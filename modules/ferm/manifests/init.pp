@@ -48,6 +48,14 @@ class ferm (
         group   => 'root',
         content => file('ferm/ferm_status.py'),
     }
+
+    file { '/etc/ferm' :
+        ensure => stdlib::ensure($ensure, 'directory'),
+        force  => true,
+        mode   => '2751',
+        group  => 'adm',
+    }
+
     if $ensure == 'present' {
         service { 'ferm':
             ensure  => running,
@@ -66,54 +74,48 @@ class ferm (
                 File['/usr/local/sbin/ferm-status'],
             ],
         }
-    }
 
-    file { '/etc/ferm/ferm.conf':
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        source  => 'puppet:///modules/ferm/ferm.conf',
-        require => Package['ferm'],
-        notify  => Service['ferm'],
-    }
+        file { '/etc/ferm/ferm.conf':
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            source  => 'puppet:///modules/ferm/ferm.conf',
+            require => Package['ferm'],
+            notify  => Service['ferm'],
+        }
 
-    file { '/etc/ferm' :
-        ensure => stdlib::ensure($ensure, 'directory'),
-        force  => true,
-        mode   => '2751',
-        group  => 'adm',
-    }
-    file { '/etc/ferm/functions.conf' :
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        source  => 'puppet:///modules/ferm/functions.conf',
-        require => Package['ferm'],
-        notify  => Service['ferm'],
-    }
+        file { '/etc/ferm/functions.conf' :
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            source  => 'puppet:///modules/ferm/functions.conf',
+            require => Package['ferm'],
+            notify  => Service['ferm'],
+        }
 
-    file { '/etc/ferm/conf.d' :
-        ensure  => stdlib::ensure($ensure, 'directory'),
-        owner   => 'root',
-        group   => 'adm',
-        mode    => '0551',
-        recurse => true,
-        purge   => true,
-        force   => true,
-        require => Package['ferm'],
-        notify  => Service['ferm'],
-    }
+        file { '/etc/ferm/conf.d' :
+            ensure  => stdlib::ensure($ensure, 'directory'),
+            owner   => 'root',
+            group   => 'adm',
+            mode    => '0551',
+            recurse => true,
+            purge   => true,
+            force   => true,
+            require => Package['ferm'],
+            notify  => Service['ferm'],
+        }
 
-    file { '/etc/default/ferm' :
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        source  => 'puppet:///modules/ferm/ferm.default',
-        require => Package['ferm'],
-        notify  => Service['ferm'],
+        file { '/etc/default/ferm' :
+            ensure  => stdlib::ensure($ensure, 'file'),
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0400',
+            source  => 'puppet:///modules/ferm/ferm.default',
+            require => Package['ferm'],
+            notify  => Service['ferm'],
+        }
     }
 
     # Starting with Bullseye iptables default to the nft backend, but for ferm
