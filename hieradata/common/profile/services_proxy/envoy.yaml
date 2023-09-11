@@ -124,6 +124,7 @@ profile::services_proxy::envoy::listeners:
     port: 6022
     service: thanos-swift
     timeout: "120s"
+    uses_ingress: true # this is a test for T339890
   - name: schema
     port: 6023
     service: schema
