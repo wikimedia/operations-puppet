@@ -3,7 +3,6 @@
 # is kept here.
 
 profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1004.wikimedia.org
   - cloudservices1005.wikimedia.org
   - cloudservices1006.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::openstack_controllers:

@@ -1401,9 +1401,7 @@ node /^cloudcumin2001\.codfw\./ {
     role(cluster::cloud_management)
 }
 
-# cloudservices1004/1005 hosts openstack-designate
-# and the powerdns auth and recursive services for instances in eqiad1.
-node /^cloudservices100[45]\.wikimedia\./ {
+node /^cloudservices100[5]\.wikimedia\./ {
     role(wmcs::openstack::eqiad1::services)
 }
 
