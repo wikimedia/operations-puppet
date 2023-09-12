@@ -1,6 +1,6 @@
 class role::thanos::backend {
     system::role { 'thanos::backend':
-        description => 'Thanos (Prometheus long-term storage) backend',
+        description => 'Swift backend (Thanos cluster)',
     }
 
     include ::profile::base::production

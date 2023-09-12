@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::thanos::swift::backend (
-    Array $thanos_backends                           = lookup('profile::thanos::backends'),
-    Array $thanos_frontends                          = lookup('profile::thanos::frontends'),
+    Array $thanos_backends                           = lookup('profile::thanos::swift::backends'),
+    Array $thanos_frontends                          = lookup('profile::thanos::swift::frontends'),
     String $swift_cluster                            = lookup('profile::thanos::swift::cluster'),
     Array $memcached_servers                         = lookup('profile::thanos::swift::memcached_servers'),
     String $hash_path_suffix                         = lookup('profile::thanos::swift::hash_path_suffix'),

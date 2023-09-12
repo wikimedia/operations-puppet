@@ -1,7 +1,7 @@
 class role::swift::storage {
 
     system::role { 'swift::storage':
-        description => 'swift storage brick',
+        description => 'Swift backend (ms cluster)',
     }
 
     include ::profile::base::production

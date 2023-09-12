@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::thanos::swift::frontend (
-    Array $thanos_backends                   = lookup('profile::thanos::backends'),
-    Array $thanos_frontends                  = lookup('profile::thanos::frontends'),
+    Array $thanos_backends                   = lookup('profile::thanos::swift::backends'),
+    Array $thanos_frontends                  = lookup('profile::thanos::swift::frontends'),
     Swift::Clusters $swift_clusters          = lookup('swift_clusters'),
     String $swift_cluster_label              = lookup('profile::thanos::swift::cluster_label'),
     Stdlib::Fqdn $service_host               = lookup('profile::thanos::swift::proxy_service_host'),

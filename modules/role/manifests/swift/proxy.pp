@@ -1,7 +1,7 @@
 class role::swift::proxy {
 
     system::role { 'swift::proxy':
-        description => 'swift frontend proxy',
+        description => 'Swift frontend (ms cluster)',
     }
 
     include ::profile::base::production

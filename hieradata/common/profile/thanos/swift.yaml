@@ -77,3 +77,23 @@ profile::thanos::swift::accounts:
 #  thanos_prod: 'foo'
 #  dispersion: 'bar'
 #  chartmuseum_prod: 'bar'
+
+profile::thanos::swift::backends:
+  - thanos-be2001.codfw.wmnet
+  - thanos-be2002.codfw.wmnet
+  - thanos-be2003.codfw.wmnet
+  - thanos-be2004.codfw.wmnet
+  - thanos-be1001.eqiad.wmnet
+  - thanos-be1002.eqiad.wmnet
+  - thanos-be1003.eqiad.wmnet
+  - thanos-be1004.eqiad.wmnet
+
+profile::thanos::swift::frontends:
+  - thanos-fe2001.codfw.wmnet
+  - thanos-fe2002.codfw.wmnet
+  - thanos-fe2003.codfw.wmnet
+  - thanos-fe2004.codfw.wmnet
+  - thanos-fe1001.eqiad.wmnet
+  - thanos-fe1002.eqiad.wmnet
+  - thanos-fe1003.eqiad.wmnet
+  - thanos-fe1004.eqiad.wmnet
