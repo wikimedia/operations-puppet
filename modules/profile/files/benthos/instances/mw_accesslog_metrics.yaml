@@ -28,9 +28,13 @@ pipeline:
         value: ${! json("http~1response~1bytes").int64() }
         labels:
           deployment: ${! json("labels.deployment") }
-          handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
+          handler: |-
+            ${! match json("labels~1handler") {
+              "-" => "static"
+              _   => "php"
+            }}
 
     - label: requests_duration
       metric:
@@ -39,9 +43,13 @@ pipeline:
         value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
           deployment: ${! json("labels.deployment") }
-          handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
+          handler: |-
+            ${! match json("labels~1handler") {
+              "-" => "static"
+              _   => "php"
+            }}
 
     - label: requests_by_endpoint_duration
       metric:
@@ -50,7 +58,6 @@ pipeline:
         value: ${! json("event~1duration").int64() * 1000 }  # event.duration is us, benthos wants ns
         labels:
           deployment: ${! json("labels.deployment") }
-          handler:    ${! json("labels~1handler") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
           endpoint: |-
@@ -61,6 +68,11 @@ pipeline:
                 this.has_prefix("/w/rest.php")  => "rest_api"
                 this.has_prefix("/w/load.php")  => "load"
                 _                               => "other"
+            }}
+          handler: |-
+            ${! match json("labels~1handler") {
+              "-" => "static"
+              _   => "php"
             }}
 
 output:
