@@ -5,8 +5,9 @@ class varnish::common(
 ) {
     # Python version
     $python_version = debian::codename() ? {
-        'bullseye'  => '3.9',
         'buster'    => '3.7',
+        'bullseye'  => '3.9',
+        'bookworm'  => '3.11',
     }
 
     file { '/usr/local/sbin/reload-vcl':
