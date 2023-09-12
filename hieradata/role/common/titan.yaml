@@ -31,6 +31,11 @@ profile::tlsproxy::envoy::cfssl_options:
     - 'thanos-query.svc.%{::site}.wmnet'
     - 'thanos-query.discovery.wmnet'
     - 'thanos.wikimedia.org'
+    - 'pyrra'
+    - 'pyrra.wikimedia.org'
+    - 'pyrra.svc.%{::site}.wmnet'
+    - 'slo'
+    - 'slo.wikimedia.org'
 profile::tlsproxy::envoy::services:
    - server_names:
      - 'thanos-query'
@@ -39,6 +44,14 @@ profile::tlsproxy::envoy::services:
      - 'thanos.wikimedia.org'
      port: 80
      cert_name: 'thanos-query.discovery.wmnet'
+   - server_names:
+     - 'pyrra'
+     - 'pyrra.wikimedia.org'
+     - 'pyrra.svc.%{::site}.wmnet'
+     - 'slo'
+     - 'slo.wikimedia.org'
+     port: 80
+     cert_name: 'pyrra.discovery.wmnet'
 profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
