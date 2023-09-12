@@ -19,7 +19,7 @@ define nftables::set (
     $ipv6_addrs = $ips.filter |$host| { $host =~ Stdlib::IP::Address::V6 }
 
     $v4_params = {
-        'name'     => "${title}_v4",
+        'name'     => "${title}_ipv4",
         'set_type' => 'ipv4_addr',
         'addrs'    => $ipv4_addrs,
         'interval' => $ipv4_addrs.any |$addr| { '/' in $addr },
@@ -33,7 +33,7 @@ define nftables::set (
     }
 
     $v6_params = {
-        'name'     => "${title}_v6",
+        'name'     => "${title}_ipv6",
         'set_type' => 'ipv6_addr',
         'addrs'    => $ipv6_addrs,
         'interval' => $ipv6_addrs.any |$addr| { '/' in $addr }

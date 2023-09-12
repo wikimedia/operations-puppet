@@ -20,7 +20,7 @@ describe 'nftables::set' do
           # rubocop:disable RegexpLiteral
           is_expected.to contain_file('/etc/nftables/sets/testing_define_ipv4.nft')
             .with_content(/
-                          set\stesting_define_v4\s{\s+
+                          set\stesting_define_ipv4\s{\s+
                           type\sipv4_addr\s+
                           elements\s=\s{\s+
                               192\.0\.2\.1,\s+
@@ -32,7 +32,7 @@ describe 'nftables::set' do
         it do
           is_expected.to contain_file('/etc/nftables/sets/testing_define_ipv6.nft')
             .with_content(/
-                          set\stesting_define_v6\s{\s+
+                          set\stesting_define_ipv6\s{\s+
                           type\sipv6_addr\s+
                           elements\s=\s{\s+
                               2001:db8::1,\s+
@@ -47,7 +47,7 @@ describe 'nftables::set' do
           it do
             is_expected.to contain_file('/etc/nftables/sets/testing_define_ipv4.nft')
               .with_content(/
-                            set\stesting_define_v4\s{\s+
+                            set\stesting_define_ipv4\s{\s+
                             type\sipv4_addr\s+
                             flags\sinterval\s+
                             elements\s=\s{\s+
@@ -59,7 +59,7 @@ describe 'nftables::set' do
           it do
             is_expected.to contain_file('/etc/nftables/sets/testing_define_ipv6.nft')
               .with_content(/
-                            set\stesting_define_v6\s{\s+
+                            set\stesting_define_ipv6\s{\s+
                             type\sipv6_addr\s+
                             flags\sinterval\s+
                             elements\s=\s{\s+
