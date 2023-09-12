@@ -8,16 +8,6 @@ class idm::jobs (
     String         $venv,
     String         $user
 ){
-
-    systemd::service { 'rq-bitu':
-        ensure  => $present,
-        content => file('idm/rq-bitu.service')
-    }
-
-    profile::auto_restarts::service {'rq-bitu':
-        ensure => $present,
-    }
-
     systemd::timer::job { 'sync_bitu_username_block':
         ensure      => $present,
         description => 'Update blocklist with data from meta and wikitech',

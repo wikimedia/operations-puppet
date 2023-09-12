@@ -40,6 +40,11 @@ class profile::idm(
 
     $production_str = $production.bool2str('production', 'staging')
     $oidc_endpoint = $apereo_cas[$production_str]['oidc_endpoint']
+    $oidc = { key      => $oidc_key,
+              secret   => $oidc_secret,
+              endpoint => $oidc_endpoint }
+
+    $mediawiki = { key    => $mediawiki_key, secret => $mediawiki_secret }
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
@@ -64,62 +69,84 @@ class profile::idm(
         group  => $deploy_user,
     }
 
-    class { 'idm::deployment':
-        project                  => $project,
-        service_fqdn             => $service_fqdn,
-        django_secret_key        => $django_secret_key,
-        django_mysql_db_name     => $django_mysql_db_name,
-        django_mysql_db_host     => $django_mysql_db_host,
-        django_mysql_db_user     => $django_mysql_db_user,
-        django_mysql_db_password => $django_mysql_db_password,
-        base_dir                 => $base_dir,
-        deploy_user              => $deploy_user,
-        etc_dir                  => $etc_dir,
-        log_dir                  => $log_dir,
-        static_dir               => $static_dir,
-        install_via_git          => $install_via_git,
-        redis_master             => $redis_master,
-        redis_replicas           => $redis_replicas,
-        redis_password           => $redis_password,
-        redis_port               => $redis_port,
-        redis_maxmem             => $redis_maxmem,
-        oidc                     => {
-            key      => $oidc_key,
-            secret   => $oidc_secret,
-            endpoint => $oidc_endpoint
-        },
-        mediawiki                => {
-            key    => $mediawiki_key,
-            secret => $mediawiki_secret
-        },
-        ldap_dn                  => $ldap_dn,
-        ldap_dn_password         => $ldap_dn_password,
-        ldap_config              => $ldap_config,
-        production               => $production,
+    $logs = ['idm', 'django']
+    $logs.each |$log| {
+        logrotate::rule { "bitu-${log}":
+        ensure        => present,
+        file_glob     => "${log_dir}/${log}.log",
+        frequency     => 'daily',
+        not_if_empty  => true,
+        copy_truncate => true,
+        max_age       => 30,
+        rotate        => 30,
+        date_ext      => true,
+        compress      => true,
+        missing_ok    => true,
+        no_create     => true,
+        }
     }
 
-    uwsgi::app{ $project:
-        settings => {
-            uwsgi => {
-                'plugins'      => 'python3',
-                'project'      => $project,
-                'uid'          => $deploy_user,
-                'base'         => "${base_dir}/${project}",
-                'env'          => [
-                    "PYTHONPATH=/etc/${project}:\$PYTHONPATH",
-                    'DJANGO_SETTINGS_MODULE=settings'
-                ],
-                'chdir'        => '%(base)/',
-                'module'       => '%(project).wsgi:application',
-                'master'       => true,
-                'processes'    => $uwsgi_process_count,
-                'socket'       => $uwsgi_socket,
-                'chown-socket' => $deploy_user,
-                'chmod-socket' => 660,
-                'vacuum'       => true,
-                'virtualenv'   => $idm::deployment::venv,
-            }
+
+    # Django configuration
+    file { "${etc_dir}/settings.py":
+        ensure  => present,
+        content => template('idm/idm-django-settings.erb'),
+        owner   => $deploy_user,
+        group   => $deploy_user,
+
+    }
+
+    class { 'idm::redis':
+        redis_master   => $redis_master,
+        redis_replicas => $redis_replicas,
+        redis_password => $redis_password,
+        redis_port     => $redis_port,
+        redis_maxmem   => $redis_maxmem,
+    }
+
+
+    if $install_via_git {
+        class { 'idm::deployment':
+            project                  => $project,
+            service_fqdn             => $service_fqdn,
+            django_secret_key        => $django_secret_key,
+            django_mysql_db_name     => $django_mysql_db_name,
+            django_mysql_db_host     => $django_mysql_db_host,
+            django_mysql_db_user     => $django_mysql_db_user,
+            django_mysql_db_password => $django_mysql_db_password,
+            base_dir                 => $base_dir,
+            deploy_user              => $deploy_user,
+            etc_dir                  => $etc_dir,
+            log_dir                  => $log_dir,
+            static_dir               => $static_dir,
+            install_via_git          => $install_via_git,
+            redis_master             => $redis_master,
+            redis_replicas           => $redis_replicas,
+            redis_password           => $redis_password,
+            redis_port               => $redis_port,
+            redis_maxmem             => $redis_maxmem,
+            oidc                     => $oidc,
+            mediawiki                => $mediawiki,
+            ldap_dn                  => $ldap_dn,
+            ldap_dn_password         => $ldap_dn_password,
+            ldap_config              => $ldap_config,
+            production               => $production,
+            uwsgi_process_count      => $uwsgi_process_count,
+
         }
+    } else {
+        ensure_packages('python3-bitu')
+
+        service { 'uwsgi-bitu':
+            ensure => 'running',
+            enable => true
+        }
+
+        service { 'rq-bitu':
+            ensure => stdlib::ensure($facts['networking']['fqdn'] == $redis_master, 'service'),
+            enable => ($facts['networking']['fqdn'] == $redis_master)
+        }
+
     }
 
     # Bitu is managed via a dedicated systemd unit (uwsgi-bitu.service),
@@ -138,16 +165,19 @@ class profile::idm(
         content => template('idm/idm-apache-config.erb'),
     }
 
-    profile::auto_restarts::service { 'apache2':}
-
     $job_state = ($facts['networking']['fqdn'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
         base_dir => $base_dir,
         etc_dir  => $etc_dir,
         project  => $project,
         present  => $job_state,
-        venv     => $idm::deployment::venv,
+        venv     => "${base_dir}/venv",
         user     => $deploy_user
+    }
+
+    profile::auto_restarts::service { 'apache2':}
+    profile::auto_restarts::service { 'rq-bitu':
+        ensure => $job_state,
     }
 
     if $enable_monitoring {

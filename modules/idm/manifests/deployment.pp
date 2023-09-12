@@ -25,6 +25,7 @@ class idm::deployment (
     String              $ldap_dn,
     String              $ldap_dn_password,
     Boolean             $production,
+    Integer             $uwsgi_process_count,
 ){
     # We need django from backports to get latest LTS.
     if debian::codename::eq('bullseye') {
@@ -33,15 +34,6 @@ class idm::deployment (
             package  => 'python3-django',
             priority => 1001,
         }
-    }
-
-    # Django configuration
-    file { "${etc_dir}/settings.py":
-        ensure  => present,
-        content => template('idm/idm-django-settings.erb'),
-        owner   => $deploy_user,
-        group   => $deploy_user,
-
     }
 
     # We need the base configuration from the Bitu
@@ -55,93 +47,72 @@ class idm::deployment (
 
     # During development we want to install Bitu and packages
     # in a virtual environment.
-    if $install_via_git {
-        ensure_packages(['python3-venv'])
+    ensure_packages(['python3-venv'])
+    $venv = "${base_dir}/venv"
+    $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
-        $venv = "${base_dir}/venv"
 
-        file { $base_dir :
-            ensure => directory,
-            owner  => $deploy_user,
-            group  => $deploy_user,
-        }
-
-        git::clone { 'operations/software/bitu':
-            ensure    => 'latest',
-            directory => "${base_dir}/${project}",
-            branch    => 'master',
-            owner     => $deploy_user,
-            group     => $deploy_user,
-            source    => 'gerrit',
-            notify    => Exec["install requirements to ${venv}"],
-        }
-
-        exec { "create virtual environment ${venv}":
-            command => "/usr/bin/python3 -m venv ${venv}",
-            creates => "${venv}/bin/activate",
-        }
-
-        exec { "install requirements to ${venv}":
-            command     => "${venv}/bin/pip3 install -r ${base_dir}/${project}/requirements.txt",
-            require     => Exec["create virtual environment ${venv}"],
-            notify      => Exec['collect static assets'],
-            refreshonly => true,
-        }
-
-        exec { 'collect static assets':
-            command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
-            environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings'],
-            notify      => Service['uwsgi-bitu', 'rq-bitu'],
-            refreshonly => true,
-        }
-    } else {
-        # For future use.
-        ensure_packages('python3-bitu-idm')
+    file { $base_dir :
+        ensure => directory,
+        owner  => $deploy_user,
+        group  => $deploy_user,
     }
 
-    ferm::service { 'redis_replication':
-        proto  => 'tcp',
-        port   => $redis_port,
-        srange => "@resolve((${redis_master} ${redis_replicas.join(' ')}))",
+    git::clone { 'operations/software/bitu':
+        ensure    => 'latest',
+        directory => "${base_dir}/${project}",
+        branch    => 'master',
+        owner     => $deploy_user,
+        group     => $deploy_user,
+        source    => 'gerrit',
+        notify    => Exec["install requirements to ${venv}"],
     }
 
-    $base_redis_settings =  {
-        bind        => $facts['networking']['ip'],
-        maxmemory   => $redis_maxmem,
-        port        => $redis_port,
-        requirepass => $redis_password,
+    exec { "create virtual environment ${venv}":
+        command => "/usr/bin/python3 -m venv ${venv}",
+        creates => "${venv}/bin/activate",
     }
 
-    $replica_redis_settings = {
-        replicaof  => "${$redis_master} ${redis_port}",
-        masterauth => $redis_password,
+    exec { "install requirements to ${venv}":
+        command     => "${venv}/bin/pip3 install -r ${base_dir}/${project}/requirements.txt",
+        require     => Exec["create virtual environment ${venv}"],
+        notify      => Exec['collect static assets'],
+        refreshonly => true,
     }
 
-    unless $facts['networking']['hostname'] in $redis_master {
-        $redis_settings = $base_redis_settings + $replica_redis_settings
-    } else {
-        $redis_settings =  $base_redis_settings
+    exec { 'collect static assets':
+        command     => "${base_dir}/venv/bin/python ${base_dir}/${project}/manage.py collectstatic  --no-input",
+        environment => ["PYTHONPATH=${etc_dir}", 'DJANGO_SETTINGS_MODULE=settings'],
+        notify      => Service['uwsgi-bitu', 'rq-bitu'],
+        refreshonly => true,
     }
 
-    redis::instance { String($redis_port):
-        settings => $redis_settings,
-        notify   => Service['uwsgi-bitu', 'rq-bitu'],
-    }
-
-    $logs = ['idm', 'django']
-    $logs.each |$log| {
-        logrotate::rule { "bitu-${log}":
-        ensure        => present,
-        file_glob     => "${log_dir}/${log}.log",
-        frequency     => 'daily',
-        not_if_empty  => true,
-        copy_truncate => true,
-        max_age       => 30,
-        rotate        => 30,
-        date_ext      => true,
-        compress      => true,
-        missing_ok    => true,
-        no_create     => true,
+    uwsgi::app{ $project:
+        settings => {
+            uwsgi => {
+                'plugins'      => 'python3',
+                'project'      => $project,
+                'uid'          => $deploy_user,
+                'base'         => "${base_dir}/${project}",
+                'env'          => [
+                    "PYTHONPATH=/etc/${project}:\$PYTHONPATH",
+                    'DJANGO_SETTINGS_MODULE=settings'
+                ],
+                'chdir'        => '%(base)/',
+                'module'       => '%(project).wsgi:application',
+                'master'       => true,
+                'processes'    => $uwsgi_process_count,
+                'socket'       => $uwsgi_socket,
+                'chown-socket' => $deploy_user,
+                'chmod-socket' => 660,
+                'vacuum'       => true,
+                'virtualenv'   => "${base_dir}/venv"
+            }
         }
+    }
+
+    systemd::service { 'rq-bitu':
+        ensure  => ($facts['networking']['fqdn'] == $redis_master).bool2str('present', 'absent'),
+        content => file('idm/rq-bitu.service')
     }
 }
