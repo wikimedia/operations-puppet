@@ -11,6 +11,8 @@ set <%= $name %> {
     <%- if $interval { -%>
     flags interval
     <% } -%>
+    <%- unless $addrs.empty { -%>
     elements = { <%= $addrs.join(",\n                  ") %>
+    <%- } -%>
     }
 }
