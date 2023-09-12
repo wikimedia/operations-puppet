@@ -2821,14 +2821,13 @@ node /^sretest200[1-2]\.codfw\./ {
     role(sretest)
 }
 
-# codfw new titan node T342300
+# House of Thanos components
 node /^titan200[1-2]\.codfw\./ {
-    role(insetup::observability)
+    role(titan)
 }
 
-# eqiad new titan node T342179
 node /^titan100[1-2]\.eqiad\./ {
-    role(insetup::observability)
+    role(titan)
 }
 
 # parsoid visual diff and roundtrip testing (T257940)
