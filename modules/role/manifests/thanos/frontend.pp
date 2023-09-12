@@ -24,6 +24,4 @@ class role::thanos::frontend {
 
     include ::profile::thanos::swift::frontend
 
-    include ::profile::pyrra::api
-    include ::profile::pyrra::filesystem
 }

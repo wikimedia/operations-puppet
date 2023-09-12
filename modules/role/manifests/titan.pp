@@ -23,4 +23,7 @@ class role::titan {
 
     include ::profile::thanos::rule
     include ::profile::alerts::deploy::thanos
+
+    include ::profile::pyrra::api
+    include ::profile::pyrra::filesystem
 }
