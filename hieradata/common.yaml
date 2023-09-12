@@ -1000,6 +1000,7 @@ hadoop_clusters:
       an-worker1122.eqiad.wmnet:  /eqiad/A/7
       an-worker1123.eqiad.wmnet:  /eqiad/A/7
       an-worker1139.eqiad.wmnet:  /eqiad/A/7
+      an-worker1149.eqiad.wmnet:  /eqiad/A/7
 
       an-worker1083.eqiad.wmnet:  /eqiad/B/2
       an-worker1084.eqiad.wmnet:  /eqiad/B/2
@@ -1017,6 +1018,7 @@ hadoop_clusters:
       an-worker1087.eqiad.wmnet:  /eqiad/B/7
       an-worker1098.eqiad.wmnet:  /eqiad/B/7
       an-worker1130.eqiad.wmnet:  /eqiad/B/7
+      an-worker1150.eqiad.wmnet:  /eqiad/B/7
 
       an-worker1088.eqiad.wmnet:  /eqiad/C/2
       an-worker1099.eqiad.wmnet:  /eqiad/C/2
@@ -1036,6 +1038,7 @@ hadoop_clusters:
       an-worker1109.eqiad.wmnet:  /eqiad/C/7
       an-worker1110.eqiad.wmnet:  /eqiad/C/7
       an-worker1133.eqiad.wmnet:  /eqiad/C/7
+      an-worker1151.eqiad.wmnet:  /eqiad/C/7
       an-worker1111.eqiad.wmnet:  /eqiad/C/8
 
       analytics1076.eqiad.wmnet:  /eqiad/D/2
@@ -1055,14 +1058,20 @@ hadoop_clusters:
       an-worker1101.eqiad.wmnet:  /eqiad/D/7
       an-worker1115.eqiad.wmnet:  /eqiad/D/7
       an-worker1116.eqiad.wmnet:  /eqiad/D/7
+      an-worker1152.eqiad.wmnet:  /eqiad/D/7
 
       an-worker1142.eqiad.wmnet:  /eqiad/E/1
+      an-worker1147.eqiad.wmnet:  /eqiad/E/1
+      an-worker1153.eqiad.wmnet:  /eqiad/E/1
       an-worker1143.eqiad.wmnet:  /eqiad/E/2
+      an-worker1154.eqiad.wmnet:  /eqiad/E/3
+
       an-worker1144.eqiad.wmnet:  /eqiad/F/1
+      an-worker1148.eqiad.wmnet:  /eqiad/F/1
+      an-worker1155.eqiad.wmnet:  /eqiad/F/1
       an-worker1145.eqiad.wmnet:  /eqiad/F/2
       an-worker1146.eqiad.wmnet:  /eqiad/F/3
-      an-worker1147.eqiad.wmnet:  /eqiad/E/1
-      an-worker1148.eqiad.wmnet:  /eqiad/F/1
+      an-worker1156.eqiad.wmnet:  /eqiad/F/3
 
     core_site_extra_properties:
       # User used in the Yarn UI to check job logs/statuses/etc..

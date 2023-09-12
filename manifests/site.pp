@@ -130,13 +130,8 @@ node /^an-worker10(7[89]|8[0-9]|9[0-9])\.eqiad\./ {
 # hieradata/common.yaml hadoop_clusters net_topology
 # to make sure the hostname -> /datacenter/rack/row id is correct.
 # This is used for Hadoop network topology awareness.
-node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-8])\.eqiad\./ {
+node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-6])\.eqiad\./ {
     role(analytics_cluster::hadoop::worker)
-}
-
-# New an-worker nodes T327295
-node /^an-worker11(4[9]|5[0-6])\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # Staging environment of Superset and Turnilo
