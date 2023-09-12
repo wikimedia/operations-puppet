@@ -433,6 +433,8 @@ eqiad:
     thanos-fe1002.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
     thanos-fe1003.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
     thanos-fe1004.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
+    titan1001.eqiad.wmnet: [thanos-query, thanos-web]
+    titan1002.eqiad.wmnet: [thanos-query, thanos-web]
   ml_serve:
     ml-serve-ctrl1001.eqiad.wmnet: [kubemaster]
     ml-serve-ctrl1002.eqiad.wmnet: [kubemaster]
