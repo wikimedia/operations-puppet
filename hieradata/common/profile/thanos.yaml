@@ -17,6 +17,10 @@ profile::thanos::frontends:
   - thanos-fe1002.eqiad.wmnet
   - thanos-fe1003.eqiad.wmnet
   - thanos-fe1004.eqiad.wmnet
+  - titan1001.eqiad.wmnet
+  - titan1002.eqiad.wmnet
+  - titan2001.codfw.wmnet
+  - titan2002.codfw.wmnet
 
 # The host to run compact on, must be only one globally
 profile::thanos::compact_host: thanos-fe2001.codfw.wmnet
