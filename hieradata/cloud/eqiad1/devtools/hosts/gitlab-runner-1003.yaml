@@ -11,7 +11,7 @@ profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:late
 profile::gitlab::runner::docker_volume_min: 5
 profile::gitlab::runner::docker_volume_max: 8
 profile::gitlab::runner::docker_network: bridge # TODO: workaround for T311241 to unblock T304514
-profile::gitlab::runner::docker_subnet: '172.20.0.0/16'
+profile::gitlab::runner::docker_subnet: '172.21.0.0/16'
 profile::gitlab::runner::docker_gc_interval: 5m
 profile::gitlab::runner::docker_gc_images_high_water_mark: 6g
 profile::gitlab::runner::docker_gc_images_low_water_mark: 3g
