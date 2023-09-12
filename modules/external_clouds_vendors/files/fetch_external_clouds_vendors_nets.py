@@ -4,10 +4,11 @@
 import csv
 import json
 import logging
+import time
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Set
+from typing import List, Set
 
 import yaml
 from conftool.extensions.reqconfig import (
@@ -107,6 +108,32 @@ class ExternalCloudVendorAzure:
             for item in ips["values"]
             for prefix in item["properties"]["addressPrefixes"]
         }
+        return nets
+
+
+@dataclass
+class ExternalCloudVendorRIPE:
+    """Class to fetch data from RIPE APIs to get all prefixes of a given ASN."""
+
+    name: str
+    asns: List[int]
+
+    def get_networks(self, session: Session) -> Set[str]:
+        """Fetch networks from RIPE
+
+        Arguments:
+            session: A request session to use for fetching data
+
+        Returns:
+            set[str]: A set of network prefixes
+        """
+        nets = set()
+        for asn in self.asns:
+            data = session.get("https://stat.ripe.net/data/announced-prefixes/data.json?"
+                               f"data_overload_limit=ignore&resource=AS{asn}&starttime="
+                               f"{int(time.time())}&min_peers_seeing=10").json()
+            nets |= {prefix["prefix"] for prefix in data["data"]["prefixes"]}
+
         return nets
 
 
@@ -216,6 +243,7 @@ def main() -> int:
                 "http://digitalocean.com/geo/google.csv"
             ),
             CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
+            ExternalCloudVendorRIPE(name="Belcloud", asns=[44901])
         ],
         "known-clients": [
             ExternalCloudVendor(
