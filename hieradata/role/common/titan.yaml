@@ -24,11 +24,17 @@ profile::lvs::realserver::pools:
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'yes'
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - 'thanos-query'
+    - 'thanos-query.svc.%{::site}.wmnet'
+    - 'thanos-query.discovery.wmnet'
+    - 'thanos.wikimedia.org'
 profile::tlsproxy::envoy::services:
    - server_names:
      - 'thanos-query'
-     - 'thanos-query.svc.eqiad.wmnet'
-     - 'thanos-query.svc.codfw.wmnet'
+     - 'thanos-query.svc.%{::site}.wmnet'
      - 'thanos-query.discovery.wmnet'
      - 'thanos.wikimedia.org'
      port: 80
