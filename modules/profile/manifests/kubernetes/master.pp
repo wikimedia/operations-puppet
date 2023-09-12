@@ -64,7 +64,7 @@ class profile::kubernetes::master (
             'kubernetes.default.svc.cluster',
             'kubernetes.default.svc.cluster.local',
         ],
-        'notify_services' => ['kube-apiserver'],
+        'notify_services' => ['kube-apiserver-safe-restart'],
     })
 
     $sa_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'sa', {
@@ -72,7 +72,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
-        'notify_services' => ['kube-apiserver', 'kube-publish-sa-cert'],
+        'notify_services' => ['kube-apiserver-safe-restart', 'kube-publish-sa-cert'],
     })
 
     # FIXME: T329826 by default the key of the cergen_sa_cert is used to sign service-account tokens
@@ -108,7 +108,7 @@ class profile::kubernetes::master (
         watch_keys => ['/'],
         # Add all but the local cert to the file (the local one will be used unconditionally)
         content    => "{{range gets \"/*\"}}{{if ne .Key \"/${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
-        reload     => '/bin/systemctl reload kube-apiserver.service',
+        reload     => '/bin/systemctl restart kube-apiserver-safe-restart.service',
     }
 
     # Add all certificates that should be used for validation of service account tokens.
@@ -128,7 +128,7 @@ class profile::kubernetes::master (
         'names'           => [{ 'organisation' => 'system:masters' }],
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
-        'notify_services' => ['kube-apiserver'],
+        'notify_services' => ['kube-apiserver-safe-restart'],
     })
 
     # Client cert for the front proxy (this uses a separate intermediate then everything else)
@@ -137,7 +137,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
         'outdir'          => '/etc/kubernetes/pki',
-        'notify_services' => ['kube-apiserver'],
+        'notify_services' => ['kube-apiserver-safe-restart'],
     })
 
     # Fetch a client cert with kubernetes-admin permission

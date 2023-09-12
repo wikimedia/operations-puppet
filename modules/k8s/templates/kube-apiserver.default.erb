@@ -69,5 +69,3 @@ daemon_args.push("--proxy-client-cert-file=#{@frontproxy_cert['cert']}")
 daemon_args.push("--proxy-client-key-file=#{@frontproxy_cert['key']}")
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"
-ETCDCTL_API=3
-ETCDCTL_ENDPOINTS="<%= @etcd_servers %>"

@@ -85,6 +85,7 @@ class k8s::apiserver (
     }
 
     # etcd-client is used to orchestrate kube-apiserver restarts
+    # with the kube-apiserver-safe-restart systemd service
     ensure_packages('etcd-client')
     k8s::package { 'apiserver':
         package => 'master',
@@ -103,7 +104,7 @@ class k8s::apiserver (
         group   => 'root',
         mode    => '0444',
         content => template('k8s/kube-apiserver.default.erb'),
-        notify  => Service['kube-apiserver'],
+        notify  => Service['kube-apiserver-safe-restart'],
     }
 
     $admission_configuration_ensure = $admission_configuration ? {
@@ -123,16 +124,18 @@ class k8s::apiserver (
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
-        notify  => Service['kube-apiserver'],
+        notify  => Service['kube-apiserver-safe-restart'],
     }
 
-    # Override the restart from puppet to become a reload, which runs
-    # restart with an etcdctl lock to ensure only one apiserver restarts
-    # at any given time.
-    systemd::service { 'kube-apiserver':
-        ensure         => present,
-        content        => file('k8s/kube-apiserver.systemd.override.conf'),
-        override       => true,
-        service_params => { 'restart' => '/bin/systemctl reload kube-apiserver.service', },
+    service { 'kube-apiserver':
+        ensure => running,
+        enable => true,
+    }
+
+    # Create a oneshot service that should be used for restarting kube-apiserver.
+    # It uses a etcd lock to ensure only one apiserver is restarted at the time
+    systemd::service { 'kube-apiserver-safe-restart':
+        ensure  => present,
+        content => template('k8s/kube-apiserver-safe-restart.systemd.erb'),
     }
 }
