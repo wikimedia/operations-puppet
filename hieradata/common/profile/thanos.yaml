@@ -26,9 +26,9 @@ profile::thanos::frontends:
 profile::thanos::compact_host: thanos-fe2001.codfw.wmnet
 
 profile::thanos::rule_hosts:
-  "thanos-fe1001.eqiad.wmnet":
+  "titan1001.eqiad.wmnet":
     replica: a
-  "thanos-fe2001.codfw.wmnet":
+  "titan2001.codfw.wmnet":
     replica: b
 
 # Shared across Prometheus and Thanos roles
