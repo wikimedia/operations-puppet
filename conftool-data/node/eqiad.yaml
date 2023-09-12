@@ -429,10 +429,10 @@ eqiad:
     dbproxy1018.eqiad.wmnet: [wikireplicas-b]
     dbproxy1019.eqiad.wmnet: [wikireplicas-b]
   thanos:
-    thanos-fe1001.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
-    thanos-fe1002.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
-    thanos-fe1003.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
-    thanos-fe1004.eqiad.wmnet: [thanos-query, thanos-swift, thanos-web]
+    thanos-fe1001.eqiad.wmnet: [thanos-swift]
+    thanos-fe1002.eqiad.wmnet: [thanos-swift]
+    thanos-fe1003.eqiad.wmnet: [thanos-swift]
+    thanos-fe1004.eqiad.wmnet: [thanos-swift]
     titan1001.eqiad.wmnet: [thanos-query, thanos-web]
     titan1002.eqiad.wmnet: [thanos-query, thanos-web]
   ml_serve:
