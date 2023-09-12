@@ -149,7 +149,23 @@ class profile::kubernetes::master (
         'outdir'          => '/etc/kubernetes/pki',
     })
     # Create a superuser kubeconfig connecting locally to this control-plane
+    file { '/root/.kube':
+        ensure => directory,
+        mode   => '0750',
+    }
+    k8s::kubeconfig { '/root/.kube/config':
+        master_host => $facts['fqdn'],
+        username    => 'default-admin',
+        auth_cert   => $default_admin_cert,
+        owner       => 'root',
+        group       => 'root',
+    }
+    # Previously the following superuser config was used.
+    # Remove that one as it's very inconvenient to always have to
+    # provide --kubeconfig. Services should also never use this
+    # file so better place it somewhere else.
     k8s::kubeconfig { '/etc/kubernetes/admin.conf':
+        ensure      => absent,
         master_host => $::fqdn,
         username    => 'default-admin',
         auth_cert   => $default_admin_cert,
@@ -183,7 +199,7 @@ class profile::kubernetes::master (
     })
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
     k8s::kubeconfig { $scheduler_kubeconfig:
-        master_host => $k8s_config['master'],
+        master_host => $facts['fqdn'],
         username    => 'default-scheduler',
         auth_cert   => $scheduler_cert,
         owner       => 'kube',
@@ -204,7 +220,7 @@ class profile::kubernetes::master (
     })
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'
     k8s::kubeconfig { $controllermanager_kubeconfig:
-        master_host => $k8s_config['master'],
+        master_host => $facts['fqdn'],
         username    => 'default-controller-manager',
         auth_cert   => $controller_manager_cert,
         owner       => 'kube',
