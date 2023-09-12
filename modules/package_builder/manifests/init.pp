@@ -78,6 +78,7 @@ class package_builder(
         'openstack-pkg-tools',
         'patchutils',
         'php-dev',
+        'piuparts',
         'pkg-kde-tools',
         'pkg-php-tools',
         'postgresql-server-dev-all',
