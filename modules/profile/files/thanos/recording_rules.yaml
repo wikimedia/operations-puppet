@@ -165,9 +165,15 @@ groups:
       # SLx: Buckets for latency
       - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_bucket:rate5m
         expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_bucket{}[5m]))
+      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_bucket:increase5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (increase(istio_request_duration_milliseconds_bucket{}[5m]))
       # SLx: Total requests for latency
       - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_count:rate5m
         expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_count{}[5m]))
+      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_count:increase5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (increase(istio_request_duration_milliseconds_count{}[5m]))
       # SLx: Request counts with status
       - record: destsvc_rev_ns_rc_rf:istio_requests_total:rate5m
         expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, response_code, response_flags, site, prometheus) (rate(istio_requests_total{}[5m]))
+      - record: destsvc_rev_ns_rc_rf:istio_requests_total:increase5m
+        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, response_code, response_flags, site, prometheus) (increase(istio_requests_total{}[5m]))
