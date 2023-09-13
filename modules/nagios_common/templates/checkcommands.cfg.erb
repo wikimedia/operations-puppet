@@ -265,12 +265,6 @@ define command {
     command_line    $USER1$/check_http -H upload.wikimedia.org --ssl --sni -I $HOSTADDRESS$ -u /monitoring/backend
     }
 
-# 'check_http_varnish' command definition
-define command {
-    command_name    check_http_varnish
-    command_line    $USER1$/check_http -H $ARG1$ -p $ARG2$ -I $HOSTADDRESS$ -u /varnish-fe
-    }
-
 define command {
     command_name    check_http_url_at_address_for_string_with_timeout
     command_line    $USER1$/check_http -t $ARG1$ -H $ARG2$ -I $ARG2$ -u "$ARG3$" -s "$ARG4$"

@@ -263,12 +263,6 @@ define varnish::instance(
         path    => '/bin:/usr/bin',
     }
 
-    # TODO/puppet4: convert this to be a define that uses instance name as title and ports as a parameter
-    # to allow having non-strigified port numbers.
-    varnish::monitoring::instance { $ports.map |$port| { String($port) }:
-        instance => $title,
-    }
-
     if $listen_uds and $enable_monitoring {
         $listen_uds.each |Stdlib::Unixpath $uds_path| {
             nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${uds_path}":
