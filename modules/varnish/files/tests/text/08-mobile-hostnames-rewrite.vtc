@@ -181,4 +181,19 @@ client c1 {
     rxresp
     expect resp.status == 200
 
+    txreq -url "/wiki/Main_Page" -hdr "User-Agent: nintendo" -hdr "Host: ca.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://ca.m.wikimedia.org/wiki/Main_Page"
+    expect resp.status == 302
+
+    txreq -url "/wiki/Homepage" -hdr "User-Agent: nintendo" -hdr "Host: office.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://office.m.wikimedia.org/wiki/Homepage"
+    expect resp.status == 302
+
+    txreq -url "/wiki/Portal" -hdr "User-Agent: nintendo" -hdr "Host: quality.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.http.location == "https://quality.m.wikimedia.org/wiki/Portal"
+    expect resp.status == 302
+
 } -run
