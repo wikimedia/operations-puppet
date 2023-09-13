@@ -1,2 +1,3 @@
 profile::cache::varnish::frontend::single_backend: true
 profile::cache::varnish::frontend::vsl_size: '160M'
+profile::cache::varnish::frontend::fe_mem_gb_reserved: 170
