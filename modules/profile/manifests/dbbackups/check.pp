@@ -39,6 +39,14 @@
 #                          the latest backup has grown or shrink more than this
 #                          in relation to the previous run, the alerm will go
 #                          off with a critical alert
+# * $es_backups_check: if true, it setups a weekly check involving making sure
+#                      that all es configured and active backups take less than
+#                      a configurable amount of hours to run; otherwise,
+#                      it sends an alert by email,
+# * $es_max_hours: Maximum amount of hours an ES (content db) backup should
+#                  take to backup, beyond which an email is sent,
+# * $es_alert_email: Email address where to sent the alerts of ES backups taking
+#                    too much time.
 # * $db_host: IP, full qualified domain or hostname where the backups statistics
 #             are hosted
 # * $db_user: Username with read grants for the mysql database where the backup
@@ -46,12 +54,15 @@
 # * $db_password: Database password for the previous user
 # * $db_database: Schema where the backup statistics and metrics are stored.
 class profile::dbbackups::check (
-    $enabled              = lookup('profile::dbbackups::check::backups', Boolean, ),
+    $enabled              = lookup('profile::dbbackups::check::enabled', Boolean, ),
     $backups              = lookup('profile::dbbackups::check::backups', Hash, ),
     $freshness            = lookup('profile::dbbackups::check::freshness', Hash[String, Integer], ),
     $min_size             = lookup('profile::dbbackups::check::min_size', Integer[0, infinity], ),
     $warn_size_percentage = lookup('profile::dbbackups::check::warn_size_percentage', Float[0.0, 100.0]),
     $crit_size_percentage = lookup('profile::dbbackups::check::crit_size_percentage', Float[0.0, 100.0]),
+    $es_backups_check     = lookup('profile::dbbackups::check::es_backups_check', Boolean, ),
+    $es_max_hours         = lookup('profile::dbbackups::check::es_max_hours', Float[0.0, 8760.0], ),
+    $es_alert_email       = lookup('profile::dbbackups::check::es_alert_email', String, ),
     $db_host              = lookup('profile::dbbackups::check::db_host', String, ),
     $db_user              = lookup('profile::dbbackups::check::db_user', String, ),
     $db_password          = lookup('profile::dbbackups::check::db_password', String, ),
@@ -84,6 +95,17 @@ class profile::dbbackups::check (
                 }
             }
         }
+    }
+
+    # Check all external storage backups for backup time, if enabled
+    dbbackups::check_es { 'check-es-backups-duration':
+        enabled     => $es_backups_check,
+        max_hours   => $es_max_hours,
+        email       => $es_alert_email,
+        db_user     => $db_user,
+        db_host     => $db_host,
+        db_password => $db_password,
+        db_database => $db_database,
     }
 }
 

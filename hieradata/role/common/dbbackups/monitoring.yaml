@@ -115,3 +115,8 @@ profile::dbbackups::check::db_database: dbbackups
 profile::dbbackups::check::min_size: 50000
 profile::dbbackups::check::warn_size_percentage: 5.0
 profile::dbbackups::check::crit_size_percentage: 15.0
+
+# long running backups
+profile::dbbackups::check::es_backups_check: true
+profile::dbbackups::check::es_max_hours: 12.0
+profile::dbbackups::check::es_alert_email: 'sre-data-persistence@wikimedia.org'
