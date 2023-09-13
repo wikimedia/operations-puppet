@@ -24,13 +24,13 @@ class profile::toolforge::proxy (
     }
 
     class { '::dynamicproxy':
-        acme_certname       => $ssl_cert_name,
-        ssl_settings        => ssl_ciphersuite('nginx', 'compat'),
-        luahandler          => 'urlproxy',
-        k8s_vip_fqdn        => $k8s_vip_fqdn,
-        k8s_vip_fqdn_port   => $k8s_vip_port,
-        redis_replication   => $redis_replication,
-        error_config        => {
+        acme_certname           => $ssl_cert_name,
+        ssl_settings            => ssl_ciphersuite('nginx', 'compat'),
+        luahandler              => 'urlproxy',
+        k8s_vip_fqdn            => $k8s_vip_fqdn,
+        k8s_vip_fqdn_port       => $k8s_vip_port,
+        redis_replication       => $redis_replication,
+        error_config            => {
             title       => 'Wikimedia Toolforge Error',
             logo        => '/.error/toolforge-logo.png',
             logo_2x     => '/.error/toolforge-logo-2x.png',
@@ -40,8 +40,10 @@ class profile::toolforge::proxy (
             logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge',
             favicon     => '/.error/favicon.ico',
         },
-        banned_description  => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
-        rate_limit_requests => $rate_limit_requests,
+        error_details           => "<p>${::facts['networking']['fqdn']}</p>",
+        banned_description      => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
+        unreachable_description => '<p>This Grid Engine web service cannot be reached. Please contact a maintainer of this tool.</p><p>Tool maintainers can find more details <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Web">from the documentation on Wikitech</a>.</p>',
+        rate_limit_requests     => $rate_limit_requests,
     }
 
     $proxy_nodes = join($proxies, ' ')

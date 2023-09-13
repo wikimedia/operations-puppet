@@ -53,6 +53,7 @@ function route_backend_and_exit_if_ok(toolname, url)
     -- This also closes the current redis connection.
     red:set_keepalive(1000 * 32, 256)
     ngx.var.backend = route
+    ngx.var.connection_error_document = '/.error/unreachable.html'
     ngx.exit(ngx.OK)
 end
 

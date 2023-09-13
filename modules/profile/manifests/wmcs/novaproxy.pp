@@ -73,6 +73,7 @@ class profile::wmcs::novaproxy(
         luahandler               => 'domainproxy',
         redis_replication        => $redis_replication,
         banned_ips               => $banned_ips,
+        error_details            => "<p>${::facts['networking']['fqdn']}</p>",
         blocked_user_agent_regex => $block_ua_re,
         blocked_referer_regex    => $block_ref_re,
         rate_limit_requests      => $rate_limit_requests,
