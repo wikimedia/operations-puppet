@@ -56,8 +56,8 @@ define firewall::service(
 
             nftables::service { $title:
                 *       => wmflib::resource::filter_params('drange', 'srange'),
-                src_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
-                dst_ips => $srange.then |$range| { wmflib::hosts2ips($range) },
+                src_ips => $srange.then |$range| { wmflib::hosts2ips($range) },
+                dst_ips => $drange.then |$range| { wmflib::hosts2ips($range) },
             }
         }
 
