@@ -199,7 +199,7 @@ def verify_dns(
 
     Return the time it took to run.
     """
-    with get_timer() as get_elpased_time:
+    with get_timer() as get_elapsed_time:
         LOGGER.info("Resolving %s from %s", hostname, nameservers)
         dig_query = ["/usr/bin/dig"]
         for server in nameservers:
@@ -223,12 +223,12 @@ def verify_dns(
 
             # If we got here then dig returned an empty string which suggests NXDOMAIN.
             # wait and see if something shows up.
-            if get_elpased_time() >= timeout:
+            if get_elapsed_time() >= timeout:
                 raise Exception(f"Timed out waiting for A record for {hostname}")
 
             time.sleep(1)
 
-    return get_elpased_time()
+    return get_elapsed_time()
 
 
 def verify_dns_reverse(
