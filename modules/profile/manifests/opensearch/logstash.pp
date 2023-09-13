@@ -11,6 +11,12 @@ class profile::opensearch::logstash(
 ) {
     include ::profile::opensearch::server
 
+    ferm::service { 'opensearch-api-from-cumin':
+        proto    => 'tcp',
+        port     => 9200,
+        src_sets => ['CUMIN_MASTERS'],
+    }
+
     # tasks that should only run on one host
     # TODO: use fork when available
     if $jobs_host == $::fqdn {
