@@ -276,11 +276,12 @@ class gitlab (
         require => Systemd::Sysuser[$ldap_group_sync_user],
     }
 
+    $sync_cmd = "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml"
     systemd::timer::job { 'sync-gitlab-group-with-ldap':
         ensure      => $ensure_ldap_group_sync,
         user        => $ldap_group_sync_user,
-        description => 'Sync wmf and ops LDAP groups with GitLab repos/mediawiki group',
-        command     => "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml --yes repos/mediawiki wmf ops",
+        description => 'Sync various GitLab groups with their LDAP groups',
+        command     => "${sync_cmd} repos/mediawiki wmf ops; ${sync_cmd} --access-level Owner repos/sre ops",
         interval    => $ldap_group_sync_interval,
         require     => Systemd::Sysuser[$ldap_group_sync_user],
     }
