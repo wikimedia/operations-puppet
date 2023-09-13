@@ -205,9 +205,10 @@ site = '<%= scope.lookupvar("::site") %>'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova
+format = '%(hostname)s.%(project_id)s.%(zone)s'
 format = '%(hostname)s.%(project_name)s.%(zone)s'
 reverse_domain_id = '<%= @domain_id_internal_reverse %>'
-reverse_format = '%(hostname)s.%(project_name)s.%(zone)s'
+reverse_format = '%(hostname)s.%(project_id)s.%(zone)s'
 
 #-----------------------
 # WMF-specific handler to clean up after instance deletion

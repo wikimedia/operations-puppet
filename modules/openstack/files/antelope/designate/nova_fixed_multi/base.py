@@ -49,11 +49,11 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 data["octet%s" % i] = ip_data[i]
         return data
 
-    def _create_record(self, context, format, zone, event_data, addr,
+    def _create_record(self, context, name, zone, event_data, addr,
                        resource_type, resource_id):
         recordset_values = {
             'zone_id': zone['id'],
-            'name': format % event_data,
+            'name': name,
             'type': 'A' if addr['version'] == 4 else 'AAAA'}
 
         record_values = {
@@ -93,6 +93,7 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         context = DesignateContext.get_admin_context(all_tenants=True)
 
         keystone = wmfdesignatelib.get_keystone_client()
+        data['project_id'] = data['tenant_id']
         data['project_name'] = wmfdesignatelib.project_name_from_id(keystone, data['tenant_id'])
 
         for addr in addresses:
@@ -131,14 +132,20 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                         context, [Record(**record_values)], **recordset_values
                     )
 
+            names = []
             for fmt in cfg.CONF[self.name].get('format'):
-                self._create_record(context,
-                                    fmt,
-                                    zone,
-                                    event_data,
-                                    addr,
-                                    resource_type,
-                                    resource_id)
+                name = fmt % event_data
+
+                # Avoid duplicates
+                if name not in names:
+                    names.append(name)
+                    self._create_record(context,
+                                        name,
+                                        zone,
+                                        event_data,
+                                        addr,
+                                        resource_type,
+                                        resource_id)
 
     def _delete(self, resource_id=None, resource_type='instance',
                 criterion={}):
