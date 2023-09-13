@@ -1990,6 +1990,17 @@ ripeatlas_measurements:
       - '32390540'  # anchors traceroutes
       - '32391312'  # probes pings
       - '32391311'  # probes traceroutes
+  esams:  # https://atlas.ripe.net/frames/probes/7261/
+    ipv4:
+      - '59935536'  # anchors pings
+      - '59935535'  # anchors traceroutes
+      - '59940409'  # probes pings
+      - '59940407'  # probes traceroutes
+    ipv6:
+      - '59935539'  # anchors pings
+      - '59935538'  # anchors traceroutes
+      - '59940414'  # probes pings
+      - '59940413'  # probes traceroutes
   ulsfo:  # https://atlas.ripe.net/frames/probes/6095/
     ipv4:
       - '1791307'  # anchors pings
@@ -2324,6 +2335,13 @@ infra_devices:
     ipv6: 2a02:ec80:300:ffff::4
     site: esams
     role: l3sw
+  ripe-atlas-esams:
+    ipv4: '185.15.59.74'
+    ipv6: '2a02:ec80:300:202:185:15:59:74'
+    site: esams
+    role: atlas
+    parents:
+    - asw1-by27-esams
 
   cr3-ulsfo:
     ipv4: 198.35.26.192
