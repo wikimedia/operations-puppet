@@ -13,6 +13,6 @@ set <%= $name %> {
     <% } -%>
     <%- unless $addrs.empty { -%>
     elements = { <%= $addrs.join(",\n                  ") %>
-    <%- } -%>
     }
+    <%- } -%>
 }
