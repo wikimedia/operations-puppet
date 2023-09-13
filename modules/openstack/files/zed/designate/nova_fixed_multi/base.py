@@ -90,7 +90,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         LOG.debug('Event data: %s' % data)
         data['zone'] = zone['name']
 
-        context = DesignateContext.get_admin_context(all_tenants=True)
+        context = DesignateContext().elevated()
+        context.all_tenants = True
+        context.edit_managed_records = True
 
         keystone = wmfdesignatelib.get_keystone_client()
         data['project_name'] = wmfdesignatelib.project_name_from_id(keystone, data['tenant_id'])
