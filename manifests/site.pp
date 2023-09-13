@@ -2753,9 +2753,13 @@ node /^schema[12]00[3-4]\.(eqiad|codfw)\./ {
     role(eventschemas::service)
 }
 
-# See T258189
+# See T258189, T346039
 node /^search-loader[12]001\.(eqiad|codfw)\./ {
     role(search::loader)
+}
+
+node /^search-loader[12]002\.(eqiad|codfw)\./ {
+    role(insetup::search_platform)
 }
 
 # new sessionstore servers via T209393 & T209389
