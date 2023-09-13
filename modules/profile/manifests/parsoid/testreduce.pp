@@ -6,13 +6,5 @@ class profile::parsoid::testreduce(
         install_node => $install_node,
     }
 
-    rsync::quickdatacopy { 'testreduce-update':
-        source_host         => 'testreduce1001.eqiad.wmnet',
-        dest_host           => 'testreduce1002.eqiad.wmnet',
-        auto_sync           => false,
-        module_path         => '/srv/data',
-        server_uses_stunnel => true,
-    }
-
     ensure_packages(['make', 'g++'])
 }
