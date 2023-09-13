@@ -41,7 +41,7 @@ ExecStartPost=/usr/local/sbin/reload-vcl <%= @reload_vcl_opts %> --start-child
 # thread_pools * thread_pool_max = maximum number of threads spawned.
 ExecStart=/usr/sbin/varnishd \
 -P %t/%p.pid \
-<%= @ports.map { |p| "-a :"+p.to_s }.join(" ") -%> \
+<%= @tcp_addrs.map { |p| "-a "+p }.join(" ") -%> \
 <% if @listen_uds -%>
 <%- @listen_uds.each do |uds_path| -%>
 -a <%= uds_path -%>,user=<%= @uds_owner -%>,group=<%= @uds_group -%>,mode=<%= @uds_mode -%> \

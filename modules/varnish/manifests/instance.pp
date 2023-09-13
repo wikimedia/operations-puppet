@@ -1,6 +1,6 @@
 # @summary configure a varnish instance
 # @param vcl_config A hash if vcl config
-# @param ports a list of ports to listen on
+# @param tcp_addrs a list of TCP [ip]:port to listen on
 # @param admin_port the port for admin operations
 # @param runtime_params A hash of runtime parameters
 # @param instance_name the name of the varnish instance
@@ -29,7 +29,7 @@
 
 define varnish::instance(
     Hash                    $vcl_config,
-    Array[Stdlib::Port]     $ports,
+    Array[String]           $tcp_addrs,
     Stdlib::Port            $admin_port,
     String                  $runtime_params,
     # TODO: change this to Optional[String]

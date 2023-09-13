@@ -236,14 +236,12 @@ class profile::cache::varnish::frontend (
         metric  => 'node_varnish_filedescriptors_total',
     }
 
-    $ports = [ 3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127 ]
-
     varnish::instance { "${cache_cluster}-frontend":
         instance_name     => 'frontend',
         vcl               => "${cache_cluster}-frontend",
         separate_vcl      => $separate_vcl_frontend,
         extra_vcl         => $fe_extra_vcl,
-        ports             => $ports,
+        tcp_addrs         => [ '127.0.0.1:3127' ],
         admin_port        => 6082,
         runtime_params    => join(prefix($runtime_params, '-p '), ' '),
         storage           => "-s malloc,${fe_mem_gb}G ${fe_transient_storage}",
