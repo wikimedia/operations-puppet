@@ -21,7 +21,7 @@ def get_puppetdb_resources():
     add the following to /etc/hosts
         127.0.0.1       puppetdb
     and:
-        ssh -L8080:localhost:8080 puppetdb1002.eqiad.wmnet
+        ssh -L8080:localhost:8080 puppetdb1003.eqiad.wmnet
     """
     unique_resources = set()
     db = connect()
