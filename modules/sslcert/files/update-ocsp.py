@@ -182,6 +182,15 @@ def certs_fetch_ocsp(out_temp, args):
                 raise Exception("Certs must have same OCSP URI (%s vs %s)!" %
                                 (ocsp_uri, this_ocsp_uri))
 
+    # Compatibility for openssl1.1 vs openssl3 style of using webproxy below
+    (version_stdout, _) = check_output_errtext(["openssl", "version"])
+    if re.search('^OpenSSL 1', version_stdout, re.M):
+        ossl_version = 1
+    elif re.search('^OpenSSL 3', version_stdout, re.M):
+        ossl_version = 3
+    else:
+        raise Exception("Cannot determine if openssl is v1 or v3!")
+
     cmd = [
         "openssl", "ocsp", "-resp_text",
         "-respout", out_temp,
@@ -190,10 +199,16 @@ def certs_fetch_ocsp(out_temp, args):
     ]
 
     if proxy:
-        cmd.extend([
-            "-path", ocsp_uri,
-            "-host", proxy,
-        ])
+        if ossl_version == 3:
+            cmd.extend([
+                "-url", ocsp_uri,
+                "-proxy", proxy,
+            ])
+        else:
+            cmd.extend([
+                "-path", ocsp_uri,
+                "-host", proxy,
+            ])
     else:
         # OpenSSL only speaks HTTP/1.0 and sends no Host header. This doesn't
         # really work in many OCSP servers, so supply the Host header manually.
