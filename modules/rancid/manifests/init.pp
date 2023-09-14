@@ -64,6 +64,9 @@ class rancid (
         '/var/lib/rancid/core/configs':
             ensure => directory,
             mode   => '0774';
+        '/var/log/rancid':
+            ensure => directory,
+            mode   => '0755';
     }
 
     file_line { 'opengear_script':
