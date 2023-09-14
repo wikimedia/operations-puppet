@@ -51,13 +51,6 @@ class idm::deployment (
     $venv = "${base_dir}/venv"
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
-
-    file { $base_dir :
-        ensure => directory,
-        owner  => $deploy_user,
-        group  => $deploy_user,
-    }
-
     git::clone { 'operations/software/bitu':
         ensure    => 'latest',
         directory => "${base_dir}/${project}",

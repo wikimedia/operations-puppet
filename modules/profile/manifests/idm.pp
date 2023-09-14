@@ -44,7 +44,7 @@ class profile::idm(
               secret   => $oidc_secret,
               endpoint => $oidc_endpoint }
 
-    $mediawiki = { key    => $mediawiki_key, secret => $mediawiki_secret }
+    $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret }
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
@@ -63,7 +63,7 @@ class profile::idm(
         port  => $ferm_port,
     }
 
-    file { [$static_dir, $media_dir, $etc_dir, $log_dir] :
+    file { [$base_dir, $static_dir, $media_dir, $etc_dir, $log_dir] :
         ensure => directory,
         owner  => $deploy_user,
         group  => $deploy_user,
