@@ -172,6 +172,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-misc
         - name: mw-misc-deploy
+    mw-script:
+      usernames:
+        - name: mw-script
+        - name: mw-script-deploy
     tegola-vector-tiles:
       usernames:
         - name: tegola-vector-tiles
