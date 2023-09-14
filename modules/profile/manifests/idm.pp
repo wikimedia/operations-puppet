@@ -137,6 +137,15 @@ class profile::idm(
     } else {
         ensure_packages('python3-bitu')
 
+        # Enable Bitu uwsgi app.
+        file { '/etc/uwsgi/apps-enabled/bitu.ini':
+            ensure => 'link',
+            target => '/etc/uwsgi/apps-available/bitu.ini',
+        }
+
+        # The systemd services is shipped with the Debian package,
+        # but we need the services to be available to Puppet to be
+        # used with Notify on configuration changes.
         service { 'uwsgi-bitu':
             ensure => 'running',
             enable => true
