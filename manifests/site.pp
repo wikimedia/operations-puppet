@@ -1060,20 +1060,11 @@ node /^dumpsdata100[245]\.eqiad\./ {
     role(dumps::generation::server::spare)
 }
 
-node /^elastic104[8-9]\.eqiad\./ {
+node /^elastic105[3-9]\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic105[0-9]\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-node /^elastic106[0-7]\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-# new elastic servers T281989
-node /^(elastic106[8-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\./ {
+node /^(elastic106[0-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
@@ -1106,11 +1097,6 @@ node /^(elastic206[1-9]|elastic207[0-2])\.codfw\./ {
 # new codfw elastic servers T300943
 node /^(elastic207[3-9]|elastic208[0-6])\.codfw\./ {
     role(elasticsearch::cirrus)
-}
-
-# new eqiad row e-f elastic servers T299609
-node /^(elastic1089|elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
-    role(insetup::search_platform)
 }
 
 # External Storage, Shard 1 (es1) databases
