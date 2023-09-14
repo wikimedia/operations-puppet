@@ -30,17 +30,18 @@
 import argparse
 import filecmp
 import glob
+import grp
 import logging
 import os
+import pwd
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
 import time
-import shutil
 
 import yaml
-
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +51,8 @@ class Module(object):
 
     def __init__(self, obj):
         self.config_mode = "644"
+        self.config_owner = None
+        self.config_group = None
 
         for k, v in obj.items():
             self.__setattr__(k, v)
@@ -69,7 +72,7 @@ class Module(object):
             if frag_mtime > config_mtime:
                 logger.debug(
                     f"Needs update: {frag} is newer ({frag_mtime}) "
-                    f"then {self.config_out} ({config_mtime})"
+                    f"than {self.config_out} ({config_mtime})"
                 )
                 return True
         return False
@@ -98,6 +101,11 @@ class Module(object):
                 return 0
             shutil.copy(f.name, self.config_out)
             os.chmod(self.config_out, int(str(self.config_mode), 8))
+            if all([self.config_owner, self.config_group]):
+                uid = pwd.getpwnam(self.config_owner).pw_uid
+                gid = grp.getgrnam(self.config_group).gr_gid
+                os.chown(self.config_out, uid, gid)
+
             return 0
 
     def validate(self, path):
