@@ -23,7 +23,7 @@ input:
       period: 100ms
 
 pipeline:
-  threads: 5
+  threads: 10
   processors:
   # varnishkafka will set dt to '-' on request timeout (e.g. started and never finished)
   # these messages can't be indexed into druid (we don't know when they happened)
