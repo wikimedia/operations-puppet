@@ -2933,7 +2933,7 @@ node /^(wdqs2008|wdqs201[45])\.codfw\./ {
     role(wdqs::internal)
 }
 
-node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202[0-2])\.codfw\./ {
+node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202[0-5])\.codfw\./ {
     role(wdqs::public)
 }
 
