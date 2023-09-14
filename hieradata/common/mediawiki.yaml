@@ -108,7 +108,7 @@ mediawiki::sites:
       # and the 'wikipedia' server's wildcard ServerAlias would otherwise apply
       - name: donate.wikimedia.org
         params:
-          docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          docroot: "/srv/mediawiki/docroot/donate"
           server_aliases: ["donate.wikipedia.org"]
           canonical_name: "On"
           https_only: true
