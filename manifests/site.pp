@@ -974,15 +974,6 @@ node /^debmonitor[2]003\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
 
-# Dispatch hosts
-node /^dispatch-be1001\.eqiad\./ {
-    role(dispatch::backend)
-}
-
-node /^dispatch-be2001\.codfw\./ {
-    role(dispatch::backend)
-}
-
 node /^dns[123456]00[123456]\.wikimedia\./ {
     role(dnsbox)
 }

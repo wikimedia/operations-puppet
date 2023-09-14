@@ -32,8 +32,6 @@ class role::alerting_host {
     include profile::klaxon
     include profile::vopsbot
 
-    include profile::dispatch
-
     # WMF services that require monitoring but do not have their
     # own standalone alerting server.
     include profile::wikifunctions::beta

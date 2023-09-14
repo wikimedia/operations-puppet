@@ -385,7 +385,5 @@ role::ml_cache::storage:
   target-q: TBD
 role::apifeatureusage::logstash:
   target-q: TBD
-role::dispatch::backend:
-  target-q: TBD
 role::cassandra_dev:
   target-q: TBD

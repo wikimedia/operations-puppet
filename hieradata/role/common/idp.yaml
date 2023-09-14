@@ -169,12 +169,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  dispatch:
-    id: 28
-    service_id: 'https://dispatch\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   idm:
     id: 29
     service_class: 'OidcRegisteredService'
