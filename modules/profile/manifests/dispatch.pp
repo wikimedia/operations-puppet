@@ -57,7 +57,8 @@ class profile::dispatch (
         version          => $version,
         env_extra        => $final_env,
         vhost            => $vhost,
-        scheduler_ensure => $scheduler_ensure,
+        ensure           => absent,
+        scheduler_ensure => absent,
     }
 
     profile::idp::client::httpd::site { $vhost:

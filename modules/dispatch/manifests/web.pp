@@ -20,6 +20,7 @@ class dispatch::web (
     String[1]                     $version          = 'latest',
     Hash[String, String]          $env_extra        = {},
     Wmflib::Ensure                $scheduler_ensure = absent,
+    Wmflib::Ensure                $ensure           = absent,
     String                        $vhost            = 'dispatch',
     Wmflib::Syslog::Level::Python $log_level        = 'INFO',
 ) {
@@ -42,6 +43,7 @@ class dispatch::web (
     | WRAPPER
 
     file { '/usr/local/bin/dispatch':
+        ensure  => ensure,
         content => $wrapper,
         owner   => 'root',
         group   => 'root',
@@ -49,6 +51,7 @@ class dispatch::web (
     }
 
     service::docker { 'dispatch':
+        ensure       => $ensure,
         image_name   => $image,
         version      => $version,
         port         => $port, # ignored when in host_network mode
