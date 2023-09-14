@@ -34,8 +34,6 @@ class profile::graphite::production (
             },
             cluster_routes   => [
                 ['^cassandra\.', 'big_users'],
-                # wanobjectcache spams metrics with hex hashes - T178531
-                ['^MediaWiki\.wanobjectcache\.[a-zA-Z0-9]{32}', 'blackhole'],
             ],
             'queue_depth'    => 500000,
             'batch_size'     => 8000,
