@@ -236,6 +236,9 @@ route:
         - match:
             severity: 'critical'
           receiver: 'growth-critical'
+    - match:
+        team: 'mediawiki-platform'
+      receiver: 'mediawiki-platform-ircmail'
 
     # Default routing for page/critical alerts, if no team could be routed
     - match:
@@ -381,6 +384,13 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+
+- name: 'mediawiki-platform-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/mediawiki-core-bots'
+  email_configs:
+    - to: 'mediawiki-platform-team@<%= @facts["networking"]["domain"] %>'
+      send_resolved: true
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
