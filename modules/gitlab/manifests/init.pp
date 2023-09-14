@@ -141,7 +141,7 @@ class gitlab (
         ensure  => stdlib::ensure($gemfile_local_ensure),
         owner   => 'root',
         group   => 'root',
-        mode    => '0400',
+        mode    => '0644',
         content => template('gitlab/Gemfile.local.erb'),
         require => Package['gitlab-ce'],
         notify  => Exec['Recreate GitLab Gemfile.local.lock'],
@@ -157,6 +157,7 @@ class gitlab (
             'BUNDLE_IGNORE_CONFIG=1',
         ],
         refreshonly => true,
+        onlyif      => '/usr/bin/test -e Gemfile.local',
         require     => Package['gitlab-ce'],
         notify      => Service['gitlab-ce'],
     }

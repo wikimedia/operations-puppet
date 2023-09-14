@@ -250,6 +250,6 @@ gitlab_rails['env'] = {
   'SSL_CERT_DIR' => '/etc/ssl/certs',
 <%- end -%>
 <%- if @local_gems_enabled -%>
-  'BUNDLE_GEMFILE' => 'Gemfile.local',
+  'BUNDLE_GEMFILE' => '<%= @rails_path %>/Gemfile.local',
 <%- end -%>
 }
