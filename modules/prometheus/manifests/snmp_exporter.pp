@@ -10,16 +10,17 @@
 # queried via HTTP by using 'module=<name>' on the query string.
 
 class prometheus::snmp_exporter {
-    ensure_packages(['prometheus-snmp-exporter', 'python3-yaml'])
+    ensure_packages(['prometheus-snmp-exporter'])
+
+    require prometheus::assemble_config
 
     prometheus::snmp_exporter::module { 'default':
         template => 'default',
     }
 
     service { 'prometheus-snmp-exporter':
-        ensure    => running,
-        require   => Package['prometheus-snmp-exporter'],
-        subscribe => Exec['prometheus-snmp-exporter-config'],
+        ensure  => running,
+        require => Package['prometheus-snmp-exporter'],
     }
 
     profile::auto_restarts::service { 'prometheus-snmp-exporter': }
@@ -39,16 +40,13 @@ class prometheus::snmp_exporter {
     }
 
     file { '/usr/local/bin/prometheus-snmp-exporter-config':
-        ensure => present,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-snmp-exporter-config.py',
+        ensure => absent,
     }
 
-    exec { 'prometheus-snmp-exporter-config':
-        refreshonly => true,
-        command     => '/usr/local/bin/prometheus-snmp-exporter-config',
-        require     => File['/usr/local/bin/prometheus-snmp-exporter-config'],
+    exec { 'assemble snmp.yml':
+        onlyif  => 'prometheus-assemble-config --onlyif snmp',
+        command => 'prometheus-assemble-config snmp',
+        notify  => Service['prometheus-snmp-exporter'],
+        path    => '/usr/local/bin',
     }
 }
