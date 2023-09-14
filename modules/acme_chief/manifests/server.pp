@@ -3,7 +3,7 @@ class acme_chief::server (
     Hash[String, Hash[String, String]] $accounts = {},
     Hash[String, Acme_chief::Certificate] $certificates = {},
     Hash[String, Hash[String, Any]] $challenges = {},
-    String $http_proxy = '',
+    Optional[Stdlib::HTTPUrl] $http_proxy = undef,
     Wmflib::Ensure $http_challenge_support = absent,
     Stdlib::Fqdn $active_host = '',
     Variant[String, Array[Stdlib::Fqdn]] $passive_host = [],

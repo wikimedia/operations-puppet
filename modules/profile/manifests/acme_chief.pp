@@ -37,7 +37,7 @@ class profile::acme_chief (
     Hash[String, Acme_chief::Certificate] $certificates = lookup('profile::acme_chief::certificates'),
     Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => {}}),
     Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
-    String $http_proxy = lookup('http_proxy'),
+    Optional[String] $http_proxy = lookup('http_proxy', {default_value => undef}),
     Stdlib::Fqdn $active_host = lookup('profile::acme_chief::active'),
     Variant[String, Array[Stdlib::Fqdn]] $passive_host = lookup('profile::acme_chief::passive'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
@@ -72,11 +72,18 @@ class profile::acme_chief (
         }
     }
 
+    # Compat for old hiera keys in Cloud VPS projects.
+    # To be removed once all of those values have been removed.
+    $_http_proxy = $http_proxy ? {
+        ''      => undef,
+        default => $http_proxy,
+    }
+
     class { '::acme_chief::server':
         accounts               => $accounts,
         certificates           => $acme_chief_certificates,
         challenges             => $challenges,
-        http_proxy             => $http_proxy,
+        http_proxy             => $_http_proxy,
         active_host            => $active_host,
         passive_host           => $passive_host,
         authdns_hosts          => $authdns_servers.keys(),
