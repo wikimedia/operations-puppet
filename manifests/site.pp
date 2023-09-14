@@ -1445,9 +1445,8 @@ node /^cloudnet200[78]-dev\.codfw\./ {
     role(insetup::wmcs)
 }
 
-# New cloudvirt node in codfw T342459
 node /^cloudvirt200[456]-dev\.codfw\./ {
-    role(insetup::wmcs)
+    role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
 # cloudrabbit servers T304888
@@ -1634,6 +1633,7 @@ node /^kubernetes20(2[5-9]|3[0-9]|4[0-9]|5[0-4])\.codfw\./ {
     role(insetup::serviceops)
 }
 
+# Soon to be decom'd
 node /^cloudvirt200[1-3]\-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
