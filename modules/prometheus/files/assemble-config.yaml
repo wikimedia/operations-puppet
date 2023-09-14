@@ -10,3 +10,11 @@ modules:
     validate_cmd: /usr/bin/pint --config {} config
     input_glob: /etc/prometheus/pint.hcl.d/*.hcl
     config_out: /etc/prometheus/pint.hcl
+
+  snmp:
+    validate_cmd: /usr/bin/prometheus-snmp-exporter --dry-run --config.file {}
+    input_glob: /etc/prometheus/snmp.yml.d/*.yml
+    config_out: /etc/prometheus/snmp.yml
+    config_mode: '400'
+    config_owner: 'prometheus'
+    config_group: 'root'

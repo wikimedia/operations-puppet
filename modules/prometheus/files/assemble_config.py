@@ -171,7 +171,23 @@ class Blackbox(Module):
         return yaml.safe_dump(config, fd, indent=4, default_flow_style=False)
 
 
-MODULES = {"blackbox": Blackbox, "pint": Pint}
+class SNMP(Module):
+    def _assemble(self):
+        frags = {}
+        for path in self.input_paths:
+            with open(path) as f:
+                frag = yaml.safe_load(f)
+            if not isinstance(frag, dict):
+                raise ValueError(f"{path} does not contain a yaml top level object")
+            frags.update(frag)
+
+        return frags
+
+    def _write(self, config, fd):
+        return yaml.safe_dump(config, fd, indent=4, default_flow_style=False)
+
+
+MODULES = {"blackbox": Blackbox, "pint": Pint, "snmp": SNMP}
 
 
 def get_log_level(args_level: int) -> int:
