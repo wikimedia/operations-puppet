@@ -184,7 +184,7 @@ profile::cache::varnish::frontend::cache_be_opts:
     connect_timeout: '3s'
     first_byte_timeout: '65s'
     between_bytes_timeout: '33s'
-    max_connections: 50000
+    max_connections: 10000
     probe: 'varnish'
 profile::cache::varnish::frontend::runtime_params:
     - default_ttl=86400
