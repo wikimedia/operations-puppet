@@ -115,53 +115,59 @@ class profile::ganeti (
         require => Class['ganeti'],
     }
 
+    # Firewalling
+    #
+
+    $ganeti_ferm_nodes = join($nodes, ' ')
+    $rapi_access = join(concat($nodes, $rapi_nodes), ' ')
+
     # Allow SSH between ganeti cluster members
     ferm::service { 'ganeti_ssh_cluster':
         proto  => 'tcp',
         port   => 22,
-        srange => $nodes,
+        srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # RAPI is the API of ganeti
     ferm::service { 'ganeti_rapi_cluster':
         proto  => 'tcp',
         port   => 5080,
-        srange => $nodes,
+        srange => "@resolve((${rapi_access}))",
     }
 
     # Ganeti noded is responsible for all cluster/node actions
     ferm::service { 'ganeti_noded_cluster':
         proto  => 'tcp',
         port   => 1811,
-        srange => $nodes,
+        srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # Ganeti confd provides a HA and fast way to query cluster configuration
     ferm::service { 'ganeti_confd_cluster':
         proto  => 'udp',
         port   => 1814,
-        srange => $nodes,
+        srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # Ganeti mond is the monitoring daemon. Data is available via port 1815
     ferm::service { 'ganeti_mond_cluster':
         proto  => 'tcp',
         port   => 1815,
-        srange => $nodes,
+        srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # DRBD is used for HA of disk images. Port range for ganeti is 11000-14999
     ferm::service { 'ganeti_drbd':
         proto      => 'tcp',
         port_range => [11000,14999],
-        srange     => $nodes,
+        srange     => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     # Migration is done over TCP port
     ferm::service { 'ganeti_migration':
         proto  => 'tcp',
         port   => 8102,
-        srange => $nodes,
+        srange => "@resolve((${ganeti_ferm_nodes}))",
     }
 
     file { '/usr/local/sbin/ganeti_rebalance':
