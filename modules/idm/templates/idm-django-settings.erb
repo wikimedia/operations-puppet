@@ -2,7 +2,11 @@
 from django.urls import reverse_lazy
 from ldap3 import HASHED_SALTED_SHA
 
+<%- if @install_via_git -%>
 from base_settings import *
+<%- else -%>
+from bitu.base_settings import *
+<%- end -%>
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '<%= @django_secret_key %>'
@@ -230,6 +234,12 @@ CAPTCHA_CHALLENGE_FUNCT = 'signups.forms.captcha_input_generator'
 CAPTCHA_IMAGE_SIZE = (130,40)
 
 STATIC_ROOT = '<%= @static_dir %>'
+<%- if @install_via_git -%>
 STATICFILES_DIRS = [
   '<%= @base_dir %>/<%= @project %>/static/'
 ]
+<%- else -%>
+STATICFILES_DIR = [
+  '/usr/lib/python3/dist-packages/bitu/static',
+]
+<%- end -%>
