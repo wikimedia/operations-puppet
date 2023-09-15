@@ -11,7 +11,12 @@
   ProxyPass / unix:<%= @uwsgi_socket %>|uwsgi://localhost/
 
   Alias /media <%= @media_dir %>
+
+  <%- if @install_via_git -%>
   Alias /static <%= @static_dir %>
+  <%- else -%>
+  Alias /static /usr/share/bitu
+  <%- end -%>
 
   <%- [@media_dir, @static_dir].each do |dir| -%>
   <Directory <%= dir %>>
