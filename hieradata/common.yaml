@@ -802,6 +802,9 @@ kafka_clusters:
       kafka-jumbo1014.eqiad.wmnet:
         id: 1014
         rack: F
+      kafka-jumbo1015.eqiad.wmnet:
+        id: 1015
+        rack: F
 
   # Kafka clusters for logs, see also T206454
   logging-eqiad:
@@ -1576,6 +1579,8 @@ kafka_brokers_jumbo:
 - 2620:0:861:10d:10:64:134:9  # kafka-jumbo1013.eqiad.wmnet
 - 10.64.135.16                # kafka-jumbo1014.eqiad.wmnet
 - 2620:0:861:10e:10:64:135:16 # kafka-jumbo1014.eqiad.wmnet
+- 10.64.136.11                # kafka-jumbo1015.eqiad.wmnet
+- 2620:0:861:10f:10:64:136:11 # kafka-jumbo1015.eqiad.wmnet
 kafka_brokers_logging:
 - 10.64.16.205                 # kafka-logging1001.eqiad.wmnet
 - 2620:0:861:102:10:64:16:205  # kafka-logging1001.eqiad.wmnet
