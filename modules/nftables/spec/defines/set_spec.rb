@@ -50,6 +50,7 @@ describe 'nftables::set' do
                             set\stesting_define_ipv4\s{\s+
                             type\sipv4_addr\s+
                             flags\sinterval\s+
+                            auto-merge\s+
                             elements\s=\s{\s+
                                 192\.0\.2\.1\/24\s+
                               }\s+
@@ -62,6 +63,7 @@ describe 'nftables::set' do
                             set\stesting_define_ipv6\s{\s+
                             type\sipv6_addr\s+
                             flags\sinterval\s+
+                            auto-merge\s+
                             elements\s=\s{\s+
                                 2001:db8::1\/64\s+
                               }\s+

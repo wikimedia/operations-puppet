@@ -10,6 +10,7 @@ set <%= $name %> {
     type <%= $set_type %>
     <%- if $interval { -%>
     flags interval
+    auto-merge
     <% } -%>
     <%- unless $addrs.empty { -%>
     elements = { <%= $addrs.join(",\n                  ") %>
