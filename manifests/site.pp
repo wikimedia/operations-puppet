@@ -91,10 +91,6 @@ node /^an-test-coord1001\.eqiad\./ {
     role(analytics_test_cluster::coordinator)
 }
 
-node /^an-test-client1001\.eqiad\./ {
-    role(analytics_test_cluster::client)
-}
-
 node /^an-test-client1002\.eqiad\./ {
     role(analytics_test_cluster::client)
 }

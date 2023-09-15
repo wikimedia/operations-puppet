@@ -615,7 +615,6 @@ statistics_servers:
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
   - an-launcher1002.eqiad.wmnet
-  - an-test-client1001.eqiad.wmnet
   - an-test-client1002.eqiad.wmnet
 
 dumps_nfs_clients:
