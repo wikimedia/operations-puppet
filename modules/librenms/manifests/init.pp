@@ -26,6 +26,31 @@ class librenms(
     Stdlib::Unixpath $rrd_dir         = "${install_dir}/rrd",
 ) {
 
+    ensure_packages([
+        'fping',
+        'graphviz',
+        'ipmitool',
+        'libapache2-mod-php',
+        'mtr-tiny',
+        'nmap',
+        'php-cli',
+        'php-curl',
+        'php-gd',
+        'php-json',
+        'php-mbstring',
+        'php-mysql',
+        'php-pear',
+        'php-snmp',
+        'php-xml',
+        'php-zip',
+        'python3-dotenv',
+        'python3-pymysql',
+        'rrdtool',
+        'snmp',
+        'snmp-mibs-downloader',
+        'whois',
+    ])
+
     # NOTE: scap will manage the deploy user
     scap::target { 'librenms/librenms':
         deploy_user => 'deploy-librenms',
@@ -88,6 +113,7 @@ class librenms(
         mode    => '0660',
         recurse => true,
     }
+
     # librenms writes the session files as 0644 as such we
     # disable recurse and only manage the directory
     file { "${install_dir}/storage/framework/sessions/":
@@ -145,33 +171,6 @@ class librenms(
         ensure => present,
         source => 'puppet:///modules/librenms/logrotate',
     }
-
-    # Package requirements references are taken from the following sources.
-    # For Debian Bullseye: https://docs.librenms.org/Installation/Install-LibreNMS/#prepare-linux-server
-    # For Debian Stretch from: https://docs.librenms.org/Installation/Installation-Ubuntu-1804-Apache/
-    if debian::codename::eq('bullseye') {
-        ensure_packages(['php-fpm', 'php-gmp'])
-        profile::auto_restarts::service { 'php7.4-fpm': }
-    } elsif debian::codename::eq('buster') {
-        ensure_packages(['php-ldap'])
-    }
-
-    ensure_packages(['php-cli', 'php-curl', 'php-gd', 'php-json', 'php-mbstring', 'php-mysql', 'php-snmp', 'php-xml'])
-    ensure_packages(['php-zip', 'libapache2-mod-php'])
-
-    ensure_packages([
-            'php-pear',
-            'fping',
-            'graphviz',
-            'ipmitool',
-            'mtr-tiny',
-            'nmap',
-            'python3-pymysql',
-            'rrdtool',
-            'snmp',
-            'snmp-mibs-downloader',
-            'whois',
-        ])
 
     include imagemagick::install
 
