@@ -53,7 +53,7 @@ class librenms(
         owner   => 'www-data',
         group   => 'librenms',
         recurse => true,
-        mode    => '0755',
+        mode    => '0775',
     }
 
     file { '/var/log/librenms/librenms.log':
@@ -95,6 +95,15 @@ class librenms(
         owner  => 'www-data',
         group  => 'librenms',
         mode   => '0660',
+    }
+
+    # "lnms" insists on being run as its owner user, and 'daily.sh' runs
+    # as 'librenms'
+    file { "${install_dir}/lnms":
+        ensure => present,
+        owner  => 'librenms',
+        group  => 'librenms',
+        mode   => '0755',
     }
 
     file { $rrd_dir:
