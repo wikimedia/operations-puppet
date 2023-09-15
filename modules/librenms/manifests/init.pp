@@ -188,7 +188,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/discovery.php -h all",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 0/6:33:0'},
+        syslog_identifier  => 'librenms-discovery-all',
     }
+
     systemd::timer::job { 'librenms-discovery-new':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms discovery-new',
@@ -197,7 +199,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/discovery.php -h new",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        syslog_identifier  => 'librenms-discovery-new',
     }
+
     systemd::timer::job { 'librenms-poller-all':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms poller',
@@ -206,7 +210,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/poller-wrapper.py 16",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        syslog_identifier  => 'librenms-poller-all',
     }
+
     systemd::timer::job { 'librenms-check-services':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms check services',
@@ -215,7 +221,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/check-services.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        syslog_identifier  => 'librenms-check-services',
     }
+
     systemd::timer::job { 'librenms-alerts':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms alerts',
@@ -224,7 +232,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/alerts.php",
         interval           => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        syslog_identifier  => 'librenms-alerts',
     }
+
     systemd::timer::job { 'librenms-poll-billing':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms poll billing',
@@ -233,7 +243,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/poll-billing.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        syslog_identifier  => 'librenms-poll-billing',
     }
+
     systemd::timer::job { 'librenms-billing-calculate':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms calculate billing',
@@ -242,7 +254,9 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/billing-calculate.php",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* *:01:0'},
+        syslog_identifier  => 'librenms-billing-calculate',
     }
+
     systemd::timer::job { 'librenms-daily':
         ensure             => $timer_ensure,
         description        => 'Regular jobs for running librenms daily work',
@@ -251,6 +265,7 @@ class librenms(
         logging_enabled    => false,
         command            => "${install_dir}/daily.sh",
         interval           => {'start' => 'OnCalendar', 'interval' => '*-*-* 01:01:0'},
+        syslog_identifier  => 'librenms-daily',
     }
 
     # syslog script, in an install_dir-agnostic location
