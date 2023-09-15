@@ -70,6 +70,13 @@ class profile::idm(
     }
 
     $logs = ['idm', 'django']
+
+    file { $logs :
+        ensure => file,
+        owner  => $deploy_user,
+        group  => $deploy_user,
+    }
+
     $logs.each |$log| {
         logrotate::rule { "bitu-${log}":
         ensure        => present,
