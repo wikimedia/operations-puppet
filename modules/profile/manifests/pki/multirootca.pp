@@ -104,6 +104,7 @@ class profile::pki::multirootca (
         key_content        => Sensitive(secret($root_ocsp_key)),
         cert_content       => file($root_ocsp_cert),
         ocsprefresh_update => $maintenance_jobs,
+        db_driver          => $db_driver,
         require            => Service[$multirootca_service],
     }
 
@@ -153,6 +154,7 @@ class profile::pki::multirootca (
             db_conf_file       => $db_conf_file,
             ca_file            => $ca_file,
             ocsprefresh_update => $maintenance_jobs,
+            db_driver          => $db_driver,
         }
         profile::pki::multirootca::monitoring { $intermediate:
             ensure  => $ensure_monitoring,
@@ -238,11 +240,13 @@ class profile::pki::multirootca (
         port   => '8443',
         srange => "(${srange})",
     }
-    systemd::timer::job {'cfssl-gc-expired-certs':
-        ensure      => $maintenance_jobs.bool2str('present', 'absent'),
-        description => 'Delete expired Certificates from the cfssl DB',
-        user        => 'root',
-        command     => '/usr/local/sbin/cfssl-certs clean',
-        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+    if $db_driver == 'mysql' {
+        systemd::timer::job {'cfssl-gc-expired-certs':
+            ensure      => $maintenance_jobs.bool2str('present', 'absent'),
+            description => 'Delete expired Certificates from the cfssl DB',
+            user        => 'root',
+            command     => '/usr/local/sbin/cfssl-certs clean',
+            interval    => {'start' => 'OnUnitInactiveSec', 'interval' => 'hourly'},
+        }
     }
 }

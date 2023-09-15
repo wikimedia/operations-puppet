@@ -14,6 +14,7 @@ define cfssl::ocsp (
     Optional[Sensitive[String]] $key_content        = undef,
     Optional[String]            $cert_content       = undef,
     Optional[Stdlib::Unixpath]  $ca_file            = undef,
+    Cfssl::DB_driver            $db_driver          = 'mysql',
 ) {
     include cfssl
     include cfssl::client
@@ -42,6 +43,10 @@ define cfssl::ocsp (
         owner  => 'root',
         group  => 'root',
     }
+    $before_certs = $db_driver ? {
+        'mysql' => Systemd::Timer::Job[$refresh_timer],
+        default => [],
+    }
     if ($key_content and !$cert_content) or ($cert_content and !$key_content) {
         fail('you must provide either both or neither key/cert_content')
     } elsif $key_content and $cert_content {
@@ -52,7 +57,7 @@ define cfssl::ocsp (
             mode    => '0444',
             content => $cert_content,
             notify  => Service[$serve_service],
-            before  => Systemd::Timer::Job[$refresh_timer],
+            before  => $before_certs,
         }
         file {$key_path:
             owner     => 'root',
@@ -61,7 +66,7 @@ define cfssl::ocsp (
             show_diff => false,
             content   => $key_content,
             notify    => Service[$serve_service],
-            before    => Systemd::Timer::Job[$refresh_timer],
+            before    => $before_certs,
         }
     } else {
         cfssl::cert{$safe_cert_name:
@@ -74,7 +79,7 @@ define cfssl::ocsp (
             tls_cert      => $facts['puppet_config']['hostcert'],
             tls_key       => $facts['puppet_config']['hostprivkey'],
             notify        => Service[$serve_service],
-            before        => Systemd::Timer::Job[$refresh_timer],
+            before        => $before_certs,
         }
     }
     $update = $ocsprefresh_update ? {
@@ -94,11 +99,13 @@ define cfssl::ocsp (
         content => template('cfssl/cfssl-ocspserve.service.erb'),
         restart => true,
     }
-    systemd::timer::job{$refresh_timer:
-        ensure      => present,
-        description => "OCSP Refresh job - ${title}",
-        user        => 'root',
-        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
-        command     => $refresh_command,
+    if $db_driver == 'mysql' {
+        systemd::timer::job{$refresh_timer:
+            ensure      => present,
+            description => "OCSP Refresh job - ${title}",
+            user        => 'root',
+            interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
+            command     => $refresh_command,
+        }
     }
 }
