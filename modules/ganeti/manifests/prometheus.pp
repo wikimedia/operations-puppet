@@ -11,7 +11,7 @@ class ganeti::prometheus(
 ) {
     ensure_packages('prometheus-ganeti-exporter')
 
-    ferm::service {'ganeti-prometheus-exporter':
+    firewall::service {'ganeti-prometheus-exporter':
         proto    => 'tcp',
         port     => 8080,
         src_sets => ['PRODUCTION_NETWORKS'],
