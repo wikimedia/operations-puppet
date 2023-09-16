@@ -8,6 +8,6 @@
   compress
   delaycompress
   postrotate
-    invoke-rc.d rsyslog rotate >/dev/null
+    /bin/systemctl is-active --quiet rsyslog.service && /bin/systemctl kill -s HUP rsyslog.service
   endscript
 }
