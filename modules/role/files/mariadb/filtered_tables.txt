@@ -627,6 +627,7 @@ user,user_email_token_expires,F
 user,user_registration,K
 user,user_newpass_time,F
 user,user_editcount,K
+user,user_is_temp,K
 user_former_groups,ufg_user,K
 user_former_groups,ufg_group,K
 user_groups,ug_user,K
