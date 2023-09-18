@@ -14,7 +14,6 @@ profile::query_service::max_query_time_millis: 30000
 profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'
 profile::query_service::nodes:
-  - 'wdqs1003.eqiad.wmnet'
   - 'wdqs1008.eqiad.wmnet'
   - 'wdqs1011.eqiad.wmnet'
   - 'wdqs2008.codfw.wmnet'
