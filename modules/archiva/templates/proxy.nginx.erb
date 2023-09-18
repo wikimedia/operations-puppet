@@ -26,6 +26,9 @@ server {
   <%= @server_properties.sort.join("\n  ") -%>
 <% end -%>
 
+  location ~*/repository/mirrored/.*<script>.* {
+    return 404;
+  }
   location / {
     proxy_pass <%= @proxy_pass %>;
     proxy_redirect off;
