@@ -61,8 +61,8 @@ https://enwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
-https://eswikiquotewiki-damaging.revscoring-editquality-damaging.wikimedia.org:
-- path: /v1/models/eswikiquotewiki-damaging:predict
+https://eswikiquote-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswikiquote-damaging:predict
   json_body:
     rev_id: 4364
   assert_status: 200
