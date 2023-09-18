@@ -1598,7 +1598,6 @@ node /^karapace100[12]\.eqiad\./ {
 # profile::microsites::research        # https://research.wikimedia.org (T183916)
 # profile::microsites::design          # https://design.wikimedia.org (T185282)
 # profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
-# profile::microsites::static_codereview # https://static-codereview.wikimedia.org (T243056)
 node /^miscweb[12]003\.(eqiad|codfw)\./ {
     role(miscweb)
 }

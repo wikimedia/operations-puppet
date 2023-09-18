@@ -95,9 +95,6 @@ class profile::backup::filesets(
     bacula::director::fileset { 'mysql-srv-backups-snapshots-latest':
         includes => [ '/srv/backups/snapshots/latest' ]
     }
-    bacula::director::fileset { 'static-codereview':
-        includes => [ '/srv/org/wikimedia/static-codereview' ]
-    }
     bacula::director::fileset { 'rt-static':
         includes => [ '/srv/org/wikimedia/static-rt' ]
     }
