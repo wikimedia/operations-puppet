@@ -12,7 +12,6 @@ prometheus_nodes:
 
 # Override to add cloudservices1006 before adding it to cloudcontrol nodes.
 profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1005.wikimedia.org
   - cloudservices1006.eqiad.wmnet
 
 contactgroups: wmcs-team-email

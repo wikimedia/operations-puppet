@@ -13,7 +13,6 @@ profile::openstack::eqiad1::haproxy_nodes:
 # for the cloud-private addresses, so that's why this override here.
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1006.private.eqiad.wikimedia.cloud
-  - cloudservices1005.wikimedia.org
 
 # TODO: move to hieradata/role/eqiad/wmcs/openstack/eqiad1/control.yaml
 # when the migration is completed

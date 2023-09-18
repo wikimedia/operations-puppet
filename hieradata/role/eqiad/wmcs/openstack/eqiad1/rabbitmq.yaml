@@ -15,5 +15,4 @@ profile::contacts::role_contacts: ['WMCS']
 # once all hosts are in the .eqiad.wmnet domain (no wikimedia.org) then
 # this override can go away
 profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1005.wikimedia.org
   - cloudservices1006.eqiad.wmnet
