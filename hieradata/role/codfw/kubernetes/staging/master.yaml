@@ -1,2 +1,0 @@
-# TODO: Remove after T329826 is resolved
-profile::kubernetes::master::cergen_sa_validation: false
