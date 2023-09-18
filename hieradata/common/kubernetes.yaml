@@ -169,6 +169,35 @@ kubernetes::clusters:
         - kubernetes2022.codfw.wmnet
         - kubernetes2023.codfw.wmnet
         - kubernetes2024.codfw.wmnet
+        - kubernetes2025.codfw.wmnet
+        - kubernetes2026.codfw.wmnet
+        - kubernetes2027.codfw.wmnet
+        - kubernetes2028.codfw.wmnet
+        - kubernetes2029.codfw.wmnet
+        - kubernetes2030.codfw.wmnet
+        - kubernetes2031.codfw.wmnet
+        - kubernetes2032.codfw.wmnet
+        - kubernetes2033.codfw.wmnet
+        - kubernetes2034.codfw.wmnet
+        - kubernetes2035.codfw.wmnet
+        - kubernetes2036.codfw.wmnet
+        - kubernetes2037.codfw.wmnet
+        - kubernetes2038.codfw.wmnet
+        - kubernetes2039.codfw.wmnet
+        - kubernetes2040.codfw.wmnet
+        - kubernetes2041.codfw.wmnet
+        - kubernetes2042.codfw.wmnet
+        - kubernetes2043.codfw.wmnet
+        - kubernetes2044.codfw.wmnet
+        - kubernetes2045.codfw.wmnet
+        - kubernetes2046.codfw.wmnet
+        - kubernetes2047.codfw.wmnet
+        - kubernetes2048.codfw.wmnet
+        - kubernetes2049.codfw.wmnet
+        - kubernetes2050.codfw.wmnet
+        - kubernetes2051.codfw.wmnet
+        - kubernetes2052.codfw.wmnet
+        - kubernetes2053.codfw.wmnet
         - kubernetes2055.codfw.wmnet
         - kubernetes2056.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles

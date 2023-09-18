@@ -1607,7 +1607,7 @@ node /^kubernetes10(0[5-9]|1[0-9]|2[0-6]|5[7-8])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^kubernetes20(0[5-9]|1[0-9]|2[0-4]|5[5-6])\.codfw\./ {
+node /^kubernetes20(0[5-9]|[1-4][0-9]|5[012356])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -1623,11 +1623,6 @@ node /^kubestage100[34]\.eqiad\./ {
 # codfw new kubernetes staging nodes T252185
 node /^kubestage200[12]\.codfw\./ {
     role(kubernetes::staging::worker)
-}
-
-# codfw new kubernetes nodes T342534
-node /^kubernetes20(2[5-9]|3[0-9]|4[0-9]|5[0-4])\.codfw\./ {
-    role(insetup::serviceops)
 }
 
 # Soon to be decom'd
