@@ -188,7 +188,7 @@ groups:
   elasticsearch-roots:
     gid: 709
     description: manage elasticsearch nodes
-    members: [ebernhardson, dcausse, pfischer]
+    members: [ebernhardson, dcausse, pfischer, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -236,7 +236,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, sstefanova, raymond-ndibe, pfischer]
+    members: [ebernhardson, dcausse, bd808, sstefanova, raymond-ndibe, pfischer, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -417,7 +417,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu,
-              xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin, cjming, phuedx]
+              xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin, cjming, phuedx, dr0ptp4kt]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
@@ -555,7 +555,7 @@ groups:
   wdqs-admins:
     gid: 755
     description: Admins for the WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service wdqs-blazegraph *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-categories *',
                  'ALL = NOPASSWD: /usr/sbin/service wdqs-updater *',
@@ -579,7 +579,7 @@ groups:
   wdqs-roots:
     gid: 806
     description: Root level access for WikiData Query Service project
-    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer]
+    members: [smalyshev, hoo, ebernhardson, dcausse, addshore, pfischer, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -694,7 +694,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, pfischer]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, pfischer, dr0ptp4kt]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -906,7 +906,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati, pfischer]
+    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati, pfischer, dr0ptp4kt]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver@search *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@search *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@search *',
