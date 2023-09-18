@@ -113,4 +113,17 @@ class profile::microsites::monitoring {
         ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
         certificate_expiry_days => 9,
     }
+
+    prometheus::blackbox::check::http { 'static-codereview.wikimedia.org':
+        team                    => 'serviceops-collab',
+        severity                => 'task',
+        path                    => '/MediaWiki/1.html',
+        ip_families             => ['ip4'],
+        force_tls               => true,
+        status_matches          => [200],
+        body_regex_matches      => ['Code Review'],
+        port                    => 30443, # Kubernetes Ingress port
+        ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
+        certificate_expiry_days => 9,
+    }
 }
