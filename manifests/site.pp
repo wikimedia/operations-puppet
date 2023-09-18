@@ -908,6 +908,12 @@ node /^dbstore100([3-5]|7)\.eqiad\./ {
     role(mariadb::analytics_replica)
 }
 
+# new analytics node TT342862
+node /^dbstore100(8|9)\.eqiad\./ {
+    role(insetup::analytics_replica)
+}
+
+
 # database-provisioning and short-term/postprocessing backups servers
 
 node /^dbprov1001\.eqiad\./ {
