@@ -16,11 +16,10 @@ define prometheus::snmp_exporter::module (
 ) {
     $exporter_module = $title
 
-    # prometheus-snmp-exporter-config will take care of assembling all
-    # modules yaml files into snmp.yml for snmp_exporter to consume.
+    # prometheus-assemble-config will take care of assembling all
+    # modules yaml files into snmp.yml for snmp_exporter to consume (init.pp)
     file { "/etc/prometheus/snmp.yml.d/${exporter_module}.yml":
         content   => template("prometheus/snmp_exporter/${template}.yml.erb"),
-        notify    => Exec['prometheus-snmp-exporter-config'],
         show_diff => false,
     }
 }
