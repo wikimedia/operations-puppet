@@ -20,3 +20,5 @@ profile::base::production::enable_ip6_mapped: false
 
 cluster: ganeti_test
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+
+profile::firewall::provider: nftables
