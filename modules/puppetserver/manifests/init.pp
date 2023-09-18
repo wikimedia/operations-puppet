@@ -105,6 +105,9 @@ class puppetserver (
             'mode'   => '0751',
         },
     )
+
+    # The puppetserver process itself enforces mode 0771 on the ssl dir, so this
+    # should not be changed or it will create a perma-diff
     file { $ssl_dir:
         ensure => directory,
         owner  => $owner,
