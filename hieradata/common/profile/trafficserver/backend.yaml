@@ -232,7 +232,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://static-codereview.wikimedia.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://stats.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
