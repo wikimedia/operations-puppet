@@ -32,13 +32,6 @@ class prometheus::snmp_exporter {
         group  => 'root',
     }
 
-    file { '/etc/prometheus/snmp.yml':
-        ensure => present,
-        mode   => '0400',
-        owner  => 'prometheus',
-        group  => 'root',
-    }
-
     file { '/usr/local/bin/prometheus-snmp-exporter-config':
         ensure => absent,
     }
