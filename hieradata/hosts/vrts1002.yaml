@@ -18,7 +18,7 @@ profile::mail::default_mail_relay::enabled: false
 
 # envoy for TLS termination behind ATS
 # TODO: Setup Test Domain Name
-profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
+profile::tlsproxy::envoy::global_cert_name: "ticket-test.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 1443
 
 profile::contacts::role_contacts: ['ServiceOps-Collab']
