@@ -4,8 +4,6 @@
 #
 class profile::kubernetes::master (
     String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
-    # TODO: Remove service_cert after T329826 is resolved
-    Stdlib::Fqdn $service_cert      = lookup('profile::kubernetes::master::service_cert'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
@@ -16,14 +14,6 @@ class profile::kubernetes::master (
     # (that's why we don't use profile::kubernetes::client)
     class { 'k8s::client':
         version => $k8s_config['version'],
-    }
-
-    # FIXME: This should be removed after T329826 is resolved
-    sslcert::certificate { $service_cert:
-        ensure       => absent,
-        group        => 'kube',
-        skip_private => false,
-        use_cergen   => true,
     }
 
     # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal

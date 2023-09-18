@@ -3,9 +3,6 @@ cluster: 'aux-k8s'
 # cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
 profile::kubernetes::cluster_name: "aux-k8s-%{::site}"
 
-# TODO: Remove service_cert after T329826 is resolved
-profile::kubernetes::master::service_cert: 'aux-k8s-ctrl.svc.%{::site}.wmnet'
-
 profile::lvs::realserver::pools:
   aux-k8s-ctrl:
     services:

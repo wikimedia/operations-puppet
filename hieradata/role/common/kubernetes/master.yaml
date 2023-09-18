@@ -3,9 +3,6 @@ cluster: kubernetes
 # cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
 profile::kubernetes::cluster_name: "%{::site}"
 
-# TODO: Remove service_cert after T329826 is resolved
-profile::kubernetes::master::service_cert: "kubemaster.svc.%{::site}.wmnet"
-
 profile::lvs::realserver::pools:
   kubemaster:
     services:
