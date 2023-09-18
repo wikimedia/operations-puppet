@@ -5,10 +5,6 @@ profile::kubernetes::cluster_name: "dse-k8s-%{::site}"
 
 # TODO: Remove service_cert after T329826 is resolved
 profile::kubernetes::master::service_cert: "dse-k8s-ctrl.svc.%{::site}.wmnet"
-# TODO: Remove ssl_cert_path after T329826 is resolved
-profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/dse-k8s-ctrl.svc.%{::site}.wmnet.crt"
-# TODO: Remove ssl_key_path after T329826 is resolved
-profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/dse-k8s-ctrl.svc.%{::site}.wmnet.key"
 
 profile::lvs::realserver::pools:
   dse-k8s-ctrl:

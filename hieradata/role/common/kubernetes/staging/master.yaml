@@ -10,10 +10,6 @@ profile::lvs::realserver::pools:
 
 # TODO: Remove service_cert after T329826 is resolved
 profile::kubernetes::master::service_cert: "kubestagemaster.svc.%{::site}.wmnet"
-# TODO: Remove ssl_cert_path after T329826 is resolved
-profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/kubestagemaster.svc.%{::site}.wmnet.crt"
-# TODO: Remove ssl_key_path after T329826 is resolved
-profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/kubestagemaster.svc.%{::site}.wmnet.key"
 
 profile::contacts::role_contacts: ['ServiceOps']
 

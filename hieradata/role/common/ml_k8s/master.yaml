@@ -5,10 +5,6 @@ profile::kubernetes::cluster_name: "ml-serve-%{::site}"
 
 # TODO: Remove service_cert after T329826 is resolved
 profile::kubernetes::master::service_cert: "ml-ctrl.svc.%{::site}.wmnet"
-# TODO: Remove ssl_cert_path after T329826 is resolved
-profile::kubernetes::master::ssl_cert_path: "/etc/ssl/localcerts/ml-ctrl.svc.%{::site}.wmnet.crt"
-# TODO: Remove ssl_key_path after T329826 is resolved
-profile::kubernetes::master::ssl_key_path: "/etc/ssl/private/ml-ctrl.svc.%{::site}.wmnet.key"
 
 profile::lvs::realserver::pools:
   ml-ctrl:
