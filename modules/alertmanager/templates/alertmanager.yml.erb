@@ -240,6 +240,10 @@ route:
         team: 'mediawiki-platform'
       receiver: 'mediawiki-platform-ircmail'
 
+    - match:
+        team: 'ml'
+      receiver: 'ml-ircmail'
+
     # Default routing for page/critical alerts, if no team could be routed
     - match:
         severity: 'page'
@@ -553,6 +557,13 @@ receivers:
   email_configs:
     - to: 'growth-engine-room-aaaab2fjcsigknmf7zv7adyzum@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
+
+- name: 'ml-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-ml'
+  email_configs:
+    - to: 'ml@wikimedia.org'
+    send_resolved: true
 
 
 inhibit_rules:
