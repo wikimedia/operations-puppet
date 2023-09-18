@@ -26,16 +26,10 @@ class pdns_server::db_backups(
             'unless_grep_match' => undef,  # will use the same stmt
         },
     ].each |Integer $index, Hash $item| {
-        if $item['unless_grep_match'] {
-            $unless_grep_match = $item['unless_grep_match']
-        } else {
-            $unless_grep_match = $item['stmt']
-        }
-        exec { "inject-pdns-db-backup-stmt-${index}":
-            command => "/usr/bin/mysql -u root -Bs -e \"${item['stmt']};\"",
-            unless  => "/usr/bin/mysql -u root -Bs -e \"${item['unless']};\" | grep -q \"${unless_grep_match}\"",
-            user    => 'root',
-            timeout => '30',
+        dbutils::statement { "pdns_server_db_backups_stmt_${index}":
+            statement         => $item['stmt'],
+            unless            => $item['unless'],
+            unless_grep_match => $item['unless_grep_match'],
         }
     }
 }
