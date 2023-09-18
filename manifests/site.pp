@@ -910,9 +910,8 @@ node /^dbstore100([3-5]|7)\.eqiad\./ {
 
 # new analytics node TT342862
 node /^dbstore100(8|9)\.eqiad\./ {
-    role(insetup::analytics_replica)
+    role(insetup::data_persistence)
 }
-
 
 # database-provisioning and short-term/postprocessing backups servers
 
