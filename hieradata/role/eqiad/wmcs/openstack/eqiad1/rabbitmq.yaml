@@ -10,9 +10,3 @@ prometheus_nodes:
 contactgroups: wmcs-team-email
 
 profile::contacts::role_contacts: ['WMCS']
-
-# TODO: override this during the network transition
-# once all hosts are in the .eqiad.wmnet domain (no wikimedia.org) then
-# this override can go away
-profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1006.eqiad.wmnet
