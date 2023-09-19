@@ -6,10 +6,13 @@ class idm::redis (
     Stdlib::Port        $redis_port,
     Integer             $redis_maxmem,
 ){
-    ferm::service { 'redis_replication':
-        proto  => 'tcp',
-        port   => $redis_port,
-        srange => "@resolve((${redis_master} ${redis_replicas.join(' ')}))",
+
+    unless $redis_replicas.empty() {
+        firewall::service { 'redis_replication':
+            proto  => 'tcp',
+            port   => $redis_port,
+            srange => $redis_replicas,
+        }
     }
 
     $base_redis_settings =  {
