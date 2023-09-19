@@ -1,6 +1,6 @@
 # @summary Role to install a PKI server
 class role::pki::multirootca {
-    system::role { 'pki::multirotoca': description => 'PKI Server' }
+    system::role { 'pki::multirootca': description => 'PKI Server' }
     include profile::base::production
     include profile::firewall
     include profile::pki::multirootca
