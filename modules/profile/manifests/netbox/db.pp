@@ -81,7 +81,7 @@ class profile::netbox::db (
         }
 
         if !empty($frontends) {
-            ferm::service { 'netbox_fe':
+            firewall::service { 'netbox_fe':
                 proto  => 'tcp',
                 port   => 5432,
                 srange => $frontends,
@@ -137,7 +137,7 @@ class profile::netbox::db (
 
         if !empty($replicas) {
             # Access to postgres primary from postgres replicas
-            ferm::service { 'netbox_postgres':
+            firewall::service { 'netbox_postgres':
                 proto  => 'tcp',
                 port   => 5432,
                 srange => $replicas,
