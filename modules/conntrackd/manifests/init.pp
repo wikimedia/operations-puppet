@@ -3,7 +3,12 @@ class conntrackd (
     String $conntrackd_cfg,
     String $systemd_cfg,
 ) {
-    ensure_packages(['conntrack', 'conntrackd'])
+
+    if !defined(Package['conntrack']) {
+        ensure_packages('conntrack')
+    }
+
+    ensure_packages('conntrackd')
 
     file { '/etc/conntrackd/conntrackd.conf':
         ensure  => present,
