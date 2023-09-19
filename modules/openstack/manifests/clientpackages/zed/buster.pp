@@ -64,7 +64,7 @@ class openstack::clientpackages::zed::buster(
     $instance_dir_to_patch = '/usr/lib/python3/dist-packages/openstack'
     $instance_patch_file = "${instance_dir_to_patch}.patch"
     file {$instance_patch_file:
-        source => 'puppet:///modules/openstack/zed/openstacksdk/allow_overriding_cloud_yaml.patch',
+        source => 'puppet:///modules/openstack/zed/openstacksdk/hacks/allow_overriding_cloud_yaml.patch',
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
