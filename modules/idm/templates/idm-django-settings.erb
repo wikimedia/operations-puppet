@@ -26,7 +26,11 @@ ADMINS_LIMITED = ['slyngshede@wikimedia.org', 'mmuhlenhoff@wikimedia.org']
 <%- if @production -%>
 DATABASES = {
     'default': {
+        <%- if @install_via_git -%>
         'ENGINE': 'mysql.connector.django',
+        <%- else -%>
+        'ENGINE': 'django.db.backends.mysql',
+        <%- end -%>
         'NAME': '<%= @django_mysql_db_name %>',
         'HOST': '<%= @django_mysql_db_host %>',
         'USER': '<%= @django_mysql_db_user %>',
