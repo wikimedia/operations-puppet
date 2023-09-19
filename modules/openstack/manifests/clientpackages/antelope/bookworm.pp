@@ -18,9 +18,7 @@ class openstack::clientpackages::antelope::bookworm(
         'python3-tenacity',
     ]
 
-    package{ $py3packages:
-        ensure => 'present',
-    }
+    ensure_packages($py3packages + ['patch'])
 
     file { '/usr/lib/python3/dist-packages/mwopenstackclients.py':
         ensure => 'present',

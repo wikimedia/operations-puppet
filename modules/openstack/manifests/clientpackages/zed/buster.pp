@@ -11,10 +11,6 @@ class openstack::clientpackages::zed::buster(
         'python-neutronclient',
     ]
 
-    package{ $py2packages:
-        ensure => 'present',
-    }
-
     $py3packages = [
         'python3-novaclient',
         'python3-glanceclient',
@@ -31,18 +27,13 @@ class openstack::clientpackages::zed::buster(
         'python3-tenacity',
     ]
 
-    package{ $py3packages:
-        ensure => 'present',
-    }
-
     $otherpackages = [
         'ebtables',
         'python-netaddr',
+        'patch',
     ]
 
-    package { $otherpackages:
-        ensure => 'present',
-    }
+    ensure_packages($py2packages + $py3packages + $otherpackages)
 
     # Wrapper python class to easily query openstack clients
     file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
