@@ -22,7 +22,7 @@
 # @param do_esitest temporary for testing ESI
 # @param fe_jemalloc_conf jemalloc configuration
 # @param thread_pool_max Maximum threads per pool
-# @param vsl_size Size of the space for VSL records (varnish default is 80M)
+# @param vsl_size Size of the space for VSL records (default 160M)
 # @param fe_mem_gb_reserved Frontend memory cache size will be set to total host memory minus this many GB (def 170)
 class profile::cache::varnish::frontend (
     # Globals
@@ -53,7 +53,7 @@ class profile::cache::varnish::frontend (
     Boolean                 $enable_monitoring       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
-    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => undef}),
+    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => '160M'}),
     Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value' => 170}),
 ) {
     include profile::cache::base
