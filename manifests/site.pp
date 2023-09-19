@@ -1524,6 +1524,11 @@ node /^pki1001\.eqiad\./ {
     role(pki::multirootca)
 }
 
+# PKI server T342892
+node /^pki1002\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # PKI server
 # make sure this is stricter enough to exclude rpki
 node /^pki2002\.codfw\./ {
