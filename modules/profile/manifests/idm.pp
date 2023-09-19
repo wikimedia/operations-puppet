@@ -71,11 +71,15 @@ class profile::idm(
 
     $logs = ['idm', 'django']
 
-    file { $logs :
+    $logs.each |$log| {
+        file { $log:
         ensure => file,
+        path   => "${log_dir}/${log}.log",
         owner  => $deploy_user,
         group  => $deploy_user,
+        }
     }
+
 
     $logs.each |$log| {
         logrotate::rule { "bitu-${log}":
