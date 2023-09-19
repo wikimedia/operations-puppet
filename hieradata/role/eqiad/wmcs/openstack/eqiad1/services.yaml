@@ -25,6 +25,13 @@ profile::dbbackups::mydumper::enabled: true
 profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'
 
+# a few different domains that designate serves as authoritative
+profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records:
+  - login.toolforge.org
+  - k8s.svc.tools.eqiad1.wikimedia.cloud
+  - tools-sgegrid-master.tools.eqiad1.wikimedia.cloud
+  - www.wmcloud.org
+
 # TODO: as of this writting, this is overridden per cloudservice host, and when ready
 # we need to drop such override
 profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor.openstack.eqiad1.wikimediacloud.org
