@@ -1,0 +1,52 @@
+# PuppetDB
+profile::puppet::agent::force_puppet7: true
+profile::nginx::lib_on_tmpfs: false
+profile::puppetdb::jvm_opts: '-Xmx256m'
+profile::puppetdb::puppetboard_hosts: []
+profile::puppetdb::rsyslog::elk: false
+profile::puppetdb::tmpfs_stockpile_queue: false
+profile::puppetdb::clean_stockpile: false
+profile::puppetdb::ssl_verify_client: 'on'
+profile::puppetdb::facts_blacklist_type: 'regex'
+profile::puppetdb::db_use_ssl: false
+# The following list should only include facts which are not used by for catalog
+# compilation This is specifically because we need the facts used by compilation
+# to be available in puppetdb so we can export them to be used with PCC
+profile::puppetdb::facts_blacklist:
+  - '^ipaddress6_cali.*'
+  - '^ipaddress6_tap.*'
+  - '^macaddress_cali.*'
+  - '^macaddress_tap.*'
+  - '^mtu_cali.*'
+  - '^mtu_tap.*'
+  - '^netmask6_cali.*'
+  - '^netmask6_tap.*'
+  - '^network6_cali.*'
+  - '^network6_tap.*'
+  - '^lvm_vg_.*'
+  - '^blockdevices.*'
+  - '^block_devices.*'
+  - '^mountpoints.*'  # used in cloud by cinderutils::ensure but not in production
+profile::puppetdb::sites: {}
+profile::puppetdb::node_ttl: 14d
+profile::puppetdb::node_purge_ttl: 1d
+profile::puppetdb::master: '%{facts.fqdn}'
+profile::puppetdb::db_ro_host: ~
+profile::puppetdb::slaves: []
+profile::puppetdb::microservice::enabled: false
+# TODO: gross hack, would be better to only allow the puppetdb fqdn
+cumin_masters:
+  - 10.0.0.0/8
+puppetmaster::servers: {}
+profile::java::java_packages:
+  - version: '17'
+    variant: 'jre-headless'
+profile::puppetdb::database::users:
+  puppetdb@localhost:
+    user: puppetdb
+    password: "%{alias('puppetdb::password::rw')}"
+    database: puppetdb
+    # TODO: Change the hba provider type to allow hostnames or alternatively
+    # allow puppetdb to connect via localhost, both options require a fair bit
+    # of puppet rejiggering
+    cidr: '10.0.0.0/8'

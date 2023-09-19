@@ -1,41 +1,54 @@
 # SPDX-License-Identifier: Apache-2.0
 version: 5
 defaults:
-  datadir: '/srv/puppet_code/environments/%{::environment}/hieradata'
+  datadir: "/srv/puppet_code/environments/%{::environment}/hieradata"
   data_hash: yaml_data
 hierarchy:
-  - name: "dev"
-    path: "dev.yaml"
-  - name: "private node"
-    datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{::hostname}.yaml"
-  - name: "node hierarchy"
-    path: "hosts/%{::hostname}.yaml"
-  - name: "Regex lookup"
-    lookup_key: 'wmflib::regex_data'
-    path: 'regex.yaml'
-    options:
-      node: "%{::fqdn}"
-  - name: "role"
-    paths:
-      - "role/%{::site}/%{::_role}.yaml"
-      - "role/common/%{::_role}.yaml"
-  - name: "private role"
-    datadir: "/etc/puppet/private/hieradata"
-    paths:
-      - "role/%{::site}/%{::_role}.yaml"
-      - "role/common/%{::_role}.yaml"
-  - name: "private site"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "%{::site}"
-  - name: "expand_path site"
-    path: "%{::site}"
-    lookup_key: 'wmflib::expand_path'
-  - name: "common"
-    lookup_key: 'wmflib::expand_path'
-    path: "common"
-  - name: "private common"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "common"
+- name: local
+  path: local.yaml
+  datadir: /etc/puppet
+- name: dev
+  path: dev.yaml
+- name: dev expand path
+  lookup_key: wmflib::expand_path
+  path: dev
+- name: private node
+  datadir: "/etc/puppet/private/hieradata"
+  path: hosts/%{::hostname}.yaml
+- name: node hierarchy
+  path: hosts/%{::hostname}.yaml
+- name: netbox node hierarchy
+  path: hosts/%{::hostname}.yaml
+  datadir: "/etc/puppet/netbox"
+- name: Regex lookup
+  lookup_key: wmflib::regex_data
+  path: regex.yaml
+  options:
+    node: "%{::fqdn}"
+- name: role
+  paths:
+  - role/env/%{::environment}/%{::_role}.yaml
+  - role/%{::site}/%{::_role}.yaml
+  - role/common/%{::_role}.yaml
+- name: private role
+  datadir: "/etc/puppet/private/hieradata"
+  paths:
+  - role/%{::site}/%{::_role}.yaml
+  - role/common/%{::_role}.yaml
+- name: private site
+  lookup_key: wmflib::expand_path
+  datadir: "/etc/puppet/private/hieradata"
+  path: "%{::site}"
+- name: expand_path site
+  path: "%{::site}"
+  lookup_key: wmflib::expand_path
+- name: netbox common hierarchy
+  path: common.yaml
+  datadir: "/etc/puppet/netbox"
+- name: common
+  lookup_key: wmflib::expand_path
+  path: common
+- name: private common
+  lookup_key: wmflib::expand_path
+  datadir: "/etc/puppet/private/hieradata"
+  path: common

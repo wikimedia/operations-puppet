@@ -1,8 +1,7 @@
-# Disable omkafka
-# The omkafka module falls into a tight CPU loop when its ssl.ca.location file
-# is not available on startup and messages are in the queue, which is true when
-# we first boot a container, since we autosign puppet certs. How to properly
-# solve the problem is not obvious.
+# Disable omkafka because the module falls into a tight CPU loop when its
+# ssl.ca.location file is not available on startup and messages are in the
+# queue, which is true when we first boot a container, since we autosign puppet
+# certs. How to properly solve the problem is not obvious.
 profile::rsyslog::kafka_shipper::enable: false
 
 # No proxy support yet in dev
@@ -36,7 +35,7 @@ cache_hosts:
 profile::netbox::host::status: 'unknown'
 profile::netbox::host::location: ~
 
-# Jave profile depends on the wmf-certificates deb
+# The java profile depends on the wmf-certificates deb
 profile::base::certificates::trusted_certs:
   package: 'wmf-certificates'
   bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
@@ -50,79 +49,24 @@ profile::debmonitor::client::ssl_ca_label: ~
 # Etcd is not stood up yet, in dev
 profile::firewall::defs_from_etcd: false
 
+# TODO: Runs but is a large CPU hog for reasons not fully understood
+profile::prometheus::cadvisor::ensure: absent
+
 # Puppet agent
-## Set environment name
+
+# Set environment name
 profile::puppet::agent::environment: 'dev'
-## Set our dev puppet server hostname, otherwise we grab eqiad's from common.yaml
+# Set our dev puppet server hostname, otherwise we grab eqiad's from common.yaml
 puppetmaster: 'puppet'
 puppet_ca_server: "%{lookup('puppetmaster')}"
-## Don't install the production Puppet CA
+# Don't install the production Puppet CA
 manage_puppet_ca_file: false
-## Don't burn cpu on our dev's laptop by running the agent periodically, this is
-## a stop gap until a better solution is devised.
+# Don't burn CPU on our dev's laptop by running the agent periodically, this is
+# a stop gap until a better solution is devised.
 profile::puppet::agent::create_timer: false
 
-# Puppet server
-profile::puppetserver::java_start_mem: 1g
-profile::puppetserver::java_max_mem: 1g
-profile::puppetserver::enable_ca: true
-profile::puppetserver::autosign: true
-profile::puppetserver::enc_path: '/usr/local/bin/puppet-dev-enc'
-profile::puppetserver::enc_source: 'puppet:///modules/profile/puppetserver/puppet-dev-enc.sh'
-profile::puppetserver::git_pull: false
-profile::puppetserver::hiera_data_dir: "%{lookup('profile::puppetserver::code_dir')}/environments/%{literal('%')}{::environment}/hieradata"
-profile::puppetserver::hiera_source: 'puppet:///modules/profile/puppetserver/hiera/dev.yaml'
-profile::puppetserver::listen_host: '0.0.0.0'
-profile::puppetserver::max_active_instances: 1
-profile::puppetserver::puppetdb_urls: []
-profile::puppetserver::reports: ['store']
-profile::puppetserver::server_id: 'puppet'
-profile::puppetserver::intermediate_ca: true
-profile::puppetserver::ca_public_key: 'puppet:///modules/profile/puppetserver/dcl/puppet_ca.pem'
-profile::puppetserver::ca_crl: 'puppet:///modules/profile/puppetserver/dcl/pki_crl.pem'
-profile::puppetserver::ca_private_key_secret: 'puppetserver/dcl/puppet_ca.key'
-profile::puppetserver::hierarchy:
-  - name: "dev"
-    path: "dev.yaml"
-  - name: "private node"
-    datadir: "/etc/puppet/private/hieradata"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
-  - name: "node hierarchy"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
-  - name: "netbox node hierarchy"
-    path: "hosts/%{literal('%')}{::hostname}.yaml"
-    datadir: "/etc/puppet/netbox"
-  - name: "Regex lookup"
-    lookup_key: 'wmflib::regex_data'
-    path: 'regex.yaml'
-    options:
-      node: "%{literal('%')}{::fqdn}"
-  - name: "role"
-    paths:
-      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
-      - "role/common/%{literal('%')}{::_role}.yaml"
-  - name: "private role"
-    datadir: "/etc/puppet/private/hieradata"
-    paths:
-      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
-      - "role/common/%{literal('%')}{::_role}.yaml"
-  - name: "private site"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "%{literal('%')}{::site}"
-  - name: "expand_path site"
-    path: "%{literal('%')}{::site}"
-    lookup_key: 'wmflib::expand_path'
-  - name: "common"
-    lookup_key: 'wmflib::expand_path'
-    path: "common"
-  - name: "netbox common hierarchy"
-    path: "common.yaml"
-    datadir: "/etc/puppet/netbox"
-  - name: "private common"
-    lookup_key: 'wmflib::expand_path'
-    datadir: "/etc/puppet/private/hieradata"
-    path: "common"
+# PKI
+profile::pki::client::signer_host: "pki1001.eqiad.default.svc.k8s.lan"
 
 # SSH Setup
 profile::ssh::server::authorized_principals_file: '/etc/ssh/user_authorized_principals.conf'
@@ -208,32 +152,3 @@ profile::ssh::server::host_keys:
     BE1hTiiqwL3Cc3xMyULBg05JVyZXqboKW3eNVt+MGxpD5ztlOGVFrdRI1P+YS8KigkEmLs
     MYo0ebD8xrGgs5AAAAEmpoYXRoYXdheUBza2l0dGxlcw==
     -----END OPENSSH PRIVATE KEY-----
-# TODO: Runs but is a large CPU hog for reasons not fully understood
-profile::prometheus::cadvisor::ensure: absent
-# PKI
-profile::pki::client::signer_host: "pki2002.codfw.default.svc.k8s.lan"
-# profile::pki::client::bundles_source: "puppet:///volatile/pontoon/pki"
-# profile::pki::client::bundles_source: "puppet:///modules/profile/pki/wmcs-intermediates"
-## Multiroot CA settings
-# in this file all _cert parameteres are passed to the file function
-# and all _key paramtetes are passed to the secret function
-profile::pki::multirootca::intermediates:
-  discovery:
-    ocsp_port: 10001
-    default_usages:
-      - 'client auth'
-      - 'digital signature'
-      - 'key encipherment'
-      - 'server auth'
-profile::pki::multirootca::db_driver: 'sqlite3'
-profile::pki::multirootca::db_host: 'localhost'
-profile::pki::multirootca::private_cert_base: 'pki/dcl-intermediates'
-profile::pki::multirootca::public_cert_base: 'profile/pki/dcl-intermediates'
-profile::pki::multirootca::root_ca_cert: 'profile/pki/ROOT/dcl-root.pem'
-profile::pki::multirootca::root_ocsp_cert: 'profile/pki/ROOT/dcl-root-ocsp.pem'
-profile::pki::multirootca::root_ca_cn: 'Wikimedia dcl Root CA'
-profile::pki::multirootca::root_ocsp_key: 'pki/ROOT/dcl-root-oscp-key.pem'
-profile::pki::multirootca::root_ocsp_port: 10000
-profile::pki::multirootca::default_expiry: '8760h'
-# profile::pki::multirootca::vhost: 'pki-intermediate.pki.eqiad1.wikimedia.cloud'
-profile::pki::multirootca::client_ca_source: "puppet:///modules/profile/pki/dcl/client_auth_CA.pem"
