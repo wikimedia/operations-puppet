@@ -30,6 +30,7 @@ class prometheus::statsd_exporter (
     String $relay_address = '',
     String $listen_address = ':9112',
     String $arguments = '',
+    Boolean $enable_scraping = true,
 ) {
     ensure_packages('prometheus-statsd-exporter')
 
