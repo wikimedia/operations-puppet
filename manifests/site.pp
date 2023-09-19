@@ -1608,17 +1608,12 @@ node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
 
-node /^kubernetes10(0[5-9]|1[0-9]|2[0-6]|5[7-8])\.eqiad\./ {
+node /^kubernetes10(0[5-9]|[1-4][0-9]5[0-8])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
 node /^kubernetes20(0[5-9]|[1-4][0-9]|5[012356])\.codfw\./ {
     role(kubernetes::worker)
-}
-
-# new backup node T342533
-node /^kubernetes10([2-4][7-9]|[3-5][0-6])\.eqiad\./ {
-    role(insetup::serviceops)
 }
 
 node /^kubestage100[34]\.eqiad\./ {

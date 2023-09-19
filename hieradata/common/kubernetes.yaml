@@ -115,6 +115,36 @@ kubernetes::clusters:
         - kubernetes1024.eqiad.wmnet
         - kubernetes1025.eqiad.wmnet
         - kubernetes1026.eqiad.wmnet
+        - kubernetes1027.eqiad.wmnet
+        - kubernetes1028.eqiad.wmnet
+        - kubernetes1029.eqiad.wmnet
+        - kubernetes1030.eqiad.wmnet
+        - kubernetes1031.eqiad.wmnet
+        - kubernetes1032.eqiad.wmnet
+        - kubernetes1033.eqiad.wmnet
+        - kubernetes1034.eqiad.wmnet
+        - kubernetes1035.eqiad.wmnet
+        - kubernetes1036.eqiad.wmnet
+        - kubernetes1037.eqiad.wmnet
+        - kubernetes1038.eqiad.wmnet
+        - kubernetes1039.eqiad.wmnet
+        - kubernetes1040.eqiad.wmnet
+        - kubernetes1041.eqiad.wmnet
+        - kubernetes1042.eqiad.wmnet
+        - kubernetes1043.eqiad.wmnet
+        - kubernetes1044.eqiad.wmnet
+        - kubernetes1045.eqiad.wmnet
+        - kubernetes1046.eqiad.wmnet
+        - kubernetes1047.eqiad.wmnet
+        - kubernetes1048.eqiad.wmnet
+        - kubernetes1049.eqiad.wmnet
+        - kubernetes1050.eqiad.wmnet
+        - kubernetes1051.eqiad.wmnet
+        - kubernetes1052.eqiad.wmnet
+        - kubernetes1053.eqiad.wmnet
+        - kubernetes1054.eqiad.wmnet
+        - kubernetes1055.eqiad.wmnet
+        - kubernetes1056.eqiad.wmnet
         - kubernetes1057.eqiad.wmnet
         - kubernetes1058.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
