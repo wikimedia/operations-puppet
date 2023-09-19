@@ -1402,11 +1402,7 @@ node /^cloudcumin2001\.codfw\./ {
     role(cluster::cloud_management)
 }
 
-node /^cloudservices100[5]\.wikimedia\./ {
-    role(wmcs::openstack::eqiad1::services)
-}
-
-node /^cloudservices1006\.eqiad\./ {
+node /^cloudservices100[56]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::services)
 }
 
