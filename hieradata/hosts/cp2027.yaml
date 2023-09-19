@@ -1,4 +1,3 @@
-profile::cache::varnish::frontend::fe_mem_gb_reserved: 170
 profile::cache::haproxy::acls:
   tls:
     - name: cache_miss
