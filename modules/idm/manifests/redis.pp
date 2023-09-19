@@ -16,7 +16,7 @@ class idm::redis (
     }
 
     $base_redis_settings =  {
-        bind        => $facts['networking']['ip'],
+        bind        => [$facts['networking']['ip'], $facts['networking']['ip6']],
         maxmemory   => $redis_maxmem,
         port        => $redis_port,
         requirepass => $redis_password,
