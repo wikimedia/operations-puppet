@@ -146,7 +146,7 @@ class profile::idm(
 
         }
     } else {
-        ensure_packages('python3-bitu')
+        ensure_packages(['python3-bitu', 'python3-mysqldb'])
 
         # Enable Bitu uwsgi app.
         file { '/etc/uwsgi/apps-enabled/bitu.ini':
