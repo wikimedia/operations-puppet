@@ -1,3 +1,2 @@
 # db1134
 mariadb::shard: 's1'
-profile::monitoring::notifications_enabled: false
