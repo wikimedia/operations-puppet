@@ -24,13 +24,13 @@ define dbbackups::check_es (
     $config_file = '/etc/wmfbackups/my.cnf'
 
     if $enabled {
-        $ensure = 'present'
+        $ensure_file = file
     } else {
-        $ensure = 'absent'
+        $ensure_file = absent
     }
 
     file { "/etc/defaults/${title}":
-        ensure  => $ensure,
+        ensure  => $ensure_file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -38,7 +38,7 @@ define dbbackups::check_es (
     }
 
     file { $config_file:
-        ensure  => $ensure,
+        ensure  => $ensure_file,
         owner   => 'root',
         group   => 'root',
         mode    => '0400',
@@ -46,17 +46,23 @@ define dbbackups::check_es (
     }
 
     file { '/usr/bin/check-dbbackup-time':
-        ensure => $ensure,
+        ensure => $ensure_file,
         owner  => 'root',
         group  => 'root',
         mode   => '0540',
         source => 'puppet:///modules/dbbackups/check_dbbackup_time.py'
     }
 
+    if $enabled {
+        $ensure_job = 'present'
+    } else {
+        $ensure_job = 'absent'
+    }
+
     # We believe a weekly schedule should be enough, will add configurability if the needs change.
     # Thursdays UTC mornings looks like a good time (weekly backups start on Tuesdays)
     systemd::timer::job { $title:
-        ensure           => $ensure,
+        ensure           => $ensure_job,
         user             => 'root',
         description      => 'Checks and alerts by email if ES backups are too slow',
         command          => '/usr/bin/check-dbbackup-time',
