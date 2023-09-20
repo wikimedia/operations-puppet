@@ -29,7 +29,7 @@ define dbbackups::check_es (
         $ensure_file = absent
     }
 
-    file { "/etc/defaults/${title}":
+    file { "/etc/default/${title}":
         ensure  => $ensure_file,
         owner   => 'root',
         group   => 'root',
@@ -66,8 +66,8 @@ define dbbackups::check_es (
         user             => 'root',
         description      => 'Checks and alerts by email if ES backups are too slow',
         command          => '/usr/bin/check-dbbackup-time',
-        environment_file => "/etc/defaults/${title}",
+        environment_file => "/etc/default/${title}",
         interval         => {'start' => 'OnCalendar', 'interval' => 'Thu *-*-* 01:00:00'},
-        require          => [ File["/etc/defaults/${title}"], File['/usr/bin/check-dbbackup-time'] ]
+        require          => [ File["/etc/default/${title}"], File['/usr/bin/check-dbbackup-time'] ]
     }
 }
