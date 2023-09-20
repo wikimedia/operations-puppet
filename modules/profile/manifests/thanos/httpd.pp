@@ -18,7 +18,7 @@ class profile::thanos::httpd (
     Integer                    $maxconn    = lookup('profile::thanos::httpd::maxconn'),
 ) {
     class { 'httpd':
-        modules => ['proxy_http'],
+        modules => ['proxy_http', 'allowmethods'],
     }
 
     profile::idp::client::httpd::site {'thanos.wikimedia.org':
