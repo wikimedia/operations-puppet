@@ -66,7 +66,7 @@ class ReplicaCnf:
     db_user: str
     db_password: str
 
-    def to_str(self) -> str:
+    def to_mysql_conf_str(self) -> str:
         replica_config = configparser.ConfigParser()
         replica_config["client"] = {
             "user": self.db_user,

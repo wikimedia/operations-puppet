@@ -17,7 +17,6 @@ from replica_cnf_api_service.backends.common import (
     ReplicaCnf,
     Skip,
     UserType,
-    mysql_hash,
     run_script,
 )
 
@@ -57,7 +56,7 @@ class ToolforgeUserFileBackend(Backend):
                 user_type=self.USER_TYPE,
                 user=user,
                 db_user=DRY_RUN_USERNAME,
-                db_password=mysql_hash(DRY_RUN_PASSWORD),
+                db_password=DRY_RUN_PASSWORD,
             )
 
         cp = configparser.ConfigParser()
@@ -81,7 +80,7 @@ class ToolforgeUserFileBackend(Backend):
                     user=user,
                     # sometimes these values have quotes around them
                     db_user=cp["client"]["user"].strip("'"),
-                    db_password=mysql_hash(cp["client"]["password"].strip("'")),
+                    db_password=cp["client"]["password"].strip("'"),
                 )
             else:
                 raise BackendError(res.stderr.decode("utf-8"))
@@ -136,7 +135,7 @@ class ToolforgeUserFileBackend(Backend):
             args=[
                 str(account_uid),
                 self.get_relative_path(user=replica_cnf.user),
-                replica_cnf.to_str(),
+                replica_cnf.to_mysql_conf_str(),
                 replica_cnf.user_type.value,
             ],
         )

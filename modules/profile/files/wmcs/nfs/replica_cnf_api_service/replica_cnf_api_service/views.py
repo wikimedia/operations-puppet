@@ -14,6 +14,7 @@ from replica_cnf_api_service.backends.common import (
     ReplicaCnf,
     Skip,
     UserType,
+    mysql_hash,
 )
 from replica_cnf_api_service.backends.envvars_backend import (
     EnvvarsConfig,
@@ -307,7 +308,7 @@ def read_replica_cnf() -> tuple[Response, int]:
     if replica_cnf is None:
         return get_error_response(reason=f"Unable to find a backend for user type {account_type}")
 
-    return get_ok_response(user=replica_cnf.db_user, password=replica_cnf.db_password)
+    return get_ok_response(user=replica_cnf.db_user, password=mysql_hash(replica_cnf.db_password))
 
 
 @bp_v1.route("/delete-replica-cnf", methods=["POST"])

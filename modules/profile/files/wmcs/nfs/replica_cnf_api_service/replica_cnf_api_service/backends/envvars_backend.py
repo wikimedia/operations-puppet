@@ -18,7 +18,6 @@ from replica_cnf_api_service.backends.common import (
     ReplicaCnf,
     Skip,
     UserType,
-    mysql_hash,
     run_script,
 )
 from toolforge_weld.api_client import ToolforgeClient
@@ -116,7 +115,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
                 user_type=self.USER_TYPE,
                 user=user,
                 db_user=DRY_RUN_USERNAME,
-                db_password=mysql_hash(DRY_RUN_PASSWORD),
+                db_password=DRY_RUN_PASSWORD,
             )
 
         cli = self._get_user_client(user_name=user)
@@ -136,6 +135,6 @@ class ToolforgeToolEnvvarsBackend(Backend):
         return ReplicaCnf(
             user_type=user_type,
             user=user,
-            db_password=mysql_hash(db_password_envvar["value"]),
+            db_password=db_password_envvar["value"],
             db_user=db_user_envvar["value"],
         )
