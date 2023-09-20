@@ -167,6 +167,9 @@ route:
       receiver: 'perf-ircmail'
       repeat_interval: '48h'
     - match:
+        team: 'qte'
+      receiver: 'qte-mail'
+    - match:
         team: 'traffic'
       receiver: 'traffic-ircmail'
       routes:
@@ -340,6 +343,10 @@ receivers:
   email_configs:
     - to: 'performance-team-alert@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
+
+- name: 'qte-mail'
+  email_configs:
+  - to: 'web-performance-alerts@wikimedia.org'
 
 - name: 'rweb-mail'
   email_configs:
