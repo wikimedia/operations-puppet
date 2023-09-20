@@ -57,14 +57,13 @@ class profile::prometheus::k8s (
                 'prometheus' => $k8s_cluster,
             },
         }
-        # Configure scraping from k8s cluster with distinct jobs:
-        # - k8s-api: api server metrics (each one, as returned by k8s)
-        # - k8s-node: metrics from each node running k8s
+        # Configure scraping from k8s cluster with distinct jobs. See comments in code below.
         # See also:
         # * https://prometheus.io/docs/operating/configuration/#<kubernetes_sd_config>
         # * https://github.com/prometheus/prometheus/blob/master/documentation/examples/prometheus-kubernetes.yml
         $scrape_configs_extra = [
             {
+                # api server metrics (each one, as returned by k8s)
                 'job_name'              => 'k8s-api',
                 'tls_config'            => $k8s_sd_tls_config,
                 'scheme'                => 'https',
@@ -88,6 +87,71 @@ class profile::prometheus::k8s (
                 ],
             },
             {
+                # kube-controller-manager metrics (on each k8s control-plane)
+                'job_name'              => 'k8s-controller-manager',
+                'tls_config'            => $k8s_sd_tls_config,
+                'scheme'                => 'https',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => $master_url,
+                        'tls_config'        => $k8s_sd_tls_config,
+                        'role'              => 'endpoints',
+                    },
+                ],
+                # Scrape config for API servers, keep only endpoints for default/kubernetes to poll only
+                # api servers
+                'relabel_configs'       => [
+                    {
+                        'source_labels' => ['__meta_kubernetes_namespace',
+                                            '__meta_kubernetes_service_name',
+                                            '__meta_kubernetes_endpoint_port_name'],
+                        'action'        => 'keep',
+                        'regex'         => 'default;kubernetes;https',
+                    },
+                    {
+                        # Rewrite the address, replacing the apiserver port with the kube-controller-manager one
+                        'action'        => 'replace',  # Redundant but clearer
+                        'source_labels' => ['__address__'],
+                        'target_label'  => '__address__',
+                        'regex'         => '([\d\.]+):(\d+)',
+                        'replacement'   => "\${1}:10257",
+                    },
+                ],
+            },
+            {
+                # kube-scheduler metrics (on each k8s control-plane)
+                'job_name'              => 'k8s-scheduler',
+                'tls_config'            => $k8s_sd_tls_config,
+                'scheme'                => 'https',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => $master_url,
+                        'tls_config'        => $k8s_sd_tls_config,
+                        'role'              => 'endpoints',
+                    },
+                ],
+                # Scrape config for API servers, keep only endpoints for default/kubernetes to poll only
+                # api servers
+                'relabel_configs'       => [
+                    {
+                        'source_labels' => ['__meta_kubernetes_namespace',
+                                            '__meta_kubernetes_service_name',
+                                            '__meta_kubernetes_endpoint_port_name'],
+                        'action'        => 'keep',
+                        'regex'         => 'default;kubernetes;https',
+                    },
+                    {
+                        # Rewrite the address, replacing the apiserver port with the kube-scheduler one
+                        'action'        => 'replace',  # Redundant but clearer
+                        'source_labels' => ['__address__'],
+                        'target_label'  => '__address__',
+                        'regex'         => '([\d\.]+):(\d+)',
+                        'replacement'   => "\${1}:10259",
+                    },
+                ],
+            },
+            {
+                # metrics from the kubelet running on each k8s node
                 'job_name'              => 'k8s-node',
                 'kubernetes_sd_configs' => [
                     {
@@ -115,6 +179,7 @@ class profile::prometheus::k8s (
                 ]
             },
             {
+                # cadvisor metrics from the kubelet running on each k8s node
                 'job_name'              => 'k8s-node-cadvisor',
                 'metrics_path'          => '/metrics/cadvisor',
                 'kubernetes_sd_configs' => [
@@ -143,6 +208,7 @@ class profile::prometheus::k8s (
                 ]
             },
             {
+                # metrics from the kube-proxy running on each k8s node
                 'job_name'              => 'k8s-node-proxy',
                 'kubernetes_sd_configs' => [
                     {
@@ -299,6 +365,7 @@ class profile::prometheus::k8s (
                 ]
             },
             {
+                # envoy metrics from the servic-proxy sidecar
                 'job_name'              => 'k8s-pods-tls',
                 'metrics_path'          => '/stats/prometheus',
                 'scheme'                => 'http',
@@ -351,6 +418,7 @@ class profile::prometheus::k8s (
                 ],
             },
             {
+                # metrics from calico-felix, running in the nodes network namespace
                 'job_name'        => 'calico-felix',
                 'file_sd_configs' => [
                     {
