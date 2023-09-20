@@ -14,9 +14,9 @@ class profile::cumin::cloud_target(
             content => template('profile/cumin/userkey.erb'),
         }
 
-        ferm::service { 'ssh-from-cloudcumin-masters':
+        firewall::service { 'ssh-from-cloudcumin-masters':
           proto  => 'tcp',
-          port   => '22',
+          port   => 22,
           srange => $cloud_cumin_masters,
         }
     }
