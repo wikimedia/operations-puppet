@@ -139,13 +139,17 @@ profile::acme_chief::certificates:
         - 'ldap-ro.codfw.wikimedia.org'
         - 'ldap-rw.eqiad.wikimedia.org'
         - 'ldap-rw.codfw.wikimedia.org'
+        - 'ldap-rw-next.eqiad.wikimedia.org'
+        - 'ldap-rw-next.codfw.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
         - '^seaborgium\.wikimedia\.org$'
         - '^serpens\.wikimedia\.org$'
-        - '^ldap-replica100[34]\.wikimedia\.org$'
-        - '^ldap-replica200[56]\.wikimedia\.org$'
+        - '^ldap-rw1001\.wikimedia\.org$'
+        - '^ldap-rw2001\.wikimedia\.org$'
+        - '^ldap-replica100[3456]\.wikimedia\.org$'
+        - '^ldap-replica200[5678]\.wikimedia\.org$'
     ldap-codfw1dev:
         CN: 'ns-recursor.openstack.codfw1dev.wikimediacloud.org'
         SNI:
