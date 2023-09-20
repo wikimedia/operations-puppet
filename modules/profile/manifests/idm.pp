@@ -118,31 +118,11 @@ class profile::idm(
 
     if $install_via_git {
         class { 'idm::deployment':
-            project                  => $project,
-            service_fqdn             => $service_fqdn,
-            django_secret_key        => $django_secret_key,
-            django_mysql_db_name     => $django_mysql_db_name,
-            django_mysql_db_host     => $django_mysql_db_host,
-            django_mysql_db_user     => $django_mysql_db_user,
-            django_mysql_db_password => $django_mysql_db_password,
-            base_dir                 => $base_dir,
-            deploy_user              => $deploy_user,
-            etc_dir                  => $etc_dir,
-            log_dir                  => $log_dir,
-            static_dir               => $static_dir,
-            install_via_git          => $install_via_git,
-            redis_master             => $redis_master,
-            redis_replicas           => $redis_replicas,
-            redis_password           => $redis_password,
-            redis_port               => $redis_port,
-            redis_maxmem             => $redis_maxmem,
-            oidc                     => $oidc,
-            mediawiki                => $mediawiki,
-            ldap_dn                  => $ldap_dn,
-            ldap_dn_password         => $ldap_dn_password,
-            ldap_config              => $ldap_config,
-            production               => $production,
-            uwsgi_process_count      => $uwsgi_process_count,
+            project             => $project,
+            base_dir            => $base_dir,
+            deploy_user         => $deploy_user,
+            redis_master        => $redis_master,
+            uwsgi_process_count => $uwsgi_process_count,
 
         }
     } else {

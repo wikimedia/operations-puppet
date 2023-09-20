@@ -7,7 +7,7 @@ profile::idm::oidc_service: idm_dev
 # IDM options
 profile::idm::service_fqdn: 'idm-test.wikimedia.org'
 profile::idm::production: false
-profile::idm::install_via_git: false
+profile::idm::install_via_git: true
 profile::idm::server::django_mysql_db_host: 'm5-master.eqiad.wmnet'
 profile::idm::server::django_mysql_db_user: 'idm_staging'
 profile::idm::server::django_mysql_db_name: 'idm_staging'

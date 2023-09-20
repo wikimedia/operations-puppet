@@ -2,11 +2,7 @@
 from django.urls import reverse_lazy
 from ldap3 import HASHED_SALTED_SHA
 
-<%- if @install_via_git -%>
-from base_settings import *
-<%- else -%>
 from bitu.base_settings import *
-<%- end -%>
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '<%= @django_secret_key %>'
@@ -26,11 +22,7 @@ ADMINS_LIMITED = ['slyngshede@wikimedia.org', 'mmuhlenhoff@wikimedia.org']
 <%- if @production -%>
 DATABASES = {
     'default': {
-        <%- if @install_via_git -%>
-        'ENGINE': 'mysql.connector.django',
-        <%- else -%>
         'ENGINE': 'django.db.backends.mysql',
-        <%- end -%>
         'NAME': '<%= @django_mysql_db_name %>',
         'HOST': '<%= @django_mysql_db_host %>',
         'USER': '<%= @django_mysql_db_user %>',
@@ -237,9 +229,3 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 CAPTCHA_CHALLENGE_FUNCT = 'signups.forms.captcha_input_generator'
 CAPTCHA_IMAGE_SIZE = (130,40)
 
-<%- if @install_via_git -%>
-STATIC_ROOT = '<%= @static_dir %>'
-STATICFILES_DIRS = [
-  '<%= @base_dir %>/<%= @project %>/static/'
-]
-<%- end -%>
