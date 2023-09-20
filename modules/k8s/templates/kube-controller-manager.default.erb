@@ -8,9 +8,10 @@ daemon_args = [
   "--service-account-private-key-file=#{@service_account_private_key_file}",
   "--use-service-account-credentials",
   "--kubeconfig=#{@kubeconfig}",
+  "--tls-cert-file=#{@tls_cert_file}",               # x509 certificate (chain) used for HTTPS
+  "--tls-private-key-file=#{@tls_private_key_file}", # x509 private key for the above
 ]
 
-daemon_args.push("--bind-address=127.0.0.1")
 daemon_args.push("--root-ca-file=/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt")
 daemon_args.push("--client-ca-file=#{@ca_file}")
 

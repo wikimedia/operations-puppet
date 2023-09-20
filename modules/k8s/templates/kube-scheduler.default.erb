@@ -6,9 +6,9 @@
 daemon_args = [
   "--config=#{@config_file}",         # Path to the KubeSchedulerConfiguration YAML
   "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here
+  "--tls-cert-file=#{@tls_cert_file}",               # x509 certificate (chain) used for HTTPS
+  "--tls-private-key-file=#{@tls_private_key_file}", # x509 private key for the above
 ]
-# Defaults from kubeadm setup
-daemon_args.push("--bind-address=127.0.0.1")
 
 # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer
 daemon_args.push("--authorization-kubeconfig=#{@kubeconfig}")

@@ -3,6 +3,8 @@
 class k8s::scheduler (
     K8s::KubernetesVersion $version,
     Stdlib::Unixpath $kubeconfig,
+    Stdlib::Unixpath $tls_cert_file,
+    Stdlib::Unixpath $tls_private_key_file,
     Integer $v_log_level = 0,
 ) {
     k8s::package { 'scheduler':

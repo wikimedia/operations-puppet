@@ -4,6 +4,7 @@
 #
 class profile::kubernetes::master (
     String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
+    Array  $prometheus_all_nodes    = lookup('prometheus_all_nodes'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
@@ -38,7 +39,7 @@ class profile::kubernetes::master (
             'kubernetes.default.svc.cluster',
             'kubernetes.default.svc.cluster.local',
         ],
-        'notify_services' => ['kube-apiserver-safe-restart'],
+        'notify_services' => ['kube-apiserver-safe-restart', 'kube-controller-manager', 'kube-scheduler'],
     })
 
     $sa_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'sa', {
@@ -162,8 +163,11 @@ class profile::kubernetes::master (
         group       => 'kube',
     }
     class { 'k8s::scheduler':
-        version    => $k8s_config['version'],
-        kubeconfig => $scheduler_kubeconfig,
+        version              => $k8s_config['version'],
+        kubeconfig           => $scheduler_kubeconfig,
+        # Use the apiserver cert for HTTPS (it has the correct SAN)
+        tls_cert_file        => $apiserver_cert['chained'],
+        tls_private_key_file => $apiserver_cert['key'],
     }
 
     # Setup kube-controller-manager
@@ -187,6 +191,9 @@ class profile::kubernetes::master (
         ca_file                          => $sa_cert['chain'],
         kubeconfig                       => $controllermanager_kubeconfig,
         version                          => $k8s_config['version'],
+        # Use the apiserver cert for HTTPS (it has the correct SAN)
+        tls_cert_file                    => $apiserver_cert['chained'],
+        tls_private_key_file             => $apiserver_cert['key'],
     }
 
     # All our masters are accessible to all
@@ -194,5 +201,15 @@ class profile::kubernetes::master (
         proto  => 'tcp',
         port   => '6443',
         srange => undef,
+    }
+
+    # Allow prometheus to scrape:
+    # * kube-controller-manager (10257)
+    # * kube-scheduler (10259)
+    $prometheus_nodes_ferm = join($prometheus_all_nodes, ' ')
+    ferm::service { 'prometheus-metrics':
+        proto  => 'tcp',
+        port   => [10257, 10259],
+        srange => "(@resolve((${prometheus_nodes_ferm})))",
     }
 }
