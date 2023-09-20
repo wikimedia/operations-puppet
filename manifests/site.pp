@@ -1711,11 +1711,11 @@ node /^ldap-replica100[5-6]\.wikimedia\./ {
 }
 
 node /^ldap-rw1001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(openldap::rw)
 }
 
 node /^ldap-rw2001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(openldap::rw)
 }
 
 # Read-only ldap replicas in codfw
