@@ -401,13 +401,11 @@ class profile::prometheus::k8s (
             port           => 9091,
         }
 
-        if $control_plane_class_name {
-            prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
-                dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
-                class_name     => $control_plane_class_name,
-                hostnames_only => false,
-                port           => 9091,
-            }
+        prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
+            dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
+            class_name     => $control_plane_class_name,
+            hostnames_only => false,
+            port           => 9091,
         }
 
         file { "/srv/prometheus/${k8s_cluster}/k8s.token":

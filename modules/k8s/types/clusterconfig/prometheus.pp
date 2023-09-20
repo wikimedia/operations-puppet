@@ -9,12 +9,12 @@
 # @param [String] node_class_name
 #     The name of the puppet class used for kubernetes nodes.
 #     Prometheus will use this to query nodes from puppetdb.
-# @param [Optional[String]] control_plane_class_name
+# @param [String] control_plane_class_name
 #     The name of the puppet class used for kubernetes control-planes.
 #     Prometheus will use this to query control-planes from puppetdb.
 type K8s::ClusterConfig::Prometheus = Struct[{
   'name'                     => Optional[String[1]],
   'port'                     => Stdlib::Port,
   'node_class_name'          => String[1],
-  'control_plane_class_name' => Optional[String[1]],
+  'control_plane_class_name' => String[1],
 }]

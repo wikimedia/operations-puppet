@@ -73,7 +73,7 @@ kubernetes::clusters:
         name: k8s
         port: 9906
         node_class_name: role::kubernetes::worker
-        # TODO: Add control_plane_class_name
+        control_plane_class_name: role::kubernetes::master
       control_plane_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
@@ -189,7 +189,7 @@ kubernetes::clusters:
         name: k8s-staging
         port: 9907
         node_class_name: role::kubernetes::staging::worker
-        # TODO: Add control_plane_class_name
+        control_plane_class_name: role::kubernetes::staging::master
       control_plane_nodes:
         - kubestagemaster1001.eqiad.wmnet
         - kubestagemaster1002.eqiad.wmnet
