@@ -21,8 +21,6 @@ role::lists:
   target-q: TBD
 role::configcluster:
   target-q: TBD
-role::wmcs::openstack::eqiad1::backy:
-  target-q: TBD
 role::installserver:
   target-q: TBD
 role::webperf::xhgui:

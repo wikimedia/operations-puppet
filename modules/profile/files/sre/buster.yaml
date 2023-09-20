@@ -25,11 +25,8 @@ role::lists:
   target-q: 2023-2
   phab-task: 331706
 role::configcluster:
-  target-q: TBD
+  target-q: 2023-3
   phab-task: 332010
-role::wmcs::openstack::eqiad1::backy:
-  target-q: TBD
-  phab-task: 332400
 role::installserver:
   target-q: 2023-1
   phab-task: 327867
@@ -54,14 +51,14 @@ role::logging::mediawiki::udp2log:
 role::parsoid:
   target-q: TBD
 role::wdqs::internal:
-  target-q: TBD
-  phab-task: 323921
+  target-q: 2023-3
+  phab-task: 343124
 role::wdqs::public:
-  target-q: TBD
-  phab-task: 323921
+  target-q: 2023-3
+  phab-task: 343124
 role::wdqs::test:
-  target-q: TBD
-  phab-task: 323921
+  target-q: 2023-3
+  phab-task: 343124
 role::wcqs::public:
   target-q: 2023-3
   phab-task: 323921
@@ -125,7 +122,7 @@ role::planet:
   target-q: 2023-4
   phab-task: 281219
 role::ganeti:
-  target-q: 2023-2
+  target-q: 2023-3
   phab-task: 311687,311686
 role::alerting_host:
   target-q: 2023-3
@@ -476,7 +473,7 @@ role::pki::root:
   phab-task: 331696
 role::search::loader:
   target-q: TBD
-  phab-task: 323921
+  phab-task: 346039
 role::chartmuseum:
   target-q: TBD
   phab-task: 331969
@@ -514,6 +511,7 @@ role::ml_cache::storage:
   phab-task: 324542
 role::apifeatureusage::logstash:
   target-q: TBD
+  phab-task: 346039
 role::dispatch::backend:
   target-q: 2023-3
   phab-task: 344937
