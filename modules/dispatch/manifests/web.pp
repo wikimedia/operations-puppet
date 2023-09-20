@@ -43,7 +43,7 @@ class dispatch::web (
     | WRAPPER
 
     file { '/usr/local/bin/dispatch':
-        ensure  => ensure,
+        ensure  => $ensure,
         content => $wrapper,
         owner   => 'root',
         group   => 'root',
