@@ -50,6 +50,7 @@ class envoyproxy(
     systemd::syslog { 'envoy':
         ensure     => $ensure,
         force_stop => true,
+        require    => Package['envoyproxy'], # 'envoy' user must exist
     }
 
     # build-envoy-config should generate all configuration starting from
