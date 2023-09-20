@@ -6,6 +6,7 @@ class role::wmcs::openstack::eqiad1::instance_backups {
     include profile::base::production
     include profile::firewall
     include profile::base::cloud_production
+    include profile::wmcs::cloud_private_subnet
 
     # This installs ceph.conf and other ceph client things
     include profile::cloudceph::client::rbd_backy
