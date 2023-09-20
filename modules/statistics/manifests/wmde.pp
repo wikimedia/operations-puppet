@@ -17,20 +17,6 @@ class statistics::wmde(
 
     $homedir = "${statistics_working_path}/analytics-wmde"
 
-    group { $user:
-        ensure => 'present',
-        name   => $user,
-    }
-
-    user { $user:
-        ensure     => 'present',
-        shell      => '/bin/bash',
-        managehome => false,
-        home       => $homedir,
-        system     => true,
-        require    => Group[$user],
-    }
-
     # Scripts & systemd timers that generate data for graphite
     class { '::statistics::wmde::graphite':
         dir           => "${homedir}/graphite",
