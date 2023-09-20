@@ -126,7 +126,7 @@ class profile::idm(
 
         }
     } else {
-        ensure_packages(['python3-bitu', 'python3-mysqldb'])
+        ensure_packages(['python3-bitu', 'python3-mysqldb', 'python3-bs4'])
 
         # Enable Bitu uwsgi app.
         file { '/etc/uwsgi/apps-enabled/bitu.ini':
@@ -167,12 +167,8 @@ class profile::idm(
 
     $job_state = ($facts['networking']['fqdn'] == $redis_master).bool2str('present', 'absent')
     class { 'idm::jobs':
-        base_dir => $base_dir,
-        etc_dir  => $etc_dir,
-        project  => $project,
-        present  => $job_state,
-        venv     => "${base_dir}/venv",
-        user     => $deploy_user
+        present => $job_state,
+        user    => $deploy_user
     }
 
     profile::auto_restarts::service { 'apache2':}

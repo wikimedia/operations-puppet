@@ -7,11 +7,7 @@ describe 'idm::jobs' do
       let(:facts) { os_facts }
       let(:params) do
         {
-          base_dir: '/foo',
-          etc_dir: '/foo',
           present: 'present',
-          project: 'foo',
-          venv: 'bar',
           user: 'foobar'
         }
       end
@@ -21,14 +17,13 @@ describe 'idm::jobs' do
       it do
         is_expected.to contain_systemd__timer__job('sync_bitu_username_block')
           .with_ensure('present')
-          .with_command('/foo/venv/bin/python /foo/foo/manage.py blocklist_wmf')
+          .with_command('/usr/bin/bitu blocklist_wmf')
       end
       describe "changeing base_dir" do
-        let(:params) { super().merge(base_dir: '/foobar') }
         it do
-          is_expected.to contain_systemd__timer__job('sync_bitu_username_block')
+          is_expected.to contain_systemd__timer__job('expire_bitu_signups')
             .with_ensure('present')
-            .with_command('/foobar/venv/bin/python /foobar/foo/manage.py blocklist_wmf')
+            .with_command('/usr/bin/bitu deleteexpired 5')
         end
       end
     end
