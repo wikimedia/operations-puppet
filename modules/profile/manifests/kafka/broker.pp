@@ -473,4 +473,12 @@ class profile::kafka::broker(
         },
         priority => 75,
     }
+
+    ensure_packages(['python3-kazoo'])
+    file { '/usr/local/bin/kafka-broker-in-sync':
+        source => 'puppet:///modules/profile/kafka/kafka-broker-in-sync.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
 }
