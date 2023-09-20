@@ -41,7 +41,8 @@ define cloudlb::haproxy::service (
         if $firewall['restricted_to_fqdns'] {
             $srange = $firewall['restricted_to_fqdns']
         } elsif $firewall['open_to_cloud_private'] {
-            $srange = $::network::constants::cloud_private_networks
+            # TODO: cloudcontrol1006/7 are temporary, until those have been moved to cloud-private networks
+            $srange = $::network::constants::cloud_private_networks + ['cloudcontrol1006.wikimedia.org', 'cloudcontrol1007.wikimedia.org']
         } else {
             if $firewall['open_to_internet'] {
                 $srange = undef
