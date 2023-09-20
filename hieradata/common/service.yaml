@@ -2027,6 +2027,8 @@ service::catalog:
         active_active: true
       - dnsdisc: restbase-async
         active_active: true
+    aliases:
+      - restbase
 
   schema:
     description: Event Schema HTTP service

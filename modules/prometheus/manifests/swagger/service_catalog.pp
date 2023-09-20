@@ -6,16 +6,21 @@ define prometheus::swagger::service_catalog (
   Stdlib::Unixpath              $targets_path
 ) {
   $targets = $services.reduce([]) |$memo, $el| {
-    $service_name = $el[0]
     $service_config = $el[1]
-    $swagger_probes = $service_config['probes'].filter |$item| { $item['type'] == 'swagger' }
+    if 'aliases' in $service_config {
+      $service_name = $service_config['aliases'][0]
+    } else {
+      $service_name = $el[0]
+    }
     $scheme = $service_config['encryption'] ? {
       true    => 'https',
       default => 'http',
     }
 
+    $swagger_probes = $service_config['probes'].filter |$item| { $item['type'] == 'swagger' }
     # there should only be one swagger probe per service
     $probe_config = $swagger_probes[0]
+
     $memo + [{
       'targets' => [
         "${scheme}://${service_name}.svc.${::site}.wmnet:${service_config['port']}"
