@@ -23,7 +23,10 @@
         <%- end -%>
     </Location>
 
-    # Object storage bucket web explorer
+    # Object storage bucket web explorer (read only)
+    <Location /bucket>
+        AllowMethods GET
+    </Location>
     ProxyPass /bucket http://localhost:<%= @vhost_settings['bucket_web_port'] %>/bucket
 
     # max connections _per apache child process_
