@@ -28,6 +28,7 @@ class docker_registry_ha::web (
     String $homepage='/srv/homepage',
     Boolean $nginx_cache=true,
     Array[Stdlib::Host] $deployment_hosts=[],
+    Array[Stdlib::Host] $kubernetes_hosts=[],
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
@@ -85,15 +86,7 @@ class docker_registry_ha::web (
     }
 
     # Find k8s nodes that have auth credentials (for restricted/)
-    # TODO: Use inventory[certname, facts.networking.ip] when we have puppetdb >= 6.7
-    $pql = @(PQL)
-    facts[certname, value] {
-        name = 'ipaddress' and
-        resources { type = 'File' and title = '/var/lib/kubelet/config.json' } and
-        resources { type = 'Class' and title = 'K8s::Kubelet' }
-    }
-    | PQL
-    $k8s_authenticated_nodes = Hash(wmflib::puppetdb_query($pql).map |$res| { [$res['certname'], $res['value']] }.sort)
+    $k8s_authenticated_nodes = Hash($kubernetes_hosts.map |$host| { [$host, ipresolve($host, 4)]}.sort)
 
     # Create a directory for nginx cache if enabled
     if $nginx_cache {

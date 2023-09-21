@@ -8,6 +8,8 @@ profile::docker_registry_ha::registry::swift_username: "docker"
 #profile::docker_registry_ha::registry::swift_container: "docker_registry"
 profile::docker_registry_ha::registry::certname: "docker-registry.discovery.wmnet"
 profile::docker_registry_ha::registry::read_only_mode: false
+profile::docker_registry_ha::registry::authorized_k8s_clusters:
+ - main
 
 profile::lvs::realserver::pools:
   docker-registry:

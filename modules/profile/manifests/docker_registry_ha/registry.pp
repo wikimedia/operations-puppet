@@ -34,6 +34,8 @@ class profile::docker_registry_ha::registry(
     Boolean $nginx_cache = lookup('profile::docker_registry_ha::registry::nginx_cache', { 'default_value' => true }),
     # Hosts allowed to authenticate using JSON Web Tokens issued by our GitLab instance
     Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry_ha::registry::jwt_allowed_ips', { 'default_value' => [] }),
+    # Which k8s clusters should be able to pull restricted images
+    Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry_ha::registry::authorized_k8s_clusters', { 'default_value' => [] }),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
@@ -82,6 +84,12 @@ class profile::docker_registry_ha::registry(
         registry_shared_secret          => $docker_registry_shared_secret
     }
 
+    $k8s_groups = k8s::fetch_cluster_groups()
+    # Get a list of all hosts in the authorized clusters
+    $kubernetes_hosts = $authorized_k8s_clusters.map |$cluster_name| {
+        $k8s_groups[$cluster_name].values.map |$x| { $x['cluster_nodes'] }
+    }.flatten.unique
+
     class { '::docker_registry_ha::web':
         ci_restricted_user_password => $ci_restricted_user_password,
         kubernetes_user_password    => $kubernetes_user_password,
@@ -95,6 +103,7 @@ class profile::docker_registry_ha::registry(
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
         deployment_hosts            => $deployment_hosts,
+        kubernetes_hosts            => $kubernetes_hosts,
         jwt_allowed_ips             => $jwt_allowed_ips,
     }
 
