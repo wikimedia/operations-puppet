@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              akhatun, jameel, jminor, awjrichards, ntsako, jkieserman, skvjold]
+              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -386,7 +386,7 @@ groups:
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, mttp,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, oljad, cmadeo,
+              mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
@@ -695,7 +695,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, pfischer, dr0ptp4kt]
+    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, akhatun, pfischer, dr0ptp4kt]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -4687,12 +4687,16 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDpAY7SjRAKEu5fnQt+66helFANk91AfDXbDUX6KEB2W hmonroy@wikimedia.org'
   akhatun:
-    ensure: absent
+    ensure: present
     realname: Aisha Khatun
+    email: akhatun-ctr@wikimedia.org
     uid: 31291
     gid: 500
     krb: present
-    ssh_keys: []
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMps+r6DTe3WVUkC1e19G8cVz8SjKaQw4Da3nK7/cjz0 akhatun-ctr@wikimedia.org'
+    expiry_date: "2024-06-30"
+    expiry_contact: mgerlach@wikimedia.org
   mmandere:
     ensure: absent
     realname: Marc Mandere
