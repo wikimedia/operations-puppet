@@ -65,6 +65,7 @@ profile::bird::anycasthc_logging:
   level: 'critical'
   num_backups: 1
 
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 
 profile::contacts::role_contacts: ['Traffic']
