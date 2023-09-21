@@ -215,6 +215,11 @@ node /^apt[12]001\.wikimedia\./ {
     role(apt_repo)
 }
 
+# apt-staging host
+node /^apt-staging2001\.codfw\./ {
+    role(insetup::serviceops_collab)
+}
+
 # Analytics Query Service
 node /^aqs10(1[0-9]|2[0-1])\.eqiad\./ {
     role(aqs)
