@@ -277,7 +277,7 @@ class gitlab (
         require => Systemd::Sysuser[$ldap_group_sync_user],
     }
 
-    $sync_cmd = "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml"
+    $sync_cmd = "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml --yes"
     systemd::timer::job { 'sync-gitlab-group-with-ldap':
         ensure      => $ensure_ldap_group_sync,
         user        => $ldap_group_sync_user,
