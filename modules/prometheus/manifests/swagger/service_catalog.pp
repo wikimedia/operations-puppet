@@ -21,10 +21,18 @@ define prometheus::swagger::service_catalog (
     # there should only be one swagger probe per service
     $probe_config = $swagger_probes[0]
 
+    # leverage relabel_config to pass job params from target labels
+    if $probe_config['params'] {
+      $labels = prefix($probe_config['params'], '__param_')
+    } else {
+      $labels = {}
+    }
+
     $memo + [{
       'targets' => [
         "${scheme}://${service_name}.svc.${::site}.wmnet:${service_config['port']}"
-      ]
+      ],
+      'labels' => $labels
     }]
   }
   file { "${targets_path}/swagger_${title}.yaml":

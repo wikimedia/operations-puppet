@@ -638,6 +638,8 @@ service::catalog:
       - type: http
         path: /healthz
       - type: swagger
+        params:
+          spec_segment: '/openapi'
     port: 8082
     sites:
       - eqiad
@@ -2208,6 +2210,8 @@ service::catalog:
       - type: http
         path: /healthz
       - type: swagger
+        params:
+          spec_segment: '/openapi'
     port: 8081
     sites:
       - eqiad
