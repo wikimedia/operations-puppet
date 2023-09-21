@@ -18,6 +18,7 @@ define firewall::client(
 ) {
     include firewall
     case $firewall::provider {
+        'none': {}
         'ferm': {
             ferm::client { $title:
                 * => wmflib::resource::dump_params(),

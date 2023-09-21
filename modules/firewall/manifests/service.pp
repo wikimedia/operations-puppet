@@ -27,6 +27,7 @@ define firewall::service(
     $escaped_title = regsubst($title, '\W', '_', 'G')
 
     case $firewall::provider {
+        'none': {}
         'ferm': {
             ferm::service { $escaped_title:
                 * => wmflib::resource::dump_params(),

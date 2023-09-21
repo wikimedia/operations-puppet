@@ -2,7 +2,7 @@
 # @summary wrapper class to provide common interface to ferm and nftables
 # @param provider which firewall provider to use
 class firewall (
-    Firewall::Provider $provider = 'ferm'
+    Firewall::Provider $provider,
 ) {
     class { 'ferm':  # lint:ignore:wmf_styleguide
         ensure => stdlib::ensure($provider == 'ferm'),
