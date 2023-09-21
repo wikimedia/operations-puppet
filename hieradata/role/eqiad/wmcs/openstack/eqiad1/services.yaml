@@ -25,7 +25,6 @@ profile::openstack::eqiad1::haproxy_nodes:
   - cloudlb1001.private.eqiad.wikimedia.cloud
   - cloudlb1002.private.eqiad.wikimedia.cloud
   - cloudcontrol1006.wikimedia.org
-  - cloudcontrol1007.wikimedia.org
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::keystone_host: "openstack.eqiad1.wikimediacloud.org"

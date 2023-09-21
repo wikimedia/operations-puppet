@@ -18,4 +18,3 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies:
   - dbproxy1019.eqiad.wmnet
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1006.wikimedia.org
-  - cloudcontrol1007.wikimedia.org

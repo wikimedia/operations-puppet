@@ -12,7 +12,6 @@ profile::openstack::eqiad1::public_apis: true
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.eqiad.wmnet
   - cloudcontrol1006.wikimedia.org
-  - cloudcontrol1007.wikimedia.org
 
 # The public service name for the keystone API
 #
@@ -29,7 +28,6 @@ profile::openstack::eqiad1::keystone_api_fqdn: 'openstack.eqiad1.wikimediacloud.
 # rather, that should happen via the keystone_api_fqdn defined above.
 profile::openstack::eqiad1::haproxy_nodes:
   - cloudcontrol1006.wikimedia.org
-  - cloudcontrol1007.wikimedia.org
 
 profile::openstack::eqiad1::glance_backends:
   - rbd

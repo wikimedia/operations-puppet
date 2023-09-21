@@ -36,8 +36,6 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "185.15.56.161"
   # VMs --> cloudcontrol1006.wikimedia.org
   - "208.80.154.149"
-  # VMs --> cloudcontrol1007.wikimedia.org
-  - "208.80.155.104"
   # VMs --> contint1002.wikimedia.org
   - "208.80.154.132"
   # VMs --> contint2002.wikimedia.org
