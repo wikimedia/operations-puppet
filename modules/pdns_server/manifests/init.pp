@@ -13,6 +13,7 @@ class pdns_server(
     $pdns_db_host,
     $pdns_db_password,
     $dns_webserver = false,
+    $dns_webserver_address = $::ipaddress,
     $dns_api_key = '',
     $dns_api_allow_from = [],
 ) {

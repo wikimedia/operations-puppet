@@ -54,7 +54,7 @@ gmysql-password=<%= @pdns_db_password %>
 webserver=yes
 api=yes
 api-key=<%= @dns_api_key %>
-webserver-address=<%= @ipaddress %>
+webserver-address=<%= @dns_webserver_address %>
 webserver-allow-from=<%- @dns_api_allow_from.each do |entry| -%><%= entry -%>,<%- end -%>
 
 # This is not actually used by designate but it's handy for troubleshooting to diff

@@ -5,6 +5,7 @@ class profile::openstack::codfw1dev::pdns::auth::service(
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     $db_pass = lookup('profile::openstack::codfw1dev::pdns::db_pass'),
     String $pdns_api_key = lookup('profile::openstack::codfw1dev::pdns::api_key'),
+    $pdns_webserver_address = lookup('profile::openstack::base::pdns::pdns_webserver_address', {'default_value' => unset}),
 ) {
     $api_allow_hosts = flatten([$hosts, $prometheus_nodes, $designate_hosts])
 
@@ -12,13 +13,14 @@ class profile::openstack::codfw1dev::pdns::auth::service(
     #  for unclear reasons 'localhost' doesn't work properly
     #  with the version of Mariadb installed on Jessie.
     class {'::profile::openstack::base::pdns::auth::service':
-        hosts               => $hosts,
-        designate_hosts     => $designate_hosts,
-        db_pass             => $db_pass,
-        db_host             => ipresolve($::fqdn,4),
-        pdns_webserver      => true,
-        pdns_api_key        => $pdns_api_key,
-        pdns_api_allow_from => flatten([
+        hosts                  => $hosts,
+        designate_hosts        => $designate_hosts,
+        db_pass                => $db_pass,
+        db_host                => ipresolve($::fqdn,4),
+        pdns_webserver         => true,
+        pdns_webserver_address => $pdns_webserver_address,
+        pdns_api_key           => $pdns_api_key,
+        pdns_api_allow_from    => flatten([
             '127.0.0.1',
             $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 4) }
         ]),
