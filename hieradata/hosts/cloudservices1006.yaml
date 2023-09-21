@@ -1,5 +1,6 @@
----
 profile::openstack::eqiad1::pdns::auth::service::monitor_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
+profile::openstack::base::pdns::pdns_webserver_address: 172.20.1.5
+
 profile::openstack::base::pdns::query_local_address: ns1.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::auth::listen_on:
   - 185.15.56.163  # ns1.openstack.eqiad1.wikimediacloud.org
