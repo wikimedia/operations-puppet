@@ -190,7 +190,7 @@ else:
             resp.content.decode("ascii").strip(),
             gauge_is_up_to_date
         )
-if os.geteuid != 0:
+if os.geteuid() != 0:
     # Switch back to root
     os.seteuid(0)
     os.environ = old_environ
