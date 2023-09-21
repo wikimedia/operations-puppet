@@ -98,7 +98,9 @@
 #   Setting the value allows to run a timer job after another service.
 # @param group
 #   The unix group to run the service unit as
-# @param path_exists sets the ConditionPathExists value for the timer
+# @param path_exists sets the ConditionPathExists value for the timer.  If this path doesn't exist
+#   then the unit will fail.  this parameter is intended to be used as a safety measure which
+#   prevents some disruptive action occurring if this folder doesn't exists
 define systemd::timer::job (
     Variant[
         Systemd::Timer::Schedule,
