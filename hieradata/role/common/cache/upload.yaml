@@ -116,3 +116,5 @@ profile::trafficserver::backend::http_settings:
   server_session_sharing_match: both
   server_session_sharing_pool: thread
   allow_half_open: 1
+
+profile::firewall::provider: none

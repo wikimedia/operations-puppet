@@ -28,3 +28,5 @@ profile::debdeploy::client::filter_services:
 contactgroups: wmcs-team-email
 profile::openstack::eqiad1::nova::common::is_control_node: false
 profile::contacts::role_contacts: ['WMCS']
+
+profile::firewall::provider: none

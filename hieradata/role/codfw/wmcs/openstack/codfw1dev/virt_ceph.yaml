@@ -26,3 +26,5 @@ profile::contacts::role_contacts: ['WMCS']
 profile::cloudceph::auth::deploy::enabled: true
 profile::cloudceph::auth::deploy::selected_creds:
 - codfw1dev-compute
+
+profile::firewall::provider: none
