@@ -74,6 +74,7 @@ class k8s::kubelet (
         # FIXME: Warning: Calling function empty() with Numeric value is deprecated.
         content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
         notify  => Service['kubelet'],
+        require => K8s::Package['kubelet'],
     }
 
     file { '/etc/default/kubelet':

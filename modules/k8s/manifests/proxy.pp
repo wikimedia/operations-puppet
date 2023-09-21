@@ -36,6 +36,7 @@ class k8s::proxy (
         mode    => '0400',
         content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
         notify  => Service['kube-proxy'],
+        require => K8s::Package['proxy'],
     }
 
     file { '/etc/default/kube-proxy':

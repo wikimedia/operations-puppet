@@ -72,18 +72,6 @@ class k8s::apiserver (
     Optional[Array[Hash]] $admission_configuration = undef,
     Optional[Array[Stdlib::Unixpath]] $additional_sa_certs = undef,
 ) {
-    group { 'kube':
-        ensure => present,
-        system => true,
-    }
-    user { 'kube':
-        ensure => present,
-        gid    => 'kube',
-        system => true,
-        home   => '/nonexistent',
-        shell  => '/usr/sbin/nologin',
-    }
-
     # etcd-client is used to orchestrate kube-apiserver restarts
     # with the kube-apiserver-safe-restart systemd service
     ensure_packages('etcd-client')
@@ -125,6 +113,7 @@ class k8s::apiserver (
         group   => 'kube',
         mode    => '0400',
         notify  => Service['kube-apiserver-safe-restart'],
+        require => K8s::Package['apiserver'],
     }
 
     service { 'kube-apiserver':

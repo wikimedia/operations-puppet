@@ -11,6 +11,33 @@ class profile::kubernetes::master (
     # as well as k8s::apiserser so we produce it here.
     $etcd_servers = join($k8s_config['etcd_urls'], ',')
 
+    # FIXME: Ensure kube user/group as well as /etc/kubernetes/pki is created with proper permissions
+    # before the first pki::get_cert call: https://phabricator.wikimedia.org/T337826
+    unless defined(Group['kube']) {
+        group { 'kube':
+            ensure => present,
+            system => true,
+        }
+    }
+    unless defined(User['kube']) {
+        user { 'kube':
+            ensure => present,
+            gid    => 'kube',
+            system => true,
+            home   => '/nonexistent',
+            shell  => '/usr/sbin/nologin',
+        }
+    }
+    $cert_dir = '/etc/kubernetes/pki'
+    unless defined(File[$cert_dir]) {
+        file { $cert_dir:
+            ensure => 'directory',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+    }
+
     # Install kubectl matching the masters kubernetes version
     # (that's why we don't use profile::kubernetes::client)
     class { 'k8s::client':
@@ -24,7 +51,7 @@ class profile::kubernetes::master (
         'profile'         => 'server',
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
         'hosts'           => [
             $facts['hostname'],
@@ -46,7 +73,7 @@ class profile::kubernetes::master (
         'profile'         => 'service-account-management',
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         'notify_services' => ['kube-apiserver-safe-restart', 'kube-publish-sa-cert'],
     })
 
@@ -84,7 +111,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:masters' }],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         'notify_services' => ['kube-apiserver-safe-restart'],
     })
 
@@ -93,7 +120,7 @@ class profile::kubernetes::master (
     $frontproxy_cert = profile::pki::get_cert("${k8s_config['pki_intermediate_base']}_front_proxy", 'front-proxy-client', {
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         'notify_services' => ['kube-apiserver-safe-restart'],
     })
 
@@ -103,7 +130,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:masters' }],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
     })
     # Create a superuser kubeconfig connecting locally to this control-plane
     file { '/root/.kube':
@@ -151,7 +178,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:kube-scheduler' }],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         'notify_services' => ['kube-scheduler'],
     })
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
@@ -175,7 +202,7 @@ class profile::kubernetes::master (
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
         'names'           => [{ 'organisation' => 'system:kube-controller-manager' }],
         'owner'           => 'kube',
-        'outdir'          => '/etc/kubernetes/pki',
+        'outdir'          => $cert_dir,
         'notify_services' => ['kube-controller-manager'],
     })
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'

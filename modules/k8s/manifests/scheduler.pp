@@ -26,6 +26,7 @@ class k8s::scheduler (
         mode    => '0400',
         content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
         notify  => Service['kube-scheduler'],
+        require => K8s::Package['scheduler'],
     }
 
     file { '/etc/default/kube-scheduler':

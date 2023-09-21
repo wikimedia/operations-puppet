@@ -9,8 +9,24 @@ class profile::kubernetes::node (
     require profile::rsyslog::kubernetes
     # Using netbox to know where we are situated in the datacenter
     require profile::netbox::host
-    # Ensure /etc/kubernetes/pki is created with proper permissions before the first pki::get_cert call
-    # FIXME: https://phabricator.wikimedia.org/T337826
+
+    # FIXME: Ensure kube user/group as well as /etc/kubernetes/pki is created with proper permissions
+    # before the first pki::get_cert call: https://phabricator.wikimedia.org/T337826
+    unless defined(Group['kube']) {
+        group { 'kube':
+            ensure => present,
+            system => true,
+        }
+    }
+    unless defined(User['kube']) {
+        user { 'kube':
+            ensure => present,
+            gid    => 'kube',
+            system => true,
+            home   => '/nonexistent',
+            shell  => '/usr/sbin/nologin',
+        }
+    }
     $cert_dir = '/etc/kubernetes/pki'
     unless defined(File[$cert_dir]) {
         file { $cert_dir:
