@@ -47,7 +47,7 @@ class idm::deployment (
                 'plugins'      => 'python3',
                 'project'      => $project,
                 'uid'          => $deploy_user,
-                'base'         => "${base_dir}/%(project)/",
+                'base'         => "${base_dir}/%(project)/src/bitu",
                 'env'          => [
                     "PYTHONPATH=/etc/${project}:\$PYTHONPATH",
                     'DJANGO_SETTINGS_MODULE=settings'
