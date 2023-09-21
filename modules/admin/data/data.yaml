@@ -402,7 +402,8 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper]
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
+              ahoelzl]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -6049,6 +6050,15 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDXa77KGOhC4qjgA2ocjjbcbhlBvKTFgwZ+gMqYbyASuPVxXedb43R0fea7H+LLTsdYkbAVli3NaxsvjkDk4kk1gaIP3d+W+1k/a+Wbqv8/i+MO+D/gcaOm4UeiCDWaER12fbaNwkO2eOhBlpNPNTmyCfJtXblFXLwkDKL/Q2hDuPhIvklzYucZN/vQH0/E/xF0lPgK6teNq8OJDDpC2Q/WBuO0tHLxX26R5x6t1mCF/UE/FyPPnAayCcE2C/ljgrsM/dLIqxuIEWNpwoGvpTTUToy23PM5XdAuN+J/fS6Qk4ZscP/N+STT99DaPvE19GqAioiJMoZLiL7MaWY5gDxiH+5nT8OgakLHmWG5/19shs7pcpitznubofPJbhB5Fb+iRyehwDaP0BvbPkmhPd6SNrEjBkC5DdT+oBfqQbwcd04IrBI1QIkXADhpjm5Up6AzgFVbuHIXFd77wMwgnmADKGJWA2iXYFMd+FPsN6sSyKDK1PNK2kavixv7jfL7fbrSaEDpLhzvtzIrY0FUiHWbU+z1m4nh1ZTQaJwI4xUdUismv15ZN3jCctsFubJG6+X2pus15aarvGZOUh5Q8SVgmFCyBmpuBgLJiZFSp7vTP1vGENOAlb29isBR+h0g3AnPYAjlt8p014RHfoFB9QpTQk3sAyyl8Aocj2gOj53cMw== cardno:23 464 726'
+  ahoelzl:
+    ensure: present
+    realname: Andreas Hoelzl
+    email: ahoelzl@wikimedia.org
+    uid: 45162
+    gid: 500
+    krb: present
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMPHBC2pHhz+O20hwTYOU/fnSWTIKS0V5o6Pg8ZU3boAX3OC8yUNE/xJXAa2G1kp3hWYNTBYHUDd73dr4lbUgTTPc4axRejfj6b80JSGulHd+JBzvu2AhjNZO8DiEvMbjVlOJh9L6dtFknZ6KWEDM8I2WQIljCmSD4VZApRZOOwoSo1ZzjBGKzfrqbeFBtXohO3JVi8s6ieBxYWrk6ImCGO2ti1LDjs97fPUd72CTlOc8EBQeSH5kvpqtPDOJk8OLeKd+oG5NIW06M7W3vUOGNi72X8y4sfMMXXlukzLup829Vl7PBbfjSvFI7cDhrWIcZXZCSRZAjglmm43pK7VGIAVCgcP8PI3JlQV88KzZ7NPPukN+Vi1FWiNTIPxMCGOcYg7uAZNnsFQwIKLrzHbw88Eo1579bt6kh/x9X2ffpTb5a31ezv3lsdu/g67e5PqGa2bde7oKyesIkMWW62N6tCAmXSpgrhAieQWkAavYP0ww6Csawl27ctzJrJjyTmNKJb0o+JPxvg8PNW0VuM0llj5vy3Mm42Y4OojCcglZonNPO1UERRck+Rs5YhG0kS8rL7R0G5jckYHqzXIZTDrVmMHQDtECvz4OBIpqUrtGjVtESS2FgnwX61EF4/dLKdXvHFExKfyOfQxFKePTDQDtLJdl429p9GzLZ9Y2ltgIoLw== ahoelzl@wikimedia.org'
 
 ldap_only_users:
   adavenport:
