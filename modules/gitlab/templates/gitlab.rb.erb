@@ -167,7 +167,6 @@ gitlab_rails['prometheus_address'] = <%= @gitlab_prometheus_address %>
 <%- end -%>
 
 prometheus['enable'] = <%= @enable_prometheus %>
-grafana['enable'] = <%= @enable_grafana%>
 alertmanager['enable'] = <%= @enable_alertmanager %>
 
 # Exporters have to be enabled and disabled explicitly, otherwise some are started by default

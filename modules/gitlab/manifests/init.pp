@@ -33,7 +33,6 @@ class gitlab (
     Boolean          $csp_report_only                           = false,
     Hash             $extra_settings                            = {},
     Boolean          $enable_prometheus                         = false,
-    Boolean          $enable_grafana                            = false,
     Boolean          $enable_alertmanager                       = false,
     Array[Gitlab::Projects] $default_projects_features          = [],
     Boolean          $smtp_enabled                              = true,
