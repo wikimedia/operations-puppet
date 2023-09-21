@@ -20,6 +20,11 @@ class idm::deployment (
         source => 'puppet:///modules/idm/bitu_cli.sh'
     }
 
+    # Create directory for static files.
+    file { '/usr/share/bitu':
+        ensure => directory,
+    }
+
     git::clone { 'operations/software/bitu':
         ensure    => 'latest',
         directory => "${base_dir}/${project}",
