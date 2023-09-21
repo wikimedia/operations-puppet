@@ -31,7 +31,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::base::openstack_controllers',  {default_value => []}),
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
     Optional[Stdlib::IP::Address::V4::Nosubnet] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip', {'default_value' => undef}),
-    Array[Stdlib::Fqdn]        $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Hash]                $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
     Stdlib::Fqdn               $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
 ) {
 
@@ -72,7 +72,7 @@ class profile::openstack::base::pdns::recursor::service(
         require => File['/var/zones']
     }
 
-    $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::lookup($item, true) }.flatten.sort.join(';')
+    $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::lookup($item['auth_fqdn'], true) }.flatten.sort.join(';')
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     class { '::dnsrecursor':

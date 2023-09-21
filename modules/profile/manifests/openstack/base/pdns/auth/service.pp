@@ -1,5 +1,5 @@
 class profile::openstack::base::pdns::auth::service(
-    Array[Stdlib::Fqdn] $hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Hash] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     Array[Stdlib::IP::Address] $listen_on = lookup('profile::openstack::base::pdns::auth::listen_on'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
@@ -7,16 +7,11 @@ class profile::openstack::base::pdns::auth::service(
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = lookup('profile::openstack::base::pdns::pdns_webserver', {'default_value' => false}),
-    $pdns_webserver_address = lookup('profile::openstack::base::pdns::pdns_webserver_address', {'default_value' => unset}),
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
     $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => ''}),
 ){
-
-
-    $dns_webserver_address = $pdns_webserver_address ? {
-      unset   => $::ipaddress,
-      default => $pdns_webserver_address,
-    }
+    $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
+    $dns_webserver_address = $this_host_entry['private_fqdn'].ipresolve(4)
 
     class { '::pdns_server':
         listen_on             => $listen_on,
@@ -54,7 +49,8 @@ class profile::openstack::base::pdns::auth::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
-    $api_clients = flatten([$hosts, $designate_hosts])
+    $raw_pdns_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
+    $api_clients = flatten([$raw_pdns_hosts, $designate_hosts])
     ::ferm::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',

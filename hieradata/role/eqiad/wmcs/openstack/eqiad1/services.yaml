@@ -26,8 +26,12 @@ profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1007.private.eqiad.wikimedia.cloud
 
 profile::openstack::eqiad1::pdns::hosts:
-  - "ns0.openstack.eqiad1.wikimediacloud.org"
-  - "ns1.openstack.eqiad1.wikimediacloud.org"
+  - auth_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
+    private_fqdn: cloudservices1006.private.eqiad.wikimedia.cloud
+    host_fqdn: cloudservices1006.eqiad.wmnet
+  - auth_fqdn: ns0.openstack.eqiad1.wikimediacloud.org
+    private_fqdn: cloudservices1005.private.eqiad.wikimedia.cloud
+    host_fqdn: cloudservices1005.eqiad.wmnet
 
 profile::openstack::base::pdns::query_local_address: "%{facts.fqdn}"
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org

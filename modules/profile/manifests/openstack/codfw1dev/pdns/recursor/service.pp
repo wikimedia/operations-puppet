@@ -2,7 +2,7 @@
 class profile::openstack::codfw1dev::pdns::recursor::service(
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $observer_password = lookup('profile::openstack::codfw1dev::observer_password'),
-    Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
+    Array[Hash] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     $legacy_tld = lookup('profile::openstack::codfw1dev::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),

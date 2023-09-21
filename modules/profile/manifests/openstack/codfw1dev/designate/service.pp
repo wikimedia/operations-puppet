@@ -13,7 +13,7 @@ class profile::openstack::codfw1dev::designate::service(
     $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     $pdns_api_key = lookup('profile::openstack::codfw1dev::pdns::api_key'),
     $db_admin_pass = lookup('profile::openstack::codfw1dev::designate::db_admin_pass'),
-    Array[Stdlib::Fqdn] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
+    Array[Hash] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     $osm_host = lookup('profile::openstack::codfw1dev::osm_host'),

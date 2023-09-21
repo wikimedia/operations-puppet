@@ -1,6 +1,6 @@
 class profile::openstack::eqiad1::pdns::recursor::service(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
-    Array[Stdlib::Fqdn] $pdns_hosts      = lookup('profile::openstack::eqiad1::pdns::hosts'),
+    Array[Hash]         $pdns_hosts      = lookup('profile::openstack::eqiad1::pdns::hosts'),
     Stdlib::Fqdn $keystone_api_fqdn      = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $observer_password = lookup('profile::openstack::eqiad1::observer_password'),
     $legacy_tld = lookup('profile::openstack::eqiad1::pdns::legacy_tld'),
