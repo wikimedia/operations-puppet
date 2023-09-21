@@ -557,11 +557,6 @@ node /^db1(157|166|175|189|198|223)\.eqiad\./ {
     role(mariadb::core)
 }
 
-# new db servers  node T342176
-node /^db12(26|27|28|29|30|31|32|33)\.eqiad\./ {
-    role(insetup::data_persistence)
-}
-
 # eqiad sanitarium master
 node /^db1212\.eqiad\./ {
     role(mariadb::sanitarium_master)
