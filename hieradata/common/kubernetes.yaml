@@ -72,8 +72,6 @@ kubernetes::clusters:
       prometheus: &wikikube_prometheus
         name: k8s
         port: 9906
-        node_class_name: role::kubernetes::worker
-        control_plane_class_name: role::kubernetes::master
       control_plane_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
@@ -247,8 +245,6 @@ kubernetes::clusters:
       prometheus: &wikikube_staging_prometheus
         name: k8s-staging
         port: 9907
-        node_class_name: role::kubernetes::staging::worker
-        control_plane_class_name: role::kubernetes::staging::master
       control_plane_nodes:
         - kubestagemaster1001.eqiad.wmnet
         - kubestagemaster1002.eqiad.wmnet
@@ -316,8 +312,6 @@ kubernetes::clusters:
       prometheus: &ml-serve_prometheus
         name: k8s-mlserve
         port: 9909
-        node_class_name: role::ml_k8s::worker
-        control_plane_class_name: role::ml_k8s::master
       control_plane_nodes:
         - ml-serve-ctrl1001.eqiad.wmnet
         - ml-serve-ctrl1002.eqiad.wmnet
@@ -426,8 +420,6 @@ kubernetes::clusters:
       prometheus:
         name: k8s-mlstaging
         port: 9910
-        node_class_name: role::ml_k8s::staging::worker
-        control_plane_class_name: role::ml_k8s::staging::master
       control_plane_nodes:
         - ml-staging-ctrl2001.codfw.wmnet
         - ml-staging-ctrl2002.codfw.wmnet
@@ -464,8 +456,6 @@ kubernetes::clusters:
       prometheus:
         name: k8s-dse
         port: 9910
-        node_class_name: role::dse_k8s::worker
-        control_plane_class_name: role::dse_k8s::master
       control_plane_nodes:
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
@@ -508,8 +498,6 @@ kubernetes::clusters:
       prometheus:
         name: k8s-aux
         port: 9911
-        node_class_name: role::aux_k8s::worker
-        control_plane_class_name: role::aux_k8s::master
       control_plane_nodes:
         - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet

@@ -31,8 +31,6 @@ class profile::prometheus::k8s (
         $targets_path = "/srv/prometheus/${k8s_cluster}/targets"
         $master_url = $k8s_config['master_url']
         $port = $k8s_config['prometheus']['port']
-        $node_class_name = $k8s_config['prometheus']['node_class_name']
-        $control_plane_class_name = $k8s_config['prometheus']['control_plane_class_name']
 
         $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
             'renew_seconds' => $k8s_config['pki_renew_seconds'],
@@ -476,22 +474,6 @@ class profile::prometheus::k8s (
         prometheus::rule { "rules_${k8s_cluster}.yml":
             instance => $k8s_cluster,
             source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
-        }
-
-        prometheus::class_config { "calico-felix-${k8s_cluster}":
-            ensure         => absent,
-            dest           => "${targets_path}/calico-felix_${::site}.yaml",
-            class_name     => $node_class_name,
-            hostnames_only => false,
-            port           => 9091,
-        }
-
-        prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
-            ensure         => absent,
-            dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
-            class_name     => $control_plane_class_name,
-            hostnames_only => false,
-            port           => 9091,
         }
 
         file { "/srv/prometheus/${k8s_cluster}/k8s.token":
