@@ -1,18 +1,9 @@
 class profile::openstack::eqiad1::metrics (
-    Stdlib::Fqdn $controller = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    Stdlib::Fqdn $active_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
 ) {
-    $this_ip = ipresolve($::fqdn, 4)
-    $controller_ip = ipresolve($controller, 4)
-
-    if $this_ip == $controller_ip {
-        class { '::profile::prometheus::openstack_exporter':
-            listen_port => 12345,
-            cloud       => 'eqiad1',
-        }
-        contain '::profile::prometheus::openstack_exporter'
-    } else {
-        class { '::profile::prometheus::openstack_exporter':
-            ensure => absent,
-        }
+    class { '::profile::prometheus::openstack_exporter':
+        ensure      => ($active_host == $::facts['networking']['fqdn']).bool2str('present', 'absent'),
+        listen_port => 12345,
+        cloud       => 'eqiad1',
     }
 }

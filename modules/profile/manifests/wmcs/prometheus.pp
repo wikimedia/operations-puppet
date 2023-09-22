@@ -1,10 +1,11 @@
 class profile::wmcs::prometheus(
-    Stdlib::Unixpath $targets_path = '/srv/prometheus/labs/targets',
-    String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
-    Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
-    Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
-    Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    Stdlib::Unixpath           $targets_path            = '/srv/prometheus/labs/targets',
+    String                     $storage_retention       = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
+    Integer                    $max_chunks_to_persist   = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
+    Integer                    $memory_chunks           = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
+    Optional[Stdlib::Datasize] $storage_retention_size  = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
+    Stdlib::Fqdn               $openstack_exporter_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
+    Array[Stdlib::Host]        $alertmanagers           = lookup('alertmanagers', {'default_value' => []}),
 ) {
     $config_extra = {
         'external_labels' => {
@@ -181,7 +182,7 @@ class profile::wmcs::prometheus(
                 'site'    => 'eqiad',
             },
             'targets' => [
-                'openstack.eqiad1.wikimediacloud.org:12345',
+                "${openstack_exporter_host}:12345",
             ]
         }]),
     }
