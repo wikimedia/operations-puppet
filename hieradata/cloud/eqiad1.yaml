@@ -146,7 +146,6 @@ zookeeper_clusters:
       "%{::fqdn}": 1
 
 profile::ssh::server::disable_agent_forwarding: false
-profile::ssh::server::challenge_response_auth: false
 
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
 puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.pem
