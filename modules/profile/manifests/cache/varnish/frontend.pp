@@ -18,6 +18,7 @@
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
 # @param uds_mode The mode of the uds sockets
+# @param privileged_uds Socket used by purged
 # @param use_etcd_req_filters use confd dynamically generated rules
 # @param do_esitest temporary for testing ESI
 # @param fe_jemalloc_conf jemalloc configuration
@@ -47,6 +48,7 @@ class profile::cache::varnish::frontend (
     String                  $uds_owner               = lookup('profile::cache::varnish::frontend::uds_owner'),
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
+    Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'    => '/run/varnish-privileged.socket'}),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
     Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
@@ -258,6 +260,7 @@ class profile::cache::varnish::frontend (
         uds_owner         => $uds_owner,
         uds_group         => $uds_group,
         uds_mode          => $uds_mode,
+        privileged_uds    => $privileged_uds,
         enable_monitoring => $enable_monitoring,
         thread_pool_max   => $thread_pool_max,
         vsl_size          => $vsl_size,

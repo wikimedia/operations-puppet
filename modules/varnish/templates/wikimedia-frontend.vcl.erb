@@ -574,13 +574,15 @@ sub normalize_request_nonmisc {
 sub wm_recv_purge {
     /* Support HTTP PURGE */
     if (req.method == "PURGE") {
-        if (client.ip !~ local_host) {
-            return (synth(405, "Method not allowed"));
-        } elsif (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
-            set req.hash_ignore_busy = true;
-            return (purge);
+        if (local.endpoint == "<%= @privileged_uds %>" || std.ip(req.http.X-Client-IP, "192.0.2.1") ~ local_host) {
+            if (req.http.Host ~ "<%= @vcl_config.fetch('purge_host_regex') %>") {
+                set req.hash_ignore_busy = true;
+                return (purge);
+            } else {
+                return (synth(204, "Domain not cached here"));
+            }
         } else {
-            return (synth(204, "Domain not cached here"));
+                return (synth(405, "Method not allowed"));
         }
     }
 }

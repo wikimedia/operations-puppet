@@ -20,6 +20,7 @@
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
 # @param uds_mode The mode of the uds sockets
+# @param privileged_uds Socket used by purged
 # @param enable_monitoring enable monitoring
 # @param thread_pool_max Maximum threads per pool
 # @param vsl_size Size of the space for VSL records (varnish default is 80M)
@@ -50,6 +51,7 @@ define varnish::instance(
     String                  $uds_owner         = 'root',
     String                  $uds_group         = 'root',
     Stdlib::Filemode        $uds_mode          = '700',
+    Stdlib::Unixpath        $privileged_uds   = '/run/varnish-privileged.socket',
     Boolean                 $enable_monitoring = true,
     Integer[1]              $thread_pool_max   = 5000,
     Optional[String]        $vsl_size          = undef,
@@ -100,6 +102,7 @@ define varnish::instance(
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
             ip_reputation          => $ip_reputation,
+            privileged_uds         => $privileged_uds,
         }
 
         # This version of wikimedia_${vcl_name}.vcl is exactly the same as the
@@ -123,6 +126,7 @@ define varnish::instance(
             wmcs_domains           => $wmcs_domains,
             etcd_filters           => $etcd_filters,
             ip_reputation          => $ip_reputation,
+            privileged_uds         => $privileged_uds,
         }
 
         varnish::wikimedia_vcl { "/etc/varnish/${vcl_name}.inc.vcl":
@@ -278,4 +282,13 @@ define varnish::instance(
         }
     }
 
+    if $privileged_uds and $enable_monitoring {
+        nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${privileged_uds}":
+            ensure       => present,
+            description  => "Check Varnish privileged UDS ${privileged_uds}",
+            nrpe_command => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${privileged_uds}",
+            notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
+            require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+        }
+    }
 }

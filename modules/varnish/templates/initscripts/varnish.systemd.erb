@@ -47,6 +47,9 @@ ExecStart=/usr/sbin/varnishd \
 -a <%= uds_path -%>,user=<%= @uds_owner -%>,group=<%= @uds_group -%>,mode=<%= @uds_mode -%> \
 <% end -%>
 <% end -%>
+<% if @privileged_uds -%>
+-a <%= @privileged_uds -%>,user=<%= @uds_owner -%>,group=<%= @uds_group -%>,mode=0222 \
+<% end -%>
 -T 127.0.0.1:<%= @admin_port -%> \
 -f '' \
 -p thread_pool_min=250 \

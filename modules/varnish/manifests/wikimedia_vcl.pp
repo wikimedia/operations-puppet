@@ -30,6 +30,7 @@ define varnish::wikimedia_vcl(
     Array[Stdlib::Fqdn] $wmcs_domains           = [],
     Optional[String]    $template_path          = undef,
     Optional[String]    $vcl                    = undef,
+    Stdlib::Unixpath    $privileged_uds         = '/run/varnish-privileged.socket',
 ) {
     if !$generate_extra_vcl and $template_path == undef {
         fail('must provide template_path unless generate_extra_vcl true')

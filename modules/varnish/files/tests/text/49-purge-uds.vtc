@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "Check PURGE requests from UDS"
+
+server s1 -repeat 2 {
+    rxreq
+    expect req.url == /dummy
+    txresp -body "dummy content"
+} -start
+
+varnish v1 -arg "-a ${tmpdir}/v1.sock -a /run/varnish-privileged.socket -p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}";
+        .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}";
+        .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+
+client c1 -connect "/run/varnish-privileged.socket" {
+    # First expect a miss
+    txreq -url "/dummy" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.body == "dummy content"
+    expect resp.http.X-Cache-Status == "miss"
+
+    # then a hit
+    txreq -url "/dummy" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.body == "dummy content"
+    expect resp.http.X-Cache-Status == "hit-front"
+
+    # issue a PURGE on the resource
+    txreq -req PURGE -url "/dummy" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 204
+    expect resp.reason == "Purged"
+
+    # So now we expect a miss
+    txreq -url "/dummy" -hdr "Host: it.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 200
+    expect resp.body == "dummy content"
+    expect resp.http.X-Cache-Status == "miss"
+
+    # A PURGE request to a domain not listed in
+    # profile::cache::varnish::frontend::fe_vcl_config::purge_host_regex should result in a 204
+    # Consider that this will be run on text instance
+    txreq -req PURGE -url "/dummy" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 204
+    expect resp.reason == "Domain not cached here"
+} -run
+
+
+client c2 -connect "${tmpdir}/v1.sock" {
+    # Connecting through generic socket should result in a 405
+    txreq -req PURGE -url "/dummy" -hdr "Host: www.wikimedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 405
+    expect resp.reason == "Method not allowed"
+} -run
