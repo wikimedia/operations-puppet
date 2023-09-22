@@ -46,8 +46,3 @@ profile::openstack::base::cloudgw::dmz_cidr:
   - "208.80.153.252"
   # VMs --> nfs-maps.wikimedia.org
   - "208.80.155.119"
-  # the following should match what's in homer/public.git cloud-in4 filter
-  # there is no other access (NAT or not) to other 10.x.x.x services anyway
-  # VMs --> cloudmetrics1003 / cloudmetrics1004
-  - "10.64.4.6"
-  - "10.64.37.6"
