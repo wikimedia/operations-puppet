@@ -39,18 +39,12 @@ def add_header():
             text(' SRE')
 
 
-def connect_puppetdb(puppetdb_host):
-    db = connect(host=puppetdb_host,
-                 port=443,
-                 protocol='https',
-                 ssl_key=None,
-                 ssl_cert=None,
-                 ssl_verify='/var/lib/puppet/ssl/certs/ca.pem')
-    return db
+def connect_puppetdb():
+    return connect()
 
 
-def get_servers_running_os(distro_release, puppetdb_host):
-    pdb = connect_puppetdb(puppetdb_host)
+def get_servers_running_os(distro_release):
+    pdb = connect_puppetdb()
     facts = pdb.facts('lsbdistcodename', distro_release)
 
     return [fact.node for fact in facts]
@@ -87,7 +81,7 @@ def get_current_quarter():
 
 
 # Fetch all roles and return a dictionary of fqdn[rolename]
-def get_roles(puppetdb_host):
+def get_roles():
     fqdns_roles = {}
 
     q = QueryBuilder.ExtractOperator()
@@ -96,7 +90,7 @@ def get_roles(puppetdb_host):
     q.add_field(str('certname'))
     q.add_query(QueryBuilder.EqualsOperator('type', 'System::Role'))
 
-    pdb = connect_puppetdb(puppetdb_host)
+    pdb = connect_puppetdb()
     data = pdb._query('resources', query=q)
 
     for resource in data:
@@ -129,7 +123,7 @@ def unroll_result_list(entries):
     return '\n'.join(sorted(entries))
 
 
-def prepare_report(datafile, puppetdb_host, owners, roles, distro, hosts, uptodate_os,
+def prepare_report(datafile, owners, roles, distro, hosts, uptodate_os,
                    target_dir, eol_date):
     status_log = []
     owners_to_contact_plan = defaultdict(set)
@@ -150,9 +144,9 @@ def prepare_report(datafile, puppetdb_host, owners, roles, distro, hosts, uptoda
     targets = defaultdict(list)
 
     for current_distro in uptodate_os:
-        hosts_current_count += len(get_servers_running_os(current_distro, puppetdb_host))
+        hosts_current_count += len(get_servers_running_os(current_distro))
 
-    deprecated_count = len(get_servers_running_os(distro, puppetdb_host))
+    deprecated_count = len(get_servers_running_os(distro))
 
     for host in hosts:
 
@@ -341,10 +335,6 @@ def main_function():
         print("Malformed config file, no [general] section found")
         sys.exit(1)
 
-    if 'puppetdb_host' not in cfg.options('general'):
-        print("Malformed config file, no puppetdb host configured")
-        sys.exit(1)
-
     if 'owners' not in cfg.options('general'):
         print("Malformed config file, no owners file configured")
         sys.exit(1)
@@ -380,13 +370,11 @@ def main_function():
 
         uptodate_os = [i.strip() for i in cfg.get(distro, 'current').split(",")]
 
-        puppetdb_host = cfg.get('general', 'puppetdb_host')
         target_directory = cfg.get('general', 'target_directory')
-        roles = get_roles(puppetdb_host)
-        hosts = get_servers_running_os(distro, puppetdb_host)
+        roles = get_roles()
+        hosts = get_servers_running_os(distro)
 
         prepare_report(cfg.get(distro, 'datafile'),
-                       puppetdb_host,
                        owners,
                        roles,
                        distro,

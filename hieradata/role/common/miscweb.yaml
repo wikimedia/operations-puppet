@@ -14,5 +14,5 @@ profile::miscweb::rsync::src_host: 'miscweb1003.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb2003.codfw.wmnet'
 
-profile::sre::os_reports::host: cumin2002.codfw.wmnet
+profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
 profile::contacts::role_contacts: ['ServiceOps-Collab']

@@ -33,7 +33,6 @@ class role::cluster::management {
 
     include profile::netops::ripeatlas::cli
 
-    include profile::sre::os_updates
     include profile::sre::check_user
 
     include profile::kubernetes::kubeconfig::admin

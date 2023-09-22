@@ -5,4 +5,5 @@ class role::puppetdb::bookworm {
     system::role { 'puppetdb::bookworm': description => 'Puppetdb server' }
 
     include role::puppetdb
+    include profile::sre::os_updates
 }

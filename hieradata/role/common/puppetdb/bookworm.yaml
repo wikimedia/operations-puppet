@@ -104,3 +104,5 @@ profile::nginx::variant: 'custom'
 profile::java::java_packages:
   - version: '17'
     variant: 'jre-headless'
+
+profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
