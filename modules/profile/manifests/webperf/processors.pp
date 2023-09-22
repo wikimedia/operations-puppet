@@ -63,10 +63,10 @@ class profile::webperf::processors(
 
     # navtiming exports Prometheus metrics on port 9230.
     if $::realm == 'labs' {
-        ferm::service { 'prometheus-navtiming-exporter':
-            proto  => 'tcp',
-            port   => '9230',
-            srange => '$LABS_NETWORKS',
+        firewall::service { 'prometheus-navtiming-exporter':
+            proto    => 'tcp',
+            port     => 9230,
+            src_sets => ['LABS_NETWORKS'],
         }
     }
 }

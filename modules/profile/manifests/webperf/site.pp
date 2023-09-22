@@ -54,10 +54,10 @@ class profile::webperf::site (
     }
 
     # Allow traffic to port 80 from internal networks
-    ferm::service { 'performance-website-global':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firewall::service { 'performance-website-global':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 
     file { '/var/www/no-robots.txt':
