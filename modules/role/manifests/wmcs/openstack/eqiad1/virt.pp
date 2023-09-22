@@ -6,7 +6,12 @@ class role::wmcs::openstack::eqiad1::virt {
     include profile::base::production
     # include profile::firewall
     include profile::base::cloud_production
-    include profile::wmcs::cloud_private_subnet
+
+    # To be enabled once cloudvirt-wdqs have been moved to a WMCS-dedicated rack. (T346948)
+    unless $::facts['networking']['hostname'] in ['cloudvirt-wdqs1001', 'cloudvirt-wdqs1002', 'cloudvirt-wdqs1003'] {
+        include profile::wmcs::cloud_private_subnet
+    }
+
     include profile::cloudceph::client::rbd_libvirt
     include profile::openstack::eqiad1::clientpackages
     include profile::openstack::eqiad1::envscripts
