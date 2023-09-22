@@ -58,15 +58,15 @@ class gitlab::ssh (
                     notify  => Service['ssh-gitlab'],
                 }
 
-                if $privacy == 'public' {
+                if $privacy == 'public' and $type == 'ecdsa' {
                     # add public key to make it available as in wmf known hosts
                     # TODO: use name instead of host_aliases with puppet 7
                     # https://github.com/puppetlabs/puppetlabs-sshkeys_core/pull/27
-                    @@sshkey { "${gitlab_domain}-${type}":
+                    @@sshkey { $gitlab_domain:
                         ensure       => $ensure,
                         key          => secret("gitlab/${filename}"),
                         type         => $type,
-                        host_aliases => [ $gitlab_domain ],
+                        host_aliases => dnsquery::lookup($gitlab_domain, true),
                     }
                 }
             }
