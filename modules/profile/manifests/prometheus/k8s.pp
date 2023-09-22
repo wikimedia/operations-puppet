@@ -236,6 +236,32 @@ class profile::prometheus::k8s (
                 ]
             },
             {
+                # metrics from calico-felix, running in the nodes network namespace
+                'job_name'        => 'calico-felix',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => $master_url,
+                        'tls_config'        => $k8s_sd_tls_config,
+                        'role'              => 'node',
+                    },
+                ],
+                'relabel_configs'       => [
+                    # Map kubernetes node labels to prometheus metric labels
+                    {
+                        'action' => 'labelmap',
+                        'regex'  => '__meta_kubernetes_node_label_(.+)',
+                    },
+                    {
+                        # Replace the port in the nodes address with that of calico-felix (9091)
+                        'action'        => 'replace',  # Redundant but clearer
+                        'source_labels' => ['__address__'],
+                        'target_label'  => '__address__',
+                        'regex'         => '([\d\.]+):(\d+)',
+                        'replacement'   => "\${1}:9091",
+                    },
+                ]
+            },
+            {
                 'job_name'              => 'k8s-pods',
                 # Note: We dont verify the cert on purpose. Issues IP SAN based
                 # certs for all pods is impossible
@@ -417,16 +443,6 @@ class profile::prometheus::k8s (
                     },
                 ],
             },
-            {
-                # metrics from calico-felix, running in the nodes network namespace
-                'job_name'        => 'calico-felix',
-                'file_sd_configs' => [
-                    {
-                      'files' => ["${targets_path}/calico-felix_*.yaml",
-                                    "${targets_path}/calico-felix-controller_*.yaml"]
-                    },
-                ],
-            },
         ]
 
         $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
@@ -463,6 +479,7 @@ class profile::prometheus::k8s (
         }
 
         prometheus::class_config { "calico-felix-${k8s_cluster}":
+            ensure         => absent,
             dest           => "${targets_path}/calico-felix_${::site}.yaml",
             class_name     => $node_class_name,
             hostnames_only => false,
@@ -470,6 +487,7 @@ class profile::prometheus::k8s (
         }
 
         prometheus::class_config { "calico-felix-controller-${k8s_cluster}":
+            ensure         => absent,
             dest           => "${targets_path}/calico-felix-controller_${::site}.yaml",
             class_name     => $control_plane_class_name,
             hostnames_only => false,

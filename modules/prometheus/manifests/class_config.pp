@@ -29,6 +29,7 @@ define prometheus::class_config(
     Hash $labels = {},
     Hash $class_parameters = {},
     Boolean $hostnames_only = true,
+    Wmflib::Ensure $ensure = present,
 ) {
     # TODO: convert to wmflib::puppetdb_query
     $query = template('prometheus/puppetdb_query_string.erb')
@@ -36,7 +37,7 @@ define prometheus::class_config(
     $site_clusters = get_clusters({'site' => $::site})
 
     file { $dest:
-        ensure  => present,
+        ensure  => stdlib::ensure($ensure, 'file'),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
