@@ -28,7 +28,7 @@ define prometheus::cluster_config(
   Stdlib::Port $port,
   Hash $labels,
 ) {
-    $data = get_clusters({'site' => [$::site], 'cluster' => [$cluster]}).map |$cluster_items| {
+    $data = wmflib::get_clusters({'site' => [$::site], 'cluster' => [$cluster]}).map |$cluster_items| {
         # $cluster_items is a tuple of ($cluster, $sites)
         $cluster_items[1].map |$site_items| {
             # $site_items is a tuple of ($site, $targets)
