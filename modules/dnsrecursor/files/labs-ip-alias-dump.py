@@ -4,6 +4,7 @@ import os
 import sys
 import yaml
 import argparse
+import subprocess
 
 from keystoneauth1.identity.v3 import Password as KeystonePassword
 from keystoneauth1 import session as keystone_session
@@ -33,11 +34,6 @@ def main():
         help="Path to config file",
         default="/etc/labs-dns-alias.yaml",
         type=argparse.FileType("r"),
-    )
-    argparser.add_argument(
-        "--check-changes-only",
-        help="Exit 0 if there are no changes and 1 otherwise. Do not write to file",
-        action="store_true",
     )
     args = argparser.parse_args()
     config = yaml.safe_load(args.config_file)
@@ -87,14 +83,11 @@ def main():
     else:
         current_contents = {}
 
-    exit_status = 0
     if output_d != current_contents:
-        if not args.check_changes_only:
-            with open(config["output_path"], "w") as f:
-                f.write(json.dumps(output_d))
-        exit_status = 1
-    if args.check_changes_only:
-        return exit_status
+        with open(config["output_path"], "w") as f:
+            f.write(json.dumps(output_d))
+
+        subprocess.check_call(["/usr/bin/rec_control", "reload-lua-script"])
 
     return 0
 
