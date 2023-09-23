@@ -50,9 +50,6 @@ profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records:
   - tools-sgegrid-master.tools.eqiad1.wikimedia.cloud
   - www.wmcloud.org
 
-# TODO: as of this writting, this is overridden per cloudservice host, and when ready
-# we need to drop such override
-profile::openstack::eqiad1::pdns::recursor_service_name: ns-recursor.openstack.eqiad1.wikimediacloud.org
 profile::bird::advertise_vips:
   # NOTE: this is a shared BGP-based anycast VIP. There also a non-shared per-host adddress
   ns-recursor.openstack.eqiad1.wikimediacloud.org:

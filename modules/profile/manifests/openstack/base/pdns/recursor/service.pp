@@ -23,7 +23,6 @@ class profile::openstack::base::pdns::recursor::service(
     $observer_user = lookup('profile::openstack::base::observer_user'),
     $observer_password = lookup('profile::openstack::base::observer_password'),
     $observer_project = lookup('profile::openstack::base::observer_project'),
-    $pdns_recursor = lookup('profile::openstack::base::pdns::recursor'),
     $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::base::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
@@ -43,15 +42,6 @@ class profile::openstack::base::pdns::recursor::service(
         $monitoring_hosts,
         $controllers.map |$host| { ipresolve($host, 4) }
     ])
-
-    $pdns_recursor_ip_v4 = ipresolve($pdns_recursor, 4)
-
-    # TODO: this is not needed in the new network setup
-    if ! $bgp_vip {
-        interface::alias { $title:
-            ipv4 => $pdns_recursor_ip_v4,
-        }
-    }
 
     #  We need to alias some public IPs to their corresponding private IPs.
     $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua'
@@ -85,14 +75,8 @@ class profile::openstack::base::pdns::recursor::service(
     $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::lookup($item, true) }.flatten.sort.join(';')
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
-    if $bgp_vip {
-        $listen_addresses = [ $bgp_vip ]
-    } else {
-        $listen_addresses = [ $pdns_recursor_ip_v4 ]
-    }
-
     class { '::dnsrecursor':
-        listen_addresses         => $listen_addresses,
+        listen_addresses         => [$bgp_vip],
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_auth_addrs}, ${reverse_zone_rules}",
         auth_zones               => 'labsdb=/var/zones/labsdb',
@@ -142,6 +126,4 @@ class profile::openstack::base::pdns::recursor::service(
         chain => 'PREROUTING',
         rule  => 'proto udp dport 53 NOTRACK;',
     }
-
-    dnsrecursor::monitor { $listen_addresses: }
 }
