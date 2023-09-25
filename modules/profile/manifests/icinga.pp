@@ -59,11 +59,6 @@ class profile::icinga(
         icinga_group => $icinga_group,
     }
 
-    class { 'icinga::monitor::ores':
-        icinga_user  => $icinga_user,
-        icinga_group => $icinga_group,
-    }
-
     class { 'icinga::monitor::toollabs': }
     class { 'icinga::monitor::cloudgw': }
     class { 'icinga::monitor::legal': }

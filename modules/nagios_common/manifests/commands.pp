@@ -64,7 +64,6 @@ class nagios_common::commands(
         'check_ifstatus_nomon',
         'check_jnx_alarms',
         'check_lastmod.py',
-        'check_ores_workers',
         'check_ospf.py',
         'check_ssl',
         'check_to_check_nagios_paging',
