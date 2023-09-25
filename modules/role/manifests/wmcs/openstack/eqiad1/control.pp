@@ -4,8 +4,8 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::firewall
     include profile::base::cloud_production
 
-    if $facts['hostname'] == 'cloudcontrol1005' {
-        # the only server on the new network setup
+    if $facts['hostname'] != 'cloudcontrol1006' {
+        # the only server on the old network setup
         include profile::wmcs::cloud_private_subnet
     }
 
@@ -30,8 +30,8 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::nova::scheduler::service
     include profile::openstack::eqiad1::nova::api::service
 
-    if $facts['hostname'] != 'cloudcontrol1005' {
-        # the only server on the new network setup
+    if $facts['hostname'] == 'cloudcontrol1006' {
+        # the only server on the old network setup
         include profile::openstack::eqiad1::haproxy
         include profile::prometheus::haproxy_exporter
     }

@@ -1626,11 +1626,11 @@ node /^cloudmetrics100[34]\.eqiad\./ {
     role(wmcs::monitoring)
 }
 
-node /^cloudcontrol100[5]\.eqiad\./ {
+node /^cloudcontrol100[57]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-node /^cloudcontrol100[6-7]\.wikimedia\./ {
+node /^cloudcontrol1006\.wikimedia\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 

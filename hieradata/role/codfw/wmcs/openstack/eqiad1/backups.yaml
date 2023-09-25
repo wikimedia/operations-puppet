@@ -31,6 +31,7 @@ profile::openstack::eqiad1::keystone_api_fqdn: openstack.eqiad1.wikimediacloud.o
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.eqiad.wmnet
   - cloudcontrol1006.wikimedia.org
+  - cloudcontrol1007.eqiad.wmnet
 profile::openstack::eqiad1::rabbitmq_nodes:
   - rabbitmq01.eqiad1.wikimediacloud.org
   - rabbitmq02.eqiad1.wikimediacloud.org
