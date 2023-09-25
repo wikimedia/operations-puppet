@@ -54,14 +54,6 @@ class profile::openstack::base::galera::node(
         srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${cinder_volume_nodes.join(' ')} ${labweb_hosts.join(' ')})))",
     }
 
-    nrpe::monitor_service { 'check_galera_mariadbd_process':
-        ensure        => $enabled.bool2str('present', 'absent'),
-        description   => 'mysql (galera) process',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mariadbd',
-        contact_group => 'wmcs-bots',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-    }
-
     prometheus::mysqld_exporter { 'default':
         client_password => $prometheus_db_pass,
         client_socket   => $socket,
