@@ -11,11 +11,7 @@ puppetmaster::pontoon:
 puppetdb:
   - pontoon-puppetdb-01.monitoring.eqiad1.wikimedia.cloud
 
-builder:
-  - pontoon-builder-01.monitoring.eqiad1.wikimedia.cloud
-
 prometheus:
-  - pontoon-prometheus-01.monitoring.eqiad1.wikimedia.cloud
   - pontoon-prometheus-02.monitoring.eqiad1.wikimedia.cloud
 
 grafana:
@@ -44,11 +40,7 @@ acme_chief:
   - pontoon-acmechief-01.monitoring.eqiad1.wikimedia.cloud
 
 netmon:
-  - pontoon-netmon-02.monitoring.eqiad1.wikimedia.cloud
   - pontoon-netmon-03.monitoring.eqiad1.wikimedia.cloud
-
-apt_repo:
-  - pontoon-apt-01.monitoring.eqiad1.wikimedia.cloud
 
 logging::mediawiki::udp2log:
   - pontoon-mwlog-01.monitoring.eqiad1.wikimedia.cloud
@@ -68,3 +60,6 @@ pontoon::frontend:
 
 pontoon::lb:
   - pontoon-lb-02.monitoring.eqiad1.wikimedia.cloud
+
+titan:
+  - pontoon-titan-01.monitoring.eqiad1.wikimedia.cloud
