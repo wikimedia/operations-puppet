@@ -43,8 +43,3 @@ profile::puppetdb::database::users:
 profile::puppetdb::master: puppetdb1003.eqiad.wmnet
 profile::puppetdb::slaves: [puppetdb2003.codfw.wmnet]
 profile::puppetdb::clean_stockpile: true
-profile::nginx::variant: 'custom'
-
-profile::java::java_packages:
-  - version: '17'
-    variant: 'jre-headless'
