@@ -196,7 +196,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://puppetboard-next.discovery.wmnet
     - type: map
       target: http://query.wikidata.org/bigdata/ldf
-      replacement: https://wdqs1016.eqiad.wmnet/bigdata/ldf
+      replacement: https://wdqs1015.eqiad.wmnet/bigdata/ldf
     - type: map
       target: http://query.wikidata.org/sparql
       replacement: https://wdqs.discovery.wmnet/sparql
