@@ -12,10 +12,10 @@ class profile::dragonfly::supernode (
 
   # This is the port the supernode is listening on for dfget clients to connect
   # Prometheus metrics are served here as well (/metrics)
-  ferm::service { 'dragonfly_supernode':
-    proto  => 'tcp',
-    port   => $listen_port,
-    srange => '$DOMAIN_NETWORKS',
+  firewall::service { 'dragonfly_supernode':
+      proto    => 'tcp',
+      port     => $listen_port,
+      src_sets => ['DOMAIN_NETWORKS'],
   }
 
   if ($download_port != $listen_port) and ($cdn_pattern == 'local') {
@@ -23,11 +23,11 @@ class profile::dragonfly::supernode (
   } else {
     $ensure_download_port = 'absent'
   }
-  ferm::service { 'dragonfly_supernode_cdn':
-    ensure => $ensure_download_port,
-    proto  => 'tcp',
-    port   => $download_port,
-    srange => '$DOMAIN_NETWORKS',
+  firewall::service { 'dragonfly_supernode_cdn':
+      ensure   => $ensure_download_port,
+      proto    => 'tcp',
+      port     => $download_port,
+      src_sets => ['DOMAIN_NETWORKS'],
   }
 
   # TODO: Add icinga monitoring
