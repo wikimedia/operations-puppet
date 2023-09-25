@@ -3,7 +3,6 @@
 class profile::wmcs::cloudlb::haproxy (
     CloudLB::HAProxy::Config $cloudlb_haproxy_config = lookup('profile::wmcs::cloudlb::haproxy::config'),
     String[1]                $acme_chief_cert_name   = lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name'),
-    Array[Stdlib::Host]      $prometheus_nodes       = lookup('prometheus_nodes'),
 ) {
     acme_chief::cert { $acme_chief_cert_name:
         puppet_svc => 'haproxy',
@@ -32,6 +31,5 @@ class profile::wmcs::cloudlb::haproxy (
     include network::constants
     class { 'cloudlb::haproxy::load_all_config':
         cloudlb_haproxy_config => $cloudlb_haproxy_config,
-        prometheus_nodes       => $prometheus_nodes,
     }
 }
