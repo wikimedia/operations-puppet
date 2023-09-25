@@ -1755,6 +1755,7 @@ service::catalog:
           url:
             - https://localhost/v3/scores/
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /v3/scores/
