@@ -17,7 +17,7 @@ scap::dsh::scap_masters:
 scap::dsh::groups:
   kubernetes-workers:
     # We only want to fetch k8s nodes where mediawiki can be installed
-    pdb_query: "Class[Profile::Kubernetes::Mediawiki_runner] and User[mwdeploy]{ensure=present}"
+    pdb_query: "Class[Profile::Kubernetes::Mediawiki_runner] and User[mwdeploy]{ensure=present} and not kubernetes2010.codfw.wmnet"
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
