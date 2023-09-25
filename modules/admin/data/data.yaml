@@ -68,6 +68,9 @@ groups:
     approval:
       - Joanna Borun
       - Mark Bergsma
+  # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
+  # completely from all our servers
+  # 751
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
@@ -522,11 +525,6 @@ groups:
     gid: 749
     description: users who maintain HTML/ZIM dumps
     members: [mobrovac]
-  traceback-roots:
-    gid: 751
-    description: people who have full root on traceback hosts
-    members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   maps-admins:
     gid: 753
     description: admin for maps clusters
