@@ -16,7 +16,6 @@ puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
 service::configuration::restbase_uri: http://deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud:7231
 #service::configuration::http_proxy:
-service::configuration::statsd_host: cloudmetrics1003.eqiad.wmnet
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
 profile::cache::purge::kafka_cluster_name: main-deployment-prep
 # T286502
@@ -63,7 +62,6 @@ profile::restbase::hosts:
 profile::restbase::seeds_ng:
   - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
 # Cassandra (profile::cassandra)
-graphite_host: cloudmetrics1003.eqiad.wmnet
 profile::cassandra::allow_analytics: false
 profile::cassandra::rack: rack1
 profile::cassandra::instances:
@@ -113,7 +111,6 @@ role::deployment::mediawiki::key_fingerprint: f0:54:06:fa:17:27:97:a2:cc:69:a0:a
 profile::mediawiki::php::enable_fpm: true
 profile::php_fpm::fcgi_port: 8000
 
-statsd: cloudmetrics1003.eqiad.wmnet:8125
 # Enable forensic logging
 profile::mediawiki::httpd::enable_forensic_log: true
 

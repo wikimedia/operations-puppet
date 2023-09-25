@@ -513,8 +513,9 @@ profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
 
-graphite_host: localhost
+graphite_host: ~
 graphite_url: ~
+statsd: ~
 
 profile::prometheus::memcached_exporter::arguments: ""
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213

@@ -1,7 +1,6 @@
 # basic profile for every CloudVPS instance
 class profile::wmcs::instance(
-    Boolean             $mount_nfs                     = lookup('mount_nfs',       {default_value => false}),
-    Stdlib::Fqdn        $metrics_server                = lookup('graphite_host',   {default_value => 'localhost'}),
+    Boolean             $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
     Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
 ) {
     if ! defined(Class['Sudo']) {

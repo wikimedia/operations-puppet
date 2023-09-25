@@ -46,9 +46,6 @@ profile::prometheus::varnishkafka_exporter::stats_default:
       "description": "Number of topics in the metadata cache."
       "labels": ["client_id"]
 
-# Labs statsd instance
-statsd: cloudmetrics1003.eqiad.wmnet:8125
-
 # Other overrides
 elasticsearch::version: 2
 elasticsearch::minimum_master_nodes: 1
