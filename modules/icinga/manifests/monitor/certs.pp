@@ -26,19 +26,6 @@ class icinga::monitor::certs {
         notes_url     => 'https://phabricator.wikimedia.org/tag/wmf-legal/',
     }
 
-    # *.wmcloud.org wildcard cert
-    @monitoring::host { 'codesearch.wmcloud.org':
-        host_fqdn     => 'codesearch.wmcloud.org',
-        contact_group => 'wmcs-bots',
-    }
-    monitoring::service { 'https_vpsproxy':
-        description   => 'HTTPS-cloud-vps-proxy',
-        check_command => 'check_ssl_http_letsencrypt!codesearch.wmcloud.org',
-        host          => 'codesearch.wmcloud.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Acme-chief/Cloud_VPS_setup#Troubleshooting',
-        contact_group => 'wmcs-team-email',
-    }
-
     # *.wmfusercontent.org (wildcard cert, testing phab.wmfusercontent.org)
     @monitoring::host { 'phab.wmfusercontent.org':
         host_fqdn     => 'phab.wmfusercontent.org',
