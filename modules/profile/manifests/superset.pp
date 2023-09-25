@@ -141,7 +141,9 @@ class profile::superset (
         explore_form_data_cache_uri => $explore_form_data_cache_uri,
     }
 
-    class { 'profile::prometheus::statsd_exporter': }
+    class { 'profile::prometheus::statsd_exporter':
+        enable_scraping => false,
+    }
 
     monitoring::service { 'superset':
         description   => 'superset',
