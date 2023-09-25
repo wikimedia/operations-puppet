@@ -2,7 +2,7 @@ class role::elasticsearch::alerts {
     monitoring::graphite_threshold { 'cirrussearch_eqiad_95th_percentile':
         description     => 'CirrusSearch eqiad 95th percentile latency',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?orgId=1&var-cirrus_group=eqiad&var-cluster=elasticsearch&var-exported_cluster=production-search&var-smoothing=1'],
-        metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.requestTime.p95, 0)',
+        metric          => 'useSeriesAbove(transformNull(MediaWiki.CirrusSearch.eqiad.requestTimeMs.comp_suggest.sample_rate, 0), 10, "requestTimeMs.comp_suggest.sample_rate", "requestTime.p95")',
         from            => '10min',
         warning         => 500,
         critical        => 1000,
