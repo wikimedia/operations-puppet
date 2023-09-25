@@ -407,7 +407,7 @@ groups:
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
-              ahoelzl]
+              ahoelzl, nathillard]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng]
@@ -6062,6 +6062,13 @@ users:
     krb: present
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDMPHBC2pHhz+O20hwTYOU/fnSWTIKS0V5o6Pg8ZU3boAX3OC8yUNE/xJXAa2G1kp3hWYNTBYHUDd73dr4lbUgTTPc4axRejfj6b80JSGulHd+JBzvu2AhjNZO8DiEvMbjVlOJh9L6dtFknZ6KWEDM8I2WQIljCmSD4VZApRZOOwoSo1ZzjBGKzfrqbeFBtXohO3JVi8s6ieBxYWrk6ImCGO2ti1LDjs97fPUd72CTlOc8EBQeSH5kvpqtPDOJk8OLeKd+oG5NIW06M7W3vUOGNi72X8y4sfMMXXlukzLup829Vl7PBbfjSvFI7cDhrWIcZXZCSRZAjglmm43pK7VGIAVCgcP8PI3JlQV88KzZ7NPPukN+Vi1FWiNTIPxMCGOcYg7uAZNnsFQwIKLrzHbw88Eo1579bt6kh/x9X2ffpTb5a31ezv3lsdu/g67e5PqGa2bde7oKyesIkMWW62N6tCAmXSpgrhAieQWkAavYP0ww6Csawl27ctzJrJjyTmNKJb0o+JPxvg8PNW0VuM0llj5vy3Mm42Y4OojCcglZonNPO1UERRck+Rs5YhG0kS8rL7R0G5jckYHqzXIZTDrVmMHQDtECvz4OBIpqUrtGjVtESS2FgnwX61EF4/dLKdXvHFExKfyOfQxFKePTDQDtLJdl429p9GzLZ9Y2ltgIoLw== ahoelzl@wikimedia.org'
+  nathillard:
+    ensure: present
+    realname: Nat Hillard
+    email: nhillard@wikimedia.org
+    uid: 19179
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6698,10 +6705,6 @@ ldap_only_users:
   vyuen:
     ensure: absent
     realname: Vanessa Yuen
-  nathillard:
-    ensure: present
-    realname: Nat Hillard
-    email: nhillard@wikimedia.org
   maryyang:
     ensure: absent
     realname: Mary Yang
