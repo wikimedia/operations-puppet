@@ -5,7 +5,7 @@ datacenters: [eqiad]
 has_nrpe: false
 
 authdns_servers:
-  "ns0.openstack.eqiad1.wikimediacloud.org": 208.80.154.148
+  "ns0.openstack.eqiad1.wikimediacloud.org": 185.15.56.162
   "ns1.openstack.eqiad1.wikimediacloud.org": 185.15.56.163
 
 profile::resolving::nameservers:
