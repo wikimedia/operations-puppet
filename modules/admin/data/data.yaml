@@ -807,10 +807,11 @@ groups:
     approval:
       - Nicholas Skaggs
   mediawiki-testers:
-    description: People who can strace and tcpdump on canary appservers for testing mediawiki
+    description: People who can strace and tcpdump on canary appservers for testing mediawiki (deprecated)
     gid: 797
     members: []
     privileges: []
+    deprecated: true
   varnish-log-readers:
     description: People who can read Varnish logs for debugging
     gid: 798
