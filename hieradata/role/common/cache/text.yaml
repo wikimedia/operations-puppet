@@ -92,7 +92,7 @@ cache::alternate_domains:
   os-reports.wikimedia.org:
     caching: 'normal'
   ores.wikimedia.org:
-    caching: 'normal'
+    caching: 'pass'
   ores-legacy.wikimedia.org:
     caching: 'pass'
   parsoid-rt-tests.wikimedia.org:
