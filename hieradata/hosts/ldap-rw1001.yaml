@@ -1,4 +1,4 @@
-profile::openldap::master: ldap-rw-next.eqiad.wikimedia.org
+profile::openldap::master: ldap-rw-next.codfw.wikimedia.org
 profile::openldap::hostname: ldap-rw-next.eqiad.wikimedia.org
 profile::openldap::server_id: 15
 profile::openldap::hash_passwords: SSHA
