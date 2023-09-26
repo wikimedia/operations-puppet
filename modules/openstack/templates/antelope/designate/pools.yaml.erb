@@ -22,9 +22,9 @@
       port: 5354
 <% end -%>
     options:
-      api_endpoint: http://<%= scope.function_ipresolve([pdns_host['auth_fqdn']]) %>:8081
+      api_endpoint: http://<%= scope.function_ipresolve([pdns_host['private_fqdn']]) %>:8081
       api_token: <%= @pdns_api_key %>
-      host: <%= scope.function_ipresolve([pdns_host['auth_fqdn']]) %>
+      host: <%= pdns_host['auth_fqdn'] %>.
       port: '53'
     type: pdns4
 <% end -%>
