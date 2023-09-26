@@ -344,6 +344,15 @@ Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
 
+Name: thirdparty/haproxy26-bullseye
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy26
+UDebComponents:
+Suite: bullseye-backports-2.6
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
 Name: thirdparty/haproxy27
 Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy27
@@ -353,20 +362,20 @@ Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
 
-Name: thirdparty/haproxy24-bullseye
+Name: thirdparty/haproxy26-bookworm
 Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy24
+Components: main>thirdparty/haproxy26
 UDebComponents:
-Suite: bullseye-backports-2.4
+Suite: bookworm-backports-2.6
 Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
 
-Name: thirdparty/haproxy26-bullseye
+Name: thirdparty/haproxy28-bookworm
 Method: http://haproxy.debian.net
-Components: main>thirdparty/haproxy26
+Components: main>thirdparty/haproxy28
 UDebComponents:
-Suite: bullseye-backports-2.6
+Suite: bookworm-backports-2.8
 Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]

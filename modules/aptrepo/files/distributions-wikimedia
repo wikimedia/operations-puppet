@@ -223,12 +223,16 @@ Components: main
  component/puppet5
  component/puppetdb7
  component/wmf-laptop
+ thirdparty/haproxy26
+ thirdparty/haproxy28
  thirdparty/hwraid
 UDebComponents: main
 Update:
+# sorted list, leading whitespace matters!
  hp-mcp-bookworm
  hwraid-megacli
-# sorted list, leading whitespace matters!
+ thirdparty/haproxy26
+ thirdparty/haproxy28
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
