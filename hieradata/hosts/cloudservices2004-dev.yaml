@@ -9,6 +9,6 @@ profile::bird::advertise_vips:
 
 profile::openldap::master: cloudservices2005-dev.codfw.wmnet
 profile::openldap::server_id: 3
-profile::openldap::storage_backend: lmdb
+profile::openldap::storage_backend: mdb
 
 profile::openstack::codfw1dev::version: 'zed'
