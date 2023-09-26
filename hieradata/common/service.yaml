@@ -3698,30 +3698,6 @@ service::catalog:
       - dnsdisc: puppetboard
         active_active: true
 
-
-  # Note the lack of an 'lvs' stanza in the configuration below.
-  puppetboard-next:
-    description: Internal production Puppetboard interface
-    encryption: true
-    ip:
-      codfw:
-        default: 10.192.32.30
-      eqiad:
-        default: 10.64.48.59
-    page: false
-    probes:
-      - type: http
-        host: puppetboard-next.wikimedia.org
-        expect_sso: true
-    sites:
-      - eqiad
-      - codfw
-    port: 443
-    state: production
-    discovery:
-      - dnsdisc: puppetboard-next
-        active_active: true
-
   image-suggestion:
     description: image suggestion service, image-suggestion.discovery.wmnet
     encryption: true

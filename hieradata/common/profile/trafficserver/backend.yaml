@@ -192,9 +192,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard-samltest.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
-      target: http://puppetboard-next.wikimedia.org
-      replacement: https://puppetboard-next.discovery.wmnet
-    - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1015.eqiad.wmnet/bigdata/ldf
     - type: map

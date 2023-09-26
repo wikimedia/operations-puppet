@@ -130,8 +130,6 @@ cache::alternate_domains:
     caching: 'pass'
   puppetboard-samltest.wikimedia.org:
     caching: 'pass'
-  puppetboard-next.wikimedia.org:
-    caching: 'pass'
   query.wikidata.org:
     caching: 'normal'
   releases.wikimedia.org:
