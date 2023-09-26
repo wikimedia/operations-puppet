@@ -1,7 +1,6 @@
 class profile::openstack::base::pdns::auth::service(
     Array[Hash] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    Array[Stdlib::IP::Address] $listen_on = lookup('profile::openstack::base::pdns::auth::listen_on'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
     Stdlib::Fqdn $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
@@ -12,6 +11,8 @@ class profile::openstack::base::pdns::auth::service(
 ){
     $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $dns_webserver_address = $this_host_entry['private_fqdn'].ipresolve(4)
+    $listen_on = [$this_host_entry['auth_fqdn'].ipresolve(4)]
+    $query_local_address = $this_host_entry['auth_fqdn']
 
     class { '::pdns_server':
         listen_on             => $listen_on,

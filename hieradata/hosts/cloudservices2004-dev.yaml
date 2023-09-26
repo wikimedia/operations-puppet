@@ -1,8 +1,5 @@
 profile::openstack::base::pdns::query_local_address: ns0.openstack.codfw1dev.wikimediacloud.org
 
-profile::openstack::base::pdns::auth::listen_on:
-  - 185.15.57.25  # ns0.openstack.codfw1dev.wikimediacloud.org
-
 profile::bird::advertise_vips:
   # NOTE: this is the per-host address. There is another shared VIP.
   ns0.openstack.codfw1dev.wikimediacloud.org:
