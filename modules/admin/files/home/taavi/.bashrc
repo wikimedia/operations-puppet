@@ -1,5 +1,17 @@
 case "$TERM" in
+	tmux-256color)
+		TITLEBAR='\[\e]0;\w\007\]'
+		;;
 	xterm-256color)
+		TITLEBAR='\[\e]0;\u@\h \w\007\]'
+		;;
+	*)
+		TITLEBAR=''
+		;;
+esac
+
+case "$TERM" in
+	xterm-256color|tmux-256color)
 		GIT_PS1_SHOWUNTRACKEDFILES=1
 		GIT_PS1_SHOWDIRTYSTATE=1
 		GIT_PS1_SHOWUPSTREAM="auto verbose"
@@ -15,7 +27,6 @@ case "$TERM" in
 			echo " <${TILLER_NAMESPACE}/${K8S_CLUSTER}>"
 		}
 
-		TITLEBAR='\[\e]0;\u@\h \w\007\]'
 		PROMPT='\[\033[00;33m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")$(__taavi_kube_env_ps1) \$ '
 		PS1="$TITLEBAR$PROMPT"
 		;;
