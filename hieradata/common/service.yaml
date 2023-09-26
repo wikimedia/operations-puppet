@@ -3496,28 +3496,6 @@ service::catalog:
       - dnsdisc: puppetdb-api
         active_active: true
         #
-  # puppetdb-api is not an LVS service. However it does warrant using discovery DC records for it.
-  # Note the lack of an 'lvs' stanza in the configuration below.
-  puppetdb-api-next:
-    description: Puppetdb api microservice
-    encryption: true
-    ip:
-      codfw:
-        default: 10.192.0.147
-      eqiad:
-        default: 10.64.32.80
-    page: false
-    probes:
-      - type: http
-    sites:
-      - eqiad
-      - codfw
-    port: 8090
-    state: production
-    discovery:
-      - dnsdisc: puppetdb-api-next
-        active_active: true
-
   # Observability services (non-lvs)
   alertmanager:
     encryption: true
