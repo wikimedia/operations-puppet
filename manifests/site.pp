@@ -2630,12 +2630,8 @@ node /^puppetmaster[12]001\.(codfw|eqiad)\./ {
     role(puppetmaster::frontend)
 }
 
-node /^puppetmaster[12]00[234]\.(codfw|eqiad)\./ {
+node /^puppetmaster[12]00[23]\.(codfw|eqiad)\./ {
     role(puppetmaster::backend)
-}
-
-node /^puppetmaster[12]004\.(codfw|eqiad)\./ {
-    role(insetup::infrastructure_foundations)
 }
 
 node /^puppetboard[12]002\.(codfw|eqiad)\./ {
@@ -2661,6 +2657,14 @@ node /^puppetserver[12]001\.(codfw|eqiad)\./ {
 # New Puppetserver node T334479
 node /^puppetserver1002\.eqiad\./ {
     role(puppetserver)
+}
+
+node /^puppetserver1003\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
+node /^puppetserver1002\.codfw\./ {
+    role(insetup::infrastructure_foundations)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
