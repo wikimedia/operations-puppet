@@ -11,7 +11,6 @@
 #       include profile::puppetboard
 # @param ensure ensureable
 # @param vhost the fqdn to use for the vhost
-# @param vhost_next The puppetboard-next domain used for testing new releases
 # @param vhost_staging vhost for use in the idp staging environment
 # @param vhost_saml saml vhost for use in the idp staging environment
 # @param puppetdb_host the puppetdb host
@@ -31,7 +30,6 @@
 class profile::puppetboard (
     Wmflib::Ensure                  $ensure                   = lookup('profile::puppetboard::ensure'),
     Stdlib::Fqdn                    $vhost                    = lookup('profile::puppetboard::vhost'),
-    Optional[Stdlib::Fqdn]          $vhost_next               = lookup('profile::puppetboard::vhost_next'),
     Optional[Stdlib::Fqdn]          $vhost_staging            = lookup('profile::puppetboard::vhost_staging'),
     Optional[Stdlib::Fqdn]          $vhost_saml               = lookup('profile::puppetboard::vhost_saml'),
     # puppet db settings
@@ -167,17 +165,6 @@ class profile::puppetboard (
             validate_saml    => true,
             environment      => 'staging',
             enable_monitor   => false,
-        }
-    }
-    if $vhost_next {
-        profile::idp::client::httpd::site { $vhost_next:
-            vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
-            required_groups  => [
-                'cn=ops,ou=groups,dc=wikimedia,dc=org',
-                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
-            ],
-            proxied_as_https => true,
-            vhost_settings   => {'uwsgi_port' => $uwsgi_port},
         }
     }
 }

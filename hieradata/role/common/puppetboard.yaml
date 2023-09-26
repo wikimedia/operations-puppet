@@ -4,14 +4,12 @@ profile::tlsproxy::envoy::global_cert_name: "puppetboard.discovery.wmnet"
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - puppetboard.wikimedia.org
-    - puppetboard-next.wikimedia.org
     - puppetboard-idptest.wikimedia.org
     - puppetboard-samltest.wikimedia.org
 # Ship logs to logging pipeline local shim
 service::configuration::logstash_host: localhost
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::puppetboard::vhost: 'puppetboard.wikimedia.org'
-profile::puppetboard::vhost_next: 'puppetboard-next.wikimedia.org'
 profile::puppetboard::vhost_staging: 'puppetboard-idptest.wikimedia.org'
 profile::puppetboard::vhost_saml: 'puppetboard-samltest.wikimedia.org'
 profile::puppetboard::puppetdb_host: "%{lookup('puppetdb_host')}"
