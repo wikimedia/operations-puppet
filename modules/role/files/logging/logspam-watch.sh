@@ -96,7 +96,7 @@ function run_logspam {
   # shellcheck disable=SC2086
   logspam $junk_option --window "$LOGSPAM_WINDOW" --minimum-hits "$MINIMUM_HITS" "$filter" | \
     sort $sort_dir $sort_type -t$'\t' -k "$sort_key" | \
-    head -n "$(listing_height)"
+    (head -n "$(listing_height)"; cat >/dev/null)
 }
 
 # Get a height for the error listing that accounts for the current height of
