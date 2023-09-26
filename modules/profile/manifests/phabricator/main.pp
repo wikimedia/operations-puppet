@@ -4,6 +4,12 @@
 class profile::phabricator::main (
     String                      $domain             = lookup('phabricator_domain',
                                                       { 'default_value' => 'phabricator.wikimedia.org' }),
+    String                      $remote_aphlict_domain =
+                                                      lookup('aphlict_domain',
+                                                      { 'default_value' => 'aphlict.discovery.wmnet' }),
+    Integer                     $remote_aphlict_admin_port =
+                                                      lookup('profile::phabricator::aphlict::admin_port',
+                                                      { 'default_value' => 22281 }),
     String                      $altdom             = lookup('phabricator_altdomain',
                                                       { 'default_value' => 'phab.wmfusercontent.org' }),
     Stdlib::Fqdn                $mysql_master       = lookup('phabricator::mysql::master',
@@ -56,7 +62,8 @@ class profile::phabricator::main (
                                                       { 'default_value' => undef }),
     Boolean                     $logmail            = lookup('phabricator_logmail',
                                                       { 'default_value' => false }),
-    Boolean                     $aphlict_enabled    = lookup('phabricator_aphlict_enabled',
+    Boolean                     $local_aphlict_enabled =
+                                                      lookup('phabricator_aphlict_enabled',
                                                       { 'default_value' => false }),
     Boolean                     $aphlict_ssl        = lookup('phabricator_aphlict_enable_ssl',
                                                       { 'default_value' => false }),
@@ -114,7 +121,7 @@ class profile::phabricator::main (
     # active "phabricator_server" defined in Hiera
     if $::fqdn == $active_server {
         $ferm_ensure = 'present'
-        if $aphlict_enabled {
+        if $local_aphlict_enabled {
             $aphlict_ensure = 'present'
         } else {
             $aphlict_ensure = 'absent'
@@ -143,7 +150,7 @@ class profile::phabricator::main (
         srange => $http_srange,
     }
 
-    if $aphlict_enabled {
+    if $local_aphlict_enabled {
         $notification_servers = [
             {
                 'type'      => 'client',
@@ -158,8 +165,25 @@ class profile::phabricator::main (
                 'protocol'  => 'http',
             }
         ]
+
     } else {
-        $notification_servers = []
+        # As of writing, client requests are routed through the public Phab/Phorge name. Our Apache Traffic Server then
+        # redirects to the remote aphlict:
+        # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/5e2613eed44b788348c223c7bb62d5089d7a2352/hieradata/common/profile/trafficserver/backend.yaml#153
+        $notification_servers = [
+            {
+                'type'      => 'client',
+                'host'      => $domain,
+                'port'      => 443,
+                'protocol'  => 'https',
+            },
+            {
+                'type'      => 'admin',
+                'host'      => $remote_aphlict_domain,
+                'port'      => $remote_aphlict_admin_port,
+                'protocol'  => 'http',
+            }
+        ]
     }
 
     # logmail must be explictly enabled in Hiera with 'phabricator_logmail: true'
@@ -275,7 +299,6 @@ class profile::phabricator::main (
             'diffusion.allow-http-auth'      => true,
             'diffusion.ssh-host'             => $phab_diffusion_ssh_host,
             'gitblit.hostname'               => 'git.wikimedia.org',
-            'notification.servers'           => $notification_servers,
         },
         config_deploy_vars => {
             'phabricator' => {
@@ -522,7 +545,7 @@ class profile::phabricator::main (
         srange => "@resolve((${phabricator_servers_ferm}))",
     }
 
-    if $aphlict_enabled {
+    if $local_aphlict_enabled {
         ferm::service { 'notification_server':
             ensure => $ferm_ensure,
             proto  => 'tcp',
