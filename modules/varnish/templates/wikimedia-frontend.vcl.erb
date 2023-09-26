@@ -482,6 +482,12 @@ sub recv_fe_ip_processing {
     if (req.http.X-Public-Cloud == "") {
         unset req.http.X-Public-Cloud;
     }
+
+    set req.http.X-Known-Client = netmapper.map("known_clients", req.http.X-Client-IP);
+    // normalize to boolean post-netmapper (varnish-3.0.4...)
+    if (req.http.X-Known-Client == "") {
+        unset req.http.X-Known-Client;
+    }
     <%- if @ip_reputation -%>
     // For the desktop non-ve edit path, use the large expensive map of ip reputation
     if (req.url ~ "^/w/index\.php" && (req.method == "POST" || req.url ~ "[?&]action=edit")) {
@@ -536,6 +542,7 @@ include "directors.frontend.vcl";
     // TODO: We no longer use carriers, will remove this in a follow up patch - jbond 10-03-2022
     netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
     netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
+    netmapper.init("known_clients", "<%= @netmapper_dir %>/known_clients.json", 89);
     <%- if @ip_reputation -%>
     // Proxy networks provided by ip reputation vendors. Reload every 10 minutes as it should change daily at most.
     netmapper.init("vendor_proxies", "<%= @netmapper_dir %>/vendor_proxies.json", 600);
