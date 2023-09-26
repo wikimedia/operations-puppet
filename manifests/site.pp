@@ -1659,7 +1659,7 @@ node /^cloudelastic100[1-6]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudelastic10(0[7-9]|1[0-2])\.wikimedia\./ {
+node /^cloudelastic10(0[7-9]|10)\.wikimedia\./ {
     role(insetup::search_platform)
 }
 
