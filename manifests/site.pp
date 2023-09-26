@@ -2655,7 +2655,7 @@ node /^puppetserver[12]00[12]\.(codfw|eqiad)\./ {
 }
 
 node /^puppetserver1003\.eqiad\./ {
-    role(puppetmaster)
+    role(puppetserver)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
