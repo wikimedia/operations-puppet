@@ -12,6 +12,9 @@
 #   Whether or not the systemd unit for the service should be running. This is
 #   passed through to the underlying base::service_unit resource. Default: true.
 #
+# [*icinga_check*]
+#   Whether or not to deploy Icinga monitoring on a per-host basis. Default: true
+#
 # [*port*]
 #   Port on which to run the service
 #
@@ -154,6 +157,7 @@
 define service::node(
     Stdlib::Port                       $port,
     Boolean                            $enable            = true,
+    Boolean                            $icinga_check      = true,
     Variant[Hash,String]               $config            = {},
     Variant[Enum['external'], Boolean] $full_config       = false,
     Variant[Integer, Enum['ncpu']]     $no_workers        = 'ncpu',
@@ -353,7 +357,7 @@ define service::node(
     }
 
     # Monitoring
-    $ensure_monitoring = $enable ? {
+    $ensure_monitoring = ($enable and $icinga_check) ? {
         true  => 'present',
         false => 'absent',
     }
