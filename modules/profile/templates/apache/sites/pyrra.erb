@@ -3,7 +3,14 @@
 # This file is managed by Puppet.
 <VirtualHost *:80>
   ServerName <%= @http_servername %>
+  ServerAlias pyrra.* slo.* slos.*
+  
   DocumentRoot /var/www
+
+  RewriteEngine On
+
+  RewriteCond %{HTTP_HOST} ^(slos|pyrra)\.wikimedia\.org [NC]
+  RewriteRule ^/(.*)$ https://slo.wikimedia.org/$1 [NC,QSA,L,R=301]
 
   ProxyPreserveHost On
   ProxyPass / http://localhost:9099/
