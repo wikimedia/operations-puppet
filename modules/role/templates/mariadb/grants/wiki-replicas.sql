@@ -1,11 +1,12 @@
 -- These grants are wrong, as they lack passwords- do not use directly
 
 -- cloudcontrol1005 - for maintaindbusers T331014
-GRANT labsdbuser TO 'labsdbadmin'@'208.80.154.85' WITH ADMIN OPTION;
-GRANT SUPER ON *.* TO 'labsdbadmin'@'208.80.154.85';
-GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'208.80.154.85';
-GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'208.80.154.85';
-GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'208.80.154.85' WITH GRANT OPTION;
+CREATE USER 'labsdbadmin'@'10.64.151.3';
+GRANT labsdbuser TO 'labsdbadmin'@'10.64.151.3' WITH ADMIN OPTION;
+GRANT SUPER ON *.* TO 'labsdbadmin'@'10.64.151.3';
+GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'10.64.151.3';
+GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'10.64.151.3';
+GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'10.64.151.3' WITH GRANT OPTION;
 
 -- cloudcontrol1006 - for maintaindbusers T331014
 GRANT labsdbuser TO 'labsdbadmin'@'208.80.154.149' WITH ADMIN OPTION;
@@ -15,11 +16,12 @@ GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'208.80.154.149';
 GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'208.80.154.149' WITH GRANT OPTION;
 
 -- cloudcontrol1007 - for maintaindbusers T331014
-GRANT labsdbuser TO 'labsdbadmin'@'208.80.155.104' WITH ADMIN OPTION;
-GRANT SUPER ON *.* TO 'labsdbadmin'@'208.80.155.104';
-GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'208.80.155.104';
-GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'208.80.155.104';
-GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'208.80.155.104' WITH GRANT OPTION;
+CREATE USER 'labsdbadmin'@'10.64.148.21';
+GRANT labsdbuser TO 'labsdbadmin'@'10.64.148.21' WITH ADMIN OPTION;
+GRANT SUPER ON *.* TO 'labsdbadmin'@'10.64.148.21';
+GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'10.64.148.21';
+GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'10.64.148.21';
+GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'10.64.148.21' WITH GRANT OPTION;
 
 -- Labsdbuser is a role with privileges for all views like
 -- GRANT SELECT, SHOW VIEW ON `rowikiquote\_p`.* TO 'labsdbuser'
