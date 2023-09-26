@@ -135,6 +135,7 @@ class profile::restbase(
         port              => $port,
         no_file           => 200000,
         healthcheck_url   => "/${monitor_domain}/v1",
+        icinga_check      => false, # done via service::catalog 'probes'
         has_spec          => true,
         starter_script    => 'restbase/server.js',
         auto_refresh      => false,
