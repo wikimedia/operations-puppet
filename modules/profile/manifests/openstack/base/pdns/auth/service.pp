@@ -2,7 +2,6 @@ class profile::openstack::base::pdns::auth::service(
     Array[Hash] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
-    Stdlib::Fqdn $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
     $pdns_webserver = lookup('profile::openstack::base::pdns::pdns_webserver', {'default_value' => false}),

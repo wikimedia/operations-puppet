@@ -33,7 +33,6 @@ profile::openstack::eqiad1::pdns::hosts:
     private_fqdn: cloudservices1005.private.eqiad.wikimedia.cloud
     host_fqdn: cloudservices1005.eqiad.wmnet
 
-profile::openstack::base::pdns::query_local_address: "%{facts.fqdn}"
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.255.1
 

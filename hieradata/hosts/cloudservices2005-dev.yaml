@@ -1,5 +1,3 @@
-profile::openstack::base::pdns::query_local_address: ns1.openstack.codfw1dev.wikimediacloud.org
-
 profile::bird::advertise_vips:
   # NOTE: this is the per-host address. There is another shared VIP.
   ns1.openstack.codfw1dev.wikimediacloud.org:

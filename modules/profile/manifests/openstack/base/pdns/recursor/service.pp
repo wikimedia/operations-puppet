@@ -32,8 +32,9 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
     Optional[Stdlib::IP::Address::V4::Nosubnet] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip', {'default_value' => undef}),
     Array[Hash]                $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
-    Stdlib::Fqdn               $query_local_address = lookup('profile::openstack::base::pdns::query_local_address'),
 ) {
+    $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
+    $query_local_address = $this_host_entry['auth_fqdn']
 
     include ::network::constants
     $allow_from = flatten([
