@@ -4,18 +4,12 @@ class openstack::neutron::linuxbridge_agent::zed::bookworm(
 ) {
     require ::openstack::serverpackages::zed::bookworm
 
-    package { 'libosinfo-1.0-0':
-        ensure => 'present',
-    }
+    ensure_packages('libosinfo-1.0-0')
 
-    package { 'neutron-linuxbridge-agent':
-        ensure => 'present',
-    }
+    ensure_packages('neutron-linuxbridge-agent')
 
     # Not installed by default, but still available on Bullseye
-    package { 'iptables':
-        ensure => 'present',
-    }
+    ensure_packages('iptables')
 
     alternatives::select { 'iptables':
         path => '/usr/sbin/iptables-legacy',
