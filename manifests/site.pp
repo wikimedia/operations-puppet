@@ -2650,21 +2650,12 @@ node /^puppetdb[12]003\.(codfw|eqiad)\./ {
     role(puppetdb::bookworm)
 }
 
-node /^puppetserver[12]001\.(codfw|eqiad)\./ {
-    role(puppetserver)
-}
-
-# New Puppetserver node T334479
-node /^puppetserver1002\.eqiad\./ {
+node /^puppetserver[12]00[12]\.(codfw|eqiad)\./ {
     role(puppetserver)
 }
 
 node /^puppetserver1003\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
-}
-
-node /^puppetserver2002\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(puppetmaster)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
