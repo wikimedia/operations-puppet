@@ -1,0 +1,21 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{/* go text/template cannot output proper json arrays, so we are extracting one element to insert at the end of any json list / dictionary **/}}
+{{- define "cidr.list" -}}
+{{- $last := index . (sub (len .) 1) }}
+{{- range $n := . }}
+    "{{ $n }}"{{ if (ne $n $last) }},{{ end }}
+{{- end }}
+{{- end -}}
+{{/* get the names of all known clients **/}}
+{{-  $all := ls "/request-ipblocks/known-clients/" -}}
+{{- $last := index $all (sub (len $all) 1) -}}
+{
+{{- range $all }}
+{{- $entry := json (getv (printf "/request-ipblocks/known-clients/%s" .)) }}
+{{- if $entry.cidrs }}
+  "{{  . }}": [
+{{- template "cidr.list" $entry.cidrs }}
+  ]{{- if (ne . $last) -}},{{ end }}
+{{- end }}
+{{- end }}
+}

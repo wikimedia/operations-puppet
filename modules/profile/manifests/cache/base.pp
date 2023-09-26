@@ -88,6 +88,16 @@ class profile::cache::base(
         content    => template('profile/cache/public_clouds.json.tpl.erb'),
         check      => '/usr/bin/vnm_validate {{.src}}'
     }
+    # Add /var/netmapper/known_clients.json from etcd.
+    # This file is loaded in wikimedia-frontend.vcl.erb
+    confd::file { '/var/netmapper/known_clients.json':
+        ensure     => present,
+        watch_keys => ['/request-ipblocks/known-clients'],
+        prefix     => $conftool_prefix,
+        before     => Service['varnish-frontend'],
+        content    => template('profile/cache/known_clients.json.tpl.erb'),
+        check      => '/usr/bin/vnm_validate {{.src}}'
+    }
     if ( $use_ip_reputation ) {
         # Add /var/netmapper/vendor_proxies.json
         # This file is loaded in wikimedia-frontend.vcl.erb
