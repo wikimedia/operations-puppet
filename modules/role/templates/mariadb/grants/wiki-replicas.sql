@@ -1,18 +1,5 @@
 -- These grants are wrong, as they lack passwords- do not use directly
 
--- Initial grants and grants added at T178128
-GRANT labsdbuser TO 'labsdbadmin'@'10.64.37.19' WITH ADMIN OPTION;
-GRANT SUPER ON *.* TO 'labsdbadmin'@'10.64.37.19';
-GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'10.64.37.19';
-GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'10.64.37.19' WITH GRANT OPTION;
-GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'10.64.37.19';
-
-GRANT labsdbuser TO 'labsdbadmin'@'10.64.37.20' WITH ADMIN OPTION;
-GRANT SUPER ON *.* TO 'labsdbadmin'@'10.64.37.20';
-GRANT SELECT, INSERT, UPDATE ON `mysql`.* TO 'labsdbadmin'@'10.64.37.20';
-GRANT SELECT, SHOW VIEW ON `%wik%`.* TO 'labsdbadmin'@'10.64.37.20';
-GRANT SELECT, SHOW VIEW ON `%\\_p`.* TO 'labsdbadmin'@'10.64.37.20' WITH GRANT OPTION;
-
 -- cloudcontrol1005 - for maintaindbusers T331014
 GRANT labsdbuser TO 'labsdbadmin'@'208.80.154.85' WITH ADMIN OPTION;
 GRANT SUPER ON *.* TO 'labsdbadmin'@'208.80.154.85';
