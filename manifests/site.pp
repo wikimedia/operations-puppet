@@ -2663,7 +2663,7 @@ node /^puppetserver1003\.eqiad\./ {
     role(insetup::infrastructure_foundations)
 }
 
-node /^puppetserver1002\.codfw\./ {
+node /^puppetserver2002\.codfw\./ {
     role(insetup::infrastructure_foundations)
 }
 
