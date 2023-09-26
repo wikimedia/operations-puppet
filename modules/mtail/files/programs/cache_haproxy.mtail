@@ -30,9 +30,10 @@ hidden gauge process_time
       }
   }
   haproxy_termination_states_total[$termination_state]++
-  $queue_time > 0 {
-    process_time += $queue_time
-  }
+  # queue time shouldn't impact HAProxy SLO
+  #  $queue_time > 0 {
+  #    process_time += $queue_time
+  #  }
   $server_connection_time > 0 {
     process_time += $server_connection_time
   }

@@ -47,4 +47,4 @@ class CacheHAProxyTest(unittest.TestCase):
         self.assertIn(('', 7), sli_total)
 
         sli_good = self.store.get_samples('haproxy_sli_good')
-        self.assertIn(('', 5), sli_good)
+        self.assertIn(('', 6), sli_good)
