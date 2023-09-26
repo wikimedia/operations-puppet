@@ -192,6 +192,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://puppetboard-samltest.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
+      target: http://pyrra.wikimedia.org
+      replacement: http://titan1001.eqiad.wmnet
+    - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1015.eqiad.wmnet/bigdata/ldf
     - type: map
@@ -224,6 +227,12 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://security.wikimedia.org
       replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      target: http://slo.wikimedia.org
+      replacement: http://titan1001.eqiad.wmnet
+    - type: map
+      target: http://slos.wikimedia.org
+      replacement: http://titan1001.eqiad.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443

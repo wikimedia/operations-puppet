@@ -130,6 +130,8 @@ cache::alternate_domains:
     caching: 'pass'
   puppetboard-samltest.wikimedia.org:
     caching: 'pass'
+  pyrra.wikimedia.org:
+    caching: 'pass'
   query.wikidata.org:
     caching: 'normal'
   releases.wikimedia.org:
@@ -144,6 +146,10 @@ cache::alternate_domains:
     caching: 'normal'
   security.wikimedia.org:
     caching: 'normal'
+  slo.wikimedia.org:
+    caching: 'pass'
+  slos.wikimedia.org:
+    caching: 'pass'
   static-bugzilla.wikimedia.org:
     caching: 'normal'
   stats.wikimedia.org:
