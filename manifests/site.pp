@@ -1291,7 +1291,10 @@ node /^lists1001\.wikimedia\./ {
 node /^lists1003\.wikimedia\./ {
     role(lists)
 }
-
+#add new list server T342374
+node /^lists1004\.eqiad\./ {
+    role(insetup::data_persistence)
+}
 node /^ganeti10(09|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
     role(ganeti)
 }
