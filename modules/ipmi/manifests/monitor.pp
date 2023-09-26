@@ -16,6 +16,7 @@ class ipmi::monitor (
         group   => 'root',
         mode    => '0440',
         content => $ipmiseld_config,
+        require => Package['freeipmi-ipmiseld'],
         notify  => Service['ipmiseld'],
     }
 
