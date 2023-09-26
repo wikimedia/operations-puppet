@@ -111,7 +111,7 @@ https://www.wikidata.org:
     Location: https://www.wikidata.org/wiki/Wikidata:Main_Page
 
 https://test.wikidata.org:
-- path: /wiki/Q77119
+- path: /wiki/Q232463
   assert_status: 200
   assert_body_contains: baYjnvuD
 - path: /prop/statement/P13344
