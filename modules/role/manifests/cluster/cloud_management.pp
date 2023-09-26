@@ -14,8 +14,6 @@ class role::cluster::cloud_management {
     include profile::firewall
 
     include profile::cumin::cloud_master
-    include profile::ipmi::mgmt
-    include profile::access_new_install
     include profile::spicerack
 
     # Backup all of /srv
