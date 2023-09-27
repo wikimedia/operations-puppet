@@ -14,8 +14,9 @@ class profile::toolforge::infrastructure (
 
         # Infrastructure instances are limited to an (arbitrarily picked) local
         # service group and root.
-        security::access::config { 'labs-admin-only':
-            content => "-:ALL EXCEPT (${::wmcs_project}.admin) root:ALL\n",
+        security::access::config { 'toolforge-admin-only':
+            content  => "-:ALL EXCEPT (${::wmcs_project}.admin) root:ALL\n",
+            priority => 90,
         }
     }
 }
