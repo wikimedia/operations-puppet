@@ -1,0 +1,2 @@
+profile::firewall::provider: nftables
+profile::openstack::base::cloudgw::firewall_profile: true
