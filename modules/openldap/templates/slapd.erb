@@ -148,6 +148,7 @@ mirrormode on
 #######################################################################
 ## General parameters and indexes
 
+<% if @storage_backend == "hdb" -%>
 dbconfig set_cachesize 0 2097152 0
 dbconfig set_lk_max_objects 1500
 dbconfig set_lk_max_locks 1500
@@ -155,6 +156,7 @@ dbconfig set_lk_max_lockers 1500
 dbconfig set_lg_regionmax 262144
 dbconfig set_lg_bsize 2097152
 dbconfig set_flags DB_LOG_AUTOREMOVE
+<% end %>
 
 # LDAP indices
 include /etc/ldap/indices.conf
