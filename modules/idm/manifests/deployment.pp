@@ -65,7 +65,7 @@ class idm::deployment (
     }
 
     systemd::service { 'rq-bitu':
-        ensure  => ($facts['networking']['fqdn'] == $redis_master).bool2str('present', 'absent'),
+        ensure  => ($facts['networking']['hostname'] == $redis_master).bool2str('present', 'absent'),
         content => file('idm/rq-bitu.service')
     }
 }
