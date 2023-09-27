@@ -34,9 +34,18 @@ class profile::openstack::base::cloudgw (
 
     $actual_dmz_cidr = $dmz_cidr + $public_cidrs
 
+
+    if $firewall_profile {
+        $keepalive_order = 105
+        $cloudgw_order = 110
+    } else {
+        $keepalive_order = 0
+        $cloudgw_order = 1
+    }
+
     nftables::file { 'cloudgw':
         ensure  => present,
-        order   => 1,
+        order   => $cloudgw_order,
         content => template('profile/openstack/base/cloudgw/cloudgw.nft.erb'),
     }
 
@@ -110,6 +119,7 @@ class profile::openstack::base::cloudgw (
     }
 
     nftables::file { 'keepalived_vrrp':
+        order   => $keepalive_order,
         content => "add rule inet ${base_rule_setname} input ip saddr ${vrrp_peer} ip protocol vrrp accept\n",
     }
 
@@ -139,7 +149,7 @@ class profile::openstack::base::cloudgw (
     }
 
     nftables::file { 'conntrackd_tcp_3780':
-        order   => 1,
+        order   => $cloudgw_order,
         content => "add rule inet ${base_rule_setname} input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
     }
 }
