@@ -20,7 +20,6 @@ class profile::wmcs::services::maintain_dbusers (
 ){
     ensure_packages([
         'python3-ldap3',
-        'python3-systemd',
     ])
 
     include passwords::mysql::labsdb

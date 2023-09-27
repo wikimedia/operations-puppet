@@ -1210,18 +1210,12 @@ def main():
     args = argparser.parse_args()
 
     log_lvl = logging.DEBUG if (args.debug or args.dry_run or args.only_users) else logging.INFO
-    # this is here as the systemd dependency is not available on most dev environments, and not
-    # really needed for testing
-    from systemd import daemon, journal  # pylint: disable=import-error,import-outside-toplevel
 
     log_format = "%(levelname)s [%(name)s.%(funcName)s:%(lineno)d] %(message)s"
     if args.dry_run:
         log_format = "DRY_RUN:%s" % log_format
 
-    if daemon.booted():
-        logging.basicConfig(format=log_format, level=log_lvl, handlers=[journal.JournalHandler()])
-    else:
-        logging.basicConfig(format=log_format, level=log_lvl)
+    logging.basicConfig(format=log_format, level=log_lvl)
 
     with open(args.config, encoding="utf8") as f:
         config = yaml.safe_load(f)
