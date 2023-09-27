@@ -19,14 +19,7 @@ class profile::openstack::base::cloudgw (
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter = lookup('profile::openstack::base::cloudgw::cloud_filter',   {default_value => []}),
     Array[Stdlib::IP::Address::V4]                 $dmz_cidr     = lookup('profile::openstack::base::cloudgw::dmz_cidr',       {default_value => ['0.0.0.0']}),
     Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs = lookup('profile::wmcs::cloud_private_subnet::public_cidrs', {default_value => []}),
-    Boolean             $firewall_profile = lookup('profile::openstack::base::cloudgw::firewall_profile', {default_value => false}),
 ) {
-
-    unless $firewall_profile {
-        class { '::nftables':
-            ensure => 'present',
-        }
-    }
 
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
@@ -34,18 +27,9 @@ class profile::openstack::base::cloudgw (
 
     $actual_dmz_cidr = $dmz_cidr + $public_cidrs
 
-
-    if $firewall_profile {
-        $keepalive_order = 105
-        $cloudgw_order = 110
-    } else {
-        $keepalive_order = 0
-        $cloudgw_order = 1
-    }
-
     nftables::file { 'cloudgw':
         ensure  => present,
-        order   => $cloudgw_order,
+        order   => 110,
         content => template('profile/openstack/base/cloudgw/cloudgw.nft.erb'),
     }
 
@@ -112,15 +96,9 @@ class profile::openstack::base::cloudgw (
         config    => template('profile/openstack/base/cloudgw/keepalived.conf.erb'),
     }
 
-    if $firewall_profile {
-        $base_rule_setname = 'base'
-    } else {
-        $base_rule_setname = 'basefirewall'
-    }
-
     nftables::file { 'keepalived_vrrp':
-        order   => $keepalive_order,
-        content => "add rule inet ${base_rule_setname} input ip saddr ${vrrp_peer} ip protocol vrrp accept\n",
+        order   => 105,
+        content => "add rule inet base input ip saddr ${vrrp_peer} ip protocol vrrp accept\n",
     }
 
     # this expects a data structure like this:
@@ -149,7 +127,7 @@ class profile::openstack::base::cloudgw (
     }
 
     nftables::file { 'conntrackd_tcp_3780':
-        order   => $cloudgw_order,
-        content => "add rule inet ${base_rule_setname} input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
+        order   => 110,
+        content => "add rule inet base input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
     }
 }
