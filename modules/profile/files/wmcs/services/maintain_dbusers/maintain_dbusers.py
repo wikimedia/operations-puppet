@@ -434,16 +434,6 @@ def find_tools_users(config: dict[str, Any]) -> list[tuple[str, int]]:
         return users
 
 
-def get_global_wiki_user(uid: str) -> dict[str, Any]:
-    api_url = (
-        "https://meta.wikimedia.org/w/api.php?action=query&format=json&"
-        "meta=globaluserinfo&guiid="
-    )
-    headers = get_headers()
-    response = requests.get(url=api_url + uid, headers=headers, timeout=60)
-    return response.json()
-
-
 def find_paws_users(config: dict[str, Any]) -> list[tuple[str, int]]:
     """
     Return list of PAWS users, from their userhomes
@@ -458,8 +448,7 @@ def find_paws_users(config: dict[str, Any]) -> list[tuple[str, int]]:
 
     for uid in user_ids:
         try:
-            user_info = get_global_wiki_user(uid=str(uid))
-            paws_users.append((user_info["query"]["globaluserinfo"]["name"], int(uid)))
+            paws_users.append((str(uid), int(uid)))
         except Exception:  # pylint: disable=broad-except
             # If it doesn't respond with a nice happy reply, assume this is
             # either a blocked user, or the API is not behaving. Should be safe
@@ -720,6 +709,8 @@ def populate_accountsdb(
     try:
         acct_db = get_accounts_db_conn(config=config)
         with acct_db.cursor() as cur:
+            # TODO: merge those two when the 'username' column for old PAWS
+            # users also has the user ID
             if account_type != "paws":
                 select_username_sql_str = (
                     """
@@ -1034,18 +1025,11 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
     - Drops users from labsdbs
     """
     if account_type == "paws":
-        # We have some special issues here. The file path is the UID, not username
-        # and we really should enter the UID in general.
+        # Ensure people use the correct user ID.
         try:
             int(account)
         except ValueError:
             sys.exit("Enter the PAWS user's UID, not the on-wiki name")
-
-        # Intentionally shadow the account arg with what the rest of the script
-        # thinks is right.
-        acc_info = get_global_wiki_user(uid=str(account))
-        uid = account
-        account = acc_info["query"]["globaluserinfo"]["name"]
 
     try:
         acct_db = get_accounts_db_conn(config=config)
@@ -1097,12 +1081,8 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
 
         # Now we get rid of the file
         try:
-            if account_type != "paws":
-                account_id = account
-            else:
-                account_id = uid
             replica_file_path = delete_replica_cnf(
-                account_id=account_id,
+                account_id=account,
                 account_type=account_type,
                 dry_run=dry_run,
                 config=config,

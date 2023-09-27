@@ -244,39 +244,6 @@ class FindToolsUsersTestCase(unittest.TestCase):
         self.assertEqual(result, expected_tools_users)
 
 
-class GetGlobalWikiUserTestCase(unittest.TestCase):
-    @mock.patch("maintain_dbusers.requests.get", return_value=MockResponse({}))
-    def test_request_get_should_be_called_with_correct_user_agent(self, mocked_requests_get):
-        expected_uid = "33455"
-
-        maintain_dbusers.get_global_wiki_user(expected_uid)
-
-        # the kwargs property for mock.call is only python>=3.8, ci uses 3.7
-        call_headers = mocked_requests_get.call_args[-1].get("headers", {})
-
-        self.assertEqual(maintain_dbusers.USER_AGENT, call_headers.get("User-Agent", None))
-
-    @mock.patch("maintain_dbusers.requests.get", return_value=MockResponse({}))
-    def test_request_get_should_be_called_with_correct_uid(self, mocked_requests_get):
-        expected_uid = "33455"
-
-        maintain_dbusers.get_global_wiki_user(expected_uid)
-
-        # the kwargs property for mock.call is only python>=3.8, ci uses 3.7
-        call_url = mocked_requests_get.call_args[-1].get("url", "")
-
-        self.assertTrue(call_url.endswith(expected_uid))
-
-    @mock.patch("maintain_dbusers.requests.get")
-    def test_should_function_returns_right_value(self, mocked_requests_get):
-        expected_result = {"some": "result"}
-        mocked_requests_get.return_value = MockResponse(expected_result)
-
-        result = maintain_dbusers.get_global_wiki_user("1234")
-
-        self.assertEqual(result, expected_result)
-
-
 class WriteReplicaCnfTestCase(unittest.TestCase):
     SERVER_ERROR_REPLY = MockResponse(
         json_data={"result": "error", "detail": {"reason": "this is an error"}}, status_code=500
@@ -707,70 +674,27 @@ class FindPawsUsersTestCase(unittest.TestCase):
         self.assertTrue(mocked_fetch_paws_uids.called)
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=None)
-    @mock.patch("maintain_dbusers.get_global_wiki_user")
-    def test_should_return_empty_list_if_fetch_paws_uids_returns_none(
-        self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
-    ):
+    def test_should_return_empty_list_if_fetch_paws_uids_returns_none(self, mocked_fetch_paws_uids):
         expected_result = []
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
         self.assertTrue(mocked_fetch_paws_uids.called)
-        self.assertFalse(mocked_get_global_wiki_user.called)
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[])
-    @mock.patch("maintain_dbusers.get_global_wiki_user")
     def test_should_return_empty_list_if_fetch_paws_uids_returns_empty_list(
-        self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
+        self, mocked_fetch_paws_uids
     ):
         expected_result = []
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
         self.assertTrue(mocked_fetch_paws_uids.called)
-        self.assertFalse(mocked_get_global_wiki_user.called)
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
-    @mock.patch(
-        "maintain_dbusers.get_global_wiki_user",
-        side_effect=[Exception, get_dummy_wiki_user("global-user2")],
-    )
-    def test_should_skip_uid_if_get_global_wiki_user_raises(
-        self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
-    ):
-        expected_result = [("global-user2", 2)]
-
+    def test_should_return_happy_path(self, mocked_fetch_paws_uids):
+        expected_result = [("1", 1), ("2", 2)]
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
         self.assertTrue(mocked_fetch_paws_uids.called)
-        self.assertTrue(mocked_get_global_wiki_user.called)
-
-    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
-    @mock.patch(
-        "maintain_dbusers.get_global_wiki_user",
-        side_effect=[{"malformed": "reply"}, get_dummy_wiki_user("global-user2")],
-    )
-    def test_should_skip_uid_if_get_global_wiki_user_returns_malformed_reply(
-        self, mocked_get_global_wiki_user, mocked_fetch_paws_uids
-    ):
-        expected_result = [("global-user2", 2)]
-
-        gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
-
-        self.assertEqual(gotten_result, expected_result)
-        self.assertTrue(mocked_fetch_paws_uids.called)
-        self.assertTrue(mocked_get_global_wiki_user.called)
-
-    @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=[1, 2])
-    @mock.patch(
-        "maintain_dbusers.get_global_wiki_user",
-        side_effect=[get_dummy_wiki_user("global-user1"), get_dummy_wiki_user("global-user2")],
-    )
-    def test_should_return_happy_path(self, mocked_get_global_wiki_user, mocked_fetch_paws_uids):
-        expected_result = [("global-user1", 1), ("global-user2", 2)]
-        gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
-
-        self.assertEqual(gotten_result, expected_result)
-        self.assertTrue(mocked_fetch_paws_uids.called)
-        self.assertTrue(mocked_get_global_wiki_user.called)
