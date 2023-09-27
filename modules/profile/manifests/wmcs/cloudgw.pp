@@ -1,24 +1,23 @@
-class profile::openstack::base::cloudgw (
-    Integer             $virt_vlan    = lookup('profile::openstack::base::cloudgw::virt_vlan',    {default_value => 2107}),
-    Stdlib::IP::Address $virt_peer    = lookup('profile::openstack::base::cloudgw::virt_peer',    {default_value => '127.0.0.5'}),
-    Stdlib::IP::Address::V4::CIDR $virt_floating= lookup('profile::openstack::base::cloudgw::virt_floating',{default_value => '127.0.0.5/24'}),
-    Optional[Stdlib::IP::Address::V4::CIDR] $virt_floating_additional= lookup('profile::openstack::base::cloudgw::virt_floating_additional', {default_value => undef}),
-    Stdlib::IP::Address $virt_cidr    = lookup('profile::openstack::base::cloudgw::virt_cidr',    {default_value => '127.0.0.6/24'}),
-    Integer             $wan_vlan     = lookup('profile::openstack::base::cloudgw::wan_vlan',     {default_value => 2120}),
-    Stdlib::IP::Address $wan_addr     = lookup('profile::openstack::base::cloudgw::wan_addr',     {default_value => '127.0.0.4'}),
-    Integer             $wan_netm     = lookup('profile::openstack::base::cloudgw::wan_netm',     {default_value => 8}),
-    Stdlib::IP::Address $wan_gw       = lookup('profile::openstack::base::cloudgw::wan_gw',       {default_value => '127.0.0.4'}),
-    String              $vrrp_passwd  = lookup('profile::openstack::base::cloudgw::vrrp_passwd',  {default_value => 'dummy'}),
-    Array[String]       $vrrp_vips    = lookup('profile::openstack::base::cloudgw::vrrp_vips',    {default_value => ['127.0.0.1 dev eno2']}),
-    Stdlib::IP::Address $vrrp_peer    = lookup('profile::openstack::base::cloudgw::vrrp_peer',    {default_value => '127.0.0.1'}),
-    Hash                $conntrackd   = lookup('profile::openstack::base::cloudgw::conntrackd',   {default_value => {}}),
-    Stdlib::IP::Address           $routing_source = lookup('profile::openstack::base::cloudgw::routing_source_ip',{default_value => '127.0.0.7'}),
-    Stdlib::IP::Address::V4::CIDR $virt_subnet    = lookup('profile::openstack::base::cloudgw::virt_subnet_cidr', {default_value => '127.0.0.8/32'}),
-    Stdlib::IP::Address::V4::CIDR $transport_cidr = lookup('profile::openstack::base::cloudgw::transport_cidr'),
-    Stdlib::IP::Address::V4::Nosubnet $transport_vip = lookup('profile::openstack::base::cloudgw::transport_vip'),
-    Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter = lookup('profile::openstack::base::cloudgw::cloud_filter',   {default_value => []}),
-    Array[Stdlib::IP::Address::V4]                 $dmz_cidr     = lookup('profile::openstack::base::cloudgw::dmz_cidr',       {default_value => ['0.0.0.0']}),
-    Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs = lookup('profile::wmcs::cloud_private_subnet::public_cidrs', {default_value => []}),
+class profile::wmcs::cloudgw (
+    Stdlib::IP::Address::V4::CIDR                  $virt_subnet               = lookup('profile::wmcs::cloudgw::virt_subnet_cidr',         {default_value => '172.16.128.0/24'}),
+    Integer                                        $virt_vlan                 = lookup('profile::wmcs::cloudgw::virt_vlan',                {default_value => 2107}),
+    Stdlib::IP::Address                            $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer',                {default_value => '127.0.0.5'}),
+    Stdlib::IP::Address::V4::CIDR                  $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating',            {default_value => '127.0.0.5/24'}),
+    Optional[Stdlib::IP::Address::V4::CIDR]        $virt_floating_additional  = lookup('profile::wmcs::cloudgw::virt_floating_additional', {default_value => undef}),
+    Integer                                        $wan_vlan                  = lookup('profile::wmcs::cloudgw::wan_vlan',                 {default_value => 2120}),
+    Stdlib::IP::Address                            $wan_addr                  = lookup('profile::wmcs::cloudgw::wan_addr',                 {default_value => '127.0.0.4'}),
+    Integer                                        $wan_netm                  = lookup('profile::wmcs::cloudgw::wan_netm',                 {default_value => 8}),
+    Stdlib::IP::Address                            $wan_gw                    = lookup('profile::wmcs::cloudgw::wan_gw',                   {default_value => '127.0.0.1'}),
+    Array[String]                                  $vrrp_vips                 = lookup('profile::wmcs::cloudgw::vrrp_vips',                {default_value => ['127.0.0.1 dev eno2']}),
+    Stdlib::IP::Address                            $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer',                {default_value => '127.0.0.1'}),
+    String[1]                                      $vrrp_passwd               = lookup('profile::wmcs::cloudgw::vrrp_passwd',              {default_value => 'dummy'}),
+    Hash                                           $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd',               {default_value => {}}),
+    Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',        {default_value => '127.0.0.7'}),
+    Stdlib::IP::Address::V4::CIDR                  $transport_cidr            = lookup('profile::wmcs::cloudgw::transport_cidr'),
+    Stdlib::IP::Address::V4::Nosubnet              $transport_vip             = lookup('profile::wmcs::cloudgw::transport_vip'),
+    Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',             {default_value => []}),
+    Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                 {default_value => ['0.0.0.0']}),
+    Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',{default_value => []}),
 ) {
 
     ensure_packages('vlan')
@@ -30,13 +29,13 @@ class profile::openstack::base::cloudgw (
     nftables::file { 'cloudgw':
         ensure  => present,
         order   => 110,
-        content => template('profile/openstack/base/cloudgw/cloudgw.nft.erb'),
+        content => template('profile/wmcs/cloudgw/cloudgw.nft.erb'),
     }
 
     # network config, VRF, vlan trunk, routing, etc
     file { '/etc/network/interfaces.d/cloudgw':
         ensure  => present,
-        content => template('profile/openstack/base/cloudgw/interfaces.erb'),
+        content => template('profile/wmcs/cloudgw/interfaces.erb'),
     }
 
     $rt_table = 10
@@ -75,7 +74,7 @@ class profile::openstack::base::cloudgw (
             # route floating IPs to neutron
             "${virt_floating} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
             # route internal VM network to neutron
-            "${virt_cidr} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+            "${virt_subnet} table ${rt_table} nexthop via ${virt_peer} dev ${nic_virt} onlink",
             # select source address for the transport cloudgw <-> neutron subnet
             "${transport_cidr} table ${rt_table} dev ${nic_virt} scope link src ${transport_vip}",
         ]
@@ -93,7 +92,7 @@ class profile::openstack::base::cloudgw (
         peers     => ['example.com'], # overriden by config template
         auth_pass => 'ignored',       # overriden by config template
         vips      => ['127.0.0.1'],   # overriden by config template
-        config    => template('profile/openstack/base/cloudgw/keepalived.conf.erb'),
+        config    => template('profile/wmcs/cloudgw/keepalived.conf.erb'),
     }
 
     nftables::file { 'keepalived_vrrp':
@@ -122,8 +121,8 @@ class profile::openstack::base::cloudgw (
     $conntrackd_filter_ipv4    = $conntrackd[$::hostname]['filter_ipv4']
 
     class { 'conntrackd':
-        conntrackd_cfg => template('profile/openstack/base/cloudgw/conntrackd.conf.erb'),
-        systemd_cfg    => file('profile/openstack/base/cloudgw/conntrackd.service'),
+        conntrackd_cfg => template('profile/wmcs/cloudgw/conntrackd.conf.erb'),
+        systemd_cfg    => file('profile/wmcs/cloudgw/conntrackd.service'),
     }
 
     nftables::file { 'conntrackd_tcp_3780':

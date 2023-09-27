@@ -1,8 +1,8 @@
-class role::wmcs::openstack::codfw1dev::cloudgw {
+class role::wmcs::cloudgw {
     system::role { $name: }
 
     include profile::base::production
     include profile::firewall
     include profile::base::cloud_production
-    include profile::openstack::codfw1dev::cloudgw
+    include profile::wmcs::cloudgw
 }

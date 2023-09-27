@@ -328,15 +328,13 @@ role::wmcs::openstack::codfw1dev::db:
   target-q: TBD
 role::wmcs::openstack::eqiad1::services:
   target-q: TBD
-role::wmcs::openstack::eqiad1::cloudgw:
+role::wmcs::cloudgw:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::services:
   target-q: TBD
 role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
   phab-task: 332400
-role::wmcs::openstack::codfw1dev::cloudgw:
-  target-q: TBD
 role::eventlogging::analytics:
   target-q: TBD
   phab-task: 288804

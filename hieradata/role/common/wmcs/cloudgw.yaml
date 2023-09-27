@@ -1,5 +1,12 @@
 ---
-profile::openstack::base::cloudgw::dmz_cidr:
+profile::contacts::role_contacts: ['WMCS']
+profile::admin::groups:
+  - wmcs-roots
+
+profile::firewall::provider: nftables
+profile::wmcs::cloudgw::firewall_profile: true
+
+profile::wmcs::cloudgw::dmz_cidr:
   # VMs --> wiki (text-lb.eqiad)
   - "208.80.154.224"
   # VMs --> wiki (upload-lb.eqiad)

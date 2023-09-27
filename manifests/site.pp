@@ -364,11 +364,11 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\./ {
 }
 
 node /^cloudgw100[12]\.eqiad\./ {
-    role(wmcs::openstack::eqiad1::cloudgw)
+    role(wmcs::cloudgw)
 }
 
 node /^cloudgw200[23]-dev\.codfw\./ {
-    role(wmcs::openstack::codfw1dev::cloudgw)
+    role(wmcs::cloudgw)
 }
 
 node /^cloudlb200[123]-dev\.codfw\./ {
