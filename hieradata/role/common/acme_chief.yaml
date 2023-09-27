@@ -36,7 +36,7 @@ profile::acme_chief::certificates:
         - 'ns2.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^(auth)?dns[0-9]{4}\.wikimedia\.org$'
+        - '^dns[1-9][0-9]{3}\.wikimedia\.org$'
     dumps:
         CN: 'dumps.wikimedia.org'
         SNI:
@@ -51,7 +51,7 @@ profile::acme_chief::certificates:
         - '*.check.wikimedia-dns.org'
         challenge: dns-01
         authorized_regexes:
-        - '^durum[123456]00[1234]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\.wmnet$'
+        - '^durum[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin)\.wmnet$'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
@@ -262,19 +262,14 @@ profile::acme_chief::certificates:
         staging_time: 604800
         challenge: dns-01
         authorized_regexes:
-        - '^cp1[0-9][0-9][0-9]\.eqiad\.wmnet$'
-        - '^cp2[0-9][0-9][0-9]\.codfw\.wmnet$'
-        - '^cp3[0-9][0-9][0-9]\.esams\.wmnet$'
-        - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
-        - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
-        - '^cp6[0-9][0-9][0-9]\.drmrs\.wmnet$'
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin)\.wmnet$'
     wikidough:
         CN: 'wikimedia-dns.org'
         SNI:
         - 'wikimedia-dns.org'
         challenge: dns-01
         authorized_regexes:
-        - '^doh[123456]00[1234]\.wikimedia\.org$'
+        - '^doh[1-9][0-9]{3}\.wikimedia\.org$'
     wikiworkshop:
         CN: 'wikiworkshop.org'
         SNI:
@@ -283,12 +278,7 @@ profile::acme_chief::certificates:
         staging_time: 604800
         challenge: dns-01
         authorized_regexes:
-        - '^cp1[0-9][0-9][0-9]\.eqiad\.wmnet$'
-        - '^cp2[0-9][0-9][0-9]\.codfw\.wmnet$'
-        - '^cp3[0-9][0-9][0-9]\.esams\.wmnet$'
-        - '^cp4[0-9][0-9][0-9]\.ulsfo\.wmnet$'
-        - '^cp5[0-9][0-9][0-9]\.eqsin\.wmnet$'
-        - '^cp6[0-9][0-9][0-9]\.drmrs\.wmnet$'
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin)\.wmnet$'
 profile::acme_chief::challenges:
   dns-01:
     zone_update_cmd: /usr/local/bin/acme-chief-gdnsd-sync.py

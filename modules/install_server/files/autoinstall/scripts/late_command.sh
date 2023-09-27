@@ -42,7 +42,7 @@ chroot /target /bin/sh -c 'echo $(cat /etc/issue.net) auto-installed on $(date).
 # single partition for ats-be cache (we currently have a mix of nodes with 0,
 # 1, or 2 such drives).
 case $(hostname) in
-    cp[123456][0-9][0-9][0-9]|sretest2002)
+    cp[1-9][0-9][0-9][0-9]|sretest2002)
 	# Starting with bullseye the fdisk udeb is no longer enabled by default
 	anna-install fdisk-udeb
         for nvmedev in /dev/nvme?n1; do

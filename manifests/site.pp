@@ -235,11 +235,6 @@ node /^archiva1002\.wikimedia\./ {
     role(archiva)
 }
 
-# Deprecated, preserved for posterity: T330670
-#node /^authdns[12]001\.wikimedia\./ {
-#    role(dns::auth)
-#}
-
 # etcd cluster for aux kubernetes cluster
 node /^aux-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::aux_k8s_etcd)
@@ -974,7 +969,7 @@ node /^debmonitor[2]003\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
 
-node /^dns[123456]00[123456]\.wikimedia\./ {
+node /^dns[1-9][0-9]{3}\.wikimedia\./ {
     role(dnsbox)
 }
 
@@ -983,12 +978,12 @@ node /^doc[12]00[123]\.(codfw|eqiad)\./ {
 }
 
 # Wikidough (T252132)
-node /^(doh[123456]00[1234])\.wikimedia\./ {
+node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
 }
 
 # durum for Wikidough (T289536)
-node /^durum[123456]00[1234]\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\./ {
+node /^durum[1-9][0-9]{3}\./ {
     role(durum)
 }
 
@@ -2480,28 +2475,7 @@ node /^mx2001\.wikimedia\./ {
     }
 }
 
-# ncredir instances
-node /^ncredir100[12]\.eqiad\./ {
-    role(ncredir)
-}
-
-node /^ncredir200[12]\.codfw\./ {
-    role(ncredir)
-}
-
-node /^ncredir300[34]\.esams\./ {
-    role(ncredir)
-}
-
-node /^ncredir400[12]\.ulsfo\./ {
-    role(ncredir)
-}
-
-node /^ncredir500[12]\.eqsin\./ {
-    role(ncredir)
-}
-
-node /^ncredir600[12]\.drmrs\./ {
+node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
 
