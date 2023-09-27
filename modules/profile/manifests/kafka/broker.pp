@@ -481,4 +481,11 @@ class profile::kafka::broker(
         group  => 'root',
         mode   => '0755',
     }
+
+    # Install kafka-kit (https://gitlab.wikimedia.org/repos/sre/kafka-kit) on each broker
+    # Note: we don't install it on brokers running Debian Buster, as we couldn't get it compiled.
+    # See https://phabricator.wikimedia.org/T346764#9203575
+    if debian::codename::ge('bullseye') {
+        ensure_packages(['kafka-kit'])
+    }
 }
