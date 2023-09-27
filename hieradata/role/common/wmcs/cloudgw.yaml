@@ -4,7 +4,8 @@ profile::admin::groups:
   - wmcs-roots
 
 profile::firewall::provider: nftables
-profile::wmcs::cloudgw::firewall_profile: true
+# cloudgw applies custom conntrack settings
+profile::firewall::manage_nf_conntrack: false
 
 profile::wmcs::cloudgw::dmz_cidr:
   # VMs --> wiki (text-lb.eqiad)
