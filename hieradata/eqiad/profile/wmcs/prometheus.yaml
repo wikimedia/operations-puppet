@@ -1,1 +1,1 @@
-profile::wmcs::prometheus::openstack_exporter_host: cloudcontrol1006.wikimedia.org
+profile::wmcs::prometheus::openstack_exporter_host: "cloudcontrol1007.eqiad.wmnet"
