@@ -18,6 +18,7 @@
 #   provide_private parameter
 # @param provide_p12
 #   Should the p12 file also be exposed, useful for java clients? Defaults to false
+# @param include_chain if true include the certificate chain. useful when using intermidiates
 # @param p12_password
 #   password for p12 file
 # @param user
@@ -44,6 +45,10 @@ define puppet::expose_agent_certs (
 ) {
     include puppet::agent
 
+    # In the puppet7 infrastructure we have an intermediate certificate as
+    # such we need to create a bundle wit the chain.  It probably safe to
+    # do this everywhere but we restrict to puppet 7 to contain fallout
+    $include_chain = versioncmp($facts['puppetversion'], '7') >= 0
 
     $target_basedir = $title
     $puppet_cert_name = $facts['networking']['fqdn']
@@ -69,12 +74,34 @@ define puppet::expose_agent_certs (
         },
         default => 'absent',
     }
-    file { "${target_basedir}/ssl/cert.pem":
-        ensure => $pem_ensure,
-        mode   => '0444',
-        owner  => $user,
-        group  => $group,
-        source => "${ssldir}/certs/${puppet_cert_name}.pem",
+    $cert_dest = "${target_basedir}/ssl/cert.pem"
+    if $include_chain {
+        concat { $cert_dest:
+            ensure => $pem_ensure,
+        }
+        concat::fragment { "${title}_puppet_agent_cert":
+            target => $cert_dest,
+            order  => '01',
+            source => $facts['puppet_config']['hostcert'],
+        }
+        # Here we add the full chain including the root CA, but we only strictly need
+        # the intermediate certificate.  however its much harder to try and extract the
+        # intermediate then just adding the hole chain.  The down side of adding the root
+        # means we use a bit more bandwith as we are sending more certificates.
+        concat::fragment { "${title}_puppet_ca_chain":
+            target => $cert_dest,
+            order  => '02',
+            source => $facts['puppet_config']['localcacert'],
+        }
+
+    } else {
+        file { $cert_dest:
+            ensure => $pem_ensure,
+            mode   => '0444',
+            owner  => $user,
+            group  => $group,
+            source => "${ssldir}/certs/${puppet_cert_name}.pem",
+        }
     }
 
     # Provide the private key
