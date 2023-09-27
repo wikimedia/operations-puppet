@@ -220,7 +220,6 @@ profile::openstack::eqiad1::nova::dhcp_domain: "eqiad1.wikimedia.cloud"
 cumin_masters:
   - 172.16.4.160 # cloud-cumin-03.cloudinfra.eqiad1.wikimedia.cloud
   - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.5.8   # bastion-restricted-eqiad1-02.bastion.eqiad1.wikimedia.cloud
   - 172.16.1.220 # bastion-restricted-eqiad1-3.bastion.eqiad1.wikimedia.cloud
 
 profile::puppet::agent::dns_alt_names: []
@@ -228,7 +227,6 @@ profile::puppet::agent::dns_alt_names: []
 bastion_hosts:
   - 172.16.3.145 # bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
   - 172.16.5.168 # bastion-eqiad1-04.bastion.eqiad1.wikimedia.cloud
-  - 172.16.5.8 # bastion-restricted-eqiad1-02.bastion.eqiad1.wikimedia.cloud
   - 172.16.1.220 # bastion-restricted-eqiad1-3.bastion.eqiad1.wikimedia.cloud
 
 cache_hosts:
