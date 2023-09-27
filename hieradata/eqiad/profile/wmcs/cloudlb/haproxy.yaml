@@ -1,4 +1,4 @@
-profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+profile::wmcs::cloudlb::haproxy::acme_chief_cert_name: openstack-eqiad1
 
 profile::wmcs::cloudlb::haproxy::config:
   designate-api:
@@ -7,7 +7,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29001
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: 9001
       servers: "%{alias('profile::openstack::eqiad1::designate_hosts')}"
@@ -24,7 +24,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 25357
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::keystone::admin_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -39,7 +39,7 @@ profile::wmcs::cloudlb::haproxy::config:
     frontends:
       - port: 5000
       - port: 25000
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::keystone::public_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -53,7 +53,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29292
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::glance::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -67,7 +67,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28776
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::cinder::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -81,7 +81,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28779
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::trove::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -95,7 +95,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28004
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::heat::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -109,7 +109,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29511
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::magnum::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -123,7 +123,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 29696
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::neutron::bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -137,7 +137,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28774
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::nova::osapi_compute_listen_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
@@ -151,7 +151,7 @@ profile::wmcs::cloudlb::haproxy::config:
       open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
     frontends:
       - port: 28778
-        acme_chief_cert_name: "%{lookup('profile::openstack::eqiad1::haproxy::acme_chief_cert_name')}"
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::placement::api_bind_port')}"
       servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"

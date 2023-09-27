@@ -235,12 +235,8 @@ class profile::wmcs::prometheus(
         port       => 9900,
     }
 
-    # This is not cloudlb, but for the sake of simplicity on the alert rules
-    # is included as one. The HAProxies on cloudcontrols are going away.
-    prometheus::class_config { "openstack_haproxy_${::site}":
-        dest       => "${targets_path}/cloudlb_haproxy_${::site}_openstack.yaml",
-        class_name => 'profile::openstack::eqiad1::haproxy',
-        port       => 9900,
+    file { "${targets_path}/cloudlb_haproxy_${::site}_openstack.yaml":
+        ensure => absent,
     }
 
     prometheus::server { 'labs':
