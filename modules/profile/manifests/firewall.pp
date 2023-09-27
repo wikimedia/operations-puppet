@@ -44,7 +44,11 @@ class profile::firewall (
         provider => $provider,
     }
 
-    if !$facts['wmflib']['is_container'] {
+    if $enable_logging and $provider == 'ferm' {
+        include profile::firewall::log::ferm
+    }
+
+    if $manage_nf_conntrack and !$facts['wmflib']['is_container'] {
         # Increase the size of conntrack table size (default is 65536)
         sysctl::parameters { 'ferm_conntrack':
             values => {
@@ -52,12 +56,7 @@ class profile::firewall (
                 'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
             },
         }
-    }
-    if $enable_logging and $provider == 'ferm' {
-        include profile::firewall::log::ferm
-    }
 
-    if $manage_nf_conntrack and !$facts['wmflib']['is_container'] {
         # The sysctl value net.netfilter.nf_conntrack_buckets is read-only. It is configured
         # via a modprobe parameter, bump it manually for running systems
         exec { 'bump nf_conntrack hash table size':
