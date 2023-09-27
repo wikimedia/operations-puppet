@@ -1,13 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 [Unit]
-Description=Redis queue worker for Bitu IDM
+Description=Bitu Identity Manager - RQ Worker
 After=network.target
 
 [Service]
-WorkingDirectory=/srv/idm/bitu
 Environment="PYTHONPATH=/etc/bitu" "DJANGO_SETTINGS_MODULE=settings"
 User=www-data
-ExecStart=/srv/idm/venv/bin/python /srv/idm/bitu/manage.py rqworker default notification
+ExecStart=bitu rqworker default notification
 
 [Install]
 WantedBy=multi-user.target
