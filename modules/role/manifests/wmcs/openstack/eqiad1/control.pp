@@ -3,11 +3,7 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::base::production
     include profile::firewall
     include profile::base::cloud_production
-
-    if $facts['hostname'] != 'cloudcontrol1006' {
-        # the only server on the old network setup
-        include profile::wmcs::cloud_private_subnet
-    }
+    include profile::wmcs::cloud_private_subnet
 
     include profile::openstack::eqiad1::metrics
     include profile::openstack::eqiad1::observerenv
@@ -29,12 +25,6 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::nova::conductor::service
     include profile::openstack::eqiad1::nova::scheduler::service
     include profile::openstack::eqiad1::nova::api::service
-
-    if $facts['hostname'] == 'cloudcontrol1006' {
-        # the only server on the old network setup
-        include profile::openstack::eqiad1::haproxy
-        include profile::prometheus::haproxy_exporter
-    }
 
     include profile::ldap::client::utils
     include profile::openstack::eqiad1::pdns::dns_floating_ip_updater

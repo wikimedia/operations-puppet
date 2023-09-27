@@ -1633,10 +1633,6 @@ node /^cloudcontrol100[57]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-node /^cloudcontrol1006\.wikimedia\./ {
-    role(wmcs::openstack::eqiad1::control)
-}
-
 #new cephosd servers T322760
 node /^cephosd100[12345]\.eqiad\./ {
     role(ceph::server)
