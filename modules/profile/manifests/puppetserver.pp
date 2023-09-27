@@ -97,9 +97,6 @@ class profile::puppetserver (
     $ssl_dir = $puppetserver::ssl_dir
     $ca_dir = $puppetserver::ca_dir
     $ca_private_key = $ca_private_key_secret.then |$x| { Sensitive(secret($x)) }
-    if enable_ca {
-        backup::set { 'etc-puppet-puppetserver-ca': }
-    }
     class { 'puppetserver::ca':
         enable          => $enable_ca,
         intermediate_ca => $intermediate_ca,
