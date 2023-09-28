@@ -26,7 +26,15 @@ class profile::druid::turnilo(
     # Abuse the fact that we all ready have network device mappings in puppetdb via the netop::check
     # resource with bgp => true matching routers and filter out fw's with bfd => false
     # TODO: pull this data from netbox/puppet integration - T229397
-    $network_devices = query_resources(false, 'Netops::Check[~".*"]{bgp=true and bfd=true}', false)
+    $pql = @("PQL")
+    resources[certname, parameters, title] {
+        type = "Netops::Check"
+        and parameters.bgp = true and parameters.bfd = true
+        order by certname
+    }
+
+    | PQL
+    $network_devices = wmflib::puppetdb_query($pql)
     $export_names_map = Hash($network_devices.map |$device| {
         [$device['parameters']['ipv4'], $device['title']]
     }.sort)
