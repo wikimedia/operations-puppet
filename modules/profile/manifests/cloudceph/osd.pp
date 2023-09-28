@@ -3,7 +3,6 @@
 #
 # This profile configures Ceph object storage hosts with the osd daemon
 class profile::cloudceph::osd(
-    Array[Stdlib::Fqdn]        $openstack_controllers           = lookup('profile::cloudceph::openstack_controllers'),
     Hash[String[1],Hash]       $mon_hosts                       = lookup('profile::cloudceph::mon::hosts'),
     Hash[String[1],Hash]       $osd_hosts                       = lookup('profile::cloudceph::osd::hosts'),
     Array[Stdlib::IP::Address] $cluster_networks                = lookup('profile::cloudceph::cluster_networks'),
@@ -121,23 +120,22 @@ class profile::cloudceph::osd(
 
     include network::constants
 
-    $client_networks = [
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-e4-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['eqiad']['private']['cloud-hosts1-f4-eqiad']['ipv4'],
-        $network::constants::all_network_subnets['production']['codfw']['private']['cloud-hosts1-codfw']['ipv4'],
-    ]
+    # this selects all production networks in eqiad & codfw that have a private subnet with name
+    # cloud-host that contains an 'ipv4' attribute
+    $client_networks = ['eqiad', 'codfw'].map |$dc| {
+        $network::constants::all_network_subnets['production'][$dc]['private'].filter | $subnet | {
+            $subnet[0] =~ /cloud-hosts/
+        }.map | $subnet, $value | {
+            $value['ipv4']
+        }
+    }.flatten.delete_undef_values.sort
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
-    $osd_cluster_addrs = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
-    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
-    $ferm_public_srange = join(concat($mon_addrs, $osd_public_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
     ferm::service { 'ceph_osd_range':
         proto      => 'tcp',
         port_range => [6800, 7100],
-        srange     => "(${ferm_public_srange})",
+        srange     => $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes,
         drange     => $host_conf['public']['addr'],
         before     => Class['ceph::common'],
     }

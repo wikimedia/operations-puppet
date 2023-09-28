@@ -23,7 +23,6 @@ describe "profile::cloudceph::mon" do
       let(:node) { "dummyhost1.example.com" }
       let(:params) {
         {
-          "openstack_controllers" => ["dummyprometheus1.local.lo"],
           "mon_hosts" => {
             "dummyhost1" => {
               "public" => {

@@ -3,7 +3,6 @@
 #
 # This profile configures Ceph monitor hosts with the mon and mgr daemons
 class profile::cloudceph::mon(
-    Array[Stdlib::Fqdn]        $openstack_controllers     = lookup('profile::cloudceph::openstack_controllers'),
     Hash[String,Hash]          $mon_hosts                 = lookup('profile::cloudceph::mon::hosts'),
     Hash[String,Hash]          $osd_hosts                 = lookup('profile::cloudceph::osd::hosts'),
     Array[Stdlib::IP::Address] $cluster_networks          = lookup('profile::cloudceph::cluster_networks'),
@@ -49,31 +48,29 @@ class profile::cloudceph::mon(
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
-    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
-    $cinder_backup_nodes_ips  = $cinder_backup_nodes.map |$host| { ipresolve($host, 4) }
-    $ferm_srange = join(concat($mon_addrs, $osd_public_addrs, $client_networks, $openstack_controller_ips, $cinder_backup_nodes_ips), ' ')
+    $ferm_srange = $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes
     ferm::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,
-        srange => "(${ferm_srange})",
+        srange => $ferm_srange,
         before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mgr_v1':
         proto  => 'tcp',
         port   => 6801,
-        srange => "(${ferm_srange})",
+        srange => $ferm_srange,
         before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_peers_v1':
         proto  => 'tcp',
         port   => 6789,
-        srange => "(${ferm_srange})",
+        srange => $ferm_srange,
         before => Class['ceph::common'],
     }
     ferm::service { 'ceph_mon_peers_v2':
         proto  => 'tcp',
         port   => 3300,
-        srange => "(${ferm_srange})",
+        srange => $ferm_srange,
         before => Class['ceph::common'],
     }
 

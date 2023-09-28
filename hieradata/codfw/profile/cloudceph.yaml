@@ -5,14 +5,6 @@ profile::cloudceph::public_networks:
   - 10.192.20.0/24
 profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 
-# TODO: we may not use here the private.codfw.wikimedia.cloud domain
-# TODO: because ceph nodes themselves are not in that subnet
-# TODO: so traffic can't circulate using the cloud-private subnet (yet)
-profile::cloudceph::openstack_controllers:
-  - cloudcontrol2001-dev.codfw.wmnet
-  - cloudcontrol2004-dev.codfw.wmnet
-  - cloudcontrol2005-dev.codfw.wmnet
-
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
 # and backup nodes for eqiad1 are in the codfw DC
 profile::cloudceph::cinder_backup_nodes:
