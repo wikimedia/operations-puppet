@@ -2,6 +2,7 @@ profile::contacts::role_contacts:
   - 'Observability'
 
 cluster: syslog
+profile::syslog::centralserver::ssl_provider: 'cfssl'
 mtail::logs:
   - /srv/syslog/*/*.log
 
