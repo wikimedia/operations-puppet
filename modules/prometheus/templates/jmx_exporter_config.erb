@@ -5,11 +5,7 @@ require 'yaml'
 static_configs = []
 
 # Iterate over each cluster and list of hosts by site in that cluster.
-@site_clusters.each { |cluster, hosts_by_site|
-  # Get a hash of hostname -> jmx_exporter_instances declared for each host
-  # in the current site in this cluster.
-  site_resources = @resources.select { |host| hosts_by_site[@site].include?(host) }.to_h
-
+@site_clusters.each do |cluster, hosts_by_site|
   # Build a hash of labels => jmx_exporter_instance parameters.
   # Each instance parameters contains the jmx exporter hostname, port and hash
   # of jmx exporter instance custom labels.  We will build prometheus static_config
@@ -20,30 +16,19 @@ static_configs = []
   # - Add a 'cluster' label for this 'cluster' name.  This usually comes from role hiera config.
   # - Finally any jmx exporter instance specific labels declared on the
   #   prometheus::jmx_exporter_instance class.
-  exporter_parameter_lists_by_labels = site_resources
-    .values
-    .flatten
-    .map { |jmx_exporter_instance|
-      parameters = jmx_exporter_instance['parameters']
-      # Add cluster label to passed in @labels, and then merge in instance specific labels.
-      parameters['labels'] = @labels.merge({'cluster' => cluster}).merge(parameters.fetch('labels', {}))
-      # return jmx_exporter_instance parameters with merged labels.
-      parameters
-    }
-    .group_by { |parameters| parameters['labels'] }
+  parameter_by_labels = @resources.select {|r| hosts_by_site[@site].include?(r['certname']) }.each do |resource|
+    resource['parameters']['labels'].merge!({'cluster' => cluster})
+  end.group_by {|x| x['parameters']['labels'] }
 
   # Append common label targets to the static_configs
-  exporter_parameter_lists_by_labels.each { |labels, parameter_list|
-    # List of targets for this set of labels
-    targets = parameter_list.map { |parameters| "#{parameters['hostname']}:#{parameters['port']}" }
-
+  parameter_by_labels.each do |labels, parameter_list|
+    targets = parameter_list.map {|param| "#{param['parameters']['hostname']}:#{param['parameters']['port']}" }
     static_configs.push({
       'targets' => targets.sort,
       'labels'  => labels.sort.to_h
-    })
-  }
-}
-
+  })
+  end
+end
 -%>
 # This file is managed by puppet
 <%= static_configs.to_yaml %>

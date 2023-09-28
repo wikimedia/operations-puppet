@@ -25,10 +25,15 @@ define prometheus::jmx_exporter_config(
     Hash   $labels            = {},
 ) {
 
-    $resources = query_resources(
-                  "Class[\"${class_name}\"]",
-                  "Prometheus::Jmx_exporter_instance[~\"${instance_selector}\"]",
-                  true)
+    $_class_name = wmflib::resource::capitalize($class_name)
+    $pql = @("PQL")
+    resources[certname, parameters] {
+        type = "Prometheus::Jmx_exporter_instance" and title ~ "${instance_selector}" and
+        nodes { resources { type =  "Class" and title = "${_class_name}" } }
+        order by parameters
+    }
+    | PQL
+    $resources = wmflib::puppetdb_query($pql)
     $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
