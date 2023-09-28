@@ -9,12 +9,11 @@ class profile::dumps::distribution::web (
 ){
     class { '::sslcert::dhparam': }
     class {'::dumps::web::xmldumps':
-        is_primary_server        => $is_primary_server,
+        web_hostname             => 'dumps.wikimedia.org',
         datadir                  => $datadir,
         xmldumpsdir              => $xmldumpsdir,
         miscdatasetsdir          => $miscdatasetsdir,
         htmldumps_server         => 'htmldumper1001.eqiad.wmnet',
-        xmldumps_server          => 'dumps.wikimedia.org',
         webuser                  => 'dumpsgen',
         webgroup                 => 'dumpsgen',
         blocked_user_agent_regex => $blocked_user_agent_regex,

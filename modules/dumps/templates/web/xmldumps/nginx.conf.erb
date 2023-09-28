@@ -7,14 +7,14 @@ limit_conn_zone $remote_addr$http_user_agent zone=addr:10m;
 
 server {
    listen [::]:80 default ipv6only=off;
-   server_name <%= @xmldumps_server %>;
+   server_name <%= @web_hostname %>;
 
    return 403;
 }
 
 server {
    listen [::]:443 default ssl ipv6only=off;
-   server_name <%= @xmldumps_server %>;
+   server_name <%= @web_hostname %>;
 
    ssl_certificate /etc/acmecerts/dumps/live/ec-prime256v1.chained.crt;
    ssl_certificate_key /etc/acmecerts/dumps/live/ec-prime256v1.key;

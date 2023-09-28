@@ -1,11 +1,10 @@
 # serve xml/sql dumps: https://wikitech.wikimedia.org/wiki/Dumps
 class dumps::web::xmldumps(
-    $is_primary_server = true,
+    Stdlib::Fqdn $web_hostname,
     $datadir          = undef,
     $xmldumpsdir      = undef,
     $miscdatasetsdir  = undef,
     $htmldumps_server = undef,
-    $xmldumps_server  = undef,
     $webuser          = undef,
     $webgroup         = undef,
     String $blocked_user_agent_regex = '',
@@ -39,19 +38,10 @@ class dumps::web::xmldumps(
         mode   => '0444',
     }
 
-    monitoring::service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http_port_status!80!403',
-        contact_group => 'wmcs-team,admins',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
-    }
-
-    if $is_primary_server {
-        monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => "check_ssl_http_letsencrypt!${xmldumps_server}",
-            contact_group => 'wmcs-team,admins',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#A_labstore_host_dies_(web_or_nfs_server_for_dumps)',
-        }
+    prometheus::blackbox::check::http { $web_hostname:
+        team               => 'wmcs',
+        severity           => 'critical',
+        body_regex_matches => ['Wikimedia Downloads'],
+        probe_runbook      => 'https://wikitech.wikimedia.org/wiki/Dumps/SQL-XML_Dumps#NFS_share_and/or_web_server_issues',
     }
 }
