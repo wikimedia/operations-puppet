@@ -4,16 +4,13 @@ require 'yaml'
 # All labels / targets list
 all = []
 
-
 # Find all servers in the current site, and filter them by the servers list we just found
 @site_clusters.each do |cluster, val|
-  targets = val[@prometheus_site].flat_map {|server|
-    @resources.fetch(server, []).map {|exporter|
-        hostname = server.split('.')[0]
-        port = exporter['parameters'][@port_parameter]
-        "#{hostname}:#{port}"
-    }
-  }
+  targets = @resources.select {|r| val[@prometheus_site].include?(r['certname']) }.map do |resource|
+      hostname = resource['certname'].split('.')[0]
+      port = resource['parameters'][@port_parameter]
+      "#{hostname}:#{port}"
+  end
   if targets.length > 0
     all.push(
       {

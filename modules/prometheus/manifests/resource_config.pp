@@ -36,8 +36,9 @@ define prometheus::resource_config(
     String $prometheus_site = $::site,
     Hash   $labels          = {},
 ) {
-    $query = "${define_name}[~'.*']"
-    $resources = query_resources(false, $query, true)
+    $_define_name = wmflib::resource::capitalize($define_name)
+    $pql = "resources[certname, parameters] { type = \"${_define_name}\" order by certname }"
+    $resources = wmflib::puppetdb_query($pql)
     $site_clusters = wmflib::get_clusters({'site' => [$prometheus_site]})
 
     file { $dest:
