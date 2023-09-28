@@ -28,6 +28,7 @@ profile::pki::root_ca::intermediates:
   - cassandra
   - puppet # USED by the puppetserver infrastructure SERVER-3164
   - network_devices
+  - syslog
 profile::pki::root_ca::common_name: 'Wikimedia_Internal_Root_CA'
 profile::pki::root_ca::key_params:
    algo: ecdsa
