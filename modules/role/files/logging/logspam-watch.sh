@@ -73,16 +73,16 @@ function display {
   printf '\n%s\n' "$logspam_output"
 
   # Pointers to hotkeys and current settings:
-  printf '[%sp%sattern: %s]' "$BOLD" "$NORMAL" "$GREEN$filter$NORMAL"
-  printf '  [%sw%sindow: %s%d%s mins]' "$BOLD" "$NORMAL" "$GREEN" "$LOGSPAM_WINDOW" "$NORMAL"
-  printf '  [%sm%sinimum hits: %s%d%s]' "$BOLD" "$NORMAL" "$GREEN" "$MINIMUM_HITS" "$NORMAL"
-  printf '  [%s123456%s sort]' "$BOLD" "$NORMAL"
-  printf '  [%sh%selp]' "$BOLD" "$NORMAL"
-  printf '  [%sq%suit] ' "$BOLD" "$NORMAL"
+  printf '[%sp%sat: %s]' "$BOLD" "$NORMAL" "$GREEN$filter$NORMAL"
+  printf ' [%sw%sindow: %s%d%s mins]' "$BOLD" "$NORMAL" "$GREEN" "$LOGSPAM_WINDOW" "$NORMAL"
+  printf ' [%sm%sin hits: %s%d%s]' "$BOLD" "$NORMAL" "$GREEN" "$MINIMUM_HITS" "$NORMAL"
+  printf ' [%s123456%s sort]' "$BOLD" "$NORMAL"
+  printf ' [%sh%selp]' "$BOLD" "$NORMAL"
+  printf ' [%sq%suit]' "$BOLD" "$NORMAL"
   if [ "$SHOW_JUNK" = 1 ]; then
-    printf '[no%sj%sunk] ' "$BOLD" "$NORMAL"
+    printf ' [no%sj%sunk] ' "$BOLD" "$NORMAL"
   else
-    printf '[show%sj%sunk] ' "$BOLD" "$NORMAL"
+    printf ' [show%sj%sunk] ' "$BOLD" "$NORMAL"
   fi
 }
 
@@ -201,6 +201,7 @@ trap 'ticks=$MAXTICKS' SIGWINCH
 while [ -z "$quit" ]; do
   if ((ticks >= MAXTICKS)); then
     ticks=0
+    echo -n '[⌚ Refreshing...] '
     display
   fi
 
