@@ -15,7 +15,6 @@
 # @param password_salt passowrd salt
 # @param allow_push_from a list of hosts allowed to push
 # @param ssl_settings an array of ssl settings
-# @param use_puppet_certs use the puppet certs
 # @param ssl_certificate_name the certificate name to use
 # @param jwt_allowed_ips A list of ips allowd to use jwt
 # @param jwt_keys_url The jwt keys url
@@ -35,8 +34,7 @@ class docker_registry_ha::web (
     String                               $password_salt,
     Array[Stdlib::Host]                  $allow_push_from,
     Array[String]                        $ssl_settings,
-    Boolean                              $use_puppet_certs     = false,
-    Optional[String]                     $ssl_certificate_name = undef,
+    String                               $ssl_certificate_name = undef,
     Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips      = [],
     Stdlib::HTTPUrl                      $jwt_keys_url         = 'https://gitlab.wikimedia.org/-/jwks',
     Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],
@@ -46,18 +44,6 @@ class docker_registry_ha::web (
     Array[Stdlib::Host]                  $deployment_hosts     = [],
     Array[Stdlib::Host]                  $kubernetes_hosts     = [],
 ) {
-    if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
-        fail('Either puppet certs should be used, or an ssl cert name should be provided')
-    }
-
-    if $use_puppet_certs {
-        # TODO: consider using profile::pki::get_cert
-        puppet::expose_agent_certs { '/etc/nginx':
-            ensure          => present,
-            provide_private => true,
-            require         => Class['nginx'],
-        }
-    }
 
     # Legacy credentials
     file { '/etc/nginx/htpasswd.registry':

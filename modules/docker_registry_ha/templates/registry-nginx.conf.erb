@@ -71,13 +71,8 @@ server {
 server {
     listen 443 default_server ssl;
     listen [::]:443 ssl default_server ipv6only=on;
-<%- if @use_puppet_certs %>
-    ssl_certificate     /etc/nginx/ssl/cert.pem;
-    ssl_certificate_key /etc/nginx/ssl/server.key;
-<%- else -%>
     ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
     ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
-<%- end -%>
 
     # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
     # Enable a shared cache, since it is defined at this level

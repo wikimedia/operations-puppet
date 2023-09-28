@@ -16,7 +16,7 @@ class profile::docker_registry_ha::registry(
     # Which machines are allowed to build images.
     Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
     # Storage configuration
-    Optional[String] $certname = lookup('profile::docker_registry_ha::registry::certname', { 'default_value' => undef }),
+    String $certname = lookup('profile::docker_registry_ha::registry::certname'),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
     Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
@@ -40,7 +40,7 @@ class profile::docker_registry_ha::registry(
     # if this looks pretty similar to profile::docker::registry
     # is intended.
 
-    require ::network::constants
+    require network::constants
     # Hiera configurations
     if !$image_builders {
         $builders = $deployment_hosts
@@ -51,15 +51,10 @@ class profile::docker_registry_ha::registry(
     # Nginx frontend
     class { '::sslcert::dhparam': }
 
-    if $certname {
-        sslcert::certificate { $certname:
-            ensure       => present,
-            skip_private => false,
-            before       => Service['nginx'],
-        }
-        $use_puppet = false
-    } else {
-        $use_puppet = true
+    sslcert::certificate { $certname:
+        ensure       => present,
+        skip_private => false,
+        before       => Service['nginx'],
     }
     $swift_account = $swift_accounts['docker_registry']
     # Get the local site's swift credentials
@@ -71,7 +66,7 @@ class profile::docker_registry_ha::registry(
         $password = $swift_password
     }
 
-    class { '::docker_registry_ha':
+    class { 'docker_registry_ha':
         swift_user                      => $swift_account['user'],
         swift_password                  => $password,
         swift_url                       => $swift_auth_url,
@@ -90,7 +85,7 @@ class profile::docker_registry_ha::registry(
         $k8s_groups[$cluster_name].values.map |$x| { $x['cluster_nodes'] }
     }.flatten.unique
 
-    class { '::docker_registry_ha::web':
+    class { 'docker_registry_ha::web':
         ci_restricted_user_password => $ci_restricted_user_password,
         kubernetes_user_password    => $kubernetes_user_password,
         ci_build_user_password      => $ci_build_user_password,
@@ -98,7 +93,6 @@ class profile::docker_registry_ha::registry(
         password_salt               => $password_salt,
         allow_push_from             => $image_builders,
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
-        use_puppet_certs            => $use_puppet,
         ssl_certificate_name        => $certname,
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
