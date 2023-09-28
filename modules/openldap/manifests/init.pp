@@ -92,6 +92,15 @@ class openldap(
         hasrestart => true,
     }
 
+    # Prior to OpenLDAP 2.5 the ppolicy overlay needed an separate
+    # schema extension. Starting with OpenLDAP 2.5 this is now built-in:
+    # https://www.openldap.org/doc/admin25/appendix-upgrading.html#ppolicy%20overlay
+    if debian::codename::ge('bookworm') {
+        $install_ppolicy_schema = false
+    } else {
+        $install_ppolicy_schema = true
+    }
+
     # our replication dir
     file { $datadir:
         ensure  => directory,

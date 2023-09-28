@@ -11,7 +11,9 @@ include         /etc/ldap/schema/rfc2307bis.schema
 include         /etc/ldap/schema/inetorgperson.schema
 include         /etc/ldap/schema/dyngroup.schema
 include         /etc/ldap/schema/samba.schema
+<% if @install_ppolicy_schema -%>
 include         /etc/ldap/schema/ppolicy.schema
+<% end %>
 
 <% if @extra_schemas -%>
     <%- @extra_schemas.each do |extra_schema| %>
