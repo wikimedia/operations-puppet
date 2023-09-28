@@ -8,7 +8,6 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
     String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
     String $kubeconfig_path_template = lookup('profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template'),
-    Array[Stdlib::Fqdn]$cloudcontrol = lookup('profile::openstack::eqiad1::openstack_controllers'),
     Boolean $redirect_to_https       = lookup('profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https'),
     # might be needed to get toolforge weld
     Boolean $include_tools_repo      = lookup('profile::wmcs::services::toolsdb_replica_cnf::include_tools_repo'),
@@ -253,12 +252,5 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     file { "${func_tests_dir}/helpers.bash":
       source => "puppet:///modules/${puppet_path}/helpers.bash",
       mode   => '0400',
-    }
-
-    # nginx runs a REST API
-    ferm::service{ 'rest_api_from_cloudcontrol':
-        proto  => 'tcp',
-        port   => '80',
-        srange => "(@resolve((${join($cloudcontrol,' ')})))",
     }
 }
