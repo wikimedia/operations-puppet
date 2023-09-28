@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# = Class: docker_registry_ha::web
 #
-# This class sets up nginx to proxy and provide access control
+# @summary This class sets up nginx to proxy and provide access control
 # in front of a docker-registry.
 #
 # There are 3 groups of users:
@@ -9,26 +8,43 @@
 # * restricted-read - can read restricted images
 # * regular-push - can push non-restricted images
 #
+# @param ci_restricted_user_password password used by restricted ci
+# @param kubernetes_user_password password used by kubernetes
+# @param ci_build_user_password password for ci build
+# @param prod_build_user_password password for production build user
+# @param password_salt passowrd salt
+# @param allow_push_from a list of hosts allowed to push
+# @param ssl_settings an array of ssl settings
+# @param use_puppet_certs use the puppet certs
+# @param ssl_certificate_name the certificate name to use
+# @param jwt_allowed_ips A list of ips allowd to use jwt
+# @param jwt_keys_url The jwt keys url
+# @param jwt_issuers The jwt keys issuer
+# @param read_only_mode enable readonly mode
+# @param homepage the homepage doc root
+# @param nginx_cache enable nginx cache
+# @param deployment_hosts list of deployment hosts
+# @param kubernetes_hosts list of kubernetes hosts
 # TODO: Refactor this to be a flexible ACL system, similar to etcd::tlsproxy
 #
 class docker_registry_ha::web (
-    String $ci_restricted_user_password,
-    String $kubernetes_user_password,
-    String $ci_build_user_password,
-    String $prod_build_user_password,
-    String $password_salt,
-    Array[Stdlib::Host] $allow_push_from,
-    Array[String] $ssl_settings,
-    Boolean $use_puppet_certs=false,
-    Optional[String] $ssl_certificate_name=undef,
-    Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips=[],
-    Stdlib::HTTPUrl $jwt_keys_url='https://gitlab.wikimedia.org/-/jwks',
-    Array[String] $jwt_issuers=['https://gitlab.wikimedia.org'],
-    Boolean $read_only_mode=false,
-    String $homepage='/srv/homepage',
-    Boolean $nginx_cache=true,
-    Array[Stdlib::Host] $deployment_hosts=[],
-    Array[Stdlib::Host] $kubernetes_hosts=[],
+    String                               $ci_restricted_user_password,
+    String                               $kubernetes_user_password,
+    String                               $ci_build_user_password,
+    String                               $prod_build_user_password,
+    String                               $password_salt,
+    Array[Stdlib::Host]                  $allow_push_from,
+    Array[String]                        $ssl_settings,
+    Boolean                              $use_puppet_certs     = false,
+    Optional[String]                     $ssl_certificate_name = undef,
+    Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips      = [],
+    Stdlib::HTTPUrl                      $jwt_keys_url         = 'https://gitlab.wikimedia.org/-/jwks',
+    Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],
+    Boolean                              $read_only_mode       = false,
+    String                               $homepage             = '/srv/homepage',
+    Boolean                              $nginx_cache          = true,
+    Array[Stdlib::Host]                  $deployment_hosts     = [],
+    Array[Stdlib::Host]                  $kubernetes_hosts     = [],
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
