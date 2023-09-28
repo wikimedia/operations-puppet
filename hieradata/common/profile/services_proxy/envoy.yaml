@@ -53,10 +53,6 @@ profile::services_proxy::envoy::listeners:
     port: 6009
     service: wdqs-internal
     timeout: "10s"
-  - name: ores
-    port: 6010
-    service: ores
-    timeout: "10s"
   - name: restbase
     port: 6011
     service: restbase-https
@@ -340,7 +336,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - termbox
   - push-notifications
   - wdqs-internal
-  - ores
   - restbase
   - cxserver
   - shellbox
