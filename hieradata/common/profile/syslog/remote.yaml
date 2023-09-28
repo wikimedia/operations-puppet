@@ -1,0 +1,15 @@
+profile::syslog::remote::enable: true
+# To specify an rsyslog destination for a site, use the site name as the key
+# and set the rsyslog destination as the corresponding value. Example:
+# eqiad:
+# - 'centrallog2002.codfw.wmnet:6514'
+profile::syslog::remote::central_hosts_tls:
+  default:
+  - 'centrallog1002.eqiad.wmnet:6514'
+  - 'centrallog2002.codfw.wmnet:6514'
+profile::syslog::remote::send_logs: 'standard'
+profile::syslog::remote::queue_size: 10000
+profile::syslog::remote::tls_client_auth: true
+profile::syslog::remote::tls_server_auth: 'x509/certvalid'
+profile::syslog::remote::tls_netstream_driver: 'ossl'
+profile::syslog::remote::tls_trusted_ca: '/etc/ssl/certs/wmf-ca-certificates.crt'

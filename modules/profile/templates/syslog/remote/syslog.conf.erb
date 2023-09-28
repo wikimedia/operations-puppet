@@ -1,5 +1,5 @@
 # NOTE: This file is managed by Puppet.
-<%- unless @central_hosts_tls.empty? %>
+<%- unless @_central_hosts_tls.empty? %>
 $DefaultNetstreamDriverCAFile <%= @tls_trusted_ca %>
 <%- if @tls_client_auth -%>
 $DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
@@ -23,7 +23,7 @@ if ($syslogseverity-text == 'info' and
 if ($syslogfacility-text == 'auth' or
     $syslogfacility-text == 'authpriv') then {
 <% end -%>
-<%- @central_hosts_tls.sort.each do |log_host| %>
+<%- @_central_hosts_tls.sort.each do |log_host| %>
   <% host, port = log_host.split(':') %>
   action(type="omfwd" name="fwd_<%= log_host %>" Target="<%= host %>" Port="<%= port or '6514' %>"
     StreamDriver="<%= @_tls_netstream_driver %>" StreamDriverAuthMode="<%= @tls_server_auth %>"

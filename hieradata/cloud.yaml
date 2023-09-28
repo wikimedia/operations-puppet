@@ -64,10 +64,6 @@ profile::admin::managehomehome: false
 
 profile::base::overlayfs: false
 profile::base::additional_purged_packages: []
-profile::base::remote_syslog_send_logs: standard
-profile::base::remote_syslog_tls_client_auth: true
-profile::base::remote_syslog_tls: {}
-profile::base::remote_syslog_tls_ca: "%{facts.puppet_config.localcacert}"
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
@@ -712,6 +708,15 @@ profile::rsyslog::kafka_shipper::kafka_brokers:
 
 profile::syslog::centralserver::log_retention_days: 90
 profile::syslog::centralserver::file_template_property: "hostname"
+
+profile::syslog::remote::enable: false
+profile::syslog::remote::central_hosts_tls: {}
+profile::syslog::remote::send_logs: 'standard'
+profile::syslog::remote::queue_size: 10000
+profile::syslog::remote::tls_client_auth: true
+profile::syslog::remote::tls_server_auth: 'x509/certvalid'
+profile::syslog::remote::tls_netstream_driver: 'gtls'
+profile::syslog::remote::tls_trusted_ca: '/var/lib/puppet/ssl/certs/ca.pem'
 
 profile::openstack::base::radosgw::service_user: "swift"
 profile::openstack::base::radosgw::service_user_project: "swift"

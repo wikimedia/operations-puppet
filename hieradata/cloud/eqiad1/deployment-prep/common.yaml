@@ -6,7 +6,8 @@ cache_hosts:
   - 172.16.3.164 # deployment-cache-text08.deployment-prep.eqiad1.wikimedia.cloud
   - 172.16.3.146 # deployment-cache-upload08.deployment-prep.eqiad1.wikimedia.cloud
 
-profile::base::remote_syslog_tls: {}
+profile::syslog::remote::enable: false
+profile::syslog::remote::central_hosts_tls: {}
 profile::apt::purge_sources: true
 # No LVS nor etcd-based load-balancing here
 has_lvs: false

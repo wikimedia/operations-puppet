@@ -1,16 +1,6 @@
 profile::base::enable_contacts: true
 profile::base::core_dump_pattern:  '/var/tmp/core/core.%h.%e.%p.%t'
 profile::base::unprivileged_userns_clone: false
-# To specify an rsyslog destination for a site, use the site name as the key
-# and set the rsyslog destination as the corresponding value. Example:
-# eqiad:
-# - 'centrallog2002.codfw.wmnet:6514'
-profile::base::remote_syslog_tls:
-  default:
-  - 'centrallog1002.eqiad.wmnet:6514'
-  - 'centrallog2002.codfw.wmnet:6514'
 profile::base::overlayfs: false
-profile::base::remote_syslog_tls_client_auth: true
-profile::base::remote_syslog_send_logs: standard
 profile::base::additional_purged_packages: ['isc-dhcp-client']
 profile::base::remote_syslog_tls_ca: "/etc/ssl/certs/wmf-ca-certificates.crt"

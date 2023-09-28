@@ -28,7 +28,8 @@ ntp_peers:
     drmrs: []
 
 ## Disable remote syslog logging, as it breaks rsyslog in cloud VPSes.
-# profile::base::remote_syslog_tls: {}
+# profile::syslog::remote::enable: false
+# profile::syslog::remote::central_hosts_tls: {}
 
 # Disable email alerts
 # profile::cumin::master::email_alerts: false

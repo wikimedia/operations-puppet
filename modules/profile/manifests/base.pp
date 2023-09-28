@@ -1,12 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to configure base config
-# @param remote_syslog_tls Central TLS enabled syslog servers
-# @param remote_syslog_tls_client_auth TLS client authentication enabled for remote syslog
-# @param remote_syslog_tls_server_auth mode used to verify the authenticity of the syslog server
-# @param remote_syslog_tls_netstream_driver rsyslog network stream driver to use
-# for TLS in remote syslog, either 'gtls' (default)  or 'ossl'
-# @param remote_syslog_tls_ca CA used for TLS, defaults to puppet CA
-# @param remote_syslog_send_logs config for send logs
 # @param overlayfs if to use overlays
 # @param wikimedia_clusters the wikimedia clusters
 # @param cluster the cluster
@@ -21,20 +14,14 @@
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
-    String                              $remote_syslog_send_logs            = lookup('profile::base::remote_syslog_send_logs'),
     Boolean                             $overlayfs                          = lookup('profile::base::overlayfs'),
     Boolean                             $enable_contacts                    = lookup('profile::base::enable_contacts'),
     String                              $core_dump_pattern                  = lookup('profile::base::core_dump_pattern'),
     Boolean                             $unprivileged_userns_clone          = lookup('profile::base::unprivileged_userns_clone'),
-    Hash                                $remote_syslog_tls                  = lookup('profile::base::remote_syslog_tls'),
-    Boolean                             $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_tls_client_auth'),
-    Enum['x509/certvalid', 'x509/name'] $remote_syslog_tls_server_auth      = lookup('profile::base::remote_syslog_tls_server_auth', {'default_value'      => 'x509/certvalid'}),
-    Enum['gtls', 'ossl']                $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'ossl'}),
-    Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca'),
-    Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value'             => false}),
-    Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value'         => true}),
-    Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value'                  => true}),
-    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value'                   => true}),
+    Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
+    Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
+    Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
+    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
     Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
 ) {
@@ -81,23 +68,10 @@ class profile::base (
     include profile::logrotate
     include profile::prometheus::node_exporter
     include profile::rsyslog
+    include profile::syslog::remote
     include profile::prometheus::rsyslog_exporter
     include profile::prometheus::cadvisor
     include profile::prometheus::ethtool_exporter
-
-    unless empty($remote_syslog_tls) {
-        $central_hosts_tls = pick($remote_syslog_tls[$::site], $remote_syslog_tls['default'])
-
-        class { 'base::remote_syslog':
-            enable               => true,
-            central_hosts_tls    => $central_hosts_tls,
-            send_logs            => $remote_syslog_send_logs,
-            tls_client_auth      => $remote_syslog_tls_client_auth,
-            tls_server_auth      => $remote_syslog_tls_server_auth,
-            tls_netstream_driver => $remote_syslog_tls_netstream_driver,
-            tls_trusted_ca       => $remote_syslog_tls_ca,
-        }
-    }
 
     if !$facts['wmflib']['is_container'] {
         # TODO: make base::sysctl a profile itself?

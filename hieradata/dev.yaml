@@ -18,7 +18,8 @@ profile::base::production::enable_ip6_mapped: false
 profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.blackhole.erb'
 
 # Disable remote syslog logging in dev for now as certs are not setup
-profile::base::remote_syslog_tls: {}
+profile::syslog::remote::enable: false
+profile::syslog::remote::central_hosts_tls: {}
 
 # Don't manage resolv.conf as k8s handles it for now
 profile::base::manage_resolvconf: false

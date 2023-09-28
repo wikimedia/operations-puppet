@@ -295,15 +295,16 @@ wikimedia_clusters:
 
 
 # Central logging for auth.log
-profile::base::remote_syslog_send_logs: auth-logs
-profile::base::remote_syslog_tls:
-  eqiad:
+profile::syslog::remote::send_logs: auth-logs
+profile::syslog::remote::enable: true
+profile::syslog::remote::central_hosts_tls:
+  default:
   - syslogaudit1.svc.eqiad1.wikimedia.cloud:6514
   - syslogaudit2.svc.eqiad1.wikimedia.cloud:6514
-profile::base::remote_syslog_tls_client_auth: false
-profile::base::remote_syslog_tls_server_auth: x509/name
-profile::base::remote_syslog_tls_ca: /etc/ssl/certs/ca-certificates.crt
+profile::syslog::remote::tls_client_auth: false
+profile::syslog::remote::tls_server_auth: x509/name
+profile::syslog::remote::tls_trusted_ca: /etc/ssl/certs/ca-certificates.crt
 
 # we need the ossl driver; gtls doesn't work with acme certs.
-profile::base::remote_syslog_tls_netstream_driver: ossl
+profile::syslog::remote::tls_netstream_driver: ossl
 profile::syslog::centralserver::tls_netstream_driver: ossl
