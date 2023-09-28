@@ -2,8 +2,8 @@
 <%- unless @_central_hosts_tls.empty? %>
 $DefaultNetstreamDriverCAFile <%= @tls_trusted_ca %>
 <%- if @tls_client_auth -%>
-$DefaultNetstreamDriverCertFile /etc/rsyslog/ssl/cert.pem
-$DefaultNetstreamDriverKeyFile /etc/rsyslog/ssl/server.key
+$DefaultNetstreamDriverCertFile <%= @cert_file %>
+$DefaultNetstreamDriverKeyFile <%= @key_file %>
 <% end -%>
 <% end -%>
 

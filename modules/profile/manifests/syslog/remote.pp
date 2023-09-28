@@ -74,7 +74,6 @@ class profile::syslog::remote (
             owner  => $owner,
             group  => $group,
             mode   => '0400',
-            before => Puppet::Expose_agent_certs['/etc/rsyslog'],
         }
 
         # TODO: consider using profile::pki::get_cert
@@ -82,7 +81,10 @@ class profile::syslog::remote (
             provide_private => true,
             user            => $owner,
             group           => $group,
+            require         => File['/etc/rsyslog'],
         }
+        $cert_file = '/etc/rsyslog/ssl/cert.pem'
+        $key_file = '/etc/rsyslog/ssl/server.key'
 
         rsyslog::conf { 'remote_syslog':
             content  => template('profile/syslog/remote/syslog.conf.erb'),
