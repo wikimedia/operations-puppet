@@ -1036,12 +1036,6 @@ lock_path = /var/lib/magnum/tmp
 # Deprecated group/name - [DEFAULT]/notification_driver
 driver = messaging
 
-# A URL representing the messaging driver to use for notifications. If
-# not set, we fall back to the same configuration used for RPC.
-# (string value)
-# Deprecated group/name - [DEFAULT]/notification_transport_url
-transport_url = rabbit://<%= @openstack_controllers.map{ |rabbit_host| "#{@rabbit_user}:#{@rabbit_pass}\@#{rabbit_host}:5671" }.join(',') %>
-
 # AMQP topic used for OpenStack notifications. (list value)
 # Deprecated group/name - [rpc_notifier2]/topics
 # Deprecated group/name - [DEFAULT]/notification_topics
