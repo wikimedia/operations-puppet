@@ -301,7 +301,7 @@ profile::syslog::remote::central_hosts_tls:
   default:
   - syslogaudit1.svc.eqiad1.wikimedia.cloud:6514
   - syslogaudit2.svc.eqiad1.wikimedia.cloud:6514
-profile::syslog::remote::tls_client_auth: false
+profile::syslog::remote::mtls_provider: 'disabled'
 profile::syslog::remote::tls_server_auth: x509/name
 profile::syslog::remote::tls_trusted_ca: /etc/ssl/certs/ca-certificates.crt
 

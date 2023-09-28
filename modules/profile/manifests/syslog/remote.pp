@@ -34,7 +34,7 @@ class profile::syslog::remote (
     Profile::Syslog::Hosts              $central_hosts_tls    = lookup('profile::syslog::remote::central_hosts_tls'),
     Enum['auth-logs', 'standard']       $send_logs            = lookup('profile::syslog::remote::send_logs'),
     Integer                             $queue_size           = lookup('profile::syslog::remote::queue_size'),
-    Boolean                             $tls_client_auth      = lookup('profile::syslog::remote::tls_client_auth'),
+    Enum['disabled', 'puppet', 'cfssl'] $mtls_provider        = lookup('profile::syslog::remote::mtls_provider'),
     Enum['x509/certvalid', 'x509/name'] $tls_server_auth      = lookup('profile::syslog::remote::tls_server_auth'),
     Enum['gtls', 'ossl']                $tls_netstream_driver = lookup('profile::syslog::remote::tls_netstream_driver'),
     Stdlib::Unixpath                    $tls_trusted_ca       = lookup('profile::syslog::remote::tls_trusted_ca'),
@@ -76,15 +76,27 @@ class profile::syslog::remote (
             mode   => '0400',
         }
 
-        # TODO: consider using profile::pki::get_cert
-        puppet::expose_agent_certs { '/etc/rsyslog':
-            provide_private => true,
-            user            => $owner,
-            group           => $group,
-            require         => File['/etc/rsyslog'],
+        case $mtls_provider {
+            'puppet': {
+                puppet::expose_agent_certs { '/etc/rsyslog':
+                    provide_private => true,
+                    user            => $owner,
+                    group           => $group,
+                    require         => File['/etc/rsyslog'],
+                }
+                $cert_file = '/etc/rsyslog/ssl/cert.pem'
+                $key_file = '/etc/rsyslog/ssl/server.key'
+            }
+            'cfssl': {
+                $ssl_paths = profile::pki::get_cert('syslog')
+                $cert_file = $ssl_paths['chained']
+                $key_file = $ssl_paths['key']
+            }
+            default: {
+                $cert_file = undef
+                $key_file = undef
+            }
         }
-        $cert_file = '/etc/rsyslog/ssl/cert.pem'
-        $key_file = '/etc/rsyslog/ssl/server.key'
 
         rsyslog::conf { 'remote_syslog':
             content  => template('profile/syslog/remote/syslog.conf.erb'),

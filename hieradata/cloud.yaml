@@ -713,7 +713,7 @@ profile::syslog::remote::enable: false
 profile::syslog::remote::central_hosts_tls: {}
 profile::syslog::remote::send_logs: 'standard'
 profile::syslog::remote::queue_size: 10000
-profile::syslog::remote::tls_client_auth: true
+profile::syslog::remote::mtls_provider: 'puppet'
 profile::syslog::remote::tls_server_auth: 'x509/certvalid'
 profile::syslog::remote::tls_netstream_driver: 'gtls'
 profile::syslog::remote::tls_trusted_ca: '/var/lib/puppet/ssl/certs/ca.pem'

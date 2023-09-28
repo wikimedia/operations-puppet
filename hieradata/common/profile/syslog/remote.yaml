@@ -9,7 +9,7 @@ profile::syslog::remote::central_hosts_tls:
   - 'centrallog2002.codfw.wmnet:6514'
 profile::syslog::remote::send_logs: 'standard'
 profile::syslog::remote::queue_size: 10000
-profile::syslog::remote::tls_client_auth: true
+profile::syslog::remote::mtls_provider: 'puppet'
 profile::syslog::remote::tls_server_auth: 'x509/certvalid'
 profile::syslog::remote::tls_netstream_driver: 'ossl'
 profile::syslog::remote::tls_trusted_ca: '/etc/ssl/certs/wmf-ca-certificates.crt'

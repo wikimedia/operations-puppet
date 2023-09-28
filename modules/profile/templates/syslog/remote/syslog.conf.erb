@@ -1,7 +1,7 @@
 # NOTE: This file is managed by Puppet.
 <%- unless @_central_hosts_tls.empty? %>
 $DefaultNetstreamDriverCAFile <%= @tls_trusted_ca %>
-<%- if @tls_client_auth -%>
+<%- unless @mtls_provider == 'disabled' -%>
 $DefaultNetstreamDriverCertFile <%= @cert_file %>
 $DefaultNetstreamDriverKeyFile <%= @key_file %>
 <% end -%>
