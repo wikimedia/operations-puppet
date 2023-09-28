@@ -193,9 +193,6 @@ LINES: while (my $line = <$logstream>) {
 
   next unless $line =~ $exception_pat;
 
-  # We don't care about messages from mwmaint* hosts.
-  next if $host =~ /mwmaint/;
-
   if ($window > 0) {
     my $age = $now - $timestamp;
     next if $age > $window;
