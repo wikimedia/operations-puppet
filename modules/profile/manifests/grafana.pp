@@ -50,9 +50,11 @@ class profile::grafana (
 
         # Grafana needs a database to store users and dashboards.
         # sqlite3 is the default, and it's perfectly adequate.
+        # "wal" new in Grafana 9.4+ to address "database is locked" errors (T345362)
         'database'   => {
             'type' => 'sqlite3',
             'path' => 'grafana.db',
+            'wal'  => true,
         },
 
         'security'   => {
