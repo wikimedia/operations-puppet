@@ -486,6 +486,10 @@ class profile::kafka::broker(
     # Note: we don't install it on brokers running Debian Buster, as we couldn't get it compiled.
     # See https://phabricator.wikimedia.org/T346764#9203575
     if debian::codename::ge('bullseye') {
-        ensure_packages(['kafka-kit'])
+        profile::kafka::kafka_kit { $kafka_cluster_name:
+            zookeeper_address => $config['zookeeper']['hosts'][0],
+            zookeeper_prefix  => $config['zookeeper']['chroot'],
+            kafka_address     => $brokers_string,
+        }
     }
 }
