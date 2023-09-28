@@ -7,7 +7,8 @@ profile::bird::advertise_vips:
     # NOTE: we always want to advertise this address
     check_cmd: "/bin/sh -c 'true'"
 
-profile::openldap::master: cloudservices2005-dev.codfw.wmnet
+# use the cloud-private FQDN here as it is the one covered by the acme-chief TLS cert
+profile::openldap::master: cloudservices2005-dev.private.codfw.wikimedia.cloud
 profile::openldap::server_id: 3
 profile::openldap::storage_backend: mdb
 
