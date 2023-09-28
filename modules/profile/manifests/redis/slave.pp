@@ -6,21 +6,19 @@ class profile::redis::slave(
     Boolean $aof = lookup('profile::redis::slave::aof', {'default_value' => false}),
 ){
     # Figure out the redis instances running on the master from Puppetdb
-    $resources = query_resources(
-        "fqdn='${master}'",
-        'Redis::Instance[~".*"]', false)
+    $pql = "resources[certname, parameters, title] { certname = \"${master}\" and type = \"Redis::Instance\" }"
+    $resources = wmflib::puppetdb_query($pql)
 
     # TODO: T228266, this is a not so temporary workaround
-    if length($resources) > 0 and has_key($resources[0], 'parameters') and has_key($resources[0]['parameters'], 'settings') {
-        $password = $resources[0]['parameters']['settings']['requirepass']
-    } else {
+    if $resources.empty {
         # Only PCC should hit this, but at least be explicit
         $password = ''
+    } else {
+        $password = $resources[0].dig('parameters', 'settings', 'requirepass').lest || { '' }
     }
     # TODO: T228266 is properly resolved, $instances will probably be 0 in
     # PCC for some hosts
-    $redis_ports = inline_template("<%= @resources.map{|r| r['title']}.join ' ' -%>")
-    $instances = split($redis_ports, ' ')
+    $instances = $resources.map |$r| { $r['title'] }
     $uris = $instances.map |$instance| { "localhost:${instance}/${password}" }
 
     $auth_settings = {
@@ -31,12 +29,8 @@ class profile::redis::slave(
     $slaveof = ipresolve($master, 4)
 
     $instances.each |String $instance| {
-        if $instance in keys($instance_overrides) {
-            $override = $instance_overrides[$instance]
-        } else {
-            $override = {}
-        }
-        ::profile::redis::instance { $instance:
+        $override = $instance_overrides[$instance].lest || { {} }
+        profile::redis::instance { $instance:
             settings => merge($settings, $auth_settings, $override),
             slaveof  => $slaveof,
             aof      => $aof,
@@ -53,6 +47,6 @@ class profile::redis::slave(
     ferm::service { 'redis_slave_role':
         proto   => 'tcp',
         notrack => true,
-        port    => inline_template('(<%= @redis_ports %>)'),
+        port    => $instances.map |$x| { Integer($x) },
     }
 }
