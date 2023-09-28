@@ -1734,42 +1734,6 @@ service::catalog:
       - drmrs
     state: production
 
-  ores:
-    description: Objective Revision Evaluation Service. ores.discovery.wmnet
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.10
-      eqiad:
-        default: 10.2.2.10
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: ores
-        service: ores
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost/v3/scores/
-      scheduler: wrr
-    page: false
-    probes:
-      - type: http
-        path: /v3/scores/
-    port: 443
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: ores
-        active_active: true
-
   parsoid-php:
     description: Parsoid/PHP wikitext parser for VisualEditor
     encryption: true

@@ -430,16 +430,6 @@ eqiad:
   labweb:
     cloudweb1003.wikimedia.org: [labweb-ssl]
     cloudweb1004.wikimedia.org: [labweb-ssl]
-  ores:
-    ores1001.eqiad.wmnet: [ores]
-    ores1002.eqiad.wmnet: [ores]
-    ores1003.eqiad.wmnet: [ores]
-    ores1004.eqiad.wmnet: [ores]
-    ores1005.eqiad.wmnet: [ores]
-    ores1006.eqiad.wmnet: [ores]
-    ores1007.eqiad.wmnet: [ores]
-    ores1008.eqiad.wmnet: [ores]
-    ores1009.eqiad.wmnet: [ores]
   docker-registry:
     registry1003.eqiad.wmnet: [docker-registry]
     registry1004.eqiad.wmnet: [docker-registry]

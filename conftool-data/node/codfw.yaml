@@ -422,16 +422,6 @@ codfw:
     kubestagemaster2002.codfw.wmnet: [kubemaster]
     kubestage2001.codfw.wmnet: [kubesvc]
     kubestage2002.codfw.wmnet: [kubesvc]
-  ores:
-    ores2001.codfw.wmnet: [ores]
-    ores2002.codfw.wmnet: [ores]
-    ores2003.codfw.wmnet: [ores]
-    ores2004.codfw.wmnet: [ores]
-    ores2005.codfw.wmnet: [ores]
-    ores2006.codfw.wmnet: [ores]
-    ores2007.codfw.wmnet: [ores]
-    ores2008.codfw.wmnet: [ores]
-    ores2009.codfw.wmnet: [ores]
   ldap-ro:
     ldap-replica2005.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2006.wikimedia.org: [ldap-ro, ldap-ro-ssl]
