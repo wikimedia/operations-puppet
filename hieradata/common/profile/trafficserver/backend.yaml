@@ -390,7 +390,9 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
           - '@pparam=appservers-ro.discovery.wmnet' # dest
-          # TODO: add mw-on-k8s once we think of moving wikidata or partial traffic.
+          # mw-on-k8s
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
     - type: map
       target: /
       replacement: https://appservers-rw.discovery.wmnet
