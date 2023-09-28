@@ -78,6 +78,13 @@ profile::pki::multirootca::intermediates:
       - 'key encipherment'
       - 'server auth'
       - 'client auth'
+  syslog:
+    ocsp_port: 10007
+    default_usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
+      - 'client auth'
   wikikube:
     # Main CA for the wikikube kubernetes cluster
     # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
