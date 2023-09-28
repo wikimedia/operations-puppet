@@ -1,19 +1,25 @@
+# @param user The docker username
+# @param hash The docker password hash
+# @param builder_host The builder host
+# @param active_node  The active node
+# @param standby_node The standby node
+# @param ssl_certificate_name The acme cert to use
 class profile::toolforge::docker::registry(
-    String $user = lookup('docker::username'),
-    String $hash = lookup('docker::password_hash'),
+    String       $user         = lookup('docker::username'),
+    String       $hash         = lookup('docker::password_hash'),
     Stdlib::Host $builder_host = lookup('docker::builder_host'),
-    Stdlib::Host $active_node = lookup('profile::toolforge::docker::registry::active_node'),
+    Stdlib::Host $active_node  = lookup('profile::toolforge::docker::registry::active_node'),
     Stdlib::Host $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
-    String $ssl_certificate_name = lookup('profile::toolforge::docker::registry::ssl_certificate_name', {default_value => 'toolforge'}),
+    String       $ssl_certificate_name = lookup('profile::toolforge::docker::registry::ssl_certificate_name', {default_value => 'toolforge'}),
 ) {
     acme_chief::cert { $ssl_certificate_name:
-        before     => Class['::docker::registry'],
+        before     => Class['docker::registry'],
         puppet_rsc => Exec['nginx-reload'],
     }
 
     $builders = [ipresolve($builder_host, 4, $::nameservers[0])]
 
-    class { '::docker::registry':
+    class { 'docker::registry':
         storage_backend => 'filebackend',
         datapath        => '/srv/registry',
         config          => {
@@ -25,8 +31,8 @@ class profile::toolforge::docker::registry(
         },
     }
 
-    class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
-    class { '::docker::registry::web':
+    class { 'sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
+    class { 'docker::registry::web':
         docker_username      => $user,
         docker_password_hash => $hash,
         allow_push_from      => $builders,

@@ -1,14 +1,25 @@
-class docker::registry::web(
-    Boolean $use_puppet_certs = false,
-    Boolean $use_acme_chief_certs = false,
-    Boolean $http_endpoint = false,
-    Array[Stdlib::Host] $http_allowed_hosts = [],
-    Boolean $cors = false,
-    Optional[String] $docker_username,
-    Optional[String] $docker_password_hash,
-    Optional[Array[Stdlib::Host]] $allow_push_from,
-    Optional[Array[String]] $ssl_settings,
-    Optional[String] $ssl_certificate_name = undef,
+# @summary configure the docker registry web site
+# @param docker_username the docker username to use
+# @param docker_password_hash the docker password hash to use
+# @param allow_push_from A list of host allowed to push
+# @param ssl_settings an aray of ssl_settings
+# @param use_puppet_certs if true use puppet certs
+# @param use_acme_chief_certs if true use acme certs
+# @param http_endpoint if true configuer a plain text http endpoint
+# @param http_allowed_hosts A loist of host allowed to use http
+# @param cors configuer cors
+# @param ssl_certificate_name The ssl certificate name to use
+class docker::registry::web (
+    String              $docker_username,
+    String              $docker_password_hash,
+    Array[Stdlib::Host] $allow_push_from,
+    Array[String]       $ssl_settings,
+    Boolean             $use_puppet_certs     = false,
+    Boolean             $use_acme_chief_certs = false,
+    Boolean             $http_endpoint        = false,
+    Array[Stdlib::Host] $http_allowed_hosts   = [],
+    Boolean             $cors                 = false,
+    Optional[String]    $ssl_certificate_name = undef,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')
