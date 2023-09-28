@@ -47,6 +47,8 @@ class profile::gitlab(
     Hash[String, String] $thanos_storage_password = lookup('profile::thanos::swift::accounts_keys', {default_value => {}}),
     Boolean $local_gems_enabled = lookup('profile::gitlab::local_gems_enabled', {default_value => false}),
     Hash[Stdlib::Unixpath, Array[String]] $local_gems = lookup('profile::gitlab::local_gems', {default_value => {}}),
+    Integer $max_storage_concurrency = lookup('profile::gitlab::max_storage_concurrency'),
+    Integer $max_concurrency = lookup('profile::gitlab::max_concurrency'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -240,5 +242,7 @@ class profile::gitlab(
         thanos_storage_password   => $thanos_storage_password['gitlab'],
         local_gems_enabled        => $local_gems_enabled,
         local_gems                => $local_gems,
+        max_storage_concurrency   => $max_storage_concurrency,
+        max_concurrency           => $max_concurrency,
     }
 }

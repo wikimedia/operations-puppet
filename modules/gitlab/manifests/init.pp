@@ -7,6 +7,8 @@
 # @param auto_sign_in_with automatically redirect to this provider
 # @param omniauth_identifier name of the omniauth client identifier
 # @omniauth_auto_link_saml_user automatically link SAML users with existing GitLab users if their email addresses match
+# @max_storage_concurrency The maximum number of projects to back up at the same time on each storage
+# @max_concurrency The maximum number of projects to back up at the same time. Should be to the number of logical CPUs.
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -69,6 +71,8 @@ class gitlab (
     String                   $thanos_storage_password           = '',
     Boolean                  $local_gems_enabled                = false,
     Hash[Stdlib::Unixpath, Array[String]] $local_gems           = {},
+    Integer           $max_storage_concurrency                  = 4,
+    Integer           $max_concurrency                          = 2,
 
 ) {
     $oidc_defaults = {
@@ -193,7 +197,8 @@ class gitlab (
         full_backup_interval    => $full_backup_interval,
         partial_backup_interval => $partial_backup_interval,
         config_backup_interval  => $config_backup_interval,
-
+        max_concurrency         => $max_concurrency,
+        max_storage_concurrency => $max_storage_concurrency,
     }
 
     # Theses parameters are installed by gitlab when the package is updated

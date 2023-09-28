@@ -97,3 +97,6 @@ profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
 profile::gitlab::ldap_group_sync_interval_interval:
   start: 'OnCalendar'
   interval: '*:0/15' # Every 15 minutes
+
+profile::gitlab::max_storage_concurrency: 2
+profile::gitlab::max_concurrency: 20
