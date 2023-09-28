@@ -1,33 +1,14 @@
-# Firewall rules for the misc db host used by wmcs.
-#  We need special rules to allow access for openstack services (which typically
-#  run on hosts with public IPs)
-
-class profile::mariadb::ferm_wmcs(
-    Array[Stdlib::Fqdn] $eqiad1_openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
+# @summary Permits access for the cloudweb hosts to access the striker
+# database.
+class profile::mariadb::ferm_wmcs (
     Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::eqiad1::labweb_hosts'),
-    ) {
+) {
     $port = '3306'
 
-    ferm::service{ 'eqiad1_openstack_controllers':
+    ferm::service { 'labweb':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "(@resolve((${join($eqiad1_openstack_controllers,' ')})))",
-    }
-
-    ferm::service{ 'designate':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => "(@resolve((${join($designate_hosts,' ')})))",
-    }
-
-    $labweb_ips = inline_template("@resolve((<%= @labweb_hosts.join(' ') %>))")
-    ferm::service{ 'labweb':
-        proto   => 'tcp',
-        port    => $port,
-        notrack => true,
-        srange  => $labweb_ips,
+        srange  => $labweb_hosts,
     }
 }
