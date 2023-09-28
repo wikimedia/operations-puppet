@@ -21,7 +21,7 @@ class profile::openstack::base::neutron::common(
 
     class {'::openstack::neutron::common':
         version                     => $version,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $openstack_controllers,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_api_fqdn,
         db_pass                     => $db_pass,

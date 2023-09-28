@@ -2,7 +2,7 @@
 
 class openstack::heat::service::yoga(
     String $db_user,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     String $region,
     String $db_pass,
     String $db_name,

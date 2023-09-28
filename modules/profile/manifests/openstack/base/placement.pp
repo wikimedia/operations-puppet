@@ -11,15 +11,15 @@ class profile::openstack::base::placement(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
     class { '::openstack::placement::service':
-        openstack_controllers => $openstack_controllers,
-        version               => $version,
-        keystone_fqdn         => $keystone_fqdn,
-        db_user               => $db_user,
-        db_pass               => $db_pass,
-        db_name               => $db_name,
-        db_host               => $db_host,
-        ldap_user_pass        => $ldap_user_pass,
-        api_bind_port         => $api_bind_port,
+        memcached_nodes => $openstack_controllers,
+        version         => $version,
+        keystone_fqdn   => $keystone_fqdn,
+        db_user         => $db_user,
+        db_pass         => $db_pass,
+        db_name         => $db_name,
+        db_host         => $db_host,
+        ldap_user_pass  => $ldap_user_pass,
+        api_bind_port   => $api_bind_port,
     }
 
     include ::network::constants

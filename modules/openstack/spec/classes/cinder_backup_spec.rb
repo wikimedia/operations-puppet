@@ -10,7 +10,7 @@ describe 'openstack::cinder::backup' do
           let(:pre_condition) {
             "class {'puppet::agent': ca_source => 'puppet:///modules/profile/puppet/ca.production.pem'}"
             "class {'openstack::cinder::config::#{openstack_version}':
-                openstack_controllers => ['dummy-controller.local'],
+                memcached_nodes => ['dummy-controller.local'],
                 rabbitmq_nodes => ['dummy-rabbit-node.local'],
                 db_user => 'dummy-db-user',
                 db_pass => 'dummy-db-pass',

@@ -12,7 +12,7 @@ describe 'profile::openstack::base::nova::compute::service' do
           db_host => \'dummydbhost\',
           db_name => \'dummydbname\',
           db_name_api => \'dummydbnameapi\',
-          openstack_controllers => [\'controller01\'],
+          memcached_nodes => [\'controller01\'],
           rabbitmq_nodes => [\'rabbit01\'],
           keystone_fqdn => \'dummy.api.fqdn\',
           scheduler_filters => [\'filter1\'],

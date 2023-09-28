@@ -30,7 +30,7 @@ class profile::openstack::base::glance(
         api_bind_port               => $api_bind_port,
         glance_backends             => $glance_backends,
         ceph_pool                   => $ceph_pool,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $openstack_controllers,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }

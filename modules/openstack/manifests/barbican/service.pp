@@ -1,5 +1,5 @@
 class openstack::barbican::service(
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     String $version,
     String $db_user,
     String $db_pass,
@@ -11,15 +11,15 @@ class openstack::barbican::service(
     Stdlib::Port $bind_port,
 ) {
     class { "openstack::barbican::service::${version}":
-        openstack_controllers => $openstack_controllers,
-        db_user               => $db_user,
-        db_pass               => $db_pass,
-        db_name               => $db_name,
-        db_host               => $db_host,
-        crypto_kek            => $crypto_kek,
-        ldap_user_pass        => $ldap_user_pass,
-        keystone_fqdn         => $keystone_fqdn,
-        bind_port             => $bind_port,
+        memcached_nodes => $memcached_nodes,
+        db_user         => $db_user,
+        db_pass         => $db_pass,
+        db_name         => $db_name,
+        db_host         => $db_host,
+        crypto_kek      => $crypto_kek,
+        ldap_user_pass  => $ldap_user_pass,
+        keystone_fqdn   => $keystone_fqdn,
+        bind_port       => $bind_port,
     }
 
     service { 'barbican-api':

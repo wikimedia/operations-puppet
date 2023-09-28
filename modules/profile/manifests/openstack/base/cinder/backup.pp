@@ -31,7 +31,7 @@ class profile::openstack::base::cinder::backup (
     String[1]               $backend_name            = lookup('profile::openstack::base::cinder::backend_name'),
 ) {
     class { "::openstack::cinder::config::${version}":
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $openstack_controllers,
         keystone_fqdn               => $keystone_fqdn,
         rabbitmq_nodes              => $rabbitmq_nodes,
         region                      => $region,

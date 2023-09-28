@@ -28,7 +28,7 @@ class profile::openstack::base::cinder(
     ) {
 
     class { "::openstack::cinder::config::${version}":
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $openstack_controllers,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         region                      => $region,

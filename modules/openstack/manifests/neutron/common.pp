@@ -1,6 +1,6 @@
 class openstack::neutron::common(
     $version,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Stdlib::Fqdn $keystone_fqdn,
     $db_pass,
@@ -19,7 +19,7 @@ class openstack::neutron::common(
     ) {
 
     class { "openstack::neutron::common::${version}":
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $memcached_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         db_pass                     => $db_pass,

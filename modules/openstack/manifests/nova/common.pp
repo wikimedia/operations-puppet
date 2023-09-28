@@ -6,7 +6,7 @@ class openstack::nova::common(
     $db_host,
     $db_name,
     $db_name_api,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Stdlib::Fqdn $keystone_fqdn,
     $scheduler_filters,

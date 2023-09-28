@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::barbican::service::zed(
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     String $db_user,
     String $db_pass,
     String $db_name,

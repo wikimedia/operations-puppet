@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::cinder::config::yoga(
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String[1]           $db_user,
     String[1]           $db_pass,

@@ -2,7 +2,7 @@
 class openstack::magnum::service(
     String $version,
     String $region,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $db_user,
     String $db_pass,
@@ -29,7 +29,7 @@ class openstack::magnum::service(
         api_bind_port               => $api_bind_port,
         rabbit_user                 => $rabbit_user,
         rabbit_pass                 => $rabbit_pass,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $memcached_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         region                      => $region,
         domain_admin_pass           => $domain_admin_pass,

@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class openstack::heat::service(
     String $version,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $db_user,
     String $region,
@@ -30,7 +30,7 @@ class openstack::heat::service(
         cfn_api_bind_port           => $cfn_api_bind_port,
         rabbit_user                 => $rabbit_user,
         rabbit_pass                 => $rabbit_pass,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $memcached_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         auth_encryption_key         => $auth_encryption_key,
         region                      => $region,

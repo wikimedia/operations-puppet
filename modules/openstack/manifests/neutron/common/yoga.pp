@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::neutron::common::yoga(
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Stdlib::Fqdn $keystone_fqdn,
     $db_pass,

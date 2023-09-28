@@ -1,7 +1,7 @@
 class openstack::trove::service(
     String              $version,
     Integer             $workers,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String              $db_user,
     String              $db_pass,
@@ -27,7 +27,7 @@ class openstack::trove::service(
     String              $trove_quay_user = 'wikimedia-cloud-services+troveguest',
 ) {
     class { "openstack::trove::service::${version}":
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $memcached_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         workers                     => $workers,
         db_user                     => $db_user,

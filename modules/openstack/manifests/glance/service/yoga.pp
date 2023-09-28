@@ -11,7 +11,7 @@ class openstack::glance::service::yoga(
     Stdlib::Port $api_bind_port,
     Array[String] $glance_backends,
     String $ceph_pool,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
 ) {
     require "openstack::serverpackages::yoga::${::lsbdistcodename}"
 

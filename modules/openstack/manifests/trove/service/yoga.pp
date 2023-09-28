@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::trove::service::yoga(
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     Integer             $workers,
     String              $db_user,

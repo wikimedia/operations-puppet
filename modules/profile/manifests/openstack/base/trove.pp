@@ -30,7 +30,7 @@ class profile::openstack::base::trove(
     class { '::openstack::trove::service':
         version                     => $version,
         workers                     => $workers,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $openstack_controllers,
         rabbitmq_nodes              => $rabbitmq_nodes,
         db_user                     => $db_user,
         db_pass                     => $db_pass,

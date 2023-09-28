@@ -3,7 +3,7 @@
 class openstack::magnum::service::yoga(
     String $db_user,
     String $region,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
     String $db_pass,
     String $db_name,

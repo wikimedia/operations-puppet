@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::placement::service::yoga(
-    $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     $db_user,
     $db_pass,
     $db_name,

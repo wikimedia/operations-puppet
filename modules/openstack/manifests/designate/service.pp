@@ -14,7 +14,7 @@ class openstack::designate::service(
     $domain_id_internal_forward_legacy,
     $domain_id_internal_reverse,
     $puppetmaster_hostname,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     $ldap_user_pass,
     $pdns_api_key,
     $db_admin_user,

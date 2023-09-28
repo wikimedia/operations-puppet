@@ -32,7 +32,7 @@ class profile::openstack::base::nova::common(
         db_host                      => $db_host,
         db_name                      => $db_name,
         db_name_api                  => $db_name_api,
-        openstack_controllers        => $openstack_controllers,
+        memcached_nodes              => $openstack_controllers,
         rabbitmq_nodes               => $rabbitmq_nodes,
         keystone_fqdn                => $keystone_fqdn,
         scheduler_filters            => $scheduler_filters,

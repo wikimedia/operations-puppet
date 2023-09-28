@@ -42,7 +42,7 @@ class profile::openstack::base::designate::service(
         domain_id_internal_forward_legacy => $domain_id_internal_forward_legacy,
         domain_id_internal_reverse        => $domain_id_internal_reverse,
         puppetmaster_hostname             => $puppetmaster_hostname,
-        openstack_controllers             => $openstack_controllers,
+        memcached_nodes                   => $openstack_controllers,
         ldap_user_pass                    => $ldap_user_pass,
         pdns_api_key                      => $pdns_api_key,
         db_admin_user                     => $db_admin_user,

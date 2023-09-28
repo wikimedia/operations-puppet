@@ -11,7 +11,7 @@ class openstack::glance::service(
     Stdlib::Port $api_bind_port,
     String $ceph_pool,
     $glance_backends,
-    Array[Stdlib::Fqdn] $openstack_controllers,
+    Array[Stdlib::Fqdn] $memcached_nodes,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
 ) {
@@ -27,7 +27,7 @@ class openstack::glance::service(
         api_bind_port               => $api_bind_port,
         glance_backends             => $glance_backends,
         ceph_pool                   => $ceph_pool,
-        openstack_controllers       => $openstack_controllers,
+        memcached_nodes             => $memcached_nodes,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
