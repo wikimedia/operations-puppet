@@ -14,7 +14,14 @@ define prometheus::pdu_config(
     Hash   $labels   = {},
 ) {
 
-    $pdu_resources = query_resources(false, "${resource}[~\".*\"]{model=${model}}", false)
+    $pql = @("PQL")
+    resources[parameters, title] {
+        type = "${resource}" and
+        parameters.model = "${model}" and parameters.site = "${::site}"
+        order by parameters
+    }
+    | PQL
+    $pdu_resources = wmflib::puppetdb_query($pql)
 
     file { $dest:
         ensure  => present,
