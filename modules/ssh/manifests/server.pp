@@ -62,6 +62,16 @@ class ssh::server (
         $key_types = $enabled_key_types
     }
 
+    # Starting with Bookworm ChallengeResponseAuthentication is a deprecated
+    # alias for KbdInteractiveAuthentication, in older Debian releases
+    # KbdInteractiveAuthentication is derived from the config setting for
+    # ChallengeResponseAuthentication, so only set it instead.
+    if debian::codename::ge('bookworm') {
+        $disable_keyboard = 'KbdInteractiveAuthentication no'
+    } else {
+        $disable_keyboard = 'ChallengeResponseAuthentication no'
+    }
+
     # we use the legacy facts here specificaly because we override them in
     # modules/base/lib/facter/interface_primary.rb
     # Although the networking.ip fact now points to a sensible fact

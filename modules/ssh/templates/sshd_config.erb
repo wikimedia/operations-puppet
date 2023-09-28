@@ -73,7 +73,7 @@ IgnoreUserKnownHosts yes
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
 PermitEmptyPasswords no
 
-ChallengeResponseAuthentication no
+<%= @disable_keyboard %>
 
 # Globally deny logon via password, only allow SSH-key login.
 PasswordAuthentication no
