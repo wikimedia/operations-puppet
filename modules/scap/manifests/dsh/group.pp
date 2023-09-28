@@ -13,7 +13,7 @@ define scap::dsh::group(
     Optional[String] $pdb_query          = undef,
 ){
     if $pdb_query {
-        $host_list = query_nodes($pdb_query)
+        $host_list = wmflib::puppetdb_query($pdb_query).map |$x| { $x['certname'] }
     } else {
         $host_list = $hosts ? {
             undef   => lookup("scap::dsh::${title}", {'default_value' => []}),
