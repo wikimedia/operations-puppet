@@ -14,10 +14,15 @@ define prometheus::redis_exporter_config(
     String $class_name,
     Hash $labels = {},
 ) {
-    $resources = query_resources(
-                  "Class[\"${class_name}\"]",
-                  'Prometheus::Redis_exporter[~".*"]',
-                  true)
+    $_class_name = wmflib::resource::capitalize($class_name)
+    $pql = @("PQL")
+    resources[certname, parameters] {
+        type = "Prometheus::Redis_exporter" and
+        nodes { resources { type = "Class" and title = "${_class_name}" } }
+        order by certname
+    }
+    | PQL
+    $resources = wmflib::puppetdb_query($pql)
     $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
