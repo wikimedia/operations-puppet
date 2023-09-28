@@ -59,8 +59,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
                 mode   => '0644',
                 source => 'puppet:///modules/profile/mariadb/phabricator-init.sql',
             }
-        } elsif $section == 'm5' {
-            include profile::mariadb::ferm_wmcs_on_port_3325
         }
     }
 

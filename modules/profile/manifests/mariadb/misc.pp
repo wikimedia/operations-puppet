@@ -14,12 +14,6 @@ class profile::mariadb::misc (
     profile::mariadb::section { $shard: }
 
     ::profile::mariadb::ferm { 'misc': }
-    # hack until m5 servers are bought and proxy is in use
-    if $shard == 'm5' {
-        include profile::mariadb::ferm_wmcs
-        include profile::mariadb::ferm_lists
-        include profile::mariadb::ferm_idm
-    }
     include profile::mariadb::monitor::prometheus
 
     require profile::mariadb::packages_wmf
