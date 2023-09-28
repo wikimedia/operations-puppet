@@ -31,9 +31,23 @@ define prometheus::class_config(
     Boolean $hostnames_only = true,
     Wmflib::Ensure $ensure = present,
 ) {
-    # TODO: convert to wmflib::puppetdb_query
-    $query = template('prometheus/puppetdb_query_string.erb')
-    $servers = keys(query_resources(false, $query, true))
+    $_class_name = wmflib::resource::capitalize($class_name)
+    $parameters_query = $class_parameters.map |$k, $v| {
+        $_v = $v ? {
+            String  => "\"${v}\"",
+            default => $v,
+        }
+        "parameters.${k} = ${_v}"
+    }.join(' and ')
+    $_parameters_query = $class_parameters.empty.bool2str('',"and ${parameters_query}")
+    $pql = @("PQL")
+    resources[certname] {
+        type = "Class" and title = "${_class_name}"
+        ${_parameters_query}
+        order by certname
+    }
+    | PQL
+    $servers = wmflib::puppetdb_query($pql).map  |$x| { $x['certname'] }
     $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
