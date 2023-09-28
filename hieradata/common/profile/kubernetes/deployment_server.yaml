@@ -232,6 +232,18 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: media-analytics
         - name: media-analytics-deploy
+    edit-analytics:
+      usernames:
+        - name: edit-analytics
+        - name: edit-analytics-deploy
+    editor-analytics:
+      usernames:
+        - name: editor-analytics
+        - name: editor-analytics-deploy
+    page-analytics:
+      usernames:
+        - name: page-analytics
+        - name: page-analytics-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:

@@ -1,0 +1,10 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE ROLE IF NOT EXISTS page_analytics WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON "local_group_default_T_pageviews_per_project_v2".data TO 'page_analytics';
+GRANT SELECT ON "local_group_default_T_lgc_pagecounts_per_project".data TO 'page_analytics';
+GRANT SELECT ON "local_group_default_T_pageviews_per_article_flat".data TO 'page_analytics';
+GRANT SELECT ON "local_group_default_T_top_bycountry".data TO 'page_analytics';
+GRANT SELECT ON "local_group_default_T_top_pageviews".data TO 'page_analytics';
+GRANT SELECT ON "local_group_default_T_top_percountry".data TO 'page_analytics';
