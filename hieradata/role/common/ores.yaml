@@ -1,12 +1,6 @@
 cluster: ores
 profile::admin::groups:
   - ores-admin
-profile::lvs::realserver::pools:
-  ores:
-    services:
-      - uwsgi-ores
-      - envoyproxy
-
 profile::ores::celery::workers: 90
 
 # We think the queue size should be (total number of celery workers / 2)

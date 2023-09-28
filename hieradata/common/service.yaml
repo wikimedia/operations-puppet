@@ -1765,7 +1765,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: ores
         active_active: true
