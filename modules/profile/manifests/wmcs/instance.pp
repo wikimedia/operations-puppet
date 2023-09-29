@@ -3,6 +3,9 @@ class profile::wmcs::instance(
     Boolean             $mount_nfs                     = lookup('mount_nfs',                     {default_value => false}),
     Array[Stdlib::Fqdn] $metricsinfra_prometheus_nodes = lookup('metricsinfra_prometheus_nodes', {default_value => []}),
 ) {
+    # a VM without isc-dhcp-client can be considered broken
+    ensure_packages(['isc-dhcp-client'])
+
     if ! defined(Class['Sudo']) {
         class { 'sudo': }
     }
