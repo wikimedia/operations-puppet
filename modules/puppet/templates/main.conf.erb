@@ -9,6 +9,9 @@ vardir = /var/lib/puppet
 ssldir = /var/lib/puppet/ssl
 rundir = /var/run/puppet
 factpath = $vardir/lib/facter
+<%- unless @certificate_revocation.nil? -%>
+certificate_revocation = <%= @certificate_revocation %>
+<%- end -%>
 
 [agent]
 <%- if @use_srv_records -%>
@@ -19,9 +22,6 @@ server = <%= @server %>
   <%- unless @ca_server.nil? -%>
 ca_server = <%= @ca_server %>
   <%- end -%>
-<%- end -%>
-<%- unless @certificate_revocation.nil? -%>
-certificate_revocation = <%= @certificate_revocation %>
 <%- end -%>
 <%- unless @certname.nil? -%>
 certname = <%= @certname %>
