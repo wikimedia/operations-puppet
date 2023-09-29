@@ -57,10 +57,10 @@ class profile::mirrors::debian {
         source => 'puppet:///modules/profile/mirrors/ssh-debian-archvsync.pub',
     }
 
-    ferm::service { 'mirrors_ssh':
+    firewall::service { 'mirrors_ssh':
         proto  => 'tcp',
-        port   => [22],
-        srange => '(@resolve(syncproxy2.wna.debian.org))',
+        port   => 22,
+        srange => ['syncproxy2.wna.debian.org'],
     }
 
     # serve via rsync

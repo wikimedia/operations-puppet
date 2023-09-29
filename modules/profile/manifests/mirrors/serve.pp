@@ -32,14 +32,14 @@ class profile::mirrors::serve {
     class { 'rsync::server': }
     profile::auto_restarts::service { 'rsync': }
 
-    ferm::service { 'mirrors_http':
+    firewall::service { 'mirrors_http':
         proto => 'tcp',
         port  => [80,443],
     }
 
-    ferm::service { 'mirrors_rsync':
+    firewall::service { 'mirrors_rsync':
         proto => 'tcp',
-        port  => [873],
+        port  => 873,
     }
 
     prometheus::blackbox::check::http { 'mirrors.wikimedia.org':
