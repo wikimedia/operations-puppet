@@ -2,7 +2,7 @@ moduledir 'vendor_modules'
 
 mod 'augeas_core',
     :git => 'https://github.com/puppetlabs/puppetlabs-augeas_core.git',
-    :ref => 'v1.2.0'
+    :ref => 'v1.4.1'
 
 mod 'augeasproviders_core',
     :git => 'https://github.com/voxpupuli/puppet-augeasproviders_core.git',

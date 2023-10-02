@@ -1,5 +1,10 @@
 require 'spec_helper_acceptance'
 
+# fedora36 has a malformed services entry that needs to be patched
+agents.each do |agent|
+  on(agent, 'sed -i "s/ircd,ircu3/ircd ircu3/" /etc/services') if agent.platform.include?('fedora-36')
+end
+
 RSpec.context 'Augeas services file' do
   before(:all) do
     on agents, 'cp /etc/services /tmp/services.bak'

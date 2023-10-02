@@ -58,20 +58,20 @@ Default value: `0`
 
 The following parameters are available in the `augeas` type.
 
-* [`changes`](#changes)
-* [`context`](#context)
-* [`force`](#force)
-* [`incl`](#incl)
-* [`lens`](#lens)
-* [`load_path`](#load_path)
-* [`name`](#name)
-* [`onlyif`](#onlyif)
-* [`provider`](#provider)
-* [`root`](#root)
-* [`show_diff`](#show_diff)
-* [`type_check`](#type_check)
+* [`changes`](#-augeas--changes)
+* [`context`](#-augeas--context)
+* [`force`](#-augeas--force)
+* [`incl`](#-augeas--incl)
+* [`lens`](#-augeas--lens)
+* [`load_path`](#-augeas--load_path)
+* [`name`](#-augeas--name)
+* [`onlyif`](#-augeas--onlyif)
+* [`provider`](#-augeas--provider)
+* [`root`](#-augeas--root)
+* [`show_diff`](#-augeas--show_diff)
+* [`type_check`](#-augeas--type_check)
 
-##### <a name="changes"></a>`changes`
+##### <a name="-augeas--changes"></a>`changes`
 
 The changes which should be applied to the filesystem. This
 can be a command or an array of commands. The following commands are supported:
@@ -93,7 +93,7 @@ can be a command or an array of commands. The following commands are supported:
 
 If the `context` parameter is set, that value is prepended to any relative `PATH`s.
 
-##### <a name="context"></a>`context`
+##### <a name="-augeas--context"></a>`context`
 
 Optional context path. This value is prepended to the paths of all
 changes if the path is relative. If the `incl` parameter is set,
@@ -101,39 +101,39 @@ defaults to `/files + incl`; otherwise, defaults to the empty string.
 
 Default value: `''`
 
-##### <a name="force"></a>`force`
+##### <a name="-augeas--force"></a>`force`
 
 Optional command to force the augeas type to execute even if it thinks changes
 will not be made. This does not override the `onlyif` parameter.
 
-Default value: ``false``
+Default value: `false`
 
-##### <a name="incl"></a>`incl`
+##### <a name="-augeas--incl"></a>`incl`
 
 Load only a specific file, such as `/etc/hosts`. This can greatly speed
 up the execution the resource. When this parameter is set, you must also
 set the `lens` parameter to indicate which lens to use.
 
-##### <a name="lens"></a>`lens`
+##### <a name="-augeas--lens"></a>`lens`
 
 Use a specific lens, such as `Hosts.lns`. When this parameter is set, you
 must also set the `incl` parameter to indicate which file to load.
 The Augeas documentation includes [a list of available lenses](http://augeas.net/stock_lenses.html).
 
-##### <a name="load_path"></a>`load_path`
+##### <a name="-augeas--load_path"></a>`load_path`
 
 Optional colon-separated list or array of directories; these directories are searched for schema definitions.
 The agent's `$libdir/augeas/lenses` path will always be added to support pluginsync.
 
 Default value: `''`
 
-##### <a name="name"></a>`name`
+##### <a name="-augeas--name"></a>`name`
 
 namevar
 
 The name of this task. Used for uniqueness.
 
-##### <a name="onlyif"></a>`onlyif`
+##### <a name="-augeas--onlyif"></a>`onlyif`
 
 Optional augeas command and comparisons to control the execution of this type.
 
@@ -164,20 +164,20 @@ where:
 
 Default value: `''`
 
-##### <a name="provider"></a>`provider`
+##### <a name="-augeas--provider"></a>`provider`
 
 The specific backend to use for this `augeas` resource. You will seldom need to specify this --- Puppet will usually
 discover the appropriate provider for your platform.
 
-##### <a name="root"></a>`root`
+##### <a name="-augeas--root"></a>`root`
 
 A file system path; all files loaded by Augeas are loaded underneath `root`.
 
 Default value: `/`
 
-##### <a name="show_diff"></a>`show_diff`
+##### <a name="-augeas--show_diff"></a>`show_diff`
 
-Valid values: ``true``, ``false``, `yes`, `no`
+Valid values: `true`, `false`, `yes`, `no`
 
 Whether to display differences when the file changes, defaulting to
 true.  This parameter is useful for files that may contain passwords or
@@ -185,13 +185,13 @@ other secret data, which might otherwise be included in Puppet reports or
 other insecure outputs.  If the global `show_diff` setting
 is false, then no diffs will be shown even if this parameter is true.
 
-Default value: ``true``
+Default value: `true`
 
-##### <a name="type_check"></a>`type_check`
+##### <a name="-augeas--type_check"></a>`type_check`
 
-Valid values: ``true``, ``false``
+Valid values: `true`, `false`
 
 Whether augeas should perform typechecking. Defaults to false.
 
-Default value: ``false``
+Default value: `false`
 

@@ -1,0 +1,16 @@
+---
+name: Unit Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  Nightly:
+    uses: "puppetlabs/phoenix-github-actions/.github/workflows/unit_tests_with_nightly_puppet_gem.yaml@main"
+  
+  Released:
+    uses: "puppetlabs/phoenix-github-actions/.github/workflows/unit_tests_with_released_puppet_gem.yaml@main"

@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-augeas_core",
-  "version": "1.2.0",
+  "version": "1.4.1",
   "author": "puppetlabs",
   "summary": "Manage files using Augeas",
   "license": "Apache-2.0",
@@ -42,10 +42,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.0.0 < 8.0.0"
+      "version_requirement": ">= 6.0.0 < 9.0.0"
     }
   ],
-  "pdk-version": "2.2.0",
-  "template-url": "https://github.com/puppetlabs/pdk-templates#2.2.0",
-  "template-ref": "tags/2.2.0-0-g2381db6"
+  "pdk-version": "3.0.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#2.7.5",
+  "template-ref": "tags/2.7.5-0-ge5b0114"
 }

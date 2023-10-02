@@ -40,9 +40,16 @@ Gemfile:
         from_env: BEAKER_PUPPET_VERSION
         version: '~> 1.22'
       - gem: github_changelog_generator
+        version: '= 1.16.4'
+      - gem: concurrent-ruby
+        version: '= 1.1.10'
+      - gem: async
+        version: '~> 1'
       - gem: beaker-module_install_helper
       - gem: beaker-puppet_install_helper
       - gem: nokogiri
+    ":system_tests":
+      - gem: voxpupuli-acceptance
 
 appveyor.yml:
   delete: true
@@ -54,6 +61,3 @@ appveyor.yml:
   unmanaged: false
 .gitlab-ci.yml:
   delete: true
-
-Rakefile:
-  changelog_version_tag_pattern: '%s'
