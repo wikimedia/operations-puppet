@@ -47,6 +47,11 @@ node /^an-master1002\.eqiad\./ {
     role(analytics_cluster::hadoop::standby)
 }
 
+#add new nodes T342291
+node /^an-master100(2,3)\.eqiad\./ {
+    role(insetup::analytics)
+}
+
 node /^an-coord1001\.eqiad\./ {
     role(analytics_cluster::coordinator)
 }
