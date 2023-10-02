@@ -103,6 +103,7 @@ Puppet::Reports.register_report(:logstash) do
         event['metrics']['puppet']['resources'][name] = {'total' => value}
       end
     end
+    Syslog.open("puppetserver-reporter", Syslog::LOG_PID, Syslog::LOG_INFO) unless Syslog.opened?
     Syslog.log(Syslog::LOG_INFO, "@cee: #{event.to_json}")
   end
 end
