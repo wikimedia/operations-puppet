@@ -18,7 +18,7 @@ Puppet::Reports.register_report(:prometheus) do
   config = YAML.load_file(configfile)
 
   TEXTFILE_DIRECTORY = config['textfile_directory']
-  REPORT_PREFIX = config.get('report_prefix', 'puppet_report_')
+  REPORT_PREFIX = config.fetch('report_prefix', 'puppet_report_')
   ENVIRONMENTS = config['environments']
   REPORTS = config['reports']
   STALE_TIME = config['stale_time']
