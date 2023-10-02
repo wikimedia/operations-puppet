@@ -23,6 +23,6 @@ else
 fi
 
 echo "${SUBJECT}, sending email to ${ADDRESS}"
-echo -e "${DIFF}\n\n${INFO}" | mail -s "[Homer] ${SUBJECT}" "${ADDRESS}"
+echo -e "${DIFF}\n\n${INFO}" | mail -a "Auto-Submitted: auto-generated" -s "[Homer] ${SUBJECT}" "${ADDRESS}"
 
 # Do not make the systemd timer fail if the email was sent but fail if the email send step fails.
