@@ -18,7 +18,7 @@ profile::bird::advertise_vips:
     service_type: authdns
   ntp.anycast.wmnet:
     address: 10.3.0.2 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/lib/nagios/plugins/check_ntp_peer -H 10.3.0.2 -w 0.1 -c 0.5'
+    check_cmd: '/usr/lib/nagios/plugins/check_ntp_time -H 10.3.0.2 -w 0.1 -c 0.5'
     ensure: present
     service_type: ntp
 
