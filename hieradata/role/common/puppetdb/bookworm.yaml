@@ -66,7 +66,7 @@ profile::puppetdb::database::users:
   replication@puppetdb2003/puppetdb:
     user: replication
     password: "%{alias('puppetdb::password::replication')}"
-    database: replication
+    database: puppetdb
     allowed_hosts:
       - puppetdb2003.codfw.wmnet
   puppetdb@puppetdb2003/puppetdb:
