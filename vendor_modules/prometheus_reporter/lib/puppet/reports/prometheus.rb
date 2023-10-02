@@ -128,7 +128,7 @@ EOS
 EOS
     end
 
-    File.open(filename, 'w') do |file|
+    File.open(filename, 'w', 0755) do |file|
       file.write(definitions)
       new_metrics.each do |k, v|
         file.write("#{k} #{v}\n")
