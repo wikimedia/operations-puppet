@@ -440,6 +440,9 @@ eqiad:
     druid1006.eqiad.wmnet: [druid-public-broker]
     druid1007.eqiad.wmnet: [druid-public-broker]
     druid1008.eqiad.wmnet: [druid-public-broker]
+    druid1009.eqiad.wmnet: [druid-public-broker]
+    druid1010.eqiad.wmnet: [druid-public-broker]
+    druid1011.eqiad.wmnet: [druid-public-broker]
   labweb:
     cloudweb1003.wikimedia.org: [labweb-ssl]
     cloudweb1004.wikimedia.org: [labweb-ssl]
