@@ -4,7 +4,7 @@ This module contains a Puppet [reports processor][rpc] that writes report
 metrics in a format that is accepted by [Prometheus node_exporter Textfile
 Collector][pnetc].
 
-[rpc]:https://docs.puppet.com/puppet/latest/reference/reporting_about.html
+[rpc]:https://puppet.com/docs/puppet/latest/reporting_about.html
 [pnetc]:https://github.com/prometheus/node_exporter#textfile-collector
 
 
@@ -22,7 +22,7 @@ textfile_directory: /var/lib/prometheus-dropzone
 
 Configuration options include:
 - `textfile_directory` - [String] Location of the node_exporter `collector.textfile.directory` (Required)
-- `report_filename` - [String] If specified, saves all reports to a single file (must end with .prom)
+- `report_prefix` - [String] the prefix to add to the prometheus reprots.  By default this is `puppet_report_`.
 - `environments` - [Array] If specified, only creates metrics on reports from these environments
 - `reports` - [Array] If specified, only creates metrics from reports of this type (changes, events, resources, time)
 - `stale_time` - [Integer] If specified, delete metric files for nodes that haven't sent reports in X days
