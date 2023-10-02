@@ -18,4 +18,9 @@ class profile::puppetserver::prometheus (
         ensure  => file,
         content => $config.to_yaml,
     }
+    # hack to add the puppet user to the prometheus-node-exporter group
+    exec { 'add puppet to prometheus-node-exporter':
+        unless  => '/bin/getent group prometheus-node-exporter|awk -F: "{print $NF}"|sed "s/,/ /g"|grep -w -q puppet',
+        command => '/usr/sbin/usermod -a -G prometheus-node-exporter puppet',
+    }
 }
