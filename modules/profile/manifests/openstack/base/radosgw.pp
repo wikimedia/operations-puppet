@@ -20,11 +20,4 @@ class profile::openstack::base::radosgw(
         port   => $api_bind_port,
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
-
-    # TODO: move to haproxy/cloudlb profiles
-    ferm::service { 'radosgw-api-access':
-        proto  => 'tcp',
-        port   => 28080,
-        srange => "(${prod_networks} ${labs_networks})",
-    }
 }
