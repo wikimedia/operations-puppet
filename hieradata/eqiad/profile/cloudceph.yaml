@@ -13,6 +13,7 @@ profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 
 profile::cloudceph::openstack_controllers:
   - cloudcontrol1005.eqiad.wmnet
+  - cloudcontrol1006.eqiad.wmnet
   - cloudcontrol1007.eqiad.wmnet
 
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC

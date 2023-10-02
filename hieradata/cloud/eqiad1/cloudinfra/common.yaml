@@ -7,6 +7,7 @@ profile::openstack::eqiad1::designate_hosts:
   - cloudservices1006.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
+  - cloudcontrol1006.private.eqiad.wikimedia.cloud
   - cloudcontrol1007.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::labweb_hosts:
   - cloudweb1003.wikimedia.org

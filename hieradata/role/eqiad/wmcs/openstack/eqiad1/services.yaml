@@ -23,6 +23,7 @@ profile::contacts::role_contacts: ["WMCS"]
 # for things like galera and memcached
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
+  - cloudcontrol1006.private.eqiad.wikimedia.cloud
   - cloudcontrol1007.private.eqiad.wikimedia.cloud
 
 profile::openstack::eqiad1::pdns::hosts:

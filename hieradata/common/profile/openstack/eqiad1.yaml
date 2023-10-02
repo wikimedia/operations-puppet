@@ -11,6 +11,7 @@ profile::openstack::eqiad1::public_apis: true
 # haproxy_nodes (defined below).
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.eqiad.wmnet
+  - cloudcontrol1006.eqiad.wmnet
   - cloudcontrol1007.eqiad.wmnet
 
 # The public service name for the keystone API

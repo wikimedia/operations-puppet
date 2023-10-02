@@ -14,6 +14,7 @@ prometheus_nodes:
 # in the same network setup, this override here can be deleted, because it should be set elsewhere.
 profile::openstack::eqiad1::openstack_controllers:
   - cloudcontrol1005.private.eqiad.wikimedia.cloud
+  - cloudcontrol1006.private.eqiad.wikimedia.cloud
   - cloudcontrol1007.private.eqiad.wikimedia.cloud
 
 profile::bird::advertise_vips:
