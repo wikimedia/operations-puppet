@@ -29,6 +29,17 @@ class profile::bird::anycast_monitoring{
         critical      => true, # Page
     }
 
+    monitoring::host { '10.3.0.2':
+        ip_address => '10.3.0.2',
+    }
+
+    monitoring::service { 'NTP anycast VIP':
+        host          => '10.3.0.2',
+        description   => 'NTP anycast VIP',
+        check_command => 'check_ntp_peer!0.1!0.5',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+    }
+
     monitoring::host { 'syslog.anycast.wmnet':
         host_fqdn => 'syslog.anycast.wmnet',
     }
