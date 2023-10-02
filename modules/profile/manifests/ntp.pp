@@ -97,7 +97,7 @@ class profile::ntp (
 
     monitoring::service { 'ntp peers':
         description   => 'NTP peers',
-        check_command => 'check_ntp_peer!0.1!0.5',
+        check_command => 'check_ntp_peer!0.05!0.1',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
 
