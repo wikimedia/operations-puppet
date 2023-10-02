@@ -3809,6 +3809,48 @@ service::catalog:
       - codfw
     state: production
 
+  page-analytics:
+    description: page-analytics AQS2 service, page-analytics.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    port: *k8s-ingress-wikikube_port
+    probes:
+      - type: http
+        path: /healthz
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
+  editor-analytics:
+    description: editor-analytics AQS2 service, editor-analytics.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    port: *k8s-ingress-wikikube_port
+    probes:
+      - type: http
+        path: /healthz
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
+  edit-analytics:
+    description: edit-analytics AQS2 service, edit-analytics.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    port: *k8s-ingress-wikikube_port
+    probes:
+      - type: http
+        path: /healthz
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   # Services has no LVS
   pki:
     description: PKI service
