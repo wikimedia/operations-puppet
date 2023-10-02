@@ -1011,11 +1011,11 @@ node /^an-test-druid1001\.eqiad\./ {
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid100[4-9]\.eqiad\./ {
+node /^druid10(0[4-9]|10)\.eqiad\./ {
     role(druid::public::worker)
 }
 
-node /^druid10(10|11)\.eqiad\./ {
+node /^druid10(11)\.eqiad\./ {
     role(insetup::data_engineering)
 }
 
