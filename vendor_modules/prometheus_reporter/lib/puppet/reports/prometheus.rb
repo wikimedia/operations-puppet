@@ -27,10 +27,6 @@ Puppet::Reports.register_report(:prometheus) do
     raise(Puppet::ParseError, "#{configfile}: textfile_directory is not set or is missing.")
   end
 
-  unless REPORT_FILENAME.nil? || REPORT_FILENAME.end_with?('.prom')
-    raise(Puppet::ParseError, "#{configfile}: report_filename does not ends with .prom")
-  end
-
   def process
     return unless ENVIRONMENTS.nil? || ENVIRONMENTS.include?(environment)
     namevar = "#{REPORT_PREFIX}#{node}.prom"
