@@ -89,6 +89,20 @@ profile::wmcs::cloudlb::haproxy::config:
       method: GET
       path: /
 
+  radosgw-api:
+    type: http
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::eqiad1::public_apis')}"
+    frontends:
+      - port: 28080
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+    healthcheck:
+      method: GET
+      path: /
+
   heat-api:
     type: http
     firewall:
