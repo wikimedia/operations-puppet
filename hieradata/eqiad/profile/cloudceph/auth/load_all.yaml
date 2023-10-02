@@ -57,6 +57,10 @@ profile::cloudceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
+  radosgw:
+    caps:
+      mon: allow rw
+      osd: allow rwx
   mon.cloudcephmon1001:
     keyring_path: /etc/ceph/ceph.mon.cloudcephmon1001.keyring
     import_to_ceph: false
