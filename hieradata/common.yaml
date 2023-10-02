@@ -1650,6 +1650,8 @@ druid_public_hosts:
 - 2620:0:861:10a:10:64:131:9  # druid1009.eqiad.wmnet
 - 10.64.132.12                # druid1010.eqiad.wmnet
 - 2620:0:861:10b:10:64:132:12 # druid1010.eqiad.wmnet
+- 10.64.135.9                 # druid1011.eqiad.wmnet
+- 2620:0:861:10e:10:64:135:9  # druid1011.eqiad.wmnet
 
 labstore_hosts:
 - 208.80.154.142              # clouddumps1001.wikimedia.org

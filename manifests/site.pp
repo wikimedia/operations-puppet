@@ -1015,12 +1015,8 @@ node /^an-test-druid1001\.eqiad\./ {
 # Druid public-eqiad servers.
 # These power AQS and wikistats 2.0 and contain non sensitive datasets.
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
-node /^druid10(0[4-9]|10)\.eqiad\./ {
+node /^druid10(0[4-9]|1[0-1])\.eqiad\./ {
     role(druid::public::worker)
-}
-
-node /^druid10(11)\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # new dse-k8s-crtl control plane servers T310171
