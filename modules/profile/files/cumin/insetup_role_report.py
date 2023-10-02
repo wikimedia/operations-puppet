@@ -41,6 +41,7 @@ def send_mail(mail_to: str, message: str) -> None:
     msg['From'] = 'Insetup Server Audit <no-reply@wikimedia.org>'
     msg['To'] = mail_to
     msg['Reply-To'] = AUDIT_OWNER
+    msg['Auto-Submitted'] = "auto-generated"
     smtp = smtplib.SMTP("localhost")
     smtp.send_message(msg)
     smtp.quit()

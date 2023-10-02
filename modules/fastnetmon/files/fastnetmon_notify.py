@@ -27,6 +27,7 @@ def mail(subject, to_addr, body=''):
     msg['Subject'] = subject
     msg['From'] = from_addr
     msg['To'] = to_addr
+    msg['Auto-Submitted'] = "auto-generated"
     smtp = smtplib.SMTP("localhost")
     smtp.send_message(msg)
     smtp.quit()

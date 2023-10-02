@@ -78,6 +78,7 @@ def main():
             {}
             """).format(cmd_str, ret, output)
         msg['Subject'] = "{}: {}".format(status, args.subject)
+        msg['Auto-Submitted'] = "auto-generated"
         msg.set_content(body)
         smtp = smtplib.SMTP('localhost')
         smtp.send_message(msg)

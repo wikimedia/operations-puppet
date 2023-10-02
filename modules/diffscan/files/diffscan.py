@@ -363,6 +363,7 @@ def send_email(recipient, subject, body, server='localhost'):
     msg['From'] = 'diffscan2 <noreply@{}>'.format(getfqdn())
     msg['To'] = recipient
     msg['Subject'] = subject
+    msg['Auto-Submitted'] = "auto-generated"
     msg.set_content(body)
     smtp = SMTP(server)
     smtp.send_message(msg)
