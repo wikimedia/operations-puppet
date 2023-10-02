@@ -29,7 +29,7 @@ Puppet::Reports.register_report(:prometheus) do
 
   def process
     return unless ENVIRONMENTS.nil? || ENVIRONMENTS.include?(environment)
-    namevar = "#{REPORT_PREFIX}#{node}.prom"
+    namevar = "#{REPORT_PREFIX}#{host}.prom"
 
     filename = File.join(TEXTFILE_DIRECTORY, namevar)
 
