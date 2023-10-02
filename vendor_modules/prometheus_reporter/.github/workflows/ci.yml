@@ -1,0 +1,51 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  setup_matrix:
+    name: 'Setup Test Matrix'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    outputs:
+      beaker_setfiles: ${{ steps.get-outputs.outputs.beaker_setfiles }}
+      puppet_major_versions: ${{ steps.get-outputs.outputs.puppet_major_versions }}
+      puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+    env:
+      BUNDLE_WITHOUT: development:release
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+      - name: Run rake validate
+        run: bundle exec rake validate
+      - name: Run rake rubocop
+        run: bundle exec rake rubocop
+      - name: Setup Test Matrix
+        id: get-outputs
+        run: bundle exec metadata2gha --use-fqdn --pidfile-workaround false
+
+  unit:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
+    env:
+      BUNDLE_WITHOUT: development:system_tests:release
+      PUPPET_VERSION: "~> ${{ matrix.puppet }}.0"
+    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake

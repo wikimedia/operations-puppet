@@ -42,6 +42,10 @@ mod 'postfix',
     :git => 'https://github.com/lollipopman/puppet-postfix',
     :ref => '6fa18a6'
 
+mod 'prometheus_reporter',
+    :git => https://github.com/voxpupuli/puppet-prometheus_reporter,
+    :ref => 'v1.1.0'
+
 mod 'puppetdbquery',
     :git => 'https://github.com/dalen/puppet-puppetdbquery.git',
     :ref => '3.0.1'

@@ -1,0 +1,47 @@
+{
+  "name": "puppet-prometheus_reporter",
+  "version": "1.1.0",
+  "author": "Vox Pupuli",
+  "summary": "This module writes Puppet reports in a format suitable for prometheus node_exporter textfile collector",
+  "license": "Apache-2.0",
+  "source": "https://github.com/voxpupuli/puppet-prometheus_reporter",
+  "project_page": "https://github.com/voxpupuli/puppet-prometheus_reporter",
+  "issues_url": "https://github.com/voxpupuli/puppet-prometheus_reporter/issues",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "16.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 6.1.0 < 8.0.0"
+    }
+  ],
+  "dependencies": [
+
+  ]
+}
