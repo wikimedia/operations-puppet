@@ -56,26 +56,32 @@ profile::puppetdb::sites:
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
 profile::puppetdb::database::users:
-  replication@puppetdb2003:
+  replication@puppetdb2003/replication:
     user: replication
     password: "%{alias('puppetdb::password::replication')}"
     database: replication
     allowed_hosts:
       - puppetdb2003.codfw.wmnet
     attrs: REPLICATION
-  puppetdb@puppetdb2003:
+  replication@puppetdb2003/puppetdb:
+    user: replication
+    password: "%{alias('puppetdb::password::replication')}"
+    database: replication
+    allowed_hosts:
+      - puppetdb2003.codfw.wmnet
+  puppetdb@puppetdb2003/puppetdb:
     user: puppetdb
     password: "%{alias('puppetdb::password::rw')}"
     database: puppetdb
     allowed_hosts:
       - puppetdb2003.codfw.wmnet
-  puppetdb@localhost:
+  puppetdb@localhost/puppetdb:
     user: puppetdb
     password: "%{alias('puppetdb::password::rw')}"
     database: puppetdb
     allowed_hosts:
       - "%{facts.networking.fqdn}"
-  puppetdb_ro@puppetdb2003:
+  puppetdb_ro@puppetdb2003/puppetdb:
     user: puppetdb_ro
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
@@ -83,7 +89,7 @@ profile::puppetdb::database::users:
       - puppetdb2003.codfw.wmnet
     privileges:
       table: 'SELECT'
-  puppetdb_ro@localhost:
+  puppetdb_ro@localhost/puppetdb:
     user: puppetdb_ro
     password: "%{alias('puppetdb::password::ro')}"
     database: puppetdb
@@ -91,7 +97,7 @@ profile::puppetdb::database::users:
       - "%{facts.networking.fqdn}"
     privileges:
       table: 'SELECT'
-  prometheus@localhost:
+  prometheus@localhost/postgres:
     user: 'prometheus'
     database: 'postgres'
     type: 'local'
