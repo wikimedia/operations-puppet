@@ -9,7 +9,7 @@ profile::puppetserver::ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::puppetserver::ca_public_key: 'puppet:///modules/profile/puppetserver/puppet_ca.pem'
 profile::puppetserver::ca_crl: 'puppet:///modules/profile/puppetserver/pki_crl.pem'
 profile::puppetserver::ca_private_key_secret: 'puppetserver/puppet_ca.key'
-profile::puppetserver::reports: ['logstash']
+profile::puppetserver::reports: ['logstash', 'prometheus']
 profile::puppetserver::hierarchy:
   - name: "private node"
     datadir: "/etc/puppet/private/hieradata"
