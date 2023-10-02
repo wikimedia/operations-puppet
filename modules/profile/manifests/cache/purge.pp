@@ -1,6 +1,8 @@
 # Profile to manage the daemon for cache invalidation
 
 class profile::cache::purge(
+    Optional[String] $frontend_addr = lookup('profile::cache::purge::frontend_addr', {'default_value' => undef}),
+    Optional[String] $backend_addr = lookup('profile::cache::purge::backend_addr', {'default_value' => undef}),
     Optional[String] $host_regex = lookup('profile::cache::purge::host_regex', {'default_value' => undef}),
     Array[String] $kafka_topics = lookup('profile::cache::purge::kafka_topics', {'default_value' => []}),
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
@@ -86,8 +88,8 @@ class profile::cache::purge(
     $prometheus_port = 2112
 
     class { 'purged':
-        backend_addr     => '127.0.0.1:3128',
-        frontend_addr    => '127.0.0.1:3127',
+        backend_addr     => $backend_addr,
+        frontend_addr    => $frontend_addr,
         prometheus_addr  => ":${prometheus_port}",
         frontend_workers => 4,
         backend_workers  => $::processorcount,

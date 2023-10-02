@@ -20,6 +20,9 @@ profile::cache::purge::kafka_topics:
   - eqiad.resource-purge
   - codfw.resource-purge
 profile::cache::purge::kafka_tls: true
+profile::cache::purge::backend_addr: 127.0.0.1:3128
+profile::cache::purge::frontend_addr: 127.0.0.1:3127
+
 profile::cache::varnish::frontend::cache_be_opts:
     port: 3128
     connect_timeout: '5s'
