@@ -66,7 +66,10 @@ profile::base::certificates::puppet_ca_content: {}
 profile::base::certificates::include_bundle_jks: false
 profile::base::certificates::include_bundle_p12: false
 
-profile::base::certificates::trusted_certs: ~
+profile::base::certificates::trusted_certs:
+  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
+  certs:
+    - "%{facts.puppet_config.localcacert}"
 
 profile::apt::use_proxy: false
 
