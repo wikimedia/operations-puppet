@@ -2454,13 +2454,6 @@ class profile::prometheus::ops (
       'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
     }
 
-    $node_site_data = wmflib::get_clusters({'site' => [$::site]}).map |$cluster, $data| {
-        {
-            'labels' => {'cluster' => $cluster, 'site' => $::site },
-            'targets' => $data[$::site].map |$fqdn| { "${fqdn.split(/\./)[0]}:9100" }
-        }
-    }
-
     file {
         default:
             backup => false,
@@ -2468,7 +2461,7 @@ class profile::prometheus::ops (
             group  => 'root',
             mode   => '0444';
         "${targets_path}/node_site_${::site}.yaml":
-            content => $node_site_data.to_yaml;
+            content => template('profile/prometheus/node_site.yaml.erb');
         # Ping and SSH probes for all bastions from all machines running
         # prometheus::ops
         "${targets_path}/blackbox_icmp_bastions.yaml":
