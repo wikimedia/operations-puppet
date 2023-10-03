@@ -113,8 +113,10 @@ class Backend(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     url = db.Column(db.String(256))
     route_id = db.Column(db.Integer, db.ForeignKey('route.id'))
-    route = db.relationship('Route',
-                            backref=db.backref('backends', lazy='dynamic'))
+    route = db.relationship(
+        'Route',
+        backref=db.backref('backends', lazy='dynamic', cascade='all, delete-orphan')
+    )
 
 
 class RedisStore:
