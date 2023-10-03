@@ -23,11 +23,11 @@ class profile::dumps::distribution::ferm (
         }
     } + $internal_rsync_clients.map |$item| { dnsquery::lookup($item) }
 
-    $_rsync_clients = $rsync_clients.flatten.sort.unique.join(' ')
+    $_rsync_clients = $rsync_clients.flatten.sort.unique
 
     ferm::service { 'dumps_rsyncd':
         port   => '873',
         proto  => 'tcp',
-        srange => "(${_rsync_clients})",
+        srange => $_rsync_clients,
     }
 }
