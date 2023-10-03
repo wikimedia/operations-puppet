@@ -1,4 +1,4 @@
-# TODO: this class seems not to be used
+# SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::rbd_cloudcontrol(
     Stdlib::Fqdn        $keystone_fqdn             = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String              $radosgw_service_user_pass = lookup('profile::openstack::eqiad1::radosgw::service_user_pass'),
