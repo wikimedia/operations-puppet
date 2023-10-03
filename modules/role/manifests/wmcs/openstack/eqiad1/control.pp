@@ -22,7 +22,6 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::rbd_cloudcontrol
     include profile::openstack::eqiad1::heat
     include profile::openstack::eqiad1::magnum
-    include profile::cloudceph::client::rbd_glance
     include profile::openstack::eqiad1::nova::common
     include profile::openstack::eqiad1::nova::conductor::service
     include profile::openstack::eqiad1::nova::scheduler::service
