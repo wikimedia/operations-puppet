@@ -20,8 +20,9 @@
 #     scrape_timeout, which in turn cannot be higher than scrape_interval.
 #     (15s for service::catalog probes)
 # @param [Optional[Hash]] params
-#     Use relabel_config to configure job params as target-specific labels.  These
-#     key-value pairs will be transformed into url query string parameters.
+#     [swagger type only] Use relabel_config to configure job params as
+#     target-specific labels. These key-value pairs will be transformed into url
+#     query string parameters.
 
 type Wmflib::Service::Probe = Struct[{
     'type'                  => Enum['http', 'tcp', 'tcp-notls', 'swagger'],
