@@ -47,6 +47,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -63,6 +64,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -79,6 +81,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -95,6 +98,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -111,6 +115,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: regex
@@ -127,6 +132,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -145,6 +151,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -161,6 +168,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
@@ -177,6 +185,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
