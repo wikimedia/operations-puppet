@@ -34,7 +34,7 @@ define prometheus::class_config(
     # TODO: convert to wmflib::puppetdb_query
     $query = template('prometheus/puppetdb_query_string.erb')
     $servers = keys(query_resources(false, $query, true))
-    $site_clusters = get_clusters({'site' => $::site})
+    $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
         ensure  => stdlib::ensure($ensure, 'file'),

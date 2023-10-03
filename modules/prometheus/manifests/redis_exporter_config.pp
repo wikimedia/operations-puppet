@@ -18,7 +18,7 @@ define prometheus::redis_exporter_config(
                   "Class[\"${class_name}\"]",
                   'Prometheus::Redis_exporter[~".*"]',
                   true)
-    $site_clusters = get_clusters({'site' => $::site})
+    $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
         ensure  => present,

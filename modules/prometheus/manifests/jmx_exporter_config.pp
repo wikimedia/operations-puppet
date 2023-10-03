@@ -29,7 +29,7 @@ define prometheus::jmx_exporter_config(
                   "Class[\"${class_name}\"]",
                   "Prometheus::Jmx_exporter_instance[~\"${instance_selector}\"]",
                   true)
-    $site_clusters = get_clusters({'site' => $::site})
+    $site_clusters = wmflib::get_clusters({'site' => [$::site]})
 
     file { $dest:
         ensure  => present,
