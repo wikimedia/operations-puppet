@@ -149,6 +149,7 @@ def send_email(message):
     message dictionary.
     """
     smtp = smtplib.SMTP('localhost')
+    message['Auto-Submitted'] = "auto-generated"
     smtp.send_message(message)
     smtp.quit()
     print("Email sent to " + message['To'], file=sys.stderr)
