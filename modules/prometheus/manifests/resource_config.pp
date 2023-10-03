@@ -38,7 +38,7 @@ define prometheus::resource_config(
 ) {
     $query = "${define_name}[~'.*']"
     $resources = query_resources(false, $query, true)
-    $site_clusters = wmflib::get_clusters({'site' => [$prometheus_site]})
+    $site_clusters = get_clusters({'site' => $prometheus_site})
 
     file { $dest:
         ensure  => present,
