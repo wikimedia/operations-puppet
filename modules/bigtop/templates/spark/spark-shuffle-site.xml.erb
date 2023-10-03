@@ -1,0 +1,11 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<configuration>
+  <property>
+    <name>spark.shuffle.service.port</name>
+    <value><%= @port -%></value>
+  </property>
+  <property>
+    <name>spark.yarn.shuffle.service.metrics.namespace</name>
+    <value>sparkShuffleService<%= @version.gsub('\.','_') -%></value>
+  </property>
+</configuration>

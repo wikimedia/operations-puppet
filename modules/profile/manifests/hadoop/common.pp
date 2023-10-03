@@ -299,6 +299,16 @@ class profile::hadoop::common (
         default => $hadoop_config['yarn_use_spark_shuffle'],
     }
 
+    $yarn_use_multi_spark_shufflers           = $hadoop_config['yarn_use_multi_spark_shufflers'] ? {
+        undef   => false,
+        default => $hadoop_config['yarn_use_multi_spark_shufflers'],
+    }
+
+    $yarn_multi_spark_shuffler_versions       = $hadoop_config['yarn_multi_spark_shuffler_versions'] ? {
+        undef   => {},
+        default => $hadoop_config['yarn_multi_spark_shuffler_versions'],
+    }
+
     # The HDFS Trash is configured in this way:
     # 1) Once every day a checkpoint is made (that contains all the trash for a day).
     # 2) After a month a checkpoint is deleted.
@@ -531,6 +541,8 @@ class profile::hadoop::common (
         yarn_scheduler_minimum_allocation_vcores         => $yarn_scheduler_minimum_allocation_vcores,
         yarn_scheduler_maximum_allocation_vcores         => $yarn_scheduler_maximum_allocation_vcores,
         yarn_use_spark_shuffle                           => $yarn_use_spark_shuffle,
+        yarn_use_multi_spark_shufflers                   => $yarn_use_multi_spark_shufflers,
+        yarn_multi_spark_shuffler_versions               => $yarn_multi_spark_shuffler_versions,
         yarn_node_labels_enabled                         => $yarn_node_labels_enabled,
 
         dfs_block_size                                   => 268435456, # 256 MB

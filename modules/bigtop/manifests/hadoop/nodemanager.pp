@@ -2,13 +2,31 @@
 # == Class bigtop::hadoop::nodemanager
 # Installs and configures a Hadoop NodeManager worker node.
 #
-class bigtop::hadoop::nodemanager {
-    Class['bigtop::hadoop'] -> Class['bigtop::hadoop::nodemanager']
+# == Params
+#
+# [*yarn_use_multi_spark_shufflers*]
+#   Boolean: This parameter determines whether or not the host should
+#   install the packages containing the spark shuffler.
+#
+# [*yarn_multi_spark_shuffler_versions*]
+#   This is a list of major.minor versions of spark shuffler to install.
+#   This has no effect if yarn_use_multi_spark_shufflers is false.
 
+class bigtop::hadoop::nodemanager (
+    Boolean $yarn_use_multi_spark_shufflers                           = false,
+    Array[Bigtop::Spark::Version] $yarn_multi_spark_shuffler_versions = [],
+) {
+    Class['bigtop::hadoop'] -> Class['bigtop::hadoop::nodemanager']
 
     package { ['hadoop-yarn-nodemanager', 'hadoop-mapreduce']:
         ensure  => 'installed',
         require => User['yarn'],
+    }
+
+    if $yarn_use_multi_spark_shufflers and $yarn_multi_spark_shuffler_versions.length > 0 {
+        $yarn_multi_spark_shuffler_versions.each | $version | {
+            ensure_packages ("yarn-spark-${version}-shuffler")
+        }
     }
 
     $nofiles_ulimit = $bigtop::hadoop::yarn_nodemanager_nofiles_ulimit

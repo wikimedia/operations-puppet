@@ -226,6 +226,22 @@
 #   [*yarn_log_aggregation_retain_check_interval_seconds*]
 #     How long to wait between aggregated log retention checks.
 #
+#   [*yarn_use_spark_shuffle*]
+#     Boolean: If enabled, this will cause yarn to load the spark shuffler
+#     service in addition to the mapreduce shuffler service. Options will be
+#     added to the yarn-site.xml file. If yarn_use_multi_spark_shuffler is
+#     true then that takes precedence over this option, which then has no effect/
+#
+#   [*yarn_use_multi_spark_shuffler*]
+#     Boolean: If enabled, this causes yarn to load support for multiple versions
+#     of the spark shuffler service, in addition to the mapreduce shuffler service.
+#     This option takes precedence over the yarn_use_spark_shuffle option.
+#
+#   [*yarn_multi_spark_shuffler_versions*]
+#     This is a hash of versions of the spark shuffler for yarn to install, along
+#     with their respective port numbers. It is only used if yarn_use_multi_spark_shuffler
+#     is true. Default: {} Example: { '3.1' => 7001, '3.3' => 7002, '3.3' => 7003 }
+#
 #   [*hadoop_heapsize*]
 #     Xmx for NameNode and DataNode.
 #     Default: undef
@@ -389,6 +405,8 @@ class bigtop::hadoop(
     $yarn_scheduler_minimum_allocation_vcores           = undef,
     $yarn_scheduler_maximum_allocation_vcores           = undef,
     $yarn_use_spark_shuffle                             = false,
+    $yarn_use_multi_spark_shufflers                     = false,
+    $yarn_multi_spark_shuffler_versions                 = {},
     $hadoop_heapsize                                    = undef,
     $hadoop_namenode_opts                               = undef,
     $hadoop_datanode_opts                               = undef,
@@ -674,10 +692,37 @@ class bigtop::hadoop(
         content => template('bigtop/hadoop/mapred-site.xml.erb'),
     }
 
+    # Here we determine whether one or multiple spark shuffle services is available
+    # Selecting multiple shufflers overrides the single shuffler configuration. See #T344910
+    if $yarn_use_multi_spark_shufflers {
+        $yarn_spark_shuffler_list = $yarn_multi_spark_shuffler_versions.keys.map | $version | {
+            sprintf('spark_shuffle_%s', sprintf('%s',$version).regsubst('\.','_'))
+            }.join(',')
+    } elsif $yarn_use_spark_shuffle {
+        $yarn_spark_shuffler_list = 'spark_shuffle'
+    }
+    # The mapreduce shuffler is always enabled. Append the required list for either single
+    # or multiple spark shufflers here.
+    if yarn_spark_shuffler_list.length > 0 {
+        $yarn_shuffler_list = sprintf('mapreduce_shuffle,%s', $yarn_spark_shuffler_list)
+    }
+    else {
+        $yarn_shuffler_list= 'mapreduce_shuffle'
+    }
+
     file { "${config_directory}/yarn-site.xml":
         content => template('bigtop/hadoop/yarn-site.xml.erb'),
     }
 
+    if $yarn_use_multi_spark_shufflers {
+        $yarn_multi_spark_shuffler_versions.each | $version | {
+            bigtop::spark::shuffler { $version[0]:
+                version          => $version[0],
+                port             => $version[1],
+                config_directory => $config_directory,
+            }
+        }
+    }
     file { "${config_directory}/yarn-env.sh":
         content => template('bigtop/hadoop/yarn-env.sh.erb'),
     }

@@ -11,7 +11,7 @@
 #  [*use_kerberos*]
 #    Make Puppet use Kerberos authentication when executing hdfs commands.
 #
-class profile::hadoop::worker(
+class profile::hadoop::worker (
     String $cluster_name                  = lookup('profile::hadoop::common::hadoop_cluster_name'),
     Boolean $monitoring_enabled           = lookup('profile::hadoop::worker::monitoring_enabled', { 'default_value' => false }),
     String $ferm_srange                   = lookup('profile::hadoop::worker::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
@@ -27,7 +27,22 @@ class profile::hadoop::worker(
         require ::profile::hadoop::monitoring::nodemanager
     }
 
-    class { '::bigtop::hadoop::worker': }
+    # Look up in the common hadoop config whether or not this cluster is configured to use multiple spark shufflers
+    $yarn_use_multi_spark_shufflers = $profile::hadoop::common::hadoop_config['yarn_use_multi_spark_shufflers'] ? {
+        undef   => false,
+        default => $profile::hadoop::common::hadoop_config['yarn_use_multi_spark_shufflers'],
+    }
+
+    # Look up in the common hadoop config the hash of spark versions in use. We only need the versions here, not their ports.
+    $yarn_multi_spark_shuffler_versions = $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'] ? {
+        undef   => [],
+        default => $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'].keys,
+    }
+
+    class { '::bigtop::hadoop::worker':
+        yarn_use_multi_spark_shufflers     => $yarn_use_multi_spark_shufflers,
+        yarn_multi_spark_shuffler_versions => $yarn_multi_spark_shuffler_versions,
+    }
 
     # The HDFS journalnodes are co-located for convenience,
     # but it is not a strict requirement.
@@ -37,7 +52,6 @@ class profile::hadoop::worker(
         }
         class { 'bigtop::hadoop::journalnode': }
     }
-
 
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
