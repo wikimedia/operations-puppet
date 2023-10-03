@@ -2,6 +2,7 @@
 class profile::toolforge::bastion::toolforge_cli () {
   package { [
     'toolforge-cli',
+    'toolforge-builds-cli',
     'toolforge-envvars-cli',
     'toolforge-jobs-framework-cli',
   ]:
