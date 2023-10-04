@@ -42,14 +42,14 @@ class profile::wmcs::cloudgw (
     $cloud_realm_routes = [[
         # route floating IPs to neutron. The 'onlink' is required for the route to don't be rejected as
         # the /30 subnet doesn't allow per-cloudgw-node address
-        "${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        "${virt_floating} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink",
         # route internal VM network to neutron
-        "${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        "${virt_subnet} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink",
         # select source address for the transport cloudgw <-> neutron subnet
-        "${transport_cidr} table ${rt_table_name} dev ${nic_virt} scope link src ${transport_vip}",
+        "${transport_cidr} table ${rt_table_number} dev ${nic_virt} scope link src ${transport_vip}",
     ] + [$virt_floating_additional.empty.bool2str('',
         # route additional floatings IPs to neutron
-        "${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt} onlink"
+        "${virt_floating_additional} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink"
     )]].flatten.filter |$x| { $x !~ /^\s*$/ }
 
     # network config, VRF, vlan trunk, routing, etc
