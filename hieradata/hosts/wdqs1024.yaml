@@ -1,0 +1,2 @@
+profile::query_service::mount_dumps: true
+profile::query_service::enable_updater: false

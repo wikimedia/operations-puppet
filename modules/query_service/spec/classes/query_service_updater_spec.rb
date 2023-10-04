@@ -18,6 +18,7 @@ describe 'query_service::updater', :type => :class do
         :logstash_logback_port => 11_514,
         :extra_jvm_opts => [],
         :journal => 'wikidata',
+        :ensure => 'present',
         }
    }
 

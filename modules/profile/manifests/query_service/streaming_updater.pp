@@ -10,7 +10,8 @@ class profile::query_service::streaming_updater (
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     String $journal = lookup('profile::query_service::streaming_updater::journal'),
-    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options')
+    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
+    Boolean $enable_updater = lookup('profile::query_service::enable_updater', { 'default_value' => true }),
 ) {
     require ::profile::query_service::common
 
@@ -37,6 +38,7 @@ class profile::query_service::streaming_updater (
     ]
 
     class { 'query_service::updater':
+        ensure                => stdlib::ensure($enable_updater),
         package_dir           => $package_dir,
         data_dir              => $data_dir,
         log_dir               => $log_dir,

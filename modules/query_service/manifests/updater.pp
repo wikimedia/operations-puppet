@@ -25,13 +25,14 @@ class query_service::updater(
     String $deploy_name,
     Array[String] $extra_jvm_opts,
     String $journal,
+    Wmflib::Ensure $ensure = 'present',
     Boolean $log_sparql = false,
 ) {
     $updater_startup_script = 'runStreamingUpdater.sh'
     $updater_service_desc = 'Query Service Streaming Updater'
 
     file { '/etc/default/query-service-updater':
-        ensure  => present,
+        ensure  => $ensure,
         content => template('query_service/updater-default.erb'),
         owner   => 'root',
         group   => 'root',
@@ -41,6 +42,7 @@ class query_service::updater(
     }
 
     query_service::logback_config { "${deploy_name}-updater":
+        ensure                => $ensure,
         pattern               => '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %mdc%n',
         log_dir               => $log_dir,
         logstash_logback_port => $logstash_logback_port,
@@ -49,11 +51,12 @@ class query_service::updater(
     }
 
     systemd::unit { "${deploy_name}-updater":
+        ensure  => $ensure,
         content => template('query_service/initscripts/updater.systemd.erb'),
         notify  => Service["${deploy_name}-updater"],
     }
 
     service { "${deploy_name}-updater":
-        ensure => 'running',
+        ensure => stdlib::ensure($ensure, 'service'),
     }
 }
