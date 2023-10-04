@@ -75,22 +75,22 @@ role::dumps::generation::server::xmlfallback:
   target-q: 2023-2
   phab-task: 325232
 role::openldap::rw:
-  target-q: 2023-2
+  target-q: 2023-4
   phab-task: 331699
 role::parsoid::testing:
   target-q: TBD
 role::parsoid::testreduce:
-  target-q: TBD
+  target-q: 2023-4
 role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
-  target-q: 2023-3
+  target-q: 2023-4
   phab-task: 331713
 role::ores:
-  target-q: 2023-2
+  target-q: 2023-4
   phab-task: 312518
 role::orespoolcounter:
-  target-q: 2023-2
+  target-q: 2023-4
   phab-task: 312518
 role::mariadb::parsercache:
   target-q: TBD
@@ -122,7 +122,7 @@ role::planet:
   target-q: 2023-4
   phab-task: 281219
 role::ganeti:
-  target-q: 2023-3
+  target-q: 2023-4
   phab-task: 311687,311686
 role::alerting_host:
   target-q: 2023-3
@@ -420,7 +420,7 @@ role::analytics_cluster::zookeeper:
 role::zookeeper::test:
   target-q: TBD
 role::apt_repo:
-  target-q: 2023-2
+  target-q: 2023-4
   phab-task: 331613
 role::poolcounter::server:
   target-q: TBD
