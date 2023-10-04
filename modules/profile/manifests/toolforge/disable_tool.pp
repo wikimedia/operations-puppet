@@ -16,8 +16,9 @@ class profile::toolforge::disable_tool (
         mode    => '0500',
         content => template('profile/toolforge/disable_tool.conf.erb'),
     }
-    git::clone { 'cloud/toolforge/disable-tool':
+    git::clone { 'repos/cloud/toolforge/disable-tool':
         ensure    => latest,
+        source    => 'gitlab',
         directory => '/srv/disable-tool',
     }
 }
