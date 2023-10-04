@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala]
+              tsepothoabala, zxane]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -176,7 +176,7 @@ groups:
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle, pearley,
-              ezachte, jamesur, jdlrobson, sguebo, zxane,
+              ezachte, jamesur, jdlrobson, sguebo,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
@@ -367,7 +367,7 @@ groups:
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, mneisler,
-              nuria, otto, jgreen, sguebo, zxane,
+              nuria, otto, jgreen, sguebo,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
               joal, akosiaris, pearley,
@@ -4461,14 +4461,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID46/gY7mfN96ylAdQb6ZBfrq9L3QwemMtN5ZjrJgEmK dcaro@magnum
   zxane:
-    ensure: present
+    ensure: absent
     name: zxane
-    realname: David Caro Estevez
+    realname: Zxane Soo
     email: zsoo@wikimedia.org
     uid: 27633
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC3kiZBoCZU9sQS0ehfB47WOPPA5+3Tak+XnqFNxK4caYDE/BzyzVXu77AzhD20ouEE8ZN2NITJyDVOkWXh3CK4krZ6Nl7mvex7eYkR1Omi0EwIsbh/sQ26eZsjSi7AyUjvbpqv7E+Aok1wE5+8CqqX/EB3JNseHihPRB7f8XGBq/X7hj/EtKVgv/ZZfXF7pAUVOyzHejPmc6ki/vTZ1zxLBg9HruFD9K17mbFkcxc2n1k/x3MHKAS46ZJ4H1BHtKdhkqQkKcD2nwFG37Q7zwP3uayyaU3A1VU/lJsmNQ7JwBcjqGiVgF7sflLHAnxRTAFp60OA6eryr75OdsPEutUzG1OK1JuIPIPBCHttEVlkbcwIZLbAl/r+Z/eOTvzp4GaGdTwcQw7YgqdSUDjQ1wETDKNMAZxK1XGBPbLo+acyBU11+Th55zUdV38/M6RTv0lbDCZsDqy2UgT1ke/clLuMBoMv/XDExOALv3ILjQfARDh8LO19kxQD7UdaknT2gu3c7ymR6PFhQbYJnmTom2EH0gFHXfRVAgJf0rUyxW7BY5MER+F0M26bUdUV2nM4e0nUxKocx4HiDosRXXc9tTgNSTXqTnb4Z4IxH6ZAzOgsqT1D6sE4mGDboh+H/XST40I/WbMfCUPErNGZPbHeYR//Ki36zlQcsXrETUxf9NXM2w== zxane@Zxanes-MBP
+    ssh_keys: []
   swagoel:
     ensure: present
     name: swagoel
