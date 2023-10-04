@@ -61,6 +61,25 @@ class profile::wmcs::cloudgw (
         legacy_vlan_naming => false,
     }
 
+    # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
+
+    # route internal VM network to neutron
+    interface::post_up_command { "route_${nic_virt}_floating_ips" :
+        interface => $nic_virt,
+        command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+    }
+    # route floating IPs to neutron
+    interface::post_up_command { "route_${nic_virt}_floating_ips" :
+        interface => $nic_virt,
+        command   => "ip route add ${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+    }
+    if $virt_floating_additional {
+        interface::post_up_command { "route_${nic_virt}_floating_ips_additional" :
+            interface => $nic_virt,
+            command   => "ip route add ${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+        }
+    }
+
     interface::tagged { "cloudgw_${nic_wan}":
         base_interface     => $facts['interface_primary'],
         vlan_id            => $wan_vlan,
@@ -92,17 +111,6 @@ class profile::wmcs::cloudgw (
             command   => "sysctl -w net.ipv6.conf.${nic}.accept_ra=0",
         }
     }
-
-    $cloud_realm_routes = [[
-        # route floating IPs to neutron. The 'onlink' is required for the route to don't be rejected as
-        # the /30 subnet doesn't allow per-cloudgw-node address
-        "${virt_floating} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}",
-        # route internal VM network to neutron
-        "${virt_subnet} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}",
-    ] + [$virt_floating_additional.empty.bool2str('',
-        # route additional floatings IPs to neutron
-        "${virt_floating_additional} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}"
-    )]].flatten.filter |$x| { $x !~ /^\s*$/ }
 
     # TODO: remove after we know this is no longer present anywhere
     file { '/etc/network/interfaces.d/cloudgw':
