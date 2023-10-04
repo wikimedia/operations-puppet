@@ -4,7 +4,8 @@ class icinga::monitor::toollabs () {
     # See profile::toolforge::checker for more details.
     $test_entry_host = 'checker.tools.wmflabs.org'
     @monitoring::host { $test_entry_host:
-        host_fqdn => $test_entry_host,
+        host_fqdn     => $test_entry_host,
+        contact_group => 'wmcs-team',
     }
 
     # Toolschecker tests are pass/fail based on string return check
