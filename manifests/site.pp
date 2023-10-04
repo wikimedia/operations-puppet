@@ -2491,14 +2491,6 @@ node /^netflow[1-6]00[1-9]\.(eqiad|codfw|ulsfo|esams|eqsin|drmrs)\./ {
     role(netinsights)
 }
 
-node /^ores[12]00[1-9]\.(eqiad|codfw)\./ {
-    role(ores)
-}
-
-node /^orespoolcounter[12]00[34]\.(codfw|eqiad)\./ {
-    role(orespoolcounter)
-}
-
 node /^vrts1001\.eqiad\./ {
     role(vrts)
 }
