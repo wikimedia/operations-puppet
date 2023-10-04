@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'pathname'
-
+require_relative '../modules/wmflib/lib/puppet_x/wmflib/monkey_patch.rb'
+PuppetX::Wmflib::ResolveMonkeypatch.apply_patch
 # We are using puppet 5.5 which uses this deprecated function.  As such monkey patch it bak in
 # This file needs to be loaded before puppet
 # We use 2.7.0 as the min version to silence deprecation warnings

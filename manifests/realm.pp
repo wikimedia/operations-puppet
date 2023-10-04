@@ -2,6 +2,9 @@
 # Collection of global definitions used across sites, within one realm.
 #
 
+# monkey patch early
+wmflib::monkey_patch()
+
 # Determine the site the server is in
 # NOTE: Adding a new site or updating private ranges?
 # Please update the ranges in mediawiki-config/wmf-config/reverse-proxy.php.
