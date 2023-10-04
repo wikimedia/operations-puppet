@@ -28,7 +28,8 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan]
+              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
+              tsepothoabala]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -151,7 +152,7 @@ groups:
               wikigit, arlolra, chrisalbon,
               annet, jgiannelos, kharlan, stran, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
-              aikochou, kevinbazira, tsepothoabala, samtar, pfischer, kindrobot,
+              aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, cec, fab, acooper,
               dr0ptp4kt, mabualruz
     ]
@@ -400,7 +401,7 @@ groups:
               shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
               hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
+              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, isaranto,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
@@ -5365,13 +5366,11 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZfnjboIHwyJ849bMbH9NspXL6dTjMkoZHflvrMLcvt sergio@wmf2988
     krb: present
   tsepothoabala:
-    ensure: present
+    ensure: absent
     realname: Tsepo Thoabala
-    email: tthoabala@wikimedia.org
     uid: 30134
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILQH9jvacif4CGZ1Hby7HYwtR/EJSy0XDbRtWzHFb+3E tthoabala@wikimedia.org
+    ssh_keys: []
   tchin:
     ensure: present
     realname: Thomas Chin
