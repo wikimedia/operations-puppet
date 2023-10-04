@@ -10,10 +10,6 @@
 auto vrf-cloudgw
 iface vrf-cloudgw inet manual
     pre-up ip link add vrf-cloudgw type vrf table cloudgw
-    # additional routes for the cloud realm traffic
-<% @cloud_realm_routes.each do |route| -%>
-    post-up ip route add <%= route %>
-<% end -%>
 
 auto <%= @nic_virt %>
 iface <%= @nic_virt %> inet manual
@@ -21,6 +17,10 @@ iface <%= @nic_virt %> inet manual
     # no address given the VIP is handle by keepalived / VRRP
     # hook this interface to the VRF
     post-up ip link set <%= @nic_virt %> master vrf-cloudgw
+    # additional routes for the cloud realm traffic
+<% @cloud_realm_routes.each do |route| -%>
+    post-up ip route add <%= route %>
+<% end -%>
     post-up sysctl -w net.ipv4.conf.<%= @nic_virt %>.forwarding=1
     post-up sysctl -w net.ipv4.conf.<%= @nic_virt %>.rp_filter=0
     post-up sysctl -w net.ipv6.conf.<%= @nic_virt %>.accept_ra=0
