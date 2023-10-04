@@ -1,1 +1,0 @@
-profile::cache::purge::frontend_addr: "/run/varnish-privileged.socket"
