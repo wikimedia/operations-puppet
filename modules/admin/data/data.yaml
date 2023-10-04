@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold]
+              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -179,7 +179,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, essexigyan, itamar, haak, erayfield,
+              komla, sgimeno, itamar, haak, erayfield,
               dbrant, tsev]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -398,7 +398,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
               shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
-              essexigyan, hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
+              hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, tsepothoabala, pfischer, ttaylor,
               hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
@@ -5407,13 +5407,11 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   essexigyan:
-    ensure: present
+    ensure: absent
     realname: Essex Igyan
-    email: eigyan@wikimedia.org
     uid: 33092
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDdz3pfyoY/88GQ8ko2qic58wZneZYVpsaf4BusiPxYg essexigyan@wmf2920
+    ssh_keys: []
   slyngshede:
     ensure: present
     realname: Simon Lyngshede
