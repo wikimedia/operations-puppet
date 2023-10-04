@@ -95,7 +95,7 @@ profile::wmcs::cloudlb::haproxy::config:
     firewall:
       open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
     frontends:
-      - port: 28080
+      - port: 443
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
