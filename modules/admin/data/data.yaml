@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield]
+              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -405,7 +405,7 @@ groups:
               damilare, isaranto,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
-              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, kmorgan, atieno, andrewtavis-wmde, sg912,
+              ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -5903,12 +5903,11 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   kmorgan:
-    ensure: present
+    ensure: absent
     realname: Kayla Morgan
-    email: kmorgan@wikimedia.org
     uid: 42439
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   atieno:
     ensure: present
     realname: Atieno Njira
