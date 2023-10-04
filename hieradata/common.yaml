@@ -979,6 +979,14 @@ hadoop_clusters:
       # better to use a smaller replication factor (3 is the Hadoop's default).
       dfs.replication: 2
 
+    yarn_use_multi_spark_shufflers: true
+    # Multiple spark shufflers are listed here with the keys as major.minor
+    # versions in quotes and the value represents the port number to be used.
+    yarn_multi_spark_shuffler_versions:
+      '3.1': 7001
+      '3.3': 7002
+      '3.4': 7003
+
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
     resourcemanager_hosts:
