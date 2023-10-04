@@ -193,16 +193,6 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-migrate.py",
     }
 
-    # Script to copy a host from a non-ceph cloudvirt
-    #  to a ceph-enabled cloudvirt
-    file { '/usr/local/sbin/wmcs-ceph-migrate':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-ceph-migrate.py",
-    }
-
     # Script to drain a ceph-enabled cloudvirt via live migration
     file { '/usr/local/sbin/wmcs-drain-hypervisor':
         ensure => 'present',
