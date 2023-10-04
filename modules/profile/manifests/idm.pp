@@ -158,7 +158,7 @@ class profile::idm(
     }
 
     class {'httpd':
-        modules => ['proxy_http', 'proxy', 'proxy_uwsgi']
+        modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'remoteip']
     }
 
     httpd::site { 'idm':
