@@ -2,6 +2,8 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address::V4::CIDR                  $virt_subnet               = lookup('profile::wmcs::cloudgw::virt_subnet_cidr',         {default_value => '172.16.128.0/24'}),
     Integer                                        $virt_vlan                 = lookup('profile::wmcs::cloudgw::virt_vlan',                {default_value => 2107}),
     Stdlib::IP::Address                            $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer',                {default_value => '127.0.0.5'}),
+    Stdlib::IP::Address                            $virt_addr                 = lookup('profile::wmcs::cloudgw::virt_addr',                {default_value => '127.0.0.4'}),
+    Integer[1,32]                                  $virt_netm                 = lookup('profile::wmcs::cloudgw::virt_netm',                {default_value => 8}),
     Stdlib::IP::Address::V4::CIDR                  $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating',            {default_value => '127.0.0.5/24'}),
     Optional[Stdlib::IP::Address::V4::CIDR]        $virt_floating_additional  = lookup('profile::wmcs::cloudgw::virt_floating_additional', {default_value => undef}),
     Integer                                        $wan_vlan                  = lookup('profile::wmcs::cloudgw::wan_vlan',                 {default_value => 2120}),
@@ -53,7 +55,8 @@ class profile::wmcs::cloudgw (
     interface::tagged { "cloudgw_${nic_virt}":
         base_interface     => $facts['interface_primary'],
         vlan_id            => $virt_vlan,
-        # no address given the VIP is handled by keepalived / VRRP
+        address            => $virt_addr,
+        netmask            => $virt_netm,
         method             => 'manual',
         legacy_vlan_naming => false,
     }
@@ -93,14 +96,12 @@ class profile::wmcs::cloudgw (
     $cloud_realm_routes = [[
         # route floating IPs to neutron. The 'onlink' is required for the route to don't be rejected as
         # the /30 subnet doesn't allow per-cloudgw-node address
-        "${virt_floating} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink",
+        "${virt_floating} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}",
         # route internal VM network to neutron
-        "${virt_subnet} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink",
-        # select source address for the transport cloudgw <-> neutron subnet
-        "${transport_cidr} table ${rt_table_number} dev ${nic_virt} scope link src ${transport_vip}",
+        "${virt_subnet} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}",
     ] + [$virt_floating_additional.empty.bool2str('',
         # route additional floatings IPs to neutron
-        "${virt_floating_additional} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt} onlink"
+        "${virt_floating_additional} table ${rt_table_number} nexthop via ${virt_peer} dev ${nic_virt}"
     )]].flatten.filter |$x| { $x !~ /^\s*$/ }
 
     # TODO: remove after we know this is no longer present anywhere
