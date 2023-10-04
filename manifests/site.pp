@@ -48,7 +48,7 @@ node /^an-master1002\.eqiad\./ {
 }
 
 #add new nodes T342291
-node /^an-master100(2,3)\.eqiad\./ {
+node /^an-master100(3,4)\.eqiad\./ {
     role(insetup::analytics)
 }
 
