@@ -28,7 +28,7 @@ groups:
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
-              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan]
+              jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -179,7 +179,7 @@ groups:
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
-              komla, sgimeno, itamar, haak, erayfield,
+              komla, sgimeno, itamar, haak,
               dbrant, tsev]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
@@ -5944,13 +5944,11 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINotvxyY6suyJrtLkYJxLVt1AuRmMchAutAnwTAU5cJ+ haak@C341
   erayfield:
-    ensure: present
+    ensure: absent
     realname: Ellen Rayfield
-    email: erayfield@wikimedia.org
     uid: 34606
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH2htFXhtFzM9qVQu73WrDvNTmQGdMei67vSEqMgHOPs erayfield@wikimedia.org
+    ssh_keys: []
   jkieserman:
     ensure: absent
     realname: Julia Kieserman
