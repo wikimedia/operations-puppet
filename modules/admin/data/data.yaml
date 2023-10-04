@@ -40,7 +40,7 @@ groups:
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
-              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing]
+              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6627,9 +6627,8 @@ ldap_only_users:
     realname: Zeljko Filipin
     email: zfilipin@wikimedia.org
   agueyte:
-    ensure: present
+    ensure: absent
     realname: Anaïs Gueyte
-    email: agueyte@wikimedia.org
   georginaburnett-wmde:
     ensure: present
     realname: Georgina Burnett
