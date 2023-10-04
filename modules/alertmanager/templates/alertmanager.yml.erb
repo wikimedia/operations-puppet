@@ -299,6 +299,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
     - to: 'data-engineering-alerts@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'data-persistence-irc'
   webhook_configs:
@@ -313,6 +314,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
   email_configs:
     - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'infrastructure-foundations-irc'
   webhook_configs:
@@ -323,19 +325,24 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'noc@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'netops-mail'
   email_configs:
     - to: 'ayounsi@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
     - to: 'cmooney@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'dcops-mail'
   email_configs:
     - to: 'datacenter-ops@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'peering-mail'
   email_configs:
     - to: 'peering@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'perf-ircmail'
   webhook_configs:
@@ -343,6 +350,7 @@ receivers:
   email_configs:
     - to: 'performance-team-alert@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'qte-mail'
   email_configs:
@@ -351,39 +359,46 @@ receivers:
 - name: 'rweb-mail'
   email_configs:
     - to: 'reading-web-team@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wikidata-mail'
   email_configs:
     - to: 'wikidata-monitoring@wikimedia.de'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'structured-data-mail'
   email_configs:
     - to: 'sd-alerts@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'releng-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
   email_configs:
     - to: 'releng@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'traffic-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-traffic'
   email_configs:
     - to: 'sre-traffic@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'search-platform-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'discovery-alerts@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-pagetaskircmail'
   victorops_configs:
@@ -395,6 +410,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'mediawiki-platform-ircmail'
   webhook_configs:
@@ -402,6 +418,7 @@ receivers:
   email_configs:
     - to: 'mediawiki-platform-team@<%= @facts["networking"]["domain"] %>'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 # Receivers to open Phabricator tasks. Naming convention is '<team-and-subteam>-task'
 - name: 'sre-o11y-task'
@@ -434,6 +451,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
   email_configs:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'serviceops-collab-critical'
   webhook_configs:
@@ -443,6 +461,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
   email_configs:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'serviceops-collab-task'
   webhook_configs:
@@ -466,6 +485,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
   email_configs:
     - to: 'releng@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'dcops-task'
   webhook_configs:
@@ -536,12 +556,14 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'fr-ircmail'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
     - to: 'fr-tech@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'abstract-wikipedia-warning'
   webhook_configs:
@@ -550,6 +572,7 @@ receivers:
   email_configs:
     - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'abstract-wikipedia-critical'
   webhook_configs:
@@ -558,12 +581,14 @@ receivers:
   email_configs:
     - to: 'aw-alerts-aaaahdftahushqrqpyfzzvrm3q@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'growth-critical'
   # growth-engine-room Slack channel
   email_configs:
     - to: 'growth-engine-room-aaaab2fjcsigknmf7zv7adyzum@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'ml-ircmail'
   webhook_configs:
@@ -605,4 +630,3 @@ inhibit_rules:
       - 'job'
       - 'instance'
       - 'site'
-
