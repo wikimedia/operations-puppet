@@ -41,7 +41,7 @@ groups:
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
-              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte]
+              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6190,9 +6190,8 @@ ldap_only_users:
     realname: Elena Lappen
     email: elappen@wikimedia.org
   elitre:
-    ensure: present
+    ensure: absent
     realname: Erica Litrenta
-    email: elitrenta@wikimedia.org
   ferdbold:
     ensure: present
     realname: Frederic Bolduc
