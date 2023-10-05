@@ -7,9 +7,9 @@ class openstack::neutron::service::antelope(
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::antelope::${::lsbdistcodename}"
 
-    service {'neutron-api':
+    service {'neutron-server':
         ensure    => $active,
-        require   => Package['neutron-server', 'neutron-api'],
+        require   => Package['neutron-server', 'neutron-server'],
         subscribe => [
                       File['/etc/neutron/neutron.conf'],
                       File['/etc/neutron/policy.yaml'],
@@ -27,22 +27,22 @@ class openstack::neutron::service::antelope(
             ],
     }
 
-    package { 'neutron-server':
+    package { 'neutron-api':
         ensure => 'present',
     }
-    package { 'neutron-api':
+    package { 'neutron-server':
         ensure => 'present',
     }
 
     # Our 'neutron-server' script is just the packaged neutron-api script
     #  renamed and with the port changed.
     file {
-        '/etc/init.d/neutron-api':
-            content => template('openstack/antelope/neutron/neutron-api'),
+        '/etc/init.d/neutron-server':
+            content => template('openstack/antelope/neutron/neutron-server'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
-            notify  => Service['neutron-api'],
+            notify  => Service['neutron-server'],
             require => Package['neutron-server', 'neutron-api'];
         '/etc/neutron/neutron-api-uwsgi.ini':
             ensure  => 'present',
@@ -50,16 +50,16 @@ class openstack::neutron::service::antelope(
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/antelope/neutron/neutron-api-uwsgi.ini',
-            notify  => Service['neutron-api'],
-            require => Package['neutron-api'];
+            notify  => Service['neutron-server'],
+            require => Package['neutron-server'];
         '/etc/neutron/api-paste.ini':
             ensure  => 'present',
             owner   => 'root',
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/antelope/neutron/api-paste.ini',
-            notify  => Service['neutron-api'],
-            require => Package['neutron-api'];
+            notify  => Service['neutron-server'],
+            require => Package['neutron-server'];
         '/var/run/neutron/':
             ensure => directory,
             owner  => 'neutron',
