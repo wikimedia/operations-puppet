@@ -1,5 +1,4 @@
 cluster: puppet
-puppetdb_host: 'puppetdb1003.eqiad.wmnet'
 puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::puppet::agent::puppetmaster: puppetserver1001.eqiad.wmnet
 profile::puppet::agent::force_puppet7: true
