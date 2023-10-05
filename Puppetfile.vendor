@@ -47,10 +47,6 @@ mod 'prometheus_reporter',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-modules/puppet-prometheus_reporter',
     :ref => 'report_prefix'
 
-mod 'puppetdbquery',
-    :git => 'https://github.com/dalen/puppet-puppetdbquery.git',
-    :ref => '3.0.1'
-
 mod 'rspamd',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',
     :ref => 'v1.3.1'
