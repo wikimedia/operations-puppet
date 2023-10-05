@@ -32,8 +32,7 @@ profile::opensearch::common_settings:
   disktype: 'hdd'
   disable_security_plugin: true
 
-profile::opensearch::monitoring::shard_size_warning: 150
-profile::opensearch::monitoring::shard_size_critical: 350
+profile::opensearch::monitoring::enable_shard_size_check: false
 
 # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
 # shard is present on each node). If one node is lost, 1/3 of the shards
