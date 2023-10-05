@@ -38,7 +38,7 @@ def extract_large_shards(indices, shard_size_warning, shard_size_critical):
     warnings = defaultdict(list)
     criticals = defaultdict(list)
     for name, shard_sizes in indices.items():
-        mean_size = mean(shard_sizes)
+        mean_size = round(mean(shard_sizes), 2)
         if mean_size > shard_size_critical:
             criticals[name].append(mean_size)
         elif mean_size > shard_size_warning:
