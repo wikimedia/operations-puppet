@@ -6499,7 +6499,7 @@ ldap_only_users:
   bawolff:
     ensure: present
     realname: Brian Wolff
-    email: bwolff@wikimedia.org
+    email: bawolff@gmail.com
   rxy:
     ensure: present
     realname: NDA On File
