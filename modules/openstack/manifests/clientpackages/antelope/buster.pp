@@ -30,7 +30,7 @@ class openstack::clientpackages::antelope::buster(
     $otherpackages = [
         'ebtables',
         'python-netaddr',
-        'patc',
+        'patch',
     ]
 
     ensure_packages($py2packages + $py3packages + $otherpackages)
