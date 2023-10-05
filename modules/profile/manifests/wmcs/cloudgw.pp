@@ -64,7 +64,7 @@ class profile::wmcs::cloudgw (
     # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
 
     # route internal VM network to neutron
-    interface::post_up_command { "route_${nic_virt}_floating_ips" :
+    interface::post_up_command { "route_${nic_virt}_virt_subnet" :
         interface => $nic_virt,
         command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
     }
