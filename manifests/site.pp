@@ -49,7 +49,7 @@ node /^an-master1002\.eqiad\./ {
 
 #add new nodes T342291
 node /^an-master100[3-4]\.eqiad\./ {
-    role(insetup::analytics)
+    role(insetup::data_engineering)
 }
 
 node /^an-coord1001\.eqiad\./ {
