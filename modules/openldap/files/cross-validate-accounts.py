@@ -187,13 +187,15 @@ def validate_privileged_ldap_groups_memberships(users):
         if member in users:  # flagged via different account check
             if 'email' in users[member]:
                 if not users[member]['email'].endswith('wikimedia.org'):
-                    log += member + " is in wmf group, but not registered with a WMF account\n"
+                    log += member + (" is in wmf group, but not registered with an "
+                                     "@wikimedia.org email in data.yaml\n")
 
     for member in get_ldap_group_members('nda'):
         if member in users:  # flagged via different account check
             if 'email' in users[member]:
                 if users[member]['email'].endswith('wikimedia.org'):
-                    log += member + " is in nda group, but registered with a WMF account\n"
+                    log += member + (" is in nda group, but registered with an @wikimedia.org "
+                                     "email in data.yaml\n")
     return log
 
 
