@@ -195,6 +195,7 @@ profile::acme_chief::certificates:
         CN: 'openstack.codfw1dev.wikimediacloud.org'
         SNI:
         - 'openstack.codfw1dev.wikimediacloud.org'
+        - 'object.codfw1dev.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
         - '^cloudlb200[123]-dev\.codfw\.wmnet$'
@@ -202,10 +203,9 @@ profile::acme_chief::certificates:
         CN: 'openstack.eqiad1.wikimediacloud.org'
         SNI:
         - 'openstack.eqiad1.wikimediacloud.org'
-        - 'openstack-next.eqiad1.wikimediacloud.org'
+        - 'object.eqiad1.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
-        - '^cloudcontrol100[3-7]\.wikimedia\.org$'
         - '^cloudlb100[123]\.eqiad\.wmnet$'
     orchestrator:
         CN: 'orchestrator.wikimedia.org'
