@@ -2893,8 +2893,12 @@ node /^wdqs101[2-5]\.eqiad\./ {
 }
 
 # new  node T342660
-node /^wdqs10([1][7-9]|[2][0-4])\.eqiad\./ {
+node /^wdqs10([1][7-9]|[2][0-1])\.eqiad\./ {
     role(::insetup::search_platform)
+}
+
+node /^wdqs10([2][2-4])\.eqiad\./ {
+    role(wdqs::test)
 }
 
 node /^(wdqs2008|wdqs201[45])\.codfw\./ {
