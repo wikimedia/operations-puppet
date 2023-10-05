@@ -32,7 +32,7 @@ define prometheus::cluster_config(
         # $cluster_items is a tuple of ($cluster, $sites)
         $cluster_items[1].map |$site_items| {
             # $site_items is a tuple of ($site, $targets)
-            $targets = $site_items[1].map |$target| { "${target.split('\.')[0]}:${port}" }
+            $targets = $site_items[1].map |$target| { "${target.split('\.')[0]}:${port}" }.sort
             $item = {
                 'targets' => $targets,
                 # TODO: should we add {'cluster' => $cluster} to labels?
