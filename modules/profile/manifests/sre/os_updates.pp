@@ -1,66 +1,52 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class profile::sre::os_updates
-#
-# Installs a script to track the status of OS upgrades across our fleet
+# @summary class to add os-reports scripts
+# @param ensure the ensure param
+# @param os_reports_host the host where we generate the reports
 class profile::sre::os_updates (
-    Stdlib::Host $os_reports_host = lookup('profile::sre::os_reports::host'),
+    Wmflib::Ensure         $ensure          = lookup('profile::sre::os_reports::ensure'),
+    Optional[Stdlib::Host] $os_reports_host = lookup('profile::sre::os_reports::host'),
 ) {
 
     systemd::sysuser { 'os-reports':
-        shell    => '/bin/bash',
+        ensure => $ensure,
+        shell  => '/bin/bash',
     }
 
     file { '/srv/os-reports':
-        ensure => 'directory',
+        ensure => stdlib::ensure($ensure, 'directory'),
         owner  => 'os-reports',
         group  => 'os-reports',
         mode   => '0755',
     }
 
     file { '/usr/local/bin/os-updates-report':
-        ensure => file,
+        ensure => stdlib::ensure($ensure, 'file'),
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/profile/sre/os-updates-report.py',
     }
 
-    wmflib::dir::mkdir_p('/etc/wikimedia/os-updates', {
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-    })
-
-    file { '/etc/wikimedia/os-updates/os-updates-tracking.cfg':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/sre/os-updates-tracking.cfg',
-    }
-
-    file { '/etc/wikimedia/os-updates/puppetdb_owners.yaml':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => profile::contacts::get_owners().to_yaml,
-    }
-
-    file { '/etc/wikimedia/os-updates/additional_owners.yaml':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/sre/additional_owners.yaml',
+    if $ensure == 'present' {
+        wmflib::dir::mkdir_p('/etc/wikimedia/os-updates', {
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        })
     }
 
     file {
         default:
-            ensure => file,
+            ensure => stdlib::ensure($ensure, 'file'),
             owner  => 'root',
             group  => 'root',
             mode   => '0444';
+        '/etc/wikimedia/os-updates/os-updates-tracking.cfg':
+            source => 'puppet:///modules/profile/sre/os-updates-tracking.cfg';
+        '/etc/wikimedia/os-updates/puppetdb_owners.yaml':
+            content => profile::contacts::get_owners().to_yaml;
+        '/etc/wikimedia/os-updates/additional_owners.yaml':
+            source => 'puppet:///modules/profile/sre/additional_owners.yaml';
         '/etc/wikimedia/os-updates/buster.yaml':
             source => 'puppet:///modules/profile/sre/buster.yaml';
         '/etc/wikimedia/os-updates/bullseye.yaml':
@@ -68,7 +54,7 @@ class profile::sre::os_updates (
     }
 
     # The reports could be run on any Cumin host, but only generate it once
-    $os_reports_timer_ensure = ($facts['fqdn'] == $os_reports_host).bool2str('present', 'absent')
+    $os_reports_timer_ensure = ($facts['fqdn'] == $os_reports_host).bool2str($ensure, 'absent')
 
     systemd::timer::job { 'generate_os_reports':
         ensure          => $os_reports_timer_ensure,
@@ -80,19 +66,21 @@ class profile::sre::os_updates (
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
     }
 
-    ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
+    if $ensure == 'present' {
+        ensure_packages(['python3-pypuppetdb', 'python3-dominate'])
 
-    class {'rsync::server':
-        ensure_service => stdlib::ensure($os_reports_timer_ensure, 'service')
-    }
-    # Allow miscweb hosts to pull reports for serving them via HTTP
-    $miscweb_rsync_clients = wmflib::role::hosts('miscweb')
-    rsync::server::module { 'osreports':
-        ensure         => $os_reports_timer_ensure,
-        path           => '/srv/os-reports',
-        read_only      => 'yes',
-        hosts_allow    => $miscweb_rsync_clients,
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
+        class {'rsync::server':
+            ensure_service => stdlib::ensure($os_reports_timer_ensure, 'service')
+        }
+        # Allow miscweb hosts to pull reports for serving them via HTTP
+        $miscweb_rsync_clients = wmflib::role::hosts('miscweb')
+        rsync::server::module { 'osreports':
+            ensure         => $os_reports_timer_ensure,
+            path           => '/srv/os-reports',
+            read_only      => 'yes',
+            hosts_allow    => $miscweb_rsync_clients,
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
+        }
     }
 }

@@ -1,0 +1,1 @@
+profile::sre::os_reports::ensure: 'present'

@@ -524,6 +524,9 @@ profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
 
+profile::sre::os_reports::ensure: absent
+profile::sre::os_reports::host: ~
+
 graphite_host: ~
 graphite_url: ~
 statsd: ~
