@@ -2604,11 +2604,7 @@ node /^puppetboard[12]002\.(codfw|eqiad)\./ {
 }
 
 node /^puppetboard[12]003\.(codfw|eqiad)\./ {
-    role(puppetboard::bookworm)
-}
-
-node /^puppetdb[12]002\.(codfw|eqiad)\./ {
-    role(insetup::infrastructure_foundations)
+    role(puppetboard)
 }
 
 node /^puppetdb[12]003\.(codfw|eqiad)\./ {
