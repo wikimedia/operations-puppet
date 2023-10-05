@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+
+auto vrf-cloudgw
+iface vrf-cloudgw inet manual
+    pre-up ip link add vrf-cloudgw type vrf table cloudgw

@@ -112,9 +112,9 @@ class profile::wmcs::cloudgw (
         }
     }
 
-    # TODO: remove after we know this is no longer present anywhere
     file { '/etc/network/interfaces.d/cloudgw':
-        ensure  => absent,
+        ensure  => present,
+        content => file('profile/wmcs/cloudgw/cloudgw'),
     }
 
     # ensure the module is loaded at boot, otherwise sysctl parameters might be ignored
