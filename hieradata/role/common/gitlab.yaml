@@ -2,8 +2,8 @@ cluster: misc
 profile::admin::groups:
   - gitlab-roots
 
-profile::gitlab::active_host: 'gitlab1004.wikimedia.org'
-profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab2002.wikimedia.org']
+profile::gitlab::active_host: 'gitlab2002.wikimedia.org'
+profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab1004.wikimedia.org']
 
 profile::ssh::server::manage_host_keys: true
 profile::ssh::server::listen_addresses:
