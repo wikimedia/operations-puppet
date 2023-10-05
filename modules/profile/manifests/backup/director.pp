@@ -276,9 +276,9 @@ class profile::backup::director(
         mode   => '0550',
     }
 
-    ferm::service { 'bacula-director':
-        proto  => 'tcp',
-        port   => '9101',
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'bacula-director':
+        proto    => 'tcp',
+        port     => 9101,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 }
