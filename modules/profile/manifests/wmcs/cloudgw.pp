@@ -43,15 +43,6 @@ class profile::wmcs::cloudgw (
 
     $vrf_interface = 'vrf-cloudgw'
 
-    interface::manual { $vrf_interface :
-        interface => $vrf_interface,
-    }
-
-    interface::pre_up_command { "${vrf_interface}_attach" :
-        interface => $vrf_interface,
-        command   => "ip link add ${vrf_interface} type vrf table ${rt_table_name}",
-    }
-
     interface::tagged { "cloudgw_${nic_virt}":
         base_interface     => $facts['interface_primary'],
         vlan_id            => $virt_vlan,
