@@ -2,9 +2,7 @@ cluster: puppet
 profile::nginx::variant: 'light'
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts:
-  - 'puppetboard1002.eqiad.wmnet'
   - 'puppetboard1003.eqiad.wmnet'
-  - 'puppetboard2002.codfw.wmnet'
   - 'puppetboard2003.codfw.wmnet'
 profile::puppetdb::rsyslog::elk: false
 profile::puppetdb::tmpfs_stockpile_queue: true
