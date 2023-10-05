@@ -57,27 +57,7 @@ class profile::wmcs::cloudgw (
         vlan_id            => $virt_vlan,
         address            => $virt_addr,
         netmask            => $virt_netm,
-        method             => 'manual',
         legacy_vlan_naming => false,
-    }
-
-    # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
-
-    # route internal VM network to neutron
-    interface::post_up_command { "route_${nic_virt}_virt_subnet" :
-        interface => $nic_virt,
-        command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
-    }
-    # route floating IPs to neutron
-    interface::post_up_command { "route_${nic_virt}_floating_ips" :
-        interface => $nic_virt,
-        command   => "ip route add ${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
-    }
-    if $virt_floating_additional {
-        interface::post_up_command { "route_${nic_virt}_floating_ips_additional" :
-            interface => $nic_virt,
-            command   => "ip route add ${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
-        }
     }
 
     interface::tagged { "cloudgw_${nic_wan}":
@@ -86,11 +66,6 @@ class profile::wmcs::cloudgw (
         address            => $wan_addr,
         netmask            => $wan_netm,
         legacy_vlan_naming => false,
-    }
-
-    interface::post_up_command { $vrf_interface :
-        interface => $vrf_interface,
-        command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
     }
 
     [$nic_virt, $nic_wan].each |$nic| {
@@ -109,6 +84,29 @@ class profile::wmcs::cloudgw (
         interface::post_up_command { "cloudgw_${nic}_accept_ra":
             interface => $nic,
             command   => "sysctl -w net.ipv6.conf.${nic}.accept_ra=0",
+        }
+    }
+
+    # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
+    interface::post_up_command { 'default_vrf_route' :
+        interface => $nic_wan,
+        command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
+    }
+
+    # route internal VM network to neutron
+    interface::post_up_command { "route_${nic_virt}_virt_subnet" :
+        interface => $nic_virt,
+        command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+    }
+    # route floating IPs to neutron
+    interface::post_up_command { "route_${nic_virt}_floating_ips" :
+        interface => $nic_virt,
+        command   => "ip route add ${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+    }
+    if $virt_floating_additional {
+        interface::post_up_command { "route_${nic_virt}_floating_ips_additional" :
+            interface => $nic_virt,
+            command   => "ip route add ${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
         }
     }
 
