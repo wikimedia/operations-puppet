@@ -4,7 +4,7 @@
 #
 # infra
 #
-puppetdb_host: puppetdb1002.eqiad.wmnet
+puppetdb_host: puppetdb1003.eqiad.wmnet
 
 labsldapconfig:
   hostname: ldap-ro.eqiad.wikimedia.org
