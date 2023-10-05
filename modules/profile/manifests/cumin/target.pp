@@ -1,9 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-# Parameters here are just a hotfix to the issue of not being able to select
-# by cluster/role/site easily, and also allows to add arbitrary tags to single
-# servers or classes of servers.
-# Note that once the role/profile transition is complete, we should not need
-# those anymore.
+# @summary
+#   Parameters here are just a hotfix to the issue of not being able to select
+#   by cluster/role/site easily, and also allows to add arbitrary tags to single
+#   servers or classes of servers.
+#   Note that once the role/profile transition is complete, we should not need
+#   those anymore.
+# @param cluster the server cluster
+# @param site the server site
+# @param cumin_masters List of cumin masters
 class profile::cumin::target(
     String $cluster = lookup('cluster'),
     String $site = $::site,
@@ -17,12 +21,12 @@ class profile::cumin::target(
 
     tag $roles
 
-    require ::network::constants
+    require network::constants
 
     # Include cumin::selector on all cumin targets so that
-    # the get_clusters puppet function will get results when calling
-    # query_resources.
-    class { '::cumin::selector':
+    # the wmflib::get_clusters puppet function will get results when calling
+    # wmflib::puppetdb_query.
+    class { 'cumin::selector':
         cluster => $cluster,
         site    => $site,
     }

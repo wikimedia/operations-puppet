@@ -1,16 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: netops::monitoring
-#
-# Sets up monitoring checks for networking equipment.
-#
-# === Parameters
-#
-# [*atlas_measurements*]
-# a hash of datacenter => ipv4 and ipv6 array measurements IDs
-#
-# === Examples
-#
-#  include netops::monitoring
+# @summary Sets up monitoring checks for networking equipment.
+# @param atlas_measurements a hash of datacenter => ipv4 and ipv6 array measurements IDs
+# @param infra_devices A hash of devices
+# @example include netops::monitoring
 
 class netops::monitoring(
     Hash[String, Hash] $atlas_measurements,
@@ -32,11 +24,14 @@ class netops::monitoring(
     #############################################################################################################
     ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
     ######                                                                                                 ######
-    ###### profile::druid::turnilo makes use of the information populated in $routers via query_resources. ######
+    ###### profile::druid::turnilo makes use of the information populated in $routers via puppetdb_query.  ######
     ###### One needs to ensure any changes made here are compatible with the use case in that profile      ######
     ###### specifically we use the following so the bgp and bfd attributes are significant:                ######
-    ######      query_resources(false, 'Netops::Check[~".*"]{bgp=true and bfd=true}'                       ######
-    ######                                                                                                 ######
+    ######     resources[certname, parameters, title] {                                                    ######
+    ######         type = "Netops::Check                                                                   ######
+    ######         and parameters.bgp = true and parameters.bfd = true                                     ######
+    ######         order by certname                                                                       ######
+    ######     }                                                                                           ######
     ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
     #############################################################################################################
 
