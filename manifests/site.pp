@@ -1604,6 +1604,10 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[012356])\.codfw\./ {
     role(kubernetes::worker)
 }
 
+node /^kubernetes2054\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^kubestage100[34]\.eqiad\./ {
     role(kubernetes::staging::worker)
 }
