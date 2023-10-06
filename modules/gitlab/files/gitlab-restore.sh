@@ -173,10 +173,14 @@ for i in {1..10}; do
     echo "ApplicationSetting.last.update(home_page_url: '${GITLAB_URL}explore')" | /usr/bin/gitlab-rails console && break || sleep 15
 done
 
-gitlab-rails runner 'BroadcastMessage.create(message: "🚨**THIS IS A REPLICA**🚨
--- You probably want to use the production gitlab, https://gitlab.wikimedia.org.
-Data on this instance is likely to be overwritten at short notice",
-theme: BroadcastMessage.themes["light-red"], dismissable: false, starts_at: 10.minutes.ago, ends_at: 10.years.from_now)'
+# Check if host is a replica
+if [[ $GITLAB_URL == *"replica"* ]] ; then
+  # replica hosts use a additional banner
+  gitlab-rails runner 'BroadcastMessage.create(message: "🚨**THIS IS A REPLICA**🚨
+  -- You probably want to use the production gitlab, https://gitlab.wikimedia.org.
+  Data on this instance is likely to be overwritten at short notice",
+  theme: BroadcastMessage.themes["light-red"], dismissable: false, starts_at: 10.minutes.ago, ends_at: 10.years.from_now)'
+fi
 
 /usr/bin/systemctl restart ssh-gitlab
 
