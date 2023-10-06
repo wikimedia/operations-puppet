@@ -30,7 +30,7 @@ profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080
 
-profile::openstack::codfw1dev::horizon::docker_version: 2023-09-07-165000
+profile::openstack::codfw1dev::horizon::docker_version: 2023-10-06-194500
 
 profile::openstack::codfw1dev::horizon::port: 8084
 
