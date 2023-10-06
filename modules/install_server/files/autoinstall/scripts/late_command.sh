@@ -7,26 +7,45 @@ set -x
 mkdir -p /target/root/.ssh # Use -p, since on bookworm, the dir exists
 wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/ssh/authorized_keys
 chmod go-rwx /target/root/.ssh/authorized_keys
+PUPPET_VERSION_PATH="/tmp/puppet_version"
+i=1
+while [ "${i}" -le  5 ]; do
+  PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
+  if [ -n "${PUPPET_VERSION}" ]; then
+    break
+  else
+    echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
+    sleep 10
+  fi
+  i=$((i + 1))
+done
+
+if [ "$PUPPET_VERSION" -ne 5 ] && [ "$PUPPET_VERSION" -ne 7 ]; then
+  printf "Unable to determine PUPPET_VERSION (%s) will default to 5\n" "$PUPPET_VERSION"
+  PUPPET_VERSION=5
+fi
 
 # lsb-release: allows conditionals in this script on in-target release codename
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
-# On Bookworm install a Puppet 5 agent backport, otherwise we can't renew the host cert
-# https://phabricator.wikimedia.org/T330495
-if [ "${LSB_RELEASE}" = "bookworm" ]; then
-  BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia bookworm-wikimedia component"
+BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
+if [ "${LSB_RELEASE}" = "bookworm" ] && [ "$PUPPET_VERSION" -eq 5 ]; then
   printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
   in-target apt-get update
   apt-install -y --force-yes puppet=5.5.22-2+deb12u3
-  apt-install openssh-server lldpd
   apt-install -y ruby-sorted-set
+elif [ "${LSB_RELEASE}" = "bullseye" ] && [ "$PUPPET_VERSION" -eq 7 ]; then
+  printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
+  in-target apt-get update
+  apt-install puppet
 else
-  # openssh-server: to make the machine accessible
   # puppet: because we'll need it soon anyway
-  # lldpd: announce the machine on the network
-  apt-install openssh-server puppet lldpd
+  apt-install puppet
 fi
+# openssh-server: to make the machine accessible
+# lldpd: announce the machine on the network
+apt-install openssh-server lldpd
 
 # nvme-cli: on machines with NVMe drives, this allows late_command to change
 # LBA format below
@@ -93,6 +112,11 @@ esac
 in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
 in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
 in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter
+if [ "${PUPPET_VERSION}" -eq 7 ]; then
+  in-target /usr/bin/puppet config set --section agent use_srv_records true
+  # Send everything to eqiad instead of trying to calculate the correct site
+  in-target /usr/bin/puppet config set --section agent srv_domain eqiad.wmnet
+fi
 
 # Configure ipv6 (sorry this is not pretty)
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
