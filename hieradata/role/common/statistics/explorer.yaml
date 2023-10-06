@@ -10,6 +10,7 @@ profile::admin::groups:
   - analytics-wmde-users
   - analytics-product-users
   - deploy-ml-service
+  - ml-team-admins
 profile::admin::managelingering: true
 
 cluster: analytics
