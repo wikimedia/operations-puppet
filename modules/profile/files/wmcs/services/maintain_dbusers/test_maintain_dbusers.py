@@ -10,6 +10,7 @@ from unittest import mock
 import maintain_dbusers
 import pymysql
 import pytest
+import requests
 
 
 class MockResponse:
@@ -19,6 +20,10 @@ class MockResponse:
 
     def json(self):
         return self.json_data
+
+    def raise_for_status(self) -> None:
+        if self.status_code >= 400:
+            raise requests.HTTPError(response=self)
 
 
 class StubLdapConnection:
@@ -461,7 +466,10 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         json_data={"result": "error", "detail": {"reason": "this is an error"}}, status_code=500
     )
     SERVER_OK_REPLY = MockResponse(
-        json_data={"result": "ok", "detail": {"result": "ok", "replica_path": "/this/is/a/path"}},
+        json_data={
+            "result": "ok",
+            "detail": {"result": "ok", "detail": {"ToolforgeToolFileBackend": "OK"}},
+        },
         status_code=200,
     )
 
@@ -546,13 +554,8 @@ class DeleteReplicaCnfTestCase(unittest.TestCase):
         self.assertTrue(mocked_logging_log.called)
 
     @mock.patch("maintain_dbusers.requests.post", return_value=SERVER_OK_REPLY)
-    def test_should_return_string(self, mocked_requests_post):
-        expected_result = "/this/is/a/path"
-
-        gotten_result = maintain_dbusers.delete_replica_cnf(**self.get_dummy_params())
-
-        self.assertEqual(gotten_result, expected_result)
-        self.assertTrue(mocked_requests_post.called)
+    def test_completes_successfully(self, mocked_requests_post):
+        assert maintain_dbusers.delete_replica_cnf(**self.get_dummy_params()) is None
 
 
 class FetchPawsUidsTestCase(unittest.TestCase):

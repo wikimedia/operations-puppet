@@ -289,7 +289,7 @@ def read_replica_cnf(
 @with_replica_cnf_api_logs()
 def delete_replica_cnf(
     account_id: str, account_type: str, dry_run: bool, config: dict[str, Any]
-) -> str:
+) -> None:
     """
     Delete a replica.my.cnf file on the api server
     """
@@ -305,7 +305,7 @@ def delete_replica_cnf(
     )
     headers = get_headers()
     data = {"account_id": account_id, "account_type": account_type, "dry_run": dry_run}
-    response = None
+    data = None
 
     try:
         response = requests.post(
@@ -314,19 +314,17 @@ def delete_replica_cnf(
             auth=auth,
             headers=headers,
             timeout=60,
-        ).json()
-        replica_path = response["detail"]["replica_path"]
+        )
+        response.raise_for_status()
+        data = response.json()
     except Exception as err:  # pylint: disable=broad-except
-        if not response or response.get("result", None) != "error":
-            response = {"result": "error", "detail": {"reason": str(err)}}
+        if not data or data.get("result", None) != "error":
+            data = {"result": "error", "detail": {"reason": str(err)}}
 
         raise APIError(
             "Request to delete replica.my.cnf file for for account_type {0} ".format(account_type)
-            + "and account_id {0} failed. Reason: {1}".format(
-                account_id, response["detail"]["reason"]
-            )
+            + "and account_id {0} failed. Reason: {1}".format(account_id, data["detail"]["reason"])
         ) from err
-    return replica_path
 
 
 @with_replica_cnf_api_logs()
@@ -1081,15 +1079,14 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
 
         # Now we get rid of the file
         try:
-            replica_file_path = delete_replica_cnf(
+            delete_replica_cnf(
                 account_id=account,
                 account_type=account_type,
                 dry_run=dry_run,
                 config=config,
             )
 
-            if replica_file_path:
-                logging.info("Deleted %s", replica_file_path)
+            logging.info("Deleted replica config for %s account %s", account_type, account)
         except Exception:  # pylint: disable=broad-except
             # don't interrupt program flow on error
             pass
