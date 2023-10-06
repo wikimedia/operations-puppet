@@ -27,7 +27,8 @@ class profile::configmaster (
         'puppet_ca_server' => $puppet_ca_server,
     }
 
-    file { $document_root:
+    # The installer dir is used by the reimage cookbook to pass info to late_command.sh
+    file { [$document_root, "${document_root}/installer"]:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
