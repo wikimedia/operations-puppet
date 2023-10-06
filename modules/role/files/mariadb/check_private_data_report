@@ -25,7 +25,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -41,7 +41,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -57,7 +57,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -71,7 +71,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -85,7 +85,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -99,7 +99,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
@@ -114,7 +114,7 @@ then
 		DATA=$(/bin/egrep -v "^-- Non|^Start time|wmf_checksums|^-- Unfiltered" -c "${REPORT_PATH}_${SECTION}" | xargs)
 		if [ "$DATA" -gt "0" ]
 		then
-		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -s "Private data found at $HOSTNAME" $EMAILS
+		echo "Private data detected at $HOSTNAME for $SECTION check: ${REPORT_PATH}_${SECTION}" | /usr/bin/mail -a "Auto-Submitted: auto-generated" -s "Private data found at $HOSTNAME" $EMAILS
 		fi
 	done
 fi
