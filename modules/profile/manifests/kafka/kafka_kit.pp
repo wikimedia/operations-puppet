@@ -9,7 +9,7 @@ define profile::kafka::kafka_kit(
     String $zookeeper_prefix,
     String $kafka_address,
 ) {
-  ensure_packages(['kafka-kit'])
+  ensure_packages(['kafka-kit', 'kafka-kit-prometheus-metricsfetcher'])
   file { '/etc/profile.d/kafka_kit.sh':
     content => epp('profile/kafka/kafka_kit.sh.epp', {
       zookeeper_address => $zookeeper_address,
