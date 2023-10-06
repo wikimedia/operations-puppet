@@ -139,7 +139,9 @@ BITU_SUB_SYSTEMS = {
         'password_hash_method': HASHED_SALTED_SHA,
         'default_groups': [],
         'attributes': {
-            'view': [{'name': 'mail', 'display': 'e-mail',},
+            'view': [<%- if @production -%>{'name': 'mail', 'display': 'e-mail',},
+        <%- else -%>{'name': 'mail', 'display': 'e-mail', 'action': reverse_lazy('accounts:email'), 'action_label': 'Update'},
+        <%- end -%>
                       {'name': 'wikimediaGlobalAccountName', 'display': 'Wikimedia Global Account (SUL)', 'tooltip': 'This is the account you use when signing into one of Wikimedias wikis, e.g. Wikipedia.',
                        'action': reverse_lazy('social:begin', args=['mediawiki']), 'action_label': 'refresh ↺'},
                       {'name': 'uidNumber', 'display': 'POSIX User ID', 'tooltip': 'If you have SSH access to Cloud VPS, Toolforge or other Wikimedia servers, this will be the ID they use to identify you.'},
