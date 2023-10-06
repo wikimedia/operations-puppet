@@ -220,6 +220,10 @@ node /^apt[12]001\.wikimedia\./ {
     role(apt_repo)
 }
 
+node /^apt[12]002\.wikimedia\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # apt-staging host
 node /^apt-staging2001\.codfw\./ {
     role(insetup::serviceops_collab)
