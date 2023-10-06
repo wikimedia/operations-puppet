@@ -73,7 +73,7 @@ profile::base::certificates::include_bundle_jks: true
 
 # Use the spark3 shuffler for YARN - See T332765
 profile::hadoop::spark2::install_yarn_shuffle_jar: false
-profile::hadoop::spark3::install_yarn_shuffle_jar: true
+profile::hadoop::spark3::install_yarn_shuffle_jar: false
 
 # We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
