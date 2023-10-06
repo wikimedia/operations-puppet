@@ -271,7 +271,7 @@ def read_replica_cnf() -> tuple[Response, int]:
     try:
         account_type = UserType(request_data["account_type"])
     except ValueError:
-        return get_bad_usertype_response(account_type)
+        return get_bad_usertype_response(request_data["account_type"])
 
     dry_run = request_data["dry_run"]
 
@@ -318,7 +318,7 @@ def delete_replica_cnf() -> tuple[Response, int]:
     try:
         account_type = UserType(request_data["account_type"])
     except ValueError:
-        return get_bad_usertype_response(account_type)
+        return get_bad_usertype_response(request_data["account_type"])
     dry_run = request_data["dry_run"]
 
     results: dict[str, str] = {}
