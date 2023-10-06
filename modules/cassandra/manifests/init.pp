@@ -277,6 +277,18 @@ class cassandra (
         require => Package['cassandra'],
     }
 
+    # sstable utility wrapper to handle multiple instances, for each instance
+    # there will be symlinks from /usr/local/bin/<UTILITY>-<INSTANCE_NAME> to
+    # sstable-util-instance
+    file { '/usr/local/bin/sstable-util-instance':
+        ensure  => present,
+        source  => "puppet:///modules/${module_name}/sstable-util-instance",
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0555',
+        require => Package['cassandra'],
+    }
+
     file { '/etc/cassandra.in.sh':
         ensure  => present,
         content => template("${module_name}/cassandra.in.sh-${target_version}.erb"),

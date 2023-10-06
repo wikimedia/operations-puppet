@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 #
-# symlink to /usr/bin/nodetool-<instance> to address the respective cassandra
+# symlink to /usr/bin/<util>-<instance> to address the respective cassandra
 # instance
+
 set -e
 set -u
 
@@ -13,11 +14,14 @@ if test ! -L "$0"; then
     exit 1
 fi
 
-me=$(basename $0)
-instance=${me#*-}
+IFS="-" read -ra parts <<< "$(basename $0)"
+
+cmd=${parts[0]}
+cid=${parts[1]}
+
 
 export CASSANDRA_INCLUDE=/etc/cassandra.in.sh
-export CASSANDRA_CONF=/etc/cassandra-${instance}
+export CASSANDRA_CONF=/etc/cassandra-${cid}
 export CASSANDRA_LOG_DIR=/var/log/cassandra
 
-exec /usr/bin/nodetool "$@"
+exec "$(dirname $0)"/$cmd "$@"

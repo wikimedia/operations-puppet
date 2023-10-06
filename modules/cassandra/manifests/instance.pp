@@ -520,6 +520,14 @@ define cassandra::instance(
         }
     }
 
+    if $instance_name != 'default' {
+        file { "/usr/local/bin/sstableutil-${title}":
+            ensure  => link,
+            target  => '/usr/local/bin/sstable-util-instance',
+            require => File['/usr/local/bin/sstable-util-instance'],
+        }
+    }
+
     file { "/etc/cassandra-instances.d/${tls_hostname}.yaml":
         content => template("${module_name}/instance.yaml.erb"),
         owner   => 'cassandra',
