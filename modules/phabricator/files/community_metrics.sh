@@ -205,7 +205,7 @@ activedifferentialusers=$(echo $result_activedifferentialusers | cut -d " " -f3)
 lastmonth=$(date --date="last month" +%Y-%m)
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator monthly statistics - ${lastmonth}" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator monthly statistics - ${lastmonth}" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
 Hi Community Metrics team,
 

@@ -52,7 +52,7 @@ tasksclosers=$(echo $result_tasks_closers | sed 's/[^0-9]*//g')
 lastquarter=$(date +"Q$(expr $(expr $(date -d '-1 month' +%m) - 1) / 3 + 1)/%Y")
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator quarterly statistics - ${lastquarter}" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator quarterly statistics - ${lastquarter}" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
 This is the automatic quarterly Phabricator statistics mail used
 for https://www.mediawiki.org/wiki/Technical_Community_Newsletter

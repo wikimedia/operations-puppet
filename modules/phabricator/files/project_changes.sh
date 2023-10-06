@@ -457,7 +457,7 @@ END
 )
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
 Hi Phabricator admin,
 

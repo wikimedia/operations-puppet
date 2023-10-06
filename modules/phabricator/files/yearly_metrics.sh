@@ -77,7 +77,7 @@ tasksclosers=$(echo $result_tasks_closers | cut -d " " -f3)
 year=$(date --date='1 year ago' +%Y)
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "DRAFT: Some Phabricator and Gerrit ${year} statistics" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "DRAFT: Some Phabricator and Gerrit ${year} statistics" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
 THIS IS AN EMAIL TEMPLATE. THIS REQUIRES ADDITIONAL
 MANUAL WORK FOR GERRIT BEFORE SENDING TO WIKITECH-L.

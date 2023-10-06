@@ -48,7 +48,7 @@ SELECT DISTINCT(CONCAT("https://phabricator.wikimedia.org/p/", u.userName)) AS u
 END
 )
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator 2FA account check" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator 2FA account check" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
 Hi Phabricator admin,
 
