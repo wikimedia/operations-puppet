@@ -8,6 +8,11 @@
 # that we think will be needed when the proper Spark3 package installation
 # will be done.
 #
+# [*default_shuffler_version*]
+#   Now that a hadoop cluster may provide more than one yarn shuffler service
+#   this parameter can be used to a select which one of them gets added to the
+#   configuration file for default job options.
+#
 # [*install_yarn_shuffle_jar*]
 #   If true, any Spark 1 or 2 yarn shuffle jars in /usr/lib/hadoop-yarn/lib
 #   will be replaced with the Spark 3 one, causing YARN NodeManagers to run
@@ -69,17 +74,18 @@
 #   be omitted from the configuration file and the compiled-in default value of /tmp
 #   will be used.
 #
-class profile::hadoop::spark3(
-    Boolean $install_yarn_shuffle_jar          = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', {'default_value' => false}),
-    # Boolean $install_assembly                  = lookup('profile::hadoop::spark3::install_assembly', {'default_value' => false}),
-    Hash[String, Any] $extra_settings          = lookup('profile::hadoop::spark3::extra_settings', {'default_value' => {}}),
-    Stdlib::Port $driver_port                  = lookup('profile::hadoop::spark3::driver_port', {'default_value' => 12000}),
-    Stdlib::Port $driver_blockmanager_port     = lookup('profile::hadoop::spark3::driver_blockmanager_port', {'default_value' => 13000}),
-    Stdlib::Port $ui_port                      = lookup('profile::hadoop::spark3::ui_port', {'default_value' => 4040}),
-    Integer $port_max_retries                  = lookup('profile::hadoop::spark3::port_max_retries', {'default_value' => 100}),
-    Stdlib::Unixpath $executor_env_ld_lib_path = lookup('profile::hadoop::spark3::executor_env_ld_lib_path', {'default_value' => '/usr/lib/hadoop/lib/native'}),
-    Boolean $encryption_enabled                = lookup('profile::hadoop::spark3::encryption_enabled', {'default_value' => true}),
-    Optional[Stdlib::Unixpath] $local_dir      = lookup('profile::hadoop::spark3::local_dir', {'default_value' => undef })
+class profile::hadoop::spark3 (
+    Bigtop::Spark::Version $default_shuffler_version = lookup('profile::spark3::default_shuffler_version', { 'default_value' => '3.1' }),
+    Boolean $install_yarn_shuffle_jar                = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', { 'default_value' => false }),
+    # Boolean $install_assembly                      = lookup('profile::hadoop::spark3::install_assembly', { 'default_value' => false }),
+    Hash[String, Any] $extra_settings                = lookup('profile::hadoop::spark3::extra_settings', { 'default_value' => {} }),
+    Stdlib::Port $driver_port                        = lookup('profile::hadoop::spark3::driver_port', { 'default_value' => 12000 }),
+    Stdlib::Port $driver_blockmanager_port           = lookup('profile::hadoop::spark3::driver_blockmanager_port', { 'default_value' => 13000 }),
+    Stdlib::Port $ui_port                            = lookup('profile::hadoop::spark3::ui_port', { 'default_value' => 4040 }),
+    Integer $port_max_retries                        = lookup('profile::hadoop::spark3::port_max_retries', { 'default_value' => 100 }),
+    Stdlib::Unixpath $executor_env_ld_lib_path       = lookup('profile::hadoop::spark3::executor_env_ld_lib_path', { 'default_value' => '/usr/lib/hadoop/lib/native' }),
+    Boolean $encryption_enabled                      = lookup('profile::hadoop::spark3::encryption_enabled', { 'default_value' => true }),
+    Optional[Stdlib::Unixpath] $local_dir            = lookup('profile::hadoop::spark3::local_dir', { 'default_value' => undef })
 ) {
     require ::profile::hadoop::common
 
@@ -91,13 +97,27 @@ class profile::hadoop::spark3(
     # values for PYSPARK_PYTHON and PYSPARK_DRIVER_PYTHON.
     $python_prefix_global = $::conda_analytics::prefix
 
+    # Look up in the common hadoop config whether or not this cluster is configured to use multiple spark shufflers
+    $yarn_use_multi_spark_shufflers = $profile::hadoop::common::hadoop_config['yarn_use_multi_spark_shufflers'] ? {
+        undef   => false,
+        default => $profile::hadoop::common::hadoop_config['yarn_use_multi_spark_shufflers'],
+    }
+
+    # If this cluster has multiple spark shufflers, look up in the common hadoop config the port number for the default version.
+    if $yarn_use_multi_spark_shufflers {
+        $default_shuffler_port = $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'][$default_shuffler_version] ? {
+            undef   => '7001',
+            default => $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'][$default_shuffler_version],
+        }
+    }
+
     # TODO: get spark_version from conda_analytics env and use it to create and upload spark assembly.
     # Get spark_version from facter. Use the default provided via hiera if not set.
     # $spark_version = $::spark_version ? {
     #     undef   => $default_version,
     #     default => $::spark_version
     # }
-    # For now, this is used in spark-defaults.conf to set the hardcoded value of spark.yarn.archives.
+    # For now, this is used in spark3-defaults.conf to set the hardcoded value of spark.yarn.archives.
     # It should match the Spark version encapsulated in the conda-analytics pkg.
     $spark_version = '3.1.2'
 
