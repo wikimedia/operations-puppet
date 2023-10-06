@@ -418,7 +418,7 @@ groups:
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
-              ahoelzl, nathillard]
+              ahoelzl, nathillard, amyt]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde]
@@ -6103,6 +6103,13 @@ users:
     uid: 19179
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  amyt:
+    ensure: present
+    realname: Amy Tsay
+    email: atsay@wikimedia.org
+    uid: 44992
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6883,10 +6890,6 @@ ldap_only_users:
     ensure: present
     realname: Mareike Heuer
     email: mareike.heuer@wikimedia.de
-  amyt:
-    ensure: present
-    realname: Amy Tsay
-    email: atsay@wikimedia.org
   scampos:
     ensure: present
     realname: Sara Campos
