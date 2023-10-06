@@ -244,6 +244,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: page-analytics
         - name: page-analytics-deploy
+    cirrus-streaming-updater:
+      usernames:
+        - name: cirrus-streaming-updater
+        - name: cirrus-streaming-updater-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
