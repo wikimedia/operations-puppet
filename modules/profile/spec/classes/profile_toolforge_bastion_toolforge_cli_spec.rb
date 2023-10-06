@@ -17,7 +17,7 @@ describe 'profile::toolforge::bastion::toolforge_cli' do
               'wmcs_project' => 'tools',
           }) }
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file('/etc/toolforge-cli.yaml').with_content(/.*tools-harbor.*/) }
+          it { is_expected.to contain_file('/etc/toolforge/common.yaml').with_content(/.*tools-harbor.*/) }
       end
 
       context 'when on toolsbeta the toolforge config has the toolsbeta harbor' do
@@ -25,7 +25,7 @@ describe 'profile::toolforge::bastion::toolforge_cli' do
               'wmcs_project' => 'toolsbeta',
           }) }
           it { is_expected.to compile.with_all_deps }
-          it { is_expected.to contain_file('/etc/toolforge-cli.yaml').with_content(/.*toolsbeta-harbor.*/) }
+          it { is_expected.to contain_file('/etc/toolforge/common.yaml').with_content(/.*toolsbeta-harbor.*/) }
       end
     end
   end

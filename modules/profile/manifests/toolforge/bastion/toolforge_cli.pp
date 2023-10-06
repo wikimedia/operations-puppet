@@ -29,25 +29,11 @@ class profile::toolforge::bastion::toolforge_cli () {
     content => $cli_config.to_yaml,
   }
 
-  # old configuration file, to be removed once every client uses the new path
-  file { '/etc/toolforge-cli.yaml':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => $cli_config.to_yaml,
-  }
-
-  $jobs_cli_config = {
-    api_url    => "https://api.svc.${::wmcs_project}.eqiad1.wikimedia.cloud:30003/jobs/api/v1",
-    kubeconfig => '~/.kube/config',
-  }
-
-  file { '/etc/toolforge-jobs-framework-cli.cfg':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => $jobs_cli_config.to_yaml,
+  # old configuration files no longer used
+  file { [
+    '/etc/toolforge-cli.yaml',
+    '/etc/toolforge-jobs-framework-cli.cfg',
+  ]:
+    ensure => absent,
   }
 }
