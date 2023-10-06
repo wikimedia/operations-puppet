@@ -1298,7 +1298,7 @@ node /^ganeti-test100[12]\.eqiad\./ {
 }
 
 node /^ganeti-test2004\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(ganeti_test)
 }
 
 node /^ganeti-test200[123]\.codfw\./ {
