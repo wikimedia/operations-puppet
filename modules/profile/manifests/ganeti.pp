@@ -28,9 +28,6 @@
 # [*rapi_ro_password*]
 #   A string containing the password for the aforementioned user.
 #
-# [*ganeti3*]
-#   Add the repository component with the 3.0 backport
-#
 # [*critical_memory*]
 #   Percentage of memory (0-100) which, if using over it, it will throw a
 #   critical alert due to memory pressure. It must be higher than warning
@@ -50,14 +47,12 @@ class profile::ganeti (
                                                 { default_value => undef }),
     Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
                                                 { default_value => undef }),
-    Boolean $ganeti3                   = lookup('profile::ganeti::ganeti3'),
     Integer[0, 100] $critical_memory   = lookup('profile::ganeti::critical_memory'),
     Integer[0, 100] $warning_memory    = lookup('profile::ganeti::warning_memory'),
 ) {
 
     class { 'ganeti':
         certname => $rapi_certificate,
-        ganeti3  => $ganeti3,
     }
 
     class { 'ganeti::prometheus':

@@ -12,7 +12,6 @@
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
-    Boolean $ganeti3=false,
 ) {
     ensure_packages('qemu-system-x86')
 
@@ -24,15 +23,7 @@ class ganeti(
         },
     }
 
-    if $ganeti3 and debian::codename::eq('buster') {
-        apt::repository { 'repository_ganeti3':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => 'buster-wikimedia',
-            components => 'component/ganeti3',
-        }
-    } else {
-        ensure_packages('ganeti')
-    }
+    ensure_packages('ganeti')
 
     # We're not using ganeti-instance-debootstrap to create images (we PXE-boot
     # the same images we use for baremetal servers), but /usr/share/ganeti/os/debootstrap

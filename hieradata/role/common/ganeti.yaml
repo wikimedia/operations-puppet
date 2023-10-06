@@ -10,7 +10,6 @@ profile::ganeti::rapi_nodes:
     - netmon2002.wikimedia.org
     - cumin1001.eqiad.wmnet
     - cumin2002.codfw.wmnet
-profile::ganeti::ganeti3: false
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
