@@ -7,6 +7,7 @@ After=network.target
 User=testreduce
 Group=testreduce
 LimitNOFILE=10000
+Restart=on-failure
 
 Environment=NODE_PATH=/srv/testreduce/node_modules PORT=8001
 WorkingDirectory=/srv/testreduce/server

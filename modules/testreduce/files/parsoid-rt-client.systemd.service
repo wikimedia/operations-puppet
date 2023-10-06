@@ -11,3 +11,4 @@ ExecStart=/usr/bin/nodejs client-cluster.js -c 16 /etc/testreduce/parsoid-rt-cli
 StandardOutput=journal
 StandardError=journal
 RestartSec=2
+Restart=on-failure

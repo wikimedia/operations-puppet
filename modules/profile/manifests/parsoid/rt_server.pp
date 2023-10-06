@@ -19,4 +19,14 @@ class profile::parsoid::rt_server (
     }
 
     profile::auto_restarts::service { 'parsoid-rt': }
+
+    # mariadb only restarts on crashes by default (on-abort), make it
+    # also restart for other failure modes:
+    systemd::override { 'testreduce-mariadb-restart-on-failure':
+        ensure  => present,
+        unit    => 'mariadb',
+        content => "[Service]\nRestart=on-abort\n",
+    }
+
+
 }
