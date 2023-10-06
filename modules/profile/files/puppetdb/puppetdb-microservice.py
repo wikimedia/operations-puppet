@@ -28,6 +28,7 @@ from flask import Flask, abort, jsonify, request
 
 # Allowed Facts
 FACTS_WHITELIST = [
+    "puppetversion",
     "serialnumber",
     "is_virtual",
     "productname",
