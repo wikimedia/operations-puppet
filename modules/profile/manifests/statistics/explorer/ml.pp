@@ -46,4 +46,16 @@ class profile::statistics::explorer::ml(
         mode    => '0550',
         content => template('profile/statistics/explorer/ml/model_upload.sh.erb'),
     }
+
+    # Allow the ML team admins only to work on the wmf-ml-models
+    # directory on each statistics explorer node. This will add extra safety
+    # fences to avoid malicious/accidental tampering of model objects
+    # published for the outside community.
+    file { '/srv/published/wmf-ml-models':
+        ensure  => directory,
+        mode    => '0775',
+        owner   => 'root',
+        group   => 'ml-team-admins',
+        require => File['/srv/published'],
+    }
 }
