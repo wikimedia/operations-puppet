@@ -7,9 +7,9 @@ class openstack::neutron::service::antelope(
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::antelope::${::lsbdistcodename}"
 
-    service {'neutron-server':
+    service {'neutron-api':
         ensure    => $active,
-        require   => Package['neutron-server', 'neutron-server'],
+        require   => Package['neutron-server', 'neutron-api'],
         subscribe => [
                       File['/etc/neutron/neutron.conf'],
                       File['/etc/neutron/policy.yaml'],
@@ -34,15 +34,13 @@ class openstack::neutron::service::antelope(
         ensure => 'present',
     }
 
-    # Our 'neutron-server' script is just the packaged neutron-api script
-    #  renamed and with the port changed.
     file {
-        '/etc/init.d/neutron-server':
-            content => template('openstack/antelope/neutron/neutron-server'),
+        '/etc/init.d/neutron-api':
+            content => template('openstack/antelope/neutron/neutron-api.erb'),
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
-            notify  => Service['neutron-server'],
+            notify  => Service['neutron-api'],
             require => Package['neutron-server', 'neutron-api'];
         '/etc/neutron/neutron-api-uwsgi.ini':
             ensure  => 'present',
@@ -50,7 +48,7 @@ class openstack::neutron::service::antelope(
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/antelope/neutron/neutron-api-uwsgi.ini',
-            notify  => Service['neutron-server'],
+            notify  => Service['neutron-api'],
             require => Package['neutron-server'];
         '/etc/neutron/api-paste.ini':
             ensure  => 'present',
@@ -58,7 +56,7 @@ class openstack::neutron::service::antelope(
             group   => 'root',
             mode    => '0644',
             source  => 'puppet:///modules/openstack/antelope/neutron/api-paste.ini',
-            notify  => Service['neutron-server'],
+            notify  => Service['neutron-api'],
             require => Package['neutron-server'];
         '/var/run/neutron/':
             ensure => directory,
