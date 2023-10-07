@@ -101,6 +101,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 
 	if [ -n "${HARAKIRI_TIMEOUT}" ] ; then
 		DAEMON_ARGS="${DAEMON_ARGS} --harakiri ${HARAKIRI_TIMEOUT}"
+	fi
 	if [ -n "${BIND_PARAMS}" ] ; then
 		DAEMON_ARGS="${BIND_PARAMS}${UWSGI_PROCESSES}"
 	else
