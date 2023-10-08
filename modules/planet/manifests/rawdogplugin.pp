@@ -8,7 +8,13 @@ define planet::rawdogplugin {
         mode   => '0755',
     }
 
-    file { "/etc/rawdog/${title}/plugins/rss.py":
+    if debian::codename::ge('bullseye') {
+        $plugin_files = 'rss-next.py'
+    } else {
+        $plugin_file ='rss.py'
+    }
+
+    file { "/etc/rawdog/${title}/plugins/${plugin_file}":
         ensure  => present,
         owner   => 'planet',
         group   => 'planet',
@@ -17,3 +23,4 @@ define planet::rawdogplugin {
     }
 
 }
+

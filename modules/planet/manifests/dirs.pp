@@ -14,11 +14,13 @@ class planet::dirs {
         mode   => '0755',
     }
 
-    file { '/etc/rawdog/plugins':
-        ensure => directory,
-        owner  => 'planet',
-        group  => 'planet',
-        mode   => '0755',
+    if (debian::codename::le('buster')) {
+        file { '/etc/rawdog/plugins':
+            ensure => directory,
+            owner  => 'planet',
+            group  => 'planet',
+            mode   => '0755',
+        }
     }
 
     file { '/etc/rawdog/config':

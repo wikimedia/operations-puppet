@@ -4,6 +4,16 @@ template /etc/rawdog/theme/wikimedia/pt/rd_page.tmpl
 itemtemplate /etc/rawdog/theme/wikimedia/pt/rd_item.tmpl
 outputfile /var/www/planet/pt/index.html
 outputxml /var/www/planet/pt/rss20.xml
+<% if @facts['os']['distro']['codename'] == 'bookworm' -%>
+xmltitle Planet Wikimedia (<%= @title %>),
+xmllink https//<%= @title %>.planet.wikimedia.org/,
+xmllanguage <%= @title %>,
+xmlurl https//<%= @title %>.planet.wikimedia.org/rss20.xml,
+xmldescription aggregated feed of Wikimedia related blogs (<%= @title %> edition),
+xmlownername Wikimedia,
+xmlowneremail noc@wikimedia.org,
+xmlmaxarticles 100,
+<% end -%>
 #
 
 feed 1h https://feeds.feedburner.com/Rei-artur_planetwikimedia
