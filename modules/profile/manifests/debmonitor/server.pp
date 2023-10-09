@@ -143,10 +143,10 @@ class profile::debmonitor::server (
     profile::auto_restarts::service { 'envoyproxy': }
 
     # Internal endpoint: incoming updates from all production hosts via debmonitor CLI
-    ferm::service { 'apache-https':
-        proto  => 'tcp',
-        port   => '443',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'apache-https':
+        proto    => 'tcp',
+        port     => 443,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     class { 'httpd':
