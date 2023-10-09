@@ -12,16 +12,8 @@ class visualdiff {
 
     ensure_packages($visualdiff_packages)
 
-    group { 'visualdiff':
-        ensure => present,
-        system => true,
-    }
-
-    user { 'visualdiff':
-        gid        => 'visualdiff',
-        home       => '/srv/visualdiff',
-        managehome => false,
-        system     => true,
+    systemd::sysuser { 'visualdiff':
+        home_dir => '/srv/visualdiff',
     }
 
     file { '/var/log/visualdiff':
