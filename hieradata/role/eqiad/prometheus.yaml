@@ -5,3 +5,5 @@ lvs::realserver::realserver_ips:
 
 profile::prometheus::ganeti::clusters:
   - ganeti01.svc.eqiad.wmnet
+
+profile::prometheus::cloud::openstack_deployment: eqiad1

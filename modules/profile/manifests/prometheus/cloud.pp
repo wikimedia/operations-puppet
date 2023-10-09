@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::cloud (
+    String $openstack_deployment = lookup('profile::prometheus::cloud::openstack_deployment'),
     String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
@@ -13,8 +14,7 @@ class profile::prometheus::cloud (
 
     $config_extra = {
         'external_labels' => {
-            # right now cloudmetrics hardware only exists on eqiad1, make sure to update this if that changes
-            'deployment' => 'eqiad1',
+            'site'       => $::site,
             'prometheus' => 'cloud',
         },
     }
@@ -141,50 +141,59 @@ class profile::prometheus::cloud (
 
     file { "${targets_path}/blackbox_http_keystone.yaml":
         content => to_yaml([{
+            'labels'  => {
+                'deployment' => $openstack_deployment,
+            },
             'targets' => [
-                'openstack.eqiad1.wikimediacloud.org:5000/v3', # keystone
+                "openstack.${openstack_deployment}.wikimediacloud.org:5000/v3", # keystone
             ],
         }]),
     }
 
     file { "${targets_path}/blackbox_https_keystone.yaml":
         content => to_yaml([{
+            'labels'  => {
+                'deployment' => $openstack_deployment,
+            },
             'targets' => [
-                'openstack.eqiad1.wikimediacloud.org:25000/v3', # keystone
-                'openstack.eqiad1.wikimediacloud.org:28774', # nova
-                'openstack.eqiad1.wikimediacloud.org:28776', # cinder
-                'openstack.eqiad1.wikimediacloud.org:28778', # placement
-                'openstack.eqiad1.wikimediacloud.org:28779', # trove
-                'openstack.eqiad1.wikimediacloud.org:29001', # designate
-                'openstack.eqiad1.wikimediacloud.org:29292', # glance
-                'openstack.eqiad1.wikimediacloud.org:29696', # neutron
+                "openstack.${openstack_deployment}.wikimediacloud.org:25000/v3", # keystone
+                "openstack.${openstack_deployment}.wikimediacloud.org:28774", # nova
+                "openstack.${openstack_deployment}.wikimediacloud.org:28776", # cinder
+                "openstack.${openstack_deployment}.wikimediacloud.org:28778", # placement
+                "openstack.${openstack_deployment}.wikimediacloud.org:28779", # trove
+                "openstack.${openstack_deployment}.wikimediacloud.org:29001", # designate
+                "openstack.${openstack_deployment}.wikimediacloud.org:29292", # glance
+                "openstack.${openstack_deployment}.wikimediacloud.org:29696", # neutron
             ],
         }]),
     }
 
     prometheus::class_config{ "rabbitmq_${::site}":
         dest       => "${targets_path}/rabbitmq_${::site}.yaml",
-        class_name => 'profile::openstack::eqiad1::rabbitmq',
+        class_name => "profile::openstack::${openstack_deployment}::rabbitmq",
+        labels     => {'deployment' => $openstack_deployment},
         port       => 15692,
     }
 
     prometheus::class_config{ "pdns_${::site}":
         dest       => "${targets_path}/pdns_${::site}.yaml",
-        class_name => 'role::wmcs::openstack::eqiad1::services',
+        class_name => "role::wmcs::openstack::${openstack_deployment}::services",
+        labels     => {'deployment' => $openstack_deployment},
         port       => 8081,
     }
 
     prometheus::class_config{ "pdns-rec_${::site}":
         dest       => "${targets_path}/pdns-rec_${::site}.yaml",
-        class_name => 'role::wmcs::openstack::eqiad1::services',
+        class_name => "role::wmcs::openstack::${openstack_deployment}::services",
+        labels     => {'deployment' => $openstack_deployment},
         port       => 8082,
     }
 
     file { "${targets_path}/openstack_${::site}.yaml":
         content => to_yaml([{
             'labels'  => {
-                'cluster' => 'wmcs',
-                'site'    => 'eqiad',
+                'cluster'    => 'wmcs',
+                'deployment' => $openstack_deployment,
             },
             'targets' => [
                 "${openstack_exporter_host}:12345",
@@ -198,13 +207,11 @@ class profile::prometheus::cloud (
         port       => 9283,
     }
 
-    prometheus::class_config{ 'mysql_galera_eqiad1':
-        dest       => "${targets_path}/mysql_galera_eqiad1.yaml",
-        class_name => 'role::wmcs::openstack::eqiad1::control',
+    prometheus::class_config { "mysql_galera_${openstack_deployment}":
+        dest       => "${targets_path}/mysql_galera_${openstack_deployment}.yaml",
+        class_name => "role::wmcs::openstack::${openstack_deployment}::control",
+        labels     => {'deployment' => $openstack_deployment},
         port       => 9104,
-        labels     => {
-            'deployment' => 'eqiad1'
-        }
     }
 
     $galera_jobs = [
