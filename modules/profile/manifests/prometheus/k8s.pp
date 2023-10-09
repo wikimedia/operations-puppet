@@ -441,6 +441,47 @@ class profile::prometheus::k8s (
                     },
                 ],
             },
+            {
+                # KServe specific metrics to monitor isvcs latency and GC activity
+                'job_name'              => 'k8s-pods-kserve',
+                'metrics_path'          => '/metrics',
+                'scheme'                => 'http',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => $master_url,
+                        'tls_config'        => $k8s_sd_tls_config,
+                        'role'              => 'pod',
+                    },
+                ],
+                'relabel_configs' => [
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_kserve_prometheus_io_scrape'],
+                        'regex'         => true,
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_kerve_prometheus_io_port'],
+                        'regex'         => '([^:]+)(?::\d+)?;(\d+)',
+                        'replacement'   => '$1:$2',
+                        'target_label'  => '__address__',
+                    },
+                    {
+                        'action'        => 'labelmap',
+                        'regex'         => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_namespace'],
+                        'target_label'  => 'kubernetes_namespace',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'target_label'  => 'kubernetes_pod_name',
+                    },
+                ],
+            },
         ]
 
         $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
