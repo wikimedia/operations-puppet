@@ -8,6 +8,12 @@ class pdns_server::db_backups(
     $db = 'pdns'
     $dbuser = 'dump'
 
+    if debian::codename::ge('bookworm') {
+      $binlog_privilege = 'BINLOG MONITOR'
+    } else {
+      $binlog_privilege = 'REPLICATION CLIENT'
+    }
+
     $statements = [
         {
             'stmt'              => "CREATE USER IF NOT EXISTS ${dbuser}@localhost IDENTIFIED VIA unix_socket",
@@ -15,7 +21,7 @@ class pdns_server::db_backups(
             'unless_grep_match' => "${dbuser}[[:space:]]unix_socket",
         },
         {
-            'stmt'              => "GRANT RELOAD, FILE, SUPER, REPLICATION CLIENT ON *.* TO \\`${dbuser}\\`@\\`localhost\\`",
+            'stmt'              => "GRANT RELOAD, FILE, SUPER, ${binlog_privilege} ON *.* TO \\`${dbuser}\\`@\\`localhost\\`",
             'unless'            => "SHOW GRANTS FOR '${dbuser}'@'localhost'",
             'unless_grep_match' => undef,  # will use the same stmt
 
