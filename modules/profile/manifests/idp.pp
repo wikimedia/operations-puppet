@@ -58,11 +58,11 @@ class profile::idp(
     class{ 'sslcert::dhparam': }
     if $envoy_termination {
       include profile::tlsproxy::envoy
-      $ferm_port = 443
+      $firewall_port = 443
       profile::auto_restarts::service { 'envoyproxy': }
     } else {
       # In cloud we use the shared wmfcloud proxy for tls termination
-      $ferm_port = 8080
+      $firewall_port = 8080
     }
 
     class {'tomcat': }
@@ -150,9 +150,9 @@ class profile::idp(
         content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\n",
     }
 
-    ferm::service {'cas-https':
+    firewall::service {'cas-https':
         proto => 'tcp',
-        port  => $ferm_port,
+        port  => $firewall_port,
     }
 
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":
