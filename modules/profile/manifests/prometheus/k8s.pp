@@ -456,12 +456,12 @@ class profile::prometheus::k8s (
                 'relabel_configs' => [
                     {
                         'action'        => 'keep',
-                        'source_labels' => ['__meta_kubernetes_pod_annotation_kserve_prometheus_io_scrape'],
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_kserve_io_scrape'],
                         'regex'         => true,
                     },
                     {
                         'action'        => 'replace',
-                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_kerve_prometheus_io_port'],
+                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_prometheus_kserve_io_port'],
                         'regex'         => '([^:]+)(?::\d+)?;(\d+)',
                         'replacement'   => '$1:$2',
                         'target_label'  => '__address__',
