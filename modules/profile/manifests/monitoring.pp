@@ -100,6 +100,7 @@ class profile::monitoring (
     }
 
     nrpe::plugin { 'check_dpkg':
+        ensure => absent,
         source => 'puppet:///modules/profile/monitoring/check_dpkg.sh',
     }
 

@@ -133,4 +133,5 @@ class profile::base (
     include profile::auto_restarts
 
     class { 'prometheus::node_debian_version': }
+    class { 'prometheus::node_dpkg_success': }
 }
