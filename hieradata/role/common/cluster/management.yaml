@@ -15,6 +15,14 @@ profile::spicerack::reposync::repos:
 profile::spicerack::configure_kafka: true
 profile::spicerack::cookbooks_repos:
   'operations/cookbooks': '/srv/deployment/spicerack'
+profile::spicerack::cookbooks_dependencies:
+  - python3-dateutil
+  - python3-prettytable
+  - python3-packaging
+  - python3-gitlab
+  - transferpy
+  - python3-aiohttp
+  - python3-cryptography
 profile::spicerack::peeringdb_config_data:
   cachedir: /tmp/peeringdb-cache
   # peeringdb_token_ro: overiden in the private repo

@@ -14,6 +14,7 @@
 # @param mysql_config_data MySQL/MariaDB config data
 # @param configure_redis if true configure redis
 # @param configure_kafka if true configure kafka
+# @param cookbooks_dependencies packages needed by specific installed cookbooks
 class profile::spicerack (
     String                         $tcpircbot_host            = lookup('tcpircbot_host'),
     Stdlib::Port                   $tcpircbot_port            = lookup('tcpircbot_port'),
@@ -27,12 +28,9 @@ class profile::spicerack (
     Hash                           $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
     Hash                           $authdns_config_data       = lookup('authdns_servers'),
     Boolean                        $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
-
+    Array[String[1]]               $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),
 ) {
-    ensure_packages([
-        'python3-dateutil', 'python3-prettytable', 'python3-requests', 'python3-packaging',
-        'spicerack', 'python3-gitlab', 'transferpy', 'python3-aiohttp', 'python3-cryptography'
-    ])
+    ensure_packages(['spicerack'] + $cookbooks_dependencies)
 
     $cookbooks_repos.each |$repo, $dir| {
         wmflib::dir::mkdir_p($dir.dirname)
