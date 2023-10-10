@@ -30,22 +30,21 @@ apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 
 BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
-if [ "${LSB_RELEASE}" = "bookworm" ] && [ "$PUPPET_VERSION" -eq 5 ]; then
-  printf 'deb %s/puppet5\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet5.list
-  in-target apt-get update
-  apt-install -y --force-yes puppet=5.5.22-2+deb12u3
-  apt-install -y ruby-sorted-set
-elif [ "${LSB_RELEASE}" = "bullseye" ] && [ "$PUPPET_VERSION" -eq 7 ]; then
-  printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
-  in-target apt-get update
-  apt-install puppet
-else
-  # puppet: because we'll need it soon anyway
-  apt-install puppet
+if [ "$PUPPET_VERSION" -eq 7 ]; then
+  case "${LSB_RELEASE}" in
+    "bookworm")
+      printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /etc/apt/preferences.d/puppet.pref
+      ;;
+    "bullseye")
+      printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
+      ;;
+  esac
 fi
+in-target apt-get update
 # openssh-server: to make the machine accessible
 # lldpd: announce the machine on the network
-apt-install openssh-server lldpd
+# puppet: will be needed soon
+apt-install openssh-server lldpd puppet
 
 # nvme-cli: on machines with NVMe drives, this allows late_command to change
 # LBA format below
