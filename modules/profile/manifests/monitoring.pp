@@ -80,6 +80,7 @@ class profile::monitoring (
     contain nrpe  # lint:ignore:wmf_styleguide
 
     nrpe::plugin { 'check_puppetrun':
+        ensure => absent,
         source => 'puppet:///modules/profile/monitoring/check_puppetrun.rb',
     }
 
@@ -130,6 +131,7 @@ class profile::monitoring (
     }
 
     nrpe::monitor_service { 'puppet_checkpuppetrun':
+        ensure         => absent,
         description    => 'puppet last run',
         nrpe_command   => "/usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
         sudo_user      => 'root',
