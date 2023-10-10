@@ -127,6 +127,7 @@ class profile::monitoring (
     }
 
     nrpe::monitor_service { 'dpkg':
+        ensure         => absent,
         description    => 'DPKG',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_dpkg',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
