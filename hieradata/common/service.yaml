@@ -3821,7 +3821,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   editor-analytics:
     description: editor-analytics AQS2 service, editor-analytics.discovery.wmnet
@@ -3835,7 +3835,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   edit-analytics:
     description: edit-analytics AQS2 service, edit-analytics.discovery.wmnet
@@ -3849,7 +3849,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   # Services has no LVS
   pki:
