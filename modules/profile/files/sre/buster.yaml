@@ -248,8 +248,8 @@ role::wmcs::openstack::eqiad1::control:
 role::wmcs::openstack::codfw1dev::control:
   target-q: TBD
 role::kafka::jumbo::broker:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-4
+  phab-task: 348495
 role::kafka::main:
   target-q: 2023-1
   phab-task: 332013
@@ -447,7 +447,7 @@ role::dragonfly::supernode:
   target-q: TBD
   phab-task: 332011
 role::puppetdb:
-  target-q: 2023-2
+  target-q: 2023-4
   phab-task: 330490
 role::puppetmaster::frontend:
   target-q: 2023-2
@@ -470,7 +470,7 @@ role::pki::root:
   target-q: 2023-1
   phab-task: 331696
 role::search::loader:
-  target-q: TBD
+  target-q: 2023-4
   phab-task: 346039
 role::chartmuseum:
   target-q: TBD
