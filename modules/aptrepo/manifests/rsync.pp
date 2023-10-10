@@ -10,32 +10,35 @@ class aptrepo::rsync (
 ){
     $ensure_sync = ($facts['fqdn'] == $primary_server).bool2str('absent', 'present')
 
-    rsync::server::module { 'install-srv':
-        ensure         => $ensure_sync,
-        path           => '/srv',
-        read_only      => 'no',
-        hosts_allow    => [$primary_server],
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
-    }
+    unless $secondary_servers.empty() {
 
-    rsync::server::module { 'install-home':
-        ensure         => $ensure_sync,
-        path           => '/home',
-        read_only      => 'no',
-        hosts_allow    => [$primary_server],
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
-    }
+        rsync::server::module { 'install-srv':
+            ensure         => $ensure_sync,
+            path           => '/srv',
+            read_only      => 'no',
+            hosts_allow    => [$primary_server],
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
+        }
 
-    ($secondary_servers + $primary_server).each |String $server| {
-        $ensure_job = ($primary_server == $facts['networking']['fqdn'] and $primary_server != $server).bool2str('present', 'absent')
-        systemd::timer::job { "rsync-aptrepo-${server}":
-            ensure      => $ensure_job,
-            user        => 'root',
-            description => 'rsync APT repo data from the primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete /srv/ rsync://${server}/install-srv",
-            interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},
+        rsync::server::module { 'install-home':
+            ensure         => $ensure_sync,
+            path           => '/home',
+            read_only      => 'no',
+            hosts_allow    => [$primary_server],
+            auto_ferm      => true,
+            auto_ferm_ipv6 => true,
+        }
+
+        ($secondary_servers + $primary_server).each |String $server| {
+            $ensure_job = ($primary_server == $facts['networking']['fqdn'] and $primary_server != $server).bool2str('present', 'absent')
+            systemd::timer::job { "rsync-aptrepo-${server}":
+                ensure      => $ensure_job,
+                user        => 'root',
+                description => 'rsync APT repo data from the primary to a secondary server',
+                command     => "/usr/bin/rsync -avp --delete /srv/ rsync://${server}/install-srv",
+                interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '6h'},
+            }
         }
     }
 }
