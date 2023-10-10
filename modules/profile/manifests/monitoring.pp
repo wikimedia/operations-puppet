@@ -172,20 +172,6 @@ class profile::monitoring (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
     }
 
-    if $facts['dmi']['name'] == 'PowerEdge R320' {
-        nrpe::plugin { 'check_cpufreq':
-            ensure => absent,
-            source => 'puppet:///modules/profile/monitoring/check_cpufreq',
-        }
-
-        nrpe::monitor_service { 'check_cpufreq':
-            ensure       => absent,
-            description  => 'CPU frequency',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_cpufreq',
-        }
-    }
-
     if ! $facts['is_virtual'] {
         include profile::prometheus::nic_saturation_exporter
         class { 'prometheus::node_nic_firmware': }
