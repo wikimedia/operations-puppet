@@ -173,10 +173,12 @@ class profile::monitoring (
 
     if $facts['dmi']['name'] == 'PowerEdge R320' {
         nrpe::plugin { 'check_cpufreq':
+            ensure => absent,
             source => 'puppet:///modules/profile/monitoring/check_cpufreq',
         }
 
         nrpe::monitor_service { 'check_cpufreq':
+            ensure       => absent,
             description  => 'CPU frequency',
             nrpe_command => '/usr/local/lib/nagios/plugins/check_cpufreq 600',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_cpufreq',
