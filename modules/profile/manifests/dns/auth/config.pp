@@ -7,8 +7,9 @@ class profile::dns::auth::config(
 
     # Create the loopback IPs used for public service (defined here since we
     # also create the matching listener config here)
+    # Skip loopbacks if bird sets up the loopbacks in a given site.
     $authdns_addrs.each |$alabel,$adata| {
-        unless $adata['skip_loopback'] {
+        unless $adata['skip_loopback'] or $adata['skip_loopback_site'] == $::site {
             interface::ip { $alabel:
                 address   => $adata['address'],
                 interface => 'lo',

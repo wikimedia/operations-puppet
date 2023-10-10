@@ -14,7 +14,7 @@ class profile::bird::anycast(
   Boolean                                        $bfd                   = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list        = lookup('profile::bird::neighbors_list', {default_value => undef}),
   Optional[Array[String[1], 1]]                  $bind_anycast_services = lookup('profile::bird::bind_anycast_services', {'default_value' => undef}),
-  Optional[Hash[String, Wmflib::Advertise_vip]]  $advertise_vips        = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
+  Optional[Hash[String, Wmflib::Advertise_vip]]  $advertise_vips        = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
   Optional[Boolean]                              $do_ipv6               = lookup('profile::bird::do_ipv6', {'default_value' => false}),
   Optional[Boolean]                              $multihop              = lookup('profile::bird::multihop', {'default_value' => true}),
   Optional[Bird::Anycasthc_logging]              $anycasthc_logging     = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),

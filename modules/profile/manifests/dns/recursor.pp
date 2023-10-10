@@ -2,7 +2,7 @@
 # A profile class for a dns recursor
 
 class profile::dns::recursor (
-  Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips    = lookup('profile::bird::advertise_vips', {'default_value' => {}}),
+  Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips    = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
   Optional[String]                                  $bind_service      = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
   Hash[Wmflib::Sites, Array[Stdlib::Fqdn]]          $ntp_peers         = lookup('ntp_peers'),
   Hash[Wmflib::Sites, Wmflib::Sites]                $site_nearest_core = lookup('site_nearest_core'),
