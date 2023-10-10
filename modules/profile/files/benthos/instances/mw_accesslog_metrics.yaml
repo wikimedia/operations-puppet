@@ -30,7 +30,7 @@ pipeline:
           deployment: ${! json("labels.deployment") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
-          cluster:    ${! json("orchestrator.resource.name").split(".").index(1) }
+          dc:         ${! json("orchestrator.resource.name").split(".").index(1) }
           handler: |-
             ${! match json("labels~1handler") {
               "-" => "static"
@@ -46,7 +46,7 @@ pipeline:
           deployment: ${! json("labels.deployment") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
-          cluster:    ${! json("orchestrator.resource.name").split(".").index(1) }
+          dc:         ${! json("orchestrator.resource.name").split(".").index(1) }
           handler: |-
             ${! match json("labels~1handler") {
               "-" => "static"
@@ -62,7 +62,7 @@ pipeline:
           deployment: ${! json("labels.deployment") }
           method:     ${! json("http~1request~1method") }
           code:       ${! json("http~1response~1status_code") }
-          cluster:    ${! json("orchestrator.resource.name").split(".").index(1) }
+          dc:         ${! json("orchestrator.resource.name").split(".").index(1) }
           endpoint: |-
             ${! match json("url~1path") {
                 this.has_prefix("/wiki/")       => "website"
