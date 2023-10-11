@@ -55,4 +55,5 @@ class profile::ci::slave::labs::common (
         },
         require  => File['/srv/home/jenkins-deploy'],
     }
+    profile::gerrit::sshkey { 'gerrit': }
 }

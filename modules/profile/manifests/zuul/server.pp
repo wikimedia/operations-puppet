@@ -23,6 +23,10 @@ class profile::zuul::server(
       logs => ['/var/log/zuul/error.log'],
     }
 
+    profile::gerrit::sshkey { 'gerrit':
+        target => '/var/lib/zuul/.ssh/known_hosts',
+    }
+
     class { 'zuul::server':
         # Shared settings
         gerrit_server        => $conf_common['gerrit_server'],
