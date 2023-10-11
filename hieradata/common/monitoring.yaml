@@ -48,6 +48,12 @@ monitoring::groups:
     description: Equipment with lsw1-e2-eqiad as uplink
   lsw1-e3-eqiad:
     description: Equipment with lsw1-e3-eqiad as uplink
+  lsw1-e5-eqiad:
+    description: Equipment with lsw1-e5-eqiad as uplink
+  lsw1-e6-eqiad:
+    description: Equipment with lsw1-e6-eqiad as uplink
+  lsw1-e7-eqiad:
+    description: Equipment with lsw1-e7-eqiad as uplink
   ssw1-f1-eqiad:
     description: Equipment with ssw1-f1-eqiad as uplink
   lsw1-f1-eqiad:
@@ -56,6 +62,12 @@ monitoring::groups:
     description: Equipment with lsw1-f2-eqiad as uplink
   lsw1-f3-eqiad:
     description: Equipment with lsw1-f3-eqiad as uplink
+  lsw1-f5-eqiad:
+    description: Equipment with lsw1-f5-eqiad as uplink
+  lsw1-f6-eqiad:
+    description: Equipment with lsw1-f6-eqiad as uplink
+  lsw1-f7-eqiad:
+    description: Equipment with lsw1-f7-eqiad as uplink
   asw2-ulsfo:
     description: Equipment with asw2-ulsfo as uplink
   asw-a-codfw:
@@ -66,6 +78,40 @@ monitoring::groups:
     description: Equipment with asw-c-codfw as uplink
   asw-d-codfw:
     description: Equipment with asw-d-codfw as uplink
+  ssw1-a1-codfw:
+    description: Equipment with ssw1-a1-codfw as uplink
+  ssw1-a8-codfw:
+    description: Equipment with ssw1-a8-codfw as uplink
+  lsw1-a1-codfw:
+    description: Equipment with lsw1-a1-codfw as uplink
+  lsw1-a2-codfw:
+    description: Equipment with lsw1-a2-codfw as uplink
+  lsw1-a3-codfw:
+    description: Equipment with lsw1-a3-codfw as uplink
+  lsw1-a4-codfw:
+    description: Equipment with lsw1-a4-codfw as uplink
+  lsw1-a5-codfw:
+    description: Equipment with lsw1-a5-codfw as uplink
+  lsw1-a6-codfw:
+    description: Equipment with lsw1-a6-codfw as uplink
+  lsw1-a7-codfw:
+    description: Equipment with lsw1-a7-codfw as uplink
+  lsw1-a8-codfw:
+    description: Equipment with lsw1-a8-codfw as uplink
+  lsw1-b2-codfw:
+    description: Equipment with lsw1-b2-codfw as uplink
+  lsw1-b3-codfw:
+    description: Equipment with lsw1-b3-codfw as uplink
+  lsw1-b4-codfw:
+    description: Equipment with lsw1-b4-codfw as uplink
+  lsw1-b5-codfw:
+    description: Equipment with lsw1-b5-codfw as uplink
+  lsw1-b6-codfw:
+    description: Equipment with lsw1-b6-codfw as uplink
+  lsw1-b7-codfw:
+    description: Equipment with lsw1-b7-codfw as uplink
+  lsw1-b8-codfw:
+    description: Equipment with lsw1-b8-codfw as uplink
   cloudsw1-b1-codfw:
     description: Equipment with cloudsw1-b1-codfw as uplink
   asw1-by27-esams:
