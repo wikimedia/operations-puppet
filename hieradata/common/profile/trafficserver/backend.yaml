@@ -321,6 +321,70 @@ profile::trafficserver::backend::mapping_rules:
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+      # T347544 Send wikifunctions to its own mw-on-k8s deployment for isolation
+      # Setup before (api|rest).php rules on purpose to send wikifunctions API calls
+      # to the right mw-on-k8s deployment, bypassing the mw-on-k8s.lua logic.
+      # First, catch REST API for path normalization with the right params
+    - type: map
+      target: http://www.wikifunctions.org/w/rest.php
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/rest.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+      # Then, catch action API to remove path normalization for PURGE requests
+    - type: map
+      target: http://www.wikifunctions.org/w/api.php
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/api.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+      # Last, catch the rest of wikifunctions calls with identical path normalization
+      # parameters as the global mediawiki catch-all.
+    - type: map
+      target: http://www.wikifunctions.org
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
       # mediawiki
       # REST api
     - type: regex_map
