@@ -9,15 +9,15 @@ class helmfile::repository(
     }
 
     systemd::timer::job { 'git_pull_charts':
-        ensure          => present,
-        description     => 'Pull changes on deployment-charts repo',
-        command         => "/bin/bash -c 'cd ${srcdir} && /usr/bin/git pull >/dev/null 2>&1'",
-        interval        => {
+        ensure            => present,
+        description       => 'Pull changes on deployment-charts repo',
+        working_directory => $srcdir,
+        command           => '/usr/bin/git pull',
+        interval          => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* *:*:00', # every minute
         },
-        logging_enabled => false,
-        user            => 'root',
+        logging_enabled   => false,
+        user              => 'root',
     }
-
 }
