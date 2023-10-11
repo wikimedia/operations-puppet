@@ -2741,6 +2741,11 @@ node /^stat101[0]\.eqiad\./ {
     role(insetup::data_engineering)
 }
 
+# New stat nodes T342454
+node /^stat1011\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # NOTE: new snapshot hosts must also be manually added to
 # hieradata/common.yaml:dumps_nfs_clients for dump nfs mount,
 # hieradata/common/scap/dsh.yaml for mediawiki installation,
