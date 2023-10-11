@@ -349,6 +349,14 @@ profile::kubernetes::deployment_server::services:
         - name: recommendation-api-ng-deploy
           owner: root
           group: deploy-ml-service
+    llm:
+      usernames:
+        - name: llm
+          owner: root
+          group: deploy-ml-service
+        - name: llm-deploy
+          owner: root
+          group: deploy-ml-service
     experimental:
       usernames:
         - name: experimental
