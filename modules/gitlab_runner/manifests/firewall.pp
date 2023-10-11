@@ -3,6 +3,7 @@ class gitlab_runner::firewall (
     Stdlib::IP::Address                         $subnet,
     Wmflib::Ensure                              $ensure            = present,
     Boolean                                     $restrict_firewall = false,
+    Boolean                                     $block_dockerhub   = true,
     Hash[String, Gitlab_runner::AllowedService] $allowed_services  = [],
     Stdlib::IP::Address::V4::CIDR               $internal_ip_range = '10.0.0.0/8',
 ) {
@@ -34,6 +35,17 @@ class gitlab_runner::firewall (
                 desc   => "allow traffic to ${name} from docker",
                 chain  => 'DOCKER-ISOLATION',
             }
+        }
+    }
+
+    if $block_dockerhub {
+        #reject all docker traffic to dockerhub
+        ferm::rule { 'docker-dockerhub-reject':
+            ensure => $ensure,
+            prio   => 19,
+            rule   => 'daddr @resolve((registry-1.docker.io docker.io index.docker.io hub.docker.com production.cloudflare.docker.com)) REJECT;',
+            desc   => 'reject all docker traffic to dockerhub',
+            chain  => 'DOCKER-ISOLATION',
         }
     }
 

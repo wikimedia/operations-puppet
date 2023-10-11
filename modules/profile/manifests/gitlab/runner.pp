@@ -21,6 +21,7 @@
 # @param enable_exporter Enable Prometheus metrics exporter
 # @param gitlab_runner_user User which is used to execute gitlab-runner daemon
 # @param restrict_firewall Enable default REJECT rule for all egress Docker traffic to wmnet
+# @param block_dockerhub Enable REJECT rule for traffic from docker (like buildkitd) to dockerhub
 # @param allowed_services List of TCP services (host and port) which can be accessed
 #   from Docker with restricted firewall enabled. Only used when restrict_firewall is True.
 # @param ensure_buildkitd Whether to provide buildkitd for image building.
@@ -70,6 +71,7 @@ class profile::gitlab::runner (
     Boolean                                     $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
     String                                      $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
     Boolean                                     $restrict_firewall  = lookup('profile::gitlab::runner::restrict_firewall'),
+    Boolean                                     $block_dockerhub    = lookup('profile::gitlab::runner::block_dockerhub'),
     Hash[String, Gitlab_runner::AllowedService] $allowed_services   = lookup('profile::gitlab::runner::allowed_services'),
     Wmflib::Ensure                              $ensure_buildkitd   = lookup('profile::gitlab::runner::ensure_buildkitd'),
     String                                      $buildkitd_image    = lookup('profile::gitlab::runner::buildkitd_image'),
@@ -120,6 +122,7 @@ class profile::gitlab::runner (
     class { 'gitlab_runner::firewall':
         subnet            => $docker_subnet,
         restrict_firewall => $restrict_firewall,
+        block_dockerhub   => $block_dockerhub,
         allowed_services  => $allowed_services,
         internal_ip_range => $internal_ip_range,
     }

@@ -176,6 +176,7 @@ profile::gitlab::runner::environment: {}
 profile::gitlab::runner::user: "root"
 # restricted firewall is used in cloud
 profile::gitlab::runner::restrict_firewall: true
+profile::gitlab::runner::block_dockerhub: false
 profile::gitlab::runner::internal_ip_range: "172.16.0.0/21"
 profile::gitlab::runner::allowed_services:
   dns:
