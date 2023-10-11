@@ -1686,7 +1686,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: mw-wikifunctions
         active_active: false
