@@ -99,10 +99,6 @@ class profile::monitoring (
         source => 'puppet:///modules/profile/monitoring/check_fresh_files_in_dir.py',
     }
 
-    nrpe::plugin { 'check_dpkg':
-        ensure => absent,
-    }
-
     nrpe::plugin { 'check_newest_file_age':
         source => 'puppet:///modules/profile/monitoring/check_newest_file_age.sh',
     }
@@ -123,16 +119,6 @@ class profile::monitoring (
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         check_interval  => 20,
         retry_interval  => 5,
-    }
-
-    nrpe::monitor_service { 'dpkg':
-        ensure         => absent,
-        description    => 'DPKG',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_dpkg',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/dpkg',
-        check_interval => 30,
-        # Write access to /var/lib/prometheus/node.d required
-        sudo_user      => 'prometheus',
     }
 
     # Calculate freshness interval in seconds (hence *60)
