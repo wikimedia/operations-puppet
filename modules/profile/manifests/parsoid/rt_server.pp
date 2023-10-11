@@ -25,8 +25,6 @@ class profile::parsoid::rt_server (
     systemd::override { 'testreduce-mariadb-restart-on-failure':
         ensure  => present,
         unit    => 'mariadb',
-        content => "[Service]\nRestart=on-abort\n",
+        content => "[Service]\nRestart=always\n",
     }
-
-
 }
