@@ -14,11 +14,8 @@ profile::redis::master::settings:
   save: '""'
   stop_writes_on_bgsave_error: false
   slave_read_only: false
-# This is for the ORES redis queue database
 profile::redis::master::instance_overrides:
-  '6380':
-    maxmemory: "1GB"
-    appendonly: false
+  # Set for docker-registry - see T256726
   '6382':
     maxmemory-policy: 'allkeys-lru'
 profile::contacts::role_contacts: ['ServiceOps']
