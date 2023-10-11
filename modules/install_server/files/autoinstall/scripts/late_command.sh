@@ -29,12 +29,11 @@ fi
 # lsb-release: allows conditionals in this script on in-target release codename
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
-
 BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
 if [ "$PUPPET_VERSION" -eq 7 ]; then
   case "${LSB_RELEASE}" in
     "bookworm")
-      printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /etc/apt/preferences.d/puppet.pref
+      printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /target/etc/apt/preferences.d/puppet.pref
       ;;
     "bullseye")
       printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
