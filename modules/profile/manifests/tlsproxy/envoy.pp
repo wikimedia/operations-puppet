@@ -70,6 +70,7 @@ class profile::tlsproxy::envoy(
     Optional[String]                 $global_cert_name          = lookup('profile::tlsproxy::envoy::global_cert_name'),
     Optional[Float]                  $idle_timeout              = lookup('profile::tlsproxy::envoy::idle_timeout'),
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
+    Optional[Firewall::Srange]       $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
     Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page')
@@ -234,11 +235,23 @@ class profile::tlsproxy::envoy(
             max_requests_per_conn     => $max_requests,
             has_error_page            => $error_page
         }
-        ferm::service { 'envoy_tls_termination':
-            proto   => 'tcp',
-            notrack => true,
-            port    => $tls_port,
-            srange  => $ferm_srange,
+
+        # If $firewall_srange is configured for a service, don't populate the service
+        # based on the $ferm_srange
+        if $firewall_srange {
+            firewall::service { 'envoy_tls_termination':
+                proto   => 'tcp',
+                notrack => true,
+                port    => $tls_port,
+                srange  => $firewall_srange,
+            }
+        } else {
+            ferm::service { 'envoy_tls_termination':
+                proto   => 'tcp',
+                notrack => true,
+                port    => $tls_port,
+                srange  => $ferm_srange,
+            }
         }
     }
 }
