@@ -20,6 +20,7 @@ class profile::idm(
     String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
     String              $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
     String              $mediawiki_secret          = lookup('profile::idm::mediawiki_secret'),
+    String              $mediawiki_callback        = lookup('profile::idm::mediaback_callback'),
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
     String              $redis_password            = lookup('profile::idm::redis_password', {'default_value'               => 'secret'}),
@@ -44,7 +45,7 @@ class profile::idm(
               secret   => $oidc_secret,
               endpoint => $oidc_endpoint }
 
-    $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret }
+    $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret, callback => $mediawiki_callback }
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }

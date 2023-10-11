@@ -32,3 +32,6 @@ profile::idm::enable_monitoring: true
 
 # LDAP
 profile::idm::ldap_dn: 'cn=bitu,ou=profile,dc=wikimedia,dc=org'
+
+# MediaWiki OIDC callback
+profile::idm::mediaback_callback: 'https://idm.wikimedia.org/complete/mediawiki'

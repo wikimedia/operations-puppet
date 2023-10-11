@@ -201,7 +201,7 @@ SOCIAL_AUTH_CAS_ID_KEY = 'username'
 SOCIAL_AUTH_MEDIAWIKI_KEY = '<%= @mediawiki["key"] %>'
 SOCIAL_AUTH_MEDIAWIKI_SECRET = '<%= @mediawiki["secret"] %>'
 SOCIAL_AUTH_MEDIAWIKI_URL = 'https://meta.wikimedia.org/w/index.php'
-SOCIAL_AUTH_MEDIAWIKI_CALLBACK = 'https://idm.wikimedia.org/complete/mediawiki'
+SOCIAL_AUTH_MEDIAWIKI_CALLBACK = '<%= @mediawiki["callback"] %>'
 
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
