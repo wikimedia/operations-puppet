@@ -112,6 +112,8 @@ in-target /usr/bin/puppet config set --section main vardir /var/lib/puppet
 in-target /usr/bin/puppet config set --section main rundir /var/run/puppet
 in-target /usr/bin/puppet config set --section main factpath /var/lib/puppet/lib/facter
 if [ "${PUPPET_VERSION}" -eq 7 ]; then
+  # We currently have an expired root crl in our crl T340543
+  in-target /usr/bin/puppet config set --section main certificate_revocation leaf
   in-target /usr/bin/puppet config set --section agent use_srv_records true
   # Send everything to eqiad instead of trying to calculate the correct site
   in-target /usr/bin/puppet config set --section agent srv_domain eqiad.wmnet
