@@ -10,13 +10,14 @@ chmod go-rwx /target/root/.ssh/authorized_keys
 PUPPET_VERSION_PATH="/tmp/puppet_version"
 i=1
 while [ "${i}" -le  5 ]; do
-  PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
-  if [ -n "${PUPPET_VERSION}" ]; then
-    break
-  else
-    echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
-    sleep 10
+  if [ -f "${PUPPET_VERSION_PATH}" ]; then
+    PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
+    if [ -n "${PUPPET_VERSION}" ]; then
+      break
+    fi
   fi
+  echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
+  sleep 10
   i=$((i + 1))
 done
 
