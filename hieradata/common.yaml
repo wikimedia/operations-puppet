@@ -1253,6 +1253,7 @@ authdns_servers:
 authdns_addrs:
   ns0-v4:
     address: '208.80.154.238'
+    skip_loopback_site: eqiad # skip loopbacks in this site as we announce it via bird
   ns1-v4:
     address: '208.80.153.231'
     skip_loopback_site: codfw # skip loopbacks in this site as we announce it via bird
