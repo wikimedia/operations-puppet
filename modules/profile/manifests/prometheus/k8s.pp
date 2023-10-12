@@ -481,13 +481,17 @@ class profile::prometheus::k8s (
                         'target_label'  => 'kubernetes_pod_name',
                     },
                     {
-                        'action'        => 'drop',
-                        'source_labels' => [
-                          'security_istio_io_tlsMode', 'service_istio_io_canonical_name',
-                          'service_istio_io_canonical_revision', 'serving_knative_dev_configurationUID',
-                          'serving_knative_dev_revision', 'serving_knative_dev_revisionUID',
-                          'serving_knative_dev_service', 'serving_knative_dev_serviceUID'
-                        ],
+                        'action'        => 'labeldrop',
+                        'regex'         => "(${[
+                          'security_istio_io_tlsMode',
+                          'service_istio_io_canonical_name',
+                          'service_istio_io_canonical_revision',
+                          'serving_knative_dev_configurationUID',
+                          'serving_knative_dev_revision',
+                          'serving_knative_dev_revisionUID',
+                          'serving_knative_dev_service',
+                          'serving_knative_dev_serviceUID',
+                        ].join('|')})",
                     },
                 ],
             },
