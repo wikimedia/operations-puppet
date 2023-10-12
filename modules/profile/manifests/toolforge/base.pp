@@ -35,6 +35,18 @@ class profile::toolforge::base(
         recipient => 'root',
     }
 
+    # By default, Cloud VPS projects have a sudoers policy in LDAP that
+    # grants all project members the ability to sudo as root. We can't
+    # use that as we only want admins to have unrestricted sudo powers,
+    # and we don't want to manually maintain a sudo policy via Horizon
+    # with everyone included. Therefore we provision that sudo policy
+    # via here, as we can reference groups (like the Toolforge admin
+    # group) this way.
+    sudo::group { 'toolforge-admin-root':
+        group      => "${::wmcs_project}.admin",
+        privileges => ['ALL = (ALL) NOPASSWD: ALL'],
+    }
+
     if !$is_mail_relay {
         class { '::exim4':
             queuerunner => 'combined',
