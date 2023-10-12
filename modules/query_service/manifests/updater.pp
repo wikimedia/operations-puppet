@@ -53,10 +53,13 @@ class query_service::updater(
     systemd::unit { "${deploy_name}-updater":
         ensure  => $ensure,
         content => template('query_service/initscripts/updater.systemd.erb'),
-        notify  => Service["${deploy_name}-updater"],
     }
 
     service { "${deploy_name}-updater":
         ensure => stdlib::ensure($ensure, 'service'),
+    }
+
+    if $ensure == 'present' {
+        Systemd::Unit["${deploy_name}-updater"] ~> Service["${deploy_name}-updater"]
     }
 }
