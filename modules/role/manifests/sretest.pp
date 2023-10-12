@@ -13,4 +13,6 @@ class role::sretest {
     include profile::base::production
     include profile::firewall
     include profile::sretest
+
+    include profile::prometheus::ethtool_exporter
 }
