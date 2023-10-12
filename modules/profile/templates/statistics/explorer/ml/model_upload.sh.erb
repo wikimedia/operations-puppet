@@ -52,3 +52,22 @@ echo "BUCKET ALREADY EXISTS, SKIPPING CREATION..."
 fi
 echo "UPLOADING ${MODEL_FILE} to ${S3_PATH}"
 s3cmd -c $CONFIG_FILE put "${MODEL_FILE}" "${S3_PATH}/${MODEL_FILE}" --multipart-chunk-size-mb=5
+# Check if the user wants to publish the model
+# to analytics.wikimedia.org/published/wmf-ml-models
+while true; do
+    read -p "Do you want to make this model downloadable at https://analytics.wikimedia.org/published/wmf-ml-models/ (publicly)? " resp
+    case $resp in
+        [Yy]* ) TARGET_CP_DIR="/srv/published/wmf-ml-models/${MODEL_PREFIX}";
+                echo "Copy the binary to ${TARGET_CP_DIR}.";
+                mkdir -p ${TARGET_CP_DIR};
+                cp ${MODEL_FILE} "${TARGET_CP_DIR}/";
+                echo "Generate sha512 checksum for the binary.";
+                sha512sum -b ${MODEL_FILE} > "${TARGET_CP_DIR}/${MODEL_FILE}.sha512";
+                echo "Please note that it may take up to 30 mins to see"\
+                     "the new files in "\
+                     "https://analytics.wikimedia.org/published/wmf-ml-models";
+                break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
