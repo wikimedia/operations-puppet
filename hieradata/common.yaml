@@ -685,7 +685,7 @@ zookeeper_clusters:
   # colocated on druid hosts.
   druid-public-eqiad:
     hosts:
-      druid1004.eqiad.wmnet: '1004'
+      druid1009.eqiad.wmnet: '1009'
       druid1010.eqiad.wmnet: '1010'
       druid1011.eqiad.wmnet: '1011'
 
