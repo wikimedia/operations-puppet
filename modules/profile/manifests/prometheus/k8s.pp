@@ -481,7 +481,7 @@ class profile::prometheus::k8s (
                         'target_label'  => 'kubernetes_pod_name',
                     },
                     {
-                        'action'        => 'labeldrop',
+                        'action'        => 'drop',
                         'source_labels' => [
                           'security_istio_io_tlsMode', 'service_istio_io_canonical_name',
                           'service_istio_io_canonical_revision', 'serving_knative_dev_configurationUID',
