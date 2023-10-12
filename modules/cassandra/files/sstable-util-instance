@@ -24,4 +24,4 @@ export CASSANDRA_INCLUDE=/etc/cassandra.in.sh
 export CASSANDRA_CONF=/etc/cassandra-${cid}
 export CASSANDRA_LOG_DIR=/var/log/cassandra
 
-exec "$(dirname $0)"/$cmd "$@"
+exec /usr/bin/$cmd "$@"
