@@ -39,7 +39,7 @@ class profile::statistics::explorer::ml(
         content => template('profile/statistics/explorer/ml/s3cfg.erb'),
     }
 
-    file {'/usr/local/bin/model_upload':
+    file {'/usr/local/bin/model-upload':
         ensure  => file,
         owner   => 'root',
         group   => 'deploy-ml-service',
