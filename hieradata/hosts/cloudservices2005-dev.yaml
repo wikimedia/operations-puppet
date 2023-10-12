@@ -12,5 +12,3 @@ profile::bird::advertise_vips:
 profile::openldap::master: cloudservices2004-dev.private.codfw.wikimedia.cloud
 profile::openldap::server_id: 4
 profile::openldap::storage_backend: mdb
-
-profile::openstack::codfw1dev::version: 'zed'
