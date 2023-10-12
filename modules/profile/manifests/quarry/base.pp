@@ -25,10 +25,11 @@ class profile::quarry::base(
         require => User['quarry'],
     }
 
-    git::clone { 'analytics/quarry/web':
+    git::clone { 'quarry':
         ensure    => present,
         directory => $clone_path,
         branch    => 'master',
+        source    => 'github-toolforge',
         require   => [File[$clone_path], User['quarry']],
         owner     => 'quarry',
         group     => 'www-data',
@@ -37,7 +38,7 @@ class profile::quarry::base(
     exec { 'quarry-venv':
         command => "/usr/bin/python3 -m venv ${venv_path}",
         creates => $venv_path,
-        require => Git::Clone['analytics/quarry/web'],
+        require => Git::Clone['quarry'],
     }
 
     exec { 'quarry-venv-update-pip-wheel':

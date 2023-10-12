@@ -86,11 +86,12 @@ define git::clone(
     ensure_packages('git')
 
     $default_url_format = $source ? {
-        'phabricator' => 'https://phabricator.wikimedia.org/diffusion/%.git',
-        'github'      => 'https://github.com/wikimedia/%s.git',
-        'gerrit'      => 'https://gerrit.wikimedia.org/r/%s',
-        'gitlab'      => 'https://gitlab.wikimedia.org/%s.git',
-        default       => 'https://gerrit.wikimedia.org/r/%s',
+        'phabricator'      => 'https://phabricator.wikimedia.org/diffusion/%.git',
+        'github'           => 'https://github.com/wikimedia/%s.git',
+        'github-toolforge' => 'https://github.com/toolforge/%s.git',
+        'gerrit'           => 'https://gerrit.wikimedia.org/r/%s',
+        'gitlab'           => 'https://gitlab.wikimedia.org/%s.git',
+        default            => 'https://gerrit.wikimedia.org/r/%s',
     }
 
     $remote = $origin ? {

@@ -26,13 +26,13 @@ class profile::quarry::staging_configure (
     exec {'import mysql':
         path    => '/usr/bin:/usr/sbin',
         command => 'mysql -u root < /srv/quarry/schema.sql',
-        require => 'Exec[git_clone_analytics/quarry/web]',
+        require => 'Exec[git_clone_quarry]',
     }
 
     file { '/srv/quarry/quarry/config.yaml':
         ensure  => file,
         content => template('quarry/staging_config.yaml.erb'),
-        require => 'Exec[git_clone_analytics/quarry/web]',
+        require => 'Exec[git_clone_quarry]',
     }
 
     file { '/root/staging_user.sql':

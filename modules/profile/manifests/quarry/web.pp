@@ -23,7 +23,7 @@ class profile::quarry::web(
     }
 
     uwsgi::app { 'quarry-web':
-        require            => Git::Clone['analytics/quarry/web'],
+        require            => Git::Clone['quarry'],
         settings           => {
             uwsgi => {
                 'plugins'   => 'python3',
