@@ -55,7 +55,7 @@ class profile::statistics::explorer::ml(
         ensure  => directory,
         mode    => '0775',
         owner   => 'root',
-        group   => 'ml-team-admins',
+        group   => 'deploy-ml-service',
         require => File['/srv/published'],
     }
 }
