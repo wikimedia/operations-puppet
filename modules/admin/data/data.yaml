@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane]
+              tsepothoabala, zxane, aborrero]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -57,7 +57,7 @@ groups:
     members: &ops_members [filippo, bblack, andrew, oblivian,
               akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
-              ayounsi, herron, aborrero, bstorm, vgutierrez, jiji, cwhite,
+              ayounsi, herron, bstorm, vgutierrez, jiji, cwhite,
               cdanis, jbond, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
@@ -3432,14 +3432,12 @@ users:
     email: mredi@wikimedia.org
     krb: present
   aborrero:
-    ensure: present
+    ensure: absent
     gid: 500
     name: aborrero
     realname: Arturo Borrero Gonzalez
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInHKi3MxDy91mgCV3x3MBFxCFWbM5QziRGJwdRRiVun aborrero@wikimedia.org production
+    ssh_keys: []
     uid: 18194
-    email: aborrero@wikimedia.org
   hpham:
     ensure: absent
     gid: 500
