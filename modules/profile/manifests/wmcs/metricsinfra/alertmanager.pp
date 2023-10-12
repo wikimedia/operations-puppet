@@ -2,6 +2,7 @@
 class profile::wmcs::metricsinfra::alertmanager (
     Array[Stdlib::Fqdn] $alertmanager_hosts = lookup('profile::wmcs::metricsinfra::prometheus_alertmanager_hosts'),
     Stdlib::Fqdn        $active_host        = lookup('profile::wmcs::metricsinfra::alertmanager_active_host'),
+    Optional[String[1]] $victorops_api_key  = lookup('profile::wmcs::metricsinfra::victorops_api_key', {'default_value' => undef}),
 ) {
     $base_path = '/etc/prometheus/alertmanager'
 
@@ -47,7 +48,9 @@ class profile::wmcs::metricsinfra::alertmanager (
     # TODO: instead of providing the config base, split into small
     # parts and fit into the base prometheus_configurator.pp config
     file { '/etc/prometheus-configurator/config.d/alertmanager-base.yaml':
-        content => epp('profile/wmcs/metricsinfra/alertmanager.yml.epp', {}),
+        content => epp('profile/wmcs/metricsinfra/alertmanager.yml.epp', {
+            victorops_api_key => $victorops_api_key,
+        }),
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
