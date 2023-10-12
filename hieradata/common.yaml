@@ -686,7 +686,7 @@ zookeeper_clusters:
   druid-public-eqiad:
     hosts:
       druid1004.eqiad.wmnet: '1004'
-      druid1005.eqiad.wmnet: '1005'
+      druid1010.eqiad.wmnet: '1010'
       druid1011.eqiad.wmnet: '1011'
 
   # ZK cluster for Druid analytics-test-eqiad cluster (non public),
