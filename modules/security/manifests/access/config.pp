@@ -2,11 +2,7 @@
 # == security::access::config ==
 #
 # Allows defining an access.conf stanza to limit logins into the server to
-# specified sets of groups or users.  See access.conf(5) for syntax
-#
-# The actual /etc/security/access.conf file is constructed from fragments
-# created by those resources and collected in /etc/security/access.conf.d
-# ordered by (numeric) priority.
+# specified sets of groups or users.  See access.conf(5) for syntax.
 #
 # Having a security::access::config resource in the manifest implicitly
 # pulls in the security::access class that creates the access.conf.d
@@ -38,25 +34,17 @@
 # }
 
 define security::access::config(
-    Wmflib::Ensure   $ensure   = 'present',
-    Optional[String] $content  = undef,
-    Optional[String] $source   = undef,
-    Integer[0,99]    $priority = 50,
-)
-{
+    Wmflib::Ensure               $ensure   = 'present',
+    Optional[String]             $content  = undef,
+    Optional[Stdlib::Filesource] $source   = undef,
+    Integer[0,99]                $priority = 50,
+) {
     include security::access
-    $safe_title = $title.regsubst('\W', '_', 'G')
-    $file_path  = "/etc/security/access.conf.d/%.2d-${safe_title}".sprintf($priority)
 
-    file { $file_path:
-        ensure  => $ensure,
+    concat::fragment { "security-access-${title}":
+        target  => '/etc/security/access.conf',
         source  => $source,
         content => $content,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File['/etc/security/access.conf.d'],
-        notify  => Exec['merge-access-conf'],
+        order   => $priority,
     }
 }
-

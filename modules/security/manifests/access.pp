@@ -6,27 +6,22 @@
 # the system PAM configuration.
 #
 
-class security::access {
-
-    file { '/etc/security/access.conf.d':
-        ensure  => directory,
-        recurse => true,
-        purge   => true,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        notify  => Exec['merge-access-conf'],
+class security::access () {
+    concat { '/etc/security/access.conf':
+        owner => 'root',
+        group => 'root',
+        mode  => '0444',
     }
 
-    exec { 'merge-access-conf':
-        refreshonly => true,
-        cwd         => '/etc/security',
-        command     => '/bin/cat access.conf.d/* >access.conf~ && mv access.conf~ access.conf',
+    file { '/etc/security/access.conf.d':
+        ensure  => absent,
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 
     security::pam::config { 'local-pam-access':
         source => 'puppet:///modules/security/local-pam-access',
     }
-
 }
 
