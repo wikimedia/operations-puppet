@@ -323,6 +323,13 @@ profile::services_proxy::envoy::listeners:
     # sets_sni should replace, long term, uses_ingress.
     uses_ingress: true
     sets_sni: true
+  - name: mw-wikifunctions-ro  # used by wikifunctions instead of mw-api-int T347544
+    port: 6501  # NOTE: re-use "mwapi" port to make the transition easier
+    service: "mw-wikifunctions"
+    upstream: "mw-wikifunctions-ro.discovery.wmnet"
+    keepalive: "4s"
+    timeout: "60s"
+    xfp: https
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
