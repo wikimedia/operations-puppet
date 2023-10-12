@@ -34,7 +34,7 @@ class profile::base (
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
     Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
-    Array[String[1]]                    $additional_purged_packages          = lookup('profile::base::additional_purged_packages'),
+    Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -83,12 +83,12 @@ class profile::base (
     include profile::prometheus::cadvisor
     include profile::prometheus::ethtool_exporter
 
-    $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
+    unless empty($remote_syslog_tls) {
+        $central_hosts_tls = pick($remote_syslog_tls[$::site], $remote_syslog_tls['default'])
 
-    unless empty($remote_syslog_tls_servers) {
         class { 'base::remote_syslog':
             enable               => true,
-            central_hosts_tls    => $remote_syslog_tls_servers,
+            central_hosts_tls    => $central_hosts_tls,
             send_logs            => $remote_syslog_send_logs,
             tls_client_auth      => $remote_syslog_tls_client_auth,
             tls_server_auth      => $remote_syslog_tls_server_auth,
