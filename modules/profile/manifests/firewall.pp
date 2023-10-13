@@ -159,6 +159,12 @@ class profile::firewall (
                 order   => 100,
                 content => file('profile/firewall/base.nft'),
             }
+
+            prometheus::node_textfile { 'check-nft':
+                filesource => 'puppet:///modules/profile/firewall/check_nftables.py',
+                interval   => '1800s',
+                run_cmd    => '/usr/local/bin/check-nft',
+            }
         }
 
         default: { fail("unknown provider: ${provider}") }
