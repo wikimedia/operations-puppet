@@ -87,6 +87,7 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::image_suggestions
     include ::profile::mediawiki::maintenance::campaignevents
     include ::profile::mediawiki::maintenance::purge_flaggedrevs
+    include ::profile::mediawiki::maintenance::purge_loginnotify
 
     # Include the cache warmup script; requires node and conftool
     require ::profile::conftool::client
