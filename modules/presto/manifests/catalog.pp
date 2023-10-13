@@ -10,7 +10,9 @@
 #   /etc/presto/catalog/$title.properties.
 #
 # [*properties*]
-#   Hash of catalog properties.
+#   Hash of catalog properties. If the catalog specifies a directory
+#   to use with the Alluxio SDK cache and that caching is enabled,
+#   then this directory will be created with the required permissions.
 #
 define presto::catalog (Hash $properties) {
     # catalog/ properties files should be installed
@@ -21,5 +23,19 @@ define presto::catalog (Hash $properties) {
 
     presto::properties { "catalog/${title}":
         properties => $properties,
+    }
+
+    if $properties['cache.base-directory'] {
+        $directory_ensure = $properties['cache.enabled'] ? {
+            true    => directory,
+            default => absent,
+        }
+        file { "${title}-alluxio-cache":
+            ensure => $directory_ensure,
+            path   => $properties['cache.base-directory'],
+            owner  => 'presto',
+            group  => 'presto',
+            mode   => '0750',
+        }
     }
 }

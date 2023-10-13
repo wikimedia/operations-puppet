@@ -160,6 +160,12 @@ class presto::server(
         require => Logrotate::Conf['presto-server'],
     }
 
+    # This is required when using the alluxio cache, so that cached HDFS files are
+    # not world-readable. See #T266641 for more information.
+    systemd::override { 'presto-umask':
+        unit    => 'presto-server',
+        content => "[Service]\nUMask=0027\n",
+    }
 
     $service_ensure = $enabled ? {
         false   => 'stopped',
@@ -177,6 +183,7 @@ class presto::server(
             File['/etc/presto/jvm.config'],
             File['/var/log/presto'],
             Rsyslog::Conf['presto-server'],
+            Systemd::Override['presto-umask'],
         ],
     }
 }
