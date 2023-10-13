@@ -47,6 +47,14 @@ class nftables (
         recurse => true,
     }
 
+    # For Puppet roles to declare exceptions from connection tracking for
+    # traffic, included by the main config
+    file { '/etc/nftables/notrack':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
     # deploy the basic configuration file, i.e, the basic nftables ruleset skeleton
     file { $nft_main_file:
         ensure  => $ensure,
