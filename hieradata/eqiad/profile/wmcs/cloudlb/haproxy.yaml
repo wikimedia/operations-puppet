@@ -108,7 +108,7 @@ profile::wmcs::cloudlb::haproxy::config:
         # We block loading of all content not embedded on the page by default,
         # and then allow some safe content types (fonts, images, stylesheets) from
         # the current domain. This is not intended as an user-facing webhost.
-        Content-Security-Policy: "default-src; font-src 'self'; img-src 'self' 'inline'; style-src 'self' 'inline'"
+        Content-Security-Policy: "default-src; font-src 'self'; img-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
 
   heat-api:
     type: http
