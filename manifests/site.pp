@@ -2713,9 +2713,8 @@ node /^search-loader[12]001\.(eqiad|codfw)\./ {
 }
 # See T346039
 node /^search-loader[12]002\.(eqiad|codfw)\./ {
-    role(search::loader)
+    role(insetup::search_platform)
 }
-
 # new sessionstore servers via T209393 & T209389
 node /^sessionstore[1-2]00[1-3]\.(eqiad|codfw)\./ {
     role(sessionstore)
