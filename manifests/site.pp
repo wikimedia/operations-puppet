@@ -75,7 +75,7 @@ node /^an-db100[1-2]\.eqiad\./ {
 
 # New an-mariadb nodes T321119
 node /^an-mariadb100[1-2]\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(analytics_cluster::mariadb)
 }
 
 node /^an-launcher1002\.eqiad\./ {
