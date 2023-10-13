@@ -133,7 +133,23 @@ define nftables::service (
         $file_require = undef
     }
 
-    $filename = sprintf('/etc/nftables/input/%02d_%s.nft', $prio, $name)
+    if $notrack {
+        $notrack_rule = regsubst($content, 'accept$', 'notrack')
+
+        $filename = sprintf('/etc/nftables/notrack/%02d_%s.nft', $prio, $title)
+        @file { $filename:
+            ensure  => $ensure,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => $notrack_rule,
+            notify  => Service['nftables'],
+            require => $file_require,
+            tag     => 'nft',
+        }
+    }
+
+    $filename = sprintf('/etc/nftables/input/%02d_%s.nft', $prio, $title)
     @file { $filename:
         ensure  => $ensure,
         owner   => 'root',
