@@ -12,9 +12,6 @@ class profile::analytics::database::meta(
     Boolean $is_mariadb_replica = lookup('profile::analytics::database::meta::is_mariadb_replica', { 'default_value' => false }),
 ) {
 
-    # Some CDH database init scripts need Java to run.
-    Class['profile::java'] -> Class['profile::analytics::database::meta']
-
     require profile::mariadb::packages_wmf
     $basedir = $profile::mariadb::packages_wmf::basedir
     include profile::mariadb::wmfmariadbpy
