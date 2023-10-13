@@ -1,9 +1,11 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- | String  $zookeeper_address,
       String  $zookeeper_prefix,
+      String  $zookeeper_metrics_prefix,
       String  $kafka_address
 | -%>
 # MANAGED BY PUPPET
 export TOPICMAPPR_ZK_ADDR="<%= $zookeeper_address -%>"
 export TOPICMAPPR_ZK_PREFIX="<%= $zookeeper_prefix -%>"
 export TOPICMAPPR_KAFKA_ADDR="<%= $kafka_address -%>"
+export TOPICMAPPR_ZK_METRICS_PREFIX="<%= $zookeeper_metrics_prefix -%>"

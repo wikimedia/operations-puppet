@@ -487,9 +487,10 @@ class profile::kafka::broker(
     # See https://phabricator.wikimedia.org/T346764#9203575
     if debian::codename::ge('bullseye') {
         profile::kafka::kafka_kit { $kafka_cluster_name:
-            zookeeper_address => $config['zookeeper']['hosts'][0],
-            zookeeper_prefix  => $config['zookeeper']['chroot'],
-            kafka_address     => $brokers_string,
+            zookeeper_address        => $config['zookeeper']['hosts'][0],
+            zookeeper_prefix         => $config['zookeeper']['chroot'],
+            zookeeper_metrics_prefix => "kafka/${cluster_name}/topicmappr",
+            kafka_address            => $brokers_string,
         }
     }
 }
