@@ -73,7 +73,7 @@ debconf-set-selections /tmp/dynamic_disc.cfg
 }
 
 case $(hostname) in
-  ms-be2050|ms-be207*|ms-be107[2-5])
+  ms-be2050|ms-be207*|ms-be107[2-5]|moss-be*)
     configure_swift_disks
     ;;
   cephosd*)
