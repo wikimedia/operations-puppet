@@ -5,4 +5,5 @@ type CloudLB::HAProxy::Service::Definition = Struct[{
     'healthcheck'   => CloudLB::HAProxy::Service::Healthcheck,
     'firewall'      => CloudLB::HAProxy::Service::Firewall,
     'type'          => Enum['http', 'tcp'],
+    'http'          => Optional[CloudLB::HAProxy::Service::HTTPOptions],
 }]

@@ -5,16 +5,28 @@ frontend <%= @title %>_frontend
 <%- @frontends.each do |frontend| -%>
     bind *:<%= frontend['port'] %><% if frontend.include? 'acme_chief_cert_name' %> ssl crt /etc/acmecerts/<%= frontend['acme_chief_cert_name'] %>/live/ec-prime256v1.chained.crt.key<% end %>
 <%- end -%>
-    default_backend <%= @title %>_backend
     http-request set-header X-Forwarded-Proto https if { ssl_fc }
     acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
     http-request deny if is-blocked-ip
     acl is-blockedagent hdr_sub(user-agent) -i -f /etc/haproxy/agentblocklist.txt
     http-request deny if is-blockedagent
+<%- if @http and @http['require_host'] -%>
+    acl is-correct-host hdr(host) -i <%= @http['require_host'] %>
+    use_backend <%= @title %>_backend if is-correct-host
+    # This is explicitly not a redirect.
+    http-request deny status 404 content-type text/plain string "Unsupported host, use <%= @http['require_host'] %> instead\n" if !is-correct-host
+<%- else -%>
+    default_backend <%= @title %>_backend
+<%- end -%>
     # log /dev/log local0 debug
 
 backend <%= @title %>_backend
     balance leastconn
+<%- if @http and @http['set_headers'] -%>
+<%- @http['set_headers'].each do |header, value| -%>
+    http-response set-header <%= header %> "<%= value %>"
+<%- end -%>
+<%- end -%>
 <%- if @healtchcheck_options -%>
 <% @healthcheck_options.each do |option| -%>
     <%= option %>

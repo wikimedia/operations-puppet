@@ -12,6 +12,7 @@ define cloudlb::haproxy::service (
     $healthcheck_method = $service['healthcheck']['method']
     $healthcheck_path = $service['healthcheck']['path']
     $firewall = $service['firewall']
+    $http = $service['http']
 
     if $type == 'http' {
         file { "/etc/haproxy/conf.d/${title}.cfg":

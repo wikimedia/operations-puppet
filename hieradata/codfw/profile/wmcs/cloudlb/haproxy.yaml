@@ -103,6 +103,13 @@ profile::wmcs::cloudlb::haproxy::config:
     healthcheck:
       method: GET
       path: /
+    http:
+      require_host: object.codfw1dev.wikimediacloud.org
+      set_headers:
+        # We block loading of all content not embedded on the page by default,
+        # and then allow some safe content types (fonts, images, stylesheets) from
+        # the current domain. This is not intended as an user-facing webhost.
+        Content-Security-Policy: "default-src 'none' font-src 'self' img-src 'self' style-src 'self'"
 
   barbican-api:
     type: http
