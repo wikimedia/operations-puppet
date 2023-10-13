@@ -1551,6 +1551,11 @@ class profile::prometheus::ops (
         class_name => 'role::ores::redis',
     }
 
+    prometheus::redis_exporter_config{ "redis_arclamp_${::site}":
+        dest       => "${targets_path}/redis_arclamp_${::site}.yaml",
+        class_name => 'profile::arclamp::redis',
+    }
+
     $mtail_jobs = [
       {
         'job_name'        => 'mtail',

@@ -18,4 +18,6 @@ class profile::arclamp::redis() {
       srange => '$DOMAIN_NETWORKS',
     }
 
+    prometheus::redis_exporter { '6379': }
+
 }
