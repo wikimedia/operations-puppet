@@ -18,6 +18,13 @@ class profile::parsoid::rt_server (
         service_ensure => $service_ensure,
     }
 
+    if debian::codename::ge('bookworm') {
+        file { '/etc/mysql/mariadb.conf.d/50-testreduce-innodb.cnf':
+            mode    => '0644',
+            content => '[mysqld]\ninnodb_buffer_pool_size = 4.6G\n'
+        }
+    }
+
     profile::auto_restarts::service { 'parsoid-rt': }
 
     # mariadb only restarts on crashes by default (on-abort), make it
