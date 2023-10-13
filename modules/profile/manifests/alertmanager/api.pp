@@ -18,4 +18,11 @@ class profile::alertmanager::api (
     httpd::site { $vhost:
         content => template('profile/alertmanager/api.apache.erb'),
     }
+
+    package { 'libapache2-mod-security2':
+        ensure => present
+    }
+
+    httpd::mod_conf { 'security2':
+    }
 }

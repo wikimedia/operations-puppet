@@ -16,6 +16,18 @@
         Require all denied
     </Directory>
 
+    <IfModule security2_module>
+        SecRuleEngine DetectionOnly
+        SecRequestBodyAccess On
+        SecAuditLog /var/log/apache2/audit.log
+
+        #Log POST requests to modsec audit log (as in "nolog" to the apache error log for the time being)
+        SecRule REQUEST_METHOD "POST" "id:1000,phase:2,ctl:auditEngine=On,nolog,pass"
+
+        #Example of custom post data logging in apache error log for future reference
+        #SecRule REQUEST_METHOD "POST" "id:1000,phase:2,ctl:auditEngine=On,log,pass,msg:'User %{ARGS.user} has scheduled downtime on %{ARGS.thing}'"
+    </IfModule>
+
     <Location />
         ProxyPass "http://localhost:9093/" retry=0
         <If "%{REQUEST_METHOD} in { 'GET', 'HEAD' }">
