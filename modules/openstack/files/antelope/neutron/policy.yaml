@@ -27,6 +27,7 @@
 "update_network": "rule:admin_only"
 "delete_network": "rule:admin_only"
 "create_port": "rule:admin_or_member"
+"create_port:device_id": "rule:admin_or_member"
 "get_port": "rule:regular_user"
 "get_port:queue_id": "rule:admin_only"
 "create_router": "rule:admin_only"
