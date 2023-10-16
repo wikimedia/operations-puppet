@@ -327,7 +327,7 @@ profile::kubernetes::deployment_server::general:
       nutcracker:
         nutcracker: nutcracker:0.0.4-20211010
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
-      rsyslogd: rsyslog:8.2102.0-2
+      rsyslogd: rsyslog:8.2102.0-3
   eqiad:
     mesh:
       certmanager: &certmanager_eqiad
