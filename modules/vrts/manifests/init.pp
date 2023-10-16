@@ -58,7 +58,7 @@ class vrts(
     String $https_proxy,
     String $public_dns,
 ) {
-    # Implementation classes
+    # Implementation Classes
     class { '::vrts::web':
         domain_name => $public_dns,
     }
@@ -97,6 +97,10 @@ class vrts(
         'libxml-libxml-perl',
         'libxml-libxslt-perl',
         'libencode-hanextra-perl',
+
+        # Added in 6.3.4 as required
+        'libauthen-sasl-perl',
+        'libmail-imapclient-perl',
 
         'default-mysql-client',
 
