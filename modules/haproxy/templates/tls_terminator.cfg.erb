@@ -117,9 +117,22 @@ listen tls
 <%- end -%>
 <%- end -%>
 
+<%- if @dedicated_hc_backend -%>
+    acl hc-host        hdr(host) -i healthcheck.wikimedia.org
+    acl hc-path        path_beg     /varnish-fe
+    acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
+    use_backend healthcheck if hc-host hc-path hc-allowed-src
+<%- end -%>
+
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 
     option forwardfor
+
+<%- if @dedicated_hc_backend -%>
+backend healthcheck
+    option forwardfor
+    server hc_server <%= @backend['prefix'] %>@<%= @backend['address'] %> maxconn 100
+<%- end -%>
 
 <%- if @prometheus_port -%>
 frontend stats

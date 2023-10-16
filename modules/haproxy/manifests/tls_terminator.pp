@@ -67,6 +67,10 @@
 #   Bool to add Connection: Close response header on port 80 frontend
 # @param filters
 #   List of filters to be defined before actions
+# @param dedicated_hc_backend
+#   Use a dedicate backend for LVS healthchecks
+# @param hc_sources
+#   List of IP addresses allowed to send healthcheck requests
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Haproxy::Backend $backend,
@@ -101,6 +105,8 @@ define haproxy::tls_terminator(
     Optional[Stdlib::Port] $http_redirection_port = undef,
     Optional[Haproxy::Timeout] $redirection_timeout = $undef,
     Optional[Array[Haproxy::Filter]] $filters = undef,
+    Boolean $dedicated_hc_backend = false,
+    Optional[Array[Stdlib::IP::Address]] $hc_sources = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
@@ -117,6 +123,18 @@ define haproxy::tls_terminator(
         ensure  => ($http_redirection_port != undef).bool2str('present', 'absent'),
         content => '<p>Insecure request forbidden, use HTTPS instead. For details see <a href="https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/">https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/</a>.</p>',
         before  => HAProxy::Site[$title],
+    }
+
+    # This contains the PyBal IPs allowed to perform healthchecks
+    $hc_sources_file_path = '/etc/haproxy/allowed-hc-sources.lst'
+
+    file { $hc_sources_file_path:
+      ensure  => bool2str($dedicated_hc_backend, 'present','absent'),
+      mode    => '0444',
+      owner   => 'root',
+      group   => 'root',
+      content => template('haproxy/allowed-hc-sources.lst.erb'),
+      notify  => Service['haproxy'],
     }
 
     haproxy::site { $title:

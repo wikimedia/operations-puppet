@@ -34,6 +34,8 @@ class profile::cache::haproxy(
     Optional[Stdlib::Port] $http_redirection_port = lookup('profile::cache::haproxy::http_redirection_port', {'default_value'                    => 80}),
     Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', {'default_value'                    => undef}),
     Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
+    Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
+    Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -188,6 +190,8 @@ class profile::cache::haproxy(
         redirection_timeout    => $redirection_timeout,
         http_disable_keepalive => $http_disable_keepalive,
         filters                => $filters,
+        dedicated_hc_backend   => $dedicated_hc_backend,
+        hc_sources             => $hc_sources,
     }
 
     if $monitoring_enabled {
