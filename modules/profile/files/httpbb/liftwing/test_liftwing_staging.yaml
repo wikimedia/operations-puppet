@@ -120,3 +120,10 @@ https://outlink-topic-model.articletopic-outlink.wikimedia.org:
   assert_status: 200
   assert_body_contains: score
   method: POST
+https://langid.llm.wikimedia.org:
+- path: /v1/models/langid:predict
+  json_body:
+    text: "Αυτό το μοντέλο χρησιμοποιείται για αναγνώριση γλώσσας"
+  assert_status: 200
+  assert_body_contains: Greek
+  method: POST
