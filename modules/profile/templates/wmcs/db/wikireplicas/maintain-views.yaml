@@ -564,7 +564,7 @@ customviews:
   linktarget:
     source: linktarget
     view: select lt_id, lt_namespace, lt_title
-    where: exists( select 1 from templatelinks where tl_target_id = lt_id )
+    where: exists( select 1 from templatelinks where tl_target_id = lt_id ) or exists( select 1 from pagelinks where pl_target_id = lt_id )
   localuser:
     source:
       - localuser

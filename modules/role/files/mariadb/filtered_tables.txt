@@ -494,6 +494,7 @@ page_restrictions,pr_id,K
 pagelinks,pl_from,K
 pagelinks,pl_namespace,K
 pagelinks,pl_title,K
+pagelinks,pl_target_id,K
 pagetriage_page,ptrp_page_id,K
 pagetriage_page,ptrp_reviewed,K
 pagetriage_page,ptrp_deleted,K
