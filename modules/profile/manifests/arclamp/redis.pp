@@ -6,7 +6,7 @@ class profile::arclamp::redis() {
 
     redis::instance { '6379':
         settings => {
-            maxmemory                   => '1Mb',
+            maxmemory                   => '2Mb',
             stop_writes_on_bgsave_error => 'no',
             bind                        => '0.0.0.0',
         },
