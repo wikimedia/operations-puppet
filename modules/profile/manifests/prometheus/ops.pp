@@ -1533,6 +1533,14 @@ class profile::prometheus::ops (
         ],
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
+      {
+        'job_name'        => 'redis_arclamp',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/redis_arclamp*.yaml" ]}
+        ],
+        'metric_relabel_configs' => [ $redis_exporter_relabel ],
+      },
     ]
 
 
