@@ -7,15 +7,14 @@
 # - $pdns_db_password:PDNS user database password
 
 class pdns_server(
-    Array[Stdlib::IP::Address] $listen_on,
-    Stdlib::Fqdn               $default_soa_content,
-    Stdlib::Fqdn               $query_local_address,
-    $pdns_db_host,
-    $pdns_db_password,
-    $dns_webserver = false,
-    $dns_webserver_address = $::ipaddress,
-    $dns_api_key = '',
-    $dns_api_allow_from = [],
+    Array[Stdlib::IP::Address::Nosubnet, 1] $listen_on,
+    Stdlib::Fqdn                            $default_soa_content,
+    Stdlib::Fqdn                            $query_local_address,
+    Stdlib::Host                            $pdns_db_host,
+    String[1]                               $pdns_db_password,
+    Stdlib::IP::Address::Nosubnet           $dns_webserver_address,
+    String[1]                               $dns_api_key,
+    Array[Stdlib::IP::Address::Nosubnet]    $dns_api_allow_from,
 ) {
 
     package { [ 'pdns-server',

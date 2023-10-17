@@ -4,14 +4,18 @@ class profile::openstack::base::pdns::auth::service(
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
-    $pdns_webserver = lookup('profile::openstack::base::pdns::pdns_webserver', {'default_value' => false}),
+    Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
-    $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => ''}),
 ){
     $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $dns_webserver_address = $this_host_entry['private_fqdn'].ipresolve(4)
     $listen_on = [$this_host_entry['auth_fqdn'].ipresolve(4)]
     $query_local_address = $this_host_entry['auth_fqdn']
+
+    $pdns_auth_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
+    $pdns_api_allow_from = [$pdns_auth_hosts, $designate_hosts, $prometheus_nodes].flatten.map |Stdlib::Fqdn $fqdn| {
+        dnsquery::a($fqdn)
+    }.flatten + ['127.0.0.1']
 
     class { '::pdns_server':
         listen_on             => $listen_on,
@@ -19,10 +23,9 @@ class profile::openstack::base::pdns::auth::service(
         query_local_address   => $query_local_address,
         pdns_db_host          => $db_host,
         pdns_db_password      => $db_pass,
-        dns_webserver         => $pdns_webserver,
-        dns_webserver_address => $dns_webserver_address,
+        dns_webserver_address => '0.0.0.0',
         dns_api_key           => $pdns_api_key,
-        dns_api_allow_from    => $pdns_api_allow_from,
+        dns_api_allow_from    => $pdns_api_allow_from.sort,
     }
 
     ferm::service { 'udp_dns_rec':
@@ -49,11 +52,10 @@ class profile::openstack::base::pdns::auth::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
-    $raw_pdns_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
-    $api_clients = flatten([$raw_pdns_hosts, $designate_hosts])
-    ::ferm::service { 'pdns-rest-api':
+    ferm::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',
-        srange => "@resolve((${join($api_clients,' ')}))",
+        srange => [$pdns_auth_hosts + $designate_hosts].flatten,
+        drange => $dns_webserver_address,
     }
 }

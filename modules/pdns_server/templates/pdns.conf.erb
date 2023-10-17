@@ -50,7 +50,6 @@ gmysql-user=pdns
 gmysql-dbname=pdns
 gmysql-password=<%= @pdns_db_password %>
 
-<% if @dns_webserver then %>
 webserver=yes
 api=yes
 api-key=<%= @dns_api_key %>
@@ -60,4 +59,3 @@ webserver-allow-from=<%- @dns_api_allow_from.each do |entry| -%><%= entry -%>,<%
 # This is not actually used by designate but it's handy for troubleshooting to diff
 #  the axfr from pdns vs. mdns
 allow-axfr-ips=<%- @dns_api_allow_from.each do |entry| -%><%= entry -%>,<%- end -%>
-<% end %>
