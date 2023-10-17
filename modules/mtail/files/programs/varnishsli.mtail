@@ -43,6 +43,9 @@ hidden gauge internal_time
     # Error shouldn't be set and FetchError can be set if the error message points out to a communication issue,
     # and the total time has to be within the chosen threshold (0.1s).
     /\terror -\tfetcherror (?P<fetcherror>-|[ \.a-zA-Z\(\)0-9:]+)\t/ && internal_time < 0.1 {
+        # I hear your mind saying "this could be condensed"; Well, cleverpants,
+        # testing is unhappy with having two regexes in the same test statement
+        # and will fail. So leave it like this.
         $fetcherror =~ /-|req\.body read error/ {
             varnish_sli_good++
         } else {
