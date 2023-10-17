@@ -84,7 +84,8 @@ class nginx(
     }
 
     file { '/etc/nginx':
-        ensure => directory,
+        ensure  => directory,
+        require => Package[$nginx_package_name],
     }
     file { [ '/etc/nginx/conf.d', '/etc/nginx/sites-available', '/etc/nginx/sites-enabled' ]:
         ensure  => stdlib::ensure($ensure, 'directory'),
