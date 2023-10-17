@@ -2553,11 +2553,18 @@ node /^pc1012\.eqiad\./ {
 node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
-# floating spare
+# floating spares
 node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
+node /^pc1015\.eqiad\./ {
+    role(mariadb::parsercache)
+}
+# pc 4
+node /^pc1016\.eqiad\./ {
+    role(mariadb::parsercache)
+}
 # codfw
 # pc1
 node /^pc2011\.codfw\./ {
@@ -2571,19 +2578,18 @@ node /^pc2012\.codfw\./ {
 node /^pc2013\.codfw\./ {
     role(mariadb::parsercache)
 }
-# floating spare
+# floating spares
 node /^pc2014\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-# New parsercache hosts to be setup #T342163
-node /^pc20(15|16)\.codfw\./ {
-    role(insetup::data_persistence)
+node /^pc2015\.codfw\./ {
+    role(mariadb::parsercache)
 }
 
-# New parsercache hosts to be setup #T342164
-node /^pc10(15|16)\.eqiad\./ {
-    role(insetup::data_persistence)
+# pc4
+node /^pc2016\.codfw\./ {
+    role(mariadb::parsercache)
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
