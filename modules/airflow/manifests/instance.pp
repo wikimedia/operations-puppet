@@ -519,4 +519,12 @@ define airflow::instance(
         srange => $ferm_srange,
     }
 
+    prometheus::node_textfile { 'prometheus-check-certificate-expiry':
+        ensure         => 'present',
+        filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
+        interval       => 'daily',
+        run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${airflow_home}/.skein/skein.crt --outfile /var/lib/prometheus/node.d/x509-skein.prom",
+        extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
+    }
+
 }
