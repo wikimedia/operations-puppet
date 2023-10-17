@@ -269,6 +269,13 @@ def get_args():
         help="If passed, will stop the compilation when the first failure happens.",
     )
     parser.add_argument(
+        "-P",
+        "--puppet-version",
+        choices=(5, 7),
+        type=int,
+        help="The puppet version to use when compiling.",
+    )
+    parser.add_argument(
         "-p",
         "--private-change",
         help=(
@@ -405,9 +412,14 @@ def main():  # pylint: disable=too-many-locals
         invocation.block(until="not_queued")
 
     build = invocation.get_build()
-    console_url = build.baseurl + "/console"
+    matrix = list(build.get_matrix_runs())
+    if len(matrix) != 1:
+        print(red(f"Expected 1 matrix run but found: {len(matrix)}"))
+        return 1
+    matrix_build = matrix[0]
+    console_url = f'{matrix_build.baseurl}/console'
 
-    print("Your build URL is %s" % white(build.baseurl))
+    print("Your build URL is %s" % white(matrix_build.baseurl))
 
     running = True
     output = ""
@@ -415,7 +427,7 @@ def main():  # pylint: disable=too-many-locals
         while running:
             sleep(1)
             running = invocation.is_running()
-            new_output = build.get_console().rstrip("\n")
+            new_output = matrix_build.get_console().rstrip("\n")
             console_output = format_console_output(
                 new_output[len(output):]
             ).strip()  # noqa: E203
@@ -427,7 +439,7 @@ def main():  # pylint: disable=too-many-locals
             yellow(
                 (
                     "Warning: polling jenkins failed please check PCC manually:\n\tError: {}\n{}"
-                ).format(error, build.baseurl)
+                ).format(error, matrix_build.baseurl)
             )
         )
         if args.post_crash:
