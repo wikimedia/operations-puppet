@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Map ECS fields with Apache2 ErrorLogFormat fields
+# https://httpd.apache.org/docs/2.4/mod/core.html#errorlogformat
+#
+# Apache-Directive: ErrorLogFormat
+---
+ecs.version: '1.7.0'
+# FIXME not sure it is supported, doc only mentions %{u}t and %{cu}t
+timestamp: '%{%Y-%m-%dT%H:%M:%S}t'
+service.type: 'apache2'
+labels.httpd_server_name: '%v'
+
+client.ip: '%a'
+event.kind: 'event'
+event.category:
+  - 'network'
+  - 'web'
+event.type:
+  - 'error'
+  - 'connection'
+event.outcome: 'unknown'
+event.dataset: 'apache.error'
+
+#Example (default format for threaded MPMs)
+# ErrorLogFormat "[%{u}t] [%-m:%l] [pid %P:tid %T] %7F: %E: [client\ %a] %M% ,\ referer\ %{Referer}i"
+
+log.file.path: '%7F'  # File name and line number
+log.logger: '%m'
+log.level: '%l'
+process.pid: '%P'
+process.thread.id: '%T'
+# %E:  # APR/OS error status code and string
+error.message: '%M'
+http.request.id: '%L'
+# FIXME those fields might be empty. The json should have spaces to let Apache
+# remove the fields in the json when they are not set. If whitespaces are part
+# of the fields rather than a delimiter, they should be escaped.
+http.request.referrer: '%{Referer}i'
+http.request.headers.x_analytics: '%{X-Analytics}i'
+http.request.headers.x_client_ip: '%{X-Client-IP}i'
+http.request.headers.x_request_id: '%{X-Request-Id}i'
