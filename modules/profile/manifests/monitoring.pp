@@ -51,9 +51,6 @@ class profile::monitoring (
     Array[Stdlib::Host] $monitoring_hosts           = lookup('profile::monitoring::monitoring_hosts'),
     Optional[Enum['WriteThrough', 'WriteBack']] $raid_write_cache_policy = lookup('profile::monitoring::raid_write_cache_policy')
 ) {
-    include profile::puppet::agent
-    $puppet_interval = $profile::puppet::agent::interval
-
     if $raid_check and $hardware_monitoring == 'present' {
         # RAID checks
         class { 'raid':
@@ -78,11 +75,6 @@ class profile::monitoring (
     }
     # the nrpe class installs monitoring-plugins-* which creates the following directory
     contain nrpe  # lint:ignore:wmf_styleguide
-
-    nrpe::plugin { 'check_puppetrun':
-        ensure => absent,
-        source => 'puppet:///modules/profile/monitoring/check_puppetrun.rb',
-    }
 
     nrpe::plugin { 'check_eth':
         ensure  => absent,
@@ -123,23 +115,6 @@ class profile::monitoring (
         retry_interval  => 5,
     }
 
-    # Calculate freshness interval in seconds (hence *60)
-    $warninginterval = $puppet_interval * 60 * 6
-    $criticalinterval = $warninginterval * 2
-
-    sudo::user { 'nagios_puppetrun':
-        ensure => absent,
-    }
-
-    nrpe::monitor_service { 'puppet_checkpuppetrun':
-        ensure         => absent,
-        description    => 'puppet last run',
-        nrpe_command   => "/usr/local/lib/nagios/plugins/check_puppetrun -w ${warninginterval} -c ${criticalinterval}",
-        sudo_user      => 'root',
-        check_interval => 5,
-        retry_interval => 1,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
-    }
     nrpe::monitor_service { 'check_eth':
         ensure         => absent,
         description    => 'configured eth',
