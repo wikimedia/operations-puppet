@@ -85,6 +85,7 @@ class profile::monitoring (
     }
 
     nrpe::plugin { 'check_eth':
+        ensure  => absent,
         content => template('profile/monitoring/check_eth.erb'),
     }
 
@@ -140,6 +141,7 @@ class profile::monitoring (
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/puppet_checkpuppetrun',
     }
     nrpe::monitor_service { 'check_eth':
+        ensure         => absent,
         description    => 'configured eth',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_eth',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
