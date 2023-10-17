@@ -759,6 +759,24 @@ kafka_clusters:
   jumbo-eqiad:
     zookeeper_cluster_name: main-eqiad
     brokers:
+      kafka-jumbo1001.eqiad.wmnet:
+        id: 1001
+        rack: A
+      kafka-jumbo1002.eqiad.wmnet:
+        id: 1002
+        rack: A
+      kafka-jumbo1003.eqiad.wmnet:
+        id: 1003
+        rack: B
+      kafka-jumbo1004.eqiad.wmnet:
+        id: 1004
+        rack: C
+      kafka-jumbo1005.eqiad.wmnet:
+        id: 1005
+        rack: C
+      kafka-jumbo1006.eqiad.wmnet:
+        id: 1006
+        rack: D
       kafka-jumbo1007.eqiad.wmnet:
         id: 1007
         rack: C
@@ -1534,6 +1552,18 @@ kafka_brokers_main:
 - 10.192.48.46                 # kafka-main2005.codfw.wmnet
 - 2620:0:860:104:10:192:48:46  # kafka-main2005.codfw.wmnet
 kafka_brokers_jumbo:
+- 10.64.0.175                 # kafka-jumbo1001.eqiad.wmnet
+- 2620:0:861:101:10:64:0:175  # kafka-jumbo1001.eqiad.wmnet
+- 10.64.0.176                 # kafka-jumbo1002.eqiad.wmnet
+- 2620:0:861:101:10:64:0:176  # kafka-jumbo1002.eqiad.wmnet
+- 10.64.16.99                 # kafka-jumbo1003.eqiad.wmnet
+- 2620:0:861:102:10:64:16:99  # kafka-jumbo1003.eqiad.wmnet
+- 10.64.32.159                # kafka-jumbo1004.eqiad.wmnet
+- 2620:0:861:103:10:64:32:159 # kafka-jumbo1004.eqiad.wmnet
+- 10.64.32.160                # kafka-jumbo1005.eqiad.wmnet
+- 2620:0:861:103:10:64:32:160 # kafka-jumbo1005.eqiad.wmnet
+- 10.64.48.117                # kafka-jumbo1006.eqiad.wmnet
+- 2620:0:861:107:10:64:48:117 # kafka-jumbo1006.eqiad.wmnet
 - 10.64.32.106                # kafka-jumbo1007.eqiad.wmnet
 - 2620:0:861:103:10:64:32:106 # kafka-jumbo1007.eqiad.wmnet
 - 10.64.48.121                # kafka-jumbo1008.eqiad.wmnet
