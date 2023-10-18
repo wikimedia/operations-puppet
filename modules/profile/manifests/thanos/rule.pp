@@ -22,7 +22,6 @@ class profile::thanos::rule (
     $http_port = 17902
     $grpc_port = 17901
 
-    # XXX expose web interface like /bucket/ ?
     class { 'thanos::rule':
         alertmanagers     => $alertmanagers,
         # /etc/thanos-rule paths are reserved for puppet-deployed files, whereas /srv paths
@@ -66,11 +65,18 @@ class profile::thanos::rule (
         }
     }
 
-    # Allow access from query hosts
+    # Allow grpc access from query hosts
     $query_hosts_ferm = join($query_hosts, ' ')
     ferm::service { 'thanos_rule_query':
         proto  => 'tcp',
         port   => $grpc_port,
+        srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
+    }
+
+    # Allow http access to reverse-proxy /rule
+    ferm::service { 'thanos_rule_web':
+        proto  => 'tcp',
+        port   => $http_port,
         srange => "(@resolve((${query_hosts_ferm})) @resolve((${query_hosts_ferm}), AAAA))",
     }
 

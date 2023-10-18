@@ -2,6 +2,7 @@
 [Service]
 ExecStart=
 ExecStart=/usr/bin/thanos rule \
+  --web.route-prefix /rule \
   --http-address <%= @http_address %> \
   --grpc-address <%= @grpc_address %> \
   --data-dir <%= @data_dir %> \
