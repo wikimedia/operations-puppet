@@ -8,8 +8,9 @@
 # [*api_url*] The URL to the API service like a Filesystem or Kubernetes Operator.
 
 class pyrra::api(
-    String $prometheus_url = 'https://thanos-query.discovery.wmnet',
-    String $api_url        = 'http://localhost:9444',
+    String $prometheus_url          = 'https://thanos-query.discovery.wmnet',
+    String $prometheus_external_url = 'https://thanos.wikimedia.org',
+    String $api_url                 = 'http://localhost:9444',
 ){
 
     ensure_packages(['pyrra'])
