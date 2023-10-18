@@ -18,9 +18,9 @@ class pyrra::filesystem(
 
     file { [ $prometheus_folder, $config_folder ]:
         ensure  => directory,
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
+        mode    => '0755',
+        owner   => 'pyrra',
+        group   => 'pyrra',
         require => Package['pyrra'],
     }
 
