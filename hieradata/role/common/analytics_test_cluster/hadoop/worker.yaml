@@ -77,4 +77,4 @@ profile::base::remove_python2_on_bullseye: false
 
 # Use the spark3 shuffler on the test_cluster
 profile::hadoop::spark2::install_yarn_shuffle_jar: false
-profile::hadoop::spark3::install_yarn_shuffle_jar: false
+profile::hadoop::spark3::install_yarn_shuffle_jar: true
