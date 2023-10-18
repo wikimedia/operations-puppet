@@ -30,6 +30,9 @@ class profile::base::certificates (
     sslcert::ca { 'DigiCert_TLS_Hybrid_ECC_SHA384_2020_CA1':
         source => 'puppet:///modules/base/ca/DigiCert_TLS_Hybrid_ECC_SHA384_2020_CA1.crt',
     }
+    sslcert::ca { 'DigiCert_Global_G2_TLS_RSA_SHA256_2020_CA1.crt':
+        source => 'puppet:///modules/base/ca/DigiCert_Global_G2_TLS_RSA_SHA256_2020_CA1.crt',
+    }
     sslcert::ca { 'GlobalSign_Organization_Validation_CA_-_SHA256_-_G2':
         source  => 'puppet:///modules/base/ca/GlobalSign_Organization_Validation_CA_-_SHA256_-_G2.crt',
     }
