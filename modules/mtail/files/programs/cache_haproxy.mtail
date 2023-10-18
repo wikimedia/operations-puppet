@@ -5,12 +5,14 @@
 # counter haproxy_termination_states_total
 # counter haproxy_sli_total
 # counter haproxy_sli_good
+# counter haproxy_sli_bad
 
 histogram haproxy_client_ttfb by cache_status, http_status_family buckets -1, 0.001, 0.005, 0.01, 0.02, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 histogram haproxy_client_healthcheck_ttfb by cache_status, http_status_family buckets -1, 0.001, 0.005, 0.01, 0.02, 0.045, 0.07, 0.1, 0.15, 0.25, 0.35, 0.5, 0.75, 1.2, 3.0, 10.0, 30.0, 60.0
 counter haproxy_termination_states_total by termination_state
 counter haproxy_sli_total
 counter haproxy_sli_good
+counter haproxy_sli_bad
 hidden text cstatus
 hidden gauge process_time
 
@@ -46,5 +48,7 @@ hidden gauge process_time
   # K --> Session actively killed by an admin operating on HAProxy (HAProxy config/TLS material reloads would trigger this one)
   $termination_state =~ /^[\-CSPLcs]/ && process_time < 50 {
     haproxy_sli_good++
+  } else {
+    haproxy_sli_bad++
   }
 }
