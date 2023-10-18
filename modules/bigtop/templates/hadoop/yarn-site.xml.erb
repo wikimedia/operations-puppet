@@ -217,7 +217,7 @@ end
 
   <property>
     <name>yarn.nodemanager.aux-services.spark_shuffle_<%= version[0].gsub('.','_') -%>.classpath</name>
-    <value>/usr/lib/hadoop-yarn/lib/spark-<%= version[0] -%>-yarn-shuffle.jar:$HADOOP_CONF_DIR/spark_shuffle_<%= version[0].gsub('.','_') -%>_config</value>
+    <value>/usr/lib/hadoop-yarn/lib/spark-<%= version[0] -%>-yarn-shuffle.jar:/etc/hadoop/conf/spark_shuffle_<%= version[0].gsub('.','_') -%>_config</value>
   </property>
   <%- end -%>
 <% elsif @yarn_use_spark_shuffle -%>
