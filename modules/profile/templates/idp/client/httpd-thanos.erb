@@ -29,6 +29,14 @@
     </Location>
     ProxyPass /bucket http://localhost:<%= @vhost_settings['bucket_web_port'] %>/bucket
 
+    # Thanos rule evaluator web interface
+    ProxyPass "/rule" "balancer://rule-hosts/rule"
+    <Proxy balancer://rule-hosts>
+      <%- @vhost_settings['rule_hosts'].each_pair do |host, options| -%>
+        BalancerMember http://<%= host %>:<%= @vhost_settings['rule_port'] %>
+      <%- end -%>
+    </Proxy>
+
     # max connections _per apache child process_
     # wait 1s to acquire a free connection before returning "server busy"
     ProxyPass / http://localhost:<%= @vhost_settings['query_port'] %>/ max=<%= @vhost_settings['maxconn'] %> acquire=1000

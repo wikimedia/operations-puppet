@@ -16,9 +16,10 @@
 class profile::thanos::httpd (
     Stdlib::Port::Unprivileged $query_port = lookup('profile::thanos::httpd::query_port'),
     Integer                    $maxconn    = lookup('profile::thanos::httpd::maxconn'),
+    Hash[Stdlib::Fqdn, Hash]   $rule_hosts = lookup('profile::thanos::rule_hosts'),
 ) {
     class { 'httpd':
-        modules => ['proxy_http', 'allowmethods', 'rewrite'],
+        modules => ['proxy_http', 'lbmethod_byrequests', 'allowmethods', 'rewrite'],
     }
 
     profile::idp::client::httpd::site {'thanos.wikimedia.org':
@@ -34,6 +35,8 @@ class profile::thanos::httpd (
             query_port      => $query_port,
             maxconn         => $maxconn,
             bucket_web_port => 15902,
+            rule_hosts      => $rule_hosts,
+            rule_port       => 17902,
         }
     }
     httpd::site { 'thanos-query':
