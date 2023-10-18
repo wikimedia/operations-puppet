@@ -29,7 +29,7 @@ fi
 # lsb-release: allows conditionals in this script on in-target release codename
 apt-install lsb-release
 LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
-BASE_REPO="[signed-by=/etc/apt/keyrings/Wikimedia_APT_repository.gpg] http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
+BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
 if [ "$PUPPET_VERSION" -eq 7 ]; then
   case "${LSB_RELEASE}" in
     "bookworm")
