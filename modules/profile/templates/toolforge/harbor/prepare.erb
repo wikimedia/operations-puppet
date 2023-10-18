@@ -52,15 +52,13 @@ secret_dir=${data_path}/secret
 config_dir=$harbor_prepare_path/common/config
 
 # Run prepare script
-# WMCS only changed one line here. The reset is the same as at https://github.com/goharbor/harbor/tags,
-# the cert volume was removed as we are not using ssl at this level (the webproxy takes care of
-# it earlier)
 docker run --rm -v $input_dir:/input \
                     -v $data_path:/data \
                     -v $harbor_prepare_path:/compose_location \
                     -v $config_dir:/config \
+                    -v /:/hostfs \
                     --privileged \
-                    goharbor/prepare:v2.5.4 prepare $@
+                    goharbor/prepare:v2.9.0 prepare $@
 
 echo "Clean up the input dir"
 # Clean up input dir
