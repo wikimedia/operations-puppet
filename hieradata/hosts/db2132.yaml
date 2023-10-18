@@ -2,3 +2,4 @@
 mariadb::shard: 'm1'
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: false
+mariadb::package: 'wmf-mariadb106'
