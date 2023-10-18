@@ -2451,6 +2451,13 @@ dataCubes:
             lookup:
               type: map
               map: {"1":"inbound", "2":"outbound","0":"unknown"}
+        forwarded:
+          extractionFn:
+            type: lookup
+            retainMissingValue: true
+            lookup:
+              type: map
+              map: {"1":"yes", "0":"no"}
         tcp:
           extractionFn:
             type: lookup
@@ -2610,7 +2617,7 @@ dataCubes:
          formula: $region
        - name: forwarded
          title: Forwarded
-         formula: $forwarded
+         formula: $forwarded.customTransform('forwarded')
     defaultSelectedMeasures: [bps, pps]
     measures:
        - name: bytes
