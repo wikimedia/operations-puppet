@@ -47,22 +47,19 @@ class Database:
         )
 
     def query_one(self, sql: str, params=None):
-        with self.connection:
-            with self.connection.cursor() as cursor:
-                cursor.execute(sql, params)
-                return cursor.fetchone()
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql, params)
+            return cursor.fetchone()
 
     def query_all(self, sql: str, params=None):
-        with self.connection:
-            with self.connection.cursor() as cursor:
-                cursor.execute(sql, params)
-                return cursor.fetchall()
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql, params)
+            return cursor.fetchall()
 
     def update(self, sql: str, params=None):
-        with self.connection:
-            with self.connection.cursor() as cursor:
-                cursor.execute(sql, params)
-            self.connection.commit()
+        with self.connection.cursor() as cursor:
+            cursor.execute(sql, params)
+        self.connection.commit()
 
 
 def get_author(keystone, user_id: str) -> git.Actor:
