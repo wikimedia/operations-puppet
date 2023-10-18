@@ -8,6 +8,8 @@ profile::contacts::role_contacts: ['WMCS']
 profile::cumin::monitor_agentrun: false
 profile::cumin::master::email_alerts: false
 profile::cumin::master::connect_timeout: 20
+# Disable distributed locking support
+profile::spicerack::etcd_config: ~
 # We don't need Ganeti auth in cloud_management hosts, so we override the
 # values from profile/spicerack.yaml to limit security risks
 profile::spicerack::ganeti_auth_data: {}

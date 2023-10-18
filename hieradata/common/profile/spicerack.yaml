@@ -1,3 +1,4 @@
+profile::spicerack::etcd_config: /etc/etcd/etcdrc
 profile::spicerack::firmware_store_dir: /srv/firmware
 profile::spicerack::cookbooks_repos: {}
 profile::spicerack::ganeti_auth_data:

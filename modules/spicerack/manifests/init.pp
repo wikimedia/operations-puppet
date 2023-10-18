@@ -4,16 +4,18 @@
 # @param tcpircbot_host Hostname for the IRC bot.
 # @param tcpircbot_port Port to use with the IRC bot.
 # @param http_proxy a http_proxy to use for connections
+# @param etcd_config the path to the etcd configuration to use for distributed locking
 # @param cookbooks_dirs a list of paths where cookbooks have been checked out
 # @param modules a hash where the keys are the spicerack module names and the values
 #        are hashes where keys are the file names and values is the file content to be converted
 #        to yaml.
 class spicerack (
-    String        $tcpircbot_host,
-    Stdlib::Port  $tcpircbot_port,
-    String        $http_proxy,
-    Array[String] $cookbooks_dirs,
-    Hash          $modules,
+    String                     $tcpircbot_host,
+    Stdlib::Port               $tcpircbot_port,
+    String                     $http_proxy,
+    Array[String]              $cookbooks_dirs,
+    Hash                       $modules,
+    Optional[Stdlib::Unixpath] $etcd_config = undef,
 ) {
     ensure_packages('spicerack')
 

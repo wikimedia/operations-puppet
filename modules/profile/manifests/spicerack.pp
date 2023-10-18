@@ -4,6 +4,7 @@
 # @param tcpircbot_host Hostname for the IRC bot.
 # @param tcpircbot_port Port to use with the IRC bot.
 # @param http_proxy a http_proxy to use for connections
+# @param etcd_config the path to the etcd configuration to use for distributed locking, set empty to disable
 # @param netbox_api the url for the netbox api
 # @param firmware_store_dir The location to store firmware images
 # @param cookbooks_repos key value pair of cookbook repos and the directory to install them to
@@ -19,6 +20,7 @@ class profile::spicerack (
     String                         $tcpircbot_host            = lookup('tcpircbot_host'),
     Stdlib::Port                   $tcpircbot_port            = lookup('tcpircbot_port'),
     String                         $http_proxy                = lookup('http_proxy'),
+    Optional[Stdlib::Unixpath]     $etcd_config               = lookup('profile::spicerack::etcd_config'),
     Stdlib::Unixpath               $firmware_store_dir        = lookup('profile::spicerack::firmware_store_dir'),
     Hash[String, Stdlib::Unixpath] $cookbooks_repos           = lookup('profile::spicerack::cookbooks_repos'),
     Hash                           $ganeti_auth_data          = lookup('profile::spicerack::ganeti_auth_data'),
@@ -78,6 +80,7 @@ class profile::spicerack (
         tcpircbot_host => $tcpircbot_host,
         tcpircbot_port => $tcpircbot_port,
         http_proxy     => $http_proxy,
+        etcd_config    => $etcd_config,
         cookbooks_dirs => $cookbooks_repos.values,
         modules        => $modules,
     }

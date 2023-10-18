@@ -9,3 +9,6 @@ tcpircbot_port: <%= @tcpircbot_port %>
 
 instance_params:
   http_proxy: <%= @http_proxy %>
+  <%- unless @etcd_config.nil? -%>
+  etcd_config: <%= @etcd_config %>
+  <%- end -%>
