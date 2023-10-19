@@ -1,11 +1,21 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-<%- | String  $zookeeper_address,
-      String  $zookeeper_prefix,
-      String  $zookeeper_metrics_prefix,
-      String  $kafka_address
+<%- | String $zookeeper_address,
+      String $zookeeper_prefix,
+      String $zookeeper_metrics_prefix,
+      String $kafka_address,
+      String $kafka_cluster_prometheus_label,
+      String $prometheus_url,
+      String $broker_mapping
 | -%>
 # MANAGED BY PUPPET
 export TOPICMAPPR_ZK_ADDR="<%= $zookeeper_address -%>"
 export TOPICMAPPR_ZK_PREFIX="<%= $zookeeper_prefix -%>"
 export TOPICMAPPR_KAFKA_ADDR="<%= $kafka_address -%>"
 export TOPICMAPPR_ZK_METRICS_PREFIX="<%= $zookeeper_metrics_prefix -%>"
+export KAFKA_KIT_METRICSFETCHER_BROKER_ID_LABEL=instance
+export KAFKA_KIT_METRICSFETCHER_BROKER_ID_MAP="<%= $broker_mapping -%>"
+export KAFKA_KIT_METRICSFETCHER_BROKER_STORAGE_QUERY='node_filesystem_avail_bytes{cluster="<%= $kafka_cluster_prometheus_label -%>", mountpoint="/srv"}'
+export KAFKA_KIT_METRICSFETCHER_COMPRESS=true
+export KAFKA_KIT_METRICSFETCHER_PARTITION_SIZE_QUERY='max(kafka_log_Size{cluster="<%= $kafka_cluster_prometheus_label -%>"}) by (topic,partition)'
+export KAFKA_KIT_METRICSFETCHER_PROMETHEUS_URL="<%= $prometheus_url -%>"
+export KAFKA_KIT_METRICSFETCHER_ZK_ADDR="<%= $zookeeper_address -%>/<%= $zookeeper_metrics_prefix -%>"

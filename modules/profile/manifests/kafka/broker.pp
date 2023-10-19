@@ -194,6 +194,7 @@ class profile::kafka::broker(
     Optional[String] $max_heap_size                              = lookup('profile::kafka::broker::max_heap_size', {'default_value' => undef}),
     Integer $num_partitions                                      = lookup('profile::kafka::broker::num_partitions', {'default_value' => 1}),
     Optional[Array[String]] $custom_ferm_srange_components       = lookup('profile::kafka::broker::custom_ferm_srange_components', { 'default_value' => undef }),
+    Optional[String] $prometheus_cluster_name                    = lookup('cluster'),
 ) {
     include profile::kafka::common
 
@@ -487,10 +488,13 @@ class profile::kafka::broker(
     # See https://phabricator.wikimedia.org/T346764#9203575
     if debian::codename::ge('bullseye') {
         profile::kafka::kafka_kit { $kafka_cluster_name:
-            zookeeper_address        => $config['zookeeper']['hosts'][0],
-            zookeeper_prefix         => $config['zookeeper']['chroot'],
-            zookeeper_metrics_prefix => "kafka/${cluster_name}/topicmappr",
-            kafka_address            => $brokers_string,
+            zookeeper_address              => $config['zookeeper']['hosts'][0],
+            zookeeper_prefix               => $config['zookeeper']['chroot'],
+            zookeeper_metrics_prefix       => "kafka/${cluster_name}/topicmappr",
+            kafka_address                  => $brokers_string,
+            kafka_cluster_prometheus_label => $prometheus_cluster_name,
+            prometheus_url                 => "http://prometheus.svc.${::site}.wmnet/ops",
+            brokers                        => $config['brokers']['hash'],
         }
     }
 }
