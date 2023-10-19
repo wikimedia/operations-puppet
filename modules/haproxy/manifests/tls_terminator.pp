@@ -69,7 +69,7 @@
 #   List of filters to be defined before actions
 define haproxy::tls_terminator(
     Stdlib::Port $port,
-    Array[Haproxy::Backend] $backends,
+    Haproxy::Backend $backend,
     Array[Haproxy::Tlscertificate] $certificates,
     String $tls_ciphers,
     String $tls13_ciphers,

@@ -363,8 +363,8 @@ profile::cache::haproxy::unified_certs:
     - digicert-2023-ecdsa-unified
     - digicert-2023-rsa-unified
 profile::cache::haproxy::varnish_socket:
-    - prefix: unix
-      address: /run/varnish-frontend-0.socket
+  prefix: 'unix'
+  address: /run/varnish-frontend-0.socket
 
 profile::cache::haproxy::monitoring_enabled: true
 profile::cache::haproxy::version: haproxy26
