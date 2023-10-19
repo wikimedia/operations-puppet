@@ -321,6 +321,8 @@ profile::kubernetes::deployment_server::general:
     # common sidecar images versions
     # TODO: autogenerate this from the registry.
     common_images:
+      httpd:
+        exporter: prometheus-apache-exporter:0.0.3-20231015
       mcrouter:
         mcrouter: mcrouter:0.41.0-4-20211010
         exporter: prometheus-mcrouter-exporter:0.0.1-2-20211010
