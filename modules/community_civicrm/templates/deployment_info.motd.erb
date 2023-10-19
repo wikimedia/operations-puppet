@@ -1,0 +1,16 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+This is a community civicrm instance.
+
+After applying the puppet role for the first time you
+may need to deploy the civicrm settings files.
+
+run 'deploy-community_civicrm deploy'
+
+deploy-community_civicrm <action>
+
+deploy: syncs file from /srv/community_civicrm (where puppet git pulls to automatically) into the right places.
+
+backup: syncs files currently used to a backup location at /usr/lib/community_civicrm/backup.
+
+restore: syncs file from the backup location {/usr/lib/community_civicrm/backup} into the right places.
+

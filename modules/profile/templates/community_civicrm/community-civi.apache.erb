@@ -1,0 +1,22 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# THIS FILE IS MANAGED BY PUPPET
+# vim: filetype=apache
+
+<VirtualHost *:80>
+
+    ServerName <%= @site_name %>
+
+    RewriteEngine on
+    AccessFileName .htaccess
+    DocumentRoot <%= @web_root %>
+
+    <Directory <%= @web_root -%>/>
+        AllowOverride All
+    </Directory>
+
+    ErrorLog /var/log/apache2/error.log
+    LogLevel warn
+    CustomLog /var/log/apache2/access.log wmf
+    ServerSignature On
+
+</VirtualHost>

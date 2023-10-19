@@ -1,0 +1,23 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+GRANT
+  SELECT,
+  INSERT,
+  UPDATE,
+  DELETE,
+  CREATE,
+  DROP,
+  INDEX,
+  ALTER,
+  CREATE TEMPORARY TABLES,
+  LOCK TABLES,
+  TRIGGER,
+  CREATE ROUTINE,
+  ALTER ROUTINE,
+  REFERENCES,
+  CREATE VIEW,
+  SHOW VIEW
+ON <%= @db_name -%>.*
+TO '<%= @db_user -%>'@'<%= @db_host -%>'
+IDENTIFIED BY '<%= @db_pass -%>';
+
+GRANT SUPER ON *.* TO '<%= @db_user -%>'@'<%= @db_host -%>' IDENTIFIED BY '<%= @db_pass -%>';
