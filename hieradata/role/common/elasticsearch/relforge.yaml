@@ -49,7 +49,7 @@ profile::elasticsearch::common_settings:
 
     # Make the full cpu resources available for indexing
     bulk_thread_pool_executors: 32
-    bulk_thread_pool_capacity: 1000,
+    bulk_thread_pool_capacity: 1000
 
     # Increase the per-node cache for compiled LTR models from default 10MB
     ltr_cache_size: '100mb'
