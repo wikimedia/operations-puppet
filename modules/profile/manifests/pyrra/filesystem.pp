@@ -9,7 +9,7 @@ class profile::pyrra::filesystem (
 
     # filesystem defined slos
 
-    $logstash_requests_slo = [{
+    $logstash_requests_slo = {
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind' => 'ServiceLevelObjective',
         'metadata' => {
@@ -35,7 +35,7 @@ class profile::pyrra::filesystem (
                 },
             },
         },
-    }]
+    }
 
 
     pyrra::filesystem::config { 'logstash-requests.yaml':
