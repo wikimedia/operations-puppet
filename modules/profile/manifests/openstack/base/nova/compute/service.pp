@@ -169,4 +169,13 @@ class profile::openstack::base::nova::compute::service(
         command => '/usr/sbin/usermod -G libvirt-qemu nova',
         unless  => '/usr/bin/id nova | /usr/bin/grep -q -E \'\(libvirt-qemu\)\''
     }
+
+    # script to run commands via consoles in an emergency
+    file { '/usr/local/sbin/wmcs-run-console-command':
+        ensure => file,
+        source => 'puppet:///modules/profile/files/openstack/base/nova/compute/wmcs-run-console-command.py',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+    }
 }
