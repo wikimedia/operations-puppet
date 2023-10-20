@@ -696,8 +696,14 @@ class bigtop::hadoop(
     # Selecting multiple shufflers overrides the single shuffler configuration. See #T344910
     if $yarn_use_multi_spark_shufflers {
         $yarn_spark_shuffler_list = $yarn_multi_spark_shuffler_versions.keys.map | $version | {
-            sprintf('spark_shuffle_%s', sprintf('%s',$version).regsubst('\.','_'))
-            }.join(',')
+            # Named shufflers are not supported until spark version 3.2
+            if $version == '3.1' {
+                sprintf('spark_shuffle')
+            }
+            else {
+                sprintf('spark_shuffle_%s', sprintf('%s',$version).regsubst('\.','_'))
+            }
+        }.join(',')
     } elsif $yarn_use_spark_shuffle {
         $yarn_spark_shuffler_list = 'spark_shuffle'
     }

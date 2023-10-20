@@ -209,7 +209,23 @@ end
   </property>
 
 <% if @yarn_use_multi_spark_shufflers -%>
-  <% @yarn_multi_spark_shuffler_versions.each do | version | -%>
+  <%- @yarn_multi_spark_shuffler_versions.each do | version | -%>
+  <%-
+  # The following conditional block is a temporary workaround to support Spark version 3.1.
+  # The option to use an arbitrarily named spark_shuffler service is not available until
+  # spark version 3.2.0 - We can remove this condition once we have upgraded to version 3.2.
+  -%>
+  <%- if version[0] == '3.1' -%>
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>
+    <value>org.apache.spark.network.yarn.YarnShuffleService</value>
+  </property>
+
+  <property>
+    <name>yarn.nodemanager.aux-services.spark_shuffle.classpath</name>
+    <value>/usr/lib/hadoop-yarn/lib/spark-<%= version[0] -%>-yarn-shuffle.jar:/etc/hadoop/conf/spark_shuffle_<%= version[0].gsub('.','_') -%>_config</value>
+  </property>
+  <%- else -%>
   <property>
     <name>yarn.nodemanager.aux-services.spark_shuffle_<%= version[0].gsub('.','_') -%>.class</name>
     <value>org.apache.spark.network.yarn.YarnShuffleService</value>
@@ -220,6 +236,7 @@ end
     <value>/usr/lib/hadoop-yarn/lib/spark-<%= version[0] -%>-yarn-shuffle.jar:/etc/hadoop/conf/spark_shuffle_<%= version[0].gsub('.','_') -%>_config</value>
   </property>
   <%- end -%>
+<%- end -%>
 <% elsif @yarn_use_spark_shuffle -%>
   <property>
     <name>yarn.nodemanager.aux-services.spark_shuffle.class</name>

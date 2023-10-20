@@ -21,9 +21,9 @@ spark.dynamicAllocation.executorIdleTimeout         60s
 spark.dynamicAllocation.cachedExecutorIdleTimeout   3600s
 spark.shuffle.io.maxRetries                         10
 spark.shuffle.io.retryWait                          10s
-<% if @yarn_use_multi_spark_shufflers -%>
+<% if @yarn_use_multi_spark_shufflers and @default_shuffler_version != '3.1' -%>
 # The following two settings are only set if the cluster is configured
-# to have multiple yarn shufflers available
+# to have multiple yarn shufflers available and the version is greater than 3.1
 spark.shuffle.service.name = spark_shuffle_<%= @default_shuffler_version.gsub('.','_') %>
 spark.shuffle.service.port = <%= @default_shuffler_port %>
 <% end -%>

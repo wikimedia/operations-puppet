@@ -106,7 +106,7 @@ class profile::hadoop::spark3 (
     # If this cluster has multiple spark shufflers, look up in the common hadoop config the port number for the default version.
     if $yarn_use_multi_spark_shufflers {
         $default_shuffler_port = $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'][$default_shuffler_version] ? {
-            undef   => '7001',
+            undef   => '7337',
             default => $profile::hadoop::common::hadoop_config['yarn_multi_spark_shuffler_versions'][$default_shuffler_version],
         }
     }
