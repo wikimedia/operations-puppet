@@ -49,9 +49,11 @@ def main():
         "Expiry timestamp of the x509 certificate",
         namespace="x509",
         registry=registry,
-        labelnames=["subject"],
+        labelnames=["cert", "subject"],
     )
-    metric_cert_expiry.labels(cert_subject_name).set(cert.not_valid_after.timestamp())
+    metric_cert_expiry.labels(args.cert_path, cert_subject_name).set(
+        cert.not_valid_after.timestamp()
+    )
     write_to_textfile(args.outfile, registry)
 
 
