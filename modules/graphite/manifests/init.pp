@@ -123,19 +123,19 @@ class graphite(
     }
 
     file { '/etc/carbon/storage-schemas.conf':
-        content => configparser_format($storage_schemas),
+        content => graphite::configparser_format($storage_schemas),
         require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/carbon.conf':
-        content => configparser_format($carbon_defaults, $carbon_settings),
+        content => graphite::configparser_format($carbon_defaults, $carbon_settings),
         require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }
 
     file { '/etc/carbon/storage-aggregation.conf':
-        content => configparser_format($storage_aggregation),
+        content => graphite::configparser_format($storage_aggregation),
         require => Package['graphite-carbon'],
         notify  => Service['carbon'],
     }

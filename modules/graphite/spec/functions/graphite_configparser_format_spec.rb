@@ -1,6 +1,6 @@
 require_relative '../../../../rake_modules/spec_helper'
 
-describe 'configparser_format' do
+describe 'graphite::configparser_format' do
   it 'should format hash into ini format' do
     run.with_params({:section => {:param1 => 'value1', :param2 => 'value2'}})
                           .and_return(
