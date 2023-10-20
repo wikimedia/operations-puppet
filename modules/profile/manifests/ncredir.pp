@@ -25,7 +25,7 @@ class profile::ncredir(
 
     class { '::ncredir':
         ssl_settings           => ssl_ciphersuite('nginx', 'mid'),
-        redirection_maps       => compile_redirects('puppet:///modules/ncredir/nc_redirects.dat', 'nginx'),
+        redirection_maps       => wmflib::compile_redirects(file('ncredir/nc_redirects.dat'), 'nginx'),
         acme_certificates      => $shared_acme_certificates,
         acme_chief_cert_prefix => $acme_chief_cert_prefix,
         http_port              => $http_port,

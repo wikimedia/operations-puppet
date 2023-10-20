@@ -1,1 +1,2 @@
-<%= scope.call_function('compile_redirects', ['puppet:///modules/mediawiki/apache/sites/redirects/redirects.dat'])%>
+<%- data = scope.call_function('file', ['mediawiki/apache/sites/redirects/redirects.dat']) -%>
+<%= scope.call_function('wmflib::compile_redirects', data)%>

@@ -1,30 +1,13 @@
-# == Function: compile_redirects
-#
+# SPDX-License-Identifier: Apache-2.0
+# @summary
 # This is a Ruby compiler for a mini-language for URL rewriting schemes.
 # The output it generates is an Apache config file. The syntax was invented by
 # Tim Starling to eliminate common sources of errors.
 #
-# === Examples
-#
-# With puppet:// URL:
-#
+# @example
 #   file { '/etc/apache2/conf.d/redirects.conf':
 #     ensure  => present,
-#     content => compile_redirects('puppet:///files/apache/redirects.dat'),
-#   }
-#
-# With absolute file path:
-#
-#   file { '/etc/apache2/conf.d/redirects.conf':
-#     ensure  => present,
-#     content => compile_redirects('/etc/apache2/conf.d/redirects.dat'),
-#   }
-#
-# With source as string:
-#
-#   file { '/etc/apache2/conf.d/redirects.conf':
-#     ensure  => present,
-#     content => compile_redirects(template('mediawiki/rewrites.erb')),
+#     content => wmflib::compile_redirects(file('mediawiki/apache/sites/redirects/redirects.dat')),
 #   }
 #
 require 'stringio'
@@ -388,33 +371,14 @@ module DomainRedirects
   end
 end
 
-if __FILE__ == $PROGRAM_NAME
-  abort "Usage: #{$PROGRAM_NAME} DAT_FILE [apache|nginx]" if ARGV.length < 1 || ARGV.length > 2
-  if ARGV.length == 1
-    web_server = 'apache'
-  else
-    web_server = ARGV[1]
+Puppet::Functions.create_function(:'wmflib::compile_redirects') do
+  dispatch :compile_redirects do
+    param 'String', :data
+    optional_param 'Enum["apache", "nginx"]', :web_server
+    return_type 'String'
   end
-  parser = DomainRedirects::Parser.new(File.read(ARGV[0]), web_server)
-  parser.parse_to(STDOUT)
-  exit 0
-end
-
-module Puppet::Parser::Functions
-  newfunction(:compile_redirects, :type => :rvalue) do |args|
-    raise Puppet::ParseError, 'compile_redirects() requires at least one argument' if args.length < 1 || args.length > 2
-    Puppet::Parser::Functions.autoloader.loadall
-    input = case args.first
-            when %r{^puppet://.*} then Puppet::FileServing::Content.indirection.find($&).content.force_encoding("utf-8")
-            when %r{^/} then function_file(args)
-            else args.first
-            end
-    if args.length == 1
-      web_server = 'apache'
-    else
-      web_server = args[1]
-    end
-    parser = DomainRedirects::Parser.new(input, web_server)
+  def compile_redirects(data, web_server = 'apache')
+    parser = DomainRedirects::Parser.new(data, web_server)
     parser.parse
   end
 end
