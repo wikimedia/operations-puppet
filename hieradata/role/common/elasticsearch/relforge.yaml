@@ -3,7 +3,7 @@ cluster: relforge
 profile::admin::groups:
   - elasticsearch-roots
 
-profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS))'
+profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
 profile::elasticsearch::cirrus::expose_http: false
 profile::elasticsearch::cirrus::enable_http2: false
 profile::elasticsearch::logstash_transport: syslog
