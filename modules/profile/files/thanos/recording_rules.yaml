@@ -156,24 +156,20 @@ groups:
           )
   - name: istio_slos
     rules:
-      # istio_request_duration_milliseconds_{bucket,count} and istio_requests_total are used for LiftWing SLO dashboards.
-      # They may be useful for other k8s services, which is why we don't limit them to the ML clusters.
-      # We have three metrics to compute (latency buckets, count) and request rate (for 2xx vs 5xx etc)
-      # We also want to compute the rate _before_ the sum for Prometheus reasons:
-      # https://www.robustperception.io/rate-then-sum-never-sum-then-rate/
+      # istio_request_duration_milliseconds_{bucket,count} and istio_requests_total
+      # are used for SLO dashboards for services behind an Istio Gateway.
+      # Due to the number of metrics and the big number of labels provided by upstream
+      # (see https://istio.io/latest/docs/reference/config/metrics/#labels)
+      # the computation of recording rule can easily become slow and cause holes
+      # in the final time series. For this reason we heavily limit the range of
+      # values for specific labels.
       #
       # SLx: Buckets for latency
-      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_bucket:rate5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_bucket{}[5m]))
-      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_bucket:increase5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (increase(istio_request_duration_milliseconds_bucket{}[5m]))
+      - record: istio_sli_latency_request_duration_milliseconds_bucket:increase5m
+        expr: sum by (destination_canonical_service, destination_service_namespace, le, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_bucket{le=~"100|500|1000|5000"}[5m]))
       # SLx: Total requests for latency
-      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_count:rate5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (rate(istio_request_duration_milliseconds_count{}[5m]))
-      - record: destsvc_rev_ns_rc_rf:istio_request_duration_milliseconds_count:increase5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, le, response_code, response_flags, site, prometheus) (increase(istio_request_duration_milliseconds_count{}[5m]))
+      - record: istio_sli_latency_request_duration_milliseconds_count:increase5m
+        expr: sum by (destination_canonical_service, destination_service_namespace, le, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_count{le=~"100|500|1000|5000"}[5m]))
       # SLx: Request counts with status
-      - record: destsvc_rev_ns_rc_rf:istio_requests_total:rate5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, response_code, response_flags, site, prometheus) (rate(istio_requests_total{}[5m]))
-      - record: destsvc_rev_ns_rc_rf:istio_requests_total:increase5m
-        expr: sum by (destination_canonical_service, destination_canonical_revision, destination_service_namespace, response_code, response_flags, site, prometheus) (increase(istio_requests_total{}[5m]))
+      - record: istio_sli_availability_requests_total:increase5m
+        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{}[5m]))
