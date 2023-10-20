@@ -961,20 +961,17 @@ hadoop_clusters:
       # better to use a smaller replication factor (3 is the Hadoop's default).
       dfs.replication: 2
 
-    # yarn_use_multi_spark_shufflers: true
+    yarn_use_multi_spark_shufflers: true
     # Multiple spark shufflers are listed here with the keys as major.minor
     # versions in quotes and the value represents the port number to be used.
     #
     # n.b. The first version listed here must use the default port of 7337.
     # For some reason, yarn isn't using the config overlay for the first shuffler loaded.
     # See https://phabricator.wikimedia.org/T344910#9262138
-    #
-    # Temporarily disable whilst we rework - since spark 3.1 cannot select a shuffler by name
-    #
-    # yarn_multi_spark_shuffler_versions:
-    #   '3.1': 7337
-    #   '3.3': 7002
-    #   '3.4': 7003
+    yarn_multi_spark_shuffler_versions:
+      '3.1': 7337 
+      '3.3': 7338
+      '3.4': 7339
 
   analytics-hadoop:
     zookeeper_cluster_name: analytics-eqiad
