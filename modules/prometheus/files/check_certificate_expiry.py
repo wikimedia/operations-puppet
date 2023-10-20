@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 
 from cryptography import x509
+from cryptography.hazmat.backends import default_backend
 from cryptography.x509.oid import NameOID
 from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
@@ -37,7 +38,9 @@ def extract_name(cert: x509.Certificate) -> str:
 def main():
     args = parse_args()
     certificate_content = args.cert_path.read_bytes()
-    cert = x509.load_pem_x509_certificate(certificate_content)
+    cert = x509.load_pem_x509_certificate(
+        certificate_content, backend=default_backend()
+    )
     cert_subject_name = extract_name(cert)
 
     registry = CollectorRegistry()
