@@ -24,4 +24,11 @@ class profile::sretest {
         ensure  => file,
         content => htpasswd('foobar', 'salty123'),
     }
+    # Test binary file content
+    file { '/tmp/delete_me_jbond':
+        content => secret('cassandra/restbase/truststore'),
+        owner   => 'cassandra',
+        group   => 'cassandra',
+        mode    => '0400',
+    }
 }
