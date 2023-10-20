@@ -17,5 +17,6 @@ server {
         include uwsgi_params;
         uwsgi_pass unix:/run/uwsgi/acme-chief.sock;
         uwsgi_param HTTP_X_CLIENT_DN $ssl_client_s_dn;
+        proxy_buffering off;
     }
 }
