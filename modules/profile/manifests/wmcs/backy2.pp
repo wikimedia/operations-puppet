@@ -62,4 +62,14 @@ class profile::wmcs::backy2(
         database => 'backy2',
         notify   => Exec['initialize-backy2-database'],
     }
+
+    logrotate::rule { 'backy2':
+        ensure       => present,
+        file_glob    => '/var/log/backy.log',
+        frequency    => 'weekly',
+        compress     => true,
+        missing_ok   => true,
+        not_if_empty => true,
+        rotate       => 8,
+    }
 }
