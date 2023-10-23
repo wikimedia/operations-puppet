@@ -9,6 +9,9 @@ class profile::pyrra::filesystem (
 
     # filesystem defined slos
 
+    # Logstash Requests SLO - please see wikitech for details
+    # https://wikitech.wikimedia.org/wiki/SLO/logstash
+
     $logstash_requests_slo = {
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind' => 'ServiceLevelObjective',
