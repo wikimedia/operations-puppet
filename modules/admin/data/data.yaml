@@ -208,10 +208,14 @@ groups:
               jforrester, mah]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
+    approval:
+      - Tyler Cipriani
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
     members: [brion, dbrant, cooltey, sharvaniharan]
+    approval:
+      - Tyler Cipriani
   sretest-roots:
     gid: 716
     description: users with root on sretest servers
@@ -223,6 +227,8 @@ groups:
     gid: 804
     description: people who upload wikidiff2 releases (T202473)
     members: [wmde-fisch, thiemowmde, samtar]
+    approval:
+      - Tyler Cipriani
   releasers-wikibase:
     gid: 807
     description: people who upload wikibase releases (T268818)
@@ -234,10 +240,14 @@ groups:
     gid: 808
     description: people who upload blubber releases
     members: [dduvall, jhuneidi, thcipriani]
+    approval:
+      - Tyler Cipriani
   releasers-mwcli:
     gid: 822
     description: people who upload mw-cli releases (T250241)
     members: [jhuneidi, brennen]
+    approval:
+      - Tyler Cipriani
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
