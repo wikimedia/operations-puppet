@@ -668,7 +668,7 @@ node /^db2158\.codfw\./ {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # See also db1170 below
-node /^db1(069|127|136|174|178|181|191|194|202)\.eqiad\./ {
+node /^db1(069|127|136|174|178|181|191|194|202|227)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -745,7 +745,7 @@ node /^db21(88|89|90|91|92|93|94|95)\.codfw\./ {
 }
 
 # New db hosts to be setup T342166
-node /^db12(26|27|28|29|39|30|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\./ {
+node /^db12(26|28|29|39|30|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 ## m1 shard
