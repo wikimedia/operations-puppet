@@ -324,12 +324,14 @@ profile::kubernetes::deployment_server::general:
       httpd:
         exporter: prometheus-apache-exporter:0.0.3-20231015
       mcrouter:
-        mcrouter: mcrouter:0.41.0-4-20211010
+        mcrouter: mcrouter:0.41.0-4-20231022
         exporter: prometheus-mcrouter-exporter:0.0.1-2-20211010
       nutcracker:
         nutcracker: nutcracker:0.0.4-20211010
         exporter: prometheus-nutcracker-exporter:0.0.2-20211010
       rsyslogd: rsyslog:8.2102.0-3
+      statsd:
+        exporter: prometheus-statsd-exporter:0.0.10-20231022
   eqiad:
     mesh:
       certmanager: &certmanager_eqiad
