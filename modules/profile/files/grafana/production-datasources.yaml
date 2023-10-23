@@ -104,7 +104,7 @@ datasources:
    type: prometheus
    access: proxy
    orgId: 1
-   url: http://prometheus-labmon.eqiad.wmnet/labs
+   url: http://prometheus.svc.eqiad.wmnet/cloud
    database:
    isDefault: false
    editable: false
