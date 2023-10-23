@@ -23,8 +23,9 @@
         <%- end -%>
     </Location>
 
-    # Default to redirecting the homepage to 'ops' instance
+    # Redirect authenticated homepage requests to 'ops' instance.
     RewriteEngine on
+    RewriteCond %{HTTP_COOKIE} MOD_AUTH_CAS_S=
     RewriteRule ^/$ https://<%= @virtual_host %>/ops [R=302]
 
     # Reverse proxy for public facing access e.g. http(s)://prometheus.site.wm.o/ops/ to http://prometheus.svc.site.wmnet/ops/
