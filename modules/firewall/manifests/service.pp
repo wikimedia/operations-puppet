@@ -51,10 +51,6 @@ define firewall::service(
                 fail('The port needs to converted to use a port or port_range')
             }
 
-            if $notrack == true {
-                fail('Support for notrack not yet added to the nft provider')
-            }
-
             nftables::service { $title:
                 *       => wmflib::resource::filter_params('drange', 'srange'),
                 src_ips => $srange.then |$range| { wmflib::hosts2ips($range) },

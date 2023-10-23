@@ -28,7 +28,6 @@ define nftables::service (
     Array[String[1]]              $dst_sets   = [],
     Boolean                       $notrack    = false,
 ) {
-    # TODO: notrack is not implemented yet
     # TODO: there is a nftables construct 'concatenation' that can drastically
     # reduce the amount of filtering rules in the system.
     # this define doesn't support it, but we may in the future!
