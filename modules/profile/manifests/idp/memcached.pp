@@ -47,12 +47,11 @@ class profile::idp::memcached (
         mcrouter_port => $mcrouter::port,
     }
 
-    ferm::service {'memcached':
+    firewall::service {'memcached':
         ensure  => $ensure,
-        desc    => 'Allow connections to memcached',
         proto   => 'tcp',
         notrack => true,
         port    => $memcached::port,
-        srange  => "@resolve((${apereo_cas::idp_nodes.join(' ')}))",
+        srange  => $apereo_cas::idp_nodes,
     }
 }
