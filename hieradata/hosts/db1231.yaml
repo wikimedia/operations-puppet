@@ -1,2 +1,6 @@
 # db1231
+# candidate master for s6
 profile::monitoring::notifications_enabled: false
+mariadb::shard: 's6'
+mariadb::binlog_format: 'STATEMENT'
+mariadb::package: 'wmf-mariadb106'
