@@ -22,8 +22,33 @@ def generate_logformat(filename):
     nickname = LOGFORMAT_NICKNAME_PREFIX + '_' + get_version(filename).replace('.', '')
     with open(filename, 'r') as f:
         parsed = yaml.safe_load(f.read())
+        json_config = json.dumps(
+            parsed, sort_keys=True,
+            # When a percent placeholder is not set, Apache "deletes everything
+            # from the preceding space character to the next space character".
+            # non-whitespace surrounding the token.
+            #
+            # Given the format:
+            #
+            #   {"client_ip": "%a", "ecs.version": "113"}
+            #
+            # When the client IP "%a" can't be determinated, the non-whitespace
+            # characters are deleted resulting in invalid json:
+            #
+            #   {"client_ip": , "ecs.version": "113"}
+            #               ^^^
+            # Change the JSONEncoder key separator to not include a space:
+            #
+            #   {"client_ip":"%a", "ecs.version":"113"}
+            #
+            # Which lets Apache strips the whole field:
+            #
+            #   {"ecs.version": "113"}
+            #
+            separators=(", ", ":")
+        )
         return 'LogFormat "' + LOGFORMAT_PREFIX \
-               + json.dumps(json.dumps(parsed, sort_keys=True))[1:-1] \
+               + json.dumps(json_config)[1:-1] \
                + '" ' + nickname
 
 
