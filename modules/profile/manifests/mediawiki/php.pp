@@ -35,6 +35,7 @@ class profile::mediawiki::php(
     Boolean $phpdbg = lookup('profile::mediawiki::php::phpdbg', {'default_value' => false}),
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions'),
     Array[Wmflib::Php_version] $absented_php_versions = lookup('profile::mediawiki::php::absented_php_versions', {'default_value' => []}),
+    Boolean $increase_open_files = lookup('profile::mediawiki::php::increase_open_files', {'default_value' => false}),
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]

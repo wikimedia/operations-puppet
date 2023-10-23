@@ -60,3 +60,7 @@ profile::services_proxy::envoy::listen_ipv6: true
 # Enable icu63 component - T264991
 profile::mediawiki::php::icu63: true
 profile::contacts::role_contacts: ["ServiceOps"]
+
+
+# Increase the number of open files T344428
+profile::mediawiki::php::increase_open_files: true

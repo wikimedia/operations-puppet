@@ -7,3 +7,7 @@ CPUAccounting=yes
 # Override ExecStartPost for php7.4
 ExecStartPost=
 <%- end -%>
+<%- if @increase_open_files -%>
+LimitNOFILE=1024000
+LimitNOFILESoft=1024000
+<%- end -%>
