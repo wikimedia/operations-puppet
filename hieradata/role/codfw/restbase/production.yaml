@@ -7,7 +7,6 @@ profile::restbase::seeds_ng:
   - restbase2025-c.codfw.wmnet
 # used for rate limiting
 profile::restbase::hosts:
-  - restbase2012.codfw.wmnet
   - restbase2013.codfw.wmnet
   - restbase2014.codfw.wmnet
   - restbase2015.codfw.wmnet

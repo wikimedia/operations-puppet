@@ -2692,8 +2692,13 @@ node /^restbase10(1[6-9]|2[0-9]|3[0-3])\.eqiad\./ {
 }
 
 # restbase codfw cluster
-node /^restbase20(09|1[0-9]|2[0-7])\.codfw\./ {
+node /^restbase20(1[3-9]|2[0-7])\.codfw\./ {
     role(restbase::production)
+}
+
+# decommissioned restbase (T349526)
+node /^restbase2012\.codfw\./ {
+    role(spare::system)
 }
 
 # New cassandra dev nodes T324113
