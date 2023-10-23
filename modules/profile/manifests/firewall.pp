@@ -162,7 +162,7 @@ class profile::firewall (
 
             prometheus::node_textfile { 'check-nft':
                 filesource => 'puppet:///modules/profile/firewall/check_nftables.py',
-                interval   => '1800s',
+                interval   => '*:0/30',
                 run_cmd    => '/usr/local/bin/check-nft',
             }
         }
