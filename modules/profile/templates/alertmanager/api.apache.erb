@@ -21,38 +21,32 @@
         SecRequestBodyAccess On
         SecAuditLog /var/log/apache2/audit.log
 
-        #Log POST requests to modsec audit log (as in "nolog" to the apache error log for the time being)
+        # Log POST requests to modsec audit log (as in "nolog" to the apache error log for the time being)
         SecRule REQUEST_METHOD "POST" "id:1000,phase:2,ctl:auditEngine=On,nolog,pass"
 
-        #Example of custom post data logging in apache error log for future reference
+        # Example of custom post data logging in apache error log for future reference
         #SecRule REQUEST_METHOD "POST" "id:1000,phase:2,ctl:auditEngine=On,log,pass,msg:'User %{ARGS.user} has scheduled downtime on %{ARGS.thing}'"
     </IfModule>
 
     <Location />
         ProxyPass "http://localhost:9093/" retry=0
         <If "%{REQUEST_METHOD} in { 'GET', 'HEAD' }">
-<% @ro_hosts.sort.each do |el| -%>
-            Require host <%= el %>
-<% end -%>
-<% @rw_hosts.sort.each do |el| -%>
+<% ([@ro_hosts, @rw_hosts, @am_hosts].flatten).sort.each do |el| -%>
             Require host <%= el %>
 <% end -%>
 
-<% @ro_ips.sort.each do |el| -%>
+<% ([@ro_ips, @rw_ips, @am_ips].flatten).sort.each do |el| -%>
             Require ip <%= el %>
-<% end -%>
-<% @rw_ips.sort.each do |el| -%>
-            Require ip <%= h %>
 <% end -%>
         </If>
 
         <If "%{REQUEST_METHOD} in { 'POST', 'DELETE' }">
-<% @rw_hosts.sort.each do |el| -%>
+<% ([@rw_hosts, @am_hosts].flatten).sort.each do |el| -%>
             Require host <%= el %>
 <% end -%>
 
-<% @rw_ips.sort.each do |el| -%>
-            Require ip <%= h %>
+<% ([@rw_ips, @am_ips].flatten).sort.each do |el| -%>
+            Require ip <%= el %>
 <% end -%>
         </If>
 

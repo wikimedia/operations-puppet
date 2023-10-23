@@ -8,12 +8,15 @@ class profile::alertmanager::api (
     # lint:endignore
     Array[Httpd::RequireHostIP] $ro = lookup('profile::alertmanager::api::ro'),
     Array[Httpd::RequireHostIP] $rw = lookup('profile::alertmanager::api::rw'),
+    Array[Httpd::RequireHostIP] $alertmanagers = lookup('alertmanagers'),
 ) {
 
     $ro_hosts = $ro.filter |$el| { $el =~ Stdlib::Fqdn }
     $ro_ips = $ro.filter |$el|   { $el =~ Stdlib::IP::Address }
     $rw_hosts = $rw.filter |$el| { $el =~ Stdlib::Fqdn }
     $rw_ips = $rw.filter |$el|   { $el =~ Stdlib::IP::Address }
+    $am_hosts = $alertmanagers.filter |$el| { $el =~ Stdlib::Fqdn }
+    $am_ips = $alertmanagers.filter |$el|   { $el =~ Stdlib::IP::Address }
 
     httpd::site { $vhost:
         content => template('profile/alertmanager/api.apache.erb'),
