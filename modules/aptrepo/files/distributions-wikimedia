@@ -224,6 +224,7 @@ Components: main
  thirdparty/haproxy26
  thirdparty/haproxy28
  thirdparty/hwraid
+ thirdparty/kubeadm-k8s-1-23
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -231,6 +232,9 @@ Update:
  hwraid-megacli
  thirdparty/haproxy26
  thirdparty/haproxy28
+ thirdparty/helm3
+ thirdparty/kubeadm-k8s-kubernetes.io-1-23
+ thirdparty/kubeadm-k8s-kubernetes.io
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
