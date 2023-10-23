@@ -6,10 +6,8 @@ class profile::prometheus::cloud (
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
     Stdlib::Fqdn $openstack_exporter_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
+    Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
 ) {
-    # Disable alerts during setup
-    $alertmanagers = []
-
     $targets_path = '/srv/prometheus/cloud/targets'
 
     $config_extra = {

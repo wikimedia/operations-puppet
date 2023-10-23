@@ -5,8 +5,9 @@ class profile::wmcs::prometheus(
     Integer                    $memory_chunks           = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Optional[Stdlib::Datasize] $storage_retention_size  = lookup('profile::wmcs::prometheus::storage_retention_size',   {default_value => undef}),
     Stdlib::Fqdn               $openstack_exporter_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
-    Array[Stdlib::Host]        $alertmanagers           = lookup('alertmanagers', {'default_value' => []}),
 ) {
+    $alertmanagers = []
+
     $config_extra = {
         'external_labels' => {
             # right now cloudmetrics hardware only exists on eqiad1, make sure to update this if that changes
