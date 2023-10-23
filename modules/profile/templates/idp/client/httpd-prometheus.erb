@@ -23,6 +23,10 @@
         <%- end -%>
     </Location>
 
+    # Default to redirecting the homepage to 'ops' instance
+    RewriteEngine on
+    RewriteRule ^/$ https://<%= @virtual_host %>/ops [R=302]
+
     # Reverse proxy for public facing access e.g. http(s)://prometheus.site.wm.o/ops/ to http://prometheus.svc.site.wmnet/ops/
     # Prometheus instance paths are not matched individually here, they are simply passed onward to the backend.
     ProxyPass / http://prometheus.svc.<%= @site %>.wmnet/
