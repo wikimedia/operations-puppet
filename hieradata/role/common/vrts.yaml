@@ -18,6 +18,7 @@ profile::mail::default_mail_relay::enabled: false
 
 # envoy for TLS termination behind ATS
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
+profile::tlsproxy::envoy::upstream_response_timeout: 130.0
 profile::tlsproxy::envoy::tls_port: 1443
 
 profile::contacts::role_contacts: ['ServiceOps-Collab']
