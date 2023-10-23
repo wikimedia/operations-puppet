@@ -40,7 +40,6 @@ class profile::pyrra::filesystem (
         },
     }
 
-
     pyrra::filesystem::config { 'logstash-requests.yaml':
       content => to_yaml($logstash_requests_slo),
     }
@@ -110,5 +109,43 @@ class profile::pyrra::filesystem (
       ensure  => absent,
       content => to_yaml($liftwing_revscoring_latency_slo),
     }
+
+    # Varnish uses one combined latency-availability SLI: A response is satisfactory IF it spends less than 100 ms processing time in Varnish, AND it isn't a Varnish internal error.
+    # SLO: In each DC, 99.9% of requests get satisfactory responses. (grouping by site)
+    # Request Error Ratio SLI: The percentage of requests receiving unsatisfactory responses. This is normally near zero; upward spikes represent incidents.
+    # https://wikitech.wikimedia.org/wiki/SLO/Varnish
+
+    $varnish_requests_slo = {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'varnish-requests-pilot',
+            'namespace' => 'pyrra-o11y-pilot',
+            'labels' => {
+                'pyrra.dev/team' => 'traffic',
+                'pyrra.dev/service' => 'varnish',
+            },
+        },
+        'spec' => {
+            'target' => '99.9',
+            'window' => '12w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'varnish_sli_bad',
+                    },
+                    'total' => {
+                        'metric' => 'varnish_sli_all',
+                    },
+                    'grouping' => ['site'],
+                },
+            },
+        },
+    }
+
+    pyrra::filesystem::config { 'varnish-requests.yaml':
+      content => to_yaml($varnish_requests_slo),
+    }
+
 
 }
