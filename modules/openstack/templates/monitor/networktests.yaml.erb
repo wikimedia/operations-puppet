@@ -192,11 +192,11 @@
 #
 - name: VM (using floating IP) can connect to wikireplicas from Toolforge
   tests:
-    - cmd: $SSH $TOOLFORGE_BASTION_LOGIN 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
+    - cmd: $SSH $TOOLFORGE_BASTION_LOGIN 'sudo -iu tools.network-tests sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
       stdout: "1"
       retcode: 0
       stderr: ""
-    - cmd: $SSH $TOOLFORGE_BASTION_DEV 'sudo -iu tools.arturo-test-tool sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
+    - cmd: $SSH $TOOLFORGE_BASTION_DEV 'sudo -iu tools.network-tests sql enwiki "select * from page limit 2;" | grep page_id | wc -l'
       stdout: "1"
       retcode: 0
       stderr: ""
