@@ -439,9 +439,12 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\./ {
     role(cache::upload)
 }
 
-#add new nodes T342159
-node /^cp11(0[0-9]|1[0-5])\.eqiad\./ {
-    role(insetup::traffic)
+node /^cp11(0[0-7])\.eqiad\./ {
+    role(cache::text)
+}
+
+node /^cp11(0[89]|1[0-5])\.eqiad\./ {
+    role(cache::upload)
 }
 
 node /^cp20(2[79]|3[13579]|41)\.codfw\./ {
