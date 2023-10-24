@@ -7,6 +7,9 @@ class profile::prometheus::cloud (
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
     Stdlib::Fqdn $openstack_exporter_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
+    Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
+    Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
+    Boolean $disable_compaction = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
 ) {
     $targets_path = '/srv/prometheus/cloud/targets'
 
@@ -238,12 +241,19 @@ class profile::prometheus::cloud (
         port       => 9900,
     }
 
+    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
+        true    => '2h',
+        default => '24h',
+    }
+
     prometheus::server { 'cloud':
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
         max_chunks_to_persist          => $max_chunks_to_persist,
         memory_chunks                  => $memory_chunks,
+        min_block_duration             => '2h',
+        max_block_duration             => $max_block_duration,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => [
             # Add 'team' label, https://phabricator.wikimedia.org/T302493#7759642
@@ -256,6 +266,13 @@ class profile::prometheus::cloud (
         ].flatten,
         global_config_extra            => $config_extra,
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
+    }
+
+    profile::thanos::sidecar { 'cloud':
+        prometheus_port     => $port,
+        prometheus_instance => 'cloud',
+        enable_upload       => $enable_thanos_upload,
+        min_time            => $thanos_min_time,
     }
 
     prometheus::web { 'cloud':
