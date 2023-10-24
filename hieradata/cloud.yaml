@@ -50,6 +50,12 @@ profile::aptrepo::wikimedia::gpg_pubring: ~
 profile::aptrepo::wikimedia::gpg_secring: ~
 profile::aptrepo::private::port: 8080
 
+profile::aptrepo::staging::basedir: /srv/wikimedia-staging
+profile::aptrepo::staging::homedir: '/root'
+profile::aptrepo::staging::gpg_user: 'root'
+profile::aptrepo::staging::gpg_pubring: ~
+profile::aptrepo::staging::gpg_secring: ~
+
 profile::admin::managelingering: false
 profile::admin::purge_sudoers_d: false
 profile::admin::groups: []

@@ -1,0 +1,18 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+server {
+   listen 80 default_server;
+   listen [::]:80 ipv6only=on default_server;
+   server_name apt-staging.wikimedia.org;
+
+   root /srv;
+
+   location / {
+      index index.html index.htm;
+      autoindex on;
+      charset utf-8;
+   }
+
+   location ~ ^/wikimedia/(conf|db) {
+      deny all;
+   }
+}
