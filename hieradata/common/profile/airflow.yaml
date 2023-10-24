@@ -1,0 +1,62 @@
+# Defines common statsd_exporter mappings for Airflow instances.
+# Those mappings rewrites the metrics to be more Prometheus friendly.
+profile::airflow::statsd_exporter_default_mappings:
+
+  # Example:
+  #   airflow_analytics_test.operator_failures_HdfsEmailOperator count
+  #   => airflow_operator_failures{airflow_instance="analytics_test", operator="HdfsEmailOperator"} count
+  - match: airflow_(\\w+)\\.operator_(failures|successes)_(\\w+)
+    match_type: regex
+    name: "airflow_operator_${2}"
+    labels:
+      airflow_instance: "$1"
+      operator: "$3"
+
+  # Example:
+  #   airflow_analytics_test.ti_failures count
+  #   => airflow_ti_failures{airflow_instance="analytics_test"} count
+  - match: airflow_(\\w+)\\.ti_(failures|successes)
+    match_type: regex
+    name: "airflow_ti_${2}"
+    labels:
+      airflow_instance: "$1"
+
+  # Example:
+  #   airflow_analytics_test.dag.pageview_hourly.move_data_to_archive.duration
+  #   => airflow_dag_duration{airflow_instance="analytics_test", dag_id="pageview_hourly", task_id="move_data_to_archive"} count
+  - match: airflow_(\\w+)\\.dag\\.(\\w+)\\.(\\w+)\\.(duration|scheduled_duration|queued_duration)
+    match_type: regex
+    name: "airflow_dag_${4}"
+    labels:
+      airflow_instance: "$1"
+      dag_id: "$2"
+      task_id: "$3"
+
+  # Example:
+  #   airflow_analytics_test.dagrun.duration.success.pageview_hourly count
+  #   => airflow_dagrun_duration{airflow_instance="analytics_test", dag_id="pageview_hourly"} count
+  - match: airflow_(\\w+)\\.dagrun.duration.(success|failed)\\.(\\w+)
+    match_type: regex
+    name: airflow_dagrun_duration
+    labels:
+      airflow_instance: "$1"
+      state: "$2"
+      dag_id: "$3"
+
+  # Example:
+  #   analytics_test.sla_missed count
+  #   => airflow_sla_missed{airflow_instance="analytics_test"} count
+  - match: airflow_(\\w+)\\.(sla_missed|collect_db_dags)
+    match_type: regex
+    name: "airflow_${2}"
+    labels:
+      airflow_instance: "$1"
+
+  # Example:
+  #   analytics_test.executor.queued_tasks count
+  #   => airflow_executor_queued_tasks{airflow_instance="analytics_test"} count
+  - match: airflow_(\\w+)\\.(executor|dag|scheduler)\\.(queued_tasks|callback_exceptions|scheduler_loop_duration)
+    match_type: regex
+    name: "airflow_${2}_${3}"
+    labels:
+      airflow_instance: "$1"

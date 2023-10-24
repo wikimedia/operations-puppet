@@ -95,6 +95,11 @@
 #   Default: {}
 #
 # [*monitoring_enabled*]
+#   Enable monitoring of Airflow system services.
+#   Default: false
+#
+# [*statsd_monitoring_enabled*]
+#   Send Airflow metrics to statsd_exporter and then Prometheus.
 #   Default: false
 #
 # [*clean_logs_older_than_days*]
@@ -129,6 +134,7 @@ define airflow::instance(
     Optional[Hash] $connections         = undef,
     Hash $environment_extra             = {},
     Boolean $monitoring_enabled         = false,
+    Boolean $statsd_monitoring_enabled  = false,
     Integer $clean_logs_older_than_days = 90,
     String $ferm_srange                 = '$INTERNAL',
     Optional[Hash] $scap_targets        = undef,
@@ -547,4 +553,5 @@ define airflow::instance(
             ]
         }
     }
+
 }

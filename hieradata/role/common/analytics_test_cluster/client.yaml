@@ -54,11 +54,19 @@ profile::airflow::instances:
     service_user: analytics
     service_group: analytics
     monitoring_enabled: false
+    statsd_monitoring_enabled: true
     airflow_config:
       datahub:
         enabled: False
         conn_id: datahub_kafka_test
         cluster: test
+      metrics:
+        statsd_on: True
+        statsd_host: localhost
+        statsd_port: 9125
+        statsd_prefix: airflow_analytics_test
+        # The allow list is a comma separated list of strings. Each produced metric must begin with at least one of them.
+        metrics_allow_list: operator_failures_,operator_successes_,ti,sla_missed,executor.queued_tasks,dag.,dagrun.duration.,collect_db_dags,scheduler.scheduler_loop_duration
     connections:
       analytics-test-hive:
         conn_type: hive_metastore
@@ -82,3 +90,4 @@ profile::base::remove_python2_on_bullseye: false
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+

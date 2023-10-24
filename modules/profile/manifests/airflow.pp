@@ -68,6 +68,7 @@ class profile::airflow(
     String $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-coord1001.eqiad.wmnet' }),
     Optional[String] $airflow_version     = lookup('profile::airflow::airflow_version', { 'default_value' => '2.6.3-py3.10-20230711' }),
     Boolean $renew_skein_certificate      = lookup('profile::airflow::renew_skein_certificate', { 'default_value' => true }),
+    Array $statsd_exporter_mappings       = lookup('profile::airflow::statsd_exporter_default_mappings', { 'default_value' => [] })
 ) {
 
     class { 'airflow':
@@ -251,6 +252,14 @@ class profile::airflow(
                 { $instance_name => $merged_instance_params },
             )
         },
+    }
+
+    # If any of the Airflow instances on this machine have statsd_monitoring_enabled, add a statsd_exporter.
+    if $airflow_instances.any |$dict| { $dict[1]['statsd_monitoring_enabled'] } {
+        class { 'profile::prometheus::statsd_exporter':
+          prometheus_instance => 'analytics',
+          mappings            => $statsd_exporter_mappings,
+        }
     }
 
     # Finally, merge any airflow secrets into our airflow instances...
