@@ -7,8 +7,6 @@ class role::wmcs::monitoring {
     include ::profile::firewall
     include ::profile::base::cloud_production
     include ::profile::tlsproxy::envoy # TLS termination
-    include ::profile::wmcs::graphite
-    include ::profile::wmcs::monitoring
     include ::profile::openstack::eqiad1::observerenv
     include ::profile::statsite
 }

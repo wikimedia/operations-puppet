@@ -13,8 +13,6 @@ profile::grafana::domain: grafana-cloud.wikimedia.org
 profile::grafana::server_aliases:
   - grafana-labs.wikimedia.org
 
-profile::wmcs::monitoring::statsd_master: cloudmetrics1003.eqiad.wmnet
-profile::wmcs::monitoring::statsd_standby: cloudmetrics1004.eqiad.wmnet
 # In private repo
 #profile::grafana::secret_key:
 #profile::grafana::admin_password:
