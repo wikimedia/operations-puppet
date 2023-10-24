@@ -10,12 +10,14 @@ class profile::prometheus::cloud (
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Boolean $disable_compaction = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
+    String $replica_label = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
 ) {
     $targets_path = '/srv/prometheus/cloud/targets'
 
     $config_extra = {
         'external_labels' => {
             'site'       => $::site,
+            'replica'    => $replica_label,
             'prometheus' => 'cloud',
         },
     }
