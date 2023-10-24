@@ -31,6 +31,7 @@
     <Location />
         ProxyPass "http://localhost:9093/" retry=0
         <If "%{REQUEST_METHOD} in { 'GET', 'HEAD' }">
+            Require local
 <% ([@ro_hosts, @rw_hosts, @am_hosts].flatten).sort.each do |el| -%>
             Require host <%= el %>
 <% end -%>
@@ -41,6 +42,7 @@
         </If>
 
         <If "%{REQUEST_METHOD} in { 'POST', 'DELETE' }">
+            Require local
 <% ([@rw_hosts, @am_hosts].flatten).sort.each do |el| -%>
             Require host <%= el %>
 <% end -%>
