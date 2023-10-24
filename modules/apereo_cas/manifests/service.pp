@@ -24,7 +24,7 @@ define apereo_cas::service (
 ) {
     if $service_class == 'OidcRegisteredService' {
         if !$client_secret {
-            fail('$client_secret required when using OidcRegisteredService')
+            fail("${title}: \$client_secret required when using OidcRegisteredService")
         }
 
         $additional_params = {
