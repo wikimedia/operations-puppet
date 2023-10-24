@@ -57,11 +57,6 @@ profile::netbox::report_checks:
         alert: false
         check_interval: 5
         run_interval: '*-*-* *:08/30:00' # every 30 minutes
-    -   name: coherence
-        class: 'coherence.Coherence'
-        alert: true
-        check_interval: 5
-        run_interval: '*-*-* *:10/30:00' # every 30 minutes
     -   name: coherence_rack
         class: 'coherence.Rack'
         alert: true
