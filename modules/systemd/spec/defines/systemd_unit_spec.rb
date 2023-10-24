@@ -107,6 +107,18 @@ describe 'systemd::unit' do
           is_expected.to contain_file('/etc/systemd/system/bar.service.d/foobar.conf')
         end
       end
+      context 'when a team' do
+        let(:params) { super().merge(team: 'Infrastructure Foundations') }
+        it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file(
+            '/var/lib/prometheus/node.d/systemd_unit_dummyservice.service_owner.prom'
+          )
+            .with_content(
+              /systemd_unit_owner\{team="infrastructure-foundations", unit="dummyservice\.service"\} 1\.0/
+            )
+        end
+      end
       context 'supports multiple overrides' do
         let(:pre_condition) do
           "systemd::unit { 'first-myservice-override':

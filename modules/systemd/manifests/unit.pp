@@ -11,6 +11,7 @@
 # @param override_filename When creating an override, filename to use for the override. The given
 #   filename would have the `.conf` extension added if missing.
 #   Defaults to undef (use `puppet-override.conf`)
+# @param team The team which owns this service
 #
 # @example A systemd override for the hhvm.service unit
 #
@@ -30,11 +31,12 @@
 #
 define systemd::unit (
     String $content,
-    Wmflib::Ensure $ensure            = present,
-    String         $unit              = $title,
-    Boolean        $restart           = false,
-    Boolean        $override          = false,
-    String[1]      $override_filename = 'puppet-override.conf',
+    Wmflib::Ensure         $ensure            = present,
+    String                 $unit              = $title,
+    Boolean                $restart           = false,
+    Boolean                $override          = false,
+    String[1]              $override_filename = 'puppet-override.conf',
+    Optional[Wmflib::Team] $team              = undef,
 ) {
     require systemd
 
@@ -98,4 +100,18 @@ define systemd::unit (
             Service[$unit] -> Exec[$exec_label]
         }
     }
+    $drop_in_file = "/var/lib/prometheus/node.d/systemd_unit_${unit_name}_owner.prom"
+    if $team {
+        $_team = $team.regsubst('\W', '-', 'G').downcase
+        $unit_team_metric = @("METRIC")
+        # HELP systemd_unit_owner The team owner of the systemd unit
+        # TYPE systemd_unit_owner gauge
+        systemd_unit_owner{team="${_team}", unit="${unit_name}"} 1.0
+        | METRIC
+        file { $drop_in_file:
+            ensure  => file,
+            content => $unit_team_metric,
+        }
+    }
+
 }

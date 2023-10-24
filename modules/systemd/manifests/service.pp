@@ -15,6 +15,7 @@
 #                             monitoring_enabled is true this is required
 # @param monitoring_critical If monitoring is enabled allows paging if the execution
 #                            of the unit ended up in a failed state.
+# @param team The team which owns this service
 # @param service_params Additional service parameters we want to specify
 #
 define systemd::service (
@@ -28,6 +29,7 @@ define systemd::service (
     String                    $monitoring_contact_group = 'admins',
     Optional[Stdlib::HTTPUrl] $monitoring_notes_url     = undef,
     Boolean                   $monitoring_critical      = false,
+    Optional[Wmflib::Team]    $team                     = undef,
     Hash                      $service_params           = {},
 ) {
     if $unit_type == 'service' {
@@ -60,6 +62,7 @@ define systemd::service (
         override          => $override,
         override_filename => $override_filename,
         restart           => $restart,
+        team              => $team,
     }
     if $monitoring_enabled {
         unless $monitoring_notes_url {
