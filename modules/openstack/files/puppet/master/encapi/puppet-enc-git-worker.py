@@ -40,26 +40,32 @@ def configure_options():
 
 class Database:
     def __init__(self, **kwargs):
-        self.connection = pymysql.connect(
-            **kwargs,
+        self.connection_params = kwargs
+
+    def connection(self):
+        return pymysql.connect(
+            **self.connection_params,
             charset="utf8",
             cursorclass=pymysql.cursors.DictCursor,
         )
 
     def query_one(self, sql: str, params=None):
-        with self.connection.cursor() as cursor:
-            cursor.execute(sql, params)
-            return cursor.fetchone()
+        with self.connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                return cursor.fetchone()
 
     def query_all(self, sql: str, params=None):
-        with self.connection.cursor() as cursor:
-            cursor.execute(sql, params)
-            return cursor.fetchall()
+        with self.connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql, params)
+                return cursor.fetchall()
 
     def update(self, sql: str, params=None):
-        with self.connection.cursor() as cursor:
-            cursor.execute(sql, params)
-        self.connection.commit()
+        with self.connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(sql, params)
+            connection.commit()
 
 
 def get_author(keystone, user_id: str) -> git.Actor:
