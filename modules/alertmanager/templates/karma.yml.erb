@@ -3,8 +3,8 @@
 alertmanager:
   interval: 10s
   servers:
-    - name: "<%= @facts['domain']  %>"
-      uri: "http://localhost:9093"
+    - name: "<%= @facts['domain'] %>"
+      uri: "http://alertmanager-<%= @site %>.<%= @facts['domain'] %>"
       proxy: true
     - name: "wmcloud.org"
       uri: "https://prometheus.wmcloud.org/.alertmanager"
