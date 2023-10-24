@@ -31,7 +31,7 @@
 # Retries and timeouts can be defined if needed. By default we will have:
 # - 65 seconds timeout on requests
 # - 1 retry on error
-# @param sni_support use on of yes, no our strict to indicate sni behaviour.  Default: yes
+# @param sni_support use one of yes, no, or strict to indicate sni behaviour.  Default: yes
 # @param tls_port The TLS port to listen on.  Default 443
 # @param websockets If true configure websocket support.  Default: false
 # @param upstream_response_timeout timeout on a request in seconds.  Default: 65
