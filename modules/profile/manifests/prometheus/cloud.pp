@@ -275,6 +275,10 @@ class profile::prometheus::cloud (
         min_time            => $thanos_min_time,
     }
 
+    prometheus::pint::source { 'cloud':
+        port => $port,
+    }
+
     prometheus::web { 'cloud':
         proxy_pass => "http://localhost:${port}/cloud",
     }
