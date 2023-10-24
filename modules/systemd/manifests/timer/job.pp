@@ -101,6 +101,9 @@
 # @param path_exists sets the ConditionPathExists value for the timer.  If this path doesn't exist
 #   then the unit will fail.  this parameter is intended to be used as a safety measure which
 #   prevents some disruptive action occurring if this folder doesn't exists
+# @param success_exit_statuses
+#   Sets an list of SuccessExitStatus, allowing non-zero exit codes to be treated as success.
+#   The statuses passed in this option will be used as well as a zero for success values.
 define systemd::timer::job (
     Variant[
         Systemd::Timer::Schedule,
@@ -141,6 +144,7 @@ define systemd::timer::job (
     Optional[String]                        $after                     = undef,
     Optional[String]                        $group                     = undef,
     Optional[String]                        $path_exists               = undef,
+    Array[Integer[1, 255]]                  $success_exit_status       = [],
 ) {
 
     unless $path_exists =~ Undef or $path_exists =~ Stdlib::UnixPath
