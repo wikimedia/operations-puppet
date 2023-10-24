@@ -5,7 +5,7 @@ class profile::prometheus::cloud (
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
-    Stdlib::Fqdn $openstack_exporter_host = lookup('profile::wmcs::prometheus::openstack_exporter_host'),
+    Stdlib::Fqdn $openstack_exporter_host = lookup('profile::wmcs::eqiad1::metrics::openstack_exporter_host'),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
