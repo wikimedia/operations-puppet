@@ -142,3 +142,10 @@ device_path = /dev/sdb
 container_registry = quay.io/wikimedia-cloud-services
 container_registry_username = <%= @trove_quay_user %>
 container_registry_password = <%= @trove_quay_pass %>
+
+[service_credentials]
+auth_url = https://<%= @keystone_fqdn %>:25000
+username = <%= @trove_service_user %>
+password = <%= @trove_service_user_pass %>
+project_name = <%= @trove_service_project%>
+region_name = <%= @region %>
