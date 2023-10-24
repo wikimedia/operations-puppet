@@ -1634,9 +1634,9 @@ node /^cloudvirt200[1-3]\-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::virt_ceph)
 }
 
-# WMCS Graphite and StatsD hosts
+# Former WMCS monitoring hosts
 node /^cloudmetrics100[34]\.eqiad\./ {
-    role(wmcs::monitoring)
+    role(insetup::wmcs)
 }
 
 node /^cloudcontrol100[567]\.eqiad\./ {
