@@ -2690,13 +2690,18 @@ node /^relforge100[3-4]\.eqiad\./ {
 }
 
 # restbase eqiad cluster
-node /^restbase10(1[6-9]|2[0-9]|3[0-3])\.eqiad\./ {
+node /^restbase10(1[7-9]|2[0-9]|3[0-3])\.eqiad\./ {
     role(restbase::production)
 }
 
 # restbase codfw cluster
 node /^restbase20(1[3-9]|2[0-7])\.codfw\./ {
     role(restbase::production)
+}
+
+# decommissioned restbase (T349526)
+node /^restbase1016\.eqiad\./ {
+    role(spare::system)
 }
 
 # decommissioned restbase (T349526)

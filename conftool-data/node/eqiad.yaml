@@ -215,7 +215,6 @@ eqiad:
     mw1356.eqiad.wmnet: [parsoid-php]
     mw1357.eqiad.wmnet: [parsoid-php]
   restbase:
-    restbase1016.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1017.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1018.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1019.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
