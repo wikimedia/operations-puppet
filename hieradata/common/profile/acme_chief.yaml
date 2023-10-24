@@ -1,0 +1,2 @@
+profile::acme_chief::ssl_client_certificate: '/etc/ssl/localcerts/puppet_ca_certs.pem'
+profile::acme_chief::ssl_client_certificate_source: 'puppet:///modules/profile/pki/puppet_ca_certs.pem'

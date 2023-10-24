@@ -40,6 +40,8 @@ kubernetes::clusters_defaults: {}
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: "profile/mail/default_mail_relay/exim4.minimal.wmcs.erb"
 
+profile::acme_chief::ssl_client_certificate: "%{facts.puppet_config.localcacert}"
+profile::acme_chief::ssl_client_certificate_source: ~
 profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia
 profile::aptrepo::wikimedia::private_basedir: /srv/private
 profile::aptrepo::wikimedia::homedir: "/root"

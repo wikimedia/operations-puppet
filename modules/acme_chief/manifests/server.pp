@@ -9,6 +9,7 @@ class acme_chief::server (
     Variant[String, Array[Stdlib::Fqdn]] $passive_host = [],
     Array[Stdlib::Fqdn] $authdns_hosts = [],
     Integer $watchdog_sec = 0,
+    Stdlib::Unixpath $ssl_client_certificate = $facts['puppet_config']['localcacert'],
 ) {
     $is_active = $::fqdn == $active_host
     $passive_hosts = [$passive_host].flatten()

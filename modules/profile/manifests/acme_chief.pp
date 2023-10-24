@@ -42,6 +42,8 @@ class profile::acme_chief (
     Variant[String, Array[Stdlib::Fqdn]] $passive_host = lookup('profile::acme_chief::passive'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
     Integer $watchdog_sec = lookup('profile::acme_chief::watchdog_sec', {default_value => 600}),
+    Stdlib::Unixpath $ssl_client_certificate = lookup('profile::acme_chief::ssl_client_certificate'),
+    Optional[Stdlib::Filesource] $ssl_client_certificate_source = lookup('profile::acme_chief::ssl_client_certificate_source'),
 ) {
     $internal_domains = ['wmnet']
     $acme_chief_certificates = $certificates + $shared_acme_certificates
@@ -55,15 +57,30 @@ class profile::acme_chief (
             }
         }
     }
+    if $ssl_client_certificate_source {
+        if $ssl_client_certificate == $facts['puppet_config']['localcacert'] {
+            $msg = @(MSG/L)
+            If you set \$ssl_client_certificate_source you must also change \$ssl_client_certificate \
+            to avoid overwriting the puppet ca cert
+            |- MSG
+            fail($msg)
+        }
+        file { $ssl_client_certificate:
+            ensure => file,
+            mode   => '0444',
+            source => $ssl_client_certificate_source,
+        }
+    }
 
     class { '::acme_chief::server':
-        accounts      => $accounts,
-        certificates  => $acme_chief_certificates,
-        challenges    => $challenges,
-        http_proxy    => $http_proxy,
-        active_host   => $active_host,
-        passive_host  => $passive_host,
-        authdns_hosts => $authdns_servers.keys(),
-        watchdog_sec  => $watchdog_sec,
+        accounts               => $accounts,
+        certificates           => $acme_chief_certificates,
+        challenges             => $challenges,
+        http_proxy             => $http_proxy,
+        active_host            => $active_host,
+        passive_host           => $passive_host,
+        authdns_hosts          => $authdns_servers.keys(),
+        watchdog_sec           => $watchdog_sec,
+        ssl_client_certificate => $ssl_client_certificate,
     }
 }

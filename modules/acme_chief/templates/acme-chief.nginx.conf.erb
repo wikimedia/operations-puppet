@@ -9,7 +9,7 @@ server {
     access_log   /var/log/nginx/acme-chief.secure.access.log;
     ssl_certificate /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem;
     ssl_certificate_key /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem;
-    ssl_client_certificate /var/lib/puppet/ssl/certs/ca.pem;
+    ssl_client_certificate <%= @ssl_client_certificate %>;
     ssl_verify_client on;
     <%= @ssl_settings.join("\n\t") %>
 
