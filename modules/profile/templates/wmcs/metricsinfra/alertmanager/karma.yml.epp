@@ -30,12 +30,19 @@ labels:
       - 'job'
       - 'project'
       - 'alertname'
+    valueOnly:
+      # Don't display 'severity' and 'alertname' label name since that's
+      # implied, and highlighted by colors
+      - 'severity'
+      - 'alertname'
     custom:
       # Match Icinga background colors for 'severity'
       severity:
-        - value: 'crit'
+        - value: 'page'
+          color: '#e74c3c'
+        - value: 'critical'
           color: '#ffd4c9'
-        - value: 'warn'
+        - value: 'warning'
           color: '#ffda9f'
         - value: 'unknown'
           color: '#eeaeee'
