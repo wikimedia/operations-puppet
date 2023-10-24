@@ -60,6 +60,14 @@ class alertmanager (
         validate_cmd => '/usr/bin/amtool check-config %',
     }
 
+    file { '/etc/prometheus/amtool.yml':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('alertmanager/amtool.yml.erb'),
+    }
+
     # Custom email template -- adapted from upstream to adjust for "alert dashboard" links.
     file { '/etc/prometheus/alertmanager_templates/email.tmpl':
         ensure  => present,
