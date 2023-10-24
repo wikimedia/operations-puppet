@@ -4,17 +4,6 @@
 "admin_or_member": "is_admin:True or role:member"
 "default": "rule:admin_or_member"
 
-# Disable backup features until we have Swift
-"instance:backups": "!"
-"backup:create": "!"
-"backup:delete": "!"
-"backup:index": "!"
-"backup:index:all_projects": "!"
-"backup:show": "!"
-"backup_strategy:create": "!"
-"backup_strategy:index": "!"
-"backup_strategy:delete": "!"
-
 
 # Make a bunch of things world-readable for e.g. openstackbrowser
 "instance:index": ""
