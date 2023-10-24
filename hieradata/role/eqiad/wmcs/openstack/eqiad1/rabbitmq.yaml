@@ -1,12 +1,6 @@
 profile::admin::groups:
   - wmcs-roots
 
-prometheus_nodes:
-  - cloudmetrics1003.eqiad.wmnet
-  - cloudmetrics1004.eqiad.wmnet
-  - prometheus1005.eqiad.wmnet
-  - prometheus1006.eqiad.wmnet
-
 # TODO: These overrides are temporary until Rabbit nodes
 # are using the cloud-private setup (T345610)
 profile::openstack::eqiad1::designate_hosts:

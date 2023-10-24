@@ -1,13 +1,5 @@
 prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
 
-# prometheus-node-exporter by prod servers
-# prometheus-openstack-exporter by cloud servers
-prometheus_nodes:
-    - cloudmetrics1003.eqiad.wmnet
-    - cloudmetrics1004.eqiad.wmnet
-    - prometheus2005.codfw.wmnet
-    - prometheus2006.codfw.wmnet
-
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
 profile::memcached::max_seq_reqs: 200

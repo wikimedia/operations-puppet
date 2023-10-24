@@ -1,14 +1,6 @@
 profile::admin::groups:
   - wmcs-roots
 
-prometheus_nodes:
-  # Base scraping from main Prometheus servers
-  - prometheus1005.eqiad.wmnet
-  - prometheus1006.eqiad.wmnet
-  # WMCS-specific Prometheus servers for WMCS-specific scrapes
-  - cloudmetrics1003.eqiad.wmnet
-  - cloudmetrics1004.eqiad.wmnet
-
 # TODO: override here the list of openstack controllers so HAproxy in cloudlb
 # can contact the backends using the cloud-private subnet. Once all cloudcontrol servers are
 # in the same network setup, this override here can be deleted, because it should be set elsewhere.

@@ -23,14 +23,6 @@ profile::openstack::codfw1dev::pdns::hosts:
    private_fqdn: cloudservices2004-dev.private.codfw.wikimedia.cloud
    host_fqdn: cloudservices2004-dev.codfw.wmnet
 
-# prometheus-pdns-exporter is scraped by cloudmetrics
-# prometheus-node-exporter by prod servers
-prometheus_nodes:
-    - cloudmetrics1003.eqiad.wmnet
-    - cloudmetrics1004.eqiad.wmnet
-    - prometheus2005.codfw.wmnet
-    - prometheus2006.codfw.wmnet
-
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.codfw1dev.wikimediacloud.org
 
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.254.1
