@@ -151,15 +151,16 @@ class profile::doc (
     }
 
     rsync::quickdatacopy { 'doc-host-data-sync':
-        ensure        => present,
-        source_host   => $active_host,
-        dest_host     => $all_hosts.filter |$host| { $host != $active_host },
-        module_path   => '/srv/doc',
-        auto_sync     => true,
-        delete        => true,
-        chown         => 'doc-uploader:doc-uploader',
-        auto_interval => { 'start' => 'OnUnitInactiveSec', 'interval' => '1h' },
-        require       => [User['doc-uploader'], File['/srv/doc']],
+        ensure                     => present,
+        source_host                => $active_host,
+        dest_host                  => $all_hosts.filter |$host| { $host != $active_host },
+        module_path                => '/srv/doc',
+        auto_sync                  => true,
+        delete                     => true,
+        chown                      => 'doc-uploader:doc-uploader',
+        auto_interval              => { 'start' => 'OnUnitInactiveSec', 'interval' => '1h' },
+        require                    => [User['doc-uploader'], File['/srv/doc']],
+        ignore_missing_file_errors => true,
     }
 
     $all_hosts.each |Stdlib::Fqdn $other_host| {
