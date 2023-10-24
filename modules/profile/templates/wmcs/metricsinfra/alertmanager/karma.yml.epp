@@ -25,15 +25,15 @@ authorization:
     silences: /etc/karma-acl-silences.yaml
 
 labels:
+  valueOnly:
+    # Don't display 'severity' and 'alertname' label name since that's
+    # implied, and highlighted by colors
+    - 'severity'
+    - 'alertname'
   color:
     unique:
       - 'job'
       - 'project'
-      - 'alertname'
-    valueOnly:
-      # Don't display 'severity' and 'alertname' label name since that's
-      # implied, and highlighted by colors
-      - 'severity'
       - 'alertname'
     custom:
       # Match Icinga background colors for 'severity'
