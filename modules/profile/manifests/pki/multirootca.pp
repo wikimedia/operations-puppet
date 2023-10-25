@@ -175,7 +175,7 @@ class profile::pki::multirootca (
         $five_years = 157680000
         $command = @("COMMAND"/L)
         /usr/bin/cfssl gencrl - ${ca_file} ${ca_key_file} ${five_years} </dev/null |\
-        /usr/bin/base64 -d > ${crl_file}"
+        /usr/bin/base64 -d > ${crl_file}
         |- COMMAND
         exec { "Generate initial CRL for ${intermediate}":
             creates => $crl_file,
