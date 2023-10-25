@@ -176,10 +176,9 @@ class apereo_cas (
         purge   => true,
     }
     file { [$base_dir, $log_dir]:
-        ensure  => directory,
-        owner   => $daemon_user,
-        mode    => '0600',
-        recurse => true,
+        ensure => directory,
+        owner  => $daemon_user,
+        mode   => '0600',
     }
     $prometheus_ips = $prometheus_nodes.map |$node| { dnsquery::lookup($node) }.flatten
     $idp_ips = $idp_nodes.map |$node| { dnsquery::lookup($node) }.flatten
