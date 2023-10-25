@@ -671,3 +671,5 @@ mediawiki::sites:
             ]
 profile::mediawiki::webserver::default_php_version: "7.4"
 profile::mediawiki::jobrunner::default_php_version: "7.4"
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
