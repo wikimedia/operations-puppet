@@ -21,7 +21,7 @@ max_connections = 8000
 
 <% if @ssl == 'on' or @ssl == 'puppet-cert' %>
 # ssl
-ssl-ca     = /etc/ssl/certs/Puppet_Internal_CA.pem
+ssl-ca     = /etc/ssl/certs/wmf-ca-certificates.crt
 ssl-cert   = /etc/mysql/ssl/cert.pem
 ssl-key    = /etc/mysql/ssl/server.key
 ssl-cipher = TLSv1.2
