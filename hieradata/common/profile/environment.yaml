@@ -15,4 +15,5 @@ profile::environment::profile_scripts:
   field.sh: 'puppet:///modules/base/environment/field.sh'
   mysql-ps1.sh: 'puppet:///modules/base/environment/mysql-ps1.sh'
   bash_autologout.sh: 'puppet:///modules/base/environment/bash_autologout.sh'
+  proxy.sh: 'puppet:///modules/base/environment/proxy.sh'
 profile::environment::variables: {}
