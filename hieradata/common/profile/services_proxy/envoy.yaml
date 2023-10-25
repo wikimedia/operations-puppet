@@ -344,6 +344,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - push-notifications
   - wdqs-internal
   - restbase
+  - rest-gateway
   - cxserver
   - shellbox
   - shellbox-constraints
