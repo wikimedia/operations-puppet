@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Installs a container runtime and the core kubeadm tool
 class profile::wmcs::kubeadm::core (
-    String $component = lookup('profile::wmcs::kubeadm::component'),
+    String[1]              $component           = lookup('profile::wmcs::kubeadm::component'),
     Optional[Stdlib::Fqdn] $label_custom_domain = lookup('profile::wmcs::kubeadm::label_custom_domain', {default_value => undef}),
-    Boolean $mount_nfs = lookup('mount_nfs', {default_value => false}),
+    String[1]              $pause_image         = lookup('profile::wmcs::kubeadm::pause_image', {default_value => 'docker-registry.tools.wmflabs.org/pause:3.1'}),
+    Boolean                $mount_nfs           = lookup('mount_nfs', {default_value => false}),
 ) {
     class { '::kubeadm::repo':
         component => $component,
@@ -19,7 +20,9 @@ class profile::wmcs::kubeadm::core (
         # the worker nodes from Debian 10 to Debian 12.
         class { '::kubeadm::calico_workaround': }
     } else {
-        class { 'kubeadm::containerd': }
+        class { 'kubeadm::containerd':
+            pause_image => $pause_image,
+        }
     }
 
     if $label_custom_domain {
@@ -41,5 +44,6 @@ class profile::wmcs::kubeadm::core (
 
     class { '::kubeadm::core':
         extra_labels => $extra_labels,
+        pause_image  => $pause_image,
     }
 }

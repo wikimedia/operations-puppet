@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # main kubeadm packages and setup
 class kubeadm::core (
-    Array[String] $extra_labels = [],
+    String[1]     $pause_image,
+    Array[String] $extra_labels,
 ) {
     require ::kubeadm::repo
     include ::kubeadm::kubectl
@@ -53,7 +54,7 @@ class kubeadm::core (
         TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,\
         TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,\
         TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256 \
-        --pod-infra-container-image=docker-registry.tools.wmflabs.org/pause:3.1\
+        --pod-infra-container-image=${pause_image}\
         ${extra_labels_joined}\
         "
         |-ARGS
