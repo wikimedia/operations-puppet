@@ -214,7 +214,7 @@ class profile::pki::multirootca (
     ferm::service{'csr_and_ocsp_responder':
         proto  => 'tcp',
         port   => '80',
-        srange => '$DOMAIN_NETWORKS',
+        srange => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
     }
     ferm::service{'multirootca tls termination':
         proto  => 'tcp',
