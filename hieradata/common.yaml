@@ -1224,7 +1224,6 @@ http_proxy: "http://%{lookup('http_proxy_host')}:%{lookup('http_proxy_port')}"
 # IP address information so that authdns tooling can operate in the face of
 # recdns issues.
 authdns_servers:
-  'dns1004.wikimedia.org': 208.80.154.6
   'dns1005.wikimedia.org': 208.80.154.153
   'dns1006.wikimedia.org': 208.80.154.77
   'dns2004.wikimedia.org': 208.80.153.48
