@@ -2699,16 +2699,6 @@ node /^restbase20(1[3-9]|2[0-7])\.codfw\./ {
     role(restbase::production)
 }
 
-# decommissioned restbase (T349526)
-node /^restbase101[6-8]\.eqiad\./ {
-    role(spare::system)
-}
-
-# decommissioned restbase (T349526)
-node /^restbase2012\.codfw\./ {
-    role(spare::system)
-}
-
 # New cassandra dev nodes T324113
 node /^cassandra-dev200[1-3]\.codfw\./ {
     role(cassandra_dev)
