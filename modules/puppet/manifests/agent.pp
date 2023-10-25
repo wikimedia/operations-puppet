@@ -14,18 +14,18 @@
 # @param ca_source to source of the CA file
 # @param certificate_revocation The level of certificate revocation to perform
 class puppet::agent (
-    Boolean                         $manage_ca_file         = false,
-    Stdlib::Unixpath                $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
-    Optional[String[1]]             $ca_server              = undef,
-    Stdlib::Host                    $server                 = 'puppet',
-    Boolean                         $use_srv_records        = false,
-    Optional[Stdlib::Fqdn]          $srv_domain             = undef,
-    Optional[String[1]]             $certname               = undef,
-    Array[Stdlib::Fqdn]             $dns_alt_names          = [],
-    Optional[String[1]]             $environment            = undef,
-    Enum['pson', 'json', 'msgpack'] $serialization_format   = 'json',
-    Optional[Stdlib::Filesource]    $ca_source              = undef,
-    Optional[Enum['chain', 'leaf']] $certificate_revocation = undef,
+    Boolean                                  $manage_ca_file         = false,
+    Stdlib::Unixpath                         $ca_file_path           = '/var/lib/puppet/ssl/certs/ca.pem',
+    Optional[String[1]]                      $ca_server              = undef,
+    Stdlib::Host                             $server                 = 'puppet',
+    Boolean                                  $use_srv_records        = false,
+    Optional[Stdlib::Fqdn]                   $srv_domain             = undef,
+    Optional[String[1]]                      $certname               = undef,
+    Array[Stdlib::Fqdn]                      $dns_alt_names          = [],
+    Optional[String[1]]                      $environment            = undef,
+    Enum['pson', 'json', 'msgpack']          $serialization_format   = 'json',
+    Optional[Stdlib::Filesource]             $ca_source              = undef,
+    Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = undef,
 ) {
     if $use_srv_records and !$srv_domain {
         fail('You must set $srv_domain when using $use_srv_records')
