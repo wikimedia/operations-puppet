@@ -9,7 +9,18 @@ class profile::wmcs::kubeadm::core (
         component => $component,
     }
 
-    class { '::kubeadm::docker': }
+    if debian::codename::eq('buster') {
+        class { '::kubeadm::docker': }
+
+        # Older versions of calico only supported iptables-legacy. Newer
+        # versions (including the ones we currently run) seem to support
+        # the newer iptables-nft (nft as in netfilter, not the blockchain
+        # thing) variant, so we will gradually migrate to it as we migrate
+        # the worker nodes from Debian 10 to Debian 12.
+        class { '::kubeadm::calico_workaround': }
+    } else {
+        class { 'kubeadm::containerd': }
+    }
 
     if $label_custom_domain {
         $label_base_domains = [
@@ -30,14 +41,5 @@ class profile::wmcs::kubeadm::core (
 
     class { '::kubeadm::core':
         extra_labels => $extra_labels,
-    }
-
-    # Older versions of calico only supported iptables-legacy. Newer
-    # versions (including the ones we currently run) seem to support
-    # the newer iptables-nft (nft as in netfilter, not the blockchain
-    # thing) variant, so we will gradually migrate to it as we migrate
-    # the worker nodes from Debian 10 to Debian 12.
-    if debian::codename::eq('buster') {
-        class { '::kubeadm::calico_workaround': }
     }
 }
