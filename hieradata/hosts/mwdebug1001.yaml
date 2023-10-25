@@ -1,4 +1,2 @@
 profile::mediawiki::webserver::stream_to_logstash: true
 profile::tlsproxy::envoy::error_page: true
-# Enable icu67 component - T345561
-profile::mediawiki::php::icu67: true
