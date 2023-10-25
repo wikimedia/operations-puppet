@@ -54,7 +54,7 @@ class profile::puppet::agent (
             }
         }
         # Force leaf on puppet7 T330490
-        $_certificate_revocation = 'leaf'
+        $_certificate_revocation = $certificate_revocation.lest || { 'leaf' }
         $_use_srv_records = $use_srv_records
         $_srv_domain = $srv_domain.lest || {
             $::site ? {
