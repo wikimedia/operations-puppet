@@ -62,10 +62,12 @@ class profile::pki::multirootca (
     $multirootca_service = 'cfssl-multirootca'
     $document_root = '/srv/cfssl'
     $bundle_dir = "${document_root}/bundles"
+    $crl_dir = "${document_root}/crl"
     $check_command_base = '/usr/local/sbin/cfssl-certs check -l'
     $ensure_monitoring = $enable_monitoring.bool2str('present', 'absent')
 
     wmflib::dir::mkdir_p($bundle_dir)
+    wmflib::dir::mkdir_p($crl_dir)
 
     # Make the puppet CA available for download
     file {"${bundle_dir}/Puppet_Internal_CA.pem.pem":
@@ -169,6 +171,17 @@ class profile::pki::multirootca (
             mode    => '0444',
             content => $int_ca_content,
         }
+        $crl_file = "${crl_dir}/${safe_title}"
+        $five_years = 157680000
+        $command = @("COMMAND"/L)
+            /usr/bin/cfssl gencrl - ${ca_file} ${ca_key_file} ${five_years} </dev/null |\
+            /usr/bin/base64 -d > ${crl_file}"
+        |- COMMAND
+        exec { "Generate initial CRL for ${intermediate}":
+            creates => $crl_file,
+            path    => ['/usr/bin'],
+            command => $command,
+        }
         $memo + {
             $safe_title => {
                 'private'     => $ca_key_file,
@@ -211,15 +224,15 @@ class profile::pki::multirootca (
         ensure  => present,
         content => template('profile/pki/multirootca/vhost.conf.erb'),
     }
-    ferm::service{'csr_and_ocsp_responder':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
+    firewall::service{'csr_and_ocsp_responder':
+        proto    => 'tcp',
+        port     => '80',
+        src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
     }
-    ferm::service{'multirootca tls termination':
-        proto  => 'tcp',
-        port   => '443',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service{'multirootca tls termination':
+        proto    => 'tcp',
+        port     => '443',
+        src_sets => ['DOMAIN_NETWORKS'],
     }
     include network::constants
     $srange = ($network::constants::services_kubepods_networks +
