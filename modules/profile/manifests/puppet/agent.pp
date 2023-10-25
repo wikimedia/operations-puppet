@@ -33,8 +33,8 @@ class profile::puppet::agent (
     Optional[String[1]]                $environment            = lookup('profile::puppet::agent::environment'),
     Enum['pson', 'json', 'msgpack']    $serialization_format   = lookup('profile::puppet::agent::serialization_format'),
     Array[Stdlib::Fqdn]                $dns_alt_names          = lookup('profile::puppet::agent::dns_alt_names'),
-    Optional[Enum['chain', 'leaf']]    $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
     Boolean                            $create_timer           = lookup('profile::puppet::agent::create_timer', {'default_value' => true}),
+    Optional[Enum['chain', 'leaf', 'false']] $certificate_revocation = lookup('profile::puppet::agent::certificate_revocation'),
 ) {
     if $force_puppet7 {
         if debian::codename::lt('bullseye') {
