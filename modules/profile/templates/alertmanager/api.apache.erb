@@ -26,6 +26,10 @@
 
         # Example of custom post data logging in apache error log for future reference
         #SecRule REQUEST_METHOD "POST" "id:1000,phase:2,ctl:auditEngine=On,log,pass,msg:'User %{ARGS.user} has scheduled downtime on %{ARGS.thing}'"
+
+        # Remove sensitive data from audit log
+        SecAction "id:1010,phase:5,nolog,pass,sanitiseRequestHeader:Cookie"
+        SecAction "id:1011,phase:5,nolog,pass,sanitiseRequestHeader:Authorization"
     </IfModule>
 
     <Location />
