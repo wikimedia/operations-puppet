@@ -393,8 +393,6 @@ profile::kubernetes::deployment_server::general:
       certmanager:
         <<: *certmanager_eqiad
 
-# Enable icu63 component - T264991
-profile::mediawiki::php::icu63: true
 profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
 

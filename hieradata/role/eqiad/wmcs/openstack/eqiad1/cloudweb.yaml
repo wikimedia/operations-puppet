@@ -86,8 +86,6 @@ profile::mediawiki::php::enable_fpm: true
 # Leaving this because of wikitech
 profile::monitoring::is_critical: true
 profile::mediawiki::apc_shm_size: 128M
-# Enable icu63 component - T264991
-profile::mediawiki::php::icu63: true
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::contacts::role_contacts: ['WMCS']
 
