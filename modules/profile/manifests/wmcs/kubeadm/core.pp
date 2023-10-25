@@ -32,5 +32,12 @@ class profile::wmcs::kubeadm::core (
         extra_labels => $extra_labels,
     }
 
-    class { '::kubeadm::calico_workaround': }
+    # Older versions of calico only supported iptables-legacy. Newer
+    # versions (including the ones we currently run) seem to support
+    # the newer iptables-nft (nft as in netfilter, not the blockchain
+    # thing) variant, so we will gradually migrate to it as we migrate
+    # the worker nodes from Debian 10 to Debian 12.
+    if debian::codename::eq('buster') {
+        class { '::kubeadm::calico_workaround': }
+    }
 }
