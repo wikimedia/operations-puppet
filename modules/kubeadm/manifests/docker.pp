@@ -6,6 +6,7 @@ class kubeadm::docker (
     $packages = [
         'docker-ce',
         'docker-ce-cli',
+        'containerd.io',
     ]
 
     package { $packages:

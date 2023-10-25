@@ -9,7 +9,6 @@ class kubeadm::core (
     $packages = [
         'kubeadm',
         'kubernetes-cni',
-        'containerd.io',
         'cri-tools',
         'ipset',
     ]
