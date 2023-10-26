@@ -196,12 +196,12 @@ class profile::prometheus::analytics (
         class_name => 'role::analytics_cluster::zookeeper',
     }
 
-  prometheus::jmx_exporter_config { "zookeeper_flink_${::site}":
-    dest       => "${targets_path}/jmx_zookeeper_flink_${::site}.yaml",
-    class_name => 'role::zookeeper::flink',
-  }
+    prometheus::jmx_exporter_config { "zookeeper_flink_${::site}":
+        dest       => "${targets_path}/jmx_zookeeper_flink_${::site}.yaml",
+        class_name => 'role::zookeeper::flink',
+    }
 
-  prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
+    prometheus::jmx_exporter_config{ "presto_analytics_${::site}":
         dest       => "${targets_path}/jmx_presto_analytics_${::site}.yaml",
         class_name => 'role::analytics_cluster::presto::server',
     }

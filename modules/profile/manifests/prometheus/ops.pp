@@ -1752,7 +1752,7 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::class_config{ "statsd_exporter_${::site}":
+    prometheus::class_config { "statsd_exporter_${::site}":
         dest             => "${targets_path}/statsd_exporter_${::site}.yaml",
         class_name       => 'profile::prometheus::statsd_exporter',
         class_parameters => { 'enable_scraping' => true },
