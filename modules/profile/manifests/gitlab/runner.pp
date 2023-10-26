@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary configure host to be a docker based GitLab runner
 # @param ensure Ensure of the resources that support it
-# @param access_level Whether the runner is protected or not. Whenever a runner is protected, it
-# picks only jobs created on protected branches or protected tags, and ignores other jobs.
 # @param concurrent Number of concurrent jobs allowed by this runner.
 # @param docker_image Default Docker image to use for job execution
 # @param image pull_policy set pull_policy for [runners.docker] setting
@@ -13,10 +11,7 @@
 # @param ensure_docker_network configure dedicated Docker network
 # @param docker_settings Docker daemon settings
 # @param gitlab_url URL of the GitLab instance on which to register
-# @param locked Whether the runner is locked and can/cannot be enabled for projects
-# @param registration_token Token used to register the runner with the GitLab instance.
-# @param run_untagged Whether the runner should also run untagged jobs
-# @param tags Tags used to schedule matching jobs to this runner
+# @param token Token used to register the runner with the GitLab instance.
 # @param environment Environment variables to configure for the GitLab runner.
 # @param enable_exporter Enable Prometheus metrics exporter
 # @param gitlab_runner_user User which is used to execute gitlab-runner daemon
@@ -46,7 +41,6 @@
 # @param buildkitd_allowed_gateway_sources A list of gateway sources that buildkitd will allow. If undef, all are allowed
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
-    Enum['not_protected', 'ref_protected']      $access_level       = lookup('profile::gitlab::runner::access_level'),
     Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
     String                                      $docker_image       = lookup('profile::gitlab::runner::docker_image'),
     Array[String]                               $pull_policy        = lookup('profile::gitlab::runner::pull_policy'),
@@ -64,10 +58,7 @@ class profile::gitlab::runner (
     String                                      $docker_gc_volumes_high_water_mark = lookup('profile::gitlab::runner::docker_gc_volumes_high_water_mark'),
     String                                      $docker_gc_volumes_low_water_mark  = lookup('profile::gitlab::runner::docker_gc_volumes_low_water_mark'),
     Stdlib::HTTPSUrl                            $gitlab_url         = lookup('profile::gitlab::runner::gitlab_url'),
-    Boolean                                     $locked             = lookup('profile::gitlab::runner::locked'),
-    String                                      $registration_token = lookup('profile::gitlab::runner::registration_token'),
-    Boolean                                     $run_untagged       = lookup('profile::gitlab::runner::run_untagged'),
-    Array[String]                               $tags               = lookup('profile::gitlab::runner::tags'),
+    String                                      $token              = lookup('profile::gitlab::runner::token'),
     Wmflib::POSIX::Variables                    $environment        = lookup('profile::gitlab::runner::environment'),
     Boolean                                     $enable_exporter    = lookup('profile::gitlab::runner::enable_exporter', {default_value => false}),
     String                                      $gitlab_runner_user = lookup('profile::gitlab::runner::user'),
@@ -202,7 +193,6 @@ class profile::gitlab::runner (
     }
 
     if $ensure == 'present' {
-        $tag_list = join($tags, ',')
 
         exec { 'gitlab-register-runner':
             user    => $gitlab_runner_user,
@@ -212,13 +202,9 @@ class profile::gitlab::runner (
                 --non-interactive \
                 --name "${runner_name}" \
                 --url "${gitlab_url}" \
-                --registration-token "${registration_token}" \
+                --token "${token}" \
                 --executor "docker" \
-                --docker-image "${docker_image}" \
-                --tag-list "${tag_list}" \
-                --run-untagged="${run_untagged}" \
-                --locked="${locked}" \
-                --access-level="${access_level}"
+                --docker-image "${docker_image}"
                 |- CMD
             ,
             unless  => "/usr/bin/gitlab-runner list 2>&1 | /bin/grep -q '^${runner_name}'",

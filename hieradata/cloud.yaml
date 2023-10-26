@@ -154,7 +154,6 @@ profile::debmonitor::server::required_groups: []
 profile::debmonitor::server::trusted_ca_source: "/etc/ssl/certs/Puppet_Internal_CA.pem"
 
 profile::gitlab::runner::ensure: present
-profile::gitlab::runner::access_level: not_protected
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::description: WMF GitLab runner
 profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:latest
@@ -177,10 +176,7 @@ profile::gitlab::runner::docker_gc_volumes_high_water_mark: 6g
 profile::gitlab::runner::docker_gc_volumes_low_water_mark: 3g
 profile::gitlab::runner::buildkitd_gckeepstorage: 6Gb
 profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
-profile::gitlab::runner::locked: false
-# profile::gitlab::runner::registration_token: private
-profile::gitlab::runner::run_untagged: true
-profile::gitlab::runner::tags: ["wmcs"]
+# profile::gitlab::runner::token: private
 profile::gitlab::runner::environment: {}
 profile::gitlab::runner::user: "root"
 # restricted firewall is used in cloud

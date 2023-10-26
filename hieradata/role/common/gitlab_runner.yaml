@@ -1,7 +1,6 @@
 profile::admin::groups:
   - gitlab-roots
 profile::gitlab::runner::ensure: present
-profile::gitlab::runner::access_level: ref_protected
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:latest
 profile::gitlab::runner::pull_policy:
@@ -21,10 +20,7 @@ profile::gitlab::runner::docker_gc_volumes_high_water_mark: 135gb
 profile::gitlab::runner::docker_gc_volumes_low_water_mark: 130gb
 profile::gitlab::runner::buildkitd_gckeepstorage: 67Gb
 profile::gitlab::runner::gitlab_url: https://gitlab.wikimedia.org/
-profile::gitlab::runner::locked: true
-# profile::gitlab::runner::registration_token: private
-profile::gitlab::runner::run_untagged: false
-profile::gitlab::runner::tags: ['trusted']
+# profile::gitlab::runner::token: private
 profile::gitlab::runner::environment:
   # environment variables expected by kokkuri when publishing images
   # See https://gitlab.wikimedia.org/repos/releng/kokkuri

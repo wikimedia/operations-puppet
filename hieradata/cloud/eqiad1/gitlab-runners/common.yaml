@@ -1,9 +1,8 @@
 profile::gitlab::runner::docker_settings:
   log-driver: none
-# profile::gitlab::runner::registration_token: private
+# profile::gitlab::runner::token: private
 profile::gitlab::runner::docker_volume: true
 profile::gitlab::runner::ensure_buildkitd: present
-profile::gitlab::runner::run_untagged: false
 puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
 
 # don't exclude /var/lib/docker T328972

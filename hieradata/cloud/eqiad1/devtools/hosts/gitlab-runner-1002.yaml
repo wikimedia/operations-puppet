@@ -1,6 +1,6 @@
 profile::gitlab::runner::docker_settings:
   log-driver: none
-# profile::gitlab::runner::registration_token: private
+# profile::gitlab::runner::token: private
 profile::gitlab::runner::docker_volume: true
 # puppetmaster: gitlab-runners-puppetmaster-01.gitlab-runners.eqiad1.wikimedia.cloud
 # uses similar config as WMCS runners from hieradata/cloud.yaml
