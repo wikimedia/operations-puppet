@@ -2,8 +2,8 @@
 # @summary class for managing contact meta data
 # @param role_contacts the default contact for this role, most often this is a Team
 class profile::contacts (
-    String[1]        $cluster       = lookup('cluster'),
-    Array[String[3]] $role_contacts = lookup('profile::contacts::role_contacts'),
+    String[1]           $cluster       = lookup('cluster'),
+    Array[Wmflib::Team] $role_contacts = lookup('profile::contacts::role_contacts'),
 ) {
     # We shouldn't use role unless we have to, in this profile it make sense
     # as such we should check that its defined and fail early if not

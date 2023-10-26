@@ -11,7 +11,7 @@ describe 'profile::contacts' do
         it { is_expected.to compile.with_all_deps }
       end
       context "add contacts" do
-        let(:params) { super().merge(role_contacts: ['foobar']) }
+        let(:params) { super().merge(role_contacts: ['Infrastructure Foundations']) }
         it { is_expected.to compile.with_all_deps }
       end
     end
