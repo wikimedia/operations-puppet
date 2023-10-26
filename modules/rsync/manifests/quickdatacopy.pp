@@ -158,7 +158,7 @@ define rsync::quickdatacopy(
 
       $success_exit_statuses = $ignore_missing_file_errors ? {
             true => [24],
-            default => [],
+            false => [],
       }
 
       systemd::timer::job { "rsync-${title}":
