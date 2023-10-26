@@ -6,6 +6,5 @@ type Firewall::Srange = Variant[
       Stdlib::Fqdn,
       Stdlib::IP::Address,
     ],
-    1
   ]
 ]
