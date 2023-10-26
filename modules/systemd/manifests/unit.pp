@@ -106,7 +106,7 @@ define systemd::unit (
         $unit_team_metric = @("METRIC")
         # HELP systemd_unit_owner The team owner of the systemd unit
         # TYPE systemd_unit_owner gauge
-        systemd_unit_owner{team="${_team}", unit="${unit_name}"} 1.0
+        systemd_unit_owner{team="${_team}", name="${unit_name}"} 1.0
         | METRIC
         file { $drop_in_file:
             ensure  => file,

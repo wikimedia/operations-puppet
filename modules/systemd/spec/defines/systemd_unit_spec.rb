@@ -115,7 +115,7 @@ describe 'systemd::unit' do
             '/var/lib/prometheus/node.d/systemd_unit_dummyservice.service_owner.prom'
           )
             .with_content(
-              /systemd_unit_owner\{team="infrastructure-foundations", unit="dummyservice\.service"\} 1\.0/
+              /systemd_unit_owner\{team="infrastructure-foundations", name="dummyservice\.service"\} 1\.0/
             )
         end
       end
