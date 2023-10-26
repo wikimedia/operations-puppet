@@ -180,6 +180,7 @@ class profile::httpbb (
             # This doesn't really need access to anything in www-data, but it definitely doesn't need root.
             user               => 'www-data',
             monitoring_enabled => true,
+            team               => 'ServiceOps',
         }
     }
 
@@ -202,6 +203,7 @@ class profile::httpbb (
                 },
                 user               => 'www-data',
                 monitoring_enabled => true,
+                team               => 'ServiceOps',
             }
         }
     }
