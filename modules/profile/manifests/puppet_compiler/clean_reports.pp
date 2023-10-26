@@ -3,11 +3,10 @@
 class profile::puppet_compiler::clean_reports (
     Stdlib::Unixpath $output_dir = lookup('profile::puppet_compiler::clean_reports::output_dir'),
 ) {
-    # TODO: now we store reports in gzip we can probably loosen this
     systemd::timer::job {'delete-old-output-files':
         ensure      => 'present',
         description => 'Clean up old PCC reports',
-        command     => "/usr/bin/find ${output_dir} -ctime +31 -delete",
+        command     => "/usr/bin/find ${output_dir} -ctime +90 -delete",
         user        => 'root',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
     }
