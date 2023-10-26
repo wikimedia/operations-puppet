@@ -42,11 +42,6 @@ mod 'postfix',
     :git => 'https://github.com/lollipopman/puppet-postfix',
     :ref => '6fa18a6'
 
-# https://github.com/voxpupuli/puppet-prometheus_reporter/pull/73
-mod 'prometheus_reporter',
-    :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-modules/puppet-prometheus_reporter',
-    :ref => 'report_prefix'
-
 mod 'rspamd',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',
     :ref => 'v1.3.1'
