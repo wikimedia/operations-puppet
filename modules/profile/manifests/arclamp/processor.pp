@@ -59,9 +59,9 @@ class profile::arclamp::processor (
         content => template('profile/webperf/arclamp/httpd.conf.erb'),
     }
 
-    ferm::service { 'arclamp_http':
+    firewall::service { 'arclamp_http':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
     }
 
     backup::set { 'arclamp-application-data': }

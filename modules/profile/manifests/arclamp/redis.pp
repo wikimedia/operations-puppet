@@ -12,10 +12,10 @@ class profile::arclamp::redis() {
         },
     }
 
-    ferm::service { 'xenon_redis':
-      proto  => 'tcp',
-      port   => 6379,
-      srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'xenon_redis':
+        proto    => 'tcp',
+        port     => 6379,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     prometheus::redis_exporter { '6379': }
