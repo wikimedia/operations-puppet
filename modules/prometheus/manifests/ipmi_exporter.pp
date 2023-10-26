@@ -61,6 +61,7 @@ class prometheus::ipmi_exporter (
         ensure  => file,
         mode    => '0444',
         content => $config.to_yaml,
+        require => Package['prometheus-ipmi-exporter'],
         notify  => Service['prometheus-ipmi-exporter'],
     }
 
