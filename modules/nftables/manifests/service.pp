@@ -135,8 +135,8 @@ define nftables::service (
     if $notrack {
         $notrack_rule = regsubst($content, 'accept$', 'notrack')
 
-        $filename = sprintf('/etc/nftables/notrack/%02d_%s.nft', $prio, $title)
-        @file { $filename:
+        $notrack_filename = sprintf('/etc/nftables/notrack/%02d_%s.nft', $prio, $title)
+        @file { $notrack_filename:
             ensure  => $ensure,
             owner   => 'root',
             group   => 'root',
