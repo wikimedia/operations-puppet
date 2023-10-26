@@ -31,12 +31,15 @@ class profile::contacts (
     # when true which fails
     $_role_contact = $role_contacts.empty ? {
         true    => 'Unknown',
-        default => $role_contacts[0].regsubst('\W', '-', 'G').downcase,
+        default => $role_contacts[0],
     }
-    $role_owner_metric = @("METRIC")
+    $role_owner_metric = @("METRIC"/L)
     # HELP role_owner The team owner of the server role
     # TYPE role_owner gauge
-    role_owner{team="${_role_contact}",role="${role_fixup}", cluster="${cluster}"} 1.0
+    role_owner{\
+    team="${_role_contact.regsubst('\W', '-', 'G').downcase}",\
+    role="${role_fixup}",\
+    cluster="${cluster}"} 1.0
     | METRIC
     file { '/var/lib/prometheus/node.d/role_owner.prom':
         ensure  => file,
