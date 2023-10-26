@@ -47,7 +47,7 @@ class profile::librenms (
         'device_perf_purge' => 30,
         'eventlog_purge'    => 360,
         'perf_times_purge'  => 90,
-        'syslog_purge'      => 90,
+        'syslog_purge'      => 15,
 
         'snmp'             => {
             'community' => [ $passwords::network::snmp_ro_community ],
