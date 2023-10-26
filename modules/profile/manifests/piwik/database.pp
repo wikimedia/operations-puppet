@@ -7,8 +7,8 @@
 # basic configs added to the standard Debian mysql deployment.
 #
 class profile::piwik::database(
-    Stdlib::Port $database_port = lookup('profile::piwik::database', { 'default_value' => 3306 }),
-    $backup_hosts_ferm_range    = lookup('profile::piwik::database::backup_hosts_ferm_range', { 'default_value' => undef }),
+    Stdlib::Port $database_port       = lookup('profile::piwik::database', { 'default_value' => 3306 }),
+    Array[Stdlib::Host] $backup_hosts = lookup('profile::piwik::database::backup_hosts', { 'default_value' => undef }),
 ) {
 
     package { 'mysql-server':
@@ -38,11 +38,11 @@ class profile::piwik::database(
         require => Class['mariadb::config'],
     }
 
-    if $backup_hosts_ferm_range {
-        ferm::service { 'mariadb':
+    if $backup_hosts {
+        firewall::service { 'mariadb':
             proto  => 'tcp',
             port   => $database_port,
-            srange => $backup_hosts_ferm_range,
+            srange => $backup_hosts,
         }
     }
 }

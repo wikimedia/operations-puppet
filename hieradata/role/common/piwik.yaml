@@ -20,7 +20,8 @@ profile::tlsproxy::envoy::global_cert_name: "yarn.wikimedia.org"
 
 profile::analytics::backup::database::db_instance: 'piwik'
 
-profile::piwik::database::backup_hosts_ferm_range: "((@resolve((db1208.eqiad.wmnet)) @resolve((db1208.eqiad.wmnet), AAAA)))"
+profile::piwik::database::backup_hosts:
+  - db1208.eqiad.wmnet
 
 profile::idp::client::httpd::sites:
   'piwik.wikimedia.org':
