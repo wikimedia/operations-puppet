@@ -59,7 +59,6 @@ class profile::mariadb::misc (
             is_critical => false,
             source_dc   => $source_dc,
         }
-        profile::mariadb::replication_lag { $shard: }
     }
 
     class { 'mariadb::monitor_memory': }

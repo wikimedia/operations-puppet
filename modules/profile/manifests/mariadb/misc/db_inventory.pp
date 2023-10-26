@@ -40,7 +40,6 @@ class profile::mariadb::misc::db_inventory(
             is_critical => $is_writeable_dc,
             source_dc   => $source_dc
         }
-        profile::mariadb::replication_lag { $id: }
     }
 
 
