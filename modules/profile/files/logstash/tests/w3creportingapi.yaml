@@ -52,6 +52,7 @@ testcases:
         type: "network-error"
         user_agent: "Mozilla/0.0 (Linux) AppleWebKit/000.00 (KHTML, like Gecko) Chrome/00.0.0000.000 Mobile Safari/000.00"
         url: "https://en.wikipedia.org/wiki/Main_Page"
+        uri_host: "en.wikipedia.org"
         meta:
           request_id: "2867d5bb-de4b-4e3e-abc3-4ed966becd46"
           stream: "w3c.reportingapi.network_error"
