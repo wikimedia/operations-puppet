@@ -3,10 +3,12 @@
 # @param ensure ensurable parameter
 # @param frequency either daily or weekly to indicate how often the timer should run
 # @param proxy the http proxy to use, if any
+# @team the team to whom alerts should be routed
 define profile::docker::reporter::report(
     Wmflib::Ensure            $ensure    = 'present',
     Enum['daily', 'weekly']   $frequency = 'weekly',
     Optional[Stdlib::HTTPUrl] $proxy     = undef,
+    Optional[Wmflib::Team]    $team      = undef,
 ) {
     file { "/etc/docker-report/${title}_rules.ini":
         ensure => $ensure,
@@ -29,5 +31,6 @@ define profile::docker::reporter::report(
         user              => 'root',
         environment       => $environment,
         syslog_identifier => "docker-report-${title}",
+        team              => $team,
     }
 }

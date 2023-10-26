@@ -18,13 +18,9 @@ class profile::docker::reporter(
         'base':
             frequency => 'daily',
             ;
-        # Report on releng images
-        'releng':
-            ensure    => absent,
-            frequency => 'weekly',
-            ;
         # Report on images used in production on k8s
         'k8s':
+            team      => 'ServiceOps',
             frequency => 'weekly',
             ;
     }
