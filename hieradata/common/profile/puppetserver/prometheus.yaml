@@ -1,5 +1,0 @@
-profile::puppetserver::prometheus::textfile_directory: /var/lib/prometheus/node.d
-profile::puppetserver::prometheus::report_filename: puppet_report.prom
-profile::puppetserver::prometheus::environments: []
-profile::puppetserver::prometheus::reports: []
-profile::puppetserver::prometheus::stale_time: ~

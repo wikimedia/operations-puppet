@@ -465,11 +465,6 @@ profile::puppetserver::git::repos:
       "pre-merge": "puppet:///modules/puppetmaster/git/private/pre-merge"
       "pre-rebase": "puppet:///modules/puppetmaster/git/private/pre-rebase"
     link: "/etc/puppet/private"
-profile::puppetserver::prometheus::textfile_directory: /var/lib/prometheus/node.d
-profile::puppetserver::prometheus::report_filename: puppet_report.prom
-profile::puppetserver::prometheus::environments: []
-profile::puppetserver::prometheus::reports: []
-profile::puppetserver::prometheus::stale_time: ~
 profile::puppetserver::scripts::keep_reports_minutes: 960
 profile::puppetserver::scripts::has_puppetdb: false
 profile::puppetserver::scripts::upload_facts: false

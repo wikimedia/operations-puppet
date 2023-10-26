@@ -93,7 +93,6 @@ class profile::puppetserver (
         *            => wmflib::resource::filter_params($exluded_args),
         g10k_sources => $g10k_sources,
     }
-    $puppet_conf_dir = $puppetserver::config_dir
     $config_dir = $puppetserver::puppetserver_config_dir
     $ssl_dir = $puppetserver::ssl_dir
     $ca_dir = $puppetserver::ca_dir
@@ -104,9 +103,6 @@ class profile::puppetserver (
         ca_public_key   => $ca_public_key,
         ca_crl          => $ca_crl,
         ca_private_key  => $ca_private_key,
-    }
-    if 'prometheus' in $reports {
-        include profile::puppetserver::prometheus
     }
 
     ferm::service { 'puppetserver':
