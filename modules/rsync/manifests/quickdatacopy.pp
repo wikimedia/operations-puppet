@@ -61,7 +61,7 @@ define rsync::quickdatacopy(
   Variant[
       Systemd::Timer::Schedule,
       Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
-  Optional[Boolean] $ignore_missing_file_errors = undef,
+  Boolean $ignore_missing_file_errors = false,
   ) {
       if ($title =~ /\s/) {
           fail('the title of rsync::quickdatacopy must not include whitespace')
