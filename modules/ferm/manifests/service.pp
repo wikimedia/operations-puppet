@@ -34,8 +34,9 @@ define ferm::service(
     Wmflib::Ensure $ensure  = present,
     String $desc    = '',
     Integer[0,99] $prio    = 10,
-    Optional[Wmflib::Firewall::Hosts] $srange = undef,
-    Optional[Wmflib::Firewall::Hosts] $drange = undef,
+    # TODO: we should move to the stricter Firewall::Range type
+    Optional[Firewall::Hosts] $srange = undef,
+    Optional[Firewall::Hosts] $drange = undef,
     Optional[Array[String[1]]] $src_sets = undef,
     Optional[Array[String[1]]] $dst_sets = undef,
     Boolean $notrack = false,

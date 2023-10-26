@@ -70,7 +70,7 @@ class profile::tlsproxy::envoy(
     Optional[String]                 $global_cert_name          = lookup('profile::tlsproxy::envoy::global_cert_name'),
     Optional[Float]                  $idle_timeout              = lookup('profile::tlsproxy::envoy::idle_timeout'),
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
-    Optional[Firewall::Srange]       $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
+    Optional[Firewall::Range]       $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
     Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page')
