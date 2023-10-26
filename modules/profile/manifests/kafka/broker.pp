@@ -484,17 +484,13 @@ class profile::kafka::broker(
     }
 
     # Install kafka-kit (https://gitlab.wikimedia.org/repos/sre/kafka-kit) on each broker
-    # Note: we don't install it on brokers running Debian Buster, as we couldn't get it compiled.
-    # See https://phabricator.wikimedia.org/T346764#9203575
-    if debian::codename::ge('bullseye') {
-        profile::kafka::kafka_kit { $kafka_cluster_name:
-            zookeeper_address              => $config['zookeeper']['hosts'][0],
-            zookeeper_prefix               => $config['zookeeper']['chroot'],
-            zookeeper_metrics_prefix       => "kafka/${cluster_name}/topicmappr",
-            kafka_address                  => $brokers_string,
-            kafka_cluster_prometheus_label => $prometheus_cluster_name,
-            prometheus_url                 => "http://prometheus.svc.${::site}.wmnet/ops",
-            brokers                        => $config['brokers']['hash'],
-        }
+    profile::kafka::kafka_kit { $kafka_cluster_name:
+        zookeeper_address              => $config['zookeeper']['hosts'][0],
+        zookeeper_prefix               => $config['zookeeper']['chroot'],
+        zookeeper_metrics_prefix       => "kafka/${cluster_name}/topicmappr",
+        kafka_address                  => $brokers_string,
+        kafka_cluster_prometheus_label => $prometheus_cluster_name,
+        prometheus_url                 => "http://prometheus.svc.${::site}.wmnet/ops",
+        brokers                        => $config['brokers']['hash'],
     }
 }
