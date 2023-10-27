@@ -24,6 +24,10 @@ node /^acmechief2001\.codfw\./ {
     role(acme_chief)
 }
 
+node /^acmechief2002\.codfw\./ {
+    role(acme_chief)
+}
+
 # Ganeti VMs for acme-chief staging environment
 node /^acmechief-test1001\.eqiad\./ {
     role(acme_chief)
