@@ -1,17 +1,16 @@
 class profile::pybaltest (
     Array[Stdlib::Host] $hosts = lookup('profile::pybaltest::hosts'),
 ) {
-    $hosts_str = $hosts.join(' ')
-    ferm::service { 'pybaltest-http':
+    firewall::service { 'pybaltest-http':
         proto  => 'tcp',
-        port   => '80',
-        srange => "(@resolve((${hosts_str})) @resolve((${hosts_str}), AAAA))",
+        port   => 80,
+        srange => $hosts,
     }
 
-    ferm::service { 'pybaltest-bgp':
+    firewall::service { 'pybaltest-bgp':
         proto  => 'tcp',
-        port   => '179',
-        srange => "(@resolve((${hosts_str})) @resolve((${hosts_str}), AAAA))",
+        port   => 179,
+        srange => $hosts,
     }
 
     # If the host considers itself as a router (IP forwarding enabled), it will
