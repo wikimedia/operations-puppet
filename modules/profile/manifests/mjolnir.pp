@@ -2,7 +2,7 @@ class profile::mjolnir(
     String $logstash_host = lookup('logstash_host'),
     Stdlib::Port $logstash_port = lookup('logstash_json_lines_port')
 ) {
-    ensure_packages(['python3.7', 'libpython3.7'])
+    ensure_packages(['python3', 'libpython3'])
 
     class { '::mjolnir':
         logstash_host => $logstash_host,

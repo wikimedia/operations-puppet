@@ -5,7 +5,7 @@
 # kafka as a middleman.
 #
 class profile::mjolnir::kafka_msearch_daemon(
-  $es_cluster_endpoint = lookup('profile::mjolnir::kafka_msearch_daemon::es_cluster_nedpoint', { 'default_value' => 'localhost:9200' }),
+  $es_cluster_endpoint = lookup('profile::mjolnir::kafka_msearch_daemon::es_cluster_endpoint', { 'default_value' => 'localhost:9200' }),
   $kafka_cluster = lookup('profile::mjolnir::kafka_msearch_daemon::kafka_cluster'),
   String $input_topic = lookup('profile::mjolnir::kafka_msearch_daemon::input_topic'),
   String $output_topic = lookup('profile::mjolnir::kafka_msearch_daemon::output_topic'),

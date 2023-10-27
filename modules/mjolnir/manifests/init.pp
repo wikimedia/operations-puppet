@@ -28,6 +28,6 @@ class mjolnir(
 
     scap::target { 'search/mjolnir/deploy':
         deploy_user => 'deploy-service',
-        require     => Package['python3.7'],
+        require     => Package['python3'],
     }
 }
