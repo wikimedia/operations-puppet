@@ -1,1 +1,1 @@
-profile::wmcs::eqiad1::metrics::openstack_exporter_host: "cloudcontrol1007.eqiad.wmnet"
+profile::openstack::eqiad1::metrics::openstack_exporter_host: "cloudcontrol1007.eqiad.wmnet"
