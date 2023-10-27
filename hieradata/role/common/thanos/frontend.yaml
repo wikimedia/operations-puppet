@@ -1,5 +1,4 @@
 profile::contacts::role_contacts:
-  - 'Observability'
   - 'Data Persistence'
 
 cluster: thanos
