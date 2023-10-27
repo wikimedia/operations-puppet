@@ -1,0 +1,12 @@
+<%#- #SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[String]  $upload_keys,
+| -%>
+allow not source '*' by unsigned
+allow not binaries '*' by unsigned
+
+<%- unless $upload_keys.empty { -%>
+<%- $upload_keys.each |$key| { -%>
+allow source '*' by key <%= $key %>
+allow binaries '*' by key <%= $key %>
+<%- } -%>
+<%- } -%>

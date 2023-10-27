@@ -4,6 +4,7 @@ profile::aptrepo::wikimedia::aptrepo_servers_failover:
 profile::aptrepo::wikimedia::aptrepo_hostname: apt.wikimedia.org
 # The public keyring is built/managed by Puppet
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
+profile::aptrepo::wikimedia::upload_keys: []
 profile::nginx::variant: 'light'
 profile::admin::groups:
   - datacenter-ops

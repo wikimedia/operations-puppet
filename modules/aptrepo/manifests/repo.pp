@@ -25,17 +25,19 @@
 # @param default_distro
 #   The default distro to use
 define aptrepo::repo (
-    Stdlib::Unixpath   $basedir,
-    Stdlib::Filesource $distributions_file,
-    String             $notify_address     = 'root@wikimedia.org',
-    String             $notify_subject     = "Reprepro changes in ${title}",
-    Array[String]      $options            = [],
-    Array[String]      $uploaders          = [],
-    Optional[String]   $incomingdir        = undef,
-    String             $incomingconf       = 'incoming-wikimedia',
-    String             $incominguser       = 'root',
-    String             $incominggroup      = 'wikidev',
-    String             $default_distro     = 'buster',
+    Stdlib::Unixpath        $basedir,
+    Stdlib::Filesource      $distributions_file,
+    String                  $notify_address     = 'root@wikimedia.org',
+    String                  $notify_subject     = "Reprepro changes in ${title}",
+    Array[String]           $options            = [],
+    Array[String]           $uploaders          = [],
+    Optional[String]        $incomingdir        = undef,
+    String                  $incomingconf       = 'incoming-wikimedia',
+    String                  $incominguser       = 'root',
+    String                  $incominggroup      = 'wikidev',
+    String                  $default_distro     = 'buster',
+    Array[String]           $upload_keys        = [],
+
 ) {
     $user = $aptrepo::common::user
     $group = $aptrepo::common::group
@@ -84,7 +86,7 @@ define aptrepo::repo (
         owner        => $user,
         group        => $group,
         mode         => '0444',
-        content      => inline_template("<%= @options.join(\"\n\") %>\n"),
+        content      => epp('aptrepo/uploaders.epp', {'upload_keys' => $upload_keys}),
         validate_cmd => $deb822_validate_cmd,
     }
 

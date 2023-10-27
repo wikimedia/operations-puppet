@@ -3,3 +3,6 @@ Name: default
 IncomingDir: <%= @incomingdir %>
 TempDir: tmp
 Default: <%= @default_distro %>
+<%- unless @upload_keys.empty -%>
+Uploaders: uploaders
+<%- end -%>
