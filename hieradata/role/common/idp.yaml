@@ -176,7 +176,7 @@ profile::idp::services:
   juniper:
     id: 30
     service_class: 'OidcRegisteredService'
-    service_id: 'https://apigw\.juniper\.net/css-asset/1\.0'
+    service_id: 'https://apigw-stage\.juniper\.net/css-asset/1\.0'
   gitlab_oidc:
     id: 31
     service_class: 'OidcRegisteredService'
