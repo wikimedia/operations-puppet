@@ -12,4 +12,6 @@ profile::webperf::arclamp::compress_logs_days: 3
 profile::webperf::arclamp::retain_hourly_logs_hours: 336
 profile::webperf::arclamp::retain_daily_logs_days: 90
 
+profile::firewall::provider: nftables
+
 profile::contacts::role_contacts: ['Observability']
