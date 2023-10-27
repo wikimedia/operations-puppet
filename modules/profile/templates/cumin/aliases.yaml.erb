@@ -57,7 +57,6 @@ cloudceph-codfw: A:cloudcephosd-codfw or A:cloudcephmon-codfw
 cloudceph-eqiad1: A:cloudcephmon-eqiad1 or A:cloudcephosd-eqiad1
 clouddumps: P{O:dumps::distribution::server}
 cloudgw: P{O:wmcs::cloudgw} and A:eqiad
-cloudmetrics: P{O:wmcs::monitoring}
 cloudnet: P{O:wmcs::openstack::eqiad1::net}
 cloudnet-eqiad1: P{O:wmcs::openstack::eqiad1::net}
 cloudrabbit: P{O:wmcs::openstack::eqiad1::rabbitmq}
@@ -233,7 +232,6 @@ wikikube-staging-etcd-<%= dc %>: A:wikikube-staging-etcd and A:<%= dc %>
 wikikube-staging-master-<%= dc %>: A:wikikube-staging-master and A:<%= dc %>
 wikikube-staging-worker-<%= dc %>: A:wikikube-staging-worker and A:<%= dc %>
 <% end -%>
-cloudmetrics: P{O:wmcs::monitoring}
 wmcs-nfs: P{O:dumps::distribution::server}
 ldap-replicas: P{O:openldap::replica}
 ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
