@@ -17,6 +17,7 @@ define openstack::nova::libvirt::secret (
             { 'uuid' => $libvirt_uuid, 'ceph_client_name' => $client_name },
         ),
         show_diff => false,
+        require   => Package['libvirt-clients'],
     }
 
     $check_secret_exec_name = "check-virsh-secret-for-${client_name}"
