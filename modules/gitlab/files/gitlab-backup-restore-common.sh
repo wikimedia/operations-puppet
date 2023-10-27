@@ -3,6 +3,7 @@
 
 LOCKFILE="/var/lock/gitlab-backup.lock"
 TIMEOUT_DURATION=10800 # 60 * 60 * 3 = 3 hours
+PROMETHEUS_PUSHGATEWAY_HOST="prometheus-pushgateway.discovery.wmnet"
 
 abort_if_locked() {
     # We chose a time-based lock here because we won't always have a PID when
@@ -36,4 +37,18 @@ unlock_backups() {
     echo -n "Cleaning up -- removing ${LOCKFILE}... "
     rm -f ${LOCKFILE}
     echo "Done"
+}
+
+send_prometheus_metrics() {
+    mode=$1 # backup/restore
+    type=$2 # For backup, full/partial/failover, not used for restore
+    duration=$3 # Time, in seconds, that the backup lasted
+    host=$HOSTNAME
+
+    # instance= is a host with port to continue with convention, but since this is a script that runs rather
+    # than a service, we use ":0" for the port.
+    duration_data="gitlab_${mode}_duration_seconds{instance=\"${host}:0\", type=\"${type}\"} ${duration}"
+    last_run_data="gitlab_${mode}_last_run{instance=\"${host}:0\", type=\"${type}\"} $(date +%s)"
+
+    echo -e "${duration_data}\n${last_run_data}" | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_${mode}"
 }

@@ -39,6 +39,8 @@ while getopts ":fF" options; do
      esac
 done
 
+restore_start_time=$(date +%s)
+
 # Check if host is production
 if [[ $GITLAB_URL != *"replica"* ]] && [[ $GITLAB_URL != *"wmcloud"* ]]; then
   # production needs additional force flag -F
@@ -186,3 +188,7 @@ fi
 /usr/bin/systemctl restart ssh-gitlab
 
 /usr/local/sbin/enable-puppet "Running Backup Restore"
+
+restore_end_time=$(date +%s)
+restore_duration=$(( ${restore_end_time} - ${restore_start_time} ))
+send_prometheus_metrics restore restore $restore_duration
