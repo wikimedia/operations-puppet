@@ -11,3 +11,5 @@ profile::netbox::db::frontends:
   - netbox2002.codfw.wmnet
 profile::netbox::db::replicas:
     - netboxdb2002.codfw.wmnet
+
+profile::firewall::provider: nftables
