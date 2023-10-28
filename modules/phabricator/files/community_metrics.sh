@@ -8,16 +8,6 @@
 
 source /etc/phab_community_metrics.conf
 
-#echo "result_activedifferentialusers"
-result_activedifferentialusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user phabricator_differential << END
-
-SELECT COUNT(DISTINCT authorPHID) FROM differential_transaction WHERE
-    (transactionType = "core:create" OR transactionType = "differential:update") AND
-    FROM_UNIXTIME(dateCreated,'%Y%m')=date_format(NOW() - INTERVAL 1 MONTH,'%Y%m');
-
-END
-)
-
 #echo "result_activemaniphestusers"
 result_activemaniphestusers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
 
@@ -200,8 +190,6 @@ mediantasksopen_lowest_epoch=$(echo $result_mediantasksopen_lowest | cut -d " " 
 diff_lowest=$((epochnow-mediantasksopen_lowest_epoch))
 mediantasksopen_lowest=$(echo $((diff_lowest/86400)))
 
-activedifferentialusers=$(echo $result_activedifferentialusers | cut -d " " -f3)
-
 lastmonth=$(date --date="last month" +%Y-%m)
 
 # the actual email
@@ -235,8 +223,6 @@ Low: ${mediantasksopen_low}
 Lowest: ${mediantasksopen_lowest}
 
 (How long tasks have been open, not how long they have had that priority)
-
-Differential users who created or updated a patchset in (${lastmonth}): ${activedifferentialusers}
 
 To see the names of the most active task authors:
 * Go to https://wikimedia.biterg.io/
