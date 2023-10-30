@@ -62,7 +62,7 @@ class profile::puppet::agent (
                 default       => "${site_nearest_core[$::site]}.wmnet",
             }
         }
-        motd::message { 'Host has beenmigrated to puppet7':
+        motd::message { 'Host has been migrated to puppet7':
             color    => 'yellow',
             priority => 90,
         }
