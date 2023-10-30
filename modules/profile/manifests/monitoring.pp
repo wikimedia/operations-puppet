@@ -76,11 +76,6 @@ class profile::monitoring (
     # the nrpe class installs monitoring-plugins-* which creates the following directory
     contain nrpe  # lint:ignore:wmf_styleguide
 
-    nrpe::plugin { 'check_eth':
-        ensure  => absent,
-        content => template('profile/monitoring/check_eth.erb'),
-    }
-
     nrpe::plugin { 'check_sysctl':
         source => 'puppet:///modules/profile/monitoring/check_sysctl',
     }
@@ -113,14 +108,6 @@ class profile::monitoring (
         dashboard_links => ["https://grafana.wikimedia.org/d/000000377/host-overview?var-server=${facts['hostname']}&var-datasource=${::site} prometheus/ops"],
         check_interval  => 20,
         retry_interval  => 5,
-    }
-
-    nrpe::monitor_service { 'check_eth':
-        ensure         => absent,
-        description    => 'configured eth',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_eth',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_eth',
-        check_interval => 30,
     }
 
     $ensure_monitor_systemd = $monitor_systemd.bool2str('present','absent')
