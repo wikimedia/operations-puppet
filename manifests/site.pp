@@ -631,7 +631,7 @@ node /^db2155\.codfw\./ {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1213 and db1144 below
-node /^db1(130|183|185|200|210)\.eqiad\./ {
+node /^db1(130|230|183|185|200|210)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -752,7 +752,7 @@ node /^db21(88|89|90|91|92|93|94|95)\.codfw\./ {
 }
 
 # New db hosts to be setup T342166
-node /^db12(26|28|29|39|30|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\./ {
+node /^db12(26|28|29|39|32|33|34|35|36|37|38|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 ## m1 shard
