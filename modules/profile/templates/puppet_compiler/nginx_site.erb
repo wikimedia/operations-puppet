@@ -25,11 +25,10 @@ server {
       add_header content-encoding "gzip";
       add_header content-type "application/json";
     }
-  }
-
-  # To integrate build results with Gerrit checks API
-  location ~ "\.json$" {
-    add_header Access-Control-Allow-Origin "https://gerrit.wikimedia.org"
+    # To integrate build results with Gerrit checks API
+    location ~ "\.json$" {
+      add_header Access-Control-Allow-Origin "https://gerrit.wikimedia.org";
+    }
   }
 
   # Backwards compatible paths
