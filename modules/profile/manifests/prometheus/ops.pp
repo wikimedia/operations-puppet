@@ -4,6 +4,7 @@
 #
 class profile::prometheus::ops (
     Array[Stdlib::Host] $prometheus_nodes                     = lookup('prometheus_nodes'),
+    String $replica_label                                     = lookup('prometheus::replica_label'),
     String $storage_retention                                 = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
     Optional[Stdlib::Datasize] $storage_retention_size        = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
     Integer $max_chunks_to_persist                            = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
@@ -11,7 +12,6 @@ class profile::prometheus::ops (
     Stdlib::Unixpath $targets_path                            = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
     Array[Stdlib::Host] $bastion_hosts                        = lookup('bastion_hosts', { 'default_value' => [] }),
     Stdlib::Host $netmon_server                               = lookup('netmon_server'),
-    String $replica_label                                     = lookup('prometheus::replica_label', { 'default_value' => 'unset' }),
     Boolean $enable_thanos_upload                             = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time                         = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
