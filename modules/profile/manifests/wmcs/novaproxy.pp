@@ -53,14 +53,6 @@ class profile::wmcs::novaproxy (
         desc  => 'Web proxy management API',
     }
 
-    if $::hostname != $active_proxy {
-        $redis_replication = {
-            "${::hostname}" => $active_proxy
-        }
-    } else {
-        $redis_replication = undef
-    }
-
     if $acme_certname != undef {
         class { '::sslcert::dhparam': }
         acme_chief::cert { $acme_certname:
@@ -87,7 +79,7 @@ class profile::wmcs::novaproxy (
         ssl_settings             => $ssl_settings,
         xff_fqdns                => $xff_fqdns,
         luahandler               => 'domainproxy',
-        redis_replication        => $redis_replication,
+        redis_primary            => $active_proxy,
         banned_ips               => $banned_ips,
         error_details            => "<p>${::facts['networking']['fqdn']}</p>",
         blocked_user_agent_regex => $block_ua_re,

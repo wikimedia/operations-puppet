@@ -15,21 +15,13 @@ class profile::toolforge::proxy (
     }
     class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
 
-    if $::hostname != $active_proxy {
-        $redis_replication = {
-            "${::hostname}" => $active_proxy,
-        }
-    } else {
-        $redis_replication = undef
-    }
-
     class { '::dynamicproxy':
         acme_certname           => $ssl_cert_name,
         ssl_settings            => ssl_ciphersuite('nginx', 'compat'),
         luahandler              => 'urlproxy',
         k8s_vip_fqdn            => $k8s_vip_fqdn,
         k8s_vip_fqdn_port       => $k8s_vip_port,
-        redis_replication       => $redis_replication,
+        redis_primary           => $active_proxy,
         error_config            => {
             title       => 'Wikimedia Toolforge Error',
             logo        => '/.error/toolforge-logo.png',

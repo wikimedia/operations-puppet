@@ -20,7 +20,7 @@ class dynamicproxy (
     Optional[Array[String]] $ssl_settings  = undef,
     Optional[String]        $acme_certname = undef,
     $notfound_servers         = [],
-    $redis_replication        = undef,
+    Optional[Stdlib::Fqdn] $redis_primary = undef,
     $error_enabled            = false,
     $error_config             = {
         title       => 'Wikimedia Cloud Services Error',
@@ -53,9 +53,10 @@ class dynamicproxy (
     $resolver = join($::nameservers, ' ')
 
     $redis_port = '6379'
-    if $redis_replication and $redis_replication[$::hostname] {
-        $slave_host = $redis_replication[$::hostname]
-        $slaveof = "${slave_host} ${redis_port}"
+    if $redis_primary and !($redis_primary in [$::facts['hostname'], $::facts['fqdn']]) {
+        $slaveof = "${redis_primary} ${redis_port}"
+    } else {
+        $slaveof = undef
     }
 
     redis::instance { $redis_port:
