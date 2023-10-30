@@ -288,15 +288,7 @@ $wikimail_smarthost = lookup('wikimail_smarthost')
 # Generic, default servers (order matters!)
 $mail_smarthost = lookup('mail_smarthost')
 
-# TODO: revert once everything is on puppet7
-$use_puppet7 = lookup('profile::puppet::agent::force_puppet7')
-
-# The hiera value is only ever looked up here so it Should
-# be fine to hard code this value for the duration of the puppet7 migration
-$acmechief_host = $use_puppet7 ? {
-    true  => 'acmechief2002.codfw.wmnet',
-    false => lookup('acmechief_host'),
-}
+$acmechief_host = lookup('acmechief_host')
 
 $ntp_peers = lookup('ntp_peers')
 
