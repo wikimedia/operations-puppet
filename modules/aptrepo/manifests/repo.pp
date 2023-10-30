@@ -126,7 +126,7 @@ define aptrepo::repo (
 
     $log_script = @("SCRIPT"/$)
     #!/bin/bash
-    echo -e "reprepro changes:\n\$@" | mail -s "${notify_subject}" ${notify_address}
+    echo -e "reprepro changes:\n\$@" | mail -a "Auto-Submitted: auto-generated" -s "${notify_subject}" ${notify_address}
     | SCRIPT
     file { "${basedir}/conf/log":
         ensure  => file,
