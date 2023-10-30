@@ -123,7 +123,7 @@ def get_puppet_yaml_file(config_item) -> Dict:
     """
     yaml_file = Path(get_puppet_config(config_item))
     if not yaml_file.is_file():
-        raise ValueError("%s: item dose not resolve to a file")
+        raise ValueError(f"{yaml_file}: item does not resolve to a file")
 
     def unknown(loader, _, node):
         if isinstance(node, yaml.ScalarNode):
