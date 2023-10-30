@@ -26,6 +26,7 @@ define acme_chief::cert (
         }
     }
 
+    $acmechief_host = lookup('acmechief_host')  # lint:ignore:wmf_styleguide
     # lint:ignore:puppet_url_without_modules
     file { "/etc/acmecerts/${title}":
         ensure    => stdlib::ensure($ensure, 'directory'),
@@ -35,7 +36,7 @@ define acme_chief::cert (
         recurse   => true,
         show_diff => false,
         backup    => false,
-        source    => "puppet://${::acmechief_host}/acmedata/${title}",
+        source    => "puppet://${acmechief_host}/acmedata/${title}",
         force     => true,
     }
 

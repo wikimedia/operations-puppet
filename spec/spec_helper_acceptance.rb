@@ -19,7 +19,6 @@ $other_site = '#{OTHER_SITE}'
 $numa_networking = 'off'
 $wikimail_smarthost = lookup('wikimail_smarthost')
 $mail_smarthost = lookup('mail_smarthost')
-$acmechief_host = lookup('acmechief_host')
 $ntp_peers = lookup('ntp_peers')
 role('#{ROLE}')
 PP

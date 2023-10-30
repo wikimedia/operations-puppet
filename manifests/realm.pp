@@ -288,8 +288,6 @@ $wikimail_smarthost = lookup('wikimail_smarthost')
 # Generic, default servers (order matters!)
 $mail_smarthost = lookup('mail_smarthost')
 
-$acmechief_host = lookup('acmechief_host')
-
 $ntp_peers = lookup('ntp_peers')
 
 # Resource defaults
