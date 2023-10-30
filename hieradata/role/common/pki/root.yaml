@@ -1,3 +1,4 @@
 cluster: pki
 profile::pki::root_ca::db_host: 'm1-master.eqiad.wmnet'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::puppet::agent::force_puppet7: true
