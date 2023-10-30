@@ -1,3 +1,4 @@
+profile::puppet::agent::force_puppet7: true
 profile::ssh::server::authorized_keys_file:
     - '/etc/ssh/userkeys/%u'
     - '/etc/ssh/userkeys/%u.d/cumin'
