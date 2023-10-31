@@ -3,6 +3,12 @@ profile::admin::groups:
   - wmcs-roots
 contactgroups: wmcs-team-email
 
+# https://phabricator.wikimedia.org/T350130
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
+  - "%{facts.ipaddress6}"
+prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
+
 profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
