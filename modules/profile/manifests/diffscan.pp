@@ -21,8 +21,12 @@ class profile::diffscan(
     Hash[String[1], Profile::Diffscan::Instance] $instances = lookup('profile::diffscan::instances', {default_value => {}}),
 ) {
     $instances.each |String[1] $groupname, Profile::Diffscan::Instance $config| {
+        $configured_ranges = pick($config['range_configs'], []).map |Profile::Diffscan::RangeConfig $config| {
+            slice_network_constants($config['realm'], $config['options'])
+        }.flatten
+
         diffscan::instance { $groupname:
-            ipranges => $config['ranges'],
+            ipranges => ($config['ranges'] + $configured_ranges).unique.sort,
             emailto  => $config['email'],
         }
     }
