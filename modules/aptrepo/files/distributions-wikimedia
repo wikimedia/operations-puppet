@@ -218,6 +218,7 @@ Components: main
  component/dnsdist
  component/puppet5
  component/puppetdb7
+ component/prometheus-openstack-exporter
  component/wmf-laptop
  thirdparty/haproxy26
  thirdparty/haproxy28
