@@ -81,6 +81,7 @@ class profile::base (
     include profile::rsyslog
     include profile::prometheus::rsyslog_exporter
     include profile::prometheus::cadvisor
+    include profile::prometheus::ethtool_exporter
 
     $remote_syslog_tls_servers = $remote_syslog_tls[$::site]
 
