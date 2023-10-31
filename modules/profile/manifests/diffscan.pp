@@ -18,12 +18,12 @@
 #   Defaults to "diffscan".
 #
 class profile::diffscan(
-  Array[Stdlib::IP::Address] $ipranges = lookup('profile::diffscan::ipranges'),
-  String $emailto                      = lookup('profile::diffscan::emailto'),
-  String $groupname                    = lookup('profile::diffscan::groupname'),
+    Hash[String[1], Profile::Diffscan::Instance] $instances = lookup('profile::diffscan::instances', {default_value => {}}),
 ) {
-    diffscan::instance { $groupname:
-        ipranges => $ipranges,
-        emailto  => $emailto,
+    $instances.each |String[1] $groupname, Profile::Diffscan::Instance $config| {
+        diffscan::instance { $groupname:
+            ipranges => $config['ranges'],
+            emailto  => $config['email'],
+        }
     }
 }
