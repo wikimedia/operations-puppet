@@ -86,6 +86,14 @@ profile::pki::multirootca::intermediates:
       - 'key encipherment'
       - 'server auth'
       - 'client auth'
+  # This end point is used to provide ssl termination certificates that are
+  # compatible with golang T350118
+  puppet_rsa:
+    ocsp_port: 10008
+    default_usages:
+      - 'digital signature'
+      - 'key encipherment'
+      - 'server auth'
   wikikube:
     # Main CA for the wikikube kubernetes cluster
     # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
