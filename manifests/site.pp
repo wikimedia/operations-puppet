@@ -653,7 +653,7 @@ node /^db2128\.codfw\./ {
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 # See also db1213 below
-node /^db1(131|168|173|180|187|201|224|231)\.eqiad\./ {
+node /^db1(168|173|180|187|201|224|231)\.eqiad\./ {
     role(mariadb::core)
 }
 
