@@ -87,7 +87,7 @@ class profile::pki::multirootca (
         conf_file      => $db_conf_file,
         notify_service => $multirootca_service,
         python_config  => true,
-        ssl_ca         => $facts['puppet_config']['localcacert'],
+        ssl_ca         => '/etc/ssl/certs/wmf-ca-certificates.crt',
     }
 
     $root_ca_content = file($root_ca_cert)

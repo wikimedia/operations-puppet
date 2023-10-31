@@ -39,7 +39,7 @@ class profile::pki::server(
         conf_file      => $db_conf_file,
         notify_service => $multirootca_service,
         python_config  => true,
-        ssl_ca         => $facts['puppet_config']['localcacert'],
+        ssl_ca         => '/etc/ssl/certs/wmf-ca-certificates.crt',
     }
 
     $_root_ca_profiles = $root_ca_profiles.empty? {
