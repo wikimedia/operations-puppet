@@ -537,6 +537,10 @@ define airflow::instance(
         profile::pki::get_cert('discovery', $facts['fqdn'], {
             'owner' => $service_user,
             'group' => $service_group,
+            'key' => {
+                'algo' => 'rsa',
+                'size' => 4096
+            }
         })
     }
 }
