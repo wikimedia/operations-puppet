@@ -1,4 +1,6 @@
 # db1130
-# candidate master for s5
+# former candidate master for s5
+# will be depooled
+
 mariadb::shard: 's5'
 mariadb::binlog_format: 'STATEMENT'
