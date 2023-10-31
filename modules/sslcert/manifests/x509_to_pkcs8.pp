@@ -23,7 +23,7 @@ define sslcert::x509_to_pkcs8 (
         default => "-passin ${passphrase}",
     }
 
-    $convert_cmd = "openssl pkcs8 -topk8 -in ${private_key} ${_passphrase} -out ${outfile}"
+    $convert_cmd = "/usr/bin/openssl pkcs8 -topk8 -in ${private_key} ${_passphrase} -out ${outfile}"
     $check_certificates_match = @("CHECK_CERTIFICATES_MATCH_COMMAND"/L)
         /usr/bin/test \
         "$(/usr/bin/openssl x509 -in ${public_key} -noout -pubkey 2>&1)" == \
