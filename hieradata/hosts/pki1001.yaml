@@ -1,1 +1,2 @@
 profile::pki::multirootca::maintenance_jobs: true
+profile::puppet::agent::force_puppet7: false
