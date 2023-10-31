@@ -525,22 +525,59 @@ define airflow::instance(
         srange => $ferm_srange,
     }
 
+    $skein_cert_path = "${airflow_home}/.skein/skein.crt"
+    $skein_key_path = "${airflow_home}/.skein/skein.pem"
     prometheus::node_textfile { 'prometheus-check-certificate-expiry':
         ensure         => 'present',
         filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
         interval       => 'daily',
-        run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${airflow_home}/.skein/skein.crt --outfile /var/lib/prometheus/node.d/x509-skein.prom",
+        run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${skein_cert_path} --outfile /var/lib/prometheus/node.d/x509-skein.prom",
         extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
     }
 
     if $manage_skein_certificate {
-        profile::pki::get_cert('discovery', $facts['fqdn'], {
-            'owner' => $service_user,
-            'group' => $service_group,
+
+        $paths = profile::pki::get_cert('discovery', $facts['fqdn'], {
+            notify   => Sslcert::X509_to_pkcs8['skein_private_key'],
+            'owner'  => $service_user,
+            'group'  => $service_group,
             'key' => {
                 'algo' => 'rsa',
                 'size' => 4096
-            }
+            },
         })
+        $cert_path = $paths['chained']
+        $key_path = $paths['key']
+
+        # The pki::get_cert function generates a PKCS#1-formatted private key. However, skein
+        # expects a private key that uses the PKCS#8 format. We thus need to convert the private
+        # key to the expected format.
+        # See https://phabricator.wikimedia.org/T329398#9294712
+        $pkcs8_key_path = "${key_path}.pkcs8"
+        sslcert::x509_to_pkcs8 { 'skein_private_key' :
+            owner       => $service_user,
+            group       => $service_group,
+            public_key  => $cert_path,
+            private_key => $key_path,
+            outfile     => $pkcs8_key_path,
+        }
+
+        # Copy the generated certificate to the skein folder
+        file { $skein_cert_path:
+            ensure  => present,
+            replace => true,
+            source  => $cert_path,
+            owner   => $service_user,
+            group   => $service_group,
+        }
+
+        # Copy the generated private key to the skein folder
+        file { $skein_key_path:
+            ensure  => present,
+            replace => true,
+            source  => $pkcs8_key_path,
+            owner   => $service_user,
+            group   => $service_group,
+        }
     }
 }
