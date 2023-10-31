@@ -27,7 +27,7 @@ server {
     }
     # To integrate build results with Gerrit checks API
     location ~ "\.json$" {
-      add_header Access-Control-Allow-Origin "https://gerrit.wikimedia.org";
+      add_header Access-Control-Allow-Origin "https://gerrit.wikimedia.org" always;
     }
   }
 
