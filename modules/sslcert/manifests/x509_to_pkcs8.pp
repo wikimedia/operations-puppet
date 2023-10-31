@@ -33,7 +33,7 @@ define sslcert::x509_to_pkcs8 (
     if $ensure == 'present' {
         exec { "Convert ${title} private key to PCKS#8 format":
             command => $convert_cmd,
-            unless  => check_certificates_match,
+            unless  => $check_certificates_match,
             require => Package['openssl'],
             before  => File[$outfile]
         }
