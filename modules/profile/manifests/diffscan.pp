@@ -22,9 +22,8 @@ class profile::diffscan(
   String $emailto                      = lookup('profile::diffscan::emailto'),
   String $groupname                    = lookup('profile::diffscan::groupname'),
 ) {
-    class { '::diffscan':
-        ipranges  => $ipranges,
-        emailto   => $emailto,
-        groupname => $groupname,
+    diffscan::instance { $groupname:
+        ipranges => $ipranges,
+        emailto  => $emailto,
     }
 }
