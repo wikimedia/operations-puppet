@@ -25,7 +25,7 @@ class etcd::client::globalconfig(
             host            => $host,
             port            => $port,
             srv_domain      => $srv_domain,
-            ca_cert         => $facts['puppet_config']['localcacert'],
+            ca_cert         => '/etc/ssl/certs/wmf-ca-certificates.crt',
             protocol        => 'https',
             allow_reconnect => true,
         },
