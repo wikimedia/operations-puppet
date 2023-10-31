@@ -14,6 +14,8 @@
 #
 # [*password*] password for the "prod-build" user on the docker registry.
 #
+# [*imageupdate_git_key*] ssh private key for the image update process
+#
 # [*docker_pkg*] Boolean value for enabling the docker_pkg component
 #
 class profile::docker::builder(
@@ -21,6 +23,7 @@ class profile::docker::builder(
     Optional[Stdlib::Port] $proxy_port = lookup('profile::docker::builder::proxy_port', {default_value => undef}),
     Stdlib::Host $registry = lookup('docker::registry'),
     String $password = lookup('profile::docker::builder::prod_build_password'),
+    String $imageupdate_git_key = lookup('profile::docker::builder::imageupdate_git_key'),
     Boolean $docker_pkg = lookup('profile::docker::docker_pkg', {default_value => false}),
     Boolean $prune_prod_images = lookup('profile::docker::builder::prune_images'),
     Boolean $rebuild_images = lookup('profile::docker::builder::rebuild_images'),
@@ -117,6 +120,35 @@ class profile::docker::builder(
         default => 'absent',
     }
     # Cronjob to refresh the production-images every week on sunday.
+    # Special clone of production-images
+    $imageupdatebot_base = '/usr/src/imageupdatebot'
+    file { $imageupdatebot_base:
+        ensure => $rebuild_images.bool2str('directory', 'absent'),
+        owner  => 'root',
+        group  => 'root',
+    }
+    $ssh_key_location = "${imageupdatebot_base}/.ssh.key"
+    file { $ssh_key_location:
+        ensure  => $rebuild_images.bool2str('present', 'absent'),
+        content => $imageupdate_git_key,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0400',
+    }
+    git::clone { 'imageupdatebot/production-images':
+        ensure    => $rebuild_images.bool2str('present', 'absent'),
+        origin    => 'ssh://imageupdatebot@gerrit.wikimedia.org:29418/operations/docker-images/production-images',
+        ssh       => "ssh -i ${ssh_key_location}",
+        directory => "${imageupdatebot_base}/production-images"
+    }
+    # The actual script to run
+    file { '/usr/local/bin/update-production-images':
+        ensure => $rebuild_images.bool2str('present', 'absent'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0544',
+        source => 'puppet:///modules/profile/docker/update-production-images.sh'
+    }
     systemd::timer::job { 'production-images-weekly-rebuild':
         ensure              => $timer_ensure,
         description         => 'Weekly job to rebuild the production-images',
