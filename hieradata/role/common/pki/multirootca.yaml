@@ -4,6 +4,7 @@ profile::puppet::agent::dns_alt_names:
   - pki.discovery.wmnet
 # in this file all _cert parameteres are passed to the file function
 # and all _key paramtetes are passed to the secret function
+profile::pki::multirootca::cfssl_httpd_cert: true
 profile::pki::multirootca::intermediates:
   debmonitor:
     ocsp_port: 10001
