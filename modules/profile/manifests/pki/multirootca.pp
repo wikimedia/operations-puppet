@@ -18,6 +18,7 @@
 # @param public_cert_base the locations in puppet to find public certs
 # @param private_cert_base the locations in the private repo to find private keys
 # @param prometheus_nodes list of prometheus hosts
+# @cfssl_httpd_cert use cfssl to generate the certificate used on pki.discovery.wmnet
 # @param default_usages list of default usages
 # @param default_expiry contains the default expiry
 # @param default_nets a array of networks used by the multirootca as an ACL.  Access is configured
@@ -42,6 +43,7 @@ class profile::pki::multirootca (
     Boolean                       $enable_monitoring  = lookup('profile::pki::multirootca::enable_monitoring'),
     Boolean                       $maintenance_jobs   = lookup('profile::pki::multirootca::maintenance_jobs'),
     Boolean                       $enable_k8s_vhost   = lookup('profile::pki::multirootca::enable_k8s_vhost'),
+    Boolean                       $cfssl_httpd_cert   = lookup('profile::pki::multirootca::cfssl_httpd_cert'),
     String[1]                     $public_cert_base   = lookup('profile::pki::multirootca::public_cert_base'),
     String[1]                     $private_cert_base  = lookup('profile::pki::multirootca::private_cert_base'),
     Array[Stdlib::Host]           $prometheus_nodes   = lookup('profile::pki::multirootca::prometheus_nodes'),
@@ -206,9 +208,6 @@ class profile::pki::multirootca (
     profile::auto_restarts::service { 'apache2': }
 
     # TODO: probably replace this with acmechief
-    $tls_termination_cert = $facts['puppet_config']['hostcert']
-    $tls_termination_key = $facts['puppet_config']['hostprivkey']
-    $tls_termination_chain = $facts['puppet_config']['localcacert']
     $ssl_settings   = ssl_ciphersuite('apache', 'strong', true)
     $client_auth_ca_file = '/etc/ssl/localcerts/multiroot_ca.pem'
     file{$client_auth_ca_file:
@@ -218,6 +217,18 @@ class profile::pki::multirootca (
         mode   => '0440',
         source => $client_ca_source,
         notify => Service['apache2'],
+    }
+    # On puppet7 we need to use cfssl to generate this certificate - T350118
+    if $cfssl_httpd_cert {
+        $certs = profile::pki::get_cert('puppet_rsa', 'pki.discovery.wmnet', {
+            hosts => [$facts['networking']['fqdn']],
+        })
+    } else {
+        $certs = {
+            'cert'  => $facts['puppet_config']['hostcert'],
+            'key'   => $facts['puppet_config']['hostprivkey'],
+            'chain' => $facts['puppet_config']['localcacert'],
+        }
     }
 
     httpd::site{$vhost:

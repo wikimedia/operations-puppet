@@ -12,6 +12,7 @@ profile::pki::multirootca::client_ca_source: "puppet:///modules/profile/pki/prod
 # certs should auto renew 10 days before expiry
 profile::pki::multirootca::enable_monitoring: true
 profile::pki::multirootca::enable_k8s_vhost: true
+profile::pki::multirootca::cfssl_httpd_cert: false
 profile::pki::multirootca::default_expiry: '672h'
 profile::pki::multirootca::default_usages:
   - 'signing'

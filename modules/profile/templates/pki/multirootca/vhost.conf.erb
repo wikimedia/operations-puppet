@@ -39,9 +39,9 @@
   DocumentRoot <%= @document_root %>
 
   SSLEngine on
-  SSLCertificateFile <%= @tls_termination_cert %>
-  SSLCertificateKeyFile <%= @tls_termination_key %>
-  SSLCertificateChainFile <%= @tls_termination_chain %>
+  SSLCertificateFile <%= @certs['cert'] %>
+  SSLCertificateKeyFile <%= @certs['key'] %>
+  SSLCertificateChainFile <%= @certs['chain'] %>
   <%= @ssl_settings.join("\n  ") %>
 <%- if @enable_client_auth -%>
   SSLVerifyClient require
@@ -64,9 +64,9 @@
   DocumentRoot <%= @document_root %>
 
   SSLEngine on
-  SSLCertificateFile <%= @tls_termination_cert %>
-  SSLCertificateKeyFile <%= @tls_termination_key %>
-  SSLCertificateChainFile <%= @tls_termination_chain %>
+  SSLCertificateFile <%= @certs['cert'] %>
+  SSLCertificateKeyFile <%= @certs['key'] %>
+  SSLCertificateChainFile <%= @certs['chain'] %>
   <%= @ssl_settings.join("\n  ") %>
 
   ProxyPass /  http://127.0.0.1:8888/
