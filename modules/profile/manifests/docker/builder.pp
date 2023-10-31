@@ -160,7 +160,7 @@ class profile::docker::builder(
     systemd::timer::job { 'production-images-weekly-rebuild':
         ensure              => $timer_ensure,
         description         => 'Weekly job to rebuild the production-images',
-        command             => '/usr/local/bin/build-production-images --nightly',
+        command             => '/usr/local/bin/update-production-images',
         interval            => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 06:00:00'},
         user                => 'root',
         after               => 'debian-weekly-rebuild.service',
