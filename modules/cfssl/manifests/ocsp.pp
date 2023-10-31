@@ -2,7 +2,7 @@
 # Title should match the cfssl::signer title
 # @param ocsprefresh_update if true update the ocsp response table otherwise just check for updates
 define cfssl::ocsp (
-    Stdlib::Fqdn                $common_name        = $facts['fqdn'],
+    Stdlib::Fqdn                $common_name        = $facts['networking']['fqdn'],
     Stdlib::IP::Address         $listen_addr        = '127.0.0.1',
     Stdlib::Port                $listen_port        = 8889,
     Cfssl::Loglevel             $log_level          = 'info',
@@ -69,6 +69,8 @@ define cfssl::ocsp (
             before    => $before_certs,
         }
     } else {
+        $cert = pick($cfssl::client::mutual_tls_client_cert, $facts['puppet_config']['hostcert'])
+        $key = pick($cfssl::client::mutual_tls_client_key, $facts['puppet_config']['hostprivkey'])
         cfssl::cert{$safe_cert_name:
             common_name   => $common_name,
             label         => $safe_title,
@@ -76,8 +78,8 @@ define cfssl::ocsp (
             profile       => 'ocsp',
             outdir        => $outdir,
             signer_config => {'config_file' => $cfssl::client::conf_file},
-            tls_cert      => $facts['puppet_config']['hostcert'],
-            tls_key       => $facts['puppet_config']['hostprivkey'],
+            tls_cert      => $cert,
+            tls_key       => $key,
             notify        => Service[$serve_service],
             before        => $before_certs,
         }
