@@ -51,13 +51,11 @@ class profile::netbox::scripts {
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
-    $ferm_nodes = wmflib::role::hosts('cluster::management').sort.join(' ')
-
-    ferm::service { 'netbox_scripts_https':
+    firewall::service { 'netbox_scripts_https':
         proto  => 'tcp',
         port   => $apache_port,
         desc   => 'Semi-restricted access to Netbox script proxy',
-        srange => "(@resolve((${ferm_nodes})) @resolve((${ferm_nodes}), AAAA))",
+        srange => wmflib::role::hosts('cluster::management'),
     }
 
     httpd::site { $facts['networking']['fqdn']:

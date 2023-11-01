@@ -217,7 +217,7 @@ class profile::netbox (
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'ssl', 'wsgi'],
     }
 
-    ferm::service { 'netbox_https':
+    firewall::service { 'netbox_https':
         proto => 'tcp',
         port  => 443,
         desc  => 'Public HTTPS for Netbox',
