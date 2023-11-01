@@ -6,9 +6,9 @@ class profile::karapace::main (
         bootstrap_uri => $bootstrap_uri,
     }
 
-    ferm::service { 'karapace':
-        proto  => 'tcp',
-        port   => '8081',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'karapace':
+        proto    => 'tcp',
+        port     => 8081,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 }
