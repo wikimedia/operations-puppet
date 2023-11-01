@@ -23,7 +23,7 @@ class profile::requesttracker {
         dbpass      => $passwords::misc::rt::rt_mysql_pass,
     }
 
-    ferm::service { 'rt-http':
+    firewall::service { 'rt-http':
         proto    => 'tcp',
         port     => [80],
         src_sets => ['CACHES'],
