@@ -4,3 +4,4 @@ profile::pybaltest::hosts:
 profile::conftool::client::namespace: "/eqiad.wmnet/conftool"
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::contacts::role_contacts: ['Traffic']
+profile::firewall::provider: nftables
