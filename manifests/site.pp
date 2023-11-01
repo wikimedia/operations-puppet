@@ -1647,6 +1647,11 @@ node /^cloudcontrol100[567]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
+# New cloudcontrol nodes T342455
+node /^cloudcontrol10(0[8-9]|1[0])\-dev\.eqiad\./ {
+    role(insetup::wmcs)
+}
+
 #new cephosd servers T322760
 node /^cephosd100[12345]\.eqiad\./ {
     role(ceph::server)
@@ -1679,6 +1684,11 @@ node /^cloudelastic10(0[7-9]|10)\.wikimedia\./ {
 
 node /^cloudnet100[5-6]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::net)
+}
+
+# New cloudnet nodes T342455
+node /^cloudnet100[7-8]\-dev\.eqiad\./ {
+    role(insetup::wmcs)
 }
 
 ## Multi-instance wikireplica dbs
