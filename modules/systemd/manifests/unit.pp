@@ -30,15 +30,20 @@
 # }
 #
 define systemd::unit (
-    String $content,
-    Wmflib::Ensure         $ensure            = present,
-    String                 $unit              = $title,
-    Boolean                $restart           = false,
-    Boolean                $override          = false,
-    String[1]              $override_filename = 'puppet-override.conf',
-    Optional[Wmflib::Team] $team              = undef,
+    Optional[String]             $content           = undef,
+    Optional[Stdlib::Filesource] $source            = undef,
+    Wmflib::Ensure               $ensure            = present,
+    String                       $unit              = $title,
+    Boolean                      $restart           = false,
+    Boolean                      $override          = false,
+    String[1]                    $override_filename = 'puppet-override.conf',
+    Optional[Wmflib::Team]       $team              = undef,
 ) {
     require systemd
+
+    if ($source == undef) == ($content == undef) {
+        fail("systemd::unit: ${title}: either source or content must be provided, but not both")
+    }
 
     if ($unit =~ /^(.+)\.(\w+)$/ and $2 =~ Systemd::Unit::Type) {
         $unit_name = $unit
@@ -72,6 +77,7 @@ define systemd::unit (
     $exec_label = "systemd daemon-reload for ${unit_name} (${title})"
     file { $path:
         ensure  => $ensure,
+        source  => $source,
         content => $content,
         mode    => '0444',
         owner   => 'root',

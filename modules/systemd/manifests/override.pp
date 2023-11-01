@@ -5,10 +5,11 @@
 # @param ensure the ensurable parameter
 # @param restart if true restart the service when the override file changes
 define systemd::override (
-    String[1]      $unit,
-    String[1]      $content,
-    Wmflib::Ensure $ensure  = present,
-    Boolean        $restart = false,
+    String[1]                    $unit,
+    Optional[String[1]]          $content           = undef,
+    Optional[Stdlib::Filesource] $source            = undef,
+    Wmflib::Ensure               $ensure  = present,
+    Boolean                      $restart = false,
 ) {
     systemd::unit { "${unit}-${title}":
         override_filename => $title,
