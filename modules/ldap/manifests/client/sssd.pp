@@ -62,6 +62,14 @@ class ldap::client::sssd(
         require => Package['sssd'],
     }
 
+    # sssd-nss.service was added as a separate service in bullseye
+    if debian::codename::ge('bullseye') {
+        systemd::override { 'sssd-nss-auto-restart':
+            unit   => 'sssd-nss.service',
+            source => 'puppet:///modules/ldap/client/sssd/sssd-nss-auto-restart.override.service',
+        }
+    }
+
     service { 'sssd':
         ensure  => 'running',
         require => [Package['sssd'], File['/etc/sssd/sssd.conf']],

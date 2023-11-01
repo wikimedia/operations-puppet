@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[Unit]
+StartLimitInterval=1800s
+# one less than 1800s/5s
+StartLimitBurst=359
+
+[Service]
+RestartSec=5s
