@@ -1,2 +1,1 @@
 profile::ssh::server::enable_kerberos: true
-profile::firewall::provider: nftables
