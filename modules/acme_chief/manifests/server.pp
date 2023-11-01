@@ -184,10 +184,10 @@ class acme_chief::server (
         ],
     }
 
-    ferm::service { 'acme-chief-api':
-        proto  => 'tcp',
-        port   => '8140',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'acme-chief-api':
+        proto    => 'tcp',
+        port     => 8140,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     nginx::site { 'acme-chief-http-challenges':
@@ -195,22 +195,23 @@ class acme_chief::server (
         content => template('acme_chief/acme-chief-http-challenges.nginx.conf.erb'),
         require => Package['acme-chief'],
     }
-    ferm::service { 'acme-chief-http-challenges':
-        ensure => $http_challenge_support,
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'acme-chief-http-challenges':
+        ensure   => $http_challenge_support,
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     $ensure_passive = (!$is_active)? {
         true    => present,
         default => absent,
     }
-    ferm::service { 'acme-chief-ssh-rsync':
+
+    firewall::service { 'acme-chief-ssh-rsync':
         ensure => $ensure_passive,
         proto  => 'tcp',
-        port   => '22',
-        srange => "(@resolve((${active_host})) @resolve((${active_host}), AAAA))",
+        port   => 22,
+        srange => [ $active_host ],
     }
 
     keyholder::agent { 'authdns_acmechief':
