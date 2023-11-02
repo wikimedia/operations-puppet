@@ -104,6 +104,14 @@ class profile::aptrepo::wikimedia (
         $motd_ensure = 'present'
     }
 
+    rsync::quickdatacopy { 'aptrepo-migration':
+        source_host         => 'apt1001.wikimedia.org',
+        dest_host           => 'apt1002.wikimedia.org',
+        auto_sync           => false,
+        module_path         => '/srv',
+        server_uses_stunnel => true,
+    }
+
     motd::message { '01_inactive_warning':
         ensure   => $motd_ensure,
         priority => 99,  # Use hi priority to ensure this is the last message
