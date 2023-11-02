@@ -18,6 +18,7 @@ class profile::openstack::base::galera::backup(
         group   => 'root',
         mode    => '0400',
         content => "[client]\nuser=${back_user}\npassword=\'${back_pass}\'\n",
+        require => Class['galera'],
     }
 
     # Backups older than 15 days will be deleted by the predump script before
