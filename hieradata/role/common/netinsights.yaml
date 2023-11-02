@@ -1,4 +1,5 @@
 profile::pmacct::kafka_cluster: 'jumbo-eqiad'
+profile::puppet::agent::force_puppet7: true
 profile::pmacct::librdkafka_config:
   - 'global,security.protocol,SSL'
   - "global,ssl.ca.location,%{profile::base::certificates::trusted_ca_path}"
