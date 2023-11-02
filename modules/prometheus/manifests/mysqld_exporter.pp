@@ -35,10 +35,11 @@ define prometheus::mysqld_exporter (
     ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
 
     file { '/var/lib/prometheus':
-        ensure => directory,
-        mode   => '0550',
-        owner  => 'prometheus',
-        group  => 'prometheus',
+        ensure  => directory,
+        mode    => '0550',
+        require => Package['prometheus-mysqld-exporter'],
+        owner   => 'prometheus',
+        group   => 'prometheus',
     }
 
     # default .my.cnf location (i.e. $HOME/.my.cnf)
