@@ -1,1 +1,1 @@
-profile::airflow::manage_skein_certificate: true
+profile::airflow::renew_skein_certificate: true

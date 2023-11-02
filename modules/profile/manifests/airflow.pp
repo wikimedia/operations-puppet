@@ -67,7 +67,7 @@ class profile::airflow(
     Boolean $use_wmf_defaults             = lookup('profile::airflow::use_wmf_defaults', { 'default_value' => true }),
     String $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-coord1001.eqiad.wmnet' }),
     Optional[String] $airflow_version     = lookup('profile::airflow::airflow_version', { 'default_value' => '2.6.3-py3.10-20230711' }),
-    Boolean $manage_skein_certificate     = lookup('profile::airflow::manage_skein_certificate', { 'default_value' => false }),
+    Boolean $renew_skein_certificate      = lookup('profile::airflow::renew_skein_certificate', { 'default_value' => false }),
 ) {
 
     class { 'airflow':
@@ -195,7 +195,7 @@ class profile::airflow(
                     # or import $instance_name/conf/dag_config.py
                     'PYTHONPATH' => $deployment_dir,
                 },
-                'manage_skein_certificate' => $manage_skein_certificate,
+                'renew_skein_certificate' => $renew_skein_certificate,
             }
 
             if $airflow_version != undef and versioncmp($airflow_version, '2.3.0') >= 0 {
