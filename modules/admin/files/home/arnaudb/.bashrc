@@ -68,8 +68,10 @@ fi
 
 
 #### Prompt rendering
-#if [ $(id -u) -eq 0 ]; then
+if [ $(id -u) -eq 0 ]; then
 #    PS1="\[\e[38;5;196m\]\u\[\e[38;5;202m\]@\[\e[38;5;208m\]\h \[\e[38;5;220m\]\w \$(prompt_return_code_handle)"
-#else
-#    PS1="\[\e[38;5;47m\]\u\[\e[38;5;156m\]@\[\e[38;5;227m\]\h \[\e[38;5;231m\]\w \$(prompt_return_code_handle)"
-#fi
+   export PS1='\[\033[0;94m\]\u@\h\[\033[1m\]:\[\033[0;35m\]\W\[\033[0m\] $ '
+else
+#    export PS1="\[\e[38;5;47m\]\u\[\e[38;5;156m\]@\[\e[38;5;227m\]\h \[\e[38;5;231m\]\w \$(prompt_return_code_handle)"
+   export PS1='\[\033[0;94m\]\u@\h\[\033[1m\]:\[\033[0;35m\]\W\[\033[0m\] $ '
+fi
