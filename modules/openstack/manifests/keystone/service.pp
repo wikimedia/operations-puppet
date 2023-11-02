@@ -5,7 +5,8 @@ class openstack::keystone::service(
     $active,
     $version,
     $token_driver,
-    $controller_hosts,
+    Array[Stdlib::Fqdn] $memcached_nodes,
+    Integer $max_active_keys,
     $osm_host,
     $db_name,
     $db_user,
@@ -45,7 +46,8 @@ class openstack::keystone::service(
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports,
 ) {
     class { "openstack::keystone::service::${version}":
-        controller_hosts                      => $controller_hosts,
+        memcached_nodes                       => $memcached_nodes,
+        max_active_keys                       => $max_active_keys,
         osm_host                              => $osm_host,
         db_name                               => $db_name,
         db_user                               => $db_user,

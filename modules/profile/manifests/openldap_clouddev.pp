@@ -10,7 +10,7 @@ class profile::openldap_clouddev (
     $read_only = lookup('profile::openldap::read_only'),
     $certname = lookup('profile::openldap::certname'),
     $storage_backend = lookup('profile::openldap::storage_backend'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
 
 ){
     # Certificate needs to be readable by slapd
@@ -22,8 +22,8 @@ class profile::openldap_clouddev (
     $suffix = 'dc=wikimedia,dc=org'
 
     $epp_params = {
-        'suffix'                => $suffix,
-        'openstack_controllers' => $openstack_controllers,
+        'suffix'             => $suffix,
+        'cloudcontrol_hosts' => $openstack_control_nodes.map |OpenStack::ControlNode $node| { $node['cloud_private_fqdn'] },
     }
 
     class { '::openldap':

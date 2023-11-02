@@ -5,7 +5,8 @@ class profile::openstack::base::neutron::common(
     $db_user = lookup('profile::openstack::base::neutron::db_user'),
     $db_pass = lookup('profile::openstack::base::neutron::db_pass'),
     $db_host = lookup('profile::openstack::base::neutron::db_host'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
@@ -21,7 +22,7 @@ class profile::openstack::base::neutron::common(
 
     class {'::openstack::neutron::common':
         version                     => $version,
-        memcached_nodes             => $openstack_controllers,
+        memcached_nodes             => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_api_fqdn,
         db_pass                     => $db_pass,

@@ -1,6 +1,6 @@
 class profile::openstack::base::nova::fullstack::service(
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
-    $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     $region = lookup('profile::openstack::base::region'),
     $network = lookup('profile::openstack::base::nova::instance_network_id'),
     $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
@@ -17,10 +17,12 @@ class profile::openstack::base::nova::fullstack::service(
         }
     }.flatten.sort
 
-    # We only want this running in one place; just pick the first
-    #  host in $openstack_controllers.
+    # We only want this running in one place; just pick the second
+    #  host in $openstack_control_nodes.
+    $active = $::facts['networking']['fqdn'] == $openstack_control_nodes[1]['host_fqdn']
+
     class { '::openstack::nova::fullstack::service':
-        active       => ($::facts['networking']['hostname'] == $openstack_controllers[1].split('\.')[0]),
+        active       => $active,
         password     => $osstackcanary_pass,
         region       => $region,
         network      => $network,
@@ -30,4 +32,8 @@ class profile::openstack::base::nova::fullstack::service(
         resolvers    => $nameservers,
     }
     contain '::openstack::nova::fullstack::service'
+
+    if $active {
+        class {'::openstack::nova::fullstack::monitor':}
+    }
 }

@@ -2,7 +2,7 @@
 class profile::openstack::codfw1dev::designate::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::codfw1dev::designate::db_pass'),
@@ -34,7 +34,7 @@ class profile::openstack::codfw1dev::designate::service(
         domain_id_internal_forward_legacy => $domain_id_internal_forward_legacy,
         domain_id_internal_reverse        => $domain_id_internal_reverse,
         puppetmaster_hostname             => $puppetmaster_hostname,
-        openstack_controllers             => $openstack_controllers,
+        openstack_control_nodes           => $openstack_control_nodes,
         ldap_user_pass                    => $ldap_user_pass,
         pdns_api_key                      => $pdns_api_key,
         db_admin_pass                     => $db_admin_pass,

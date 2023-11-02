@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::rabbitmq(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_setup_nodes'),
     $monitor_user = lookup('profile::openstack::codfw1dev::rabbit_monitor_user'),
@@ -26,7 +26,7 @@ class profile::openstack::codfw1dev::rabbitmq(
 ){
 
     class {'::profile::openstack::base::rabbitmq':
-        openstack_controllers   => $openstack_controllers,
+        openstack_control_nodes => $openstack_control_nodes,
         rabbitmq_nodes          => $rabbitmq_nodes,
         rabbitmq_setup_nodes    => $rabbitmq_setup_nodes,
         monitor_user            => $monitor_user,

@@ -7,22 +7,22 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     $private_reverse_zones = lookup('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
     $aliaser_extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::codfw1dev::pdns::extra_allow_from', {default_value => []}),
-    Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::codfw1dev::openstack_controllers',  {default_value => []}),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
 ) {
     # for now only prometheus metrics are needed.. maybe something else in the future?
     $api_allow_hosts = $prometheus_nodes
 
     class {'::profile::openstack::base::pdns::recursor::service':
-        keystone_api_fqdn     => $keystone_api_fqdn,
-        observer_password     => $observer_password,
-        pdns_hosts            => $pdns_hosts,
-        legacy_tld            => $legacy_tld,
-        private_reverse_zones => $private_reverse_zones,
-        aliaser_extra_records => $aliaser_extra_records,
-        extra_allow_from      => $extra_allow_from,
-        controllers           => $controllers,
-        pdns_api_allow_from   => flatten([
+        keystone_api_fqdn       => $keystone_api_fqdn,
+        observer_password       => $observer_password,
+        pdns_hosts              => $pdns_hosts,
+        legacy_tld              => $legacy_tld,
+        private_reverse_zones   => $private_reverse_zones,
+        aliaser_extra_records   => $aliaser_extra_records,
+        extra_allow_from        => $extra_allow_from,
+        openstack_control_nodes => $openstack_control_nodes,
+        pdns_api_allow_from     => flatten([
             '127.0.0.1',
             $api_allow_hosts.map |Stdlib::Fqdn $host| { ipresolve($host, 4) }
         ]),

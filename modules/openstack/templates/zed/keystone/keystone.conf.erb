@@ -61,7 +61,7 @@ wikitech_access_secret = <%= @wiki_access_secret %>
 
 [cache]
 backend = oslo_cache.memcache_pool
-memcache_servers = <%= @controller_hosts.map{|host| "#{host}:11211"}.join(",") %>
+memcache_servers = <%= @memcached_nodes.map{|host| "#{host}:11211"}.join(",") %>
 
 [catalog]
 driver = sql

@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
 class openstack::keystone::service::antelope(
-    $controller_hosts,
+    Array[Stdlib::Fqdn] $memcached_nodes,
+    Integer $max_active_keys,
     $osm_host,
     $db_name,
     $db_user,
@@ -44,13 +45,6 @@ class openstack::keystone::service::antelope(
         public_bind_port => $public_bind_port,
         admin_bind_port  => $admin_bind_port,
     }
-
-    # Fernet key count.  We rotate once per day on each host.  That means that
-    #  for our keys to live a week, we need at least 7*(number of hosts) keys
-    #  at any one time.  Using 9 here instead because it costs us nothing
-    #  and provides ample slack.
-    $max_active_keys = $controller_hosts.length * 9
-
 
     # Hint for conf sub-templates
     $version = 'antelope'

@@ -2,7 +2,8 @@ class profile::openstack::base::keystone::service(
     $daemon_active = lookup('profile::openstack::base::keystone::daemon_active'),
     $version = lookup('profile::openstack::base::version'),
     $region = lookup('profile::openstack::base::region'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::keystone::service::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     $osm_host = lookup('profile::openstack::base::osm_host'),
     $db_name = lookup('profile::openstack::base::keystone::db_name'),
     $db_user = lookup('profile::openstack::base::keystone::db_user'),
@@ -51,10 +52,17 @@ class profile::openstack::base::keystone::service(
     include ::network::constants
     $ldap_rw_host = $ldap_config['rw-server']
 
+    # Fernet key count.  We rotate once per day on each host.  That means that
+    #  for our keys to live a week, we need at least 7*(number of hosts) keys
+    #  at any one time.  Using 9 here instead because it costs us nothing
+    #  and provides ample slack.
+    $max_active_keys = $openstack_control_nodes.length * 9
+
     class {'::openstack::keystone::service':
         active                                => $daemon_active,
         version                               => $version,
-        controller_hosts                      => $openstack_controllers,
+        memcached_nodes                       => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
+        max_active_keys                       => $max_active_keys,
         osm_host                              => $osm_host,
         db_name                               => $db_name,
         db_user                               => $db_user,

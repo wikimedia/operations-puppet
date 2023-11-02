@@ -1,16 +1,18 @@
 class profile::openstack::base::galera::node(
-    Integer                $server_id              = lookup('profile::openstack::base::galera::server_id'),
-    Boolean                $enabled                = lookup('profile::openstack::base::galera::enabled'),
-    Stdlib::Port           $listen_port            = lookup('profile::openstack::base::galera::listen_port'),
-    String                 $prometheus_db_pass     = lookup('profile::openstack::base::galera::prometheus_db_pass'),
-    Array[Stdlib::Fqdn]    $openstack_controllers  = lookup('profile::openstack::base::openstack_controllers'),
-    Array[Stdlib::Fqdn]    $haproxy_nodes          = lookup('profile::openstack::base::haproxy_nodes'),
-    Stdlib::Fqdn           $wsrep_node_name        = lookup('profile::openstack::base::galera::node::wsrep_node_name'),
+    Integer                       $server_id               = lookup('profile::openstack::base::galera::server_id'),
+    Boolean                       $enabled                 = lookup('profile::openstack::base::galera::enabled'),
+    Stdlib::Port                  $listen_port             = lookup('profile::openstack::base::galera::listen_port'),
+    String                        $prometheus_db_pass      = lookup('profile::openstack::base::galera::prometheus_db_pass'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String                        $openstack_control_node_interface = lookup('profile::openstack::base::galera::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
+    Array[Stdlib::Fqdn]           $haproxy_nodes           = lookup('profile::openstack::base::haproxy_nodes'),
+    Stdlib::Fqdn                  $wsrep_node_name         = lookup('profile::openstack::base::galera::node::wsrep_node_name'),
 ) {
+    $cloudcontrols = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'
     class {'::galera':
-        cluster_nodes   => $openstack_controllers,
+        cluster_nodes   => $cloudcontrols,
         server_id       => $server_id,
         enabled         => $enabled,
         port            => $listen_port,
@@ -26,7 +28,7 @@ class profile::openstack::base::galera::node(
     ferm::service { 'galera-cluster':
         proto  => 'tcp',
         port   => '(3306 4567 4568 4444)',
-        srange => "(@resolve((${openstack_controllers.join(' ')})))",
+        srange => "(@resolve((${cloudcontrols.join(' ')})))",
     }
 
     # 9990 for the nodecheck service
@@ -45,7 +47,7 @@ class profile::openstack::base::galera::node(
 
     openstack::db::project_grants { 'prometheus':
         privs        => 'REPLICATION CLIENT, PROCESS',
-        access_hosts => $openstack_controllers + $haproxy_nodes,
+        access_hosts => $cloudcontrols + $haproxy_nodes,
         db_name      => '*',
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,
@@ -55,7 +57,7 @@ class profile::openstack::base::galera::node(
 
     openstack::db::project_grants { 'prometheus_performance':
         privs        => 'SELECT',
-        access_hosts => $openstack_controllers + $haproxy_nodes,
+        access_hosts => $cloudcontrols + $haproxy_nodes,
         db_name      => 'performance_schema',
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,

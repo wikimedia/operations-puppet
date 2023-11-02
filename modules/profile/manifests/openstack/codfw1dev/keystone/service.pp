@@ -2,7 +2,7 @@
 class profile::openstack::codfw1dev::keystone::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
     $region = lookup('profile::openstack::codfw1dev::region'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     $osm_host = lookup('profile::openstack::codfw1dev::osm_host'),
     $db_host = lookup('profile::openstack::codfw1dev::keystone::db_host'),
     $token_driver = lookup('profile::openstack::codfw1dev::keystone::token_driver'),
@@ -39,7 +39,7 @@ class profile::openstack::codfw1dev::keystone::service(
         daemon_active                         => $daemon_active,
         version                               => $version,
         region                                => $region,
-        openstack_controllers                 => $openstack_controllers,
+        openstack_control_nodes               => $openstack_control_nodes,
         osm_host                              => $osm_host,
         db_host                               => $db_host,
         token_driver                          => $token_driver,

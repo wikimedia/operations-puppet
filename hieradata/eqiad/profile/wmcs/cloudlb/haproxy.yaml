@@ -27,7 +27,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::keystone::admin_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -42,7 +42,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::keystone::public_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -56,7 +56,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::glance::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -70,7 +70,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::cinder::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -84,7 +84,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::trove::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -98,7 +98,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -119,7 +119,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::heat::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -133,7 +133,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::magnum::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -147,7 +147,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::neutron::bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -161,7 +161,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::nova::osapi_compute_listen_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: HEAD
       path: /
@@ -175,7 +175,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::eqiad1::placement::api_bind_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -189,7 +189,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 8775
     backend:
       port: "%{alias('profile::openstack::eqiad1::nova::metadata_listen_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /healthcheck
@@ -203,7 +203,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 3306
     backend:
       port: "%{alias('profile::openstack::eqiad1::galera::listen_port')}"
-      servers: "%{alias('profile::openstack::eqiad1::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::eqiad1::openstack_control_nodes')}"
       primary_host: "%{lookup('profile::openstack::eqiad1::galera::primary_host')}"
     healthcheck:
       options:

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::keystone::fernet_keys(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
-    ) {
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
+) {
     class {'profile::openstack::base::keystone::fernet_keys':
-        keystone_hosts => $openstack_controllers,
+        openstack_control_nodes => $openstack_control_nodes,
     }
 }

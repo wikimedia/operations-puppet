@@ -28,7 +28,7 @@ class profile::openstack::base::pdns::recursor::service(
     $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::base::pdns::extra_allow_from', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
-    Array[Stdlib::Fqdn]        $controllers      = lookup('profile::openstack::base::openstack_controllers',  {default_value => []}),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes',  {default_value => []}),
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
     Optional[Stdlib::IP::Address::V4::Nosubnet] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip', {'default_value' => undef}),
     Array[Hash]                $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
@@ -41,7 +41,9 @@ class profile::openstack::base::pdns::recursor::service(
         $::network::constants::labs_networks,
         $extra_allow_from,
         $monitoring_hosts,
-        $controllers.map |$host| { ipresolve($host, 4) }
+        $openstack_control_nodes.map |OpenStack::ControlNode $node| {
+            dnsquery::lookup($node['cloud_private_fqdn'], true)
+        }.flatten
     ])
 
     #  We need to alias some public IPs to their corresponding private IPs.

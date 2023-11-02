@@ -1,6 +1,6 @@
 class profile::openstack::eqiad1::cinder(
     String $version = lookup('profile::openstack::eqiad1::version'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::eqiad1::cinder::db_pass'),
@@ -19,7 +19,7 @@ class profile::openstack::eqiad1::cinder(
 ) {
     class {'::profile::openstack::base::cinder':
         version                     => $version,
-        openstack_controllers       => $openstack_controllers,
+        openstack_control_nodes     => $openstack_control_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         region                      => $region,

@@ -6,10 +6,7 @@ profile::admin::groups:
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1005.eqiad.wmnet
   - cloudservices1006.eqiad.wmnet
-profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1005.eqiad.wmnet
-  - cloudcontrol1006.eqiad.wmnet
-  - cloudcontrol1007.eqiad.wmnet
+profile::openstack::base::rabbitmq::openstack_control_node_interface: host_fqdn
 
 contactgroups: wmcs-team-email
 

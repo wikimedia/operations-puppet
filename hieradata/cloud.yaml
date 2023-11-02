@@ -881,8 +881,13 @@ profile::kubernetes::deployment_server::helm_user_group: deployment
 profile::wmcs::firewall::services: {}
 profile::wmcs::firewall::blocked_ips: []
 
-# Needed only for toolsdb_replica_cnf running on bare metal, will be removed once we migrate to VMs
-profile::openstack::eqiad1::openstack_controllers: []
+profile::openstack::eqiad1::openstack_control_nodes:
+  - host_fqdn: cloudcontrol1005.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1005.private.eqiad.wikimedia.cloud
+  - host_fqdn: cloudcontrol1006.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1006.private.eqiad.wikimedia.cloud
+  - host_fqdn: cloudcontrol1007.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1007.private.eqiad.wikimedia.cloud
 profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path: /srv/tools/home
 profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path: /srv/paws/project/paws/userhomes
 profile::wmcs::services::toolsdb_replica_cnf::tool_replica_cnf_path: /srv/tools/project

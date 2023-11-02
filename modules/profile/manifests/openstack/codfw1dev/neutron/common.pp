@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::neutron::common(
     $region = lookup('profile::openstack::codfw1dev::region'),
     $dhcp_domain = lookup('profile::openstack::codfw1dev::nova::dhcp_domain'),
     $db_pass = lookup('profile::openstack::codfw1dev::neutron::db_pass'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
@@ -20,7 +20,7 @@ class profile::openstack::codfw1dev::neutron::common(
 
     class {'::profile::openstack::base::neutron::common':
         version                     => $version,
-        openstack_controllers       => $openstack_controllers,
+        openstack_control_nodes     => $openstack_control_nodes,
         haproxy_nodes               => $haproxy_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_api_fqdn           => $keystone_api_fqdn,

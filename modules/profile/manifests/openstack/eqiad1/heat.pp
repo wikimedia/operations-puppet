@@ -3,7 +3,7 @@
 class profile::openstack::eqiad1::heat(
     String $version = lookup('profile::openstack::eqiad1::version'),
     Boolean $active = lookup('profile::openstack::eqiad1::heat::active'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::eqiad1::heat::db_pass'),
@@ -24,7 +24,7 @@ class profile::openstack::eqiad1::heat(
     class {'::profile::openstack::base::heat':
         version                     => $version,
         active                      => $active,
-        openstack_controllers       => $openstack_controllers,
+        openstack_control_nodes     => $openstack_control_nodes,
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         db_user                     => $db_user,

@@ -1,7 +1,8 @@
 class profile::openstack::base::designate::service(
     $version = lookup('profile::openstack::base::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::cinder::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::base::puppetmaster_hostname'),
     $db_user = lookup('profile::openstack::base::designate::db_user'),
@@ -42,7 +43,7 @@ class profile::openstack::base::designate::service(
         domain_id_internal_forward_legacy => $domain_id_internal_forward_legacy,
         domain_id_internal_reverse        => $domain_id_internal_reverse,
         puppetmaster_hostname             => $puppetmaster_hostname,
-        memcached_nodes                   => $openstack_controllers,
+        memcached_nodes                   => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
         ldap_user_pass                    => $ldap_user_pass,
         pdns_api_key                      => $pdns_api_key,
         db_admin_user                     => $db_admin_user,

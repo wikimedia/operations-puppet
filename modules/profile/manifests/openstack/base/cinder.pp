@@ -1,6 +1,7 @@
 class profile::openstack::base::cinder(
     String $version = lookup('profile::openstack::base::version'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::cinder::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     String $region = lookup('profile::openstack::base::region'),
@@ -28,7 +29,7 @@ class profile::openstack::base::cinder(
     ) {
 
     class { "::openstack::cinder::config::${version}":
-        memcached_nodes             => $openstack_controllers,
+        memcached_nodes             => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         region                      => $region,

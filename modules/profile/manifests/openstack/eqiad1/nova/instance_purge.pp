@@ -1,16 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::instance_purge(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
-    Array[Hash]         $purge_projects        = lookup('profile::openstack::eqiad1::purge_projects'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
+    Array[Hash]                   $purge_projects          = lookup('profile::openstack::eqiad1::purge_projects'),
     ) {
 
     # systemd::timer::job does not take a boolean
-    if ($::facts['networking']['hostname'] == $openstack_controllers[0].split('\.')[0]) {
-        $ensure = 'present'
-    }
-    else {
-        $ensure = 'absent'
-    }
+    $ensure = ($::facts['networking']['fqdn'] == $openstack_control_nodes[0]['host_fqdn']).bool2str('present', 'absent')
 
     # We only want this running in one place; just pick the first
     #  option in the list.

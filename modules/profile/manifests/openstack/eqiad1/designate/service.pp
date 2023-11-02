@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::designate::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::eqiad1::designate::db_pass'),
@@ -34,7 +34,7 @@ class profile::openstack::eqiad1::designate::service(
         domain_id_internal_forward_legacy => $domain_id_internal_forward_legacy,
         domain_id_internal_reverse        => $domain_id_internal_reverse,
         puppetmaster_hostname             => $puppetmaster_hostname,
-        openstack_controllers             => $openstack_controllers,
+        openstack_control_nodes           => $openstack_control_nodes,
         ldap_user_pass                    => $ldap_user_pass,
         pdns_api_key                      => $pdns_api_key,
         db_admin_pass                     => $db_admin_pass,

@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- | String[1] $suffix,
-      Array[Stdlib::Fqdn] $openstack_controllers,
+      Array[Stdlib::Fqdn] $cloudcontrol_hosts,
 | -%>
 # The cn=admin DN and the members of the "Directory Managers" group
 # have full write access. The break here means that others will not be
@@ -18,8 +18,8 @@ limits dn.exact="uid=novaadmin,ou=people,dc=wikimedia,dc=org" time=unlimited siz
 
 # novaobserver is an account used only for keystone access.  We don't want it
 #  to appear on wikitech, gerrit, etc. so limit access only to the keystone host
-<%- $keystone_ipv4_addrs = $openstack_controllers.map |$fqdn| { dnsquery::a($fqdn) }.flatten.sort.unique -%>
-<%- $keystone_ipv6_addrs = $openstack_controllers.map |$fqdn| { dnsquery::aaaa($fqdn) }.flatten.sort.unique -%>
+<%- $keystone_ipv4_addrs = $cloudcontrol_hosts.map |$fqdn| { dnsquery::a($fqdn) }.flatten.sort.unique -%>
+<%- $keystone_ipv6_addrs = $cloudcontrol_hosts.map |$fqdn| { dnsquery::aaaa($fqdn) }.flatten.sort.unique -%>
 access to dn=uid=novaobserver,ou=people,dc=wikimedia,dc=org
 <% $keystone_ipv4_addrs.each |$v4| { -%>
 	by peername.ip=<%= $v4 %> anonymous read

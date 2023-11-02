@@ -4,7 +4,7 @@ class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
     Hash[String,Stdlib::Port] $section_ports = lookup('profile::mariadb::section_ports', ),
     Integer[0, 100] $mariadb_memory_warning_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold', {'default_value' => 90}),
     Integer[0, 100] $mariadb_memory_critical_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold', {'default_value' => 95}),
-    Array[Stdlib::Fqdn] $cloudcontrols = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $dbproxies = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies'),
 ) {
     class { 'mariadb::service':
@@ -60,6 +60,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             notrack => true,
             srange  => "(@resolve((${dbproxies.join(' ')})))",
         }
+        $cloudcontrols = $openstack_control_nodes.map |OpenStack::ControlNode $node| { $node['host_fqdn'] }
         ferm::service { "mysql_wmcs_db_admin_${section}":
             proto   => 'tcp',
             port    => $port,

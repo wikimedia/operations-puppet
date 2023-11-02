@@ -31,15 +31,6 @@ profile::openstack::codfw1dev::version: antelope
 profile::openstack::codfw1dev::cinder::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone_api_fqdn: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone::enforce_policy_scope: false
-
-# TODO: we may not use here the private.codfw.wikimedia.cloud domain
-# TODO: because backup nodes themselves are not in that subnet
-# TODO: so traffic can't circulate using the cloud-private subnet (yet)
-profile::openstack::codfw1dev::openstack_controllers:
-    - cloudcontrol2001-dev.codfw.wmnet
-    - cloudcontrol2004-dev.codfw.wmnet
-    - cloudcontrol2005-dev.codfw.wmnet
-
 profile::openstack::codfw1dev::rabbitmq_nodes:
     # TODO: decide what to do with these
     #- rabbitmq01.codfw1dev.wikimediacloud.org

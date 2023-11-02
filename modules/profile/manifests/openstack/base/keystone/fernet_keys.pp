@@ -1,7 +1,7 @@
 class profile::openstack::base::keystone::fernet_keys(
-    Array[Stdlib::Fqdn] $keystone_hosts = lookup('profile::openstack::base::openstack_controllers'),
-    ) {
-
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::keystone::fernet_keys::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
+) {
     file { '/etc/keystone/fernet-keys':
         ensure => directory,
         owner  => 'keystone',
@@ -13,7 +13,7 @@ class profile::openstack::base::keystone::fernet_keys(
         path        => '/etc/keystone/fernet-keys',
         uid         => 'keystone',
         gid         => 'keystone',
-        hosts_allow => $keystone_hosts,
+        hosts_allow => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
         auto_ferm   => true,
         read_only   => 'yes',
     }
@@ -25,12 +25,13 @@ class profile::openstack::base::keystone::fernet_keys(
     # Note that if the order of hosts in $keystone_hosts is not consistent across all
     #  hosts this will cause chaos.
     #
-    $hostcount = count($keystone_hosts)
+    $hostcount = count($openstack_control_nodes)
     $staggerhours = 24/$hostcount
 
-    $keystone_hosts.each |$index, Stdlib::Fqdn $fqdn| {
+    $openstack_control_nodes.each |$index, OpenStack::ControlNode $node| {
         $activehour = $index * $staggerhours
-        $is_this_host = $::facts['networking']['hostname'] == $fqdn.split('\.')[0]
+        $is_this_host = $::facts['networking']['fqdn'] == $node['host_fqdn']
+        $fqdn = $node[$openstack_control_node_interface]
 
         systemd::timer::job { "keystone_sync_keys_from_${fqdn}":
             ensure             => $is_this_host.bool2str('absent', 'present'),

@@ -5,14 +5,17 @@ profile::openstack::eqiad1::horizon_version: 'zed'
 # Expose openstack APIs to the open internet
 profile::openstack::eqiad1::public_apis: true
 
-# The openstack_controllers host most of the cloud-vps OpenStack
+# The openstack_control_nodes host most of the cloud-vps OpenStack
 # control plane, with the notable exclusion of the Designate API.
 # All of the API endpoints are behind a HAProxy load balancer, running
 # haproxy_nodes (defined below).
-profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1005.eqiad.wmnet
-  - cloudcontrol1006.eqiad.wmnet
-  - cloudcontrol1007.eqiad.wmnet
+profile::openstack::eqiad1::openstack_control_nodes:
+  - host_fqdn: cloudcontrol1005.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1005.private.eqiad.wikimedia.cloud
+  - host_fqdn: cloudcontrol1006.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1006.private.eqiad.wikimedia.cloud
+  - host_fqdn: cloudcontrol1007.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1007.private.eqiad.wikimedia.cloud
 
 # The public service name for the keystone API
 #

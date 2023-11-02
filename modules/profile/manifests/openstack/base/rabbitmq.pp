@@ -13,7 +13,8 @@
 #
 class profile::openstack::base::rabbitmq(
     String $region = lookup('profile::openstack::base::region'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::rabbitmq::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::base::rabbitmq_setup_nodes'),
     Stdlib::Fqdn $rabbitmq_service_name = lookup('profile::openstack::base::rabbitmq_service_name'),
@@ -164,10 +165,11 @@ class profile::openstack::base::rabbitmq(
         srange => "(${hosts_ranges.join(' ')})",
     }
 
+    $cloudcontrols = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
     ferm::service { 'rabbitmq-openstack-control':
         proto  => 'tcp',
         port   => [5671, 5672],
-        srange => "(@resolve((${openstack_controllers.join(' ')})))",
+        srange => "(@resolve((${cloudcontrols.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-designate':

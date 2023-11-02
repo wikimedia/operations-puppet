@@ -3,7 +3,14 @@ define cloudlb::haproxy::service (
     CloudLB::HAProxy::Service::Definition $service,
 ) {
     # shortcuts
-    $servers = $service['backend']['servers']
+    if $service['backend']['servers'] =~ Array[Stdlib::Fqdn] {
+        $servers = $service['backend']['servers']
+    } else {
+        $servers = $service['backend']['servers'].map |OpenStack::ControlNode $node| {
+            $node['cloud_private_fqdn']
+        }
+    }
+
     $port_backend = $service['backend']['port']
     $frontends = $service['frontends']
     $type = $service['type']

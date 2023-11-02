@@ -1,5 +1,5 @@
 class profile::openstack::base::puppetmaster::frontend(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $puppetmasters = lookup('profile::openstack::base::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::base::puppetmaster::ca'),
@@ -22,7 +22,10 @@ class profile::openstack::base::puppetmaster::frontend(
     class { 'profile::openstack::base::puppetmaster::common': }
 
     $designate_ips = $designate_hosts.map |$host| { ipresolve($host, 4) }
-    $openstack_controller_ips = $openstack_controllers.map |$host| { ipresolve($host, 4) }
+    $openstack_controller_ips = $openstack_control_nodes.map |$node| {
+        dnsquery::lookup($node['cloud_private_fqdn'], true)
+    }
+
     class { 'puppetmaster::certmanager':
         remote_cert_cleaners => flatten([
             $designate_ips,

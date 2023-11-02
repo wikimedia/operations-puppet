@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::puppetmaster::frontend(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::codfw1dev::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     $puppetmasters = lookup('profile::openstack::codfw1dev::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::codfw1dev::puppetmaster::ca'),
@@ -14,7 +14,7 @@ class profile::openstack::codfw1dev::puppetmaster::frontend(
     }
 
     class {'::profile::openstack::base::puppetmaster::frontend':
-        openstack_controllers    => $openstack_controllers,
+        openstack_control_nodes  => $openstack_control_nodes,
         designate_hosts          => $designate_hosts,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,

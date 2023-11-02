@@ -1,5 +1,5 @@
 class profile::openstack::eqiad1::puppetmaster::frontend(
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     $puppetmasters = lookup('profile::openstack::eqiad1::puppetmaster::servers'),
     $puppetmaster_ca = lookup('profile::openstack::eqiad1::puppetmaster::ca'),
@@ -7,7 +7,7 @@ class profile::openstack::eqiad1::puppetmaster::frontend(
     $cert_secret_path = lookup('profile::openstack::eqiad1::puppetmaster::cert_secret_path'),
     ) {
     class {'::profile::openstack::base::puppetmaster::frontend':
-        openstack_controllers    => $openstack_controllers,
+        openstack_control_nodes  => $openstack_control_nodes,
         designate_hosts          => $designate_hosts,
         puppetmasters            => $puppetmasters,
         puppetmaster_ca          => $puppetmaster_ca,

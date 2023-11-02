@@ -10,14 +10,6 @@ profile::prometheus::memcached_exporter::arguments: "--memcached.address=localho
 raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]
 
-# TODO: not required after the whole control plane is on the next network setup
-# This is here to force designate to talk to cloudcontrol using the cloud-private link
-# for things like galera and memcached
-profile::openstack::eqiad1::openstack_controllers:
-  - cloudcontrol1005.private.eqiad.wikimedia.cloud
-  - cloudcontrol1006.private.eqiad.wikimedia.cloud
-  - cloudcontrol1007.private.eqiad.wikimedia.cloud
-
 profile::openstack::eqiad1::pdns::hosts:
   - auth_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
     private_fqdn: cloudservices1006.private.eqiad.wikimedia.cloud
@@ -47,3 +39,6 @@ profile::bird::advertise_vips:
     service_type: "pdns recursor"
     address: 172.20.255.1
     check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.255.1 -d www.wikimedia.org -t 1"
+
+# TODO: drop these overrides
+profile::openstack::base::designate::openstack_control_node_interface: cloud_private_fqdn

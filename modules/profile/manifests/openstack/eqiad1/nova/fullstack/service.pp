@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::eqiad1::nova::fullstack::service(
     $osstackcanary_pass = lookup('profile::openstack::eqiad1::nova::fullstack_pass'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     $region = lookup('profile::openstack::eqiad1::region'),
     $network = lookup('profile::openstack::eqiad1::nova::instance_network_id'),
     $puppetmaster = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
@@ -10,18 +10,12 @@ class profile::openstack::eqiad1::nova::fullstack::service(
 
     require ::profile::openstack::eqiad1::clientpackages
     class { '::profile::openstack::base::nova::fullstack::service':
-        openstack_controllers => $openstack_controllers,
-        osstackcanary_pass    => $osstackcanary_pass,
-        region                => $region,
-        network               => $network,
-        puppetmaster          => $puppetmaster,
-        bastion_ip            => $bastion_ip,
-        deployment            => 'eqiad1',
-    }
-
-    # We only want this running in one place; just pick the first
-    #  option in the list.
-    if ($::facts['networking']['hostname'] == $openstack_controllers[1].split('\.')[0]) {
-        class {'::openstack::nova::fullstack::monitor':}
+        openstack_control_nodes => $openstack_control_nodes,
+        osstackcanary_pass      => $osstackcanary_pass,
+        region                  => $region,
+        network                 => $network,
+        puppetmaster            => $puppetmaster,
+        bastion_ip              => $bastion_ip,
+        deployment              => 'eqiad1',
     }
 }

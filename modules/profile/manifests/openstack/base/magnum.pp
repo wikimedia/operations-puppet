@@ -3,7 +3,8 @@
 class profile::openstack::base::magnum(
     String $version = lookup('profile::openstack::base::version'),
     Boolean $active = lookup('profile::openstack::base::magnum::active'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::base::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::magnum::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     String $region = lookup('profile::openstack::base::region'),
@@ -23,7 +24,7 @@ class profile::openstack::base::magnum(
 ) {
     class { '::openstack::magnum::service':
         version                     => $version,
-        memcached_nodes             => $openstack_controllers,
+        memcached_nodes             => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
         rabbitmq_nodes              => $rabbitmq_nodes,
         keystone_fqdn               => $keystone_fqdn,
         db_user                     => $db_user,

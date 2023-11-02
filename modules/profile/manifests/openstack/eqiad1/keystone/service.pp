@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::keystone::service(
     $version = lookup('profile::openstack::eqiad1::version'),
     $region = lookup('profile::openstack::eqiad1::region'),
-    Array[Stdlib::Fqdn] $openstack_controllers = lookup('profile::openstack::eqiad1::openstack_controllers'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     $osm_host = lookup('profile::openstack::eqiad1::osm_host'),
     $db_host = lookup('profile::openstack::eqiad1::keystone::db_host'),
     $token_driver = lookup('profile::openstack::eqiad1::keystone::token_driver'),
@@ -42,7 +42,7 @@ class profile::openstack::eqiad1::keystone::service(
         daemon_active                         => $daemon_active,
         version                               => $version,
         region                                => $region,
-        openstack_controllers                 => $openstack_controllers,
+        openstack_control_nodes               => $openstack_control_nodes,
         osm_host                              => $osm_host,
         db_host                               => $db_host,
         token_driver                          => $token_driver,

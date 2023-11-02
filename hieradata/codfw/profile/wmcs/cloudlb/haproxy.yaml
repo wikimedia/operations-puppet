@@ -28,7 +28,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::keystone::admin_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -43,7 +43,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::keystone::public_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -57,7 +57,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::glance::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -71,7 +71,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::cinder::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -85,7 +85,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::trove::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -99,7 +99,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::base::radosgw::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -120,7 +120,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::barbican::bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -134,7 +134,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::heat::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -148,7 +148,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::magnum::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -162,7 +162,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::heat::cfn_api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -176,7 +176,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::neutron::bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -190,7 +190,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::nova::osapi_compute_listen_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: HEAD
       path: /
@@ -204,7 +204,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: "%{alias('profile::openstack::codfw1dev::placement::api_bind_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /
@@ -218,7 +218,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 8775
     backend:
       port: "%{alias('profile::openstack::codfw1dev::nova::metadata_listen_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: GET
       path: /healthcheck
@@ -232,7 +232,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 3306
     backend:
       port: "%{alias('profile::openstack::codfw1dev::galera::listen_port')}"
-      servers: "%{alias('profile::openstack::codfw1dev::openstack_controllers')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
       primary_host: "%{lookup('profile::openstack::codfw1dev::galera::primary_host')}"
     healthcheck:
       options:
