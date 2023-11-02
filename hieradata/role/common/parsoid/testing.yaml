@@ -49,3 +49,6 @@ profile::parsoid::testreduce::install_node: false
 profile::nginx::variant: "light"
 
 profile::contacts::role_contacts: ["ServiceOps"]
+
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
