@@ -83,7 +83,8 @@ class base::standard_packages (
 
         ensure_packages('rasdaemon')
         service { 'rasdaemon':
-            ensure => 'running'
+            ensure  => 'running',
+            require => Package['rasdaemon'],
         }
         profile::auto_restarts::service { 'rasdaemon': }
 
