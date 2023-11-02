@@ -39,3 +39,5 @@ profile::netbox::db::frontends:
 profile::netbox::cas_server_url: "%{lookup('apereo_cas.staging.oidc_endpoint')}"
 profile::netbox::authentication_provider: 'oidc'
 profile::netbox::oidc_service: 'netbox_next'
+
+profile::firewall::provider: nftables
