@@ -67,9 +67,9 @@ if [ -f /home/arnaudb/.local/bin/z.sh ]; then
 fi
 
 
-### Prompt rendering
-if [ $(id -u) -eq 0 ]; then
-    PS1="\[\e[38;5;196m\]\u\[\e[38;5;202m\]@\[\e[38;5;208m\]\h \[\e[38;5;220m\]\w \$(prompt_return_code_handle)"
-else
-    PS1="\[\e[38;5;47m\]\u\[\e[38;5;156m\]@\[\e[38;5;227m\]\h \[\e[38;5;231m\]\w \$(prompt_return_code_handle)"
-fi
+#### Prompt rendering
+#if [ $(id -u) -eq 0 ]; then
+#    PS1="\[\e[38;5;196m\]\u\[\e[38;5;202m\]@\[\e[38;5;208m\]\h \[\e[38;5;220m\]\w \$(prompt_return_code_handle)"
+#else
+#    PS1="\[\e[38;5;47m\]\u\[\e[38;5;156m\]@\[\e[38;5;227m\]\h \[\e[38;5;231m\]\w \$(prompt_return_code_handle)"
+#fi
