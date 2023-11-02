@@ -30,7 +30,7 @@
 #    [int] maximum number of entries in the cache. default: 10,000,000.
 #
 # @param ringbuffer_max
-#    [int] maximum number of entries in the ring buffer. default: 10.
+#    [int] maximum number of entries in the ring buffer. default: 0.
 #
 # @param tcp_client_threads_max
 #    [int] maximum number of TCP client threads. default: 20.
@@ -72,7 +72,7 @@ class dnsdist (
     Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
     Boolean                             $enable_packetcache     = true,
     Integer[1]                          $packetcache_max        = 10000000,
-    Integer[1]                          $ringbuffer_max         = 10,
+    Integer[0]                          $ringbuffer_max         = 0,
     Integer[1]                          $tcp_client_threads_max = 20,
     Boolean                             $enable_console         = false,
     Optional[String]                    $console_key            = undef,
