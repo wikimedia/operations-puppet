@@ -138,7 +138,7 @@ class profile::docker::builder(
     $ssh_script="${imageupdatebot_base}/ssh-imageupdatebot"
     file { $ssh_script:
         ensure  => $rebuild_images.bool2str('present', 'absent'),
-        content => "#!/bin/bash\nssh -i ${imageupdate_git_key} \"$@\"\n",
+        content => "#!/bin/bash\nssh -i ${ssh_key_location} \"$@\"\n",
         owner   => 'root',
         group   => 'root',
         mode    => '0500'
