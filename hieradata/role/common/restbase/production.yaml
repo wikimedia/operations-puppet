@@ -1005,7 +1005,6 @@ profile::cassandra::settings:
     disk_failure_policy: best_effort
   users:
     - restbase
-    - mediawiki_services_mobileapps
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000
