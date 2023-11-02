@@ -1,5 +1,6 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::monitoring::notifications_enabled: false
+profile::puppet::agent::force_puppet7: true
 
 # Netbox
 profile::netbox::validators:
