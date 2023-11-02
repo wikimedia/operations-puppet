@@ -39,6 +39,7 @@ class rsync::server(
     service { 'rsync':
         ensure    => $ensure_service,
         enable    => true,
+        require   => Package['rsync'],
         subscribe => [Exec['compile fragments'], File['/etc/default/rsync']],
     }
 
