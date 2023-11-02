@@ -1,5 +1,6 @@
 profile::admin::groups:
   - datacenter-ops
+profile::puppet::agent::force_puppet7: true
 profile::installserver::dhcp::ensure_service: 'running'
 profile::installserver::proxy::ensure: 'present'
 profile::nginx::variant: 'light'
