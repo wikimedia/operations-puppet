@@ -16,6 +16,11 @@ class profile::ci::php {
             dist       => "${::lsbdistcodename}-wikimedia",
             components => 'component/php74',
         }
+        apt::repository { 'icu67':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => 'buster-wikimedia',
+            components => 'component/icu67',
+        }
     }
 
     $php_version = debian::codename() ? {
