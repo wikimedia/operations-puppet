@@ -47,5 +47,6 @@ class profile::openstack::base::glance(
         db_name      => 'glance',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['glance'],
     }
 }

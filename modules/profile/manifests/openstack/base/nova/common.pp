@@ -49,12 +49,14 @@ class profile::openstack::base::nova::common(
     }
     contain '::openstack::nova::common'
 
+    # TODO: move to the service profile
     openstack::db::project_grants { 'nova_api':
         access_hosts => $haproxy_nodes,
         db_name      => $db_name_api,
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',
+        require      => Package['nova-common'],
     }
     openstack::db::project_grants { 'nova':
         access_hosts => $haproxy_nodes,
@@ -62,6 +64,7 @@ class profile::openstack::base::nova::common(
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',
+        require      => Package['nova-common'],
     }
     openstack::db::project_grants { 'nova_cell':
         access_hosts => $haproxy_nodes,
@@ -69,5 +72,6 @@ class profile::openstack::base::nova::common(
         db_user      => $db_user,
         db_pass      => $db_pass,
         project_name => 'nova',
+        require      => Package['nova-common'],
     }
 }

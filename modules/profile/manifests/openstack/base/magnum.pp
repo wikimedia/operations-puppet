@@ -52,5 +52,6 @@ class profile::openstack::base::magnum(
         db_name      => $db_name,
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['magnum-api'],
     }
 }

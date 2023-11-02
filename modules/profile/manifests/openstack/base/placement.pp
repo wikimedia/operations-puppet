@@ -33,5 +33,6 @@ class profile::openstack::base::placement(
         db_name      => 'placement',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['placement-api'],
     }
 }

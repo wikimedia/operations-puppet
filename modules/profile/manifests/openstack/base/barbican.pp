@@ -36,5 +36,6 @@ class profile::openstack::base::barbican(
         db_name      => 'barbican',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['barbican-api'],
     }
 }

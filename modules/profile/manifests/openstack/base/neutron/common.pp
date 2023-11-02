@@ -40,10 +40,12 @@ class profile::openstack::base::neutron::common(
     }
     contain '::openstack::neutron::common'
 
+    # TODO: move to the service profile
     openstack::db::project_grants { 'neutron':
         access_hosts => $haproxy_nodes,
         db_name      => 'neutron',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['neutron-common'],
     }
 }

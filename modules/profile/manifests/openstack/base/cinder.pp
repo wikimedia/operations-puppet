@@ -72,6 +72,7 @@ class profile::openstack::base::cinder(
         db_name      => 'cinder',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['cinder-api'],
     }
 
     if debian::codename::eq('bullseye') {

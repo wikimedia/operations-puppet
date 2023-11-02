@@ -50,6 +50,7 @@ class profile::openstack::base::galera::node(
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,
         project_name => 'prometheus',
+        require      => Package['prometheus-mysqld-exporter'],
     }
 
     openstack::db::project_grants { 'prometheus_performance':
@@ -59,6 +60,7 @@ class profile::openstack::base::galera::node(
         db_user      => 'prometheus',
         db_pass      => $prometheus_db_pass,
         project_name => 'prometheus',
+        require      => Package['prometheus-mysqld-exporter'],
     }
 
     # nodechecker service -- should be able to run as prometheus user

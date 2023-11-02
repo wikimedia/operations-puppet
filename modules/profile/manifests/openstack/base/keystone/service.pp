@@ -112,5 +112,6 @@ class profile::openstack::base::keystone::service(
         db_name      => 'keystone',
         db_user      => $db_user,
         db_pass      => $db_pass,
+        require      => Package['keystone'],
     }
 }
