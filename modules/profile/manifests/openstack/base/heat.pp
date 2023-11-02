@@ -59,21 +59,10 @@ class profile::openstack::base::heat(
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
     ferm::service { 'heat-api-backend':
         proto  => 'tcp',
         port   => "(${api_bind_port} ${cfn_api_bind_port})",
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # TODO: move to haproxy/cloudlb profiles
-    ferm::service { 'heat-api-access':
-        proto  => 'tcp',
-        port   => 28004,
-        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'heat':

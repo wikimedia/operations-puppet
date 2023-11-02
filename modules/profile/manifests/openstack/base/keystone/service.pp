@@ -32,8 +32,6 @@ class profile::openstack::base::keystone::service(
     $wiki_consumer_secret = lookup('profile::openstack::base::keystone::wiki_consumer_secret'),
     $wiki_access_token = lookup('profile::openstack::base::keystone::wiki_access_token'),
     $wiki_access_secret = lookup('profile::openstack::base::keystone::wiki_access_secret'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
-    $labweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     String $wsgi_server = lookup('profile::openstack::base::keystone::wsgi_server'),
     Stdlib::IP::Address::V4::CIDR $instance_ip_range = lookup('profile::openstack::base::keystone::instance_ip_range', {default_value => '0.0.0.0/0'}),
     String $wmcloud_domain_owner = lookup('profile::openstack::base::keystone::wmcloud_domain_owner'),
@@ -107,19 +105,6 @@ class profile::openstack::base::keystone::service(
         proto  => 'tcp',
         port   => "(${public_bind_port} ${admin_bind_port})",
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # keystone admin API only for openstack services that might need it.
-    #
-    # Note that because keystone admin uses a weird, extremely-high-number
-    #  port by default, we need to use a non-standard port for its
-    #  tls port as well: 25357 rather than the more expected 225357
-    # TODO: move these to the haproxy/cloudlb profile
-    $nova_hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
-    ferm::service { 'keystone-admin-access':
-        proto  => 'tcp',
-        port   => '(25357)',
-        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${labweb_hosts.join(' ')})) ${nova_hosts_ranges.join(' ')})",
     }
 
     openstack::db::project_grants { 'keystone':

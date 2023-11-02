@@ -25,21 +25,10 @@ class profile::openstack::base::barbican(
         bind_port       => $bind_port,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
     ferm::service { 'barbican-api-backend':
         proto  => 'tcp',
         port   => $bind_port,
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # TODO: move to haproxy/cloudlb profiles
-    ferm::service { 'barbican-api-access':
-        proto  => 'tcp',
-        port   => $bind_port + 20000,
-        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'barbican':

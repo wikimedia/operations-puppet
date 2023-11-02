@@ -4,11 +4,7 @@ class profile::openstack::base::galera::node(
     Stdlib::Port           $listen_port            = lookup('profile::openstack::base::galera::listen_port'),
     String                 $prometheus_db_pass     = lookup('profile::openstack::base::galera::prometheus_db_pass'),
     Array[Stdlib::Fqdn]    $openstack_controllers  = lookup('profile::openstack::base::openstack_controllers'),
-    Array[Stdlib::Fqdn]    $designate_hosts        = lookup('profile::openstack::base::designate_hosts'),
-    Array[Stdlib::Fqdn]    $labweb_hosts           = lookup('profile::openstack::base::labweb_hosts'),
-    Array[Stdlib::Fqdn]    $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Array[Stdlib::Fqdn]    $haproxy_nodes          = lookup('profile::openstack::base::haproxy_nodes'),
-    Array[Stdlib::Fqdn]    $cinder_volume_nodes    = lookup('profile::openstack::base::cinder_volume_nodes'),
     Stdlib::Fqdn           $wsrep_node_name        = lookup('profile::openstack::base::galera::node::wsrep_node_name'),
 ) {
     $socket = '/var/run/mysqld/mysqld.sock'
@@ -23,12 +19,13 @@ class profile::openstack::base::galera::node(
         wsrep_node_name => $wsrep_node_name,
     }
 
+    # 3306, standard mariadb port for debugging/connections/etc
     # 4567, replication
     # 4568, incremental state transfer
     # 4444, state snapshot transfer
     ferm::service { 'galera-cluster':
         proto  => 'tcp',
-        port   => '(4567 4568 4444)',
+        port   => '(3306 4567 4568 4444)',
         srange => "(@resolve((${openstack_controllers.join(' ')})))",
     }
 
@@ -37,14 +34,6 @@ class profile::openstack::base::galera::node(
         proto  => 'tcp',
         port   => "(${listen_port} 9990)",
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # TODO: move to haproxy/cloudlb profiles
-    # Database access from each db node, HA-proxy, designate, web hosts
-    ferm::service { 'galera-access':
-        proto  => 'tcp',
-        port   => 3306,
-        srange => "(@resolve((${openstack_controllers.join(' ')} ${designate_hosts.join(' ')} ${cinder_backup_nodes.join(' ')} ${cinder_volume_nodes.join(' ')} ${labweb_hosts.join(' ')})))",
     }
 
     prometheus::mysqld_exporter { 'default':

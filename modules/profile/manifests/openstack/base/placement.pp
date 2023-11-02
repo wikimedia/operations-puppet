@@ -22,21 +22,10 @@ class profile::openstack::base::placement(
         api_bind_port   => $api_bind_port,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
     ferm::service { 'placement-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
-    }
-
-    # TODO: move to haproxy/cloudlb profiles
-    ferm::service { 'placement-api-access':
-        proto  => 'tcp',
-        port   => 28778,
-        srange => "(${prod_networks} ${labs_networks})",
     }
 
     openstack::db::project_grants { 'placement':
