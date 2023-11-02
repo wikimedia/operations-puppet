@@ -135,10 +135,18 @@ class profile::docker::builder(
         group   => 'root',
         mode    => '0400',
     }
+    $ssh_script="${imageupdatebot_base}/ssh-imageupdatebot"
+    file { $ssh_script:
+        ensure  => $rebuild_images.bool2str('present', 'absent'),
+        content => "#!/bin/bash\nssh -i ${imageupdate_git_key} \"$@\"\n",
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0500'
+    }
     git::clone { 'imageupdatebot/production-images':
         ensure    => $rebuild_images.bool2str('present', 'absent'),
         origin    => 'ssh://imageupdatebot@gerrit.wikimedia.org:29418/operations/docker-images/production-images',
-        ssh       => "ssh -i ${ssh_key_location}",
+        ssh       => $ssh_script,
         directory => "${imageupdatebot_base}/production-images"
     }
     # The actual script to run
