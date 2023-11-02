@@ -31,5 +31,3 @@ profile::java::java_packages:
 
 # Needed to be able to build pybal
 profile::base::remove_python2_on_bullseye: false
-
-profile::firewall::provider: nftables
