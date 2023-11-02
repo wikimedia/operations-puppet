@@ -72,20 +72,4 @@ class prometheus::ipmi_exporter (
     }
 
     profile::auto_restarts::service { 'prometheus-ipmi-exporter': }
-
-    # TODO: Can be removed once run every where
-    # this was required pre 1.4
-    $prometheus_home = '/var/lib/prometheus'
-    file { [
-        '/etc/prometheus/ipmi_sudo.yml',
-        "${prometheus_home}/ipmi_sudo_wrapper.sh",
-        "${prometheus_home}/ipmimonitoring",
-        "${prometheus_home}/ipmi-sensors",
-        "${prometheus_home}/ipmi-dcmi",
-        "${prometheus_home}/bmc-info",
-        "${prometheus_home}/ipmi-chassis",
-        "${prometheus_home}/ipmi-sel",
-        ]:
-        ensure => absent,
-    }
 }
