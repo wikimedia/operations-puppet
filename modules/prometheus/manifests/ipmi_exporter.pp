@@ -28,6 +28,7 @@ class prometheus::ipmi_exporter (
     sudo::user { 'prometheus_ipmi_exporter':
         user       => 'prometheus',
         privileges => $privileges,
+        before     => Package['prometheus-ipmi-exporter'],
     }
 
     $args = {
