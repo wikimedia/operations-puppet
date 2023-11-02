@@ -8,7 +8,7 @@ class openstack::nova::api::service::zed(
     # simple enough to don't require per-debian release split
     require "openstack::serverpackages::zed::${::lsbdistcodename}"
 
-    ensure_packages(['nova-api', 'patch'])
+    ensure_packages(['nova-api'])
 
     file { '/etc/init.d/nova-api':
         content => template('openstack/zed/nova/api/nova-api'),
@@ -21,18 +21,9 @@ class openstack::nova::api::service::zed(
 
     # Hack in regex validation for instance names.
     #  Context can be found in T207538
-    $file_to_patch = '/usr/lib/python3/dist-packages/nova/api/openstack/compute/servers.py'
-    $patch_file = "${file_to_patch}.patch"
-    file {$patch_file:
-        source => 'puppet:///modules/openstack/zed/nova/hacks/servers.py.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${patch_file}":
-        command => "/usr/bin/patch --forward ${file_to_patch} ${patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${file_to_patch} ${patch_file}",
-        require => [File[$patch_file], Package['nova-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/nova/api/openstack/compute/servers.py':
+        source  => 'puppet:///modules/openstack/zed/nova/hacks/servers.py.patch',
+        require => Package['nova-api'],
         notify  => Service['nova-api'],
     }
 

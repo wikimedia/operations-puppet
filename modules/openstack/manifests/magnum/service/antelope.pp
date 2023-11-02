@@ -60,35 +60,14 @@ class openstack::magnum::service::antelope(
     #  https://review.opendev.org/c/openstack/magnum/+/885900
     # These next two files can be removed once the upstream patch is merged and
     # we catch up with it.
-    $fragment_file_to_patch = '/usr/lib/python3/dist-packages/magnum/drivers/common/templates/kubernetes/fragments/start-container-agent.sh'
-    $fragment_patch_file = "${fragment_file_to_patch}.patch"
-    file {$fragment_patch_file:
-        source => 'puppet:///modules/openstack/antelope/magnum/hacks/drivers/common/templates/kubernetes/fragments/start-container-agent.sh.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${fragment_patch_file}":
-        command => "/usr/bin/patch --forward ${fragment_file_to_patch} ${fragment_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${fragment_file_to_patch} ${fragment_patch_file}",
-        require => [File[$fragment_patch_file], Package['magnum-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/magnum/drivers/common/templates/kubernetes/fragments/start-container-agent.sh':
+        source  => 'puppet:///modules/openstack/antelope/magnum/hacks/drivers/common/templates/kubernetes/fragments/start-container-agent.sh.patch',
+        require => Package['magnum-api'],
         notify  => Service['magnum-api'],
     }
-    $template_file_to_patch = '/usr/lib/python3/dist-packages/magnum/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml'
-    $template_patch_file = "${template_file_to_patch}.patch"
-    file {$template_patch_file:
-        source => 'puppet:///modules/openstack/antelope/magnum/hacks/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${template_patch_file}":
-        command => "/usr/bin/patch --forward ${template_file_to_patch} ${template_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${template_file_to_patch} ${template_patch_file}",
-        require => [File[$template_patch_file], Package['magnum-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/magnum/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml':
+        source  => 'puppet:///modules/openstack/antelope/magnum/hacks/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml.patch',
+        require => Package['magnum-api'],
         notify  => Service['magnum-api'],
     }
-
-
-
 }

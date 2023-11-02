@@ -78,18 +78,9 @@ class openstack::trove::service::yoga(
 
     # Apply https://review.opendev.org/c/openstack/trove/+/791053
     #  (likely merged upstream in version Z)
-    $instance_file_to_patch = '/usr/lib/python3/dist-packages/trove/instance/models.py'
-    $instance_patch_file = "${instance_file_to_patch}.patch"
-    file {$instance_patch_file:
-        source => 'puppet:///modules/openstack/yoga/trove/hacks/instance/models.py.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${instance_patch_file}":
-        command => "/usr/bin/patch --forward ${instance_file_to_patch} ${instance_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${instance_file_to_patch} ${instance_patch_file}",
-        require => [File[$instance_patch_file], Package['trove-api']],
-        notify  => Service['trove-api'],
+    openstack::patch { '/usr/lib/python3/dist-packages/trove/instance/models.py':
+        source  => 'puppet:///modules/openstack/yoga/trove/hacks/instance/models.py.patch',
+        require => Package['trove-api'],
+        notify  => Service['trove-api', 'trove-taskmanager'],
     }
 }

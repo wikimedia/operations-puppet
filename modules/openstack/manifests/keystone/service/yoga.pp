@@ -117,18 +117,9 @@ class openstack::keystone::service::yoga(
             recurse => true;
     }
 
-    $file_to_patch = '/usr/lib/python3/dist-packages/keystone/api/projects.py'
-    $patch_file = "${file_to_patch}.patch"
-    file {$patch_file:
-        source => 'puppet:///modules/openstack/yoga/keystone/hacks/projects.py.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${patch_file}":
-        command => "/usr/bin/patch --forward ${file_to_patch} ${patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${file_to_patch} ${patch_file}",
-        require => [File[$patch_file], Package['keystone']],
+    openstack::patch { '/usr/lib/python3/dist-packages/keystone/api/projects.py':
+        source  => 'puppet:///modules/openstack/yoga/keystone/hacks/projects.py.patch',
+        require => Package['keystone'],
         notify  => Service[$wsgi_server],
     }
 

@@ -73,18 +73,9 @@ class openstack::glance::service::antelope(
     }
 
     # Apply https://review.opendev.org/c/openstack/glance_store/+/885581
-    $rbd_file_to_patch = '/usr/lib/python3/dist-packages/glance_store/_drivers/rbd.py'
-    $rbd_patch_file = "${rbd_file_to_patch}.patch"
-    file {$rbd_patch_file:
-        source => 'puppet:///modules/openstack/antelope/glance/hacks/rbd.py.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${rbd_patch_file}":
-        command => "/usr/bin/patch --forward ${rbd_file_to_patch} ${rbd_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${rbd_file_to_patch} ${rbd_patch_file}",
-        require => [File[$rbd_patch_file], Package['glance']],
+    openstack::patch { '/usr/lib/python3/dist-packages/glance_store/_drivers/rbd.py':
+        source  => 'puppet:///modules/openstack/antelope/glance/hacks/rbd.py.patch',
+        require => Package['glance'],
         notify  => Service['glance-api'],
     }
 }

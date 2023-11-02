@@ -30,48 +30,21 @@ class openstack::cinder::service(
         priority => 20,
     }
 
-    $api_file_to_patch = '/usr/lib/python3/dist-packages/cinder/backup/api.py'
-    $api_patch_file = "${api_file_to_patch}.patch"
-    file {$api_patch_file:
-        source => "puppet:///modules/openstack/${version}/cinder/hacks/backup/api.py.patch",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${api_patch_file}":
-        command => "/usr/bin/patch --forward ${api_file_to_patch} ${api_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${api_file_to_patch} ${api_patch_file}",
-        require => [File[$api_patch_file], Package['cinder-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/cinder/backup/api.py':
+        source  => "puppet:///modules/openstack/${version}/cinder/hacks/backup/api.py.patch",
+        require => Package['cinder-api'],
         notify  => Service['cinder-api'],
     }
 
-    $access_file_to_patch = '/usr/lib/python3/dist-packages/cinder/api/schemas/volume_type_access.py'
-    $access_patch_file = "${access_file_to_patch}.patch"
-    file {$access_patch_file:
-        source => "puppet:///modules/openstack/${version}/cinder/hacks/api/volume_type_access.py.patch",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${access_patch_file}":
-        command => "/usr/bin/patch --forward ${access_file_to_patch} ${access_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${access_file_to_patch} ${access_patch_file}",
-        require => [File[$access_patch_file], Package['cinder-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/cinder/api/schemas/volume_type_access.py':
+        source  => "puppet:///modules/openstack/${version}/cinder/hacks/api/volume_type_access.py.patch",
+        require => Package['cinder-api'],
         notify  => Service['cinder-api'],
     }
 
-    $manager_file_to_patch = '/usr/lib/python3/dist-packages/cinder/scheduler/manager.py'
-    $manager_patch_file = "${manager_file_to_patch}.patch"
-    file {$manager_patch_file:
-        source => "puppet:///modules/openstack/${version}/cinder/hacks/manager/manager.py.patch",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${manager_patch_file}":
-        command => "/usr/bin/patch --forward ${manager_file_to_patch} ${manager_patch_file}",
-        unless  => "/usr/bin/patch --reverse --dry-run -f ${manager_file_to_patch} ${manager_patch_file}",
-        require => [File[$manager_patch_file], Package['cinder-api']],
+    openstack::patch { '/usr/lib/python3/dist-packages/cinder/scheduler/manager.py':
+        source  => "puppet:///modules/openstack/${version}/cinder/hacks/manager/manager.py.patch",
+        require => Package['cinder-api'],
         notify  => Service['cinder-api'],
     }
 
