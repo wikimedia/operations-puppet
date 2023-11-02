@@ -14,21 +14,30 @@
 define diffscan::instance (
     Array[Stdlib::IP::Address] $ipranges,
     Stdlib::Email              $emailto,
-    String                     $groupname = $title,
 ) {
     include diffscan
 
-    file { "${diffscan::base_dir}/targets-${groupname}.txt":
+    file { "${diffscan::base_dir}/targets-${title}.txt":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         content => template('diffscan/targets.txt.erb'),
     }
-    $command = "/usr/local/sbin/diffscan -p 1-65535 -E ${emailto} -W ${diffscan::base_dir} ${diffscan::base_dir}/targets-${groupname}.txt"
-    systemd::timer::job {"diffscan-${groupname}":
+
+    $working_dir = "${diffscan::base_dir}/${title}"
+
+    file { $working_dir:
+        ensure => 'directory',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0775',
+    }
+
+    $command = "/usr/local/sbin/diffscan -p 1-65535 -E ${emailto} -W ${working_dir} ${diffscan::base_dir}/targets-${title}.txt"
+    systemd::timer::job {"diffscan-${title}":
         user        => 'root',
-        description => "Daily diffscan for ${groupname}",
+        description => "Daily diffscan for ${title}",
         command     => $command,
         interval    => {
             'start'    => 'OnCalendar',
