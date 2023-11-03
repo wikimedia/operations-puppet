@@ -10,8 +10,8 @@ class profile::acme_chief::cloud (
     Boolean $designate_sync_tidyup_enabled = lookup('profile::acme_chief::cloud::designate_sync_tidyup_enabled'),
 ) {
     $passive_hosts = [$passive_host].flatten()
-    if $::fqdn in $passive_hosts {
-        $active_host_ip = ipresolve($active_host, 4, $::nameservers[0])
+    if $facts['networking']['fqdn'] in $passive_hosts {
+        $active_host_ip = dnsquery::a($active_host)[0]
         security::access::config { 'acme-chief':
             content  => "+ : acme-chief : ${active_host_ip}\n",
             priority => 60,
