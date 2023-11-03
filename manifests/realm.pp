@@ -126,8 +126,6 @@ else {
     $numa_networking = 'off'
 }
 
-$ntp_peers = lookup('ntp_peers')
-
 # Resource defaults
 File {
     owner => 'root',
