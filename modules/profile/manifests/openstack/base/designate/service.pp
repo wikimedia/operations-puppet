@@ -68,16 +68,16 @@ class profile::openstack::base::designate::service(
     $pdns_hosts_private = $pdns_hosts.map |$host| { $host['private_fqdn'] }
     $mdns_clients = flatten([$designate_hosts, $raw_pdns_hosts, $pdns_hosts_private])
     # allow axfr traffic between mdns and pdns on the pdns hosts
-    ferm::rule { 'mdns-axfr':
-        rule => "saddr (@resolve((${join($mdns_clients,' ')}))
-                        @resolve((${join($mdns_clients,' ')}), AAAA))
-                 proto tcp dport (5354) ACCEPT;",
+    firewall::service { 'mdns-axfr-tcp':
+        proto  => 'tcp',
+        port   => 5354,
+        srange => $mdns_clients,
     }
 
-    ferm::rule { 'mdns-axfr-udp':
-        rule => "saddr (@resolve((${join($mdns_clients,' ')}))
-                        @resolve((${join($mdns_clients,' ')}), AAAA))
-                 proto udp dport (5354) ACCEPT;",
+    firewall::service { 'mdns-axfr-udp':
+        proto  => 'udp',
+        port   => 5354,
+        srange => $mdns_clients,
     }
 
     # Replicated cache set including all designate hosts.
