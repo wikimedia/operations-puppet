@@ -85,7 +85,7 @@ protocol bfd {
 <% @neighbors_v4.each do |neighbor_v4| -%>
 protocol bgp {
 <% if @multihop -%>
-    multihop 2;
+    multihop;
 <% end -%>
 <% if @bfd -%>
     bfd yes;
@@ -103,7 +103,7 @@ protocol bgp {
 <% @neighbors_v6.each do |neighbor_v6| -%>
 protocol bgp {
 <% if @multihop -%>
-    multihop 2;
+    multihop;
 <% end -%>
 <% if @bfd -%>
     bfd yes;
