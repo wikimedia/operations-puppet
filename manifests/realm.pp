@@ -81,17 +81,8 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
     }
     $projectgroup = "project-${labsproject}"
 
-    $_nameservers = lookup('profile::resolving::nameservers')
-    $nameservers = $_nameservers.map |$ns| {
-        if $ns =~ Stdlib::IP::Address {
-            $ns
-        } else {
-            dnsquery::a($ns)[0]
-        }
-    }
 } else {
     $realm = 'production'
-    $nameservers = [ '10.3.0.1' ] # anycast
 }
 
 $network_zone = $facts['ipaddress'] ? {
