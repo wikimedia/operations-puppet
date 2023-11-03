@@ -170,6 +170,7 @@ profile::gitlab::runner::docker_subnet: "172.21.0.0/16"
 profile::gitlab::runner::ensure_docker_network: present
 profile::gitlab::runner::docker_settings: {}
 profile::gitlab::runner::docker_gc_interval: 5m
+profile::gitlab::runner::docker_gc_timeout: 90
 profile::gitlab::runner::docker_gc_images_high_water_mark: 6g
 profile::gitlab::runner::docker_gc_images_low_water_mark: 3g
 profile::gitlab::runner::docker_gc_volumes_high_water_mark: 6g
