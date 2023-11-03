@@ -16,7 +16,8 @@ class profile::toolforge::proxy (
     }
     class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
 
-    $resolver = $::nameservers.join(' ')
+    include profile::resolving
+    $resolver = $profile::resolving::nameserver_ips.join(' ')
 
     file { '/etc/nginx/nginx.conf':
         ensure  => file,

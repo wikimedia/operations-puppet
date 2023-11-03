@@ -66,11 +66,13 @@ class profile::wmcs::novaproxy (
         db   => $mariadb_db,
     }
 
+    include profile::resolving
     class { '::dynamicproxy':
         supported_zones          => $supported_zones,
         ssl_settings             => $ssl_settings,
         xff_fqdns                => $xff_fqdns,
         redis_primary            => $active_proxy,
+        nameservers              => $profile::resolving::nameserver_ips,
         banned_ips               => $banned_ips,
         blocked_user_agent_regex => $block_ua_re,
         blocked_referer_regex    => $block_ref_re,

@@ -22,6 +22,7 @@ class dynamicproxy (
     Array[Stdlib::Fqdn]              $xff_fqdns,
     Integer                          $rate_limit_requests,
     String[1]                        $redis_maxmemory = '512MB',
+    Array[Stdlib::IP::Address]       $nameservers = [],
 ) {
     $acme_certs = $supported_zones.values.map |Dynamicproxy::Zone $zone| { $zone['acmechief_cert'] }.unique
 
@@ -29,7 +30,7 @@ class dynamicproxy (
         puppet_rsc => Exec['nginx-reload'],
     }
 
-    $resolver = join($::nameservers, ' ')
+    $resolver = $nameservers.join(' ')
 
     $redis_port = '6379'
     if $redis_primary and !($redis_primary in [$::facts['hostname'], $::facts['fqdn']]) {
