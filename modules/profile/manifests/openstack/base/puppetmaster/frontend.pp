@@ -61,17 +61,15 @@ class profile::openstack::base::puppetmaster::frontend(
         cert_secret_path => $cert_secret_path,
     }
 
-    $labs_networks = join($network::constants::labs_networks, ' ')
-    ferm::rule{'puppetmaster_balancer':
-        ensure => 'present',
-        rule   => "saddr (${labs_networks})
-                          proto tcp dport 8140 ACCEPT;",
+    firewall::service { 'puppetmaster_balancer':
+        proto    => 'tcp',
+        port     => 8140,
+        src_sets => ['CLOUD_NETWORKS'],
     }
 
-    ferm::rule{'puppetcertcleaning':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${join($designate_hosts,' ')})))
-                        proto tcp dport 22 ACCEPT;",
+    firewall::service { 'puppetcertcleaning':
+        proto  => 'tcp',
+        port   => 22,
+        srange => $designate_hosts,
     }
-
 }
