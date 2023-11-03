@@ -126,16 +126,6 @@ else {
     $numa_networking = 'off'
 }
 
-# TODO: create hash of all LVS service IPs
-
-# Set some basic variables
-
-# TODO: SMTP settings
-
-# TODO: NTP settings
-
-# TODO: Better nesting of settings inside classes
-
 ## puppet-accessible list of private wikis
 ## please keep alphabetized
 $private_wikis = [
