@@ -25,7 +25,7 @@ class ssh::client (
         mode   => '0755',
     }
 
-    if $manage_ssh_keys and $::use_puppetdb {
+    if $manage_ssh_keys and wmflib::have_puppetdb() {
         file { '/etc/ssh/ssh_known_hosts':
             ensure  => file,
             content => template('ssh/known_hosts.erb'),
