@@ -67,6 +67,7 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
             require     => Package['vlan'],
             subscribe   => Augeas[$intf],
             refreshonly => true,
+            tag         => "interface-create-${intf}",
         }
     }
 }

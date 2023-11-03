@@ -39,8 +39,9 @@ define interface::ip($interface, $address, $prefixlen='32', $options=undef, $ens
           returns => [0, 2],
           unless  => "ip address show ${interface} | grep -q ${prefix}",
       }
+
+      # if the interface is managed by Puppet, ensure it's created first
+      Exec <| tag == "interface-create-${interface}" |>
+        -> Exec[$ipaddr_command]
     }
-
-
-
 }

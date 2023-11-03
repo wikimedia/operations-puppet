@@ -52,6 +52,10 @@ define interface::route(
         unless => $show_command,
     }
 
+    # if the interface is managed by Puppet, ensure it's created first
+    Exec <| tag == "interface-create-${interface}" |>
+        -> Exec[$add_command]
+
     # persisting the route is optional, but if you don't do it, it won't survive
     # a reboot of the server and the route will be missing until the next puppet run.
     if $persist {

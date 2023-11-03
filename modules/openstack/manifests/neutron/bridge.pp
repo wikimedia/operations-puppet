@@ -17,6 +17,10 @@ define openstack::neutron::bridge(
                 unless    => "/sbin/brctl show ${name} | /bin/grep ${addif}",
                 subscribe => Exec["create-${name}-bridge"],
             }
+
+            # if the interface is managed by Puppet, ensure it's created first
+            Exec <| tag == "interface-create-${addif}" |>
+                -> Exec["create-${name}-bridge-${addif}"]
         }
     }
 
