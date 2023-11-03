@@ -24,9 +24,6 @@ ntp_peers:
   eqsin: []
   drmrs: []
   esams: []
-mail_smarthost:
-  - mx-out03.wmcloud.org
-  - mx-out04.wmcloud.org
 # auges is not installed in the test environment
 # so we mock its version fact
 augeasversion: 1.2.0

@@ -1269,10 +1269,6 @@ authdns_addrs:
 # acme-chief active host
 acmechief_host: 'acmechief1001.eqiad.wmnet'
 
-mail_smarthost:
-- 'mx1001.wikimedia.org'
-- 'mx2001.wikimedia.org'
-
 # These are our servers - they all peer to each other and sync to upstream NTP
 # pool servers.
 ntp_peers:

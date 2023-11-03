@@ -6,7 +6,3 @@ prometheus_nodes:
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "digicert-2023"
-
-mail_smarthost:
-- 'mx1001.wikimedia.org'
-- 'mx2001.wikimedia.org'

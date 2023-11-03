@@ -126,9 +126,6 @@ else {
     $numa_networking = 'off'
 }
 
-# Generic, default servers (order matters!)
-$mail_smarthost = lookup('mail_smarthost')
-
 $ntp_peers = lookup('ntp_peers')
 
 # Resource defaults
