@@ -176,6 +176,14 @@ route:
         - match:
             severity: 'page'
           receiver: 'sre-page'
+    - match_re:
+        # team=observability is used for role_owner
+        team: '(observability|o11y)'
+      receiver: 'o11y-irc'
+      routes:
+        - match:
+            severity: 'page'
+          receiver: 'sre-page'
     - match:
         team: 'releng'
       receiver: 'releng-ircmail'
@@ -385,6 +393,10 @@ receivers:
   email_configs:
     - to: 'sre-traffic@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'o11y-irc'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-observability'
 
 - name: 'search-platform-ircmail'
   webhook_configs:
