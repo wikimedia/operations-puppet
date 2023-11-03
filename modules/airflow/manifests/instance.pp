@@ -181,7 +181,7 @@ define airflow::instance(
         },
         'smtp' => {
             # mail_smarthost is set globally in manifests/realm.pp
-            'smtp_host' => $::mail_smarthost[0],
+            'smtp_host' => $airflow::mail_smarthost[0],
             'smtp_starttls' => 'False',
             'smtp_ssl' => 'False',
             'smtp_port' => '25',

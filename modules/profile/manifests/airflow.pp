@@ -71,8 +71,10 @@ class profile::airflow(
     Array $statsd_exporter_mappings       = lookup('profile::airflow::statsd_exporter_default_mappings', { 'default_value' => [] })
 ) {
 
+    include profile::mail::default_mail_relay
     class { 'airflow':
-        version => $airflow_version,
+        version        => $airflow_version,
+        mail_smarthost => $profile::mail::default_mail_relay::smarthosts,
     }
 
     # Need to make sure a few packages exist. Some airflow code

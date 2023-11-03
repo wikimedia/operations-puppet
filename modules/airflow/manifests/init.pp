@@ -20,8 +20,9 @@
 #   Default: undef.
 #
 class airflow(
-    Wmflib::Ensure $ensure = 'present',
-    Optional[String] $version = undef
+    Wmflib::Ensure      $ensure = 'present',
+    Array[Stdlib::Fqdn] $mail_smarthost = [],
+    Optional[String]    $version = undef
 ) {
     # If $ensure is absent, then also ensure that
     # airflow package is absent.  Else
