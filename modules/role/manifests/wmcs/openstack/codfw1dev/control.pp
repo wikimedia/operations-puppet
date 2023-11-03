@@ -5,6 +5,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::base::cloud_production
     include profile::wmcs::cloud_private_subnet
 
+    include profile::openstack::codfw1dev::metrics
     include profile::openstack::codfw1dev::observerenv
     include profile::openstack::codfw1dev::rabbitmq
 
