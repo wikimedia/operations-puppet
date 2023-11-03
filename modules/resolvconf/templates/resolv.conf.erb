@@ -7,6 +7,6 @@
 <%- clean_domain_search =  @domain_search.reject{|domain| domain == @facts['networking']['domain']} -%>
 search <%= @facts['networking']['domain'] %> <%= clean_domain_search.to_set.to_a.join(' ') %>
 options timeout:<%= @timeout %> attempts:<%= @attempts %> ndots:<%= @ndots %>
-<% @_nameservers.reject{|ns| [@facts['ip'], @facts['ip6']].include?(ns) }.each do |nameserver| -%>
+<% @nameserver_ips.reject{|ns| [@facts['ip'], @facts['ip6']].include?(ns) }.each do |nameserver| -%>
 nameserver <%= nameserver %>
 <% end -%>

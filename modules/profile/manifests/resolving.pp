@@ -17,4 +17,5 @@ class profile::resolving (
         disable_resolvconf  => $disable_resolvconf,
         disable_dhcpupdates => $disable_resolvconf,
     }
+    $nameserver_ips = $resolvconf::nameserver_ips
 }

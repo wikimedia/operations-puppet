@@ -18,13 +18,7 @@ class resolvconf (
     Boolean               $disable_dhcpupdates = false,
     Boolean               $manage_resolv_conf  = true,
 ) {
-    $_nameservers = $nameservers.map |$nameserver| {
-        if $nameserver =~ Stdlib::IP::Address {
-            $nameserver
-        } else {
-            $nameserver.ipresolve(4)
-        }
-    }
+    $nameserver_ips = wmflib::hosts2ips($nameservers)
     if $disable_resolvconf {
         file { '/sbin/resolvconf':
             owner  => 'root',
