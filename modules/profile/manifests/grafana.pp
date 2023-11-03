@@ -109,10 +109,10 @@ class profile::grafana (
         ldap   => $ldap,
     }
 
-    ferm::service { 'grafana_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firewall::service { 'grafana_http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 
     file { '/usr/share/grafana/public/dashboards/home.json':
