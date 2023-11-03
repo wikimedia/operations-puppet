@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane, aborrero]
+              tsepothoabala, zxane, aborrero, cec]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -153,7 +153,7 @@ groups:
               annet, jgiannelos, kharlan, stran, sihe,
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
-              mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, cec, fab, acooper,
+              mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, mabualruz, dani, aqu
     ]
     system_members: [mwbuilder, mwpresync]
@@ -5985,13 +5985,11 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG+gpsvUfDGDcdWnSuKxPPwZflAsuftXM25lb4TRDtfL ggalarzaheredero@wikimedia.org
   cec:
-    ensure: present
+    ensure: absent
     realname: Carrie Coxwell
-    email: ccoxwell@wikimedia.org
     uid: 44119
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMDFSs6MJZekBu3PVnPTaEnU/KFrEPvf4Unje7o3Kib/
+    ssh_keys: []
   amalr:
     ensure: present
     realname: Amal Ramadan
