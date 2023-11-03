@@ -8,6 +8,6 @@ class wikilabels::db_proxy(
 ) {
     host { 'wikilabels-database':
         ensure => present,
-        ip     => ipresolve($server, 4, $::nameservers[0]),
+        ip     => dnsquery::a($server)[0]
     }
 }
