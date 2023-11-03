@@ -50,5 +50,3 @@ profile::wmcs::cloudgw::dmz_cidr:
   - "208.80.154.252"
   # VMs --> ldap-ro.codfw.wikimedia.org
   - "208.80.153.252"
-  # VMs --> nfs-maps.wikimedia.org
-  - "208.80.155.119"
