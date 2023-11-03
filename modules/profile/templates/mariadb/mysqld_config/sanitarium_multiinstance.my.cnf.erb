@@ -127,11 +127,11 @@ userstat                                               = 1
 replicate-wild-ignore-table = mysql.%
 replicate-wild-ignore-table = oai.%
 
-<% scope.lookupvar("::private_wikis").each do |name| -%>
+<% scope.call_function('lookup', ['private_wikis']).each do |name| -%>
 replicate-wild-ignore-table = <%= name %>.%
 <% end -%>
 
-<% scope.lookupvar("::private_tables").each do |name| -%>
+<% scope.call_function('lookup', ['private_tables']).each do |name| -%>
 replicate-wild-ignore-table = %.<%= name %>
 <% end -%>
 
