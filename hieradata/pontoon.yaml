@@ -16,7 +16,7 @@ profile::resolving::nameservers:
 mail_smarthost:
 - 'mx-out03.wmcloud.org'
 - 'mx-out04.wmcloud.org'
-wikimail_smarthost:
+profile::mail::default_mail_relay::mediawiki_smarthosts:
 - 'mx-out03.wmcloud.org'
 - 'mx-out04.wmcloud.org'
 

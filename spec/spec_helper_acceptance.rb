@@ -17,7 +17,6 @@ $realm = '#{REALM}'
 $site = '#{SITE}'
 $other_site = '#{OTHER_SITE}'
 $numa_networking = 'off'
-$wikimail_smarthost = lookup('wikimail_smarthost')
 $mail_smarthost = lookup('mail_smarthost')
 $ntp_peers = lookup('ntp_peers')
 role('#{ROLE}')

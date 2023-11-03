@@ -1273,9 +1273,6 @@ mail_smarthost:
 - 'mx1001.wikimedia.org'
 - 'mx2001.wikimedia.org'
 
-wikimail_smarthost:
-- 'wiki-mail-eqiad.wikimedia.org'
-- 'wiki-mail-codfw.wikimedia.org'
 # These are our servers - they all peer to each other and sync to upstream NTP
 # pool servers.
 ntp_peers:

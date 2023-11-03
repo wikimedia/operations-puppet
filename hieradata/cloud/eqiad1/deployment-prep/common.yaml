@@ -360,7 +360,7 @@ profile::monitoring::services:
 
 profile::openstack::eqiad1::cumin::master::puppetdb_host: deployment-puppetdb03.deployment-prep.eqiad.wmflabs
 
-wikimail_smarthost:
+profile::mail::default_mail_relay::mediawiki_smarthosts:
 - 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
 
 deployment_hosts:

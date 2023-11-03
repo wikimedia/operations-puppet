@@ -126,9 +126,6 @@ else {
     $numa_networking = 'off'
 }
 
-# Route list for mail coming from MediaWiki mailer
-$wikimail_smarthost = lookup('wikimail_smarthost')
-
 # Generic, default servers (order matters!)
 $mail_smarthost = lookup('mail_smarthost')
 

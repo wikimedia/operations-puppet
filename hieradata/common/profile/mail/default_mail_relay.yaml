@@ -1,2 +1,5 @@
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: 'profile/mail/default_mail_relay/exim4.minimal.production.erb'
+profile::mail::default_mail_relay::mediawiki_smarthosts:
+- 'wiki-mail-eqiad.wikimedia.org'
+- 'wiki-mail-codfw.wikimedia.org'
