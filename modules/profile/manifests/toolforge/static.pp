@@ -2,7 +2,8 @@ class profile::toolforge::static (
     Stdlib::Fqdn $static_domain = lookup('profile::toolforge::static::static_domain', {default_value => 'tools-static.wmflabs.org'}),
     Stdlib::Fqdn $web_domain    = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
 ) {
-    $resolver = join($::nameservers, ' ')
+    include profile::resolving
+    $resolver = $profile::resolving::nameserver_ips.join(' ')
     $fingerprints_dir = '/var/www/fingerprints'
 
     wmflib::dir::mkdir_p($fingerprints_dir)
