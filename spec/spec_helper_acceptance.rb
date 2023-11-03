@@ -11,11 +11,9 @@ REALM = ENV.fetch('PUPPET_REALM', 'production')
 ROLE = ENV.fetch('PUPPET_ROLE', 'insetup')
 HOSTNAME = ENV.fetch('PUPPET_HOSTNAME', "#{ROLE}1001.eqiad.wmnet")
 SITE = ENV.fetch('PUPPET_SITE', 'eqiad')
-OTHER_SITE = SITE == 'eqiad' ? 'codfw' : 'eqiad'
 PP_HEADER = <<-PP
 $realm = '#{REALM}'
 $site = '#{SITE}'
-$other_site = '#{OTHER_SITE}'
 $numa_networking = 'off'
 $ntp_peers = lookup('ntp_peers')
 role('#{ROLE}')
