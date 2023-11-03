@@ -233,7 +233,7 @@ node /^apt2002\.wikimedia\./ {
 
 # apt-staging host
 node /^apt-staging2001\.codfw\./ {
-    role(insetup::serviceops_collab)
+    role(apt_staging)
 }
 
 # Analytics Query Service

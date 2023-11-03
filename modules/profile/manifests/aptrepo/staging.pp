@@ -33,7 +33,7 @@ class profile::aptrepo::staging (
   firewall::service { 'apt_staging_http':
     proto    => 'tcp',
     port     => [80,443],
-    src_sets => '[$DOMAIN_NETWORKS $MGMT_NETWORKS]',
+    src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
   }
 
   nginx::site { 'apt-staging.wikimedia.org':
