@@ -81,12 +81,18 @@ class profile::toolforge::mailrelay (
         source => 'puppet:///modules/profile/toolforge/mailrelay/localuser',
     }
 
+    ensure_packages([
+        'python3-ldap3',
+        'python3-systemd',
+        'python3-yaml',
+    ])
+
     file { '/usr/local/sbin/maintainers':
         ensure => file,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/mailrelay/maintainers',
+        source => 'puppet:///modules/profile/toolforge/mailrelay/maintainers.py',
     }
 
     file { '/etc/aliases':
