@@ -11,7 +11,7 @@ ftp: root
 abuse: root
 noc: root
 security: root
-root: tools.admin
+root: admin.root
 administrator: root
 admin: root
 prometheus: root
