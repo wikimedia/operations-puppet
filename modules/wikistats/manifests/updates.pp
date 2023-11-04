@@ -42,7 +42,7 @@ class wikistats::updates (
         'wf' : ensure => $ensure, hour => 10; # Wikifur
         'wy' : ensure => $ensure, hour => 6; # Wikivoyage
         'wv' : ensure => $ensure, hour => 11; # Wikiversities
-        'wi' : ensure => absent, hour => 11; # Wikia - disabled while we update it manually
+        'wi' : ensure => $ensure, hour => 11, day => 'Mon'; # Wikia
         'sc' : ensure => $ensure, hour => 12; # Scoutwikis
         'ne' : ensure => $ensure, hour => 13; # Neoseeker
         'wr' : ensure => $ensure, hour => 14; # Wikitravel
