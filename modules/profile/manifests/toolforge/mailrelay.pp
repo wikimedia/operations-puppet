@@ -18,6 +18,11 @@ class profile::toolforge::mailrelay (
         trusted_networks => ['255.255.255.255/32'], # hope this means 'nothing is trusted'
     }
 
+    # This is using profile::base as a Puppet class applied to all hosts.
+    # The query is done against the project-specific PuppetDB server so
+    # everything works fine.
+    $all_toolforge_servers = wmflib::class::ips('profile::base')
+
     class { '::exim4':
         queuerunner => 'combined',
         config      => template('profile/toolforge/mail-relay.exim4.conf.erb'),

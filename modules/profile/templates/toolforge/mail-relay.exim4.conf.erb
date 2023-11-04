@@ -9,7 +9,6 @@
 ##########
 
 INSTANCEPROJECT = <%= @wmcs_project %>
-MAILDOMAIN      = <%= @mail_domains.join(' : ') %>
 PRIMARY_DOMAIN  = <%= @primary_domain %>
 SRS_SECRET      = <%= @srs_secret %>
 SRS_OFFSET      = 14159
@@ -23,10 +22,12 @@ primary_hostname = <%= @external_hostname %>
 qualify_domain = PRIMARY_DOMAIN
 smtp_banner = $smtp_active_hostname ESMTP
 
-domainlist local_domains = MAILDOMAIN : \
+domainlist local_domains = <%= @mail_domains.join(' : ') %> : \
                            *.INSTANCEPROJECT.eqiad.wmflabs : \
                            *.INSTANCEPROJECT.eqiad1.wikimedia.cloud
-hostlist relay_from_hosts = 10.0.0.0/8 : 172.16.0.0/21
+# The <; at the beginning tells exim to use ';' as the delimiter instead of the default ':' (which interferes with ipv6)
+hostlist toolforge_hosts = <; <%= @all_toolforge_servers.join(' ; ') %>
+hostlist wmcs_hosts = 172.16.0.0/21
 
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
@@ -81,11 +82,19 @@ acl_check_rcpt:
           # accept mail for postmaster and abuse without filtering for compliance with RFC
           set acl_m2     = skip_spamd
 
-  warn    hosts          = +relay_from_hosts
+  deny    hosts          = +toolforge_hosts
           sender_domains = !+local_domains
-          log_message    = Mail sent from Toolforge using non-Toolforge domain $sender_address_domain
+          message        = Mail sent from Toolforge using non-Toolforge domain $sender_address_domain
 
-  accept  hosts          = +relay_from_hosts
+  accept  hosts          = +toolforge_hosts
+          control        = submission
+
+  # Some Cloud VPS projects (mostly those that move out of Toolforge) relay via the Toolforge mail
+  # relay and not via the Cloud VPS mail relay. This is not supported, and we should consider
+  # making this a hard reject.
+  accept  log_message    = Cloud VPS user relaying mail via Toolforge for domain $sender_address_domain
+          hosts          = +wmcs_hosts
+          sender_domains = +local_domains
           control        = submission
 
   accept  authenticated  = *
