@@ -136,7 +136,7 @@ define airflow::instance(
     String $ferm_srange                 = '$INTERNAL',
     Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
-    Boolean $renew_skein_certificate    = false
+    Boolean $renew_skein_certificate    = true
 ) {
     # Require that something include the airflow base class
     # before using airflow::instance.
