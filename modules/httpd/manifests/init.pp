@@ -26,6 +26,7 @@ class httpd(
 ) {
     # Package and service. Links is needed for the status page below
     $base_pkgs = ['apache2', 'links']
+    $service_name = 'apache2'
     ensure_packages($base_pkgs + $extra_pkgs)
 
     if $remove_default_ports {
@@ -33,7 +34,7 @@ class httpd(
         file { '/etc/apache2/ports.conf':
             ensure  => file,
             content => "# Puppet: default ports are not used\n",
-            notify  => Service['apache2'],
+            notify  => Service[$service_name],
             require => Package['apache2'],
         }
     } elsif $http_only {
@@ -41,7 +42,7 @@ class httpd(
         file { '/etc/apache2/ports.conf':
             ensure  => file,
             content => inline_template("#This file is puppetized.\nListen 80\n"),
-            notify  => Service['apache2'],
+            notify  => Service[$service_name],
             require => Package['apache2'],
         }
     } else {
@@ -49,7 +50,7 @@ class httpd(
         file { '/etc/apache2/ports.conf':
             ensure  => file,
             source  => 'puppet:///modules/httpd/default-ports.conf',
-            notify  => Service['apache2'],
+            notify  => Service[$service_name],
             require => Package['apache2'],
         }
     }
@@ -71,7 +72,7 @@ class httpd(
             recurse => $purge_manual_config,
             purge   => $purge_manual_config,
             require => Package['apache2'],
-            notify  => Service['apache2'],
+            notify  => Service[$service_name],
         }
     }
 
@@ -186,7 +187,7 @@ class httpd(
     exec { 'apache2_test_config_and_restart':
         command     => '/usr/sbin/service apache2 restart',
         onlyif      => '/usr/sbin/apache2ctl configtest',
-        before      => Service['apache2'],
+        before      => Service[$service_name],
         refreshonly => true,
     }
 
@@ -200,7 +201,7 @@ class httpd(
         content => "[Unit]\nAfter=network-online.target\nWants=network-online.target\n",
     }
 
-    service { 'apache2':
+    service { $service_name:
         ensure     => running,
         enable     => true,
         hasrestart => true,
