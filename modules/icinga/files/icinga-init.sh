@@ -1,4 +1,7 @@
 #! /bin/sh
+# On Debian /usr/bin/sh -> dash, and dash supports `echo -n`, even though it is
+# a POSIX shell, so disable the shellcheck warning:
+# shellcheck disable=SC3037
 #		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
 #		Modified for Debian GNU/Linux
 #		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
