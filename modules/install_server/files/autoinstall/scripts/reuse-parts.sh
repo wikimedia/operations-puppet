@@ -1,4 +1,7 @@
 #!/bin/sh
+# dash is used by the debian installer and supports local variables, even though
+# it is a POSIX shell, so disable the shellcheck warning:
+# shellcheck disable=SC3043
 #
 # reuse-parts: An alternative partition management system for debian-installer, which is
 # (only) capable of re-using existing partitions. It takes a recipe (format documented
@@ -264,8 +267,7 @@ for recipe_dir in /tmp/reuse-parts/recipes/*; do
     part_count=0
     open_dialog PARTITIONS
     while { read_line num id size type fs path name; [ "$id" ]; }; do
-        # libparted gives sections of free space the partition number -1. Skip these.
-        [ "$num" == "-1" ] && continue
+        [ "$fs" = "free" ] && continue
         part_count=$((part_count+1))
         get_part_recipe "$dev_name" "$recipe_dev" "$num" || { ret=1; break; }
         if [ "$fs" != "$recipe_fs" -a "$recipe_action" = "keep" ]; then
