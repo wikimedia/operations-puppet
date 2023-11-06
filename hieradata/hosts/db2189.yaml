@@ -1,2 +1,3 @@
 # db2189
 profile::monitoring::notifications_enabled: false
+mariadb::package: 'wmf-mariadb106'
