@@ -33,7 +33,7 @@ class profile::wmcs::backup_cinder_volumes(
     systemd::timer::job { 'backup_cinder_volumes':
         ensure                    => $timers_ensure,
         description               => 'backup cinder volumes',
-        command                   => '/usr/local/sbin/wmcs-backup volumes backup-assigned-volumes',
+        command                   => '/usr/local/sbin/wmcs-backup volumes backup-assigned-volumes && /usr/local/sbin/wmcs-backup volumes remove-unhandled-backups && /usr/local/sbin/wmcs-backup volumes remove-dangling-snapshots',
         interval                  => {
           'start'    => 'OnCalendar',
           'interval' => $backup_interval,
