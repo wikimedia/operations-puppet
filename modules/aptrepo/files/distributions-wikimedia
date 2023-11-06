@@ -146,6 +146,7 @@ Components: main
  component/libmysql-java
  component/logrotate
  component/memcached-tls
+ component/php74
  component/puppet7
  component/pdns-recursor
  component/prometheus-openstack-exporter
