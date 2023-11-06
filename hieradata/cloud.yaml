@@ -665,26 +665,6 @@ profile::logoutd::owner: root
 profile::logoutd::group: root
 profile::logoutd::scripts: {}
 
-profile::pki::server::names:
-  - organisation: Wikimedia Foundation, Inc
-    organisational_unit: Cloud Services
-    locality: San Francisco
-    state: California
-    country: US
-profile::pki::server::key_params:
-  algo: ecdsa
-  size: 521
-profile::pki::server::gen_csr: false
-profile::pki::server::db_driver: sqlite3
-profile::pki::server::db_user: pki
-profile::pki::server::db_name: pki
-profile::pki::server::db_host: localhost
-profile::pki::server::root_ca_profiles: {}
-profile::pki::server::default_profiles: {}
-profile::pki::server::vhost: "%{facts.networking.fqdn}"
-profile::pki::root_ca::enable_backups: false
-profile::pki::root_ca::bootstrap: false
-profile::pki::multirootca::cfssl_httpd_cert: false
 profile::pki::client::root_ca_cn: WMF_TEST_CA
 profile::pki::client::root_ca_source: "puppet:///modules/profile/pki/ROOT/WMF_TEST_CA.pem"
 profile::pki::client::ensure: absent
