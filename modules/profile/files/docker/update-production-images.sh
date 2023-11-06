@@ -15,11 +15,12 @@ function git_update() {
 }
 
 git_update
+pushd "$REPO"
 # Run the weekly update for the main images
 for imgdir in images istio cert-manager;
     do
     "${REPO}/weekly-update.sh" "$imgdir"
 done
-# Now rebuild
-IMAGE_BASEDIR=$REPO /usr/local/bin/build-production-images
+# Now rebuild. Use --info to send logs to stdout to be captured by journald
+IMAGE_BASEDIR=$REPO /usr/local/bin/build-production-images --info
 popd
