@@ -1,6 +1,8 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::idm::processes: 4
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
 # OIDC
 profile::idm::oidc_service: idm_dev
 
