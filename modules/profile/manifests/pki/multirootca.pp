@@ -221,7 +221,8 @@ class profile::pki::multirootca (
     # On puppet7 we need to use cfssl to generate this certificate - T350118
     if $cfssl_httpd_cert {
         $certs = profile::pki::get_cert('puppet_rsa', 'pki.discovery.wmnet', {
-            hosts => [$facts['networking']['fqdn']],
+            hosts           => [$facts['networking']['fqdn']],
+            notify_services => [$httpd::service_name],
         })
     } else {
         $certs = {
