@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Service to collect puppet agent stats
+After=puppet-agent-timer.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/local/bin/prometheus-puppet-agent-stats --outfile <%= @outfile %>
+
+[Install]
+WantedBy=puppet-agent-timer.service
