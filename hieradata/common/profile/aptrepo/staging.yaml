@@ -1,4 +1,4 @@
-profile::aptrepo::staging::basedir: /srv/wikimedia-staging
+profile::aptrepo::staging::basedir: /srv/aptrepo/wikimedia-staging
 profile::aptrepo::staging::homedir: '/root'
 profile::aptrepo::staging::gpg_user: 'root'
 profile::aptrepo::staging::gpg_pubring: ~

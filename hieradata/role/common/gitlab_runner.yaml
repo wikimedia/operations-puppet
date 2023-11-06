@@ -33,6 +33,9 @@ profile::gitlab::runner::restrict_firewall: true
 profile::gitlab::runner::block_dockerhub: true
 profile::gitlab::runner::internal_ip_range: '10.0.0.0/8'
 profile::gitlab::runner::allowed_services:
+  apt-staging: # For uploading apt packages to the staging host
+    host: 'apt-staging.discovery.wmnet'
+    port: 873
   dns:
     host: 'recdns.anycast.wmnet'
     port: 53

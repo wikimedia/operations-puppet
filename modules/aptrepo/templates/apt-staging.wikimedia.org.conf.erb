@@ -4,7 +4,7 @@ server {
    listen [::]:80 ipv6only=on default_server;
    server_name apt-staging.wikimedia.org;
 
-   root /srv;
+   root /srv/aptrepo;
 
    location / {
       index index.html index.htm;
@@ -12,7 +12,7 @@ server {
       charset utf-8;
    }
 
-   location ~ ^/wikimedia/(conf|db) {
+   location ~ ^/wikimedia-staging/(conf|db) {
       deny all;
    }
 }
