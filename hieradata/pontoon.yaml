@@ -79,3 +79,4 @@ profile::benthos::instances: {}
 
 # default to not require etcd for easier bootstraps
 profile::firewall::defs_from_etcd: false
+profile::pki::multirootca::cfssl_httpd_cert: false

@@ -67,6 +67,7 @@ profile::puppet::agent::create_timer: false
 
 # PKI
 profile::pki::client::signer_host: "pki1001.eqiad.default.svc.k8s.lan"
+profile::pki::multirootca::cfssl_httpd_cert: false
 
 # SSH Setup
 profile::ssh::server::authorized_principals_file: '/etc/ssh/user_authorized_principals.conf'
