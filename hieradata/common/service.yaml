@@ -1161,7 +1161,7 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    role: "logstash7"
+    role: "opensearch::collector"
     public_endpoint: "logstash"
 
   kubemaster:
@@ -2528,7 +2528,7 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-query
         active_active: true
-    role: "thanos::frontend"
+    role: "titan"
 
   thanos-web:
     description: Prometheus long-term storage, web interface
@@ -2577,7 +2577,7 @@ service::catalog:
     discovery:
       - dnsdisc: thanos-web
         active_active: true
-    role: "thanos::frontend"
+    role: "titan"
     public_endpoint: "thanos"
 
   thanos-swift:
