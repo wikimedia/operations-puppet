@@ -30,7 +30,7 @@ class puppetdb::app(
     String                        $db_user                    = 'puppetdb',
     Enum['hsqldb', 'postgres']    $db_driver                  = 'postgres',
     Stdlib::Unixpath              $ssldir                     = puppet_ssldir(),
-    Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/Puppet_Internal_CA.pem',
+    Stdlib::Unixpath              $ca_path                    = '/etc/ssl/certs/wmf-ca-certificates.crt',
     Boolean                       $tmpfs_stockpile_queue      = false,
     Integer                       $command_processing_threads = 16,
     Puppetdb::Loglevel            $log_level                  = 'info',
