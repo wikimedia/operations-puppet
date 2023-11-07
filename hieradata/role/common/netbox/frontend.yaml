@@ -3,6 +3,9 @@
 service::configuration::logstash_host: localhost
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
+
 # Netbox
 profile::netbox::validators:
   - ipam.ipaddress
