@@ -15,7 +15,7 @@ import sys
 import pymysql
 import yaml
 
-TLS_TRUSTED_CA = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+TLS_TRUSTED_CA = '/etc/ssl/certs/wmf-ca-certificates.crt'
 DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
 DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs']
 
