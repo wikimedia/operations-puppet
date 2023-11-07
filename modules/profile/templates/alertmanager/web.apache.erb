@@ -22,6 +22,11 @@
         Require all granted
     </Location>
 
+    <Location /triage>
+        ProxyPass "http://localhost:8295/triage"
+        Require all granted
+    </Location>
+
     <% if @readonly %>
     <Location /proxy/alertmanager>
         AllowMethods GET

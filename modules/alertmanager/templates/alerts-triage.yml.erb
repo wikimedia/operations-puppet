@@ -1,0 +1,19 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+alertmanager_url: "http://localhost:9093"
+phabricator_url: "https://phabricator.wikimedia.org"
+alert_dashboard_url: "https://alerts.wikimedia.org"
+url_prefix: "<%= @prefix %>"
+hide_alerts_older_than: '1200h'
+refresh_alerts_seconds: 60
+
+phabricator_routes:
+  - matchers:
+      - alertname =~ .*
+    projects:
+      - 'sre-alert-triage'
+    priority: medium
+    continue: true
+
+  - matchers:
+      - severity = critical
+    priority: high

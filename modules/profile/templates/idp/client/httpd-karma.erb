@@ -50,6 +50,19 @@
         ProxySet connectiontimeout=5 timeout=90 retry=0
     </Proxy>
 
+    <Location /triage>
+        ProxyPass "http://localhost:8295/triage"
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+        <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+        <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+    </Location>
+
     ErrorLog /var/log/apache2/<%= @virtual_host %>_error.log
     LogLevel warn
 </VirtualHost>
