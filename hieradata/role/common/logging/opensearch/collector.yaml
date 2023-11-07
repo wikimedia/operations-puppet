@@ -76,7 +76,7 @@ profile::opensearch::api::httpd_proxy::auth_file: '/etc/opensearch-api-htpasswd'
 #  'foo': '$apr1$HGuvNA0g$L4j7ot6JjhfwPPv8V5uPG1'
 
 # Logstash
-logstash::heap_memory: 1g
+logstash::heap_memory: 4g
 logstash::java_package: openjdk-11-jdk
 logstash::logstash_version: 7
 logstash::logstash_package: logstash-oss
