@@ -21,7 +21,7 @@
   "MySQLOrchestratorPort": <%= @db_backend_port %>,
   "MySQLOrchestratorDatabase": "<%= @db_backend_database %>",
   "MySQLOrchestratorCredentialsConfigFile": "/etc/mysql/orchestrator_srv.cnf",
-  "MySQLOrchestratorSSLCAFile": "/etc/ssl/certs/Puppet_Internal_CA.pem",
+  "MySQLOrchestratorSSLCAFile": "/etc/ssl/certs/wmf-ca-certificates.crt",
 <% elsif @db_backend == 'sqlite' -%>
   "BackendDB": "sqlite",
   "SQLite3DataFile": "/var/lib/orchestrator/orchestrator.db",
@@ -29,7 +29,7 @@
 
   "MySQLTopologyCredentialsConfigFile": "/etc/mysql/orchestrator_topo.cnf",
   "MySQLTopologyUseMutualTLS": true,
-  "MySQLTopologySSLCAFile": "/etc/ssl/certs/Puppet_Internal_CA.pem",
+  "MySQLTopologySSLCAFile": "/etc/ssl/certs/wmf-ca-certificates.crt",
   "InstancePollSeconds": 5,
   "MySQLConnectTimeoutSeconds": 1,
   "HostnameResolveMethod": "cname",
