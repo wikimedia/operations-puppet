@@ -13,7 +13,7 @@ profile::hive::client::hive_service_name: 'analytics-hive'
 profile::analytics::airflow::service_user: analytics-search
 profile::analytics::airflow::service_group: analytics-search
 profile::analytics::airflow::webserver_port: 8778
-profile::analytics::airflow::mysql_host: 'an-coord1001.eqiad.wmnet'
+profile::analytics::airflow::mysql_host: 'an-mariadb1001.eqiad.wmnet'
 profile::analytics::airflow::db_name: 'search_airflow'
 profile::analytics::airflow::deploy_target: 'search/airflow'
 profile::analytics::airflow::deploy_target_plugins: 'wikimedia/discovery/analytics'

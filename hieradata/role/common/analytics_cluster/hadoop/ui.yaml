@@ -10,7 +10,7 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 
-profile::hue::database_host: 'an-coord1001.eqiad.wmnet'
+profile::hue::database_host: 'an-mariadb1001.eqiad.wmnet'
 profile::hue::hive_server_host: 'analytics-hive.eqiad.wmnet'
 profile::hue::monitoring_enabled: true
 
