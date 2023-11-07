@@ -70,8 +70,10 @@ class profile::puppetserver (
                 'sha1' => '/srv/config-master/puppet-sha1.txt',
             },
         }
+        # TODO: once the migration is complete update to use ca_server instead
         class { 'merge_cli':
-            ca_server => $server_id,
+            #ca_server => $ca_server,
+            ca_server => 'puppetmaster1001.eqiad.wment',
             masters   => $profile::puppetserver::git::servers,
             workers   => $profile::puppetserver::git::servers,
             paths     => $paths,

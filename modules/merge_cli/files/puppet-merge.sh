@@ -10,7 +10,7 @@ USAGE=0
 LABS_PRIVATE=0
 OVERRIDE_TAGOUT=0
 OVERRIDE_TAGOUT_FILE=/var/lock/puppet-merge-lockout-tagout
-# CA_SERVER, MASTERS and WORKERS are configured in /etc/puppet-merge.conf
+# CA_SERVER, MASTERS and WORKERS are configured in /etc/puppet-merge/shell_config.conf
 CA_SERVER=''
 MASTERS=''
 WORKERS=''
