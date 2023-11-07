@@ -320,3 +320,4 @@ profile::cache::haproxy::monitoring_enabled: true
 profile::cache::haproxy::version: haproxy26
 profile::cache::haproxy::do_systemd_hardening: true
 profile::cache::haproxy::http_disable_keepalive: true
+profile::cache::haproxy::dedicated_hc_backend: true
