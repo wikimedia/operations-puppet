@@ -131,7 +131,7 @@ class profile::netbox (
     }
     $ca_certs = '/etc/ssl/certs/ca-certificates.crt'
     # TODO: bring this in from profile::certificates
-    $ganeti_ca_cert = '/etc/ssl/certs/Puppet_Internal_CA.pem'
+    $ganeti_ca_cert = '/etc/ssl/certs/wmf-ca-certificates.crt'
     $puppetdb_api = "https://${puppetdb_microservice_fqdn}:${puppetdb_microservice_port}/"
 
     $extras_path = '/srv/deployment/netbox-extras/'
