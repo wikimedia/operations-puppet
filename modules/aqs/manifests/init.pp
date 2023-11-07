@@ -96,6 +96,10 @@ class aqs(
         init_restart    => false,
         deployment      => $deployment,
         contact_groups  => $contact_groups,
+        # A ham-fisted break-fix for T349228
+        environment     => {
+            'NODE_PATH' => '/srv/deployment/analytics/aqs/deploy/node_modules:/srv/deployment/analytics/aqs/deploy/src',
+        },
     }
 
 }
