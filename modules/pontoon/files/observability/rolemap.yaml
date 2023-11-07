@@ -63,3 +63,6 @@ pontoon::lb:
 
 titan:
   - pontoon-titan-01.monitoring.eqiad1.wikimedia.cloud
+
+pki::multirootca:
+  - pontoon-pki-01.monitoring.eqiad1.wikimedia.cloud

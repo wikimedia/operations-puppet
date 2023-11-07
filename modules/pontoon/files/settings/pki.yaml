@@ -16,3 +16,4 @@ profile::pki::multirootca::db_driver: 'sqlite3'
 profile::pki::multirootca::db_host: 'localhost'
 profile::pki::multirootca::private_cert_base: '/etc/pontoon/pki'
 profile::pki::multirootca::public_cert_base: '/etc/pontoon/pki'
+profile::pki::multirootca::enable_client_auth: false

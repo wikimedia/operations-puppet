@@ -150,6 +150,7 @@ class profile::puppetmaster::pontoon (
 
     if $pki_enabled {
         include profile::pki::root_ca
+        include profile::pki::client
 
         # Wait for 'profile::pki::client::signer_host' to have an
         # hostname in the rolemap
