@@ -2823,6 +2823,11 @@ node /^titan100[1-2]\.eqiad\./ {
     role(titan)
 }
 
+# special VMs for wiki stewards - T344164
+node /^stewards[12]001.(eqiad|codfw)\./ {
+    role(insetup::serviceops_collab)
+}
+
 # parsoid visual diff and roundtrip testing (T257940)
 # also see scandium.eqiad.wmnet
 node /^testreduce1001\.eqiad\./ {
