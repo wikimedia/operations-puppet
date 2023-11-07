@@ -34,7 +34,7 @@ hijack_https:
   hosts:
     - regx: "<%= @docker_registry_fqdn %>"
       # Puppet-ca here, for validation of the cert from source
-      certs: ["/etc/ssl/certs/Puppet_Internal_CA.pem"]
+      certs: ["/etc/ssl/certs/wmf-ca-certificates.crt"]
 
 # Configure dfget to use a specific home directory (will be created if it does not exist).
 #
