@@ -2,5 +2,5 @@
 # special VM for stewards (T344164)
 class profile::stewards (
 ){
-    ensure_packages(['python3-click', 'python-requests-oauthlib'])
+    ensure_packages(['python3-click', 'python3-requests-oauthlib'])
 }
