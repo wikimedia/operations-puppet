@@ -219,7 +219,7 @@ class profile::airflow(
                             # $airflow_instances_secrets as the $db_user and $db_password params.
                             # This ERb template string will be rendered in airflow::instance
                             # with those values.
-                            'sql_alchemy_conn' => "postgresql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?sslmode=require&sslrootcert=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                            'sql_alchemy_conn' => "postgresql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?sslmode=require&sslrootcert=/etc/ssl/certs/wmf-ca-certificates.crt",
                         }
                     }
                 }
@@ -234,7 +234,7 @@ class profile::airflow(
                             # $airflow_instances_secrets as the $db_user and $db_password params.
                             # This ERb template string will be rendered in airflow::instance
                             # with those values.
-                            'sql_alchemy_conn' => "mysql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem",
+                            'sql_alchemy_conn' => "mysql://<%= @db_user %>:<%= @db_password %>@${airflow_database_host_default}/airflow_${instance_name_normalized}?ssl_ca=/etc/ssl/certs/wmf-ca-certificates.crt",
                         }
                     }
                 }

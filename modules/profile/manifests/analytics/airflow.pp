@@ -64,7 +64,7 @@ class profile::analytics::airflow(
         mode   => '0755',
     }
 
-    $sql_alchemy_conn = "mysql://${db_user}:${db_password}@${mysql_host}/${db_name}?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem"
+    $sql_alchemy_conn = "mysql://${db_user}:${db_password}@${mysql_host}/${db_name}?ssl_ca=/etc/ssl/certs/wmf-ca-certificates.crt"
 
     file { "${conf_dir}/${conf_file}":
         ensure  => present,

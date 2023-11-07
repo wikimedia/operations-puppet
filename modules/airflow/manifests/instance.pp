@@ -17,7 +17,7 @@
 #   The final sql_alchemy_conn setting will render this template with local variable
 #   context, which allows to include $db_user and $db_password in the sql_alchemy_conn string
 #   without providing it directly in the $airflow_config param.  E.g.
-#   mysql://:<%= @db_user %>:<%= @db_password %>@an-test-coord1001.eqiad.wmnet/airflow_analytics?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+#   mysql://:<%= @db_user %>:<%= @db_password %>@an-test-coord1001.eqiad.wmnet/airflow_analytics?ssl_ca=/etc/ssl/certs/wmf-ca-certificates.crt
 #   Deprecated and replaced with database.sql_alchemy_conn defined below
 #
 # - database.sql_alchemy_conn
@@ -25,7 +25,7 @@
 #   The final sql_alchemy_conn setting will render this template with local variable
 #   context, which allows to include $db_user and $db_password in the sql_alchemy_conn string
 #   without providing it directly in the $airflow_config param.  E.g.
-#   postgresql://<%= @db_user %>:<%= @db_password %>@an-db1001.eqiad.wmnet:5432/airflow_data_engineering_dev?sslmode=require&sslrootcert=/etc/ssl/certs/Puppet_Internal_CA.pem
+#   postgresql://<%= @db_user %>:<%= @db_password %>@an-db1001.eqiad.wmnet:5432/airflow_data_engineering_dev?sslmode=require&sslrootcert=/etc/ssl/certs/wmf-ca-certificates.crt
 #   connection also updated to a postgresql db on Airflow >= 2.3.0
 #
 # - kerberos settings
