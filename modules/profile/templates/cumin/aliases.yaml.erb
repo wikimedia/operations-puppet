@@ -444,3 +444,5 @@ misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:inse
 <%- @owners.each do |owner| -%>
 owner-<%= owner.downcase.gsub(/\W/, '-') -%>: P{P:contacts%role_contacts ~ "<%= owner %>"}
  <%- end -%>
+puppet5: P{F:puppetversion ~ ^5}
+puppet7: P{F:puppetversion ~ ^7}
