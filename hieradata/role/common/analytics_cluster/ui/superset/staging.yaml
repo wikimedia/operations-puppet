@@ -8,7 +8,7 @@ profile::admin::groups:
 
 # Database password will be filled added in profile::superset from the
 # profile::superset::database_password hiera variable stored in the private repo.
-profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging?ssl_ca=/etc/ssl/certs/Puppet_Internal_CA.pem
+profile::superset::database_uri: mysql://superset_staging@an-coord1001.eqiad.wmnet/superset_staging?ssl_ca=/etc/ssl/certs/wmf-ca-certificates.crt
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::enable_cas: true
