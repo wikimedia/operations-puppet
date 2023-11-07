@@ -18,9 +18,9 @@
 #   To find the certificate file secret() puppet paths.  You might want to
 #   change this if you are testing in Cloud VPS.  Default: varnishkafka.
 #
-# [*use_puppet_internal_ca*]
+# [*use_internal_ca*]
 #   If true, the CA cert.pem file will be assumed to be already installed at
-#   /etc/ssl/certs/Puppet_Internal_CA.pem, and will be used as the ssl.ca.location
+#   /etc/ssl/certs/wmf-ca-certificates.crt, and will be used as the ssl.ca.location
 #   for varnishkafka/librdkafka.  Default: true.  Set this to false if the
 #   certificate name you set is not signed by the Puppet CA, and the
 #   cergen created ca.crt.pem file will be used.
