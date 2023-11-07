@@ -29,13 +29,20 @@ class pontoon::public_lb (
             $aliases = []
         }
 
+        $role_hosts = pontoon::hosts_for_role($config['role'])
+        if !empty($role_hosts) {
+          $hosts = $role_hosts
+        } else {
+          $hosts = []
+        }
+
         [
             $service_name,
             {
                 'public_name'     => $server_name,
                 'public_aliases'  => $aliases,
                 'port'            => $config['port'],
-                'hosts'           => pontoon::hosts_for_role($config['role']),
+                'hosts'           => $hosts,
                 'backend_use_tls' => $config['encryption'],
                 # Which SNI to send when talking to backends in TLS.
                 'backend_sni'     => ('lvs' in $config) ? {
