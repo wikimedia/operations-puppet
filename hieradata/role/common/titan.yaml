@@ -42,6 +42,7 @@ profile::tlsproxy::envoy::services:
      - 'thanos-query.svc.%{::site}.wmnet'
      - 'thanos-query.discovery.wmnet'
      - 'thanos.wikimedia.org'
+     - 'thanos.%{lookup("public_domain")}'
      port: 80
      cert_name: 'thanos-query.discovery.wmnet'
    - server_names:
