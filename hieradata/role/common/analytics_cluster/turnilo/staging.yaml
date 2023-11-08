@@ -12,3 +12,6 @@ profile::druid::turnilo::druid_clusters:
     type: druid
 
 profile::contacts::role_contacts: ['Data Engineering']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
