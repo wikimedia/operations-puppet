@@ -5,14 +5,14 @@
 set -e
 
 if [ -e /run/puppet/disabled ]; then
-  echo "not running: systemd time disabled vi /run/puppet/disabled" | logger -t puppet-agent-cronjob
+  printf "not running: systemd time disabled vi /run/puppet/disabled\n" | logger -t puppet-agent-cronjob
   exit
 fi
 
 
 # Check this before apt-get update, so that our update doesn't screw up
 # package installs in a running (manual and/or initial install) puppet run
-PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
+PUPPETLOCK=$(puppet agent --configprint agent_catalog_run_lockfile)
 
 # From here out, make a best effort to continue in the face of failure
 set +e
@@ -25,21 +25,20 @@ set +e
 # before the sleep (but not after), and does not create the agent lockfile
 # until after the sleep, which creates a wide race window against tools trying
 # to avoid puppet agent concurrency with the "disable and then poll lockfile".
-SLEEPVAL=$(($RANDOM % 60))
-echo "Sleeping $SLEEPVAL for random splay" | logger -t puppet-agent-cronjob
+SLEEPVAL=$((RANDOM % 60))
+printf "Sleeping %d for random splay\n"  $SLEEPVAL | logger -t puppet-agent-cronjob
 sleep $SLEEPVAL
 
-if [ -n "$PUPPETLOCK" -a -e "$PUPPETLOCK" ]; then
-    PUPPETPID=$(cat $PUPPETLOCK)
+if [ -n "$PUPPETLOCK" ] && [ -e "$PUPPETLOCK" ]; then
+    PUPPETPID=$(<"$PUPPETLOCK")
     CMDLINE_FILE="/proc/$PUPPETPID/cmdline"
-    if [ -f $CMDLINE_FILE ]; then
-        grep -q puppet $CMDLINE_FILE
-        if [ $? -eq 0 ]; then
-            echo Skipping this run, puppet agent already running at pid `cat $PUPPETLOCK`  | logger -t puppet-agent-cronjob
+    if [ -f "$CMDLINE_FILE" ]; then
+        if grep -q puppet "$CMDLINE_FILE"; then
+            printf "Skipping this run, puppet agent already running at pid %s\n" "$(<"$PUPPETLOCK")"  | logger -t puppet-agent-cronjob
             exit 0
         fi
     fi
-    echo Ignoring stale puppet agent lock for pid `cat $PUPPETLOCK` | logger -t puppet-agent-cronjob
+    printf "Ignoring stale puppet agent lock for pid %s\n" "$(<"$PUPPETLOCK")"  | logger -t puppet-agent-cronjob
 fi
 
 timeout -k 60 300 apt-get update -qq |& logger -t puppet-agent-cronjob
