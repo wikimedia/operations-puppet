@@ -191,7 +191,7 @@ node /^an-airflow1006\.eqiad\./ {
 
 # WMDE instance of Apache Airflow
 node /^an-airflow1007\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(analytics_cluster::airflow::wmde)
     }
 
 # Analytics Zookeeper cluster
