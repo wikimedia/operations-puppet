@@ -1,5 +1,5 @@
 #!/bin/bash
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# SPDX-License-Identifier: Apache-2.0
 
 # Bail out early if any of these first commands exit abnormally
 set -e

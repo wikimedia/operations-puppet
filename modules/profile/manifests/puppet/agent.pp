@@ -118,7 +118,7 @@ class profile::puppet::agent (
         '/usr/local/share/bash/puppet-common.sh':
             source => 'puppet:///modules/profile/puppet/bin/puppet-common.sh';
         '/usr/local/sbin/puppet-run':
-            content => template('profile/puppet/puppet-run.erb');
+            source => 'puppet:///modules/profile/puppet/bin/puppet-run.sh';
         '/usr/local/bin/puppet-enabled':
             source => 'puppet:///modules/profile/puppet/bin/puppet-enabled';
         '/usr/local/sbin/disable-puppet':
