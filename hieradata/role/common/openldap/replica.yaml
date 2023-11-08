@@ -1,3 +1,6 @@
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
+
 profile::openldap::certname: ldap
 profile::openldap::storage_backend: hdb
 
