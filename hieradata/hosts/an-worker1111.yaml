@@ -1,3 +1,6 @@
 # Temporarily test spark3 install on workers only on an-worker1111.
 
 profile::hadoop::spark3::test_spark_3_install: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
