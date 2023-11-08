@@ -3,3 +3,6 @@ profile::admin::groups:
   - htmldumps-admin
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Data Engineering']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
