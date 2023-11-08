@@ -63,6 +63,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  thanos_test:
+    id: 9
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://thanos\.(wikimedia|monitoring\.wmflabs)\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
