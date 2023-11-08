@@ -2,8 +2,6 @@ class profile::openstack::base::trove(
     String                        $version                     = lookup('profile::openstack::base::version'),
     Integer                       $workers                     = lookup('profile::openstack::base::trove::workers'),
     Array[OpenStack::ControlNode] $openstack_control_nodes     = lookup('profile::openstack::base::openstack_control_nodes'),
-    # temporary so I'm not going to bother aligning it
-    String                        $openstack_control_node_interface = lookup('profile::openstack::base::trove::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn]           $rabbitmq_nodes              = lookup('profile::openstack::base::rabbitmq_nodes'),
     String                        $db_user                     = lookup('profile::openstack::base::trove::db_user'),
     String                        $db_pass                     = lookup('profile::openstack::base::trove::db_pass'),
@@ -32,7 +30,7 @@ class profile::openstack::base::trove(
     class { '::openstack::trove::service':
         version                     => $version,
         workers                     => $workers,
-        memcached_nodes             => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
+        memcached_nodes             => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
         rabbitmq_nodes              => $rabbitmq_nodes,
         db_user                     => $db_user,
         db_pass                     => $db_pass,
