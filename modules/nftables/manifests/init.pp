@@ -60,7 +60,7 @@ class nftables (
         ensure  => $ensure,
         source  => 'puppet:///modules/nftables/main.nft',
         require => File['/etc/nftables'],
-        notify  => Systemd::Service['nftables'],
+        notify  => Service['nftables'],
     }
 
     # cleanup the file shipped with the debian package, we don't use it
