@@ -11,6 +11,9 @@ class profile::stewards (
     git::clone { 'repos/stewards/onboarding-system':
         ensure    => 'present',
         source    => 'gitlab',
+        group     => 'wikidev',
+        shared    => true,
+        umask     => '002',
         directory => "${repo_dir}/onboarding-system",
     }
 }
