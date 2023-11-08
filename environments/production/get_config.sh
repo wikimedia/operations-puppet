@@ -2,7 +2,7 @@
 # We dont actully need the environment
 # environment=$1
 set -ue
-PATH=/usr/bin
+PATH=/usr/bin:/bin
 
 script_dir=$(dirname "$(realpath "$0")")
 repo_dir=$(realpath "${script_dir}/../../.git")
