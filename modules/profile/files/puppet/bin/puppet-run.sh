@@ -4,6 +4,12 @@
 # Bail out early if any of these first commands exit abnormally
 set -e
 
+if [ -e /run/puppet/disabled ]; then
+  echo "not running: systemd time disabled vi /run/puppet/disabled" | logger -t puppet-agent-cronjob
+  exit
+fi
+
+
 # Check this before apt-get update, so that our update doesn't screw up
 # package installs in a running (manual and/or initial install) puppet run
 PUPPETLOCK=`puppet agent --configprint agent_catalog_run_lockfile`
