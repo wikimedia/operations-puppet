@@ -20,10 +20,10 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     # $general_dir/mediawiki/httpd.yaml
     # Beware: here we manually set the fcgi proxy, it should be changed
     # if it gets changed on kubernetes.
-    # Uncomment if using FCGI_UNIX
-    #$fcgi_proxy = 'unix:/run/shared/fpm-www.sock|fcgi://localhost'
+    # Uncomment if using FCGI_UNIX #T350770
+    $fcgi_proxy = 'unix:/run/shared/fpm-www.sock|fcgi://localhost'
     # Uncomment if using FCGI_TCP
-    $fcgi_proxy = 'fcgi://127.0.0.1:9000'
+    # $fcgi_proxy = 'fcgi://127.0.0.1:9000'
     $all_sites = $mediawiki_sites + $common_sites
     class { '::mediawiki::web::yaml_defs':
         path          => "${general_dir}/mediawiki/httpd.yaml",
