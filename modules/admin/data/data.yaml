@@ -1240,6 +1240,8 @@ groups:
     description: People with access to the stewards VMs
     gid: 751
     members: []
+    approval:
+      - Martin Urbanec
 
 users:
   reprepro:
