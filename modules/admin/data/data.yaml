@@ -71,7 +71,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 751 768
+  # 768
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
@@ -1235,6 +1235,10 @@ groups:
   analytics-wmde:
     gid: 927
     system: true
+    members: []
+  stewards-users:
+    description: People with access to the stewards VMs
+    gid: 751
     members: []
 
 users:

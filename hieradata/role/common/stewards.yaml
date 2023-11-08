@@ -1,2 +1,4 @@
 cluster: misc
 profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::admin::groups:
+  - stewards-users
