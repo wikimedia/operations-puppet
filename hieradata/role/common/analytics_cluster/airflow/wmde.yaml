@@ -1,0 +1,48 @@
+# Notify the Data Engineering team about services on these hosts
+contactgroups: 'admins,analytics'
+
+nagios_group: analytics_eqiad
+cluster: analytics
+profile::admin::groups:
+  - analytics-admins
+  - airflow-wmde-admins
+
+profile::contacts::role_contacts: ['Data Engineering']
+
+profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
+profile::hive::client::hive_service_name: 'analytics-hive'
+
+profile::kerberos::keytabs::keytabs_metadata:
+  - role: 'analytics-wmde'
+    owner: 'analytics-wmde'
+    group: 'analytics-wmde'
+    filename: 'analytics-wmde.keytab'
+# Context https://phabricator.wikimedia.org/T278353#6976509
+profile::kerberos::client::dns_canonicalize_hostname: false
+
+profile::java::java_packages:
+  - version: '8'
+    variant: 'jdk'
+profile::java::extra_args:
+  JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
+
+profile::airflow::database_host_default: an-db1001.eqiad.wmnet
+
+# Set up airflow instances.
+profile::airflow::instances:
+  # airflow@wmde instance.
+  wmde:
+    ferm_srange: $ANALYTICS_NETWORKS
+    # Since we set security: kerberos a keytab must be deployed for the service_user.
+    service_user: analytics-wmde
+    service_group: analytics-wmde
+    monitoring_enabled: true
+    connections:
+      analytics-hive:
+        conn_type: hive_metastore
+        host: analytics-hive.eqiad.wmnet
+        port: 9083
+        extra_dejson: {'authMechanism': 'GSSAPI'}
+    airflow_config:
+      datahub:
+        enabled: False
