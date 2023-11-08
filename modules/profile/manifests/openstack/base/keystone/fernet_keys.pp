@@ -1,6 +1,5 @@
 class profile::openstack::base::keystone::fernet_keys(
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
-    String $openstack_control_node_interface = lookup('profile::openstack::base::keystone::fernet_keys::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
 ) {
     file { '/etc/keystone/fernet-keys':
         ensure => directory,
@@ -13,7 +12,7 @@ class profile::openstack::base::keystone::fernet_keys(
         path        => '/etc/keystone/fernet-keys',
         uid         => 'keystone',
         gid         => 'keystone',
-        hosts_allow => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
+        hosts_allow => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
         auto_ferm   => true,
         read_only   => 'yes',
     }
@@ -31,15 +30,29 @@ class profile::openstack::base::keystone::fernet_keys(
     $openstack_control_nodes.each |$index, OpenStack::ControlNode $node| {
         $activehour = $index * $staggerhours
         $is_this_host = $::facts['networking']['fqdn'] == $node['host_fqdn']
-        $fqdn = $node[$openstack_control_node_interface]
+        $fqdn = $node['cloud_private_fqdn']
 
         systemd::timer::job { "keystone_sync_keys_from_${fqdn}":
             ensure             => $is_this_host.bool2str('absent', 'present'),
             description        => "Sync keys for Keystone fernet tokens to ${fqdn}",
             command            => "/usr/bin/rsync -a --delete rsync://${fqdn}/keystonefernetkeys/ /etc/keystone/fernet-keys/",
             interval           => {
-            'start'    => 'OnCalendar',
-            'interval' => "*-*-* ${activehour}:30:00",
+                'start'    => 'OnCalendar',
+                'interval' => "*-*-* ${activehour}:30:00",
+            },
+            logging_enabled    => true,
+            monitoring_enabled => false,
+            user               => 'keystone',
+        }
+
+        # TODO: remove after Puppet has ran everywhere
+        systemd::timer::job { "keystone_sync_keys_from_${node['host_fqdn']}":
+            ensure             => absent,
+            description        => "Sync keys for Keystone fernet tokens to ${node['host_fqdn']}",
+            command            => "/usr/bin/rsync -a --delete rsync://${node['host_fqdn']}/keystonefernetkeys/ /etc/keystone/fernet-keys/",
+            interval           => {
+                'start'    => 'OnCalendar',
+                'interval' => "*-*-* ${activehour}:30:00",
             },
             logging_enabled    => true,
             monitoring_enabled => false,
