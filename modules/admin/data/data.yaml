@@ -536,6 +536,12 @@ groups:
     gid: 749
     description: users who maintain HTML/ZIM dumps
     members: [mobrovac]
+  stewards-users:
+    description: People with access to the stewards VMs
+    gid: 751
+    members: [urbanecm]
+    approval:
+      - Martin Urbanec
   maps-admins:
     gid: 753
     description: admin for maps clusters
@@ -1236,12 +1242,6 @@ groups:
     gid: 927
     system: true
     members: []
-  stewards-users:
-    description: People with access to the stewards VMs
-    gid: 751
-    members: []
-    approval:
-      - Martin Urbanec
 
 users:
   reprepro:
