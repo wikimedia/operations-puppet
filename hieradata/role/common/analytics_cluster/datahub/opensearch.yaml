@@ -40,3 +40,6 @@ profile::lvs::realserver::pools:
       - opensearch_1@datahub
 
 profile::contacts::role_contacts: ['Data Engineering']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
