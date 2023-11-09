@@ -17,23 +17,47 @@ class ircecho (
     $ensure = 'present',
 ) {
 
-    ensure_packages(['python-pyinotify', 'python-irc'])
+    if debian::codename::eq('buster') {
+        ensure_packages(['python-pyinotify', 'python-irc'])
 
-    file { '/usr/local/bin/ircecho':
-        ensure => 'present',
-        source => 'puppet:///modules/ircecho/ircecho.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        notify => Service['ircecho'],
-    }
-    file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
-        ensure => 'present',
-        source => 'puppet:///modules/ircecho/ib3_auth.py',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        notify => Service['ircecho'],
+        file { '/usr/local/bin/ircecho':
+            ensure => 'present',
+            source => 'puppet:///modules/ircecho/ircecho.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            notify => Service['ircecho'],
+        }
+
+        file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
+            ensure => 'present',
+            source => 'puppet:///modules/ircecho/ib3_auth.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            notify => Service['ircecho'],
+        }
+
+    } else {
+        ensure_packages(['python3-pyinotify', 'python3-irc'])
+
+        file { '/usr/local/bin/ircecho':
+            ensure => 'present',
+            source => 'puppet:///modules/ircecho/ircecho3.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            notify => Service['ircecho'],
+        }
+
+        file { '/usr/local/lib/python3.11/dist-packages/ib3_auth.py':
+            ensure => 'present',
+            source => 'puppet:///modules/ircecho/ib3_auth.py',
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            notify => Service['ircecho'],
+        }
     }
 
     file { '/etc/default/ircecho':
@@ -52,7 +76,6 @@ class ircecho (
         },
         require        => File['/usr/local/bin/ircecho'],
     }
-
 
     profile::auto_restarts::service { 'ircecho':
         ensure => $ensure,
