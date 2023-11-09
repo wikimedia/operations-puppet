@@ -80,6 +80,7 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::readinglists
     include ::profile::mediawiki::maintenance::initsitestats
     include ::profile::mediawiki::maintenance::startupregistrystats
+    include ::profile::mediawiki::maintenance::temporary_accounts
     include ::profile::mediawiki::maintenance::computer_aided_tagging
     include ::profile::mediawiki::maintenance::recount_categories
     include ::profile::mediawiki::maintenance::purge_expired_blocks
