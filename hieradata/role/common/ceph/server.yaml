@@ -121,3 +121,6 @@ profile::monitoring::nrpe_check_disk_options:
   --exclude-type=tracefs --exclude-type=tmpfs'
 
 profile::contacts::role_contacts: ['Data Engineering']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
