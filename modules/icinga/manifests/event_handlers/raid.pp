@@ -14,7 +14,7 @@ class icinga::event_handlers::raid (
         group    => $icinga_group,
     }
 
-    ensure_packages(['python-phabricator', 'python3-phabricator'])
+    ensure_packages(['python3-phabricator'])
 
     file { '/usr/lib/nagios/plugins/eventhandlers/raid_handler':
         source  => 'puppet:///modules/icinga/raid_handler.py',
