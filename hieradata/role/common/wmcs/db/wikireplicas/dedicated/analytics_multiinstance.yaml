@@ -1,7 +1,8 @@
 ---
+profile::contacts::role_contacts: ['Data Engineering','WMCS']
 profile::admin::groups:
     - wmcs-admin
-contactgroups: wmcs-team-email
+contactgroups: 'admins,analytics,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']
 
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies:
