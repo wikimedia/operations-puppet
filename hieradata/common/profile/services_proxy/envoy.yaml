@@ -127,7 +127,7 @@ profile::services_proxy::envoy::listeners:
   - name: schema
     port: 6023
     service: schema
-    timeout: "120s"
+    timeout: "10s"
   - name: shellbox
     port: 6024
     timeout: "60s"
