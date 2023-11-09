@@ -318,7 +318,7 @@ profile::gitlab::ldap_group_sync_interval_interval:
 
 # GitLab Runner
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
-profile::gitlab::runner::token: private
+# profile::gitlab::runner::token: private
 
 # VRTS
 profile::vrts::daemon: true
