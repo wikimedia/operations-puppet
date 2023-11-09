@@ -443,11 +443,11 @@ node /^cp10(7[68]|8[02468]|90)\.eqiad\./ {
     role(cache::upload)
 }
 
-node /^cp11(0[0-7])\.eqiad\./ {
+node /^cp11(0[02468]|1[024])\.eqiad\./ {
     role(cache::text)
 }
 
-node /^cp11(0[89]|1[0-5])\.eqiad\./ {
+node /^cp11(0[13579]|1[135])\.eqiad\./ {
     role(cache::upload)
 }
 
