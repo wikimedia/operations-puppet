@@ -127,7 +127,8 @@ profile::services_proxy::envoy::listeners:
   - name: schema
     port: 6023
     service: schema
-    timeout: "10s"
+    timeout: "120s"
+    keepalive: "10s"
     retry:
       retry_on: "5xx"
       num_retries: 1
