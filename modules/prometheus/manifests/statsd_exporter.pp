@@ -23,6 +23,11 @@
 # [*histogram_buckets*]
 #   Buckets for the histogram. An array of floats. Defaults to what upstream
 #   defaults to
+#
+# [*prometheus_instance*]
+#   This determines which prometheus instance scrapes these statsd metrics.
+#   defaults to 'ops'
+#
 class prometheus::statsd_exporter (
     Enum['summary', 'histogram'] $timer_type,
     Array[Variant[Integer, Float]] $histogram_buckets,
@@ -31,6 +36,7 @@ class prometheus::statsd_exporter (
     String $listen_address = ':9112',
     String $arguments = '',
     Boolean $enable_scraping = true,
+    String $prometheus_instance = 'ops',
 ) {
     ensure_packages('prometheus-statsd-exporter')
 

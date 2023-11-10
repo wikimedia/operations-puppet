@@ -6,20 +6,21 @@ class profile::prometheus::statsd_exporter (
     Enum['summary', 'histogram'] $timer_type = lookup('profile::prometheus::statsd_exporter::timer_type', { 'default_value' => 'summary'}),
     Array[Variant[Integer, Float]] $histogram_buckets = lookup('profile::prometheus::statsd_exporter::histogram_buckets', { 'default_value' => [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],}),
     Boolean     $enable_scraping = lookup('profile::prometheus::statsd_exporter::enable_scraping', { 'default_value' => true }),
-){
-
+    String $prometheus_instance = lookup('profile::prometheus::statsd_exporter::prometheus_instance', { 'default_value' => 'ops' }),
+) {
     if $enable_relay {
         $relay_addr = $relay_address
     } else {
         $relay_addr = ''
     }
 
-    class { '::prometheus::statsd_exporter':
-        mappings          => $mappings,
-        relay_address     => $relay_addr,
-        timer_type        => $timer_type,
-        histogram_buckets => $histogram_buckets,
-        enable_scraping   => $enable_scraping,
+    class { 'prometheus::statsd_exporter':
+        mappings            => $mappings,
+        relay_address       => $relay_addr,
+        timer_type          => $timer_type,
+        histogram_buckets   => $histogram_buckets,
+        enable_scraping     => $enable_scraping,
+        prometheus_instance => $prometheus_instance,
     }
 
     # Don't spam conntrack with localhost statsd clients
