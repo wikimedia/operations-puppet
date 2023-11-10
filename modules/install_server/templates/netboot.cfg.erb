@@ -1,0 +1,28 @@
+# SPDX-License-Identifier: Apache-2.0
+########################
+##                    ##
+## Managed by puppet  ##
+##                    ##
+########################
+
+# configs for installing via netboot
+
+# Generally we'll do a basic server install.
+d-i preseed/include string  common.cfg passwd.cfg override.cfg
+
+# This was set per-subnet below in the past, but is now set here globally to
+# the anycast recdns IP:
+d-i netcfg/get_nameservers string 10.3.0.1
+
+d-i preseed/include_command string  \
+    case $(ip route show | grep default | cut -d' ' -f 3) in \
+    <% @preseed_per_ip.each_pair do |ip, preseed_file| -%>
+    <%= ip %>) echo <%= preseed_file %> ;; \
+    <% end -%>
+    esac; \
+    \
+    case $(debconf-get netcfg/get_hostname) in \
+    <% @preseed_per_hostname.each_pair do |hostname, preseed_files| -%>
+    <%= hostname %>) echo <%= preseed_files.join(' ') %> ;; \
+    <% end -%>
+    esac
