@@ -151,6 +151,18 @@ network::subnets:
         private1-e3-eqiad:
           ipv4: 10.64.132.0/24
           ipv6: 2620:0:861:10b::/64
+        private1-e5-eqiad:
+          ipv4: 10.64.152.0/24
+          ipv6: 2620:0:861:120::/64
+        private1-e6-eqiad:
+          ipv4: 10.64.154.0/24
+          ipv6: 2620:0:861:122::/64
+        private1-e7-eqiad:
+          ipv4: 10.64.156.0/24
+          ipv6: 2620:0:861:124::/64
+        private1-e8-eqiad:
+          ipv4: 10.64.158.0/24
+          ipv6: 2620:0:861:126::/64
         private1-f1-eqiad:
           ipv4: 10.64.134.0/24
           ipv6: 2620:0:861:10d::/64
@@ -160,6 +172,18 @@ network::subnets:
         private1-f3-eqiad:
           ipv4: 10.64.136.0/24
           ipv6: 2620:0:861:10f::/64
+        private1-f5-eqiad:
+          ipv4: 10.64.160.0/24
+          ipv6: 2620:0:861:128::/64
+        private1-f6-eqiad:
+          ipv4: 10.64.162.0/24
+          ipv6: 2620:0:861:12a::/64
+        private1-f7-eqiad:
+          ipv4: 10.64.164.0/24
+          ipv6: 2620:0:861:12c::/64
+        private1-f8-eqiad:
+          ipv4: 10.64.166.0/24
+          ipv6: 2620:0:861:12e::/64
         analytics1-e1-eqiad:
           ipv4: 10.64.138.0/24
           ipv6: 2620:0:861:100::/64
@@ -169,6 +193,18 @@ network::subnets:
         analytics1-e3-eqiad:
           ipv4: 10.64.140.0/24
           ipv6: 2620:0:861:112::/64
+        analytics1-e5-eqiad:
+          ipv4:	10.64.153.0/24
+          ipv6: 2620:0:861:121::/64
+        analytics1-e6-eqiad:
+          ipv4:	10.64.155.0/24
+          ipv6: 2620:0:861:123::/64
+        analytics1-e7-eqiad:
+          ipv4:	10.64.157.0/24
+          ipv6: 2620:0:861:125::/64
+        analytics1-e8-eqiad:
+          ipv4:	10.64.159.0/24
+          ipv6: 2620:0:861:127::/64
         analytics1-f1-eqiad:
           ipv4: 10.64.142.0/24
           ipv6: 2620:0:861:114::/64
@@ -178,6 +214,18 @@ network::subnets:
         analytics1-f3-eqiad:
           ipv4: 10.64.144.0/24
           ipv6: 2620:0:861:116::/64
+        analytics1-f5-eqiad:
+          ipv4: 10.64.161.0/24
+          ipv6: 2620:0:861:129::/64
+        analytics1-f6-eqiad:
+          ipv4: 10.64.163.0/24
+          ipv6: 2620:0:861:12b::/64
+        analytics1-f7-eqiad:
+          ipv4: 10.64.165.0/24
+          ipv6: 2620:0:861:12d::/64
+        analytics1-f8-eqiad:
+          ipv4: 10.64.167.0/24
+          ipv6: 2620:0:861:12f::/64
         cloud-hosts1-e4-eqiad:
           ipv4: 10.64.148.0/24
           ipv6: 2620:0:861:11c::/64
