@@ -6897,3 +6897,7 @@ ldap_only_users:
     ensure: present
     realname: Sara Campos
     email: scampos@wikimedia.org
+  ecarg:
+    ensure: present
+    realname: Grace Choi
+    email: gchoi@wikimedia.org
