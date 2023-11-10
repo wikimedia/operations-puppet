@@ -126,6 +126,102 @@ class profile::prometheus::analytics (
         port       => 9104,
     }
 
+    # The following jobs are all instances of the statsd_exporter, each running
+    # on a host with one (or possibly more than one) airflow instance with monitoring enabled.
+    $statsd_airflow_exporter_jobs = [
+      {
+        'job_name'        => 'airflow_analytics',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_analytics_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_analytics_test',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_analytics_test_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_analytics_product',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_analytics_product_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_platform_eng',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_platform_eng_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_research',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_research_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_search',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_search_${::site}.yaml"] },
+        ]
+      },
+      {
+        'job_name'        => 'airflow_wmde',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/airflow_wmde_${::site}.yaml"] },
+        ]
+      },
+    ]
+
+#   prometheus::class_config { "airflow_analytics_${::site}":
+#       dest       => "${targets_path}/airflow_analytics_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::launcher',
+#       port       => 9112,
+#   }
+
+    prometheus::class_config { "airflow_analytics_test_${::site}":
+        dest       => "${targets_path}/airflow_analytics_test_${::site}.yaml",
+        class_name => 'role::analytics_test_cluster::client',
+        port       => 9112,
+    }
+
+#   prometheus::class_config { "airflow_analytics_product_${::site}":
+#       dest       => "${targets_path}/airflow_analytics_product_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::airflow::analytics_product',
+#       port       => 9112,
+#   }
+#
+#   prometheus::class_config { "airflow_platform_eng_${::site}":
+#       dest       => "${targets_path}/airflow_platform_eng_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::airflow::platform_eng',
+#       port       => 9112,
+#   }
+#
+#   prometheus::class_config { "airflow_research_${::site}":
+#       dest       => "${targets_path}/airflow_research_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::airflow::research',
+#       port       => 9112,
+#   }
+#
+#   prometheus::class_config { "airflow_search_${::site}":
+#       dest       => "${targets_path}/airflow_search_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::airflow::search',
+#       port       => 9112,
+#   }
+#
+#   prometheus::class_config { "airflow_wmde_${::site}":
+#       dest       => "${targets_path}/airflow_wmde_${::site}.yaml",
+#       class_name => 'role::analytics_cluster::airflow::search',
+#       port       => 9112,
+#   }
+
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
         dest       => "${targets_path}/jmx_hadoop_worker_${::site}.yaml",
         class_name => 'role::analytics_cluster::hadoop::worker',
@@ -245,7 +341,7 @@ class profile::prometheus::analytics (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs].flatten,
+        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs].flatten,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
         alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
