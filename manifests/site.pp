@@ -2805,7 +2805,7 @@ node /^snapshot101[4567]\.eqiad\./ {
 }
 
 # Servers for SRE tests which are not suitable for Cloud VPS
-node /^sretest100[1-3]\.eqiad\./ {
+node /^sretest100[1-4]\.eqiad\./ {
     role(sretest)
 }
 
