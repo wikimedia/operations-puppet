@@ -1,8 +1,0 @@
-profile::tlsproxy::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-  - server_names: ['*']
-    port: 80
-profile::tlsproxy::envoy::global_cert_name: "apt-staging.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
-
-profile::contacts::role_contacts: ['Infrastructure Foundations']

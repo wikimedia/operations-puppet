@@ -12,5 +12,6 @@ class role::apt_staging {
     include profile::backup::host
 
     include profile::nginx
+    include profile::tlsproxy::envoy
     include profile::aptrepo::staging
 }

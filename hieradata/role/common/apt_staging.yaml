@@ -1,2 +1,11 @@
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::global_cert_name: "apt-staging.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - apt-staging.wikimedia.org
+    - "%{facts.networking.fqdn}"
+
+profile::contacts::role_contacts: ['Infrastructure Foundations']
