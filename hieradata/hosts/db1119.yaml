@@ -1,5 +1,7 @@
 # db1119
+# m1 master
 mariadb::shard: 'm1'
 mariadb::binlog_format: 'ROW'
-profile::monitoring::is_critical: false 
+profile::mariadb::mysql_role: 'master'
+profile::monitoring::is_critical: true
 mariadb::package: 'wmf-mariadb106'
