@@ -38,34 +38,32 @@ class profile::bird::anycast(
     $_multihop = false
   }
 
-  $neighbors_for_ferm = join($_neighbors_list, ' ')
-
-  ferm::service { 'bird-bgp':
+  firewall::service { 'bird-bgp':
       proto  => 'tcp',
-      port   => '179',
-      srange => "(${neighbors_for_ferm})",
+      port   => 179,
+      srange => $_neighbors_list,
       before => Service['bird'],
   }
 
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
   if $bfd {
-    ferm::service { 'bird-bfd-control':
+    firewall::service { 'bird-bfd-control':
         proto  => 'udp',
-        port   => '3784',
-        srange => "(${neighbors_for_ferm})",
+        port   => 3784,
+        srange => $_neighbors_list,
         before => Service['bird'],
     }
-    ferm::service { 'bird-bfd-echo':
+    firewall::service { 'bird-bfd-echo':
         proto  => 'udp',
-        port   => '3785',
-        srange => "(${neighbors_for_ferm})",
+        port   => 3785,
+        srange => $_neighbors_list,
         before => Service['bird'],
     }
     if $_multihop {
-      ferm::service { 'bird-bfd-multi-ctl':  # Multihop BFD
+      firewall::service { 'bird-bfd-multi-ctl':  # Multihop BFD
           proto  => 'udp',
-          port   => '4784',
-          srange => "(${neighbors_for_ferm})",
+          port   => 4784,
+          srange => $_neighbors_list,
           before => Service['bird'],
       }
     }
