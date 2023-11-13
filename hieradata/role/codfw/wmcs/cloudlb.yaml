@@ -1,8 +1,6 @@
 profile::admin::groups:
   - wmcs-roots
 
-profile::firewall::provider: nftables
-
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present

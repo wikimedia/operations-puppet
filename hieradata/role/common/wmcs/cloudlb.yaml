@@ -3,3 +3,4 @@ profile::bird::bind_anycast_services:
   - haproxy
 profile::admin::groups:
   - wmcs-roots
+profile::firewall::provider: nftables
