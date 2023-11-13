@@ -103,9 +103,9 @@ class profile::openstack::base::nova::compute::service(
     $libvirt_cert_pub  = "${certpath}/clientcert.pem"
     $libvirt_cert_priv = "${certpath}/clientkey.pem"
     $libvirt_cert_ca   = "${certpath}/cacert.pem"
-    $puppet_cert_pub  = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
-    $puppet_cert_priv = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
-    $puppet_cert_ca   = '/var/lib/puppet/ssl/certs/ca.pem'
+    $puppet_cert_pub  = $facts['puppet_config']['hostcert']
+    $puppet_cert_priv = $facts['puppet_config']['hostprivkey']
+    $puppet_cert_ca   = profile::base::certificates::get_trusted_ca_path()
 
     file { '/var/lib/nova/ssl/':
         ensure => directory,
