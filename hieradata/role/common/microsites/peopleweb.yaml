@@ -16,3 +16,6 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     protected_uri: '/~cdanis/sremap/'
 profile::contacts::role_contacts: ['ServiceOps-Collab']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
