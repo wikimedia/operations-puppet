@@ -239,7 +239,8 @@ scap::sources:
   netbox/deploy:
     repository: operations/software/netbox-deploy
   search/mjolnir/deploy:
-    repository: search/MjoLniR/deploy
+    repository: search-platform/mjolnir-deploy
+    origin: gitlab
   statsv/statsv:
     repository: analytics/statsv
   performance/arc-lamp: {}
