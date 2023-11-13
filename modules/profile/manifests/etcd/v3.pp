@@ -77,7 +77,6 @@ class profile::etcd::v3(
             before       => Service['etcd'],
         }
 
-        $trusted_ca  = '/etc/ssl/certs/Puppet_Internal_CA.pem'
         $ssl_paths = {
             'chained' => "/etc/ssl/localcerts/${certname}.crt",
             'key'     => "/etc/ssl/private/${certname}.key",
@@ -93,7 +92,6 @@ class profile::etcd::v3(
         } else {
             $ssl_hosts = [$facts['networking']['fqdn']]
         }
-        $trusted_ca  = '/etc/ssl/certs/wmf-ca-certificates.crt'
         $ssl_paths = profile::pki::get_cert('etcd', $certname, {
             hosts  => $ssl_hosts,
             owner  => 'etcd',
@@ -110,7 +108,7 @@ class profile::etcd::v3(
         use_client_certs => $use_client_certs,
         max_latency_ms   => $max_latency,
         adv_client_port  => $adv_client_port,
-        trusted_ca       => $trusted_ca,
+        trusted_ca       => profile::base::certificates::get_trusted_ca_path(),
         client_cert      => $ssl_paths['chained'],
         client_key       => $ssl_paths['key'],
         peer_cert        => $ssl_paths['chained'],
