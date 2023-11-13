@@ -11,5 +11,6 @@ class role::wmcs::db::wikireplicas::web_multiinstance {
     include ::profile::wmcs::db::wikireplicas::views
     include ::profile::mariadb::check_private_data
     include ::profile::wmcs::db::wikireplicas::kill_long_running_queries
+    include ::profile::conftool::client
 
 }
