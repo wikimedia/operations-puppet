@@ -19,9 +19,9 @@ class profile::wmcs::kubeadm::control (
     $k8s_etcd_cert_pub  = '/etc/kubernetes/pki/puppet_etcd_client.crt'
     $k8s_etcd_cert_priv = '/etc/kubernetes/pki/puppet_etcd_client.key'
     $k8s_etcd_cert_ca   = '/etc/kubernetes/pki/puppet_ca.pem'
-    $puppet_cert_pub    = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
-    $puppet_cert_priv   = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
-    $puppet_cert_ca     = '/var/lib/puppet/ssl/certs/ca.pem'
+    $puppet_cert_pub    = $facts['puppet_config']['hostcert']
+    $puppet_cert_priv   = $facts['puppet_config']['hostprivkey']
+    $puppet_cert_ca     = profile::base::certificates::get_trusted_ca_path()
 
     file { '/etc/kubernetes/pki':
         ensure => directory,
