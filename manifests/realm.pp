@@ -232,6 +232,7 @@ $private_tables = [
     'log_search',
     'logging_old',
     'long_run_profiling',
+    'mediamoderation_scan',
     'migrateuser_medium',
     'moodbar_feedback',
     'moodbar_feedback_response',
