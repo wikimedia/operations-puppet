@@ -21,13 +21,13 @@ class profile::toolforge::checker {
     ])
 
     # For etcd checks, we need the puppet certs to act as client
-    $puppet_cert_pub  = "/var/lib/puppet/ssl/certs/${::fqdn}.pem"
-    $puppet_cert_priv = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
-    $puppet_cert_ca   = '/var/lib/puppet/ssl/certs/ca.pem'
+    $puppet_cert_pub  = $facts['puppet_config']['hostcert']
+    $puppet_cert_priv = $facts['puppet_config']['hostprivkey']
+    $puppet_cert_ca   = profile::base::certificates::get_trusted_ca_path()
     $install_dir = '/var/lib/toolschecker'
     $wsgi_file = "${install_dir}/toolschecker.py"
-    $etcd_cert_pub    = "${install_dir}/etcd/${::fqdn}.pem"
-    $etcd_cert_priv   = "${install_dir}/etcd/${::fqdn}.priv"
+    $etcd_cert_pub    = "${install_dir}/etcd/${facts['networking']['fqdn']}.pem"
+    $etcd_cert_priv   = "${install_dir}/etcd/${facts['networking']['fqdn']}.priv"
     $etcd_cert_ca     = "${install_dir}/etcd/ca.pem"
 
     $checks = {
