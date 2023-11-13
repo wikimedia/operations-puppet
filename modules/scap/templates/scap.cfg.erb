@@ -135,7 +135,6 @@ deploy_mw_container_image: True
 datacenter: eqiad
 git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
-statsd_host: <%= @cloud_statsd_host %>
 logstash_host: logging-logstash-02.logging.eqiad1.wikimedia.cloud:9200
 udp2log_host: <%= @betacluster_udplog_host %>
 mediawiki_canary_swagger_url: https://en.wikipedia.beta.wmflabs.org
