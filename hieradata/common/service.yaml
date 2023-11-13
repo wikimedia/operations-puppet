@@ -1677,7 +1677,7 @@ service::catalog:
       scheduler: wrr
       protocol: tcp
     httpbb_dir: jobrunner
-    page: false # TODO change this to true
+    page: false  # TODO change this to true
     probes:
       - type: http
         path: /w/health-check.php
@@ -1685,7 +1685,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: mw-jobrunner
         active_active: false
