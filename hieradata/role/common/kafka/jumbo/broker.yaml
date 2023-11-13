@@ -121,3 +121,6 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 profile::contacts::role_contacts: ['Data Engineering']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
