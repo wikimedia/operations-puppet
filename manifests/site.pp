@@ -2881,14 +2881,13 @@ node /^cloudvirtlocal100[1-3]\.eqiad\./ {
 }
 
 
-# cloudvirts using Ceph backend storage
-# https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Ceph
-node /^cloudvirt102[5-9]\.eqiad\./ {
-    role(wmcs::openstack::eqiad1::virt_ceph)
+# T351010
+node /^cloudvirt10(2[5-9]|30)\.eqiad\./ {
+    role(insetup::wmcs)
 }
 
 # cloudvirt servers T305194, T299574, T342537
-node /^cloudvirt10(3[0-9]|4[0-9]|5[0-9]|6[0-7])\.eqiad\./ {
+node /^cloudvirt10(3[1-9]|4[0-9]|5[0-9]|6[0-7])\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
