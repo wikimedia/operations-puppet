@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+
+provider = "oidc"
+provider_display_name = "Wikimedia SSO"
+client_id = "<%= @client_id %>"
+client_secret = "<%= @client_secret.unwrap %>"
+redirect_url = "<%= @redirect_url %>"
+code_challenge_method = "plain"
+oidc_issuer_url = "<%= @issuer_url %>"
+cookie_secret = "<%= @cookie_secret.unwrap %>"
+cookie_domains = "<%= @cookie_domain %>"
+email_domains = "<%= @email_domain %>"
+upstreams = [
+<% @upstreams.sort.each do |url| -%>
+  "<%= url %>",
+<% end -%>
+]
