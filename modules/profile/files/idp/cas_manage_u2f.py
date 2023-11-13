@@ -95,7 +95,7 @@ def get_db_config(cas_cfg: Path) -> Dict:
         'cursorclass': pymysql.cursors.DictCursor,
         'charset': 'utf8mb4',
         'ssl': {
-            'ca': '/var/lib/puppet/ssl/certs/ca.pem',
+            'ca': '/etc/ssl/certs/wmf-ca-certificates.crt',
             'check_hostname': False,
         },
     }
