@@ -538,10 +538,13 @@ define airflow::instance(
             user        => $service_user,
             environment => {'HOME' => $airflow_home},
             command     => '/lib/airflow/bin/skein config gencerts --force',
-            interval    => {
-                'start'    => 'OnCalendar',
-                'interval' => 'monthly',
-            },
+            interval    => [
+                {
+                    'start'    => 'OnCalendar',
+                    # at 10AM UTC on each Tuesday. See https://phabricator.wikimedia.org/T350945 for rationale
+                    'interval' => 'Tue 10:00',
+                }
+            ]
         }
     }
 }
