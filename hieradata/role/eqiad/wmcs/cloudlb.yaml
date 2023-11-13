@@ -2,9 +2,60 @@ profile::admin::groups:
   - wmcs-roots
 
 profile::bird::advertise_vips:
-  # TODO: the FQDN needs update (remove the -next)
   openstack.eqiad1.wikimediacloud.org:
     ensure: present
     service_type: haproxy
     address: 185.15.56.161
     check_cmd: "/usr/local/lib/nagios/plugins/check_haproxy --check=someup"
+
+  wikireplicas-analytics-s1.svc.private.eqiad.wikimedia.cloud: &wikireplicas
+    ensure: present
+    service_type: haproxy
+    # TODO: can we check the specific proxy for this section?
+    check_cmd: "/usr/local/lib/nagios/plugins/check_haproxy --check=someup"
+    address: 172.20.255.2
+  wikireplicas-analytics-s2.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.3
+  wikireplicas-analytics-s3.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.4
+  wikireplicas-analytics-s4.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.5
+  wikireplicas-analytics-s5.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.6
+  wikireplicas-analytics-s6.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.7
+  wikireplicas-analytics-s7.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.8
+  wikireplicas-analytics-s8.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.9
+  wikireplicas-web-s1.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.10
+  wikireplicas-web-s2.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.11
+  wikireplicas-web-s3.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.12
+  wikireplicas-web-s4.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.13
+  wikireplicas-web-s5.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.14
+  wikireplicas-web-s6.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.15
+  wikireplicas-web-s7.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.16
+  wikireplicas-web-s8.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.17

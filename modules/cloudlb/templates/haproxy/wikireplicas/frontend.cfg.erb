@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+<%- @frontends.each_pair do |type, sections| -%>
+<%- sections.each_pair do |section, ip| -%>
+frontend wikireplica-proxy-<%= type %>-<%= section %>
+    bind <%= ip %>:3306
+
+    mode tcp
+    option tcplog
+    log /dev/log local0 crit
+    option tcpka
+
+    acl use_backup nbsrv(wikireplica-db-<%= type %>-<%= section %>) lt 1
+    use_backend wikireplica-db-<%= @backups[type] %>-<%= section %> if use_backup
+    default_backend wikireplica-db-<%= type %>-<%= section %>
+
+<%- end -%>
+<%- end -%>

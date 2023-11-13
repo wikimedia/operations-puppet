@@ -10,4 +10,5 @@ class role::wmcs::cloudlb (
     include profile::wmcs::cloud_private_subnet
     include profile::wmcs::cloud_private_subnet::bgp
     include profile::wmcs::cloudlb::haproxy
+    include profile::wmcs::cloudlb::haproxy_wikireplicas
 }

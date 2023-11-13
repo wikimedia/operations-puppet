@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+<%- @replica_types.each do |type| -%>
+<%- @sections.each_pair do |section, port| -%>
+backend wikireplica-db-<%= type %>-<%= section %>
+    mode tcp
+    balance roundrobin
+    option log-health-checks
+    log /dev/log local0 crit
+    option tcpka
+    option mysql-check user haproxy
+
+<%- key = "wikireplica-db-#{type}/#{section}" %>
+	# etcd key <%= key %>
+{{ range $node := ls "<%= key %>/" }}{{ $key := printf "<%= key %>/%s" $node }}{{ $data := json (getv $key) }}{{ if and (eq $data.pooled "yes") (ge $data.weight 1) }}
+	server {{ $node }} {{ $node }}:<%= port %> weight {{ $data.weight }} check inter 3s fall 10 rise 20
+{{ end }}{{ end }}
+<%- end -%>
+<%- end -%>
