@@ -257,9 +257,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'clouddb1*':
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
-  'cloudmetrics*':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
   'conf[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
