@@ -7,7 +7,6 @@ describe 'cloudlb::haproxy::service' do
   let(:pre_condition) {
     """
     include haproxy
-    include network::constants
     """
   }
 
@@ -50,16 +49,16 @@ describe 'cloudlb::haproxy::service' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_file('/etc/haproxy/conf.d/service1.cfg')
-            is_expected.to contain_ferm__service('service1_11111').with(
+            is_expected.to contain_firewall__service('service1_11111').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
-                    'port'   => '11111'
-                ).without_srange
-            is_expected.to contain_ferm__service('service1_11112').with(
+                    'port'   => 11_111
+                ).without_srange.without_src_sets
+            is_expected.to contain_firewall__service('service1_11112').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
-                    'port'   => '11112'
-                ).without_srange
+                    'port'   => 11_112
+                ).without_srange.without_src_sets
           }
       end
       context "when closed firewall and 2 frontends" do
@@ -95,16 +94,18 @@ describe 'cloudlb::haproxy::service' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_file('/etc/haproxy/conf.d/service1.cfg')
-            is_expected.to contain_ferm__service('service1_11111').with(
-                    'ensure' => 'present',
-                    'proto'  => 'tcp',
-                    'port'   => '11111'
-                )
-            is_expected.to contain_ferm__service('service1_11112').with(
-                    'ensure' => 'present',
-                    'proto'  => 'tcp',
-                    'port'   => '11112'
-                )
+            is_expected.to contain_firewall__service('service1_11111').with(
+                    'ensure'   => 'present',
+                    'proto'    => 'tcp',
+                    'port'     => 11_111,
+                    'src_sets' => ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
+                ).without_srange
+            is_expected.to contain_firewall__service('service1_11112').with(
+                    'ensure'   => 'present',
+                    'proto'    => 'tcp',
+                    'port'     => 11_112,
+                    'src_sets' => ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
+                ).without_srange
           }
       end
       context "when FQDN-based-firewall and 2 frontends" do
@@ -143,24 +144,24 @@ describe 'cloudlb::haproxy::service' do
           it { is_expected.to compile.with_all_deps }
           it {
             is_expected.to contain_file('/etc/haproxy/conf.d/service1.cfg')
-            is_expected.to contain_ferm__service('service1_11114').with(
+            is_expected.to contain_firewall__service('service1_11114').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
-                    'port'   => '11114',
+                    'port'   => 11_114,
                     'srange' => [
                         'sourcehost1.example.com',
                         'sourcehost2.example.com',
                     ]
-                )
-            is_expected.to contain_ferm__service('service1_11115').with(
+                ).without_src_sets
+            is_expected.to contain_firewall__service('service1_11115').with(
                     'ensure' => 'present',
                     'proto'  => 'tcp',
-                    'port'   => '11115',
+                    'port'   => 11_115,
                     'srange' => [
                         'sourcehost1.example.com',
                         'sourcehost2.example.com',
                     ]
-                )
+                ).without_src_sets
           }
       end
     end

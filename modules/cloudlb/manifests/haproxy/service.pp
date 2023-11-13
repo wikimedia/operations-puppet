@@ -48,23 +48,26 @@ define cloudlb::haproxy::service (
     $frontends.each | Integer $index, CloudLB::HAProxy::Service::Frontend $frontend | {
         if $firewall['restricted_to_fqdns'] {
             $srange = $firewall['restricted_to_fqdns']
+            $src_sets = undef
         } elsif $firewall['open_to_cloud_private'] {
-            $srange = $::network::constants::cloud_private_networks
+            $srange = undef
+            $src_sets = ['CLOUD_PRIVATE_NETWORKS']
+        } elsif $firewall['open_to_internet'] {
+            $srange = undef
+            $src_sets = undef
         } else {
-            if $firewall['open_to_internet'] {
-                $srange = undef
-            } else {
-                $srange = $::network::constants::production_networks + $::network::constants::labs_networks
-            }
+            $srange = undef
+            $src_sets = ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
         }
 
         $port = $frontend['port']
 
-        ferm::service { "${title}_${port}":
-            ensure => present,
-            proto  => 'tcp',
-            port   => $port,
-            srange => $srange,
+        firewall::service { "${title}_${port}":
+            ensure   => present,
+            proto    => 'tcp',
+            port     => $port,
+            srange   => $srange,
+            src_sets => $src_sets,
         }
     }
 }

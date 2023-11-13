@@ -57,6 +57,13 @@ class profile::firewall::nftables_base_sets (
         hosts => $network::constants::cloud_networks_public,
     }
 
+    # $CLOUD_PRIVATE_NETWORKS is the cloud-private networks with WMCS
+    # hardware with cloud realm private 172.20.x.x addresses. These
+    # hosts are dual-homed, usually also in at least cloud-hosts.
+    nftables::set { 'CLOUD_PRIVATE_NETWORKS':
+        hosts => $network::constants::cloud_private_networks,
+    }
+
     # $FRACK_NETWORKS is meant to be a set of all fundraising networks
     nftables::set { 'FRACK_NETWORKS':
         hosts => $network::constants::frack_networks,
