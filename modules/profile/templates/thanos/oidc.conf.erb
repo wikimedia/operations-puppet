@@ -1,0 +1,18 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+
+    # disable golang debugging from outside localhost
+    <Location /debug>
+        Require all denied
+    </Location>
+
+    # Object storage bucket web explorer (read only)
+    <Location /bucket>
+        AllowMethods GET
+    </Location>
+
+    # Forward to oauth2-proxy, sub-routes will be handled there (e.g. /bucket or /rule)
+    # Trailing slash compulsory below!
+    ProxyPass / http://localhost:4180/
+</VirtualHost>

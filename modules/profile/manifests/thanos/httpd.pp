@@ -17,28 +17,34 @@ class profile::thanos::httpd (
     Stdlib::Port::Unprivileged $query_port = lookup('profile::thanos::httpd::query_port'),
     Integer                    $maxconn    = lookup('profile::thanos::httpd::maxconn'),
     Hash[Stdlib::Fqdn, Hash]   $rule_hosts = lookup('profile::thanos::rule_hosts'),
+    Boolean                    $oidc_sso   = lookup('profile::thanos::oidc_sso_enabled', { 'default_value' => false }),
 ) {
     class { 'httpd':
         modules => ['proxy_http', 'lbmethod_byrequests', 'allowmethods', 'rewrite'],
     }
 
-    profile::idp::client::httpd::site {'thanos.wikimedia.org':
-        vhost_content    => 'profile/idp/client/httpd-thanos.erb',
-        proxied_as_https => true,
-        document_root    => '/var/www/html',
-        required_groups  => [
-            'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
-            'cn=nda,ou=groups,dc=wikimedia,dc=org',
-        ],
-        vhost_settings   => {
-            query_port      => $query_port,
-            maxconn         => $maxconn,
-            bucket_web_port => 15902,
-            rule_hosts      => $rule_hosts,
-            rule_port       => 17902,
+    if ($oidc_sso) {
+        include profile::thanos::oidc
+    } else {
+        profile::idp::client::httpd::site {'thanos.wikimedia.org':
+            vhost_content    => 'profile/idp/client/httpd-thanos.erb',
+            proxied_as_https => true,
+            document_root    => '/var/www/html',
+            required_groups  => [
+                'cn=ops,ou=groups,dc=wikimedia,dc=org',
+                'cn=wmf,ou=groups,dc=wikimedia,dc=org',
+                'cn=nda,ou=groups,dc=wikimedia,dc=org',
+            ],
+            vhost_settings   => {
+                query_port      => $query_port,
+                maxconn         => $maxconn,
+                bucket_web_port => 15902,
+                rule_hosts      => $rule_hosts,
+                rule_port       => 17902,
+            }
         }
     }
+
     httpd::site { 'thanos-query':
         content => template('profile/thanos/httpd.conf.erb'),
     }
