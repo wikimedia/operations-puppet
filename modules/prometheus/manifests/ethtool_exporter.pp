@@ -9,7 +9,7 @@ class prometheus::ethtool_exporter(
         $override_content = @(CONTENT)
         [Service]
         ExecStart =
-        ExecStart = /usr/bin/prometheus-ethtool-exporter --skip-no-link -f /var/lib/prometheus/node.d/ethtool.prom
+        ExecStart = /usr/bin/prometheus-ethtool-exporter --skip-no-link -f /var/lib/prometheus/node.d/ethtool.prom -q
         | CONTENT
 
         systemd::service {  'prometheus-ethtool-exporter':
