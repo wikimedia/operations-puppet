@@ -1,5 +1,6 @@
 profile::pybaltest::hosts:
   - pybal-test2003.codfw.wmnet
+profile::base::remove_python2_on_bullseye: false
 # Conftool
 profile::conftool::client::namespace: "/eqiad.wmnet/conftool"
 profile::conftool::master::sync_dir: "/etc/conftool/data"
