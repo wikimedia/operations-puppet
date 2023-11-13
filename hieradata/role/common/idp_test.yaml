@@ -63,7 +63,7 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  thanos_test:
+  thanos_oidc:
     id: 9
     service_class: 'OidcRegisteredService'
     service_id: 'https://thanos\.(wikimedia|monitoring\.wmflabs)\.org(/.*)?'

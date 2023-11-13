@@ -207,6 +207,15 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  thanos_oidc:
+    id: 35
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://thanos\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
+
 profile::idp::ldap_attributes:
   - cn
   - memberOf
