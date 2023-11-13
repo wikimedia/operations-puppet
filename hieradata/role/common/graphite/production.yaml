@@ -30,3 +30,6 @@ profile::netconsole::client::ensure: present
 profile::graphite::hosts:
   - graphite1005.eqiad.wmnet
   - graphite2004.codfw.wmnet
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
