@@ -66,6 +66,10 @@ GRANT PROCESS, SUPER ON *.* TO 'wmf-pt-kill'@'localhost' IDENTIFIED VIA unix_soc
 GRANT USAGE ON *.* TO 'haproxy'@'10.64.37.27';
 -- haproxy@dbproxy1019.eqiad.wmnet
 GRANT USAGE ON *.* TO 'haproxy'@'10.64.16.14';
+-- haproxy@cloudlb1001.eqiad.wmnet
+GRANT USAGE ON *.* TO 'haproxy'@'10.64.151.2';
+-- haproxy@cloudlb1002.eqiad.wmnet
+GRANT USAGE ON *.* TO 'haproxy'@'10.64.150.4';
 
 -- Currently only on the legacy wikireplicas for information gathering. T272723
 -- Re-added on the new replicas T345211

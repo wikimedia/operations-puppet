@@ -32,6 +32,9 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
         group  => root,
         mode   => '0755',
     }
+
+    $cloud_lbs = wmflib::role::hosts('wmcs::cloudlb', [$::site])
+
     $mysql_root_clients_str = join($mysql_root_clients, ' ')
     $instances.each |$section, $buffer_pool| {
         $port = $section_ports[$section]
@@ -59,6 +62,12 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             port    => $port,
             notrack => true,
             srange  => "(@resolve((${dbproxies.join(' ')})))",
+        }
+        ferm::service { "mysql_wikireplica_db_cloudlb_proxy_${section}":
+            proto   => 'tcp',
+            port    => $port,
+            notrack => true,
+            srange  => $cloud_lbs,
         }
         $cloudcontrols = $openstack_control_nodes.map |OpenStack::ControlNode $node| { $node['host_fqdn'] }
         ferm::service { "mysql_wmcs_db_admin_${section}":
