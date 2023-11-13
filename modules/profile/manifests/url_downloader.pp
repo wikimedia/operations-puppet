@@ -56,5 +56,10 @@ class profile::url_downloader (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
     }
 
+    prometheus::blackbox::check::http { 'url-downloader.wikimedia.org':
+        port           => $url_downloader_port,
+        status_matches => [400],
+    }
+
     profile::auto_restarts::service { 'squid': }
 }
