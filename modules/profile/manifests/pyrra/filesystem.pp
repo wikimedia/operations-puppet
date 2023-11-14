@@ -46,4 +46,36 @@ class profile::pyrra::filesystem (
     }
 
 
+    $liftwing_revscoring_requests_slo = {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'liftwing-requests-revscoring',
+            'namespace' => 'pyrra-o11y-pilot',
+            'labels' => {
+                'pyrra.dev/team' => 'ml',
+                'pyrra.dev/service' => 'liftwing-revscoring',
+            },
+        },
+        'spec' => {
+            'target' => '98.0',
+            'window' => '12w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'istio_sli_availability_requests_total{response_code=~"5..", prometheus="k8s-mlserve", destination_service_namespace=~"revscoring.*"}',
+                    },
+                    'total' => {
+                        'metric' => 'istio_sli_availability_requests_total{prometheus="k8s-mlserve", destination_service_namespace=~"revscoring.*"}',
+                    },
+                    'grouping' => ['site', 'destination_service_namespace'],
+                },
+            },
+        },
+    }
+
+    pyrra::filesystem::config { 'liftwing-requests.yaml':
+      content => to_yaml($liftwing_revscoring_requests_slo),
+    }
+
 }
