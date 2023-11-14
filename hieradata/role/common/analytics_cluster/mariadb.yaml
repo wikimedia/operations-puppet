@@ -10,3 +10,6 @@ profile::analytics::database::meta::innodb_pool_size: '8G'
 
 # These DBs are replicas of an-coord1001 until being brought into service. See #T284150
 profile::analytics::database::meta::is_mariadb_replica: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
