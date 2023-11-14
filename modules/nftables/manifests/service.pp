@@ -70,17 +70,23 @@ define nftables::service (
         }
     }.flatten.sort.filter |$x| { $x !~ /^\s*$/ }
 
-    # Remove smaller statements that are contained in stricter rules, to avoid firewall holes.
-    # I understand if this gives you headache, so let me explain:
-    # if we are producing 2 rules:
-    #  "ip saddr 1.1.1.1 accept"
-    #  "ip saddr 1.1.1.1 ip daddr 2.2.2.2 accept"
-    # the second rule wont ever match because packets are accepted by the first. The first rule
-    # is what we are killing here, because we have an stricter one.
-    # Filter the 'maybe statements', and remove each statement that is contained in other statements.
-    $l3_v4_stmts = $maybe_l3_v4_stmts.filter |$i| {
-        ! $maybe_l3_v4_stmts.filter |$j| { $i != $j }.reduce(false) |$memo, $x| {
-            $memo or ($i in $x)
+    # T351094: Ensure that we have valid v4 addresses after filtering.
+    # This prevents us from having an empty rule if e.g. dst_ips contains no ipv4 address
+    if ($src_ipv4_addrs.empty and !$src_ips.empty) or ($dst_ipv4_addrs.empty and !$dst_ips.empty) {
+        $l3_v4_stmts = []
+    } else {
+        # Remove smaller statements that are contained in stricter rules, to avoid firewall holes.
+        # I understand if this gives you headache, so let me explain:
+        # if we are producing 2 rules:
+        #  "ip saddr 1.1.1.1 accept"
+        #  "ip saddr 1.1.1.1 ip daddr 2.2.2.2 accept"
+        # the second rule wont ever match because packets are accepted by the first. The first rule
+        # is what we are killing here, because we have an stricter one.
+        # Filter the 'maybe statements', and remove each statement that is contained in other statements.
+        $l3_v4_stmts = $maybe_l3_v4_stmts.filter |$i| {
+            ! $maybe_l3_v4_stmts.filter |$j| { $i != $j }.reduce(false) |$memo, $x| {
+                $memo or ($i in $x)
+            }
         }
     }
 
@@ -103,10 +109,16 @@ define nftables::service (
         }
     }.flatten.sort.filter |$x| { $x !~ /^\s*$/ }
 
-    # See comment above about contained statements and headache
-    $l3_v6_stmts = $maybe_l3_v6_stmts.filter |$i| {
-        ! $maybe_l3_v6_stmts.filter |$j| { $i != $j }.reduce(false) |$memo, $x| {
-            $memo or ($i in $x)
+    # T351094: Ensure that we have valid v4 addresses after filtering.
+    # This prevents us from having an empty rule if e.g. dst_ips contains no ipv4 address
+    if ($src_ipv6_addrs.empty and !$src_ips.empty) or ($dst_ipv6_addrs.empty and !$dst_ips.empty) {
+        $l3_v6_stmts = []
+    } else {
+        # See comment above about contained statements and headache
+        $l3_v6_stmts = $maybe_l3_v6_stmts.filter |$i| {
+            ! $maybe_l3_v6_stmts.filter |$j| { $i != $j }.reduce(false) |$memo, $x| {
+                $memo or ($i in $x)
+            }
         }
     }
 

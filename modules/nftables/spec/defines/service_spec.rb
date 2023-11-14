@@ -139,6 +139,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -156,6 +157,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -173,6 +175,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -190,6 +193,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -208,6 +212,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -225,6 +230,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -242,6 +248,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -259,6 +266,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -276,6 +284,7 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
@@ -294,11 +303,10 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
-                    ip\sdaddr\s@dst_set1_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip\sdaddr\s@dst_set2_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip6\ssaddr\s{\sfe::80,\sfe::90\s}\sip6\sdaddr\s@dst_set1_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip6\ssaddr\s{\sfe::80,\sfe::90\s}\sip6\sdaddr\s@dst_set2_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     /x)
@@ -315,13 +323,12 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
                     ip\ssaddr\s{\s1.1.1.1,\s1.1.1.2\s}\sip\sdaddr\s@dst_set1_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip\ssaddr\s{\s1.1.1.1,\s1.1.1.2\s}\sip\sdaddr\s@dst_set2_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip6\sdaddr\s@dst_set1_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip6\sdaddr\s@dst_set2_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     /x)
         end
       end
@@ -336,11 +343,10 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv4.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
-                    ip\ssaddr\s@src_set1_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip\ssaddr\s@src_set2_ipv4\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip6\ssaddr\s@src_set1_ipv6\sip6\sdaddr\s{\sfe::80,\sfe::90\s}\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip6\ssaddr\s@src_set2_ipv6\sip6\sdaddr\s{\sfe::80,\sfe::90\s}\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     /x)
@@ -357,13 +363,12 @@ describe 'nftables::service' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_file('/etc/nftables/input/10_test_service.nft')
+            .without_content(/ipv6.+[sd]addr/)
             .with_content(/
                     #\sManaged\sby\spuppet\s+
                     #\ssome\sdesc\s+
                     ip\ssaddr\s@src_set1_ipv4\sip\sdaddr\s{\s1.1.1.1,\s2.2.2.2\s}\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     ip\ssaddr\s@src_set2_ipv4\sip\sdaddr\s{\s1.1.1.1,\s2.2.2.2\s}\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip6\ssaddr\s@src_set1_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
-                    ip6\ssaddr\s@src_set2_ipv6\stcp\sdport\s{\s80,\s443\s}\saccept\s+
                     /x)
         end
       end
