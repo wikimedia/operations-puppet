@@ -26,3 +26,7 @@ prometheus::node_exporter::collectors_extra:
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
+
+# Puppet v7 migration
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
