@@ -1521,7 +1521,7 @@ node /^phab2002\.codfw\./ {
 
 # temp test VM for T335080
 node /^phab-test1001\.eqiad\./ {
-    role(insetup::serviceops_collab)
+    role(insetup::buster)
 }
 
 # PKI server
