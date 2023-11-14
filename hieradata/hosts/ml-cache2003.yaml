@@ -1,1 +1,5 @@
 profile::cassandra::rack: 'c_f'
+
+# Puppet v7 migration
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
