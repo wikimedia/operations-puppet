@@ -50,3 +50,7 @@ profile::base::certificates::trusted_certs:
   - '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt'
   - '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt'
   - '/etc/cassandra-a/tls/rootCa.crt'
+
+# Puppet v7 migration
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
