@@ -113,3 +113,6 @@ profile::java::extra_args:
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::base::certificates::include_bundle_jks: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
