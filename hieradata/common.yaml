@@ -1616,12 +1616,6 @@ zookeeper_flink_hosts:
 - 2620:0:860:104:10:192:48:219 # flink-zk2003.codfw.wmnet
 
 druid_public_hosts:
-- 10.64.0.35                  # druid1004.eqiad.wmnet
-- 2620:0:861:101:10:64:0:35   # druid1004.eqiad.wmnet
-- 10.64.16.172                # druid1005.eqiad.wmnet
-- 2620:0:861:102:10:64:16:172 # druid1005.eqiad.wmnet
-- 10.64.48.171                # druid1006.eqiad.wmnet
-- 2620:0:861:107:10:64:48:171 # druid1006.eqiad.wmnet
 - 10.64.16.171                # druid1007.eqiad.wmnet
 - 2620:0:861:102:10:64:16:171 # druid1007.eqiad.wmnet
 - 10.64.48.227                # druid1008.eqiad.wmnet
