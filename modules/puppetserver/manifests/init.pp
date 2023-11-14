@@ -127,14 +127,12 @@ class puppetserver (
         },
     )
 
-    $_ssldir_txt = $separate_ssldir.bool2str("ssldir = ${ssl_dir}", '')
     $config = @("CONFIG")
 
     [server]
     ca_server = ${ca_server}
     reports = ${_reports.unique.join(',')}
     codedir = ${code_dir}
-    ${_ssldir_txt}
     | CONFIG
     concat::fragment { 'server':
         target  => '/etc/puppet/puppet.conf',
@@ -166,6 +164,15 @@ class puppetserver (
             target  => '/etc/puppet/puppet.conf',
             order   => '23',
             content => "autosign = ${autosign}\n",
+            notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
+        }
+    }
+    if $separate_ssldir {
+        concat::fragment { 'separate-ssldir':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '24',
+            content => "ssldir = ${ssl_dir}\n",
             notify  => $service_reload_notify,
             require => Systemd::Unmask['puppetserver.service'],
         }
