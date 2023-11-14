@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=FIFO log demultiplexer (instance %i)
-Documentation=https://github.com/wikimedia/operations-software-fifo-log-demux
+Documentation=https://gitlab.wikimedia.org/repos/sre/fifo-log-demux
 <% if @wanted_by -%>
 BindsTo=<%= @wanted_by %>
 After=<%= @wanted_by %>

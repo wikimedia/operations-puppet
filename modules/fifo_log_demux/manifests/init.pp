@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class: fifo_log_demux
 #
-# Install and configure fifo-log-demux:
-# https://github.com/wikimedia/operations-software-fifo-log-demux
+# Install and configure fifo-log-demux
 
 class fifo_log_demux {
     # Not a hard requirement but handy to have to test fifo-log-demux
