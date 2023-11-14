@@ -1519,11 +1519,6 @@ node /^phab2002\.codfw\./ {
     role(phabricator)
 }
 
-# temp test VM for T335080
-node /^phab-test1001\.eqiad\./ {
-    role(insetup::buster)
-}
-
 # PKI server
 node /^pki1001\.eqiad\./ {
     role(pki::multirootca)
