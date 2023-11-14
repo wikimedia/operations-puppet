@@ -7,3 +7,6 @@ profile::tlsproxy::envoy::websockets: true
 
 profile::contacts::role_contacts: ['ServiceOps-Collab']
 profile::etherpad::listen_ip: '::'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
