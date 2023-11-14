@@ -22,6 +22,7 @@
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
+# @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -45,6 +46,7 @@ class puppetserver (
     Stdlib::Port                             $jmx_port                  = 8141,
     Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
     Hash[String, Stdlib::Unixpath]           $extra_mounts              = {},
+    Variant[Enum['unlimited'], Integer]      $environment_timeout       = 0,
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
@@ -93,6 +95,15 @@ class puppetserver (
         },
     )
 
+    file { $config_d_dir:
+        ensure  => directory,
+        recurse => true,
+        purge   => true,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+    }
+
     # Shared by profile::puppet::agent, but needs to have the correct
     # permissions prior to starting Puppet
     ensure_resource(
@@ -133,6 +144,7 @@ class puppetserver (
     ca_server = ${ca_server}
     reports = ${_reports.unique.join(',')}
     codedir = ${code_dir}
+    environment_timeout = ${environment_timeout}
     | CONFIG
     concat::fragment { 'server':
         target  => '/etc/puppet/puppet.conf',
@@ -208,6 +220,9 @@ class puppetserver (
     $web_server_params = {
         'listen_host' => $listen_host,
     }
+    $auth_params = {
+        'fqdn' => $facts['networking']['fqdn'],
+    }
     # Ensure additional mounts exist
     unless $extra_mounts.empty {
         wmflib::dir::mkdir_p($extra_mounts.values(), {mode => '0555'})
@@ -237,6 +252,12 @@ class puppetserver (
             content => epp('puppetserver/web-routes.conf.epp');
         "${config_d_dir}/webserver.conf":
             content => epp('puppetserver/webserver.conf.epp', $web_server_params);
+        "${config_d_dir}/auth.conf":
+            content => epp('puppetserver/auth.conf.epp', $auth_params);
+        "${config_d_dir}/ca.conf":
+            source =>  'puppet:///modules/puppetserver/ca.conf';
+        "${config_d_dir}/global.conf":
+            source =>  'puppet:///modules/puppetserver/global.conf';
         '/etc/puppet/hiera.yaml':
             content => $hiera_config.to_yaml;
         '/etc/puppet/fileserver.conf':
@@ -280,5 +301,13 @@ class puppetserver (
         path        => '/usr/bin',
         command     => 'printf "Restart required from %s\n" "$(date)" >> /run/puppetserver/restart_required',
         refreshonly => true,
+    }
+
+    file { '/usr/local/bin/puppetserver-evict-code-cache':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/puppetserver/puppetserver-evict-code-cache.sh',
+        mode   => '0555',
     }
 }

@@ -25,6 +25,7 @@
 #   reload the puppetserver service
 # @param enable_jmx
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
+# @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
 class profile::puppetserver (
     Stdlib::Fqdn                   $server_id                 = lookup('profile::puppetserver::server_id'),
     Stdlib::Unixpath               $code_dir                  = lookup('profile::puppetserver::code_dir'),
@@ -50,6 +51,10 @@ class profile::puppetserver (
     Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
     Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
     Hash[String, Stdlib::Unixpath] $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
+    Variant[
+        Enum['unlimited'],
+        Integer
+    ]                              $environment_timeout       = lookup('profile::puppetserver::environment_timeout'),
 
 ) {
     $enable_ca = $ca_server == $facts['networking']['fqdn']

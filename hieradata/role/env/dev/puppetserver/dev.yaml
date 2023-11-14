@@ -17,6 +17,8 @@ profile::puppetserver::intermediate_ca: true
 profile::puppetserver::ca_public_key: 'puppet:///modules/profile/puppetserver/dcl/puppet_ca.pem'
 profile::puppetserver::ca_crl: 'puppet:///modules/profile/puppetserver/dcl/pki_crl.pem'
 profile::puppetserver::ca_private_key_secret: 'puppetserver/dcl/puppet_ca.key'
+# Don't cache, since we are writing directly via NFS
+profile::puppetserver::environment_timeout: 0
 profile::puppetserver::hierarchy:
   - name: local
     path: local.yaml
