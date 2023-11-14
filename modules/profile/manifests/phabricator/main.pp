@@ -372,12 +372,7 @@ class profile::phabricator::main (
         'ldap',
     ]
 
-    $php_version = debian::codename() ? {
-        'buster'   => '7.3',
-        'bullseye' => '7.4',
-        'bookworm' => '8.2',
-        default    => '7.3',
-    }
+    $php_version = wmflib::debian_php_version()
 
     # Install the runtime
     class { '::php':

@@ -14,12 +14,8 @@ class profile::simplelamp2(
 
     ensure_packages('libapache2-mod-php')
 
-    # TODO: another use case for php_version fact
-    $apache_php_module = debian::codename() ? {
-        'buster'   => 'php7.3',
-        'bullseye' => 'php7.4',
-        default    => fail("unsupported on ${debian::codename()}"),
-    }
+    $php_version = wmflib::debian_php_version()
+    $apache_php_module = "php${php_version}"
 
     $apache_modules = concat($apache_modules_common, $apache_php_module)
 

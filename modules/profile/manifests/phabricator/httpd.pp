@@ -7,13 +7,9 @@ class profile::phabricator::httpd (
 
     $httpd_base_modules = [ 'headers', 'rewrite', 'remoteip' ]
 
-    # TODO: php_fact use case
-    $php_lib = debian::codename() ? {
-        'buster'   => 'php7.3-fpm',
-        'bullseye' => 'php7.4-fpm',
-        'bookworm' => 'php8.2-fpm',
-        default    => 'php7.2-fpm',
-    }
+    $php_version = wmflib::debian_php_version()
+    $php_lib = "php${php_version}-fpm"
+
     $httpd_extra_modules = [ 'proxy', 'proxy_fcgi' ]
 
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)

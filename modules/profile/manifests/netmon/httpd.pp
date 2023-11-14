@@ -1,11 +1,9 @@
 class profile::netmon::httpd (
 ){
-    $php_version = debian::codename() ? {
-        'buster'   => 'php7.3',
-        'bullseye' => 'php7.4',
-        'bookworm' => 'php8.2',
-        default    => 'php7.3',
-    }
+
+    $php_version_number = wmflib::debian_php_version()
+    $php_version = "php${php_version_number}"
+
     # needed by librenms and netbox web servers
     class { '::sslcert::dhparam': }
 
