@@ -21,20 +21,20 @@ class profile::openstack::base::galera::node(
         wsrep_node_name => $wsrep_node_name,
     }
 
-    # 3306, standard mariadb port for debugging/connections/etc
+    # mariadb listen port for debugging/connections/etc
     # 4567, replication
     # 4568, incremental state transfer
     # 4444, state snapshot transfer
     ferm::service { 'galera-cluster':
         proto  => 'tcp',
-        port   => '(3306 4567 4568 4444)',
+        port   => [$listen_port, 4567, 4568, 4444],
         srange => "(@resolve((${cloudcontrols.join(' ')})))",
     }
 
     # 9990 for the nodecheck service
     ferm::service { 'galera-backend':
         proto  => 'tcp',
-        port   => "(${listen_port} 9990)",
+        port   => [$listen_port, 9990],
         srange => "@resolve((${haproxy_nodes.join(' ')}))",
     }
 
