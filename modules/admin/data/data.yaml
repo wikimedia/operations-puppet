@@ -181,7 +181,7 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev]
+              dbrant, tsev, ngkountas]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6115,6 +6115,14 @@ users:
     uid: 44992
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  ngkountas:
+    ensure: present
+    realname: Nik Gkountas
+    email: ngkountas@wikimedia.org
+    uid: 24336
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILInfdooHG0VTLNV6TSlNiYTvNpgtWuM7Vy25CGqngKA ngkountas@wikimedia.org'
 
 ldap_only_users:
   adavenport:
@@ -6572,10 +6580,6 @@ ldap_only_users:
     ensure: present
     realname: Antonino Hemmer
     email: ahemmer@wikimedia.org
-  ngkountas:
-    ensure: present
-    realname: Nik Gkountas
-    email: ngkountas@wikimedia.org
   vhargyono:
     ensure: absent
     realname: Vasanthi Hargyono
