@@ -100,3 +100,6 @@ profile::gitlab::ldap_group_sync_interval_interval:
 
 profile::gitlab::max_storage_concurrency: 2
 profile::gitlab::max_concurrency: 20
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
