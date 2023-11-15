@@ -304,6 +304,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
     - to: 'data-engineering-alerts@lists.wikimedia.org'
+      send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'data-persistence-irc'
