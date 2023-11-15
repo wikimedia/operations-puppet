@@ -18,7 +18,6 @@ profile::hue::monitoring_enabled: false
 profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
 profile::hue::kerberos_principal: "hue/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
 profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
-profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: false
 profile::hue::servername: 'hue.wikimedia.org'
 # The default Thrift version for Hue 4 is 11, that is not compatible
@@ -27,8 +26,6 @@ profile::hue::hive_thrift_version: 7
 
 profile::hue::database_name: 'hue_test'
 profile::hue::use_hue4_settings: true
-
-profile::oozie::client::oozie_service: 'analytics-test-oozie'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hue'

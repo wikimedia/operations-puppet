@@ -839,16 +839,6 @@ kafka_clusters:
       kafka-test1010.eqiad.wmnet:
         id: 1010
 
-# Oozie base configuration is common to multiple profiles, and must be kept
-# in sync. Instead of having it repated multiple times it is convenient to
-# have a single place in hiera to check/modify.
-oozie_services:
-  analytics-test-oozie:
-    oozie_host: an-test-coord1001.eqiad.wmnet
-
-  analytics-oozie:
-    oozie_host: an-coord1001.eqiad.wmnet
-
 # Hive base configuration is common to multiple profiles, and must be kept
 # in sync. Instead of having it repated multiple times it is convenient to
 # have a single place in hiera to check/modify.

@@ -16,7 +16,7 @@
     file:<%= @local_source %> \
     hdfs://analytics-hadoop<%= @hdfs_destination %>
 
-# Touch flag in all folders to let oozie start jobs
+# Touch flag in all folders to let Airflow start jobs
 for f in $(/usr/bin/hdfs dfs -ls <%= @hdfs_destination %> | awk '{print $8}')
 do
     /usr/bin/hdfs dfs -touchz $f/_IMPORTED

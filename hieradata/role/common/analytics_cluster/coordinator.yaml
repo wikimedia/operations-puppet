@@ -5,8 +5,6 @@ nagios_group: analytics_eqiad
 cluster: analytics
 profile::admin::groups:
   - analytics-admins
-# Oozie needs to have users deployed on the OS to be able to decide who can
-# re-run bundles/coordinators for a specific user.
 profile::admin::groups_no_ssh:
   - analytics-product-users
 
@@ -14,8 +12,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 profile::hive::client::deploy_jdbc_settings: true
-
-profile::oozie::client::oozie_service: 'analytics-oozie'
 
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
@@ -129,28 +125,11 @@ profile::presto::server::catalogs:
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
 
-profile::oozie::server::monitoring_enabled: true
-profile::oozie::server::ferm_srange: '$ANALYTICS_NETWORKS'
-
-profile::oozie::server::use_admins_list: true
-profile::oozie::server::admin_users: []
-profile::oozie::server::admin_groups: ['analytics-admins', 'ops']
-profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
-
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: true
 
 profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
-
-profile::oozie::server::oozie_service_kerberos_enabled: true
-profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
-profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'
-profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA'
-profile::oozie::server::oozie_authentication_type: 'kerberos'
-profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
-profile::oozie::server::spark_defaults_config_dir: '/etc/spark2/conf'
-profile::oozie::server::oozie_sharelib_archive: '/usr/lib/oozie/oozie-sharelib.tar.gz'
 
 profile::kerberos::keytabs::keytabs_metadata:
   - role: 'hive'

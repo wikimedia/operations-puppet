@@ -12,8 +12,6 @@ profile::hive::client::hive_service_name: 'analytics-test-hive'
 profile::hive::client::deploy_jdbc_settings: true
 profile::hive::client::hive_metastore_host: 'an-test-coord1001.eqiad.wmnet'
 
-profile::oozie::client::oozie_service: 'analytics-test-oozie'
-
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
 profile::hive::client::config_files_group_ownership: 'analytics'
@@ -144,12 +142,6 @@ profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTI
 profile::analytics::database::meta::datadir: '/srv/mysql'
 profile::analytics::refinery::job::data_purge::public_druid_host: 'an-test-druid1001.eqiad.wmnet'
 profile::analytics::refinery::ensure_hdfs_dirs: true
-profile::oozie::server::monitoring_enabled: true
-profile::oozie::server::ferm_srange: '(($ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
-profile::oozie::server::use_admins_list: true
-profile::oozie::server::admin_users: []
-profile::oozie::server::admin_groups: ['analytics-admins', 'ops']
-profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
 
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: true
@@ -176,14 +168,6 @@ profile::kerberos::keytabs::keytabs_metadata:
     group: 'hdfs'
     filename: 'hdfs.keytab'
     parent_dir_grp: 'hadoop'
-
-profile::oozie::server::oozie_service_kerberos_enabled: true
-profile::oozie::server::local_realm: 'ANALYTICS.EQIAD.WMFLABS'
-profile::oozie::server::oozie_service_keytab_file: '/etc/security/keytabs/oozie/HTTP-oozie.keytab'
-profile::oozie::server::oozie_service_kerberos_principal: 'oozie/_HOST@WIKIMEDIA'
-profile::oozie::server::oozie_authentication_type: 'kerberos'
-profile::oozie::server::oozie_authentication_kerberos_principal: 'HTTP/_HOST@WIKIMEDIA'
-profile::oozie::server::spark_defaults_config_dir: '/etc/spark2/conf'
 
 profile::monitoring::notifications_enabled: false
 

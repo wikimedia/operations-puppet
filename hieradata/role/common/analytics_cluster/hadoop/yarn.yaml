@@ -10,8 +10,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 
-profile::oozie::client::oozie_service: 'analytics-oozie'
-
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:
    - server_names: ['*']

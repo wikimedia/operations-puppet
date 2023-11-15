@@ -14,8 +14,6 @@ profile::hive::client::deploy_jdbc_settings: true
 # Metastore.
 profile::hive::client::hive_metastore_host: 'an-coord1002.eqiad.wmnet'
 
-profile::oozie::client::oozie_service: 'analytics-oozie'
-
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
 profile::hive::client::config_files_group_ownership: 'analytics'

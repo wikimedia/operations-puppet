@@ -24,7 +24,7 @@ class profile::hadoop::worker::clients {
     # via pyspark installed in the conda environment in /opt/conda-analytics.
     include ::profile::hadoop::spark3
 
-    # sqoop needs to be on worker nodes if Oozie is to
+    # sqoop needs to be on worker nodes if Airflow is to
     # launch sqoop jobs.
     class { '::bigtop::sqoop': }
 }

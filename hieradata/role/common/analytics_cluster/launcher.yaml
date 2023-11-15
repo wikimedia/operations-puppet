@@ -12,8 +12,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-hive'
 
-profile::oozie::client::oozie_service: 'analytics-oozie'
-
 # Set the hive-site.xml file with group ownership 'analytics' so systemd timers
 # can read the file.
 profile::hive::client::config_files_group_ownership: 'analytics'

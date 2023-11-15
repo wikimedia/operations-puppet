@@ -163,11 +163,10 @@ class profile::hadoop::spark2(
     # sharelib in HDFS so that oozie actions can launch spark2 jobs.
     if $install_oozie_sharelib {
         file { '/usr/local/bin/spark2_oozie_sharelib_install':
-            source  => 'puppet:///modules/profile/hadoop/spark2/spark2_oozie_sharelib_install.sh',
-            owner   => 'oozie',
-            group   => 'root',
-            mode    => '0744',
-            require => Class['::profile::oozie::server'],
+            source => 'puppet:///modules/profile/hadoop/spark2/spark2_oozie_sharelib_install.sh',
+            owner  => 'oozie',
+            group  => 'root',
+            mode   => '0744',
         }
 
         kerberos::exec { 'spark2_oozie_sharelib_install':

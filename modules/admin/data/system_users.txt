@@ -2,7 +2,6 @@
 # sudo python3 -c "from requests import get; print ('\n'.join(set(i['title'] for i in get('http://localhost:8080/pdb/query/v4/resources/User').json() if i['parameters'].get('system'))))"
 analytics-deploy
 dumpsgen
-oozie
 dump
 deploy-debmonitor
 restbase

@@ -6,7 +6,6 @@ profile::admin::groups:
 profile::contacts::role_contacts: ['Data Engineering']
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
-profile::oozie::client::oozie_service: 'analytics-oozie'
 profile::hive::client::hive_service_name: 'analytics-hive'
 
 # Airflow settings and defaults.

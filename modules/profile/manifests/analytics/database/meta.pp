@@ -1,6 +1,6 @@
 # == Class role::analytics_cluster::database::meta
 #
-# Installs a MySQL/MariaDB server for use with Hive and Oozie
+# Installs a MySQL/MariaDB server for use with Hive, Superset, Druid, and DataHub
 # and other Analytics Cluster services.
 #
 class profile::analytics::database::meta(
