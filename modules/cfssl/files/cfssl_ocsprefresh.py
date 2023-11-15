@@ -11,6 +11,7 @@ import logging
 import shlex
 
 from argparse import ArgumentParser
+from base64 import b64decode
 from datetime import datetime
 from pathlib import Path
 from subprocess import CalledProcessError, check_call, check_output
@@ -81,7 +82,7 @@ def ocspdump(dbconfig, responses_file):
     logging.debug('running %s', command)
     responses = check_output(shlex.split(command))
     logging.debug('Updating response file: %s', responses_file)
-    responses_file.write_bytes(responses)
+    responses_file.write_bytes(b64decode(responses))
 
 
 def get_db_update_time(db_conn, db_name, table_name):
