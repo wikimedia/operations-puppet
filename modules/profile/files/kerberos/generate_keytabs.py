@@ -18,7 +18,6 @@ keytab_specs = {
     'HTTP': ('HTTP', 'HTTP', 'hdfs', 'hadoop', 'hadoop'),
     'mapred': ('mapred', 'mapred', 'mapred', 'hadoop', 'hadoop'),
     'yarn': ('yarn', 'yarn', 'yarn', 'hadoop', 'hadoop'),
-    'HTTP-oozie': ('HTTP', 'HTTP-oozie', 'oozie', 'oozie', 'oozie'),
 }
 
 actions = ['create_princ', 'create_keytab', 'merge_keytab', 'delete_keytab']

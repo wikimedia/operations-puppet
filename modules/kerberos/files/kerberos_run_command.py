@@ -19,7 +19,6 @@ logger.addHandler(handler)
 keytabs = {
     'hdfs': '/etc/security/keytabs/hadoop/hdfs.keytab',
     'yarn': '/etc/security/keytabs/hadoop/yarn.keytab',
-    'oozie': '/etc/security/keytabs/oozie/HTTP-oozie.keytab',
 }
 
 
