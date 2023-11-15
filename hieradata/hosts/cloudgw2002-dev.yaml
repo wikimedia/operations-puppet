@@ -23,4 +23,4 @@ profile::wmcs::cloudgw::wan_gw: 208.80.153.185
 profile::wmcs::cloudgw::vrrp_peer: 208.80.153.188
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmne
+acmechief_host: acmechief2002.codfw.wmnet
