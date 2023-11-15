@@ -631,7 +631,7 @@ node /^db2155\.codfw\./ {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1213 and db1144 below
-node /^db1(130|230|183|185|200|210)\.eqiad\./ {
+node /^db1(230|183|185|200|210)\.eqiad\./ {
     role(mariadb::core)
 }
 
