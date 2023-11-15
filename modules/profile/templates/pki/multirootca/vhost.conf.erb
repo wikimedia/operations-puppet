@@ -19,12 +19,12 @@
   </Location>
 
   # <%= @root_ca_cn %>
-  ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
-  ProxyPassReverse /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>/  http://localhost:<%= @root_ocsp_port %>/
+  ProxyPass /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>  http://localhost:<%= @root_ocsp_port %>/
+  ProxyPassReverse /ocsp/<%= @root_ca_cn.gsub(/\W/, '_') %>  http://localhost:<%= @root_ocsp_port %>/
 <%- @intermediates.each_pair do |intermediate, config| -%>
   # <%= intermediate %>
-  ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
-  ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>/  http://localhost:<%= config['ocsp_port'] %>/
+  ProxyPass /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
+  ProxyPassReverse /ocsp/<%= intermediate.gsub(/\W/, '_') %>  http://localhost:<%= config['ocsp_port'] %>/
 <%- end -%>
 
   LogLevel warn
