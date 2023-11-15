@@ -414,6 +414,7 @@ codfw:
     kubernetes2051.codfw.wmnet: [kubesvc]
     kubernetes2052.codfw.wmnet: [kubesvc]
     kubernetes2053.codfw.wmnet: [kubesvc]
+    kubernetes2054.codfw.wmnet: [kubesvc]
     kubernetes2055.codfw.wmnet: [kubesvc]
     kubernetes2056.codfw.wmnet: [kubesvc]
   kubernetes-staging:

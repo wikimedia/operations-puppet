@@ -226,6 +226,7 @@ kubernetes::clusters:
         - kubernetes2051.codfw.wmnet
         - kubernetes2052.codfw.wmnet
         - kubernetes2053.codfw.wmnet
+        - kubernetes2054.codfw.wmnet
         - kubernetes2055.codfw.wmnet
         - kubernetes2056.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
