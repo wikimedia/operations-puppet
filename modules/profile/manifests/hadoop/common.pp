@@ -426,8 +426,6 @@ class profile::hadoop::common (
         # https://www.cloudera.com/documentation/enterprise/5-16-x/topics/cdh_sg_hiveserver2_security.html#concept_vxf_pgx_nm
         'hadoop.proxyuser.hive.hosts' => '*',
         'hadoop.proxyuser.hive.groups' => '*',
-        'hadoop.proxyuser.oozie.hosts' => '*',
-        'hadoop.proxyuser.oozie.groups' => '*',
         'hadoop.proxyuser.presto.hosts' => '*',
         'hadoop.proxyuser.presto.groups' => '*',
         'hadoop.proxyuser.superset.hosts' => '*',
