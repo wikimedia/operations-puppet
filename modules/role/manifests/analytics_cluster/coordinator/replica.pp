@@ -12,8 +12,6 @@ class role::analytics_cluster::coordinator::replica {
 
     include profile::analytics::cluster::client
 
-    include profile::analytics::database::meta
-
     include profile::analytics::refinery_git_config
 
     # SQL-like queries to data stored in HDFS

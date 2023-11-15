@@ -18,7 +18,6 @@ class role::analytics_cluster::coordinator {
     include profile::java
 
     include profile::analytics::cluster::client
-    include profile::analytics::database::meta
 
     # SQL-like queries to data stored in HDFS
     include profile::hive::metastore
