@@ -97,13 +97,14 @@ class bigtop::oozie::server(
     Class['bigtop::oozie']  -> Class['bigtop::oozie::server']
 
     package { 'oozie':
-        ensure => 'installed',
+        ensure => 'purged',
     }
 
     # Explicitly adding the 'oozie' user
     # to the catalog, even if created by the oozie package,
     # to allow other resources to require it.
     user { 'oozie':
+        ensure     => 'absent',
         gid        => 'oozie',
         comment    => 'Oozie User',
         home       => '/var/lib/oozie',
@@ -116,13 +117,13 @@ class bigtop::oozie::server(
     $config_directory = "/etc/oozie/conf.${bigtop::hadoop::cluster_name}"
     # Create the $cluster_name based $config_directory.
     file { $config_directory:
-        ensure  => 'directory',
+        ensure  => absent,
         require => Package['oozie'],
     }
-    bigtop::alternative { 'oozie-conf':
-        link => '/etc/oozie/conf',
-        path => $config_directory,
-    }
+    # bigtop::alternative { 'oozie-conf':
+    #     link => '/etc/oozie/conf',
+    #     path => $config_directory,
+    # }
 
     # TODO: This doesn't work, Oozie Web UI references ext-2.2
     # files directly, which cause 404s and Javascript errors
@@ -150,12 +151,13 @@ class bigtop::oozie::server(
     # sudo -u hdfs hdfs dfs -mkdir /user/oozie
     # sudo -u hdfs hdfs dfs -chmod 0775 /user/oozie
     # sudo -u hdfs hdfs dfs -chown oozie:oozie /user/oozie
-    bigtop::hadoop::directory { '/user/oozie':
-        owner   => 'oozie',
-        group   => 'hadoop',
-        mode    => '0755',
-        require => Package['oozie'],
-    }
+    # bigtop::hadoop::directory { '/user/oozie':
+    #     ensure  => absent,
+    #     owner   => 'oozie',
+    #     group   => 'hadoop',
+    #     mode    => '0755',
+    #     require => Package['oozie'],
+    # }
 
     $namenode_address = $::bigtop::hadoop::ha_enabled ? {
         true    => $bigtop::hadoop::nameservice_id,
@@ -167,6 +169,7 @@ class bigtop::oozie::server(
     # su -s /bin/bash -c etc.. Without it we can safely run
     # the script as user 'oozie'.
     file { '/usr/bin/oozie-setup':
+        ensure  => absent,
         source  => 'puppet:///modules/bigtop/oozie/oozie-setup',
         owner   => 'root',
         group   => 'root',
@@ -174,32 +177,36 @@ class bigtop::oozie::server(
         require => Package['oozie'],
     }
 
-    kerberos::exec { 'oozie_sharelib_install':
-        command => "/usr/bin/oozie-setup sharelib create -fs ${hdfs_uri} -locallib ${oozie_sharelib_archive}",
-        unless  => '/usr/bin/hdfs dfs -ls /user/oozie | grep -q /user/oozie/share',
-        user    => 'oozie',
-        require => [Bigtop::Hadoop::Directory['/user/oozie'], File['/usr/bin/oozie-setup']]
-    }
+    # kerberos::exec { 'oozie_sharelib_install':
+    #     command => "/usr/bin/oozie-setup sharelib create -fs ${hdfs_uri} -locallib ${oozie_sharelib_archive}",
+    #     unless  => '/usr/bin/hdfs dfs -ls /user/oozie | grep -q /user/oozie/share',
+    #     user    => 'oozie',
+    #     require => [Bigtop::Hadoop::Directory['/user/oozie'], File['/usr/bin/oozie-setup']]
+    # }
 
     file { "${config_directory}/oozie-site.xml":
+        ensure  => absent,
         content => template($oozie_site_template),
         mode    => '0440',  # has database pw in it, shouldn't be world readable.
         owner   => 'root',
         group   => 'oozie',
     }
     file { "${config_directory}/oozie-env.sh":
+        ensure  => absent,
         content => template($oozie_env_template),
         mode    => '0444',
         owner   => 'root',
         group   => 'oozie',
     }
     file { "${config_directory}/oozie-log4j.properties":
+        ensure  => absent,
         content => template($oozie_log4j_template),
         mode    => '0444',
         owner   => 'root',
         group   => 'oozie',
     }
     file { "${config_directory}/adminusers.txt":
+        ensure  => absent,
         content => inline_template("# Admin Users, one user by line\n<%= Array(@admin_users).join('\n') %>\n"),
         mode    => '0440',  # has database pw in it, shouldn't be world readable.
         owner   => 'root',
@@ -208,33 +215,33 @@ class bigtop::oozie::server(
     # Oozie needs action-conf directory inside of $config_directory
     #  to exist, even if there are no files in it.
     file { "${config_directory}/action-conf":
-        ensure  => 'directory',
+        ensure  => absent,
     }
 
-    if ($jdbc_protocol == 'mysql') {
-        # Need libmysql-java in /var/lib/oozie.
-        bigtop::mysql_jdbc { 'oozie-mysql-jar':
-            link_path     => '/var/lib/oozie/mysql.jar',
-            use_mysql_jar => true,
-            require       => Package['oozie'],
-        }
+    # if ($jdbc_protocol == 'mysql') {
+    #     # Need libmysql-java in /var/lib/oozie.
+    #     bigtop::mysql_jdbc { 'oozie-mysql-jar':
+    #         link_path     => '/var/lib/oozie/mysql.jar',
+    #         use_mysql_jar => true,
+    #         require       => Package['oozie'],
+    #     }
 
         # Run ooziedb.sh to create the oozie database schema.
         # This is here instead of in the bigtop::oozie::database::mysql
         # class because ooziedb.sh is included in the 'oozie' server
         # package.
-        exec { 'oozie_mysql_create_schema':
-            command => '/usr/lib/oozie/bin/ooziedb.sh create -run',
-            require => File['/var/lib/oozie/mysql.jar'],
-            # TODO: Are we sure /usr/bin/mysql is installed?!
-            unless  => "/usr/bin/mysql -h${jdbc_host} -P'${jdbc_port}' -u'${jdbc_username}' -p'${jdbc_password}' ${jdbc_database} -BNe 'SHOW TABLES;' | /bin/grep -q WF_JOBS",
-            user    => 'oozie',
-            before  => Service['oozie'],
-        }
-    }
+    #     exec { 'oozie_mysql_create_schema':
+    #         command => '/usr/lib/oozie/bin/ooziedb.sh create -run',
+    #         require => File['/var/lib/oozie/mysql.jar'],
+    #         # TODO: Are we sure /usr/bin/mysql is installed?!
+    #         unless  => "/usr/bin/mysql -h${jdbc_host} -P'${jdbc_port}' -u'${jdbc_username}' -p'${jdbc_password}' ${jdbc_database} -BNe 'SHOW TABLES;' | /bin/grep -q WF_JOBS",
+    #         user    => 'oozie',
+    #         before  => Service['oozie'],
+    #     }
+    # }
 
     service { 'oozie':
-        ensure     => 'running',
+        ensure     => stopped,
         hasrestart => true,
         hasstatus  => true,
         require    => [
