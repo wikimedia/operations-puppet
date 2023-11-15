@@ -1,17 +1,32 @@
 # SPDX-License-Identifier: Apache-2.0
 # sets up preseeding dir and config on an install server
-class profile::installserver::preseed(
-    $preseed_per_ip = lookup('profile::installserver::preseed::preseed_per_ip', {'default_value' => {}}),
-    $preseed_per_hostname = lookup('profile::installserver::preseed::preseed_per_hostname', {'default_value' => {}}),
-){
-    class { 'install_server::preseed_server':
-        preseed_per_ip       => $preseed_per_ip,
-        preseed_per_hostname => $preseed_per_hostname,
-    }
+class profile::installserver::preseed (
+  Hash $preseed_per_hostname = lookup('profile::installserver::preseed::preseed_per_hostname', { 'default_value' => {} }),
+) {
+  $preseed_subnets = Hash(
+    $network::constants::all_network_subnets['production'].map |$datacenter_name, $datacenter_config| {
+      $datacenter_config.map |$audience, $audience_config| {
+        $audience_config.filter |$subnet_name, $_| {
+          $subnet_name !~ /-(lvs|kube)/
+        }.map |$subnet_name, $subnet_config| {
+          [$subnet_name, {
+              'subnet_gateway' => wmflib::cidr_first_address($subnet_config['ipv4']),
+              'subnet_mask' => wmflib::cidr2mask($subnet_config['ipv4']),
+              'datacenter_name' => $datacenter_name,
+              'public_subnet' => $subnet_name =~ /^public/,
+          }]
+        }
+      }
+    }.flatten
+  )
 
-    # Backup
-    $sets = [ 'srv-autoinstall',
-            ]
-    backup::set { $sets : }
+  class { 'install_server::preseed_server':
+    preseed_subnets      => $preseed_subnets,
+    preseed_per_hostname => $preseed_per_hostname,
+  }
 
+  # Backup
+  $sets = ['srv-autoinstall',
+  ]
+  backup::set { $sets : }
 }

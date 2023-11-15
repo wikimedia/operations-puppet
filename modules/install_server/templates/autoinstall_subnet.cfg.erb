@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+# subnet specific configuration settings
+#
+# get_domain should be set, get_hostname is overwritten by DHCP
+<% if @subnet_config['public_subnet'] -%>
+d-i	netcfg/get_domain	string	wikimedia.org
+<% else -%>
+d-i	netcfg/get_domain	string	<%= @subnet_config['datacenter_name'] %>.wmnet
+<% end -%>
+
+# ip address is taken from DHCP, rest is set here
+d-i	netcfg/get_netmask	string	<%= @subnet_config['subnet_mask'] %>
+d-i	netcfg/get_gateway	string	<%= @subnet_config['subnet_gateway'] %>
+d-i	netcfg/confirm_static	boolean	true
+
+<% if ! @subnet_config['public_subnet'] -%>
+d-i	mirror/http/proxy	string	http://webproxy.<%= @subnet_config['datacenter_name'] %>.wmnet:8080
+<% end -%>

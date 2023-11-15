@@ -16,8 +16,8 @@ d-i netcfg/get_nameservers string 10.3.0.1
 
 d-i preseed/include_command string  \
     case $(ip route show | grep default | cut -d' ' -f 3) in \
-    <% @preseed_per_ip.each_pair do |ip, preseed_file| -%>
-    <%= ip %>) echo <%= preseed_file %> ;; \
+    <% @preseed_per_gateway.each_pair do |gateway_ip, preseed_file| -%>
+    <%= gateway_ip %>) echo <%= preseed_file %> ;; \
     <% end -%>
     esac; \
     \
