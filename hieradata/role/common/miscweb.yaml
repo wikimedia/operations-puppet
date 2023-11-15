@@ -16,3 +16,6 @@ profile::miscweb::rsync::dst_hosts:
 
 profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
 profile::contacts::role_contacts: ['ServiceOps-Collab']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
