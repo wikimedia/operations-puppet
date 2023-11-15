@@ -13,3 +13,5 @@ profile::tlsproxy::envoy::services:
     port: 22280
 profile::tlsproxy::envoy::websockets: true
 profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
