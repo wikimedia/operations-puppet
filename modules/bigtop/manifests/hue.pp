@@ -5,9 +5,8 @@
 # and ensures that hue server is running.
 # This requires that bigtop::hadoop is included.
 #
-# If bigtop::hive and/or bigtop::oozie are included
-# on this node, hue will be configured to interface
-# with hive and oozie.
+# If bigtop::hive is included on this node, hue
+# will be configured to interface with hive.
 #
 # == Parameters
 # $http_host               - IP for webservice to bind.
@@ -17,10 +16,6 @@
 #                            Default: hbase, impala, search, spark, rdbms, zookeeper
 #
 # $hive_server_host        - FQDN of host running hive-server2
-#
-# $oozie_url               - URL for Oozie API.  If bigtop::oozie is included,
-#                            this will be inferred.  Else this will be disabled.
-# $oozie_security_enabled  - Default: false.
 #
 # $proxy_whitelist         - Comma-separated regular expressions,
 #                            which match 'host:port' of requested proxy target.
@@ -139,8 +134,6 @@ class bigtop::hue(
     $kerberos_principal         = undef,
     $kerberos_kinit_path        = undef,
 
-    $oozie_security_enabled     = false,
-
     $use_hue4_settings          = false,
     $auth_backend               = 'ldap',
 
@@ -148,19 +141,6 @@ class bigtop::hue(
 
 ) {
     Class['bigtop::hadoop'] -> Class['bigtop::hue']
-
-    # Set Hue Oozie defaults to those already
-    # set in the bigtop::oozie class.
-    if (defined(Class['bigtop::oozie'])) {
-        $oozie_url              = $bigtop::oozie::url
-        $oozie_proxy_regex      = "${bigtop::oozie::oozie_host}:(11000|11443)"
-    }
-    # Otherwise disable Oozie interface for Hue.
-    else {
-        $oozie_url              = undef
-        $oozie_proxy_regex      = ''
-
-    }
 
     # The Hue 4.x package is not provided by CDH, but it is packaged
     # internally by us. Some options are different, including the config
@@ -212,8 +192,6 @@ class bigtop::hue(
         $proxy_whitelist_final = [
             # namenode + resourcemanager + history server host and ports
             inline_template("(<%= @namenode_hosts.join('|') %>):(<%= @yarn_rm_port %>|<%= @hdfs_nn_port %>|<%= @mapred_history_port %>)"),
-            # Oozie Web UI.
-            $oozie_proxy_regex,
             # No way to determine DataNode or NodeManager hostname defaults.
             # If you want to restrict this, make sure you override $proxy_whitelist parameter.
             ".+:(${hdfs_dn_port}| ${yarn_nm_port})",

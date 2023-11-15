@@ -22,7 +22,6 @@ class profile::hue (
     Boolean $use_yarn_ssl_config                = lookup('profile::hue::use_yarn_ssl_config', { 'default_value' => false }),
     Boolean $use_hdfs_ssl_config                = lookup('profile::hue::use_hdfs_ssl_config', { 'default_value' => false }),
     Boolean $use_mapred_ssl_config              = lookup('profile::hue::use_mapred_ssl_config', { 'default_value' => false }),
-    Boolean $oozie_security_enabled             = lookup('profile::hue::oozie_security_enabled', { 'default_value' => false }),
     String $server_name                         = lookup('profile::hue::servername'),
     Boolean $enable_cas                         = lookup('profile::hue::enable_cas'),
     Boolean $use_hue4_settings                  = lookup('profile::hue::use_hue4_settings', { 'default_value' => false }),
@@ -36,7 +35,6 @@ class profile::hue (
     require ::profile::hadoop::common
     require ::profile::hadoop::httpd
     require ::profile::hive::client
-    require ::profile::oozie::client
 
     require ::profile::analytics::httpd::utils
 
@@ -77,7 +75,6 @@ class profile::hue (
         ssl_private_key            => false,
         ssl_certificate            => false,
         secure_proxy_ssl_header    => true,
-        oozie_security_enabled     => $oozie_security_enabled,
         kerberos_keytab            => $kerberos_keytab,
         kerberos_principal         => $kerberos_principal,
         kerberos_kinit_path        => $kerberos_kinit_path,

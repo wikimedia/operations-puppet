@@ -18,7 +18,6 @@ profile::hue::monitoring_enabled: true
 profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
 profile::hue::kerberos_principal: "hue/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
 profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
-profile::hue::oozie_security_enabled: true
 profile::hue::enable_cas: true
 profile::hue::servername: 'hue.wikimedia.org'
 
@@ -26,9 +25,6 @@ profile::hue::database_name: 'hue'
 profile::hue::use_hue4_settings: true
 profile::hue::auth_backend: 'remote_user'
 profile::hue::hive_thrift_version: 5
-
-
-profile::oozie::client::oozie_service: 'analytics-oozie'
 
 # TLS Terminator settings
 profile::envoy::ensure: present

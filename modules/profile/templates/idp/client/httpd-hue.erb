@@ -54,12 +54,6 @@
         Alias /var/www/health_check
     </Location>
 
-    # ProxyPreserveHost is needed to avoid CSRF errors like
-    # "Referer checking failed -
-    #   https://<%= @virtual_host %>/accounts/[..cut..]/list_oozie_coordinators/
-    #   does not match https://localhost:<%= @vhost_settings['hue_port'] %>/"
-    # ProxyPassReverse is also special since it matches https responses,
-    # probably due to the secure_proxy_ssl_header=true hue option.
     ProxyPreserveHost On
     ProxyPass /static/ !
     ProxyPass /health_check !

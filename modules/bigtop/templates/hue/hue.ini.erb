@@ -562,49 +562,7 @@
       history_server_api_url=<%= @mapred_history_http_protocol %>://<%= @namenode_host %>:<%= @mapred_history_port -%>
 
 
-<%
-# Enable Hue <-> Oozie API interface if @oozie_url is set.
-if @oozie_url
--%>
-###########################################################################
-# Settings to configure liboozie
-###########################################################################
 
-[liboozie]
-  # The URL where the Oozie service runs on. This is required in order for
-  # users to submit jobs.
-  oozie_url=<%= @oozie_url %>
-
-  <%= @oozie_security_enabled ? "security_enabled=true" : "## security_enabled=false" %>
-
-  # Location on HDFS where the workflows/coordinator are deployed when submitted.
-  ## remote_deployement_dir=/user/hue/oozie/deployments
-
-
-###########################################################################
-# Settings to configure the Oozie app
-###########################################################################
-
-[oozie]
-  # Location on local FS where the examples are stored.
-  ## local_data_dir=..../examples
-
-  # Location on local FS where the data for the examples is stored.
-  ## sample_data_dir=...thirdparty/sample_data
-
-  # Location on HDFS where the oozie examples and workflows are stored.
-  ## remote_data_dir=/user/hue/oozie/workspaces
-
-  # Maximum of Oozie workflows or coodinators to retrieve in one API call.
-  ## oozie_jobs_count=100
-
-  # Use Cron format for defining the frequency of a Coordinator instead of the old frequency number/unit.
-  ## enable_cron_scheduling=true
-
-  # Indicate that workflows, coordinators, and bundles should be shared with all users.
-  # If set to false, they will be visible only to the owner and administrators.
-  share_jobs=true
-<% end # if @oozie_url -%>
 
 
 ###########################################################################
