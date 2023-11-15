@@ -1752,7 +1752,7 @@ node /^ldap-replica200[7-8]\.wikimedia\./ {
 }
 
 node /^lists2001\.codfw\./ {
-    role(insetup::data_persistence)
+    role(insetup::unowned)
 }
 
 # Logging data nodes (codfw)
