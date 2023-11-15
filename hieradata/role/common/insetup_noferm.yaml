@@ -2,3 +2,6 @@ profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Traffic']
 
 profile::firewall::provider: none
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
