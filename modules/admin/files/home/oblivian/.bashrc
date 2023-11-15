@@ -60,12 +60,12 @@ if command -v docker > /dev/null; then
     debian-shell() {
         DISTRO=${1:-buster}
         shift
-        docker run --rm -ti "$@" docker-registry.discovery.wmnet/$DISTRO:latest /bin/bash
+        docker run --rm -ti "$@" "docker-registry.discovery.wmnet/${DISTRO}:latest" /bin/bash
     }
 
     docker-root-shell() {
         IMG=${1}
-        if [ -n "$IMG" ]; then
+        if [[ -n "$IMG" ]]; then
             docker run --rm -ti --user root --entrypoint /bin/bash "docker-registry.discovery.wmnet/$IMG"
         else
             echo "usage: docker-root-shell IMAGE:TAG"
@@ -78,9 +78,42 @@ fi
 if command -v kafkacat > /dev/null; then
     kafkaread() {
         TOPIC=$1
-        if [ ! -n "$TOPIC" ]; then
+        if [[ -z "$TOPIC" ]]; then
             echo "usage: kafkaread <topic>";
+            return 1
         fi
         kafkacat -C -b "$(hostname -f)":9093 -t "$TOPIC" -X security.protocol=SSL
     }
+fi
+
+if command -v helmfile > /dev/null; then
+    deploy-service() {
+        DEPLOY_DIR=/srv/deployment-charts/helmfile.d/services
+        test -d $DEPLOY_DIR || return 2
+        SERVICE=$1
+        if [[ -z "$SERVICE" ]]; then
+            echo "usage: deploy-service <service> [env1 env2 ...]";
+            return 1
+        fi
+        shift
+        pushd "$DEPLOY_DIR/${SERVICE}" || return 1
+        ENVS=( "$@" )
+        if [[ -z "${ENVS[*]}" ]]; then
+	        ENVS=( "eqiad" "codfw" "staging" )
+        fi
+
+        for env in "${ENVS[@]}"; do
+            # check if the staing env is present
+            if helmfile -e "$env" list > /dev/null 2>&1; then
+                echo "### $env"
+                if [[ -n "$ROLL_RESTART" ]]; then
+                    helmfile -e "${env}" --state-values-set roll_restart=1 sync
+                else
+                    helmfile -e "$env" -i apply
+                fi
+            fi
+        done
+        popd || return 1
+    }
+
 fi
