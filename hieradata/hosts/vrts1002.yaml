@@ -24,6 +24,3 @@ profile::tlsproxy::envoy::tls_port: 1443
 profile::contacts::role_contacts: ['ServiceOps-Collab']
 
 profile::vrts::public_dns: "ticket-test.wikimedia.org"
-
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
