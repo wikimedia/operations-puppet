@@ -11,11 +11,12 @@ class bigtop::oozie(
     $url = "http://${oozie_host}:11000/oozie"
 
     package { 'oozie-client':
-        ensure => 'installed',
+        ensure => absent,
     }
 
     # create a file in /etc/profile.d to export OOZIE_URL.
     file { '/etc/profile.d/oozie.sh':
+        ensure  => absent,
         content => "# NOTE:  This file is managed by Puppet.
 
 export OOZIE_URL='${url}'
