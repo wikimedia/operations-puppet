@@ -1,4 +1,0 @@
-# db1127
-profile::monitoring::notifications_enabled: false
-mariadb::shard: 's7'
-mariadb::package: 'wmf-mariadb106'
