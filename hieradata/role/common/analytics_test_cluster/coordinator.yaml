@@ -150,9 +150,6 @@ profile::oozie::server::use_admins_list: true
 profile::oozie::server::admin_users: []
 profile::oozie::server::admin_groups: ['analytics-admins', 'ops']
 profile::oozie::server::jvm_opts: '-Xms2g -Xmx2g'
-# Build and install oozie sharelib for our custom spark2 package.
-profile::hadoop::spark2::install_oozie_sharelib: true
-profile::oozie::server::oozie_sharelib_archive: '/usr/lib/oozie/oozie-sharelib.tar.gz'
 
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: true

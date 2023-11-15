@@ -28,9 +28,6 @@ profile::hive::server::ferm_srange: '$ANALYTICS_NETWORKS'
 profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '$ANALYTICS_NETWORKS'
 
-# Build and install oozie sharelib for our custom spark2 package.
-profile::hadoop::spark2::install_oozie_sharelib: false
-
 # Upload the spark2-assembly.zip file to HDFS
 profile::hadoop::spark2::install_assembly: false
 
