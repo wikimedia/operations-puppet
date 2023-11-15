@@ -180,7 +180,6 @@ class profile::icinga(
         protected_uri   => '/icinga',
         cookie_scope    => '/',
         required_groups => [
-            "cn=ops,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
         ]

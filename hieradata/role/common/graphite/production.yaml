@@ -9,7 +9,6 @@ profile::idp::client::httpd::sites:
     vhost_content: 'profile/idp/client/httpd-graphite.erb'
     document_root: '/usr/share/graphite-web'
     required_groups:
-    - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
@@ -18,7 +17,6 @@ profile::idp::client::httpd::sites:
     vhost_content: 'profile/idp/client/httpd-graphite.erb'
     document_root: '/usr/share/graphite-web'
     required_groups:
-    - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
     - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true

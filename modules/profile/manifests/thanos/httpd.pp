@@ -31,7 +31,6 @@ class profile::thanos::httpd (
             proxied_as_https => true,
             document_root    => '/var/www/html',
             required_groups  => [
-                'cn=ops,ou=groups,dc=wikimedia,dc=org',
                 'cn=wmf,ou=groups,dc=wikimedia,dc=org',
                 'cn=nda,ou=groups,dc=wikimedia,dc=org',
             ],

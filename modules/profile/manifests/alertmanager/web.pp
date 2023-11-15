@@ -28,7 +28,6 @@ class profile::alertmanager::web (
             vhost_content   => 'profile/idp/client/httpd-karma.erb',
             vhost_settings  => { 'readonly' => $readonly },
             required_groups => [
-                "cn=ops,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
                 "cn=wmf,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
                 "cn=nda,${ldap_config['groups_cn']},${ldap_config['base-dn']}",
             ],
