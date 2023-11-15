@@ -24,6 +24,12 @@ class profile::thanos::httpd (
     }
 
     if ($oidc_sso) {
+        # auth_cas needs to be disabled for $oidc_sso to go
+        # from false to true (i.e. opting in to OIDC SSO)
+        httpd::mod_conf { 'auth_cas':
+            ensure => absent,
+        }
+
         include profile::thanos::oidc
     } else {
         profile::idp::client::httpd::site {'thanos.wikimedia.org':
