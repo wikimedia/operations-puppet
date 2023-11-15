@@ -1,16 +1,12 @@
 # == Class role::analytics_cluster::coordinator
 #
-# This role includes Oozie and Hive servers, as well as a MySQL instance
-# that stores meta data associated with those and other
-# Analytics Cluster services.
+# This role includes Hive servers and the Presto coordinator.
 #
-# This roles sets up a node responsible to coordinate and orchestrate
-# a Hadoop cluster equipped with tools like Camus, Hive, Oozie, Presto, etc..
 #
 class role::analytics_cluster::coordinator {
 
     system::role { 'analytics_cluster::coordinator':
-        description => 'Analytics Cluster host running various Hadoop services (Hive, Presto, Oozie, ..)'
+        description => 'Analytics Cluster host running various Hadoop services (Hive and Presto)',
     }
 
     include profile::analytics::cluster::gitconfig
@@ -28,13 +24,6 @@ class role::analytics_cluster::coordinator {
     # The actual workers are configured in the presto::server role.
     # This node is marked as a coordinator in hiera.
     include profile::presto::server
-
-    # The Hadoop job scheduler
-    # We want to exclude oozie from bullseye installs
-    if debian::codename::lt('bullseye') {
-        # oozie is no longer in use and deprecated on bullseye.
-        require profile::oozie::server
-    }
 
     include profile::analytics::refinery
     include profile::analytics::refinery_git_config

@@ -38,11 +38,6 @@ class role::analytics_test_cluster::coordinator {
     # This node is marked as a coordinator in hiera.
     include profile::presto::server
 
-    if debian::codename::lt('bullseye') {
-        # oozie is no longer in use and deprecated on bullseye.
-        require profile::oozie::server
-    }
-
     # Include a weekly cron job to run hdfs balancer.
     include profile::hadoop::balancer
 

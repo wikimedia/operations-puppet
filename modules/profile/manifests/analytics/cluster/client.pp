@@ -16,12 +16,10 @@ class profile::analytics::cluster::client {
     # interacting with HDFS.
     include ::profile::analytics::cluster::users
 
-    # We want to exclude spark2 and oozie from bullseye installs
+    # We want to exclude spark2 from bullseye installs
     if debian::codename::lt('bullseye') {
         # Spark 2 is manually packaged by us, it is not part of CDH.
         require ::profile::hadoop::spark2
-        # oozie is no longer in use and deprecated on bullseye.
-        require ::profile::oozie::client
     }
 
     # Install Spark 3 configuration to be used as a trial with
