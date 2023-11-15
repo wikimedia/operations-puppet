@@ -51,9 +51,11 @@ class base::remote_syslog (
 ) {
     $owner = 'root'
     $group = 'root'
+    # force ossl on buster #T351181
+    $_tls_netstream_driver = debian::codename::le('buster').bool2str('ossl', $tls_netstream_driver)
 
     if $enable {
-        if $tls_netstream_driver == 'gtls' {
+        if $_tls_netstream_driver == 'gtls' {
             ensure_packages('rsyslog-gnutls')
         } else {
             # for >= bullseye, available in debian main
