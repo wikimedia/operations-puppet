@@ -27,3 +27,6 @@ profile::tlsproxy::envoy::services:
      cert_name: 'prometheus.wikimedia.org'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::sni_support: 'strict'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
