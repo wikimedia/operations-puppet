@@ -60,7 +60,7 @@ desc 'Run all actual tests in parallel for changes in HEAD'
 task :test => [:parallel, :wmf_styleguide_delta]
 
 desc 'Run WMF specific lint test'
-task :static => t.tasks - [:spec, :tox, :per_module_tox, :dhcp]
+task :static => t.tasks - [:spec, :tox, :per_module_tox]
 desc 'Run WMF specific unit test'
 task :unit => [:spec, :tox, :per_module_tox]
 

@@ -34,7 +34,6 @@ class TaskGen < ::Rake::TaskLib
       :python_extensions,
       :spec,
       :tox,
-      :dhcp,
       :per_module_tox,
     ]
     @git = GitOps.new(path)
@@ -152,48 +151,6 @@ class TaskGen < ::Rake::TaskLib
       config.pattern = changed
     end
     [:puppet_lint]
-  end
-
-  def setup_dhcp
-    changed = filter_files_by("modules/install_server/templates/dhcp/*")
-    return [] if changed.empty?
-    unless File.exists?('/usr/sbin/dhcpd')
-      puts 'dhcp: skipping tests as dhcpd is not available'
-      return []
-    end
-    desc 'Check dhcp configuration is correct'
-    task :dhcp do
-      failures = 0
-      Dir.mktmpdir do |dir|
-        dhcp_config_dir = File.join(dir, "dhcp")
-        Dir.mkdir(dhcp_config_dir)
-        dhcp_config_file = File.join(dhcp_config_dir, "dhcpd.conf")
-        FileUtils.cp("modules/install_server/templates/dhcp/dhcpd.conf.erb", dhcp_config_file)
-        dhcp_config = File.read(dhcp_config_file)
-        dhcp_config.gsub!(%r{/etc/dhcp}, dhcp_config_dir)
-        dhcp_config.gsub!(/<%= @tftp_servers\[".*"\] %>/, "10.0.0.1")
-        File.open(dhcp_config_file, "w") {|file| file.puts dhcp_config }
-        # Any includes that may be generated or provided by puppet outside of the files/dhcpd tree will be essentially
-        # ignored by this test.
-        dhcp_config.scan(/include\s+\"(.+)\";/).each do |fname|
-          next if File.file?(fname[0])
-          print "DHCP include file '#{fname[0]}' does not exist. Touching for CI.\n"
-          FileUtils.makedirs(File.dirname(fname[0]))
-          FileUtils.touch(fname[0])
-        end
-        begin
-          puts "dhcp configuration: BEGIN TEST"
-          puts "=============================="
-          failures = 1 unless system('/usr/sbin/dhcpd', '-t', '-cf', dhcp_config_file)
-        rescue
-          failures = 1
-        end
-      end
-      abort("dhcp configuration: NOT OK".red) if failures == 1
-      puts "dhcp configuration: END TEST"
-      puts "=============================="
-    end
-    [:dhcp]
   end
 
   def setup_json_syntax
