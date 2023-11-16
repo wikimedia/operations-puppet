@@ -53,3 +53,6 @@ profile::benthos::instances:
       site: "%{::site}"
       topics:
       - "mediawiki.httpd.accesslog"
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
