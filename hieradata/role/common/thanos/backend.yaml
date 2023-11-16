@@ -195,3 +195,6 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       method: "$3"
       status: "$4"
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
