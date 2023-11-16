@@ -11,12 +11,8 @@
 #
 class role::simplelap{
 
-    # TODO: another case for php_version facte
-    $php_module = debian::codename() ? {
-        'buster'      => 'php7.3',
-        'bullseye'    => 'php7.4',
-        default => fail("unsupported on ${debian::codename()}")
-    }
+    $php_version = wmflib::debian_php_version()
+    $php_module = "php${php_version}"
 
     ensure_packages(["libapache2-mod-${php_module}", 'php-cli'])
 
