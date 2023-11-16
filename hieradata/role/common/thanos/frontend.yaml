@@ -226,3 +226,6 @@ profile::prometheus::statsd_exporter::mappings:
     name: "swift_dispersion_policy_container_$3"
     labels:
       storage_policy: "$2"
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
