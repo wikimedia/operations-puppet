@@ -78,18 +78,22 @@ define admin::user (
     # This is all absented by the above /home/${user} cleanup
     # Puppet chokes if we try to absent subfiles to /home/${user}
     if $ensure == 'present' and $_home_dir != '/nonexistent' {
+        # HACK: Not all home directores exist, so use find_file to check if they
+        # exist. This was previosly accomplished via an array of sources, but
+        # that method spams the puppetserver log file with not found messages.
+        $home_dir_src = if find_file("admin/home/${name}") != undef {
+            "puppet:///modules/admin/home/${name}"
+        } else {
+            'puppet:///modules/admin/home/skel'
+        }
         file { $_home_dir:
-            ensure       => stdlib::ensure($ensure, 'directory'),
-            source       => [
-                "puppet:///modules/admin/home/${name}/",
-                'puppet:///modules/admin/home/skel/',
-            ],
-            sourceselect => 'first',
-            recurse      => 'remote',
-            mode         => '0644',
-            owner        => $name,
-            group        => $gid,
-            force        => true,
+            ensure  => stdlib::ensure($ensure, 'directory'),
+            source  => $home_dir_src,
+            recurse => 'remote',
+            mode    => '0644',
+            owner   => $name,
+            group   => $gid,
+            force   => true,
         }
     }
 
