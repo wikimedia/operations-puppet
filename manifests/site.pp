@@ -512,6 +512,10 @@ node /^cp60(09|1[0-6])\.drmrs\./ {
     role(cache::text)
 }
 
+node /^crm1001\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^cumin1001\.eqiad\./ {
     role(cluster::management)
 }
