@@ -60,7 +60,7 @@ spark.driver.blockManager.port                      <%= @driver_blockmanager_por
 <% if @sql_files_max_partition_bytes -%>
 spark.sql.files.maxPartitionBytes                   <%= @sql_files_max_partition_bytes %>
 <% end -%>
-
+spark.sql.warehouse.dir                             hdfs:///user/hive/warehouse
 spark.yarn.archive                                  hdfs:///user/spark/share/lib/spark-<%= @spark_version %>-assembly.jar
 
 # JVMs should use system proxy settings.
