@@ -5,7 +5,6 @@ class profile::cassandra(
     Hash $all_instances                       = lookup('profile::cassandra::instances'),
     String $rack                              = lookup('profile::cassandra::rack'),
     Hash $cassandra_settings                  = lookup('profile::cassandra::settings'),
-    Stdlib::Host $graphite_host               = lookup('graphite_host'),
     Array[Stdlib::IP::Address] $client_ips    = lookup('profile::cassandra::client_ips', {'default_value' => []}),
     Boolean $allow_analytics                  = lookup('profile::cassandra::allow_analytics'),
     Boolean $monitor_enabled                  = lookup('profile::cassandra::monitor_enabled', {'default_value' => true}),

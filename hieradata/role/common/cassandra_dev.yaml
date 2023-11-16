@@ -9,8 +9,6 @@ contactgroups: 'admins'
 #
 # Cassandra
 #
-# FIXME: no graphite_host since graphite1003 was decom'ed in T209357
-graphite_host: 'none'
 
 # Allow CQL client connections from the Analytics network
 profile::cassandra::allow_analytics: true

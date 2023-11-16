@@ -2,8 +2,6 @@ cluster: sessionstore
 
 #
 # Cassandra
-# FIXME: no graphite_host since graphite1003 decom'ed in T209357
-graphite_host: 'none'
 profile::cassandra::allow_analytics: false
 profile::cassandra::client_ips:
   # Add the kubernetes pod IPs here
