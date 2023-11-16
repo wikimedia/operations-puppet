@@ -108,7 +108,7 @@ class puppetserver (
     # permissions prior to starting Puppet
     ensure_resource(
         'file',
-        ['/var/lib/puppet', '/var/lib/puppet/server'],
+        '/var/lib/puppet',
         {
             'ensure' => 'directory',
             'owner'  => 'puppet',
@@ -116,6 +116,19 @@ class puppetserver (
             'mode'   => '0751',
         },
     )
+
+    if $separate_ssldir {
+        ensure_resource(
+            'file',
+            '/var/lib/puppet/server',
+            {
+                'ensure' => 'directory',
+                'owner'  => 'puppet',
+                'group'  => 'puppet',
+                'mode'   => '0751',
+            },
+        )
+    }
 
     # The puppetserver process itself enforces mode 0771 on the ssl dir, so this
     # should not be changed or it will create a perma-diff
