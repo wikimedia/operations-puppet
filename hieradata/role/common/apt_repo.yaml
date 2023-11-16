@@ -176,6 +176,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'cp[1-9][0-9][0-9][0-9]':
     - partman/custom/cacheproxy.cfg
+  'crm*':
+    - partman/flat.cfg
+    - virtual.cfg
   'datahubsearch*':
     - partman/flat.cfg
     - virtual.cfg
