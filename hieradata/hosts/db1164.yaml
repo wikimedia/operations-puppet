@@ -1,5 +1,4 @@
 # db1164
 mariadb::shard: 'm1'
 mariadb::binlog_format: 'ROW'
-profile::monitoring::is_critical: false
-profile::monitoring::notifications_enabled: false
+profile::monitoring::is_critical: true
