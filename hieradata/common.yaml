@@ -1272,7 +1272,7 @@ authdns_addrs:
     skip_loopback: true # bird::anycast takes care of this one
 
 # acme-chief active host
-acmechief_host: 'acmechief2001.codfw.wmnet'
+acmechief_host: 'acmechief1001.eqiad.wmnet'
 
 mail_smarthost:
 - 'mx1001.wikimedia.org'
