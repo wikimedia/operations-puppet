@@ -944,7 +944,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, kcv-wikimf]
+    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, kcv-wikimf, hghani, osefu]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
