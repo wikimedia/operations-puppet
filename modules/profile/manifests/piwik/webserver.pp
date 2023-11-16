@@ -10,8 +10,9 @@
 class profile::piwik::webserver {
     include profile::prometheus::apache_exporter
 
-    $php_module = 'php7.3'
-    $php_ini = '/etc/php/7.3/apache2/php.ini'
+    $php_version = wmflib::debian_php_version()
+    $php_module = "php${php_version}"
+    $php_ini = "/etc/php/${php_version}/apache2/php.ini"
 
     package { "${php_module}-mbstring":
         ensure => 'present',
