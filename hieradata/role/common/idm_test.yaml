@@ -20,7 +20,7 @@ profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::services:
-  - server_names: ['*']
+  - server_names: ['idm-test.wikimedia.org']
     port: 80
 profile::tlsproxy::envoy::ssl_provider: 'acme'
 profile::tlsproxy::envoy::global_cert_name: idm-test
