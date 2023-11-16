@@ -212,7 +212,7 @@ filter {
 
   $w3creportingapi_versions = {
     # version => revision
-    '1.0.0' => '2'
+    '1.0.0' => '3'
   }
   $w3creportingapi_versions.each |String $w3creportingapi_version, String $w3creportingapi_revision| {
     logstash::output::opensearch { "w3creportingapi-${w3creportingapi_version}-${w3creportingapi_revision}":
