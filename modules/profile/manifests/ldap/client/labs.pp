@@ -15,14 +15,14 @@ class profile::ldap::client::labs(
         priority => 0,
     }
 
-    # Labs instance default to allowing root and project members
-    # only (members of the project-foo group).
+    # Cloud VPS instances default to allowing root and project
+    # members only (members of the project-foo group).
     #
-    # In addition, there are variables that can be set on wikitech
-    # to alter that:
+    # In addition, there are Hiera variables that can be set
+    # via Horizon/ENC to alter that:
     #   $restricted_from
     #       limits the specified group or user from loggin in
-    #       (used to prevent opsen from logging onto unsecured
+    #       (used to prevent SREs from logging onto unsecured
     #       bastions, for instance)
     #   $restricted_to
     #       replaces the default group allowed to login
