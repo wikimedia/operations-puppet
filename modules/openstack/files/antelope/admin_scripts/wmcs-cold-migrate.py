@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
 """
@@ -102,6 +102,7 @@ class NovaInstance(object):
             "mysql",
             "--user=nova",
             "--password=%s" % mysql_password,
+            "--port=3306",
             "--host",
             "%s" % nova_db_server,
             "%s" % nova_db,
