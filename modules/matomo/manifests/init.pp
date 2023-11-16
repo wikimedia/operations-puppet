@@ -35,12 +35,21 @@ class matomo (
     $proxy_client_headers = ['HTTP_X_FORWARDED_FOR']
 
     file { '/etc/matomo/config.ini.php':
-        ensure  => present,
         content => template('matomo/config.ini.php.erb'),
         owner   => $piwik_username,
         group   => $piwik_username,
         mode    => '0750',
         require => Package['matomo'],
+    }
+
+    # The TagManager plugin needs to have write access to a certain directory in order to be able to
+    # write the container javascript snippets that it requires. We do not wish to enable write access
+    # to the default location of /usr/share/matmo/js so we need to override a pair of functions to
+    # specify a custom directory that is within an existing writeable location. This is gone in a custom
+    # config.php file. See #T349910 and https://github.com/matomo-org/tag-manager/issues/154 for more.
+    file { '/etc/matomo':
+        source => 'puppet:///modules/matomo/config.php',
+        mode   => '0640',
     }
 
     file { '/var/log/matomo':
