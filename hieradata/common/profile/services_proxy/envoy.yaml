@@ -337,6 +337,18 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "60s"
     xfp: https
+  - name: mw-api-async-transition
+    port: 6500  # NOTE: re-use "mwapi-async" port to make the transition easier
+    service: "api-https"
+    upstream: "api-rw.discovery.wmnet"
+    keepalive: "4s"
+    timeout: "120s"
+    xfp: https
+    split:
+      percentage: 10
+      service: "mw-api-int"
+      upstream: "mw-api-int.discovery.wmnet"
+      keepalive: "4s"
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:

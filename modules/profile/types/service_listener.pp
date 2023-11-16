@@ -10,4 +10,11 @@ type Profile::Service_listener =  Struct[{
     'keepalive'    => Optional[String],
     'uses_ingress' => Optional[Boolean],
     'sets_sni'     => Optional[Boolean],
+    'split'        => Optional[Struct[{
+        'service' => String,
+        'upstream' => Stdlib::Fqdn,
+        'keepalive'  => Optional[String],
+        'sets_sni'   => Optional[Boolean],
+        'percentage' => Integer,
+    }]],
 }]

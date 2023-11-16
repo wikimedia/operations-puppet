@@ -51,22 +51,55 @@ class profile::kubernetes::deployment_server::global_config (
                 default                           => $x
             }
         }
+        $split_data = $listener['split']
+        if ($split_data == undef) {
+            $split = undef
+        } else {
+            $split_svc = $services_proxy[$split_data['service']]
+            # To properly enable the networkpolicies, we also need to collect the service IPs
+            $split_ip_addresses = $split_svc['ip'].map |$k, $v| { $v.values() }.flatten().unique().sort().map |$x| {
+                $retval = $x ? {
+                    Stdlib::IP::Address::V4::Nosubnet => "${x}/32",
+                    Stdlib::IP::Address::V6::Nosubnet => "${x}/128",
+                    default                           => $x
+                }
+            }
+            $split = {
+                'percentage' => $split_data['percentage'],
+                'address' => $split_data['upstream'],
+                'port' => $split_svc['port'],
+                'ips' => $split_ip_addresses,
+                'encryption' => $split_svc['encryption'],
+                'keepalive' => $split_data['keepalive'],
+                'sets_sni' => $split_data['sets_sni'],
+            }.filter |$key, $val| { $val =~ NotUndef }
+        }
+        $upstream = {
+                    'ips' => $ip_addresses,
+                    'address' => $address,
+                    'port' => $upstream_port,
+                    'encryption' => $encryption,
+                    'sets_sni'   => $listener['sets_sni'],
+                    'keepalive' => $listener['keepalive'],
+        }.filter |$key, $val| { $val =~ NotUndef }
         $retval = {
             $listener['name'] => {
+                # TODO: remove after all charts are at
+                # mesh.configuration 1.5.0 or later
                 'keepalive' => $listener['keepalive'],
                 'port' => $listener['port'],
                 'http_host' => $listener['http_host'],
                 'timeout'   => $listener['timeout'],
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
+                # TODO: remove after all charts are at
+                # mesh.configuration 1.5.0 or later
                 'uses_ingress' => $listener['uses_ingress'],
+                # TODO: remove after all charts are at
+                # mesh.configuration 1.5.0 or later
                 'sets_sni' => $listener['sets_sni'],
-                'upstream' => {
-                    'ips' => $ip_addresses,
-                    'address' => $address,
-                    'port' => $upstream_port,
-                    'encryption' => $encryption,
-                },
+                'upstream' => $upstream,
+                'split' => $split,
             }.filter |$key, $val| { $val =~ NotUndef },
         }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
