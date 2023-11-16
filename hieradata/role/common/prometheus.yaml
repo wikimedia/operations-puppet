@@ -51,3 +51,6 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
