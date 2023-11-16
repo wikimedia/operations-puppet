@@ -758,12 +758,12 @@ node /^db12(26|28|29|39|32|33|34|35|37|39|40|41|42|43|44|45|46|47|48|49)\.eqiad\
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
-# old m1 master
+# m1 master
 node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# m1 temporarily master T349272
+# To be moved to m2 
 node /^db1119\.eqiad\./ {
     role(mariadb::misc)
 }
