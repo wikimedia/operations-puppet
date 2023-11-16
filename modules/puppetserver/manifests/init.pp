@@ -108,7 +108,7 @@ class puppetserver (
     # permissions prior to starting Puppet
     ensure_resource(
         'file',
-        '/var/lib/puppet',
+        ['/var/lib/puppet', '/var/lib/puppet/server'],
         {
             'ensure' => 'directory',
             'owner'  => 'puppet',

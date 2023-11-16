@@ -73,7 +73,7 @@ class profile::puppetserver::git (
         }
     }
 
-    wmflib::dir::mkdir_p($basedir.dirname, {
+    wmflib::dir::mkdir_p([$basedir.dirname, $basedir], {
         owner  => $user,
         group  => $group
     })

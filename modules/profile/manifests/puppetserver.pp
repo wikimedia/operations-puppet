@@ -66,8 +66,8 @@ class profile::puppetserver (
                 # TODO: link this with config master profile
                 'sha1' => '/srv/config-master/puppet-sha1.txt',
             },
-            # We have labsprivate on the puppetserveres to ensure that we validate changes via
-            # puppet-merge. Sopecifically we dont want the WMCS puppetserveres accidently running
+            # We have labsprivate on the puppetservers to ensure that we validate changes via
+            # puppet-merge. Specifically we dont want the WMCS puppetserveres accidentally running
             # malicious modules injected into the private repo.  And to a lesser extent any
             # vulnerabilities that may be present via hiera injections.  e.g. injecting a user
             'labsprivate'  => {
