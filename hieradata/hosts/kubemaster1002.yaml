@@ -1,1 +1,4 @@
 profile::puppet::agent::timer_seed: "Real stupidity beats artificial intelligence every time."
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
