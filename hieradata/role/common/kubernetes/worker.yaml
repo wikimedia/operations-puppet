@@ -63,3 +63,6 @@ profile::lvs::realserver::pools:
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts: ['ServiceOps']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
