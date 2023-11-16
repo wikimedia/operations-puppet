@@ -4,3 +4,5 @@
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
 mariadb::package: 'wmf-mariadb106'
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
