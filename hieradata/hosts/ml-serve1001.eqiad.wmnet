@@ -1,0 +1,2 @@
+# Puppet v7 migration temp rollback
+profile::puppet::agent::force_puppet7: false
