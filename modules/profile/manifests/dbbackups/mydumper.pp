@@ -23,6 +23,12 @@ class profile::dbbackups::mydumper (
       {default_value => ''}),
     String  $statistics = lookup('profile::dbbackups::mydumper::statistics',
       {default_value => ''}),
+    String  $stats_host = lookup('profile::dbbackups::mydumper::stats_host',
+      {default_value => ''}),
+    String  $stats_db = lookup('profile::dbbackups::mydumper::stats_db',
+      {default_value => ''}),
+    String  $stats_ca = lookup('profile::dbbackups::mydumper::stats_ca',
+      {default_value => ''}),
 ) {
 
     include ::passwords::mysql::dump
@@ -108,13 +114,17 @@ class profile::dbbackups::mydumper (
         content   => template($template),
     }
 
+    # ensure old statistics file is deleted
+    file { '/etc/wmfbackups/statistics.cnf':
+        ensure => absent
+    }
     if $statistics == '' {
-        file { '/etc/wmfbackups/statistics.cnf':
+        file { '/etc/wmfbackups/statistics.ini':
             ensure => absent
         }
     } else {
         # separate file for common statistics db config
-        file { '/etc/wmfbackups/statistics.cnf':
+        file { '/etc/wmfbackups/statistics.ini':
             ensure    => present,
             owner     => 'dump',
             group     => 'dump',

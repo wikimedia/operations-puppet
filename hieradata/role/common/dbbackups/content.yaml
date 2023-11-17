@@ -3,4 +3,7 @@ cluster: backup
 profile::mariadb::wmfmariadbpy::role: 'library'
 profile::contacts::role_contacts: ['Data Persistence']
 
-profile::dbbackups::mydumper::statistics: 'profile/dbbackups/statistics.cnf.erb'
+profile::dbbackups::mydumper::statistics: 'profile/dbbackups/statistics.ini.erb'
+profile::dbbackups::mydumper::stats_host: db1164.eqiad.wmnet
+profile::dbbackups::mydumper::stats_db: dbbackups
+profile::dbbackups::mydumper::stats_ca: '/etc/ssl/certs/wmf-ca-certificates.crt'
