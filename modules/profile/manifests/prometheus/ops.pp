@@ -2411,6 +2411,22 @@ class profile::prometheus::ops (
         }
     }
 
+    $lvs_realserver_jobs = [
+      {
+        'job_name'        => 'lvs_realserver',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/lvs_realserver_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::resource_config { "lvs_realserver_clamper_${::site}":
+        dest           => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
+        define_name    => 'profile::lvs::realserver::ipip',
+        port_parameter => 'clamper_prometheus_port',
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -2441,7 +2457,7 @@ class profile::prometheus::ops (
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
-            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs,
+            $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,

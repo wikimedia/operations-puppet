@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=eBPF based TCP MSS clamper
+
+[Service]
+LimitMEMLOCK=infinity
+ExecStart=/usr/bin/tcp-mss-clamper --ipv4-mss <%= @ipv4_mss %> --ipv6-mss <%= @ipv6_mss %> -p <%= @prometheus_addr %> -s "<%= @clamped_ipport.join(",") %>" -i <%= @interfaces.join(",") %>
+Restart=on-failure
