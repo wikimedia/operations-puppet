@@ -1,6 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
 <?php
-
+// SPDX-License-Identifier: Apache-2.0
 return array(
     'TagManagerContainerStorageDir' => function () {
         // the location where we store the generated javascript or json container files

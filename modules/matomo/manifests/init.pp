@@ -49,7 +49,7 @@ class matomo (
     # config.php file. See #T349910 and https://github.com/matomo-org/tag-manager/issues/154 for more.
     file { '/etc/matomo/config.php':
         source => 'puppet:///modules/matomo/config.php',
-        mode   => '0640',
+        mode   => '0644',
     }
 
     file { '/var/log/matomo':
