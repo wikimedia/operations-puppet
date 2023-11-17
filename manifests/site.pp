@@ -518,7 +518,7 @@ node /^cp60(09|1[0-6])\.drmrs\./ {
 }
 
 node /^crm2001\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(crm)
 }
 
 node /^cumin1001\.eqiad\./ {
