@@ -71,7 +71,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 768
+  # 768, 782
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
@@ -949,15 +949,6 @@ groups:
     system_members: [analytics-product]
     approval:
       - Mikhail Popov
-  ores-admin:
-    description: ORES admins
-    gid: 782
-    members: [halfak, *ml-team-admins]
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service uwsgi-ores *',
-                 'ALL = NOPASSWD: /usr/sbin/service celery-ores-worker *',
-                 'ALL = NOPASSWD: /usr/bin/lsof *']
-    approval:
-      - Chris Albon
   deploy-ml-service:
     gid: 833
     description: Users allowed to deploy k8s Machine Learning Services
