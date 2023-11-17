@@ -112,6 +112,12 @@ class profile::puppetserver (
         ca_private_key  => $ca_private_key,
     }
 
+    puppetserver::rsync_module { 'ca':
+        path     => $ca_dir,
+        hosts    => wmflib::class::hosts('puppetserver::ca'),
+        interval => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
+    }
+
     ferm::service { 'puppetserver':
         srange => '$DOMAIN_NETWORKS',
         proto  => 'tcp',

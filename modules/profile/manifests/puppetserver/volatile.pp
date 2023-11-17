@@ -92,4 +92,10 @@ class profile::puppetserver::volatile (
             ],
         }
     }
+
+    puppetserver::rsync_module { 'volatile':
+        path     => $base_path,
+        hosts    => wmflib::class::hosts('profile::puppetserver::volatile'),
+        interval => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
+    }
 }

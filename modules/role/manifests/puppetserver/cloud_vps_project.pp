@@ -9,7 +9,4 @@ class role::puppetserver::cloud_vps_project {
 
     include profile::puppetserver::wmcs
     include profile::puppetserver::scripts
-
-    # TODO: decouple this from the volatile profile
-    # include profile::puppetserver::rsync
 }
