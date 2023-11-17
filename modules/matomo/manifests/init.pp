@@ -47,7 +47,7 @@ class matomo (
     # to the default location of /usr/share/matmo/js so we need to override a pair of functions to
     # specify a custom directory that is within an existing writeable location. This is gone in a custom
     # config.php file. See #T349910 and https://github.com/matomo-org/tag-manager/issues/154 for more.
-    file { '/etc/matomo':
+    file { '/etc/matomo/config.php':
         source => 'puppet:///modules/matomo/config.php',
         mode   => '0640',
     }
