@@ -26,33 +26,33 @@ class sslcert::trusted_ca (
             ensure_packages($trusted_certs['package'])
             $res_subscribe = Package[$trusted_certs['package']]
         } else {
-            $trusted_certs['certs'].each |$cert| {
-                # The following file resources is only used so we no when the source
-                # file changes and thus know when to notify the exec and rebuild the bundle
-                file { "${sslcert::localcerts}/${cert.basename}":
-                    ensure => file,
-                    owner  => $owner,
-                    group  => $group,
-                    mode   => '0444',
-                    source => $cert,
-                    notify => Exec['generate trusted_ca'],
-                }
-            }
-            exec { 'generate trusted_ca':
-                command     => "/bin/cat ${trusted_certs['certs'].join(' ')} > ${trusted_ca_path}",
-                refreshonly => true,
-                user        => $owner,
-                group       => $group,
-            }
-            $res_subscribe = Exec['generate trusted_ca']
-
-            # Ensure readability for user/group/others of the cert bundle.
-            file { $trusted_ca_path:
-                ensure => file,
+            concat { $trusted_ca_path:
+                ensure => present,
                 owner  => $owner,
                 group  => $group,
                 mode   => '0644',
+                notify => Exec['generate trusted_ca'],
             }
+
+            $trusted_certs['certs'].each |Integer $index, Stdlib::Unixpath $cert| {
+                file { "${sslcert::localcerts}/${cert.basename}":
+                    ensure => absent,
+                }
+
+                concat::fragment { "ssl-ca-${cert}":
+                    source => $cert,
+                    target => $trusted_ca_path,
+                    order  => $index,
+                    notify => Exec['generate trusted_ca'],
+                }
+            }
+
+            # no-op resource used for propagating notifies
+            exec { 'generate trusted_ca':
+                command     => '/bin/true',
+                refreshonly => true,
+            }
+            $res_subscribe = Exec['generate trusted_ca']
         }
         $trusted_certs['certs'].each |$cert| {
             if $include_bundle_jks {
