@@ -1526,14 +1526,6 @@ class profile::prometheus::ops (
         'metric_relabel_configs' => [ $redis_exporter_relabel ],
       },
       {
-        'job_name'        => 'redis_ores',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/redis_ores_*.yaml" ]}
-        ],
-        'metric_relabel_configs' => [ $redis_exporter_relabel ],
-      },
-      {
         'job_name'        => 'redis_arclamp',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -1552,11 +1544,6 @@ class profile::prometheus::ops (
     prometheus::redis_exporter_config{ "redis_misc_slave_${::site}":
         dest       => "${targets_path}/redis_misc_slave_${::site}.yaml",
         class_name => 'role::redis::misc::slave',
-    }
-
-    prometheus::redis_exporter_config{ "redis_ores_${::site}":
-        dest       => "${targets_path}/redis_ores_${::site}.yaml",
-        class_name => 'role::ores::redis',
     }
 
     prometheus::redis_exporter_config{ "redis_arclamp_${::site}":
