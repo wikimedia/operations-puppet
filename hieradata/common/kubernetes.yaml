@@ -145,6 +145,10 @@ kubernetes::clusters:
         - kubernetes1056.eqiad.wmnet
         - kubernetes1057.eqiad.wmnet
         - kubernetes1058.eqiad.wmnet
+        - mw1472.eqiad.wmnet
+        - mw1473.eqiad.wmnet
+        - mw1474.eqiad.wmnet
+        - mw1475.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
@@ -229,6 +233,10 @@ kubernetes::clusters:
         - kubernetes2054.codfw.wmnet
         - kubernetes2055.codfw.wmnet
         - kubernetes2056.codfw.wmnet
+        - mw2420.codfw.wmnet
+        - mw2421.codfw.wmnet
+        - mw2425.codfw.wmnet
+        - mw2431.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
