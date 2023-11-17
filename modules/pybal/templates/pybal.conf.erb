@@ -52,6 +52,7 @@ ip = <%= subserviceip %>
 port = <%= service['port'] %>
 scheduler = <%= lvs.fetch('scheduler', "wrr") %>
 ops = false
+tunneling = <%= lvs.fetch('ipip_encapsulation', 'false') %>
 
 <% if @config == 'etcd' -%>
 <%- conftool = lvs['conftool'] -%>

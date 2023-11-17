@@ -10,13 +10,15 @@
 #    Which Pybal monitors to configure. For details, see the Pybal documentation. Configuration options are written as key: value
 # @param [Optional[Boolean]] bgp  Whether to advertise the service via bgp, or not. Defaults to true
 # @param [Optional[Enum]] protocol  Whether the service uses tcp or udp. Defaults to 'tcp'.
+# @param [Optional[Boolean] ipip_encapsulation  Whether the real servers receive traffic from the load balancers using IPIP encapsulation. Defaults to false
 type Wmflib::Service::Lvs = Struct[{
-    'enabled'           => Boolean,
-    'class'             => Enum['low-traffic', 'high-traffic1', 'high-traffic2'],
-    'scheduler'         => Optional[Enum['rr', 'wrr', 'lc', 'wlc', 'lblc', 'lblcr', 'dh', 'sh', 'sed', 'nq', 'mh']],
-    'conftool'          => Struct[{'cluster' => String[1], 'service' => String[1]}],
-    'depool_threshold'  => String[1],
-    'monitors'          => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash]],
-    'bgp'               => Optional[Boolean],
-    'protocol'          => Optional[Enum['tcp', 'udp']],
+    'enabled'            => Boolean,
+    'class'              => Enum['low-traffic', 'high-traffic1', 'high-traffic2'],
+    'scheduler'          => Optional[Enum['rr', 'wrr', 'lc', 'wlc', 'lblc', 'lblcr', 'dh', 'sh', 'sed', 'nq', 'mh']],
+    'conftool'           => Struct[{'cluster' => String[1], 'service' => String[1]}],
+    'depool_threshold'   => String[1],
+    'monitors'           => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash]],
+    'bgp'                => Optional[Boolean],
+    'protocol'           => Optional[Enum['tcp', 'udp']],
+    'ipip_encapsulation' => Optional[Boolean],
 }]
