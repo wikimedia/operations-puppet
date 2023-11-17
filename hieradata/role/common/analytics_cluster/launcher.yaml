@@ -22,7 +22,7 @@ profile::analytics::cluster::hdfs_mount::monitoring_user: 'analytics'
 
 profile::analytics::refinery::job::project_namespace_map::http_proxy: 'http://webproxy.eqiad.wmnet:8080'
 
-profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1010.eqiad.wmnet'
+profile::analytics::refinery::job::data_purge::public_druid_host: 'druid1007.eqiad.wmnet'
 
 profile::statistics::base::enable_stat_host_addons: false
 profile::statistics::base::mysql_credentials_group: 'analytics'
