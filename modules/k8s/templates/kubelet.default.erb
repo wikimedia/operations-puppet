@@ -10,6 +10,10 @@ daemon_args = [
   "--hostname-override=#{@fqdn}",     # No KubeletConfiguration equivalent
   # TODO: Split pod-infra-container-image in image and version. Let the cluster decide the image and the k8s version the version?
   "--pod-infra-container-image=#{@pod_infra_container_image}", # No KubeletConfiguration equivalent
+  # When joining the cluster for the first time, the node will set itself unschedulable.
+  # This option is marked as deprecated (still available in 1.29), but there is no alternative as of now.
+  # The "registerWithTaint" option does not work here because the taint "node.kubernetes.io/unschedulable" is not allowed to be set by kubelet.
+  "--register-schedulable=false",
 ]
 
 if @cni
