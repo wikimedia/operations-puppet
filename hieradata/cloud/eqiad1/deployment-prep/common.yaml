@@ -307,10 +307,6 @@ scap::sources:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
 
-  # Main ORES deployment repository
-  ores/deploy:
-    repository: mediawiki/services/ores/deploy
-
 prometheus_nodes:
   - deployment-prometheus05.deployment-prep.eqiad1.wikimedia.cloud
 

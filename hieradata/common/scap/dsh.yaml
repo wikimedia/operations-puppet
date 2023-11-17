@@ -143,13 +143,6 @@ scap::dsh::groups:
       - netbox-dev2002.codfw.wmnet
       - netbox1002.eqiad.wmnet
       - netbox2002.codfw.wmnet
-  ores:
-    conftool:
-      - {'cluster': 'ores', 'service': 'ores'}
-  ores-canaries:
-    hosts:
-      - ores1001.eqiad.wmnet
-      - ores2001.codfw.wmnet
   phatality:
     conftool:
       - {'cluster': 'kibana7', 'service': 'kibana7'}

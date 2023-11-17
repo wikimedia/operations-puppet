@@ -204,9 +204,6 @@ scap::sources:
   logstash/plugins:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy: {}
-  ores/deploy:
-    repository: mediawiki/services/ores/deploy
-  #    lvs_service: ores
   parsoid/deploy:
     repository: mediawiki/services/parsoid/deploy
   #    lvs_service: parsoid
