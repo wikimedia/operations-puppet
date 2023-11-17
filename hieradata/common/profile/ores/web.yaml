@@ -1,2 +1,0 @@
----
-profile::ores::web::statsd: 'localhost:9125'

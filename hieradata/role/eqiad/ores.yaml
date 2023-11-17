@@ -1,4 +1,0 @@
-profile::ores::web::poolcounter_nodes:
-  - orespoolcounter1003:7531
-  - orespoolcounter1004:7531
-profile::ores::web::redis_host: rdb1011.eqiad.wmnet

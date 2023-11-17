@@ -1,4 +1,0 @@
-profile::ores::web::poolcounter_nodes:
-  - orespoolcounter2003:7531
-  - orespoolcounter2004:7531
-profile::ores::web::redis_host: rdb2009.codfw.wmnet
