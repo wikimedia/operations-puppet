@@ -9,7 +9,7 @@ profile::admin::groups:
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::druid_clusters:
   - name: druid-analytics-eqiad
-    host: 'an-druid1001.eqiad.wmnet:8082'
+    host: 'an-druid1002.eqiad.wmnet:8082'
     sourceListScan: auto
     sourceListRefreshInterval: 15000
     sourceReintrospectInterval: 120000
