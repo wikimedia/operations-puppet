@@ -140,9 +140,6 @@ class profile::httpbb (
     httpbb::test_suite {'thumbor/test_thumbor.yaml':
         source => 'puppet:///modules/profile/httpbb/thumbor/test_thumbor.yaml'
     }
-    httpbb::test_suite {'ores/test_ores.yaml':
-        source => 'puppet:///modules/profile/httpbb/ores/test_ores.yaml'
-    }
     httpbb::test_suite {'query_service/test_wdqs.yaml':
         source => 'puppet:///modules/profile/httpbb/query_service/test_wdqs.yaml'
     }
