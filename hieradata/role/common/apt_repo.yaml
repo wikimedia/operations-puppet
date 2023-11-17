@@ -577,12 +577,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'netmon*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'ores[12]00[1-9]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
-  'orespoolcounter*':
-    - partman/flat.cfg
-    - virtual.cfg
   'parse*':
     - partman/custom/mw-raid1-lvm.cfg
   'peek*':

@@ -374,11 +374,6 @@ wikimedia_clusters:
     description: "Druid Public Cluster"
     sites:
       eqiad: []
-  ores:
-    description: "ORES Cluster"
-    sites:
-      eqiad: []
-      codfw: []
   wdqs-internal:
     description: "Wikidata Query Service - Internal cluster"
     sites:
