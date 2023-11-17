@@ -1,6 +1,6 @@
 # db1119
-# old m1 master - to be moved to m2
-mariadb::shard: 'm1'
+# Future m2 master
+mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: false
 mariadb::package: 'wmf-mariadb106'

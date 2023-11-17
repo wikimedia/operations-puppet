@@ -772,7 +772,7 @@ node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# To be moved to m2 
+# Future  m2 master
 node /^db1119\.eqiad\./ {
     role(mariadb::misc)
 }
