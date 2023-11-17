@@ -202,6 +202,10 @@ profile::gitlab::runner::allowed_services:
     host: "gitlab.devtools.wmcloud.org"
     port: 443
     proto: tcp
+  zuul-test-rsync:
+    host: "zuul.devtools.wmcloud.org"
+    port: 873
+    proto: tcp
   cloud-public-proxy: # Any *.wmcloud.org (or deprecated *.wmflabs.org) proxied service, ex. tools-harbor.wmcloud.org
     host: "proxy-eqiad1.wmcloud.org"
     port: 443
