@@ -18,7 +18,6 @@
 # @param enable_jmx add the jmx java agent parameter
 # @param jmx_port the port for jmx to bind to
 # @param separate_ssldir used when the puppetserver is managed by a different puppet server
-# @param g10k_sources a list of g10k sources to configure
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
@@ -44,7 +43,6 @@ class puppetserver (
     Boolean                                  $enable_jmx                = false,
     Boolean                                  $auto_restart              = true,
     Stdlib::Port                             $jmx_port                  = 8141,
-    Hash[String, Puppetmaster::R10k::Source] $g10k_sources              = {},
     Hash[String, Stdlib::Unixpath]           $extra_mounts              = {},
     Variant[Enum['unlimited'], Integer]      $environment_timeout       = 0,
 ) {
@@ -280,11 +278,6 @@ class puppetserver (
             notify  => $service_restart_notify;
     }
     include puppetserver::puppetdb
-    $g10k_ensure = $g10k_sources.empty.bool2str('absent', $ensure)
-    class { 'puppetserver::g10k':
-        ensure  => $g10k_ensure,
-        sources => $g10k_sources,
-    }
     if $enable_jmx {
         ensure_packages(['prometheus-jmx-exporter'])
         file { $jmx_config:

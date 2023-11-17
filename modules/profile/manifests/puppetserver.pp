@@ -97,8 +97,12 @@ class profile::puppetserver (
         'ca_public_key', 'ca_crl', 'ca_private_key_secret',
     ]
     class { 'puppetserver':
-        *            => wmflib::resource::filter_params($exluded_args),
-        g10k_sources => $g10k_sources,
+        * => wmflib::resource::filter_params($exluded_args),
+    }
+    class { 'puppetserver::g10k':
+        ensure       => stdlib::ensure(!$g10k_sources.empty),
+        sources      => $g10k_sources,
+        exec_require => Git::Clone[$profile::puppetserver::git::control_repo],
     }
     $config_dir = $puppetserver::puppetserver_config_dir
     $ssl_dir = $puppetserver::ssl_dir
