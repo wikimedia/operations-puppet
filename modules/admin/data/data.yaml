@@ -71,7 +71,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 768, 782
+  # 782
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
@@ -1233,6 +1233,13 @@ groups:
     gid: 927
     system: true
     members: []
+  crm-root:
+    gid: 768
+    description: root on the community-crm servers
+    members: [*fr_tech_admins]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Greg Grossmeier
 
 users:
   reprepro:
