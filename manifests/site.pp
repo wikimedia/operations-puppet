@@ -517,7 +517,7 @@ node /^cp60(09|1[0-6])\.drmrs\./ {
     role(cache::text)
 }
 
-node /^crm1001\.eqiad\./ {
+node /^crm2001\.codfw\./ {
     role(insetup::infrastructure_foundations)
 }
 
