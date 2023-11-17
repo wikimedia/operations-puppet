@@ -63,10 +63,6 @@ role::eventschemas::service:
   target-q: TBD
 role::restbase::production:
   target-q: TBD
-role::ores:
-  target-q: TBD
-role::orespoolcounter:
-  target-q: TBD
 role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:

@@ -78,12 +78,6 @@ class profile::graphite::production (
         keep_days => 182,
     }
 
-    # ORES metrics - T169969
-    graphite::whisper_cleanup { 'graphite-ores':
-        directory => "${storage_dir}/whisper/ores",
-        keep_days => 30,
-    }
-
     # General cleanup of metric files not updated. ~3y
     graphite::whisper_cleanup { 'graphite-stale-metrics':
         directory => "${storage_dir}/whisper",
