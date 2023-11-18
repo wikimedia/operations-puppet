@@ -1,6 +1,14 @@
 # This profile sets up an bastion/dev instance in the Toolforge model.
 class profile::toolforge::bastion () {
-    include profile::toolforge::shell_environ
+    if debian::codename::eq('buster') {
+        include profile::toolforge::shell_environ
+    } else {
+        ensure_packages([
+            'emacs-nox',
+            'neovim',
+        ])
+    }
+
     include profile::toolforge::k8s::client
 
     file { '/bin/disabledtoolshell':
