@@ -35,12 +35,17 @@ class profile::toolforge::grid::cronrunner(
     # Until then...
     include profile::toolforge::grid::exec_environ
 
+    # This doesn't clearly belong here! Host key authentication is only
+    # possible from the bastions and a cron runner is not a bastion.
+    # However this is going away in a month or two so I'm just going to
+    # leave this here and remove the profile entirely when the time
+    # comes.
     file { '/etc/ssh/ssh_config':
         ensure => file,
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
+        source => 'puppet:///modules/profile/toolforge/grid/bastion/ssh_config',
     }
 
     file { '/usr/bin/jlocal':

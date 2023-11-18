@@ -1,7 +1,7 @@
 # Establish the ability to do Host Based Auth from bastions to execs/webgrid
 
 class profile::toolforge::grid::hba {
-    $bastions = wmflib::class::hosts('profile::toolforge::bastion')
+    $bastions = wmflib::class::hosts('profile::toolforge::grid::bastion')
     $bastion_ips = $bastions.map |Stdlib::Fqdn $host| { ipresolve($host, 4) }
 
     file { '/etc/ssh/shosts.equiv':

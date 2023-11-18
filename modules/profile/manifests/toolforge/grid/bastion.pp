@@ -27,6 +27,14 @@ class profile::toolforge::grid::bastion (
         source => 'puppet:///modules/profile/toolforge/qstat-full',
     }
 
+    file { '/etc/ssh/ssh_config':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/toolforge/grid/bastion/ssh_config',
+    }
+
     # TODO: why is this not in ::submithost?
     file { "${profile::toolforge::grid::base::store}/submithost-${facts['fqdn']}":
         ensure  => file,

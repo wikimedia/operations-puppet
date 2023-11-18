@@ -25,15 +25,6 @@ class profile::toolforge::bastion () {
         ensure => present,
     }
 
-    # General SSH Use Configuration
-    file { '/etc/ssh/ssh_config':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/profile/toolforge/submithost-ssh_config',
-    }
-
     apt::repository { 'thirdparty-tekton':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
