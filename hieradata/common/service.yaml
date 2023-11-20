@@ -1763,6 +1763,7 @@ service::catalog:
           url:
             - http://en.wikipedia.com/_status
       scheduler: wrr
+      ipip_encapsulation: true
     page: false
     probes:
       - type: http
