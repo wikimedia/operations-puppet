@@ -501,6 +501,8 @@ class profile::phabricator::main (
     backup::set { 'srv-repos': }
     backup::set { 'home': }
 
+    include profile::mail::default_mail_relay
+    $smarthosts = $profile::mail::default_mail_relay::smarthosts
     class { '::exim4':
         variant => 'heavy',
         config  => template('role/exim/exim4.conf.phab.erb'),
@@ -521,14 +523,7 @@ class profile::phabricator::main (
         ensure => $ferm_ensure,
         port   => '25',
         proto  => 'tcp',
-        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x})" }.join(" ") %>)'),
-    }
-
-    ferm::service { 'phabmain-smtp_ipv6':
-        ensure => $ferm_ensure,
-        port   => '25',
-        proto  => 'tcp',
-        srange => inline_template('(<%= @mail_smarthost.map{|x| "@resolve(#{x}, AAAA)" }.join(" ") %>)'),
+        srange => $smarthosts,
     }
 
     prometheus::blackbox::check::tcp { 'phabricator-smtp':

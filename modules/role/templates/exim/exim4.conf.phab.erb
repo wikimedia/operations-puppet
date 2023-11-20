@@ -147,7 +147,7 @@ smart_route:
 	driver = manualroute
 	transport = remote_smtp
 	# Local mail is undeliverable and remote mail is forwarded
-	route_list = !+local_domains  <%= @mail_smarthost.join(':') %>
+	route_list = !+local_domains  <%= @smarthosts.join(':') %>
 
 ##############
 # Transports #
