@@ -57,6 +57,7 @@ class vrts(
     String $http_proxy,
     String $https_proxy,
     String $public_dns,
+    Array[Stdlib::Fqdn] $mail_smarthosts,
 ) {
     # Implementation Classes
     class { '::vrts::web':
@@ -67,6 +68,7 @@ class vrts(
         vrts_mysql_user     => $exim_database_user,
         vrts_mysql_password => $exim_database_pass,
         trusted_networks    => $trusted_networks,
+        mail_smarthosts     => $mail_smarthosts,
     }
 
     # Installation

@@ -22,6 +22,7 @@ class profile::vrts(
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
+    include profile::mail::default_mail_relay
 
     if $local_database {
         class { 'profile::mariadb::generic_server':
@@ -52,6 +53,7 @@ class profile::vrts(
         http_proxy         => $http_proxy,
         https_proxy        => $https_proxy,
         public_dns         => $dns_name,
+        mail_smarthosts    => $profile::mail::default_mail_relay::smarthosts,
     }
 
     class { '::httpd':
@@ -80,11 +82,10 @@ class profile::vrts(
         srange => '$CACHES',
     }
 
-    $smtp_ferm = join($::mail_smarthost, ' ')
     ferm::service { 'vrts_smtp':
         proto  => 'tcp',
         port   => '25',
-        srange => "@resolve((${smtp_ferm}))",
+        srange => $profile::mail::default_mail_relay::smarthosts,
     }
 
     prometheus::blackbox::check::tcp { 'vrts-smtp':

@@ -31,6 +31,7 @@ class vrts::mail(
     String $vrts_mysql_user,
     String $vrts_mysql_password,
     Array $trusted_networks,
+    Array[Stdlib::Fqdn] $mail_smarthosts,
 ){
     class { '::clamav':
         proxy => "webproxy.${::site}.wmnet:8080",
