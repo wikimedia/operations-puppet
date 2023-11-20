@@ -49,6 +49,9 @@ function my() {
     sudo mysql --disable-auto-rehash $skip_ssl --socket="${socket}" --user=root --prompt="\u@$(hostname)[\d]> " --pager="grcat /etc/mysql/grcat.config | less -RSFXin"
 }
 
+function quick_show_slave() {
+    sudo mysql -e 'show slave status \G'|grep -iE 'second|run|state|log_|Master_Host'
+}
 
 
 ### Exporting
