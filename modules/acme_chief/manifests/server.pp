@@ -27,6 +27,13 @@ class acme_chief::server (
         content => secret('keyholder/authdns_acmechief.pub'),
     }
 
+    # Prevent acme-chief from starting on a passive server
+    if !$is_active {
+        systemd::mask { 'acme-chief.service':
+            before => Package['acme-chief']
+        }
+    }
+
     package { 'acme-chief':
         ensure  => present,
         require => Exec['apt-get update'],
@@ -122,6 +129,9 @@ class acme_chief::server (
     $ensure = $is_active? {
         true    => 'present',
         default => 'absent',
+    }
+    if $is_active {
+        systemd::unmask { 'acme-chief.service': }
     }
     systemd::service { 'acme-chief':
         ensure               => $ensure,
