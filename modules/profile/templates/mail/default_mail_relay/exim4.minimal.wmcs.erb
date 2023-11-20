@@ -51,7 +51,7 @@ system_aliases:
 smart_route:
 	driver = manualroute
 	transport = remote_smtp
-	route_list = *	<%= @mail_smarthost.join(':') %>
+	route_list = *	<%= @smarthosts.join(':') %>
 
 
 begin transports
