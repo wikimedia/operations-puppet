@@ -12,7 +12,6 @@ class profile::icinga::ircbot(
         '/var/log/icinga/irc-releng.log'      => '#wikimedia-releng',
         '/var/log/icinga/irc-cloud-feed.log'  => '#wikimedia-cloud-feed',
         '/var/log/icinga/irc-analytics.log'   => '#wikimedia-analytics',
-        '/var/log/icinga/irc-ores.log'        => '#wikimedia-ml',
         '/var/log/icinga/irc-interactive.log' => '#wikimedia-interactive',
         '/var/log/icinga/irc-performance.log' => '#wikimedia-perf-bots',
         '/var/log/icinga/irc-fundraising.log' => '#wikimedia-fundraising',
