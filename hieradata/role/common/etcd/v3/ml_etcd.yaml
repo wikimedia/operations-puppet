@@ -12,3 +12,7 @@ profile::etcd::v3::use_pki_certs: true
 profile::admin::groups:
   - ml-team-admins
 profile::contacts::role_contacts: ['Machine Learning']
+
+# Puppet v7 migration (T349619)
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
