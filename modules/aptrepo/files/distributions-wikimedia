@@ -82,7 +82,6 @@ Components: main
  thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
- thirdparty/tekton
  thirdparty/terraform
 UDebComponents: main
 Update:
@@ -111,7 +110,6 @@ Update:
  thirdparty/haproxy24
  thirdparty/haproxy26
  thirdparty/helm3
- thirdparty/tekton
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
@@ -174,7 +172,6 @@ Components: main
  thirdparty/openstack-db
  thirdparty/otelcol-contrib
  thirdparty/routinator
- thirdparty/tekton
  thirdparty/terraform
 UDebComponents: main
 Update:
@@ -201,7 +198,6 @@ Update:
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
  thirdparty/openstack-db
- thirdparty/tekton
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
