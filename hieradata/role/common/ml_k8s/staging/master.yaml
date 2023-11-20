@@ -34,6 +34,6 @@ prometheus::node_exporter::collectors_extra:
 profile::admin::groups:
   - ml-team-admins
 
-# Puppet v7 migration
+# Puppet v7 migration (T349619)
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
