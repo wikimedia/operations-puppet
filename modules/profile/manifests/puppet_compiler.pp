@@ -23,6 +23,14 @@ class profile::puppet_compiler (
         source => '/etc/puppet/puppetdb.conf',
         owner  => $puppet_compiler::user,
     }
+    # Files in this dir should only exist for the time it takes to do the pcc run
+    systemd::timer::job { 'delete-canceled-pcc-run-dirs':
+        ensure      => present,
+        description => 'Clean up stale files from canceled PCC reports',
+        command     => "/usr/bin/find ${puppet_compiler::workdir} -maxdepth 1 -type d -daystart -mtime +1",
+        user        => 'root',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
+    }
     if $puppetdb_proxy {
         $ssldir = "${puppet_compiler::vardir}/ssl"
         $ssl_settings = ssl_ciphersuite('nginx', 'strong')
