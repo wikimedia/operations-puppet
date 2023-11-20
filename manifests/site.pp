@@ -640,7 +640,7 @@ node /^db2155\.codfw\./ {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1213 and db1144 below
-node /^db1(230|183|185|200|210)\.eqiad\./ {
+node /^db1(183|185|200|210|230)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -651,7 +651,7 @@ node /^db1161\.eqiad\./ {
 
 # s5 (default, dewiki and others) core production dbs on codfw
 # See also db2171 and db2137 below
-node /^db2(111|113|123|157|178)\.codfw\./ {
+node /^db2(111|113|123|157|178|192)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -684,7 +684,7 @@ node /^db2158\.codfw\./ {
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
 # See also db1170 below
-node /^db1(069|236|174|178|181|191|194|202|227)\.eqiad\./ {
+node /^db1(069|174|178|181|191|194|202|227|236)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -756,7 +756,7 @@ node /^db21(42|43|44)\.codfw\./ {
 }
 
 # New db hosts to be setup T342174
-node /^db21(88|89|90|91|92|94|95)\.codfw\./ {
+node /^db21(88|89|90|91|94|95)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
