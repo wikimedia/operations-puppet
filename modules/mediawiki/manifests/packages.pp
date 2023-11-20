@@ -12,14 +12,6 @@ class mediawiki::packages {
         'gnupg1',
     ])
 
-    package {'tidy':
-        ensure => absent
-    }
-
-    package {'libvips-tools':
-        ensure => absent
-    }
-
     # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
     ensure_packages(['python-pil', 'python3-pil'])
 }
