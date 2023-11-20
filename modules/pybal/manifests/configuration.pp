@@ -8,6 +8,7 @@
 # global_options - pybal global options
 # config_host - the fqdn:port for the host to get config from
 # conftool_prefix - the prefix to use in queries to etcd
+# ipip_enabled - whether IPIP encapsulation is enabled or not
 class pybal::configuration(
     Hash[String, Wmflib::Service] $services,
     Hash $lvs_class_hosts,
@@ -16,6 +17,7 @@ class pybal::configuration(
     Hash $global_options={},
     String $config_host="config-master.${site}.wmnet",
     String $conftool_prefix = '/conftool/v1',
+    Boolean $ipip_enabled = false,
 ) {
 
     # Generate PyBal config file

@@ -7,6 +7,7 @@ define profile::lvs::interface_tweaks(
   $txqlen=false,
   $rss_pattern='',
   $do_rps=true,
+  $ipip_enabled=false,
 ) {
     if $interface != $facts['interface_primary'] {
         interface::manual { $name:
@@ -61,5 +62,12 @@ define profile::lvs::interface_tweaks(
             setting   => 'tx',
             value     => $ring_size,
         }
+    }
+
+    # if we are using IPIP encapsulation we need the clsact qdisc + ipip-multiqueue-optimizer
+    $ensure_clsact = bool2str($ipip_enabled, 'present', 'absent')
+    interface::clsact { $name:
+        ensure    => $ensure_clsact,
+        interface => $interface,
     }
 }

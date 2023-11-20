@@ -8,8 +8,9 @@ class profile::pybal(
     String $config_source = lookup('profile::pybal::config_source'),
     Stdlib::Host $config_host = lookup('profile::pybal::config_host'),
     Hash $wikimedia_clusters = lookup('wikimedia_clusters'),
-    Stdlib::Port $etcd_port = lookup('profile::pybal::etcd_port', {'default_value' => 2379}),
+    Stdlib::Port $etcd_port = lookup('profile::pybal::etcd_port', {'default_value'                    => 2379}),
     Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
+    Boolean $ipip_enabled = lookup('profile::pybal::ipip_enabled', {'default_value'                   => false}),
 ) {
     # Includes all the common configs.
     include profile::lvs::configuration
@@ -62,7 +63,8 @@ class profile::pybal(
         site            => $::site,
         conftool_prefix => $conftool_prefix,
         config          => $config_source,
-        config_host     => $pybal_config_host
+        config_host     => $pybal_config_host,
+        ipip_enabled    => $ipip_enabled,
     }
 
     class { '::pybal::monitoring':

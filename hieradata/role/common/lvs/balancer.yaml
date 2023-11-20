@@ -14,3 +14,4 @@ profile::contacts::role_contacts: ['Traffic']
 profile::base::remove_python2_on_bullseye: false
 
 profile::firewall::provider: none
+profile::lvs::ipip_enabled: false

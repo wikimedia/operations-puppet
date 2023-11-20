@@ -1,0 +1,7 @@
+#<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=eBPF based IPIP Multiqueue Optimizer
+
+[Service]
+LimitMEMLOCK=infinity
+ExecStart=/usr/bin/ipip-mq-optimizer -p <%= @prometheus_addr %> -i <%= @optimizer_interfaces.join(",") %>

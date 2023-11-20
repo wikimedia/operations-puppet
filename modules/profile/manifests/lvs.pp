@@ -7,6 +7,7 @@ class profile::lvs(
     Array[String] $tagged_subnets = lookup('profile::lvs::tagged_subnets'),
     Hash[String, Hash] $vlan_data = lookup('lvs::interfaces::vlan_data'),
     Hash[String, Hash] $interface_tweaks = lookup('profile::lvs::interface_tweaks'),
+    Boolean $ipip_enabled = lookup('profile::lvs::ipip_enabled'),
 ){
     require profile::lvs::configuration
 
@@ -41,11 +42,35 @@ class profile::lvs(
     }
 
     profile::lvs::tagged_interface {$tagged_subnets:
-        interfaces         => $vlan_data,
+        interfaces   => $vlan_data,
+        ipip_enabled => $ipip_enabled,
     }
 
     # Apply needed interface tweaks
 
-    create_resources(profile::lvs::interface_tweaks, $interface_tweaks)
+    create_resources(profile::lvs::interface_tweaks, $interface_tweaks, {ipip_enabled => $ipip_enabled})
 
+
+    # Install ipip-multiqueue-optimizer
+    package { 'ipip-multiqueue-optimizer':
+        ensure => stdlib::ensure($ipip_enabled),
+    }
+
+    $host_vlan_ifaces = $vlan_data.filter |$vlan_name, $vlan| {
+        $::hostname in $vlan['iface']
+    }.map |$vlan_name, $vlan| {
+        # Interface name comes from profile::lvs::tagged_interface --> interface::tagged
+        "vlan${vlan['id']}"
+    }
+    $host_native_ifaces = $interface_tweaks.map|$iface_name, $tweaks| {
+        $iface_name
+    }
+
+    $optimizer_interfaces = $host_vlan_ifaces + $host_native_ifaces
+    $prometheus_addr = ':9095'
+    systemd::service { 'ipip-multiqueue-optimizer':
+        ensure  => stdlib::ensure($ipip_enabled),
+        content => systemd_template('ipip-multiqueue-optimizer'),
+        restart => false,
+    }
 }

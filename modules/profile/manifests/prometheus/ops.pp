@@ -1350,6 +1350,12 @@ class profile::prometheus::ops (
         port       => 9090,
     }
 
+    prometheus::class_config{ "pybal_ipip-mq-optimizer_${::site}":
+        dest       => "${targets_path}/pybal_ipip-mq-optimizer_${::site}.yaml",
+        class_name => 'profile::lvs',
+        port       => 9095,
+    }
+
     $jmx_exporter_jobs = [
       {
         'job_name'        => 'jmx_logstash',
