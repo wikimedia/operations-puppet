@@ -35,7 +35,7 @@ class profile::thanos::oidc (
       "http://${rule_host}:17902/rule/",
     ]
 
-    class { 'oauth2_proxy::oidc':
+    class { 'profile::oauth2_proxy::oidc':
         upstreams     => $upstreams,
         client_id     => 'thanos_oidc',
         client_secret => $client_secret,
