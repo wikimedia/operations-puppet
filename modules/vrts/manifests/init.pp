@@ -104,6 +104,9 @@ class vrts(
         'libauthen-sasl-perl',
         'libmail-imapclient-perl',
 
+        # Added in 6.4.5 as required
+        'libical-parser-perl',
+
         'default-mysql-client',
 
     ]
