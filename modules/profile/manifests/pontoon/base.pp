@@ -50,7 +50,7 @@ class profile::pontoon::base (
     # that's what the user expect (i.e. these two certs will 'just work')
     # and the filenames must be compatible with what will work in production
 
-    file { '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt':
+    file { '/usr/share/ca-certificates/wikimedia/Puppet5_Internal_CA.crt':
         ensure => present,
         source => '/var/lib/puppet/ssl/certs/ca.pem',
         notify => Exec['reconfigure-wmf-certificates'],
