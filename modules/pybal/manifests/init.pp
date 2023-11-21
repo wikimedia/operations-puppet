@@ -1,11 +1,6 @@
 class pybal {
 
-    ensure_packages(['ipvsadm'])
-
-    # In bullseye, we install Pybal from component.
-    apt::package_from_component { 'pybal':
-        component => 'component/pybal',
-    }
+    ensure_packages(['ipvsadm', 'pybal'])
 
     file { '/etc/default/pybal':
         mode    => '0555',
