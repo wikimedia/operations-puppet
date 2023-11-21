@@ -345,7 +345,7 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
     xfp: https
     split:
-      percentage: 20
+      percentage: 30
       service: "mw-api-int"
       upstream: "mw-api-int.discovery.wmnet"
       keepalive: "4s"
