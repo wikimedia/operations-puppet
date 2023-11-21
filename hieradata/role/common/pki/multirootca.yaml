@@ -95,6 +95,12 @@ profile::pki::multirootca::intermediates:
       - 'digital signature'
       - 'key encipherment'
       - 'server auth'
+    profiles:
+      mtls:
+        usages:
+        - 'digital signature'
+        - 'key encipherment'
+        - 'client auth'
   wikikube:
     # Main CA for the wikikube kubernetes cluster
     # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
