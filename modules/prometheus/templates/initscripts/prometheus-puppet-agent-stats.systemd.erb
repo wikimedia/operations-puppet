@@ -6,7 +6,7 @@ After=puppet-agent-timer.service
 [Service]
 User=root
 Type=oneshot
-ExecStart=/usr/local/bin/prometheus-puppet-agent-stats --outfile <%= @outfile %>
+ExecStart=/usr/local/bin/prometheus-puppet-agent-stats --outfile <%= @outfile %> <%- if @debug %> --debug<% end %>
 
 [Install]
 WantedBy=puppet-agent-timer.service

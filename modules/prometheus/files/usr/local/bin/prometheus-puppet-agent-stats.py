@@ -92,8 +92,11 @@ def _summary_stats(registry: CollectorRegistry, puppet_state_dir: Optional[Path]
         return
 
     if not summary_yaml:
+        log.error('Summary yaml is falsy')
         failed.set(1)
         return
+
+    log.debug('Parsed YAML: %s', summary_yaml)
 
     if 'time' in summary_yaml:
         last_run.set(summary_yaml['time'].get('last_run', 0))

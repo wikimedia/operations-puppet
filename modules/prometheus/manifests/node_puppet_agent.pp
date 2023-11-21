@@ -4,8 +4,9 @@
 #
 
 class prometheus::node_puppet_agent (
-    Wmflib::Ensure $ensure = 'present',
+    Wmflib::Ensure       $ensure  = 'present',
     Stdlib::AbsolutePath $outfile = '/var/lib/prometheus/node.d/puppet_agent.prom',
+    Boolean              $debug   = false,
 ) {
     if !($outfile =~ /\.prom$/) {
         fail("\$outfile should end with '.prom' but is [${outfile}]")
