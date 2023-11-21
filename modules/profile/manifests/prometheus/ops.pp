@@ -1651,11 +1651,33 @@ class profile::prometheus::ops (
                 },
             ],
         },
+        {
+            'job_name'        => 'rsyslog-receiver',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/rsyslog-receiver_*.yaml" ]}
+            ],
+            # drop metrics for actions without an explicity assigned name
+            # to prevent metrics explosion
+            'metric_relabel_configs' => [
+                { 'source_labels' => ['action'],
+                    'regex'  => 'action-\d+-.*(?:.*)',
+                    'action' => 'drop',
+                },
+            ],
+        },
     ]
+
     prometheus::class_config { "rsyslog_${::site}":
         dest       => "${targets_path}/rsyslog_${::site}.yaml",
         class_name => 'profile::prometheus::rsyslog_exporter',
         port       => 9105,
+    }
+
+    prometheus::class_config { "rsyslog-receiver_${::site}":
+        dest       => "${targets_path}/rsyslog-receiver_${::site}.yaml",
+        class_name => 'role::syslog::centralserver',
+        port       => 9110,
     }
 
     $pdns_rec_jobs = [
