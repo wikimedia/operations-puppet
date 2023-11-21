@@ -217,6 +217,8 @@ class profile::analytics::refinery::job::refine(
         'ResourceTiming',        # Schema is deleted.
         'RUMSpeedIndex',         # Schema is deleted.
         'LayoutShift',           # Schema is deleted.
+        'FeaturePolicyViolation', # Instrumentation has been removed: https://phabricator.wikimedia.org/T209572#8774403
+        'SpecialMuteSubmit',      # Instrumentation has been removed: https://phabricator.wikimedia.org/T329718
     ]
     $eventlogging_legacy_table_exclude_regex = downcase("^(${join($eventlogging_legacy_table_exclude_list, '|')})$")
 
