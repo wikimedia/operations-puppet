@@ -105,7 +105,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'aqs*':
-    - reuse-parts-test.cfg
+    - reuse-parts.cfg
     - partman/custom/reuse-aqs-cassandra-8ssd-2srv.cfg
   'archiva*':
     - partman/flat.cfg
