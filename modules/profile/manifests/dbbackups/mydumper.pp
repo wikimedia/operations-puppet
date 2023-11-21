@@ -7,13 +7,23 @@
 # dbbackups::bacula class.
 #
 # Arguments:
-# * enabled: A boolean value that, if false, removes the execution
-#            of the systemd timer (defaulting to true for backwards
-#            compatiblity)
-# * schedule: A string containing the systemd timer's execution
-#             schedule definition (defaulting to
-#             'Tue *-*-* 00:00:00' for backwards compatibility)
-
+# * enabled:    A boolean value that, if false, removes the execution
+#               of the systemd timer (defaulting to true for backwards
+#               compatiblity)
+# * schedule:   A string containing the systemd timer's execution
+#               schedule definition (defaulting to
+#               'Tue *-*-* 00:00:00' for backwards compatibility)
+# * config:     Relative path where the template with the dbbackups
+#               config is, by default, on:
+#               profile/dbbackups/${::hostname}.cnf.erb
+# * statistics: Relative path where the template with the mysql
+#               ini file is on puppet. If not given, we assume
+#               the backup will not be monitored and the file is not
+#               created (used like that by Cloud team at some point).
+# * stats_db:   Database used to configure the statistics file, which
+#               will be used to connect to the right schema.
+# * stats_ca:   CA certificate used to configure the statistics file, which
+#               will be used to connect using TLS (and enforce it).
 class profile::dbbackups::mydumper (
     Boolean $enabled  = lookup('profile::dbbackups::mydumper::enabled',
       {default_value => true}),
