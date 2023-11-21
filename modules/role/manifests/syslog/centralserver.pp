@@ -18,5 +18,7 @@ class role::syslog::centralserver {
     include ::profile::benthos
 
     # https://phabricator.wikimedia.org/T199406
-    include ::toil::rsyslog_tls_remedy # lint:ignore:wmf_styleguide
+    class { '::toil::rsyslog_tls_remedy':
+        ensure => absent,
+    }
 }
