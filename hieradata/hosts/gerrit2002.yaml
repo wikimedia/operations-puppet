@@ -3,3 +3,6 @@ profile::gerrit::ipv6: '2620:0:860:4:208:80:153:104'
 
 profile::gerrit::backups_enabled: false
 profile::gerrit::is_replica: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
