@@ -10,8 +10,7 @@ class mediawiki::packages {
         'ghostscript', 'djvulibre-bin', 'librsvg2-bin', 'libtiff-tools', 'poppler-utils',
         # SecurePoll is incompatible with gpg2 (T209802)
         'gnupg1',
+        # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
+        'python3-pil',
     ])
-
-    # Used by captcha.py from ConfirmEdit extension (used to generate captchas)
-    ensure_packages(['python-pil', 'python3-pil'])
 }
