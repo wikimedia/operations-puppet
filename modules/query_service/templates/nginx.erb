@@ -77,17 +77,6 @@ server {
         echo_flush;
     }
 
-    # Temporarily ban a User-Agent sending problematic queries
-    # Note ~ means case sensitive match, need to surround regex w/ "" also
-    if ($http_user_agent ~ "My User Agent.*") {
-        return 429;
-    }
-
-    # Temporarily ban dailymotion (2021-09-09)
-    if ($http_user_agent ~ "VideocatalogTopic.*") {
-        return 429;
-    }
-
 <% if @oauth -%>
     location /error403 {
       internal;
