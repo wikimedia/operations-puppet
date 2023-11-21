@@ -88,10 +88,9 @@ define rsync::server::module (
     }
   }
 
-  file { "${rsync::server::rsync_fragments}/frag-${name}":
-    ensure  => $ensure,
+  concat::fragment { "${rsync::server::rsync_conf}-${name}":
+    target  => $::rsync::server::rsync_conf,
     content => template('rsync/module.erb'),
-    notify  => Exec['compile fragments'],
   }
 
   if $auto_ferm and $hosts_allow {

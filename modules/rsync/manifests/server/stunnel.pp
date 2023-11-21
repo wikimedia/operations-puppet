@@ -29,7 +29,7 @@ class rsync::server::stunnel(
         ensure    => $ensure_service,
         enable    => true,
         subscribe => [
-            Exec['compile fragments'],
+            Concat[$rsync::server::rsync_conf],
             File['/etc/default/rsync', '/etc/stunnel/rsync.conf'],
             File_line['enable_stunnel'],
             Package['stunnel4'],
