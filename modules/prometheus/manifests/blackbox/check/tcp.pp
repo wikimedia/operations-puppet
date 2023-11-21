@@ -32,7 +32,7 @@
     Integer[1,120]                          $certificate_expiry_days = 10,
     Pattern[/\d+[ms]/]                      $timeout                 = '3s',
     Boolean                                 $use_client_auth         = false,
-    # puppet agent certs exported in profile::prometheus::blackbox_exporter
+    # puppet agent certs exported in profile::prometheus::ops
     Stdlib::Unixpath                        $client_auth_cert        = '/etc/prometheus/ssl/cert.pem',
     Stdlib::Unixpath                        $client_auth_key         = '/etc/prometheus/ssl/server.key',
     Wmflib::Sites                           $site                    = $::site,  # lint:ignore:top_scope_facts

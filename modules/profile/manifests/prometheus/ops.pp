@@ -90,10 +90,18 @@ class profile::prometheus::ops (
 
     # We need a deterministic location for client certificates to use for exported
     # blackbox checks e.g. prometheus::blackbox::check::{http,tcp} with use_client_auth
-    puppet::expose_agent_certs { '/etc/prometheus':
-        ensure          => 'present',
-        user            => 'prometheus',
-        provide_private => true,
+    $certs = profile::pki::get_cert('puppet_rsa', "blackbox.${facts['networking']['fqdn']}", {
+        owner   => 'prometheus',
+        profile => 'mtls',
+        outdir  => '/etc/prometheus/ssl',
+    })
+    file { '/etc/prometheus/ssl/cert.pem':
+        ensure => link,
+        target => $certs['cert'],
+    }
+    file { '/etc/prometheus/ssl/server.key':
+        ensure => link,
+        target => $certs['key'],
     }
 
     class{ '::prometheus::blackbox_exporter':
