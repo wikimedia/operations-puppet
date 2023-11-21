@@ -258,7 +258,7 @@ profile::gitlab::runner::allowed_images:
   # Elasticsearch official - T327519:
   - "docker.elastic.co/elasticsearch/*:*"
   # Toolforge CI images
-  - "docker-registry.tools.wmflabs.org/cloud-cicd*"
+  - "docker-registry.tools.wmflabs.org/**/*"
   # SonarQube cli image
   - "sonarsource/sonar-scanner-cli:*"
 profile::gitlab::runner::allowed_docker_services:
