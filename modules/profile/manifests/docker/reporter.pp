@@ -12,6 +12,7 @@ class profile::docker::reporter(
     profile::docker::reporter::report {
         default:
             ensure => $report_ensure,
+            team   => 'ServiceOps',
             proxy  => $proxy,
             ;
         # Report on base images and production-images
@@ -20,7 +21,6 @@ class profile::docker::reporter(
             ;
         # Report on images used in production on k8s
         'k8s':
-            team      => 'ServiceOps',
             frequency => 'weekly',
             ;
     }
