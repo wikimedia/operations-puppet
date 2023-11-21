@@ -106,3 +106,6 @@ profile::contacts::role_contacts: ['ServiceOps-Collab']
 
 # don't exclude /var/lib/docker T327435
 prometheus::node_exporter::ignored_mount_points: '^/(sys|proc|dev|var/lib/kubelet)($|/)'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
