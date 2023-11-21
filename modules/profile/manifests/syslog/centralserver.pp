@@ -87,13 +87,6 @@ class profile::syslog::centralserver (
         class { 'profile::rsyslog::netdev_kafka_relay': }
     }
 
-
-    monitoring::service { "syslog::centralserver ${::hostname} syslog-tls":
-        description   => 'rsyslog TLS listener on port 6514',
-        check_command => "check_ssl_on_host_port!${::fqdn}!${::fqdn}!6514",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Logs',
-    }
-
     prometheus::blackbox::check::tcp { 'rsyslog-receiver':
         port        => 6514,
         force_tls   => true,
