@@ -55,6 +55,7 @@ profile::lvs::realserver::pools:
   k8s-ingress-wikikube: {}
   mw-api-ext: {}
   mw-api-int: {}
+  mw-jobrunner: {}
   mw-web: {}
   mw-wikifunctions: {}
   device-analytics: {}

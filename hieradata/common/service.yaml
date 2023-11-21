@@ -1681,6 +1681,7 @@ service::catalog:
     probes:
       - type: http
         path: /w/health-check.php
+        host: mw-jobrunner.discovery.wmnet
     port: 4448
     sites:
       - eqiad
