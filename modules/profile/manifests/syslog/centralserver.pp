@@ -88,9 +88,10 @@ class profile::syslog::centralserver (
     }
 
     prometheus::blackbox::check::tcp { 'rsyslog-receiver':
-        port        => 6514,
-        force_tls   => true,
-        server_name => $facts['networking']['fqdn'],
+        port            => 6514,
+        force_tls       => true,
+        server_name     => $facts['networking']['fqdn'],
+        use_client_auth => true,
     }
 
     mtail::program { 'kernel':
