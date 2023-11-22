@@ -5,5 +5,5 @@ profile::base::certificates::trusted_certs:
   package: 'wmf-certificates'
   bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
   certs:
-  - '/usr/share/ca-certificates/wikimedia/Puppet_Internal_CA.crt'
+  - '/usr/share/ca-certificates/wikimedia/Puppet5_Internal_CA.crt'
   - '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt'
