@@ -9,14 +9,19 @@
 # 3. Swap code via a symlink
 # 4. Evict puppetserver's cached code:
 #	 - https://www.puppet.com/docs/puppet/7/configuration#environment-timeout
+#
+# TODO:
+# - support deploying other environments, we can't symlink
+#   ${codedir}/environments, because puppetserver manages that directory and will
+#   overwrite the symlink with a directory
 
 set -o errexit
 set -o nounset
 
 function cleanup {
 	local exit_code=$?
-	if [[ -v 'old_dir' ]] && [[ -d "$old_dir" ]]; then
-		rm -r "$old_dir"
+	if [[ -v 'OLD_DIR' ]] && [[ -d "$OLD_DIR" ]]; then
+		rm -r "$OLD_DIR"
 	fi
 	return $exit_code
 }
@@ -24,18 +29,20 @@ function cleanup {
 trap cleanup SIGINT SIGHUP SIGABRT EXIT
 
 function main {
-	local codedir
+	local codedir envdir g10k_envdir new_dir
 	codedir=$(puppet config --section server print codedir)
-	# g10k populates ${code_dir}/environments_staging
+	envdir="${codedir}/environments"
+	g10k_envdir="${codedir}/environments_staging"
+	# g10k populates ${codedir}/environments_staging/production
 	g10k -quiet -config /etc/puppet/g10k.conf
-	new_dir=$(mktemp --directory --tmpdir="${codedir}" env.XXXXXXXXXX)
+	new_dir=$(mktemp --directory --tmpdir="${envdir}" env.XXXXXXXXXX)
 	mv --no-target-directory \
-		"${codedir}/environments_staging" "$new_dir"
-	if [[ -L "${codedir}/environments" ]]; then
-		old_dir=$(realpath "${codedir}/environments")
+		"${g10k_envdir}/production" "$new_dir"
+	if [[ -L "${envdir}/production" ]]; then
+		OLD_DIR=$(realpath "${envdir}/production")
 	fi
 	ln --no-target-directory --symbolic --force \
-		"$new_dir" "${codedir}/environments"
+		"$new_dir" "${envdir}/production"
 	printf 'INFO: Puppet code deployed\n'
 
 	if http_code=$(
