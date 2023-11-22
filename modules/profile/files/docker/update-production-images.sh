@@ -22,5 +22,5 @@ for imgdir in images istio cert-manager;
     "${REPO}/weekly-update.sh" "$imgdir"
 done
 # Now rebuild. Use --info to send logs to stdout to be captured by journald
-IMAGE_BASEDIR=$REPO /usr/local/bin/build-production-images --info
+IMAGE_BASEDIR=$REPO /usr/local/bin/manage-production-images --info build
 popd
