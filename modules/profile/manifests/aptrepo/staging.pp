@@ -49,7 +49,7 @@ class profile::aptrepo::staging (
     group  => 'apt-uploader',
   }
 
-  file { '/etc/rsync.d/secrets':
+  file { '/etc/rsync-apt-auth-secrets':
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -70,6 +70,6 @@ class profile::aptrepo::staging (
       auto_ferm      => true,
       auto_ferm_ipv6 => true,
       auth_users     => ['apt-publisher'],
-      secrets_file   => '/etc/rsync.d/secrets',
+      secrets_file   => '/etc/rsync-apt-auth-secrets',
   }
 }
