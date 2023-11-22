@@ -23,11 +23,16 @@ class profile::etcd::tlsproxy(
     # this is a hash of user => password
     $accounts = $passwords::etcd::accounts
 
-    # The testserver cluster is a bit peculiar: it is in conftool but doesn't have a load-balancer.
-    # So we need to add it to the list manually.
+    # Clusters that are in conftool but do not have standard load balancers
+    # and so are not in hieradata/common/service.yaml.
     $base_acls = {
+        # Used for managing scap pools only, no load balancing
         '/conftool/v1/pools/eqiad/testserver' => ['root', 'conftool', 'pool-eqiad-testserver'],
         '/conftool/v1/pools/codfw/testserver' => ['root', 'conftool', 'pool-codfw-testserver'],
+
+        # Load balanced via cloudlb servers
+        '/conftool/v1/pools/eqiad/wikireplica-db-analytics' => ['root', 'conftool', 'pool-eqiad-wikireplica-db-analytics'],
+        '/conftool/v1/pools/eqiad/wikireplica-db-web'       => ['root', 'conftool', 'pool-eqiad-wikireplica-db-web'],
     }
 
     # Autogenerate the acls for all the conftool pools.
