@@ -88,9 +88,11 @@ define rsync::server::module (
     }
   }
 
-  concat::fragment { "${rsync::server::rsync_conf}-${name}":
-    target  => $::rsync::server::rsync_conf,
-    content => template('rsync/module.erb'),
+  if $ensure == 'present' {
+    concat::fragment { "${rsync::server::rsync_conf}-${name}":
+      target  => $::rsync::server::rsync_conf,
+      content => template('rsync/module.erb'),
+    }
   }
 
   if $auto_ferm and $hosts_allow {
