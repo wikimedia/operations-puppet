@@ -8,7 +8,11 @@ Group=<%= @daemon_user %>
 Type=simple
 EnvironmentFile=/etc/default/gerrit
 ExecStart=<%= @java_home %>/bin/java <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %> -jar <%= @gerrit_site %>/bin/gerrit.war daemon -d <%= @gerrit_site %><% if @replica %> --replica --enable-httpd<% end %>
+
+# JVM exit code is 128 + <signal>
 KillSignal=SIGINT
+SuccessExitStatus=130
+
 # NOFILE :  GERRIT_FDS, determined by "core.packedGitOpenFiles" in the script
 LimitNOFILE=<%= @git_open_files %>
 Restart=always
