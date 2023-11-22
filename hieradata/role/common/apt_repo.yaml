@@ -219,9 +219,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'druid1009|druid101[01]':
     - partman/standard.cfg
     - partman/raid10-8dev.cfg
-  'druid*':
+  'druid100[7-8]':
     - partman/standard.cfg
-    - partman/raid10-4dev.cfg
+    - partman/reuse-raid10-4dev.cfg
   'dse-k8s-etcd*':
     - partman/flat.cfg
     - virtual.cfg
