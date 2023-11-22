@@ -11,3 +11,6 @@ profile::analytics::postgresql::databases:
   - airflow_search
   - airflow_analytics_product
   - airflow_wmde
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
