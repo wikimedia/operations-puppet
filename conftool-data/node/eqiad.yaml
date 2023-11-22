@@ -184,7 +184,6 @@ eqiad:
     cp1107.eqiad.wmnet: [cdn, ats-be]
     cp1109.eqiad.wmnet: [cdn, ats-be]
     cp1111.eqiad.wmnet: [cdn, ats-be]
-    cp1113.eqiad.wmnet: [cdn, ats-be]
     cp1115.eqiad.wmnet: [cdn, ats-be]
   parsoid:
     parse1001.eqiad.wmnet: [parsoid-php, canary]

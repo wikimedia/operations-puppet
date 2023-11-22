@@ -1393,8 +1393,8 @@ cache_hosts:
 - 2620:0:861:103:10:64:32:65     # cp1111.eqiad.wmnet
 - 10.64.48.16                    # cp1112.eqiad.wmnet
 - 2620:0:861:107:10:64:48:16     # cp1112.eqiad.wmnet
-- 10.64.53.17                    # cp1113.eqiad.wmnet
-- 2620:0:861:108:10:64:53:17     # cp1113.eqiad.wmnet
+- 10.64.48.41                    # cp1113.eqiad.wmnet
+- 2620:0:861:107:10:64:48:41     # cp1113.eqiad.wmnet
 - 10.64.48.27                    # cp1114.eqiad.wmnet
 - 2620:0:861:107:10:64:48:27     # cp1114.eqiad.wmnet
 - 10.64.48.28                    # cp1115.eqiad.wmnet
