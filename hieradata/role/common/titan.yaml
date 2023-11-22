@@ -67,3 +67,6 @@ profile::thanos::store::max_time: '-15d'
 profile::thanos::retention::raw: '54w'
 
 profile::thanos::oidc_sso_enabled: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
