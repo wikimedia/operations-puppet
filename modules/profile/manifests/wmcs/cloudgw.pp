@@ -34,11 +34,9 @@ class profile::wmcs::cloudgw (
         content => template('profile/wmcs/cloudgw/cloudgw.nft.erb'),
     }
 
-    $rt_table_number = 10
     $rt_table_name = 'cloudgw'
-    file { "/etc/iproute2/rt_tables.d/${rt_table_name}.conf":
-        ensure  => present,
-        content => "${rt_table_number} ${rt_table_name}\n",
+    interface::routing_table { $rt_table_name:
+        number => 10,
     }
 
     $vrf_interface = 'vrf-cloudgw'

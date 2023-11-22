@@ -22,11 +22,8 @@ class profile::wmcs::cloud_private_subnet::bgp (
     }
 
     $table = 'cloud-private'
-    $table_number = 100
-
-    file { "/etc/iproute2/rt_tables.d/${table}.conf":
-        ensure  => present,
-        content => "${table_number} ${table}\n",
+    interface::routing_table { $table:
+        number => 100,
     }
 
     interface::post_up_command { "${table}_default_gw":

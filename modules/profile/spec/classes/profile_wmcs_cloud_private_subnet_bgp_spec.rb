@@ -62,9 +62,8 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
               .with_neighbors_list(["172.20.5.1"])
       }
       it {
-        is_expected.to contain_file("/etc/iproute2/rt_tables.d/cloud-private.conf")
-              .with_ensure("present")
-              .with_content("100 cloud-private\n")
+        is_expected.to contain_interface__routing_table("cloud-private")
+              .with_number(100)
       }
       it {
         is_expected.to contain_interface__post_up_command("cloud-private_default_gw")
