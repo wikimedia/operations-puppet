@@ -31,12 +31,9 @@ class varnishkafka {
 
     # Basic rsyslog.d configuration to create /var/log/varnishkafka.log
     if defined(Service['rsyslog']) {
-        file { '/etc/rsyslog.d/70-varnishkafka.conf':
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0444',
-            source => 'puppet:///modules/varnishkafka/varnishkafka_rsyslog.conf',
-            notify =>  Service['rsyslog']
+        rsyslog::conf { 'varnishkafka':
+            priority => 70,
+            source   => 'puppet:///modules/varnishkafka/varnishkafka_rsyslog.conf',
         }
     }
 
