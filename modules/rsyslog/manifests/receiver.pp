@@ -87,36 +87,53 @@ class rsyslog::receiver (
         default: { fail("unknown provider: ${ssl_provider}") }
     }
 
-    systemd::unit { 'rsyslog':
-        ensure   => present,
-        override => true,
-        content  => template('rsyslog/initscripts/rsyslog_receiver.systemd_override.erb'),
+    systemd::service { 'rsyslog-receiver':
+        ensure  => present,
+        content => template('rsyslog/initscripts/rsyslog_receiver.systemd.erb'),
     }
 
-    file { '/etc/rsyslog-receiver':
+    file { ['/etc/rsyslog-receiver', '/etc/rsyslog-receiver/conf.d']:
         ensure => directory,
         owner  => 'root',
         group  => 'root',
         mode   => '0500',
     }
 
-    rsyslog::conf { 'receiver':
+    file { '/var/spool/rsyslog-receiver':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0700',
+    }
+
+    file { '/etc/rsyslog-receiver/main.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/rsyslog/receiver.conf',
+    }
+
+    prometheus::rsyslog_exporter { 'receiver':
+        listen_port => 9110,
+        base        => '/etc/rsyslog-receiver/conf.d',
+    }
+
+    rsyslog::conf { 'input':
         content  => template("${module_name}/receiver.erb.conf"),
+        priority => 10,
+        base     => '/etc/rsyslog-receiver/conf.d',
+    }
+
+    # Remove default instance receiver config
+    rsyslog::conf { 'receiver':
+        ensure   => absent,
         priority => 10,
     }
 
     logrotate::conf { 'rsyslog_receiver':
         ensure  => present,
         content => template("${module_name}/receiver_logrotate.erb.conf"),
-    }
-
-    # disable DNS lookup for remote messages
-    file { '/etc/default/rsyslog':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => 'RSYSLOGD_OPTIONS="-x"',
-        notify  => Service['rsyslog'],
     }
 
     file { $log_directory:
