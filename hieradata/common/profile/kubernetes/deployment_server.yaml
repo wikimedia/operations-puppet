@@ -374,6 +374,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: spark
         - name: spark-deploy
+    spark-history-test:
+      usernames:
+        - name: spark-history-test
+        - name: spark-history-test-deploy
+    spark-history:
+      usernames:
+        - name: spark-history
+        - name: spark-history-deploy
     stream-enrichment-poc:
       usernames:
         - name: stream-enrichment-poc
