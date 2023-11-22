@@ -19,3 +19,6 @@ profile::java::java_packages:
   - version: '11'
     variant: 'jdk'
 profile::java::enable_dbg: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
