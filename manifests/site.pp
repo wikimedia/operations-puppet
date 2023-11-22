@@ -2609,12 +2609,8 @@ node /^ping[12]003\.(eqiad|codfw)\./ {
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
-node /^planet[12]002\.(eqiad|codfw)\./ {
+node /^planet[12]00[23]\.(eqiad|codfw)\./ {
     role(planet)
-}
-
-node /^planet[12]003\.(eqiad|codfw)\./ {
-    role(insetup::serviceops_collab)
 }
 
 node /^poolcounter[12]00[345]\.(codfw|eqiad)\./ {
