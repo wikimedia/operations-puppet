@@ -4,6 +4,7 @@ graphite::production:
 
 syslog::centralserver:
   - pontoon-log-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-log-03.monitoring.eqiad1.wikimedia.cloud
 
 puppetmaster::pontoon:
   - pontoon-puppet-01.monitoring.eqiad1.wikimedia.cloud
