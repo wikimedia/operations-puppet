@@ -5,15 +5,9 @@ https://jobrunner.discovery.wmnet:
   # Cannot reach the web endpoints here
   - path: /w/index.php
     assert_status: 404
-  # Health check is reachable, we can force the php version
+  # Health check is reachable
   - path: /w/health-check.php
     assert_status: 200
-  - path: /w/health-check.php?force_php72=1
-    assert_headers_regex:
-      X-Powered-By: ^PHP/7\.2
-  - path: /w/health-check.php?force_php74=1
-    assert_headers_regex:
-      X-Powered-By: ^PHP/7\.4
   # RunSingleJob only works on POST requests.
   - path: /rpc/RunSingleJob.php
     assert_status: 405
