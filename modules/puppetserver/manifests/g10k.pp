@@ -5,8 +5,8 @@
 # @param cache_dir path to the cache directory
 # @param sources list of sources to configure
 # @param exec_require g10k fails if the destination base directory dose not exit. This profile is
-#        not responsible for creatng that diurectopry as such we pass the define of what ever is
-#        responsible so we can added ias a dependency on the exec resource.
+#        not responsible for creating that directory as such we pass the define of what ever is
+#        responsible so we can add it as a dependency on the exec resource.
 class puppetserver::g10k (
     Wmflib::Ensure                           $ensure       = 'present',
     Stdlib::Unixpath                         $config_file  = '/etc/puppet/g10k.conf',
