@@ -105,7 +105,7 @@ class profile::doc (
     $gitlab_runner_hosts = wmflib::role::hosts('gitlab_runner')
     $jenkins_releases_hosts = wmflib::class::hosts('profile::releases::mediawiki')
 
-    file { '/etc/rsync.d/secrets':
+    file { '/etc/rsync-doc-auth-secrets':
       ensure  => $ensure_on_active,
       owner   => 'root',
       group   => 'root',
@@ -125,11 +125,11 @@ class profile::doc (
         auto_ferm      => true,
         auto_ferm_ipv6 => true,
         auth_users     => ['doc-publisher'],
-        secrets_file   => '/etc/rsync.d/secrets',
+        secrets_file   => '/etc/rsync-doc-auth-secrets',
         require        => [
             User['doc-uploader'],
             File['/srv/doc'],
-            File['/etc/rsync.d/secrets'],
+            File['/etc/rsync-doc-auth-secrets'],
         ],
     }
 
