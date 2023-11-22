@@ -423,7 +423,7 @@ profile::puppetserver::separate_ssldir: true
 profile::puppetserver::enable_jmx: false
 profile::puppetserver::auto_restart: true
 profile::puppetserver::extra_mounts: {}
-profile::puppetserver::environment_timeout: 0
+profile::puppetserver::environment_timeout: 'unlimited'
 profile::puppetserver::hiera_data_dir: "%{lookup('profile::puppetserver::code_dir')}/environments/%{literal('%')}{::environment}/hieradata"
 profile::puppetserver::hierarchy:
   - name: "Http Yaml"
@@ -467,6 +467,7 @@ profile::puppetserver::git::repos:
       "pre-commit": "puppet:///modules/puppetmaster/git/pre-commit"
       "pre-merge": "puppet:///modules/puppetmaster/git/pre-merge"
       "pre-rebase": "puppet:///modules/puppetmaster/git/pre-rebase"
+      'post-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/post-merge.sh'
   "labs/private":
     branch: "master"
     hooks:

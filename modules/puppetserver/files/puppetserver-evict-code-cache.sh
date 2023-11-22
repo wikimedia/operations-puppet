@@ -8,9 +8,9 @@ http_code=$(
 	curl \
 		--silent \
 		--show-error \
-		--cert "$(puppet config print hostcert)" \
-		--key "$(puppet config print hostprivkey)" \
-		--cacert "$(puppet config print cacert)" \
+		--cert "$(puppet config --section server print hostcert)" \
+		--key "$(puppet config --section server print hostprivkey)" \
+		--cacert "$(puppet config --section server print cacert)" \
 		--write-out '%{http_code}\n' \
 		--request DELETE \
 		"https://$(hostname -f):8140/puppet-admin-api/v1/environment-cache"
