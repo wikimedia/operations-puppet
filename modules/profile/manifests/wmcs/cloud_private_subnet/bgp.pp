@@ -26,7 +26,16 @@ class profile::wmcs::cloud_private_subnet::bgp (
         number => 100,
     }
 
+    interface::route { "${table}_default_gw":
+        interface => $interface,
+        address   => 'default',
+        nexthop   => $gw_address,
+        table     => $table,
+        persist   => true,
+    }
+
     interface::post_up_command { "${table}_default_gw":
+        ensure    => absent,
         interface => $interface,
         command   => "ip route add default via ${gw_address} table ${table}",
     }

@@ -66,9 +66,12 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
               .with_number(100)
       }
       it {
-        is_expected.to contain_interface__post_up_command("cloud-private_default_gw")
+        is_expected.to contain_interface__route("cloud-private_default_gw")
               .with_interface("vlan2151")
-              .with_command("ip route add default via 172.20.5.1 table cloud-private")
+              .with_address("default")
+              .with_table("cloud-private")
+              .with_nexthop("172.20.5.1")
+              .with_persist(true)
       }
       it {
         is_expected.to contain_interface__post_up_command("cloud-private_route_lookup_rule_openstack.codfw1dev.wikimediacloud.org")
