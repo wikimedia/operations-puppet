@@ -39,7 +39,8 @@ class profile::puppet::agent (
     if $force_puppet7 {
         if debian::codename::lt('bullseye') {
             # We only have packages for bullseye currently
-            fail('puppet7 is only avalible for bullseye')
+            $msg = wmflib::ansi::fg('puppet7 is not available on buster.  forcing this is likely going to cause issue.', 'red')
+            notify { $msg: }
         } elsif debian::codename::eq('bullseye') {
         # Use the backported version
             apt::package_from_component { 'puppet':
