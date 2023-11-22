@@ -38,8 +38,7 @@ class profile::puppetserver::git (
     # This is required to run g10k as root
     sudo::user { $user:
         privileges => [
-            'ALL = NOPASSWD: /usr/bin/g10k -config /etc/puppet/g10k.conf',
-            'ALL = NOPASSWD: /usr/local/bin/puppetserver-evict-code-cache',
+            'ALL = NOPASSWD: /usr/local/bin/puppetserver-deploy-code',
         ],
     }
 

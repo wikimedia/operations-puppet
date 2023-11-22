@@ -16,7 +16,7 @@ class puppetserver::g10k (
 ) {
     ensure_packages('g10k')
     $_sources =  Hash($sources.map |$items| {
-        [$items[0], { 'basedir' => $puppetserver::environments_dir } + $items[1]]
+        [$items[0], { 'basedir' => "${puppetserver::environments_dir}_staging" } + $items[1]]
     })
     $config = {
         'cachedir' => $cache_dir,

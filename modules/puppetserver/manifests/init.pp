@@ -309,11 +309,11 @@ class puppetserver (
         refreshonly => true,
     }
 
-    file { '/usr/local/bin/puppetserver-evict-code-cache':
+    file { '/usr/local/bin/puppetserver-deploy-code':
         ensure => file,
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/puppetserver/puppetserver-evict-code-cache.sh',
+        source => 'puppet:///modules/puppetserver/puppetserver-deploy-code.sh',
         mode   => '0555',
     }
 }
