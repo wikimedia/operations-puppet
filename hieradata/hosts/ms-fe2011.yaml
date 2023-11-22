@@ -1,0 +1,1 @@
+profile::swift::proxy::use_envoy: true
