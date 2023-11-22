@@ -3,7 +3,7 @@
 
 listen <%= @title %>
 <%- @frontends.each do |frontend| -%>
-    bind *:<%= frontend['port'] %>
+    bind <%= frontend['address'] or '*' %>:<%= frontend['port'] %>
 <%- end -%>
     mode tcp
     option tcpka

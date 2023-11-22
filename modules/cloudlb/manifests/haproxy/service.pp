@@ -61,6 +61,7 @@ define cloudlb::haproxy::service (
         }
 
         $port = $frontend['port']
+        $drange = $frontend['address'].then |$ip| { [$ip] }
 
         firewall::service { "${title}_${port}":
             ensure   => present,
@@ -68,6 +69,7 @@ define cloudlb::haproxy::service (
             port     => $port,
             srange   => $srange,
             src_sets => $src_sets,
+            drange   => $drange,
         }
     }
 }

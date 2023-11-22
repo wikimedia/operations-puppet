@@ -3,7 +3,7 @@
 
 frontend <%= @title %>_frontend
 <%- @frontends.each do |frontend| -%>
-    bind *:<%= frontend['port'] %><% if frontend.include? 'acme_chief_cert_name' %> ssl crt /etc/acmecerts/<%= frontend['acme_chief_cert_name'] %>/live/ec-prime256v1.chained.crt.key<% end %>
+    bind <%= frontend['address'] or '*' %>:<%= frontend['port'] %><% if frontend.include? 'acme_chief_cert_name' %> ssl crt /etc/acmecerts/<%= frontend['acme_chief_cert_name'] %>/live/ec-prime256v1.chained.crt.key<% end %>
 <%- end -%>
     http-request set-header X-Forwarded-Proto https if { ssl_fc }
     acl is-blocked-ip src -f /etc/haproxy/ipblocklist.txt
