@@ -29,7 +29,7 @@ class profile::syslog::centralserver (
     Integer $log_deletion_grace_days                            = lookup('profile::syslog::centralserver::log_deletion_grace_days', {'default_value' => 45}),
     Boolean $use_kafka_relay                                    = lookup('profile::syslog::centralserver::use_kafka_relay', {'default_value' => true}),
     Enum['anon', 'x509/certvalid', 'x509/name'] $tls_auth_mode  = lookup('profile::syslog::centralserver::tls_auth_mode', {'default_value' => 'x509/certvalid'}),
-    Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'ossl'}),
+    Enum['gtls', 'ossl'] $tls_netstream_driver                  = lookup('profile::syslog::centralserver::tls_netstream_driver', {'default_value' => 'gtls'}),
     Enum['fromhost-ip', 'hostname'] $file_template_property     = lookup('profile::syslog::centralserver::file_template_property', {'default_value' => 'hostname'}),
     Optional[Stdlib::Fqdn]  $acme_cert_name                     = lookup('profile::syslog::centralserver::acme_cert_name', {'default_value' => undef}),
     Enum['puppet', 'cfssl'] $ssl_provider                      = lookup('profile::syslog::centralserver::ssl_provider', {'default_value' => 'puppet'}),
