@@ -4,7 +4,7 @@ class cloudlb::haproxy::wikireplicas::frontend (
     Hash[String[1], Hash[String[1], Stdlib::IP::Address::Nosubnet]] $frontends,
     Hash[String[1], String[1]]                                      $backups,
 ) {
-    file { '/etc/haproxy/conf.d/wiki-replica-backends.cfg':
+    file { '/etc/haproxy/conf.d/wiki-replica-frontends.cfg':
         ensure  => present,
         owner   => 'root',
         group   => 'root',
