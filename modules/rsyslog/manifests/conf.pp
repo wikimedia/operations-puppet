@@ -28,16 +28,17 @@
 #  }
 #
 define rsyslog::conf (
-    Wmflib::Ensure $ensure    = present,
-    Optional[String] $content = undef,
-    Optional[String] $source  = undef,
-    Integer[0, 99] $priority  = 60,
-    Stdlib::Filemode $mode    = '0444',
+    Wmflib::Ensure $ensure     = present,
+    Optional[String] $content  = undef,
+    Optional[String] $source   = undef,
+    Integer[0, 99] $priority   = 60,
+    Stdlib::Filemode $mode     = '0444',
+    Stdlib::Absolutepath $base = '/etc/rsyslog.d',
 ) {
     include ::rsyslog
 
     $basename = regsubst($title, '[\W_]', '-', 'G')
-    $filename = sprintf('/etc/rsyslog.d/%02d-%s.conf', $priority, $basename)
+    $filename = sprintf('%s/%02d-%s.conf', $base, $priority, $basename)
 
     file { $filename:
         ensure  => $ensure,
