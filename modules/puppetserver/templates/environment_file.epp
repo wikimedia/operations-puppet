@@ -16,7 +16,7 @@
   "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:${jmx_port}:${jmx_config}",
   ""
 ) -%>
-JAVA_ARGS="-Xms<%= $java_max_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger <%= $jmx_ops %>"
+JAVA_ARGS="-Xms<%= $java_start_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger <%= $jmx_ops %>"
 
 # Modify this as you would JAVA_ARGS but for non-service related subcommands
 JAVA_ARGS_CLI="${JAVA_ARGS_CLI:-}"
