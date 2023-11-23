@@ -116,13 +116,13 @@ class rsyslog::receiver (
 
     prometheus::rsyslog_exporter { 'receiver':
         listen_port => 9110,
-        base        => '/etc/rsyslog-receiver/conf.d',
+        instance    => 'receiver',
     }
 
     rsyslog::conf { 'input':
         content  => template("${module_name}/receiver.erb.conf"),
         priority => 10,
-        base     => '/etc/rsyslog-receiver/conf.d',
+        instance => 'receiver',
     }
 
     # Remove default instance receiver config

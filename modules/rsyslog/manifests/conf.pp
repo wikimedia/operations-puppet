@@ -20,6 +20,10 @@
 #   If you're not sure, leave this unspecified. The default value of 60
 #   should suit most cases.
 #
+# [*instance*]
+#   The rsyslog instance to install this configuration for. Defaults to
+#   the system's rsyslog instance.
+#
 # === Examples
 #
 #  rsyslog::conf { 'hadoop':
@@ -33,9 +37,17 @@ define rsyslog::conf (
     Optional[String] $source   = undef,
     Integer[0, 99] $priority   = 60,
     Stdlib::Filemode $mode     = '0444',
-    Stdlib::Absolutepath $base = '/etc/rsyslog.d',
+    Optional[String] $instance = undef,
 ) {
     include ::rsyslog
+
+    if $instance == undef {
+        $base = '/etc/rsyslog.d'
+        $service = 'rsyslog'
+    } else {
+        $base = "/etc/rsyslog-${instance}/conf.d"
+        $service = "rsyslog-${instance}"
+    }
 
     $basename = regsubst($title, '[\W_]', '-', 'G')
     $filename = sprintf('%s/%02d-%s.conf', $base, $priority, $basename)
@@ -47,6 +59,6 @@ define rsyslog::conf (
         owner   => 'root',
         group   => 'root',
         mode    => $mode,
-        notify  => Service['rsyslog'],
+        notify  => Service[$service],
     }
 }

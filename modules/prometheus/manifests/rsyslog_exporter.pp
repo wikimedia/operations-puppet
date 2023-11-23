@@ -5,7 +5,7 @@ define prometheus::rsyslog_exporter (
                                               false => $facts['networking']['ip'],
                                           },
     Stdlib::Port         $listen_port    = 9105,
-    Stdlib::Absolutepath $base           = '/etc/rsyslog.d',
+    Optional[String]     $instance       = undef,
 ) {
     ensure_packages(['prometheus-rsyslog-exporter'])
 
@@ -15,7 +15,7 @@ define prometheus::rsyslog_exporter (
         ensure   => $ensure,
         content  => template("${module_name}/rsyslog_exporter.conf.erb"),
         priority => 10,
-        base     => $base,
+        instance => $instance,
     }
 
     # Legacy name
