@@ -11,14 +11,16 @@ define interface::manual(
             "set iface[. = '${interface}']/method 'manual'",
     ]
 
-    if ensure == 'absent' {
+    if $ensure == 'absent' {
         file_line { "rm_${interface}_manual":
             ensure            => absent,
+            path              => '/etc/network/interfaces',
             match             => "iface ${interface} ${family} manual",
             match_for_absence => true,
         }
         file_line { "rm_hotplug_${interface}":
             ensure            => absent,
+            path              => '/etc/network/interfaces',
             match             => "allow-hotplug ${interface}",
             match_for_absence => true,
         }
