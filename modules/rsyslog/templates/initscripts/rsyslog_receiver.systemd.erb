@@ -10,6 +10,7 @@ Type=notify
 ExecStart=/usr/sbin/rsyslogd -n -iNONE -x -f /etc/rsyslog-receiver/main.conf
 StandardOutput=null
 Restart=on-failure
+SyslogIdentifier=rsyslog-receiver
 
 # Increase the default a bit in order to allow many simultaneous
 # files to be monitored, we might need a lot of fds.
