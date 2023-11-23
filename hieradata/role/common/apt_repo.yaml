@@ -195,7 +195,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'dborch*':
     - partman/flat.cfg
     - virtual.cfg
-  'dbproxy1*':
+  'dbproxy*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'debmonitor*':
