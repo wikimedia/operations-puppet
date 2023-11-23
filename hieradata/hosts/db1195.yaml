@@ -1,5 +1,4 @@
 # db1195
-# m2 master
+# old m2 master
 mariadb::shard: 'm2'
-profile::mariadb::mysql_role: 'master'
-profile::monitoring::is_critical: true
+profile::monitoring::is_critical: false
