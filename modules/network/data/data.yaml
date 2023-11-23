@@ -102,12 +102,7 @@ network::subnets:
         cloud-hosts1-eqiad:
           ipv4: 10.64.20.0/24
           ipv6: 2620:0:861:118::/64
-        labs-hosts1-d-eqiad:
-          ipv4: 10.64.52.0/24
-        labs-support1-a-eqiad:
-          ipv4: 10.64.4.0/24
-          ipv6: 2620:0:861:117::/64
-        labs-support1-c-eqiad:
+        cloud-support1-c-eqiad:
           ipv4: 10.64.37.0/24
           ipv6: 2620:0:861:119::/64
         analytics1-a-eqiad:
@@ -326,7 +321,7 @@ network::subnets:
         private1-b8-codfw:
           ipv4: 10.192.22.0/24
           ipv6: 2620:0:860:112::/64
-        cloud-hosts1-codfw:
+        cloud-hosts1-b1-codfw:
           ipv4: 10.192.20.0/24
           ipv6: 2620:0:860:118::/64
         private1-lvs-codfw:

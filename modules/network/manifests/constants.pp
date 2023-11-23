@@ -85,11 +85,6 @@ class network::constants {
                 'description' => 'private\d?-[abcdef]\d?-',
                 }),
             slice_network_constants('production', {
-                'site'        => 'eqiad',
-                'sphere'      => 'private',
-                'description' => 'labs-support',
-                }),
-            slice_network_constants('production', {
                 'sphere'      => 'private',
                 'description' => '-kubepods-',
                 }),
