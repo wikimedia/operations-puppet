@@ -32,5 +32,4 @@ ruleset(name="ruleset_netdev_kafka_relay" queue.type="LinkedList") {
 
 }
 
-$ModLoad imudp
 input(type="imudp" port="<%= @port %>" ruleset="ruleset_netdev_kafka_relay")

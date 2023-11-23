@@ -25,6 +25,13 @@ class profile::rsyslog::netdev_kafka_relay (
     rsyslog::conf { 'netdev_kafka_relay':
         content  => template('profile/rsyslog/netdev_kafka_relay.conf.erb'),
         priority => 50,
+        instance => 'receiver',
     }
 
+    # Templates required by netdev_kafka_relay output
+    rsyslog::conf { 'template_syslog_json':
+        source   => 'puppet:///modules/profile/rsyslog/template_syslog_json.conf',
+        priority => 10,
+        instance => 'receiver',
+    }
 }
