@@ -116,6 +116,12 @@ class profile::puppetserver (
         ca_private_key  => $ca_private_key,
     }
 
+    # TODO: move to puppetserver class
+    class { 'puppetmaster::ca_monitoring':
+        ensure  => $enable_ca.bool2str('present', 'absent'),
+        ca_root => $puppetserver::ca_dir,
+    }
+
     puppetserver::rsync_module { 'ca':
         path     => $ca_dir,
         hosts    => wmflib::class::hosts('puppetserver::ca'),
