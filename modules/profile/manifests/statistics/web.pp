@@ -18,8 +18,8 @@ class profile::statistics::web(
     class { '::statistics::sites::stats': }
     class { '::statistics::sites::analytics': }
 
-    ferm::service {'statistics-web':
+    firewall::service {'statistics-web':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
     }
 }
