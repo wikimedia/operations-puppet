@@ -25,6 +25,7 @@ class profile::rsyslog::netdev_kafka_relay (
     rsyslog::conf { 'netdev_kafka_relay':
         content  => template('profile/rsyslog/netdev_kafka_relay.conf.erb'),
         priority => 50,
+        base     => '/etc/rsyslog-receiver/conf.d',
     }
 
 }
