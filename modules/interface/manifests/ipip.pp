@@ -39,11 +39,13 @@ define interface::ipip(
 
         file_line { "rm_${interface}_set_up":
             ensure            => absent,
+            path              => '/etc/network/interfaces',
             match             => $ip_link_up,
             match_for_absence => true,
         }
         file_line { "rm_${interface}_add_up":
             ensure            => absent,
+            path              => '/etc/network/interfaces',
             match             => $ip_link_add,
             match_for_absence => true,
         }
