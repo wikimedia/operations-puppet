@@ -740,7 +740,7 @@ node /^db1(137|179|220)\.eqiad\./ {
 }
 
 # codfw
-node /^db2(096|115|131)\.codfw\./ {
+node /^db2(096|115|131|191)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -756,7 +756,7 @@ node /^db21(42|43|44)\.codfw\./ {
 }
 
 # New db hosts to be setup T342174
-node /^db21(91|94)\.codfw\./ {
+node /^db2194\.codfw\./ {
     role(insetup::data_persistence)
 }
 
