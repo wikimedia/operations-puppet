@@ -716,7 +716,7 @@ node /^db1167\.eqiad\./ {
 
 # s8 (wikidata) core production dbs on codfw
 # See also db2167 db2168 below
-node /^db2(152|154|161|162|163|165|166|181)\.codfw\./ {
+node /^db2(152|154|161|162|163|165|166|181|195)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -756,7 +756,7 @@ node /^db21(42|43|44)\.codfw\./ {
 }
 
 # New db hosts to be setup T342174
-node /^db21(91|94|95)\.codfw\./ {
+node /^db21(91|94)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
