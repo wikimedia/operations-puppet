@@ -39,23 +39,6 @@ class profile::mediawiki::php(
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]
-    # Use component/php72. The core php7.2 package is imported from Ondrej Sury's repository,
-    # but it's rebuilt (along with a range of extensions) against Stretch only (while
-    # the repository also imports/forks a number of low level libraries to accomodate
-    # the PHP packages for older distros
-    if ('7.2' in $php_versions) {
-        apt::repository { 'wikimedia-php72':
-            uri        => 'http://apt.wikimedia.org/wikimedia',
-            dist       => "${::lsbdistcodename}-wikimedia",
-            components => 'component/php72',
-            notify     => Exec['apt_update_php'],
-            before     => Package['php7.2-common', 'php7.2-opcache']
-        }
-    } elsif ('7.2' in $absented_php_versions) {
-        apt::repository { 'wikimedia-php72':
-            ensure => absent,
-        }
-    }
     # Use component/php74 if php 7.4 is installed.
     if ('7.4' in $php_versions) {
         apt::repository { 'wikimedia-php74':
