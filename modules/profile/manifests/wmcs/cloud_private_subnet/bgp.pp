@@ -41,9 +41,10 @@ class profile::wmcs::cloud_private_subnet::bgp (
     }
 
     $vips.each |$entry_name, $vip_info| {
-        interface::post_up_command { "${table}_route_lookup_rule_${entry_name}":
+        interface::rule { "${table}_route_lookup_rule_${entry_name}":
             interface => $interface,
-            command   => "ip rule add from ${vip_info['address']}/32 table ${table}",
+            from      => $vip_info['address'],
+            table     => $table,
         }
     }
 }
