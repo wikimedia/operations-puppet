@@ -6,7 +6,7 @@ profile::admin::groups:
   - swift-roots
 profile::swift::proxy::use_tls: true
 profile::swift::stats_reporter_host: 'ms-fe1009.eqiad.wmnet'
-# tlsproxy::envoy only enabled when profile::swift::proxy::use_envoy is true
+profile::swift::proxy::use_envoy: true
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::global_cert_name: "%{lookup('profile::swift::proxy::proxy_service_host')}"
 profile::tlsproxy::envoy::ssl_provider: sslcert
