@@ -2887,7 +2887,6 @@ private_tables:
  - 'moodbar_feedback'
  - 'moodbar_feedback_response'
  - 'msg_resource'
- - 'oathauth_users'
  - 'oauth_accepted_consumer'
  - 'oathauth_devices'
  - 'oauth_ratelimit_client_tier'
