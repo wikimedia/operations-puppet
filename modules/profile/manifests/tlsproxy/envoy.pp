@@ -51,6 +51,7 @@
 # @param header_key_format Allows capitalizing headers or maintain the original headers case on HTTP/1.1 requests
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
 #                     It should match the idle timeout of the upstream service.
+# @param stream_idle_timeout If set, set the stream idle timeout (otherwise, 5 minutes is what envoy defaults to)
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
 # @param error_page  boolean true if an error page should be added; false by default.
 class profile::tlsproxy::envoy(
@@ -69,6 +70,7 @@ class profile::tlsproxy::envoy(
     Optional[Stdlib::Host]           $upstream_addr             = lookup('profile::tlsproxy::envoy::upstream_addr'),
     Optional[String]                 $global_cert_name          = lookup('profile::tlsproxy::envoy::global_cert_name'),
     Optional[Float]                  $idle_timeout              = lookup('profile::tlsproxy::envoy::idle_timeout'),
+    Optional[Float]                  $stream_idle_timeout       = lookup('profile::tlsproxy::envoy::stream_idle_timeout'),
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
     Optional[Firewall::Range]       $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
@@ -232,6 +234,7 @@ class profile::tlsproxy::envoy(
             header_key_format         => $header_key_format,
             listen_ipv6               => $listen_ipv6,
             idle_timeout              => $idle_timeout,
+            stream_idle_timeout       => $stream_idle_timeout,
             max_requests_per_conn     => $max_requests,
             has_error_page            => $error_page
         }

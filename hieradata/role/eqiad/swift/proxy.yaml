@@ -13,3 +13,7 @@ profile::tlsproxy::envoy::ssl_provider: sslcert
 profile::tlsproxy::envoy::use_remote_address: true
 # force envoy to talk to swift-proxy on local internal v4 address
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+# Disable the default timeout for the whole request, instead
+# set a 180s timeout between reads from the server (like nginx had)
+profile::tlsproxy::envoy::stream_idle_timeout: 180.0
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0
