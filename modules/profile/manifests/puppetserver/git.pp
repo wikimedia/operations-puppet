@@ -161,4 +161,19 @@ class profile::puppetserver::git (
         require     => [Package['g10k'], File['/usr/local/bin/puppetserver-deploy-code']],
         subscribe   => [Git::Clone[$control_repo], File[$puppetserver::g10k::config_file]],
     }
+
+    file { '/usr/local/bin/pgit':
+        ensure  => file,
+        content => "#!/bin/sh\nexec sudo -u ${user} git \"$@\"\n",
+        mode    => '0555',
+    }
+
+    git::config { "${home_dir}/.gitconfig":
+        settings => {
+            'user' => {
+                'name'  => $user,
+                'email' => "${user}@${facts['networking']['fqdn']}",
+            },
+        },
+    }
 }
