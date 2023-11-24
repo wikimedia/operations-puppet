@@ -48,8 +48,8 @@ def get_args():
     parser.add_argument(
         "--lockout-tagout",
         help=(
-            "Enable lockout tagout to prevent merges ",
-            "https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout",
+            "Enable lockout tagout to prevent merges "
+            "https://en.wikipedia.org/wiki/Lockout%%E2%%80%%93tagout"
         ),
     )
     parser.add_argument(
@@ -57,7 +57,7 @@ def get_args():
         action='store_true',
         help=(
             'Force a merge even if lockout tagout is in place. '
-            'https://en.wikipedia.org/wiki/Lockout%E2%80%93tagout'
+            'https://en.wikipedia.org/wiki/Lockout%%E2%%80%%93tagout'
         ),
     )
     parser.add_argument(
