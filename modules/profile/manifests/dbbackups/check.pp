@@ -69,8 +69,16 @@ class profile::dbbackups::check (
     $db_database          = lookup('profile::dbbackups::check::db_database', String, ),
 ) {
     require ::profile::mariadb::wmfmariadbpy
+
+    $config_file = '/etc/wmfbackups/backups_check.ini'
+
     class { 'dbbackups::check_common':
+        config_file         => $config_file,
         valid_sections_file => 'puppet:///modules/profile/dbbackups/valid_sections.txt',
+        db_user             => $db_user,
+        db_host             => $db_host,
+        db_password         => $db_password,
+        db_database         => $db_database,
     }
 
     # only install the software on disabled ("passive") hosts, not the actual
@@ -80,6 +88,7 @@ class profile::dbbackups::check (
             $section_hash.each |String $type, Array[String] $type_array| {
                 $type_array.each |String $dc| {
                     dbbackups::check { "${dc}-${section}-${type}":
+                        config_file          => $config_file,
                         section              => $section,
                         datacenter           => $dc,
                         type                 => $type,
@@ -87,10 +96,6 @@ class profile::dbbackups::check (
                         min_size             => $min_size,
                         warn_size_percentage => $warn_size_percentage,
                         crit_size_percentage => $crit_size_percentage,
-                        db_user              => $db_user,
-                        db_host              => $db_host,
-                        db_password          => $db_password,
-                        db_database          => $db_database,
                     }
                 }
             }
@@ -102,10 +107,6 @@ class profile::dbbackups::check (
         enabled     => $es_backups_check,
         max_hours   => $es_max_hours,
         email       => $es_alert_email,
-        db_user     => $db_user,
-        db_host     => $db_host,
-        db_password => $db_password,
-        db_database => $db_database,
+        config_file => $config_file,
     }
 }
-

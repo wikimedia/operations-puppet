@@ -11,20 +11,17 @@
 # * max_hours: Float value with the maximum amount of hours of backup runtime, after which
 #              the alert will trigger.
 # * email: Email address of where the email will be sent.
-#
-define dbbackups::check_es (
-    $enabled,
-    $max_hours,
-    $email,
-    $db_host,
-    $db_user,
-    $db_password,
-    $db_database,
-) {
-    $config_file = '/etc/wmfbackups/my.cnf'
+# * config_file: Unix path of where to find the MySQL connection parameters ini file
 
+define dbbackups::check_es (
+    Boolean $enabled,
+    Float[0] $max_hours,
+    String $email,
+    Stdlib::Unixpath $config_file = '/etc/wmfbackups/backups_check.ini'
+) {
     if $enabled {
         $ensure_file = file
+        ensure_packages('wmfbackups-check')
     } else {
         $ensure_file = absent
     }
@@ -37,20 +34,9 @@ define dbbackups::check_es (
         content => template('dbbackups/check-es-config.erb'),
     }
 
-    file { $config_file:
-        ensure  => $ensure_file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('dbbackups/my.cnf.erb'),
-    }
-
-    file { '/usr/bin/check-dbbackup-time':
-        ensure => $ensure_file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0540',
-        source => 'puppet:///modules/dbbackups/check_dbbackup_time.py'
+    # remove old config file
+    file { '/etc/wmfbackups/my.cnf':
+        ensure  => absent,
     }
 
     if $enabled {
@@ -68,6 +54,10 @@ define dbbackups::check_es (
         command          => '/usr/bin/check-dbbackup-time',
         environment_file => "/etc/default/${title}",
         interval         => {'start' => 'OnCalendar', 'interval' => 'Thu *-*-* 01:00:00'},
-        require          => [ File["/etc/default/${title}"], File['/usr/bin/check-dbbackup-time'] ]
+        require          => [
+            File["/etc/default/${title}"],
+            Package['wmfbackups-check'],
+            File[$config_file]
+        ]
     }
 }

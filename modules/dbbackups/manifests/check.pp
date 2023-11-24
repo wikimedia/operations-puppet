@@ -2,20 +2,17 @@
 # Checks the metadata database backups of a particular section, datacenter
 # and type, and sets up an icinga alert about it
 define dbbackups::check (
-    $db_host,
-    $db_user,
-    $db_password,
-    $db_database,
-    $section,
-    $datacenter,
-    $type                 = 'dump',
-    $freshness            = 691200,  # 8 days
-    $min_size             = 307200,
-    $warn_size_percentage = 5,
-    $crit_size_percentage = 15,
+    String $section,
+    String $datacenter,
+    Stdlib::Unixpath $config_file    = '/etc/wmfbackups/backups_check.ini',
+    String $type                     = 'dump',
+    Integer[0] $freshness            = 691200,  # 8 days
+    Integer[0] $min_size             = 307200,
+    Float[0.0] $warn_size_percentage = 5,
+    Float[0.0] $crit_size_percentage = 15,
 ) {
     $check_command = "check-mariadb-backups \
---host='${db_host}' --user='${db_user}' --password='${db_password}' --database='${db_database}' \
+--config-file='${config_file}' \
 --section='${section}' --datacenter='${datacenter}' \
 --type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
 --warn-size-percentage='${warn_size_percentage}' --crit-size-percentage='${crit_size_percentage}'"
