@@ -160,6 +160,27 @@ class profile::firewall (
                 content => file('profile/firewall/base.nft'),
             }
 
+            if $defs_from_etcd and $defs_from_etcd_nft {
+                confd::file { '/etc/nftables/sets/requestctl.nft':
+                    reload          => '/bin/systemctl reload nftables',
+                    watch_keys      => ['/request-ipblocks/abuse'],
+                    content         => file('profile/firewall/defs_requestctl_nftables.tpl'),
+                    prefix          => $conftool_prefix,
+                    relative_prefix => false,
+                }
+
+                # unmanaged files under /etc/nftables/sets are purged
+                # so we define the file to stop it being deleted
+                file { '/etc/nftables/sets/requestctl.nft':
+                    ensure => file,
+                }
+
+                nftables::file { 'drop-blocked-nets':
+                    order   => 5,
+                    content => 'ip saddr $BLOCKED_NETS drop\n'
+                }
+            }
+
             prometheus::node_textfile { 'check-nft':
                 filesource => 'puppet:///modules/profile/firewall/check_nftables.py',
                 interval   => '*:0/30',
