@@ -1,4 +1,5 @@
 profile::firewall::provider: ferm
 profile::firewall::enable_logging: true
 profile::firewall::defs_from_etcd: true
+profile::firewall::defs_from_etcd_nft: false
 profile::firewall::manage_nf_conntrack: true

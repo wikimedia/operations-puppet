@@ -48,6 +48,7 @@ profile::debmonitor::client::ssl_ca_label: ~
 
 # Etcd is not stood up yet, in dev
 profile::firewall::defs_from_etcd: false
+profile::firewall::defs_from_etcd_nft: false
 
 # TODO: Runs but is a large CPU hog for reasons not fully understood
 profile::prometheus::cadvisor::ensure: absent

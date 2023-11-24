@@ -17,6 +17,7 @@
 # @param manage_nf_conntrack manage contract
 # @param enable_logging enable logging
 # @param defs_from_etcd build ferm definitions from requestctl etcd data
+# @param defs_from_etcd_nft build ferm definitions from requestctl etcd data for nftables (temporary)
 class profile::firewall (
     String                     $conftool_prefix         = lookup('conftool_prefix'),
     Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts'),
@@ -38,6 +39,7 @@ class profile::firewall (
     Boolean                    $manage_nf_conntrack     = lookup('profile::firewall::manage_nf_conntrack'),
     Boolean                    $enable_logging          = lookup('profile::firewall::enable_logging'),
     Boolean                    $defs_from_etcd          = lookup('profile::firewall::defs_from_etcd'),
+    Boolean                    $defs_from_etcd_nft      = lookup('profile::firewall::defs_from_etcd_nft'),
 ) {
     include network::constants
     class { 'firewall':
@@ -88,20 +90,18 @@ class profile::firewall (
         }
     }
 
-    if $defs_from_etcd {
-        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure          => stdlib::ensure($provider == 'ferm'),
-            reload          => '/bin/systemctl reload ferm',
-            watch_keys      => ['/request-ipblocks/abuse'],
-            content         => file('profile/firewall/defs_requestctl.tpl'),
-            prefix          => $conftool_prefix,
-            relative_prefix => false,
-        }
-    }
-
     case $provider {
         'ferm': {
             if $defs_from_etcd {
+                confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+                    ensure          => stdlib::ensure($provider == 'ferm'),
+                    reload          => '/bin/systemctl reload ferm',
+                    watch_keys      => ['/request-ipblocks/abuse'],
+                    content         => file('profile/firewall/defs_requestctl.tpl'),
+                    prefix          => $conftool_prefix,
+                    relative_prefix => false,
+                }
+
                 # unmanaged files under /etc/ferm/conf.d are purged
                 # so we define the file to stop it being deleted
                 file { '/etc/ferm/conf.d/00_defs_requestctl':
