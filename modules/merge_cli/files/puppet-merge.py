@@ -20,7 +20,9 @@ from pathlib import Path
 from pwd import getpwnam
 from subprocess import CalledProcessError, PIPE, run
 from syslog import syslog
+from time import time
 
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 ERROR_MESSAGE = '\033[91m{msg}\033[0m'
 """int: reserved exit code: puppet-merge did not perform a merge operation"""
@@ -74,6 +76,11 @@ def get_args():
         action='store_true',
         help='Only produce diffs; do not perform the git merge',
     )
+    parser.add_argument(
+        '--node-exporter-outfile',
+        type=Path,
+        default='/var/lib/prometheus/node.d/puppet_merge.prom',
+    )
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument(
         '-p', '--labsprivate', action='store_true', help='work on the labs private repo'
@@ -109,7 +116,9 @@ def git(args, repo_dir, stdout=PIPE):
     try:
         result = run(command, cwd=repo_dir, stdout=stdout, stderr=PIPE, check=True)
     except CalledProcessError as error:
-        raise SystemExit('failed to run `{}`\n{}'.format(' '.join(command), error)) from error
+        raise SystemExit(
+            'failed to run `{}`\n{}'.format(' '.join(command), error)
+        ) from error
     if isinstance(result.stdout, bytes):
         try:
             return result.stdout.decode()
@@ -145,7 +154,25 @@ def main():
     git_user = 'gitpuppet'
     running_user = getuser()
     args = get_args()
+    short_sha1 = args.sha1[0:10]
     config_paths = json.loads(args.config.read_text())['paths']
+    prom_registry = CollectorRegistry()
+    metrics = {
+        'start_time': Gauge(
+            'start_time',
+            'The start time of a puppet-merge',
+            namespace='puppet_merge',
+            registry=prom_registry,
+            labelnames=['git_sha'],
+        ),
+        'end_time': Gauge(
+            'end_time',
+            'The end time of a puppet-merge',
+            namespace='puppet_merge',
+            registry=prom_registry,
+            labelnames=['git_sha'],
+        ),
+    }
 
     if args.lockout_tagout:
         if args.lockout_tagout_override_file.exists():
@@ -205,6 +232,7 @@ def main():
             'log HEAD..{} --format=%ce'.format(target_sha1), config['repo']
         )
         confirm_merge(committers.split('\n'))
+    metrics['start_time'].labels(short_sha1).set(time())
     syslog(f'({repo}) Merging: {head_sha1_old} -> {target_sha1}')
     print('HEAD is currently {}'.format(head_sha1_old))
     git('merge --ff-only {}'.format(target_sha1), config['repo'], None)
@@ -217,6 +245,9 @@ def main():
     if os.path.isdir(os.path.dirname(config['sha1'])):
         with open(config['sha1'], 'w') as sha1_fd:
             sha1_fd.write('{}\n'.format(head_sha1_new))
+    metrics['end_time'].labels(short_sha1).set(time())
+    write_to_textfile(args.node_exporter_outfile, prom_registry)
+
     return 0
 
 

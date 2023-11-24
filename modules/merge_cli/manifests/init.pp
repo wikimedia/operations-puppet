@@ -13,6 +13,7 @@ class merge_cli (
     Array[Stdlib::Host] $masters = [],
     Array[Stdlib::Host] $workers = [],
 ) {
+    ensure_packages('python3-prometheus_client')
     $_masters = $masters - $facts['networking']['fqdn']
     $_workers = $workers - $facts['networking']['fqdn']
 
