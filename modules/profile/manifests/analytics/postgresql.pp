@@ -56,10 +56,10 @@ class profile::analytics::postgresql (
         do_backups    => $do_backups,
       }
     }
-    ferm::service { 'postgres':
-        proto  => 'tcp',
-        port   => '5432',
-        srange => '$ANALYTICS_NETWORKS',
+    firewall::service { 'postgres':
+        proto    => 'tcp',
+        port     => 5432,
+        src_sets => ['ANALYTICS_NETWORKS'],
     }
     # This is a simplistic method of creating users with an identically named database
     $users.each |$user, $pass| {
