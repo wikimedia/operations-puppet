@@ -574,7 +574,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run flake8 on python2 files via tox'
           task :flake8 do
             shell_python2_files = Shellwords.join(py_files[:py2])
-            raise "Flake8 failed".red unless system("tox -e py2-pep8 #{shell_python2_files}")
+            raise "Flake8 failed".red unless system("tox -e py2-pep8 -- #{shell_python2_files}")
           end
           tasks << 'tox:flake8'
         end
@@ -583,7 +583,7 @@ class TaskGen < ::Rake::TaskLib
           desc 'Run flake8 on python3 files via tox'
           task :flake8_3 do
             shell_python3_files = Shellwords.join(py_files[:py3])
-            raise "Flake8 failed" unless system("tox -e py3-pep8 #{shell_python3_files}")
+            raise "Flake8 failed" unless system("tox -e py3-pep8 -- #{shell_python3_files}")
           end
           tasks << 'tox:flake8_3'
         end
