@@ -100,9 +100,8 @@ class profile::puppetserver (
         * => wmflib::resource::filter_params($exluded_args),
     }
     class { 'puppetserver::g10k':
-        ensure       => stdlib::ensure(!$g10k_sources.empty),
-        sources      => $g10k_sources,
-        exec_require => Git::Clone[$profile::puppetserver::git::control_repo],
+        ensure  => stdlib::ensure(!$g10k_sources.empty),
+        sources => $g10k_sources,
     }
     $config_dir = $puppetserver::puppetserver_config_dir
     $ssl_dir = $puppetserver::ssl_dir

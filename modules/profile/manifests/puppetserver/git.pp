@@ -153,4 +153,12 @@ class profile::puppetserver::git (
             }
         }
     }
+
+    exec { 'puppetserver-deploy-code':
+        command     => '/usr/local/bin/puppetserver-deploy-code',
+        refreshonly => true,
+        notify      => Service['puppetserver'],
+        require     => [Package['g10k'], File['/usr/local/bin/puppetserver-deploy-code']],
+        subscribe   => [Git::Clone[$control_repo], File[$puppetserver::g10k::config_file]],
+    }
 }
