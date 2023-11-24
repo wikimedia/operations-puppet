@@ -12,6 +12,7 @@
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
+    Boolean $use_pki=false,
 ) {
     ensure_packages('qemu-system-x86')
 
@@ -24,6 +25,10 @@ class ganeti(
     }
 
     ensure_packages('ganeti')
+
+    service { 'ganeti':
+        ensure => running,
+    }
 
     # We're not using ganeti-instance-debootstrap to create images (we PXE-boot
     # the same images we use for baremetal servers), but /usr/share/ganeti/os/debootstrap
@@ -76,9 +81,22 @@ class ganeti(
         content => template('ganeti/etc_default_ganeti.erb')
     }
 
-    sslcert::certificate { $certname:
-        ensure     => present,
-        group      => 'gnt-admin',
-        use_cergen => true,
+    if $use_pki {
+        profile::pki::get_cert('discovery', $certname, {
+            'owner'           => 'root',
+            'group'           => 'gnt-admin',
+            'notify_services' => ['ganeti'],
+        })
+
+        sslcert::certificate { $certname:
+            ensure     => absent,
+        }
+
+    } else {
+        sslcert::certificate { $certname:
+            ensure     => present,
+            group      => 'gnt-admin',
+            use_cergen => true,
+        }
     }
 }

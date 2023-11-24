@@ -38,6 +38,9 @@
 #   warning alert due to memory pressure. It must be lower than
 #   critical_memory.
 #
+# [*use_pki*]
+#   If enabled, the certificate for the RAPI endpoint is retrieved from the
+#   PKI, otherwise a cergen-issued cert is used from the private repo
 
 class profile::ganeti (
     Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
@@ -49,10 +52,12 @@ class profile::ganeti (
                                                 { default_value => undef }),
     Integer[0, 100] $critical_memory   = lookup('profile::ganeti::critical_memory'),
     Integer[0, 100] $warning_memory    = lookup('profile::ganeti::warning_memory'),
+    Boolean $use_pki                   = lookup('profile::ganeti::use_pki'),
 ) {
 
     class { 'ganeti':
         certname => $rapi_certificate,
+        use_pki  => $use_pki,
     }
 
     class { 'ganeti::prometheus':
