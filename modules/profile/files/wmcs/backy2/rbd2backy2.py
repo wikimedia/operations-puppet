@@ -34,7 +34,7 @@ class RBDSnapshot:
     image: str
     snapshot: str
     pool: str
-    protected: bool
+    protected: bool = False
 
     @classmethod
     def from_rbd_ls_line(cls, pool: str, rbd_ls_line: str):
