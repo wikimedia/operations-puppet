@@ -1182,14 +1182,18 @@ class InstanceBackupsState:
     def remove_dangling_snapshots(self, noop: bool) -> None:
         failed_snapshots = []
         to_remove = self.get_dangling_snapshots()
-        for snapshot in to_remove:
+        for snapshot in to_remove.copy():
             logging.info(f"Removing snapshot {snapshot}...")
             try:
-                snapshot.remove(noop=noop)
-                if noop:
-                    logging.info(f"       Done, {snapshot} would have been removed")
+                if snapshot.protected:
+                    logging.info("Snapshot %s protected, not removing" % str(snapshot))
+                    to_remove.remove(snapshot)
                 else:
-                    logging.info(f"       Done, {snapshot} removed")
+                    snapshot.remove(noop=noop)
+                    if noop:
+                        logging.info(f"       Done, {snapshot} would have been removed")
+                    else:
+                        logging.info(f"       Done, {snapshot} removed")
             except Exception as error:
                 logging.error(f"ERROR: failed removing snapshot {snapshot}: {error}")
                 failed_snapshots.append((snapshot, error))
@@ -1346,14 +1350,18 @@ class ImageBackupsState:
     def remove_dangling_snapshots(self, noop: bool) -> None:
         failed_snapshots = []
         to_remove = self.get_dangling_snapshots()
-        for snapshot in to_remove:
+        for snapshot in to_remove.copy():
             logging.info(f"Removing snapshot {snapshot}...")
             try:
-                snapshot.remove(noop=noop)
-                if noop:
-                    logging.info(f"       Done, {snapshot} would have been removed")
+                if snapshot.protected:
+                    logging.info("Snapshot %s protected, not removing" % str(snapshot))
+                    to_remove.remove(snapshot)
                 else:
-                    logging.info(f"       Done, {snapshot} removed")
+                    snapshot.remove(noop=noop)
+                    if noop:
+                        logging.info(f"       Done, {snapshot} would have been removed")
+                    else:
+                        logging.info(f"       Done, {snapshot} removed")
             except Exception as error:
                 logging.error(f"ERROR: failed removing snapshot {snapshot}: {error}")
                 failed_snapshots.append((snapshot, error))

@@ -34,6 +34,7 @@ class RBDSnapshot:
     image: str
     snapshot: str
     pool: str
+    protected: bool
 
     @classmethod
     def from_rbd_ls_line(cls, pool: str, rbd_ls_line: str):
@@ -66,10 +67,12 @@ class RBDSnapshot:
         Example of line:
             60784 2020-12-04T05:03:23 20 GiB           Fri Dec  4 05:03:23 2020
             60784 2020-12-04T05:03:23_cloudvirt1024 20 GiB           Fri Dec  4 05:03:23 2020
+            60784 2020-12-04T05:03:23_cloudvirt1024 20 GiB yes       Fri Dec  4 05:03:23 2020
         """
-        _, snapshot_name, _ = rbd_snap_ls_line.split(maxsplit=2)
-
-        return cls(image=image_name, snapshot=snapshot_name, pool=pool)
+        _, snapshot_name, _, _, protected, _ = rbd_snap_ls_line.split(maxsplit=5)
+        return cls(
+            image=image_name, snapshot=snapshot_name, pool=pool, protected=(protected == "yes")
+        )
 
     @classmethod
     def create(cls, pool: str, image: str, snapshot: str, noop: bool = True) -> None:
@@ -83,6 +86,9 @@ class RBDSnapshot:
 
     def remove(self, noop: bool = True) -> None:
         args = [RBD, "snap", "remove", str(self)]
+        if self.protected:
+            logging.info("Snapshot %s protected, not removing" % str(self))
+            return
         if noop:
             logging.info("NOOP: Would have executed %s", args)
         else:
