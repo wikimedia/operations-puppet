@@ -37,10 +37,25 @@ class profile::microsites::query_service {
     }
 
     prometheus::blackbox::check::http { 'query.wikidata.org':
+        server_name => 'query.wikidata.org',
         team        => 'serviceops-collab',
         severity    => 'task',
         path        => '/',
         force_tls   => true,
         ip_families => [ip4],
+    }
+    prometheus::blackbox::check::http { 'query.wikidata.org-ldf':
+        server_name        => 'query.wikidata.org',
+        team               => 'search-platform',
+        severity           => 'task',
+        path               => '/bigdata/ldf',
+        body               => {
+            'subject'   => 'wd:42',
+            'predicate' => 'wdt:P31',
+            'object'    => '',
+        },
+        body_regex_matches => ['wd:Q42  wdt:P31  wd:Q5 .'],
+        force_tls          => true,
+        ip_families        => [ip4],
     }
 }
