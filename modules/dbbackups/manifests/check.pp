@@ -11,11 +11,13 @@ define dbbackups::check (
     Float[0.0] $warn_size_percentage = 5,
     Float[0.0] $crit_size_percentage = 15,
 ) {
+    # Send command without quotes due to surprising sudoers behaviour:
+    # https://gerrit.wikimedia.org/r/c/operations/puppet/+/977603/comments/b8d512ac_102df5ba
     $check_command = "/usr/bin/check-mariadb-backups \
---config-file='${config_file}' \
---section='${section}' --datacenter='${datacenter}' \
---type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
---warn-size-percentage='${warn_size_percentage}' --crit-size-percentage='${crit_size_percentage}'"
+--config-file=${config_file} \
+--section=${section} --datacenter=${datacenter} \
+--type=${type} --freshness=${freshness} --min-size=${min_size} \
+--warn-size-percentage=${warn_size_percentage} --crit-size-percentage=${crit_size_percentage}"
 
     nrpe::monitor_service { "mariadb_${type}_${section}_${datacenter}":
         description    => "${type} of ${section} in ${datacenter}",
