@@ -2707,6 +2707,11 @@ node /^restbase20(1[3-9]|2[0-7])\.codfw\./ {
     role(restbase::production)
 }
 
+# new restbase nodes T349758
+node /^restbase20(2[8-9]|3[0-5])\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 # New cassandra dev nodes T324113
 node /^cassandra-dev200[1-3]\.codfw\./ {
     role(cassandra_dev)
