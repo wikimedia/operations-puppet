@@ -39,6 +39,3 @@ profile::bird::advertise_vips:
     service_type: "pdns recursor"
     address: 172.20.255.1
     check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.255.1 -d www.wikimedia.org -t 1"
-
-# TODO: drop these overrides
-profile::openstack::base::designate::openstack_control_node_interface: cloud_private_fqdn
