@@ -79,7 +79,7 @@ profile::analytics::refinery::job::gobblin::gobblin_jar_file: /srv/deployment/an
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 # Temporarily override airflow version to permit phased deployment
-profile::airflow::airflow_version: '2.7.3-py3.10-20231127'
+#profile::airflow::airflow_version: '2.7.3-py3.10-20231127'
 
 # Set up airflow instances.
 profile::airflow::instances:
