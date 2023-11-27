@@ -61,6 +61,7 @@ define interface::ipip(
             context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = '${family}']",
             changes => "set up[last()+1] '${ip_link_add}'",
             onlyif  => "match up[. = '${ip_link_add}'] size == 0",
+            require => Interface::Manual[$title],
         }
 
         augeas { "${interface}_set_up":
