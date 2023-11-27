@@ -1,6 +1,5 @@
 # db1119
-# Temporary m2 master
+# Future m3 master
 mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
-profile::mariadb::mysql_role: 'master'
-profile::monitoring::is_critical: true 
+profile::monitoring::is_critical: false

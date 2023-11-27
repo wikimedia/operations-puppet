@@ -772,7 +772,7 @@ node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# Temporary m2 master
+# Future m3 master 
 node /^db1119\.eqiad\./ {
     role(mariadb::misc)
 }
