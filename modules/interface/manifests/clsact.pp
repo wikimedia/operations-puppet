@@ -15,12 +15,12 @@ define interface::clsact(
 
     if ensure == 'absent' {
         exec { $tc_del_cmd:
-            onlyif => "/usr/sbin/tc show dev ${interface} | grep -q clsact",
+            onlyif => "/usr/sbin/tc qdisc show dev ${interface} | grep -q clsact",
         }
     } else {
         # Add clsact manually as well
         exec { $tc_add_cmd:
-            unless => "/usr/sbin/tc show dev ${interface} | grep -q clsact",
+            unless => "/usr/sbin/tc qdisc show dev ${interface} | grep -q clsact",
         }
     }
 }
