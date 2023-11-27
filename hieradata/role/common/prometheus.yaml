@@ -57,4 +57,3 @@ acmechief_host: acmechief2002.codfw.wmnet
 
 # Retention settings - https://phabricator.wikimedia.org/T351179
 profile::prometheus::ops::storage_retention_size: 3100GB
-profile::prometheus::k8s::storage_retention_size: 850GB
