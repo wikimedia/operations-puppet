@@ -6,7 +6,7 @@ profile::admin::groups:
 profile::webperf::arclamp::redis_host: 'arclamp1001.eqiad.wmnet'
 profile::webperf::arclamp::redis_port: 6379
 
-profile::webperf::arclamp::errors_mailto: 'performance-team-alert@wikimedia.org'
+profile::webperf::arclamp::errors_mailto: 'sre-observability@wikimedia.org'
 
 profile::webperf::arclamp::compress_logs_days: 3
 profile::webperf::arclamp::retain_hourly_logs_hours: 336
