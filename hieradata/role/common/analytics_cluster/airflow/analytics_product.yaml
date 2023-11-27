@@ -27,6 +27,10 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
+
+# Temporarily override airflow version to permit phased deployment
+profile::airflow::airflow_version: '2.7.3-py3.10-20231127'
+
 # Set up airflow instances.
 profile::airflow::instances:
   # airflow@analytics_product instance.
