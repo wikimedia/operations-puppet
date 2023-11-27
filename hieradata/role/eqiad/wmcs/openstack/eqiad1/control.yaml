@@ -62,6 +62,5 @@ profile::openstack::base::galera::openstack_control_node_interface: host_fqdn
 profile::openstack::base::cinder::openstack_control_node_interface: host_fqdn
 profile::openstack::base::glance::openstack_control_node_interface: host_fqdn
 profile::openstack::base::heat::openstack_control_node_interface: host_fqdn
-profile::openstack::base::magnum::openstack_control_node_interface: host_fqdn
 profile::openstack::base::placement::openstack_control_node_interface: host_fqdn
 profile::openstack::base::keystone::service::openstack_control_node_interface: host_fqdn
