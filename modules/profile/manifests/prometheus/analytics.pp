@@ -11,7 +11,7 @@ class profile::prometheus::analytics (
     Boolean $enable_thanos_upload      = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time  = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
-    String $storage_retention          = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
+    String $storage_retention          = lookup('profile::prometheus::analytics::storage_retention', {'default_value' => '4032h'}),
     Integer $max_chunks_to_persist     = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks             = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Boolean $disable_compaction        = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),

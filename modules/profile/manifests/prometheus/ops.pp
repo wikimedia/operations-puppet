@@ -5,8 +5,8 @@
 class profile::prometheus::ops (
     Array[Stdlib::Host] $prometheus_nodes                     = lookup('prometheus_nodes'),
     String $replica_label                                     = lookup('prometheus::replica_label'),
-    String $storage_retention                                 = lookup('prometheus::server::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
-    Optional[Stdlib::Datasize] $storage_retention_size        = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
+    String $storage_retention                                 = lookup('profile::prometheus::ops::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
+    Optional[Stdlib::Datasize] $storage_retention_size        = lookup('profile::prometheus::ops::storage_retention_size', {default_value => undef}),
     Integer $max_chunks_to_persist                            = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
     Integer $memory_chunks                                    = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
     Stdlib::Unixpath $targets_path                            = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),

@@ -5,7 +5,7 @@
 # This Prometheus instance is for metrics that come in from outside of the infrastructure.
 # E.g. Statsv
 class profile::prometheus::ext (
-    String           $storage_retention              = lookup('prometheus::server::storage_retention', { 'default_value' => '730h'  }),
+    String           $storage_retention              = lookup('profile::prometheus::ext::storage_retention', { 'default_value' => '730h'  }),
     String           $replica_label                  = lookup('prometheus::replica_label'),
     Boolean          $enable_thanos_upload           = lookup('profile::prometheus::enable_thanos_upload',      { 'default_value' => false   }),
     Optional[String] $thanos_min_time                = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef   }),

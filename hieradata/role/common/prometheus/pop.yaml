@@ -11,7 +11,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
-prometheus::server::storage_retention_size: 80GB
+profile::prometheus::ops::storage_retention_size: 80GB
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::services:

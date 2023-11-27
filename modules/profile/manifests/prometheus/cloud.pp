@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::cloud (
     String $openstack_deployment = lookup('profile::prometheus::cloud::openstack_deployment'),
-    String $storage_retention = lookup('prometheus::server::storage_retention', {'default_value' => '4032h'}),
+    String $storage_retention = lookup('profile::prometheus::cloud::storage_retention', {'default_value' => '4032h'}),
+    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::prometheus::cloud::storage_retention_size', {default_value => undef}),
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('prometheus::server::storage_retention_size', {default_value => undef}),
     Stdlib::Fqdn $openstack_exporter_host = lookup('profile::openstack::eqiad1::metrics::openstack_exporter_host'),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
