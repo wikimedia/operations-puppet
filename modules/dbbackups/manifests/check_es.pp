@@ -57,7 +57,8 @@ define dbbackups::check_es (
         require          => [
             File["/etc/default/${title}"],
             Package['wmfbackups-check'],
-            File[$config_file]
+            File[$config_file],
+            User['backupcheck'],
         ]
     }
 }

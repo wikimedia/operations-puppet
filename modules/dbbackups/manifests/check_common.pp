@@ -21,6 +21,19 @@ class dbbackups::check_common (
     String $db_database,
 ){
     ensure_packages('wmfbackups-check')
+    group { 'backupcheck':
+        ensure => present,
+        system => true,
+    }
+
+    user { 'backupcheck':
+        ensure     => present,
+        gid        => 'backupcheck',
+        shell      => '/bin/false',
+        home       => '/etc/wmfbackups',
+        system     => true,
+        managehome => false,
+    }
 
     file { '/etc/wmfbackups/valid_sections.txt':
         ensure  => present,
@@ -35,7 +48,8 @@ class dbbackups::check_common (
         ensure  => present,
         mode    => '0440',
         owner   => 'root',
-        group   => 'root',
-        content => template('dbbackups/backups_check.ini.erb')
+        group   => 'backupcheck',
+        content => template('dbbackups/backups_check.ini.erb'),
+        require => [ Group['backupcheck'] ],
     }
 }

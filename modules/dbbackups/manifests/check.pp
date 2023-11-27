@@ -11,7 +11,7 @@ define dbbackups::check (
     Float[0.0] $warn_size_percentage = 5,
     Float[0.0] $crit_size_percentage = 15,
 ) {
-    $check_command = "check-mariadb-backups \
+    $check_command = "/usr/bin/check-mariadb-backups \
 --config-file='${config_file}' \
 --section='${section}' --datacenter='${datacenter}' \
 --type='${type}' --freshness='${freshness}' --min-size='${min_size}' \
@@ -22,8 +22,13 @@ define dbbackups::check (
         nrpe_command   => $check_command,
         critical       => false,
         contact_group  => 'admins',
+        sudo_user      => 'backupcheck',
         check_interval => 30,  # Don't check too often
-        require        => [ Package['wmfbackups-check'], File['/etc/wmfbackups/valid_sections.txt'] ],
+        require        => [
+            Package['wmfbackups-check'],
+            File['/etc/wmfbackups/valid_sections.txt'],
+            User['backupcheck'],
+        ],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
     }
 }
