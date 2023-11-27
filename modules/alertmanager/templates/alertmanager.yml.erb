@@ -212,10 +212,6 @@ route:
         - receiver: 'search-platform-ircmail'
     - match:
         team: 'wmcs'
-      # Grouping by instance too so we create one task per alert+instance tuple
-      # as sometimes it's better for handling (ex. when there's a node down alert
-      # you might want one task for each node, so they can be checked individually)
-      group_by: ['alertname', 'cluster', 'scope', 'instance']
       routes:
         - match:
             severity: 'page'
