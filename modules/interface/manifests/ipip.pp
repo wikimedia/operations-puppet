@@ -67,6 +67,7 @@ define interface::ipip(
             context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = '${family}']",
             changes => "set up[last()+1] '${ip_link_up}'",
             onlyif  => "match up[. = '${ip_link_up}'] size == 0",
+            require => Augeas["${interface}_add_up"],
         }
 
         # Create the device manually as well
@@ -88,6 +89,7 @@ define interface::ipip(
                 interface => $interface,
                 address   => $address,
                 prefixlen => 32,
+                require   => Augeas["${interface}_set_up"],
             }
         }
     }
