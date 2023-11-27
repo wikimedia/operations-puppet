@@ -57,7 +57,7 @@ write_files:
         ExecStart=-/sbin/agetty --autologin root --noclear %I $TERM
       path: /etc/systemd/system/serial-getty@ttyS0.service.d/override.conf
     - content: |
-        Package: puppet puppet-agent
+        Package: *
         Pin: release o=wikimedia
         Pin-Priority: 1001
       path: /etc/apt/preferences.d/puppet.pref
