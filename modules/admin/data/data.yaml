@@ -1428,6 +1428,15 @@ users:
     home_dir: none
     shell: /bin/bash
     krb: present
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet.
+  # authdns:
+  #   ensure: present
+  #   system: true
+  #   uid: 928
+  #   gid: 928
+  #   home_dir: /srv/authdns
+  #   shell: /usr/bin/git-shell
   rush:
     ensure: absent
     gid: 500
