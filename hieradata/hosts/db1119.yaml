@@ -3,3 +3,4 @@
 mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: false
+profile::monitoring::notifications_enabled: false
