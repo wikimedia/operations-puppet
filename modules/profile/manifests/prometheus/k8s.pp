@@ -7,8 +7,6 @@ class profile::prometheus::k8s (
     Boolean                    $enable_thanos_upload   = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String]           $thanos_min_time        = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host]        $alertmanagers          = lookup('alertmanagers', { 'default_value' => [] }),
-    String                     $storage_retention      = lookup('profile::prometheus::k8s::storage_retention', { 'default_value' => '4032h' }),
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::prometheus::k8s::storage_retention_size', {default_value => undef}),
     Integer                    $max_chunks_to_persist  = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
     Integer                    $memory_chunks          = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
     Boolean                    $disable_compaction     = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
@@ -32,6 +30,8 @@ class profile::prometheus::k8s (
         $targets_path = "/srv/prometheus/${k8s_cluster}/targets"
         $master_url = $k8s_config['master_url']
         $port = $k8s_config['prometheus']['port']
+        $storage_retention = $k8s_config['prometheus']['retention']
+        $storage_retention_size = $k8s_config['prometheus']['retention_size']
 
         $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
             'renew_seconds' => $k8s_config['pki_renew_seconds'],

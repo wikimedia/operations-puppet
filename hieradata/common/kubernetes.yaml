@@ -54,6 +54,9 @@ kubernetes::clusters_defaults:
     disable:
       - StorageObjectInUseProtection
       - PersistentVolumeClaimResize
+  prometheus:
+    retention: '4032h'
+    retention_size: ~
 
 # kubernetes clusters by group.
 # Clusters in the same group (first level key) are supposed
