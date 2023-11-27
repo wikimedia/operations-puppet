@@ -99,23 +99,37 @@ class profile::openstack::base::nova::compute::service(
     #  configure these libvirt_ paths, it actually seems
     #  to hardcode things in places so best to stick with
     #  the paths listed below.
-    $certpath = '/var/lib/nova'
-    $libvirt_cert_pub  = "${certpath}/clientcert.pem"
-    $libvirt_cert_priv = "${certpath}/clientkey.pem"
-    $libvirt_cert_ca   = "${certpath}/cacert.pem"
-    $puppet_cert_pub  = $facts['puppet_config']['hostcert']
-    $puppet_cert_priv = $facts['puppet_config']['hostprivkey']
-    $puppet_cert_ca   = profile::base::certificates::get_trusted_ca_path()
+    # TODO: use puppet::expose_agent_certs (which does not support custom
+    #  paths) or PKI directly
+    $certpath              = '/var/lib/nova'
+    $libvirt_cert_pub      = "${certpath}/clientcert.pem"
+    $libvirt_cert_priv     = "${certpath}/clientkey.pem"
+    $libvirt_cert_ca       = "${certpath}/cacert.pem"
+    $puppet_cert_pub       = $facts['puppet_config']['hostcert']
+    $puppet_cert_chain     = $facts['puppet_config']['localcacert']
+    $puppet_cert_priv      = $facts['puppet_config']['hostprivkey']
+    $puppet_cert_verify_ca = profile::base::certificates::get_trusted_ca_path()
 
     file { '/var/lib/nova/ssl/':
         ensure => directory,
     }
 
-    file { $libvirt_cert_pub:
+    concat { $libvirt_cert_pub:
         ensure => present,
-        source => "file://${puppet_cert_pub}",
         owner  => 'nova',
         group  => 'libvirt',
+    }
+
+    concat::fragment { 'libvirtd_puppet_agent_cert':
+        source => $puppet_cert_pub,
+        order  => 1,
+        target => $libvirt_cert_pub,
+    }
+
+    concat::fragment { 'libvirtd_puppet_agent_chain':
+        source => $puppet_cert_chain,
+        order  => 2,
+        target => $libvirt_cert_pub,
     }
 
     file { $libvirt_cert_priv:
@@ -129,7 +143,7 @@ class profile::openstack::base::nova::compute::service(
 
     file { $libvirt_cert_ca:
         ensure => present,
-        source => "file://${puppet_cert_ca}",
+        source => "file://${puppet_cert_verify_ca}",
         owner  => 'nova',
         group  => 'libvirt',
     }
