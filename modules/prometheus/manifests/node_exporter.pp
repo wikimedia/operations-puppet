@@ -42,6 +42,7 @@ class prometheus::node_exporter (
         'loadavg', 'mdadm', 'meminfo', 'netdev', 'netstat', 'sockstat', 'stat', 'tcpstat',
         'textfile', 'time', 'uname', 'vmstat']
     $textfile_directory = '/var/lib/prometheus/node.d'
+    $systemd_unit_exclude = '.+\\.(automount|device|mount|scope|slice|target|timer)'
 
     package { 'prometheus-node-exporter':
       ensure => 'present'
