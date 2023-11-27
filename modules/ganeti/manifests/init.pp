@@ -69,6 +69,30 @@ class ganeti(
         source => 'puppet:///modules/ganeti/lvm.conf',
     }
 
+    if $use_pki {
+        $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+            'owner'           => 'root',
+            'group'           => 'gnt-admin',
+            'notify_services' => ['ganeti'],
+        })
+
+        sslcert::certificate { $certname:
+            ensure     => absent,
+        }
+
+        $rapi_ssl_key = $ssl_paths['key']
+        $rapi_ssl_cert = $ssl_paths['cert']
+
+    } else {
+        sslcert::certificate { $certname:
+            ensure     => present,
+            group      => 'gnt-admin',
+            use_cergen => true,
+        }
+        $rapi_ssl_key = "/etc/ssl/private/${certname}.key"
+        $rapi_ssl_cert = "/etc/ssl/localcerts/${certname}.crt"
+    }
+
     # Deploy defaults (for now, configuring RAPI) and the certificates for RAPI.
     # Potential fixme: We don't restart the daemon here since it's not independent
     # and this file configures other aspects of Ganeti. Manually restart ganeti
@@ -79,24 +103,5 @@ class ganeti(
         group   => 'root',
         mode    => '0644',
         content => template('ganeti/etc_default_ganeti.erb')
-    }
-
-    if $use_pki {
-        profile::pki::get_cert('discovery', $certname, {
-            'owner'           => 'root',
-            'group'           => 'gnt-admin',
-            'notify_services' => ['ganeti'],
-        })
-
-        sslcert::certificate { $certname:
-            ensure     => absent,
-        }
-
-    } else {
-        sslcert::certificate { $certname:
-            ensure     => present,
-            group      => 'gnt-admin',
-            use_cergen => true,
-        }
     }
 }
