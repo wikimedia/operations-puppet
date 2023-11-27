@@ -55,13 +55,24 @@ class prometheus::node_exporter (
     }
 
 
-    file { '/etc/default/prometheus-node-exporter':
-        ensure  => present,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
-        notify  => Service['prometheus-node-exporter'],
+    if debian::codename::eq('buster') {
+        file { '/etc/default/prometheus-node-exporter':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('prometheus/etc/default/prometheus-node-exporter-0.17.erb'),
+            notify  => Service['prometheus-node-exporter'],
+        }
+    } else {
+        file { '/etc/default/prometheus-node-exporter':
+            ensure  => present,
+            mode    => '0444',
+            owner   => 'root',
+            group   => 'root',
+            content => template('prometheus/etc/default/prometheus-node-exporter.erb'),
+            notify  => Service['prometheus-node-exporter'],
+        }
     }
 
     # Up to 0.17 prometheus-node-exporter shipped a number of collectors in
