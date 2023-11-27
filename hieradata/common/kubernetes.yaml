@@ -149,6 +149,7 @@ kubernetes::clusters:
         - kubernetes1056.eqiad.wmnet
         - kubernetes1057.eqiad.wmnet
         - kubernetes1058.eqiad.wmnet
+        - mw1462.eqiad.wmnet
         - mw1472.eqiad.wmnet
         - mw1473.eqiad.wmnet
         - mw1474.eqiad.wmnet
@@ -243,6 +244,7 @@ kubernetes::clusters:
         - kubernetes2060.codfw.wmnet
         - mw2420.codfw.wmnet
         - mw2421.codfw.wmnet
+        - mw2422.codfw.wmnet
         - mw2425.codfw.wmnet
         - mw2431.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles

@@ -140,7 +140,6 @@ codfw:
     mw2416.codfw.wmnet: [nginx]
     mw2417.codfw.wmnet: [nginx]
     mw2418.codfw.wmnet: [nginx]
-    mw2422.codfw.wmnet: [nginx]
     mw2423.codfw.wmnet: [nginx]
     mw2424.codfw.wmnet: [nginx]
     mw2434.codfw.wmnet: [nginx]
@@ -419,6 +418,7 @@ codfw:
     kubernetes2060.codfw.wmnet: [kubesvc]
     mw2420.codfw.wmnet: [kubesvc]
     mw2421.codfw.wmnet: [kubesvc]
+    mw2422.codfw.wmnet: [kubesvc]
     mw2425.codfw.wmnet: [kubesvc]
     mw2431.codfw.wmnet: [kubesvc]
   kubernetes-staging:
