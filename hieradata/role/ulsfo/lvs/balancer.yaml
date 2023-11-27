@@ -5,3 +5,6 @@ profile::lvs::tagged_subnets:
 profile::lvs::interface_tweaks:
   enp175s0f0np0:
     txqlen: 10000
+
+profile::lvs::ipip_enabled: true
+profile::pybal::ipip_enabled: true
