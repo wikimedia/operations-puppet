@@ -3,7 +3,7 @@ varnishtest "Do not cache the beta variant of the mobile site T228861"
 server s1 {
     rxreq
     expect req.http.cookie == "optin=beta"
-    txresp -hdr "X-Cache-Int-Testing: cp1077 pass"
+    txresp -hdr "X-Cache-Int-Testing: cp1100 pass"
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {

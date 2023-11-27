@@ -3,15 +3,15 @@ varnishtest "X-Cache-Status"
 server s1 {
     rxreq
     expect req.url == "/hit-front"
-    txresp -hdr "X-Cache-Int-Testing: cp1067 pass, cp2004 hit/1, cp4029 hit/4, cp4027 hit/221"
+    txresp -hdr "X-Cache-Int-Testing: cp1101 pass, cp2004 hit/1, cp4029 hit/4, cp4027 hit/221"
 
     rxreq
     expect req.url == "/hit-local"
-    txresp -hdr "X-Cache-Int-Testing: cp1053 hit/2, cp2010 pass, cp4032 hit/3, cp4027 miss"
+    txresp -hdr "X-Cache-Int-Testing: cp1101 hit/2, cp2010 pass, cp4032 hit/3, cp4027 miss"
 
     rxreq
     expect req.url == "/hit-remote"
-    txresp -hdr "X-Cache-Int-Testing: cp1053 hit/11, cp2016 pass, cp4028 miss, cp4027 miss"
+    txresp -hdr "X-Cache-Int-Testing: cp1101 hit/11, cp2016 pass, cp4028 miss, cp4027 miss"
 
     rxreq
     expect req.url == "/int-front"
@@ -27,11 +27,11 @@ server s1 {
 
     rxreq
     expect req.url == "/miss"
-    txresp -hdr "X-Cache-Int-Testing: cp1053 pass, cp2023 pass, cp4027 miss, cp4027 miss"
+    txresp -hdr "X-Cache-Int-Testing: cp1101 pass, cp2023 pass, cp4027 miss, cp4027 miss"
 
     rxreq
     expect req.url == "/pass"
-    txresp -hdr "X-Cache-Int-Testing: cp1053 pass, cp2004 pass, cp4027 pass, cp4027 pass"
+    txresp -hdr "X-Cache-Int-Testing: cp1101 pass, cp2004 pass, cp4027 pass, cp4027 pass"
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
