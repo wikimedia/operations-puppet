@@ -1,5 +1,1 @@
 profile::openstack::eqiad1::galera::server_id: 3
-
-# TODO: move to hieradata/role/eqiad/wmcs/openstack/eqiad1/control.yaml
-# when the migration is completed
-profile::memcached::srange: "%{lookup('profile::wmcs::cloud_private_subnet::supernet')}"
