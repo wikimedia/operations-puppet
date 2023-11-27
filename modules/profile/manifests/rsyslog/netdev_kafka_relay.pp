@@ -29,7 +29,7 @@ class profile::rsyslog::netdev_kafka_relay (
     }
 
     # Templates required by netdev_kafka_relay output
-    rsyslog::conf { 'template_syslog_json':
+    rsyslog::conf { 'template_syslog_json_receiver':
         source   => 'puppet:///modules/profile/rsyslog/template_syslog_json.conf',
         priority => 10,
         instance => 'receiver',
