@@ -6,6 +6,9 @@ profile::lvs::realserver::pools:
   ncredir:
     services:
       - nginx
+  ncredir-https:
+    services:
+      - nginx
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

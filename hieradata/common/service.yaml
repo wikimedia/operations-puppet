@@ -1795,6 +1795,7 @@ service::catalog:
           url:
             - https://en.wikipedia.com/_status
       scheduler: wrr
+      ipip_encapsulation: true
     probes:
       - type: http
         host: en.wikipedia.com
