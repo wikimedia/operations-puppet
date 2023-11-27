@@ -63,10 +63,10 @@ class profile::pyrra::filesystem (
             'indicator' => {
                 'ratio' => {
                     'errors' => {
-                        'metric' => 'istio_sli_availability_requests_total{response_code=~"5..", prometheus="k8s-mlserve", destination_service_namespace=~"revscoring.*"}',
+                        'metric' => 'istio_requests_total{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"5.."}"}',
                     },
                     'total' => {
-                        'metric' => 'istio_sli_availability_requests_total{prometheus="k8s-mlserve", destination_service_namespace=~"revscoring.*"}',
+                        'metric' => 'istio_requests_total{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default"}',
                     },
                     'grouping' => ['site', 'destination_service_namespace'],
                 },
