@@ -5,13 +5,14 @@ define puppetserver::rsync_module (
     Array[Stdlib::Fqdn]      $hosts,
     Systemd::Timer::Schedule $interval,
 ) {
+    include puppetserver
     $ca_server = $puppetserver::ca_server
     $is_ca = $ca_server == $facts['networking']['fqdn']
     $other_hosts = $hosts - $facts['networking']['fqdn']
     $server_ensure = stdlib::ensure($is_ca and !$other_hosts.empty())
 
     if !$is_ca and !($facts['networking']['fqdn'] in $hosts) {
-        fail("${title}: current host is not active CA server or in list of targets")
+        fail("${title}: ${facts['networking']['fqdn']} is not active CA server (${ca_server}) or in list of targets: ${hosts.join(',')}")
     }
 
     rsync::server::module { "puppet_${title}":

@@ -93,7 +93,7 @@ class profile::puppetserver (
     }
 
     $exluded_args = [
-        'enc_source', 'git_pull', 'ca_server', 'intermediate_ca',
+        'enc_source', 'git_pull', 'intermediate_ca',
         'ca_public_key', 'ca_crl', 'ca_private_key_secret',
     ]
     class { 'puppetserver':
