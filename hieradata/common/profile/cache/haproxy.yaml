@@ -92,7 +92,7 @@ profile::cache::haproxy::acls:
     - name: 'too_many_concurrent_queries'
       criterion: 'sc0_trackers(httpreqrate)'
       operator: 'ge'
-      value: '2000'
+      value: '500'
     - name: 'too_much_recent_concurrency'
       # Add hysteresis.
       criterion: 'sc0_gpc0_rate(httpreqrate)'
