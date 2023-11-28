@@ -63,4 +63,12 @@ class profile::ncredir(
         proto => 'tcp',
         port  => $https_port,
     }
+    ferm::rule { 'ncredir_ipip':
+        rule   => 'saddr 172.16.0.0/10 proto ipencap ACCEPT;',
+        domain => '(ip)',
+    }
+    ferm::rule { 'ncredir_ip6ip6':
+        rule   => 'saddr 0100::/64 proto ipv6 ACCEPT;',
+        domain => '(ip6)',
+    }
 }
