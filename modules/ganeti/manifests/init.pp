@@ -75,7 +75,6 @@ class ganeti(
             'group'           => 'gnt-admin',
             'notify_services' => ['ganeti'],
             'outdir'          => '/etc/ganeti/ssl/',
-            require           => File['/etc/ganeti/ssl/'],
         })
 
         sslcert::certificate { $certname:
