@@ -5680,10 +5680,10 @@ users:
   hghani:
     ensure: present
     krb: present
-    realname: Hghani
+    realname: Hamid Ghani
     email: hghani-ctr@wikimedia.org
-    expiry_date: "2023-11-30"
-    expiry_contact: kzimmerman@wikimedia.org
+    expiry_date: "2024-06-30"
+    expiry_contact: osefu@wikimedia.org
     uid: 42383
     gid: 500
     ssh_keys:
