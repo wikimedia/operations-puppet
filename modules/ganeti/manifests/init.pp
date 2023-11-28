@@ -82,7 +82,7 @@ class ganeti(
         }
 
         $rapi_ssl_key = $ssl_paths['key']
-        $rapi_ssl_cert = $ssl_paths['cert']
+        $rapi_ssl_cert = $ssl_paths['chained']
 
     } else {
         sslcert::certificate { $certname:
