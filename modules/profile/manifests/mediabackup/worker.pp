@@ -10,13 +10,13 @@ class profile::mediabackup::worker (
     # be moved later to the db to allow for more dynamic
     # configuration.
     class { 'mediabackup::worker':
-        mw_db_host            => $mediabackup_config['mw_db_host'],
-        mw_db_port            => $mediabackup_config['mw_db_port'],
+        sections              => $mediabackup_config['sections'],
         mw_db_user            => $mediabackup_config['mw_db_user'],
         mw_db_password        => $mediabackup_config['mw_db_password'],
-        dblist                => $mediabackup_config['dblist'],
-        wiki                  => $mediabackup_config['wiki'],
+        dblists_path          => $mediabackup_config['dblists_path'],
+        mw_db_config_file     => $mediabackup_config['mw_db_config_file'],
         batchsize             => $mediabackup_config['batchsize'],
+        db_config_file        => $mediabackup_config['db_config_file'],
         db_host               => $mediabackup_config['db_host'],
         db_port               => $mediabackup_config['db_port'],
         db_user               => $mediabackup_config['db_user'],

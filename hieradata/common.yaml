@@ -2064,6 +2064,9 @@ swift_aux_partitions:
 
 mediabackup:
   batchsize: 100
+  dblists_path: '/srv/mediawiki-config/dblists'
+  mw_db_config_file: '/etc/mediabackup/mw_db.ini'
+  db_config_file: '/etc/mediabackup/mediabackups_db.ini'
   storage_path: '/srv/objectstorage'
   storage_port: 9000
   console_port: 9001

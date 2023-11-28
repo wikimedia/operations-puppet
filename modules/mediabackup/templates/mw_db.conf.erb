@@ -1,12 +1,11 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-host: <%= @mw_db_host %>
-port: <%= @mw_db_port %>
-<% if @wiki -%>
-wiki: '<%= @wiki %>'
-<% end -%>
-<% if @dblist -%>
-dblist: '<%= @dblist %>'
-<% end -%>
-user: '<%= @mw_db_user %>'
-password: '<%= @mw_db_password %>'
-batchsize: <%= @batchsize %>
+sections:
+<%- @sections.each do |section, properties| -%>
+    <%= section %>:
+        host: <%= properties['host'] %>
+        port: <%= properties['port'] || '3306' %>
+        dblist: <%= properties['dblist'] || section + '.dblist' %>
+<%- end -%>
+batchsize: <%= @batchsize || '1000' %>
+config_file: <%= @mw_db_config_file %>
+dblists_path: <%= @dblists_path %>
