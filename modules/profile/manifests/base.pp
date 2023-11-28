@@ -17,6 +17,7 @@
 # @param additional_purged_packages A list of additional packages to purge
 # @param manage_resolvconf set this to false to disable managing resolv.conf
 #   useful in container environments
+# @param enable_rp_filter set this to false to disable rp_filtering
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -27,14 +28,15 @@ class profile::base (
     Boolean                             $unprivileged_userns_clone          = lookup('profile::base::unprivileged_userns_clone'),
     Hash                                $remote_syslog_tls                  = lookup('profile::base::remote_syslog_tls'),
     Boolean                             $remote_syslog_tls_client_auth      = lookup('profile::base::remote_syslog_tls_client_auth'),
-    Enum['x509/certvalid', 'x509/name'] $remote_syslog_tls_server_auth      = lookup('profile::base::remote_syslog_tls_server_auth', {'default_value' => 'x509/certvalid'}),
+    Enum['x509/certvalid', 'x509/name'] $remote_syslog_tls_server_auth      = lookup('profile::base::remote_syslog_tls_server_auth', {'default_value'      => 'x509/certvalid'}),
     Enum['gtls', 'ossl']                $remote_syslog_tls_netstream_driver = lookup('profile::base::remote_syslog_tls_netstream_driver', {'default_value' => 'ossl'}),
     Stdlib::Unixpath                    $remote_syslog_tls_ca               = lookup('profile::base::remote_syslog_tls_ca'),
-    Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
-    Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
-    Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
-    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
+    Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value'             => false}),
+    Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value'         => true}),
+    Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value'                  => true}),
+    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value'                   => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
+    Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -101,6 +103,7 @@ class profile::base (
         # TODO: make base::sysctl a profile itself?
         class { 'base::sysctl':
             unprivileged_userns_clone => $unprivileged_userns_clone,
+            enable_rp_filter          => $enable_rp_filter,
         }
     }
     class { 'motd': }
