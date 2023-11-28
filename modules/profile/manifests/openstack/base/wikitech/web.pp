@@ -86,10 +86,4 @@ class profile::openstack::base::wikitech::web(
         gerrit_api_user                    => $gerrit_api_user,
         gerrit_api_password                => $gerrit_api_password,
     }
-
-    ferm::service { 'wikitech_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
-    }
 }
