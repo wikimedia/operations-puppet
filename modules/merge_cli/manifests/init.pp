@@ -26,10 +26,6 @@ class merge_cli (
     $python_config = {
         'paths' => $paths,
     }
-    # Remove old file 2023-06-28
-    file { '/etc/puppet-merge.conf':
-        ensure => absent,
-    }
     file { '/etc/puppet-merge':
         ensure => directory,
     }
