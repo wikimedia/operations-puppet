@@ -1128,6 +1128,11 @@ node /^(elastic207[3-9]|elastic208[0-6])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
+# new codfw elastic servers T349778
+node /^(elastic208[7-9]|elastic209[0-1])\.codfw\./ {
+    role(insetup::search_platform)
+}
+
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
