@@ -653,8 +653,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'restbase201[3-9]|restbase202[0-7]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
-  'restbase202[8-9]|restbase203[0-5]':
-    - partman/custom/cassandrahosts-3ssd-jbod.cfg:
   'rpki*':
     - partman/flat.cfg
     - virtual.cfg
