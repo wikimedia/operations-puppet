@@ -50,7 +50,7 @@ class profile::microsites::query_service {
         severity           => 'task',
         path               => '/bigdata/ldf',
         body               => {
-            'subject'   => 'wd:42',
+            'subject'   => 'wd:Q42',
             'predicate' => 'wdt:P31',
             'object'    => '',
         },
