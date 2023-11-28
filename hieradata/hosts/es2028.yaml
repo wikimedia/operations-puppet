@@ -2,4 +2,3 @@
 mariadb::shard: 'es1'
 profile::mariadb::mysql_role: 'standalone'
 mariadb::binlog_format: 'ROW'
-profile::monitoring::notifications_enabled: false
