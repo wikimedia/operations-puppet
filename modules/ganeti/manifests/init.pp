@@ -74,7 +74,7 @@ class ganeti(
             'owner'           => 'root',
             'group'           => 'gnt-admin',
             'notify_services' => ['ganeti'],
-            'outdir'          => '/etc/ganeti/ssl/',
+            'outdir'          => '/etc/ganeti/ssl',
         })
 
         sslcert::certificate { $certname:
@@ -82,7 +82,9 @@ class ganeti(
         }
 
         $rapi_ssl_key = $ssl_paths['key']
-        $rapi_ssl_cert = $ssl_paths['chained']
+        $rapi_ssl_cert = $ssl_paths['cert']
+        $chain_file_name = $ssl_paths['chained']
+        $rapi_ssl_chain = "--ssl-chain ${chain_file_name}"
 
     } else {
         sslcert::certificate { $certname:
@@ -92,6 +94,7 @@ class ganeti(
         }
         $rapi_ssl_key = "/etc/ssl/private/${certname}.key"
         $rapi_ssl_cert = "/etc/ssl/localcerts/${certname}.crt"
+        $rapi_ssl_chain = ''
     }
 
     # Deploy defaults (for now, configuring RAPI) and the certificates for RAPI.
