@@ -17,16 +17,12 @@
 #
 # [*interfaces*] Network interfaces handling egress traffic on the realserver. Defaults to the primary interface
 #
-# [*clamper_prometheus_port*] TCP port used by the prometheus metrics endpoint of tcp-mss-clamper.
-#                             profile::prometheus::ops uses it to get the port to scrape. Defaults to 2200
-#
 class profile::lvs::realserver::ipip(
     Hash $pools = lookup('profile::lvs::realserver::pools', {'default_value'                                                 => {}}),
     Boolean $enabled = lookup('profile::lvs::realserver::ipip::enabled', {'default_value'                                    => false}),
     Integer[536, 1480] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'                       => 1400}),
     Integer[1220, 1440] $ipv6_mss = lookup('profile::lvs::realserver::ipip::ipv6_mss', {'default_value'                      => 1400}),
     Array[String, 1] $interfaces = lookup('profile::lvs::realserver::ipip::interfaces'),
-    Stdlib::Port $clamper_prometheus_port = lookup('profile::lvs::realserver::ipip::clamper_prometheus_port', {default_value => 2200}),
 ) {
     $present_pools = $pools.keys()
     $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
@@ -59,7 +55,7 @@ class profile::lvs::realserver::ipip(
         ensure => $ensure,
     }
 
-    $prometheus_addr = ":${clamper_prometheus_port}"
+    $prometheus_addr = ':2200'
     systemd::service { 'tcp-mss-clamper':
         ensure  => $ensure,
         content => systemd_template('tcp-mss-clamper'),

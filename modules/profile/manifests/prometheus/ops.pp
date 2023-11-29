@@ -2427,10 +2427,10 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::resource_config { "lvs_realserver_clamper_${::site}":
-        dest           => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
-        define_name    => 'profile::lvs::realserver::ipip',
-        port_parameter => 'clamper_prometheus_port',
+    prometheus::class_config{ "lvs_realserver_clamper_${::site}":
+        dest       => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
+        class_name => 'profile::lvs::realserver::ipip',
+        port       => 2200,
     }
 
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
