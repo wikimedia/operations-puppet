@@ -140,7 +140,7 @@ class phabricator::config (
     }
 
     file { '/usr/local/sbin/phab_deploy_finalize':
-        content => file('phabricator/phab_deploy_finalize.sh'),
+        content => template('phabricator/phab_deploy_finalize.sh.erb'),
         owner   => 'root',
         group   => 'root',
         mode    => '0700',
