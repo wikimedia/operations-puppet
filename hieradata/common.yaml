@@ -578,6 +578,15 @@ wikimedia_clusters:
     description: "Cassandra dev & test cluster"
     sites:
       codfw: []
+  ncredir:
+    description: "non-canonical domain redirect service cluster"
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
+      drmrs: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///modules/profile/puppet/ca.production.pem
