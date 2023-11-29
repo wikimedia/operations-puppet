@@ -16,7 +16,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Per-node timeouts: 10s connect + 45s execution
 CLUSH_OPTIONS="-S -B -n -t 10 -u 45"
-SSH_OPTIONS="-l authdns -i /srv/authdns/.ssh/id_ed25519 -oCheckHostIP=no -oUserKnownHostsFile=/dev/null"
+SSH_OPTIONS="-l authdns -i /srv/authdns/.ssh/id_ed25519 -F /srv/authdns/.ssh/config -oCheckHostIP=no -oUserKnownHostsFile=/dev/null"
 
 if [ -z "$NAMESERVERS" -o -z "$FQDN" ]; then
     echo "Missing config file options, system misconfigured"
