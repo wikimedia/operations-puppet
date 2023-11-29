@@ -39,19 +39,12 @@ define admin::hashuser (
             fail("${name}: system user defined with incorrect gid (${gid})")
         }
         $privileges = $uinfo['privileges']
+        $shell = $uinfo['shell']
         $groups = $uinfo['groups']
         $comment = $uinfo['realname']
         $ssh_keys = ($uinfo.has_key('ssh_keys') and $ensure_ssh_key) ? {
             true    => $uinfo['ssh_keys'],
             default => [],
-        }
-        $krb = $uinfo['krb'] ? {
-          'present' => true,
-          default   => false,
-        }
-        $shell = ($ssh_keys.empty and !$krb) ? {
-          true  => '/usr/sbin/nologin',
-          false => $uinfo['shell'],
         }
     }
     $gid = $uinfo.has_key('gid') ? {
