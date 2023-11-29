@@ -66,4 +66,16 @@ class profile::lvs::realserver::ipip(
         restart => false,
     }
 
+    # Allow inbound IPIP && IP6IP6 traffic
+    ferm::rule { 'ipip':
+        ensure => $ensure,
+        rule   => 'saddr 172.16.0.0/12 proto ipencap ACCEPT;',
+        domain => '(ip)',
+    }
+    ferm::rule { 'ip6ip6':
+        ensure => $ensure,
+        rule   => 'saddr 0100::/64 proto ipv6 ACCEPT;',
+        domain => '(ip6)',
+    }
+
 }
