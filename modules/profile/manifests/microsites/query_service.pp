@@ -56,8 +56,6 @@ class profile::microsites::query_service {
         },
         body_regex_matches => ['wd:Q42  wdt:P31  wd:Q5 .'],
         force_tls          => true,
-        # wdqs1015 is the only host for the LDF endpoint, see hieradata/common/profile/trafficserver/backend.yaml
-        ip4                => ipresolve('wdqs1015.eqiad.wmnet', 4),
         ip_families        => [ip4],
     }
 }
