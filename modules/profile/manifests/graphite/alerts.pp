@@ -27,6 +27,7 @@ class profile::graphite::alerts(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
+    # Monitor MediaWiki CentralAuth bad tokens
     monitoring::graphite_threshold { 'mediawiki_bad_token':
         description     => 'MediaWiki edit failure due to bad token',
         graphite_url    => $graphite_url,
@@ -39,12 +40,12 @@ class profile::graphite::alerts(
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
     }
 
-    # Monitor MediaWiki CentralAuth bad tokens
+    # Monitor MediaWiki CentralAuth login failures
     monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
         description     => 'MediaWiki centralauth errors',
         graphite_url    => $graphite_url,
         dashboard_links => ['https://grafana.wikimedia.org/d/000000438/mediawiki-alerts?panelId=3&fullscreen&orgId=1'],
-        metric          => 'transformNull(sumSeries(MediaWiki.centralauth.centrallogin_errors.*.rate), 0)',
+        metric          => 'transformNull(sumSeries(MediaWiki.authmanager.centrallogin.*.failure.*.rate), 0)',
         warning         => 0.5,
         critical        => 1,
         from            => '15min',
