@@ -1315,6 +1315,11 @@ node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
     role(ganeti)
 }
 
+# New codfw ganeti nodes T349926
+node /^ganeti203[3-4]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^ganeti-test100[12]\.eqiad\./ {
     role(ganeti_test)
 }
