@@ -3461,7 +3461,7 @@ service::catalog:
     port: 3311
     sites:
       - eqiad
-    state: production
+    state: service_setup
 
   wikireplicas-a-s2:
     <<: *wikireplica_a_default
@@ -3519,7 +3519,7 @@ service::catalog:
     port: 3311
     sites:
       - eqiad
-    state: production
+    state: service_setup
 
   wikireplicas-b-s2:
     <<: *wikireplica_b_default

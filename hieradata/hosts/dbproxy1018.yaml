@@ -5,14 +5,6 @@ profile::contacts::role_contacts:
 # Firewall rules for cloud are in the multiinstance profile
 profile::mariadb::proxy::firewall: 'internal'
 profile::mariadb::proxy::multiinstance_replicas::replica_type: 'analytics'
-# LVS DNS of this server is wikireplicas-a.wikimedia.org
-profile::lvs::realserver::pools:
-  wikireplicas-a-s1:
-    services:
-      - wikireplicas-a
-  wikireplicas-b-s1:
-    services:
-      - wikireplicas-b
 
 # Example multi-instance wikireplicas depooling, inserting the entry for the
 # web service. The basic idea is replace that section with a manual entry of the
