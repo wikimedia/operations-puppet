@@ -1771,6 +1771,11 @@ node /^lists2001\.codfw\./ {
     role(insetup::unowned)
 }
 
+# New codfw logging nodes T349834
+node /^logging-hd200[1-3]\.codfw\./ {
+    role(insetup::observability)
+}
+
 # Logging data nodes (codfw)
 node /^logstash20(0[123]|2[6789]|3[34567])\.codfw\./ {
     role(logging::opensearch::data)
