@@ -152,7 +152,7 @@ class profile::httpbb (
         source => 'puppet:///modules/profile/httpbb/liftwing/test_liftwing_staging.yaml'
     }
 
-    if defined('$basicauth_credentials') and $basicauth_credentials['docker-registry'] {
+    if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
         httpbb::test_suite {'docker-registry/test_docker-registry.yaml':
             content => template('profile/httpbb/docker-registry/test_docker-registry.yaml.erb'),
             mode    => '0400',
