@@ -20,10 +20,6 @@ class lvs::kernel_config {
 
     sysctl::parameters { 'lvs':
         values => {
-            # Turn OFF RP filter
-            'net.ipv4.conf.default.rp_filter' => 0,
-            'net.ipv4.conf.all.rp_filter'     => 0,
-
             # Turn off IP forwarding for security
             # LVS servers sit on all subnets
             'net.ipv4.ip_forward'             => 0,

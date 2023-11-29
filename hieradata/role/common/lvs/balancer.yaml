@@ -15,3 +15,4 @@ profile::base::remove_python2_on_bullseye: false
 
 profile::firewall::provider: none
 profile::lvs::ipip_enabled: false
+profile::base::enable_rp_filter: false
