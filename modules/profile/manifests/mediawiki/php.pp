@@ -48,10 +48,17 @@ class profile::mediawiki::php(
             notify     => Exec['apt_update_php'],
             before     => Package['php7.4-common', 'php7.4-opcache']
         }
+
+        if debian::codename::eq('buster') {
+            $php_common_version = '2:76+wmf1~buster2'
+        } elsif debian::codename::eq('bullseye') {
+            $php_common_version = '2:76+wmf1~bullseye1'
+        }
+
         # Install explicitly php-common from the php74 component
         # as the one installed elsewhere misses
         package { 'php-common':
-            ensure  => '2:76+wmf1~buster2',
+            ensure  => $php_common_version,
             require => Exec['apt_update_php'],
             before  => Package['php7.4-common', 'php7.4-opcache']
         }
