@@ -8,10 +8,10 @@
 # $ssl_enabled        - If true, this proxy will do SSL and force redirect to HTTPS.  Default: true
 #
 # $certificate_name   - Name of certificate.  If this is anything but 'ssl-cert-snakeoil',
-#                       sslcert::certificate will be called, and the certificate file will be
-#                       assumed to be in /etc/ssl/localcert.  If this is 'ssl-cert-snakeoil',
-#                       the snakeoil certificate will be used.  It is expected to be found at
-#                       /etc/ssl/certs/ssl-cert-snakeoil.pem.  Default: archiva.wikimedia.org
+#                       the certificate will be retrieved via acme-chief.
+#                       If this is 'ssl-cert-snakeoil', the snakeoil certificate will be used.
+#                       It is expected to be found at /etc/ssl/certs/ssl-cert-snakeoil.pem.
+#                       Default: archiva
 #
 class archiva::proxy(
     $ssl_enabled      = true,
