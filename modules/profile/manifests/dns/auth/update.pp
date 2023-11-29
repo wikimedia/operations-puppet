@@ -49,15 +49,6 @@ class profile::dns::auth::update (
         before   => Exec['authdns-local-update'],
     }
 
-    # Create explicit /etc/hosts entries for all authdns IPv4 to reach each
-    # other by-hostname without working recdns
-    $authdns_servers.each |$s_name,$s_ip| {
-        host { $s_name:
-            ip           => $s_ip,
-            host_aliases => split($s_name, '[.]')[0],
-        }
-    }
-
     $authdns_conf = '/etc/wikimedia-authdns.conf'
 
     if $confd_enabled {

@@ -46,6 +46,15 @@ class profile::dns::auth::update::account {
         content   => secret('authdns/id_ed25519.pub'),
         show_diff => false,
     }
+
+    confd::file { "${home}/.ssh/config":
+        ensure     => present,
+        prefix     => '/dnsbox',
+        watch_keys => ['/authdns'],
+        mode       => '0644',
+        content    => template('profile/dns/auth/authdns-ssh-config.tpl.erb'),
+    }
+
     ssh::userkey { $user:
         content => secret('authdns/id_ed25519.pub'),
     }
