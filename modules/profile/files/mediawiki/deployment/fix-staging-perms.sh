@@ -19,8 +19,8 @@ group=${deployment_group:?"'deployment_group' must be set in $config_file"}
 chmod -R g+w /srv/mediawiki-staging
 chmod -R g+w /srv/patches
 
-# Files and directories in the staging dir should have group ownership of deployment.
-find /srv/mediawiki-staging -not -group "$group" -print0 | xargs -0 -r chgrp "$group"
+# Files, directories and symbolic links in the staging dir should have group ownership of deployment.
+find /srv/mediawiki-staging -not -group "$group" -print0 | xargs -0 -r chgrp --no-dereference "$group"
 
-# Files and directories in the patches repository should have group ownership of deployment
-find /srv/patches -not -group "$group" -print0 | xargs -0 -r chgrp "$group"
+# Files, directories and symbolic links in the patches repository should have group ownership of deployment
+find /srv/patches -not -group "$group" -print0 | xargs -0 -r chgrp --no-dereference "$group"
