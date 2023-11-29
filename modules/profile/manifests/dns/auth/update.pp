@@ -4,6 +4,7 @@ class profile::dns::auth::update (
     Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
     Stdlib::Unixpath $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
     Stdlib::Fqdn $netbox_exports_domain = lookup('profile::dns::auth::update::netbox_exports_domain'),
+    Boolean $confd_enabled = lookup('profile::dns::auth::confd_enabled', {'default_value' => false}),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
@@ -66,12 +67,31 @@ class profile::dns::auth::update (
         }
     }
 
-    # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
-    # ssh access as well
-    ferm::service { 'authdns_update_ssh':
-        proto  => 'tcp',
-        port   => '22',
-        srange => "(${authdns_servers.values().join(' ')})",
+    if $confd_enabled {
+      # authdns ferm rules for ssh access as well, via confd.
+      $authdns_update_ssh = '/etc/ferm/conf.d/10_authdns_update_ssh'
+
+      # Files in /etc/ferm/conf.d have to be managed via Puppet or are removed.
+      file { $authdns_update_ssh:
+          ensure => present,
+          before => Confd::File[$authdns_update_ssh],
+      }
+      confd::file { $authdns_update_ssh:
+          ensure     => present,
+          prefix     => '/dnsbox',
+          watch_keys => ['/authdns'],
+          reload     => '/bin/systemctl reload ferm',
+          content    => template('profile/dns/auth/authdns-update-ssh.tpl.erb'),
+          before     => Exec['authdns-local-update'],
+      }
+    } else {
+      # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
+      # ssh access as well
+      ferm::service { 'authdns_update_ssh':
+          proto  => 'tcp',
+          port   => '22',
+          srange => "(${authdns_servers.values().join(' ')})",
+      }
     }
 
     # The clones and exec below are only for the initial puppetization of a
