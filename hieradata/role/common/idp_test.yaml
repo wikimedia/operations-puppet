@@ -35,6 +35,7 @@ profile::idp::services:
     id: 4
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox-next\.wikimedia\.org\/[\w\/]*'
+    profile_format: 'FLAT'
     required_groups:
       - wmf
       - nda

@@ -25,7 +25,7 @@
 # @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
 # @param ldap_server The LDAP server to specify in the configuration
 # @param enable_ldap Enable/disable LDAP authentication
-# @param authentication_provider which auth provider to use ldap/cas
+# @param authentication_provider which auth provider to use ldap/cas/oidc
 # @param swift_auth_url The authentication URL to be used for image storage.
 # @param http_proxy the proxy for netbox to use for outbound connections
 # @param cas_rename_attributes hash of attributes to rename
