@@ -24,7 +24,11 @@ class phabricator::tools (
     Boolean $dump               = false,
 ) {
 
-    package { 'python-mysqldb': ensure => present }
+    if debian::codename::eq('buster') {
+        package { 'python-mysqldb': ensure => present }
+    } else {
+        package { 'python3-mysqldb': ensure => present }
+    }
 
     file { '/etc/phabtools.conf':
         content => template('phabricator/phabtools.conf.erb'),
