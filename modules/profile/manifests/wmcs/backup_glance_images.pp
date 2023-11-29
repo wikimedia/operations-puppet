@@ -29,17 +29,15 @@ class profile::wmcs::backup_glance_images(
     }
 
     systemd::timer::job { 'backup_glance_images':
-        ensure                    => $timers_ensure,
-        description               => 'backup images',
-        command                   => '/usr/local/sbin/wmcs-backup images backup-all-images',
-        interval                  => {
+        ensure          => $timers_ensure,
+        description     => 'backup images',
+        command         => '/usr/local/sbin/wmcs-backup images backup-all-images',
+        interval        => {
           'start'    => 'OnCalendar',
           'interval' => $backup_interval,
         },
-        logging_enabled           => true,
-        monitoring_enabled        => true,
-        monitoring_contact_groups => 'wmcs-team-email',
-        user                      => 'root',
-        require                   => File['/usr/local/sbin/wmcs-backup'],
+        logging_enabled => true,
+        user            => 'root',
+        require         => File['/usr/local/sbin/wmcs-backup'],
     }
 }

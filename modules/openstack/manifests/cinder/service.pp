@@ -58,18 +58,15 @@ class openstack::cinder::service(
         }
 
         systemd::timer::job { 'backup_cinder_volumes':
-            description               => 'Backup select cinder volumes using wmcs-cinder-backup-manager.py',
-            command                   => '/usr/local/sbin/wmcs-cinder-backup-manager',
-            user                      => 'root',
-            logging_enabled           => true,
-            logfile_name              => 'wmcs-cinder-backup-manager.log',
-            interval                  => {
+            description     => 'Backup select cinder volumes using wmcs-cinder-backup-manager.py',
+            command         => '/usr/local/sbin/wmcs-cinder-backup-manager',
+            user            => 'root',
+            logging_enabled => true,
+            logfile_name    => 'wmcs-cinder-backup-manager.log',
+            interval        => {
                 'start'    => 'OnCalendar',
                 'interval' => 'Mon,Wed,Fri *-*-* 10:30:00', # The closer to every two days I could get
             },
-            monitoring_enabled        => true,
-            monitoring_contact_groups => 'wmcs-team-email',
-            monitoring_notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Runbooks/Check_unit_status_of_backup_cinder_volumes',
         }
     }
 }
