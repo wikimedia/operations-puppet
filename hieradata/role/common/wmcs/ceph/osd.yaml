@@ -2,3 +2,4 @@ profile::monitoring::nrpe_check_disk_options: '-w 6% -c 3% -W 6% -K 3% -l -e -A 
 profile::contacts::role_contacts: ['WMCS']
 profile::admin::groups:
   - wmcs-roots
+cluster: wmcs

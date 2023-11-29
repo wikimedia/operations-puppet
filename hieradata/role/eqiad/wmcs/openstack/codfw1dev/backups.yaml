@@ -8,10 +8,11 @@
 # the codfw DC
 profile::admin::groups:
   - wmcs-roots
+profile::contacts::role_contacts: ['WMCS']
+cluster: wmcs
 
 profile::monitoring::notifications_enabled: false
 
-profile::contacts::role_contacts: ['WMCS']
 profile::cloudceph::auth::deploy::enabled: true
 
 profile::cloudceph::auth::deploy::configuration:

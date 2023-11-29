@@ -1,6 +1,7 @@
 profile::admin::groups:
   - wmcs-roots
 contactgroups: wmcs-team-email
+cluster: wmcs
 
 profile::debdeploy::client::filter_services:
   qemu-system-x86:

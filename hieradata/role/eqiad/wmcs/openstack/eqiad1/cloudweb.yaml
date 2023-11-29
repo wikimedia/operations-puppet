@@ -3,6 +3,7 @@ profile::admin::groups:
   - wmcs-roots
   - deployment
   - ldap-admins
+cluster: wmcs
 
 profile::base::overlayfs: true
 

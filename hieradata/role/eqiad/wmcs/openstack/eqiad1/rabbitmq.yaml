@@ -11,3 +11,4 @@ profile::openstack::base::rabbitmq::openstack_control_node_interface: host_fqdn
 contactgroups: wmcs-team-email
 
 profile::contacts::role_contacts: ['WMCS']
+cluster: wmcs

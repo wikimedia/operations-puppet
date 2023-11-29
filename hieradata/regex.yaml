@@ -205,18 +205,6 @@ dbproxy_eqiad:
 extstorage_eqiad:
   __regex: !ruby/regexp /^(es101[1-9])\.eqiad\.wmnet$/
 
-labvirt:
-  __regex: !ruby/regexp /^labvirt10[0-9][0-9]\.eqiad\.wmnet$/
-  cluster: labvirt
-
-labstore:
-  __regex: !ruby/regexp /^labstore.*\.wmnet$/
-  cluster: labsnfs
-
-labs:
-  __regex: !ruby/regexp /^lab((net|mon)100[1-9]\.eqiad\.wmnet|(services|control)100[1-9]\.wikimedia\.org)$/
-  cluster: labs
-
 # Legacy hosts with a single object-server per port
 # https://phabricator.wikimedia.org/T222366
 swift_servers_per_port:

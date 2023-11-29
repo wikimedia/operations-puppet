@@ -2,6 +2,7 @@
 profile::admin::groups:
   - wmcs-roots
   - deployment
+cluster: wmcs
 
 # Currently unused:
 profile::openstack::base::nutcracker::memcached::size: 6000

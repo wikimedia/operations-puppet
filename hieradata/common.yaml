@@ -241,14 +241,6 @@ wikimedia_clusters:
       eqiad: []
       codfw: []
       esams: []
-  labvirt:
-    description: "Labs virt hosts"
-    sites:
-      eqiad: []
-  labs:
-    description: "Labs services"
-    sites:
-      eqiad: []
   jobrunner:
     description: "Jobrunners"
     sites:
@@ -288,11 +280,6 @@ wikimedia_clusters:
       codfw: []
   redis:
     description: "Redis"
-    sites:
-      eqiad: []
-      codfw: []
-  labsnfs:
-    description: "Labs NFS cluster"
     sites:
       eqiad: []
       codfw: []
@@ -349,14 +336,6 @@ wikimedia_clusters:
     description: "Elasticsearch relforge cluster"
     sites:
       eqiad: []
-  labtestvirt:
-    description: "Labtest virt hosts"
-    sites:
-      codfw: []
-  labtest:
-    description: "Labtest services"
-    sites:
-      codfw: []
   thumbor:
     description: "Thumbor"
     sites:
