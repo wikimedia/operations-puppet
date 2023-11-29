@@ -8,5 +8,3 @@ profile::bird::advertise_vips:
     address: 185.15.56.162
     # NOTE: we always want to advertise this address
     check_cmd: "/bin/sh -c 'true'"
-
-profile::openstack::eqiad1::version: 'antelope'
