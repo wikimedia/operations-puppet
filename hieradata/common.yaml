@@ -427,6 +427,7 @@ wikimedia_clusters:
     description: "WMCS servers"
     sites:
       eqiad: []
+      codfw: []
   webperf:
     description: "Web Performance servers"
     sites:
