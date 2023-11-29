@@ -1722,7 +1722,7 @@ node /^flink-zk100[123]\.eqiad\./ {
 }
 
 node /^flink-zk200[123]\.codfw\./ {
-    role(insetup::search_platform)
+    role(zookeeper::flink)
 }
 
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
