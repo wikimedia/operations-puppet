@@ -28,15 +28,6 @@ class profile::dns::auth::update (
         before => Exec['authdns-local-update'],
     }
 
-    file { '/etc/wikimedia-authdns.conf':
-        ensure  => 'present',
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('profile/dns/auth/wikimedia-authdns.conf.erb'),
-        before  => Exec['authdns-local-update'],
-    }
-
     # safe.directory directive for the two below directories allows
     # authdns-local-update to be run without any permission issues.
     # See CR 888053 for more information.
@@ -67,6 +58,8 @@ class profile::dns::auth::update (
         }
     }
 
+    $authdns_conf = '/etc/wikimedia-authdns.conf'
+
     if $confd_enabled {
       # authdns ferm rules for ssh access as well, via confd.
       $authdns_update_ssh = '/etc/ferm/conf.d/10_authdns_update_ssh'
@@ -84,6 +77,14 @@ class profile::dns::auth::update (
           content    => template('profile/dns/auth/authdns-update-ssh.tpl.erb'),
           before     => Exec['authdns-local-update'],
       }
+
+      confd::file { $authdns_conf:
+          ensure     => present,
+          prefix     => '/dnsbox',
+          watch_keys => ['/authdns'],
+          content    => template('profile/dns/auth/wikimedia-authdns.conf.tpl.erb'),
+          before     => Exec['authdns-local-update'],
+      }
     } else {
       # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
       # ssh access as well
@@ -91,6 +92,14 @@ class profile::dns::auth::update (
           proto  => 'tcp',
           port   => '22',
           srange => "(${authdns_servers.values().join(' ')})",
+      }
+      file { $authdns_conf:
+          ensure  => 'present',
+          mode    => '0444',
+          owner   => 'root',
+          group   => 'root',
+          content => template('profile/dns/auth/wikimedia-authdns.conf.erb'),
+          before  => Exec['authdns-local-update'],
       }
     }
 
