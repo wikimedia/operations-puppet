@@ -808,6 +808,7 @@ profile::puppetboard::inventory_facts_override: {}
 # defaults for cloud (mostly deployment prep)
 profile::base::production::enable: false
 profile::base::production::enable_ip6_mapped: false
+profile::base::production::role_description: ~
 
 profile::cumin::cloud_master::puppetdb_micro_host: puppetdb-api.discovery.wmnet
 profile::cumin::cloud_master::puppetdb_micro_port: "%{alias('profile::puppetdb::microservice::port')}"
