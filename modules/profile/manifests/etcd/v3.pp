@@ -33,10 +33,6 @@
 #   Boolean. Whether to back up the data on etcd or not. Defaults to false on
 #   first deploy for backwards compatibility.
 #
-# [*use_pki_certs]
-#   Boolean. Whether to use the CFSSL based PKI to generate certificates,
-#   or to use the older Puppet CA based certificates. Defaults to false.
-#
 # [*quota_backend_bytes*]
 #   Integer. The maximum size of the etcd database. Defaults to 2GB.
 #
@@ -51,7 +47,6 @@ class profile::etcd::v3(
     Integer $max_latency = lookup('profile::etcd::v3::max_latency'),
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
     Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
-    Boolean $use_pki_certs = lookup('profile::etcd::v3::use_pki_certs', {'default_value' => false}),
     Optional[Integer] $quota_backend_bytes = lookup('profile::etcd::v3::quota_backend_bytes', {'default_value' => undef}),
 ) {
     # Parameters mangling
@@ -77,37 +72,20 @@ class profile::etcd::v3(
     # connection. So there is no need to notify the etcd service
     # on certificate renewals.
 
-    # This option uses the puppet CA based certificates
-    if ! $use_pki_certs {
-        sslcert::certificate { $certname:
-            skip_private => false,
-            group        => 'etcd',
-            require      => Package['etcd-server'],
-            before       => Service['etcd'],
-        }
-
-        $ssl_paths = {
-            'chained' => "/etc/ssl/localcerts/${certname}.crt",
-            'key'     => "/etc/ssl/private/${certname}.key",
-        }
+    # From etcd 3.3+ (bullseye version+) if we use discovery SRV records,
+    # we'll also need to add a SAN with the "domain_name: in "dns:domain_name"
+    # See T329556
+    if $srv_dns != undef {
+        $ssl_hosts = [$facts['networking']['fqdn'], $srv_dns]
+    } else {
+        $ssl_hosts = [$facts['networking']['fqdn']]
     }
-    # This option allows the CFSSL based PKI to be used with the etcd intermediate
-    else {
-        # From etcd 3.3+ (bullseye version+) if we use discovery SRV records,
-        # we'll also need to add a SAN with the "domain_name: in "dns:domain_name"
-        # See T329556
-        if $srv_dns != undef {
-            $ssl_hosts = [$facts['networking']['fqdn'], $srv_dns]
-        } else {
-            $ssl_hosts = [$facts['networking']['fqdn']]
-        }
-        $ssl_paths = profile::pki::get_cert('etcd', $certname, {
-            hosts           => $ssl_hosts,
-            owner           => 'etcd',
-            outdir          => '/var/lib/etcd/ssl',
-            before_services => ['etcd'],
-        })
-    }
+    $ssl_paths = profile::pki::get_cert('etcd', $certname, {
+        hosts           => $ssl_hosts,
+        owner           => 'etcd',
+        outdir          => '/var/lib/etcd/ssl',
+        before_services => ['etcd'],
+    })
 
     # Service
     class { '::etcd::v3':

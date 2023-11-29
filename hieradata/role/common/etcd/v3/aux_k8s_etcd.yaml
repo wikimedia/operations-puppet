@@ -10,7 +10,6 @@ profile::etcd::v3::use_client_certs: false
 profile::etcd::v3::allow_from: '$DOMAIN_NETWORKS'
 # The following parameter enables automatic peer communication certificate
 # generation
-profile::etcd::v3::use_pki_certs: true
 profile::etcd::v3::max_latency: 10
 profile::etcd::v3::adv_client_port: 2379
 

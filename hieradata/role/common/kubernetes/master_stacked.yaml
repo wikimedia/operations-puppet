@@ -41,7 +41,6 @@ profile::etcd::v3::use_client_certs: false
 profile::etcd::v3::max_latency: 10
 # We use the v3 api directly.
 profile::etcd::v3::adv_client_port: 2379
-profile::etcd::v3::use_pki_certs: true
 # Raise the etcd database size to 4GB
 profile::etcd::v3::quota_backend_bytes: 4294967296
 
