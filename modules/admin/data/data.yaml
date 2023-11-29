@@ -6914,3 +6914,7 @@ ldap_only_users:
     ensure: present
     realname: Grace Choi
     email: gchoi@wikimedia.org
+  toyofuku:
+    ensure: present
+    realname: Steph Toyofuku
+    email: stoyofuku@wikimedia.org
