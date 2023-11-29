@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-counter ncredir_requests_total by scheme, vhost, method, status
+counter ncredir_requests_total by scheme, method, status
 # log_format ncredir '$remote_addr [$time_local] $scheme '
 #                   '"$request" $status $body_bytes_sent '
 #                   '"$http_user_agent" $host $sent_http_location';
@@ -14,5 +14,5 @@ counter ncredir_requests_total by scheme, vhost, method, status
 /(?P<vhost>[0-9A-Za-z\.\-:]+) / +
 /(?P<redirection_target>\S+)/ +
 /$/ {
-  ncredir_requests_total[$scheme][$vhost][$method][$status]++
+  ncredir_requests_total[$scheme][$method][$status]++
 }

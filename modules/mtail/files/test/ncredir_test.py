@@ -15,6 +15,5 @@ class NcredirTest(unittest.TestCase):
 
     def testRespStatus(self):
         s = self.store.get_samples('ncredir_requests_total')
-        self.assertIn(('scheme=http,vhost=www.wikipedia.com,method=GET,status=301', 2), s)
-        self.assertIn(('scheme=https,vhost=www.wikipedia.com,method=GET,status=301', 1), s)
-        self.assertIn(('scheme=https,vhost=wikipedia.co.il,method=GET,status=301', 1), s)
+        self.assertIn(('scheme=http,method=GET,status=301', 2), s)
+        self.assertIn(('scheme=https,method=GET,status=301', 2), s)
