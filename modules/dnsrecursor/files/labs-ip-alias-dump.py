@@ -65,7 +65,7 @@ def main():
             )
             try:
                 for floating_ip in r_conn.list_floating_ips():
-                    if floating_ip.attached:
+                    if floating_ip.fixed_ip_address:
                         output_d["aliasmapping"][
                             floating_ip.floating_ip_address
                         ] = floating_ip.fixed_ip_address
