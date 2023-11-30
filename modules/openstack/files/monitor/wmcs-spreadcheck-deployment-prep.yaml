@@ -1,5 +1,0 @@
-project: deployment-prep
-
-classifier:
-  db: mariadb
-  ms-be: swift
