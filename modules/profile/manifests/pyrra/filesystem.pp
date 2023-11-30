@@ -45,7 +45,6 @@ class profile::pyrra::filesystem (
       content => to_yaml($logstash_requests_slo),
     }
 
-
     $liftwing_revscoring_requests_slo = {
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind' => 'ServiceLevelObjective',
@@ -68,7 +67,7 @@ class profile::pyrra::filesystem (
                     'total' => {
                         'metric' => 'istio_requests_total{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default"}',
                     },
-                    'grouping' => ['site', 'destination_service_namespace'],
+                    'grouping' => ['site'],
                 },
             },
         },
@@ -76,6 +75,38 @@ class profile::pyrra::filesystem (
 
     pyrra::filesystem::config { 'liftwing-requests.yaml':
       content => to_yaml($liftwing_revscoring_requests_slo),
+    }
+
+    $liftwing_revscoring_latency_slo = {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'liftwing-latency-revscoring',
+            'namespace' => 'pyrra-o11y-pilot',
+            'labels' => {
+                'pyrra.dev/team' => 'ml',
+                'pyrra.dev/service' => 'liftwing-revscoring',
+            },
+        },
+        'spec' => {
+            'target' => '98.0',
+            'window' => '12w',
+            'indicator' => {
+                'latency' => {
+                    'success' => {
+                        'metric' => 'istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", le="5000", response_code=~"2.."}'
+                    },
+                    'total' => {
+                        'metric' => 'istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"2..", le="+Inf"}',
+                    },
+                    'grouping' => ['site'],
+                },
+            },
+        },
+    }
+
+    pyrra::filesystem::config { 'liftwing-latency.yaml':
+      content => to_yaml($liftwing_revscoring_latency_slo),
     }
 
 }
