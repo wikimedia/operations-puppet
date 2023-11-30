@@ -2,61 +2,96 @@
 # Those mappings rewrites the metrics to be more Prometheus friendly.
 profile::airflow::statsd_exporter_default_mappings:
 
-  # Example:
-  #   airflow_analytics_test.operator_failures_HdfsEmailOperator count
-  #   => airflow_operator_failures{airflow_instance="analytics_test", operator="HdfsEmailOperator"} count
-  - match: airflow_(\\w+)\\.operator_(failures|successes)_(\\w+)
-    match_type: regex
-    name: "airflow_operator_${2}"
+  - match: airflow.scheduler.scheduler_loop_duration
+    name: airflow_scheduler_loop_duration
+    summary_options:
+      quantiles:
+        - quantile: 0.5
+          error: 0.1
+      max_age: 30s
+      age_buckets: 30
+      buf_cap: 10
     labels:
-      airflow_instance: "$1"
-      operator: "$3"
+      site: analytics_test
 
   # Example:
-  #   airflow_analytics_test.ti_failures count
-  #   => airflow_ti_failures{airflow_instance="analytics_test"} count
-  - match: airflow_(\\w+)\\.ti_(failures|successes)
+  #   airflow.operator_failures__HdfsEmailOperator count
+  #   => airflow_operator{operator="HdfsEmailOperator", state="failures"} count
+  - match: airflow\.operator_(failures|successes)__(\w+)
     match_type: regex
-    name: "airflow_ti_${2}"
+    name: airflow_operator
     labels:
-      airflow_instance: "$1"
+      state: "$1"
+      operator: "$2"
 
   # Example:
-  #   airflow_analytics_test.dag.pageview_hourly.move_data_to_archive.duration
-  #   => airflow_dag_duration{airflow_instance="analytics_test", dag_id="pageview_hourly", task_id="move_data_to_archive"} count
-  - match: airflow_(\\w+)\\.dag\\.(\\w+)\\.(\\w+)\\.(duration|scheduled_duration|queued_duration)
+  #   airflow.ti_failures count
+  #   => airflow_ti{state="failures"} count
+  - match: airflow\.ti_(failures|successes)
     match_type: regex
-    name: "airflow_dag_${4}"
+    name: airflow_ti
     labels:
-      airflow_instance: "$1"
-      dag_id: "$2"
-      task_id: "$3"
+      state: "$1"
 
   # Example:
-  #   airflow_analytics_test.dagrun.duration.success.pageview_hourly count
-  #   => airflow_dagrun_duration{airflow_instance="analytics_test", dag_id="pageview_hourly"} count
-  - match: airflow_(\\w+)\\.dagrun.duration.(success|failed)\\.(\\w+)
+  #   airflow.ti.start.example_python_operator.print_array count
+  #   dropped
+  - match: airflow\.ti\.start.*
+    match_type: regex
+    name: airflow_ti_start
+    action: drop
+
+  # Example:
+  #   airflow.ti.finish.example_dag.task_1.failed count
+  #   => airflow_ti_finish{dag_id="example_dag", task_id="task1", state="failed"} count
+  - match: airflow\.ti\.finish.(\w+)\.(\w+)\.(queued|running|scheduled|success|failed)
+    match_type: regex
+    name: airflow_ti_finish
+    labels:
+      dag_id: "$1"
+      task_id: "$2"
+      state: "$3"
+
+  # Example:
+  #   airflow.ti.finished.example_python_operator.print_array.None count
+  #   dropped
+  - match: airflow\.ti\.finish\.(\w+)\.(\w+)\.(None|deferred|removed|restarting|shutdown|skipped|up_for_reschedule|up_for_retry|upstream_failed)
+    match_type: regex
+    name: airflow_ti_finish_useless
+    action: drop
+
+  # Example:
+  #   airflow.dag.pageview_hourly.move_data_to_archive.duration
+  #   => airflow_dag_duration{dag_id="pageview_hourly", task_id="move_data_to_archive"} count
+  - match: airflow\.dag\.(\w+)\.(\w+)\.duration
+    match_type: regex
+    name: "airflow_task_duration"
+    labels:
+      dag_id: "$1"
+      task_id: "$2"
+
+  # Example:
+  #   airflow.dag.pageview_hourly.move_data_to_archive.duration
+  #   dropped
+  - match: airflow\.dag\.(\w+)\.(\w+)\.(queued_duration|scheduled_duration)
+    match_type: regex
+    name: airflow_dag_other_durations
+    action: drop
+
+  # Example:
+  #   airflow.dagrun.duration.pageview_hourly count
+  #   dropped
+  - match: airflow\.dagrun\.duration\.(success|failed)$
+    match_type: regex
+    name: airflow_dagrun_duration_success
+    action: drop
+
+  # Example:
+  #   airflow.dagrun.duration.success.pageview_hourly count
+  #   => airflow_dagrun_duration{dag_id="pageview_hourly", state="success"} count
+  - match: airflow\.dagrun\.duration\.(success|failed)\.(\w+)
     match_type: regex
     name: airflow_dagrun_duration
     labels:
-      airflow_instance: "$1"
-      state: "$2"
-      dag_id: "$3"
-
-  # Example:
-  #   analytics_test.sla_missed count
-  #   => airflow_sla_missed{airflow_instance="analytics_test"} count
-  - match: airflow_(\\w+)\\.(sla_missed|collect_db_dags)
-    match_type: regex
-    name: "airflow_${2}"
-    labels:
-      airflow_instance: "$1"
-
-  # Example:
-  #   analytics_test.executor.queued_tasks count
-  #   => airflow_executor_queued_tasks{airflow_instance="analytics_test"} count
-  - match: airflow_(\\w+)\\.(executor|dag|scheduler)\\.(queued_tasks|callback_exceptions|scheduler_loop_duration)
-    match_type: regex
-    name: "airflow_${2}_${3}"
-    labels:
-      airflow_instance: "$1"
+      state: "$1"
+      dag_id: "$2"
