@@ -27,7 +27,7 @@ profile::hive::metastore::ferm_srange: '(($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETW
 
 # Override to force the Hive Server 2 on an-coord1001 to use its local
 # Metastore.
-profile::hive::client::hive_metastore_host: 'an-coord1001.eqiad.wmnet'
+profile::hive::client::hive_metastore_host: '%{::fqdn}'
 
 # Kerberos settings
 profile::kerberos::client::prefer_tcp: true
@@ -35,7 +35,7 @@ profile::kerberos::client::prefer_tcp: true
 # Presto (Coordinator) Server settings
 profile::presto::monitoring_enabled: true
 profile::presto::cluster_name: analytics-presto
-profile::presto::discovery_uri: https://an-coord1001.eqiad.wmnet:8281
+profile::presto::discovery_uri: 'https://%{::fqdn}:8281'
 profile::presto::server::heap_max: 10G
 profile::presto::server::config_properties:
   coordinator: true
