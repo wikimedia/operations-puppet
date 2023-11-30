@@ -3,6 +3,7 @@
 class profile::installserver::preseed (
   Hash $preseed_per_hostname = lookup('profile::installserver::preseed::preseed_per_hostname', { 'default_value' => {} }),
 ) {
+  include network::constants
   $preseed_subnets = Hash(
     $network::constants::all_network_subnets['production'].map |$datacenter_name, $datacenter_config| {
       $datacenter_config.map |$audience, $audience_config| {
