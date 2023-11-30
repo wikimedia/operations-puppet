@@ -23,8 +23,6 @@ class profile::openstack::eqiad1::rabbitmq(
     Integer $heartbeat_timeout = lookup('profile::openstack::eqiad1::rabbitmq_heartbeat_timeout'),
     String $version = lookup('profile::openstack::eqiad1::version'),
 ){
-
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::rabbitmq':
         openstack_control_nodes => $openstack_control_nodes,
         rabbitmq_nodes          => $rabbitmq_nodes,
