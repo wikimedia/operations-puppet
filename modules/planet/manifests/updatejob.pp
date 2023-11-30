@@ -6,6 +6,7 @@ define planet::updatejob (
     Stdlib::Unixpath $planet_bin = '/usr/bin/rawdog',
     String $planet_conf_dir = '/etc/rawdog',
     String $planet_options = '-v -u -w',
+    Wmflib::Ensure $ensure = 'present',
 ){
 
     $planet_cmd = "${planet_bin} -d ${planet_conf_dir}/${title}/ ${planet_options}"
@@ -13,7 +14,7 @@ define planet::updatejob (
     $minute = Integer(seeded_rand(60, $title))
 
     systemd::timer::job { "planet-update-${title}":
-        ensure          => present,
+        ensure          => $ensure,
         user            => 'planet',
         description     => "Update feed content for Planet language version: ${title}",
         command         => $planet_cmd,

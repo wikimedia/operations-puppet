@@ -20,6 +20,7 @@ class planet (
     Hash $languages,
     Stdlib::Httpsurl $meta_link,
     Stdlib::Httpurl $https_proxy,
+    Wmflib::Ensure $updatejob_ensure,
 ) {
 
     # things done once for all planet per languages
@@ -68,6 +69,7 @@ class planet (
     # creates one systemd timer for updates per language
     # all run hourly but each language at a different random minute
     planet::updatejob { $languages_keys:
+        ensure      => $updatejob_ensure,
         https_proxy => $https_proxy,
     }
 
