@@ -8,6 +8,7 @@ frontend wikireplica-proxy-<%= type %>-<%= section %>
     option tcplog
     log /dev/log local0 crit
     option tcpka
+    timeout client  28800s
 
     acl use_backup nbsrv(wikireplica-db-<%= type %>-<%= section %>) lt 1
     use_backend wikireplica-db-<%= @backups[type] %>-<%= section %> if use_backup

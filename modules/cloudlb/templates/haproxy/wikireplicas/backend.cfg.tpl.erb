@@ -9,6 +9,9 @@ backend wikireplica-db-<%= type %>-<%= section %>
     option tcpka
     option mysql-check user haproxy
 
+    timeout connect 3000ms
+    timeout server  28800s
+
 <%- key = "/wikireplica-db-#{type}/#{section}" -%>
     # etcd key <%= key %>
 {{ range $node := ls "<%= key %>/" }}{{ $key := printf "<%= key %>/%s" $node }}{{ $data := json (getv $key) }}{{ if and (eq $data.pooled "yes") (ge $data.weight 1.0) }}
