@@ -22,7 +22,7 @@ class profile::cache::haproxy(
     Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value'                          => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', {'default_value'                                 => false}),
-    String $ocsp_proxy = lookup('http_proxy'),
+    Optional[Stdlib::HTTPUrl] $ocsp_proxy = lookup('http_proxy', {'default_value'                                                                => undef}),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
     Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value'                                                  => '/etc/haproxymtail'}),
     Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value'                                              => 3906}),
