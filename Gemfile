@@ -1,19 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'sync'
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '5.5.10'
-# Last version supporting legacy facts, buster facts, and ruby 2.5, can be
-# upgraded once we are no longer have buster specs, legacy facts, or ruby 2.5
-gem 'facterdb', '= 1.21.0'
-# Newer versions break on buster, can be removed once build image is no longer
-# buster.
-gem "ffi", "< 1.17.0"
-gem 'xmlrpc' if RUBY_VERSION >= '2.4.0'
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '7.23.0'
+# Last version supporting legacy facts and buster facts can be upgraded once we
+# are no longer using legacy facts and buster specs
+gem 'facterdb', '= 1.27.0'
 gem 'puppet-strings', '~> 2.9.0'
 gem 'rspec-puppet', '~> 2.9.0'
 gem 'rspec-puppet-facts', '~> 2.0', require: false
 gem 'puppetlabs_spec_helper', '< 4.0.0'
-gem 'safe_yaml', '~> 1.0.5'
 gem 'parallel_tests'
 # required by lvm spec_helper
 gem 'puppet-blacksmith', '~> 4.1.2'
