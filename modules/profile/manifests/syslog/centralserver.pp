@@ -64,6 +64,12 @@ class profile::syslog::centralserver (
         ssl_provider           => $ssl_provider,
     }
 
+    # https://phabricator.wikimedia.org/T199406
+    class { '::toil::rsyslog_receiver_remedy':
+        ensure       => present,
+        ssl_provider => $ssl_provider,
+    }
+
     # Prune old /srv/syslog/host directories on disk (from decommed hosts, etc.) after grace period expires
     $log_deletion_days = $log_retention_days + $log_deletion_grace_days
 

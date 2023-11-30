@@ -16,9 +16,4 @@ class role::syslog::centralserver {
     include ::profile::kafkatee::webrequest::ops
     include ::profile::netconsole::server
     include ::profile::benthos
-
-    # https://phabricator.wikimedia.org/T199406
-    class { '::toil::rsyslog_tls_remedy':
-        ensure => absent,
-    }
 }

@@ -11,7 +11,4 @@ class role::wmcs::centralserver_syslog {
     include ::profile::firewall
 
     include ::profile::syslog::centralserver
-
-    # https://phabricator.wikimedia.org/T199406
-    include ::toil::rsyslog_tls_remedy # lint:ignore:wmf_styleguide
 }
