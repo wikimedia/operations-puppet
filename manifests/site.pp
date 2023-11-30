@@ -2673,15 +2673,11 @@ node /^pybal-test2003\.codfw\./ {
     role(pybaltest)
 }
 
-node /^rdb10(09|11)\.eqiad\./ {
+node /^rdb101[13]\.eqiad\./ {
     role(redis::misc::master)
 }
 
-node /^rdb101[02]\.eqiad\./ {
-    role(redis::misc::slave)
-}
-
-node /^rdb101[34]\.eqiad\./ {
+node /^rdb101[24]\.eqiad\./ {
     role(redis::misc::slave)
 }
 
