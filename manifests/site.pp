@@ -2678,7 +2678,7 @@ node /^rdb101[02]\.eqiad\./ {
 }
 
 node /^rdb101[34]\.eqiad\./ {
-    role(insetup::serviceops)
+    role(redis::misc::slave)
 }
 
 node /^rdb200[79]\.codfw\./ {
