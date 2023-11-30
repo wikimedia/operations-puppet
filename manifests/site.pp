@@ -1094,6 +1094,11 @@ node /^(elastic108[4-9]|elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
+# new elastic servers T349777
+node /^elastic110[3-7]\.eqiad\./ {
+    role(insetup::search_platform)
+}
+
 node /^elastic203[7-9]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
