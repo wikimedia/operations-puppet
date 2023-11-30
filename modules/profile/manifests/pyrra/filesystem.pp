@@ -97,7 +97,7 @@ class profile::pyrra::filesystem (
                         'metric' => 'istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", le="5000", response_code=~"2.."}'
                     },
                     'total' => {
-                        'metric' => 'istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"2..", le="+Inf"}',
+                        'metric' => 'istio_request_duration_milliseconds_count{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"2.."}',
                     },
                     'grouping' => ['site'],
                 },
