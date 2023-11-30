@@ -1626,6 +1626,11 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-6])\.codfw\./ {
     role(kubernetes::worker)
 }
 
+# New kubernetes in codfw T349873
+node /^kubernetes20(5[7-9]|6[0])\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 # START Kubernetes workers that used to be mw app/api servers
 node /^mw147[2345]\.eqiad\./ {
     role(kubernetes::worker)
