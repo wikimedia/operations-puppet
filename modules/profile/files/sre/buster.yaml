@@ -82,7 +82,8 @@ role::parsoid::testing:
 role::parsoid::testreduce:
   target-q: 2023-4
 role::eventschemas::service:
-  target-q: TBD
+  phab-task: 349286
+  target-q: 2023-4
 role::restbase::production:
   target-q: 2023-4
   phab-task: 331713
@@ -150,16 +151,16 @@ role::analytics_cluster::turnilo:
   phab-task: 288804
 role::search::airflow:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 335261
 role::analytics_cluster::airflow::research:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 335261
 role::analytics_cluster::airflow::platform_eng:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 335261
 role::analytics_cluster::airflow::platform_eng_legacy:
   target-q: TBD
-  phab-task: 288804
+  phab-task: 335261
 role::aqs:
   target-q: TBD
   phab-task: 288804
@@ -407,8 +408,8 @@ role::wmcs::ceph::mon:
   target-q: TBD
   phab-task: 309789
 role::wmcs::monitoring:
-  target-q: TBD
-  phab-task: 332400
+  target-q: 2023-4
+  phab-task: 336774
 role::dnsbox:
   target-q: 2023-1
   phab-task: 321309
