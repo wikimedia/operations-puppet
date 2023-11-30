@@ -29,8 +29,6 @@ profile::dns::auth::acmechief_target::acmechief_hosts:
 - acmechief-test1001.eqiad.wmnet
 - acmechief-test2001.codfw.wmnet
 profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
-profile::bird::bind_anycast_services:
-  - pdns-recursor
 
 profile::systemd::timesyncd::ensure: absent
 profile::contacts::role_contacts: ['Traffic']
