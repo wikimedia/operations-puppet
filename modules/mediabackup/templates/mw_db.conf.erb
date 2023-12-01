@@ -1,10 +1,10 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 sections:
 <%- @sections.each do |section, properties| -%>
-    <%= section %>:
-        host: <%= properties['host'] %>
-        port: <%= properties['port'] || '3306' %>
-        dblist: <%= properties['dblist'] || section + '.dblist' %>
+  <%= section %>:
+    host: <%= properties['host'] %>
+    port: <%= properties['port'] || '3306' %>
+    dblist: <%= properties['dblist'] || section + '.dblist' %>
 <%- end -%>
 batchsize: <%= @batchsize || '1000' %>
 config_file: <%= @mw_db_config_file %>
