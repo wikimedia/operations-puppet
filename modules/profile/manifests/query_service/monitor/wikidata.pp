@@ -12,23 +12,4 @@ class profile::query_service::monitor::wikidata {
         check_command => 'check_https_url_for_string!query.wikidata.org!/bigdata/namespace/wdq/sparql?query=SELECT%20*%20WHERE%20%7Bwikibase%3ADump%20schema%3AdateModified%20%3Fy%7D%20LIMIT%201!http://www.w3.org/2001/XMLSchema#dateTime',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
-
-    # ldf endpoint monitoring, see T347355
-    prometheus::blackbox::check::http { 'query.wikidata.org-ldf':
-        instance_label     => 'wdqs1015',
-        server_name        => 'query.wikidata.org',
-        team               => 'search-platform',
-        severity           => 'task',
-        path               => '/bigdata/ldf',
-        body               => {
-            'subject'   => 'wd:Q42',
-            'predicate' => 'wdt:P31',
-            'object'    => '',
-        },
-        body_regex_matches => ['wd:Q42  wdt:P31  wd:Q5 .'],
-        force_tls          => true,
-        ip4                => ipresolve('wdqs-ldf.discovery.wmnet'),
-        ip_families        => [ip4],
-    }
 }
-
