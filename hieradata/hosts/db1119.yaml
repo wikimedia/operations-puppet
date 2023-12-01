@@ -1,6 +1,6 @@
 # db1119
 # Future m5 master
-mariadb::shard: 'm3'
+mariadb::shard: 'm5'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: false
 profile::monitoring::notifications_enabled: false
