@@ -28,7 +28,7 @@ class profile::lvs::realserver::ipip(
     $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
     $clamped_ipport = wmflib::service::get_ipport_for_ipip_services($services, $::site)
 
-    $ensure = bool2str($enabled, 'present', 'absent')
+    $ensure = stdlib::ensure($enabled)
 
     # Provide ingress interfaces for both IPv4 and IPv6 traffic
     interface::ipip { 'ipip_ipv4':
@@ -74,4 +74,9 @@ class profile::lvs::realserver::ipip(
         domain => '(ip6)',
     }
 
+    # monitor MSS values
+    prometheus::node_lvs_realserver_mss { 'lvs_clamped_ipport':
+        ensure         => $ensure,
+        clamped_ipport => $clamped_ipport,
+    }
 }
