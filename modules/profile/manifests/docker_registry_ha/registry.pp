@@ -80,9 +80,11 @@ class profile::docker_registry_ha::registry(
     }
 
     $k8s_groups = k8s::fetch_cluster_groups()
-    # Get a list of all hosts in the authorized clusters
+    # Get a list of all nodes (without control planes) in the authorized clusters
     $kubernetes_hosts = $authorized_k8s_clusters.map |$cluster_name| {
-        $k8s_groups[$cluster_name].values.map |$x| { $x['cluster_nodes'] }
+        $k8s_groups[$cluster_name].values.map |$x| {
+            $x['cluster_nodes'].filter |$n| { !($n in $x['control_plane_nodes']) }
+        }
     }.flatten.unique
 
     class { 'docker_registry_ha::web':
