@@ -76,15 +76,15 @@ class profile::vrts(
     }
     # lint:endignore
 
-    ferm::service { 'vrts_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firewall::service { 'vrts_http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 
-    ferm::service { 'vrts_smtp':
+    firewall::service { 'vrts_smtp':
         proto  => 'tcp',
-        port   => '25',
+        port   => 25,
         srange => $profile::mail::default_mail_relay::smarthosts,
     }
 
