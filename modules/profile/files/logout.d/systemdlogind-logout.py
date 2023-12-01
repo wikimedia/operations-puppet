@@ -18,15 +18,20 @@ class SystemdLogind(LogoutdBase):
                           check=False).returncode != 0:
             return 0
 
-        try:
-            output = subprocess.check_output(["/bin/loginctl", "terminate-user", user],
-                                             universal_newlines=True).strip()
-        except subprocess.CalledProcessError as error:
-            print('Failed to logout user {}: {}'.format(user, error.returncode))
-            return 1
+        # terminate-user closes all session associated with a user. With the default
+        # setting of KillUserProcesses of logind.conf this doesn't close tmux sessions
+        # As such, to make sure those are terminated as well, run kill-user in addition
+        for logout_cmd in ['terminate-user', 'kill-user']:
+            try:
+                output = subprocess.check_output(["/bin/loginctl", logout_cmd, user],
+                                                 universal_newlines=True).strip()
+            except subprocess.CalledProcessError as error:
+                print('Failed to run {} for {}: {}'.format(logout_cmd, user, error.returncode))
+                return 1
 
-        if self._args.verbose:
-            print(output)
+            if self._args.verbose:
+                print(output)
+
         return 0
 
     def list(self):
