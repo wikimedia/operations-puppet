@@ -1,5 +1,5 @@
 # db1159
-# old m3 master
 mariadb::shard: 'm3'
 mariadb::binlog_format: 'ROW'
+profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: true
