@@ -1,5 +1,5 @@
 # db1119
-# Future m3 master
+# Future m5 master
 mariadb::shard: 'm3'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: false
