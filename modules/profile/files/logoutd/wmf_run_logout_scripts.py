@@ -4,7 +4,6 @@
 
 import logging
 import os
-import sys
 
 from argparse import ArgumentParser
 from json import dumps
@@ -84,10 +83,6 @@ def main() -> int:
     except SystemExit as error:
         print('The message above relates to the arguments sent to the wrapped scripts')
         raise error
-
-    # logout scripts are not supported on Stretch (which has 3.5)
-    if sys.version_info.minor < 7:
-        return 0
 
     results = []
     for script in args.script_dir.iterdir():
