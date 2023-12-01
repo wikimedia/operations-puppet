@@ -5,7 +5,6 @@ class profile::prometheus::cloud (
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::prometheus::cloud::storage_retention_size', {default_value => undef}),
     Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
     Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
-    Stdlib::Fqdn $openstack_exporter_host = lookup('profile::openstack::eqiad1::metrics::openstack_exporter_host'),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
@@ -192,16 +191,12 @@ class profile::prometheus::cloud (
         port       => 8082,
     }
 
-    file { "${targets_path}/openstack_${::site}.yaml":
-        content => to_yaml([{
-            'labels'  => {
-                'cluster'    => 'wmcs',
-                'deployment' => $openstack_deployment,
-            },
-            'targets' => [
-                "${openstack_exporter_host}:12345",
-            ]
-        }]),
+    prometheus::class_config { "openstack_${::site}":
+        dest             => "${targets_path}/openstack_${::site}.yaml",
+        class_name       => 'profile::prometheus::openstack_exporter',
+        class_parameters => {'ensure' => 'present', 'cloud' => $openstack_deployment},
+        labels           => {'deployment' => $openstack_deployment},
+        port             => 12345,
     }
 
     prometheus::class_config{ "ceph_${::site}":
