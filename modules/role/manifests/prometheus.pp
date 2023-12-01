@@ -14,10 +14,7 @@ class role::prometheus {
     include profile::prometheus::ops
     include profile::prometheus::ops_mysql
     include profile::prometheus::ext
-
-    if $::site == 'eqiad' {
-        include profile::prometheus::cloud
-    }
+    include profile::prometheus::cloud
 
     include profile::prometheus::pushgateway
 
