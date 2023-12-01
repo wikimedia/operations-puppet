@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane, aborrero, cec]
+              tsepothoabala, zxane, aborrero, cec, jbond]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -58,7 +58,7 @@ groups:
               akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, bstorm, vgutierrez, jiji, cwhite,
-              cdanis, jbond, dzahn, sukhe, pt1979,
+              cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
@@ -412,7 +412,7 @@ groups:
               hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
-              hokwelum, cmyrick, jbond, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
+              hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, isaranto,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
@@ -3881,16 +3881,15 @@ users:
     ssh_keys: []
     uid: 20623
   jbond:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jbond
     realname: John Bond
     shell: /usr/bin/zsh
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICSadkjU94IaCUrtnwvECGaGkDyICObEn35NvNpilUaD jbond@work-laptop
+    ssh_keys: []
     uid: 20774
-    email: jbond@wikimedia.org
-    krb: present
+    email: john.r.bond@gmail.com
+    krb: absent
   srishakatux:
     ensure: present
     gid: 500
