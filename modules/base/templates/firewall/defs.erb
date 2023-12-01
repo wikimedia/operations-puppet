@@ -36,9 +36,7 @@ dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networ
 # $FRACK_NETWORKS is meant to be a set of all fundraising networks
 @def $FRACK_NETWORKS = (<%- frack_networks.each do |net| -%><%= net %> <% end -%>);
 
-# flevorium (10.64.48.112/32) is in ANALYTICS_NETWORKS for backup purposes, see: T176506
-# Point of contact: Faidon/Otto/Luca
-@def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%> 10.64.48.112/32 );
+@def $ANALYTICS_NETWORKS = (<%- analytics_networks.each do |net| -%><%= net %> <% end -%>);
 @def $MW_APPSERVER_NETWORKS = (<%- mw_appserver_networks.each do |net| -%><%= net %> <% end -%>);
 @def $WIKIKUBE_KUBEPODS_NETWORKS  = (<%- services_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
 @def $STAGING_KUBEPODS_NETWORKS  = (<%- staging_kubepods_networks.each do |net| -%><%= net %> <% end -%>);
