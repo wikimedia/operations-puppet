@@ -61,4 +61,4 @@ provision k8s-staging 50g
 provision k8s-aux 50g
 provision ops 1.7t
 provision services 150g
-[ "$site" = "eqiad" ] && provision cloud 100g
+provision cloud 100g
