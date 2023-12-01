@@ -126,6 +126,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'build*':
     - partman/flat.cfg
     - virtual.cfg
+  'ceph200[1-3]':
+    - partman/custom/cephosd.cfg
   'cephosd*':
     - partman/custom/cephosd.cfg
   'config-master*':

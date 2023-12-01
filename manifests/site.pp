@@ -395,6 +395,11 @@ node /^cloudcephosd200[123]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
+# New ceph node codfw T349934
+node /^ceph200[1-3]\.codfw\./ {
+    role(insetup::data_engineering)
+}
+
 node /^cloudcephmon200[4-6]-dev\.codfw\./ {
     role(wmcs::ceph::mon)
 }
