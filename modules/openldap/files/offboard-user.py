@@ -155,7 +155,6 @@ delete: userPassword
 
     lc = ldap.controls.SimplePagedResultsControl(criticality=False, size=1024, cookie='')
 
-    # TODO: add more groups after validating priv. status
     privileged_groups = ['cn=nda,ou=groups,dc=wikimedia,dc=org',
                          'cn=wmf,ou=groups,dc=wikimedia,dc=org',
                          'cn=ops,ou=groups,dc=wikimedia,dc=org',
@@ -231,13 +230,6 @@ delete: userPassword
                 else:
                     print(" ", group, "(can be retained)")
 
-    if has_openstack_projects:
-        print("To remove membership in Cloud VPS projects mentioned above, please see:")
-        print(
-            "  https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/"
-            "Admin/Projects_lifecycle#Manage_project_access"
-        )
-
     if len(member_set & priv_set) > 0:
         print("Privileged groups:")
         for priv_group in set(member_set & priv_set):
@@ -251,10 +243,21 @@ delete: userPassword
                     else:
                         print("  ", priv_group, "(can be retained)")
                 else:
-                    ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
-                    print("  ", priv_group, "(removing)")
+                    if priv_group.startswith("cn=project-"):
+                        print(" ", priv_group, "(Cloud VPS project, must be removed manually)")
+                        has_openstack_projects = True
+                    else:
+                        ldif += REMOVE_GROUP.format(group_name=priv_group, user_dn=user_dn)
+                        print("  ", priv_group, "(removing)")
     else:
         print("Is not a member in any privileged group")
+
+    if has_openstack_projects:
+        print("To remove membership in Cloud VPS projects mentioned above, please see:")
+        print(
+            "  https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/"
+            "Admin/Projects_lifecycle#Manage_project_access"
+        )
 
     attrs_to_remove = ['mail', 'sshPublicKey']
     if disable_user:
