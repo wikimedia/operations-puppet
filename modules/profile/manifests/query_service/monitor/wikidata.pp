@@ -15,12 +15,13 @@ class profile::query_service::monitor::wikidata {
 
     # ldf endpoint monitoring, see T347355
     prometheus::blackbox::check::http { 'query.wikidata.org-ldf':
+        instance_label     => 'wdqs1015',
         server_name        => 'query.wikidata.org',
         team               => 'search-platform',
         severity           => 'task',
         path               => '/bigdata/ldf',
         body               => {
-            'subject'   => 'wd:42',
+            'subject'   => 'wd:Q42',
             'predicate' => 'wdt:P31',
             'object'    => '',
         },
