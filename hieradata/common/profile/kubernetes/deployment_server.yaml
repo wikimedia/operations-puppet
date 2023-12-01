@@ -254,6 +254,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: cirrus-streaming-updater
         - name: cirrus-streaming-updater-deploy
+    mw-mcrouter:
+      usernames:
+        - name: mw-mcrouter
+        - name: mw-mcrouter-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
