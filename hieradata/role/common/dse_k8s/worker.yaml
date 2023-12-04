@@ -18,6 +18,7 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   inference: {}
+  k8s-ingress-dse: {}
 
 profile::admin::groups:
   - ml-team-admins

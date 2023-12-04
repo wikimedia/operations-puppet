@@ -1064,6 +1064,48 @@ service::catalog:
       - dnsdisc: k8s-ingress-ml-serve
         active_active: true
 
+
+  k8s-ingress-dse:
+    description: istio-ingresscontroller on kubernetes. k8s-ingress-dse.discovery.wmnet
+    encryption: true
+    ip: &k8s-ingress-dse_ips
+      eqiad:
+        default: 10.2.2.91
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: dse
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+    page: false
+    # The ingressgateway does not accept connections on 30443 if no backend is
+    # configured (which is fine from ingressgateways POV). That means PyBal might
+    # see all hosts as down during initial setup of ingressgateway.
+    # Also there is no TLS certificate or route for the discovery FQDN configured
+    # in ingressgateway and it is not possible to do so just within it's envoy
+    # instance (e.g. without adding another service).
+    # Because of all that, just check the tcp connection here as well.
+    #
+    # Kubernetes will internally check the ingressgateways dedicated health check
+    # port and will pull the iptables rules used to forward traffic to ingressgateway
+    # in case health check fails. That in turn means tcp connections will be rejected
+    # leading this check and PyBal monitor to fail.
+    probes:
+      - type: tcp-notls
+    port: &k8s-ingress-dse_port 30443
+    sites:
+      - eqiad
+    state: service_setup
+    discovery:
+      - dnsdisc: k8s-ingress-dse
+        active_active: false
+
   kartotherian:
     description: Kartotherian, kartotherian.discovery.wmnet
     encryption: false
