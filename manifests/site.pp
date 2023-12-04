@@ -726,7 +726,7 @@ node /^db2164\.codfw\./ {
 node /^db1(144|146|170|213)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
-node /^db2(137|138|167|168|169|170|171)\.codfw\./ {
+node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
     role(mariadb::core_multiinstance)
 }
 
@@ -750,11 +750,6 @@ node /^db11(51|52|53)\.eqiad\./ {
 # codfw
 node /^db21(42|43|44)\.codfw\./ {
     role(mariadb::objectstash)
-}
-
-# New db hosts to be setup T342174
-node /^db2194\.codfw\./ {
-    role(insetup::data_persistence)
 }
 
 # New db hosts to be setup T342166
