@@ -1,2 +1,3 @@
 profile::lvs::realserver::ipip::interfaces:
   - "%{facts.interface_primary}"
+  - lo
