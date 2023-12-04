@@ -551,7 +551,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'moss-be*':
     - partman/custom/ms-be_simple.cfg
-  'ms-be2050|ms-be207*|ms-be107[2-5]':
+  'ms-be2050|ms-be20[7-8]*|ms-be107[2-9]|ms-be108*':
     - partman/custom/ms-be_simple.cfg
   'ms-be*':
     - partman/custom/ms-be.cfg
