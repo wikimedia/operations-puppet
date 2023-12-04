@@ -1631,16 +1631,16 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
 }
 
 # START Kubernetes workers that used to be mw app/api servers
-node /^mw1462\.eqiad\./ {
+node /^mw146[2-5]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw147[2345]\.eqiad\./ {
+node /^mw147[0-5]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw242[0125]\.codfw\./ {
+node /^mw242[0-5]\.codfw\./ {
     role(kubernetes::worker)
 }
-node /^mw2431\.codfw\./ {
+node /^mw243[145]\.codfw\./ {
     role(kubernetes::worker)
 }
 # END Kubernetes workers that used to be mw app/api servers
@@ -2144,20 +2144,10 @@ node /^mw13(8[68]|9[02])\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 
-# rack A8
-node /^mw146[3-5]\.eqiad\./ {
-    role(mediawiki::appserver::api)
-}
-
 # Row B
 
 # rack B3 and B5
 node /^mw1(39[468]|40[024])\.eqiad\./ {
-    role(mediawiki::appserver::api)
-}
-
-# rack B6
-node /^mw147[01]\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 
@@ -2275,20 +2265,12 @@ node /^mw241[01]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
-# rack A5 (T331609)
-node /^mw2423\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
 # rack A6
 node /^mw230[13579]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
 # rack A6 (T331609)
-node /^mw2424\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
 
 node /^mw242[67]\.codfw\./ {
     role(mediawiki::jobrunner)
@@ -2324,10 +2306,6 @@ node /^mw24(2[89]|30)\.codfw\./ {
 # rack B8 (T331609)
 node /^mw243[23]\.codfw\./ {
     role(mediawiki::appserver)
-}
-
-node /^mw243[45]\.codfw\./ {
-    role(mediawiki::appserver::api)
 }
 
 # Row C
