@@ -1,13 +1,14 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary a shim define to support a common interface between ferm::service and nft::service
 # @param proto the protocol to use
-# @param port the port to configure
-# @param a port range to configure
+# @param port a single port or an array of ports to configure
 # @param ensure the ensurable parameter
 # @param desc a description to add as a comment
 # @param prio the priority
 # @param srange the source range to configure
 # @param drange the destination range to configure
+# @param src_sets An optional array of predefined sets of hosts FROM which incoming traffic is allowed (defined in profile::firewall::nftables_base_sets).
+# @param dst_sets An optional array of predefined sets of hosts TO which incoming traffic is allowed (defined in profile::firewall::nftables_base_sets).
 # @param notrack set the rule with no state tracking
 define firewall::service(
     Wmflib::Protocol              $proto,
@@ -36,19 +37,19 @@ define firewall::service(
         'nftables': {
 
             if $srange =~ String {
-                fail('The srange needs to needs to passed as an array of hosts or IPs')
+                fail('The srange needs to be passed as an array of hosts or IPs')
             }
 
             if $drange =~ String {
-                fail('The drange needs to needs to passed as an array of hosts or IPs')
+                fail('The drange needs to be passed as an array of hosts or IPs')
             }
 
             if $port =~ Pattern[/\d{1,5}:\d{1,5}/] {
-                fail('The port needs to converted to use a port_range')
+                fail('The port needs to be converted to use a port_range')
             }
 
             if $port =~ String {
-                fail('The port needs to converted to use a port or port_range')
+                fail('The port needs to be converted to an array; use a port or port_range')
             }
 
             nftables::service { $title:
