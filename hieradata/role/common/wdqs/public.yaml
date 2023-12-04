@@ -66,3 +66,6 @@ profile::query_service::jvmquake_options: "300,5,0"
 
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
+
+# The host for the LDF (Linked Data Fragments) endpoint
+profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
