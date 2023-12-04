@@ -6921,3 +6921,7 @@ ldap_only_users:
     ensure: present
     realname: Sandeep Singh
     email: sandeep.singh@wikimedia.org
+  xqt:
+    ensure: present
+    realname: (known to legal)
+    email: info@gno.de
