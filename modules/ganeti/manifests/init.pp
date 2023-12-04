@@ -12,7 +12,6 @@
 class ganeti(
     String $certname,
     Boolean $with_drbd=true,
-    Boolean $use_pki=false,
 ) {
     ensure_packages('qemu-system-x86')
 
@@ -69,33 +68,17 @@ class ganeti(
         source => 'puppet:///modules/ganeti/lvm.conf',
     }
 
-    if $use_pki {
-        $ssl_paths = profile::pki::get_cert('discovery', $certname, {
-            'owner'           => 'root',
-            'group'           => 'gnt-admin',
-            'notify_services' => ['ganeti'],
-            'outdir'          => '/etc/ganeti/ssl',
-        })
+    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+        'owner'           => 'root',
+        'group'           => 'gnt-admin',
+        'notify_services' => ['ganeti'],
+        'outdir'          => '/etc/ganeti/ssl',
+    })
 
-        sslcert::certificate { $certname:
-            ensure     => absent,
-        }
-
-        $rapi_ssl_key = $ssl_paths['key']
-        $rapi_ssl_cert = $ssl_paths['cert']
-        $chain_file_name = $ssl_paths['chained']
-        $rapi_ssl_chain = "--ssl-chain ${chain_file_name}"
-
-    } else {
-        sslcert::certificate { $certname:
-            ensure     => present,
-            group      => 'gnt-admin',
-            use_cergen => true,
-        }
-        $rapi_ssl_key = "/etc/ssl/private/${certname}.key"
-        $rapi_ssl_cert = "/etc/ssl/localcerts/${certname}.crt"
-        $rapi_ssl_chain = ''
-    }
+    $rapi_ssl_key = $ssl_paths['key']
+    $rapi_ssl_cert = $ssl_paths['cert']
+    $chain_file_name = $ssl_paths['chained']
+    $rapi_ssl_chain = "--ssl-chain ${chain_file_name}"
 
     # Deploy defaults (for now, configuring RAPI) and the certificates for RAPI.
     # Potential fixme: We don't restart the daemon here since it's not independent
