@@ -77,3 +77,11 @@ profile::mariadb::cloudinfra::cloudinfra_dbs:
 profile::openstack::codfw1dev::keystone_api_fqdn: "openstack.codfw1dev.wikimediacloud.org"
 
 metricsinfra_prometheus_nodes: []
+
+profile::mail::default_mail_relay::smarthosts:
+  - "mx1001.wikimedia.org"
+  - "mx2001.wikimedia.org"
+
+profile::mail::default_mail_relay::mediawiki_smarthosts:
+  - "mx1001.wikimedia.org"
+  - "mx2001.wikimedia.org"
