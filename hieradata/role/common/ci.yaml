@@ -86,6 +86,8 @@ kubernetes::clusters:
         - https://dummy.x.y
         - https://dummy.x.y
       cluster_nodes: [dummy.x.y]
+      prometheus:
+        port: 9907
 
 
 profile::kubernetes::deployment_server::user_defaults:
