@@ -11,17 +11,17 @@ class profile::microsites::peopleweb (
 ){
 
     # firewall: allow caching layer to talk to http backend
-    ferm::service { 'people-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firwall::service { 'people-http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 
     # firewall: allow http from deployment servers for testing
     ferm::service { 'people-http-deployment':
-        proto  => 'tcp',
-        port   => '80',
-        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['DEPLOYMENT_HOSTS'],
     }
 
     # httpd (apache2)
