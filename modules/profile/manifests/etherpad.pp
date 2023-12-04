@@ -37,10 +37,10 @@ class profile::etherpad(
         body_regex_matches => ['Pad'],
     }
 
-    ferm::service { 'etherpad_service':
-        proto  => 'tcp',
-        port   => '9001',
-        srange => '$CACHES',
+    firewall::service { 'etherpad_service':
+        proto    => 'tcp',
+        port     => 9001,
+        src_sets => ['CACHES'],
     }
 
     profile::auto_restarts::service { 'envoyproxy': }
