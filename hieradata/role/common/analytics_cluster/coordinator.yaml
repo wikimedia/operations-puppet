@@ -165,3 +165,6 @@ profile::base::certificates::include_bundle_jks: true
 # (see https://issues.apache.org/jira/browse/BIGTOP-3619).
 profile::hadoop::common::config_override:
   enable_log4j_extras: false
+
+# We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
+profile::base::remove_python2_on_bullseye: false
