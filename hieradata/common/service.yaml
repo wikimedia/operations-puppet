@@ -1101,7 +1101,7 @@ service::catalog:
     port: &k8s-ingress-dse_port 30443
     sites:
       - eqiad
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: k8s-ingress-dse
         active_active: false
