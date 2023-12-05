@@ -12,7 +12,7 @@ class profile::query_service::monitor::ldf {
             'predicate' => 'wdt:P31',
             'object'    => '',
         },
-        body_regex_matches => ['wd:Q42\s+wdt:P31\s+wd:Q5\s+\.'],
+        body_regex_matches => ['wd:Q42  wdt:P31  wd:Q5 .'],
         force_tls          => true,
         ip4                => ipresolve('wdqs-ldf.discovery.wmnet'),
         ip_families        => [ip4],
