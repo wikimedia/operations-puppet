@@ -3,6 +3,8 @@
 #
 # Kafka topic selection is based on the syslog message severity.
 
+module(load="omkafka")
+
 template(name="netdev_kafka_relay_topic" type="string" string="rsyslog-%syslogseverity-text:::lowercase%")
 
 # Use a separate (in memory) queue to limit message processing to this ruleset only.
