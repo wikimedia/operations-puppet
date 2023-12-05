@@ -13,7 +13,7 @@ class role::dse_k8s::worker {
     include ::profile::amd_gpu
 
     # Setup LVS
-    #include profile::lvs::realserver
+    include profile::lvs::realserver
 
     system::role { 'kubernetes::worker':
         description => 'DSE Kubernetes worker node',
