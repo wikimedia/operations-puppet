@@ -178,11 +178,11 @@ done
 # Check if host is a replica
 if [[ $GITLAB_URL == *"replica"* ]] ; then
   # replica hosts use a additional banner
-  gitlab-rails runner 'BroadcastMessage.create(message: "🚨**THIS IS A REPLICA**🚨
+  gitlab-rails runner 'System::BroadcastMessage.create(message: "🚨**THIS IS A REPLICA**🚨
   -- You probably want to use the production gitlab, https://gitlab.wikimedia.org.
   Data on this instance is likely to be overwritten at short notice.
   Login with hardware 2FA key does not work, please use one-time passwords.",
-  theme: BroadcastMessage.themes["light-red"], dismissable: false, starts_at: 10.minutes.ago, ends_at: 10.years.from_now)'
+  theme: System::BroadcastMessage.themes["light-red"], dismissable: false, starts_at: 10.minutes.ago, ends_at: 10.years.from_now)'
 fi
 
 /usr/bin/systemctl restart ssh-gitlab
