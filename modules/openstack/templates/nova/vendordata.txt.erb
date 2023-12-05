@@ -112,6 +112,7 @@ apt:
 package_update: true
 package_upgrade: true
 
+{% if ds.meta_data.install_puppet %}
 # This configures puppet and starts the puppet agent (which we don't want).
 #  When the boot script starts we'll kill the agent and run puppet synchronously.
 puppet:
@@ -121,7 +122,7 @@ puppet:
         agent:
             server: 'puppet'
             certname: '%f'
-
+{% endif %}
 
 --XXXXboundary text
 MIME-Version: 1.0
@@ -129,6 +130,16 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 #!/bin/bash
 
 set -x
+
+
+if ! command -v apt-get >/dev/null; then
+    # If we don't have apt then none of our init script will
+    #  work so let's just get out of here
+
+    rm /etc/block-ldap-key-lookup
+    touch /.cloud-init-finished
+    exit 0
+fi
 
 # Function to test if puppet is running or not
 puppet_is_running() {
@@ -190,56 +201,63 @@ dpkg-reconfigure -fnoninteractive -pcritical openssh-server
 systemctl restart ssh.service
 nscd -i hosts
 
-# Run puppet, twice.  The second time is just to pick up packages
-#  that may have been unavailable in apt before the first puppet run
-#  updated sources.list
-puppet agent --enable
+# This VM might have puppet installed in its base image, or it
+#  might have the metadata install_puppet flag set. If neither
+#  of these is true then skip puppet entirely.
+if dpkg -s puppet; then
+    # Clear certs from base image
+    rm -rf /var/lib/puppet/ssl
 
-# Just in case puppet is already running for some reason, wait
-#  for it to finish.
-wait_for_puppet 120
-service puppet stop
-wait_for_puppet 120
+    # Run puppet, twice.  The second time is just to pick up packages
+    #  that may have been unavailable in apt before the first puppet run
+    #  updated sources.list
+    puppet agent --enable
 
-# Sometimes the previous --enable doesn't take. Don't know why but
-#  it's harmless to try again
-puppet agent --enable
-puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
+    # Just in case puppet is already running for some reason, wait
+    #  for it to finish.
+    wait_for_puppet 120
+    service puppet stop
+    wait_for_puppet 120
 
-# Refresh ldap now that puppet has updated our ldap.conf
-systemctl restart nslcd.service
+    # Sometimes the previous --enable doesn't take. Don't know why but
+    #  it's harmless to try again
+    puppet agent --enable
+    puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --server=puppet
+    # Refresh ldap now that puppet has updated our ldap.conf
+    systemctl restart nslcd.service
 
-# Ensure all NFS mounts are mounted
-mount_attempts=1
-until [ $mount_attempts -gt 10 ]
-do
-    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
-    echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
-    ((mount_attempts++))
-    /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
-    # Sleep for 10s before next attempt
-    sleep 10
-done
+    # Ensure all NFS mounts are mounted
+    mount_attempts=1
+    until [ $mount_attempts -gt 10 ]
+    do
+        echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}"
+        echo "Ensuring all NFS mounts are mounted, attempt ${mount_attempts}" >> /etc/block-ldap-key-lookup
+        ((mount_attempts++))
+        /usr/bin/timeout --preserve-status -k 10s 20s /bin/mount -a && break
+        # Sleep for 10s before next attempt
+        sleep 10
+    done
 
-# Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
-# before, the puppet code that ensures the symlinks are created, etc may not
-# have run)
-wait_for_puppet 10
-puppet agent -t
+    # Run puppet again post mounting NFS mounts (if all the mounts hadn't been mounted
+    # before, the puppet code that ensures the symlinks are created, etc may not
+    # have run)
+    wait_for_puppet 10
+    puppet agent -t
 
-# One last puppet run to avoid possible races. I'm (AGB) not totally sure what's
-# happening here but occasionally the very first run fails but subsequent runs
-# work and we really need two good ones before logins work.
-wait_for_puppet 10
-puppet agent -t
+    # One last puppet run to avoid possible races. I'm (AGB) not totally sure what's
+    # happening here but occasionally the very first run fails but subsequent runs
+    # work and we really need two good ones before logins work.
+    wait_for_puppet 10
+    puppet agent -t
 
-# sssd might be caching sudo rules and other ldap things from before puppet
-# finished setting up ldap integration. Restart sssd and clear its cache.
-# On some old images we won't have sssd installed; in that case this will
-# throw some harmless errors.
-systemctl stop sssd
-rm -rf /var/lib/sss/db/*
-systemctl restart sssd
+    # sssd might be caching sudo rules and other ldap things from before puppet
+    # finished setting up ldap integration. Restart sssd and clear its cache.
+    # On some old images we won't have sssd installed; in that case this will
+    # throw some harmless errors.
+    systemctl stop sssd
+    rm -rf /var/lib/sss/db/*
+    systemctl restart sssd
+fi
 
 
 # Remove the non-root login restriction

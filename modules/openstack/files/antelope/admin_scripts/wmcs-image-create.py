@@ -227,6 +227,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
         image=upstream_image.id,
         flavor=flavor_id,
         nics=nics,
+        meta={"install_puppet": True},
     )
     LOGGER.info("Created temporary VM %s" % instance.id)
 
