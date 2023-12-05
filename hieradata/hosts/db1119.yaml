@@ -1,5 +1,5 @@
 # db1119
-# Future m5 master
+# to be decommissioned 
 mariadb::shard: 'm5'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::is_critical: false
