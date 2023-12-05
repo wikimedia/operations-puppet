@@ -56,17 +56,12 @@ node /^an-master100[3-4]\.eqiad\./ {
     role(insetup::data_engineering)
 }
 
-node /^an-coord100[13]\.eqiad\./ {
+node /^an-coord100[134]\.eqiad\./ {
     role(analytics_cluster::coordinator)
 }
 
 node /^an-coord1002\.eqiad\./ {
     role(analytics_cluster::coordinator::replica)
-}
-
-# New an-coord  nodes T321119
-node /^an-coord1004\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 node /^an-db100[1-2]\.eqiad\./ {
