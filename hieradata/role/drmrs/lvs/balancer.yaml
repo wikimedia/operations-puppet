@@ -10,3 +10,6 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
   enp175s0f1np1:
     txqlen: 10000
+
+profile::lvs::ipip_enabled: true
+profile::pybal::ipip_enabled: true
