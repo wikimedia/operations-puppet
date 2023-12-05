@@ -17,3 +17,6 @@ profile::redis::slave::instance_overrides:
   '6382':
     maxmemory-policy: 'allkeys-lru'
 profile::contacts::role_contacts: ['ServiceOps']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
