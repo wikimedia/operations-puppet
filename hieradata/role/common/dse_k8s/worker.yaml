@@ -17,7 +17,6 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
-  inference: {}
   k8s-ingress-dse: {}
 
 profile::admin::groups:
