@@ -764,7 +764,7 @@ node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# Future m5 master 
+# To be decommissioned #T337206 
 node /^db1119\.eqiad\./ {
     role(mariadb::misc)
 }
