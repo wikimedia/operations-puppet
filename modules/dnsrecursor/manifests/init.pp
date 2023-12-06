@@ -63,7 +63,7 @@ class dnsrecursor (
         '198.35.27.27',
     ]
     $wmf_authdns_semi = join($wmf_authdns, ';')
-    $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}, 20.172.in-addr.arpa=${wmf_authdns_semi}"
+    $forward_zones = "wmnet=${wmf_authdns_semi}, 10.in-addr.arpa=${wmf_authdns_semi}, 20.172.in-addr.arpa=${wmf_authdns_semi}, wikimedia.org=${wmf_authdns_semi}"
 
     $socket_dir = '/var/run/pdns-recursor/'
     $group = 'pdns'
