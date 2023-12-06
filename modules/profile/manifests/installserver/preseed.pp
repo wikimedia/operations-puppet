@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # sets up preseeding dir and config on an install server
 class profile::installserver::preseed (
-  Hash $preseed_per_hostname = lookup('profile::installserver::preseed::preseed_per_hostname', { 'default_value' => {} }),
+  Hash $preseed_per_hostname = lookup('profile::installserver::preseed::preseed_per_hostname'),
 ) {
   include network::constants
   $preseed_subnets = Hash(
