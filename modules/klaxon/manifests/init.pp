@@ -26,6 +26,14 @@ class klaxon (
         shell    => '/bin/bash',
     }
 
+    file { '/var/lib/klaxon':
+        ensure  => directory,
+        owner   => 'klaxon',
+        group   => 'klaxon',
+        mode    => '0755',
+        require => User['klaxon'],
+    }
+
     file { $environ_file:
         ensure  => 'file',
         owner   => 'root',
