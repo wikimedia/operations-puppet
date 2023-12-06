@@ -47,20 +47,6 @@ class profile::openstack::base::keystone::fernet_keys(
             user               => 'keystone',
         }
 
-        # TODO: remove after Puppet has ran everywhere
-        systemd::timer::job { "keystone_sync_keys_from_${node['host_fqdn']}":
-            ensure             => absent,
-            description        => "Sync keys for Keystone fernet tokens to ${node['host_fqdn']}",
-            command            => "/usr/bin/rsync -a --delete rsync://${node['host_fqdn']}/keystonefernetkeys/ /etc/keystone/fernet-keys/",
-            interval           => {
-                'start'    => 'OnCalendar',
-                'interval' => "*-*-* ${activehour}:30:00",
-            },
-            logging_enabled    => true,
-            monitoring_enabled => false,
-            user               => 'keystone',
-        }
-
         if $is_this_host {
             systemd::timer::job { 'keystone_rotate_keys':
                 description        => 'Rotate keys for Keystone fernet tokens',
