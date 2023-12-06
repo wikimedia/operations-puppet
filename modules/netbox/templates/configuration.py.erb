@@ -184,7 +184,6 @@ SHORT_DATETIME_FORMAT = 'Y-m-d H:i'
 
 
 PASSTHROUGH = {
-    'SECURE_PROXY_SSL_HEADER': ('HTTP_X_FORWARDED_PROTO', 'https'),
 <% if @swift_auth_url %>
     # Swift backend storage configuration.
     'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
