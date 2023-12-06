@@ -560,6 +560,8 @@ customviews:
       ipb_create_account, ipb_expiry, ipb_range_start, ipb_range_end, ipb_enable_autoblock, ipb_deleted,
       ipb_block_email, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id, ipb_sitewide
     where: ipb_deleted=0 and ipb_auto=0
+  # NOTE: when updating the sanitization on linktarget, please also update the corresponding
+  # duplicated logic here: https://gerrit.wikimedia.org/r/plugins/gitiles/analytics/refinery/+/refs/heads/master/python/refinery/sqoop.py#611
   linktarget:
     source: linktarget
     view: select lt_id, lt_namespace, lt_title
