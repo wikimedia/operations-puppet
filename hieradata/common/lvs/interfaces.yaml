@@ -171,6 +171,7 @@ lvs::interfaces::vlan_data:
     id: "2021"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.4.2'
       lvs2012: 'eno12399np0:10.192.4.3'
       lvs2013: 'eno12409np1:10.192.4.4'
       lvs2014: 'eno12409np1:10.192.4.5'
@@ -178,6 +179,7 @@ lvs::interfaces::vlan_data:
     id: "2022"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.23.2'
       lvs2012: 'eno12399np0:10.192.23.3'
       lvs2013: 'eno12409np1:10.192.23.4'
       lvs2014: 'eno12409np1:10.192.23.5'
@@ -185,6 +187,7 @@ lvs::interfaces::vlan_data:
     id: "2023"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.5.2'
       lvs2012: 'eno12399np0:10.192.5.3'
       lvs2013: 'eno12409np1:10.192.5.4'
       lvs2014: 'eno12409np1:10.192.5.5'
@@ -192,6 +195,7 @@ lvs::interfaces::vlan_data:
     id: "2024"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.6.2'
       lvs2012: 'eno12399np0:10.192.6.3'
       lvs2013: 'eno12409np1:10.192.6.4'
       lvs2014: 'eno12409np1:10.192.6.5'
@@ -199,6 +203,7 @@ lvs::interfaces::vlan_data:
     id: "2025"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.7.2'
       lvs2012: 'eno12399np0:10.192.7.3'
       lvs2013: 'eno12409np1:10.192.7.4'
       lvs2014: 'eno12409np1:10.192.7.5'
@@ -206,6 +211,7 @@ lvs::interfaces::vlan_data:
     id: "2026"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.8.2'
       lvs2012: 'eno12399np0:10.192.8.3'
       lvs2013: 'eno12409np1:10.192.8.4'
       lvs2014: 'eno12409np1:10.192.8.5'
@@ -213,6 +219,7 @@ lvs::interfaces::vlan_data:
     id: "2027"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.9.2'
       lvs2012: 'eno12399np0:10.192.9.3'
       lvs2013: 'eno12409np1:10.192.9.4'
       lvs2014: 'eno12409np1:10.192.9.5'
@@ -220,6 +227,7 @@ lvs::interfaces::vlan_data:
     id: "2028"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.10.2'
       lvs2012: 'eno12399np0:10.192.10.3'
       lvs2013: 'eno12409np1:10.192.10.4'
       lvs2014: 'eno12409np1:10.192.10.5'
@@ -227,6 +235,7 @@ lvs::interfaces::vlan_data:
     id: "2029"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.11.2'
       lvs2012: 'eno12399np0:10.192.11.3'
       lvs2013: 'eno12409np1:10.192.11.4'
       lvs2014: 'eno12409np1:10.192.11.5'
@@ -234,6 +243,7 @@ lvs::interfaces::vlan_data:
     id: "2030"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.12.2'
       lvs2012: 'eno12399np0:10.192.12.3'
       lvs2013: 'eno12409np1:10.192.12.4'
       lvs2014: 'eno12409np1:10.192.12.5'
@@ -241,6 +251,7 @@ lvs::interfaces::vlan_data:
     id: "2031"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.13.2'
       lvs2012: 'eno12399np0:10.192.13.3'
       lvs2013: 'eno12409np1:10.192.13.4'
       lvs2014: 'eno12409np1:10.192.13.5'
@@ -248,6 +259,7 @@ lvs::interfaces::vlan_data:
     id: "2032"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.14.2'
       lvs2012: 'eno12399np0:10.192.14.3'
       lvs2013: 'eno12409np1:10.192.14.4'
       lvs2014: 'eno12409np1:10.192.14.5'
@@ -255,6 +267,7 @@ lvs::interfaces::vlan_data:
     id: "2033"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.15.2'
       lvs2012: 'eno12399np0:10.192.15.3'
       lvs2013: 'eno12409np1:10.192.15.4'
       lvs2014: 'eno12409np1:10.192.15.5'
@@ -262,6 +275,7 @@ lvs::interfaces::vlan_data:
     id: "2034"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.21.2'
       lvs2012: 'eno12399np0:10.192.21.3'
       lvs2013: 'eno12409np1:10.192.21.4'
       lvs2014: 'eno12409np1:10.192.21.5'
@@ -269,6 +283,7 @@ lvs::interfaces::vlan_data:
     id: "2035"
     netmask: '255.255.255.0'
     iface:
+      lvs2011: 'eno12399np0:10.192.22.2'
       lvs2012: 'eno12399np0:10.192.22.3'
       lvs2013: 'eno12409np1:10.192.22.4'
       lvs2014: 'eno12409np1:10.192.22.5'
