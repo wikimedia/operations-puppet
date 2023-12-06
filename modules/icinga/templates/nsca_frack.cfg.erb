@@ -845,6 +845,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_coworker
+    host_name                frdev1002
+}
+
+define service {
+    use                      passive-service
     service_description      check_ssl
     host_name                frdev1002
 }
@@ -1195,6 +1201,12 @@ define service {
 }
 
 # fundraising-civicrm
+
+define service {
+    use                      passive-service
+    service_description      check_coworker
+    hostgroup_name           fundraising-civicrm
+}
 
 define service {
     use                      passive-service
