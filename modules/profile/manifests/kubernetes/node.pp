@@ -110,23 +110,32 @@ class profile::kubernetes::node (
         group       => 'kube',
     }
 
-    # Get typology info from netbox data
+    # Get typology info from Netbox and LLDP data
     $location = $profile::netbox::host::location
     $region = $location['site']
     $zone = $location ? {
         # Ganeti instances will have their ganeti cluster and group as zone, like "ganeti-eqiad-a"
         Netbox::Device::Location::Virtual   => "ganeti-${location['ganeti_cluster']}-${location['ganeti_group']}",
         # The zone of metal instances depends on the layout of the row they are in
-        Netbox::Device::Location::BareMetal => if $location['rack'] =~ /^[A-D]\d$/ {
+        Netbox::Device::Location::BareMetal =>
+            if !$facts['lldp']['parent'] {
+                fail('LLDP fact finding failed, \
+                failing the entire Puppet run to avoid unwanted kubelet topology changes.')
+            } elsif $facts['lldp']['parent'] =~ /^lsw/ {
+                # Old-> new switches transition - to be removed once the transition is over
+                # Case where the server has been physically moved to the new switches,
+                # But is still in the old row wise codfw vlans
+                if $facts['lldp'][$facts['interface_primary']]['vlans']['untagged_vlan'] in [2017, 2018, 2019, 2020] {
+                    regsubst($location['row'], "${region}-", '')
+                } else {
+                    # L3 ToR switches in the core sites are named "lsw", while row wide VCs are "asw"
+                    # in that case, their "availlability zone" is limited to the rack
+                    "row-${location['rack']}"
+                }
+            } else {
                 # The old row setup follows a per row redundancy model, therefore we
                 # expect zone to include the row without rack number, like "row-a".
                 regsubst($location['row'], "${region}-", '')
-            } else {
-                # With the new row setup (rows E and F currently) we include the rack number
-                # (like "row-e2") as we moved to a per rack redundancy model. We also need calico
-                # to select hosts in specific racks to BGP pair with their ToR switch.
-                # See: https://phabricator.wikimedia.org/T306649
-                "row-${location['rack']}"
             },
     }
 
