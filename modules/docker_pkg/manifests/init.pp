@@ -14,4 +14,10 @@ class docker_pkg () {
         manage_user => true,
         require     => File['/srv/deployment']
     }
+
+    file { '/usr/local/bin/docker-pkg':
+        ensure  => link,
+        target  => '/srv/deployment/docker-pkg/venv/bin/docker-pkg',
+        require => Scap::Target['docker-pkg/deploy'],
+    }
 }
