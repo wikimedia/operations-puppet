@@ -74,6 +74,9 @@
 #   be omitted from the configuration file and the compiled-in default value of /tmp
 #   will be used.
 #
+# [*event_log_dir*]
+#   This option is used as a default value for the spark.eventLog.dir configuration
+#   parameter. It is used to store historical data about the jobs.
 class profile::hadoop::spark3 (
     Bigtop::Spark::Version $default_shuffler_version = lookup('profile::spark3::default_shuffler_version', { 'default_value' => '3.1' }),
     Boolean $install_yarn_shuffle_jar                = lookup('profile::hadoop::spark3::install_yarn_shuffle_jar', { 'default_value' => false }),
@@ -85,10 +88,10 @@ class profile::hadoop::spark3 (
     Integer $port_max_retries                        = lookup('profile::hadoop::spark3::port_max_retries', { 'default_value' => 100 }),
     Stdlib::Unixpath $executor_env_ld_lib_path       = lookup('profile::hadoop::spark3::executor_env_ld_lib_path', { 'default_value' => '/usr/lib/hadoop/lib/native' }),
     Boolean $encryption_enabled                      = lookup('profile::hadoop::spark3::encryption_enabled', { 'default_value' => true }),
-    Optional[Stdlib::Unixpath] $local_dir            = lookup('profile::hadoop::spark3::local_dir', { 'default_value' => undef })
+    Optional[Stdlib::Unixpath] $local_dir            = lookup('profile::hadoop::spark3::local_dir', { 'default_value' => undef }),
+    Optional[String] $event_log_dir                  = lookup('profile::hadoop::spark3::event_log_dir', { 'default_value' => undef })
 ) {
     require ::profile::hadoop::common
-
     # We use conda-analytics to distribute spark3,
     # and also want to use it as the default analytics cluster python for spark.
     require ::profile::analytics::conda_analytics

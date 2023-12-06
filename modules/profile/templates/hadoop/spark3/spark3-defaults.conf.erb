@@ -90,3 +90,7 @@ spark.network.crypto.saslFallback                   false
 # Ensure that Python requests lib always use system CA certificates.
 spark.yarn.appMasterEnv.REQUESTS_CA_BUNDLE          /etc/ssl/certs/ca-certificates.crt
 spark.executorEnv.REQUESTS_CA_BUNDLE                /etc/ssl/certs/ca-certificates.crt
+<% if @event_log_dir -%>
+spark.eventLog.enabled                              true
+spark.eventLog.dir                                  <%= @event_log_dir %>
+<% end -%>
