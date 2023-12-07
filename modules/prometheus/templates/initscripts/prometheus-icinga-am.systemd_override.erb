@@ -3,4 +3,4 @@
 Group=www-data
 # Clear ExecStart array
 ExecStart=
-ExecStart=/usr/bin/prometheus-icinga-am <% if @extinfo_url %>--icinga.extinfo-url=<%= @extinfo_url %><% end %> <%= @am_urls.sort.join(' ') %><% if @label_teams_config_file_ensure == 'present' %> --labels.team.config-file=<%= @label_teams_config_file %><% end %>
+ExecStart=/usr/bin/prometheus-icinga-am --listen 0.0.0.0:9247 <% if @extinfo_url %>--icinga.extinfo-url=<%= @extinfo_url %><% end %> <%= @am_urls.sort.join(' ') %><% if @label_teams_config_file_ensure == 'present' %> --labels.team.config-file=<%= @label_teams_config_file %><% end %>
