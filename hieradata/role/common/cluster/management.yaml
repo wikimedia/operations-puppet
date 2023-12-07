@@ -50,3 +50,5 @@ profile::spicerack::mysql_config_data:
   replication_user: repl
   # replication_password: overiden in the private repo
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
