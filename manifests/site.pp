@@ -1304,6 +1304,11 @@ node /^lists1004\.eqiad\./ {
 node /^ganeti10(09|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
     role(ganeti)
 }
+# New eqiad ganeti nodes T349925
+node /^ganeti103[5-8]\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 
 node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
     role(ganeti)
