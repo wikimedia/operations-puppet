@@ -379,6 +379,7 @@ profile::kubernetes::deployment_server::general:
   ml-staging-codfw:
     mesh:
       certmanager:
+        enabled: true
         # We have a wildcard DNS entry for *.k8s-ml-staging.discovery.wmnet
         # used for ingress, but we can reuse that for NodePort services as well.
         domains:
