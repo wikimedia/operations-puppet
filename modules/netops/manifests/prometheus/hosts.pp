@@ -18,24 +18,33 @@ define netops::prometheus::hosts (
     $host = $el[0]
     $config = $el[1]
 
-    $v4_address = ipresolve($host, 4)
-
-    $ip4 = {
-      targets => ["${host}:0@${v4_address}"],
-      labels  => {
-        module      => 'icmp_ip4',
-        family      => 'ip4',
-        address     => $v4_address,
-        realm       => $config['realm'],
-        rack        => $config['rack'],
-        role        => 'host',
-        # Not strictly required, but make sure all metrics (in this job)
-        # have the same set of labels.
-        target_site => $config['site'],
-      } + $extra_labels,
+    $addresses = dnsquery::lookup($host, true)
+    if $addresses.empty() {
+      fail("netops::prometheus::hosts: no addresses found for '${host}'")
     }
 
-    $memo + [$ip4]
+    $probes = $addresses.map |$ip| {
+      $family = wmflib::ip_family($ip)
+
+      $ret = {
+        targets => ["${host}:0@${ip}"],
+        labels  => {
+          module      => "icmp_ip${family}",
+          family      => "ip${family}",
+          address     => $ip,
+          realm       => $config['realm'],
+          rack        => $config['rack'],
+          role        => 'host',
+          # Not strictly required, but make sure all metrics (in this job)
+          # have the same set of labels.
+          target_site => $config['site'],
+        } + $extra_labels,
+      }
+
+      $ret
+    }
+
+    $memo + $probes
   }
 
   file { $targets_file:
