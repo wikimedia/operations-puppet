@@ -104,7 +104,7 @@ class swift (
         require  => File['/var/log/swift'],
     }
 
-    # Used to ban logs both from local disk and centrallog syslog hosts
+    # Used to perform ban on spammy messages and write to local files
     rsyslog::conf { 'swift-pre-centrallog':
         source   => 'puppet:///modules/swift/swift.rsyslog-pre-centrallog.conf',
         priority => 20,
