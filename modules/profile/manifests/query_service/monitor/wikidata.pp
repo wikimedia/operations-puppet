@@ -13,3 +13,4 @@ class profile::query_service::monitor::wikidata {
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
     }
 }
+
