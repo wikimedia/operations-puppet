@@ -391,7 +391,7 @@ node /^cloudcephosd200[123]-dev\.codfw\./ {
 }
 
 # New ceph node codfw T349934
-node /^ceph200[1-3]\.codfw\./ {
+node /^cephosd200[1-3]\.codfw\./ {
     role(insetup::data_engineering)
 }
 
