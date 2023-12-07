@@ -759,11 +759,6 @@ node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# To be decommissioned #T337206 
-node /^db1119\.eqiad\./ {
-    role(mariadb::misc)
-}
-
 # m1 codfw master
 node /^db2132\.codfw\./ {
     role(mariadb::misc)

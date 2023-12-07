@@ -1,6 +1,0 @@
-# db1119
-# to be decommissioned 
-mariadb::shard: 'm5'
-mariadb::binlog_format: 'ROW'
-profile::monitoring::is_critical: false
-profile::monitoring::notifications_enabled: false
