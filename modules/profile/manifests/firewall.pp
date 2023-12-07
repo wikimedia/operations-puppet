@@ -177,7 +177,7 @@ class profile::firewall (
                     ensure => file,
                 }
 
-                nftables::file { 'drop-blocked-nets':
+                nftables::file::input { 'drop-blocked-nets':
                     order   => 5,
                     content => 'ip saddr $BLOCKED_NETS drop\n'
                 }
