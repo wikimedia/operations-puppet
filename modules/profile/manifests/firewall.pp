@@ -90,18 +90,20 @@ class profile::firewall (
         }
     }
 
+    if $defs_from_etcd {
+        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+            ensure          => stdlib::ensure($provider == 'ferm'),
+            reload          => '/bin/systemctl reload ferm',
+            watch_keys      => ['/request-ipblocks/abuse'],
+            content         => file('profile/firewall/defs_requestctl.tpl'),
+            prefix          => $conftool_prefix,
+            relative_prefix => false,
+        }
+    }
+
     case $provider {
         'ferm': {
             if $defs_from_etcd {
-                confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-                    ensure          => stdlib::ensure($provider == 'ferm'),
-                    reload          => '/bin/systemctl reload ferm',
-                    watch_keys      => ['/request-ipblocks/abuse'],
-                    content         => file('profile/firewall/defs_requestctl.tpl'),
-                    prefix          => $conftool_prefix,
-                    relative_prefix => false,
-                }
-
                 # unmanaged files under /etc/ferm/conf.d are purged
                 # so we define the file to stop it being deleted
                 file { '/etc/ferm/conf.d/00_defs_requestctl':
