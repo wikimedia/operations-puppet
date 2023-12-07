@@ -11,7 +11,7 @@ class scap (
     Variant[Stdlib::Host,String] $deployment_server = 'deployment',
     Stdlib::Fqdn $wmflabs_master                    = 'deployment-deploy03.deployment-prep.eqiad1.wikimedia.cloud',
     Stdlib::Port::Unprivileged $php7_admin_port     = 9181,
-    Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog01.deployment-prep.eqiad1.wikimedia.cloud',
+    Stdlib::Fqdn $betacluster_udplog_host           = 'deployment-mwlog02.deployment-prep.eqiad1.wikimedia.cloud',
     Boolean      $is_master                         = false,
     Optional[Hash] $k8s_deployments                 = {},
     Boolean $enable_bootstrapping                   = true,
