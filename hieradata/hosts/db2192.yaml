@@ -1,3 +1,2 @@
 # db2192
 mariadb::shard: 's5'
-mariadb::package: 'wmf-mariadb106'
