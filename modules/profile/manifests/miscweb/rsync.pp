@@ -7,10 +7,10 @@ class profile::miscweb::rsync (
 
     if $::fqdn in $dst_hosts {
 
-        ferm::service { 'miscapps-rsync':
+        firewall::service { 'miscapps-rsync':
             proto  => 'tcp',
-            port   => '873',
-            srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
+            port   => 873,
+            srange => [$src_host],
         }
 
         class { '::rsync::server': }
