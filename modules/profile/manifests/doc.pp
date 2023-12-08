@@ -63,10 +63,10 @@ class profile::doc (
 
     profile::auto_restarts::service { "${php_prefix}-fpm": }
 
-    ferm::service { 'doc-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '($CACHES $DEPLOYMENT_HOSTS)',
+    firewall::service { 'doc-http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES', 'DEPLOYMENT_HOSTS'],
     }
 
     profile::auto_restarts::service { 'apache2': }
