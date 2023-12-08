@@ -42,8 +42,13 @@ define admin::hashuser (
         $shell = $uinfo['shell']
         $groups = $uinfo['groups']
         $comment = $uinfo['realname']
-        $ssh_keys = ($uinfo.has_key('ssh_keys') and $ensure_ssh_key) ? {
-            true    => $uinfo['ssh_keys'],
+
+        $ssh_key_dict_key = (debian::codename::eq('buster') and $uinfo.has_key('buster_ssh_keys')).bool2str(
+            'buster_ssh_keys', 'ssh_keys'
+        )
+
+        $ssh_keys = ($uinfo.has_key($ssh_key_dict_key) and $ensure_ssh_key) ? {
+            true    => $uinfo[$ssh_key_dict_key],
             default => [],
         }
     }

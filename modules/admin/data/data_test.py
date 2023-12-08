@@ -339,6 +339,11 @@ class DataTest(unittest.TestCase):
                     sshpubkeys.SSHKey(key, strict=True).parse()
                 except sshpubkeys.InvalidKeyError:
                     users_with_invalid_keys.add(username)
+            for key in attrs.get("buster_ssh_keys", []):
+                try:
+                    sshpubkeys.SSHKey(key, strict=True).parse()
+                except sshpubkeys.InvalidKeyError:
+                    users_with_invalid_keys.add(username)
 
         if len(users_with_invalid_keys) > 0:
             raise ValueError(
