@@ -28,7 +28,7 @@ class profile::microsites::query_service {
     }
 
     prometheus::blackbox::check::http { 'commons-query.wikimedia.org':
-        team        => 'serviceops-collab',
+        team        => 'search-platform',
         severity    => 'task',
         path        => '/',
         force_tls   => false,
@@ -38,7 +38,7 @@ class profile::microsites::query_service {
 
     prometheus::blackbox::check::http { 'query.wikidata.org':
         server_name => 'query.wikidata.org',
-        team        => 'serviceops-collab',
+        team        => 'search-platform',
         severity    => 'task',
         path        => '/',
         force_tls   => true,
