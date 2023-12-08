@@ -2922,11 +2922,6 @@ node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202[0-5])\.codfw\./ {
     role(wdqs::public)
 }
 
-# New codfw wdqs nodes T342659
-node /^wdqs202[3-5]\.codfw\./ {
-    role(insetup::search_platform)
-}
-
 node /^webperf1003.eqiad\./ {
     role(webperf)
 }
