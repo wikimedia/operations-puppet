@@ -1,5 +1,5 @@
 {{/* SPDX-License-Identifier: Apache-2.0 */}}
-{{- range gets "/request-ipblocks/abuse/blocked-nets" }}
+{{- range gets "/request-ipblocks/abuse/blocked_nets/*" }}
   {{- $ipblock := json .Value }}
 define {{ toUpper (base .Key) }} = {
   {{- range $cidr := $ipblock.cidrs }}
