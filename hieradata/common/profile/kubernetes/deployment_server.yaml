@@ -386,6 +386,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: stream-enrichment-poc
         - name: stream-enrichment-poc-deploy
+    echoserver:
+      usernames:
+        - name: echoserver
+        - name: echoserver-deploy
   aux-k8s:
     jaeger:
       usernames:
