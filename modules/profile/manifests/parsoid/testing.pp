@@ -26,16 +26,16 @@ class profile::parsoid::testing (
         notify  => Service['nginx'],
     }
 
-    ferm::service { 'nginx-parsoid-testing':
-        proto  => 'tcp',
-        port   => 8001,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nginx-parsoid-testing':
+        proto    => 'tcp',
+        port     => 8001,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     # Presented by the @remote links shown on parsoid-rt-tests.wikimedia.org
-    ferm::service { 'parsoid-testing':
-        proto  => 'tcp',
-        port   => 8142,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'parsoid-testing':
+        proto    => 'tcp',
+        port     => 8142,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 }
