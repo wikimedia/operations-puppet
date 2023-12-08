@@ -29,7 +29,8 @@ class profile::query_service::wikidata(
     Optional[String] $jvmquake_options = lookup('profile::query_service::jvmquake_options', {'default_value' => undef}),
     Optional[Integer] $jvmquake_warn_threshold = lookup('profile::query_service::jvmquake_warn_threshold', {'default_value' => undef}),
     String $jvmquake_warn_file = lookup('profile::query_service::jvmquake_warn_file', {'default_value' => '/tmp/wdqs_blazegraph_jvmquake_warn_gc'}),
-    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options')
+    Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
+    Stdlib::Fqdn $ldf_host = lookup('profile::query_service::ldf_host', {'default_value' => 'placeholder.wmnet'}),
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::streaming_updater
@@ -74,5 +75,8 @@ class profile::query_service::wikidata(
 
     if ($monitoring_enabled) {
         class { '::profile::query_service::monitor::wikidata': }
+    }
+    if ($facts['fqdn']) == $ldf_host {
+        class { '::profile::query_service::monitor::ldf': }
     }
 }
