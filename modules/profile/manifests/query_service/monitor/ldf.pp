@@ -9,12 +9,7 @@ class profile::query_service::monitor::ldf {
         server_name        => 'query.wikidata.org',
         team               => 'search-platform',
         severity           => 'task',
-        path               => '/bigdata/ldf',
-        body               => {
-            'subject'   => 'wd:Q42',
-            'predicate' => 'wdt:P31',
-            'object'    => '',
-        },
+        path               => '/bigdata/ldf?subject=wd%3AQ42&predicate=wdt%3AP31&object=',
         body_regex_matches => ['wd:Q42\s+wdt:P31\s+wd:Q5\s+\.'],
         force_tls          => false,
         ip4                => $facts['ipaddress'],
