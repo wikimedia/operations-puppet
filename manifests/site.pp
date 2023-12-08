@@ -2689,12 +2689,12 @@ node /^restbase10(19|2[0-9]|3[0-3])\.eqiad\./ {
 }
 
 # restbase codfw cluster
-node /^restbase20(1[3-9]|2[0-9]|3[0-2])\.codfw\./ {
+node /^restbase20(1[3-9]|2[0-9]|3[0-3])\.codfw\./ {
     role(restbase::production)
 }
 
 # new restbase nodes T349758
-node /^restbase20(3[3-5])\.codfw\./ {
+node /^restbase20(3[4-5])\.codfw\./ {
     role(insetup::data_persistence)
 }
 
