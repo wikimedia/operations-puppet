@@ -10,10 +10,10 @@ class profile::gerrit::migration (
 
     if $facts['fqdn'] in $dst_hosts {
 
-        ferm::service { 'gerrit-migration-rsync':
+        firewall::service { 'gerrit-migration-rsync':
             proto  => 'tcp',
-            port   => '873',
-            srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
+            port   => 873,
+            srange => [$src_host],
         }
 
         class { 'rsync::server': }
