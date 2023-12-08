@@ -2735,6 +2735,11 @@ node /^sessionstore[1-2]00[1-3]\.(eqiad|codfw)\./ {
     role(sessionstore)
 }
 
+# New sessionstore T349876
+node /^sessionstore200[4-6]\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\./ {
     role(openldap::rw)
