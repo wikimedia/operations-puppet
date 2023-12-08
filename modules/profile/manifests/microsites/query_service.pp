@@ -44,4 +44,23 @@ class profile::microsites::query_service {
         force_tls   => true,
         ip_families => [ip4],
     }
+
+    prometheus::blackbox::check::http { 'commons-query.wikimedia.org-collab':
+        server_name => 'commons-query.wikimedia.org',
+        team        => 'serviceops-collab',
+        severity    => 'task',
+        path        => '/',
+        force_tls   => false,
+        port        => 80,
+        ip_families => [ip4],
+    }
+
+    prometheus::blackbox::check::http { 'query.wikidata.org-collab':
+        server_name => 'query.wikidata.org',
+        team        => 'serviceops-collab',
+        severity    => 'task',
+        path        => '/',
+        force_tls   => true,
+        ip_families => [ip4],
+    }
 }
