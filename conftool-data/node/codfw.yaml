@@ -321,6 +321,7 @@ codfw:
     restbase2031.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2032.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase2033.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
+    restbase2034.codfw.wmnet: [restbase, restbase-ssl, restbase-backend]
   eventschemas:
     schema2003.codfw.wmnet: [eventschemas]
     schema2004.codfw.wmnet: [eventschemas]
