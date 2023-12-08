@@ -196,9 +196,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'deploy*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'flerovium':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'doc[12]*':
     - partman/flat.cfg
     - virtual.cfg
