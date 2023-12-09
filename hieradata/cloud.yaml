@@ -40,6 +40,11 @@ kubernetes::clusters_defaults: {}
 profile::mail::default_mail_relay::enabled: true
 profile::mail::default_mail_relay::template: "profile/mail/default_mail_relay/exim4.minimal.wmcs.erb"
 
+profile::mail::smarthost::wmcs::internal_domains:
+  - "*.wmflabs"
+  - "*.wikimedia.cloud"
+profile::mail::smarthost::wmcs::external_domain: wmcloud.org
+
 profile::acme_chief::ssl_client_certificate: "%{facts.puppet_config.localcacert}"
 profile::acme_chief::ssl_client_certificate_source: ~
 profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia
