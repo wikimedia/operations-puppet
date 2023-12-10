@@ -112,7 +112,8 @@ apt:
 package_update: true
 package_upgrade: true
 
-{% if ds.meta_data.install_puppet %}
+{% if ds.meta_data.meta is defined %}
+{% if ds.meta_data.meta.install_puppet is defined %}
 # This configures puppet and starts the puppet agent (which we don't want).
 #  When the boot script starts we'll kill the agent and run puppet synchronously.
 puppet:
@@ -122,6 +123,7 @@ puppet:
         agent:
             server: 'puppet'
             certname: '%f'
+{% endif %}
 {% endif %}
 
 --XXXXboundary text
