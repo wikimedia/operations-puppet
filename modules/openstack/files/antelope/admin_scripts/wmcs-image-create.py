@@ -4,6 +4,7 @@
 
 import argparse
 import logging
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -308,6 +309,14 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
         LOGGER.warning("Found legacy Puppet cron file %s", puppet_cron_config)
         puppet_cron_config.unlink()
 
+    # Allow cloud-init to re-run per-instance things
+    cloud_instances = mountpath / "var/lib/cloud/instances"
+    shutil.rmtree(cloud_instances)
+
+    # Prepare for a fresh puppet run
+    puppet_certs = mountpath / "var/lib/puppet/ssl"
+    shutil.rmtree(puppet_certs)
+
     # Bonus: enable dhcp setting of resolv.conf.  This will get turned off again by puppet
     #  but will allow new images to pick up a proper resolv.conf on boot
     nodnsupdate = mountpath / "etc/dhcp/dhclient-enter-hooks.d/nodnsupdate"
@@ -384,7 +393,6 @@ def main(args: argparse.Namespace) -> None:
             print("Either image_url or image_file must be set.")
             exit(1)
 
-        snapshot_path = workdir / "snapshot.img"
         snapshot_path = workdir / "snapshot.img"
 
         with with_confirmation(

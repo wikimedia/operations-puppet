@@ -207,9 +207,6 @@ nscd -i hosts
 #  might have the metadata install_puppet flag set. If neither
 #  of these is true then skip puppet entirely.
 if dpkg -s puppet; then
-    # Clear certs from base image
-    rm -rf /var/lib/puppet/ssl
-
     # Run puppet, twice.  The second time is just to pick up packages
     #  that may have been unavailable in apt before the first puppet run
     #  updated sources.list
