@@ -2599,7 +2599,7 @@ node /^ping[12]003\.(eqiad|codfw)\./ {
 }
 
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
-node /^planet[12]00[23]\.(eqiad|codfw)\./ {
+node /^planet[12]003\.(eqiad|codfw)\./ {
     role(planet)
 }
 
