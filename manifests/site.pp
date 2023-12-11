@@ -2796,6 +2796,10 @@ node /^sretest200[1-4]\.codfw\./ {
     role(sretest)
 }
 
+node /^testhost2001\.codfw\./ {
+    role(insetup::wmcs)
+}
+
 # House of Thanos components
 node /^titan200[1-2]\.codfw\./ {
     role(titan)
