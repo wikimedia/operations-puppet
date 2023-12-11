@@ -105,7 +105,7 @@ class profile::idm(
         content => template('idm/idm-django-settings.erb'),
         owner   => $deploy_user,
         group   => $deploy_user,
-
+        notify  => Service['uwsgi-bitu', 'rq-bitu'],
     }
 
     class { 'idm::redis':
