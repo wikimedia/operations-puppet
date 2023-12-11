@@ -599,7 +599,7 @@ node /^db2156\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(141|142|143|147|148|149|160|190|199|238|241|242|243|247)\.eqiad\./ {
+node /^db1(147|148|149|160|190|199|238|241|242|243|247)\.eqiad\./ {
     role(mariadb::core)
 }
 
