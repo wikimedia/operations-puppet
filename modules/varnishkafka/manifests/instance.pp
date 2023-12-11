@@ -5,6 +5,8 @@
 # Most varnishkafka.conf properties are supported.
 #
 # == Parameters
+# $ensure
+#
 # $brokers                          - Array of Kafka broker host:ports.
 #                                     Default: [localhost:9091]
 # $topic                            - Kafka topic name to produce to.
@@ -111,6 +113,7 @@
 # $ssl_key_location                 - Full path of the TLS keystore.
 #                                     Default: undef
 define varnishkafka::instance(
+    $ensure                         = 'present',
     $brokers                        = ['localhost:9092'],
     $topic                          = 'varnish',
     $sequence_number                = 0,
@@ -173,6 +176,7 @@ define varnishkafka::instance(
     }
 
     file { "/etc/varnishkafka/${name}.conf":
+        ensure  => $ensure,
         content => template($conf_template),
         owner   => 'root',
         group   => 'root',
@@ -181,6 +185,7 @@ define varnishkafka::instance(
     }
 
     file { "/etc/logrotate.d/varnishkafka-${name}-stats":
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
@@ -189,6 +194,7 @@ define varnishkafka::instance(
     }
 
     base::service_unit { "varnishkafka-${name}":
+        ensure         => $ensure,
         systemd        => systemd_template('varnishkafka'),
         refresh        => $should_subscribe,
         require        => Package['varnishkafka'],
