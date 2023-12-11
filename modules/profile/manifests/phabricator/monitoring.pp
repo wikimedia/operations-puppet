@@ -14,6 +14,19 @@ class profile::phabricator::monitoring (
             severity => 'page',
         }
 
+        # dedicated check with collab team and severity task
+        # Reporting to a phab task might not work if phabricator is down
+        prometheus::blackbox::check::http { 'phabricator.wikimedia.org-collab':
+            server_name        => 'phabricator.wikimedia.org',
+            team               => 'serviceops-collab',
+            severity           => 'task',
+            path               => '/',
+            force_tls          => true,
+            port               => 443,
+            ip_families        => [ip4],
+            body_regex_matches => ['Welcome to Wikimedia Phabricator'],
+        }
+
         nrpe::monitor_service { 'check_phab_phd':
             description   => 'PHD should be running',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
