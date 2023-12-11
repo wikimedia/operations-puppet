@@ -149,6 +149,10 @@ kubernetes::clusters:
         - kubernetes1056.eqiad.wmnet
         - kubernetes1057.eqiad.wmnet
         - kubernetes1058.eqiad.wmnet
+        - kubernetes1059.eqiad.wmnet
+        - kubernetes1060.eqiad.wmnet
+        - kubernetes1061.eqiad.wmnet
+        - kubernetes1062.eqiad.wmnet
         - mw1462.eqiad.wmnet
         - mw1463.eqiad.wmnet
         - mw1464.eqiad.wmnet
