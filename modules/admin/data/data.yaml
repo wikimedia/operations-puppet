@@ -6944,3 +6944,7 @@ ldap_only_users:
     ensure: present
     realname: (known to legal)
     email: info@gno.de
+  mcastro-wmf:
+    ensure: present
+    realname: Miguel Castro
+    email: mcastro@wikimedia.org
