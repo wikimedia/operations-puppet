@@ -3,3 +3,4 @@ lvs::realserver::realserver_ips:
   - '2620:0:861:ed1a::9'
 
 profile::base::enable_rp_filter: false
+profile::lvs::realserver::ipip::enabled: true
