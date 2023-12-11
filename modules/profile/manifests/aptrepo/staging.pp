@@ -72,4 +72,14 @@ class profile::aptrepo::staging (
       auth_users     => ['apt-publisher'],
       secrets_file   => '/etc/rsync-apt-auth-secrets',
   }
+
+  ensure_packages(['python3-gitlab'])
+
+  file { '/usr/local/bin/gitlab-package-puller':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => 'puppet:///modules/aptrepo/gitlab_package_puller.py',
+  }
 }
