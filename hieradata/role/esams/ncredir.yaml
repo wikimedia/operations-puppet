@@ -3,3 +3,4 @@ lvs::realserver::realserver_ips:
   - '2a02:ec80:300:ed1a::3'
 
 profile::base::enable_rp_filter: false
+profile::lvs::realserver::ipip::enabled: true
