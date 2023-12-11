@@ -375,6 +375,11 @@ class profile::hadoop::common (
         default => $hadoop_config['yarn_scheduler_maximum_allocation_vcores'],
     }
 
+    $yarn_spark_history_server_address  = $hadoop_config['yarn_spark_history_server_address'] ? {
+        undef   => undef,
+        default => $hadoop_config['yarn_spark_history_server_address'],
+    }
+
     # Raised for T206943
     $yarn_resourcemanager_zk_timeout_ms       = $hadoop_config['yarn_resourcemanager_zk_timeout_ms'] ? {
         undef   => 20000,
@@ -538,6 +543,7 @@ class profile::hadoop::common (
         yarn_scheduler_maximum_allocation_mb             => $yarn_scheduler_maximum_allocation_mb,
         yarn_scheduler_minimum_allocation_vcores         => $yarn_scheduler_minimum_allocation_vcores,
         yarn_scheduler_maximum_allocation_vcores         => $yarn_scheduler_maximum_allocation_vcores,
+        yarn_spark_history_server_address                => $yarn_spark_history_server_address,
         yarn_use_spark_shuffle                           => $yarn_use_spark_shuffle,
         yarn_use_multi_spark_shufflers                   => $yarn_use_multi_spark_shufflers,
         yarn_multi_spark_shuffler_versions               => $yarn_multi_spark_shuffler_versions,

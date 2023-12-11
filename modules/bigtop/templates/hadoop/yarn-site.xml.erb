@@ -306,6 +306,13 @@ end
   </property>
 <% end -%>
 
+<% if @yarn_spark_history_server_address -%>
+  <property>
+    <name>spark.yarn.historyServer.address</name>
+    <value><%= @yarn_spark_history_server_address %></value>
+  </property>
+
+<% end -%>
   <property>
     <name>yarn.log-aggregation-enable</name>
     <value>true</value>
