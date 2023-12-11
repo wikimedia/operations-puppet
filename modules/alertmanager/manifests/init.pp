@@ -3,9 +3,10 @@ class alertmanager (
     Stdlib::Host        $active_host,
     Array[Stdlib::Host] $partners,
     String $irc_channel,
-    String $data_retention_time = '730h', #30 days
+    String $data_retention_time = '730h', # 30 days
     Optional[String] $victorops_api_key = undef,
     Optional[String] $vhost = undef,
+    Optional[Boolean] $sink_notifications = false,
 ) {
     ensure_packages(['prometheus-alertmanager', 'alertmanager-webhook-logger'])
 

@@ -10,13 +10,15 @@ class profile::alertmanager (
     # lint:ignore:wmf_styleguide - T260574
     String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
     # lint:endignore
+    Optional[Boolean]   $sink_notifications = lookup('profile::alertmanager::sink_notifications', { 'default_value' => false }),
 ) {
     class { '::alertmanager':
-        irc_channel       => $irc_channel,
-        active_host       => $active_host,
-        partners          => $partners,
-        victorops_api_key => $victorops_api_key,
-        vhost             => $vhost,
+        irc_channel        => $irc_channel,
+        active_host        => $active_host,
+        partners           => $partners,
+        victorops_api_key  => $victorops_api_key,
+        vhost              => $vhost,
+        sink_notifications => $sink_notifications,
     }
 
     # All Prometheus servers need access to Alertmanager to send alerts

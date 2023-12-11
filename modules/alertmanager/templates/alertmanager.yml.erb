@@ -27,6 +27,14 @@ route:
     - receiver: 'logger'
       continue: true
 
+<% if @sink_notifications %>
+    #
+    # ALL NOTIFICATIONS ARE BEING SINKED HERE AND GOING NOWHERE.
+    # For testing purposes only.
+    #
+    - receiver: 'sink'
+<% end %>
+
     # Compat Icinga alerts are routed to a 'sink' channel
     - match_re:
         alertname: '^Icinga/.*'
@@ -268,6 +276,8 @@ receivers:
     - url: 'http://localhost:6725'
 
 - name: 'default'
+
+- name: 'sink'
 
 - name: 'irc-spam'
   webhook_configs:
