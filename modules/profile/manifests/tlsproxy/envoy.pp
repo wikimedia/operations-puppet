@@ -243,11 +243,19 @@ class profile::tlsproxy::envoy(
         # based on the $ferm_srange
         # We check for NotUndef here as an empty list (which is false'y) is valid
         if $firewall_srange =~ NotUndef {
-            firewall::service { 'envoy_tls_termination':
-                proto   => 'tcp',
-                notrack => true,
-                port    => $tls_port,
-                srange  => $firewall_srange,
+            if $firewall_srange == [] {
+                firewall::service { 'envoy_tls_termination':
+                    proto   => 'tcp',
+                    notrack => true,
+                    port    => $tls_port,
+                }
+            } else {
+                firewall::service { 'envoy_tls_termination':
+                    proto   => 'tcp',
+                    notrack => true,
+                    port    => $tls_port,
+                    srange  => $firewall_srange,
+                }
             }
         } else {
             ferm::service { 'envoy_tls_termination':
