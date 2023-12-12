@@ -516,8 +516,8 @@ FLAVOR_EXTRA_KEYS = {
 SITE_BRANDING = 'Manage Wikimedia Cloud'
 SITE_BRANDING_LINK = 'https://horizon.wikimedia.org'
 
-HORIZON_IMAGES_UPLOAD_MODE = 'legacy'
-CREATE_IMAGE_DEFAULTS = {'image_visibility': "private"}
+# WMF-specific security limits
+HORIZON_IMAGES_UPLOAD_MODE = 'off'
 
 DESIGNATE = { 'records_use_fips': True }
 
