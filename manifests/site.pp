@@ -727,7 +727,7 @@ node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
 
 ## x1 shard
 # eqiad
-node /^db1(137|179|220)\.eqiad\./ {
+node /^db1(137|179|220|237)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -748,7 +748,7 @@ node /^db21(42|43|44)\.codfw\./ {
 }
 
 # New db hosts to be setup T342166
-node /^db12(39|32|33|34|35|37|39|40|44|45|46|48|49)\.eqiad\./ {
+node /^db12(39|32|33|34|35|39|40|44|45|46|48|49)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 ## m1 shard
