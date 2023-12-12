@@ -12,9 +12,10 @@ https://jobrunner.discovery.wmnet:
   - path: /rpc/RunSingleJob.php
     assert_status: 405
   # Of course we're not submitting an actual job.
-  # So we get back a 500 error in this case instead than
+  # So we get back a 422 error in this case instead than
   # method not allowed
   - path: /rpc/RunSingleJob.php
     method: POST
+    assert_status: 422
     assert_headers_regex:
       X-Powered-By: ^PHP/7\.
