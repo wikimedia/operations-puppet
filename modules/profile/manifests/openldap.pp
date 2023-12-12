@@ -13,6 +13,7 @@ class profile::openldap (
     $storage_backend = lookup('profile::openldap::storage_backend'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Integer             $size_limit = lookup('profile::openldap::size_limit'),
+    Array[String[1]]    $firewall_src_sets = lookup('profile::openldap::firewall_src_sets', {default_value => ['PRODUCTION_NETWORKS', 'CLOUD_NETWORKS']}),
 ){
     # Certificate needs to be readable by slapd
     acme_chief::cert { $certname:
@@ -49,10 +50,10 @@ class profile::openldap (
 
     # Ldap services are used all over the place, including within
     # WMCS and on various prod hosts.
-    ferm::service { 'ldap':
-        proto  => 'tcp',
-        port   => [389, 636],
-        srange => '($PRODUCTION_NETWORKS $LABS_NETWORKS)',
+    firewall::service { 'ldap':
+        proto    => 'tcp',
+        port     => [389, 636],
+        src_sets => $firewall_src_sets,
     }
 
     $monitoring_rw_desc = $read_only.bool2str('read-only', 'writable')
