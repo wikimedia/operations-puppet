@@ -6948,3 +6948,7 @@ ldap_only_users:
     ensure: present
     realname: Miguel Castro
     email: mcastro@wikimedia.org
+  arthurtaylor:
+    ensure: present
+    realname: Arthur Taylor
+    email: arthur.taylor@wikimedia.de
