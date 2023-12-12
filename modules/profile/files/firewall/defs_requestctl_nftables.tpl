@@ -1,9 +1,7 @@
 {{/* SPDX-License-Identifier: Apache-2.0 */}}
-{{- range gets "/request-ipblocks/abuse/blocked_nets" }}
-  {{- $ipblock := json .Value }}
-define {{ toUpper (base .Key) }} = {
+{{- $ipblock := json (getv "/request-ipblocks/abuse/blocked_nets") -}}
+define BLOCKED_NETS = {
   {{- range $cidr := $ipblock.cidrs }}
-  {{ $cidr }} ,
+  {{ $cidr }},
   {{- end }}
 }
-{{- end }}
