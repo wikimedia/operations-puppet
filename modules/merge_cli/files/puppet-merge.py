@@ -193,16 +193,18 @@ def main():
         print(target_sha1)
         return 0
     if not args.quiet:
+        # %cN normalizes the committer using .mailmap
         git(
-            'log HEAD..{} --format="%C(bold magenta)%cn%C(reset): %s (%h)"'.format(
+            'log HEAD..{} --format="%C(bold magenta)%cN%C(reset): %s (%h)"'.format(
                 target_sha1
             ),
             config['repo'],
             None,
         )
     if not args.yes:
+        # %cE normalizes the committer using .mailmap
         committers = git(
-            'log HEAD..{} --format=%ce'.format(target_sha1), config['repo']
+            'log HEAD..{} --format=%cE'.format(target_sha1), config['repo']
         )
         confirm_merge(committers.split('\n'))
     syslog(f'({repo}) Merging: {head_sha1_old} -> {target_sha1}')
