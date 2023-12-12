@@ -30,6 +30,7 @@ profile::tlsproxy::envoy::global_cert_name: "testreduce.discovery.wmnet"
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 8001
+profile::tlsproxy::envoy::firewall_srange: []
 
 profile::nginx::variant: 'light'
 
