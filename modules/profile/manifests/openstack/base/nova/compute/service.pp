@@ -173,7 +173,7 @@ class profile::openstack::base::nova::compute::service(
     # script to run commands via consoles in an emergency
     file { '/usr/local/sbin/wmcs-run-console-command':
         ensure => file,
-        source => 'puppet:///modules/profile/files/openstack/base/nova/compute/wmcs-run-console-command.py',
+        source => 'puppet:///modules/profile/openstack/base/nova/compute/wmcs-run-console-command.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
