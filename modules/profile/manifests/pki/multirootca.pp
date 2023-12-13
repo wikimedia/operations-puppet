@@ -118,7 +118,7 @@ class profile::pki::multirootca (
         $config          = $value[1]
         $safe_title      = $intermediate.regsubst('\W', '_', 'G')
         $profiles        = 'profiles' in $config ? {
-            true    => $config['profiles'] + $default_profiles,
+            true    => $default_profiles + $config['profiles'],
             default => $default_profiles,
         }
         $auth_keys       = pick($config['auth_keys'], $default_auth_keys)
