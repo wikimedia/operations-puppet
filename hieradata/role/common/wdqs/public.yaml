@@ -23,12 +23,22 @@ profile::query_service::nodes:
   - 'wdqs1013.eqiad.wmnet'
   - 'wdqs1014.eqiad.wmnet'
   - 'wdqs1015.eqiad.wmnet'
-  - 'wdqs1016.eqiad.wmnet'
   - 'wdqs2007.codfw.wmnet'
   - 'wdqs2009.codfw.wmnet'
   - 'wdqs2010.codfw.wmnet'
   - 'wdqs2011.codfw.wmnet'
   - 'wdqs2012.codfw.wmnet'
+  - 'wdqs2013.codfw.wmnet'
+  - 'wdqs2016.codfw.wmnet'
+  - 'wdqs2017.codfw.wmnet'
+  - 'wdqs2018.codfw.wmnet'
+  - 'wdqs2019.codfw.wmnet'
+  - 'wdqs2020.codfw.wmnet'
+  - 'wdqs2021.codfw.wmnet'
+  - 'wdqs2022.codfw.wmnet'
+  - 'wdqs2023.codfw.wmnet'
+  - 'wdqs2024.codfw.wmnet'
+  - 'wdqs2025.codfw.wmnet'
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins

@@ -98,21 +98,10 @@ scap::dsh::groups:
       - {'cluster': 'wdqs', 'service': 'wdqs'}
       - {'cluster': 'wdqs-internal', 'service': 'wdqs'}
     hosts:
-      - wdqs1009.eqiad.wmnet
-      - wdqs1010.eqiad.wmnet
-      - wdqs2013.codfw.wmnet
-      - wdqs2014.codfw.wmnet
-      - wdqs2015.codfw.wmnet
-      - wdqs2016.codfw.wmnet
-      - wdqs2017.codfw.wmnet
-      - wdqs2018.codfw.wmnet
-      - wdqs2019.codfw.wmnet
-      - wdqs2020.codfw.wmnet
-      - wdqs2021.codfw.wmnet
-      - wdqs2022.codfw.wmnet
-      - wdqs2023.codfw.wmnet
-      - wdqs2024.codfw.wmnet
-      - wdqs2025.codfw.wmnet
+      - wdqs1016.eqiad.wmnet
+      - wdqs1022.eqiad.wmnet
+      - wdqs1023.eqiad.wmnet
+      - wdqs1024.eqiad.wmnet
   librenms:
     hosts:
       - netmon1003.wikimedia.org

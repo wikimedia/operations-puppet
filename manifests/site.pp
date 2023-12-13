@@ -2892,10 +2892,6 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs10(09|10)\.eqiad\./ {
-    role(wdqs::test)
-}
-
 node /^wdqs1008\.eqiad\./ {
     role(wdqs::internal)
 }

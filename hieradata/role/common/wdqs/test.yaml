@@ -16,8 +16,9 @@ profile::query_service::deploy_mode: 'scap3'
   # required to have wikibase:isSomeValue using skolems instead of blank nodes
   # - '-DwikibaseSomeValueMode=skolem'
 profile::query_service::nodes:
-  - 'wdqs1009.eqiad.wmnet'
-  - 'wdqs1010.eqiad.wmnet'
+  - 'wdqs1022.eqiad.wmnet'
+  - 'wdqs1023.eqiad.wmnet'
+  - 'wdqs1024.eqiad.wmnet'
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
