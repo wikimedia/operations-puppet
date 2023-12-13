@@ -5,5 +5,5 @@ class role::crm {
 
     include profile::base::production
     include profile::firewall
-    include profile::crm
+    include profile::community_civicrm
 }
