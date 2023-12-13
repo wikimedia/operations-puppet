@@ -178,6 +178,12 @@ class profile::kubernetes::master (
         true    => 'critical',
         default => 'critical', # FIXME: Switch to 'page' once verified
     }
+    # The default reneval time is ~11 days before expiry (1 day for staging)
+    # So all(?) other certificate checks in the infrastructure start alerting when
+    # a certificate expires in <=10 days. Try to allign with that here but keeping
+    # the flexibility to have shorter expiry times (for staging) by using
+    # pki_renew_seconds (in days) minus 1 day with a minimum of 1 day before expiry.
+    $certificate_expiry_days = max(ceiling($k8s_config['pki_renew_seconds'] / 60 / 60 / 24) - 1, 1)
     # Add a blackbox check for the kube-apiserver
     prometheus::blackbox::check::http { "${kubernetes_cluster_name}-kube-apiserver":
         server_name             => $k8s_config['master'],
@@ -186,7 +192,7 @@ class profile::kubernetes::master (
         path                    => '/readyz',
         port                    => 6443,
         force_tls               => true,
-        certificate_expiry_days => min(ceiling($k8s_config['pki_renew_seconds'] / 60 / 60 / 24), 1),
+        certificate_expiry_days => $certificate_expiry_days,
         prometheus_instance     => 'ops',
     }
 
