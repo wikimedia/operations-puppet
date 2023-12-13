@@ -179,7 +179,7 @@ class profile::kubernetes::master (
         default => 'critical', # FIXME: Switch to 'page' once verified
     }
     # Add a blackbox check for the kube-apiserver
-    prometheus::blackbox::check::http { $kubernetes_cluster_name + '-kube-apiserver':
+    prometheus::blackbox::check::http { "${kubernetes_cluster_name}-kube-apiserver":
         server_name             => $k8s_config['master'],
         team                    => 'sre',
         severity                => $severity,
