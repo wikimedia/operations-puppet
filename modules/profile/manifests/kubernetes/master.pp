@@ -54,10 +54,10 @@ class profile::kubernetes::master (
         'outdir'          => $cert_dir,
         # https://v1-23.docs.kubernetes.io/docs/setup/best-practices/certificates/#all-certificates
         'hosts'           => [
-            $facts['hostname'],
-            $facts['fqdn'],
-            $facts['ipaddress'],
-            $facts['ipaddress6'],
+            $facts['networking']['hostname'],
+            $facts['networking']['fqdn'],
+            $facts['networking']['ip'],
+            $facts['networking']['ip6'],
             $apiserver_clusterip,
             $k8s_config['master'],
             'kubernetes',
@@ -102,7 +102,7 @@ class profile::kubernetes::master (
         instance   => 'k8s',
         watch_keys => ['/'],
         # Add all but the local cert to the file (the local one will be used unconditionally)
-        content    => "{{range gets \"/*\"}}{{if ne .Key \"/${facts['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
+        content    => "{{range gets \"/*\"}}{{if ne .Key \"/${facts['networking']['fqdn']}\"}}{{.Value}}{{end}}{{end}}",
         reload     => '/bin/systemctl restart kube-apiserver-safe-restart.service',
     }
 
@@ -138,7 +138,7 @@ class profile::kubernetes::master (
         mode   => '0750',
     }
     k8s::kubeconfig { '/root/.kube/config':
-        master_host => $facts['fqdn'],
+        master_host => $facts['networking']['fqdn'],
         username    => 'default-admin',
         auth_cert   => $default_admin_cert,
         owner       => 'root',
@@ -150,7 +150,7 @@ class profile::kubernetes::master (
     # file so better place it somewhere else.
     k8s::kubeconfig { '/etc/kubernetes/admin.conf':
         ensure      => absent,
-        master_host => $::fqdn,
+        master_host => $facts['networking']['fqdn'],
         username    => 'default-admin',
         auth_cert   => $default_admin_cert,
         owner       => 'kube',
@@ -173,6 +173,23 @@ class profile::kubernetes::master (
         ipv6dualstack           => $k8s_config['ipv6dualstack'],
     }
 
+    # Don't page for staging clusters
+    $severity = 'staging' in $kubernetes_cluster_name ? {
+        true    => 'critical',
+        default => 'critical', # FIXME: Switch to 'page' once verified
+    }
+    # Add a blackbox check for the kube-apiserver
+    prometheus::blackbox::check::http { 'kube-apiserver':
+        server_name             => $facts['networking']['fqdn'],
+        team                    => 'sre',
+        severity                => $severity,
+        path                    => '/readyz',
+        port                    => 6443,
+        force_tls               => true,
+        certificate_expiry_days => min(ceiling($k8s_config['pki_renew_seconds'] / 60 / 60 / 24), 1),
+        prometheus_instance     => $k8s_config['prometheus']['name'],
+    }
+
     # Setup kube-scheduler
     $scheduler_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'system:kube-scheduler', {
         'renew_seconds'   => $k8s_config['pki_renew_seconds'],
@@ -183,7 +200,7 @@ class profile::kubernetes::master (
     })
     $scheduler_kubeconfig = '/etc/kubernetes/scheduler.conf'
     k8s::kubeconfig { $scheduler_kubeconfig:
-        master_host => $facts['fqdn'],
+        master_host => $facts['networking']['fqdn'],
         username    => 'default-scheduler',
         auth_cert   => $scheduler_cert,
         owner       => 'kube',
@@ -207,7 +224,7 @@ class profile::kubernetes::master (
     })
     $controllermanager_kubeconfig = '/etc/kubernetes/controller-manager.conf'
     k8s::kubeconfig { $controllermanager_kubeconfig:
-        master_host => $facts['fqdn'],
+        master_host => $facts['networking']['fqdn'],
         username    => 'default-controller-manager',
         auth_cert   => $controller_manager_cert,
         owner       => 'kube',
