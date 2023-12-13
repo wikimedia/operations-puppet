@@ -99,7 +99,7 @@ groups:
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
                   gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
                   zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
-    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper]
+    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper, sandeeps]
     approval:
       - Tyler Cipriani
   parsoid-roots:
@@ -6163,6 +6163,14 @@ users:
     uid: 35360
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  sandeeps:
+    ensure: present
+    realname: Sandeep Singh
+    email: sandeep.singh@wikimedia.org
+    uid: 45632
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBox9lAhzQ4sSC7sGC4Ca/jVv7TripiJMj8UcxrilUxB sandeep.singh@wikimedia.org'
 
 ldap_only_users:
   adavenport:
@@ -6947,10 +6955,6 @@ ldap_only_users:
     ensure: present
     realname: Steph Toyofuku
     email: stoyofuku@wikimedia.org
-  sandeeps:
-    ensure: present
-    realname: Sandeep Singh
-    email: sandeep.singh@wikimedia.org
   xqt:
     ensure: present
     realname: (known to legal)
