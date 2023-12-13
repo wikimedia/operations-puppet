@@ -94,3 +94,6 @@ spark.executorEnv.REQUESTS_CA_BUNDLE                /etc/ssl/certs/ca-certificat
 spark.eventLog.enabled                              true
 spark.eventLog.dir                                  <%= @event_log_dir %>
 <% end -%>
+<% if @spark_yarn_history_address -%>
+spark.yarn.historyServer.address                    <%= @spark_yarn_history_address %>
+<% end -%>
