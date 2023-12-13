@@ -421,7 +421,7 @@ groups:
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
-              analytics-research, analytics-platform-eng, analytics-wmde]
+              analytics-research, analytics-platform-eng, analytics-wmde, spark]
     approval:
       - Olja Dimitrjevic
       - Dan Andreescu
@@ -1229,6 +1229,10 @@ groups:
   #   gid: 925
   #   system: true
   #   members: []
+  spark:
+    gid: 926
+    system: true
+    members: []
   analytics-wmde:
     gid: 927
     system: true
@@ -1420,6 +1424,13 @@ users:
   #   gid: 925
   #   home_dir: /var/lib/gerrit
   #   shell: /bin/bash
+  spark:
+    ensure: present
+    system: true
+    uid: 926
+    gid: 926
+    home_dir: none
+    shell: /bin/bash
   analytics-wmde:
     ensure: present
     system: true
