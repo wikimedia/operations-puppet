@@ -187,7 +187,7 @@ class profile::kubernetes::master (
         port                    => 6443,
         force_tls               => true,
         certificate_expiry_days => min(ceiling($k8s_config['pki_renew_seconds'] / 60 / 60 / 24), 1),
-        prometheus_instance     => $k8s_config['prometheus']['name'],
+        prometheus_instance     => 'ops',
     }
 
     # Setup kube-scheduler
