@@ -39,6 +39,22 @@ class amd_rocm (
         fail('Please use ROCm 5.4 with Bullseye, other versions are not supported.')
     }
 
+    # AMD firmware for GPU cards
+    if debian::codename::eq('bullseye') {
+        # The default firmware-amd-graphics package in bullseye does not have
+        # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
+        apt::package_from_bpo { 'firmware-amd-graphics':
+            distro => 'bullseye',
+        }
+    } else {
+        # On buster, we can't install the backport (and that use case is going
+        # away anyway), and on Bookworm and later, the standard package has the
+        # right files.
+        package { 'firmware-amd-graphics':
+            ensure => present,
+        }
+    }
+
     # In most cases, like the stat100x nodes, we are able to control all the users
     # and add them to the 'render' group, needed to access the various devices
     # exposed by ROCm to the OS. In cases like k8s, we delegate the GPU
@@ -65,11 +81,6 @@ class amd_rocm (
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
-    }
-
-    # AMD firmwares for GPU cards
-    package { 'firmware-amd-graphics':
-        ensure => present,
     }
 
     # rock-dkms quietly skips compiling the kernel module if we don't
