@@ -1075,12 +1075,11 @@ node /^elastic105[3-9]\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^(elastic106[0-9]|elastic107[0-9]|elastic108[0-3])\.eqiad\./ {
+node /^(elastic106[0-9]|elastic107[0-9]|elastic108[0-9])\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-# new elastic servers T291655 and T299609
-node /^(elastic108[4-9]|elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
+node /^(elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
