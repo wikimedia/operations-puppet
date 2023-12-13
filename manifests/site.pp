@@ -1775,7 +1775,7 @@ node /^lists2001\.codfw\./ {
 
 # New codfw logging nodes T349834
 node /^logging-hd200[1-3]\.codfw\./ {
-    role(insetup::observability)
+    role(logging::opensearch::data::hd)
 }
 
 # Logging data nodes (codfw)
