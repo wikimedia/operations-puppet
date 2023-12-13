@@ -211,9 +211,6 @@
 #     take effect, and will get capped to this value.
 #     Default: undef (32)
 #
-#   [*yarn_spark_history_server_address*]
-#     The address of the Spark history server.
-#
 #   [*yarn_resourcemanager_scheduler_class*]
 #     If you change this (e.g. to FairScheduler), you should also provide
 #     your own scheduler config .xml files outside of the bigtop module.
@@ -400,7 +397,6 @@ class bigtop::hadoop(
     $yarn_nodemanager_log_aggregation_compression_type  = 'gz',
     $yarn_nodemanager_resource_memory_mb                = undef,
     $yarn_nodemanager_resource_cpu_vcores               = max($::processorcount - 1, 1 + 0),
-    $yarn_spark_history_server_address                  = undef,
     $yarn_nodemanager_nofiles_ulimit                    = 65536,
     $yarn_log_aggregation_retain_seconds                = 5184000, # 60 days
     $yarn_log_aggregation_retain_check_interval_seconds = 86400,
