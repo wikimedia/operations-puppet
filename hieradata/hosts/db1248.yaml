@@ -1,2 +1,4 @@
 # db1248
+mariadb::shard: 's4'
+mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false

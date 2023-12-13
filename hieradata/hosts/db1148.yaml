@@ -1,3 +1,4 @@
 # db1148
 mariadb::shard: 's4'
 mariadb::binlog_format: 'ROW'
+profile::monitoring::notifications_enabled: false
