@@ -1,3 +1,0 @@
-# db1129
-mariadb::shard: 's2'
-profile::monitoring::notifications_enabled: false
