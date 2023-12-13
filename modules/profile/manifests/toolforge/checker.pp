@@ -37,7 +37,7 @@ class profile::toolforge::checker {
         'etcd_kubernetes'        => '/etcd/k8s',
         'grid_continuous_buster' => '/grid/continuous/buster',
         'grid_start_buster'      => '/grid/start/buster',
-        'kubernetes_nodes_ready' => '/k8s/nodes/ready',
+        'kubernetes_nodes_ready' => absent,
         'ldap'                   => '/ldap',
         'nfs_dumps'              => '/nfs/dumps',
         'nfs_home'               => '/nfs/home',
@@ -179,32 +179,13 @@ class profile::toolforge::checker {
         ensure => absent,
     }
 
-    file { "${install_dir}/kubernetes.json":
+    file { [
+        "${install_dir}/kubernetes.json",
+        "${install_dir}/kube-config.yaml",
+        "${install_dir}/client.crt",
+        "${install_dir}/client.key",
+    ]:
         ensure => absent,
-    }
-    file { "${install_dir}/kube-config.yaml":
-        ensure => present,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0400',
-        source => '/data/project/toolschecker/.kube/config',
-        before => File[$wsgi_file],
-    }
-    file { "${install_dir}/client.crt":
-        ensure => present,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0400',
-        source => '/data/project/toolschecker/.toolskube/client.crt',
-        before => File[$wsgi_file],
-    }
-    file { "${install_dir}/client.key":
-        ensure => present,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0400',
-        source => '/data/project/toolschecker/.toolskube/client.key',
-        before => File[$wsgi_file],
     }
 
     # Allow the www-data user to perform actions as related tools.

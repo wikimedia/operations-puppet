@@ -207,40 +207,6 @@ def grid_start_buster():
     return grid_check_start("buster")
 
 
-@check("/k8s/nodes/ready")
-def kubernetes_nodes_ready_check():
-    """Check that no nodes are in NonReady but Schedulable state"""
-
-    def check_nodes(server, token, verify=True):
-        r = requests.get(
-            "{}/api/v1/nodes".format(server),
-            headers={"Authorization": "Bearer {}".format(token)},
-            verify=verify,
-        )
-        for node in r.json()["items"]:
-            is_ready = False
-            for condition in node["status"]["conditions"]:
-                if condition["type"] == "Ready" and condition["status"] == "True":
-                    is_ready = True
-                    break
-            if not is_ready:
-                if node["spec"].get("unschedulable", False):
-                    # If node isn't ready but is marked as unschedulable
-                    # (cordoned), is ok
-                    continue
-                return False
-        return True
-
-    with open(os.path.join(__dir__, "kube-config.yaml")) as dotfile:
-        config = yaml.safe_load(dotfile)
-
-    return check_nodes(
-        config["clusters"][1]["cluster"]["server"],
-        config["users"][1]["user"]["token"],
-        verify=False,
-    )
-
-
 @check("/ldap")
 def ldap_query_check():
     """Run a simple known query and verify that all ldap servers return

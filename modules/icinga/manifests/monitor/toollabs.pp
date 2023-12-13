@@ -61,16 +61,6 @@ class icinga::monitor::toollabs () {
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
-    monitoring::service { 'tools-checker-k8s-node-ready':
-        description    => 'toolschecker: All k8s worker nodes are healthy',
-        check_command  => "${checker}!/k8s/nodes/ready!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
     monitoring::service { 'tools-checker-ldap':
         description   => 'toolschecker: Test LDAP for query',
         check_command => "${checker}!/ldap!OK",
