@@ -115,11 +115,50 @@ class mailman3::listserve (
 
     file { "/var/lib/mailman3/templates/domains/${host}/en/":
         ensure  => directory,
-        source  => 'puppet:///modules/mailman3/templates/',
         owner   => 'root',
         group   => 'list',
         mode    => '0555',
-        recurse => 'remote',
         require => File["/var/lib/mailman3/templates/domains/${host}/"],
+    }
+
+    $templates = [
+        'domain_admin_notice_new-list.txt',
+        'help.txt',
+        'list_admin_action_post.txt',
+        'list_admin_action_subscribe.txt',
+        'list_admin_action_unsubscribe.txt',
+        'list_admin_notice_disable.txt',
+        'list_admin_notice_removal.txt',
+        'list_admin_notice_subscribe.txt',
+        'list_admin_notice_unrecognized.txt',
+        'list_admin_notice_unsubscribe.txt',
+        'list_member_digest_header.txt',
+        'list_member_digest_masthead.txt',
+        'list_member_generic_footer.txt',
+        'list_member_regular_header.txt',
+        'list_user_action_invite.txt',
+        'list_user_action_subscribe.txt',
+        'list_user_action_unsubscribe.txt',
+        'list_user_notice_goodbye.txt',
+        'list_user_notice_hold.txt',
+        'list_user_notice_no-more-today.txt',
+        'list_user_notice_post.txt',
+        'list_user_notice_probe.txt',
+        'list_user_notice_refuse.txt',
+        'list_user_notice_rejected.txt',
+        'list_user_notice_warning.txt',
+        'list_user_notice_welcome.txt'
+    ]
+
+    $templates.each |String $template| {
+        $dest_filename = regsubst($template, /_/, ':', 'G')
+        file { "/var/lib/mailman3/templates/domains/${host}/en/${dest_filename}":
+            ensure  => file,
+            source  => "puppet:///modules/mailman3/templates/${template}",
+            owner   => 'root',
+            group   => 'list',
+            mode    => '0555',
+            require => File["/var/lib/mailman3/templates/domains/${host}/en"],
+        }
     }
 }
