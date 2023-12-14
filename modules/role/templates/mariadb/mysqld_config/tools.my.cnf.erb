@@ -67,7 +67,7 @@ table_definition_cache         = 4000
 
 default-storage-engine         = InnoDB
 innodb_file_per_table          = 1
-# Lowering this value to 10G until we fix T349695
+# Lowering this value to 10G until we fix T353093
 # innodb_buffer_pool_size      = <%= (Float(@memorysize.split[0]) * 0.5).round %>G
 innodb_buffer_pool_size        = 10G
 innodb_log_file_size           = 128M
@@ -77,6 +77,14 @@ innodb_io_capacity             = 1000
 innodb_stats_method            = nulls_unequal
 # max_user_connections set for T216170
 max_user_connections = 20
+
+# Kill all queries taking more than 1 hour to execute (T353093)
+max_statement_time = 3600
+
+# Log all queries taking more than 30 minutes to execute
+# (log is at /srv/labsdb/data/tools-db-1-slow.log)
+long_query_time = 30
+slow_query_log  = 1
 
 innodb_strict_mode             = 1
 
