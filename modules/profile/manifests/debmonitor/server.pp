@@ -238,5 +238,22 @@ class profile::debmonitor::server (
             check_command => 'check_https_client_auth_puppet!debmonitor.discovery.wmnet!/client!200!HEAD',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
+
+        prometheus::blackbox::check::http { 'debmonitor.wikimedia.org':
+            port           => 7443,
+            status_matches => [302],
+            force_tls      => true,
+            probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Debmonitor'
+        }
+
+        prometheus::blackbox::check::http { 'debmonitor.discovery.wmnet':
+            port            => 443,
+            path            => '/client',
+            use_client_auth => true,
+            method          => 'HEAD',
+            status_matches  => [200],
+            probe_runbook   => 'https://wikitech.wikimedia.org/wiki/Debmonitor'
+
+        }
     }
 }
