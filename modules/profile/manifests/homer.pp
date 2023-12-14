@@ -4,9 +4,9 @@
 # This class installs & manages Homer, a network configuration management tool.
 
 class profile::homer (
-    Stdlib::Host $private_git_peer = lookup('profile::homer::private_git_peer'),
     String $nb_ro_token = lookup('profile::netbox::ro_token'),
     Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
+    Optional[Stdlib::Host] $private_git_peer = lookup('profile::homer::private_git_peer'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
     Optional[Boolean] $disable_homer = lookup('profile::homer::disable', {'default_value' => false}),
 ){
