@@ -672,7 +672,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'testhost2001':
-    - partman/manual-setup.cfg
+    - partman/custom/backup-format.cfg
   'titan*':
     - partman/standard.cfg
     - partman/raid0.cfg
