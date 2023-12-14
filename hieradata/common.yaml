@@ -1134,6 +1134,10 @@ hadoop_clusters:
       '3.3': 7338
       '3.4': 7339
 
+    # The internal service service endpoint to which the Spark history requests
+    # will be redirected to
+    yarn_spark_history_server_address: "https://spark-history.svc.eqiad.wmnet:30443"
+
 deployment_server: deploy2002.codfw.wmnet
 
 netmon_server: netmon1003.wikimedia.org

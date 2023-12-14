@@ -386,6 +386,11 @@ class profile::hadoop::common (
         default => $hadoop_config['enable_log4j_extras'],
     }
 
+    $yarn_spark_history_server_address = $hadoop_config['yarn_spark_history_server_address'] ? {
+        undef   => undef,
+        default => $hadoop_config['yarn_spark_history_server_address']
+    }
+
     # The datanode mountpoints are retrieved from facter, among the list of mounted
     # partitions on the host. Once a partition is not available anymore (disk broken for example),
     # it is sufficient to run puppet to update the configs (and restart daemons if needed).

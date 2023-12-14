@@ -15,11 +15,15 @@ class profile::hadoop::yarn_proxy (
     }
 
     $resourcemanager_primary_host = $profile::hadoop::common::resourcemanager_hosts[0]
+    $spark_history_server_address = $profile::hadoop::common::yarn_spark_history_server_address
 
     profile::idp::client::httpd::site{ 'yarn.wikimedia.org':
         vhost_content    => 'profile/idp/client/httpd-yarn.erb',
         proxied_as_https => true,
-        vhost_settings   => { 'res_manager' => $resourcemanager_primary_host },
+        vhost_settings   => {
+            'res_manager'                  => $resourcemanager_primary_host,
+            'spark_history_server_address' => $spark_history_server_address,
+        },
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
             'cn=wmf,ou=groups,dc=wikimedia,dc=org',
