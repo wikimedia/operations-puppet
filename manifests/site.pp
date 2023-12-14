@@ -20,6 +20,10 @@ node /^acmechief1001\.eqiad\./ {
     role(acme_chief)
 }
 
+node /^acmechief1002\.eqiad\./ {
+    role(acme_chief)
+}
+
 node /^acmechief2001\.codfw\./ {
     role(acme_chief)
 }
