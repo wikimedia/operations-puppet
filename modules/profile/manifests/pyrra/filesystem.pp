@@ -74,6 +74,7 @@ class profile::pyrra::filesystem (
     }
 
     pyrra::filesystem::config { 'liftwing-requests.yaml':
+      ensure  => absent,
       content => to_yaml($liftwing_revscoring_requests_slo),
     }
 
@@ -106,6 +107,7 @@ class profile::pyrra::filesystem (
     }
 
     pyrra::filesystem::config { 'liftwing-latency.yaml':
+      ensure  => absent,
       content => to_yaml($liftwing_revscoring_latency_slo),
     }
 
