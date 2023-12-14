@@ -132,6 +132,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcumin*':
     - partman/flat.cfg
     - virtual.cfg
+  'cumin1002':
+    - partman/flat.cfg
+    - virtual.cfg
   'cumin*|scandium':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
