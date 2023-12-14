@@ -8,7 +8,7 @@ class profile::homer (
     String $nb_ro_token = lookup('profile::netbox::ro_token'),
     Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
-    Optional[Boolean] $disable_homer = lookup('profile::homer:disable', {'default_value' => false}),
+    Optional[Boolean] $disable_homer = lookup('profile::homer::disable', {'default_value' => false}),
 ){
 
     unless $disable_homer {
