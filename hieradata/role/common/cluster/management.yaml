@@ -50,3 +50,4 @@ profile::spicerack::mysql_config_data:
   replication_user: repl
   # replication_password: overiden in the private repo
 profile::homer::private_git_peer: ~
+profile::homer::diff_timer_interval: ~
