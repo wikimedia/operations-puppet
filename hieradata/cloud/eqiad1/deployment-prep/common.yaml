@@ -96,6 +96,7 @@ profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
+profile::memcached::localcacert: ~
 keyholder::trusted_groups:
    - wikidev
 profile::base::core_dump_pattern: '/data/project/cores/%{facts.hostname}-core.%h.%e.%p.%t'

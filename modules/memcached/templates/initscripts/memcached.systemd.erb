@@ -31,6 +31,9 @@ ExecStart=/usr/bin/memcached \
           <%- if @enable_tls -%>
           -Z -o ssl_chain_cert=<%= @ssl_cert %> \
           -o ssl_key=<%= @ssl_key %> \
+          <%- if defined?(@localcacert) -%>
+          -o ssl_ca_cert=<%= @localcacert %> \
+          <%- end -%>
           <%- end -%>
           -n <%= @min_slab_size %>
 <%- unless @override %>

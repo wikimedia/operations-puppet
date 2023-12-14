@@ -53,6 +53,10 @@
 # [*ssl_key*]
 #   The public key used for SSL connections
 #   Default: undef
+
+# [*localcacert*]
+#   Location of ca.pem
+#   Default: undef
 #
 # [*notls_port]
 #   By default, when we `enable_tls`, the host will listen
@@ -75,6 +79,7 @@ class profile::memcached::instance (
     Optional[Stdlib::Port]     $notls_port       = lookup('profile::memcached::notls_port'),
     Optional[Stdlib::Unixpath] $ssl_cert         = lookup('profile::memcached::ssl_cert'),
     Optional[Stdlib::Unixpath] $ssl_key          = lookup('profile::memcached::ssl_key'),
+    Optional[Stdlib::Unixpath] $localcacert      = lookup('profile::memcached::localcacert'),
     Optional[Boolean]          $enable_16        = lookup('profile::memcached::enable_16'),
     Optional[Integer]          $threads          = lookup('profile::memcached::threads'),
     Optional[Firewall::Hosts]  $srange           = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
@@ -112,6 +117,7 @@ class profile::memcached::instance (
         notls_port    => $notls_port,
         ssl_cert      => $ssl_cert,
         ssl_key       => $ssl_key,
+        localcacert   => $localcacert,
     }
     ferm::service { 'memcached':
         proto  => 'tcp',

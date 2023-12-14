@@ -11,3 +11,4 @@ profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~
 profile::memcached::ssl_key: ~
+profile::memcached::localcacert: ~

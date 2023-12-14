@@ -67,6 +67,10 @@
 #   The public key used for SSL connections
 #   Default: undef
 #
+# [*localcacert*]
+#   Location of ca.pem
+#   Default: undef
+#
 # [*extra_options*]
 #   A hash of additional command-line options and values.
 #
@@ -101,6 +105,7 @@ class memcached(
     Optional[Stdlib::Port]     $notls_port            = undef,
     Optional[Stdlib::Unixpath] $ssl_cert              = undef,
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
+    Optional[Stdlib::Unixpath] $localcacert           = undef,
 ) {
     if $enable_tls and (!$ssl_key or !$ssl_key) {
         fail('you must provide ssl_cert and ssl_key if you enable_tls')
