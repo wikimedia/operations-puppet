@@ -6,6 +6,7 @@ profile::alertmanager::api::rw:
   - 'netmon1003.wikimedia.org'
   - 'netmon2002.wikimedia.org'
   - 'cumin1001.eqiad.wmnet'
+  - 'cumin1002.eqiad.wmnet'
   - 'cumin2002.codfw.wmnet'
   - 'cuminunpriv1001.eqiad.wmnet'
   - 'cloudcumin1001.eqiad.wmnet'

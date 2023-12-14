@@ -1281,6 +1281,8 @@ graphite_url: "http://%{lookup('graphite_host')}"
 cumin_masters:
 - 10.64.32.25                 # cumin1001.eqiad.wmnet
 - 2620:0:861:103:10:64:32:25  # cumin1001.eqiad.wmnet
+- 10.64.48.98                 # cumin1002.eqiad.wmnet
+- 2620:0:861:107:10:64:48:98  # cumin1002.eqiad.wmnet
 - 10.192.32.49                # cumin2002.codfw.wmnet
 - 2620:0:860:103:10:192:32:49 # cumin2002.codfw.wmnet
 
@@ -1639,6 +1641,7 @@ mysql_root_clients:
 - 10.64.16.90    # db1215.eqiad.wmnet
 - 10.192.16.191  # db2185.codfw.wmnet
 - 10.64.32.25    # cumin1001.eqiad.wmnet
+- 10.64.48.98    # cumin1002.eqiad.wmnet
 - 10.192.32.49   # cumin2002.codfw.wmnet
 - 208.80.155.103 # dborch1001.wikimedia.org
 
