@@ -539,7 +539,7 @@ node /^db1208\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|132|134|135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
+node /^db1(106|134|135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -603,7 +603,7 @@ node /^db2156\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(148|149|160|190|199|238|241|242|243|247|248|249)\.eqiad\./ {
+node /^db1(149|160|190|199|238|241|242|243|247|248|249)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -731,7 +731,7 @@ node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
 
 ## x1 shard
 # eqiad
-node /^db1(137|179|220|237)\.eqiad\./ {
+node /^db1(179|220|237)\.eqiad\./ {
     role(mariadb::core)
 }
 
