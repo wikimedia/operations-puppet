@@ -128,7 +128,7 @@ class profile::pki::multirootca (
         $ca_key_file     = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}-key.pem"
         $ca_file         = "${cfssl::signer_dir}/${safe_title}/ca/${safe_title}.pem"
         $key_content     = "${private_cert_base}/${intermediate}-key.pem"
-        $cert_content    = "${public_cert_base}/${intermediate}.pem"
+        $cert_content    = "${public_cert_base}/${intermediate}-cert.pem"
         $int_ca_content  = file($cert_content)
 
         if find_file($key_content) {
