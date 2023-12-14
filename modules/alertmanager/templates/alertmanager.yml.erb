@@ -636,11 +636,22 @@ inhibit_rules:
       - 'instance'
       - 'site'
 
-  # Inhibit warnings when there's a matching alert at critical
+  # Inhibit warnings when there's a matching alert at critical,
+  # and criticals when there is a matching page
   - source_match:
       severity: 'critical'
     target_match:
       severity: 'warning'
+    equal:
+      - 'alertname'
+      - 'job'
+      - 'instance'
+      - 'site'
+
+  - source_match:
+      severity: 'page'
+    target_match_re:
+      severity: 'warning|critical'
     equal:
       - 'alertname'
       - 'job'
