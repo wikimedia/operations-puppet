@@ -75,9 +75,4 @@ class planet (
 
     # creates one planet theme (css/logo) per language
     planet::theme { $languages_keys: }
-
-    if debian::codename::le('buster') {
-        # creates RSS dir and plugin per language
-        planet::rawdogplugin { $languages_keys: }
-    }
 }
