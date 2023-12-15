@@ -182,19 +182,19 @@ class profile::librenms (
 
     include profile::librenms::web
 
-    ferm::service { 'librenms-rsyslog':
+    firewall::service { 'librenms-rsyslog':
         proto => 'udp',
-        port  => '514',
+        port  => 514,
     }
 
-    ferm::service { 'librenms-http':
+    firewall::service { 'librenms-http':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
     }
 
-    ferm::service { 'librenms-https':
+    firewall::service { 'librenms-https':
         proto => 'tcp',
-        port  => '443',
+        port  => 443,
     }
 
     backup::set {'librenms': }
