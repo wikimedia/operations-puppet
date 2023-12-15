@@ -14,7 +14,7 @@
 define admin::hashuser (
     Boolean $ensure_ssh_key = true,
 ) {
-    $uinfo = $::admin::data['users'][$name]
+    $uinfo = $admin::data['users'][$name]
 
     if $uinfo['system'] {
         # ensure system users specify a home dir
