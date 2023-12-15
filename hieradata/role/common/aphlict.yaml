@@ -13,6 +13,6 @@ profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 22280
 profile::tlsproxy::envoy::websockets: true
-profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::contacts::role_contacts: ['Collaboration Services']
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

@@ -1,4 +1,4 @@
-profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::contacts::role_contacts: ['Collaboration Services']
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true

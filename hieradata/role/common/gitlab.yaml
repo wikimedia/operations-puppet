@@ -55,7 +55,7 @@ profile::gitlab::exporters:
 profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.crt'
 profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 
-profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::contacts::role_contacts: ['Collaboration Services']
 
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true

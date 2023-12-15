@@ -5,7 +5,7 @@ profile::tlsproxy::envoy::global_cert_name: "etherpad.discovery.wmnet"
 profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::websockets: true
 
-profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::contacts::role_contacts: ['Collaboration Services']
 profile::etherpad::listen_ip: '::'
 
 profile::puppet::agent::force_puppet7: true

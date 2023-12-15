@@ -9,7 +9,7 @@ type Wmflib::Team = Enum[
     'Observability',
     'Search Platform',
     'ServiceOps',
-    'ServiceOps-Collab',
+    'Collaboration Services',
     'Traffic',
     'WMCS',
 ]

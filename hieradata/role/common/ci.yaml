@@ -122,4 +122,4 @@ profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
 profile::tlsproxy::envoy::ferm_srange: "$CACHES"
 
-profile::contacts::role_contacts: ['ServiceOps-Collab']
+profile::contacts::role_contacts: ['Collaboration Services']
