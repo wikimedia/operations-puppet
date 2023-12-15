@@ -134,7 +134,7 @@ class profile::kubernetes::deployment_server::helmfile (
     # they are no longer needed. We set them to state => absent once, and we'll remove
     # this code once it's been deployed and applied.
     ['spark-history', 'spark-history-test', 'spark-history-analytics'].each |$svc| {
-        file { "${service_private_dir}/dse-k8s_services/${svc}":
+        file { "/etc/helmfile-defaults/private/dse-k8s_services/${svc}":
             ensure => absent,
         }
     }
