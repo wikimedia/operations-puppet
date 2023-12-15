@@ -31,8 +31,7 @@ class profile::microsites::query_service {
         team        => 'search-platform',
         severity    => 'task',
         path        => '/',
-        force_tls   => false,
-        port        => 80,
+        force_tls   => true,
         ip_families => [ip4],
     }
 
