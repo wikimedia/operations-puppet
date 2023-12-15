@@ -201,7 +201,7 @@ define cfssl::cert (
             owner  => $owner,
             group  => $group,
             mode   => '0440',
-            source => "${cfssl::client::bundles_source}/${label}.pem",
+            source => "${cfssl::client::bundles_source}/${label}-cert.pem",
         }
 
         if $ensure == 'present' {
