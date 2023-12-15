@@ -76,10 +76,10 @@ class profile::aptrepo::staging (
   ensure_packages(['python3-gitlab'])
 
   file { '/usr/local/bin/gitlab-package-puller':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    content => 'puppet:///modules/aptrepo/gitlab_package_puller.py',
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+    source => 'puppet:///modules/aptrepo/gitlab_package_puller.py',
   }
 }
