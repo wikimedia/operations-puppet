@@ -126,16 +126,4 @@ class profile::kubernetes::deployment_server::helmfile (
             }
         }
     }
-
-    # T351816: Temporary. As we have iterated over the spark-history release names,
-    # which has resulted in the managment of the spark-history, spark-history-test, and
-    # spark-history-analytics directories under
-    # /etc/helmfile-defaults/private/dse-k8s_services/ on the deployment server,, when
-    # they are no longer needed. We set them to state => absent once, and we'll remove
-    # this code once it's been deployed and applied.
-    ['spark-history', 'spark-history-test', 'spark-history-analytics'].each |$svc| {
-        file { "/etc/helmfile-defaults/private/dse-k8s_services/${svc}":
-            ensure => absent,
-        }
-    }
 }
