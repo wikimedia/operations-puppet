@@ -1384,7 +1384,7 @@ node /^gitlab2002\.wikimedia\./ {
 }
 
 node /^gitlab2003\.wikimedia\./ {
-    role(insetup::serviceops_collab)
+    role(insetup::collaboration_services)
 }
 
 # gitlab runners - codfw (T3011183)
