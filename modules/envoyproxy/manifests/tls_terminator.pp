@@ -168,6 +168,7 @@ define envoyproxy::tls_terminator(
     Optional[Integer]                  $connection_buffer_limit   = undef,
     Optional[Envoyproxy::Http2options] $http2_options             = undef,
     Boolean                            $has_error_page            = false,
+    Float                              $local_otel_reporting_pct  = 0.0,
 ) {
 
     # First of all, we can't configure a tls terminator if envoy is not installed.

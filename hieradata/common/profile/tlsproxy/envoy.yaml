@@ -21,3 +21,4 @@ profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::firewall_srange: ~
 profile::tlsproxy::envoy::max_requests: ~
 profile::tlsproxy::envoy::error_page: false
+profile::tlsproxy::envoy::local_otel_reporting_pct: 0.0

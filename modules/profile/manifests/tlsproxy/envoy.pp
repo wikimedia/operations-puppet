@@ -54,6 +54,7 @@
 # @param stream_idle_timeout If set, set the stream idle timeout (otherwise, 5 minutes is what envoy defaults to)
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
 # @param error_page  boolean true if an error page should be added; false by default.
+# @param otel_reporting boolean, true if we are to report to a local open telemetry collector
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni    $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                     $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -72,10 +73,11 @@ class profile::tlsproxy::envoy(
     Optional[Float]                  $idle_timeout              = lookup('profile::tlsproxy::envoy::idle_timeout'),
     Optional[Float]                  $stream_idle_timeout       = lookup('profile::tlsproxy::envoy::stream_idle_timeout'),
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
-    Optional[Firewall::Range]       $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
+    Optional[Firewall::Range]        $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
-    Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page')
+    Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page'),
+    Float                            $local_otel_reporting_pct  = lookup('profile::tlsproxy::envoy::local_otel_reporting_pct'),
 ) {
     require profile::envoy
     $ensure = $profile::envoy::ensure
@@ -236,7 +238,24 @@ class profile::tlsproxy::envoy(
             idle_timeout              => $idle_timeout,
             stream_idle_timeout       => $stream_idle_timeout,
             max_requests_per_conn     => $max_requests,
-            has_error_page            => $error_page
+            has_error_page            => $error_page,
+            local_otel_reporting_pct  => $local_otel_reporting_pct,
+        }
+
+        if $local_otel_reporting_pct > 0 {
+            # TLS terminator was defined with OpenTelemetry reporting enabled.
+            # Set an upstream cluster that is required by the tracing stanza
+            $upstream_name = 'otel-collector'
+            $max_requests_per_conn = $max_requests
+            $connect_timeout = 1.0
+            $upstream = {
+                  'upstream'     => {'port' => 4317, 'addr' => 'localhost'},
+            }
+
+            envoyproxy::cluster { "cluster_${upstream_name}":
+              priority => 1,
+              content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+            }
         }
 
         # If $firewall_srange is configured for a service, don't populate the service
