@@ -19,7 +19,6 @@ class gnmic(
     ensure_packages(['gnmic'])
 
     systemd::sysuser { 'gnmic':
-        id          => '926:926',  # https://wikitech.wikimedia.org/wiki/UID
         description => 'gNMIc user'
     }
 
