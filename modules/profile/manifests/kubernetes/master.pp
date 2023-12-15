@@ -176,7 +176,7 @@ class profile::kubernetes::master (
     # Don't page for staging clusters
     $severity = 'staging' in $kubernetes_cluster_name ? {
         true    => 'critical',
-        default => 'critical', # FIXME: Switch to 'page' once verified
+        default => 'page',
     }
     # The default reneval time is ~11 days before expiry (1 day for staging)
     # So all(?) other certificate checks in the infrastructure start alerting when
