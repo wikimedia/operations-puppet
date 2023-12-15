@@ -49,15 +49,16 @@ class profile::prometheus::snmp_exporter (
     }
 
     if $::realm == 'labs' {
-        $ferm_srange = '$LABS_NETWORKS'
+        firewall::service { 'prometheus-snmp-exporter':
+            proto    => 'tcp',
+            port     => 9116,
+            src_sets => ['LABS_NETWORKS'],
+        }
     } else {
-        $prometheus_ferm_nodes = join($prometheus_all_nodes, ' ')
-        $ferm_srange = "@resolve((${prometheus_ferm_nodes}))"
-    }
-
-    ferm::service { 'prometheus-snmp-exporter':
-        proto  => 'tcp',
-        port   => '9116',
-        srange => $ferm_srange,
+        firewall::service { 'prometheus-snmp-exporter':
+            proto  => 'tcp',
+            port   => 9116,
+            srange => $prometheus_all_nodes,
+        }
     }
 }
