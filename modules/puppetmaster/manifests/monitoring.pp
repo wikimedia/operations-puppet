@@ -10,6 +10,19 @@ class puppetmaster::monitoring (
     # both will be used
     $puppetmaster_check_uri = '/puppet/v3'
 
+    file { '/usr/local/bin/check_git_needs_merge':
+        ensure => present,
+        source => 'puppet:///modules/puppetmaster/check_git_needs_merge.py'
+    }
+
+    systemd::timer::job { 'prometheus_puppetmerge_puppet':
+        ensure      => present,
+        user        => 'root',
+        description => 'Prometheus exporter for missing git merges',
+        command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/operations/',
+        interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '10m'},
+    }
+
     # Check for unmerged changes that have been sitting for more than one minute.
     # ref: T80100, T83854
     monitoring::icinga::git_merge { 'puppet': }
@@ -30,6 +43,14 @@ class puppetmaster::monitoring (
             status_matches => [400],
             force_tls      => true,
             probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging'
+        }
+
+        systemd::timer::job { 'prometheus_puppetmerge_labs_private':
+            ensure      => present,
+            user        => 'root',
+            description => 'Prometheus exporter for missing git merges',
+            command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/labs/private/ --name labs_private',
+            interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '10m'},
         }
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
