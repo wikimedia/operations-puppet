@@ -15,6 +15,12 @@ class netops::ripeatlas::cli (
         home_dir => $home,
     }
 
+    file { $home:
+        ensure => directory,
+        owner  => 'atlas',
+        group  => 'atlas',
+    }
+
     file { ["${home}/.config", "${home}/.config/ripe-atlas-tools"]:
         ensure => directory,
         owner  => 'atlas',
