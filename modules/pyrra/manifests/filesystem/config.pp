@@ -16,7 +16,7 @@ define pyrra::filesystem::config (
     }
 
     file { "${config_dir}/${title}":
-        ensure  => file,
+        ensure  => $ensure,
         mode    => '0444',
         owner   => 'root',
         source  => $source,
