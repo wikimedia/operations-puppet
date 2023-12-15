@@ -173,6 +173,3 @@ groups:
       # SLx: Request counts with status
       - record: istio_sli_availability_requests_total:increase5m
         expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{kubernetes_namespace="istio-system"}[5m]))
-      # Needed for the Pyrra pilot
-      - record: istio_sli_availability_requests_total
-        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (istio_requests_total{kubernetes_namespace="istio-system"})
