@@ -144,18 +144,6 @@ class profile::kubernetes::master (
         owner       => 'root',
         group       => 'root',
     }
-    # Previously the following superuser config was used.
-    # Remove that one as it's very inconvenient to always have to
-    # provide --kubeconfig. Services should also never use this
-    # file so better place it somewhere else.
-    k8s::kubeconfig { '/etc/kubernetes/admin.conf':
-        ensure      => absent,
-        master_host => $facts['networking']['fqdn'],
-        username    => 'default-admin',
-        auth_cert   => $default_admin_cert,
-        owner       => 'kube',
-        group       => 'kube',
-    }
 
     class { 'k8s::apiserver':
         etcd_servers            => $etcd_servers,
