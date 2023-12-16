@@ -9,7 +9,10 @@ class profile::wmcs::services::toolsdb (
 
     require profile::mariadb::packages_wmf
     include profile::mariadb::wmfmariadbpy
-    class { '::mariadb::service': }
+    class { '::mariadb::service':
+      # Use jemalloc to prevent memory issues (T353093)
+      override => '[Service]\nEnvironment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"',
+    }
 
     class { 'profile::mariadb::monitor::prometheus':
         socket => $socket,
