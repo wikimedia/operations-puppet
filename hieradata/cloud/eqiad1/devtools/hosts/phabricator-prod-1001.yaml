@@ -3,7 +3,6 @@ phabricator_servers:
 - phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud
 
 # this provides the listen_address for sshd_config, used for admin logins
-# all other IPs are used by phabricator::vcs (aka git-ssh.wikimedia.org)
 profile::ssh::server::listen_addresses: ["172.16.0.173"]
 
 profile::tlsproxy::envoy::global_cert_name: "phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud"
