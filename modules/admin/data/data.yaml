@@ -413,7 +413,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
-              damilare, isaranto,
+              damilare, isaranto, anakanishi,
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
@@ -6163,6 +6163,14 @@ users:
     uid: 35360
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  anakanishi:
+    ensure: present
+    realname: Aki Nakanishi
+    email: anakanishi@wikimedia.org
+    uid: 45720
+    gid: 500
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4zw34NTTT9pZBUL0m+kjk2PkPqtLrVGFsun7e3Bl8QAvq9Z6KU2keYfF/RjR/yOjSQhkgEwGkVyvzh7zlKiKDq9BpvIqNANcCHHi+C0ZZmuwHYmrLV+9aUMHtaVvYCCcu2flCPhIq3sHevRaUn4Xux8hbcrgq4G7gZ0Ko2keVlAy2lkZYmAwmyNN+rTnHBY3L7nbBWQ7kfAnNysP7oBq0vrcdSqufQebj1ArDUPnKduNCpYhIiH2BNpl9O+NkogGt9iM7UTRT5z/zaDOaiqQVl44Rw6MWDigM5+fhofBTeHh9kPIP23OSAqgV2CuQn4X743ep6JdKkhAPkZ4Kk4uq+eMskZhXpE0caqn1QYaUgqGdSIj55NEANFV/ks2OBtL/BondRYcawJN/zQeRY5QCK2efQayfsK3uFuqo2Sdma2ouWOkv3jWb9V8OmLBnjIOI3kTlhgkfXLVWsp9+CDMC83Z67IgNtj6RWHw9CF3aKXq8Y4oxFRakYbmBX6XKi7Mr8ipnbHCT4MCsJ7Ury/oUG/Dj5mfoeWnPmX01LTUigTvl4z8T6zSz9eAnE19hmWFRRMDdjWsjmYk3Xzcxy/ZXR5+aDrS20Ert4DzITaMB2py33VmEk3PtnGQGKiu8hrYtA0h3MxuUBuZHNrWTElsrluRnjaQhqAo1px/GEQZ7Vw== anakanishi@wmf2997'
   sandeeps:
     ensure: present
     realname: Sandeep Singh
