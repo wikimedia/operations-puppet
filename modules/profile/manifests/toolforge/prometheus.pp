@@ -517,6 +517,11 @@ class profile::toolforge::prometheus (
         ],
     }
 
+    prometheus::rule { 'rules_kubernetes.yml':
+        instance => 'tools',
+        source   => 'puppet:///modules/profile/toolforge/prometheus/rules_kubernetes.yml',
+    }
+
     prometheus::web { 'tools':
         proxy_pass => 'http://localhost:9902/tools',
         homepage   => true,
