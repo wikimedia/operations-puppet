@@ -418,7 +418,7 @@ groups:
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, nickifeajika, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
-              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes]
+              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6171,6 +6171,16 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBox9lAhzQ4sSC7sGC4Ca/jVv7TripiJMj8UcxrilUxB sandeep.singh@wikimedia.org'
+  rkhan:
+    ensure: present
+    realname: Riddy Khan
+    email: rkhan-ctr@wikimedia.org
+    expiry_date: '2024-04-01'
+    expiry_contact: anakanishi@wikimedia.org
+    uid: 45721
+    gid: 500
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCnCxkKTSCsICHya+gc5pKMrJyd6mo+FBvczfOSFfnEuyRSFZ4ZZ1WZqktodJJPJvctBJMZ2RDYQz73iwnn+3g0+cz+Izk9v40tElH64iNDwKFcaK2xaRvIHNFj1yYwS+JIBIQ8qFp0InrkGO8gln85yme8JtO73c4Y6cP4xXObESSu2quU1J6kZP6y5FQdDq1wlUJv0j1ci94oizKDu97rhDpc4WSGcNO0/ktQPsyT8PhaKfangIeJWAjtd8IOVCh2nqtpwB4fd3dTMKLm6pMbu4JQldnKO2X4EWPg40HVrtCxh0T73+QFejaShJq98d47PWqdIBxn0kMB7isk54dBjpi+Z4fYGAHjZlftCmxXoiwXe6V5f8cDLbdy755YsALgckjs4h71MfC22mkPvkImhJVeqca3f7rWjzmN88QPYksheNYULHfI0yx8K8c80/cDAwdLiVaFUSTAkTVaI1JaoZIm35qpKkfbkmEz2+vKdoFP0SEF+pyQd1w/LGEQEqrbeHsAvKGm4WBngkSfCAPoSNbjbddwIsGJGCVnKl3BEkNdQHO6x3WRdohrTCJ7E29B9qX0UnffZyPtAr5fb94nBC/S/1AQ/850mbVUW8gE8CXG9pRIf/tQS3h9PYG16QryATWko/kfJBcSMx/hkWXuh4J7dsIcdyLLbcXRYrLwqQ== rkhan-ctr@wikimedia.org'
 
 ldap_only_users:
   adavenport:
