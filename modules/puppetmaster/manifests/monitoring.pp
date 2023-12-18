@@ -22,28 +22,12 @@ class puppetmaster::monitoring (
         monitoring::icinga::git_merge { 'labs-private':
             dir => '/var/lib/git/labs/private/',
         }
-
-        prometheus::blackbox::check::http { $facts['fqdn']:
-            path           => $puppetmaster_check_uri,
-            port           => 8140,
-            status_matches => [400],
-            force_tls      => true,
-            probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging'
-        }
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
         monitoring::service { 'puppetmaster_backend_https':
             description   => 'puppetmaster backend https',
             check_command => "check_https_port_status!8141!400!${puppetmaster_check_uri}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
-        }
-
-        prometheus::blackbox::check::http { $facts['fqdn']:
-            path           => $puppetmaster_check_uri,
-            port           => 8141,
-            status_matches => [400],
-            force_tls      => true,
-            probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging'
         }
     }
 }
