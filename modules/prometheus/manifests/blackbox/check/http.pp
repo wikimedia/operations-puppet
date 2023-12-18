@@ -18,6 +18,7 @@
 # @param client_auth_key - path to the client auth key to use. Please note this
 #                          file must exist on the monitoring server not the
 #                          server been monitored
+# @param req_headers - Request headers to send as part of the health check.
 # @param header_matches - list of regular expressions to match against the response headers. if any of those does not match the probe will fail.
 # @param header_not_matches - list of regular expressions to match against the response headers. if any of those does match the probe will fail.
 # @param body_regex_matches - list of regular expressions to match against the body's response. if any of those does not match the probe will fail.
@@ -33,7 +34,6 @@
 # @param proxy_url - The proxy_url
 # @param auth_username - username used for basic auth
 # @param auth_password - password used for basic auth
-# @param useragent - user agent to use
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
 define prometheus::blackbox::check::http (
     Stdlib::Fqdn                            $server_name             = $title,
@@ -51,6 +51,7 @@ define prometheus::blackbox::check::http (
     # puppet agent certs exported in profile::prometheus::blackbox_exporter
     Stdlib::Unixpath                        $client_auth_cert        = '/etc/prometheus/ssl/cert.pem',
     Stdlib::Unixpath                        $client_auth_key         = '/etc/prometheus/ssl/server.key',
+    Hash[String, String]                    $req_headers             = {},
     Array[Prometheus::Blackbox::HeaderSpec] $header_matches          = [],
     Array[Prometheus::Blackbox::HeaderSpec] $header_not_matches      = [],
     Array[String[1]]                        $body_regex_matches      = [],
@@ -66,7 +67,6 @@ define prometheus::blackbox::check::http (
     Optional[String[1]]                     $body_raw                = undef,
     Optional[String[1]]                     $auth_username           = undef,
     Optional[String[1]]                     $auth_password           = undef,
-    Optional[String[1]]                     $useragent               = undef,
     Optional[String[1]]                     $proxy_url               = undef,
     String[1]                               $probe_runbook           = 'https://wikitech.wikimedia.org/wiki/Runbook#{{ $labels.instance }}',
     String[1]                               $probe_description       = '{{ $labels.instance }} failed when probed by {{ $labels.module }} from {{ $externalLabels.site }}. Availability is {{ $value }}%.',
@@ -91,10 +91,8 @@ define prometheus::blackbox::check::http (
         default => undef,
     }
 
-    $headers = $useragent ? {
-        undef   => { 'Host' => $server_name },
-        default => { 'Host' => $server_name, 'User-Agent' => $useragent},
-    }
+    $all_headers = deep_merge({ 'Host' => $server_name }, $req_headers )
+
     $client_auth_config = $use_client_auth ? {
         false   => {},
         default => {'cert_file' => $client_auth_cert, 'key_file' => $client_auth_key},
@@ -105,7 +103,7 @@ define prometheus::blackbox::check::http (
     }
 
     $http_module_params = {
-        'headers'                         => $headers,
+        'headers'                         => $all_headers,
         'no_follow_redirects'             => !$follow_redirects,
         'method'                          => $method,
         'ip_protocol_fallback'            => false,
