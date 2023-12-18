@@ -10,5 +10,6 @@ class profile::thanos::bucket_web (
         objstore_password => $objstore_password,
         http_port         => $http_port,
     }
-}
 
+    class { 'thanos::bucket_query_tools': }
+}
