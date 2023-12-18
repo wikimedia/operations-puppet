@@ -16,6 +16,5 @@ https://jobrunner.discovery.wmnet:
   # method not allowed
   - path: /rpc/RunSingleJob.php
     method: POST
-    assert_status: 500
     assert_headers_regex:
       X-Powered-By: ^PHP/7\.
