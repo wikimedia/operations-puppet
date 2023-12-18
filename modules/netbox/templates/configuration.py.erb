@@ -193,19 +193,19 @@ PLUGINS = [
     'netbox_more_metrics'
 ]
 
-PASSTHROUGH = {
 <% if @swift_auth_url %>
-    # Swift backend storage configuration.
+# Swift backend storage configuration.
+STORAGE_BACKEND = 'swift.storage.SwiftStorage'
+STORAGE_CONFIG = {
     'SWIFT_AUTH_URL': '<%= @swift_auth_url %>/auth/v1.0',
     'SWIFT_USERNAME': '<%= @swift_user %>',
     'SWIFT_PASSWORD': '<%= @swift_key %>',
     'SWIFT_CONTAINER_NAME': '<%= @swift_container %>',
-    'DEFAULT_FILE_STORAGE': 'swift.storage.SwiftStorage',
     'SWIFT_USE_TEMP_URLS': True,
     'SWIFT_TEMP_URL_KEY': '<%= @swift_url_key %>',
     'SWIFT_BASE_URL': 'https://<%= @service_hostname %>',
-<% end %>
 }
+<% end %>
 
 RQ_DEFAULT_TIMEOUT = 300
 
