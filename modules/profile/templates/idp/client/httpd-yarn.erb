@@ -77,6 +77,9 @@
     ProxyPassReverse /jobhistory/ http://<%= @vhost_settings['res_manager'] %>:19888/jobhistory/
 
     <%- if @vhost_settings['spark_history_server_address'] -%>
+    <%- if @vhost_settings['spark_history_server_address'].include? 'https' -%>
+    SSLProxyEngine On
+    <%- end -%>
     ProxyPass /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
     ProxyPassReverse /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
     <%- end %>

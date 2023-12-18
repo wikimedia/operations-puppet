@@ -5,7 +5,10 @@
 #
 class profile::hadoop::yarn_proxy (
 ) {
-    require profile::hadoop::httpd
+    class {'profile::hadoop::httpd':
+        http_only     => true,
+        extra_modules => ['ssl'],
+    }
     require profile::analytics::httpd::utils
     require profile::hadoop::common
 
