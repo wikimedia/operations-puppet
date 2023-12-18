@@ -33,6 +33,7 @@ profile::lvs::realserver::pools:
 profile::query_service::use_revisions: true
 
 profile::tlsproxy::envoy::global_cert_name: "wdqs-internal.discovery.wmnet"
+profile::tlsproxy::envoy::listen_ipv6: true
 
 profile::query_service::blazegraph::monitoring_enabled: true
 profile::query_service::oauth: false
