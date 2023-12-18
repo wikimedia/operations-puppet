@@ -34,7 +34,7 @@ class mariadb::service (
         }
         file { '/etc/systemd/system/mariadb.service.d/override.conf':
             ensure  => present,
-            mode    => '0755',
+            mode    => '0644',
             owner   => 'root',
             group   => 'root',
             content => $override,
