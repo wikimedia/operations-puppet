@@ -386,6 +386,22 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: stream-enrichment-poc
         - name: stream-enrichment-poc-deploy
+    superset:
+      usernames:
+        - name: superset
+          owner: root
+          group: analytics-deployers
+        - name: superset-deploy
+          owner: root
+          group: analytics-deployers
+    superset-next:
+      usernames:
+        - name: superset-next
+          owner: root
+          group: analytics-deployers
+        - name: superset-next-deploy
+          owner: root
+          group: analytics-deployers
     echoserver:
       usernames:
         - name: echoserver
