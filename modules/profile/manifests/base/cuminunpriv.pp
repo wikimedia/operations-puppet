@@ -30,11 +30,10 @@ class profile::base::cuminunpriv(
         require   => File['/etc/security/keytabs/host']
     }
 
-    $cumin_hosts_ferm = join($unpriv_cumin_masters, ' ')
-    ferm::service { 'ssh-from-unprivcumin-masters':
+    firewall::service { 'ssh-from-unprivcumin-masters':
         proto  => 'tcp',
-        port   => '22',
-        srange => "(${cumin_hosts_ferm})",
+        port   => 22,
+        srange => $unpriv_cumin_masters,
     }
 
     # OpenSSH searches for the host keytab in /etc/keytab. We deploy all keytabs
