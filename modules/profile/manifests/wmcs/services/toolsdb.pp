@@ -11,7 +11,7 @@ class profile::wmcs::services::toolsdb (
     include profile::mariadb::wmfmariadbpy
     class { '::mariadb::service':
       # Use jemalloc to prevent memory issues (T353093)
-      override => '[Service]\nEnvironment="LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2"',
+      override => "[Service]\nEnvironment=\"LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libjemalloc.so.2\"",
     }
 
     class { 'profile::mariadb::monitor::prometheus':
