@@ -33,6 +33,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://config-master.wikimedia.org
       replacement: https://config-master.discovery.wmnet
     - type: map
+      target: http://community-crm.wikimedia.org
+      replacement: https://community-crm.discovery.wmnet
+    - type: map
       target: http://cxserver.wikimedia.org
       replacement: https://cxserver.discovery.wmnet:4002
     - type: map

@@ -29,6 +29,8 @@ cache::alternate_domains:
     caching: 'normal'
   commons-query.wikimedia.org:
     caching: 'normal'
+  community-crm.wikimedia.org:
+    caching: 'pass'
   config-master.wikimedia.org:
     caching: 'pass'
   datasets.wikimedia.org:
