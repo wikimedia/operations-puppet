@@ -2,6 +2,7 @@
 class role::mediawiki::canary_appserver {
     include role::mediawiki::appserver
     include ::profile::firewall
+    include profile::opentelemetry::collector
 
     # include the deployment scripts because mwscript can occasionally be useful
     # here: T112174
