@@ -44,3 +44,5 @@ profile::phabricator::main::dumps_rsync_clients:
   - clouddumps1002.wikimedia.org
   - phab1004.eqiad.wmnet
   - phab2002.codfw.wmnet
+
+phabricator::vcs::enable: true

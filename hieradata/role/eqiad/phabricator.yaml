@@ -1,6 +1,5 @@
 phabricator_logmail: true
 profile::phabricator::main::dump_enabled: true
-phabricator::vcs::enable: true
 
 phabricator::mysql::master: "m3-master.eqiad.wmnet"
 phabricator::mysql::master::port: '3306'
