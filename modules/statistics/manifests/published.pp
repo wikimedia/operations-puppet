@@ -52,7 +52,7 @@ class statistics::published(
         read_only   => 'no',
         list        => 'yes',
         hosts_allow => $::statistics::servers,
-        auto_ferm   => true,
+        auto_nft    => true,
         uid         => $::statistics::user::username,
         gid         => 'wikidev',
         require     => File[$hardsync_source],
