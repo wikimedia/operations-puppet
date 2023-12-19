@@ -17,6 +17,7 @@ profile::query_service::nodes:
   - 'wdqs1008.eqiad.wmnet'
   - 'wdqs1011.eqiad.wmnet'
   - 'wdqs1016.eqiad.wmnet'
+  - 'wdqs1017.eqiad.wmnet'
   - 'wdqs2008.codfw.wmnet'
   - 'wdqs2014.codfw.wmnet'
   - 'wdqs2015.codfw.wmnet'
