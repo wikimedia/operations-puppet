@@ -11,6 +11,7 @@ class profile::query_service::monitor::ldf {
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
         port               => 443,
+        req_headers        => {'Accept' => '*/*', 'User-Agent' => 'prometheus-ldf-check' },
     }
 }
 
