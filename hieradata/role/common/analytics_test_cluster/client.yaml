@@ -71,7 +71,7 @@ profile::airflow::instances:
         # If you want to avoid emitting all the available metrics, you can configure an
         # allow list of prefixes (comma separated) to send only the metrics that start
         # with the elements of the list (e.g: "scheduler,executor,dagrun")
-        metrics_allow_list: operator_failures_,operator_successes_,sla_missed,executor.queued_tasks,dag.,dagrun.duration.,scheduler.scheduler_loop_duration,dag_processing.import_errors,dag_processing.total_parse_time,ti.failures,ti.successes,ti.finish
+        metrics_allow_list: operator_failures_,operator_successes_,sla_missed,executor.queued_tasks,dag.,dagrun.duration.,scheduler.scheduler_loop_duration,dag_processing.import_errors,dag_processing.total_parse_time,ti.failures,ti.successes,ti.finish,ti_failures,ti_successes
         # If you want to utilise your own custom StatsD client set the relevant
         # module path below.
         # Note: The module path must exist on your PYTHONPATH for Airflow to pick it up

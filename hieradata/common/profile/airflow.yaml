@@ -11,13 +11,11 @@ profile::airflow::statsd_exporter_default_mappings:
       max_age: 30s
       age_buckets: 30
       buf_cap: 10
-    labels:
-      site: analytics_test
 
   # Example:
   #   airflow.operator_failures__HdfsEmailOperator count
   #   => airflow_operator{operator="HdfsEmailOperator", state="failures"} count
-  - match: airflow\.operator_(failures|successes)__(\w+)
+  - match: airflow\.operator_(failures|successes)[\._]+(\w+)
     match_type: regex
     name: airflow_operator
     labels:
@@ -40,6 +38,12 @@ profile::airflow::statsd_exporter_default_mappings:
     match_type: regex
     name: airflow_ti_start
     action: drop
+
+  # Renamed to remove ambiguity with the next mapping
+  # The ambiguity only happens in prod, and depends on the order of the metric arrivals to the exporter.
+  - match: airflow\.ti\.finish$
+    match_type: regex
+    name: airflow_ti_finish_aggregated
 
   # Example:
   #   airflow.ti.finish.example_dag.task_1.failed count
