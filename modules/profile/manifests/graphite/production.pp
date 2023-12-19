@@ -91,7 +91,7 @@ class profile::graphite::production (
         uid         => '_graphite',
         gid         => '_graphite',
         hosts_allow => $graphite_hosts,
-        auto_ferm   => true,
+        auto_nft    => true,
     }
 
     ferm::service { 'carbon_c_relay-local_relay_udp':
