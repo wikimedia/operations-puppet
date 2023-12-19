@@ -93,6 +93,7 @@ class profile::hadoop::spark3 (
     Boolean $encryption_enabled                      = lookup('profile::hadoop::spark3::encryption_enabled', { 'default_value' => true }),
     Optional[Stdlib::Unixpath] $local_dir            = lookup('profile::hadoop::spark3::local_dir', { 'default_value' => undef }),
     Optional[String] $event_log_dir                  = lookup('profile::hadoop::spark3::event_log_dir', { 'default_value' => undef }),
+    Optional[Boolean] $event_log_compress            = lookup('profile::hadoop::spark3::event_log_compress', { 'default_value' => undef }),
     Optional[String] $spark_yarn_history_address     = lookup('profile::hadoop::spark3::spark_yarn_history_address', { 'default_value' => undef })
 ) {
     require ::profile::hadoop::common
