@@ -82,6 +82,8 @@
     <%- end -%>
     ProxyPass /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
     ProxyPassReverse /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
+    ProxyPass /spark-history/ <%= @vhost_settings['spark_history_server_address'] %>/
+    ProxyPassReverse /spark-history/ <%= @vhost_settings['spark_history_server_address'] %>/
     <%- end %>
     ProxyPass /health_check !
     ProxyPass / http://<%= @vhost_settings['res_manager'] %>:8088/
