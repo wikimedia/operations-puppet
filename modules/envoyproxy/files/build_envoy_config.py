@@ -129,7 +129,10 @@ class EnvoyConfig:
         logger.debug("Reading %s into %s", name, what)
         with open(name, "r") as file_handle:
             data = yaml.safe_load(file_handle)
-        self.config["static_resources"][what].append(data)
+        if isinstance(data, list):
+            self.config["static_resources"][what].extend(data)
+        else:
+            self.config["static_resources"][what].append(data)
 
     def populate_config(self):
         """Populate the configuration.
