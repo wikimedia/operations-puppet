@@ -215,6 +215,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  jaeger:
+    id: 36
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://trace\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
