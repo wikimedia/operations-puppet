@@ -139,4 +139,14 @@ class thanos::rule (
             hasrestart => true,
         },
     }
+
+    systemd::service { "${service_name}-reload":
+        ensure         => $service_ensure,
+        restart        => true,
+        content        => systemd_template("${service_name}-reload"),
+        service_params => {
+            enable     => $service_enable,
+            hasrestart => true,
+        },
+    }
 }

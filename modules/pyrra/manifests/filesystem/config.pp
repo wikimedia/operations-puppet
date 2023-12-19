@@ -21,5 +21,6 @@ define pyrra::filesystem::config (
         owner   => 'root',
         source  => $source,
         content => $content,
+        notify  => Service['pyrra-filesystem']
     }
 }

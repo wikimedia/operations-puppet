@@ -35,4 +35,10 @@ class pyrra::filesystem(
         },
     }
 
+    systemd::unit { 'pyrra-filesystem-notify-thanos.path':
+        ensure  => present,
+        restart => true,
+        content => systemd_template('pyrra-filesystem-notify-thanos'),
+    }
+
 }
