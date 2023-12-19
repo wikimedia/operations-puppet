@@ -18,7 +18,6 @@ profile::tlsproxy::envoy::retries: true
 profile::tlsproxy::envoy::global_cert_name: "appservers.svc.eqiad.wmnet"
 profile::tlsproxy::envoy::access_log: true
 profile::tlsproxy::envoy::header_key_format: "proper_case"
-profile::services_proxy::envoy::listen_ipv6: true
 
 profile::mediawiki::httpd::logrotate_retention: 12
 

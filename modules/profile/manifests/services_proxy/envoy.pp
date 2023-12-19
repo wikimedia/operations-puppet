@@ -17,6 +17,7 @@
 #   xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
 # @param enabled_listeners Optional list of listeners we want to install locally.
 # @param listen_ipv6 listen on ipv6
+# @param listen_ipv6 listen on ipv6 as well as on IPv4
 # @param local_otel_reporting_pct float, the percentage (e.g. 37.5) of traffic to be sampled for tracing
 class profile::services_proxy::envoy(
     Wmflib::Ensure                   $ensure                    = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
