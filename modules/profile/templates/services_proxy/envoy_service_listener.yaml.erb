@@ -2,7 +2,8 @@
 address:
 <%- if @listen_ipv6 -%>
   socket_address: {protocol: TCP, address: "::", port_value: <%= @listener['port'] %>}
-<%- else -%>
-  socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
+<%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
 <%- end -%>
+address:
+  socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
 <%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
