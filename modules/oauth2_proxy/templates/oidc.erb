@@ -10,6 +10,7 @@ oidc_issuer_url = "<%= @issuer_url %>"
 cookie_secret = "<%= @cookie_secret.unwrap %>"
 cookie_domains = "<%= @cookie_domain %>"
 email_domains = "<%= @email_domain %>"
+skip_provider_button = "true"
 upstreams = [
 <% @upstreams.sort.each do |url| -%>
   "<%= url %>",
