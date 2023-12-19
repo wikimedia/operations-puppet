@@ -1300,10 +1300,6 @@ node /^lists1001\.wikimedia\./ {
     role(lists)
 }
 
-# New lists server T331706
-node /^lists1003\.wikimedia\./ {
-    role(lists)
-}
 #add new list server T342374
 node /^lists1004\.eqiad\./ {
     role(insetup::unowned)
