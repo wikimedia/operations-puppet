@@ -442,21 +442,6 @@ class profile::phabricator::main (
         require    => Class[phabricator],
     }
 
-    if $enable_vcs {
-    # This exists to offer git services at git-ssh.wikimedia.org.
-
-        if $use_lvs {
-            class { '::lvs::realserver': }
-        }
-
-        if $vcs_ip_v4 or $vcs_ip_v6 {
-            interface::alias { 'phabricator vcs':
-                ipv4 => $vcs_ip_v4,
-                ipv6 => $vcs_ip_v6,
-            }
-        }
-    }
-
     class { '::phabricator::tools':
         directory       => "${phab_root_dir}/tools",
         dbmaster_host   => $mysql_host,
