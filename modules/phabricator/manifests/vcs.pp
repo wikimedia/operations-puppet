@@ -90,29 +90,6 @@ class phabricator::vcs (
         require => File['/usr/libexec'],
     }
 
-    if empty($listen_addresses) {
-        # Emit a warning but allow listen_address to be empty, this is needed
-        # for easier migrations from one server to another
-        # notify { 'Warning: phabricator::vcs::listen_address is empty': }
-    } else {
-        $drange = $listen_addresses.map |$addr| { $addr.regsubst(/[\[\]]/, '', 'G') }
-
-        file { $sshd_config:
-            content => template('phabricator/vcs/sshd_config.phabricator.erb'),
-            mode    => '0644',
-            owner   => 'root',
-            group   => 'root',
-            require => Package['openssh-server'],
-            notify  => Service['ssh-phab'],
-        }
-
-        systemd::service { 'ssh-phab':
-            ensure  => $ssh_phab_service_ensure,
-            content => systemd_template('ssh-phab'),
-            require => Package['openssh-server'],
-        }
-    }
-
     # phd.user owns repo resources and both vcs and web user
     # must sudo to phd to for repo work.
     sudo::user { $vcs_user:
