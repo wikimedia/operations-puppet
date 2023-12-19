@@ -175,7 +175,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'lists1001.wikimedia.org'
-        - 'lists1003.wikimedia.org'
     mirrors:
         CN: 'mirrors.wikimedia.org'
         SNI:
