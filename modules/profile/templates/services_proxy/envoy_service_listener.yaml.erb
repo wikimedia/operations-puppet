@@ -1,11 +1,13 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- if @listen_ipv6 -%>
 - address:
-  socket_address: {protocol: TCP, address: "::", port_value: <%= @listener['port'] %>}
-<%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
+    socket_address: {protocol: TCP, address: "::", port_value: <%= @listener['port'] %>}
+  <%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
 - address:
+    socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
+  <%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
 <%- else -%>
 address:
-<%- end -%>
   socket_address: {protocol: TCP, address: 0.0.0.0, port_value: <%= @listener['port'] %>}
 <%= scope.call_function('template', ['profile/services_proxy/envoy_service_listener_af_common.yaml.erb']) -%>
+<%- end -%>
