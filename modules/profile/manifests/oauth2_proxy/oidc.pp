@@ -27,10 +27,15 @@ class profile::oauth2_proxy::oidc (
         listen_address => $listen_address,
     }
 
+    $match_idp_location = {
+        'header' => 'location',
+        'regexp' => '^https://idp.wikimedia.org/oidc/oidcAuthorize.*',
+    }
+
     prometheus::blackbox::check::http { $cookie_domain:
-        server_name        => $cookie_domain,
-        status_matches     => [ 403 ],
-        body_regex_matches => [ 'Sign in with' ],
-        port               => 443,
+        server_name    => $cookie_domain,
+        status_matches => [ 302 ],
+        header_matches => [ $match_idp_location ],
+        port           => 443,
     }
 }
