@@ -6,18 +6,21 @@ This script generates the prometheus-mysqld-exporter targets from the
 zarcillo database so it doesn't have to be maintained
 manually on different places
 """
-
+import difflib
+import yaml
 import argparse
 import logging
-import os
 import sys
-
 import pymysql
-import yaml
+from dataclasses import dataclass
+from wmflib.config import load_yaml_config
+from pathlib import Path
+from wmflib.constants import ALL_DATACENTERS
 
-TLS_TRUSTED_CA = '/etc/ssl/certs/wmf-ca-certificates.crt'
-DB_CONFIG_FILE = '/etc/prometheus/zarcillo.cnf'
-DATACENTERS = ['eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs']
+
+TLS_TRUSTED_CA = "/etc/ssl/certs/wmf-ca-certificates.crt"
+DB_CONFIG_FILE = Path("/etc/prometheus/zarcillo.cnf")
+logger = logging.getLogger("mysqld_exporter_config")
 
 
 def get_socket(instance):
@@ -27,59 +30,78 @@ def get_socket(instance):
     REMEMBER to change role::prometheus::mysqld_exporter,
     profile::mariadb::*multiinstance if you change this.
     """
-    if ':' not in instance:
-        return f'{instance}:9104'
-    host, port = instance.rsplit(':', 1)
-    return f'{host}:{int(port) + 10000}'
+    if ":" not in instance:
+        return f"{instance}:9104"
+    host, port = instance.rsplit(":", 1)
+    return f"{host}:{int(port) + 10000}"
 
 
-def get_options():
+def get_args():
     """
     Return an object with the datacenter to be monitored and the path of the prometheus job
     configuration as read from the command line arguments
     """
-    parser = argparse.ArgumentParser(description='Generate mysql prometheus exporter targets.')
-    parser.add_argument('dc', choices=DATACENTERS,
-                        help='Datacenter to generate files for.')
-    parser.add_argument('config_path',
-                        help='Absolute path of the location of prometheus job configuration.')
+    parser = argparse.ArgumentParser(
+        description="Generate mysql prometheus exporter targets."
+    )
+    parser.add_argument(
+        "--db-config-file",
+        dest="db_config_file",
+        default=DB_CONFIG_FILE,
+        help="MySQL Config file to read from to connect to Zarcillo's database",
+        type=Path,
+    )
+    parser.add_argument(
+        "--dc",
+        "-d",
+        dest="dc",
+        choices=ALL_DATACENTERS,
+        help="Datacenter to generate files for.",
+        type=str,
+    )
+    parser.add_argument(
+        "-C",
+        "--config-path",
+        dest="config_path",
+        help="Absolute path of the location of prometheus job configuration.",
+        type=Path,
+        nargs="?",
+    )
+    parser.add_argument(
+        "-G",
+        "--generator-config",
+        dest="generator_config",
+        help="Overrides default path of this generator's configuration file",
+        default=Path("/etc/mysqld-exporter-config.yaml"),
+        type=Path,
+        nargs="?",
+    )
+    parser.add_argument(
+        "-D",
+        "--dry-run",
+        dest="dry_run",
+        help="Will only print diff between generated and existing config file.",
+        default=False,
+        action="store_true",
+    )
     options = parser.parse_args()
     return options
 
 
-def get_db_config():
-    """
-    Read from a local file and return the database configuration parameters
-    """
-    logger = logging.getLogger('prometheus')
-    try:
-        config = yaml.safe_load(open(DB_CONFIG_FILE))
-    except yaml.YAMLError:
-        logger.exception('Error opening or parsing the YAML config file')
-        sys.exit(1)
-    except FileNotFoundError:
-        logger.exception('Config file not found')
-        sys.exit(2)
-    if not isinstance(config, dict) or 'host' not in config:
-        logger.error('Error reading host from config file')
-        sys.exit(3)
-
-    return (config.get('host'), config.get('port'), config.get('database'), config.get('user'),
-            config.get('password'))
-
-
-def get_data(host, port, database, user, password, dc):
+def get_data(dc, args):
     """
     Connect to the database, query all needed data, do basic checks (e.g. no empty results)
     and return it as is.
     """
-    logger = logging.getLogger('prometheus')
+    logger = logging.getLogger("prometheus")
     try:
-        db = pymysql.connect(host=host, port=port, database=database,
-                             user=user, password=password,
-                             ssl={'ca': TLS_TRUSTED_CA}, connect_timeout=10)
+        db = pymysql.connect(
+            read_default_file=args.db_config_file,
+
+        )
     except pymysql.err.OperationalError:
-        logger.exception('We could not connect to %s to store the stats', host)
+        logger.error("We could not connect to the database reading %s to store the stats" %
+                     str(args.db_config_file), exc_info=True)
         sys.exit(4)
 
     # query instances and its sections, groups and if they are masters or not
@@ -99,15 +121,16 @@ def get_data(host, port, database, user, password, dc):
     #                   db3  | labs  | m4      | standalone
     with db.cursor(pymysql.cursors.DictCursor) as cursor:
         try:
-            cursor.execute(query, ('%.' + dc + '.wmnet',))
+            cursor.execute(query, ("%." + dc + ".wmnet",))
         except (pymysql.err.ProgrammingError, pymysql.err.InternalError):
-            logger.exception('A MySQL error occurred while quering the instances')
+            logger.exception("A MySQL error occurred while quering the instances")
             sys.exit(5)
         data = cursor.fetchall()
         # Check we have a number of reasonable results depending on the dc
-        if (((len(data) < 10 or len(data) > 1000) and dc in ['eqiad', 'codfw'])
-                or (len(data) > 0 and dc not in ['eqiad', 'codfw'])):
-            logger.error('The number of obtained results is different than expected')
+        if ((len(data) < 10 or len(data) > 1000) and dc in ["eqiad", "codfw"]) or (
+            len(data) > 0 and dc not in ["eqiad", "codfw"]
+        ):
+            logger.error("The number of obtained results is different than expected")
             sys.exit(6)
     db.close()
     return data
@@ -129,12 +152,16 @@ def transform_data_to_prometheus(data):
     logger = logging.getLogger('prometheus')
     instances = dict()
     for instance in data:
-        name = get_socket(instance['name'])
-        group = instance['group']
-        section = instance['section']
-        role = instance['role']
-        if role not in ['master', 'slave', 'standalone']:  # Some es* hosts are special ones
-            logger.error('A role other than master, replica or standalone was found')
+        name = get_socket(instance["name"])
+        group = instance["group"]
+        section = instance["section"]
+        role = instance["role"]
+        if role not in [
+            "master",
+            "slave",
+            "standalone",
+        ]:  # Some es* hosts are special ones
+            logger.error("A role other than master, replica or standalone was found")
             sys.exit(7)
         if group not in instances:
             instances[group] = dict()
@@ -144,7 +171,7 @@ def transform_data_to_prometheus(data):
             instances[group][section][role] = list()
         instances[group][section][role].append(name)
 
-    # transform to prometheus weird format. E.g.:
+    # transform to prometheus yaml schema. E.g.:
     # core:
     # - labels:
     #     shard: s1
@@ -164,48 +191,69 @@ def transform_data_to_prometheus(data):
             for section, roles in sorted(sections.items()):
                 for role, targets in sorted(roles.items()):
                     labels = dict()
-                    labels['shard'] = section
-                    labels['role'] = role
+                    labels["shard"] = section
+                    labels["role"] = role
                     item = dict()
-                    item['labels'] = labels
-                    item['targets'] = targets
+                    item["labels"] = labels
+                    item["targets"] = targets
                     prometheus[group].append(item)
         except TypeError:
-            logger.error('The query returned instances with NULL sections, aborting.')
-            logger.error('Check the instances, section_instances or sections tables.')
+            logger.error("The query returned instances with NULL sections, aborting.")
+            logger.error("Check the instances, section_instances or sections tables.")
             sys.exit(8)
     return prometheus
 
 
-def check_and_write_to_disk(prometheus, dc, config_path):
+def check_and_write_to_disk(prometheus, dc, config_path, args):
     """
     Compares existing and new content about to be written, and if it is different, it
     overwrites it
     """
-    logger = logging.getLogger('prometheus')
+    logger = logging.getLogger("prometheus")
     for group, sections in sorted(prometheus.items()):
-        filename = f'mysql-{group}_{dc}.yaml'
-        path = os.path.join(config_path, filename)
+        filename = f"mysql-{group}_{dc}.yaml"
+        path = Path(config_path) / Path(filename)
         try:
-            previous_config = open(path, 'r').read()
+            previous_config = path.read_text()
         except FileNotFoundError:
-            logger.debug('Prometheus file not found')
+            logger.debug("Prometheus file not found")
             previous_config = None
         except IOError:
-            logger.exception('Error while reading original file')
+            logger.exception("Error while reading original file")
             sys.exit(8)
         new_config = yaml.dump(sections, default_flow_style=False)
         if previous_config == new_config:
-            logger.debug('%s is identical to the new one queries, '
-                         'skiping overwrite', filename)
+            logger.debug(
+                "%s is identical to the generated one. Sskipping overwrite.", filename
+            )
+            print(
+                filename, "is identical to the generated one. Skipping overwrite.",
+            )
         else:
-            try:
-                with open(path, 'w') as outfile:
-                    yaml.dump(sections, outfile, default_flow_style=False)
-            except IOError:
-                logger.exception('Error updating file %s', filename)
-                sys.exit(9)
-            logger.info('%s was modified', filename)
+            if not args.dry_run:
+                print("Writing", filename)
+                try:
+                    with open(path, "w") as outfile:
+                        yaml.dump(sections, outfile, default_flow_style=False)
+                except IOError:
+                    logger.exception("Error updating file %s", filename)
+                    sys.exit(9)
+                logger.info("%s was modified", filename)
+            else:
+                print("Diffing only.")
+                diff = difflib.Differ()
+                comp = list(diff.compare(str(previous_config).splitlines(
+                    False), str(new_config).splitlines(False)))
+                for line in comp:
+                    print(line)
+
+
+def get_config_from_file(conf_file):
+    """
+    Read from a local file and return the generator configuration parameters
+    """
+
+    return Generatorconfig(**load_yaml_config(conf_file))
 
 
 def main():
@@ -213,22 +261,33 @@ def main():
     Reads the instance configuration from the database and, if it changed,
     overwrite the prometheus mysqld exporter job scheduling config.
     """
+    generator_config: Generatorconfig
     # get datacenter and prometheus config path from command line
-    options = get_options()
-    dc = options.dc
-    config_path = options.config_path
-
-    # Read database connection configuration from file
-    host, port, database, user, password = get_db_config()
+    logger = logging.getLogger("prometheus")
+    args = get_args()
+    if not args.config_path or not args.dc:
+        logger.info("Default mode, will read from %s", args.generator_config)
+        generator_config = get_config_from_file(args.generator_config)
+    elif args.config_path and args.dc:
+        print("Custom mode, will use %s", str(args))
+        generator_config = Generatorconfig(args.dc, args.config_path)
+    else:
+        raise SyntaxError
 
     # Connect to the database and gather data
-    data = get_data(host, port, database, user, password, dc)
-
+    data = get_data(generator_config.dc, args)
     # transform data to the prometheus format
     prometheus = transform_data_to_prometheus(data)
-
     # write yaml to disk
-    check_and_write_to_disk(prometheus, dc, config_path)
+    check_and_write_to_disk(
+        prometheus, generator_config.dc, generator_config.config_path, args
+    )
+
+
+@dataclass
+class Generatorconfig:
+    dc: str
+    config_path: str
 
 
 if __name__ == "__main__":
