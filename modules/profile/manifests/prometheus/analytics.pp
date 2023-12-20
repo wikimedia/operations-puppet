@@ -180,11 +180,11 @@ class profile::prometheus::analytics (
       },
     ]
 
-#   prometheus::class_config { "airflow_analytics_${::site}":
-#       dest       => "${targets_path}/airflow_analytics_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::launcher',
-#       port       => 9112,
-#   }
+    prometheus::class_config { "airflow_analytics_${::site}":
+        dest       => "${targets_path}/airflow_analytics_${::site}.yaml",
+        class_name => 'role::analytics_cluster::launcher',
+        port       => 9112,
+    }
 
     prometheus::class_config { "airflow_analytics_test_${::site}":
         dest       => "${targets_path}/airflow_analytics_test_${::site}.yaml",
@@ -192,35 +192,35 @@ class profile::prometheus::analytics (
         port       => 9112,
     }
 
-#   prometheus::class_config { "airflow_analytics_product_${::site}":
-#       dest       => "${targets_path}/airflow_analytics_product_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::airflow::analytics_product',
-#       port       => 9112,
-#   }
-#
-#   prometheus::class_config { "airflow_platform_eng_${::site}":
-#       dest       => "${targets_path}/airflow_platform_eng_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::airflow::platform_eng',
-#       port       => 9112,
-#   }
-#
-#   prometheus::class_config { "airflow_research_${::site}":
-#       dest       => "${targets_path}/airflow_research_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::airflow::research',
-#       port       => 9112,
-#   }
-#
-#   prometheus::class_config { "airflow_search_${::site}":
-#       dest       => "${targets_path}/airflow_search_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::airflow::search',
-#       port       => 9112,
-#   }
-#
-#   prometheus::class_config { "airflow_wmde_${::site}":
-#       dest       => "${targets_path}/airflow_wmde_${::site}.yaml",
-#       class_name => 'role::analytics_cluster::airflow::search',
-#       port       => 9112,
-#   }
+    prometheus::class_config { "airflow_analytics_product_${::site}":
+        dest       => "${targets_path}/airflow_analytics_product_${::site}.yaml",
+        class_name => 'role::analytics_cluster::airflow::analytics_product',
+        port       => 9112,
+    }
+
+    prometheus::class_config { "airflow_platform_eng_${::site}":
+        dest       => "${targets_path}/airflow_platform_eng_${::site}.yaml",
+        class_name => 'role::analytics_cluster::airflow::platform_eng',
+        port       => 9112,
+    }
+
+    prometheus::class_config { "airflow_research_${::site}":
+        dest       => "${targets_path}/airflow_research_${::site}.yaml",
+        class_name => 'role::analytics_cluster::airflow::research',
+        port       => 9112,
+    }
+
+    prometheus::class_config { "airflow_search_${::site}":
+        dest       => "${targets_path}/airflow_search_${::site}.yaml",
+        class_name => 'role::analytics_cluster::airflow::search',
+        port       => 9112,
+    }
+
+    prometheus::class_config { "airflow_wmde_${::site}":
+        dest       => "${targets_path}/airflow_wmde_${::site}.yaml",
+        class_name => 'role::analytics_cluster::airflow::search',
+        port       => 9112,
+    }
 
     prometheus::jmx_exporter_config{ "hadoop_worker_${::site}":
         dest       => "${targets_path}/jmx_hadoop_worker_${::site}.yaml",
