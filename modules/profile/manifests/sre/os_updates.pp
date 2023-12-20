@@ -75,12 +75,11 @@ class profile::sre::os_updates (
         # Allow miscweb hosts to pull reports for serving them via HTTP
         $miscweb_rsync_clients = wmflib::role::hosts('miscweb')
         rsync::server::module { 'osreports':
-            ensure         => $os_reports_timer_ensure,
-            path           => '/srv/os-reports',
-            read_only      => 'yes',
-            hosts_allow    => $miscweb_rsync_clients,
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
+            ensure      => $os_reports_timer_ensure,
+            path        => '/srv/os-reports',
+            read_only   => 'yes',
+            hosts_allow => $miscweb_rsync_clients,
+            auto_nft    => true,
         }
     }
 }
