@@ -17,4 +17,5 @@ class role::wdqs::test {
         ensure      => 'present',
         description => 'Wikidata Query Service - test cluster',
     }
+
 }

@@ -73,6 +73,7 @@ class profile::query_service::wikidata(
         jvmquake_warn_file      => $jvmquake_warn_file
     }
 
+    class { 'toil::systemd_scope_cleanup': }  # T265323
     if ($monitoring_enabled) {
         class { '::profile::query_service::monitor::wikidata': }
     }
