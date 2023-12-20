@@ -492,7 +492,7 @@ define airflow::instance(
     } else {
         $monitoring_ensure = 'absent'
     }
-    $airflow_cmd = "/usr/bin/env AIRFLOW_HOME=${airflow_home} ${airflow_prefix}/bin/airflow"
+    $airflow_cmd = "/usr/bin/env PYTHONPATH=/srv/deployment/airflow-dags/${title} AIRFLOW_HOME=${airflow_home} ${airflow_prefix}/bin/airflow"
     # See: https://airflow.apache.org/docs/apache-airflow/stable/logging-monitoring/check-health.html
 
     $check_scheduler_command = "/usr/local/bin/check_cmd ${airflow_cmd} jobs check --job-type SchedulerJob --hostname ${::fqdn}"
