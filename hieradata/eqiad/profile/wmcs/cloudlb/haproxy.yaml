@@ -31,6 +31,8 @@ profile::wmcs::cloudlb::haproxy::config:
     healthcheck:
       method: GET
       path: /
+    http:
+      timeout_server: "600s"
 
   keystone-public-api:
     type: http

@@ -40,3 +40,6 @@ backend <%= @title %>_backend
 <% end -%>
     stick store-request src
     stick-table type ip size 256k expire 30m
+<%- if @http and @http['timeout_server'] -%>
+    timeout server <%= @http['timeout_server'] %>
+<% end -%>
