@@ -18,12 +18,11 @@ class gitlab::rsync (
     # rsync server module is needed.
     $all_hosts = $passive_hosts + $active_host
     rsync::server::module { 'data-backup':
-        ensure         => $ensure_sync,
-        path           => $backup_dir_data,
-        read_only      => 'no',
-        hosts_allow    => $all_hosts,
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
+        ensure      => $ensure_sync,
+        path        => $backup_dir_data,
+        read_only   => 'no',
+        hosts_allow => $all_hosts,
+        auto_nft    => true,
     }
 
     $all_hosts.each | Stdlib::Fqdn $host | {
