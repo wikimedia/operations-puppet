@@ -44,3 +44,6 @@ profile::contacts::role_contacts: ['Search Platform']
 
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
+
+# Currently not using categories for test hosts
+profile::query_service::load_categories: 'none'
