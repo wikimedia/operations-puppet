@@ -10,6 +10,7 @@ profile::kerberos::replication::monitoring_enabled: true
 # The Presto nodes currently issue a lot of TGS requests and there's currently
 # no known way to reduce them T330119
 profile::rsyslog::logrotate_source: 'puppet:///modules/profile/kerberos/kdc-logrotate.conf'
+profile::logrotate::hourly: true
 
 # In T257412 the Analytics team came up with a new setting
 # for dns_canonicalize_hostname=false to allow daemons/services
