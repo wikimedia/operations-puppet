@@ -2892,16 +2892,8 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs1008\.eqiad\./ {
-    role(wdqs::internal)
-}
-
 node /^wdqs101[167]\.eqiad\./ {
     role(wdqs::internal)
-}
-
-node /^wdqs100[67]\.eqiad\./ {
-    role(wdqs::public)
 }
 
 node /^wdqs101[2-5]\.eqiad\./ {
