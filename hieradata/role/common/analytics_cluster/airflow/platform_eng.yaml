@@ -47,6 +47,7 @@ profile::airflow::instances:
     airflow_config:
       datahub:
         enabled: False
-
+      metrics:
+        statsd_on: True
 
 profile::contacts::role_contacts: ['Data Engineering']

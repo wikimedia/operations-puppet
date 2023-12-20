@@ -187,6 +187,22 @@ define airflow::instance(
             'smtp_port' => '25',
             'smtp_mail_from' => "airflow-${title}@${::fqdn}",
         },
+        'metrics' => {
+            'statsd_on' => 'False',  # Turn this parameter on in hiera to enable statsd metrics.
+            # statsd-exporter is running on the same machine
+            'statsd_host' => 'localhost',
+            'statsd_port' => '9125',
+            'statsd_prefix' => 'airflow',
+            # StatsD (https://github.com/etsy/statsd) integration settings.
+            # If you want to avoid emitting all the available metrics, you can configure an
+            # allow list of prefixes (comma separated) to send only the metrics that start
+            # with the elements of the list (e.g: "scheduler,executor,dagrun")
+            'metrics_allow_list' => 'operator_failures_,operator_successes_,sla_missed,executor.queued_tasks,dag.,dagrun.duration.,scheduler.scheduler_loop_duration,dag_processing.import_errors,dag_processing.total_parse_time,ti.failures,ti.successes,ti.finish,ti_failures,ti_successes',
+            # If you want to utilise your own custom StatsD client set the relevant
+            # module path below.
+            # Note: The module path must exist on your PYTHONPATH for Airflow to pick it up
+            'statsd_custom_client_path' => 'wmf_airflow_common.metrics.custom_statsd_client.CustomStatsClient'
+        }
     }
 
     # Value to be used for sql_alchemy_conn if is not set in provided $airflow_config.

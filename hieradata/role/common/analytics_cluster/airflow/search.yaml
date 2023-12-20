@@ -48,6 +48,7 @@ profile::airflow::instances:
     airflow_config:
       datahub:
         enabled: False
-
+      metrics:
+        statsd_on: True
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet

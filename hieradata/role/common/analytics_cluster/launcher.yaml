@@ -95,6 +95,8 @@ profile::airflow::instances:
         enabled: False
         conn_id: datahub_kafka_jumbo
         cluster: prod
+      metrics:
+        statsd_on: True
     connections:
       analytics-hive:
         conn_type: hive_metastore
