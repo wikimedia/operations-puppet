@@ -89,6 +89,7 @@ profile::airflow::instances:
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
     service_group: analytics
+    statsd_monitoring_enabled: true
     monitoring_enabled: true
     airflow_config:
       datahub:
