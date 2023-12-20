@@ -42,6 +42,10 @@
 # [*ignore_missing_file_errors*] If provided, it will specify a SuccessExitStatus of 24 to the systemd unit file.
 #                                This allows a non-zero exit code that occurs following a "some files vanished
 #                                before they could be transferred (code 24)" error to be considered a success.
+# [*use_generic_firewall*] If enabled, the firewall definitions are not written as Ferm-specific service(s), but
+#                          instead as a generic firewall::service, which is also compatible with nftables.
+#                          This mode always enables ipv6 if enabled for a given DNS record, i.e. the $auto_ferm_ipv6
+#                          parameter has no effect.
 define rsync::quickdatacopy(
   Stdlib::Fqdn $source_host,
   Variant[
@@ -62,6 +66,7 @@ define rsync::quickdatacopy(
       Systemd::Timer::Schedule,
       Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
   Boolean $ignore_missing_file_errors = false,
+  Boolean $use_generic_firewall = false,
   ) {
       if ($title =~ /\s/) {
           fail('the title of rsync::quickdatacopy must not include whitespace')
@@ -82,13 +87,23 @@ define rsync::quickdatacopy(
               include rsync::server::stunnel
           }
 
-          rsync::server::module { $title:
-              ensure         => $ensure,
-              read_only      => 'yes',
-              path           => $module_path,
-              hosts_allow    => $dest_hosts,
-              auto_ferm      => true,
-              auto_ferm_ipv6 => $auto_ferm_ipv6,
+          if $use_generic_firewall {
+              rsync::server::module { $title:
+                  ensure      => $ensure,
+                  read_only   => 'yes',
+                  path        => $module_path,
+                  hosts_allow => $dest_hosts,
+                  auto_nft    => true,
+              }
+          } else {
+              rsync::server::module { $title:
+                  ensure         => $ensure,
+                  read_only      => 'yes',
+                  path           => $module_path,
+                  hosts_allow    => $dest_hosts,
+                  auto_ferm      => true,
+                  auto_ferm_ipv6 => $auto_ferm_ipv6,
+              }
           }
       }
       $_bwlimit = $bwlimit ? {
