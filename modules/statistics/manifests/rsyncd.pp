@@ -26,7 +26,7 @@ class statistics::rsyncd(
         uid         => 'nobody',
         gid         => 'nogroup',
         hosts_allow => $hosts_allow,
-        auto_ferm   => true,
+        auto_nft    => true,
     }
 
     # Set up an rsync module
@@ -38,6 +38,6 @@ class statistics::rsyncd(
         uid         => 'nobody',
         gid         => 'nogroup',
         hosts_allow => $hosts_allow,
-        auto_ferm   => true,
+        auto_nft    => true,
     }
 }
