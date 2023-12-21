@@ -15,7 +15,7 @@ class profile::openstack::base::keystone::fernet_keys(
         uid         => 'keystone',
         gid         => 'keystone',
         hosts_allow => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
-        auto_ferm   => true,
+        auto_nft    => true,
         read_only   => 'yes',
     }
 
