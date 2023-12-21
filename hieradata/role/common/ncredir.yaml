@@ -1,7 +1,8 @@
 cluster: ncredir
 mtail::service_ensure: absent
 profile::ncredir::monitoring: true
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 profile::contacts::role_contacts: ['Traffic']
 profile::lvs::realserver::pools:
   ncredir:
