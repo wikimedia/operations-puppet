@@ -114,7 +114,8 @@ filter_chains:
 <%- end -%>
 <%- if @local_otel_reporting_pct > 0 -%>
       tracing:
-        random_sampling: <%= @local_otel_reporting_pct %>
+        random_sampling:
+          value: <%= @local_otel_reporting_pct %>
         provider:
           name: envoy.tracers.opentelemetry
           typed_config:
@@ -253,7 +254,8 @@ filter_chains:
 <%- end -%>
 <%- if @local_otel_reporting_pct > 0 -%>
       tracing:
-        random_sampling: <%= @local_otel_reporting_pct %>
+        random_sampling:
+          value: <%= @local_otel_reporting_pct %>
         provider:
           name: envoy.tracers.opentelemetry
           typed_config:
