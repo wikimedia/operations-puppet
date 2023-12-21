@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 # THIS FILE IS MANAGED BY PUPPET
 
@@ -6,11 +6,10 @@
 
 import argparse
 import re
-import string
 import sys
 
 
-transTable = string.maketrans("./", "__")
+transTable = str.maketrans("./", "__")
 openFiles = {}
 nameRegex = re.compile(r"^[\040-\176]*$")
 
@@ -29,11 +28,11 @@ while True:
         break
 
     try:
-        (name, text) = line.split(" ", 1)
-    except:
+        name, text = line.split(" ", 1)
+    except Exception:
         # No name
         continue
-    string.translate(name, transTable)
+    str.translate(name, transTable)
 
     # ASCII printable?
     if not nameRegex.match(name):
@@ -44,11 +43,11 @@ while True:
         if name in openFiles:
             f = openFiles[name]
         else:
-            f = file(args.basedir + '/' + name, "a")
+            f = open(args.basedir + '/' + name, "a")
             openFiles[name] = f
         f.write(text)
         f.flush()
-    except:
+    except Exception:
         # Exit if it was a ctrl-C
         if sys.exc_info()[0] == 'KeyboardInterrupt':
             break
@@ -58,6 +57,6 @@ while True:
         if name in openFiles:
             try:
                 openFiles[name].close()
-            except:
+            except Exception:
                 pass
             del openFiles[name]

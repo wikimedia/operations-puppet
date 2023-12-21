@@ -1,5 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-flush pipe 1 python2 /usr/local/bin/demux.py --basedir <%= @log_directory %>
+flush pipe 1 python3 /usr/local/bin/demux.py --basedir <%= @log_directory %>
 
 <% if @forward_messages -%>
 # Forward some messages to Logstash's udp2log collector.
