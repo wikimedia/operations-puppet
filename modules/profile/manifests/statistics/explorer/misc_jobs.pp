@@ -37,7 +37,7 @@ class profile::statistics::explorer::misc_jobs(
             path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
             read_only   => 'no',
             hosts_allow => $labstore_hosts,
-            auto_ferm   => true,
+            auto_nft    => true,
         }
     }
 }
