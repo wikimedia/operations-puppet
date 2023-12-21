@@ -10,7 +10,7 @@ define cloudlb::haproxy::service (
             $node['cloud_private_fqdn']
         }
     }
-
+    $primary_host = $service['backend']['primary_host']
     $port_backend = $service['backend']['port']
     $frontends = $service['frontends']
     $type = $service['type']
