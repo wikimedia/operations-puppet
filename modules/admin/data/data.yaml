@@ -154,7 +154,7 @@ groups:
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
-              dr0ptp4kt, mabualruz, dani, aqu, sfaci
+              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -5664,7 +5664,8 @@ users:
     email: dadedoyin@wikimedia.org
     uid: 33093
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/K5GBab22YaSVq1NVHQO5+l010k8zkISH7q/FM0AFYDTK2q5uVuacASoUiCpSWDzD5Ejpxnh93NvsCJZoxnCJcEY2hxHFP1zll2RdyIgNityQ74bXZ90jpcFY1Tou4Ztz7qvmKoB7zw1k9MTQuZ7G9pGcWma8vhbaG4LgnjHcIekUw5KZknOKYO3jBkz4bRMvjPVvUqLhkOb2OG3zDevvosqwqEhRPPTfWRcOnND3GAUWdUtDlMYGS27z5Hg3UjZw3ZOyx5n2WTDForaWQyyj1HmRInkRxsVSaQIuQmkIBbiVeHV1wF9aczUbYvXJkmBBvHCpIjhRfMyNLX7LK+DakVprPqch6IeAgeQucPnwV/WSp64jFgvddUVhSxVZEIZn3lgdKDLee+NPy5o8xsCSrZaCy7n+EZUWHMtnm3Wog1Ak6foYFfC/4hcM4gYt1i1rUqJSIFwXLHJ6ulwHVugrWgyP/atG6qBS9IuIXtaIeQ+v3G0CgK5CfTClyU5PAWAfD8Y7+qeJjHzcbcd2pdCLfDCvAECuzOqdgjCVHZdSW1EgDB6+MHrSb5X2dnSVLsszK+0B7WiOUMpl/oDTD4XQJa44mj1hIk4twulc+fpA6bEIRv776JnsdzoYJV/rYWXgVm+GirMbuLALoPrl3UZLl0Z5q9bo/sR+v+tK7Vry8w== damilare@wmf2989
   kindrobot:
     ensure: present
     realname: Stef Dunlap
