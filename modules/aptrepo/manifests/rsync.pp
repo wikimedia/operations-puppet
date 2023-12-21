@@ -13,21 +13,19 @@ class aptrepo::rsync (
     unless $secondary_servers.empty() {
 
         rsync::server::module { 'install-srv':
-            ensure         => $ensure_sync,
-            path           => '/srv',
-            read_only      => 'no',
-            hosts_allow    => [$primary_server],
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
+            ensure      => $ensure_sync,
+            path        => '/srv',
+            read_only   => 'no',
+            hosts_allow => [$primary_server],
+            auto_nft    => true,
         }
 
         rsync::server::module { 'install-home':
-            ensure         => $ensure_sync,
-            path           => '/home',
-            read_only      => 'no',
-            hosts_allow    => [$primary_server],
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
+            ensure      => $ensure_sync,
+            path        => '/home',
+            read_only   => 'no',
+            hosts_allow => [$primary_server],
+            auto_nft    => true,
         }
 
         ($secondary_servers + $primary_server).each |String $server| {
