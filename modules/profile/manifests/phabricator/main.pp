@@ -465,22 +465,20 @@ class profile::phabricator::main (
 
     # Allow dumps servers to pull dump files.
     rsync::server::module { 'srv-dumps':
-            path           => '/srv/dumps',
-            read_only      => 'yes',
-            hosts_allow    => $dumps_rsync_clients,
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
+            path        => '/srv/dumps',
+            read_only   => 'yes',
+            hosts_allow => $dumps_rsync_clients,
+            auto_nft    => true,
     }
 
     # Allow pthers phab servers to pull tarballs with home dir files
     file { '/srv/homes': ensure => directory,}
 
     rsync::server::module { 'srv-homes':
-            path           => '/srv/homes',
-            read_only      => 'yes',
-            hosts_allow    => $phabricator_servers,
-            auto_ferm      => true,
-            auto_ferm_ipv6 => true,
+            path        => '/srv/homes',
+            read_only   => 'yes',
+            hosts_allow => $phabricator_servers,
+            auto_nft    => true,
     }
     # Backup repositories and home dirs
     backup::set { 'srv-repos': }
@@ -597,12 +595,11 @@ class profile::phabricator::main (
 
     # Allow pulling /srv/repos data from the active server.
     rsync::server::module { 'srv-repos':
-        ensure         => present,
-        read_only      => 'yes',
-        path           => '/srv/repos',
-        hosts_allow    => $phabricator_servers,
-        auto_ferm      => true,
-        auto_ferm_ipv6 => true,
+        ensure      => present,
+        read_only   => 'yes',
+        path        => '/srv/repos',
+        hosts_allow => $phabricator_servers,
+        auto_nft    => true,
     }
 
     # Ship apache error logs to ELK - T141895
