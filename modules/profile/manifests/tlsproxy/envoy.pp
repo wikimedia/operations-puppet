@@ -249,12 +249,12 @@ class profile::tlsproxy::envoy(
             $max_requests_per_conn = $max_requests
             $connect_timeout = 1.0
             $upstream = {
-                  'upstream'     => {'port' => 4317, 'addr' => 'localhost'},
+                  'upstream'     => {'port' => 4317, 'addr' => '127.0.0.1'},
             }
 
             envoyproxy::cluster { "cluster_${upstream_name}":
               priority => 1,
-              content  => template('envoyproxy/tls_terminator/cluster.yaml.erb'),
+              content  => template('envoyproxy/tracing_cluster.yaml.erb'),
             }
         }
 

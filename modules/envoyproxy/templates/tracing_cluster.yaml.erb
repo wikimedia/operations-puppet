@@ -1,0 +1,20 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+name: <%= @upstream_name %>
+connect_timeout: <%= @connect_timeout %>s
+typed_extension_protocol_options:
+  envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+    "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+    explicit_http_config:
+      http2_protocol_options:
+        max_concurrent_streams: 100
+type: static
+lb_policy: round_robin
+load_assignment:
+  cluster_name: <%= @upstream_name %>
+  endpoints:
+  - lb_endpoints:
+    - endpoint:
+        address:
+          socket_address:
+            address: <%= @upstream['upstream'].fetch('addr', @fqdn) %>
+            port_value: <%= @upstream['upstream']['port'] %>
