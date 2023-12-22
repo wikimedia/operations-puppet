@@ -1,7 +1,9 @@
-# SPDX-License-Identifier: Apache-2.0
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Boolean $allow_san,
+| -%>
 certificate-authority: {
     # allow CA to sign certificate requests that have subject alternative names.
-    # allow-subject-alt-names: false
+    allow-subject-alt-names: <%= $allow_san %>
 
     # allow CA to sign certificate requests that have authorization extensions.
     # allow-authorization-extensions: false

@@ -22,6 +22,8 @@
 #   reload the puppetserver service
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
 # @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
+# @param ca_allow_san whether to allow agents to request SANs
+# @param ca_name override the default Puppet CA name
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -45,6 +47,8 @@ class puppetserver (
     Stdlib::Port                             $jmx_port                  = 8141,
     Hash[String, Stdlib::Unixpath]           $extra_mounts              = {},
     Variant[Enum['unlimited'], Integer]      $environment_timeout       = 0,
+    Boolean                                  $ca_allow_san              = false,
+    Optional[String[1]]                      $ca_name                   = undef,
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
@@ -200,6 +204,15 @@ class puppetserver (
             require => Systemd::Unmask['puppetserver.service'],
         }
     }
+    if $ca_name {
+        concat::fragment { 'ca-name':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '25',
+            content => "ca_name = ${ca_name}\n",
+            notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
+        }
+    }
 
     # TODO: puppetserver has support for graphite and jmx (with jolokia)
     # we will need to work out which is best
@@ -234,6 +247,9 @@ class puppetserver (
     $auth_params = {
         'fqdn' => $facts['networking']['fqdn'],
     }
+    $ca_params = {
+        'allow_san' => $ca_allow_san,
+    }
     # Ensure additional mounts exist
     unless $extra_mounts.empty {
         wmflib::dir::mkdir_p($extra_mounts.values(), {mode => '0555'})
@@ -266,7 +282,7 @@ class puppetserver (
         "${config_d_dir}/auth.conf":
             content => epp('puppetserver/auth.conf.epp', $auth_params);
         "${config_d_dir}/ca.conf":
-            source =>  'puppet:///modules/puppetserver/ca.conf';
+            content => epp('puppetserver/ca.conf.epp', $ca_params);
         "${config_d_dir}/global.conf":
             source =>  'puppet:///modules/puppetserver/global.conf';
         '/etc/puppet/hiera.yaml':

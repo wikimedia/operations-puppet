@@ -20,6 +20,8 @@
 # @param separate_ssldir use seperate ssldir for the server.  usefull in cloud setup
 # @param ca_crl location of the intermediate crl content
 # @param ca_private_key_secret the content of the W
+# @param ca_allow_san whether to allow agents to request SANs
+# @param ca_name override the default Puppet CA name
 # @param git_pull whether to pull puppet code from git, defaults to true
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
@@ -50,6 +52,8 @@ class profile::puppetserver (
     Optional[Stdlib::Filesource]   $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
     Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
     Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
+    Boolean                        $ca_allow_san              = lookup('profile::puppetserver::ca_allow_san'),
+    Optional[String[1]]            $ca_name                   = lookup('profile::puppetserver::ca_name'),
     Hash[String, Stdlib::Unixpath] $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
     Variant[
         Enum['unlimited'],
