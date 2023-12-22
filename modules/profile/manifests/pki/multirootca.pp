@@ -183,6 +183,7 @@ class profile::pki::multirootca (
             creates => $crl_file,
             path    => ['/usr/bin'],
             command => $command,
+            require => Package[$cfssl::packages],
         }
         $memo + {
             $safe_title => {
