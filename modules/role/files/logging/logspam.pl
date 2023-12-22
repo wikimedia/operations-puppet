@@ -136,7 +136,6 @@ my %consolidate_patterns = (
   qr/max_statement_time exceeded/                          => '[db]',
   qr/Duplicate entry '.*' for key '.*'/                    => '[db-duplicate-key]',
   qr/Database can't find our row and won't let us insert it on page .* revision .*/ => '[db-cantfindorinsert]',
-  qr/Actor name can not be empty for 0 and /               => 'T307738',
 );
 
 # These (along with those in %consolidate_patterns) are a constant source of log noise.
