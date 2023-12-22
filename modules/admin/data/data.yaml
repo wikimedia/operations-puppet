@@ -155,7 +155,7 @@ groups:
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
-              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz
+              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz, wfan219
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -5756,7 +5756,8 @@ users:
     email: wfan@wikimedia.org
     uid: 37145
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICf71X/hBMDxo3qA5zUpuD4SF+MWMlHIFCP65wie376Z wiki
   xihua:
     ensure: absent
     realname: Hua Xi
