@@ -75,6 +75,7 @@
 class profile::restbase(
     $cassandra_user = lookup('profile::restbase::cassandra_user'),
     $cassandra_password = lookup('profile::restbase::cassandra_password'),
+    $no_workers = lookup('profile::restbase::no_workers', {'default_value' => 'ncpu'}),
     $seeds_ng = lookup('profile::restbase::seeds_ng', {'default_value' => []}),
     $hosts = lookup('profile::restbase::hosts'),
     $cassandra_local_dc = lookup('profile::restbase::cassandra_local_dc'),
@@ -133,6 +134,7 @@ class profile::restbase(
     # Uris
     service::node { 'restbase':
         port              => $port,
+        no_workers        => $no_workers,
         no_file           => 200000,
         healthcheck_url   => "/${monitor_domain}/v1",
         icinga_check      => false, # done via service::catalog 'probes'
