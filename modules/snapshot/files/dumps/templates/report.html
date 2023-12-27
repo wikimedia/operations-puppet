@@ -7,75 +7,86 @@
         <title>%(db)s dump progress on %(date)s</title>
         <link rel="stylesheet" type="text/css" href="/dumps.css" />
         <style type="text/css">
-                .siteinfo {
-                        text-align: center;
-                }
-                li {
-                        list-style-type: none;
-                        padding: 0.5em 1.5em 0.5em 1.5em;
-                        background: #fff;
-                        margin-bottom: 1em;
-                }
-                li li {
-                        background-color: white;
-                        box-shadow: none;
-                        border-top: none;
-                        padding: 0px;
-                        margin-bottom: 0em;
-                }
-                li ul {
-                        margin-top: 4px;
-                        margin-bottom: 8px;
-                        box-shadow: none;
-                        border-top: none;
-                        padding: 0.5em 0px 0px;
-                }
-                .detail {
-                        font-weight: normal;
-                        font-style: italic;
-                }
-                .updates {
-                        font: monospace;
-                        font-size: smaller;
-                }
-                .status {
-                        font-weight: bold;
-                }
-                .status, .checksum {
-                        padding-left: 1em;
-                        padding-right: 1em;
-                }
-                li.in-progress {
-                        border-top: 3px solid #3366cc;
-                        font-weight: bold;
-                        box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.15 );
-                }
-                li.done {
-                        border-top: 3px solid #00af89;
-                        box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.15 );
-                }
-                li.failed {
-                        color: #b32424;
-                        font-weight: bold;
-                        border-top: 3px solid #b32424;
-                        box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.15 );
-                }
-                .waiting {
-                        color: #c8ccd1;
-                        box-shadow: none;
-                        border-top: none;
-                }
-                .progress {
-                        font-family: monospace;
-                        font-size: 80%%;
-                        margin-left: .5in;
-                }
-                .notice {
-                        border: none;
-                        background-color: transparent;
-                        font-weight: normal;
-                        color: #b32424;
-                }
+		.siteinfo {
+			text-align: center;
+		}
+		li {
+			list-style-type: none;
+			padding: 0.5em 1.5em 0.5em 1.5em;
+			background: #fff;
+			margin-bottom: 1em;
+		}
+		li li {
+			background-color: white;
+			box-shadow: none;
+			border-top: none;
+			padding: 0px;
+			margin-bottom: 0em;
+		}
+		li ul {
+			margin-top: 4px;
+			margin-bottom: 8px;
+			box-shadow: none;
+			border-top: none;
+			padding: 0.5em 0px 0px;
+		}
+		.detail {
+			font-weight: normal;
+			font-style: italic;
+		}
+		.updates {
+			font: monospace;
+			font-size: smaller;
+		}
+		.status {
+			font-weight: bold;
+		}
+		.status, .checksum {
+			padding-left: 1em;
+			padding-right: 1em;
+		}
+		li.in-progress {
+			border-top: 3px solid #3366cc;
+			border-right: 1px solid #a2a9b1;
+			border-left: 1px solid #a2a9b1;
+			border-bottom: 1px solid #a2a9b1;
+			border-radius: 2px;
+			padding: 12px;
+			font-weight: bold;
+		}
+		li.done {
+			border-top: 3px solid #00af89;
+			border-right: 1px solid #a2a9b1;
+			border-left: 1px solid #a2a9b1;
+			border-bottom: 1px solid #a2a9b1;
+			border-radius: 2px;
+			padding: 12px;
+		}
+		li.failed {
+			color: #b32424;
+			font-weight: bold;
+			border-right: 1px solid #a2a9b1;
+			border-left: 1px solid #a2a9b1;
+			border-bottom: 1px solid #a2a9b1;
+			border-radius: 2px;
+			padding: 12px;
+		}
+		.waiting {
+			color: #c8ccd1;
+			box-shadow: none;
+			border-top: none;
+		}
+		.progress {
+			font-family: monospace;
+			font-size: 80%%;
+			margin-left: .5in;
+		}
+		.notice {
+			border: none;
+			background-color: transparent;
+			font-weight: normal;
+			color: #b32424;
+		}
         </style>
 </head>
 
