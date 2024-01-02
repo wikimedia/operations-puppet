@@ -170,6 +170,7 @@
     groupBase = ou=groups,<%= @ldap_base_dn %>
     groupMemberPattern = (&(objectClass=groupOfNames)(member=${dn}))
     groupScope = one
+    groupsVisibleToAll = true
     # Fixes T152640
     localUsernameToLowerCase = true
     connectTimeout = 5 s
