@@ -30,6 +30,9 @@ describe 'profile::gerrit' do
       let(:pre_condition) {
           """
           service {'apache2': }
+          function wmflib::role::hosts($role) {
+            ['gerrit1001.example.org', 'gerrit2002.example.org']
+          }
           """
       }
 

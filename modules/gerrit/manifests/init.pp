@@ -10,6 +10,7 @@ class gerrit(
     String                            $daemon_user,
     String                            $scap_user,
     Stdlib::Unixpath                  $gerrit_site,
+    Stdlib::Fqdn                      $active_host,
 
     String                            $config            = 'gerrit.config.erb',
     Boolean                           $enable_monitoring = true,
@@ -318,5 +319,15 @@ class gerrit(
             nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array '^${java_home}/bin/java .*-jar ${gerrit_site}/bin/gerrit.war daemon -d ${gerrit_site}'",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Gerrit',
         }
+    }
+
+    $gerrit_replica_hosts = wmflib::role::hosts('gerrit').filter |$gerrit_host| { $gerrit_host != $active_host }
+
+    rsync::quickdatacopy { 'lfs_replica_sync':
+        ensure                     => present,
+        source_host                => $active_host,
+        dest_host                  => $gerrit_replica_hosts,
+        module_path                => '/srv/gerrit/data/lfs',
+        ignore_missing_file_errors => true,
     }
 }

@@ -110,6 +110,7 @@ class profile::gerrit(
         git_dir           => $git_dir,
         java_home         => $java_home,
         mask_service      => $mask_service,
+        active_host       => $active_host,
     }
 
     class { 'gerrit::replication_key':
