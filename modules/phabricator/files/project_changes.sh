@@ -465,6 +465,57 @@ Hi Phabricator admin,
 This is your automatic weekly Phabricator project changes mail.
 
 
+ARCHIVED PROJECTS WITH OPEN TASKS WITH NO OTHER ACTIVE PROJECTS, EXCLUDING PATCH-FOR-REVIEW
+(find these open tasks: they either need to get a non-archived project tag associated, or
+the task status needs updating, or the project tag needs to be unarchived):
+${result_archived_projects_open_tasks}
+
+
+PROJECTS WITH COLOR/ICON COMBINATIONS WHICH MIGHT VIOLATE OUR GUIDELINES:
+(per https://www.mediawiki.org/wiki/Phabricator/Project_management#Types_of_Projects ;
+edit the project and correct icon/color in such cases)
+${result_problematic_color_icon_combos}
+
+
+DISABLED USER ACCOUNTS WITH OPEN TASKS ASSIGNED
+(unassign if there's no patch waiting for review written by them):
+${result_inactive_users_assigned_tasks}
+
+
+USER PROFILES WITH A URL IN THEIR DESC WHICH CHANGED WITHIN THE LAST 1 WEEK
+(to spam check. If there are spam links in the desc, disable their account):
+${result_user_profile_urls}
+
+
+WORKBOARD COLUMN TRIGGER CHANGES WITHIN THE LAST 1 WEEK
+(to spam check, likely mitigated by https://phabricator.wikimedia.org/T260427):
+${result_workboard_column_triggers}
+
+
+DASHBOARD PANEL CHANGES WITHIN THE LAST 1 WEEK (to spam check, mitigated by
+https://phabricator.wikimedia.org/T260428 once we pull from upstream.
+If spam use ./bin/remove destroy ; see https://wikitech.wikimedia.org/wiki/Phabricator ):
+${result_dashboard_panels}
+
+
+DASHBOARD CHANGES WITHIN THE LAST 1 WEEK (to spam check, mitigated by
+https://phabricator.wikimedia.org/T260428 once we pull from upstream.
+If spam use ./bin/remove destroy ; see https://wikitech.wikimedia.org/wiki/Phabricator ):
+${result_dashboards}
+
+
+PORTAL CHANGES WITHIN THE LAST 1 WEEK (to spam check.
+If spam use ./bin/remove destroy ; see https://wikitech.wikimedia.org/wiki/Phabricator ):
+${result_portals}
+
+
+ACTIVE HERALD RULES USING ARCHIVED PROJECTS IN THEIR ACTIONS
+(projects to be updated or Herald rules to be disabled):
+${result_herald_rules_archived_projects}
+
+
+===== EVERYTHING BELOW THIS LINE IS NOT REACTIVE AND JUST FYI =====
+
 PROJECT CREATIONS AND PROJECT NAME CHANGES:
 ${result_creations_and_name_changes}
 
@@ -482,55 +533,25 @@ PROJECT WORKBOARD COLUMN CHANGES:
 ${result_column_changes}
 
 
-ARCHIVED PROJECTS WITH OPEN TASKS WITH NO OTHER ACTIVE PROJECTS, EXCLUDING PATCH-FOR-REVIEW:
-${result_archived_projects_open_tasks}
-
-
-PROJECTS WITH COLOR/ICON COMBINATIONS WHICH MIGHT VIOLATE OUR GUIDELINES:
-${result_problematic_color_icon_combos}
-
-
-DISABLED USER ACCOUNTS WITH OPEN TASKS ASSIGNED:
-${result_inactive_users_assigned_tasks}
-
-
-USER ACCOUNTS WHO BECAME AN ASSIGNEE RECENTLY AND HAD LESS THAN 5 TASKS EVER ASSIGNED:
+USER ACCOUNTS WHO BECAME AN ASSIGNEE RECENTLY AND HAD LESS THAN 5 TASKS EVER ASSIGNED
+(to ping after a month whether they need help, and to potentially unassign again):
 ${result_new_user_assignees}
 
 
-USER PROFILES WITH A URL IN THEIR DESC WHICH CHANGED WITHIN THE LAST 1 WEEK (to spam check):
-${result_user_profile_urls}
-
-
-WORKBOARD COLUMN TRIGGER CHANGES WITHIN THE LAST 1 WEEK (to spam check):
-${result_workboard_column_triggers}
-
-
-DASHBOARD PANEL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
-${result_dashboard_panels}
-
-DASHBOARD CHANGES WITHIN THE LAST 1 WEEK (to spam check):
-${result_dashboards}
-
-PORTAL CHANGES WITHIN THE LAST 1 WEEK (to spam check):
-${result_portals}
-
-
-OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO:
+OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO
+(to ask the assignee and/or reporter to update task status or due date):
 ${result_past_due_dates}
 
 
-PROJECTS WHICH HAVE AN EMPTY PROJECT DESCRIPTION:
+PROJECTS WHICH HAVE AN EMPTY PROJECT DESCRIPTION
+(to be mitigated by downstream https://phabricator.wikimedia.org/T344610 ):
 ${result_parent_projects_without_desc}
 
 ${result_sub_projects_without_desc}
 
 
-ACTIVE HERALD RULES USING ARCHIVED PROJECTS IN THEIR ACTIONS:
-${result_herald_rules_archived_projects}
-
-
-ACTIVE PERSONAL HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS:
+ACTIVE PERSONAL HERALD RULES AUTHORED BY ACCOUNTS INACTIVE FOR 6 MONTHS
+(note that these might be fine when these rules have some global value):
 ${result_herald_rules_inactive_authors}
 
 
@@ -546,7 +567,8 @@ OPEN TASKS WITHOUT A PATCH FOR REVIEW THAT HAVE BEEN ASSIGNED TO THE SAME USER F
 ${result_cookie_licked_open_tasks_without_patch_for_review}
 
 
-STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS:
+STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS
+(to potentially manually re-triage and reset to open status):
 ${result_old_stalled_tasks}
 
 
