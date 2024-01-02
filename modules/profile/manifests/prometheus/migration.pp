@@ -8,14 +8,15 @@ class profile::prometheus::migration (
   $hosts.each |String $datacenter, Hash $data_flows| {
     if $::site == $datacenter {
       rsync::quickdatacopy { "prometheus-migration-${datacenter}":
-        ensure              => Wmflib::Ensure($data_flows['ensure']),
-        source_host         => $data_flows['src_host'],
-        dest_host           => $data_flows['dst_host'],
-        chown               => 'prometheus:prometheus',
-        auto_sync           => false,
-        module_path         => '/srv/prometheus',
-        server_uses_stunnel => true,
-        progress            => true,
+        ensure               => Wmflib::Ensure($data_flows['ensure']),
+        source_host          => $data_flows['src_host'],
+        dest_host            => $data_flows['dst_host'],
+        chown                => 'prometheus:prometheus',
+        auto_sync            => false,
+        module_path          => '/srv/prometheus',
+        server_uses_stunnel  => true,
+        progress             => true,
+        use_generic_firewall => true,
       }
     }
   }
