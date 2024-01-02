@@ -125,7 +125,8 @@ SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", id) AS url, 
     WHERE status != "100"
     AND ((color = "violet" AND icon != "group")
         OR (color = "yellow" AND icon != "tag")
-        OR (color = "orange" AND (icon != "goal" AND icon != "release"))
+        OR (color = "orange" AND (icon != "goal" AND icon != "release"
+            AND name NOT LIKE "Cloud-Services-Origin-%"))
         OR (color = "checkered" AND icon != "account")
         OR (color = "green" AND icon != "timeline")
         OR color = "indigo"
