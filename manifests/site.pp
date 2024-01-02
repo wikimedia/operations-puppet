@@ -1117,14 +1117,19 @@ node /^(elastic207[3-9]|elastic208[0-6])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-# new codfw elastic servers T349778
-node /^(elastic208[7-9]|elastic209[0-1])\.codfw\./ {
+# new codfw elastic servers T353878
+node /^(elastic208[8-9]|elastic209[0-1])\.codfw\./ {
     role(insetup::search_platform)
 }
 
-# new codfw elastic servers T349778
+# new codfw elastic servers T353878
 node /^(elastic209[2-9]|elastic210[0-9])\.codfw\./ {
     role(insetup::search_platform)
+}
+
+# new codfw elastic servers T353878
+node /^(elastic2087)\.codfw\./ {
+    role(elasticsearch::cirrus)
 }
 
 # External Storage, Shard 1 (es1) databases
