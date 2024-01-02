@@ -81,8 +81,10 @@ class profile::kerberos::kadminserver (
         mode   => '0750',
     }
 
-    # Add the rsync server configuration only to the
-    # active kerberos host.
+    # Add the rsync server configuration only to the active kerberos host.
+    # This allows the Puppet server holding the private repository to rsync
+    # the keytab files in order to be able to add them to the private repository.
+    # This way the puppet master will not need to be a kerberos client.
     if $is_krb_master {
         $ensure_rsync = 'present'
         $ensure_rsync_secrets_file = 'present'
