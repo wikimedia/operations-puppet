@@ -117,15 +117,7 @@ class profile::toolforge::grid::cronrunner(
     }
 
     systemd::timer::job { 'disable-tool-archive-dbs':
-        ensure          => $is_active.bool2str('present', 'absent'),
-        logging_enabled => false,
-        user            => 'root',
-        description     => 'Archive databases for expired tools',
-        command         => '/srv/disable-tool/disable_tool.py archivedbs',
-        interval        => {
-        'start'    => 'OnCalendar',
-        'interval' => '*:0/2', # every 2 minutes
-        },
-        require         => Class['::profile::toolforge::disable_tool'],
+        ensure  => 'disabled',
+        command => '/srv/disable-tool/disable_tool.py archivedbs',
     }
 }
