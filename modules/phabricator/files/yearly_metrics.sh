@@ -91,22 +91,22 @@ Big thanks to all Wikimedia technical contributors!
 
 * ${taskscreated} tasks got created.
 * ${tasksclosed} tasks got closed.
-* ${activeusers} people were active in Phabricator.
-* ${tasksauthors} people created tasks.
-* ${tasksclosers} people closed tasks.
-* The 20 people who created the most tasks:
+* ${activeusers} accounts were active in Phabricator.
+* ${tasksauthors} accounts created tasks.
+* ${tasksclosers} accounts closed tasks.
+* The 20 accounts who created the most tasks:
 ${result_tasks_authors_top20}
-* The 20 people who closed the most tasks:
+* The 20 accounts who closed the most tasks:
 ${result_tasks_closers_top20}
 
 === Gerrit ${year} ===
 
 * TODO changesets got created. [1]
 * TODO code reviews took place. [2]
-* TODO people created patches. [3]
-* The 20 people who submitted the most changesets: [4]
+* TODO accounts created patches. [3]
+* The 20 accounts who submitted the most changesets: [4]
 TODO
-* The 20 people who reviewed the most patchsets: [5]
+* The 20 accounts who reviewed the most patchsets: [5]
 TODO
 
 If you find a bug in these numbers, please see
@@ -116,7 +116,7 @@ Cheers!
 
 [1] See "Gerrit 🡒 Changesets" on "Gerrit 🡒 Overview" on 
 https://wikimedia.biterg.io/ after setting the time
-[2] See "Total Number of Code Reviews 🡒 Approvals" on "Gerrit 🡒
+[2] See "Total Changesets and Approvals 🡒 Approvals" on "Gerrit 🡒
 Approvals" on https://wikimedia.biterg.io/ after setting the time span
 [3] See "Gerrit 🡒 Changeset Submitters" on "Gerrit 🡒 Overview"
 on https://wikimedia.biterg.io/ after setting the time span
