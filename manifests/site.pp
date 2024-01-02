@@ -928,13 +928,8 @@ node /^db2102\.codfw\./ {
 }
 
 # Analytics production replicas
-node /^dbstore100[3578]\.eqiad\./ {
+node /^dbstore100[35789]\.eqiad\./ {
     role(mariadb::analytics_replica)
-}
-
-# new analytics node TT342862
-node /^dbstore1009\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # database-provisioning and short-term/postprocessing backups servers
