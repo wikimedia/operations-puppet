@@ -4340,7 +4340,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzKRxyFfYw/A8UIQAm6o6hTdVOKCjgdh+qsXlzOGBT4 daniele@MacBook-Pro-di-Daniele.local'
-    expiry_date: "2024-01-05"
+    expiry_date: "2024-01-15"
     expiry_contact: mredi@wikimedia.org
     krb: present
   rodolfovalentim:
