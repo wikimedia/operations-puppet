@@ -8,8 +8,8 @@ class profile::grafana::production (
     Stdlib::Fqdn $active_host = lookup('profile::grafana::active_host'),
     Stdlib::Fqdn $standby_host = lookup('profile::grafana::standby_host'),
 ) {
-    include ::profile::grafana
-    include ::profile::grafana::grizzly
+    include profile::grafana
+    include profile::grafana::grizzly
 
     $on_active_host = $active_host == $::fqdn ? {
         true  => present,
@@ -17,14 +17,14 @@ class profile::grafana::production (
     }
 
     # Enables rsync'ing /var/lib/grafana from active host to standby host.
-    # Set ensure => absent to disable the rsync job.
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure              => present,
-      source_host         => $active_host,
-      dest_host           => $standby_host,
-      module_path         => '/var/lib/grafana',
-      server_uses_stunnel => true,
-      exclude             => 'grafana.db-journal',
+      ensure               => present,
+      source_host          => $active_host,
+      dest_host            => $standby_host,
+      module_path          => '/var/lib/grafana',
+      server_uses_stunnel  => true,
+      exclude              => 'grafana.db-journal',
+      use_generic_firewall => true,
     }
 
     class {'::grafana::ldap_sync':
