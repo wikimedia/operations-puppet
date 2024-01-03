@@ -46,7 +46,7 @@
 
       <%- } -%>
     <%- } -%>
-    Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+    Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src: 'self' https://upload.wikimedia.org"
     Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
     Alias /mailman3/static      /var/lib/mailman3/web/static
     <Directory "/var/lib/mailman3/web/static">
