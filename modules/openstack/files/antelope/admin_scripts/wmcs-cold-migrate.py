@@ -28,7 +28,14 @@ if sys.version_info[0] >= 3:
 
 class ScriptConfig:
     def __init__(
-        self, datacenter, destination, mysql_password, nova_db_server, nova_db, cleanup, leak
+        self,
+        datacenter,
+        destination,
+        mysql_password,
+        nova_db_server,
+        nova_db,
+        cleanup,
+        leak,
     ):
         self.datacenter = datacenter
         self.destination = destination
@@ -177,7 +184,9 @@ class NovaInstance(object):
             logging.error("rsync to new host failed.")
             return 1
 
-        logging.info("{} instance copied. Now updating nova db...".format(self.instance_name))
+        logging.info(
+            "{} instance copied. Now updating nova db...".format(self.instance_name)
+        )
         host_moved = self.update_nova_db(config)
 
         activated_image = self.activate_image(image_id)
@@ -192,7 +201,8 @@ class NovaInstance(object):
                 while confirm != "cleanup":
                     confirm = raw_input(
                         "Verify that %s is healthy, then type "
-                        "'cleanup' to delete old instance files:  " % self.instance._info["name"]
+                        "'cleanup' to delete old instance files:  "
+                        % self.instance._info["name"]
                     )
 
                 logging.info("removing old instance from libvirt on {}".format(source))
@@ -209,7 +219,9 @@ class NovaInstance(object):
                 ]
                 undefine_status = subprocess.call(undefine_args)
                 if undefine_status:
-                    logging.error("undefine of {} on {} failed.".format(virshid, source))
+                    logging.error(
+                        "undefine of {} on {} failed.".format(virshid, source)
+                    )
                     return 1
 
                 logging.info("cleaning up old instance files on {}".format(source))
@@ -223,7 +235,9 @@ class NovaInstance(object):
                 ]
                 rmimage_status = subprocess.call(rmimage_args)
                 if rmimage_status:
-                    logging.error("cleanup of {} on {} failed.".format(imagedir, source))
+                    logging.error(
+                        "cleanup of {} on {} failed.".format(imagedir, source)
+                    )
                     return 1
 
         if activated_image:
@@ -244,13 +258,19 @@ if __name__ == "__main__":
         "cold-migrate", description="Move an instance to a " "different compute node"
     )
     argparser.add_argument(
-        "--nova-user", help="username for nova auth", default=os.environ.get("OS_USERNAME", None)
+        "--nova-user",
+        help="username for nova auth",
+        default=os.environ.get("OS_USERNAME", None),
     )
     argparser.add_argument(
-        "--nova-pass", help="password for nova auth", default=os.environ.get("OS_PASSWORD", None)
+        "--nova-pass",
+        help="password for nova auth",
+        default=os.environ.get("OS_PASSWORD", None),
     )
     argparser.add_argument(
-        "--nova-url", help="url for nova auth", default=os.environ.get("OS_AUTH_URL", None)
+        "--nova-url",
+        help="url for nova auth",
+        default=os.environ.get("OS_AUTH_URL", None),
     )
     argparser.add_argument(
         "--nova-db-server",
@@ -258,7 +278,9 @@ if __name__ == "__main__":
         default="openstack.eqiad1.wikimediacloud.org",
     )
     argparser.add_argument(
-        "--nova-db", help="nova database name. Default is nova_eqiad1", default="nova_eqiad1"
+        "--nova-db",
+        help="nova database name. Default is nova_eqiad1",
+        default="nova_eqiad1",
     )
     argparser.add_argument(
         "--region", help="nova region", default=os.environ.get("OS_REGION_NAME", None)
@@ -276,10 +298,16 @@ if __name__ == "__main__":
         default="eqiad",
     )
     argparser.add_argument(
-        "--cleanup", dest="cleanup", action="store_true", help="delete source VM without prompting"
+        "--cleanup",
+        dest="cleanup",
+        action="store_true",
+        help="delete source VM without prompting",
     )
     argparser.add_argument(
-        "--leak", dest="leak", action="store_true", help="exit without deleting source VM"
+        "--leak",
+        dest="leak",
+        action="store_true",
+        help="exit without deleting source VM",
     )
 
     args = argparser.parse_args()
@@ -298,7 +326,9 @@ if __name__ == "__main__":
         args.leak,
     )
     logging.basicConfig(
-        format="%(filename)s: %(levelname)s: %(message)s", level=logging.INFO, stream=sys.stdout
+        format="%(filename)s: %(levelname)s: %(message)s",
+        level=logging.INFO,
+        stream=sys.stdout,
     )
 
     sshargs = [

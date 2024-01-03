@@ -41,13 +41,21 @@ if __name__ == "__main__":
         default=os.environ.get("OS_AUTH_URL", None),
     )
     argparser.add_argument(
-        "--region", help="keystone/designate region", default=os.environ.get("OS_REGION_NAME", None)
+        "--region",
+        help="keystone/designate region",
+        default=os.environ.get("OS_REGION_NAME", None),
     )
-    argparser.add_argument("--project", help="project for domain creation", required=True)
-    argparser.add_argument("--domain", help="domain to create")
-    argparser.add_argument("--delete", action="store_true", help="delete domain rather than create")
     argparser.add_argument(
-        "--all", action="store_true", help="with --delete, delete all domains in a project"
+        "--project", help="project for domain creation", required=True
+    )
+    argparser.add_argument("--domain", help="domain to create")
+    argparser.add_argument(
+        "--delete", action="store_true", help="delete domain rather than create"
+    )
+    argparser.add_argument(
+        "--all",
+        action="store_true",
+        help="with --delete, delete all domains in a project",
     )
     argparser.add_argument(
         "--orig-project",
@@ -61,7 +69,9 @@ if __name__ == "__main__":
 
     if args.delete and args.all:
         if args.domain:
-            print("--domain should not be specified unless if --delete and --all are true")
+            print(
+                "--domain should not be specified unless if --delete and --all are true"
+            )
             exit(1)
     else:
         if not args.domain:

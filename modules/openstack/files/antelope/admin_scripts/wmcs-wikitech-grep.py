@@ -153,7 +153,9 @@ except urllib.error.HTTPError as error:
             root_cause = error_body["error"]["root_cause"][0]
             if root_cause["type"] == "invalid_regex_exception":
                 sys.stderr.write(
-                    "Error parsing regex: {0}\n{1}\n".format(args.term, root_cause["reason"])
+                    "Error parsing regex: {0}\n{1}\n".format(
+                        args.term, root_cause["reason"]
+                    )
                 )
             else:
                 sys.stderr.write(

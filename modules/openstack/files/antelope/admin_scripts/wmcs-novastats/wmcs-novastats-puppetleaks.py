@@ -60,8 +60,7 @@ def all_projects():
 
 
 def all_prefixes(project):
-    """Return a list of prefixes for a given project
-    """
+    """Return a list of prefixes for a given project"""
     base_url, session = get_enc_client(project)
     req = session.get(
         f"{base_url}/prefix",
@@ -71,8 +70,7 @@ def all_prefixes(project):
 
 
 def delete_prefix(project, prefix):
-    """Return a list of prefixes for a given project
-    """
+    """Return a list of prefixes for a given project"""
     base_url, session = get_enc_client(project)
     print(f"Deleting prefix {prefix} in project {project}")
     session.delete(
@@ -130,7 +128,10 @@ parser = argparse.ArgumentParser(
     description="Find (and, optionally, remove) leaked Puppet ENC entries."
 )
 parser.add_argument(
-    "--delete", dest="delete", help="Actually delete leaked entries", action="store_true"
+    "--delete",
+    dest="delete",
+    help="Actually delete leaked entries",
+    action="store_true",
 )
 args = parser.parse_args()
 

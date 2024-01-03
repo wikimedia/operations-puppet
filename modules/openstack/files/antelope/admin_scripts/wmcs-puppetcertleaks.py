@@ -37,7 +37,7 @@ puppetmaster_keyfile = "/var/lib/osstackcanary/osstackcanary_id"
 
 # this is cribbed from nova_fullstack_test.py:
 def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
-    """ Execute a remote command using SSH
+    """Execute a remote command using SSH
     :param node: str
     :param cmd: str
     :param debug: bool
@@ -74,7 +74,9 @@ def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
     # The nested nature of the proxycommand line is baffling to
     #  subprocess and/or ssh; joining a full shell commandline
     #  works and gives us something we can actually test by hand.
-    return subprocess.check_output(" ".join(fullcmd), shell=True, stderr=subprocess.STDOUT)
+    return subprocess.check_output(
+        " ".join(fullcmd), shell=True, stderr=subprocess.STDOUT
+    )
 
 
 def purge_leaks(delete=False):
@@ -141,7 +143,9 @@ def purge_leaks(delete=False):
         print("\nFound %s leaked certs" % len(leaklist))
 
 
-parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked puppet certs.")
+parser = argparse.ArgumentParser(
+    description="Find (and, optionally, remove) leaked puppet certs."
+)
 parser.add_argument(
     "--delete", dest="delete", help="Actually delete leaked certs", action="store_true"
 )

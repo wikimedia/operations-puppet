@@ -51,7 +51,11 @@ class NovaInstance(object):
     def migrate(self, leave_stopped=False):
         print(
             "Instance %s is now on host %s with state %s"
-            % (self.instance_id, self.instance._info["OS-EXT-SRV-ATTR:host"], self.instance.status)
+            % (
+                self.instance_id,
+                self.instance._info["OS-EXT-SRV-ATTR:host"],
+                self.instance.status,
+            )
         )
 
         if self.instance.status != "SHUTOFF":
@@ -83,7 +87,11 @@ class NovaInstance(object):
         print()
         print(
             "Instance %s is now on host %s with status %s"
-            % (self.instance_id, self.instance._info["OS-EXT-SRV-ATTR:host"], self.instance.status)
+            % (
+                self.instance_id,
+                self.instance._info["OS-EXT-SRV-ATTR:host"],
+                self.instance.status,
+            )
         )
 
 
@@ -91,21 +99,29 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         "cold-migrate", description="""Move an instance to a different compute node"""
     )
-    argparser.add_argument("--nova-user", help="username for nova auth", default="novaadmin")
+    argparser.add_argument(
+        "--nova-user", help="username for nova auth", default="novaadmin"
+    )
     argparser.add_argument("--nova-pass", help="password for nova auth", required=True)
     argparser.add_argument(
         "--nova-url",
         help="url for nova auth",
         default="https://openstack.eqiad1.wikimediacloud.org:25357/v2.0",
     )
-    argparser.add_argument("--nova-project", help="project for nova auth", default="admin")
+    argparser.add_argument(
+        "--nova-project", help="project for nova auth", default="admin"
+    )
     argparser.add_argument(
         "--no-restart", help="Do not start instance after migrate", default=False
     )
-    argparser.add_argument("instanceid", help="instance id to migrate", default="testlabs")
+    argparser.add_argument(
+        "instanceid", help="instance id to migrate", default="testlabs"
+    )
     args = argparser.parse_args()
 
-    novaclient = client.Client(args.nova_user, args.nova_pass, args.nova_project, args.nova_url)
+    novaclient = client.Client(
+        args.nova_user, args.nova_pass, args.nova_project, args.nova_url
+    )
 
     instance = NovaInstance(novaclient, args.instanceid)
     instance.migrate(args.no_restart)

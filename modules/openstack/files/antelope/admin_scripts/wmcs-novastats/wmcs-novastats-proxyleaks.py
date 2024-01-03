@@ -36,7 +36,9 @@ def url_template():
     """Get the url template for accessing the proxy service."""
     keystone = clients.keystoneclient()
     proxy = keystone.services.list(type="proxy")[0]
-    endpoint = keystone.endpoints.list(service=proxy.id, interface="public", enabled=True)[0]
+    endpoint = keystone.endpoints.list(
+        service=proxy.id, interface="public", enabled=True
+    )[0]
     return endpoint.url
 
 
@@ -47,8 +49,7 @@ def proxy_client(project):
 
 
 def all_mappings(project):
-    """Return a list of proxies for a given project
-    """
+    """Return a list of proxies for a given project"""
     proxy_url, session = proxy_client(project)
     resp = session.get(f"{proxy_url}/mapping", raise_exc=False)
 
@@ -61,8 +62,7 @@ def all_mappings(project):
 
 
 def delete_mapping(project, domain):
-    """Delete a single proxy
-    """
+    """Delete a single proxy"""
     proxy_url, session = proxy_client(project)
     session.delete(f"{proxy_url}/mapping/{domain}")
 
@@ -139,7 +139,10 @@ def purge_leaks(delete=False):
                     if delete:
                         delete_mapping(project.id, mapping["domain"])
                 else:
-                    print("%s: proxy mapping outside of its project: %s" % (project.id, mapping))
+                    print(
+                        "%s: proxy mapping outside of its project: %s"
+                        % (project.id, mapping)
+                    )
 
             searchname = mapping["domain"]
             if not searchname.endswith("."):
@@ -180,9 +183,14 @@ def purge_leaks(delete=False):
                     infraclient.recordsets.delete(rset["zone_id"], rset["id"])
 
 
-parser = argparse.ArgumentParser(description="Find (and, optionally, remove) leaked proxy entries.")
+parser = argparse.ArgumentParser(
+    description="Find (and, optionally, remove) leaked proxy entries."
+)
 parser.add_argument(
-    "--delete", dest="delete", help="Actually delete leaked records", action="store_true"
+    "--delete",
+    dest="delete",
+    help="Actually delete leaked records",
+    action="store_true",
 )
 args = parser.parse_args()
 

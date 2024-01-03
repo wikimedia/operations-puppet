@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
     osclients = mwopenstackclients.clients(oscloud="novaadmin")
     total_errors = 0
-    epoch_days = int(time.time() / (24*60*60))
+    epoch_days = int(time.time() / (24 * 60 * 60))
 
     for project in conf:
         cinderclient = osclients.cinderclient(project=project)
@@ -82,7 +82,7 @@ if __name__ == "__main__":
         if epoch_days % full_frequency == full_frequency_offset:
             # If it's a full backup day, then we're definitely backing up
             full = True
-        elif (epoch_days % frequency != 0):
+        elif epoch_days % frequency != 0:
             # otherwise, check frequency to see if we should skip today
             continue
 
@@ -105,7 +105,9 @@ if __name__ == "__main__":
                 if thisid:
                     volume_ids.append(thisid)
                 else:
-                    logging.warning("Unabled to find requested volume %s" % requested_volume)
+                    logging.warning(
+                        "Unabled to find requested volume %s" % requested_volume
+                    )
         if volume_ids:
             logging.info("Backing up %s in project %s" % (volume_ids, project))
             volume_dict = {volume.id: volume for volume in all_volumes}
@@ -127,7 +129,12 @@ if __name__ == "__main__":
                 logging.info("Purging old backups of %s" % volume_id)
 
                 # Purge old backups
-                purgeargs = [backup_tool, volume_id, "--purge-older-than", str(purge_after)]
+                purgeargs = [
+                    backup_tool,
+                    volume_id,
+                    "--purge-older-than",
+                    str(purge_after),
+                ]
                 r = subprocess.call(purgeargs)
                 if r:
                     logging.warning("Failed to purge backups for volume %s" % volume_id)

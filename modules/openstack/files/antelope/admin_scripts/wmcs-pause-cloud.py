@@ -29,16 +29,26 @@ if __name__ == "__main__":
         "wmcs-pause-cloud", description="Disable all hypervisors and suspend all VMs"
     )
     argparser.add_argument(
-        "--nova-user", help="username for nova auth", default=os.environ.get("OS_USERNAME", None)
+        "--nova-user",
+        help="username for nova auth",
+        default=os.environ.get("OS_USERNAME", None),
     )
     argparser.add_argument(
-        "--nova-pass", help="password for nova auth", default=os.environ.get("OS_PASSWORD", None)
+        "--nova-pass",
+        help="password for nova auth",
+        default=os.environ.get("OS_PASSWORD", None),
     )
     argparser.add_argument(
-        "--nova-url", help="url for nova auth", default=os.environ.get("OS_AUTH_URL", None)
+        "--nova-url",
+        help="url for nova auth",
+        default=os.environ.get("OS_AUTH_URL", None),
     )
-    argparser.add_argument("--file", required=True, help="filepath to store suspended VMs")
-    argparser.add_argument("--resume", action="store_true", help="resume VMs in referenced file")
+    argparser.add_argument(
+        "--file", required=True, help="filepath to store suspended VMs"
+    )
+    argparser.add_argument(
+        "--resume", action="store_true", help="resume VMs in referenced file"
+    )
 
     args = argparser.parse_args()
 
@@ -66,7 +76,8 @@ if __name__ == "__main__":
     if not args.resume:
         if os.path.isfile(args.file):
             logging.error(
-                "%s already exists; not overwriting it out of an abundance of caution." % args.file
+                "%s already exists; not overwriting it out of an abundance of caution."
+                % args.file
             )
             exit(1)
         with open(args.file, "w") as idfile:
