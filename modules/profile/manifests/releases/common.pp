@@ -43,22 +43,24 @@ class profile::releases::common(
             # automatically sync relases files to all secondary
             # servers and ensure they are real mirrors of each other
             rsync::quickdatacopy { "srv-org-wikimedia-releases-${releases_server}":
-              ensure      => present,
-              auto_sync   => true,
-              delete      => true,
-              source_host => $primary_server,
-              dest_host   => $releases_server,
-              module_path => '/srv/org/wikimedia/releases',
+              ensure               => present,
+              auto_sync            => true,
+              delete               => true,
+              source_host          => $primary_server,
+              dest_host            => $releases_server,
+              module_path          => '/srv/org/wikimedia/releases',
+              use_generic_firewall => true,
             }
             # allow syncing jenkins data between servers for migrations
             # but do not automatically do it
             rsync::quickdatacopy { "var-lib-jenkins-${releases_server}":
-              ensure      => present,
-              auto_sync   => false,
-              delete      => true,
-              source_host => $primary_server,
-              dest_host   => $releases_server,
-              module_path => '/var/lib/jenkins',
+              ensure               => present,
+              auto_sync            => false,
+              delete               => true,
+              source_host          => $primary_server,
+              dest_host            => $releases_server,
+              module_path          => '/var/lib/jenkins',
+              use_generic_firewall => true,
             }
         }
     }
