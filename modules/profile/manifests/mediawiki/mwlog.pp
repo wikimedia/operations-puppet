@@ -72,12 +72,12 @@ class profile::mediawiki::mwlog (
 
     if $primary_host and $standby_host {
         rsync::quickdatacopy { 'srv-mw-log':
-            source_host         => $primary_host,
-            dest_host           => $standby_host,
-            auto_sync           => false,
-            auto_ferm_ipv6      => false,
-            module_path         => '/srv/mw-log',
-            server_uses_stunnel => true,
+            source_host          => $primary_host,
+            dest_host            => $standby_host,
+            auto_sync            => false,
+            module_path          => '/srv/mw-log',
+            server_uses_stunnel  => true,
+            use_generic_firewall => true,
         }
     }
 }
