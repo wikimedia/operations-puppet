@@ -133,6 +133,14 @@ class profile::kubernetes::deployment_server::global_config (
         $retval = { $cl => $ips }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
+    $kerberos_nodes = wmflib::role::ips('kerberos::kdc');
+    $hadoop_analytics_master_node = wmflib::role::ips('analytics_cluster::hadoop::master');
+    $hadoop_analytics_standby_node = wmflib::role::ips('analytics_cluster::hadoop::standby');
+    $hadoop_analytics_worker_nodes = wmflib::role::ips('analytics_cluster::hadoop::worker');
+    $hadoop_analytics_test_master_node = wmflib::role::ips('analytics_test_cluster::hadoop::master');
+    $hadoop_analytics_test_standby_node = wmflib::role::ips('analytics_test_cluster::hadoop::standby');
+    $hadoop_analytics_test_worker_nodes = wmflib::role::ips('analytics_test_cluster::hadoop::worker');
+
     # Per-cluster general defaults.
     # Fetch clusters excluding aliases, for aliases we create symlinks to the actual cluster defaults
     k8s::fetch_clusters(false).each | String $cluster_name, K8s::ClusterConfig $cluster_config | {
@@ -169,6 +177,15 @@ class profile::kubernetes::deployment_server::global_config (
             'kafka_brokers'      => $kafka_brokers,
             'zookeeper_clusters' => $zookeeper_nodes,
             'mariadb'            => { 'section_ports' => $db_sections },
+            'kerberos'           => { 'kdc' => $kerberos_nodes },
+            'hadoop_masters'     => {
+              'analytics' => $hadoop_analytics_master_node + $hadoop_analytics_standby_node,
+              'analytics_test' => $hadoop_analytics_test_master_node + $hadoop_analytics_test_standby_node
+            },
+            'hadoop_workers'     => {
+              'analytics' => $hadoop_analytics_worker_nodes,
+              'analytics_test' => $hadoop_analytics_test_worker_nodes
+            },
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
