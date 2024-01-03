@@ -26,7 +26,7 @@ class profile::ci::httpd {
 
     if $profile::ci::manager {
         prometheus::blackbox::check::http { 'integration.wikimedia.org':
-            team               => 'serviceops-collab',
+            team               => 'collaboration-services',
             severity           => 'task',
             path               => '/',
             ip_families        => ['ip4'],

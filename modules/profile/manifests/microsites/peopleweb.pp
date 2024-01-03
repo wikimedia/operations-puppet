@@ -66,7 +66,7 @@ class profile::microsites::peopleweb (
 
     # Monitoring
     prometheus::blackbox::check::http { $sitename:
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],

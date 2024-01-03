@@ -3,7 +3,7 @@
 class profile::microsites::monitoring {
 
     prometheus::blackbox::check::http { '15.wikipedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         ip_families             => ['ip4'],
@@ -16,7 +16,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'annual.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/2017/',
         ip_families             => ['ip4'],
@@ -28,7 +28,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'bienvenida.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         force_tls               => true,
@@ -40,7 +40,7 @@ class profile::microsites::monitoring {
     }
 
         prometheus::blackbox::check::http { 'transparency.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         force_tls               => true,
@@ -53,7 +53,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'transparency-archive.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         force_tls               => true,
@@ -65,7 +65,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'tendril.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         force_tls               => true,
@@ -77,7 +77,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'dbtree.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         force_tls               => true,
@@ -89,7 +89,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'wikiworkshop.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/2023/',
         ip_families             => ['ip4'],
@@ -102,7 +102,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'research.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/',
         ip_families             => ['ip4'],
@@ -115,7 +115,7 @@ class profile::microsites::monitoring {
     }
 
     prometheus::blackbox::check::http { 'static-codereview.wikimedia.org':
-        team                    => 'serviceops-collab',
+        team                    => 'collaboration-services',
         severity                => 'task',
         path                    => '/MediaWiki/1.html',
         ip_families             => ['ip4'],

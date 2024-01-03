@@ -30,7 +30,7 @@ class profile::microsites::os_reports (
     }
 
     prometheus::blackbox::check::http { 'os-reports.wikimedia.org':
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],

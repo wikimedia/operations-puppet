@@ -205,7 +205,7 @@ class profile::planet (
 
 
     prometheus::blackbox::check::http { 'en.planet.wikimedia.org':
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],

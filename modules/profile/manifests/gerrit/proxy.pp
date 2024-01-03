@@ -28,7 +28,7 @@ class profile::gerrit::proxy(
         if !$is_replica {
             prometheus::blackbox::check::http { 'gerrit-tls':
                 server_name        => $tls_host,
-                team               => 'serviceops-collab-releng',
+                team               => 'collaboration-services-releng',
                 severity           => 'critical',
                 path               => '/',
                 follow_redirects   => true,

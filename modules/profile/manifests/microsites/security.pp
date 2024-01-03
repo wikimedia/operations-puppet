@@ -19,7 +19,7 @@ class profile::microsites::security(
     }
 
     prometheus::blackbox::check::http { 'security.wikimedia.org':
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         force_tls          => true,

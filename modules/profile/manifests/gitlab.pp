@@ -74,7 +74,7 @@ class profile::gitlab(
 
     if $active_host == $facts['fqdn'] {
         prometheus::blackbox::check::http { $service_name:
-            team               => 'serviceops-collab',
+            team               => 'collaboration-services',
             severity           => $severity,
             path               => '/explore',
             ip4                => $service_ip_v4,

@@ -125,17 +125,17 @@ route:
         # send everything to #w-infrastructure-foundations
         - receiver: 'infrastructure-foundations-irc'
     - match:
-        team: 'serviceops-collab'
+        team: 'collaboration-services'
       routes:
         - match:
             severity: 'critical'
-          receiver: 'serviceops-collab-critical'
+          receiver: 'collaboration-services-critical'
         - match:
             severity: 'warning'
-          receiver: 'serviceops-collab-warning'
+          receiver: 'collaboration-services-warning'
         - match:
             severity: 'task'
-          receiver: 'serviceops-collab-task'
+          receiver: 'collaboration-services-task'
     - match:
         team: 'dcops'
       receiver: 'dcops-mail'
@@ -461,7 +461,7 @@ receivers:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-gsfmtborh6beh6xj5lz6'
       send_resolved: false
 
-- name: 'serviceops-collab-warning'
+- name: 'collaboration-services-warning'
   webhook_configs:
     # #serviceops mail & IRC
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
@@ -469,9 +469,9 @@ receivers:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
-- name: 'serviceops-collab-critical'
+- name: 'collaboration-services-critical'
   webhook_configs:
-    # #serviceops-collab task & mail & IRC
+    # #collaboration-services task & mail & IRC
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
@@ -479,9 +479,9 @@ receivers:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
-- name: 'serviceops-collab-task'
+- name: 'collaboration-services-task'
   webhook_configs:
-    # #serviceops-collab task & IRC
+    # #collaboration-services task & IRC
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
@@ -492,7 +492,7 @@ receivers:
     # sre-collab x releng - task, IRC, (mail) for both teams
     # single URL, multiple phids = one ticket with multiple tags.
     # multiple URLs = multiple tickets
-    # PHID-PROJ-pjhy3ymh5pitgp2jflcb = https://phabricator.wikimedia.org/tag/serviceops-collab/
+    # PHID-PROJ-pjhy3ymh5pitgp2jflcb = https://phabricator.wikimedia.org/tag/collaboration-services/
     # PHID-PROJ-uier7rukzszoewbhj7ja = https://phabricator.wikimedia.org/tag/release-engineering-team/
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb&phid=PHID-PROJ-uier7rukzszoewbhj7ja'
       send_resolved: false

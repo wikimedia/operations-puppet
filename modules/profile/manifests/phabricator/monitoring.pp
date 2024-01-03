@@ -18,7 +18,7 @@ class profile::phabricator::monitoring (
         # Reporting to a phab task might not work if phabricator is down
         prometheus::blackbox::check::http { 'phabricator.wikimedia.org-collab':
             server_name        => 'phabricator.wikimedia.org',
-            team               => 'serviceops-collab',
+            team               => 'collaboration-services',
             severity           => 'task',
             path               => '/',
             force_tls          => true,

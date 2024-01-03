@@ -89,7 +89,7 @@ class profile::vrts(
     }
 
     prometheus::blackbox::check::tcp { 'vrts-smtp':
-        team     => 'serviceops-collab',
+        team     => 'collaboration-services',
         severity => 'task',
         port     => 25,
     }
@@ -107,7 +107,7 @@ class profile::vrts(
 
     if $active_host == $facts['fqdn'] {
         prometheus::blackbox::check::http { $dns_name:
-            team               => 'serviceops-collab',
+            team               => 'collaboration-services',
             severity           => 'task',
             path               => '/otrs/index.pl',
             port               => 1443,

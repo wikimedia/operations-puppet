@@ -17,7 +17,7 @@ class profile::etherpad(
 
     prometheus::blackbox::check::http { 'etherpad-envoy':
         server_name        => 'etherpad.wikimedia.org',
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip4'],
@@ -28,7 +28,7 @@ class profile::etherpad(
 
     prometheus::blackbox::check::http { 'etherpad-nodejs':
         server_name        => 'etherpad.wikimedia.org',
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         ip_families        => ['ip6'],

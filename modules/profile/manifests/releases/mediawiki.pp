@@ -87,7 +87,7 @@ class profile::releases::mediawiki (
     if $jenkins_service_monitor {
         prometheus::blackbox::check::http { "${sitename_jenkins}-login":
             server_name        => $sitename_jenkins,
-            team               => 'serviceops-collab',
+            team               => 'collaboration-services',
             severity           => 'task',
             path               => '/login',
             ip_families        => ['ip4'],

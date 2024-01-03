@@ -48,7 +48,7 @@ class profile::microsites::design(
     }
 
     prometheus::blackbox::check::http { 'design.wikimedia.org':
-        team               => 'serviceops-collab',
+        team               => 'collaboration-services',
         severity           => 'task',
         path               => '/',
         force_tls          => true,

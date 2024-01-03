@@ -30,7 +30,7 @@ class profile::requesttracker {
     }
 
     prometheus::blackbox::check::http { 'rt.wikimedia.org':
-        team             => 'serviceops-collab',
+        team             => 'collaboration-services',
         severity         => 'task',
         path             => '/',
         status_matches   => [302], # Ensure we redirect to IDP
