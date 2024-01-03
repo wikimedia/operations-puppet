@@ -41,7 +41,8 @@ groups:
               jcarvalho, sthart, johnben, ppena, mshaver, schang, ldoan, maryyang, ozhang, aassaf,
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
-              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre]
+              kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
+              kassiameq]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6689,9 +6690,8 @@ ldap_only_users:
     realname: Christopher Schilling
     email: cschilling@wikimedia.org
   kassiameq:
-    ensure: present
+    ensure: absent
     realname: Kassia Echavarri-Queen
-    email: kechavarriqueen@wikimedia.org
   tobias-schumann-wmde-ext:
     ensure: absent
     realname: Tobias Schumann
