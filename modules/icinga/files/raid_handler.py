@@ -95,11 +95,14 @@ def get_raid_status(host, raid_type):
         host      -- hostname to be passed to the NRPE check
         raid_type -- the RAID type to check, see RAID_TYPES for accepted values
     """
+    text = True
+    if raid_type in COMPRESSED_RAID_TYPES:
+        text = False
 
     try:
         nrpe_command = [CHECK_NRPE_PATH, '-4', '-H', host,
                         '-c', NRPE_REMOTE_COMMAND.format(raid_type)]
-        proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE, text=True)
+        proc = subprocess.Popen(nrpe_command, stdout=subprocess.PIPE, text=text)
         stdout, stderr = proc.communicate()
         if proc.returncode != 0 or len(stdout) == 0:
             raise RuntimeError(
@@ -119,7 +122,7 @@ def get_raid_status(host, raid_type):
             status = 'Failed to decompress Raid status: {err}'.format(err=e)
             logger.error(status)
     else:
-        status = stdout.decode()
+        status = stdout
 
     logger.debug(status)
     return status
