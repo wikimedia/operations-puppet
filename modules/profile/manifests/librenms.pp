@@ -201,13 +201,14 @@ class profile::librenms (
 
     $passive_servers.each |Stdlib::Fqdn $passive_server| {
         rsync::quickdatacopy { "srv-librenms-rrd-${passive_server}":
-            ensure              => present,
-            auto_sync           => false,
-            source_host         => $active_server,
-            dest_host           => $passive_server,
-            module_path         => '/srv/librenms/rrd',
-            server_uses_stunnel => true,
-            chown               => 'librenms:librenms',
+            ensure               => present,
+            auto_sync            => false,
+            source_host          => $active_server,
+            dest_host            => $passive_server,
+            module_path          => '/srv/librenms/rrd',
+            server_uses_stunnel  => true,
+            chown                => 'librenms:librenms',
+            use_generic_firewall => true,
         }
     }
 }

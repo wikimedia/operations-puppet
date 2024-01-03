@@ -13,13 +13,14 @@ class profile::rancid (
 
     $passive_servers.each |Stdlib::Fqdn $passive_server| {
         rsync::quickdatacopy { "var-lib-rancid-${passive_server}":
-            ensure              => present,
-            auto_sync           => false,
-            source_host         => $active_server,
-            dest_host           => $passive_server,
-            module_path         => '/var/lib/rancid',
-            server_uses_stunnel => true,
-            chown               => 'rancid:rancid',
+            ensure               => present,
+            auto_sync            => false,
+            source_host          => $active_server,
+            dest_host            => $passive_server,
+            module_path          => '/var/lib/rancid',
+            server_uses_stunnel  => true,
+            chown                => 'rancid:rancid',
+            use_generic_firewall => true,
         }
     }
 }
