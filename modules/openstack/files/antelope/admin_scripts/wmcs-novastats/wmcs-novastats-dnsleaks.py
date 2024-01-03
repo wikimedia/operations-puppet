@@ -238,9 +238,10 @@ def purge_duplicates(project_id, delete=False):
                         if record.lower() in ptrcounts:
                             ptrcounts[record.lower()].append(recordset["name"])
                             print(
-                                "Found %s ptr recordsets for the same VM: %s"
+                                "Found %s ptr recordsets for the same VM: %s %s"
                                 % (
                                     len(ptrcounts[record.lower()]),
+                                    record,
                                     ptrcounts[record.lower()],
                                 )
                             )
