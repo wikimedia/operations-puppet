@@ -1625,10 +1625,10 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
 
 # START Kubernetes workers that used to be mw app/api servers
 node /^mw137[7-9]\.eqiad\./ {
-  role(insetup::serviceops)
+  role(kubernetes::worker)
 }
 node /^mw138[0-3]\.eqiad\./ {
-  role(insetup::serviceops)
+  role(kubernetes::worker)
 }
 node /^mw146[2-5]\.eqiad\./ {
   role(kubernetes::worker)
