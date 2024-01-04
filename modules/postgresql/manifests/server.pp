@@ -91,9 +91,9 @@ class postgresql::server(
     }
 
     exec { 'pgreload':
-        command     => "/usr/bin/pg_ctlcluster ${_pgversion} main reload",
-        user        => 'postgres',
+        command     => "/usr/bin/systemctl reload ${service_name}",
         refreshonly => true,
+        require     => Service[$service_name],
     }
 
     if $use_ssl {
