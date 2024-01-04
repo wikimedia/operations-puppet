@@ -1,5 +1,7 @@
 # @summary imports blackbox checks from puppetdb
 # SPDX-License-Identifier: Apache-2.0
+
+# Make sure to add new Prometheus instances to type Prometheus::Blackbox::Check::Instance
 define prometheus::blackbox::import_checks (
   String        $prometheus_instance,
   Wmflib::Sites $site,

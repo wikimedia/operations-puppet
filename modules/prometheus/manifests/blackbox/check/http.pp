@@ -63,7 +63,7 @@ define prometheus::blackbox::check::http (
     Wmflib::HTTP::Method                    $method                  = 'GET',
     Boolean                                 $follow_redirects        = false,
     Wmflib::Sites                           $site                    = $::site,  # lint:ignore:top_scope_facts
-    String[1]                               $prometheus_instance     = 'ops',
+    Prometheus::Blackbox::Check::Instance   $prometheus_instance     = 'ops',
     Optional[String[1]]                     $body_raw                = undef,
     Optional[String[1]]                     $auth_username           = undef,
     Optional[String[1]]                     $auth_password           = undef,

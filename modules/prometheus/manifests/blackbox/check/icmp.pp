@@ -9,15 +9,15 @@
 # @param timeout the probe timeout
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
 define prometheus::blackbox::check::icmp (
-    Stdlib::Fqdn                         $instance_label      = $facts['networking']['hostname'],
-    Stdlib::IP::Address::V4::Nosubnet    $ip4                 = $facts['networking']['ip'],
-    Stdlib::IP::Address::V6::Nosubnet    $ip6                 = $facts['networking']['ip6'],
-    Array[Enum['ip4', 'ip6']]            $ip_families         = ['ip4', 'ip6'],
-    String[1]                            $team                = 'sre',
-    Prometheus::Alert::Severity          $severity            = 'critical',
-    Pattern[/\d+[ms]/]                   $timeout             = '3s',
-    Wmflib::Sites                        $site                = $::site,  # lint:ignore:top_scope_facts
-    String[1]                            $prometheus_instance = 'ops',
+    Stdlib::Fqdn                          $instance_label      = $facts['networking']['hostname'],
+    Stdlib::IP::Address::V4::Nosubnet     $ip4                 = $facts['networking']['ip'],
+    Stdlib::IP::Address::V6::Nosubnet     $ip6                 = $facts['networking']['ip6'],
+    Array[Enum['ip4', 'ip6']]             $ip_families         = ['ip4', 'ip6'],
+    String[1]                             $team                = 'sre',
+    Prometheus::Alert::Severity           $severity            = 'critical',
+    Pattern[/\d+[ms]/]                    $timeout             = '3s',
+    Wmflib::Sites                         $site                = $::site,  # lint:ignore:top_scope_facts
+    Prometheus::Blackbox::Check::Instance $prometheus_instance = 'ops',
 ) {
     $safe_title = $title.regsubst('\W', '_', 'G')
     $module_title = $safe_title

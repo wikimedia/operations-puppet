@@ -36,7 +36,7 @@
     Stdlib::Unixpath                        $client_auth_cert        = '/etc/prometheus/ssl/cert.pem',
     Stdlib::Unixpath                        $client_auth_key         = '/etc/prometheus/ssl/server.key',
     Wmflib::Sites                           $site                    = $::site,  # lint:ignore:top_scope_facts
-    String[1]                               $prometheus_instance     = 'ops',
+    Prometheus::Blackbox::Check::Instance   $prometheus_instance     = 'ops',
     Prometheus::Blackbox::Query_response    $query_response          = undef,
 ) {
     $use_tls = ($force_tls or $port == 443)
