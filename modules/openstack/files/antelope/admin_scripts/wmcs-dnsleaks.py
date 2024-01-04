@@ -31,10 +31,25 @@ are already mid-deletion.  In that case it should be safe to re-run.
 """
 
 import argparse
+import sys
 
 import mwopenstackclients
 
 clients = mwopenstackclients.clients(oscloud="novaadmin")
+
+PROMETHEUS_FILE = "/var/lib/prometheus/node.d/designateleaks.prom"
+
+PROM_BLOB = (
+    "# HELP https://wikitech.wikimedia.org/wiki/Portal:"
+    "Cloud_VPS/Admin/Runbooks/Designate_record_leaks\n"
+    "# TYPE designate record leak gauge\n"
+    "cloudvps.designateleaks {leaks}\n"
+)
+
+
+def write_prom_file(straycount):
+    with open(PROMETHEUS_FILE, "w") as f:
+        f.write(PROM_BLOB.format(leaks=straycount))
 
 
 def recordset_is_service(recordset):
@@ -57,6 +72,7 @@ def recordset_is_service(recordset):
 
 
 def purge_duplicates(project_id, delete=False):
+    strays = 0
     designateclient = clients.designateclient(project=project_id, edit_managed=True)
     zones = designateclient.zones.list()
 
@@ -137,11 +153,13 @@ def purge_duplicates(project_id, delete=False):
                 # For an A record, we can just delete the whole recordset
                 #  if it's for a missing instance.
                 if name not in all_possible_names:
+                    strays += 1
                     print(("%s is linked to missing instance %s" % (recordsetid, name)))
                     if delete:
                         designateclient.recordsets.delete(zone["id"], recordsetid)
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
+                    strays += 1
                     print(
                         (
                             "A record for %s has multiple IPs: %s"
@@ -174,6 +192,7 @@ def purge_duplicates(project_id, delete=False):
                         # Make sure we don't have multiple recordsets for the same VM
                         if record.lower() in ptrcounts:
                             ptrcounts[record.lower()].append(recordset["name"])
+                            strays += 1
                             print(
                                 "Found %s ptr recordsets for the same VM: %s %s"
                                 % (
@@ -186,6 +205,7 @@ def purge_duplicates(project_id, delete=False):
                             ptrcounts[record.lower()] = [recordset["name"]]
 
                     else:
+                        strays += 1
                         print(
                             (
                                 "PTR %s is linked to missing instance %s"
@@ -206,6 +226,7 @@ def purge_duplicates(project_id, delete=False):
                                 )
                             )
                             designateclient.update(zone["id"], recordset, goodrecords)
+    return strays
 
 
 parser = argparse.ArgumentParser(
@@ -213,12 +234,25 @@ parser = argparse.ArgumentParser(
 )
 parser.add_argument(
     "--delete",
-    dest="delete",
     help="Actually delete leaked records",
+    action="store_true",
+)
+parser.add_argument(
+    "--to-prometheus",
+    help="Write stray record count to prometheus. Cannot be used with --delete",
     action="store_true",
 )
 args = parser.parse_args()
 
-purge_duplicates("cloudinfra", args.delete)
-purge_duplicates("cloudinfra-codfw1dev", args.delete)
-purge_duplicates("noauth-project", args.delete)
+if args.delete and args.to_prometheus:
+    print("--delete and --to-prometheus are mutually exclusive")
+    sys.exit(2)
+
+strays = purge_duplicates("cloudinfra", args.delete)
+strays += purge_duplicates("cloudinfra-codfw1dev", args.delete)
+strays += purge_duplicates("noauth-project", args.delete)
+
+if args.to_prometheus:
+    write_prom_file(strays)
+
+sys.exit(0)
