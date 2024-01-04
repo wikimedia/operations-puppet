@@ -30,6 +30,7 @@ define postgresql::user::hba(
 ) {
 
     $pg_hba_file = "/etc/postgresql/${pgversion}/main/pg_hba.conf"
+    $pg_hba_dir = "/etc/postgresql/${pgversion}/main"
 
     # xpath expression to identify the user entry in pg_hba.conf
     if $type == 'local' {
@@ -63,7 +64,9 @@ define postgresql::user::hba(
             context => "/files${pg_hba_file}/",
             changes => $changes,
             onlyif  => "match ${xpath} size == 0",
-            notify  => Exec['pgreload'],
+            notify  => Exec['pg_try_reload_or_restart'],
+            before  => Service[$postgresql::server::service_name],
+            require => File[$pg_hba_dir],
         }
     } elsif $ensure == 'absent' {
 
@@ -74,7 +77,8 @@ define postgresql::user::hba(
             changes => "rm ${xpath}",
             # only if the user exists
             onlyif  => "match ${xpath} size > 0",
-            notify  => Exec['pgreload'],
+            notify  => Exec['pg_try_reload_or_restart'],
+            require => File[$pg_hba_dir],
         }
     }
 }

@@ -72,9 +72,13 @@ class postgresql::server(
         -> Package["postgresql-${_pgversion}"]
         -> Service[$service_name]
 
+    # We want to all server configuration to be in place *before* the server
+    # package (postgresql-<version>) is installed. When installing / bootstrapping
+    # this means a manual restart is not needed.
+    # Resources such as configuration must therefore declare "before => Service[$service_name]"
     package { [
-        "postgresql-${_pgversion}",
-        "postgresql-${_pgversion}-debversion",
+        # postgresql-common will create the 'postgres' user/group
+        'postgresql-common',
         "postgresql-client-${_pgversion}",
         'libdbi-perl',
         'libdbd-pg-perl',
@@ -96,6 +100,12 @@ class postgresql::server(
         require     => Service[$service_name],
     }
 
+    exec { 'pg_try_reload_or_restart':
+        command     => "/usr/bin/systemctl try-reload-or-restart ${service_name}",
+        refreshonly => true,
+        require     => Service[$service_name],
+    }
+
     if $use_ssl {
         file { "/etc/postgresql/${_pgversion}/main/ssl.conf":
             ensure  => $ensure,
@@ -103,10 +113,7 @@ class postgresql::server(
             owner   => 'root',
             group   => 'root',
             mode    => '0444',
-            require => [
-                Puppet::Expose_agent_certs['/etc/postgresql'],
-                Package["postgresql-${_pgversion}"],
-            ],
+            require => Puppet::Expose_agent_certs['/etc/postgresql'],
             before  => Service[$service_name],
         }
 
@@ -117,7 +124,8 @@ class postgresql::server(
             user            => 'postgres',
             group           => 'postgres',
             ssldir          => $ssldir,
-            require         => Package["postgresql-${_pgversion}"],
+            require         => Package['postgresql-common'],
+            before          => Service[$service_name],
         }
     }
 
@@ -132,6 +140,26 @@ class postgresql::server(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        require => Package["postgresql-${_pgversion}"],
+        before  => Service[$service_name],
+    }
+
+    # Required to both initialize pg_hba.conf (must be present and non-empty for
+    # the server to start) and provide access for 'postgres' UNIX user.
+    postgresql::user::hba { 'Local access for postgres user':
+        ensure    => $ensure,
+        user      => 'postgres',
+        database  => 'all',
+        type      => 'local',
+        method    => 'peer',
+        pgversion => $_pgversion,
+    }
+
+    # Install the server, at this point all required configuration is in place.
+    package { [
+        "postgresql-${_pgversion}",
+        "postgresql-${_pgversion}-debversion",
+    ]:
+        ensure  => $ensure,
+        require => Package['postgresql-common'],
     }
 }

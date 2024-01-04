@@ -85,10 +85,7 @@ define postgresql::user (
             command => "/usr/bin/createuser --no-superuser --no-createdb --no-createrole ${user}",
             user    => 'postgres',
             unless  => $userexists,
-            require => [
-                Package["postgresql-${_pgversion}"],
-                Service["postgresql@${_pgversion}-main.service"],
-            ]
+            require => Service[$postgresql::server::service_name],
         }
 
         # This will not be run on a slave as it is read-only

@@ -91,7 +91,7 @@ class profile::puppetdb::database(
         group   => 'root',
         mode    => '0444',
         content => template('puppetmaster/puppetdb/tuning.conf.erb'),
-        require => Package["postgresql-${pgversion}"],
+        before  => Service[$postgresql::server::service_name],
     }
     $users.each |$pg_name, $config| {
         postgresql::user { $pg_name:

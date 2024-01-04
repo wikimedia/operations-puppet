@@ -95,7 +95,7 @@ class postgresql::master(
         group   => 'root',
         mode    => '0444',
         content => template('postgresql/master.conf.erb'),
-        require => Package["postgresql-${_pgversion}"],
+        before  => Service[$postgresql::server::service_name],
     }
 
     if $ensure == 'present' {
@@ -103,7 +103,7 @@ class postgresql::master(
             command => "/usr/lib/postgresql/${_pgversion}/bin/initdb --locale ${locale} -D ${data_dir}",
             user    => 'postgres',
             unless  => "/usr/bin/test -f ${data_dir}/PG_VERSION",
-            before  => Service["postgresql@${_pgversion}-main.service"],
+            before  => Service[$postgresql::server::service_name],
             require => Package["postgresql-${_pgversion}"],
         }
     }
