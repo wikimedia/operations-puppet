@@ -31,61 +31,10 @@ are already mid-deletion.  In that case it should be safe to re-run.
 """
 
 import argparse
-import time
-
-import requests
-import yaml
 
 import mwopenstackclients
 
-sysclients = mwopenstackclients.clients(oscloud="ossystemadmin")
 clients = mwopenstackclients.clients(oscloud="novaadmin")
-
-
-def designate_endpoint_and_token():
-    services = sysclients.keystoneclient().services.list()
-    for service in services:
-        if service.type == "dns":
-            serviceid = service.id
-            break
-    endpoints = sysclients.keystoneclient().endpoints.list(serviceid)
-    for endpoint in endpoints:
-        if endpoint.interface == "public":
-            url = endpoint.url
-
-    session = clients.session()
-    token = session.get_token()
-
-    return (url, token)
-
-
-def delete_recordset(endpoint, token, project_id, zoneid, recordsetid):
-    headers = {
-        "X-Auth-Token": token,
-        "X-Auth-Sudo-Tenant-ID": project_id,
-        "X-Designate-Edit-Managed-Records": "true",
-    }
-    recordseturl = "%s/v2/zones/%s/recordsets/%s" % (endpoint, zoneid, recordsetid)
-    print(("Deleting %s with %s" % (recordsetid, recordseturl)))
-    req = requests.delete(recordseturl, headers=headers, verify=False)
-    req.raise_for_status()
-    time.sleep(1)
-
-
-def edit_recordset(endpoint, token, project_id, zoneid, recordset, newrecords):
-    headers = {
-        "X-Auth-Token": token,
-        "X-Auth-Sudo-Tenant-ID": project_id,
-        "X-Designate-Edit-Managed-Records": "true",
-    }
-
-    patch = {"records": newrecords}
-
-    print(("Updating %s with %s" % (recordset["id"], newrecords)))
-    recordseturl = "%s/v2/zones/%s/recordsets/%s" % (endpoint, zoneid, recordset["id"])
-
-    req = requests.put(recordseturl, headers=headers, verify=False, json=patch)
-    req.raise_for_status()
 
 
 def recordset_is_service(recordset):
@@ -108,13 +57,8 @@ def recordset_is_service(recordset):
 
 
 def purge_duplicates(project_id, delete=False):
-    (endpoint, token) = designate_endpoint_and_token()
-
-    headers = {"X-Auth-Token": token, "X-Auth-Sudo-Tenant-ID": project_id}
-
-    req = requests.get("%s/v2/zones" % (endpoint), headers=headers, verify=False)
-    req.raise_for_status()
-    zones = yaml.safe_load(req.text)["zones"]
+    designateclient = clients.designateclient(project=project_id, edit_managed=True)
+    zones = designateclient.zones.list()
 
     for zone in zones:
         if "svc." in zone["name"].lower():
@@ -129,17 +73,12 @@ def purge_duplicates(project_id, delete=False):
 
         print("checking zone: %s" % zone["name"])
 
-        req = requests.get(
-            "%s/v2/zones/%s/recordsets" % (endpoint, zone["id"]),
-            headers=headers,
-            verify=False,
-        )
-        req.raise_for_status()
-        recordsets = yaml.safe_load(req.text)["recordsets"]
+        recordsets = designateclient.recordsets.list(zone["id"])
 
         # we need a fresh copy of all instances so we don't accidentally
         #  delete things that have been created since we last checked.
         instances = clients.allinstances(allregions=True)
+
         all_possible_names = []
         all_eqiad_nova_instances_legacy = [
             "%s.%s.eqiad.wmflabs."
@@ -200,9 +139,7 @@ def purge_duplicates(project_id, delete=False):
                 if name not in all_possible_names:
                     print(("%s is linked to missing instance %s" % (recordsetid, name)))
                     if delete:
-                        delete_recordset(
-                            endpoint, token, project_id, zone["id"], recordsetid
-                        )
+                        designateclient.recordsets.delete(zone["id"], recordsetid)
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
                     print(
@@ -258,9 +195,7 @@ def purge_duplicates(project_id, delete=False):
                 if not goodrecords:
                     if delete:
                         print("Deleting the whole recordset.")
-                        delete_recordset(
-                            endpoint, token, project_id, zone["id"], recordsetid
-                        )
+                        designateclient.recordsets.delete(zone["id"], recordsetid)
                 else:
                     if len(goodrecords) != len(originalrecords):
                         if delete:
@@ -270,14 +205,7 @@ def purge_duplicates(project_id, delete=False):
                                     % (goodrecords, originalrecords)
                                 )
                             )
-                            edit_recordset(
-                                endpoint,
-                                token,
-                                project_id,
-                                zone["id"],
-                                recordset,
-                                goodrecords,
-                            )
+                            designateclient.update(zone["id"], recordset, goodrecords)
 
 
 parser = argparse.ArgumentParser(
@@ -290,11 +218,6 @@ parser.add_argument(
     action="store_true",
 )
 args = parser.parse_args()
-
-# We don't want to hear about https certs
-requests.packages.urllib3.disable_warnings(
-    requests.packages.urllib3.exceptions.InsecureRequestWarning
-)
 
 purge_duplicates("cloudinfra", args.delete)
 purge_duplicates("cloudinfra-codfw1dev", args.delete)
