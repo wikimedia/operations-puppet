@@ -292,7 +292,7 @@ class Clients(object):
         wait=wait_random(min=5, max=15),
         before_sleep=before_sleep_log(logger, logging.WARNING),
     )
-    def designateclient(self, auth_project=None, project=None):
+    def designateclient(self, auth_project=None, project=None, edit_managed=False):
         if not project:
             project = self.project
 
@@ -306,6 +306,7 @@ class Clients(object):
                 timeout=300,
                 sudo_project_id=project,
                 region_name=self.region,
+                edit_managed=edit_managed,
             )
         return self.designateclients[project]
 
