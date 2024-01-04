@@ -48,4 +48,10 @@ class profile::openstack::eqiad1::designate::service(
         enforce_policy_scope              => $enforce_policy_scope,
         enforce_new_policy_defaults       => $enforce_new_policy_defaults,
     }
+
+    prometheus::node_textfile { 'wmcs-dnsleaks':
+        filesource => 'puppet:///modules/openstack/admin/wmcs-dnsleaks.py',
+        interval   => '*:0/30',
+        run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus',
+    }
 }
