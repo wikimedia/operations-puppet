@@ -217,10 +217,13 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/dnsdist
+ component/elastic710
  component/puppet5
  component/puppetdb7
  component/prometheus-openstack-exporter
  component/wmf-laptop
+ thirdparty/elastic710
+ thirdparty/elasticsearch-curator5
  thirdparty/haproxy26
  thirdparty/haproxy28
  thirdparty/hwraid
@@ -228,6 +231,8 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ elastic710
+ elasticsearch-curator5
  hp-mcp-bookworm
  hwraid-megacli
  thirdparty/haproxy26-bookworm
