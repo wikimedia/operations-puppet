@@ -33,7 +33,6 @@ class rsyslog::receiver (
         # Unlike rsyslog-openssl (see below), rsyslog-gnutls is available
         # in buster, but on buster systems, we need a newer version of
         # rsyslog due to segfaults (T259780)
-        $buster_component = 'component/rsyslog'
         $netstream_package = 'rsyslog-gnutls'
     } else {
         # rsyslog-openssl is available by default in bullseye and later,
@@ -41,22 +40,10 @@ class rsyslog::receiver (
         # buster systems (T324623)
         # component/rsyslog-openssl also incorporated the fix for
         # T259780 (see above), hence component/rsyslog is redundant
-        $buster_component = 'component/rsyslog-openssl'
         $netstream_package = 'rsyslog-openssl'
     }
 
-    if debian::codename::eq('buster') {
-        # On Buster syslog servers acting as syslog clients,
-        # apt::package_from_component may have been defined
-        # in base::remote_syslog as well
-        ensure_resource('apt::package_from_component', 'rsyslog-tls', {
-            component => $buster_component,
-            packages  => [$netstream_package, 'rsyslog-kafka', 'rsyslog'],
-            before    => Class['rsyslog'],
-        })
-    } else {
-        ensure_packages($netstream_package)
-    }
+    ensure_packages($netstream_package)
 
     if ($log_directory == $archive_directory) {
         fail("rsyslog log and archive are the same: ${log_directory}")
