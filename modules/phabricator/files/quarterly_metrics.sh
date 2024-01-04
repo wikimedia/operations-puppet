@@ -49,7 +49,13 @@ tasksclosed=$(echo $result_tasks_closed | sed 's/[^0-9]*//g')
 tasksauthors=$(echo $result_tasks_authors | sed 's/[^0-9]*//g')
 tasksclosers=$(echo $result_tasks_closers | sed 's/[^0-9]*//g')
 
-lastquarter=$(date +"Q$(expr $(expr $(date -d '-1 month' +%m) - 1) / 3 + 1)/%Y")
+month="$(date -d '-1 month' +%m)"
+if [[ $month == 12 ]]; then
+  year="$(date --date='-1 year' +'%Y')"
+else
+  year="$(date +'%Y')"
+fi
+lastquarter=$(date +"Q$(expr $(expr $month - 1) / 3 + 1)/$year")
 
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator quarterly statistics - ${lastquarter}" -a "Auto-Submitted: auto-generated" ${rcpt_address}
