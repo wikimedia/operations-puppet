@@ -52,16 +52,16 @@ class profile::idm(
 
     if $envoy_termination {
       include profile::tlsproxy::envoy
-      $ferm_port = 443
+      $firewall_port = 443
       profile::auto_restarts::service { 'envoyproxy': }
     } else {
       # In cloud we use the shared wmfcloud proxy for tls termination
-      $ferm_port = 80
+      $firewall_port = 80
     }
 
-    ferm::service { 'idm_http':
+    firewall::service { 'idm_http':
         proto => 'tcp',
-        port  => $ferm_port,
+        port  => $firewall_port,
     }
 
     file { [$base_dir, $static_dir, $media_dir, $etc_dir, $log_dir] :
