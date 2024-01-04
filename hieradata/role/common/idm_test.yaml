@@ -25,6 +25,7 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::ssl_provider: 'acme'
 profile::tlsproxy::envoy::global_cert_name: idm-test
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::tlsproxy::envoy::firewall_srange: []
 
 # Redis
 profile::idm::redis_master: 'idm-test1001'
