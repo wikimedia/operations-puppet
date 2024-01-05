@@ -34,4 +34,11 @@ class profile::phabricator::monitoring (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
         }
     }
+
+    prometheus::blackbox::check::tcp { 'phabricator-smtp':
+        team     => 'serviceops-collab',
+        severity => 'task',
+        port     => 25,
+    }
+
 }

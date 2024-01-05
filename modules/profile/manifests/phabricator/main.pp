@@ -500,12 +500,6 @@ class profile::phabricator::main (
         srange => $smarthosts,
     }
 
-    prometheus::blackbox::check::tcp { 'phabricator-smtp':
-        team     => 'collaboration-services',
-        severity => 'task',
-        port     => 25,
-    }
-
     # ssh between phabricator servers for clustering support
     $phabricator_servers_ferm = join($phabricator_servers, ' ')
     ferm::service { 'ssh_cluster':
