@@ -387,3 +387,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - device-analytics
   - inference
   - wikifunctions
+
+# Tracing percentage
+profile::services_proxy::envoy::local_otel_reporting_pct: 0.0

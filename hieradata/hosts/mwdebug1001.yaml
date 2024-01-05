@@ -3,5 +3,6 @@ profile::tlsproxy::envoy::error_page: true
 # T351566. Overriding temporarily for mwdebug hosts, adding OpenTelemetry
 # collector envoy upstream
 profile::tlsproxy::envoy::local_otel_reporting_pct: 100.0
+profile::services_proxy::envoy::local_otel_reporting_pct: 100.0
 profile::opentelemetry::otel_gateway_fqdn: jaeger-collector-grpc.svc.eqiad.wmnet
 profile::opentelemetry::otel_gateway_otlp_port: 30443

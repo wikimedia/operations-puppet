@@ -16,6 +16,19 @@ filter_chains:
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
           path: "/var/log/envoy/<%= n %>.log"
+      <%- if @local_otel_reporting_pct > 0 -%>
+      tracing:
+        random_sampling:
+          value: <%= @local_otel_reporting_pct %>
+        provider:
+          name: envoy.tracers.opentelemetry
+          typed_config:
+            "@type": type.googleapis.com/envoy.config.trace.v3.OpenTelemetryConfig
+            grpc_service:
+              envoy_grpc:
+                cluster_name: otel-collector
+              timeout: 0.250s
+      <%- end -%>
       stat_prefix: <%= n %>_egress
       http_filters:
       - name: envoy.filters.http.router

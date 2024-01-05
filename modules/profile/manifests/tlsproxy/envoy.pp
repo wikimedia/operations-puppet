@@ -54,7 +54,7 @@
 # @param stream_idle_timeout If set, set the stream idle timeout (otherwise, 5 minutes is what envoy defaults to)
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
 # @param error_page  boolean true if an error page should be added; false by default.
-# @param otel_reporting boolean, true if we are to report to a local open telemetry collector
+# @param local_otel_reporting_pct float, the percentage (e.g. 37.5) of traffic to be sampled for tracing
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni    $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                     $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -244,17 +244,18 @@ class profile::tlsproxy::envoy(
 
         if $local_otel_reporting_pct > 0 {
             # TLS terminator was defined with OpenTelemetry reporting enabled.
-            # Set an upstream cluster that is required by the tracing stanza
             $upstream_name = 'otel-collector'
-            $max_requests_per_conn = $max_requests
-            $connect_timeout = 1.0
-            $upstream = {
-                  'upstream'     => {'port' => 4317, 'addr' => '127.0.0.1'},
-            }
-
-            envoyproxy::cluster { "cluster_${upstream_name}":
-              priority => 1,
-              content  => template('envoyproxy/tracing_cluster.yaml.erb'),
+            if !defined(Envoyproxy::Cluster["cluster_${upstream_name}"]) {
+                # Set an upstream cluster that is required by the tracing stanza
+                $max_requests_per_conn = $max_requests
+                $connect_timeout = 1.0
+                $upstream = {
+                    'upstream' => {'port' => 4317, 'addr' => '127.0.0.1'},
+                }
+                envoyproxy::cluster { "cluster_${upstream_name}":
+                  priority => 1,
+                  content  => template('envoyproxy/tracing_cluster.yaml.erb'),
+                }
             }
         }
 

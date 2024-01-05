@@ -536,6 +536,7 @@ profile::idp::webauthn_relaying_party: wikimedia.org
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
 profile::services_proxy::envoy::enabled_listeners: []
+profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
 
 profile::sre::os_reports::ensure: absent
 profile::sre::os_reports::host: ~

@@ -13,12 +13,14 @@
 #             For nodejs applications assume the right value is 5 seconds (see T247484)
 #   xfp - Set an explicit value for X-Forwarded-Proto, instead of letting envoy inject it (see T249535)
 # @param enabled_listeners Optional list of listeners we want to install locally.
-# @param listen_ipv6 listent on ipv6
+# @param listen_ipv6 listen on ipv6
+# @param local_otel_reporting_pct float, the percentage (e.g. 37.5) of traffic to be sampled for tracing
 class profile::services_proxy::envoy(
-    Wmflib::Ensure                   $ensure            = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
-    Array[Profile::Service_listener] $all_listeners     = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
-    Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
-    Boolean                          $listen_ipv6       = lookup('profile::services_proxy::envoy::listen_ipv6'),
+    Wmflib::Ensure                   $ensure                    = lookup('profile::envoy::ensure', {'default_value' => 'present'}),
+    Array[Profile::Service_listener] $all_listeners             = lookup('profile::services_proxy::envoy::listeners', {'default_value' => []}),
+    Optional[Array[String]]          $enabled_listeners         = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
+    Boolean                          $listen_ipv6               = lookup('profile::services_proxy::envoy::listen_ipv6'),
+    Float                            $local_otel_reporting_pct  = lookup('profile::services_proxy::envoy::local_otel_reporting_pct'),
 ) {
     if $enabled_listeners == undef {
         $listeners = $all_listeners
@@ -66,6 +68,22 @@ class profile::services_proxy::envoy(
         if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
             envoyproxy::cluster { "${svc_name}_cluster":
                 content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
+            }
+        }
+
+        if $local_otel_reporting_pct > 0 {
+            $upstream_name = 'otel-collector'
+            # OpenTelemetry reporting enabled, define cluster if nonexisting
+            if !defined(Envoyproxy::Cluster["cluster_${upstream_name}"]) {
+                # Set an upstream cluster that is required by the tracing stanza
+                $connect_timeout = 1.0
+                $upstream = {
+                    'upstream' => {'port' => 4317, 'addr' => '127.0.0.1'},
+                }
+                envoyproxy::cluster { "cluster_${upstream_name}":
+                  priority => 1,
+                  content  => template('envoyproxy/tracing_cluster.yaml.erb'),
+                }
             }
         }
 
