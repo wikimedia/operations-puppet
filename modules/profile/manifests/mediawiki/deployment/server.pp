@@ -203,4 +203,30 @@ class profile::mediawiki::deployment::server(
 
     # benchmarking tools (sessionstorage testing, k8s ml infra benchmarking) (T230178)
     ensure_packages(['siege', 'wrk', 'lua-cjson'])
+
+    # Starting with git 2.30.3 (which also got backported to older releases
+    # as CVE-2022-24765) git changed the default behaviour to add an ownership
+    # check which prevents git operations by a user different than the one which
+    # owns the .git directory within the repository. This also applies to the root
+    # user and was added to git in
+    # https://github.com/git/git/commit/8959555cee7ec045958f9b6dd62e541affb7e7d9
+    # When making the change, git upstream added a new config directive 'safe.directory'
+    # which omits the new safety check for a given directory.
+    #
+    # For Scap deployments in T330394, the scap provider was fixed to run all git
+    # commands of the users owning the directory.
+    #
+    # However, for a shared environment like the deployment servers the safe.directory
+    # option isn't well suited: It doesn't allow globbing and only operates on a single
+    # directory and no sub directories within. Also allow-listing individual directories
+    # would need an additional wrapper since deployers currently need to run individual
+    # git commands. As such, for now we're disabling the new check globally until a better
+    # fix is available
+    git::systemconfig { 'disable-check-for-CVE-2022-24765':
+        settings => {
+            'safe' => {
+                'directory' => '*',
+            }
+        }
+    }
 }
