@@ -544,6 +544,9 @@ profile::sre::os_reports::host: ~
 graphite_host: ~
 graphite_url: ~
 statsd: ~
+# We don't have a graphite_host in cloud, so
+# disable statsite
+profile::statsite::ensure: absent
 
 profile::prometheus::memcached_exporter::arguments: ""
 profile::prometheus::mcrouter_exporter::mcrouter_port: 11213

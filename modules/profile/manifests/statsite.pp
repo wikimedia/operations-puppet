@@ -5,11 +5,15 @@
 # Graphite or Ganglia. See <https://github.com/armon/statsite>.
 #
 class profile::statsite (
-  Stdlib::Host   $graphite_host = lookup('graphite_host'),
-  Wmflib::Ensure $ensure = lookup('profile::statsite::ensure', { 'default_value' => 'present' }),
+  Optional[Stdlib::Host]   $graphite_host = lookup('graphite_host'),
+  Wmflib::Ensure           $ensure = lookup('profile::statsite::ensure', { 'default_value' => 'present' }),
 ) {
     system::role { 'statsite':
         description => 'statsite server'
+    }
+
+    if $ensure == 'present' and $graphite_host == undef {
+        fail('$graphite_host required, but it is set to undef')
     }
 
     class { '::statsite':
