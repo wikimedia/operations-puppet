@@ -89,7 +89,6 @@ class profile::phabricator::main (
 
     Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
-    Array[Stdlib::Fqdn]         $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
     String                      $gitlab_api_key     = lookup('profile::phabricator::main::gitlab_api_key',
                                                       { 'default_value' => '' }),
     Stdlib::Unixpath            $database_datadir   = lookup('profile::phabricator::main::database_datadir',
@@ -454,23 +453,6 @@ class profile::phabricator::main (
         require         => Package[$deploy_target]
     }
 
-    # Allow dumps servers to pull dump files.
-    rsync::server::module { 'srv-dumps':
-            path        => '/srv/dumps',
-            read_only   => 'yes',
-            hosts_allow => $dumps_rsync_clients,
-            auto_nft    => true,
-    }
-
-    # Allow pthers phab servers to pull tarballs with home dir files
-    file { '/srv/homes': ensure => directory,}
-
-    rsync::server::module { 'srv-homes':
-            path        => '/srv/homes',
-            read_only   => 'yes',
-            hosts_allow => $phabricator_servers,
-            auto_nft    => true,
-    }
     # Backup repositories and home dirs
     backup::set { 'srv-repos': }
     backup::set { 'home': }
@@ -514,15 +496,6 @@ class profile::phabricator::main (
             proto  => 'tcp',
             port   => '22280',
         }
-    }
-
-    # Allow pulling /srv/repos data from the active server.
-    rsync::server::module { 'srv-repos':
-        ensure      => present,
-        read_only   => 'yes',
-        path        => '/srv/repos',
-        hosts_allow => $phabricator_servers,
-        auto_nft    => true,
     }
 
     # Ship apache error logs to ELK - T141895
