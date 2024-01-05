@@ -28,6 +28,13 @@ class clamav($proxy=undef) {
         require => Package['clamav-daemon'],
     }
 
+    # overwriting the unit file from the distro package
+    # because we are adding auto-restart on failure
+    systemd::override { 'clamav-daemon-auto-restart':
+        unit    => 'clamav-daemon',
+        content => "[Service]\nRestart=on-failure\nRestartSec=5s\n",
+    }
+
     # Add proxy settings to freshclam
     if $proxy {
         $proxy_arr = split($proxy, ':')
