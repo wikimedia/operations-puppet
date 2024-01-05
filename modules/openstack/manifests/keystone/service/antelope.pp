@@ -115,12 +115,6 @@ class openstack::keystone::service::antelope(
             recurse => true;
     }
 
-    openstack::patch { '/usr/lib/python3/dist-packages/keystone/api/projects.py':
-        source  => 'puppet:///modules/openstack/antelope/keystone/hacks/projects.py.patch',
-        require => Package['keystone'],
-        notify  => Service[$wsgi_server],
-    }
-
     # Specify that the Default domain uses ldap (while the default /config/ specifies
     #  mysql. Confusing, right?)
     file {'/etc/keystone/domains/keystone.default.conf':
