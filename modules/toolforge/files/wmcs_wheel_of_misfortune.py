@@ -289,7 +289,7 @@ def main():
         "--min-uid",
         "-m",
         type=int,
-        default=500,
+        default=1000,
         help="Minimum UID to consider kill-worthy",
     )
     parser.add_argument(
