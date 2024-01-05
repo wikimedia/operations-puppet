@@ -10,6 +10,7 @@ class role::phabricator {
     include ::profile::firewall
     include ::profile::backup::host
     include ::profile::phabricator::main
+    include ::profile::phabricator::logmail
     include ::profile::phabricator::httpd
     include ::profile::phabricator::monitoring
     include ::profile::phabricator::performance
