@@ -4,5 +4,5 @@ Description=socat ipv6 to ipv4 relay for udp2log
 
 [Service]
 User=nobody
-ExecStart=/usr/bin/socat -u UDP6-RECV:<%= @port %>,ipv6only=1 UDP4-SENDTO:127.0.0.1:<%= @port %>
+ExecStart=/usr/bin/socat -b65536 -u UDP6-RECV:<%= @port %>,ipv6only=1 UDP4-SENDTO:127.0.0.1:<%= @port %>
 Restart=always
