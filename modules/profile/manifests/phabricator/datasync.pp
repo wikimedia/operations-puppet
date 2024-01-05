@@ -2,11 +2,13 @@
 # phabricator - data syncing between servers
 #
 class profile::phabricator::datasync (
-    Stdlib::Fqdn               $active_server = lookup('phabricator_active_server',
-                                                      { 'default_value' => undef }),
-    Stdlib::Fqdn               $passive_server = lookup('phabricator_passive_server',
-                                                      { 'default_value' => undef }),
-    Array[Stdlib::Fqdn]        $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
+    Stdlib::Fqdn        $active_server = lookup('phabricator_active_server',
+                        { 'default_value' => undef }),
+    Stdlib::Fqdn        $passive_server = lookup('phabricator_passive_server',
+                        { 'default_value' => undef }),
+    Array[Stdlib::Fqdn] $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
+    Stdlib::Unixpath    $home_sync_dir= lookup('profile::phabricator::datasync::home_sync_dir',
+                        { 'default_value' => '/srv/homes' }),
 ){
 
     $phabricator_servers = [ $active_server, $passive_server ]
@@ -20,13 +22,15 @@ class profile::phabricator::datasync (
     }
 
     # Allow other phab servers to pull tarballs with home dir files.
-    file { '/srv/homes': ensure => directory,}
+    file { $home_sync_dir: ensure => directory,}
 
-    rsync::server::module { 'srv-homes':
-            path        => '/srv/homes',
-            read_only   => 'yes',
-            hosts_allow => $phabricator_servers,
-            auto_nft    => true,
+    rsync::quickdatacopy { 'phabricator-home-dirs':
+        ensure      => present,
+        auto_sync   => true,
+        delete      => true,
+        source_host => $active_server,
+        dest_host   => $passive_server,
+        module_path => $home_sync_dir,
     }
 
     # Allow pulling /srv/repos data from the active server.
