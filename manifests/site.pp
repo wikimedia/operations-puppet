@@ -1630,7 +1630,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
 
 # START Kubernetes workers that used to be mw app/api servers
 node /^mw1377\.eqiad\./ {  # TEMPORARY -- kamila debugging rebooting weirdness and will revert this when done
-  role(insetup::serviceops)
+  role(kubernetes::debugreboot)
 }
 
 node /^mw137[8-9]\.eqiad\./ {
