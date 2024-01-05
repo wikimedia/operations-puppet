@@ -160,7 +160,7 @@ class Clients(object):
                     password=self.password,
                     user_domain_name="Default",
                     project_domain_id=projectdomain,
-                    project_name=project,
+                    project_id=project,
                 )
 
             self.sessions[project] = keystone_session.Session(auth=auth)
