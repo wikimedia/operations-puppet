@@ -42,6 +42,9 @@ require_relative 'rake_modules/module_rake_tasks.rb'
 
 pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,tasks,type_aliases,types,unit}/**/*_spec.rb'
 
+# Clone the labs private repo. The hiera data from the repo is used by CI to
+# ensure that rspec tests can lookup [mocked] hiera data in the labs private
+# repo.
 private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')
