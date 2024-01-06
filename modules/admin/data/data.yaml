@@ -6987,3 +6987,7 @@ ldap_only_users:
     ensure: present
     realname: Jack Wheeler
     email: jwheeler@wikimedia.org
+  dimakoushha:
+    ensure: present
+    realname: Dima Koushha
+    email: dima.koushha@wikimedia.de
