@@ -39,7 +39,7 @@ es_codfw_rack_c4:
   profile::elasticsearch::row:  C
 
 es_codfw_rack_c7:
-  __regex: !ruby/regexp /^elastic2(048|059|071|83|102|103)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2(048|059|071|083|102|103)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C7
   profile::elasticsearch::row:  C
 
