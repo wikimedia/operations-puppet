@@ -208,6 +208,11 @@ profile::services_proxy::envoy::listeners:
     # sets_sni should replace, long term, uses_ingress.
     uses_ingress: true
     sets_sni: true
+  - name: ipoid
+    port: 6035
+    service: ipoid
+    timeout: "5s"
+    upstream: "ipoid.discovery.wmnet"
 
   # Non-discovery records
   # Eqiad ports are at 61xx
@@ -387,6 +392,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - device-analytics
   - inference
   - wikifunctions
+  - ipoid
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
