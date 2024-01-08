@@ -5,10 +5,11 @@ import argparse
 import subprocess
 import sys
 
+from typing import Tuple
 from pathlib import Path
 
 
-def rev_count(basedir: Path, remote: str, branch: str) -> tuple[int, int]:
+def rev_count(basedir: Path, remote: str, branch: str) -> Tuple[int, int]:
     """Return number of revisions our branch is ahead and behind
 
     Args:
@@ -17,7 +18,7 @@ def rev_count(basedir: Path, remote: str, branch: str) -> tuple[int, int]:
         branch (str): Remote branch
 
     Returns:
-        Union[int, int]: Number of revisions behind, number of revision ahead
+        tuple[int, int]: Number of revisions behind, number of revision ahead
     """
     return (
         int(subprocess.run([
