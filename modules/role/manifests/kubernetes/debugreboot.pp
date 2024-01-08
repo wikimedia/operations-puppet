@@ -8,7 +8,7 @@ class role::kubernetes::debugreboot {
     # Setup dfdaemon and configure docker to use it
     include profile::dragonfly::dfdaemon
     # Setup kubernetes stuff
-    # include profile::kubernetes::node
+    include profile::kubernetes::node
     # # Set up mediawiki-related stuff
     # include profile::kubernetes::mediawiki_runner
     # # Setup calico
