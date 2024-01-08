@@ -27,10 +27,12 @@ class profile::toolforge::mailrelay (
                             '/usr/local/sbin/maintainers'],
     }
 
-    exim4::dkim { $primary_domain:
-        domain   => $primary_domain,
-        selector => 'toolforge',
-        content  => secret("dkim/wmcs/${primary_domain}-toolforge.key"),
+    ['toolforge', 'toolforge-rsa'].each |String[1] $dkim_selector| {
+        exim4::dkim { "${primary_domain}-${dkim_selector}":
+            domain   => $primary_domain,
+            selector => $dkim_selector,
+            content  => secret("dkim/wmcs/${primary_domain}-${dkim_selector}.key"),
+        }
     }
 
     # Manually maintained outbound sender blocklist
