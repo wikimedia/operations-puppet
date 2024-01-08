@@ -249,15 +249,19 @@ class profile::debmonitor::server (
         }
 
         prometheus::blackbox::check::http { 'debmonitor.wikimedia.org':
-            server_name    => $facts['networking']['fqdn'],
-            port           => 7443,
+            server_name    => 'debmonitor.wikimedia.org',
+            port           => 443,
             status_matches => [302],
-            force_tls      => true,
+            header_matches => [{
+                header =>'location',
+                regexp => '^https:\/\/idp.wikimedia.org\/'
+            }],
             probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Debmonitor'
         }
 
         prometheus::blackbox::check::http { 'debmonitor.discovery.wmnet':
-            port            => 443,
+            server_name     => $facts['networking']['fqdn'],
+            port            => 7443,
             path            => '/client',
             use_client_auth => true,
             method          => 'HEAD',
