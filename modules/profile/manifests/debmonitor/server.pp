@@ -240,6 +240,7 @@ class profile::debmonitor::server (
         }
 
         prometheus::blackbox::check::http { 'debmonitor.wikimedia.org':
+            server_name    => $facts['networking']['fqdn'],
             port           => 7443,
             status_matches => [302],
             force_tls      => true,
