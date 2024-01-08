@@ -12,6 +12,7 @@ class puppetmaster::monitoring (
 
     file { '/usr/local/bin/check_git_needs_merge':
         ensure => present,
+        mode   => '0555',
         source => 'puppet:///modules/puppetmaster/check_git_needs_merge.py'
     }
 
