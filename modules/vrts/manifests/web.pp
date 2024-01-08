@@ -39,4 +39,9 @@ class vrts::web(
     rsyslog::input::file { 'vrts-apache2-access':
         path => '/var/log/apache2/*access*.log',
     }
+
+    systemd::override { 'apache2-auto-restart':
+        unit    => 'apache2',
+        content => "[Service]\nRestart=on-failure\nRestartSec=5s\n",
+    }
 }
