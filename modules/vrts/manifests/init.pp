@@ -168,6 +168,15 @@ class vrts(
         source => 'puppet:///modules/vrts/vrts.TicketExport2Mbox.pl',
     }
 
+    # Enable Database Connection Pooling
+    file { '/opt/otrs/scripts/apache2-perl-startup.pl':
+        ensure => file,
+        owner  => 'otrs',
+        group  => 'www-data',
+        mode   => '0755',
+        source => 'puppet:///modules/vrts/apache2-perl-startup.pl',
+    }
+
     # WMF skin customizations
     file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
         ensure => file,
