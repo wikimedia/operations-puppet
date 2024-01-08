@@ -2697,6 +2697,11 @@ node /^restbase20(1[3-9]|2[0-9]|3[0-5])\.codfw\./ {
     role(restbase::production)
 }
 
+# New restbase (eqiad) hosts T354227
+node /^restbase10(3[4-9]|4[0-2])\.eqiad\./ {
+    role(insetup::data_persistence)
+}
+
 # New cassandra dev nodes T324113
 node /^cassandra-dev200[1-3]\.codfw\./ {
     role(cassandra_dev)
