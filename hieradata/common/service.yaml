@@ -3962,3 +3962,17 @@ service::catalog:
     discovery:
       - dnsdisc: config-master
         active_active: true
+
+  ipoid:
+    description: iPoid IP address reputation service ipoid.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    probes:
+      - type: http
+        path: /healthz
+    port: *k8s-ingress-wikikube_port
+    sites:
+      - eqiad
+      - codfw
+    state: production
