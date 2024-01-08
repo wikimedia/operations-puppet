@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: dologmsg
-.\"    Author: [FIXME: author] [see http://docbook.sf.net/el/author]
-.\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 06/02/2019
+.\"    Author: [FIXME: author] [see http://www.docbook.org/tdg5/en/html/author]
+.\" Generator: DocBook XSL Stylesheets vsnapshot <http://docbook.sf.net/>
+.\"      Date: 01/09/2024
 .\"    Manual: Wikimedia Manual
 .\"    Source: Puppet 1.0
 .\"  Language: English
 .\"
-.TH "DOLOGMSG" "1" "06/02/2019" "Puppet 1\&.0" "Wikimedia Manual"
+.TH "DOLOGMSG" "1" "01/09/2024" "Puppet 1\&.0" "Wikimedia Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -36,7 +36,21 @@ dologmsg \- send a message to an IRC relay
 .fi
 .SH "DESCRIPTION"
 .sp
-\fIdologmsg\fR will instruct wm\-bot to relay the \fIMESSAGE\fR to the #wikimedia\-cloud IRC channel, where it will be picked up by stashbot and stored in the tool\(cqs Server Admin Log at https://wikitech\&.wikimedia\&.org/wiki/Nova_Resource:Tools\&.\fItoolname\fR/SAL\&. The message is prepended by the current tool user name and, if available, the real user behind it (\fB$SUDO_USER\fR)\&. If multiple arguments are specified, they are concatenated separated by spaces, but messages containing shell special characters must still be quoted\&.
+\fIdologmsg\fR will instruct wm\-bot to relay the \fIMESSAGE\fR to the #wikimedia\-cloud IRC channel, prepended by the user who ran the command, the hostname where the command was run, and the toolname, in the format expected by stashbot:
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+!log user@hostname tools\&.toolname This is the log message
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+Stashbot will parse this message and store it in the tool\(cqs Server Admin Log at https://wikitech\&.wikimedia\&.org/wiki/Nova_Resource:Tools\&.\fItoolname\fR/SAL\&. Messages can be browsed also at https://sal\&.toolforge\&.org/tools\&.\fItoolname\fR\&.
+.sp
+\fIMESSAGE\fR can contain spaces, but shell special characters must be quoted\&.
 .SH "OPTIONS"
 .PP
 \fB\-h, \-\-help\fR
