@@ -16,7 +16,7 @@ class puppetmaster::monitoring (
     }
 
     systemd::timer::job { 'prometheus_puppetmerge_puppet':
-        ensure      => present,
+        ensure      => absent,
         user        => 'root',
         description => 'Prometheus exporter for missing git merges',
         command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/operations/',
@@ -46,7 +46,7 @@ class puppetmaster::monitoring (
         }
 
         systemd::timer::job { 'prometheus_puppetmerge_labs_private':
-            ensure      => present,
+            ensure      => absent,
             user        => 'root',
             description => 'Prometheus exporter for missing git merges',
             command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/labs/private/ --name labs_private',
