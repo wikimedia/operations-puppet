@@ -10,7 +10,6 @@ class profile::gerrit(
     Array[Stdlib::Fqdn]               $ssh_allowed_hosts = lookup('profile::gerrit::ssh_allowed_hosts'),
     String                            $config            = lookup('profile::gerrit::config'),
     Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
-    Boolean                           $is_replica        = lookup('profile::gerrit::is_replica'),
     Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
     Optional[String]                  $daemon_user       = lookup('profile::gerrit::daemon_user'),
     Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
@@ -23,8 +22,11 @@ class profile::gerrit(
     Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
     Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
     Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
+    Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
 ) {
     require ::profile::java
+
+    $is_replica = $facts['fqdn'] != $active_host
 
     interface::alias { 'gerrit server':
         ipv4 => $ipv4,

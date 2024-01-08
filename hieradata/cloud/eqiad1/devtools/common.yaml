@@ -148,7 +148,6 @@ profile::gerrit::mask_service: false
 profile::gerrit::ssh_allowed_hosts:
 - gerrit-prod-1001.devtools.eqiad.wmflabs
 
-profile::gerrit::is_replica: false
 profile::gerrit::replica_hosts: []
 
 # No IPv6 in cloud
@@ -188,9 +187,9 @@ sslcert::certificate::skip_private: true
 profile::gerrit::backups_enabled: false
 profile::gerrit::backup_set: 'gerrit-repo-data'
 
+profile::gerrit::active_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
+
 ## data for server migration
-profile::gerrit::migration::src_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
-profile::gerrit::migration::dst_hosts: []
 profile::gerrit::migration::data_dir: /srv/gerrit
 
 # Cache Proxy

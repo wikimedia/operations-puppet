@@ -6,17 +6,10 @@ profile::gerrit::mask_service: false
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
-# When promoting a master set this to false
-# in the corresponding hosts yaml file.
-profile::gerrit::is_replica: true
+profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
     - 'gerrit-replica-new.wikimedia.org'
-
-# Settings for rsyncing app data for migration or reinstalls
-profile::gerrit::migration::src_host: 'gerrit1003.wikimedia.org'
-profile::gerrit::migration::dst_hosts:
-  - 'gerrit2002.wikimedia.org'
 
 profile::gerrit::migration::data_dir: '/srv/gerrit'
 

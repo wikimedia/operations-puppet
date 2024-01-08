@@ -1,12 +1,12 @@
 # Allow rsyncing gerrit data to another server for
 # migration and reinstalls.
 class profile::gerrit::migration (
-    Stdlib::Fqdn        $src_host    = lookup('profile::gerrit::migration::src_host'),
-    Array[Stdlib::Fqdn] $dst_hosts   = lookup('profile::gerrit::migration::dst_hosts'),
+    Stdlib::Fqdn        $src_host    = lookup('profile::gerrit::active_host'),
     Stdlib::UnixPath    $gerrit_site = lookup('profile::gerrit::gerrit_site'),
     Stdlib::Unixpath    $data_dir    = lookup('profile::gerrit::migration::data_dir'),
     String              $daemon_user = lookup('profile::gerrit::migration::daemon_user'),
 ) {
+    $dst_hosts = wmflib::class::hosts('gerrit').filter |$host| { $host != $src_host }
 
     if $facts['fqdn'] in $dst_hosts {
 
