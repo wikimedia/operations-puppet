@@ -72,7 +72,7 @@ is outstanding changes which needs to be merged on a Puppet master""",
     parser.add_argument('--branch', type=str, default='production', help="branch")
     parser.add_argument('--dir',
                         type=Path,
-                        default='/var/lib/promentheus/node.d/',
+                        default='/var/lib/prometheus/node.d/',
                         help='Output path for prom file')
     parser.add_argument('--name',
                         type=str,
