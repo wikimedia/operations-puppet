@@ -1,0 +1,2 @@
+# TEMPORARY for debugging T354413, TODO(kamila) remove me
+profile::base::overlayfs: true
