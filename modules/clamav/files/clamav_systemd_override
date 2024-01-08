@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+StartLimitIntervalSec=120
+StartLimitBurst=5
+
+[Service]
+Restart=on-failure
+RestartSec=5s
+OOMPolicy=kill
+OOMScoreAdjust=100

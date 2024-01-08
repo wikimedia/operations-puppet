@@ -41,7 +41,7 @@ class vrts::web(
     }
 
     systemd::override { 'apache2-auto-restart':
-        unit    => 'apache2',
-        content => "[Service]\nRestart=on-failure\nRestartSec=5s\n",
+        unit   => 'apache2',
+        source => 'puppet:///modules/vrts/apache2_systemd_override',
     }
 }

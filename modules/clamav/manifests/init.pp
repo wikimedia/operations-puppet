@@ -31,8 +31,8 @@ class clamav($proxy=undef) {
     # overwriting the unit file from the distro package
     # because we are adding auto-restart on failure
     systemd::override { 'clamav-daemon-auto-restart':
-        unit    => 'clamav-daemon',
-        content => "[Service]\nRestart=on-failure\nRestartSec=5s\n",
+        unit   => 'clamav-daemon',
+        source => 'puppet:///modules/clamav/clamav_systemd_override',
     }
 
     # Add proxy settings to freshclam
