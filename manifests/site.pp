@@ -972,12 +972,12 @@ node /^dbproxy20(01|02|03|04)\.codfw\./ {
 # clouddb proxies (controling replica service dbs)
 # analytics proxy
 node /^dbproxy1018\.eqiad\./ {
-    role(mariadb::proxy::replicas)
+    role(insetup::wmcs)
 }
 
 # web proxy
 node /^dbproxy1019\.eqiad\./ {
-    role(mariadb::proxy::replicas)
+    role(insetup::wmcs)
 }
 
 node /^debmonitor[12]002\.(codfw|eqiad)\./ {
