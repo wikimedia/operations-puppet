@@ -6188,7 +6188,7 @@ users:
   dreamyjazz:
     ensure: present
     realname: William Brown
-    email: dreamyjazzwikipedia@gmail.com
+    email: wpgbrown@wikimedia.org
     uid: 20726
     gid: 500
     ssh_keys:
