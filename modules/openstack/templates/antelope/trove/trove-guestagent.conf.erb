@@ -11,8 +11,8 @@
 
 [DEFAULT]
 
-block_device_mapping = sdb
-device_path = /dev/sdb
+block_device_mapping = vdb
+device_path = /dev/vdb
 
 
 #=========== RPC Configuration ======================
@@ -113,15 +113,15 @@ kombu_reconnect_delay=0.1
 
 [mysql]
 docker_image = quay.io/wikimedia-cloud-services/mysql
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 
 [mariadb]
 docker_image = quay.io/wikimedia-cloud-services/mariadb
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 [redis]
-device_path = /dev/sdb
+device_path = /dev/vdb
 docker_image = quay.io/wikimedia-cloud-services/redis
 # For redis, the following are the defaults for backup, and restore:
 # backup_strategy = RedisBackup
@@ -129,16 +129,16 @@ docker_image = quay.io/wikimedia-cloud-services/redis
 # restore_namespace = trove.guestagent.strategies.restore.experimental.redis_impl
 
 [postgresql]
-device_path = /dev/sdb
+device_path = /dev/vdb
 docker_image = quay.io/wikimedia-cloud-services/postgres
 
 [percona]
-device_path = /dev/sdb
+device_path = /dev/vdb
 backup_namespace = trove.guestagent.strategies.backup.mysql_impl
 restore_namespace = trove.guestagent.strategies.restore.mysql_impl
 
 [guest_agent]
-device_path = /dev/sdb
+device_path = /dev/vdb
 container_registry = quay.io/wikimedia-cloud-services
 container_registry_username = <%= @trove_quay_user %>
 container_registry_password = <%= @trove_quay_pass %>

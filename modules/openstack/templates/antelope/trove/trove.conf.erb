@@ -64,8 +64,8 @@ db_api_implementation = "trove.db.sqlalchemy.api"
 
 # Config options for enabling volume service
 trove_volume_support = True
-block_device_mapping = sdb
-device_path = /dev/sdb
+block_device_mapping = vdb
+device_path = /dev/vdb
 # Maximum volume size for an instance
 
 
@@ -201,7 +201,7 @@ root_on_create = False
 # where C greater than B
 tcp_ports = 3306
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 # Users to ignore for user create/list/delete operations
 ignore_users = os_admin, root
@@ -213,7 +213,7 @@ root_on_create = False
 # where C greater than B
 tcp_ports = 3306
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 # Users to ignore for user create/list/delete operations
 ignore_users = os_admin, root
@@ -222,27 +222,27 @@ ignore_dbs = mysql, information_schema, performance_schema
 [postgresql]
 tcp_ports = 5432
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 [redis]
 tcp_ports = 6379, 16379
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 [cassandra]
 tcp_ports = 7000, 7001, 9042, 9160
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 [couchbase]
 tcp_ports = 8091, 8092, 4369, 11209-11211, 21100-21199
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 
 [mongodb]
 tcp_ports = 2500, 27017, 27019
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 num_config_servers_per_cluster = 1
 num_query_routers_per_cluster = 1
 
@@ -250,7 +250,7 @@ num_query_routers_per_cluster = 1
 tcp_ports = 5433, 5434, 22, 5444, 5450, 4803
 udp_ports = 5433, 4803, 4804, 6453
 volume_support = True
-device_path = /dev/sdb
+device_path = /dev/vdb
 cluster_support = True
 cluster_member_count = 3
 api_strategy = trove.common.strategies.cluster.experimental.vertica.api.VerticaAPIStrategy
