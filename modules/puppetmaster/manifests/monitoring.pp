@@ -50,7 +50,7 @@ class puppetmaster::monitoring (
             ensure      => present,
             user        => 'root',
             description => 'Prometheus exporter for missing git merges',
-            command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/labs/private/ --name labs_private',
+            command     => '/usr/local/bin/check_git_needs_merge --basedir /var/lib/git/labs/private/ --name labs_private --branch master',
             interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '10m'},
         }
     }
