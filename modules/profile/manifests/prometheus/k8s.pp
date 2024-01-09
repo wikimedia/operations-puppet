@@ -189,6 +189,11 @@ class profile::prometheus::k8s (
                     },
                 ],
                 'relabel_configs'       => [
+                    # Drop the id label containing the slice-id of the container; T354604
+                    {
+                        'action'        => 'labeldrop',
+                        'regex'         => 'id',
+                    },
                     # Map kubernetes node labels to prometheus metric labels
                     {
                         'action' => 'labelmap',
