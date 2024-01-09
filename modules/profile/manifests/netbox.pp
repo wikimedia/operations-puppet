@@ -208,7 +208,7 @@ class profile::netbox (
                 'notify' => Service['apache2'],
             })
         }
-        default: { fail("unsuupported ssl_provider: ${ssl_provider}") }
+        default: { fail("unsupported ssl_provider: ${ssl_provider}") }
     }
 
 
