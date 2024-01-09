@@ -1,4 +1,5 @@
 # dbstore1005
+profile::monitoring::notifications_enabled: false
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
   s6: 90G
