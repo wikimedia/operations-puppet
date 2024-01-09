@@ -9,6 +9,7 @@ class role::wmcs::openstack::eqiad1::services {
     include ::profile::openstack::eqiad1::pdns::auth::service
     include ::profile::openstack::eqiad1::pdns::recursor::service
     include ::profile::openstack::eqiad1::designate::service
+    include ::profile::openstack::eqiad1::envscripts
     include ::profile::ldap::client::utils
     include ::profile::dbbackups::mydumper
     include ::profile::backup::host
