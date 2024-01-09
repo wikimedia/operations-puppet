@@ -51,13 +51,8 @@ node /^an-master100[13]\.eqiad\./ {
 # The Hadoop (stanby) master node:
 # - primary active NameNode
 # - YARN ResourceManager
-node /^an-master1002\.eqiad\./ {
+node /^an-master100[24]\.eqiad\./ {
     role(analytics_cluster::hadoop::standby)
-}
-
-#add new nodes T342291
-node /^an-master1004\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 node /^an-coord100[134]\.eqiad\./ {
