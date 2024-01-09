@@ -197,4 +197,14 @@ profile::dumps::distribution::mirrors:
     institution: 'none'
     addedby: 'hokwelum'
     addeddate: 'Apr 19, 2023'
+    active: 'no'
+  - url: 'https://datasets.orbopengraph.com/wikimedia/'
+    hostname: 'data1.usrdm1.scatter.red'
+    ipv4: ['104.255.173.26', 'data1.usrdm1.scatter.red']
+    ipv6: ['data1.usrdm1.scatter.red']
+    contactname: 'James Hare'
+    contactaddy: 'james@scatter.red'
+    institution: 'Scatter'
+    addedby: 'xcollazo'
+    addeddate: 'Jan 19, 2024'
     active: 'yes'
