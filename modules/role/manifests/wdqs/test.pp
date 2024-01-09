@@ -10,7 +10,8 @@ class role::wdqs::test {
     require profile::nginx
     require profile::query_service::wikidata
     # T350106 temporary firewall rules
-    require profile::query_service::graph_split_firewall
+    require profile::query_service::graph_split
+    include profile::tlsproxy::envoy # TLS termination
 
     system::role { 'wdqs::test':
         ensure      => 'present',
