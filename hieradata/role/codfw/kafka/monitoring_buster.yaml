@@ -1,3 +1,0 @@
-profile::kafka::monitoring::clusters:
-  - 'main-codfw'
-  - 'logging-codfw'

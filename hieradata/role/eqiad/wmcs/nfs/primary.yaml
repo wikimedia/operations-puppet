@@ -1,9 +1,0 @@
----
-# SPDX-License-Identifier: Apache-2.0
-profile::wmcs::services::maintain_dbusers::paws_replica_cnf_user: tools-db-replica-cnf
-profile::wmcs::services::maintain_dbusers::paws_replica_cnf_htpassword: test-password
-profile::wmcs::services::maintain_dbusers::paws_replica_cnf_root_url: https://nfs-paws.wmcloud.org/v1
-profile::wmcs::services::maintain_dbusers::tools_replica_cnf_user: tools-db-replica-cnf
-profile::wmcs::services::maintain_dbusers::tools_replica_cnf_htpassword: test-password
-profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url: https://nfs-tools.wmcloud.org/v1
-profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary: cloudcontrol1005.eqiad.wmnet
