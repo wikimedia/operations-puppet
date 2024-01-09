@@ -18,13 +18,12 @@ class profile::grafana::production (
 
     # Enables rsync'ing /var/lib/grafana from active host to standby host.
     rsync::quickdatacopy { 'var-lib-grafana':
-      ensure               => present,
-      source_host          => $active_host,
-      dest_host            => $standby_host,
-      module_path          => '/var/lib/grafana',
-      server_uses_stunnel  => true,
-      exclude              => 'grafana.db-journal',
-      use_generic_firewall => true,
+      ensure              => present,
+      source_host         => $active_host,
+      dest_host           => $standby_host,
+      module_path         => '/var/lib/grafana',
+      server_uses_stunnel => true,
+      exclude             => 'grafana.db-journal',
     }
 
     class {'::grafana::ldap_sync':

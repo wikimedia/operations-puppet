@@ -126,12 +126,11 @@ class profile::mediawiki::maintenance (
     include ::eventlogging
 
     rsync::quickdatacopy { 'home-mwmaint':
-        ensure               => present,
-        auto_sync            => false,
-        source_host          => 'mwmaint1002.eqiad.wmnet',
-        dest_host            => 'mwmaint2002.codfw.wmnet',
-        module_path          => '/home',
-        use_generic_firewall => true,
+        ensure      => present,
+        auto_sync   => false,
+        source_host => 'mwmaint1002.eqiad.wmnet',
+        dest_host   => 'mwmaint2002.codfw.wmnet',
+        module_path => '/home',
     }
 
     if $::realm != 'labs' {

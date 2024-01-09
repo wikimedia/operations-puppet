@@ -97,12 +97,11 @@ class profile::microsites::peopleweb (
     # allow copying /home from one server to another for migrations
     ensure_packages(['rsync'])
     rsync::quickdatacopy { 'people-home':
-        ensure               => present,
-        auto_sync            => false,
-        source_host          => $rsync_src_host,
-        dest_host            => $rsync_dst_host,
-        module_path          => '/home',
-        use_generic_firewall => true,
+        ensure      => present,
+        auto_sync   => false,
+        source_host => $rsync_src_host,
+        dest_host   => $rsync_dst_host,
+        module_path => '/home',
     }
 
     profile::auto_restarts::service { 'rsync':

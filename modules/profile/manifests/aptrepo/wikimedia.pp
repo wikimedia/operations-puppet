@@ -105,12 +105,11 @@ class profile::aptrepo::wikimedia (
     }
 
     rsync::quickdatacopy { 'aptrepo-migration':
-        source_host          => 'apt1001.wikimedia.org',
-        dest_host            => 'apt1002.wikimedia.org',
-        auto_sync            => false,
-        module_path          => '/srv',
-        server_uses_stunnel  => true,
-        use_generic_firewall => true,
+        source_host         => 'apt1001.wikimedia.org',
+        dest_host           => 'apt1002.wikimedia.org',
+        auto_sync           => false,
+        module_path         => '/srv',
+        server_uses_stunnel => true,
     }
 
     motd::message { '01_inactive_warning':

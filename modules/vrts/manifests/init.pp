@@ -214,13 +214,12 @@ class vrts(
     }
 
     rsync::quickdatacopy { 'vrts':
-        ensure               => present,
-        source_host          => $active_host,
-        dest_host            => $passive_host,
-        auto_sync            => false,
-        module_path          => '/opt',
-        server_uses_stunnel  => true,
-        progress             => true,
-        use_generic_firewall => true,
+        ensure              => present,
+        source_host         => $active_host,
+        dest_host           => $passive_host,
+        auto_sync           => false,
+        module_path         => '/opt',
+        server_uses_stunnel => true,
+        progress            => true,
     }
 }

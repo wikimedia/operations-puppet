@@ -159,7 +159,6 @@ class profile::doc (
         auto_interval              => { 'start' => 'OnUnitInactiveSec', 'interval' => '1h' },
         require                    => [User['doc-uploader'], File['/srv/doc']],
         ignore_missing_file_errors => true,
-        use_generic_firewall       => true,
     }
 
     $all_hosts.each |Stdlib::Fqdn $other_host| {
