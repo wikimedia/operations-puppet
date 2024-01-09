@@ -6,15 +6,8 @@ profile::admin::groups:
 
 profile::contacts::role_contacts: ['Collaboration Services']
 
-# List of all Phabricator servers.
-# Used in firewall as sources who are allowed to rsync from the
-# active phabricator server. That's it.
-# The definition of the "active server" which enables dumps an opens
-# needed firewall holes is the "phabricator_server" key in common.yaml
+# The definitions of the active server and the failover server are in global common.yaml
 # Switching backend for caching servers needs to be done in DNS.
-phabricator_servers:
-  - phab1004.eqiad.wmnet
-  - phab2002.codfw.wmnet
 
 profile::resolving::domain_search:
   - eqiad.wmnet

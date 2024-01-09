@@ -2,7 +2,7 @@
 # == Class: profile::phabricator::monitoring
 #
 class profile::phabricator::monitoring (
-    Stdlib::Fqdn $active_server = lookup('phabricator_server'),
+    Stdlib::Fqdn $active_server = lookup('phabricator_active_server'),
 ){
 
     $phab_contact_groups = 'admins,phabricator'

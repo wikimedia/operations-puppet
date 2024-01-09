@@ -31,7 +31,7 @@ profile::phabricator::main::rate_limits:
 # This is the number of concurrent connections per client IP:
   connection: 0
 
-phabricator_server: phabricator-prod-1001
+phabricator_active_server: phabricator-prod-1001
 profile::phabricator::main::dumps_rsync_clients: []
 phabricator_phd_taskmasters: 4
 phabricator_domain: phab.wmflabs.org

@@ -1,6 +1,5 @@
-phabricator_server: phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud
-phabricator_servers:
-- phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud
+phabricator_active_server: phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud
+phabricator_passive_server: phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud
 
 # this provides the listen_address for sshd_config, used for admin logins
 profile::ssh::server::listen_addresses: ["172.16.0.173"]

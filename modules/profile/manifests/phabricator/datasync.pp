@@ -2,10 +2,14 @@
 # phabricator - data syncing between servers
 #
 class profile::phabricator::datasync (
-    Array                       $phabricator_servers= lookup('phabricator_servers',
+    Stdlib::Fqdn               $active_server = lookup('phabricator_active_server',
                                                       { 'default_value' => undef }),
-    Array[Stdlib::Fqdn]         $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
+    Stdlib::Fqdn               $passive_server = lookup('phabricator_passive_server',
+                                                      { 'default_value' => undef }),
+    Array[Stdlib::Fqdn]        $dumps_rsync_clients = lookup('profile::phabricator::main::dumps_rsync_clients'),
 ){
+
+    $phabricator_servers = [ $active_server, $passive_server ]
 
     # Allow dumps servers to pull dump files.
     rsync::server::module { 'srv-dumps':

@@ -56,9 +56,9 @@ class profile::phabricator::main (
     Optional[Stdlib::IP::Address::V6] $vcs_ip_v6    = lookup('phabricator::vcs::address::v6',
                                                       { 'default_value' => undef }),
     Array                       $cluster_search     = lookup('phabricator_cluster_search'),
-    Optional[String]            $active_server      = lookup('phabricator_server',
+    Stdlib::Fqdn                $active_server      = lookup('phabricator_active_server',
                                                       { 'default_value' => undef }),
-    Array                       $phabricator_servers= lookup('phabricator_servers',
+    Stdlib::Fqdn                $passive_server     = lookup('phabricator_passive_server',
                                                       { 'default_value' => undef }),
     Boolean                     $local_aphlict_enabled =
                                                       lookup('phabricator_aphlict_enabled',
@@ -115,7 +115,7 @@ class profile::phabricator::main (
     include passwords::mysql::phabricator
 
     # things configured differently if we are on the
-    # active "phabricator_server" defined in Hiera
+    # "phabricator_active_server" defined in Hiera
     if $::fqdn == $active_server {
         $ferm_ensure = 'present'
         if $local_aphlict_enabled {
@@ -483,11 +483,10 @@ class profile::phabricator::main (
     }
 
     # ssh between phabricator servers for clustering support
-    $phabricator_servers_ferm = join($phabricator_servers, ' ')
     ferm::service { 'ssh_cluster':
         port   => '22',
         proto  => 'tcp',
-        srange => "@resolve((${phabricator_servers_ferm}))",
+        srange => "@resolve((${active_server} ${passive_server}))",
     }
 
     if $local_aphlict_enabled {

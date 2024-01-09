@@ -11,7 +11,7 @@ class profile::phabricator::aphlict (
     String $deploy_target = lookup('phabricator_deploy_target', { 'default_value' => 'phabricator/deployment'}),
     Optional[String] $deploy_user = lookup('phabricator_deploy_user', { 'default_value' => 'phab-deploy' }),
     Boolean $manage_scap_user = lookup('profile::phabricator::main::manage_scap_user', { 'default_value' => true }),
-    Optional[Stdlib::Host] $phabricator_server = lookup('phabricator_server', { 'default_value' => undef }),
+    Optional[Stdlib::Host] $phabricator_active_server = lookup('phabricator_active_server', { 'default_value' => undef }),
     Optional[Stdlib::Port] $client_port = lookup('profile::phabricator::aphlict::client_port', { 'default_value' => undef }),
     Optional[Stdlib::IP::Address] $client_listen = lookup('profile::phabricator::aphlict::client_listen', { 'default_value' => undef }),
     Optional[Stdlib::Port] $admin_port = lookup('profile::phabricator::aphlict::admin_port', { 'default_value' => undef }),
@@ -117,6 +117,6 @@ class profile::phabricator::aphlict (
     ferm::service { 'phab_aphlict_admin_port':
         proto  => 'tcp',
         port   => $admin_port,
-        srange => [$phabricator_server],
+        srange => [$phabricator_active_server],
     }
 }
