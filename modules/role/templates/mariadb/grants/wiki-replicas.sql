@@ -62,10 +62,6 @@ GRANT USAGE ON *.* TO 's53272'@'%' WITH MAX_USER_CONNECTIONS 200;
 GRANT PROCESS, SUPER ON *.* TO 'wmf-pt-kill'@'localhost' IDENTIFIED VIA unix_socket;
 
 -- HAProxy health checks
--- haproxy@dbproxy1018.eqiad.wmnet
-GRANT USAGE ON *.* TO 'haproxy'@'10.64.37.27';
--- haproxy@dbproxy1019.eqiad.wmnet
-GRANT USAGE ON *.* TO 'haproxy'@'10.64.16.14';
 -- haproxy@cloudlb1001.eqiad.wmnet
 GRANT USAGE ON *.* TO 'haproxy'@'10.64.151.2';
 -- haproxy@cloudlb1002.eqiad.wmnet

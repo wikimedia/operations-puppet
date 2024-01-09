@@ -4,7 +4,3 @@ profile::admin::groups:
     - wmcs-admin
 contactgroups: 'admins,analytics,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']
-
-profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies:
-  - dbproxy1018.eqiad.wmnet
-  - dbproxy1019.eqiad.wmnet

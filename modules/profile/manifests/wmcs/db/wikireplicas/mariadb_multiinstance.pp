@@ -5,7 +5,6 @@ class profile::wmcs::db::wikireplicas::mariadb_multiinstance (
     Integer[0, 100] $mariadb_memory_warning_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold', {'default_value' => 90}),
     Integer[0, 100] $mariadb_memory_critical_threshold = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold', {'default_value' => 95}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
-    Array[Stdlib::Fqdn] $dbproxies = lookup('profile::wmcs::db::wikireplicas::mariadb_multiinstance::dbproxies'),
 ) {
     class { 'mariadb::service':
         override => "[Service]\nExecStartPre=/bin/sh -c \"echo 'mariadb main service is \
@@ -56,12 +55,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             proto  => 'tcp',
             port   => 20 + $port,
             srange => "(${mysql_root_clients_str})",
-        }
-        ferm::service { "mysql_wikireplica_db_proxy_${section}":
-            proto   => 'tcp',
-            port    => $port,
-            notrack => true,
-            srange  => "(@resolve((${dbproxies.join(' ')})))",
         }
         ferm::service { "mysql_wikireplica_db_cloudlb_proxy_${section}":
             proto   => 'tcp',
