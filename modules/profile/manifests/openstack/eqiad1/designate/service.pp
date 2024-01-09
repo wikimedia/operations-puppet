@@ -50,7 +50,7 @@ class profile::openstack::eqiad1::designate::service(
     }
 
     prometheus::node_textfile { 'wmcs-dnsleaks':
-        filesource => 'puppet:///modules/openstack/admin/wmcs-dnsleaks.py',
+        filesource => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-dnsleaks.py",
         interval   => '*:0/30',
         run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus',
     }
