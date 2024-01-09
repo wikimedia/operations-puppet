@@ -40,10 +40,10 @@ clients = mwopenstackclients.clients(oscloud="novaadmin")
 PROMETHEUS_FILE = "/var/lib/prometheus/node.d/designateleaks.prom"
 
 PROM_BLOB = (
-    "# HELP https://wikitech.wikimedia.org/wiki/Portal:"
+    "# HELP cloudvps_designateleaks https://wikitech.wikimedia.org/wiki/Portal:"
     "Cloud_VPS/Admin/Runbooks/Designate_record_leaks\n"
-    "# TYPE designate record leak gauge\n"
-    "cloudvps.designateleaks {leaks}\n"
+    "# TYPE cloudvps_designateleaks gauge\n"
+    "cloudvps_designateleaks {leaks}\n"
 )
 
 
