@@ -44,7 +44,7 @@ node /^acmechief-test2001\.codfw\./ {
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
-node /^an-master1001\.eqiad\./ {
+node /^an-master100[13]\.eqiad\./ {
     role(analytics_cluster::hadoop::master)
 }
 
@@ -56,7 +56,7 @@ node /^an-master1002\.eqiad\./ {
 }
 
 #add new nodes T342291
-node /^an-master100[3-4]\.eqiad\./ {
+node /^an-master1004\.eqiad\./ {
     role(insetup::data_engineering)
 }
 
