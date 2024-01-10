@@ -52,6 +52,11 @@ profile::swift::accounts:
         account_name: 'AUTH_netbox'
         auth:         'https://ms-fe.svc.%{::site}.wmnet'
         user:         'netbox:attachments'
+    netbox_dev:
+        access:       '.admin'
+        account_name: 'AUTH_netbox-dev'
+        auth:         'https://ms-fe.svc.%{::site}.wmnet'
+        user:         'netboxdev:attachments'
     performance_arclamp: # https://phabricator.wikimedia.org/T244776
         access:       '.admin'
         account_name: 'AUTH_performance'
