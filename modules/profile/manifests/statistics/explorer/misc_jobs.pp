@@ -34,10 +34,10 @@ class profile::statistics::explorer::misc_jobs(
         # to unbreak that use case. This rsync might be removed in the future.
         # TODO: this should be moved to hdfs-rsync.
         rsync::server::module { 'dumps-webrequest':
-            path        => '/srv/log/webrequest/archive/dumps.wikimedia.org',
-            read_only   => 'no',
-            hosts_allow => $labstore_hosts,
-            auto_nft    => true,
+            path          => '/srv/log/webrequest/archive/dumps.wikimedia.org',
+            read_only     => 'no',
+            hosts_allow   => $labstore_hosts,
+            auto_firewall => true,
         }
     }
 }

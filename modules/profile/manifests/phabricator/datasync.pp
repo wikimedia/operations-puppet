@@ -15,10 +15,10 @@ class profile::phabricator::datasync (
 
     # Allow dumps servers to pull dump files.
     rsync::server::module { 'srv-dumps':
-            path        => '/srv/dumps',
-            read_only   => 'yes',
-            hosts_allow => $dumps_rsync_clients,
-            auto_nft    => true,
+            path          => '/srv/dumps',
+            read_only     => 'yes',
+            hosts_allow   => $dumps_rsync_clients,
+            auto_firewall => true,
     }
 
     # Allow other phab servers to pull tarballs with home dir files.
@@ -35,10 +35,10 @@ class profile::phabricator::datasync (
 
     # Allow pulling /srv/repos data from the active server.
     rsync::server::module { 'srv-repos':
-        ensure      => present,
-        read_only   => 'yes',
-        path        => '/srv/repos',
-        hosts_allow => $phabricator_servers,
-        auto_nft    => true,
+        ensure        => present,
+        read_only     => 'yes',
+        path          => '/srv/repos',
+        hosts_allow   => $phabricator_servers,
+        auto_firewall => true,
     }
 }

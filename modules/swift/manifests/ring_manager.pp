@@ -60,12 +60,12 @@ class swift::ring_manager (
     }
 
     rsync::server::module { 'swiftrings':
-        ensure      => $ensure,
-        read_only   => 'yes',
-        hosts_allow => $puppetmasters,
-        auto_nft    => true,
-        chroot      => false,
-        path        => $ring_dir,
+        ensure        => $ensure,
+        read_only     => 'yes',
+        hosts_allow   => $puppetmasters,
+        auto_firewall => true,
+        chroot        => false,
+        path          => $ring_dir,
     }
 
     profile::auto_restarts::service { 'rsync':

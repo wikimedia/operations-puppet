@@ -86,11 +86,11 @@ class profile::graphite::production (
     include rsync::server
 
     rsync::server::module { 'carbon':
-        path        => $storage_dir,
-        uid         => '_graphite',
-        gid         => '_graphite',
-        hosts_allow => $graphite_hosts,
-        auto_nft    => true,
+        path          => $storage_dir,
+        uid           => '_graphite',
+        gid           => '_graphite',
+        hosts_allow   => $graphite_hosts,
+        auto_firewall => true,
     }
 
     firewall::service { 'carbon_c_relay-local_relay_udp':

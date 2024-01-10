@@ -11,12 +11,12 @@ class profile::openstack::base::keystone::fernet_keys(
     }
 
     rsync::server::module { 'keystonefernetkeys':
-        path        => '/etc/keystone/fernet-keys',
-        uid         => 'keystone',
-        gid         => 'keystone',
-        hosts_allow => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
-        auto_nft    => true,
-        read_only   => 'yes',
+        path          => '/etc/keystone/fernet-keys',
+        uid           => 'keystone',
+        gid           => 'keystone',
+        hosts_allow   => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
+        auto_firewall => true,
+        read_only     => 'yes',
     }
 
     # It's important to do these steps in the right order: a host should rotate its keys, and immediately

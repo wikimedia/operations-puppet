@@ -67,7 +67,7 @@ class profile::aptrepo::staging (
       gid            => 'apt-uploader',
       incoming_chmod => 'D755,F644',
       hosts_allow    => wmflib::role::hosts('gitlab_runner'),
-      auto_nft       => true,
+      auto_firewall  => true,
       auth_users     => ['apt-publisher'],
       secrets_file   => '/etc/rsync-apt-auth-secrets',
   }

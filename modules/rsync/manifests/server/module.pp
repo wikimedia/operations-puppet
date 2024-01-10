@@ -40,15 +40,9 @@
 #   rsyncd.conf for details, must be undef or an array)
 # @param chroot
 #   chroot to the destination before starting the rsync.  enabled by default.
-# @param auto_nft
+# @param auto_firewall
 #   If enabled and if $hosts_allow is set, generate a firewall service which restricts
 #   access to the allowed hosts. This enables access via ipv4 and ipv6
-# @param auto_ferm
-#   If enabled and if $hosts_allow is set, generate a ferm service which restricts
-#   access to the allowed hosts
-# @param auto_ferm_ipv6
-#   If auto_ferm is used and this option is enabled, ferm rules are also generated
-#   for ipv6
 #
 # @example
 #   rsync::server::module { 'repo':
@@ -67,9 +61,7 @@ define rsync::server::module (
   Variant[Integer, String[1]]             $max_connections = '0',
   Stdlib::Unixpath                        $lock_file       = '/var/run/rsyncd.lock',
   Boolean                                 $chroot          = true,
-  Boolean                                 $auto_nft        = false,
-  Boolean                                 $auto_ferm       = false,
-  Boolean                                 $auto_ferm_ipv6  = false,
+  Boolean                                 $auto_firewall   = false,
   Optional[Stdlib::Unixpath]              $secrets_file    = undef,
   Optional[String[1]]                     $comment         = undef,
   Optional[String[4]]                     $incoming_chmod  = undef,
@@ -79,10 +71,6 @@ define rsync::server::module (
   Optional[Variant[String,Array[String]]] $hosts_deny      = undef,
 ){
   include rsync::server
-
-  if $auto_nft and $auto_ferm {
-      fail('An rsync server definition can only use auto_ferm or auto_nft')
-  }
 
   if $hosts_allow {
     $hosts_allow_as_array = $hosts_allow ? {
@@ -103,46 +91,12 @@ define rsync::server::module (
     }
   }
 
-  if $auto_nft and $hosts_allow {
+  if $auto_firewall and $hosts_allow {
       firewall::service { "rsyncd_access_${name}":
           ensure => $ensure,
           proto  => 'tcp',
           port   => [873, 1873],
           srange => $hosts_allow,
-      }
-  }
-
-  if $auto_ferm and $hosts_allow {
-      $hosts_allow_ferm = join($hosts_allow, ' ')
-
-      ferm::service { "rsyncd_access_${name}":
-          ensure => $ensure,
-          proto  => 'tcp',
-          port   => 873,
-          srange => "@resolve((${hosts_allow_ferm}))",
-      }
-
-      ferm::service { "rsyncd_access_${name}_tls":
-          ensure => $ensure,
-          proto  => 'tcp',
-          port   => 1873,
-          srange => "@resolve((${hosts_allow_ferm}))",
-      }
-
-      if $auto_ferm_ipv6 {
-          ferm::service { "rsyncd_access_${name}_ipv6":
-              ensure => $ensure,
-              proto  => 'tcp',
-              port   => 873,
-              srange => "@resolve((${hosts_allow_ferm}),AAAA)",
-          }
-
-          ferm::service { "rsyncd_access_${name}_ipv6_tls":
-              ensure => $ensure,
-              proto  => 'tcp',
-              port   => 1873,
-              srange => "@resolve((${hosts_allow_ferm}),AAAA)",
-          }
       }
   }
 }

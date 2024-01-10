@@ -9,11 +9,11 @@ class profile::prometheus::rsyncd (
     }
 
     rsync::server::module { 'prometheus-data':
-        ensure      => $ensure,
-        path        => '/srv/prometheus',
-        uid         => 'prometheus',
-        gid         => 'prometheus',
-        hosts_allow => $prometheus_nodes,
-        auto_nft    => true,
+        ensure        => $ensure,
+        path          => '/srv/prometheus',
+        uid           => 'prometheus',
+        gid           => 'prometheus',
+        hosts_allow   => $prometheus_nodes,
+        auto_firewall => true,
     }
 }

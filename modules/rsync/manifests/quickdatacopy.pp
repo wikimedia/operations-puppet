@@ -82,11 +82,11 @@ define rsync::quickdatacopy(
           }
 
           rsync::server::module { $title:
-              ensure      => $ensure,
-              read_only   => 'yes',
-              path        => $module_path,
-              hosts_allow => $dest_hosts,
-              auto_nft    => true,
+              ensure        => $ensure,
+              read_only     => 'yes',
+              path          => $module_path,
+              hosts_allow   => $dest_hosts,
+              auto_firewall => true,
           }
       }
       $_bwlimit = $bwlimit ? {

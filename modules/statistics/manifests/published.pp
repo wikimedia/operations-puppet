@@ -48,14 +48,14 @@ class statistics::published(
     # Set up an rsync module
     # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'published-destination':
-        path        => $hardsync_source,
-        read_only   => 'no',
-        list        => 'yes',
-        hosts_allow => $::statistics::servers,
-        auto_nft    => true,
-        uid         => $::statistics::user::username,
-        gid         => 'wikidev',
-        require     => File[$hardsync_source],
+        path          => $hardsync_source,
+        read_only     => 'no',
+        list          => 'yes',
+        hosts_allow   => $::statistics::servers,
+        auto_firewall => true,
+        uid           => $::statistics::user::username,
+        gid           => 'wikidev',
+        require       => File[$hardsync_source],
     }
 
     # Merge files in published-rsynced/* via hardlinks into $document_root/published

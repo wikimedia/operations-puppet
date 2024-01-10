@@ -109,14 +109,14 @@ class profile::kerberos::kadminserver (
     }
 
     rsync::server::module { 'srv-keytabs':
-        ensure       => $ensure_rsync,
-        path         => '/srv/kerberos/keytabs',
-        read_only    => 'yes',
-        hosts_allow  => [$krb_kadmin_keytabs_repo],
-        auto_nft     => true,
-        auth_users   => $rsync_secrets_file_auth_users,
-        secrets_file => $rsync_secrets_file,
-        require      => File[$rsync_secrets_file],
+        ensure        => $ensure_rsync,
+        path          => '/srv/kerberos/keytabs',
+        read_only     => 'yes',
+        hosts_allow   => [$krb_kadmin_keytabs_repo],
+        auto_firewall => true,
+        auth_users    => $rsync_secrets_file_auth_users,
+        secrets_file  => $rsync_secrets_file,
+        require       => File[$rsync_secrets_file],
     }
 
     if $enable_replication {

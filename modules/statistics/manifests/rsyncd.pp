@@ -1,3 +1,5 @@
+
+
 # @summary
 #   Sets up rsyncd and common modules
 #   for statistic servers.  Currently
@@ -20,24 +22,24 @@ class statistics::rsyncd(
     # Set up an rsync module
     # (in /etc/rsyncd.conf) for /home.
     rsync::server::module { 'home':
-        path        => '/home',
-        read_only   => 'yes',
-        list        => 'yes',
-        uid         => 'nobody',
-        gid         => 'nogroup',
-        hosts_allow => $hosts_allow,
-        auto_nft    => true,
+        path          => '/home',
+        read_only     => 'yes',
+        list          => 'yes',
+        uid           => 'nobody',
+        gid           => 'nogroup',
+        hosts_allow   => $hosts_allow,
+        auto_firewall => true,
     }
 
     # Set up an rsync module
     # (in /etc/rsyncd.conf) for /srv.
     rsync::server::module { 'srv':
-        path        => '/srv',
-        read_only   => 'yes',
-        list        => 'yes',
-        uid         => 'nobody',
-        gid         => 'nogroup',
-        hosts_allow => $hosts_allow,
-        auto_nft    => true,
+        path          => '/srv',
+        read_only     => 'yes',
+        list          => 'yes',
+        uid           => 'nobody',
+        gid           => 'nogroup',
+        hosts_allow   => $hosts_allow,
+        auto_firewall => true,
     }
 }

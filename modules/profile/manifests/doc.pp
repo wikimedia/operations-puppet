@@ -122,7 +122,7 @@ class profile::doc (
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
         hosts_allow    => $gitlab_runner_hosts + $jenkins_releases_hosts,
-        auto_nft       => true,
+        auto_firewall  => true,
         auth_users     => ['doc-publisher'],
         secrets_file   => '/etc/rsync-doc-auth-secrets',
         require        => [
@@ -141,7 +141,7 @@ class profile::doc (
         gid            => 'doc-uploader',
         incoming_chmod => 'D775,F664',
         hosts_allow    => $contint_hosts,
-        auto_nft       => true,
+        auto_firewall  => true,
         require        => [
             User['doc-uploader'],
             File['/srv/doc'],
