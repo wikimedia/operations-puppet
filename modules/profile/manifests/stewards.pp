@@ -13,7 +13,6 @@ class profile::stewards (
         source    => 'gitlab',
         group     => 'wikidev',
         shared    => true,
-        umask     => '002',
         directory => "${repo_dir}/onboarding-system",
     }
 }
