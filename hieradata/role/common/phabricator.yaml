@@ -13,6 +13,18 @@ profile::resolving::domain_search:
   - eqiad.wmnet
   - codfw.wmnet
 
+# database setttings
+# We do want to always talk to the same database regardless
+# of the datacenter of the phabricator server.
+# In the case of the server going down we would be able to failover and repair
+# the main server without having to change which DB server is writable
+# and cross-DC queries are accetable for a limited time.
+phabricator::mysql::master: "m3-master.eqiad.wmnet"
+phabricator::mysql::master::port: '3306'
+
+phabricator::mysql::slave: "m3-slave.eqiad.wmnet"
+phabricator::mysql::slave::port: '3323'
+
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)
 # logged in users are permitted 4x the request rate of logged-out users

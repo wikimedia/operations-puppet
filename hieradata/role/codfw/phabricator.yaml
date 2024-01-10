@@ -1,11 +1,6 @@
 phabricator_logmail: false
 profile::phabricator::main::dump_enabled: false
 
-phabricator::mysql::master: "m3-master.codfw.wmnet"
-phabricator::mysql::master::port: '3306'
-phabricator::mysql::slave: "m3-slave.codfw.wmnet"
-phabricator::mysql::slave::port: '3323'
-
 phabricator_aphlict_enable_ssl: false
 # phabricator_aphlict_cert: "/path/to/cert"
 # phabricator_aphlict_key: "/path/to/key"
