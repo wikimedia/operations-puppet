@@ -189,11 +189,6 @@ class profile::prometheus::k8s (
                     },
                 ],
                 'relabel_configs'       => [
-                    # Drop the id label containing the slice-id of the container; T354604
-                    {
-                        'action'        => 'labeldrop',
-                        'regex'         => 'id',
-                    },
                     # Map kubernetes node labels to prometheus metric labels
                     {
                         'action' => 'labelmap',
@@ -209,7 +204,14 @@ class profile::prometheus::k8s (
                         'regex'         => '([\d\.]+):(\d+)',
                         'replacement'   => "\${1}:10255",
                     },
-                ]
+                ],
+                'metric_relabel_configs' => [
+                    # Drop the id label containing the slice-id of the container; T354604
+                    {
+                        'action'        => 'labeldrop',
+                        'regex'         => 'id',
+                    },
+                ],
             },
             {
                 # metrics from the kube-proxy running on each k8s node
@@ -486,6 +488,8 @@ class profile::prometheus::k8s (
                         'source_labels' => ['__meta_kubernetes_pod_name'],
                         'target_label'  => 'kubernetes_pod_name',
                     },
+                ],
+                'metric_relabel_configs' => [
                     {
                         'action'        => 'labeldrop',
                         'regex'         => "(${[
