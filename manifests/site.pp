@@ -2717,7 +2717,7 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
 
 # scandium is a parsoid test server. it replaced ruthenium.
 # This is now just like an MW appserver plus parsoid repo.
-# roundtrip and visualdiff testing moved to testreduce1001 (T257906)
+# roundtrip and visualdiff testing moved to testreduce* (T257906)
 node /^scandium\.eqiad\./ {
     role(parsoid::testing)
 }
@@ -2825,10 +2825,6 @@ node /^stewards[12]001.(eqiad|codfw)\./ {
 
 # parsoid visual diff and roundtrip testing (T257940)
 # also see scandium.eqiad.wmnet
-node /^testreduce1001\.eqiad\./ {
-    role(parsoid::testreduce)
-}
-
 node /^testreduce1002\.eqiad\./ {
     role(parsoid::testreduce)
 }
