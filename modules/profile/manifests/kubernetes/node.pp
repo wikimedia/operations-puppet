@@ -36,6 +36,18 @@ class profile::kubernetes::node (
             mode   => '0755',
         }
     }
+    # Blacklist the wdat_wdt watchdog kernel module present in some R440s
+    # Due to some race condition that is triggered by a slow to stop container
+    # the machines using this watchdog driver don't finish a proper reboot but
+    # are rather rebooted by the watchdog. The watchdog triggered reboot causes
+    # the firmware to ask for a manual action on the next boot (Press F1), which
+    # is just unacceptable. Blacklist the module as a workaround. T354413
+    if $::productname == 'PowerEdge R440' {
+        kmod::blacklist { 'r440_wdat_wdt':
+            modules => [ 'wdat_wdt' ],
+            rmmod   => true,
+        }
+    }
 
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
 
