@@ -80,7 +80,7 @@ role::openldap::rw:
 role::parsoid::testing:
   target-q: TBD
 role::parsoid::testreduce:
-  target-q: 2023-4
+  target-q: 2024-1
 role::eventschemas::service:
   phab-task: 349286
   target-q: 2023-4
@@ -162,8 +162,8 @@ role::analytics_cluster::airflow::platform_eng_legacy:
   target-q: TBD
   phab-task: 335261
 role::aqs:
-  target-q: TBD
-  phab-task: 288804
+  target-q: 2023-4
+  phab-task: 347738
 role::bastionhost:
   target-q: 2023-1
   phab-task: 324974
@@ -414,7 +414,8 @@ role::dnsbox:
   target-q: 2023-1
   phab-task: 321309
 role::grafana:
-  target-q: TBD
+  target-q: 2024-1
+  phab-task: 352665
 role::analytics_cluster::zookeeper:
   target-q: TBD
   phab-task: 329362
