@@ -72,7 +72,8 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::thanos::oidc::cookie_secret:
     convert_to: 'Sensitive'
-
+  profile::hadoop::common::config_override:
+    merge: deep
 # General variables that once would have been in realm.pp
 cluster: misc
 # TODO: move all of theses directly under P:monitoring::host
