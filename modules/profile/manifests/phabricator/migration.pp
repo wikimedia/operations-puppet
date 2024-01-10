@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Allow rsyncing phabricator data to other servers for hardware migration
 class profile::phabricator::migration (
-    Stdlib::Fqdn        $src_host  = lookup('profile::phabricator::migration::src_host'),
+    Stdlib::Fqdn        $src_host  = lookup('phabricator_active_server'),
     Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::phabricator::migration::dst_hosts'),
 ) {
     class { '::phabricator::phd::user': }
