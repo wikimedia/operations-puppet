@@ -88,6 +88,9 @@ if __name__ == '__main__':
     registry = CollectorRegistry()
     gauge = Gauge('lvs_realserver_mss_value',
                   'MSS values', ['endpoint', 'protocol'], registry=registry)
+    success_gauge = Gauge('lvs_realserver_mss_successful_measurement',
+                          'Reports whether the last measurement has been successful or not',
+                          ['endpoint', 'protocol'], registry=registry)
     results = {}
 
     for endpoint in args.endpoint:
@@ -106,6 +109,11 @@ if __name__ == '__main__':
             fix_scapy_ipv4_route_table(ip)
 
         mss = get_mss(ip, int(port), version)
-        gauge.labels(endpoint, f'IPv{version}').set(mss)
+        if mss is not None:
+            gauge.labels(endpoint, f'IPv{version}').set(mss)
+            success_gauge.labels(endpoint, f'IPv{version}').set(1)
+        else:
+            gauge.labels(endpoint, f'IPv{version}').set(0)
+            success_gauge.labels(endpoint, f'IPv{version}').set(0)
 
     write_to_textfile(args.outfile, registry)
