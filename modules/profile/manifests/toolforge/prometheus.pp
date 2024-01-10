@@ -335,6 +335,13 @@ class profile::toolforge::prometheus (
                 },
             ],
         },
+        {
+            'job_name' => 'pint',
+            'scheme'   => 'http',
+            'static_configs' => [
+                { 'targets' => [ 'localhost:9123' ] },
+            ],
+        },
     ]
 
     $kubernetes_pod_jobs = [
@@ -525,5 +532,10 @@ class profile::toolforge::prometheus (
     prometheus::web { 'tools':
         proxy_pass => 'http://localhost:9902/tools',
         homepage   => true,
+    }
+
+    prometheus::pint::source { 'tools':
+        port       => 9902,
+        all_alerts => true,
     }
 }
