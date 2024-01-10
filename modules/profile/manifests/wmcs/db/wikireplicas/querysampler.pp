@@ -8,10 +8,7 @@ class profile::wmcs::db::wikireplicas::querysampler (
 
     # $in_setup should only be false after the cinder volume is ready
     # and the sqlite table is created
-    $ensure = $in_setup? {
-        true   => 'stopped',
-        default => 'running',
-    }
+
     file { '/etc/querysampler-config.yaml':
         ensure  => file,
         content => template('profile/wmcs/db/wikireplicas/querysampler-config.yaml.erb'),
@@ -29,12 +26,9 @@ class profile::wmcs::db::wikireplicas::querysampler (
         ],
     }
     systemd::service { 'querysampler':
-        ensure         => 'present',
-        content        => systemd_template('wmcs/db/wikireplicas/querysampler'),
-        require        => File['/usr/local/sbin/querysampler'],
-        subscribe      => File['/etc/querysampler-config.yaml'],
-        service_params => {
-            ensure => $ensure,
-        }
+        ensure    => $in_setup.bool2str('absent', 'present'),
+        content   => systemd_template('wmcs/db/wikireplicas/querysampler'),
+        require   => File['/usr/local/sbin/querysampler'],
+        subscribe => File['/etc/querysampler-config.yaml'],
     }
 }
