@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# check the size of user home dirs
+# and send a warning if they become too large (T343364)
+
+home_dir_limit=<%= @home_dir_limit %>
+hostname=$(hostname -f)
+sndr_address="root@{hostname}"
+rcpt_address='dzahn@wikimedia.org'

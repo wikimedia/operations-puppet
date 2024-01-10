@@ -8,6 +8,7 @@ class profile::microsites::peopleweb (
     Stdlib::Unixpath $docroot           = lookup('profile::microsites::peopleweb::docroot'),
     Stdlib::Host     $rsync_src_host    = lookup('profile::microsites::peopleweb::rsync_src_host'),
     Stdlib::Host     $rsync_dst_host    = lookup('profile::microsites::peopleweb::rsync_dst_host'),
+    Integer          $home_dir_limit    = lookup('profile::microsites::peopleweb::home_dir_limit'),
 ){
 
     # firewall: allow caching layer to talk to http backend
@@ -107,4 +108,33 @@ class profile::microsites::peopleweb (
     profile::auto_restarts::service { 'rsync':
         ensure => $rsync_auto_restart_ensure,
     }
+
+    # send warning emails if user home directories become large (T343364)
+
+    file { '/etc/home_size_warning.conf':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0550',
+        content => template('profile/microsites/peopleweb/home_size_warning.conf.erb'),
+    }
+
+    file { '/usr/local/bin/home_size_warning':
+        content => file('profile/microsites/peopleweb/home_size_warning.sh'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    systemd::timer::job { 'home_dir_size_warnings':
+        ensure          => present,
+        description     => 'Warn users about large home directories',
+        user            => 'root',
+        logging_enabled => false,
+        send_mail       => false,
+        command         => '/usr/local/bin/home_size_warning',
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 02:00:00'},
+    }
+
+
 }
