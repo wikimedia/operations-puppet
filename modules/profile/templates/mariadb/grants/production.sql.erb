@@ -34,7 +34,7 @@ GRANT ALL PRIVILEGES
 
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO 'nagios'@'localhost'
-    IDENTIFIED BY '<%= @nagios_pass %>';
+    IDENTIFIED VIA unix_socket;
 GRANT SELECT
     ON heartbeat.heartbeat TO 'nagios'@'localhost';
 
