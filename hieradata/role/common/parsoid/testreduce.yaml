@@ -37,3 +37,6 @@ profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['ServiceOps']
 
 profile::firewall::provider: nftables
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
