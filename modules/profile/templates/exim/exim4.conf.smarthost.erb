@@ -90,15 +90,15 @@ acl_check_rcpt:
 begin routers
 
 <% @dkim_domains.each do |key, dkim_domain| -%>
-# router for dkim domain <%= dkim_domain['domain'] %> with selector <%= dkim_domain['selector'] %> (listed in dkim_domains)
-dnslookup_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>:
+# router for dkim domain <%= dkim_domain['domain'] %> (<%= key %>) (listed in dkim_domains)
+dnslookup_<%= key %>:
 	driver = dnslookup
 	domains = ! +system_hostname
 	condition = ${if match_domain{$sender_address_domain}{<%= dkim_domain['domain'] %>} }
 <% if dkim_domain['exim_router_condition'] -%>
 	condition = <%= dkim_domain['exim_router_condition'] %>
 <% end -%>
-	transport = remote_smtp_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>
+	transport = remote_smtp_<%= key %>
 	ignore_target_hosts = <; 0.0.0.0 ; 127.0.0.0/8 ; 10/8 ; 172.16/12 ; 192.168/16
 	cannot_route_message = Cannot route to remote domain $domain
 
@@ -133,11 +133,12 @@ begin transports
 # and if key file exists on filesystem.
 
 <% @dkim_domains.each do |key, dkim_domain| -%>
-# dkim enabled smtp transport for domain <%= dkim_domain['domain'] %> with dkim selector <%= dkim_domain['selector'] %> (listed in dkim_domains)
-remote_smtp_<%= dkim_domain['domain'].gsub(/[-.]/, '_') %>_<%= dkim_domain['selector'].gsub(/[-.]/, '_') %>:
+<%- selectors = [dkim_domain['selector']].flatten -%>
+# dkim enabled smtp transport for domain <%= dkim_domain['domain'] %> (<%= key %>) with dkim selector(s) <%= selectors.join(', ') %> (listed in dkim_domains)
+remote_smtp_<%= key %>:
 	driver = smtp
 	dkim_domain = <%= dkim_domain['domain'] %>
-	dkim_selector = <%= dkim_domain['selector'] %>
+	dkim_selector = <%= selectors.join(' : ') %>
 	dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
 	dkim_canon = relaxed
 

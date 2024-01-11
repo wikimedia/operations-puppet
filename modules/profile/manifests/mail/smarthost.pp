@@ -65,11 +65,14 @@ class profile::mail::smarthost (
     }
 
     $dkim_domains.each |$name, $dkim_domain| {
-      exim4::dkim{ $name:
-        domain   => $dkim_domain['domain'],
-        selector => $dkim_domain['selector'],
-        content  => secret("dkim/${dkim_domain['domain']}-${dkim_domain['selector']}.key"),
-      }
+        $selectors = [$dkim_domain['selector']].flatten
+        $selectors.each |String[1] $selector| {
+            exim4::dkim { "${name}-${selector}":
+                domain   => $dkim_domain['domain'],
+                selector => $selector,
+                content  => secret("dkim/${dkim_domain['domain']}-${selector}.key"),
+            }
+        }
     }
 
     acme_chief::cert { $cert_name:
