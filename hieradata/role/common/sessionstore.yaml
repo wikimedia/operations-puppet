@@ -35,6 +35,9 @@ profile::cassandra::instances:
   "sessionstore1005.eqiad.wmnet":
     a:
       listen_address: 10.64.32.67
+  "sessionstore1006.eqiad.wmnet":
+    a:
+      listen_address: 10.64.48.59
   "sessionstore2001.codfw.wmnet":
     a:
       listen_address: 10.192.16.95
