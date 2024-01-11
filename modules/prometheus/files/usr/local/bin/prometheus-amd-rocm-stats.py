@@ -34,6 +34,10 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
         'usage_percent', 'GPU usage percent', ['card'],
         namespace='amd_rocm_gpu', registry=registry
     )
+    gpu_stats['activity'] = Gauge(
+        'activity_percent', 'GPU usage percent', ['card'],
+        namespace='amd_rocm_gpu', registry=registry
+    )
     gpu_stats['temperature'] = Gauge(
         'temperature_celsius', 'GPU temperature (in Celsius)',
         ['card', 'location'], namespace='amd_rocm_gpu', registry=registry
@@ -62,7 +66,12 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
                 # format example: 42
                 gpu_stats['usage'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
-
+            # It is unclear what "activity" means vis-a-vis usage, so for now
+            # just drop it to squelch the fallthrough warning.
+            # TODO(klausman): figure out what it means and either export it or
+            # add note here on why we don't care.
+            elif metric == "GFX Activity":
+                continue
             # All temperature readings use the same format, e.g. 27.0
             # The old kernel-native driver has one temp reading:
             elif metric == 'Temperature (Sensor #1) (c)' \
@@ -80,7 +89,24 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
                     or metric == 'Temperature (Sensor memory) (C)':
                 gpu_stats['temperature'].labels(card=card, location="mem").set(
                     rocm_metrics[card][metric].strip())
-
+            # Readings for the Instinct series include HBM sensors "HBM"
+            # High-bandwidth memory. On the MI100, these seem to always be 0.
+            # Since this might become useful at some point (and a reading of 0
+            # is definitely not correct), we drop the metric if the value is 0
+            # and export it otherwise.
+            elif metric.startswith('Temperature (Sensor HBM'):
+                if rocm_metrics[card][metric].strip() == "0":
+                    continue
+                toks = metric.split()
+                if len(toks) < 4:
+                    # warning
+                    log.warning(
+                        "Metric '{}' listed in rocm-smi's JSON could not be parsed for HBM id"
+                        .format(metric))
+                    continue
+                val = toks[3].rstrip(")")
+                gpu_stats['temperature'].labels(card=card, location="hbm{}".format(val)).set(
+                    rocm_metrics[card][metric].strip())
             # Power
             elif metric == 'Average Graphics Package Power (W)':
                 # format example: 7.0
@@ -130,7 +156,7 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
             # Unknown stuff should emit a warning (to be delivered by cron mail)
             else:
                 log.warning(
-                    "Metric {} listed in rocm-smi's JSON  but not parsed"
+                    "Metric '{}' listed in rocm-smi's JSON but not parsed"
                     .format(metric))
 
 
