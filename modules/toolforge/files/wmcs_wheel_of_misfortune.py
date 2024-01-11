@@ -90,7 +90,7 @@ def email_user(
     conn: ldap3.Connection,
     procname: str,
     hostname: str,
-    project: str = "tools",
+    project: str,
 ) -> bool:
     if user.startswith("{}.".format(project)):
         users_in_project = get_group_members(user, conn)
@@ -207,7 +207,7 @@ def choices(population, weights=None, *, cum_weights=None, k=1):
 
 
 def spin_the_wheel(
-    min_uid: int = 500, victims: int = 1, age: float = 259200.0
+    min_uid: int, victims: int, age: float
 ) -> List[psutil.Process]:
     lucky_contestants = []
     now = datetime.now(timezone.utc).timestamp()
@@ -269,14 +269,14 @@ def main():
         "--age",
         "-a",
         type=int,
-        default=3,
+        required=True,
         help="Age of candidate processes in days, defaults to 3",
     )
     parser.add_argument(
         "--victims",
         "-v",
         type=int,
-        default=2,
+        required=True,
         help="Number of processes to kill",
     )
     parser.add_argument(
@@ -289,7 +289,7 @@ def main():
         "--min-uid",
         "-m",
         type=int,
-        default=1000,
+        required=True,
         help="Minimum UID to consider kill-worthy",
     )
     parser.add_argument(

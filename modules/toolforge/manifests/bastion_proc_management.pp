@@ -31,10 +31,10 @@
 #    }
 
 class toolforge::bastion_proc_management (
+    String  $project,
     Integer $days_allowed = 3,
     Integer $script_victims = 2,
-    Integer $min_uid = 500,
-    String  $project = 'tools',
+    Integer $min_uid = 1000,
     Boolean $dry_run = false,
 ){
     ensure_packages('python3-psutil')
