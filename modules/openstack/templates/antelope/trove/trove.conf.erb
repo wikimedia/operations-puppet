@@ -23,6 +23,14 @@ use_json = True
 syslog_log_facility = LOG_LOCAL0
 
 
+# In theory trove supports volume resize without stopping the DB. In practice
+#  this resizes the volume but the mountpoint doesn't pick up the change.
+#
+# Setting this to False means a service interruption during resize but the
+#  resize actually works thanks to detaching/reattaching the volume.
+online_volume_resize = False
+
+
 #===================== RPC Configuration =================================
 
 # URL representing the messaging driver to use and its full configuration.
