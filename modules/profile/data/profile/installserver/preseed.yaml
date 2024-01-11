@@ -360,8 +360,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/custom/reuse-sessionstore-2dev.cfg
   'sessionstore[1-2]00[4-6]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - reuse-parts.cfg
+    - partman/reuse-raid1-2dev.cfg
   'contint[12]00[12]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
