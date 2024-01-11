@@ -126,4 +126,16 @@ class profile::microsites::monitoring {
         ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
         certificate_expiry_days => 9,
     }
+
+    prometheus::blackbox::check::http { 'design.wikimedia.org':
+        team                    => 'collaboration-services',
+        severity                => 'task',
+        path                    => '/',
+        force_tls               => true,
+        ip_families             => ['ip4'],
+        body_regex_matches      => ['Foundation Design'],
+        port                    => 30443, # Kubernetes Ingress port
+        ip4                     => ipresolve('miscweb.discovery.wmnet', 4), # Kubernetes Ingress
+        certificate_expiry_days => 9,
+    }
 }
