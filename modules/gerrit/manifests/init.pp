@@ -23,7 +23,7 @@ class gerrit(
     Hash[String, Hash]                $replication       = {},
     String                            $ssh_host_key      = 'ssh_host_key',
     Boolean                           $use_acmechief     = false,
-    Stdlib::HTTPSUrl                  $url               = "https://${::gerrit::host}/r",
+    Stdlib::HTTPSUrl                  $url               = "https://${::gerrit::host}/r/",
 
     Optional[Stdlib::IP::Address::V6] $ipv6              = undef,
     Optional[String]                  $scap_key_name     = undef,
