@@ -2774,10 +2774,10 @@ node /^sessionstore[1-2]00[1-3]\.(eqiad|codfw)\./ {
 }
 
 # New sessionstore servers T349875
-node /^sessionstore1004\.eqiad\./ {
+node /^sessionstore100[4-5]\.eqiad\./ {
     role(sessionstore)
 }
-node /^sessionstore100[5-6]\.eqiad\./ {
+node /^sessionstore1006\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
