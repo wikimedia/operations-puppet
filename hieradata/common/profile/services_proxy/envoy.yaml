@@ -213,6 +213,8 @@ profile::services_proxy::envoy::listeners:
     service: ipoid
     timeout: "5s"
     upstream: "ipoid.discovery.wmnet"
+    uses_ingress: true
+    sets_sni: true
 
   # Non-discovery records
   # Eqiad ports are at 61xx
