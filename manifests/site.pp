@@ -2767,17 +2767,21 @@ node /^schema[12]00[3-4]\.(eqiad|codfw)\./ {
 node /^search-loader[12]002\.(eqiad|codfw)\./ {
     role(search::loader)
 }
-# new sessionstore servers via T209393 & T209389
+
+# sessionstore servers
 node /^sessionstore[1-2]00[1-3]\.(eqiad|codfw)\./ {
     role(sessionstore)
 }
 
-# New sessionstore T349875
-node /^sessionstore100[4-6]\.eqiad\./ {
+# New sessionstore servers T349875
+node /^sessionstore1004\.eqiad\./ {
+    role(sessionstore)
+}
+node /^sessionstore100[5-6]\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
-# New sessionstore T349876
+# New sessionstore servers T349876
 node /^sessionstore200[4-6]\.codfw\./ {
     role(insetup::data_persistence)
 }
