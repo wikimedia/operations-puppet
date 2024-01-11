@@ -82,18 +82,11 @@ route:
         team: 'data-engineering'
       routes:
         - match:
-            severity: 'page'
-          receiver: 'data-engineering-page'
-          continue: true
-        - match:
-            severity: 'page'
-          receiver: 'sre-page'
-        - match:
             severity: 'critical'
-          receiver: 'data-engineering-ircmail'
+          receiver: 'data-engineering-mail'
         - match:
             severity: 'warning'
-          receiver: 'data-engineering-irc'
+          receiver: 'data-engineering-ircmail'
         - match:
             severity: 'task'
           receiver: 'data-engineering-task'
@@ -109,6 +102,17 @@ route:
         - match:
             severity: 'warning'
           receiver: 'data-persistence-irc-feed'
+    - match:
+        team: 'data-platform'
+      routes:
+        - match:
+            severity: task
+          receiver: 'data-platform-task'
+        - match:
+            severity: page
+          receiver: 'data-platform-page'
+        # Send everything to email and IRC for data-plaform-alerts
+        - receiver: 'data-platform-ircmail'
     - match:
         team: 'infrastructure-foundations'
       routes:
@@ -295,12 +299,6 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
-- name: 'data-engineering-page'
-  victorops_configs:
-    - routing_key: 'analytics'
-  webhook_configs:
-    - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
-
 - name: 'data-engineering-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
@@ -326,6 +324,22 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
   email_configs:
     - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'data-platform-page'
+  victorops_configs:
+    - routing_key: 'data-platform'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-platform-alerts'
+  email_configs:
+    - to: 'data-platform-alerts@wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'data-platform-ircmail'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-platform-alerts'
+  email_configs:
+    - to: 'data-platform-alerts@wikimedia.org'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'infrastructure-foundations-irc'
@@ -459,6 +473,12 @@ receivers:
   webhook_configs:
     # #data-engineering
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-gsfmtborh6beh6xj5lz6'
+      send_resolved: false
+
+- name: 'data-platform-task'
+  webhook_configs:
+    # #data-platform-sre
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-r456pnp5exj6uphuhwy6'
       send_resolved: false
 
 - name: 'collaboration-services-warning'
