@@ -45,8 +45,8 @@
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The use of this certificate depends on the value of ssl_provider.
 #   when ssl_provider is sslcert this value is passed to sslcert::certificate { $global_cert_name: }
-#   when ssl_provider is acme this value ise passed to acme_chief::cert {$global_cert_name: }
-#   when ssl_provider is cfssl this alue is passed to profile::pki::get_cert($cfssl_label, $global_cert_name, ...)
+#   when ssl_provider is acme this value is passed to acme_chief::cert {$global_cert_name: }
+#   when ssl_provider is cfssl this value is passed to profile::pki::get_cert($cfssl_label, $global_cert_name, ...)
 # @param access_log Whether to use an access log or not.
 # @param header_key_format Allows capitalizing headers or maintain the original headers case on HTTP/1.1 requests
 # @param idle_timeout If indicated, that's how long an idle connection to the service is left open before closing it.
