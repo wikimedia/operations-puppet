@@ -15,7 +15,7 @@ prometheus:
   - pontoon-prometheus-02.monitoring.eqiad1.wikimedia.cloud
 
 grafana:
-  - pontoon-grafana-01.monitoring.eqiad1.wikimedia.cloud
+  - pontoon-grafana-02.monitoring.eqiad1.wikimedia.cloud
 
 kafka::logging:
   - pontoon-kafka-01.monitoring.eqiad1.wikimedia.cloud
