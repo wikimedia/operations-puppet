@@ -33,12 +33,12 @@ class profile::phabricator::datasync (
         module_path => $home_sync_dir,
     }
 
-    # Allow pulling /srv/repos data from the active server.
-    rsync::server::module { 'srv-repos':
-        ensure        => present,
-        read_only     => 'yes',
-        path          => '/srv/repos',
-        hosts_allow   => $phabricator_servers,
-        auto_firewall => true,
+    rsync::quickdatacopy { 'phabricator-repos':
+        ensure      => present,
+        auto_sync   => true,
+        delete      => true,
+        source_host => $active_server,
+        dest_host   => $passive_server,
+        module_path => '/srv/repos',
     }
 }
