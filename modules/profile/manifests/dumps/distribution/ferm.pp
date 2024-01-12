@@ -25,8 +25,8 @@ class profile::dumps::distribution::ferm (
 
     $_rsync_clients = $rsync_clients.flatten.sort.unique
 
-    ferm::service { 'dumps_rsyncd':
-        port   => '873',
+    firewall::service { 'dumps_rsyncd':
+        port   => 873,
         proto  => 'tcp',
         srange => $_rsync_clients,
     }

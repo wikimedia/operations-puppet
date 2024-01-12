@@ -45,10 +45,10 @@ class profile::dumps::distribution::nfs (
         require => Package['nfs-kernel-server'],
     }
 
-    ferm::service { 'labstore_analytics_nfs_nfs_service':
-        proto  => 'tcp',
-        port   => '2049',
-        srange => '$ANALYTICS_NETWORKS',
+    firewall::service { 'labstore_analytics_nfs_nfs_service':
+        proto    => 'tcp',
+        port     => 2049,
+        src_sets => ['ANALYTICS_NETWORKS'],
     }
 
     monitoring::service { 'nfs':
