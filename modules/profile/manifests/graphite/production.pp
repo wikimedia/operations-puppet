@@ -9,7 +9,6 @@ class profile::graphite::production (
     Array[Stdlib::Fqdn] $graphite_hosts = lookup('profile::graphite::hosts'),
 ) {
     $storage_dir = '/srv/carbon'
-    $graphite_hosts_ferm = join($graphite_hosts, ' ')
 
     class { '::httpd':
         modules => ['headers', 'rewrite', 'proxy', 'proxy_http', 'uwsgi', 'authnz_ldap'],
@@ -94,34 +93,34 @@ class profile::graphite::production (
         auto_nft    => true,
     }
 
-    ferm::service { 'carbon_c_relay-local_relay_udp':
+    firewall::service { 'carbon_c_relay-local_relay_udp':
         proto  => 'udp',
-        port   => '1903',
-        srange => "@resolve((${graphite_hosts_ferm}))",
+        port   => 1903,
+        srange => $graphite_hosts,
     }
 
-    ferm::service { 'carbon_c_relay-local_relay_tcp':
+    firewall::service { 'carbon_c_relay-local_relay_tcp':
         proto  => 'tcp',
-        port   => '1903',
-        srange => "@resolve((${graphite_hosts_ferm}))",
+        port   => 1903,
+        srange => $graphite_hosts,
     }
 
-    ferm::service { 'carbon_c_relay-frontend_relay_udp':
-        proto  => 'udp',
-        port   => '2003',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'carbon_c_relay-frontend_relay_udp':
+        proto    => 'udp',
+        port     => 2003,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
-    ferm::service { 'carbon_c_relay-frontend_relay_tcp':
-        proto  => 'tcp',
-        port   => '2003',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'carbon_c_relay-frontend_relay_tcp':
+        proto    => 'tcp',
+        port     => 2003,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
-    ferm::service { 'carbon_pickled':
-        proto  => 'tcp',
-        port   => '2004',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'carbon_pickled':
+        proto    => 'tcp',
+        port     => 2004,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     profile::auto_restarts::service { 'apache2': }
