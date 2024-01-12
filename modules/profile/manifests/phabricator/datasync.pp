@@ -24,6 +24,28 @@ class profile::phabricator::datasync (
     # Allow other phab servers to pull tarballs with home dir files.
     file { $home_sync_dir: ensure => directory,}
 
+    file { '/usr/local/bin/backup-home-dirs':
+        ensure  => present,
+        content => "#!/bin/bash\nfor user in \$(ls /home); do\ntar czfv /srv/homes/\${user}-\$(hostname -s).tar.gz /home/\${user}; done",
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+    }
+
+    $timer_ensure = ($active_server == $::fqdn)? {
+        true    => 'present',
+        default => 'absent',
+    }
+
+    systemd::timer::job { 'backup-home-dirs':
+        ensure      => $timer_ensure,
+        description => 'create tarballs from /home dirs into /srv/homes',
+        user        => 'root',
+        command     => '/usr/local/bin/backup-home-dirs',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:10:00'},
+        require     => File['/usr/local/bin/backup-home-dirs'],
+    }
+
     rsync::quickdatacopy { 'phabricator-home-dirs':
         ensure      => present,
         auto_sync   => true,
