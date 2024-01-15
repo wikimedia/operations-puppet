@@ -16,3 +16,7 @@ profile::memcached::localcacert: "%{facts.puppet_config.localcacert}"
 profile::memcached::notls_port: 11211
 profile::memcached::port: 11214
 profile::contacts::role_contacts: ['ServiceOps']
+
+# for puppet 7 migration
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
