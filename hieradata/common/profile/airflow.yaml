@@ -18,6 +18,7 @@ profile::airflow::statsd_exporter_default_mappings:
   - match: airflow\.operator_(failures|successes)[\._]+(\w+)
     match_type: regex
     name: airflow_operator
+    ttl: 1m
     labels:
       state: "$1"
       operator: "$2"
@@ -39,6 +40,7 @@ profile::airflow::statsd_exporter_default_mappings:
     name: airflow_ti_start
     action: drop
 
+
   # Renamed to remove ambiguity with the next mapping
   # The ambiguity only happens in prod, and depends on the order of the metric arrivals to the exporter.
   - match: airflow\.ti\.finish$
@@ -51,6 +53,7 @@ profile::airflow::statsd_exporter_default_mappings:
   - match: airflow\.ti\.finish.(\w+)\.(\w+)\.(queued|running|scheduled|success|failed)
     match_type: regex
     name: airflow_ti_finish
+    ttl: 1m
     labels:
       dag_id: "$1"
       task_id: "$2"
@@ -70,6 +73,7 @@ profile::airflow::statsd_exporter_default_mappings:
   - match: airflow\.dag\.(\w+)\.(\w+)\.duration
     match_type: regex
     name: "airflow_task_duration"
+    ttl: 1m
     labels:
       dag_id: "$1"
       task_id: "$2"
@@ -96,6 +100,7 @@ profile::airflow::statsd_exporter_default_mappings:
   - match: airflow\.dagrun\.duration\.(success|failed)\.(\w+)
     match_type: regex
     name: airflow_dagrun_duration
+    ttl: 1m
     labels:
       state: "$1"
       dag_id: "$2"
