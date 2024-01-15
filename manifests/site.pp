@@ -41,17 +41,22 @@ node /^acmechief-test2001\.codfw\./ {
     role(acme_chief)
 }
 
+#old namenodes - to be decommissioned
+node /^an-master100[12]\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
-node /^an-master100[13]\.eqiad\./ {
+node /^an-master1003\.eqiad\./ {
     role(analytics_cluster::hadoop::master)
 }
 
 # The Hadoop (stanby) master node:
 # - primary active NameNode
 # - YARN ResourceManager
-node /^an-master100[24]\.eqiad\./ {
+node /^an-master1004\.eqiad\./ {
     role(analytics_cluster::hadoop::standby)
 }
 
