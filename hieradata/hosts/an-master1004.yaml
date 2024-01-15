@@ -1,11 +1,2 @@
-# profile::hadoop::common::config_override:
-#   namenode_hosts:
-#     - an-master1001.eqiad.wmnet
-#     - an-master1004.eqiad.wmnet
-#   hadoop_namenode_opts: "-Xms110592m -Xmx110592m -Djava.net.preferIPv4Stack=false -XX:+UseG1GC -XX:MaxGCPauseMillis=4000 -XX:ParallelGCThreads=20 -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10080:/etc/prometheus/hdfs_namenode_jmx_exporter.yaml"
-
-
-profile::monitoring::notifications_enabled: false
-
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
