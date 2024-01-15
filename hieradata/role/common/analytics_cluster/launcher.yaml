@@ -63,15 +63,15 @@ profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
 
 # These parameters can be used to disable the refinery jobs temporarily,
 # such as when Hadoop maintenance work is required
-profile::analytics::refinery::job::canary_events::ensure_timers: absent
-profile::analytics::refinery::job::refine::ensure_timers: absent
-profile::analytics::refinery::job::refine_sanitize::ensure_timers: absent
-profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers: absent
-profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers: absent
-profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers: absent
-profile::analytics::refinery::job::import_commons_mediainfo_dumps::ensure_timers: absent
-profile::analytics::refinery::job::data_check::ensure_timers: absent
-profile::analytics::refinery::job::data_purge::ensure_timers: absent
+#profile::analytics::refinery::job::canary_events::ensure_timers: absent
+#profile::analytics::refinery::job::refine::ensure_timers: absent
+#profile::analytics::refinery::job::refine_sanitize::ensure_timers: absent
+#profile::analytics::refinery::job::sqoop_mediawiki::ensure_timers: absent
+#profile::analytics::refinery::job::import_wikidata_entities_dumps::ensure_timers: absent
+#profile::analytics::refinery::job::import_mediawiki_dumps::ensure_timers: absent
+#profile::analytics::refinery::job::import_commons_mediainfo_dumps::ensure_timers: absent
+#profile::analytics::refinery::job::data_check::ensure_timers: absent
+#profile::analytics::refinery::job::data_purge::ensure_timers: absent
 
 # Versioned gobblin-wmf shaded to use for gobblin ingestion jobs.
 profile::analytics::refinery::job::gobblin::gobblin_jar_file: /srv/deployment/analytics/refinery/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-1.0.1-jar-with-dependencies.jar
