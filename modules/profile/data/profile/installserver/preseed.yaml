@@ -184,7 +184,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'dbprov[12]00[123]':
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
-  'db[12]*|dbstore100[1-9]|dbstore2*|es[12]*|pc[12]*':
+  'db[12]*|dbstore100[7-9]|dbstore2*|es[12]*|pc[12]*':
     - reuse-parts.cfg
     - partman/custom/reuse-db.cfg
   'dborch*':

@@ -1,4 +1,4 @@
--- Role for the research user on the dbstore1003-1005 for analytics replicas
+-- Role for the research user on the dbstore1007-1009 for analytics replicas
 -- Creating the role:
 CREATE ROLE research_role;
 

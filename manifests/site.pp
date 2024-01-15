@@ -928,7 +928,7 @@ node /^db2102\.codfw\./ {
 }
 
 # Analytics production replicas
-node /^dbstore100[35789]\.eqiad\./ {
+node /^dbstore100[789]\.eqiad\./ {
     role(mariadb::analytics_replica)
 }
 
