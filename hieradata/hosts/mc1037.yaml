@@ -1,2 +1,3 @@
-#profile::puppet::agent::force_puppet7: true
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
 profile::memcached::localcacert: "%{facts.puppet_config.localcacert}"
