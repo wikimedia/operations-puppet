@@ -118,6 +118,7 @@ class profile::openstack::base::nova::compute::service(
         owner  => 'nova',
         group  => 'libvirt',
         source => $puppet_cert_pub,
+        notify => Service['libvirtd'],
     }
 
     file { $libvirt_cert_priv:
@@ -127,6 +128,7 @@ class profile::openstack::base::nova::compute::service(
         group     => 'libvirt',
         mode      => '0640',
         show_diff => false,
+        notify    => Service['libvirtd'],
     }
 
     file { $libvirt_cert_ca:
@@ -134,6 +136,7 @@ class profile::openstack::base::nova::compute::service(
         source => "file://${puppet_cert_chain}",
         owner  => 'nova',
         group  => 'libvirt',
+        notify => Service['libvirtd'],
     }
 
     class {'openstack::nova::compute::service':
