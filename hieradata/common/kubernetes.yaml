@@ -153,6 +153,13 @@ kubernetes::clusters:
         - kubernetes1060.eqiad.wmnet
         - kubernetes1061.eqiad.wmnet
         - kubernetes1062.eqiad.wmnet
+        - mw1360.eqiad.wmnet
+        - mw1361.eqiad.wmnet
+        - mw1362.eqiad.wmnet
+        - mw1363.eqiad.wmnet
+        - mw1374.eqiad.wmnet
+        - mw1375.eqiad.wmnet
+        - mw1376.eqiad.wmnet
         - mw1377.eqiad.wmnet
         - mw1378.eqiad.wmnet
         - mw1379.eqiad.wmnet
@@ -259,6 +266,13 @@ kubernetes::clusters:
         - kubernetes2058.codfw.wmnet
         - kubernetes2059.codfw.wmnet
         - kubernetes2060.codfw.wmnet
+        - mw2291.codfw.wmnet
+        - mw2292.codfw.wmnet
+        - mw2293.codfw.wmnet
+        - mw2294.codfw.wmnet
+        - mw2295.codfw.wmnet
+        - mw2296.codfw.wmnet
+        - mw2297.codfw.wmnet
         - mw2420.codfw.wmnet
         - mw2421.codfw.wmnet
         - mw2422.codfw.wmnet
