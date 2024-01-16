@@ -2,7 +2,7 @@
 
 GRANT ALL PRIVILEGES
     ON *.* TO 'root'@'localhost'
-    IDENTIFIED BY '<%= @root_pass %>'
+    IDENTIFIED VIA unix_socket
     WITH GRANT OPTION;
 
 GRANT PROXY
