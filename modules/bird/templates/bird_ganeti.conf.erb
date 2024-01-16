@@ -1,0 +1,40 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+router id <%= @ipv4_src %>;
+
+protocol kernel kernel_v4 {
+    learn;
+    scan time 1;
+    ipv4 {
+        import where krt_source = 4; # statics
+    };
+}
+protocol kernel kernel_v6 {
+    learn;
+    scan time 1;
+    ipv6 {
+        import where krt_source = 3; # statics
+   };
+}
+
+<% @neighbors_v4.each do |neighbor_v4| -%>
+protocol bgp {
+    ipv4 {
+        import none;
+        export all;
+    };
+    local <%= @ipv4_src %> as 64612;
+    neighbor <%= neighbor_v4 %> external;
+}
+<% end -%>
+
+<% @neighbors_v6.each do |neighbor_v6| -%>
+protocol bgp {
+    ipv6 {
+        import none;
+        export all;
+    };
+    local <%= @ipv6_src %> as 64612;
+    neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
+}
+<% end -%>

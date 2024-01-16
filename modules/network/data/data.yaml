@@ -242,6 +242,9 @@ network::subnets:
         private1-dse-kubesvc-eqiad:
           ipv4: 10.67.32.0/20
           ipv6: 2620:0:861:303::/64
+        private1-virtual-eqiad:
+          ipv4: 10.64.24.0/23
+          ipv6: 2620:0:861:140::/64
 
     codfw:
       public:
@@ -260,6 +263,9 @@ network::subnets:
         public1-lvs-codfw:
           ipv4: 208.80.153.224/27
           ipv6: 2620:0:860:ed1a::/64
+        public1-virtual-codfw:
+          ipv4: 208.80.152.128/27
+          ipv6: 2620:0:860:5::/64
       private:
         private1-a-codfw:
           ipv4: 10.192.0.0/22
@@ -347,6 +353,9 @@ network::subnets:
         private1-mlstage-kubesvc-codfw:
           ipv4: 10.194.62.0/23
           ipv6: 2620:0:860:303::/64
+        private1-virtual-codfw:
+          ipv4: 10.192.24.0/23
+          ipv6: 2620:0:860:140::/64
     esams:
       public:
         public1-bw27-esams:

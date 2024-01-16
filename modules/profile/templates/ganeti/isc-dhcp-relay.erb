@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# MANAGED BY PUPPET
+# Defaults for isc-dhcp-relay initscript
+# sourced by /etc/init.d/isc-dhcp-relay
+
+#
+# This is a POSIX shell fragment
+#
+
+# What servers should the DHCP relay forward requests to?
+SERVERS="<%= @tftp_servers[@site] %>"
+
+# On what interfaces should the DHCP relay (dhrelay) serve DHCP requests?
+INTERFACES=""
+
+# Additional options that are passed to the DHCP relay daemon?
+OPTIONS=""

@@ -3,3 +3,4 @@ profile::ganeti::rapi_nodes: []
 profile::ganeti::critical_memory: 95
 profile::ganeti::warning_memory: 90
 profile::ganeti::use_pki: false
+profile::ganeti::routed: false

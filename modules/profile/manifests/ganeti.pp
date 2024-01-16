@@ -37,17 +37,27 @@
 #   Percentage of memory (0-100) which, if using over it, it will throw a
 #   warning alert due to memory pressure. It must be lower than
 #   critical_memory.
+#
+# [*routed*]
+#   If Ganeti is used in routed (L3) mode or not.
+#   See https://phabricator.wikimedia.org/phame/post/view/312/ganeti_on_modern_network_design/
+#
+# [*tftp_servers*]
+#   Dictionary of DHCP servers (as they're the same as TFTP servers)
+#   keyed by site.
 
 class profile::ganeti (
-    Array[Stdlib::Fqdn] $nodes         = lookup('profile::ganeti::nodes'),
-    Array[Stdlib::Fqdn] $rapi_nodes    = lookup('profile::ganeti::rapi_nodes'),
-    String $rapi_certificate           = lookup('profile::ganeti::rapi::certificate'),
-    Optional[String] $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
-                                                { default_value => undef }),
-    Optional[String] $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
-                                                { default_value => undef }),
-    Integer[0, 100] $critical_memory   = lookup('profile::ganeti::critical_memory'),
-    Integer[0, 100] $warning_memory    = lookup('profile::ganeti::warning_memory'),
+    Array[Stdlib::Fqdn]                      $nodes            = lookup('profile::ganeti::nodes'),
+    Array[Stdlib::Fqdn]                      $rapi_nodes       = lookup('profile::ganeti::rapi_nodes'),
+    String                                   $rapi_certificate = lookup('profile::ganeti::rapi::certificate'),
+    Optional[String]                         $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
+                                                                        { default_value => undef }),
+    Optional[String]                         $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
+                                                                        { default_value => undef }),
+    Integer[0, 100]                          $critical_memory  = lookup('profile::ganeti::critical_memory'),
+    Integer[0, 100]                          $warning_memory   = lookup('profile::ganeti::warning_memory'),
+    Boolean                                  $routed           = lookup('profile::ganeti::routed'),
+    Hash[Wmflib::Sites, Stdlib::IP::Address] $tftp_servers     = lookup('profile::installserver::dhcp::tftp_servers'),
 ) {
 
     class { 'ganeti':
@@ -230,6 +240,52 @@ class profile::ganeti (
                 'interval' => 'Wed *-*-01,02,03,04,05,06,07 11:47:00',
                 }
             ]
+        }
+    }
+    if $routed {
+        ensure_packages('isc-dhcp-relay')
+        # To be replaced by finer grained policies
+        # DHCP, BGP
+        nftables::file::input { 'ganeti_guest_vm_all_in':
+            content => 'iifname "tap*" accept',
+            order   => 10,
+        }
+
+        $hypervisor_tap_ips = $::site ? {
+            'codfw' => {4 => '10.192.24.1/32', 6 => '2620:0:860:140::1/128'},
+            'eqiad' => {4 => '10.64.24.1/32', 6 => '2620:0:861:140::1/128'},
+        }
+        # Override the Package provided net-common script
+        file { '/usr/lib/ganeti/3.0/usr/lib/ganeti/net-common':
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0755',
+            content => template('profile/ganeti/net-common.erb'),
+        }
+
+        sysctl::parameters { 'primary-nic-ip-forward':
+            values => {
+                "net.ipv4.conf.${$facts['interface_primary']}.ip_forward" => 1,
+                "net.ipv6.conf.${$facts['interface_primary']}.ip_forward" => 1,
+            },
+        }
+        # tftp servers are also the dhcp servers
+        file { '/etc/default/isc-dhcp-relay':
+            ensure  => file,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('profile/ganeti/isc-dhcp-relay.erb'),
+        }
+        service { 'isc-dhcp-relay':
+            ensure  => running,
+        }
+        class { 'bird':
+            bfd             => false,
+            do_ipv6         => true,
+            multihop        => false,
+            config_template => 'bird/bird_ganeti.conf.erb',
         }
     }
 }
