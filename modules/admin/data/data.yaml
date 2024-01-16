@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1]
+              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1, daniram]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -395,7 +395,7 @@ groups:
               esanders, sukhe, jfishback, iflorez, mayakpwiki, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
-              itamar, phedenskog, aaron, aklapper, andrew-wmde, daniram,
+              itamar, phedenskog, aaron, aklapper, andrew-wmde,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
               dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, migr, gtzatchkova, mttp,
@@ -4332,16 +4332,12 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICHjbEiVf5Z7L4yrqByE9kVcRtR3MTmwyPg65l3LPZc7 rkemper@wikimedia.org'
     krb: present
   daniram:
-    ensure: present
+    ensure: absent
     realname: Daniele Rama
-    email: daniele.rama@unito.it
     uid: 24065
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMzKRxyFfYw/A8UIQAm6o6hTdVOKCjgdh+qsXlzOGBT4 daniele@MacBook-Pro-di-Daniele.local'
-    expiry_date: "2024-01-15"
-    expiry_contact: mredi@wikimedia.org
-    krb: present
+    ssh_keys: []
+    krb: absent
   rodolfovalentim:
     ensure: absent
     realname: Rodolfo Valentim
