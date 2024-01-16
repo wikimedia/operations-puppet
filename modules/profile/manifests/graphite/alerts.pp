@@ -13,33 +13,6 @@ class profile::graphite::alerts(
         graphite_url => $graphite_url,
     }
 
-    # Monitor MediaWiki session failures
-    # See https://grafana.wikimedia.org/d/000000208/edit-count
-    monitoring::graphite_threshold { 'mediawiki_session_loss':
-        description     => 'MediaWiki edit session loss',
-        graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000208/edit-count?orgId=1&viewPanel=13'],
-        metric          => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.session_loss.rate, "max"), 60), 0)',
-        warning         => 10,
-        critical        => 50,
-        from            => '15min',
-        percentage      => 30,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    }
-
-    # Monitor MediaWiki CentralAuth bad tokens
-    monitoring::graphite_threshold { 'mediawiki_bad_token':
-        description     => 'MediaWiki edit failure due to bad token',
-        graphite_url    => $graphite_url,
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000208/edit-count?orgId=1&viewPanel=13'],
-        metric          => 'transformNull(scale(consolidateBy(MediaWiki.edit.failures.bad_token.rate, "max"), 60), 0)',
-        warning         => 10,
-        critical        => 50,
-        from            => '15min',
-        percentage      => 30,
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Application_servers',
-    }
-
     # Monitor MediaWiki CentralAuth login failures
     monitoring::graphite_threshold { 'mediawiki_centralauth_errors':
         description     => 'MediaWiki centralauth errors',
