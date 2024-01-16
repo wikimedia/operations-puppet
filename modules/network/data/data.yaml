@@ -102,9 +102,6 @@ network::subnets:
         cloud-hosts1-eqiad:
           ipv4: 10.64.20.0/24
           ipv6: 2620:0:861:118::/64
-        cloud-support1-c-eqiad:
-          ipv4: 10.64.37.0/24
-          ipv6: 2620:0:861:119::/64
         analytics1-a-eqiad:
           ipv4: 10.64.5.0/24
           ipv6: 2620:0:861:104::/64
