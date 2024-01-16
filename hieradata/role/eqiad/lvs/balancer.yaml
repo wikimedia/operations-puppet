@@ -1,7 +1,6 @@
 profile::pybal::config_host: conf1007.eqiad.wmnet
 profile::pybal::etcd_port: 4001
 profile::lvs::tagged_subnets:
-  - cloud-support1-c-eqiad
   - private1-a-eqiad
   - private1-b-eqiad
   - private1-c-eqiad
