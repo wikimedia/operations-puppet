@@ -102,6 +102,12 @@ class profile::openstack::base::nova::compute::service(
     # TODO: use puppet::expose_agent_certs (which does not support custom
     #  paths) or PKI directly
     $certpath          = '/var/lib/nova'
+    # The 'client*' names are hardcoded in the client code, but the server
+    # config can specify custom paths. Since we're using a single cert for both
+    # client and server they're both using 'client*' files instead of having
+    # duplicates on disk.
+    # Also note, the cacert file is only used for verification - the certs in
+    # clientcert.pem must include the full chain.
     $libvirt_cert_pub  = "${certpath}/clientcert.pem"
     $libvirt_cert_priv = "${certpath}/clientkey.pem"
     $libvirt_cert_ca   = "${certpath}/cacert.pem"
@@ -113,12 +119,22 @@ class profile::openstack::base::nova::compute::service(
         ensure => directory,
     }
 
-    file { $libvirt_cert_pub:
-        ensure => file,
+    concat { $libvirt_cert_pub:
+        ensure => present,
         owner  => 'nova',
         group  => 'libvirt',
-        source => $puppet_cert_pub,
         notify => Service['libvirtd'],
+    }
+
+    concat::fragment { 'libvirtd_puppet_agent_cert':
+        source => $puppet_cert_pub,
+        order  => 1,
+        target => $libvirt_cert_pub,
+    }
+    concat::fragment { 'libvirtd_puppet_cert_chain':
+        source => $puppet_cert_chain,
+        order  => 2,
+        target => $libvirt_cert_pub,
     }
 
     file { $libvirt_cert_priv:
