@@ -1,7 +1,3 @@
-profile::microsites::research::server_name: 'research.wikimedia.org'
-profile::microsites::research::server_admin: 'noc@wikimedia.org'
-profile::microsites::design::server_name: 'design.wikimedia.org'
-profile::microsites::design::server_admin: 'noc@wikimedia.org'
 profile::microsites::security::server_name: 'security.wikimedia.org'
 profile::microsites::security::server_admin: 'noc@wikimedia.org'
 

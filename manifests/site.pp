@@ -1601,9 +1601,9 @@ node /^karapace100[12]\.eqiad\./ {
 # replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
 # profile::microsites::static_rt       # https://static-rt.wikimedia.org
-# profile::microsites::research        # https://research.wikimedia.org (T183916)
-# profile::microsites::design          # https://design.wikimedia.org (T185282)
-# profile::microsites::wikiworkshop    # https://wikiworkshop.org (T242374)
+# profile::microsites::security        # https://security.wikimedia.org (T257830)
+# profile::microsites::query_service   # parts of https://query.wikidata.org (T266702)
+# profile::microsites::os_reports      # https://os-reports.wikimedia.org
 node /^miscweb[12]003\.(eqiad|codfw)\./ {
     role(miscweb)
 }
