@@ -73,12 +73,11 @@ define aptrepo::repo (
     }
 
     file { "${basedir}/conf/options":
-        ensure       => file,
-        owner        => $user,
-        group        => $group,
-        mode         => '0444',
-        content      => inline_template("<%= @options.join(\"\n\") %>\n"),
-        validate_cmd => $deb822_validate_cmd,
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0444',
+        content => inline_template("<%= @options.join(\"\n\") %>\n"),
     }
 
     file { "${basedir}/conf/uploaders":
