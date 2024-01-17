@@ -29,7 +29,7 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1, daniram]
+              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1, daniram, bstorm]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -58,7 +58,7 @@ groups:
     members: &ops_members [filippo, bblack, andrew, oblivian,
               akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
-              ayounsi, herron, bstorm, vgutierrez, jiji, cwhite,
+              ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
@@ -3554,14 +3554,12 @@ users:
     uid: 17779
     email: risler@wikimedia.org
   bstorm:
-    ensure: present
+    ensure: absent
     gid: 500
     name: bstorm
     realname: Brooke Storm
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8mCQQmAnqIJvvANonRbREzfJ0hi34IqfFtE++PjwT0oYcNnZKSjj/T3kRvZ+L29VgfE6+U7oEtAzgdTIe1o+CLLdtX0n0FQArjD94XxSboZwe0UlnqJSWuP2GKIaYPjaNUOROfEMpJ1C4mvoHaJRZPaUZJXKeuDvAx3wjrpoeSYZhPlQfXzEbMwUos16ycKiawCgMrtQ9JdrYclOyJXJj3RjWfqdvrP/lNHOJ3UsJu0BBQNWTQDX8oDCozGEHlXvQX0wL5IZcxfVTg13al3yqRzRssQgZLVYWtDi1wNUjUdACxYV8Bu36G+B7tUqVH3EHzuMJSeYQWNhcth9sy403vq34I1zYUVcIOPsm9VEzvQJdbQZ1shRAoS2aA5dpThnVn0dv9YwgjZF4lb8M2EIvT0MoKlEcFFCS92yklrtfvo7mgmxuL+pRDNHSz+sL7W34ObneUURgbLhqeKpGfpUaFUh449Kq32WCGrTApu9x+iaHKdzuunOoIN+p4Ib+Hkd9JobL7ivrFA6I70eQfajgu/xq/zhH5tNjJdFjJU/kONO2IqSZd/x+wpj4ZNdTKA2hY6WCCG6Ge9sZlyH5BQMWBiofSUrsk5S4r9/DoK2isMJIw/mxJzEmCOFiVk57yhLr94gvzgPEEZlyDEx/IJBfLYok9Lf/Y/mZeEYEG/2tKQ== bstorm@wikimedia.org
+    ssh_keys: []
     uid: 18713
-    email: bastorm@pm.me
   rook:
     ensure: present
     gid: 500
