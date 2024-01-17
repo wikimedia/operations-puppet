@@ -172,7 +172,7 @@ class puppetmaster(
         }
     }
     include puppetmaster::gitpuppet
-    include puppetmaster::generators
+    include puppetserver::generators # lint:ignore:wmf_styleguide
 
     file { '/etc/puppet/auth.conf':
         owner   => 'root',

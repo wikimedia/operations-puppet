@@ -1,4 +1,4 @@
-class puppetmaster::generators(
+class puppetserver::generators (
     Wmflib::Ensure $ensure = 'present'
 ){
 
@@ -10,7 +10,7 @@ class puppetmaster::generators(
         owner   => 'root',
         group   => 'root',
         mode    => '0555',
-        source  => 'puppet:///modules/puppetmaster/naggen2.py',
+        source  => 'puppet:///modules/puppetserver/naggen2.py',
         require => Package['python3-requests'],
     }
 }

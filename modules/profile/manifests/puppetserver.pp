@@ -121,6 +121,8 @@ class profile::puppetserver (
         ca_root => $puppetserver::ca_dir,
     }
 
+    class { 'puppetserver::generators': }
+
     puppetserver::rsync_module { 'ca':
         path     => $ca_dir,
         hosts    => wmflib::class::hosts('puppetserver::ca'),
