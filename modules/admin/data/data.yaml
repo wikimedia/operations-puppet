@@ -6983,3 +6983,7 @@ ldap_only_users:
     ensure: present
     realname: Arthur Taylor
     email: arthur.taylor@wikimedia.de
+  jwheeler:
+    ensure: present
+    realname: Jack Wheeler
+    email: jwheeler@wikimedia.org
