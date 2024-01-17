@@ -82,12 +82,11 @@ define aptrepo::repo (
     }
 
     file { "${basedir}/conf/uploaders":
-        ensure       => file,
-        owner        => $user,
-        group        => $group,
-        mode         => '0444',
-        content      => epp('aptrepo/uploaders.epp', {'upload_keys' => $upload_keys}),
-        validate_cmd => $deb822_validate_cmd,
+        ensure  => file,
+        owner   => $user,
+        group   => $group,
+        mode    => '0444',
+        content => epp('aptrepo/uploaders.epp', {'upload_keys' => $upload_keys}),
     }
 
     file { "${basedir}/conf/distributions":
