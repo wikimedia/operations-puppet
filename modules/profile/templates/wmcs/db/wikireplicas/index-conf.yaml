@@ -35,6 +35,11 @@ indexes:
     columns:
       - ipb_reason_id
       - ipb_deleted
+  - table: block
+    name: block_reason_deleted
+    columns:
+      - bl_reason_id
+      - bl_deleted
   - table: recentchanges
     name: rc_comment_deleted
     columns:
@@ -71,6 +76,11 @@ indexes:
     columns:
         - ipb_by_actor
         - ipb_deleted
+  - table: block
+    name: block_actor_deleted
+    columns:
+        - bl_by_actor
+        - bl_deleted
   - table: oldimage
     name: oi_actor_deleted
     columns:

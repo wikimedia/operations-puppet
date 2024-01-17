@@ -250,9 +250,9 @@ customviews:
     view: select actor_id, actor_user, actor_name
     where: >
       exists( select 1 from user where user_id = actor_user )
-      AND (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=actor_user) is NULL
+      AND ( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user ) IS NULL
       OR exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
-      OR exists( select 1 from ipblocks where ipb_by_actor = actor_id AND ipb_deleted=0 )
+      OR exists( select 1 from block where bl_by_actor = actor_id AND bl_deleted=0 )
       OR exists( select 1 from image where img_actor = actor_id )
       OR exists( select 1 from oldimage where oi_actor = actor_id AND oi_deleted&4 = 0 )
       OR exists( select 1 from filearchive where fa_actor = actor_id AND fa_deleted&4 = 0 )
@@ -266,17 +266,22 @@ customviews:
     view: select actor_id, actor_user, actor_name
     where: >
       exists( select 1 from user where user_id = actor_user ) AND
-      (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=actor_user) is NULL
+      ( select 1 from block join block_target on bt_id=bl_target where bl_deleted=1 AND bt_user=actor_user ) IS NULL
   actor_archive:
     source: actor
     view: select actor_id, actor_user, actor_name
     where: >
       exists( select 1 from archive where ar_actor = actor_id AND ar_deleted&4 = 0 )
+  actor_block:
+    source: actor
+    view: select actor_id, actor_user, actor_name
+    where: >
+      exists( select 1 from block where bl_by_actor = actor_id AND bl_deleted = 0 )
   actor_ipblocks:
     source: actor
     view: select actor_id, actor_user, actor_name
     where: >
-      exists( select 1 from ipblocks where ipb_by_actor = actor_id AND ipb_deleted=0 )
+      exists( select 1 from block where bl_by_actor = actor_id AND bl_deleted = 0 )
   actor_image:
     source: actor
     view: select actor_id, actor_user, actor_name
@@ -366,8 +371,16 @@ customviews:
       select bt_id, if(bt_auto<>0, null, bt_address) as bt_address, bt_user,
       bt_user_text, bt_auto, bt_range_start, bt_range_end,
       if(bt_auto<>0, null, bt_ip_hex) as bt_ip_hex, bt_count
-    where:
-      not exists( select 1 from block where bl_target=bt_id and bl_deleted=1 )
+    where: ( select 1 from block where bl_target=bt_id and bl_deleted=1 ) IS NULL
+  block_target_ipindex:
+    source:
+      - block_target
+    view: >
+      select bt_id, bt_address, bt_user, bt_user_text, bt_auto, bt_range_start,
+      bt_range_end, bt_ip_hex, bt_count
+    where: >
+      ( select 1 from block where bl_target=bt_id and bl_deleted=1 ) IS NULL
+      AND bt_auto=0
   comment:
     source: comment
     view: >
@@ -376,7 +389,7 @@ customviews:
       exists( select 1 from image where img_description_id = comment_id )
       OR exists( select 1 from filearchive where fa_deleted_reason_id = comment_id )
       OR exists( select 1 from filearchive where fa_description_id = comment_id AND fa_deleted&2 = 0 )
-      OR exists( select 1 from ipblocks where ipb_reason_id = comment_id and ipb_deleted = 0)
+      OR exists( select 1 from block where bl_reason_id = comment_id and bl_deleted = 0 )
       OR exists( select 1 from oldimage where oi_description_id = comment_id AND oi_deleted&2 = 0 )
       OR exists( select 1 from protected_titles where pt_reason_id = comment_id )
       OR exists( select 1 from recentchanges where rc_comment_id = comment_id AND rc_deleted&2 = 0 )
@@ -384,6 +397,12 @@ customviews:
       OR exists( select 1 from logging where log_comment_id = comment_id AND log_deleted&2 = 0 AND $INSERTED_EXPR$ )
     logging_where:
       *allowed_logtypes
+  comment_block:
+    source: comment
+    view: >
+      select comment_id, comment_hash, comment_text, comment_data
+    where: >
+      exists( select 1 from block where bl_reason_id = comment_id and bl_deleted = 0 )
   comment_image:
     source: comment
     view: >
@@ -402,7 +421,7 @@ customviews:
     view: >
       select comment_id, comment_hash, comment_text, comment_data
     where: >
-      exists( select 1 from ipblocks where ipb_reason_id = comment_id and ipb_deleted = 0 )
+      exists( select 1 from block where bl_reason_id = comment_id and bl_deleted = 0 )
   comment_oldimage:
     source: comment
     view: >
@@ -541,40 +560,98 @@ customviews:
       img_actor, img_timestamp, img_sha1
     where: comment_id = img_description_id AND img_actor = actor_id
   ipblocks:
-    source: ipblocks
-    view: >
-      select ipb_id, if(ipb_auto<>0,null,ipb_address) as ipb_address, ipb_user,
-      ipb_reason_id,
-      ipb_timestamp, ipb_auto, ipb_anon_only,
-      ipb_create_account, ipb_expiry, if(ipb_auto<>0,null,ipb_range_start)
-      as ipb_range_start, if(ipb_auto<>0,null,ipb_range_end) as ipb_range_end, ipb_enable_autoblock,
-      ipb_deleted, ipb_block_email, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id, ipb_sitewide
-    where: ipb_deleted=0
-  ipblocks_compat:
+    # b/c view showing the table as it was prior to block/block_target
     source:
-      - ipblocks
+      - block
+      - block_target
+    view: >
+      select
+      bl_id as ipb_id,
+      if(bt_auto<>0, null, coalesce(bt_address, bt_user_text)) as ipb_address,
+      bt_user as ipb_user,
+      bl_reason_id as ipb_reason_id,
+      bl_timestamp as ipb_timestamp,
+      bt_auto as ipb_auto,
+      bl_anon_only as ipb_anon_only,
+      bl_create_account as ipb_create_account,
+      bl_expiry as ipb_expiry,
+      if(bt_auto<>0, null, coalesce(bt_range_start, bt_ip_hex)) as ipb_range_start,
+      bt_range_end as ipb_range_end,
+      bl_enable_autoblock as ipb_enable_autoblock,
+      bl_deleted as ipb_deleted,
+      bl_block_email as ipb_block_email,
+      bl_by_actor as ipb_by_actor,
+      bl_allow_usertalk as ipb_allow_usertalk,
+      bl_parent_block_id as ipb_parent_block_id,
+      bl_sitewide as ipb_sitewide
+    where: >
+      bt_id=bl_target
+      AND bl_deleted=0
+      AND ( select 1 from block join block_target hu_block_target on bl_target=bt_id where bl_deleted=1 AND hu_block_target.bt_id=block_target.bt_id ) IS NULL
+  ipblocks_compat:
+    # b/c view showing the table as it was prior to actor/comment
+    source:
+      - block
+      - block_target
       - comment
       - actor
     view: >
-      select ipb_id, if(ipb_auto<>0,null,ipb_address) as ipb_address, ipb_user,
+      select
+      bl_id as ipb_id,
+      if(bt_auto<>0, null, coalesce(bt_address, bt_user_text)) as ipb_address,
+      bt_user as ipb_user,
       actor_user as ipb_by,
-      ipb_reason_id, comment_text as ipb_reason,
-      ipb_timestamp, ipb_auto, ipb_anon_only,
-      ipb_create_account, ipb_expiry, if(ipb_auto<>0,null,ipb_range_start)
-      as ipb_range_start, if(ipb_auto<>0,null,ipb_range_end) as ipb_range_end, ipb_enable_autoblock,
-      ipb_deleted, ipb_block_email,
+      bl_reason_id as ipb_reason_id,
+      comment_text as ipb_reason,
+      bl_timestamp as ipb_timestamp,
+      bt_auto as ipb_auto,
+      bl_anon_only as ipb_anon_only,
+      bl_create_account as ipb_create_account,
+      bl_expiry as ipb_expiry,
+      if(bt_auto<>0, null, coalesce(bt_range_start, bt_ip_hex)) as ipb_range_start,
+      bt_range_end as ipb_range_end,
+      bl_enable_autoblock as ipb_enable_autoblock,
+      bl_deleted as ipb_deleted,
+      bl_block_email as ipb_block_email,
       actor_name as ipb_by_text,
-      ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id
-    where: ipb_deleted=0 AND comment.comment_id = ipblocks.ipb_reason_id AND ipb_by_actor = actor_id
+      bl_by_actor as ipb_by_actor,
+      bl_allow_usertalk as ipb_allow_usertalk,
+      bl_parent_block_id as ipb_parent_block_id,
+      bl_sitewide as ipb_sitewide
+    where: >
+      bl_target=bt_id
+      AND bl_deleted=0
+      AND ( select 1 from block join block_target hu_block_target on bl_target=bt_id where bl_deleted=1 AND hu_block_target.bt_id=block_target.bt_id ) IS NULL
+      AND comment.comment_id = block.bl_reason_id
+      AND bl_by_actor = actor_id
   ipblocks_ipindex:
-    source: ipblocks
+    source:
+      - block
+      - block_target
     view: >
-      select ipb_id, ipb_address, ipb_user,
-      ipb_reason_id,
-      ipb_timestamp, ipb_auto, ipb_anon_only,
-      ipb_create_account, ipb_expiry, ipb_range_start, ipb_range_end, ipb_enable_autoblock, ipb_deleted,
-      ipb_block_email, ipb_by_actor, ipb_allow_usertalk, ipb_parent_block_id, ipb_sitewide
-    where: ipb_deleted=0 and ipb_auto=0
+      select
+      bl_id as ipb_id,
+      bt_address as ipb_address,
+      bt_user as ipb_user,
+      bl_reason_id as ipb_reason_id,
+      bl_timestamp as ipb_timestamp,
+      bt_auto as ipb_auto,
+      bl_anon_only as ipb_anon_only,
+      bl_create_account as ipb_create_account,
+      bl_expiry as ipb_expiry,
+      bt_range_start as ipb_range_start,
+      bt_range_end as ipb_range_end,
+      bl_enable_autoblock as ipb_enable_autoblock,
+      bl_deleted as ipb_deleted,
+      bl_block_email as ipb_block_email,
+      bl_by_actor as ipb_by_actor,
+      bl_allow_usertalk as ipb_allow_usertalk,
+      bl_parent_block_id as ipb_parent_block_id,
+      bl_sitewide as ipb_sitewide
+    where: >
+      bt_id=bl_target
+      AND bl_deleted=0 AND bt_auto=0
+      AND ( select 1 from block join block_target hu_block_target on bl_target=bt_id where bl_deleted=1 AND hu_block_target.bt_id=block_target.bt_id ) IS NULL
   # NOTE: when updating the sanitization on linktarget, please also update the corresponding
   # duplicated logic here: https://gerrit.wikimedia.org/r/plugins/gitiles/analytics/refinery/+/refs/heads/master/python/refinery/sqoop.py#611
   linktarget:
@@ -826,13 +903,13 @@ customviews:
       NULL as user_email_token, NULL as user_email_token_expires, user_registration,
       NULL as user_newpass_time, user_editcount, NULL as user_password_expires,
       user_is_temp
-    where: (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=user_id) is NULL
+    where: ( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id ) IS NULL
   user_old:
     source: user_old
     view: >
       select user_id, user_name, NULL as user_password, NULL as user_newpassword, NULL as user_email,
       NULL as user_options, NULL as user_newtalk, NULL as user_touched, user_real_name, NULL as user_token
-    where: (SELECT 1 from ipblocks where ipb_auto=0 AND ipb_deleted=1 AND ipb_user=user_id) is NULL
+    where: ( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id ) IS NULL
   user_properties:
     source: user_properties
     view: select up_user, up_property, up_value
