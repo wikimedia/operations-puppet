@@ -1157,6 +1157,11 @@ node /^es20(35|36|37|38|39|40)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
+# New db hosts T354210
+node /^db2(196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|217|218|219|220)\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
