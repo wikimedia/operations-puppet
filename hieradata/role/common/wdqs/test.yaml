@@ -58,10 +58,10 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - "%{facts.fqdn}"
-    - 'full-experimental.query.wikidata.org'
-    - 'main-experimental.query.wikidata.org'
-    - 'scholarly-experimental.query.wikidata.org'
-profile::tlsproxy::envoy::global_cert_name: 'wdqs-test.eqiad.wmnet'
+    - 'query-full-experimental.wikidata.org'
+    - 'query-main-experimental.wikidata.org'
+    - 'query-scholarly-experimental.wikidata.org'
+profile::tlsproxy::envoy::global_cert_name: 'query-experimental.eqiad.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
