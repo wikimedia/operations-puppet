@@ -31,4 +31,13 @@ class mediawiki::cgroup {
     grub::bootparam { 'cgroup.memory':
         value => 'nokmem',
     }
+
+    # Bullseye defaults to cgroup v2 by default T325228 and our cgroup
+    # setup isn't compatible with v2, so configure c1 explicitly
+    if debian::codename::eq('bullseye') {
+        grub::bootparam { 'disable_unified_cgroup_hierarchy':
+            key   => 'systemd.unified_cgroup_hierarchy',
+            value => '0',
+        }
+    }
 }
