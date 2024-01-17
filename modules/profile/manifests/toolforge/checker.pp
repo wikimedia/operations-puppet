@@ -43,8 +43,8 @@ class profile::toolforge::checker {
         'nfs_home'               => '/nfs/home',
         'redis'                  => '/redis',
         'self'                   => '/self',
-        'webservice_gridengine'  => '/webservice/gridengine',
-        'webservice_kubernetes'  => '/webservice/kubernetes',
+        'webservice_gridengine'  => absent,
+        'webservice_kubernetes'  => absent,
     }
 
     $checks.each |String $name, Variant[String, Wmflib::Ensure] $path| {
