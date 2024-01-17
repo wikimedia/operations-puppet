@@ -21,6 +21,7 @@
   "MySQLOrchestratorHost": "<%= @db_backend_host %>",
   "MySQLOrchestratorPort": <%= @db_backend_port %>,
   "MySQLOrchestratorDatabase": "<%= @db_backend_database %>",
+  "MySQLOrchestratorSSLSkipVerify": true,
   "MySQLOrchestratorCredentialsConfigFile": "/etc/mysql/orchestrator_srv.cnf",
   "MySQLOrchestratorSSLCAFile": "/etc/ssl/certs/wmf-ca-certificates.crt",
 <% elsif @db_backend == 'sqlite' -%>
@@ -30,6 +31,7 @@
 
   "MySQLTopologyCredentialsConfigFile": "/etc/mysql/orchestrator_topo.cnf",
   "MySQLTopologyUseMutualTLS": true,
+  "MySQLTopologySSLSkipVerify": true,
   "MySQLTopologySSLCAFile": "/etc/ssl/certs/wmf-ca-certificates.crt",
   "InstancePollSeconds": 5,
   "MySQLConnectTimeoutSeconds": 1,
