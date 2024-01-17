@@ -27,38 +27,4 @@ class profile::microsites::query_service {
         branch    => 'production',
     }
 
-    prometheus::blackbox::check::http { 'commons-query.wikimedia.org':
-        team        => 'search-platform',
-        severity    => 'task',
-        path        => '/',
-        force_tls   => true,
-        ip_families => [ip4],
-    }
-
-    prometheus::blackbox::check::http { 'query.wikidata.org':
-        server_name => 'query.wikidata.org',
-        team        => 'search-platform',
-        severity    => 'task',
-        path        => '/',
-        force_tls   => true,
-        ip_families => [ip4],
-    }
-
-    prometheus::blackbox::check::http { 'commons-query.wikimedia.org-collab':
-        server_name => 'commons-query.wikimedia.org',
-        team        => 'collaboration-services',
-        severity    => 'task',
-        path        => '/',
-        force_tls   => true,
-        ip_families => [ip4],
-    }
-
-    prometheus::blackbox::check::http { 'query.wikidata.org-collab':
-        server_name => 'query.wikidata.org',
-        team        => 'collaboration-services',
-        severity    => 'task',
-        path        => '/',
-        force_tls   => true,
-        ip_families => [ip4],
-    }
 }
