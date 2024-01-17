@@ -2,12 +2,22 @@
 # Wikibase Query Service UI (T266702)
 class profile::microsites::query_service {
 
-    profile::microsites::query_service::site { 'wdqs':
-        domain_name => 'query.wikidata.org',
-    }
-
-    profile::microsites::query_service::site { 'wcqs':
-        domain_name => 'commons-query.wikimedia.org',
+    profile::microsites::query_service::site {
+        'wdqs':
+            domain_name => 'query.wikidata.org',
+        ;
+        'wcqs':
+            domain_name => 'commons-query.wikimedia.org',
+        ;
+        'full-experimental':
+            domain_name => 'query-full-experimental.wikidata.org',
+        ;
+        'main-experimental':
+            domain_name => 'query-main-experimental.wikidata.org',
+        ;
+        'scholarly-experimental':
+            domain_name => 'query-scholarly-experimental.wikidata.org',
+        ;
     }
 
     wmflib::dir::mkdir_p('/srv/org/wikidata/query')
