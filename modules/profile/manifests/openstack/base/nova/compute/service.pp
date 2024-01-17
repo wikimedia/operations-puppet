@@ -82,16 +82,16 @@ class profile::openstack::base::nova::compute::service(
     }
 
     # Increase the size of conntrack table size (default is 65536)
-    #  T139598
+    #  T139598 T355222
     sysctl::parameters { 'nova_conntrack':
         values => {
-            'net.netfilter.nf_conntrack_max'                   => 262144,
+            'net.netfilter.nf_conntrack_max'                   => 524288,
             'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
         },
     }
 
     kmod::options { 'nf_conntrack':
-        options => 'hashsize=32768',
+        options => 'hashsize=65536',
     }
 
     # Reuse the puppet cert as the labvirt cert
