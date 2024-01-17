@@ -165,13 +165,10 @@ class profile::icinga(
     class { 'icinga::web':
         icinga_user           => $icinga_user,
         icinga_group          => $icinga_group,
-        virtual_host          => $virtual_host,
         apache2_htpasswd_salt => $apache2_htpasswd_salt,
         apache2_auth_users    => $apache2_auth_users,
-        ldap_server           => $ldap_config['ro-server'],
-        ldap_server_fallback  => $ldap_config['ro-server-fallback'],
     }
-    profile::idp::client::httpd::site { 'icinga.wikimedia.org':
+    profile::idp::client::httpd::site { $virtual_host:
         vhost_content   => 'profile/idp/client/httpd-icinga.erb',
         acme_chief_cert => 'icinga',
         document_root   => '/usr/share/icinga/htdocs',

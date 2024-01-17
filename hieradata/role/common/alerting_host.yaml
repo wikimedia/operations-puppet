@@ -18,8 +18,7 @@ profile::icinga::ircbot::ircecho_server: 'irc.libera.chat +6697'
 profile::tcpircbot::irc::host: 'irc.libera.chat'
 profile::tcpircbot::irc::port: 6697
 
-# NOTE: update the senders whitelist on our paging infrastructure (AQL as of 20190211) when modifying Icinga hostnames
-profile::icinga::virtual_host: ldap-icinga.wikimedia.org
+profile::icinga::virtual_host: "icinga.%{lookup('public_domain')}"
 profile::icinga::active_host: alert1001.wikimedia.org
 profile::icinga::partners:
   - 'alert2001.wikimedia.org'
