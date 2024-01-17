@@ -310,3 +310,6 @@ profile::trafficserver::backend::http_settings:
   allow_half_open: 1
 
 profile::firewall::provider: none
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
