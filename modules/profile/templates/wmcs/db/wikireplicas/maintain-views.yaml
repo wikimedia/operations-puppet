@@ -353,6 +353,23 @@ customviews:
       ar_deleted, if(ar_deleted&1,null,ar_len) as ar_len, ar_page_id, ar_parent_id,
       if(ar_deleted&1,null,ar_sha1) as ar_sha1
     where: (ar_deleted&4)=0
+  block:
+    source:
+      - block
+    view: >
+      select bl_id, bl_target, bl_by_actor, bl_reason_id, bl_timestamp, bl_anon_only,
+      bl_create_account, bl_enable_autoblock, bl_expiry, bl_deleted, bl_block_email,
+      bl_allow_usertalk, bl_parent_block_id, bl_sitewide
+    where: bl_deleted=0
+  block_target:
+    source:
+      - block_target
+    view: >
+      select bt_id, if(bt_auto<>0, null, bt_address) as bt_address, bt_user,
+      bt_user_text, bt_auto, bt_range_start, bt_range_end,
+      if(bt_auto<>0, null, bt_ip_hex) as bt_ip_hex, bt_count
+    where:
+      not exists( select 1 from block where bl_target=bt_id and bl_deleted=1 )
   comment:
     source: comment
     view: >
