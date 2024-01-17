@@ -14,6 +14,11 @@ class profile::pontoon::base (
 
     include "profile::pontoon::provider::${provider}"
 
+    # Partial duplication/compatibility with profile::base::production
+    # Ideally Pontoon runs with the profile above enabled, and we are
+    # not there yet.
+    include profile::monitoring
+
     # PKI is a "base" service, often required even in minimal stacks
     # (e.g. puppetdb can use PKI).
     # Do not require a load balancer and service discovery enabled
