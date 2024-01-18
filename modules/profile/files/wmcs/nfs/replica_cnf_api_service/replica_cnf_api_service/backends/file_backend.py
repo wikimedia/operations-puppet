@@ -98,8 +98,7 @@ class ToolforgeUserFileBackend(Backend):
         if not dest_path.parent.exists():
             raise Skip(
                 (
-                    f"Skipping account {replica_cnf.user}: Parent directory ({dest_path.parent}) does not exist yet, "
-                    "this might happen if the user has not logged in yet, skipping to retry in the next run"
+                    f"Skipping account {replica_cnf.user}: Home directory ({dest_path.parent}) does not exist yet"
                 ),
                 dest_path=dest_path,
             )
@@ -202,24 +201,6 @@ class ToolforgeToolFileBackend(ToolforgeUserFileBackend):
             / "replica.my.cnf"
         )
 
-    def check_if_should_skip_write_replica_cnf(
-        self, dest_path: Path, replica_cnf: ReplicaCnf
-    ) -> None:
-        if not dest_path.parent.exists():
-            raise Skip(
-                (
-                    f"Skipping account {replica_cnf.user}: Parent directory ({dest_path.parent}) does not exist yet, "
-                    "this might happen if maintain-kubeusers has not run yet, skipping to retry in the next run"
-                ),
-                dest_path=dest_path,
-            )
-
-        if dest_path.exists():
-            raise Skip(
-                f"Skipping account {replica_cnf.user}: File already exists.",
-                dest_path=dest_path,
-            )
-
 
 class PawsUserFileBackend(ToolforgeUserFileBackend):
     USER_TYPE = UserType.PAWS_USER
@@ -229,13 +210,3 @@ class PawsUserFileBackend(ToolforgeUserFileBackend):
 
     def get_relative_path(self, user: str) -> Path:
         return Path(user) / ".my.cnf"
-
-    def check_if_should_skip_write_replica_cnf(
-        self, dest_path: Path, replica_cnf: ReplicaCnf
-    ) -> None:
-        if dest_path.exists():
-            LOGGER.warning("Configuration file %s already exists", dest_path)
-            raise Skip(
-                f"Skipping account {replica_cnf.user}: {dest_path} Already exists",
-                dest_path=dest_path,
-            )

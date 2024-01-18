@@ -187,7 +187,7 @@ class TestWriteReplicaCnf:
         )
         assert response.status_code == 404
 
-    def test_write_replica_cnf_for_paws_non_existing_parent_dir_returns_500(self, client, app):
+    def test_write_replica_cnf_for_paws_non_existing_parent_dir_returns_skip(self, client, app):
         wrong_paw_path = app.config["TESTONLY_WRONG_PAWS_PATH"]
         account_type = "paws"
 
@@ -206,9 +206,8 @@ class TestWriteReplicaCnf:
             content_type="application/json",
         )
         response_data = json.loads(response.data)
-        assert response.status_code == 500
-        assert response_data["result"] == "error"
-        assert "No such file or directory" in response_data["detail"]["reason"]
+        assert response.status_code == 200
+        assert response_data["result"] == "skip"
         assert not os.path.exists(wrong_paw_path)
 
     def test_write_replica_cnf_for_users_success(self, client, app):
