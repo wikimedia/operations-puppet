@@ -79,15 +79,17 @@ class ToolforgeToolEnvvarsBackend(Backend):
     def _create_envvar(self, name: str, value: str, client, toolname: str) -> None:
         try:
             client.get(url=f"/envvars/v1/tool/{toolname}/envvars/{name}")
-            current_app.logger.debug("Skipping setting existing var %s", name)
+            current_app.logger.debug("Overwriting variable %s", name)
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == http.HTTPStatus.NOT_FOUND:
-                client.post(
-                    url=f"/envvars/v1/tool/{toolname}/envvars",
-                    json={"name": name, "value": value},
-                )
+                current_app.logger.debug("Creating new variable %s", name)
             else:
                 raise
+
+        client.post(
+            url=f"/envvars/v1/tool/{toolname}/envvars",
+            json={"name": name, "value": value},
+        )
 
     def save_replica_cnf(
         self, replica_cnf: ReplicaCnf, account_uid: int, dry_run: bool

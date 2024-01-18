@@ -94,13 +94,13 @@ disable-ssl = true'
 }
 
 
-@test "tools: write replica cnf does not overwrite if it exists already" {
+@test "tools: write replica cnf does overwrite it if it exists already" {
     data='{
             "account_id": "'$TOOL_NAME'",
             "account_type": "tool",
             "uid": "'$USER_ID'",
-            "mysql_username": "new_dummyuser",
-            "password": "new_dummypass",
+            "mysql_username": "dummy_mysql_user",
+            "password": "dummypass2",
             "dry_run": false
     }'
     cnf_path="${TOOL_BASE_PATH}/${SHORT_TOOL_NAME}/replica.my.cnf" 
@@ -109,7 +109,7 @@ disable-ssl = true'
     run do_curl write-replica-cnf "$data"
 
     is_equal "$status" "0"
-    json_has_equal "result" "skip" "$output"
+    json_has_equal "result" "ok" "$output"
 }
 
 
@@ -126,7 +126,8 @@ disable-ssl = true'
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_match "detail.password" ".*" "$output"
+    # hashed password dummypass2
+    json_has_match "detail.password" "f6dc0f4b60d79b0f559f736b8489a1c1beb02c1e" "$output"
     json_has_equal "detail.user" "dummy_mysql_user" "$output"
 }
 

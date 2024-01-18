@@ -97,15 +97,7 @@ class ToolforgeUserFileBackend(Backend):
         """
         if not dest_path.parent.exists():
             raise Skip(
-                (
-                    f"Skipping account {replica_cnf.user}: Home directory ({dest_path.parent}) does not exist yet"
-                ),
-                dest_path=dest_path,
-            )
-
-        if dest_path.exists():
-            raise Skip(
-                f"Skipping account {replica_cnf.user}: File already exists.",
+                f"Skipping account {replica_cnf.user}: Home directory ({dest_path.parent}) does not exist yet",
                 dest_path=dest_path,
             )
 

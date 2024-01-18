@@ -94,13 +94,13 @@ disable-ssl = true'
 }
 
 
-@test "paws: write replica cnf does not overwrite if it exists already" {
+@test "paws: write replica cnf overwrites it if it exists already" {
     data='{
             "account_id": "'$USER_ID'",
             "account_type": "paws",
             "uid": "'$USER_ID'",
-            "mysql_username": "new_dummyuser",
-            "password": "new_dummypass",
+            "mysql_username": "dummy_mysql_user",
+            "password": "dummypass2",
             "dry_run": false
     }'
     cnf_path="${PAWS_BASE_PATH}/${USER_ID}/.my.cnf" 
@@ -109,7 +109,7 @@ disable-ssl = true'
     run do_curl write-replica-cnf "$data"
 
     is_equal "$status" "0"
-    json_has_equal "result" "skip" "$output"
+    json_has_equal "result" "ok" "$output"
 }
 
 
@@ -126,7 +126,8 @@ disable-ssl = true'
 
     is_equal "$status" "0"
     json_has_equal "result" "ok" "$output"
-    json_has_match "detail.password" ".*" "$output"
+    # hashed password dummypass2
+    json_has_match "detail.password" "f6dc0f4b60d79b0f559f736b8489a1c1beb02c1e" "$output"
     json_has_equal "detail.user" "dummy_mysql_user" "$output"
 }
 

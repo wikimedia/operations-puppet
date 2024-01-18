@@ -60,6 +60,12 @@ base_path=$(get_base_path "${account_type}")
 full_path="${base_path}/${path}"
 # echo full_path to stdout for python script to read.
 echo "$full_path"
+if [[ -e "$full_path" ]]; then
+    # reset permissions if we are going to rewrite it
+    chattr -i "$full_path"
+    chown "$USER" "$full_path"
+    chmod u+rwx "$full_path"
+fi
 echo -e "$config" > "$full_path"
 
 # harden ownership, permissions and mutability

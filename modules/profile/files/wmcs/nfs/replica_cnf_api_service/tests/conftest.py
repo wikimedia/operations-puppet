@@ -207,8 +207,18 @@ def mock_envvars_api(requests_mock: Mocker):
         }
         user_url_match = re.compile(f"{DUMMY_TOOLFORGE_API}/envvars/v1/tool/[^/]+/envvars/{var}")
 
-        for method in ("GET", "POST", "DELETE"):
+        for method in ("GET", "DELETE"):
             requests_mock.register_uri(method, user_url_match, json=wrapped_response)
+
+    def post_response(request, context):
+        return {
+            "envvar": request.json(),
+            "messages": {
+                "info": [],
+                "warning": [],
+                "error": [],
+            },
+        }
 
     for var in ToolforgeToolEnvvarsBackend.PASSWORD_ENVVARS:
         pass_envvar = {
@@ -225,7 +235,10 @@ def mock_envvars_api(requests_mock: Mocker):
             },
         }
 
-        for method in ("GET", "POST", "DELETE"):
+        for method in ("GET", "DELETE"):
             requests_mock.register_uri(method, pass_url_match, json=wrapped_response)
+
+    user_url_match = re.compile(f"{DUMMY_TOOLFORGE_API}/envvars/v1/tool/[^/]+/envvars/?")
+    requests_mock.register_uri(method="POST", url=user_url_match, json=post_response)
 
     return requests_mock
