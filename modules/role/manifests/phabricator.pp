@@ -15,6 +15,7 @@ class role::phabricator {
     include ::profile::phabricator::monitoring
     include ::profile::phabricator::performance
     include ::profile::phabricator::datasync
+    include ::profile::phabricator::reposync
     include ::profile::prometheus::apache_exporter
     include ::profile::tlsproxy::envoy # TLS termination
     include ::rsync::server # copy repo data between servers
