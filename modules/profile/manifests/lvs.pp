@@ -73,4 +73,12 @@ class profile::lvs(
         content => systemd_template('ipip-multiqueue-optimizer'),
         restart => false,
     }
+
+    if $ipip_enabled {
+        exec { 'enable_ipip-multiqueue-optimizer_service':
+            command => '/usr/bin/systemctl enable ipip-multiqueue-optimizer.service',
+            unless  => '/usr/bin/systemctl -q is-enabled ipip-multiqueue-optimizer.service',
+            require => Systemd::Service['ipip-multiqueue-optimizer'],
+        }
+    }
 }
