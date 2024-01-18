@@ -119,7 +119,7 @@ lvs::interfaces::vlan_data:
     id: "2002"
     netmask: '255.255.255.224'
     iface:
-      'lvs2011': 'eno12409np1:208.80.153.55'
+      'lvs2011': 'eno12399np0:208.80.153.55'
       'lvs2012': 'eno12399np0:208.80.153.56'
       'lvs2013': 'eno12409np1:208.80.153.57'
       'lvs2014': 'eno12409np1:208.80.153.58'
@@ -150,7 +150,7 @@ lvs::interfaces::vlan_data:
     id: "2018"
     netmask: '255.255.252.0'
     iface:
-      'lvs2011': 'eno12409np1:10.192.17.8'
+      'lvs2011': 'eno12399np0:10.192.17.8'
       'lvs2013': 'eno12409np1:10.192.17.9'
       'lvs2014': 'eno12409np1:10.192.17.10'
   private1-c-codfw:
