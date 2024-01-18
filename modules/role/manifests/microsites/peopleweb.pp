@@ -8,5 +8,6 @@ class role::microsites::peopleweb {
     include ::profile::backup::host
     include ::profile::microsites::peopleweb
     include ::profile::tlsproxy::envoy # TLS termination
+    include ::profile::phabricator::reposync
 
 }

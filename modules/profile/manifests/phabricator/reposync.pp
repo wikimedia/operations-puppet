@@ -3,13 +3,13 @@
 # temporary test
 class profile::phabricator::reposync {
 
-    if $::fqdn in ['phab2002.codfw.wmnet', 'gitlab2003.wikimedia.org'] {
+    if $::fqdn in ['phab2002.codfw.wmnet', 'people1004.eqiad.wmnet'] {
         rsync::quickdatacopy { 'phabricator-repos-test':
             ensure      => present,
             auto_sync   => false,
             delete      => true,
             source_host => 'phab2002.codfw.wmnet',
-            dest_host   => 'gitlab2003.wikimedia.org',
+            dest_host   => 'people1004.eqiad.wmnet',
             module_path => '/srv/repos',
         }
     }
