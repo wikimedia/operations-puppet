@@ -62,6 +62,14 @@ class profile::lvs::realserver::ipip(
         restart => false,
     }
 
+    if $enabled {
+        exec { 'enable_tcp-mss-clamper_service':
+            command => '/usr/bin/systemctl enable tcp-mss-clamper.service',
+            unless  => '/usr/bin/systemctl -q is-enabled tcp-mss-clamper.service',
+            require => Systemd::Service['tcp-mss-clamper'],
+        }
+    }
+
     # Allow inbound IPIP && IP6IP6 traffic
     ferm::rule { 'ipip':
         ensure => $ensure,
