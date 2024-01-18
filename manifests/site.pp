@@ -2522,6 +2522,10 @@ node /^mx2001\.wikimedia\./ {
     }
 }
 
+node /^ncmonitor[1-9][0-9]{3}\./ {
+    role(ncmonitor)
+}
+
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
