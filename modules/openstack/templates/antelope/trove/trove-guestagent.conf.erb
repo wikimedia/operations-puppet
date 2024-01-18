@@ -114,12 +114,22 @@ kombu_reconnect_delay=0.1
 [mysql]
 docker_image = quay.io/wikimedia-cloud-services/mysql
 device_path = /dev/vdb
-backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-mysql:1.0.0
+
+# A terrible thing is happening here: a bug in the mysql backup driver in version antelope
+# doubles up the version. So this setting results in us looking for a container named
+# quay.io/wikimedia-cloud-services/db-backup-mysql5.7:5.7
+#
+# There is also an image at quay.io/wikimedia-cloud-services/db-backup-mysql:5.7
+# in case this bug is ever fixed.
+#
+# The bug seems to be specific to mysql, the naming makes sense for maria and postgres
+backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-mysql:5.7
 
 
 [mariadb]
 docker_image = quay.io/wikimedia-cloud-services/mariadb
 device_path = /dev/vdb
+backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-mariadb:10.5.10
 
 [redis]
 device_path = /dev/vdb
@@ -132,6 +142,7 @@ docker_image = quay.io/wikimedia-cloud-services/redis
 [postgresql]
 device_path = /dev/vdb
 docker_image = quay.io/wikimedia-cloud-services/postgres
+backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-postgresql:12.7
 
 [percona]
 device_path = /dev/vdb
