@@ -1060,22 +1060,33 @@ def delete_account(account: str, dry_run: bool, config: dict[str, Any], account_
                             # is not to execute them at all if dry_run is True.
                             if not dry_run:
                                 cloud_db_cur.execute(drop_user_sql_str)
-
-                        with acct_db.cursor() as write_cur:
-                            del_acct_host_sql_str = f"""
-                                DELETE FROM account_host
-                                WHERE id = '{row['account_host_id']}';
-                                """
-                            write_cur.execute(del_acct_host_sql_str)
-                            commit_to_db(db=acct_db, dry_run=dry_run)
-                            logging.info(
-                                "Deleted %s account in %s for %s",
-                                row["type"],
+                    except pymysql.err.OperationalError as exc:
+                        # Ignore if the user fails to delete, this generally
+                        # means that the user already exists.
+                        if exc.args[0] == 1396:  # CANNOT_USER
+                            logging.warning(
+                                "Ignoring deleting user %s on %s, user does not exist",
+                                account,
                                 host,
-                                row["username"],
                             )
+                        else:
+                            raise
                     finally:
                         cloud_db.close()
+
+                    with acct_db.cursor() as write_cur:
+                        del_acct_host_sql_str = f"""
+                            DELETE FROM account_host
+                            WHERE id = '{row['account_host_id']}';
+                            """
+                        write_cur.execute(del_acct_host_sql_str)
+                        commit_to_db(db=acct_db, dry_run=dry_run)
+                        logging.info(
+                            "Deleted %s account in %s for %s",
+                            row["type"],
+                            host,
+                            row["username"],
+                        )
 
         # Now we get rid of the file
         try:
