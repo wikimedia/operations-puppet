@@ -35,6 +35,7 @@
 # @param auth_username - username used for basic auth
 # @param auth_password - password used for basic auth
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
+# @param alert_after the time to wait between first expression hit and ProbeDown firing, defaults to 2m
 define prometheus::blackbox::check::http (
     Stdlib::Fqdn                            $server_name             = $title,
     Stdlib::Fqdn                            $instance_label          = $facts['networking']['hostname'],
@@ -76,6 +77,7 @@ define prometheus::blackbox::check::http (
     String[1]                               $ssl_expired_description = 'The certificate presented by service {{ $labels.instance }} is going to expire in {{ $value | humanizeDuration }}',
     String[1]                               $ssl_expired_summary     = 'Certificate for service {{ $labels.instance }} is about to expire',
     String[1]                               $ssl_expired_dashboard   = 'https://grafana.wikimedia.org/d/K1dRhGCnz/probes-tls-dashboard',
+    Pattern[/\d+[mh]/]                      $alert_after             = '2m',
 ) {
     if !$body.empty and !$body_raw.empty {
         fail('can not set both body and body_raw')
@@ -186,7 +188,7 @@ define prometheus::blackbox::check::http (
             'rules' => [{
                 'alert'      => 'ProbeDown',
                 'expr'       => "avg_over_time(probe_success{module=~'http_${safe_title}_.*'}[1m]) * 100 < 75",
-                'for'         => '2m',
+                'for'         => $alert_after,
                 'labels'      => {
                     'team'     => $team,
                     'severity' => $severity,

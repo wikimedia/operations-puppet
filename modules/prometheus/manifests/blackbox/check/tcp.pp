@@ -19,6 +19,7 @@
 #                        file must exist on the monitoring server not the
 #                        server been monitored
 # @param prometheus_instance prometheus instance to deploy to, defaults to 'ops'
+# @param alert_after the time to wait between first expression hit and ProbeDown firing, defaults to 2m
   define prometheus::blackbox::check::tcp (
     Stdlib::Fqdn                            $server_name             = $facts['networking']['hostname'],
     Stdlib::Fqdn                            $instance_label          = $facts['networking']['hostname'],
@@ -38,6 +39,7 @@
     Wmflib::Sites                           $site                    = $::site,  # lint:ignore:top_scope_facts
     Prometheus::Blackbox::Check::Instance   $prometheus_instance     = 'ops',
     Prometheus::Blackbox::Query_response    $query_response          = undef,
+    Pattern[/\d+[mh]/]                      $alert_after             = '2m',
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
@@ -124,7 +126,7 @@
             'rules' => [{
                 'alert'      => 'ProbeDown',
                 'expr'       => "avg_over_time(probe_success{module=~'tcp_${safe_title}_.*'}[1m]) * 100 < 75",
-                'for'         => '2m',
+                'for'         => $alert_after,
                 'labels'      => {
                     'team'     => $team,
                     'severity' => $severity,
