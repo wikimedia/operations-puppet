@@ -47,8 +47,8 @@ define grafana::dashboard(
         ensure  => $ensure,
         content => $content,
         source  => $source,
-        owner   => 'root',
-        group   => 'root',
+        owner   => 'grafana',
+        group   => 'grafana',
         mode    => '0444',
         notify  => Service['grafana-server'],
     }
