@@ -24,6 +24,7 @@ class profile::grafana::production (
         module_path         => '/var/lib/grafana',
         server_uses_stunnel => false,
         exclude             => 'grafana.db-journal',
+        chown               => 'grafana:grafana',
     }
 
     class {'::grafana::ldap_sync':
