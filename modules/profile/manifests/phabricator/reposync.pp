@@ -8,7 +8,7 @@ class profile::phabricator::reposync {
             ensure      => present,
             auto_sync   => false,
             delete      => true,
-            source_host => 'phab1004.eqiad.wmnet',
+            source_host => 'phab2002.codfw.wmnet',
             dest_host   => 'gitlab2003.wikimedia.org',
             module_path => '/srv/repos',
         }
