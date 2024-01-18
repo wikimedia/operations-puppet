@@ -22,7 +22,7 @@ class profile::grafana::production (
         source_host         => $active_host,
         dest_host           => $standby_host,
         module_path         => '/var/lib/grafana',
-        server_uses_stunnel => true,
+        server_uses_stunnel => false,
         exclude             => 'grafana.db-journal',
     }
 
