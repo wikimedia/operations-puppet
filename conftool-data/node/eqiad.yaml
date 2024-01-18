@@ -111,18 +111,15 @@ eqiad:
     parse1016.eqiad.wmnet: [apache2, nginx]      # Only pooled as jobrunner
     mw1437.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1438.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
-    mw1439.eqiad.wmnet: [apache2, nginx]         # Only pooled as jobrunner
     mw1440.eqiad.wmnet: [apache2, nginx]         # Only pooled as jobrunner
     mw1445.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
     mw1446.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
     mw1457.eqiad.wmnet: [apache2, nginx]
     mw1458.eqiad.wmnet: [apache2, nginx]
     mw1459.eqiad.wmnet: [apache2, nginx]
-    mw1461.eqiad.wmnet: [apache2, nginx]
     mw1466.eqiad.wmnet: [apache2, nginx]
     mw1467.eqiad.wmnet: [apache2, nginx]
     mw1468.eqiad.wmnet: [apache2, nginx]
-    mw1469.eqiad.wmnet: [apache2, nginx]
     mw1482.eqiad.wmnet: [apache2, nginx]         # Only pooled as jobrunner
     mw1483.eqiad.wmnet: [apache2, nginx]         # Only pooled as jobrunner
     mw1484.eqiad.wmnet: [apache2, nginx]         # Only pooled as jobrunner
@@ -412,11 +409,14 @@ eqiad:
     mw1381.eqiad.wmnet: [kubesvc]
     mw1382.eqiad.wmnet: [kubesvc]
     mw1383.eqiad.wmnet: [kubesvc]
+    mw1439.eqiad.wmnet: [kubesvc]
     mw1460.eqiad.wmnet: [kubesvc]
+    mw1461.eqiad.wmnet: [kubesvc]
     mw1462.eqiad.wmnet: [kubesvc]
     mw1463.eqiad.wmnet: [kubesvc]
     mw1464.eqiad.wmnet: [kubesvc]
     mw1465.eqiad.wmnet: [kubesvc]
+    mw1469.eqiad.wmnet: [kubesvc]
     mw1470.eqiad.wmnet: [kubesvc]
     mw1471.eqiad.wmnet: [kubesvc]
     mw1472.eqiad.wmnet: [kubesvc]

@@ -1635,7 +1635,10 @@ node /^mw137[4-9]\.eqiad\./ {
 node /^mw138[0-3]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw146[02-5]\.eqiad\./ {
+node /^mw1439\.eqiad\./ {
+  role(kubernetes::worker)
+}
+node /^mw146[0-59]\.eqiad\./ {
   role(kubernetes::worker)
 }
 node /^mw147[0-5]\.eqiad\./ {
@@ -2132,7 +2135,7 @@ node /^mw143[7-8]\.eqiad\./ {
 }
 
 # rack D8 - jobrunners
-node /^mw14(39|40|45|46)\.eqiad\./ {
+node /^mw14(40|45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2209,14 +2212,14 @@ node /^mwmaint[12]002\.(eqiad|codfw)\./ {
 # Row A
 
 # rack A8
-node /^mw14(5[7-9]|61)\.eqiad\./ {
+node /^mw145[7-9]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
 
 # rack B6
-node /^mw146[6-9]\.eqiad\./ {
+node /^mw146[6-8]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
