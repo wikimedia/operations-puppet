@@ -1,6 +1,10 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=eBPF based TCP MSS clamper
+After=network.target
+
+[Install]
+WantedBy=multi-user.target
 
 [Service]
 LimitMEMLOCK=infinity
