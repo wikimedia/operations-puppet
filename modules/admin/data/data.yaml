@@ -6196,6 +6196,13 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL/OQjQqWzDvDCW9JNQxNAXEwlJ1BL2DCQHItZMxZELH arthur.taylor@wikimedia.de'
+  swfrench:
+    ensure: present
+    realname: Scott French
+    email: swfrench@wikimedia.org
+    uid: 45942
+    gid: 500
+    ssh_keys: []
   mfischerwmf:
     ensure: present
     realname: Max Fischer
