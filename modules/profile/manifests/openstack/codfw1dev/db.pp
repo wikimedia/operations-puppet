@@ -31,9 +31,10 @@ class profile::openstack::codfw1dev::db(
         client_socket   => '/var/run/mysqld/mysqld.sock',
     }
 
-    ferm::rule { 'labweb_mysql':
-        ensure => 'present',
-        rule   => "saddr (@resolve((${labweb_hosts.join(' ')}))) proto tcp dport (3306) ACCEPT;",
+    firewall::service { 'labweb_mysql':
+        proto  => 'tcp',
+        port   => 3306,
+        srange => $labweb_hosts,
     }
 
     # mysql monitoring and administration from root clients/tendril
