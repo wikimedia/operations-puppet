@@ -73,7 +73,7 @@ protocol bfd {
         interval 300 ms;
         multiplier 3;
     };
-<% if @multihop -%>
+<% if @_multihop -%>
     multihop {
         interval 300 ms;
         multiplier 3;
@@ -84,7 +84,7 @@ protocol bfd {
 
 <% @neighbors_v4.each do |neighbor_v4| -%>
 protocol bgp {
-<% if @multihop -%>
+<% if @_multihop -%>
     multihop;
 <% end -%>
 <% if @bfd -%>
@@ -102,7 +102,7 @@ protocol bgp {
 <% if @do_ipv6 -%>
 <% @neighbors_v6.each do |neighbor_v6| -%>
 protocol bgp {
-<% if @multihop -%>
+<% if @_multihop -%>
     multihop;
 <% end -%>
 <% if @bfd -%>
@@ -113,7 +113,7 @@ protocol bgp {
         export filter vips6_filter;
     };
     local <%= @ipv6_src %> as 64605;
-<% if ! @multihop -%>
+<% if ! @_multihop -%>
     neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
 <% else -%>
     neighbor <%= neighbor_v6 %> external;

@@ -27,48 +27,6 @@ class profile::bird::anycast(
     }
   }
 
-  if $neighbors_list {
-    $_neighbors_list = $neighbors_list
-    $_multihop = $multihop
-  } else {
-    $_neighbors_list = $do_ipv6 ? {
-        true    => [$facts['default_routes']['ipv4'], $facts['default_routes']['ipv6']],
-        default => [$facts['default_routes']['ipv4']],
-    }
-    $_multihop = false
-  }
-
-  firewall::service { 'bird-bgp':
-      proto  => 'tcp',
-      port   => 179,
-      srange => $_neighbors_list,
-      before => Service['bird'],
-  }
-
-  # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
-  if $bfd {
-    firewall::service { 'bird-bfd-control':
-        proto  => 'udp',
-        port   => 3784,
-        srange => $_neighbors_list,
-        before => Service['bird'],
-    }
-    firewall::service { 'bird-bfd-echo':
-        proto  => 'udp',
-        port   => 3785,
-        srange => $_neighbors_list,
-        before => Service['bird'],
-    }
-    if $_multihop {
-      firewall::service { 'bird-bfd-multi-ctl':  # Multihop BFD
-          proto  => 'udp',
-          port   => 4784,
-          srange => $_neighbors_list,
-          before => Service['bird'],
-      }
-    }
-  }
-
   $advertise_vips.each |$vip_fqdn, $vip_params| {
     interface::ip { "lo-vip-${vip_fqdn}":
       ensure    => $vip_params['ensure'],
@@ -98,26 +56,20 @@ class profile::bird::anycast(
     }
   }
 
-  systemd::sysuser { 'bird':
-      home_dir => '/run/bird',
-  }
-
   class { 'bird::anycast_healthchecker':
       bind_service => $bind_anycast_services,
       do_ipv6      => $do_ipv6,
       logging      => $anycasthc_logging,
-      require      => Systemd::Sysuser['bird'],
   }
 
   include profile::bird::anycast_healthchecker_monitoring
 
   class { 'bird':
-      neighbors    => $_neighbors_list,
+      neighbors    => $neighbors_list,
       bind_service => 'anycast-healthchecker.service',
       bfd          => $bfd,
       do_ipv6      => $do_ipv6,
-      multihop     => $_multihop,
+      multihop     => $multihop,
       ipv4_src     => $ipv4_src,
-      require      => Systemd::Sysuser['bird'],
   }
 }
