@@ -57,4 +57,3 @@ profile::openstack::base::nova::fullstack::nameservers:
   - ns0.openstack.eqiad1.wikimediacloud.org
 
 profile::openstack::base::galera::openstack_control_node_interface: host_fqdn
-profile::openstack::base::keystone::service::openstack_control_node_interface: host_fqdn

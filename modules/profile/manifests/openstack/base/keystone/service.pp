@@ -3,7 +3,6 @@ class profile::openstack::base::keystone::service(
     $version = lookup('profile::openstack::base::version'),
     $region = lookup('profile::openstack::base::region'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
-    String $openstack_control_node_interface = lookup('profile::openstack::base::keystone::service::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     $osm_host = lookup('profile::openstack::base::osm_host'),
     $db_name = lookup('profile::openstack::base::keystone::db_name'),
     $db_user = lookup('profile::openstack::base::keystone::db_user'),
@@ -61,7 +60,7 @@ class profile::openstack::base::keystone::service(
     class {'::openstack::keystone::service':
         active                                => $daemon_active,
         version                               => $version,
-        memcached_nodes                       => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
+        memcached_nodes                       => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
         max_active_keys                       => $max_active_keys,
         osm_host                              => $osm_host,
         db_name                               => $db_name,
