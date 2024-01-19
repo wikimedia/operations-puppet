@@ -26,14 +26,11 @@ class role::logging::mediawiki::udp2log(
 
     class { '::bsection': }
 
-    ferm::rule { 'udp2log_accept_all_wikimedia':
-        rule => 'saddr ($DOMAIN_NETWORKS) proto udp ACCEPT;',
-    }
-
-    ferm::rule { 'udp2log_notrack':
-        table => 'raw',
-        chain => 'PREROUTING',
-        rule  => 'saddr ($DOMAIN_NETWORKS) proto udp NOTRACK;',
+    firewall::service {'udp2log_accept_all_wikimedia':
+        proto      => 'udp',
+        port_range => [1,65535],
+        src_sets   => ['DOMAIN_NETWORKS'],
+        notrack    => true,
     }
 
     file { '/usr/local/bin/demux.py':
