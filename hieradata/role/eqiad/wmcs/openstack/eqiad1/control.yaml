@@ -59,6 +59,5 @@ profile::openstack::base::nova::fullstack::nameservers:
 # TODO: in the future, this can be removed and made default to cloud-private FQDN in the profile
 profile::openstack::base::galera::node::wsrep_node_name: "%{facts.fqdn}"
 profile::openstack::base::galera::openstack_control_node_interface: host_fqdn
-profile::openstack::base::glance::openstack_control_node_interface: host_fqdn
 profile::openstack::base::placement::openstack_control_node_interface: host_fqdn
 profile::openstack::base::keystone::service::openstack_control_node_interface: host_fqdn
