@@ -69,9 +69,11 @@ class profile::lvs(
     $optimizer_interfaces = $host_vlan_ifaces + $host_native_ifaces
     $prometheus_addr = "${::ipaddress}:9095"
     systemd::service { 'ipip-multiqueue-optimizer':
-        ensure  => stdlib::ensure($ipip_enabled),
-        content => systemd_template('ipip-multiqueue-optimizer'),
-        restart => false,
+        ensure               => stdlib::ensure($ipip_enabled),
+        content              => systemd_template('ipip-multiqueue-optimizer'),
+        monitoring_enabled   => true,
+        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/LVS#IPIP_encapsulation_experiments',
+        restart              => false,
     }
 
     if $ipip_enabled {

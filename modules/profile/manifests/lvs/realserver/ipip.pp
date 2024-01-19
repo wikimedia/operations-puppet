@@ -57,9 +57,11 @@ class profile::lvs::realserver::ipip(
 
     $prometheus_addr = ':2200'
     systemd::service { 'tcp-mss-clamper':
-        ensure  => $ensure,
-        content => systemd_template('tcp-mss-clamper'),
-        restart => false,
+        ensure               => $ensure,
+        content              => systemd_template('tcp-mss-clamper'),
+        monitoring_enabled   => true,
+        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/LVS#IPIP_encapsulation_experiments',
+        restart              => false,
     }
 
     if $enabled {
