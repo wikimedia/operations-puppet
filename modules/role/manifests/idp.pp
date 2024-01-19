@@ -2,11 +2,8 @@
 # == Class: role::idp
 # An identity provider using Apereo CAS
 class role::idp {
-
-    system::role { 'idp': description => 'CAS Identity provider' }
-
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::idp
-    include ::profile::java
+    include profile::base::production
+    include profile::firewall
+    include profile::idp
+    include profile::java
 }

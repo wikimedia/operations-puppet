@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::aux_k8s::worker {
-    system::role { 'role::aux_k8s::worker ':
-        description => 'aux kubernetes worker node',
-    }
-
     # setup standard profiles
     include profile::base::production
     include profile::firewall
@@ -16,5 +12,5 @@ class role::aux_k8s::worker {
     include profile::calico::kubernetes
 
     # LVS configuration, for service VIPs
-    include ::profile::lvs::realserver
+    include profile::lvs::realserver
 }

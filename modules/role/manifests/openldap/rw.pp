@@ -10,8 +10,4 @@ class role::openldap::rw {
     }
 
     include profile::openldap
-
-    system::role { 'openldap::rw':
-        description => 'Writable LDAP servers (based on OpenLDAP)'
-    }
 }

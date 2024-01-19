@@ -20,6 +20,7 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 profile::docker::builder::prune_images: true
 #profile::docker::builder::prod_build_password: defined in the private repo
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
+profile::base::production::role_description: 'Build host for Docker images and Debian packages'
 # we need overlayfs
 profile::base::overlayfs: true
 

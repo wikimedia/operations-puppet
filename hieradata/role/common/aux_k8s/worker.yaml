@@ -26,3 +26,4 @@ profile::lvs::realserver::pools:
 prometheus::node_exporter::collectors_extra:
   - 'processes'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'aux kubernetes worker node'

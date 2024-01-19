@@ -4,3 +4,4 @@ profile::ping_offload::target_ips:
   text-lb-codfw-vip: 208.80.153.224
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
+profile::base::production::role_description: 'Ping offload server'

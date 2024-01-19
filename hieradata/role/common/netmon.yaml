@@ -10,5 +10,5 @@ profile::idp::client::httpd::sites:
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
   - 'Observability'
-
+profile::base::production::role_description: 'Network monitoring and management'
 profile::firewall::provider: nftables

@@ -244,3 +244,4 @@ profile::prometheus::memcached_exporter::arguments: '--memcached.address=localho
 profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'CAS Identity provider'

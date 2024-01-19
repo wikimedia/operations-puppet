@@ -11,6 +11,7 @@ profile::lvs::realserver::pools:
       - 'kubemaster'
 
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'aux kubernetes master server'
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
 # (like running bird for Calico, see T285927)

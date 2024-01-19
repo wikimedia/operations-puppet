@@ -10,6 +10,7 @@ profile::admin::groups:
   - datacenter-ops
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'repository server for DEB packages'
 # NOTE: profile::installserver::preseed::preseed_per_hostname has been moved to
 # modules/profile/data/profile/installserver/preseed.yaml to allow for type
 # checking in CI, to avoid letting a typo in this hiera value make it to

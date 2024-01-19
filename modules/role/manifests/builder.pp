@@ -10,8 +10,4 @@ class role::builder {
     include profile::docker::prune
     include profile::systemtap::devserver
     include profile::java
-
-    system::role { 'builder':
-        description => 'Docker images builder',
-    }
 }

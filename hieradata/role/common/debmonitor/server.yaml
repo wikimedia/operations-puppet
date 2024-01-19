@@ -14,3 +14,4 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - debmonitor.wikimedia.org
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Debmonitor server'

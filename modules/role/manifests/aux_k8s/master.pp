@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::aux_k8s::master {
-    system::role { 'role::aux_k8s::master':
-        description => 'aux kubernetes master server',
-    }
-
     # setup standard profiles
     include profile::base::production
     include profile::firewall

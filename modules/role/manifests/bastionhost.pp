@@ -1,9 +1,5 @@
 # bastion host for all users
 class role::bastionhost{
-    system::role { 'bastionhost':
-        description => 'Bastion host for all shell users',
-    }
-
     include profile::base::production
     include profile::firewall
     include profile::backup::host

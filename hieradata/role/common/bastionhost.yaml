@@ -11,3 +11,4 @@ profile::resolving::domain_search:
 profile::admin::groups:
   - all-users
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Bastion host for all shell users'

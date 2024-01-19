@@ -6,6 +6,7 @@ profile::installserver::proxy::ensure: 'present'
 profile::nginx::variant: 'light'
 profile::ssh::server::enable_kerberos: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Installation server'
 profile::installserver::proxy::structured_logs: true
 profile::installserver::proxy::custom_acls:
   cloudcumin_ssh:

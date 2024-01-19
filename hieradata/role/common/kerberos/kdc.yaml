@@ -30,3 +30,4 @@ profile::logrotate::hourly: true
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
   - 'Data Engineering'
+profile::base::production::role_description: 'Kerberos KDC'
