@@ -182,7 +182,7 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas]
+              dbrant, tsev, ngkountas, arthurtaylor]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6191,6 +6191,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGe1B8y/aFjS8rBJwc8IW2yJp1rFBquCVB0JRjY95N1E wpgbrown@wpgbrown-work'
+  arthurtaylor:
+    ensure: present
+    realname: Arthur Taylor
+    email: arthur.taylor@wikimedia.de
+    uid: 45664
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL/OQjQqWzDvDCW9JNQxNAXEwlJ1BL2DCQHItZMxZELH arthur.taylor@wikimedia.de'
 
 ldap_only_users:
   adavenport:
@@ -6978,10 +6986,6 @@ ldap_only_users:
     ensure: present
     realname: Miguel Castro
     email: mcastro@wikimedia.org
-  arthurtaylor:
-    ensure: present
-    realname: Arthur Taylor
-    email: arthur.taylor@wikimedia.de
   jwheeler:
     ensure: present
     realname: Jack Wheeler
