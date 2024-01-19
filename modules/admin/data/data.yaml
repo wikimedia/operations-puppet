@@ -114,7 +114,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra, mobrovac]
+    members: [ssastry, cscott, arlolra]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
@@ -190,7 +190,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [mobrovac, ssastry]
+    members: [ssastry]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -493,7 +493,7 @@ groups:
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
-    members: [mobrovac]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   phabricator-admin:
     gid: 746
@@ -538,7 +538,7 @@ groups:
   htmldumps-admin:
     gid: 749
     description: users who maintain HTML/ZIM dumps
-    members: [mobrovac]
+    members: []
   stewards-users:
     description: People with access to the stewards VMs
     gid: 751
@@ -643,7 +643,7 @@ groups:
   aqs-admins:
     description: Group of admins for the Analytics Query Service
     gid: 764
-    members: [*analytics_admins_members, mobrovac, frankie]
+    members: [*analytics_admins_members, frankie]
     approval:
       - Olja Dimitrjevic
     privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
@@ -908,7 +908,7 @@ groups:
   sessionstore-roots:
     gid: 811
     description: people who have full root on session storage cluster nodes
-    members: [mobrovac]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   analytics-deployers:
     gid: 812
