@@ -6,9 +6,13 @@ class profile::openstack::base::galera::node(
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     String                        $openstack_control_node_interface = lookup('profile::openstack::base::galera::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn]           $haproxy_nodes           = lookup('profile::openstack::base::haproxy_nodes'),
-    Stdlib::Fqdn                  $wsrep_node_name         = lookup('profile::openstack::base::galera::node::wsrep_node_name'),
 ) {
     $cloudcontrols = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
+    $this_control_node = $openstack_control_nodes.filter | $entry | {
+        $entry['host_fqdn'] == $facts['networking']['fqdn']
+    }[0]
+    $wsrep_node_name = $this_control_node[$openstack_control_node_interface]
+
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'
     class {'::galera':
