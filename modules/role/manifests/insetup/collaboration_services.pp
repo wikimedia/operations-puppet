@@ -7,6 +7,4 @@ class role::insetup::collaboration_services {
 
     include profile::base::production
     include profile::firewall
-    # temp test, will be reverted asap
-    include profile::phabricator::reposync
 }
