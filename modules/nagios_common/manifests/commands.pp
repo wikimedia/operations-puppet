@@ -66,7 +66,6 @@ class nagios_common::commands(
         'check_lastmod.py',
         'check_ospf.py',
         'check_ssl',
-        'check_to_check_nagios_paging',
         'check_vcp.py',
         'check_vrrp.py',
     ] :

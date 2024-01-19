@@ -52,8 +52,6 @@ class profile::icinga(
         mgmt_parents => $mgmt_parents
     }
 
-    class { 'icinga::monitor::checkpaging': }
-
     class { 'icinga::nsca::daemon':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,
