@@ -1,7 +1,6 @@
 class profile::openstack::base::placement(
     String $version = lookup('profile::openstack::base::version'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
-    String $openstack_control_node_interface = lookup('profile::openstack::base::placement::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     String $db_user = lookup('profile::openstack::base::placement::db_user'),
     String $db_name = lookup('profile::openstack::base::placement::db_name'),
@@ -12,7 +11,7 @@ class profile::openstack::base::placement(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
     class { '::openstack::placement::service':
-        memcached_nodes => $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] },
+        memcached_nodes => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
         version         => $version,
         keystone_fqdn   => $keystone_fqdn,
         db_user         => $db_user,
