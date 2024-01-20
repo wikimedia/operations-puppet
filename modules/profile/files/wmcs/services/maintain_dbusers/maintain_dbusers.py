@@ -304,26 +304,26 @@ def delete_replica_cnf(
         config["replica_cnf"][config_key]["password"],
     )
     headers = get_headers()
-    data = {"account_id": account_id, "account_type": account_type, "dry_run": dry_run}
-    data = None
+    params = {"account_id": account_id, "account_type": account_type, "dry_run": dry_run}
 
+    response_data = None
     try:
         response = requests.post(
             url=api_url,
-            json=data,
+            json=params,
             auth=auth,
             headers=headers,
             timeout=60,
         )
         response.raise_for_status()
-        data = response.json()
+        response_data = response.json()
     except Exception as err:  # pylint: disable=broad-except
-        if not data or data.get("result", None) != "error":
-            data = {"result": "error", "detail": {"reason": str(err)}}
+        if not response_data or response_data.get("result", None) != "error":
+            response_data = {"result": "error", "detail": {"reason": str(err)}}
 
         raise APIError(
-            "Request to delete replica.my.cnf file for for account_type {0} ".format(account_type)
-            + "and account_id {0} failed. Reason: {1}".format(account_id, data["detail"]["reason"])
+            f"Request to delete replica.my.cnf file for for account_type {account_type} "
+            f"and account_id {account_id} failed with reason '{response_data['detail']['reason']}'"
         ) from err
 
 
