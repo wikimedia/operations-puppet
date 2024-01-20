@@ -1520,7 +1520,7 @@ node /^alert[12]001\.wikimedia\./ {
 
 # Phabricator eqiad (T280540, T279176) (production)
 node /^phab1004\.eqiad\./ {
-    role(phabricator)
+    role(phabricator::migration)
 }
 
 # Phabricator codfw (T280544, T279177) (failover)
