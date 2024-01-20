@@ -2,6 +2,7 @@ abuse_filter,af_id,K
 abuse_filter,af_pattern,K
 abuse_filter,af_user,K
 abuse_filter,af_user_text,K
+abuse_filter,af_actor,K
 abuse_filter,af_timestamp,K
 abuse_filter,af_enabled,K
 abuse_filter,af_comments,K
@@ -20,6 +21,7 @@ abuse_filter_history,afh_id,K
 abuse_filter_history,afh_filter,K
 abuse_filter_history,afh_user,K
 abuse_filter_history,afh_user_text,K
+abuse_filter_history,afh_actor,K
 abuse_filter_history,afh_timestamp,K
 abuse_filter_history,afh_pattern,K
 abuse_filter_history,afh_comments,K
