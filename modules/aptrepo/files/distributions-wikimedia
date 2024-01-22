@@ -167,6 +167,7 @@ Components: main
  thirdparty/gvisor
  thirdparty/haproxy26
  thirdparty/haproxy27
+ thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -199,6 +200,7 @@ Update:
  thirdparty/gitlab-runner
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27
+ thirdparty/haproxy28-bullseye
  thirdparty/openstack-db
  thirdparty/tekton
 Description: Wikimedia packages for Debian bullseye

@@ -371,6 +371,15 @@ Architectures: amd64
 VerifyRelease: 95A42FE8353525F9
 ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
 
+Name: thirdparty/haproxy28-bullseye
+Method: http://haproxy.debian.net
+Components: main>thirdparty/haproxy28
+UDebComponents:
+Suite: bullseye-backports-2.8
+Architectures: amd64
+VerifyRelease: 95A42FE8353525F9
+ListShellHook: grep-dctrl -e haproxy || [ $? -eq 1 ]
+
 Name: thirdparty/openstack-db
 Method: https://mirrors.xtom.com/mariadb/repo/10.5/debian/
 Suite: bullseye
