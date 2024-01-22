@@ -55,5 +55,3 @@ profile::toolforge::disable_tool::disable_tool_db_host: '185.15.56.15'
 # inject these particular nameservers into VMs
 profile::openstack::base::nova::fullstack::nameservers:
   - ns0.openstack.eqiad1.wikimediacloud.org
-
-profile::openstack::base::galera::openstack_control_node_interface: host_fqdn
