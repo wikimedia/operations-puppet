@@ -148,7 +148,6 @@ fullviews:
   - wb_id_counters
   - wb_items_per_site
   - wb_property_info
-  - wb_terms
   - wbc_entity_usage
   - wbqc_constraints
   - wbs_propertypairs
