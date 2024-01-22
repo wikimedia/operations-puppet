@@ -114,7 +114,7 @@ class profile::superset (
             "mysql://${passwords::mysql::research::user}@staging-db-analytics.eqiad.wmnet:3350/staging" =>
                 $passwords::mysql::research::pass,
             # new cluster, wikishared
-            "mysql://${passwords::mysql::research::user}@dbstore1008.eqiad.wmnet:3320/wikishared" =>
+            "mysql://${passwords::mysql::research::user}@dbstore1009.eqiad.wmnet:3320/wikishared" =>
                 $passwords::mysql::research::pass,
         }
     }
