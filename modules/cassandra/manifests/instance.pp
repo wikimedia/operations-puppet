@@ -536,10 +536,8 @@ define cassandra::instance(
     }
 
     # This is becoming brittle; jvm.options was introduced in v3, in v4 we now
-    # have jvm.options + JVM-specific add-ons (see below).  The 'dev'
-    # target_version is currently 3.x, but will eventually be 4.x, and this
-    # expression (and the following one) will need to change accordingly.
-    if ($target_version in ['3.x', 'dev']) {
+    # have jvm.options + JVM-specific add-ons (see below).
+    if $target_version == '3.x' {
         file { "${config_directory}/jvm.options":
             ensure  => present,
             content => template("${module_name}/jvm.options-${target_version}.erb"),
@@ -549,7 +547,7 @@ define cassandra::instance(
         }
     }
 
-    if ($target_version in ['4.x']) {
+    if ($target_version in ['4.x', 'dev']) {
         file { "${config_directory}/jvm-server.options":
             ensure  => present,
             content => template("${module_name}/jvm-server.options-${target_version}.erb"),

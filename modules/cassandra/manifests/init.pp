@@ -160,12 +160,7 @@ class cassandra (
         '2.2' => pick($version, '2.2.6-wmf5'),
         '3.x' => pick($version, '3.11.14'),
         '4.x' => pick($version, '4.1.1'),
-
-        # NOTE: When 'dev' is eventually adjusted to correspond to a v4 version,
-        # the $target_version expressions in instance.pp will need to be
-        # adjusted accordingly (there are differences in the number and
-        # disposition of configuration files).
-        'dev' => pick($version, '3.11.14')
+        'dev' => pick($version, '4.1.1-wmf1')
     }
 
     $component = $target_version  ? {
