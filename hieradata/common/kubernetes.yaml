@@ -181,6 +181,8 @@ kubernetes::clusters:
         - mw1473.eqiad.wmnet
         - mw1474.eqiad.wmnet
         - mw1475.eqiad.wmnet
+        - mw1486.eqiad.wmnet
+        - mw1495.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator

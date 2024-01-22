@@ -1649,6 +1649,12 @@ node /^mw146[0-59]\.eqiad\./ {
 node /^mw147[0-5]\.eqiad\./ {
     role(kubernetes::worker)
 }
+node /^mw1486\.eqiad\./ {
+    role(kubernetes::worker)
+}
+node /^mw1495\.eqiad\./ {
+    role(kubernetes::worker)
+}
 node /^mw2267\.codfw\./ {
   role(kubernetes::worker)
 }
@@ -2235,12 +2241,12 @@ node /^parse101[3-6]\.eqiad\./ {
 }
 
 # rack C5
-node /^mw148[2-6]\.eqiad\./ {
+node /^mw148[2-5]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
 # Row F
-node /^mw149[45]\.eqiad\./ {
+node /^mw1494\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
