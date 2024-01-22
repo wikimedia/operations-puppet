@@ -34,6 +34,11 @@ class profile::openstack::base::galera::node(
         port   => [$listen_port, 4567, 4568, 4444],
         srange => "(@resolve((${cloudcontrols.join(' ')})))",
     }
+    firewall::service { 'galera-cluster-udp':
+        proto  => 'udp',
+        port   => 4567,
+        srange => $cloudcontrols,
+    }
 
     # 9990 for the nodecheck service
     ferm::service { 'galera-backend':
