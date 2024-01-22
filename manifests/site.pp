@@ -1470,8 +1470,13 @@ node /^cloudvirt200[456]-dev\.codfw\./ {
 }
 
 # cloudrabbit servers T304888
-node /^cloudrabbit100[123]\.wikimedia\./ {
+node /^cloudrabbit100[12]\.wikimedia\./ {
     role(wmcs::openstack::eqiad1::rabbitmq)
+}
+
+node /^cloudrabbit1003\.eqiad\./ {
+    role(insetup::wmcs)
+    include profile::wmcs::cloud_private_subnet # lint:ignore:wmf_styleguide
 }
 
 node /^cloudservices200[45]-dev\.codfw\./ {
