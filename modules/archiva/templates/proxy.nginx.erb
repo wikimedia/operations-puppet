@@ -30,7 +30,7 @@ server {
     return 404;
   }
   location ~* ^\/([\w\s\-@\.\/#&\(\)\+\?\,\:\!\~\*\'\=]*)$ {
-    proxy_pass <%= @proxy_pass %>$1;
+    proxy_pass <%= @proxy_pass %>;
     proxy_redirect off;
     proxy_buffering off;
     proxy_set_header Host $host;

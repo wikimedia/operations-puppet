@@ -72,7 +72,7 @@ class archiva::proxy(
         $server_properties = $archiva_server_properties
     }
 
-    $proxy_pass = "http://127.0.0.1:${::archiva::port}/"
+    $proxy_pass = "http://127.0.0.1:${::archiva::port}"
 
     nginx::site { 'archiva':
         content => template('archiva/proxy.nginx.erb'),
