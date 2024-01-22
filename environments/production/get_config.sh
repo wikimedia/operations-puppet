@@ -6,4 +6,5 @@ PATH=/usr/bin:/bin
 
 script_dir=$(dirname "$(realpath "$0")")
 repo_dir=$(realpath "${script_dir}/../../.git")
-git --git-dir "${repo_dir}" log -1 --pretty='(%h) %cn - %s'
+# %cN normalizes the committer using .mailmap
+git --git-dir "${repo_dir}" log -1 --pretty='(%h) %cN - %s'
