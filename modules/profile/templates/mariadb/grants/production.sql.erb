@@ -52,7 +52,7 @@ GRANT REPLICATION SLAVE
 
 GRANT PROCESS, REPLICATION CLIENT
     ON *.* TO 'prometheus'@'localhost'
-    IDENTIFIED BY '<%= @prometheus_pass %>'
+    IDENTIFIED VIA unix_socket
     WITH MAX_USER_CONNECTIONS 5;
 GRANT SELECT
     ON heartbeat.heartbeat TO 'prometheus'@'localhost';
