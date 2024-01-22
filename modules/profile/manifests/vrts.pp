@@ -114,7 +114,6 @@ class profile::vrts(
             ip_families        => ['ip4'],
             force_tls          => true,
             body_regex_matches => ['wikimedia'],
-            alert_after        => '3m', # test https://gerrit.wikimedia.org/r/q/991571
         }
     }
 
