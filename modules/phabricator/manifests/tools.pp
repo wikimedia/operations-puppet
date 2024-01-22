@@ -68,7 +68,7 @@ class phabricator::tools (
         ensure      => $dump_job_ensure,
         user        => 'root',
         description => 'phabricator public task dump',
-        command     => $dump_script,
+        command     => "/usr/bin/python3 ${dump_script}",
         interval    => {'start' => 'OnCalendar', 'interval' => 'Monday *-*-* 02:00:00'},
         require     => Package[$deploy_target],
     }
