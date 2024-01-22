@@ -28,10 +28,10 @@ class profile::openstack::base::galera::node(
     # 4567, replication
     # 4568, incremental state transfer
     # 4444, state snapshot transfer
-    ferm::service { 'galera-cluster':
+    firewall::service { 'galera-cluster-tcp':
         proto  => 'tcp',
         port   => [$listen_port, 4567, 4568, 4444],
-        srange => "(@resolve((${cloudcontrols.join(' ')})))",
+        srange => $cloudcontrols,
     }
     firewall::service { 'galera-cluster-udp':
         proto  => 'udp',
@@ -40,10 +40,10 @@ class profile::openstack::base::galera::node(
     }
 
     # 9990 for the nodecheck service
-    ferm::service { 'galera-backend':
+    firewall::service { 'galera-backend':
         proto  => 'tcp',
         port   => [$listen_port, 9990],
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     prometheus::mysqld_exporter { 'default':
