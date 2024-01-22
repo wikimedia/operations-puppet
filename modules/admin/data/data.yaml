@@ -29,7 +29,8 @@ groups:
               ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
-              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1, daniram, bstorm]
+              tsepothoabala, zxane, aborrero, cec, jbond, nickifeajika, conniecc1, daniram, bstorm,
+              shubhankar]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -409,7 +410,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
-              shubhankar, dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
+              dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
               hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
@@ -5352,16 +5353,12 @@ users:
     email: aalhazwani@wikimedia.org
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   shubhankar:
-    ensure: present
+    ensure: absent
     uid: 38373
     gid: 500
-    krb: present
+    krb: absent
     realname: Shubhankar Patankar
-    email: spatank@seas.upenn.edu
-    expiry_date: "2024-01-21"
-    expiry_contact: mgerlach@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlEIMQQGbuyTAod+ev+GLFEhBYnaXuXI+t7iWVVDoSn spatank@seas.upenn.edu
+    ssh_keys: []
   dalezhou:
     ensure: present
     uid: 38372
