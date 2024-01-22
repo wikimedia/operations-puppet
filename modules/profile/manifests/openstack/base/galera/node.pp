@@ -4,14 +4,13 @@ class profile::openstack::base::galera::node(
     Stdlib::Port                  $listen_port             = lookup('profile::openstack::base::galera::listen_port'),
     String                        $prometheus_db_pass      = lookup('profile::openstack::base::galera::prometheus_db_pass'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
-    String                        $openstack_control_node_interface = lookup('profile::openstack::base::galera::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Array[Stdlib::Fqdn]           $haproxy_nodes           = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
-    $cloudcontrols = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
+    $cloudcontrols = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
     $this_control_node = $openstack_control_nodes.filter | $entry | {
         $entry['host_fqdn'] == $facts['networking']['fqdn']
     }[0]
-    $wsrep_node_name = $this_control_node[$openstack_control_node_interface]
+    $wsrep_node_name = $this_control_node['cloud_private_fqdn']
 
     $socket = '/var/run/mysqld/mysqld.sock'
     $datadir = '/srv/sqldata'

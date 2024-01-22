@@ -6,15 +6,13 @@ class profile::openstack::codfw1dev::galera::node(
     String                        $prometheus_db_pass      = lookup('profile::openstack::codfw1dev::galera::prometheus_db_pass'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn]           $haproxy_nodes           = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
-    String                        $openstack_control_node_interface = lookup('profile::openstack::codfw1dev::galera::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
 ) {
     class {'::profile::openstack::base::galera::node':
-        server_id                        => $server_id,
-        enabled                          => $enabled,
-        listen_port                      => $listen_port,
-        openstack_control_nodes          => $openstack_control_nodes,
-        prometheus_db_pass               => $prometheus_db_pass,
-        haproxy_nodes                    => $haproxy_nodes,
-        openstack_control_node_interface => $openstack_control_node_interface,
+        server_id               => $server_id,
+        enabled                 => $enabled,
+        listen_port             => $listen_port,
+        openstack_control_nodes => $openstack_control_nodes,
+        prometheus_db_pass      => $prometheus_db_pass,
+        haproxy_nodes           => $haproxy_nodes,
     }
 }
