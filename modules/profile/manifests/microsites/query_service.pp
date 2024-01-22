@@ -9,15 +9,15 @@ class profile::microsites::query_service {
         'wcqs':
             domain_name => 'commons-query.wikimedia.org',
         ;
-        # 'full-experimental':
-        #     domain_name => 'query-full-experimental.wikidata.org',
-        # ;
-        # 'main-experimental':
-        #     domain_name => 'query-main-experimental.wikidata.org',
-        # ;
-        # 'scholarly-experimental':
-        #     domain_name => 'query-scholarly-experimental.wikidata.org',
-        # ;
+        'full-experimental':
+            domain_name => 'query-full-experimental.wikidata.org',
+        ;
+        'main-experimental':
+            domain_name => 'query-main-experimental.wikidata.org',
+        ;
+        'scholarly-experimental':
+            domain_name => 'query-scholarly-experimental.wikidata.org',
+        ;
     }
 
     wmflib::dir::mkdir_p('/srv/org/wikidata/query')
