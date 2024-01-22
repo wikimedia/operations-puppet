@@ -543,7 +543,7 @@ node /^db1208\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|134|135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
+node /^db1(106|135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -775,8 +775,13 @@ node /^db2132\.codfw\./ {
 ## m2 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
-# old m2 master
+# old master
 node /^db1195\.eqiad\./ {
+    role(mariadb::misc)
+}
+
+# Temporary host T355541
+node /^db1134\.eqiad\./ {
     role(mariadb::misc)
 }
 
