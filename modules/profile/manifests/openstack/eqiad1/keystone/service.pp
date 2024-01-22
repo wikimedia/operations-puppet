@@ -77,7 +77,4 @@ class profile::openstack::eqiad1::keystone::service(
         version => $version,
     }
     contain '::profile::openstack::base::keystone::hooks'
-
-    class {'::openstack::monitor::spreadcheck':
-    }
 }
