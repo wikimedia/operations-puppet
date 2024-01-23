@@ -1479,7 +1479,7 @@ node /^cloudrabbit100[12]\.wikimedia\./ {
 }
 
 node /^cloudrabbit1003\.eqiad\./ {
-    role(insetup::wmcs)
+    role(wmcs::openstack::eqiad1::rabbitmq)
     include profile::wmcs::cloud_private_subnet # lint:ignore:wmf_styleguide
 }
 

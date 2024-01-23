@@ -1,13 +1,6 @@
 profile::admin::groups:
   - wmcs-roots
 
-# TODO: These overrides are temporary until Rabbit nodes
-# are using the cloud-private setup (T345610)
-profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1005.eqiad.wmnet
-  - cloudservices1006.eqiad.wmnet
-profile::openstack::base::rabbitmq::openstack_control_node_interface: host_fqdn
-
 contactgroups: wmcs-team-email
 
 profile::contacts::role_contacts: ['WMCS']

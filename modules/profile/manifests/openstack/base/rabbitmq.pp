@@ -1,4 +1,8 @@
-# @param $rabbitmq_setup_nodes List of rabbit nodes allowed in firewalls etc but not serving traffic
+# @summary Cloud VPS OpenStack RabbitMQ message queue server
+# @param rabbitmq_service_name The name that clients use to connect to this server. Usually in the
+#   form of rabbitmqNN.DEPLOYMENT.wikimediacloud.org.
+# @param rabbitmq_own_name The name that this node is internally known in the cluster. Usually
+#   either rabbitmq_service_name or the node cloud-private address.
 #
 # There are two similarly-named params here, '$rabbitmq_setup_nodes' and '$rabbitmq_nodes':
 #
@@ -18,6 +22,7 @@ class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::base::rabbitmq_setup_nodes'),
     Stdlib::Fqdn $rabbitmq_service_name = lookup('profile::openstack::base::rabbitmq_service_name'),
+    Stdlib::Fqdn $rabbitmq_own_name = lookup('profile::openstack::base::rabbitmq::rabbitmq_own_name'),
     $monitor_user = lookup('profile::openstack::base::rabbit_monitor_user'),
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
@@ -52,7 +57,11 @@ class profile::openstack::base::rabbitmq(
                 require       => Package['rabbitmq-server'],
                 before        => File['/etc/rabbitmq/rabbitmq.config'],
                 notify        => Service['rabbitmq-server'],
-                hosts         => [$rabbitmq_service_name]
+                hosts         => [
+                    $facts['networking']['fqdn'],
+                    $rabbitmq_service_name,
+                    $rabbitmq_own_name,
+                ].unique(),
             }
         )
 

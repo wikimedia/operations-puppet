@@ -35,6 +35,9 @@ profile::cloudceph::auth::deploy::selected_creds:
   - admin
   - radosgw
 
+# TODO: remove at some point
+profile::openstack::base::rabbitmq::rabbitmq_own_name: "%{lookup('profile::openstack::base::rabbitmq_service_name')}"
+
 # inject these particular nameservers into VMs
 profile::openstack::base::nova::fullstack::nameservers:
   - ns0.openstack.codfw1dev.wikimediacloud.org
