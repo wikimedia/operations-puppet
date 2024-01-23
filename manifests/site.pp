@@ -1736,8 +1736,12 @@ node /^cloudelastic100[1-6]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudelastic10(0[7-9]|10)\.wikimedia\./ {
+node /^cloudelastic100[7-9]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
+}
+
+node /^cloudelastic1010\.eqiad\./ {
+    role(insetup::search_platform)
 }
 
 node /^cloudnet100[5-6]\.eqiad\./ {
