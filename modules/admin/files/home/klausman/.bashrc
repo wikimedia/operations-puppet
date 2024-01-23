@@ -20,7 +20,7 @@ if ! shopt -oq posix; then
     fi
 fi
 
-eval $(dircolors)
+eval "$(dircolors)"
 export LS_COLORS=${LS_COLORS/di=01;34/di=36}
 
 export LESSCHARSET="UTF-8"
@@ -64,17 +64,17 @@ PROMPTCOLOR="\[$(tput setaf 3)\]\[$(tput bold)\]"
 PROMPTRESET="\[$(tput sgr0)\]"
 case ${TERM} in
     xterm*|rxvt*|Eterm|aterm|kterm|gnome)
-        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$$PROMPTRESET "
+        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$ $PROMPTRESET"
         PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME%%.*}:${PWD/$HOME/\~}\007";stty echo'
         ;;
     screen*)
-        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$$PROMPTRESET "
+        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$ $PROMPTRESET"
         PROMPT_COMMAND='echo -ne "\033_${HOSTNAME%%.*}:${PWD/$HOME/\~}\033\\";stty echo'
         export TERM=screen-256color
         unset DISPLAY
         ;;
     tmux*)
-        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$$PROMPTRESET "
+        export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$ $PROMPTRESET"
         PROMPT_COMMAND='echo -ne "\033_${HOSTNAME%%.*}:${PWD/$HOME/\~}\033\\";stty echo'
         export TERM=tmux-256color
         unset DISPLAY
@@ -84,5 +84,21 @@ case ${TERM} in
 esac
 
 [ -f ~/.less_termcap ] && source ~/.less_termcap
+
+# No Proxy
+function proxyoff
+{
+    unset http_proxy HTTP_PROXY https_proxy HTTPs_PROXY
+}
+
+# Proxy
+function proxyon
+{
+    http_proxy=http://webproxy:8080
+    HTTP_PROXY=$http_proxy
+    https_proxy=$http_proxy
+    HTTPS_PROXY=$https_proxy
+    export http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+}
 
 # vim: ft=sh expandtab autoindent smartindent tabstop=4 shiftwidth=4
