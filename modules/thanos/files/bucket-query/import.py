@@ -29,6 +29,30 @@ SCHEMAS = {
             RESOLUTION TEXT,
             SOURCE TEXT
         );
+        /* blocks in this view as replicated and thus can be candidate
+           for early deletion/cleanup */
+        CREATE VIEW IF NOT EXISTS replicated_blocks AS
+            SELECT *
+            FROM blocks
+            /* only blocks already compacted */
+            WHERE source = 'compactor'
+            /* detect replication by stripping 'replica' label and
+               make sure each group has > 1 element per stripped 'labels' */
+            GROUP BY
+                resolution,
+                until_timestamp,
+                REPLACE(
+                    REPLACE(labels, "replica=a", ""),
+                    "replica=b", "")
+            HAVING
+                /* pick the replica with the least samples */
+                samples = MIN(samples) AND
+                COUNT(
+                    REPLACE(
+                        REPLACE(labels, "replica=a", ""),
+                        "replica=b", "")
+                ) > 1
+            ;
     """,
 }
 
