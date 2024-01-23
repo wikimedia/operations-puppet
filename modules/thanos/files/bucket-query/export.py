@@ -74,17 +74,16 @@ def blocks_sizes(config_file, tls_verify, workers):
 
     print(
         f"Found {len(blocks)} blocks for bucket {bucket_name!r} "
-        "at {endpoint_url}. Calculating sizes.",
+        f"at {endpoint_url}. Calculating sizes.",
         file=sys.stderr,
     )
 
     # Calculate total size for each block
-    with ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         blocks_sizes = list(
             executor.map(
                 lambda d: get_block_size(bucket_name, d, s3_client),
                 blocks,
-                max_workers=workers,
             )
         )
 

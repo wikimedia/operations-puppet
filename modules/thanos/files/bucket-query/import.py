@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
-import fileinput
 import sqlite3
 import sys
 from contextlib import contextmanager
@@ -64,7 +63,7 @@ def get_or_create(path):
 
 
 def import_data(conn, data_type):
-    for i, line in enumerate(fileinput.input()):
+    for i, line in enumerate(sys.stdin):
         if i == 0:
             continue
         data = line.strip().split("\t")
