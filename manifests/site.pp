@@ -1834,6 +1834,11 @@ node /^logstash20(2[345]|3[012])\.codfw\./ {
     role(logging::opensearch::collector)
 }
 
+# New eqiad logging nodes T354226
+node /^logging-hd100[1-3]\.eqiad\./ {
+    role(insetup::observability)
+}
+
 # Logging data nodes (eqiad)
 node /^logstash10(1[012]|2[6789]|3[34567])\.eqiad\./ {
     role(logging::opensearch::data)
