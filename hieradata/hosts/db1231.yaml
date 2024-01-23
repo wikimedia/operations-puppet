@@ -1,5 +1,5 @@
 # db1231
-# candidate master for s6
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 's6'
 mariadb::binlog_format: 'STATEMENT'
 mariadb::package: 'wmf-mariadb106'
