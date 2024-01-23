@@ -14,8 +14,4 @@ class role::ml_k8s::staging::master {
 
     # LVS configuration (VIP)
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::master':
-        description => 'ML staging Kubernetes master server',
-    }
 }

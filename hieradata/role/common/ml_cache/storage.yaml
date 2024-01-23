@@ -37,6 +37,7 @@ profile::cassandra::settings:
 profile::cassandra::monitor_tls_port: 7000
 
 profile::contacts::role_contacts: ["Machine Learning"]
+profile::base::production::role_description: 'Backend storage for ML cache and Online Feature Store'
 
 profile::base::certificates::include_bundle_jks: true
 

@@ -6,8 +6,4 @@ class role::ml_cache::storage {
     include profile::firewall
 
     include profile::cassandra
-
-    system::role { 'role::ml_cache::storage':
-        description => 'Backend storage for ML cache and Online Feature Store.',
-    }
 }
