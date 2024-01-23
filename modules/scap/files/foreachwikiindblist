@@ -5,6 +5,16 @@
 # This script belongs in /usr/local/bin/ and should be in PATH.
 # Managed by Puppet. See modules/scap/files/foreachwikiindblist
 
+usage() {
+    echo "Usage: $(basename $0) <dblist> <command>"
+    echo ""
+    exit 1
+}
+
+if [ $# -lt 2 ]; then
+    usage
+fi
+
 . /etc/profile.d/mediawiki.sh
 DBLIST=$(/usr/local/bin/expanddblist "$1")
 CMD=$2
