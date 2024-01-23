@@ -21,6 +21,10 @@
 "admin_or_owner": "is_admin:True or role:member"
 "admin_or_member": "is_admin:True or role:member"
 
+# The 'unmanaged' role will allow a user access to features that
+#  (among other things) don't work with puppet, e.g. rebuilding VMs
+"admin_or_unmanaged": "is_admin:True or role:unmanaged"
+
 # This seems to be generally unobserved; leaving it here in case some
 #  leftover policies still check default.
 "default": "rule:admin_or_member"
@@ -76,7 +80,7 @@
 "os_compute_api:servers:detail:get_all_tenants": ""
 "os_compute_api:servers:index": ""
 "os_compute_api:servers:reboot": "rule:admin_or_member"
-"os_compute_api:servers:rebuild": "is_admin:True"
+"os_compute_api:servers:rebuild": "rule:admin_or_unmanaged"
 "os_compute_api:servers:resize": "rule:admin_or_member"
 "os_compute_api:servers:revert_resize": "rule:admin_or_member"
 "os_compute_api:servers:show": ""
