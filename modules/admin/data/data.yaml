@@ -77,7 +77,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members []
+    members: &sre_admins_members [swfrench]
     approval:
       - Joanna Borun
   ops-adm-group:
