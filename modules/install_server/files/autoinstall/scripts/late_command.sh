@@ -70,14 +70,6 @@ case $(hostname) in
     ;;
 esac
 
-# These snapshot hosts run Buster, but have a controller only supported on 5.10, so they use
-# a backported d-i component T334955
-case $(hostname) in
-    snapshot101[67]*)
-	apt-install linux-image-5.10-amd64
-    ;;
-esac
-
 # Temporarily pre-provision swift user at a fixed UID on new installs.
 # Once T123918 is resolved and swift is the same uid/gid everywhere, the
 # 'admin' puppet module can take over.
