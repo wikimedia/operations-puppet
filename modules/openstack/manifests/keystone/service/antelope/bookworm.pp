@@ -32,7 +32,8 @@ class openstack::keystone::service::antelope::bookworm(
     }
     service {'keystone':
         ensure  => 'running',
-        require => File['/etc/init.d/keystone'];
+        require => File['/etc/init.d/keystone'],
+        notify  => Service['keystone-admin'],
     }
     service {'keystone-admin':
         ensure  => 'running',
