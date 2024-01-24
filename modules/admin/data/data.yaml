@@ -1240,6 +1240,13 @@ groups:
     gid: 927
     system: true
     members: []
+  # Placeholder to reserve the uid/gid.
+  # This service system user is managed by puppet in ::gerrit
+  # The 'authdns' configuration requires rsync.
+  # authdns:
+  #   gid: 928
+  #   system: true
+  #   members: []
   crm-root:
     gid: 768
     description: root on the community-crm servers
