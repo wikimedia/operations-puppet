@@ -86,9 +86,6 @@ class base::kernel(
       default: {}
     }
 
-    file { '/usr/lib/nagios/plugins/check_microcode':
-        ensure => absent,
-    }
     nrpe::plugin { 'check_microcode':
         source => 'puppet:///modules/base/check-microcode.py',
     }
