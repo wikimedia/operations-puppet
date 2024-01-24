@@ -309,6 +309,11 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
         LOGGER.warning("Found legacy Puppet cron file %s", puppet_cron_config)
         puppet_cron_config.unlink()
 
+    # Remove the 'cloud-init is done' flag
+    cloud_init_flag = mountpath / ".cloud-init-finished"
+    if cloud_init_flag.is_file():
+        cloud_init_flag.unlink()
+
     # Allow cloud-init to re-run per-instance things
     cloud_instances = mountpath / "var/lib/cloud/instances"
     shutil.rmtree(cloud_instances)
