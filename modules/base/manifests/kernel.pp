@@ -86,26 +86,6 @@ class base::kernel(
       default: {}
     }
 
-    # Settings to mitigate fragmentsmack. The low settings need to be applied
-    # before the high settings, otherwise the new high settings are lower than
-    # the current kernel defaults which results in sysctl rejecting the value
-    # T345724 for potential followups
-    sysctl::parameters { 'ipfrag_low':
-        values   => {
-            'net.ipv4.ipfrag_low_thresh'  => '196608',
-            'net.ipv6.ip6frag_low_thresh' => '196608',
-        },
-        priority => 10,
-        before   => Sysctl::Parameters['ipfrag_high']
-    }
-
-    sysctl::parameters { 'ipfrag_high':
-        values   => {
-            'net.ipv4.ipfrag_high_thresh'  => '262144',
-            'net.ipv6.ip6frag_high_thresh' => '262144',
-        },
-        priority => 11,
-    }
     file { '/usr/lib/nagios/plugins/check_microcode':
         ensure => absent,
     }
