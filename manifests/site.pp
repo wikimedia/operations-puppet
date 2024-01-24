@@ -1670,13 +1670,13 @@ node /^mw2357\.codfw\./ {
 node /^mw2395\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw242[0-5]\.codfw\./ {
+node /^mw242[0-57]\.codfw\./ {
     role(kubernetes::worker)
 }
-node /^mw243[14-7]\.codfw\./ {
+node /^mw243[014-7]\.codfw\./ {
     role(kubernetes::worker)
 }
-node /^mw244[023]\.codfw\./ {
+node /^mw244[0236]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw245[01]\.codfw\./ {
@@ -2306,7 +2306,7 @@ node /^mw230[13579]\.codfw\./ {
 
 # rack A6 (T331609)
 
-node /^mw242[67]\.codfw\./ {
+node /^mw2426\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 # Row B
@@ -2333,7 +2333,7 @@ node /^mw23(2[579]|3[13])\.codfw\./ {
 
 # rack B6 (T331609)
 
-node /^mw24(2[89]|30)\.codfw\./ {
+node /^mw242[89]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2394,7 +2394,7 @@ node /^mw2(27[3-7]|36[79]|37[135])\.codfw\./ {
 }
 
 # rack D5 (T331609)
-node /^mw244[4-6]\.codfw\./ {
+node /^mw244[4-5]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 

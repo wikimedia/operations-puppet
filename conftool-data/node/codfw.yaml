@@ -153,13 +153,10 @@ codfw:
     mw2411.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
     mw2419.codfw.wmnet: [apache2, nginx]
     mw2426.codfw.wmnet: [apache2, nginx]
-    mw2427.codfw.wmnet: [apache2, nginx]
     mw2428.codfw.wmnet: [apache2, nginx]
     mw2429.codfw.wmnet: [apache2, nginx]
-    mw2430.codfw.wmnet: [apache2, nginx]
     mw2444.codfw.wmnet: [apache2, nginx]
     mw2445.codfw.wmnet: [apache2, nginx]
-    mw2446.codfw.wmnet: [apache2, nginx]
   videoscaler: *jobrunner
   parsoid:
     # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
@@ -442,6 +439,8 @@ codfw:
     mw2423.codfw.wmnet: [kubesvc]
     mw2424.codfw.wmnet: [kubesvc]
     mw2425.codfw.wmnet: [kubesvc]
+    mw2427.codfw.wmnet: [kubesvc]
+    mw2430.codfw.wmnet: [kubesvc]
     mw2431.codfw.wmnet: [kubesvc]
     mw2434.codfw.wmnet: [kubesvc]
     mw2435.codfw.wmnet: [kubesvc]
@@ -450,6 +449,7 @@ codfw:
     mw2440.codfw.wmnet: [kubesvc]
     mw2442.codfw.wmnet: [kubesvc]
     mw2443.codfw.wmnet: [kubesvc]
+    mw2446.codfw.wmnet: [kubesvc]
     mw2450.codfw.wmnet: [kubesvc]
     mw2451.codfw.wmnet: [kubesvc]
   kubernetes-staging:
