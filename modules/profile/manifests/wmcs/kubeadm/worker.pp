@@ -4,14 +4,26 @@ class profile::wmcs::kubeadm::worker (
 ) {
     require profile::wmcs::kubeadm::preflight_checks
 
+    # TODO: rename variable
     if $docker_vol {
-        cinderutils::ensure { 'separate-docker':
-            min_gb        => 40,
-            max_gb        => 160,
-            mount_point   => '/var/lib/docker',
-            mount_mode    => '711',
-            mount_options => 'discard,defaults',
-            before        => Service['docker'],
+        if debian::codename::eq('buster') {
+            cinderutils::ensure { 'separate-docker':
+                min_gb        => 40,
+                max_gb        => 160,
+                mount_point   => '/var/lib/docker',
+                mount_mode    => '711',
+                mount_options => 'discard,defaults',
+                before        => Service['docker'],
+            }
+        } else {
+            cinderutils::ensure { 'separate-containerd':
+                min_gb        => 40,
+                max_gb        => 160,
+                mount_point   => '/var/lib/containerd',
+                mount_mode    => '711',
+                mount_options => 'discard,defaults',
+                before        => Service['containerd'],
+            }
         }
     }
 
