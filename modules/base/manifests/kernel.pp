@@ -35,6 +35,7 @@ class base::kernel(
 
     kmod::blacklist { 'wmf':
         modules => [
+            'asn1_decoder',
             'aufs',
             'usbip-core',
             'usbip-host',
@@ -48,6 +49,7 @@ class base::kernel(
             'intel_cstate',
             'intel_rapl_perf',
             'intel_uncore',
+            'macsec',
             'parport',
             'parport_pc',
             'ppdev',
@@ -60,18 +62,12 @@ class base::kernel(
         ],
     }
 
-    # File systems not in use, blacklist as additonal bandaid
+    # File systems not in use, blacklist as additional bandaid
     kmod::blacklist { 'wmf-filesystems':
         modules => [
             'exfat',
             'f2fs',
         ],
-    }
-
-    if (versioncmp($::kernelversion, '4.4') >= 0) {
-        kmod::blacklist { 'linux44':
-            modules => [ 'asn1_decoder', 'macsec' ],
-        }
     }
 
     # This section is for blacklisting modules per server model.
