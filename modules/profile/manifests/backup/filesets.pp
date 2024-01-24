@@ -222,4 +222,8 @@ class profile::backup::filesets(
         includes => [ '/srv/postgres-backup/' ]
     }
 
+    bacula::director::fileset { 'mysql-dbbackups-archival':
+        includes => [ '/srv/backups/dumps/latest/dbbackups' ]
+    }
+
 }

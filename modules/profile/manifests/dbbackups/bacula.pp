@@ -24,5 +24,9 @@ class profile::dbbackups::bacula (
         # backup::set { 'mysql-srv-backups-snapshots-latest':
         #     jobdefaults => $jobdefaults,
         # }
+        backup::set { 'mysql-dbbackups-archival':
+            jobdefaults => 'Weekly-Mon-ArchiveEqiad',
+        }
+
     }
 }
