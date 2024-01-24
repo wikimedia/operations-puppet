@@ -6209,7 +6209,8 @@ users:
     email: swfrench@wikimedia.org
     uid: 45942
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDdQ6GSGJdQaNU57ojJBGI36CKNDYGjkIf4KSBmwIC0L5xYTxFw7/Im82anOBVdcPxE6gltrKVcmnvZW3kwqVOWVydVqPIfKng2fgoNT4CSexpsbQvFWmRvNLNS3hdN0E0Jc67vtb8rtEXq9wL643xS1DYOAMF6XvkHJ4o/CGzNEsjS8JnSIDyOAZey0iH97DFJBuxj3K+nXf7ZzpEwFUEKOTP6NXC2MMEnCLhuUIhcg3dcS2GamOWpeaq1Oo1/GjMxdjkGiBytKeKN4ow7SOY46SWO2m1XQMANhb5bi0n0C4veeaCzbB38qBVKwboj9fuFrO4MqmfHzp1YOOqRm0Z63Srod5647jYiPqjw1Dcj+mRpl88K4eKtJM8A9VYbW+b50wHKVtnGOkIkxdBgLSJb5Z9MqA0jCwbEnUJ0QeqEFrkEEEDNYK4VmIRKYp+4Zs9HcDD1HM6mmd90DVWcmWSu6nWtvQhAPAw5E6UKU3gXI5hi+h4XSZ2hP9sH5DsQqD/Anf3noTeg2+spknTzxgFmB+iOZWkM3RV+UFW9HKy9EsIFBNwODTxRJtVYZIpDevoD4Yj+dOsSPg/benOsIuSh+ErRvRE5Y5dGf23NTocAs/W0/oMgAuQ5yyxyyU5pTw5bU2bQWrueviKqBoPLiWGaHEscYNGwzkBCRJnpAEHIeQ== cardno:25 017 801'
   mfischerwmf:
     ensure: present
     realname: Max Fischer
