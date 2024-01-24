@@ -1313,14 +1313,9 @@ node /^lists1001\.wikimedia\./ {
 node /^lists1004\.eqiad\./ {
     role(insetup::unowned)
 }
-node /^ganeti10(09|1[0-9]|2[0-9]|3[0-7])\.eqiad\./ {
+node /^ganeti10(09|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {
     role(ganeti)
 }
-# New eqiad ganeti nodes T349925
-node /^ganeti103[8]\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
-}
-
 
 node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
     role(ganeti)
