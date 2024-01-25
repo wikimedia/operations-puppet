@@ -7019,3 +7019,7 @@ ldap_only_users:
     ensure: present
     realname: Christopher Ciufo
     email: cciufo@wikimedia.org
+  amastilovic:
+    ensure: present
+    realname: Aleksandar Mastilovic
+    email: amastilovic@wikimedia.org
