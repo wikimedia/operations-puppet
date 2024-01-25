@@ -90,14 +90,15 @@ class rabbitmq(
         }
     }
 
-    exec { 'invalidate_rabbitmq_guest_account':
-        command     => '/usr/local/sbin/rabbit_random_guest',
-        subscribe   => File['/usr/local/sbin/rabbit_random_guest'],
-        refreshonly => true,
-    }
-
     service { 'rabbitmq-server':
         ensure  => $running,
         require => Package['rabbitmq-server'],
+    }
+
+    exec { 'invalidate_rabbitmq_guest_account':
+        command     => '/usr/local/sbin/rabbit_random_guest',
+        require     => Service['rabbitmq-server'],
+        subscribe   => File['/usr/local/sbin/rabbit_random_guest'],
+        refreshonly => true,
     }
 }
