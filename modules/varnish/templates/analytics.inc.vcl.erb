@@ -419,6 +419,35 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";requestctl=" + req.http.X-Requestctl;
     }
 
+    // Add to X-Analytics whether Sec-Purpose HTTP header present. T346463
+    if (req.http.Sec-Purpose) {
+        if (std.tolower(regsuball(req.http.Sec-Purpose, " ", "")) == "prefetch;anonymous-client-ip") {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_sec_purpose=chrome_private_prefetch;chrome_private_prefetch_version=1";
+        }
+        else if (req.http.Sec-Purpose && req.http.Sec-Purpose == "prefetch") {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_sec_purpose=1";
+        }
+        else if (req.http.Sec-Purpose && req.http.Sec-Purpose == "prefetch;prerender") {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_sec_purpose=chrome_prerender";
+        }
+        else if (req.http.Sec-Purpose && req.http.Sec-Purpose == "prefetch;prerender;preview") {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_sec_purpose=chrome_preview";
+        }
+        else {
+            set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_sec_purpose=nonstandard";
+        }
+    }
+
+    // Add to X-Analytics whether historical de facto prefetch Purpose: prefetch header present. T346463
+    if (req.http.Purpose && req.http.Purpose == "prefetch") {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_purpose=1";
+    }
+
+    // Add to X-Analytics whether pre-FF115 X-Moz: prefetch header present. T346463
+    if (req.http.X-Moz && req.http.X-Moz == "prefetch") {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";prefetch_x_moz=1";
+    }
+
     // Clean up header from setting to empty at the start...
     if (resp.http.X-Analytics == "") {
         unset resp.http.X-Analytics;
