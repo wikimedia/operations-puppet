@@ -48,7 +48,7 @@ class profile::debmonitor::server (
     # Starting with Bookworm Debmonitor uses the packaged Django stack from Debian
     if debian::codename::ge('bookworm') {
         ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
-        ensure_packages(['python3-mysqldb'])
+        ensure_packages(['python3-mysqldb', 'debmonitor-server'])
     } else {
         # Make is required by the deploy system
         ensure_packages(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
