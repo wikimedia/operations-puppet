@@ -190,17 +190,14 @@ class profile::ganeti (
         }
 
         # Memory monitoring
-        ensure_packages( 'nagios-plugins-contrib' )  # for pmp-check-unix-memory
+        ensure_packages( 'monitoring-plugins-contrib' )  # for pmp-check-unix-memory
         $check_path = '/usr/lib/nagios/plugins/pmp-check-unix-memory'
         $check_command = "${check_path} -c ${critical_memory} -w ${warning_memory}"
         nrpe::monitor_service { 'ganeti_memory':
             description  => 'Ganeti memory',
             nrpe_command => $check_command,
-            require      => Package['nagios-plugins-contrib'],
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti#Memory_pressure',
         }
-
-
 
         if $facts['ganeti_master'] == $facts['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
