@@ -20,7 +20,7 @@ class mariadb::monitor_memory(
         nrpe_command  => $check_command,
         critical      => $is_critical,
         contact_group => $contact_group,
-        require       => Package['nagios-plugins-contrib'],
+        require       => Package['monitoring-plugins-contrib'],
         notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
     }
 }
