@@ -65,7 +65,7 @@ groups:
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
-              nskaggs, fabfur, taavi, arnaudb, brouberol]
+              nskaggs, fabfur, taavi, arnaudb, brouberol, swfrench]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -77,7 +77,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members [swfrench]
+    members: &sre_admins_members []
     approval:
       - Joanna Borun
   ops-adm-group:
