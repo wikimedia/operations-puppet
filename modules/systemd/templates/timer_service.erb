@@ -4,6 +4,9 @@ Documentation=<%= @monitoring_notes_url %>
 <%- if @after -%>
 After=<%= @after %>
 <%- end -%>
+<% unless @path_exists.nil? -%>
+ConditionPathExists=<%= @path_exists %>
+<%- end -%>
 
 [Service]
 Type=oneshot
@@ -54,9 +57,6 @@ StandardError=<%= @stderr %>
 <%- end -%>
 <%- if @working_directory -%>
 WorkingDirectory=<%= @working_directory %>
-<%- end -%>
-<% unless @path_exists.nil? -%>
-ConditionPathExists=<%= @path_exists %>
 <%- end -%>
 <%- unless @success_exit_status.empty? -%>
 SuccessExitStatus=<%= @success_exit_status.join(' ') %>
