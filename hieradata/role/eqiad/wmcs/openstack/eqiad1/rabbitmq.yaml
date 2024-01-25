@@ -1,7 +1,7 @@
 profile::admin::groups:
   - wmcs-roots
-
 contactgroups: wmcs-team-email
-
 profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs
+
+profile::openstack::base::rabbitmq::rabbitmq_own_name: "%{lookup('profile::wmcs::cloud_private_subnet::host')}"

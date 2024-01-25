@@ -56,7 +56,10 @@ profile::openstack::eqiad1::rabbitmq_nodes:
   - rabbitmq01.eqiad1.wikimediacloud.org
   - rabbitmq02.eqiad1.wikimediacloud.org
   - rabbitmq03.eqiad1.wikimediacloud.org
-profile::openstack::eqiad1::rabbitmq_setup_nodes: []
+profile::openstack::eqiad1::rabbitmq_setup_nodes:
+  # TODO: remove once service names are pointing back at 1001/1002
+  - cloudrabbit1001.private.eqiad.wikimedia.cloud
+  - cloudrabbit1002.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192
 profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 120
