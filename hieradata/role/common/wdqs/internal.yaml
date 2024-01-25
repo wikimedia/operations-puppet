@@ -52,3 +52,6 @@ profile::contacts::role_contacts: ['Search Platform']
 
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
