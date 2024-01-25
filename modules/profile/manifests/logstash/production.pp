@@ -189,34 +189,6 @@ class profile::logstash::production (
     consumer_threads                      => 3,
   }
 
-  logstash::input::kafka { 'mediawiki-httpd-accesslog-eqiad':
-    kafka_cluster_name                    => 'logging-eqiad',
-    topic                                 => 'mediawiki.httpd.accesslog',
-    group_id                              => $input_kafka_consumer_group_id,
-    tags                                  => ['input-kafka-mediawiki-httpd-accesslog-eqiad', 'kafka', 'es'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
-  }
-
-  logstash::input::kafka { 'mediawiki-httpd-accesslog-codfw':
-    kafka_cluster_name                    => 'logging-codfw',
-    topic                                 => 'mediawiki.httpd.accesslog',
-    group_id                              => $input_kafka_consumer_group_id,
-    tags                                  => ['input-kafka-mediawiki-httpd-accesslog-codfw', 'kafka', 'es'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
-  }
-
   logstash::input::kafka { 'mediawiki-httpd-accesslog-eqiad-sampled':
     kafka_cluster_name                    => 'logging-eqiad',
     topic                                 => 'mediawiki.httpd.accesslog-sampled',
