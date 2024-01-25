@@ -135,7 +135,6 @@ codfw:
     mw2418.codfw.wmnet: [nginx]
   jobrunner: &jobrunner
     mw2259.codfw.wmnet: [apache2, nginx]
-    mw2260.codfw.wmnet: [apache2, nginx]
     mw2263.codfw.wmnet: [apache2, nginx]
     mw2264.codfw.wmnet: [apache2, nginx]
     mw2265.codfw.wmnet: [apache2, nginx]
@@ -145,8 +144,6 @@ codfw:
     mw2281.codfw.wmnet: [apache2, nginx]
     mw2351.codfw.wmnet: [apache2, nginx]
     mw2353.codfw.wmnet: [apache2, nginx]
-    mw2355.codfw.wmnet: [apache2, nginx]
-    mw2381.codfw.wmnet: [apache2, nginx]
     mw2382.codfw.wmnet: [apache2, nginx]
     mw2394.codfw.wmnet: [apache2, nginx] # Only pooled as jobrunner
     mw2410.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
@@ -154,9 +151,7 @@ codfw:
     mw2419.codfw.wmnet: [apache2, nginx]
     mw2426.codfw.wmnet: [apache2, nginx]
     mw2428.codfw.wmnet: [apache2, nginx]
-    mw2429.codfw.wmnet: [apache2, nginx]
     mw2444.codfw.wmnet: [apache2, nginx]
-    mw2445.codfw.wmnet: [apache2, nginx]
   videoscaler: *jobrunner
   parsoid:
     # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
@@ -422,6 +417,7 @@ codfw:
     kubernetes2058.codfw.wmnet: [kubesvc]
     kubernetes2059.codfw.wmnet: [kubesvc]
     kubernetes2060.codfw.wmnet: [kubesvc]
+    mw2260.codfw.wmnet: [kubesvc]
     mw2267.codfw.wmnet: [kubesvc]
     mw2282.codfw.wmnet: [kubesvc]
     mw2291.codfw.wmnet: [kubesvc]
@@ -431,7 +427,9 @@ codfw:
     mw2295.codfw.wmnet: [kubesvc]
     mw2296.codfw.wmnet: [kubesvc]
     mw2297.codfw.wmnet: [kubesvc]
+    mw2355.codfw.wmnet: [kubesvc]
     mw2357.codfw.wmnet: [kubesvc]
+    mw2381.codfw.wmnet: [kubesvc]
     mw2395.codfw.wmnet: [kubesvc]
     mw2420.codfw.wmnet: [kubesvc]
     mw2421.codfw.wmnet: [kubesvc]
@@ -440,6 +438,7 @@ codfw:
     mw2424.codfw.wmnet: [kubesvc]
     mw2425.codfw.wmnet: [kubesvc]
     mw2427.codfw.wmnet: [kubesvc]
+    mw2429.codfw.wmnet: [kubesvc]
     mw2430.codfw.wmnet: [kubesvc]
     mw2431.codfw.wmnet: [kubesvc]
     mw2434.codfw.wmnet: [kubesvc]
@@ -449,6 +448,7 @@ codfw:
     mw2440.codfw.wmnet: [kubesvc]
     mw2442.codfw.wmnet: [kubesvc]
     mw2443.codfw.wmnet: [kubesvc]
+    mw2445.codfw.wmnet: [kubesvc]
     mw2446.codfw.wmnet: [kubesvc]
     mw2450.codfw.wmnet: [kubesvc]
     mw2451.codfw.wmnet: [kubesvc]

@@ -1654,7 +1654,7 @@ node /^mw1486\.eqiad\./ {
 node /^mw1495\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw2267\.codfw\./ {
+node /^mw226[07]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw2282\.codfw\./ {
@@ -1663,19 +1663,22 @@ node /^mw2282\.codfw\./ {
 node /^mw229[1-7]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw2357\.codfw\./ {
+node /^mw235[57]\.codfw\./ {
+  role(kubernetes::worker)
+}
+node /^mw2381\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw2395\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw242[0-57]\.codfw\./ {
+node /^mw242[0-579]\.codfw\./ {
     role(kubernetes::worker)
 }
 node /^mw243[014-7]\.codfw\./ {
     role(kubernetes::worker)
 }
-node /^mw244[0236]\.codfw\./ {
+node /^mw244[02356]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw245[01]\.codfw\./ {
@@ -2273,7 +2276,7 @@ node /^mwdebug200[12]\.codfw\./ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw23(8[1-2]|94)\.codfw\./ {
+node /^mw23(82|94)\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2336,7 +2339,7 @@ node /^mw23(2[579]|3[13])\.codfw\./ {
 
 # rack B6 (T331609)
 
-node /^mw242[89]\.codfw\./ {
+node /^mw2428\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2353,7 +2356,7 @@ node /^mw23(59|6[135])\.codfw\./ {
 }
 
 # rack C6
-node /^mw23(5[135])\.codfw\./ {
+node /^mw23(5[13])\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2397,7 +2400,7 @@ node /^mw2(27[3-7]|36[79]|37[135])\.codfw\./ {
 }
 
 # rack D5 (T331609)
-node /^mw244[4-5]\.codfw\./ {
+node /^mw2444\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2462,7 +2465,7 @@ node /^mw22(8[3-9]|90)\.codfw\./ {
 # Row B
 
 # rack B3
-node /^mw22(59|60)\.codfw\./ {
+node /^mw2259\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 

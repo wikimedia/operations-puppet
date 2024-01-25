@@ -271,6 +271,7 @@ kubernetes::clusters:
         - kubernetes2058.codfw.wmnet
         - kubernetes2059.codfw.wmnet
         - kubernetes2060.codfw.wmnet
+        - mw2260.codfw.wmnet
         - mw2267.codfw.wmnet
         - mw2282.codfw.wmnet
         - mw2291.codfw.wmnet
@@ -280,7 +281,9 @@ kubernetes::clusters:
         - mw2295.codfw.wmnet
         - mw2296.codfw.wmnet
         - mw2297.codfw.wmnet
+        - mw2355.codfw.wmnet
         - mw2357.codfw.wmnet
+        - mw2381.codfw.wmnet
         - mw2395.codfw.wmnet
         - mw2420.codfw.wmnet
         - mw2421.codfw.wmnet
@@ -289,6 +292,7 @@ kubernetes::clusters:
         - mw2424.codfw.wmnet
         - mw2425.codfw.wmnet
         - mw2427.codfw.wmnet
+        - mw2429.codfw.wmnet
         - mw2430.codfw.wmnet
         - mw2431.codfw.wmnet
         - mw2434.codfw.wmnet
@@ -298,6 +302,7 @@ kubernetes::clusters:
         - mw2440.codfw.wmnet
         - mw2442.codfw.wmnet
         - mw2443.codfw.wmnet
+        - mw2445.codfw.wmnet
         - mw2446.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
