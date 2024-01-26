@@ -1,0 +1,30 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE USER IF NOT EXISTS aqsloader WITH PASSWORD '<%= @application_password %>';
+
+GRANT SELECT ON aqs TO 'aqsloader';
+GRANT MODIFY ON aqs TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_editors_bycountry" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_editors_bycountry" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_knowledge_gap_by_category" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_knowledge_gap_by_category" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_lgc_pagecounts_per_project" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_lgc_pagecounts_per_project" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_mediarequest_per_file" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_mediarequest_per_file" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_mediarequest_per_referer" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_mediarequest_per_referer" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_mediarequest_top_files" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_mediarequest_top_files" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_pageviews_per_article_flat" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_pageviews_per_article_flat" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_pageviews_per_project_v2" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_pageviews_per_project_v2" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_top_bycountry" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_top_bycountry" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_top_pageviews" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_top_pageviews" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_top_percountry" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_top_percountry" TO 'aqsloader';
+GRANT SELECT ON "local_group_default_T_unique_devices" TO 'aqsloader';
+GRANT MODIFY ON "local_group_default_T_unique_devices" TO 'aqsloader';
