@@ -13,23 +13,6 @@ class profile::ci::firewall (
     class { '::profile::firewall': }
     include ::network::constants
 
-    # Restrict some services to be only reacheable from localhost over both
-    # IPv4 and IPv6 (to be safe)
-
-    # Jenkins on port 8080, reacheable via Apache proxying the requests
-    ferm::service { 'jenkins_localhost_only':
-        proto  => 'tcp',
-        port   => '8080',
-        srange => '(127.0.0.1 ::1)',
-    }
-
-    # Zuul status page on port 8001, reacheable via Apache proxying the requests
-    ferm::service { 'zuul_localhost_only':
-        proto  => 'tcp',
-        port   => '8001',
-        srange => '(127.0.0.1 ::1)',
-    }
-
     # Each master is an agent of the other
     include ::profile::ci::firewall::jenkinsagent
 
