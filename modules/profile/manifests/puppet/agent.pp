@@ -148,7 +148,6 @@ class profile::puppet::agent (
             user          => 'root',
             ignore_errors => true,
             command       => '/usr/local/sbin/puppet-run',
-            path_exists   => '!/run/puppet/disabled',
             interval      => [
                 { 'start' => 'OnCalendar', 'interval' => $timer_interval },
                 { 'start' => 'OnStartupSec', 'interval' => '1min' },
