@@ -420,7 +420,7 @@ groups:
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
-              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf]
+              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6220,6 +6220,15 @@ users:
     ssh_keys:
       - ' ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD3PVX58Clp2su5e7B0S4RI8PjmFT8fa5ix3gQS0n/yKrNRID7EUuz/SP0qcSlF0atw6E+tFZlT/tDpCfA9ltThs6jhxXv9qGfsMZwtdVGw010XdXbg0Jj1Uo2xa+Z//2TyTPVUOGRILdl9LBVRsNGJOd1qPIZoMabHNynO/D9J6JrGJKj6eU+2p4wYjPuOp7fAvQB+f7QtuRzSwMGFHPZfW6ebt/40s3XtCPoYHsGhjoTbMBMp6E5jdzfLuxYZcZEZk9IHsR/lagJMjiE3fBxC8y6ZJlHBCo2BUbfnYO+w795YMWfxPRnpc5BkS/ILX6dTWMzFiVMgPAsDqBBQvnnhP6KT/veFkANG4SrTM+jxJCqUq6hViAT0Wi1oon1UwDJtg2IFS9VFBg44II1Zw5iWXqYtj32e7qbWkWJLToUoXvSJzDrZvi5Am5JHNrlxfEILRe/sRL9U5EQDJu17JR8X2AxzqsbfMctccTXGoIz9P1zUCIG84hLSxZY7/bA3qCAHnE6HfxkBwiXxsfMDJ5BKGy5FhsrHbmM+7fFtJsGxy7IZC210ELkAvmNl2ozyfKqPLdu/bsARaFGrK8etUr0g8MTo2TLZJOvvuMrjYerWms1UaUY49fauV6cIDpMDdkP08Vkwtu7v55oYQuSYnP0BeidPAkWCO+jv8fnvVCpWYw== .'
     krb: present
+  amastilovic:
+    ensure: present
+    realname: Aleksandar Mastilovic
+    email: amastilovic@wikimedia.org
+    uid: 45953
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLAUtzl5qEFOcKGWXFmGolqdhYCc9bZEXtx/06Wyimq amastilovic@wikimedia.org'
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7018,7 +7027,3 @@ ldap_only_users:
     ensure: present
     realname: Christopher Ciufo
     email: cciufo@wikimedia.org
-  amastilovic:
-    ensure: present
-    realname: Aleksandar Mastilovic
-    email: amastilovic@wikimedia.org
