@@ -151,7 +151,7 @@ def column_has_private_data(conn, database, table, column):
     except pymysql.err.ProgrammingError:
         pass
     # Ignore "field doesn't exist" errors
-    except pymysql.err.InternalError:
+    except (pymysql.err.OperationalError, pymysql.err.InternalError):
         pass
     cursor.close()
     return has_private_data
