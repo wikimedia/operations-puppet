@@ -15,7 +15,6 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1007.wikimedia.org
           - cloudelastic1008.wikimedia.org
           - cloudelastic1009.wikimedia.org
-          - cloudelastic1010.wikimedia.org
 
         expected_nodes: 6
 

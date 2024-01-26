@@ -28,7 +28,6 @@ profile::acme_chief::certificates:
         - 'cloudelastic1007.wikimedia.org'
         - 'cloudelastic1008.wikimedia.org'
         - 'cloudelastic1009.wikimedia.org'
-        - 'cloudelastic1010.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
