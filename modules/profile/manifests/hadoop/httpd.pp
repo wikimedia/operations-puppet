@@ -12,9 +12,9 @@ class profile::hadoop::httpd(
         http_only => $http_only,
     }
 
-    ferm::service { 'hadoop-ui-http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firewall::service { 'hadoop-ui-http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 }
