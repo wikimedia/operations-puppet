@@ -58,6 +58,8 @@ define postgresql::user::hba(
         }
 
         augeas { "hba_create-${title}":
+            incl    => $pg_hba_file,
+            lens    => 'Pg_Hba.lns',
             context => "/files${pg_hba_file}/",
             changes => $changes,
             onlyif  => "match ${xpath} size == 0",
@@ -66,6 +68,8 @@ define postgresql::user::hba(
     } elsif $ensure == 'absent' {
 
         augeas { "hba_drop-${title}":
+            incl    => $pg_hba_file,
+            lens    => 'Pg_Hba.lns',
             context => "/files${pg_hba_file}/",
             changes => "rm ${xpath}",
             # only if the user exists
