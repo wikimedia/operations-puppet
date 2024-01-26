@@ -58,6 +58,8 @@ define interface::ipip(
     } else { # Add the interface
 
         augeas { "${interface}_add_up":
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
             context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = '${family}']",
             changes => "set up[last()+1] '${ip_link_add}'",
             onlyif  => "match up[. = '${ip_link_add}'] size == 0",
@@ -65,6 +67,8 @@ define interface::ipip(
         }
 
         augeas { "${interface}_set_up":
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
             context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = '${family}']",
             changes => "set up[last()+1] '${ip_link_up}'",
             onlyif  => "match up[. = '${ip_link_up}'] size == 0",

@@ -26,6 +26,8 @@ define interface::manual(
         }
     } else {
         augeas { "${interface}_manual":
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
             context => '/files/etc/network/interfaces',
             changes => $augeas_cmd;
         }

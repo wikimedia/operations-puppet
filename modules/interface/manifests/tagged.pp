@@ -58,6 +58,8 @@ define interface::tagged($base_interface, $vlan_id, $address=undef, $netmask=und
 
     # Use augeas
     augeas { $intf:
+        incl    => '/etc/network/interfaces',
+        lens    => 'Interfaces.lns',
         context => '/files/etc/network/interfaces/',
         changes => $augeas_cmd;
     }

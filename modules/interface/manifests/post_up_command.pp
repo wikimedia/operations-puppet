@@ -14,6 +14,8 @@ define interface::post_up_command(
     } else {
         # Use augeas to add an 'post-up' command to the interface
         augeas { "${interface}_${title}":
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
             context => "/files/etc/network/interfaces/*[. = '${interface}']",
             changes => "set post-up[last()+1] '${command}'",
             onlyif  => "match post-up[. = '${command}'] size == 0";

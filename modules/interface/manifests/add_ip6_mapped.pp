@@ -55,6 +55,8 @@ define interface::add_ip6_mapped(
     $v6_token_preup_cmd = "set iface[. = '${interface}']/pre-up '${v6_token_cmd}'"
 
     augeas { "${interface}_v6_token":
+        incl    => '/etc/network/interfaces',
+        lens    => 'Interfaces.lns',
         context => '/files/etc/network/interfaces/',
         changes => $v6_token_preup_cmd,
     }

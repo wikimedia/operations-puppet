@@ -28,6 +28,8 @@ define interface::ip($interface, $address, $prefixlen='32', $options=undef, $ens
     } else { # By default, add the IP
       # Use augeas to add an 'up' command to the interface
       augeas { "${interface}_${prefix}":
+          incl    => '/etc/network/interfaces',
+          lens    => 'Interfaces.lns',
           context => "/files/etc/network/interfaces/*[. = '${interface}' and ./family = 'inet']",
           changes => "set up[last()+1] '${ipaddr_command}'",
           onlyif  => "match up[. = '${ipaddr_command}'] size == 0";

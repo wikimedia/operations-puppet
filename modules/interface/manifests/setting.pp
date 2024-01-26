@@ -5,6 +5,8 @@
 
 define interface::setting($interface, $setting, $value) {
     augeas { "${interface}_${title}":
+        incl    => '/etc/network/interfaces',
+        lens    => 'Interfaces.lns',
         context => "/files/etc/network/interfaces/*[. = '${interface}' and family = 'inet']",
         changes => "set ${setting} '${value}'",
     }
