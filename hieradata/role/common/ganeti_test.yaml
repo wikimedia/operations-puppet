@@ -23,5 +23,3 @@ cluster: ganeti_test
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 
 profile::firewall::provider: nftables
-
-profile::ganeti::use_pki: true

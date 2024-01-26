@@ -5,4 +5,3 @@ profile::ganeti::nodes:
   - ganeti5006.eqsin.wmnet
   - ganeti5007.eqsin.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.eqsin.wmnet
-profile::ganeti::use_pki: true

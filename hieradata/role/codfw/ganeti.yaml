@@ -25,4 +25,3 @@ profile::ganeti::nodes:
   - ganeti2031.codfw.wmnet
   - ganeti2032.codfw.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.codfw.wmnet
-profile::ganeti::use_pki: true

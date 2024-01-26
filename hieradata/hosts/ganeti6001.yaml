@@ -3,4 +3,3 @@ profile::ganeti::nodes:
   - ganeti6001.drmrs.wmnet
   - ganeti6003.drmrs.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.drmrs.wmnet
-profile::ganeti::use_pki: true

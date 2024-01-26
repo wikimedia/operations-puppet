@@ -3,4 +3,3 @@ profile::ganeti::nodes:
   - ganeti3005.esams.wmnet
   - ganeti3007.esams.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.esams.wmnet
-profile::ganeti::use_pki: true
