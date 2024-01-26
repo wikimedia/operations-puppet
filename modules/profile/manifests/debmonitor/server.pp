@@ -49,11 +49,28 @@ class profile::debmonitor::server (
     if debian::codename::ge('bookworm') {
         ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
         ensure_packages(['python3-mysqldb', 'debmonitor-server'])
+        $deploy_user = 'www-data'
+        $debmonitor_service_name = 'debmonitor-server'
+        $debmonitor_shell_command = '/usr/bin/debmonitor'
+        $static_path = '/usr/share/debmonitor/static/'
+        $config_path = '/etc/debmonitor/config.json'
+        service { 'debmonitor-server':
+            ensure => 'running',
+        }
     } else {
         # Make is required by the deploy system
         ensure_packages(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
         # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
         ensure_packages('libmariadb3')
+        $deploy_user = 'deploy-debmonitor'
+        $debmonitor_service_name = 'uwsgi-debmonitor'
+        $base_path = '/srv/deployment/debmonitor'
+        $debmonitor_shell_command = "${base_path}/run-django-command"
+        $deploy_path = "${base_path}/deploy"
+        $venv_path = "${base_path}/venv"
+        $static_path = "${base_path}/static/"
+        $config_path = "${base_path}/config.json"
+        $directory = "${deploy_path}/src"
     }
 
     class { 'sslcert::dhparam': }
@@ -65,13 +82,6 @@ class profile::debmonitor::server (
 
     $ldap_password = $passwords::ldap::production::proxypass
     $port = 8001
-    $deploy_user = 'deploy-debmonitor'
-    $base_path = '/srv/deployment/debmonitor'
-    $deploy_path = "${base_path}/deploy"
-    $venv_path = "${base_path}/venv"
-    $static_path = "${base_path}/static/"
-    $config_path = "${base_path}/config.json"
-    $directory = "${deploy_path}/src"
     $ssl_config = ssl_ciphersuite('apache', 'strong')
     # Ensure to add FQDN of the current host also the first time the role is applied
     $hosts = (wmflib::role::hosts('debmonitor::server') << $facts['networking']['fqdn']).sort.unique
@@ -87,58 +97,59 @@ class profile::debmonitor::server (
         group   => 'www-data',
         mode    => '0440',
         content => template('profile/debmonitor/server/config.json.erb'),
-        before  => Uwsgi::App['debmonitor'],
-        notify  => Service['uwsgi-debmonitor'],
-    }
-
-    # Scap creates the deployment directory internally, otherwise create it here
-    if $app_deployment != 'scap3' {
-
-        wmflib::dir::mkdir_p($base_path, {
-            owner  => 'www-data',
-            group  => 'www-data',
-            mode   => '0755',
-        })
+        notify  => Service[$debmonitor_service_name],
     }
 
     # uWSGI service to serve the Django-based WebUI and API
     $socket = '/run/uwsgi/debmonitor.sock'
-    service::uwsgi { 'debmonitor':
-        deployment      => $app_deployment,
-        port            => $port,
-        no_workers      => 4,
-        deployment_user => $deploy_user,
-        config          => {
-            need-plugins => 'python3',
-            chdir        => $directory,
-            venv         => $venv_path,
-            wsgi         => 'debmonitor.wsgi',
-            buffer-size  => 8192,
-            vacuum       => true,
-            http-socket  => "127.0.0.1:${port}",
-            socket       => $socket,
-            env          => [
-                # T164034: make sure Python has a sane default encoding
-                'LANG=C.UTF-8',
-                'LC_ALL=C.UTF-8',
-                'PYTHONENCODING=utf-8',
-                # Tell Debmonitor which configuration file to read
-                "DEBMONITOR_CONFIG=${config_path}",
-                # Tell Debmonitor which settings module to load
-                "DJANGO_SETTINGS_MODULE=${settings_module}",
+    if $app_deployment == 'scap3' {
+        service::uwsgi { 'debmonitor':
+            deployment      => $app_deployment,
+            port            => $port,
+            no_workers      => 4,
+            deployment_user => $deploy_user,
+            config          => {
+                need-plugins => 'python3',
+                chdir        => $directory,
+                venv         => $venv_path,
+                wsgi         => 'debmonitor.wsgi',
+                buffer-size  => 8192,
+                vacuum       => true,
+                http-socket  => "127.0.0.1:${port}",
+                socket       => $socket,
+                env          => [
+                    # T164034: make sure Python has a sane default encoding
+                    'LANG=C.UTF-8',
+                    'LC_ALL=C.UTF-8',
+                    'PYTHONENCODING=utf-8',
+                    # Tell Debmonitor which configuration file to read
+                    "DEBMONITOR_CONFIG=${config_path}",
+                    # Tell Debmonitor which settings module to load
+                    "DJANGO_SETTINGS_MODULE=${settings_module}",
+                ],
+            },
+            healthcheck_url => '/',
+            icinga_check    => false,
+            sudo_rules      => [
+                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor restart',
+                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor start',
+                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor status',
+                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor stop',
             ],
-        },
-        healthcheck_url => '/',
-        icinga_check    => false,
-        sudo_rules      => [
-            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor restart',
-            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor start',
-            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor status',
-            'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor stop',
-        ],
-    }
+        }
 
-    profile::auto_restarts::service { 'uwsgi-debmonitor': }
+        # Maintenance script, this is provided by the Debian package and is only
+        # required when deploying using SCAP
+        file { $debmonitor_shell_command:
+            ensure  => file,
+            owner   => $deploy_user,
+            group   => $deploy_user,
+            mode    => '0554',
+            content => template('profile/debmonitor/server/run_django_command.sh.erb'),
+        }
+
+    }
+    profile::auto_restarts::service { $debmonitor_service_name: }
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
@@ -199,19 +210,10 @@ class profile::debmonitor::server (
         content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb'),
     }
 
-    # Maintenance script
-    file { "${base_path}/run-django-command":
-        ensure  => file,
-        owner   => $deploy_user,
-        group   => $deploy_user,
-        mode    => '0554',
-        content => template('profile/debmonitor/server/run_django_command.sh.erb'),
-    }
-
     $times = cron_splay($hosts, 'weekly', 'debmonitor-maintenance-gc')
     systemd::timer::job { 'debmonitor-maintenance-gc':
         ensure      => present,
-        command     => "${base_path}/run-django-command debmonitorgc",
+        command     => "${debmonitor_shell_command} debmonitorgc",
         user        => $deploy_user,
         description => 'Debmonitor GC',
         interval    => {
