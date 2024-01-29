@@ -1,4 +1,4 @@
 # pc2014
-mariadb::parsercache::shard: 'pc2'
+mariadb::parsercache::shard: 'pc1'
 profile::mariadb::config::sync_binlog: '0'
 profile::mariadb::config::innodb_flush_log_at_trx_commit: '0'
