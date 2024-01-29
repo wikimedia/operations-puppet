@@ -36,14 +36,14 @@ class reposync (
     $repos.each |$repo| {
         $repo_path = "${base_dir}/${repo}"
         file { $repo_path:
-            ensure  => stdlib::ensure($ensure, 'directory'),
-            owner   => $owner,
-            group   => $group,
-            recurse => true,
+            ensure => stdlib::ensure($ensure, 'directory'),
+            owner  => $owner,
+            group  => $group
         }
         exec { "git_init_${repo}":
             command => "/usr/bin/git -C ${repo_path} init --bare",
             user    => $owner,
+            group   => $group,
             creates => "${repo_path}/HEAD",
             require => File[$repo_path],
         }
