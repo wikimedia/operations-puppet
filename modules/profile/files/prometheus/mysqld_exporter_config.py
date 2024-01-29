@@ -125,7 +125,7 @@ def transform_data_to_prometheus(data):
     #       - db1163:9104  <-- list of sockets
     #     slave:
     #       - db1169:11311
-    #       - db1134:9104
+    #       - db1187:9104
     logger = logging.getLogger('prometheus')
     instances = dict()
     for instance in data:
@@ -156,7 +156,7 @@ def transform_data_to_prometheus(data):
     #     role: slave
     #   targets:
     #     - db1169:11311
-    #     - db1134:9104
+    #     - db1187:9104
     prometheus = dict()
     for group, sections in sorted(instances.items()):
         prometheus[group] = list()

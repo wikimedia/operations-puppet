@@ -1,5 +1,0 @@
-# db1134
-# m2 temp host
-mariadb::shard: 'm2'
-mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
