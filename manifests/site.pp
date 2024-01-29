@@ -1624,7 +1624,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-# START Kubernetes workers that used to be mw app/api servers
+# START Kubernetes workers that used to be mw app/api/jobrunner servers
 node /^mw136[0-3]\.eqiad\./ {
   role(kubernetes::worker)
 }
@@ -1638,13 +1638,19 @@ node /^mw138[0-3]\.eqiad\./ {
 node /^mw1439\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw146[0-59]\.eqiad\./ {
+node /^mw1440\.eqiad\./ {
+  role(kubernetes::worker)
+}
+node /^mw146[0-69]\.eqiad\./ {
   role(kubernetes::worker)
 }
 node /^mw147[0-5]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw1486\.eqiad\./ {
+node /^mw145[79]\.eqiad\./ {
+    role(kubernetes::worker)
+}
+node /^mw148[26]\.eqiad\./ {
     role(kubernetes::worker)
 }
 node /^mw1495\.eqiad\./ {
@@ -1680,7 +1686,7 @@ node /^mw244[02356]\.codfw\./ {
 node /^mw245[01]\.codfw\./ {
   role(kubernetes::worker)
 }
-# END Kubernetes workers that used to be mw app/api servers
+# END Kubernetes workers that used to be mw app/api/jobrunner servers
 
 node /^kubestage100[34]\.eqiad\./ {
     role(kubernetes::staging::worker)
@@ -2153,7 +2159,7 @@ node /^mw143[7-8]\.eqiad\./ {
 }
 
 # rack D8 - jobrunners
-node /^mw14(40|45|46)\.eqiad\./ {
+node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2230,14 +2236,14 @@ node /^mwmaint[12]002\.(eqiad|codfw)\./ {
 # Row A
 
 # rack A8
-node /^mw145[7-9]\.eqiad\./ {
+node /^mw1458\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
 # Row B
 
 # rack B6
-node /^mw146[6-8]\.eqiad\./ {
+node /^mw146[78]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
@@ -2248,7 +2254,7 @@ node /^parse101[3-6]\.eqiad\./ {
 }
 
 # rack C5
-node /^mw148[2-5]\.eqiad\./ {
+node /^mw148[3-5]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 

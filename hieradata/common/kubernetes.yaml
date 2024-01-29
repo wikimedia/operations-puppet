@@ -168,12 +168,16 @@ kubernetes::clusters:
         - mw1382.eqiad.wmnet
         - mw1383.eqiad.wmnet
         - mw1439.eqiad.wmnet
+        - mw1440.eqiad.wmnet
+        - mw1457.eqiad.wmnet
+        - mw1459.eqiad.wmnet
         - mw1460.eqiad.wmnet
         - mw1461.eqiad.wmnet
         - mw1462.eqiad.wmnet
         - mw1463.eqiad.wmnet
         - mw1464.eqiad.wmnet
         - mw1465.eqiad.wmnet
+        - mw1466.eqiad.wmnet
         - mw1469.eqiad.wmnet
         - mw1470.eqiad.wmnet
         - mw1471.eqiad.wmnet
@@ -181,6 +185,7 @@ kubernetes::clusters:
         - mw1473.eqiad.wmnet
         - mw1474.eqiad.wmnet
         - mw1475.eqiad.wmnet
+        - mw1482.eqiad.wmnet
         - mw1486.eqiad.wmnet
         - mw1495.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
