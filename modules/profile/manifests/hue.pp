@@ -46,7 +46,11 @@ class profile::hue (
     class { '::passwords::ldap::production': }
 
     # For snappy support with Hue.
-    ensure_packages('python3-snappy')
+    if debian::codename::eq('buster') {
+        ensure_packages('python-snappy')
+    } else {
+        ensure_packages('python3-snappy')
+    }
 
     class { '::bigtop::hue':
         # We always host hive-server on the same node as hive-metastore.
