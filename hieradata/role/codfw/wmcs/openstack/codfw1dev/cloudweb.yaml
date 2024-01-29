@@ -57,3 +57,6 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
+
+# T255568
+profile::services_proxy::envoy::listen_ipv6: true

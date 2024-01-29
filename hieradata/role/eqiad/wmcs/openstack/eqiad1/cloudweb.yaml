@@ -108,3 +108,6 @@ profile::tlsproxy::envoy::services:
     port: 80
 
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
+
+# T255568
+profile::services_proxy::envoy::listen_ipv6: true
