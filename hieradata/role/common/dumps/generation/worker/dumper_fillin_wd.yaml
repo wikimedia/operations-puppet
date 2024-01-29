@@ -1,0 +1,13 @@
+cluster: dumps
+profile::admin::groups:
+  - udp2log-users
+  - deployment
+  - snapshot-admins
+  - snapshot-users
+  - dumps-roots
+profile::mediawiki::php::enable_fpm: false
+profile::mediawiki::apc_shm_size: 128M
+profile::contacts::role_contacts: ["Data Engineering"]
+# Enable icu67 component - T345561
+profile::mediawiki::php::icu67: true
+profile::puppet::agent::force_puppet7: true

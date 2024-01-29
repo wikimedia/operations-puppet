@@ -2494,8 +2494,12 @@ node /^snapshot1010\.eqiad\./ {
 node /^snapshot101[123]\.eqiad\./ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot101[457]\.eqiad\./ {
+node /^snapshot101[47]\.eqiad\./ {
     role(dumps::generation::worker::testbed)
+}
+# snapshot1015 is used to take some of the load of the wikidata dump
+node /^snapshot1015\.eqiad\./ {
+    role(dumps::generation::worker::dumper_fillin_wd)
 }
 node /^snapshot1016\.eqiad\./ {
     role(dumps::generation::worker::dumper_misc_crons_only)
