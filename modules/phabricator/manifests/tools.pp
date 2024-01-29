@@ -28,7 +28,7 @@ class phabricator::tools (
         package { 'python-mysqldb': ensure => present }
     } else {
         package { 'python3-mysqldb': ensure => present }
-        package { 'python3-pymsql': ensure => present }
+        package { 'python3-pymysql': ensure => present }
     }
 
     file { '/etc/phabtools.conf':
