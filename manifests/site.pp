@@ -1746,8 +1746,9 @@ node /^cloudelastic100[7-9]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
 }
 
+#private IP migration canary, see T355617
 node /^cloudelastic1010\.eqiad\./ {
-    role(insetup::search_platform)
+    role(elasticsearch::cloudelastic)
 }
 
 node /^cloudnet100[5-6]\.eqiad\./ {

@@ -1,3 +1,5 @@
+# use cfssl to get internal certs for wmnet TLD. See T355617 for more details.
+profile::elasticsearch::cirrus::ssl_provider: cfssl
 profile::elasticsearch::rack: D2
 profile::elasticsearch::row:  D
 profile::puppet::agent::force_puppet7: true
