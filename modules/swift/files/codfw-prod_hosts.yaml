@@ -44,9 +44,6 @@ schemes:
       ssds: 311
 
 hosts:
-  prod_ng:
-    - ms-be2050:
-        - drain
   prod24_ng:
     - ms-be2070
     - ms-be2071
@@ -60,18 +57,6 @@ hosts:
     - ms-be2079
     - ms-be2080
   prod:
-    - ms-be2044:
-        - drain
-    - ms-be2045:
-        - drain
-    - ms-be2046:
-        - drain
-    - ms-be2047:
-        - drain
-    - ms-be2048:
-        - drain
-    - ms-be2049:
-        - drain
     - ms-be2051
     - ms-be2052
     - ms-be2053
