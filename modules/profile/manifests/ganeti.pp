@@ -110,6 +110,14 @@ class profile::ganeti (
         # Provide a blank authentication file for the RAPI server (no users will be defined, thus denying all)
         $real_content = ''
     }
+
+    file { '/var/lib/ganeti/rapi':
+        ensure => directory,
+        owner  => 'gnt-rapi',
+        group  => 'gnt-masterd',
+        mode   => '0710',
+    }
+
     file { '/var/lib/ganeti/rapi/users':
         ensure  => present,
         owner   => 'gnt-rapi',
