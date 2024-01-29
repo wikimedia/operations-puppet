@@ -2,19 +2,23 @@
 [Unit]
 Description=FIFO log demultiplexer (instance %i)
 Documentation=https://gitlab.wikimedia.org/repos/sre/fifo-log-demux
+# See the below comment for context.
+StartLimitIntervalSec=0
+StartLimitBurst=0
 <% if @wanted_by -%>
-BindsTo=<%= @wanted_by %>
 After=<%= @wanted_by %>
 <% end -%>
 
 [Service]
-Restart=always
 User=<%= @user %>
 ExecStart=/usr/bin/fifo-log-demux -log-fifo <%= @fifo %> -socket <%= @socket %>
+# It's important to keep consuming the fifo; otherwise, some programs will
+# become inoperative while waiting for consumers. Keep trying forever.
+# However, if the program itself is broken, let's give up so that we're alerted
+# for a failed unit.
+Restart=always
+RestartSec=500ms
+RestartPreventExitStatus=70
 
 [Install]
-<% if @wanted_by -%>
-WantedBy=<%= @wanted_by %>
-<% elsif @required_by -%>
-RequiredBy=<%= @required_by %>
-<% end -%>
+WantedBy=multi-user.target

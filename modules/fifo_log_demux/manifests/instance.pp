@@ -4,11 +4,10 @@ define fifo_log_demux::instance(
     String $user = 'root',
     Stdlib::Absolutepath $fifo = '/var/run/fifo.pipe',
     Stdlib::Absolutepath $socket = '/var/run/log.socket',
-    Optional[String] $wanted_by = undef,
-    Optional[String] $required_by = undef,
     Boolean $create_fifo = false,
     Optional[String] $fifo_owner = undef,
     Optional[String] $fifo_group = undef,
+    Optional[String] $wanted_by = undef,
     Optional[Stdlib::Filemode] $fifo_mode = undef,
 ) {
     include fifo_log_demux
@@ -28,9 +27,21 @@ define fifo_log_demux::instance(
         }
     }
 
+    # Removing this as we had Wants= in the [Install] section which would
+    # perpetually keep the dependency on fifo-log-demux that we're trying to
+    # remove from web servers. Once this is deployed we can remove this.
+    file { '/etc/systemd/system/trafficserver.service.wants/fifo-log-demux@notpurge.service':
+      ensure => 'absent',
+    }
+    file { '/etc/systemd/system/nginx.service.requires/fifo-log-demux@ncredir_access_log.service':
+      ensure => 'absent',
+    }
+
     systemd::service { "fifo-log-demux@${title}":
         ensure  => $ensure,
-        restart => true,
+        # See above comment regarding removal of dependencies.
+        # This can be uncommented when deployed.
+        # restart => true,
         content => systemd_template('fifo-log-demux@'),
     }
 }

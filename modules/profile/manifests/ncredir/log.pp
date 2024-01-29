@@ -12,7 +12,7 @@ define profile::ncredir::log(
         user        => 'root',
         fifo        => $fifo,
         socket      => $socket,
-        required_by => 'nginx.service',
+        wanted_by   => 'nginx.service',
         create_fifo => true,
         fifo_owner  => $fifo_owner,
         fifo_group  => $fifo_group,
