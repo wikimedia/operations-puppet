@@ -24,7 +24,7 @@ class profile::kubernetes::deployment_server::mediawiki::release (
     # to lose history.
     backup::set { 'mediawiki-k8s-releases-repository': }
 
-    # Mediawiki deployment configuration
+    # MediaWiki deployment configuration
     file { "${general_dir}/mediawiki-deployments.yaml":
         ensure  => present,
         content => to_yaml($mw_releases),

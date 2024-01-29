@@ -14,7 +14,7 @@ class profile::mediawiki::maintenance::translationnotifications {
         interval => '*-01,04,07,10-02 02:00:00',
     }
 
-    # Mediawiki
+    # MediaWiki
     profile::mediawiki::periodic_job { 'translationnotifications-mediawikiwiki':
         command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki',
         interval => 'Mon 10:05',

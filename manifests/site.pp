@@ -2703,7 +2703,7 @@ node /^registry[12]00[34]\.(eqiad|codfw)\./ {
 }
 
 # https://releases.wikimedia.org - VMs for releases files (mediawiki and other)
-# https://releases-jenkins.wikimedia.org (automatic Mediawiki builds)
+# https://releases-jenkins.wikimedia.org (automatic MediaWiki builds)
 node /^releases[12]003\.(codfw|eqiad)\./ {
     role(releases)
 }

@@ -43,7 +43,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
         # check, but T224425 makes it generate too much noise.
         # FIXME: reduce moving average to 10 minutes once T224425 is fixed.
         monitoring::graphite_threshold { "mediawiki_cirrus_update_rate_${site}":
-            description     => "Mediawiki CirrusSearch update rate - ${site}",
+            description     => "MediaWiki CirrusSearch update rate - ${site}",
             dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?panelId=44&fullscreen&orgId=1'],
             host            => $host,
             metric          => "movingAverage(transformNull(MediaWiki.CirrusSearch.${site}.updates.all.sent.rate),\"60minutes\")",
@@ -57,7 +57,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
 
     # Search is currently too busy - T262694
     monitoring::graphite_threshold { 'mediawiki_cirrus_pool_counter_rejections_rate':
-        description     => 'Mediawiki CirrusSearch pool counter rejections rate',
+        description     => 'MediaWiki CirrusSearch pool counter rejections rate',
         dashboard_links => ['https://grafana.wikimedia.org/d/qrOStmdGk/elasticsearch-pool-counters?viewPanel=4&orgId=1'],
         metric          => "aliasByNode(sum(movingAverage(consolidateBy(transformNull(MediaWiki.CirrusSearch.poolCounter.*.failureMs.sample_rate, 0), \"max\"), \"5minutes\")), 1, 2)",
         warning         => 500,
@@ -68,7 +68,7 @@ class icinga::monitor::elasticsearch::cirrus_cluster_checks(
 
     # Background repair process finding lots of bad documents - T295365
     monitoring::graphite_threshold { 'mediawiki_cirrussearch_indices_high_fix_rate':
-        description     => 'Mediawiki CirrusSearch Saneitizer Weekly Fix Rate',
+        description     => 'MediaWiki CirrusSearch Saneitizer Weekly Fix Rate',
         dashboard_links => ['https://grafana.wikimedia.org/d/JLK3I_siz/elasticsearch-indexing?viewPanel=35&orgId=1&from=now-6M&to=now'],
         metric          => 'smartSummarize(transformNull(MediaWiki.CirrusSearch.{eqiad,codfw,cloudelastic}.sanitization.fixed.sum, 0), "1wk", "sum")',
         warning         => 100000,

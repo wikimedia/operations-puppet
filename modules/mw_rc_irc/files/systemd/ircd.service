@@ -1,5 +1,5 @@
 [Unit]
-Description=IRCd for Mediawiki RecentChanges feed
+Description=IRCd for MediaWiki RecentChanges feed
 After=network.target
 
 [Service]

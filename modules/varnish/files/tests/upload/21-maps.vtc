@@ -58,7 +58,7 @@ client c1 {
 
     expect resp.status == 200
 
-    # Local development with Mediawiki-Vagrant
+    # Local development with MediaWiki-Vagrant
     txreq -url "/osm-intl/1/1.11/-5.55" -hdr "X-Forwarded-Proto: https" -hdr "Host: maps.wikimedia.org" -hdr "X-Client-IP: 192.241.194.113" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "Referer: https://wmftest.net:1234"
     rxresp
 
