@@ -115,7 +115,7 @@ class profile::ganeti (
         ensure => directory,
         owner  => 'gnt-rapi',
         group  => 'gnt-masterd',
-        mode   => '0710',
+        mode   => '0750',
     }
 
     file { '/var/lib/ganeti/rapi/users':
