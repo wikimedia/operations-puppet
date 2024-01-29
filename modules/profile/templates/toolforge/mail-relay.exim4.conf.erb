@@ -267,9 +267,9 @@ tool_forward_specific:
   local_part_suffix_optional = false
   caseful_local_part
   local_parts = passwd;INSTANCEPROJECT.$local_part
-  require_files = INSTANCEPROJECT.$local_part:$home/.forward$local_part_suffix
+  require_files = INSTANCEPROJECT.$local_part:$home/.forward.$local_part_suffix_v
   router_home_directory = ${lookup passwd{INSTANCEPROJECT.$local_part}{${extract{5}{:}{$value}}}fail}
-  file = /data/project/$local_part/.forward$local_part_suffix
+  file = ${run{/usr/local/sbin/match-tool-alias $home $local_part_suffix_v}{$value}fail}
   expn = false
   check_ancestor
   modemask = 002
@@ -293,7 +293,7 @@ tool_forward_general:
   local_parts = passwd;INSTANCEPROJECT.$local_part
   require_files = INSTANCEPROJECT.$local_part:$home/.forward
   router_home_directory = ${lookup passwd{INSTANCEPROJECT.$local_part}{${extract{5}{:}{$value}}}fail}
-  file = /data/project/$local_part/.forward
+  file = $home/.forward
   expn = false
   check_ancestor
   modemask = 002
@@ -328,7 +328,7 @@ begin transports
 
 remote_smtp:
   driver = smtp
-  dkim_domain = ${sender_address_domain}
+  dkim_domain = ${if eq {${sender_address_domain}}{<%= @primary_domain %>} {<%= @primary_domain %>}{}}
   dkim_selector = toolforge : toolforge-rsa
   dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
   dkim_canon = relaxed

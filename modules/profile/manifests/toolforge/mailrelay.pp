@@ -94,6 +94,14 @@ class profile::toolforge::mailrelay (
         source => 'puppet:///modules/profile/toolforge/mailrelay/maintainers',
     }
 
+    file { '/usr/local/sbin/match-tool-alias':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/profile/toolforge/mailrelay/match-tool-alias.py',
+    }
+
     file { '/etc/aliases':
         ensure => file,
         owner  => 'root',
