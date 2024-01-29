@@ -203,6 +203,7 @@ codfw:
     maps2006.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2007.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2008.codfw.wmnet: [kartotherian, kartotherian-ssl]
+    maps2009.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2010.codfw.wmnet: [kartotherian, kartotherian-ssl]
   elasticsearch:
     elastic2037.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]

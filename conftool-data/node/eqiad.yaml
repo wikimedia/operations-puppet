@@ -181,6 +181,7 @@ eqiad:
     maps1006.eqiad.wmnet: [kartotherian, kartotherian-ssl]
     maps1007.eqiad.wmnet: [kartotherian, kartotherian-ssl]
     maps1008.eqiad.wmnet: [kartotherian, kartotherian-ssl]
+    maps1009.eqiad.wmnet: [kartotherian, kartotherian-ssl]
     maps1010.eqiad.wmnet: [kartotherian, kartotherian-ssl]
   elasticsearch:
     elastic1053.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
