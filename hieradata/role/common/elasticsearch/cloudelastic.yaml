@@ -68,6 +68,7 @@ profile::elasticsearch::common_settings:
     bind_networks:
       - _local_
       - _global_
+      - _site_
 
     certificate_name: cloudelastic
 
