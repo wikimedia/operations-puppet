@@ -2,6 +2,16 @@
 
 router id <%= @ipv4_src %>;
 
+protocol direct {
+    interface "lo";
+    ipv4 {
+        export all;
+    };
+}
+
+protocol device {
+}
+
 protocol kernel kernel_v4 {
     learn;
     scan time 1;
@@ -13,7 +23,7 @@ protocol kernel kernel_v6 {
     learn;
     scan time 1;
     ipv6 {
-        import where krt_source = 3; # statics
+        import where krt_source = 4; # statics
    };
 }
 
