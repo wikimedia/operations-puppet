@@ -54,6 +54,13 @@ class profile::debmonitor::server (
         $debmonitor_shell_command = '/usr/bin/debmonitor'
         $static_path = '/usr/share/debmonitor/static/'
         $config_path = '/etc/debmonitor/config.json'
+
+        file {'/etc/uwsgi/apps-enabled/debmonitor.ini':
+            ensure => link,
+            target => '/etc/uwsgi/apps-available/debmonitor.ini',
+            notify => Service[$debmonitor_service_name],
+        }
+
         service { 'debmonitor-server':
             ensure => 'running',
         }
