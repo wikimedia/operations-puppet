@@ -220,6 +220,7 @@ Components: main
 # sorted list, leading whitespace matters!
  component/dnsdist
  component/elastic710
+ component/exim4-arc
  component/puppet5
  component/puppetdb7
  component/prometheus-openstack-exporter
