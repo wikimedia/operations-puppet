@@ -162,6 +162,8 @@ acl_check_mail:
         set acl_c_sender_address_ratelimit=${lookup{$sender_address}nwildlsearch{/etc/exim4/ratelimits/sender_hourly_limits}}
         ratelimit = $acl_c_sender_address_ratelimit / 1h / $sender_address
         log_message = Sender address $sender_address has exceeded rate limit of $sender_rate_limit messages per $sender_rate_period
+        # Ignore bounces since Exim seems greatly confused about per-sender rate limits on messages without senders.
+        !senders = :
 
   accept
 
