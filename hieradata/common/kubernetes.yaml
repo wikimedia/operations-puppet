@@ -288,6 +288,9 @@ kubernetes::clusters:
         - mw2297.codfw.wmnet
         - mw2355.codfw.wmnet
         - mw2357.codfw.wmnet
+        - mw2366.codfw.wmnet
+        - mw2368.codfw.wmnet
+        - mw2370.codfw.wmnet
         - mw2381.codfw.wmnet
         - mw2395.codfw.wmnet
         - mw2420.codfw.wmnet

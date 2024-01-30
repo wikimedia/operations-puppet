@@ -1671,6 +1671,12 @@ node /^mw235[57]\.codfw\./ {
 node /^mw2381\.codfw\./ {
   role(kubernetes::worker)
 }
+node /^mw236[68]\.codfw\./ {
+  role(kubernetes::worker)
+}
+node /^mw2370\.codfw\./ {
+  role(kubernetes::worker)
+}
 node /^mw2395\.codfw\./ {
   role(kubernetes::worker)
 }
@@ -2451,7 +2457,7 @@ node /^mw237[46]\.codfw\./ {
     role(mediawiki::appserver::canary_api)
 }
 
-node /^mw23(6[68]|7[02])\.codfw\./ {
+node /^mw2372\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
