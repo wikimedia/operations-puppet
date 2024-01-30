@@ -102,7 +102,7 @@ class profile::debmonitor::server (
 
     # uWSGI service to serve the Django-based WebUI and API
     $socket = '/run/uwsgi/debmonitor.sock'
-    if $app_deployment == 'scap3' {
+    if debian::codename::lt('bookworm') {
         service::uwsgi { 'debmonitor':
             deployment      => $app_deployment,
             port            => $port,
