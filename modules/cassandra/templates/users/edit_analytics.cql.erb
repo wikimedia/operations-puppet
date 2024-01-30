@@ -1,0 +1,5 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE USER IF NOT EXISTS edit_analytics WITH PASSWORD '<%= @application_password %>';
+
+GRANT SELECT ON aqs.config TO 'edit_analytics';
