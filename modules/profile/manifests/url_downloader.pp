@@ -51,6 +51,7 @@ class profile::url_downloader (
     }
 
     monitoring::service { 'url_downloader':
+        ensure        => absent,
         description   => 'url_downloader',
         check_command => "check_tcp_ip!url-downloader.wikimedia.org!${url_downloader_port}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
@@ -59,6 +60,7 @@ class profile::url_downloader (
     prometheus::blackbox::check::http { 'url-downloader.wikimedia.org':
         port           => $url_downloader_port,
         status_matches => [400],
+        probe_runbook  => 'https://wikitech.wikimedia.org/wiki/Url-downloader',
     }
 
     profile::auto_restarts::service { 'squid': }
