@@ -49,7 +49,7 @@ class profile::systemd::timesyncd (
     }
 
     nrpe::monitor_service { 'timesynd_ntp_status':
-        ensure         => $ensure,
+        ensure         => absent,
         description    => 'Check the NTP synchronisation status of timesyncd',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_timedatectl',
         contact_group  => 'admins',
