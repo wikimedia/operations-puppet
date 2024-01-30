@@ -36,7 +36,7 @@ class profile::phabricator::monitoring (
     }
 
     prometheus::blackbox::check::tcp { 'phabricator-smtp':
-        team     => 'serviceops-collab',
+        team     => 'collaboration-services',
         severity => 'task',
         port     => 25,
     }
