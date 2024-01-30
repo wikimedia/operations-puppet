@@ -83,3 +83,5 @@ profile::query_service::uri_scheme_options: []
 #The host for the LDF (Linked Data Fragments) endpoint
 profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
