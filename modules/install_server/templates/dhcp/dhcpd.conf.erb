@@ -48,6 +48,10 @@ group {
     next-server <%= datacenter_config['tftp_server'] %>;
     <%- end -%>
 
+    # Add DHCP option 12 (hostname) to the reply explicitly based on the host dhcp stanza title
+    # Otherwise isc-dhcp relies on a DNS lookup on the IP
+    use-host-decl-names on;
+
     # Public subnets
     group {
         option domain-name "<%= datacenter_config['public']['domain'] %>";

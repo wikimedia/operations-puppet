@@ -108,6 +108,10 @@ group \{
 
     next-server 208.80.153.105;
 
+    # Add DHCP option 12 \(hostname\) to the reply explicitly based on the host dhcp stanza title
+    # Otherwise isc-dhcp relies on a DNS lookup on the IP
+    use-host-decl-names on;
+
     # Public subnets
     group \{
         option domain-name "wikimedia.org";
@@ -152,6 +156,10 @@ group \{
 group \{
 
     next-server 208.80.154.74;
+
+    # Add DHCP option 12 \(hostname\) to the reply explicitly based on the host dhcp stanza title
+    # Otherwise isc-dhcp relies on a DNS lookup on the IP
+    use-host-decl-names on;
 
     # Public subnets
     group \{
