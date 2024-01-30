@@ -982,11 +982,7 @@ node /^debmonitor[12]002\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
 
-node /^debmonitor[1]003\.(codfw|eqiad)\./ {
-    role(insetup::infrastructure_foundations)
-}
-
-node /^debmonitor[2]003\.(codfw|eqiad)\./ {
+node /^debmonitor[12]003\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
 
