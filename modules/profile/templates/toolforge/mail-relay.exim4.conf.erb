@@ -332,6 +332,7 @@ remote_smtp:
   dkim_selector = toolforge : toolforge-rsa
   dkim_private_key = ${if exists{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{/etc/exim4/dkim/${dkim_domain}-${dkim_selector}.key}{0}}
   dkim_canon = relaxed
+  arc_sign = <%= @external_hostname %> : toolforge-arc : /etc/exim4/dkim/<%= @external_hostname %>-toolforge-arc.key : timestamps,expire
 
 ###############
 # Retry rules #

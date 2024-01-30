@@ -28,6 +28,7 @@ class profile::toolforge::mailrelay (
         config      => template('profile/toolforge/mail-relay.exim4.conf.erb'),
         filter      => template('profile/toolforge/mail-relay-spam-filter.conf.erb'),
         variant     => 'heavy',
+        component   => 'component/exim4-arc',
         require     => File['/usr/local/sbin/localuser',
                             '/usr/local/sbin/maintainers'],
     }
@@ -38,6 +39,12 @@ class profile::toolforge::mailrelay (
             selector => $dkim_selector,
             content  => secret("dkim/wmcs/${primary_domain}-${dkim_selector}.key"),
         }
+    }
+
+    exim4::dkim { "${external_hostname}-toolforge-arc":
+        domain   => $external_hostname,
+        selector => 'toolforge-arc',
+        content  => secret("dkim/wmcs/${external_hostname}-toolforge-arc.key"),
     }
 
     # Manually maintained outbound sender blocklist
