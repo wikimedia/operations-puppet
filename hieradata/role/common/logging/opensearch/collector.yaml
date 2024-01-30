@@ -105,3 +105,15 @@ profile::base::certificates::include_bundle_jks: true
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# T355836
+profile::benthos::instances:
+  mw_accesslog_sampler:
+    port: 4153
+    kafka:
+      cluster: logging
+      site: "%{::site}"
+      topics:
+        - "mediawiki.httpd.accesslog"
+    env_variables:
+      site: "%{::site}"

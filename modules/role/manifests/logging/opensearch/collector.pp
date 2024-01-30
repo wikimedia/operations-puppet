@@ -16,6 +16,7 @@ class role::logging::opensearch::collector {
     include profile::opensearch::dashboards::httpd_proxy
     include profile::opensearch::dashboards::phatality
     include profile::prometheus::logstash_exporter
+    include profile::benthos
 
     # https://phabricator.wikimedia.org/T327161
     include toil::opensearch_dashboards_restart # lint:ignore:wmf_styleguide

@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: Apache-2.0
+http:
+  enabled: true
+  address: "0.0.0.0:${PORT}"
+
+input:
+  label: 'mw_accesslog_sampler_input_kafka'
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
+    topics: [ "${KAFKA_TOPICS}" ]
+    regexp_topics: false
+    consumer_group: "benthos-${SITE}"
+    tls:
+      enabled: true
+    batching:
+      count: 2048
+      period: 1s
+
+pipeline:
+  processors:
+    - label: "mw_accesslog_sampler_processors_mapping_drop_99_pct"
+      mapping: |
+        if random_int(max:100) <= 99 { deleted() }
+
+output:
+  label: 'mw_accesslog_sampler_output_kafka'
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
+    topic: 'mediawiki.httpd.accesslog-sampled'
+    tls:
+      enabled: true
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+    add_process_metrics: true
+    add_go_metrics: true
