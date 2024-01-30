@@ -43,7 +43,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq]
+              kassiameq, maurelio]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6948,9 +6948,8 @@ ldap_only_users:
     ensure: absent
     realname: Barakat Ajadi
   maurelio:
-    ensure: present
+    ensure: absent
     realname: (known to Legal)
-    email: maurelio.wikitech@gmail.com
   kbach:
     ensure: present
     realname: Kamil Bach
