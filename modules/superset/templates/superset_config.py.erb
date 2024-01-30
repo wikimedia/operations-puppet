@@ -117,4 +117,7 @@ FEATURE_FLAGS = {
     "ENABLE_TEMPLATE_PROCESSING": True,
     "DASHBOARD_NATIVE_FILTERS": True,
     "ENABLE_FILTER_BOX_MIGRATION": True,
+<% if @enable_presto_nested_data -%>
+    "PRESTO_EXPAND_DATA": True,
+<% end -%>
 }

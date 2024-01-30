@@ -64,6 +64,9 @@
 # [*enable_cas*]
 #   Enable authentication via CAS instead of LDAP
 #
+# [*enable_presto_nested_data*]
+#   Enable the PRESTO_NESTED_DATA feature flag, which displays nested columns in the UI
+#
 # [*metadata_cache_uri*]
 #   If specified, Superset uses this to cache its own metadata to speed up rendering the interface.
 #
@@ -91,6 +94,7 @@ class superset (
     String $deployment_user                       = 'analytics_deploy',
     String $gunicorn_app                          = 'superset:app',
     Boolean $enable_cas                           = false,
+    Boolean $enable_presto_nested_data            = false,
     Optional[String] $metadata_cache_uri          = undef,
     Optional[String] $data_cache_uri              = undef,
     Optional[String] $filter_state_cache_uri      = undef,

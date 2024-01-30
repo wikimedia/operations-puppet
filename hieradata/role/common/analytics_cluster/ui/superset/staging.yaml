@@ -12,6 +12,7 @@ profile::superset::database_uri: mysql://superset_staging@an-mariadb1001.eqiad.w
 profile::superset::workers: 8
 profile::superset::ldap_proxy_enabled: true
 profile::superset::enable_cas: true
+profile::superset::enable_presto_nested_data: true
 profile::superset::server_name: 'superset-next.wikimedia.org'
 
 profile::superset::proxy::x_forwarded_proto: 'https'
