@@ -141,6 +141,9 @@ sub Load {
     # $DIBI$
     $Self->{DefaultCharset} = 'utf-8';
 
+    # IndexAccellerator module, https://phabricator.wikimedia.org/T355979
+    $Self->{'Ticket::IndexModule'} =  'Kernel::System::Ticket::IndexAccelerator::StaticDB';
+
     # ---------------------------------------------------- #
     # ---------------------------------------------------- #
     #                                                      #
