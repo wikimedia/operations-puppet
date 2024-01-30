@@ -66,9 +66,7 @@ profile::elasticsearch::common_settings:
 
     # Cloudelastic servers are on public vlan
     bind_networks:
-      - _local_
-      - _global_
-      - _site_
+      - 0.0.0.0
 
     certificate_name: cloudelastic
 
