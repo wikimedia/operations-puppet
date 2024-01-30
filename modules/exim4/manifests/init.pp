@@ -16,21 +16,33 @@
 #
 # [*queuerunner*]
 #   The queue runner config option.
+# @param component optional Apt component to install Exim packages from
 
 class exim4(
-  String             $config,
-  Exim4::Variant     $variant     = 'light',
-  Exim4::Queuerunner $queuerunner = 'combined',
-  Stdlib::Unixpath   $config_dir  = '/etc/exim4',
-  Optional[String]   $filter      = undef,
+  String              $config,
+  Exim4::Variant      $variant     = 'light',
+  Exim4::Queuerunner  $queuerunner = 'combined',
+  Stdlib::Unixpath    $config_dir  = '/etc/exim4',
+  Optional[String]    $filter      = undef,
+  Optional[String[1]] $component   = undef,
 ) {
     $aliases_dir = "${config_dir}/aliases"
     $dkim_dir    = "${config_dir}/dkim"
-    package { [
+
+    $packages = [
         'exim4-config',
         "exim4-daemon-${variant}",
-        ]:
-        ensure => installed,
+    ]
+
+    if $component {
+        apt::package_from_component { 'exim':
+            component => $component,
+            packages  => $packages,
+        }
+    } else {
+        package { $packages:
+            ensure => installed,
+        }
     }
 
     $servicestatus = $queuerunner ? {
