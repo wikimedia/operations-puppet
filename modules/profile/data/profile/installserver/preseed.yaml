@@ -672,6 +672,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest200[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'sretest2005':
+    - partman/flat.cfg
+    - virtual.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'testhost2001':

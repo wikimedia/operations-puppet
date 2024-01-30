@@ -2830,7 +2830,7 @@ node /^sretest100[1-4]\.eqiad\./ {
 }
 
 # Servers for SRE tests in codfw
-node /^sretest200[1-4]\.codfw\./ {
+node /^sretest200[1-5]\.codfw\./ {
     role(sretest)
 }
 
