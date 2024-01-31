@@ -95,7 +95,7 @@
         }
 
         const filtersData = {};
-        Object.values(data.state.filterState).forEach((filter) => {
+        Object.values(data.state.dataMask).forEach((filter) => {
           if (filter.extraFormData && Array.isArray(filter.extraFormData.filters)) {
             filter.extraFormData.filters.forEach((filterObj) => {
               filtersData[filterObj.col] = { "op": filterObj.op, "val": filterObj.val };
