@@ -248,8 +248,8 @@ class profile::debmonitor::server (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
         }
 
-        prometheus::blackbox::check::http { 'debmonitor.discovery.wmnet':
-            server_name     => $facts['networking']['fqdn'],
+        prometheus::blackbox::check::http { 'debmonitor-client-download':
+            server_name     => 'debmonitor.discovery.wmnet',
             port            => 443,
             path            => '/client',
             use_client_auth => true,
