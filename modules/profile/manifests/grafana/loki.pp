@@ -7,9 +7,11 @@
 #   $version: (optional) the package version to ensure
 #   $allow_from: (optional) array of hosts that need access to the loki api
 class profile::grafana::loki (
-  Hash                $config     = lookup('profile::grafana::loki::config',        { 'default_value' => {} }),
-  Optional[String]    $version    = lookup('profile::grafana::loki::version',       { 'default_value' => 'present' }),
-  Array[Stdlib::Fqdn] $allow_from = lookup('profile::grafana::loki::allow_from',    { 'default_value' => [] })
+  Hash                $config       = lookup('profile::grafana::loki::config',     { 'default_value' => {} }),
+  Optional[String]    $version      = lookup('profile::grafana::loki::version',    { 'default_value' => 'present' }),
+  Array[Stdlib::Fqdn] $allow_from   = lookup('profile::grafana::loki::allow_from', { 'default_value' => [] }),
+  Stdlib::Fqdn        $active_host  = lookup('profile::grafana::active_host',      { 'default_value' => '' }),
+  Stdlib::Fqdn        $standby_host = lookup('profile::grafana::standby_host',     { 'default_value' => '' }),
 ) {
 
   unless empty($allow_from) {
@@ -29,11 +31,24 @@ class profile::grafana::loki (
   # `common.path_prefix` is used to define where the wal, boltdb shipper
   # data, default ruler path, compactor path, and tokens if token
   # persistence is enabled
-  file { pick($config['common']['path_prefix'], '/var/lib/loki'):
+  $loki_data = pick($config['common']['path_prefix'], '/var/lib/loki')
+
+  file { $loki_data:
     ensure  => 'directory',
     owner   => 'loki',
     group   => 'loki',
     require => Package['grafana-loki']
   }
 
+  # Enables rsync'ing loki data from active host to standby host.
+  if $active_host and $standby_host {
+    rsync::quickdatacopy { 'loki-data':
+      ensure              => present,
+      source_host         => $active_host,
+      dest_host           => $standby_host,
+      module_path         => $loki_data,
+      server_uses_stunnel => false,
+      chown               => 'loki:loki',
+    }
+  }
 }
