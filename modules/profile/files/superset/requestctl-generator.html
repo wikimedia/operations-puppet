@@ -228,6 +228,14 @@
 
         const urls = [];
         const url_rules = [];
+        // Define an empty URI path or query if there are queries or paths to filter
+        if (uri_paths.length > 0 && uri_queries.length == 0) {
+          uri_queries = [""];
+        }
+        if (uri_paths.length == 0 && uri_queries.length > 0) {
+          uri_paths = [""];
+        }
+
         uri_paths.forEach((uri) => {
           uri_queries.forEach((query) => {
             let url = "";
