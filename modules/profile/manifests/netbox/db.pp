@@ -175,6 +175,8 @@ class profile::netbox::db (
     }
     if $do_backups {
         include ::profile::backup::host
-        backup::set { 'netbox-postgres': }
+        backup::set { 'netbox-postgres':
+            jobdefaults => 'Daily-productionEqiad', # full backups every day
+        }
     }
 }

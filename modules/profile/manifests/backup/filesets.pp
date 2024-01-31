@@ -186,7 +186,7 @@ class profile::backup::filesets(
     }
 
     bacula::director::fileset { 'netbox-postgres':
-        includes => [ '/srv/postgres-backup/',
+        includes => [ '/srv/postgres-backup/psql-all-dbs-latest.sql.gz',
                     ]
     }
 
