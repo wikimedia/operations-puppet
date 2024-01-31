@@ -106,6 +106,7 @@ profile::lvs::realserver::pools:
       - "elasticsearch_6@cloudelastic-omega-eqiad.service"
 profile::lvs::realserver::use_conftool: true
 
+profile::tlsproxy::instance::certificate_name: 'cloudelastic.wikimedia.org'
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform']
 
