@@ -40,6 +40,7 @@
     Prometheus::Blackbox::Check::Instance   $prometheus_instance     = 'ops',
     Prometheus::Blackbox::Query_response    $query_response          = undef,
     Pattern[/\d+[mh]/]                      $alert_after             = '2m',
+    String[1]                               $probe_runbook           = 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
 ) {
     $use_tls = ($force_tls or $port == 443)
     $safe_title = $title.regsubst('\W', '_', 'G')
@@ -110,7 +111,7 @@
                     'description' => 'The certificate presented by service {{ $labels.instance }} is going to expire in {{ $value | humanizeDuration }}',
                     'summary'     => 'Certificate for service {{ $labels.instance }} is about to expire',
                     'dashboard'   => 'https://grafana.wikimedia.org/d/K1dRhGCnz/probes-tls-dashboard',
-                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
+                    'runbook'     => $probe_runbook,
                 },
             }],
         }
@@ -136,7 +137,7 @@
                     'summary'     => "Service {{ \$labels.instance }} has failed probes ({{ \$labels.module }})${page_text}",
                     'dashboard'   => 'https://grafana.wikimedia.org/d/O0nHhdhnz/network-probes-overview?var-job={{ $labels.job }}&var-module=All',
                     'logs'        => 'https://logstash.wikimedia.org/app/dashboards#/view/f3e709c0-a5f8-11ec-bf8e-43f1807d5bc2?_g=(filters:!((query:(match_phrase:(service.name:{{ $labels.module }})))))',
-                    'runbook'     => 'https://wikitech.wikimedia.org/wiki/TLS/Runbook#{{ $labels.instance }}',
+                    'runbook'     => $probe_runbook,
                 },
             }],
           },

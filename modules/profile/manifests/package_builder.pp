@@ -25,4 +25,10 @@ class profile::package_builder {
         check_command => 'check_tcp!873',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Debian_Packaging#Upload_to_Wikimedia_Repo',
     }
+
+    prometheus::blackbox::check::tcp { 'package-builder-rsync':
+        port          => 873,
+        probe_runbook => 'https://wikitech.wikimedia.org/wiki/Debian_Packaging#Upload_to_Wikimedia_Repo',
+    }
+
 }
