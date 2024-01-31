@@ -2,6 +2,3 @@ profile::cumin::master::insetup_role_report_day: 1  # first day of the month
 profile::dbbackups::transfer::enabled: false
 profile::homer::private_git_peer: cumin2002.codfw.wmnet
 profile::homer::diff_timer_interval: ~ # Disable homer daily diff
-# TODO T356054: delete httpbb keys below once timers are removed.
-profile::httpbb::hourly_tests:
-  appserver: []
