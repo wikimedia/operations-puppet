@@ -145,7 +145,8 @@ class profile::netbox::db (
         }
         # On the primary node, do a daily DB dump
         class { '::postgresql::backup':
-            do_backups    => $do_backups,
+            do_backups  => $do_backups,
+            rotate_days => 15
         }
     } else {
         $require_class = 'postgresql::slave'
