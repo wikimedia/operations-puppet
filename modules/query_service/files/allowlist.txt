@@ -87,3 +87,4 @@ https://qlever.cs.uni-freiburg.de/api/wikimedia-commons
 https://data.nlg.gr/sparql
 https://query-main-experimental.wikidata.org/sparql
 https://query-scholarly-experimental.wikidata.org/sparql
+https://nfdi4culture.de/sparql
