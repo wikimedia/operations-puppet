@@ -31,6 +31,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
+        - '^cloudelastic[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin)\.wmnet$'
     dotls-for-authdns:
         CN: 'ns0.wikimedia.org'
         SNI:
