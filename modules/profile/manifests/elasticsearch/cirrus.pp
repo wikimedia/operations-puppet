@@ -11,13 +11,14 @@
 #   to disable that, and cleanup the old ones. For transition, let's make this
 #   configureable.
 class profile::elasticsearch::cirrus(
+    String $cluster = lookup('cluster'),
     String $ferm_srange = lookup('profile::elasticsearch::cirrus::ferm_srange'),
     String $ferm_ro_srange = lookup('profile::elasticsearch::cirrus::ferm_ro_srange', {default_value => ''}),
     Boolean $expose_http = lookup('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = lookup('profile::elasticsearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
     Boolean $enable_http2 = lookup('profile::elasticsearch::cirrus::enable_http2', {default_value => false}),
-    Profile::Pki::Provider $ssl_provider = lookup('profile::elasticsearch::cirrus::ssl_provider', {default_value =>  'sslcert'})
+    Profile::Pki::Provider $ssl_provider = lookup('profile::elasticsearch::cirrus::ssl_provider', {default_value =>  'sslcert'}),
 ) {
     include ::profile::elasticsearch
 
@@ -65,8 +66,9 @@ class profile::elasticsearch::cirrus(
         case $ssl_provider {
             'acme_chief': {
                 $proxy_cert_params = {
-                    acme_chief    => true,
-                    acme_certname => $instance_params['certificate_name'],
+                    acme_chief        => true,
+                    acme_certname     => $cluster,
+                    server_name       => $instance_params['certificate_name'],
                 }
             }
             'cfssl': {

@@ -27,6 +27,7 @@ profile::elasticsearch::instances:
     transport_tcp_port: 9300
     heap_memory: '55G'
     tune_gc_new_size_ratio: 3
+    certificate_name: 'cloudelastic.wikimedia.org'
   cloudelastic-omega-eqiad:
     cluster_name: cloudelastic-omega-eqiad
     short_cluster_name: omega
@@ -35,6 +36,7 @@ profile::elasticsearch::instances:
     tls_ro_port: 8443
     transport_tcp_port: 9500
     heap_memory: '12G'
+    certificate_name: 'cloudelastic.wikimedia.org'
   cloudelastic-psi-eqiad:
     cluster_name: cloudelastic-psi-eqiad
     short_cluster_name: psi
@@ -43,6 +45,7 @@ profile::elasticsearch::instances:
     tls_ro_port: 8643
     transport_tcp_port: 9700
     heap_memory: '12G'
+    certificate_name: 'cloudelastic.wikimedia.org'
 profile::elasticsearch::common_settings:
     awareness_attributes: 'row'
     # We need these plugins to be loaded in order to work properly. This will keep
