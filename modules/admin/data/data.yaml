@@ -5118,7 +5118,6 @@ users:
     uid: 21215
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkJb5JcREGn4L0yM+lx2DK12aSd12vHA1mis7DLAhLY taavi@runko wmf prod
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAINbPd+qtL6XEYh5UcH2LHRvUD6GsMZ+CtgYehk1Ie0RmAAAABHNzaDo= taavi@runko wmf prod yk1
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIBHH5gACEPnn5UQDJeSvLVh8nY42/7WGVNaMYbXP2+ccAAAABHNzaDo= taavi@runko wmf prod yk2
     buster_ssh_keys:
