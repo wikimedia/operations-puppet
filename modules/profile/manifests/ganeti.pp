@@ -255,7 +255,7 @@ class profile::ganeti (
         # To be replaced by finer grained policies
         # DHCP, BGP
         nftables::file::input { 'ganeti_guest_vm_all_in':
-            content => 'iifname "tap*" accept\n',
+            content => "iifname \"tap*\" accept\n",
             order   => 10,
         }
 
