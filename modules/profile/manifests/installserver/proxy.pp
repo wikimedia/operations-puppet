@@ -60,4 +60,10 @@ class profile::installserver::proxy(
         check_command => 'check_tcp!8080',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
     }
+
+    prometheus::blackbox::check::http { 'squid':
+        port           => 8080,
+        status_matches => [400],
+        probe_runbook  => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
+    }
 }
