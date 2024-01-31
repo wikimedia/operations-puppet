@@ -735,7 +735,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(144|146|170|213)\.eqiad\./ {
+node /^db1(144|146|170|213|244|246)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
@@ -765,7 +765,7 @@ node /^db21(42|43|44)\.codfw\./ {
 }
 
 # New db hosts to be setup T342166
-node /^db12(39|35|39|40|44|45|46)\.eqiad\./ {
+node /^db1235.eqiad\./ {
     role(insetup::data_persistence)
 }
 ## m1 shard
@@ -869,15 +869,15 @@ node /^db2183|db2184\.codfw\./ {
 
 # eqiad backup sources
 ## s1 & s2, bullseye
-node /^db1139\.eqiad\./ {
+node /^(db1139|db1239)\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s1 & s3, bullseye
-node /^db1140\.eqiad\./ {
+node /^(db1140|db1240)\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s4 & s5, bullseye
-node /^db1145\.eqiad\./ {
+node /^(db1145|db1245)\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s3 & s4, bullseye

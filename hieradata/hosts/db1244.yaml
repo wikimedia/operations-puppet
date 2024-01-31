@@ -1,2 +1,5 @@
 # db1244
+profile::mariadb::core::multiinstance::instances:
+  s4: 185G
+  s5: 185G
 profile::monitoring::notifications_enabled: false
