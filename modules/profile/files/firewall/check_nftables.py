@@ -9,7 +9,7 @@ import sys
 
 PROM_BLOB = ("# HELP firewall_running Is the configured firewall running\n"
              "# TYPE firewall_running gauge\n"
-             "firewall_running{policy=drop} ")
+             'firewall_running{policy="drop"} ')
 
 
 def write_prom_file(state, filepath):
@@ -37,6 +37,7 @@ def main():
                                               stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError:
         write_prom_file("0.0", args.outfile)
+        return
 
     for rule in nft_ruleset.split("\n"):
         if rule.find('policy drop;') != -1:
