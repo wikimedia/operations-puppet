@@ -6236,6 +6236,13 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBzNo2UCmxKiKKfgMve02fZ/hGCYsWr+mI3D/rHeOsT2 arina@wmf3439'
     krb: present
+  cdobbins:
+    ensure: present
+    realname: Chris Dobbins
+    email: cdobbins@wikimedia.org
+    uid: 45974
+    gid: 500
+    ssh_keys: []  # to be added later
 
 ldap_only_users:
   adavenport:
