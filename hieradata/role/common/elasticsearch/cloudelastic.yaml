@@ -68,7 +68,7 @@ profile::elasticsearch::common_settings:
     bind_networks:
       - 0.0.0.0
 
-    certificate_name: 'cloudelastic.wikimedia.org'
+    certificate_name: cloudelastic
 
     # wait that long for all nodes to restart. If not all nodes are present after
     # `recover_after_time`, recover anyway, as long as at least
