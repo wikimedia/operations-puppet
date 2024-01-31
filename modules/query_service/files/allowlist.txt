@@ -83,3 +83,5 @@ https://lila-erc.eu/sparql/lila_knowledge_base/sparql
 https://qlever.cs.uni-freiburg.de/api/imdb
 https://qlever.cs.uni-freiburg.de/api/wikidata
 https://data.nlg.gr/sparql
+https://query-main-experimental.wikidata.org/sparql
+https://query-scholarly-experimental.wikidata.org/sparql
