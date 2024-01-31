@@ -427,6 +427,8 @@ groups:
     approval:
       - Olja Dimitrjevic
       - Dan Andreescu
+      - Will Doran
+      - Andreas Hoelzl
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
