@@ -255,7 +255,7 @@ class profile::ganeti (
         # To be replaced by finer grained policies
         # DHCP, BGP
         nftables::file::input { 'ganeti_guest_vm_all_in':
-            content => 'iifname "tap*" accept',
+            content => 'iifname "tap*" accept\n',
             order   => 10,
         }
 
@@ -276,6 +276,8 @@ class profile::ganeti (
             values => {
                 "net.ipv4.conf.${$facts['interface_primary']}.ip_forward" => 1,
                 "net.ipv6.conf.${$facts['interface_primary']}.ip_forward" => 1,
+                'net.ipv4.ip_forward'                                     => 1,
+                'net.ipv6.conf.all.forwarding'                            => 1,
             },
         }
         # tftp servers are also the dhcp servers
