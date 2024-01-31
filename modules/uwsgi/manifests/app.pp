@@ -39,6 +39,7 @@ define uwsgi::app(
     String[1]           $systemd_user       = 'www-data',
     String[1]           $systemd_group      = 'www-data',
     Hash                $extra_systemd_opts = {},
+    Wmflib::Ensure      $monitoring         = present,
 ) {
     include uwsgi
 
@@ -63,7 +64,7 @@ define uwsgi::app(
         }
 
         nrpe::monitor_service { "uwsgi-${title}":
-            ensure       => present,
+            ensure       => $monitoring,
             description  => "${title} uWSGI web app",
             nrpe_command => "/bin/systemctl status uwsgi-${title}",
             require      => Base::Service_unit["uwsgi-${title}"],
