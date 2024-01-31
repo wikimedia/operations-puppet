@@ -81,7 +81,9 @@ https://vocabularies.unesco.org/sparql
 https://digitale.bncf.firenze.sbn.it/openrdf-workbench/repositories/NS/query
 https://lila-erc.eu/sparql/lila_knowledge_base/sparql
 https://qlever.cs.uni-freiburg.de/api/imdb
+https://qlever.cs.uni-freiburg.de/api/dblp
 https://qlever.cs.uni-freiburg.de/api/wikidata
+https://qlever.cs.uni-freiburg.de/api/wikimedia-commons
 https://data.nlg.gr/sparql
 https://query-main-experimental.wikidata.org/sparql
 https://query-scholarly-experimental.wikidata.org/sparql
