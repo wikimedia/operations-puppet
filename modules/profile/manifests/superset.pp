@@ -68,7 +68,7 @@ class profile::superset (
     Optional[String] $statsd                      = lookup('profile::superset::statsd', { 'default_value' => undef }),
     String $gunicorn_app                          = lookup('profile::superset::gunicorn_app', { 'default_value' => 'superset.app:create_app()' }),
     Boolean $enable_cas                           = lookup('profile::superset::enable_cas'),
-    Boolean $enable_presto_nested_data            = lookup('profile::superset::enable_presto_nested_data', { 'default_value' => false }),
+    Boolean $enable_presto_nested_data            = lookup('profile::superset::enable_presto_nested_data', { 'default_value' => true }),
     Optional[String] $metadata_cache_uri          = lookup('profile::superset::metadata_cache_uri', { 'default_value' => undef }),
     Optional[String] $data_cache_uri              = lookup('profile::superset::data_cache_uri', { 'default_value' => undef }),
     Optional[String] $filter_state_cache_uri      = lookup('profile::superset::filter_state_cache_uri', { 'default_value' => undef }),
