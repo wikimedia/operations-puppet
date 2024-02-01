@@ -979,7 +979,7 @@ node /^dbproxy20(01|02|03|04)\.codfw\./ {
 }
 
 node /^debmonitor[12]002\.(codfw|eqiad)\./ {
-    role(debmonitor::server)
+    role(insetup::buster)
 }
 
 node /^debmonitor[12]003\.(codfw|eqiad)\./ {
