@@ -31,5 +31,5 @@ GRANT MODIFY ON KEYSPACE "local_group_default_T_unique_devices" TO 'aqsloader';
 
 -- FIXME: image suggestions should *not* being using the aqsloader; This
 -- was added as a break-fix (see: https://phabricator.wikimedia.org/T356400).
-GRANT SELECT ON KEYSPACE image_suggestions TO image_suggestions;
-GRANT MODIFY ON KEYSPACE image_suggestions TO image_suggestions;
+GRANT SELECT ON KEYSPACE image_suggestions TO aqsloader;
+GRANT MODIFY ON KEYSPACE image_suggestions TO aqsloader;
