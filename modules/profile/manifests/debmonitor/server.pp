@@ -64,10 +64,10 @@ class profile::debmonitor::server (
         }
 
         file {'/etc/uwsgi/apps-available/debmonitor.ini':
-            ensure => file,
-            mode   => '0444',
-            source =>  template('profile/debmonitor/server/debmonitor.ini.erb'),
-            notify => Service[$debmonitor_service_name],
+            ensure  => file,
+            mode    => '0444',
+            content => template('profile/debmonitor/server/debmonitor.ini.erb'),
+            notify  => Service[$debmonitor_service_name],
         }
 
         file {$log_dir:
