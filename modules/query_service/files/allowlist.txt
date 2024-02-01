@@ -88,3 +88,4 @@ https://data.nlg.gr/sparql
 https://query-main-experimental.wikidata.org/sparql
 https://query-scholarly-experimental.wikidata.org/sparql
 https://nfdi4culture.de/sparql
+https://query.mimotext.uni-trier.de/proxy/wdqs/bigdata/namespace/wdq/sparql
