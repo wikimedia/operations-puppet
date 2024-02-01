@@ -181,26 +181,24 @@ class profile::httpbb (
     }
 
     # Add the hourly Kubernetes test separately, since it needs a different --https_port.
-    if $test_kubernetes_hourly {
-        $ensure = $test_kubernetes_hourly.bool2str('present', 'absent')
-        $kubernetes_services = wmflib::service::fetch().filter |$name, $config| {
-            $config.has_key('httpbb_dir')
-        }
-        $kubernetes_services.each |String $svc_name, Hash $svc| {
-            $svc_port       = $svc['port']
-            $svc_httpbb_dir = $svc['httpbb_dir']
-            systemd::timer::job { "httpbb_kubernetes_${svc_name}_hourly":
-                ensure             => $ensure,
-                description        => "Run httpbb ${svc_httpbb_dir} tests hourly on Kubernetes ${svc_name}.",
-                command            => "/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/${svc_httpbb_dir}/*.yaml --host ${svc_name}.discovery.wmnet --https_port ${svc_port} --retry_on_timeout\'",
-                interval           => {
-                    'start'    => 'OnUnitActiveSec',
-                    'interval' => '1 hour',
-                },
-                user               => 'www-data',
-                monitoring_enabled => true,
-                team               => 'ServiceOps',
-            }
+    $ensure = $test_kubernetes_hourly.bool2str('present', 'absent')
+    $kubernetes_services = wmflib::service::fetch().filter |$name, $config| {
+        $config.has_key('httpbb_dir')
+    }
+    $kubernetes_services.each |String $svc_name, Hash $svc| {
+        $svc_port       = $svc['port']
+        $svc_httpbb_dir = $svc['httpbb_dir']
+        systemd::timer::job { "httpbb_kubernetes_${svc_name}_hourly":
+            ensure             => $ensure,
+            description        => "Run httpbb ${svc_httpbb_dir} tests hourly on Kubernetes ${svc_name}.",
+            command            => "/bin/sh -c \'/usr/bin/httpbb /srv/deployment/httpbb-tests/${svc_httpbb_dir}/*.yaml --host ${svc_name}.discovery.wmnet --https_port ${svc_port} --retry_on_timeout\'",
+            interval           => {
+                'start'    => 'OnUnitActiveSec',
+                'interval' => '1 hour',
+            },
+            user               => 'www-data',
+            monitoring_enabled => true,
+            team               => 'ServiceOps',
         }
     }
 }
