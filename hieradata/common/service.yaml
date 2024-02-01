@@ -3970,7 +3970,7 @@ service::catalog:
     page: false
     probes:
       - type: http
-        path: /healthz
+        path: /_info
     port: *k8s-ingress-wikikube_port
     sites:
       - eqiad
