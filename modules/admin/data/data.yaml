@@ -420,7 +420,7 @@ groups:
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
-              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic]
+              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6229,6 +6229,15 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMLAUtzl5qEFOcKGWXFmGolqdhYCc9bZEXtx/06Wyimq amastilovic@wikimedia.org'
+    krb: present
+  arinaigum:
+    ensure: present
+    realname: Arina Igumenshcheva
+    email: aigumenshcheva@wikimedia.org
+    uid: 45954
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBzNo2UCmxKiKKfgMve02fZ/hGCYsWr+mI3D/rHeOsT2 arina@wmf3439'
     krb: present
 
 ldap_only_users:
