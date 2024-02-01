@@ -219,9 +219,6 @@ function setup_route {
       # WMF - disable proxy NDP
       echo 0 > /proc/sys/net/ipv6/conf/$INTERFACE/proxy_ndp
       echo 1 > /proc/sys/net/ipv6/conf/$INTERFACE/forwarding
-
-      # WMF - don't accept router advertisements from the VMs
-      echo 0  > /proc/sys/net/ipv6/conf/$INTERFACE/accept_ra
     fi
   fi
 }
