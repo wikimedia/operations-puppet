@@ -315,6 +315,9 @@ kubernetes::clusters:
         - mw2443.codfw.wmnet
         - mw2445.codfw.wmnet
         - mw2446.codfw.wmnet
+        - mw2447.codfw.wmnet
+        - mw2448.codfw.wmnet
+        - mw2449.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles

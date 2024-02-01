@@ -72,9 +72,6 @@ codfw:
     mw2438.codfw.wmnet: [nginx]
     mw2439.codfw.wmnet: [nginx]
     mw2441.codfw.wmnet: [nginx]
-    mw2447.codfw.wmnet: [nginx]
-    mw2448.codfw.wmnet: [nginx]
-    mw2449.codfw.wmnet: [nginx]
   api_appserver:
     mw2261.codfw.wmnet: [nginx]
     mw2262.codfw.wmnet: [nginx]
@@ -451,6 +448,9 @@ codfw:
     mw2443.codfw.wmnet: [kubesvc]
     mw2445.codfw.wmnet: [kubesvc]
     mw2446.codfw.wmnet: [kubesvc]
+    mw2447.codfw.wmnet: [kubesvc]
+    mw2448.codfw.wmnet: [kubesvc]
+    mw2449.codfw.wmnet: [kubesvc]
     mw2450.codfw.wmnet: [kubesvc]
     mw2451.codfw.wmnet: [kubesvc]
   kubernetes-staging:
