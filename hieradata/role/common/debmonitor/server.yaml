@@ -15,3 +15,8 @@ profile::tlsproxy::envoy::cfssl_options:
     - debmonitor.wikimedia.org
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Debmonitor server'
+
+profile::debmonitor::server::app_deployment: 'none'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
