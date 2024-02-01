@@ -46,63 +46,47 @@ class profile::debmonitor::server (
     include passwords::ldap::production
 
     # Starting with Bookworm Debmonitor uses the packaged Django stack from Debian
-    if debian::codename::ge('bookworm') {
-        ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
-        ensure_packages(['python3-mysqldb', 'debmonitor-server'])
-        $deploy_user = 'www-data'
-        $debmonitor_service_name = 'debmonitor-server'
-        $debmonitor_shell_command = '/usr/bin/debmonitor'
-        $static_path = '/usr/share/debmonitor/static/'
-        $config_path = '/etc/debmonitor/config.json'
-        $log_dir = '/var/log/debmonitor'
-        $log_file = "${log_dir}/main.log"
+    ensure_packages(['python3-django', 'python3-django-stronghold', 'python3-django-csp', 'python3-django-auth-ldap'])
+    ensure_packages(['python3-mysqldb', 'debmonitor-server'])
+    $deploy_user = 'www-data'
+    $debmonitor_service_name = 'debmonitor-server'
+    $debmonitor_shell_command = '/usr/bin/debmonitor'
+    $static_path = '/usr/share/debmonitor/static/'
+    $config_path = '/etc/debmonitor/config.json'
+    $log_dir = '/var/log/debmonitor'
+    $log_file = "${log_dir}/main.log"
 
-        file {'/etc/uwsgi/apps-enabled/debmonitor.ini':
-            ensure => link,
-            target => '/etc/uwsgi/apps-available/debmonitor.ini',
-            notify => Service[$debmonitor_service_name],
-        }
+    file {'/etc/uwsgi/apps-enabled/debmonitor.ini':
+        ensure => link,
+        target => '/etc/uwsgi/apps-available/debmonitor.ini',
+        notify => Service[$debmonitor_service_name],
+    }
 
-        file {'/etc/uwsgi/apps-available/debmonitor.ini':
-            ensure  => file,
-            mode    => '0444',
-            content => template('profile/debmonitor/server/debmonitor.ini.erb'),
-            notify  => Service[$debmonitor_service_name],
-        }
+    file {'/etc/uwsgi/apps-available/debmonitor.ini':
+        ensure  => file,
+        mode    => '0444',
+        content => template('profile/debmonitor/server/debmonitor.ini.erb'),
+        notify  => Service[$debmonitor_service_name],
+    }
 
-        file {$log_dir:
-            ensure => directory,
-            owner  => $deploy_user,
-            group  => $deploy_user
-        }
+    file {$log_dir:
+        ensure => directory,
+        owner  => $deploy_user,
+        group  => $deploy_user
+    }
 
-        logrotate::rule { 'debmonitor-uwsgi':
-            file_glob     => "${log_dir}/*.log",
-            frequency     => 'daily',
-            copy_truncate => true,
-            compress      => true,
-            size          => '50M',
-            rotate        => 10,
-            missing_ok    => true,
-        }
+    logrotate::rule { 'debmonitor-uwsgi':
+        file_glob     => "${log_dir}/*.log",
+        frequency     => 'daily',
+        copy_truncate => true,
+        compress      => true,
+        size          => '50M',
+        rotate        => 10,
+        missing_ok    => true,
+    }
 
-        service { 'debmonitor-server':
-            ensure => 'running',
-        }
-    } else {
-        # Make is required by the deploy system
-        ensure_packages(['libldap-2.4-2', 'make', 'python3-pip', 'virtualenv'])
-        # Debmonitor depends on 'mysqlclient' Python package that in turn requires a MySQL connector
-        ensure_packages('libmariadb3')
-        $deploy_user = 'deploy-debmonitor'
-        $debmonitor_service_name = 'uwsgi-debmonitor'
-        $base_path = '/srv/deployment/debmonitor'
-        $debmonitor_shell_command = "${base_path}/run-django-command"
-        $deploy_path = "${base_path}/deploy"
-        $venv_path = "${base_path}/venv"
-        $static_path = "${base_path}/static/"
-        $config_path = "${base_path}/config.json"
-        $directory = "${deploy_path}/src"
+    service { 'debmonitor-server':
+        ensure => 'running',
     }
 
     class { 'sslcert::dhparam': }
@@ -132,55 +116,6 @@ class profile::debmonitor::server (
         notify  => Service[$debmonitor_service_name],
     }
 
-    # uWSGI service to serve the Django-based WebUI and API
-    $socket = '/run/uwsgi/debmonitor.sock'
-    if debian::codename::lt('bookworm') {
-        service::uwsgi { 'debmonitor':
-            deployment      => $app_deployment,
-            port            => $port,
-            no_workers      => 4,
-            deployment_user => $deploy_user,
-            config          => {
-                need-plugins => 'python3',
-                chdir        => $directory,
-                venv         => $venv_path,
-                wsgi         => 'debmonitor.wsgi',
-                buffer-size  => 8192,
-                vacuum       => true,
-                http-socket  => "127.0.0.1:${port}",
-                socket       => $socket,
-                env          => [
-                    # T164034: make sure Python has a sane default encoding
-                    'LANG=C.UTF-8',
-                    'LC_ALL=C.UTF-8',
-                    'PYTHONENCODING=utf-8',
-                    # Tell Debmonitor which configuration file to read
-                    "DEBMONITOR_CONFIG=${config_path}",
-                    # Tell Debmonitor which settings module to load
-                    "DJANGO_SETTINGS_MODULE=${settings_module}",
-                ],
-            },
-            healthcheck_url => '/',
-            icinga_check    => false,
-            sudo_rules      => [
-                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor restart',
-                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor start',
-                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor status',
-                'ALL=(root) NOPASSWD: /usr/sbin/service uwsgi-debmonitor stop',
-            ],
-        }
-
-        # Maintenance script, this is provided by the Debian package and is only
-        # required when deploying using SCAP
-        file { $debmonitor_shell_command:
-            ensure  => file,
-            owner   => $deploy_user,
-            group   => $deploy_user,
-            mode    => '0554',
-            content => template('profile/debmonitor/server/run_django_command.sh.erb'),
-        }
-
-    }
     profile::auto_restarts::service { $debmonitor_service_name: }
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
@@ -196,6 +131,8 @@ class profile::debmonitor::server (
         modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'auth_basic', 'ssl', 'headers'],
     }
 
+    # uWSGI service to serve the Django-based WebUI and API
+    $socket = '/run/uwsgi/debmonitor.sock'
     profile::idp::client::httpd::site { $public_server_name:
         vhost_content    => 'profile/idp/client/httpd-debmonitor.erb',
         proxied_as_https => true,
