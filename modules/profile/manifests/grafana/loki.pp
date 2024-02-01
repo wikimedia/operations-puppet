@@ -48,7 +48,7 @@ class profile::grafana::loki (
       dest_host           => $standby_host,
       module_path         => $loki_data,
       exclude             => 'wal',
-      server_uses_stunnel => false,
+      server_uses_stunnel => true,
       chown               => 'loki:loki',
     }
   }
