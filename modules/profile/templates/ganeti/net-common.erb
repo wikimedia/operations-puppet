@@ -201,6 +201,16 @@ function setup_route {
 
     else
       ip route replace $IP proto static dev $INTERFACE
+
+      # WMF - set the v6 route
+      if [[ $INSTANCE == *.wmnet ]]; then
+        PREFIX="<%= @v6_prefixes['private'] %>"
+      else
+        PREFIX="<%= @v6_prefixes['public'] %>"
+      fi
+      SUFFIX="$(printf '%s' "${IP}"| tr '.' ':')"
+      IP6="${PREFIX}:${SUFFIX}"
+      ip -6 route replace $IP6 proto static dev $INTERFACE
     fi
 
     # WMF - restart the DHCP relay to pickup the new interface

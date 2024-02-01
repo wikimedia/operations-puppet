@@ -268,7 +268,11 @@ class profile::ganeti (
             content => "iifname \"tap*\" accept\n",
             order   => 10,
         }
-
+        # TODO ideally get those from Netbox or data.yaml
+        $v6_prefixes = $::site ? {
+            'codfw' => {'private' => '2620:0:860:140', 'public' => '2620:0:860:5'},
+            'eqiad' => {'private' => '2620:0:861:140', 'public' => '2620:0:861:5'},
+        }
         # Override the Package provided net-common script
         file { '/usr/lib/ganeti/3.0/usr/lib/ganeti/net-common':
             ensure  => present,
