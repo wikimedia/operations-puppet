@@ -19,15 +19,6 @@ profile::acme_chief::certificates:
         CN: 'cloudelastic.wikimedia.org'
         SNI:
         - 'cloudelastic.wikimedia.org'
-        - 'cloudelastic1001.wikimedia.org'
-        - 'cloudelastic1002.wikimedia.org'
-        - 'cloudelastic1003.wikimedia.org'
-        - 'cloudelastic1004.wikimedia.org'
-        - 'cloudelastic1005.wikimedia.org'
-        - 'cloudelastic1006.wikimedia.org'
-        - 'cloudelastic1007.wikimedia.org'
-        - 'cloudelastic1008.wikimedia.org'
-        - 'cloudelastic1009.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
