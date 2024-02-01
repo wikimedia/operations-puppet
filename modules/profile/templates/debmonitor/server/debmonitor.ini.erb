@@ -1,0 +1,26 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file is managed by Puppet
+[uwsgi]
+project=debmonitor
+base=/usr/lib/python3/dist-packages/%(project)/
+chdir=%(base)/
+chmod-socket=660
+chown-socket=www-data
+env=DEBMONITOR_CONFIG=<%= @config_path -%>
+
+env=DJANGO_SETTINGS_MODULE=debmonitor.settings.prod
+master=true
+module=%(project).wsgi:application
+plugins=python3, logfile, logsocket
+processes=4
+socket=/run/uwsgi/%(project).sock
+uid=www-data
+vacuum=true
+log-encoder=format:local [${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}] ${msgnl}
+log-encoder=json:logstash {"@timestamp":"${strftime:%%Y-%%m-%%dT%%H:%%M:%%S}","type":"debmonitor","logger_name":"uwsgi","host":"%h","level":"INFO","message":"${msg}"}
+log-route=local .*
+log-route=logstash .*
+logger=local file:<%= @log_file -%>
+
+logger=logstash socket:localhost:11514
+

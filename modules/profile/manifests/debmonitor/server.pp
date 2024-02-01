@@ -54,11 +54,36 @@ class profile::debmonitor::server (
         $debmonitor_shell_command = '/usr/bin/debmonitor'
         $static_path = '/usr/share/debmonitor/static/'
         $config_path = '/etc/debmonitor/config.json'
+        $log_dir = '/var/log/debmonitor'
+        $log_file = "${log_dir}/main.log"
 
         file {'/etc/uwsgi/apps-enabled/debmonitor.ini':
             ensure => link,
             target => '/etc/uwsgi/apps-available/debmonitor.ini',
             notify => Service[$debmonitor_service_name],
+        }
+
+        file {'/etc/uwsgi/apps-available/debmonitor.ini':
+            ensure => file,
+            mode   => '0444',
+            source =>  template('profile/debmonitor/server/debmonitor.ini.erb'),
+            notify => Service[$debmonitor_service_name],
+        }
+
+        file {$log_dir:
+            ensure => directory,
+            owner  => $deploy_user,
+            group  => $deploy_user
+        }
+
+        logrotate::rule { 'debmonitor-uwsgi':
+            file_glob     => "${log_dir}/*.log",
+            frequency     => 'daily',
+            copy_truncate => true,
+            compress      => true,
+            size          => '50M',
+            rotate        => 10,
+            missing_ok    => true,
         }
 
         service { 'debmonitor-server':
