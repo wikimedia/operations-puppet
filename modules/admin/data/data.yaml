@@ -156,7 +156,8 @@ groups:
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
-              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz, wfan219
+              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
+              sbailey
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -4279,6 +4280,7 @@ users:
     gid: 500
     ssh_keys:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH7N+9wSCC9MdjE0ZNA4qp09RLcDarwNYQgcZakDS44t sbailey@wikimedia.org'
+     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZi22PWQ1BOdO36Rvk8WuG8OL2lXBWcRGOQCvyHmuPo sbailey@wikimedia.org'
   holger:
     ensure: absent
     realname: Holger Knust
