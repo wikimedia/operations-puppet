@@ -55,3 +55,6 @@ profile::airflow::instances:
 
 # We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
