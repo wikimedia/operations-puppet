@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::designate::service(
     $version = lookup('profile::openstack::codfw1dev::version'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::codfw1dev::designate_hosts'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::codfw1dev::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::codfw1dev::designate::db_pass'),
@@ -23,6 +23,8 @@ class profile::openstack::codfw1dev::designate::service(
     Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
 ) {
+
+    $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
 
     class{'::profile::openstack::base::designate::service':
         version                           => $version,

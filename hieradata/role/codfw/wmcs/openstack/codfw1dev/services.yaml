@@ -16,14 +16,6 @@ raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs
 
-profile::openstack::codfw1dev::pdns::hosts:
- - auth_fqdn: ns1.openstack.codfw1dev.wikimediacloud.org
-   private_fqdn: cloudservices2005-dev.private.codfw.wikimedia.cloud
-   host_fqdn: cloudservices2005-dev.codfw.wmnet
- - auth_fqdn: ns0.openstack.codfw1dev.wikimediacloud.org
-   private_fqdn: cloudservices2004-dev.private.codfw.wikimedia.cloud
-   host_fqdn: cloudservices2004-dev.codfw.wmnet
-
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.codfw1dev.wikimediacloud.org
 
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.254.1

@@ -1,0 +1,7 @@
+profile::openstack::codfw1dev::pdns::hosts:
+ - auth_fqdn: ns1.openstack.codfw1dev.wikimediacloud.org
+   private_fqdn: cloudservices2005-dev.private.codfw.wikimedia.cloud
+   host_fqdn: cloudservices2005-dev.codfw.wmnet
+ - auth_fqdn: ns0.openstack.codfw1dev.wikimediacloud.org
+   private_fqdn: cloudservices2004-dev.private.codfw.wikimedia.cloud
+   host_fqdn: cloudservices2004-dev.codfw.wmnet

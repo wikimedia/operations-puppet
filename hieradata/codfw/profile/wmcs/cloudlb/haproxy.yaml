@@ -11,7 +11,7 @@ profile::wmcs::cloudlb::haproxy::config:
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
       port: 9001
-      servers: "%{alias('profile::openstack::codfw1dev::designate_hosts')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:
       method: HEAD
       path: /
