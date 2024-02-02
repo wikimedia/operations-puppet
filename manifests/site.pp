@@ -1635,6 +1635,9 @@ node /^mw137[4-9]\.eqiad\./ {
 node /^mw138[0-3]\.eqiad\./ {
   role(kubernetes::worker)
 }
+node /^mw1419\.eqiad\./ {
+  role(kubernetes::worker)
+}
 node /^mw142[3-5]\.eqiad\./ {
   role(kubernetes::worker)
 }
@@ -1653,10 +1656,10 @@ node /^mw147[0-5]\.eqiad\./ {
 node /^mw145[79]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw148[26]\.eqiad\./ {
+node /^mw148[268]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw1495\.eqiad\./ {
+node /^mw149[56]\.eqiad\./ {
     role(kubernetes::worker)
 }
 node /^mw226[07]\.codfw\./ {
@@ -2081,7 +2084,7 @@ node /^mw141([4-8])\.eqiad\./ {
     role(mediawiki::canary_appserver)
 }
 
-node /^mw14(19|20)\.eqiad\./ {
+node /^mw1420\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
@@ -2144,7 +2147,7 @@ node /^mw13(49|5[0-5])\.eqiad\./ {
 }
 
 # rack D1
-node /^mw148[78]\.eqiad\./ {
+node /^mw1487\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
@@ -2179,11 +2182,6 @@ node /^mw1384\.eqiad\./ {
 }
 
 node /^mw144([1-2])\.eqiad\./ {
-    role(mediawiki::appserver)
-}
-
-# Row F
-node /^mw1496\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
