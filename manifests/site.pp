@@ -552,7 +552,7 @@ node /^db1208\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on eqiad
-node /^db1(106|135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
+node /^db1(135|163|169|184|186|206|207|218|219|228|232|234)\.eqiad\./ {
     role(mariadb::core)
 }
 

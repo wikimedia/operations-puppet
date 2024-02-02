@@ -1,6 +1,0 @@
-# db1106
-# Testing MariaDB 11 - do not pool
-mariadb::shard: 's1'
-mariadb::binlog_format: 'ROW'
-mariadb::package: 'wmf-mariadb111'
-profile::monitoring::notifications_enabled: false
