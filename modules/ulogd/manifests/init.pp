@@ -40,6 +40,7 @@
 #  outputters to use for NACCT
 #
 class ulogd (
+  Wmflib::Ensure              $ensure              = present,
   Ulogd::Logfile              $logfile             = 'syslog',
   Wmflib::Syslog::Level::Unix $log_level           = 'info',
   Stdlib::Unixpath            $logemu_logfile      = '/var/log/ulog/syslogemu.log',
@@ -62,23 +63,30 @@ class ulogd (
   # An array of supported extensions that require additional packages
   # dbi, mysql, pgsql and sqlite are options for the future
   $supported_extensions = ['JSON', 'PCAP']
-  ensure_packages('ulogd2')
+
+  package { 'ulogd2':
+      ensure => stdlib::ensure($ensure, 'package')
+  }
 
   $supported_extensions.each |String $extension| {
     if $extension in union($nflog, $nfct, $acct)  {
-      ensure_packages("ulogd2-${extension.downcase}")
+      ensure_packages("ulogd2-${extension.downcase}", {
+        ensure  => $ensure,
+      })
     }
   }
   file {$config_file:
-    ensure  => file,
+    ensure  => stdlib::ensure($ensure, 'file'),
     content => template('ulogd/etc/ulogd.conf.erb'),
     notify  => Service['ulogd2'],
   }
   service {'ulogd2':
-    ensure  => 'running',
+    ensure  => stdlib::ensure($ensure, 'service'),
     enable  => true,
     require => Package['ulogd2'],
   }
 
-  profile::auto_restarts::service { 'ulogd2': }
+  profile::auto_restarts::service { 'ulogd2':
+    ensure  => $ensure,
+  }
 }
