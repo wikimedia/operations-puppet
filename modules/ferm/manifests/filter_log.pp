@@ -1,5 +1,6 @@
 # defines a custom ferm rule to filter logs
 define ferm::filter_log (
+    Wmflib::Ensure                $ensure = present,
     Optional[Enum['tcp', 'udp']]  $proto = undef,
     Optional[Stdlib::IP::Address] $saddr = undef,
     Optional[Stdlib::IP::Address] $daddr = undef,
@@ -27,7 +28,8 @@ define ferm::filter_log (
     default => "dport ${dport}",
   }
   ferm::rule { "filter_log_${name}":
-    rule => "${_proto} ${_saddr} ${_daddr} ${_sport} ${_dport} DROP;",
-    prio => '98',
+    ensure => $ensure,
+    rule   => "${_proto} ${_saddr} ${_daddr} ${_sport} ${_dport} DROP;",
+    prio   => '98',
   }
 }
