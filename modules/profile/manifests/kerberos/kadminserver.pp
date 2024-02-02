@@ -125,6 +125,7 @@ class profile::kerberos::kadminserver (
 
     if $monitoring_enabled and $is_krb_master {
         nrpe::monitor_service { 'krb-kadmin-server':
+            ensure        => absent,
             description   => 'Kerberos KAdmin daemon',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/kadmind"',
             contact_group => 'admins,team-data-platform',
