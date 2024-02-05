@@ -115,7 +115,7 @@ define systemd::unit (
         systemd_unit_owner{team="${_team}", name="${unit_name}"} 1.0
         | METRIC
         file { $drop_in_file:
-            ensure  => file,
+            ensure  => stdlib::ensure($ensure, 'file'),
             content => $unit_team_metric,
         }
     }
