@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, conniecc1, daniram, bstorm,
-              shubhankar]
+              shubhankar, nskaggs]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -65,7 +65,7 @@ groups:
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
-              nskaggs, fabfur, taavi, arnaudb, brouberol, swfrench, aborrero]
+              fabfur, taavi, arnaudb, brouberol, swfrench, aborrero]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -4430,14 +4430,12 @@ users:
     name: agaduran
     ssh_keys: []
   nskaggs:
-    ensure: present
+    ensure: absent
     gid: 500
     name: nskaggs
     realname: Nicholas Skaggs
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJrQktvFtYDgqDLSijTL+6ot1XyAAR31hlFMTZGKTc5o nskaggs@x1carbon
+    ssh_keys: []
     uid: 24994
-    email: nskaggs@wikimedia.org
   edtadros:
     ensure: present
     realname: Edward Tadros
