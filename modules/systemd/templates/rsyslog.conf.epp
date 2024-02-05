@@ -1,0 +1,22 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- |
+    Enum['startswith', 'isequal'] $programname_comparison,
+    String[1]                     $programname,
+    Stdlib::UnixPath              $local_syslogfile,
+    String[1]                     $owner,
+    String[1]                     $group,
+    Stdlib::Filemode              $filemode,
+    Boolean                       $force_stop,
+| -%>
+# rsyslog.conf(5) configuration file for services.
+# This file is managed by Puppet.
+if $programname <%= $programname_comparison %> "<%= $programname %>" then {
+    action(
+        type="omfile" file="<%= $local_syslogfile %>"
+        fileOwner="<%= $owner %>" fileGroup="<%= $group %>"
+        fileCreateMode="<%= $filemode %>"
+    )
+    <%- if $force_stop { -%>
+    & stop
+    <%- } -%>
+}
