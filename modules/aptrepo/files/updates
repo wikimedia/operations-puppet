@@ -156,7 +156,7 @@ Components: stable>thirdparty/kubeadm-k8s-1-23
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl \( -e -P '^docker-ce|docker-ce-cli|$' -a -FVersion --ge 5:18.09 \) -o  \( -P 'containerd.io' -a -FVersion --ge 1.2.13-2 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -e -P '^docker-ce|docker-ce-cli|$' -a -FVersion --ge 5:18.09 -a -FVersion --lt 5:25 \) -o  \( -P 'containerd.io' -a -FVersion --ge 1.2.13-2 \) || [ $? -eq 1 ]
 
 Name: thirdparty/helm3
 Method: https://baltocdn.com/helm/stable/debian
