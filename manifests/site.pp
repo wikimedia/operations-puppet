@@ -677,7 +677,8 @@ node /^db1165\.eqiad\./ {
 
 # s6 core production dbs on codfw
 # See also db2169 and db2171 below
-node /^db2(114|117|124|129|151|180|193)\.codfw\./ {
+# node /^db2(114|117|124|129|151|180|193)\.codfw\./ { # Will revert after tests
+node /^db2(114|117|124|129|151|180|193|194)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -733,7 +734,8 @@ node /^db2164\.codfw\./ {
 node /^db1(144|146|170|213|244|246)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
-node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
+# node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ { # Will revert after tests
+node /^db2(137|138|167|168|169|170|171)\.codfw\./ {
     role(mariadb::core_multiinstance)
 }
 

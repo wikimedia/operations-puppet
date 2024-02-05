@@ -1,6 +1,8 @@
 # db2194
 # Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s6: 185G
-  s7: 185G
+# Will be temporary a s6 server
+# profile::mariadb::core::multiinstance::instances:
+#   s6: 185G
+#   s7: 185G
+mariadb::shard: 's6'
 profile::monitoring::notifications_enabled: false
