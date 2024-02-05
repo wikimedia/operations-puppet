@@ -4,8 +4,8 @@
 # This class sets up libraryupgrader aka LibUp
 # https://www.mediawiki.org/wiki/Libraryupgrader
 #
-class libraryupgrader(
-    Optional[Stdlib::Unixpath] $base_dir = undef
+class libraryupgrader (
+    Stdlib::Unixpath $base_dir,
 ){
     $data_dir  = "${base_dir}/data"
     $clone_dir  = "${base_dir}/libraryupgrader"
