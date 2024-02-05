@@ -1,4 +1,4 @@
-config/yoga.pp:# SPDX-License-Identifier: Apache-2.0
+# SPDX-License-Identifier: Apache-2.0
 sudo systemctl stop cinder-api cinder-scheduler cinder-volume
 sudo puppet agent --disable 'cinder setup'
 

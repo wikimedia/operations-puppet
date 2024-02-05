@@ -1,5 +1,0 @@
-{
-   "volume": ["name", "status", "metadata", "bootable", "volume_id"],
-   "snapshot": ["name", "status", "metadata", "bootable", "volume_id"],
-   "backup": ["name", "status", "metadata", "bootable", "volume_id"]
-}

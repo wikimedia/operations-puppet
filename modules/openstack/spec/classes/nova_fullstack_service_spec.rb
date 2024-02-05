@@ -5,7 +5,7 @@ require "rspec-puppet/cache"
 describe "openstack::nova::fullstack::service" do
   on_supported_os(WMFConfig.test_on(10)).each do |os, facts|
     context "On #{os}" do
-      supported_openstacks = ["yoga", "zen", "antelope"]
+      supported_openstacks = ["antelope"]
       supported_openstacks.each do |openstack_version|
         context "On openstack #{openstack_version}" do
           let(:facts) { facts }

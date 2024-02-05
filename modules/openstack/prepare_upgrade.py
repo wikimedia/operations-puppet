@@ -17,7 +17,7 @@ def main():
     if len(sys.argv) != 3:
         print(
             "Usage: python prepare_upgrade.py old_version new_version\n"
-            "Example: python prepare_upgrade.py yoga zed"
+            "Example: python prepare_upgrade.py zed antelope"
         )
         return
 

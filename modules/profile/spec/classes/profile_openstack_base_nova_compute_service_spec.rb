@@ -5,7 +5,7 @@ describe 'profile::openstack::base::nova::compute::service' do
     [
       'class { "::apt": }',
       'class{ \'openstack::nova::common\':
-          version => \'yoga\',
+          version => \'zed\',
           region => \'eqiad1-r\',
           db_user => \'dummydbuser\',
           db_pass => \'dummydbpass\',
@@ -38,7 +38,7 @@ describe 'profile::openstack::base::nova::compute::service' do
           })
       end
       let(:params) {{
-        'version' => 'yoga',
+        'version' => 'zed',
         'instance_dev' => 'thinvirt',
         'network_flat_interface' => 'eno50.1105',
         'network_flat_interface_vlan' => '1105',
