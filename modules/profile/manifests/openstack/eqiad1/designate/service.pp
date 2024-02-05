@@ -55,36 +55,6 @@ class profile::openstack::eqiad1::designate::service(
         run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus',
     }
 
-    # Replicated cache set including all designate hosts.
-    # This will be used for tooz coordination by designate.
-    #
-    # The route config here is copy/pasted from
-    #  https://github.com/facebook/mcrouter/wiki/Replicated-pools-setup
-    #
-    # The cross-region bits don't actually matter but the parent class expects them.
-    class { '::mcrouter':
-        region      => $::site,
-        cluster     => 'designate',
-        pools       => {
-            'designate' => {
-                servers => $designate_hosts.map |$designatehost| { sprintf('%s:11000:ascii:plain',ipresolve($designatehost,4)) }
-            },
-        },
-        routes      => [
-            aliases => [ "/${::site}/designate/" ],
-            route   => {
-                type               => 'OperationSelectorRoute',
-                default_policy     => 'PoolRoute|designate',
-                operation_policies => {
-                    add    => 'AllSyncRoute|Pool|designate',
-                    delete => 'AllSyncRoute|Pool|designate',
-                    get    => 'LatestRoute|Pool|designate',
-                    set    => 'AllSyncRoute|Pool|designate'
-                }
-            }
-        ]
-    }
-
     class { '::memcached':
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
@@ -97,7 +67,7 @@ class profile::openstack::eqiad1::designate::service(
         desc    => 'Allow connections to memcached',
         proto   => 'tcp',
         notrack => true,
-        port    => 11000,
+        port    => 11211,
         srange  => "(@resolve((${join($designate_hosts,' ')}))
                     @resolve((${join($designate_hosts,' ')}), AAAA))",
     }

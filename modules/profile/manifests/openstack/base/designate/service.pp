@@ -78,6 +78,36 @@ class profile::openstack::base::designate::service(
                  proto udp dport (5354) ACCEPT;",
     }
 
+    # Replicated cache set including all designate hosts.
+    # This will be used for tooz coordination by designate.
+    #
+    # The route config here is copy/pasted from
+    #  https://github.com/facebook/mcrouter/wiki/Replicated-pools-setup
+    #
+    # The cross-region bits don't actually matter but the parent class expects them.
+    class { '::mcrouter':
+        region      => $::site,
+        cluster     => 'designate',
+        pools       => {
+            'designate' => {
+                servers => $designate_hosts.map |$designatehost| { sprintf('%s:11211:ascii:plain',ipresolve($designatehost,4)) }
+            },
+        },
+        routes      => [
+            aliases => [ "/${::site}/designate/" ],
+            route   => {
+                type               => 'OperationSelectorRoute',
+                default_policy     => 'PoolRoute|designate',
+                operation_policies => {
+                    add    => 'AllSyncRoute|Pool|designate',
+                    delete => 'AllSyncRoute|Pool|designate',
+                    get    => 'LatestRoute|Pool|designate',
+                    set    => 'AllSyncRoute|Pool|designate'
+                }
+            }
+        ]
+    }
+
 
     ferm::rule { 'skip_mcrouter_designate_conntrack_out':
         desc  => 'Skip outgoing connection tracking for mcrouter',
