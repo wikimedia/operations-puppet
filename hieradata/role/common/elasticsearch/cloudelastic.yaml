@@ -113,3 +113,6 @@ profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform']
 
 logstash_host: 'localhost'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
