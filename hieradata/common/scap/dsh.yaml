@@ -135,10 +135,6 @@ scap::dsh::groups:
   phatality:
     conftool:
       - {'cluster': 'kibana7', 'service': 'kibana7'}
-  debmonitor:
-    hosts:
-      - debmonitor1002.eqiad.wmnet
-      - debmonitor2002.codfw.wmnet
   homer:
     hosts:
       - cumin1001.eqiad.wmnet
