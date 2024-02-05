@@ -17,8 +17,8 @@
   targets:
 <% @pdns_hosts.each do |pdns_host| -%>
   - masters:
-<% @pdns_hosts.each do |pdns_host_inner| -%>
-    - host: <%= scope.function_ipresolve([pdns_host_inner['private_fqdn']]) %>
+<% @designate_host_ips.each do |designate_ip| -%>
+    - host: <%= designate_ip %>
       port: 5354
 <% end -%>
     options:
