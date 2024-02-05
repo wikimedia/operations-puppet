@@ -31,5 +31,3 @@ profile::bird::advertise_vips:
 profile::dbbackups::mydumper::enabled: true
 profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'
-
-profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
