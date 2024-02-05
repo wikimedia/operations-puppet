@@ -5,7 +5,8 @@ profile::admin::groups:
 contactgroups: wmcs-team-email
 
 cluster: wmcs
-profile::prometheus::memcached_exporter::arguments: "--memcached.address=localhost:11000"
+profile::memcached::port: 11211
+profile::prometheus::memcached_exporter::arguments: "--memcached.address=localhost:11211"
 # See T224828
 raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]
