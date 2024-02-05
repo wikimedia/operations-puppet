@@ -64,7 +64,8 @@ class profile::openstack::base::designate::service(
     }
 
     $raw_pdns_hosts = $pdns_hosts.map |$host| { $host['auth_fqdn'] }
-    $mdns_clients = flatten([$designate_hosts, $raw_pdns_hosts])
+    $pdns_hosts_private = $pdns_hosts.map |$host| { $host['private_fqdn'] }
+    $mdns_clients = flatten([$designate_hosts, $raw_pdns_hosts, $pdns_hosts_private])
     # allow axfr traffic between mdns and pdns on the pdns hosts
     ferm::rule { 'mdns-axfr':
         rule => "saddr (@resolve((${join($mdns_clients,' ')}))
