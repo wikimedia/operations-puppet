@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, conniecc1, daniram, bstorm,
-              shubhankar, nskaggs]
+              shubhankar, nskaggs, mhoutti]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -411,7 +411,7 @@ groups:
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
               dalezhou, otich, sgimeno, tchin, aitolkyn, drochford,
-              hmonroy, dmaza, mhoutti, mazevedo, tsev, kstoller, samtar, xcollazo,
+              hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
@@ -5458,16 +5458,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFRwFepdKx09yNGYrpt/qra4NJBF0AjjdE8RZ5cFeGwR cardno:18 551 449
   mhoutti:
-    ensure: present
+    ensure: absent
     realname: Mo Houtti
-    email: mohamed.houtti@gmail.com
     uid: 39171
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDUZw20NNlj/iDCDwsF1fVXTH0m8XgLG1NXjl7TS3Y/DYCsXm4rtMp8QIQQ2yvqjo6EeD2nXUjCPqa3glAsuICIg7vAex/XBZXVuWS8esZ+kdj697PyRDN4hKowezyGk1pS97TjtxDAf+xFpWc26t+8BJLVG7rCWEafN6T/95UDTZElPlp/QDZOK/Tl/EAFWhJqK2pvD4I0C4o4QuvXj3meahvnPO38hBlmfPD/m47Y+ZIZU5lnRrBKQfGHn16heJMBTveMyjjcEOGzFk507tRwKXHx0cx/GwftnmN9XEZnr+AvTx4ydIrmDmwa0wab5RLLoMHrWPyP2tBTaU54PwNUOp24fXXWiyfecbiFAZZ0Bo9n2paijZejn2G2KGC370fA7yVBST/tm4I2uq6h58LmAmYCoIxC3bnGKVt4a543ZWZnpIr+4yuKzIwTDHOr/pwAjCNhC4hW1tUkk57UG7TKy+vOglmgWdvUHBtC1/7/ZEoAF26YR69Coy5KeVnO1qRCi0PkdxR6NoUIkG/RYcHz9zYcM6hu45QISBeAU4CmQZp1+sniIKoVJHewl3IbdZv+gawfEpvzUWWVVa1HEBoRBIVaRHiwGuKsQhFJmG7K4Moywtrc+u+5bkAKabYHlVGVwTZcq97THA9OFeCAQ5dWxlBnZe8Cjrgbe5+J9QHk7Q== mhoutti@infra04-wg324.eduroam.wireless.umn.edu
-    krb: present
-    expiry_date: "2024-02-11"
-    expiry_contact: ijohnson@wikimedia.org
+    ssh_keys: []
+    krb: absent
   mazevedo:
     ensure: present
     realname: Marina Azevedo
