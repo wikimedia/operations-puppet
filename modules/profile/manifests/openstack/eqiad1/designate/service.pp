@@ -60,6 +60,7 @@ class profile::openstack::eqiad1::designate::service(
         # MW settings, need to be reviewed.
         growth_factor => 1.05,
         min_slab_size => 5,
+        port          => 11211,
     }
     class { '::profile::prometheus::memcached_exporter': }
 
