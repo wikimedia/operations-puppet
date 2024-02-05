@@ -103,12 +103,6 @@ class libraryupgrader (
         ]
     }
 
-    systemd::service { 'libup-web':
-        ensure  => present,
-        content => template('libraryupgrader/initscripts/libup-web.service.erb'),
-        require => Exec['install libup']
-    }
-
     systemd::service { 'libup-ssh-agent':
         ensure  => present,
         content => template('libraryupgrader/initscripts/libup-ssh-agent.service.erb'),
