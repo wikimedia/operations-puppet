@@ -1,4 +1,2 @@
 profile::elasticsearch::rack: B4
 profile::elasticsearch::row:  B
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
