@@ -4,9 +4,11 @@
 # This class sets up libraryupgrader aka LibUp
 # https://www.mediawiki.org/wiki/Libraryupgrader
 #
+# @param enable_workers whether to enable the worker units
 class libraryupgrader (
     Stdlib::Unixpath $base_dir,
-){
+    Boolean          $enable_workers,
+) {
     $data_dir  = "${base_dir}/data"
     $clone_dir  = "${base_dir}/libraryupgrader"
 
@@ -85,8 +87,10 @@ class libraryupgrader (
         require => Exec['install virtualenv dependencies'],
     }
 
+    $systemd_ensure = stdlib::ensure($enable_workers)
+
     systemd::service { 'libup-celery':
-        ensure  => present,
+        ensure  => $systemd_ensure,
         content => template('libraryupgrader/initscripts/libup-celery.service.erb'),
         require => [
             Exec['install libup'],
@@ -95,7 +99,7 @@ class libraryupgrader (
     }
 
     systemd::service { 'libup-push':
-        ensure  => present,
+        ensure  => $systemd_ensure,
         content => template('libraryupgrader/initscripts/libup-push.service.erb'),
         require => [
             Exec['install libup'],
@@ -110,6 +114,7 @@ class libraryupgrader (
     }
 
     systemd::timer::job { 'libup-run':
+        ensure      => $systemd_ensure,
         description => 'Trigger the libup daily run',
         command     => "${clone_dir}/venv/bin/libup-run",
         user        => 'libup',

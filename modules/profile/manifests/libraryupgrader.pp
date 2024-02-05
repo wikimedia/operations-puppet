@@ -1,5 +1,6 @@
 class profile::libraryupgrader (
-    Stdlib::Unixpath $base_dir = lookup('profile::libraryupgrader::base_dir'),
+    Stdlib::Unixpath $base_dir       = lookup('profile::libraryupgrader::base_dir'),
+    Boolean          $enable_workers = lookup('profile::libraryupgrader::enable_workers', {default_value => true}),
 ) {
     ferm::conf { 'docker-preserve':
         ensure => present,
@@ -8,6 +9,7 @@ class profile::libraryupgrader (
     }
 
     class { '::libraryupgrader':
-        base_dir => $base_dir,
+        base_dir       => $base_dir,
+        enable_workers => $enable_workers,
     }
 }
