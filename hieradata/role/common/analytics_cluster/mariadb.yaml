@@ -2,7 +2,7 @@ profile::contacts::role_contacts: ['Data Engineering']
 
 profile::analytics::database::meta::datadir: '/srv/sqldata'
 profile::analytics::database::meta::monitoring_enabled: true
-profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS $WIKIKUBE_KUBEPODS_NETWORKS (@resolve((db1208.eqiad.wmnet)) @resolve((db1208.eqiad.wmnet), AAAA))))'
+profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS $WIKIKUBE_KUBEPODS_NETWORKS $DSE_KUBEPODS_NETWORKS (@resolve((db1208.eqiad.wmnet)) @resolve((db1208.eqiad.wmnet), AAAA))))'
 profile::analytics::database::meta::innodb_pool_size: '48G'
 
 profile::puppet::agent::force_puppet7: true
