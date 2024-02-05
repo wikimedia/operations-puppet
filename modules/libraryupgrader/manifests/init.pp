@@ -39,8 +39,9 @@ class libraryupgrader(
         mode   => '0755',
     }
 
-    git::clone {'labs/libraryupgrader':
+    git::clone { 'repos/ci-tools/libup':
         ensure    => present,
+        source    => 'gitlab',
         directory => $clone_dir,
         branch    => 'master',
         owner     => 'libup',
@@ -56,7 +57,7 @@ class libraryupgrader(
         creates => "${clone_dir}/venv/bin/python",
         require => [
             Package['virtualenv'],
-            Git::Clone['labs/libraryupgrader'],
+            Git::Clone['repos/ci-tools/libup'],
         ],
     }
 
