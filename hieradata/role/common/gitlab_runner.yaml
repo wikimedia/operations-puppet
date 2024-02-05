@@ -82,7 +82,7 @@ profile::gitlab::runner::buildkitd_allowed_frontends:
   - 'dockerfile.v0'
 profile::gitlab::runner::buildkitd_allowed_gateway_sources:
   - 'docker-registry.wikimedia.org/repos/releng/blubber/buildkit'
-  - 'docker/dockerfile-upstream:master'
+  - 'docker.io/docker/dockerfile-upstream:master'
 profile::gitlab::runner::clear_interval:
   start: 'OnCalendar'
   interval: 'hourly'
