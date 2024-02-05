@@ -817,7 +817,7 @@ groups:
     members: &wmcs_roots [bd808, taavi, sstefanova, raymond-ndibe, samtar]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Nicholas Skaggs
+      - Joanna Borun
   wmcs-admin:
     description: admin for cloud services infrastructure (labsdb only atm)
     gid: 793
@@ -827,7 +827,7 @@ groups:
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-meta_p',
                  'ALL = (ALL) NOPASSWD: /usr/local/sbin/maintain-replica-indexes']
     approval:
-      - Nicholas Skaggs
+      - Joanna Borun
   mediawiki-testers:
     description: People who can strace and tcpdump on canary appservers for testing mediawiki (deprecated)
     gid: 797
