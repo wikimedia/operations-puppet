@@ -12,12 +12,12 @@ class libraryupgrader(
 
     ensure_packages(['virtualenv', 'rabbitmq-server'])
 
-    apt::package_from_component { 'thirdparty-kubeadm-k8s':
-        component => 'thirdparty/kubeadm-k8s-1-15',
-        packages  => ['docker-ce'],
-    }
-
     if debian::codename::eq('buster') {
+        apt::package_from_component { 'thirdparty-kubeadm-k8s':
+            component => 'thirdparty/kubeadm-k8s-1-15',
+            packages  => ['docker-ce'],
+        }
+
         # We need iptables 1.8.3+ for compatibility with docker
         # (see comments on <https://gerrit.wikimedia.org/r/565752>)
         apt::pin { 'iptables':
@@ -25,6 +25,10 @@ class libraryupgrader(
             package  => 'iptables',
             priority => 1001,
             before   => Package['docker-ce'],
+        }
+    } else {
+        package { 'docker.io':
+            ensure => present,
         }
     }
 
