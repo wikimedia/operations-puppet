@@ -53,7 +53,7 @@ profile::openstack::codfw1dev::rabbitmq_nodes:
 profile::openstack::codfw1dev::rabbitmq_setup_nodes: []
 profile::openstack::codfw1dev::rabbit_monitor_user: 'monitoring'
 profile::openstack::codfw1dev::rabbit_file_handles: 8192
-profile::openstack::codfw1dev::rabbitmq_heartbeat_timeout: 120
+profile::openstack::codfw1dev::rabbitmq_heartbeat_timeout: 180
 
 # This is empty here and will be overridden on a single cloudcontrol
 #  so we only backup once

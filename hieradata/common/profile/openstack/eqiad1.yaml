@@ -62,7 +62,7 @@ profile::openstack::eqiad1::rabbitmq_setup_nodes:
   - cloudrabbit1002.private.eqiad.wikimedia.cloud
 profile::openstack::eqiad1::rabbit_monitor_user: 'monitoring'
 profile::openstack::eqiad1::rabbit_file_handles: 8192
-profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 120
+profile::openstack::eqiad1::rabbitmq_heartbeat_timeout: 180
 
 # T247517
 profile::openstack::eqiad1::purge_projects:
