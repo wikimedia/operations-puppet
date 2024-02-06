@@ -37,11 +37,6 @@ define cassandra::instance::monitoring (
 
     $ensure_monitor = $monitor_enabled.bool2str('present', 'absent')
 
-    nrpe::monitor_systemd_unit_state { $service_name:
-        ensure  => $ensure_monitor,
-        require => Service[$service_name],
-    }
-
     # SSL cert expiration monitoring (T120662)
     if $tls_cluster_name {
         $ensure_nagios_monitor = $tls_use_pki ? {
