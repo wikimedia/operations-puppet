@@ -345,7 +345,6 @@ profile::monitoring::raid_check_interval: 10
 profile::monitoring::raid_retry_interval: 10
 profile::monitoring::notifications_enabled: false
 profile::monitoring::is_critical: false
-profile::monitoring::monitor_systemd: false
 profile::monitoring::monitor_screens: false
 profile::monitoring::monitoring_hosts: "%{alias('monitoring_hosts')}"
 profile::monitoring::raid_check: false

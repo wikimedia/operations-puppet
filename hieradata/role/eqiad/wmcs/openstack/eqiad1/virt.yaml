@@ -25,7 +25,6 @@ profile::cloudceph::client::rbd::enable_nova_rbd: false
 profile::cloudceph::auth::deploy::enabled: true
 profile::cloudceph::auth::deploy::selected_creds:
   - eqiad1-compute
-profile::monitoring::monitor_systemd: false
 cluster: wmcs
 profile::debdeploy::client::filter_services:
   qemu-system-x86:

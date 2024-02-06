@@ -21,8 +21,6 @@ profile::cloudceph::auth::deploy::selected_creds:
 - eqiad1-cinder
 - admin
 
-profile::monitoring::monitor_systemd: false
-
 profile::contacts::role_contacts: ['WMCS']
 
 profile::cloudceph::auth::deploy::configuration:

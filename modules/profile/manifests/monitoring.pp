@@ -17,7 +17,6 @@
 # @param contact_group Nagios contact_group to use for notifications.
 # @param cluster the cluster to ack on
 # @param is_critical indicate this host is critical
-# @param monitor_systemd indicate if we should monitor systemd
 # @param nrpe_check_disk_options Default options for checking disks.  Defaults to checking
 #   all disks and warning at < 6% and critical at < 3% free.
 # @param raid_check indicate if we should check raid
@@ -37,7 +36,6 @@ class profile::monitoring (
     String              $contact_group              = lookup('profile::monitoring::contact_group'),
     String              $cluster                    = lookup('profile::monitoring::cluster'),
     Boolean             $is_critical                = lookup('profile::monitoring::is_critical'),
-    Boolean             $monitor_systemd            = lookup('profile::monitoring::monitor_systemd'),
     String              $nrpe_check_disk_options    = lookup('profile::monitoring::nrpe_check_disk_options'),
     Boolean             $nrpe_check_disk_critical   = lookup('profile::monitoring::nrpe_check_disk_critical'),
     Boolean             $raid_check                 = lookup('profile::monitoring::raid_check'),
@@ -110,15 +108,13 @@ class profile::monitoring (
         retry_interval  => 5,
     }
 
-    $ensure_monitor_systemd = $monitor_systemd.bool2str('present','absent')
-
     nrpe::plugin { 'check_systemd_state':
-        ensure => $ensure_monitor_systemd,
+        ensure => present,
         source => 'puppet:///modules/profile/monitoring/check_systemd_state.py',
     }
 
     nrpe::monitor_service { 'check_systemd_state':
-        ensure       => $ensure_monitor_systemd,
+        ensure       => absent,
         description  => 'Check systemd state',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',

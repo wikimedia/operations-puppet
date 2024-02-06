@@ -1,7 +1,6 @@
 cluster: wmcs
 
 contactgroups: "wmcs-team-email,admins"
-profile::monitoring::monitor_systemd: false
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
