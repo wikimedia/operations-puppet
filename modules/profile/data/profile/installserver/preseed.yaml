@@ -63,8 +63,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-hadoop-test.cfg
   'an-web*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-analytics-raid1-2dev.cfg
   'an-worker1149|an-worker115*|an-worker116*|an-worker117*':
     - partman/custom/analytics-flex.cfg
   'an-tool10[0-1][1-9]*|an-test-presto*':
