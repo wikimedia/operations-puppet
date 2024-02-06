@@ -135,12 +135,4 @@ class profile::monitoring (
     if $facts['has_ipmi'] {
         class { 'ipmi::monitor': ensure => $hardware_monitoring }
     }
-
-    # TODO: remove absented resource
-    # https://phabricator.wikimedia.org/T239862
-    host { 'statsd.eqiad.wmnet':
-        ensure       => absent,
-        ip           => '10.64.16.81', # graphite1005
-        host_aliases => 'statsd',
-    }
 }
