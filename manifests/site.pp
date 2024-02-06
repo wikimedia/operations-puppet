@@ -2731,11 +2731,6 @@ node /^restbase20(2[1-9]|3[0-5])\.codfw\./ {
     role(restbase::production)
 }
 
-# restbase codfw hosts being decommissioned: T352469
-node /^restbase20(1[3-9]|20)\.codfw\./ {
-    role(restbase::production)
-}
-
 # New restbase (eqiad) hosts T354227
 node /^restbase10(3[4-9]|4[0-2])\.eqiad\./ {
     role(insetup::data_persistence)
