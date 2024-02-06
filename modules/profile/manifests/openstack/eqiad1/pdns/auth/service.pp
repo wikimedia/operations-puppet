@@ -1,11 +1,15 @@
 class profile::openstack::eqiad1::pdns::auth::service(
     Array[Hash] $hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
+    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     $db_pass = lookup('profile::openstack::eqiad1::pdns::db_pass'),
     String $pdns_api_key = lookup('profile::openstack::eqiad1::pdns::api_key'),
     Stdlib::Fqdn        $monitor_fqdn           = lookup('profile::openstack::eqiad1::pdns::auth::service::monitor_fqdn'),
     Array[Stdlib::Fqdn] $monitor_verify_records = lookup('profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records'),
     ) {
+
+    $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
+
     # We're patching in our ipv4 address for db_host here;
     #  for unclear reasons 'localhost' doesn't work properly
     #  with the version of Mariadb installed on Jessie.

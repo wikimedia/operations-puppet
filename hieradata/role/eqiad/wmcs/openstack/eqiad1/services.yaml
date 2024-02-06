@@ -5,18 +5,10 @@ profile::admin::groups:
 contactgroups: wmcs-team-email
 
 cluster: wmcs
-profile::prometheus::memcached_exporter::arguments: "--memcached.address=localhost:11211"
+
 # See T224828
 raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]
-
-profile::openstack::eqiad1::pdns::hosts:
-  - auth_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
-    private_fqdn: cloudservices1006.private.eqiad.wikimedia.cloud
-    host_fqdn: cloudservices1006.eqiad.wmnet
-  - auth_fqdn: ns0.openstack.eqiad1.wikimediacloud.org
-    private_fqdn: cloudservices1005.private.eqiad.wikimedia.cloud
-    host_fqdn: cloudservices1005.eqiad.wmnet
 
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.255.1

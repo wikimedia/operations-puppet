@@ -1,7 +1,7 @@
 class profile::openstack::eqiad1::designate::service(
     $version = lookup('profile::openstack::eqiad1::version'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::eqiad1::designate_hosts'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
+    String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     $puppetmaster_hostname = lookup('profile::openstack::eqiad1::puppetmaster_hostname'),
     $db_pass = lookup('profile::openstack::eqiad1::designate::db_pass'),
@@ -22,6 +22,7 @@ class profile::openstack::eqiad1::designate::service(
     Boolean $enforce_policy_scope = lookup('profile::openstack::eqiad1::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::eqiad1::keystone::enforce_new_policy_defaults'),
 ) {
+    $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
 
     require ::profile::openstack::eqiad1::clientpackages
     class{'::profile::openstack::base::designate::service':
@@ -53,23 +54,5 @@ class profile::openstack::eqiad1::designate::service(
         filesource => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-dnsleaks.py",
         interval   => '*:0/30',
         run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus',
-    }
-
-    class { '::memcached':
-        # TODO: the following were implicit defaults from
-        # MW settings, need to be reviewed.
-        growth_factor => 1.05,
-        min_slab_size => 5,
-        port          => 11211,
-    }
-    class { '::profile::prometheus::memcached_exporter': }
-
-    ferm::service { 'memcached_for_mcrouter':
-        desc    => 'Allow connections to memcached',
-        proto   => 'tcp',
-        notrack => true,
-        port    => 11211,
-        srange  => "(@resolve((${join($designate_hosts,' ')}))
-                    @resolve((${join($designate_hosts,' ')}), AAAA))",
     }
 }

@@ -1,0 +1,7 @@
+profile::openstack::eqiad1::pdns::hosts:
+ - auth_fqdn: ns0.openstack.eqiad1.wikimediacloud.org
+   private_fqdn: cloudservices1005.private.eqiad.wikimedia.cloud
+   host_fqdn: cloudservices1005.eqiad.wmnet
+ - auth_fqdn: ns1.openstack.eqiad1.wikimediacloud.org
+   private_fqdn: cloudservices1006.private.eqiad.wikimedia.cloud
+   host_fqdn: cloudservices1006.eqiad.wmnet

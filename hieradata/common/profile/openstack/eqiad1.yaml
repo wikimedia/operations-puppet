@@ -37,10 +37,6 @@ profile::openstack::eqiad1::haproxy_nodes:
 profile::openstack::eqiad1::glance_backends:
   - rbd
 
-profile::openstack::eqiad1::designate_hosts:
-  - cloudservices1005.private.eqiad.wikimedia.cloud
-  - cloudservices1006.private.eqiad.wikimedia.cloud
-
 profile::openstack::eqiad1::puppetmaster_hostname: 'puppetmaster.cloudinfra.wmflabs.org'
 profile::openstack::eqiad1::osm_host: 'wikitech.wikimedia.org'
 profile::openstack::eqiad1::ldap_hosts:
