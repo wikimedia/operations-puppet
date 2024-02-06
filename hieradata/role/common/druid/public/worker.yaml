@@ -47,7 +47,7 @@ profile::druid::common::zookeeper_cluster_name: druid-public-eqiad
 profile::druid::common::metadata_storage_database_name: 'druid_public_eqiad'
 
 profile::druid::daemons_autoreload: false
-profile::druid::ferm_srange: '$DRUID_PUBLIC_HOSTS'
+profile::druid::ferm_srange: '(($DRUID_PUBLIC_HOSTS $DSE_KUBEPODS_NETWORKS))'
 
 profile::druid::common::properties:
   druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
@@ -82,7 +82,7 @@ profile::druid::common::properties:
 
 # Broker gets a special ferm_srange since it is the frontend query interface to Druid.
 profile::druid::broker::monitoring_enabled: true
-profile::druid::broker::ferm_srange: '$DOMAIN_NETWORKS'
+profile::druid::broker::ferm_srange: '(($$DOMAIN_NETWORKS $DSE_KUBEPODS_NETWORKS))'
 profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
