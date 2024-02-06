@@ -88,8 +88,4 @@ define confd::instance (
     }
     # Any change to a this instances service configuration or to a template should reload confd.
     Confd::File <| instance == $name |> ~> Service[$label]
-
-    nrpe::monitor_systemd_unit_state { $label:
-        require => Service[$label],
-    }
 }
