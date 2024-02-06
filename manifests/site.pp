@@ -1756,7 +1756,7 @@ node /^cloudelastic100[7-8]\.wikimedia\./ {
 
 #next host in ongoing private IP migration, see T355617
 node /^cloudelastic1009\.eqiad\./ {
-    role(::insetup::search_platform)
+    role(elasticsearch::cloudelastic)
 }
 
 node /^cloudelastic1010\.eqiad\./ {
