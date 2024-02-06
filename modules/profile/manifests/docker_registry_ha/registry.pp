@@ -134,7 +134,4 @@ class profile::docker_registry_ha::registry(
         check_command => "check_http_url_for_regexp_on_port!${::fqdn}:5001!5001!/debug/health!\\\\{\\\\}",
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Docker',
     }
-
-    nrpe::monitor_systemd_unit_state{ 'docker-registry': }
-
 }
