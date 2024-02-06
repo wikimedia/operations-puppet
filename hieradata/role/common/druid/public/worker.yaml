@@ -82,7 +82,7 @@ profile::druid::common::properties:
 
 # Broker gets a special ferm_srange since it is the frontend query interface to Druid.
 profile::druid::broker::monitoring_enabled: true
-profile::druid::broker::ferm_srange: '(($$DOMAIN_NETWORKS $DSE_KUBEPODS_NETWORKS))'
+profile::druid::broker::ferm_srange: '(($DOMAIN_NETWORKS $DSE_KUBEPODS_NETWORKS))'
 profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
