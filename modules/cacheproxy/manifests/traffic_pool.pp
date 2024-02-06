@@ -26,10 +26,4 @@ class cacheproxy::traffic_pool {
         unless  => '/bin/systemctl is-enabled traffic-pool.service',
         require => [Systemd::Unit['traffic-pool.service'],File[$varlib_path]]
     }
-
-    nrpe::monitor_systemd_unit_state { 'traffic-pool':
-        require  => Systemd::Unit['traffic-pool.service'],
-        critical => false, # promote to true once better-tested in the real world
-    }
-
 }

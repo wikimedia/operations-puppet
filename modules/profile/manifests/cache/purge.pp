@@ -100,9 +100,4 @@ class profile::cache::purge(
         tls              => $tls_settings,
         kafka_conf_file  => "${base_dir}/purged-kafka.conf"
     }
-
-    nrpe::monitor_systemd_unit_state { 'purged':
-        require => Service['purged'],
-    }
-
 }
