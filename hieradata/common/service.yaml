@@ -3976,3 +3976,29 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+
+  superset-next:
+    description: Staging superset service, superset-next.wikimedia.org
+    encryption: true
+    ip: *k8s-ingress-dse_ips
+    page: false
+    probes:
+      - type: http
+        path: /health
+    port: *k8s-ingress-dse_port
+    sites:
+      - eqiad
+    state: service_setup
+
+  superset:
+    description: Production superset service, superset.wikimedia.org
+    encryption: true
+    ip: *k8s-ingress-dse_ips
+    page: false
+    probes:
+      - type: http
+        path: /health
+    port: *k8s-ingress-dse_port
+    sites:
+      - eqiad
+    state: service_setup
