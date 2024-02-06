@@ -2798,18 +2798,8 @@ node /^mirror1001\.wikimedia\./ {
 
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node /^stat100[4-9]\.eqiad\./ {
+node /^stat10(1[0-1]|0[4-9])\.eqiad\./ {
     role(statistics::explorer)
-}
-
-# New stat nodes T299466 and T307399
-node /^stat101[0]\.eqiad\./ {
-    role(insetup::data_engineering)
-}
-
-# New stat nodes T342454
-node /^stat1011\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # NOTE: new snapshot hosts must also be manually added to

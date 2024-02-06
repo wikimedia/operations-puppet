@@ -602,6 +602,8 @@ statistics_servers:
   - stat1007.eqiad.wmnet
   - stat1008.eqiad.wmnet
   - stat1009.eqiad.wmnet
+  - stat1010.eqiad.wmnet
+  - stat1011.eqiad.wmnet
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
   - an-launcher1002.eqiad.wmnet
