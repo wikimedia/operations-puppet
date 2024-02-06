@@ -88,12 +88,8 @@ class profile::mediawiki::php::monitoring(
         group   => 'ops',
         mode    => '0440',
     }
+
     ## Monitoring
-    # Check that php-fpm is running
-    $php_versions.each |$php_version| {
-        $svc_name = php::fpm::programname($php_version)
-        nrpe::monitor_systemd_unit_state{ $svc_name: }
-    }
 
     # Export basic php-fpm stats using a textfile exporter
     class { '::prometheus::node_phpfpm_statustext':
