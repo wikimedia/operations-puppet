@@ -2781,11 +2781,6 @@ node /^sessionstore200[4-6]\.codfw\./ {
     role(insetup::data_persistence)
 }
 
-# sessionstore servers being decommissioned: T353405
-node /^sessionstore100[1-3]\.eqiad\./ {
-    role(sessionstore)
-}
-
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\./ {
     role(openldap::rw)
