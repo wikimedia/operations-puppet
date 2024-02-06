@@ -29,11 +29,4 @@ class mariadb::heartbeat (
             ensure => $enabled,
         }
     }
-
-    nrpe::monitor_systemd_unit_state { 'pt-heartbeat-wikimedia':
-        contact_group  => 'databases-testing',
-        retries        => 2,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/pt-heartbeat',
-        expected_state => $enabled.bool2str('active', 'inactive'),
-    }
 }
