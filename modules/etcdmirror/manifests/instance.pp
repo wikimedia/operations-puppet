@@ -58,8 +58,4 @@ define etcdmirror::instance(
         group        => 'root',
         log_filename => 'syslog.log',
     }
-
-    if ($enable) {
-        nrpe::monitor_systemd_unit_state{ $prefix: }
-    }
 }

@@ -1,8 +1,4 @@
 class etcd::v3::monitoring(Stdlib::HTTPSurl $endpoint) {
-    # Check the daemon is running
-    nrpe::monitor_systemd_unit_state { 'etcd':
-        require => Service['etcd'],
-    }
 
     # Just check the local health
     file { '/usr/local/bin/check_etcd_health':
