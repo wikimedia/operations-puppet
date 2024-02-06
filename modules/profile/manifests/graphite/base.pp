@@ -230,18 +230,6 @@ class profile::graphite::base(
         }
     }
 
-    nrpe::monitor_systemd_unit_state{ 'carbon-frontend-relay': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-local-relay': }
-
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@a': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@b': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@c': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@d': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@e': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@f': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@g': }
-    nrpe::monitor_systemd_unit_state{ 'carbon-cache@h': }
-
     ferm::service { 'graphite-http':
         proto => 'tcp',
         port  => [80],
