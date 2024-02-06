@@ -127,17 +127,9 @@ scap::dsh::groups:
   maps-canaries:
     hosts:
       - maps2009.codfw.wmnet
-  netbox:
-    hosts:
-      - netbox-dev2002.codfw.wmnet
-      - netbox1002.eqiad.wmnet
-      - netbox2002.codfw.wmnet
   phatality:
     conftool:
       - {'cluster': 'kibana7', 'service': 'kibana7'}
-  homer:
-    hosts:
-      - cumin1001.eqiad.wmnet
   ci-docroot:
     pdb_query: 'nodes[certname] { resources { type = "Scap::Target" and title = "integration/docroot" } order by certname}'
   gerrit:
