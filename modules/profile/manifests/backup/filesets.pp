@@ -219,7 +219,7 @@ class profile::backup::filesets(
 
     # Analytics Postgresql Cluster (T319440)
     bacula::director::fileset { 'data-engineering-postgres':
-        includes => [ '/srv/postgres-backup/' ]
+        includes => [ '/srv/postgres-backup/psql-all-dbs-latest.sql.gz' ]
     }
 
 }
