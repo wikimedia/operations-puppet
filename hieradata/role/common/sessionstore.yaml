@@ -20,15 +20,6 @@ profile::cassandra::client_ips:
 
 ## Instances
 profile::cassandra::instances:
-  "sessionstore1001.eqiad.wmnet":
-    a:
-      listen_address: 10.64.0.144
-  "sessionstore1002.eqiad.wmnet":
-    a:
-      listen_address: 10.64.32.85
-  "sessionstore1003.eqiad.wmnet":
-    a:
-      listen_address: 10.64.48.178
   "sessionstore1004.eqiad.wmnet":
     a:
       listen_address: 10.64.0.33
