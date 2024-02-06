@@ -44,13 +44,6 @@ class profile::chartmuseum(
 
     # Monitoring
     $monitoring_notes_url = 'https://wikitech.wikimedia.org/wiki/ChartMuseum'
-    nrpe::monitor_systemd_unit_state{ 'chartmuseum.service':
-        ensure      => present,
-        description => 'Check that ChartMuseum is running',
-        retries     => 2,
-        notes_url   => $monitoring_notes_url,
-    }
-
     monitoring::service { 'check_chartmuseum_http':
         description   => 'ChartMuseum HTTP',
         check_command => "check_https_url_for_string!${hostname}!/health!true",
