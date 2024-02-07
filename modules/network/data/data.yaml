@@ -511,6 +511,8 @@ network::subnets:
           ipv4: 172.16.128.0/24
         cloud-private-b1-codfw:
           ipv4: 172.20.5.0/24
+        cloud-codfw-bgp-private-vips:
+          ipv4: 172.20.254.0/24
       public:
         cloud-codfw1dev-floating:
           ipv4: 185.15.57.0/29
