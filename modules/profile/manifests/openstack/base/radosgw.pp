@@ -11,13 +11,9 @@ class profile::openstack::base::radosgw(
         version => $version,
     }
 
-    include ::network::constants
-    $prod_networks = join($network::constants::production_networks, ' ')
-    $labs_networks = join($network::constants::labs_networks, ' ')
-
-    ferm::service { 'radosgw-api-backend':
+    firewall::service { 'radosgw-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 }
