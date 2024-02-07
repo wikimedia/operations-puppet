@@ -2,7 +2,7 @@
 domain_networks = scope.lookupvar('network::constants::domain_networks')
 all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 production_networks = scope.lookupvar('network::constants::production_networks')
-labs_networks = scope.lookupvar('network::constants::labs_networks')
+cloud_networks = scope.lookupvar('network::constants::cloud_networks')
 cloud_networks_public = scope.lookupvar('network::constants::cloud_networks_public')
 all_cloud_private_networks = scope.lookupvar('network::constants::all_cloud_private_networks')
 frack_networks = scope.lookupvar('network::constants::frack_networks')
@@ -24,9 +24,10 @@ dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networ
 
 # $PRODUCTION_NETWORKS is a set of all production networks
 @def $PRODUCTION_NETWORKS = (<%- production_networks.each do |net| -%><%= net %> <% end -%>);
-# $LABS_NETWORKS is meant to be a set of all labs networks, $CLOUD_NETWORKS is an alias for it
-@def $LABS_NETWORKS = (<%- labs_networks.each do |net| -%><%= net %> <% end -%>);
-@def $CLOUD_NETWORKS = (<%- labs_networks.each do |net| -%><%= net %> <% end -%>);
+# $CLOUD_NETWORKS is a set of all Cloud VPS instance networks
+@def $CLOUD_NETWORKS = (<%- cloud_networks.each do |net| -%><%= net %> <% end -%>);
+# $LABS_NETWORKS is a deprecated alias for $CLOUD_NETWORKS
+@def $LABS_NETWORKS = (<%- cloud_networks.each do |net| -%><%= net %> <% end -%>);
 # $CLOUD_NETWORKS_PUBLIC is meant to be a set of all Cloud public networks
 @def $CLOUD_NETWORKS_PUBLIC = (<%- cloud_networks_public.each do |net| -%><%= net %> <% end -%>);
 # $CLOUD_PRIVATE_NETWORKS is the cloud-private networks with WMCS

@@ -11,7 +11,7 @@ class profile::mail::smarthost::wmcs (
     }
 
     class { '::profile::mail::smarthost':
-        relay_from_hosts       => $network::constants::labs_networks,
+        relay_from_hosts       => $network::constants::cloud_networks,
         root_alias_rcpt        => "root@${external_domain}",
         envelope_rewrite_rules => $rewrite_rules,
     }

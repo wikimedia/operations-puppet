@@ -33,8 +33,8 @@ class network::constants {
     $domain_networks = slice_network_constants($network_realm)
     # $production_networks will always contain just the production networks
     $production_networks = slice_network_constants('production')
-    # $labs_networks will always contain just the Cloud VPS networks
-    $labs_networks = slice_network_constants('cloud')
+    # $cloud_networks is a set of all Cloud VPS instance networks
+    $cloud_networks = slice_network_constants('cloud')
     # $cloud_networks_public contains basically general egress NAT and floating IP addresses
     $cloud_networks_public = slice_network_constants('cloud', { 'sphere' => 'public' })
 

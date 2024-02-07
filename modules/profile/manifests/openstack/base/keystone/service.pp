@@ -92,7 +92,7 @@ class profile::openstack::base::keystone::service(
         wmcloud_domain_owner                  => $wmcloud_domain_owner,
         bastion_project_id                    => $bastion_project_id,
         prod_networks                         => $::network::constants::production_networks + [$cloud_private_supernet],
-        labs_networks                         => $::network::constants::labs_networks,
+        labs_networks                         => $::network::constants::cloud_networks,
         enforce_policy_scope                  => $enforce_policy_scope,
         enforce_new_policy_defaults           => $enforce_new_policy_defaults,
         keystone_admin_uri                    => $keystone_admin_uri,

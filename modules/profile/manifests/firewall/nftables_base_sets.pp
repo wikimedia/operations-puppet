@@ -42,14 +42,14 @@ class profile::firewall::nftables_base_sets (
         hosts => $network::constants::production_networks,
     }
 
-    # $LABS_NETWORKS is meant to be a set of all labs networks
+    # $LABS_NETWORKS is a deprecated alias for $CLOUD_NETWORKS
     nftables::set { 'LABS_NETWORKS':
-        hosts => $network::constants::labs_networks,
+        hosts => $network::constants::cloud_networks,
     }
 
-    # $CLOUD_NETWORKS is meant to be a set of all labs networks (alias for LABS_NETWORKS)
+    # $CLOUD_NETWORKS is a set of all Cloud VPS instance networks
     nftables::set { 'CLOUD_NETWORKS':
-        hosts => $network::constants::labs_networks,
+        hosts => $network::constants::cloud_networks,
     }
 
     # $CLOUD_NETWORKS_PUBLIC is meant to be a set of all Cloud public networks

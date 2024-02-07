@@ -38,7 +38,7 @@ class profile::openstack::base::pdns::recursor::service(
 
     include ::network::constants
     $allow_from = flatten([
-        $::network::constants::labs_networks,
+        $::network::constants::cloud_networks,
         $extra_allow_from,
         $monitoring_hosts,
         $openstack_control_nodes.map |OpenStack::ControlNode $node| {
