@@ -13,22 +13,12 @@ class icinga::monitor::etcd_mw_config (
         source => 'puppet:///modules/icinga/update-etcd-mw-config-lastindex',
     }
 
-    systemd::service { 'update-etcd-mw-config-lastindex':
-        ensure         => present,
-        content        => systemd_template('update-etcd-mw-config-lastindex'),
-        service_params => { 'ensure' => undef, 'enable' => true },
+    systemd::timer::job { 'update-etcd-mw-config-lastindex':
+        ensure             => present,
+        user               => $icinga_user,
+        description        => 'Update the etcd last modified index for MediaWiki config',
+        command            => '/usr/local/bin/update-etcd-mw-config-lastindex',
+        interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '30s'},
+        monitoring_enabled => true,
     }
-
-    systemd::service { 'update-etcd-mw-config-lastindex.timer':
-        ensure         => present,
-        restart        => true,
-        service_params => { 'provider' => 'systemd' },
-        content        => systemd_template('update-etcd-mw-config-lastindex.timer'),
-    }
-
-    nrpe::monitor_systemd_unit_state { 'update-etcd-mw-config-lastindex':
-        expected_state => 'periodic',
-        lastrun        => '60',
-    }
-
 }
