@@ -123,6 +123,12 @@ class wikistats (
         source => 'puppet:///modules/wikistats/wikistats_path.sh',
     }
 
+    # symlink into PATH to make it work with sudo without editing secure_path
+    file { '/usr/local/bin/deploy-wikistats':
+        ensure => 'link',
+        target => '/usr/local/bin/wikistats/deploy-wikistats',
+    }
+
     class { 'wikistats::updates':
         db_pass     => $db_pass,
         ensure      => $jobs_ensure,
