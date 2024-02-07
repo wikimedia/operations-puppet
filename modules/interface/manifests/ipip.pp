@@ -13,6 +13,7 @@ define interface::ipip(
 
     interface::manual { $title:
         ensure    => $ensure,
+        hotplug   => false,
         interface => $interface,
         family    => $family,
     }
