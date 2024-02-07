@@ -28,23 +28,107 @@
 import argparse
 import logging
 import re
+import socket
 import sys
-from typing import Dict, List
+import time
+from typing import Dict, List, Optional
 
 import pymysql
 import yaml
 
+try:
+    from conftool import configuration
+    from conftool.kvobject import KVObject
+    from conftool.loader import Schema
+    from conftool.node import Node
+
+    conftool_available = True
+except Exception:
+    # The analytics special replicas (clouddb1021) do not have conftool
+    # available as they're not behind cloudlb.
+    conftool_available = False
+
+
+class DepoolManager:
+    """Class to handle possible depooling of this host."""
+
+    def __init__(self, *, enabled: bool, config_file: str, schema_file: str) -> None:
+        if enabled and not conftool_available:
+            logging.warning("Auto-depooling is not available as conftool is not available")
+            enabled = False
+
+        self.enabled = enabled
+
+        self.config_file = config_file
+        self.schema_file = schema_file
+
+        self.depooled: "List[str]" = []
+        self.schema: "Optional[Schema]" = None
+
+    def _get_schema(self) -> "Schema":
+        if not self.schema:
+            config = configuration.get(self.config_file)
+            KVObject.setup(config)
+            self.schema = Schema.from_file(self.schema_file)
+
+        return self.schema
+
+    def _get_node_object(self, section: str) -> "Node":
+        return next(
+            self._get_schema()
+            .entities["node"]
+            .query(
+                {
+                    "name": re.compile(f"^{re.escape(socket.getfqdn())}$"),
+                    "service": re.compile(f"^{re.escape(section)}$"),
+                }
+            )
+        )
+
+    def should_retry(self, section: str) -> bool:
+        return self.enabled and section not in self.depooled
+
+    def depool_section(self, section: str) -> None:
+        if not self.enabled:
+            return
+        if section in self.depooled:
+            return
+
+        # TODO: use poolcounter to ensure we only depool one host from each section at a time?
+        node = self._get_node_object(section)
+        if node.pooled == "inactive":
+            return
+        node.update({"pooled": "no"})
+        self.depooled.append(section)
+
+    def repool_all(self) -> None:
+        if not self.enabled:
+            return
+
+        for section in self.depooled:
+            logging.info("Re-pooling section %s", section)
+            node = self._get_node_object(section)
+            if node.pooled != "no":
+                continue
+            node.update({"pooled": "yes"})
+
+        self.depooled = []
+
 
 class SchemaOperations:
-    def __init__(self, dry_run, replace_all, db, db_size, cursor):
+    def __init__(
+        self, dry_run, replace_all, section, db, db_size, cursor, depool_manager: DepoolManager
+    ):
         self.dry_run = dry_run
         self.replace_all = replace_all
+        self.section = section
         self.db = db
         self.db_p = db + "_p"
         self.db_size = db_size
         self.cursor = cursor
+        self.depool_manager = depool_manager
         self.definer = "viewmaster"
-        self.views_missing_tables = []
+        self.views_missing_tables: List[str] = []
 
     def write_execute(self, query):
         """Do operation or simulate
@@ -52,7 +136,21 @@ class SchemaOperations:
         """
         logging.debug("SQL: %s", query)
         if not self.dry_run:
-            self.cursor.execute(query)
+            try:
+                self.cursor.execute(query)
+            except pymysql.Error as err:
+                # 1205 Lock wait timeout exceeded
+                if err.args[0] != 1205:
+                    raise
+                if not self.depool_manager.should_retry(self.section):
+                    raise
+
+                logging.warning("Depooling %s and retrying", self.section)
+                self.depool_manager.depool_section(self.section)
+                # Wait for traffic to move
+                time.sleep(15)
+
+                self.cursor.execute(query)
 
     def drop_view(self, view):
         """Drop an obsolete view
@@ -468,6 +566,7 @@ def dbrun(
     clean: bool,
     customviews: Dict[str, Dict],
     all_tables: List[str],
+    depool_manager: DepoolManager,
 ) -> int:
     exit_status = 0
     with db_connections[instance].cursor() as cursor:
@@ -479,9 +578,11 @@ def dbrun(
             ops = SchemaOperations(
                 dry_run,
                 replace_all,
+                instance,
                 db,
                 db_info.get("size", None),
                 cursor,
+                depool_manager,
             )
 
             if not ops.user_exists(ops.definer):
@@ -516,7 +617,7 @@ def main():
     exit_status = 0
     argparser = argparse.ArgumentParser(
         "maintain-views",
-        description="Maintain labsdb sanitized views of replica databases",
+        description="Maintain sanitized views of wiki replica databases",
     )
 
     group = argparser.add_mutually_exclusive_group(required=True)
@@ -541,7 +642,7 @@ def main():
     argparser.add_argument("--table", help="Specify a single table to act on", default="")
     argparser.add_argument(
         "--dry-run",
-        help=("Give this parameter if you don't want the script to actually" " make changes."),
+        help="Give this parameter if you don't want the script to actually make changes.",
         action="store_true",
     )
     argparser.add_argument(
@@ -552,15 +653,28 @@ def main():
     argparser.add_argument("--drop", help="Remove _p db entirely.", action="store_true")
     argparser.add_argument(
         "--replace-all",
-        help=(
-            "Give this parameter if you don't want the script to prompt" " before replacing views."
-        ),
+        help=("Give this parameter if you don't want the script to prompt before replacing views."),
         action="store_true",
     )
     argparser.add_argument(
         "--mediawiki-config",
-        help=("Specify path to mediawiki-config checkout" " values can be given space-separated."),
+        help="Specify path to mediawiki-config checkout values can be given space-separated.",
         default="/usr/local/lib/mediawiki-config",
+    )
+    argparser.add_argument(
+        "--auto-depool",
+        help="Automatically depool this replica if schema changes fail to get executed in place",
+        action="store_true",
+    )
+    argparser.add_argument(
+        "--conftool-config",
+        help="Conftool configuration file for automated depooling",
+        default="/etc/conftool/config.yaml",
+    )
+    argparser.add_argument(
+        "--conftool-schema",
+        help="Conftool schema file for automated depooling",
+        default="/etc/conftool/schema.yaml",
     )
 
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
@@ -607,6 +721,12 @@ def main():
     logging.basicConfig(
         format="%(asctime)s %(levelname)s %(message)s",
         level=logging.DEBUG if args.debug else logging.INFO,
+    )
+
+    depool_manager = DepoolManager(
+        enabled=args.auto_depool,
+        config_file=args.conftool_config,
+        schema_file=args.conftool_schema,
     )
 
     db_connections = {}
@@ -678,12 +798,15 @@ def main():
                     args.clean,
                     customviews,
                     all_tables,
+                    depool_manager,
                 )
                 if exit_status != 0:
                     break
 
         return exit_status
     finally:
+        depool_manager.repool_all()
+
         for _, conn in db_connections.items():
             conn.close()
 
