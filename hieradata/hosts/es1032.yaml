@@ -2,4 +2,3 @@
 mariadb::shard: 'es1'
 profile::mariadb::mysql_role: 'standalone'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
