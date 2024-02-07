@@ -117,6 +117,8 @@ class profile::analytics::postgresql (
   }
   if $do_backups {
     include profile::backup::host
-    backup::set { 'data-engineering-postgres': }
+    backup::set { 'data-engineering-postgres':
+      jobdefaults => 'Daily-productionEqiad', # full backups every day
+    }
   }
 }
