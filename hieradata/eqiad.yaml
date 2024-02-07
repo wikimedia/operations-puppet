@@ -31,19 +31,19 @@ ldap:
 mediabackup:
   sections:
       s1:
-          host: db1139.eqiad.wmnet
+          host: db1239.eqiad.wmnet
           port: 3311
       s2:
-          host: db1139.eqiad.wmnet
+          host: db1239.eqiad.wmnet
           port: 3312
       s3:
           host: db1150.eqiad.wmnet
           port: 3313
       s4:
-          host: db1145.eqiad.wmnet
+          host: db1245.eqiad.wmnet
           port: 3314
       s5:
-          host: db1145.eqiad.wmnet
+          host: db1245.eqiad.wmnet
           port: 3315
       s6:
           host: db1225.eqiad.wmnet
