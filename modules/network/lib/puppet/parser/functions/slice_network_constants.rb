@@ -24,8 +24,8 @@
 # # Get all subnets that belong in production
 # slice_network_constants('production')
 #
-# # Get IPv4 subnets that belong in labs
-# slice_network_constants('labs', { 'af' => 'ipv4' })
+# # Get IPv4 subnets that belong in Cloud VPS
+# slice_network_constants('cloud', { 'af' => 'ipv4' })
 #
 # # Get private only production networks
 # slice_network_constants('production', { 'sphere' => 'private' })
@@ -44,7 +44,10 @@ module Puppet::Parser::Functions
     end
 
     all_network_subnets = lookupvar('network::constants::all_network_subnets')
+
     realm = args[0]
+    realm = 'labs' if realm == 'cloud'
+
     options = args[1] if args.length > 1
     requested_site = options['site'] if options
     requested_sphere = options['sphere'] if options

@@ -80,4 +80,16 @@ describe "slice_network_constants" do
     expect(result).to be_an Array
     # TODO: After migrating to dummy data actually test this result for equality
   end
+
+  # Cloud VPS
+  it "should map labs realm correctly" do
+    result = scope.function_slice_network_constants(['labs', { 'sphere' => 'public'}])
+    expect(result).to be_an Array
+    # TODO: After migrating to dummy data actually test this result for equality
+  end
+  it "should map cloud realm correctly" do
+    result = scope.function_slice_network_constants(['cloud', { 'sphere' => 'public'}])
+    expect(result).to be_an Array
+    # TODO: After migrating to dummy data actually test this result for equality
+  end
 end
