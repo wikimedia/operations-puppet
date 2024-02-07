@@ -22,14 +22,14 @@ class network::constants {
     # $domain_networks is a set of all networks belonging to a domain.
     # a domain is a realm currently, but the notion is more generic than that on
     # purpose.
-    # TODO: Figure out a way this can be per-project networks in labs
+    # TODO: Figure out a way this can be per-project networks in ClouD VPS
     $domain_networks = slice_network_constants($::realm)
     # $production_networks will always contain just the production networks
     $production_networks = slice_network_constants('production')
-    # $labs_networks will always contain just the labs networks
-    $labs_networks = slice_network_constants('labs')
+    # $labs_networks will always contain just the Cloud VPS networks
+    $labs_networks = slice_network_constants('cloud')
     # $cloud_networks_public contains basically general egress NAT and floating IP addresses
-    $cloud_networks_public = slice_network_constants('labs', { 'sphere' => 'public' })
+    $cloud_networks_public = slice_network_constants('cloud', { 'sphere' => 'public' })
 
     # this selects all 'labs' (...cloud) realm networks in eqiad & codfw that have a private subnet with name
     # cloud-private that contains an 'ipv4' attribute
@@ -91,12 +91,12 @@ class network::constants {
             ])
         $mw_appserver_networks = concat($mw_appserver_networks_private, $mw_appserver_networks_public)
     } elsif $::realm == 'labs' {
-        # rely on security groups in labs to restrict this
+        # rely on security groups to restrict this
         $mw_appserver_networks = flatten([
-            slice_network_constants('labs'),
+            slice_network_constants('cloud'),
             '127.0.0.1'])
         $mw_appserver_networks_private = flatten([
-            slice_network_constants('labs'),
+            slice_network_constants('cloud'),
             '127.0.0.1'])
     }
 
