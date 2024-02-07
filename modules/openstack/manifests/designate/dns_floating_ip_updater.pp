@@ -1,27 +1,17 @@
-# == openstack::designate::dns_floating_ip_updater ==
-#
-# === Parameters ===
-# [*ensure*]
-#     ensure the job is present/running or not
-# [*floating_ip_pr_zone*]
-#    Reverse DNS zone
-# [*floating_ip_ptr_fqdn_matching_regex*]
-#    Regular expression that matches PTR records
-# [*floating_ip_ptr_fqdn_replacement_pattern*]
-#    Regular expression that matches PTR records to be replaced
-#
-class openstack::designate::dns_floating_ip_updater(
+# @summary Script to update PTR records for floating IPs
+# @param ensure ensure the job is present/running or not
+# @param project_zone_template template to use when generating zone names for projects
+# @param reverse_zone_project project in which the in-addr.arpa. reverse zones live
+class openstack::designate::dns_floating_ip_updater (
     Wmflib::Ensure $ensure,
-    String         $floating_ip_ptr_zone,
-    String         $floating_ip_ptr_fqdn_matching_regex,
-    String         $floating_ip_ptr_fqdn_replacement_pattern,
+    String[1]      $project_zone_template,
+    String[1]      $reverse_zone_project,
 ) {
     $config = {
-        'floating_ip_ptr_zone'                     => $floating_ip_ptr_zone,
-        'floating_ip_ptr_fqdn_matching_regex'      => $floating_ip_ptr_fqdn_matching_regex,
-        'floating_ip_ptr_fqdn_replacement_pattern' => $floating_ip_ptr_fqdn_replacement_pattern,
-        'retries' => 2,
-        'retry_interval' => 120,
+        'project_zone_template' => $project_zone_template,
+        'reverse_zone_project'  => $reverse_zone_project,
+        'retries'               => 2,
+        'retry_interval'        => 120,
     }
 
     file { '/etc/wmcs-dns-floating-ip-updater.yaml':

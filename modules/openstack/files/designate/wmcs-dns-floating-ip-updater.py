@@ -25,14 +25,46 @@ import mwopenstackclients
 
 logger = logging.getLogger(__name__)
 
-PROJECT_ZONE_TEMPLATE = "{project}.wmflabs.org."
-FQDN_TEMPLATE = "instance-{server}.{project}.wmflabs.org."
+FQDN_TEMPLATE = "instance-{server}.{zone}"
 FQDN_REGEX = FQDN_TEMPLATE.replace(r".", r"\.").format(
-    server="(.*)", project="{project}"
+    server="(.*)", zone="{zone}"
 )
 MANAGED_DESCRIPTION = (
     "MANAGED BY dns-floating-ip-updater.py IN PUPPET - DO NOT UPDATE OR DELETE"
 )
+
+
+def reverse_zone_name_for(network) -> str:
+    if network.prefixlen < 24:
+        raise ValueError(f"Unable to handle CIDR '{network}' longer than a /24")
+    elif network.prefixlen == 24:
+        return f"{network.network_address.reverse_pointer.removeprefix('0.')}."
+    else:
+        subnet_part = f"{network.network_address.packed[-1]}-{network.prefixlen}"
+        supernet = reverse_zone_name_for(network.supernet(new_prefix=24))
+        return f"{subnet_part}.{supernet}"
+
+
+def find_floating_ip_zones(clients, reverse_zone_project):
+    zones = {}
+    designate_client = clients.designateclient(project=reverse_zone_project)
+
+    for subnet in clients.neutronclient().list_subnets()["subnets"]:
+        if "floating" not in subnet["name"]:
+            continue
+
+        # TODO: IPv6 support
+        cidr = ipaddress.IPv4Network(subnet["cidr"])
+        zone_name = reverse_zone_name_for(cidr)
+
+        zone_data = designate_client.zones.list(criterion={"name": zone_name})
+        if len(zone_data) != 1:
+            logging.warning("Did not find reverse zone '%s' for subnet %s", zone_name, cidr)
+            logging.warning("Please create it manually in the '%s' project!", reverse_zone_project)
+            continue
+        zones[cidr] = zone_data[0]
+
+    return zones
 
 
 def managed_description_error(action, type, label):
@@ -47,6 +79,7 @@ def managed_description_error(action, type, label):
 def update_tenant(
     client,
     tenant,
+    project_zone_name,
     project_main_zone_ids,
     public_addrs,
     existing_As,
@@ -73,18 +106,19 @@ def update_tenant(
                 # practically the case...
                 server_addresses[server.name] = public
                 A_FQDN = FQDN_TEMPLATE.format(
-                    server=server.name, project=tenant.name
+                    server=server.name, zone=project_zone_name
                 )
                 public_addrs[A_FQDN, tenant.name] = True, public
                 logger.debug("Found public IP %s -> %s", public, A_FQDN)
 
     dns = mwopenstackclients.DnsManager(client, tenant=tenant.name)
-    existing_match_regex = re.compile(FQDN_REGEX.format(project=tenant.name))
+    existing_match_regex = re.compile(FQDN_REGEX.format(zone=project_zone_name))
+
     # Now go through every zone the project controls
     for zone in dns.zones():
         logger.debug("Checking zone %s", zone["name"])
         # If this is their main zone, record the ID for later use
-        if zone["name"] == PROJECT_ZONE_TEMPLATE.format(project=tenant.name):
+        if zone["name"] == project_zone_name:
             project_main_zone_ids[tenant.name] = zone["id"]
 
         # Go through every recordset in the zone
@@ -155,6 +189,7 @@ def update_tenant(
 def try_update_tenant(
     client,
     tenant,
+    project_zone_name,
     project_main_zone_ids,
     public_addrs,
     existing_As,
@@ -167,6 +202,7 @@ def try_update_tenant(
             update_tenant(
                 client=client,
                 tenant=tenant,
+                project_zone_name=project_zone_name,
                 project_main_zone_ids=project_main_zone_ids,
                 public_addrs=public_addrs,
                 existing_As=existing_As
@@ -184,11 +220,9 @@ def try_update_tenant(
 
 
 def update(config, os_cloud, retries, retry_interval):
-    floating_ip_ptr_fqdn_matching_regex = re.compile(
-        config["floating_ip_ptr_fqdn_matching_regex"]
-    )
-
     client = mwopenstackclients.Clients(oscloud=os_cloud)
+
+    reverse_zones = find_floating_ip_zones(client, config["reverse_zone_project"])
 
     project_main_zone_ids = {}
     public_addrs = {}
@@ -199,6 +233,7 @@ def update(config, os_cloud, retries, retry_interval):
         try_update_tenant(
             client=client,
             tenant=tenant,
+            project_zone_name=config["project_zone_template"].format(project=tenant.name),
             project_main_zone_ids=project_main_zone_ids,
             public_addrs=public_addrs,
             existing_As=existing_As,
@@ -232,21 +267,16 @@ def update(config, os_cloud, retries, retry_interval):
         # Generate PTR record data, handling rewriting for RFC 2317 delegation as
         # configured
         for IP in IPs:
-            PTR_FQDN = ipaddress.ip_address(IP).reverse_pointer + "."
-            delegated_PTR_FQDN = floating_ip_ptr_fqdn_matching_regex.sub(
-                config["floating_ip_ptr_fqdn_replacement_pattern"], PTR_FQDN
-            )
-            if delegated_PTR_FQDN.endswith(config["floating_ip_ptr_zone"]):
-                if delegated_PTR_FQDN in public_PTRs:
-                    public_PTRs[delegated_PTR_FQDN].append(A_FQDN)
+            address = ipaddress.ip_address(IP)
+            for subnet, zone in reverse_zones.items():
+                if address not in subnet:
+                    continue
+                PTR_FQDN = f"{address.packed[-1]}.{zone['name']}"
+
+                if PTR_FQDN in public_PTRs:
+                    public_PTRs[PTR_FQDN].append(A_FQDN)
                 else:
-                    public_PTRs[delegated_PTR_FQDN] = [A_FQDN]
-            else:
-                logger.warning(
-                    "Not handling %s" + " because it doesn't end with %s",
-                    delegated_PTR_FQDN,
-                    config["floating_ip_ptr_zone"],
-                )
+                    public_PTRs[PTR_FQDN] = [A_FQDN]
 
     # Clean up reverse proxies. We don't want to generate PTR records for dozens
     # or hundreds of hostnames that are sharing a single reverse proxy like
@@ -254,7 +284,9 @@ def update(config, os_cloud, retries, retry_interval):
     # will try to figure out a reasonable truncated list.
     proxies = (k for k in public_PTRs if len(public_PTRs[k]) > 10)
     proxy_fqdn_re = re.compile(
-        FQDN_TEMPLATE.replace(r".", r"\.").format(server="(.*)", project="(.*)")
+        FQDN_REGEX.format(
+            zone=config["project_zone_template"].replace(r".", r"\.").format(project="(.*)")
+        )
     )
     for ptr in proxies:
         logger.info("Trimming FQDN list for %s", ptr)
@@ -269,30 +301,24 @@ def update(config, os_cloud, retries, retry_interval):
         logger.debug("Trimmed FQDN list for %s is %s", ptr, public_PTRs[ptr])
 
     # Set up designate client to write recordsets with
-    dns = mwopenstackclients.DnsManager(client, tenant="wmflabsdotorg")
-    # Find the correct zone ID for the floating IP zone
-    floating_ip_ptr_zone_id = None
-    for zone in dns.zones():
-        if zone["name"] == config["floating_ip_ptr_zone"]:
-            floating_ip_ptr_zone_id = zone["id"]
-            break
-
-    # Zone should already exist!
-    assert floating_ip_ptr_zone_id is not None
+    dns = mwopenstackclients.DnsManager(client, tenant=config["reverse_zone_project"])
 
     existing_public_PTRs = {}
     # Go through each record in the delegated PTR zone, deleting any with our
     # managed_description that don't exist and updating any that don't match our
     # public_PTRs data.
-    for recordset in dns.recordsets(floating_ip_ptr_zone_id):
-        existing_public_PTRs[recordset["name"]] = recordset
-        if recordset["type"] == "PTR":
+    for zone in reverse_zones.values():
+        for recordset in dns.recordsets(zone["id"]):
+            existing_public_PTRs[recordset["name"]] = recordset
+            if recordset["type"] != "PTR":
+                continue
+
             if recordset["name"] not in public_PTRs:
                 if recordset["description"] == MANAGED_DESCRIPTION:
                     # Delete whole recordset, it shouldn't exist anymore.
                     logger.info("Deleting PTR record %s", recordset["name"])
                     try:
-                        dns.delete_recordset(floating_ip_ptr_zone_id, recordset["id"])
+                        dns.delete_recordset(zone["id"], recordset["id"])
                     except Exception:
                         logger.exception("Failed to delete %s", recordset["name"])
                 else:
@@ -305,7 +331,7 @@ def update(config, os_cloud, retries, retry_interval):
                     logger.info("Updating PTR record %s", recordset["name"])
                     try:
                         dns.update_recordset(
-                            floating_ip_ptr_zone_id,
+                            zone["id"],
                             recordset["id"],
                             list(new_records),
                         )
@@ -315,9 +341,15 @@ def update(config, os_cloud, retries, retry_interval):
                     managed_description_error("update", "PTR", recordset["name"])
 
     # Create PTRs in delegated PTR zone
-    for delegated_PTR_FQDN, records in public_PTRs.items():
-        # We already dealt with updating existing PTRs above.
-        if delegated_PTR_FQDN not in existing_public_PTRs:
+    for zone in reverse_zones.values():
+        for delegated_PTR_FQDN, records in public_PTRs.items():
+            if not delegated_PTR_FQDN.endswith(zone["name"]):
+                continue
+
+            # We already dealt with updating existing PTRs above.
+            if delegated_PTR_FQDN in existing_public_PTRs:
+                continue
+
             logger.info(
                 "Creating PTR record %s pointing to %s",
                 delegated_PTR_FQDN,
@@ -325,7 +357,7 @@ def update(config, os_cloud, retries, retry_interval):
             )
             try:
                 dns.create_recordset(
-                    floating_ip_ptr_zone_id,
+                    zone["id"],
                     delegated_PTR_FQDN,
                     "PTR",
                     records,

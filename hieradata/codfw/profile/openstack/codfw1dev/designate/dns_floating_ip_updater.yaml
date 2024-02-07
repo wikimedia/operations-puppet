@@ -1,0 +1,2 @@
+profile::openstack::codfw1dev::designate::dns_floating_ip_updater::project_zone_template: '{project}.codfw1dev.wmcloud.org.'
+profile::openstack::codfw1dev::designate::dns_floating_ip_updater::reverse_zone_project: 'cloudinfra-codfw1dev'
