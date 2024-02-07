@@ -12,7 +12,7 @@ class profile::url_downloader (
         $wikimedia = $network::constants::mw_appserver_networks
     } elsif $::realm == 'labs' {
         $wikimedia = [
-            $network::constants::all_network_subnets['labs']['eqiad']['private']['cloud-instances2-b-eqiad']['ipv4'],
+            $network::constants::all_network_subnets['cloud']['eqiad']['private']['cloud-instances2-b-eqiad']['ipv4'],
         ]
     } else {
         fail('Dont use this role outside of wikimedia')

@@ -24,7 +24,7 @@ network::aggregate_networks:
   - 10.0.0.0/8
   - 127.0.0.0/8 # localhost is always implicitly trusted
   - '::1/128'
-  labs:
+  cloud:
   - 172.16.0.0/12
   - 127.0.0.0/8 # localhost is always implicitly trusted
   - '::1/128'
@@ -485,7 +485,7 @@ network::subnets:
         sandbox1-eqsin:
           ipv4: 103.102.166.16/28
           ipv6: 2001:df2:e500:201::/64
-  labs:
+  cloud:
     eqiad:
       private:
         cloud-instances2-b-eqiad:

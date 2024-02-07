@@ -10,4 +10,10 @@ describe 'network::constants', :type => :class do
         let(:facts) {{ :realm => 'labs' }}
         it { should compile }
     end
+    context "on cloud" do
+        # realm => cloud is not yet in use, but this class should not be
+        # blocking that anymore
+        let(:facts) {{ :realm => 'cloud' }}
+        it { should compile }
+    end
 end

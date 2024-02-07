@@ -46,7 +46,7 @@ module Puppet::Parser::Functions
     all_network_subnets = lookupvar('network::constants::all_network_subnets')
 
     realm = args[0]
-    realm = 'labs' if realm == 'cloud'
+    realm = 'cloud' if realm == 'labs'
 
     options = args[1] if args.length > 1
     requested_site = options['site'] if options

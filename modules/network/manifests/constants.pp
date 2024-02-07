@@ -16,14 +16,21 @@ class network::constants {
     $mgmt_networks_bydc = $network_data['network::management']
     $mgmt_networks = $mgmt_networks_bydc.values.flatten
 
+    # $network_realm is to map $::realm == 'labs' to 'cloud' for this module.
+    # I hope it will eventually go away when $::realm will be 'cloud'. (Famous last words.)
+    $network_realm = $::realm ? {
+        'labs'  => 'cloud',
+        default => $::realm,
+    }
+
     # Per realm aggregate networks
-    $aggregate_networks = flatten($network_data['network::aggregate_networks'][$::realm])
+    $aggregate_networks = flatten($network_data['network::aggregate_networks'][$network_realm])
 
     # $domain_networks is a set of all networks belonging to a domain.
     # a domain is a realm currently, but the notion is more generic than that on
     # purpose.
     # TODO: Figure out a way this can be per-project networks in ClouD VPS
-    $domain_networks = slice_network_constants($::realm)
+    $domain_networks = slice_network_constants($network_realm)
     # $production_networks will always contain just the production networks
     $production_networks = slice_network_constants('production')
     # $labs_networks will always contain just the Cloud VPS networks
@@ -34,7 +41,7 @@ class network::constants {
     # this selects all 'labs' (...cloud) realm networks in eqiad & codfw that have a private subnet with name
     # cloud-private that contains an 'ipv4' attribute
     $cloud_private_networks = ['eqiad', 'codfw'].map |$dc| {
-        $all_network_subnets['labs'][$dc]['private'].filter | $subnet | {
+        $all_network_subnets['cloud'][$dc]['private'].filter | $subnet | {
             $subnet[0] =~ /cloud-private/
         }.map | $subnet, $value | {
             $value['ipv4']
@@ -60,7 +67,7 @@ class network::constants {
     # These are:
     #  - public hosts in eqiad/codfw
     #  - all private networks in eqiad/codfw
-    if $::realm == 'production' {
+    if $network_realm == 'production' {
         $mw_appserver_networks_public = flatten([
             slice_network_constants('production', {
                 'site'        => 'eqiad',
@@ -90,7 +97,7 @@ class network::constants {
                 }),
             ])
         $mw_appserver_networks = concat($mw_appserver_networks_private, $mw_appserver_networks_public)
-    } elsif $::realm == 'labs' {
+    } elsif $network_realm == 'cloud' {
         # rely on security groups to restrict this
         $mw_appserver_networks = flatten([
             slice_network_constants('cloud'),
@@ -98,6 +105,8 @@ class network::constants {
         $mw_appserver_networks_private = flatten([
             slice_network_constants('cloud'),
             '127.0.0.1'])
+    } else {
+        fail("unknown realm '${network_realm}'")
     }
 
     # Analytics subnets
