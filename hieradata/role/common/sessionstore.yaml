@@ -44,6 +44,9 @@ profile::cassandra::instances:
   "sessionstore2005.codfw.wmnet":
     a:
       listen_address: 10.192.32.237
+  "sessionstore2006.codfw.wmnet":
+    a:
+      listen_address: 10.192.48.242
 
 profile::cassandra::settings:
   start_rpc: false
