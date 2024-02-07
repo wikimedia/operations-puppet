@@ -48,6 +48,27 @@ class network::constants {
         }
     }.flatten.delete_undef_values.sort
 
+    # $cloud_instance_networks is the list of Cloud VPS internal instance networks
+    # per site.
+    $cloud_instance_networks = {
+        'eqiad' => slice_network_constants(
+            'cloud',
+            {
+                sphere      => 'private',
+                description => 'cloud-instances',
+                site        => 'eqiad',
+            }
+        ),
+        'codfw' => slice_network_constants(
+            'cloud',
+            {
+                sphere      => 'private',
+                description => 'cloud-instances',
+                site        => 'codfw',
+            }
+        )
+    }
+
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
 

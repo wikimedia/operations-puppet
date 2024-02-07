@@ -19,6 +19,15 @@ describe 'profile::wmcs::cloud_private_subnet' do
         end
       end
     end
+
+    let(:pre_condition) do
+      "class network::constants () {
+        $cloud_instance_networks = {
+          'codfw' => ['192.0.2.0/24'],
+        }
+      }"
+    end
+
     context "on #{os}" do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
@@ -48,28 +57,32 @@ describe 'profile::wmcs::cloud_private_subnet' do
         },
       }}
       it { is_expected.to compile.with_all_deps }
-      it {
+
+      it "should add vlan tag interface" do
         is_expected.to contain_interface__tagged("cloud_private_subnet_iface")
               .with_base_interface("eno1")
               .with_vlan_id("2151")
               .with_method("manual")
               .with_legacy_vlan_naming(false)
-      }
-      it {
+      end
+
+      it "should assign an IP address to the interface" do
         is_expected.to contain_interface__ip("cloud_private_subnet_ip")
               .with_interface("vlan2151")
               .with_address("172.20.5.2")
               .with_prefixlen("24")
-      }
-      it {
+      end
+
+      it "should add route to cloud-private supernet" do
         is_expected.to contain_interface__route("cloud_private_subnet_route_supernet")
               .with_address("172.20.0.0")
               .with_prefixlen("16")
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
               .with_persist(true)
-      }
-      it {
+      end
+
+      it "should add routes to public nets" do
         is_expected.to contain_interface__route("cloud_private_subnet_route_public_0")
               .with_address("185.15.57.0")
               .with_prefixlen("26")
@@ -82,7 +95,16 @@ describe 'profile::wmcs::cloud_private_subnet' do
               .with_nexthop("172.20.5.1")
               .with_interface("vlan2151")
               .with_persist(true)
-      }
+      end
+
+      it "should add routes to instance nets" do
+        is_expected.to contain_interface__route("cloud_private_subnet_route_instances_192.0.2.0/24")
+              .with_address("192.0.2.0")
+              .with_prefixlen("24")
+              .with_nexthop("172.20.5.1")
+              .with_interface("vlan2151")
+              .with_persist(true)
+      end
     end
   end
 end

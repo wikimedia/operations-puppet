@@ -9,6 +9,8 @@ class profile::wmcs::cloud_private_subnet (
     Profile::Wmcs::Cloud_Private_Vlan_Mapping $vlan_mapping       = lookup('profile::wmcs::cloud_private_subnet::vlan_mapping'),
     Netbox::Device::Location                  $netbox_location    = lookup('profile::netbox::host::location'),
 ) {
+    include network::constants
+
     $rack = downcase($netbox_location['rack'])
     $vlan_id = $vlan_mapping[$::site][$rack]
 
@@ -50,6 +52,16 @@ class profile::wmcs::cloud_private_subnet (
 
     $public_cidrs.each  |$index, $cidr| {
         interface::route { "cloud_private_subnet_route_public_${index}":
+            address   => split($cidr, '/')[0],
+            prefixlen => Integer(split($cidr, '/')[1]),
+            nexthop   => $gw_address,
+            interface => $interface,
+            persist   => true,
+        }
+    }
+
+    $::network::constants::cloud_instance_networks[$netbox_location['site']].each |$cidr| {
+        interface::route { "cloud_private_subnet_route_instances_${cidr}":
             address   => split($cidr, '/')[0],
             prefixlen => Integer(split($cidr, '/')[1]),
             nexthop   => $gw_address,
