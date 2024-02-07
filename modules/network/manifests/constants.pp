@@ -38,15 +38,27 @@ class network::constants {
     # $cloud_networks_public contains basically general egress NAT and floating IP addresses
     $cloud_networks_public = slice_network_constants('cloud', { 'sphere' => 'public' })
 
-    # this selects all 'labs' (...cloud) realm networks in eqiad & codfw that have a private subnet with name
-    # cloud-private that contains an 'ipv4' attribute
-    $cloud_private_networks = ['eqiad', 'codfw'].map |$dc| {
-        $all_network_subnets['cloud'][$dc]['private'].filter | $subnet | {
-            $subnet[0] =~ /cloud-private/
-        }.map | $subnet, $value | {
-            $value['ipv4']
-        }
-    }.flatten.delete_undef_values.sort
+    # $cloud_private_networks is the per site list of cloud-private IPs assigned to
+    # dual-realm servers.
+    $cloud_private_networks = {
+        'eqiad' => slice_network_constants(
+            'cloud',
+            {
+                sphere      => 'private',
+                description => 'cloud-private',
+                site        => 'eqiad',
+            }
+        ),
+        'codfw' => slice_network_constants(
+            'cloud',
+            {
+                sphere      => 'private',
+                description => 'cloud-private',
+                site        => 'codfw',
+            }
+        )
+    }
+    $all_cloud_private_networks = $cloud_private_networks.values.flatten()
 
     # $cloud_instance_networks is the list of Cloud VPS internal instance networks
     # per site.

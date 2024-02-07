@@ -61,7 +61,7 @@ class profile::firewall::nftables_base_sets (
     # hardware with cloud realm private 172.20.x.x addresses. These
     # hosts are dual-homed, usually also in at least cloud-hosts.
     nftables::set { 'CLOUD_PRIVATE_NETWORKS':
-        hosts => $network::constants::cloud_private_networks,
+        hosts => $network::constants::all_cloud_private_networks,
     }
 
     # $FRACK_NETWORKS is meant to be a set of all fundraising networks

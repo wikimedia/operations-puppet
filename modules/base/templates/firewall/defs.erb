@@ -4,7 +4,7 @@ all_network_subnets = scope.lookupvar('network::constants::all_network_subnets')
 production_networks = scope.lookupvar('network::constants::production_networks')
 labs_networks = scope.lookupvar('network::constants::labs_networks')
 cloud_networks_public = scope.lookupvar('network::constants::cloud_networks_public')
-cloud_private_networks = scope.lookupvar('network::constants::cloud_private_networks')
+all_cloud_private_networks = scope.lookupvar('network::constants::all_cloud_private_networks')
 frack_networks = scope.lookupvar('network::constants::frack_networks')
 analytics_networks = scope.lookupvar('network::constants::analytics_networks')
 mw_appserver_networks = scope.lookupvar('network::constants::mw_appserver_networks')
@@ -32,7 +32,7 @@ dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networ
 # $CLOUD_PRIVATE_NETWORKS is the cloud-private networks with WMCS
 # hardware with cloud realm private 172.20.x.x addresses. These
 # hosts are dual-homed, usually also in at least cloud-hosts.
-@def $CLOUD_PRIVATE_NETWORKS = (<%= cloud_private_networks.join(' ') %>);
+@def $CLOUD_PRIVATE_NETWORKS = (<%= all_cloud_private_networks.join(' ') %>);
 # $FRACK_NETWORKS is meant to be a set of all fundraising networks
 @def $FRACK_NETWORKS = (<%- frack_networks.each do |net| -%><%= net %> <% end -%>);
 
