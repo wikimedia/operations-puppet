@@ -77,12 +77,11 @@ profile::gitlab::runner::allowed_services:
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/releng/buildkit:wmf-v0.11-8
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
+# T329220: Only allow the Blubber buildkit frontend to be used on Trusted Runners
 profile::gitlab::runner::buildkitd_allowed_frontends:
   - 'gateway.v0'
-  - 'dockerfile.v0'
 profile::gitlab::runner::buildkitd_allowed_gateway_sources:
   - 'docker-registry.wikimedia.org/repos/releng/blubber/buildkit'
-  - 'docker.io/docker/dockerfile-upstream:master'
 profile::gitlab::runner::clear_interval:
   start: 'OnCalendar'
   interval: 'hourly'
