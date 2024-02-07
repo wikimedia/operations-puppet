@@ -35,16 +35,10 @@ profile::wmcs::cloudgw::dmz_cidr:
   - "185.15.59.224"
   # VMs --> wiki (upload-lb.esams)
   - "185.15.59.240"
-  # VMs --> ns-recursor.openstack.eqiad1.wikimediacloud.org
-  - "172.20.255.1"
-  # VMs --> ns-recursor.openstack.codfw1dev.wikimediacloud.org
-  - "172.20.254.1"
   # VMs --> gerrit-replica.wikimedia.org
   - "208.80.153.107"
   # VMs --> gerrit.wikimedia.org
   - "208.80.154.151"
-  # VMs --> openstack.eqiad1.wikimediacloud.org
-  - "185.15.56.161"
   # VMs --> contint1002.wikimedia.org
   - "208.80.154.132"
   # VMs --> contint2002.wikimedia.org

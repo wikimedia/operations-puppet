@@ -12,13 +12,41 @@ table inet cloudgw {
         # use auto-merge to collapse overlapping elements, see T346432
         auto-merge
         counter
-        <%- if !@actual_dmz_cidr.empty? -%>
+        <%- if !@dmz_cidr.empty? -%>
         elements = {
-        <% @actual_dmz_cidr.each do |element| -%>
+        <% @dmz_cidr.each do |element| -%>
             <%= element %> ,
         <% end -%>
         }
         <%- end -%>
+    }
+
+    # This includes both floating IPs and other infra that's using public IPs.
+    set cloud_public_v4_set {
+        type ipv4_addr
+        flags interval
+        # use auto-merge to collapse overlapping elements, see T346432
+        auto-merge
+        counter
+        <%- if !@public_cidrs.empty? -%>
+        elements = {
+        <% @public_cidrs.each do |element| -%>
+            <%= element %> ,
+        <% end -%>
+        }
+        <%- end -%>
+    }
+
+    # Individual host addresses in cloud-private subnets.
+    set cloud_private_v4_set {
+        type ipv4_addr
+        flags interval
+        # use auto-merge to collapse overlapping elements, see T346432
+        auto-merge
+        counter
+        elements = {
+            <%= @cloud_private_supernet %>
+        }
     }
 
     # if required, this can be integrated with requestctl for abuse networks like in profile::firewall
@@ -61,7 +89,13 @@ table inet cloudgw {
         # check the packet uses virt addressing
         ip saddr != $virtual_subnet_cidr counter accept
 
+        # dmz_cidr is the list of hosts explicitely excluded from the egress NAT.
         ip daddr @dmz_cidr_set counter accept comment "dmz_cidr"
+
+        # T356850: cloud-internal addresses can handle the VM addresses just fine.
+        ip daddr @cloud_public_v4_set counter accept comment "cloud_public_v4"
+        ip daddr @cloud_private_v4_set counter accept comment "cloud_private_v4"
+
         counter snat ip to $routing_source_ip comment "routing_source_ip"
     }
 

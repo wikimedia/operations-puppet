@@ -18,15 +18,13 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address::V4::CIDR                  $transport_cidr            = lookup('profile::wmcs::cloudgw::transport_cidr'),
     Stdlib::IP::Address::V4::Nosubnet              $transport_vip             = lookup('profile::wmcs::cloudgw::transport_vip'),
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',             {default_value => []}),
-    Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                 {default_value => ['0.0.0.0']}),
-    Optional[Array[Stdlib::IP::Address::V4::Cidr]] $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',{default_value => []}),
+    Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                 {default_value => []}),
+    Array[Stdlib::IP::Address::V4::Cidr]           $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',{default_value => []}),
+    Stdlib::IP::Address::V4::Cidr                  $cloud_private_supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet'),
 ) {
-
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
-
-    $actual_dmz_cidr = $dmz_cidr + $public_cidrs
 
     nftables::file { 'cloudgw':
         ensure  => present,
