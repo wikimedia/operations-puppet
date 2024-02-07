@@ -148,21 +148,21 @@ class profile::openstack::base::rabbitmq(
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/2'}
     }
 
-    ferm::service { 'rabbitmq-cloud-private':
+    firewall::service { 'rabbitmq-cloud-private':
         proto  => 'tcp',
         port   => [5671, 5672],
         srange => $cloud_private_supernet,
     }
 
-    ferm::service { 'rabbitmq-internals':
+    firewall::service { 'rabbitmq-internals':
         proto  => 'tcp',
         port   => [4369, 5671, 5672, 25672],
-        srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
+        srange => $rabbitmq_nodes + $rabbitmq_setup_nodes,
     }
 
-    ferm::service { 'rabbitmq-cloud-vps-instances':
-        proto  => 'tcp',
-        port   => [5671, 5672],
-        srange => '$LABS_NETWORKS',
+    firewall::service { 'rabbitmq-cloud-vps-instances':
+        proto    => 'tcp',
+        port     => [5671, 5672],
+        src_sets => ['CLOUD_NETWORKS'],
     }
 }
