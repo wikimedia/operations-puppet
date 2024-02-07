@@ -1751,16 +1751,16 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
-# New systems placed into service by cloud team via T194186 and T249062
-node /^cloudelastic100[1-6]\.wikimedia\./ {
-    role(elasticsearch::cloudelastic)
-}
-
-node /^cloudelastic100[7-8]\.wikimedia\./ {
+node /^cloudelastic100[1-7]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
 }
 
 #next host in ongoing private IP migration, see T355617
+
+node /^cloudelastic1008\.eqiad\./ {
+    role(insetup::search_platform)
+}
+
 node /^cloudelastic1009\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
