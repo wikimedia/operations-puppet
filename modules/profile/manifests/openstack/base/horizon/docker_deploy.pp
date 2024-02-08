@@ -26,7 +26,6 @@ class profile::openstack::base::horizon::docker_deploy(
           'proxy_fcgi',  # Needed by ::openstack::wikitech::web
           'rewrite',
           'ssl',
-          'wsgi',
         ],
     }
 
