@@ -12,8 +12,8 @@ class profile::prometheus::alerts (
     # Monitor throughput and dropped messages on MirrorMaker instances.
     # main-eqiad -> jumbo MirrorMaker
     profile::kafka::mirror::alerts { 'main-eqiad_to_jumbo-eqiad':
-        #  For now, alert analytics admins.  Change this back to admins soon.
-        contact_group         => 'analytics',
+        #  For now, alert Data Platform SREs.  Change this back to admins soon.
+        contact_group         => 'team-data-platform',
         topic_blacklist       => '.*(change-prop|\.job\.|changeprop).*',
         prometheus_url        => 'http://prometheus.svc.eqiad.wmnet/ops',
         source_prometheus_url => 'http://prometheus.svc.eqiad.wmnet/ops',

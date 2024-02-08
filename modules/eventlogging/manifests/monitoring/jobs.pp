@@ -13,7 +13,7 @@ class eventlogging::monitoring::jobs($ensure = 'present') {
         ensure        => $ensure,
         description   => 'Check status of defined EventLogging jobs',
         nrpe_command  => '/usr/local/lib/nagios/plugins/check_eventlogging_jobs',
-        contact_group => 'admins,analytics',
+        contact_group => 'admins,analytics,team-data-platform',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/EventLogging',
     }
 }

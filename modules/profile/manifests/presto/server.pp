@@ -193,7 +193,7 @@ class profile::presto::server(
         nrpe::monitor_service { 'presto-server':
             description   => 'Presto Server',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "com.facebook.presto.server.PrestoServer"',
-            contact_group => 'analytics',
+            contact_group => 'team-data-platform',
             require       => Class['presto::server'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Presto/Administration#Presto_server_down',
         }

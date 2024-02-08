@@ -30,7 +30,7 @@ define udp2log::instance::monitoring(
             ensure        => 'present',
             description   => "udp2log log age for ${name}",
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_log_age ${name}",
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,analytics,team-data-platform',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Udp2log',
         }
     }
@@ -44,7 +44,7 @@ define udp2log::instance::monitoring(
             ensure        => 'present',
             description   => "udp2log processes for ${name}",
             nrpe_command  => "/usr/lib/nagios/plugins/check_udp2log_procs ${name}",
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,analytics,team-data-platform',
             retries       => 10,
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Udp2log',
         }

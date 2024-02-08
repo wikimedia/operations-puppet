@@ -95,7 +95,7 @@ class profile::hadoop::backup::namenode(
             description   => 'Age of most recent Hadoop NameNode backup files',
             nrpe_command  => "/usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${backup_dir} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
             sudo_user     => 'root',
-            contact_group => 'analytics',
+            contact_group => 'team-data-platform',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_backup_age',
         }
     }

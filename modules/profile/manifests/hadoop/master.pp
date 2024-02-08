@@ -69,28 +69,28 @@ class profile::hadoop::master(
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Primary',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_process',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_ZKFC_process',
         }
         nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
             description   => 'Hadoop ResourceManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Yarn_Resourcemanager_process',
         }
         nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
             description   => 'Hadoop HistoryServer',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::master'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Mapreduce_Historyserver_process',
         }
@@ -124,14 +124,14 @@ class profile::hadoop::master(
             nrpe_command   => "/usr/bin/sudo ${kerberos_prefix}/usr/local/lib/nagios/plugins/check_hdfs_topology",
             check_interval => 30,
             retries        => 2,
-            contact_group  => 'analytics',
+            contact_group  => 'team-data-platform',
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_topology_check',
         }
         # Alert if there is no active NameNode
         nrpe::monitor_service { 'hadoop-hdfs-active-namenode':
             description   => 'At least one Hadoop HDFS NameNode is active',
             nrpe_command  => "/usr/bin/sudo ${kerberos_prefix}/usr/local/bin/check_hdfs_active_namenode",
-            contact_group => 'analytics',
+            contact_group => 'team-data-platform',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#No_active_HDFS_Namenode_running',
             require       => [
                 Class['bigtop::hadoop::master'],

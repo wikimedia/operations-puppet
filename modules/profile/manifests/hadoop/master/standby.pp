@@ -29,14 +29,14 @@ class profile::hadoop::master::standby(
         nrpe::monitor_service { 'hadoop-hdfs-namenode':
             description   => 'Hadoop Namenode - Stand By',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::namenode::standby'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }
         nrpe::monitor_service { 'hadoop-hdfs-zkfc':
             description   => 'Hadoop HDFS Zookeeper failover controller',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::namenode::standby'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
         }

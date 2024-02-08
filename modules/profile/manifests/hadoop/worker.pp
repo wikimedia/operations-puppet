@@ -74,14 +74,14 @@ class profile::hadoop::worker (
         nrpe::monitor_service { 'hadoop-hdfs-datanode':
             description   => 'Hadoop DataNode',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::worker'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Datanode_process',
         }
         nrpe::monitor_service { 'hadoop-yarn-nodemanager':
             description   => 'Hadoop NodeManager',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hadoop::worker'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Yarn_Nodemanager_process',
         }
@@ -90,7 +90,7 @@ class profile::hadoop::worker (
             nrpe::monitor_service { 'hadoop-hdfs-journalnode':
                 description   => 'Hadoop JournalNode',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-                contact_group => 'admins,analytics',
+                contact_group => 'admins,team-data-platform',
                 require       => Class['bigtop::hadoop'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Journalnode_process',
             }
@@ -103,7 +103,7 @@ class profile::hadoop::worker (
             nrpe::monitor_service { 'disk_space_hadoop_worker':
                 description   => 'Disk space on Hadoop worker',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_disk --units GB -w 32 -c 16 -e -l  -r "/var/lib/hadoop/data"',
-                contact_group => 'admins,analytics',
+                contact_group => 'admins,team-data-platform',
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration',
             }
         }

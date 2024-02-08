@@ -22,7 +22,7 @@ class profile::eventstreams::monitoring {
         description    => 'Check if active EventStreams endpoint is delivering messages.',
         check_interval => 30,
         retries        => 2,
-        contact_group  => 'admins,analytics',
+        contact_group  => 'admins,analytics,team-data-platform',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventStreams/Administration',
         check_command  => "check_eventstreams!${stream_url}",
     }

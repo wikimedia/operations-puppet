@@ -26,7 +26,7 @@ class profile::analytics::database::meta(
         if $monitoring_enabled {
             mariadb::monitor_replication { 'analytics-meta-replica':
                 is_critical   => false,
-                contact_group => 'admins,analytics',
+                contact_group => 'admins,team-data-platform',
             }
         }
     } else {
@@ -79,7 +79,7 @@ class profile::analytics::database::meta(
         nrpe::monitor_service { 'mysql_analytics-meta':
             description   => 'analytics-meta MySQL instance',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C mysqld',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['mariadb::service'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Mysql_Meta',
         }

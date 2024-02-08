@@ -127,7 +127,7 @@ class profile::kerberos::kadminserver (
         nrpe::monitor_service { 'krb-kadmin-server':
             description   => 'Kerberos KAdmin daemon',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/kadmind"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Service['krb5-admin-server'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
         }

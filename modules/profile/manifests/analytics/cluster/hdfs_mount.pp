@@ -41,7 +41,7 @@ class profile::analytics::cluster::hdfs_mount(
             sudo_user      => $sudo_user,
             check_interval => 30,
             retries        => 2,
-            contact_group  => 'analytics',
+            contact_group  => 'team-data-platform',
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Fixing_HDFS_mount_at_/mnt/hdfs',
         }
     }

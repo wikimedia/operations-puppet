@@ -10,7 +10,7 @@ class profile::piwik::instance (
     $password_salt     = lookup('profile::piwik::password_salt'),
     $trusted_hosts     = lookup('profile::piwik::trusted_hosts', { 'default_value' => ['piwik.wikimedia.org', 'wikimediafoundation.org'] }),
     $archive_timer_url = lookup('profile::piwik::archive_timer_url', { 'default_value' => 'piwik.wikimedia.org' }),
-    $contact_groups    = lookup('profile::piwik::contact_groups', { 'default_value' => 'analytics' }),
+    $contact_groups    = lookup('profile::piwik::contact_groups', { 'default_value' => 'team-data-platform' }),
     $piwik_username    = lookup('profile::piwik::piwik_username', { 'default_value' => 'www-data' }),
 ) {
     # Piwik has been rebranded to Matomo, but the core stays the same.

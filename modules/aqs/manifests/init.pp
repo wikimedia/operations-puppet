@@ -74,7 +74,7 @@ class aqs(
     $druid_properties              = undef,
     $druid_datasources             = undef,
     $druid_uri_pattern             = undef,
-    $contact_groups                = 'admins,analytics',
+    $contact_groups                = 'admins,team-data-platform',
     Boolean $git_deploy            = false,
 ) {
 

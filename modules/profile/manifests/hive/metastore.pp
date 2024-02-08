@@ -27,7 +27,7 @@ class profile::hive::metastore(
         nrpe::monitor_service { 'hive-metasore':
             description   => 'Hive Metastore',
             nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hive.metastore.HiveMetaStore"',
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,team-data-platform',
             require       => Class['bigtop::hive::metastore'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hive',
         }

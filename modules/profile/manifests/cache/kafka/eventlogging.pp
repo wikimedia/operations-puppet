@@ -97,7 +97,7 @@ class profile::cache::kafka::eventlogging(
         nrpe::monitor_service { 'varnishkafka-eventlogging':
             description   => 'eventlogging Varnishkafka log producer',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
-            contact_group => 'admins,analytics',
+            contact_group => 'admins,analytics,team-data-platform',
             require       => Varnishkafka::Instance['eventlogging'],
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
         }

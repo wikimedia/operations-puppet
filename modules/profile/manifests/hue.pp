@@ -96,7 +96,7 @@ class profile::hue (
             nrpe::monitor_service { 'hue-gunicorn':
                 description   => 'Hue Gunicorn Python server',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1: -a "/usr/lib/hue/build/env/bin/python3.7 /usr/lib/hue/build/env/bin/hue rungunicornserver"',
-                contact_group => 'analytics',
+                contact_group => 'team-data-platform',
                 require       => Class['bigtop::hue'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
             }
@@ -104,7 +104,7 @@ class profile::hue (
                 nrpe::monitor_service { 'hue-kt-renewer':
                     description   => 'Hue Kerberos keytab renewer',
                     nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/lib/hue/build/env/bin/python3.7 /usr/lib/hue/build/env/bin/hue kt_renewer"',
-                    contact_group => 'analytics',
+                    contact_group => 'team-data-platform',
                     require       => Class['bigtop::hue'],
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
                 }
@@ -115,7 +115,7 @@ class profile::hue (
             nrpe::monitor_service { 'hue-cherrypy':
                 description   => 'Hue CherryPy python server',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue runcherrypyserver"',
-                contact_group => 'analytics',
+                contact_group => 'team-data-platform',
                 require       => Class['bigtop::hue'],
                 notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
             }
@@ -123,7 +123,7 @@ class profile::hue (
                 nrpe::monitor_service { 'hue-kt-renewer':
                     description   => 'Hue Kerberos keytab renewer',
                     nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C python2.7 -a "/usr/lib/hue/build/env/bin/hue kt_renewer"',
-                    contact_group => 'analytics',
+                    contact_group => 'team-data-platform',
                     require       => Class['bigtop::hue'],
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Cluster/Hue/Administration',
                 }

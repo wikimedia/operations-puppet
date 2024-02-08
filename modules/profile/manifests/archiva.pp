@@ -5,7 +5,7 @@
 #
 class profile::archiva(
     $enable_backup  = lookup('profile::archiva::enable_backup', { 'default_value' => false }),
-    $contact_groups = lookup('profile::archiva::contact_groups', { 'default_value' => 'analytics' }),
+    $contact_groups = lookup('profile::archiva::contact_groups', { 'default_value' => 'team-data-platform' }),
 ) {
     # needed by ssl_ciphersuite() used in ::archiva::proxy
     class { '::sslcert::dhparam': }
