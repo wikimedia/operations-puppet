@@ -65,18 +65,9 @@ table inet cloudgw {
         <%- end -%>
     }
 
+    # empty NAT chain on purpose
     chain prerouting {
         type nat hook prerouting priority dstnat; policy accept;
-
-        # TODO: temporal thing ;-)
-        # some misconfigured VMs may be trying to contact old DNS resolvers
-        # instead of abandoning them, let's gracefully and transparently route them
-        # to the new DNS resolver. See also T346426
-        # 208.80.154.143 and 208.80.154.24 are the old, legacy resolvers
-        # like ns-recursor0.openstack.eqiad1.wikimediacloud.org
-        # and 172.20.255.1 the new ns-recursor.openstack.eqiad1.wikimediacloud.org
-        ip daddr {208.80.154.143, 208.80.154.24} udp dport 53 counter dnat to 172.20.255.1 comment "compat DNS resolver"
-        ip daddr {208.80.154.143, 208.80.154.24} tcp dport 53 counter dnat to 172.20.255.1 comment "compat DNS resolver"
     }
 
     chain postrouting {
