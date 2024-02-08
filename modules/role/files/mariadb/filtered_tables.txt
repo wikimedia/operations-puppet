@@ -321,6 +321,7 @@ global_block_whitelist,gbw_by,K
 global_block_whitelist,gbw_by_text,K
 global_block_whitelist,gbw_reason,K
 global_block_whitelist,gbw_expiry,K
+global_block_whitelist,gbw_target_central_id,K
 globaluser,gu_id,K
 globaluser,gu_name,K
 globaluser,gu_home_db,K
