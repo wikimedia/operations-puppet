@@ -1,5 +1,5 @@
-# Notify the Data Engineering team about services on these hosts
-contactgroups: 'admins,analytics'
+# Notify the Data Platform SRE team about services on these hosts
+contactgroups: 'admins,team-data-platform'
 
 profile::druid::turnilo::port: 9091
 profile::druid::turnilo::monitoring_enabled: false

@@ -1,5 +1,5 @@
-# Notify the Data Engineering team about services on these hosts
-contactgroups: 'admins,analytics'
+# Notify the Data Platform SRE team about services on these hosts
+contactgroups: 'admins,team-data-platform'
 
 profile::archiva::enable_backup: true
 profile::archiva::proxy::ssl_enabled: true

@@ -2,5 +2,5 @@
 profile::contacts::role_contacts: ['Data Engineering','WMCS']
 profile::admin::groups:
     - wmcs-admin
-contactgroups: 'admins,analytics,wmcs-team-email'
+contactgroups: 'admins,team-data-platform,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']

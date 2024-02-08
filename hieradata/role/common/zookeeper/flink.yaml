@@ -1,7 +1,5 @@
-# TODO: Notify the Search Platform and Data Engineering SREs
-# about services on these hosts. These groups are in the process
-# of merging into Data Platform SRE team.
-contactgroups: 'admins,analytics,team-discovery'
+# Notify the Search Platform and Data Platform SREs about services on these hosts.
+contactgroups: 'admins,team-data-platform,team-discovery'
 
 cluster: flink
 

@@ -1,5 +1,5 @@
-# Notify the Data Engineering and product analytics teams about services on these hosts
-contactgroups: 'admins,analytics,team-product-analytics'
+# Notify the Data Platform SRE and product analytics teams about services on these hosts
+contactgroups: 'admins,team-data-platform,team-product-analytics'
 
 nagios_group: analytics_eqiad
 cluster: analytics
