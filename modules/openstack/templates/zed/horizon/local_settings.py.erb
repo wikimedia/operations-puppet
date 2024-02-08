@@ -279,6 +279,14 @@ POLICY_FILES = {
     'orchestration': 'disabled_policy.yaml',
 }
 
+DEFAULT_POLICY_FILES = {
+    'identity': '/srv/app/policy/default_policies/keystone.yaml',
+    'compute': '/srv/app/policy/default_policies/nova.yaml',
+    'volume': '/srv/app/policy/default_policies/cinder.yaml',
+    'image': '/srv/app/policy/default_policies/glance.yaml',
+    'network': '/srv/app/policy/default_policies/neutron.yaml',
+}
+
 # Trove user and database extension support. By default support for
 # creating users and databases on database instances is turned on.
 # To disable these extensions set the permission here to something
