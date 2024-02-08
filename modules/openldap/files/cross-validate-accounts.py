@@ -297,6 +297,33 @@ def check_ssh_keys(yamldata):
     return log
 
 
+def check_ldap_locks(yamldata):
+    log = ""
+
+    ldap_conn = ldap.initialize(LDAP_SERVER_URI)
+    ldap_conn.protocol_version = ldap.VERSION3
+
+    for username, userdata in yamldata['users'].items():
+        if userdata["ensure"] == "absent":
+            continue
+        ldapdata = ldap_conn.search_s(
+            "ou=people,dc=wikimedia,dc=org",
+            ldap.SCOPE_SUBTREE,
+            "(&(objectclass=person)(uid=" + username + "))",
+            attrlist=['pwdPolicySubentry'],
+        )
+        if ldapdata and ldapdata[0][1]:
+            for entry in ldapdata[0][1]['pwdPolicySubentry']:
+                # This is the case 99% of the time so format it a bit nicer.
+                if entry == b"cn=disabled,ou=ppolicies,dc=wikimedia,dc=org":
+                    why = "being disabled in LDAP"
+                else:
+                    why = f"password policy '{entry.decode('utf-8')}'"
+                log += f"{username} has shell access despite {why}\n"
+
+    return log
+
+
 def parse_args():
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
@@ -361,6 +388,7 @@ def main():
         print_pending_account_expirys(users),
         validate_privileged_ldap_groups_memberships(users),
         check_ssh_keys(yamldata),
+        check_ldap_locks(yamldata),
     ]
     status = 0
     for output in tests_output:
