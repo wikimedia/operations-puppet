@@ -137,6 +137,17 @@ define command{
     command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-analytics.log
     }
 
+# IRC output for Data Platform SREs
+define command{
+    command_name    notify-host-by-irc-team-data-platform
+    command_line    echo "$NOTIFICATIONTYPE$ - Host $HOSTALIAS$ is $HOSTSTATE$: $HOSTOUTPUT$ $HOSTACKAUTHOR$ $HOSTACKCOMMENT$" >> <%= @irc_dir_path %>/irc-team-data-platform.log
+    }
+
+define command{
+    command_name    notify-service-by-irc-team-data-platform
+    command_line    echo "$NOTIFICATIONTYPE$ - $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$: $SERVICEOUTPUT$ $SERVICEACKAUTHOR$ $SERVICEACKCOMMENT$ $SERVICENOTESURL$" | sed -r -e 's/%27(https)/\1/g' -e 's/%27(\+|$$)/ /g' >> <%= @irc_dir_path %>/irc-team-data-platform.log
+    }
+
 # IRC output for Countervandalism Network
 define command{
     command_name    notify-host-by-irc-cvn

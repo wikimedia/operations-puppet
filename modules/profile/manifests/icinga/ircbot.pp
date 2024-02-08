@@ -8,16 +8,17 @@ class profile::icinga::ircbot(
     String $ircecho_server = lookup('profile::icinga::ircbot::ircecho_server'),
 ) {
     $ircecho_logs   = {
-        '/var/log/icinga/irc.log'             => '#wikimedia-operations',
-        '/var/log/icinga/irc-releng.log'      => '#wikimedia-releng',
-        '/var/log/icinga/irc-cloud-feed.log'  => '#wikimedia-cloud-feed',
-        '/var/log/icinga/irc-analytics.log'   => '#wikimedia-analytics',
-        '/var/log/icinga/irc-interactive.log' => '#wikimedia-interactive',
-        '/var/log/icinga/irc-performance.log' => '#wikimedia-perf-bots',
-        '/var/log/icinga/irc-fundraising.log' => '#wikimedia-fundraising',
-        '/var/log/icinga/irc-reading-web.log' => '#wikimedia-reading-web-bots',
-        '/var/log/icinga/irc-dcops.log'       => '#wikimedia-dcops',
-        '/var/log/icinga/irc-databases.log'   => '#wikimedia-data-persistence',
+        '/var/log/icinga/irc.log'                    => '#wikimedia-operations',
+        '/var/log/icinga/irc-releng.log'             => '#wikimedia-releng',
+        '/var/log/icinga/irc-cloud-feed.log'         => '#wikimedia-cloud-feed',
+        '/var/log/icinga/irc-analytics.log'          => '#wikimedia-analytics',
+        '/var/log/icinga/irc-interactive.log'        => '#wikimedia-interactive',
+        '/var/log/icinga/irc-performance.log'        => '#wikimedia-perf-bots',
+        '/var/log/icinga/irc-fundraising.log'        => '#wikimedia-fundraising',
+        '/var/log/icinga/irc-reading-web.log'        => '#wikimedia-reading-web-bots',
+        '/var/log/icinga/irc-dcops.log'              => '#wikimedia-dcops',
+        '/var/log/icinga/irc-databases.log'          => '#wikimedia-data-persistence',
+        '/var/log/icinga/irc-team-data-platform.log' => '#wikimedia-data-platform-alerts',
     }
 
     $password_file = '/etc/icinga/.irc_secret'
