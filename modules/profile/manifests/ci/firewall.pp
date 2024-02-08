@@ -10,27 +10,24 @@
 class profile::ci::firewall (
     Array[Stdlib::Fqdn] $zuul_merger_hosts = lookup('profile::ci::firewall::zuul_merger_hosts'),
 ){
-    class { '::profile::firewall': }
-    include ::network::constants
+    include profile::firewall
+    include network::constants
 
     # Each master is an agent of the other
-    include ::profile::ci::firewall::jenkinsagent
+    include profile::ci::firewall::jenkinsagent
 
     # Gearman is used between Zuul and the Jenkin master, both on the same
     # server and communicating over localhost.
     # It is also used by Zuul merger daemons.
-    $zuul_merger_hosts_ferm = join($zuul_merger_hosts, ' ')
-
-    ferm::service { 'gearman_from_zuul_mergers':
+    firewall::service { 'gearman_from_zuul_mergers':
         proto  => 'tcp',
-        port   => '4730',
-        srange => "(${zuul_merger_hosts_ferm})",
+        port   => 4730,
+        srange => $zuul_merger_hosts,
     }
 
-    # web access
-    ferm::service { 'ci_http':
-        proto  => 'tcp',
-        port   => '80',
-        srange => '$CACHES',
+    firewall::service { 'ci_http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['CACHES'],
     }
 }
