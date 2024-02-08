@@ -19,10 +19,6 @@ class openstack::wikitech::web(
         gerrit_api_password                => $gerrit_api_password,
     }
 
-    ensure_packages([
-        'php-ldap',
-    ])
-
     backup::set {'cloudweb-srv-backup': }
 
     httpd::site { $webserver_hostname:
