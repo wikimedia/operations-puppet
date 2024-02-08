@@ -20,8 +20,7 @@ class openstack::wikitech::web(
     }
 
     ensure_packages([
-        'python-mysqldb',
-        'php-ldap'
+        'php-ldap',
     ])
 
     backup::set {'cloudweb-srv-backup': }
