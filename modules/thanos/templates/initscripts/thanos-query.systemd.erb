@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 ExecStart=
-ExecStart=/usr/bin/thanos query --http-address <%= @http_address %> --query.replica-label <%= @replica_label %> --store.sd-files <%= @sd_files %>
+ExecStart=/usr/bin/thanos query --http-address <%= @http_address %> --query.replica-label <%= @replica_label %> --store.sd-files <%= @sd_files %> <%= @logging_cmdline %>
 
 MemoryHigh=70%
 MemoryMax=85%

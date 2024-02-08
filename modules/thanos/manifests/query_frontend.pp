@@ -20,6 +20,7 @@ class thanos::query_frontend (
     String $log_queries_longer_than = '20s',
     Array[Stdlib::Host] $memcached_hosts = [],
     Stdlib::Port $memcached_port = 11211,
+    Boolean $request_debug = false,
 ) {
     ensure_packages(['thanos'])
 
@@ -63,6 +64,25 @@ class thanos::query_frontend (
         group   => 'root',
         content => to_yaml($cache_config),
         notify  => Service[$service_name],
+    }
+
+    $logging_config = @("CONFIG")
+        http:
+          options:
+            level: DEBUG
+            decision:
+              log_start: true
+              log_end: true
+        | CONFIG
+
+    file { '/etc/thanos-query-frontend/request-logging.yaml':
+        ensure  => present,
+        content => $logging_config,
+    }
+
+    $logging_cmdline = $request_debug ? {
+        true    => '--log.level=debug --request.logging-config-file=/etc/thanos-query-frontend/request-logging.yaml',
+        default => '',
     }
 
     systemd::service { $service_name:

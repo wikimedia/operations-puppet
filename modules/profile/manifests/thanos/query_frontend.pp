@@ -13,5 +13,6 @@ class profile::thanos::query_frontend (
         http_port       => $http_port,
         memcached_hosts => $memcached_hosts,
         memcached_port  => 11211,
+        request_debug   => true,
     }
 }

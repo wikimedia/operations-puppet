@@ -13,6 +13,7 @@ class thanos::query (
     Stdlib::Port::Unprivileged $http_port,
     String $replica_label = 'replica',
     String $sd_files = '/etc/thanos-query/stores/*.yml',
+    Boolean $request_debug = false,
 ) {
     ensure_packages(['thanos'])
 
@@ -25,6 +26,25 @@ class thanos::query (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
+    }
+
+    $logging_config = @("CONFIG")
+        http:
+          options:
+            level: DEBUG
+            decision:
+              log_start: true
+              log_end: true
+        | CONFIG
+
+    file { '/etc/thanos-query/request-logging.yml':
+        ensure  => present,
+        content => $logging_config,
+    }
+
+    $logging_cmdline = $request_debug ? {
+        true    => '--log.level=debug --request.logging-config-file=/etc/thanos-query/request-logging.yml',
+        default => '',
     }
 
     systemd::service { $service_name:
