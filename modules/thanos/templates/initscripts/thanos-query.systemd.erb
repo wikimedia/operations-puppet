@@ -3,5 +3,5 @@
 ExecStart=
 ExecStart=/usr/bin/thanos query --http-address <%= @http_address %> --query.replica-label <%= @replica_label %> --store.sd-files <%= @sd_files %>
 
-MemoryHigh=85%
-MemoryMax=90%
+MemoryHigh=70%
+MemoryMax=85%
