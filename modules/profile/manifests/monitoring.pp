@@ -109,15 +109,7 @@ class profile::monitoring (
     }
 
     nrpe::plugin { 'check_systemd_state':
-        ensure => present,
-        source => 'puppet:///modules/profile/monitoring/check_systemd_state.py',
-    }
-
-    nrpe::monitor_service { 'check_systemd_state':
-        ensure       => absent,
-        description  => 'Check systemd state',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_systemd_state',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_systemd_state',
+        ensure => absent,
     }
 
     if ! $facts['is_virtual'] {
