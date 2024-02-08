@@ -1,6 +1,7 @@
 # variables, convert puppet vars into nft vars
 define routing_source_ip   = <%= @routing_source %>
 define virtual_subnet_cidr = <%= @virt_subnet %>
+define cloud_private_supernet = <%= @cloud_private_supernet %>
 define nic_virt = "<%= @nic_virt %>"
 define nic_wan = "<%= @nic_wan %>"
 
@@ -35,18 +36,6 @@ table inet cloudgw {
         <% end -%>
         }
         <%- end -%>
-    }
-
-    # Individual host addresses in cloud-private subnets.
-    set cloud_private_v4_set {
-        type ipv4_addr
-        flags interval
-        # use auto-merge to collapse overlapping elements, see T346432
-        auto-merge
-        counter
-        elements = {
-            <%= @cloud_private_supernet %>
-        }
     }
 
     # if required, this can be integrated with requestctl for abuse networks like in profile::firewall
@@ -85,7 +74,7 @@ table inet cloudgw {
 
         # T356850: cloud-internal addresses can handle the VM addresses just fine.
         ip daddr @cloud_public_v4_set counter accept comment "cloud_public_v4"
-        ip daddr @cloud_private_v4_set counter accept comment "cloud_private_v4"
+        ip daddr $cloud_private_supernet counter accept comment "cloud_private_v4"
 
         counter snat ip to $routing_source_ip comment "routing_source_ip"
     }
