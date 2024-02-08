@@ -7,11 +7,11 @@
 #   $version: (optional) the package version to ensure
 #   $allow_from: (optional) array of hosts that need access to the loki api
 class profile::grafana::loki (
-  Hash                $config       = lookup('profile::grafana::loki::config',     { 'default_value' => {} }),
-  Optional[String]    $version      = lookup('profile::grafana::loki::version',    { 'default_value' => 'present' }),
-  Array[Stdlib::Fqdn] $allow_from   = lookup('profile::grafana::loki::allow_from', { 'default_value' => [] }),
-  Stdlib::Fqdn        $active_host  = lookup('profile::grafana::active_host',      { 'default_value' => '' }),
-  Stdlib::Fqdn        $standby_host = lookup('profile::grafana::standby_host',     { 'default_value' => '' }),
+  Hash                   $config       = lookup('profile::grafana::loki::config',     { 'default_value' => {} }),
+  Optional[String]       $version      = lookup('profile::grafana::loki::version',    { 'default_value' => 'present' }),
+  Array[Stdlib::Fqdn]    $allow_from   = lookup('profile::grafana::loki::allow_from', { 'default_value' => [] }),
+  Optional[Stdlib::Fqdn] $active_host  = lookup('profile::grafana::active_host',      { 'default_value' => undef }),
+  Optional[Stdlib::Fqdn] $standby_host = lookup('profile::grafana::standby_host',     { 'default_value' => undef }),
 ) {
 
   unless empty($allow_from) {
