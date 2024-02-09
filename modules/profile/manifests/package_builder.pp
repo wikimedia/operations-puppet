@@ -28,6 +28,7 @@ class profile::package_builder {
 
     prometheus::blackbox::check::tcp { 'package-builder-rsync':
         port          => 873,
+        ip_families   => ['ip4',],
         probe_runbook => 'https://wikitech.wikimedia.org/wiki/Debian_Packaging#Upload_to_Wikimedia_Repo',
     }
 
