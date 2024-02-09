@@ -1263,7 +1263,7 @@ node /^etherpad1003\.eqiad\./ {
 
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad1004\.eqiad\./ {
-    role(insetup::collaboration_services)
+    role(etherpad)
 }
 
 node /^etherpad2002\.codfw\./ {
