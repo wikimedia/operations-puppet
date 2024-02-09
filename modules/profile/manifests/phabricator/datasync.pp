@@ -56,11 +56,12 @@ class profile::phabricator::datasync (
     }
 
     rsync::quickdatacopy { 'phabricator-repos':
-        ensure      => present,
-        auto_sync   => true,
-        delete      => true,
-        source_host => $active_server,
-        dest_host   => $passive_server,
-        module_path => '/srv/repos',
+        ensure                     => present,
+        auto_sync                  => true,
+        delete                     => true,
+        source_host                => $active_server,
+        dest_host                  => $passive_server,
+        module_path                => '/srv/repos',
+        ignore_missing_file_errors => true,
     }
 }
