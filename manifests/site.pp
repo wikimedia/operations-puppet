@@ -2663,10 +2663,6 @@ node /^puppetmaster[12]00[23]\.(codfw|eqiad)\./ {
     role(puppetmaster::backend)
 }
 
-node /^puppetboard[12]002\.(codfw|eqiad)\./ {
-    role(insetup::infrastructure_foundations)
-}
-
 node /^puppetboard[12]003\.(codfw|eqiad)\./ {
     role(puppetboard)
 }
