@@ -32,7 +32,6 @@ class profile::puppetdb::database(
         'bullseye' => 13,
         'buster'   => 11,
     }
-    $slave_range = join($slaves, ' ')
     if $master == $facts['networking']['fqdn'] {
         # db_role is only used for the motd in role::puppetdb
         $db_role = 'primary'
@@ -111,11 +110,11 @@ class profile::puppetdb::database(
         user    => 'postgres',
         require => Postgresql::Db['puppetdb'],
     }
-    # Firewall rules
+
     # Allow connections from all the slaves
-    ferm::service { 'postgresql_puppetdb':
+    firewall::service { 'postgresql_puppetdb':
         proto  => 'tcp',
         port   => 5432,
-        srange => "@resolve((${slave_range}))",
+        srange => $slaves,
     }
 }
