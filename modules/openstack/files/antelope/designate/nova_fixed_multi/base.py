@@ -97,6 +97,11 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         data["project_name"] = wmfdesignatelib.project_name_from_id(
             keystone, data["tenant_id"]
         )
+        LOG.warning(
+            "Looked up project id %s, found project name %s",
+            data["project_id"],
+            data["project_name"],
+        )
 
         for addr in addresses:
             event_data = data.copy()
@@ -177,6 +182,11 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         )
 
         records = central_api.find_records(context, forward_crit)
+        LOG.warning(
+            "In zone %s, found these records: %s",
+            cfg.CONF[self.name].domain_id,
+            records,
+        )
 
         for record in records:
             LOG.warn(
@@ -203,6 +213,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             )
 
             records = central_api.find_records(context, legacy_crit)
+            LOG.warning(
+                "In legacy zone %s, found these records: %s", legacy_zone_id, records
+            )
 
             for record in records:
                 LOG.warn(
@@ -228,6 +241,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
             )
 
             records = central_api.find_records(context, reverse_crit)
+            LOG.warning(
+                "In reverse zone %s, found these records: %s", reverse_zone_id, records
+            )
 
             for record in records:
                 LOG.warn(
