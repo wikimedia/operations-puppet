@@ -311,6 +311,12 @@ receivers:
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
+- name: 'data-engineering-mail'
+  email_configs:
+    - to: 'data-engineering-alerts@lists.wikimedia.org'
+      send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
+
 - name: 'data-persistence-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-data-persistence'
