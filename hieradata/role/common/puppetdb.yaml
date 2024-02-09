@@ -49,7 +49,6 @@ profile::puppetdb::sites:
       - puppetmaster1003.eqiad.wmnet
       - puppetmaster2001.codfw.wmnet
       - puppetmaster2002.codfw.wmnet
-      - puppetmaster2003.codfw.wmnet
 profile::puppetdb::node_ttl: 14d
 profile::puppetdb::node_purge_ttl: 1d
 profile::puppetdb::database::users:
