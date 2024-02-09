@@ -28,26 +28,32 @@ import traceback
 
 LOG = logging.getLogger(__name__)
 
-cfg.CONF.register_group(cfg.OptGroup(
-    name='handler:nova_fixed_multi',
-    title="Configuration for Nova Notification Handler"
-))
+cfg.CONF.register_group(
+    cfg.OptGroup(
+        name="handler:nova_fixed_multi",
+        title="Configuration for Nova Notification Handler",
+    )
+)
 
-cfg.CONF.register_opts([
-    cfg.ListOpt('notification-topics', default=['monitor']),
-    cfg.StrOpt('control-exchange', default='nova'),
-    cfg.StrOpt('domain-id', default=None),
-    cfg.MultiStrOpt('format', default=[]),
-    cfg.StrOpt('legacy-domain-id', default=None),
-    cfg.MultiStrOpt('legacy-format', default=[]),
-    cfg.StrOpt('reverse-domain-id', default=None),
-    cfg.StrOpt('reverse-format', default=None),
-], group='handler:nova_fixed_multi')
+cfg.CONF.register_opts(
+    [
+        cfg.ListOpt("notification-topics", default=["monitor"]),
+        cfg.StrOpt("control-exchange", default="nova"),
+        cfg.StrOpt("domain-id", default=None),
+        cfg.MultiStrOpt("format", default=[]),
+        cfg.StrOpt("legacy-domain-id", default=None),
+        cfg.MultiStrOpt("legacy-format", default=[]),
+        cfg.StrOpt("reverse-domain-id", default=None),
+        cfg.StrOpt("reverse-format", default=None),
+    ],
+    group="handler:nova_fixed_multi",
+)
 
 
 class NovaFixedMultiHandler(BaseAddressMultiHandler):
     """ Handler for Nova's notifications """
-    __plugin_name__ = 'nova_fixed_multi'
+
+    __plugin_name__ = "nova_fixed_multi"
 
     def get_exchange_topics(self):
         exchange = cfg.CONF[self.name].control_exchange
@@ -58,31 +64,39 @@ class NovaFixedMultiHandler(BaseAddressMultiHandler):
 
     def get_event_types(self):
         return [
-            'compute.instance.create.end',
-            'compute.instance.delete.start',
+            "compute.instance.create.end",
+            "compute.instance.delete.start",
         ]
 
     def process_notification(self, context, event_type, payload):
-        if event_type == 'compute.instance.create.end':
-            LOG.warn('NovaFixedHandler creating records  - %s' % event_type)
+        if event_type == "compute.instance.create.end":
+            LOG.warn("NovaFixedHandler creating records  - %s" % event_type)
             try:
-                self._create(payload['fixed_ips'], payload,
-                             resource_id=payload['instance_id'],
-                             resource_type='instance')
+                self._create(
+                    payload["fixed_ips"],
+                    payload,
+                    resource_id=payload["instance_id"],
+                    resource_type="instance",
+                )
             except:
-                LOG.warn("--------------------     Unexpected error: %s %s" %
-                         (sys.exc_info()[0], traceback.format_exc()))
+                LOG.warn(
+                    "--------------------     Unexpected error: %s %s"
+                    % (sys.exc_info()[0], traceback.format_exc())
+                )
                 LOG.warn("--------------------     (swallowed)")
                 traceback.print_exc()
 
-        elif event_type == 'compute.instance.delete.start':
-            LOG.warn('NovaFixedHandler deleting records  - %s' % event_type)
+        elif event_type == "compute.instance.delete.start":
+            LOG.warn("NovaFixedHandler deleting records  - %s" % event_type)
             try:
-                self._delete(resource_id=payload['instance_id'],
-                             resource_type='instance')
+                self._delete(
+                    resource_id=payload["instance_id"], resource_type="instance"
+                )
             except:
-                LOG.warn("--------------------     Unexpected error: %s %s" %
-                         (sys.exc_info()[0], traceback.format_exc()))
+                LOG.warn(
+                    "--------------------     Unexpected error: %s %s"
+                    % (sys.exc_info()[0], traceback.format_exc())
+                )
                 LOG.warn("--------------------     (swallowed)")
         else:
-            raise ValueError('NovaFixedHandler received an invalid event type')
+            raise ValueError("NovaFixedHandler received an invalid event type")

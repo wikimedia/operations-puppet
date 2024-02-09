@@ -34,45 +34,45 @@ central_api = central_rpcapi.CentralAPI()
 
 class BaseAddressMultiHandler(BaseAddressHandler):
     def _get_ip_data(self, addr_dict):
-        ip = addr_dict['address']
-        version = addr_dict['version']
+        ip = addr_dict["address"]
+        version = addr_dict["version"]
 
         data = {
-            'ip_version': version,
+            "ip_version": version,
         }
 
         # TODO(endre): Add v6 support
         if version == 4:
-            data['ip_address'] = ip.replace('.', '-')
+            data["ip_address"] = ip.replace(".", "-")
             ip_data = ip.split(".")
             for i in [0, 1, 2, 3]:
                 data["octet%s" % i] = ip_data[i]
         return data
 
-    def _create_record(self, context, name, zone, event_data, addr,
-                       resource_type, resource_id):
+    def _create_record(
+        self, context, name, zone, event_data, addr, resource_type, resource_id
+    ):
         recordset_values = {
-            'zone_id': zone['id'],
-            'name': name,
-            'type': 'A' if addr['version'] == 4 else 'AAAA'}
+            "zone_id": zone["id"],
+            "name": name,
+            "type": "A" if addr["version"] == 4 else "AAAA",
+        }
 
         record_values = {
-            'data': addr['address'],
-            'managed': True,
-            'managed_plugin_name': self.get_plugin_name(),
-            'managed_plugin_type': self.get_plugin_type(),
-            'managed_resource_type': resource_type,
-            'managed_resource_id': resource_id
+            "data": addr["address"],
+            "managed": True,
+            "managed_plugin_name": self.get_plugin_name(),
+            "managed_plugin_type": self.get_plugin_type(),
+            "managed_resource_type": resource_type,
+            "managed_resource_id": resource_id,
         }
-        LOG.warn('Creating record in %s with values %r',
-                 zone['id'], record_values)
+        LOG.warn("Creating record in %s with values %r", zone["id"], record_values)
 
         self._create_or_update_recordset(
             context, [Record(**record_values)], **recordset_values
         )
 
-    def _create(self, addresses, extra,
-                resource_type=None, resource_id=None):
+    def _create(self, addresses, extra, resource_type=None, resource_id=None):
         """
         Create a record from addresses
 
@@ -82,73 +82,79 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         :param resource_type: The managed resource type
         :param resource_id: The managed resource ID
         """
-        LOG.debug('Using DomainID: %s' % cfg.CONF[self.name].domain_id)
+        LOG.debug("Using DomainID: %s" % cfg.CONF[self.name].domain_id)
         zone = self.get_zone(cfg.CONF[self.name].domain_id)
-        LOG.debug('Domain: %r' % zone)
+        LOG.debug("Domain: %r" % zone)
 
         data = extra.copy()
-        LOG.debug('Event data: %s' % data)
-        data['zone'] = zone['name']
+        LOG.debug("Event data: %s" % data)
+        data["zone"] = zone["name"]
 
         context = DesignateContext.get_admin_context(all_tenants=True)
 
         keystone = wmfdesignatelib.get_keystone_client()
-        data['project_id'] = data['tenant_id']
-        data['project_name'] = wmfdesignatelib.project_name_from_id(keystone, data['tenant_id'])
+        data["project_id"] = data["tenant_id"]
+        data["project_name"] = wmfdesignatelib.project_name_from_id(
+            keystone, data["tenant_id"]
+        )
 
         for addr in addresses:
             event_data = data.copy()
             event_data.update(self._get_ip_data(addr))
 
-            if addr['version'] == 4:
-                reverse_format = cfg.CONF[self.name].get('reverse_format')
-                reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
+            if addr["version"] == 4:
+                reverse_format = cfg.CONF[self.name].get("reverse_format")
+                reverse_zone_id = cfg.CONF[self.name].get("reverse_domain_id")
                 if reverse_format and reverse_zone_id:
                     reverse_zone = self.get_zone(reverse_zone_id)
-                    LOG.debug('Reverse zone: %r' % reverse_zone)
+                    LOG.debug("Reverse zone: %r" % reverse_zone)
 
-                    ip_digits = addr['address'].split('.')
+                    ip_digits = addr["address"].split(".")
                     ip_digits.reverse()
-                    name = "%s.in-addr.arpa." % '.'.join(ip_digits)
+                    name = "%s.in-addr.arpa." % ".".join(ip_digits)
 
                     recordset_values = {
-                        'zone_id': reverse_zone['id'],
-                        'name': name,
-                        'type': 'PTR',
+                        "zone_id": reverse_zone["id"],
+                        "name": name,
+                        "type": "PTR",
                     }
 
                     record_values = {
-                        'data': reverse_format % event_data,
-                        'managed': True,
-                        'managed_plugin_name': self.get_plugin_name(),
-                        'managed_plugin_type': self.get_plugin_type(),
-                        'managed_resource_type': resource_type,
-                        'managed_resource_id': resource_id
+                        "data": reverse_format % event_data,
+                        "managed": True,
+                        "managed_plugin_name": self.get_plugin_name(),
+                        "managed_plugin_type": self.get_plugin_type(),
+                        "managed_resource_type": resource_type,
+                        "managed_resource_id": resource_id,
                     }
 
-                    LOG.warn('Creating reverse record in %s with values %r',
-                             reverse_zone['id'], record_values)
+                    LOG.warn(
+                        "Creating reverse record in %s with values %r",
+                        reverse_zone["id"],
+                        record_values,
+                    )
                     self._create_or_update_recordset(
                         context, [Record(**record_values)], **recordset_values
                     )
 
             names = []
-            for fmt in cfg.CONF[self.name].get('format'):
+            for fmt in cfg.CONF[self.name].get("format"):
                 name = fmt % event_data
 
                 # Avoid duplicates
                 if name not in names:
                     names.append(name)
-                    self._create_record(context,
-                                        name,
-                                        zone,
-                                        event_data,
-                                        addr,
-                                        resource_type,
-                                        resource_id)
+                    self._create_record(
+                        context,
+                        name,
+                        zone,
+                        event_data,
+                        addr,
+                        resource_type,
+                        resource_id,
+                    )
 
-    def _delete(self, resource_id=None, resource_type='instance',
-                criterion={}):
+    def _delete(self, resource_id=None, resource_type="instance", criterion={}):
         """
         Handle a generic delete of a fixed ip within a zone
 
@@ -159,63 +165,75 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         context.edit_managed_records = True
 
         forward_crit = criterion.copy()
-        forward_crit.update({
-            'zone_id': cfg.CONF[self.name].domain_id,
-            'managed': True,
-            'managed_plugin_name': self.get_plugin_name(),
-            'managed_plugin_type': self.get_plugin_type(),
-            'managed_resource_id': resource_id,
-            'managed_resource_type': resource_type
-        })
+        forward_crit.update(
+            {
+                "zone_id": cfg.CONF[self.name].domain_id,
+                "managed": True,
+                "managed_plugin_name": self.get_plugin_name(),
+                "managed_plugin_type": self.get_plugin_type(),
+                "managed_resource_id": resource_id,
+                "managed_resource_type": resource_type,
+            }
+        )
 
         records = central_api.find_records(context, forward_crit)
 
         for record in records:
-            LOG.warn('Deleting forward record %s in recordset %s' % (record['id'],
-                                                                     record['recordset_id']))
+            LOG.warn(
+                "Deleting forward record %s in recordset %s"
+                % (record["id"], record["recordset_id"])
+            )
             self._update_or_delete_recordset(
-                context, cfg.CONF[self.name].domain_id, record['recordset_id'], record
+                context, cfg.CONF[self.name].domain_id, record["recordset_id"], record
             )
 
-        legacy_zone_id = cfg.CONF[self.name].get('legacy_domain_id')
+        legacy_zone_id = cfg.CONF[self.name].get("legacy_domain_id")
         if legacy_zone_id:
             legacy_crit = criterion.copy()
 
-            legacy_crit.update({
-                'zone_id': legacy_zone_id,
-                'managed': True,
-                'managed_plugin_name': self.get_plugin_name(),
-                'managed_plugin_type': self.get_plugin_type(),
-                'managed_resource_id': resource_id,
-                'managed_resource_type': resource_type
-            })
+            legacy_crit.update(
+                {
+                    "zone_id": legacy_zone_id,
+                    "managed": True,
+                    "managed_plugin_name": self.get_plugin_name(),
+                    "managed_plugin_type": self.get_plugin_type(),
+                    "managed_resource_id": resource_id,
+                    "managed_resource_type": resource_type,
+                }
+            )
 
             records = central_api.find_records(context, legacy_crit)
 
             for record in records:
-                LOG.warn('Deleting legacy record %s in recordset %s' % (record['id'],
-                                                                        record['recordset_id']))
+                LOG.warn(
+                    "Deleting legacy record %s in recordset %s"
+                    % (record["id"], record["recordset_id"])
+                )
                 self._update_or_delete_recordset(
-                    context, legacy_zone_id, record['recordset_id'], record
+                    context, legacy_zone_id, record["recordset_id"], record
                 )
 
-        reverse_zone_id = cfg.CONF[self.name].get('reverse_domain_id')
+        reverse_zone_id = cfg.CONF[self.name].get("reverse_domain_id")
         if reverse_zone_id:
             reverse_crit = criterion.copy()
-            reverse_crit.update({
-                'zone_id': reverse_zone_id,
-                'managed': True,
-                'managed_plugin_name': self.get_plugin_name(),
-                'managed_plugin_type': self.get_plugin_type(),
-                'managed_resource_id': resource_id,
-                'managed_resource_type': resource_type
-            })
+            reverse_crit.update(
+                {
+                    "zone_id": reverse_zone_id,
+                    "managed": True,
+                    "managed_plugin_name": self.get_plugin_name(),
+                    "managed_plugin_type": self.get_plugin_type(),
+                    "managed_resource_id": resource_id,
+                    "managed_resource_type": resource_type,
+                }
+            )
 
             records = central_api.find_records(context, reverse_crit)
 
             for record in records:
-                LOG.warn('Deleting reverse record %s in recordset %s' % (record['id'],
-                                                                         record['recordset_id']))
+                LOG.warn(
+                    "Deleting reverse record %s in recordset %s"
+                    % (record["id"], record["recordset_id"])
+                )
                 self._update_or_delete_recordset(
-                    context, reverse_zone_id, record['recordset_id'], record
+                    context, reverse_zone_id, record["recordset_id"], record
                 )
