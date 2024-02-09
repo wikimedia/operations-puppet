@@ -1283,6 +1283,11 @@ node /^etherpad1003\.eqiad\./ {
     role(etherpad)
 }
 
+# Etherpad on bookworm (virtual machine) (T357159, T316421)
+node /^etherpad1004\.eqiad\./ {
+    role(insetup::collaboration_services)
+}
+
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
 node /^eventlog1003\.eqiad\./ {
