@@ -90,6 +90,15 @@ class openstack::util::admin_scripts(
         source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-dnsleaks.py",
     }
 
+    file { '/usr/local/sbin/wmcs-empty-rbd-trash':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-empty-rbd-trash",
+    }
+
+
     file { '/usr/local/sbin/wmcs-novastats-cephleaks':
         ensure => 'present',
         owner  => 'root',
