@@ -7,6 +7,6 @@ profile::admin::groups:
   - dumps-roots
 profile::mediawiki::php::enable_fpm: false
 profile::mediawiki::apc_shm_size: 128M
-profile::contacts::role_contacts: ["Data Engineering"]
+profile::contacts::role_contacts: ["Data Platform"]
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true

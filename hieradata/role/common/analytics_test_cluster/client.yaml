@@ -77,7 +77,7 @@ profile::airflow::instances:
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 

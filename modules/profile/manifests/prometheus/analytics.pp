@@ -2,7 +2,7 @@
 # Uses the prometheus module and generates the specific configuration
 # needed for WMF production
 #
-# Configures prometheus for hosts owned by the Data Engineering group,
+# Configures prometheus for hosts owned by the Data Platform Engineering group,
 # formerly known as 'analytics' (which is why this name appears so
 # frequently in the config).
 

@@ -2,6 +2,7 @@
 type Wmflib::Team = Enum[
     'Core Platform',
     'Data Engineering',
+    'Data Platform',
     'Data Persistence',
     'Fundraising Tech',
     'Infrastructure Foundations',

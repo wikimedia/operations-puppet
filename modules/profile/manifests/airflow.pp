@@ -37,7 +37,7 @@
 #   Default: {}
 #
 # [*use_wmf_defaults]
-#   If true, defaults for WMF Data Engineering airflow deployments
+#   If true, defaults for WMF Data Platform Engineering airflow deployments
 #   will be merged into each of the provided instance's params.
 #   This reduces Hiera boilerplate needed with conventions we use to deploy Airflow.
 #   Default: true

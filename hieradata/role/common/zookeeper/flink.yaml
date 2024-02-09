@@ -10,7 +10,7 @@ profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins'
 # Will eventually merge role contacts into Data Platform SRE
-profile::contacts::role_contacts: ['Data Engineering', 'Search Platform']
+profile::contacts::role_contacts: ['Data Platform', 'Search Platform']
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

@@ -1,5 +1,5 @@
 ---
-profile::contacts::role_contacts: ['Data Engineering','WMCS']
+profile::contacts::role_contacts: ['Data Platform','WMCS']
 profile::admin::groups:
     - wmcs-admin
 profile::puppet::agent::force_puppet7: true

@@ -34,7 +34,7 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
     # that the following is consistent:
     # 1) Analytics' DNS CNAMEs and SRV records
     # 2) Analytics VLAN's firewall rules
-    # For more info ping one of the Data Engineering SREs.
+    # For more info ping one of the Data Platform SREs.
 
     $instances.each |$section, $buffer_pool| {
         $port = $section_ports[$section]

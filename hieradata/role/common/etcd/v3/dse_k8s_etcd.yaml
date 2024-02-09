@@ -15,7 +15,7 @@ profile::admin::groups:
   - analytics-admins
   - ml-team-admins
 profile::contacts::role_contacts:
-  - 'Data Engineering'
+  - 'Data Platform'
   - 'Machine Learning'
 
 profile::puppet::agent::force_puppet7: true

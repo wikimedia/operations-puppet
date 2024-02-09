@@ -24,7 +24,7 @@ profile::admin::groups:
 prometheus::node_exporter::collectors_extra:
   - processes
 profile::contacts::role_contacts:
-  - 'Data Engineering'
+  - 'Data Platform'
   - 'Machine Learning'
 
 profile::amd_gpu::allow_gpu_broader_access: true

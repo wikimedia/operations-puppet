@@ -14,7 +14,7 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "schema.discovery.wmnet"
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

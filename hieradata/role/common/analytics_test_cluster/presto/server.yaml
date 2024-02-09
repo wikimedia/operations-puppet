@@ -128,7 +128,7 @@ profile::monitoring::notifications_enabled: false
 
 profile::base::certificates::include_bundle_jks: true
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

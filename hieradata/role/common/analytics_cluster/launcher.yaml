@@ -109,7 +109,7 @@ profile::airflow::instances:
         host: kafka-jumbo1007.eqiad.wmnet:9092
         extra_dejson: {"connection": {"schema_registry_url": "http://karapace1001.eqiad.wmnet:8081"}}
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::base::certificates::include_bundle_jks: true
 

@@ -29,5 +29,5 @@ profile::logrotate::hourly: true
 # TODO: Revisit this when upgrading to Debian 11.
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
-  - 'Data Engineering'
+  - 'Data Platform'
 profile::base::production::role_description: 'Kerberos KDC'

@@ -56,4 +56,4 @@ profile::java::extra_args:
 profile::hadoop::common::config_override:
   enable_log4j_extras: false
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']

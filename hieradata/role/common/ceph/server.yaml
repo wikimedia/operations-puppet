@@ -120,7 +120,7 @@ profile::monitoring::nrpe_check_disk_options:
   "/srv/nvme[0-9]n[0-9]p[0-9]" --exclude-type=fuse --exclude-type=fuse.fuse_dfs
   --exclude-type=tracefs --exclude-type=tmpfs'
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

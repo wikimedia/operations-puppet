@@ -179,7 +179,7 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 profile::monitoring::notifications_enabled: false
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

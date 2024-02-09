@@ -9,7 +9,7 @@ profile::lvs::realserver::pools:
       - "kubemaster"
 
 profile::contacts::role_contacts:
-  - 'Data Engineering'
+  - 'Data Platform'
   - 'Machine Learning'
 
 # Configuration to add the Kubelet to Master nodes for limited use cases

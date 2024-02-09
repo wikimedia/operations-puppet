@@ -237,7 +237,7 @@ profile::lvs::realserver::pools:
     services:
       - aqs
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'

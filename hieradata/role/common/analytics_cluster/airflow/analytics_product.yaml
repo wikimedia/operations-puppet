@@ -7,7 +7,7 @@ profile::admin::groups:
   - analytics-product-users
   - analytics-admins
 
-profile::contacts::role_contacts: ['Data Engineering']
+profile::contacts::role_contacts: ['Data Platform']
 
 profile::hadoop::common::hadoop_cluster_name: 'analytics-hadoop'
 profile::hive::client::hive_service_name: 'analytics-hive'
