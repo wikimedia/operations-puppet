@@ -57,6 +57,9 @@ LimitFSIZE=infinity
 # Disable timeout logic and wait until process is stopped
 TimeoutStopSec=0
 
+# Avoid systemd timeouts when the large clusters start up
+TimeoutStartSec=300s
+
 # SIGTERM signal is used to stop the Java process
 KillSignal=SIGTERM
 
