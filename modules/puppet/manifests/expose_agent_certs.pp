@@ -113,11 +113,12 @@ define puppet::expose_agent_certs (
         default => 'absent',
     }
     file { "${target_basedir}/ssl/server.key":
-        ensure => $private_key_ensure,
-        mode   => '0400',
-        owner  => $user,
-        group  => $group,
-        source => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        ensure    => $private_key_ensure,
+        mode      => '0400',
+        owner     => $user,
+        group     => $group,
+        show_diff => false,
+        source    => "${ssldir}/private_keys/${puppet_cert_name}.pem",
     }
     # Provide a keypair of key and cert concatenated. The file resource is used
     # to ensure file attributes/presence and the exec resource the contents
