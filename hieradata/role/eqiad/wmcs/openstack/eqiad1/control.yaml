@@ -12,8 +12,7 @@ profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000
 profile::memcached::port: 11211
-# TODO: remove DOMAIN_NETWORKS once cloud-private migration is done
-profile::memcached::srange: "($CLOUD_PRIVATE_NETWORKS $DOMAIN_NETWORKS)"
+profile::memcached::srange: "$CLOUD_PRIVATE_NETWORKS"
 
 profile::cloudceph::client::rbd::client_name: 'eqiad1-glance-images'
 profile::cloudceph::client::rbd::pool: 'eqiad1-glance-images'
