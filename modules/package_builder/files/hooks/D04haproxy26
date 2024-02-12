@@ -1,0 +1,13 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+
+if [ "$HAPROXY26" = "yes" ] && [ "$DIST" = "bookworm" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-haproxy26.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/haproxy26
+    deb-src http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/haproxy26
+EOF
+    apt-get update
+fi
