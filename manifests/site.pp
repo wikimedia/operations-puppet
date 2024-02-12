@@ -1283,6 +1283,10 @@ node /^etherpad1004\.eqiad\./ {
     role(insetup::collaboration_services)
 }
 
+node /^etherpad2001\.codfw\./ {
+    role(insetup::collaboration_services)
+}
+
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
 node /^eventlog1003\.eqiad\./ {
