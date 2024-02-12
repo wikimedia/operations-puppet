@@ -862,7 +862,7 @@ node /^db1240\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s4 & s5, bullseye
-node /^(db1145|db1245)\.eqiad\./ {
+node /^db1245\.eqiad\./ {
     role(mariadb::backup_source)
 }
 ## s3 & s4, bullseye
