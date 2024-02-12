@@ -1283,7 +1283,7 @@ node /^etherpad1004\.eqiad\./ {
     role(insetup::collaboration_services)
 }
 
-node /^etherpad2001\.codfw\./ {
+node /^etherpad2002\.codfw\./ {
     role(insetup::collaboration_services)
 }
 
