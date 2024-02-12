@@ -3988,7 +3988,7 @@ service::catalog:
     port: *k8s-ingress-dse_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
 
   superset:
     description: Production superset service, superset.wikimedia.org
@@ -4001,4 +4001,4 @@ service::catalog:
     port: *k8s-ingress-dse_port
     sites:
       - eqiad
-    state: service_setup
+    state: production
