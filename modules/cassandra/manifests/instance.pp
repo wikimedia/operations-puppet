@@ -528,6 +528,14 @@ define cassandra::instance(
         }
     }
 
+    if $instance_name != 'default' {
+        file { "/usr/local/bin/cqlsh-${instance_name}":
+            ensure  => link,
+            target  => '/usr/bin/cqlsh-instance',
+            require => Package['cassandra-tools-wmf'],
+        }
+    }
+
     file { "/etc/cassandra-instances.d/${tls_hostname}.yaml":
         content => template("${module_name}/instance.yaml.erb"),
         owner   => 'cassandra',
