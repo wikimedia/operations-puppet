@@ -724,7 +724,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(144|146|170|213|244|246)\.eqiad\./ {
+node /^db1(144|170|213|244|246)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
