@@ -912,11 +912,6 @@ node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
 
-# backup testing hosts
-node /^db1133\.eqiad\./ {
-    role(mariadb::core_test)
-}
-
 node /^db2102\.codfw\./ {
     role(mariadb::core_test)
 }
