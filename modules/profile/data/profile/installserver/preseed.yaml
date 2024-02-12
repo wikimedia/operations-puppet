@@ -564,6 +564,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'mx*':
     - partman/flat.cfg
     - virtual.cfg
+  'ncmonitor*':
+    - partman/flat.cfg
+    - virtual.cfg
   'ncredir*':
     - partman/flat.cfg
     - virtual.cfg
