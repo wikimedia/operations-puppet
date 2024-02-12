@@ -35,4 +35,4 @@ profile::opensearch::dc_settings:
     - logstash1037.eqiad.wmnet
 
 profile::logstash::collector::input_kafka_consumer_group_id: 'logstash7-eqiad'
-profile::logstash::collector::output_public_loki_host: 'grafana2001.codfw.wmnet'
+profile::logstash::collector::output_public_loki_host: 'grafana1002.eqiad.wmnet'

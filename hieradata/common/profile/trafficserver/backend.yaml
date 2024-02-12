@@ -73,16 +73,16 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://phabricator.discovery.wmnet
     - type: map
       target: http://grafana-next.wikimedia.org
-      replacement: https://grafana1002.eqiad.wmnet
+      replacement: https://grafana2001.codfw.wmnet
     - type: map
       target: http://grafana-rw.wikimedia.org
-      replacement: https://grafana2001.codfw.wmnet
-    - type: map
-      target: http://grafana-next-rw.wikimedia.org
       replacement: https://grafana1002.eqiad.wmnet
     - type: map
-      target: http://grafana.wikimedia.org
+      target: http://grafana-next-rw.wikimedia.org
       replacement: https://grafana2001.codfw.wmnet
+    - type: map
+      target: http://grafana.wikimedia.org
+      replacement: https://grafana1002.eqiad.wmnet
     - type: map
       target: http://graphite.wikimedia.org
       replacement: https://graphite.discovery.wmnet
