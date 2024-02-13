@@ -91,14 +91,6 @@ class profile::icinga(
     class { 'icinga::monitor::debmonitor': }
     class { 'icinga::monitor::gitlab': }
 
-    # check planet for cert expiration and regular content updates
-    # warn/crit = hours before content is considered stale
-    class { 'icinga::monitor::planet':
-        url  => 'https://en.planet.wikimedia.org/',
-        warn => 24,
-        crit => 48,
-    }
-
     class { 'icinga::event_handlers::raid':
         icinga_user  => $icinga_user,
         icinga_group => $icinga_group,
