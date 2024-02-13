@@ -4,7 +4,9 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1001.wikimedia.org
           - cloudelastic1006.wikimedia.org
           - cloudelastic1007.wikimedia.org
+          - cloudelastic1008.eqiad.wmnet
           - cloudelastic1009.eqiad.wmnet
+          - cloudelastic1010.eqiad.wmnet
 
         cluster_hosts:
           - cloudelastic1001.wikimedia.org
