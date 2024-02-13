@@ -66,7 +66,7 @@ class phabricator::tools (
     }
 
     systemd::timer::job { 'phabricator_task_dump':
-        ensure      => absent, # Removed until T355502 is resolved
+        ensure      => present,
         user        => 'root',
         description => 'phabricator public task dump',
         command     => "/usr/bin/python3 ${dump_script}",
