@@ -69,9 +69,6 @@
 [commentlink "changeid"]
     match = \\b(I[0-9a-f]{7,40})\\b
     link = /q/$1
-[commentlink "ci-test-result"]
-    match = <li>([^ ]+) (<a href=\"https://integration\\.wikimedia\\.org/ci/[a-zA-Z0-9/_.-]+\" target=\"_blank\" rel=\"nofollow\">)[^<]+</a> : ([a-zA-Z_]+)([^<]*)</li>
-    html = <li class=\"ci_comment_test\"><span class=\"ci_comment_test_name\">$2$1</a></span> <span class=\"ci_comment_test_result\"><span class=\"ci_result_$3\">$3</span>$4</span></li>
 [commentlink "codereview"]
     match = \\br(\\d+)\\b
     link = https://www.mediawiki.org/wiki/Special:Code/MediaWiki/$1
@@ -96,12 +93,6 @@
 [commentlink "scid"]
     match = "\\b[sS][cC][iI][dD]\\:?\\s+#?(\\d+)\\b"
     link = https://meta.wikimedia.org/w/index.php?oldid=$1
-[commentlink "pipeline-dashboard"]
-    match = pipeline-dashboard:\\s+([a-z-]+)
-    html = <a href=\"https://integration.wikimedia.org/ci/blue/organizations/jenkins/$1/activity\"><span class=\"wmf-badge-logo\">Wikimedia Pipeline</span></a>
-[commentlink "pipeline-build-result"]
-    match = pipeline-build-result:\\s+(SUCCESS|FAILURE)\\s+\\(job:\\s+([a-z-]+),\\s+build:\\s+(\\d+)\\)
-    html = <a href=\"https://integration.wikimedia.org/ci/blue/organizations/jenkins/$2/detail/service-pipeline-test-and-publish/$3/pipeline\"><span class=\"wmf-badge-left\">Image Build</span><span class=\"wmf-badge-$1\">$1</span></a>
 [commitmessage]
     maxSubjectLength = 100
     maxLineLength = 120
