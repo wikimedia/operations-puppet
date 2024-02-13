@@ -215,6 +215,7 @@ profile::services_proxy::envoy::listeners:
     upstream: "ipoid.discovery.wmnet"
     uses_ingress: true
     sets_sni: true
+    keepalive: "4s" # T356766
 
   # Non-discovery records
   # Eqiad ports are at 61xx
