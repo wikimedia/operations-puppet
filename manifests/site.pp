@@ -2779,11 +2779,6 @@ node /^sessionstore200[4-6]\.codfw\./ {
     role(sessionstore)
 }
 
-# Hosts are decommissioned: T356828
-node /^sessionstore200[1-3]\.codfw\./ {
-    role(sessionstore)
-}
-
 # Codfw, eqiad ldap servers, aka ldap-$::site
 node /^(seaborgium|serpens)\.wikimedia\./ {
     role(openldap::rw)
