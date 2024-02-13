@@ -57,6 +57,11 @@ route:
       repeat_interval: 72h
       continue: true
 
+    - match:
+        alertname: 'SystemdUnitFailed'
+      repeat_interval: 24h
+      continue: true
+
     # Fundraising pingthing alerts are routed to irc #wm-operations and fr-tech@wm.o
     - match:
         instance: 'https://donate.wikimedia.org/'
