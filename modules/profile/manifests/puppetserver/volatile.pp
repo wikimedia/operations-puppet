@@ -29,10 +29,20 @@ class profile::puppetserver::volatile (
     $base_path            = $profile::puppetserver::extra_mounts['volatile']
     $geoip_destdir        = "${base_path}/GeoIP"
     $geoip_destdir_ipinfo = "${base_path}/GeoIPInfo"
+
     # Files in this folder are managed manually
     file { "${base_path}/tftpboot":
         ensure => directory,
     }
+
+    file { '/usr/local/sbin/update-netboot-image':
+        ensure => present,
+        source => 'puppet:///modules/profile/puppetmaster/update-netboot-image.sh',
+        mode   => '0544',
+    }
+
+    # Needed by update-netboot-image
+    ensure_packages('pax')
 
     class { 'external_clouds_vendors':
         user         => 'root',
