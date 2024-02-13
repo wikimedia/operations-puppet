@@ -63,3 +63,13 @@ https://fixcopyright.wikimedia.org:
   assert_headers:
     Location: https://wikimediafoundation.org/advocacy/
 
+https://donate.wikimedia.org:
+- path: /
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/wiki/Special:FundraiserRedirector
+# T357436
+- path: /wikihole
+  assert_status: 302
+  assert_headers:
+    Location: https://donate.wikimedia.org/?utm_medium=podcast&utm_campaign=wikihole&utm_source=wikihole
