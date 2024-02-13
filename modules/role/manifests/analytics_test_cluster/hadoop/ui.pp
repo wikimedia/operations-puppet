@@ -9,8 +9,6 @@ class role::analytics_test_cluster::hadoop::ui {
 
     include ::profile::java
 
-    include ::profile::hue
-
     # Test cluster setup uses LDAP (in contrast to the prod setup with CAS)
     include ::profile::hadoop::yarn_proxy_testcluster
 
