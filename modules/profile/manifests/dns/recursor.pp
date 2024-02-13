@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# A profile class for a dns recursor
+# A profile class for a DNS recursor
 
 class profile::dns::recursor (
   Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips    = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
