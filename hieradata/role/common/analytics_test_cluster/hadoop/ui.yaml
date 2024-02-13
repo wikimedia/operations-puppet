@@ -10,29 +10,6 @@ profile::hadoop::common::hadoop_cluster_name: 'analytics-test-hadoop'
 
 profile::hive::client::hive_service_name: 'analytics-test-hive'
 
-profile::hue::database_host: 'an-test-coord1001.eqiad.wmnet'
-profile::hue::hive_server_host: 'analytics-test-hive.eqiad.wmnet'
-profile::hue::monitoring_enabled: false
-
-# Kerberos config
-profile::hue::kerberos_keytab: '/etc/security/keytabs/hue/hue.keytab'
-profile::hue::kerberos_principal: "hue/%{::hostname}.eqiad.wmnet@WIKIMEDIA"
-profile::hue::kerberos_kinit_path: '/usr/bin/kinit'
-profile::hue::enable_cas: false
-profile::hue::servername: 'hue.wikimedia.org'
-# The default Thrift version for Hue 4 is 11, that is not compatible
-# with Hive 2.x's version, so upstream suggests 7 as good value.
-profile::hue::hive_thrift_version: 7
-
-profile::hue::database_name: 'hue_test'
-profile::hue::use_hue4_settings: true
-
-profile::kerberos::keytabs::keytabs_metadata:
-  - role: 'hue'
-    owner: 'hue'
-    group: 'hue'
-    filename: 'hue.keytab'
-
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
 
