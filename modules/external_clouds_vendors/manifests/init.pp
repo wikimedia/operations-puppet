@@ -67,6 +67,7 @@ class external_clouds_vendors (
         syslog_identifier => 'fetch-external-clouds-vendors-nets',
         environment       => $environment,
         interval          => {'start' => 'OnCalendar', 'interval' => 'daily'},
+        team              => 'ServiceOps'
     }
 }
 
