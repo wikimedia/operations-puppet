@@ -16,10 +16,14 @@ define etcd::client::config(
     }
 
     file { $title:
-        ensure  => $ensure,
-        owner   => $owner,
-        group   => $group,
-        mode    => $file_perms,
-        content => template('etcd/client_config.erb'),
+        ensure    => $ensure,
+        owner     => $owner,
+        group     => $group,
+        mode      => $file_perms,
+        # The client config may contain a password hash, so only show the diff
+        # if a password is not present
+        # TODO: use puppet 7's sensitive type
+        show_diff => $settings['password'] == undef,
+        content   => template('etcd/client_config.erb'),
     }
 }
