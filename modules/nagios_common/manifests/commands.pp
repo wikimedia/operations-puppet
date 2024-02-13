@@ -63,7 +63,6 @@ class nagios_common::commands(
         'check_graphite.py',
         'check_ifstatus_nomon',
         'check_jnx_alarms',
-        'check_lastmod.py',
         'check_ospf.py',
         'check_ssl',
         'check_vcp.py',
