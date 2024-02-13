@@ -70,12 +70,16 @@ class puppetmaster::puppetdb(
     nginx::site { 'puppetdb':
         ensure  => present,
         content => template('puppetmaster/nginx-puppetdb.conf.erb'),
-        require => Class['::sslcert::dhparam'],
+        require => [
+            Class['::sslcert::dhparam'],
+            Puppet::Expose_agent_certs['/etc/nginx'],
+        ],
     }
 
     # T209709
     nginx::status_site { 'status':
-        port => 10080,
+        port    => 10080,
+        require => Puppet::Expose_agent_certs['/etc/nginx'],
     }
 
     class { 'puppetdb::app':
