@@ -15,10 +15,10 @@ class profile::grafana::loki (
 ) {
 
   unless empty($allow_from) {
-    ferm::service { "loki-${config['server']['http_listen_port']}":
+    firewall::service { "loki-${config['server']['http_listen_port']}":
       proto  => 'tcp',
       port   => $config['server']['http_listen_port'],
-      srange => "@resolve((${allow_from.join(' ')}))",
+      srange => $allow_from,
     }
   }
 
