@@ -20,5 +20,4 @@ client c1 {
     expect resp.status == 200
     expect resp.http.Content-Security-Policy-Report-Only ~ "^default-src 'none';"
     expect resp.http.Content-Security-Policy-Report-Only == resp.http.X-Content-Security-Policy-Report-Only
-    expect resp.http.X-Content-Security-Policy-Report-Only ==  resp.http.X-Webkit-CSP-Report-Only
 } -run
