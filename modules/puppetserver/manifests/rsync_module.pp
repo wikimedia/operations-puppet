@@ -12,7 +12,7 @@ define puppetserver::rsync_module (
     $server_ensure = stdlib::ensure($is_ca and !$other_hosts.empty())
 
     if !$is_ca and !($facts['networking']['fqdn'] in $hosts) {
-        fail("${title}: ${facts['networking']['fqdn']} is not active CA server (${ca_server}) or in list of targets: ${hosts.join(',')}")
+        warning("${title}: ${facts['networking']['fqdn']} is not active CA server (${ca_server}) or in list of targets: ${hosts.join(',')}")
     }
 
     rsync::server::module { "puppet_${title}":
