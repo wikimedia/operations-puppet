@@ -12,6 +12,28 @@ EOF
 debconf-set-selections /tmp/static_net.cfg
 kill-all-dhcp; netcfg
 
+# Workaround netcfg not handling "netcfg/get_netmask string 255.255.255.255"
+# https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1064005
+# For routed Ganeti.
+# Doesn't scale well, ideally there should be a better way to detect if it's routed or not.
+case $IP in
+10.192.2[4-5].*)
+  MODE=routed
+  GATEWAY=10.192.24.1
+  ;;
+*)
+  MODE=switched
+  ;;
+esac
+
+if [ "$MODE" = "routed" ]; then
+    ip addr del $IP dev $IFACE
+    ip addr add $IP/32 dev $IFACE
+    ip route add $GATEWAY dev $IFACE scope link
+    ip route add default via $GATEWAY
+fi
+
+
 # install the network-console udeb, providing SSH access to the installer
 # which is useful for debugging (see also network-console settings)
 anna-install network-console
