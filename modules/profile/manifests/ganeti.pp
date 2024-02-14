@@ -212,6 +212,7 @@ class profile::ganeti (
         $check_path = '/usr/lib/nagios/plugins/pmp-check-unix-memory'
         $check_command = "${check_path} -c ${critical_memory} -w ${warning_memory}"
         nrpe::monitor_service { 'ganeti_memory':
+            ensure       => absent,
             description  => 'Ganeti memory',
             nrpe_command => $check_command,
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti#Memory_pressure',
