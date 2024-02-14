@@ -6,7 +6,7 @@ PartOf=eventlogging.service
 Type=simple
 User=eventlogging
 Group=eventlogging
-Environment=PYTHONPATH=<%= @eventlogging_path %>
+Environment=PYTHONPATH=<%= @eventlogging_path %>:/usr/lib/python3/dist-packages/MySQLdb
 ExecStart=<%= @eventlogging_path %>/bin/eventlogging-forwarder "@<%= @config_file %>"
 Restart=always
 SyslogIdentifier=eventlogging-forwarder@%i

@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=eventlogging
 Group=eventlogging
-WorkingDirectory=<%= @eventlogging_path %>
+WorkingDirectory=<%= @eventlogging_path %>:/usr/lib/python3/dist-packages/MySQLdb
 Environment="PYTHONPATH=<%= @eventlogging_path %>"
 Environment="STATSD_HOST=<%= @statsd.split(':')[0] or 'statsd' %>"
 Environment="STATSD_PORT=<%= @statsd.split(':')[1] or 8125 %>"
