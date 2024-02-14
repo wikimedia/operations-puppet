@@ -261,6 +261,7 @@ class profile::ganeti (
         if $tap_ip4 == undef {
             fail('In routed mode, `profile::ganeti::tap_ip4` must be defined.')
         }
+        systemd::mask { 'isc-dhcp-relay.service': }
         ensure_packages('isc-dhcp-relay')
         # To be replaced by finer grained policies
         # DHCP, BGP
@@ -291,17 +292,7 @@ class profile::ganeti (
                 'net.ipv6.conf.all.ip_forward'                            => 1,
             },
         }
-        # tftp servers are also the dhcp servers
-        file { '/etc/default/isc-dhcp-relay':
-            ensure  => file,
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            content => template('profile/ganeti/isc-dhcp-relay.erb'),
-        }
-        service { 'isc-dhcp-relay':
-            ensure  => running,
-        }
+
         class { 'bird':
             bfd             => false,
             do_ipv6         => true,

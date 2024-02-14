@@ -193,6 +193,12 @@ function setup_route {
     # IPv6 uses the link-local IP automatically
     ip addr add <%= @tap_ip4 %>/32 dev $INTERFACE scope link
 
+    # WMF - kill any DHCP relay that could be running on the interface - not pretty
+    pkill -f "dhcrelay.*$INTERFACE.*"
+    # WMF - then start the DHCP relay in the background for the proper interface
+    # and log to syslog
+    nohup /usr/sbin/dhcrelay <%= @tftp_servers[@site] %> -U <%= @facts['networking']['primary'] %> -i $INTERFACE -d 2>&1 | logger -t dhcrelay &> /dev/null &
+
     # Route traffic targeted at the IP to the interface
     if [ -n "$LINK" ]; then
       while ip rule del dev $INTERFACE; do :; done
@@ -212,10 +218,6 @@ function setup_route {
       IP6="${PREFIX}:${SUFFIX}"
       ip -6 route replace $IP6 proto static dev $INTERFACE
     fi
-
-    # WMF - restart the DHCP relay to pickup the new interface
-    /usr/sbin/service isc-dhcp-relay restart
-
 
     # Allow routing and arp proxying, or ndp proxying (IPv6)
     if [ -d "/proc/sys/net/ipv4/conf/$INTERFACE" ]; then
