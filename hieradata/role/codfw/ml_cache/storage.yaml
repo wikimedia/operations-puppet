@@ -15,3 +15,6 @@ profile::cassandra::instances:
   "ml-cache2003.codfw.wmnet":
     a:
       listen_address: 10.192.32.72
+
+# python 2 is required for git-fat
+profile::base::remove_python2_on_bullseye: false

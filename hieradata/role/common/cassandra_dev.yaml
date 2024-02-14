@@ -121,3 +121,6 @@ profile::java::java_packages:
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# python 2 is required for git-fat
+profile::base::remove_python2_on_bullseye: false

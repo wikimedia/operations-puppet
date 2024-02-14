@@ -10,6 +10,9 @@ class cassandra::logging(
 ) {
     require ::cassandra
 
+    # The scap deploy below requires git-fat
+    ensure_packages(['git-fat'])
+
     scap::target { 'cassandra/logstash-logback-encoder':
         deploy_user => 'deploy-service',
         manage_user => true,
