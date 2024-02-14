@@ -354,32 +354,30 @@ class profile::netbox (
     # T311048#8017206
     # https://docs.netbox.dev/en/stable/administration/housekeeping/
     systemd::timer::job { 'netbox_housekeeping':
-        ensure             => $active_ensure,
-        description        => 'Run Netbox Housekeeping cleanups',
-        environment        => $systemd_environment,
-        command            => '/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py housekeeping',
-        interval           => {
+        ensure      => $active_ensure,
+        description => 'Run Netbox Housekeeping cleanups',
+        environment => $systemd_environment,
+        command     => '/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py housekeeping',
+        interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 3:10:00',
         },
-        monitoring_enabled => true,
-        user               => 'netbox',
+        user        => 'netbox',
     }
 
     $ganeti_sync_profiles.each |Integer $prof_index, Hash $profile| {
         systemd::timer::job { "netbox_ganeti_${profile['profile']}_sync":
-            ensure             => $active_ensure,
-            description        => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
-            environment        => $systemd_environment,
-            command            => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox-extras/tools/ganeti-netbox-sync.py ${profile['profile']}",
-            interval           => {
+            ensure          => $active_ensure,
+            description     => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
+            environment     => $systemd_environment,
+            command         => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox-extras/tools/ganeti-netbox-sync.py ${profile['profile']}",
+            interval        => {
                 'start'    => 'OnCalendar',
                 # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)
                 'interval' => '*-*-* *:%02d/%02d:00'.sprintf($prof_index + 5, $ganeti_sync_interval),
             },
-            logging_enabled    => false,
-            monitoring_enabled => true,
-            user               => 'netbox',
+            logging_enabled => false,
+            user            => 'netbox',
         }
     }
 
