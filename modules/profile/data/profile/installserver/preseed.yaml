@@ -627,6 +627,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'puppetmaster200[4-5]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
+  'puppetserver2003':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
   'puppetserver*':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
