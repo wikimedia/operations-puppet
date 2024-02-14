@@ -111,26 +111,42 @@ if [ "${PUPPET_VERSION}" -eq 7 ]; then
   in-target /usr/bin/puppet config set --section agent srv_domain eqiad.wmnet
 fi
 
-# Configure ipv6 (sorry this is not pretty)
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
-# IPv4 with : not '.'
-IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1| tr '.' ':')"
-IP6_SLAAC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
 
-printf '\tpre-up /sbin/ip token set ::%s dev %s\n' "${IP}" "${IFACE}" >> /target/etc/network/interfaces
-if [ -z "${IP6_SLAAC}" ]
-then
-  # No global ipv6 address
-  PREFIX="NO_IPV6"
-elif test "${IP6_SLAAC#*::}" != "${IP6_SLAAC}"
-then
-  # Current address is compressed
-  PREFIX="${IP6_SLAAC%%::*}::"
+# Load the qemu module from the guest host
+cp /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko /lib/modules/$(uname -r)/kernel/drivers/firmware/
+depmod
+modprobe qemu_fw_cfg
+
+# If a qemu VM:
+if [ -f "/sys/firmware/qemu_fw_cfg/by_name/opt/ip/raw" ]; then
+    # Set the v4 to a /32
+    sed -i 's/\(address [0-9.]\+\/\)23/\132/g' /target/etc/network/interfaces
+    
+    # Get the v6 from qemu and configure the v6 IP and route.
+    IP6=$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw)
+    printf '\tup ip addr add %s/128 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+    printf '\tup ip route add default via fe80::2022:22ff:fe22:2201 dev %s\n' "${IFACE}" >> /target/etc/network/interfaces
 else
-  PREFIX="$(printf '%s' "${IP6_SLAAC}" | cut -d: -f1,2,3,4):"
-fi
-if [ "${PREFIX}" != "NO_IPV6" ]
-then
-  IP6="${PREFIX}${IP}"
-  printf '\tup ip addr add %s/64 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+    # Configure ipv6 (sorry this is not pretty)
+    IP="$(ip -o -4 address show dev $IFACE | tr -s ' ' | cut -d ' ' -f 4 | cut -d '/' -f 1| tr '.' ':')"
+    IP6_SLAAC="$(ip -o -6 addr show dev ${IFACE} | tr -s ' ' | cut -d ' ' -f4 | head -1)"
+
+    printf '\tpre-up /sbin/ip token set ::%s dev %s\n' "${IP}" "${IFACE}" >> /target/etc/network/interfaces
+    if [ -z "${IP6_SLAAC}" ]
+    then
+      # No global ipv6 address
+      PREFIX="NO_IPV6"
+    elif test "${IP6_SLAAC#*::}" != "${IP6_SLAAC}"
+    then
+      # Current address is compressed
+      PREFIX="${IP6_SLAAC%%::*}::"
+    else
+      PREFIX="$(printf '%s' "${IP6_SLAAC}" | cut -d: -f1,2,3,4):"
+    fi
+    if [ "${PREFIX}" != "NO_IPV6" ]
+    then
+      IP6="${PREFIX}${IP}"
+      printf '\tup ip addr add %s/64 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
+    fi
 fi
