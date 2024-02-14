@@ -12,6 +12,3 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
 mariadb::package: 'wmf-mariadb106'
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
-
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
