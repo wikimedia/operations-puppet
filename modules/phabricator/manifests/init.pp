@@ -3,6 +3,8 @@
 # Phabricator is a collection of open source web applications
 # that help software companies build better software.
 #
+# Phabricator has forked into Phorge. (https://we.phorge.it/)
+#
 # === Parameters
 #
 # [*phabdir*]
@@ -57,7 +59,7 @@
 #
 # See README for post install instructions
 #
-
+#
 class phabricator (
     Stdlib::Unixpath        $phabdir            = '/srv/phab',
     Stdlib::Unixpath        $confdir            = '/srv/phab/phabricator/conf',

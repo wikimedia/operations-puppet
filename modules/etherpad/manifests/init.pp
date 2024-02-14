@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # Install and manage Etherpad Lite
-
+# https://wikitech.wikimedia.org/wiki/Etherpad.wikimedia.org
 class etherpad(
     String $etherpad_db_user,
     Stdlib::Fqdn $etherpad_db_host,

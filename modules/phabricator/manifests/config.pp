@@ -33,7 +33,6 @@
 #     Specify whether to create a User resource for the $deploy_user.
 #     This should be set to false if you have defined the user elsewhere.
 #     Default: true
-
 class phabricator::config (
     Stdlib::Unixpath $phabdir            = '/srv/phab',
     String           $deploy_root        = undef,

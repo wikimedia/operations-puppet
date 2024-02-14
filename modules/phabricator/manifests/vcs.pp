@@ -1,6 +1,6 @@
 # == Class: phabricator::vcs
 #
-# Setup Phabricator to properly act as a VCS host
+# Setup Phabricator to properly act as a version control system host.
 #
 # Much of this logic is based on the Diffusion setup guide
 # https://secure.phabricator.com/book/phabricator/article/diffusion_hosting/
@@ -10,7 +10,7 @@
 #
 # [ssh_port]
 #  Port SSH should listen on
-
+#
 class phabricator::vcs (
     Stdlib::Unixpath $basedir               = '/srv/phab',
     Stdlib::Unixpath $phd_log_dir           = '/var/log/phd',

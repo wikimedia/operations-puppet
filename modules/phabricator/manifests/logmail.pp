@@ -1,8 +1,11 @@
 # == Class: phabricator::logmail
 #
-# once used for admin audit log and community metrics
+# An abstraction to define a shell script that sends
+# its output to users via email.
+#
+# Once used for admin audit log and community metrics
 # on Bugzilla, now for similar metrics on Phabricator
-# but can be flexible about the script it uses
+# but can be flexible about the script it uses.
 #
 # === Required Parameters
 #
@@ -43,7 +46,7 @@
 #
 # [*ensure*]
 #    Whether to enable the periodic job or not, default present
-
+#
 define phabricator::logmail (
     String $sndr_address,
     Variant[String, Array] $rcpt_address,

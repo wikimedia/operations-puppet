@@ -1,8 +1,8 @@
 # == Class: phabricator::phd
 #
-# Setup PHD service to run securely
+# Phabricator Daemon launcher
+# https://secure.phabricator.com/book/phabricator/article/managing_daemons/
 #
-
 class phabricator::phd (
     String $phd_user              = 'phd',
     Stdlib::Unixpath $phd_log_dir = '/var/log/phd',
