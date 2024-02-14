@@ -117,6 +117,8 @@ mediawiki::sites:
           additional_rewrites:
             "early":
               - "RewriteRule ^/$ https://donate.wikimedia.org/wiki/Special:FundraiserRedirector [R=302,L]"
+              - "# wikihole redirect can be removed 2026-03-01 - T357436"
+              - "RewriteRule ^/wikihole(/)?$ https://donate.wikimedia.org/?utm_medium=podcast&utm_campaign=wikihole&utm_source=wikihole [R=302,NE,L]"
             "late": []
       - name: thankyou.wikipedia.org
         params:
