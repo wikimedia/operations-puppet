@@ -48,7 +48,6 @@ class ncmonitor(
 
     package { 'ncmonitor':
         ensure  => $ensure,
-        require => Exec['apt-get update'],
     }
 
     systemd::sysuser { 'ncmonitor':
