@@ -1757,11 +1757,7 @@ node /^cloudelastic100[1-5]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudelastic1006\.eqiad\./ {
-    role(::insetup::search_platform)
-}
-
-node /^cloudelastic100[7-9]\.eqiad\./ {
+node /^cloudelastic100[6-9]\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
 
