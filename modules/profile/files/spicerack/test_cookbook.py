@@ -46,13 +46,13 @@ from subprocess import CompletedProcess, Popen, run
 import requests
 import yaml
 
+from wmflib.config import load_yaml_config
 from wmflib.interactive import ask_confirmation
 
 
 logger = logging.getLogger(__name__)
 GERRIT = "https://gerrit.wikimedia.org/r"
-REPO = "operations/cookbooks"
-GERRIT_REPO = f"{GERRIT}/{REPO}"
+CONFIG = Path("/etc/test-cookbook.yaml")
 BASE_DIR = Path("~/cookbooks_testing").expanduser()
 
 
@@ -64,15 +64,24 @@ class CookbookTesting:
     spicerack_config = Path("/etc/spicerack/config.yaml")
     custom_config = BASE_DIR / "config.yaml"
 
-    def __init__(self, *, change: int, patch_set: int, remaining_args: list[str],
-                 no_sal: bool = False):
+    def __init__(self, *, repos: list[str], change: int, patch_set: int,
+                 remaining_args: list[str], no_sal: bool = False):
         """Initialize the instance and auto-detect last patch set if not set."""
         self.change = str(change)
         self.remaining_args = remaining_args
         self.cookbooks_dir = BASE_DIR / f"cookbooks-{self.change}"
         self.no_sal = no_sal
+
+        project, latest_ps = self.get_gerrit_data()
+
+        if project not in repos:
+            raise ValueError(
+                f"Change {change} is in project {project} which is not available on this host"
+            )
+        self.git_url = f"{GERRIT}/{project}"
+
         if patch_set is None:
-            self.patch_set = self.get_latest_ps()
+            self.patch_set = latest_ps
         else:
             self.patch_set = str(patch_set)
 
@@ -120,15 +129,19 @@ class CookbookTesting:
 
         self.custom_config.write_text(yaml.dump(config))
 
-    def get_latest_ps(self) -> str:
-        """Find the latest patch set for the given change."""
+    def get_gerrit_data(self) -> tuple[str, str]:
+        """Find the repository name and the latest patch set for the given change."""
         raw_response = requests.get(f"{GERRIT}/changes/?q={self.change}&o=CURRENT_REVISION")
         payload = "".join(raw_response.text.splitlines()[1:])
         response = json.loads(payload)[0]
+        project = response["project"]
         revision = response["current_revision"]
         patch_set = response["revisions"][revision]["_number"]
-        logger.info("Latest patch set is %s", patch_set)
-        return patch_set
+        logger.info(
+            "Change exists in project %s with latest patch set being %s",
+            project, patch_set
+        )
+        return project, patch_set
 
     def run_git(self, args, **run_kwargs) -> CompletedProcess:
         """Run a git command logging the parameters."""
@@ -145,7 +158,7 @@ class CookbookTesting:
         if not self.cookbooks_dir.exists():
             logger.info("Checkout of change %s not found, cloning the repo", self.change)
             self.run_git(
-                ["clone", "--depth", "10", GERRIT_REPO, str(self.cookbooks_dir)], check=True)
+                ["clone", "--depth", "10", self.git_url, str(self.cookbooks_dir)], check=True)
 
         status = self.run_git(
             ["status", "--porcelain"], capture_output=True, text=True, check=True)
@@ -165,7 +178,7 @@ class CookbookTesting:
         else:
             logger.info("No local modification found, fetching change from Gerrit")
             ref = f"refs/changes/{self.change[-2:]}/{self.change}/{self.patch_set}"
-            self.run_git(["fetch", GERRIT_REPO, ref], check=True)
+            self.run_git(["fetch", self.git_url, ref], check=True)
             branch_exists = self.run_git(["rev-parse", "--verify", branch_name], check=False)
 
             if branch_exists.returncode != 0:
@@ -221,7 +234,9 @@ def main() -> int:
     """Execute the script."""
     logging.basicConfig(level=logging.INFO)
     args, remaining_args = parse_args()
+    config = load_yaml_config(CONFIG)
     cookbook_testing = CookbookTesting(
+        repos=config["cookbook_repos"],
         change=args.change,
         patch_set=args.ps,
         remaining_args=remaining_args,

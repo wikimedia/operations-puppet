@@ -85,6 +85,15 @@ class profile::spicerack (
         modules        => $modules,
     }
 
+    $test_cookbook_config = {
+        'cookbook_repos' => $cookbooks_repos.keys,
+    }
+
+    file { '/etc/test-cookbook.yaml':
+        ensure  => file,
+        content => $test_cookbook_config.to_yaml(),
+    }
+
     file { '/usr/local/bin/test-cookbook':
         ensure => file,
         source => 'puppet:///modules/profile/spicerack/test_cookbook.py',
