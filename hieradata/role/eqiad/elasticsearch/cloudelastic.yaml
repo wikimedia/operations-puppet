@@ -11,7 +11,7 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1003.wikimedia.org
           - cloudelastic1004.wikimedia.org
           - cloudelastic1005.wikimedia.org
-          - cloudelastic1006.wikimedia.org
+          - cloudelastic1006.eqiad.wmnet
           - cloudelastic1007.eqiad.wmnet
           - cloudelastic1008.eqiad.wmnet
           - cloudelastic1009.eqiad.wmnet

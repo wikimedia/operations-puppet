@@ -1753,8 +1753,12 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudelastic100[1-6]\.wikimedia\./ {
+node /^cloudelastic100[1-5]\.wikimedia\./ {
     role(elasticsearch::cloudelastic)
+}
+
+node /^cloudelastic1006\.eqiad\./ {
+    role(::insetup::search_platform)
 }
 
 node /^cloudelastic100[7-9]\.eqiad\./ {
