@@ -1,4 +1,4 @@
-profile::dumps::distribution::web::is_primary_server: false
+profile::dumps::distribution::web::is_primary_server: true
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
