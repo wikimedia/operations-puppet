@@ -189,6 +189,7 @@ class profile::kerberos::kdc (
 
     if $monitoring_enabled {
         nrpe::monitor_service { 'krb-kdc':
+            ensure        => absent,
             description   => 'Kerberos KDC daemon',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${mon_workers}:${mon_workers} -a '/usr/sbin/krb5kdc'",
             contact_group => 'admins,team-data-platform',
