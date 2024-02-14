@@ -2,6 +2,7 @@
 # sets up an Etherpad lite server
 class profile::etherpad(
     Stdlib::IP::Address $listen_ip = lookup('profile::etherpad::listen_ip'),
+    Stdlib::Ensure::Service $service_ensure = lookup('profile::etherpad::service_ensure'),
 ){
 
     include ::passwords::etherpad_lite
@@ -13,6 +14,7 @@ class profile::etherpad(
         etherpad_db_name => $passwords::etherpad_lite::etherpad_db_name,
         etherpad_db_pass => $passwords::etherpad_lite::etherpad_db_pass,
         etherpad_ip      => $listen_ip,
+        service_ensure   => $service_ensure,
     }
 
     prometheus::blackbox::check::http { 'etherpad-envoy':

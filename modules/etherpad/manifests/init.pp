@@ -6,13 +6,14 @@ class etherpad(
     Stdlib::Fqdn $etherpad_db_host,
     String $etherpad_db_name,
     String $etherpad_db_pass,
-    Stdlib::IP::Address $etherpad_ip = '0.0.0.0',
-    Stdlib::Port $etherpad_port      = 9001,
+    Stdlib::IP::Address $etherpad_ip        = '0.0.0.0',
+    Stdlib::Port $etherpad_port             = 9001,
+    Stdlib::Ensure::Service $service_ensure = 'running',
 ){
     ensure_packages('etherpad-lite')
 
     service { 'etherpad-lite':
-        ensure    => running,
+        ensure    => $service_ensure,
         enable    => true,
         subscribe => File['/etc/etherpad-lite/settings.json'],
     }
