@@ -95,6 +95,7 @@ class profile::puppetboard (
         nrpe_check_http => $nrpe_check_http,
         no_workers      => 4,
         systemd_group   => $systemd_group,
+        icinga_check    => false,
         config          => {
             need-plugins => 'python3',
             wsgi         => 'puppetboard.wsgi',
