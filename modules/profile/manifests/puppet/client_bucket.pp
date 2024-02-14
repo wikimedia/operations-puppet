@@ -44,7 +44,7 @@ class profile::puppet::client_bucket(
     }
 
     nrpe::monitor_service { 'client_bucket_large_file':
-        ensure       => $ensure,
+        ensure       => absent,
         description  => 'Check for large files in client bucket',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Puppet#check_client_bucket_large_file',
         nrpe_command => '/usr/local/lib/nagios/plugins/check_client_bucket',
