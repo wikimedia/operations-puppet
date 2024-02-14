@@ -34,7 +34,11 @@ VERP_BOUNCE_LOCALPART_REGEXP = \N^wiki-\w+-\w+-\w+-[+/\w]+$\N
 chunking_advertise_hosts =
 
 domainlist system_domains = @
+<% if @realm == "production" -%>
 domainlist local_domains = +system_domains : +wikimedia_domains : +verp_domains
+<% else -%>
+domainlist local_domains = +system_domains : +verp_domains
+<% end -%>
 domainlist wikimedia_domains = lsearch,ret=key;CONFDIR/wikimedia_domains
 domainlist verp_domains = <%= @verp_domains.join(" : ") %>
 domainlist relay_domains = +wikimedia_domains
