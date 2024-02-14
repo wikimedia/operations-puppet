@@ -1,9 +1,6 @@
 profile::elasticsearch::dc_settings:
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - cloudelastic1001.wikimedia.org
-          - cloudelastic1006.wikimedia.org
-          - cloudelastic1007.wikimedia.org
           - cloudelastic1008.eqiad.wmnet
           - cloudelastic1009.eqiad.wmnet
           - cloudelastic1010.eqiad.wmnet
