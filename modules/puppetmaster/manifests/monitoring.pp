@@ -29,6 +29,7 @@ class puppetmaster::monitoring (
     monitoring::icinga::git_merge { 'puppet': }
     if $server_type == 'frontend' or $server_type == 'standalone' {
         monitoring::service { 'puppetmaster_https':
+            ensure        => absent,
             description   => 'puppetmaster https',
             check_command => "check_https_port_status!8140!400!${puppetmaster_check_uri}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
@@ -56,6 +57,7 @@ class puppetmaster::monitoring (
     }
     if $server_type == 'frontend' or $server_type == 'backend' {
         monitoring::service { 'puppetmaster_backend_https':
+            ensure        => absent,
             description   => 'puppetmaster backend https',
             check_command => "check_https_port_status!8141!400!${puppetmaster_check_uri}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
