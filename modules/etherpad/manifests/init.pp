@@ -2,12 +2,12 @@
 # Install and manage Etherpad Lite
 
 class etherpad(
-    $etherpad_db_user,
-    $etherpad_db_host,
-    $etherpad_db_name,
-    $etherpad_db_pass,
-    $etherpad_ip = '0.0.0.0',
-    $etherpad_port = 9001,
+    String $etherpad_db_user,
+    Stdlib::Fqdn $etherpad_db_host,
+    String $etherpad_db_name,
+    String $etherpad_db_pass,
+    Stdlib::IP::Address $etherpad_ip = '0.0.0.0',
+    Stdlib::Port $etherpad_port      = 9001,
 ){
     ensure_packages('etherpad-lite')
 
