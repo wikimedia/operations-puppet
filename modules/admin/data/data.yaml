@@ -6186,7 +6186,7 @@ users:
     uid: 45721
     gid: 500
     ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCnCxkKTSCsICHya+gc5pKMrJyd6mo+FBvczfOSFfnEuyRSFZ4ZZ1WZqktodJJPJvctBJMZ2RDYQz73iwnn+3g0+cz+Izk9v40tElH64iNDwKFcaK2xaRvIHNFj1yYwS+JIBIQ8qFp0InrkGO8gln85yme8JtO73c4Y6cP4xXObESSu2quU1J6kZP6y5FQdDq1wlUJv0j1ci94oizKDu97rhDpc4WSGcNO0/ktQPsyT8PhaKfangIeJWAjtd8IOVCh2nqtpwB4fd3dTMKLm6pMbu4JQldnKO2X4EWPg40HVrtCxh0T73+QFejaShJq98d47PWqdIBxn0kMB7isk54dBjpi+Z4fYGAHjZlftCmxXoiwXe6V5f8cDLbdy755YsALgckjs4h71MfC22mkPvkImhJVeqca3f7rWjzmN88QPYksheNYULHfI0yx8K8c80/cDAwdLiVaFUSTAkTVaI1JaoZIm35qpKkfbkmEz2+vKdoFP0SEF+pyQd1w/LGEQEqrbeHsAvKGm4WBngkSfCAPoSNbjbddwIsGJGCVnKl3BEkNdQHO6x3WRdohrTCJ7E29B9qX0UnffZyPtAr5fb94nBC/S/1AQ/850mbVUW8gE8CXG9pRIf/tQS3h9PYG16QryATWko/kfJBcSMx/hkWXuh4J7dsIcdyLLbcXRYrLwqQ== rkhan-ctr@wikimedia.org'
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBjIZkSdeLazqXirTQHxSNyZa0EBa5Fb/G0qjrSb85SN riddy@edelgard'
   dreamyjazz:
     ensure: present
     realname: William Brown
