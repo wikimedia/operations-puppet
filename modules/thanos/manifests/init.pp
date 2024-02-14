@@ -7,4 +7,11 @@ class thanos {
         command     => '/usr/bin/curl -X POST localhost:17902/rule/-/reload',
         refreshonly => true,
     }
+
+    # Slice container for Thanos components, used to control resources as a whole
+    systemd::unit { 'thanos.slice':
+        ensure   => present,
+        override => true,
+        content  => systemd_template('slice'),
+    }
 }

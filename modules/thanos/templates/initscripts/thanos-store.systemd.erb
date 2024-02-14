@@ -1,5 +1,14 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
+Slice=thanos.slice
 ExecStart=
 # Use = for min/max time options since their values can start with -
-ExecStart=/usr/bin/thanos store --http-address <%= @http_address %> --grpc-address <%= @grpc_address %> --data-dir <%= @data_dir %> --index-cache.config-file <%= @cache_config_file %> --objstore.config-file <%= @objstore_config_file %> <%= @min_time ? "--min-time=#{@min_time}" : '' %> <%= @max_time ? "--max-time=#{@max_time}" : '' %> <%= @consistency_delay ? "--consistency-delay=#{@consistency_delay}" : '' %>
+ExecStart=/usr/bin/thanos store \
+  --http-address <%= @http_address %> \
+  --grpc-address <%= @grpc_address %> \
+  --data-dir <%= @data_dir %> \
+  --index-cache.config-file <%= @cache_config_file %> \
+  --objstore.config-file <%= @objstore_config_file %> \
+  <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
+  <%= @max_time ? "--max-time=#{@max_time}" : '' %> \
+  <%= @consistency_delay ? "--consistency-delay=#{@consistency_delay}" : '' %>

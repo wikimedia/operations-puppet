@@ -4,9 +4,13 @@ Description=Thanos bucket web viewer
 Documentation=https://github.com/thanos-io/thanos
 
 [Service]
+Slice=thanos.slice
 Restart=always
 User=thanos
-ExecStart=/usr/bin/thanos tools bucket web --http-address <%= @http_address %> --objstore.config-file <%= @objstore_config_file %> --web.external-prefix=/bucket
+ExecStart=/usr/bin/thanos tools bucket web \
+  --http-address <%= @http_address %> \
+  --objstore.config-file <%= @objstore_config_file %> \
+  --web.external-prefix=/bucket
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SyslogIdentifier=%N

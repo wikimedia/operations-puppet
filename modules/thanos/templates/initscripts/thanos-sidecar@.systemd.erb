@@ -4,11 +4,19 @@ Description=Thanos sidecar (instance %i)
 Documentation=https://github.com/improbable-eng/thanos/
 
 [Service]
+Slice=thanos.slice
 Restart=always
 User=prometheus
 # Use = for min time option since its value can start with -
 # Let sidecar start even when Prometheus compaction is disabled: --shipper.ignore-unequal-block-size
-ExecStart=/usr/bin/thanos sidecar --http-address <%= @http_address %> --grpc-address <%= @grpc_address %> --tsdb.path <%= @tsdb_path %> --prometheus.url <%= @prometheus_url %> <%= @objstore_account ? "--objstore.config-file #{@objstore_config_file}" : '' %> <%= @min_time ? "--min-time=#{@min_time}" : '' %> --shipper.ignore-unequal-block-size
+ExecStart=/usr/bin/thanos sidecar \
+  --http-address <%= @http_address %> \
+  --grpc-address <%= @grpc_address %> \
+  --tsdb.path <%= @tsdb_path %> \
+  --prometheus.url <%= @prometheus_url %> \
+  <%= @objstore_account ? "--objstore.config-file #{@objstore_config_file}" : '' %> \
+  <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
+  --shipper.ignore-unequal-block-size
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
