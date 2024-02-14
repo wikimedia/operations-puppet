@@ -46,6 +46,14 @@ system_aliases:
 	allow_defer
 	forbid_file
 
+<% if @mediawiki_smarthosts -%>
+wiki_mail:
+	driver = manualroute
+	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}
+	transport = remote_smtp
+	route_list = * <%= @mediawiki_smarthosts.join(':') %>
+<% end -%>
+
 # Send all mail via a set of mail relays ("smart hosts")
 
 smart_route:
