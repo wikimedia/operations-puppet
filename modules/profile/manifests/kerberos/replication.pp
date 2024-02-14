@@ -55,6 +55,7 @@ class profile::kerberos::replication (
 
         if $monitoring_enabled {
             nrpe::monitor_service { 'krb-kpropd':
+                ensure        => absent,
                 description   => 'Kerberos Kpropd daemon',
                 nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -a "/usr/sbin/kpropd"',
                 contact_group => 'admins,team-data-platform',
