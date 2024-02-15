@@ -50,9 +50,11 @@ class profile::query_service::streaming_updater (
         journal               => $journal,
     }
 
-    class { 'query_service::monitor::updater':
-        username           => $username,
-        updater_main_class => 'org.wikidata.query.rdf.updater.consumer.StreamingUpdate',
+    if $enable_updater {
+        class { 'query_service::monitor::updater':
+            username           => $username,
+            updater_main_class => 'org.wikidata.query.rdf.updater.consumer.StreamingUpdate',
+        }
     }
 
 }
