@@ -3,6 +3,7 @@
 class profile::etherpad(
     Stdlib::IP::Address $listen_ip = lookup('profile::etherpad::listen_ip'),
     Stdlib::Ensure::Service $service_ensure = lookup('profile::etherpad::service_ensure'),
+    Stdlib::Unixpath $database_datadir = lookup('profile::etherpad::database_datadir', {default_value => '/var/lib/mysql'}),
 ){
 
     include ::passwords::etherpad_lite
@@ -52,5 +53,12 @@ class profile::etherpad(
     rsyslog::input::file { 'etherpad-multiline':
         path           => '/var/log/etherpad-lite/etherpad-lite.log',
         startmsg_regex => '^\\\\[[0-9,-\\\\ \\\\:]+\\\\]',
+    }
+
+    # in cloud, use a local db server
+    if $::realm == 'labs' {
+        class { 'profile::mariadb::generic_server':
+            datadir => $database_datadir,
+        }
     }
 }
