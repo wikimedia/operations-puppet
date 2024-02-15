@@ -21,18 +21,22 @@
             <PatternLayout pattern="%highlight{%d %p [%c] - &lt;%m&gt;}%n"/>
         </Console>
         <RollingFile name="file" fileName="${baseDir}/cas.log" append="true"
-                     filePattern="${baseDir}/cas-%d{yyyy-MM-dd}.log">
+                     filePattern="${baseDir}/cas-%d{yyyy-MM-dd}.log.gz">
             <PatternLayout pattern="%d %p [%c] - &lt;%m&gt;%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
+            <!-- Keep a year's worth of logs -->
+            <DefaultRolloverStrategy max="365"/>
         </RollingFile>
         <RollingFile name="auditlogfile" fileName="${baseDir}/cas_audit.log" append="true"
-                     filePattern="${baseDir}/cas_audit-%d{yyyy-MM-dd}.log">
+                     filePattern="${baseDir}/cas_audit-%d{yyyy-MM-dd}.log.gz">
             <PatternLayout pattern="%d %p [%c] - %m%n"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
             </Policies>
+            <!-- Keep a year's worth of logs -->
+            <DefaultRolloverStrategy max="365"/>
         </RollingFile>
 
         <CasAppender name="casAudit">
