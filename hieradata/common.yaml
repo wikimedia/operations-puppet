@@ -634,7 +634,7 @@ dumps_dist_nfs_servers: [clouddumps1001.wikimedia.org, clouddumps1002.wikimedia.
 dumps_dist_active_vps: clouddumps1001.wikimedia.org
 # Dumps distribution server currently serving web and rsync mirror traffic
 # Also serves stat* hosts over nfs
-dumps_dist_active_web: clouddumps1001.wikimedia.org
+dumps_dist_active_web: clouddumps1002.wikimedia.org
 
 # List of all zookeeper clusters in production.
 # The number after each hostname represents the host's zkid
