@@ -141,7 +141,7 @@ testcases:
         wiki: "zhwiki"
         mwversion: "1.38.0-wmf.3"
         reqId: "8fabbd5e-184a-47e0-9bb8-514846c8ae2c"
-        message_checksum: "4c615270691b88c41beb7266cb1225f3"
+        message_checksum: "ffd49c32e0dca41eb7b1f8f468cf17f1"
       - __target_index: "ecs-mediawiki-1-1.11.0-N-weekly"
         message: "[8fabbd5e-184a-47e0-9bb8-514846c8ae2c] /w/rest.php/zh.wikipedia.org/v3/page/pagebundle/2018%E5%B9%B4%E8%88%AA%E5%A4%A9%E6%B4%BB%E5%8A%A8%E5%88%97%E8%A1%A8/63910636   Wikimedia\\Assert\\InvariantException: Invariant failed: Bad UTF-8 at start of string"
         log:
@@ -359,7 +359,7 @@ testcases:
         phpversion: "7.4.30"
         servergroup: "jobrunner"
         normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
-        message_checksum: "6e68b5cd5ffeb7f52a7e2ac1d9594da7"
+        message_checksum: "2514dea08b28d53f7f1ab87cdbf07759"
         reqId: "ede088f4-b120-4615-9523-25c820686a58"
       - "__target_index": "ecs-mediawiki-1-1.11.0-N-weekly"
         message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
