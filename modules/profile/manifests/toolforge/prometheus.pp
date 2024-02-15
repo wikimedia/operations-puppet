@@ -1,7 +1,7 @@
 # This profile provides both project-wide host discovery/monitoring (via cron
 # prometheus-labs-targets) and kubernetes discovery/monitoring via Prometheus'
 # native k8s support.
-
+# @param allow_pages boolean to disable paging alerts on non-production deployments
 class profile::toolforge::prometheus (
     Stdlib::Fqdn               $k8s_apiserver_fqdn                 = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port               $k8s_apiserver_port                 = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
@@ -9,6 +9,7 @@ class profile::toolforge::prometheus (
     Stdlib::Fqdn               $keystone_api_fqdn                  = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String                     $observer_password                  = lookup('profile::openstack::eqiad1::observer_password'),
     String                     $observer_user                      = lookup('profile::openstack::base::observer_user'),
+    Boolean                    $allow_pages                        = lookup('profile::toolforge::prometheus::allow_pages', {default_value => false}),
     Optional[Stdlib::Datasize] $storage_retention_size             = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
     Array[Stdlib::HTTPUrl]     $probes_pingthing_http_check_urls   = lookup('profile::toolforge::prometheus::probes_pingthing_http_check_urls', { 'default_value' => [] }),
 ) {
@@ -511,6 +512,18 @@ class profile::toolforge::prometheus (
         instances  => ["project-${::wmcs_project}"],
     }
 
+    if $allow_pages {
+        $page_filter = undef
+    } else {
+        # Rewrite pages as criticals on non-production deployments.
+        $page_filter = {
+            'action'       => 'replace',
+            'target_label' => 'severity',
+            'regex'        => 'page',
+            'replacement'  => 'critical',
+        }
+    }
+
     prometheus::server { 'tools':
         listen_address                 => '127.0.0.1:9902',
         external_url                   => 'https://tools-prometheus.wmflabs.org/tools',
@@ -521,7 +534,8 @@ class profile::toolforge::prometheus (
         alerting_relabel_configs_extra => [
             { 'target_label' => 'project', 'replacement' => $::wmcs_project, 'action' => 'replace' },
             { 'target_label' => 'team',    'replacement' => 'wmcs',          'action' => 'replace' },
-        ],
+            $page_filter,
+        ].filter |$it| { $it != undef },
     }
 
     prometheus::rule { 'rules_kubernetes.yml':
