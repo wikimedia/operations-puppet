@@ -65,3 +65,6 @@ profile::apifeatureusage::logstash::curator_actions:
         unit_count: 2
 
 profile::contacts::role_contacts: ['Search Platform']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
