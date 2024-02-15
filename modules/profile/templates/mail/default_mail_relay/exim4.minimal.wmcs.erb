@@ -46,7 +46,7 @@ system_aliases:
 	allow_defer
 	forbid_file
 
-<% if @mediawiki_smarthosts -%>
+<% if @mediawiki_smarthosts != [] -%>
 wiki_mail:
 	driver = manualroute
 	condition = ${if eqi{$header_X-Mailer:}{MediaWiki mailer}}

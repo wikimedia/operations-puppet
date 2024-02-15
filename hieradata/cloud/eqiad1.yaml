@@ -201,10 +201,7 @@ jenkins_agent_username: "jenkins-deploy"
 profile::mail::default_mail_relay::smarthosts:
   - "mx-out03.wmcloud.org"
   - "mx-out04.wmcloud.org"
-
-profile::mail::default_mail_relay::mediawiki_smarthosts:
-  - "mx-out03.wmcloud.org"
-  - "mx-out04.wmcloud.org"
+profile::mail::default_mail_relay::mediawiki_smarthosts: []
 
 profile::systemd::timesyncd::ntp_servers:
   - "ntp-03.cloudinfra.eqiad1.wikimedia.cloud"
