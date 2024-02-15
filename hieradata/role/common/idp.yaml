@@ -223,22 +223,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  superset_next:
-    id: 37
-    service_class: 'OidcRegisteredService'
-    service_id: 'https://superset-next-k8s\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
-    required_groups:
-      - nda
-      - wmf
-  superset:
-    id: 38
-    service_class: 'OidcRegisteredService'
-    service_id: 'https://superset-k8s\.wikimedia\.org(/.*)?'
-    profile_format: 'FLAT'
-    required_groups:
-      - nda
-      - wmf
 
 profile::idp::ldap_attributes:
   - cn
