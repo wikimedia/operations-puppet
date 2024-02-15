@@ -3,8 +3,7 @@ acmechief_host: acmechief2002.codfw.wmnet
 
 profile::idp::tgc_cookie_same_site: 'lax'
 profile::idp::tgc_cookie_pin_to_session: false
-# TODO: we should possibly lower the level for production
-profile::idp::log_level: 'DEBUG'
+profile::idp::log_level: 'WARN'
 profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
