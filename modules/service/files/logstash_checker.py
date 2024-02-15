@@ -3,9 +3,9 @@
 Basic logstash error rate checker.
 
 Theory of operation:
-    - fetch histogram of error / fatals from logstash for the last ~10 minutes
+    - fetch histogram of error / fatals from logstash for the last hour
     - calculate the mean rates before/after a time <delay> seconds in the past
-    - if the `after` rate is more than <threshold> times the before rate,
+    - if the `after` rate is more than <fail-threshold> times the before rate,
       return an error; else, exit with 0.
 """
 
@@ -17,6 +17,7 @@ import logging
 import os
 import sys
 import time
+import yaml
 
 import urllib3
 
@@ -87,7 +88,8 @@ class CheckService(object):
 
     def __init__(self, host, service_name, logstash_host, user='', password='',
                  verbose=False, delay=120.0, fail_threshold=2.0,
-                 absolute_threshold=1.0):
+                 absolute_threshold=1.0,
+                 mediawiki_deployments_file="/etc/helmfile-defaults/mediawiki-deployments.yaml"):
         """Initialize the checker."""
         self.host = host
         self.service_name = service_name
@@ -95,6 +97,7 @@ class CheckService(object):
         self.delay = delay
         self.fail_threshold = fail_threshold
         self.absolute_threshold = absolute_threshold
+        self.mediawiki_deployments_file = mediawiki_deployments_file
         self.auth = None
         self.logger = logging.getLogger(__name__)
 
@@ -107,14 +110,55 @@ class CheckService(object):
 
         return self._make_logstash_query()
 
+    def _get_baremetal_mediawiki_canaries(self) -> set:
+        bare_metal_canaries = set()
+
+        for group in ["mediawiki-api-canaries", "mediawiki-appserver-canaries"]:
+            with open(os.path.join("/etc/dsh/group", group)) as f:
+                for canary in f.readlines():
+                    if canary.startswith("#"):
+                        continue
+                    # Strip domain from hostname since logstash records hold unqualified hostnames.
+                    canary = canary.split(".")[0]
+                    bare_metal_canaries.add(canary)
+
+        return bare_metal_canaries
+
+    def _get_k8s_canary_namespaces(self) -> set:
+        res = set()
+
+        with open(self.mediawiki_deployments_file) as f:
+            for entry in yaml.load(f):
+                if entry.get("canary"):
+                    res.add(entry["namespace"])
+
+        return res
+
+    def _one_of_query(self, key, values) -> str:
+        return f"{key}:(" + " OR ".join(values) + ")"
+
     def _mwdeploy_query(self):
         """Return a query that tracks MediaWiki deploy problems."""
-        query = ('host:("%(host)s") '
-                 'AND type:mediawiki '
-                 'AND channel:(exception OR error)'
-                 ) % vars(self)
+
+        if self.host == "canaries":
+            k8s_labels_deployment = self._get_k8s_canary_namespaces()
+            k8s_canaries_query = "kubernetes.labels.release:canary AND " \
+                + self._one_of_query("kubernetes.labels.deployment", k8s_labels_deployment)
+
+            host_query = k8s_canaries_query
+
+            baremetal_mediawiki_canaries = self._get_baremetal_mediawiki_canaries()
+            if baremetal_mediawiki_canaries:
+                bare_metal_canaries_query = \
+                    self._one_of_query("host", baremetal_mediawiki_canaries)
+                host_query = f"({host_query} OR {bare_metal_canaries_query})"
+        else:
+            host_query = f'host:"{self.host}"'
+
+        query = (f"{host_query} AND type:mediawiki AND channel:(exception OR error)")
 
         return {
+            # "size": 0, means don't return the matching records, just count.
             "size": 0,
             "aggs": {
                 "2": {
@@ -190,12 +234,14 @@ class CheckService(object):
             }
         }
 
-    def run(self):
+    def run(self) -> bool:
         """
         Query logstash and check error rate.
 
         Queries logstash & checks whether a deploy caused a significant
         increase in the event rate.
+
+        Returns true if the error threshold has been exceeded.
         """
         # Query logstash
         http = self._spawn_downloader()
@@ -209,6 +255,7 @@ class CheckService(object):
         logstash_search_url = os.path.join(self.logstash_host,
                                            'logstash-*', '_search')
         query_object = self._logstash_query()
+        self.logger.debug('logstash query: %s', query_object)
         try:
             response = fetch_url(
                 http,
@@ -220,9 +267,9 @@ class CheckService(object):
             )
             resp = response.data.decode('utf-8')
             r = json.loads(resp)
-        except ValueError:
-            # FIXME: discards the error object
-            raise ValueError("Logstash request returned error")
+            self.logger.debug('logstash response %s', r)
+        except ValueError as e:
+            raise ValueError(f"Logstash request returned error: {e}")
 
         if type(r) is not dict:
             raise ValueError(
@@ -234,9 +281,27 @@ class CheckService(object):
                 "Logstash request to %s returned error:\n%s\n\nQuery was: %s"
                 % (logstash_search_url, r, json.dumps(query_object())))
 
-        self.logger.debug('logstash response %s', r)
-
         # Calculate mean event rates before / after the deploy.
+
+        # buckets is an array of records like the following:
+        # {
+        #     "key_as_string": "2024-02-15T20:15:00.000Z",
+        #     "key": 1708028100000,
+        #     "doc_count": 0
+        # },
+        # {
+        #     "key_as_string": "2024-02-15T20:15:10.000Z",
+        #     "key": 1708028110000,
+        #     "doc_count": 1
+        # },
+        # {
+        #     "key_as_string": "2024-02-15T20:15:20.000Z",
+        #     "key": 1708028120000,
+        #     "doc_count": 1
+        # },
+
+        # The "key" appears to be a unix timestamp with millisecond resolution.
+
         entries = r['aggregations']['2']['buckets']
         cutoff_ts = (time.time() - self.delay) * 1000
 
@@ -259,13 +324,13 @@ class CheckService(object):
         if over_threshold:
             percent_over = (1 - target_error_rate / mean_after) * 100
 
-            self.logger.error('%d%% OVER_THRESHOLD (Avg. Error rate: '
+            self.logger.error('%d%% OVER_THRESHOLD (Avg. errors per 10 seconds: '
                               'Before: %.2f, After: %.2f, Threshold: %.2f)',
                               percent_over, mean_before, mean_after,
                               target_error_rate)
 
         else:
-            self.logger.info('OK (Avg. Error rate: '
+            self.logger.info('OK (Avg. errors per 10 seconds: '
                              'Before: %.2f, After: %.2f, Threshold: %.2f)',
                              mean_before, mean_after, target_error_rate)
 
@@ -285,12 +350,15 @@ class CheckService(object):
 def main():
     """Handle args, kick off check."""
     parser = argparse.ArgumentParser(
-        description='Check the error rate change of a single WMF service/host',
-        epilog='Example: logstash_checker.py --host mw1167 --user "<user>" -p')
+        description='Check the error rate change across all WMF canaries, or a single service/host',
+        epilog=f'Example: {__file__} --service-name mwdeploy '
+        '--logstash-host logstash1023.eqiad.wmnet:9200 --host canaries')
 
     parser.add_argument('--service-name', default='mediawiki',
                         help='The service name to match')
-    parser.add_argument('--host', required=True, help='The host to check')
+    parser.add_argument('--host', required=True,
+                        help='The host to check.  '
+                        'Specify "canaries" to check all MediaWiki canaries')
     parser.add_argument('--logstash-host',
                         default='https://logstash.wikimedia.org:9200',
                         help='The logstash host.')
@@ -311,6 +379,10 @@ def main():
                         help='Prompt for password')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='More verbose output')
+    parser.add_argument('--mediawiki-deployments-file',
+                        default='/etc/helmfile-defaults/mediawiki-deployments.yaml',
+                        help='The file to read to determine k8s canary deployment namespaces, '
+                        'when using --host "canaries"')
 
     args = parser.parse_args()
     args = vars(args)
