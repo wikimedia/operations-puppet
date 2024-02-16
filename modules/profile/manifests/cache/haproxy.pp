@@ -36,6 +36,7 @@ class profile::cache::haproxy(
     Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
     Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
+    Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -47,8 +48,16 @@ class profile::cache::haproxy(
     # variable used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
 
+    # If we want to install haproxy from component/haproxy26 on bookworm, built
+    # against OpenSSL 1.1.1; see T352744.
+    if $install_haproxy26_component and debian::codename::eq('bookworm') {
+        $component = 'component/haproxy26'
+    } else {
+        $component = "thirdparty/${haproxy_version}"
+    }
+
     apt::package_from_component { 'haproxy':
-        component       => "thirdparty/${haproxy_version}",
+        component       => $component,
         before          => Class['::haproxy'],
         priority        => 1002, # Take precedence over main
         ensure_packages => false, # this is handled by ::haproxy
