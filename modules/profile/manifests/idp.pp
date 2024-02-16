@@ -61,7 +61,7 @@ class profile::idp(
       $firewall_port = 443
       profile::auto_restarts::service { 'envoyproxy': }
     } else {
-      # In cloud we use the shared wmfcloud proxy for tls termination
+      # In Cloud VPS we use the shared web proxy for tls termination
       $firewall_port = 8080
     }
 
