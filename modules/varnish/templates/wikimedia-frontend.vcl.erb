@@ -80,9 +80,6 @@ acl wikimedia_trust {
 -%>
        "<%= subnet %>"/<%= mask %>;
 <% end -%>
-<% if @realm == "production" -%>
-       ! "10.68.0.0"/16; # temporary hack, do not treat labs like production
-<% end -%>
 }
 
 /* Include the VCL file for this role */
