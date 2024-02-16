@@ -128,10 +128,9 @@ class profile::configmaster (
             content  => template('profile/configmaster/config-master.conf.erb'),
         }
     }
-    # The contents of these files are managed by puppet-merge, but user
-    ferm::service { 'pybal_conf-http':
-        proto  => 'tcp',
-        port   => 80,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'pybal_conf-http':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 }
