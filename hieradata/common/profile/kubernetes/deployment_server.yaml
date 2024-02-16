@@ -154,6 +154,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-jobrunner
         - name: mw-jobrunner-deploy
+    mw-parsoid:
+      usernames:
+        - name: mw-parsoid
+        - name: mw-parsoid-deploy
     mw-page-content-change-enrich:
       usernames:
         - name: mw-page-content-change-enrich
