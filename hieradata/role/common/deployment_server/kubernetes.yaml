@@ -294,6 +294,12 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
+  - namespace: mw-parsoid
+    release: main
+    canary: canary
+    mw_flavour: "publish"
+    web_flavour: "webserver"
+    debug: false
   - namespace: mw-misc
     release: main
     canary: ~
