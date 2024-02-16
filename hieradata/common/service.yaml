@@ -1755,7 +1755,7 @@ service::catalog:
       scheduler: wrr
       protocol: tcp
     httpbb_dir: appserver
-    page: false  # TODO change this to true
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1764,7 +1764,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: mw-parsoid
         active_active: false
