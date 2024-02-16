@@ -29,5 +29,5 @@ pax -x sv4cpio -s'%firmware%/firmware%' -w firmware | gzip -c >firmware.cpio.gz
 cat firmware.cpio.gz >> "$distro"-installer/debian-installer/amd64/initrd.gz
 
 echo The updated netboot environment can be found in "$WD"/"$distro"-installer, if everyone looks fine, move it to /var/lib/puppet/volatile/tftpboot
-echo if the script is run on a Puppet 5 server and to /srv/puppet_fileserver/volatile on a Puppet 7 server
+echo if the script is run on a Puppet 5 server and to /srv/puppet_fileserver/volatile/tftpboot on a Puppet 7 server
 echo and make sure to remove "$WD"
