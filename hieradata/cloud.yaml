@@ -154,6 +154,8 @@ profile::debmonitor::server::enable_monitoring: false
 profile::debmonitor::server::required_groups: []
 profile::debmonitor::server::trusted_ca_source: "/etc/ssl/certs/Puppet_Internal_CA.pem"
 
+profile::etherpad::service_ensure: running
+
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::description: WMF GitLab runner
