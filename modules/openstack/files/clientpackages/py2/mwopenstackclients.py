@@ -305,7 +305,7 @@ class DnsManager(object):
         r = self.designateclient.zones.list(criterion={'name': name})
         if not r:
             self.logger.warning('Creating zone %s', name)
-            z = self.designateclient.zones.create(name, email='root@wmflabs.org', ttl=60)
+            z = self.designateclient.zones.create(name, email='root@wmcloud.org', ttl=60)
         else:
             z = r[0]
         return z

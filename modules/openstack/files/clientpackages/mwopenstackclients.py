@@ -564,7 +564,7 @@ class DnsManager(object):
         if not r:
             logger.warning("Creating zone %s", name)
             z = self.designateclient.zones.create(
-                name, email="root@wmflabs.org", ttl=60
+                name, email="root@wmcloud.org", ttl=60
             )
         else:
             z = r[0]

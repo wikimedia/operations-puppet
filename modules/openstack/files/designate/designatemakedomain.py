@@ -76,7 +76,7 @@ def createDomain(url, user, password, project, domain, orig_project, region='eqi
     #  is needed since wmflabs.org lives in that project and
     #  designate prevents subdomain creation elsewhere.
     LOG.info("Creating %s" % domain)
-    zone = createClient.zones.create(domain, email='root@wmflabs.org', ttl=ttl)
+    zone = createClient.zones.create(domain, email='root@wmcloud.org', ttl=ttl)
     status = 'PENDING'
     # Wait for the domain to actually exist before we transfer it
     while status == 'PENDING':
