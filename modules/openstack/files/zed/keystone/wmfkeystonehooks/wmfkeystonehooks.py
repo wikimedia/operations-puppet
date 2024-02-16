@@ -358,17 +358,6 @@ class KeystoneHooks(notifier.Driver):
                 CONF.wmfhooks.region
             )
 
-            LOG.warning("Creating default .wmflabs.org domain for project %s" % project_id)
-            designatemakedomain.createDomain(
-                CONF.wmfhooks.auth_url,
-                CONF.wmfhooks.admin_user,
-                CONF.wmfhooks.admin_pass,
-                project_id,
-                '{}.wmflabs.org.'.format(project_id),
-                'wmflabsdotorg',
-                CONF.wmfhooks.region
-            )
-
         LOG.warning("Completed wmf hooks for project creation: %s" % project_id)
 
     def notify(self, context, message, priority, retry=False):
