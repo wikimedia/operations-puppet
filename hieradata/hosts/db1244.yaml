@@ -1,4 +1,2 @@
 # db1244
-profile::mariadb::core::multiinstance::instances:
-  s4: 185G
-  s5: 185G
+mariadb::shard: 's4'

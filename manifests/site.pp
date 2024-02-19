@@ -611,7 +611,7 @@ node /^db2156\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(160|190|199|238|241|242|243|247|248|249)\.eqiad\./ {
+node /^db1(160|190|199|238|241|242|243|244|247|248|249)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -723,7 +723,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(213|244|246)\.eqiad\./ {
+node /^db1(213|246)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
