@@ -1,5 +1,2 @@
 # db2137
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s4: 185G
-  s5: 185G
+mariadb::shard: 's4'
