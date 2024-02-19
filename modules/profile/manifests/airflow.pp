@@ -168,7 +168,7 @@ class profile::airflow(
                         # keep some parallelism:
                         #   - for faster backfill
                         #   - for faster backfill
-                        'max_active_runs_per_dag' => '1',
+                        'max_active_runs_per_dag' => '3',
 
                         # The number of retries each task is going to have by default. Can be
                         # overridden at dag or task level.
