@@ -1,5 +1,2 @@
 # db1246
-profile::mariadb::core::multiinstance::instances:
-  s2: 185G
-  s4: 185G
-
+mariadb::shard: 's2'
