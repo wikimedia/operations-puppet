@@ -1,5 +1,3 @@
 # db2170
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s1: 185G
-  s2: 185G
+mariadb::shard: 's1'
+mariadb::package: 'wmf-mariadb106'
