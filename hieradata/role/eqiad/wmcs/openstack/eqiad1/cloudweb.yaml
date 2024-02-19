@@ -5,6 +5,9 @@ profile::admin::groups:
   - ldap-admins
 cluster: wmcs
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
+
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080
