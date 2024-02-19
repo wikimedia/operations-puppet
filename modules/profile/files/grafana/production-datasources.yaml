@@ -280,3 +280,33 @@ datasources:
    editable: false
    withCredentials: false
    version: 1
+   jsonData:
+    prometheusType: "Thanos"
+
+ - name: thanos-downsample-5m
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: https://thanos-query.discovery.wmnet
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+   jsonData:
+    customQueryParameters: "max_source_resolution=5m"
+    prometheusType: "Thanos"
+
+ - name: thanos-downsample-1h
+   type: prometheus
+   access: proxy
+   orgId: 1
+   url: https://thanos-query.discovery.wmnet
+   database:
+   isDefault: false
+   editable: false
+   withCredentials: false
+   version: 1
+   jsonData:
+    customQueryParameters: "max_source_resolution=1h"
+    prometheusType: "Thanos"
