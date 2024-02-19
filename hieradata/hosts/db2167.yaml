@@ -1,2 +1,3 @@
 # db2167
 mariadb::shard: 's8'
+mariadb::package: 'wmf-mariadb106'
