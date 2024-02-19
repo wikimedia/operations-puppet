@@ -1,5 +1,2 @@
 # db1170
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s2: 185G
-  s7: 185G
+mariadb::shard: 's7'

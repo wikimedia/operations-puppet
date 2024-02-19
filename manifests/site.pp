@@ -568,7 +568,7 @@ node /^db2173\.codfw\./ {
 }
 
 # s2 (large wikis) core production dbs on eqiad
-# See also db1146, db1170 below
+# See also db1146 below
 node /^db1(162|182|188|197|222|229|233)\.eqiad\./ {
     role(mariadb::core)
 }
@@ -681,8 +681,7 @@ node /^db2158\.codfw\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
-# See also db1170 below
-node /^db1(069|174|178|181|191|194|202|227|236)\.eqiad\./ {
+node /^db1(069|170|174|178|181|191|194|202|227|236)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -724,7 +723,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db1(170|213|244|246)\.eqiad\./ {
+node /^db1(213|244|246)\.eqiad\./ {
     role(mariadb::core_multiinstance)
 }
 node /^db2(137|138|167|168|169|170|171|194)\.codfw\./ {
