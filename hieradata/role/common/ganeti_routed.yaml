@@ -8,7 +8,6 @@ profile::ganeti::rapi_nodes:
     - netbox-dev2002.codfw.wmnet
     - netmon1003.wikimedia.org
     - netmon2002.wikimedia.org
-    - cumin1001.eqiad.wmnet
     - cumin1002.eqiad.wmnet
     - cumin2002.codfw.wmnet
 profile::debdeploy::client::filter_services:
