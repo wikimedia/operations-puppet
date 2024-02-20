@@ -226,6 +226,7 @@ Components: main
  component/puppetdb7
  component/prometheus-openstack-exporter
  component/wmf-laptop
+ thirdparty/ceph-reef
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/haproxy26
@@ -239,6 +240,7 @@ Update:
  elasticsearch-curator5
  hp-mcp-bookworm
  hwraid-megacli
+ thirdparty/ceph-reef
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3

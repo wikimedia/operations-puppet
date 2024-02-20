@@ -252,6 +252,16 @@ VerifyRelease: E84AC2C0460F3994
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
 
+Name: thirdparty/ceph-reef
+Method: https://download.ceph.com/debian-reef
+Components: main>thirdparty/ceph-reef
+UDebComponents:
+Suite: bookworm
+Architectures: amd64
+VerifyRelease: E84AC2C0460F3994
+# skip any debugging package, as they are too big and can be manually installed if needed for debugging
+ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
+
 Name: bigtop15-buster
 Method: http://repo.bigtop.apache.org.s3.amazonaws.com/releases/1.5.0/debian/10/amd64
 Components: contrib>thirdparty/bigtop15
