@@ -173,6 +173,8 @@ cache::alternate_domains:
     caching: 'normal'
   toolsadmin.wikimedia.org:
     caching: 'normal'
+  trace.wikimedia.org:
+    caching: 'pass'
   transparency.wikimedia.org:
     caching: 'normal'
   turnilo.wikimedia.org:

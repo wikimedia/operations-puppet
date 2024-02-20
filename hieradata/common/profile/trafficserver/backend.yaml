@@ -319,6 +319,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://toolsadmin.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
     - type: map
+      target: http://trace.wikimedia.org
+      replacement: https://jaeger-query.svc.eqiad.wmnet:30443
+    - type: map
       target: http://transparency.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
