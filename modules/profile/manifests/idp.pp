@@ -55,6 +55,7 @@ class profile::idp(
 
     ensure_packages(['python3-pymysql'])
     include passwords::ldap::production
+    include profile::java
     class{ 'sslcert::dhparam': }
     if $envoy_termination {
       include profile::tlsproxy::envoy
@@ -147,7 +148,7 @@ class profile::idp(
     systemd::unit{'tomcat9':
         override => true,
         restart  => true,
-        content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\n",
+        content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\nEnvironment=JAVA_HOME=${profile::java::default_java_home}",
     }
 
     firewall::service {'cas-https':
