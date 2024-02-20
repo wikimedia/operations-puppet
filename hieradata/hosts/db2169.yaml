@@ -1,4 +1,2 @@
 # db2169
 mariadb::shard: 's6'
-mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
