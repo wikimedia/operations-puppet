@@ -190,7 +190,7 @@ lvs::interfaces::vlan_data:
       lvs2011: 'eno12399np0:10.192.5.2'
       lvs2012: 'eno12399np0:10.192.5.3'
       lvs2013: 'eno12409np1:10.192.5.4'
-      lvs2014: 'eno12409np1:10.192.5.5'
+      lvs2014: 'eno12409np1:10.192.5.8'
   private1-a4-codfw:
     id: "2024"
     netmask: '255.255.255.0'
