@@ -34,6 +34,6 @@ further analysis. `python3` is required locally and `block_sizes.py`
 must be available on `thanos host`.
 
 ```shell
-ssh <thanos host> 'export.py' | ./import.py
-ssh <thanos host> 'export.py --kind sizes' | ./import.py --kind sizes
+ssh <thanos host> 'sudo thanos-bucket-query-export' | ./import.py
+ssh <thanos host> 'sudo thanos-bucket-query-export --kind sizes' | ./import.py --kind sizes
 ```

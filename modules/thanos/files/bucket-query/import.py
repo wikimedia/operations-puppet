@@ -7,13 +7,16 @@ import sys
 from contextlib import contextmanager
 
 SCHEMAS = {
-    "sizes": """
+    "sizes": [
+        """
         CREATE TABLE IF NOT EXISTS blocks_sizes (
             ULID TEXT PRIMARY KEY,
             SIZE_MB REAL
         );
-    """,
-    "blocks": """
+        """,
+    ],
+    "blocks": [
+        """
         CREATE TABLE IF NOT EXISTS blocks (
             ULID TEXT PRIMARY KEY,
             FROM_TIMESTAMP DATETIME,
@@ -29,6 +32,8 @@ SCHEMAS = {
             RESOLUTION TEXT,
             SOURCE TEXT
         );
+        """,
+        """
         /* blocks in this view as replicated and thus can be candidate
            for early deletion/cleanup */
         CREATE VIEW IF NOT EXISTS replicated_blocks AS
@@ -53,7 +58,8 @@ SCHEMAS = {
                         "replica=b", "")
                 ) > 1
             ;
-    """,
+        """,
+       ],
 }
 
 INSERTS = {
@@ -76,9 +82,10 @@ def get_or_create(path):
     conn = sqlite3.connect(path)
     cursor = conn.cursor()
 
-    for s in ["blocks", "sizes"]:
-        cursor.execute(SCHEMAS[s])
-        conn.commit()
+    for kind in ["blocks", "sizes"]:
+        for s in SCHEMAS[kind]:
+            cursor.execute(s)
+            conn.commit()
 
     try:
         yield conn
