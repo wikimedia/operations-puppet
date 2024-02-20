@@ -665,8 +665,7 @@ node /^db1165\.eqiad\./ {
 }
 
 # s6 core production dbs on codfw
-# See also db2169
-node /^db2(114|117|124|129|151|180|193)\.codfw\./ {
+node /^db2(114|117|124|129|151|169|180|193)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -686,7 +685,6 @@ node /^db1158\.eqiad\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
-# See also db2169 below
 node /^db2(108|118|120|121|122|150|168|182)\.codfw\./ {
     role(mariadb::core)
 }
@@ -717,7 +715,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db2(169|194)\.codfw\./ {
+node /^db2(194)\.codfw\./ {
     role(mariadb::core_multiinstance)
 }
 

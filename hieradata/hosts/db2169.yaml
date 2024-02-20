@@ -1,6 +1,4 @@
 # db2169
-# Buffer pool sizes/instance enabled
-profile::mariadb::core::multiinstance::instances:
-  s6: 185G
-  s7: 185G
+mariadb::shard: 's6'
 mariadb::package: 'wmf-mariadb106'
+profile::monitoring::notifications_enabled: false
