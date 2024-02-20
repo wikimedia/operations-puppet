@@ -1,6 +1,2 @@
 acmechief_host: acmechief2002.codfw.wmnet
 
-profile::java::hardened_tls: false
-profile::java::java_packages:
-  - version: "17"
-    variant: "jdk"
