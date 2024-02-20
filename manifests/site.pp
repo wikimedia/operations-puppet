@@ -598,7 +598,7 @@ node /^db1212\.eqiad\./ {
 }
 
 # s3 core production dbs on codfw
-node /^db2(105|109|127|149|177|190)\.codfw\./ {
+node /^db2(105|109|127|149|177|190|194)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -712,11 +712,6 @@ node /^db2(152|154|161|162|163|165|166|167|181|195)\.codfw\./ {
 # codfw sanitarium master
 node /^db2164\.codfw\./ {
     role(mariadb::sanitarium_master)
-}
-
-# multi-instance hosts with multiple shards
-node /^db2(194)\.codfw\./ {
-    role(mariadb::core_multiinstance)
 }
 
 ## x1 shard
