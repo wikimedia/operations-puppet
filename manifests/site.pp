@@ -1740,10 +1740,6 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudelastic100[1-4]\.wikimedia\./ {
-    role(elasticsearch::cloudelastic)
-}
-
 node /^cloudelastic100[5-9]\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
