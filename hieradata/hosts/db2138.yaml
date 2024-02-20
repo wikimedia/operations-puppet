@@ -1,4 +1,3 @@
 # db2138
 mariadb::shard: 's2'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
