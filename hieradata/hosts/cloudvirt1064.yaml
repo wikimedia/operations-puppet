@@ -1,0 +1,2 @@
+---
+profile::openstack::base::nova::compute::id: 81ac9224-a873-442c-b872-3282caacbedb

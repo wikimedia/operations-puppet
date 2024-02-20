@@ -12,6 +12,7 @@ class profile::openstack::base::nova::compute::service(
     Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
     Boolean          $modern_nic_setup = lookup('profile::openstack::base::nova::modern_nic_setup', {default_value => true}),
+    Optional[String[1]] $compute_id = lookup('profile::openstack::base::nova::compute::id', {default_value => undef}),
 ) {
     ensure_packages('conntrack')
 
@@ -164,6 +165,7 @@ class profile::openstack::base::nova::compute::service(
         ceph_rbd_client_name => $ceph_rbd_client_name,
         libvirt_rbd_uuid     => $libvirt_rbd_uuid,
         enable_nova_rbd      => $enable_nova_rbd,
+        compute_id           => $compute_id,
     }
     contain 'openstack::nova::compute::service'
 

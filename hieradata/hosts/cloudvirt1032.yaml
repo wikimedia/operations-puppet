@@ -3,3 +3,4 @@ profile::openstack::eqiad1::nova::network_flat_interface: 'eno2np1.1105'
 profile::openstack::eqiad1::nova::physical_interface_mappings:
   cloudinstances2b: 'eno2np1.1105'
 profile::openstack::base::nova::modern_nic_setup: false
+profile::openstack::base::nova::compute::id: 77d7d013-f1b2-4ca2-8ba5-fac20a1c092f

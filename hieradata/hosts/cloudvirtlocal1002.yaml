@@ -1,1 +1,2 @@
 profile::openstack::base::nova::instance_dev: 'srvlink'
+profile::openstack::base::nova::compute::id: 4df83e28-e0ed-4e50-a826-52b4d8b59d64

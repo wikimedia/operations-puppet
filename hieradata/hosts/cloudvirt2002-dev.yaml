@@ -1,1 +1,2 @@
 profile::openstack::codfw1dev::cinder::backend_name: 'local2'
+profile::openstack::base::nova::compute::id: 94def619-bb96-442f-b217-d01157a75c91
