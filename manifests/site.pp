@@ -522,7 +522,7 @@ node /^crm2001\.codfw\./ {
 }
 
 node /^cumin1001\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::buster)
 }
 
 node /^cumin1002\.eqiad\./ {
