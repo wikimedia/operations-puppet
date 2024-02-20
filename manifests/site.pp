@@ -522,7 +522,7 @@ node /^crm2001\.codfw\./ {
 }
 
 node /^cumin1001\.eqiad\./ {
-    role(cluster::management)
+    role(insetup::infrastructure_foundations)
 }
 
 node /^cumin1002\.eqiad\./ {
