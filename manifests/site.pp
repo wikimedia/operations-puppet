@@ -645,7 +645,6 @@ node /^db1161\.eqiad\./ {
 }
 
 # s5 (default, dewiki and others) core production dbs on codfw
-# See also db2171 below
 node /^db2(111|113|123|157|178|192)\.codfw\./ {
     role(mariadb::core)
 }
@@ -666,7 +665,7 @@ node /^db1165\.eqiad\./ {
 }
 
 # s6 core production dbs on codfw
-# See also db2169 and db2171 below
+# See also db2169
 node /^db2(114|117|124|129|151|180|193)\.codfw\./ {
     role(mariadb::core)
 }
@@ -718,7 +717,7 @@ node /^db2164\.codfw\./ {
 }
 
 # multi-instance hosts with multiple shards
-node /^db2(169|171|194)\.codfw\./ {
+node /^db2(169|194)\.codfw\./ {
     role(mariadb::core_multiinstance)
 }
 
