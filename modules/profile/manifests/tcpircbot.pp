@@ -28,8 +28,6 @@ class profile::tcpircbot(
             '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet
             '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet
             '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet
-            '::ffff:10.64.32.25/128',           # cumin1001.eqiad.wmnet
-            '2620:0:861:103:10:64:32:25/128',   # cumin1001.eqiad.wmnet
             '::ffff:10.64.48.98/128',           # cumin1002.eqiad.wmnet
             '2620:0:861:107:10:64:48:98/128',   # cumin1002.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
@@ -59,7 +57,6 @@ class profile::tcpircbot(
         'puppetmaster2001.codfw.wmnet', # puppet codfw
         'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
-        'cumin1001.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin1002.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
     ]
