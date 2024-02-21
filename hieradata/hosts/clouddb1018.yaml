@@ -2,3 +2,4 @@
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s2: 95G
   s7: 185G
+mariadb::package: 'wmf-mariadb106'
