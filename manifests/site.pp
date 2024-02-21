@@ -2619,7 +2619,7 @@ node /^relforge100[3-4]\.eqiad\./ {
 }
 
 # restbase eqiad cluster
-node /^restbase10(19|2[0-9]|3[0-7])\.eqiad\./ {
+node /^restbase10(19|2[0-9]|3[0-8])\.eqiad\./ {
     role(restbase::production)
 }
 
@@ -2629,7 +2629,7 @@ node /^restbase20(2[1-9]|3[0-5])\.codfw\./ {
 }
 
 # New restbase (eqiad) hosts T354227
-node /^restbase10(3[8-9]|4[0-2])\.eqiad\./ {
+node /^restbase10(39|4[0-2])\.eqiad\./ {
     role(insetup::data_persistence)
 }
 

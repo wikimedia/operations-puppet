@@ -132,6 +132,7 @@ eqiad:
     restbase1035.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1036.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1037.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
+    restbase1038.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
   maps:
     maps1005.eqiad.wmnet: [kartotherian, kartotherian-ssl]
     maps1006.eqiad.wmnet: [kartotherian, kartotherian-ssl]
