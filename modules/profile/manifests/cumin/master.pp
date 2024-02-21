@@ -48,14 +48,6 @@ class profile::cumin::master (
         mode   => '0750',
     }
 
-    if $facts['fqdn'] == 'cumin1001.eqiad.wmnet' {
-        motd::script { 'cumin1001_note':
-            ensure   => present,
-            content  => "#!/bin/sh\necho '\\033[31;1;4mPlease use cumin1002/cumin2002 for all cookbooks and Cumin!\\033[0m'\n",
-            priority => 60,
-        }
-    }
-
     file { '/etc/cumin':
         ensure => directory,
         owner  => 'root',
