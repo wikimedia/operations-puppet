@@ -4,6 +4,3 @@ profile::homer::diff_timer_interval: '*-*-* 20:35:00'  # Avoid the first 10 minu
 profile::httpbb::hourly_tests:
   appserver: [mw2271.codfw.wmnet]  # Run appserver tests against the lowest-numbered canary appserver in codfw.
 profile::httpbb::test_kubernetes_hourly: true
-
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

@@ -1,5 +1,3 @@
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::homer::private_git_peer: cumin2002.codfw.wmnet
 profile::homer::diff_timer_interval: '*-*-* 08:35:00'  # Avoid the first 10 minutes of the hour, to not overlap with rancid
 profile::httpbb::hourly_tests:

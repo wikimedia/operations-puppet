@@ -51,3 +51,6 @@ profile::spicerack::mysql_config_data:
   # replication_password: overiden in the private repo
 profile::homer::private_git_peer: ~
 profile::homer::diff_timer_interval: ~
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
