@@ -40,7 +40,11 @@
 #
 # [*routed*]
 #   If Ganeti is used in routed (L3) mode or not.
-#   See https://phabricator.wikimedia.org/phame/post/view/312/ganeti_on_modern_network_design/
+#   See https://wikitech.wikimedia.org/wiki/Ganeti#Routed_Ganeti
+#
+# [*tap_ip4*]
+#   Required in routed mode only, specify the IPv4 assigned to all the VM facing interfaces.
+#   IPv6 automatically uses the link-local address.
 #
 # [*tftp_servers*]
 #   Dictionary of DHCP servers (as they're the same as TFTP servers)
@@ -57,6 +61,8 @@ class profile::ganeti (
     Integer[0, 100]                          $critical_memory  = lookup('profile::ganeti::critical_memory'),
     Integer[0, 100]                          $warning_memory   = lookup('profile::ganeti::warning_memory'),
     Boolean                                  $routed           = lookup('profile::ganeti::routed'),
+    Optional[Stdlib::IP::Address]            $tap_ip4          = lookup('profile::ganeti::tap_ip4',
+                                                                        { default_value => undef }),
     Hash[Wmflib::Sites, Stdlib::IP::Address] $tftp_servers     = lookup('profile::installserver::dhcp::tftp_servers'),
 ) {
 
@@ -252,6 +258,9 @@ class profile::ganeti (
         }
     }
     if $routed {
+        if $tap_ip4 == undef {
+            fail('In routed mode, `profile::ganeti::tap_ip4` must be defined.')
+        }
         ensure_packages('isc-dhcp-relay')
         # To be replaced by finer grained policies
         # DHCP, BGP
@@ -260,10 +269,6 @@ class profile::ganeti (
             order   => 10,
         }
 
-        $hypervisor_tap_ips = $::site ? {
-            'codfw' => {4 => '10.192.24.1/32', 6 => '2620:0:860:140::1/128'},
-            'eqiad' => {4 => '10.64.24.1/32', 6 => '2620:0:861:140::1/128'},
-        }
         # Override the Package provided net-common script
         file { '/usr/lib/ganeti/3.0/usr/lib/ganeti/net-common':
             ensure  => present,

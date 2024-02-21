@@ -189,10 +189,9 @@ function setup_route {
       exit 1
     fi
 
-    # WMF - set the hypervisor side IPs
-    ip addr add <%= @hypervisor_tap_ips[4] %> dev $INTERFACE scope link
-    ip -6 addr add <%= @hypervisor_tap_ips[6] %> dev $INTERFACE scope link
-
+    # WMF - set the hypervisor side IPv4
+    # IPv6 uses the link-local IP automatically
+    ip addr add <%= @tap_ip4 %>/32 dev $INTERFACE scope link
 
     # Route traffic targeted at the IP to the interface
     if [ -n "$LINK" ]; then
