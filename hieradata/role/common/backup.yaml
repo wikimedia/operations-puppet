@@ -8,3 +8,6 @@ profile::backup::director::dbschema: bacula9
 profile::backup::director::dbuser: bacula9
 profile::backup::director::dbport: 3306
 #profile::backup::director::dbpass: In the private repo
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
