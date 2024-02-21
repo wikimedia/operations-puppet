@@ -1,2 +1,2 @@
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
+profile::cassandra::rack: 'a'
+cassandra::jbod_devices: ['sda4', 'sdb4', 'sdc4']
