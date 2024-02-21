@@ -6,7 +6,6 @@ profile::acme_chief::certificates:
         - 'apt.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^install[12]002\.wikimedia\.org$'
         - '^apt[12]00[12]\.wikimedia\.org$'
     archiva:
         CN: 'archiva.wikimedia.org'
