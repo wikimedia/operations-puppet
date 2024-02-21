@@ -60,9 +60,23 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
+    <%- if @extended_logging -%>
+    unique-id-format "%Ts%rt"
+    <%- end -%>
     # TODO: refactor to a more configurable approach
     capture response header X-Cache-Status len 10
     capture request header Host len 25
+    <%- if @extended_logging -%>
+    capture request header Referer len 64
+    capture request header User-Agent len 64
+    capture request header Accept-Language len 10
+    capture request header Range len 10
+    capture request header Accept len 64
+    capture response header Content-Type len 25
+    capture response header X-Analytics len 96
+    capture response header X-Cache len 96
+    capture response header Server len 64
+    <%- end -%>
 
 <%- if @vars and @vars['tls'] -%>
 <%- @vars['tls'].each do |var| -%>

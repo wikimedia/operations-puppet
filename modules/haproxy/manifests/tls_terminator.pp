@@ -71,6 +71,9 @@
 #   Use a dedicate backend for LVS healthchecks
 # @param hc_sources
 #   List of IP addresses allowed to send healthcheck requests
+# @param extended_logging
+#   Bool to enable configuration to allow richer logging
+#   Default: false
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Haproxy::Backend $backend,
@@ -107,6 +110,7 @@ define haproxy::tls_terminator(
     Optional[Array[Haproxy::Filter]] $filters = undef,
     Boolean $dedicated_hc_backend = false,
     Optional[Array[Stdlib::IP::Address]] $hc_sources = undef,
+    Boolean $extended_logging = false,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {

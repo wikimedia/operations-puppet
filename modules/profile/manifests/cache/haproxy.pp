@@ -35,6 +35,7 @@ class profile::cache::haproxy(
     Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', {'default_value'                    => undef}),
     Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
     Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
+    Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', {'default_value'                                             => false}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
 ) {
@@ -201,6 +202,7 @@ class profile::cache::haproxy(
         filters                => $filters,
         dedicated_hc_backend   => $dedicated_hc_backend,
         hc_sources             => $hc_sources,
+        extended_logging       => $extended_logging,
     }
 
     if $monitoring_enabled {
