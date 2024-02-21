@@ -3,7 +3,7 @@
 class toolforge::k8s::deployer (
   Hash[String[1], String[1]] $toolforge_secrets,
 ) {
-    file { '/etc/toolforge-deploy/':
+    file { '/etc/toolforge-deploy':
         ensure => directory,
         owner  => 'root',
         group  => 'root',
@@ -11,11 +11,11 @@ class toolforge::k8s::deployer (
     }
 
     file { '/etc/toolforge-deploy/secrets.yaml':
-        ensure  => file,
-        content => to_yaml($toolforge_secrets),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        require => File['/etc/toolforge-deploy'],
+        ensure    => file,
+        content   => to_yaml($toolforge_secrets),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        show_diff => false,
     }
 }
