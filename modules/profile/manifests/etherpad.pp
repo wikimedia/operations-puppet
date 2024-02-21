@@ -7,7 +7,6 @@ class profile::etherpad(
 ){
 
     include ::passwords::etherpad_lite
-    include ::profile::prometheus::etherpad_exporter
 
     class { '::etherpad':
         etherpad_db_user => $passwords::etherpad_lite::etherpad_db_user,
@@ -18,26 +17,40 @@ class profile::etherpad(
         service_ensure   => $service_ensure,
     }
 
-    prometheus::blackbox::check::http { 'etherpad-envoy':
-        server_name        => 'etherpad.wikimedia.org',
-        team               => 'collaboration-services',
-        severity           => 'task',
-        path               => '/',
-        ip_families        => ['ip4'],
-        port               => 7443,
-        force_tls          => true,
-        body_regex_matches => ['Pad'],
+    class { '::profile::prometheus::etherpad_exporter':
+        service_ensure => $service_ensure,
+        listen_ip      => $facts['networking']['ip'],
+        require        => Class['::etherpad'],
     }
 
-    prometheus::blackbox::check::http { 'etherpad-nodejs':
-        server_name        => 'etherpad.wikimedia.org',
-        team               => 'collaboration-services',
-        severity           => 'task',
-        path               => '/',
-        ip_families        => ['ip6'],
-        port               => 9001,
-        force_tls          => false,
-        body_regex_matches => ['Pad'],
+    $ensure_blackbox_check = $service_ensure ? {
+        running => 'present',
+        default => 'absent',
+    }
+
+    if $service_ensure == running {
+
+        prometheus::blackbox::check::http { 'etherpad-envoy':
+            server_name        => 'etherpad.wikimedia.org',
+            team               => 'collaboration-services',
+            severity           => 'task',
+            path               => '/',
+            ip_families        => ['ip4'],
+            port               => 7443,
+            force_tls          => true,
+            body_regex_matches => ['Pad'],
+        }
+
+        prometheus::blackbox::check::http { 'etherpad-nodejs':
+            server_name        => 'etherpad.wikimedia.org',
+            team               => 'collaboration-services',
+            severity           => 'task',
+            path               => '/',
+            ip_families        => ['ip6'],
+            port               => 9001,
+            force_tls          => false,
+            body_regex_matches => ['Pad'],
+        }
     }
 
     firewall::service { 'etherpad_service':
