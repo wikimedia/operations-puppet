@@ -44,6 +44,7 @@ if ( $.log_outputs contains "kafka" ) then {
     # names, so the kafka action is duplicated here.
     if $parsesuccess == "OK" then {
         action(type="omkafka"
+               name="omkafka_syslog_cee"
                broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
                topic="kafka_topic"
                dynatopic="on"
@@ -69,6 +70,7 @@ if ( $.log_outputs contains "kafka" ) then {
         # non-json-formatted syslog events into an ecs-compatible form
         if ( $.log_outputs contains "ecs_170" ) then {
             action(type="omkafka"
+                   name="omkafka_ecs_170"
                    broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
                    topic="kafka_topic"
                    dynatopic="on"
@@ -92,6 +94,7 @@ if ( $.log_outputs contains "kafka" ) then {
         } else {
             # fall back to legacy json format
             action(type="omkafka"
+                   name="omkafka_syslog_json"
                    broker=<%= scope.lookupvar('logging_kafka_brokers').to_json %>
                    topic="kafka_topic"
                    dynatopic="on"
