@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm]
+              shubhankar, nskaggs, mhoutti, goransm, brion]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -138,7 +138,7 @@ groups:
     gid: 705
     description: replaces 'mortals' for software deployment
     members: &deployment_members [*platform_engineering_members, *ops_members, *releng_members,
-              bd808, brion, cscott, ebernhardson,
+              bd808, bvibber, cscott, ebernhardson,
               gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
@@ -216,7 +216,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [brion, dbrant, cooltey, sharvaniharan]
+    members: [bvibber, dbrant, cooltey, sharvaniharan]
     approval:
       - Tyler Cipriani
   sretest-roots:
@@ -1696,13 +1696,12 @@ users:
     email: bdavis@wikimedia.org
     krb: present
   brion:
-    ensure: present
+    ensure: absent
     gid: 500
     name: brion
-    realname: Brion Vibber
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkW110qkapVpZeAYASuZTVYKt3KTr3v9S/5uFQ3SZGpZBjhBu5ly3TaEIxfzbvZqX3FJCyuECEN6NMjLegp6iJBA+HBG8v+fm2Sx4OaPR7oCqEdRhqCaXRYHYPqlA89dY3qBmHLUdyr9HrkViZ1Oa9KdWoJpTgL6A6rozKGXBN7MjuDoX592JMo7HUPCqf3ncb//5/viT3gzSN/lz91i7aApEB2JRV1ozmi2dcTAhNEBLa8mnSwohwyMjaDZhDPfYjz3kprnv8BcmZHUZSSH380VBz9mEsQBNH2+7SCIEfzHLChb5Oczl63Sf4AuIs/veOXpT6Px7IBkaUxAgJrH3L brion@flexo.local]
+    realname: Brooke Vibber (old)
+    ssh_keys: []
     uid: 500
-    email: bvibber@wikimedia.org
   bsitu:
     ensure: absent
     gid: 500
@@ -1710,6 +1709,14 @@ users:
     realname: Benny Situ
     ssh_keys: []
     uid: 2100
+  bvibber:
+    ensure: present
+    gid: 46160
+    name: bvibber
+    realname: Brooke Vibber
+    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDkW110qkapVpZeAYASuZTVYKt3KTr3v9S/5uFQ3SZGpZBjhBu5ly3TaEIxfzbvZqX3FJCyuECEN6NMjLegp6iJBA+HBG8v+fm2Sx4OaPR7oCqEdRhqCaXRYHYPqlA89dY3qBmHLUdyr9HrkViZ1Oa9KdWoJpTgL6A6rozKGXBN7MjuDoX592JMo7HUPCqf3ncb//5/viT3gzSN/lz91i7aApEB2JRV1ozmi2dcTAhNEBLa8mnSwohwyMjaDZhDPfYjz3kprnv8BcmZHUZSSH380VBz9mEsQBNH2+7SCIEfzHLChb5Oczl63Sf4AuIs/veOXpT6Px7IBkaUxAgJrH3L]
+    uid: 46160
+    email: bvibber@wikimedia.org
   catrope:
     ensure: present
     gid: 500
