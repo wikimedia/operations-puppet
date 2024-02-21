@@ -43,6 +43,9 @@
 /.idea
 *.iml
 
+# vscode
+/.vscode
+
 # Vagrant directory
 .vagrant
 
