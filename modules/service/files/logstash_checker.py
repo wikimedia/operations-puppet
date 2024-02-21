@@ -234,14 +234,17 @@ class CheckService(object):
             }
         }
 
-    def run(self) -> bool:
+    def run(self) -> int:
         """
         Query logstash and check error rate.
 
         Queries logstash & checks whether a deploy caused a significant
         increase in the event rate.
 
-        Returns true if the error threshold has been exceeded.
+        Returns:
+        0  if the error rate is below threshold.
+        10 if the error threshold has been exceeded.
+        1  if some other error occurred.
         """
         # Query logstash
         http = self._spawn_downloader()
@@ -334,7 +337,7 @@ class CheckService(object):
                              'Before: %.2f, After: %.2f, Threshold: %.2f)',
                              mean_before, mean_after, target_error_rate)
 
-        return over_threshold
+        return 10 if over_threshold else 0
 
     def _spawn_downloader(self):
         """Spawn a urllib3.Poolmanager with the correct configuration."""
@@ -404,7 +407,13 @@ def main():
     args.pop('verbose')
 
     checker = CheckService(**args)
-    sys.exit(checker.run())
+    try:
+        sys.exit(checker.run())
+    except CheckServiceError as e:
+        # Avoid spamming the user with nested backtraces when there
+        # are connection problems to logstash.
+        logging.error(e)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
