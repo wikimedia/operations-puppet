@@ -64,12 +64,16 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'codemirror':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/codemirror',
     }
 
     reportupdater::job { 'interlanguage':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/interlanguage',
     }
 
@@ -79,12 +83,16 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'reference-previews':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/reference-previews',
     }
 
     reportupdater::job { 'templatedata':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/templatedata',
     }
 
@@ -94,36 +102,48 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'structured-data':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/structured-data',
     }
 
     reportupdater::job { 'visualeditor':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/visualeditor',
     }
 
     reportupdater::job { 'templatewizard':
-        ensure     => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure     => 'absent',
         output_dir => 'metrics/templatewizard',
     }
 
     # Set up various jobs to be executed by reportupdater
     # creating several reports on mysql research db.
     reportupdater::job { 'flow-beta-features':
-        ensure       => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure       => 'absent',
         output_dir   => 'metrics/beta-feature-enables',
         use_kerberos => false,
     }
 
     reportupdater::job { 'edit-beta-features':
-        ensure       => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure       => 'absent',
         output_dir   => 'metrics/beta-feature-enables',
         use_kerberos => false,
     }
 
     reportupdater::job { 'language':
-        ensure       => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure       => 'absent',
         output_dir   => 'metrics/beta-feature-enables',
         use_kerberos => false,
     }
@@ -134,12 +154,16 @@ class profile::reportupdater::jobs(
     # but their output directory is the same on purpose, to allow rsync
     # jobs to properly collect and merge data downstream.
     reportupdater::job { 'published_cx2_translations':
-        ensure      => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure      => 'absent',
         config_file => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-hive.yaml",
         output_dir  => 'metrics/published_cx2_translations',
     }
     reportupdater::job { 'published_cx2_translations_mysql':
-        ensure       => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure       => 'absent',
         config_file  => "${base_path}/jobs/reportupdater-queries/published_cx2_translations/config-mysql.yaml",
         output_dir   => 'metrics/published_cx2_translations',
         query_dir    => 'published_cx2_translations',
@@ -148,7 +172,9 @@ class profile::reportupdater::jobs(
     }
 
     reportupdater::job { 'mt_engines':
-        ensure       => $ensure_jobs,
+        # Force absenting jobs as per T357419
+        # ensure     => $ensure_jobs,
+        ensure       => 'absent',
         output_dir   => 'metrics/mt_engines',
         use_kerberos => false,
     }
