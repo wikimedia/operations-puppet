@@ -515,8 +515,6 @@ pagetriage_page_tags,ptrpt_value,K
 pagetriage_tags,ptrt_tag_id,K
 pagetriage_tags,ptrt_tag_name,K
 pagetriage_tags,ptrt_tag_desc,K
-pif_edits,pif_user,K
-pif_edits,pif_edits,K
 povwatch_log,pwl_id,K
 povwatch_log,pwl_timestamp,K
 povwatch_log,pwl_namespace,K
