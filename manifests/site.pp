@@ -522,10 +522,6 @@ node /^crm2001\.codfw\./ {
     role(crm)
 }
 
-node /^cumin1001\.eqiad\./ {
-    role(insetup::buster)
-}
-
 node /^cumin1002\.eqiad\./ {
     role(cluster::management)
 }
