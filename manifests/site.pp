@@ -1666,7 +1666,7 @@ node /^mw231[0-37-9]\.codfw\./ {
 node /^mw2335\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw235[024-7]\.codfw\./ {
+node /^mw235[0-7]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw236[6-9]\.codfw\./ {
@@ -1675,22 +1675,25 @@ node /^mw236[6-9]\.codfw\./ {
 node /^mw237[0789]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw238[013-5]\.codfw\./ {
+node /^mw238[0-5]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw2395\.codfw\./ {
+node /^mw239[45]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw2406\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw242[0-579]\.codfw\./ {
+node /^mw2419\.codfw\./ {
+  role(kubernetes::worker)
+}
+node /^mw242[0-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw243[014-7]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw244[0235-9]\.codfw\./ {
+node /^mw244[02-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw245[01]\.codfw\./ {
@@ -2255,10 +2258,6 @@ node /^mwdebug200[12]\.codfw\./ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw23(82|94)\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
-
 node /^mw2(29[8-9]|300)\.codfw\./ {
     role(mediawiki::appserver::api)
 }
@@ -2289,11 +2288,6 @@ node /^mw230[3579]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
-# rack A6 (T331609)
-
-node /^mw2426\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
 # Row B
 
 # rack B3
@@ -2316,12 +2310,6 @@ node /^mw23(2[579]|3[13])\.codfw\./ {
     role(mediawiki::appserver)
 }
 
-# rack B6 (T331609)
-
-node /^mw2428\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
-
 # rack B8 (T331609)
 node /^mw243[23]\.codfw\./ {
     role(mediawiki::appserver)
@@ -2332,11 +2320,6 @@ node /^mw243[23]\.codfw\./ {
 # rack C6
 node /^mw23(59|6[135])\.codfw\./ {
     role(mediawiki::appserver)
-}
-
-# rack C6
-node /^mw23(5[13])\.codfw\./ {
-    role(mediawiki::jobrunner)
 }
 
 # rack C3
@@ -2350,10 +2333,6 @@ node /^mw24(1[2-5])\.codfw\./ {
 
 node /^mw24(1[6-8])\.codfw\./ {
     role(mediawiki::appserver::api)
-}
-
-node /^mw2419\.codfw\./ {
-    role(mediawiki::jobrunner)
 }
 
 # rack C1 (T331609)
@@ -2378,10 +2357,6 @@ node /^mw2(27[3-7]|37[135])\.codfw\./ {
     role(mediawiki::appserver)
 }
 
-# rack D5 (T331609)
-node /^mw2444\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
 
 # API
 
