@@ -7,6 +7,7 @@ class openstack::wikitech::wikitechprivatesettings(
     $phabricator_api_token,
     $gerrit_api_user,
     $gerrit_api_password,
+    $gitlab_api_token,
 ) {
 
     file { '/etc/mediawiki':

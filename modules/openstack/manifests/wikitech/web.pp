@@ -7,6 +7,7 @@ class openstack::wikitech::web(
     String $phabricator_api_token,
     String $gerrit_api_user,
     String $gerrit_api_password,
+    String $gitlab_api_token,
     Boolean $public_rewrites = true,
     String $php_fpm_fcgi_endpoint = 'unix:/run/php/fpm-www-7.4.sock|fcgi://localhost',
 ) {
@@ -17,6 +18,7 @@ class openstack::wikitech::web(
         phabricator_api_token              => $phabricator_api_token,
         gerrit_api_user                    => $gerrit_api_user,
         gerrit_api_password                => $gerrit_api_password,
+        gitlab_api_token                   => $gitlab_api_token,
     }
 
     backup::set {'cloudweb-srv-backup': }

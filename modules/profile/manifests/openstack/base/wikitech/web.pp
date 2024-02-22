@@ -6,6 +6,8 @@ class profile::openstack::base::wikitech::web(
     $phabricator_api_token = lookup('profile::openstack::base::wikitech::web::phabricator_api_token'),
     $gerrit_api_user = lookup('profile::openstack::base::wikitech::web::gerrit_api_user'),
     $gerrit_api_password = lookup('profile::openstack::base::wikitech::web::gerrit_api_password'),
+    # Deliberate reuse of LDAP group sync bot's credential
+    $gitlab_api_token = lookup('profile::gitlab::ldap_group_sync_bot_token'),
     Boolean $install_fonts = lookup('profile::openstack::base::wikitech::web::install_fonts', {'default_value' => false}),
 ) {
 
