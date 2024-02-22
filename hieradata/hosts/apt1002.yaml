@@ -1,5 +1,6 @@
 profile::aptrepo::wikimedia::aptrepo_server: apt1002.wikimedia.org
-profile::aptrepo::wikimedia::aptrepo_servers_failover: []
+profile::aptrepo::wikimedia::aptrepo_servers_failover:
+  - apt2002.wikimedia.org
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 

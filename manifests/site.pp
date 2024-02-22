@@ -222,12 +222,8 @@ node /^apt[12]001\.wikimedia\./ {
     role(apt_repo)
 }
 
-node /^apt1002\.wikimedia\./ {
+node /^apt[12]002\.wikimedia\./ {
     role(apt_repo)
-}
-
-node /^apt2002\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
 }
 
 # apt-staging host
