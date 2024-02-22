@@ -26,7 +26,10 @@ class puppetmaster::monitoring (
 
     # Check for unmerged changes that have been sitting for more than one minute.
     # ref: T80100, T83854
-    monitoring::icinga::git_merge { 'puppet': }
+    monitoring::icinga::git_merge { 'puppet':
+        ensure => absent
+    }
+
     if $server_type == 'frontend' or $server_type == 'standalone' {
         monitoring::service { 'puppetmaster_https':
             ensure        => absent,
@@ -35,7 +38,8 @@ class puppetmaster::monitoring (
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Puppet#Debugging',
         }
         monitoring::icinga::git_merge { 'labs-private':
-            dir => '/var/lib/git/labs/private/',
+            ensure => absent,
+            dir    => '/var/lib/git/labs/private/',
         }
 
         prometheus::blackbox::check::http { "${facts['fqdn']}_https":

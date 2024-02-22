@@ -6,7 +6,8 @@ define monitoring::icinga::git_merge (
     $user          = 'gitpuppet',
     $remote        = 'origin',
     $remote_branch = 'production',
-    $interval      = 10
+    $interval      = 10,
+    $ensure        = present
     ) {
     $sane_title = regsubst($title, '\W', '_', 'G')
 
@@ -15,6 +16,7 @@ define monitoring::icinga::git_merge (
     }
 
     nrpe::monitor_service { "${sane_title}_merged":
+        ensure       => $ensure,
         description  => "Unmerged changes on repository ${title}",
         nrpe_command => "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge",
         sudo_user    => 'root',
