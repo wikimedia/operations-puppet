@@ -29,8 +29,8 @@ profile::services_proxy::envoy::enabled_listeners:
   - wikifeeds
   - eventgate-main
   - parsoid-async
-  - mwapi-async
   - mw-parsoid
+  - mw-api-async-transition
 service::configuration::mwapi_host: "http://localhost:6500"
 #
 # Cassandra
