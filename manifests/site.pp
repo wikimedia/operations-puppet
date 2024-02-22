@@ -1630,19 +1630,19 @@ node /^mw143[0149]\.eqiad\./ {
 node /^mw1440\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw145[79]\.eqiad\./ {
+node /^mw145[7-9]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw146[0-69]\.eqiad\./ {
+node /^mw146[0-9]\.eqiad\./ {
   role(kubernetes::worker)
 }
 node /^mw147[0-7]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw148[268]\.eqiad\./ {
+node /^mw148[2-68]\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw149[56]\.eqiad\./ {
+node /^mw149[4-6]\.eqiad\./ {
     role(kubernetes::worker)
 }
 node /^mw1453\.eqiad\./ {
@@ -2159,7 +2159,7 @@ node /^mw143[7-8]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
-# rack D8 - jobrunners
+# rack D8 - videoscaler jobrunners
 node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
@@ -2234,33 +2234,9 @@ node /^mwmaint[12]002\.(eqiad|codfw)\./ {
 # Due to T329366, we are moving some parsoid servers to the jobrunner
 # cluser in both datacenters.
 
-# Row A
-
-# rack A8
-node /^mw1458\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
-# Row B
-
-# rack B6
-node /^mw146[78]\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
 # Row C
 
 node /^parse101[3-6]\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
-# rack C5
-node /^mw148[3-5]\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
-# Row F
-node /^mw1494\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
