@@ -84,19 +84,3 @@ dbconfig-section:
       default: "regular"
     omit_replicas_in_mwconfig:
       default: false
-
-dnsbox:
-  path: "dnsbox"
-  tags:
-    - service
-    - dc
-  schema:
-    pooled:
-      type: "enum:yes|no|inactive"
-      default: "inactive"
-    weight:
-      type: "int"
-      default: 0
-    ip:
-      type: "string"
-      default: "127.0.0.1"

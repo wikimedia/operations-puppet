@@ -1,9 +1,0 @@
-authdns: &hosts_list
-  eqiad: [dns1004.wikimedia.org, dns1005.wikimedia.org, dns1006.wikimedia.org]
-  codfw: [dns2004.wikimedia.org, dns2005.wikimedia.org, dns2006.wikimedia.org]
-  esams: [dns3003.wikimedia.org, dns3004.wikimedia.org]
-  ulsfo: [dns4003.wikimedia.org, dns4004.wikimedia.org]
-  eqsin: [dns5003.wikimedia.org, dns5004.wikimedia.org]
-  drmrs: [dns6001.wikimedia.org, dns6002.wikimedia.org]
-recdns: *hosts_list
-ntp: *hosts_list
