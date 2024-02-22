@@ -4,6 +4,29 @@ describe 'profile::openstack::base::nova::compute::service' do
   let(:pre_condition) do
     [
       'class { "::apt": }',
+      'class { \'ceph::common\':
+          home_dir => \'/var/lib/ceph/\',
+          ceph_repository_component => \'something\',
+      }',
+      'class { \'ceph::config\':
+          enable_libvirt_rbd => true,
+          enable_v2_messenger => true,
+          mon_hosts => {
+            "monhost01.local" => {
+              "public" => {
+                "addr" => "127.0.10.1",
+              },
+            },
+            "monhost02.local" => {
+              "public" => {
+                "addr" => "127.0.10.2",
+              },
+            },
+          },
+          cluster_networks => [\'192.168.4.0/24\'],
+          public_networks => [\'10.192.20.0/24\'],
+          fsid => \'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e\',
+       }',
       'class{ \'openstack::nova::common\':
           version => \'zed\',
           region => \'eqiad1-r\',
