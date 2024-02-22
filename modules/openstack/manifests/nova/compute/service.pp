@@ -67,7 +67,7 @@ class openstack::nova::compute::service(
                       File['/etc/nova/nova.conf'],
                       File['/etc/nova/nova-compute.conf'],
             ],
-        require   => Package['nova-compute'],
+        require   => [Package['nova-compute'], File['/etc/ceph/ceph.conf']],
     }
 
     # Guest management on host startup/reboot
