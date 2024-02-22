@@ -65,7 +65,7 @@ groups:
               dcaro, legoktm, cmooney, joanna, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
-              fabfur, taavi, arnaudb, brouberol, swfrench, aborrero]
+              fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -6244,7 +6244,8 @@ users:
     email: cdobbins@wikimedia.org
     uid: 45974
     gid: 500
-    ssh_keys: []  # to be added later
+    ssh_keys:
+       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpjkJ7In0zY1w22fPlej/NXb9FcqCQxduBWBsmW+bRV cardno:24 651 828'
   jaz:
     ensure: present
     realname: Jazmin Tanner
