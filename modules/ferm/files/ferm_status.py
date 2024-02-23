@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""script to compare the output of iptables-save/ip6tables-save with
-the output of `ferm -nl /etc/ferm/ferm.conf` This enables us to ensure
-the desired ruleset has been loaded by iptables"""
+"""script to check the status of ferm.service and compare the output of
+iptables-save/ip6tables-save with the output of `ferm -nl /etc/ferm/ferm.conf`
+This enables us to ensure the desired ruleset has been loaded by iptables"""
 from argparse import ArgumentParser
 from ipaddress import ip_network
 from re import match
 from socket import getservbyname
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 
 
 def get_quoted_string(words_array, idx):
@@ -370,6 +370,16 @@ def main():
     ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
 
     ret_code = 0
+    # Actually check the service's status so it trigger puppet's ensure=> running
+    try:
+        check_output('systemctl is-active --quiet ferm.service'.split())
+    except CalledProcessError as systemctl_error:
+        ret_code = systemctl_error.returncode
+        if args.verbose:
+            print('ferm.service is in error state, check systemctl status ferm.service')
+        # Return early if ferm.service is in a bad state
+        return ret_code
+
     if ferm6_parsed != ip6tables_parsed:
         ret_code = 1
         if args.verbose:
@@ -378,6 +388,7 @@ def main():
         ret_code = 1
         if args.verbose:
             print('ipv4:\n{}'.format(iptables_parsed.diff(ferm_parsed)))
+
     return ret_code
 
 
