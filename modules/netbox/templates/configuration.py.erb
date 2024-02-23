@@ -164,6 +164,10 @@ METRICS_ENABLED = True
 # Set this to True to prefer IPv4 instead.
 PREFER_IPV4 = <%= @prefer_ipv4.to_s.capitalize %>
 
+# To be removed after Netbox >= 3.7
+# The default value for this parameter was changed from False to True in NetBox v3.7.
+ENFORCE_GLOBAL_UNIQUE = True
+
 # The file path where custom reports will be stored. A trailing slash is not needed. Note that the default value of
 # this setting is derived from the installed location.
 # REPORTS_ROOT = '/opt/netbox/netbox/reports'
