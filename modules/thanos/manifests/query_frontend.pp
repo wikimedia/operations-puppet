@@ -59,6 +59,14 @@ class thanos::query_frontend (
       }
     }
 
+    file { '/usr/local/bin/thanos-query-log-explore':
+        ensure => present,
+        mode   => '0555',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/thanos/query-log-explore.py',
+    }
+
     file { $cache_config_file:
         ensure  => present,
         mode    => '0444',
