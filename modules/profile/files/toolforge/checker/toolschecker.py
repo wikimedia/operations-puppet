@@ -24,8 +24,6 @@
 import logging.config
 import os
 import socket
-import subprocess
-import time
 import uuid
 
 import flask
@@ -85,19 +83,6 @@ def check(endpoint):
     return actual_decorator
 
 
-@check("/cron")
-def cron_check():
-    """A tools cron job touches a file every five minutes.
-
-    This test verifies that the mtime is appropriately recent."""
-    filepath = app.config["CRON_PATH"]
-    tenminutes = 60 * 10
-    mtime = os.path.getmtime(filepath)
-    if time.time() - mtime < tenminutes:
-        return True
-    return False
-
-
 @check("/dns/private")
 def dns_private_check():
     """Verify that we can resolve the local fqdn."""
@@ -131,80 +116,6 @@ def kubernetes_etcd_check():
     hosts = app.config["ETCD_K8S"]
     auth = app.config["ETCD_AUTH"]
     return all([check_etcd_health(host, auth) for host in hosts])
-
-
-def job_running(name):
-    """Check if a job with given name is running"""
-    try:
-        with open(os.devnull, "w") as devnull:
-            subprocess.check_call(
-                [
-                    "sudo",
-                    "-i",
-                    "-u", "{}.toolschecker".format(app.config["PROJECT"]),
-                    "/usr/bin/qstat", "-j", name
-                ],
-                stderr=devnull
-            )
-        return True
-    except subprocess.CalledProcessError:
-        return False
-
-
-@check("/grid/continuous/buster")
-def grid_continuous_buster():
-    return job_running("test-long-running-buster")
-
-
-def grid_check_start(release):
-    """Launch a new job, return True if it starts in 10 seconds"""
-    name = "start-{}-test".format(release)
-    try:
-        with open(os.devnull, "w") as devnull:
-            subprocess.check_call(
-                [
-                    "sudo",
-                    "-i",
-                    "-u", "{}.toolschecker".format(app.config["PROJECT"]),
-                    "/usr/bin/jstart",
-                    "-N", name,
-                    "-l", "release={}".format(release),
-                    "/bin/sleep", "600",
-                ],
-                stderr=devnull,
-                stdout=devnull,
-            )
-    except subprocess.CalledProcessError:
-        return False
-
-    success = False
-    for i in range(0, 10):
-        if job_running(name):
-            success = True
-            break
-        time.sleep(1)
-    # clean up, whether or not it started
-    try:
-        with open(os.devnull, "w") as devnull:
-            subprocess.check_call(
-                [
-                    "sudo",
-                    "-i",
-                    "-u", "{}.toolschecker".format(app.config["PROJECT"]),
-                    "/usr/bin/qdel", name
-                ],
-                stderr=devnull,
-                stdout=devnull,
-            )
-    except subprocess.CalledProcessError:
-        return False
-    return success
-
-
-@check("/grid/start/buster")
-def grid_start_buster():
-    """Verify that we can start a job on the Buster grid."""
-    return grid_check_start("buster")
 
 
 @check("/ldap")

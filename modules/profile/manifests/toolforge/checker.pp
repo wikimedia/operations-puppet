@@ -31,12 +31,12 @@ class profile::toolforge::checker {
     $etcd_cert_ca     = "${install_dir}/etcd/ca.pem"
 
     $checks = {
-        'cron'                   => '/cron',
+        'cron'                   => absent,
         'db_toolsdb'             => absent,
         'dns_private'            => '/dns/private',
         'etcd_kubernetes'        => '/etcd/k8s',
-        'grid_continuous_buster' => '/grid/continuous/buster',
-        'grid_start_buster'      => '/grid/start/buster',
+        'grid_continuous_buster' => absent,
+        'grid_start_buster'      => absent,
         'kubernetes_nodes_ready' => absent,
         'ldap'                   => '/ldap',
         'nfs_dumps'              => '/nfs/dumps',
@@ -140,7 +140,6 @@ class profile::toolforge::checker {
 
     # TODO(T279078): move to hiera?
     $config = {
-        'CRON_PATH'     => '/data/project/toolschecker/crontest.txt',
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
         'ETCD_K8S' => [
@@ -154,8 +153,6 @@ class profile::toolforge::checker {
             'CA'   => $etcd_cert_ca,
         },
         'NFS_HOME_PATH' => '/data/project/toolschecker/nfs-test/',
-        'PROJECT'       => $::wmcs_project,
-        'TOOLS_DOMAIN'  => 'tools.wmflabs.org',
     }
     file { "${install_dir}/config.yaml":
         ensure  => 'present',
@@ -188,13 +185,8 @@ class profile::toolforge::checker {
         ensure => absent,
     }
 
-    # Allow the www-data user to perform actions as related tools.
     sudo::user { 'www-data':
-        privileges => [
-            "ALL=(${::wmcs_project}.toolschecker) NOPASSWD: ALL",
-            "ALL=(${::wmcs_project}.toolschecker-k8s-ws) NOPASSWD: ALL",
-            "ALL=(${::wmcs_project}.toolschecker-ge-ws) NOPASSWD: ALL",
-        ],
+        ensure => absent,
     }
 
     # Configure the $HOME of the toolschecker tool. Assumes that the basic
@@ -213,30 +205,6 @@ class profile::toolforge::checker {
     # Configure the $HOME of the toolschecker-ge-ws tool. Assumes that the
     # basic Toolforge tool user and its homedir has already been provisioned
     # by other means.
-
-    # "Hello world" php app
-    file { '/data/project/toolschecker-ge-ws/public_html/index.php':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/checker/service.php',
-        before => File[$wsgi_file],
-    }
-
-    # Configure the $HOME of the toolschecker-k8s-ws tool. Assumes that the
-    # basic Toolforge tool user and its homedir has already been provisioned
-    # by other means.
-
-    # "Hello world" php app
-    file { '/data/project/toolschecker-k8s-ws/public_html/index.php':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/checker/service.php',
-        before => File[$wsgi_file],
-    }
 
     file { '/usr/local/sbin/toolscheckerctl':
         ensure => file,

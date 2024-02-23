@@ -11,16 +11,6 @@ class icinga::monitor::toollabs () {
     # Toolschecker tests are pass/fail based on string return check
     $checker="check_http_url_at_address_for_string_with_timeout!300!${test_entry_host}"
 
-    # become toolschecker
-    # crontab -e (from a bastion)
-    monitoring::service { 'tools-checker-toolscron':
-        description   => 'toolschecker: check mtime mod from tools cron job',
-        check_command => "${checker}!/cron!OK",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team-email',
-    }
-
     monitoring::service { 'tools-checker-labs-dns-private':
         description   => 'toolschecker: Verify internal DNS from within Tools',
         check_command => "${checker}!/dns/private!OK",
@@ -36,28 +26,6 @@ class icinga::monitor::toollabs () {
         check_interval => 5,
         retry_interval => 5,
         contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
-    monitoring::service { 'tools-checker-grid-continuous-buster':
-        description    => 'toolschecker: expect a long running job on buster',
-        check_command  => "${checker}!/grid/continuous/buster!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-bots,wmcs-team-email',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-    }
-
-    # The mechanism for this test is too flaky to page.  We need to revise
-    # if persisting with SMS notification.
-    monitoring::service { 'tools-checker-grid-start-buster':
-        description    => 'toolschecker: start a job and verify on buster',
-        check_command  => "${checker}!/grid/start/buster!OK",
-        host           => $test_entry_host,
-        check_interval => 5,
-        retry_interval => 5,
-        contact_group  => 'wmcs-bots,wmcs-team-email',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
     }
 
