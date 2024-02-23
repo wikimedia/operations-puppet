@@ -22,5 +22,7 @@ class profile::prometheus::etherpad_exporter(
         content => "[Service]\nExecStart=/usr/bin/prometheus-etherpad-exporter --listen ${listen_ip}:${listen_port}\n",
     }
 
-    profile::auto_restarts::service { 'prometheus-etherpad-exporter': }
+    profile::auto_restarts::service { 'prometheus-etherpad-exporter':
+        ensure  => $ensure_override,
+    }
 }
