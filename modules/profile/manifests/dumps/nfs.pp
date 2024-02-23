@@ -35,46 +35,46 @@ class profile::dumps::nfs(
 
     include ::network::constants
 
-    ferm::service { 'dumps_nfs':
-        proto  => 'tcp',
-        port   => '2049',
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'dumps_nfs':
+        proto    => 'tcp',
+        port     => 2049,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_rpc_mountd':
-        proto  => 'tcp',
-        port   => $mountd_port,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_rpc_mountd':
+        proto    => 'tcp',
+        port     => $mountd_port,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_rpc_statd':
-        proto  => 'tcp',
-        port   => $statd_port,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_rpc_statd':
+        proto    => 'tcp',
+        port     => $statd_port,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_portmapper_udp':
-        proto  => 'udp',
-        port   => $portmapper_port,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_portmapper_udp':
+        proto    => 'udp',
+        port     => $portmapper_port,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_portmapper_tcp':
-        proto  => 'tcp',
-        port   => $portmapper_port,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_portmapper_tcp':
+        proto    => 'tcp',
+        port     => $portmapper_port,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_lockd_udp':
-        proto  => 'udp',
-        port   => $lockd_udp,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_lockd_udp':
+        proto    => 'udp',
+        port     => $lockd_udp,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
-    ferm::service { 'nfs_lockd_tcp':
-        proto  => 'tcp',
-        port   => $lockd_tcp,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'nfs_lockd_tcp':
+        proto    => 'tcp',
+        port     => $lockd_tcp,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     class { '::dumps::monitoring': }
