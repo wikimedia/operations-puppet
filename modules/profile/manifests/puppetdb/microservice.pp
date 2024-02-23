@@ -64,7 +64,9 @@ class profile::puppetdb::microservice (
         }
     }
 
-    profile::auto_restarts::service { 'uwsgi-puppetdb-microservice': }
+    profile::auto_restarts::service { 'uwsgi-puppetdb-microservice':
+        ensure => stdlib::ensure($enabled),
+    }
 
     unless $_allowed_hosts.empty() {
         ferm::service { 'puppetdb-microservice':
