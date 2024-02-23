@@ -112,12 +112,6 @@ class rsyslog::receiver (
         instance => 'receiver',
     }
 
-    # Remove default instance receiver config
-    rsyslog::conf { 'receiver':
-        ensure   => absent,
-        priority => 10,
-    }
-
     logrotate::conf { 'rsyslog_receiver':
         ensure  => present,
         content => template("${module_name}/receiver_logrotate.erb.conf"),
