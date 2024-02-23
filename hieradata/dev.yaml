@@ -66,6 +66,8 @@ manage_puppet_ca_file: false
 # Don't burn CPU on our dev's laptop by running the agent periodically, this is
 # a stop gap until a better solution is devised.
 profile::puppet::agent::create_timer: false
+profile::puppet::agent::use_srv_records: false
+profile::puppet::agent::srv_domain: ~
 
 # PKI
 profile::pki::client::signer_host: "pki1001.eqiad.default.svc.k8s.lan"
