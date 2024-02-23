@@ -20,8 +20,8 @@ class profile::pontoon::frontend (
         public_domain   => $public_domain,
     }
 
-    ferm::service { 'pontoon-frontend':
+    firewall::service { 'pontoon-frontend':
         proto => 'tcp',
-        port  => '(80 443)',
+        port  => [80, 443],
     }
 }

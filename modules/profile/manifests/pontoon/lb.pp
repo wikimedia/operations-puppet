@@ -17,7 +17,7 @@ class profile::pontoon::lb {
     $ports = unique($role_services.map |$name, $svc| { $svc['port'] })
 
     $ports.sort.each |$p| {
-        ferm::service { "pontoon-lb-${p}":
+        firewall::service { "pontoon-lb-${p}":
             proto   => 'tcp',
             notrack => true,
             port    => $p,
