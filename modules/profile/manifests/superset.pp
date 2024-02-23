@@ -151,7 +151,7 @@ class profile::superset (
         description   => 'superset',
         check_command => "check_tcp!${superset::port}",
         require       => Class['superset'],
-        contact_group => 'victorops-analytics',
+        contact_group => 'victorops-data-platform',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 
@@ -173,7 +173,7 @@ class profile::superset (
         nrpe_command  => "/usr/local/bin/check_superset_http ${user_header}",
         description   => 'Check that superset http server is responding ok',
         require       => File['/usr/local/bin/check_superset_http'],
-        contact_group => 'victorops-analytics',
+        contact_group => 'victorops-data-platform',
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset',
     }
 }
