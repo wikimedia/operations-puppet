@@ -18,7 +18,14 @@ class etherpad(
         subscribe => File['/etc/etherpad-lite/settings.json'],
     }
 
-    profile::auto_restarts::service { 'etherpad-lite':}
+    $ensure_auto_restarts = $service_ensure ? {
+        running => 'present',
+        default => 'absent',
+    }
+
+    profile::auto_restarts::service { 'etherpad-lite':
+        ensure => $ensure_auto_restarts,
+    }
 
     file { '/etc/etherpad-lite/settings.json':
         content => template('etherpad/settings.json.erb'),

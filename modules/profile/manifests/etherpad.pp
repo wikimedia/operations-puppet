@@ -23,11 +23,6 @@ class profile::etherpad(
         require        => Class['::etherpad'],
     }
 
-    $ensure_blackbox_check = $service_ensure ? {
-        running => 'present',
-        default => 'absent',
-    }
-
     if $service_ensure == running {
 
         prometheus::blackbox::check::http { 'etherpad-envoy':
