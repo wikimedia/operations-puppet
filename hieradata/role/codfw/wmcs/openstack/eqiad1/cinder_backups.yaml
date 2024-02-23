@@ -35,6 +35,7 @@ profile::cloudceph::auth::deploy::configuration:
 
 profile::wmcs::backy2::backup_dir: /srv/cinder-backups/backy/data
 profile::wmcs::backy2::volume_backup_time: '*-*-* 19:00:00'
+profile::wmcs::backy2::volume_cleanup_time: '*-*-* 02:00:00'
 profile::wmcs::backy2::backup_cinder_volumes::enabled: true
 profile::wmcs::backy2::backup_cinder_volumes::div: 2
 profile::wmcs::backy2::backup_cinder_volumes::remainder: 0

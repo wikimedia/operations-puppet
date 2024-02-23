@@ -8,6 +8,7 @@ class profile::wmcs::backup_cinder_volumes(
     Stdlib::Unixpath     $data_dir         = lookup('profile::cloudceph::data_dir'),
     String               $ceph_volume_pool = lookup('profile::openstack::eqiad1::cinder::ceph_pool'),
     String               $backup_interval  = lookup('profile::wmcs::backy2::volume_backup_time'),
+    String               $cleanup_interval = lookup('profile::wmcs::backy2::volume_cleanup_time'),
     Boolean              $enabled          = lookup('profile::wmcs::backy2::backup_cinder_volumes::enabled'),
 ) {
     require profile::cloudceph::auth::deploy
@@ -51,7 +52,7 @@ class profile::wmcs::backup_cinder_volumes(
         command         => '/usr/local/sbin/wmcs-backup volumes remove-dangling-snapshots',
         interval        => {
           'start'    => 'OnCalendar',
-          'interval' => $backup_interval,
+          'interval' => $cleanup_interval,
         },
         logging_enabled => true,
         user            => 'root',
