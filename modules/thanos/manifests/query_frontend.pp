@@ -11,13 +11,15 @@
 # [*http_port*] The port to listen on for HTTP
 # [*downstream_url*] The url to talk to for queries
 # [*log_queries_longer_than*] Log queries taking longer than the specified duration
+# [*max_query_length*] Reject queries requesting a range longer than this duration (h/m/s)
 # [*memcached_hosts*] List of hostnames for memcached caching, empty list disables memcached
 # [*memcached_port*] The port for memcached client
 
 class thanos::query_frontend (
     Stdlib::Port::Unprivileged $http_port = 16902,
     String $downstream_url = 'http://localhost:10902',
-    String $log_queries_longer_than = '20s',
+    Pattern[/\d+[hms]/] $log_queries_longer_than = '20s',
+    Pattern[/\d+[hms]/] $max_query_length = '0s',
     Array[Stdlib::Host] $memcached_hosts = [],
     Stdlib::Port $memcached_port = 11211,
     Boolean $request_debug = false,

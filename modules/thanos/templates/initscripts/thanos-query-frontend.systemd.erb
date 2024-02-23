@@ -7,6 +7,7 @@ ExecStart=/usr/bin/thanos query-frontend \
   --cache-compression-type snappy \
   --query-frontend.downstream-url <%= @downstream_url %> \
   --query-range.response-cache-config-file <%= @cache_config_file %> \
+  --query-range.max-query-length <%= @max_query_length %> \
   --query-frontend.log-queries-longer-than <%= @log_queries_longer_than %> \
   --query-frontend.compress-responses \
   <%= @logging_cmdline %>
