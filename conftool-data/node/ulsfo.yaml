@@ -20,3 +20,6 @@ ulsfo:
   ncredir:
     ncredir4001.ulsfo.wmnet: [nginx]
     ncredir4002.ulsfo.wmnet: [nginx]
+  dnsbox:
+    dns4003.wikimedia.org: [authdns-update, authdns-n2, recdns, ntp]
+    dns4004.wikimedia.org: [authdns-update, authdns-n2, recdns, ntp]

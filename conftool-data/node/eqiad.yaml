@@ -522,3 +522,7 @@ eqiad:
   cloudweb:
     cloudweb1003.wikimedia.org: [cloudweb-ssl]
     cloudweb1004.wikimedia.org: [cloudweb-ssl]
+  dnsbox:
+    dns1004.wikimedia.org: [authdns-update, authdns-ns0, authdns-n2, recdns, ntp]
+    dns1005.wikimedia.org: [authdns-update, authdns-ns0, authdns-n2, recdns, ntp]
+    dns1006.wikimedia.org: [authdns-update, authdns-ns0, authdns-n2, recdns, ntp]

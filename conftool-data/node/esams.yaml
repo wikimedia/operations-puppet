@@ -20,3 +20,6 @@ esams:
   ncredir:
     ncredir3003.esams.wmnet: [nginx]
     ncredir3004.esams.wmnet: [nginx]
+  dnsbox:
+    dns3003.wikimedia.org: [authdns-update, authdns-n2, recdns, ntp]
+    dns3004.wikimedia.org: [authdns-update, authdns-n2, recdns, ntp]
