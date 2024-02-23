@@ -1,1 +1,0 @@
-profile::etherpad::service_ensure: stopped
