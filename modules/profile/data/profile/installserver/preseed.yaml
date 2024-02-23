@@ -53,6 +53,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-master*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-raid1-2dev.cfg
+  'an-redacteddb*':
+    - partman/custom/db.cfg
   'an-test-worker100*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-test-worker.cfg
