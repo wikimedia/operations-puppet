@@ -5,6 +5,7 @@ profile::prometheus::icinga_exporter::label_teams_config:
     instance:
       - '.*cloud.*'
       - '.*labs.*'
+      - '.*wikitech-static.*'
 
   dcops:
     # tag all but 'physical' netbox report with 'team=dcops'
