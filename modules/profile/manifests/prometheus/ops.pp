@@ -1493,9 +1493,10 @@ class profile::prometheus::ops (
     ]
 
     prometheus::class_config{ "etherpad_${::site}":
-        dest       => "${targets_path}/etherpad_${::site}.yaml",
-        class_name => 'role::etherpad',
-        port       => 9198,
+        dest             => "${targets_path}/etherpad_${::site}.yaml",
+        class_name       => 'role::etherpad',
+        port             => 9198,
+        class_parameters => { 'service_ensure' => 'running' },
     }
 
     $blazegraph_jobs = [
