@@ -23,18 +23,18 @@
 #                        Default: undef
 #
 define udp2log::instance(
-    $ensure              = present,
-    $port                = '8420',
-    $log_directory       = '/var/log/udp2log',
-    $logrotate           = true,
-    $monitor_processes   = true,
-    $monitor_log_age     = true,
-    $template_variables  = undef,
-    $recv_queue          = '524288',
-    $logrotate_template  = 'udp2log/logrotate_udp2log.erb',
-    $rotate              = 1000,
-    $forward_messages    = false,
-    $mirror_destinations = undef,
+    Wmflib::Ensure $ensure = present,
+    Stdlib::Port $port     = 8420,
+    $log_directory         = '/var/log/udp2log',
+    $logrotate             = true,
+    $monitor_processes     = true,
+    $monitor_log_age       = true,
+    $template_variables    = undef,
+    $recv_queue            = '524288',
+    $logrotate_template    = 'udp2log/logrotate_udp2log.erb',
+    $rotate                = 1000,
+    $forward_messages      = false,
+    $mirror_destinations   = undef,
 ){
     # This define requires that the udp2log class has
     # been included.  The udp2log class is parameterized,

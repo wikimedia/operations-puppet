@@ -56,7 +56,7 @@ class role::logging::mediawiki::udp2log(
     class { '::profile::rsyslog::udp_tee': }
 
     udp2log::instance { 'mw':
-        port                =>   '8421',
+        port                =>   8421,
         log_directory       =>   $log_directory,
         monitor_log_age     =>   false,
         monitor_processes   =>   false,
