@@ -163,6 +163,10 @@ cache::alternate_domains:
     caching: 'normal'
   superset-next.wikimedia.org:
     caching: 'normal'
+  superset-k8s.wikimedia.org:
+    caching: 'normal'
+  superset-next-k8s.wikimedia.org:
+    caching: 'normal'
   tendril.wikimedia.org:
     caching: 'normal'
   thanos.wikimedia.org:
