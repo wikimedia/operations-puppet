@@ -375,6 +375,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'contint[12]00[12]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'contint100[34]':
+    - partman/flat.cfg
+    - virtual.cfg
   'cloudlb100[1-2]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
