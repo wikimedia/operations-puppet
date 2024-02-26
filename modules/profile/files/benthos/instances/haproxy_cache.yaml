@@ -1,0 +1,188 @@
+# SPDX-License-Identifier: Apache-2.0
+# Any value that needs to be injected in the template should be passed
+# as environment variable (see https://www.benthos.dev/docs/configuration/interpolation/)
+#
+http:
+  enabled: true
+  address: "0.0.0.0:${PORT}"
+  debug_endpoints: true
+
+input:
+  label: ""
+  socket_server:
+    network: udp
+    address: env("SOCKET_ADDRESS"),string()
+    codec: lines
+    tls:
+      cert_file: ""
+      key_file: ""
+      self_signed: false
+  processors:
+    - label: "syslog_format"
+      parse_log:
+        format: "syslog_rfc3164"
+        codec: "json"
+buffer:
+ memory:
+   limit: 524288000 # approx 525MB
+   batch_policy:
+     enabled: false
+     count: 0
+     byte_size: 0
+     period: ""
+     check: ""
+
+pipeline:
+  threads: env("PIPELINE_THREADS").number()
+  processors:
+    - label: "drop_first_part"
+      mapping: |
+        root = this
+        root.message = this.message.re_replace_all("^.* newlog (.*)$", "$1")
+    - label: "delete_unused_fields"
+      mapping: |
+        root = this
+        root.hostname = deleted()
+        root.appname = deleted()
+        root.procid = deleted()
+        root.facility = deleted()
+        root.message = this.message
+    - branch:
+        request_map: |
+          root = this.message
+        processors:
+          - grok:
+              expressions:
+                - '%{MESSAGELOG}'
+              use_default_patterns: True
+              pattern_definitions:
+                HAPROXYTIME: '%{HOUR:haproxy_hour}:%{MINUTE:haproxy_minute}(?::%{SECOND:haproxy_second})'
+                HAPROXYDATE: '%{MONTHDAY:haproxy_monthday}/%{MONTH:haproxy_month}/%{YEAR:haproxy_year}:%{HAPROXYTIME:haproxy_time}.%{INT:haproxy_milliseconds:int}'
+                HAPROXYCAPTUREDREQUESTHEADERS: '%{DATA:uri_host}\|%{DATA:referer}\|%{DATA:user_agent}\|%{DATA:accept_language}\|%{DATA:range}\|%{DATA:accept}\|%{DATA:tls}'
+                HAPROXYCAPTUREDRESPONSEHEADERS: '%{DATA:cache_status}\|%{DATA:content_type}\|%{DATA:x_analytics}\|%{DATA:x_cache}\|%{DATA:server}'
+                MESSAGELOG: '%{IP:client_ip}:%{INT:client_port} %{DATA:haproxy_uniq_id} \[%{HAPROXYDATE:accept_date}\] %{NOTSPACE:frontend_name} %{NOTSPACE:backend_name}/%{NOTSPACE:server_name} %{INT:time_request}/%{INT:time_queue}/%{INT:time_backend_connect}/%{INT:time_backend_response}/%{NOTSPACE:time_duration} %{INT:http_status_code} %{NOTSPACE:bytes_read} %{DATA:captured_request_cookie} %{DATA:captured_response_cookie} %{NOTSPACE:termination_state} %{INT:actconn}/%{INT:feconn}/%{INT:beconn}/%{INT:srvconn}/%{NOTSPACE:retries} %{INT:srv_queue}/%{INT:backend_queue} (\{%{HAPROXYCAPTUREDREQUESTHEADERS}\})?( )?(\{%{HAPROXYCAPTUREDRESPONSEHEADERS}\})?( )?%{WORD:http_method} (%{URIPROTO:http_proto}://)?(?:%{USER:http_user}(?::[^@]*)?@)?()?%{DATA:uri_path} %{DATA:uri_query} HTTP/%{NUMBER:http_version} %{NOTSPACE:haproxy_uuid}'
+        result_map: |
+          root.result = this.without(
+               "actconn",
+               "backend_name",
+               "backend_queue",
+               "beconn",
+               "bytes_read",
+               "captured_request_cookie",
+               "captured_response_cookie",
+               "client_port",
+               "feconn",
+               "frontend_name",
+               "haproxy_hour",
+               "haproxy_milliseconds",
+               "haproxy_minute",
+               "haproxy_month",
+               "haproxy_monthday",
+               "haproxy_second",
+               "haproxy_time",
+               "haproxy_year",
+               "http_version",
+               "priority",
+               "retries",
+               "server_name",
+               "srv_queue",
+               "srvconn",
+               "termination_state",
+               "time_backend_connect",
+               "time_duration",
+               "time_queue",
+               "time_request")
+
+          # time_firstbyte should be in seconds
+          root.time_firstbyte = (this.time_backend_response.number() / 1000)
+          root.result.time_backend_response = deleted()
+          # rename server key to backend
+          root.backend = this.server
+          root.result.server = deleted()
+          # rename http_status_code key to http_status
+          root.http_status = this.http_status_code
+          root.result.http_status_code = deleted()
+          # rename client_ip to ip
+          root.ip = this.client_ip
+          root.result.client_ip = deleted()
+          # rename bytes_read to response_size (TODO: what if NaN?)
+          root.response_size = this.bytes_read.number()
+          root.result.bytes_read = deleted()
+          # rename haproxy_uniq_id to sequence
+          root.sequence = this.haproxy_uniq_id.number()
+          root.result.haproxy_uniq_id = deleted()
+          # Parse accept_date into expected format
+          # root.dt is the HAProxy request timestamp
+          # while meta.dt is the Benthos processing timestamp
+          root.dt = this.accept_date.ts_parse("02/Jan/2006:15:04:05.000").ts_format("2006-01-02T15:04:05Z", "UTC")
+          root.result.accept_date = deleted()
+
+          # Metadata
+          meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
+          meta domain = this.uri_host
+          meta id = uuid_v4()
+
+          meta request_id = this.haproxy_uuid
+          root.result.haproxy_uuid = deleted()
+
+          # Set from puppet
+          meta stream = "webrequest_text"
+          root.debug_metadata = root_meta()
+
+          root = root.merge(root.result)
+          root.result = deleted()
+          root.message = deleted()
+          # Note that hostname() (or other bloblang functions) doesn't return FQDN.
+          # This could be done using puppet template
+          root.hostname = hostname()
+          # Set by puppet, webrequest_source can be text|upload
+          root.webrequest_source = "text"
+          # Drop these keys after all processing
+          root.priority = deleted()
+          root.timestamp = deleted()
+          root.severity = deleted()
+
+logger:
+  level: WARN
+  format: logfmt
+output:
+  label: "webrequest_out"
+  kafka_franz:
+    seed_brokers: [ "${KAFKA_BROKERS}" ]
+    topic: env("WEBREQUEST_TOPIC"),string()
+    compression: "snappy"
+  tls:
+    enabled: true
+    root_cas_file: /etc/ssl/certs/wmf-ca-certificats.crt
+    skip_cert_verify: true
+  # label: "sample_stdout_output"
+  # stdout:
+  #   codec: lines
+
+metrics:
+  prometheus:
+    use_histogram_timing: true
+    add_process_metrics: true
+    add_go_metrics: true
+  mapping: |
+    root = "benthos_" + this
+
+tests:
+  - name: syslog parsing
+    target_processors: syslog_format
+    environment: {}
+    input_batch:
+      - content: "<134>Feb  9 14:50:17 localhost haproxy[3789103]: 31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58186 170749021731 [09/Feb/2024:14:50:17.576] tls~ tls/backend_server 0/0/0/2/2 200 72124 - - ---- 1/1/0/0/0 0/0 {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=unknown;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar HTTP/2.0 5c37c58f-7ed0-47a3-817c-96176e85b511"
+    output_batches:
+      -
+        - content_equals: '{"appname":"haproxy","facility":16,"hostname":"localhost","message":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58186 170749021731 [09/Feb/2024:14:50:17.576] tls~ tls/backend_server 0/0/0/2/2 200 72124 - - ---- 1/1/0/0/0 0/0 {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=unknown;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar HTTP/2.0 5c37c58f-7ed0-47a3-817c-96176e85b511","priority":134,"procid":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58186 170749021731 [09/Feb/2024:14:50:17.576","severity":6,"timestamp":"2024-02-09T14:50:17Z"}'
+
+  - name: main pipeline parsing
+    target_processors: /pipeline/processors
+    environment: {}
+    input_batch:
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660] tls~ tls/backend_server 0/0/0/5/5 200 72124 - - ---- 1/1/0/0/0 0/0 {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=unknown;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/9|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar HTTP/2.0 ec866956-0c66-4551-9d92-2d241164d566","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"text"}
+    output_batches:
+      -
+        - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","debug_metadata":{"domain":"en.wikipedia.beta.wmflabs.org","request_id":"ec866956-0c66-4551-9d92-2d241164d566","stream":"webrequest_text"},"dt":"2024-02-09T15:18:55Z","hostname":"traffic-cache-bullseye","http_method":"GET","http_status":"200","ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":170749193534,"time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=unknown;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"text"}
+
