@@ -942,10 +942,6 @@ node /^dbproxy20(01|02|03|04)\.codfw\./ {
     role(mariadb::proxy::master)
 }
 
-node /^debmonitor[12]002\.(codfw|eqiad)\./ {
-    role(insetup::buster)
-}
-
 node /^debmonitor[12]003\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
