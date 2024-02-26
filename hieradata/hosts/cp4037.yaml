@@ -1,0 +1,2 @@
+# Enable extended haproxy log-format
+profile::cache::haproxy::extended_logging: true
