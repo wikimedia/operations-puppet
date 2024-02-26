@@ -6,6 +6,8 @@ class profile::dns::auth::update (
     Stdlib::Fqdn $netbox_exports_domain = lookup('profile::dns::auth::update::netbox_exports_domain'),
     Boolean $confd_enabled = lookup('profile::dns::auth::confd_enabled', {'default_value' => false}),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips = lookup('profile::dns::auth::authdns_servers_ips'),
+    String $conftool_prefix = lookup('conftool_prefix'),
+    Array[Wmflib::Sites] $datacenters = lookup('datacenters'),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
@@ -53,10 +55,11 @@ class profile::dns::auth::update (
     $authdns_conf = '/etc/wikimedia-authdns.conf'
 
     if $confd_enabled {
+      $authdns_update_watch_keys = $datacenters.map |$dc| { "${conftool_prefix}/pools/${dc}/dnsbox/authdns-update" }
+
       confd::file { $authdns_conf:
           ensure     => present,
-          prefix     => '/dnsbox',
-          watch_keys => ['/authdns'],
+          watch_keys => $authdns_update_watch_keys,
           content    => template('profile/dns/auth/wikimedia-authdns.conf.tpl.erb'),
           before     => Exec['authdns-local-update'],
       }
