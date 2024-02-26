@@ -53,23 +53,6 @@ class profile::dns::auth::update (
     $authdns_conf = '/etc/wikimedia-authdns.conf'
 
     if $confd_enabled {
-      # authdns ferm rules for ssh access as well, via confd.
-      $authdns_update_ssh = '/etc/ferm/conf.d/10_authdns_update_ssh'
-
-      # Files in /etc/ferm/conf.d have to be managed via Puppet or are removed.
-      file { $authdns_update_ssh:
-          ensure => absent,
-          before => Confd::File[$authdns_update_ssh],
-      }
-      confd::file { $authdns_update_ssh:
-          ensure     => absent,
-          prefix     => '/dnsbox',
-          watch_keys => ['/authdns'],
-          reload     => '/bin/systemctl reload ferm',
-          content    => template('profile/dns/auth/authdns-update-ssh.tpl.erb'),
-          before     => Exec['authdns-local-update'],
-      }
-
       confd::file { $authdns_conf:
           ensure     => present,
           prefix     => '/dnsbox',
