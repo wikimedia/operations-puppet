@@ -19,7 +19,7 @@ class profile::prometheus::etherpad_exporter(
     systemd::override { 'prometheus-etherpad-exporter-add-listen-address':
         ensure  => $ensure_override,
         unit    => 'prometheus-etherpad-exporter',
-        content => "[Service]\nExecStart=/usr/bin/prometheus-etherpad-exporter --listen ${listen_ip}:${listen_port}\n",
+        content => "[Service]\nExecStart=\nExecStart=/usr/bin/prometheus-etherpad-exporter --listen ${listen_ip}:${listen_port}\n",
     }
 
     profile::auto_restarts::service { 'prometheus-etherpad-exporter':
