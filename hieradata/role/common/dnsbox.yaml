@@ -5,6 +5,26 @@ prometheus::node_exporter::collectors_extra:
 
 prometheus::haproxy_exporter::endpoint: 'http://127.0.0.1:8404/?stats;csv'
 
+# This is used to generate .ssh/config for the DNS hosts themselves so that
+# they can reach other directly with the IP address _and_ for the ferm rules
+# for these hosts. It servers no other purpose and should not be used for
+# anything else.
+profile::dns::auth::authdns_servers_ips:
+  'dns1004.wikimedia.org': 208.80.154.6
+  'dns1005.wikimedia.org': 208.80.154.153
+  'dns1006.wikimedia.org': 208.80.154.77
+  'dns2004.wikimedia.org': 208.80.153.48
+  'dns2005.wikimedia.org': 208.80.153.74
+  'dns2006.wikimedia.org': 208.80.153.107
+  'dns3003.wikimedia.org': 185.15.59.34
+  'dns3004.wikimedia.org': 185.15.59.2
+  'dns4003.wikimedia.org': 198.35.26.7
+  'dns4004.wikimedia.org': 198.35.26.8
+  'dns5003.wikimedia.org': 103.102.166.10
+  'dns5004.wikimedia.org': 103.102.166.8
+  'dns6001.wikimedia.org': 185.15.58.5
+  'dns6002.wikimedia.org': 185.15.58.37
+
 profile::bird::advertise_vips:
   recdns.anycast.wmnet:
     address: 10.3.0.1 # VIP to advertise (limited to a /32)

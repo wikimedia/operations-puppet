@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # == Class profile::dns::auth::update::account
 # Sets up user, group, sudo SSH keys & git-shell commands for authdns-update
-class profile::dns::auth::update::account {
+class profile::dns::auth::update::account (
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips = lookup('profile::dns::auth::authdns_servers_ips')
+) {
     $user  = 'authdns'
     $group = 'authdns'
     $home  = '/srv/authdns'
@@ -47,12 +49,10 @@ class profile::dns::auth::update::account {
         show_diff => false,
     }
 
+    # For a brief period of time this was managed via confd but is now managed
+    # through Puppet again.
     confd::file { "${home}/.ssh/config":
-        ensure     => present,
-        prefix     => '/dnsbox',
-        watch_keys => ['/authdns'],
-        mode       => '0644',
-        content    => template('profile/dns/auth/authdns-ssh-config.tpl.erb'),
+        ensure => absent,
     }
 
     ssh::userkey { $user:
