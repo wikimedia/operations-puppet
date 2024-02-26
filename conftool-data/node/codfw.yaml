@@ -527,6 +527,6 @@ codfw:
     aqs2011.codfw.wmnet: [aqs]
     aqs2012.codfw.wmnet: [aqs]
   dnsbox:
-    dns2004.wikimedia.org: [authdns-update, authdns-ns1, authdns-n2, recdns, ntp]
-    dns2005.wikimedia.org: [authdns-update, authdns-ns1, authdns-n2, recdns, ntp]
-    dns2006.wikimedia.org: [authdns-update, authdns-ns1, authdns-n2, recdns, ntp]
+    dns2004.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp]
+    dns2005.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp]
+    dns2006.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp]
