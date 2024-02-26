@@ -301,7 +301,7 @@ node /^backup1010\.eqiad\./ {
 
 # new node T355571
 node /^an-redacteddb1001\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_engineering)
 }
 
 # codfw storage daemon
