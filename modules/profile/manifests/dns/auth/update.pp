@@ -5,6 +5,7 @@ class profile::dns::auth::update (
     Stdlib::Unixpath $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
     Stdlib::Fqdn $netbox_exports_domain = lookup('profile::dns::auth::update::netbox_exports_domain'),
     Boolean $confd_enabled = lookup('profile::dns::auth::confd_enabled', {'default_value' => false}),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips = lookup('profile::dns::auth::authdns_servers_ips'),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
@@ -57,11 +58,11 @@ class profile::dns::auth::update (
 
       # Files in /etc/ferm/conf.d have to be managed via Puppet or are removed.
       file { $authdns_update_ssh:
-          ensure => present,
+          ensure => absent,
           before => Confd::File[$authdns_update_ssh],
       }
       confd::file { $authdns_update_ssh:
-          ensure     => present,
+          ensure     => absent,
           prefix     => '/dnsbox',
           watch_keys => ['/authdns'],
           reload     => '/bin/systemctl reload ferm',
@@ -77,13 +78,6 @@ class profile::dns::auth::update (
           before     => Exec['authdns-local-update'],
       }
     } else {
-      # Hardcode the same IPv4 addrs as above in the inter-authdns ferm rules for
-      # ssh access as well
-      ferm::service { 'authdns_update_ssh':
-          proto  => 'tcp',
-          port   => '22',
-          srange => "(${authdns_servers.values().join(' ')})",
-      }
       file { $authdns_conf:
           ensure  => 'present',
           mode    => '0444',
@@ -92,6 +86,12 @@ class profile::dns::auth::update (
           content => template('profile/dns/auth/wikimedia-authdns.conf.erb'),
           before  => Exec['authdns-local-update'],
       }
+    }
+
+    ferm::service { 'authdns_update_ssh_rule':
+        proto  => 'tcp',
+        port   => '22',
+        srange => "(${authdns_servers_ips.values().join(' ')})",
     }
 
     # The clones and exec below are only for the initial puppetization of a
