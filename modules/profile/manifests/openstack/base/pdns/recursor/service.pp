@@ -102,18 +102,16 @@ class profile::openstack::base::pdns::recursor::service(
         observer_project_name => $observer_project,
     }
 
-    $ferm_srange = "(${allow_from.join(' ')})"
-
-    ferm::service { 'recursor_udp_dns_rec':
+    firewall::service { 'recursor_udp_dns_rec':
         proto  => 'udp',
-        port   => '53',
-        srange => $ferm_srange,
+        port   => 53,
+        srange => $allow_from,
     }
 
-    ferm::service { 'recursor_tcp_dns_rec':
+    firewall::service { 'recursor_tcp_dns_rec':
         proto  => 'tcp',
-        port   => '53',
-        srange => $ferm_srange,
+        port   => 53,
+        srange => $allow_from,
     }
 
     ferm::rule { 'recursor_skip_dns_conntrack-out':
