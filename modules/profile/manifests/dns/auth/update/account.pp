@@ -49,10 +49,12 @@ class profile::dns::auth::update::account (
         show_diff => false,
     }
 
-    # For a brief period of time this was managed via confd but is now managed
-    # through Puppet again.
-    confd::file { "${home}/.ssh/config":
-        ensure => absent,
+    file { "${home}/.ssh/config":
+        ensure  => present,
+        owner   => $user,
+        group   => $group,
+        mode    => '0644',
+        content => template('profile/dns/auth/authdns-ssh-config.erb'),
     }
 
     ssh::userkey { $user:
