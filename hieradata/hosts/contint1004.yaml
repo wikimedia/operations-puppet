@@ -1,0 +1,5 @@
+profile::admin::groups:
+  - contint-roots
+  - contint-docker
+cluster: ci
+contactgroups: "admins,contint"
