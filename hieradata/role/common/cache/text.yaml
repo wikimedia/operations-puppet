@@ -49,8 +49,6 @@ cache::alternate_domains:
     caching: 'normal'
   etherpad.wikimedia.org:
     caching: 'websockets'
-  git.wikimedia.org:
-    caching: 'normal'
   grafana-next.wikimedia.org:
     caching: 'pass'
   grafana-rw.wikimedia.org:
