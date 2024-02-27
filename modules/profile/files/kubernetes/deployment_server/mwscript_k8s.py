@@ -151,6 +151,8 @@ def main() -> int:
             ],
             env={
                 'PATH': os.environ['PATH'],  # Our helmfiles use an unqualified path for helmBinary.
+                'HELM_CACHE_HOME': '/var/cache/helm',  # Use the shared cache.
+                'HELM_CONFIG_HOME': '/etc/helm',  # Needed for helm chart repos etc.
                 'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
                 'RELEASE_NAME': release,  # Consumed by the helmfile template.
             },
