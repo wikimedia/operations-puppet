@@ -2,3 +2,6 @@
 mariadb::shard: 'm1'
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: false
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
