@@ -39,9 +39,10 @@ class tomcat (
     # lint:ignore:single_quote_string_with_variables
                                                         '${catalina.base}/conf/web.xml'],
     # lint:endignore
+    Integer                $tomcat_version           = 9,
     Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
-    ensure_packages(['tomcat9'])
+    ensure_packages(["tomcat${tomcat_version}"])
     if $apr_listener {
       ensure_packages(['libtcnative-1'])
     }
@@ -53,7 +54,7 @@ class tomcat (
             owner  => 'root',
             mode   => '0640',
             group  => $group,
-            notify => Service['tomcat9'];
+            notify => Service["tomcat${tomcat_version}"];
         $config_basedir:
             ensure => directory;
         "${config_basedir}/server.xml":
@@ -62,12 +63,12 @@ class tomcat (
             content => template('tomcat/context.xml.erb');
         "${config_basedir}/web.xml":
             content => template('tomcat/web.xml.erb');
-        '/etc/default/tomcat9':
+        "/etc/default/tomcat${tomcat_version}":
             mode    => '0644',
             group   => 'root',
             content => "JAVA_OPTS=\"${_java_opts}\"\n";
     }
-    service{'tomcat9':
+    service{"tomcat${tomcat_version}":
         ensure => 'running',
         enable => true,
     }
