@@ -1,2 +1,3 @@
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+profile::restbase::parsoid_uri: http://localhost:6505/w/rest.php
