@@ -1,4 +1,3 @@
 # db1151
 mariadb::shard: 'x2'
-mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false
