@@ -449,7 +449,7 @@ node /^(contint1002|contint2002)\.wikimedia\./ {
     role(ci)
 }
 
-node /^contint1004\.eqiad\./ {
+node /^contint1003\.eqiad\./ {
     role(insetup::collaboration_services)
 }
 
