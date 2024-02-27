@@ -11,6 +11,11 @@
 # @param manage_resolvconf set this to false to disable managing resolv.conf
 #   useful in container environments
 # @param enable_rp_filter set this to false to disable rp_filtering
+# @param no_cron If enabled, don't depend on the presence of a cron daemon. In a standard installation
+#                we still have common packages which depend on a cron-compatible daemon, but there are
+#                already use cases in Cloud VPS where cron isn't necessary. With increased adoption of
+#                systemd timers, this might also be applicable for a future baremetal installation.
+#                For now this option only omits the automated service restarts for cron.
 class profile::base (
     Hash                                $wikimedia_clusters                 = lookup('wikimedia_clusters'),
     String                              $cluster                            = lookup('cluster'),
@@ -24,6 +29,7 @@ class profile::base (
     Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
     Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
+    Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
 ) {
     # Sanity checks for cluster - T234232
     if ! has_key($wikimedia_clusters, $cluster) {
@@ -89,6 +95,7 @@ class profile::base (
     class { 'base::standard_packages':
         remove_python2             => $remove_python2_on_bullseye,
         additional_purged_packages => $additional_purged_packages,
+        no_cron                    => $no_cron,
     }
 
     include profile::environment

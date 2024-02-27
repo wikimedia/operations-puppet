@@ -3,7 +3,8 @@
 #                       default. For select corner cases it will be needed to skip that.
 # @param additional_purged_packages A list of additional packages to purge
 class base::standard_packages (
-    Boolean $remove_python2                     = true,
+    Boolean $remove_python2                      = true,
+    Boolean $no_cron                             = false,
     Array[String[1]] $additional_purged_packages = []
 )  {
 
@@ -146,7 +147,10 @@ class base::standard_packages (
     package {$purged_packages: ensure => 'purged'}
 
     profile::auto_restarts::service { 'lldpd': }
-    profile::auto_restarts::service { 'cron': }
+
+    unless $no_cron {
+        profile::auto_restarts::service { 'cron': }
+    }
 
     # Safe restarts are supported since systemd 219:
     # * systemd now provides a way to store file descriptors
