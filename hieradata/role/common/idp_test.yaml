@@ -72,14 +72,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  superset-next:
-    id: 10
-    service_class: 'OidcRegisteredService'
-    service_id: 'https://superset-next\.svc\.eqiad\.wmnet(/.*)?'
-    profile_format: 'FLAT'
-    required_groups:
-      - nda
-      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
