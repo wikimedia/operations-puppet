@@ -1,9 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # Allow rsyncing phabricator data to other servers for hardware migration
+# and setup scap user before deploying the first time to a new or reimaged server.
 class profile::phabricator::migration (
     Stdlib::Fqdn        $src_host  = lookup('phabricator_active_server'),
     Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::phabricator::migration::dst_hosts'),
 ) {
+
+    class { '::scap::user': }
     class { '::phabricator::phd::user': }
 
     if $facts['fqdn'] in $dst_hosts {
