@@ -470,7 +470,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'lists*':
     - partman/flat.cfg
     - virtual.cfg
-  'logging-hd200[1-3]':
+  'logging-hd[12]00[1-3]':
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
