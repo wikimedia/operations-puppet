@@ -1,8 +1,0 @@
-#!/bin/bash
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
-# This file is managed by puppet. DO NOT EDIT
-# create a DB backup with mysqldump and compress it
-set -euo pipefail
-
-DATESTRING=$(date +%Y%m%d)
-/usr/bin/mysqldump --defaults-extra-file=/etc/dbdump.cfg --single-transaction s52771__paws | /bin/gzip > <%= @backupdir%>/s52771__paws_${DATESTRING}.sql.gz

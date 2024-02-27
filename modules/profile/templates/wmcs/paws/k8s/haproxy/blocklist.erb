@@ -1,9 +1,0 @@
-<%#- SPDX-License-Identifier: Apache-2.0 -%>
-# ** THIS FILE IS MANAGED BY PUPPET -- DO NOT EDIT BY HAND **
-#
-# To block an ip or an ip address range, enter values in the
-# hiera array named profile::wmcs::paws::ip_blocks
-# See also modules/profile/manifests/wmcs/paws/k8s/haproxy.pp in ops/puppet
-<% @ip_blocks.each do |ip| -%>
-<%= ip %>
-<% end -%>
