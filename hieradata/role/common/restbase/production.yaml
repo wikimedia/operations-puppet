@@ -30,6 +30,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - eventgate-main
   - parsoid-async
   - mwapi-async
+  - mw-parsoid
 service::configuration::mwapi_host: "http://localhost:6500"
 #
 # Cassandra

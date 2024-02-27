@@ -322,6 +322,15 @@ profile::services_proxy::envoy::listeners:
     retry:  # -ro should be safe to retry on
       retry_on: "5xx"
       num_retries: 1
+    # Migrating away from parsoid-php to mw-parsoid which is on mw-on-k8s. T357392. TODO: Remove comment once done
+  - name: mw-parsoid
+    port: 6505
+    timeout: "30s"
+    service: mw-parsoid
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
     xfp: https
   - name: restbase-for-services # applications that have call loops with restbase
     port: 6503
