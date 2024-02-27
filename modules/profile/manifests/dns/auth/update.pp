@@ -53,24 +53,12 @@ class profile::dns::auth::update (
 
     $authdns_conf = '/etc/wikimedia-authdns.conf'
 
-    if $confd_enabled {
-      $authdns_update_watch_keys = $datacenters.map |$dc| { "/pools/${dc}/dnsbox/authdns-update" }
-
-      confd::file { $authdns_conf:
-          ensure     => present,
-          watch_keys => $authdns_update_watch_keys,
-          content    => template('profile/dns/auth/wikimedia-authdns.conf.tpl.erb'),
-          before     => Exec['authdns-local-update'],
-      }
-    } else {
-      file { $authdns_conf:
-          ensure  => 'present',
-          mode    => '0444',
-          owner   => 'root',
-          group   => 'root',
-          content => template('profile/dns/auth/wikimedia-authdns.conf.erb'),
-          before  => Exec['authdns-local-update'],
-      }
+    $authdns_update_watch_keys = $datacenters.map |$dc| { "/pools/${dc}/dnsbox/authdns-update" }
+    confd::file { $authdns_conf:
+        ensure     => present,
+        watch_keys => $authdns_update_watch_keys,
+        content    => template('profile/dns/auth/wikimedia-authdns.conf.tpl.erb'),
+        before     => Exec['authdns-local-update'],
     }
 
     ferm::service { 'authdns_update_ssh_rule':
