@@ -1,5 +1,6 @@
 # db2118
 # candidate master for s7
+# See https://phabricator.wikimedia.org/T358421
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::notifications_enabled: false
