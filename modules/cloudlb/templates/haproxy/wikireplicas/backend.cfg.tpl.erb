@@ -11,7 +11,7 @@ backend wikireplica-db-<%= type %>-<%= section %>
 
     timeout connect 3000ms
     timeout server  28800s
-    default server check inter 3s fall 10 rise 20 on-marked-down shutdown-sessions
+    default-server check inter 3s fall 10 rise 20 on-marked-down shutdown-sessions
 
 <%- key = "/wikireplica-db-#{type}/#{section}" -%>
     # etcd key <%= key %>
