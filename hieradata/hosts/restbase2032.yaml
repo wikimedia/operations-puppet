@@ -1,3 +1,2 @@
 profile::cassandra::rack: 'c'
 cassandra::jbod_devices: ['sda4', 'sdb4', 'sdc4']
-profile::restbase::parsoid_uri: http://localhost:6505/w/rest.php
