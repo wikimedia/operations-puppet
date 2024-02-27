@@ -23,6 +23,14 @@ define profile::pki::multirootca::monitoring (
         sudo_user    => 'root',
     }
 
+    prometheus::node_textfile { "prometheus-check-${title}-certificate-expiry":
+        ensure         => 'present',
+        filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
+        interval       => 'daily',
+        run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${ca_file} --outfile /var/lib/prometheus/node.d/${title}_intermediate.prom",
+        extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
+    }
+
     prometheus::blackbox::check::http { "PKI_${title}":
         server_name        => $vhost,
         use_client_auth    => true,
