@@ -159,12 +159,6 @@ profile::idp::services:
     required_groups:
       - wmf
       - nda
-  superset-next:
-    id: 26
-    service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   prometheus:
     id: 27
     service_id: 'https://prometheus-[^.]+\.wikimedia.org(/.*)?'
@@ -233,7 +227,7 @@ profile::idp::services:
   superset_next_k8s:
     id: 38
     service_class: 'OidcRegisteredService'
-    service_id: 'https://superset-next-k8s\.wikimedia\.org(/.*)?'
+    service_id: 'https://superset-next\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
