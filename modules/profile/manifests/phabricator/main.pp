@@ -292,7 +292,6 @@ class profile::phabricator::main (
             'events.listeners'               => [],
             'diffusion.allow-http-auth'      => true,
             'diffusion.ssh-host'             => $phab_diffusion_ssh_host,
-            'gitblit.hostname'               => 'git.wikimedia.org',
         },
         config_deploy_vars => {
             'phabricator' => {

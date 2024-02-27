@@ -144,22 +144,6 @@ class phabricator (
         require => $base_requirements,
     }
 
-    # git.wikimedia.org hosts rewrite rules to redirect old gitblit urls to
-    # equivilent diffusion urls.
-
-    $gitblit_servername = $phab_settings['gitblit.hostname']
-
-    file { '/srv/git.wikimedia.org':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-    }
-
-    httpd::site { 'git.wikimedia.org':
-        content => template('phabricator/gitblit_vhost.conf.erb'),
-        require => File['/srv/git.wikimedia.org'],
-    }
-
     class { '::phabricator::config':
         phabdir            => $phabdir,
         deploy_root        => $deploy_root,

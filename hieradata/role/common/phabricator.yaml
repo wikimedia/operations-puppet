@@ -35,7 +35,6 @@ profile::tlsproxy::envoy::cfssl_options:
     - phab.wmfusercontent.org
     - bugs.wikimedia.org
     - bugzilla.wikimedia.org
-    - git.wikimedia.org
 
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
