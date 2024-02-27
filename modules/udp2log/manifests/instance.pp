@@ -84,10 +84,10 @@ define udp2log::instance(
         content => template($logrotate_template),
     }
 
-    ferm::service { "udp2log_instance_${port}":
-        proto  => 'udp',
-        port   => $port,
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { "udp2log_instance_${port}":
+        proto    => 'udp',
+        port     => $port,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     # only set up instance monitoring if the monitoring scripts are installed
