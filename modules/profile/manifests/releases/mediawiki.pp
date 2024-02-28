@@ -41,7 +41,7 @@ class profile::releases::mediawiki (
         'release_notes_bot_pass', 'integration_registry_pass',
         'releases_jenkins_rsa_pass', 'releases_jenkins_rsa_key',
         'trainbranchbot_netrc', 'jenkins_phab_conduit_token',
-        'doc_rsync_pass'
+        'doc_rsync_pass', 'security_patch_bot_conduit_token'
     ]
 
     $secrets.each |$secret| {
