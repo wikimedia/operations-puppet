@@ -24,10 +24,10 @@ define profile::pki::multirootca::monitoring (
     }
 
     prometheus::node_textfile { "prometheus-check-${title}-certificate-expiry":
-        ensure         => 'present',
+        ensure         =>  $ensure,
         filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
         interval       => 'daily',
-        run_cmd        => "/usr/local/bin/prometheus-check-certificate-expiry --cert-path ${ca_file} --outfile /var/lib/prometheus/node.d/${title}_intermediate.prom",
+        run_cmd        => "/usr/local/bin/prometheus-check-${title}-certificate-expiry --cert-path ${ca_file} --outfile /var/lib/prometheus/node.d/${title}_intermediate.prom",
         extra_packages => ['python3-cryptography', 'python3-prometheus-client'],
     }
 
