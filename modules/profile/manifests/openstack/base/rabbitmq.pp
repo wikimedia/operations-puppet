@@ -16,7 +16,6 @@
 #   traffic over. It should consist of primary fqdns (.wikimedia.org or .wmnet)
 #
 class profile::openstack::base::rabbitmq(
-    String $region = lookup('profile::openstack::base::region'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::base::rabbitmq_setup_nodes'),
     Stdlib::Fqdn $rabbitmq_service_name = lookup('profile::openstack::base::rabbitmq_service_name'),
@@ -161,14 +160,6 @@ class profile::openstack::base::rabbitmq(
         proto  => 'tcp',
         port   => [4369, 5671, 5672, 25672],
         srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
-    }
-
-    $hosts_ranges = $::network::constants::cloud_nova_hosts_ranges[$region]
-
-    ferm::service { 'rabbitmq-nova-hosts':
-        proto  => 'tcp',
-        port   => [5671, 5672],
-        srange => "(${hosts_ranges.join(' ')})",
     }
 
     ferm::service { 'rabbitmq-cinder-backup':
