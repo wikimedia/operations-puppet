@@ -3,7 +3,9 @@
 domains = wikimedia.org
 default_domain_suffix = wikimedia.org
 full_name_format = %1$s
+<%- unless @socket_activation -%>
 services = <%= @services.join(', ') %>
+<%- end -%>
 config_file_version = 2
 
 [sudo]

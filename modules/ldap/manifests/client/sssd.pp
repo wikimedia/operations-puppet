@@ -25,15 +25,21 @@ class ldap::client::sssd(
         'libsss-sudo',
         'sssd',
     ]
+
+    $services = [
+        'nss',
+        'pam',
+        'ssh',
+        'sudo',
+    ]
+
     # On bullseye, the services are started by socket, so there's no need to duplicate them in the sssd config itself.
-    $services = debian::codename::eq('bullseye') ? {
-        true    => [],
-        default => [
-            'nss',
-            'pam',
-            'ssh',
-            'sudo',
-        ]
+    $socket_activation = debian::codename::ge('bullseye')
+
+    if $socket_activation {
+        $service_notify = ['sssd'] + $services.map |String $x| { "sssd-${x}" }
+    } else {
+        $service_notify = ['sssd']
     }
 
     # mkhomedir is not enabled automatically; activate it if needed
@@ -58,12 +64,23 @@ class ldap::client::sssd(
         group   => 'root',
         mode    => '0600',
         content => template('ldap/sssd.conf.erb'),
-        notify  => Service['sssd'],
+        notify  => Service[$service_notify],
         require => Package['sssd'],
     }
 
-    # sssd-nss.service was added as a separate service in bullseye
-    if debian::codename::ge('bullseye') {
+    if $socket_activation {
+        $services.each |String $x| {
+            # We declare these services to exist so that they can be restarted on config chagnes,
+            # but not to start or be enabled as the socket units will take care of that during
+            # normal operations.
+            service { "sssd-${x}": }
+
+            # And just to be sure, we ensure that the socket unit is enabled.
+            service { "sssd-${x}.socket":
+                enable => true,
+            }
+        }
+
         systemd::override { 'sssd-nss-auto-restart':
             unit   => 'sssd-nss.service',
             source => 'puppet:///modules/ldap/client/sssd/sssd-nss-auto-restart.override.service',
@@ -71,8 +88,7 @@ class ldap::client::sssd(
     }
 
     service { 'sssd':
-        ensure  => 'running',
-        require => [Package['sssd'], File['/etc/sssd/sssd.conf']],
+        ensure => 'running',
     }
 
     file { '/etc/ldap.conf':
