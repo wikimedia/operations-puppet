@@ -30,7 +30,6 @@ class profile::openstack::eqiad1::rabbitmq(
         monitor_password        => $monitor_password,
         cleanup_password        => $cleanup_password,
         file_handles            => $file_handles,
-        designate_hosts         => [],
         nova_rabbit_user        => $nova_rabbit_user,
         nova_rabbit_password    => $nova_rabbit_password,
         neutron_rabbit_user     => $neutron_rabbit_user,

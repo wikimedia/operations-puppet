@@ -27,7 +27,6 @@ class profile::openstack::base::rabbitmq(
     $monitor_password = lookup('profile::openstack::base::rabbit_monitor_pass'),
     $cleanup_password = lookup('profile::openstack::base::rabbit_cleanup_pass'),
     $file_handles = lookup('profile::openstack::base::rabbit_file_handles'),
-    Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     String $nova_rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     String $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
     String $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
@@ -179,12 +178,6 @@ class profile::openstack::base::rabbitmq(
         proto  => 'tcp',
         port   => [5671, 5672],
         srange => "(@resolve((${cloudcontrols.join(' ')})))",
-    }
-
-    ferm::service { 'rabbitmq-designate':
-        proto  => 'tcp',
-        port   => [5671, 5672],
-        srange => "(@resolve((${designate_hosts.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-cinder-backup':
