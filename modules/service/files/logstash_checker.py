@@ -127,10 +127,11 @@ class CheckService(object):
     def _get_k8s_canary_namespaces(self) -> set:
         res = set()
 
-        with open(self.mediawiki_deployments_file) as f:
-            for entry in yaml.load(f):
-                if entry.get("canary"):
-                    res.add(entry["namespace"])
+        if os.path.exists(self.mediawiki_deployments_file):
+            with open(self.mediawiki_deployments_file) as f:
+                for entry in yaml.load(f):
+                    if entry.get("canary"):
+                        res.add(entry["namespace"])
 
         return res
 
