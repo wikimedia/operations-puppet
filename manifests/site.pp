@@ -450,7 +450,7 @@ node /^(contint1002|contint2002)\.wikimedia\./ {
 }
 
 node /^contint1003\.eqiad\./ {
-    role(insetup::collaboration_services)
+    role(ci_test)
 }
 
 node /^cp11(0[02468]|1[024])\.eqiad\./ {
