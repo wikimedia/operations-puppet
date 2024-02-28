@@ -2856,11 +2856,6 @@ node /^wdqs10(1[89]|2[01])\.eqiad\./ {
     role(wdqs::public)
 }
 
-# new  node T342660
-node /^wdqs10([1][7-9]|[2][0-1])\.eqiad\./ {
-    role(::insetup::search_platform)
-}
-
 node /^wdqs10([2][2-4])\.eqiad\./ {
     role(wdqs::test)
 }
