@@ -1,5 +1,6 @@
 profile::idp::log_level: 'DEBUG'
 profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
 profile::idp::tgc_cookie_same_site: 'strict'
 profile::idp::tgc_cookie_pin_to_session: false
 profile::tlsproxy::envoy::floc_opt_out: true
