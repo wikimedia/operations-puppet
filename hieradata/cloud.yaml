@@ -69,6 +69,7 @@ profile::admin::managehomehome: false
 
 profile::base::overlayfs: false
 profile::base::additional_purged_packages: []
+profile::base::no_cron: true  # T358343
 
 # All labs instances have internet connectivity, so do not bother with proxies
 profile::base::certificates::puppet_ca_content: {}
