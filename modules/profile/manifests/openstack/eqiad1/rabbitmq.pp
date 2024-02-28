@@ -1,5 +1,4 @@
 class profile::openstack::eqiad1::rabbitmq(
-    Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     Array[Stdlib::Fqdn] $rabbitmq_setup_nodes = lookup('profile::openstack::eqiad1::rabbitmq_setup_nodes'),
     $monitor_user = lookup('profile::openstack::eqiad1::rabbit_monitor_user'),
@@ -23,7 +22,6 @@ class profile::openstack::eqiad1::rabbitmq(
     String $version = lookup('profile::openstack::eqiad1::version'),
 ){
     class {'::profile::openstack::base::rabbitmq':
-        openstack_control_nodes => $openstack_control_nodes,
         rabbitmq_nodes          => $rabbitmq_nodes,
         rabbitmq_setup_nodes    => $rabbitmq_setup_nodes,
         monitor_user            => $monitor_user,
