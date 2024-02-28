@@ -20,9 +20,8 @@ class profile::thanos::query (
     $http_port = 10902
 
     class { 'thanos::query':
-        http_port     => $http_port,
-        sd_files      => $sd_files,
-        request_debug => true,
+        http_port => $http_port,
+        sd_files  => $sd_files,
     }
 
     # Reach out to all sites' sidecars for recent data
