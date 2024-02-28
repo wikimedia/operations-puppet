@@ -110,7 +110,13 @@
 #
 # [*ferm_srange*]
 #   ferm srange on which to allow access to Airflow (really just the airflow-webserver port).
-#   Default: $ANALYTICS_NETWORKS
+#   If $firewall_srange is set, this option isn't used.
+#   Default: $INTERNAL
+#
+# [*firewall_srange*]
+#   A firewall set used to configure firewall access using the generic firewall module.
+#   If set, it overrides $ferm_srange
+#   Default: unset
 #
 # [*scap_targets*]
 #   scap::target resource definitions to declare.
@@ -137,6 +143,7 @@ define airflow::instance(
     Boolean $statsd_monitoring_enabled  = false,
     Integer $clean_logs_older_than_days = 90,
     String $ferm_srange                 = '$INTERNAL',
+    Optional[String] $firewall_srange   = undef,
     Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
     Boolean $renew_skein_certificate    = true
@@ -538,11 +545,20 @@ define airflow::instance(
         },
     }
 
-    ferm::service { "airflow-webserver@${title}":
-        proto  => 'tcp',
-        port   => $webserver_port,
-        srange => $ferm_srange,
+    if $firewall_srange != undef {
+        firewall::service { "airflow-webserver@${title}":
+            proto    => 'tcp',
+            port     => $webserver_port,
+            src_sets => [$firewall_srange],
+        }
+    } else {
+        ferm::service { "airflow-webserver@${title}":
+            proto  => 'tcp',
+            port   => $webserver_port,
+            srange => $ferm_srange,
+        }
     }
+
 
     $skein_cert_path = "${airflow_home}/.skein/skein.crt"
     prometheus::node_textfile { 'prometheus-check-certificate-expiry':
