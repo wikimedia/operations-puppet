@@ -95,7 +95,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             self._run_remote_command(
                 cfg.CONF[self.name].puppet_master_host,
                 cfg.CONF[self.name].certmanager_user,
-                "sudo puppet cert clean %s" % pipes.quote(fqdn),
+                "sudo /usr/bin/puppetserver ca clean --certname %s" % pipes.quote(fqdn),
             )
 
         # Clean up the puppet config for this instance, if there is one
