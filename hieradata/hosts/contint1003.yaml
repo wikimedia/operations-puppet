@@ -2,3 +2,4 @@ profile::admin::groups:
   - contint-roots
 cluster: ci
 contactgroups: "admins,contint"
+profile::zuul::merger::enable: false
