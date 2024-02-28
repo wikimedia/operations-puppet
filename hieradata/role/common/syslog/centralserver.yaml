@@ -38,7 +38,7 @@ profile::benthos::instances:
     # 128 / (24 / #partitions)
     # The partition range is specified below in the topic list.
     env_variables:
-      - sampling: 128
+      sampling: 128
     kafka:
       cluster: jumbo
       site: eqiad
