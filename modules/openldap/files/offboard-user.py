@@ -168,6 +168,7 @@ delete: userPassword
                          'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
                          'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
                          'cn=dns-admins,ou=groups,dc=wikimedia,dc=org',
+                         'cn=superset-admins,ou=groups,dc=wikimedia,dc=org',
                          'cn=project-cloudinfra,ou=groups,dc=wikimedia,dc=org',
                          'cn=tools.admin,ou=servicegroups,dc=wikimedia,dc=org']
     ldapdata = ldap_conn.search_s(
