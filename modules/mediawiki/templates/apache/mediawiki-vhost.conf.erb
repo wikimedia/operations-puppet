@@ -48,7 +48,7 @@
     RewriteRule     ^/w/wiki.phtml$      /w/index.php [L,QSA,NE]
 
     # Primary wiki redirector:
-    RewriteRule ^/wiki /w/index.php [L]
+    RewriteRule ^/wiki(/.*)?$ /w/index.php [L]
 <%- if @public_rewrites -%>
     # Make robots.txt editable via MediaWiki:robots.txt
     RewriteRule ^/robots\.txt$ /w/robots.php [L]

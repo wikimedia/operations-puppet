@@ -48,6 +48,16 @@ https://en.wikipedia.org:
 - path: /api/
   assert_status: 200
   assert_body_contains: providing rich queries, editing and content access
+# T357595 - Previously, anything matching /wiki.* would get an unintended 301.
+- path: /nonexistent
+  assert_status: 404
+- path: /wikinonexistent
+  assert_status: 404
+- path: /wiki
+  assert_status: 301
+  assert_headers:
+    Location: https://en.wikipedia.org/wiki/Main_Page
+
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
