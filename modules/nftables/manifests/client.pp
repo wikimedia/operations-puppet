@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary Create nft rules for a service
+# @summary Create nft rules for a client (permit outbound)
 # @param ensure Ensure of the resource
 # @param proto Either 'udp' or 'tcp'
 # @param prio The rules are included with a path prefix, by default all rules use 10,
@@ -16,22 +16,27 @@
 # @param src_sets see srange docs
 # @param dst_sets see srange docs
 # @param notrack Optional boolean to disable connection tracking for matching traffic
-# @param qos Optional string with value of 'high', 'low', 'normal' or 'mgmt' to indicate the
+# @param qos Optional string with value of 'high', 'low', 'normal' or 'control' to indicate the
 #       quality-of-service the traffic should get across the network, controlled by setting the
 #       DSCP bits in the packet header.
-define nftables::service (
+# @param skip_output_chain
+#       Controls whether or not to create a rule in the output chain matching the defined 
+#       traffic, which is usually not needed.  Defaults to true to match the existing 
+#       ferm::client behaviour.
+define nftables::client (
     Wmflib::Protocol              $proto,
-    Wmflib::Ensure                $ensure     = present,
-    Integer[0,99]                 $prio       = 10,
-    Optional[String]              $desc       = undef,
-    Optional[Nftables::Port]      $port       = undef,
-    Optional[Firewall::Portrange] $port_range = undef,
-    Array[Stdlib::IP::Address]    $src_ips    = [],
-    Array[Stdlib::IP::Address]    $dst_ips    = [],
-    Array[String[1]]              $src_sets   = [],
-    Array[String[1]]              $dst_sets   = [],
-    Boolean                       $notrack    = false,
-    Optional[Firewall::Qos]       $qos        = undef,
+    Wmflib::Ensure                $ensure            = present,
+    Integer[0,99]                 $prio              = 10,
+    Optional[String]              $desc              = undef,
+    Optional[Nftables::Port]      $port              = undef,
+    Optional[Firewall::Portrange] $port_range        = undef,
+    Array[Stdlib::IP::Address]    $src_ips           = [],
+    Array[Stdlib::IP::Address]    $dst_ips           = [],
+    Array[String[1]]              $src_sets          = [],
+    Array[String[1]]              $dst_sets          = [],
+    Boolean                       $notrack           = false,
+    Boolean                       $skip_output_chain = false,
+    Optional[Firewall::Qos]       $qos               = undef,
 ) {
     # TODO: there is a nftables construct 'concatenation' that can drastically
     # reduce the amount of filtering rules in the system.
@@ -165,47 +170,29 @@ define nftables::service (
         }
     }
 
-    $filename = sprintf('/etc/nftables/input/%02d_%s.nft', $prio, $title)
-    @file { $filename:
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => $content,
-        notify  => Service['nftables'],
-        require => $file_require,
-        tag     => 'nft',
+    if !$skip_output_chain {
+        $filename = sprintf('/etc/nftables/output/%02d_%s.nft', $prio, $title)
+        @file { $filename:
+            ensure  => $ensure,
+            mode    => '0444',
+            content => $content,
+            notify  => Service['nftables'],
+            require => $file_require,
+            tag     => 'nft',
+        }
     }
 
     if $qos != undef {
         $dscp = firewall::qos2dscp($qos)
 
-        # DSCP is set outbound, so we are marking the reply packets to those permitted
-        # in the input chain by the rules compiled earlier.
-        # In other words we need the same match criteria, but with 'saddr/daddr' reversed etc.
-        $port_stmt_rev = $port_stmt.regsubst('dport', 'sport', 'G')
-        $v4_stmts_rev = $l3_v4_stmts
-            .regsubst('daddr', 'srcaddr', 'G')
-            .regsubst('saddr', 'daddr', 'G')
-            .regsubst('srcaddr', 'saddr', 'G')
-        $v6_stmts_rev = $l3_v6_stmts
-            .regsubst('daddr', 'srcaddr', 'G')
-            .regsubst('saddr', 'daddr', 'G')
-            .regsubst('srcaddr', 'saddr', 'G')
-
-        # Now we compile the rules for v4 and v6 with appropriate dscp set instruction
-        $dscp_v4_rules = $v4_stmts_rev.empty() ? {
-            true => ["${port_stmt_rev} ip dscp set ${dscp} return"],
-            default => $v4_stmts_rev.map |$v4_stmt_rev| {
-                "${v4_stmt_rev} ${port_stmt_rev} ip dscp set ${dscp} return".strip
-            },
+        $dscp_v4_rules = $l3_v4_stmts.empty() ? {
+            true => ["${port_stmt} ip dscp set ${dscp} return"],
+            default => $l3_v4_stmts.map |$l3_v4_stmt| { "${l3_v4_stmt} ${port_stmt} ip dscp set ${dscp} return".strip },
         }
 
-        $dscp_v6_rules = $v6_stmts_rev.empty() ? {
-            true => ["${port_stmt_rev} ip6 dscp set ${dscp} return"],
-            default => $v6_stmts_rev.map |$v6_stmt_rev| {
-                "${v6_stmt_rev} ${port_stmt_rev} ip6 dscp set ${dscp} return".strip
-            },
+        $dscp_v6_rules = $l3_v6_stmts.empty() ? {
+            true => ["${port_stmt} ip6 dscp set ${dscp} return"],
+            default => $l3_v6_stmts.map |$l3_v6_stmt| { "${l3_v6_stmt} ${port_stmt} ip6 dscp set ${dscp} return".strip },
         }
 
         $dscp_rules = ($dscp_v4_rules + $dscp_v6_rules).sort
@@ -216,7 +203,7 @@ define nftables::service (
         ${dscp_rules.join("\n")}
         | POST_CONTENT
 
-        $postrouting_filename = sprintf('/etc/nftables/postrouting/%02d_%s_service_%s.nft', $prio, $title, $qos)
+        $postrouting_filename = sprintf('/etc/nftables/postrouting/%02d_%s_client_%s.nft', $prio, $title, $qos)
         @file { $postrouting_filename:
             ensure  => $ensure,
             mode    => '0444',

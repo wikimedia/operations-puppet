@@ -10,6 +10,7 @@
 # @param src_sets An optional array of predefined sets of hosts FROM which incoming traffic is allowed (defined in profile::firewall::nftables_base_sets).
 # @param dst_sets An optional array of predefined sets of hosts TO which incoming traffic is allowed (defined in profile::firewall::nftables_base_sets).
 # @param notrack set the rule with no state tracking
+# @param qos specify a traffic class for DSCP marking (low/normal/high/control)
 define firewall::service(
     Wmflib::Protocol              $proto,
                                   $port   = undef,
@@ -22,6 +23,7 @@ define firewall::service(
     Optional[Array[String[1]]]    $src_sets = undef,
     Optional[Array[String[1]]]    $dst_sets = undef,
     Boolean                       $notrack = false,
+    Optional[Firewall::Qos]       $qos               = undef,
 ) {
     include firewall
 

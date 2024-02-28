@@ -5,26 +5,39 @@ table inet base {
     include "/etc/nftables/sets/*.nft"
 
     chain prerouting {
-	type filter hook prerouting priority -300;
+        type filter hook prerouting priority -300;
 
-	# Include all Puppet-managed exceptions from connection tracking
-	include "/etc/nftables/notrack/*.nft"
+        # Include all Puppet-managed exceptions from connection tracking
+        include "/etc/nftables/notrack/*.nft"
     }
 
     chain input {
-	type filter hook input priority 0 ; policy drop;
+        type filter hook input priority 0 ; policy drop;
 
-	ct state related,established accept
-	iifname "lo" accept
-	pkttype multicast accept
-	meta l4proto ipv6-icmp accept
-	ip protocol icmp accept
+        ct state related,established accept
+        iifname "lo" accept
+        pkttype multicast accept
+        meta l4proto ipv6-icmp accept
+        ip protocol icmp accept
 
-	# Include all Puppet-managed service definitions for incoming traffic
-	include "/etc/nftables/input/*.nft"
+        # Include all Puppet-managed service definitions for incoming traffic
+        include "/etc/nftables/input/*.nft"
     }
 
     chain output {
-	type filter hook output priority 0 ; policy accept;
+        type filter hook output priority 0 ; policy accept;
+
+        # Include any Puppet-managed client definitions filtering outbound traffic
+        include "/etc/nftables/output/*.nft"
+    }
+
+    chain postrouting {
+        type filter hook postrouting priority 0 ;
+
+        # Include any Puppet-managed custom rules to mark DSCP bits
+        include "/etc/nftables/postrouting/*.nft"
+        # Anything else mark as CS0 / default priority class
+        ip dscp != cs0 ip dscp set cs0 counter
+        ip6 dscp != cs0 ip6 dscp set cs0 counter
     }
 }

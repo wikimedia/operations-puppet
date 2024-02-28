@@ -123,6 +123,14 @@ class profile::firewall (
                 source => 'puppet:///modules/base/firewall/main-input-default-drop.conf',
             }
 
+            # Set all DSCP to default marking - for granular classification use nftables
+            ferm::rule { 'dscp-default':
+                prio  => 99,
+                table => 'mangle',
+                chain => 'POSTROUTING',
+                rule  => 'DSCP set-dscp-class CS0;',
+            }
+
             ferm::conf { 'defs':
                 prio    => '00',
                 content => template('base/firewall/defs.erb'),

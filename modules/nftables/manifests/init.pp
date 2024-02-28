@@ -56,6 +56,20 @@ class nftables (
         recurse => true,
     }
 
+    # For Puppet roles to declare outgoing traffic, included by the main config
+    file { '/etc/nftables/output':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
+    # For Puppet roles to define outbound DSCP markings, included by the main config
+    file { '/etc/nftables/postrouting':
+        ensure  => 'directory',
+        purge   => true,
+        recurse => true,
+    }
+
     # For Puppet roles to declare exceptions from connection tracking for
     # traffic, included by the main config
     file { '/etc/nftables/notrack':

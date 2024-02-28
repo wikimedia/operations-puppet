@@ -23,6 +23,30 @@
 <% end -%>
 <% end -%>
 
+<% if @dscp -%>
+<% if @_srange -%>
+<% if @_drange -%>
+&RD_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_srange %>, <%= @_drange %>, <%= @dscp %>);
+<% else -%>
+&R_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_srange %>, <%= @dscp %>);
+<% end -%>
+<% elsif @_drange -%>
+&D_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_drange %>, <%= @dscp %>);
+<% end -%>
+<% if !@_srange and !@_drange and !@_src_sets and !@_dst_sets -%>
+&SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @dscp %>);
+<% if @_src_sets and @_dst_sets -%>
+&RD_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_src_sets %>, <%= @_dst_sets %>, <%= @dscp %>);
+<% end -%>
+<% else -%>
+<% if @_src_sets -%>
+&R_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_src_sets %>, <%= @dscp %>);
+<% elsif @_dst_sets -%>
+&D_SERVICE_DSCP(<%= @proto %>, <%= @_port %>, <%= @_dst_sets %>, <%= @dscp %>);
+<% end -%>
+<% end -%>
+<% end -%>
+
 <% if @notrack == true %>
 &NO_TRACK(<%= @proto %>, <%= @_port %>);
 <% end -%>

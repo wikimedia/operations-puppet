@@ -27,6 +27,7 @@
 #    ports of the range
 # Only one of $port ot $port_range can be given
 #
+# $qos can be one of "high/normal/low/control" to mark traffic with DSCP
 define ferm::service(
     Wmflib::Protocol $proto,
     Optional[Ferm::Port] $port = undef,
@@ -40,6 +41,7 @@ define ferm::service(
     Optional[Array[String[1]]] $src_sets = undef,
     Optional[Array[String[1]]] $dst_sets = undef,
     Boolean $notrack = false,
+    Optional[Firewall::Qos] $qos = undef,
 ) {
     if $port == undef and $port_range == undef {
         fail('One of port or port_range must be passed to ferm::service.')
@@ -81,6 +83,10 @@ define ferm::service(
         }
     } elsif $port_range {
         $_port = $port_range.join(':')
+    }
+
+    if $qos != undef {
+        $dscp = firewall::qos2dscp($qos)
     }
 
     @file { '/etc/ferm/conf.d/%02d_%s'.sprintf($prio, $name):
