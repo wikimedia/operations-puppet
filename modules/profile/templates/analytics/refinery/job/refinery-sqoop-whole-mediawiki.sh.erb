@@ -10,4 +10,7 @@
 #
 # See each script referenced below for the list of cloud replica and prod replica tables
 
-/usr/local/bin/refinery-sqoop-mediawiki-history && /usr/local/bin/refinery-sqoop-mediawiki-production && /usr/local/bin/refinery-sqoop-mediawiki-not-history
+/usr/local/bin/refinery-sqoop-mediawiki-history \
+  && /usr/local/bin/refinery-sqoop-mediawiki-production-history \
+  && /usr/local/bin/refinery-sqoop-mediawiki-not-history \
+  && /usr/local/bin/refinery-sqoop-mediawiki-production-not-history

@@ -1,0 +1,21 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# NOTE: This file is managed by puppet
+#
+
+export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
+
+/usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
+    --job-name sqoop-mediawiki-monthly-production-history-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    --output-dir <%= @output_directory_private %> \
+    --wiki-file <%= @wiki_file %> \
+    --tables actor,comment \
+    --user <%= @private_db_user %> \
+    --password-file <%= @db_password_private %> \
+    --partition-name snapshot \
+    --partition-value $(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    --mappers <%= @num_mappers_all_times %> \
+    --processors <%= @num_processors %> \
+    --yarn-queue <%= @yarn_queue %> \
+    --output-format avrodata \
+    --log-file <%= @production_log_file %>

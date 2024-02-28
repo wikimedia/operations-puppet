@@ -6,10 +6,10 @@
 export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
 
 /usr/bin/python3 <%= @refinery_path %>/bin/sqoop-mediawiki-tables \
-    --job-name sqoop-mediawiki-monthly-production-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
+    --job-name sqoop-mediawiki-monthly-production-not-history-$(/bin/date --date="$(/bin/date +%Y-%m-15) -1 month" +'%Y-%m') \
     --output-dir <%= @output_directory_private %> \
     --wiki-file <%= @wiki_file %> \
-    --tables actor,comment,watchlist,linktarget \
+    --tables watchlist,linktarget \
     --user <%= @private_db_user %> \
     --password-file <%= @db_password_private %> \
     --partition-name snapshot \

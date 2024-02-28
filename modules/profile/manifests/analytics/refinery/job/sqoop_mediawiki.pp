@@ -65,10 +65,21 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         group   => 'analytics',
     }
 
-    # sqoop from analytics-store replicas, tables not available on cloud replicas for privacy reasons
-    file { '/usr/local/bin/refinery-sqoop-mediawiki-production':
+    # sqoop from analytics-store replicas the tables needed by medawiki-history
+    # Tables not available on cloud replicas for privacy reasons
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-production-history':
         ensure  => $ensure_timers,
-        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production.sh.erb'),
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production-history.sh.erb'),
+        mode    => '0550',
+        owner   => 'analytics',
+        group   => 'analytics',
+    }
+
+    # sqoop from analytics-store replicas the tables not needed by medawiki-history
+    # Tables not available on cloud replicas for privacy reasons
+    file { '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history':
+        ensure  => $ensure_timers,
+        content => template('profile/analytics/refinery/job/refinery-sqoop-mediawiki-production-not-history.sh.erb'),
         mode    => '0550',
         owner   => 'analytics',
         group   => 'analytics',
@@ -83,7 +94,8 @@ class profile::analytics::refinery::job::sqoop_mediawiki (
         require => File[
             '/usr/local/bin/refinery-sqoop-mediawiki-history',
             '/usr/local/bin/refinery-sqoop-mediawiki-not-history',
-            '/usr/local/bin/refinery-sqoop-mediawiki-production'
+            '/usr/local/bin/refinery-sqoop-mediawiki-production-history',
+            '/usr/local/bin/refinery-sqoop-mediawiki-production-not-history'
             ],
     }
 
