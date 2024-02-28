@@ -32,6 +32,11 @@
 #   Sub-folders: dump_type/date/wikidb.
 #   Default: wmf/data/raw/mediawiki/dumps
 #
+# [*skip_list*]
+#   A comma-separated list of wikis (database-name) to be skipped
+#   from the projects present in wiki_file
+#   Default: undef
+#
 # [*script_path*]
 #   The path to be used for the import-script.
 #   Default: /usr/local/bin/${title}
@@ -45,6 +50,7 @@ define profile::analytics::refinery::job::import_mediawiki_dumps_config(
     $wiki_file = '/mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikis.csv',
     $input_directory_base = '/mnt/data/xmldatadumps/public',
     $output_directory_base = '/wmf/data/raw/mediawiki/dumps',
+    $skip_list = undef,
     $script_path = "/usr/local/bin/${title}",
     $ensure = 'present',
 ) {
