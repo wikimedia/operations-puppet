@@ -77,7 +77,13 @@ enforcer.register_defaults([
 app = flask.Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = cfg.CONF.dynamicproxy.sqlalchemy_uri
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(
+    app,
+    engine_options={
+        'pool_recycle': 1800,
+        'pool_pre_ping': True,
+    }
+)
 
 key.init_app(app)
 log.init_app(app)
