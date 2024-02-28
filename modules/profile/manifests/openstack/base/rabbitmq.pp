@@ -36,7 +36,6 @@ class profile::openstack::base::rabbitmq(
     String $magnum_rabbit_password = lookup('profile::openstack::base::magnum::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
-    Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
     String $version = lookup('profile::openstack::base::version'),
     Stdlib::IP::Address::V4 $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet'),
@@ -159,12 +158,6 @@ class profile::openstack::base::rabbitmq(
         proto  => 'tcp',
         port   => [4369, 5671, 5672, 25672],
         srange => "(@resolve((${rabbitmq_nodes.join(' ')} ${rabbitmq_setup_nodes.join(' ')})))",
-    }
-
-    ferm::service { 'rabbitmq-cinder-backup':
-        proto  => 'tcp',
-        port   => [5671, 5672],
-        srange => "(@resolve((${cinder_backup_nodes.join(' ')})))",
     }
 
     ferm::service { 'rabbitmq-cloud-vps-instances':

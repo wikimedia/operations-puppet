@@ -18,7 +18,6 @@ class profile::openstack::codfw1dev::rabbitmq(
     String $trove_guest_rabbit_pass = lookup('profile::openstack::codfw1dev::trove::trove_guest_rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::codfw1dev::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::codfw1dev::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
-    Array[Stdlib::Fqdn] $cinder_backup_nodes   = lookup('profile::openstack::codfw1dev::cinder::backup::nodes'),
     Integer $heartbeat_timeout = lookup('profile::openstack::eqiad1::rabbitmq_heartbeat_timeout'),
     String $version = lookup('profile::openstack::codfw1dev::version'),
 ){
@@ -42,7 +41,6 @@ class profile::openstack::codfw1dev::rabbitmq(
         trove_guest_rabbit_pass => $trove_guest_rabbit_pass,
         rabbit_erlang_cookie    => $rabbit_erlang_cookie,
         rabbit_cfssl_label      => $rabbit_cfssl_label,
-        cinder_backup_nodes     => $cinder_backup_nodes,
         heartbeat_timeout       => $heartbeat_timeout,
         version                 => $version,
     }

@@ -1,5 +1,0 @@
-# NOTE: remember, cinder-backup nodes for codfw1dev live in the eqiad DC
-# and cinder-backup nodes for eqiad1 live in the codfw DC
-profile::openstack::codfw1dev::cinder::backup::nodes:
-    - cloudbackup1001-dev.eqiad.wmnet
-    - cloudbackup1002-dev.eqiad.wmnet
