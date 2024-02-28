@@ -82,8 +82,13 @@ class NovaFixedWMFHandler(BaseAddressWMFHandler):
 
         # This plugin only handles cleanup.
         if event_type == 'compute.instance.delete.start':
-            self._delete(payload,
-                         resource_id=payload['instance_id'],
-                         resource_type='instance')
+            try:
+                self._delete(payload,
+                             resource_id=payload['instance_id'],
+                             resource_type='instance')
+            except Exception:
+                LOG.exception(
+                    "Unhandled exception when processing compute.instance.delete.start notification"
+                )
         else:
             raise ValueError('NovaFixedHandler received an invalid event type')
