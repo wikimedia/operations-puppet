@@ -124,6 +124,7 @@ class base::standard_packages (
                 'libsnmp30', 'libdns-export1104', 'libdns1104', 'libisc-export1100', 'libisc1100', 'multiarch-support',
                 'libjson-c3', 'libpython3.7', 'libpython3.7-minimal', 'libpython3.7-stdlib', 'python3.7', 'python3.7-minimal',
                 'libevent-2.1-6', 'libwireshark11', 'libwiretap8', 'libwsutil9', 'libwscodecs2', 'libperl5.28', 'libmpdec2',
+                'perl-modules-5.28',
             ]
             $purged_packages = []
         }
