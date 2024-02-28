@@ -23,6 +23,7 @@ are already mid-deletion.  In that case it should be safe to re-run.
 """
 
 import argparse
+import json
 import subprocess
 
 import mwopenstackclients
@@ -88,7 +89,7 @@ def purge_leaks(delete=False):
             puppetmaster_username,
             puppetmaster_keyfile,
             bastion_ip,
-            "sudo /usr/bin/puppet cert list --all -m",
+            "sudo /usr/bin/puppetserver ca list --all --format json",
             debug=True,
         )
     except subprocess.CalledProcessError:
@@ -97,10 +98,8 @@ def purge_leaks(delete=False):
             "add the 'osstackcanary' user to the cloudinfra project. Don't leave it "
             "there though!"
         )
-    for line in cert_list_output.split(b"\n"):
-        if line.startswith(b"+"):
-            certname = line.split(b'"')[1]
-            allcerts.append(certname.decode("utf8"))
+    allcerts = [cert['name']
+                for cert in json.loads(cert_list_output)['signed']]
 
     instances = clients.allinstances(allregions=True)
     all_possible_names = []
@@ -129,7 +128,7 @@ def purge_leaks(delete=False):
                     puppetmaster_username,
                     puppetmaster_keyfile,
                     bastion_ip,
-                    "sudo /usr/bin/puppet cert clean %s" % leak,
+                    "sudo /usr/bin/puppetserver ca clean --certname %s" % leak,
                     debug=True,
                 )
             else:
