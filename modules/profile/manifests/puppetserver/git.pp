@@ -13,6 +13,7 @@ class profile::puppetserver::git (
     String[1]           $group              = lookup('profile::puppetserver::git::group'),
     String[1]           $control_repo       = lookup('profile::puppetserver::git::control_repo'),
     Hash[String, Hash]  $repos              = lookup('profile::puppetserver::git::repos'),
+    Stdlib::Unixpath    $code_dir           = lookup('profile::puppetserver::code_dir'),
 ) {
     $servers = (wmflib::role::hosts('puppetmaster::frontend') +
                 wmflib::role::hosts('puppetmaster::backend') +
@@ -164,11 +165,11 @@ class profile::puppetserver::git (
     }
 
     exec { 'puppetserver-deploy-code':
-        command     => '/usr/local/bin/puppetserver-deploy-code',
-        refreshonly => true,
-        notify      => Service['puppetserver'],
-        require     => [Package['g10k'], File['/usr/local/bin/puppetserver-deploy-code']],
-        subscribe   => [Git::Clone[$control_repo], File[$puppetserver::g10k::config_file]],
+        command   => '/usr/local/bin/puppetserver-deploy-code',
+        creates   => "${code_dir}/environments/production",
+        notify    => Service['puppetserver'],
+        require   => [Package['g10k'], File['/usr/local/bin/puppetserver-deploy-code']],
+        subscribe => [Git::Clone[$control_repo], File[$puppetserver::g10k::config_file]],
     }
 
     file { '/usr/local/bin/pgit':
