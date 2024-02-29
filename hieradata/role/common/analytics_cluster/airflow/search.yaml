@@ -34,7 +34,7 @@ profile::java::extra_args:
 profile::airflow::instances:
   # airflow@search instance.
   search:
-    ferm_srange: $ANALYTICS_NETWORKS
+    firewall_srange: ANALYTICS_NETWORKS
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics-search
     service_group: analytics-search
