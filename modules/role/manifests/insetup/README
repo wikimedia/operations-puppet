@@ -1,0 +1,2 @@
+When modifying the insetup roles please update the mapping MAPPING in
+modules/profile/files/cumin/insetup_role_report.py

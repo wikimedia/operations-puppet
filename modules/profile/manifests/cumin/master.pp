@@ -128,7 +128,7 @@ class profile::cumin::master (
         interval      => { 'start' => 'OnCalendar', 'interval' => $times['OnCalendar'] },
     }
 
-    # Audit servers in insetup role periodic job, splayed between the week across the Cumin masters
+    # Audit servers in insetup role periodic job, active only on one host
     $insetup_role_report_ensure = ($insetup_role_report_day == 0).bool2str('absent', 'present')
     systemd::timer::job { 'cumin-insetup-role-report':
         ensure        => $insetup_role_report_ensure,

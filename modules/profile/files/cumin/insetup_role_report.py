@@ -21,14 +21,13 @@ MESSAGE_SUFFIX = ('For more information or to relay feedback just reply to this 
 OWNER_PREFIX = 'Those are the audit reports sent to the various owners.\n\n'
 # Mapping of owner email to Puppet O:insetup::* roles (allow exceptions starting a role with O:)
 MAPPING = {
-    'akosiaris': ['serviceops'],
     'calbon': ['machine_learning'],
-    'glederrey': ['search_platform'],
-    'jborun': ['infrastructure_foundations', 'unowned'],
+    'glederrey': ['search_platform', 'data_engineering'],
+    'jborun': ['infrastructure_foundations', 'unowned', 'buster', 'wmcs'],
+    'kappakayala': ['serviceops', 'container'],
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
     'lmata': ['observability'],
-    'nskaggs': ['wmcs'],
-    'odimitrijevic': ['data_engineering'],
+    'lsobanski': ['collaboration_services'],
     'wdoran': ['core_platform'],
 }
 
