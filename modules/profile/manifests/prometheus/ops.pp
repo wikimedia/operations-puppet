@@ -1494,7 +1494,7 @@ class profile::prometheus::ops (
 
     prometheus::class_config{ "etherpad_${::site}":
         dest             => "${targets_path}/etherpad_${::site}.yaml",
-        class_name       => 'role::etherpad',
+        class_name       => 'profile::etherpad',
         port             => 9198,
         class_parameters => { 'service_ensure' => 'running' },
     }
