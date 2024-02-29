@@ -141,7 +141,7 @@ class icinga(
         ensure => 'present',
         mode   => '0644',
         owner  => $icinga_user,
-        group  => 'adm',
+        group  => $icinga_group,
     }
 
     # If hosts appear to be missing from the web ui, it might be
