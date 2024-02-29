@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm, brion]
+              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -394,7 +394,7 @@ groups:
               ayounsi, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
               niharika29, jgleeson, srishakatux,
-              esanders, sukhe, jfishback, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
+              esanders, sukhe, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
@@ -3968,15 +3968,13 @@ users:
     email: wpao@wikimedia.org
     krb: present
   jfishback:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jfishback
     realname: James Fishback
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvQPxrbAfdwDNnWroKYoHrSLGgAudhmpRbryJ3Vd6eL jfishback@wikimedia.org
+    ssh_keys: []
     uid: 21257
-    email: jfishback@wikimedia.org
-    krb: present
+    krb: absent
   urbanecm:
     ensure: present
     gid: 500
