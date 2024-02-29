@@ -33,11 +33,6 @@ class tomcat10 (
     Stdlib::Unixpath       $private_key_path         = '/etc/tomcat10/ssl/server.key',
     Hash[String[1], String[1]] $java_opts            = {'java.awt.headless'         => 'true',
                                                         'log4j2.formatMsgNoLookups' => 'true'},
-    Array[String[1]]           $watched_resources    = ['WEB-INF/web.xml',
-                                                        'WEB-INF/tomcat-web.xml',
-    # lint:ignore:single_quote_string_with_variables
-                                                        '${catalina.base}/conf/web.xml'],
-    # lint:endignore
     Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
     ensure_packages(['tomcat10'])
