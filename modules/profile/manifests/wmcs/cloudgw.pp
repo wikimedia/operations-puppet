@@ -4,8 +4,7 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address                            $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer',                {default_value => '127.0.0.5'}),
     Stdlib::IP::Address                            $virt_addr                 = lookup('profile::wmcs::cloudgw::virt_addr',                {default_value => '127.0.0.4'}),
     Integer[1,32]                                  $virt_netm                 = lookup('profile::wmcs::cloudgw::virt_netm',                {default_value => 8}),
-    Stdlib::IP::Address::V4::CIDR                  $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating',            {default_value => '127.0.0.5/24'}),
-    Optional[Stdlib::IP::Address::V4::CIDR]        $virt_floating_additional  = lookup('profile::wmcs::cloudgw::virt_floating_additional', {default_value => undef}),
+    Array[Stdlib::IP::Address::V4::CIDR]           $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating',            {default_value => ['127.0.0.5/24']}),
     Integer                                        $wan_vlan                  = lookup('profile::wmcs::cloudgw::wan_vlan',                 {default_value => 2120}),
     Stdlib::IP::Address                            $wan_addr                  = lookup('profile::wmcs::cloudgw::wan_addr',                 {default_value => '127.0.0.4'}),
     Integer                                        $wan_netm                  = lookup('profile::wmcs::cloudgw::wan_netm',                 {default_value => 8}),
@@ -86,14 +85,10 @@ class profile::wmcs::cloudgw (
         command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
     }
     # route floating IPs to neutron
-    interface::post_up_command { "route_${nic_virt}_floating_ips" :
-        interface => $nic_virt,
-        command   => "ip route add ${virt_floating} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
-    }
-    if $virt_floating_additional {
-        interface::post_up_command { "route_${nic_virt}_floating_ips_additional" :
+    $virt_floating.each |$net| {
+        interface::post_up_command { "route_${nic_virt}_floating_ips_${net}":
             interface => $nic_virt,
-            command   => "ip route add ${virt_floating_additional} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+            command   => "ip route add ${net} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
         }
     }
 

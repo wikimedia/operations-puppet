@@ -1,6 +1,9 @@
 ---
 profile::wmcs::cloudgw::routing_source_ip: 185.15.57.1
 profile::wmcs::cloudgw::virt_subnet_cidr: 172.16.128.0/24
+profile::wmcs::cloudgw::virt_floating:
+  - 185.15.57.0/29
+  - 185.15.57.16/29
 profile::wmcs::cloudgw::transport_cidr: 185.15.57.8/29
 profile::wmcs::cloudgw::transport_vip: 185.15.57.9
 profile::wmcs::cloudgw::virt_vlan: 2107

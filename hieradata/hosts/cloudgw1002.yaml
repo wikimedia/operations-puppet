@@ -5,8 +5,6 @@
 profile::wmcs::cloudgw::virt_addr: 185.15.56.234/29
 profile::wmcs::cloudgw::virt_netm: 29
 profile::wmcs::cloudgw::virt_peer: 185.15.56.238
-# floating CIDR, to create a route that points to the main neutron virtual router
-profile::wmcs::cloudgw::virt_floating: 185.15.56.0/25
 
 # leg in the cloud-instances-transport1-b-eqiad (vlan 1120) 185.15.56.240/29
 # 185.15.56.244/29: wan.cloudgw.eqiad1.wikimediacloud.org (VIP)
