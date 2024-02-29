@@ -1,7 +1,6 @@
 #! /usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import getpass
 import os
 import smtplib
 import subprocess
@@ -27,6 +26,11 @@ def get_args():
         '--only-on-error',
         action='store_true',
         help='Only send emails if the job errors',
+    )
+    parser.add_argument(
+        '-F', '--mail-from', required=False,
+        default='SYSTEMDTIMER <noreply@wikimedia.org>',
+        help="Override the default Sender: and From: headers"
     )
     parser.add_argument('cmd', nargs=REMAINDER)
     return parser.parse_args()
@@ -58,10 +62,10 @@ def main():
     if output:
         status = 'PASS' if ret == 0 else 'FAIL'
         msg = EmailMessage()
-        msg['From'] = 'SYSTEMDTIMER <noreply@{}>'.format(getfqdn())
+        msg['From'] = args.mail_from
         # Set an explicit sender for hosts with stricter exim config
-        # which requires From/Sender to be valid (T280744)
-        msg['Sender'] = '{}@{}'.format(getpass.getuser(), getfqdn())
+        # which requires both From and Sender headers to be routable. (T280744)
+        msg['Sender'] = args.mail_from
         if os.getenv('MAILTO'):
             msg['To'] = os.getenv('MAILTO')
         else:
