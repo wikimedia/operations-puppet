@@ -1,11 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# Monitor exteral blazegraph settings for the wikidata.org dataset
-class profile::query_service::monitor::wikidata {
-    nrpe::monitor_service { 'Query_Service_Internal_HTTP_endpoint':
-        description  => 'Query Service HTTP Port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 80 -w 10 -u /readiness-probe',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
-    }
+# Creates monitoring checks for
+class profile::query_service::monitor::wikidata_public {
 
     monitoring::service { 'WDQS_External_SPARQL_Endpoint':
         description   => 'WDQS SPARQL',
@@ -22,7 +17,7 @@ class profile::query_service::monitor::wikidata {
         body_regex_matches => ['http:\/\/www\.w3\.org\/2001\/XMLSchema#dateTime'],
         force_tls          => true,
         port               => 443,
-        req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-sparql-ep-check' },
+        req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-public-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
     }
@@ -35,8 +30,10 @@ class profile::query_service::monitor::wikidata {
         body_regex_matches => ['http:\/\/www\.w3\.org\/2001\/XMLSchema#dateTime'],
         force_tls          => true,
         port               => 443,
-        req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-sparql-ep-check' },
+        req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-public-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
     }
 }
+
+

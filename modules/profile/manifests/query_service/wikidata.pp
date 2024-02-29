@@ -11,6 +11,7 @@
 # instances per host (preventing configuration by profile), and multiple roles
 # per datasource (preventing configuration by role).
 class profile::query_service::wikidata(
+    String $monitoring_tier = lookup('profile::query_service::monitoring_tier'),
     String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
@@ -20,8 +21,8 @@ class profile::query_service::wikidata(
     String $heap_size = lookup('profile::query_service::blazegraph_heap_size', {'default_value' => '31g'}),
     Boolean $use_deployed_config = lookup('profile::query_service::blazegraph_use_deployed_config', {'default_value' => false}),
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
-    String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     Boolean $monitoring_enabled = lookup('profile::query_service::blazegraph::monitoring_enabled'),
+    String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     Optional[String] $sparql_query_stream = lookup('profile::query_service::sparql_query_stream', {'default_value' => undef}),
     Optional[String] $event_service_endpoint = lookup('profile::query_service::event_service_endpoint', {'default_value' => undef}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
@@ -74,10 +75,18 @@ class profile::query_service::wikidata(
     }
 
     class { 'toil::systemd_scope_cleanup': }  # T265323
-    if ($monitoring_enabled) {
-        class { '::profile::query_service::monitor::wikidata': }
-    }
+
     if ($facts['fqdn']) == $ldf_host {
         class { '::profile::query_service::monitor::ldf': }
     }
+
+    if $monitoring_tier == 'internal' {
+        class { '::profile::query_service::monitor::wikidata_internal': }
+
+    }
+    if $monitoring_tier == 'public' {
+        class { '::profile::query_service::monitor::wikidata_public': }
+
+    }
+
 }
