@@ -7,6 +7,12 @@ exclude_volumes:
     - scratch
   admin-monitoring:
     - ".*"
+  tools:
+    # When creating a new ToolsDB replica, we create big temp volumes that
+    # we don't need to back up
+    # https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/ToolsDB
+    - "^temp.*$"
+    - "^.*temp$"
   video:
     - ".*"
 # T300160
