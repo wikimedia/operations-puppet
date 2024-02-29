@@ -64,6 +64,12 @@ class profile::dns::auth::update (
 
     if $confd_enabled {
         $host_state_dir = '/var/lib/dnsbox'
+        file { $host_state_dir:
+            ensure => directory,
+            mode   => '0755',
+            owner  => 'root',
+            group  => 'root',
+        }
         # Manage service depooling via confd. This means iterating over the
         # services defined in advertise_vips and creating state files for them,
         # using their respective healthchecks.
