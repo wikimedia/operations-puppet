@@ -7067,3 +7067,7 @@ ldap_only_users:
     ensure: present
     realname: Cynthia Makonyango
     email: cynthia.makonyango@wikimedia.de
+  frri:
+    ensure: present
+    realname: Frederik Ring
+    email: frederik.ring@wikimedia.de
