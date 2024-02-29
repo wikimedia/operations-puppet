@@ -21,7 +21,7 @@ define admin::groupmembers(
     $user_list = ($members + $system_members).filter |$user| { $user =~ NotUndef }
     $joined_user_list = $user_list.empty ? {
         true    => $default_member,
-        default => $user_list.join(','),
+        default => $user_list.flatten().join(','),
     }
 
 
