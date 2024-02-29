@@ -1,0 +1,3 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# managed by confd; it should say `yes' below if current host is pooled, `no' or anything else otherwise.
+{{ range gets "/pools/<%= @site %>/dnsbox/<%= @service_type %>/<%= @fqdn %>" }}{{ $data := json .Value }}{{ $data.pooled }}{{ end }}

@@ -7,6 +7,7 @@ class profile::dns::auth::update (
     Boolean $confd_enabled = lookup('profile::dns::auth::confd_enabled', {'default_value' => false}),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips = lookup('profile::dns::auth::authdns_servers_ips'),
     Array[Wmflib::Sites] $datacenters = lookup('datacenters'),
+    Hash[String, Wmflib::Advertise_vip] $advertise_vips = lookup('profile::bird::advertise_vips', {'merge' => hash}),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
@@ -59,6 +60,37 @@ class profile::dns::auth::update (
         watch_keys => $authdns_update_watch_keys,
         content    => template('profile/dns/auth/wikimedia-authdns.conf.tpl.erb'),
         before     => Exec['authdns-local-update'],
+    }
+
+    if $confd_enabled {
+        $host_state_dir = '/var/lib/dnsbox'
+        # Manage service depooling via confd. This means iterating over the
+        # services defined in advertise_vips and creating state files for them,
+        # using their respective healthchecks.
+        #
+        # Since the basic wrapper is the same for all services, we use that and
+        # template it, instead of duplicating the code.
+        $advertise_vips.map |$vip_fqdn, $vip_params| {
+            $service_type = $vip_params['service_type']
+            $service_name = regsubst($service_type, '-', '_', 'G')
+
+            $state_file = "${host_state_dir}/${service_name}.state"
+            file { "/usr/local/bin/check_${service_name}_state":
+                ensure  => present,
+                mode    => '0755',
+                content => template('profile/dns/auth/check_state.erb'),
+                before  => Confd::File[$state_file],
+            }
+
+            $service_watch_keys = [ "/pools/${::site}/dnsbox/${service_type}/${::fqdn}" ]
+            confd::file { $state_file:
+                ensure     => present,
+                watch_keys => $service_watch_keys,
+                content    => template('profile/dns/auth/state.tpl.erb'),
+                reload     => "/usr/local/bin/check_${service_name}_state",
+                before     => Exec['authdns-local-update'],
+            }
+        }
     }
 
     ferm::service { 'authdns_update_ssh_rule':

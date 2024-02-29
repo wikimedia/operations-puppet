@@ -1,0 +1,28 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+# Healthcheck for <%= @service_type %>.
+
+STATE_FILE="<%= @state_file %>"
+
+if [ $# -eq 0 ]; then
+    echo "No healthcheck command was passed in the arguments." >&2
+    exit 1
+fi
+
+if [ ! -f $STATE_FILE ]; then
+    echo "${STATE_FILE} not found." >&2
+    exit 1
+fi
+
+if grep -q '^yes$' $STATE_FILE; then
+    if health=$("$@" 2>&1); then
+        echo "${health}"
+        exit 0
+    else
+        echo "${health}"
+        exit 1
+    fi
+else
+echo "Host $(hostname -f) is not pooled for <%= @service_type %>."
+    exit 1
+fi
