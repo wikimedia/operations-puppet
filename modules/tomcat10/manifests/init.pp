@@ -10,12 +10,6 @@ class tomcat10 (
     Stdlib::Port           $connector_port           = 8080,
     Integer                $connector_timeout        = 20000,
     Stdlib::Unixpath       $config_basedir           = '/etc/tomcat10',
-    Boolean                $versionlogger_listener   = true,
-    Boolean                $security_listener        = false,
-    Boolean                $apr_sslengine            = false,
-    Stdlib::Port::User     $apr_port                 = 8443,
-    Boolean                $userdatabase_realm       = false,
-    String[1]              $userdatabase_file        = 'tomcat-users.xml',
     String[1]              $logs_dir                 = 'logs',
     String[1]              $log_pattern              = 'combined',
     Integer[1]             $default_session_timeout  = 30,
@@ -25,15 +19,11 @@ class tomcat10 (
     Array[String[1]]       $default_servlet_mappings = ['/'],
     Boolean                $jsp_servlet_fork         = false,
     Boolean                $jsp_servlet_xpoweredby   = false,
+    Boolean                $remote_ip_logging        = true,
     Array[String[1]]       $jsp_servlet_mappings     = ['*.jsp', '*.jspx'],
     Array[String[1]]       $welcome_files            = ['index.html', 'index.htm', 'index.jsp'],
-    Stdlib::Host           $shutdown_address         = 'localhost',
-    String                 $shutdown_string          = 'SHUTDOWN',
-    Stdlib::Unixpath       $public_key_path          = '/etc/tomcat10/ssl/cert.pem',
-    Stdlib::Unixpath       $private_key_path         = '/etc/tomcat10/ssl/server.key',
     Hash[String[1], String[1]] $java_opts            = {'java.awt.headless'         => 'true',
                                                         'log4j2.formatMsgNoLookups' => 'true'},
-    Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
     ensure_packages(['tomcat10'])
     $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip
@@ -48,11 +38,11 @@ class tomcat10 (
         $config_basedir:
             ensure => directory;
         "${config_basedir}/server.xml":
-            content => template('tomcat/server.xml.erb');
+            content => template('tomcat10/server.xml.erb');
         "${config_basedir}/context.xml":
-            content => template('tomcat/context.xml.erb');
+            content => template('tomcat10/context.xml.erb');
         "${config_basedir}/web.xml":
-            content => template('tomcat/web.xml.erb');
+            content => template('tomcat10/web.xml.erb');
         '/etc/default/tomcat10':
             mode    => '0644',
             group   => 'root',
