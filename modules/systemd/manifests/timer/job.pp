@@ -36,6 +36,8 @@
 #   to that instead of root@
 # @param send_mail_to
 #   If send_mail is true, send email to this address.
+# @param send_mail_from
+#   If send_mail is true, override the default Sender and From headers with this address
 # @param ignore_errors
 #   set this to true to ensure that a failed timer wont show up in systemctl status --failed
 # @param send_mail_only_on_error
@@ -146,7 +148,8 @@ define systemd::timer::job (
     Optional[String]                        $group                     = undef,
     Optional[String]                        $path_exists               = undef,
     Array[Integer[1, 255]]                  $success_exit_status       = [],
-    Optional[Wmflib::Team]                  $team                      = undef
+    Optional[Wmflib::Team]                  $team                      = undef,
+    Optional[Stdlib::Email]                 $send_mail_from            = undef
 ) {
 
     unless $path_exists =~ Undef or $path_exists =~ Stdlib::UnixPath

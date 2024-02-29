@@ -36,7 +36,7 @@ TimeoutStartSec=<%= @timeout_start_sec %>
 <%- end -%>
 <%- if @send_mail -%>
 SyslogIdentifier=<%= @command.split(' ')[0].split('/')[-1] %>
-ExecStart=<% if @ignore_errors %>-<% end %>/usr/local/bin/systemd-timer-mail-wrapper --subject <%= @title %> --mail-to <%= @send_mail_to %><% if @send_mail_only_on_error -%> --only-on-error<% end %> <%= @command %>
+ExecStart=<% if @ignore_errors %>-<% end %>/usr/local/bin/systemd-timer-mail-wrapper --subject <%= @title %> --mail-to <%= @send_mail_to %><% if @send_mail_from -%> --mail-from <%= @send_mail_from %><% end %><% if @send_mail_only_on_error -%> --only-on-error<% end %> <%= @command %>
 <%- else -%>
 ExecStart=<% if @ignore_errors %>-<% end %><%= @command %>
 <%- end -%>
