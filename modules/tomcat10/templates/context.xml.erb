@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- #### Managed by Puppet #### -->
+<Context>
+<%- @watched_resources.each do |watched_resource| -%>
+  <WatchedResource><%= watched_resource %></WatchedResource>
+<%- end -%>
+</Context>

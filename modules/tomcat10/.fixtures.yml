@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+fixtures:
+    symlinks:
+        tomcat: "#{source_dir}"
+        stdlib: "../../../../stdlib"
+        wmflib: "../../../../wmflib"

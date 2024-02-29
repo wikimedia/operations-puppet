@@ -1,0 +1,60 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="<% if @shutdown_port %><%= @shutdown_port %><% else %>-1<% end %>"
+        shutdown="<%= @shutdown_shutdown %>" address="<%= @shutdown_address %>">
+<%- if @versionlogger_listener -%>
+    <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+<%- end -%>
+<%- if @security_listener -%>
+    <Listener className="org.apache.catalina.security.SecurityListener" />
+<%- end -%>
+<%- if @apr_listener -%>
+    <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+<%- end -%>
+    <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+    <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+    <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+    <GlobalNamingResources>
+<%- if @userdatabase_realm -%>
+        <Resource name="UserDatabase" auth="Container"
+                  type="org.apache.catalina.UserDatabase"
+                  description="User database that can be updated and saved"
+                  factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+                  pathname="<%= @userdatabase_file %>" />
+<%- end -%>
+    </GlobalNamingResources>
+    <Service name="Catalina">
+        <Connector port="<%= @connector_port %>" protocol="HTTP/1.1"
+                  connectionTimeout="<%= @connector_timeout %>" />
+<%- if @apr_listener -%>
+        <Connector port="<%= @apr_port %>" protocol="org.apache.coyote.http11.Http11AprProtocol"
+               maxThreads="150" SSLEnabled="true" >
+        <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+        <SSLHostConfig>
+            <Certificate certificateKeyFile="<%= @private_key_path %>"
+                         certificateFile="<%= @public_key_path %>"
+                         type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+<%- end -%>
+        <Engine name="Catalina" defaultHost="localhost">
+<%- if @userdatabase_realm -%>
+            <Realm className="org.apache.catalina.realm.LockOutRealm">
+              <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+                     resourceName="UserDatabase"/>
+            </Realm>
+<%- end -%>
+            <Host name="<%= @hostname %>" appBase="<%= @app_base %>"
+                  unpackWARs="<%= @unpack_wars.to_s %>" autoDeploy="<%= @auto_deploy %>">
+                <Valve className="org.apache.catalina.valves.RemoteIpValve"
+                       remoteIpHeader="x-forwarded-for"
+                       protocolHeader="x-forwarded-proto" />
+                <Valve className="org.apache.catalina.valves.AccessLogValve"
+                       directory="<%= @logs_dir %>"
+                       requestAttributesEnabled="true"
+                       prefix="<%= @hostname %>_access_log" suffix='.log'
+                       pattern="<%= @log_pattern %>" resolveHosts="false"/>
+            </Host>
+        </Engine>
+    </Service>
+</Server>
