@@ -7071,3 +7071,7 @@ ldap_only_users:
     ensure: present
     realname: Frederik Ring
     email: frederik.ring@wikimedia.de
+  ifeatunnaobiwmde:
+    ensure: present
+    realname: Ifeatu Nnaobi
+    email: ifeatu.nnaobi@wikimedia.de
