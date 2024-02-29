@@ -1,5 +1,4 @@
 cluster: swift
-nagios_group: swift
 
 profile::base::systemd::memory_accounting: 'yes'
 
