@@ -1,3 +1,0 @@
-profile::java::java_packages:
-  - version: "17"
-    variant: "jdk"
