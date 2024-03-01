@@ -329,9 +329,15 @@ kubernetes::clusters:
         - mw2311.codfw.wmnet
         - mw2312.codfw.wmnet
         - mw2313.codfw.wmnet
+        - mw2314.codfw.wmnet
+        - mw2315.codfw.wmnet
+        - mw2316.codfw.wmnet
         - mw2317.codfw.wmnet
         - mw2318.codfw.wmnet
         - mw2319.codfw.wmnet
+        - mw2320.codfw.wmnet
+        - mw2321.codfw.wmnet
+        - mw2322.codfw.wmnet
         - mw2335.codfw.wmnet
         - mw2350.codfw.wmnet
         - mw2351.codfw.wmnet
