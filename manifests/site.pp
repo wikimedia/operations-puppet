@@ -138,13 +138,6 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-5])\.eqi
     role(analytics_cluster::hadoop::worker)
 }
 
-# Staging environment of Superset and Turnilo
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Superset
-# https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo
-node /^an-tool1005\.eqiad\./ {
-    role(analytics_cluster::ui::superset::staging)
-}
-
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
 node /^an-tool1007\.eqiad\./ {
