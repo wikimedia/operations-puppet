@@ -39,7 +39,7 @@ class profile::openstack::base::rabbitmq(
     Array[Stdlib::Fqdn] $cinder_backup_nodes    = lookup('profile::openstack::base::cinder::backup::nodes'),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
     String $version = lookup('profile::openstack::base::version'),
-    Optional[Stdlib::IP::Address::V4] $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet', {default_value => undef}),
+    Stdlib::IP::Address::V4 $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet'),
 ){
     if $rabbit_cfssl_label {
         $cert_paths = profile::pki::get_cert(
@@ -149,11 +149,10 @@ class profile::openstack::base::rabbitmq(
         interval    => {'start' => 'OnCalendar', 'interval' => '*:0/2'}
     }
 
-    # TODO: once migrated to the new network setup, this is the only rule we need
     ferm::service { 'rabbitmq-cloud-private':
         proto  => 'tcp',
-        port   =>  [4369, 5671, 5672, 25672],
-        srange => "(${cloud_private_supernet})",
+        port   => [5671, 5672],
+        srange => $cloud_private_supernet,
     }
 
     ferm::service { 'rabbitmq-internals':
