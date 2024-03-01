@@ -7,4 +7,4 @@
 #		to NFS clients.  See exports(5).
 #
 
-/srv/dumps/xmldatadumps/public  -ro,insecure,fsid=0,sec=sys,no_subtree_check,all_squash,nocrossmnt <%= Array(@nfs_clients).join(' ') %>
+/srv/dumps/xmldatadumps/public  -ro,insecure,fsid=0,sec=sys,no_subtree_check,all_squash,nocrossmnt <%= @nfs_clients_all.join(' ') %>

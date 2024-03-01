@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
-# Set up NFS Server for the public dumps servers
-# Firewall rules are managed separately through profile::wmcs::nfs::ferm
-
+# @summary Set up NFS Server for the public dumps servers
 class profile::dumps::distribution::nfs (
     Array[Stdlib::Host] $nfs_clients = lookup('profile::dumps::distribution::nfs_clients'),
-){
-
+) {
     ensure_packages(['nfs-kernel-server', 'nfs-common', 'rpcbind'])
+
+    include network::constants
+    $nfs_clients_all = $nfs_clients + $network::constants::cloud_networks_public
 
     file { '/etc/default/nfs-common':
         ensure => present,
@@ -40,15 +40,15 @@ class profile::dumps::distribution::nfs (
         require => Package['nfs-kernel-server'],
     }
 
+    firewall::service { 'dumps-nfs-access':
+        proto  => 'tcp',
+        port   => 2049,
+        srange => $nfs_clients_all,
+    }
+
     service { 'nfs-kernel-server':
         enable  => true,
         require => Package['nfs-kernel-server'],
-    }
-
-    firewall::service { 'labstore_analytics_nfs_nfs_service':
-        proto    => 'tcp',
-        port     => 2049,
-        src_sets => ['ANALYTICS_NETWORKS'],
     }
 
     monitoring::service { 'nfs':

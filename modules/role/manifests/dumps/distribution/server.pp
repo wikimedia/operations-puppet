@@ -3,7 +3,6 @@ class role::dumps::distribution::server {
 
     include profile::base::production
     include profile::firewall
-    include profile::wmcs::nfs::ferm
     include profile::nginx
 
     include profile::dumps::distribution::server
