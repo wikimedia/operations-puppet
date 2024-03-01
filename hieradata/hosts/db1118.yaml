@@ -1,5 +1,0 @@
-# db1118 - temporary in m2 T341489
-mariadb::shard: 'm2'
-mariadb::binlog_format: 'ROW'
-profile::monitoring::notifications_enabled: false
-mariadb::package: 'wmf-mariadb106'

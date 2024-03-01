@@ -758,11 +758,6 @@ node /^db1195\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# Temporary testing for T341489
-node /^db1118\.eqiad\./ {
-    role(mariadb::misc)
-}
-
 # m2 codfw master
 node /^db2133\.codfw\./ {
     role(mariadb::misc)
