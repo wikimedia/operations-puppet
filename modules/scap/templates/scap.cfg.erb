@@ -112,8 +112,8 @@ php_fpm_always_restart: True
 canary_dashboard_url: https://logstash.wikimedia.org
 #php7-admin-port: <%= @php7_admin_port %>
 mw_web_clusters: appserver,api_appserver,testserver,parsoid_php
-mediawiki_canary_swagger_url: https://en.wikipedia.org
-
+testservers_check_cmd_baremetal: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=$BAREMETAL_TESTSERVERS
+testservers_check_cmd_k8s: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444
 
 beta_only_config_files: wmf-config/CirrusSearch-labs.php
                         wmf-config/CommonSettings-labs.php
@@ -137,7 +137,6 @@ git_server: <%= @wmflabs_master %>
 master_rsync: <%= @wmflabs_master %>
 logstash_host: logging-logstash-02.logging.eqiad1.wikimedia.cloud:9200
 udp2log_host: <%= @betacluster_udplog_host %>
-mediawiki_canary_swagger_url: https://en.wikipedia.beta.wmflabs.org
 canary_dashboard_url: https://beta-logs.wmcloud.org
 wmf_realm: labs
 delay_messageblobstore_purge: true
