@@ -37,14 +37,10 @@ class openstack::neutron::common(
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
 
-    # Installed by neutron-common
-    $invalid_files = [
-        '/etc/neutron/plugins/ml2/ml2_conf_sriov.ini',
-        '/etc/neutron/plugins/ml2/openvswitch_agent.ini',
-        '/etc/neutron/plugins/ml2/sriov_agent.ini',
-    ]
-
-    file { $invalid_files:
-        ensure => 'absent',
+    file { '/etc/neutron/plugins/ml2':
+        ensure  => directory,
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
     }
 }
