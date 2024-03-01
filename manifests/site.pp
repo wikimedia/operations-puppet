@@ -1041,39 +1041,13 @@ node /^elastic204[0-8]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic205[0-9]\.codfw\./ {
+node /^elastic205[0-4]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic2060\.codfw\./ {
+node /^elastic(205[5-9]|20[6-9][0-9]|210[0-9])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
-
-# new codfw refresh servers T300943
-node /^(elastic206[1-9]|elastic207[0-2])\.codfw\./ {
-    role(elasticsearch::cirrus)
-}
-
-# new codfw elastic servers T300943
-node /^(elastic207[3-9]|elastic208[0-6])\.codfw\./ {
-    role(elasticsearch::cirrus)
-}
-
-# new codfw elastic servers T353878
-node /^(elastic208[8-9]|elastic209[0-1])\.codfw\./ {
-    role(insetup::search_platform)
-}
-
-# new codfw elastic servers T353878
-node /^(elastic209[2-9]|elastic210[0-9])\.codfw\./ {
-    role(insetup::search_platform)
-}
-
-# new codfw elastic servers T353878
-node /^(elastic2087)\.codfw\./ {
-    role(elasticsearch::cirrus)
-}
-
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
