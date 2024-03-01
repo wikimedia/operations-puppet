@@ -2,11 +2,11 @@
 # == Class profile::wmcs::services::ntp
 #
 # Ntp server profile
-class profile::wmcs::services::ntp(
+class profile::wmcs::services::ntp (
     Array[Stdlib::Host] $server_peers = lookup('profile::wmcs::services::server_peers'),
-    Array[String] $networks_acl = lookup('profile::wmcs::services::wmcs_networks_acl',
-    { 'default_value' => [ '172.16.0.0 mask 255.255.248.0', '10.68.16.0 mask 255.255.248.0' ] }),
-){
+) {
+    include network::constants
+
     $server_upstream_pools = ['0.us.pool.ntp.org']
 
     # Keep syncing even if our peer doesn't respond
@@ -17,11 +17,20 @@ class profile::wmcs::services::ntp(
 
     $peers = $server_peers.filter |Stdlib::Host $host| { $host != $::facts['networking']['fqdn'] }
 
+    # On Bookworm (or, really, src:ntpsec, but that's replacing src:ntp in Bookworm),
+    # we can pass CIDR ranges directly in the config file. For now, we need to pass the
+    # netmask in the long format.
+    $time_acl = $network::constants::cloud_instance_networks[$::site].map |Stdlib::IP::Address $cidr| {
+        $address = $cidr.split('/')[0]
+        $mask = wmflib::cidr2mask($cidr)
+        "${address} mask ${mask}"
+    }
+
     ntp::daemon { 'server':
         servers      => $server_upstreams,
         pools        => $server_upstream_pools,
         peers        => $peers,
-        time_acl     => $networks_acl,
+        time_acl     => $time_acl,
         extra_config => $extra_config,
         query_acl    => $query_acl,
     }
