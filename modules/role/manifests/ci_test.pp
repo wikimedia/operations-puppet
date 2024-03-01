@@ -9,5 +9,6 @@ class role::ci_test {
 
     include ::profile::zuul::merger
     include ::profile::zuul::server
+    include ::profile::ci::httpd
     include ::profile::ci::proxy_zuul
 }
