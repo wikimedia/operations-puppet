@@ -5,8 +5,6 @@ class role::puppetserver::cloud_vps_project {
         description => 'Cloud VPS per-project Puppet server',
     }
 
-    include profile::firewall
-
     include profile::puppetserver::wmcs
     include profile::puppetserver::scripts
 }
