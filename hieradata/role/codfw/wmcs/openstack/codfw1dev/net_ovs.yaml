@@ -12,3 +12,4 @@ profile::firewall::provider: none
 profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress}"
   - "%{facts.ipaddress6}"
+prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
