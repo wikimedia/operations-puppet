@@ -1590,6 +1590,10 @@ node /^mw1349\.eqiad\./ {
   role(kubernetes::worker)
 }
 
+node /^mw135[0-4]\.eqiad\./ {
+  role(kubernetes::worker)
+}
+
 node /^mw136[0-37]\.eqiad\./ {
   role(kubernetes::worker)
 }
@@ -2119,7 +2123,7 @@ node /^mw14(09|1[13])\.eqiad\./ {
 # Row D
 
 # rack D1
-node /^mw135[0-5]\.eqiad\./ {
+node /^mw1355\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
