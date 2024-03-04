@@ -405,6 +405,11 @@ kubernetes::clusters:
         - mw2449.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
+        - parse2016.codfw.wmnet
+        - parse2017.codfw.wmnet
+        - parse2018.codfw.wmnet
+        - parse2019.codfw.wmnet
+        - parse2020.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.

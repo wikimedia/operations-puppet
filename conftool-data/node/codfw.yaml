@@ -111,7 +111,6 @@ codfw:
     mw2411.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
   videoscaler: *jobrunner
   parsoid:
-    # Do not forget to update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     parse2001.codfw.wmnet: [parsoid-php, canary]
     parse2002.codfw.wmnet: [parsoid-php, canary]
     parse2003.codfw.wmnet: [parsoid-php]
@@ -127,11 +126,6 @@ codfw:
     parse2013.codfw.wmnet: [parsoid-php]
     parse2014.codfw.wmnet: [parsoid-php]
     parse2015.codfw.wmnet: [parsoid-php]
-    parse2016.codfw.wmnet: [parsoid-php]
-    parse2017.codfw.wmnet: [parsoid-php]
-    parse2018.codfw.wmnet: [parsoid-php]
-    parse2019.codfw.wmnet: [parsoid-php]
-    parse2020.codfw.wmnet: [parsoid-php]
   cache_text:
     cp2027.codfw.wmnet: [cdn, ats-be]
     cp2029.codfw.wmnet: [cdn, ats-be]
@@ -445,6 +439,11 @@ codfw:
     mw2449.codfw.wmnet: [kubesvc]
     mw2450.codfw.wmnet: [kubesvc]
     mw2451.codfw.wmnet: [kubesvc]
+    parse2016.codfw.wmnet: [kubesvc]
+    parse2017.codfw.wmnet: [kubesvc]
+    parse2018.codfw.wmnet: [kubesvc]
+    parse2019.codfw.wmnet: [kubesvc]
+    parse2020.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2001.codfw.wmnet: [kubemaster]
     kubestagemaster2002.codfw.wmnet: [kubemaster]

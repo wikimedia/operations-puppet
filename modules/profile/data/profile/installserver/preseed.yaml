@@ -361,7 +361,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
-  'parse101[012]|parse102[01234]':
+  'parse101[012]|parse102[01234]|parse201[6789]|parse2020':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
