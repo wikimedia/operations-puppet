@@ -42,5 +42,6 @@ class openstack::neutron::common(
         mode    => '0755',
         recurse => true,
         purge   => true,
+        require => Package['neutron-common'],
     }
 }
