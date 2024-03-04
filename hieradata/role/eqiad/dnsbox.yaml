@@ -1,6 +1,6 @@
 profile::bird::advertise_vips:
   ns0.wikimedia.org:
     address: 208.80.154.238 # ns0 IP, unicast
-    check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 208.80.154.238 -a -l -d www.wikipedia.org -t 1'
+    check_cmd: '/usr/local/bin/check_authdns_ns0_state /usr/lib/nagios/plugins/check_dns_query -H 208.80.154.238 -a -l -d www.wikipedia.org -t 1'
     ensure: present
-    service_type: authdns
+    service_type: authdns_ns0

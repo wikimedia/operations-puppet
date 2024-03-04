@@ -25,20 +25,24 @@ profile::dns::auth::authdns_servers_ips:
   'dns6001.wikimedia.org': 185.15.58.5
   'dns6002.wikimedia.org': 185.15.58.37
 
+# When adding a new VIP here, make sure that check_cmd follows this format:
+#   /usr/local/bin/check_{service_type}_state <actual check command>
+# This is because we generate the check script template based on the service name in dns/auth/update.pp
+# The name of the script should match the service_type. For authdns_ns2, the script is check_authdns_ns2_state
 profile::bird::advertise_vips:
   recdns.anycast.wmnet:
     address: 10.3.0.1 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 10.3.0.1 -l -d www.wikipedia.org -t 1'
+    check_cmd: '/usr/local/bin/check_recdns_state /usr/lib/nagios/plugins/check_dns_query -H 10.3.0.1 -l -d www.wikipedia.org -t 1'
     ensure: present
     service_type: recdns
   ns2.wikimedia.org:
     address: 198.35.27.27 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/lib/nagios/plugins/check_dns_query -H 198.35.27.27 -a -l -d www.wikipedia.org -t 1'
+    check_cmd: '/usr/local/bin/check_authdns_ns2_state /usr/lib/nagios/plugins/check_dns_query -H 198.35.27.27 -a -l -d www.wikipedia.org -t 1'
     ensure: present
-    service_type: authdns
+    service_type: authdns_ns2
   ntp.anycast.wmnet:
     address: 10.3.0.2 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/lib/nagios/plugins/check_ntp_peer -H 127.0.0.1 -w 0.05 -c 0.1'
+    check_cmd: '/usr/local/bin/check_ntp_state /usr/lib/nagios/plugins/check_ntp_peer -H 127.0.0.1 -w 0.05 -c 0.1'
     ensure: present
     service_type: ntp
 
