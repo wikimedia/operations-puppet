@@ -231,6 +231,14 @@ kubernetes::clusters:
         - mw1494.eqiad.wmnet
         - mw1495.eqiad.wmnet
         - mw1496.eqiad.wmnet
+        - parse1010.eqiad.wmnet
+        - parse1011.eqiad.wmnet
+        - parse1012.eqiad.wmnet
+        - parse1020.eqiad.wmnet
+        - parse1021.eqiad.wmnet
+        - parse1022.eqiad.wmnet
+        - parse1023.eqiad.wmnet
+        - parse1024.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator

@@ -361,6 +361,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
+  'parse101[012]|parse102[01234]':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-overlay.cfg
   # END Kubernetes workers that used to be mw app/api servers
   'kubernetes[12]*|kubestage[12]*':
     - partman/standard.cfg

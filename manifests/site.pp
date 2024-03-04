@@ -1580,7 +1580,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-# START Kubernetes workers that used to be mw app/api/jobrunner servers
+# START Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
 node /^mw1349\.eqiad\./ {
   role(kubernetes::worker)
 }
@@ -1689,7 +1689,10 @@ node /^mw244[02-9]\.codfw\./ {
 node /^mw245[01]\.codfw\./ {
   role(kubernetes::worker)
 }
-# END Kubernetes workers that used to be mw app/api/jobrunner servers
+node /^parse10(1[012]|2[01234])\.eqiad\./ {
+  role(kubernetes::worker)
+}
+# END Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
 
 node /^kubestage100[34]\.eqiad\./ {
     role(kubernetes::staging::worker)
@@ -2486,7 +2489,7 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\./ {
     role(parsoid)
 }
 
-node /^parse10(0[1-9]|1[012789]|2[0-4])\.eqiad\./ {
+node /^parse10(0[1-9]|1[789])\.eqiad\./ {
     role(parsoid)
 }
 
