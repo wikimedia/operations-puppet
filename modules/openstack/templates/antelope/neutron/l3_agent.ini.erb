@@ -9,7 +9,7 @@ agent_mode = legacy
 router_delete_namespaces = true
 
 # neutron.agent.linux.interface.BridgeInterfaceDriver
-interface_driver = linuxbridge
+interface_driver = <%= @interface_driver %>
 
 handle_internal_only_routers = True
 enable_metadata_proxy = True

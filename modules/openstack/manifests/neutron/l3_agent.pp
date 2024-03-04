@@ -3,11 +3,13 @@ class openstack::neutron::l3_agent(
     $report_interval,
     String[1] $wan_nic,
     String[1] $virt_nic,
+    Enum['linuxbridge', 'openvswitch'] $interface_driver,
     $enabled=true,
 ) {
 
     class { "openstack::neutron::l3_agent::${version}":
-        report_interval   => $report_interval,
+        report_interval  => $report_interval,
+        interface_driver => $interface_driver,
     }
 
     service {'neutron-l3-agent':

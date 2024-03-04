@@ -13,3 +13,5 @@ profile::ssh::server::listen_addresses:
   - "%{facts.ipaddress}"
   - "%{facts.ipaddress6}"
 prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
+
+profile::openstack::codfw1dev::neutron::use_ovs: true

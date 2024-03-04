@@ -5,7 +5,8 @@ class profile::openstack::base::neutron::l3_agent(
     $network_flat_interface_vlan_external = lookup('profile::openstack::base::neutron::network_flat_interface_vlan_external'),
     $network_flat_interface_vlan = lookup('profile::openstack::base::neutron::network_flat_interface_vlan'),
     Boolean $legacy_vlan_naming  = lookup('profile::openstack::base::neutron::legacy_vlan_naming', {default_value => true}),
-    ) {
+    Enum['linuxbridge', 'openvswitch'] $interface_driver = lookup('profile::openstack::base::neutron::interface_driver'),
+) {
 
     if $legacy_vlan_naming {
         $wan_nic  = "${base_interface}.${network_flat_interface_vlan_external}"
@@ -34,10 +35,11 @@ class profile::openstack::base::neutron::l3_agent(
     }
 
     class {'::openstack::neutron::l3_agent':
-        version         => $version,
-        report_interval => $report_interval,
-        wan_nic         => $wan_nic,
-        virt_nic        => $virt_nic,
+        version          => $version,
+        report_interval  => $report_interval,
+        wan_nic          => $wan_nic,
+        virt_nic         => $virt_nic,
+        interface_driver => $interface_driver,
     }
     contain '::openstack::neutron::l3_agent'
 

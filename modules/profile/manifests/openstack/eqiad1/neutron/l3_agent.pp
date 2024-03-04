@@ -26,6 +26,7 @@ class profile::openstack::eqiad1::neutron::l3_agent(
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
         legacy_vlan_naming                   => $legacy_vlan,
+        interface_driver                     => 'linuxbridge',
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 

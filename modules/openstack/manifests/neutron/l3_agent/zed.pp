@@ -2,6 +2,7 @@
 
 class openstack::neutron::l3_agent::zed(
     $report_interval,
+    Enum['linuxbridge', 'openvswitch'] $interface_driver,
 ) {
     class { "openstack::neutron::l3_agent::zed::${::lsbdistcodename}": }
 

@@ -7,8 +7,8 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
     $network_flat_interface_vlan = lookup('profile::openstack::codfw1dev::neutron::network_flat_interface_vlan'),
     $report_interval = lookup('profile::openstack::codfw1dev::neutron::report_interval'),
     $base_interface = lookup('profile::openstack::codfw1dev::neutron::base_interface'),
-    ) {
-
+    Boolean $use_ovs = lookup('profile::openstack::codfw1dev::neutron::use_ovs', {default_value => false}),
+) {
     require ::profile::openstack::codfw1dev::clientpackages
     require ::profile::openstack::codfw1dev::neutron::common
 
@@ -33,14 +33,21 @@ class profile::openstack::codfw1dev::neutron::l3_agent(
         base_interface                       => $base_interface,
         network_flat_interface_vlan          => $network_flat_interface_vlan,
         network_flat_interface_vlan_external => $network_flat_interface_vlan_external,
+        interface_driver                     => $use_ovs.bool2str('openvswitch', 'linuxbridge'),
     }
     contain '::profile::openstack::base::neutron::l3_agent'
 
-    class {'::profile::openstack::base::neutron::linuxbridge_agent':
-        version         => $version,
-        bridges         => $bridges,
-        bridge_mappings => $bridge_mappings,
-        report_interval => $report_interval,
+    if $use_ovs {
+        class { 'profile::openstack::base::neutron::ovs_agent':
+            version => $version,
+        }
+    } else {
+        class {'::profile::openstack::base::neutron::linuxbridge_agent':
+            version         => $version,
+            bridges         => $bridges,
+            bridge_mappings => $bridge_mappings,
+            report_interval => $report_interval,
+        }
+        contain '::profile::openstack::base::neutron::linuxbridge_agent'
     }
-    contain '::profile::openstack::base::neutron::linuxbridge_agent'
 }
