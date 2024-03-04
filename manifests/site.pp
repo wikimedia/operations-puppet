@@ -686,7 +686,7 @@ node /^db1158\.eqiad\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
-node /^db2(108|118|120|121|122|150|168|182|218)\.codfw\./ {
+node /^db2(108|120|121|122|150|168|182|218)\.codfw\./ {
     role(mariadb::core)
 }
 
