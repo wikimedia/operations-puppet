@@ -276,12 +276,18 @@ class profile::kafka::broker(
             $super_users = $super_users_brokers
             $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
             $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+
+            # Set kafka broker certificates to renew 1 month before expiration as kafka uses a
+            # custom 1 year certificate lifespan.  This aims to provide ample time for manual
+            # broker restarts to activate new certificates, and ensure that renewed certs are
+            # present on-disk before alerting warns of upcoming expiration T358870
             $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
-                'outdir'  => $ssl_location,
-                'owner'   => 'kafka',
-                'profile' => 'kafka_11',
-                notify    => Sslcert::X509_to_pkcs12['kafka_keystore'],
-                require   => Class['::confluent::kafka::common'],
+                'renew_seconds' => 2678400, #1 month
+                'outdir'        => $ssl_location,
+                'owner'         => 'kafka',
+                'profile'       => 'kafka_11',
+                notify          => Sslcert::X509_to_pkcs12['kafka_keystore'],
+                require         => Class['::confluent::kafka::common'],
                 }
             )
 
