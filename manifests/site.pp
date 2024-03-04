@@ -1241,11 +1241,6 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
     role(kubernetes::master)
 }
 
-# Etherpad on bullseye (virtual machine) (T300568)
-node /^etherpad1003\.eqiad\./ {
-    role(etherpad)
-}
-
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
     role(etherpad)
