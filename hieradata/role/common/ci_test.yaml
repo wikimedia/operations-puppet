@@ -7,7 +7,7 @@ profile::ci::manager_host: contint2002.wikimedia.org
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 
-profile::firewall::provider: nftables
+profile::firewall::provider: iptables
 
 # Zuul merger
 
