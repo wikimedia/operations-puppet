@@ -16,7 +16,10 @@ class openstack::neutron::common(
     Stdlib::Port $bind_port,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
-    ) {
+    Array[String[1]] $type_drivers,
+    Array[String[1]] $tenant_network_types,
+    Array[String[1]] $mechanism_drivers,
+) {
 
     class { "openstack::neutron::common::${version}":
         memcached_nodes             => $memcached_nodes,
@@ -35,6 +38,9 @@ class openstack::neutron::common(
         bind_port                   => $bind_port,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        type_drivers                => $type_drivers,
+        tenant_network_types        => $tenant_network_types,
+        mechanism_drivers           => $mechanism_drivers,
     }
 
     file { '/etc/neutron/plugins/ml2':

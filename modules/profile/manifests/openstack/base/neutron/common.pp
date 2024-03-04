@@ -18,6 +18,9 @@ class profile::openstack::base::neutron::common(
     $agent_down_time = lookup('profile::openstack::base::neutron::agent_down_time'),
     $log_agent_heartbeats = lookup('profile::openstack::base::neutron::log_agent_heartbeats'),
     Stdlib::Port $bind_port = lookup('profile::openstack::base::neutron::bind_port'),
+    Array[String[1]] $type_drivers = lookup('profile::openstack::base::neutron::type_drivers', {default_value => ['flat', 'vxlan']}),
+    Array[String[1]] $tenant_network_types = lookup('profile::openstack::base::neutron::tenant_network_types', {default_value => []}),
+    Array[String[1]] $mechanism_drivers = lookup('profile::openstack::base::neutron::mechanism_drivers', {default_value => ['linuxbridge']}),
     ) {
 
     class {'::openstack::neutron::common':
@@ -38,6 +41,9 @@ class profile::openstack::base::neutron::common(
         bind_port                   => $bind_port,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        type_drivers                => $type_drivers,
+        tenant_network_types        => $tenant_network_types,
+        mechanism_drivers           => $mechanism_drivers,
     }
     contain '::openstack::neutron::common'
 

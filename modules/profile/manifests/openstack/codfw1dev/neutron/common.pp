@@ -16,8 +16,10 @@ class profile::openstack::codfw1dev::neutron::common(
     Stdlib::Port $bind_port = lookup('profile::openstack::codfw1dev::neutron::bind_port'),
     Boolean $enforce_policy_scope = lookup('profile::openstack::codfw1dev::keystone::enforce_policy_scope'),
     Boolean $enforce_new_policy_defaults = lookup('profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults'),
-    ) {
-
+    Array[String[1]] $type_drivers = lookup('profile::openstack::codfw1dev::neutron::type_drivers', {default_value => ['flat', 'vlan', 'vxlan']}),
+    Array[String[1]] $tenant_network_types = lookup('profile::openstack::codfw1dev::neutron::tenant_network_types', {default_value => ['vxlan']}),
+    Array[String[1]] $mechanism_drivers = lookup('profile::openstack::codfw1dev::neutron::mechanism_drivers', {default_value => ['linuxbridge', 'openvswitch', 'l2population']}),
+) {
     class {'::profile::openstack::base::neutron::common':
         version                     => $version,
         openstack_control_nodes     => $openstack_control_nodes,
@@ -35,6 +37,9 @@ class profile::openstack::codfw1dev::neutron::common(
         bind_port                   => $bind_port,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        type_drivers                => $type_drivers,
+        tenant_network_types        => $tenant_network_types,
+        mechanism_drivers           => $mechanism_drivers,
     }
     contain '::profile::openstack::base::neutron::common'
 }

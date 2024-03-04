@@ -5,11 +5,8 @@
 # debug = true
 [ml2]
 
-# After you configure the ML2 plug-in
-# removing or changing values in the type_drivers
-# option can lead to database inconsistency.
-type_drivers = flat, vxlan
-tenant_network_types =
+type_drivers = <%= @type_drivers.join(', ') %>
+tenant_network_types = <%= @tenant_network_types.join(', ') %>
 
 # l2population is a sort of meta driver to
 # make overlay (VXLAN) intelligently handle broadcast
@@ -17,7 +14,7 @@ tenant_network_types =
 # bugs as recent as Mitaka that cause HA gateway
 # failover to not update the l2pop driver causing
 # instances to contact the incorrect MAC
-mechanism_drivers = linuxbridge
+mechanism_drivers = <%= @mechanism_drivers.join(', ') %>
 extension_drivers = port_security
 
 [ml2_type_flat]

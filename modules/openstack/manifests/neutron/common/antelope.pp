@@ -17,6 +17,9 @@ class openstack::neutron::common::antelope(
     Stdlib::Port $bind_port,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
+    Array[String[1]] $type_drivers,
+    Array[String[1]] $tenant_network_types,
+    Array[String[1]] $mechanism_drivers,
     ) {
 
     class { "openstack::neutron::common::antelope::${::lsbdistcodename}": }
