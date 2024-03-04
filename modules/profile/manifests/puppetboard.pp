@@ -117,9 +117,9 @@ class profile::puppetboard (
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    ferm::service { 'apache2-http':
+    firewall::service { 'apache2-http':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
     }
 
     class { 'httpd':
