@@ -35,7 +35,7 @@ profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 profile::airflow::instances:
   # airflow@research instance.
   research:
-    ferm_srange: $ANALYTICS_NETWORKS
+    firewall_srange: ANALYTICS_NETWORKS
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics-research
     service_group: analytics-research

@@ -33,7 +33,7 @@ profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 profile::airflow::instances:
   # airflow@platform_eng instance.
   platform_eng:
-    ferm_srange: $ANALYTICS_NETWORKS
+    firewall_srange: ANALYTICS_NETWORKS
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics-platform-eng
     service_group: analytics-platform-eng

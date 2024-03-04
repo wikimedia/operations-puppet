@@ -139,7 +139,7 @@ class profile::airflow(
             # Default WMF (analytics cluster, for now) specific instance params.
             $default_wmf_instance_params = {
                 'airflow_home' => $airflow_home,
-                'ferm_srange' => '$ANALYTICS_NETWORKS',
+                'firewall_srange' => 'ANALYTICS_NETWORKS',
                 'scap_targets' => $default_scap_targets,
                 'airflow_config' => {
                     'core' => {
