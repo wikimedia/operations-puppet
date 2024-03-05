@@ -310,9 +310,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://ticket.wikimedia.org
       replacement: https://ticket.discovery.wmnet:1443
     - type: map
-      target: http://ticket-test.wikimedia.org
-      replacement: https://ticket-test.discovery.wmnet:1443
-    - type: map
       target: http://toolhub.wikimedia.org
       replacement: https://toolhub.discovery.wmnet:4011
     - type: map
