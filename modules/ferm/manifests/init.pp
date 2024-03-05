@@ -5,7 +5,7 @@ class ferm (
     Wmflib::Ensure $ensure ='present'
 ) {
     # @resolve requires libnet-dns-perl
-    package { ['iptables', 'libnet-dns-perl', 'conntrack']:
+    package { ['iptables', 'libnet-dns-perl']:
         ensure => stdlib::ensure($ensure, package),
     }
 

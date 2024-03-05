@@ -3,11 +3,6 @@ class conntrackd (
     String $conntrackd_cfg,
     String $systemd_cfg,
 ) {
-
-    if !defined(Package['conntrack']) {
-        ensure_packages('conntrack')
-    }
-
     ensure_packages('conntrackd')
 
     file { '/etc/conntrackd/conntrackd.conf':
