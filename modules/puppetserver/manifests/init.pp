@@ -17,7 +17,8 @@
 # @param autosign if true autosign agent certs
 # @param enable_jmx add the jmx java agent parameter
 # @param jmx_port the port for jmx to bind to
-# @param separate_ssldir used when the puppetserver is managed by a different puppet server
+# @param ssldir_on_srv used on cloud-vps; it allows storing certs on a detachable volume
+# @param separate_ssldir used when the puppetserver is managed by a different puppet server #TODO remove this setting in favor of ssldir_on_srv
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
@@ -41,6 +42,7 @@ class puppetserver (
     Optional[Stdlib::Unixpath]               $enc_path                  = undef,
     Stdlib::Host                             $listen_host               = $facts['networking']['ip'],
     Boolean                                  $autosign                  = false,
+    Boolean                                  $ssldir_on_srv             = false,
     Boolean                                  $separate_ssldir           = true,
     Boolean                                  $enable_jmx                = false,
     Boolean                                  $auto_restart              = true,
@@ -70,7 +72,11 @@ class puppetserver (
     $config_d_dir = "${puppetserver_config_dir}/conf.d"
     $ca_dir = "${puppetserver_config_dir}/ca"
     $bootstap_config_dir = "${puppetserver_config_dir}/services.d"
-    $ssl_dir = $separate_ssldir.bool2str('/var/lib/puppet/server/ssl', '/var/lib/puppet/ssl')
+    if $ssldir_on_srv {
+        $ssl_dir = '/srv/puppet/server/ssl'
+    } else {
+        $ssl_dir = $separate_ssldir.bool2str('/var/lib/puppet/server/ssl', '/var/lib/puppet/ssl')
+    }
     $environments_dir = "${code_dir}/environments"
 
     $service_reload_notify = $auto_restart ? {
@@ -119,7 +125,18 @@ class puppetserver (
         },
     )
 
-    if $separate_ssldir {
+    if $ssldir_on_srv {
+        ensure_resource(
+            'file',
+            '/srv/puppet/server',
+            {
+                'ensure' => 'directory',
+                'owner'  => 'puppet',
+                'group'  => 'puppet',
+                'mode'   => '0751',
+            },
+        )
+    } elsif $separate_ssldir {
         ensure_resource(
             'file',
             '/var/lib/puppet/server',
@@ -131,6 +148,7 @@ class puppetserver (
             },
         )
     }
+
 
     # The puppetserver process itself enforces mode 0771 on the ssl dir, so this
     # should not be changed or it will create a perma-diff

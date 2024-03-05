@@ -430,6 +430,7 @@ profile::puppetserver::ca_private_key_secret: ~
 profile::puppetserver::ca_allow_san: false
 profile::puppetserver::ca_name: ~
 profile::puppetserver::separate_ssldir: true
+profile::puppetserver::ssldir_on_srv: true
 profile::puppetserver::enable_jmx: false
 profile::puppetserver::auto_restart: true
 profile::puppetserver::extra_mounts: {}
