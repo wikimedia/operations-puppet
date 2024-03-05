@@ -3658,9 +3658,9 @@ service::catalog:
     encryption: false
     ip:
       codfw:
-        default: 208.80.153.42
+        default: 208.80.153.11
       eqiad:
-        default: 208.80.154.30
+        default: 208.80.154.10
     page: false
     probes:
       - type: http
