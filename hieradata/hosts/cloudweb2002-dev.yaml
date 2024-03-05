@@ -34,7 +34,7 @@ profile::openstack::codfw1dev::horizon::docker_version: 2023-12-13-003614
 
 profile::openstack::codfw1dev::horizon::port: 8084
 
-profile::wmcs::striker::docker::version: 2024-02-07-005708-production
+profile::wmcs::striker::docker::version: 2024-02-28-214103-production
 profile::wmcs::striker::docker::env:
   LOGGING_HANDLERS: cee
   DB_ENGINE: striker.db
