@@ -37,3 +37,6 @@ profile::zuul::server::conf:
 
 profile::zuul::server::email_server: localhost
 
+# keep Python2 packages on bullseye to be able to run Zuul v2
+profile::base::remove_python2_on_bullseye: false
+
