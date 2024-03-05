@@ -659,7 +659,7 @@ node /^db1165\.eqiad\./ {
 }
 
 # s6 core production dbs on codfw
-node /^db2(114|117|124|129|151|169|180|193)\.codfw\./ {
+node /^db2(114|124|129|151|169|180|193)\.codfw\./ {
     role(mariadb::core)
 }
 
