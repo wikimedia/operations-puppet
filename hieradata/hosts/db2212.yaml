@@ -1,3 +1,5 @@
 # db2212
-# To be setup
+# profile::mariadb::mysql_role: 'master'
+mariadb::shard: 's1'
+mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::notifications_enabled: false

@@ -1,3 +1,4 @@
 # db2202
-# To be setup
+mariadb::shard: 'test-s1'
+mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false

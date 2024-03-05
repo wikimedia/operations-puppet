@@ -1,3 +1,6 @@
 # db2201
-# To be setup
+# Buffer pool sizes/instance enabled
+profile::mariadb::dbstore_multiinstance::instances:
+  s5: 230G
+  x1: 128G
 profile::monitoring::notifications_enabled: false

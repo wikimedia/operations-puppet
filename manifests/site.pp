@@ -551,7 +551,7 @@ node /^db1196\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on codfw
-node /^db2(103|112|116|130|145|146|153|170|174|176|188)\.codfw\./ {
+node /^db2(103|112|116|130|145|146|153|170|174|176|188|203|212|216)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -572,7 +572,7 @@ node /^db1156\.eqiad\./ {
 }
 
 # s2 (large wikis) core production dbs on codfw
-node /^db2(104|107|125|138|148|175|189)\.codfw\./ {
+node /^db2(104|107|125|138|148|175|189|204|207)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -592,7 +592,7 @@ node /^db1212\.eqiad\./ {
 }
 
 # s3 core production dbs on codfw
-node /^db2(105|109|127|149|177|190|194)\.codfw\./ {
+node /^db2(105|109|127|149|177|190|194|205|209)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -618,7 +618,7 @@ node /^db1125\.eqiad\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(106|110|119|136|137|140|147|172|179)\.codfw\./ {
+node /^db2(106|110|119|136|137|140|147|172|179|206|210|219)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -639,7 +639,7 @@ node /^db1161\.eqiad\./ {
 }
 
 # s5 (default, dewiki and others) core production dbs on codfw
-node /^db2(111|113|123|157|171|178|192)\.codfw\./ {
+node /^db2(111|113|123|157|171|178|192|211|213)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -659,7 +659,7 @@ node /^db1165\.eqiad\./ {
 }
 
 # s6 core production dbs on codfw
-node /^db2(114|124|129|151|169|180|193|217)\.codfw\./ {
+node /^db2(114|124|129|151|169|180|193|214|217)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -679,7 +679,7 @@ node /^db1158\.eqiad\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
-node /^db2(108|120|121|122|150|168|182|218)\.codfw\./ {
+node /^db2(108|120|121|122|150|168|182|218|208|220)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -715,7 +715,7 @@ node /^db1(179|220|237)\.eqiad\./ {
 }
 
 # codfw
-node /^db2(096|115|131|191)\.codfw\./ {
+node /^db2(096|115|131|191|196|215)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -856,23 +856,23 @@ node /^db1216\.eqiad\./ {
 
 # codfw backup sources
 ## s2, s6 & x1, 10.6, bullseye
-node /^db2097\.codfw\./ {
+node /^(db2097|db2197)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s7 & s8, bullseye
-node /^db2098\.codfw\./ {
+node /^(db2098|db2198)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s4, bullseye
-node /^db2099\.codfw\./ {
+node /^(db2099|db2199)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s7 & s8, bullseye
-node /^db2100\.codfw\./ {
+node /^(db2100|db2200)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s2, s5, & x1, bullseye
-node /^db2101\.codfw\./ {
+node /^(db2101|db2201)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s3 & s4, bullseye
@@ -884,7 +884,7 @@ node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
 
-node /^db2102\.codfw\./ {
+node /^(db2102|db2202)\.codfw\./ {
     role(mariadb::core_test)
 }
 
@@ -1094,11 +1094,6 @@ node /^es20(35|36|37|38|39|40)\.codfw\./ {
 
 # New external store hosts T355269
 node /^es10(35|36|37|38|39|40)\.eqiad\./ {
-    role(insetup::data_persistence)
-}
-
-# New db hosts T354210
-node /^db2(196|197|198|199|200|201|202|203|204|205|206|207|208|209|210|211|212|213|214|215|216|219|220)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
