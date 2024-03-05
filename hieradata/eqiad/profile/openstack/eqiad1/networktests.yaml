@@ -4,7 +4,7 @@ profile::openstack::eqiad1::networktests::envvars:
     FLOATING_VM_FQDN: bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
     FLOATING_VM_IP: 185.15.56.87
     VM_IP_PREFIX: 172.16.
-    NO_FLOATING_VM: tools-docker-imagebuilder-01.tools.eqiad1.wikimedia.cloud
+    NO_FLOATING_VM: tools-imagebuilder-2.tools.eqiad1.wikimedia.cloud
     GENERAL_PUPPETMASTER: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
     LOCAL_PUPPETMASTER: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad1.wikimedia.cloud
     CLOUDGW_A_IP: 185.15.56.245
