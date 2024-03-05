@@ -22,12 +22,6 @@ class profile::openstack::eqiad1::pdns::auth::service(
     }
 
     $monitor_verify_records.each | Stdlib::Fqdn $verify_record | {
-        monitoring::service { "DNS resolution ${verify_record}":
-            description   => "Check DNS resolution of ${verify_record}",
-            check_command => "check_dns!${verify_record}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
-        }
-
         monitoring::service { "Auth DNS UDP: ${verify_record} on server ${monitor_fqdn}":
             description   => "Check DNS auth via UDP of ${verify_record} on server ${monitor_fqdn}",
             check_command => "check_dig!${monitor_fqdn}!${verify_record}",
