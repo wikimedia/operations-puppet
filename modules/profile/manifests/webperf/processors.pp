@@ -42,7 +42,9 @@ class profile::webperf::processors(
         statsd_port             => 9125,
         kafka_ssl_cafile        => $kafka_ssl_cafile,
     }
-    class { 'profile::prometheus::statsd_exporter': }
+    class { 'profile::prometheus::statsd_exporter':
+        prometheus_instance => 'ext',
+    }
 
     # EventLogging is on the jumbo kafka. Unlike the main one, this
     # is not yet mirrored to other data centers, so for prod,

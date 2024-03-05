@@ -56,6 +56,7 @@ class profile::prometheus::ext (
         },
     ]
 
+    # statsd-exporter
     prometheus::class_config{ "statsv_${::site}":
         dest       => "${targets_path}/statsv_${::site}.yaml",
         class_name => 'profile::webperf::processors',
