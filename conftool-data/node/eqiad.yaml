@@ -69,10 +69,6 @@ eqiad:
     mw1492.eqiad.wmnet: [nginx]
     mw1493.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
-    parse1013.eqiad.wmnet: [apache2, nginx]      # Only pooled as jobrunner
-    parse1014.eqiad.wmnet: [apache2, nginx]      # Only pooled as jobrunner
-    parse1015.eqiad.wmnet: [apache2, nginx]      # Only pooled as jobrunner
-    parse1016.eqiad.wmnet: [apache2, nginx]      # Only pooled as jobrunner
     mw1437.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1438.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1445.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
@@ -98,20 +94,6 @@ eqiad:
     cp1115.eqiad.wmnet: [cdn, ats-be]
   parsoid:
     parse1001.eqiad.wmnet: [parsoid-php, canary]
-    parse1002.eqiad.wmnet: [parsoid-php]
-    parse1003.eqiad.wmnet: [parsoid-php, canary]
-    parse1004.eqiad.wmnet: [parsoid-php]
-    parse1005.eqiad.wmnet: [parsoid-php]
-    parse1006.eqiad.wmnet: [parsoid-php]
-    parse1007.eqiad.wmnet: [parsoid-php]
-    parse1008.eqiad.wmnet: [parsoid-php]
-    parse1009.eqiad.wmnet: [parsoid-php]
-    parse1017.eqiad.wmnet: [parsoid-php]
-    parse1018.eqiad.wmnet: [parsoid-php]
-    parse1019.eqiad.wmnet: [parsoid-php]
-    # Temp capacity from api_appserver https://phabricator.wikimedia.org/T342085
-    mw1356.eqiad.wmnet: [parsoid-php]
-    mw1357.eqiad.wmnet: [parsoid-php]
   restbase:
     restbase1019.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1020.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
@@ -344,6 +326,8 @@ eqiad:
     mw1352.eqiad.wmnet: [kubesvc]
     mw1353.eqiad.wmnet: [kubesvc]
     mw1354.eqiad.wmnet: [kubesvc]
+    mw1356.eqiad.wmnet: [kubesvc]
+    mw1357.eqiad.wmnet: [kubesvc]
     mw1360.eqiad.wmnet: [kubesvc]
     mw1361.eqiad.wmnet: [kubesvc]
     mw1362.eqiad.wmnet: [kubesvc]
@@ -416,9 +400,24 @@ eqiad:
     mw1494.eqiad.wmnet: [kubesvc]
     mw1495.eqiad.wmnet: [kubesvc]
     mw1496.eqiad.wmnet: [kubesvc]
+    parse1002.eqiad.wmnet: [kubesvc]
+    parse1003.eqiad.wmnet: [kubesvc]
+    parse1004.eqiad.wmnet: [kubesvc]
+    parse1005.eqiad.wmnet: [kubesvc]
+    parse1006.eqiad.wmnet: [kubesvc]
+    parse1007.eqiad.wmnet: [kubesvc]
+    parse1008.eqiad.wmnet: [kubesvc]
+    parse1009.eqiad.wmnet: [kubesvc]
     parse1010.eqiad.wmnet: [kubesvc]
     parse1011.eqiad.wmnet: [kubesvc]
     parse1012.eqiad.wmnet: [kubesvc]
+    parse1013.eqiad.wmnet: [kubesvc]
+    parse1014.eqiad.wmnet: [kubesvc]
+    parse1015.eqiad.wmnet: [kubesvc]
+    parse1016.eqiad.wmnet: [kubesvc]
+    parse1017.eqiad.wmnet: [kubesvc]
+    parse1018.eqiad.wmnet: [kubesvc]
+    parse1019.eqiad.wmnet: [kubesvc]
     parse1020.eqiad.wmnet: [kubesvc]
     parse1021.eqiad.wmnet: [kubesvc]
     parse1022.eqiad.wmnet: [kubesvc]

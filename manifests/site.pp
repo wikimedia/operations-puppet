@@ -1567,7 +1567,7 @@ node /^mw1349\.eqiad\./ {
   role(kubernetes::worker)
 }
 
-node /^mw135[0-4]\.eqiad\./ {
+node /^mw135([0-4]|[67])\.eqiad\./ {
   role(kubernetes::worker)
 }
 
@@ -1671,7 +1671,7 @@ node /^mw244[02-9]\.codfw\./ {
 node /^mw245[01]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^parse10(1[012]|2[01234])\.eqiad\./ {
+node /^parse10(0[2-9]|1[0-9]|2[01234])\.eqiad\./ {
   role(kubernetes::worker)
 }
 node /^parse20(1[6789]|20)\.codfw\./ {
@@ -2203,15 +2203,6 @@ node /^mwmaint[12]002\.(eqiad|codfw)\./ {
 
 # Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
-# Due to T329366, we are moving some parsoid servers to the jobrunner
-# cluser in both datacenters.
-
-# Row C
-
-node /^parse101[3-6]\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
 ## DATACENTER: CODFW
 
 # Debug servers
@@ -2474,12 +2465,7 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\./ {
     role(parsoid)
 }
 
-node /^parse10(0[1-9]|1[789])\.eqiad\./ {
-    role(parsoid)
-}
-
-# Temp parsoid eqiad capacity - T342085
-node /^mw135[67]\.eqiad\./ {
+node /^parse1001\.eqiad\./ {
     role(parsoid)
 }
 
