@@ -167,9 +167,9 @@ def validate_mutually_exclusive_privileged_ldap_groups():
 def validate_common_ops_group(yamldata):
     ldap_ops = set(get_ldap_group_members('ops'))
     yml_ops = set(
-        yamldata['groups']['ops']['members']
-        + yamldata['groups']['datacenter-ops']['members']
-        + yamldata['groups']['fr-tech-admins']['members']
+        [member for member in yamldata['groups']['ops']['members'] if member]
+        + [member for member in yamldata['groups']['datacenter-ops']['members'] if member]
+        + [member for member in yamldata['groups']['fr-tech-admins']['members'] if member]
     )
     if ldap_ops != yml_ops:
         ops_diff = list(ldap_ops.symmetric_difference(yml_ops))
