@@ -124,7 +124,7 @@ def main() -> int:
         },
         'mwscript': {
             'args': mwscript_args,
-            'labels:': {
+            'labels': {
                 'username': interactive.get_username(),
                 'script': script_name,
             }
