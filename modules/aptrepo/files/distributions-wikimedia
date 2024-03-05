@@ -111,9 +111,6 @@ Update:
  thirdparty/haproxy24
  thirdparty/haproxy26
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-23
- thirdparty/kubeadm-k8s-kubernetes.io
- thirdparty/kubeadm-k8s-docker.com
  thirdparty/tekton
 Description: Wikimedia packages for Debian buster
 SignWith: 9D392D3FFADF18FB
@@ -244,8 +241,6 @@ Update:
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
- thirdparty/kubeadm-k8s-kubernetes.io-1-23
- thirdparty/kubeadm-k8s-kubernetes.io
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
