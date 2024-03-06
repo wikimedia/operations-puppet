@@ -21,9 +21,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     # Horizon:
     include ::profile::openstack::codfw1dev::horizon::docker_deploy
 
-    # Striker:
-    include ::profile::wmcs::striker::docker
-
     # TLS termination
     include profile::tlsproxy::envoy
 }

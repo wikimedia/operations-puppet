@@ -108,9 +108,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://labtestwikitech.wikimedia.org
       replacement: https://cloudweb2002-dev.wikimedia.org:7443
     - type: map
-      target: http://labtesttoolsadmin.wikimedia.org
-      replacement: https://cloudweb2002-dev.wikimedia.org:7443
-    - type: map
       target: http://logstash.wikimedia.org
       replacement: https://kibana7.svc.eqiad.wmnet
     - type: map

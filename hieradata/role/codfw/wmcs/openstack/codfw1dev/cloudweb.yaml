@@ -45,11 +45,8 @@ profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - labtesthorizon.wikimedia.org
-    - labtesttoolsadmin.wikimedia.org
     - labtestwikitech.wikimedia.org
 profile::tlsproxy::envoy::services:
-  - server_names: ['labtesttoolsadmin.wikimedia.org']
-    port: 8080
   - server_names: ['labtesthorizon.wikimedia.org']
     port: 8084
   - server_names: ['*']
