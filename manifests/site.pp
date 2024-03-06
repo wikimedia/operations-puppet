@@ -1591,10 +1591,10 @@ node /^mw142[3-5]\.eqiad\./ {
 node /^mw143[0-49]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw1440\.eqiad\./ {
+node /^mw144[0-2]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw145[7-9]\.eqiad\./ {
+node /^mw145[1-57-9]\.eqiad\./ {
   role(kubernetes::worker)
 }
 node /^mw146[0-9]\.eqiad\./ {
