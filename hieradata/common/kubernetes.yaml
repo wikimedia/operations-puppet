@@ -428,6 +428,12 @@ kubernetes::clusters:
         - mw2449.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
+        - parse2002.codfw.wmnet
+        - parse2003.codfw.wmnet
+        - parse2004.codfw.wmnet
+        - parse2005.codfw.wmnet
+        - parse2006.codfw.wmnet
+        - parse2007.codfw.wmnet
         - parse2008.codfw.wmnet
         - parse2009.codfw.wmnet
         - parse2010.codfw.wmnet
