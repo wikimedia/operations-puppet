@@ -146,15 +146,33 @@ logger:
   level: WARN
   format: logfmt
 output:
-  label: "webrequest_out"
-  kafka_franz:
-    seed_brokers: [ "${KAFKA_BROKERS}" ]
-    topic: "${WEBREQUEST_TOPIC}"
-    compression: "snappy"
-    tls:
-      enabled: true
-      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-      skip_cert_verify: true
+  switch:
+    cases:
+      - check: errored()
+        output:
+          label: "webrequest_deadletter"
+          kafka_franz:
+            seed_brokers: [ "${KAFKA_BROKERS}" ]
+            topic: "${WEBREQUEST_TOPIC}_error"
+            compression: "snappy"
+            tls:
+              enabled: true
+              root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+              skip_cert_verify: true
+          processors:
+            - mapping: |
+                root = this
+                root.error = error()
+      - output:
+          label: "webrequest_out"
+          kafka_franz:
+            seed_brokers: [ "${KAFKA_BROKERS}" ]
+            topic: "${WEBREQUEST_TOPIC}"
+            compression: "snappy"
+            tls:
+              enabled: true
+              root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+              skip_cert_verify: true
 
 metrics:
   prometheus:
