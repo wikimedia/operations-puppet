@@ -150,7 +150,7 @@ etherpad: P{O:etherpad}
 eventlogging: P{O:eventlogging::analytics}
 failoid: P{O:failoid}
 ganeti: P{O:ganeti}
-ganeti-all A:ganeti and A:ganeti-test and A:ganeti-routed
+ganeti-all: A:ganeti or A:ganeti-test or A:ganeti-routed
 ganeti-test: P{O:ganeti_test}
 ganeti-routed: P{O:ganeti_routed}
 ganeti-codfw: A:ganeti and A:codfw
@@ -159,7 +159,6 @@ ganeti-esams: A:ganeti and A:esams
 ganeti-ulsfo: A:ganeti and A:ulsfo
 ganeti-eqsin: A:ganeti and A:eqsin
 ganeti-drmrs: A:ganeti and A:drmrs
-ganeti-all: A:ganeti or A:ganeti-test
 gerrit: P{O:gerrit}
 gitlab-server: P{O:gitlab}
 gitlab-runner: P{O:gitlab_runner}
