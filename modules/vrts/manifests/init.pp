@@ -215,7 +215,7 @@ class vrts(
     }
 
     systemd::timer::job { 'vrts-cache-cleanup':
-        ensure      => present,
+        ensure      => absent,
         user        => 'otrs',
         description => 'Cleanup VRTS cache',
         command     => '/opt/otrs/bin/otrs.Console.pl Maint::Cache::Delete',
