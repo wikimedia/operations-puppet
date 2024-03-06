@@ -153,7 +153,7 @@ output:
     compression: "snappy"
     tls:
       enabled: true
-      root_cas_file: /etc/ssl/certs/wmf-ca-certificats.crt
+      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       skip_cert_verify: true
 
 metrics:
