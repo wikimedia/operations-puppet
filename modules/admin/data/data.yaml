@@ -7084,3 +7084,9 @@ ldap_only_users:
     ensure: present
     realname: Ifeatu Nnaobi
     email: ifeatu.nnaobi@wikimedia.de
+  bdgreenlee:
+    ensure: present
+    realname: Brad Greenlee
+    email: bgreenlee-ctr@wikimedia.org
+    expiry_date: "2024-04-30"
+    expiry_contact: odimitrijevic@wikimedia.org
