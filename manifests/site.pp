@@ -212,7 +212,7 @@ node /^aphlict(100[12]|2001)\.(eqiad|codfw)\./ {
 }
 
 node /^apt[12]001\.wikimedia\./ {
-    role(apt_repo)
+    role(insetup::buster)
 }
 
 node /^apt[12]002\.wikimedia\./ {
