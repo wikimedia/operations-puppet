@@ -32,12 +32,27 @@ while [ -n "$1" ]; do
     shift
 done
 
-# update the local instance first -- this may call a review interactively
-echo "Updating $FQDN (self)..."
-# this might seem silly at first, ssh'ing to self; however, this is a paranoid
-# step to ensure that we're running in the exact same way as the slaves and if
-# it fails, it fail for all of them, instead of having a split-brain.
-ssh $SSH_OPTIONS $FQDN authdns-local-update
+# Only update the current host if it is pooled and in $NAMESERVERS. Otherwise,
+# we don't allow running authdns-update as the human review part of the process
+# fails as all the other hosts are updated non-interactively.
+for host in $NAMESERVERS; do
+    if [ "$FQDN" = "$host" ]; then
+        host_pooled=true
+        break
+    fi
+done
+
+if [ "$host_pooled" = true ] ; then
+    # update the local instance first -- this may call a review interactively
+    echo "Updating $FQDN (self)..."
+    # this might seem silly at first, ssh'ing to self; however, this is a paranoid
+    # step to ensure that we're running in the exact same way as the slaves and if
+    # it fails, it fail for all of them, instead of having a split-brain.
+    ssh $SSH_OPTIONS $FQDN authdns-local-update
+else
+    echo "Unable to run authdns-update from this host: $FQDN is not pooled. Please pick another host!"
+    exit 1
+fi
 
 OTHERS_OPT=""
 for other in $NAMESERVERS; do
