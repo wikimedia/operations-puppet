@@ -202,7 +202,13 @@ kubernetes::clusters:
         - mw1434.eqiad.wmnet
         - mw1439.eqiad.wmnet
         - mw1440.eqiad.wmnet
+        - mw1441.eqiad.wmnet
+        - mw1442.eqiad.wmnet
+        - mw1451.eqiad.wmnet
+        - mw1452.eqiad.wmnet
         - mw1453.eqiad.wmnet
+        - mw1454.eqiad.wmnet
+        - mw1455.eqiad.wmnet
         - mw1457.eqiad.wmnet
         - mw1458.eqiad.wmnet
         - mw1459.eqiad.wmnet

@@ -2042,11 +2042,6 @@ node /^mwdebug100[12]\.eqiad\./ {
 
 # Row A
 
-# rack A1
-node /^mw14(5[1-2])\.eqiad\./ {
-    role(mediawiki::appserver)
-}
-
 # rack A3
 node /^mw141([4-8])\.eqiad\./ {
     role(mediawiki::canary_appserver)
@@ -2057,7 +2052,7 @@ node /^mw1420\.eqiad\./ {
 }
 
 # rack A8
-node /^mw14(5[4-6])\.eqiad\./ {
+node /^mw1456\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
@@ -2133,11 +2128,6 @@ node /^mw143[7-8]\.eqiad\./ {
 # rack D8 - videoscaler jobrunners
 node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
-}
-
-# rack D8 - appservers
-node /^mw144([1-2])\.eqiad\./ {
-    role(mediawiki::appserver)
 }
 
 ## Api servers
