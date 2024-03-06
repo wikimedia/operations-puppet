@@ -1639,7 +1639,7 @@ node /^mw235[0-7]\.codfw\./ {
 node /^mw236[6-9]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw237[0789]\.codfw\./ {
+node /^mw237[0-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw238[0-5]\.codfw\./ {
