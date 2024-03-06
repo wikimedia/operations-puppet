@@ -6,6 +6,8 @@ class profile::icinga::ircbot(
     Wmflib::Ensure $ensure = 'present', # lint:ignore:wmf_styleguide
     String $ircecho_nick   = lookup('profile::icinga::ircbot::ircecho_nick'),
     String $ircecho_server = lookup('profile::icinga::ircbot::ircecho_server'),
+    String $icinga_user    = lookup('profile::icinga::icinga_user'),
+    String $icinga_group   = lookup('profile::icinga::icinga_group'),
 ) {
     $ircecho_logs   = {
         '/var/log/icinga/irc.log'                    => '#wikimedia-operations',
@@ -29,6 +31,18 @@ class profile::icinga::ircbot(
         mode      => '0400',
         content   => secret('icinga/icinga-wm_irc.secret'),
         show_diff => false,
+    }
+
+    if $ensure == present {
+        # Preemptively create log files for ircecho to read at startup
+        # https://phabricator.wikimedia.org/T359292
+        $ircecho_logs.each |String $file, String $channel| {
+            exec { "create ${file}":
+                command => "/usr/bin/install -o ${icinga_user} -g ${icinga_group} -m 644 /dev/null ${file}",
+                creates => $file,
+                before  => Class['ircecho'],
+            }
+        }
     }
 
     class { '::ircecho':
