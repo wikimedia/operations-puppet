@@ -36,6 +36,8 @@ class profile::cache::haproxy(
     Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
     Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
     Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', {'default_value'                                             => false}),
+    Boolean $use_benthos = lookup('profile::cache::base::use_benthos', {'default_value'                                                          => false}),
+    Optional[String] $benthos_socket = lookup('profile::benthos::instances::haproxy_cache::env_variable::socket_address', {'default_value'       => '127.0.0.1:1221'}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
 ) {
