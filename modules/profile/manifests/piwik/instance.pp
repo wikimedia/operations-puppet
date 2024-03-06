@@ -42,9 +42,9 @@ class profile::piwik::instance (
         show_diff => false,
     }
 
-    # Install a systemd timer to run the Archive task periodically.
-    # Running it once a day to avoid performance penalties on high trafficated websites
-    # (https://piwik.org/docs/setup-auto-archiving/#important-tips-for-medium-to-high-traffic-websites)
+    # Install an hourly systemd timer to run the Archive task periodically.
+    # We previously ran the timer every 8 hours indexing permitted once per day.
+    # However, having reviewed the server load, we feel that we can now increase the frequency
     $archiver_command = "/usr/bin/php /usr/share/matomo/console core:archive --url=\"${archive_timer_url}\""
 
     systemd::timer::job { 'matomo-archiver':
@@ -52,7 +52,7 @@ class profile::piwik::instance (
         command                   => "/bin/bash -c '${archiver_command}'",
         interval                  => {
             'start'    => 'OnCalendar',
-            'interval' => '*-*-* 00/8:00:00',
+            'interval' => 'hourly',
         },
         logfile_basedir           => '/var/log/matomo',
         logfile_name              => 'matomo-archive.log',
