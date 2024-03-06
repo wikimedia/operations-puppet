@@ -7090,3 +7090,9 @@ ldap_only_users:
     email: bgreenlee-ctr@wikimedia.org
     expiry_date: "2024-04-30"
     expiry_contact: odimitrijevic@wikimedia.org
+  febinbellamy:
+    ensure: present
+    realname: Febin Bellamy
+    email: fbellamy-ctr@wikimedia.org
+    expiry_date: "2024-06-28"
+    expiry_contact: slopes@wikimedia.org
