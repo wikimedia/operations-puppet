@@ -129,7 +129,7 @@ class profile::aptrepo::wikimedia (
     }
 
     if $facts['fqdn'] == 'apt1001.wikimedia.org' {
-        motd::message { '02_inactive_warning':
+        motd::message { '03_apt1001_warning':
             ensure   => $motd_ensure,
             priority => 99,  # Use hi priority to ensure this is the last message
             color    => 'red',
