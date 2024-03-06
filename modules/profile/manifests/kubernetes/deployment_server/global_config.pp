@@ -133,13 +133,143 @@ class profile::kubernetes::deployment_server::global_config (
         $retval = { $cl => $ips }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
-    $kerberos_nodes = wmflib::role::ips('kerberos::kdc');
-    $hadoop_analytics_master_node = wmflib::role::ips('analytics_cluster::hadoop::master');
-    $hadoop_analytics_standby_node = wmflib::role::ips('analytics_cluster::hadoop::standby');
-    $hadoop_analytics_worker_nodes = wmflib::role::ips('analytics_cluster::hadoop::worker');
-    $hadoop_analytics_test_master_node = wmflib::role::ips('analytics_test_cluster::hadoop::master');
-    $hadoop_analytics_test_standby_node = wmflib::role::ips('analytics_test_cluster::hadoop::standby');
-    $hadoop_analytics_test_worker_nodes = wmflib::role::ips('analytics_test_cluster::hadoop::worker');
+    $external_service_opts = {
+      'external_services_definitions' => {
+        'kafka'  => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'plaintext',
+                'port'     => 9092,
+              },
+              {
+                'name'     => 'tls',
+                'port'     => 9093,
+              }
+            ]
+          },
+          'instances' => $kafka_brokers,
+        },
+        'zookeeper' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'client',
+                'port'     => 2181,
+              }
+            ]
+          },
+          'instances' => $zookeeper_nodes,
+        },
+        'kerberos'  => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'ticket',
+                'port'     => 88,
+                'protocol' => 'UDP'
+              },
+              {
+                'name'     => 'ticket-large',
+                'port'     => 88,
+              }
+            ]
+          },
+          'instances' => {
+            'kdc' => wmflib::role::ips('kerberos::kdc'),
+          }
+        },
+        'hadoop-master' => {
+          '_meta' => {
+            'namespace' => 'hadoop',
+            'ports'     => [
+              {
+                'name'     => 'namenode',
+                'port'     => 8020,
+              }
+            ]
+          },
+          'instances' => {
+            'analytics'      => wmflib::role::ips('analytics_cluster::hadoop::master') + wmflib::role::ips('analytics_cluster::hadoop::standby'),
+            'analytics_test' => wmflib::role::ips('analytics_test_cluster::hadoop::master') + wmflib::role::ips('analytics_test_cluster::hadoop::standby'),
+          }
+        },
+        'hadoop-worker' => {
+          '_meta' => {
+            'namespace' => 'hadoop',
+            'ports'     => [
+              {
+                'name'     => 'datanode-data',
+                'port'     => 50010,
+              },
+              {
+                'name'     => 'datanode-metadata',
+                'port'     => 50020,
+              }
+            ]
+          },
+          'instances' => {
+            'analytics'      => wmflib::role::ips('analytics_cluster::hadoop::worker'),
+            'analytics_test' => wmflib::role::ips('analytics_test_cluster::hadoop::worker'),
+          }
+        },
+        'cas' => {
+            '_meta' => {
+              'ports' => [
+                {
+                  'name'     => 'https',
+                  'port'     => 443,
+                }
+              ]
+            },
+            'instances' => {
+              'idp'      => wmflib::role::ips('idp'),
+              'idp_test' => wmflib::role::ips('idp_test'),
+            },
+        },
+        'druid' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'coordinator',
+                'port'     => 8081,
+              },
+              {
+                'name'     => 'broker',
+                'port'     => 8282,
+              },
+              {
+                'name'     => 'historical',
+                'port'     => 8282,
+              }
+            ]
+          },
+          'instances' => {
+            'analytics'      => wmflib::role::ips('druid::analytics::worker'),
+            'analytics_test' => wmflib::role::ips('druid::test_analytics::worker'),
+            'public'         => wmflib::role::ips('druid::public::worker'),
+          }
+        },
+        'presto' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'http',
+                'port'     => 8280,
+              },
+              {
+                'name'     => 'discovery',
+                'port'     => 8281,
+              }
+            ]
+          },
+          'instances' => {
+            'analytics'      => wmflib::role::ips('analytics_cluster::presto::server'),
+            'analytics_test' => wmflib::role::ips('analytics_test_cluster::presto::server'),
+          }
+        }
+      }
+    }
 
     # Per-cluster general defaults.
     # Fetch clusters excluding aliases, for aliases we create symlinks to the actual cluster defaults
@@ -172,20 +302,16 @@ class profile::kubernetes::deployment_server::global_config (
           $general_values['default'],
           $general_values[$cluster_name],
           $deployment_config_opts,
+          $external_service_opts,
           {
-            'services_proxy'     => $proxies,
-            'kafka_brokers'      => $kafka_brokers,
-            'zookeeper_clusters' => $zookeeper_nodes,
-            'mariadb'            => { 'section_ports' => $db_sections },
-            'kerberos'           => { 'kdc' => $kerberos_nodes },
-            'hadoop_masters'     => {
-              'analytics' => $hadoop_analytics_master_node + $hadoop_analytics_standby_node,
-              'analytics_test' => $hadoop_analytics_test_master_node + $hadoop_analytics_test_standby_node
-            },
-            'hadoop_workers'     => {
-              'analytics' => $hadoop_analytics_worker_nodes,
-              'analytics_test' => $hadoop_analytics_test_worker_nodes
-            },
+            'services_proxy'                => $proxies,
+            # Temporary duplication of kafka/zookeeper details until all charts are migrated
+            # to using the external-services chart to define their egress network policies
+            # to external services
+            'kafka_brokers'                 => $kafka_brokers,
+            'zookeeper_clusters'            => $zookeeper_nodes,
+
+            'mariadb'                       => { 'section_ports' => $db_sections },
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
