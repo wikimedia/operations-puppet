@@ -127,4 +127,13 @@ class profile::aptrepo::wikimedia (
         color    => 'red',
         message  => "Please use ${primary_server} instead. It will rsync to ${facts['networking']['hostname']}"
     }
+
+    if $facts['fqdn'] == 'apt1001.wikimedia.org' {
+        motd::message { '02_inactive_warning':
+            ensure   => $motd_ensure,
+            priority => 99,  # Use hi priority to ensure this is the last message
+            color    => 'red',
+            message  => 'Please use apt1002 to import/manage packages!'
+        }
+    }
 }
