@@ -5,7 +5,8 @@ profile::aptrepo::wikimedia::aptrepo_hostname: apt.wikimedia.org
 # The public keyring is built/managed by Puppet
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
 profile::aptrepo::wikimedia::upload_keys: []
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 profile::admin::groups:
   - datacenter-ops
 profile::ssh::server::enable_kerberos: true
@@ -15,3 +16,6 @@ profile::base::production::role_description: 'repository server for DEB packages
 # modules/profile/data/profile/installserver/preseed.yaml to allow for type
 # checking in CI, to avoid letting a typo in this hiera value make it to
 # production
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
