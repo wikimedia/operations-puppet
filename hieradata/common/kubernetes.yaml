@@ -422,6 +422,14 @@ kubernetes::clusters:
         - mw2449.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
+        - parse2008.codfw.wmnet
+        - parse2009.codfw.wmnet
+        - parse2010.codfw.wmnet
+        - parse2011.codfw.wmnet
+        - parse2012.codfw.wmnet
+        - parse2013.codfw.wmnet
+        - parse2014.codfw.wmnet
+        - parse2015.codfw.wmnet
         - parse2016.codfw.wmnet
         - parse2017.codfw.wmnet
         - parse2018.codfw.wmnet

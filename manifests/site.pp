@@ -1669,7 +1669,7 @@ node /^mw245[01]\.codfw\./ {
 node /^parse10(0[2-9]|1[0-9]|2[01234])\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^parse20(1[6789]|20)\.codfw\./ {
+node /^parse20(0[89]|1[0-9]|20)\.codfw\./ {
   role(kubernetes::worker)
 }
 # END Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
@@ -2452,7 +2452,7 @@ node /^vrts2001\.codfw\./ {
 }
 
 # new parsoid nodes - codfw (T243112, T247441) - eqiad (T299573)
-node /^parse20(0[1-9]|1[0-9]|20)\.codfw\./ {
+node /^parse200[1-7]\.codfw\./ {
     role(parsoid)
 }
 
