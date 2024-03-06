@@ -2298,12 +2298,12 @@ node /^mw2441\.codfw\./ {
 # Row D
 
 # rack D3
-node /^mw2(27[12])\.codfw\./ {
+node /^mw227[12]\.codfw\./ {
     role(mediawiki::canary_appserver)
 }
 
 # rack D3
-node /^mw2(27[3-7]|37[135])\.codfw\./ {
+node /^mw227[3-7]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
@@ -2338,18 +2338,11 @@ node /^mw23(58|6[024])\.codfw\./ {
 
 # Row D
 
-# rack D3
-
-node /^mw237[46]\.codfw\./ {
+# rack D4
+node /^mw228[34]\.codfw\./ {
     role(mediawiki::appserver::canary_api)
 }
-
-node /^mw2372\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
-# rack D4
-node /^mw22(8[3-9]|90)\.codfw\./ {
+node /^mw22(8[5-9]|90)\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
