@@ -11,7 +11,7 @@ input:
   label: ""
   socket_server:
     network: udp
-    address: '${! env("SOCKET_ADDRESS").string() }'
+    address: "${SOCKET_ADDRESS}"
     codec: lines
     tls:
       cert_file: ""
@@ -33,7 +33,7 @@ buffer:
      check: ""
 
 pipeline:
-  threads: '${! env("PIPELINE_THREADS").number() }'
+  threads: ${PIPELINE_THREADS}
   processors:
     - label: "drop_first_part"
       mapping: |
@@ -149,15 +149,12 @@ output:
   label: "webrequest_out"
   kafka_franz:
     seed_brokers: [ "${KAFKA_BROKERS}" ]
-    topic: '${! env("WEBREQUEST_TOPIC").string() }'
+    topic: "${WEBREQUEST_TOPIC}"
     compression: "snappy"
-  tls:
-    enabled: true
-    root_cas_file: /etc/ssl/certs/wmf-ca-certificats.crt
-    skip_cert_verify: true
-  # label: "sample_stdout_output"
-  # stdout:
-  #   codec: lines
+    tls:
+      enabled: true
+      root_cas_file: /etc/ssl/certs/wmf-ca-certificats.crt
+      skip_cert_verify: true
 
 metrics:
   prometheus:
