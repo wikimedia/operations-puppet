@@ -11,7 +11,7 @@ input:
   label: ""
   socket_server:
     network: udp
-    address: env("SOCKET_ADDRESS"),string()
+    address: '${! env("SOCKET_ADDRESS").string() }'
     codec: lines
     tls:
       cert_file: ""
@@ -33,7 +33,7 @@ buffer:
      check: ""
 
 pipeline:
-  threads: env("PIPELINE_THREADS").number()
+  threads: '${! env("PIPELINE_THREADS").number() }'
   processors:
     - label: "drop_first_part"
       mapping: |
@@ -149,7 +149,7 @@ output:
   label: "webrequest_out"
   kafka_franz:
     seed_brokers: [ "${KAFKA_BROKERS}" ]
-    topic: env("WEBREQUEST_TOPIC"),string()
+    topic: '${! env("WEBREQUEST_TOPIC").string() }'
     compression: "snappy"
   tls:
     enabled: true
