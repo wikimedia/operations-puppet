@@ -1,0 +1,2 @@
+---
+profile::openstack::codfw1dev::neutron::base_interface: "eno12399np0"
