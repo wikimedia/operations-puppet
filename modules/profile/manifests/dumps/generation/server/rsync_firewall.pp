@@ -2,9 +2,9 @@
 class profile::dumps::generation::server::rsync_firewall(
     Array[Stdlib::Fqdn] $rsync_clients = lookup('profile::dumps::rsync_internal_clients'),
 ) {
-    ferm::service { 'dumps_rsyncd':
-        port   => '873',
+    firewall::service { 'dumps_rsyncd':
+        port   => 873,
         proto  => 'tcp',
-        srange => "@resolve((${rsync_clients.join(' ')}))",
+        srange => $rsync_clients,
     }
 }
