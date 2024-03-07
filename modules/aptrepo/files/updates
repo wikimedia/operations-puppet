@@ -300,6 +300,16 @@ GetInRelease: no
 VerifyRelease: 94E92A0708C4CC43
 ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
 
+Name: routinator-bookworm
+Method: https://packages.nlnetlabs.nl/linux/debian/
+Suite: bookworm
+Components: main>thirdparty/routinator
+UDebComponents:
+Architectures: amd64
+GetInRelease: no
+VerifyRelease: 94E92A0708C4CC43
+ListShellHook: grep-dctrl -X -S routinator || [ $? -eq 1 ]
+
 Name: thirdparty/haproxy24
 Method: http://haproxy.debian.net
 Components: main>thirdparty/haproxy24

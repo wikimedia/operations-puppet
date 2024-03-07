@@ -230,6 +230,7 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-23
+ thirdparty/routinator
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -237,6 +238,7 @@ Update:
  elasticsearch-curator5
  hp-mcp-bookworm
  hwraid-megacli
+ routinator-bookworm
  thirdparty/ceph-reef
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
