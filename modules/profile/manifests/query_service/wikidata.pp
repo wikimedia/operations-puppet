@@ -11,7 +11,6 @@
 # instances per host (preventing configuration by profile), and multiple roles
 # per datasource (preventing configuration by role).
 class profile::query_service::wikidata(
-    String $monitoring_tier = lookup('profile::query_service::monitoring_tier'),
     String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
@@ -78,15 +77,6 @@ class profile::query_service::wikidata(
 
     if ($facts['fqdn']) == $ldf_host {
         class { '::profile::query_service::monitor::ldf': }
-    }
-
-    if $monitoring_tier == 'internal' {
-        class { '::profile::query_service::monitor::wikidata_internal': }
-
-    }
-    if $monitoring_tier == 'public' {
-        class { '::profile::query_service::monitor::wikidata_public': }
-
     }
 
 }
