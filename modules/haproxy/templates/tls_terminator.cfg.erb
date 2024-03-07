@@ -119,6 +119,9 @@ listen tls
 <%- end -%>
 <%- end -%>
 <%- end -%>
+<%- if @extended_logging -%>
+    http-request capture hdr(X-Analytics-TLS) len 96
+<%- end -%>
 <%- if @del_headers and @del_headers['tls'] -%>
 <%- @del_headers['tls'].each do |del_header| -%>
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
