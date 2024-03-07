@@ -222,6 +222,7 @@ Components: main
  component/puppet5
  component/puppetdb7
  component/prometheus-openstack-exporter
+ component/tomcat9
  component/wmf-laptop
  thirdparty/ceph-reef
  thirdparty/elastic710
