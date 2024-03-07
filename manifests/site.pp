@@ -2785,7 +2785,7 @@ node /^wdqs10([2][2-4])\.eqiad\./ {
 }
 
 node /^wdqs1025.eqiad\./ {
-    role(insetup::search_platform)
+    role(wdqs::test)
 }
 
 node /^(wdqs2008|wdqs201[45])\.codfw\./ {

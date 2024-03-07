@@ -37,6 +37,7 @@ profile::dumps::distribution::nfs_clients:
   - wdqs1022.eqiad.wmnet
   - wdqs1023.eqiad.wmnet
   - wdqs1024.eqiad.wmnet
+  - wdqs1025.eqiad.wmnet
   - wdqs2009.codfw.wmnet
   - wdqs2010.codfw.wmnet
 profile::dumps::distribution::mirrors:
