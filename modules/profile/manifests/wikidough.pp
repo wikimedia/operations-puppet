@@ -20,22 +20,22 @@ class profile::wikidough (
         source   => 'puppet:///modules/profile/wikidough/motd.sh',
     }
 
-    ferm::service { 'wikidough-doh':
+    firewall::service { 'wikidough-doh':
         proto   => 'tcp',
         notrack => true,
         port    => 443,
     }
 
-    ferm::service { 'wikidough-dot':
+    firewall::service { 'wikidough-dot':
         proto   => 'tcp',
         notrack => true,
         port    => 853,
     }
 
-    ferm::service { 'wikidough-dnsdist-webserver':
-        proto  => 'tcp',
-        port   => $webserver_config['port'],
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'wikidough-dnsdist-webserver':
+        proto    => 'tcp',
+        port     => $webserver_config['port'],
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     class { 'dnsrecursor':
