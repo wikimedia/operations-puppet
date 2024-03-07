@@ -1,2 +1,5 @@
 profile::openstack::codfw1dev::cinder::backend_name: 'local1'
 profile::openstack::base::nova::compute::id: 210467c3-66bf-42f8-853b-59eca6235d4e
+
+profile::openstack::codfw1dev::neutron::use_ovs: true
+profile::openstack::codfw1dev::neutron::legacy_vlan_naming: false
