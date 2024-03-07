@@ -10,6 +10,7 @@ class role::planet {
     include ::profile::locales::extended
 
     include ::profile::tlsproxy::envoy # TLS termination
+    include ::profile::prometheus::apache_exporter # T359556
 
     system::role { 'planet':
         description => 'Planet (rawdog) RSS feed aggregator'
