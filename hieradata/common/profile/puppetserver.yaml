@@ -17,6 +17,7 @@ profile::puppetserver::ca_private_key_secret: ~
 profile::puppetserver::ca_allow_san: false
 profile::puppetserver::ca_name: ~
 profile::puppetserver::separate_ssldir: false
+profile::puppetserver::ssldir_on_srv: false
 profile::puppetserver::enable_jmx: true
 profile::puppetserver::auto_restart: true
 # ni nthe private repo

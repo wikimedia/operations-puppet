@@ -17,7 +17,8 @@
 # @param ca_server the fqdn of the ca_server
 # @param intermediate_ca configure puppet Ca with an intermediate CA
 # @param ca_public_key location of the intermediate ca content
-# @param separate_ssldir use seperate ssldir for the server.  usefull in cloud setup
+# @param ssldir_on_srv used on cloud-vps; it allows storing certs on a detachable volume
+# @param separate_ssldir used when the puppetserver is managed by a different puppet server #TODO remove this setting in favor of ssldir_on_srv
 # @param ca_crl location of the intermediate crl content
 # @param ca_private_key_secret the content of the W
 # @param ca_allow_san whether to allow agents to request SANs
@@ -44,6 +45,7 @@ class profile::puppetserver (
     Optional[Stdlib::Host]         $listen_host               = lookup('profile::puppetserver::listen_host', { 'default_value' => undef }),
     Boolean                        $autosign                  = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
     Boolean                        $git_pull                  = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
+    Boolean                        $ssldir_on_srv             = lookup('profile::puppetserver::ssldir_on_srv'),
     Boolean                        $separate_ssldir           = lookup('profile::puppetserver::separate_ssldir'),
     Stdlib::Fqdn                   $ca_server                 = lookup('profile::puppetserver::ca_server'),
     Boolean                        $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
