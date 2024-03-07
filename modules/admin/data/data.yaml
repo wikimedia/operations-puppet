@@ -422,7 +422,7 @@ groups:
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
-              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga]
+              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6284,6 +6284,15 @@ users:
     uid: 46090
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bdgreenlee:
+    ensure: present
+    realname: Brad Greenlee
+    email: bgreenlee-ctr@wikimedia.org
+    uid: 46232
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    expiry_date: "2024-04-30"
+    expiry_contact: odimitrijevic@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -7084,12 +7093,6 @@ ldap_only_users:
     ensure: present
     realname: Ifeatu Nnaobi
     email: ifeatu.nnaobi@wikimedia.de
-  bdgreenlee:
-    ensure: present
-    realname: Brad Greenlee
-    email: bgreenlee-ctr@wikimedia.org
-    expiry_date: "2024-04-30"
-    expiry_contact: odimitrijevic@wikimedia.org
   febinbellamy:
     ensure: present
     realname: Febin Bellamy
