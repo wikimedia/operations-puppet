@@ -4,7 +4,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'tomcat' do
-  on_supported_os(WMFConfig.test_on(10, 10)).each do |os, _facts|
+  on_supported_os(WMFConfig.test_on(11, 12)).each do |os, _facts|
     context "on #{os}" do
       describe 'test with default settings' do
         it { is_expected.to compile.with_all_deps }
