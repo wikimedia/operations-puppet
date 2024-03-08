@@ -41,10 +41,21 @@ class tomcat (
     # lint:endignore
     Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
-    ensure_packages(['tomcat9'])
-    if $apr_listener {
-      ensure_packages(['libtcnative-1'])
+
+    $package = 'tomcat9'
+    if debian::codename::ge('bookworm') {
+        apt::package_from_component { 'tomcat9':
+            component => 'component/tomcat9',
+            packages  => [$package],
+        }
     }
+    else {
+        ensure_packages([$package])
+        if $apr_listener {
+            ensure_packages(['libtcnative-1'])
+        }
+    }
+
     $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip
 
     file{

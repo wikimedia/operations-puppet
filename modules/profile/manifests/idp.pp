@@ -66,13 +66,7 @@ class profile::idp(
       $firewall_port = 8080
     }
 
-    if debian::codename::ge('bookworm') {
-        $tomcat_service = 'tomcat10'
-        class { 'tomcat10':}
-    } else {
-        $tomcat_service = 'tomcat9'
-        class {'tomcat': }
-    }
+    class {'tomcat': }
 
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
@@ -151,7 +145,7 @@ class profile::idp(
         webauthn_relaying_party     => $webauthn_relaying_party,
     }
 
-    systemd::unit{$tomcat_service:
+    systemd::unit{'tomcat9':
         override => true,
         restart  => true,
         content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\nEnvironment=JAVA_HOME=${profile::java::default_java_home}",
