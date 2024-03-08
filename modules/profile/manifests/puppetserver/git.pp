@@ -20,6 +20,15 @@ class profile::puppetserver::git (
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
+
+    git::systemconfig { 'mark puppet repos as safe':
+        settings => {
+            'safe' => {
+                'directory' => $basedir,
+            },
+        },
+    }
+
     $control_repo_dir = "${basedir}/${control_repo}"
     $home_dir = "/home/${user}"
 
@@ -108,7 +117,7 @@ class profile::puppetserver::git (
                 origin    => $origin,
                 owner     => $user,
                 group     => $group,
-                require   => File[$dir.dirname],
+                require   => [File[$dir.dirname], Git::Systemconfig['mark puppet repos as safe']],
                 before    => Service['puppetserver'],
             }
             $git_require = Git::Clone[$repo]
