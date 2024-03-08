@@ -4,7 +4,9 @@ class prometheus::ethtool_exporter(
     Wmflib::Ensure $ensure = 'present',
 ) {
     if debian::codename::ge('bookworm') {
-        ensure_packages(['prometheus-ethtool-exporter',], {'ensure' => $ensure})
+        package { 'prometheus-ethtool-exporter':
+            ensure => stdlib::ensure($ensure, 'package'),
+        }
 
         $override_content = @(CONTENT)
         [Service]
@@ -22,4 +24,3 @@ class prometheus::ethtool_exporter(
         profile::auto_restarts::service { 'prometheus-ethtool-exporter': }
     }
 }
-
