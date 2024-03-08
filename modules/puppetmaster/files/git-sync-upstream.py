@@ -5,10 +5,12 @@
 # application of local changes due to non-atomic operations.
 import argparse
 import datetime
+from enum import Enum
 import logging
 import pwd
 import os
 import shutil
+import subprocess
 
 from pathlib import Path
 
@@ -27,6 +29,25 @@ logging.basicConfig(
 )
 logging.captureWarnings(True)
 logger = logging.getLogger("sync-upstream")
+
+
+def deploy_puppet_code():
+    """On puppet7 and later servers we need to deploy puppet code after
+       updating the git repo."""
+    if Path("/usr/local/bin/puppetserver-deploy-code").is_file():
+        logger.info("Deploying updated puppet code")
+        try:
+            subprocess.check_call(['/usr/local/bin/puppetserver-deploy-code'])
+            return True
+        except subprocess.CalledProcessError:
+            logger.error("Call to puppetserver-deploy-code failed")
+            return False
+
+
+class repostate(Enum):
+    FAIL = 0
+    NOOP = 1
+    UPDATE = 2
 
 
 def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
@@ -49,7 +70,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     if repo.index.diff(None):
         logger.error("Local diffs detected.  Commit your changes!")
         prometheus_gauge.labels(repo_path).set(0)
-        return False
+        return repostate.FAIL
 
     repo.remotes.origin.fetch()
 
@@ -60,7 +81,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     if latest_upstream_commit == latest_merged_commit:
         logger.info("Up-to-date: %s", repo_path)
         prometheus_gauge.labels(repo_path).set(1)
-        return True
+        return repostate.NOOP
     try:
         # Perform rebase in a temporary workdir to avoid altering the state of
         # the current workdir. Rebasing in place can lead to Puppet using
@@ -116,7 +137,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
         logger.error("Rebase failed!")
         shutil.rmtree(tempdir)
         prometheus_gauge.labels(repo_path).set(0)
-        return False
+        return repostate.FAIL
 
     # For the sake of future rollbacks, tag the repo in the state we've just
     # set up
@@ -127,7 +148,7 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     repo.git.log("--color", "--pretty=oneline", "--abbrev-commit", "origin/HEAD..HEAD")
 
     prometheus_gauge.labels(repo_path).set(1)
-    return True
+    return repostate.UPDATE
 
 
 parser = argparse.ArgumentParser(description="Sync local puppet repo with upstream")
@@ -167,33 +188,43 @@ if args.git_user != 'root':
     os.environ['USER'] = args.git_user
     os.environ['HOME'] = pwd.getpwnam(args.git_user).pw_dir
 
+
+repo_changes = 0
 if args.private:
     resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
     assert resp.status_code == 200
-    rebase_repo(
+    if rebase_repo(
         str(args.base_dir / "labs/private"),
         resp.content.decode("ascii").strip(),
         gauge_is_up_to_date
-    )
+    ) == repostate.UPDATE:
+        repo_changes += 1
 else:
     resp = requests.get("https://config-master.wikimedia.org/puppet-sha1.txt")
     assert resp.status_code == 200
-    if rebase_repo(
+    rs = rebase_repo(
         str(args.base_dir / "operations/puppet"),
         resp.content.decode("ascii").strip(),
         gauge_is_up_to_date
-    ):
+    )
+    if rs == repostate.UPDATE:
+        repo_changes += 1
+    if rs != repostate.FAIL:
         resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
         assert resp.status_code == 200
-        rebase_repo(
+        if rebase_repo(
             str(args.base_dir / "labs/private"),
             resp.content.decode("ascii").strip(),
             gauge_is_up_to_date
-        )
+        ) == repostate.UPDATE:
+            repo_changes += 1
+
 if os.geteuid() != 0:
     # Switch back to root
     os.seteuid(0)
     os.environ = old_environ
+    if repo_changes > 0:
+        deploy_puppet_code()
 
 if args.prometheus_file is not None:
     write_to_textfile(args.prometheus_file, prometheus_registry)
