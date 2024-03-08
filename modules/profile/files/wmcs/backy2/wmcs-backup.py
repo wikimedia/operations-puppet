@@ -109,11 +109,12 @@ class VolumeBackupsConfig(MinimalConfig):
     def get_host_for_project(self, project: str) -> str:
         return self.project_assignments.get(project, self.project_assignments["ALLOTHERS"])
 
-    def get_host_for_image(self, project: str, image_id: Optional[str] = None) -> str:
-        if image_id is not None:
+    def get_host_for_image(self, project: str, image_info: Dict[str, Any]) -> str:
+        if image_info is not None:
             for volume_regex in self.exclude_volumes.get(project, []):
-                if re.match(volume_regex, image_id):
-                    return f"excluded_from_backups (matches {volume_regex})"
+                image_name = image_info.get("name")
+                if re.match(volume_regex, image_name):
+                    return f"excluded_from_backups ({volume_regex} matches {image_name})"
 
         return self.get_host_for_project(project=project)
 
@@ -1460,8 +1461,9 @@ class ImageBackupsState:
             if image_id not in ceph_vols:
                 continue
             project = image_info.get("os-vol-tenant-attr:tenant_id", "no_project")
-            id = image_info.get("id", "no_id")
-            if this_hostname == self.config.get_host_for_image(project=project, image_id=id):
+            if this_hostname == self.config.get_host_for_image(
+                project=project, image_info=image_info
+            ):
                 assigned_images.append(image_info)
         return assigned_images
 

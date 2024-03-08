@@ -150,9 +150,11 @@ class BackupEntry:
             valid=bool(int(valid)),
             protected=bool(int(protected)),
             tags=tags.split(","),
-            expire=datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M:%S")
-            if expire and not expire.isspace()
-            else datetime.datetime.min,
+            expire=(
+                datetime.datetime.strptime(expire, "%Y-%m-%d %H:%M:%S")
+                if expire and not expire.isspace()
+                else datetime.datetime.min
+            ),
         )
 
     @classmethod
