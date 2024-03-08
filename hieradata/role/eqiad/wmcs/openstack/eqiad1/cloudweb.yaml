@@ -11,7 +11,7 @@ acmechief_host: acmechief2002.codfw.wmnet
 profile::base::overlayfs: true
 
 profile::wmcs::striker::docker::port: 8080
-profile::wmcs::striker::docker::version: 2024-03-07-101638-production
+profile::wmcs::striker::docker::version: 2024-03-08-085857-production
 profile::wmcs::striker::docker::env:
   LOGGING_HANDLERS: cee
   DB_ENGINE: striker.db
