@@ -424,3 +424,12 @@ UDebComponents:
 Suite: jammy
 Architectures: amd64
 VerifyRelease: 3EFE0E0A2F2F60AA
+
+Name: thirdparty/kubeadm-k8s-1-24
+Method: https://pkgs.k8s.io/core:/stable:/v1.24/deb
+Suite: /
+Flat: thirdparty/kubeadm-k8s-1-24
+UDebComponents:
+Architectures: amd64
+VerifyRelease: DE15B14486CD377B
+ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]

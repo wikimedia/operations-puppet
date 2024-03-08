@@ -231,6 +231,7 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-23
+ thirdparty/kubeadm-k8s-1-24
  thirdparty/routinator
 UDebComponents: main
 Update:
@@ -244,6 +245,7 @@ Update:
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
+ thirdparty/kubeadm-k8s-1-24
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
