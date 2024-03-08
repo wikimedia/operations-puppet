@@ -430,5 +430,5 @@ Method: https://pkgs.k8s.io/core:/stable:/v1.24/deb
 Suite: /
 Flat: thirdparty/kubeadm-k8s-1-24
 Architectures: amd64
-VerifyRelease: DE15B14486CD377B
-ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
+VerifyRelease: 234654DA9A296436
+ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
