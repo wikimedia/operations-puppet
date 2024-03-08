@@ -173,10 +173,24 @@ frontend http
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
 
+<%- if @extended_logging -%>
+    unique-id-format "%Ts%rt"
+<%- end -%>
     # Needed for logging purposes
     capture request header Host len 25
     # declare a capture slot with id 0 for X-Cache-Status
     declare capture response len 10
+<%- if @extended_logging -%>
+    capture request header Referer len 64
+    capture request header User-Agent len 64
+    capture request header Accept-Language len 10
+    capture request header Range len 10
+    capture request header Accept len 64
+    capture response header Content-Type len 25
+    capture response header X-Analytics len 96
+    capture response header X-Cache len 96
+    capture response header Server len 64
+<%- end -%>
 
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
@@ -244,6 +258,9 @@ frontend http
     http-after-response set-header X-Cache "<%= @hostname %> int"
     http-after-response set-header X-Cache-Status "int-tls"
     http-after-response capture hdr(X-Cache-Status) id 0
+<%- if @extended_logging -%>
+    http-request capture hdr(X-Analytics-TLS) len 96
+<%- end -%>
 <%- if @http_disable_keepalive -%>
     # Explicitly avoid keep-alive
     http-after-response set-header Connection Close
