@@ -2,14 +2,9 @@
 #
 # Prometheus exporter for Apache httpd server metrics.
 #
-# = Parameters
 #
-# [*arguments*]
-#   Additional command line arguments for prometheus-apache-exporter.
+define prometheus::apache_exporter (){
 
-define prometheus::apache_exporter (
-    $arguments = '-scrape_uri http://127.0.0.1/server-status/?auto',
-) {
     ensure_packages('prometheus-apache-exporter')
 
     file { '/etc/default/prometheus-apache-exporter':
@@ -17,7 +12,7 @@ define prometheus::apache_exporter (
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"${arguments}\"",
+        content => 'ARGS="--scrape_uri http://127.0.0.1/server-status/?auto"',
         notify  => Service['prometheus-apache-exporter'],
     }
 
