@@ -136,6 +136,14 @@ class puppetserver (
                 'mode'   => '0751',
             },
         )
+        ensure_resource(
+            'file',
+            '/etc/puppet/puppetserver/ca',
+            {
+                'ensure' => link,
+                'target' => '/srv/puppet/server/ssl/ca'
+            },
+        )
     } elsif $separate_ssldir {
         ensure_resource(
             'file',
