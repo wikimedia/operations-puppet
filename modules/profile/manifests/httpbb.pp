@@ -62,6 +62,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/jobrunner',
             '/srv/deployment/httpbb-tests/phabricator',
             '/srv/deployment/httpbb-tests/liftwing',
+            '/srv/deployment/httpbb-tests/ores_legacy',
         ]:
             ensure => directory,
             purge  => true
@@ -150,6 +151,12 @@ class profile::httpbb (
     }
     httpbb::test_suite {'liftwing/test_liftwing_staging.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/test_liftwing_staging.yaml'
+    }
+    httpbb::test_suite {'ores_legacy/test_ores_staging.yaml':
+        source => 'puppet:///modules/profile/httpbb/ores_legacy/test_ores_staging.yaml'
+    }
+    httpbb::test_suite {'ores_legacy/test_ores_production.yaml':
+        source => 'puppet:///modules/profile/httpbb/ores_legacy/test_ores_production.yaml'
     }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {
