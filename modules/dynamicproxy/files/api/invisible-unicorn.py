@@ -172,6 +172,17 @@ class Dns:
         if hostname_parent in self.zones:
             if self.zones[hostname_parent].get("deprecated", False):
                 enforce_policy("proxy:zones:use_deprecated", project)
+            if (
+                self.zones[hostname_parent]["project"] != project
+                and not self.zones[hostname_parent].get("shared", False)
+            ):
+                log.logger.warning(
+                    "Rejecting project %s from using non-shared zone %s in %s",
+                    project,
+                    hostname_parent,
+                    self.zones[hostname_parent]["project"],
+                )
+                return None
 
             for zone in self.designateclient(project).zones.list():
                 # we don't have multi-level wildcard certs
@@ -313,9 +324,13 @@ def list_zones(project_id):
         zone.rstrip("."): {
             "deprecated": details.get("deprecated", False),
             "default": details.get("default", False),
+            "shared": details.get("shared", False),
         }
         for zone, details in zones.items()
-        if use_deprecated or not details.get("deprecated", False)
+        if (
+            (use_deprecated or not details.get("deprecated", False))
+            and (details["project"] == project_id or details.get("shared", False))
+        )
     }
 
     return flask.jsonify(data)

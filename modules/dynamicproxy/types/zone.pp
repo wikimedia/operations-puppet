@@ -3,4 +3,5 @@ type Dynamicproxy::Zone = Struct[{
   'project'    => String[1],
   'deprecated' => Optional[Boolean],
   'default'    => Optional[Boolean],
+  'shared'     => Optional[Boolean],
 }]
