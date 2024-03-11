@@ -2,6 +2,9 @@
 profile::opensearch::dc_settings:
   cluster_name: production-elk7-eqiad
   unicast_hosts:
+    - logging-hd1001.eqiad.wmnet
+    - logging-hd1002.eqiad.wmnet
+    - logging-hd1003.eqiad.wmnet
     - logstash1010.eqiad.wmnet
     - logstash1011.eqiad.wmnet
     - logstash1012.eqiad.wmnet
@@ -15,6 +18,9 @@ profile::opensearch::dc_settings:
     - logstash1036.eqiad.wmnet
     - logstash1037.eqiad.wmnet
   cluster_hosts:
+    - logging-hd1001.eqiad.wmnet
+    - logging-hd1002.eqiad.wmnet
+    - logging-hd1003.eqiad.wmnet
     - logstash1010.eqiad.wmnet
     - logstash1011.eqiad.wmnet
     - logstash1012.eqiad.wmnet
