@@ -1,4 +1,4 @@
 # db1220
-# candidate master for x1
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
