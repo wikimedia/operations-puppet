@@ -10,13 +10,9 @@ acmechief_host: acmechief2002.codfw.wmnet
 
 profile::base::overlayfs: true
 
-profile::wmcs::striker::docker::port: 8080
-profile::wmcs::striker::docker::version: 2024-03-11-120408-production
-profile::wmcs::striker::docker::env:
+profile::wmcs::striker::docker::common_env:
   LOGGING_HANDLERS: cee
   DB_ENGINE: striker.db
-  DB_NAME: striker
-  DB_USER: striker
   DB_HOST: m5-master.eqiad.wmnet
   DB_PORT: 3306
   LDAP_SERVER_URI: ldaps://ldap-rw.eqiad.wikimedia.org:636
@@ -24,23 +20,31 @@ profile::wmcs::striker::docker::env:
   CACHE_LOCATION: 127.0.0.1:11212
   REQUIRE_HTTPS: true
   USE_XFF_HEADER: true
-  # CIDR not supported, but substring/prefix match is
-  # Should match IPs presented by the CDN edge servers + 127.0.0.1
-  TRUSTED_PROXY_LIST: "127.0.0.1,10.,208.80.152.,208.80.153.,208.80.154.,208.80.155.,103.102.166.,198.35.26.,185.15.58.,185.15.59."
-  OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+
+profile::wmcs::striker::docker::instances:
+  # This is the main instance for the main Toolforge project.
+  striker:
+    port: 8080
+    version: 2024-03-11-120408-production
+    env:
+      OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
+      DB_NAME: striker
+      DB_USER: striker
 
 # The following values should be set in the private repo
-## profile::wmcs::striker::docker::secret_env:
-##   DJANGO_SECRET_KEY:
-##   DB_PASSWORD:
+## profile::wmcs::striker::docker::common_secret_env:
 ##   LDAP_BIND_PASSWORD:
-##   OAUTH_CONSUMER_SECRET:
 ##   PHABRICATOR_TOKEN:
-##   WIKITECH_CONSUMER_TOKEN:
-##   WIKITECH_CONSUMER_SECRET:
-##   WIKITECH_ACCESS_TOKEN:
-##   WIKITECH_ACCESS_SECRET:
 ##   OPENSTACK_PASSWORD:
+## profile::wmcs::striker::docker::instances_secret_env:
+##   instance:
+##     WIKITECH_CONSUMER_TOKEN:
+##     WIKITECH_CONSUMER_SECRET:
+##     WIKITECH_ACCESS_TOKEN:
+##     WIKITECH_ACCESS_SECRET:
+##     OAUTH_CONSUMER_SECRET:
+##     DJANGO_SECRET_KEY:
+##     DB_PASSWORD:
 
 #lvs::realserver::realserver_ips:
 #    - '10.2.2.40' # labweb.svc.eqiad.wmnet
