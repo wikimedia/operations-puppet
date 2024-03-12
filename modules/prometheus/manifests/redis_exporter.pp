@@ -23,21 +23,26 @@ define prometheus::redis_exporter (
     $arguments = '',
     $password = '',
     $hostname = $::hostname,
-    $port = '9121'
+    $port = '9121',
+    Wmflib::Ensure $ensure = 'present',
 ) {
-    ensure_packages('prometheus-redis-exporter')
-
     $service_name = "prometheus-redis-exporter@${instance}"
     $listen_address = "${hostname}:${port}"
 
-    # We're going with multiple prometheus-redis-exporter, mask and stop the default single-instance one.
-    exec { "mask_default_redis_exporter_${instance}":
-        command => '/bin/systemctl mask prometheus-redis-exporter.service ; /bin/systemctl stop prometheus-redis-exporter.service',
-        creates => '/etc/systemd/system/prometheus-redis-exporter.service',
+    if $ensure == 'present' {
+        ensure_packages('prometheus-redis-exporter')
+
+        Package['prometheus-redis-exporter'] -> Systemd::Service[$service_name]
+
+        # We're going with multiple prometheus-redis-exporter, mask and stop the default single-instance one.
+        exec { "mask_default_redis_exporter_${instance}":
+            command => '/bin/systemctl mask prometheus-redis-exporter.service ; /bin/systemctl stop prometheus-redis-exporter.service',
+            creates => '/etc/systemd/system/prometheus-redis-exporter.service',
+        }
     }
 
     file { "/etc/default/${service_name}":
-        ensure    => present,
+        ensure    => stdlib::ensure($ensure, 'file'),
         mode      => '0400',
         owner     => 'root',
         group     => 'root',
@@ -47,11 +52,12 @@ define prometheus::redis_exporter (
     }
 
     systemd::service { $service_name:
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('prometheus-redis-exporter@'),
         restart => true,
-        require => Package['prometheus-redis-exporter'],
     }
 
-    profile::auto_restarts::service { $service_name: }
+    profile::auto_restarts::service { $service_name:
+        ensure => $ensure,
+    }
 }

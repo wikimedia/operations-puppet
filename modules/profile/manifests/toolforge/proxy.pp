@@ -1,109 +1,148 @@
 class profile::toolforge::proxy (
-    Array[String]       $proxies             = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
-    String              $active_proxy        = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
-    Stdlib::Fqdn        $web_domain          = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
-    Array[Stdlib::Fqdn] $prometheus          = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
-    Stdlib::Fqdn        $k8s_vip_fqdn        = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
-    Stdlib::Port        $k8s_vip_port        = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
-    Integer             $rate_limit_requests = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
+    Array[String]              $proxies                  = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
+    String                     $active_proxy             = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
+    Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
+    Array[Stdlib::Fqdn]        $prometheus               = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
+    Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port               $k8s_vip_port             = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
+    Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
+    Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
+    Optional[String[1]]        $blocked_user_agent_regex = lookup('dynamicproxy::blocked_user_agent_regex', {default_value => undef}),
+    Optional[String[1]]        $blocked_referer_regex    = lookup('dynamicproxy::blocked_referer_regex', {default_value => undef}),
 ) {
-    class { '::redis::client::python': }
-
-    $ssl_cert_name = 'toolforge'
-    acme_chief::cert { $ssl_cert_name:
+    $acme_certname = 'toolforge'
+    acme_chief::cert { $acme_certname:
         puppet_rsc => Exec['nginx-reload'],
     }
     class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
 
-    class { '::dynamicproxy':
-        acme_certname           => $ssl_cert_name,
-        ssl_settings            => ssl_ciphersuite('nginx', 'compat'),
-        luahandler              => 'urlproxy',
-        k8s_vip_fqdn            => $k8s_vip_fqdn,
-        k8s_vip_fqdn_port       => $k8s_vip_port,
-        redis_primary           => $active_proxy,
-        error_config            => {
-            title       => 'Wikimedia Toolforge Error',
-            logo        => '/.error/toolforge-logo.png',
-            logo_2x     => '/.error/toolforge-logo-2x.png',
-            logo_alt    => 'Wikimedia Toolforge',
-            logo_height => 120,
-            logo_width  => 120,
-            logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge',
-            favicon     => '/.error/favicon.ico',
-        },
-        error_details           => "<p>${::facts['networking']['fqdn']}</p>",
-        banned_description      => 'You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.',
-        unreachable_description => '<p>This Grid Engine web service cannot be reached. Please contact a maintainer of this tool.</p><p>Tool maintainers can find more details <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Web">from the documentation on Wikitech</a>.</p>',
-        rate_limit_requests     => $rate_limit_requests,
-    }
+    $resolver = $::nameservers.join(' ')
 
-    $proxy_nodes = join($proxies, ' ')
-
-    # Open up redis to all proxies!
-    ferm::service { 'redis-replication':
-        proto  => 'tcp',
-        port   => '6379',
-        srange => "@resolve((${proxy_nodes}))",
-    }
-
-    file { '/usr/local/sbin/proxylistener':
+    file { '/etc/nginx/nginx.conf':
         ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0555',
-        source  => 'puppet:///modules/profile/toolforge/proxylistener.py',
-        # Is provided by the dynamicproxy class.
-        require => Class['::redis::client::python'],
+        content => template('profile/toolforge/proxy/nginx.conf.erb'),
+        require => Package['nginx-common'],
+        notify  => Service['nginx'],
     }
 
-    systemd::service { 'proxylistener':
-        ensure  => present,
-        content => systemd_template('toolforge/proxylistener'),
-        require => File['/usr/local/sbin/proxylistener'],
+    file { '/etc/security/limits.conf':
+        ensure  => file,
+        source  => 'puppet:///modules/profile/toolforge/proxy/limits.conf',
+        require => Package['nginx-common'],
+        notify  => Service['nginx'],
     }
 
-    ferm::service { 'proxylistener-port':
-        proto  => 'tcp',
-        port   => '8282',
-        srange => '$LABS_NETWORKS',
-        desc   => 'Proxylistener port, open to just CloudVPS',
+    class { '::nginx':
+        variant => 'extras',
+    }
+
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
+    nginx::site { 'proxy':
+        content => template('profile/toolforge/proxy/nginx-site.conf.erb'),
+    }
+
+    logrotate::conf { 'nginx':
+        ensure => present,
+        source => 'puppet:///modules/profile/toolforge/proxy/logrotate',
+    }
+
+    systemd::timer::job { 'dynamicproxy_logrotate':
+        ensure      => present,
+        description => 'Logrotation for Toolforge front proxy',
+        user        => 'root',
+        command     => '/usr/sbin/logrotate /etc/logrotate.conf',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00/1:00:00'}
+    }
+
+    if debian::codename::eq('buster') {
+        redis::instance { '6379':
+            ensure => absent,
+        }
+
+        prometheus::redis_exporter { '6379':
+            ensure => absent,
+        }
+
+        file { '/usr/local/sbin/proxylistener':
+            ensure => absent,
+        }
+
+        systemd::service { 'proxylistener':
+            ensure  => absent,
+            content => '',
+        }
+
+        file { '/etc/nginx/lua':
+            ensure  => absent,
+            recurse => true,
+            purge   => true,
+            force   => true,
+        }
+    }
+
+    file { [
+        '/var/www/',
+        '/var/www/error',
+    ]:
+        ensure  => directory,
+        owner   => 'www-data',
+        group   => 'www-data',
+        mode    => '0444',
+        recurse => true,
+        purge   => true,
+        force   => true,
     }
 
     file { '/var/www/error/favicon.ico':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/favicon.ico',
+        source  => 'puppet:///modules/profile/toolforge/proxy/favicon.ico',
         require => File['/var/www/error'],
     }
 
     file { '/var/www/error/toolforge-logo.png':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/toolforge-logo.png',
+        source  => 'puppet:///modules/profile/toolforge/proxy/toolforge-logo.png',
         require => [File['/var/www/error']],
     }
 
     file { '/var/www/error/toolforge-logo-2x.png':
         ensure  => file,
-        source  => 'puppet:///modules/profile/toolforge/toolforge-logo-2x.png',
+        source  => 'puppet:///modules/profile/toolforge/proxy/toolforge-logo-2x.png',
         require => [File['/var/www/error']],
     }
 
     file { '/var/www/error/robots.txt':
         ensure => file,
-        source => 'puppet:///modules/profile/toolforge/robots.txt',
+        source => 'puppet:///modules/profile/toolforge/proxy/robots.txt',
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0444',
     }
 
-    ensure_packages('goaccess')  # webserver statistics, T121233
+    mediawiki::errorpage {
+        default:
+            favicon     => '/.error/favicon.ico',
+            pagetitle   => 'Wikimedia Toolforge Error',
+            logo_src    => '/.error/toolforge-logo.png',
+            logo_srcset => '/.error/toolforge-logo-2x.png 2x',
+            logo_width  => 120,
+            logo_height => 120,
+            logo_alt    => 'Wikimedia Toolforge',
+            logo_link   => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge',
+            footer      => "<p>${::facts['networking']['fqdn']}</p>",
+            owner       => 'www-data',
+            group       => 'www-data',
+            mode        => '0444';
 
-    ferm::service { 'proxymanager':
-        proto  => 'tcp',
-        port   => '8081',
-        desc   => 'Proxymanager service for CloudVPS instances',
-        srange => '$LABS_NETWORKS',
+        '/var/www/error/errorpage.html':
+            content => '<p>Our servers are currently experiencing a technical problem. This is probably temporary and should be fixed soon. Please try again later.</p>';
+        '/var/www/error/banned.html':
+            content => '<p>You have been banned from accessing Toolforge. Please see <a href="https://wikitech.wikimedia.org/wiki/Help:Toolforge/Banned">Help:Toolforge/Banned</a> for more information on why and on how to resolve this.</p>';
+        '/var/www/error/ratelimit.html':
+            content => '<p>You are trying to access this service too fast.</p>';
     }
+
+    ensure_packages('goaccess')  # webserver statistics, T121233
 
     ferm::service{ 'http':
         proto => 'tcp',

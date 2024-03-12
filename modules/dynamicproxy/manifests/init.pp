@@ -228,24 +228,6 @@ class dynamicproxy (
         notify  => Service['nginx'],
     }
 
-    if $luahandler == 'urlproxy' {
-        file { '/etc/nginx/lua/list-proxy-entries.lua':
-            ensure  => 'file',
-            source  => 'puppet:///modules/dynamicproxy/list-proxy-entries.lua',
-            require => [File['/etc/nginx/lua'], Package['lua-json']],
-            notify  => Service['nginx'],
-        }
-
-        package { 'lua-json':
-            ensure => installed,
-        }
-
-        nginx::site { 'proxymanager':
-            content => template('dynamicproxy/proxymanager.conf.erb'),
-            require => File['/etc/nginx/lua/list-proxy-entries.lua'],
-        }
-    }
-
     file { '/etc/nginx/lua/resty':
         ensure  => directory,
         require => File['/etc/nginx/lua'],
