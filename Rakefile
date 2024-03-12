@@ -83,8 +83,6 @@ namespace :global do
         markup: 'rdoc',
         }
     )
-    # Remove useless file.
-    File.unlink(File.join(__dir__, "doc", "frames.html"))
   end
 
   spec_failed = []
