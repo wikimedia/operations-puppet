@@ -13,7 +13,7 @@ fi
 
 . /etc/profile.d/mediawiki.sh
 
-if hostname --domain | grep -q wmflabs ; then
+if [ -f /etc/wikimedia-cluster ] && [ $(cat /etc/wikimedia-cluster) = "labs" ]; then
     ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all-labs.dblist"
 else
     ALL_DBLIST="$MEDIAWIKI_STAGING_DIR/dblists/all.dblist"
