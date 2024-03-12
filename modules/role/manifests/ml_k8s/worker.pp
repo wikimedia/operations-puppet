@@ -10,6 +10,8 @@ class role::ml_k8s::worker {
     include profile::calico::kubernetes
     # Support for AMD GPUs
     include profile::amd_gpu
+    # Setup dfdaemon and configure docker to use it
+    include profile::dragonfly::dfdaemon
 
     # Setup LVS
     include profile::lvs::realserver
