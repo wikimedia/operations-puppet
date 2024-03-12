@@ -13,16 +13,22 @@
 #limitations under the License.
 
 class dynamicproxy (
-    Array[String]              $ssl_settings,
-    String[1]                  $acme_certname,
-    Optional[Stdlib::Fqdn]     $redis_primary,
-    Array[Stdlib::IP::Address] $banned_ips,
-    String                     $blocked_user_agent_regex,
-    String                     $blocked_referer_regex,
-    Array[Stdlib::Fqdn]        $xff_fqdns,
-    Integer                    $rate_limit_requests,
-    String[1]                  $redis_maxmemory = '512MB',
+    Array[String]                    $ssl_settings,
+    Hash[String, Dynamicproxy::Zone] $supported_zones,
+    Optional[Stdlib::Fqdn]           $redis_primary,
+    Array[Stdlib::IP::Address]       $banned_ips,
+    String                           $blocked_user_agent_regex,
+    String                           $blocked_referer_regex,
+    Array[Stdlib::Fqdn]              $xff_fqdns,
+    Integer                          $rate_limit_requests,
+    String[1]                        $redis_maxmemory = '512MB',
 ) {
+    $acme_certs = $supported_zones.values.map |Dynamicproxy::Zone $zone| { $zone['acmechief_cert'] }.unique
+
+    acme_chief::cert { $acme_certs:
+        puppet_rsc => Exec['nginx-reload'],
+    }
+
     $resolver = join($::nameservers, ' ')
 
     $redis_port = '6379'
@@ -132,8 +138,11 @@ class dynamicproxy (
         notify  => Service['nginx'],
     }
 
-    nginx::site { 'proxy':
-        content => template('dynamicproxy/nginx-site.conf'),
+    $supported_zones.each |String[1] $name, Dynamicproxy::Zone $zone| {
+        $fqdn = $name.regsubst('(.+)\.', '\\1')
+        nginx::site { $fqdn:
+            content => template('dynamicproxy/nginx-site.conf'),
+        }
     }
 
     file { '/etc/nginx/lua':

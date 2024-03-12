@@ -1,4 +1,5 @@
-# Copyright 2020 Wikimedia Foundation and contributors
+# SPDX-License-Identifier: Apache-2.0
+# Copyright 2020-2024 Wikimedia Foundation and contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,17 +19,13 @@ map $http_upgrade $connection_upgrade {
 }
 
 server {
-    <%- if @acme_certname -%>
     # Serve both HTTP and HTTPS
-    listen 443 ssl http2;
+    listen 443 ssl http2 default_server;
 
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
 
     <%= @ssl_settings.join("\n    ") %>
-    <%- end -%>
-
-    listen 80;
 
     server_name wmcloud.org www.wmcloud.org wmflabs.org www.wmflabs.org;
     location / {

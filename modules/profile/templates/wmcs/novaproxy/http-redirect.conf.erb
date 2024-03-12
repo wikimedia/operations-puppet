@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+
+server {
+    listen 80 default_server;
+    server_name _;
+
+    # 308 is the more proper return code, but lots of crappy old clients do
+    # not understand it. So we will instead stick with the ancient 301 and
+    # hope that not too many things break on POST.
+    return 301 https://$host$request_uri;
+}

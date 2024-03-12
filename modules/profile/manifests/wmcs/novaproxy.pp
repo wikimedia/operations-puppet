@@ -53,16 +53,8 @@ class profile::wmcs::novaproxy (
         desc  => 'Web proxy management API',
     }
 
-    if $acme_certname != undef {
-        class { '::sslcert::dhparam': }
-        acme_chief::cert { $acme_certname:
-            puppet_rsc => Exec['nginx-reload'],
-        }
-
-        $ssl_settings = ssl_ciphersuite('nginx', 'compat')
-    } else {
-        $ssl_settings = undef
-    }
+    class { '::sslcert::dhparam': }
+    $ssl_settings = ssl_ciphersuite('nginx', 'compat')
 
     include profile::mariadb::packages_client
     mariadb::config::client { 'webproxy':
@@ -75,7 +67,7 @@ class profile::wmcs::novaproxy (
     }
 
     class { '::dynamicproxy':
-        acme_certname            => $acme_certname,
+        supported_zones          => $supported_zones,
         ssl_settings             => $ssl_settings,
         xff_fqdns                => $xff_fqdns,
         redis_primary            => $active_proxy,
@@ -105,8 +97,12 @@ class profile::wmcs::novaproxy (
         redis_primary_host       => $active_proxy,
     }
 
-    nginx::site { 'wmflabs.org':
-        content => template('profile/wmcs/novaproxy-wmflabs.org.conf'),
+    nginx::site { 'landing':
+        content => template('profile/wmcs/novaproxy/landing.conf.erb'),
+    }
+
+    nginx::site { 'http-redirect':
+        content => template('profile/wmcs/novaproxy/http-redirect.conf.erb'),
     }
 
     # Disable the nchan module, we don't use pub/sub on nginx
