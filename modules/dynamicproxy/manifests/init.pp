@@ -73,7 +73,7 @@ class dynamicproxy (
 
     file { '/etc/nginx/nginx.conf':
         ensure  => file,
-        content => template('dynamicproxy/nginx.conf'),
+        content => template('dynamicproxy/nginx.conf.erb'),
         require => Package['nginx-common'],
         notify  => Service['nginx'],
     }
@@ -141,7 +141,7 @@ class dynamicproxy (
     $supported_zones.each |String[1] $name, Dynamicproxy::Zone $zone| {
         $fqdn = $name.regsubst('(.+)\.', '\\1')
         nginx::site { $fqdn:
-            content => template('dynamicproxy/nginx-site.conf'),
+            content => template('dynamicproxy/nginx-site.conf.erb'),
         }
     }
 

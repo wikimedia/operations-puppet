@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # Default nginx config for Debian Jessie with overrides for worker_connections
 # and worket_rlimit_nofile. Also includes a health check endpoint.
 
@@ -62,6 +63,37 @@ http {
   ##
   # Virtual Host Configs
   ##
+
+
+  lua_package_path "/etc/nginx/lua/?.lua";
+
+  map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+  }
+
+  # do XFF conditionally, only for a selected set of FQDNs
+  map $http_host $xff {
+    # no default, so nginx sets an empty string!
+    <%- @xff_fqdns.each do |fqdn| -%>
+    <%= fqdn %> $proxy_add_x_forwarded_for;
+    <%- end -%>
+  }
+
+  geo $bad_user {
+    default 0;
+    # 0: OK, 1: banned
+    # 1.2.3.4 1;     # ban single IP
+    # 1.2.3.4/24 1;  # ban IP block
+    <%- @banned_ips.each do |val| -%>
+    <%= val %> 1;
+    <%- end -%>
+  }
+
+  # Add a simple, arbitrarily picked per-IP rate limit to prevent
+  # a single client for causing platform-wide issues.
+  limit_req_zone $binary_remote_addr zone=cloudvps:10m rate=<%= @rate_limit_requests %>r/s;
+  limit_req_status 429;
 
   include /etc/nginx/conf.d/*.conf;
   include /etc/nginx/sites-enabled/*;
