@@ -4,8 +4,6 @@ profile::openstack::eqiad1::pdns::private_reverse_zones:
   - "16.172.in-addr.arpa"
   - "56.15.185.in-addr.arpa"
 
-profile::openstack::eqiad1::pdns::monitor_target_fqdn: "tools-sgegrid-master.tools.eqiad1.wikimedia.cloud"
-
 # make sure VMs with a floating IP can query the recursor (cloud-eqiad1-floating)
 profile::openstack::eqiad1::pdns::extra_allow_from:
   - 185.15.56.0/25

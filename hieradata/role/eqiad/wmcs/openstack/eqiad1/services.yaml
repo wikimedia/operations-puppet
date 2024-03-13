@@ -21,7 +21,7 @@ profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf
 profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records:
   - login.toolforge.org
   - k8s.svc.tools.eqiad1.wikimedia.cloud
-  - tools-sgegrid-master.tools.eqiad1.wikimedia.cloud
+  - tools-puppetserver-01.tools.eqiad1.wikimedia.cloud
   - www.wmcloud.org
 
 profile::bird::advertise_vips:
