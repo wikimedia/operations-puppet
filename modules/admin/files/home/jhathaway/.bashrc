@@ -95,6 +95,10 @@ fzf-file-widget() {
 	READLINE_POINT=$((READLINE_POINT + ${#selected}))
 }
 
+function fqdn {
+	hostname -f
+}
+
 bind -m vi-command -x '"\C-t": fzf-file-widget'
 bind -m vi-insert -x '"\C-t": fzf-file-widget'
 
@@ -531,6 +535,6 @@ export GIT_PS1_SHOWCOLORHINTS=1
 export GIT_PS1_SHOWDIRTYSTATE=1
 PS1='\[\e[36m\e[3m\]\h$(wmf-site):\[\e[23m\][\[\e[m\]\w\[\e[36m\]]\[\e[m\]$(git_ps1 " (%s)")'
 if [[ $(type -t puppet_env_ps1 2>/dev/null) == 'function' ]]; then
-	PS1+=' $(puppet_env_ps1)'
+	PS1='$(puppet_env_ps1) '"$PS1"
 fi
 PS1+='\[\e[1;33m\]$(jobs_ps1)\[\e[m\]\n\[\e[36m\e[m\]$(dollar $?) '
