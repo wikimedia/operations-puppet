@@ -8,7 +8,6 @@
 #
 class profile::toolforge::checker {
     include profile::toolforge::grid::base
-    include profile::toolforge::grid::submit_host
     include profile::toolforge::k8s::client
 
     # Packages needed by the uwsgi services

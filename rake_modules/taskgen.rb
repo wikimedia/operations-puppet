@@ -531,15 +531,6 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:grafana'
         end
-        sonofgridengine_files = filter_files_by("modules/sonofgridengine/files/**")
-        unless sonofgridengine_files.empty?
-          desc 'Run tox for sonofgridengine'
-          task :sonofgridengine do
-            res = system("tox -e sonofgridengine")
-            raise 'Tests for sonofgridengine failed!'.red unless res
-          end
-          tasks << 'tox:sonofgridengine'
-        end
         smart_data_dump_files = filter_files_by("modules/smart/files/**")
         unless smart_data_dump_files.empty?
           desc 'Run tox for smart_data_dump'

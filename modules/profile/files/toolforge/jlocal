@@ -1,9 +1,0 @@
-#!/bin/bash
-
-# WAY too many things depend on this being run on a exec submit host
-# This is used by tools that want to run a shell script that would
-# launch jobs themselves. Since exec nodes are not submit nodes themselves
-# and a lot of tools use this already, keep this up for now. Hopefully
-# someone someday finds those tools, tells the authors to fix it up and
-# then we can remove this.
-exec $@

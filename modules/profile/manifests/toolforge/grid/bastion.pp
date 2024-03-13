@@ -5,26 +5,12 @@ class profile::toolforge::grid::bastion (
 ) {
     include profile::toolforge::grid::exec_environ
 
-    file { '/etc/toollabs-cronhost':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => $active_cronrunner,
-    }
-
-    file { '/usr/local/bin/crontab':
-        ensure  => 'link',
-        target  => '/usr/bin/oge-crontab',
-        require => Package['misctools'],
-    }
-
-    file { '/usr/local/bin/qstat-full':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0655',
-        source => 'puppet:///modules/profile/toolforge/qstat-full',
+    file { [
+        '/etc/toollabs-cronhost',
+        '/usr/local/bin/crontab',
+        '/usr/local/bin/qstat-full',
+    ]:
+        ensure => absent,
     }
 
     file { '/etc/ssh/ssh_config':
@@ -33,15 +19,5 @@ class profile::toolforge::grid::bastion (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/toolforge/grid/bastion/ssh_config',
-    }
-
-    # TODO: why is this not in ::submithost?
-    file { "${profile::toolforge::grid::base::store}/submithost-${facts['fqdn']}":
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => File[$profile::toolforge::grid::base::store],
-        content => "${::ipaddress}\n",
     }
 }
