@@ -28,5 +28,30 @@ fi
 
 alias ll='ls -l'
 alias sudo='sudo '
+alias treel='tree -L 2 --filesfirst -F'
+alias diff='diff -u --color'
+alias bat='batcat'
+alias cp='cp --interactive'
+alias tailf='tail -f'
+alias gldoc='git log --decorate --oneline --color'
+alias gll='git log --pretty=format:"%C(yellow)%h %Creset%s%Cblue [%ae] (%ad)" --decorate --numstat --date=relative --shortstat'
+alias grpo='git remote prune origin'
+alias gcd='cd $(git rev-parse --show-toplevel 2>/dev/null || echo .)'
+alias ghd='git diff origin/HEAD..HEAD'
+alias gcas='git commit --all --signoff'
+alias k='kubectl'
+alias kg='kubectl get'
+
+# recursive sed
+sedrec() {
+    pattern=${1:?"${FUNCNAME[0]}: missing pattern: s/foo/bar/g"}
+    shift
+    dir="${1:-.}"
+
+    find ${dir} -type f -exec sed -i "${pattern}" {} +
+}
 
 . .liquidprompt/liquidprompt
+
+# update the shell history after each command, to share the shell history inside/outside screen sessions
+export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
