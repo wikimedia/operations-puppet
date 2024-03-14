@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley]
+              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -406,7 +406,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
-              ifried, etonkovidova, ldelench, cjming, kcv-wikimf, mnz, lbowmaker,
+              ifried, etonkovidova, ldelench, cjming, mnz, lbowmaker,
               natalia-rodriguez, wmde-fisch, ksiebert,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana, dbad2021,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
@@ -951,7 +951,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, kcv-wikimf, hghani, osefu, kcvelaga]
+    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, nshahquinn-wmf, hghani, osefu, kcvelaga]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -5028,14 +5028,13 @@ users:
     uid: 32067
     ssh_keys: []
   kcv-wikimf:
-    ensure: present
+    ensure: absent
     realname: Krishna Velaga
     email: kcvelaga@wikimedia.org
     gid: 500
     uid: 34397
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKek16uOk9+HF1bkH4lphtdtVdDgsNhFlcjJdvpLyIb9 kcvelaga-ctr@wikimedia.org
+    krb: absent
+    ssh_keys: []
   kcvelaga:
     ensure: present
     realname: Krishna Velaga
