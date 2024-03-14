@@ -7,7 +7,6 @@ class profile::toolforge::grid::bastion (
 
     file { [
         '/etc/toollabs-cronhost',
-        '/usr/local/bin/crontab',
         '/usr/local/bin/qstat-full',
     ]:
         ensure => absent,

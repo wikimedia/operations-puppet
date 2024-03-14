@@ -33,6 +33,26 @@ class profile::toolforge::bastion () {
         ensure => present,
     }
 
+    $grid_off_script = @("GRIDOFF"/L)
+       #!/bin/bash
+       echo 'The grid engine has been shut off, for more information see:'
+       echo 'https://wikitech.wikimedia.org/wiki/News/Toolforge_Grid_Engine_deprecation'
+       exit 1
+       | GRIDOFF
+
+    # /usr/local/bin has precedence in $PATH to /usr/bin
+    file { [
+      '/usr/local/bin/qstat',
+      '/usr/local/bin/jsub',
+      '/usr/local/bin/crontab',
+    ]:
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0655',
+        content => $grid_off_script,
+    }
+
     apt::repository { 'thirdparty-tekton':
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",

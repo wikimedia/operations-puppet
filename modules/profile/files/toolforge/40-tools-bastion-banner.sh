@@ -20,4 +20,8 @@ Code of Conduct, and Privacy Policies:
 General guidance and help can be found at:
 - [4mhttps://toolforge.org/[0m
 
+The grid engine has been turned off, now all your workloads will run on the
+kubernetes cluster, see:
+- [4mhttps://wikitech.wikimedia.org/wiki/News/Toolforge_Grid_Engine_deprecation[0m
+
 EOF
