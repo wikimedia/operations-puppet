@@ -52,6 +52,3 @@ sedrec() {
 }
 
 . .liquidprompt/liquidprompt
-
-# update the shell history after each command, to share the shell history inside/outside screen sessions
-export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND}"
