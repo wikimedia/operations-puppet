@@ -3,6 +3,7 @@
 # native k8s support.
 # @param allow_pages boolean to disable paging alerts on non-production deployments
 class profile::toolforge::prometheus (
+    Stdlib::Fqdn               $web_domain                         = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
     Stdlib::Fqdn               $k8s_apiserver_fqdn                 = lookup('profile::toolforge::k8s::apiserver_fqdn', {default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port               $k8s_apiserver_port                 = lookup('profile::toolforge::k8s::apiserver_port', {default_value => 6443}),
     String                     $region                             = lookup('profile::openstack::eqiad1::region'),
@@ -526,7 +527,7 @@ class profile::toolforge::prometheus (
 
     prometheus::server { 'tools':
         listen_address                 => '127.0.0.1:9902',
-        external_url                   => 'https://tools-prometheus.wmflabs.org/tools',
+        external_url                   => "https://prometheus.svc.${web_domain}/tools",
         storage_retention_size         => $storage_retention_size,
         scrape_configs_extra           => $jobs,
         alertmanager_discovery_extra   => $alertmanager_discovery_extra,

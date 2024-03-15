@@ -18,7 +18,7 @@ datasources:
    type: prometheus
    access: proxy
    orgId: 1
-   url: https://tools-prometheus.wmflabs.org/tools
+   url: https://prometheus.svc.toolforge.org/tools
    isDefault: false
    editable: false
    withCredentials: false
@@ -28,7 +28,7 @@ datasources:
    type: prometheus
    access: proxy
    orgId: 1
-   url: https://toolsbeta-prometheus.wmcloud.org/tools
+   url: https://prometheus.svc.beta.toolforge.org/tools
    isDefault: false
    editable: false
    withCredentials: false
