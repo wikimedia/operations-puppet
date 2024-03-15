@@ -85,6 +85,9 @@ server {
         default_type text/html;
     }
 
+    # A block like this is needed for anything used as a rewrite target.
+    # An `error_page` directive to the HTML directly is enough for most
+    # error pages.
     location /.error/banned/ {
         error_page 403 /.error/banned.html;
         return 403;
@@ -101,6 +104,7 @@ server {
         # Our access_by_lua_file script should return a 404 status when
         # no proxy has been configured for the current $http_host.
         error_page 404 /.error/noproxy.html;
+        error_page 429 /.error/ratelimit.html;
         error_page 502 503 504 /.error/unreachable.html;
 
         set $backend '';
