@@ -86,12 +86,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  superset:
-    id: 12
-    service_id: 'https://superset\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   thanos:
     id: 13
     service_id: 'https://thanos\.wikimedia\.org(/.*)?'
@@ -219,7 +213,7 @@ profile::idp::services:
   superset_k8s:
     id: 37
     service_class: 'OidcRegisteredService'
-    service_id: 'https://superset-k8s\.wikimedia\.org(/.*)?'
+    service_id: 'https://superset\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
