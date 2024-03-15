@@ -290,7 +290,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://eventgate-analytics-external.discovery.wmnet:4692 # TLS port
     - type: map
       target: http://superset.wikimedia.org
-      replacement: https://an-tool1010.eqiad.wmnet
+      replacement: https://superset.svc.eqiad.wmnet:30443
     - type: map
       target: http://superset-next.wikimedia.org
       replacement: https://superset-next.svc.eqiad.wmnet:30443
