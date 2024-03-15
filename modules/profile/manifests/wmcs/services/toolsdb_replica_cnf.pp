@@ -33,13 +33,12 @@ class profile::wmcs::services::toolsdb_replica_cnf(
 
     if $include_tools_repo {
         apt::repository { 'toolforge':
-            uri        => 'https://deb-tools.wmcloud.org/repo',
-            dist       => "${::lsbdistcodename}-tools",
+            uri        => 'https://deb.svc.toolforge.org/repo',
+            dist       => "${debian::codename()}-tools",
             components => 'main',
             trust_repo => true,
             source     => false,
         }
-
     }
 
     ensure_packages(['python3-flask', 'python3-toolforge-weld'])
