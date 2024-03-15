@@ -185,7 +185,7 @@ define airflow::instance(
             'smtp_starttls' => 'False',
             'smtp_ssl' => 'False',
             'smtp_port' => '25',
-            'smtp_mail_from' => "airflow-${title}@${::fqdn}",
+            'smtp_mail_from' => "Airflow: ${title} <noreply@wikimedia.org>",
         },
         'metrics' => {
             'statsd_on' => 'False',  # Turn this parameter on in hiera to enable statsd metrics.
