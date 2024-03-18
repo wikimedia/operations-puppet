@@ -25,7 +25,7 @@ profile::cloudceph::auth::deploy::selected_creds:
 # Backup things:
 profile::wmcs::backy2::cluster_name: ceph
 profile::wmcs::backy2::backup_dir: '/srv/backy2/data'
-profile::wmcs::backy2::postgres_root_dir: '/var/lib/postgresql'
+profile::wmcs::backy2::postgres_root_dir: '/srv/instancebackups/postgresql'
 cluster: wmcs
 
 profile::contacts::role_contacts: ['WMCS']
