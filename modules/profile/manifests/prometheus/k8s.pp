@@ -287,6 +287,15 @@ class profile::prometheus::k8s (
                         'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scrape'],
                         'regex'         => true,
                     },
+                    # Avoid the Istio metrics in this job, so we can collect them
+                    # separately in another one. We rely on the Istio
+                    # sidecar.istio.io/inject K8s annotation to be present in all
+                    # Pods running Istio, either an Ingress Gateway or a sidecar.
+                    {
+                        'action'        => 'drop',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_sidecar_istio_io_inject'],
+                        'regex'         => '(.*)',
+                    },
                     {
                         'action'        => 'replace',
                         'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
@@ -502,6 +511,91 @@ class profile::prometheus::k8s (
                           'serving_knative_dev_revisionUID',
                           'serving_knative_dev_service',
                           'serving_knative_dev_serviceUID',
+                        ].join('|')})",
+                    },
+                ],
+            },
+            {
+                # Istio metrics (Ingress and sidecars)
+                'job_name'              => 'k8s-pods-istio',
+                'scheme'                => 'http',
+                'kubernetes_sd_configs' => [
+                    {
+                        'api_server'        => $master_url,
+                        'tls_config'        => $k8s_sd_tls_config,
+                        'role'              => 'pod',
+                    },
+                ],
+                'relabel_configs' => [
+                    # We rely on the Istio sidecar.istio.io/inject K8s annotation
+                    # to be present in all Pods running Istio,
+                    # either an Ingress Gateway or a sidecar.
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_sidecar_istio_io_inject'],
+                        'regex'         => '(.*)',
+                    },
+                    # This instructs prometheus to only scrape a single port for
+                    # a pod instead of the default behavior
+                    #
+                    # By default, the pod role discovers all pods and exposes
+                    # their containers as targets. For each declared port of a
+                    # container, a single target is generated. If a container
+                    # has no specified ports, a port-free target per container
+                    # is created for manually adding a port via relabeling. If
+                    # no relabelling action is taken, port 80 is chosen.
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_prometheus_io_port'],
+                        'regex'         => '([^:]+)(?::\d+)?;(\d+)',
+                        'replacement'   => '$1:$2',
+                        'target_label'  => '__address__',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
+                        'target_label'  => '__metrics_path__',
+                        'regex'         => '(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scheme'],
+                        'target_label'  => '__scheme__',
+                        'regex'         => '(.+)',
+                    },
+                    {
+                        'action'        => 'labelmap',
+                        'regex'         => '__meta_kubernetes_pod_label_(.+)',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_namespace'],
+                        'target_label'  => 'kubernetes_namespace',
+                    },
+                    {
+                        'action'        => 'replace',
+                        'source_labels' => ['__meta_kubernetes_pod_name'],
+                        'target_label'  => 'kubernetes_pod_name',
+                    },
+                ],
+                'metric_relabel_configs' => [
+                    {
+                        'action'        => 'labeldrop',
+                        'regex'         => "(${[
+                          'connection_security_policy',
+                          'controller_revision_hash',
+                          'istio_io_rev',
+                          'source_canonical_revision',
+                          'source_principal',
+                          'source_version',
+                          'install_operator_istio_io_owning_resource',
+                          'operator_istio_io_component',
+                          'service_istio_io_canonical_revision',
+                          'sidecar_istio_io_inject',
+                          'source_cluster',
+                          'destination_principal',
+                          'destination_version',
+                          'destination_cluster',
                         ].join('|')})",
                     },
                 ],
