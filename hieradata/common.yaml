@@ -2513,13 +2513,6 @@ infra_devices:
     ipv4: 10.128.128.7
     site: ulsfo
     role: l2sw
-  ripe-atlas-ulsfo:
-    ipv4: 198.35.26.244
-    ipv6: 2620:0:863:201:198:35:26:244
-    parents:
-    - asw2-ulsfo
-    site: ulsfo
-    role: atlas
   scs-ulsfo:
     ipv4: 10.128.128.11
     parents:
