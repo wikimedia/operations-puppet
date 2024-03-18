@@ -1,9 +1,9 @@
 # Enable extended haproxy log-format
-profile::cache::haproxy::extended_logging: false
+profile::cache::haproxy::extended_logging: true
 # Benthos
 # Use this boolean to gradually rollout benthos on cp hosts with configuration
 # for HAProxy log parser
-profile::cache::base::use_benthos: false
+profile::cache::base::use_benthos: true
 profile::benthos::use_geoip: false
 profile::benthos::instances:
   haproxy_cache:
