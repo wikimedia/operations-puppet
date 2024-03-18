@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback]
+              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -178,7 +178,7 @@ groups:
     gid: 706
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
-    members: [bearloga, tjones, cparle, pearley,
+    members: [bearloga, tjones, cparle,
               ezachte, jamesur, jdlrobson, sguebo,
               santhosh, amire80, foks, chelsyx, karen,
               kharlan, abi, musikanimal, nahidunlimited,
@@ -383,7 +383,7 @@ groups:
               nuria, otto, jgreen, sguebo,
               dbrant, nettrom, leizi, jmm,
               ezachte, mforns, reedy, west1, phuedx, awight,
-              joal, akosiaris, pearley,
+              joal, akosiaris,
               hoo, daniel, krinkle, tgr,
               ebernhardson, addshore,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
@@ -3683,16 +3683,13 @@ users:
     gid: 500
     ssh_keys: []
     uid: 18640
-    email: tonina.zhelyazkova@wikimedia.de
   pearley:
-    ensure: present
+    ensure: absent
     realname: Patrick Earley
     name: pearley
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkuGVdh5aLFt5xlJ5k2+LFmELmsYknZvo+JICa650muKIizaI2/lYbCMwtl9VDNudpqzsgeITKZ04HFicGIPlraZU8yZ5KVoWmhddEyhUVBib1lq0WEnyPrjlR1ljb5ets052keahF8+nTekRa4p+cWS1CGFyyrIEwEmSFuAo5yPX64cFYzhIn9pysIDSwYJeH0I4kRcCr7gczS2L/qO64lbDhgeshTQsRxDVlNHdz5f3zp2xnSdLuOsXh5vMdETxSZGc7TdGv5TbRSZqD4I0uD9d8OvWS0ZU5NpL9mOtIrkU1zzYcQmggiO5wS0ChUKZoXTWZbBdbJensdq5rLEicejlxU2guStwJyL0wEAWePslcH9axlb69We1MTH+Iel+T41sJaAUJSzCuWGLiUeBX153xro1mWQWaOPkklkcf29nhsYBP7kd5O1JIMnpeOalXuc7onCyH3ate4F4b01Q6PVF4sQJEvJE3yLCdMIgITRpHJKm6qlgMhxOmkYW8v1FpJbmnz3IBeWUhLsvYE3HNVdKRZz6N6qg3+5BeM0t4vXzK79bvH2omZVztpxu1DAfJMbteNoxzUYDkJEAbNZLSjiL6aJNHjkFB5Gy4/nyt1S6DLrr2ysAVyKHx6pAlebxNduTlPJJf9nXE/OhiCzVH0/NiOHZ7Pfr2JhOXEr8g9Q==
+    ssh_keys: []
     uid: 19962
-    email: pearley@wikimedia.org
   karen:
     ensure: present
     realname: Karen Brown
