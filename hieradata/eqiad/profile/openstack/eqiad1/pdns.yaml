@@ -1,8 +1,6 @@
 profile::openstack::eqiad1::pdns::legacy_tld: "wmflabs"
 profile::openstack::eqiad1::pdns::private_reverse_zones:
-  - "68.10.in-addr.arpa"
   - "16.172.in-addr.arpa"
-  - "56.15.185.in-addr.arpa"
 
 # make sure VMs with a floating IP can query the recursor (cloud-eqiad1-floating)
 profile::openstack::eqiad1::pdns::extra_allow_from:
