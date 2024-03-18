@@ -11,4 +11,14 @@ class profile::puppetserver::wmcs (
         # TODO: make git_user a param to puppetmaster::gitpuppet and use that here
         git_user => 'gitpuppet',
     }
+
+    # validatelabsfqdn will look up an instance certname in nova
+    #  and make sure it's for an actual instance before signing
+    file { '/usr/local/sbin/validatelabsfqdn.py':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => 'puppet:///modules/puppetmaster/validatelabsfqdn.py',
+    }
 }
