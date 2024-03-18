@@ -2294,7 +2294,7 @@ infra_devices:
     ipv4: '208.80.153.196'
     ipv6: '2620:0:860:ffff::6'
     parents:
-    - asw-a-codfw
+    - lsw1-a2-codfw
     site: codfw
     role: mr
   msw1-codfw:
@@ -2303,10 +2303,6 @@ infra_devices:
     - mr1-codfw
     site: codfw
     role: msw
-  asw-a-codfw:
-    ipv4: 10.193.0.16
-    site: codfw
-    role: l2sw
   asw-b-codfw:
     ipv4: 10.193.0.17
     site: codfw
@@ -2419,7 +2415,7 @@ infra_devices:
     ipv4: 208.80.152.244
     ipv6: 2620:0:860:201:208:80:152:244
     parents:
-    - asw-a-codfw
+    - lsw1-a2-codfw
     site: codfw
     role: atlas
   scs-a1-codfw:
