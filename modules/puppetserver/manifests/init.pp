@@ -14,7 +14,7 @@
 # @param reports list of reports to configure
 # @param enc_path path to an ENC script
 # @param listen_host host to bind webserver socket
-# @param autosign if true autosign agent certs
+# @param autosign if true autosign agent all certs, if a path then execute that script to validate
 # @param enable_jmx add the jmx java agent parameter
 # @param jmx_port the port for jmx to bind to
 # @param ssldir_on_srv used on cloud-vps; it allows storing certs on a detachable volume
@@ -41,7 +41,7 @@ class puppetserver (
     Array[Puppetserver::Report,1]            $reports                   = ['store'],
     Optional[Stdlib::Unixpath]               $enc_path                  = undef,
     Stdlib::Host                             $listen_host               = $facts['networking']['ip'],
-    Boolean                                  $autosign                  = false,
+    Variant[Boolean, Stdlib::Unixpath]       $autosign                  = false,
     Boolean                                  $ssldir_on_srv             = false,
     Boolean                                  $separate_ssldir           = true,
     Boolean                                  $enable_jmx                = false,

@@ -13,7 +13,7 @@
 #        cpu count, this effectively is the max concurrency for compilation
 # @param listen_host host to bind webserver socket
 # @param server_id hostname for metrics and ca_server
-# @param autosign if true autosign agent certs
+# @param autosign if true autosign agent certs, if a path then use that script to validate
 # @param ca_server the fqdn of the ca_server
 # @param intermediate_ca configure puppet Ca with an intermediate CA
 # @param ca_public_key location of the intermediate ca content
@@ -30,37 +30,37 @@
 # @param extra_mounts hash of mount point name to path, mount point name will used in puppet:///<MOUNT POINT>
 # @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
 class profile::puppetserver (
-    Stdlib::Fqdn                   $server_id                 = lookup('profile::puppetserver::server_id'),
-    Stdlib::Unixpath               $code_dir                  = lookup('profile::puppetserver::code_dir'),
-    Stdlib::Unixpath               $hiera_data_dir            = lookup('profile::puppetserver::hiera_data_dir'),
-    Stdlib::Datasize               $java_start_mem            = lookup('profile::puppetserver::java_start_mem'),
-    Stdlib::Datasize               $java_max_mem              = lookup('profile::puppetserver::java_max_mem'),
-    Array[Puppetserver::Hierarchy] $hierarchy                 = lookup('profile::puppetserver::hierarchy'),
-    Array[Puppetserver::Report,1]  $reports                   = lookup('profile::puppetserver::reports'),
-    Array[Stdlib::HTTPUrl]         $puppetdb_urls             = lookup('profile::puppetserver::puppetdb_urls'),
-    Array[Stdlib::HTTPUrl]         $puppetdb_submit_only_urls = lookup('profile::puppetserver::puppetdb_submit_only_urls'),
-    Optional[Stdlib::Unixpath]     $enc_path                  = lookup('profile::puppetserver::enc_path'),
-    Optional[Stdlib::Filesource]   $enc_source                = lookup('profile::puppetserver::enc_source'),
-    Optional[Integer[1]]           $max_active_instances      = lookup('profile::puppetserver::max_active_instances', { 'default_value' => undef }),
-    Optional[Stdlib::Host]         $listen_host               = lookup('profile::puppetserver::listen_host', { 'default_value' => undef }),
-    Boolean                        $autosign                  = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
-    Boolean                        $git_pull                  = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
-    Boolean                        $ssldir_on_srv             = lookup('profile::puppetserver::ssldir_on_srv'),
-    Boolean                        $separate_ssldir           = lookup('profile::puppetserver::separate_ssldir'),
-    Stdlib::Fqdn                   $ca_server                 = lookup('profile::puppetserver::ca_server'),
-    Boolean                        $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
-    Boolean                        $enable_jmx                = lookup('profile::puppetserver::enable_jmx'),
-    Boolean                        $auto_restart              = lookup('profile::puppetserver::auto_restart'),
-    Optional[Stdlib::Filesource]   $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
-    Optional[Stdlib::Filesource]   $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
-    Optional[String]               $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
-    Boolean                        $ca_allow_san              = lookup('profile::puppetserver::ca_allow_san'),
-    Optional[String[1]]            $ca_name                   = lookup('profile::puppetserver::ca_name'),
-    Hash[String, Stdlib::Unixpath] $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
+    Stdlib::Fqdn                       $server_id                 = lookup('profile::puppetserver::server_id'),
+    Stdlib::Unixpath                   $code_dir                  = lookup('profile::puppetserver::code_dir'),
+    Stdlib::Unixpath                   $hiera_data_dir            = lookup('profile::puppetserver::hiera_data_dir'),
+    Stdlib::Datasize                   $java_start_mem            = lookup('profile::puppetserver::java_start_mem'),
+    Stdlib::Datasize                   $java_max_mem              = lookup('profile::puppetserver::java_max_mem'),
+    Array[Puppetserver::Hierarchy]     $hierarchy                 = lookup('profile::puppetserver::hierarchy'),
+    Array[Puppetserver::Report,1]      $reports                   = lookup('profile::puppetserver::reports'),
+    Array[Stdlib::HTTPUrl]             $puppetdb_urls             = lookup('profile::puppetserver::puppetdb_urls'),
+    Array[Stdlib::HTTPUrl]             $puppetdb_submit_only_urls = lookup('profile::puppetserver::puppetdb_submit_only_urls'),
+    Optional[Stdlib::Unixpath]         $enc_path                  = lookup('profile::puppetserver::enc_path'),
+    Optional[Stdlib::Filesource]       $enc_source                = lookup('profile::puppetserver::enc_source'),
+    Optional[Integer[1]]               $max_active_instances      = lookup('profile::puppetserver::max_active_instances', { 'default_value' => undef }),
+    Optional[Stdlib::Host]             $listen_host               = lookup('profile::puppetserver::listen_host', { 'default_value' => undef }),
+    Variant[Boolean, Stdlib::Unixpath] $autosign                  = lookup('profile::puppetserver::autosign', { 'default_value' => false }),
+    Boolean                            $git_pull                  = lookup('profile::puppetserver::git_pull', { 'default_value' => true }),
+    Boolean                            $ssldir_on_srv             = lookup('profile::puppetserver::ssldir_on_srv'),
+    Boolean                            $separate_ssldir           = lookup('profile::puppetserver::separate_ssldir'),
+    Stdlib::Fqdn                       $ca_server                 = lookup('profile::puppetserver::ca_server'),
+    Boolean                            $intermediate_ca           = lookup('profile::puppetserver::intermediate_ca'),
+    Boolean                            $enable_jmx                = lookup('profile::puppetserver::enable_jmx'),
+    Boolean                            $auto_restart              = lookup('profile::puppetserver::auto_restart'),
+    Optional[Stdlib::Filesource]       $ca_public_key             = lookup('profile::puppetserver::ca_public_key'),
+    Optional[Stdlib::Filesource]       $ca_crl                    = lookup('profile::puppetserver::ca_crl'),
+    Optional[String]                   $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
+    Boolean                            $ca_allow_san              = lookup('profile::puppetserver::ca_allow_san'),
+    Optional[String[1]]                $ca_name                   = lookup('profile::puppetserver::ca_name'),
+    Hash[String, Stdlib::Unixpath]     $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
     Variant[
         Enum['unlimited'],
         Integer
-    ]                              $environment_timeout       = lookup('profile::puppetserver::environment_timeout'),
+    ]                                  $environment_timeout       = lookup('profile::puppetserver::environment_timeout'),
 
 ) {
     $enable_ca = $ca_server == $facts['networking']['fqdn']
