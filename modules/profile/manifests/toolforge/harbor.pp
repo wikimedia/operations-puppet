@@ -14,7 +14,7 @@ class profile::toolforge::harbor (
     }
 
     file { '/etc/docker/daemon.json':
-        source  => 'puppet:///modules/toolforge/docker-config.json',
+        source  => 'puppet:///modules/profile/toolforge/harbor/docker-config.json',
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
