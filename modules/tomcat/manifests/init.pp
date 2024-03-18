@@ -42,18 +42,20 @@ class tomcat (
     Optional[Stdlib::Port]     $shutdown_port           = undef,
 ){
 
-    $package = 'tomcat9'
-    if debian::codename::ge('bookworm') {
-        apt::package_from_component { 'tomcat9':
+    if debian::codename::eq('bullseye') {
+        ensure_packages(['tomcat9'])
+    }
+
+    if debian::codename::eq('bookworm') {
+        apt::package_from_component { 'tomcat9-forwardport':
             component => 'component/tomcat9',
-            packages  => [$package],
+            packages  => ['libtomcat9-java', 'tomcat9', 'tomcat9-common'],
+            priority  => 1002,
         }
     }
-    else {
-        ensure_packages([$package])
-        if $apr_listener {
-            ensure_packages(['libtcnative-1'])
-        }
+
+    if $apr_listener {
+      ensure_packages(['libtcnative-1'])
     }
 
     $_java_opts  = $java_opts.reduce('') |$memo, $value| { "-D${value[0]}=${value[1]} ${memo}" }.strip
