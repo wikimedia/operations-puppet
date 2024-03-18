@@ -22,6 +22,11 @@ input:
       parse_log:
         format: "syslog_rfc3164"
         codec: "json"
+    - label: "drop_ssl_errors"
+      mapping: |
+        root = if this.message.contains("SSL handshake failure").catch(false) {
+          deleted()
+        }
 buffer:
  memory:
    limit: 524288000 # approx 525MB
