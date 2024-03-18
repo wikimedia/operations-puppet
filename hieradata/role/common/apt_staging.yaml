@@ -3,6 +3,9 @@ acmechief_host: acmechief2002.codfw.wmnet
 
 profile::aptrepo::wikimedia::upload_keys: []
 
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
+
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::global_cert_name: "apt-staging.discovery.wmnet"
 profile::tlsproxy::envoy::cfssl_options:
