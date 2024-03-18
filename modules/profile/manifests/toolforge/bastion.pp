@@ -56,6 +56,7 @@ class profile::toolforge::bastion () {
     }
 
     apt::repository { 'thirdparty-tekton':
+        ensure     => absent,
         uri        => 'http://apt.wikimedia.org/wikimedia',
         dist       => "${::lsbdistcodename}-wikimedia",
         components => 'thirdparty/tekton',
