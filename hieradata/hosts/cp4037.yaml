@@ -8,7 +8,7 @@ profile::benthos::use_geoip: false
 profile::benthos::instances:
   haproxy_cache:
     # Prometheus exporter port
-    port: 4151
+    port: 4153
     # List of envvars that will be copied by benthos::instance in
     # separate file (template) and used by main configuration file
     env_variables:
