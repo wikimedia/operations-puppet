@@ -1,2 +1,1 @@
-profile::puppetserver::enable_ca: true
 profile::puppetserver::intermediate_ca: true

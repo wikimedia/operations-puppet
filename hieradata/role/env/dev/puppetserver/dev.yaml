@@ -1,7 +1,6 @@
 # Puppet server
 profile::puppetserver::java_start_mem: 1g
 profile::puppetserver::java_max_mem: 1g
-profile::puppetserver::enable_ca: true
 profile::puppetserver::autosign: true
 profile::puppetserver::enc_path: '/usr/local/bin/puppet-dev-enc'
 profile::puppetserver::enc_source: 'puppet:///modules/profile/puppetserver/puppet-dev-enc.sh'
