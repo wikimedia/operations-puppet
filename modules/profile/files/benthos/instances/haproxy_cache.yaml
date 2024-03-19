@@ -31,11 +31,9 @@ buffer:
  memory:
    limit: 524288000 # approx 525MB
    batch_policy:
-     enabled: false
-     count: 0
-     byte_size: 0
-     period: ""
-     check: ""
+     enabled: true
+     count: 10
+     period: 5s
 
 pipeline:
   threads: ${PIPELINE_THREADS}
@@ -181,6 +179,7 @@ output:
               skip_cert_verify: true
             batching:
               count: 10
+              period: 5s
 
 metrics:
   prometheus:
