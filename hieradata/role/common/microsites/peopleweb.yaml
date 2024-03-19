@@ -4,6 +4,8 @@ profile::resolving::domain_search:
   - codfw.wmnet
 profile::admin::groups:
   - all-users
+
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
 profile::tlsproxy::envoy::firewall_srange: []
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
