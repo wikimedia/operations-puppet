@@ -63,3 +63,8 @@ fi
     --archive --delete-delay --delay-updates --compress --new-compress --delete \
     --exclude="*.swp" \
     "${MASTER}::patches" /srv/patches
+
+/usr/bin/rsync \
+    --archive --delete-delay --delay-updates --compress --new-compress --delete \
+    --exclude="*.swp" \
+    "${MASTER}::releases" /etc/helmfile-defaults/mediawiki/release
