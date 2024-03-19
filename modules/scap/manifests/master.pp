@@ -14,6 +14,7 @@ class scap::master(
     Stdlib::Unixpath $common_source_path = '/srv/mediawiki-staging',
     Stdlib::Unixpath $patches_path       = '/srv/patches',
     Stdlib::Unixpath $scap_source_path   = '/srv/deployment/scap',
+    Stdlib::Unixpath $scap_k8s_releases  = '/etc/helmfile-defaults/mediawiki/release',
     Array[String] $deployment_hosts      = [],
 ){
     include network::constants
@@ -98,6 +99,12 @@ class scap::master(
 
     rsync::server::module { 'patches':
         path        => $patches_path,
+        read_only   => 'yes',
+        hosts_allow => $deployment_hosts
+    }
+
+    rsync::server::module { 'releases':
+        path        => $scap_k8s_releases,
         read_only   => 'yes',
         hosts_allow => $deployment_hosts
     }
