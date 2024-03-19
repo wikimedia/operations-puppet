@@ -91,9 +91,8 @@ profile::elasticsearch::common_settings:
     filter_cache_size: '20%'
 
 # Bulk daemon consumes per-datacenter to apply page updates to all clusters.
-# Disable until cloudelastic is setup.
 
-profile::elasticsearch::cirrus::enable_remote_search: false
+profile::elasticsearch::cirrus::enable_remote_search: true
 
 profile::elasticsearch::monitor::threshold: '>=0.2'
 
