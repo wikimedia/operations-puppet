@@ -12,7 +12,7 @@ profile::benthos::instances:
     # List of envvars that will be copied by benthos::instance in
     # separate file (template) and used by main configuration file
     env_variables:
-      socket_address: "127.0.0.1:1221"
+      socket_address: "/tmp/benthos.sock"
       webrequest_topic: "webrequest_text_test"
       pipeline_threads: -1
       benthos_fqdn: '%{facts.fqdn}'
