@@ -60,10 +60,6 @@ class profile::toolforge::base(
     }
 
     file { '/usr/local/bin/log-command-invocation':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/toolforge/log-command-invocation',
+        ensure => absent,
     }
 }

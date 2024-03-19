@@ -3,18 +3,14 @@
 class profile::toolforge::bastion (
     String[1]              $component           = lookup('profile::wmcs::kubeadm::component'),
 ) {
-    if debian::codename::eq('buster') {
-        include profile::toolforge::shell_environ
-    } else {
-        include profile::locales::all
+    include profile::locales::all
 
-        ensure_packages([
-            'emacs-nox',
-            'joe',  # T371556
-            'neovim',
-            'rsync',  # T362679
-        ])
-    }
+    ensure_packages([
+        'emacs-nox',
+        'joe',  # T371556
+        'neovim',
+        'rsync',  # T362679
+    ])
 
     include profile::toolforge::k8s::client
 
@@ -29,13 +25,6 @@ class profile::toolforge::bastion (
     motd::script { 'bastion-banner':
         ensure => present,
         source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-bastion-banner.sh",
-    }
-
-    if debian::codename::eq('buster') {
-        motd::script { 'deprecated-bastion-banner':
-            ensure => present,
-            source => "puppet:///modules/profile/toolforge/50-${::wmcs_project}-deprecated-bastion-banner.sh",
-        }
     }
 
     package { 'mosh':

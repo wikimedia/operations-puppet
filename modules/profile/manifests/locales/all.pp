@@ -3,13 +3,10 @@
 #
 # Provisions all available supported locales. WARNING: this can take a very
 # long time on Ubuntu systems; consider using profile::locales::extended.
-
 class profile::locales::all {
-
     package { 'locales':
         ensure => present,
     }
-
     exec { 'locale-gen':
         command     => '/usr/sbin/locale-gen --purge',
         refreshonly => true,
