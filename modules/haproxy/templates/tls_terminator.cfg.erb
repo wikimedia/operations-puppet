@@ -68,7 +68,7 @@ listen tls
     capture request header Host len 25
     <%- if @extended_logging -%>
     capture request header Referer len 64
-    capture request header User-Agent len 64
+    capture request header User-Agent len 96
     capture request header Accept-Language len 10
     capture request header Range len 10
     capture request header Accept len 64
@@ -182,7 +182,7 @@ frontend http
     declare capture response len 10
 <%- if @extended_logging -%>
     capture request header Referer len 64
-    capture request header User-Agent len 64
+    capture request header User-Agent len 96
     capture request header Accept-Language len 10
     capture request header Range len 10
     capture request header Accept len 64
