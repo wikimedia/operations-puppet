@@ -26,7 +26,7 @@ class profile::puppetserver::scripts (
     ensure_packages(['python3-cryptography', 'python3-requests', 'python3-yaml'])
 
     $puppet_facts_export_source = $has_puppetdb ? {
-        false   => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-export-nodb.sh',
+        false   => 'puppet:///modules/profile/puppetserver/scripts/puppet7-facts-export-nodb.py',
         default => 'puppet:///modules/profile/puppetserver/scripts/puppet-facts-export-puppetdb.py',
     }
     file { '/usr/local/bin/puppet-facts-export':
