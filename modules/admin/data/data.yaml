@@ -6150,8 +6150,7 @@ users:
     email: xxiao@wikimedia.org
     uid: 45622
     gid: 500
-    ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCejcnriuBw/qvyO0YkXrD5vUUE4wF+7H5PvzPIULPKPxjSNYw0HjimnReK9rhG8kN4TW5pTb3pz0jmIsOaaTFD00V5YewTy1bf6oBxqGSvWB5JJW9L5zCKqRnBPPvKTw/W2LEAbryfPr1SfAIebFKeHZkBHyNpbVuP1gY4s2Tk8kAJ0Y4XdHORpsLjJK74Tly3MD/Ld1aCqqnLmWL9Zwct8ckaM0lSImsHroMnsBAPNPDLPvfi9Uw/faWLuIb0nwfBiZ0oKkBO4taw0saAzQ9pVOdl2rGii40BsDs+OYnEme7pV7LhjxVvXE8TScjDXwnH0CsYYL7GXOzUo66A13Q1U1U6mZhi2DhbUWB17T7Z5u9y8bv9Sg51MbLyazSgpMIAclDJz/QkNd4PtE9klmE+bwfYIGaujCyPmgKoNU+TAgqi+JJWtcywHUFoIwltPVgEmrZGHMFXJOSWoJswdlCZ3ZZGDwOWdMvbWToD9+Ghgkls6CclTTsvuOkz+8a9qgx+QXEWh6uWpEG91i4lrT0RtebPDmz8zJd8PvMGT4zbLeWC6HfN7KWOksQzG2vMuWfNp0UygnRMFMSsSQE53hY5jGfszh6E7Lsxg4uJvCnBWZydEUXKIhPA4TCUaOxwjdPHpFooyJqqC7o71gYL5g9S0FyCvR3grOLOtSoVLlcneQ== xiaoxiao@Xiaos-MacBook-Pro.local'
+    ssh_keys: []
   ecarg:
     ensure: present
     realname: Grace Choi
