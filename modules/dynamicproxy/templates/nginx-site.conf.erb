@@ -50,6 +50,10 @@ server {
 
     # To avoid being overwhelmed by large file uploads, disable buffering
     proxy_request_buffering off;
+    # And support HTTP 1.1 for the backend connection. This means that clients using
+    # chunked transfer encoding will not be buffered as long as the backend server
+    # also supports that.
+    proxy_http_version 1.1;
 
     # See http://www.gnuterrypratchett.com/
     add_header X-Clacks-Overhead "GNU Terry Pratchett" always;
