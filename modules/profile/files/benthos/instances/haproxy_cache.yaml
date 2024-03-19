@@ -146,6 +146,7 @@ pipeline:
           root.priority = deleted()
           root.timestamp = deleted()
           root.severity = deleted()
+          root."$schema" = "/webrequest/1.0.0"
 
 logger:
   level: WARN
