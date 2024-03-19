@@ -907,6 +907,12 @@ node /^dbprov1003\.eqiad\./ {
 node /^dbprov1004\.eqiad\./ {
     role(dbbackups::metadata)
 }
+node /^dbprov1005\.eqiad\./ {
+    role(insetup::data_persistence)
+}
+node /^dbprov1006\.eqiad\./ {
+    role(insetup::data_persistence)
+}
 node /^dbprov2001\.codfw\./ {
     role(dbbackups::metadata)
 }
@@ -918,6 +924,12 @@ node /^dbprov2003\.codfw\./ {
 }
 node /^dbprov2004\.codfw\./ {
     role(dbbackups::metadata)
+}
+node /^dbprov2005\.codfw\./ {
+    role(insetup::data_persistence)
+}
+node /^dbprov2006\.codfw\./ {
+    role(insetup::data_persistence)
 }
 
 # Active eqiad proxies for misc databases
