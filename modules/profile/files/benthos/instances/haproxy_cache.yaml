@@ -179,6 +179,8 @@ output:
               enabled: true
               root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
               skip_cert_verify: true
+            batching:
+              count: 10
 
 metrics:
   prometheus:
