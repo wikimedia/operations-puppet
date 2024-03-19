@@ -138,8 +138,8 @@ pipeline:
           root.result = deleted()
           root.message = deleted()
           # Note that hostname() (or other bloblang functions) doesn't return FQDN.
-          # This could be done using puppet template
-          root.hostname = hostname()
+          # This must be passed as envvar
+          root.hostname = env("BENTHOS_FQDN").or(hostname())
           # Set by puppet, webrequest_source can be text|upload
           root.webrequest_source = "text"
           # Drop these keys after all processing
