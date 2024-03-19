@@ -183,6 +183,16 @@ class Dns:
                     self.zones[hostname_parent]["project"],
                 )
                 return None
+            if (
+                hostname.startswith("*.")
+                and self.zones[hostname_parent].get("shared", False)
+            ):
+                log.logger.warning(
+                    "Rejecting project %s from using wildcard in shared zone %s",
+                    project,
+                    hostname_parent,
+                )
+                return None
 
             for zone in self.designateclient(project).zones.list():
                 # we don't have multi-level wildcard certs
@@ -268,13 +278,22 @@ def is_valid_domain(hostname):
     Credit for this function goes to Tim Pietzcker and other StackOverflow contributors
     See https://stackoverflow.com/a/2532344
     """
+    if "." not in hostname:
+        return False
     if len(hostname) > 255:
         return False
     if hostname[-1] == ".":
         # strip exactly one dot from the right, if present
         hostname = hostname[:-1]
     allowed = re.compile("(?!-)[A-Z\\d-]{1,63}(?<!-)$", re.IGNORECASE)
-    return all(allowed.match(x) for x in hostname.split("."))
+    parts_for_validation = hostname.split(".")
+
+    # Allow a wildcard at the very start. There's separate policy checking when they can
+    # really be used.
+    if parts_for_validation[0] == "*":
+        parts_for_validation = parts_for_validation[1:]
+
+    return all(allowed.match(x) for x in parts_for_validation)
 
 
 def environify_header_name(name):

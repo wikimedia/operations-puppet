@@ -47,22 +47,36 @@ if backend ~= ngx.null then
     ngx.var.vhost = fqdn
     redis_shutdown()
     return ngx.exit(ngx.OK)
-else
-    -- No configured backend found for this FQDN.
-    -- Next steps are either:
-    -- * Redirect to a matching host in the wmcloud.org domain
-    -- * Return a 404 response
-    local re_wmflabs = "\\.wmflabs\\.org$"
-    if ngx.re.match(fqdn, re_wmflabs) then
-        -- Check for a .wmcloud.org version of the hostname
-        local wmcloud_host = ngx.re.sub(fqdn, re_wmflabs, ".wmcloud.org")
-        if lookup_backend(wmcloud_host) ~= ngx.null then
-            -- Redirect to .wmcloud.org hostname
-            redis_shutdown()
-            return ngx.redirect("https://" .. wmcloud_host .. ngx.var.request_uri, ngx.HTTP_MOVED_PERMANENTLY)
-        end
-    end
-    -- we don't know where to go so return a 404 response
-    redis_shutdown()
-    return ngx.exit(404)
 end
+
+-- Check for a wildcard.
+local wildcard_match = ngx.re.match(ngx.var.http_host, "^[^:.]+\\.([^:]*)")
+if wildcard_match then
+    local wildcard_backend = lookup_backend("*." .. wildcard_match[1])
+
+    if wildcard_backend ~= ngx.null then
+        ngx.var.backend = wildcard_backend
+        ngx.var.vhost = fqdn
+        redis_shutdown()
+        return ngx.exit(ngx.OK)
+    end
+end
+
+-- No configured backend found for this FQDN.
+-- Next steps are either:
+-- * Redirect to a matching host in the wmcloud.org domain
+-- * Return a 404 response
+local re_wmflabs = "\\.wmflabs\\.org$"
+if ngx.re.match(fqdn, re_wmflabs) then
+    -- Check for a .wmcloud.org version of the hostname
+    local wmcloud_host = ngx.re.sub(fqdn, re_wmflabs, ".wmcloud.org")
+    if lookup_backend(wmcloud_host) ~= ngx.null then
+        -- Redirect to .wmcloud.org hostname
+        redis_shutdown()
+        return ngx.redirect("https://" .. wmcloud_host .. ngx.var.request_uri, ngx.HTTP_MOVED_PERMANENTLY)
+    end
+end
+
+-- we don't know where to go so return a 404 response
+redis_shutdown()
+return ngx.exit(404)
