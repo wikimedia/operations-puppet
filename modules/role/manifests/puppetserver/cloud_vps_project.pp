@@ -7,4 +7,5 @@ class role::puppetserver::cloud_vps_project {
 
     include profile::puppetserver::wmcs
     include profile::puppetserver::scripts
+    include profile::openstack::base::puppetmaster::stale_certs_exporter
 }
