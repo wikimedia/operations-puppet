@@ -101,8 +101,9 @@ def main() -> int:
                     "After the options listed below are stripped out, the remainder of argv is "
                     "passed to MWScript.php. A typical invocation looks like:\n\n"
                     "%(prog)s Filename.php --wiki=aawiki --script-specific-arg")
-    parser.add_argument('-v', '--verbose',
+    parser.add_argument('-v', '--verbose', action='store_true',
                         help='Print extra output from the underlying helmfile invocation.')
+    parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
     args, mwscript_args = parser.parse_known_args()
     script_name = mwscript_args[0]
 
@@ -126,8 +127,10 @@ def main() -> int:
             'args': mwscript_args,
             'labels': {
                 'username': interactive.get_username(),
-                'script': script_name,
-            }
+                # The label can't contain slashes. If script_name is a path, use the file only.
+                'script': script_name.split('/')[-1],
+            },
+            'comment': args.comment,
         }
     }
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
