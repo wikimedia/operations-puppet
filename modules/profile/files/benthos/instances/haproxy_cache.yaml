@@ -32,8 +32,8 @@ buffer:
    limit: 524288000 # approx 525MB
    batch_policy:
      enabled: true
-     count: 10
-     period: 5s
+     count: 1024
+     period: 100ms
 
 pipeline:
   threads: ${PIPELINE_THREADS}
@@ -177,9 +177,6 @@ output:
               enabled: true
               root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
               skip_cert_verify: true
-            batching:
-              count: 10
-              period: 5s
 
 metrics:
   prometheus:
