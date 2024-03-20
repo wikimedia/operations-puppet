@@ -112,7 +112,7 @@ pipeline:
           root.response_size = this.bytes_read.number()
           root.result.bytes_read = deleted()
           # rename haproxy_uniq_id to sequence
-          root.sequence = this.haproxy_uniq_id
+          root.sequence = this.haproxy_uniq_id.number()
           root.result.haproxy_uniq_id = deleted()
           # Parse accept_date into expected format
           # root.dt is the HAProxy request timestamp
