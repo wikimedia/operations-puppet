@@ -10,7 +10,7 @@ http:
 input:
   label: ""
   socket_server:
-    network: unix
+    network: udp
     address: "${SOCKET_ADDRESS}"
     codec: lines
     tls:
