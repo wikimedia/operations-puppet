@@ -1,4 +1,9 @@
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "rt.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - rt.wikimedia.org
+
 profile::tlsproxy::envoy::firewall_srange: []
 
 profile::idp::client::httpd::sites:
