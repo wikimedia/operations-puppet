@@ -97,7 +97,6 @@ eqiad:
   - es1033
   - es1034
 codfw:
-  - db2096
   - db2103
   - db2104
   - db2105
