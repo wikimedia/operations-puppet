@@ -40,6 +40,7 @@ class profile::cache::haproxy(
     Optional[Hash[String, Any]] $benthos_instances = lookup('profile::benthos::instances', {'default_value'                                      => undef}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
+    Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
 ) {
     class { 'sslcert::dhparam':
     }

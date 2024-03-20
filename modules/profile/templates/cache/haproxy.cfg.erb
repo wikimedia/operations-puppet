@@ -9,7 +9,7 @@ global
     stats socket <%= @socket %> mode 600 expose-fd listeners level admin
     log /var/lib/haproxy/dev/log local0 info
     <%- if @use_benthos -%>
-    log <%= @benthos_socket %> len 8192 format rfc3164 local0 info
+    log <%= @benthos_socket %> len <%= @log_length %> format rfc3164 local0 info
     <%- end -%>
     # do not keep old processes longer than 5m after a reload
     hard-stop-after 5m
