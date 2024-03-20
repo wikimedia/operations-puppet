@@ -1439,7 +1439,7 @@ node /^idp-test[12]002\.wikimedia\./ {
 }
 
 node /^idp-test1003\.wikimedia\./ {
-    role(idp_test)
+    role(idp_build)
 }
 
 node /^idp-test2003\.wikimedia\./ {
