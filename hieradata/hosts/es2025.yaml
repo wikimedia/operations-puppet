@@ -1,3 +1,4 @@
 # es2025
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
+mariadb::package: 'wmf-mariadb106'
