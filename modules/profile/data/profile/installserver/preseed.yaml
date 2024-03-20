@@ -153,9 +153,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-conf*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-zk-raid1-2dev.cfg
+   # warning: there might be differently-sized SSD until the next hw cycle
+   # * https://phabricator.wikimedia.org/T359452
+   # * https://phabricator.wikimedia.org/T359451
   'centrallog*':
     - partman/standard.cfg
-    - partman/raid10-4dev.cfg
+    - partman/raid10-8dev.cfg
   'chartmuseum[12]001':
     - partman/flat.cfg
     - virtual.cfg
