@@ -30,7 +30,7 @@
   {@param uploaderUsername: string}
   {@param subject: string}
 
-  Change {$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; author: {$authorName ? $authorName : $authorUsername}):{\n}
+  Change #{$changeNumber} had a related patch set uploaded (by {$uploaderName ? $uploaderName : $uploaderUsername}; author: {$authorName ? $authorName : $authorUsername}):{\n}
   %%%[{$project}@{$branch}] {$subject}%%%{\n}
 
   https://gerrit.wikimedia.org/r/{$changeNumber}
