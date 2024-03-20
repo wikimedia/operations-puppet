@@ -59,6 +59,7 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::wikidata
     include ::profile::mediawiki::maintenance::growthexperiments
     include ::profile::mediawiki::maintenance::mediamoderation
+    include ::profile::mediawiki::maintenance::globalblocking
     include ::profile::mediawiki::maintenance::pagetriage
     include ::profile::mediawiki::maintenance::translationnotifications
     include ::profile::mediawiki::maintenance::updatetranslationstats
