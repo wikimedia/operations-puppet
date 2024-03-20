@@ -93,10 +93,6 @@ role::analytics_cluster::launcher:
   target-q: TBD
 role::analytics_cluster::ui::staging:
   target-q: TBD
-role::analytics_cluster::ui::superset:
-  target-q: TBD
-role::analytics_cluster::ui::superset::staging:
-  target-q: TBD
 role::analytics_cluster::presto::server:
   target-q: TBD
 role::analytics_cluster::hadoop::worker:

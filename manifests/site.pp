@@ -155,7 +155,7 @@ node /^an-tool1009\.eqiad\./ {
 }
 
 node /^an-tool1010\.eqiad\./ {
-    role(analytics_cluster::ui::superset)
+    role(insetup::data_engineering)
 }
 
 node /^an-tool1011\.eqiad\./ {

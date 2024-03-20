@@ -134,12 +134,6 @@ role::analytics_cluster::launcher:
 role::analytics_cluster::ui::staging:
   target-q: TBD
   phab-task: 288804
-role::analytics_cluster::ui::superset:
-  target-q: TBD
-  phab-task: 288804
-role::analytics_cluster::ui::superset::staging:
-  target-q: TBD
-  phab-task: 288804
 role::analytics_cluster::presto::server:
   target-q: 2023-1
   phab-task: 329361
