@@ -35,20 +35,19 @@ puppet_compiler::uploader::realms:
       -----END PUBLIC KEY-----
   cloudinfra:
     cloudinfra-cloudvps-puppetserver-1: |
-      -----BEGIN PUBLIC KEY-----
-      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtIhmgHSNKDNBHPYublge
-      FEMd3ZQ4CtK91X5jptAANMH5BbgNkLMUo0XVwUWOVekZfTZqC6nU6SitzhbkkoBi
-      qPTQi4lG5EdJD8rGYNV4qVMD9M1zNw5c6E69tEM0l1p90lwdTVL0A2KuA4I/lxlR
-      /aPcIvV3xiezKaEsdO+ivKld6gHhuWKnEMY7iASjTXzII8RDfjhPeYePsz8LqzUH
-      EuPi9RUTbJ1Mj2O/1C5qJpVW6ArAcW01pZ5AYXU6fDt6bYVXKmHejB0SUhv3XuIE
-      umqgD8aBAWVtNDSQuTUKLxFOEe8hVyqVmvFGBUbK2Kev5N8O4cBTExQijJuzYGDu
-      x8ZRoSZInKKtUWgXkgYtxGpi6T2+dzf/T1YUOfP83YgAjxjdCa13/chRQ0zVYlL2
-      1tPPbp4gGd5sjhgmkEaBE3tWYt/0VSxoszu+v7HtnUefufMDpxYyO+JlZy8/4ymV
-      hlfEAbI+DxVc50kJOUVbR3OAOxoe9pgCnpXWbo0u/hLXGoQRKYCuH6uoDcAFduGN
-      8pje/ZCIVVt2nFgS3WsVuwyrZgWxSGVe5kizjAI/aZWvZES5AydBYIrByS5Lu6E2
-      5+Bqk2QWqAnY8ved5LKzd68fSx96V9Gk5flGckrX4L053MtQHORbGrY2zZqyDnw3
-      fQO1+Ra0RdME1r5zmkyAxu8CAwEAAQ==
-      -----END PUBLIC KEY-----
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAx/vEMPhgLyiCta/a2NkxpWjRitiApuPUw/F0rwq+wIiJjLdZu1et
+      koexGa54dpycNh/UzTGlQppo8jVsslU+FEkxZhR4ZeBYP2BzLtO8puT12f0Sj4Fg
+      qzGKibx9+fKTAd5ehegUmGFkN7fUsDZ5P5NLR9MmAhDljAQOMmrsdCLfaVDwf8wu
+      TZr7OfsXTAbcQ8INydGA5GutOsYI2Jf6zvcu51nTuuksqtDaEX/fPQVHJ2fz3a3Z
+      +3d80Xj1mYiey0Om9jgH58NRI2iqqlGhxbTqrZgqjBBAgaUatFKnofBeR4yca/Hc
+      vyQzCgczrreusu1RmYM7HfQ+RGD/02E0q/U579d8wCMa6hdHXiGOovP4xBSboNIz
+      wLokULGhtJHSH9HKy8xy9+xQeLVNWAyxEzPt3CMZ6/UDLIy5x1dd+OrXXAsaWDBP
+      RQHsoIe3oK0YbZQ1u+39ITFboj55RKJhCjACi+g2xcJLwdQsm11SUQJD+TeyWy3S
+      MKs79NBYa+M8eKkY8vjaIP+csTnBVNDIf0SR1/HwHXHl67USc1FpElFKAIfb2d9t
+      d9l5Nglp4i3Eta/w6xGCPPLJAw0HM7LxcHJ1edskIRSeHXNICciz30fZ7QFus/rQ
+      SzB5+w+BfoKRXmFA8Z4bazQJMd/i76LPDK8EaNFv6IQmmJ5MTFxBtFcCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
   cloudinfra-internal:
     cloudinfra-internal-puppetserver-01: |
       -----BEGIN PUBLIC KEY-----
