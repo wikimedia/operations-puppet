@@ -80,8 +80,10 @@ profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::na
 # T329220: Only allow the Blubber buildkit frontend to be used on Trusted Runners
 profile::gitlab::runner::buildkitd_allowed_frontends:
   - 'gateway.v0'
+  - 'dockerfile.v0'
 profile::gitlab::runner::buildkitd_allowed_gateway_sources:
   - 'docker-registry.wikimedia.org/repos/releng/blubber/buildkit'
+  - 'docker.io/docker/dockerfile-upstream'
 profile::gitlab::runner::clear_interval:
   start: 'OnCalendar'
   interval: 'hourly'
