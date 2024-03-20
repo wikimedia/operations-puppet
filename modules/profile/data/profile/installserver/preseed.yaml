@@ -630,7 +630,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'prometheus[12]*':
     - partman/standard.cfg
-    - partman/raid10-6dev.cfg
+    - partman/raid10-8dev.cfg
     - partman/custom/prometheus.cfg
   'prometheus[3456]*':
     - partman/flat.cfg
