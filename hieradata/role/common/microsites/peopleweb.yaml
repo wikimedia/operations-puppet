@@ -7,6 +7,10 @@ profile::admin::groups:
 
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "peopleweb.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - people.wikimedia.org
+
 profile::tlsproxy::envoy::firewall_srange: []
 profile::microsites::peopleweb::sitename: 'people.wikimedia.org'
 profile::microsites::peopleweb::docroot: '/srv/org/wikimedia/publichtml'
