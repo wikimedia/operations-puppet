@@ -33,19 +33,17 @@ class profile::mediabackup::storage (
 
     # Do not open the firewall to everyone if there are no available storage hosts
     if length($mediabackup_config['worker_hosts']) > 0 {
-        $workers = join($mediabackup_config['worker_hosts'], ' ')
-        $srange_workers = join(['@resolve((', $workers, '))'], ' ')
-        ferm::service { 'minio-mediabackup-workers':
+        firewall::service { 'minio-mediabackup-workers':
             proto   => 'tcp',
             port    => $mediabackup_config['storage_port'],
             notrack => true,
-            srange  => $srange_workers,
+            srange  => $mediabackup_config['worker_hosts'],
         }
         # console port
-        ferm::service { 'minio-console-mediabackup-workers':
+        firewall::service { 'minio-console-mediabackup-workers':
             proto  => 'tcp',
             port   => $mediabackup_config['console_port'],
-            srange => $srange_workers,
+            srange => $mediabackup_config['worker_hosts'],
         }
     }
 }
