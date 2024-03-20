@@ -5,9 +5,9 @@
 class profile::prometheus::blackbox_exporter {
     class { 'prometheus::blackbox_exporter': }
 
-    ferm::service { 'prometheus-blackbox-exporter':
-        proto  => 'tcp',
-        port   => '9115',
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'prometheus-blackbox-exporter':
+        proto    => 'tcp',
+        port     => 9115,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 }
