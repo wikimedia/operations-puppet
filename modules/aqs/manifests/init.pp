@@ -84,6 +84,10 @@ class aqs(
     }
 
     service::node { 'aqs':
+        # https://phabricator.wikimedia.org/T360522: we're stoppping AQS 1.0, but not the associated
+        # Cassandra cluster
+        enable          => false,
+
         port            => $port,
         repo            => 'analytics/aqs/deploy',
         config          => template('aqs/config.yaml.erb'),
