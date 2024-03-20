@@ -6250,7 +6250,7 @@ users:
     uid: 45974
     gid: 500
     ssh_keys:
-       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINpjkJ7In0zY1w22fPlej/NXb9FcqCQxduBWBsmW+bRV cardno:24 651 828'
+       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlgl/5pJzo1Kn/3wvwyc2ufsew5LwjQkGQ8aVOumfOU cdobbins@wikimedia.org'
   jaz:
     ensure: present
     realname: Jazmin Tanner
