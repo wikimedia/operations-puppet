@@ -33,11 +33,11 @@ logger = logging.getLogger("sync-upstream")
 
 def deploy_puppet_code():
     """On puppet7 and later servers we need to deploy puppet code after
-       updating the git repo."""
+    updating the git repo."""
     if Path("/usr/local/bin/puppetserver-deploy-code").is_file():
         logger.info("Deploying updated puppet code")
         try:
-            subprocess.check_call(['/usr/local/bin/puppetserver-deploy-code'])
+            subprocess.check_call(["/usr/local/bin/puppetserver-deploy-code"])
             return True
         except subprocess.CalledProcessError:
             logger.error("Call to puppetserver-deploy-code failed")
@@ -57,7 +57,11 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     :param repo_path: git clone to rebase
     :param latest_upstream_commit: latest upstream commit
     """
-    logger.info("Rebasing repository '%s' on top of commit '%s'", repo_path, latest_upstream_commit)
+    logger.info(
+        "Rebasing repository '%s' on top of commit '%s'",
+        repo_path,
+        latest_upstream_commit,
+    )
     datestring = datetime.datetime.now().strftime("%Y%m%d%H%M")
     branchname = "oot-branch-%s" % datestring
     tagname = "snapshot-%s" % datestring
@@ -153,7 +157,10 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
 
 parser = argparse.ArgumentParser(description="Sync local puppet repo with upstream")
 parser.add_argument(
-    "--private-only", dest="private", action="store_true", help="Only sync the /labs/private repo"
+    "--private-only",
+    dest="private",
+    action="store_true",
+    help="Only sync the /labs/private repo",
 )
 parser.add_argument("--base-dir", default=Path("/var/lib/git"), type=Path)
 parser.add_argument("--git-user", default="root")
@@ -181,23 +188,26 @@ gauge_is_up_to_date = Gauge(
     labelnames=["repository"],
     registry=prometheus_registry,
 )
-if args.git_user != 'root':
+if args.git_user != "root":
     # Switch to git user for git operations
     os.seteuid(pwd.getpwnam(args.git_user).pw_uid)
     old_environ = os.environ.copy()
-    os.environ['USER'] = args.git_user
-    os.environ['HOME'] = pwd.getpwnam(args.git_user).pw_dir
+    os.environ["USER"] = args.git_user
+    os.environ["HOME"] = pwd.getpwnam(args.git_user).pw_dir
 
 
 repo_changes = 0
 if args.private:
     resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
     assert resp.status_code == 200
-    if rebase_repo(
-        str(args.base_dir / "labs/private"),
-        resp.content.decode("ascii").strip(),
-        gauge_is_up_to_date
-    ) == repostate.UPDATE:
+    if (
+        rebase_repo(
+            str(args.base_dir / "labs/private"),
+            resp.content.decode("ascii").strip(),
+            gauge_is_up_to_date,
+        )
+        == repostate.UPDATE
+    ):
         repo_changes += 1
 else:
     resp = requests.get("https://config-master.wikimedia.org/puppet-sha1.txt")
@@ -205,18 +215,21 @@ else:
     rs = rebase_repo(
         str(args.base_dir / "operations/puppet"),
         resp.content.decode("ascii").strip(),
-        gauge_is_up_to_date
+        gauge_is_up_to_date,
     )
     if rs == repostate.UPDATE:
         repo_changes += 1
     if rs != repostate.FAIL:
         resp = requests.get("https://config-master.wikimedia.org/labsprivate-sha1.txt")
         assert resp.status_code == 200
-        if rebase_repo(
-            str(args.base_dir / "labs/private"),
-            resp.content.decode("ascii").strip(),
-            gauge_is_up_to_date
-        ) == repostate.UPDATE:
+        if (
+            rebase_repo(
+                str(args.base_dir / "labs/private"),
+                resp.content.decode("ascii").strip(),
+                gauge_is_up_to_date,
+            )
+            == repostate.UPDATE
+        ):
             repo_changes += 1
 
 if os.geteuid() != 0:
