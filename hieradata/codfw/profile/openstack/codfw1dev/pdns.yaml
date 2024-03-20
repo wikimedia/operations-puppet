@@ -11,4 +11,4 @@ profile::openstack::codfw1dev::pdns::extra_allow_from:
 # Used for things that would ideally be in a .svc. DNS zone but
 # we do not have one. REMEMBER THE TRAILING DOT.
 profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records:
-  puppet.: 172.16.128.120 # puppetmaster-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
+  puppet.: 172.16.128.65 # cloudinfra-cloudvps-puppetserver-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
