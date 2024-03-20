@@ -41,10 +41,10 @@ class profile::toolforge::k8s::haproxy (
 
     class { 'prometheus::haproxy_exporter': }
 
-    unless $keepalived_vips.empty {
+    if !$keepalived_vips.empty() and $facts['networking']['fqdn'] in $keepalived_peers {
         class { 'keepalived':
             auth_pass => $keepalived_password,
-            peers     => delete($keepalived_peers, $::fqdn),
+            peers     => delete($keepalived_peers, $facts['networking']['fqdn']),
             vips      => $keepalived_vips.map |$host| { ipresolve($host, 4) },
         }
     }
