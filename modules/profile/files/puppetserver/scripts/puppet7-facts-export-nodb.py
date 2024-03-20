@@ -21,7 +21,7 @@ def redact(facts: dict, keyname: str):
         facts["values"][keyname] = "REDACTED"
 
 
-with tarfile.open(outfile, "w:xz") as outfile:
+with tarfile.open(outfile, "w:xz") as yamltarfile:
     for jsonfactfilepath in factsdir.iterdir():
         if jsonfactfilepath.suffix == ".json":
 
@@ -43,6 +43,6 @@ with tarfile.open(outfile, "w:xz") as outfile:
                 tarinfo = tarfile.TarInfo(jsonfactfilepath.stem + ".yaml")
                 tarinfo.mtime = int(time.time())
                 tarinfo.size = len(yamlfacts)
-                outfile.addfile(tarinfo, BytesIO(yamlfacts))
+                yamltarfile.addfile(tarinfo, BytesIO(yamlfacts))
 
 print("puppet facts sanitized and exported at %s" % outfile)
