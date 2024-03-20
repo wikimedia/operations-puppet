@@ -137,15 +137,10 @@ class profile::toolforge::checker {
         notify => Uwsgi::App[$check_names],
     }
 
-    # TODO(T279078): move to hiera?
     $config = {
         'DEBUG'         => true,
         'DUMPS_PATH'    => '/public/dumps/public/enwiki',
-        'ETCD_K8S' => [
-            "tools-k8s-etcd-16.${::wmcs_project}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-17.${::wmcs_project}.eqiad1.wikimedia.cloud",
-            "tools-k8s-etcd-18.${::wmcs_project}.eqiad1.wikimedia.cloud",
-        ],
+        'ETCD_K8S' => wmflib::role::hosts('wmcs::toolforge::k8s::etcd'),
         'ETCD_AUTH' => {
             'KEY'  => $etcd_cert_priv,
             'CERT' => $etcd_cert_pub,

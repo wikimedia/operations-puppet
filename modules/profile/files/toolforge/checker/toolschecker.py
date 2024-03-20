@@ -114,6 +114,12 @@ def check_etcd_health(host, auth):
 @check("/etcd/k8s")
 def kubernetes_etcd_check():
     hosts = app.config["ETCD_K8S"]
+    # Normally 3. During maintenance (such as replacing nodes)
+    # there might be at least one more, and up to two more (so 5 total)
+    # to have an odd number of nodes.
+    if len(hosts) < 3 or len(hosts) > 5:
+        return False
+
     auth = app.config["ETCD_AUTH"]
     return all([check_etcd_health(host, auth) for host in hosts])
 
