@@ -85,3 +85,33 @@ profile::mail::default_mail_relay::smarthosts:
 profile::mail::default_mail_relay::mediawiki_smarthosts:
   - "mx1001.wikimedia.org"
   - "mx2001.wikimedia.org"
+
+profile::puppetserver::hierarchy:
+  - name: "Http Yaml"
+    data_hash: cloudlib::httpyaml
+    uri: "https://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
+  - name: "cloud hierarchy"
+    paths:
+      - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/hosts/%{literal('%')}{facts.networking.hostname}.yaml"
+      - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/common.yaml"
+      - "cloud/%{literal('%')}{::wmcs_deployment}.yaml"
+      - "cloud.yaml"
+  - name: "Secret hierarchy"
+    paths:
+      - "hosts/%{literal('%')}{trusted.certname}.yaml"
+      - "%{literal('%')}{::wmcs_project}.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private hierarchy"
+    paths:
+      - "labs/%{literal('%')}{::wmcs_project}/common.yaml"
+      - "%{literal('%')}{::wmcs_project}.yaml"
+      - "labs.yaml"
+    datadir: "/etc/puppet/private/hieradata"
+  - name: "Common hierarchy"
+    path: "common.yaml"
+  - name: "Secret Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/secret/hieradata"
+  - name: "Private Common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/private/hieradata"
