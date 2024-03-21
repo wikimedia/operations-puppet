@@ -2,6 +2,10 @@
 # problems, the hiera data required to set up the puppet and enc servers
 # is kept here.
 
+# We don't have per-deployment versions of profile::openstack::base::puppetserver::cert_cleaning, so
+# we use this alias instead to get the data for the correct deployment
+profile::openstack::base::openstack_control_nodes: "%{lookup('profile::openstack::codfw1dev::openstack_control_nodes')}"
+
 profile::openstack::codfw1dev::puppetmaster::encapi::acme_certname: enc
 profile::openstack::codfw1dev::puppetmaster::encapi::db_host: cloudinfra-db-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::openstack::codfw1dev::puppetmaster::encapi::db_name: labspuppet

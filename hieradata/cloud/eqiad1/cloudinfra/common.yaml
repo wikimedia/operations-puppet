@@ -8,6 +8,9 @@ profile::openstack::eqiad1::designate_hosts:
 profile::openstack::eqiad1::labweb_hosts:
   - cloudweb1003.wikimedia.org
   - cloudweb1004.wikimedia.org
+# We don't have per-deployment versions of profile::openstack::base::puppetserver::cert_cleaning, so
+# we use this alias instead to get the data for the correct deployment
+profile::openstack::base::openstack_control_nodes: "%{lookup('profile::openstack::eqiad1::openstack_control_nodes')}"
 
 profile::mariadb::cloudinfra::cloudinfra_dbs:
   - cloudinfra-db03.cloudinfra.eqiad1.wikimedia.cloud

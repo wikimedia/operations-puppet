@@ -30,14 +30,14 @@ import mwopenstackclients
 
 clients = mwopenstackclients.clients()
 
+# TODO: make this configurable so we can run this in codfw1dev
 puppetmaster = "puppetmaster.cloudinfra.wmflabs.org"
-bastion_ip = "185.15.56.87"
-puppetmaster_username = "osstackcanary"
-puppetmaster_keyfile = "/var/lib/osstackcanary/osstackcanary_id"
+puppetmaster_username = "certmanager"
+puppetmaster_keyfile = "/var/lib/designate/.ssh/id_rsa"
 
 
 # this is cribbed from nova_fullstack_test.py:
-def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
+def run_remote(node, username, keyfile, cmd, debug=False):
     """Execute a remote command using SSH
     :param node: str
     :param cmd: str
@@ -61,10 +61,6 @@ def run_remote(node, username, keyfile, bastion_ip, cmd, debug=False):
         "NumberOfPasswordPrompts=0",
         "-o",
         "LogLevel={}".format("DEBUG" if debug else "ERROR"),
-        "-o",
-        'ProxyCommand="ssh -o StrictHostKeyChecking=no -i {} -W %h:%p {}@{}"'.format(
-            keyfile, username, bastion_ip
-        ),
         "-i",
         keyfile,
         "{}@{}".format(username, node),
@@ -88,7 +84,6 @@ def purge_leaks(delete=False):
             puppetmaster,
             puppetmaster_username,
             puppetmaster_keyfile,
-            bastion_ip,
             "sudo /usr/bin/puppetserver ca list --all --format json",
             debug=True,
         )
@@ -127,7 +122,6 @@ def purge_leaks(delete=False):
                     puppetmaster,
                     puppetmaster_username,
                     puppetmaster_keyfile,
-                    bastion_ip,
                     "sudo /usr/bin/puppetserver ca clean --certname %s" % leak,
                     debug=True,
                 )

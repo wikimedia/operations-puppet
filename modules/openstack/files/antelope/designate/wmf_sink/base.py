@@ -113,7 +113,7 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 self._run_remote_command(
                     cfg.CONF[self.name].puppet_master_host,
                     cfg.CONF[self.name].certmanager_user,
-                    "sudo puppet cert clean %s" % pipes.quote(legacy_fqdn),
+                    "sudo /usr/bin/puppetserver ca clean --certname %s" % pipes.quote(legacy_fqdn),
                 )
 
         # Finally, delete any proxy records pointing to this instance.

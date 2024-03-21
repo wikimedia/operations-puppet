@@ -20,7 +20,9 @@ def clean_certs(clean):
             certname_substr = line[line.find(herald) + len(herald):]
             certname = certname_substr[0:certname_substr.find('"')]
             if clean:
-                subprocess.run(["/usr/bin/puppet", "cert", "clean", certname])
+                subprocess.run(
+                    ["/usr/bin/puppetserver", "ca", "clean", "--certname", certname]
+                )
             else:
                 print("stray cert %s" % certname)
 
