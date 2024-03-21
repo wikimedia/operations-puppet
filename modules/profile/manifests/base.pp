@@ -26,7 +26,6 @@ class profile::base (
     Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
-    Boolean                             $manage_timesyncd                   = lookup('profile::base::manage_timesyncd', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
     Boolean                             $enable_rp_filter                   = lookup('profile::base::enable_rp_filter', {'default_value'                   => true}),
     Boolean                             $no_cron                            = lookup('profile::base::no_cron', {'default_value' => false}),
