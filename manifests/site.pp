@@ -1060,14 +1060,9 @@ node /^elastic205[0-4]\.codfw\./ {
 node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
-node /^elastic(210[0-6]|2109)\.codfw\./ {
+node /^elastic210[0-9]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
-
-node /^elastic210[7-8]\.codfw\./ {
-    role(insetup::search_platform)
-}
-
 # External Storage, Shard 1 (es1) databases
 
 ## eqiad servers
