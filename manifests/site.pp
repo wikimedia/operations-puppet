@@ -1045,7 +1045,11 @@ node /^elastic110[3-7]\.eqiad\./ {
     role(insetup::search_platform)
 }
 
-node /^elastic203[7-9]\.codfw\./ {
+node /^elastic2037\.codfw\./ {
+    role(insetup::search_platform)
+}
+
+node /^elastic203[8-9]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
