@@ -19,7 +19,7 @@ class profile::toolforge::prometheus (
         require ::profile::labs::lvm::srv
     }
 
-    include ::profile::prometheus::blackbox_exporter
+    class { '::prometheus::blackbox_exporter': }
 
     if debian::codename::ge('bullseye') {
         # Checks for custom probes, defined in puppet
