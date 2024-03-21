@@ -7,7 +7,12 @@ profile::phabricator::aphlict::client_port: 22280
 profile::phabricator::aphlict::admin_port: 22281
 profile::phabricator::aphlict::admin_listen: "%{::ipaddress6}"
 profile::phabricator::aphlict::puppet_controlled_phabricator_config: true
+
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "aphlict.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - phabricator.wikimedia.org
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
