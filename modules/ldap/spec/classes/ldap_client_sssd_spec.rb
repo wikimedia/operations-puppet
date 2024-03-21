@@ -6,15 +6,14 @@ describe 'ldap::client::sssd' do
     context "On #{os}" do
       let(:facts) { os_facts }
       let(:params) {
-          {
-              'ldapconfig' => {
-                  'servernames'          => ['server1', 'server2'],
-                  'basedn'               => 'basedn_value',
-                  'sudobasedn'           => 'sudobasedn_value',
-                  'proxypass'            => 'proxypass_value',
-                  'pagesize'             => '2000',
-              },
-          }
+        {
+          'servers'      => ['server1', 'server2'],
+          'base_dn'      => 'basedn_value',
+          'sudo_base_dn' => 'sudobasedn_value',
+          'proxy_pass'   => 'proxypass_value',
+          'page_size'    => 2000,
+          'ca_file'      => 'ca-certificates.crt',
+        }
       }
       it { should compile }
     end

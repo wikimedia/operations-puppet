@@ -52,7 +52,12 @@ class profile::ldap::client::labs(
     }
 
     class { 'ldap::client::sssd':
-        ldapconfig => $::profile::ldap::client::utils::ldapconfig,
+        servers      => $profile::ldap::client::utils::ldapconfig['servernames'],
+        base_dn      => $profile::ldap::client::utils::ldapconfig['basedn'],
+        proxy_pass   => $profile::ldap::client::utils::ldapconfig['proxypass'],
+        sudo_base_dn => $profile::ldap::client::utils::ldapconfig['sudobasedn'],
+        page_size    => $profile::ldap::client::utils::ldapconfig['pagesize'],
+        ca_file      => $profile::ldap::client::utils::ldapconfig['ca'],
     }
 
     # The ldap nss package recommends this package

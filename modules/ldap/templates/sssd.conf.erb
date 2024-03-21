@@ -28,20 +28,20 @@ offline_credentials_expiration = 1
 #debug_level=10
 id_provider = ldap
 auth_provider = ldap
-ldap_uri = <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 , <% end -%>
+ldap_uri = <% @servers.each do |servername| -%>ldap://<%= servername %>:389 , <% end -%>
 
-ldap_default_bind_dn = cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
-ldap_default_authtok = <%= @ldapconfig["proxypass"] %>
-ldap_search_base = <%= @ldapconfig["basedn"] %>
+ldap_default_bind_dn = cn=proxyagent,ou=profile,<%= @base_dn %>
+ldap_default_authtok = <%= @proxy_pass %>
+ldap_search_base = <%= @base_dn %>
 ldap_tls_reqcert = demand
 ldap_id_use_start_tls = False
 ldap_tls_cacertdir = /etc/openldap/cacerts
 ldap_schema = rfc2307bis
 use_fully_qualified_names = True
-ldap_page_size = <%= @ldapconfig["pagesize"] %>
+ldap_page_size = <%= @page_size %>
 # https://linux.die.net/man/5/sudoers.ldap
 sudo_provider = ldap
-ldap_sudo_search_base = <%= @ldapconfig["sudobasedn"] %>
+ldap_sudo_search_base = <%= @sudo_base_dn %>
 # disable stuff not provided by LDAP (value of id_provider is used by default)
 selinux_provider = none
 autofs_provider = none

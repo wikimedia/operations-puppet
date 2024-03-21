@@ -2,17 +2,22 @@
 # in the ldap module. Make sure to don't include this and the others
 # at the same time. That's why there is an 'avoid confusion section'
 
-class ldap::client::sssd(
-    $ldapconfig,
+class ldap::client::sssd (
+    Array[Stdlib::Fqdn] $servers,
+    String[1]           $base_dn,
+    String[1]           $proxy_pass,
+    String[1]           $sudo_base_dn,
+    Integer             $page_size,
+    String[1]           $ca_file,
 ) {
     # this provides the /etc/ldap.yaml file, which is used to
     # lookup for sshkeys. We could switch at some point to a native
     # sssd mechanism for that, but meanwhile...
     $yaml_data = {
-        'servers'  => $ldapconfig['servernames'],
-        'basedn'   => $ldapconfig['basedn'],
-        'user'     => "cn=proxyagent,ou=profile,${ldapconfig['basedn']}",
-        'password' => $ldapconfig['proxypass'],
+        'servers'  => $servers,
+        'basedn'   => $base_dn,
+        'user'     => "cn=proxyagent,ou=profile,${base_dn}",
+        'password' => $proxy_pass,
     }
     file { '/etc/ldap.yaml':
         ensure  => file,

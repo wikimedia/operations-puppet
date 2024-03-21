@@ -1,19 +1,19 @@
-uri             <% @ldapconfig["servernames"].each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
+uri             <% @servers.each do |servername| -%>ldap://<%= servername %>:389 <% end -%>
 
-base            <%= @ldapconfig["basedn"] %>
-binddn          cn=proxyagent,ou=profile,<%= @ldapconfig["basedn"] %>
-bindpw          <%= @ldapconfig["proxypass"] %>
+base            <%= @base_dn %>
+binddn          cn=proxyagent,ou=profile,<%= @base_dn %>
+bindpw          <%= @proxy_pass %>
 pam_filter      objectclass=posixAccount
-nss_base_passwd ou=people,<%= @ldapconfig["basedn"] %>
-nss_base_shadow ou=people,<%= @ldapconfig["basedn"] %>
-nss_base_group  ou=groups,<%= @ldapconfig["basedn"] %>
-nss_base_hosts  ou=hosts,<%= @ldapconfig["basedn"] %>
-nss_base_netgroup     ou=netgroup,<%= @ldapconfig["basedn"] %>
+nss_base_passwd ou=people,<%= @base_dn %>
+nss_base_shadow ou=people,<%= @base_dn %>
+nss_base_group  ou=groups,<%= @base_dn %>
+nss_base_hosts  ou=hosts,<%= @base_dn %>
+nss_base_netgroup     ou=netgroup,<%= @base_dn %>
 nss_schema      rfc2307bis
 nss_map_attribute   uniquemember member
 nss_map_objectclass groupofuniquenames groupofnames
 tls_checkpeer   yes
-tls_cacertfile  /etc/ssl/certs/<%= @ldapconfig["ca"] %>
+tls_cacertfile  /etc/ssl/certs/<%= @ca_file %>
 tls_cacertdir   /etc/ssl/certs
 ssl             start_tls
 pam_password    clear

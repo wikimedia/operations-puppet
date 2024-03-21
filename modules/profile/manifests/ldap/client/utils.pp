@@ -28,7 +28,7 @@ class profile::ldap::client::utils (
         'tenant_id_attribute'  => 'cn',
         'ca'                   => 'ca-certificates.crt',
         'sudobasedn'           => $sudobasedn,
-        'pagesize'             => '2000',
+        'pagesize'             => 2000,
         'nss_min_uid'          => '499',
     }
 
