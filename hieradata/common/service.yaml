@@ -158,6 +158,7 @@ service::catalog:
       - codfw
       - eqiad
     state: production
+    page: false
     discovery:
       - dnsdisc: aqs
         active_active: true
