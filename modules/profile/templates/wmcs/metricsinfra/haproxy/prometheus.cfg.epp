@@ -48,7 +48,6 @@ frontend http-public
 
 backend prometheus_alertmanager
     mode http
-    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
@@ -61,7 +60,6 @@ backend prometheus_alertmanager
 
 backend karma
     mode http
-    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
@@ -77,7 +75,6 @@ backend karma
 
 backend config_manager
     mode http
-    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
@@ -88,7 +85,6 @@ backend config_manager
 
 backend thanos_fe
     mode http
-    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
@@ -102,7 +98,6 @@ backend thanos_fe
 
 backend grafana
     mode http
-    option httplog
     option tcp-check
     balance roundrobin
     timeout server 1h
