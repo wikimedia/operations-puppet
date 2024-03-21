@@ -215,7 +215,7 @@ profile::cassandra::client_ips:
 # to create the user first.
 profile::aqs::cassandra_user: aqs
 
-profile::aqs::monitoring_enabled: true
+profile::aqs::monitoring_enabled: false
 
 profile::aqs::druid_properties:
   scheme: http

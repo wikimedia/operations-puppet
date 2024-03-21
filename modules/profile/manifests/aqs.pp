@@ -36,23 +36,11 @@ class profile::aqs (
         port  => $::aqs::port,
     }
 
-    if $monitoring_enabled {
-        monitoring::service { 'aqs_http_root':
-            description   => 'AQS root url',
-            check_command => "check_http_port_url!${::aqs::port}!/",
-            contact_group => 'admins,team-services,team-data-platform',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
-        }
-        #TODO: add monitoring once we figure out what metrics we want
-        #monitoring::graphite_threshold { 'restbase_analytics_<<some-metric-name>>':
-            #description   => 'Analytics RESTBase req/s returning 5xx http://grafana.wikimedia.org/d/000000068/restbase',
-            #metric        => '<<the metric and any transformations>>',
-            #from          => '10min',
-            #warning       => <<warning threshold>>, # <<explain>>
-            #critical      => <<critical threshold>>, # <<explain>>
-            #percentage    => 20,
-            #contact_group => 'aqs-admins',
-            #notes_link     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
-        #}
+    monitoring::service { 'aqs_http_root':
+        ensure        => stdlib::ensure($monitoring_enabled),
+        description   => 'AQS root url',
+        check_command => "check_http_port_url!${::aqs::port}!/",
+        contact_group => 'admins,team-services,team-data-platform',
+        notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/AQS#Monitoring',
     }
 }
