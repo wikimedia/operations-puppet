@@ -31,11 +31,6 @@ class profile::aqs (
         git_deploy                    => $git_deploy,
     }
 
-    ferm::service {'aqs_web':
-        proto => 'tcp',
-        port  => $::aqs::port,
-    }
-
     monitoring::service { 'aqs_http_root':
         ensure        => stdlib::ensure($monitoring_enabled),
         description   => 'AQS root url',
