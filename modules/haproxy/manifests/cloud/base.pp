@@ -14,7 +14,11 @@
 class haproxy::cloud::base (
     Stdlib::Filesource $mainfile = 'puppet:///modules/haproxy/cloud/haproxy.cfg',
 ) {
-    ensure_packages(['socat', 'haproxy'])
+    package { 'haproxy':
+        ensure => installed,
+    }
+
+    ensure_packages(['socat'])
 
     file { '/etc/haproxy/conf.d':
         ensure => directory,
