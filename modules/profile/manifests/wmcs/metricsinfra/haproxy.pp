@@ -8,6 +8,8 @@ class profile::wmcs::metricsinfra::haproxy (
 ) {
     class { 'haproxy::cloud::base': }
 
+    $haproxy2 = debian::codename::gt('buster')
+
     file { '/etc/haproxy/conf.d/prometheus.cfg':
         owner   => 'root',
         group   => 'root',
@@ -20,6 +22,7 @@ class profile::wmcs::metricsinfra::haproxy (
                 thanos_fe_hosts               => $thanos_fe_hosts,
                 config_manager_hosts          => $config_manager_hosts,
                 grafana_hosts                 => $grafana_hosts,
+                haproxy2                      => $haproxy2,
             },
         ),
         notify  => Service['haproxy'],
