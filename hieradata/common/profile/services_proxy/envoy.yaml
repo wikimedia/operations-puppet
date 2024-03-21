@@ -318,7 +318,6 @@ profile::services_proxy::envoy::listeners:
     retry:  # -ro should be safe to retry on
       retry_on: "5xx"
       num_retries: 1
-    # Migrating away from parsoid-php to mw-parsoid which is on mw-on-k8s. T357392. TODO: Remove comment once done
   - name: mw-parsoid
     port: 6505
     timeout: "30s"
@@ -362,6 +361,24 @@ profile::services_proxy::envoy::listeners:
       service: "mw-api-int"
       upstream: "mw-api-int.discovery.wmnet"
       keepalive: "4s"
+  - name: mw-jobrunner
+    port: 6506
+    service: mw-jobrunner
+    timeout: "30s"
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+    xfp: https
+  - name: videoscaler
+    port: 6507
+    service: videoscaler
+    timeout: "30s"
+    keepalive: "4s"
+    retry:
+      retry_on: "5xx"
+      num_retries: 1
+    xfp: https
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
