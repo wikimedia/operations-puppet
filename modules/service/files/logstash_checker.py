@@ -283,7 +283,7 @@ class CheckService(object):
         if r.get('error', None):
             raise ValueError(
                 "Logstash request to %s returned error:\n%s\n\nQuery was: %s"
-                % (logstash_search_url, r, json.dumps(query_object())))
+                % (logstash_search_url, r, json.dumps(query_object)))
 
         # Calculate mean event rates before / after the deploy.
 
