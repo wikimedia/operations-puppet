@@ -399,7 +399,7 @@ class profile::prometheus::k8s (
             {
                 # envoy metrics from the servic-proxy sidecar
                 'job_name'              => 'k8s-pods-tls',
-                'metrics_path'          => '/stats/prometheus?usedonly',
+                'metrics_path'          => '/stats/prometheus',
                 'scheme'                => 'http',
                 'kubernetes_sd_configs' => [
                     {
