@@ -1434,7 +1434,7 @@ node /^idp[12]002\.wikimedia\./ {
 }
 
 node /^idp[12]003\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(idp)
 }
 
 node /^idp-test[12]002\.wikimedia\./ {
