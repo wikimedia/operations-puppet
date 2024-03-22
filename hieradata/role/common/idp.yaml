@@ -240,7 +240,7 @@ profile::idp::idp_nodes:
   - idp1002.wikimedia.org
   - idp1003.wikimedia.org
   - idp2002.wikimedia.org
-  - idp2003.wikimeida.org
+  - idp2003.wikimedia.org
 profile::idp::deploy_deb: true
 profile::idp::actuators:
   - sso
