@@ -240,7 +240,7 @@ class profile::kubernetes::deployment_server::global_config (
               },
               {
                 'name'     => 'historical',
-                'port'     => 8282,
+                'port'     => 8283,
               }
             ]
           },
