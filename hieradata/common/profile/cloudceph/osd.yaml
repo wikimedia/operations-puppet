@@ -7,4 +7,4 @@ profile::cloudceph::osd::disk_models_without_write_cache:
   - HFS1T9G32FEH-BA10A # cloudcephosd[1021-34].eqiad.wmnet
 profile::cloudceph::osd::disks_io_scheduler: "none"
 profile::cloudceph::osd::num_os_disks: 2
-profile::cloudceph::osd::with_location_hook: false
+profile::cloudceph::osd::with_location_hook: true
