@@ -1767,6 +1767,11 @@ node /^cloudbackup200[12]\.codfw\./ {
     role(wmcs::openstack::eqiad1::cinder_backups)
 }
 
+# Future replacements for cloudbackup200[12]
+node /^cloudbackup200[34]\.codfw\./ {
+    role(insetup::wmcs)
+}
+
 # Flink team-specific zookeeper clusters T341705
 node /^flink-zk100[123]\.eqiad\./ {
     role(zookeeper::flink)
