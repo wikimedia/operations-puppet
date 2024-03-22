@@ -83,11 +83,11 @@ class profile::cloudceph::osd(
         refreshonly => true,
     }
 
-    $ferm_cluster_srange = join($osd_hosts.map | $key, $value | { $value['cluster']['addr'] }, ' ')
-    ferm::service { 'ceph_osd_cluster_range':
+    $firewall_osd_access = $osd_hosts.map | $key, $value | { $value['cluster']['addr'] }
+    firewall::service { 'ceph_osd_cluster_range':
         proto      => 'tcp',
         port_range => [6800, 7100],
-        srange     => "(${ferm_cluster_srange})",
+        srange     => $firewall_osd_access,
         drange     => $host_conf['cluster']['addr'],
         before     => Class['ceph::common'],
     }
@@ -132,7 +132,7 @@ class profile::cloudceph::osd(
 
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
-    ferm::service { 'ceph_osd_range':
+    firewall::service { 'ceph_osd_range':
         proto      => 'tcp',
         port_range => [6800, 7100],
         srange     => $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes,
