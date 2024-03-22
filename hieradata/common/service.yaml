@@ -157,7 +157,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: production
+    state: lvs_setup
     page: false
     discovery:
       - dnsdisc: aqs
