@@ -422,7 +422,7 @@ groups:
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
-              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee]
+              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6004,6 +6004,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILb9vuRPoWECb5Ad6zij0NQGf2kxGs1lp/KUfc60FdfH ffurnari@wikimedia.org
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAeydDXbMjhj9yFWzukobrDPyjyIlRY6ugP6tUYUcuVX cardno:23 857 498
     email: ffurnari@wikimedia.org
+    krb: present
   gengh:
     ensure: present
     realname: Genoveva Galarza
