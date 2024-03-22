@@ -35,6 +35,12 @@
 <% } -%>
 [mon]
     mon cluster log to syslog = true
+
+<% if $with_location_hook {-%>
+[osd]
+    crush_location_hook = /usr/bin/custom-crush-location-hook
+
+<% } -%>
 <% $mon_hosts.each |$fqdn, $host_data| {%>
 [mon.<%= $fqdn.split('[.]')[0] %>]
     host = <%= $fqdn.split('[.]')[0] %>
@@ -46,9 +52,6 @@
     public addr = <%= $host_data['public']['addr'] %>
 <% if $cluster_networks.size > 0 {-%>
     cluster addr = <%= $host_data['cluster']['addr'] %>
-<% } -%>
-<% if $with_location_hook {-%>
-    crush_location_hook = /usr/bin/custom-crush-location-hook
 <% } -%>
     # Don't lock up the whole system in a rush to
     #  delete snapshots
