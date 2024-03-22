@@ -7100,3 +7100,7 @@ ldap_only_users:
     ensure: present
     realname: Zoe Leiper
     email: zoe@wikimedia.org
+  kcoleman:
+    ensure: present
+    realname: Katie Coleman
+    email: kcoleman@wikimedia.org
