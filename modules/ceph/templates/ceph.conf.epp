@@ -48,7 +48,7 @@
     cluster addr = <%= $host_data['cluster']['addr'] %>
 <% } -%>
 <% if $with_location_hook {-%>
-    crush_location_hook = /usr/bin/custom-location-hook
+    crush_location_hook = /usr/bin/custom-crush-location-hook
 <% } -%>
     # Don't lock up the whole system in a rush to
     #  delete snapshots
