@@ -644,24 +644,11 @@ function toolname_allowed(toolname)
     return false
 end
 
---- Generate the redirect URL by checking first for nginx vars for safety
+--- Generate the redirect URL
 -- @param toolname Name of the tool
 -- @param path Path fragment of URL
 function compute_redirect_url(toolname, path)
     -- toolname and path were checked in the previous function
-
-    if not ngx.var.canonical_scheme then
-        ngx.log(ngx.STDERR, 'ERROR: no $canonical_scheme var defined in nginx conf. This is a Toolforge outage!')
-        ngx.log(ngx.STDERR, 'ERROR: the LUA code expects the $canonical_scheme var to be set to "https://"')
-        ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
-    end
-
-    if not ngx.var.canonical_domain then
-        ngx.log(ngx.STDERR, 'ERROR: no $canonical_domain var defined in nginx conf. This is a Toolforge outage!')
-        ngx.log(ngx.STDERR, 'ERROR: the LUA code expects the $canonical_domain var to be set to "toolforge.org"')
-        ngx.exit(ngx.HTTP_INTERNAL_SERVER_ERROR)
-    end
-
     local is_args = ''
     if ngx.var.is_args then
         is_args = ngx.var.is_args
@@ -671,7 +658,7 @@ function compute_redirect_url(toolname, path)
         args = ngx.var.args
     end
 
-    return ngx.var.canonical_scheme .. toolname .. '.' .. ngx.var.canonical_domain .. path .. is_args .. args
+    return 'https://' .. toolname .. '.toolforge.org' .. path .. is_args .. args
 end
 
 --- Look up a canonical redirect target for a given tool

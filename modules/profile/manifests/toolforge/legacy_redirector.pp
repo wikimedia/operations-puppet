@@ -1,21 +1,16 @@
 class profile::toolforge::legacy_redirector (
-    Boolean $do_https        = lookup('profile::toolforge::proxy::do_https',  {default_value => true}),
-    String $canonical_domain = lookup('profile::toolforge::canonical_domain', {default_value => 'toolforge.org'}),
-    String $canonical_scheme = lookup('profile::toolforge::canonical_scheme', {default_value => 'https://'}),
+    Optional[String[1]] $ssl_certificate_name = lookup('profile::toolforge::legacy_redirector::ssl_certificate_name', {default_value => 'tools-legacy'}),
 ) {
     $resolver = join($::nameservers, ' ')
 
     # toolsbeta support: running without SSL as in the main front proxy
-    if $do_https {
+    if $ssl_certificate_name {
         $ssl_settings = ssl_ciphersuite('nginx', 'compat')
         # SSL certificate for tools.wmflabs.org
-        $ssl_certificate_name = 'tools-legacy'
         acme_chief::cert { $ssl_certificate_name:
             puppet_rsc => Exec['nginx-reload'],
         }
         class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
-    } else {
-        $ssl_certificate_name = false
     }
 
     class { '::nginx':
