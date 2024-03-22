@@ -98,8 +98,6 @@ define aptrepo::repo (
     }
 
     # Reprepro needs the deb-override file to exist.
-    # For apt1001/2001 this file already exist and have
-    # content which is not managed by Puppet.
     file { "${basedir}/conf/deb-override":
         ensure  => file,
         replace => 'no',

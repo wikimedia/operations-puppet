@@ -1,6 +1,3 @@
-profile::aptrepo::wikimedia::aptrepo_server: apt1001.wikimedia.org
-profile::aptrepo::wikimedia::aptrepo_servers_failover:
-  - apt2001.wikimedia.org
 profile::aptrepo::wikimedia::aptrepo_hostname: apt.wikimedia.org
 # The public keyring is built/managed by Puppet
 profile::aptrepo::wikimedia::gpg_secring: 'apt/secring.gpg'
