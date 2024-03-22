@@ -22,9 +22,10 @@ input:
       parse_log:
         format: "syslog_rfc3164"
         codec: "json"
-    - label: "drop_ssl_errors"
+    - label: "drop_unparsable_messages"
       mapping: |
-        root = if this.message.contains("SSL handshake failure").catch(false) {
+        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false)
+        {
           deleted()
         }
 buffer:
@@ -190,10 +191,15 @@ tests:
     output_batches:
       -
         - content_equals: '{"appname":"haproxy","facility":16,"hostname":"localhost","message":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58186 170749021731 [09/Feb/2024:14:50:17.576] tls~ tls/backend_server 0/0/0/2/2 200 72124 - - ---- 1/1/0/0/0 0/0 {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=unknown;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58186 170749021731 [09/Feb/2024:14:50:17.576","severity":6,"timestamp":"2024-02-09T14:50:17Z"}'
-  - name: test deleted messages
-    target_processors: drop_ssl_errors
+  - name: drop ssl errors
+    target_processors: drop_unparsable_messages
     input_batch:
       - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"SSL handshake failure","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"text"}
+    output_batches: []
+  - name: drop badreq errors
+    target_processors: drop_unparsable_messages
+    input_batch:
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"127.0.0.1:26682 - [22/Mar/2024:09:47:45.058] tls~ tls/<NOSRV> -1/-1/-1/-1/0 400 0 - - PR-- 5437/5429/68/0/0 0/0 <BADREQ> <BADREQ> <BADREQ>]","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"text"}
     output_batches: []
   - name: main pipeline parsing
     target_processors: /pipeline/processors
