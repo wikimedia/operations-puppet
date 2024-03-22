@@ -7096,3 +7096,7 @@ ldap_only_users:
     email: fbellamy-ctr@wikimedia.org
     expiry_date: "2024-06-28"
     expiry_contact: slopes@wikimedia.org
+  zoe:
+    ensure: present
+    realname: Zoe Leiper
+    email: zoe@wikimedia.org
