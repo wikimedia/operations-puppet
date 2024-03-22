@@ -1,2 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-&R_SERVICE(tcp, 22, ({{ range $index, $element := gets "/authdns/*/*" }}{{ $host := json .Value }}{{ if ne $host.pooled "inactive" }}{{ if $index }} {{ end }}{{ $host.ip }}{{ end }}{{ end }}));
