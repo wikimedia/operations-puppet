@@ -1641,7 +1641,7 @@ node /^mw231[0-9]\.codfw\./ {
 node /^mw232[0-2]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw2335\.codfw\./ {
+node /^mw233[5-7]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw235[0-7]\.codfw\./ {
@@ -1653,7 +1653,7 @@ node /^mw236[6-9]\.codfw\./ {
 node /^mw237[0-9]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw238[0-5]\.codfw\./ {
+node /^mw238[0-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw239[45]\.codfw\./ {
@@ -2223,7 +2223,7 @@ node /^mw2(29[8-9]|300)\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw23(8[6-9]|9[0-3])\.codfw\./ {
+node /^mw239[0-3]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
@@ -2279,7 +2279,7 @@ node /^mw23(59|6[135])\.codfw\./ {
 }
 
 # rack C3
-node /^mw23(3[6-9])\.codfw\./ {
+node /^mw23(3[8-9])\.codfw\./ {
     role(mediawiki::appserver)
 }
 
