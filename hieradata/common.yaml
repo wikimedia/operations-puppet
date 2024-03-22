@@ -2303,10 +2303,6 @@ infra_devices:
     - mr1-codfw
     site: codfw
     role: msw
-  asw-b-codfw:
-    ipv4: 10.193.0.17
-    site: codfw
-    role: l2sw
   asw-c-codfw:
     ipv4: 10.193.0.18
     site: codfw
