@@ -48,29 +48,29 @@ class profile::cloudceph::mon(
     $mon_addrs = $mon_hosts.map | $key, $value | { $value['public']['addr'] }
     $osd_public_addrs = $osd_hosts.map | $key, $value | { $value['public']['addr'] }
 
-    $ferm_srange = $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes
-    ferm::service { 'ceph_mgr_v2':
+    $firewall_srange = $mon_addrs + $osd_public_addrs + $client_networks + $cinder_backup_nodes
+    firewall::service { 'ceph_mgr_v2':
         proto  => 'tcp',
         port   => 6800,
-        srange => $ferm_srange,
+        srange => $firewall_srange,
         before => Class['ceph::common'],
     }
-    ferm::service { 'ceph_mgr_v1':
+    firewall::service { 'ceph_mgr_v1':
         proto  => 'tcp',
         port   => 6801,
-        srange => $ferm_srange,
+        srange => $firewall_srange,
         before => Class['ceph::common'],
     }
-    ferm::service { 'ceph_mon_peers_v1':
+    firewall::service { 'ceph_mon_peers_v1':
         proto  => 'tcp',
         port   => 6789,
-        srange => $ferm_srange,
+        srange => $firewall_srange,
         before => Class['ceph::common'],
     }
-    ferm::service { 'ceph_mon_peers_v2':
+    firewall::service { 'ceph_mon_peers_v2':
         proto  => 'tcp',
         port   => 3300,
-        srange => $ferm_srange,
+        srange => $firewall_srange,
         before => Class['ceph::common'],
     }
 
