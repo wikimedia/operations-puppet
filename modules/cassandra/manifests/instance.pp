@@ -211,26 +211,27 @@
 #   Default: false
 define cassandra::instance(
     # the following parameters are injected by the main cassandra class
-    Optional[String]                 $cluster_name           = undef,
-    Optional[String]                 $memory_allocator       = undef,
-    Optional[Stdlib::IP::Address]    $listen_address         = undef,
-    Optional[String]                 $tls_cluster_name       = undef,
-    Optional[String]                 $default_applications   = undef,
-    Optional[Stdlib::Port]           $native_transport_port  = undef,
-    Optional[String]                 $target_version         = undef,
-    Optional[Array[Stdlib::Host, 1]] $seeds                  = undef,
-    Optional[String]                 $dc                     = undef,
-    Optional[String]                 $rack                   = undef,
-    Optional[Array[String]]          $additional_jvm_opts    = undef,
-    Optional[Array[String]]          $extra_classpath        = undef,
-    Optional[Stdlib::Host]           $logstash_host          = undef,
-    Optional[Stdlib::Port]           $logstash_port          = undef,
-    Optional[Boolean]                $start_rpc              = undef,
-    Optional[String]                 $super_username         = undef,
-    Optional[String]                 $super_password         = undef,
-    Boolean                          $tls_use_pki            = false,
-    Boolean                          $tls_use_pki_truststore = false,
-    Optional[String]                 $tls_keystore_password  = undef,
+    Optional[String]                 $cluster_name            = undef,
+    Optional[String]                 $memory_allocator        = undef,
+    Optional[Stdlib::IP::Address]    $listen_address          = undef,
+    Optional[String]                 $tls_cluster_name        = undef,
+    Optional[String]                 $default_applications    = undef,
+    Optional[Stdlib::Port]           $native_transport_port   = undef,
+    Optional[String]                 $target_version          = undef,
+    Optional[Array[Stdlib::Host, 1]] $seeds                   = undef,
+    Optional[String]                 $dc                      = undef,
+    Optional[String]                 $rack                    = undef,
+    Optional[Array[String]]          $additional_jvm_opts     = undef,
+    Optional[Array[String]]          $extra_classpath         = undef,
+    Optional[Stdlib::Host]           $logstash_host           = undef,
+    Optional[Stdlib::Port]           $logstash_port           = undef,
+    Optional[Boolean]                $start_rpc               = undef,
+    Optional[String]                 $super_username          = undef,
+    Optional[String]                 $super_password          = undef,
+    Boolean                          $tls_use_pki             = false,
+    Boolean                          $tls_use_pki_truststore  = false,
+    Boolean                          $tls_use_pki_keep_old_ca = false,
+    Optional[String]                 $tls_keystore_password   = undef,
 
     # the following parameters need specific default values for single instance
     Stdlib::Unixpath        $config_directory       = "/etc/cassandra-${title}",
@@ -436,6 +437,20 @@ define cassandra::instance(
         if $tls_use_pki_truststore {
             $tls_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
             $tls_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+            # If the PKI trustore bundle is composed using the current
+            # rootCa.crt file (via profile::base::certificates) we need
+            # to keep it around in the Puppet Catalog for consistency.
+            # We could use a more elaborate scheme but it is just a setting
+            # to allow us to rollout PKI certificates more easily.
+            # TODO: remove this once we have deployed PKI everywhere.
+            if $tls_use_pki_keep_old_ca {
+                file { "${config_directory}/tls/rootCa.crt":
+                    content => secret("cassandra/${tls_cluster_name}/rootCa.crt"),
+                    owner   => 'cassandra',
+                    group   => 'cassandra',
+                    mode    => '0400',
+                }
+            }
         } else {
             $tls_truststore_location = "${config_directory}/tls/server.trust"
             $tls_truststore_password = undef

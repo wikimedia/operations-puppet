@@ -35,6 +35,12 @@
 #   See T288470
 #   Default: false
 #
+# [*tls_use_pki_keep_old_ca*]
+#   Whether or not to keep the old root CA around when a PKI trustore is used.
+#   Only needed to keep consistency when upgrading to PKI.
+#   See T352647
+#   Default: false
+#
 # [*tls_keystore_password*]
 #   Password of the TLS keystore to use. Needed only if tls_use_pki is true.
 #   Default: undef
@@ -128,6 +134,7 @@ class cassandra (
     Optional[String]                 $tls_cluster_name        = undef,
     Boolean                          $tls_use_pki             = false,
     Boolean                          $tls_use_pki_truststore  = false,
+    Boolean                          $tls_use_pki_keep_old_ca = false,
     Optional[String]                 $tls_keystore_password   = undef,
     Hash                             $instances               = {},
     Hash                             $default_instance_params = {},
@@ -195,28 +202,29 @@ class cassandra (
     # Default is to keep Debian package behaviour,
     # in other words create a "default" instance.
     $default_common = {
-        cluster_name           => $cluster_name,
-        tls_cluster_name       => $tls_cluster_name,
-        tls_use_pki            => $tls_use_pki,
-        tls_use_pki_truststore => $tls_use_pki_truststore,
-        tls_keystore_password  => $tls_keystore_password,
-        seeds                  => $seeds,
-        additional_jvm_opts    => $additional_jvm_opts,
-        extra_classpath        => $extra_classpath,
-        memory_allocator       => $memory_allocator,
-        listen_address         => $listen_address,
-        users                  => $users,
-        native_transport_port  => $native_transport_port,
-        target_version         => $target_version,
-        dc                     => $dc,
-        rack                   => $rack,
-        logstash_host          => $logstash_host,
-        logstash_port          => $logstash_port,
-        start_rpc              => $start_rpc,
-        super_username         => $super_username,
-        super_password         => $super_password,
-        cassandra_passwords    => $cassandra_passwords,
-        auto_apply_grants      => $auto_apply_grants,
+        cluster_name            => $cluster_name,
+        tls_cluster_name        => $tls_cluster_name,
+        tls_use_pki             => $tls_use_pki,
+        tls_use_pki_truststore  => $tls_use_pki_truststore,
+        tls_use_pki_keep_old_ca => $tls_use_pki_keep_old_ca,
+        tls_keystore_password   => $tls_keystore_password,
+        seeds                   => $seeds,
+        additional_jvm_opts     => $additional_jvm_opts,
+        extra_classpath         => $extra_classpath,
+        memory_allocator        => $memory_allocator,
+        listen_address          => $listen_address,
+        users                   => $users,
+        native_transport_port   => $native_transport_port,
+        target_version          => $target_version,
+        dc                      => $dc,
+        rack                    => $rack,
+        logstash_host           => $logstash_host,
+        logstash_port           => $logstash_port,
+        start_rpc               => $start_rpc,
+        super_username          => $super_username,
+        super_password          => $super_password,
+        cassandra_passwords     => $cassandra_passwords,
+        auto_apply_grants       => $auto_apply_grants,
     }
 
     if empty($instances) {
