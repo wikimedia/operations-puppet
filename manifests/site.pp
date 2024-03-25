@@ -1824,7 +1824,7 @@ node /^logging-hd100[1-3]\.eqiad\./ {
 }
 
 # Logging data nodes (eqiad)
-node /^logstash10(1[012]|2[6789]|3[34567])\.eqiad\./ {
+node /^logstash10(2[6789]|3[34567])\.eqiad\./ {
     role(logging::opensearch::data)
 }
 
