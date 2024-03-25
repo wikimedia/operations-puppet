@@ -35,9 +35,50 @@ class profile::toolforge::legacy_redirector (
         port  => '80',
         desc  => 'HTTP webserver for the entire world',
     }
-    ferm::service { 'https':
-        proto => 'tcp',
-        port  => '443',
-        desc  => 'HTTPS webserver for the entire world',
+    if $ssl_certificate_name {
+        ferm::service { 'https':
+            proto => 'tcp',
+            port  => '443',
+            desc  => 'HTTPS webserver for the entire world',
+        }
+    }
+
+    if $ssl_certificate_name {
+        $monitor_port = 443
+    } else {
+        $monitor_port = 80
+    }
+
+    prometheus::blackbox::check::http {
+        default:
+            port                => $monitor_port,
+            ip_families         => ['ip4'],
+            prometheus_instance => 'tools',
+            team                => 'wmcs',
+            severity            => 'warning';
+
+        'tools.wmflabs.org main page':
+            server_name    => 'tools.wmflabs.org',
+            path           => '/',
+            status_matches => [302],
+            header_matches => [{ 'header' => 'Location', 'regexp' => '^https://toolforge.org/$' }];
+
+        'tools.wmflabs.org tool':
+            server_name    => 'tools.wmflabs.org',
+            path           => '/sal/aaa',
+            status_matches => [308],
+            header_matches => [{ 'header' => 'Location', 'regexp' => '^https://sal.toolforge.org/aaa$' }];
+
+        'toolserver.org main page':
+            server_name        => 'toolserver.org',
+            path               => '/',
+            status_matches     => [200],
+            body_regex_matches => ['Toolserver was'];
+
+        'toolserver.org redirects':
+            server_name    => 'toolserver.org',
+            path           => '/~legoktm',
+            status_matches => [301],
+            header_matches => [{ 'header' => 'Location', 'regexp' => '^https://meta.wikimedia.org/wiki/User:Legoktm/Toolserver\\?from=$' }];
     }
 }
