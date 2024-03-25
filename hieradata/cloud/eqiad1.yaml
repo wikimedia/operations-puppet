@@ -199,8 +199,8 @@ profile::diffscan::instances:
 jenkins_agent_username: "jenkins-deploy"
 
 profile::mail::default_mail_relay::smarthosts:
-  - "mx-out03.wmcloud.org"
-  - "mx-out04.wmcloud.org"
+  - "mx-out-a.wmcloud.org"
+  - "mx-out-b.wmcloud.org"
 profile::mail::default_mail_relay::mediawiki_smarthosts: []
 
 profile::systemd::timesyncd::ntp_servers:
