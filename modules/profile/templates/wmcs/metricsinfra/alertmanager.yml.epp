@@ -33,7 +33,7 @@ alertmanager_config:
 
     # If an alert has successfully been sent, wait 'repeat_interval' to
     # resend them.
-    repeat_interval: 3h
+    repeat_interval: 24h
 
     # When there is no project-specific receiver, do not send notifications at all
     receiver: 'blackhole'
