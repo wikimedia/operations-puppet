@@ -12,6 +12,7 @@ class profile::wmcs::metricsinfra::alertmanager (
     }
 
     exec { 'alertmanager-restart':
+        require     => Package['prometheus-alertmanager'],
         command     => '/bin/systemctl restart prometheus-alertmanager',
         refreshonly => true,
     }
@@ -40,9 +41,11 @@ class profile::wmcs::metricsinfra::alertmanager (
     # prometheus_configurator will manage the directory contents, but
     # it still needs to exist and be writable
     file { $base_path:
-        ensure => directory,
-        owner  => 'prometheus',
-        group  => 'prometheus',
+        ensure  => directory,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        mode    => '0775',
+        require => Package['prometheus-alertmanager'],
     }
 
     # TODO: instead of providing the config base, split into small
