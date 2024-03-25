@@ -43,12 +43,6 @@ class profile::toolforge::legacy_redirector (
             modules => ['alias', 'rewrite', 'ssl'],
         }
 
-        if $ssl_certificate_name {
-            acme_chief::cert { $ssl_certificate_name:
-                puppet_svc => 'apache2',
-            }
-        }
-
         httpd::site { 'tools.wmflabs.org':
             content => template('profile/toolforge/legacy_redirector/tools.wmflabs.org.conf.erb'),
         }
