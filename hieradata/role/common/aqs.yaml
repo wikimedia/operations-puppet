@@ -233,9 +233,7 @@ profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
 
 profile::lvs::realserver::pools:
-  aqs:
-    services:
-      - aqs
+  aqs: {}
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::java::java_packages:
