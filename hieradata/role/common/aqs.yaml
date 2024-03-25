@@ -232,9 +232,6 @@ profile::aqs::cassandra_default_consistency: localQuorum
 profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
 
-profile::lvs::realserver::pools:
-  aqs: {}
-
 profile::contacts::role_contacts: ['Data Platform']
 profile::java::java_packages:
   - version: '8'

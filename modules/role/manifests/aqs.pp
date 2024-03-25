@@ -16,5 +16,4 @@ class role::aqs {
     include profile::aqs
 
     include profile::rsyslog::udp_localhost_compat
-    include profile::lvs::realserver
 }
