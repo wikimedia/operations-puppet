@@ -13,8 +13,14 @@ class opensearch::curator (
     } else {
         if debian::codename::le('buster') {
             $curator_version = '5.8.5-1~wmf3'
-        } else {
+        } elsif debian::codename::eq('bullseye') {
             $curator_version = '5.8.5-1~wmf3+deb11u1'
+        } elsif debian::codename::eq('bookworm') {
+            $curator_version = '5.8.5-1~wmf3+deb12u1'
+        } else {
+            notify { 'curator unsupported':
+                message => 'ElasticSearch Curator with OpenSearch support is not yet available for this version of Debian.'
+            }
         }
     }
 
