@@ -16,6 +16,20 @@ class profile::toolforge::legacy_redirector (
         content => template('profile/toolforge/legacy_redirector/tools.wmflabs.org.conf.erb'),
     }
 
+    httpd::site { 'www.toolserver.org':
+        content => template('profile/toolforge/legacy_redirector/www.toolserver.org.conf.erb'),
+    }
+
+    file { '/var/www/www.toolserver.org':
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0555',
+        source  => 'puppet:///modules/profile/toolforge/legacy_redirector/www.toolserver.org/',
+        recurse => true,
+        purge   => true,
+    }
+
     ferm::service { 'http':
         proto => 'tcp',
         port  => '80',
