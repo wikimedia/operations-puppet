@@ -11,7 +11,6 @@ class profile::kubernetes::deployment_server::global_config (
     Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
     String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
     Hash[String, Hash] $zookeeper_clusters              = lookup('zookeeper_clusters'),
-
 ) {
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
@@ -41,6 +40,9 @@ class profile::kubernetes::deployment_server::global_config (
             default => $listener['upstream'],
         }
         $svc = $services_proxy[$listener['service']]
+        if ($svc == undef) {
+            fail("Service \"${listener['service']}\" not found in service::catalog")
+        }
         $upstream_port = $svc['port']
         $encryption = $svc['encryption']
         # To properly enable the networkpolicies, we also need to collect the service IPs
@@ -133,8 +135,31 @@ class profile::kubernetes::deployment_server::global_config (
         $retval = { $cl => $ips }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
-    $external_service_opts = {
-      'external_services_definitions' => {
+    # Create one external services definition for each redis port (instance running on each node)
+    # to allow services to explicitely specify which redis instance they want to connect to
+    $redis_misc_ips = wmflib::role::ips('redis::misc::master') + wmflib::role::ips('redis::misc::slave')
+    # The hiera key containing the redis instances is scoped to the redis::misc::master role
+    # and therefore not accessible here. Lookup all redis::misc instances from puppetdb instead.
+    $redis_misc_resources = wmflib::puppetdb_query('resources[title] { type = "Redis::Instance" and certname in resources[certname] { type = "Class" and title = "Role::Redis::Misc::Master" } group by title }')
+    $redis_misc_instances = $redis_misc_resources.map |$r| { $r['title'] }
+    $external_service_redis_misc = $redis_misc_instances.map |$port| {
+      {
+        "redis-misc-${port}" => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => "redis-${port}",
+                'port' => Stdlib::Port($port),
+              },
+            ],
+          },
+          'instances' => $redis_misc_ips,
+        },
+      }
+    }.reduce({}) |$mem, $val| { $mem.merge($val) }
+
+    $external_service_opts = deep_merge(
+      {
         'kafka'  => {
           '_meta' => {
             'ports' => [
@@ -145,8 +170,8 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'tls',
                 'port'     => 9093,
-              }
-            ]
+              },
+            ],
           },
           'instances' => $kafka_brokers,
         },
@@ -156,8 +181,8 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'client',
                 'port'     => 2181,
-              }
-            ]
+              },
+            ],
           },
           'instances' => $zookeeper_nodes,
         },
@@ -172,12 +197,12 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'ticket-large',
                 'port'     => 88,
-              }
-            ]
+              },
+            ],
           },
           'instances' => {
             'kdc' => wmflib::role::ips('kerberos::kdc'),
-          }
+          },
         },
         'hadoop-master' => {
           '_meta' => {
@@ -186,13 +211,13 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'namenode',
                 'port'     => 8020,
-              }
-            ]
+              },
+            ],
           },
           'instances' => {
             'analytics'      => wmflib::role::ips('analytics_cluster::hadoop::master') + wmflib::role::ips('analytics_cluster::hadoop::standby'),
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::hadoop::master') + wmflib::role::ips('analytics_test_cluster::hadoop::standby'),
-          }
+          },
         },
         'hadoop-worker' => {
           '_meta' => {
@@ -205,13 +230,13 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'datanode-metadata',
                 'port'     => 50020,
-              }
-            ]
+              },
+            ],
           },
           'instances' => {
             'analytics'      => wmflib::role::ips('analytics_cluster::hadoop::worker'),
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::hadoop::worker'),
-          }
+          },
         },
         'cas' => {
             '_meta' => {
@@ -219,8 +244,8 @@ class profile::kubernetes::deployment_server::global_config (
                 {
                   'name'     => 'https',
                   'port'     => 443,
-                }
-              ]
+                },
+              ],
             },
             'instances' => {
               'idp'      => wmflib::role::ips('idp'),
@@ -248,7 +273,7 @@ class profile::kubernetes::deployment_server::global_config (
             'analytics'      => wmflib::role::ips('druid::analytics::worker'),
             'analytics_test' => wmflib::role::ips('druid::test_analytics::worker'),
             'public'         => wmflib::role::ips('druid::public::worker'),
-          }
+          },
         },
         'presto' => {
           '_meta' => {
@@ -260,16 +285,17 @@ class profile::kubernetes::deployment_server::global_config (
               {
                 'name'     => 'discovery',
                 'port'     => 8281,
-              }
-            ]
+              },
+            ],
           },
           'instances' => {
             'analytics'      => wmflib::role::ips('analytics_cluster::coordinator'),
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::coordinator'),
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+      $external_service_redis_misc,
+    )
 
     # Per-cluster general defaults.
     # Fetch clusters excluding aliases, for aliases we create symlinks to the actual cluster defaults
@@ -302,8 +328,8 @@ class profile::kubernetes::deployment_server::global_config (
           $general_values['default'],
           $general_values[$cluster_name],
           $deployment_config_opts,
-          $external_service_opts,
           {
+            'external_services_definitions' => $external_service_opts,
             'services_proxy'                => $proxies,
             # Temporary duplication of kafka/zookeeper details until all charts are migrated
             # to using the external-services chart to define their egress network policies
