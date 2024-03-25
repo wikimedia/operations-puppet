@@ -58,6 +58,7 @@ class profile::analytics::refinery::job::refine(
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
         'to_emails'                          => 'data-engineering-alerts@lists.wikimedia.org',
+        'from_email'                         => 'Refinery <noreply@wikimedia.org>',
         'should_email_report'                => true,
         'output_database'                    => 'event',
         'output_path'                        => '/wmf/data/event',
