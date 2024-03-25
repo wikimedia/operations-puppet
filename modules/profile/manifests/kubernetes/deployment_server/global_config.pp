@@ -236,12 +236,12 @@ class profile::kubernetes::deployment_server::global_config (
               },
               {
                 'name'     => 'broker',
-                'port'     => 8282,
+                'port'     => 8082,
               },
               {
                 'name'     => 'historical',
-                'port'     => 8283,
-              }
+                'port'     => 8083,
+              },
             ]
           },
           'instances' => {
@@ -264,8 +264,8 @@ class profile::kubernetes::deployment_server::global_config (
             ]
           },
           'instances' => {
-            'analytics'      => wmflib::role::ips('analytics_cluster::presto::server'),
-            'analytics_test' => wmflib::role::ips('analytics_test_cluster::presto::server'),
+            'analytics'      => wmflib::role::ips('analytics_cluster::coordinator'),
+            'analytics_test' => wmflib::role::ips('analytics_test_cluster::coordinator'),
           }
         }
       }
