@@ -117,7 +117,11 @@ profile::tlsproxy::envoy::ensure: present
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 80
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "contint.wikimedia.org"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - integration.wikimedia.org
 profile::tlsproxy::envoy::sni_support: "no"
 profile::tlsproxy::envoy::tls_port: 1443
 profile::tlsproxy::envoy::ferm_srange: "$CACHES"
