@@ -1,4 +1,0 @@
-# Minimal robots.txt for blocking everything that respects robots.txt.
-# No actual content served here! Just redirects for very outdated but still used links.
-User-Agent: *
-Disallow: /
