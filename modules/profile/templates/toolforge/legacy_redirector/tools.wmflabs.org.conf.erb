@@ -23,7 +23,7 @@
 
     SSLEngine on
     SSLCertificateFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @ssl_certificate_name %>/rsa-2048.chained.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
 <%- end -%>
