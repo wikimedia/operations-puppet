@@ -1,0 +1,3 @@
+profile::opensearch::common_settings:
+  holds_data: true
+  disktype: hdd
