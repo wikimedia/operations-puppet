@@ -294,7 +294,7 @@ class profile::prometheus::k8s (
                     {
                         'action'        => 'drop',
                         'source_labels' => ['__meta_kubernetes_pod_annotation_sidecar_istio_io_inject'],
-                        'regex'         => '(.*)',
+                        'regex'         => '(true|false)',
                     },
                     {
                         'action'        => 'replace',
@@ -533,7 +533,7 @@ class profile::prometheus::k8s (
                     {
                         'action'        => 'keep',
                         'source_labels' => ['__meta_kubernetes_pod_annotation_sidecar_istio_io_inject'],
-                        'regex'         => '(.*)',
+                        'regex'         => '(true|false)',
                     },
                     # This instructs prometheus to only scrape a single port for
                     # a pod instead of the default behavior
