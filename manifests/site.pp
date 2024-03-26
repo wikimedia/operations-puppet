@@ -149,9 +149,8 @@ node /^an-tool1008\.eqiad\./ {
     role(analytics_cluster::hadoop::yarn)
 }
 
-# hue.wikimedia.org
 node /^an-tool1009\.eqiad\./ {
-    role(analytics_cluster::hadoop::ui)
+    role(insetup::data_engineering)
 }
 
 node /^an-tool1011\.eqiad\./ {
