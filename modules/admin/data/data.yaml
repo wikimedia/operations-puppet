@@ -423,7 +423,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
-              georgemikesell]
+              georgemikesell, bblack]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -1565,6 +1565,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCPwFMvPEqUCks63fD+0UjgPjoIfkqoECOiJ3Cl1PJMwLADldAMZEPBhwjyJT11sKP4bvCqcVb/HVooED1zmQmF1urSycopkMj02FMIXZRSfvOWA2evTHNPeNR+/7dvSGgRqYggI5r+8d7gRB1YNedRoHq9d+1lWv5TpZ+TKr1ns0DekiFHXP4JCRC2U8/QxAriMcRywrbQ9Wpib5UCDKjlg7YmP29K9g7XdTkczyQCCOFSqEk2qRw4/lm1IACZXh9PBxy0CW2LuiNkkij5TBWMc+KDBqWwpETfIGFdSE0yzX9nCH9IsADj9MyaIMxS+Vtc96zS9ZR2HaFMaWIGFB2h bb@neo-3
     uid: 3015
     email: bblack@wikimedia.org
+    krb: present
   akosiaris:
     ensure: present
     gid: 500
