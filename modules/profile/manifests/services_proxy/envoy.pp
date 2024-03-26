@@ -42,29 +42,12 @@ class profile::services_proxy::envoy(
         if $svc == undef {
             fail("Could not find service ${cluster_label} in service::catalog")
         }
-        # Service name is:
-        # - foo if upstream is foo.discovery.wmnet
-        # - $listener['service']_eqiad if upstream is foo.eqiad.wikimedia.org
-        #   or foo.svc.eqiad.wmnet
-        # - $listener['service'] otherwise
         if $listener['upstream'] {
             $address = $listener['upstream']
-            if $address =~ /^([^.]+)\.discovery\.wmnet$/ {
-                $svc_name = $1
-            }
-            elsif $address =~ /^[^.]+\.svc\.([^.]+)\.wmnet$/ {
-                $svc_name = "${listener['service']}_${1}"
-            }
-            elsif $address =~ /^[^.]+\.([^.]+)\.wikimedia\.org$/ {
-                $svc_name = "${listener['service']}_${1}"
-            }
-            else {
-                $svc_name = $listener['service']
-            }
         } else {
-            $svc_name = $listener['service']
-            $address = "${svc_name}.discovery.wmnet"
+            $address = "${listener['service']}.discovery.wmnet"
         }
+        $svc_name = profile::services_proxy::envoy::svc_name($listener)
         if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
             envoyproxy::cluster { "${svc_name}_cluster":
                 content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
@@ -97,5 +80,54 @@ class profile::services_proxy::envoy(
         envoyproxy::listener { $listener['name']:
             content => template('profile/services_proxy/envoy_service_listener.yaml.erb'),
         }
+    }
+    # Now let's check for additional clusters to define for split traffic
+    $listeners.each |$listener| {
+        unless $listener['split'] {
+            next()
+        }
+        $split = $listener['split']
+        $cluster_label = $split['service']
+        $svc = $all_services[$cluster_label]
+        if $svc == undef {
+            fail("Could not find service ${cluster_label} in service::catalog")
+        }
+        $svc_name_base = profile::services_proxy::envoy::svc_name($listener)
+        $svc_name = "${svc_name_base}-split"
+        if $split['upstream'] {
+            $address = $split['upstream']
+        } else {
+            $address = "${split['service']}.discovery.wmnet"
+        }
+        if !defined(Envoyproxy::Cluster["${svc_name}_cluster"]) {
+            envoyproxy::cluster { "${svc_name}_cluster":
+                content => template('profile/services_proxy/envoy_service_cluster.yaml.erb'),
+            }
+        }
+    }
+}
+
+# Service name is:
+# - foo if upstream is foo.discovery.wmnet
+# - $listener['service']_eqiad if upstream is foo.eqiad.wikimedia.org
+#   or foo.svc.eqiad.wmnet
+# - $listener['service'] otherwise
+function profile::services_proxy::envoy::svc_name( Profile::Service_listener $listener ) >> String {
+    if $listener['upstream'] {
+        $address = $listener['upstream']
+        if $address =~ /^([^.]+)\.discovery\.wmnet$/ {
+            return $1
+        }
+        elsif $address =~ /^[^.]+\.svc\.([^.]+)\.wmnet$/ {
+            return "${listener['service']}_${1}"
+        }
+        elsif $address =~ /^[^.]+\.([^.]+)\.wikimedia\.org$/ {
+            return "${listener['service']}_${1}"
+        }
+        else {
+            return $listener['service']
+        }
+    } else {
+        return $listener['service']
     }
 }

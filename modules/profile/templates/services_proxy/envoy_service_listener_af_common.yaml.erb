@@ -48,6 +48,28 @@ filter_chains:
         - name: <%= n %>
           domains: ["*"]
           routes:
+          <%- if @listener['split'] %>
+          - match:
+              prefix: "/"
+              runtime_fraction:
+                default_value:
+                  numerator: <%= @listener['split']['percentage'] %>
+                  denominator: HUNDRED
+                runtime_key: routing.traffic_shift.<%= @svc_name %>
+            route:
+              <%- if @listener['http_host'] -%>
+              host_rewrite_literal: <%= @listener['http_host'] %>
+              <%- end -%>
+              <%- if @listener['sets_sni'] && !@listener['http_host'] -%>
+              auto_host_rewrite: true
+              <%- end -%>
+              cluster: <%= @svc_name %>-split
+              timeout: <%= @listener['timeout'] %>
+              retry_policy:
+              <%- @retry_policy.each do |k,v| -%>
+                <%= k %>: <%= scope.call_function('to_json',[v]) %>
+              <%- end -%>
+          <%- end -%>
           - match:
               prefix: "/"
             route:
