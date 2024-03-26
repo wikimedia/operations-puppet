@@ -13,6 +13,7 @@ class role::doc {
     include ::profile::firewall
     include ::profile::backup::host
     include ::profile::doc
+    include ::profile::prometheus::apache_exporter
 
     if $::realm == 'production' {
         include ::profile::tlsproxy::envoy
