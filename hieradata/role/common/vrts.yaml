@@ -17,7 +17,11 @@ profile::vrts::http_proxy: 'webproxy.eqiad.wmnet:8080'
 profile::mail::default_mail_relay::enabled: false
 
 # envoy for TLS termination behind ATS
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "ticket.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - ticket.wikimedia.org
 profile::tlsproxy::envoy::upstream_response_timeout: 130.0
 profile::tlsproxy::envoy::tls_port: 1443
 
