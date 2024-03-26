@@ -215,8 +215,6 @@ role::netmon:
   target-q: TBD
 role::analytics_cluster::coordinator:
   target-q: TBD
-role::analytics_cluster::coordinator::replica:
-  target-q: TBD
 role::analytics_cluster::hadoop::master:
   target-q: TBD
 role::analytics_cluster::hadoop::standby:

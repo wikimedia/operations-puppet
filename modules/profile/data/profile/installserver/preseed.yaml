@@ -23,12 +23,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-airflow*':
     - partman/flat.cfg
     - virtual.cfg
-  'an-coord1001*':
-    - reuse-parts-test.cfg
-    - partman/custom/reuse-analytics-raid1-2dev.cfg
-  'an-coord1002*':
-    - reuse-parts-test.cfg
-    - partman/custom/reuse-analytics-hadoop-coord.cfg
   'an-coord100[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg

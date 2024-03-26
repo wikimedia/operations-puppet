@@ -175,9 +175,7 @@ hadoop: A:hadoop-worker or A:hadoop-master or A:hadoop-standby
 hadoop-all: A:hadoop or A:hadoop-coordinator
 hadoop-test: A:hadoop-worker-test or A:hadoop-master-test or A:hadoop-standby-test or A:hadoop-coordinator-test or A:hadoop-ui-test or A:hadoop-client-test
 hadoop-all-test: A:hadoop-test or A:hadoop-coordinator-test
-hadoop-coordinator: A:hadoop-coordinator-primary or A:hadoop-coordinator-secondary
-hadoop-coordinator-primary: P{O:analytics_cluster::coordinator}
-hadoop-coordinator-secondary: P{O:analytics_cluster::coordinator::replica}
+hadoop-coordinator: P{O:analytics_cluster::coordinator}
 hadoop-coordinator-test: P{O:analytics_test_cluster::coordinator}
 hadoop-hdfs-journal: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker
 hadoop-master: P{O:analytics_cluster::hadoop::master}

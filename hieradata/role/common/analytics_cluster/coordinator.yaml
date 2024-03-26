@@ -25,7 +25,7 @@ profile::hive::server::ferm_srange: '(($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORK
 profile::hive::metastore::monitoring_enabled: true
 profile::hive::metastore::ferm_srange: '(($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))'
 
-# Override to force the Hive Server 2 on an-coord1001 to use its local
+# Override to force the Hive Server 2 on an-coord1003 to use its local
 # Metastore.
 profile::hive::client::hive_metastore_host: '%{::fqdn}'
 

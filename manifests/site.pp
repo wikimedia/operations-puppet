@@ -60,12 +60,8 @@ node /^an-master1004\.eqiad\./ {
     role(analytics_cluster::hadoop::standby)
 }
 
-node /^an-coord100[134]\.eqiad\./ {
+node /^an-coord100[34]\.eqiad\./ {
     role(analytics_cluster::coordinator)
-}
-
-node /^an-coord1002\.eqiad\./ {
-    role(analytics_cluster::coordinator::replica)
 }
 
 node /^an-db100[1-2]\.eqiad\./ {

@@ -17,7 +17,7 @@ profile::logrotate::hourly: true
 # (like hive) to have principals like:
 # hive/analytics-hive.eqiad.wmnet@WIKIMEDIA
 # as opposed to the more canonical ones like:
-# hive/an-coord1001.eqiad.wmnet@WIKIMEDIA
+# hive/an-coord1003.eqiad.wmnet@WIKIMEDIA
 # The goal is to have services that can share a principal,
 # and use DNS CNAMEs (like analytics-hive.eqiad.wmnet) to
 # achieve better availability/failover.

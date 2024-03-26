@@ -21,11 +21,11 @@ class profile::hive::client(
     # metastore co-located rather than the one referenced by the metastore_host
     # variable, since it could be a DNS CNAME. Example:
     #
-    # analytics-hive.eqiad.wmnet -> resolves to -> an-coord1001
+    # analytics-hive.eqiad.wmnet -> resolves to -> an-coord1003
     #
-    # If we have a metastore on an-coord1002, and metastore_host=analytics-hive.eqiad.wmnet,
+    # If we have a metastore on an-coord1004, and metastore_host=analytics-hive.eqiad.wmnet,
     # then the hive server on the same node would point to the metastore on 1001.
-    # This would work but then if an-coord1001 went down, the failover of the DNS CNAME
+    # This would work but then if an-coord1003 went down, the failover of the DNS CNAME
     # wouldn't be enough, since the hive server on 1002 would still point to the metastore
     # on 1001 (and a restart would be needed to pick up the new settings).
     $metastore_host = $hive_metastore_host ? {
