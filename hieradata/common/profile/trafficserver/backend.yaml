@@ -96,9 +96,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://wikitech.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
     - type: map
-      target: http://hue.wikimedia.org
-      replacement: https://an-tool1009.eqiad.wmnet
-    - type: map
       target: http://integration.wikimedia.org
       replacement: https://contint.wikimedia.org:1443
     - type: map
