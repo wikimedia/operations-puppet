@@ -422,7 +422,8 @@ groups:
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
-              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur]
+              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
+              georgemikesell]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6292,6 +6293,17 @@ users:
     krb: present
     expiry_date: "2024-04-30"
     expiry_contact: odimitrijevic@wikimedia.org
+  georgemikesell:
+    ensure: present
+    realname: George Mikesell
+    email: gmikesell-ctr@wikimedia.org
+    uid: 42733
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOnm+TGg4lLdOeDMaeB+X8Gtkjn84OJvzX4FRkjTUvnm gmikesell-ctr@wikimedia.org'
+    krb: present
+    expiry_date: "2025-06-30"
+    expiry_contact: jbranaa@wikimedia.org
 
 ldap_only_users:
   adavenport:
