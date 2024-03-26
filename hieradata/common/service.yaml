@@ -3370,7 +3370,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: similar-users
         active_active: true
