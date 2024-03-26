@@ -24,7 +24,9 @@ class profile::mediawiki::maintenance::wikidata() {
             wmflib::service::get_i13n_for_lvs_class($my_lvs_class, 'codfw')
         ].map |$host| { "--lb ${host}:9090" }.join(' ')
 
-        $additional_args = "--lb-pool ${svc_lbl} ${lb}"
+        # Set this value relatively low to account for wdqs@codfw which is receiving a lot less traffic than eqiad (see T360993#9669374)
+        $pooled_server_min_query_rate = 0.2
+        $additional_args = "--lb-pool ${svc_lbl} ${lb} --pooled-server-min-query-rate ${pooled_server_min_query_rate}"
         profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
             command  => "/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet ${additional_args}",
             interval => '*-*-* *:*:00'
