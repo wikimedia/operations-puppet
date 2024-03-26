@@ -1,0 +1,2 @@
+# bookworm jdk override
+logstash::java_package: openjdk-17-jdk
