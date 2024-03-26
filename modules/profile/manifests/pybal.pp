@@ -12,6 +12,9 @@ class profile::pybal(
     Optional[Integer] $override_bgp_med = lookup('profile::pybal::override_bgp_med', {'default_value' => undef}),
     Boolean $ipip_enabled = lookup('profile::pybal::ipip_enabled', {'default_value'                   => false}),
 ) {
+    # required for monitoring changes to the pybal.conf file
+    ensure_packages(['python3-pystemd'])
+
     # Includes all the common configs.
     include profile::lvs::configuration
     $services = wmflib::service::get_services_for_lvs($profile::lvs::configuration::lvs_class, $::site)
