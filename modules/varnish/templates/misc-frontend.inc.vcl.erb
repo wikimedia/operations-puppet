@@ -7,7 +7,7 @@ sub cluster_fe_vcl_switch {
 }
 
 sub cluster_fe_recv_pre_purge {
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ phabricator_abusers && req.http.Host == "phabricator.wikimedia.org") {
+    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ phabricator_abusers && (req.http.Host == "phabricator.wikimedia.org" || req.http.Host == "phab.wmfusercontent.org")) {
         return (synth(403, "Requests from your IP have been blocked, please contact noc@wikimedia.org"));
     }
 }
