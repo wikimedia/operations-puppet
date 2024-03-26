@@ -216,6 +216,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--force", action="store_true", help="Run without user interaction"
     )
+    parser.add_argument(
+        "--allow-unattended-format",
+        action="store_true",
+        help="Allow formatting volume contents without user interaction (this might cause data loss!)",  # noqa: E501
+    )
     args = parser.parse_args()
 
     if args.force:
@@ -227,6 +232,8 @@ if __name__ == "__main__":
         args = get_args(devdict, args)
 
     if devdict[args.device]["canformat"]:
+        if args.force and not args.allow_unattended_format:
+            exit("Refusing to format volume in non-interactive mode without --allow-unattended-format")  # noqa: E501
         format_volume(args)
 
     mount_volume(args)
