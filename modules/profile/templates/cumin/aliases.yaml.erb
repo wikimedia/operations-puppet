@@ -187,9 +187,8 @@ hadoop-hdfs-journal-test: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker-t
 hadoop-testcluster: A:hadoop-test or A:hadoop-client-test or A:hadoop-ui-test or A:druid-test or A:presto-analytics-test
 hadoop-client: P{O:statistics::explorer}
 hadoop-client-test: P{O:analytics_test_cluster::client}
-hadoop-ui: A:hadoop-hue or A:hadoop-yarn
+hadoop-ui: A:hadoop-yarn
 hadoop-yarn: P{O:analytics_cluster::hadoop::yarn}
-hadoop-hue: P{an-tool1009.eqiad.wmnet}
 hadoop-ui-test: P{O:analytics_test_cluster::hadoop::ui}
 icinga: P{O:alerting_host}
 idm: P{O:idm} or A:idm-test
