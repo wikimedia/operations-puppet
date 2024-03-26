@@ -142,9 +142,9 @@ class profile::kubernetes::deployment_server::global_config (
     # and therefore not accessible here. Lookup all redis::misc instances from puppetdb instead.
     $redis_misc_resources = wmflib::puppetdb_query('resources[title] { type = "Redis::Instance" and certname in resources[certname] { type = "Class" and title = "Role::Redis::Misc::Master" } group by title }')
     $redis_misc_instances = $redis_misc_resources.map |$r| { $r['title'] }
-    $external_service_redis_misc = $redis_misc_instances.map |$port| {
+    $external_service_redis = $redis_misc_instances.map |$port| {
       {
-        "redis-misc-${port}" => {
+        "redis-${port}" => {
           '_meta' => {
             'ports' => [
               {
@@ -153,7 +153,9 @@ class profile::kubernetes::deployment_server::global_config (
               },
             ],
           },
-          'instances' => $redis_misc_ips,
+          'instances' => {
+            'misc' => $redis_misc_ips,
+          },
         },
       }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
@@ -294,7 +296,7 @@ class profile::kubernetes::deployment_server::global_config (
           },
         },
       },
-      $external_service_redis_misc,
+      $external_service_redis,
     )
 
     # Per-cluster general defaults.
