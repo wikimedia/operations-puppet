@@ -76,6 +76,18 @@ class profile::pybal(
         services      => $services,
     }
 
+    nrpe::plugin { 'check_pybal_restart':
+        source => 'puppet:///modules/profile/monitoring/check_service_restart.py',
+    }
+
+    nrpe::monitor_service { 'check_service_restart_pybal':
+        description    => 'Check if Pybal has been restarted after pybal.conf was changed',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_pybal_restart --service pybal.service --file /etc/pybal/pybal.conf',
+        check_interval => 120, # 120mins
+        retry_interval => 60,  # 60mins
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal#Pybal_service_has_not_been_restarted',
+    }
+
     # Sites with MediaWiki appservers need runcommand
     if $::site in keys($wikimedia_clusters['appserver']['sites']) {
         class { '::lvs::balancer::runcommand': }
