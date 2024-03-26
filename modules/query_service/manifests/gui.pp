@@ -27,6 +27,7 @@ class query_service::gui(
     String $blazegraph_main_ns,
     Boolean $oauth,
     Optional[Stdlib::HTTPSUrl] $gui_url,
+    Array[String] $monitoring_user_agents
 ) {
     $port = 80
     $additional_port = 8888

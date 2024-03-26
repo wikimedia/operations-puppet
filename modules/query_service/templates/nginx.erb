@@ -1,5 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 limit_conn_zone $http_x_client_ip zone=byaddr:10m;
+map_hash_bucket_size 128;
 
 # Namespace alias map: alias -> real namespace
 # http://nginx.org/en/docs/http/ngx_http_map_module.html states that
@@ -16,6 +17,16 @@ map $http_accept $accept {
 "" "*/*";
 default $http_accept;
 }
+
+<%- if @monitoring_user_agents != [] %>
+# Attach an X-Monitoring-Query header if we detect a user-agent used by our o11y sensors
+map $http_user_agent $monitoring_ua {
+<% @monitoring_user_agents.each do |monitoring_ua| -%>
+  "<%= monitoring_ua %>" "true";
+<% end -%>
+  default "";
+}
+<% end -%>
 
 server {
     listen <%= @port %> default_server;
@@ -209,6 +220,9 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        <%- if @monitoring_user_agents != [] %>
+        proxy_set_header X-Monitoring-Query $monitoring_ua;
+        <%- end %>
 
         # Default 60 second max query time
         set $xmaxqueryheader "<%= @max_query_time_millis %>";

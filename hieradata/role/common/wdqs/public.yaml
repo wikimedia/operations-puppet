@@ -85,3 +85,10 @@ profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# User agents known to send monitoring queries
+profile::query_service::monitoring_user_agents:
+  - "check_http/v2.3.3 (monitoring-plugins 2.3.3)"
+  - "Twisted PageGetter"
+  - "prometheus-public-sparql-ep-check"
+  - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
