@@ -92,12 +92,6 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  hue:
-    id: 14
-    service_id: 'https://hue\.wikimedia\.org(/.*)?'
-    required_groups:
-      - nda
-      - wmf
   alerts:
     id: 15
     service_id: 'https://alerts\.wikimedia\.org(/.*)?'
