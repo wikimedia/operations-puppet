@@ -9,8 +9,7 @@ profile::elasticsearch::instances:
         transport_tcp_port: 9300
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2042.codfw.wmnet # row B TODO replace with new master
-          - elastic2093.codfw.wmnet # row B (will replace elastic2042 as master)
+          - elastic2093.codfw.wmnet # row B
           - elastic2061.codfw.wmnet # row A
           - elastic2074.codfw.wmnet # row A
           - elastic2081.codfw.wmnet # row C
@@ -119,10 +118,11 @@ profile::elasticsearch::instances:
         heap_memory: '10G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2042.codfw.wmnet # row B TODO replace with new master
-          - elastic2092.codfw.wmnet # row B (will replace elastic2042 as master)
-          - elastic2047.codfw.wmnet # row C TODO replace with new master
-          - elastic2052.codfw.wmnet # row D TODO replace with new master
+          - elastic2092.codfw.wmnet # row B
+          - elastic2047.codfw.wmnet # row C TODO remove
+          - elastic2100.codfw.wmnet # row C (will replace elastic2047.codfw.wmnet)
+          - elastic2052.codfw.wmnet # row D TODO remove
+          - elastic2106.codfw.wmnet # row D (will replace elastic2052.codfw.wmnet)
           - elastic2073.codfw.wmnet # row A
           - elastic2086.codfw.wmnet # row D
 
@@ -188,8 +188,7 @@ profile::elasticsearch::instances:
         heap_memory: '10G'
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
-          - elastic2054.codfw.wmnet # row D TODO replace with new master
-          - elastic2108.codfw.wmnet # row D (will replace elastic2054 as master)
+          - elastic2108.codfw.wmnet # row D
           - elastic2075.codfw.wmnet # row A
           - elastic2076.codfw.wmnet # row A
           - elastic2080.codfw.wmnet # row B
