@@ -47,7 +47,6 @@ profile::lvs::realserver::pools:
   shellbox-media: {}
   shellbox-syntaxhighlight: {}
   shellbox-timeline: {}
-  similar-users: {}
   thumbor: {}
   toolhub: {}
   linkrecommendation: {}
