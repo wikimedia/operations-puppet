@@ -22,7 +22,7 @@ define profile::kafka::burrow(
         kafka_cluster_name => $kafka_cluster_name,
         kafka_brokers      => $config['brokers']['array'],
         smtp_server        => $smtp_server,
-        from_email         => "burrow@${::fqdn}",
+        from_email         => 'Burrow <noreply@wikimedia.org>',
         to_email           => $to_email,
         lagcheck_intervals => 100,
         httpserver_port    => $burrow_http_port,
