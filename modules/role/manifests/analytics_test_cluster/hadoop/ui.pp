@@ -1,6 +1,6 @@
 # Class: role::analytics_test_cluster::hadoop::ui
 #
-# Hadoop GUIs.  Currently hue and yarn resourcemanager web interfaces.
+# Hadoop GUIs.  Currently the yarn resourcemanager web interface.
 #
 class role::analytics_test_cluster::hadoop::ui {
     system::role { 'analytics_cluster::hadoop::ui':
