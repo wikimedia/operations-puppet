@@ -31,7 +31,7 @@ profile::opensearch::dashboards::httpd_proxy::auth_file: '/etc/logstash/htpasswd
 profile::opensearch::dashboards::httpd_proxy::auth_type: 'local'
 profile::opensearch::dashboards::httpd_proxy::auth_realm: 'local'
 profile::opensearch::dashboards::httpd_proxy::vhost: 'beta-logs.wmcloud.org'
-profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-01.logging.eqiad1.wikimedia.cloud'
+profile::opensearch::dashboards::httpd_proxy::serveradmin: 'root@logging-logstash-03.logging.eqiad1.wikimedia.cloud'
 profile::opensearch::dashboards::phatality::provision_scap: false
 
 profile::opensearch::version: '2.0.0'
@@ -51,8 +51,8 @@ profile::opensearch::dc_settings:
     - logging-opensearch-ssd-06.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-hdd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-hdd-02.logging.eqiad1.wikimedia.cloud
-    - logging-logstash-01.logging.eqiad1.wikimedia.cloud
     - logging-logstash-02.logging.eqiad1.wikimedia.cloud
+    - logging-logstash-03.logging.eqiad1.wikimedia.cloud
   unicast_hosts:
     - logging-opensearch-ssd-01.logging.eqiad1.wikimedia.cloud
     - logging-opensearch-ssd-02.logging.eqiad1.wikimedia.cloud
@@ -253,8 +253,8 @@ profile::grafana::config:
   auth.proxy:
     enabled: false
 profile::grafana::loki::allow_from:
-  - 'logging-logstash-01.logging.eqiad1.wikimedia.cloud'
   - 'logging-logstash-02.logging.eqiad1.wikimedia.cloud'
+  - 'logging-logstash-03.logging.eqiad1.wikimedia.cloud'
 profile::grafana::loki::config:
   auth_enabled: false
   server:
