@@ -21,7 +21,7 @@ profile::benthos::instances: {}
 profile::logstash::collector::input_kafka_ssl_truststore_passwords:
   logging-beta: 'changeit'
 profile::logstash::collector::input_kafka_consumer_group_id: 'logging-logstash'
-profile::logstash::collector::output_public_loki_host: 'logging-grafana-01.logging.eqiad1.wikimedia.cloud'
+# profile::logstash::collector::output_public_loki_host: 'logging-grafana-01.logging.eqiad1.wikimedia.cloud'
 
 # There is no deployment server in the logging env.
 scap::deployment_server: "%{facts.fqdn}"
