@@ -2,7 +2,16 @@
 # Configures a full sink of all requests to https to the http port
 # cert_name is omitted in the service definition so that we only
 # configure the non-sni version.
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "webserver-misc-apps.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - os-reports.wikimedia.org
+    - commons-query.wikimedia.org
+    - query-full-experimental.wikidata.org
+    - query-main-experimental.wikidata.org
+    - query-scholarly-experimental.wikidata.org
+    - query.wikidata.org
 profile::miscweb::rsync::src_host: 'miscweb1003.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb2003.codfw.wmnet'
