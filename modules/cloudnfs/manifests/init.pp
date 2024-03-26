@@ -40,8 +40,9 @@ class cloudnfs (
     # For some reason this isn't created during install of the nfs
     # server, which causes failures in the nfsdcltrack init
     file { '/var/lib/nfs/nfsdcltrack/':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
+        ensure  => directory,
+        owner   => 'root',
+        group   => 'root',
+        require => Package['nfs-kernel-server'],
     }
 }
