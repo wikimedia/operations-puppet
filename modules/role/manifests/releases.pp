@@ -41,4 +41,5 @@ class role::releases {
     include profile::releases::blubber
     include profile::releases::wikibase
     include profile::tlsproxy::envoy # TLS termination
+    include ::profile::prometheus::apache_exporter
 }
