@@ -97,6 +97,26 @@ class EncConnection:
 
         return response
 
+    def get_prefix_roles(self, prefix: str) -> requests.Response:
+        response = self.session.get(
+            "{0}/prefix/{1}/roles".format(
+                self.enc_url,
+                prefix,
+            ),
+            headers={"Accept": "application/x-yaml"},
+            raise_exc=False,
+        )
+        if not response.ok:
+            raise EncError(
+                "Unable to get prefix roles for "
+                f"enc_url='{self.enc_url}', "
+                f"prefix='{prefix}', "
+                f"openstack_project='{self.openstack_project}'"
+                f"\n{response}"
+            )
+
+        return response
+
     def set_prefix_roles(self, prefix: str, data: str) -> requests.Response:
         response = self.session.post(
             "{0}/prefix/{1}/roles".format(
