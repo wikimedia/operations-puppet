@@ -3,3 +3,5 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s7: 150G
   s8: 192G
+# See: T361037
+profile::monitoring::notifications_enabled: false
