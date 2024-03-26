@@ -8,6 +8,7 @@ class profile::logstash::common (
   OpenSearch::InstanceParams $dc_settings       = lookup('profile::opensearch::dc_settings'),
   Stdlib::Port               $jmx_exporter_port = lookup('profile::logstash::collector::jmx_exporter_port', { 'default_value' => 7800 }),
   Optional[Stdlib::Unixpath] $java_home         = lookup('profile::logstash::java_home',                    { 'default_value' => undef }),
+  Optional[String]           $java_package      = lookup('profile::logstash::java_package',                 { 'default_value' => undef }),
 ) {
 
   require ::profile::java
@@ -38,7 +39,7 @@ class profile::logstash::common (
     log_format          => 'json',
     enable_dlq          => true,
     dlq_hosts           => $dc_settings['cluster_hosts'],
-    java_package        => 'openjdk-11-jdk',
+    java_package        => pick($java_package, $profile::java::default_package_name),
     logstash_package    => 'logstash-oss',
     logstash_version    => 7,
     gc_log              => false,
