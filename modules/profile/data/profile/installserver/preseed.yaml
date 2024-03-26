@@ -72,9 +72,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-tool10[0-1][1-9]*|an-test-presto*':
     - partman/flat.cfg
     - virtual.cfg
-  'an-tool1010*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'an-test-client*|an-test-ui*|an-test-druid*':
     - partman/flat.cfg
     - virtual.cfg
