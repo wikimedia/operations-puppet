@@ -77,22 +77,12 @@ def run_remote(node, username, keyfile, cmd, debug=False):
 
 
 def purge_leaks(delete=False):
-
-    allcerts = []
-    try:
-        cert_list_output = run_remote(
-            puppetmaster,
-            puppetmaster_username,
-            puppetmaster_keyfile,
-            "sudo /usr/bin/puppetserver ca list --all --format json",
-            debug=True,
-        )
-    except subprocess.CalledProcessError:
-        exit(
-            "Unable to contact the puppetmaster. Probably you need to temporarily "
-            "add the 'osstackcanary' user to the cloudinfra project. Don't leave it "
-            "there though!"
-        )
+    cert_list_output = run_remote(
+        puppetmaster,
+        puppetmaster_username,
+        puppetmaster_keyfile,
+        "sudo /usr/bin/puppetserver ca list --all --format json",
+    )
     allcerts = [cert['name']
                 for cert in json.loads(cert_list_output)['signed']]
 
