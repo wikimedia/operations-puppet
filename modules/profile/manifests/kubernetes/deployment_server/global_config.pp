@@ -295,6 +295,20 @@ class profile::kubernetes::deployment_server::global_config (
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::coordinator'),
           },
         },
+        'cassandra'  => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name'     => 'cassandra-client',
+                'port'     => 9042,
+                'protocol' => 'TCP'
+              },
+            ],
+          },
+          'instances' => {
+            'ml-cassandra' => wmflib::role::ips('ml_cache::storage'),
+          },
+        },
       },
       $external_service_redis,
     )
