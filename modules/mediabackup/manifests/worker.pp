@@ -65,6 +65,7 @@ class mediabackup::worker (
 ) {
     ensure_packages([
         'mediabackups',
+        'rclone',
         's3cmd',  # optional, but useful s3 command line util
     ])
 
