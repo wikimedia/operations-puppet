@@ -1,6 +1,13 @@
 profile::spicerack::etcd_config: /etc/etcd/etcdrc
 profile::spicerack::firmware_store_dir: /srv/firmware
 profile::spicerack::cookbooks_repos: {}
+profile::spicerack::alertmanager_config_data:
+  default_instance: production
+  instances:
+    production:
+      urls:
+        - https://alertmanager-eqiad.wikimedia.org
+        - https://alertmanager-codfw.wikimedia.org
 profile::spicerack::ganeti_auth_data:
   username: "%{alias('profile::ganeti::rapi::ro_user')}"
   password: "%{alias('profile::ganeti::rapi::ro_password')}"

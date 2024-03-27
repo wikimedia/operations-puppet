@@ -41,6 +41,8 @@ lookup_options:
     merge: hash
   profile::idp::services:
     merge: deep
+  profile::spicerack::alertmanager_config_data:
+    merge: deep
   profile::spicerack::peeringdb_config_data:
     merge: hash
   profile::spicerack::mysql_config_data:

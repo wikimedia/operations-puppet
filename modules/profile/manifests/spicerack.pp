@@ -8,7 +8,8 @@
 # @param netbox_api the url for the netbox api
 # @param firmware_store_dir The location to store firmware images
 # @param cookbooks_repos key value pair of cookbook repos and the directory to install them to
-# @param ganeti_auth_data geneti config data
+# @param alertmanager_config_data Alertmanager config data
+# @param ganeti_auth_data Ganeti config data
 # @param netbox_config_data netbox config data
 # @param peeringdb_config_data peeringdb config data
 # @param elasticsearch_config_data elastic config data
@@ -17,20 +18,21 @@
 # @param configure_kafka if true configure kafka
 # @param cookbooks_dependencies packages needed by specific installed cookbooks
 class profile::spicerack (
-    String                         $tcpircbot_host            = lookup('tcpircbot_host'),
-    Stdlib::Port                   $tcpircbot_port            = lookup('tcpircbot_port'),
-    String                         $http_proxy                = lookup('http_proxy'),
-    Optional[Stdlib::Unixpath]     $etcd_config               = lookup('profile::spicerack::etcd_config'),
-    Stdlib::Unixpath               $firmware_store_dir        = lookup('profile::spicerack::firmware_store_dir'),
-    Hash[String, Stdlib::Unixpath] $cookbooks_repos           = lookup('profile::spicerack::cookbooks_repos'),
-    Hash                           $ganeti_auth_data          = lookup('profile::spicerack::ganeti_auth_data'),
-    Hash                           $netbox_config_data        = lookup('profile::spicerack::netbox_config_data'),
-    Hash                           $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
-    Hash                           $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
-    Hash                           $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
-    Hash                           $authdns_config_data       = lookup('authdns_servers'),
-    Boolean                        $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
-    Array[String[1]]               $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),
+    String                                 $tcpircbot_host            = lookup('tcpircbot_host'),
+    Stdlib::Port                           $tcpircbot_port            = lookup('tcpircbot_port'),
+    String                                 $http_proxy                = lookup('http_proxy'),
+    Optional[Stdlib::Unixpath]             $etcd_config               = lookup('profile::spicerack::etcd_config'),
+    Stdlib::Unixpath                       $firmware_store_dir        = lookup('profile::spicerack::firmware_store_dir'),
+    Hash[String, Stdlib::Unixpath]         $cookbooks_repos           = lookup('profile::spicerack::cookbooks_repos'),
+    Profile::Spicerack::AlertmanagerConfig $alertmanager_config_data  = lookup('profile::spicerack::alertmanager_config_data'),
+    Hash                                   $ganeti_auth_data          = lookup('profile::spicerack::ganeti_auth_data'),
+    Hash                                   $netbox_config_data        = lookup('profile::spicerack::netbox_config_data'),
+    Hash                                   $peeringdb_config_data     = lookup('profile::spicerack::peeringdb_config_data'),
+    Hash                                   $elasticsearch_config_data = lookup('profile::spicerack::elasticsearch_config_data'),
+    Hash                                   $mysql_config_data         = lookup('profile::spicerack::mysql_config_data'),
+    Hash                                   $authdns_config_data       = lookup('authdns_servers'),
+    Boolean                                $configure_kafka           = lookup('profile::spicerack::configure_kafka'),
+    Array[String[1]]                       $cookbooks_dependencies    = lookup('profile::spicerack::cookbooks_dependencies', {default_value => []}),
 ) {
     ensure_packages(['spicerack'] + $cookbooks_dependencies)
 
@@ -66,6 +68,7 @@ class profile::spicerack (
     # TODO: refactor this after we move to puppet >= 6
     # or possibly after https://gerrit.wikimedia.org/r/c/operations/puppet/+/868739
     $modules = {
+        'alertmanager'  => { 'config.yaml'  => $alertmanager_config_data },
         'elasticsearch' => { 'config.yaml'  => $elasticsearch_config_data },
         'ganeti'        => { 'config.yaml'  => $ganeti_auth_data },
         'kafka'         => { 'config.yaml'  => $kafka_config_data },
