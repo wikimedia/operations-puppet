@@ -112,8 +112,8 @@ php_fpm_always_restart: True
 canary_dashboard_url: https://logstash.wikimedia.org
 #php7-admin-port: <%= @php7_admin_port %>
 mw_web_clusters: appserver,api_appserver,testserver,parsoid_php
-testservers_check_cmd_baremetal: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=$BAREMETAL_TESTSERVERS
-testservers_check_cmd_k8s: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444
+testservers_check_cmd_baremetal: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=$BAREMETAL_TESTSERVERS --retry_on_timeout
+testservers_check_cmd_k8s: httpbb /srv/deployment/httpbb-tests/appserver/* --hosts=mwdebug.discovery.wmnet --https_port=4444 --retry_on_timeout
 
 beta_only_config_files: wmf-config/CirrusSearch-labs.php
                         wmf-config/CommonSettings-labs.php
