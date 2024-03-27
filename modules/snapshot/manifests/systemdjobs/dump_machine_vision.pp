@@ -5,6 +5,7 @@ class snapshot::systemdjobs::dump_machine_vision(
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { '/usr/local/bin/dump-machine-vision.sh':
+        ensure => absent,
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
@@ -13,7 +14,7 @@ class snapshot::systemdjobs::dump_machine_vision(
 
     if !$filesonly {
         systemd::timer::job { 'machine_vision_dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of machine vision data',
             user               => $user,
             monitoring_enabled => false,
