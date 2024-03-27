@@ -16,23 +16,6 @@ profile::elasticsearch::instances:
           - elastic2084.codfw.wmnet # row D
 
         cluster_hosts:
-          - elastic2037.codfw.wmnet
-          - elastic2038.codfw.wmnet
-          - elastic2039.codfw.wmnet
-          - elastic2040.codfw.wmnet
-          - elastic2041.codfw.wmnet
-          - elastic2042.codfw.wmnet
-          - elastic2043.codfw.wmnet
-          - elastic2044.codfw.wmnet
-          - elastic2045.codfw.wmnet
-          - elastic2046.codfw.wmnet
-          - elastic2047.codfw.wmnet
-          - elastic2048.codfw.wmnet
-          - elastic2050.codfw.wmnet
-          - elastic2051.codfw.wmnet
-          - elastic2052.codfw.wmnet
-          - elastic2053.codfw.wmnet
-          - elastic2054.codfw.wmnet
           - elastic2055.codfw.wmnet
           - elastic2056.codfw.wmnet
           - elastic2057.codfw.wmnet
@@ -119,19 +102,15 @@ profile::elasticsearch::instances:
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2092.codfw.wmnet # row B
-          - elastic2047.codfw.wmnet # row C TODO remove
-          - elastic2100.codfw.wmnet # row C (will replace elastic2047.codfw.wmnet)
-          - elastic2052.codfw.wmnet # row D TODO remove
-          - elastic2106.codfw.wmnet # row D (will replace elastic2052.codfw.wmnet)
+          - elastic2100.codfw.wmnet # row C
+          - elastic2106.codfw.wmnet # row D
           - elastic2073.codfw.wmnet # row A
           - elastic2086.codfw.wmnet # row D
 
         cluster_hosts:
           # row A
-          - elastic2037.codfw.wmnet
-          - elastic2087.codfw.wmnet # (will replace elastic2037.codfw.wmnet)
-          - elastic2038.codfw.wmnet
-          - elastic2088.codfw.wmnet # (will replace elastic2038.codfw.wmnet)
+          - elastic2087.codfw.wmnet
+          - elastic2088.codfw.wmnet
           - elastic2056.codfw.wmnet
           - elastic2061.codfw.wmnet
           - elastic2073.codfw.wmnet
@@ -139,10 +118,8 @@ profile::elasticsearch::instances:
           - elastic2090.codfw.wmnet
 
           # row B
-          - elastic2041.codfw.wmnet
-          - elastic2092.codfw.wmnet # (will replace elastic2041.codfw.wmnet)
-          - elastic2042.codfw.wmnet
-          - elastic2093.codfw.wmnet # (will replace elastic2042.codfw.wmnet)
+          - elastic2092.codfw.wmnet
+          - elastic2093.codfw.wmnet
           - elastic2057.codfw.wmnet
           - elastic2063.codfw.wmnet
           - elastic2070.codfw.wmnet
@@ -150,24 +127,18 @@ profile::elasticsearch::instances:
           - elastic2097.codfw.wmnet
 
           # row C
-          - elastic2045.codfw.wmnet
-          - elastic2098.codfw.wmnet # (will replace elastic2045.codfw.wmnet)
-          - elastic2046.codfw.wmnet
-          - elastic2099.codfw.wmnet # (will replace elastic2046.codfw.wmnet)
-          - elastic2047.codfw.wmnet
-          - elastic2100.codfw.wmnet # (will replace elastic2047.codfw.wmnet)
+          - elastic2098.codfw.wmnet
+          - elastic2099.codfw.wmnet
+          - elastic2100.codfw.wmnet
           - elastic2059.codfw.wmnet
           - elastic2065.codfw.wmnet
           - elastic2081.codfw.wmnet
           - elastic2102.codfw.wmnet
 
           # row D
-          - elastic2050.codfw.wmnet
-          - elastic2104.codfw.wmnet # (will replace elastic2050.codfw.wmnet)
-          - elastic2051.codfw.wmnet
-          - elastic2105.codfw.wmnet # (will replace elastic2051.codfw.wmnet)
-          - elastic2052.codfw.wmnet
-          - elastic2106.codfw.wmnet # (will replace elastic2052.codfw.wmnet)
+          - elastic2104.codfw.wmnet
+          - elastic2105.codfw.wmnet
+          - elastic2106.codfw.wmnet
           - elastic2067.codfw.wmnet
           - elastic2084.codfw.wmnet
           - elastic2086.codfw.wmnet
@@ -196,10 +167,8 @@ profile::elasticsearch::instances:
 
         cluster_hosts:
           # row A
-          - elastic2039.codfw.wmnet
-          - elastic2089.codfw.wmnet # (will replace elastic2039.codfw.wmnet)
-          - elastic2040.codfw.wmnet
-          - elastic2090.codfw.wmnet # (will replace elastic2040.codfw.wmnet)
+          - elastic2089.codfw.wmnet
+          - elastic2090.codfw.wmnet
           - elastic2055.codfw.wmnet
           - elastic2062.codfw.wmnet
           - elastic2069.codfw.wmnet
@@ -208,10 +177,8 @@ profile::elasticsearch::instances:
           - elastic2091.codfw.wmnet
 
           # row B
-          - elastic2043.codfw.wmnet
-          - elastic2094.codfw.wmnet # (will replace elastic2043.codfw.wmnet)
-          - elastic2044.codfw.wmnet
-          - elastic2095.codfw.wmnet # (will replace elastic2044.codfw.wmnet)
+          - elastic2094.codfw.wmnet
+          - elastic2095.codfw.wmnet
           - elastic2058.codfw.wmnet
           - elastic2064.codfw.wmnet
           - elastic2078.codfw.wmnet
@@ -220,8 +187,7 @@ profile::elasticsearch::instances:
           - elastic2096.codfw.wmnet
 
           # row C
-          - elastic2048.codfw.wmnet
-          - elastic2101.codfw.wmnet # (will replace elastic2048.codfw.wmnet)
+          - elastic2101.codfw.wmnet
           - elastic2066.codfw.wmnet
           - elastic2071.codfw.wmnet
           - elastic2072.codfw.wmnet
@@ -230,10 +196,8 @@ profile::elasticsearch::instances:
           - elastic2103.codfw.wmnet
 
           # row D
-          - elastic2053.codfw.wmnet
-          - elastic2107.codfw.wmnet # (will replace elastic2053.codfw.wmnet)
-          - elastic2054.codfw.wmnet
-          - elastic2108.codfw.wmnet # (will replace elastic2054.codfw.wmnet)
+          - elastic2107.codfw.wmnet
+          - elastic2108.codfw.wmnet
           - elastic2060.codfw.wmnet
           - elastic2068.codfw.wmnet
           - elastic2085.codfw.wmnet
