@@ -1,6 +1,3 @@
-profile::microsites::security::server_name: 'security.wikimedia.org'
-profile::microsites::security::server_admin: 'noc@wikimedia.org'
-
 # Envoy TLS termination configuration.
 # Configures a full sink of all requests to https to the http port
 # cert_name is omitted in the service definition so that we only
