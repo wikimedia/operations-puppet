@@ -31,7 +31,8 @@
 #
 define git::systemconfig(
     Hash[String, Hash[String, String]] $settings,
-    Integer[1,99] $priority = 10,
+    Integer[1,99]                      $priority = 10,
+    Wmflib::Ensure                     $ensure   = 'present',
 ) {
   include ::git::globalconfig
 
@@ -39,7 +40,7 @@ define git::systemconfig(
   $file_path = '/etc/gitconfig.d/%.2d-%s.gitconfig'.sprintf($priority, $safe_title)
 
   file { $file_path:
-    ensure  => present,
+    ensure  => stdlib::ensure($ensure, 'file'),
     owner   => 'root',
     group   => 'root',
     mode    => '0444',

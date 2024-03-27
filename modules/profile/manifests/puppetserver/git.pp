@@ -83,11 +83,8 @@ class profile::puppetserver::git (
         $dir = "${basedir}/${repo}"
 
         git::systemconfig { "mark puppet repo ${dir} as safe":
-            settings => {
-                'safe' => {
-                    'directory' => $dir,
-                },
-            },
+            ensure   => absent,
+            settings => {},
         }
 
         $origin = $config['origin'].lest || { "https://gerrit.wikimedia.org/r/${repo}" }
@@ -119,7 +116,7 @@ class profile::puppetserver::git (
                 origin    => $origin,
                 owner     => $user,
                 group     => $group,
-                require   => [File[$dir.dirname], Git::Systemconfig["mark puppet repo ${dir} as safe"]],
+                require   => File[$dir.dirname],
                 before    => Service['puppetserver'],
             }
             $git_require = Git::Clone[$repo]
