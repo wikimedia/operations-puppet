@@ -259,12 +259,6 @@ sub cluster_fe_ratelimit {
             return (synth(403, "Forbidden"));
         }
 
-        // 2024-02-26: Facebook saturating link with aggressive scrapping from multiple IPs - T358455
-        if (req.http.User-Agent ~ "^facebookexternalhit/") {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_facebook";
-            return (synth(403, "Forbidden. Facebook, please contact noc@wikimedia.org"));
-        }
-
         // geoshape limit rate: 10/10s (1/s long term, with 10 burst)
         if (req.http.Host == "<%= @vcl_config.fetch('maps_domain') %>" && req.url ~ "/geoshape") {
             if (vsthrottle.is_denied("maps-geoshape:" + req.http.X-Client-IP, 10, 10s)) {
@@ -307,11 +301,6 @@ sub cluster_fe_ratelimit_hit {
             set req.http.Retry-After = 600;
             return (synth(429, "Too many requests"));
         }
-    }
-    // 2024-02-26: Facebook saturating link with aggressive scrapping from multiple IPs - T358455
-    if (req.http.User-Agent ~ "^facebookexternalhit/") {
-        set req.http.X-Requestctl = req.http.X-Requestctl + ",static_facebook";
-        return (synth(403, "Forbidden. Facebook, please contact noc@wikimedia.org"));
     }
     set req.http.X-Requestctl = regsub(req.http.X-Requestctl, "^,", "");
 }
