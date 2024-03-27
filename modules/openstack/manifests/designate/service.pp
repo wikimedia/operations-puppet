@@ -43,6 +43,7 @@ class openstack::designate::service(
         mode    => '0644',
         source  => "puppet:///modules/openstack/${version}/designate/wmf_sink",
         recurse => true,
+        notify  => Service['designate-sink'],
     }
 
     file { '/usr/lib/python3/dist-packages/wmf_sink.egg-info':
@@ -51,6 +52,7 @@ class openstack::designate::service(
         mode    => '0644',
         source  => "puppet:///modules/openstack/${version}/designate/wmf_sink.egg-info",
         recurse => true,
+        notify  => Service['designate-sink'],
     }
 
     file { '/usr/lib/python3/dist-packages/nova_fixed_multi':
@@ -59,6 +61,7 @@ class openstack::designate::service(
         mode    => '0644',
         source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi",
         recurse => true,
+        notify  => Service['designate-sink'],
     }
 
     file { '/usr/lib/python3/dist-packages/nova_fixed_multi.egg-info':
@@ -67,6 +70,7 @@ class openstack::designate::service(
         mode    => '0644',
         source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi.egg-info",
         recurse => true,
+        notify  => Service['designate-sink'],
     }
 
     file { '/usr/lib/python3/dist-packages/wmfdesignatelib.py':
@@ -74,6 +78,7 @@ class openstack::designate::service(
         group  => 'root',
         mode   => '0644',
         source => "puppet:///modules/openstack/${version}/designate/wmfdesignatelib.py",
+        notify => Service['designate-sink'],
     }
 
     # Stage pools.yaml.  Updating this file won't change active config;
