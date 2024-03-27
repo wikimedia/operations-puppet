@@ -19,16 +19,18 @@
 #
 # filtertags: labs-project-deployment-prep
 class profile::opensearch::dashboards::httpd_proxy (
-    String                      $vhost        = lookup('profile::opensearch::dashboards::httpd_proxy::vhost'),
-    String                      $serveradmin  = lookup('profile::opensearch::dashboards::httpd_proxy::serveradmin'),
-    Enum['ldap','local','none'] $auth_type    = lookup('profile::opensearch::dashboards::httpd_proxy::auth_type'),
-    Boolean                     $require_ssl  = lookup('profile::opensearch::dashboards::httpd_proxy::require_ssl',  { 'default_value' => true }),
-    Optional[String]            $auth_realm   = lookup('profile::opensearch::dashboards::httpd_proxy::auth_realm',   { 'default_value' => undef }),
-    Optional[String]            $auth_file    = lookup('profile::opensearch::dashboards::httpd_proxy::auth_file',    { 'default_value' => undef }),
-    Optional[String]            $ldap_authurl = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_authurl', { 'default_value' => undef }),
-    Optional[String]            $ldap_binddn  = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_binddn',  { 'default_value' => undef }),
-    Optional[Array[String]]     $ldap_groups  = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_groups',  { 'default_value' => [] }),
-    Optional[Array[String]]     $aliases      = lookup('profile::opensearch::dashboards::httpd_proxy::aliases',      { 'default_value' => [] }),
+    String                            $vhost              = lookup('profile::opensearch::dashboards::httpd_proxy::vhost'),
+    String                            $serveradmin        = lookup('profile::opensearch::dashboards::httpd_proxy::serveradmin'),
+    Enum['ldap','local','none','sso'] $auth_type          = lookup('profile::opensearch::dashboards::httpd_proxy::auth_type'),
+    Boolean                           $require_ssl        = lookup('profile::opensearch::dashboards::httpd_proxy::require_ssl',       { 'default_value' => true }),
+    Optional[String]                  $auth_realm         = lookup('profile::opensearch::dashboards::httpd_proxy::auth_realm',        { 'default_value' => undef }),
+    Optional[String]                  $auth_file          = lookup('profile::opensearch::dashboards::httpd_proxy::auth_file',         { 'default_value' => undef }),
+    Optional[String]                  $ldap_authurl       = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_authurl',      { 'default_value' => undef }),
+    Optional[String]                  $ldap_binddn        = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_binddn',       { 'default_value' => undef }),
+    Optional[Array[String]]           $ldap_groups        = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_groups',       { 'default_value' => [] }),
+    Optional[Array[String]]           $aliases            = lookup('profile::opensearch::dashboards::httpd_proxy::aliases',           { 'default_value' => [] }),
+    Optional[String]                  $sso_client_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_client_secret', { 'default_value' => undef }),
+    Optional[String]                  $sso_cookie_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret', { 'default_value' => undef }),
 ) {
     $httpd_base_modules = [
         'proxy_http',
@@ -37,6 +39,14 @@ class profile::opensearch::dashboards::httpd_proxy (
         'headers',
         'rewrite'
     ]
+
+    if $auth_type == 'sso' {
+        # reverse proxy everything to oauth2-proxy
+        $upstream_port = 4180
+    } else {
+        # opensearch-dashboards
+        $upstream_port = 5601
+    }
 
     if $auth_type == 'ldap' {
         $httpd_extra_modules = ['authnz_ldap']
@@ -51,6 +61,17 @@ class profile::opensearch::dashboards::httpd_proxy (
     } elsif $auth_type == 'none' {
         $httpd_extra_modules = []
 
+    } elsif $auth_type == 'sso' {
+        $httpd_extra_modules = []
+
+        class { 'profile::oauth2_proxy::oidc':
+            upstreams     => 'http://localhost:5601',
+            client_id     => 'logstash_oidc',
+            client_secret => $sso_client_secret,
+            cookie_secret => $sso_cookie_secret,
+            cookie_domain => $vhost,
+            redirect_url  => "https://${vhost}/oauth2/callback",
+        }
     }
 
     $httpd_modules = concat($httpd_base_modules, $httpd_extra_modules)

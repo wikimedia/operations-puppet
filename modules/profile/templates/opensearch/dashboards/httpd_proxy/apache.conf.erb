@@ -30,13 +30,13 @@
   </Directory>
 
   <Location />
-    ProxyPass "http://localhost:5601/"
+    ProxyPass "http://localhost:<%= @upstream_port %>/"
 <%= @apache_auth -%>
   </Location>
 
   ProxyRequests Off
 
-  <Proxy http://localhost:5601>
+  <Proxy http://localhost:<%= @upstream_port %>>
     ProxySet connectiontimeout=5 timeout=90 retry=0
   </Proxy>
 
