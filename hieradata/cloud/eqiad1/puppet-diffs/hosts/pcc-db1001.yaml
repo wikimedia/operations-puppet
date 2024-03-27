@@ -51,17 +51,17 @@ puppet_compiler::uploader::realms:
   cloudinfra-internal:
     cloudinfra-internal-puppetserver-01: |
       -----BEGIN RSA PUBLIC KEY-----
-      MIICCgKCAgEA0MIIPIKkNSmDoRTAVLoekfVltNGsvML4i2xI6H9dfMY5Qo+iXE0s
-      q49wxxVllZ857KTIODYuKVhe8rjOPAiY+p+CrTLQnmEmkYVrOJwRDyBtbtQNh5u3
-      CmIRfHUhJWOYZOd5XE7IxlsMaUg32RFubz08qc14MBOI9tWOdETgu/VaBeGk4uPs
-      v973TB3Af1ofVrUNbk2hfpfsRONbF9MpJbq50LRfabMrzM8m49foZuu1HkRLazfM
-      kxEMa3Bj5V3fkTxwMY+aHRR/dY0WASe7bUkMVCZTs6U5MIxU+A+EzLo5L8OiQ6l7
-      haPMaom4LJAPBjmN+r4DzLzJjDUns9eJTbNe+ILTnVCCWNGtvgLgI7RGeizW6tFH
-      CQow2jTLv0OLBuve/8sJwnmwwbDw/TAkXU1oK3VktXJQSYkUfSt3OcBkLyW09UV4
-      eomFh42efNIF0jhetis2dXIxRrd7irps85G2tB4X9TYTFE2NEZb+RNjmEr5+FuHk
-      QVBMnUEuGqrcAFCoNSB9Mv3bB2EeccsfiOw/G4uvBAPs7O/++M+uUMeTXvasw9nU
-      glXsVQAzdHJKPDHiwTXpjcpE4rAr6tLCDKKig3106rRAh+Y+Vbehq3D3ajZgZOk0
-      y419cUanEa+y1k9fg7xrDlvzwoWKdHwcsA3eRq2a5mhvRNIRyQxybX0CAwEAAQ==
+      MIICCgKCAgEAkUFC6QwqjvLdCVMWSdbaa0U/a3rZsH0Fagw2V3W2VfWXR9nFLidW
+      oPxgVNZbWISnSV+ny7iGUEdvjTODuYFxzt1RWtC66gLTk8+WghCHcPHX8jNJnYib
+      ELfIdQQXBBgE+ficv2reuXzfSrsquo/0Px2OmzRRlY8h4wntjLZSmFIRh0nuBDWW
+      h59LQMLQG3x8gUBH3bzprAZLAlFiv75G3OtVPlaey5NklIgIeHXpXTb8QzQH21Bc
+      HzBnOV6F5c0AQisCilSx6ktBK+Ptkw+QrYrpEFW9kF8cOvfgAvFSSZcisabVALD4
+      F8kn0p163MDtrDchS2XBMIEM5HAxx1wsX6IShe/w46/0k1H3voPbCJHvPhT8MrOt
+      u+ie34x+pDUw3xEmf9yDeSXuoziyFW+NGcLf5uSClGt3n7fRKFICarRD39nrRwjg
+      LJxa582VAzrSOWO3J4HTeQcyuy0YS7RBgR6/fXfjIj+8uSCB7vwxZcCT2j12IyHp
+      jkABRPEIXsCJS/gHrf/ed1PEeZXxXBuq1MlsROW6VfUGXX+gVGS2JapoT3DRtPOf
+      PkN4FhG/6mA1fl3aJ6fEbAAp3uR/AU0ffJXd2WTaDj6MI6YFiBWDoneC3uDVzyT4
+      7shTy+Jpm2c/ydv2U5tHetiNeeRNCLm9LGgvLZdcT7mVJHfUZrhr+mUCAwEAAQ==
       -----END RSA PUBLIC KEY-----
   clouddb-services:
     clouddb-services-puppetserver-1: |
