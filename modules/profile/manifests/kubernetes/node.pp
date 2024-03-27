@@ -62,6 +62,27 @@ class profile::kubernetes::node (
         syslog_tag         => 'kubernetes',
         priority           => 8,
     }
+    # rsyslogs imfile plugin does not properly close inotify watches when container
+    # logs/their symlinks have been removed. Over time this leads to rsyslog reaching the
+    # maximum number of open files allowed.
+    # https://phabricator.wikimedia.org/T357616
+    # This systemd timer will check every hour if the number of inotify watches for deleted
+    # files/direcotries is above 10000 (which is a value I randomly choose) and restart rsyslog if so.
+    $release_deleted_inotify_watches = 'rsyslog-release-deleted-inotify-watches'
+    $command = "/usr/local/sbin/${release_deleted_inotify_watches}"
+    file { $command:
+        mode   => '0544',
+        owner  => 'root',
+        group  => 'root',
+        source => "puppet:///modules/profile/kubernetes/node/${release_deleted_inotify_watches}.sh",
+    }
+    $minute = fqdn_rand(59, $release_deleted_inotify_watches)
+    systemd::timer::job { $release_deleted_inotify_watches:
+        description => 'Restart rsyslog to release inotify watches of deleted container logs',
+        user        => 'root',
+        command     => $command,
+        interval    => { 'start' => 'OnCalendar', 'interval' => "*-*-* *:${minute}:00" },
+    }
 
     $kubelet_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'kubelet', {
         'profile'         => 'server',
