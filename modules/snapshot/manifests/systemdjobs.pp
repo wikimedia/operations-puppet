@@ -45,10 +45,6 @@ class snapshot::systemdjobs(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
-    class { '::snapshot::systemdjobs::dump_machine_vision':
-        user      => $miscdumpsuser,
-        filesonly => $filesonly,
-    }
     class { '::snapshot::addschanges':
         user      => $miscdumpsuser,
         filesonly => $filesonly,
