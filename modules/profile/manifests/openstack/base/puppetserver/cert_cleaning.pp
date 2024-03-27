@@ -5,6 +5,7 @@ class profile::openstack::base::puppetserver::cert_cleaning (
   Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
 ) {
   $openstack_control_node_hostnames = $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] }
+  $remote_cert_cleaners = $openstack_control_node_hostnames.map |Stdlib::Fqdn $node| { dnsquery::lookup($node) }.flatten
 
   user { 'certmanager':
     home   => '/nonexistent',
@@ -25,7 +26,7 @@ class profile::openstack::base::puppetserver::cert_cleaning (
   }
 
   security::access::config { 'certmanager':
-    content  => "+ : certmanager : ${openstack_control_node_hostnames.join(' ')}\n",
+    content  => "+ : certmanager : ${remote_cert_cleaners.join(' ')}\n",
     priority => 60,
   }
 }
