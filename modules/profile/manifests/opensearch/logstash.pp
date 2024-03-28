@@ -29,5 +29,10 @@ class profile::opensearch::logstash(
                 actions      => $curator_actions,
             }
         }
+    } else {
+        opensearch::curator::job { 'cluster_wide':
+            ensure       => absent,
+            cluster_name => $dc_settings['cluster_name'],
+        }
     }
 }
