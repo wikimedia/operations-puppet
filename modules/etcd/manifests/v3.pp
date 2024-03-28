@@ -109,16 +109,19 @@ class etcd::v3 (
         ensure  => present,
         content => template('etcd/v3.etcd.default.erb'),
         notify  => Service['etcd'],
+        require => Package['etcd-server'],
     }
 
     file { '/var/lib/etcd':
-        ensure => directory,
-        owner  => 'etcd',
-        group  => 'etcd',
-        mode   => '0700',
+        ensure  => directory,
+        owner   => 'etcd',
+        group   => 'etcd',
+        mode    => '0700',
+        require => Package['etcd-server'],
     }
 
     service { 'etcd':
-        ensure   => running,
+        ensure  => running,
+        require => Package['etcd-server'],
     }
 }
