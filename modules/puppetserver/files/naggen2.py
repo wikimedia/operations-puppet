@@ -117,12 +117,11 @@ ICINGA_LINE_LENGTH = 32
 
 class NagiosGeneratorPuppetDB:
 
-    def __init__(self, configfile, cert_path, key_path):
+    def __init__(self, configfile):
         self.log = logging.getLogger('naggen2')
         self.log.debug('Loading configfile %s', configfile)
         self.config = configparser.ConfigParser()
         self.config.read(configfile)
-        self.cert = (cert_path, key_path)
 
     @staticmethod
     def _format_content(params):
@@ -182,7 +181,7 @@ class NagiosGeneratorPuppetDB:
             server_url,
             resource_type
         )
-        resources_raw = requests.get(url, cert=self.cert, params={
+        resources_raw = requests.get(url, params={
             'query': '["and", \
                         ["=", ["parameter", "ensure"], "present"], \
                         ["=", "exported", true] \
@@ -226,8 +225,6 @@ def main():
                         choices=['services', 'hosts'])
     parser.add_argument('--configfile', '-c', dest='configfile',
                         default='/etc/puppet/puppetdb.conf')
-    parser.add_argument('--cert', dest='cert_path')
-    parser.add_argument('--key', dest='key_path')
     parser.add_argument('--debug', action='store_true', default=False)
     args = parser.parse_args()
 
@@ -253,7 +250,7 @@ def main():
 
     log.info('Generating output for resource %s', args.type)
     tstart = time.time()
-    n = NagiosGeneratorPuppetDB(args.configfile, args.cert_path, args.key_path)
+    n = NagiosGeneratorPuppetDB(args.configfile)
     for entity in n.render(args.type):
         print(entity)
     log.info('Run completed in %.2f seconds', (time.time() - tstart))
