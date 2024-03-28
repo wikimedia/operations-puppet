@@ -101,11 +101,17 @@
 #
 # @param [Optional[K8s::ClusterConfig::Prometheus]] prometheus
 #   Configuration of the prometheus instances for this cluster
-
-# @param [Optional[Array[String] apparmor_profiles
+#
+# @param [Optional[Array[String]] apparmor_profiles
 #   A list of apparmor profiles to populate in the cluster. The actual profiles
 #   will need to be placed in modules/profile/files/kubernetes/node/ and are
 #   referenced by filename
+#
+# @param [Optional[String]] audit_policy
+#   The audit policy configuration to use for the cluster. This is a string that corresponds to the filename
+#   of a full audit policy file in modules/k8s/files/
+#   Audit logging is disabled if this is not set.
+
 type K8s::ClusterConfig = Struct[{
   'dc'                      => String[1],
   'cluster_alias'           => Optional[String[1]],
@@ -136,4 +142,5 @@ type K8s::ClusterConfig = Struct[{
   'imagecatalog'            => Boolean,
   'prometheus'              => Optional[K8s::ClusterConfig::Prometheus],
   'apparmor_profiles'       => Optional[Array[String]],
+  'audit_policy'            => Optional[String],
 }]

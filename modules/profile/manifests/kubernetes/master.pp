@@ -159,6 +159,7 @@ class profile::kubernetes::master (
         admission_configuration => $k8s_config['admission_configuration'],
         service_account_issuer  => $k8s_config['master_url'],
         ipv6dualstack           => $k8s_config['ipv6dualstack'],
+        audit_policy            => $k8s_config['audit_policy'],
     }
 
     # Don't page for staging clusters

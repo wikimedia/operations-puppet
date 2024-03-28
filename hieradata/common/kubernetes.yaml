@@ -510,6 +510,7 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
+      audit_policy: audit-policy-modify-pods.yaml
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]

@@ -37,6 +37,11 @@
 # @param [Boolean] ipv6dualstack
 #   Whether to enable IPv6 dual stack support. Defaults to false.
 #
+# @param [Optional[String]] audit_policy
+#   The audit policy configuration to use for the cluster. This is a string that corresponds to the filename
+#   of a full audit policy file in modules/k8s/files/
+#   Audit logging is disabled if this is not set.
+#
 # @param service_node_port_range
 #   Optional port range (as first and last port, including) to reserve for services with NodePort visibility.
 #   Defaults to 30000-32767 if undef.
@@ -67,6 +72,7 @@ class k8s::apiserver (
     Boolean $allow_privileged = true,
     Integer $v_log_level = 0,
     Boolean $ipv6dualstack = false,
+    String $audit_policy = '',
     Optional[Array[Stdlib::Port, 2, 2]] $service_node_port_range = undef,
     Optional[K8s::AdmissionPlugins] $admission_plugins = undef,
     Optional[Array[Hash]] $admission_configuration = undef,
@@ -80,8 +86,26 @@ class k8s::apiserver (
         version => $version,
     }
 
-    file { '/etc/kubernetes/infrastructure-users':
-        ensure => absent,
+    # Create log folder for kube-apiserver audit logs
+    file { '/var/log/kubernetes/':
+        ensure  => directory,
+        owner   => 'kube',
+        require => K8s::Package['apiserver'],
+    }
+    $enable_audit_log = $audit_policy ? {
+        undef   => false,
+        ''      => false,
+        default => true,
+    }
+    $audit_policy_file = '/etc/kubernetes/audit-policy.yaml'
+    file { $audit_policy_file:
+        ensure  => stdlib::ensure($enable_audit_log, 'file'),
+        owner   => 'kube',
+        group   => 'kube',
+        mode    => '0444',
+        source  => "puppet:///modules/k8s/${audit_policy}",
+        notify  => Service['kube-apiserver-safe-restart'],
+        require => K8s::Package['apiserver'],
     }
 
     # The admission config file needs to be available as parameter fo apiserver

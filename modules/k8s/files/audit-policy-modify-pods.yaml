@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+apiVersion: audit.k8s.io/v1
+kind: Policy
+# Don't generate audit events for all requests in RequestReceived stage.
+omitStages:
+  - RequestReceived
+rules:
+  - level: Metadata
+    verbs: ["create", "patch", "update"]
+    resources:
+      - group: ""
+        resources: ["pods"]
+  # A catch-all rule to drop everything that has not been handled.
+  - level: None
