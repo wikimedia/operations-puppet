@@ -811,6 +811,13 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on releases servers
+    prometheus::class_config{ "apache_releases_${::site}":
+        dest       => "${targets_path}/apache_releases_${::site}.yaml",
+        class_name => 'role::releases',
+        port       => 9117,
+    }
+
     # Special config for Apache on CI servers
     prometheus::class_config{ "apache_ci_${::site}":
         dest       => "${targets_path}/apache_ci_${::site}.yaml",
