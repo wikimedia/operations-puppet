@@ -13,11 +13,6 @@ hierarchy:
       - "cloud/%{::wmcs_deployment}/%{::wmcs_project}/common.yaml"
       - "cloud/%{::wmcs_deployment}.yaml"
       - "cloud.yaml"
-  - name: "Secret hierarchy"
-    paths:
-      - "hosts/%{::trusted.certname}.yaml"
-      - "%{::wmcs_project}.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
   - name: "Private hierarchy"
     paths:
       - "labs/%{::wmcs_project}/common.yaml"
@@ -26,9 +21,6 @@ hierarchy:
     datadir: "/etc/puppet/private/hieradata"
   - name: "Common hierarchy"
     path: "common.yaml"
-  - name: "Secret Common hierarchy"
-    path: "common.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
   - name: "Private Common hierarchy"
     path: "common.yaml"
     datadir: "/etc/puppet/private/hieradata"

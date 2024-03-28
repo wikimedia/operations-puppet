@@ -446,11 +446,6 @@ profile::puppetserver::hierarchy:
       - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/common.yaml"
       - "cloud/%{literal('%')}{::wmcs_deployment}.yaml"
       - "cloud.yaml"
-  - name: "Secret hierarchy"
-    paths:
-      - "hosts/%{literal('%')}{trusted.certname}.yaml"
-      - "%{literal('%')}{::wmcs_project}.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
   - name: "Private hierarchy"
     paths:
       - "labs/%{literal('%')}{::wmcs_project}/common.yaml"
@@ -459,9 +454,6 @@ profile::puppetserver::hierarchy:
     datadir: "/etc/puppet/private/hieradata"
   - name: "Common hierarchy"
     path: "common.yaml"
-  - name: "Secret Common hierarchy"
-    path: "common.yaml"
-    datadir: "/etc/puppet/secret/hieradata"
   - name: "Private Common hierarchy"
     path: "common.yaml"
     datadir: "/etc/puppet/private/hieradata"
