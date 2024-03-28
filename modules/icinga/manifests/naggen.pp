@@ -8,8 +8,12 @@ class icinga::naggen (
 ){
     include ::icinga
 
+    $ssldir = puppet_ssldir()
+    $puppet_cert = "${ssldir}/certs/${facts['networking']['fqdn']}.pem"
+    $puppet_key = "${ssldir}/private_keys/${facts['networking']['fqdn']}.pem"
+
     file { '/etc/icinga/objects/puppet_hosts.cfg':
-      content => generate('/usr/local/bin/naggen2', '--type', 'hosts'),
+      content => generate('/usr/local/bin/naggen2', '--type', 'hosts', '--cert', $puppet_cert, '--key', $puppet_key),
       backup  => false,
       owner   => $icinga_user,
       group   => $icinga_group,
@@ -18,7 +22,7 @@ class icinga::naggen (
     }
 
     file { '/etc/icinga/objects/puppet_services.cfg':
-      content => generate('/usr/local/bin/naggen2', '--type', 'services'),
+      content => generate('/usr/local/bin/naggen2', '--type', 'services', '--cert', $puppet_cert, '--key', $puppet_key),
       backup  => false,
       owner   => $icinga_user,
       group   => $icinga::icinga_group,
