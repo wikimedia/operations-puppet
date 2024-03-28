@@ -48,7 +48,6 @@ puppet_compiler::uploader::realms:
       d9l5Nglp4i3Eta/w6xGCPPLJAw0HM7LxcHJ1edskIRSeHXNICciz30fZ7QFus/rQ
       SzB5+w+BfoKRXmFA8Z4bazQJMd/i76LPDK8EaNFv6IQmmJ5MTFxBtFcCAwEAAQ==
       -----END RSA PUBLIC KEY-----
-  cloudinfra-internal:
     cloudinfra-internal-puppetserver-1: |
       -----BEGIN RSA PUBLIC KEY-----
       MIICCgKCAgEAkUFC6QwqjvLdCVMWSdbaa0U/a3rZsH0Fagw2V3W2VfWXR9nFLidW
