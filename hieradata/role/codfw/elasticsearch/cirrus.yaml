@@ -168,7 +168,6 @@ profile::elasticsearch::instances:
         cluster_hosts:
           # row A
           - elastic2089.codfw.wmnet
-          - elastic2090.codfw.wmnet
           - elastic2055.codfw.wmnet
           - elastic2062.codfw.wmnet
           - elastic2069.codfw.wmnet
