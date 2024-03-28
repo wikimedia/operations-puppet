@@ -1036,6 +1036,11 @@ node /^elastic110[3-7]\.eqiad\./ {
     role(insetup::search_platform)
 }
 
+# Temporarily set to insetup until T361286 is resolved
+node /^elastic2088\.codfw\./ {
+    role(insetup::search_platform)
+}
+
 node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
