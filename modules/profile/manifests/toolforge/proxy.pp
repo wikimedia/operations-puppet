@@ -1,6 +1,4 @@
 class profile::toolforge::proxy (
-    Array[String]              $proxies                  = lookup('profile::toolforge::proxies',           {default_value => ['tools-proxy-03']}),
-    String                     $active_proxy             = lookup('profile::toolforge::active_proxy_host', {default_value => 'tools-proxy-03'}),
     Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
     Array[Stdlib::Fqdn]        $prometheus               = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
