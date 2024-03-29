@@ -58,10 +58,6 @@ expire_logs_days               = 14
 slave_transaction_retries      = 4294967295
 slave_parallel_threads         = 12 # Let's keep 4 cores for non-replication activities
 
-# remember it is one table/wildcard per line
-# T344411
-replicate_wild_ignore_table    = s51698\_\_yetkin.wanted\_items
-
 table_open_cache               = 5000
 table_definition_cache         = 4000
 
@@ -85,11 +81,6 @@ long_query_time = 1800
 slow_query_log  = 1
 
 innodb_strict_mode             = 1
-
-# Enable innodb_large_prefix
-# These variables can be removed after we upgrade to MariaDB 10.4 (T301949).
-innodb_file_format = Barracuda
-innodb_large_prefix = 1
 
 <% if @kernelversion < "3.19" %>
 # Until kernel 3.16 http://www.spinics.net/lists/stable/msg61873.html
