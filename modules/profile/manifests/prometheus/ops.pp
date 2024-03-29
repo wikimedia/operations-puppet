@@ -832,6 +832,20 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on miscweb servers
+    prometheus::class_config{ "apache_miscweb_${::site}":
+        dest       => "${targets_path}/apache_miscweb_${::site}.yaml",
+        class_name => 'role::miscweb',
+        port       => 9117,
+    }
+
+    # Special config for Apache on RT servers
+    prometheus::class_config{ "apache_rt_${::site}":
+        dest       => "${targets_path}/apache_rt_${::site}.yaml",
+        class_name => 'role::requesttracker',
+        port       => 9117,
+    }
+
     # Job definition for icinga_exporter
     $icinga_jobs = [
       {
