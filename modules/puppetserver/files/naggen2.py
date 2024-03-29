@@ -4,6 +4,8 @@
 import argparse
 import configparser
 import logging
+import shlex
+import subprocess
 import sys
 import time
 
@@ -117,11 +119,12 @@ ICINGA_LINE_LENGTH = 32
 
 class NagiosGeneratorPuppetDB:
 
-    def __init__(self, configfile):
+    def __init__(self, configfile, cert_path, key_path):
         self.log = logging.getLogger('naggen2')
         self.log.debug('Loading configfile %s', configfile)
         self.config = configparser.ConfigParser()
         self.config.read(configfile)
+        self.cert = (cert_path, key_path)
 
     @staticmethod
     def _format_content(params):
@@ -181,7 +184,7 @@ class NagiosGeneratorPuppetDB:
             server_url,
             resource_type
         )
-        resources_raw = requests.get(url, params={
+        resources_raw = requests.get(url, cert=self.cert, params={
             'query': '["and", \
                         ["=", ["parameter", "ensure"], "present"], \
                         ["=", "exported", true] \
@@ -209,6 +212,18 @@ class NagiosGeneratorPuppetDB:
         if what == 'hosts' and 'sms' in entity['parameters']['contact_groups'].split(','):
             clean_paramaters['alias'] = f"{clean_paramaters['host_name']} #page"
         return entity['title'], clean_paramaters
+
+
+def _cmd_output(cmd):
+    return subprocess.check_output(shlex.split(cmd))
+
+
+def _puppet_agent_ssl(confdir='/etc/puppet'):
+    config_cmd = f'puppet config --confdir {confdir}'
+    cert_path = _cmd_output(f'{config_cmd} print hostcert').strip()
+    key_path = _cmd_output(f'{config_cmd} print hostprivkey').strip()
+
+    return cert_path, key_path
 
 
 def main():
@@ -250,7 +265,8 @@ def main():
 
     log.info('Generating output for resource %s', args.type)
     tstart = time.time()
-    n = NagiosGeneratorPuppetDB(args.configfile)
+    cert_path, key_path = _puppet_agent_ssl()
+    n = NagiosGeneratorPuppetDB(args.configfile, cert_path, key_path)
     for entity in n.render(args.type):
         print(entity)
     log.info('Run completed in %.2f seconds', (time.time() - tstart))
