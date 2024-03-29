@@ -196,6 +196,23 @@ profile::opensearch::logstash::curator_actions:
         unit: weeks
         unit_count: 12
 
+  '10':
+    description: 'jaeger: delete older than 32 days'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+      timeout_override: 120
+    filters:
+      - filtertype: pattern
+        kind: regex
+        value: '^jaeger-(service|span)-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 32
+
   '20':
     description: 'all: after 31 days set number of replicas to 1'
     action: replicas
