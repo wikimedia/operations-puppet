@@ -11,6 +11,7 @@ class role::miscweb {
     include profile::miscweb::httpd              # common webserver setup
     include profile::miscweb::rsync              # copy data for migrations
     include profile::tlsproxy::envoy             # TLS termination
+    include profile::prometheus::apache_exporter # dashboard data
 
     include profile::microsites::static_rt       # https://static-rt.wikimedia.org
     include profile::microsites::security        # https://security.wikimedia.org (T257830)
