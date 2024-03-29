@@ -34,7 +34,7 @@ class gitlab::rsync (
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab data backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='gitlab_config_*.tar' --exclude='failover_gitlab_backup.tar' ${backup_dir_data}/*_gitlab_backup.tar rsync://${host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='gitlab_config_*.tar' ${backup_dir_data}/ rsync://${host}/data-backup",
             interval    => $rsync_interval,
             after       => 'full-backup.service',
         }
@@ -43,7 +43,7 @@ class gitlab::rsync (
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab config backup primary to a secondary server',
-            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='*_gitlab_backup.tar' --exclude='failover_gitlab_backup.tar' ${backup_dir_config}/gitlab_config_*.tar rsync://${host}/data-backup",
+            command     => "/usr/bin/rsync -avp --delete --exclude='*.sh' --exclude='*_gitlab_backup.tar' ${backup_dir_config}/ rsync://${host}/data-backup",
             interval    => $rsync_interval,
             after       => 'config-backup.service',
         }
