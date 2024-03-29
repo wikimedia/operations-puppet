@@ -54,7 +54,7 @@ def main():
     if sys.stdin.isatty():
         raise EmailParsingError("no stdin")
 
-    parser = configparser.SafeConfigParser()
+    parser = configparser.ConfigParser()
     parser_mode = "phab_bot"
     parser.read("/etc/phab_epipe.conf")
 
