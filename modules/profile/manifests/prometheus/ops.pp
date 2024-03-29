@@ -825,6 +825,13 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for Apache on doc servers
+    prometheus::class_config{ "apache_doc_${::site}":
+        dest       => "${targets_path}/apache_doc_${::site}.yaml",
+        class_name => 'role::doc',
+        port       => 9117,
+    }
+
     # Job definition for icinga_exporter
     $icinga_jobs = [
       {
