@@ -9,5 +9,5 @@ class role::requesttracker {
     include ::profile::firewall
     include ::profile::requesttracker
     include ::profile::tlsproxy::envoy # TLS termination
-
+    include ::profile::prometheus::apache_exporter
 }
