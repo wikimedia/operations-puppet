@@ -16,3 +16,5 @@ profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 profile::cloudceph::cinder_backup_nodes:
   - cloudbackup2001.codfw.wmnet
   - cloudbackup2002.codfw.wmnet
+  - cloudbackup2003.codfw.wmnet
+  - cloudbackup2004.codfw.wmnet
