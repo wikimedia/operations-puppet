@@ -475,18 +475,12 @@ profile::puppetserver::git::repos:
   "operations/puppet":
     branch: "production"
     hooks:
-      "pre-commit": "puppet:///modules/puppetmaster/git/pre-commit"
-      "pre-merge": "puppet:///modules/puppetmaster/git/pre-merge"
-      "pre-rebase": "puppet:///modules/puppetmaster/git/pre-rebase"
       'post-checkout': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
       'post-commit': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
       'post-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
   "labs/private":
     branch: "master"
     hooks:
-      "pre-commit": "puppet:///modules/puppetmaster/git/private/pre-commit"
-      "pre-merge": "puppet:///modules/puppetmaster/git/private/pre-merge"
-      "pre-rebase": "puppet:///modules/puppetmaster/git/private/pre-rebase"
       'post-checkout': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
       'post-commit': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
       'post-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
