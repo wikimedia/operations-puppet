@@ -34,11 +34,12 @@ class profile::wmcs::kubeadm::etcd (
     }
 
     file { $etcd_cert_pub:
-        ensure => present,
-        source => "file://${puppet_cert_pub}",
-        owner  => 'etcd',
-        group  => 'etcd',
-        before => [Service['etcd'], Package['etcd-server']],
+        ensure  => present,
+        source  => "file://${puppet_cert_pub}",
+        owner   => 'etcd',
+        group   => 'etcd',
+        notify  => Service['etcd'],
+        require => Package['etcd-server'],
     }
 
     file { $etcd_cert_priv:
@@ -48,15 +49,17 @@ class profile::wmcs::kubeadm::etcd (
         group     => 'etcd',
         mode      => '0640',
         show_diff => false,
-        before    => [Service['etcd'], Package['etcd-server']],
+        notify    => Service['etcd'],
+        require   => Package['etcd-server'],
     }
 
     file { $etcd_cert_ca:
-        ensure => present,
-        source => "file://${puppet_cert_ca}",
-        owner  => 'etcd',
-        group  => 'etcd',
-        before => [Service['etcd'], Package['etcd-server']],
+        ensure  => present,
+        source  => "file://${puppet_cert_ca}",
+        owner   => 'etcd',
+        group   => 'etcd',
+        notify  => Service['etcd'],
+        require => Package['etcd-server'],
     }
 
     class { '::etcd::v3':
