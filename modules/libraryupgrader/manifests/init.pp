@@ -10,7 +10,8 @@ class libraryupgrader (
     Boolean          $enable_workers,
 ) {
     $data_dir  = "${base_dir}/data"
-    $clone_dir  = "${base_dir}/libraryupgrader"
+    $git_dir   = "${base_dir}/git"
+    $clone_dir = "${base_dir}/libraryupgrader"
 
     ensure_packages(['python3-venv', 'rabbitmq-server'])
 
@@ -27,7 +28,7 @@ class libraryupgrader (
         priv_key_path  => '/root/.ssh/id_libup',
     }
 
-    file { $data_dir:
+    file { [ $data_dir, $git_dir ]:
         ensure => directory,
         owner  => 'libup',
         group  => 'libup',
