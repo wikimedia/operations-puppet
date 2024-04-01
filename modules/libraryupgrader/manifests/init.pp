@@ -12,26 +12,10 @@ class libraryupgrader (
     $data_dir  = "${base_dir}/data"
     $clone_dir  = "${base_dir}/libraryupgrader"
 
-    ensure_packages(['virtualenv', 'rabbitmq-server'])
+    ensure_packages(['python3-venv', 'rabbitmq-server'])
 
-    if debian::codename::eq('buster') {
-        apt::package_from_component { 'thirdparty-kubeadm-k8s':
-            component => 'thirdparty/kubeadm-k8s-1-15',
-            packages  => ['docker-ce'],
-        }
-
-        # We need iptables 1.8.3+ for compatibility with docker
-        # (see comments on <https://gerrit.wikimedia.org/r/565752>)
-        apt::pin { 'iptables':
-            pin      => 'release a=buster-backports',
-            package  => 'iptables',
-            priority => 1001,
-            before   => Package['docker-ce'],
-        }
-    } else {
-        package { 'docker.io':
-            ensure => present,
-        }
+    package { 'docker.io':
+        ensure => present,
     }
 
     systemd::sysuser { 'libup':
@@ -57,14 +41,22 @@ class libraryupgrader (
 
     # Create virtualenv
     exec { 'create virtualenv':
-        command => '/usr/bin/virtualenv -p python3 venv',
+        command => '/usr/bin/python3 -m venv venv',
         cwd     => $clone_dir,
         user    => 'libup',
         creates => "${clone_dir}/venv/bin/python",
         require => [
-            Package['virtualenv'],
+            Package['python3-venv'],
             Git::Clone['repos/ci-tools/libup'],
         ],
+    }
+
+    exec { 'install pip and wheel in virtualenv':
+        command => "${clone_dir}/venv/bin/pip install -U pip wheel",
+        cwd     => $clone_dir,
+        user    => 'libup',
+        creates => "${clone_dir}/venv/bin/wheel",
+        require => Exec['create virtualenv'],
     }
 
     # Bootstrap initial dependencies
@@ -74,7 +66,7 @@ class libraryupgrader (
         user    => 'libup',
         # Just one example file created after the deps are installed
         creates => "${clone_dir}/venv/bin/gunicorn",
-        require => Exec['create virtualenv'],
+        require => Exec['install pip and wheel in virtualenv'],
     }
 
     # Install libup into venv
