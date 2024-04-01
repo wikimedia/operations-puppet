@@ -87,6 +87,13 @@ class community_civicrm (
         group  => 'www-data',
     }
 
+    # add cv and drush bin dirs to PATH for all users
+    file { '/etc/profile.d/community_civicrm_path.sh':
+        ensure  => present,
+        mode    => '0644',
+        content => template('community_civicrm/civicrm/community_civicrm_path.sh.erb'),
+    }
+
     # add civicrm settings file
     file { '/var/www/community_civicrm/web/sites/default/civicrm.settings.php':
         ensure  => present,
