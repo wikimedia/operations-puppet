@@ -25,6 +25,8 @@ max_allowed_packet = <%= @max_allowed_packet %>
 sync_binlog        = 1
 expire_logs_days   = 7
 
+slow_query_log
+
 innodb_file_per_table   = 1
 innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
 innodb_log_file_size    = 50M
