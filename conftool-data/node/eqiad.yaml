@@ -84,15 +84,6 @@ eqiad:
   parsoid:
     parse1001.eqiad.wmnet: [parsoid-php, canary]
   restbase:
-    restbase1019.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1020.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1021.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1022.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1023.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1024.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1025.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1026.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1027.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1028.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1029.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1030.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]

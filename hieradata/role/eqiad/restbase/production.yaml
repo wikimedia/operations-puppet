@@ -1,24 +1,15 @@
 profile::restbase::seeds_ng:
-  - restbase1020-a.eqiad.wmnet
-  - restbase1020-b.eqiad.wmnet
-  - restbase1020-c.eqiad.wmnet
-  - restbase1021-a.eqiad.wmnet
-  - restbase1021-b.eqiad.wmnet
-  - restbase1021-c.eqiad.wmnet
+  - restbase1028-a.eqiad.wmnet
+  - restbase1028-b.eqiad.wmnet
+  - restbase1028-c.eqiad.wmnet
+  - restbase1029-a.eqiad.wmnet
+  - restbase1029-b.eqiad.wmnet
+  - restbase1029-c.eqiad.wmnet
   - restbase1031-a.eqiad.wmnet
   - restbase1031-b.eqiad.wmnet
   - restbase1031-c.eqiad.wmnet
 # used for rate limiting
 profile::restbase::hosts:
-  - restbase1019.eqiad.wmnet
-  - restbase1020.eqiad.wmnet
-  - restbase1021.eqiad.wmnet
-  - restbase1022.eqiad.wmnet
-  - restbase1023.eqiad.wmnet
-  - restbase1024.eqiad.wmnet
-  - restbase1025.eqiad.wmnet
-  - restbase1026.eqiad.wmnet
-  - restbase1027.eqiad.wmnet
   - restbase1028.eqiad.wmnet
   - restbase1029.eqiad.wmnet
   - restbase1031.eqiad.wmnet

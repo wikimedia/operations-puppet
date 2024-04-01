@@ -659,7 +659,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
-  'restbase1019|restbase102[0-9]|restbase103[0-3]':
+  'restbase102[8-9]|restbase103[0-3]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
   'restbase201[3-9]|restbase202[0-9]|restbase203[0-5]':
