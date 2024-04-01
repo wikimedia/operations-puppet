@@ -1,5 +1,5 @@
 # db2215
+# candidate master for x1
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
-# profile::mariadb::mysql_role: 'master'
 profile::monitoring::notifications_enabled: false
