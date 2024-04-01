@@ -22,6 +22,11 @@ class libraryupgrader (
         additional_groups => ['docker'],
     }
 
+    keyholder::agent { 'libup':
+        trusted_groups => ['libup'],
+        priv_key_path  => '/root/.ssh/id_libup',
+    }
+
     file { $data_dir:
         ensure => directory,
         owner  => 'libup',
@@ -100,9 +105,8 @@ class libraryupgrader (
     }
 
     systemd::service { 'libup-ssh-agent':
-        ensure  => present,
-        content => template('libraryupgrader/initscripts/libup-ssh-agent.service.erb'),
-        require => User['libup'],
+        ensure  => absent,
+        content => '',
     }
 
     systemd::timer::job { 'libup-run':
