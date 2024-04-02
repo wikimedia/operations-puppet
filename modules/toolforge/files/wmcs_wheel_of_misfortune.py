@@ -37,6 +37,7 @@ SHELLS = (
     "/usr/bin/fish",
     "/usr/bin/mysql",
     "/usr/bin/screen",
+    "/usr/bin/sudo",  # `become $TOOL` is seen as `/usr/bin/sudo -niu $TOOL`
     "/usr/bin/tcsh",
     "/usr/bin/tmux",
     "/usr/bin/zsh",
