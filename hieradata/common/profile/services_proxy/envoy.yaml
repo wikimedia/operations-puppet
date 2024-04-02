@@ -315,6 +315,7 @@ profile::services_proxy::envoy::listeners:
     upstream: "mw-api-int-ro.discovery.wmnet"
     keepalive: "4s"
     timeout: "120s"
+    xfp: https
     retry:  # -ro should be safe to retry on
       retry_on: "5xx"
       num_retries: 1
