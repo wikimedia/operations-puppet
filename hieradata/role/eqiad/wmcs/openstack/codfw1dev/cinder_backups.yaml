@@ -1,0 +1,61 @@
+profile::admin::groups:
+  - wmcs-roots
+contactgroups: wmcs-team-email
+cluster: wmcs
+
+profile::debdeploy::client::filter_services:
+  qemu-system-x86:
+    - '*'
+
+profile::cloudceph::client::rbd::client_name: 'codfw1dev-compute'
+profile::cloudceph::client::rbd::pool: 'codfw1dev-cinder'
+profile::cloudceph::client::rbd::glance::pool: 'codfw1dev-glance-images'
+profile::cloudceph::client::rbd::enable_v2_messenger: false
+
+# This key is shared across all the libvirt / nova / backy hosts
+profile::cloudceph::client::rbd::cinder_client_name: "codfw1dev-cinder"
+
+profile::cloudceph::auth::deploy::enabled: true
+profile::cloudceph::auth::deploy::selected_creds:
+- codfw1dev-cinder
+
+profile::contacts::role_contacts: ['WMCS']
+
+profile::cloudceph::auth::deploy::configuration:
+  codfw1dev-cinder:
+    group: root
+    owner: root
+    mode: "0440"
+    caps:
+      mon: profile rbd
+      osd: profile rbd-read-only pool=codfw1dev-glance-images, profile rbd pool=codfw1dev-compute
+
+
+profile::wmcs::backy2::backup_dir: /srv/cinder-backups/backy/data
+profile::wmcs::backy2::volume_backup_time: '*-*-* 19:00:00'
+profile::wmcs::backy2::volume_cleanup_time: '*-*-* 02:00:00'
+profile::wmcs::backy2::backup_cinder_volumes::enabled: true
+profile::wmcs::backy2::backup_cinder_volumes::div: 2
+profile::wmcs::backy2::backup_cinder_volumes::remainder: 0
+profile::wmcs::backy2::cluster_name: ceph
+profile::wmcs::backy2::postgres_root_dir: '/srv/cinder-backups/postgresql'
+
+profile::cloudceph::mon::hosts:
+  "cloudcephmon2004-dev.eqiad.wmnet":
+    public:
+      addr: "10.192.20.19"
+  "cloudcephmon2005-dev.eqiad.wmnet":
+    public:
+      addr: "10.192.20.12"
+  "cloudcephmon2006-dev.eqiad.wmnet":
+    public:
+      addr: "10.192.20.20"
+
+profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
+  ceph_pool: codfw1dev-cinder
+  live_for_days: 8
+  exclude_volumes:
+    andrewtestproject:
+  project_assignments:
+    testlabs: cloudbackup1001-dev
+    testlabs: cloudbackup1002-dev

@@ -1759,7 +1759,7 @@ node /^flink-zk200[123]\.codfw\./ {
 # the cinder-backup nodes for codfw1dev run in the eqiad DC and
 # they are ganeti virtual machines. See T295584 for details.
 node /^cloudbackup100[12]-dev\.eqiad\./ {
-    role(wmcs::openstack::codfw1dev::backups)
+    role(wmcs::openstack::codfw1dev::cinder_backups)
 }
 
 # Read-only ldap replicas in eqiad
