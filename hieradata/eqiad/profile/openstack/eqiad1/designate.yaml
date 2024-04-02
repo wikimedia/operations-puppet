@@ -1,5 +1,4 @@
 profile::openstack::eqiad1::designate::db_host: "openstack.eqiad1.wikimediacloud.org"
-profile::openstack::eqiad1::designate::wmflabsdotorg_project: "wmflabsdotorg"
 
 # We aren't creating domains under this anymore, but we nevertheless need to keep a reference so
 #  we can clean up properly after old VMs that still have entries here.
