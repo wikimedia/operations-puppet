@@ -73,6 +73,15 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  logstash_oidc:
+    id: 10
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://beta-logs(-idp)?\.wmcloud\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
+
 profile::idp::ldap_attributes:
   - cn
   - memberOf

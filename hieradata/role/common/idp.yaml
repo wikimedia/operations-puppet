@@ -220,6 +220,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  logstash_oidc:
+    id: 39
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://logstash\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
