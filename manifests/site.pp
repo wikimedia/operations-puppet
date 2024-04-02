@@ -859,7 +859,7 @@ node /^(db2099|db2199)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s7 & s8, bullseye
-node /^(db2100|db2200)\.codfw\./ {
+node /^db2200.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s2, s5, & x1, bullseye
