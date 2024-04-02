@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: Apache-2.0
+config_paths:
+  roles: /srv/repos/onboarding-system/config/roles.yaml
+  users: /srv/repos/users-db/users.yaml
+
+export_base_dir: /srv/exports
