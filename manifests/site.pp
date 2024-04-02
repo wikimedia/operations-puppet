@@ -149,10 +149,6 @@ node /^an-tool1008\.eqiad\./ {
     role(analytics_cluster::hadoop::yarn)
 }
 
-node /^an-tool1009\.eqiad\./ {
-    role(insetup::data_engineering)
-}
-
 node /^an-tool1011\.eqiad\./ {
     role(analytics_cluster::turnilo::staging)
 }
