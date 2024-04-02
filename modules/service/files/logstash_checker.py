@@ -116,7 +116,8 @@ class CheckService(object):
         for group in ["mediawiki-api-canaries", "mediawiki-appserver-canaries"]:
             with open(os.path.join("/etc/dsh/group", group)) as f:
                 for canary in f.readlines():
-                    if canary.startswith("#"):
+                    canary = canary.strip()
+                    if canary == "" or canary.startswith("#"):
                         continue
                     # Strip domain from hostname since logstash records hold unqualified hostnames.
                     canary = canary.split(".")[0]
@@ -142,17 +143,20 @@ class CheckService(object):
         """Return a query that tracks MediaWiki deploy problems."""
 
         if self.host == "canaries":
-            k8s_labels_deployment = self._get_k8s_canary_namespaces()
-            k8s_canaries_query = "kubernetes.labels.release:canary AND " \
-                + self._one_of_query("kubernetes.labels.deployment", k8s_labels_deployment)
+            host_query = []
 
-            host_query = k8s_canaries_query
+            k8s_labels_deployment = self._get_k8s_canary_namespaces()
+            if k8s_labels_deployment:
+                host_query.append("(kubernetes.labels.release:canary AND "
+                                  + self._one_of_query("kubernetes.labels.deployment",
+                                                       k8s_labels_deployment)
+                                  + ")")
 
             baremetal_mediawiki_canaries = self._get_baremetal_mediawiki_canaries()
             if baremetal_mediawiki_canaries:
-                bare_metal_canaries_query = \
-                    self._one_of_query("host", baremetal_mediawiki_canaries)
-                host_query = f"({host_query} OR {bare_metal_canaries_query})"
+                host_query.append(self._one_of_query("host", baremetal_mediawiki_canaries))
+
+            host_query = " OR ".join(host_query)
         else:
             host_query = f'host:"{self.host}"'
 
