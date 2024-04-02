@@ -6,10 +6,10 @@
 class profile::wmcs::backup_cinder_volumes(
     String               $cluster_name     = lookup('profile::wmcs::backy2::cluster_name'),
     Stdlib::Unixpath     $data_dir         = lookup('profile::cloudceph::data_dir'),
-    String               $ceph_volume_pool = lookup('profile::openstack::eqiad1::cinder::ceph_pool'),
     String               $backup_interval  = lookup('profile::wmcs::backy2::volume_backup_time'),
     String               $cleanup_interval = lookup('profile::wmcs::backy2::volume_cleanup_time'),
     Boolean              $enabled          = lookup('profile::wmcs::backy2::backup_cinder_volumes::enabled'),
+    Hash                 $scheduler_config = lookup('profile::wmcs::backy2::backup_cinder_volumes::scheduler_config'),
 ) {
     require profile::cloudceph::auth::deploy
     require profile::openstack::eqiad1::clientpackages
@@ -23,7 +23,7 @@ class profile::wmcs::backup_cinder_volumes(
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => template('profile/wmcs/backy2/wmcs_backup_volumes.yaml.erb');
+        content => to_yaml($scheduler_config),
     }
 
     $timers_ensure = $enabled ? {

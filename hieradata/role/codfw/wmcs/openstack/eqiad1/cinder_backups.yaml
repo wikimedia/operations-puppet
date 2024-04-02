@@ -7,7 +7,6 @@ profile::debdeploy::client::filter_services:
   qemu-system-x86:
     - '*'
 
-profile::openstack::eqiad1::cinder::ceph_pool: eqiad1-cinder
 profile::cloudceph::client::rbd::client_name: 'eqiad1-compute'
 profile::cloudceph::client::rbd::pool: 'eqiad1-cinder'
 profile::cloudceph::client::rbd::glance::pool: 'eqiad1-glance-images'
@@ -52,3 +51,36 @@ profile::cloudceph::mon::hosts:
   "cloudcephmon1003.eqiad.wmnet":
     public:
       addr: "10.64.20.69"
+
+profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
+  ceph_pool: eqiad1-cinder
+  live_for_days: 8
+  exclude_volumes:
+    cloudinfra-nfs:
+      - scratch
+    admin-monitoring:
+      - ".*"
+    tools:
+      # When creating a new ToolsDB replica, we create big temp volumes that
+      # we don't need to back up
+      # https://wikitech.wikimedia.org/wiki/Portal:Data_Services/Admin/ToolsDB
+      - "^temp.*$"
+      - "^.*temp$"
+    video:
+      - ".*"
+  # T300160
+    maps:
+      - ".*"
+    dumps:
+      - ".*"
+  # T297446 -- wikiwho has two 5 TB volumes
+    wikiwho:
+      - ".*"
+  # new hosts cloudbackup200[34] only backing up testlabs for testing
+  project_assignments:
+    ALLOTHERS: cloudbackup2001
+    tools: cloudbackup2002
+    paws: cloudbackup2002
+    clouddb-services: cloudbackup2002
+    testlabs: cloudbackup2003
+    testlabs: cloudbackup2004
