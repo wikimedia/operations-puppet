@@ -134,3 +134,9 @@ https://design.wikimedia.org:
 - path: /blog/.git/config
   # 404, served on a subpath of the git root
   assert_status: 404
+
+https://security.wikimedia.org:
+- path: /
+  assert_status: 200
+  assert_body_contains: Wikimedia Security
+

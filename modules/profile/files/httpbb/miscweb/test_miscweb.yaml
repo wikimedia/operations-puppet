@@ -1,9 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
-https://security.wikimedia.org:
-- path: /
-  assert_status: 200
-  assert_body_contains: Wikimedia Security
-
 https://query.wikidata.org:
 - path: /
   assert_status: 200
