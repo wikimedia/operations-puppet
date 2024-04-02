@@ -2,6 +2,9 @@
 profile::opensearch::dc_settings:
   cluster_name: production-elk7-codfw
   unicast_hosts:
+    - logging-hd2001.codfw.wmnet
+    - logging-hd2002.codfw.wmnet
+    - logging-hd2003.codfw.wmnet
     - logstash2001.codfw.wmnet
     - logstash2002.codfw.wmnet
     - logstash2003.codfw.wmnet
@@ -15,6 +18,9 @@ profile::opensearch::dc_settings:
     - logstash2036.codfw.wmnet
     - logstash2037.codfw.wmnet
   cluster_hosts:
+    - logging-hd2001.codfw.wmnet
+    - logging-hd2002.codfw.wmnet
+    - logging-hd2003.codfw.wmnet
     - logstash2001.codfw.wmnet
     - logstash2002.codfw.wmnet
     - logstash2003.codfw.wmnet

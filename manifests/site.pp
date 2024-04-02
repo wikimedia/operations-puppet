@@ -1794,9 +1794,9 @@ node /^lists2001\.codfw\./ {
     role(insetup::unowned)
 }
 
-# New codfw logging nodes T349834
+# Logging data nodes, hdd class (codfw)
 node /^logging-hd200[1-3]\.codfw\./ {
-    role(insetup::observability)
+    role(logging::opensearch::data)
 }
 
 # Logging data nodes (codfw)

@@ -1,0 +1,2 @@
+profile::opensearch::common_settings:
+  heap_memory: '64G'
