@@ -23,21 +23,27 @@ define profile::pki::multirootca::monitoring (
         sudo_user    => 'root',
     }
 
-    # Note: this script requires python3-cryptography but the package
-    # is already defined and required by other classes, like cfssl::ocsp.
+    # Note: this script requires python3-cryptography
+    # and prometheus-client but the packages
+    # are already defined and required by other classes, like cfssl::ocsp.
     # If this define's ensure is set to absent (like in cloud), then puppet
-    # will try to remove the package ending up in conflicts with other
-    # requests for the package.
-    # To workaround this problem, simply ensure that the package is deployed
-    # rather than delegate prometheus::node_textfile to manage its state.
-    ensure_packages(['python3-cryptography'])
+    # will try to remove the packages ending up in conflicts with other
+    # requests for the packages.
+    # To workaround this problem, simply ensure that the packages are deployed
+    # rather than delegate prometheus::node_textfile to manage their state.
+    ensure_packages([
+      'python3-cryptography',
+      'python3-prometheus-client'])
     prometheus::node_textfile { "prometheus-check-${title}-certificate-expiry":
         ensure         =>  $ensure,
         filesource     => 'puppet:///modules/prometheus/check_certificate_expiry.py',
         interval       => 'daily',
         run_cmd        => "/usr/local/bin/prometheus-check-${title}-certificate-expiry --cert-path ${ca_file} --outfile /var/lib/prometheus/node.d/${title}_intermediate.prom",
-        extra_packages => ['python3-prometheus-client'],
-        require        => Package['python3-cryptography'],
+        extra_packages => [],
+        require        => Package[
+          'python3-cryptography',
+          'python3-prometheus-client'
+        ],
     }
 
     prometheus::blackbox::check::http { "PKI_${title}":
