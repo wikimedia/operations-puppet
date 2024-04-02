@@ -75,7 +75,7 @@ kubernetes::clusters:
       prometheus: &wikikube_prometheus
         name: k8s
         port: 9906
-        retention_size: '760GB'
+        retention_size: '1160GB'
       control_plane_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
