@@ -1548,7 +1548,7 @@ def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
 def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(IMAGES_CACHE_FILE):
         logging.debug("Getting images from the server...")
-        clients = mwopenstackclients.Clients(oscloud="novaobserver")
+        clients = mwopenstackclients.Clients(oscloud="novaadmin")
         image_id_to_image_info = {image.id: image for image in clients.glanceclient().images.list()}
         with open(IMAGES_CACHE_FILE, "w") as cache_fd:
             logging.debug("Getting images from cache...")
@@ -1563,7 +1563,7 @@ def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
 def get_volumes_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     if not from_cache or not os.path.exists(VOLUMES_CACHE_FILE):
         logging.debug("Getting images from the server...")
-        clients = mwopenstackclients.Clients(oscloud="novaobserver")
+        clients = mwopenstackclients.Clients(oscloud="novaadmin")
         volume_id_to_volume_info = {volume.id: volume.to_dict() for volume in clients.allvolumes()}
         with open(VOLUMES_CACHE_FILE, "w") as cache_fd:
             logging.debug("Writing volumes to cache...")
