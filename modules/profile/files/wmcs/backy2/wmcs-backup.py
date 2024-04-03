@@ -96,7 +96,7 @@ class ImageBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_images.yaml"
 
     # Backup everything everywhere
-    def get_host_for_image(self, project: str, image_id: Optional[str] = None) -> str:
+    def get_host_for_image(self, project: str, image_info: Optional[Dict[str, Any]] = None) -> str:
         return socket.gethostname()
 
 
@@ -1376,12 +1376,13 @@ class ImageBackupsState:
             sys.exit(1)
 
     def create_image_backup(
-        self, image_id: str, project_name: str = None, noop: bool = True
+        self, image_info: Dict[str, Any], project_name: str = None, noop: bool = True
     ) -> None:
+        image_id = image_info["id"]
         if project_name:
             this_hostname = socket.gethostname()
             assigned_hostname = self.config.get_host_for_image(
-                project=project_name, image_id=image_id
+                project=project_name, image_info=image_info
             )
             if assigned_hostname != this_hostname:
                 raise Exception(
@@ -1442,7 +1443,7 @@ class ImageBackupsState:
                     image_info.get("name", "no_name"),
                 )
                 continue
-            self.create_image_backup(image_id=image_id, noop=noop)
+            self.create_image_backup(image_info=image_info, noop=noop)
 
         logging.info(
             "%sBacked up %d images.",
@@ -1472,12 +1473,11 @@ class ImageBackupsState:
         for image_info in self.get_assigned_images():
             cur_try = 0
             image_name = image_info.get("name", "no_name")
-            image_id = image_info.get("id", "no_id")
             project_id = image_info.get("os-vol-tenant-attr:tenant_id", "no_project")
             while cur_try < tries:
                 try:
                     self.create_image_backup(
-                        image_id=image_id,
+                        image_info=image_info,
                         project_name=project_id,
                         noop=noop,
                     )
@@ -1943,7 +1943,7 @@ def _add_images_parser(subparser: argparse.ArgumentParser) -> None:
     backup_image_parser.set_defaults(
         func=lambda: get_current_images_state(from_cache=args.from_cache).create_image_backup(
             noop=args.noop,
-            image_id=args.image_id,
+            image_info={"id": args.image_id},
         )
     )
 
@@ -2025,7 +2025,7 @@ def _add_volumes_parser(subparser: argparse.ArgumentParser) -> None:
     backup_volume_parser.set_defaults(
         func=lambda: get_current_volumes_state(from_cache=args.from_cache).create_image_backup(
             noop=args.noop,
-            image_id=args.volume_id,
+            image_info={"id": args.volume_id},
         )
     )
     get_assigned_volumes_parser = volumes_subparser.add_parser(
