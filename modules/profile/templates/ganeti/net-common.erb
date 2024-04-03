@@ -205,9 +205,7 @@ function setup_route {
       ip rule add dev $INTERFACE table $LINK
       ip route replace $IP table $LINK proto static dev $INTERFACE
 
-    else
-      ip route replace $IP proto static dev $INTERFACE
-
+      # WMF - Ganeti sets $LINK to "main" when nothing is explicitely set
       # WMF - set the v6 route
       if [[ $INSTANCE == *.wmnet ]]; then
         PREFIX="<%= @v6_prefixes['private'] %>"
@@ -217,6 +215,8 @@ function setup_route {
       SUFFIX="$(printf '%s' "${IP}"| tr '.' ':')"
       IP6="${PREFIX}:${SUFFIX}"
       ip -6 route replace $IP6 proto static dev $INTERFACE
+    else
+      ip route replace $IP proto static dev $INTERFACE
     fi
 
     # Allow routing and arp proxying, or ndp proxying (IPv6)
