@@ -7,5 +7,6 @@ lvs::realserver::realserver_ips:
 profile::prometheus::ganeti::clusters:
   - ganeti-test01.svc.codfw.wmnet
   - ganeti01.svc.codfw.wmnet
+  - ganeti02.svc.codfw.wmnet
 
 profile::prometheus::cloud::openstack_deployment: codfw1dev
