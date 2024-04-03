@@ -2578,11 +2578,6 @@ node /^restbase10(2[8-9]|3[0-9]|4[0-2])\.eqiad\./ {
     role(restbase::production)
 }
 
-# decommissioned restbase (eqiad)
-node /^restbase10(19|2[0-7])\.eqiad\./ {
-    role(restbase::production)
-}
-
 # restbase codfw cluster
 node /^restbase20(2[1-9]|3[0-5])\.codfw\./ {
     role(restbase::production)
