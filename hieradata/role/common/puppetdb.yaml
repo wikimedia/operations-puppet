@@ -45,7 +45,6 @@ profile::puppetdb::sites:
     ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
     allowed_hosts:
       - puppetmaster1001.eqiad.wmnet
-      - puppetmaster1002.eqiad.wmnet
       - puppetmaster1003.eqiad.wmnet
       - puppetmaster2001.codfw.wmnet
       - puppetmaster2002.codfw.wmnet
