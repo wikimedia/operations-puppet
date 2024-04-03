@@ -13,5 +13,6 @@ class role::wmcs::openstack::eqiad1::cinder_backups {
     include profile::cloudceph::client::rbd_cloudbackup
     include profile::wmcs::backy2
     include profile::openstack::eqiad1::observerenv
+    include profile::openstack::eqiad1::envscripts
     include profile::wmcs::backup_cinder_volumes
 }
