@@ -2875,6 +2875,7 @@ private_tables:
  - 'bv2009_edits'
  - 'categorylinks_old'
  - 'click_tracking'
+ - 'cu_useragent'
  - 'cu_changes'
  - 'cu_log'
  - 'cu_log_event'
