@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::db(
     Array[Stdlib::IP::Address] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
 
-    package {'wmf-mariadb104':
+    package {'wmf-mariadb106':
         ensure => 'present',
     }
 
@@ -23,7 +23,7 @@ class profile::openstack::codfw1dev::db(
         group   => 'root',
         mode    => '0644',
         source  => 'puppet:///modules/profile/openstack/codfw1dev/db/my.cnf',
-        require => Package['wmf-mariadb104'],
+        require => Package['wmf-mariadb106'],
     }
 
     prometheus::mysqld_exporter { 'default':
