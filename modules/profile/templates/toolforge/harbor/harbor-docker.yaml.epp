@@ -25,14 +25,14 @@ http:
 #   # The path of cert and key files for nginx
 #   certificate: /your/certificate/path
 #   private_key: /your/private/key/path
+#   enable strong ssl ciphers (default: false)
+#   strong_ssl_ciphers: false
 
 # internal_tls:
 #   # set enabled to true means internal tls is enabled
 #   enabled: true
 #   # put your cert and key files on dir
 #   dir: /etc/harbor/tls/internal
-#   # enable strong ssl ciphers (default: false)
-#   strong_ssl_ciphers: false
 
 # Uncomment external_url if you want to enable external proxy
 # And when it enabled the hostname will no longer used
@@ -153,7 +153,7 @@ log:
 
 
 #This attribute is for migrator to detect the version of the .cfg file, DO NOT MODIFY!
-_version: 2.9.0
+_version: 2.10.0
 # Uncomment external_database if using external database.
 external_database:
   harbor:
