@@ -26,6 +26,15 @@ class kubeadm::containerd (
     notify  => Service['containerd'],
   }
 
+  # crictl needs this envvar now as it will not use default endpoints anymore
+  file { '/etc/profile.d/99-crictl.sh':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => 'export CONTAINER_RUNTIME_ENDPOINT=unix:///run/containerd/containerd.sock',
+  }
+
   service { 'containerd':
     ensure => running,
   }
