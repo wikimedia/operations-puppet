@@ -49,7 +49,8 @@ if @enable_audit_log
   daemon_args.push("--audit-policy-file=#{@audit_policy_file}")
   daemon_args.push("--audit-log-path=/var/log/kubernetes/audit.log")
   daemon_args.push("--audit-log-compress")
-  daemon_args.push("--audit-log-maxsize=100M")
+  # maxsize takes the size in megabytes as int
+  daemon_args.push("--audit-log-maxsize=100")
   daemon_args.push("--audit-log-maxbackup=10")
 end
 
