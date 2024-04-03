@@ -123,9 +123,7 @@ pipeline:
           # Metadata
           meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
           meta domain = this.uri_host
-
-          # Set from puppet
-          meta stream = "webrequest_text"
+          meta stream = "webrequest_frontend"
           root.meta = root_meta()
 
           root = root.merge(root.result)
@@ -134,8 +132,8 @@ pipeline:
           # Note that hostname() (or other bloblang functions) doesn't return FQDN.
           # This must be passed as envvar
           root.hostname = env("BENTHOS_FQDN").or(hostname())
-          # Set by puppet, webrequest_source can be text|upload
-          root.webrequest_source = "text"
+          # Set by envvar, webrequest_source can be text|upload
+          root.webrequest_source = env("BENTHOS_SOURCE").or("unknown")
           # Drop these keys after all processing
           root.priority = deleted()
           root.timestamp = deleted()

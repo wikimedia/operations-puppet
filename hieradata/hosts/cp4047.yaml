@@ -17,6 +17,7 @@ profile::benthos::instances:
       webrequest_topic: "webrequest_upload_test"
       pipeline_threads: -1
       benthos_fqdn: '%{facts.fqdn}'
+      benthos_source: "%{lookup('cache::cluster')}"
     # These will be used as envvars for kafka input
     kafka:
       cluster: jumbo
