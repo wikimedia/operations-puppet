@@ -14,6 +14,7 @@ profile::docker::builder::known_uid_mappings:
   spark: 185
   flink: 186
   nobody: 65534
+  somebody: 65533
   otelcol-contrib: 10001
   ml-runner: 22222
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/docker/*' --exclude-type=tracefs
