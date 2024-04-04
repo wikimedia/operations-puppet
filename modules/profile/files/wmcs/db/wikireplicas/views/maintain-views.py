@@ -676,8 +676,12 @@ def main():
         help="Conftool schema file for automated depooling",
         default="/etc/conftool/schema.yaml",
     )
-
     argparser.add_argument("--debug", help="Turn on debug logging", action="store_true")
+    argparser.add_argument(
+        "--quiet",
+        help="Suppress progress output, show only errors and warnings",
+        action="store_true",
+    )
 
     args = argparser.parse_args()
 
@@ -718,9 +722,15 @@ def main():
     dbs_metadata = config["metadata"]
     sensitive_db_lists = config["sensitive_db_lists"]
 
+    if args.debug:
+        log_level = logging.DEBUG
+    elif args.quiet:
+        log_level = logging.WARNING
+    else:
+        log_level = logging.INFO
     logging.basicConfig(
         format="%(asctime)s %(levelname)s %(message)s",
-        level=logging.DEBUG if args.debug else logging.INFO,
+        level=log_level,
     )
 
     depool_manager = DepoolManager(
