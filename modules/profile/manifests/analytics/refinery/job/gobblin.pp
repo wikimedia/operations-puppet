@@ -22,6 +22,9 @@
 #   Ingests legacy EventLogging streams. (No datacenter topic prefixes, topics start with
 #   'eventlogging_'.)
 #
+# - webrequest_frontend_rc0
+#   Ingests the composite webrequest.frontend.rc0 stream (upload and text topics) into
+#   /wmf/data/raw/webrequest_frontend_rc0.
 #
 # == Parameters
 #
@@ -82,5 +85,14 @@ class profile::analytics::refinery::job::gobblin(
 
     profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy':
         interval         => '*-*-* *:10:00',
+    }
+
+    profile::analytics::refinery::job::gobblin_job { 'webrequest_frontend_rc0':
+        # webrequest_frontend is large. Run it every 10 minutes to keep pressure on Kafka
+        # low (pulling more often means it is more likely for data to be in Kafka's cache).
+        # The 15 minutes offset from calendar hour is to mitigate out-of-order events
+        # messing up with _IMPORTED flags generation, and runs of the webrequest gobblin job
+        # happening simulatenously.
+        interval         => '*-*-* *:8/10:00',
     }
 }
