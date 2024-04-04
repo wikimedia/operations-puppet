@@ -228,6 +228,22 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  mpic:
+    id: 40
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://mpic\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
+  mpic_next:
+    id: 41
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://mpic-next\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
