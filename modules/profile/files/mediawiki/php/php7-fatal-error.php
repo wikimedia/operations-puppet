@@ -240,3 +240,10 @@ if ( $statsd_host && $statsd_port ) {
 	// Ignore errors
 	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $statsd_host, $statsd_port );
 }
+
+if ( $dogstatsd_host && $dogstatsd_port ) {
+	$sock = socket_create( AF_INET, SOCK_DGRAM, SOL_UDP );
+	$stat = 'mediawiki.fatal_errors_total:1|c';
+	// Ignore errors
+	@socket_sendto( $sock, $stat, strlen( $stat ), 0, $dogstatsd_host, $dogstatsd_port );
+}

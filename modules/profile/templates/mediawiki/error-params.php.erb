@@ -8,3 +8,9 @@ $statsd_port = <%= @statsd_port.to_i %>;
 $statsd_host = $statsd_port = null;
 <% end -%>
 
+<% if @dogstatsd_host != :undef && @dogstatsd_port != :undef -%>
+$dogstatsd_host = "<%= @dogstatsd_host %>";
+$dogstatsd_port = <%= @dogstatsd_port.to_i %>;
+<% else -%>
+$dogstatsd_host = $dogstatsd_port = null;
+<% end -%>
