@@ -21,48 +21,52 @@ define interface::add_ip6_mapped(
     $v6_mapped_lower64 = "::${ipv4_address_with_colons}"
 
     $ipv6_address = inline_template("<%= require 'ipaddr'; (IPAddr.new(scope.lookupvar(\"::ipaddress6_${interface}\")).mask(64) | IPAddr.new(@v6_mapped_lower64)).to_s() %>")
-    interface::ip { $title:
-        interface => $interface,
-        address   => $ipv6_address,
-        prefixlen => '64'
-    }
 
-    # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
-    # address statically, and also executes the command to add the address
-    # in the present if not configured.
-    #
-    # Below sets "ip token" to the same on distros that support it.  The
-    # token command explicitly configures the lower 64 bits that will be
-    # used with any autoconf address, as opposed to one derived from the
-    # macaddr.  This aligns the autoconf-assigned address with the fixed
-    # one set above, and can do so as a pre-up command to avoid ever
-    # having another address even temporarily, when this is all set up
-    # before boot.
-    # We can't rely on the token part exclusively, though, or we'd face
-    # race conditions: daemons would expect to be able to bind this
-    # address for listening immediately after network-up, but the address
-    # wouldn't exist until the next RA arrives on the interface, which can
-    # be 1-2s in practice.
-    # By keeping both the static config from above and the token command,
-    # we get the best of all worlds: no race, and no conflicting
-    # macaddr-based assignment on the interface either.  When this is
-    # first applied at runtime it will execute the token command as well,
-    # but any previous macaddr-based address will be flushed.
+    if $facts['ipaddress6'] != $ipv6_address {
 
-    $v6_token_cmd = "/sbin/ip token set ${v6_mapped_lower64} dev ${interface}"
-    $v6_flush_dyn_cmd = "/sbin/ip -6 addr flush dev ${interface} dynamic"
-    $v6_token_check_cmd = "/sbin/ip token get dev ${interface} | grep -qw ${v6_mapped_lower64}"
-    $v6_token_preup_cmd = "set iface[. = '${interface}']/pre-up '${v6_token_cmd}'"
+        interface::ip { $title:
+            interface => $interface,
+            address   => $ipv6_address,
+            prefixlen => '64'
+        }
 
-    augeas { "${interface}_v6_token":
-        incl    => '/etc/network/interfaces',
-        lens    => 'Interfaces.lns',
-        context => '/files/etc/network/interfaces/',
-        changes => $v6_token_preup_cmd,
-    }
+        # The above sets up an "up" command to add the fixed IPv6 mapping of the v4
+        # address statically, and also executes the command to add the address
+        # in the present if not configured.
+        #
+        # Below sets "ip token" to the same on distros that support it.  The
+        # token command explicitly configures the lower 64 bits that will be
+        # used with any autoconf address, as opposed to one derived from the
+        # macaddr.  This aligns the autoconf-assigned address with the fixed
+        # one set above, and can do so as a pre-up command to avoid ever
+        # having another address even temporarily, when this is all set up
+        # before boot.
+        # We can't rely on the token part exclusively, though, or we'd face
+        # race conditions: daemons would expect to be able to bind this
+        # address for listening immediately after network-up, but the address
+        # wouldn't exist until the next RA arrives on the interface, which can
+        # be 1-2s in practice.
+        # By keeping both the static config from above and the token command,
+        # we get the best of all worlds: no race, and no conflicting
+        # macaddr-based assignment on the interface either.  When this is
+        # first applied at runtime it will execute the token command as well,
+        # but any previous macaddr-based address will be flushed.
 
-    exec { "${interface}_v6_token":
-        command => "${v6_token_cmd} && ${v6_flush_dyn_cmd}",
-        unless  => $v6_token_check_cmd,
+        $v6_token_cmd = "/sbin/ip token set ${v6_mapped_lower64} dev ${interface}"
+        $v6_flush_dyn_cmd = "/sbin/ip -6 addr flush dev ${interface} dynamic"
+        $v6_token_check_cmd = "/sbin/ip token get dev ${interface} | grep -qw ${v6_mapped_lower64}"
+        $v6_token_preup_cmd = "set iface[. = '${interface}']/pre-up '${v6_token_cmd}'"
+
+        augeas { "${interface}_v6_token":
+            incl    => '/etc/network/interfaces',
+            lens    => 'Interfaces.lns',
+            context => '/files/etc/network/interfaces/',
+            changes => $v6_token_preup_cmd,
+        }
+
+        exec { "${interface}_v6_token":
+            command => "${v6_token_cmd} && ${v6_flush_dyn_cmd}",
+            unless  => $v6_token_check_cmd,
+        }
     }
 }
