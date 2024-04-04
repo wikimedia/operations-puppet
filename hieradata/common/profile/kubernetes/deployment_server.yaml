@@ -435,6 +435,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: echoserver
         - name: echoserver-deploy
+    mpic:
+      usernames:
+        - name: mpic
+        - name: mpic-deploy
+    mpic-next:
+      usernames:
+        - name: mpic-next
+        - name: mpic-next-deploy
   aux-k8s:
     jaeger:
       usernames:
