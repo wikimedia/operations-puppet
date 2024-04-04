@@ -43,14 +43,6 @@ pipeline:
       mapping: |
         root = this
         root.message = this.message.re_replace_all("^.* newlog (.*)$", "$1")
-    - label: "delete_unused_fields"
-      mapping: |
-        root = this
-        root.hostname = deleted()
-        root.appname = deleted()
-        root.procid = deleted()
-        root.facility = deleted()
-        root.message = this.message
     - branch:
         request_map: |
           root = this.message
@@ -96,9 +88,12 @@ pipeline:
                "time_queue",
                "time_request")
 
-          # time_firstbyte should be in seconds
+          # time_firstbyte is ms (HAProxy default), should be in seconds
           root.time_firstbyte = (this.time_backend_response.number() / 1000)
+          # time_firstbyte_ns is the equivalent in ns used by metrics and deleted afterwards
+          root.time_firstbyte_ns = (this.time_backend_response.number() * 1000000).int64()
           root.result.time_backend_response = deleted()
+
           # rename server key to backend
           root.backend = this.server
           root.result.server = deleted()
@@ -140,6 +135,43 @@ pipeline:
           root.severity = deleted()
           root."$schema" = "/webrequest/1.0.0"
 
+    - label: "ttfb_metric_condition"
+      switch:
+        # Increment metrics only if ttfb > 0
+        - check: this.time_firstbyte_ns > 0
+          processors:
+            - label: "ttfb_metric_switch"
+              switch:
+                # If it's an hc request, increment also this timing
+                - check: this.uri_host.contains("healthcheck.wikimedia.org")
+                  processors:
+                    - label: "ttfb_metric_healthcheck"
+                      metric:
+                        name: "haproxy_client_healthcheck_ttfb"
+                        type: timing
+                        labels:
+                          cache_status: ${! json("cache_status") }
+                          http_status_family: ${! (json("http_status").number() / 100).floor() }
+                        value: ${! json("time_firstbyte_ns") }
+
+            # This is always incremented
+            - label: "ttfb_metric"
+              metric:
+                name: "haproxy_client_ttfb"
+                type: timing
+                labels:
+                  cache_status: ${! json("cache_status") }
+                  http_status_family: ${! (json("http_status").number() / 100).floor() }
+                value: ${! json("time_firstbyte_ns") }
+
+    - label: "delete_unused_fields"
+      mapping: |
+        root = this
+        root.appname = deleted()
+        root.procid = deleted()
+        root.facility = deleted()
+        root.time_firstbyte_ns = deleted()
+
 logger:
   level: WARN
   format: logfmt
@@ -177,6 +209,24 @@ metrics:
     use_histogram_timing: true
     add_process_metrics: true
     add_go_metrics: true
+    histogram_buckets:
+       - .001
+       - .005
+       - .01
+       - .02
+       - .045
+       - .07
+       - .1
+       - .15
+       - .25
+       - .35
+       - .5
+       - .75
+       - 1.2
+       - 3
+       - 10
+       - 30
+       - 60
   mapping: |
     root = "benthos_" + this
 
