@@ -1,0 +1,6 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+CREATE USER IF NOT EXISTS cassandra-devel WITH PASSWORD '<%= @application_password %>';
+
+GRANT SELECT ON ALL KEYSPACES TO 'cassandra-devel';
+GRANT MODIFY ON ALL KEYSPACES TO 'cassandra-devel';
