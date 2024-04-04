@@ -3838,7 +3838,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   device-analytics:
     description: device-analytics AQS2 service, device-analytics.discovery.wmnet
