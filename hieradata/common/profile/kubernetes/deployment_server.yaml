@@ -250,6 +250,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: page-analytics
         - name: page-analytics-deploy
+    commons-impact-analytics:
+      usernames:
+        - name: commons-impact-analytics
+        - name: commons-impact-analytics-deploy
     cirrus-streaming-updater:
       usernames:
         - name: cirrus-streaming-updater
