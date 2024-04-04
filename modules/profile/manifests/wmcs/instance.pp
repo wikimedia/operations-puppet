@@ -6,6 +6,12 @@ class profile::wmcs::instance(
     # a VM without isc-dhcp-client can be considered broken
     ensure_packages(['isc-dhcp-client'])
 
+    # cloud-init is installed on base cloud images, but
+    #  ensuring it here may prevent it from being accidentally
+    #  removed, e.g. as part of a weird dependency behavior
+    #  in T361749
+    ensure_packages(['cloud-init'])
+
     if ! defined(Class['Sudo']) {
         class { 'sudo': }
     }
