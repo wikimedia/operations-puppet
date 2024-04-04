@@ -7118,3 +7118,7 @@ ldap_only_users:
     ensure: present
     realname: Katie Coleman
     email: kcoleman@wikimedia.org
+  ospingou:
+    ensure: present
+    realname: Olga Spingou
+    email: ospingou@wikimedia.org
