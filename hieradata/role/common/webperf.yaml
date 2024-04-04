@@ -12,7 +12,11 @@ profile::webperf::site::excimer_mysql_host: m2-master.eqiad.wmnet
 profile::webperf::site::excimer_mysql_db: excimer
 profile::webperf::site::excimer_mysql_user: excimer_ui_server
 # profile::webperf::site::excimer_mysql_password: in private repo
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "performance.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - performance.wikimedia.org
 
 profile::prometheus::statsd_exporter::mappings:
   # Capture MediaWiki.ExternalGuidance.<action|mtinfo>.<service>.<from>.<to>
