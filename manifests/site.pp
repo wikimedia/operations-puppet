@@ -2397,6 +2397,10 @@ node /^mx2001\.wikimedia\./ {
     }
 }
 
+node /^mx-out[1-9][0-9]{3}\.wikimedia\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
