@@ -121,19 +121,19 @@ network::subnets:
           ipv6: 2620:0:861:cabe::/64
         private1-services-kubesvc-eqiad:
           ipv4: 10.64.72.0/24
-          ipv6: 2620:0:861:cabf::/64
+          ipv6: 2620:0:861:cabf::/116
         private1-staging-kubepods-eqiad:
           ipv4: 10.64.75.0/24
           ipv6: 2620:0:861:babe::/64
         private1-staging-kubesvc-eqiad:
           ipv4: 10.64.76.0/24
-          ipv6: 2620:0:861:babf::/64
+          ipv6: 2620:0:861:babf::/116
         private1-mlserve-kubepods-eqiad:
           ipv4: 10.67.16.0/21
           ipv6: 2620:0:861:300::/64
         private1-mlserve-kubesvc-eqiad:
           ipv4: 10.67.0.0/20
-          ipv6: 2620:0:861:301::/64
+          ipv6: 2620:0:861:301::/116
         private1-e1-eqiad:
           ipv4: 10.64.130.0/24
           ipv6: 2620:0:861:109::/64
@@ -235,13 +235,13 @@ network::subnets:
           ipv6: 2620:0:861:305::/64
         private1-aux-kubesvc-eqiad:
           ipv4: 10.67.64.0/20
-          ipv6: 2620:0:861:304::/64
+          ipv6: 2620:0:861:304::/116
         private1-dse-kubepods-eqiad:
           ipv4: 10.67.24.0/21
           ipv6: 2620:0:861:302::/64
         private1-dse-kubesvc-eqiad:
           ipv4: 10.67.32.0/20
-          ipv6: 2620:0:861:303::/64
+          ipv6: 2620:0:861:303::/116
         private1-virtual-eqiad:
           ipv4: 10.64.24.0/23
           ipv6: 2620:0:861:140::/64
