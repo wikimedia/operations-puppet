@@ -13,7 +13,12 @@ class profile::codesearch (
     ferm::service { 'codesearch':
         proto  => 'tcp',
         port   => '3002',
-        srange => '$CACHES',
+        # Disallow direct access from other WMCS projects. They must use the
+        # stable (and rate-limited) codesearch-backend.wmcloud.org URL instead.
+        #
+        # Allow access from local Docker containers (e.g. codesearch-frontend)
+        # https://phabricator.wikimedia.org/T361899
+        srange => '($CACHES 172.17.0.0/16)',
     }
 
     class { '::codesearch':

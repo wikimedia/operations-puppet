@@ -9,6 +9,7 @@ User=www-data
 Group=www-data
 RuntimeDirectory=gunicorn
 WorkingDirectory=/srv/codesearch
+# NOTE: codesearch-backend.wmcloud.org is a public proxy to this Hound proxy on port 3002
 ExecStart=/usr/bin/gunicorn3 --pid /run/gunicorn/pid   \
           -w 4 -b 0.0.0.0:3002 app:app
 ExecReload=/bin/kill -s HUP $MAINPID
