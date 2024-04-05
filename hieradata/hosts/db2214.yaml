@@ -1,4 +1,5 @@
 # db2214
-# candidate master for s6
+# candidate master for s6 ← node is depooled and down for now
 mariadb::shard: 's6'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
