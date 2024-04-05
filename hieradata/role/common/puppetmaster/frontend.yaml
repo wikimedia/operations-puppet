@@ -36,3 +36,4 @@ profile::java::java_packages:
     variant: 'jre-headless'
 profile::tlsproxy::envoy::global_cert_name: "config-master.discovery.wmnet"
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Puppetmaster frontend'

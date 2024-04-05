@@ -1,10 +1,6 @@
 # vim: set tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=80 smarttab
 
 class role::puppetmaster::frontend {
-    system::role { 'puppetmaster':
-        description => 'Puppetmaster frontend'
-    }
-
     include profile::base::production
     include profile::firewall
 

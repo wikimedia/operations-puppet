@@ -10,8 +10,6 @@
 #
 
 class role::puppetboard {
-    system::role { 'puppetboard': description => 'Puppetboard server' }
-
     include profile::base::production
     include profile::firewall
     include profile::puppetboard

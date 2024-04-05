@@ -16,3 +16,4 @@ profile::samplicator::targets:
   - 127.0.0.1/2100 #Nfacct
 profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
+profile::base::production::role_description: 'network telemetry collector'

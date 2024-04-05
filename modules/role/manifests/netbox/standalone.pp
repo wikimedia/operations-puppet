@@ -14,8 +14,6 @@
 
 class role::netbox::standalone {
     include profile::base::production
-    system::role { 'netbox::standalone': description => 'Netbox frontend and database in one box' }
-
     include profile::netbox
     include profile::netbox::scripts
     include profile::netbox::db

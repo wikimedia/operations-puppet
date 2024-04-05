@@ -11,3 +11,4 @@ profile::tlsproxy::envoy::cfssl_options:
     - "%{facts.networking.fqdn}"
 
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Staging repo for CI generated packages, used for testing'

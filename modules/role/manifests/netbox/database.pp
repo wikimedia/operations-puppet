@@ -13,9 +13,6 @@
 
 class role::netbox::database {
     include profile::base::production
-
-    system::role { 'netbox::database': description => 'Netbox database server' }
-
     include profile::netbox::db
     include profile::prometheus::postgres_exporter
     include profile::firewall
