@@ -9,6 +9,7 @@ class profile::cache::purge(
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
     String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
     Optional[String] $tls_key_password = lookup('profile::cache::purge::tls_key_password', {'default_value' => undef}),
+    Boolean $use_pki = lookup('profile::cache::purged::use_pki', {'default_value' => false}),
 ){
     $kafka_ensure = $kafka_topics ? {
         []      => 'absent',
@@ -29,62 +30,87 @@ class profile::cache::purge(
     $base_dir = '/etc/purged'
     $tls_dir = "${base_dir}/ssl"
     $tls_private_dir = "${tls_dir}/private"
-    $tls_key = "${tls_private_dir}/purged.key.pem"
-    $tls_cert = "${tls_dir}/purged.crt.pem"
     file { $base_dir:
         ensure => 'directory',
         owner  => 'root',
         group  => 'root',
         mode   => '0555'
     }
-
+    $cipher_suites = 'ECDHE-ECDSA-AES256-GCM-SHA384'
+    $curves_list = 'P-256'
+    $sigalgs_list = 'ECDSA+SHA256'
     if $kafka_tls and $kafka_topics != [] {
-        file { $tls_dir:
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555'
-        }
+        if $use_pki {
+            file { $tls_dir:
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555'
+            }
 
-        file { $tls_private_dir:
-            ensure => 'directory',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0500'
-        }
-        file { $tls_key:
-            ensure  => 'present',
-            content => secret('certificates/purged/purged.key.private.pem'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0400',
-            before  => Service['purged']
-        }
+            file { $tls_private_dir:
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0500'
+            }
 
-        file { $tls_cert:
-            ensure  => 'present',
-            content => secret('certificates/purged/purged.crt.pem'),
-            owner   => 'root',
-            group   => 'root',
-            mode    => '0444',
-            before  => Service['purged']
+            $tls_paths = profile::pki::get_cert('discovery',
+            'purged',
+            {
+              'owner'           => 'root',
+              'group'           => 'root',
+              'notify_services' => ['purged'],
+              'outdir'          => $tls_dir,
+            })
+
+            $tls_key = $tls_paths['key']
+            $tls_cert = $tls_paths['cert']
+        } else {
+            $tls_key = "${tls_private_dir}/purged.key.pem"
+            $tls_cert = "${tls_dir}/purged.crt.pem"
+            file { $tls_dir:
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0555'
+            }
+
+            file { $tls_private_dir:
+                ensure => 'directory',
+                owner  => 'root',
+                group  => 'root',
+                mode   => '0500'
+            }
+            file { $tls_key:
+                ensure  => 'present',
+                content => secret('certificates/purged/purged.key.private.pem'),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0400',
+                before  => Service['purged']
+            }
+
+            file { $tls_cert:
+                ensure  => 'present',
+                content => secret('certificates/purged/purged.crt.pem'),
+                owner   => 'root',
+                group   => 'root',
+                mode    => '0444',
+                before  => Service['purged']
+            }
         }
-        $tls_settings = {
-            'ca_location' => '/etc/ssl/certs/wmf-ca-certificates.crt',
-            'key_location' => $tls_key,
-            'key_password' => $tls_key_password,
-            'certificate_location' => $tls_cert,
-            'cipher_suites' => 'ECDHE-ECDSA-AES256-GCM-SHA384',
-            'curves_list' => 'P-256',
-            'sigalgs_list' => 'ECDSA+SHA256'
-        }
-    } else {
-        # TODO: uncomment after the transition.
-        #file { [$tls_key,$tls_cert,$tls_dir,$tls_private_dir]:
-        #    ensure => 'absent'
-        #}
-        $tls_settings = undef
     }
+    $tls_settings = {
+            'ca_location'          => '/etc/ssl/certs/wmf-ca-certificates.crt',
+            'key_location'         => $tls_key,
+            'key_password'         => $tls_key_password,
+            'certificate_location' => $tls_cert,
+            'cipher_suites'        => $cipher_suites,
+            'curves_list'          => $curves_list,
+            'sigalgs_list'         => $sigalgs_list
+    }
+
 
     $prometheus_port = 2112
 
