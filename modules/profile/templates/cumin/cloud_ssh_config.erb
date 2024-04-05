@@ -1,5 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-Host restricted.bastion.wmcloud.org bastion-restricted-eqiad1-3.bastion.eqiad1.wikimedia.cloud bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org bastion-codfw1dev-02.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+Host restricted.bastion.wmcloud.org bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
     ProxyCommand nc -X connect -x webproxy:8080 %h %p
     # Set it to none so that it doesn't get set in the next sections
     ProxyJump none
