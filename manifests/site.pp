@@ -920,6 +920,16 @@ node /^dbproxy10(12|13|14|15|16|20|21|22|23|24|25|26|27)\.eqiad\./ {
     role(mariadb::proxy::master)
 }
 
+# New proxies T361351
+node /^dbproxy102[8-9]\.eqiad\./ {
+    role(insetup::data_persistence)
+}
+
+# New proxies T361352
+node /^dbproxy200[5-8]\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # Passive codfw proxies for misc databases
 node /^dbproxy20(01|02|03|04)\.codfw\./ {
     role(mariadb::proxy::master)
