@@ -18,7 +18,6 @@ import yaml
 import configparser
 from collections import defaultdict
 from pypuppetdb import connect
-from pypuppetdb import QueryBuilder
 from dominate import tags as tags
 from dominate.util import text
 
@@ -82,21 +81,20 @@ def get_current_quarter():
 
 # Fetch all roles and return a dictionary of fqdn[rolename]
 def get_roles():
+
+    db = connect()
+    pql = """
+resources [tags, certname]{
+    type = 'Class' and
+    title ~ 'Role'
+}
+"""
+
     fqdns_roles = {}
-
-    q = QueryBuilder.ExtractOperator()
-    q.add_field(str('tags'))
-    q.add_field(str('title'))
-    q.add_field(str('certname'))
-    q.add_query(QueryBuilder.EqualsOperator('type', 'System::Role'))
-
-    pdb = connect_puppetdb()
-    data = pdb._query('resources', query=q)
-
-    for resource in data:
-        for i in resource['tags']:
-            if i.startswith("role::"):
-                fqdns_roles[resource['certname']] = i
+    resources = db.pql(pql)
+    for resource in resources:
+        role = [r for r in resource['tags'] if r.startswith('role::')][0]
+        fqdns_roles[resource['certname']] = role
 
     return fqdns_roles
 
