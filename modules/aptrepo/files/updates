@@ -111,7 +111,7 @@ UDebComponents:
 Suite: stable
 Architectures: amd64
 VerifyRelease: 963FA27710458545
-ListShellHook: grep-dctrl \( -P 'grafana' --exact-match -a -FVersion --ge 9 -a -FVersion --lt 9.5 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -P 'grafana' --exact-match -a -FVersion --ge 9 -a -FVersion --lt 9.6 \) || [ $? -eq 1 ]
 
 Name: confluent
 Method: http://packages.confluent.io/deb/4.0
