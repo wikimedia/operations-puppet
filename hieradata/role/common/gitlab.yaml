@@ -56,6 +56,7 @@ profile::gitlab::cert_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.chained.cr
 profile::gitlab::key_path: '/etc/acmecerts/gitlab/live/ec-prime256v1.key'
 
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'GitLab server for code review'
 
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true

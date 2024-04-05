@@ -45,6 +45,7 @@ profile::java::java_packages:
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Wikimedia Software Releases Server'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

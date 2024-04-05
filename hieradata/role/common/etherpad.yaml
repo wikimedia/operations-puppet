@@ -12,6 +12,8 @@ profile::tlsproxy::envoy::tls_port: 7443
 profile::tlsproxy::envoy::websockets: true
 
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Etherpad-lite server'
+
 profile::etherpad::listen_ip: '::'
 
 profile::puppet::agent::force_puppet7: true

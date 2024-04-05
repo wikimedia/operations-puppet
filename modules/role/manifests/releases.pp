@@ -24,11 +24,6 @@
 # install certs or configure apache for ssl/tls
 
 class role::releases {
-    system::role { 'releases':
-        ensure      => 'present',
-        description => 'Wikimedia Software Releases Server',
-    }
-
     include profile::base::production
     include profile::firewall
     include profile::backup::host
@@ -41,5 +36,5 @@ class role::releases {
     include profile::releases::blubber
     include profile::releases::wikibase
     include profile::tlsproxy::envoy # TLS termination
-    include ::profile::prometheus::apache_exporter
+    include profile::prometheus::apache_exporter
 }

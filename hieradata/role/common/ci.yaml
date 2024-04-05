@@ -127,6 +127,7 @@ profile::tlsproxy::envoy::tls_port: 1443
 profile::tlsproxy::envoy::ferm_srange: "$CACHES"
 
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'CI server'
 
 # keep Python2 packages on bullseye to be able to run Zuul v2
 profile::base::remove_python2_on_bullseye: false

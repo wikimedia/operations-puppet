@@ -18,6 +18,7 @@ profile::miscweb::rsync::dst_hosts:
 
 profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'WMF misc apps and sites web server'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

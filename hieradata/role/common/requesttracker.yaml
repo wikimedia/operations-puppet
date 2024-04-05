@@ -14,6 +14,8 @@ profile::idp::client::httpd::sites:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'RT server'
+
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true
