@@ -163,4 +163,14 @@ class base::standard_packages (
     # various sockets connected to all the system's stdout/stderr
     # are not lost when journald is restarted.
     profile::auto_restarts::service { 'systemd-journald': }
+
+    # The hardware emulated by our Ganeti machine type includes a "CDROM"
+    # If d-i detects such a drive, it installs eject on the installed system
+    # (used by functionality which ejects the CDROM if installung from optical
+    # media. We don't need this, so uninstall it via Puppet
+    # Restrict this to production VMs, cloud-init as used in Cloud VPS
+    # depends on eject
+    if $facts['is_virtual'] and $::realm == 'production' {
+        package {'eject': ensure => 'absent'}
+    }
 }
