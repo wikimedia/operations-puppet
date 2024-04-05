@@ -25,10 +25,10 @@ class profile::openstack::base::barbican(
         bind_port       => $bind_port,
     }
 
-    ferm::service { 'barbican-api-backend':
+    firewall::service { 'barbican-api-backend':
         proto  => 'tcp',
         port   => $bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'barbican':
