@@ -18,6 +18,7 @@ profile::cloudceph::client::rbd::cinder_client_name: "codfw1dev-cinder"
 profile::cloudceph::auth::deploy::enabled: true
 profile::cloudceph::auth::deploy::selected_creds:
 - codfw1dev-cinder
+- admin
 
 profile::contacts::role_contacts: ['WMCS']
 
