@@ -22,10 +22,10 @@ class profile::installserver::http_light {
         content => '',
     }
 
-    ferm::service { 'install_http_light':
-        proto  => 'tcp',
-        port   => 80,
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'install_http_light':
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     monitoring::service { 'http':

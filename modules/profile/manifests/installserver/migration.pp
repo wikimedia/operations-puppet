@@ -22,10 +22,10 @@ class profile::installserver::migration (
 
     if $::fqdn in $dst_hosts {
 
-        ferm::service { 'installserver-migration-rsync':
+        firewall::service { 'installserver-migration-rsync':
             proto  => 'tcp',
             port   => 873,
-            srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
+            srange => $src_host,
         }
 
         class { '::rsync::server': }

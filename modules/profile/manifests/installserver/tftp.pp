@@ -24,10 +24,10 @@ class profile::installserver::tftp () {
 
     class { 'install_server::tftp_server': }
 
-    ferm::service { 'tftp':
-        proto  => 'udp',
-        port   => 69,
-        srange => '($PRODUCTION_NETWORKS $MGMT_NETWORKS)',
+    firewall::service { 'tftp':
+        proto    => 'udp',
+        port     => 69,
+        src_sets => ['PRODUCTION_NETWORKS', 'MGMT_NETWORKS']
     }
 
     backup::set { 'srv-tftpboot': }

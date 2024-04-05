@@ -47,10 +47,10 @@ class profile::installserver::proxy(
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 17:15:00'},
     }
 
-    ferm::service { 'proxy':
-        proto  => 'tcp',
-        port   => 8080,
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'proxy':
+        proto    => 'tcp',
+        port     => 8080,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 
     # Monitoring
