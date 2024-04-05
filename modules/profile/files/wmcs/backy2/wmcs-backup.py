@@ -79,7 +79,9 @@ class InstanceBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_instances.yaml"
 
     def get_host_for_project(self, project: str) -> str:
-        return self.project_assignments.get(project, self.project_assignments["ALLOTHERS"])
+        return self.project_assignments.get(
+            project, self.project_assignments.get("ALLOTHERS", None)
+        )
 
     def get_host_for_vm(self, project: str, vm_name: Optional[str] = None) -> str:
         if vm_name is not None:
@@ -107,7 +109,9 @@ class VolumeBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_volumes.yaml"
 
     def get_host_for_project(self, project: str) -> str:
-        return self.project_assignments.get(project, self.project_assignments["ALLOTHERS"])
+        return self.project_assignments.get(
+            project, self.project_assignments.get("ALLOTHERS", None)
+        )
 
     def get_host_for_image(self, project: str, image_info: Dict[str, Any]) -> str:
         if image_info is not None:
