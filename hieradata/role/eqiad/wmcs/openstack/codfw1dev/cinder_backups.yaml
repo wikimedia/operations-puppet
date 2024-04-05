@@ -57,6 +57,8 @@ profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   live_for_days: 8
   exclude_volumes:
     andrewtestproject:
+      - ".*"
   project_assignments:
-    testlabs: cloudbackup1001-dev
+    trove: cloudbackup1001-dev
     testlabs: cloudbackup1002-dev
+    cloudinfra-codfw1dev: cloudbackup1002-dev
