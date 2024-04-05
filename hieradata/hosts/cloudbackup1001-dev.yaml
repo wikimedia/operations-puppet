@@ -7,7 +7,6 @@
 # less precedence than per-DC data, so we need the keys here, which should have
 # higher priority.
 
-profile::cloudceph::client::rbd::enable_v2_messenger: true
 profile::cloudceph::mon::hosts:
   "cloudcephmon2004-dev.codfw.wmnet":
     public:
