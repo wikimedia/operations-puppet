@@ -9,11 +9,7 @@ User=codesearch
 TimeoutStartSec=0
 ExecStartPre=-/usr/bin/docker kill codesearch-frontend
 ExecStartPre=-/usr/bin/docker rm -f codesearch-frontend
-# Connect to the local Hound container directly via the docker host IP.
-# Avoid tripping CDN rate limits since all conns would come from the same IP.
-# https://phabricator.wikimedia.org/T361899
-ExecStart=/usr/bin/docker run --network=host --name=codesearch-frontend \
-    -e "CODESEARCH_HOUND_BASE=http://172.17.0.1:3002" \
+ExecStart=/usr/bin/docker run -p 3003:80 --name codesearch-frontend \
     codesearch-frontend
 ExecStop=/usr/bin/docker stop codesearch-frontend
 Restart=on-failure
