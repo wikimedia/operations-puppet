@@ -126,9 +126,9 @@ class profile::mail::mx (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
     }
 
-    ferm::service { 'exim-smtp':
+    firewall::service { 'exim-smtp':
         proto => 'tcp',
-        port  => '25',
+        port  => 25,
     }
 
     # mails the wikimedia.org mail alias file to ITS once per week
