@@ -40,7 +40,7 @@ with tarfile.open(outfile, "w:xz") as yamltarfile:
                         del facts["values"][key]
 
                 yamlfacts = yaml.dump(facts).encode("utf8")
-                tarinfo = tarfile.TarInfo(jsonfactfilepath.stem + ".yaml")
+                tarinfo = tarfile.TarInfo(f"yaml/facts/{jsonfactfilepath.stem}.yaml")
                 tarinfo.mtime = int(time.time())
                 tarinfo.size = len(yamlfacts)
                 yamltarfile.addfile(tarinfo, BytesIO(yamlfacts))
