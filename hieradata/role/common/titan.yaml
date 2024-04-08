@@ -65,7 +65,7 @@ profile::thanos::store::max_time: '-15d'
 
 # Retention custom settings -- see also T311690 and T351927
 profile::thanos::retention::raw: '54w'
-profile::thanos::retention::5m: '217w'
+profile::thanos::retention::5m: '164w'
 
 profile::thanos::oidc_sso_enabled: true
 
