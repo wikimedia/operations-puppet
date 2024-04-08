@@ -1,5 +1,6 @@
 # PuppetDB
 profile::puppet::agent::force_puppet7: true
+profile::puppet::agent::puppetmaster: puppet
 profile::nginx::lib_on_tmpfs: false
 profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::puppetboard_hosts: []
