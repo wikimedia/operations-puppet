@@ -17,6 +17,18 @@ profile::admin::groups:
 #
 profile::cassandra::allow_analytics: true
 
+# Temporary override to allow the creation of a bundle
+# that includes the custom CA certificate that Cassandra nodes use.
+# TODO: remove the trusted_certs setting after the cluster
+# is migrated to PKI.
+profile::base::certificates::include_bundle_jks: true
+profile::base::certificates::trusted_certs:
+  package: 'wmf-certificates'
+  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
+  certs:
+  - '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt'
+  - '/etc/cassandra-a/tls/rootCa.crt'
+
 # Instances
 profile::cassandra::instances:
   "aqs1010.eqiad.wmnet":
@@ -145,6 +157,8 @@ profile::cassandra::settings:
   dc: "%{::site}"
   cluster_name: "Analytics Query Service Storage"
   tls_cluster_name: aqs
+  tls_use_pki_truststore: true
+  tls_use_pki_keep_old_ca: true
   start_rpc: false
   target_version: '4.x'
   default_instance_params:
