@@ -25,6 +25,14 @@ class gitlab::rsync (
         auto_firewall => true,
     }
 
+    file { "${backup_dir_data}/gitlab-backup-periodic-rsync.sh":
+        ensure => file,
+        mode   => '0744',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/gitlab/gitlab-backup-periodic-rsync.sh',
+    }
+
     $all_hosts.each | Stdlib::Fqdn $host | {
         # We need to ensure that systemd timeres are only active on the active host
         # and that any jobs on the old active pulling from the new active are also cleaned up
