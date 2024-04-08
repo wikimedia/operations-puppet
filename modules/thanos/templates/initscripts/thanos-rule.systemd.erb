@@ -15,8 +15,7 @@ ExecStart=/usr/bin/thanos rule \
   --alert.relabel-config-file <%= @relabel_config_file %> \
   --alertmanagers.config-file <%= @am_config_file %> \
   --alert.label-drop replica \
-  --label 'prometheus="thanos-rule"' \
+  --label 'recorder="thanos-rule"' \
   --label 'replica="<%= @replica %>"' \
-  --label 'site="<%= scope['::site'] %>"' \
   <%= @rule_files.map { |f| "--rule-file #{f}" }.join(" ") %> \
   --query http://localhost:<%= @query_port %>
