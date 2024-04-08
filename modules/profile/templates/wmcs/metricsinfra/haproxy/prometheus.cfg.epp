@@ -1,5 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 <%- |
+    Stdlib::Fqdn        $public_domain,
+    Stdlib::Fqdn        $svc_domain,
     Array[Stdlib::Fqdn] $prometheus_alertmanager_hosts,
     Stdlib::Fqdn        $alertmanager_active_host,
     Array[Stdlib::Fqdn] $thanos_fe_hosts,
@@ -15,14 +17,14 @@ frontend http-public
     option forwardfor
 
     acl is_prometheus_host hdr(host) -i prometheus.wmflabs.org
-    acl is_prometheus_host hdr(host) -i prometheus.wmcloud.org
-    acl is_prometheus_host hdr(host) -i prometheus.svc.metricsinfra.eqiad1.wikimedia.cloud
+    acl is_prometheus_host hdr(host) -i prometheus.<%= $public_domain %>
+    acl is_prometheus_host hdr(host) -i prometheus.<%= $svc_domain %>
 
     acl is_prometheus_alertmanager_path path -i -m beg /.alertmanager/
 
-    acl is_karma_host hdr(host) -i prometheus-alerts.wmcloud.org
+    acl is_karma_host hdr(host) -i prometheus-alerts.<%= $public_domain %>
 
-    acl is_config_manager_host hdr(host) -i config-manager.svc.metricsinfra.eqiad1.wikimedia.cloud
+    acl is_config_manager_host hdr(host) -i config-manager.<%= $svc_domain %>
 
     # Block alertmanager's dangerous endpoints
     acl is_unsafe_alertmanager_path path -i -m beg /.alertmanager/debug
@@ -30,8 +32,8 @@ frontend http-public
     acl is_unsafe_alertmanager_path path -i -m beg /.alertmanager/-/reload
     acl is_safe_alertmanager_method method GET HEAD OPTIONS
 
-    acl is_grafana_host hdr(host) -i grafana.wmcloud.org
-    acl is_grafana_host hdr(host) -i grafana-rw.wmcloud.org
+    acl is_grafana_host hdr(host) -i grafana.<%= $public_domain %>
+    acl is_grafana_host hdr(host) -i grafana-rw.<%= $public_domain %>
 
     acl is_prometheus_metrics_path path -i -m beg /metrics
 
