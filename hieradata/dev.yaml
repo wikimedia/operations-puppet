@@ -24,9 +24,11 @@ profile::syslog::remote::central_hosts_tls: {}
 # Don't manage resolv.conf as k8s handles it for now
 profile::base::manage_resolvconf: false
 
-# Allow SSH access in dev env from minikube configured pod cidr
+# Treat all private networks as "bastions" for the dev environment.
 bastion_hosts:
   - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
 
 # Allow access to '$CACHES' in firewall config from pod cidr
 cache_hosts:
