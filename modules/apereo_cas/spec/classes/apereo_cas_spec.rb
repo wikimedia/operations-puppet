@@ -12,9 +12,7 @@ describe 'apereo_cas' do
           keystore_source: 'puppet:///modules/apereo_cas/thekeystore',
           idp_nodes: [
             # theses need to resolve for the checks to pass
-            'idp1002.wikimedia.org',
             'idp1003.wikimedia.org',
-            'idp2002.wikimedia.org',
             'idp2003.wikimedia.org',
           ]
         }

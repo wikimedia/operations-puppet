@@ -107,9 +107,7 @@ profile::acme_chief::certificates:
         CN: 'idp.wikimedia.org'
         SNI:
         - 'idp.wikimedia.org'
-        - 'idp1002.wikimedia.org'
         - 'idp1003.wikimedia.org'
-        - 'idp2002.wikimedia.org'
         - 'idp2003.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
