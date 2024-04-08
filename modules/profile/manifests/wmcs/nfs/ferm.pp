@@ -13,6 +13,6 @@ class profile::wmcs::nfs::ferm {
     ferm::service { 'query_service_nfs_service':
       proto  => 'tcp',
       port   => '2049',
-      srange => '@resolve((wdqs1022.eqiad.wmnet wdqs1023.eqiad.wmnet wdqs1024.eqiad.wmnet wdqs1025.eqiad.wmnet wcqs2001.codfw.wmnet wdqs2009.codfw.wmnet wdqs2010.codfw.wmnet))',
+      srange => '@resolve((wdqs1022.eqiad.wmnet wdqs1023.eqiad.wmnet wdqs1024.eqiad.wmnet wcqs2001.codfw.wmnet wdqs2009.codfw.wmnet wdqs2010.codfw.wmnet))',
     }
 }

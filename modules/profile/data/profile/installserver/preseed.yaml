@@ -716,8 +716,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'wdqs101[1-3]|wdqs200[7-8]':
     - partman/standard.cfg
     - partman/raid10-8dev.cfg
-  'wdqs1025':
-    - partman/custom/cacheproxy.cfg
   'wdqs2009|wdqs201[0-9]|wdqs202[0-5]|wdqs101[4-6]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg

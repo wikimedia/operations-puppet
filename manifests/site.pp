@@ -2788,10 +2788,6 @@ node /^wdqs10([2][2-4])\.eqiad\./ {
     role(wdqs::test)
 }
 
-node /^wdqs1025.eqiad\./ {
-    role(wdqs::test)
-}
-
 node /^(wdqs2008|wdqs201[45])\.codfw\./ {
     role(wdqs::internal)
 }
