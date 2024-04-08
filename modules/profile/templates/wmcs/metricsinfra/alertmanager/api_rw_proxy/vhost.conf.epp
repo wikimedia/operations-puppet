@@ -17,6 +17,12 @@ Listen 8643
         Require ip <%= $ip %>
         <%- } -%>
 
+        AuthType Basic
+        AuthName "restricted"
+        AuthBasicProvider file
+        AuthUserFile "/etc/apache2/alertmanager-api-rw.htpasswd"
+        Require valid-user
+
         ProxyPreserveHost On
         ProxyPass http://localhost:9093/
         ProxyPassReverse http://localhost:9093/
