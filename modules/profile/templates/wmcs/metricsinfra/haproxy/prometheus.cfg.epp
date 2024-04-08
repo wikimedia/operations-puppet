@@ -22,6 +22,8 @@ frontend http-public
 
     acl is_prometheus_alertmanager_path path -i -m beg /.alertmanager/
 
+    acl is_prometheus_alertmanager_rw_host hdr(host) -i metricsinfra-alertmanager-rw.<%= $public_domain %>
+
     acl is_karma_host hdr(host) -i prometheus-alerts.<%= $public_domain %>
 
     acl is_config_manager_host hdr(host) -i config-manager.<%= $svc_domain %>
@@ -43,6 +45,7 @@ frontend http-public
     http-request deny if is_grafana_host is_prometheus_metrics_path
 
     use_backend prometheus_alertmanager if is_prometheus_host is_prometheus_alertmanager_path
+    use_backend prometheus_alertmanager_rw if is_prometheus_alertmanager_rw_host
     use_backend thanos_fe if is_prometheus_host !is_prometheus_alertmanager_path
     use_backend karma if is_karma_host
     use_backend grafana if is_grafana_host
@@ -58,6 +61,16 @@ backend prometheus_alertmanager
     http-request replace-path /.alertmanager(/)?(.*) /\2
 <%- $prometheus_alertmanager_hosts.each |$server| { -%>
     server <%= $server %> <%= $server %>:9093 check
+<%- } -%>
+
+backend prometheus_alertmanager_rw
+    mode http
+    option tcp-check
+    balance roundrobin
+    timeout server 1h
+    default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
+<%- $prometheus_alertmanager_hosts.each |$server| { -%>
+    server <%= $server %> <%= $server %>:8643 check
 <%- } -%>
 
 backend karma
