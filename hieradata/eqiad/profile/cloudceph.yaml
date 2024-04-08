@@ -14,7 +14,5 @@ profile::cloudceph::ceph_repository_component: "thirdparty/ceph-octopus"
 # NOTE: remember, backups nodes for codfw1dev are in the eqiad DC
 # and backup nodes for eqiad1 are in the codfw DC
 profile::cloudceph::cinder_backup_nodes:
-  - cloudbackup2001.codfw.wmnet
-  - cloudbackup2002.codfw.wmnet
   - cloudbackup2003.codfw.wmnet
   - cloudbackup2004.codfw.wmnet
