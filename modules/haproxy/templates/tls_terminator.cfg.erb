@@ -61,7 +61,7 @@ listen tls
     timeout tunnel <%= @timeout['tunnel'] %>s
 
     <%- if @extended_logging -%>
-    unique-id-format "%Ts%rt"
+    unique-id-format "%rt"
     <%- end -%>
     # TODO: refactor to a more configurable approach
     capture response header X-Cache-Status len 10
@@ -174,7 +174,7 @@ frontend http
     bind :::<%= @http_redirection_port %> v6only
 
 <%- if @extended_logging -%>
-    unique-id-format "%Ts%rt"
+    unique-id-format "%rt"
 <%- end -%>
     # Needed for logging purposes
     capture request header Host len 25
