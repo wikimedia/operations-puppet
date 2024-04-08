@@ -68,7 +68,6 @@ Components: main
  thirdparty/elastic78
  thirdparty/elastic79
  thirdparty/gitlab-runner
- thirdparty/grafana
  thirdparty/gvisor
  thirdparty/haproxy24
  thirdparty/haproxy26
@@ -96,7 +95,6 @@ Update:
  elastic78
  elastic79
  elastic710
- grafana
  gvisor
  jenkins
  hp-mcp-buster
@@ -227,6 +225,7 @@ Components: main
  thirdparty/ceph-reef
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
+ thirdparty/grafana
  thirdparty/haproxy26
  thirdparty/haproxy28
  thirdparty/hwraid
@@ -239,6 +238,7 @@ Update:
 # sorted list, leading whitespace matters!
  elastic710
  elasticsearch-curator5
+ grafana
  hp-mcp-bookworm
  hwraid-megacli
  routinator-bookworm
