@@ -1,3 +1,4 @@
 # db1156
 # sanitarium master for s2
 mariadb::shard: 's2'
+mariadb::package: 'wmf-mariadb106'
