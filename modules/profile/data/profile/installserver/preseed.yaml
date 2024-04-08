@@ -220,7 +220,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'durum*':
     - partman/flat.cfg
     - virtual.cfg
-  'dumpsdata100[1-7]':
+  'dumpsdata100[3-7]':
     - partman/custom/dumpsdata100X-no-data-format.cfg
   'elastic*':
     - partman/standard.cfg
