@@ -28,7 +28,7 @@ class profile::prometheus::ops_mysql (
     file { '/etc/mysqld-exporter-config.yaml':
       ensure  => file,
       mode    => '0644',
-      content => "---\ndc: ${facts['site']}\nconfig_path: ${targets_path}\n",
+      content => "---\ndc: ${::site}\nconfig_path: ${targets_path}\n",
     }
     systemd::timer::job { 'generate-mysqld-exporter-config':
       ensure      => 'present',
