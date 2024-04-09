@@ -15,7 +15,7 @@
 # @param password_salt passowrd salt
 # @param allow_push_from a list of hosts allowed to push
 # @param ssl_settings an array of ssl settings
-# @param ssl_certificate_name the certificate name to use
+# @param ssl_paths the ssl file paths to use
 # @param jwt_allowed_ips A list of ips allowd to use jwt
 # @param jwt_keys_url The jwt keys url
 # @param jwt_issuers The jwt keys issuer
@@ -34,7 +34,7 @@ class docker_registry_ha::web (
     String                               $password_salt,
     Array[Stdlib::Host]                  $allow_push_from,
     Array[String]                        $ssl_settings,
-    String                               $ssl_certificate_name = undef,
+    Hash                                 $ssl_paths            = undef,
     Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips      = [],
     Stdlib::HTTPUrl                      $jwt_keys_url         = 'https://gitlab.wikimedia.org/-/jwks',
     Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],

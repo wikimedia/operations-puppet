@@ -17,6 +17,7 @@ class profile::docker_registry_ha::registry(
     Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
     # Storage configuration
     String $certname = lookup('profile::docker_registry_ha::registry::certname'),
+    Array[Cfssl::Common_name] $alt_names = lookup('profile::docker_registry_ha::registry::alt_names'),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
     Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry_ha::registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
@@ -49,13 +50,12 @@ class profile::docker_registry_ha::registry(
     }
 
     # Nginx frontend
-    class { '::sslcert::dhparam': }
+    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+        'notify_services' => ['nginx'],
+        'outdir'          => '/etc/nginx/ssl',
+        'hosts'           => $alt_names,
+    })
 
-    sslcert::certificate { $certname:
-        ensure       => present,
-        skip_private => false,
-        before       => Service['nginx'],
-    }
     $swift_account = $swift_accounts['docker_registry']
     # Get the local site's swift credentials
     $swift_account_keys = $global_swift_account_keys[$::site]
@@ -95,7 +95,7 @@ class profile::docker_registry_ha::registry(
         password_salt               => $password_salt,
         allow_push_from             => $image_builders,
         ssl_settings                => ssl_ciphersuite('nginx', 'mid'),
-        ssl_certificate_name        => $certname,
+        ssl_paths                   => $ssl_paths,
         read_only_mode              => $registry_read_only_mode,
         nginx_cache                 => $nginx_cache,
         deployment_hosts            => $deployment_hosts,

@@ -71,8 +71,8 @@ server {
 server {
     listen 443 default_server ssl;
     listen [::]:443 ssl default_server ipv6only=on;
-    ssl_certificate /etc/ssl/localcerts/<%= @ssl_certificate_name %>.chained.crt;
-    ssl_certificate_key /etc/ssl/private/<%= @ssl_certificate_name %>.key;
+    ssl_certificate <%= @ssl_paths['chained'] %>;
+    ssl_certificate_key <%= @ssl_paths['key'] %>;
 
     # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
     # Enable a shared cache, since it is defined at this level
