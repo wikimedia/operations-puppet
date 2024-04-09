@@ -1892,6 +1892,11 @@ node /^matomo1002\.eqiad\./ {
     role(piwik)
 }
 
+# Bookworm replacement for matomo1002 - T349397
+node /^matomo1003\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 node /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\./ {
     role(mediawiki::memcached)
 }
