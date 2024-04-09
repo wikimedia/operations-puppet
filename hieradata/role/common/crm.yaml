@@ -3,3 +3,15 @@ profile::admin::groups:
 profile::contacts::role_contacts: ['Fundraising Tech']
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# envoy for TLS termination for community-crm.wikimedia.org behind ATS
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
+
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::global_cert_name: 'community-crm.discovery.wmnet'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - community-crm.wikimedia.org
