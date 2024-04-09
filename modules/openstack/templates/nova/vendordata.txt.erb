@@ -81,10 +81,6 @@ packages:
     - pciutils
     - ruby-sorted-set
 
-# Clear default partitioning/mounting behavior so puppet can manage it
-disk_setup:
-fs_setup:
-
 # Mark out ephemeral0 so that cloud-init leaves it alone;
 #  we'll let puppet mount it later.
 mounts:
