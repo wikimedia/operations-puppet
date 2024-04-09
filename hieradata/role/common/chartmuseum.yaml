@@ -11,10 +11,13 @@ profile::chartmuseum::hostname: helm-charts.discovery.wmnet
 
 profile::tlsproxy::envoy::upstream_addr: 127.0.0.1
 profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - helm-charts.wikimedia.org
 profile::tlsproxy::envoy::services:
 - server_names: ['*']
   port: 8080
 profile::tlsproxy::envoy::global_cert_name: "helm-charts.discovery.wmnet"
-profile::tlsproxy::envoy::sni_support: "no"
 
 profile::contacts::role_contacts: ['ServiceOps']
