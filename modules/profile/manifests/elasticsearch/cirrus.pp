@@ -122,6 +122,12 @@ class profile::elasticsearch::cirrus(
         # of this check on all nodes until we find a better way to run this check
         # only on icinga nodes
         if $facts['fqdn'] in $instance_params['unicast_hosts'] {
+            elasticsearch::cross_cluster_settings { $instance_title:
+                http_port            => $http_port,
+                settings             => $::profile::elasticsearch::configured_instances,
+                enable_remote_search => $enable_remote_search,
+            }
+
             icinga::monitor::elasticsearch::cirrus_settings_check { $instance_title:
                 port                 => $http_port,
                 settings             => $::profile::elasticsearch::configured_instances,

@@ -1,0 +1,13 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+# set-cross-cluster-seeds.sh. Given a json file with elastic remote seeds,
+# update Elastic cluster with correct settings.
+# Author: Brian King
+
+set -eo pipefail
+
+data="<%= @cluster_settings_path %>"
+
+logger "updating cross cluster seed settings via ${data}"
+
+curl -H 'content-type: application/json' -XPUT --data "@${data}" http://localhost:<%= @http_port %>/_cluster/settings
