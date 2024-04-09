@@ -478,12 +478,12 @@ define cassandra::instance(
                 'group'  => 'cassandra',
                 'mode'   => '0400',
                 'hosts'  => ['cassandra', $facts['networking']['fqdn']],
-                notify   => Sslcert::X509_to_pkcs12['cassandra_keystore'],
+                notify   => Sslcert::X509_to_pkcs12["cassandra_keystore_${tls_hostname}"],
                 }
             )
 
             $tls_keystore_location = "${tls_dir}/server.key"
-            sslcert::x509_to_pkcs12 { 'cassandra_keystore' :
+            sslcert::x509_to_pkcs12 { "cassandra_keystore_${tls_hostname}" :
                 owner       => 'cassandra',
                 group       => 'cassandra',
                 public_key  => $tls_files['chained'],
