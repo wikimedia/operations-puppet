@@ -52,9 +52,7 @@ mediawiki::sites:
               - "    RewriteRule ^/w/index\\.php  %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org/%2/%3.html? [R=301,L]"
               - "    RewriteCond %%{}{QUERY_STRING} title=Special:Code(Review)?"
               - "    RewriteRule ^/w/index\\.php %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org? [R=301,L]"
-            late:
-              - "# T171807, T359643"
-              - "    RewriteRule ^/ontology/ontology\\.owl$ /w/docs/ontology.owl [PT]"
+            late: []
       - name: test.wikidata.org
         params:
           docroot: "/srv/mediawiki/docroot/wikidata.org"
