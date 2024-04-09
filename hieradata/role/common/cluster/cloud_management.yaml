@@ -11,6 +11,15 @@ profile::contacts::role_contacts: ['WMCS']
 profile::cumin::monitor_agentrun: false
 profile::cumin::master::email_alerts: false
 profile::cumin::master::connect_timeout: 20
+
+profile::spicerack::alertmanager_config_data:
+  instances:
+    metricsinfra-eqiad1:
+      urls:
+        - https://metricsinfra-alertmanager-rw.wmcloud.org
+      http_use_proxy: true
+      http_username: spicerack
+      # (http_password: in private repo)
 # Disable distributed locking support
 profile::spicerack::etcd_config: ~
 # We don't need Ganeti auth in cloud_management hosts, so we override the
@@ -23,6 +32,7 @@ profile::spicerack::cookbooks_repos:
   'cloud/wmcs-cookbooks': '/srv/deployment/wmcs-cookbooks'
 profile::spicerack::cookbooks_dependencies:
   - python3-defusedxml
+
 # This sets the right port in /etc/spicerack/config.yaml
 # (9200 logs to #wikimedia-operations, 9201 logs to #wikimedia-cloud-feed)
 # Please note that this variable can also affect /etc/conftool/config.yaml,
