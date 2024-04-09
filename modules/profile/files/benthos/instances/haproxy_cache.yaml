@@ -227,9 +227,14 @@ metrics:
        - 10
        - 30
        - 60
+  # Add the benthos_ prefix only to metrics not starting with haproxy
   mapping: |
-    root = "benthos_" + this
-
+    root = if !this.has_prefix("haproxy") {
+      "benthos_" + this
+    } else {
+      this
+    }
+    
 tests:
   - name: syslog parsing
     target_processors: syslog_format
