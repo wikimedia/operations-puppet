@@ -6,9 +6,11 @@ alertmanager:
     - name: "<%= @facts['domain'] %>"
       uri: "http://alertmanager-<%= @site %>.<%= @facts['domain'] %>"
       proxy: true
+<%- if @metricsinfra_username and @metricsinfra_password -%>
     - name: "wmcloud.org"
-      uri: "https://prometheus.wmcloud.org/.alertmanager"
-      readonly: true
+      uri: "https://<%= @metricsinfra_username %>:<%= @metricsinfra_password %>@metricsinfra-alertmanager-rw.wmcloud.org"
+      proxy: true
+<%- end -%>
 
 # skip wmcloud from silences by default
 silenceForm:

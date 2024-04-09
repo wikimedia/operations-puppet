@@ -7,6 +7,8 @@ class profile::alertmanager::web (
     # lint:endignore
     Boolean $enable_sso  = lookup('profile::alertmanager::web::enable_sso', {'default_value' => true}),
     Boolean $readonly  = lookup('profile::alertmanager::web::readonly', {'default_value' => false}),
+    Optional[String[1]] $metricsinfra_username = lookup('profile::alertmanager::web::metricsinfra_username', {'default_value' => undef}),
+    Optional[String[1]] $metricsinfra_password = lookup('profile::alertmanager::web::metricsinfra_password', {'default_value' => undef}),
     Hash[String, String] $ldap_config = lookup('ldap', {'merge' => 'hash'}),
 ) {
     $auth_header = $enable_sso ? {
@@ -15,10 +17,12 @@ class profile::alertmanager::web (
     }
 
     class { 'alertmanager::karma':
-        vhost          => $vhost,
-        listen_address => '0.0.0.0',
-        listen_port    => 19194,
-        auth_header    => $auth_header,
+        vhost                 => $vhost,
+        listen_address        => '0.0.0.0',
+        listen_port           => 19194,
+        auth_header           => $auth_header,
+        metricsinfra_username => $metricsinfra_username,
+        metricsinfra_password => $metricsinfra_password,
     }
 
     if $enable_sso {

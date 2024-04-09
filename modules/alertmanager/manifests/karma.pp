@@ -6,6 +6,8 @@ class alertmanager::karma (
     Stdlib::Host $listen_address = 'localhost',
     Stdlib::Port $listen_port = 19194,
     Optional[String] $auth_header = undef,
+    Optional[String[1]] $metricsinfra_username = undef,
+    Optional[String[1]] $metricsinfra_password = undef,
 ) {
     ensure_packages(['karma'])
 
@@ -25,8 +27,8 @@ class alertmanager::karma (
     file { '/etc/karma.yml':
         ensure       => present,
         owner        => 'root',
-        group        => 'root',
-        mode         => '0444',
+        group        => 'karma',
+        mode         => '0440',
         content      => $content,
         validate_cmd => '/usr/bin/karma --config.file % --check-config',
         notify       => Service['karma'],
