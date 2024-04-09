@@ -342,7 +342,8 @@ groups:
 
   # HAproxy TTFB and rates for clients
   - record: cluster_http_status_family_cache_status_le:haproxy_client_ttfb_bucket:rate2m
-    expr: sum by (cluster, http_status_family, cache_status, le) (rate(haproxy_client_ttfb_bucket[2m]))
+    # filter by job until Benthos doesn't replace entirely mtail (base metric has same name)
+    expr: sum by (cluster, http_status_family, cache_status, le) (rate(haproxy_client_ttfb_bucket[2m]{job=~"cache_.*"}))
   - record: cluster_http_status_family_cache_status:haproxy_client_ttfb:50p2m
     expr: histogram_quantile(0.50, cluster_http_status_family_cache_status_le:haproxy_client_ttfb_bucket:rate2m)
   - record: cluster_http_status_family_cache_status:haproxy_client_ttfb:75p2m
@@ -352,7 +353,20 @@ groups:
   - record: cluster_http_status_family_cache_status:haproxy_client_ttfb:99p2m
     expr: histogram_quantile(0.99, cluster_http_status_family_cache_status_le:haproxy_client_ttfb_bucket:rate2m)
   - record: cluster_http_status_family_cache_status:haproxy_client_ttfb:rate2m
-    expr: sum by (cluster, http_status_family, cache_status) (rate(haproxy_client_ttfb_count[2m]))
+    expr: sum by (cluster, http_status_family, cache_status) (rate(haproxy_client_ttfb_count[2m]{job=~"cache_.*"}))
+  # Same query but with Benthos source
+  - record: cluster_http_status_family_cache_status_le:benthos_haproxy_client_ttfb_bucket:rate2m
+    expr: sum by (cluster, http_status_family, cache_status, le) (rate(haproxy_client_ttfb_bucket[2m]{job=~"benthos"}))
+  - record: cluster_http_status_family_cache_status:benthos_haproxy_client_ttfb:50p2m
+    expr: histogram_quantile(0.50, cluster_http_status_family_cache_status_le:benthos_haproxy_client_ttfb_bucket:rate2m)
+  - record: cluster_http_status_family_cache_status:benthos_haproxy_client_ttfb:75p2m
+    expr: histogram_quantile(0.75, cluster_http_status_family_cache_status_le:benthos_haproxy_client_ttfb_bucket:rate2m)
+  - record: cluster_http_status_family_cache_status:benthos_haproxy_client_ttfb:95p2m
+    expr: histogram_quantile(0.95, cluster_http_status_family_cache_status_le:benthos_haproxy_client_ttfb_bucket:rate2m)
+  - record: cluster_http_status_family_cache_status:benthos_haproxy_client_ttfb:99p2m
+    expr: histogram_quantile(0.99, cluster_http_status_family_cache_status_le:benthos_haproxy_client_ttfb_bucket:rate2m)
+  - record: cluster_http_status_family_cache_status:benthos_haproxy_client_ttfb:rate2m
+    expr: sum by (cluster, http_status_family, cache_status) (rate(haproxy_client_ttfb_count[2m]{job=~"benthos"}))
 
   - record: cluster_method:mediawiki_http_requests_duration_count:rate2m
     expr: sum by (cluster, method) (rate(mediawiki_http_requests_duration_count[2m]))
