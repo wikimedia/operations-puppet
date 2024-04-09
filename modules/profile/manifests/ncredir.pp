@@ -24,7 +24,7 @@ class profile::ncredir(
     }
 
     class { '::ncredir':
-        ssl_settings           => ssl_ciphersuite('nginx', 'mid'),
+        ssl_settings           => ssl_ciphersuite('nginx', 'strong'),
         redirection_maps       => wmflib::compile_redirects(file('ncredir/nc_redirects.dat'), 'nginx'),
         acme_certificates      => $shared_acme_certificates,
         acme_chief_cert_prefix => $acme_chief_cert_prefix,
