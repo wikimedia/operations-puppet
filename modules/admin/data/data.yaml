@@ -7122,3 +7122,9 @@ ldap_only_users:
     ensure: present
     realname: Olga Spingou
     email: ospingou@wikimedia.org
+  andyrussg:
+    ensure: present
+    realname: Andrew Green
+    email: agreen-ctr@wikimedia.org
+    expiry_date: "2024-06-30"
+    expiry_contact: bgerdemann@wikimedia.org
