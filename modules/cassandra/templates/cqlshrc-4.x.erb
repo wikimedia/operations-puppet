@@ -5,5 +5,9 @@ credentials = <%= @config_directory %>/credentials
 <% if @client_encryption_enabled -%>
 
 [ssl]
+<% if @tls_use_pki_truststore -%>
+certfile = /etc/ssl/certs/wmf-ca-certificates.crt
+<% else -%>
 certfile = <%= @config_directory %>/tls/rootCa.crt
+<% end -%>
 <% end -%>
