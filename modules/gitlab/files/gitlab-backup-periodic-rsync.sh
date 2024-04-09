@@ -5,6 +5,18 @@ backup_type=$1
 backup_dir=$2
 backup_destination_host=$3
 
+if [ ! -d ${backup_dir} ];
+then
+  echo "Backup directory ${backup_dir} should be a directory but isn't"
+  exit 1
+elif [ -z ${backup_destination_host} ];
+then
+  echo "Backup destination host ${backup_destination_host} should be set, but isn't"
+  echo "This script should be run as:"
+  echo "# ${0} [BACKUP_TYPE] [BACKUP_DIR] [DESTINTION_HOST]"
+  exit 1
+fi
+
 case "${backup_type}" in
   "data")
     /usr/bin/rsync -avp --delete \
