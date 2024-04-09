@@ -289,8 +289,3 @@ funnel	mo.wiktionary.org	https://ro.wiktionary.org/wiki/Pagina_principală
 # Enterprise redirects for typos - T296445
 rewrite enterprise.wikimedia.org	https://enterprise.wikimedia.com
 rewrite enterprise.wikipedia.org	https://enterprise.wikimedia.com
-
-# Decom'd WMCS Graphite and Grafana services - T326266
-funnel	graphite-labs.wikimedia.org	https://wikitech.wikimedia.org/wiki/News/2023_Cloud_VPS_metrics_changes
-funnel	grafana-labs.wikimedia.org	https://wikitech.wikimedia.org/wiki/News/2023_Cloud_VPS_metrics_changes
-funnel	grafana-cloud.wikimedia.org	https://wikitech.wikimedia.org/wiki/News/2023_Cloud_VPS_metrics_changes
