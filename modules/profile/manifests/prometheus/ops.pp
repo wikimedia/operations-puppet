@@ -1588,6 +1588,22 @@ class profile::prometheus::ops (
         port       => 3903,
     }
 
+    prometheus::class_config{ "postfix_mx_out_${::site}":
+        dest       => "${targets_path}/postfix_mx_out_${::site}.yaml",
+        class_name => 'role::postfix::mx_out',
+        port       => 9154,
+    }
+
+    $postfix_jobs = [
+      {
+        'job_name'        => 'postfix',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/postfix_*.yaml" ]}
+        ],
+      },
+    ]
+
     prometheus::class_config{ "mtail_syslog_${::site}":
         dest       => "${targets_path}/mtail_syslog_${::site}.yaml",
         class_name => 'role::syslog::centralserver',
@@ -2467,6 +2483,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
+            $postfix_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
