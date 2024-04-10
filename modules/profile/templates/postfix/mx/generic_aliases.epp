@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Host $domain
+| -%>
+# THIS FILE IS MANAGED BY PUPPET
+#
+# <%= $domain %> aliases
+#
+root@<%= $domain %>    root@wikimedia.org
+hostmaster@<%= $domain %>    root@<%= $domain %>
+postmaster@<%= $domain %>    root@<%= $domain %>
+abuse@<%= $domain %>    postmaster@<%= $domain %>, security-team@wikimedia.org
+privacy@<%= $domain %>    privacy@wikimedia.org
+MAILER-DAEMON@<%= $domain %>    postmaster@<%= $domain %>

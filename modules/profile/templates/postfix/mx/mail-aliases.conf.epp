@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String[1] $subject,
+      Stdlib::Email $rcpt,
+      Stdlib::Unixpath $path
+| -%>
+SUBJECT='<%= $subject %>'
+RECIPIENT='<%= $rcpt %>'
+ALIAS_FILE='<%= $path %>'

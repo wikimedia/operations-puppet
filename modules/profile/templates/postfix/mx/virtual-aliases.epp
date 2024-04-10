@@ -1,0 +1,8 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[Profile::Postfix::Virtual] $virtual_aliases
+| -%>
+<%=
+$virtual_aliases.reduce("") |$memo, $virtual_alias| {
+    "${memo}${virtual_alias['pattern']}    ${join($virtual_alias['addresses'], ', ')}\n"
+}
+-%>
