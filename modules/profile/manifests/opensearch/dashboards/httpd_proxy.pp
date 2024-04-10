@@ -29,8 +29,8 @@ class profile::opensearch::dashboards::httpd_proxy (
     Optional[String]                  $ldap_binddn        = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_binddn',       { 'default_value' => undef }),
     Optional[Array[String]]           $ldap_groups        = lookup('profile::opensearch::dashboards::httpd_proxy::ldap_groups',       { 'default_value' => [] }),
     Optional[Array[String]]           $aliases            = lookup('profile::opensearch::dashboards::httpd_proxy::aliases',           { 'default_value' => [] }),
-    Optional[String]                  $sso_client_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_client_secret', { 'default_value' => undef }),
-    Optional[String]                  $sso_cookie_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret', { 'default_value' => undef }),
+    Optional[Sensitive[String]]       $sso_client_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_client_secret', { 'default_value' => undef }),
+    Optional[Sensitive[String]]       $sso_cookie_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret', { 'default_value' => undef }),
 ) {
     $httpd_base_modules = [
         'proxy_http',
