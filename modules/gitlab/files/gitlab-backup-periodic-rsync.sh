@@ -23,7 +23,7 @@ case "${backup_type}" in
       --exclude='*.sh' \
       --exclude='gitlab_config_*.tar' \
       --exclude='failover_gitlab_backup.tar' \
-      "${backup_dir}/*_gitlab_backup.tar" \
+      ${backup_dir}/*_gitlab_backup.tar \
       "rsync://${backup_destination_host}/data-backup"
     ;;
   "config")
@@ -31,7 +31,7 @@ case "${backup_type}" in
       --exclude='*.sh' \
       --exclude='*_gitlab_backup.tar' \
       --exclude='failover_gitlab_backup.tar' \
-      "${backup_dir}/" \
+      ${backup_dir}/ \
       "rsync://${backup_destination_host}/data-backup"
     ;;
   *)
