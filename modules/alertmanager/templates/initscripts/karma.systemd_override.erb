@@ -1,4 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
+Group=karma
 ExecStart=
 ExecStart=/usr/bin/karma --config.file /etc/karma.yml --listen.address <%= @listen_address %> --listen.port <%= @listen_port %>
