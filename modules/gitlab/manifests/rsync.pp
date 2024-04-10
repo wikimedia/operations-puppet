@@ -42,7 +42,7 @@ class gitlab::rsync (
             ensure      => $ensure_job,
             user        => 'root',
             description => 'rsync GitLab data backup primary to a secondary server',
-            command     => "${backup_dir_data}/gitlab-backup-periodic-sync.sh data ${backup_dir_data} ${host}",
+            command     => "${backup_dir_data}/gitlab-backup-periodic-rsync.sh data ${backup_dir_data} ${host}",
             interval    => $rsync_interval,
             after       => 'full-backup.service',
         }
