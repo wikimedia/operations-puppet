@@ -19,7 +19,7 @@ LOG = logging.getLogger(__file__)
 def get_args():
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("-c", "--config", default=Path("/etc/exim4/otrs.conf"))
+    parser.add_argument("-c", "--config", default=Path("/etc/exim4/vrts.conf"))
     parser.add_argument("-v", "--verbose", action="count")
     return parser.parse_args()
 

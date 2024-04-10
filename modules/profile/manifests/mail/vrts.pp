@@ -49,7 +49,7 @@ class profile::mail::vrts (
     file { $vrts_aliases_conf:
         ensure  => present,
         mode    => '0440',
-        content => epp('profile/mail/mx/otrs.conf.epp', {
+        content => epp('profile/mail/mx/vrts.conf.epp', {
             gmail_smtp_server      => $gmail_host,
             vrts_aliases_file      => $aliases_file,
             vrts_aliases_format    => $aliases_format,

@@ -3,11 +3,11 @@
       Stdlib::Host $vrts_mysql_dbname,
       Stdlib::Host $vrts_mysql_server,
       Stdlib::Host $vrts_mysql_user,
-      String $vrts_aliases_file,
-      Sensitive[String] $vrts_mysql_password,
-      String $wikimedia_domains_path,
-      String $vrts_aliases_format,
-      String $vrts_aliases_folder
+      String[1] $vrts_aliases_file,
+      Sensitive[String[1]] $vrts_mysql_password,
+      String[1] $wikimedia_domains_path,
+      String[1] $vrts_aliases_format,
+      String[1] $vrts_aliases_folder
 | -%>
 [DEFAULT]
 valid_domains = <%= $wikimedia_domains_path %>

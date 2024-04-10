@@ -182,12 +182,12 @@ class profile::mail::mx (
     }
 
     ensure_packages(['python3-pymysql'])
-    file { "${exim4::config_dir}/otrs.conf":
+    file { "${exim4::config_dir}/vrts.conf":
         ensure  => present,
         owner   => 'root',
         group   => 'Debian-exim',
         mode    => '0444',
-        content => epp('profile/mail/mx/otrs.conf.epp', {
+        content => epp('profile/mail/mx/vrts.conf.epp', {
             gmail_smtp_server      => $gmail_smtp_server,
             vrts_aliases_file      => $vrts_aliases_file,
             vrts_aliases_format    => 'exim',
