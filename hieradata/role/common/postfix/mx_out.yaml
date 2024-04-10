@@ -1,0 +1,13 @@
+profile::base::production::role_description: 'Postfix outbound email server'
+# Disable the use of our default exim config
+profile::mail::default_mail_relay::enabled: false
+profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::postfix::mx::mta_mode: 'outbound'
+profile::postfix::mx::rspamd_config:
+  dkim_signing:
+    signing_table:
+      - 'wiki@wikimedia.org wiki-mail'
+      - '*@wikimedia.org wikimedia'
+    key_table:
+      - 'wiki-mail wikimedia.org:wiki-mail:/etc/rspamd/dkim/wikimedia.org-wiki-mail.key'
+      - 'wikimedia wikimedia.org:wikimedia:/etc/rspamd/dkim/wikimedia.org-wikimedia.key'
