@@ -1,0 +1,60 @@
+profile::postfix::mx::trusted_networks:
+  - '10.0.0.0/8'
+  - 'fd00::/8'
+  - '169.254.0.0/16'
+  - 'fe80::/10'
+profile::postfix::mx::verp_config:
+  post_connect_server: meta.wikimedia.org
+  bounce_post_url: http://localhost:8080/w/api.php
+profile::postfix::mx::rspamd_config:
+  # Testing only
+  logging.inc:
+    debug_modules:
+      - 'spf'
+  # Testing only gtube test patterns
+  options.inc:
+    enable_test_patterns: true
+# dupped so we have x_client
+profile::postfix::mx::config:
+  # Testing only
+  smtpd_authorized_xclient_hosts: ['192.168.0.0/16']
+  relay_domains: &relay_domains
+    # source, puppet:///modules/role/exim/wikimedia_domains
+    # top-level project domains
+    - mediawiki.org
+    - wikibooks.org
+    - wikidata.org
+    - wikimediafoundation.org
+    - wikinews.org
+    - wikimedia.org
+    - wikipedia.org
+    - wikiquote.org
+    - wikisource.org
+    - wikispecies.org
+    - wikiversity.org
+    - wikivoyage.org
+    - wiktionary.org
+    - wmflabs.org
+    - wmcloud.org
+    - w.wiki
+    # wikivoyage.de -> WMF migration; aliases
+    - wikivoyage.de
+    # Domains handled by VRT
+    - wikilovesmonuments.be
+    - wikilovesmonuments.cat
+    - wikilovesmonuments.eu
+    - wikilovesmonuments.nl
+    - wikilovesmonuments.org
+    - wikimedia.community
+    - wikimedia.com
+    - wikipedia.com
+    # routed by special-case routers
+    - donate.wikimedia.org
+    - civicrm.wikimedia.org
+    - rt.wikimedia.org
+    - phabricator.wikimedia.org
+    - benefactors.wikimedia.org
+    # pr.wikimedia.org outbound mail is delegated to MuckRack (https://muckrack.com)
+    # with inbound mail handled via aliases - T231387
+    - pr.wikimedia.org
+profile::mail::vrts::wikimedia_domains: *relay_domains
