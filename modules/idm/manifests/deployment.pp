@@ -11,7 +11,7 @@ class idm::deployment (
     ensure_packages(['python3-django', 'python3-django-captcha', 'python3-django-rq',
         'python3-jose', 'python3-ldap3', 'python3-openid', 'python3-paramiko',
         'python3-redis', 'python3-social-auth-core', 'python3-social-django',
-        'python3-bitu-ldap', 'libjs-jquery'])
+        'python3-bitu-ldap', 'libjs-jquery', 'python3-djangorestframework'])
 
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
