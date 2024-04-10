@@ -13,6 +13,8 @@ lookup_options:
     convert_to: 'Sensitive'
   '^profile::mail::mx::[\w_]+_password$':
     convert_to: 'Sensitive'
+  '^profile::mail::vrts::[\w_]+_password$':
+    convert_to: 'Sensitive'
   profile::pki::client::auth_key:
     convert_to: 'Sensitive'
   profile::sre::check_user::namely_api_key:
