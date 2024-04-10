@@ -31,6 +31,7 @@ class profile::opensearch::dashboards::httpd_proxy (
     Optional[Array[String]]           $aliases            = lookup('profile::opensearch::dashboards::httpd_proxy::aliases',           { 'default_value' => [] }),
     Optional[Sensitive[String]]       $sso_client_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_client_secret', { 'default_value' => undef }),
     Optional[Sensitive[String]]       $sso_cookie_secret  = lookup('profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret', { 'default_value' => undef }),
+    Stdlib::HTTPSUrl                  $sso_issuer_url     = lookup('profile::opensearch::dashboards::httpd_proxy::sso_issuer_url',    { 'default_value' => 'https://idp.wikimedia.org/oidc' }),
 ) {
     $httpd_base_modules = [
         'proxy_http',
@@ -69,6 +70,7 @@ class profile::opensearch::dashboards::httpd_proxy (
             client_id     => 'logstash_oidc',
             client_secret => $sso_client_secret,
             cookie_secret => $sso_cookie_secret,
+            issuer_url    => $sso_issuer_url,
             cookie_domain => $vhost,
             redirect_url  => "https://${vhost}/oauth2/callback",
         }

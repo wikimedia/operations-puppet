@@ -1,3 +1,5 @@
 profile::opensearch::dashboards::httpd_proxy::auth_type: sso
 profile::opensearch::dashboards::httpd_proxy::sso_client_secret: dummytest
 profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret: astr16characters
+profile::opensearch::dashboards::httpd_proxy::sso_issuer_url: 'https://idp-test.wikimedia.org/oidc'
+profile::opensearch::dashboards::httpd_proxy::vhost: 'beta-logs-idp.wmcloud.org'
