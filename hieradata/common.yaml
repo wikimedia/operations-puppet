@@ -74,6 +74,10 @@ lookup_options:
     convert_to: 'Sensitive'
   profile::thanos::oidc::cookie_secret:
     convert_to: 'Sensitive'
+  profile::opensearch::dashboards::httpd_proxy::sso_client_secret:
+    convert_to: 'Sensitive'
+  profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret:
+    convert_to: 'Sensitive'
   profile::hadoop::common::config_override:
     merge: deep
 # General variables that once would have been in realm.pp

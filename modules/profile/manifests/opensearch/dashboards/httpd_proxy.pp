@@ -65,7 +65,7 @@ class profile::opensearch::dashboards::httpd_proxy (
         $httpd_extra_modules = []
 
         class { 'profile::oauth2_proxy::oidc':
-            upstreams     => 'http://localhost:5601',
+            upstreams     => ['http://localhost:5601'],
             client_id     => 'logstash_oidc',
             client_secret => $sso_client_secret,
             cookie_secret => $sso_cookie_secret,
