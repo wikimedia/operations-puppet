@@ -5,6 +5,7 @@ class role::prometheus::pop {
 
     include profile::base::production
     include profile::firewall
+    include ::profile::tlsproxy::envoy
 
     require profile::prometheus::ops
 
