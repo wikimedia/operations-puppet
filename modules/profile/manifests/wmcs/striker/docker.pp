@@ -30,6 +30,7 @@ class profile::wmcs::striker::docker(
             image_name   => 'labs-striker',
             version      => $instance['version'],
             port         => $instance['port'],
+            override_cmd => "127.0.0.1:${instance['port']}",
             environment  => $shared_env + $instance_env,
             host_network => true,
         }
