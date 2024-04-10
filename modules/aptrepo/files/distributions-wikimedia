@@ -231,6 +231,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-23
  thirdparty/kubeadm-k8s-1-24
+ thirdparty/matomo
  thirdparty/opensearch2
  thirdparty/routinator
 UDebComponents: main
@@ -241,6 +242,7 @@ Update:
  grafana
  hp-mcp-bookworm
  hwraid-megacli
+ matomo
  routinator-bookworm
  thirdparty/ceph-reef
  thirdparty/haproxy26-bookworm

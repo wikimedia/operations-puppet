@@ -254,8 +254,8 @@ VerifyRelease: 7FCC7D46ACCC4CF8
 ListShellHook: grep-dctrl -X -S postgresql-9.6 || [ $? -eq 1 ]
 
 Name: matomo
-Method: http://debian.matomo.org/
-Suite: piwik
+Method: https://debian.matomo.org/
+Suite: matomo
 Components: main>thirdparty/matomo
 UDebComponents:
 Architectures: amd64
