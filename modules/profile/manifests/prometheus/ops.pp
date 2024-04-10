@@ -1598,6 +1598,12 @@ class profile::prometheus::ops (
         port       => 9154,
     }
 
+    prometheus::class_config{ "postfix_mx_in_${::site}":
+        dest       => "${targets_path}/postfix_mx_in_${::site}.yaml",
+        class_name => 'role::postfix::mx_in',
+        port       => 9154,
+    }
+
     $postfix_jobs = [
       {
         'job_name'        => 'postfix',
