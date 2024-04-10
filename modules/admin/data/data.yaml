@@ -26,7 +26,7 @@ groups:
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
-              ilooremeta, cmjohnson, xihua, nray, andyrussg, fsero, demon, paramd, neilpquinn-wmf,
+              ilooremeta, cmjohnson, xihua, nray, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
@@ -423,7 +423,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
-              georgemikesell, bblack, toyofuku]
+              georgemikesell, bblack, toyofuku, andyrussg]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -2557,13 +2557,17 @@ users:
     ssh_keys: []
     uid: 3029
   andyrussg:
-    ensure: absent
+    ensure: present
     gid: 500
     name: andyrussg
     realname: Andrew Green
-    ssh_keys: []
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFet3ceayitBe5wjmUVZ6Pf+HPtlUlN+Q/V5plK++VoA agreen-ctr@wikimedia.org'
     uid: 3609
-    krb: absent
+    krb: present
+    email: agreen-ctr@wikimedia.org
+    expiry_date: "2024-06-30"
+    expiry_contact: bgerdemann@wikimedia.org
   mobrovac:
     ensure: present
     gid: 500
@@ -7125,9 +7129,3 @@ ldap_only_users:
     ensure: present
     realname: Olga Spingou
     email: ospingou@wikimedia.org
-  andyrussg:
-    ensure: present
-    realname: Andrew Green
-    email: agreen-ctr@wikimedia.org
-    expiry_date: "2024-06-30"
-    expiry_contact: bgerdemann@wikimedia.org
