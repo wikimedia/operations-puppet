@@ -25,7 +25,7 @@ profile::wmcs::striker::docker::instances:
   # This is the main instance for the main Toolforge project.
   striker:
     port: 8080
-    version: 2024-04-10-111354-production
+    version: 2024-04-10-145923-production
     env:
       OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
       DB_NAME: striker
@@ -33,7 +33,7 @@ profile::wmcs::striker::docker::instances:
   # This is the Toolsbeta instance.
   striker-toolsbeta:
     port: 8081
-    version: 2024-04-10-111354-production
+    version: 2024-04-10-145923-production
     env:
       OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
       DB_NAME: striker_toolsbeta
@@ -48,6 +48,7 @@ profile::wmcs::striker::docker::instances:
       GITLAB_REPO_NAMESPACE_NAME: toolforge-repos/toolsbeta
       GITLAB_REPO_NAMESPACE_ID: 3718
       FEATURE_ACCOUNT_CREATE: 0
+      SITE_ENVIRONMENT_BANNER: "STAGING ENVIRONMENT (toolsbeta)"
 
 # The following values should be set in the private repo
 ## profile::wmcs::striker::docker::common_secret_env:
