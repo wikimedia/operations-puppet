@@ -87,6 +87,25 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 GRANT USAGE ON *.* TO `striker_admin`@`208.80.155.117` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`208.80.155.117`;
 
+-- Grants for 'striker_toolsbeta'@'10.64.32.180'
+GRANT USAGE ON *.* TO `striker_toolsbeta`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta`@`10.64.32.180`;
+-- Grants for 'striker_toolsbeta'@'10.64.134.16'
+GRANT USAGE ON *.* TO `striker_toolsbeta`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta`@`10.64.134.16`;
+-- Grants for 'striker_toolsbeta_admin'@'10.192.48.47'
+GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.192.48.47` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.192.48.47`;
+-- Grants for 'striker_toolsbeta_admin'@'10.64.16.77'
+GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.16.77` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.16.77`;
+-- Grants for 'striker_toolsbeta_admin'@'10.64.32.180'
+GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.32.180`;
+-- Grants for 'striker_toolsbeta_admin'@'10.64.134.16'
+GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.134.16`;
+
 -- Grants for 'idm'@'10.192.48.47'
 GRANT USAGE ON *.* TO `idm`@`10.192.48.47` IDENTIFIED BY PASSWORD '<%= @idm_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm`.* TO `idm`@`10.192.48.47`;
