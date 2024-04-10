@@ -423,7 +423,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
-              georgemikesell, bblack]
+              georgemikesell, bblack, toyofuku]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6304,6 +6304,14 @@ users:
     krb: present
     expiry_date: "2025-06-30"
     expiry_contact: jbranaa@wikimedia.org
+  toyofuku:
+    ensure: present
+    realname: Steph Toyofuku
+    email: stoyofuku@wikimedia.org
+    uid: 45587
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPzNLzxzF0+Sjy80bIrbKyCyoDqcEB95X9z0fWh3F7x toyofuku@wmf3417'
 
 ldap_only_users:
   adavenport:
@@ -7071,10 +7079,6 @@ ldap_only_users:
     ensure: present
     realname: Sara Campos
     email: scampos@wikimedia.org
-  toyofuku:
-    ensure: present
-    realname: Steph Toyofuku
-    email: stoyofuku@wikimedia.org
   xqt:
     ensure: present
     realname: (known to legal)
