@@ -1,3 +1,4 @@
 # db1166
 mariadb::shard: 's3'
 mariadb::binlog_format: 'ROW'
+profile::monitoring::notifications_enabled: false
