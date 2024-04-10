@@ -1,0 +1,3 @@
+profile::opensearch::dashboards::httpd_proxy::auth_type: sso
+profile::opensearch::dashboards::httpd_proxy::sso_client_secret: dummytest
+profile::opensearch::dashboards::httpd_proxy::sso_cookie_secret: astr16characters
