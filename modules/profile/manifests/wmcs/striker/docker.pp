@@ -25,7 +25,7 @@ class profile::wmcs::striker::docker(
 
     $instances.each |String[1] $name, Profile::Wmcs::Striker::Instance $instance| {
         $instance_env = $instance['env'] + pick($instances_secret_env[$name], {})
-        service::docker { 'striker':
+        service::docker { $name:
             namespace    => 'wikimedia',
             image_name   => 'labs-striker',
             version      => $instance['version'],

@@ -30,6 +30,24 @@ profile::wmcs::striker::docker::instances:
       OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
       DB_NAME: striker
       DB_USER: striker
+  # This is the Toolsbeta instance.
+  striker-toolsbeta:
+    port: 8081
+    version: 2024-03-11-120408-production
+    env:
+      OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
+      DB_NAME: striker_toolsbeta
+      DB_USER: striker_toolsbeta
+      SSL_CANONICAL_HOST: toolsadmin-toolsbeta.wikimedia.org
+      STAFF_GROUP_DN: cn=toolsbeta.admin,ou=servicegroups,dc=wikimedia,dc=org
+      SUPERUSER_GROUP_DN: cn=toolsbeta.admin,ou=servicegroups,dc=wikimedia,dc=org
+      PHABRICATOR_PARENT_PROJECT: PHID-PROJ-3k4txxgqhn37uhfqgtam
+      TOOLS_TOOL_LABS_GROUP_NAME: project-toolsbeta
+      TOOLS_ADMIN_GROUP_NAME: toolsbeta.admin
+      OPENSTACK_PROJECT: toolsbeta
+      GITLAB_REPO_NAMESPACE_NAME: toolforge-repos/toolsbeta
+      GITLAB_REPO_NAMESPACE_ID: 3718
+      FEATURE_ACCOUNT_CREATE: 0
 
 # The following values should be set in the private repo
 ## profile::wmcs::striker::docker::common_secret_env:
@@ -109,6 +127,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - labweb.svc.%{::site}.wmnet  # cloudweb? T317463
     - horizon.wikimedia.org
     - toolsadmin.wikimedia.org
+    - toolsadmin-toolsbeta.wikimedia.org
     - wikitech.wikimedia.org
 # T306469: Use primary IPv4 address rather than FQDN to avoid IPv6 results.
 # The Docker container used by toolsadmin is not IPv6 accessible.
@@ -116,6 +135,8 @@ profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 profile::tlsproxy::envoy::services:
   - server_names: ['toolsadmin.wikimedia.org']
     port: 8080
+  - server_names: ['toolsadmin-toolsbeta.wikimedia.org']
+    port: 8081
   - server_names: ['horizon.wikimedia.org']
     port: 8084
   - server_names: ['*']
