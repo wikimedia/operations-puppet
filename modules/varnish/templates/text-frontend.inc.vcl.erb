@@ -256,7 +256,7 @@ sub cluster_fe_recv_pre_purge {
 
         # normalize all /w/static.php to the same wiki host for improved caching
         # https://wikitech.wikimedia.org/wiki/MediaWiki_at_WMF#Static_files
-        if (req.url ~ "^/w/(skins/|resources/|extensions/|docs/|CREDITS|COPYING)" ) {
+        if (req.url ~ "^/w/(skins/|resources/|extensions/|CREDITS|COPYING)" ) {
             set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
         }
 
