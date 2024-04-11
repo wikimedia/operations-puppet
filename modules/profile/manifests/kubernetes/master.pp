@@ -235,6 +235,22 @@ class profile::kubernetes::master (
         tls_private_key_file             => $apiserver_cert['key'],
     }
 
+    # Configure rsyslog to forward audit logs to kafka
+    $ensure_audit_log = $k8s_config['audit_policy'] ? {
+        undef   => absent,
+        ''      => absent,
+        default => present,
+    }
+    rsyslog::input::file { 'kubernetes-audit':
+        ensure             => $ensure_audit_log,
+        path               => '/var/log/kubernetes/audit.log',
+        reopen_on_truncate => 'on',
+        addmetadata        => 'on',
+        addceetag          => 'on',
+        syslog_tag         => 'kubernetes',
+        priority           => 8,
+    }
+
     # All our masters are accessible to all
     ferm::service { 'apiserver-https':
         proto  => 'tcp',
