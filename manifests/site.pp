@@ -2705,6 +2705,10 @@ node /^testvm200[1-9]\.codfw\./ {
     role(test)
 }
 
+node /^testvm200[1-9]\.wikimedia\./ {
+    role(test)
+}
+
 node /^thanos-be100[1234]\.eqiad\./ {
     role(thanos::backend)
 }
