@@ -135,34 +135,34 @@ pipeline:
           root.severity = deleted()
           root."$schema" = "/webrequest/1.0.0"
 
-    # - label: "ttfb_metric_condition"
-    #   switch:
-    #     # Increment metrics only if ttfb > 0
-    #     - check: this.time_firstbyte_ns > 0
-    #       processors:
-    #         - label: "ttfb_metric_switch"
-    #           switch:
-    #             # If it's an hc request, increment also this timing
-    #             - check: this.uri_host.contains("healthcheck.wikimedia.org")
-    #               processors:
-    #                 - label: "ttfb_metric_healthcheck"
-    #                   metric:
-    #                     name: "haproxy_client_healthcheck_ttfb"
-    #                     type: timing
-    #                     labels:
-    #                       cache_status: ${! json("cache_status") }
-    #                       http_status_family: ${! (json("http_status").number() / 100).floor() }
-    #                     value: ${! json("time_firstbyte_ns") }
+    - label: "ttfb_metric_condition"
+      switch:
+        # Increment metrics only if ttfb > 0
+        - check: this.time_firstbyte_ns > 0
+          processors:
+            - label: "ttfb_metric_switch"
+              switch:
+                # If it's an hc request, increment also this timing
+                - check: this.uri_host.contains("healthcheck.wikimedia.org")
+                  processors:
+                    - label: "ttfb_metric_healthcheck"
+                      metric:
+                        name: "haproxy_client_healthcheck_ttfb"
+                        type: timing
+                        labels:
+                          cache_status: ${! json("cache_status") }
+                          http_status_family: ${! (json("http_status").number() / 100).floor() }
+                        value: ${! json("time_firstbyte_ns") }
 
-    #         # This is always incremented
-    #         - label: "ttfb_metric"
-    #           metric:
-    #             name: "haproxy_client_ttfb"
-    #             type: timing
-    #             labels:
-    #               cache_status: ${! json("cache_status") }
-    #               http_status_family: ${! (json("http_status").number() / 100).floor() }
-    #             value: ${! json("time_firstbyte_ns") }
+            # This is always incremented
+            - label: "ttfb_metric"
+              metric:
+                name: "haproxy_client_ttfb"
+                type: timing
+                labels:
+                  cache_status: ${! json("cache_status") }
+                  http_status_family: ${! (json("http_status").number() / 100).floor() }
+                value: ${! json("time_firstbyte_ns") }
 
     - label: "delete_unused_fields"
       mapping: |
