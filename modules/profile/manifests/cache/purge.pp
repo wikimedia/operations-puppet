@@ -9,7 +9,6 @@ class profile::cache::purge(
     Boolean $kafka_tls = lookup('profile::cache::purge::kafka_tls', {'default_value' => false}),
     String $kafka_cluster_name = lookup('profile::cache::purge::kafka_cluster_name', {'default_value' => 'main-eqiad'}),
     Optional[String] $tls_key_password = lookup('profile::cache::purge::tls_key_password', {'default_value' => undef}),
-    Boolean $use_pki = lookup('profile::cache::purge::use_pki', {'default_value' => false}),
 ){
     $kafka_ensure = $kafka_topics ? {
         []      => 'absent',
@@ -38,21 +37,6 @@ class profile::cache::purge(
         group  => 'root',
         mode   => '0555'
     }
-
-    if $use_pki and $kafka_tls and $kafka_topics != [] {
-        $tls_paths = profile::pki::get_cert('discovery',
-        'purged',
-        {
-          'owner' => 'root',
-          'group' => 'root',
-          'notify_services' => ['purged'],
-          'outdir' => $tls_dir,
-        })
-
-        $tls_key = $tls_paths['key']
-        $tls_cert = $tls_paths['cert']
-
-    } else {
 
     if $kafka_tls and $kafka_topics != [] {
         file { $tls_dir:
@@ -100,7 +84,6 @@ class profile::cache::purge(
         #    ensure => 'absent'
         #}
         $tls_settings = undef
-    }
     }
 
     $prometheus_port = 2112
