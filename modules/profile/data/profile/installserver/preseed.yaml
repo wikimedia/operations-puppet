@@ -513,9 +513,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'lvs*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'matomo*':
+  'matomo1002':
     - partman/flat.cfg
     - virtual.cfg
+  'matomo1003':
+    - partman/custom/matomo.cfg
   'mc*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
