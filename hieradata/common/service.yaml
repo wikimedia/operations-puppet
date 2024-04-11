@@ -843,6 +843,7 @@ service::catalog:
             - https://localhost/w/health-check.php?force_php74=1
           check_all: true
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /w/health-check.php
@@ -3013,6 +3014,7 @@ service::catalog:
           url:
             - https://localhost/w/health-check.php
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /w/health-check.php
