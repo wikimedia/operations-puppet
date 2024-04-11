@@ -155,7 +155,9 @@ BITU_SSH_KEY_VALIDATOR = {
     'allowed_key_type': {
         'ssh-rsa': {'min_key_size': 2048},
         'ssh-ecdsa': {},
-        'ssh-ed25519': {}
+        'ssh-ed25519': {},
+        'sk-ssh-ed25519@openssh.com': {},
+        'sk-ssh-ecdsa@openssh.com': {}
     }
 }
 
