@@ -16,7 +16,6 @@ datadir            = <%= @datadir %>
 basedir            = <%= @basedir %>
 tmpdir             = <%= @tmpdir %>
 server_id          = <%= @server_id %>
-report_host        = <%= @fqdn %>
 read_only          = <%= (@read_only == 'off' or not @read_only) ? 0 : 1 %>
 
 # ssl
@@ -42,10 +41,6 @@ innodb_buffer_pool_size        = 4G
 
 query_cache_type        = 1
 query_cache_size        = 16M
-
-# Not needed after 10.4.3
-# enable socket authentication
-plugin-load = unix_socket=auth_socket.so
 
 [mysqldump]
 
