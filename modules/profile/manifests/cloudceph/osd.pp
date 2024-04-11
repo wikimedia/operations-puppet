@@ -88,7 +88,7 @@ class profile::cloudceph::osd(
         proto      => 'tcp',
         port_range => [6800, 7100],
         srange     => $firewall_osd_access,
-        drange     => $host_conf['cluster']['addr'],
+        drange     => [$host_conf['cluster']['addr']],
         before     => Class['ceph::common'],
     }
 
