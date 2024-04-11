@@ -1,5 +1,3 @@
 # db2202
-# TODO reimage host c.f. https://w.wiki/9agS
 mariadb::shard: 'test-s1'
 mariadb::package: 'wmf-mariadb106'
-profile::monitoring::notifications_enabled: false
