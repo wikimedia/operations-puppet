@@ -61,10 +61,10 @@ groups:
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, ryankemper, lmata, klausman, lsobanski,
-              dcaro, legoktm, cmooney, joanna, jelto, btullis,
+              rzl, hnowlan, jayme, kormat, ryankemper, klausman,
+              dcaro, legoktm, cmooney, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
-              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kwakuofori, kamila,
+              brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
