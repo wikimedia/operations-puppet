@@ -30,7 +30,7 @@ prompt_cdanis1_setup () {
   prompt_cdanis1_color2=${2:-'cyan'}
   prompt_cdanis1_color3=${3:-'green'}
 
-  base_prompt="%(0?,✔️ ,❌)%K{%(!.red.$prompt_cdanis1_color1)}%n@$(hostname -f | sed 's/\.local\(domain\)\?//')%k "
+  base_prompt="%(0?,💙,💔)%K{%(!.red.$prompt_cdanis1_color1)}%n@$(hostname -f | sed 's/\.local\(domain\)\?//')%k "
   post_prompt="%b%f%k"
 
   setopt localoptions extendedglob
