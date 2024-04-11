@@ -59,6 +59,7 @@ class base::kernel(
             'floppy',
             'cdrom',
             'binder_linux',
+            'n_gsm',
         ],
     }
 
