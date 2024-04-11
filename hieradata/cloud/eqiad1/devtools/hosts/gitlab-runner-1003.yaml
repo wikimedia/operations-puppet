@@ -46,3 +46,9 @@ profile::gitlab::runner::clear_interval:
   interval: '*-*-* 05:00:00'
 profile::gitlab::runner::enable_clear_cache: true
 profile::base::overlayfs: true
+profile::gitlab::runner::buildkitd_allowed_frontends:
+  - 'gateway.v0'
+  - 'dockerfile.v0'
+profile::gitlab::runner::buildkitd_allowed_gateway_sources:
+  - 'docker-registry.wikimedia.org/repos/releng/blubber/buildkit'
+  - 'docker-registry.wikimedia.org/repos/releng/buildkit/dockerfile-frontend'
