@@ -113,16 +113,6 @@ class profile::wmcs::instance(
         onlyif  => '/usr/bin/test -e /etc/apache2/apache2.conf -a ! -d /etc/apache2/sites-local',
     }
 
-    # Uninstall Diamond from remaining Buster servers where it was enabled
-    # at some point,
-    if debian::codename::le('buster') {
-        class { 'diamond': }
-
-        profile::auto_restarts::service { 'diamond':
-            ensure => absent,
-        }
-    }
-
     class { 'prometheus::node_ssh_open_sessions': }
 
     # TODO: move this so it doesn't need a lint:ignore for a lookup in the middle of a class
