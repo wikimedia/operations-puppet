@@ -327,7 +327,7 @@ class puppetserver (
             content => epp('puppetserver/jmx_exporter.yaml.epp'),
         }
         $service_require = [File[$ssl_dir], Package['prometheus-jmx-exporter']]
-        # This is quite specific to the WMF systems it might be better top move this to some profile
+        # This is quite specific to the WMF systems it might be better to move this to some profile
         prometheus::jmx_exporter_instance { 'puppetserver':
             hostname => $facts['networking']['hostname'],
             port     => $jmx_port,

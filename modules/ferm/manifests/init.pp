@@ -61,13 +61,13 @@ class ferm (
             ensure  => running,
             # This is a bit of an abuse of the puppet DSL
             # We use the status command to ensure that the rules on disk match the rules loaded in the
-            # kernel if not we want to reload the rule base
+            # kernel; if not we want to reload the rule base
             status  => '/usr/local/sbin/ferm-status',
-            # When the service status command fails, puppet set the service status to stopped:
+            # When the service status command fails, puppet sets the service status to stopped:
             # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/provider/service/base.rb#L77
-            # which means that it call the starcmd (not restartcmd). As such we need top update the start command
-            # so that it calls systemd reload instead of systemd restart.  however we also need to account for
-            # when the services is actually stopped which is why we use reload-or-restart.
+            # which means that it calls the startcmd (not restartcmd). As such we need to update the start command
+            # so that it calls systemd reload instead of systemd restart.  However we also need to account for
+            # when the service is actually stopped which is why we use reload-or-restart.
             start   => '/bin/systemctl reload-or-restart ferm',
             require => [
                 Package['ferm'],
