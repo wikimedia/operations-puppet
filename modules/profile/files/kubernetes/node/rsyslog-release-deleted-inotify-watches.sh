@@ -15,5 +15,6 @@ rsyslog_pid="$(systemctl show --property MainPID --value rsyslog.service)"
 deleted_file_fds="$(lsof -p "${rsyslog_pid}" | grep -c '(deleted)')"
 
 if [ "$deleted_file_fds" -gt "$threshold" ]; then
+    echo "Number of inotify watches for deleted files/directories is above ${threshold}. Restarting rsyslog."
     /bin/systemctl restart rsyslog.service
 fi
