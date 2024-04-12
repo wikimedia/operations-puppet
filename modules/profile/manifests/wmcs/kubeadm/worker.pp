@@ -16,6 +16,14 @@ class profile::wmcs::kubeadm::worker (
         }
     }
 
+    sysctl::parameters { 'extra_inotify_instances':
+        values   => {
+            # the default is 128, and we were hitting it when using containerd
+            'fs.inotify.max_user_instances' => 1024,
+        },
+        priority => 99,
+    }
+
     include ::profile::wmcs::kubeadm::core
     contain ::profile::wmcs::kubeadm::core
 }
