@@ -212,10 +212,10 @@ class profile::icinga(
     $all_icinga_hosts = $partners + $active_host
 
     $all_icinga_hosts.each |String $partner| {
-        ferm::service { "icinga-rsync-${partner}":
+        firewall::service { "icinga-rsync-${partner}":
             proto  => 'tcp',
             port   => 873,
-            srange => "(@resolve(${partner}) @resolve(${partner}, AAAA))",
+            srange => $partner,
         }
     }
 
@@ -236,22 +236,22 @@ class profile::icinga(
     }
 
     # access to the web interface
-    ferm::service { 'icinga-https':
-      proto => 'tcp',
-      port  => 443,
+    firewall::service { 'icinga-https':
+        proto => 'tcp',
+        port  => 443,
     }
 
-    ferm::service { 'icinga-http':
-      proto => 'tcp',
-      port  => 80,
+    firewall::service { 'icinga-http':
+        proto => 'tcp',
+        port  => 80,
     }
 
     # allow NSCA (Nagios Service Check Acceptor)
     # connections on port 5667/tcp
-    ferm::service { 'icinga-nsca':
-        proto  => 'tcp',
-        port   => '5667',
-        srange => '($DOMAIN_NETWORKS $FRACK_NETWORKS)',
+    firewall::service { 'icinga-nsca':
+        proto    => 'tcp',
+        port     => 5667,
+        src_sets => ['DOMAIN_NETWORKS', 'FRACK_NETWORKS'],
     }
 
     # We absent the timer job on active hosts, should only exist on passive ones
