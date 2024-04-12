@@ -1978,18 +1978,14 @@ node /^moss-fe1001\.eqiad\./ {
     include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
-# New moss-be nodes T276637
-node /^moss-be100[12]\.eqiad\./ {
-    role(insetup::buster)
-}
-# New moss-be nodes T342675
-node /^moss-be1003\.eqiad\./ {
-    role(insetup::buster)
+# New moss-be nodes T276637 T342675
+node /^moss-be100[123]\.eqiad\./ {
+    role(insetup::data_persistence)
 }
 
 # New moss-be nodes T276642 and T342674
 node /^moss-be200[123]\.codfw\./ {
-    role(insetup::buster)
+    role(insetup::data_persistence)
 }
 
 # New moss-fe nodes T275513
