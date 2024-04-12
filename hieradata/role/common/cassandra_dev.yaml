@@ -83,6 +83,7 @@ profile::cassandra::settings:
   tls_use_pki_truststore: true
   tls_use_pki_keep_old_ca: true
   tls_cluster_name: 'cassandra-dev'
+  tls_use_pki: true
   dc: "%{::site}"
   cluster_name: 'cassandra-dev'
   super_username: cassandra
