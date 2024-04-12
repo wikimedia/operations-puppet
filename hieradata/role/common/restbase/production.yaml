@@ -1024,6 +1024,55 @@ profile::admin::groups:
   - restbase-roots
   - restbase-admins
 profile::tlsproxy::envoy::tls_port: 7443
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - restbase.discovery.wmnet
+    - restbase-async.discovery.wmnet
+    - "restbase.svc.%{::site}.wmnet"
+    - restbase.svc.codfw.wmnet
+    - "*.wikipedia.org"
+    - "*.m.mediawiki.org"
+    - "*.m.wikibooks.org"
+    - "*.m.wikidata.org"
+    - "*.m.wikimedia.org"
+    - "*.m.wikimediafoundation.org"
+    - "*.m.wikinews.org"
+    - "*.m.wikipedia.org"
+    - "*.m.wikiquote.org"
+    - "*.m.wikisource.org"
+    - "*.m.wikiversity.org"
+    - "*.m.wikivoyage.org"
+    - "*.m.wiktionary.org"
+    - "*.mediawiki.org"
+    - "*.planet.wikimedia.org"
+    - "*.wikibooks.org"
+    - "*.wikidata.org"
+    - "*.wikimedia.org"
+    - "*.wikimediafoundation.org"
+    - "*.wikinews.org"
+    - "*.wikiquote.org"
+    - "*.wikisource.org"
+    - "*.wikiversity.org"
+    - "*.wikivoyage.org"
+    - "*.wiktionary.org"
+    - "*.wmfusercontent.org"
+    - "*.zero.wikipedia.org"
+    - mediawiki.org
+    - w.wiki
+    - wikibooks.org
+    - wikidata.org
+    - wikimedia.org
+    - wikimediafoundation.org
+    - wikinews.org
+    - wikiquote.org
+    - wikisource.org
+    - wikiversity.org
+    - wikivoyage.org
+    - wiktionary.org
+    - wmfusercontent.org
+    - wikipedia.org
+
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 7231
