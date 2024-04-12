@@ -25,7 +25,7 @@ profile::wmcs::striker::docker::instances:
   # This is the main instance for the main Toolforge project.
   striker:
     port: 8080
-    version: 2024-04-10-145923-production
+    version: 2024-04-12-081232-production
     env:
       OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
       DB_NAME: striker
@@ -33,7 +33,7 @@ profile::wmcs::striker::docker::instances:
   # This is the Toolsbeta instance.
   striker-toolsbeta:
     port: 8081
-    version: 2024-04-10-145923-production
+    version: 2024-04-12-081232-production
     env:
       OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
       DB_NAME: striker_toolsbeta
@@ -44,6 +44,7 @@ profile::wmcs::striker::docker::instances:
       PHABRICATOR_PARENT_PROJECT: PHID-PROJ-3k4txxgqhn37uhfqgtam
       TOOLS_TOOL_LABS_GROUP_NAME: project-toolsbeta
       TOOLS_ADMIN_GROUP_NAME: toolsbeta.admin
+      TOOLS_WEB_BASE_DOMAIN: beta.toolforge.org
       OPENSTACK_PROJECT: toolsbeta
       GITLAB_REPO_NAMESPACE_NAME: toolforge-repos/toolsbeta
       GITLAB_REPO_NAMESPACE_ID: 3718
