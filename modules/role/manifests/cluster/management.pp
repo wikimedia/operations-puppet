@@ -4,11 +4,6 @@
 # automation and orchestration softwares, ACL and such.
 #
 class role::cluster::management {
-
-    system::role { 'cluster-management':
-        description => 'Cluster management',
-    }
-
     include profile::base::production
     include profile::firewall
 

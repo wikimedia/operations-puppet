@@ -19,3 +19,4 @@ profile::etcd::v3::adv_client_port: 2379
 
 # XXX Who are the aux k8s cluster owners?
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'kubernetes aux etcd cluster member'

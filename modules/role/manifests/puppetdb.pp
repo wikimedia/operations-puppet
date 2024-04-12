@@ -7,9 +7,4 @@ class role::puppetdb {
     include profile::prometheus::postgres_exporter
     include profile::sre::os_updates
     include profile::sre::nftables_compat_check
-
-    system::role { "puppetdb (postgres ${profile::puppetdb::database::db_role})":
-        ensure      => 'present',
-        description => 'PuppetDB server',
-    }
 }

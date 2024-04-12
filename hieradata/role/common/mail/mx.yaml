@@ -16,3 +16,4 @@ profile::mail::mx::alias_file: /etc/exim4/aliases/wikimedia.org
 profile::mail::mx::alias_file_mail_rcpt: its@wikimedia.org
 profile::mail::mx::alias_file_mail_subject: wikimedia.org mail aliases
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Mail router'

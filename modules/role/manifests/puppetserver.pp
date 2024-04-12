@@ -1,10 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary puppetserver rol
 class role::puppetserver {
-    system::role { 'puppetserver':
-        description => 'Puppetserver',
-    }
-
     include profile::base::production
     include profile::firewall
     include profile::puppetserver::backup

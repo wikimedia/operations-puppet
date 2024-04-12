@@ -4,11 +4,6 @@
 # users
 #
 class role::cluster::unprivmanagement {
-
-    system::role { 'unpriv-cluster-management':
-        description => 'Unprivileged cluster management',
-    }
-
     include profile::base::production
     include profile::firewall
 

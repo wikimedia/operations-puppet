@@ -1,1 +1,2 @@
 profile::monitoring::notifications_enabled: false
+profile::base::production::role_description: 'Host being setup with Debian Buster/Puppet5'

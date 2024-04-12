@@ -1,6 +1,7 @@
 cluster: puppet
 puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
+profile::base::production::role_description: 'PuppetDB server'
 profile::puppet::agent::puppetmaster: puppetserver1001.eqiad.wmnet
 profile::puppet::agent::force_puppet7: true
 profile::puppetdb::jvm_opts: '-Xmx6g'

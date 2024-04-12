@@ -5,8 +5,6 @@
 # internet.
 
 class role::apt_private_repo {
-    system::role { 'private-apt-repository': }
-
     include profile::base::production
     include profile::firewall
 

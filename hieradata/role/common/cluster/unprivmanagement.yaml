@@ -4,4 +4,5 @@ profile::kerberos::client::show_krb_ticket_info: true
 profile::ssh::client::gss_api_delegate_credentials: true
 profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'Unprivileged cluster management'
 profile::firewall::provider: nftables

@@ -2,6 +2,7 @@
 profile::puppetserver::scripts::realm_override: "production7"
 puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
+profile::base::production::role_description: 'Puppetserver'
 profile::puppet::agent::force_puppet7: true
 profile::puppet::agent::puppetmaster: "%{facts.networking.fqdn}"
 profile::puppetserver::auto_restart: false
