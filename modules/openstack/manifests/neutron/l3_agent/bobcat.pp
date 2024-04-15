@@ -20,10 +20,4 @@ class openstack::neutron::l3_agent::bobcat(
     systemd::mask { 'radvd.service':
         before => Package['neutron-l3-agent'],
     }
-
-    # hope we only need this for bobcat, and next version includes the fix
-    openstack::patch {'/usr/lib/python3/dist-packages/neutron/agent/l3/keepalived_state_change.py':
-        source  => 'puppet:///modules/openstack/bobcat/neutron/hacks/keepalived_state_change.py.patch',
-        require => Package['neutron-l3-agent'],
-    }
 }
