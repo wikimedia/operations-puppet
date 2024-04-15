@@ -8,24 +8,25 @@ wmflib::monkey_patch()
 # Determine the site the server is in
 # NOTE: Adding a new site or updating private ranges?
 # Please update the ranges in mediawiki-config/wmf-config/reverse-proxy.php.
+# See I385fe5bef47dc04 for a sample commit.
 
 $site = $facts['ipaddress'] ? {
-    /^208\.80\.15[23]\./                                      => 'codfw',
     /^208\.80\.15[45]\./                                      => 'eqiad',
     /^10\.6[48]\./                                            => 'eqiad',
+    /^172\.16\.([0-9]|[1-9][0-9]|1([0-1][0-9]|2[0-7]))\./     => 'eqiad',
+    /^208\.80\.15[23]\./                                      => 'codfw',
     /^10\.19[26]\./                                           => 'codfw',
+    /^172\.16\.(1(2[8-9]|[3-9][0-9])|2([0-4][0-9]|5[0-5]))\./ => 'codfw',
     /^185\.15\.59\./                                          => 'esams',
+    /^10\.80\./                                               => 'esams',
     /^198\.35\.26\./                                          => 'ulsfo',
     /^10\.128\./                                              => 'ulsfo',
-    /^10\.80\./                                               => 'esams',
     /^103\.102\.166\./                                        => 'eqsin',
     /^10\.132\./                                              => 'eqsin',
     /^185\.15\.58\./                                          => 'drmrs',
     /^10\.136\./                                              => 'drmrs',
     /^195\.200\.68\./                                         => 'magru',
     /^10\.140\./                                              => 'magru',
-    /^172\.16\.([0-9]|[1-9][0-9]|1([0-1][0-9]|2[0-7]))\./     => 'eqiad',
-    /^172\.16\.(1(2[8-9]|[3-9][0-9])|2([0-4][0-9]|5[0-5]))\./ => 'codfw',
     default                                                   => '(undefined)'
 }
 # trusted facts are not always available with puppet master --compile (used by pcc)
