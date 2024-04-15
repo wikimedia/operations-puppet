@@ -180,10 +180,12 @@ class apt(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    apt::repository { 'debian-backports':
-        uri        => "http://${mirror}/debian/",
-        dist       => "${::lsbdistcodename}-backports",
-        components => 'main contrib non-free',
+    if debian::codename::ge('bullseye') {
+        apt::repository { 'debian-backports':
+            uri        => "http://${mirror}/debian/",
+            dist       => "${::lsbdistcodename}-backports",
+            components => 'main contrib non-free',
+        }
     }
 
     apt::repository { 'debian-debug':
