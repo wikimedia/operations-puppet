@@ -51,6 +51,7 @@ Components: main
  component/rsyslog
  component/rsyslog-k8s
  component/rsyslog-openssl
+ component/shellcheck
  component/spicerack
  component/wmf-sre-laptop
  thirdparty/amd-rocm42
