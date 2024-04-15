@@ -30,8 +30,7 @@ profile::spicerack::ganeti_auth_data: {}
 profile::spicerack::netbox_config_data: {}
 profile::spicerack::cookbooks_repos:
   'cloud/wmcs-cookbooks': '/srv/deployment/wmcs-cookbooks'
-profile::spicerack::cookbooks_dependencies:
-  - python3-defusedxml
+profile::spicerack::cookbooks_dependencies: []
 
 # This sets the right port in /etc/spicerack/config.yaml
 # (9200 logs to #wikimedia-operations, 9201 logs to #wikimedia-cloud-feed)
