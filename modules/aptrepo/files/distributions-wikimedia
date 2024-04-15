@@ -34,6 +34,7 @@ Components: main
  component/kubernetes116
  component/kubernetes123
  component/libmysql-java
+ component/lilypond
  component/mailman3
  component/memcached16
  component/mtail
