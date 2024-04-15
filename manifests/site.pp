@@ -851,11 +851,11 @@ node /^(db2099|db2199)\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s7 & s8, bullseye
-node /^db2200.codfw\./ {
+node /^db2200\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s2, s5, & x1, bullseye
-node /^(db2101|db2201)\.codfw\./ {
+node /^db2201\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s3 & s4, bullseye
@@ -869,6 +869,11 @@ node /^db2141\.codfw\./ {
 
 node /^(db2102|db2202)\.codfw\./ {
     role(mariadb::core_test)
+}
+
+# To be decomm., T362311
+node /^db2101\.codfw\./ {
+    role(mariadb::backup_source)
 }
 
 # Analytics production replicas
