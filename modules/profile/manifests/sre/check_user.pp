@@ -13,12 +13,6 @@ class profile::sre::check_user (
     # python3-google-auth-httplib2 is also required
     # https://github.com/googleapis/google-auth-library-python/issues/190#issuecomment-322837328
     $packages = ['python3-googleapi', 'python3-google-auth', 'python3-google-auth-httplib2']
-    # need at least version 1.6.0
-    # https://github.com/googleapis/google-auth-library-python/issues/190#issuecomment-322640637
-    apt::pin { 'python3-googleapi':
-        pin      => 'release a=buster-backports',
-        priority => 1001,
-    }
     ensure_packages($packages)
 
     $namley_config = $namely_api_key.unwrap.empty.bool2str(
