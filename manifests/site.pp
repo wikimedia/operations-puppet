@@ -909,7 +909,7 @@ node /^dbprov2004\.codfw\./ {
     role(dbbackups::metadata)
 }
 node /^dbprov2005\.codfw\./ {
-    role(insetup::data_persistence)
+    role(dbbackups::metadata)
 }
 node /^dbprov2006\.codfw\./ {
     role(insetup::data_persistence)
