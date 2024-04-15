@@ -3,7 +3,11 @@ profile::admin::groups:
   - perf-roots
   - graphite-admins
 profile::graphite::base::uwsgi_processes: 16
-profile::tlsproxy::envoy::global_cert_name: "graphite.discovery.wmnet"
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::global_cert_name: 'graphite.discovery.wmnet'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - graphite.wikimedia.org
 profile::idp::client::httpd::sites:
   'graphite.wikimedia.org':
     vhost_content: 'profile/idp/client/httpd-graphite.erb'
