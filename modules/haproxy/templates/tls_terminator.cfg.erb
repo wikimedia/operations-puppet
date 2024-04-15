@@ -65,11 +65,11 @@ listen tls
     <%- end -%>
     # TODO: refactor to a more configurable approach
     capture response header X-Cache-Status len 10
-    capture request header Host len 25
+    capture request header Host len 255
     <%- if @extended_logging -%>
-    capture request header Referer len 64
+    capture request header Referer len 1024
     capture request header User-Agent len 1024
-    capture request header Accept-Language len 10
+    capture request header Accept-Language len 64
     capture request header Range len 10
     capture request header Accept len 64
     capture response header Content-Type len 25
@@ -177,13 +177,13 @@ frontend http
     unique-id-format "%rt"
 <%- end -%>
     # Needed for logging purposes
-    capture request header Host len 25
+    capture request header Host len 255
     # declare a capture slot with id 0 for X-Cache-Status
     declare capture response len 10
 <%- if @extended_logging -%>
-    capture request header Referer len 64
+    capture request header Referer len 1024
     capture request header User-Agent len 1024
-    capture request header Accept-Language len 10
+    capture request header Accept-Language len 64
     capture request header Range len 10
     capture request header Accept len 64
     capture response header Content-Type len 25
