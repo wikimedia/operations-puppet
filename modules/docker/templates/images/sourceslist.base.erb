@@ -5,5 +5,7 @@ deb http://security.debian.org/ <%= @distro %>/updates main
 deb http://security.debian.org/debian-security <%= @distro %>-security main
 <%- end -%>
 deb http://mirrors.wikimedia.org/debian/ <%= @distro %>-updates main
+<%- if @distro != "buster" -%>
 deb http://mirrors.wikimedia.org/debian/ <%= @distro %>-backports main contrib
+<%- end -%>
 deb http://apt.wikimedia.org/wikimedia <%= @distro %>-wikimedia main
