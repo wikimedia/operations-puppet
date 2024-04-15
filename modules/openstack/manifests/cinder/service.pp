@@ -36,12 +36,6 @@ class openstack::cinder::service(
         notify  => Service['cinder-api'],
     }
 
-    openstack::patch { '/usr/lib/python3/dist-packages/cinder/api/schemas/volume_type_access.py':
-        source  => "puppet:///modules/openstack/${version}/cinder/hacks/api/volume_type_access.py.patch",
-        require => Package['cinder-api'],
-        notify  => Service['cinder-api'],
-    }
-
     openstack::patch { '/usr/lib/python3/dist-packages/cinder/scheduler/manager.py':
         source  => "puppet:///modules/openstack/${version}/cinder/hacks/manager/manager.py.patch",
         require => Package['cinder-api'],
