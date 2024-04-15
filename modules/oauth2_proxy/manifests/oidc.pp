@@ -20,7 +20,7 @@ class oauth2_proxy::oidc (
     Sensitive[String[1]] $cookie_secret,
     String[1] $cookie_domain,
     Stdlib::HTTPSUrl $redirect_url,
-    String[1] $email_domain = 'wikimedia.org',
+    String[1] $email_domain = '*',
     Stdlib::HTTPSUrl $issuer_url = 'https://idp.wikimedia.org/oidc',
     String[1] $listen_address = '127.0.0.1:4180',
     Array[String] $skip_auth_routes = [],
