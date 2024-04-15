@@ -871,11 +871,6 @@ node /^(db2102|db2202)\.codfw\./ {
     role(mariadb::core_test)
 }
 
-# To be decomm., T362311
-node /^db2101\.codfw\./ {
-    role(mariadb::backup_source)
-}
-
 # Analytics production replicas
 node /^dbstore100[789]\.eqiad\./ {
     role(mariadb::analytics_replica)
