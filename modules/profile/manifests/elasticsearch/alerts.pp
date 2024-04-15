@@ -1,4 +1,4 @@
-class role::elasticsearch::alerts {
+class profile::elasticsearch::alerts {
     # For the following 6 alerts, they all follow the pattern of "only alert if qps volume is not negligible"
     # See https://phabricator.wikimedia.org/T347341#9197646 to understand specifcially how fallbackSeries/useSeriesAbove/constantLine achieve the above
     monitoring::graphite_threshold { 'cirrussearch_eqiad_fulltext_95th_percentile':

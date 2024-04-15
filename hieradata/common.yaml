@@ -1238,6 +1238,8 @@ udp2log_aggregator: "udplog:8420"
 tcpircbot_host: 'icinga.wikimedia.org'
 tcpircbot_port: 9200
 
+graphite_primary_host: graphite1005.eqiad.wmnet
+
 # User for Jenkins controllers SSH connections to the agents
 jenkins_agent_username: 'jenkins-agent'
 

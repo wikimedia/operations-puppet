@@ -7,6 +7,7 @@
 #
 class profile::graphite::production (
     Array[Stdlib::Fqdn] $graphite_hosts = lookup('profile::graphite::hosts'),
+    Stdlib::Fqdn $primary_host = lookup('graphite_primary_host'),
 ) {
     $storage_dir = '/srv/carbon'
 
@@ -132,4 +133,10 @@ class profile::graphite::production (
         jobdefaults => 'Weekly-Mon-productionEqiad',
     }
     backup::set { 'var-lib-graphite-web-graphite-db': }
+
+    # alert only on the primary server
+    if $::fqdn == $primary_host {
+        include profile::graphite::alerts
+        include profile::elasticsearch::alerts
+    }
 }

@@ -1407,15 +1407,8 @@ node /^cloudservices200[45]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::services)
 }
 
-# Primary graphite host
-node /^graphite1005\.eqiad\./ {
-    role(graphite::production)
-    include role::graphite::alerts # lint:ignore:wmf_styleguide
-    include role::elasticsearch::alerts # lint:ignore:wmf_styleguide
-}
-
-# Standby graphite host
-node /^graphite2004\.codfw\./ {
+# graphite - primary host defined in hieradata/common.yaml
+node /^graphite[12]00[4-5]\.(eqiad|codfw)\./ {
     role(graphite::production)
 }
 
