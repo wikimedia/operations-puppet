@@ -51,19 +51,4 @@ class openstack::clientpackages::bobcat::buster(
         owner  => 'root',
         group  => 'root',
     }
-
-    # Apply https://review.opendev.org/c/openstack/openstacksdk/+/893283
-    $instance_dir_to_patch = '/usr/lib/python3/dist-packages/openstack'
-    $instance_patch_file = "${instance_dir_to_patch}.patch"
-    file {$instance_patch_file:
-        source => 'puppet:///modules/openstack/bobcat/openstacksdk/hacks/allow_overriding_cloud_yaml.patch',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-    }
-    exec { "apply ${instance_patch_file}":
-        command => "/usr/bin/patch --forward --strip=2 --directory=${instance_dir_to_patch} --input=${instance_patch_file}",
-        unless  => "/usr/bin/patch --reverse --strip=2 --dry-run -f --directory=${instance_dir_to_patch} --input=${instance_patch_file}",
-        require => [File[$instance_patch_file], Package['python3-openstacksdk']],
-    }
 }
