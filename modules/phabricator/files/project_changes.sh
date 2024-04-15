@@ -265,6 +265,24 @@ SELECT CONCAT("https://phabricator.wikimedia.org/portal/view/", dpo.id) AS porta
 END
 )
 
+# echo "result_renamed_diffusion_striker_repos"
+# see https://phabricator.wikimedia.org/T197699
+result_renamed_diffusion_striker_repos=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT rt.oldValue AS oldName, rt.newValue AS newName, u.userName AS user
+    FROM phabricator_repository.repository_transaction rt
+    INNER JOIN phabricator_user.user u ON rt.authorPHID = u.phid
+    WHERE rt.transactionType = "repo:name"
+    AND rt.dateCreated > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK))
+    AND oldValue != "null"
+    AND rt.objectPHID IN
+        (SELECT objectPHID FROM phabricator_repository.repository_transaction sb
+        WHERE sb.transactionType = "core:create"
+        AND sb.authorPHID = "PHID-USER-osw2bumzx5lwf3mf65t3");
+
+END
+)
+
 #echo "result_past_due_dates"
 # see https://phabricator.wikimedia.org/T249807
 result_past_due_dates=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
@@ -512,6 +530,11 @@ ${result_portals}
 ACTIVE HERALD RULES USING ARCHIVED PROJECTS IN THEIR ACTIONS
 (projects to be updated or Herald rules to be disabled):
 ${result_herald_rules_archived_projects}
+
+
+DIFFUSION REPOSITORIES CREATED BY STRIKERBOT WHICH GOT RENAMED:
+(renames to check and potentially revert; cf T197699)
+${result_renamed_diffusion_striker_repos}
 
 
 ===== EVERYTHING BELOW THIS LINE IS NOT REACTIVE AND JUST FYI =====
