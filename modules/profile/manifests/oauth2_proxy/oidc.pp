@@ -13,18 +13,20 @@ class profile::oauth2_proxy::oidc (
     String[1] $email_domain = 'wikimedia.org',
     Stdlib::HTTPSUrl $issuer_url = 'https://idp.wikimedia.org/oidc',
     String[1] $listen_address = '127.0.0.1:4180',
+    Array[String] $skip_auth_routes = [],
     # lint:endignore
 ) {
     class { 'oauth2_proxy::oidc':
-        upstreams      => $upstreams,
-        client_id      => $client_id,
-        client_secret  => $client_secret,
-        cookie_secret  => $cookie_secret,
-        cookie_domain  => $cookie_domain,
-        redirect_url   => $redirect_url,
-        email_domain   => $email_domain,
-        issuer_url     => $issuer_url,
-        listen_address => $listen_address,
+        upstreams        => $upstreams,
+        client_id        => $client_id,
+        client_secret    => $client_secret,
+        cookie_secret    => $cookie_secret,
+        cookie_domain    => $cookie_domain,
+        redirect_url     => $redirect_url,
+        email_domain     => $email_domain,
+        issuer_url       => $issuer_url,
+        listen_address   => $listen_address,
+        skip_auth_routes => $skip_auth_routes,
     }
 
     $match_idp_location = {

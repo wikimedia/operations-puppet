@@ -16,3 +16,10 @@ upstreams = [
   "<%= url %>",
 <% end -%>
 ]
+<%- unless @skip_auth_routes.empty? -%>
+skip_auth_routes = [
+<% @skip_auth_routes.sort.each do |route| -%>
+  "<%= route %>",
+<% end -%>
+]
+<%- end -%>

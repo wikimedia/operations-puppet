@@ -66,13 +66,14 @@ class profile::opensearch::dashboards::httpd_proxy (
         $httpd_extra_modules = []
 
         class { 'profile::oauth2_proxy::oidc':
-            upstreams     => ['http://localhost:5601'],
-            client_id     => 'logstash_oidc',
-            client_secret => $sso_client_secret,
-            cookie_secret => $sso_cookie_secret,
-            issuer_url    => $sso_issuer_url,
-            cookie_domain => $vhost,
-            redirect_url  => "https://${vhost}/oauth2/callback",
+            upstreams        => ['http://localhost:5601'],
+            client_id        => 'logstash_oidc',
+            client_secret    => $sso_client_secret,
+            cookie_secret    => $sso_cookie_secret,
+            issuer_url       => $sso_issuer_url,
+            cookie_domain    => $vhost,
+            redirect_url     => "https://${vhost}/oauth2/callback",
+            skip_auth_routes => [ '^/api/status' ],
         }
     }
 

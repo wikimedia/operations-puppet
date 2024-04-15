@@ -23,6 +23,7 @@ class oauth2_proxy::oidc (
     String[1] $email_domain = 'wikimedia.org',
     Stdlib::HTTPSUrl $issuer_url = 'https://idp.wikimedia.org/oidc',
     String[1] $listen_address = '127.0.0.1:4180',
+    Array[String] $skip_auth_routes = [],
 ) {
     ensure_packages(['oauth2-proxy'])
 
