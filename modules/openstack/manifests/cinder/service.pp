@@ -30,18 +30,6 @@ class openstack::cinder::service(
         priority => 20,
     }
 
-    openstack::patch { '/usr/lib/python3/dist-packages/cinder/backup/api.py':
-        source  => "puppet:///modules/openstack/${version}/cinder/hacks/backup/api.py.patch",
-        require => Package['cinder-api'],
-        notify  => Service['cinder-api'],
-    }
-
-    openstack::patch { '/usr/lib/python3/dist-packages/cinder/scheduler/manager.py':
-        source  => "puppet:///modules/openstack/${version}/cinder/hacks/manager/manager.py.patch",
-        require => Package['cinder-api'],
-        notify  => Service['cinder-api'],
-    }
-
     if $cinder_backup_volumes != {} {
         file { '/etc/wmcs-cinder-backup-manager.yaml':
             content   => $cinder_backup_volumes.to_yaml,
