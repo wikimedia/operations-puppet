@@ -44,8 +44,9 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.queue-mappings-override.enable' => false,
         # Useful to enable/disable any new job in the cluster (for example to let it drain before maintenance)
         # Individual queues are not re-enabled by setting the yarn.scheduler.capacity.root.state to RUNNING,
-        # so all 4 queues have a setting here. Specific leaf queues can also be managed this way.
-        'yarn.scheduler.capacity.root.fifo.state' => 'RUNNING',
+        # so all 5 queues have a setting here. Specific leaf queues can also be managed this way.
+        'yarn.scheduler.capacity.root.gpus.state' => 'RUNNING',
+        'yarn.scheduler.capacity.root.launchers.state' => 'RUNNING',
         'yarn.scheduler.capacity.root.default.state' => 'RUNNING',
         'yarn.scheduler.capacity.root.production.state' => 'RUNNING',
         'yarn.scheduler.capacity.root.essential.state' => 'RUNNING',
@@ -55,9 +56,11 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # The -1 value for maximum-capacity means no maximum. We set this to maximize
         # usage elasticity.
         # First layer
-        'yarn.scheduler.capacity.root.queues' => 'fifo,default,production,essential',
-        'yarn.scheduler.capacity.root.fifo.capacity' => 5,
-        'yarn.scheduler.capacity.root.fifo.maximum-capacity' => -1,
+        'yarn.scheduler.capacity.root.queues' => 'gpus,launchers,default,production,essential',
+        'yarn.scheduler.capacity.root.gpus.capacity' => 2,
+        'yarn.scheduler.capacity.root.gpus.maximum-capacity' => -1,
+        'yarn.scheduler.capacity.root.launchers.capacity' => 3,
+        'yarn.scheduler.capacity.root.launchers.maximum-capacity' => -1,
         'yarn.scheduler.capacity.root.default.capacity' => 35,
         'yarn.scheduler.capacity.root.default.maximum-capacity' => -1,
         'yarn.scheduler.capacity.root.production.capacity' => 50,
@@ -76,8 +79,10 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # The user limit factor is a multiplier used to allow users of a specific queue to take up to X
         # times the resource allocated (as min value) for the queue. It is needed to allow/control elasticity,
         # so users can overcome Yarn default limits in case there are free resources.
-        # Since fifo queue size is small, use a large limit-factor
-        'yarn.scheduler.capacity.root.fifo.user-limit-factor' => 5,
+        # Since launchers queue size is small, use a large limit-factor.
+        # Don't allow more resources than GPU ones when running in GPU queue
+        'yarn.scheduler.capacity.root.gpus.user-limit-factor' => 1,
+        'yarn.scheduler.capacity.root.launchers.user-limit-factor' => 5,
         'yarn.scheduler.capacity.root.default.user-limit-factor' => 2,
         'yarn.scheduler.capacity.root.production.user-limit-factor' => 2,
         'yarn.scheduler.capacity.root.essential.user-limit-factor' => 10,
@@ -86,17 +91,19 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # 'yarn.scheduler.capacity.root.production.analytics.minimum-user-limit-percent' => 50,
         # we want to allow up to two users concurrently in the queue (druid and analytics), leaving the others waiting.
         # If we use '25', we'll allow a max of 4 different users, etc..
-        'yarn.scheduler.capacity.root.fifo.minimum-user-limit-percent' => 100,
+        'yarn.scheduler.capacity.root.gpus.minimum-user-limit-percent' => 100,
+        'yarn.scheduler.capacity.root.launchers.minimum-user-limit-percent' => 50,
         'yarn.scheduler.capacity.root.default.minimum-user-limit-percent' => 10,
         'yarn.scheduler.capacity.root.production.minimum-user-limit-percent' => 20,
         'yarn.scheduler.capacity.root.essential.minimum-user-limit-percent' => 50,
 
         # Max lifetime for a Yarn application
         'yarn.scheduler.capacity.root.default.maximum-application-lifetime' => 604800, # 1 week in seconds
-        'yarn.scheduler.capacity.root.fifo.maximum-application-lifetime' => 604800, # 1 week in seconds
+        'yarn.scheduler.capacity.root.gpus.maximum-application-lifetime' => 604800, # 1 week in seconds
 
         # Ordering policy
-        'yarn.scheduler.capacity.root.fifo.ordering-policy' => 'fifo',
+        'yarn.scheduler.capacity.root.gpus.ordering-policy' => 'fifo',
+        'yarn.scheduler.capacity.root.launchers.ordering-policy' => 'fair',
         'yarn.scheduler.capacity.root.default.ordering-policy' => 'fair',
         'yarn.scheduler.capacity.root.production.ordering-policy' => 'fair',
         'yarn.scheduler.capacity.root.essential.ordering-policy' => 'fair',
@@ -109,8 +116,8 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         # use the GPU label, so we concentrate all the capacity to it.
         'yarn.scheduler.capacity.root.accessible-node-labels' => 'GPU',
         'yarn.scheduler.capacity.root.accessible-node-labels.GPU.capacity' => '100',
-        'yarn.scheduler.capacity.root.fifo.accessible-node-labels' => 'GPU',
-        'yarn.scheduler.capacity.root.fifo.accessible-node-labels.GPU.capacity' => '100',
+        'yarn.scheduler.capacity.root.gpus.accessible-node-labels' => 'GPU',
+        'yarn.scheduler.capacity.root.gpus.accessible-node-labels.GPU.capacity' => '100',
 
         # ACLs
         # Permissions cannot be reduced on the lower layer of the tree once set for a specific
@@ -119,8 +126,12 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         #       group is, the value should start with a space
         'yarn.scheduler.capacity.root.acl_submit_applications' => ' ',
         'yarn.scheduler.capacity.root.acl_administer_queue' => ' ',
-        'yarn.scheduler.capacity.root.fifo.acl_submit_applications' => ' analytics-privatedata-users',
-        'yarn.scheduler.capacity.root.fifo.acl_administer_queue' => ' analytics-privatedata-users',
+        # Allow any from analytics-privatedata-users group to use GPUs
+        'yarn.scheduler.capacity.root.gpus.acl_submit_applications' => ' analytics-privatedata-users',
+        'yarn.scheduler.capacity.root.gpus.acl_administer_queue' => ' analytics-privatedata-users',
+        # same settings as the production queue
+        'yarn.scheduler.capacity.root.launchers.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde',
+        'yarn.scheduler.capacity.root.launchers.acl_administer_queue' => '%user analytics-admins,analytics-platform-eng-admins,analytics-research-admins,analytics-search-users,analytics-product-users,airflow-wmde-admins',
         'yarn.scheduler.capacity.root.default.acl_submit_applications' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.default.acl_administer_queue' => ' analytics-privatedata-users',
         'yarn.scheduler.capacity.root.production.acl_submit_applications' => 'analytics,analytics-platform-eng,analytics-research,druid,analytics-search,analytics-product,analytics-wmde',
@@ -132,6 +143,12 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
 
         # Preemption
         'yarn.scheduler.capacity.root.essential.disable_preemption' => true,
+
+        # Application-master ratio override
+        # The launchers queue will be used to run very small jobs (application-master only)
+        # We don't limit the ratio application-master/container to allow many jobs
+        # to be run at the same time in this queue
+        'yarn.scheduler.capacity.root.launchers.maximum-am-resource-percent' => 1,
     }
 
     $scheduler_settings = $base_settings + $extra_settings
