@@ -21,14 +21,16 @@ use_privmsg: yes
 msg_once_per_alert_group: yes
 
 # Send out messages with (in order):
-# * The alert group name
-# * Group status and number of alerts if > 1
+# * The group status (FIRING/RESOLVED)
+# * Number of alerts firing in group if > 1, e.g. "[2x]"
+# * The alert group name, e.g. "FooBarBaz:"
 # * The alert's summary
 # * The alert's runbook/dashboard URLs
 # * The alert dashboard link
 msg_template: >-
-  ({{ .GroupLabels.alertname }})
-  {{.Status}}:{{ if .Alerts | len | le 2 }} ({{ .Alerts | len }}){{ end }}
+  {{ .Status | ToUpper }}:
+  {{ if .Alerts | len | le 2 }} [{{ .Alerts | len }}x]{{ end }}
+  {{ .GroupLabels.alertname }}:
   {{ if eq .GroupLabels.alertname "DatasourceError" -}}
   {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
   {{- else -}}
