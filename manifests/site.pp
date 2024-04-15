@@ -838,27 +838,39 @@ node /^db1216\.eqiad\./ {
 }
 
 # codfw backup sources
-## s2, s6 & x1, 10.6, bullseye
-node /^(db2097|db2197)\.codfw\./ {
+## s2, s6 & x1, bullseye, 10.6
+node /^db2097\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s2, s6 & x1, bookworm, 10.6
+node /^db2197\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s7 & s8, bullseye
-node /^(db2098|db2198)\.codfw\./ {
+node /^db2098\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s7 & s8, bookworm, 10.6
+node /^db2198\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s4, bullseye
-node /^(db2099|db2199)\.codfw\./ {
+node /^db2099\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bullseye
+## s4, bookworm, 10.6
+node /^db2199\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s7 & s8, bookworm, 10.6
 node /^db2200\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s2, s5, & x1, bullseye
+## s2, s5, & x1, bookworm, 10.6
 node /^db2201\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s3 & s4, bullseye
+## s3 & s4, bullseye, 10.6
 node /^db2139\.codfw\./ {
     role(mariadb::backup_source)
 }
@@ -866,8 +878,12 @@ node /^db2139\.codfw\./ {
 node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
-
-node /^(db2102|db2202)\.codfw\./ {
+## test-s1, bullseye
+node /^db2102\.codfw\./ {
+    role(mariadb::core_test)
+}
+## test-s1, bookworm, 10.6
+node /^db2202\.codfw\./ {
     role(mariadb::core_test)
 }
 
