@@ -167,28 +167,25 @@ acl_check_helo:
 
 	# warn if remote tries to send HELO < my primary hostname >
 	# change from warn to delay & drop to enforce this
-	warn log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name - Problem: HELO name equals my primary_hostname of $primary_hostname)
+	drop log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name - Problem: HELO name equals my primary_hostname of $primary_hostname)
 		condition   = ${if match{$sender_helo_name}{$primary_hostname}}
 		!hosts      = +wikimedia_nets : +relay_from_hosts
-		#log_message = HELO failure ref2 (Remote said: HELO $sender_helo_name - Problem: HELO name equals my primary_hostname of $primary_hostname)
-		#delay       = 45s
+		delay       = 45s
 
 	# warn if remote tries to send HELO < my interface address >
 	# change from warn to delay & drop to enforce this
-	warn log_message = HELO FAILURE ref3 (Remote said: HELO $sender_helo_name - Problem: HELO name matches local interface address $received_ip_address)
+	drop log_message = HELO FAILURE ref3 (Remote said: HELO $sender_helo_name - Problem: HELO name matches local interface address $received_ip_address)
 		condition   = ${if eq{[$received_ip_address]}{$sender_helo_name}}
 		!hosts      = +wikimedia_nets : +relay_from_hosts
-		#log_message = HELO failure ref3 (Remote said: HELO $sender_helo_name - Problem: HELO name matches local interface address $received_ip_address)
-		#delay       = 45s
+		delay       = 45s
 
 	# warn if remote sends HELO with no address literal and no periods
 	# change from warn to delay & drop to enforce this
-	warn log_message = HELO FAILURE ref4 (Remote said: HELO $sender_helo_name - Problem: HELO name does not contain an address literal or a period)
+	drop log_message = HELO FAILURE ref4 (Remote said: HELO $sender_helo_name - Problem: HELO name does not contain an address literal or a period)
 		condition   = ${if match{$sender_helo_name}{\N^\[\N}{no}{yes}}
 		condition   = ${if match{$sender_helo_name}{\N\.\N}{no}{yes}}
 		!hosts      = +wikimedia_nets : +relay_from_hosts
-		#log_message = HELO failure ref4 (Remote said: HELO $sender_helo_name - Problem: HELO name does not contain an address literal or a period)
-		#delay       = 45s
+		delay       = 45s
 
 	accept
 
