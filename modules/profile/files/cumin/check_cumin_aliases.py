@@ -9,10 +9,8 @@ import time
 
 from cumin import Config, NodeSet, query
 from cumin.backends import InvalidQueryError
+from wmflib.constants import ALL_DATACENTERS
 
-
-# Hardcoded DC aliases to verify them.
-DCS = {'eqiad', 'codfw', 'esams', 'ulsfo', 'eqsin', 'drmrs'}
 
 # Aliases that are allowed to match zero hosts.
 OPTIONAL_ALIASES = {'spare'}
@@ -46,7 +44,7 @@ def main():
             print('Alias {alias} matched 0 hosts'.format(alias=alias))
             return_code = 1
 
-        if alias in DCS:
+        if alias in ALL_DATACENTERS:
             dc_hosts |= match
         else:
             alias_hosts |= match

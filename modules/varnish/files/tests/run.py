@@ -12,7 +12,7 @@ from pathlib import Path
 
 import toml
 
-DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs")
+DC = ("eqiad", "codfw", "esams", "ulsfo", "eqsin", "drmrs", "magru")
 CLUSTERS = ("text", "upload")
 PATH_RE = re.compile("^(/etc/varnish/|/usr/share/varnish/|/etc/confd/.*_etc_varnish.*)")
 COMPILER_RE = re.compile(

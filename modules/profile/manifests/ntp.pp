@@ -27,6 +27,7 @@ class profile::ntp (
         esams   => 'nl',
         eqsin   => 'sg',
         drmrs   => 'fr',
+        magru   => 'br',
         default => 'us',
     }
 
@@ -38,6 +39,7 @@ class profile::ntp (
       '103.102.166.0 mask 255.255.255.0',
       '185.15.58.0 mask 255.255.255.0',
       '185.15.59.0 mask 255.255.255.0',
+      '195.200.68.0 mask 255.255.255.0',
       '2620:0:860:: mask ffff:ffff:fffc::',
       '2a02:ec80:: mask ffff:ffff::',
       '2001:df2:e500:: mask ffff:ffff:ffff::',

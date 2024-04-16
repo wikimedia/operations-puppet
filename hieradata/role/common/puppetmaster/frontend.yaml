@@ -10,6 +10,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
+  - magru.wmnet
 cluster: puppet
 # Conftool
 profile::conftool::master::sync_dir: "/etc/conftool/data"

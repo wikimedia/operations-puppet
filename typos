@@ -30,6 +30,8 @@ wikimeda
 (?<!WMF)[^4][[:digit:]]{3}\.ulsfo\.wmnet
 (?<!WMF)[^5][[:digit:]]{3}\.eqsin\.wmnet
 (?<!WMF)[^6][[:digit:]]{3}\.drmrs\.wmnet
+(?<!WMF)[^7][[:digit:]]{3}\.magru\.wmnet
+
 criticial
 puppte
 pupet

@@ -154,7 +154,7 @@ route:
           # Default to #dcops project if none of the site routes match
           receiver: 'dcops-task'
           routes:
-<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "ulsfo", "drmrs", "eqsin"].each do |site| -%>
+<% ["eqiad", "eqord", "codfw", "eqdfw", "esams", "ulsfo", "drmrs", "eqsin", "magru"].each do |site| -%>
             - match_re:
                 instance: '^.*<%= site %>.*$'
               receiver: 'dcops-<%= site %>-task'
@@ -574,6 +574,12 @@ receivers:
   webhook_configs:
     # #ops-drmrs
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-2p7htqghb5al4xwyb2nj'
+      send_resolved: false
+
+- name: 'dcops-magru-task'
+  webhook_configs:
+    # #ops-magru
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-ighbv7onemgmq4ruvpuu'
       send_resolved: false
 
 - name: 'dcops-eqord-task'

@@ -8,6 +8,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
+  - magru.wmnet
 cluster: puppet
 profile::puppetmaster::common::storeconfigs: puppetdb
 profile::puppetmaster::common::reports:

@@ -95,6 +95,7 @@ datacenters:
   - ulsfo
   - eqsin
   - drmrs
+  - magru
 
 # This is used for setting the resolv.conf on the DNS hosts and the NTP peers
 # that are consumed by P:systemd::timesyncd.
@@ -105,6 +106,7 @@ site_nearest_core:
   ulsfo: codfw
   eqsin: codfw
   drmrs: eqiad
+  magru: eqiad  # TODO change depending on real latency
 
 public_domain: 'wikimedia.org'
 
@@ -2059,6 +2061,7 @@ asns:
   ulsfo: 65004
   eqsin: 65005
   drmrs: 65006
+  magru: 65007
   eqord: 65020
 
 swift_storage_drives:

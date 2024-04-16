@@ -11,6 +11,7 @@ network::external: &external
 - 103.102.166.0/24 # eqsin
 - 185.15.58.0/24 # drmrs
 - 185.15.59.0/24 # esams
+- 195.200.68.0/24 # magru
 
 # Untrusted or parked prefixes
 network::customers:
@@ -52,6 +53,9 @@ network::infrastructure:
   drmrs:
     - 185.15.58.128/27
     - 2a02:ec80:600:fe00::/55
+  magru:
+    - 195.200.68.128/27
+    - 2a02:ec80:700:fe00::/55
 
 network::management:
   eqiad:
@@ -66,6 +70,8 @@ network::management:
     - 10.132.128.0/17
   drmrs:
     - 10.136.128.0/17
+  magru:
+    - 10.140.128.0/17
 
 network::subnets:
   production:
@@ -424,6 +430,26 @@ network::subnets:
           ipv6: 2a02:ec80:600:102::/64
         private1-lvs-drmrs:
           ipv4: 10.2.6.0/24
+    magru:
+      public:
+        public1-b3-magru:
+          ipv4: 195.200.68.0/27
+          ipv6: 2a02:ec80:700:1::/64
+        public1-b4-magru:
+          ipv4: 195.200.68.32/27
+          ipv6: 2a02:ec80:700:2::/64
+        public1-lvs-magru:
+          ipv4: 195.200.68.224/27
+          ipv6: 2a02:ec80:700:ed1a::/64
+      private:
+        private1-b3-magru:
+          ipv4: 10.140.0.0/24
+          ipv6: 2a02:ec80:700:101::/64
+        private1-b4-magru:
+          ipv4: 10.140.1.0/24
+          ipv6: 2a02:ec80:700:102::/64
+        private1-lvs-magru:
+          ipv4: 10.2.7.0/24
   frack:
     eqiad:
       public:

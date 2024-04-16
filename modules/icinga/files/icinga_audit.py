@@ -13,7 +13,7 @@ class IcingaAudit(object):
     port_re = re.compile(r"[0-9]{4,6}")
     ipv4_re = re.compile(r"\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
     ipv6_re = re.compile(r"(([a-f0-9]+):)+([a-f0-9]+)", re.I)
-    site_re = re.compile(r"(eqiad|codfw|drmrs|ulsfo|eqsin|esams)", re.I)
+    site_re = re.compile(r"(eqiad|codfw|drmrs|ulsfo|eqsin|esams|magru)", re.I)
     net_device_re = re.compile(
             r"(\S+) (BFD|BGP|OSPF|Juniper|VCP|VRRP|interfaces)")
     pdu_re = re.compile(r"(\S+)(-infeed-load.*)")

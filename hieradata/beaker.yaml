@@ -26,6 +26,7 @@ ntp_peers:
     eqsin: []
     esams: []
     drmrs: []
+    magru: []
 
 ## Disable remote syslog logging, as it breaks rsyslog in cloud VPSes.
 # profile::syslog::remote::enable: false

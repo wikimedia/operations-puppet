@@ -114,3 +114,7 @@ monitoring::groups:
     description: Equipment with asw1-by27-esams as uplink
   asw1-bw27-esams:
     description: Equipment with asw1-bw27-esams as uplink
+  asw1-b3-magru:
+    description: Equipment with asw1-b3-magru as uplink
+  asw1-b4-magru:
+    description: Equipment with asw1-b4-magru as uplink

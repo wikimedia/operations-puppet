@@ -10,6 +10,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
+  - magru.wmnet
 prometheus::server::mysqld_exporter::mysql::host: db1215.eqiad.wmnet
 prometheus::server::mysqld_exporter::mysql::port: 3306
 prometheus::server::mysqld_exporter::mysql::database: zarcillo

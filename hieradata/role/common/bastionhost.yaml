@@ -8,6 +8,7 @@ profile::resolving::domain_search:
   - ulsfo.wmnet
   - eqsin.wmnet
   - drmrs.wmnet
+  - magru.wmnet
 profile::admin::groups:
   - all-users
 profile::contacts::role_contacts: ['Infrastructure Foundations']
