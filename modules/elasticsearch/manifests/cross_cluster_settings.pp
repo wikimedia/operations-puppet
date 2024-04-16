@@ -35,7 +35,7 @@ define elasticsearch::cross_cluster_settings(
         content => template('elasticsearch/set-cross-cluster-seeds.sh.erb'),
     }
 
-    systemd::timer::job { 'push_cross_cluster_settings':
+    systemd::timer::job { "push_cross_cluster_settings_${http_port}":
         command            => "/bin/bash /usr/local/bin/set-cross-cluster-seeds_${http_port}.sh",
         description        => "Auto set remote cluster seeds for ${title}",
         user               => 'root',
