@@ -28,7 +28,7 @@ profile::cloudceph::auth::deploy::selected_creds:
   - codfw1dev-cinder
 
 profile::openstack::codfw1dev::region: codfw1dev-r
-profile::openstack::codfw1dev::version: antelope
+profile::openstack::codfw1dev::version: bobcat
 profile::openstack::codfw1dev::cinder::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone_api_fqdn: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone::enforce_policy_scope: false
