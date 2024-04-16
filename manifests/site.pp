@@ -1059,11 +1059,6 @@ node /^elastic110[3-7]\.eqiad\./ {
     role(insetup::search_platform)
 }
 
-# Disabling until T361525 resolved
-node /^elastic2088\.codfw\./ {
-    role(insetup::search_platform)
-}
-
 node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
