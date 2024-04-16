@@ -85,6 +85,9 @@ mw_k8s_nodes: kubernetes-workers
 
 block_deployments: <%= @block_scap_deployments %>
 
+# T359643
+manage_mediawiki_php_symlink: False
+
 [eqiad.wmnet]
 # Wikimedia Foundation production eqiad datacenter
 datacenter: eqiad
