@@ -22,17 +22,15 @@ class profile::alertmanager (
     }
 
     # All Prometheus servers need access to Alertmanager to send alerts
-    $prometheus_nodes_ferm = join($prometheus_all_nodes + $grafana_hosts + $thanos_query_hosts, ' ')
-    ferm::service { 'alertmanager-prometheus':
+    firewall::service { 'alertmanager-prometheus':
         proto  => 'tcp',
-        port   => '9093',
-        srange => "(@resolve((${prometheus_nodes_ferm})))",
+        port   => 9093,
+        srange => $prometheus_all_nodes + $grafana_hosts + $thanos_query_hosts,
     }
 
-    $hosts = join($partners + $active_host, ' ')
-    ferm::service{ 'alertmanager-cluster':
+    firewall::service{ 'alertmanager-cluster':
         proto  => 'tcp',
-        port   => '9094',
-        srange => "@resolve((${hosts}))",
+        port   => 9094,
+        srange => $partners + $active_host,
     }
 }
