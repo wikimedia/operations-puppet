@@ -7132,3 +7132,7 @@ ldap_only_users:
     ensure: present
     realname: Lukasz Sobanski
     email: lsobanski@wikimedia.org
+  migr:
+    ensure: present
+    realname: Michael Grosse
+    email: mgrosse@wikimedia.org
