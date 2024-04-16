@@ -12,6 +12,7 @@ kubernetes::clusters_defaults:
   imagecatalog: false
   ipv6dualstack: false
   infra_pod: docker-registry.discovery.wmnet/pause:3.6-1
+  audit_policy: audit-policy-modify-pods.yaml
   # The kubernetes default is 30000-32767.
   service_node_port_range: [30000, 32767]
   use_cni: true
@@ -487,7 +488,6 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
-      audit_policy: audit-policy-modify-pods.yaml
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
@@ -523,7 +523,6 @@ kubernetes::clusters:
       pki_renew_seconds: 172800
       imagecatalog: true
       ipv6dualstack: true
-      audit_policy: audit-policy-modify-pods.yaml
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
