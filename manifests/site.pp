@@ -1390,7 +1390,7 @@ node /^cloudcontrol200[145]-dev\.codfw\./ {
 }
 
 # New cloudcontrol node in codfw T342456
-node /^cloudcontrol200[678]-dev\.codfw\./ {
+node /^cloudcontrol200[6789]-dev\.codfw\./ {
     role(insetup::wmcs)
 }
 
