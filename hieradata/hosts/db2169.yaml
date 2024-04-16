@@ -1,2 +1,5 @@
 # db2169
 mariadb::shard: 's6'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
