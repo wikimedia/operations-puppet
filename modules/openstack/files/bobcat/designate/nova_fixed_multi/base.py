@@ -21,15 +21,12 @@
 
 from oslo_config import cfg
 from oslo_log import log as logging
-from designate.central import rpcapi as central_rpcapi
 from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
-from designate.objects import Record
 
 import wmfdesignatelib
 
 LOG = logging.getLogger(__name__)
-central_api = central_rpcapi.CentralAPI()
 
 
 class BaseAddressMultiHandler(BaseAddressHandler):
@@ -68,8 +65,10 @@ class BaseAddressMultiHandler(BaseAddressHandler):
         }
         LOG.warn("Creating record in %s with values %r", zone["id"], record_values)
 
-        self._create_or_update_recordset(
-            context, [Record(**record_values)], **recordset_values
+        self.central_api.create_managed_records(
+            context, zone['id'],
+            records_values=[record_values],
+            recordset_values=recordset_values,
         )
 
     def _create(self, addresses, extra, resource_type=None, resource_id=None):
@@ -138,8 +137,11 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                         reverse_zone["id"],
                         record_values,
                     )
-                    self._create_or_update_recordset(
-                        context, [Record(**record_values)], **recordset_values
+
+                    self.central_api.create_managed_records(
+                        context, reverse_zone['id'],
+                        records_values=[record_values],
+                        recordset_values=recordset_values,
                     )
 
             names = []
@@ -180,22 +182,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 "managed_resource_type": resource_type,
             }
         )
-
-        records = central_api.find_records(context, forward_crit)
-        LOG.warning(
-            "In zone %s, found these records: %s",
-            cfg.CONF[self.name].domain_id,
-            records,
+        self.central_api.delete_managed_records(
+            context, cfg.CONF[self.name].domain_id, forward_crit
         )
-
-        for record in records:
-            LOG.warn(
-                "Deleting forward record %s in recordset %s"
-                % (record["id"], record["recordset_id"])
-            )
-            self._update_or_delete_recordset(
-                context, cfg.CONF[self.name].domain_id, record["recordset_id"], record
-            )
 
         legacy_zone_id = cfg.CONF[self.name].get("legacy_domain_id")
         if legacy_zone_id:
@@ -212,19 +201,9 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 }
             )
 
-            records = central_api.find_records(context, legacy_crit)
-            LOG.warning(
-                "In legacy zone %s, found these records: %s", legacy_zone_id, records
+            self.central_api.delete_managed_records(
+                context, legacy_zone_id, legacy_crit
             )
-
-            for record in records:
-                LOG.warn(
-                    "Deleting legacy record %s in recordset %s"
-                    % (record["id"], record["recordset_id"])
-                )
-                self._update_or_delete_recordset(
-                    context, legacy_zone_id, record["recordset_id"], record
-                )
 
         reverse_zone_id = cfg.CONF[self.name].get("reverse_domain_id")
         if reverse_zone_id:
@@ -240,16 +219,6 @@ class BaseAddressMultiHandler(BaseAddressHandler):
                 }
             )
 
-            records = central_api.find_records(context, reverse_crit)
-            LOG.warning(
-                "In reverse zone %s, found these records: %s", reverse_zone_id, records
+            self.central_api.delete_managed_records(
+                context, reverse_zone_id, reverse_crit
             )
-
-            for record in records:
-                LOG.warn(
-                    "Deleting reverse record %s in recordset %s"
-                    % (record["id"], record["recordset_id"])
-                )
-                self._update_or_delete_recordset(
-                    context, reverse_zone_id, record["recordset_id"], record
-                )
