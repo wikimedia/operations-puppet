@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr]
+              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -4472,14 +4472,12 @@ users:
     uid: 26051
     krb: absent
   lsobanski:
-    ensure: present
+    ensure: absent
     name: lsobanski
     realname: Lukasz Sobanski
-    email: lsobanski@wikimedia.org
     uid: 26128
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILVVotK5XPDEs+M1V7GoolJjktoGm0y1ffpyz9bd5A4m lsobanski@wikimedia.org
+    ssh_keys: []
   annet:
     ensure: present
     name: annet
@@ -7129,3 +7127,7 @@ ldap_only_users:
     ensure: present
     realname: Olga Spingou
     email: ospingou@wikimedia.org
+  lsobanski:
+    ensure: present
+    realname: Lukasz Sobanski
+    email: lsobanski@wikimedia.org
