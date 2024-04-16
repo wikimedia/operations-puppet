@@ -5,8 +5,6 @@ profile::mediawiki::mcrouter_wancache::memcached_tls_port: 11214
 profile::mediawiki::mcrouter_wancache::num_proxies: 1
 profile::mediawiki::mcrouter_wancache::timeouts_until_tko: 10
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
 profile::mediawiki::mcrouter_wancache::shards:
   gutter:
     eqiad:

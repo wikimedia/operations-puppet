@@ -214,8 +214,6 @@ puppetmaster::servers:
     - { worker: puppetmaster-1003.devtools.eqiad.wmflabs, loadfactor: 10 }
 role::puppetmaster::standalone::autosign: true
 profile::mediawiki::mcrouter_wancache::prometheus_exporter: true
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
 
 kafka_clusters:
   logging-eqiad:

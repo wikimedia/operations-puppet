@@ -7,9 +7,6 @@ profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: true
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: false
-profile::prometheus::memcached_exporter::arguments: "--memcached.address=127.0.0.1:11210"
 has_lvs: true
 # TLS configuration: go via Envoy
 profile::mediawiki::webserver::has_tls: true

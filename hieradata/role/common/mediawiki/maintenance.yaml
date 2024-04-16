@@ -29,7 +29,6 @@ profile::tlsproxy::envoy::global_cert_name: "mwmaint.discovery.wmnet"
 
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached: false
 # Bump the connections per backend to 5 in mcrouter, see T203786
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Enable icu67 component - T345561

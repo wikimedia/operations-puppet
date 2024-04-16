@@ -1,1 +1,0 @@
-profile::mediawiki::mcrouter_wancache::use_onhost_memcached_socket: true
