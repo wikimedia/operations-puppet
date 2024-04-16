@@ -393,6 +393,11 @@ node /^clouddumps100[12]\.wikimedia\./ {
     role(dumps::distribution::server)
 }
 
+# Bitu instance for labtestwikitech
+node /^cloudidm2001-dev\.codfw\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # All gerrit servers (swap master status in hiera)
 node /^gerrit(1003|2002)\.wikimedia\./ {
     role(gerrit)
