@@ -27,6 +27,15 @@ phabricator_phd_taskmasters: 4
 profile::phabricator::aphlict::ensure: absent
 
 profile::tlsproxy::envoy::global_cert_name: "phabricator.discovery.wmnet"
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - phabricator.wikimedia.org
+    - phab.wmfusercontent.org
+    - bugs.wikimedia.org
+    - bugzilla.wikimedia.org
+    - git.wikimedia.org
+
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
 
