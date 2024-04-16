@@ -1,3 +1,6 @@
 # db1168
 mariadb::shard: 's6'
 mariadb::package: 'wmf-mariadb106'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
