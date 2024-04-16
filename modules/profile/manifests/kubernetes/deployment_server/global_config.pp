@@ -135,6 +135,26 @@ class profile::kubernetes::deployment_server::global_config (
         $retval = { $cl => $ips }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
+    # Turn the puppet DB resources for Cassandra clusters into a hashmap of the form:
+    # ['name_instance_dc']  => [ip1, ip2, ...]
+    # e.g.:
+    # ['ml_cache_a_eqiad']     => ['10.192.0.222', '10.192.16.190', '10.192.32.72']
+    $cassandra_clusters = wmflib::puppetdb_query('resources[title, parameters] { type = "Cassandra::Instance" order by certname, title }').reduce({}) |$mem, $v| {
+      $dc = $v['parameters']['dc']
+      # Some clusters, like AQS, have spaces in their names. Replace them with
+      # underscores for easier use here and in the deployment charts.
+      $name = regsubst($v['parameters']['cluster_name'], ' ', '_', 'G')
+      $instance = $v['title']
+      $ip = $v['parameters']['listen_address']
+      $k = "${name}_${instance}_${dc}".downcase()
+
+      if $k in $mem {
+        $mem + { $k => $mem[$k]+$ip }
+      } else {
+        $mem + { $k => [$ip]}
+      }
+    }
+
     # Create one external services definition for each redis port (instance running on each node)
     # to allow services to explicitely specify which redis instance they want to connect to
     $redis_misc_ips = wmflib::role::ips('redis::misc::master') + wmflib::role::ips('redis::misc::slave')
@@ -305,9 +325,7 @@ class profile::kubernetes::deployment_server::global_config (
               },
             ],
           },
-          'instances' => {
-            'ml-cassandra' => wmflib::role::ips('ml_cache::storage'),
-          },
+          'instances' => $cassandra_clusters
         },
       },
       $external_service_redis,
