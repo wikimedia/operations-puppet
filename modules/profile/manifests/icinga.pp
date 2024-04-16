@@ -206,33 +206,27 @@ class profile::icinga(
 
     }
 
-    # In order to do failovers, we need to be able to rsync state
-    # from any one to any other, whether or not Puppet has run any subset
-    # of the hosts.
     $all_icinga_hosts = $partners + $active_host
 
-    $all_icinga_hosts.each |String $partner| {
-        firewall::service { "icinga-rsync-${partner}":
-            proto  => 'tcp',
-            port   => 873,
-            srange => $partner,
-        }
+    rsync::server::module { 'icinga-tmpfs':
+        read_only     => 'yes',
+        path          => '/var/icinga-tmpfs',
+        auto_firewall => true,
+        hosts_allow   => $all_icinga_hosts
     }
 
-    rsync::server::module { 'icinga-tmpfs':
-        read_only   => 'yes',
-        path        => '/var/icinga-tmpfs',
-        hosts_allow => $all_icinga_hosts
-    }
     rsync::server::module { 'icinga-cache':
-        read_only   => 'yes',
-        path        => '/var/cache/icinga',
-        hosts_allow => $all_icinga_hosts
+        read_only     => 'yes',
+        path          => '/var/cache/icinga',
+        auto_firewall => true,
+        hosts_allow   => $all_icinga_hosts
     }
+
     rsync::server::module { 'icinga-lib':
-        read_only   => 'yes',
-        path        => '/var/lib/icinga',
-        hosts_allow => $all_icinga_hosts
+        read_only     => 'yes',
+        path          => '/var/lib/icinga',
+        auto_firewall => true,
+        hosts_allow   => $all_icinga_hosts
     }
 
     # access to the web interface
