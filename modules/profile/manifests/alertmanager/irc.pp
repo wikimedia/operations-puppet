@@ -29,9 +29,9 @@ class profile::alertmanager::irc (
 
     # API (webhook)
     $hosts = join($partners + $active_host)
-    ferm::service { 'alertmanager-irc':
+    firewall::service { 'alertmanager-irc':
         proto  => 'tcp',
         port   => 19190,
-        srange => "@resolve((${hosts}))",
+        srange => $hosts,
     }
 }
