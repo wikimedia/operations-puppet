@@ -31,9 +31,11 @@ scapyconf.use_pcap = False
 # https://github.com/secdev/scapy/issues/4201
 def fix_scapy_ipv4_route_table(ip: str) -> None:
     ndb = NDB()
-    try:
-        _ = ndb.routes[f'{ip}/32']
-    except KeyError:  # No route on the local routing table for the specified IP
+
+    # RecordSet count() method isn't available on pyroute2 0.5.14 (bullseye)
+    # if ndb.routes.summary().filter(dst=ip).count() == 0:
+    if not any(ndb.routes.summary().filter(dst=ip)):
+        # No route on the local routing table for the specified IP
         return None
 
     scapyconf.route.add(host=ip, gw='0.0.0.0', dev='lo')
