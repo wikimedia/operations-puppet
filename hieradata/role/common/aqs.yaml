@@ -159,6 +159,7 @@ profile::cassandra::settings:
   tls_cluster_name: aqs
   tls_use_pki_truststore: true
   tls_use_pki_keep_old_ca: true
+  tls_use_pki: true
   start_rpc: false
   target_version: '4.x'
   default_instance_params:
