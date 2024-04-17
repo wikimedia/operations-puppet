@@ -84,7 +84,9 @@ Plugins[] = "CoreConsole"
 Plugins[] = "ScheduledReports"
 Plugins[] = "UserCountryMap"
 Plugins[] = "Live"
+<%- if @facts['os']['distro']['codename'] == "buster" -%>
 Plugins[] = "CustomVariables"
+<%- end -%>
 Plugins[] = "PrivacyManager"
 Plugins[] = "ImageGraph"
 Plugins[] = "Annotations"
@@ -99,7 +101,9 @@ Plugins[] = "Resolution"
 Plugins[] = "DevicePlugins"
 Plugins[] = "Heartbeat"
 Plugins[] = "Intl"
+<%- if @facts['os']['distro']['codename'] == "buster" -%>
 Plugins[] = "CustomPiwikJs"
+<%- end -%>
 Plugins[] = "Marketplace"
 Plugins[] = "ProfessionalServices"
 Plugins[] = "UserId"
@@ -147,7 +151,9 @@ PluginsInstalled[] = "CoreConsole"
 PluginsInstalled[] = "ScheduledReports"
 PluginsInstalled[] = "UserCountryMap"
 PluginsInstalled[] = "Live"
+<%- if @facts['os']['distro']['codename'] == "buster" -%>
 PluginsInstalled[] = "CustomVariables"
+<%- end -%>
 PluginsInstalled[] = "PrivacyManager"
 PluginsInstalled[] = "ImageGraph"
 PluginsInstalled[] = "Annotations"
@@ -163,7 +169,9 @@ PluginsInstalled[] = "DevicePlugins"
 PluginsInstalled[] = "Heartbeat"
 PluginsInstalled[] = "UserId"
 PluginsInstalled[] = "ProfessionalServices"
+<%- if @facts['os']['distro']['codename'] == "buster" -%>
 PluginsInstalled[] = "CustomPiwikJs"
+<%- end -%>
 PluginsInstalled[] = "Marketplace"
 PluginsInstalled[] = "TagManager"
 PluginsInstalled[] = "GeoIp2"
