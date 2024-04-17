@@ -36,6 +36,9 @@ class profile::query_service::common(
         include ::profile::rsyslog::udp_json_logback_compat
     }
 
+    # enable CPU performance governor; see T315398
+    class { 'cpufrequtils': }
+
     class { '::query_service::common':
       deploy_mode         => $deploy_mode,
       username            => $username,
