@@ -139,7 +139,7 @@ pipeline:
     - label: "ttfb_metric_condition"
       switch:
         # Increment metrics only if ttfb > 0
-        - check: this.time_firstbyte_ns > 0
+        - check: this.time_firstbyte_ns.number(0) > 0
           processors:
             - label: "ttfb_metric_switch"
               switch:
