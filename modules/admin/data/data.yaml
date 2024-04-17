@@ -7140,3 +7140,7 @@ ldap_only_users:
     ensure: present
     realname: Katherine Graessle
     email: kgraessle@wikimedia.org
+  derenrich:
+    ensure: present
+    realname: Daniel Erenrich
+    email: derenrich@wikimedia.org
