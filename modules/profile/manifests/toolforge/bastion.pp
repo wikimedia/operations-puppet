@@ -3,7 +3,7 @@ class profile::toolforge::bastion () {
     if debian::codename::eq('buster') {
         include profile::toolforge::shell_environ
     } else {
-        include profile::locales::base
+        include profile::locales::all
 
         ensure_packages([
             'emacs-nox',
