@@ -71,7 +71,7 @@ class role::mariadb::misc::phabricator(
     class { 'profile::mariadb::grants::production':
         shard    => $shard,
         prompt   => "MISC ${shard}",
-        password => $passwords::misc::scripts::mysql_root_pass,
+        password => $passwords::misc::scripts::mysql_cumin_pass,
     }
 
     class { 'mariadb::heartbeat':

@@ -23,7 +23,7 @@ class profile::mariadb::wmf_root_client {
         basedir  => $profile::mariadb::packages_client::basedir,
     }
 
-    $password = $passwords::misc::scripts::mysql_root_pass
+    $password = $passwords::misc::scripts::mysql_cumin_pass
     $labsdb_password = $passwords::misc::scripts::mysql_labsdb_root_pass
     $replication_user = $passwords::misc::scripts::mysql_repl_user
     $replication_password = $passwords::misc::scripts::mysql_repl_pass

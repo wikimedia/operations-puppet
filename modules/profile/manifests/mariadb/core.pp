@@ -56,7 +56,7 @@ class profile::mariadb::core (
     class { 'profile::mariadb::grants::production':
         shard    => 'core',
         prompt   => "PRODUCTION ${shard} ${mysql_role}",
-        password => $passwords::misc::scripts::mysql_root_pass,
+        password => $passwords::misc::scripts::mysql_cumin_pass,
     }
 
     $is_writeable_dc = profile::mariadb::section_params::is_writeable_dc($shard)

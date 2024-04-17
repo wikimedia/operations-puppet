@@ -58,7 +58,7 @@ class profile::mariadb::core_test (
     class { 'profile::mariadb::grants::production':
         shard    => 'core',
         prompt   => "PRODUCTION ${shard} ${mysql_role}",
-        password => $passwords::misc::scripts::mysql_root_pass,
+        password => $passwords::misc::scripts::mysql_cumin_pass,
     }
 
     $mw_primary = mediawiki::state('primary_dc')

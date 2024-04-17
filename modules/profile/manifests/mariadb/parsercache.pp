@@ -34,7 +34,7 @@ class profile::mariadb::parsercache (
     class { 'profile::mariadb::grants::production':
         shard    => 'parsercache',
         prompt   => 'PARSERCACHE',
-        password => $passwords::misc::scripts::mysql_root_pass,
+        password => $passwords::misc::scripts::mysql_cumin_pass,
     }
 
     class { 'mariadb::config':

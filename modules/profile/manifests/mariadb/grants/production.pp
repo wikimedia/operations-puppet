@@ -24,7 +24,7 @@ class profile::mariadb::grants::production(
     include passwords::designate
     include passwords::rddmarc
 
-    $root_pass       = $passwords::misc::scripts::mysql_root_pass
+    $cumin_pass       = $passwords::misc::scripts::mysql_cumin_pass
     $repl_pass       = $passwords::misc::scripts::mysql_repl_pass
     $prometheus_pass = $passwords::prometheus::db_pass
 
