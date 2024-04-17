@@ -7,7 +7,7 @@ profile::admin::groups:
 cluster: ci
 contactgroups: "admins,contint"
 
-profile::ci::manager_host: contint2002.wikimedia.org
+profile::ci::manager_host: contint1002.wikimedia.org
 
 profile::ci::jenkins::prefix: "/ci"
 profile::ci::proxy_jenkins::http_port: 8080

@@ -2,7 +2,7 @@ profile::contacts::role_contacts: ['Collaboration Services']
 
 profile::monitoring::notifications_enabled: false
 
-profile::ci::manager_host: contint2002.wikimedia.org
+profile::ci::manager_host: contint1002.wikimedia.org
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
