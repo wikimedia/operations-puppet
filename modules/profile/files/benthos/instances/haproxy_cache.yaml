@@ -8,7 +8,7 @@ http:
   debug_endpoints: true
 
 input:
-  label: ""
+  label: "syslog"
   socket_server:
     network: udp
     address: "${SOCKET_ADDRESS}"
@@ -47,7 +47,8 @@ pipeline:
         request_map: |
           root = this.message
         processors:
-          - grok:
+          - label: "parse_haproxy"
+            grok:
               expressions:
                 - '%{MESSAGELOG}'
               use_default_patterns: True
