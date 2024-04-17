@@ -323,15 +323,5 @@ class profile::kubernetes::node (
         apparmor::profile { "containers.${pname}":
             source => "puppet:///modules/profile/kubernetes/node/${pname}",
         }
-        # Clean up apparmor profiles from subdirectory
-        file { "/etc/apparmor.d/containers/${pname}":
-            ensure => absent,
-        }
-    }
-    if !$apparmor_profiles.empty {
-        # Clean up apparmor profiles subdirectory
-        file { '/etc/apparmor.d/containers':
-            ensure => absent,
-        }
     }
 }
