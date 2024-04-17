@@ -23,7 +23,8 @@ define apparmor::profile (
 ) {
     require apparmor
 
-    if !defined(File[$directory]) {
+    # /etc/apparmor.d is provided by the package
+    if $directory != '/etc/apparmor.d' and !defined(File[$directory]) {
         file { $directory:
             ensure => directory,
             owner  => 'root',
