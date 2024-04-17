@@ -30,6 +30,14 @@ class matomo (
         packages  => ['matomo'],
     }
 
+    # Prior to bookworm/matomo1003 we installed this package manually.
+    # Once matomo1002 is decommissioned we will be able to remove this condition.
+    if debian::codename::ge('bullseye') {
+        package { 'matomo-plugin-marketingcampaignsreporting':
+            require => Package['matomo'],
+        }
+    }
+
     $database_name = 'piwik'
     $database_table_prefix = 'piwik_'
     $proxy_client_headers = ['HTTP_X_FORWARDED_FOR']
