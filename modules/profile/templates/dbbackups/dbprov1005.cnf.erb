@@ -8,10 +8,14 @@ archive: False
 retention: 18
 stats_file: '/etc/wmfbackups/statistics.ini'
 sections:
-  s2:
-    host: 'db1239.eqiad.wmnet'
-    port: 3312
-  s6:
-    host: 'db1225.eqiad.wmnet'
-    port: 3316
-
+  s3:
+    host: 'db1240.eqiad.wmnet'
+    port: 3313
+    archive: True
+  s5:
+    host: 'db1216.eqiad.wmnet'
+    port: 3315
+  x1:
+    host: 'db1216.eqiad.wmnet'
+    port: 3320
+    archive: True

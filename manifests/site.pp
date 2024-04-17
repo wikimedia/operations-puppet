@@ -912,7 +912,7 @@ node /^dbprov1004\.eqiad\./ {
     role(dbbackups::metadata)
 }
 node /^dbprov1005\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(dbbackups::metadata)
 }
 node /^dbprov1006\.eqiad\./ {
     role(insetup::data_persistence)

@@ -7,7 +7,7 @@ archive: False
 stats_file: '/etc/wmfbackups/statistics.ini'
 sections:
   s1:
-    host: 'db1240.eqiad.wmnet'
+    host: 'db1239.eqiad.wmnet'
     port: 3311
     destination: 'dbprov1001.eqiad.wmnet'
     stop_slave: True
@@ -18,9 +18,9 @@ sections:
     destination: 'dbprov1004.eqiad.wmnet'
     order: 8
   s3:
-    host: 'db1150.eqiad.wmnet'
+    host: 'db1240.eqiad.wmnet'
     port: 3313
-    destination: 'dbprov1001.eqiad.wmnet'
+    destination: 'dbprov1005.eqiad.wmnet'
     stop_slave: True
     order: 4
   s4:
@@ -32,7 +32,7 @@ sections:
   s5:
     host: 'db1216.eqiad.wmnet'
     port: 3315
-    destination: 'dbprov1003.eqiad.wmnet'
+    destination: 'dbprov1005.eqiad.wmnet'
     order: 5
   s6:
     host: 'db1225.eqiad.wmnet'
@@ -51,7 +51,7 @@ sections:
     stop_slave: True
     order: 1
   x1:
-    host: 'db1225.eqiad.wmnet'
+    host: 'db1216.eqiad.wmnet'
     port: 3320
-    destination: 'dbprov1004.eqiad.wmnet'
+    destination: 'dbprov1005.eqiad.wmnet'
     order: 9
