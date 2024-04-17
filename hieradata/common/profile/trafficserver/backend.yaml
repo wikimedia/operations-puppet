@@ -154,7 +154,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://an-tool1007.eqiad.wmnet
     - type: map
       target: http://piwik.wikimedia.org
-      replacement: https://matomo1002.eqiad.wmnet
+      replacement: https://matomo1003.eqiad.wmnet
     - type: map
       target: http://planet.wikimedia.org
       replacement: https://planet.discovery.wmnet
