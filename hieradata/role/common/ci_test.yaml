@@ -12,7 +12,7 @@ profile::firewall::provider: ferm
 # Zuul merger
 
 profile::zuul::merger::conf:
-  gearman_server: "208.80.153.39" # contint2002.wikimedia.org
+  gearman_server: "208.80.154.132" # contint1002.wikimedia.org
   gerrit_ssh_key_file: "ssh/ci/jenkins-bot_gerrit_id_rsa"
   git_dir: "/srv/zuul/git"
   git_email: "zuul-merger@%{::hostname}"
