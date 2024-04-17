@@ -4,3 +4,4 @@ profile::mariadb::dbstore_multiinstance::instances:
   s5: 100G
   s8: 200G
   x1: 85G
+mariadb::package: 'wmf-mariadb106'
