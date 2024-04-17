@@ -100,9 +100,9 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: ci
 
-profile::ci::migration::rsync_src_host: "contint2002.wikimedia.org"
+profile::ci::migration::rsync_src_host: "contint1002.wikimedia.org"
 profile::ci::migration::rsync_dst_hosts:
-  - "contint1002.wikimedia.org"
+  - "contint2002.wikimedia.org"
 profile::ci::migration::rsync_data_dirs:
   - "/var/lib/jenkins/"
   - "/var/lib/zuul/"
