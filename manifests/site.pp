@@ -813,18 +813,6 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s1 & s2, bullseye
-node /^db1239\.eqiad\./ {
-    role(mariadb::backup_source)
-}
-## s1 & s3, bullseye
-node /^db1240\.eqiad\./ {
-    role(mariadb::backup_source)
-}
-## s4 & s5, bullseye
-node /^db1245\.eqiad\./ {
-    role(mariadb::backup_source)
-}
 ## s3 & s4, bullseye
 node /^db1150\.eqiad\./ {
     role(mariadb::backup_source)
@@ -833,34 +821,54 @@ node /^db1150\.eqiad\./ {
 node /^db1171\.eqiad\./ {
     role(mariadb::backup_source)
 }
+## s5, s8 & x1, 10.6, bullseye
+node /^db1216\.eqiad\./ {
+    role(mariadb::backup_source)
+}
 ## s2, s6 & x1, 10.6, bullseye
 node /^db1225\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s5, s8 & x1, bullseye
-node /^db1216\.eqiad\./ {
+## s1 & s2, bullseye
+node /^db1239\.eqiad\./ {
+    role(mariadb::backup_source)
+}
+## s1 & s3, 10.6, bullseye
+node /^db1240\.eqiad\./ {
+    role(mariadb::backup_source)
+}
+## s4 & s5, bullseye
+node /^db1245\.eqiad\./ {
     role(mariadb::backup_source)
 }
 
 # codfw backup sources
-## s2, s6 & x1, bullseye, 10.6
+## s2, s6 & x1, bullseye, 10.6, to be decommed
 node /^db2097\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s7 & s8, bullseye, to be decommed
+node /^db2098\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s4, bullseye, to be decommed
+node /^db2099\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s3 & s4, bullseye, 10.6
+node /^db2139\.codfw\./ {
+    role(mariadb::backup_source)
+}
+## s1, bullseye
+node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s2, s6 & x1, bookworm, 10.6
 node /^db2197\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bullseye
-node /^db2098\.codfw\./ {
-    role(mariadb::backup_source)
-}
 ## s7 & s8, bookworm, 10.6
 node /^db2198\.codfw\./ {
-    role(mariadb::backup_source)
-}
-## s4, bullseye
-node /^db2099\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## s4, bookworm, 10.6
@@ -873,14 +881,6 @@ node /^db2200\.codfw\./ {
 }
 ## s2, s5, & x1, bookworm, 10.6
 node /^db2201\.codfw\./ {
-    role(mariadb::backup_source)
-}
-## s3 & s4, bullseye, 10.6
-node /^db2139\.codfw\./ {
-    role(mariadb::backup_source)
-}
-## s1, bullseye
-node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
 ## test-s1, bullseye
