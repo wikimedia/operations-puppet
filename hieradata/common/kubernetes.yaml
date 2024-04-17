@@ -672,7 +672,6 @@ kubernetes::clusters:
       service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve_staging
       pki_renew_seconds: 172800
-      ipv6dualstack: true
       prometheus:
         name: k8s-mlstaging
         port: 9910
