@@ -437,6 +437,7 @@ mediawiki::sites:
         params:
           server_aliases:
             [
+              "ae.wikimedia.org",
               "am.wikimedia.org",
               "ar.wikimedia.org",
               "az.wikimedia.org",
