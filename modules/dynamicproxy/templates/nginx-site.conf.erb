@@ -50,6 +50,13 @@ server {
 
     # To avoid being overwhelmed by large file uploads, disable buffering
     proxy_request_buffering off;
+
+    # To avoid being overwhelmed by large downloads, disable file buffering
+    # note that buffering on is the default, we just explicitly state it for clarity
+    # we set the temp_file_size to 0 to disable using temporary files
+    proxy_buffering on;
+    proxy_max_temp_file_size 0;
+
     # And support HTTP 1.1 for the backend connection. This means that clients using
     # chunked transfer encoding will not be buffered as long as the backend server
     # also supports that.
