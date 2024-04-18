@@ -5,31 +5,10 @@ https://enwiki-articlequality.revscoring-articlequality.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
-https://ruwiki-articlequality.revscoring-articlequality.wikimedia.org:
-- path: /v1/models/ruwiki-articlequality:predict
-  json_body:
-    rev_id: 127588746
-  assert_status: 200
-  assert_body_contains: probability
-  method: POST
 https://wikidatawiki-itemquality.revscoring-articlequality.wikimedia.org:
 - path: /v1/models/wikidatawiki-itemquality:predict
   json_body:
     rev_id: 1799693453
-  assert_status: 200
-  assert_body_contains: probability
-  method: POST
-https://arwiki-articletopic.revscoring-articletopic.wikimedia.org:
-- path: /v1/models/arwiki-articletopic:predict
-  json_body:
-    rev_id: 60469331
-  assert_status: 200
-  assert_body_contains: probability
-  method: POST
-https://cswiki-articletopic.revscoring-articletopic.wikimedia.org:
-- path: /v1/models/cswiki-articletopic:predict
-  json_body:
-    rev_id: 22284455
   assert_status: 200
   assert_body_contains: probability
   method: POST
@@ -61,24 +40,10 @@ https://enwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
   assert_status: 200
   assert_body_contains: probability
   method: POST
-https://eswikiquote-damaging.revscoring-editquality-damaging.wikimedia.org:
-- path: /v1/models/eswikiquote-damaging:predict
-  json_body:
-    rev_id: 4364
-  assert_status: 200
-  assert_body_contains: probability
-  method: POST
 https://wikidatawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
 - path: /v1/models/wikidatawiki-damaging:predict
   json_body:
     rev_id: 1799693453
-  assert_status: 200
-  assert_body_contains: probability
-  method: POST
-https://enwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
-- path: /v1/models/enwiki-goodfaith:predict
-  json_body:
-    rev_id: 1130787305
   assert_status: 200
   assert_body_contains: probability
   method: POST
