@@ -54,11 +54,10 @@ profile::cloudceph::mon::hosts:
 
 profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   ceph_pool: codfw1dev-cinder
-  live_for_days: 8
+  live_for_days: 4
   exclude_volumes:
     andrewtestproject:
       - ".*"
   project_assignments:
     trove: cloudbackup1001-dev
-    testlabs: cloudbackup1002-dev
     cloudinfra-codfw1dev: cloudbackup1002-dev
