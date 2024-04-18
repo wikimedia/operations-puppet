@@ -1,1 +1,4 @@
 profile::ci::docker::docker_version: '5:20.10.18~3-0~debian'
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
