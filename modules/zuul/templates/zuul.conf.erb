@@ -8,7 +8,7 @@
 # zuul and merger.
 
 [gearman]
-server=<%= @gearman_server %>
+server=<%= @gearman_server_ip %>
 
 <% if @zuul_role == 'server' -%>
 [gearman_server]

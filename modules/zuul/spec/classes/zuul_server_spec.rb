@@ -10,7 +10,7 @@ describe 'zuul::server' do
       let(:params) { {
         :gerrit_server => 'review.example.org',
         :gerrit_user => 'ci-bot',
-        :gearman_server => '127.0.0.1',
+        :gearman_server => 'contint.wikimedia.org',
         :gearman_server_start => true,
         :url_pattern => 'https://ci.example.org/job/{job.name}',
       } }

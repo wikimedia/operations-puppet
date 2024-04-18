@@ -76,6 +76,8 @@ class zuul::server (
     }
 
     $zuul_role = 'server'
+    $gearman_server_ip = ipresolve($gearman_server, 4)
+
     file { '/etc/zuul/zuul-server.conf':
         owner   => 'zuul',
         group   => 'root',
