@@ -36,8 +36,8 @@ profile::wmcs::striker::docker::instances:
     version: 2024-04-12-081232-production
     env:
       OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
-      DB_NAME: striker_toolsbeta
-      DB_USER: striker_toolsbeta
+      DB_NAME: strikertoolsbeta
+      DB_USER: strikertoolsbeta
       SSL_CANONICAL_HOST: toolsadmin-toolsbeta.wikimedia.org
       STAFF_GROUP_DN: cn=toolsbeta.admin,ou=servicegroups,dc=wikimedia,dc=org
       SUPERUSER_GROUP_DN: cn=toolsbeta.admin,ou=servicegroups,dc=wikimedia,dc=org
