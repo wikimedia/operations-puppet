@@ -1,4 +1,0 @@
-# db2105
-# candidate master for s3
-mariadb::shard: 's3'
-mariadb::binlog_format: 'STATEMENT'
