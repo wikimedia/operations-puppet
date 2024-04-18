@@ -322,6 +322,14 @@ class ImageBackups:
         """
         dangling_snapshots: List[RBDSnapshot] = []
 
+        if not self.image_info:
+            # If the image is gone then it won't have any snapshots!
+            return []
+
+        if self.image_info["status"] == "backing-up":
+            # Avoid races and just skip this one for now. We'll get it next time.
+            return []
+
         # Get the latest known backup with a valid snapshot
         all_snapshots_for_image = get_snapshots_for_image(
             pool=self.config.ceph_pool, image_name=self.ceph_id
