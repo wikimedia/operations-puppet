@@ -1711,8 +1711,13 @@ node /^cloudcephmon100[1-3]\.eqiad\./ {
     role(wmcs::ceph::mon)
 }
 
-# new cloudceph storage nodes T324998
-node /^cloudcephosd10(3[5-9]|4[0])\.eqiad\./ {
+# new cloudceph storage nodes T351332
+node /^cloudcephosd103[5-8]\.eqiad\./ {
+    role(insetup::wmcs)
+}
+
+# new cloudceph storage nodes T361366
+node /^cloudcephosd10(39|4[0-1])\.eqiad\./ {
     role(insetup::wmcs)
 }
 
