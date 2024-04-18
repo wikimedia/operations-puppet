@@ -31,6 +31,12 @@
 #
 # [*hsts_max_age*]
 #   Value used to set the max-age directive of the HSTS header (default: 106384710)
+#
+# [*use_benthos*]
+#   Send access log data via syslog to a benthos endpoint (default: false)
+#
+# [*benthos_address*]
+#    Benthos address used for producing prometheus metrics (default: 127.0.0.1:1221)
 
 class ncredir(
     Tuple[String, 1, default] $ssl_settings,
@@ -41,6 +47,8 @@ class ncredir(
     Stdlib::Port $http_port = 80,
     Stdlib::Port $https_port = 443,
     Integer $hsts_max_age = 106384710,
+    Boolean $use_benthos = false,
+    String $benthos_address = '127.0.0.1:1221',
 ) {
     file { '/etc/nginx/conf.d/redirection_maps.conf':
         content => $redirection_maps,

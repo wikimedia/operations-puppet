@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: Apache-2.0
+# Any value that needs to be injected in the template should be passed
+# as environment variable (see https://www.benthos.dev/docs/configuration/interpolation/)
+#
+http:
+  enabled: true
+  address: "0.0.0.0:${PORT}"
+  debug_endpoints: false
+
+input:
+  label: "syslog"
+  socket_server:
+    network: udp
+    address: "${SOCKET_ADDRESS}"
+    codec: lines
+    tls:
+      cert_file: ""
+      key_file: ""
+      self_signed: false
+  processors:
+    - label: "syslog_format"
+      parse_log:
+        format: "syslog_rfc3164"
+        codec: "json"
+
+# log_format ncredir '$remote_addr [$time_local] $scheme '
+#                   '"$request" $status $body_bytes_sent '
+#                   '"$http_user_agent" $host $sent_http_location\n';
+pipeline:
+  threads: ${PIPELINE_THREADS}
+  processors:
+    - label: "drop_syslog_metadata"
+      mapping:
+        root = this.message
+    - label: "parse_ncredir_log_format"
+      grok:
+        expressions:
+          - '%{IPORHOST:clientip} \[%{HTTPDATE:timestamp}\] %{URIPROTO:scheme} "(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:agent} %{URIHOST:host} (?:%{URI:redirection}|-)'
+        use_default_patterns: true
+    - label: "requests_metric"
+      metric:
+        type: counter
+        name: "ncredir_requests_total"
+        labels:
+          scheme: ${! json("scheme") }
+          method: ${! json("verb") }
+          status: ${! json("response") }
+buffer:
+  memory:
+    limit: ${BUFFER_MEMORY_LIMIT_BYTES}
+    batch_policy:
+      enabled: true
+      count: 1024
+      period: 100ms
+
+logger:
+  level: WARN
+  format: logfmt
+output:
+  # discard everything as we only need prometheus metrics
+  drop: {}
+
+metrics:
+  prometheus: {}
+  # Add the benthos_ prefix only to metrics not starting with ncredir
+  mapping: |
+    root = if !this.has_prefix("ncredir") {
+      "benthos_" + this
+    } else {
+      this
+    }
+
+tests:
+  - name: syslog parsing
+    target_processors: syslog_format
+    environment: {}
+    input_batch:
+      - content: '<190>Apr 18 12:36:07 ncredir2001 nginx: 208.80.153.232 [18/Apr/2024:12:36:07 +0000] https "GET / HTTP/2.0" 301 169 "curl/7.88.1" wikipedia.com https://www.wikipedia.org/'
+    output_batches:
+      - - content_equals: '{"appname":"nginx","facility":23,"hostname":"ncredir2001","message":"208.80.153.232 [18/Apr/2024:12:36:07 +0000] https \"GET / HTTP/2.0\" 301 169 \"curl/7.88.1\" wikipedia.com https://www.wikipedia.org/","priority":190,"severity":6,"timestamp":"2024-04-18T12:36:07Z"}'
+  - name: main pipeline parsing
+    target_processors: /pipeline/processors
+    environment: {}
+    input_batch:
+      - json_content: {"appname":"nginx","facility":23,"hostname":"ncredir2001","message":"208.80.153.232 [18/Apr/2024:12:36:07 +0000] https \"GET / HTTP/2.0\" 301 169 \"curl/7.88.1\" wikipedia.com https://www.wikipedia.org/","priority":190,"severity":6,"timestamp":"2024-04-18T12:36:07Z"}
+    output_batches:
+      - - json_contains: {"agent":"\"curl/7.88.1\"","bytes":"169","clientip":"208.80.153.232","host":"wikipedia.com","httpversion":"2.0","redirection":"https://www.wikipedia.org/","request":"/","response":"301","scheme":"https","timestamp":"18/Apr/2024:12:36:07 +0000","verb":"GET"}
+  - name: parsing POST request
+    target_processors: /pipeline/processors
+    environment: {}
+    input_batch:
+      - json_content: {"appname":"nginx","facility":23,"hostname":"ncredir2001","message":"2620:0:860:ed1a::9 [19/Apr/2024:13:01:20 +0000] https \"POST / HTTP/2.0\" 403 75 \"curl/7.88.1\" en.wikipedia.com -","priority":190,"severity":6,"timestamp":"2024-04-19T13:01:20Z"}
+    output_batches:
+      - - json_contains: {"agent":"\"curl/7.88.1\"","bytes":"75","clientip":"2620:0:860:ed1a::9","host":"en.wikipedia.com","httpversion":"2.0","request":"/","response":"403","scheme":"https","timestamp":"19/Apr/2024:13:01:20 +0000","verb":"POST"}

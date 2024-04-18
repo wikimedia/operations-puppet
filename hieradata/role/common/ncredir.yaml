@@ -18,3 +18,13 @@ profile::lvs::realserver::ipip::ipv4_mss: 1440
 profile::lvs::realserver::ipip::ipv6_mss: 1400
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
+profile::ncredir::use_benthos: false
+profile::ncredir::benthos_address: &ncredir-benthos-address "127.0.0.1:1221"
+profile::benthos::use_geoip: false
+profile::benthos::instances:
+  ncredir:
+    port: 4154
+    env_variables:
+      pipeline_threads: 1
+      socket_address: *ncredir-benthos-address
+      buffer_memory_limit_bytes: 104857600
