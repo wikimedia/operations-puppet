@@ -1,0 +1,6 @@
+profile::idm::oidc_service: undef
+profile::idm::oidc_secret: undef
+profile::idm::mediawiki_key: undef
+profile::idm::mediawiki_secret: undef
+profile::idm::mediaback_callback: undef
+

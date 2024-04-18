@@ -1,0 +1,233 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+from django.urls import reverse_lazy
+from ldap3 import HASHED_SALTED_SHA
+
+from bitu.base_settings import *
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = '<%= @django_secret_key %>'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# Never set DEBUG to True in production environment, that includes
+# staging as this WILL leak passwords.
+DEBUG = False
+
+ALLOWED_HOSTS = ['<%= @service_fqdn %>',]
+ADMINS = [('Infrastruction Foundations','sre-foundations@wikimedia.org'),]
+ADMINS_LIMITED = []
+
+# Database
+# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+
+<%- if @production -%>
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '<%= @django_mysql_db_name %>',
+        'HOST': '<%= @django_mysql_db_host %>',
+        'USER': '<%= @django_mysql_db_user %>',
+        'PASSWORD': '<%= @django_mysql_db_password %>',
+    }
+}
+<%- else -%>
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': '/srv/idm/db.sqlite3', # noqa
+    }
+}
+<%- end -%>
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'mail_admins': {
+          'level': 'ERROR',
+          'class': 'django.utils.log.AdminEmailHandler',
+          'include_html': DEBUG  # Use debug (False) to avoid sending sensetive information in emails.
+        },
+        'django': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '<%= @log_dir %>/django.log',
+            'formatter': 'simple',
+        },
+        'bitu': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '<%= @log_dir %>/idm.log',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'bitu': {
+            'handlers': ['bitu'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'social': {
+            'handlers': ['bitu'],
+            'level': 'DEBUG',
+            'propagate': True,
+        }
+    },
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': '<%= @redis_master %>',
+        'PORT': <%= @redis_port %>,
+        'DB': 0,
+        'PASSWORD': '<%= @redis_password %>',
+        'DEFAULT_TIMEOUT': 360,
+    },
+    'notification': {
+        'HOST': '<%= @redis_master %>',
+        'PORT': <%= @redis_port %>,
+        'DB': 0,
+        'PASSWORD': '<%= @redis_password %>',
+        'DEFAULT_TIMEOUT': 360,
+    },
+}
+
+# Wikimedia IDM configuration
+
+LDAP_USER_CONF = {
+    'default_gid': 500,
+}
+
+BITU_LDAP = {
+    'uri': ['ldaps://<%= @ldap_config["rw-server"] %>',],
+    'username': '<%= @ldap_dn %>',
+    'password': '<%= @ldap_dn_password %>',
+    'readonly': False,
+    'connection_timeout': 5,
+    'users': {
+        'dn': '<%= @ldap_config["users_cn"] %>,<%= @ldap_config["base-dn"] %>',
+        'object_classes': ['inetOrgPerson'],
+        'auxiliary_classes': ['posixAccount', 'wikimediaPerson', 'ldapPublicKey'],
+    },
+    'groups': {
+        'dn': '<%= @ldap_config["groups_cn"] %>,<%= @ldap_config["base-dn"] %>',
+        'object_classes': ['groupOfNames',],
+        'auxiliary_classes': ['posixGroup',]
+    }
+}
+
+BITU_SUB_SYSTEMS = {
+    'ldapbackend': {
+        'default_gid': 500,
+        'manage_ssh_keys': True,
+        'ssh_keys_display_name': 'Wikimedia Cloud Services SSH keys',
+        'password_hash': 'ldapbackend.helpers.hash_password',
+        'password_hash_method': HASHED_SALTED_SHA,
+        'default_groups': [],
+        'attributes': {
+            'view': [{'name': 'uid', 'display': 'SSH access (shell) username'},
+                     {'name': 'mail', 'display': 'e-mail', 'action': reverse_lazy('accounts:email'), 'action_label': 'Update'},
+                     {'name': 'wikimediaGlobalAccountName', 'display': 'Wikimedia Global Account (SUL)', 'tooltip': 'This is the account you use when signing into one of Wikimedias wikis, e.g. Wikipedia.',
+                      'action': reverse_lazy('social:begin', args=['mediawiki']), 'action_label': 'refresh ↺'},
+                     {'name': 'uidNumber', 'display': 'POSIX User ID', 'tooltip': 'If you have SSH access to Cloud VPS, Toolforge or other Wikimedia servers, this will be the ID they use to identify you.'},
+                     {'name': 'gidNumber', 'display': 'POSIX Group ID', 'tooltip': 'If you have SSH access to Cloud VPS, Toolforge or other Wikimedia servers, this will be the ID of your primary user group.'},
+                     {'name': 'loginShell', 'display': 'Shell', 'tooltip': 'This is the command-line interface presented to you if you have SSH access to Wikimedia servers.'}
+            ]
+        },
+    }
+}
+
+BITU_SSH_KEY_VALIDATOR = {
+    'allowed_key_type': {
+        'ssh-rsa': {'min_key_size': 2048},
+        'ssh-ecdsa': {},
+        'ssh-ed25519': {},
+        'sk-ssh-ed25519@openssh.com': {},
+        'sk-ssh-ecdsa@openssh.com': {}
+    }
+}
+
+BITU_DOMAIN = 'https://<%= @service_fqdn %>'
+BITU_NOTIFICATION = {
+    'default_sender': 'no-reply@wikimedia.org',
+    'signup_template_prefix': 'email_wmf_signup_activation',
+    'signup_subject': 'Wikimedia Developer Account activation'
+}
+
+# Signup settings:
+# Enable validators
+SIGNUP_USERNAME_VALIDATORS = ['ldapbackend.validators.LDAPUsernameValidator',
+                              'ldapbackend.validators.LDAPCommonNameValidator',
+                              'signups.validators.UsernameValidator']
+
+SIGNUP_UID_VALIDATORS = ['ldapbackend.validators.unix_username_regex_validator',
+                         'ldapbackend.validators.unix_username_length_validator',
+                         'signups.validators.UsernameValidator',
+                         'ldapbackend.validators.LDAPUsernameValidator',
+                         'ldapbackend.validators.LDAPCommonNameValidator']
+
+# Display Wikimedia Foundation Signup message
+SIGNUP_INFO_TEMPLATE = 'signup_info_wmf.html'
+
+
+# Configure for LDAP authentication
+AUTHENTICATION_BACKENDS = [
+    "django_auth_ldap.backend.LDAPBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+AUTH_LDAP_BIND_DN = "<%= @ldap_dn %>"
+AUTH_LDAP_BIND_PASSWORD = "<%= @ldap_dn_password %>"
+AUTH_LDAP_GROUP_TYPE = GroupOfNamesType(name_attr="cn")
+AUTH_LDAP_SERVER_URI = "ldaps://<%= @ldap_config['rw-server'] %>"
+AUTH_LDAP_FIND_GROUP_PERMS = True
+
+AUTH_LDAP_USER_ATTR_MAP = {
+    "first_name": "givenName",
+    "last_name": "sn",
+    "email": "mail",
+}
+
+AUTH_LDAP_USER_SEARCH = LDAPSearch(
+    "ou=people,dc=wikimedia,dc=org", ldap.SCOPE_SUBTREE, "(uid=%(user)s)"
+)
+
+AUTH_LDAP_GROUP_SEARCH = LDAPSearch(
+    "dc=wikimedia,dc=org",
+     ldap.SCOPE_SUBTREE, "(objectClass=groupOfNames)",
+)
+
+AUTH_LDAP_USER_FLAGS_BY_GROUP = {
+    "is_active": "cn=wmf,ou=groups,dc=wikimedia,dc=org",
+    "is_staff": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+    "is_superuser": "cn=ops,ou=groups,dc=wikimedia,dc=org",
+}
+
+
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'ldapbackend:properties'
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
+# CAPTCHA settings, use our own generator
+CAPTCHA_CHALLENGE_FUNCT = 'signups.forms.captcha_input_generator'
+CAPTCHA_IMAGE_SIZE = (130,40)
+
+<%- if @install_via_git -%>
+STATICFILES_DIRS = [
+  '/srv/idm/bitu/src/bitu/static/',
+]
+<%- end -%>
