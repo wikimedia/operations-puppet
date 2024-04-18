@@ -184,6 +184,9 @@ GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.26`;
 GRANT USAGE ON *.* TO `stats`@`10.64.48.146` IDENTIFIED BY '<%=@backup_stats_pass%>';
 GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.48.146`;
 
+GRANT USAGE ON *.* TO `stats`@`10.64.0.140` IDENTIFIED BY '<%=@backup_stats_pass%>';
+GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.0.140`;
+
 -- backupmon-django @ dbbackups
 GRANT USAGE ON *.* TO `backupmon-django`@`10.64.48.150` IDENTIFIED BY '<%=@backup_django_pass%>';
 GRANT SELECT ON `dbbackups`.* TO `backupmon-django`@`10.64.48.150`;
