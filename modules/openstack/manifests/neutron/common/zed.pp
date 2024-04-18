@@ -17,6 +17,7 @@ class openstack::neutron::common::zed(
     Stdlib::Port $bind_port,
     Boolean $enforce_policy_scope,
     Boolean $enforce_new_policy_defaults,
+    String[1] $firewall_driver,
     Array[String[1]] $type_drivers,
     Array[String[1]] $tenant_network_types,
     Array[String[1]] $mechanism_drivers,

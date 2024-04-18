@@ -128,8 +128,7 @@ enable_security_group = True
 # security group will be added to the ipset chain.
 #
 enable_ipset = True
-# neutron.agent.linux.iptables_firewall.IptablesFirewallDriver
-firewall_driver = iptables
+firewall_driver = <%= @firewall_driver %>
 
 [experimental]
 linuxbridge = true
