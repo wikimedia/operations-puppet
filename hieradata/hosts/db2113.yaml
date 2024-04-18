@@ -1,4 +1,0 @@
-# db2113
-# candidate master for s5
-mariadb::shard: 's5'
-mariadb::binlog_format: 'STATEMENT'
