@@ -560,7 +560,7 @@ node /^db1156\.eqiad\./ {
 }
 
 # s2 (large wikis) core production dbs on codfw
-node /^db2(107|125|138|148|175|189|204|207)\.codfw\./ {
+node /^db2(125|138|148|175|189|204|207)\.codfw\./ {
     role(mariadb::core)
 }
 
