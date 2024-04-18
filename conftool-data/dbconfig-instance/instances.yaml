@@ -99,7 +99,6 @@ eqiad:
 codfw:
   - db2103
   - db2105
-  - db2106
   - db2114
   - db2115
   - db2116

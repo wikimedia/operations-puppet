@@ -606,7 +606,7 @@ node /^db1125\.eqiad\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(106|136|137|140|147|172|179|206|210|219)\.codfw\./ {
+node /^db2(136|137|140|147|172|179|206|210|219)\.codfw\./ {
     role(mariadb::core)
 }
 
