@@ -38,7 +38,7 @@ class profile::cache::haproxy(
     Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
     Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', {'default_value'                                             => false}),
     Boolean $use_benthos = lookup('profile::cache::base::use_benthos', {'default_value'                                                          => false}),
-    Optional[Hash[String, Any]] $benthos_instances = lookup('profile::benthos::instances', {'default_value'                                      => undef}),
+    Optional[String] $benthos_socket = lookup('profile::cache::base::benthos_socket_address', {'default_value'                                   => '127.0.0.1:1221'}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
     Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
@@ -80,14 +80,6 @@ class profile::cache::haproxy(
 
     # used on haproxy.cfg.erb
     $socket = '/run/haproxy/haproxy.sock'
-
-    # Benthos socket to send logs
-    if $benthos_instances {
-        $benthos_socket = $benthos_instances['haproxy_cache']['env_variables']['socket_address']
-        if $benthos_socket == undef {
-            $benthos_socket = '127.0.0.1:1221'
-        }
-    }
 
     class { '::haproxy':
         config_content        => template('profile/cache/haproxy.cfg.erb'),
