@@ -10,6 +10,6 @@ class role::wmcs::openstack::codfw1dev::net_ovs () {
   include profile::openstack::codfw1dev::neutron::common
 
   include profile::openstack::codfw1dev::neutron::l3_agent
-  # include profile::openstack::codfw1dev::neutron::dhcp_agent
-  # include profile::openstack::codfw1dev::neutron::metadata_agent
+  include profile::openstack::codfw1dev::neutron::dhcp_agent
+  include profile::openstack::codfw1dev::neutron::metadata_agent
 }
