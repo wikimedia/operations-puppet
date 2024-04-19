@@ -17,7 +17,7 @@ profile::tlsproxy::envoy::global_cert_name: "piwik.wikimedia.org"
 
 profile::tlsproxy::envoy::firewall_srange: []
 
-profile::analytics::backup::database::db_instance: 'matomo'
+profile::analytics::backup::database::db_instance: 'piwik'
 
 profile::matomo::database::backup_hosts:
   - db1208.eqiad.wmnet
