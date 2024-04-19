@@ -76,8 +76,7 @@ describe 'puppetmaster::web_frontend' do
           before(:each) do
             params.merge!(
               canary_hosts: [
-                'www.example.org', # This test hard codes the A/AAAA answers below
-                'www.example.net', # This test hard codes the A/AAAA answers below
+                'www.wikipedia.org', # This test hard codes the A/AAAA answers below
                 '192.0.2.42',
                 '2001:db8::1',
               ]
@@ -89,10 +88,8 @@ describe 'puppetmaster::web_frontend' do
               ensure: 'present',
               priority: '90'
             ).with_content(
-              %r{RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25c8:1946'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'2606:2800:220:1:248:1893:25c8:1946'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'93\.184\.216\.34'"\s+\[OR\]
+              %r{RewriteCond\s+expr\s+"-R\s+'208\.80\.154\.224'"\s+\[OR\]
+              \s+RewriteCond\s+expr\s+"-R\s+'2620:0:861:ed1a::1'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'192\.0\.2\.42'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'2001:db8::1'"
               \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]
