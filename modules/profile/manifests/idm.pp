@@ -16,17 +16,18 @@ class profile::idm(
     Hash                $ldap_config               = lookup('ldap'),
     String              $ldap_dn                   = lookup('profile::idm::ldap_dn'),
     String              $ldap_dn_password          = lookup('profile::idm::ldap_dn_password'),
-    String              $oidc_key                  = lookup('profile::idm::oidc_service'),
-    String              $oidc_secret               = lookup('profile::idm::oidc_secret'),
-    String              $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
-    String              $mediawiki_secret          = lookup('profile::idm::mediawiki_secret'),
-    String              $mediawiki_callback        = lookup('profile::idm::mediaback_callback'),
+    Optional[String[1]] $oidc_key                  = lookup('profile::idm::oidc_service'),
+    Optional[String[1]] $oidc_secret               = lookup('profile::idm::oidc_secret'),
+    Optional[String[1]] $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
+    Optional[String[1]] $mediawiki_secret          = lookup('profile::idm::mediawiki_secret'),
+    Optional[String[1]] $mediawiki_callback        = lookup('profile::idm::mediaback_callback'),
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
     String              $redis_password            = lookup('profile::idm::redis_password', {'default_value'               => 'secret'}),
     Stdlib::Port        $redis_port                = lookup('profile::idm::redis_port', {'default_value'                   => 6973}),
     Integer             $redis_maxmem              = lookup('profile::idm::redis_maxmem', {'default_value'                 => 1610612736 }),
     Boolean             $enable_monitoring         = lookup('profile::idm::enable_monitoring'),
+    String              $config_template           = lookup('profile::idm::config_template', {'default_value'              => 'idm/idm-django-settings.erb'})
 ) {
 
     ensure_packages(['python3-django-uwsgi'])
@@ -40,12 +41,17 @@ class profile::idm(
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
     $production_str = $production.bool2str('production', 'staging')
-    $oidc_endpoint = $apereo_cas[$production_str]['oidc_endpoint']
-    $oidc = { key      => $oidc_key,
-              secret   => $oidc_secret,
-              endpoint => $oidc_endpoint }
 
-    $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret, callback => $mediawiki_callback }
+    if $oidc_key {
+    $oidc_endpoint = $apereo_cas[$production_str]['oidc_endpoint']
+        $oidc = { key      => $oidc_key,
+                  secret   => $oidc_secret,
+                  endpoint => $oidc_endpoint }
+    }
+
+    if $mediawiki_callback {
+        $mediawiki = { key => $mediawiki_key, secret => $mediawiki_secret, callback => $mediawiki_callback }
+    }
 
     include passwords::ldap::production
     class{ 'sslcert::dhparam': }
@@ -102,7 +108,7 @@ class profile::idm(
     # Django configuration
     file { "${etc_dir}/settings.py":
         ensure  => present,
-        content => template('idm/idm-django-settings.erb'),
+        content => template($config_template),
         owner   => $deploy_user,
         group   => $deploy_user,
         notify  => Service['uwsgi-bitu', 'rq-bitu'],
@@ -178,7 +184,7 @@ class profile::idm(
     }
 
     if $enable_monitoring {
-        prometheus::blackbox::check::http { 'idm.wikimedia.org':
+        prometheus::blackbox::check::http { $service_fqdn:
             team               => 'infrastructure-foundations',
             severity           => 'critical',
             path               => '/signup/',
