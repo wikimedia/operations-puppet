@@ -32,3 +32,6 @@ profile::idp::client::httpd::sites:
       - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     proxied_as_https: true
 profile::contacts::role_contacts: ['Data Platform']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
