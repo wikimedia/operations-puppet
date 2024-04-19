@@ -274,9 +274,6 @@ role::openldap::corp:
 role::wmcs::openstack::eqiad1::cloudweb:
   target-q: TBD
   phab-task: 332400
-role::piwik:
-  target-q: TBD
-  phab-task: 288804
 role::webserver_misc_apps:
   target-q: TBD
 role::mediawiki::maintenance:

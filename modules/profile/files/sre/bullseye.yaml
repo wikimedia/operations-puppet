@@ -205,8 +205,6 @@ role::openldap::corp:
   target-q: TBD
 role::wmcs::openstack::eqiad1::cloudweb:
   target-q: TBD
-role::piwik:
-  target-q: TBD
 role::webserver_misc_apps:
   target-q: TBD
 role::mediawiki::maintenance:
