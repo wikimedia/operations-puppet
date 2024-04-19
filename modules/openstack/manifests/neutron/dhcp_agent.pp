@@ -2,11 +2,13 @@ class openstack::neutron::dhcp_agent(
     $version,
     $dhcp_domain,
     $report_interval,
-    ) {
+    String[1] $interface_driver,
+) {
 
     class { "openstack::neutron::dhcp_agent::${version}":
-        dhcp_domain     => $dhcp_domain,
-        report_interval => $report_interval,
+        dhcp_domain      => $dhcp_domain,
+        report_interval  => $report_interval,
+        interface_driver => $interface_driver,
     }
 
     service {'neutron-dhcp-agent':

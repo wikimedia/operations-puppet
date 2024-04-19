@@ -3,6 +3,7 @@
 class openstack::neutron::dhcp_agent::bobcat(
     $dhcp_domain,
     $report_interval,
+    String[1] $interface_driver,
 ) {
     class { "openstack::neutron::dhcp_agent::bobcat::${::lsbdistcodename}": }
 

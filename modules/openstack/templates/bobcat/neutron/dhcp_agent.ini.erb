@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 [DEFAULT]
-# neutron.agent.linux.interface.BridgeInterfaceDriver
-interface_driver = linuxbridge
+interface_driver = <%= @interface_driver %>
 dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
 dnsmasq_config_file = /etc/neutron/dnsmasq-neutron.conf
 
