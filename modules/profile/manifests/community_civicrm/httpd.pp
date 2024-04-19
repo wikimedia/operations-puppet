@@ -1,9 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # sets up a webserver for community crm
-class profile::community_civicrm::httpd {
+#
+# @param site_name endpoint dns name for civicrm web interface
+# @param web_root path that holds web files for reference by the webserver
 
-    $web_root = '/var/www/community_civicrm/web'
-    $site_name = 'community-crm.wmcloud.org'
+class profile::community_civicrm::httpd (
+    Stdlib::Fqdn $site_name = lookup('profile::community_civicrm::httpd::site_name', {'default_value' => 'community-crm.wikimedia.org'}),
+    Stdlib::Unixpath $web_root = lookup('profile::community_civicrm::httpd::web_root', {'default_value' => '/var/www/community_civicrm/web'}),
+) {
 
     $php_version = wmflib::debian_php_version()
 
