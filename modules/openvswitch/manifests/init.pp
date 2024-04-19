@@ -6,7 +6,8 @@ class openvswitch () {
   }
 
   service { 'openvswitch-switch':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
+    require => Package['openvswitch-switch'],
   }
 }
