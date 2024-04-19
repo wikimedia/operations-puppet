@@ -113,7 +113,7 @@ class libraryupgrader (
     systemd::timer::job { 'libup-run':
         ensure      => $systemd_ensure,
         description => 'Trigger the libup daily run',
-        command     => "${clone_dir}/venv/bin/libup-run",
+        command     => "${clone_dir}/venv/bin/libup-run --auto",
         user        => 'libup',
         interval    => {
             'start'    => 'OnCalendar',
