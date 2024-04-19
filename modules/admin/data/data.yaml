@@ -511,7 +511,7 @@ groups:
                  * Convert projects to subprojects or milestones of another project
                  * Silence notifications for maniphest bulk jobs
                  * Disable Herald rules
-    members: [aklapper, gjg]
+    members: [aklapper, gjg, lmata]
     approval:
       - Tyler Cipriani
     privileges: ['ALL = NOPASSWD: /srv/phab/phabricator/bin/cache purge --caches user',
