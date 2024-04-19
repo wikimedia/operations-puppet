@@ -67,10 +67,12 @@ acl wikimedia_nets {
 -%>
        "<%= subnet %>"/<%= mask %>;
 <% end -%>
-       // T255524 : Elastic IP used for some PAPI work under a WMF project
-       "3.23.12.83"/32;
-       // T294798 : Second Wikimedia Enterprise Elastic IP
-       "3.211.48.168"/32;
+       // The following two IP addresses are AWS Elastic IPs used by the
+       // Wikimedia Enterprise project to bulk scrape content and query APIs.
+       // They are added to wikimedia_nets in order to skip most of our CDN's
+       // rate limiting, including being unaffected by requestctl.
+       "3.23.12.83"/32;     // T255524
+       "3.211.48.168"/32;   // T294798
 }
 
 // Only wikimedia_trust can fake X-F-P
