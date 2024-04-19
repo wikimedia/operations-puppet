@@ -99,7 +99,7 @@ class profile::prometheus::analytics (
 
     prometheus::class_config{ "matomo_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_matomo_${::site}.yaml",
-        class_name => 'role::piwik',
+        class_name => 'role::matomo',
         port       => 9104,
     }
 

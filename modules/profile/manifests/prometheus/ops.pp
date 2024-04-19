@@ -779,7 +779,7 @@ class profile::prometheus::ops (
     # Special config for Apache on Piwik deployments
     prometheus::class_config{ "apache_piwik_${::site}":
         dest       => "${targets_path}/apache_piwik_${::site}.yaml",
-        class_name => 'profile::piwik::webserver',
+        class_name => 'profile::matomo::webserver',
         port       => 9117,
     }
 
