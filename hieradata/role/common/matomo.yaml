@@ -1,9 +1,6 @@
 # Notify the Data Platform SRE team about services on these hosts
 contactgroups: 'admins,team-data-platform'
 
-# Disable notifications until the service is ready for production use.
-profile::monitoring::notifications_enabled: false
-
 profile::admin::groups:
   - analytics-admins
 
