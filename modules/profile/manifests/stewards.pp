@@ -8,6 +8,7 @@ class profile::stewards (
     $repo_dir = '/srv/repos'
     $conf_dir = '/etc/steward-onboarder'
     $export_dir = '/srv/exports'
+    $userdb_dir = "${repo_dir}/users-db"
 
     $group_owner = 'stewards-users'
 
@@ -25,6 +26,7 @@ class profile::stewards (
         mode  => '0775',
     })
 
+    # pull application from gitlab and create the config
     git::clone { 'repos/stewards/onboarding-system':
         ensure    => 'present',
         source    => 'gitlab',
@@ -36,5 +38,23 @@ class profile::stewards (
     file { "${conf_dir}/steward-onboarder.yaml":
         ensure => 'present',
         source => 'puppet:///modules/profile/stewards/steward-onboarder.yaml',
+    }
+
+    # create a local-only repo to hold private app data
+    file { $userdb_dir:
+        ensure  => directory,
+        owner   => 'root',
+        group   => $group_owner,
+        mode    => '2775',
+        recurse => true,
+    }
+
+    exec { "${userdb_dir} git init":
+        command => '/usr/bin/git init',
+        user    => 'root',
+        group   => $group_owner,
+        cwd     => $userdb_dir,
+        creates => "${userdb_dir}/.git",
+        require => File[$userdb_dir],
     }
 }
