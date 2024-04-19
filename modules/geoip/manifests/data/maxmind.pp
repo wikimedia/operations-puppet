@@ -49,7 +49,8 @@ class geoip::data::maxmind(
   if $is_active {
     # Go ahead and exec geoipupdate now, so that we can be sure we have these
     # files if this is the first time puppetmaster is running this class.
-    $geoipupdate_command = "/usr/bin/geoipupdate -f ${config_file} -d ${data_directory}"
+    # We are temporarily adding verbose information to the geoipupdate command - See #T358268
+    $geoipupdate_command = "/usr/bin/geoipupdate -f ${config_file} -d ${data_directory} -v"
     exec { 'geoipupdate':
         command     => $geoipupdate_command,
         refreshonly => true,
