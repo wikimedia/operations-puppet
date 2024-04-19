@@ -1,3 +1,2 @@
 #db1202
 mariadb::shard: 's7'
-profile::monitoring::notifications_enabled: false
