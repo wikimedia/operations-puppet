@@ -191,4 +191,5 @@ class profile::lists (
         standby_host     => $standby_host
     }
     class { 'profile::lists::ferm': }
+    class { 'profile::lists::automation': }
 }
