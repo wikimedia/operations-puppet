@@ -1887,9 +1887,9 @@ node /^maps2009\.codfw\./ {
     role(maps::master)
 }
 
-# Buster replacement for matomo1001 - T252740
+# To be decommissioned
 node /^matomo1002\.eqiad\./ {
-    role(piwik)
+    role(insetup::data_engineering)
 }
 
 # Bookworm replacement for matomo1002 - T349397
