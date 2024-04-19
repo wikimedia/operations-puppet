@@ -59,10 +59,10 @@ class profile::openstack::base::heat(
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
     }
 
-    ferm::service { 'heat-api-backend':
+    firewall::service { 'heat-api-backend':
         proto  => 'tcp',
-        port   => "(${api_bind_port} ${cfn_api_bind_port})",
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        port   => [$api_bind_port, $cfn_api_bind_port],
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'heat':
