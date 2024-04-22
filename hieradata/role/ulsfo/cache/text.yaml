@@ -23,6 +23,7 @@ profile::benthos::instances:
       pipeline_threads: -1
       benthos_fqdn: '%{facts.fqdn}'
       benthos_source: "%{lookup('cache::cluster')}"
+      buffer_memory_limit_bytes: 524288000
     # These will be used as envvars for kafka input
     kafka:
       cluster: jumbo

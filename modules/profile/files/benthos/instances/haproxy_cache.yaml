@@ -30,7 +30,7 @@ input:
         }
 buffer:
  memory:
-   limit: 524288000 # approx 525MB
+   limit: ${BUFFER_MEMORY_LIMIT_BYTES}
    batch_policy:
      enabled: true
      count: 1024
