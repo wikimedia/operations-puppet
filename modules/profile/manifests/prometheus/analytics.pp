@@ -313,6 +313,14 @@ class profile::prometheus::analytics (
         }
     }
 
+    # Temporary monitoring for T362904
+    file { "${targets_path}/wmde_tewu_scraper.yaml":
+        ensure  => present,
+        content => to_yaml([
+          { 'targets' => [ 'stat1009.eqiad.wmnet:9568' ] }
+        ]),
+    }
+
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
