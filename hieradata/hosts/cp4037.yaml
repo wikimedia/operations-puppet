@@ -1,0 +1,19 @@
+profile::benthos::instances:
+  haproxy_cache:
+    # Prometheus exporter port
+    port: 4153
+    # List of envvars that will be copied by benthos::instance in
+    # separate file (template) and used by main configuration file
+    env_variables:
+      socket_address: "127.0.0.1:1221"
+      webrequest_topic: "webrequest_text_test"
+      pipeline_threads: -1
+      benthos_fqdn: '%{facts.fqdn}'
+      benthos_source: "%{lookup('cache::cluster')}"
+      buffer_memory_limit_bytes: 700000000
+    # These will be used as envvars for kafka input
+    kafka:
+      cluster: jumbo
+      site: eqiad
+      topics:
+        - "none"
