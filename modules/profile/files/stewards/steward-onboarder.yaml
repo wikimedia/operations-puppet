@@ -3,4 +3,9 @@ config_paths:
   roles: /srv/repos/onboarding-system/config/roles.yaml
   users: /srv/repos/users-db/users.yaml
 
+mediawiki_api:
+  global: https://meta.wikimedia.org/w/api.php
+  metawiki: https://meta.wikimedia.org/w/api.php
+  loginwiki: https://login.wikimedia.org/w/api.php
+
 export_base_dir: /srv/exports
