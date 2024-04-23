@@ -39,14 +39,14 @@ define etcdmirror::instance(
     }
 
     systemd::service { $prefix:
-        ensure         => present,
+        ensure         => absent,
         content        => template('etcdmirror/initscripts/etcd-mirror.systemd.erb'),
         restart        => false,
         service_params => $service_params,
     }
 
     file { "/usr/local/sbin/reload-${prefix}":
-        ensure  => present,
+        ensure  => absent,
         content => inline_template("#!/bin/bash\n/usr/bin/etcd-mirror --strip --reload --src-prefix ${src_path} --dst-prefix ${dst_path} ${src} ${dst}"),
         mode    => '0544',
         owner   => 'root',
@@ -54,6 +54,7 @@ define etcdmirror::instance(
     }
 
     systemd::syslog { $prefix:
+        ensure       => absent,
         owner        => 'root',
         group        => 'root',
         log_filename => 'syslog.log',
