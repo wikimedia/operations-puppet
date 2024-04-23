@@ -50,11 +50,10 @@ class profile::stewards (
 
     # create a local-only repo to hold private onboarding app data
     file { $userdb_dir:
-        ensure  => directory,
-        owner   => 'root',
-        group   => $group_owner,
-        mode    => '2775',
-        recurse => true,
+        ensure => directory,
+        owner  => 'root',
+        group  => $group_owner,
+        mode   => '2775',
     }
 
     git::systemconfig { 'safe.directory-userdb_dir':
