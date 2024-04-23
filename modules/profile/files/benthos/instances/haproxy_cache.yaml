@@ -171,7 +171,8 @@ pipeline:
         name: "haproxy_termination_states_total"
         type: counter
         labels:
-          termination_state: ${! json("termination_state") }
+          # We need only the first 2 character from termination state
+          termination_state: ${! json("termination_state").slice(0, 2) }
 
     - label: "delete_unused_fields"
       mapping: |
