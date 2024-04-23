@@ -6,6 +6,9 @@ class profile::puppetserver::wmcs (
     class { 'profile::puppetserver':
         enc_path => $profile::openstack::base::puppetmaster::enc_client::enc_path,
     }
+    # To ensure the server is restarted on unattended java upgrades
+    profile::auto_restarts::service { 'puppetserver': }
+
     class { 'puppetmaster::gitsync':
         base_dir => $git_basedir,
         # TODO: make git_user a param to puppetmaster::gitpuppet and use that here
