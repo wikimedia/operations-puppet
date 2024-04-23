@@ -163,7 +163,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://planet.discovery.wmnet
     - type: map
       target: http://prometheus-eqiad.wikimedia.org
-      replacement: https://prometheus1006.eqiad.wmnet
+      replacement: https://prometheus1005.eqiad.wmnet
     - type: map
       target: http://prometheus-codfw.wikimedia.org
       replacement: https://prometheus2005.codfw.wmnet
