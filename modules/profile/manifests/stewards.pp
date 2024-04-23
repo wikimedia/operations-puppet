@@ -5,6 +5,7 @@ class profile::stewards (
     Stdlib::Unixpath $conf_dir = lookup('profile::stewards::conf_dir', {default_value => '/etc/steward-onboarder'}),
     Stdlib::Unixpath $export_dir = lookup('profile::stewards::export_dir', {default_value => '/srv/exports'}),
     Stdlib::Unixpath $userdb_dir = lookup('profile::stewards::userdb_dir', {default_value => "${repo_dir}/users-db"}),
+    Stdlib::Unixpath $onboarding_system_dir = lookup('profile::stewards::onboarding_system_dir', {default_value => "${repo_dir}/onboarding-system"}),
     String $group_owner = lookup('profile::stewards::group_owner', {default_value => 'stewards-users'}),
 ){
 
@@ -31,12 +32,20 @@ class profile::stewards (
         source    => 'gitlab',
         group     => $group_owner,
         shared    => true,
-        directory => "${repo_dir}/onboarding-system",
+        directory => $onboarding_system_dir,
     }
 
     file { "${conf_dir}/steward-onboarder.yaml":
         ensure => 'present',
         source => 'puppet:///modules/profile/stewards/steward-onboarder.yaml',
+    }
+
+    git::systemconfig { 'safe.directory-onboarding_system_dir':
+        settings => {
+            'safe' => {
+                'directory' => $onboarding_system_dir
+            }
+        }
     }
 
     # create a local-only repo to hold private onboarding app data
@@ -46,6 +55,14 @@ class profile::stewards (
         group   => $group_owner,
         mode    => '2775',
         recurse => true,
+    }
+
+    git::systemconfig { 'safe.directory-userdb_dir':
+        settings => {
+            'safe' => {
+                'directory' => $userdb_dir
+            }
+        }
     }
 
     exec { "${userdb_dir} git init":
