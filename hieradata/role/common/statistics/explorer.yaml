@@ -63,3 +63,5 @@ profile::hadoop::spark3::test_spark_3_install: true
 
 # We need to prevent the removal of the python2 packages on bullseye because of hive
 profile::base::remove_python2_on_bullseye: false
+
+profile::base::certificates::include_bundle_jks: true
