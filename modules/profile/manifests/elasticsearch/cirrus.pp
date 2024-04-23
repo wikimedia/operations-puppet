@@ -75,7 +75,10 @@ class profile::elasticsearch::cirrus(
                 $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
                     hosts => [$instance_params['certificate_name'], "search.svc.${::site}.wmnet"],
                 })
-                $proxy_cert_params = {'cfssl_paths' => $cfssl_paths}
+                $proxy_cert_params = {
+                    'cfssl_paths'  => $cfssl_paths,
+                    server_aliases => [$instance_params['certificate_name'],"search.svc.${::site}.wmnet"],
+                }
             }
             default: {
                 $proxy_cert_params = {
