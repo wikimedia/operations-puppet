@@ -27,6 +27,8 @@ analytics-web: P{O:analytics_cluster::webserver}
 analytics-psql: P{O:analytics_cluster::postgresql}
 apifeatureusage: P{O:apifeatureusage::logstash}
 apt: P{O:apt_repo}
+apt-staging: P{O:apt_staging}
+apt-all: A:apt or A:apt-staging
 aqs: P{O:aqs}
 aqs-eqiad: A:aqs and A:eqiad
 aqs-codfw: A:aqs and A:codfw
