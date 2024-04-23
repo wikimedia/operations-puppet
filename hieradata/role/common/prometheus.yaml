@@ -26,7 +26,7 @@ profile::prometheus::thanos::min_time: '-15d'
 
 # The single host that's running Pushgateway.
 # DNS prometheus-pushgateway.discovery.wmnet must match.
-profile::prometheus::pushgateway_host: 'prometheus1006.eqiad.wmnet'
+profile::prometheus::pushgateway_host: 'prometheus1005.eqiad.wmnet'
 
 profile::lvs::realserver::use_conftool: true
 profile::lvs::realserver::pools:
