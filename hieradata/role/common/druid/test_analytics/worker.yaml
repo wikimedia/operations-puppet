@@ -53,6 +53,7 @@ profile::druid::common::metadata_storage_database_name: 'druid'
 
 profile::druid::daemons_autoreload: false
 profile::druid::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::druid::firewall_access: ~
 
 profile::druid::common::properties:
   druid.metadata.storage.type: mysql
@@ -87,6 +88,7 @@ profile::druid::common::properties:
 # Broker gets a special ferm_srange since it is the frontend query interface to Druid.
 profile::druid::broker::monitoring_enabled: true
 profile::druid::broker::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::druid::broker::firewall_access: ~
 profile::druid::broker::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
