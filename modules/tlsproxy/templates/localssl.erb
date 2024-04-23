@@ -8,104 +8,104 @@ upstream local_fe_<%= @basename %> {
 
 # SSL proxying
 server {
-	# Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
-	# concern replaying TLS Client Hello.
-	# https://tools.ietf.org/html/rfc7413#section-6.3.2
-	listen [::]:<%= @tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 -%>http2<% end %>;
-	listen <%= @tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 %>http2<% end %>;
-	ssl on;
-	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
+    # Enabling TCP Fast Open is safe for HTTP over TLS. There is no idempotency
+    # concern replaying TLS Client Hello.
+    # https://tools.ietf.org/html/rfc7413#section-6.3.2
+    listen [::]:<%= @tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 -%>http2<% end %>;
+    listen <%= @tls_port %> <%= @default_server ? "default_server deferred backlog=16384 reuseport fastopen=#{@fastopen_pending_max} " : "" %>ssl <% if @enable_http2 %>http2<% end %>;
+    ssl on;
+    server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
-	error_log   /var/log/nginx/<%= @name %>.error.log;
-	access_log   <% if @access_log %>/var/log/nginx/<%= @name %>.access.log<% else %>off<% end %>;
+    error_log   /var/log/nginx/<%= @name %>.error.log;
+    access_log   <% if @access_log %>/var/log/nginx/<%= @name %>.access.log<% else %>off<% end %>;
 
     <%- unless @cfssl_paths.empty? -%>
     ssl_certificate <%= @cfssl_paths['chained'] %>;
     ssl_certificate_key <%= @cfssl_paths['key'] %>;
     <%- end -%>
-	<%- @certs_nginx.each do |cert| -%>
-	ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
-	ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
-	<%- end -%>
-	<%- if @acme_chief and @certs_nginx.empty? -%>
-	ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
-	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
-	ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
-	ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
-	<%- end -%>
-	<%- if @do_ocsp -%>
-	ssl_stapling on;
-	  <%- @certs_nginx.each do |cert| -%>
-	ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
-	  <%- end -%>
-	<%- if @acme_chief and @certs_nginx.empty? -%>
-	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.ocsp;
-	ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.ocsp;
-	<%- end -%>
-	<%- end -%>
+    <%- @certs_nginx.each do |cert| -%>
+    ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
+    ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
+    <%- end -%>
+    <%- if @acme_chief and @certs_nginx.empty? -%>
+    ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
+    ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
+    ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
+    ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
+    <%- end -%>
+    <%- if @do_ocsp -%>
+    ssl_stapling on;
+      <%- @certs_nginx.each do |cert| -%>
+    ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
+      <%- end -%>
+    <%- if @acme_chief and @certs_nginx.empty? -%>
+    ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.ocsp;
+    ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.ocsp;
+    <%- end -%>
+    <%- end -%>
 
-	keepalive_timeout <%= @keepalive_timeout %>;
-	keepalive_requests <%= @keepalive_requests %>;
+    keepalive_timeout <%= @keepalive_timeout %>;
+    keepalive_requests <%= @keepalive_requests %>;
 
-	location / {
+    location / {
 <% if @only_get_requests -%>
-		limit_except GET {
-			deny all;
-		}
+        limit_except GET {
+            deny all;
+        }
 <% end -%>
-		proxy_pass http://local_fe_<%= @basename %>;
-		proxy_http_version 1.1;
-		proxy_set_header Connection close; # should be default
+        proxy_pass http://local_fe_<%= @basename %>;
+        proxy_http_version 1.1;
+        proxy_set_header Connection close; # should be default
 
-		# this should be in sync with Varnish's first_byte_timeout
-		# and PHP's max_execution_time
-		proxy_read_timeout <%= @read_timeout %>s;
+        # this should be in sync with Varnish's first_byte_timeout
+        # and PHP's max_execution_time
+        proxy_read_timeout <%= @read_timeout %>s;
 
-		proxy_set_header Host $host;
-		proxy_set_header X-Client-IP $remote_addr;
-		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-		proxy_set_header X-Forwarded-Proto https;
-		proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
+        proxy_set_header Host $host;
+        proxy_set_header X-Client-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Connection-Properties "H2=$h2; SSR=$session_reused; SSL=$ssl_protocol; C=$ssl_cipher;";
 
-		# Don't clobber the Server header from the backend.
-		proxy_pass_header Server;
+        # Don't clobber the Server header from the backend.
+        proxy_pass_header Server;
 
-		proxy_redirect off;
-		proxy_buffering off;
-		proxy_request_buffering <%= @nginx_proxy_request_buffering %>;
+        proxy_redirect off;
+        proxy_buffering off;
+        proxy_request_buffering <%= @nginx_proxy_request_buffering %>;
 
-		# With proxy buffering off, proxy_buffer_size is still used to
-		# define the singular chunk of buffer the content passes
-		# through.  Apparently if nginx can't read all the response
-		# headers in the first such chunk, it fails with 502.  Upping
-		# this to 8k (from def 4k) solves the one reported case in
-		# https://phabricator.wikimedia.org/T161819
-		# --
-		# Raising this further from 8K to 32K, at least temporarily, due to T226840
-		# Note 32KB is also the similar default limit in our varnishes (http_resp_size)
-		proxy_buffer_size       32k;
-		proxy_buffers         4 32k;
-	}
+        # With proxy buffering off, proxy_buffer_size is still used to
+        # define the singular chunk of buffer the content passes
+        # through.  Apparently if nginx can't read all the response
+        # headers in the first such chunk, it fails with 502.  Upping
+        # this to 8k (from def 4k) solves the one reported case in
+        # https://phabricator.wikimedia.org/T161819
+        # --
+        # Raising this further from 8K to 32K, at least temporarily, due to T226840
+        # Note 32KB is also the similar default limit in our varnishes (http_resp_size)
+        proxy_buffer_size       32k;
+        proxy_buffers         4 32k;
+    }
 }
 <% if @redir_port -%>
 server {
-	# Enable TCP Fast Open for http -> https redirects since there are no
-	# idempotency concerns with HTTPS.
-	# Note that TFO is *not* safe in general for non-TLS HTTP. See
-	# https://tools.ietf.org/html/rfc7413#section-6.3.1
-	listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>;
-	listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport fastopen=#{@fastopen_pending_max} " : "" %>;
-	server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
+    # Enable TCP Fast Open for http -> https redirects since there are no
+    # idempotency concerns with HTTPS.
+    # Note that TFO is *not* safe in general for non-TLS HTTP. See
+    # https://tools.ietf.org/html/rfc7413#section-6.3.1
+    listen [::]:<%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport ipv6only=on fastopen=#{@fastopen_pending_max} " : "" %>;
+    listen <%= @redir_port %> <%= @default_server ? "default_server deferred backlog=4096 reuseport fastopen=#{@fastopen_pending_max} " : "" %>;
+    server_name <%= ([@server_name] + @server_aliases).join(" ") %>;
 
-	error_log   /var/log/nginx/<%= @name %>.error.log;
-	access_log   off;
+    error_log   /var/log/nginx/<%= @name %>.error.log;
+    access_log   off;
 
-	if ($request_method = GET) {
-		return 301 https://$host$request_uri;
-	}
-	if ($request_method = HEAD) {
-		return 301 https://$host$request_uri;
-	}
-	return 403 "Insecure Request Forbidden - use HTTPS";
+    if ($request_method = GET) {
+        return 301 https://$host$request_uri;
+    }
+    if ($request_method = HEAD) {
+        return 301 https://$host$request_uri;
+    }
+    return 403 "Insecure Request Forbidden - use HTTPS";
 }
 <% end -%>
