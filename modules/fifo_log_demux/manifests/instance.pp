@@ -12,7 +12,7 @@ define fifo_log_demux::instance(
 ) {
     include fifo_log_demux
 
-    if $create_fifo {
+    if $create_fifo and $ensure == 'present' {
         exec { "create_fifo@${title}":
             command => "/usr/bin/mkfifo ${fifo}",
             creates => $fifo,
