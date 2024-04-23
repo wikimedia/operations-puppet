@@ -83,7 +83,6 @@ pipeline:
                "server_name",
                "srv_queue",
                "srvconn",
-               "termination_state",
                "time_backend_connect",
                "time_duration",
                "time_queue",
@@ -167,6 +166,13 @@ pipeline:
                   http_status_family: ${! (json("http_status").number() / 100).floor() }
                 value: ${! json("time_firstbyte_ns") }
 
+    - label: "termination_states_total_metric"
+      metric:
+        name: "haproxy_termination_states_total"
+        type: counter
+        labels:
+          termination_state: ${! json("termination_state") }
+
     - label: "delete_unused_fields"
       mapping: |
         root = this
@@ -174,6 +180,7 @@ pipeline:
         root.procid = deleted()
         root.facility = deleted()
         root.time_firstbyte_ns = deleted()
+        root.termination_state = deleted()
 
 logger:
   level: WARN
