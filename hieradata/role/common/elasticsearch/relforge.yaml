@@ -6,6 +6,7 @@ profile::admin::groups:
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 
+profile::elasticsearch::cirrus::ssl_provider: cfssl
 profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
 profile::elasticsearch::cirrus::expose_http: false
 profile::elasticsearch::cirrus::enable_http2: false
