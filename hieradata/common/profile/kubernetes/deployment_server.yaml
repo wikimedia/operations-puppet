@@ -415,6 +415,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datasets-config
         - name: datasets-config-deploy
+    datasets-config-next:
+      usernames:
+        - name: datasets-config-next
+        - name: datasets-config-next-deploy
     superset:
       usernames:
         - name: superset
