@@ -13,4 +13,6 @@ class prometheus::logstash_exporter{
     require => Package['prometheus-logstash-exporter'],
     content => template('prometheus/prometheus-logstash-exporter.defaults.erb'),
   }
+
+  profile::auto_restarts::service { 'prometheus-logstash-exporter': }
 }
