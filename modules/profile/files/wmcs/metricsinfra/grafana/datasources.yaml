@@ -12,6 +12,8 @@ datasources:
    isDefault: true
    editable: false
    withCredentials: false
+   jsonData:
+     timeInterval: 1m
    version: 1
 
  - name: prometheus-tools
@@ -22,6 +24,8 @@ datasources:
    isDefault: false
    editable: false
    withCredentials: false
+   jsonData:
+     timeInterval: 1m
    version: 1
 
  - name: prometheus-toolsbeta
@@ -32,6 +36,8 @@ datasources:
    isDefault: false
    editable: false
    withCredentials: false
+   jsonData:
+     timeInterval: 1m
    version: 1
 
  - name: prometheus-paws
@@ -42,4 +48,6 @@ datasources:
    isDefault: false
    editable: false
    withCredentials: false
+   jsonData:
+     timeInterval: 1m
    version: 1
