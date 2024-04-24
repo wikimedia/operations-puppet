@@ -7,9 +7,19 @@ class profile::kubernetes::master (
     Array  $prometheus_all_nodes    = lookup('prometheus_all_nodes'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
-    # Comma separated list of etcd URLs is consumed by the kube-publish-sa-cert service
-    # as well as k8s::apiserser so we produce it here.
-    $etcd_servers = join($k8s_config['etcd_urls'], ',')
+    $stacked = defined(Class['profile::etcd::v3'])
+
+    # Create a comma separated list of etcd URLs to be consumed by the kube-publish-sa-cert service
+    # as well as k8s::apiserser.
+    if $stacked {
+        # In stacked mode, we use the local etcd server only.
+        # TODO: This is the low effort solution. Ideally we would use a localhost connection
+        # (the cert used does not have 127.0.0.1/localhost in SAN) or a unix socket (not supported
+        # by etcd 3.3) instead of this.
+        $etcd_servers = "https://${facts['networking']['fqdn']}:2379"
+    } else {
+        $etcd_servers = join($k8s_config['etcd_urls'], ',')
+    }
 
     # FIXME: Ensure kube user/group as well as /etc/kubernetes/pki is created with proper permissions
     # before the first pki::get_cert call: https://phabricator.wikimedia.org/T337826

@@ -1237,7 +1237,7 @@ node /^kubestagemaster[12]00[12]\.(eqiad|codfw)\./ {
 }
 
 node /^kubestagemaster2003\.codfw\./ {
-    role(insetup::serviceops)
+    role(kubernetes::staging::master_stacked)
 }
 
 # kubernetes masters
