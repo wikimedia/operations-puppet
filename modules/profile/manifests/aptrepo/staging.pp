@@ -81,4 +81,8 @@ class profile::aptrepo::staging (
     mode   => '0755',
     source => 'puppet:///modules/aptrepo/gitlab_package_puller.py',
   }
+
+  profile::auto_restarts::service { 'nginx': }
+  profile::auto_restarts::service { 'envoyproxy': }
+  profile::auto_restarts::service { 'rsync': }
 }
