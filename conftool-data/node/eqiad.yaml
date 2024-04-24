@@ -143,6 +143,11 @@ eqiad:
     elastic1100.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1101.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic1102.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+    elastic1103.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    elastic1104.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+    elastic1105.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    elastic1106.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+    elastic1107.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
   cloudelastic:
     cloudelastic1005.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1006.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
