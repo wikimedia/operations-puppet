@@ -62,6 +62,11 @@ class profile::kubernetes::node (
         syslog_tag         => 'kubernetes',
         priority           => 8,
     }
+
+    # additional rsyslog imfile remedy, unconditionally restart rsyslog
+    # every few hours
+    class { 'toil::rsyslog_imfile_remedy': }
+
     # rsyslog imfile fd leak seems fixed with 8.2404.0-1~bpo11+1
     # absent the bandaid to completely remove it later.
     # https://phabricator.wikimedia.org/T357616
