@@ -7,11 +7,6 @@ class deployment::deployment_server(
 ) {
     include ::redis::client::python
 
-    ensure_packages([
-        'python-gitdb',
-        'python-git',
-        ])
-
     file { '/usr/local/bin/git-new-workdir':
         source  => 'puppet:///modules/deployment/git-new-workdir',
         mode    => '0555',
