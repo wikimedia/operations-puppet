@@ -53,7 +53,13 @@ profile::lvs::realserver::pools:
       - nginx
 
 profile::query_service::use_revisions: true
-
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - wdqs-ldf.discovery.wmnet
+    - wdqs.svc.%{::site}.wmnet
+    - wdqs.wikimedia.org
+    - query.wikidata.org
 profile::tlsproxy::envoy::global_cert_name: "wdqs.discovery.wmnet"
 profile::tlsproxy::envoy::listen_ipv6: true
 
