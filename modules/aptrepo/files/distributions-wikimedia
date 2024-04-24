@@ -153,6 +153,7 @@ Components: main
  thirdparty/bigtop15
  thirdparty/ceph-octopus
  thirdparty/ceph-quincy
+ thirdparty/ceph-reef
  thirdparty/ci
  thirdparty/conda
  thirdparty/confluent
@@ -191,6 +192,7 @@ Update:
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-quincy
+ thirdparty/ceph-reef
  thirdparty/conda
  thirdparty/docker-ci-bullseye
  thirdparty/gitlab-bullseye
