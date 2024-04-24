@@ -7,6 +7,7 @@ class profile::idp::memcached (
     Boolean             $enable_tls       = lookup('profile::idp::memcached::enable_tls'),
     Stdlib::Unixpath    $ssl_cert         = lookup('profile::idp::memcached::ssl_cert'),
     Stdlib::Unixpath    $ssl_key          = lookup('profile::idp::memcached::ssl_key'),
+    Boolean             $auto_restarts    = lookup('profile::idp::memcached::auto_restarts'),
 ) {
     class { 'memcached':
         enable_16      => debian::codename::eq('buster'),
@@ -55,5 +56,10 @@ class profile::idp::memcached (
         notrack => true,
         port    => $memcached::port,
         srange  => $apereo_cas::idp_nodes,
+    }
+
+    if $auto_restarts {
+        profile::auto_restarts::service { 'mcrouter': }
+        profile::auto_restarts::service { 'memcached': }
     }
 }
