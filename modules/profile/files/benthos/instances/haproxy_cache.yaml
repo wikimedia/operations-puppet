@@ -198,7 +198,7 @@ output:
             compression: "snappy"
             tls:
               enabled: true
-              root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+              root_cas_file: "${ROOT_CAS_FILE}"
               skip_cert_verify: false
           processors:
             - mapping: |
@@ -212,7 +212,7 @@ output:
             compression: "snappy"
             tls:
               enabled: true
-              root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
+              root_cas_file: "${ROOT_CAS_FILE}"
               skip_cert_verify: false
 
 metrics:

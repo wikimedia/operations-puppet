@@ -20,6 +20,7 @@ profile::benthos::instances:
     env_variables:
       socket_address: *benthos_address
       webrequest_topic: "webrequest_text_test"
+      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       pipeline_threads: -1
       benthos_fqdn: '%{facts.fqdn}'
       benthos_source: "%{lookup('cache::cluster')}"
