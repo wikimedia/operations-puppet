@@ -15,19 +15,15 @@ profile::resolving::domain_search:
 profile::prometheus::ops::storage_retention_size: 80GB
 
 profile::envoy::ensure: present
-profile::tlsproxy::envoy::services:
-   - server_names:
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+   hosts:
      - 'prometheus'
-     - 'prometheus-eqiad.wikimedia.org'
-     - 'prometheus-codfw.wikimedia.org'
-     - 'prometheus-esams.wikimedia.org'
-     - 'prometheus-ulsfo.wikimedia.org'
-     - 'prometheus-eqsin.wikimedia.org'
-     - 'prometheus-drmrs.wikimedia.org'
-     port: 80
-     cert_name: 'prometheus.wikimedia.org'
+     - 'prometheus-%{::site}.wikimedia.org'
+     - 'prometheus.svc.%{::site}.wmnet'
+     - "%{facts.networking.fqdn}"
+profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
-profile::tlsproxy::envoy::sni_support: 'strict'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
