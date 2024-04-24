@@ -31,4 +31,6 @@ class profile::idp::build {
         port   => [873],
         srange => wmflib::role::hosts('apt_repo'),
     }
+
+    profile::auto_restarts::service { 'rsync': }
 }
