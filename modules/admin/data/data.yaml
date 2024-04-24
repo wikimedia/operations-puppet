@@ -953,7 +953,7 @@ groups:
   analytics-product-users:
     gid: 820
     description: Group of users for managing WMF Product Analytics-related jobs
-    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, hghani, osefu, kcvelaga]
+    members: [bearloga, nettrom, mneisler, conniecc1, mayakpwiki, snowick, jiawang, iflorez, osefu, kcvelaga]
     privileges: ['ALL = (analytics-product) NOPASSWD: ALL']
     system_members: [analytics-product]
     approval:
@@ -1044,7 +1044,7 @@ groups:
   airflow-analytics-product-admins:
     gid: 840
     description: Group of users for managing Product Analytics related analytics/data jobs and deploying airflow-dags/analytics_product
-    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf]
+    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani]
     privileges: [
       'ALL = (analytics-product) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
