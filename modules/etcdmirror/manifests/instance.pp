@@ -16,12 +16,16 @@
 #
 # [*enable*] If service is to be enabled or not
 #
+# [*src_ignore_keys_regex*] Optional fully anchored regex for keys that should
+#                           not be replicated.
+#
 define etcdmirror::instance(
     Stdlib::HTTPUrl  $src,
     Stdlib::Unixpath $src_path,
     Stdlib::HTTPUrl  $dst,
     Stdlib::Unixpath $dst_path,
-    Boolean          $enable
+    Boolean          $enable,
+    Optional[String] $src_ignore_keys_regex = undef
 ) {
     ensure_packages('etcd-mirror')
 
@@ -38,23 +42,28 @@ define etcdmirror::instance(
         enable => $enable,
     }
 
+    $src_ignore_keys_regex_flag = $src_ignore_keys_regex ? {
+        undef   => '',
+        default => "--src-ignore-keys-regex '${src_ignore_keys_regex}'"
+    }
+
     systemd::service { $prefix:
-        ensure         => absent,
+        ensure         => present,
         content        => template('etcdmirror/initscripts/etcd-mirror.systemd.erb'),
         restart        => false,
         service_params => $service_params,
     }
 
     file { "/usr/local/sbin/reload-${prefix}":
-        ensure  => absent,
-        content => inline_template("#!/bin/bash\n/usr/bin/etcd-mirror --strip --reload --src-prefix ${src_path} --dst-prefix ${dst_path} ${src} ${dst}"),
+        ensure  => present,
+        content => inline_template("#!/bin/bash\n/usr/bin/etcd-mirror --strip --reload --src-prefix ${src_path} --dst-prefix ${dst_path} ${src_ignore_keys_regex_flag} ${src} ${dst}"),
         mode    => '0544',
         owner   => 'root',
         group   => 'root',
     }
 
     systemd::syslog { $prefix:
-        ensure       => absent,
+        ensure       => present,
         owner        => 'root',
         group        => 'root',
         log_filename => 'syslog.log',

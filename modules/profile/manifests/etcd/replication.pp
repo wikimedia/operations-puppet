@@ -37,10 +37,11 @@ class profile::etcd::replication(
 
     $hosts = fqdn_rotate($origin['servers'])
     etcdmirror::instance { $resource_title:
-        src      => "https://${hosts[0]}:${src_port}",
-        src_path => $origin['path'],
-        dst      => $dst_url,
-        dst_path => $destination_path,
-        enable   => $active,
+        src                   => "https://${hosts[0]}:${src_port}",
+        src_path              => $origin['path'],
+        src_ignore_keys_regex => $origin['ignore_keys_regex'],
+        dst                   => $dst_url,
+        dst_path              => $destination_path,
+        enable                => $active,
     }
 }
