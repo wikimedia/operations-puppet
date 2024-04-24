@@ -272,7 +272,7 @@ maps-master: P{O:maps::master}
 maps-master-codfw: A:maps-master and A:codfw
 maps-master-eqiad: A:maps-master and A:eqiad
 maps-canary: P{maps1009.eqiad.wmnet}
-matomo: P{O:piwik}
+matomo: P{O:matomo}
 mcrouter: P{P:mediawiki::mcrouter_wancache or P:mediawiki::mcrouter_exporter}
 mcrouter-codfw: A:mcrouter and A:codfw
 mcrouter-eqiad: A:mcrouter and A:eqiad
@@ -440,7 +440,7 @@ zookeeper-test: P{O:zookeeper::test}
 zookeeper-all: A:zookeeper-flink or A:zookeeper-main-eqiad or A:zookeeper-main-codfw or A:zookeeper-druid-public or A:zookeeper-druid-analytics or A:zookeeper-analytics or A:zookeeper-test
 
 # Miscellaneous groups
-misc-analytics: P{O:statistics::web or O:piwik or O:analytics_cluster::webserver} or A:eventlogging
+misc-analytics: P{O:statistics::web or O:matomo or O:analytics_cluster::webserver} or A:eventlogging
 misc-devel: P{O:webperf or O:arclamp or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:insetup
 #### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ####
