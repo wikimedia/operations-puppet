@@ -3,5 +3,9 @@
 # This module declares the Python client library for redis.
 #
 class redis::client::python {
-    ensure_packages('python-redis')
+    if (debian::codename::ge('bullseye')) {
+        ensure_packages('python3-redis')
+    } else {
+        ensure_packages('python-redis')
+    }
 }
