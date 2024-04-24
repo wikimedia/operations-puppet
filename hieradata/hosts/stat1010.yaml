@@ -1,2 +1,5 @@
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# This stat server has a GPU card present
+profile::amd_gpu::rocm_version: '54'
