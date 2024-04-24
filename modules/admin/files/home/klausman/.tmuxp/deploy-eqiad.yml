@@ -1,0 +1,14 @@
+session_name: k8s deploy eqiad
+global_options:
+  default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
+windows:
+- window_name: k8s deplot
+  suppress_history: false
+  layout: even-vertical
+  panes:
+  - shell_command:
+    - kube_env admin ml-serve-eqiad
+    - watch kubectl get pods -o wide -A --field-selector status.phase!=Running -o wide\|sed -e \''s/\ *<none.*//g'\'
+  - shell_command:
+    - kube_env admin ml-serve-codfw
+    - cd /srv/deployment-charts/helmfile.d/

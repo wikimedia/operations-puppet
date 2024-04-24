@@ -1,0 +1,7 @@
+session_name: deploymentsrv root
+global_options:
+  default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
+windows:
+- window_name: rootwin
+  panes:
+    - shell_command: cd /srv/deployment-charts
