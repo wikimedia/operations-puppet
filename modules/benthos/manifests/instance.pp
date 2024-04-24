@@ -46,4 +46,6 @@ define benthos::instance(
         restart => true,
         require => File[$config_path],
     }
+
+    profile::auto_restarts::service { $service_name: }
 }
