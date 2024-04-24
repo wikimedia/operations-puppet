@@ -61,4 +61,5 @@ class profile::thanos::httpd (
     }
 
     profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 }
