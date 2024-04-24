@@ -232,6 +232,11 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 CAPTCHA_CHALLENGE_FUNCT = 'signups.forms.captcha_input_generator'
 CAPTCHA_IMAGE_SIZE = (130,40)
 
+<%- if @enable_api -%>
+# Bitu API
+ENABLE_API = True
+<%- end -%>
+
 <%- if @install_via_git -%>
 STATICFILES_DIRS = [
   '/srv/idm/bitu/src/bitu/static/',

@@ -39,4 +39,7 @@ profile::idm::ldap_dn: 'cn=bitu,ou=profile,dc=wikimedia,dc=org'
 # MediaWiki OIDC callback
 profile::idm::mediaback_callback: 'https://idm-test.wikimedia.org/complete/mediawiki'
 
+# Bitu API
+profile::idm::enable_api: true
+
 profile::firewall::provider: nftables

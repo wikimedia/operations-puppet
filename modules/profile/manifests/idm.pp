@@ -27,7 +27,8 @@ class profile::idm(
     Stdlib::Port        $redis_port                = lookup('profile::idm::redis_port', {'default_value'                   => 6973}),
     Integer             $redis_maxmem              = lookup('profile::idm::redis_maxmem', {'default_value'                 => 1610612736 }),
     Boolean             $enable_monitoring         = lookup('profile::idm::enable_monitoring'),
-    String              $config_template           = lookup('profile::idm::config_template', {'default_value'              => 'idm/idm-django-settings.erb'})
+    String              $config_template           = lookup('profile::idm::config_template', {'default_value'              => 'idm/idm-django-settings.erb'}),
+    Boolean             $enable_api                = lookup('profile::idm::enable_api', {'default_value'                   => false})
 ) {
 
     ensure_packages(['python3-django-uwsgi'])
