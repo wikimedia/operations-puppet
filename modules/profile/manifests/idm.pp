@@ -182,6 +182,8 @@ class profile::idm(
     profile::auto_restarts::service { 'rq-bitu':
         ensure => $job_state,
     }
+    profile::auto_restarts::service { 'uwsgi-bitu':}
+
 
     if $enable_monitoring {
         prometheus::blackbox::check::http { $service_fqdn:
