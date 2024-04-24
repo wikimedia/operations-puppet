@@ -199,7 +199,7 @@ output:
             tls:
               enabled: true
               root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-              skip_cert_verify: true
+              skip_cert_verify: false
           processors:
             - mapping: |
                 root = this
@@ -213,7 +213,7 @@ output:
             tls:
               enabled: true
               root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-              skip_cert_verify: true
+              skip_cert_verify: false
 
 metrics:
   prometheus:
