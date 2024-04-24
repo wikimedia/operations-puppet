@@ -34,6 +34,11 @@ profile::lvs::realserver::pools:
         - wcqs-blazegraph
         - nginx
 
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - wcqs.svc.%{::site}.wmnet
+    - commons-query.wikimedia.org
 profile::tlsproxy::envoy::global_cert_name: "wcqs.discovery.wmnet"
 
 profile::query_service::blazegraph::monitoring_enabled: true
