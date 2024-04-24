@@ -6,5 +6,7 @@ class profile::parsoid::testreduce(
         install_node => $install_node,
     }
 
+    profile::auto_restarts::service { 'envoyproxy': }
+
     ensure_packages(['make', 'g++'])
 }
