@@ -56,15 +56,14 @@ pipeline:
                 HAPROXYTIME: '%{HOUR:haproxy_hour}:%{MINUTE:haproxy_minute}(?::%{SECOND:haproxy_second})'
                 HAPROXYDATE: '%{MONTHDAY:haproxy_monthday}/%{MONTH:haproxy_month}/%{YEAR:haproxy_year}:%{HAPROXYTIME:haproxy_time}.%{INT:haproxy_milliseconds:int}'
                 HAPROXYCAPTUREDREQUESTHEADERS: '%{DATA:uri_host}\|(%{DATA:referer})?\|(%{DATA:user_agent})?\|(%{DATA:accept_language})?\|(%{DATA:range})?\|(?:%{DATA:accept})?\|(?:%{DATA:tls})?'
-                HAPROXYCAPTUREDRESPONSEHEADERS: '%{DATA:cache_status}\|%{DATA:content_type}\|%{DATA:x_analytics}\|%{DATA:x_cache}\|%{DATA:server}'
-                MESSAGELOG: '%{NUMBER:pid} %{IP:client_ip}:%{INT:client_port} %{INT:haproxy_uniq_id} \[%{HAPROXYDATE:accept_date}\] %{NOTSPACE:frontend_name} %{NOTSPACE:backend_name}/%{NOTSPACE:server_name} %{INT:time_request}/%{INT:time_queue}/%{INT:time_backend_connect}/%{INT:time_backend_response}/%{NOTSPACE:time_duration} %{INT:http_status_code} %{NOTSPACE:bytes_read} %{DATA:captured_request_cookie} %{DATA:captured_response_cookie} %{NOTSPACE:termination_state} %{INT:actconn}/%{INT:feconn}/%{INT:beconn}/%{INT:srvconn}/%{NOTSPACE:retries} %{INT:srv_queue}/%{INT:backend_queue} \{(%{HAPROXYCAPTUREDREQUESTHEADERS})?\}( )?\{(%{HAPROXYCAPTUREDRESPONSEHEADERS})?\}( )?%{WORD:http_method} (%{URIPROTO:http_proto}://)?(?:%{USER:http_user}(?::[^@]*)?@)?()?%{NOTSPACE:uri_path} (?:%{NOTSPACE:uri_query})?'
+                HAPROXYCAPTUREDRESPONSEHEADERS: '%{DATA:cache_status}\|%{DATA:content_type}\|%{DATA:x_analytics}\|%{DATA:x_cache}\|%{DATA:backend}'
+                MESSAGELOG: '%{NUMBER:haproxy_pid:int} %{IP:ip}:%{INT:client_port} %{INT:sequence:int} \[%{HAPROXYDATE:accept_date}\] %{NOTSPACE:frontend_name} %{NOTSPACE:backend_name}/%{NOTSPACE:server_name} %{INT:time_request}/%{INT:time_queue}/%{INT:time_backend_connect}/%{INT:time_backend_response}/%{NOTSPACE:time_duration} %{INT:http_status} %{NOTSPACE:response_size} %{DATA:captured_request_cookie} %{DATA:captured_response_cookie} %{NOTSPACE:termination_state} %{INT:actconn}/%{INT:feconn}/%{INT:beconn}/%{INT:srvconn}/%{NOTSPACE:retries} %{INT:srv_queue}/%{INT:backend_queue} \{(%{HAPROXYCAPTUREDREQUESTHEADERS})?\}( )?\{(%{HAPROXYCAPTUREDRESPONSEHEADERS})?\}( )?%{WORD:http_method} (%{URIPROTO:http_proto}://)?(?:%{USER:http_user}(?::[^@]*)?@)?()?%{NOTSPACE:uri_path} (?:%{NOTSPACE:uri_query})?'
         result_map: |
           root.result = this.without(
                "actconn",
                "backend_name",
                "backend_queue",
                "beconn",
-               "bytes_read",
                "captured_request_cookie",
                "captured_response_cookie",
                "client_port",
@@ -94,28 +93,14 @@ pipeline:
           root.time_firstbyte_ns = (this.time_backend_response.number() * 1000000).int64()
           root.result.time_backend_response = deleted()
 
-          # rename server key to backend
-          root.backend = this.server
-          root.result.server = deleted()
-          # rename http_status_code key to http_status
-          root.http_status = this.http_status_code
-          root.result.http_status_code = deleted()
-          # rename client_ip to ip
-          root.ip = this.client_ip
-          root.result.client_ip = deleted()
-          # rename bytes_read to response_size (TODO: what if NaN?)
-          root.response_size = this.bytes_read.number()
-          root.result.bytes_read = deleted()
-          # rename haproxy_uniq_id to sequence
-          root.sequence = this.haproxy_uniq_id.number()
-          root.result.haproxy_uniq_id = deleted()
           # Parse accept_date into expected format
           # root.dt is the HAProxy request timestamp
           # while meta.dt is the Benthos processing timestamp
           root.dt = this.accept_date.ts_parse("02/Jan/2006:15:04:05.000").ts_format("2006-01-02T15:04:05Z", "UTC")
           root.result.accept_date = deleted()
-          # haproxy_pid should be a number
-          root.haproxy_pid = this.pid.number()
+
+          # To be sure response size is actually converted to a number
+          root.result.response_size = this.response_size.number().or(0)
 
           # Metadata
           meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
