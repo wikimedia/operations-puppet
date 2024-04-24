@@ -37,4 +37,6 @@ class idm::redis (
         settings => $redis_settings,
         notify   => Service['uwsgi-bitu', 'rq-bitu'],
     }
+
+    profile::auto_restarts::service { 'redis-server': }
 }
