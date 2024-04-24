@@ -32,6 +32,10 @@ profile::lvs::realserver::pools:
       - nginx
 profile::query_service::use_revisions: true
 
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - wdqs-internal.svc.%{::site}.wmnet
 profile::tlsproxy::envoy::global_cert_name: "wdqs-internal.discovery.wmnet"
 profile::tlsproxy::envoy::listen_ipv6: true
 
