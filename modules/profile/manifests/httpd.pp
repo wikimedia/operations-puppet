@@ -27,4 +27,7 @@ class profile::httpd (
     class { 'httpd':
         * => wmflib::resource::dump_params(),
     }
+
+    profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 }
