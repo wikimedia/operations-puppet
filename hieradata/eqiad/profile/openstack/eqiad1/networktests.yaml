@@ -26,6 +26,6 @@ profile::openstack::eqiad1::networktests::envvars:
     KEYSTONE_URL: https://openstack.eqiad1.wikimediacloud.org:25000/v3
     DUMPSFILE: /mnt/nfs/dumps-clouddumps1001.wikimedia.org/index.html
     DUMPS_FLOATING_VM_FQDN: tools-bastion-13.tools.eqiad1.wikimedia.cloud
-    DUMPS_NO_FLOATING_VM: tools-k8s-worker-104.tools.eqiad1.wikimedia.cloud
+    DUMPS_NO_FLOATING_VM: tools-k8s-worker-nfs-56.tools.eqiad1.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
