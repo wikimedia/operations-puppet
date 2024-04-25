@@ -5,8 +5,8 @@ profile::openstack::eqiad1::networktests::envvars:
     FLOATING_VM_IP: 185.15.56.87
     VM_IP_PREFIX: 172.16.
     NO_FLOATING_VM: tools-imagebuilder-2.tools.eqiad1.wikimedia.cloud
-    GENERAL_PUPPETMASTER: cloud-puppetmaster-05.cloudinfra.eqiad1.wikimedia.cloud
-    LOCAL_PUPPETMASTER: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad1.wikimedia.cloud
+    GENERAL_PUPPETMASTER: cloudinfra-cloudvps-puppetserver-1.cloudinfra.eqiad1.wikimedia.cloud
+    LOCAL_PUPPETMASTER: cloudinfra-internal-puppetserver-1.cloudinfra.eqiad1.wikimedia.cloud
     CLOUDGW_A_IP: 185.15.56.245
     CLOUDGW_B_IP: 185.15.56.246
     CLOUDGW_VIRT_IP: 185.15.56.237
@@ -25,7 +25,7 @@ profile::openstack::eqiad1::networktests::envvars:
     DNS_AUTH_DOMAIN_A_RECORD: 185.15.56.11
     KEYSTONE_URL: https://openstack.eqiad1.wikimediacloud.org:25000/v3
     DUMPSFILE: /mnt/nfs/dumps-clouddumps1001.wikimedia.org/index.html
-    DUMPS_FLOATING_VM_FQDN: tools-sgebastion-11.tools.eqiad1.wikimedia.cloud
-    DUMPS_NO_FLOATING_VM: tools-k8s-worker-79.tools.eqiad1.wikimedia.cloud
+    DUMPS_FLOATING_VM_FQDN: tools-bastion-13.tools.eqiad1.wikimedia.cloud
+    DUMPS_NO_FLOATING_VM: tools-k8s-worker-104.tools.eqiad1.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
