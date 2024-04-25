@@ -1,1 +1,1 @@
-profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::cluster_bootstrap: false

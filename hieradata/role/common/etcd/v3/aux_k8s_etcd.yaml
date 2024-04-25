@@ -4,7 +4,7 @@ profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 
 profile::etcd::v3::cluster_name: "aux_k8s_etcd.%{::site}"
-profile::etcd::v3::cluster_bootstrap: true
+profile::etcd::v3::cluster_bootstrap: false
 profile::etcd::v3::discovery: "dns:aux-k8s-etcd.%{::site}.wmnet"
 # Firewall used for access limiting instead of certs
 profile::etcd::v3::use_client_certs: false
