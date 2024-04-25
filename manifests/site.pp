@@ -2467,6 +2467,12 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
 node /^scandium\.eqiad\./ {
     role(parsoid::testing)
 }
+# parsoidtest1001 is a parsoid test server. it replaced scandium.
+# This is now just like an MW appserver plus parsoid repo.
+# roundtrip and visualdiff testing moved to testreduce* (T257906)
+node /^parsoidtest1001\.eqiad\./ {
+    role(parsoid::testing)
+}
 
 node /^schema[12]00[3-4]\.(eqiad|codfw)\./ {
     role(eventschemas::service)
