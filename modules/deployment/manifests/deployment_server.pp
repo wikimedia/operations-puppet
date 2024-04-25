@@ -5,7 +5,6 @@
 class deployment::deployment_server(
     $trebuchet_email = "trebuchet@${::fqdn}",
 ) {
-    include ::redis::client::python
 
     file { '/usr/local/bin/git-new-workdir':
         source  => 'puppet:///modules/deployment/git-new-workdir',
