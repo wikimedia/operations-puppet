@@ -18,6 +18,8 @@ class alertmanager (
         ensure => running,
     }
 
+    profile::auto_restarts::service { 'alertmanager-webhook-logger': }
+
     # Specify a retention time to keep silence history for longer
     $base_args = "--data.retention=${data_retention_time}"
 
