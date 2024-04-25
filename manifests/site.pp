@@ -1247,9 +1247,14 @@ node /^lists1001\.wikimedia\./ {
 }
 
 #add new list server T342374
-node /^lists1004\.eqiad\./ {
-    role(insetup::unowned)
+node /^lists1004\.wikimedia\./ {
+    role(insetup::collaboration_services)
 }
+
+node /^lists2001\.wikimedia\./ {
+    role(insetup::collaboration_services)
+}
+
 node /^ganeti10(09|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {
     role(ganeti)
 }
@@ -1805,10 +1810,6 @@ node /^ldap-replica200[5-6]\.wikimedia\./ {
 # Read-only ldap replicas in codfw (bookworm)
 node /^ldap-replica200[7-8]\.wikimedia\./ {
     role(insetup::infrastructure_foundations)
-}
-
-node /^lists2001\.codfw\./ {
-    role(insetup::unowned)
 }
 
 # Logging data nodes, hdd class (codfw)
