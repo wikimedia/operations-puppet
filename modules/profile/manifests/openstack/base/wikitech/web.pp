@@ -86,4 +86,7 @@ class profile::openstack::base::wikitech::web(
         gerrit_api_user                    => $gerrit_api_user,
         gerrit_api_password                => $gerrit_api_password,
     }
+
+    profile::auto_restarts::service { 'apache2': }
+    profile::auto_restarts::service { 'envoyproxy': }
 }
