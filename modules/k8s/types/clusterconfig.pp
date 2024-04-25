@@ -57,9 +57,6 @@
 # @param [Array[Stdlib::HTTPSUrl, 3]] etcd_urls
 #     URLs of all etcd nodes for this cluster.
 #
-# @param [Stdlib::Host] etcd_srv_name
-#     Service record domain name of the etcd cluster (as defined in profile::etcd::v3::discovery).
-#
 # @param [Array[Stdlib::Port, 2, 2]] service_node_port_range
 #     A port range to reserve for services with NodePort visibility.
 #     This must not overlap with the ephemeral port range on nodes.
@@ -127,7 +124,6 @@ type K8s::ClusterConfig = Struct[{
   'service_cluster_cidr'    => K8s::ClusterCIDR,
   'cluster_cidr'            => K8s::ClusterCIDR,
   'etcd_urls'               => Array[Stdlib::HTTPSUrl, 3],
-  'etcd_srv_name'           => Stdlib::Host,
   'service_node_port_range' => Array[Stdlib::Port, 2, 2],
   'ipv6dualstack'           => Boolean,
   'infra_pod'               => String[1],
