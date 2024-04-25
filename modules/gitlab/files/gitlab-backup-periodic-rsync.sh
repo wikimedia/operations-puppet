@@ -20,10 +20,11 @@ fi
 case "${backup_type}" in
   "data")
     /usr/bin/rsync -avp --delete \
-      --exclude='*.sh' \
       --exclude='gitlab_config_*.tar' \
       --exclude='failover_gitlab_backup.tar' \
-      ${backup_dir}/*_gitlab_backup.tar \
+      --include='*_gitlab_backup.tar' \
+      --exclude='*' \
+      ${backup_dir}/ \
       "rsync://${backup_destination_host}/data-backup"
     ;;
   "config")
