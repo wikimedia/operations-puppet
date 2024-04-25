@@ -6464,6 +6464,10 @@ ldap_only_users:
   ldoan:
     ensure: absent
     realname: Linnea Doan
+  linafaridwmde:
+    ensure: present
+    realname: Lina Farid
+    email: lina.farid@wikimedia.de
   lmixter:
     ensure: present
     realname: Leighanna Mixter
