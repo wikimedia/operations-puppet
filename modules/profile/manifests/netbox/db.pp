@@ -20,6 +20,7 @@ class profile::netbox::db (
     Array[Stdlib::Host] $frontends            = lookup('profile::netbox::db::frontends'),
     Boolean             $ipv6_ok              = lookup('profile::netbox::db::ipv6_ok'),
     Boolean             $do_backups           = lookup('profile::netbox::db::do_backup'),
+    Boolean             $auto_restart         = lookup('profile::netbox::db::auto_restart'),
 ) {
     # Inspired by modules/puppetprimary/manifests/puppetdb/database.pp
     if $primary == $facts['networking']['fqdn'] {
@@ -178,5 +179,13 @@ class profile::netbox::db (
         backup::set { 'netbox-postgres':
             jobdefaults => 'Daily-productionEqiad', # full backups every day
         }
+    }
+
+    if $auto_restart {
+        $pgversion = $::lsbdistcodename ? {
+            'bullseye'  => 13,
+        }
+
+        profile::auto_restarts::service { "postgresql@${pgversion}-main": }
     }
 }
