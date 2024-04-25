@@ -26,6 +26,10 @@ class profile::kerberos::kadminserver (
             ensure  => running,
             require => Package['krb5-admin-server'],
         }
+
+        profile::auto_restarts::service { 'krb5-admin-server':
+            ensure => stdlib::ensure($is_krb_master)
+        }
     } else {
         $ensure_motd = 'present'
     }
