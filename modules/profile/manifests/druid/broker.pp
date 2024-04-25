@@ -13,7 +13,7 @@
 class profile::druid::broker(
     Hash[String, Any] $properties            = lookup('profile::druid::broker::properties', {'default_value' => {}}),
     Hash[String, String] $env                = lookup('profile::druid::broker::env', {'default_value' => {}}),
-    String $ferm_srange                      = lookup('profile::druid::broker::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Optional[String] $ferm_srange            = lookup('profile::druid::broker::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
     Optional[Array[String]] $firewall_access = lookup('profile::druid::broker::firewall_access'),
     Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
     Boolean $monitoring_enabled              = lookup('profile::druid::broker::monitoring_enabled', {'default_value' => false}),
