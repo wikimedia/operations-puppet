@@ -42,4 +42,6 @@ class statistics::rsyncd(
         hosts_allow   => $hosts_allow,
         auto_firewall => true,
     }
+
+    profile::auto_restarts::service { 'rsync': }
 }
