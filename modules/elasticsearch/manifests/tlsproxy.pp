@@ -39,12 +39,10 @@ define elasticsearch::tlsproxy (
         enable_http2      => $enable_http2,
         cfssl_paths       => $cfssl_paths,
     }
-
     $check_command = $acme_chief ? {
         true    => 'check_ssl_on_port_letsencrypt',
         default => 'check_ssl_on_port',
     }
-
     monitoring::service { "elasticsearch-https-${title}":
         ensure        => present,
         description   => "Elasticsearch HTTPS for ${title}",
