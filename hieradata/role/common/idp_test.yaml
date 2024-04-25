@@ -84,7 +84,7 @@ profile::idp::services:
   mpic_next:
     id: 11
     service_class: 'OidcRegisteredService'
-    service_id: 'https://mpic-next\.wikimedia\.org(/.*)?'
+    service_id: 'http://mpic-next\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
