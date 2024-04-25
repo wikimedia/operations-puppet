@@ -52,6 +52,8 @@ class karapace (
         subscribe => File['/etc/karapace/karapace.config.json'],
     }
 
+    profile::auto_restarts::service { 'karapace': }
+
     monitoring::service { 'karapace':
         ensure        => present,
         description   => 'karapace http server',
