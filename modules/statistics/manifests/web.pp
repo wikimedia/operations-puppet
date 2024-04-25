@@ -41,4 +41,6 @@ class statistics::web {
         # the default timeout of 300 is too low
         timeout => 1000,
     }
+
+    profile::auto_restarts::service { 'rsync': }
 }
