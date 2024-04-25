@@ -13,9 +13,9 @@ class profile::releases::mediawiki (
     $jenkins_service_monitor = lookup('profile::releases::mediawiki::jenkins_service_monitor'),
     $jenkins_java_home = lookup('profile::releases::mediawiki::jenkins_java_home'),
 ){
-    include ::profile::ci::pipeline::publisher
-    include ::profile::docker::engine
-    include ::profile::java
+    include profile::ci::pipeline::publisher
+    include profile::docker::engine
+    include profile::java
     Class['::profile::java'] ~> Class['::jenkins']
 
     class { '::jenkins':
@@ -63,6 +63,9 @@ class profile::releases::mediawiki (
     profile::auto_restarts::service { 'jenkins':
         ensure => $jenkins_restart_ensure,
     }
+
+    profile::auto_restarts::service { 'containerd': }
+    profile::auto_restarts::service { 'docker': }
 
     # Controller connects to itself via the fqdn / primary IP ipaddress
     class { 'jenkins::agent':
