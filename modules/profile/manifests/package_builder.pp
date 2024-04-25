@@ -14,6 +14,8 @@ class profile::package_builder {
         path        => '/var/cache/pbuilder/result',
     }
 
+    profile::auto_restarts::service { 'rsync': }
+
     firewall::service { 'package_builder_rsync':
         proto    => 'tcp',
         port     => 873,
