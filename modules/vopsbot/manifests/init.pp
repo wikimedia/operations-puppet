@@ -109,4 +109,6 @@ class vopsbot(
         content              => template('vopsbot/systemd.unit.erb'),
         require              => Systemd::Sysuser[$daemon_user],
     }
+
+    profile::auto_restarts::service { 'vopsbot': }
 }
