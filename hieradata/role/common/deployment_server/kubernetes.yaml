@@ -429,3 +429,5 @@ profile::mediawiki::deployment::server::enable_auto_deploy: true
 # See https://releases-jenkins.wikimedia.org/job/Automatic%20branch%20cut/configure for the schedule
 # of the branch cut job that auto deployment relies on.
 profile::mediawiki::deployment::server::auto_deploy_interval: Mon *-*-* 20:00:00 America/Los_Angeles
+profile::mediawiki::deployment::server::auto_clean_interval: Mon *-*-* 21:00:00 America/Los_Angeles
+

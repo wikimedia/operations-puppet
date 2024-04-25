@@ -22,6 +22,7 @@ class profile::mediawiki::deployment::server(
     }]] $sources  = lookup('scap::sources'),
     Boolean $enable_auto_deploy                              = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
     Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
+    Optional[Systemd::Timer::Datetime] $auto_clean_interval  = lookup('profile::mediawiki::deployment::server::auto_clean_interval', {default_value => undef}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -180,6 +181,18 @@ class profile::mediawiki::deployment::server(
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
             interval                => {'start' => 'OnCalendar', 'interval' => $auto_deploy_interval},
+            monitoring_enabled      => false,
+            ignore_errors           => true,
+        }
+        systemd::timer::job { 'train-clean':
+            ensure                  => $primary_deploy_ensure,
+            description             => 'Clean up old train checkouts',
+            user                    => 'mwpresync',
+            command                 => '/usr/bin/scap clean auto',
+            send_mail               => true,
+            send_mail_only_on_error => false,
+            send_mail_to            => 'releng@lists.wikimedia.org',
+            interval                => {'start' => 'OnCalendar', 'interval' => $auto_clean_interval},
             monitoring_enabled      => false,
             ignore_errors           => true,
         }
