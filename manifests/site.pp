@@ -2437,12 +2437,6 @@ node /^people(1004|2003)\.(eqiad|codfw)\./ {
     role(microsites::peopleweb)
 }
 
-# scandium is a parsoid test server. it replaced ruthenium.
-# This is now just like an MW appserver plus parsoid repo.
-# roundtrip and visualdiff testing moved to testreduce* (T257906)
-node /^scandium\.eqiad\./ {
-    role(parsoid::testing)
-}
 # parsoidtest1001 is a parsoid test server. it replaced scandium.
 # This is now just like an MW appserver plus parsoid repo.
 # roundtrip and visualdiff testing moved to testreduce* (T257906)

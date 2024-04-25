@@ -132,7 +132,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cumin1002':
     - partman/flat.cfg
     - virtual.cfg
-  'cumin*|scandium|parsoidtest1001':
+  'cumin*|parsoidtest1001':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'dns[1-9][0-9][0-9][0-9]':
