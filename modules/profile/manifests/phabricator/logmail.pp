@@ -82,4 +82,16 @@ class profile::phabricator::logmail (
         mysql_slave_port => $mysql_slave_port,
         mysql_db_name    => 'phabricator_maniphest',
     }
-}
+
+    # quarterly wmf qls mail (T362804)
+    phabricator::logmail {'quarterly_wmf_qls':
+        ensure           => $logmail_ensure,
+        rcpt_address     => [ 'abittaker@wikimedia.org', 'aramirez@wikimedia.org', 'aklapper@wikimedia.org' ],
+        sndr_address     => 'aklapper@wikimedia.org',
+        month            => '01,04,07,10',
+        monthday         => 1,
+        require          => Package[$deploy_target],
+        mysql_slave      => $mysql_slave,
+        mysql_slave_port => $mysql_slave_port,
+        mysql_db_name    => 'phabricator_maniphest',
+    }}
