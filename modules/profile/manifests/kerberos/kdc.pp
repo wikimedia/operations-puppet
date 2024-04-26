@@ -134,16 +134,16 @@ class profile::kerberos::kdc (
 
     profile::auto_restarts::service { 'krb5-kdc': }
 
-    ferm::service { 'kerberos_kdc_tcp':
-        proto  => 'tcp',
-        port   => [88],
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'kerberos_kdc_tcp':
+        proto    => 'tcp',
+        port     => 88,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
-    ferm::service { 'kerberos_kdc_udp':
-        proto  => 'udp',
-        port   => [88],
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'kerberos_kdc_udp':
+        proto    => 'udp',
+        port     => 88,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     file { '/srv/backup':

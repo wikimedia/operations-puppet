@@ -28,9 +28,9 @@ class profile::kerberos::replication (
             ensure => present,
         }
 
-        ferm::service { 'kerberos_kpropd_tcp':
+        firewall::service { 'kerberos_kpropd_tcp':
             proto  => 'tcp',
-            port   => [754],
+            port   => 754,
             srange => [$krb_kadmin_primary],
         }
 

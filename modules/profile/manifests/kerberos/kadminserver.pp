@@ -40,16 +40,16 @@ class profile::kerberos::kadminserver (
         content  => template('profile/kerberos/kadminserver/inactive.motd.erb'),
     }
 
-    ferm::service { 'kerberos_kpasswd_tcp':
-        proto  => 'tcp',
-        port   => [464],
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'kerberos_kpasswd_tcp':
+        proto    => 'tcp',
+        port     => 464,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
-    ferm::service { 'kerberos_kpasswd_udp':
-        proto  => 'udp',
-        port   => [464],
-        srange => '$DOMAIN_NETWORKS',
+    firewall::service { 'kerberos_kpasswd_udp':
+        proto    => 'udp',
+        port     => 464,
+        src_sets => ['DOMAIN_NETWORKS'],
     }
 
     # Util script to help generating keytabs
