@@ -20,4 +20,5 @@ class profile::arclamp::redis() {
 
     prometheus::redis_exporter { '6379': }
 
+    profile::auto_restarts::service { 'redis-instance-tcp_6379': }
 }
