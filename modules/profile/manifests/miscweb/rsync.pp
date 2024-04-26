@@ -20,5 +20,7 @@ class profile::miscweb::rsync (
             read_only   => 'no',
             hosts_allow => [$src_host],
         }
+
+        profile::auto_restarts::service { 'rsync': }
     }
 }
