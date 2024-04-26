@@ -1,12 +1,6 @@
 # Stop losing state when away for more than 5 days. Grr.
 unset TMOUT
 
-set_proxies() {
-    export http_proxy="http://webproxy:8080"
-    export https_proxy="$http_proxy"
-}
-
-
 # Stolen from ~jynus/.bashrc
 alias mysqlbinlog='sudo mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias skip-slave-start='sudo systemctl set-environment MYSQLD_OPTS="--skip-slave-start"'
