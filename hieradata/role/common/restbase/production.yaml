@@ -986,6 +986,7 @@ profile::cassandra::instances:
 profile::cassandra::settings:
   start_rpc: false
   tls_cluster_name: "restbase"
+  tls_use_pki: true
   tls_use_pki_truststore: true
   tls_use_pki_keep_old_ca: true
   dc: "%{::site}"
