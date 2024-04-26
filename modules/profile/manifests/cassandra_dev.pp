@@ -25,12 +25,20 @@ class profile::cassandra_dev (
         managehome => true,
     }
 
+    file { "/var/lib/${devuser}/.cassandra":
+        ensure  => 'directory',
+        owner   => $devuser,
+        group   => $devuser,
+        mode    => '0700',
+        require => User[$devuser],
+    }
+
     file { "/var/lib/${devuser}/.cassandra/cqlshrc":
         owner   => $devuser,
         group   => $devuser,
         mode    => '0440',
         content => template('profile/cassandra_dev/cqlshrc.erb'),
-        require => User[$devuser],
+        require => File["/var/lib/${devuser}/.cassandra"],
     }
 
     file { "/var/lib/${devuser}/.cassandra/credentials":
@@ -38,6 +46,6 @@ class profile::cassandra_dev (
         group   => $devuser,
         mode    => '0440',
         content => template('profile/cassandra_dev/credentials.erb'),
-        require => User[$devuser],
+        require => File["/var/lib/${devuser}/.cassandra"],
     }
 }
