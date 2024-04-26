@@ -325,7 +325,34 @@ class profile::kubernetes::deployment_server::global_config (
               },
             ],
           },
-          'instances' => $cassandra_clusters
+          'instances' => $cassandra_clusters,
+        },
+        # Note that this section does _not_ contain the Wikimedia mariadb clusters.
+        'mariadb' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'client',
+                'port' => 3306,
+              },
+            ],
+          },
+          'instances' => {
+            'analytics_meta' => wmflib::role::ips('analytics_cluster::mariadb'),
+          }
+        },
+        'postgresql' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'client',
+                'port' => 5432,
+              },
+            ],
+          },
+          'instances' => {
+            'analytics' => wmflib::role::ips('analytics_cluster::postgresql'),
+          }
         },
       },
       $external_service_redis,
