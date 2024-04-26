@@ -112,6 +112,14 @@ class profile::postfix::mx (
             'reject_unknown_recipient_domain',
         ],
         smtpd_milters                => ['unix:/rspamd/milter.sock'],
+        # Disable local mail delivery
+        local_transport              => 'error:local mail delivery is disabled',
+        # Require mail clients to say helo
+        smtpd_helo_required          => 'yes',
+        # Require mail clients to use standard envelope commands
+        strict_rfc821_envelopes      => 'yes',
+        # Reject egress mail that is not configured
+        smtpd_reject_unlisted_sender => 'yes',
     }
 
     if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
