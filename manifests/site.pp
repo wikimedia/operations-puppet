@@ -1697,7 +1697,11 @@ node /^cloudcontrol10(0[8-9]|1[0])\-dev\.eqiad\./ {
     role(insetup::wmcs)
 }
 
-#new cephosd servers T322760
+# Ceph admin server T363558
+node /^cephadm1001\.eqiad\./ {
+    role(ceph::cephadm)
+}
+# Data Platform - Ceph osd servers T322760
 node /^cephosd100[12345]\.eqiad\./ {
     role(ceph::server)
 }
