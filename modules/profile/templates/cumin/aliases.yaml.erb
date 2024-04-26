@@ -19,12 +19,15 @@ all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
 all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-serve-etcd or A:ml-staging-etcd or A:aux-etcd
 an-conf: P{O:analytics_cluster::zookeeper}
-analytics-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:analytics-airflow or A:analytics-tools or A:analytics-web or A:presto-analytics or A:analytics-launcher
-analytics-airflow: P{O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy or O:analytics_cluster::airflow::platform_eng or O:analytics_cluster::airflow::search or O:analytics_cluster::airflow::analytics_product or O:analytics_cluster::airflow::wmde} or A:analytics-launcher
-analytics-launcher: P{O:analytics_cluster::launcher}
-analytics-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::turnilo::staging or O:analytics_cluster::ui::superset or O:analytics_cluster::ui::superset::staging or O:analytics_cluster::ui::staging or O:analytics_cluster::hadoop::yarn}
-analytics-web: P{O:analytics_cluster::webserver}
-analytics-psql: P{O:analytics_cluster::postgresql}
+an-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:an-airflow or A:an-tools or A:an-web or A:an-presto or A:an-launcher
+an-airflow: P{O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy or O:analytics_cluster::airflow::platform_eng or O:analytics_cluster::airflow::search or O:analytics_cluster::airflow::analytics_product or O:analytics_cluster::airflow::wmde} or A:an-launcher
+an-launcher: P{O:analytics_cluster::launcher}
+an-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::turnilo::staging or O:analytics_cluster::ui::superset or O:analytics_cluster::ui::superset::staging or O:analytics_cluster::ui::staging or O:analytics_cluster::hadoop::yarn}
+an-web: P{O:analytics_cluster::webserver}
+an-psql: P{O:analytics_cluster::postgresql}
+an-presto: P{O:analytics_cluster::presto::server}
+an-presto-canary: P{an-presto1001.eqiad.wmnet}
+an-presto-test: P{O:analytics_test_cluster::presto::server}
 apifeatureusage: P{O:apifeatureusage::logstash}
 apt: P{O:apt_repo}
 apt-staging: P{O:apt_staging}
@@ -188,7 +191,7 @@ hadoop-worker: P{O:analytics_cluster::hadoop::worker}
 hadoop-worker-canary: P{an-worker1100.eqiad.wmnet}
 hadoop-worker-test: P{O:analytics_test_cluster::hadoop::worker}
 hadoop-hdfs-journal-test: P{C:bigtop::hadoop::journalnode} and A:hadoop-worker-test
-hadoop-testcluster: A:hadoop-test or A:hadoop-client-test or A:hadoop-ui-test or A:druid-test or A:presto-analytics-test
+hadoop-testcluster: A:hadoop-test or A:hadoop-client-test or A:hadoop-ui-test or A:druid-test or A:an-presto-test
 hadoop-client: P{O:statistics::explorer}
 hadoop-client-test: P{O:analytics_test_cluster::client}
 hadoop-ui: A:hadoop-yarn
@@ -352,9 +355,6 @@ pki: P{O:pki::root} or P{O:pki::multirootca}
 poolcounter: P{O:poolcounter::server}
 poolcounter-codfw: A:poolcounter and A:codfw
 poolcounter-eqiad: A:poolcounter and A:eqiad
-presto-analytics: P{O:analytics_cluster::presto::server}
-presto-analytics-canary: P{an-presto1001.eqiad.wmnet}
-presto-analytics-test: P{O:analytics_test_cluster::presto::server}
 # after T243057 is done, replace the following with `prometheus: P{O:prometheus}`
 prometheus: P{P:prometheus::ops}
 puppetboard: P{O:puppetboard}
