@@ -10,6 +10,8 @@ class profile::phabricator::logmail (
                                                       { 'default_value' => 'localhost' }),
     String                      $mysql_slave_port   = lookup('phabricator::mysql::slave::port',
                                                       { 'default_value' => '3323' }),
+    String                      $sndr_address       = lookup('profile::phabricator::logmail::sndr_adddress',
+                                                      { 'default_value' => 'phabricator@wikimedia.org' }),
 ){
 
     # logmail must be explictly enabled in Hiera with 'phabricator_logmail: true'
@@ -23,7 +25,7 @@ class profile::phabricator::logmail (
     phabricator::logmail {'community_metrics':
         ensure           => $logmail_ensure,
         rcpt_address     => 'wikitech-l@lists.wikimedia.org',
-        sndr_address     => 'aklapper@wikimedia.org',
+        sndr_address     => $sndr_address,
         monthday         => 1,
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
@@ -35,7 +37,7 @@ class profile::phabricator::logmail (
     phabricator::logmail {'project_changes':
         ensure           => $logmail_ensure,
         rcpt_address     => [ 'phabricator-reports@lists.wikimedia.org' ],
-        sndr_address     => 'aklapper@wikimedia.org',
+        sndr_address     => $sndr_address,
         weekday          => 'Monday',
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
@@ -47,7 +49,7 @@ class profile::phabricator::logmail (
     phabricator::logmail {'mfa_check':
         ensure           => $logmail_ensure,
         rcpt_address     => [ 'aklapper@wikimedia.org' ],
-        sndr_address     => 'aklapper@wikimedia.org',
+        sndr_address     => $sndr_address,
         weekday          => 'Wednesday',
         require          => Package[$deploy_target],
         mysql_slave      => $mysql_slave,
@@ -59,7 +61,7 @@ class profile::phabricator::logmail (
     phabricator::logmail {'yearly_metrics':
         ensure           => $logmail_ensure,
         rcpt_address     => [ 'aklapper@wikimedia.org', 'releng@lists.wikimedia.org' ],
-        sndr_address     => 'aklapper@wikimedia.org',
+        sndr_address     => $sndr_address,
         month            => 1,
         monthday         => 1,
         require          => Package[$deploy_target],
@@ -72,7 +74,7 @@ class profile::phabricator::logmail (
     phabricator::logmail {'quarterly_metrics':
         ensure           => $logmail_ensure,
         rcpt_address     => [ 'oonifade@wikimedia.org', 'aklapper@wikimedia.org' ],
-        sndr_address     => 'aklapper@wikimedia.org',
+        sndr_address     => $sndr_address,
         month            => '01,04,07,10',
         monthday         => 1,
         require          => Package[$deploy_target],
