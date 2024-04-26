@@ -120,6 +120,9 @@ class netbox (
         },
         }
         prometheus::redis_exporter { String($redis_port): }
+
+        $redis_service_name = "redis-instance-tcp_${redis_port}"
+        profile::auto_restarts::service { $redis_service_name: }
     }
 
     systemd::sysuser { 'netbox':
