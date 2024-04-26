@@ -110,5 +110,7 @@ class vopsbot(
         require              => Systemd::Sysuser[$daemon_user],
     }
 
-    profile::auto_restarts::service { 'vopsbot': }
+    profile::auto_restarts::service { 'vopsbot':
+        ensure => stdlib::ensure($run_service)
+    }
 }
