@@ -4,9 +4,6 @@
 #
 cluster: aqs
 
-# Notify the Data Platform SRE team about services on these hosts
-contactgroups: 'admins,team-data-platform'
-
 profile::admin::groups:
     - aqs-admins
     - aqs-roots
@@ -236,7 +233,7 @@ profile::aqs::cassandra_default_consistency: localQuorum
 profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
 
-profile::contacts::role_contacts: ['Data Platform']
+profile::contacts::role_contacts: ['Data Persistence']
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
