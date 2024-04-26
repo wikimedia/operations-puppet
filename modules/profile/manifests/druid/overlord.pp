@@ -7,11 +7,12 @@
 # haver finer control over how Druid accepts indexing tasks.
 #
 class profile::druid::overlord(
-    Hash[String, Any] $properties = lookup('profile::druid::overlord::properties', {'default_value' => {}}),
-    Hash[String, String] $env     = lookup('profile::druid::overlord::env', {'default_value' => {}}),
-    String $ferm_srange           = lookup('profile::druid::overlord::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
-    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
-    Boolean $monitoring_enabled   = lookup('profile::druid::overlord::monitoring_enabled', {'default_value' => false}),
+    Hash[String, Any] $properties            = lookup('profile::druid::overlord::properties', {'default_value' => {}}),
+    Hash[String, String] $env                = lookup('profile::druid::overlord::env', {'default_value' => {}}),
+    Optional[String] $ferm_srange            = lookup('profile::druid::overlord::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Optional[Array[String]] $firewall_access = lookup('profile::druid::overlord::firewall_access'),
+    Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    Boolean $monitoring_enabled              = lookup('profile::druid::overlord::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
@@ -45,10 +46,18 @@ class profile::druid::overlord(
         logger_prefix    => $class_prefix,
     }
 
-    ferm::service { 'druid-overlord':
-        proto  => 'tcp',
-        port   => $::druid::overlord::runtime_properties['druid.port'],
-        srange => $ferm_srange,
+    if $firewall_access {
+        firewall::service { 'druid-overlord':
+            proto    => 'tcp',
+            port     => $::druid::overlord::runtime_properties['druid.port'],
+            src_sets => $firewall_access,
+        }
+    } else {
+        ferm::service { 'druid-overlord':
+            proto  => 'tcp',
+            port   => $::druid::overlord::runtime_properties['druid.port'],
+            srange => $ferm_srange,
+        }
     }
 
     if $monitoring_enabled {

@@ -112,6 +112,7 @@ profile::druid::broker::env:
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
 profile::druid::coordinator::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::druid::coordinator::firewall_access: ~
 profile::druid::coordinator::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
@@ -165,6 +166,7 @@ profile::druid::middlemanager::env:
 # Overlord will accept indexing jobs from Hadoop nodes in the ANALYTICS_NETWORKS
 profile::druid::overlord::monitoring_enabled: true
 profile::druid::overlord::ferm_srange: '$ANALYTICS_NETWORKS'
+profile::druid::overlord::firewall_access: ~
 profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata

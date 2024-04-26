@@ -7,11 +7,12 @@
 # haver finer control over how Druid accepts queries.
 #
 class profile::druid::coordinator(
-    Hash[String, Any] $properties = lookup('profile::druid::coordinator::properties', {'default_value' => {}}),
-    Hash[String, String] $env     = lookup('profile::druid::coordinator::env', {'default_value' => {}}),
-    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
-    String $ferm_srange           = lookup('profile::druid::coordinator::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
-    Boolean $monitoring_enabled   = lookup('profile::druid::coordinator::monitoring_enabled', {'default_value' => false}),
+    Hash[String, Any] $properties            = lookup('profile::druid::coordinator::properties', {'default_value' => {}}),
+    Hash[String, String] $env                = lookup('profile::druid::coordinator::env', {'default_value' => {}}),
+    Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    Optional[String] $ferm_srange            = lookup('profile::druid::coordinator::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Optional[Array[String]] $firewall_access = lookup('profile::druid::coordinator::firewall_access'),
+    Boolean $monitoring_enabled              = lookup('profile::druid::coordinator::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
@@ -46,10 +47,18 @@ class profile::druid::coordinator(
         logger_prefix    => $class_prefix,
     }
 
-    ferm::service { 'druid-coordinator':
-        proto  => 'tcp',
-        port   => $::druid::coordinator::runtime_properties['druid.port'],
-        srange => $ferm_srange,
+    if $firewall_access {
+        firewall::service { 'druid-coordinator':
+            proto    => 'tcp',
+            port     => $::druid::coordinator::runtime_properties['druid.port'],
+            src_sets => $firewall_access,
+        }
+    } else {
+        ferm::service { 'druid-coordinator':
+            proto  => 'tcp',
+            port   => $::druid::coordinator::runtime_properties['druid.port'],
+            srange => $ferm_srange,
+        }
     }
 
     if $monitoring_enabled {
