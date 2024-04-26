@@ -85,7 +85,7 @@ profile::ceph::auth::load_all::configuration:
       mgr: allow profile osd
       osd: allow *
 
-profile::ceph::ceph_repository_component: 'thirdparty/ceph-quincy'
+profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
 
 # Generated with uuidgen
 profile::ceph::fsid: 6d4278e1-ea45-4d29-86fe-85b44c150813
