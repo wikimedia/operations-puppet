@@ -68,6 +68,8 @@ profile::bird::anycasthc_logging:
 profile::firewall::enable_logging: false
 
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'DoH and DoT resolver'
+
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

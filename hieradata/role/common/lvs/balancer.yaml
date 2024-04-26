@@ -11,6 +11,7 @@ profile::pybal::config_source: etcd
 profile::pybal::bgp: "yes"
 profile::pybal::primary: true
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'LVS balancer'
 profile::base::remove_python2_on_bullseye: false
 
 profile::firewall::provider: none

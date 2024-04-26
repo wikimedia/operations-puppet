@@ -4,6 +4,8 @@ profile::ncredir::monitoring: true
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'Non canonical domains redirection service'
+
 profile::lvs::realserver::pools:
   ncredir:
     services:

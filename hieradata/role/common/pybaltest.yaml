@@ -5,6 +5,8 @@ profile::base::remove_python2_on_bullseye: false
 profile::conftool::client::namespace: "/eqiad.wmnet/conftool"
 profile::conftool::master::sync_dir: "/etc/conftool/data"
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'pybal testing/development'
+
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true

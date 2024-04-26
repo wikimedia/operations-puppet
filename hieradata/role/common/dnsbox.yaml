@@ -58,6 +58,7 @@ profile::dns::auth::gitrepo: 'https://gerrit.wikimedia.org/r/operations/dns.git'
 
 profile::systemd::timesyncd::ensure: absent
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'DNS auth/recursor and NTP site infra server'
 
 # Copied over from dns::auth T330670.
 profile::admin::groups:

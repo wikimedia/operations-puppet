@@ -69,6 +69,7 @@ profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'Check service for Wikidough'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

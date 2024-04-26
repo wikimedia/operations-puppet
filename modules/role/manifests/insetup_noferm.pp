@@ -5,11 +5,5 @@
 # This is a variant for the setup of a service which will not use profile::firewall
 # when moved to full production
 class role::insetup_noferm {
-
-    system::role { 'insetup_noferm':
-        ensure      => 'present',
-        description => 'Host being setup for later application of a role (no ferm)',
-    }
-
     include profile::base::production
 }

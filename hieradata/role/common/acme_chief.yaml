@@ -301,3 +301,4 @@ profile::acme_chief::passive:
   - 'acmechief2002.codfw.wmnet'
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'ACME certificate manager'

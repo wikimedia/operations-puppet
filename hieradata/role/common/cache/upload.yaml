@@ -96,6 +96,8 @@ profile::lvs::realserver::pools:
     services:
       - cdn
 profile::contacts::role_contacts: ['Traffic']
+profile::base::production::role_description: 'upload HAProxy/Varnish/ATS cache server'
+
 profile::cache::varnish::frontend::use_etcd_req_filters: true
 
 # T337825
