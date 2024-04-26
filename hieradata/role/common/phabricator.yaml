@@ -5,6 +5,7 @@ profile::admin::groups:
   - phabricator-bulk-manager
 
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Phabricator (main) server'
 
 # The definitions of the active server and the failover server are in global common.yaml
 # Switching backend for caching servers needs to be done in DNS.

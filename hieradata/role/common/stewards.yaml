@@ -1,5 +1,6 @@
 cluster: misc
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'special VM for stewards - T344164'
 profile::admin::groups:
   - stewards-users
 

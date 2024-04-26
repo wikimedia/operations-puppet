@@ -3,6 +3,7 @@ profile::admin::groups:
   - gerrit-admin
 contactgroups: 'admins,gerrit'
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: "Gerrit server in ${::realm}"
 
 profile::firewall::defs_from_etcd: true
 

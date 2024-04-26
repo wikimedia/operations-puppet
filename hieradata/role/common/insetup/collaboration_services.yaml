@@ -1,4 +1,6 @@
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Host being setup by Collaboration Services SREs'
+
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true

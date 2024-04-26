@@ -26,6 +26,7 @@ profile::tlsproxy::envoy::upstream_response_timeout: 130.0
 profile::tlsproxy::envoy::tls_port: 1443
 
 profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'VRTS web application server'
 
 profile::vrts::public_dns: "ticket.wikimedia.org"
 

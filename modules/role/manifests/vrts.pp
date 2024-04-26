@@ -3,11 +3,8 @@
 # https://wikitech.wikimedia.org/wiki/VRT_System
 #
 class role::vrts {
-    system::role { 'vrts':
-        description => 'VRTS Web Application Server',
-    }
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::vrts
-    include ::profile::tlsproxy::envoy # TLS termination
+    include profile::base::production
+    include profile::firewall
+    include profile::vrts
+    include profile::tlsproxy::envoy # TLS termination
 }
