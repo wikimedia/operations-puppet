@@ -6293,7 +6293,7 @@ users:
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6WHdbLSyRkSQO7hKVB11nKkkYkTtw0eZmbQcNaX9rb1c4Bi2+4SiitEi1VJld+ZyF2yZjVYGHdjPbQ94gHx5uvMfR7kdAfzFnDMiicjMy2ZDUQhoIbg9YBg4La9P8E7qTI22I7IDM5i3QOrwP/m4r9GuUU1GaIbwsvvsi4FzHSSDVV4EGSaQ381vAZ44hVqhmvZoFvokeiL0eItt2BnskdDOS1/VDnq+iPEeSKBPPSgzGTvGfvUB2Qvw5a8qsWHrAMNUdCvibMVJ8iLcCJVvA9LoJjVn2RvTh8PfOKJEGa4SOLPGhfcEdie5BwDthJ3hdvBDJN94vw6LCUmae0Z2tvnFQHT0fbAEXN8axDYbuCLuLnmt8Duv2m6flEuYKIis1i6vuW2h7a4Oml/NKrrNe1VhyFqfjh72aKgd0CZSQdTTDvSuLD0AboDxMVUC96G78DP0+v3vHSrIFfEC0NXaGFGFbgYD2ovlQ7DLQQWiJmI4U0rkRH+JoiPONKQMDjaS7CRoL4woGDlTw4GRfNxtlfR8MDgdSIttOHTEk8vk78I0TE/efMCCgTK4YmWo3A3tuifQT1ZSKwOo3nEvy/huRFRjIgWeywSIPRMKh6ZTZlKdrgJPXJoxpShXy9GjLYDhmoHfnVXl8uYxVBkzOmvehUFCndshennRCatJwjs8QIw== bgreenlee-ctr@wikimedia.org'
     krb: present
-    expiry_date: "2024-04-30"
+    expiry_date: "2024-05-14"
     expiry_contact: odimitrijevic@wikimedia.org
   georgemikesell:
     ensure: present
