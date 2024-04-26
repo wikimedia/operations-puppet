@@ -10,7 +10,7 @@ grants.
 
 import sys
 
-ALLOWED_STARTS = ["GRANT", "CREATE USER"]
+ALLOWED_STARTS = ["GRANT", "CREATE USER", "CREATE ROLE"]
 
 
 def main():
@@ -27,6 +27,9 @@ def main():
     for statement in config.split(";"):
         statement = statement.strip()
         if not statement:
+            continue
+        # Ignore comments
+        if statement.startswith("--"):
             continue
         statement_ok = False
         for allowed_start in ALLOWED_STARTS:

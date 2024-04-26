@@ -103,7 +103,7 @@ profile::cassandra::settings:
   users:
     - restbase_dev
     - mediawiki_services_mobileapps
-    - cassandra-devel
+    - cassandra_devel
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000

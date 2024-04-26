@@ -4,7 +4,7 @@
 class profile::cassandra_dev (
     Hash[String, String] $cassandra_passwords = lookup('profile::cassandra::user_credentials', {'default_value' => {}}),
 ) {
-    $devuser          = 'cassandra-devel'
+    $devuser          = 'cassandra_devel'
     $devpasswd        = $cassandra_passwords[$devuser]
     $tls_cluster_name = 'cassandra-dev'
 
