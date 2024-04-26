@@ -142,10 +142,13 @@ class profile::postfix::mx (
 
     if $plain_auth_logins != {} {
         $dovecot_config = {
-            smtpd_sasl_type         => 'dovecot',
-            smtpd_sasl_path         => 'private/auth',
-            smtpd_sasl_auth_enable  => 'yes',
-            smtpd_sender_login_maps => ['hash:/etc/postfix/controlled_envelope_senders'],
+            smtpd_sasl_type                 => 'dovecot',
+            smtpd_sasl_path                 => 'private/auth',
+            smtpd_sasl_auth_enable          => 'yes',
+            smtpd_sasl_authenticated_header => 'yes',
+            smtpd_sender_login_maps         => [
+                'hash:/etc/postfix/controlled_envelope_senders'
+            ],
         }
         ensure_packages(['dovecot-core'])
         file { '/etc/dovecot/plain_auth_logins':
