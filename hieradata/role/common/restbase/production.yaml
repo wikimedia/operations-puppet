@@ -988,7 +988,6 @@ profile::cassandra::settings:
   tls_cluster_name: "restbase"
   tls_use_pki: true
   tls_use_pki_truststore: true
-  tls_use_pki_keep_old_ca: true
   dc: "%{::site}"
   cluster_name: "restbase"
   target_version: 'dev'
@@ -1085,17 +1084,7 @@ profile::java::java_packages:
   - version: '8'
     variant: 'jdk'
 
-# Temporary override to allow the creation of a bundle
-# that includes the custom CA certificate that Cassandra nodes use.
-# TODO: remove the trusted_certs setting after the cluster
-# is migrated to PKI.
 profile::base::certificates::include_bundle_jks: true
-profile::base::certificates::trusted_certs:
-  package: 'wmf-certificates'
-  bundle: '/etc/ssl/certs/wmf-ca-certificates.crt'
-  certs:
-  - '/usr/share/ca-certificates/wikimedia/Wikimedia_Internal_Root_CA.crt'
-  - '/etc/cassandra-a/tls/rootCa.crt'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
