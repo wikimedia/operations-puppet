@@ -6,7 +6,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     VM_IP_PREFIX: 172.16.128.
     NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
     GENERAL_PUPPETMASTER: cloudinfra-cloudvps-puppetserver-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
-    LOCAL_PUPPETMASTER:	cloudinfra-internal-puppetserver-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
+    LOCAL_PUPPETMASTER: cloudinfra-internal-puppetserver-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     CLOUDGW_A_IP: 208.80.153.188
     CLOUDGW_B_IP: 208.80.153.189
     CLOUDGW_VIRT_IP: 185.15.57.9
