@@ -51,6 +51,30 @@ lvs::interfaces::vlan_data:
       'lvs1018': 'enp94s0f0np0:10.64.132.18'
       'lvs1019': 'enp94s0f0np0:10.64.132.19'
       'lvs1020': 'enp94s0f0np0:10.64.132.20'
+  private1-e5-eqiad:
+    id: "1047"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.152.17'
+      'lvs1018': 'enp94s0f0np0:10.64.152.18'
+      'lvs1019': 'enp94s0f0np0:10.64.152.19'
+      'lvs1020': 'enp94s0f0np0:10.64.152.20'
+  private1-e6-eqiad:
+    id: "1049"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.154.17'
+      'lvs1018': 'enp94s0f0np0:10.64.154.18'
+      'lvs1019': 'enp94s0f0np0:10.64.154.19'
+      'lvs1020': 'enp94s0f0np0:10.64.154.20'
+  private1-e7-eqiad:
+    id: "1051"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.156.17'
+      'lvs1018': 'enp94s0f0np0:10.64.156.18'
+      'lvs1019': 'enp94s0f0np0:10.64.156.19'
+      'lvs1020': 'enp94s0f0np0:10.64.156.20'
   private1-f1-eqiad:
     id: "1035"
     netmask: 255.255.255.0
@@ -75,6 +99,30 @@ lvs::interfaces::vlan_data:
       'lvs1018': 'enp94s0f0np0:10.64.136.18'
       'lvs1019': 'enp94s0f0np0:10.64.136.19'
       'lvs1020': 'enp94s0f0np0:10.64.136.20'
+  private1-f5-eqiad:
+    id: "1055"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.160.17'
+      'lvs1018': 'enp94s0f0np0:10.64.160.18'
+      'lvs1019': 'enp94s0f0np0:10.64.160.19'
+      'lvs1020': 'enp94s0f0np0:10.64.160.20'
+  private1-f6-eqiad:
+    id: "1057"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.162.17'
+      'lvs1018': 'enp94s0f0np0:10.64.162.18'
+      'lvs1019': 'enp94s0f0np0:10.64.162.19'
+      'lvs1020': 'enp94s0f0np0:10.64.162.20'
+  private1-f7-eqiad:
+    id: "1059"
+    netmask: 255.255.255.0
+    iface:
+      'lvs1017': 'enp94s0f0np0:10.64.164.17'
+      'lvs1018': 'enp94s0f0np0:10.64.164.18'
+      'lvs1019': 'enp94s0f0np0:10.64.164.19'
+      'lvs1020': 'enp94s0f0np0:10.64.164.20'
   public1-a-eqiad:
     id: "1001"
     netmask: "255.255.255.192"
