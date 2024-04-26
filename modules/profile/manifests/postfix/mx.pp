@@ -98,7 +98,10 @@ class profile::postfix::mx (
         # Require TLS to advertise SMTP auth
         smtpd_tls_auth_only          => 'yes',
         header_checks                => ['regexp:/etc/postfix/header_checks'],
-        smtpd_sender_restrictions    => ['reject_unknown_sender_domain'],
+        smtpd_sender_restrictions    => [
+            'reject_unknown_sender_domain',
+            'reject_authenticated_sender_login_mismatch'
+        ],
         smtpd_relay_restrictions     => [
             'permit_mynetworks',
             'permit_sasl_authenticated',
@@ -139,9 +142,10 @@ class profile::postfix::mx (
 
     if $plain_auth_logins != {} {
         $dovecot_config = {
-            smtpd_sasl_type => 'dovecot',
-            smtpd_sasl_path => 'private/auth',
-            smtpd_sasl_auth_enable => 'yes',
+            smtpd_sasl_type         => 'dovecot',
+            smtpd_sasl_path         => 'private/auth',
+            smtpd_sasl_auth_enable  => 'yes',
+            smtpd_sender_login_maps => ['hash:/etc/postfix/controlled_envelope_senders'],
         }
         ensure_packages(['dovecot-core'])
         file { '/etc/dovecot/plain_auth_logins':
@@ -185,6 +189,11 @@ class profile::postfix::mx (
           require => File['/var/spool/postfix'],
         }
         service {'dovecot':}
+        postfix::lookup::database { '/etc/postfix/controlled_envelope_senders':
+            content => $plain_auth_logins.keys().reduce('') |$memo, $addr| {
+                "${memo}${addr} ${addr}\n"
+            },
+        }
     } else {
         $dovecot_config = {}
     }
