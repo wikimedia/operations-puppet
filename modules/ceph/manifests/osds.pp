@@ -49,13 +49,18 @@ class ceph::osds (
 
   # Create a new hash with the populated slots from all controllers, exclude any that are in the list of excluded slots.
   # This mechanism is intended to be used to avoid adding an OSD for the operating system disks.
-  $storage_disks = $facts['ceph_disks'].values.map | $controller | {
+  #
+  # n.b. The ceph_disks fact is not available until after the first puppet run, so this conditional will defer management
+  # of the OSDs until the second puppet run. This is a temporary measure to fix reimages.
+  if $facts['ceph_disks'] {
+      $storage_disks = $facts['ceph_disks'].values.map | $controller | {
         $controller['disks']
     }.reduce | $memo, $disk | {
         $memo + $disk
     }.filter | $slot | {
         ! ($slot[0] in $excluded_slots)
     }
+  }
 
   # Optional support for creating bluestore partitions on a named NVMe device
     if ( $discrete_bluestore_device and $bluestore_device_name =~ '\/dev\/nvme[0-9]*n[0-9]*' ) {
