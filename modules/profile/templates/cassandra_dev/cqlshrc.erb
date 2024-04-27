@@ -3,5 +3,8 @@
 [authentication]
 credentials = /var/lib/<%= @devuser %>/.cassandra/credentials
 
+[connection]
+ssl = true
+
 [ssl]
 certfile = /etc/ssl/certs/wmf-ca-certificates.crt
