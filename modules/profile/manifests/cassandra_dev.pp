@@ -44,7 +44,7 @@ class profile::cassandra_dev (
     file { "/var/lib/${devuser}/.cassandra/credentials":
         owner   => $devuser,
         group   => $devuser,
-        mode    => '0440',
+        mode    => '0400',
         content => template('profile/cassandra_dev/credentials.erb'),
         require => File["/var/lib/${devuser}/.cassandra"],
     }
