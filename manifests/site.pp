@@ -503,6 +503,10 @@ node /^cp60(09|1[0-6])\.drmrs\./ {
     role(cache::text)
 }
 
+node /^cp7001\.magru\./ {
+    role(insetup::traffic)
+}
+
 node /^crm2001\.codfw\./ {
     role(crm)
 }
