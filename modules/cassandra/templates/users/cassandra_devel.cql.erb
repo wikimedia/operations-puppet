@@ -1,5 +1,6 @@
 -- SPDX-License-Identifier: Apache-2.0
 
+-- Surrogate user for the staging/dev cluster (see: T355730).
 CREATE ROLE IF NOT EXISTS cassandra_devel WITH PASSWORD '<%= @application_password %>';
 
 GRANT SELECT ON ALL KEYSPACES TO 'cassandra_devel';
