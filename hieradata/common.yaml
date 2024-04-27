@@ -2581,7 +2581,37 @@ infra_devices:
     ipv6: 2a02:ec80:600:ffff::5
     site: drmrs
     role: l3sw
-
+  cr1-magru:
+    ipv4: 195.200.68.128
+    ipv6: 2a02:ec80:700:ffff::1
+    site: magru
+    role: cr
+  cr2-magru:
+    ipv4: 195.200.68.129
+    ipv6: 2a02:ec80:700:ffff::2
+    site: magru
+    role: cr
+  mr1-magru:
+    ipv4: 195.200.68.132
+    ipv6: 2a02:ec80:700:ffff::5
+    site: magru
+    role: mr
+  scs-magru:
+    ipv4: 10.140.128.6
+    parents:
+    - mr1-magru
+    site: magru
+    role: scs
+  asw1-b3-magru:
+    ipv4: 195.200.68.130
+    ipv6: 2a02:ec80:700:ffff::3
+    site: magru
+    role: l3sw
+  asw1-b4-magru:
+    ipv4: 195.200.68.131
+    ipv6: 2a02:ec80:700:ffff::4
+    site: magru
+    role: l3sw
 
 # A map of hostname -> metadata for Prometheus blackbox exporter to ping.
 # The list is ported from Smokeping and manually maintained as of Jul

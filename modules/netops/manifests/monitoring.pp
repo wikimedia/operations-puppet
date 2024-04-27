@@ -61,6 +61,7 @@ class netops::monitoring(
         'mr1-ulsfo.oob' => { ipv4 => '198.24.47.102',   ipv6 => '2607:fb58:9000:7::2',  parents => ['mr1-ulsfo'] },
         'mr1-eqsin.oob' => { ipv4 => '27.111.227.106',  ipv6 => '2403:b100:3001:9::2',  parents => ['mr1-eqsin'] },
         'mr1-drmrs.oob' => { ipv4 => '193.251.154.146',  ipv6 => '2001:688:0:4::2d4',  parents => ['mr1-drmrs'] },
+        'mr1-magru.oob' => { ipv4 => '177.185.14.4',  ipv6 => '2804:ad4:ff12:19::84',  parents => ['mr1-magru'] },
         're0.cr1-eqiad.mgmt' => { ipv4 => '10.65.0.12',      parents => ['msw1-eqiad'] },
         're0.cr2-eqiad.mgmt' => { ipv4 => '10.65.0.14',      parents => ['msw1-eqiad'] },
         're0.cr1-codfw.mgmt' => { ipv4 => '10.193.0.10',     parents => ['msw1-codfw'] },
@@ -183,6 +184,9 @@ class netops::monitoring(
         # esams
         'asw1-bw27-esams.mgmt' => { ipv4 => '10.80.128.3',   parents => ['mr1-esams'] },
         'asw1-by27-esams.mgmt' => { ipv4 => '10.80.128.5',   parents => ['mr1-esams'] },
+        # magru
+        'asw1-b3-magru.mgmt' => { ipv4 => '10.140.128.4',   parents => ['mr1-magru'] },
+        'asw1-b4-magru.mgmt' => { ipv4 => '10.140.128.5',   parents => ['mr1-magru'] },
     }
     create_resources(netops::check, $l3_switches_mgmt, $l3_switches_mgmt_defaults)
 

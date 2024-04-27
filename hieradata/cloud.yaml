@@ -586,6 +586,7 @@ profile::icinga::mgmt_parents:
   esams: mr1-esams
   eqsin: mr1-eqsin
   drmrs: mr1-drmrs
+  magru: mr1-magru
 profile::thanos::httpd::enable_sso: false
 profile::thanos::query_frontend::memcached_hosts: []
 profile::thanos::rule_hosts: {}
