@@ -241,6 +241,7 @@ server {
         add_header Access-Control-Allow-Credentials true always;
         <%- else -%>
         add_header Access-Control-Allow-Origin * always;
+        add_header Access-Control-Allow-Headers "accept, content-type, content-length, user-agent, api-user-agent";
         <%- end %>
         add_header Cache-Control "public, max-age=300";
         add_header Vary Accept;
