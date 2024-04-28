@@ -175,6 +175,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   puppet:
     description: "Puppetmasters"
     sites:
@@ -207,6 +208,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   kubernetes:
     description: "Kubernetes"
     sites:
@@ -231,6 +233,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   cache_upload:
     description: "Upload caches"
     sites:
@@ -240,6 +243,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   payments:
     description: "Fundraiser payments"
     sites: {}
@@ -334,6 +338,7 @@ wikimedia_clusters:
       esams: []
       eqsin: []
       drmrs: []
+      magru: []
   aqs:
     description: "Analytics Query Service"
     sites:
@@ -383,6 +388,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   spare:
     description: "Spare servers"
     sites:
@@ -392,6 +398,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   prometheus:
     description: "Prometheus servers"
     sites:
@@ -401,6 +408,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   graphite:
     description: "Graphite servers"
     sites:
@@ -415,6 +423,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   alerting:
     description: "Icinga"
     sites:
@@ -539,6 +548,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   durum:
     description: "Wikidough check service"
     sites:
@@ -548,6 +558,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
   kubernetes-staging:
     description: "Kubernetes staging"
     sites:
@@ -599,6 +610,7 @@ wikimedia_clusters:
       ulsfo: []
       eqsin: []
       drmrs: []
+      magru: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///modules/profile/puppet/ca.production.pem
