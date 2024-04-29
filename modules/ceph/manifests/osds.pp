@@ -81,7 +81,9 @@ class ceph::osds (
         # then partition the given device equally between the number of HDDs.
         $hdd_storage_disks = $storage_disks.values.filter | $disk | { $disk['medium'] == 'HDD' }
 
-        $percent_partition = 100 / $hdd_storage_disks.length
+        if ( $hdd_storage_disks.length > 0 ) {
+            $percent_partition = 100 / $hdd_storage_disks.length
+        }
 
         $hdd_storage_disks.each |$index, $hdd_disk| {
             $start_partition = 0 + $index * $percent_partition
