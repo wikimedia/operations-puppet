@@ -6,6 +6,7 @@ profile::rsyslog::kafka_queue_enabled_sites:
   - 'eqiad'
   - 'codfw'
   - 'drmrs'
+  - 'magru'
 # mapping of site to kafka cluster name, used by rsyslog kafka outputs
 # see kafka_clusters in common.yaml and kafka_config() for additional details
 profile::rsyslog::kafka_destination_clusters:
@@ -15,3 +16,4 @@ profile::rsyslog::kafka_destination_clusters:
   esams: 'logging-eqiad'
   eqsin: 'logging-eqiad'
   drmrs: 'logging-eqiad'
+  magru: 'logging-eqiad'
