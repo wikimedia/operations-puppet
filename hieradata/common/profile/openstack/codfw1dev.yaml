@@ -1,6 +1,6 @@
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
 profile::openstack::codfw1dev::version: 'bobcat'
-profile::openstack::codfw1dev::horizon_version: 'zed'
+profile::openstack::codfw1dev::horizon_version: 'bobcat'
 
 # Keep codfw1dev APIs limited to VMs and prod hosts
 profile::openstack::codfw1dev::public_apis: false
