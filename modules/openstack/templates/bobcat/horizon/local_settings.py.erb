@@ -102,7 +102,7 @@ SECRET_KEY = "<%= @secret_key %>"
 SESSION_ENGINE='django.contrib.sessions.backends.cache'
 CACHES = {
    'default': {
-       'BACKEND' : 'django.core.cache.backends.memcached.MemcachedCache',
+       'BACKEND' : 'django.core.cache.backends.memcached.PyMemcacheCache',
        'LOCATION' : '127.0.0.1:11213',
    }
 }
@@ -523,7 +523,8 @@ SITE_BRANDING = 'Manage Wikimedia Cloud'
 SITE_BRANDING_LINK = 'https://horizon.wikimedia.org'
 
 # WMF-specific security limits
-HORIZON_IMAGES_UPLOAD_MODE = 'off'
+HORIZON_IMAGES_UPLOAD_MODE = 'legacy'
+CREATE_IMAGE_DEFAULTS = {'image_visibility': "private"}
 
 DESIGNATE = { 'records_use_fips': True }
 
@@ -539,7 +540,7 @@ ADMIN_USER = "novaadmin"
 ADMIN_PROJECT = "admin"
 LDAP_PROJECTS_BASE = "ou=projects,dc=wikimedia,dc=org"
 LDAP_USER_PASSWORD = "<%= @ldap_user_pass %>"
-LDAP_RW_URI = "ldap://<%= @ldap_rw_host %>"
+LDAP_RW_URI = "ldaps://<%= @ldap_rw_host %>"
 
 # A few things for role management:
 MEMBER_ROLE_NAME = "reader"
