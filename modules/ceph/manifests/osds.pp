@@ -53,13 +53,16 @@ class ceph::osds (
   # n.b. The ceph_disks fact is not available until after the first puppet run, so this conditional will defer management
   # of the OSDs until the second puppet run. This is a temporary measure to fix reimages.
   if $facts['ceph_disks'] {
-      $storage_disks = $facts['ceph_disks'].values.map | $controller | {
+    $storage_disks = $facts['ceph_disks'].values.map | $controller | {
         $controller['disks']
     }.reduce | $memo, $disk | {
         $memo + $disk
     }.filter | $slot | {
         ! ($slot[0] in $excluded_slots)
     }
+  }
+  else {
+    $storage_disks = {}
   }
 
   # Optional support for creating bluestore partitions on a named NVMe device
