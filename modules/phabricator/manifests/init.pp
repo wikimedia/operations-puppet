@@ -219,4 +219,12 @@ class phabricator (
             hasrestart => true,
         },
     }
+
+    git::systemconfig { 'safe.directory-phabdir':
+        settings => {
+            'safe' => {
+                'directory' => $phabdir,
+            }
+        }
+    }
 }
