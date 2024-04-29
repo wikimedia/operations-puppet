@@ -82,6 +82,14 @@ class profile::aptrepo::staging (
     source => 'puppet:///modules/aptrepo/gitlab_package_puller.py',
   }
 
+  file { '/etc/gitlab-puller-auth':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0400',
+    content => secret('apt-staging/gitlab-puller-token'),
+  }
+
   profile::auto_restarts::service { 'nginx': }
   profile::auto_restarts::service { 'envoyproxy': }
   profile::auto_restarts::service { 'rsync': }
