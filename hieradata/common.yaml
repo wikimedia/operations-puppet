@@ -1324,6 +1324,9 @@ ntp_peers:
     drmrs:
     - 'dns6001.wikimedia.org'
     - 'dns6002.wikimedia.org'
+    magru:
+    - 'dns7001.wikimedia.org'
+    - 'dns7002.wikimedia.org'
 
 # Url to use for reaching graphite
 
