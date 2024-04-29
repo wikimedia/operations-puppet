@@ -1,7 +1,7 @@
 # es1023
+# candidate master for es5
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
-profile::mariadb::mysql_role: 'master'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
