@@ -96,7 +96,7 @@ define ceph::osd (
         # Activate osd
         $activate_command = @("COMMAND"/L$)
         id=$(ceph-volume lvm list ${device} --format=json | jq -r keys[]) && \
-        fsid=$(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid"') &&\
+        fsid=$(ceph-volume lvm list ${device} --format=json | jq -r '.[]|.[]|.tags|."ceph.osd_fsid" // empty') &&\
         ceph-volume lvm activate \$id \$fsid
         | -COMMAND
 
