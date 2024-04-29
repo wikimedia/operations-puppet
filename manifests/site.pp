@@ -503,7 +503,7 @@ node /^cp60(09|1[0-6])\.drmrs\./ {
     role(cache::text)
 }
 
-node /^cp700[12]\.magru\./ {
+node /^cp700[123]\.magru\./ {
     role(insetup::traffic)
 }
 
