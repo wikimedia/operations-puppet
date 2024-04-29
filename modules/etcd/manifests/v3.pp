@@ -101,9 +101,7 @@ class etcd::v3 (
     # Packages installation and setup
     class { '::etcd::logging': }
 
-    package { ['etcd-server', 'etcd-client']:
-        ensure => present,
-    }
+    ensure_packages(['etcd-server', 'etcd-client'])
 
     file { '/etc/default/etcd':
         ensure  => present,

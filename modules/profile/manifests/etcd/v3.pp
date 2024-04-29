@@ -48,6 +48,7 @@ class profile::etcd::v3(
     Stdlib::Port $adv_client_port = lookup('profile::etcd::v3::adv_client_port'),
     Boolean $do_backup = lookup('profile::etcd::v3::do_backup', {'default_value' => false}),
     Boolean $use_pki_certs = lookup('profile::etcd::v3::use_pki_certs', {'default_value' => false}),
+    Array[Stdlib::Host] $prometheus_all_nodes = lookup('prometheus_all_nodes'),
 ) {
     # Parameters mangling
     $cluster_state = $cluster_bootstrap ? {
@@ -127,6 +128,12 @@ class profile::etcd::v3(
             port   => $adv_client_port,
             srange => $allow_from,
         }
+    }
+
+    firewall::service { 'etcd_prometheus':
+        proto  => 'tcp',
+        port   => $adv_client_port,
+        srange => $prometheus_all_nodes,
     }
 
     ferm::service { 'etcd_peers':
