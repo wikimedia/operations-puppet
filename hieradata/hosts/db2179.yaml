@@ -1,4 +1,4 @@
 # db2179
-profile::mariadb::mysql_role: 'master'
+# candidate master for s4
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 's4'
