@@ -430,9 +430,9 @@ codfw:
   kubernetes-staging:
     kubestagemaster2001.codfw.wmnet: [kubemaster]
     kubestagemaster2002.codfw.wmnet: [kubemaster]
+    kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestage2001.codfw.wmnet: [kubesvc]
     kubestage2002.codfw.wmnet: [kubesvc]
-    kubestage2003.codfw.wmnet: [kubesvc]
   ldap-ro:
     ldap-replica2005.wikimedia.org: [ldap-ro, ldap-ro-ssl]
     ldap-replica2006.wikimedia.org: [ldap-ro, ldap-ro-ssl]
