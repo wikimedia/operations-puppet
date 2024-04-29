@@ -1,6 +1,8 @@
 # es2036
 # To be setup
-profile::monitoring::notifications_enabled: false
+mariadb::shard: 'es6'
+mariadb::binlog_format: 'ROW'
 
+profile::monitoring::notifications_enabled: false
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

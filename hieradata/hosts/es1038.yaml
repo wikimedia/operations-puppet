@@ -1,6 +1,8 @@
 # es1038
 # To be setup
+mariadb::shard: 'es6'
 profile::monitoring::notifications_enabled: false
+profile::mariadb::mysql_role: 'standalone'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
