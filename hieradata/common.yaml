@@ -137,6 +137,7 @@ debmonitor: debmonitor.discovery.wmnet
 
 # List of all prometheus nodes (ops instance)
 prometheus_all_nodes:
+  - prometheus7001.magru.wmnet
   - prometheus3003.esams.wmnet
   - prometheus4002.ulsfo.wmnet
   - prometheus5002.eqsin.wmnet
