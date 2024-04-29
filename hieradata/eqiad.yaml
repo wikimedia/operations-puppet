@@ -71,3 +71,17 @@ mediabackup:
     - backup1006.eqiad.wmnet
     - backup1007.eqiad.wmnet
     - backup1011.eqiad.wmnet
+
+# Cephadm cluster details
+# This is an instance of the Cephadm::Clusters type
+cephadm_clusters:
+  apus:
+    cluster_name: 'apus-eqiad'
+    controller: 'moss-be1001.eqiad.wmnet'
+    osds: &osds
+      - moss-be1001.eqiad.wmnet
+      - moss-be1002.eqiad.wmnet
+      - moss-be1003.eqiad.wmnet
+    monitors: *osds
+    rgws:
+      - moss-fe1002.eqiad.wmnet

@@ -2022,9 +2022,13 @@ node /^moss-fe1001\.eqiad\./ {
     include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
-# New moss-be nodes T276637 T342675
-node /^moss-be100[123]\.eqiad\./ {
-    role(insetup::data_persistence)
+# Controller for the eqiad apus cephadm cluster
+node /^moss-be1001\.eqiad\./ {
+    role(cephadm::controller)
+}
+
+node /^moss-be100[23]\.eqiad\./ {
+    role(cephadm::storage)
 }
 
 # New moss-be nodes T276642 and T342674
