@@ -100,7 +100,6 @@ eqiad:
   - es1037
   - es1038
 codfw:
-  - db2114
   - db2115
   - db2116
   - db2121
