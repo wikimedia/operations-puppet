@@ -1,6 +1,5 @@
 # es1038
 mariadb::shard: 'es6'
-profile::monitoring::notifications_enabled: false
 profile::mariadb::mysql_role: 'master'
 
 profile::puppet::agent::force_puppet7: true
