@@ -4,3 +4,4 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - 'grafana-next.discovery.wmnet'
     - 'grafana-next.wikimedia.org'
+    - 'grafana-next-rw.wikimedia.org'
