@@ -46,6 +46,9 @@
 #  Enable proxy for sa-update. Useful for hosts without direct internet acces.
 #  Defaults to undef
 #
+# [*monitoring_ensure*]
+#  Determines whether to include the nrpe monitor for spamd. Defaults to 'present'
+#
 class spamassassin(
     $required_score = '5.0',
     $max_children = 8,
@@ -58,7 +61,8 @@ class spamassassin(
     $spamd_group = 'debian-spamd',
     $custom_scores = {},
     $debug_logging = '',
-    $proxy=undef,
+    $proxy = undef,
+    $monitoring_ensure = 'present',
 ) {
     if debian::codename::ge('bookworm') {
         $sa_daemon='spamd'
@@ -98,6 +102,7 @@ class spamassassin(
     }
 
     nrpe::monitor_service { 'spamd':
+        ensure       => $monitoring_ensure,
         description  => 'spamassassin',
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:20 -c 1:40 -a spamd',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mail#SpamAssassin',

@@ -1298,11 +1298,11 @@ node /^lists1001\.wikimedia\./ {
 
 #add new list server T342374
 node /^lists1004\.wikimedia\./ {
-    role(insetup::collaboration_services)
+    role(lists)
 }
 
 node /^lists2001\.wikimedia\./ {
-    role(insetup::collaboration_services)
+    role(lists)
 }
 
 node /^ganeti10(09|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {

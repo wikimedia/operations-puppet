@@ -19,19 +19,18 @@ class mailman3 (
     String $service_ensure = 'running',
     Optional[String] $memcached = undef,
 ) {
-
     # We do not want to use the dbconfig system
     # that tries to apply database updates on
     # package install.
     package { 'dbconfig-no-thanks':
-        ensure => present
+        ensure => present,
     }
 
     package { 'dbconfig-mysql':
-        ensure => absent
+        ensure => absent,
     }
 
-    class { '::mailman3::listserve':
+    class { 'mailman3::listserve':
         host           => $host,
         service_ensure => $service_ensure,
         db_host        => $db_host,
@@ -41,7 +40,7 @@ class mailman3 (
         api_password   => $api_password,
     }
 
-    class { '::mailman3::web':
+    class { 'mailman3::web':
         host            => $host,
         service_ensure  => $service_ensure,
         db_host         => $db_host,

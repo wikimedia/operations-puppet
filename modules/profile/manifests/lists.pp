@@ -12,7 +12,7 @@
 class profile::lists (
     Stdlib::Fqdn $lists_servername            = lookup('mailman::lists_servername'),
     Optional[String] $primary_host            = lookup('lists_primary_host', {'default_value' => undef}),
-    Optional[String] $standby_host            = lookup('lists_standby_host', {'default_value' => undef}),
+    Optional[Array[String]] $standby_hosts    = lookup('lists_standby_host', {'default_value' => []}),
     Optional[Stdlib::IP::Address] $lists_ipv4 = lookup('profile::lists::ipv4', {'default_value' => undef}),
     Optional[Stdlib::IP::Address] $lists_ipv6 = lookup('profile::lists::ipv6', {'default_value' => undef}),
     Optional[String] $acme_chief_cert         = lookup('profile::lists::acme_chief_cert', {'default_value' => undef}),
@@ -36,11 +36,10 @@ class profile::lists (
     include network::constants
     include privateexim::listserve
 
+    $is_standby = ($facts['fqdn'] in $standby_hosts)
+
     # Disable mailman service on the sandby host
-    $mailman_service_ensure = $facts['fqdn'] ? {
-        $standby_host => 'stopped',
-        default       => 'running',
-    }
+    $mailman_service_ensure = $is_standby.bool2str('stopped', 'running')
 
     class { '::mailman3':
         host            => $lists_servername,
@@ -56,6 +55,7 @@ class profile::lists (
         uwsgi_processes => $uwsgi_processes,
         web_secret      => $web_secret,
         memcached       => $memcached,
+        service_ensure  => $mailman_service_ensure,
     }
 
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
@@ -139,10 +139,11 @@ class profile::lists (
     }
 
     class { 'spamassassin':
-        required_score   => '4.0',
-        use_bayes        => '0',
-        bayes_auto_learn => '0',
-        trusted_networks => $trusted_networks,
+        required_score    => '4.0',
+        use_bayes         => '0',
+        bayes_auto_learn  => '0',
+        trusted_networks  => $trusted_networks,
+        monitoring_ensure => $is_standby.bool2str('absent', 'present'),
     }
 
     $list_outbound_ips = [
@@ -176,10 +177,10 @@ class profile::lists (
 
     backup::set { 'var-lib-mailman3': }
 
-    if $primary_host and $standby_host {
+    if $primary_host and $standby_hosts != [] {
         rsync::quickdatacopy { 'var-lib-mailman':
             source_host         => $primary_host,
-            dest_host           => $standby_host,
+            dest_host           => $standby_hosts,
             auto_sync           => false,
             module_path         => '/var/lib/mailman',
             server_uses_stunnel => true,
@@ -188,7 +189,7 @@ class profile::lists (
 
     class { 'profile::lists::monitoring':
         lists_servername => $lists_servername,
-        standby_host     => $standby_host
+        ensure           => $is_standby.bool2str('absent', 'present')
     }
     class { 'profile::lists::ferm': }
     class { 'profile::lists::automation': }
