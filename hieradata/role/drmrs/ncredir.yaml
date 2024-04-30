@@ -1,3 +1,4 @@
 lvs::realserver::realserver_ips:
   - '185.15.58.226'
   - '2a02:ec80:600:ed1a::3'
+profile::ncredir::use_benthos: true
