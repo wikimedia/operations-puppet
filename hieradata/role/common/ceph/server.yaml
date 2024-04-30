@@ -4,6 +4,11 @@ profile::ceph::auth::load_all::configuration:
       mgr: allow *
       mon: allow *
       osd: allow *
+  mon.:
+    keyring_path: /etc/ceph/ceph.mon.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
   mon.cephosd1001:
     import_to_ceph: false
     caps:
