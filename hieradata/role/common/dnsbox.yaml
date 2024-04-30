@@ -24,6 +24,8 @@ profile::dns::auth::authdns_servers_ips:
   'dns5004.wikimedia.org': 103.102.166.8
   'dns6001.wikimedia.org': 185.15.58.5
   'dns6002.wikimedia.org': 185.15.58.37
+  'dns7001.wikimedia.org': 195.200.68.5
+  'dns7002.wikimedia.org': 195.200.68.37
 
 # When adding a new VIP here, make sure that check_cmd follows this format:
 #   /usr/local/bin/check_{service_type}_state <actual check command>
