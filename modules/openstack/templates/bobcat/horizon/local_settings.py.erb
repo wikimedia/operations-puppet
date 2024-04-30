@@ -20,8 +20,8 @@ TEMPLATE_DEBUG = DEBUG
 # with the list of host/domain names that the application can serve.
 # For more information see:
 # https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['horizon.wikimedia.org', ]
-
+ALLOWED_HOSTS = ['<%= @webserver_hostname %>', ]
+CSRF_TRUSTED_ORIGINS = ['<%= @webserver_hostname %>', ]
 AUTHENTICATION_PLUGINS = ['openstack_auth.plugin.wmtotp.WmtotpPlugin', 'openstack_auth.plugin.token.TokenPlugin']
 
 # Set SSL proxy settings:
