@@ -1778,12 +1778,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-2:
@@ -1828,12 +1823,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-3:
@@ -1878,12 +1868,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-4:
@@ -1920,12 +1905,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-5:
@@ -1974,12 +1954,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
   non-canonical-redirect-6:
@@ -2028,12 +2003,7 @@ shared_acme_certificates:
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
-    - '^ncredir100[12]\.eqiad\.wmnet$'
-    - '^ncredir200[12]\.codfw\.wmnet$'
-    - '^ncredir300[34]\.esams\.wmnet$'
-    - '^ncredir400[12]\.ulsfo\.wmnet$'
-    - '^ncredir500[12]\.eqsin\.wmnet$'
-    - '^ncredir600[12]\.drmrs\.wmnet$'
+    - '^ncredir[0-9]{4,}\..*\.wmnet$'
     prevalidate: true
     skip_invalid_snis: true
 labsldapconfig: {}
