@@ -1907,6 +1907,11 @@ node /^lvs600[123]\.drmrs\./ {
     role(lvs::balancer)
 }
 
+# MAGRU lvs servers
+node /^lvs700[123]\.magru\./ {
+    role(lvs::balancer)
+}
+
 node /^maps10(0[5-8]|1[0])\.eqiad\./ {
     role(maps::replica)
 }

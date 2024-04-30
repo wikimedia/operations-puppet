@@ -10,6 +10,7 @@ class profile::lvs::configuration {
                 'ulsfo' => [ 'lvs4008', 'lvs4010' ],
                 'eqsin' => [ 'lvs5004', 'lvs5006' ],
                 'drmrs' => [ 'lvs6001', 'lvs6003' ],
+                'magru' => [ 'lvs7001', 'lvs7003' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -25,6 +26,7 @@ class profile::lvs::configuration {
                 'ulsfo' => [ 'lvs4009', 'lvs4010' ],
                 'eqsin' => [ 'lvs5005', 'lvs5006'],
                 'drmrs' => [ 'lvs6002', 'lvs6003' ],
+                'magru' => [ 'lvs7002', 'lvs7003' ],
                 default => undef,
             },
             'labs' => $::site ? {
@@ -75,6 +77,9 @@ class profile::lvs::configuration {
         'lvs6001'      => 'high-traffic1',
         'lvs6002'      => 'high-traffic2',
         'lvs6003'      => 'secondary',
+        'lvs7001'      => 'high-traffic1',
+        'lvs7002'      => 'high-traffic2',
+        'lvs7003'      => 'secondary',
     }
     $lvs_class = pick($lvs_classes[$::hostname], 'unknown')
 }

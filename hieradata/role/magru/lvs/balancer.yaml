@@ -1,0 +1,14 @@
+profile::pybal::config_host: conf1009.eqiad.wmnet
+profile::pybal::etcd_port: 4001
+profile::lvs::tagged_subnets:
+  - public1-b3-magru
+  - public1-b4-magru
+  - private1-b3-magru
+  - private1-b4-magru
+
+profile::lvs::interface_tweaks:
+  eno12399np0:
+    txqlen: 10000
+
+profile::lvs::ipip_enabled: true
+profile::pybal::ipip_enabled: true

@@ -2884,6 +2884,14 @@ haproxy_allowed_healthcheck_sources:
   - 10.136.1.20                         # lvs6003
   - 2a02:ec80:600:101::/64              # drmrs
   - 2a02:ec80:600:102::/64              # drmrs
+  - 10.140.0.13                         # lvs7001
+  - 10.140.1.2                          # lvs7001
+  - 10.140.1.14                         # lvs7002
+  - 10.140.0.2                          # lvs7002
+  - 10.140.0.14                         # lvs7003
+  - 10.140.1.3                          # lvs7003
+  - 2a02:ec80:700:101::/64              # magru: private1-b3-magru
+  - 2a02:ec80:700:102::/64              # magru: private1-b4-magru
 
 private_wikis:
  - 'advisorswiki'

@@ -29,6 +29,8 @@ class profile::pybal(
     $global_options = {
         'bgp' => $bgp,
         'bgp-peer-address' => $::hostname ? {
+            # drmrs, esams, magru are different because they have L3 ToR switches, while the
+            # others above are a shared L2 domain across both racks.
             /^lvs10[0-9][0-9]$/ => "[ '208.80.154.196', '208.80.154.197' ]", # cr1-eqiad,cr2-eqiad
             /^lvs2011$/         => "[ '10.192.23.1' ]", # lsw1-a2-codfw gateway
             /^lvs2012$/         => "[ '10.192.11.1' ]", # lsw1-b2-codfw gateway
@@ -37,10 +39,10 @@ class profile::pybal(
             /^lvs3009$/         => "[ '10.80.1.1' ]", # asw1-by27-esams gateway
             /^lvs40[0-9][0-9]$/ => "[ '198.35.26.192', '198.35.26.193' ]",   # cr3-ulsfo,cr4-ulsfo
             /^lvs50[0-9][0-9]$/ => "[ '103.102.166.131', '103.102.166.130' ]", # cr3-eqsin,cr2-eqsin
-            # Note drmrs is different because it has L3 ToR switches, while the
-            # others above are a shared L2 domain across both racks
             /^lvs600[13]$/      => "[ '10.136.0.1' ]", # asw1-b12-drmrs gateway
             /^lvs6002$/         => "[ '10.136.1.1' ]", # asw1-b13-drmrs gateway
+            /^lvs700[13]$/      => "[ '10.140.0.1' ]", # asw1-b3-magru gateway
+            /^lvs7002$/         => "[ '10.140.1.1' ]", # asw1-b4-magru gateway
             default             => '(unspecified)'
             },
         'bgp-nexthop-ipv4'               => $facts['ipaddress'],

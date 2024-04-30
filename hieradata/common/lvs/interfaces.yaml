@@ -401,3 +401,28 @@ lvs::interfaces::vlan_data:
     iface:
       lvs3008: 'eno12409np1:10.80.1.8'
       lvs3010: 'eno12409np1:10.80.1.10'
+  public1-b3-magru:
+    id: "711"
+    netmask: '255.255.255.224'
+    iface:
+      lvs7001: 'eno12399np0:195.200.68.2'
+      lvs7002: 'eno12409np1:195.200.68.3'
+      lvs7003: 'eno12399np0:195.200.68.4'
+  public1-b4-magru:
+    id: "712"
+    netmask: '255.255.255.224'
+    iface:
+      lvs7001: 'eno12409np1:195.200.68.34'
+      lvs7002: 'eno12399np0:195.200.68.35'
+      lvs7003: 'eno12409np1:195.200.68.36'
+  private1-b3-magru:
+    id: "721"
+    netmask: '255.255.255.0'
+    iface:
+      lvs7002: 'eno12409np1:10.140.0.2'
+  private1-b4-magru:
+    id: "722"
+    netmask: '255.255.255.0'
+    iface:
+      lvs7001: 'eno12409np1:10.140.1.2'
+      lvs7003: 'eno12409np1:10.140.1.3'
