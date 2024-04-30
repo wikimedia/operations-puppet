@@ -33,3 +33,9 @@ profile::openstack::codfw1dev::horizon::port: 8084
 labsldapconfig:
   hostname: cloudservices2004-dev.codfw.wmnet
   secondary_hostname: cloudservices2004-dev.codfw.wmnet
+
+ldap:
+  ro-server: cloudservices2004-dev.private.codfw.wikimedia.cloud
+  ro-server-fallback: cloudservices2004-dev.private.codfw.wikimedia.cloud
+  rw-server: cloudservices2004-dev.private.codfw.wikimedia.cloud
+  rw-server-fallback: cloudservices2004-dev.private.codfw.wikimedia.cloud
