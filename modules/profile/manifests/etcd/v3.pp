@@ -66,8 +66,12 @@ class profile::etcd::v3(
         $certname = $::fqdn
     }
 
-    # TLS certs *for etcd use* in peer-to-peer communications.
-    # Tlsproxy will use other certificates.
+    # TLS certs *for etcd use* in peer-to-peer communications,
+    # tlsproxy will use other certificates.
+    # According to https://github.com/etcd-io/etcd/commit/4e21f87e3d014d606bb3ba2a89731a7d24806611
+    # etcd does reload the certificate from disc for every client
+    # connection. So there is no need to notify the etcd service
+    # on certificate renewals.
 
     # This option uses the puppet CA based certificates
     if ! $use_pki_certs {
@@ -94,10 +98,11 @@ class profile::etcd::v3(
             $ssl_hosts = [$facts['networking']['fqdn']]
         }
         $ssl_paths = profile::pki::get_cert('etcd', $certname, {
-            hosts  => $ssl_hosts,
-            owner  => 'etcd',
-            outdir => '/var/lib/etcd/ssl',
-            } )
+            hosts           => $ssl_hosts,
+            owner           => 'etcd',
+            outdir          => '/var/lib/etcd/ssl',
+            before_services => ['etcd'],
+        })
     }
 
     # Service

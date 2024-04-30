@@ -14,6 +14,7 @@
 # @param label the cfssl label to use, this is essentially the CA
 # @param profile the cfssl profile to use
 # @param notify_services array of service names to notify when the certificate changes
+# @param before_services this cert needs to be applied before all services in this array of service names
 # @param outdir specify a specific directory to write all certificate files to
 # @param tls_cert the tls client certificate use when requesting signing
 # @param tls_key the tls client key use when requesting signing
@@ -39,6 +40,7 @@ define cfssl::cert (
     Optional[Cfssl::Ca_name]       $label           = undef,
     Optional[String]               $profile         = undef,
     Array[String]                  $notify_services = [],
+    Array[String]                  $before_services = [],
     Optional[Stdlib::Unixpath]     $outdir          = undef,
     Optional[Stdlib::Unixpath]     $tls_cert        = undef,
     Optional[Stdlib::Unixpath]     $tls_key         = undef,
@@ -143,11 +145,16 @@ define cfssl::cert (
             true    => undef,
             default => Service[$notify_services],
         }
+        $_before_services = $before_services.empty() ? {
+            true    => undef,
+            default => Service[$before_services],
+        }
         exec { "Generate cert ${title}":
             command     => $gen_command,
             environment => $environment,
             unless      => $test_command,
             notify      => $_notify_services,
+            before      => $_before_services,
             require     => Cfssl::Csr[$csr_json_path],
         }
         exec { "Generate cert ${title} refresh":
@@ -155,6 +162,7 @@ define cfssl::cert (
             environment => $environment,
             refreshonly => true,
             notify      => $_notify_services,
+            before      => $_before_services,
             subscribe   => File[$csr_json_path],
         }
         if $auto_renew {
@@ -219,6 +227,7 @@ define cfssl::cert (
                 command   => "/bin/cat ${cert_path} ${cert_chain_path} > ${cert_chained_path}",
                 unless    => $test_chained,
                 notify    => $_notify_services,
+                before    => $_before_services,
                 subscribe => $subscribe,
             }
         }
