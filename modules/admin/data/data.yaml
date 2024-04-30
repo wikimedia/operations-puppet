@@ -158,7 +158,7 @@ groups:
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
-              sbailey, tjones
+              sbailey, tjones, jsn
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -6314,6 +6314,14 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPzNLzxzF0+Sjy80bIrbKyCyoDqcEB95X9z0fWh3F7x toyofuku@wmf3417'
+  jsn:
+    ensure: present
+    realname: Jason Sherman
+    email: jsherman@wikimedia.org
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdUcVkD6BtqZJlTW5QPf63PekD3uSUg+5L8x7el71xf jsherman@wikimedia.org'
+    uid: 16502
+    gid: 500
 
 ldap_only_users:
   adavenport:
@@ -6918,10 +6926,6 @@ ldap_only_users:
   jcarvalho:
     ensure: absent
     realname: João Carvalho
-  jsn:
-    ensure: present
-    realname: Jason Sherman
-    email: jsherman@wikimedia.org
   eleoni:
     ensure: present
     realname: Emanuele Leoni
