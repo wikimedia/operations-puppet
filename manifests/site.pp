@@ -829,11 +829,11 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s3 & s4, bullseye
+## s3 & s4, 10.6, bullseye
 node /^db1150\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bullseye
+## s7 & s8, 10.6, bullseye
 node /^db1171\.eqiad\./ {
     role(mariadb::backup_source)
 }
