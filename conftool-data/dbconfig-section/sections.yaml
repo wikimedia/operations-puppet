@@ -13,6 +13,7 @@ eqiad:
   - es3
   - es4
   - es5
+  - es6
   - x1
   - x2
 codfw:
@@ -30,5 +31,6 @@ codfw:
   - es3
   - es4
   - es5
+  - es6
   - x1
   - x2
