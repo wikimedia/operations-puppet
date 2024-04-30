@@ -45,7 +45,7 @@ class openstack::horizon::config(
         content => template("openstack/${horizon_version}/horizon/local_settings.py.erb"),
         mode    => '0444',
         owner   => 'root',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -53,7 +53,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/nova/common/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -61,7 +61,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/keystone/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -69,7 +69,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/glance/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -77,7 +77,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/designate/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -85,7 +85,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/neutron/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -93,7 +93,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/cinder/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -101,7 +101,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${openstack_version}/trove/policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 
@@ -112,7 +112,7 @@ class openstack::horizon::config(
         source  => "puppet:///modules/openstack/${horizon_version}/horizon/disabled_policy.yaml",
         owner   => 'root',
         mode    => '0444',
-        notify  => Service['apache2'],
+        notify  => Service['openstack-dashboard'],
         require => File['/etc/openstack-dashboard'],
     }
 }
