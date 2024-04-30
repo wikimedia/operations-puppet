@@ -1,5 +1,4 @@
 # es2036
-# To be setup
 mariadb::shard: 'es6'
 mariadb::binlog_format: 'ROW'
 
