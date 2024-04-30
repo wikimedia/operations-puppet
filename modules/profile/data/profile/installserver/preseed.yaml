@@ -286,7 +286,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'ganeti[12]*':
     - partman/custom/ganeti-raid5.cfg
-  'ganeti[3456]*':
+  'ganeti[34567]*':
     - partman/custom/ganeti-raid1.cfg
   'ganeti-test2*':
     - partman/custom/ganeti-raid5.cfg
