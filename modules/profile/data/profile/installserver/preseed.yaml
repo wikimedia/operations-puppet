@@ -300,9 +300,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'htmldumper1001':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'icinga*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'install*':
     - partman/flat.cfg
     - virtual.cfg
