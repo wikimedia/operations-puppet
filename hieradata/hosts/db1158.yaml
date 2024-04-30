@@ -1,4 +1,3 @@
 # db1158
 # sanitarium master for s7
 mariadb::shard: 's7'
-profile::monitoring::notifications_enabled: false
