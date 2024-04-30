@@ -54,6 +54,15 @@ cache::nodes:
       - 'cp6014.drmrs.wmnet'
       - 'cp6015.drmrs.wmnet'
       - 'cp6016.drmrs.wmnet'
+    magru:
+      - 'cp7001.magru.wmnet'
+      - 'cp7002.magru.wmnet'
+      - 'cp7003.magru.wmnet'
+      - 'cp7004.magru.wmnet'
+      - 'cp7005.magru.wmnet'
+      - 'cp7006.magru.wmnet'
+      - 'cp7007.magru.wmnet'
+      - 'cp7008.magru.wmnet'
   upload:
     codfw:
       - 'cp2028.codfw.wmnet'
@@ -109,3 +118,12 @@ cache::nodes:
       - 'cp6006.drmrs.wmnet'
       - 'cp6007.drmrs.wmnet'
       - 'cp6008.drmrs.wmnet'
+    magru:
+      - 'cp7009.magru.wmnet'
+      - 'cp7010.magru.wmnet'
+      - 'cp7011.magru.wmnet'
+      - 'cp7012.magru.wmnet'
+      - 'cp7013.magru.wmnet'
+      - 'cp7014.magru.wmnet'
+      - 'cp7015.magru.wmnet'
+      - 'cp7016.magru.wmnet'

@@ -1,0 +1,19 @@
+magru:
+  cache_text:
+    cp7001.magru.wmnet: [cdn, ats-be]
+    cp7002.magru.wmnet: [cdn, ats-be]
+    cp7003.magru.wmnet: [cdn, ats-be]
+    cp7004.magru.wmnet: [cdn, ats-be]
+    cp7005.magru.wmnet: [cdn, ats-be]
+    cp7006.magru.wmnet: [cdn, ats-be]
+    cp7007.magru.wmnet: [cdn, ats-be]
+    cp7008.magru.wmnet: [cdn, ats-be]
+  cache_upload:
+    cp7009.magru.wmnet: [cdn, ats-be]
+    cp7010.magru.wmnet: [cdn, ats-be]
+    cp7011.magru.wmnet: [cdn, ats-be]
+    cp7012.magru.wmnet: [cdn, ats-be]
+    cp7013.magru.wmnet: [cdn, ats-be]
+    cp7014.magru.wmnet: [cdn, ats-be]
+    cp7015.magru.wmnet: [cdn, ats-be]
+    cp7016.magru.wmnet: [cdn, ats-be]
