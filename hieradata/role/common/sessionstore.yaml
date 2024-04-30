@@ -44,6 +44,7 @@ profile::cassandra::settings:
   tls_cluster_name: "sessions"
   tls_use_pki_truststore: true
   tls_use_pki_keep_old_ca: true
+  tls_use_pki: true
   dc: "%{::site}"
   cluster_name: "sessions"
   super_username: cassandra
