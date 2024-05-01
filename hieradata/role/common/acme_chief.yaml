@@ -185,6 +185,14 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^mx[12]001\.wikimedia\.org$'
+    mx-out:
+        CN: 'mx-out1001.wikimedia.org'
+        SNI:
+        - 'mx-out1001.wikimedia.org'
+        - 'mx-out2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^mx-out[12]001\.wikimedia\.org$'
     openstack-codfw1dev:
         CN: 'openstack.codfw1dev.wikimediacloud.org'
         SNI:

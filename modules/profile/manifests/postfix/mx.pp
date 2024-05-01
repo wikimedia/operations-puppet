@@ -196,9 +196,23 @@ class profile::postfix::mx (
     # We need rspamd to create the milter socket, before installing postfix
     Class['Rspamd'] -> Class['Postfix']
 
-    acme_chief::cert { 'mx':
-        puppet_svc => undef,
-        key_group  => 'postfix',
+    case $mta_mode {
+        'inbound': {
+            acme_chief::cert { 'mx-in':
+                puppet_rsc => Service['postfix'],
+                key_group  => 'postfix',
+            }
+        }
+        'outbound': {
+            acme_chief::cert { 'mx-out':
+                puppet_rsc => Service['postfix'],
+                key_group  => 'postfix',
+            }
+        }
+        'null-client': {
+            # TODO: do we want to encrypt null-client traffic?
+        }
+        default: { fail('mta_mode not supported') }
     }
 
     monitoring::service { 'smtp':
