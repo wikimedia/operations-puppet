@@ -114,6 +114,7 @@ profile::cassandra::monitor_tls_port: 7000
 profile::admin::groups:
   - aqs-admins
   - restbase-admins
+  - cassandra-staging-devs
 
 profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Data Persistence']
