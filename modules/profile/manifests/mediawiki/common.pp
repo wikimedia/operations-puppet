@@ -5,6 +5,7 @@ class profile::mediawiki::common(
     Array[Wmflib::Php_version] $php_versions = lookup('profile::mediawiki::php::php_versions', {'default_value' => ['7.2']}),
     Array $histogram_buckets = lookup('profile::prometheus::statsd_exporter::histogram_buckets', { 'default_value' => [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30, 60],}),
     Optional[Wmflib::Ensure] $php_restarts = lookup('profile::mediawiki::php::restarts::ensure', {'default_value' => undef}),
+    Optional[Boolean] $load_geoip_data_from_puppetserver = lookup('profile::mediawiki::common::load_geoip_data_from_puppetserver', {'default_value' => true}),
     Optional[Boolean] $fetch_ipinfo_dbs = lookup('profile::mediawiki::common::fetch_ipinfo_dbs', {'default_value' => false}),
     Optional[Boolean] $is_scap_master = lookup('profile::mediawiki::scap_client::is_master', {'default_value' => false}),
     Optional[Boolean] $enable_icu67 = lookup('profile::mediawiki::php::icu67', {'default_value' => false})
@@ -15,7 +16,8 @@ class profile::mediawiki::common(
     require ::profile::mediawiki::system_users
     # GeoIP is needed for MW
     class { '::geoip':
-        fetch_ipinfo_dbs => $fetch_ipinfo_dbs,
+        load_data_from_puppetserver => $load_geoip_data_from_puppetserver,
+        fetch_ipinfo_dbs            => $fetch_ipinfo_dbs,
     }
 
     # Enable systemd coredump on all servers running mediawiki
