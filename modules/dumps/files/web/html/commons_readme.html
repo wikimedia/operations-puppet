@@ -1,0 +1,237 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!-- This file is maintained by puppet!! -->
+<!-- modules/dumps/files/web/html/pageviews_readme.html -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analytics: Commons Impact Metrics</title>
+    <link rel="stylesheet" type="text/css" href="/dumps.css" />
+</head>
+<body>
+    <div id="globalWrapper">
+        <div id="content">
+            <h1>Analytics Datasets: Commons Impact Metrics</h1>
+
+            <h3>Overview</h3>
+            <p>
+            This collection of datasets details how commons media is edited, used, and accessed across Wikimedia projects.  Currently, we are publishing data about categories on an allow-list, curated jointly with the <a href="https://meta.wikimedia.org/wiki/GLAM" target="_new">GLAM</a> community.
+            </p>
+            <p>
+            The files available for download are all in TSV (tab-separated-value) format, with lists are separated by the "|" character.  Schemas for each dataset are detailed below.
+            </p>
+            <h2><a href="/other/commons">Download Commons Impact Metrics Data</a></h2>
+
+            <h4>back to all <a href="/other/analytics">Analytics Datasets</a></h4>
+
+            <h3>Category metrics snapshot</h3>
+
+            <table class="wikitable">
+                <tr>
+                    <th>Field</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>category</td>
+                    <td>The name of the category this row refers to. Coincides with the page title of the category page in Commons. URL version (with underscores).</td>
+                </tr>
+                <tr>
+                    <td>primary_categories</td>
+                    <td>The top ancestor category names of this row’s category. They should be in the Commons institution category allow-list. Ideally, there should be only one primary category, but since we can not control that from MediaWiki, we accept multiple primary categories. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>media_file_count</td>
+                    <td>The number of media files contained in this (shallow) category.</td>
+                </tr>
+                <tr>
+                    <td>media_file_count_deep</td>
+                    <td>The number of media files contained in this (deep) category tree.</td>
+                </tr>
+                <tr>
+                    <td>used_media_file_count</td>
+                    <td>The number of media files from this (shallow) category featured in at least one wiki page.</td>
+                </tr>
+                <tr>
+                    <td>used_media_file_count_deep</td>
+                    <td>The number of media files from this (deep) category tree featured in at least one wiki page.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_wiki_count</td>
+                    <td>The number of wikis featuring at least one of this (shallow) category’s media files.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_wiki_count_deep</td>
+                    <td>The number of wikis featuring at least one of this (deep) category tree’s media files.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_page_count</td>
+                    <td>The number of (namespace=0) pages featuring at least one of this (shallow) category’s media files.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_page_count_deep</td>
+                    <td>The number of (namespace=0) pages featuring at least one of this (deep) category tree’s media files.</td>
+                </tr>
+                <tr>
+                    <td>month</td>
+                    <td>The month after the end of which we calculate the data (YYYY-MM). For example, if we are calculating the data after March 2024 (even if it’s i.e. April 4th) the value should be “2024-03”. This is so, to be consistent with the sibling incremental datasets (Pageviews by category, Pageviews by media file, and Edits).</td>
+                </tr>
+            </table>
+
+            <h3>Media file metrics snapshot</h3>
+
+            <table class="wikitable">
+                <tr>
+                    <th>Field</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>media_file</td>
+                    <td>The name of the media file this row refers to. Coincides with the page title of the media file page in Commons. URL version (with underscores).</td>
+                </tr>
+                <tr>
+                    <td>media_type</td>
+                    <td>The media type of the media file, coming from the Image table (img_media_type): BITMAP, VIDEO, etc.</td>
+                </tr>
+                <tr>
+                    <td>categories</td>
+                    <td>The category names that the media file is directly associated with. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>primary_categories</td>
+                    <td>The top ancestor category names of the media file. They should be in the Commons institution category allow-list. Ideally, there should be only one primary category, but since we can not control that from MediaWiki, we accept multiple primary categories. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_wiki_count</td>
+                    <td>The number of wikis featuring this media file at least in one (namespace=0) page.</td>
+                </tr>
+                <tr>
+                    <td>leveraging_page_count</td>
+                    <td>The number of (namespace=0) pages featuring this media file across all wikis.</td>
+                </tr>
+                <tr>
+                    <td>month</td>
+                    <td>The month after the end of which we calculate the data (YYYY-MM). For example, if we are calculating the data after March 2024 (even if it’s i.e. April 4th) the value should be “2024-03”. This is so, to be consistent with the sibling incremental datasets (Pageviews by category, Pageviews by media file, and Edits).</td>
+                </tr>
+            </table>
+
+
+            <h3>Pageviews by category</h3>
+
+            <table class="wikitable">
+                <tr>
+                    <td>Field</td>
+                    <td>Description</td>
+                </tr>
+                <tr>
+                    <td>category</td>
+                    <td>The name of the category this row refers to. Coincides with the page title of the category page in Commons. URL version (with underscores).</td>
+                </tr>
+                <tr>
+                    <td>category_scope</td>
+                    <td>Either “shallow” (meaning only media files directly associated with the category were used to aggregate pageviews) or “deep” (meaning all media files within the category and all its recursive subcategories were used to aggregate pageviews).</td>
+                </tr>
+                <tr>
+                    <td>primary_categories</td>
+                    <td>The top ancestor category names of this row’s category. They should be in the Commons institution category allow-list. Ideally, there should be only one primary category, but since we can not control that from MediaWiki, we accept multiple primary categories. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>wiki</td>
+                    <td>The canonical name of the visualized wiki, i.e.: “en.wikipedia” or “fr.wiktionary”. Only wikis that feature at least one media file of the corresponding category will appear here.</td>
+                </tr>
+                <tr>
+                    <td>page_title</td>
+                    <td>The title of the visualized (namespace=0) page. URL version (with underscores). Only (namespace=0) pages featuring at least one media file of the corresponding category will appear here.</td>
+                </tr>
+                <tr>
+                    <td>pageview_count</td>
+                    <td>Aggregated pageview count for (namespace=0) pages featuring at least one media file from the category/scope. Rows with pageview_count=0 should be omitted!</td>
+                </tr>
+                <tr>
+                    <td>month</td>
+                    <td>The month for which we aggregate the data (YYYY-MM).</td>
+                </tr>
+            </table>
+
+
+            <h3>Pageviews by media file</h3>
+
+            <table class="wikitable">
+                <tr>
+                    <td>Field</td>
+                    <td>Description</td>
+                </tr>
+                <tr>
+                    <td>media_file</td>
+                    <td>The name of the media file this row refers to. Coincides with the page title of the media file page in Commons. URL version (with underscores).</td>
+                </tr>
+                <tr>
+                    <td>categories</td>
+                    <td>The category names that the media file is directly associated with. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>primary_categories</td>
+                    <td>The top ancestor category names of the media file. They should be in the Commons institution category allow-list. Ideally, there should be only one primary category, but since we can not control that from MediaWiki, we accept multiple primary categories. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>wiki</td>
+                    <td>The canonical name of the visualized wiki, i.e.: “en.wikipedia” or “fr.wiktionary”. Only wikis that feature the media file at least once will appear here.</td>
+                </tr>
+                <tr>
+                    <td>page_title</td>
+                    <td>The title of the visualized (namespace=0) page. URL version (with underscores). Only (namespace=0) pages featuring the media file will appear here.</td>
+                </tr>
+                <tr>
+                    <td>pageview_count</td>
+                    <td>Aggregated pageview count for (namespace=0) pages featuring the media file. Rows with pageview_count=0 should be omitted!</td>
+                </tr>
+                <tr>
+                    <td>month</td>
+                    <td>The month for which we aggregate the data (YYYY-MM).</td>
+                </tr>
+            </table>
+
+
+            <h3>Edits</h3>
+
+            <table class="wikitable">
+                <tr>
+                    <td>Field</td>
+                    <td>Description</td>
+                </tr>
+                <tr>
+                    <td>user_name</td>
+                    <td>The user name of the user who performed the edit. This is resolved from the actor table’s actor_name. If no actor is found, it is set to ‘anonymous’. If it has been suppressed, it is set to ‘redacted’.</td>
+                </tr>
+                <tr>
+                    <td>edit_type</td>
+                    <td>Either “create” (for the first revision of a media file page), or “update” (for all other revisions of the media file page).</td>
+                </tr>
+                <tr>
+                    <td>media_file</td>
+                    <td>The name of the edited media file. Coincides with the page title of the media file page in Commons. URL version (with underscores).</td>
+                </tr>
+                <tr>
+                    <td>categories</td>
+                    <td>The category names that the media file is directly associated with. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>primary_categories</td>
+                    <td>The top ancestor category names of the media file. They should be in the Commons institution category allow-list. Ideally, there should be only one primary category, but since we can not control that from MediaWiki, we accept multiple primary categories. The list is separated by the bar “|” character.</td>
+                </tr>
+                <tr>
+                    <td>dt</td>
+                    <td>The timestamp of the edit.</td>
+                </tr>
+            </table>
+
+            <h4>back to all <a href="/other/analytics">Analytics Datasets</a></h4>
+            <div class="visualClear"></div>
+            <hr/>
+            <p>
+                <strong>All Analytics datasets are available under the <a href = "https://creativecommons.org/publicdomain/zero/1.0/" target = "_blank">Creative Commons CC0 dedication</a>.</strong>
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>

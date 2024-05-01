@@ -112,6 +112,15 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/geoeditors_readme.html',
     }
 
+    file { "${miscdatasetsdir}/commons/readme.html":
+        ensure => 'present',
+        path   => "${miscdatasetsdir}/commons/readme.html",
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+        source => 'puppet:///modules/dumps/web/html/commons_readme.html',
+    }
+
     file { "${miscdatasetsdir}/wikibase/commonswiki/README_commonsrdfdumps.txt":
         ensure => 'present',
         path   => "${miscdatasetsdir}/wikibase/commonswiki/README_commonsrdfdumps.txt",
