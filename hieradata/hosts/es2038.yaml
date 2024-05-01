@@ -1,5 +1,6 @@
 # es2038
 # To be setup
+mariadb::shard: 'es7'
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true

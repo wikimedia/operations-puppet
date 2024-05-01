@@ -1,6 +1,7 @@
 # es2040
 # To be setup
 profile::monitoring::notifications_enabled: false
+mariadb::shard: 'es7'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

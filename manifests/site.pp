@@ -1107,11 +1107,6 @@ node /^es2032\.codfw\./ {
     role(mariadb::core)
 }
 
-# New external store hosts T354674
-node /^es20(38|39|40)\.codfw\./ {
-    role(insetup::data_persistence)
-}
-
 # External Storage, Shard 2 (es2) databases
 
 ## eqiad servers
@@ -1219,6 +1214,11 @@ node /^es203[567]\.codfw\./ {
 # External Storage, Shard 7 (es7) databases
 ## eqiad servers
 node /^es10(35|39|40)\.eqiad\./ {
+    role(mariadb::core)
+}
+
+## codfw servers
+node /^es20(38|39|40)\.codfw\./ {
     role(mariadb::core)
 }
 
