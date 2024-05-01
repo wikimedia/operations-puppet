@@ -83,10 +83,16 @@ profile::opensearch::monitoring::enable_shard_size_check: false
 # is fine and should not raise an alert. So threshold needs to be > 1/3.
 profile::opensearch::monitoring::threshold: '>=0.34'
 
-# reusing kibana.discovery.wmnet to squelch PCC missing secret() errors.
-# the kibana-combined cert contains SAN for 'kibana' names and
-# 'logs-api' (for programmatic access)
-profile::tlsproxy::envoy::global_cert_name: "kibana-combined.discovery.wmnet"
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::global_cert_name: 'logstash.wikimedia.org'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - 'kibana7.svc.codfw.wmnet'
+    - 'kibana7.svc.eqiad.wmnet'
+    - 'logs-api.discovery.wmnet'
+    - 'logs-api.svc.codfw.wmnet'
+    - 'logs-api.svc.eqiad.wmnet'
+    - 'logstash-next.wikimedia.org'
 profile::tlsproxy::envoy::sni_support: 'yes'
 profile::tlsproxy::envoy::listen_ipv6: true
 
