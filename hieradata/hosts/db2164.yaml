@@ -2,4 +2,3 @@
 # sanitarium master for s8
 mariadb::binlog_format: 'ROW'
 mariadb::shard: 's8'
-profile::monitoring::notifications_enabled: false
