@@ -185,6 +185,14 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^mx[12]001\.wikimedia\.org$'
+    mx-in:
+        CN: 'mx-in1001.wikimedia.org'
+        SNI:
+        - 'mx-in1001.wikimedia.org'
+        - 'mx-in2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^mx-in[12]001\.wikimedia\.org$'
     mx-out:
         CN: 'mx-out1001.wikimedia.org'
         SNI:
