@@ -170,6 +170,7 @@ kubernetes::clusters:
         - mw1368.eqiad.wmnet
         - mw1369.eqiad.wmnet
         - mw1370.eqiad.wmnet
+        - mw1371.eqiad.wmnet
         - mw1374.eqiad.wmnet
         - mw1375.eqiad.wmnet
         - mw1376.eqiad.wmnet
@@ -194,7 +195,10 @@ kubernetes::clusters:
         - mw1395.eqiad.wmnet
         - mw1396.eqiad.wmnet
         - mw1397.eqiad.wmnet
+        - mw1399.eqiad.wmnet
+        - mw1405.eqiad.wmnet
         - mw1408.eqiad.wmnet
+        - mw1409.eqiad.wmnet
         - mw1414.eqiad.wmnet
         - mw1415.eqiad.wmnet
         - mw1416.eqiad.wmnet
@@ -209,6 +213,7 @@ kubernetes::clusters:
         - mw1432.eqiad.wmnet
         - mw1433.eqiad.wmnet
         - mw1434.eqiad.wmnet
+        - mw1435.eqiad.wmnet
         - mw1439.eqiad.wmnet
         - mw1440.eqiad.wmnet
         - mw1441.eqiad.wmnet
