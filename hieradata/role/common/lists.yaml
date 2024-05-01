@@ -1,3 +1,6 @@
+profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Mailing list server'
+
 profile::admin::groups:
   - mailman3-roots
 profile::mail::default_mail_relay::enabled: false
