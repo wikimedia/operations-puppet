@@ -29,7 +29,7 @@ msg_once_per_alert_group: yes
 # * The alert dashboard link
 msg_template: >-
   {{ .Status | ToUpper }}:
-  {{ if .Alerts | len | le 2 }}[{{ .Alerts | len }}x]{{ end }}
+  {{- if .Alerts | len | le 2 }} [{{ .Alerts | len }}x]{{ end }}
   {{ .GroupLabels.alertname }}:
   {{ if eq .GroupLabels.alertname "DatasourceError" -}}
   {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
