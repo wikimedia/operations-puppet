@@ -131,12 +131,13 @@ class profile::dns::auth::update (
     }
 
     exec { 'authdns-local-update':
-        command     => '/usr/local/sbin/authdns-local-update --skip-review --initial',
-        user        => root,
-        refreshonly => true,
-        timeout     => 60,
+        command => '/usr/local/sbin/authdns-local-update --skip-review --initial',
+        user    => root,
+        timeout => 60,
+        # we don't want to run this if we have already run before and the files exist
+        unless  => [ 'test -f /etc/gdnsd/config -a -f /etc/gdnsd/zones/netbox/eqiad.wmnet -a -f /etc/gdnsd/zones/wikipedia.org' ],
         # we prepare the config even before the package gets installed, leaving
         # no window where service would be started and answer with REFUSED
-        before      => Package['gdnsd'],
+        before  => Package['gdnsd'],
     }
 }
