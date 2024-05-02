@@ -1796,6 +1796,9 @@ service::catalog:
       drmrs:
         ncredirlb: 185.15.58.226
         ncredirlb6: 2a02:ec80:600:ed1a::3
+      magru:
+        ncredirlb: 195.200.68.226
+        ncredirlb6: 2a02:ec80:700:ed1a::3
     lvs:
       class: high-traffic1
       conftool:
@@ -1822,6 +1825,7 @@ service::catalog:
       - ulsfo
       - eqsin
       - drmrs
+      - magru
     state: production
 
   ncredir-https:
@@ -1853,6 +1857,7 @@ service::catalog:
       - ulsfo
       - eqsin
       - drmrs
+      - magru
     state: production
 
   parsoid-php:
