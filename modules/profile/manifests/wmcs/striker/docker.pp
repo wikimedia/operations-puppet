@@ -35,4 +35,7 @@ class profile::wmcs::striker::docker(
             host_network => true,
         }
     }
+
+    profile::auto_restarts::service { 'containerd': }
+    profile::auto_restarts::service { 'docker': }
 }
