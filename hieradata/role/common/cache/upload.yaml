@@ -43,7 +43,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     upload_domain: 'upload.wikimedia.org'
     upload_webp_hits_threshold: 100
     maps_domain: 'maps.wikimedia.org'
-    measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs)\.wikimedia\.org$'
+    measure_domain_regex: '^measure-(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wikimedia\.org$'
     pass_random: false
     # Admit objects into cache with probability exponentially decreasing
     # with size. Using rate=0.2 and base=-20.3, the probability of caching
