@@ -31,10 +31,19 @@ trap cleanup SIGINT SIGHUP SIGABRT EXIT
 function main {
 	local codedir envdir g10k_envdir new_dir
 	codedir=$(puppet config --section server print codedir)
+	if ! current_branch=$(git -C /srv/git/operations/puppet/ branch --show-current); then
+		printf 'ERROR: Unable to obtain the current branch\n' 1>&2
+		exit 1
+	fi
+	if [[ "$current_branch" != 'production' ]]; then
+		printf 'ERROR: Current branch in /srv/git/operations/puppet is "%s", should be "production"\n' "$current_branch" 1>&2
+		printf 'ERROR: Exiting rather than deploying something surprising\n' 1>&2
+		exit 1
+	fi
 	envdir="${codedir}/environments"
 	g10k_envdir="${codedir}/environments_staging"
 	# g10k populates ${codedir}/environments_staging/production
-	g10k -quiet -config /etc/puppet/g10k.conf
+	g10k -quiet -branch production -config /etc/puppet/g10k.conf
 	new_dir=$(mktemp --directory --tmpdir="${envdir}" env.XXXXXXXXXX)
 	mv --no-target-directory \
 		"${g10k_envdir}/production" "$new_dir"
