@@ -126,3 +126,6 @@ profile::netbox::ganeti_sync_profiles:
     - profile: magru01
       url: ganeti01.svc.magru.wmnet
       site: magru
+    - profile: magru02
+      url: ganeti02.svc.magru.wmnet
+      site: magru
