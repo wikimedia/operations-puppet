@@ -328,12 +328,9 @@ mwlog: P{O:logging::mediawiki::udp2log}
 mx: P{O:mail::mx}
 mx-canary: P{mx2001.wikimedia.org}
 ncredir: P{O:ncredir}
-ncredir-codfw: A:ncredir and A:codfw
-ncredir-eqiad: A:ncredir and A:eqiad
-ncredir-esams: A:ncredir and A:esams
-ncredir-ulsfo: A:ncredir and A:ulsfo
-ncredir-eqsin: A:ncredir and A:eqsin
-ncredir-drmrs: A:ncredir and A:drmrs
+<% @datacenters.each do |dc| -%>
+ncredir-<%= dc %>: A:ncredir and A:<%= dc %>
+<% end -%>
 netbox: P{O:netbox::frontend}
 netbox-canary: P{O:netbox::standalone}
 netbox-all: A:netbox or A:netbox-canary
