@@ -13,7 +13,7 @@
 
 # Modify this if you'd like to change the memory allocation, enable JMX, etc
 <%- $jmx_ops = $enable_jmx.bool2str(
-  "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:${jmx_port}:${jmx_config}",
+  "-javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=0.0.0.0:${jmx_port}:${jmx_config}",
   ""
 ) -%>
 JAVA_ARGS="-Xms<%= $java_start_mem %> -Xmx<%= $java_max_mem %> -Djruby.logger.class=com.puppetlabs.jruby_utils.jruby.Slf4jLogger <%= $jmx_ops %>"
