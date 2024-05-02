@@ -87,6 +87,8 @@ class profile::openstack::base::wikitech::web(
         gerrit_api_password                => $gerrit_api_password,
     }
 
+    $php_version = wmflib::wmf_php_version()
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
+    profile::auto_restarts::service { "php${php_version}-fpm": }
 }
