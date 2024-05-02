@@ -85,6 +85,8 @@ class profile::openstack::base::nutcracker(
         override => true,
     }
 
+    profile::auto_restarts::service { 'nutcracker': }
+
     # monitor memcached if present, redis otherwise.
     if $memcached_servers != [] {
         class { '::nutcracker::monitoring':
