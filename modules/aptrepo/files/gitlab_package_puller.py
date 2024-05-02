@@ -51,7 +51,6 @@ class GitlabPackagePuller:
 
         self.artifact_creation_job = args.job
         self.destination_dir = args.destination_dir
-        self.dry_run = args.dry_run
         self.allowed_branches = args.branches
 
     def gitlab_token(self) -> str | None:

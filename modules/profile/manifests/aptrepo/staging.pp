@@ -90,6 +90,14 @@ class profile::aptrepo::staging (
     content => secret('apt-staging/gitlab-puller-token'),
   }
 
+  systemd::timer::job { 'gitlab-package-puller':
+    ensure      => present,
+    user        => 'root',
+    description => 'Runs the script to pull apt packages from Gitlab CI jobs',
+    command     => '/usr/local/bin/gitlab-package-puller',
+    interval    => { 'start' => 'OnUnitInactiveSec', 'interval' => '5m' },
+  }
+
   profile::auto_restarts::service { 'nginx': }
   profile::auto_restarts::service { 'envoyproxy': }
   profile::auto_restarts::service { 'rsync': }
