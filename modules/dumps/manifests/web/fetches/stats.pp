@@ -77,7 +77,7 @@ class dumps::web::fetches::stats(
     # Copies over commons impact metrics dumps from HDFS archive
     hdfs_tools::hdfs_rsync_job { 'commons_impact_metrics':
         hdfs_source       => "${src_hdfs}/commons/",
-        local_destination => "${miscdatasetsdir}/commons/",
+        local_destination => "${miscdatasetsdir}/commons_impact_metrics/",
         interval          => '*-*-* 06:00:00',
         user              => $user,
     }
