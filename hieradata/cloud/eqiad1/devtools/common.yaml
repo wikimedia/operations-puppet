@@ -59,11 +59,11 @@ phabricator_cluster_search:
 # Deployment server, scap
 
 deployment_hosts:
-- '172.16.6.54'  # deploy-1004.devtools.eqiad1.wikimedia.cloud
-deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
-scap::deployment_server: deploy-1004.devtools.eqiad1.wikimedia.cloud
+- '172.16.4.117'  # deploy-1006.devtools.eqiad1.wikimedia.cloud
+deployment_server: deploy-1006.devtools.eqiad1.wikimedia.cloud
+scap::deployment_server: deploy-1006.devtools.eqiad1.wikimedia.cloud
 scap::dsh::scap_masters:
-- deploy-1004.devtools.eqiad1.wikimedia.cloud
+- deploy-1006.devtools.eqiad1.wikimedia.cloud
 profile::mediawiki::scap_client::is_master: false
 
 profile::keyholder::server::require_encrypted_keys: 'no'
@@ -89,7 +89,7 @@ profile::kubernetes::deployment_server::user_defaults:
   mode: '0640'
   owner: mwdeploy
 profile::mediawiki::apc_shm_size: 128M
-profile::mediawiki::deployment::server::rsync_host: deploy-1004.devtools.eqiad1.wikimedia.cloud
+profile::mediawiki::deployment::server::rsync_host: deploy-1006.devtools.eqiad1.wikimedia.cloud
 profile::mediawiki::php::enable_fpm: true
 profile::rsyslog::kafka_shipper::kafka_brokers: []
 redis::shards:
@@ -165,7 +165,7 @@ profile::gerrit::java_home: /usr/lib/jvm/java-17-openjdk-amd64
 profile::gerrit::java_version: 8
 
 ## Deployment
-scap::wmflabs_master: deploy-1004.devtools.eqiad1.wikimedia.cloud
+scap::wmflabs_master: deploy-1006.devtools.eqiad1.wikimedia.cloud
 profile::gerrit::daemon_user: 'gerrit2'
 profile::gerrit::gerrit_site: "/var/lib/gerrit2/review_site"
 profile::gerrit::scap_user: 'gerrit-deploy'
