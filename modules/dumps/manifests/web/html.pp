@@ -112,9 +112,9 @@ class dumps::web::html(
         source => 'puppet:///modules/dumps/web/html/geoeditors_readme.html',
     }
 
-    file { "${miscdatasetsdir}/commons/readme.html":
+    file { "${miscdatasetsdir}/commons_impact_metrics/readme.html":
         ensure => 'present',
-        path   => "${miscdatasetsdir}/commons/readme.html",
+        path   => "${miscdatasetsdir}/commons_impact_metrics/readme.html",
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
