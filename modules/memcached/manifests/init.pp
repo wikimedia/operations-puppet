@@ -32,6 +32,10 @@
 #   Note: change the default only if you know what you are doing.
 #   Default: 48
 #
+# [*memcached_user*]
+#   User to run memcached as.
+#   Default: undef
+#
 # [*enable_tls*]
 #   Configure mcrouter using TLS on external interfaces. This
 #   parameter is only supported on memcached 1.6. On Buster a
@@ -98,6 +102,7 @@ class memcached(
     Float                      $growth_factor         = 1.25,
     Hash[String, Any]          $extra_options         = {},
     Boolean                    $enable_16             = false,
+    String                     $memcached_user        = undef,
     Boolean                    $enable_tls            = false,
     Boolean                    $enable_tls_localhost  = false,
     Boolean                    $enable_unix_socket    = false,

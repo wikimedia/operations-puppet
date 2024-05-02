@@ -8,6 +8,7 @@ prometheus::haproxy_exporter::endpoint: 'http://localhost:9900/stats;csv'
 profile::memcached::version: 'present'
 profile::memcached::growth_factor: 1.05
 profile::memcached::min_slab_size: 5
+profile::memcached::memcached_user: 'nobody'
 profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000

@@ -6,6 +6,7 @@ class profile::openstack::base::cloudweb_mcrouter(
     Array[Stdlib::Fqdn] $cloudweb_hosts = lookup('profile::openstack::base::labweb_hosts'),
     Stdlib::Port        $mcrouter_port  = lookup('profile::openstack::base::cloudweb::mcrouter_port'),
     Integer             $memcached_size = lookup('profile::openstack::base::cloudweb_memcached_size'),
+    String              $memcached_user = lookup('profile::openstack::eqiad1::cloudweb::memcached_user'),
 ) {
     # Replicated cache set including all cloudweb hosts.
     #
@@ -43,11 +44,12 @@ class profile::openstack::base::cloudweb_mcrouter(
     }
 
     class { '::memcached':
-        size          => $memcached_size,
+        size           => $memcached_size,
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
-        growth_factor => 1.05,
-        min_slab_size => 5,
+        growth_factor  => 1.05,
+        min_slab_size  => 5,
+        memcached_user => $memcached_user,
     }
     class { '::profile::prometheus::memcached_exporter': }
 

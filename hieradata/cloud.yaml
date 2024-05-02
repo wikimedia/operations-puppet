@@ -640,6 +640,7 @@ profile::memcached::max_seq_reqs: 200
 profile::memcached::size: ~
 profile::memcached::extended_options: []
 profile::memcached::port: 11211
+profile::memcached::memcached_user: 'nobody'
 profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~

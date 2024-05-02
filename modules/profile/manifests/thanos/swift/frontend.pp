@@ -53,12 +53,13 @@ class profile::thanos::swift::frontend (
     }
 
     class { '::memcached':
-        size          => $memcached_size_mb,
-        port          => 11211,
+        size           => $memcached_size_mb,
+        port           => 11211,
         # TODO: the following were implicit defaults from
         # MW settings, need to be reviewed.
-        growth_factor => 1.05,
-        min_slab_size => 5,
+        growth_factor  => 1.05,
+        min_slab_size  => 5,
+        memcached_user => 'nobody',
     }
 
     include ::profile::prometheus::memcached_exporter

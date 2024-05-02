@@ -106,6 +106,7 @@ profile::idp::idp_nodes:
   - idp-test2002.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
+profile::idp::memcached::memcached_user: 'nobody'
 profile::idp::memcached::mcrouter_cluster: 'idp-test'
 profile::idp::memcached::enable_tls: true
 profile::idp::memcached_transcoder: 'SERIAL'

@@ -22,7 +22,7 @@ ExecStart=/usr/bin/memcached \
           -p <%= @port -%> \
           <%- end -%>
           -m <%= @size %> \
-          -u nobody \
+          -u <%= @memcached_user %> \
           -c 25000 \
           -f <%= @growth_factor -%> \
           <%- @extra_options.sort.each do |option,value| -%>

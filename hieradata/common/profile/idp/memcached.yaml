@@ -2,5 +2,6 @@ profile::idp::memcached::ensure: present
 profile::idp::memcached::idp_nodes: []
 profile::idp::memcached::mcrouter_cluster: idp
 profile::idp::memcached::enable_tls: false
+profile::idp::memcached::memcached_user: 'nobody'
 profile::idp::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
 profile::idp::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"

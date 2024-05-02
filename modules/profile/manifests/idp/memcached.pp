@@ -3,15 +3,17 @@ class profile::idp::memcached (
     Wmflib::Ensure      $ensure           = lookup('profile::idp::memcached::ensure'),
     Array[Stdlib::Host] $idp_nodes        = lookup('profile::idp::memcached::idp_nodes'),
     String[1]           $mcrouter_cluster = lookup('profile::idp::memcached::mcrouter_cluster'),
+    String              $memcached_user   = lookup('profile::idp::memcached::memcached_user'),
     Boolean             $enable_tls       = lookup('profile::idp::memcached::enable_tls'),
     Stdlib::Unixpath    $ssl_cert         = lookup('profile::idp::memcached::ssl_cert'),
     Stdlib::Unixpath    $ssl_key          = lookup('profile::idp::memcached::ssl_key'),
 ) {
     class { 'memcached':
-        enable_16  => debian::codename::eq('buster'),
-        enable_tls => $enable_tls,
-        ssl_cert   => $ssl_cert,
-        ssl_key    => $ssl_key,
+        enable_16      => debian::codename::eq('buster'),
+        enable_tls     => $enable_tls,
+        ssl_cert       => $ssl_cert,
+        ssl_key        => $ssl_key,
+        memcached_user => $memcached_user,
     }
     class { 'profile::prometheus::memcached_exporter': }
 
