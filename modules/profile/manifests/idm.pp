@@ -31,7 +31,7 @@ class profile::idm(
     Boolean             $enable_api                = lookup('profile::idm::enable_api', {'default_value'                   => false})
 ) {
 
-    ensure_packages(['python3-django-uwsgi'])
+    ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])
 
     $etc_dir = '/etc/bitu'
     $base_dir = '/srv/idm'
