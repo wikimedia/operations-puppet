@@ -31,7 +31,7 @@ profile::phabricator::main::rate_limits:
 # This is the number of concurrent connections per client IP:
   connection: 0
 
-phabricator_active_server: phabricator-prod-1001
+phabricator_active_server: phabricator-bullseye
 profile::phabricator::main::dumps_rsync_clients: []
 phabricator_phd_taskmasters: 4
 phabricator_domain: phabricator.wmcloud.org
@@ -144,7 +144,7 @@ profile::gerrit::host: 'gerrit.devtools.wmcloud.org'
 profile::gerrit::mask_service: false
 
 profile::gerrit::ssh_allowed_hosts:
-- gerrit-prod-1001.devtools.eqiad.wmflabs
+- gerrit-bullseye.devtools.eqiad.wmflabs
 
 profile::gerrit::replica_hosts: []
 
@@ -186,7 +186,7 @@ sslcert::certificate::skip_private: true
 profile::gerrit::backups_enabled: false
 profile::gerrit::backup_set: 'gerrit-repo-data'
 
-profile::gerrit::active_host: 'gerrit-prod-1001.devtools.eqiad.wmflabs'
+profile::gerrit::active_host: 'gerrit-bullseye.devtools.eqiad.wmflabs'
 
 ## data for server migration
 profile::gerrit::migration::daemon_user: gerrit2
@@ -196,8 +196,8 @@ profile::gerrit::migration::data_dir: /srv/gerrit
 cache::nodes:
     text:
         eqiad:
-          - 'gerrit-prod-1001.devtools.eqiad.wmflabs'
-          - 'phabricator-prod-1001.devtools.eqiad1.wikimedia.cloud'
+          - 'gerrit-bullseye.devtools.eqiad.wmflabs'
+          - 'phabricator-bullseye.devtools.eqiad1.wikimedia.cloud'
 
 # Puppet master
 
