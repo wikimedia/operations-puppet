@@ -18,7 +18,7 @@ class profile::elasticsearch::cirrus(
     String $storage_device = lookup('profile::elasticsearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
     Boolean $enable_http2 = lookup('profile::elasticsearch::cirrus::enable_http2', {default_value => false}),
-    Profile::Pki::Provider $ssl_provider = lookup('profile::elasticsearch::cirrus::ssl_provider', {default_value =>  'sslcert'}),
+    Profile::Pki::Provider $ssl_provider = lookup('profile::elasticsearch::cirrus::ssl_provider'),
 ) {
     include ::profile::elasticsearch
 
@@ -63,29 +63,22 @@ class profile::elasticsearch::cirrus(
             srange => $ferm_srange,
         }
 
-        case $ssl_provider {
-            'acme_chief': {
-                $proxy_cert_params = {
-                    acme_chief        => true,
-                    acme_certname     => $cluster,
-                    server_name       => $instance_params['certificate_name'],
-                }
+        if $ssl_provider == 'acme_chief' {
+            $proxy_cert_params = {
+                acme_chief        => true,
+                acme_certname     => $cluster,
+                server_name       => $instance_params['certificate_name'],
             }
-            'cfssl': {
-                $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-                    hosts => [$instance_params['certificate_name'], "search.svc.${::site}.wmnet"],
-                })
-                $proxy_cert_params = {
-                    'cfssl_paths'  => $cfssl_paths,
-                    server_aliases => [$instance_params['certificate_name'],"search.svc.${::site}.wmnet"],
-                }
-            }
-            default: {
-                $proxy_cert_params = {
-                    certificate_names => [$instance_params['certificate_name']],
-                    server_name       => $instance_params['certificate_name'],
-                    server_aliases    => ["search.svc.${::site}.wmnet"],
-                }
+        }
+
+        if $ssl_provider == 'cfssl' {
+            $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
+                hosts => [$instance_params['certificate_name'], "search.svc.${::site}.wmnet"],
+            })
+
+            $proxy_cert_params = {
+                'cfssl_paths'  => $cfssl_paths,
+                server_aliases => [$instance_params['certificate_name'],"search.svc.${::site}.wmnet"],
             }
         }
 
