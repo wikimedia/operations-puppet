@@ -1,4 +1,9 @@
 profile::ceph::auth::load_all::configuration:
+  dse-k8s-csi:
+    caps:
+      mon: allow profile rbd
+      mgr: allow profile osd pool=dse-k8s-csi-ssd
+      osd: allow profile osd pool=dse-k8s-csi-ssd
   admin:
     caps:
       mgr: allow *
