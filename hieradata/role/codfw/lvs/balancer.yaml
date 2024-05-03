@@ -9,7 +9,6 @@ profile::lvs::tagged_subnets:
   - public1-b-codfw
   - public1-c-codfw
   - public1-d-codfw
-  - private1-a1-codfw
   - private1-a2-codfw
   - private1-a3-codfw
   - private1-a4-codfw

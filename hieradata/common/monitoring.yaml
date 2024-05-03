@@ -78,8 +78,6 @@ monitoring::groups:
     description: Equipment with ssw1-a1-codfw as uplink
   ssw1-a8-codfw:
     description: Equipment with ssw1-a8-codfw as uplink
-  lsw1-a1-codfw:
-    description: Equipment with lsw1-a1-codfw as uplink
   lsw1-a2-codfw:
     description: Equipment with lsw1-a2-codfw as uplink
   lsw1-a3-codfw:

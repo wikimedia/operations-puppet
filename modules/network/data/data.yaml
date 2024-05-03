@@ -285,9 +285,6 @@ network::subnets:
         private1-d-codfw:
           ipv4: 10.192.48.0/22
           ipv6: 2620:0:860:104::/64
-        private1-a1-codfw:
-          ipv4: 10.192.4.0/24
-          ipv6: 2620:0:860:105::/64
         private1-a2-codfw:
           ipv4: 10.192.23.0/24
           ipv6: 2620:0:860:113::/64
