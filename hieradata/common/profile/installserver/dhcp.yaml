@@ -5,4 +5,4 @@ profile::installserver::dhcp::tftp_servers:
   ulsfo: 198.35.26.13    # install4002
   eqsin: 103.102.166.12  # install5002
   drmrs: 185.15.58.12    # install6002
-  magru: 208.80.154.74   # install1004, FIXME after installserver in magru
+  magru: 195.200.68.7    # install7001
