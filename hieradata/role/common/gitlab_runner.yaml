@@ -75,7 +75,7 @@ profile::gitlab::runner::allowed_services:
     host: 'kubestagemaster.svc.eqiad.wmnet'
     port: 6443
 profile::gitlab::runner::ensure_buildkitd: present
-profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/releng/buildkit:wmf-v0.12.5-8
+profile::gitlab::runner::buildkitd_image: docker-registry.discovery.wmnet/repos/releng/buildkit:wmf-v0.13.2-1
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
 # T329220: Only allow the Blubber buildkit frontend to be used on Trusted Runners
 profile::gitlab::runner::buildkitd_allowed_frontends:
