@@ -100,7 +100,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'backupmon*':
     - partman/flat.cfg
     - virtual.cfg
-  'bast[3456]*':
+  'bast[34567]*':
     - partman/flat.cfg
     - virtual.cfg
   'bast[12]*':
@@ -627,7 +627,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid10-8dev.cfg
     - partman/custom/prometheus.cfg
-  'prometheus[3456]*':
+  'prometheus[34567]*':
     - partman/flat.cfg
     - virtual.cfg
   'puppetdb[12]003':
