@@ -3,6 +3,8 @@ cluster: restbase
 # Icinga
 contactgroups: "admins,team-services"
 
+profile::base::production::role_description: 'Restbase (production with Cassandra 3.x)'
+
 #
 # RESTBase
 #

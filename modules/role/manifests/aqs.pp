@@ -5,10 +5,6 @@
 # node has both colocated.
 #
 class role::aqs {
-    system::role { 'aqs':
-        description => 'Analytics Query Service Node - next generation',
-    }
-
     include profile::base::production
     include profile::firewall
 

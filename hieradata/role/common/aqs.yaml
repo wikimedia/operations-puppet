@@ -234,6 +234,8 @@ profile::aqs::cassandra_local_dc: "%{::site}"
 profile::aqs::statsd_host: statsd.eqiad.wmnet
 
 profile::contacts::role_contacts: ['Data Persistence']
+profile::base::production::role_description: 'Analytics Query Service Node - next generation'
+
 profile::java::java_packages:
   - version: '8'
     variant: 'jdk'

@@ -118,6 +118,7 @@ profile::admin::groups:
 
 profile::monitoring::notifications_enabled: false
 profile::contacts::role_contacts: ['Data Persistence']
+profile::base::production::role_description: 'Development & test storage service'
 
 profile::java::java_packages:
   - version: '8'

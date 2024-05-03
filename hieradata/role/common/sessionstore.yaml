@@ -1,5 +1,7 @@
 cluster: sessionstore
 
+profile::base::production::role_description: 'Session storage service'
+
 #
 # Cassandra
 profile::cassandra::allow_analytics: false

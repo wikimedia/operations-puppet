@@ -4,13 +4,8 @@
 #
 # Configures the cassandra-dev cluster
 class role::cassandra_dev {
-
-    system::role { 'cassandra_dev':
-        description => 'Development & test storage service'
-    }
-
-    include ::profile::firewall
-    include ::profile::base::production
-    include ::profile::cassandra_dev
-    include ::profile::cassandra
+    include profile::firewall
+    include profile::base::production
+    include profile::cassandra_dev
+    include profile::cassandra
 }

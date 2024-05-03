@@ -71,10 +71,6 @@ class profile::cassandra(
         }
     }
 
-    system::role { 'cassandra':
-        description => 'Cassandra server',
-    }
-
     $cassandra_hosts_ferm = join($ferm_seeds, ' ')
     $client_ips_ferm = join($client_ips, ' ')
 
