@@ -73,20 +73,7 @@ class profile::elasticsearch::alerts {
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
     }
 
-    # warning level is ~1% of peak traffic failing
-    monitoring::graphite_threshold { 'search_backend_failure_count':
-        description     => 'Number of backend failures per minute from CirrusSearch',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?orgId=1&var-cluster=eqiad&var-smoothing=1&viewPanel=9'],
-        metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.backend_failure.failed.count, 0)',
-        from            => '10min',
-        warning         => 300,
-        critical        => 600,
-        percentage      => 20,
-        contact_group   => 'team-discovery',
-        notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
-    }
-
-    monitoring::graphite_threshold { 'search_backend_memory_issue_count':
+        monitoring::graphite_threshold { 'search_backend_memory_issue_count':
         description     => 'Number of requests triggering circuit breakers due to excessive memory usage',
         dashboard_links => ['https://grafana.wikimedia.org/d/000000455/elasticsearch-percentiles?orgId=1&var-cluster=eqiad&var-smoothing=1&viewPanel=9'],
         metric          => 'transformNull(MediaWiki.CirrusSearch.eqiad.backend_failure.memory_issue.count, 0)',
@@ -98,3 +85,4 @@ class profile::elasticsearch::alerts {
         notes_link      => 'https://wikitech.wikimedia.org/wiki/Search#Health/Activity_Monitoring',
     }
 }
+
