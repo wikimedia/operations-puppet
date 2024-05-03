@@ -1,7 +1,6 @@
 # es1032
 mariadb::shard: 'es1'
 profile::mariadb::mysql_role: 'standalone'
-mariadb::package: 'wmf-mariadb106'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
