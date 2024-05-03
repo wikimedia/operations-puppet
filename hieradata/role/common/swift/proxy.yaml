@@ -1,9 +1,3 @@
-# Disable client body buffer on disk, also don't check client Content-Length
-# (swift proxy-server will do the checking)
-profile::tlsproxy::instance::nginx_client_max_body_size: "0"
-tlsproxy::localssl::proxy_request_buffering: 'off'
-profile::tlsproxy::instance::bootstrap_protection: true
-
 profile::prometheus::statsd_exporter::mappings:
 
   # Authentication subsystem (tempauth)
@@ -172,8 +166,20 @@ profile::prometheus::statsd_exporter::mappings:
     labels:
       storage_policy: "$2"
 
-profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Data Persistence']
+
+profile::swift::proxy::use_tls: true
+profile::swift::proxy::use_envoy: true
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::global_cert_name: "%{lookup('profile::swift::proxy::proxy_service_host')}"
+profile::tlsproxy::envoy::ssl_provider: sslcert
+profile::tlsproxy::envoy::use_remote_address: true
+# force envoy to talk to swift-proxy on local internal v4 address
+profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
+# Disable the default timeout for the whole request, instead
+# set a 180s timeout between reads from the server (like nginx had)
+profile::tlsproxy::envoy::stream_idle_timeout: 180.0
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
