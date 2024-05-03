@@ -11,7 +11,8 @@ class profile::phabricator::monitoring (
     # It should not be duplicated.
     if $::fqdn == $active_server {
         prometheus::blackbox::check::http { 'phabricator.wikimedia.org':
-            severity => 'page',
+            severity    => 'page',
+            alert_after => '4m',
         }
 
         # dedicated check with collab team and severity task
