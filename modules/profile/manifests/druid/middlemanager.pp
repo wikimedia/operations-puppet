@@ -2,11 +2,12 @@
 # Class: profile::druid::middlemanager
 #
 class profile::druid::middlemanager(
-    Hash[String, Any] $properties = lookup('profile::druid::middlemanager::properties', {'default_value' => {}}),
-    Hash[String, String] $env     = lookup('profile::druid::middlemanager::env', {'default_value' => {}}),
-    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
-    String $ferm_srange           = lookup('profile::druid::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
-    Boolean $monitoring_enabled   = lookup('profile::druid::middlemanager::monitoring_enabled', {'default_value' => false}),
+    Hash[String, Any] $properties            = lookup('profile::druid::middlemanager::properties', {'default_value' => {}}),
+    Hash[String, String] $env                = lookup('profile::druid::middlemanager::env', {'default_value' => {}}),
+    Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    Optional[String] $ferm_srange            = lookup('profile::druid::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Optional[Array[String]] $firewall_access = lookup('profile::druid::firewall_access'),
+    Boolean $monitoring_enabled              = lookup('profile::druid::middlemanager::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
@@ -40,19 +41,33 @@ class profile::druid::middlemanager(
         logger_prefix    => $class_prefix,
     }
 
-    ferm::service { 'druid-middlemanager':
-        proto  => 'tcp',
-        port   => $::druid::middlemanager::runtime_properties['druid.port'],
-        srange => $ferm_srange,
-    }
-
     # Allow incoming connections to druid.indexer.runner.startPort + 900
     $peon_start_port = $::druid::middlemanager::runtime_properties['druid.indexer.runner.startPort']
     $peon_end_port   = $::druid::middlemanager::runtime_properties['druid.indexer.runner.startPort'] + 900
-    ferm::service { 'druid-middlemanager-indexer-task':
-        proto  => 'tcp',
-        port   => "${peon_start_port}:${peon_end_port}",
-        srange => $ferm_srange,
+    if $firewall_access {
+        firewall::service { 'druid-middlemanager':
+            proto    => 'tcp',
+            port     => $::druid::middlemanager::runtime_properties['druid.port'],
+            src_sets => $firewall_access,
+        }
+
+        firewall::service { 'druid-middlemanager-indexer-task':
+            proto    => 'tcp',
+            port     => "${peon_start_port}:${peon_end_port}",
+            src_sets => $firewall_access,
+        }
+    } else {
+        ferm::service { 'druid-middlemanager':
+            proto  => 'tcp',
+            port   => $::druid::middlemanager::runtime_properties['druid.port'],
+            srange => $ferm_srange,
+        }
+
+        ferm::service { 'druid-middlemanager-indexer-task':
+            proto  => 'tcp',
+            port   => "${peon_start_port}:${peon_end_port}",
+            srange => $ferm_srange,
+        }
     }
 
     if $monitoring_enabled {

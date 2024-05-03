@@ -2,11 +2,12 @@
 # Class: profile::druid::historical
 #
 class profile::druid::historical(
-    Hash[String, Any] $properties = lookup('profile::druid::historical::properties', {'default_value' => {}}),
-    Hash[String, String] $env     = lookup('profile::druid::historical::env', {'default_value' => {}}),
-    Boolean $daemon_autoreload    = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
-    String $ferm_srange           = lookup('profile::druid::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
-    Boolean $monitoring_enabled   = lookup('profile::druid::historical::monitoring_enabled', {'default_value' => false}),
+    Hash[String, Any] $properties            = lookup('profile::druid::historical::properties', {'default_value' => {}}),
+    Hash[String, String] $env                = lookup('profile::druid::historical::env', {'default_value' => {}}),
+    Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
+    Optional[String] $ferm_srange            = lookup('profile::druid::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
+    Optional[Array[String]] $firewall_access = lookup('profile::druid::firewall_access'),
+    Boolean $monitoring_enabled              = lookup('profile::druid::historical::monitoring_enabled', {'default_value' => false}),
 ) {
 
     require ::profile::druid::common
@@ -61,10 +62,18 @@ class profile::druid::historical(
         logger_prefix    => $class_prefix,
     }
 
-    ferm::service { 'druid-historical':
-        proto  => 'tcp',
-        port   => $::druid::historical::runtime_properties['druid.port'],
-        srange => $ferm_srange,
+    if $firewall_access {
+        firewall::service { 'druid-historical':
+            proto    => 'tcp',
+            port     => $::druid::historical::runtime_properties['druid.port'],
+            src_sets => $firewall_access,
+        }
+    } else {
+        ferm::service { 'druid-historical':
+            proto  => 'tcp',
+            port   => $::druid::historical::runtime_properties['druid.port'],
+            srange => $ferm_srange,
+        }
     }
 
     if $monitoring_enabled {

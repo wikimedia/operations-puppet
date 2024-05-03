@@ -52,6 +52,7 @@ profile::druid::common::metadata_storage_database_name: 'druid'
 
 profile::druid::daemons_autoreload: false
 profile::druid::ferm_srange: '(($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))'
+profile::druid::firewall_access: ~
 
 profile::druid::common::properties:
   druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
