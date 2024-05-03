@@ -1371,6 +1371,8 @@ bastion_hosts:
 - 2001:df2:e500:1:103:102:166:6  # bast5004.wikimedia.org
 - 185.15.58.6                    # bast6003.wikimedia.org
 - 2a02:ec80:600:1:185:15:58:6    # bast6003.wikimedia.org
+- 195.200.68.38                  # bast7001.wikimedia.org
+- 2a02:ec80:700:2:195:200:68:38  # bast7001.wikimedia.org
 
 cache_hosts:
 - 10.64.0.79                     # cp1100.eqiad.wmnet
