@@ -1,0 +1,4 @@
+cluster: ganeti
+profile::ganeti::nodes:
+  - ganeti7002.magru.wmnet
+profile::ganeti::rapi::certificate: ganeti02.svc.magru.wmnet

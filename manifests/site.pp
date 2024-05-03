@@ -1323,11 +1323,11 @@ node /^ganeti600[1234]\.drmrs\./ {
     role(ganeti)
 }
 
-node /^ganeti700[24]\.magru\./ {
+node /^ganeti700[4]\.magru\./ {
     role(insetup::infrastructure_foundations)
 }
 
-node /^ganeti700[13]\.magru\./ {
+node /^ganeti700[123]\.magru\./ {
     role(ganeti)
 }
 
