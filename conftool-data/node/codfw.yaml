@@ -239,7 +239,6 @@ codfw:
     wdqs2020.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2021.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2022.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
-    wdqs2023.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2024.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
     wdqs2025.codfw.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
   wdqs-internal:

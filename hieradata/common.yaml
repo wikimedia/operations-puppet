@@ -380,6 +380,7 @@ wikimedia_clusters:
     description: "Wikidata Query Service - Test cluster"
     sites:
       eqiad: []
+      codfw: []
   dnsbox:
     description: "DNS and NTP Combo Infra Boxes"
     sites:
