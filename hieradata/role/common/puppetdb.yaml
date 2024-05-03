@@ -1,8 +1,6 @@
 cluster: puppet
-puppet_ca_server: 'puppetserver1001.eqiad.wmnet'
 profile::contacts::role_contacts: ["Infrastructure Foundations"]
 profile::base::production::role_description: 'PuppetDB server'
-profile::puppet::agent::puppetmaster: puppetserver1001.eqiad.wmnet
 profile::puppet::agent::force_puppet7: true
 profile::puppetdb::jvm_opts: '-Xmx6g'
 profile::puppetdb::puppetboard_hosts:
@@ -17,7 +15,6 @@ profile::puppetdb::database::replication_lag_warn: 8388608 # 8MB
 profile::puppetdb::database::log_line_prefix: '%m [db:%d,sess:%c,pid:%p,vtid:%v,tid:%x] '
 profile::puppetdb::database::log_min_duration_statement: 10000 # 10secs
 profile::puppetdb::database::log_autovacuum_min_duration: 250  # 250ms
-profile::puppetdb::tmpfs_stockpile_queue: true
 profile::puppetdb::ssl_verify_client: 'on'
 profile::puppetdb::facts_blacklist_type: 'regex'
 # The following list should only include facts which are not used by for catalog compilation
