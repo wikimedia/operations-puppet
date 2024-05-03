@@ -796,6 +796,13 @@ groups:
       'ALL = NOPASSWD: /usr/local/bin/secure-cookbook sre.hardware.upgrade-firmware *',
       'ALL = NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox *',
     ]
+  fr-tech-devs:
+    gid: 789
+    description: fundraising tech developers
+    members: &fr_tech_devs [eileen, ejegg, jgleeson, damilare, wfan219]
+    approval:
+      - Greg Grossmeier
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
   gitpuppet:
     gid: 998
     description: Private repo users
