@@ -27,7 +27,7 @@ class profile::puppet_compiler (
     systemd::timer::job { 'delete-canceled-pcc-run-dirs':
         ensure      => present,
         description => 'Clean up stale files from canceled PCC reports',
-        command     => "/usr/bin/find ${puppet_compiler::workdir} -maxdepth 1 -type d -daystart -mtime +1",
+        command     => "/usr/bin/find ${puppet_compiler::workdir} -maxdepth 1 -type d -daystart -mtime +1 -exec rm -r {} \\;",
         user        => 'root',
         interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
     }
