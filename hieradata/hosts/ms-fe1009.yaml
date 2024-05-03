@@ -1,0 +1,11 @@
+# Override for T356412 - Move to PKI
+profile::tlsproxy::envoy::ssl_provider: "cfssl"
+profile::tlsproxy::envoy::global_cert_name: "swift.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - "swift-rw.discovery.wmnet"
+    - "upload.wikimedia.org"
+    - "swift.svc.%{::site}.wmnet"
+    - "ms-fe.svc.%{::site}.wmnet"
+    - "swift.discovery.wmnet"
+    - "swift-ro.discovery.wmnet"
