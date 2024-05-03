@@ -4,6 +4,6 @@ type Ceph::Auth::ClientAuth = Struct[{
     'owner' => Optional[String[1]],
     'group' => Optional[String[1]],
     'mode' => Optional[Stdlib::Filemode],
-    'caps' => Ceph::Auth::Caps,
+    'caps' => Optional[Ceph::Auth::Caps],
     'import_to_ceph' => Optional[Boolean],
 }]
