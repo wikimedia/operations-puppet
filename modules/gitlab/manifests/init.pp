@@ -43,6 +43,9 @@ class gitlab (
     Array[Stdlib::IP::Address] $ssh_listen_addresses            = ['127.0.0.1', '::1'],
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters         = {},
     Array[Stdlib::IP::Address] $monitoring_whitelist            = ['127.0.0.1/32'],
+    Boolean          $enable_custom_exporter                    = false,
+    Integer          $custom_exporter_port                      = 9169,
+    Integer          $custom_exporter_interval                  = 60,
     Boolean          $enable_secondary_sshd                     = true,
     Boolean          $install_restore_script                    = true,
     Boolean          $enable_restore                            = false,
@@ -290,4 +293,32 @@ class gitlab (
         interval    => $ldap_group_sync_interval,
         require     => Systemd::Sysuser[$ldap_group_sync_user],
     }
+
+    $ensure_custom_exporter = $enable_custom_exporter.bool2str('present','absent')
+    git::clone { 'repos/sre/gitlab-exporter':
+        ensure        => $ensure_custom_exporter,
+        update_method => 'checkout',
+        git_tag       => 'v1.0.2',
+        directory     => '/srv/gitlab-exporter',
+        source        => 'gitlab',
+        owner         => 'prometheus',
+        group         => 'prometheus',
+    }
+
+    systemd::service { 'gitlab-exporter':
+        ensure  => $ensure_custom_exporter,
+        content => template('gitlab/gitlab-exporter.service.erb'),
+        restart => true,
+    }
+
+    $ensure_custom_exporter_secret = $enable_custom_exporter.bool2str('file','absent')
+    file { '/etc/gitlab-exporter-auth':
+    ensure  => $ensure_custom_exporter_secret,
+    owner   => 'prometheus',
+    group   => 'prometheus',
+    mode    => '0400',
+    content => secret('gitlab/gitlab-exporter-auth'),
+  }
+
+    ensure_packages(['python3-gitlab'])
 }

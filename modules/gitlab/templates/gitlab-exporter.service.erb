@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=gitlab-exporter
+After=gitlab-runsvdir.service
+Requires=gitlab-runsvdir.service
+
+[Service]
+User=prometheus
+TimeoutStartSec=0
+ExecStart=/srv/gitlab-exporter/exporter.py \
+    --host <%= @gitlab_domain%> \
+    --port <%= @custom_exporter_port %> \
+    --interval <%= @custom_exporter_interval %>
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
