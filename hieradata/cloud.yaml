@@ -253,7 +253,8 @@ profile::gitlab::runner::allowed_images:
   - "registry.gitlab.com/security-products/**/*"
   # dependabot-gitlab - T326507:
   # https://dependabot-gitlab.gitlab.io/dependabot/guide/index.html
-  - "registry.gitlab.com/dependabot-gitlab/dependabot:*"
+  - "docker.io/andrcuns/dependabot-gitlab:*"
+  - "ghcr.io/dependabot-gitlab/dependabot-gitlab:*"
   # Elasticsearch official - T327519:
   - "docker.elastic.co/elasticsearch/*:*"
   # Toolforge CI images
