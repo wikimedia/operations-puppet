@@ -705,13 +705,12 @@ customviews:
     view: >
       select log_id, log_type, log_action, log_timestamp,
       if(log_deleted&4,0,log_actor) as log_actor,
-      if(log_deleted&1,null,log_namespace) as log_namespace,
-      if(log_deleted&1,null,log_title) as log_title,
+      log_namespace, log_title,
       if(log_deleted&2,0,log_comment_id) as log_comment_id,
       if(log_deleted,null,log_params) as log_params, log_deleted,
-      if(log_deleted&1,null,log_page) as log_page
+      log_page
     where:
-      $INSERTED_EXPR$
+      $INSERTED_EXPR$ AND (log_deleted&1)=0
     logging_where:
       *allowed_logtypes
   logging_userindex:
