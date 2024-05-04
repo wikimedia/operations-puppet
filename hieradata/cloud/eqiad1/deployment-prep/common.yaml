@@ -526,7 +526,7 @@ profile::swift::proxy::memcached_servers:
   - deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
 profile::swift::proxy::proxy_service_host: deployment-ms-fe04.deployment-prep.eqiad1.wikimedia.cloud
 profile::swift::proxy::rewrite_account: mw_media
-profile::swift::proxy::thumborhost: deployment-imagescaler03.eqiad.wmflabs:8800
+profile::swift::proxy::thumborhost: deployment-imagescaler04.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::swift::storage::statsd_host: localhost
 
 logstash::heap_memory: 1G
