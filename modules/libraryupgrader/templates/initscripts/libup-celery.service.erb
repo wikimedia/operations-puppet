@@ -13,6 +13,7 @@ ExecStart=/srv/libraryupgrader/venv/bin/libup-celery worker --loglevel=info \
           --pidfile /run/celery/pid --concurrency=1
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
