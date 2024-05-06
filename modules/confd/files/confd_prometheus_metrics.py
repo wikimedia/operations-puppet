@@ -57,20 +57,18 @@ def inspect_template_dest(
         metrics["error_timestamp"].labels(resource.name).set(-1)
         return
 
-    template_state = list(runpath.glob(f".{template_dest.name}*"))
+    template_state = runpath / f"{resource.stem}.err"
 
-    if len(template_state) == 0:
+    if not template_state.exists():
         metrics["healthy"].labels(resource.name).set(1)
         metrics["error_timestamp"].labels(resource.name).set(-1)
         return
 
-    for state in template_state:
-        state_mtime = state.stat().st_mtime
-        if state_mtime > template_dest_mtime:
-            log.warning(f"State file {state} newer than {template_dest.name}")
-            metrics["healthy"].labels(resource.name).set(0)
-            metrics["error_timestamp"].labels(resource.name).set(state_mtime)
-            return
+    state_mtime = template_state.stat().st_mtime
+    if state_mtime > template_dest_mtime:
+        log.warning(f"State file {template_state} newer than {template_dest.name}")
+        metrics["healthy"].labels(resource.name).set(0)
+        metrics["error_timestamp"].labels(resource.name).set(state_mtime)
 
 
 def inspect_resources(confd_path: Path, runpath: Path, metrics: Mapping[str, Gauge]):
