@@ -124,6 +124,8 @@ cache::alternate_domains:
     caching: 'pass'
   prometheus-drmrs.wikimedia.org:
     caching: 'pass'
+  prometheus-magru.wikimedia.org:
+    caching: 'pass'
   puppetboard.wikimedia.org:
     caching: 'pass'
   puppetboard-idptest.wikimedia.org:

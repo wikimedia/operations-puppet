@@ -186,6 +186,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://prometheus-drmrs.wikimedia.org
       replacement: https://prometheus.svc.drmrs.wmnet
     - type: map
+      target: http://prometheus-magru.wikimedia.org
+      replacement: https://prometheus.svc.magru.wmnet
+    - type: map
       target: http://puppetboard.wikimedia.org
       replacement: https://puppetboard.discovery.wmnet
     - type: map
