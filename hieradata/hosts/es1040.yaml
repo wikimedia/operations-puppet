@@ -1,5 +1,4 @@
 # es1040
-# To be setup
 mariadb::shard: 'es7'
 profile::monitoring::notifications_enabled: false
 
