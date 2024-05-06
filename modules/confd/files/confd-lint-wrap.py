@@ -13,6 +13,7 @@
 #   will only seek to lint and modify files irregularly.  This does
 #   not lend itself well to nsca.
 #
+import argparse
 import sys
 import subprocess
 import time
@@ -35,16 +36,34 @@ def log(msg):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    # TODO: T363924 make resource required and clean up conditional logic below
+    # once puppet is updated.
+    parser.add_argument(
+        '--resource',
+        help=(
+            'A unique file-safe identifier of the confd resource associated '
+            'with this check (i.e., the stem of the template name). Used to '
+            'construct the error state file name.'
+        ),
+    )
+    parser.add_argument(
+        'check',
+        nargs='+',
+        type=str,
+        help='The check command to execute.',
+    )
+    args = parser.parse_args()
 
     if not os.path.exists(error_dir):
         os.makedirs(error_dir)
 
-    target = sys.argv[1:]
-    # TODO: T363924 - Clean up '--' separator pruning when adopting argparse.
-    if target[0] == '--':
-        target = target[1:]
-    error_file = path.join(error_dir,
-                           path.basename(sys.argv[-1]) + '.err')
+    target = args.check
+    if args.resource is None:
+        error_file_base = path.basename(target[-1])
+    else:
+        error_file_base = args.resource
+    error_file = path.join(error_dir, f"{error_file_base}.err")
 
     start = time.time()
     p = subprocess.Popen(target,
