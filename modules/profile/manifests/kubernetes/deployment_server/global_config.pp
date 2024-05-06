@@ -155,6 +155,9 @@ class profile::kubernetes::deployment_server::global_config (
       }
     }
 
+    $analytics_meta_master_fqdn =  wmflib::puppetdb_query('resources[certname] {type = "Class" and title = "Profile::Analytics::Database::Meta" and parameters.is_mariadb_replica = false and certname ~ "an-mariadb" }')[0]['certname']
+    $analytics_meta_master_ips = [ipresolve($analytics_meta_master_fqdn, 4), ipresolve($analytics_meta_master_fqdn, 6)]
+
     # Create one external services definition for each redis port (instance running on each node)
     # to allow services to explicitely specify which redis instance they want to connect to
     $redis_misc_ips = wmflib::role::ips('redis::misc::master') + wmflib::role::ips('redis::misc::slave')
@@ -338,7 +341,7 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'analytics_meta' => wmflib::role::ips('analytics_cluster::mariadb'),
+            'analytics_meta' => $analytics_meta_master_ips,
           }
         },
         'postgresql' => {
