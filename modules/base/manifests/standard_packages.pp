@@ -36,6 +36,12 @@ class base::standard_packages (
         ensure_packages(['ruby-sorted-set'])
     }
 
+    # Much nicer to use than htop on modern machines with many cores,
+    # but only available in bookworm+
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['btop'])
+    }
+
     # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
     if debian::codename::lt('bookworm') {
         ensure_packages('quickstack')
