@@ -145,4 +145,72 @@ class profile::pyrra::filesystem::slos (
     }
 
 
+    # Etcd SLOs
+    #
+    # Etcd requests/errors
+
+    $etcd_requests_slo = {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'etcd-requests',
+            'labels' => {
+                'pyrra.dev/team' => 'serviceops',
+                'pyrra.dev/service' => 'etcd',
+            },
+        },
+        'spec' => {
+            'target' => '99.9',
+            'window' => '12w',
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => 'etcd_http_failed_total{code=~"5.."}',
+                    },
+                    'total' => {
+                        'metric' => 'etcd_http_received_total',
+                    },
+                    'grouping' => ['site'],
+                },
+            },
+        },
+    }
+
+    pyrra::filesystem::config { 'etcd-requests.yaml':
+      content => to_yaml($etcd_requests_slo),
+    }
+
+    # Etcd latency
+
+    $etcd_latency_slo = {
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind' => 'ServiceLevelObjective',
+        'metadata' => {
+            'name' => 'etcd-latency',
+            'labels' => {
+                'pyrra.dev/team' => 'serviceops',
+                'pyrra.dev/service' => 'etcd',
+            },
+        },
+        'spec' => {
+            'target' => '99.8',
+            'window' => '12w',
+            'indicator' => {
+                'latency' => {
+                    'success' => {
+                        'metric' => 'etcd_http_successful_duration_seconds_bucket{le="0.032"}'
+                    },
+                    'total' => {
+                        'metric' => 'etcd_http_successful_duration_seconds_count',
+                    },
+                    'grouping' => ['site'],
+                },
+            },
+        },
+    }
+
+    pyrra::filesystem::config { 'etcd-latency.yaml':
+      content => to_yaml($etcd_latency_slo),
+    }
+
 }
