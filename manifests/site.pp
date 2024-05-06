@@ -1486,7 +1486,7 @@ node /^install[456]002\.wikimedia\./ {
 }
 
 node /^install7001\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(installserver)
 }
 
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T255072, T255070)
