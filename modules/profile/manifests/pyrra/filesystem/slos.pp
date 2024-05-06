@@ -154,6 +154,7 @@ class profile::pyrra::filesystem::slos (
         'kind' => 'ServiceLevelObjective',
         'metadata' => {
             'name' => 'etcd-requests',
+            'namespace' => 'pyrra-o11y-pilot',
             'labels' => {
                 'pyrra.dev/team' => 'serviceops',
                 'pyrra.dev/service' => 'etcd',
@@ -187,6 +188,7 @@ class profile::pyrra::filesystem::slos (
         'kind' => 'ServiceLevelObjective',
         'metadata' => {
             'name' => 'etcd-latency',
+            'namespace' => 'pyrra-o11y-pilot',
             'labels' => {
                 'pyrra.dev/team' => 'serviceops',
                 'pyrra.dev/service' => 'etcd',
