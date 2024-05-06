@@ -3,7 +3,7 @@ all: P{*}
 <% @datacenters.each do |dc| -%>
 <%= dc %>: P{P:cumin::target%site = <%= dc %>}
 <% end -%>
-edges: A:esams or A:ulsfo or A:eqsin or A:drmrs
+edges: A:esams or A:ulsfo or A:eqsin or A:drmrs or A:magru
 
 # Distros
 <% ['buster', 'bullseye', 'bookworm'].each do |distro| -%>
@@ -164,12 +164,9 @@ ganeti: P{O:ganeti}
 ganeti-all: A:ganeti or A:ganeti-test or A:ganeti-routed
 ganeti-test: P{O:ganeti_test}
 ganeti-routed: P{O:ganeti_routed}
-ganeti-codfw: A:ganeti and A:codfw
-ganeti-eqiad: A:ganeti and A:eqiad
-ganeti-esams: A:ganeti and A:esams
-ganeti-ulsfo: A:ganeti and A:ulsfo
-ganeti-eqsin: A:ganeti and A:eqsin
-ganeti-drmrs: A:ganeti and A:drmrs
+<% @datacenters.each do |dc| -%>
+ganeti-<%= dc %>: A:ganeti and A:<%= dc %>
+<% end -%>
 gerrit: P{O:gerrit}
 gitlab-server: P{O:gitlab}
 gitlab-runner: P{O:gitlab_runner}
@@ -260,12 +257,9 @@ logstash-eqiad: A:logstash and A:eqiad
 logstash-codfw: A:logstash and A:codfw
 lvs: P{O:lvs::balancer}
 lvs-canary: P{lvs4008.ulsfo.wmnet}
-lvs-codfw: A:lvs and A:codfw
-lvs-eqiad: A:lvs and A:eqiad
-lvs-esams: A:lvs and A:esams
-lvs-ulsfo: A:lvs and A:ulsfo
-lvs-eqsin: A:lvs and A:eqsin
-lvs-drmrs: A:lvs and A:drmrs
+<% @datacenters.each do |dc| -%>
+lvs-<%= dc %>: A:lvs and A:<%= dc %>
+<% end -%>
 maps: P{O:maps::master or O:maps::replica}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
