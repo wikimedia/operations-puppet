@@ -22,6 +22,7 @@ an-conf: P{O:analytics_cluster::zookeeper}
 an-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:an-airflow or A:an-tools or A:an-web or A:an-presto or A:an-launcher
 an-airflow: P{O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy or O:analytics_cluster::airflow::platform_eng or O:analytics_cluster::airflow::search or O:analytics_cluster::airflow::analytics_product or O:analytics_cluster::airflow::wmde} or A:an-launcher
 an-launcher: P{O:analytics_cluster::launcher}
+an-mariadb: P{O:analytics_cluster::mariadb}
 an-tools: P{O:analytics_cluster::hadoop::ui or O:analytics_cluster::turnilo or O:analytics_cluster::turnilo::staging or O:analytics_cluster::ui::superset or O:analytics_cluster::ui::superset::staging or O:analytics_cluster::ui::staging or O:analytics_cluster::hadoop::yarn}
 an-web: P{O:analytics_cluster::webserver}
 an-psql: P{O:analytics_cluster::postgresql}
