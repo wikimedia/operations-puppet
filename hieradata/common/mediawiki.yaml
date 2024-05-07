@@ -350,6 +350,8 @@ mediawiki::sites:
         params: *private_wiki
       - name: wikipedia-pl-sysop.wikimedia.org
         params: *private_wiki
+      - name: wikipedia-it-arbcom.wikimedia.org
+        params: *private_wiki
       - name: test-commons.wikimedia.org
         params:
           upload_rewrite:
