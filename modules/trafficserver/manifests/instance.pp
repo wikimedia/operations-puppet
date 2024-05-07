@@ -321,7 +321,7 @@ define trafficserver::instance(
     $logging = { 'logging' => {
         'formats' => $log_formats,
         'filters' => $log_filters,
-        'logs'    => $logs.filter |$log| { $log['ensure'] == 'present' }.map |$log| { $log.delete('ensure') },
+        'logs'    => $logs.filter |$log| { $log['ensure'] == 'present' }.map |$log| { $log.delete(['ensure', 'prometheus_port']) },
     }.filter |$value| { !$value[1].empty } }
 
 
