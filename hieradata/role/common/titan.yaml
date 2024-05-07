@@ -37,23 +37,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - 'pyrra.svc.%{::site}.wmnet'
     - 'slo'
     - 'slo.wikimedia.org'
-profile::tlsproxy::envoy::services:
-   - server_names:
-     - 'thanos-query'
-     - 'thanos-query.svc.%{::site}.wmnet'
-     - 'thanos-query.discovery.wmnet'
-     - 'thanos.%{lookup("public_domain")}'
-     port: 80
-     cert_name: 'thanos-query.discovery.wmnet'
-   - server_names:
-     - 'pyrra'
-     - 'pyrra.wikimedia.org'
-     - 'pyrra.svc.%{::site}.wmnet'
-     - 'slo'
-     - 'slo.wikimedia.org'
-     port: 80
-     cert_name: 'pyrra.discovery.wmnet'
-profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
+profile::tlsproxy::envoy::global_cert_name: 'thanos-query.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
