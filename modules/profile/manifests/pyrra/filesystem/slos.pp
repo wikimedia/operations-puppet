@@ -2,12 +2,15 @@
 # == Class: profile::pyrra::filesystem::slos
 
 class profile::pyrra::filesystem::slos (
+    Array[String] $datacenters = lookup('datacenters'),
 ) {
 
     # filesystem defined SLOs
 
     # Logstash Requests SLO - please see wikitech for details
     # https://wikitech.wikimedia.org/wiki/SLO/logstash
+
+    #lint:ignore:arrow_alignment
 
     $logstash_requests_slo = {
         'apiVersion' => 'pyrra.dev/v1alpha1',
@@ -112,7 +115,12 @@ class profile::pyrra::filesystem::slos (
     # Request Error Ratio SLI: The percentage of requests receiving unsatisfactory responses. This is normally near zero; upward spikes represent incidents.
     # https://wikitech.wikimedia.org/wiki/SLO/Varnish
 
-    $varnish_requests_slo = {
+
+    # workaround grouping exported metrics limitation by setting datacenter
+    $datacenters.each |$datacenter| {
+
+    pyrra::filesystem::config { "varnish-requests-${datacenter}.yaml":
+        content => to_yaml({
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind' => 'ServiceLevelObjective',
         'metadata' => {
@@ -121,6 +129,7 @@ class profile::pyrra::filesystem::slos (
             'labels' => {
                 'pyrra.dev/team' => 'traffic',
                 'pyrra.dev/service' => 'varnish',
+                'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
             },
         },
         'spec' => {
@@ -129,19 +138,16 @@ class profile::pyrra::filesystem::slos (
             'indicator' => {
                 'ratio' => {
                     'errors' => {
-                        'metric' => 'varnish_sli_bad',
+                        'metric' => "varnish_sli_bad{site=\"${datacenter}\"}",
                     },
                     'total' => {
-                        'metric' => 'varnish_sli_all',
+                        'metric' => "varnish_sli_all{site=\"${datacenter}\"}",
                     },
-                    'grouping' => ['site'],
                 },
             },
-        },
+        }
+        })
     }
-
-    pyrra::filesystem::config { 'varnish-requests.yaml':
-      content => to_yaml($varnish_requests_slo),
     }
 
 
@@ -214,5 +220,7 @@ class profile::pyrra::filesystem::slos (
     pyrra::filesystem::config { 'etcd-latency.yaml':
       content => to_yaml($etcd_latency_slo),
     }
+
+    #lint:endignore
 
 }
