@@ -5,38 +5,13 @@ class profile::ncredir(
     Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('shared_acme_certificates'),
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value           => 'non-canonical-redirect-'}),
     Boolean $monitoring = lookup('profile::ncredir::monitoring', {default_value                                  => false}),
-    Stdlib::Port::User $mtail_access_log_port = lookup('profile::ncredir::mtail_access_log_port', {default_value => 3904}),
-    String $mtail_args = lookup('profile::ncredir::mtail_args', {default_value                                   => ''}),
     Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value                           => 106384710}),
-    Boolean $use_benthos = lookup('profile::ncredir::use_benthos', {default_value                                => false}),
     String $benthos_address = lookup('profile::ncredir::benthos_address', {default_value                         => '127.0.0.1:1221'}),
 ) {
 
     class { '::sslcert::dhparam': }
 
-    if $use_benthos {
-        include ::profile::benthos
-    }
-
-    $ensure_mtail = $use_benthos.bool2str('absent', 'present')
-
-    mtail::program { 'ncredir':
-        ensure      => $ensure_mtail,
-        source      => 'puppet:///modules/mtail/programs/ncredir.mtail',
-        destination => '/etc/ncredir.mtail',
-        notify      => Service['ncredirmtail@access_log'],
-    }
-
-    profile::ncredir::log { 'access_log':
-        ensure            => $ensure_mtail,
-        ncredirmtail_port => $mtail_access_log_port,
-        ncredirmtail_args => $mtail_args,
-    }
-
-    $require_ncredir = $use_benthos ? {
-        true  => undef,
-        false => File['/var/log/nginx/ncredir.access_log.pipe'],
-    }
+    include ::profile::benthos
 
     class { '::ncredir':
         ssl_settings           => ssl_ciphersuite('nginx', 'strong'),
@@ -46,9 +21,7 @@ class profile::ncredir(
         http_port              => $http_port,
         https_port             => $https_port,
         hsts_max_age           => $hsts_max_age,
-        use_benthos            => $use_benthos,
         benthos_address        => $benthos_address,
-        require                => $require_ncredir,
     }
 
     $shared_acme_certificates.each |String $cert_name, Hash[String, Any] $cert_details| {
