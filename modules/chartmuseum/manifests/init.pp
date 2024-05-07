@@ -56,6 +56,8 @@ class chartmuseum (
         ensure => present,
     }
 
+    profile::auto_restarts::service { 'chartmuseum': }
+
     file { '/etc/chartmuseum/chartmuseum.yaml':
         ensure  => file,
         mode    => '0440',
