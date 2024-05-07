@@ -119,6 +119,11 @@ class profile::pyrra::filesystem::slos (
     # workaround grouping exported metrics limitation by setting datacenter
     $datacenters.each |$datacenter| {
 
+    # Varnish uses one combined latency-availability SLI: A response is satisfactory IF it spends less than 100 ms processing time in Varnish, AND it isn't a Varnish internal error.
+    # SLO: In each DC, 99.9% of requests get satisfactory responses. (grouping by site)
+    # Request Error Ratio SLI: The percentage of requests receiving unsatisfactory responses. This is normally near zero; upward spikes represent incidents.
+    # https://wikitech.wikimedia.org/wiki/SLO/Varnish
+
     pyrra::filesystem::config { "varnish-requests-${datacenter}.yaml":
         content => to_yaml({
         'apiVersion' => 'pyrra.dev/v1alpha1',
@@ -148,77 +153,80 @@ class profile::pyrra::filesystem::slos (
         }
         })
     }
-    }
-
 
     # Etcd SLOs
     #
-    # Etcd requests/errors
 
-    $etcd_requests_slo = {
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'etcd-requests',
-            'namespace' => 'pyrra-o11y-pilot',
-            'labels' => {
-                'pyrra.dev/team' => 'serviceops',
-                'pyrra.dev/service' => 'etcd',
-            },
-        },
-        'spec' => {
-            'target' => '99.9',
-            'window' => '12w',
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => 'etcd_http_failed_total{code=~"5.."}',
-                    },
-                    'total' => {
-                        'metric' => 'etcd_http_received_total',
-                    },
-                    'grouping' => ['site'],
+    # etcd is limited to primary sites only
+    if $datacenter in ['eqiad', 'codfw'] {
+
+    # Etcd requests/errors SLO
+
+        pyrra::filesystem::config { "etcd-requests-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'etcd-requests',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'serviceops',
+                    'pyrra.dev/service' => 'etcd',
+                    'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
                 },
             },
-        },
-    }
-
-    pyrra::filesystem::config { 'etcd-requests.yaml':
-      content => to_yaml($etcd_requests_slo),
-    }
-
-    # Etcd latency
-
-    $etcd_latency_slo = {
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'etcd-latency',
-            'namespace' => 'pyrra-o11y-pilot',
-            'labels' => {
-                'pyrra.dev/team' => 'serviceops',
-                'pyrra.dev/service' => 'etcd',
-            },
-        },
-        'spec' => {
-            'target' => '99.8',
-            'window' => '12w',
-            'indicator' => {
-                'latency' => {
-                    'success' => {
-                        'metric' => 'etcd_http_successful_duration_seconds_bucket{le="0.032"}'
+            'spec' => {
+                'target' => '99.9',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "etcd_http_failed_total{code=~\"5..\",site=\"${datacenter}\"}",
+                        },
+                        'total' => {
+                            'metric' => "etcd_http_received_total{site=\"${datacenter}\"}",
+                        },
                     },
-                    'total' => {
-                        'metric' => 'etcd_http_successful_duration_seconds_count',
-                    },
-                    'grouping' => ['site'],
                 },
             },
-        },
+          })
+
+        }
+
+    # Etcd latency SLO
+
+        pyrra::filesystem::config { "etcd-latency-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'etcd-latency',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'serviceops',
+                    'pyrra.dev/service' => 'etcd',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '99.8',
+                'window' => '12w',
+                'indicator' => {
+                    'latency' => {
+                        'success' => {
+                            'metric' => "etcd_http_successful_duration_seconds_bucket{le=\"0.032\",site=\"${datacenter}\"}"
+                        },
+                        'total' => {
+                            'metric' => "etcd_http_successful_duration_seconds_count{site=\"${datacenter}\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+
     }
 
-    pyrra::filesystem::config { 'etcd-latency.yaml':
-      content => to_yaml($etcd_latency_slo),
     }
 
     #lint:endignore
