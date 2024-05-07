@@ -11,11 +11,12 @@ define profile::trafficserver::logs(
     $logs.each |TrafficServer::Log $log| {
         if $log['mode'] == 'ascii_pipe' {
             fifo_log_demux::instance { $log['filename']:
-                ensure    => $log['ensure'],
-                user      => $user,
-                fifo      => "${paths['logdir']}/${log['filename']}.pipe",
-                socket    => "${paths['runtimedir']}/${log['filename']}.sock",
-                wanted_by => "${service_name}.service",
+                ensure          => $log['ensure'],
+                user            => $user,
+                fifo            => "${paths['logdir']}/${log['filename']}.pipe",
+                socket          => "${paths['runtimedir']}/${log['filename']}.sock",
+                prometheus_port => $log['prometheus_port'],
+                wanted_by       => "${service_name}.service",
             }
 
             profile::trafficserver::nrpe_monitor_script { "check_trafficserver_log_fifo_${log['filename']}_${instance_name}":
