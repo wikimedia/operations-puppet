@@ -1687,10 +1687,10 @@ node /^mw237[0-9]\.codfw\./ {
 node /^mw238[0-9]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw239[045]\.codfw\./ {
+node /^mw239[04-9]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw240[67]\.codfw\./ {
+node /^mw240[1267]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw241[2-9]\.codfw\./ {
@@ -2243,7 +2243,7 @@ node /^mw239[123]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
-node /^mw2(39[6-9]|40[0-2])\.codfw\./ {
+node /^mw2400\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
