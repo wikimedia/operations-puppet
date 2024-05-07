@@ -21,5 +21,6 @@ define prometheus::snmp_exporter::module (
     file { "/etc/prometheus/snmp.yml.d/${exporter_module}.yml":
         content   => template("prometheus/snmp_exporter/${template}.yml.erb"),
         show_diff => false,
+        notify    => Exec['assemble snmp.yml'],
     }
 }
