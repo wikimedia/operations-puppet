@@ -40,6 +40,9 @@ def main():
         os.makedirs(error_dir)
 
     target = sys.argv[1:]
+    # TODO: T363924 - Clean up '--' separator pruning when adopting argparse.
+    if target[0] == '--':
+        target = target[1:]
     error_file = path.join(error_dir,
                            path.basename(sys.argv[-1]) + '.err')
 
