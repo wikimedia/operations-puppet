@@ -47,11 +47,6 @@ class base::standard_packages (
         ensure_packages('quickstack')
     }
 
-    # git-fat hasn't been ported to Python 3 yet, T279509
-    if debian::codename::lt('bullseye') {
-        ensure_packages('git-fat')
-    }
-
     # uninstall these packages
     package { [
         'apport', 'command-not-found', 'command-not-found-data', 'ecryptfs-utils',
