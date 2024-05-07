@@ -171,8 +171,16 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::swift::proxy::use_tls: true
 profile::swift::proxy::use_envoy: true
 profile::envoy::ensure: present
-profile::tlsproxy::envoy::global_cert_name: "%{lookup('profile::swift::proxy::proxy_service_host')}"
-profile::tlsproxy::envoy::ssl_provider: sslcert
+profile::tlsproxy::envoy::global_cert_name: "swift.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - "swift-rw.discovery.wmnet"
+    - "upload.wikimedia.org"
+    - "swift.svc.%{::site}.wmnet"
+    - "ms-fe.svc.%{::site}.wmnet"
+    - "swift.discovery.wmnet"
+    - "swift-ro.discovery.wmnet"
+profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::use_remote_address: true
 # force envoy to talk to swift-proxy on local internal v4 address
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
