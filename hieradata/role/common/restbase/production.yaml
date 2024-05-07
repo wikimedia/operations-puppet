@@ -1089,6 +1089,3 @@ profile::base::certificates::include_bundle_jks: true
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 profile::restbase::no_workers: 40 # T353456
-
-# python 2 is required for git-fat
-profile::base::remove_python2_on_bullseye: false
