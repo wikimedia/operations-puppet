@@ -2546,10 +2546,6 @@ node /^prometheus100[56]\.eqiad\./ {
     role(prometheus)
 }
 
-node /^prometheus700[1-9]\.magru\./ {
-    role(insetup::observability)
-}
-
 node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
     role(prometheus::pop)
 }
