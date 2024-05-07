@@ -19,12 +19,10 @@ class profile::analytics::refinery::job::import_mediawiki_dumps (
     }
 
     # Import pages-meta-history
-    # Note: Skip wikidatawiki to speed-up data availability (T357859)
     profile::analytics::refinery::job::import_mediawiki_dumps_config { 'refinery-import-page-history-dumps':
         ensure            => $ensure_timers,
         dump_type         => 'pages-meta-history',
         log_file_name     => 'import_pages_history_dumps.log',
-        skip_list         => 'wikidatawiki',
         timer_description => 'Schedules daily an incremental import of the current month of pages-meta-history xmldumps into HDFS',
         timer_interval    => '*-*-* 03:00:00',
     }
