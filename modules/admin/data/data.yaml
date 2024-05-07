@@ -424,7 +424,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
-              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde]
+              georgemikesell, bblack, toyofuku, andyrussg]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6322,12 +6322,6 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdUcVkD6BtqZJlTW5QPf63PekD3uSUg+5L8x7el71xf jsherman@wikimedia.org'
     uid: 16502
     gid: 500
-  linafaridwmde:
-    ensure: present
-    realname: Lina Farid
-    email: lina.farid@wikimedia.de
-    uid: 46602
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6478,6 +6472,10 @@ ldap_only_users:
   ldoan:
     ensure: absent
     realname: Linnea Doan
+  linafaridwmde:
+    ensure: present
+    realname: Lina Farid
+    email: lina.farid@wikimedia.de
   lmixter:
     ensure: present
     realname: Leighanna Mixter
