@@ -62,9 +62,6 @@ class profile::query_service::common(
       reload_wcqs_data => $reload_wcqs_data,
     }
 
-    # temporary addition until we migrate to git-lfs. See T279509
-    ensure_packages(['git-fat'])
-
     ensure_packages(['python3-dateutil', 'python3-prometheus-client'])
     file { '/usr/local/bin/prometheus-blazegraph-exporter':
       ensure => present,
