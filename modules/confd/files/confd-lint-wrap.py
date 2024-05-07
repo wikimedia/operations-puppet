@@ -17,17 +17,10 @@ import argparse
 import sys
 import subprocess
 import time
-import os
-from os import path
+from pathlib import Path
 from syslog import syslog
 
-error_dir = '/var/run/confd-template'
-
-
-def touch(fname, times=None):
-    log("updating error mtime on %s" % (fname,))
-    with open(fname, 'w+'):
-        os.utime(fname, None)
+ERROR_STATE_PATH = "/var/run/confd-template"
 
 
 def log(msg):
@@ -37,40 +30,39 @@ def log(msg):
 
 def main():
     parser = argparse.ArgumentParser()
-    # TODO: T363924 make resource required and clean up conditional logic below
-    # once puppet is updated.
     parser.add_argument(
         '--resource',
+        required=True,
         help=(
-            'A unique file-safe identifier of the confd resource associated '
-            'with this check (i.e., the stem of the template name). Used to '
-            'construct the error state file name.'
+            "A unique file-safe identifier of the confd resource associated "
+            "with this check (i.e., the stem of the template name). Used to "
+            "construct the error state file name."
         ),
     )
     parser.add_argument(
-        'check',
-        nargs='+',
+        "check",
+        nargs="+",
         type=str,
-        help='The check command to execute.',
+        help="The check command to execute.",
     )
     args = parser.parse_args()
 
-    if not os.path.exists(error_dir):
-        os.makedirs(error_dir)
+    error_dir = Path(ERROR_STATE_PATH)
+    if not error_dir.exists():
+        error_dir.mkdir(parents=True)
 
     target = args.check
-    if args.resource is None:
-        error_file_base = path.basename(target[-1])
-    else:
-        error_file_base = args.resource
-    error_file = path.join(error_dir, f"{error_file_base}.err")
+
+    error_file = error_dir / f"{args.resource}.err"
 
     start = time.time()
-    p = subprocess.Popen(target,
-                         shell=False,
-                         stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE,
-                         universal_newlines=True)
+    p = subprocess.Popen(
+        target,
+        shell=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        universal_newlines=True,
+    )
     out, err = p.communicate()
     retcode = p.wait()
     duration = time.time() - start
@@ -78,18 +70,16 @@ def main():
     if not retcode and retcode != 0:
         retcode = 3
 
-    msg = "linting '%s' with %s (%ss)" % (' '.join(target),
-                                          retcode,
-                                          duration)
+    msg = "linting '%s' with %s (%ss)" % (" ".join(target), retcode, duration)
 
     if retcode:
-        error = 'failed %s %s' % (msg, err)
-        touch(error_file)
-        log(error)
+        log("failed %s %s" % (msg, err))
+        log("updating error mtime on %s" % (error_file))
+        error_file.touch()
         sys.exit(int(retcode))
     else:
-        if os.path.exists(error_file):
-            os.remove(error_file)
+        if error_file.exists():
+            error_file.unlink()
             print(msg)
         sys.exit(0)
 
