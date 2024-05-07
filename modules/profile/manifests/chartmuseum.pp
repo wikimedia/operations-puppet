@@ -30,6 +30,8 @@ class profile::chartmuseum(
     $allow_anonymous_get = true
     $debug = false
 
+    profile::auto_restarts::service { 'envoyproxy': }
+
     class { '::chartmuseum':
         listen_host             => $listen_host,
         listen_port             => $listen_port,
