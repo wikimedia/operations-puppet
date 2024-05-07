@@ -37,6 +37,9 @@ class profile::ci::docker(
         },
     )
 
+    profile::auto_restarts::service { 'docker': }
+    profile::auto_restarts::service { 'containerd': }
+
     # Upstream docker debian package does not enable the service and it thus
     # does not start on reboot T313119
     service { 'docker':
