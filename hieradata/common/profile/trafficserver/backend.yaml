@@ -30,6 +30,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://bugzilla.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map
+      target: http://cloudtestidm.wikimedia.org
+      replacement: https://cloudidm2001-dev.codfw.wmnet
+    - type: map
       target: http://config-master.wikimedia.org
       replacement: https://config-master.discovery.wmnet
     - type: map
