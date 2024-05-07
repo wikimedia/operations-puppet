@@ -22,7 +22,7 @@ class profile::dumps::distribution::web (
     # copy web server logs to stat host
     if $is_primary_server {
         class {'::dumps::web::rsync::nginxlogs':
-          dest => 'stat1007.eqiad.wmnet::dumps-webrequest/',
+          dest => 'stat1011.eqiad.wmnet::dumps-webrequest/',
         }
     }
 

@@ -27,7 +27,7 @@ profile::presto::cluster_name: analytics-presto
 profile::presto::discovery_uri: https://analytics-presto.eqiad.wmnet:8281
 
 profile::statistics::explorer::misc_jobs::hosts_with_jobs:
-  - 'stat1007'
+  - 'stat1011'
 
 profile::debdeploy::client::exclude_mounts:
   - /mnt/hdfs
