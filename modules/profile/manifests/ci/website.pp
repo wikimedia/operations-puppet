@@ -13,4 +13,5 @@ class profile::ci::website {
         source => 'puppet:///modules/contint/apache/integration.wikimedia.org.conf'
     }
 
+    profile::auto_restarts::service { 'envoyproxy': }
 }
