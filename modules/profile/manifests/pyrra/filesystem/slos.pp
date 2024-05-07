@@ -7,42 +7,7 @@ class profile::pyrra::filesystem::slos (
 
     # filesystem defined SLOs
 
-    # Logstash Requests SLO - please see wikitech for details
-    # https://wikitech.wikimedia.org/wiki/SLO/logstash
-
     #lint:ignore:arrow_alignment
-
-    $logstash_requests_slo = {
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'logstash-requests-pilot',
-            'namespace' => 'pyrra-o11y-pilot',
-            'labels' => {
-                'pyrra.dev/team' => 'o11y',
-                'pyrra.dev/service' => 'logging',
-            },
-        },
-        'spec' => {
-            'target' => '99.5',
-            'window' => '12w',
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => 'log_dead_letters_hits',
-                    },
-                    'total' => {
-                        'metric' => 'logstash_node_plugin_events_out_total{plugin_id="output/opensearch/logstash"}',
-                    },
-                    'grouping' => ['site'],
-                },
-            },
-        },
-    }
-
-    pyrra::filesystem::config { 'logstash-requests.yaml':
-      content => to_yaml($logstash_requests_slo),
-    }
 
     $liftwing_revscoring_requests_slo = {
         'apiVersion' => 'pyrra.dev/v1alpha1',
@@ -118,6 +83,44 @@ class profile::pyrra::filesystem::slos (
 
     # workaround grouping exported metrics limitation by setting datacenter
     $datacenters.each |$datacenter| {
+
+
+    # Logstash Requests SLO - please see wikitech for details
+    # https://wikitech.wikimedia.org/wiki/SLO/logstash
+
+    # logstash is eqiad/codfw only
+    if $datacenter in [ 'eqiad', 'codfw' ] {
+        pyrra::filesystem::config { "logstash-requests-${datacenter}.yaml":
+          content => to_yaml( {
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'logstash-requests-pilot',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'o11y',
+                    'pyrra.dev/service' => 'logging',
+                    'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '99.5',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "log_dead_letters_hits{site=\"${datacenter}\"}",
+                        },
+                        'total' => {
+                            'metric' => "logstash_node_plugin_events_out_total{plugin_id=\"output/opensearch/logstash\",site=\"${datacenter}\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+    }
+
 
     # Varnish uses one combined latency-availability SLI: A response is satisfactory IF it spends less than 100 ms processing time in Varnish, AND it isn't a Varnish internal error.
     # SLO: In each DC, 99.9% of requests get satisfactory responses. (grouping by site)
