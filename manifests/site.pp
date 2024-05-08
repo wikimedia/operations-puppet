@@ -2715,25 +2715,20 @@ node /^stat10(1[0-1]|0[4-9])\.eqiad\./ {
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
 node /^snapshot1008\.eqiad\./ {
-    role(dumps::generation::worker::dumper_misc_crons_only)
+    role(insetup::data_engineering)
 }
 node /^snapshot1010\.eqiad\./ {
     role(dumps::generation::worker::dumper_monitor)
 }
-node /^snapshot1009\.eqiad\./ {
-    role(insetup::data_engineering)
-}
-node /^snapshot101[1-2]\.eqiad\./ {
+node /^snapshot101[123]\.eqiad\./ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot1013\.eqiad\./ {
-    role(dumps::generation::worker::dumper)
-}
-
-node /^snapshot101[4567]\.eqiad\./ {
+node /^snapshot101[456]\.eqiad\./ {
     role(dumps::generation::worker::testbed)
 }
-
+node /^snapshot1017\.eqiad\./ {
+    role(dumps::generation::worker::dumper_misc_crons_only)
+}
 # Servers for SRE tests which are not suitable for Cloud VPS
 node /^sretest100[1-4]\.eqiad\./ {
     role(sretest)
