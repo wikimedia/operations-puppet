@@ -169,7 +169,6 @@ profile::prometheus::statsd_exporter::mappings:
 profile::contacts::role_contacts: ['Data Persistence']
 
 profile::swift::proxy::use_tls: true
-profile::swift::proxy::use_envoy: true
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::global_cert_name: "swift.discovery.wmnet"
 profile::tlsproxy::envoy::cfssl_options:
