@@ -47,8 +47,8 @@ profile::druid::common::zookeeper_cluster_name: druid-public-eqiad
 profile::druid::common::metadata_storage_database_name: 'druid_public_eqiad'
 
 profile::druid::daemons_autoreload: false
-profile::druid::ferm_srange: '(($DRUID_PUBLIC_HOSTS $DSE_KUBEPODS_NETWORKS))'
-profile::druid::firewall_access: ~
+profile::druid::ferm_srange: ~
+profile::druid::firewall_access: ['DRUID_PUBLIC_HOSTS', 'DSE_KUBEPODS_NETWORKS']
 
 profile::druid::common::properties:
   druid.hadoop.security.kerberos.principal: "druid/%{::fqdn}@WIKIMEDIA"
@@ -133,8 +133,8 @@ profile::druid::broker::env:
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
-profile::druid::coordinator::ferm_srange: '$DOMAIN_NETWORKS'
-profile::druid::coordinator::firewall_access: ~
+profile::druid::coordinator::ferm_srange: ~
+profile::druid::coordinator::firewall_access: ['DOMAIN_NETWORKS']
 profile::druid::coordinator::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
@@ -197,8 +197,8 @@ profile::druid::middlemanager::env:
 
 # Overlord will accept indexing jobs from Hadoop nodes in the ANALYTICS_NETWORKS
 profile::druid::overlord::monitoring_enabled: true
-profile::druid::overlord::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS))'
-profile::druid::overlord::firewall_access: ~
+profile::druid::overlord::ferm_srange: ~
+profile::druid::overlord::firewall_access: ['DRUID_PUBLIC_HOSTS', 'ANALYTICS_NETWORKS']
 profile::druid::overlord::properties:
   druid.indexer.runner.type: remote
   druid.indexer.storage.type: metadata
