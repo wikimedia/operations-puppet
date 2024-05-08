@@ -27,16 +27,6 @@ define fifo_log_demux::instance(
         }
     }
 
-    # Removing this as we had Wants= in the [Install] section which would
-    # perpetually keep the dependency on fifo-log-demux that we're trying to
-    # remove from web servers. Once this is deployed we can remove this.
-    file { '/etc/systemd/system/trafficserver.service.wants/fifo-log-demux@notpurge.service':
-      ensure => 'absent',
-    }
-    file { '/etc/systemd/system/nginx.service.requires/fifo-log-demux@ncredir_access_log.service':
-      ensure => 'absent',
-    }
-
     systemd::service { "fifo-log-demux@${title}":
         ensure  => $ensure,
         # See above comment regarding removal of dependencies.
