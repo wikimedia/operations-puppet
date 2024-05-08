@@ -2248,6 +2248,13 @@ class profile::prometheus::ops (
         ]
       },
       {
+        'job_name'        => 'wmf_gitlab_exporter',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/wmf_gitlab_exporter_*.yaml"] },
+        ]
+      },
+      {
         'job_name'        => 'gitaly',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -2290,6 +2297,12 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/gitlab_${::site}.yaml",
         class_name => 'profile::gitlab',
         port       => 9168
+    }
+    # custom gitlab exporter added in https://phabricator.wikimedia.org/T354656
+    prometheus::class_config{ "wmf_gitlab_exporter_${::site}":
+        dest       => "${targets_path}/wmf_gitlab_exporter_${::site}.yaml",
+        class_name => 'profile::gitlab',
+        port       => 9169
     }
     prometheus::class_config{ "gitaly_${::site}":
         dest       => "${targets_path}/gitaly_${::site}.yaml",
