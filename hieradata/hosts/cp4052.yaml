@@ -1,2 +1,11 @@
 profile::cache::haproxy::install_haproxy26_component: true
 profile::cache::purge::use_pki: true
+profile::trafficserver::backend::logs:
+  - filename: notpurge
+    format: wmf
+    filters:
+    - notpurge
+    - notvarnishcheck
+    mode: ascii_pipe
+    ensure: present
+    prometheus_port: 3400
