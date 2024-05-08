@@ -16,3 +16,6 @@ profile::logrotate::hourly: true
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+# udp2log currently fails under python3
+profile::base::remove_python2_on_bullseye: false
