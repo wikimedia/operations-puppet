@@ -1,1 +1,4 @@
 profile::dumps::generation::worker::dumper::runtype: wikidatawiki
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
