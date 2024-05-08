@@ -35,14 +35,6 @@ class query_service::common(
             }
         }
 
-        'manual': {
-            class {'::query_service::deploy::manual':
-                deploy_user => $deploy_user,
-                package_dir => $package_dir,
-                deploy_name => $deploy_name,
-            }
-        }
-
         default: { }
     }
 
