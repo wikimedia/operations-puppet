@@ -267,8 +267,6 @@ profile::gitlab::runner::allowed_docker_services:
   # Database engines
   - "mariadb:*"
 
-profile::gitlab::enable_custom_exporter: true
-
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 profile::mail::smarthost::support_ipv6: false
 

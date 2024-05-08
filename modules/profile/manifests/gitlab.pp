@@ -23,7 +23,7 @@ class profile::gitlab(
     Boolean  $smtp_enabled = lookup('profile::gitlab::smtp_enabled'),
     Array[Gitlab::Projects] $default_projects_features = lookup('profile::gitlab::default_projects_features', {default_value => []}),
     Hash[Gitlab::Exporters,Gitlab::Exporter] $exporters = lookup('profile::gitlab::exporters', {default_value => {}}),
-    Boolean $enable_custom_exporter = lookup('profile::gitlab::enable_custom_exporter', {default_value => false}),
+    Boolean $enable_custom_exporter = lookup('profile::gitlab::enable_custom_exporter', {default_value => true}),
     Integer $custom_exporter_port = lookup('profile::gitlab::custom_exporter_port', {default_value => 9169}),
     Integer $custom_exporter_interval = lookup('profile::gitlab::custom_exporter_interval', {default_value => 60}),
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
