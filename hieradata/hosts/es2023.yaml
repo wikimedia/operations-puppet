@@ -1,7 +1,7 @@
 # es2023
+# candidate master for es5
 mariadb::shard: 'es5'
 mariadb::binlog_format: 'ROW'
-profile::mariadb::mysql_role: 'master'
 mariadb::package: 'wmf-mariadb106'
 
 profile::puppet::agent::force_puppet7: true
