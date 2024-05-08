@@ -78,7 +78,13 @@ class profile::swift::proxy (
     }
 
     if $use_tls {
-        include profile::swift::proxy_tls
+        include profile::tlsproxy::envoy
+
+        ferm::service { 'swift-proxy-https':
+            proto   => 'tcp',
+            notrack => true,
+            port    => '443',
+        }
     }
 
     class { 'memcached':
