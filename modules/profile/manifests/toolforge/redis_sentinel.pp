@@ -86,6 +86,7 @@ class profile::toolforge::redis_sentinel (
             slaveof                     => $slaveof,
             bind                        => '0.0.0.0',
             rename_command              => $mapped_secret_commands,
+            timeout                     => 600,
         },
     }
 
