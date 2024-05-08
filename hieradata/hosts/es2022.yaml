@@ -1,7 +1,6 @@
 # es2022
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
-mariadb::package: 'wmf-mariadb106'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
