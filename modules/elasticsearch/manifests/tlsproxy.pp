@@ -27,7 +27,6 @@ define elasticsearch::tlsproxy (
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths       = {}
 ) {
     tlsproxy::localssl { $title:
-        certs             => $certificate_names,
         server_name       => $server_name,
         server_aliases    => $server_aliases,
         default_server    => true,
