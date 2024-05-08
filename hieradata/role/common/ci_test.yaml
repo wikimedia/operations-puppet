@@ -40,3 +40,18 @@ profile::zuul::server::email_server: localhost
 # keep Python2 packages on bullseye to be able to run Zuul v2
 profile::base::remove_python2_on_bullseye: false
 
+
+# envoy for TLS termination for ci website behind ATS
+profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 80
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::global_cert_name: "contint.wikimedia.org"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - integration-test.wikimedia.org
+profile::tlsproxy::envoy::sni_support: "no"
+profile::tlsproxy::envoy::tls_port: 1443
+profile::tlsproxy::envoy::ferm_srange: "$CACHES"
+
