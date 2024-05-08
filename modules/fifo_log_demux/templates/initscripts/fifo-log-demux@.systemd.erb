@@ -11,7 +11,7 @@ After=<%= @wanted_by %>
 
 [Service]
 User=<%= @user %>
-ExecStart=/usr/bin/fifo-log-demux -log-fifo <%= @fifo %> -socket <%= @socket %><%- if @prometheus_port -%> -prometheus-address=<%= @prometheus_host %>:<%= @prometheus_port %><%- end -%><%- if @input_buffer_size -%> -input-buffer-size=<%= @input_buffer_size %><%- end -%><%- if @output_buffer_size -%> -output-buffer-size=<%= @output_buffer_size %><% end %>
+ExecStart=/usr/bin/fifo-log-demux -log-fifo <%= @fifo %> -socket <%= @socket %>
 # It's important to keep consuming the fifo; otherwise, some programs will
 # become inoperative while waiting for consumers. Keep trying forever.
 # However, if the program itself is broken, let's give up so that we're alerted
