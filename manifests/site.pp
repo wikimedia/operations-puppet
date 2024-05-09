@@ -1433,12 +1433,8 @@ node /^cloudweb2002-dev\.wikimedia\./ {
     role(wmcs::openstack::codfw1dev::cloudweb)
 }
 
-node /^cloudnet2005-dev\.codfw\./ {
+node /^cloudnet200[5-6]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::net_ovs)
-}
-
-node /^cloudnet2006-dev\.codfw\./ {
-    role(wmcs::openstack::codfw1dev::net)
 }
 
 # New clouddb node T306854
