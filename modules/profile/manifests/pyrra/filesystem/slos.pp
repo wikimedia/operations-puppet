@@ -157,6 +157,47 @@ class profile::pyrra::filesystem::slos (
         })
     }
 
+
+    # HAProxy SLO
+    #
+    # HAProxy uses one combined latency-availability SLI: A response is satisfactory if it spends less than 50 ms processing time in HAProxy, and it isn't an HAProxy internal error.
+    #
+
+    ['cache_text', 'cache_upload'].each |$cluster| {
+
+        pyrra::filesystem::config { "haproxy-combined-${datacenter}-${cluster}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'haproxy-combined',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'traffic',
+                    'pyrra.dev/service' => 'haproxy',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                    'pyrra.dev/cluster' => "${cluster}",   #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '99.9',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "haproxy_sli_bad{cluster=~\"${cluster}\",site=~\"${datacenter}\"}",
+                        },
+                        'total' => {
+                            'metric' => "haproxy_sli_total{ cluster=~\"${cluster}\",site=~\"${datacenter}\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+
+    }
+
     # Etcd SLOs
     #
 
