@@ -38,7 +38,9 @@ class profile::cache::haproxy(
     Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
     Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', {'default_value'                                             => false}),
     Boolean $use_benthos = lookup('profile::cache::base::use_benthos', {'default_value'                                                          => false}),
-    Optional[String] $benthos_socket = lookup('profile::cache::base::benthos_socket_address', {'default_value'                                   => '127.0.0.1:1221'}),
+    String $benthos_socket = lookup('profile::cache::base::benthos_socket_address', {'default_value'                                             => '127.0.0.1:1221'}),
+    Boolean $benthos_systemd_socket = lookup('profile::cache::base::benthos_systemd_socket', {'default_value'                                    => false}),
+    Optional[Integer[256]] $benthos_udp_rbuffer_bytes = lookup('profile::cache::base::benthos_udp_rbuffer_bytes', {'default_value'               => undef}),
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
     Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
@@ -244,5 +246,39 @@ class profile::cache::haproxy(
         owner   => 'root',
         group   => 'root',
         content => file('profile/cache/haproxy_restart.sh'),
+    }
+
+    if $use_benthos and $benthos_systemd_socket {
+        $benthos_socket_ensure = 'present'
+    } else {
+        $benthos_socket_ensure = 'absent'
+    }
+
+    # No need to set sysctl if no custom buffer size but let's be sure
+    # it's cleaned up if removed.
+    if ($benthos_socket_ensure == 'present') and $benthos_udp_rbuffer_bytes {
+        $benthos_sysctl_ensure = 'present'
+    } else {
+        $benthos_sysctl_ensure = 'absent'
+    }
+
+    sysctl::parameters { 'udp rmem for benthos':
+        ensure => $benthos_sysctl_ensure,
+        values => {
+            'net.core.rmem_max' => $benthos_udp_rbuffer_bytes,
+        },
+        before => Systemd::Service['benthos@haproxy_cache_systemd_socket.socket'],
+    }
+
+    systemd::service { 'benthos@haproxy_cache_systemd_socket.socket':
+        ensure  => $benthos_socket_ensure,
+        content => systemd_template('haproxy-benthos@.socket'),
+        before  => Systemd::Override['benthos-stdin-from-socket'],
+    }
+
+    systemd::override { 'benthos-stdin-from-socket':
+        ensure  => $benthos_socket_ensure,
+        unit    => 'benthos@haproxy_cache_systemd_socket',
+        content => "[Service]\nStandardInput=socket\nStandardOutput=journal\nStandardError=journal\n",
     }
 }
