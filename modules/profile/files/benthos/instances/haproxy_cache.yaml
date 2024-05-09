@@ -17,17 +17,7 @@ input:
       cert_file: ""
       key_file: ""
       self_signed: false
-  processors:
-    - label: "syslog_format"
-      parse_log:
-        format: "syslog_rfc3164"
-        codec: "json"
-    - label: "drop_unparsable_messages"
-      mapping: |
-        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false)
-        {
-          deleted()
-        }
+
 buffer:
  memory:
    limit: ${BUFFER_MEMORY_LIMIT_BYTES}
@@ -39,6 +29,16 @@ buffer:
 pipeline:
   threads: ${PIPELINE_THREADS}
   processors:
+    - label: "syslog_format"
+      parse_log:
+        format: "syslog_rfc3164"
+        codec: "json"
+    - label: "drop_unparsable_messages"
+      mapping: |
+        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false)
+        {
+          deleted()
+        }
     - label: "drop_first_part"
       mapping: |
         root = this
