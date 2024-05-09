@@ -127,17 +127,19 @@ class profile::pyrra::filesystem::slos (
     # Request Error Ratio SLI: The percentage of requests receiving unsatisfactory responses. This is normally near zero; upward spikes represent incidents.
     # https://wikitech.wikimedia.org/wiki/SLO/Varnish
 
-    pyrra::filesystem::config { "varnish-requests-${datacenter}.yaml":
+    ['cache_text', 'cache_upload'].each |$varnish_cluster| {
+    pyrra::filesystem::config { "varnish-combined-${datacenter}-${varnish_cluster}.yaml":
         content => to_yaml({
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind' => 'ServiceLevelObjective',
         'metadata' => {
-            'name' => 'varnish-requests-pilot',
+            'name' => 'varnish-combined',
             'namespace' => 'pyrra-o11y-pilot',
             'labels' => {
                 'pyrra.dev/team' => 'traffic',
                 'pyrra.dev/service' => 'varnish',
                 'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
+                'pyrra.dev/cluster' => "${varnish_cluster}", #lint:ignore:only_variable_string
             },
         },
         'spec' => {
@@ -146,26 +148,25 @@ class profile::pyrra::filesystem::slos (
             'indicator' => {
                 'ratio' => {
                     'errors' => {
-                        'metric' => "varnish_sli_bad{site=\"${datacenter}\"}",
+                        'metric' => "varnish_sli_bad{site=\"${datacenter}\",cluster=\"${varnish_cluster}\"}",
                     },
                     'total' => {
-                        'metric' => "varnish_sli_all{site=\"${datacenter}\"}",
+                        'metric' => "varnish_sli_all{site=\"${datacenter}\",cluster=\"${varnish_cluster}\"}",
                     },
                 },
             },
         }
         })
     }
-
+    }
 
     # HAProxy SLO
     #
     # HAProxy uses one combined latency-availability SLI: A response is satisfactory if it spends less than 50 ms processing time in HAProxy, and it isn't an HAProxy internal error.
     #
 
-    ['cache_text', 'cache_upload'].each |$cluster| {
-
-        pyrra::filesystem::config { "haproxy-combined-${datacenter}-${cluster}.yaml":
+    ['cache_text', 'cache_upload'].each |$haproxy_cluster| {
+        pyrra::filesystem::config { "haproxy-combined-${datacenter}-${haproxy_cluster}.yaml":
           content => to_yaml({
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind' => 'ServiceLevelObjective',
@@ -176,7 +177,7 @@ class profile::pyrra::filesystem::slos (
                     'pyrra.dev/team' => 'traffic',
                     'pyrra.dev/service' => 'haproxy',
                     'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
-                    'pyrra.dev/cluster' => "${cluster}",   #lint:ignore:only_variable_string
+                    'pyrra.dev/cluster' => "${haproxy_cluster}",   #lint:ignore:only_variable_string
                 },
             },
             'spec' => {
@@ -185,10 +186,10 @@ class profile::pyrra::filesystem::slos (
                 'indicator' => {
                     'ratio' => {
                         'errors' => {
-                            'metric' => "haproxy_sli_bad{cluster=~\"${cluster}\",site=~\"${datacenter}\"}",
+                            'metric' => "haproxy_sli_bad{cluster=~\"${haproxy_cluster}\",site=~\"${datacenter}\"}",
                         },
                         'total' => {
-                            'metric' => "haproxy_sli_total{ cluster=~\"${cluster}\",site=~\"${datacenter}\"}",
+                            'metric' => "haproxy_sli_total{ cluster=~\"${haproxy_cluster}\",site=~\"${datacenter}\"}",
                         },
                     },
                 },
