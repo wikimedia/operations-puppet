@@ -612,7 +612,7 @@ def do_main():
     dumps_num = "5"
     dumpsdir = None
     flags = get_flag_defaults()
-    subdirs = '[a-z0-9]*wik[a-z0-9]*'
+    subdirs = '[a-z0-9_]*wik[a-z0-9_]*'
     templs = {}
     output_dir = None
 
