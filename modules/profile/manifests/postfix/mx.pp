@@ -148,6 +148,34 @@ class profile::postfix::mx (
         recipient => 'root@wikimedia.org',
     }
 
+    # TLS Config
+    $acme_chief_cert = $mta_mode ? {
+        'inbound'     => 'mx-in',
+        'outbound'    => 'mx-out',
+        'null-client' => 'mx-null-client',
+        default       => fail('mta_mode not supported'),
+    }
+    acme_chief::cert { $acme_chief_cert:
+        puppet_rsc => Service['postfix'],
+        key_group  => 'postfix',
+    }
+    $cert_resources = ['rsa-2048', 'ec-prime256v1'].map |$tls_key_type| {
+        profile::postfix::acme_chief_cert(
+            $acme_chief_cert,
+            $tls_key_type,
+        )
+    }
+    $cert_resources.each |$rsc| {
+        # Restart postfix on cert changes
+        $rsc ~> Service['postfix']
+    }
+    $tls_config = {
+        smtpd_tls_chain_files =>
+            $cert_resources.map |$rsc| {
+                $rsc['path']
+            },
+    }
+
     if $plain_auth_logins != {} {
         $dovecot_config = {
             smtpd_sasl_type                 => 'dovecot',
@@ -209,31 +237,15 @@ class profile::postfix::mx (
         $dovecot_config = {}
     }
 
+    # lint:ignore:2sp_soft_tabs
     class { 'postfix':
-        * => $config + $base_config + $dovecot_config + $virtual_alias_maps + $transport_maps
+        * => $config + $base_config + $tls_config + $dovecot_config +
+             $virtual_alias_maps + $transport_maps
     }
+    # lint:endignore
 
     # We need rspamd to create the milter socket, before installing postfix
     Class['Rspamd'] -> Class['Postfix']
-
-    case $mta_mode {
-        'inbound': {
-            acme_chief::cert { 'mx-in':
-                puppet_rsc => Service['postfix'],
-                key_group  => 'postfix',
-            }
-        }
-        'outbound': {
-            acme_chief::cert { 'mx-out':
-                puppet_rsc => Service['postfix'],
-                key_group  => 'postfix',
-            }
-        }
-        'null-client': {
-            # TODO: do we want to encrypt null-client traffic?
-        }
-        default: { fail('mta_mode not supported') }
-    }
 
     monitoring::service { 'smtp':
         description   => 'Postfix SMTP',
