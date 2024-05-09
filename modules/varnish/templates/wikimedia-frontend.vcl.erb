@@ -562,6 +562,11 @@ sub wm_recv_early {
     if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
         return (synth(200, "healthcheck"));
     }
+
+    # T364126: Disable Chrome Private Prefetch Proxy
+    if (req.url == "/.well-known/traffic-advice") {
+        return (synth(200, "Disable Chrome Private Prefetch Proxy"));
+    }
 }
 
 sub normalize_request_nonmisc {
@@ -1200,6 +1205,12 @@ sub vcl_synth {
     if (resp.reason == "healthcheck") {
         set resp.reason = "OK";
         synthetic("Varnish frontend running on <%= @hostname %> is up");
+    }
+
+    if (resp.reason == "Disable Chrome Private Prefetch Proxy") {
+        set resp.reason = "OK";
+        set resp.http.Content-Type = "application/trafficadvice+json";
+        synthetic({"[{"user_agent":"prefetch-proxy","disallow":true}]"});
     }
 
     return (deliver);

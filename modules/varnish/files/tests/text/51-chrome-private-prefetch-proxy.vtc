@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_text disable chrome private prefetch proxy"
+
+server s1 {
+    rxreq
+    txresp
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/.well-known/traffic-advice" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Content-Type == "application/trafficadvice+json"
+    expect resp.body == "[{\"user_agent\":\"prefetch-proxy\",\"disallow\":true}]"
+
+    txreq -url "/.well-known/traffic-advice" -hdr "Host: upload.wikipedia.org"
+    rxresp
+    expect resp.status == 200
+    expect resp.http.Content-Type == "application/trafficadvice+json"
+    expect resp.body == "[{\"user_agent\":\"prefetch-proxy\",\"disallow\":true}]"
+} -run
