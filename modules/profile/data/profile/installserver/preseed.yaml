@@ -681,7 +681,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'search-loader*':
     - partman/flat.cfg
     - virtual.cfg
-  'snapshot100[8-9]|snapshot101[0-7]':
+  'snapshot*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'sretest100[1-4]':

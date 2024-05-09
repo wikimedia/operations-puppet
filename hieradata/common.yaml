@@ -636,7 +636,6 @@ statistics_servers:
 dumps_nfs_clients:
   snapshots:
     - snapshot1008.eqiad.wmnet
-    - snapshot1009.eqiad.wmnet
     - snapshot1010.eqiad.wmnet
     - snapshot1011.eqiad.wmnet
     - snapshot1012.eqiad.wmnet

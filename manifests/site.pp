@@ -2692,7 +2692,7 @@ node /^snapshot1010\.eqiad\./ {
     role(dumps::generation::worker::dumper_monitor)
 }
 node /^snapshot1009\.eqiad\./ {
-    role(dumps::generation::worker::testbed)
+    role(insetup::data_engineering)
 }
 node /^snapshot101[1-2]\.eqiad\./ {
     role(dumps::generation::worker::dumper)
