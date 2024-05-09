@@ -2,14 +2,22 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [Unreleased]
+## [v3.1.4](https://github.com/lollipopman/puppet-postfix/tree/v3.1.4) (2024-05-09)
+
+### Fixed
+
+- Install postfix package prior to running postmap
+
+## [v3.1.3](https://github.com/lollipopman/puppet-postfix/tree/v3.1.3) (2024-05-09)
 
 ### Added
 
 - Add Debian Bullseye(11) support
+- Add support for `smtpd_tls_chain_files`
 
 ### Fixed
 
+- Debian: drop default tls settings
 - Fix support for /etc/aliases
 - Debian: don't install augeas lens for unix-dgram
 

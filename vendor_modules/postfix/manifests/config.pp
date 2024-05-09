@@ -1625,6 +1625,10 @@ class postfix::config {
       true    => 'yes',
       default => $postfix::smtpd_tls_wrappermode,
     },
+    'smtpd_tls_chain_files'                                  => $postfix::smtpd_tls_chain_files ? {
+      undef   => undef,
+      default => join($postfix::smtpd_tls_chain_files, ', '),
+    },
     'smtpd_upstream_proxy_protocol'                          => $postfix::smtpd_upstream_proxy_protocol,
     'smtpd_upstream_proxy_timeout'                           => $postfix::smtpd_upstream_proxy_timeout,
     'smtpd_use_tls'                                          => $postfix::smtpd_use_tls ? {

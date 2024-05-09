@@ -617,6 +617,7 @@ postfix::smtpd_tls_security_level: ~
 postfix::smtpd_tls_session_cache_database: ~
 postfix::smtpd_tls_session_cache_timeout: ~
 postfix::smtpd_tls_wrappermode: ~
+postfix::smtpd_tls_chain_files: ~
 postfix::smtpd_upstream_proxy_protocol: ~
 postfix::smtpd_upstream_proxy_timeout: ~
 postfix::smtpd_use_tls: ~

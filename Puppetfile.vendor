@@ -34,13 +34,10 @@ mod 'postfix',
     # NOTE: Forked from upstream, https://github.com/bodgit/puppet-postfix
     # TODO: migrate local fixes to gitlab.w.o and create a tag
     #
-    # Contains three pull requests
+    # diff: https://github.com/bodgit/puppet-postfix/compare/main...lollipopman:puppet-postfix:main
     #
-    #  1. Add Debian Bullseye(11) support
-    #  2. Fix support for /etc/aliases
-    #  3. Debian: don't install Augeas lens for unix-dgram
     :git => 'https://github.com/lollipopman/puppet-postfix',
-    :ref => '6fa18a6'
+    :ref => 'v3.1.4'
 
 mod 'rspamd',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',

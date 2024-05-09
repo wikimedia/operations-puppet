@@ -1,5 +1,6 @@
 ---
-# Matches default main.cf config for Debian Bullseye
+# Matches default main.cf config for Debian Bookworm, minus TLS keys, to allow
+# for easier setting of TLS keys in class parameters
 postfix::alias_database:
   - 'hash:/etc/aliases'
 postfix::alias_maps:
@@ -17,8 +18,6 @@ postfix::mydestination:
 postfix::smtp_tls_capath: '/etc/ssl/certs'
 postfix::smtp_tls_security_level: 'may'
 postfix::smtp_tls_session_cache_database: 'btree:${data_directory}/smtp_scache'
-postfix::smtpd_tls_cert_file: '/etc/ssl/certs/ssl-cert-snakeoil.pem'
-postfix::smtpd_tls_key_file: '/etc/ssl/private/ssl-cert-snakeoil.key'
 postfix::smtpd_tls_security_level: 'may'
 postfix::biff: false
 postfix::readme_directory: false

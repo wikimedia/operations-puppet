@@ -109,7 +109,11 @@ define postfix::lookup::database (
       exec { "${postcmd} ${type}:${path}":
         path    => $::path,
         unless  => $unless,
-        require => File[$path],
+        require => [
+            File[$path],
+            # Needed for postmap
+            Package['postfix'],
+        ],
         before  => File[$files],
       }
     }
