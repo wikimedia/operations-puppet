@@ -914,12 +914,12 @@ profile::openstack::eqiad1::openstack_control_nodes:
     cloud_private_fqdn: cloudcontrol1007.private.eqiad.wikimedia.cloud
 
 profile::openstack::codfw1dev::openstack_control_nodes:
-  - host_fqdn: cloudcontrol2001-dev.codfw.wmnet
-    cloud_private_fqdn: cloudcontrol2001-dev.private.codfw.wikimedia.cloud
   - host_fqdn: cloudcontrol2004-dev.codfw.wmnet
     cloud_private_fqdn: cloudcontrol2004-dev.private.codfw.wikimedia.cloud
   - host_fqdn: cloudcontrol2005-dev.codfw.wmnet
     cloud_private_fqdn: cloudcontrol2005-dev.private.codfw.wikimedia.cloud
+  - host_fqdn: cloudcontrol2006-dev.codfw.wmnet
+    cloud_private_fqdn: cloudcontrol2006-dev.private.codfw.wikimedia.cloud
 
 profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path: /srv/tools/home
 profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path: /srv/paws/project/paws/userhomes
