@@ -5,7 +5,8 @@
 # === Parameters
 #
 # [*airflow_instances*]
-#   Hash of airflow::instance parameters keyed by name.  This will be
+#   Hash of airflow::instance parameters keyed by name.
+#   The default value is an empty hash. This will be
 #   passed directly to the create_resources function. E.g.
 #       myinstanceA:
 #           service_user: ...
@@ -62,7 +63,7 @@
 #   (TO DO: Set default to 2.5.0 once we upgrade everywhere.)
 #
 class profile::airflow(
-    Hash $airflow_instances               = lookup('profile::airflow::instances'),
+    Hash $airflow_instances               = lookup('profile::airflow::instances', { 'default_value' => {} }),
     Hash $airflow_instances_secrets       = lookup('profile::airflow::instances_secrets', { 'default_value' => {} }),
     Boolean $use_wmf_defaults             = lookup('profile::airflow::use_wmf_defaults', { 'default_value' => true }),
     String $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-db1001.eqiad.wmnet' }),
