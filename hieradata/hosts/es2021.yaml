@@ -1,7 +1,7 @@
 # es2021
-# candidate master for es4
 mariadb::shard: 'es4'
 mariadb::binlog_format: 'ROW'
+profile::mariadb::mysql_role: 'master'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
