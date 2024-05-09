@@ -1432,7 +1432,7 @@ node /^cloudcontrol200[6789]-dev\.codfw\./ {
 
 # New cloudnet node used for OVS experiments
 node /^cloudnet200[78]-dev\.codfw\./ {
-    role(wmcs::openstack::codfw1dev::net_ovs)
+    role(insetup::wmcs)
 }
 
 node /^cloudvirt200[456]-dev\.codfw\./ {
