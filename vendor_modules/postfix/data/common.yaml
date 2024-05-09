@@ -454,6 +454,7 @@ postfix::smtp_discard_ehlo_keywords: ~
 postfix::smtp_dns_resolver_options: ~
 postfix::smtp_enforce_tls: ~
 postfix::smtp_fallback_relay: ~
+postfix::smtpd_forbid_bare_newline: ~
 postfix::smtp_generic_maps: ~
 postfix::smtp_header_checks: ~
 postfix::smtp_helo_name: ~

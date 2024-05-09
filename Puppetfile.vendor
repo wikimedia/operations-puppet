@@ -37,7 +37,7 @@ mod 'postfix',
     # diff: https://github.com/bodgit/puppet-postfix/compare/main...lollipopman:puppet-postfix:main
     #
     :git => 'https://github.com/lollipopman/puppet-postfix',
-    :ref => 'v3.1.4'
+    :ref => 'v3.1.5'
 
 mod 'rspamd',
     :git => 'https://gitlab.wikimedia.org/repos/sre/puppet-rspamd.git',

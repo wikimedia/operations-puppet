@@ -1158,6 +1158,7 @@ class postfix::config {
       undef   => undef,
       default => join($postfix::smtp_fallback_relay, ', '),
     },
+    'smtpd_forbid_bare_newline'                              => $postfix::smtpd_forbid_bare_newline,
     'smtp_generic_maps'                                      => $postfix::smtp_generic_maps ? {
       undef   => undef,
       default => join($postfix::smtp_generic_maps, ', '),

@@ -3579,6 +3579,12 @@ Data type: `Optional[Array[String, 1]]`
 
 
 
+##### <a name="smtpd_forbid_bare_newline"></a>`smtpd_forbid_bare_newline`
+
+Data type: `Optional[Enum['no', 'normalize', 'note', 'reject', 'yes']]`
+
+
+
 ##### <a name="smtp_generic_maps"></a>`smtp_generic_maps`
 
 Data type: `Optional[Array[String, 1]]`

@@ -1233,6 +1233,15 @@ class postfix (
   Optional[Array[String, 1]]           $smtp_dns_resolver_options,
   Optional[Variant[Boolean, String]]   $smtp_enforce_tls,
   Optional[Array[String, 1]]           $smtp_fallback_relay,
+  Optional[
+      Enum[
+        'no',
+        'normalize',
+        'note',
+        'reject',
+        'yes',
+      ]
+  ]                                    $smtpd_forbid_bare_newline,
   Optional[Array[String, 1]]           $smtp_generic_maps,
   Optional[Array[String, 1]]           $smtp_header_checks,
   Optional[String]                     $smtp_helo_name,
