@@ -170,6 +170,8 @@ class profile::postfix::mx (
                                             $dynamic_transport_maps_paths +
                                             $recipient_discard_transport_maps_paths,
         parent_domain_matches_subdomains => ['debug_peer_list'],
+        # Prevent smtp smuggling, https://www.postfix.org/smtp-smuggling.html
+        smtpd_forbid_bare_newline        => 'normalize',
     }
 
     if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
