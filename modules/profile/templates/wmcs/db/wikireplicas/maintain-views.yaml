@@ -526,7 +526,7 @@ customviews:
   globaluser:
     source: globaluser
     view: >
-      select gu_id, gu_name,gu_home_db, NULL as gu_email, NULL as gu_email_authenticated, NULL as gu_salt,
+      select gu_id, gu_name,gu_home_db, NULL as gu_email, NULL as gu_email_authenticated,
       NULL as gu_password, gu_locked, gu_hidden_level, gu_registration, NULL as gu_password_reset_key,
       NULL as gu_password_reset_expiration, NULL as gu_auth_token
     where: gu_hidden_level=0
