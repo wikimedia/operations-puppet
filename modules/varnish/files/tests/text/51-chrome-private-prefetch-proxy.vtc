@@ -29,12 +29,14 @@ client c1 {
     txreq -url "/.well-known/traffic-advice" -hdr "Host: en.wikipedia.org"
     rxresp
     expect resp.status == 200
+    expect resp.http.Cache-Control == "public, max-age=86400"
     expect resp.http.Content-Type == "application/trafficadvice+json"
-    expect resp.body == "[{\"user_agent\":\"prefetch-proxy\",\"disallow\":true}]"
+    expect resp.body == "[{\n  \"user_agent\": \"prefetch-proxy\",\n  \"disallow\": true\n}]\n"
 
     txreq -url "/.well-known/traffic-advice" -hdr "Host: upload.wikipedia.org"
     rxresp
     expect resp.status == 200
     expect resp.http.Content-Type == "application/trafficadvice+json"
-    expect resp.body == "[{\"user_agent\":\"prefetch-proxy\",\"disallow\":true}]"
+    expect resp.http.Cache-Control == "public, max-age=86400"
+    expect resp.body == "[{\n  \"user_agent\": \"prefetch-proxy\",\n  \"disallow\": true\n}]\n"
 } -run

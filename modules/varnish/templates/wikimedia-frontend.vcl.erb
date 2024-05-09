@@ -1209,8 +1209,13 @@ sub vcl_synth {
 
     if (resp.reason == "Disable Chrome Private Prefetch Proxy") {
         set resp.reason = "OK";
+        set resp.http.Cache-Control = "public, max-age=86400";
         set resp.http.Content-Type = "application/trafficadvice+json";
-        synthetic({"[{"user_agent":"prefetch-proxy","disallow":true}]"});
+        synthetic({"[{
+  "user_agent": "prefetch-proxy",
+  "disallow": true
+}]
+"});
     }
 
     return (deliver);
