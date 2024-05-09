@@ -1425,10 +1425,6 @@ node /^clouddb2002-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::db)
 }
 
-node /^cloudcontrol2001-dev\.codfw\./ {
-    role(insetup::wmcs)
-}
-
 node /^cloudcontrol200[456]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::control)
 }
