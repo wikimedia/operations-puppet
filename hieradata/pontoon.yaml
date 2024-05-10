@@ -67,13 +67,14 @@ cumin_masters:
 
 ## Puppet CA management
 manage_puppet_ca_file: false
-puppetmaster: "%{alias('__master_for_role_puppetmaster__pontoon')}"
-puppet_ca_server: "%{alias('__master_for_role_puppetmaster__pontoon')}"
+puppetmaster: "%{alias('__master_for_role_puppetserver__pontoon')}"
+puppet_ca_server: "%{alias('__master_for_role_puppetserver__pontoon')}"
+profile::puppet::agent::puppetmaster: "%{alias('__master_for_role_puppetserver__pontoon')}"
 
 # profile::apt hardcodes http proxy that only works in production.  We don't need this in cloud.
 profile::apt::use_proxy: false
 
-profile::base::certificates::trusted_certs: ~
+  #profile::base::certificates::trusted_certs: ~
 
 # don't configure benthos instances from prod hieradata
 profile::benthos::instances: {}

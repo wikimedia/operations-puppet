@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Map roles to VM specifications (image, flavor)
+# Can be overridden per-stack when <stack>/specmap.yaml is found
+
+default:
+  image: 'debian-12.0-bookworm'
+  flavor: 'g4.cores1.ram2.disk20'
+
+puppetserver::pontoon:
+  flavor: 'g4.cores2.ram4.disk20'
+
+logging::opensearch::collector:
+  flavor: 'g4.cores2.ram4.disk20'
+
+kafka::logging:
+  image: 'debian-11.0-bullseye'

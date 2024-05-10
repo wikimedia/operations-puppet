@@ -1,0 +1,80 @@
+profile::puppet::agent::force_puppet7: true
+
+profile::puppetserver::java_start_mem: 1g
+profile::puppetserver::java_max_mem: 1g
+profile::puppetserver::enable_ca: true
+profile::puppetserver::ca_server: "%{alias('__master_for_role_puppetserver__pontoon')}"
+profile::puppetserver::autosign: true
+profile::puppetserver::enc_path: '/usr/local/bin/pontoon-enc'
+profile::puppetserver::git_pull: false
+profile::puppetserver::max_active_instances: 1
+profile::puppetserver::server_id: 'puppet'
+profile::puppetserver::intermediate_ca: false
+# Don't cache, since we are writing directly via NFS
+profile::puppetserver::environment_timeout: 0
+
+# No puppetdb by default
+profile::puppetserver::puppetdb_urls: []
+
+profile::puppetserver::extra_mounts:
+  volatile: "/srv/puppet_fileserver/volatile"
+
+# Look up Pontoon values (per-host, per-stack, defaults) first, then
+# check the production hierarchy.
+# In other words Pontoon hiera is used to override only values that
+# differ from production.
+profile::puppetserver::hiera_data_dir: "/srv/git/operations/puppet/hieradata"
+profile::puppetserver::hierarchy:
+  - name: "Pontoon per-host settings"
+    path: "stack/hosts/%{literal('%')}{::hostname}.yaml"
+    datadir: "/etc/pontoon/hiera"
+  - name: "Pontoon stack-specific settings"
+    glob: "stack/*.yaml"
+    datadir: "/etc/pontoon/hiera"
+  - name: "Pontoon default settings from puppet.git"
+    path: "pontoon.yaml"
+  - name: "Pontoon ENC-generated hiera variables"
+    path: "/etc/pontoon/hiera/auto.yaml"
+
+  # Production hiera verbatim.
+  # 'profile::puppetserver::hierarchy' variable from
+  # hieradata/role/common/puppetserver.yaml
+  - name: "private node"
+    datadir: "/etc/puppet/private/hieradata"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+  - name: "node hierarchy"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+  - name: "netbox node hierarchy"
+    path: "hosts/%{literal('%')}{::hostname}.yaml"
+    datadir: "/etc/puppet/netbox"
+  - name: "Regex lookup"
+    lookup_key: 'wmflib::regex_data'
+    path: 'regex.yaml'
+    options:
+      node: "%{literal('%')}{::fqdn}"
+  - name: "role"
+    paths:
+      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
+      - "role/common/%{literal('%')}{::_role}.yaml"
+  - name: "private role"
+    datadir: "/etc/puppet/private/hieradata"
+    paths:
+      - "role/%{literal('%')}{::site}/%{literal('%')}{::_role}.yaml"
+      - "role/common/%{literal('%')}{::_role}.yaml"
+  - name: "private site"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "%{literal('%')}{::site}"
+  - name: "expand_path site"
+    path: "%{literal('%')}{::site}"
+    lookup_key: 'wmflib::expand_path'
+  - name: "netbox common hierarchy"
+    path: "common.yaml"
+    datadir: "/etc/puppet/netbox"
+  - name: "common"
+    lookup_key: 'wmflib::expand_path'
+    path: "common"
+  - name: "private common"
+    lookup_key: 'wmflib::expand_path'
+    datadir: "/etc/puppet/private/hieradata"
+    path: "common"

@@ -1,7 +1,7 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 
-# Provision a new host with Debian installed.
+# Provision a non-Cloud VPS host with Debian installed.
 # After this phase is complete the host must be ready to run puppet for the first time.
 
 set -e
@@ -14,17 +14,13 @@ apt_deadline_seconds=60
 
 preflight() {
   # Disable man-db rebuild on package installation
-  debconf-set-selections <<EOF
+  debconf-set-selections << EOF
 man-db man-db/auto-update boolean false
 EOF
 
-  # XXX hack, make enroll.py happy
-  install -d /var/lib/puppet/ssl
-
   _try_apt install -y --no-install-recommends \
-      wget lsb-release locales augeas-tools jq
+    wget lsb-release locales augeas-tools jq
 }
-
 
 _try_apt() {
   start_ts=$(date +%s)
@@ -37,7 +33,6 @@ _try_apt() {
     sleep 5
   done
 }
-
 
 install_wmf_repo() {
   if [ ! -e /etc/apt/trusted.gpg.d/wikimedia-archive-keyring.gpg ]; then
@@ -61,6 +56,8 @@ provision_puppet() {
   puppet config set --section main vardir /var/lib/puppet
   puppet config set --section main rundir /var/run/puppet
   puppet config set --section main factpath \$vardir/lib/facter
+
+  install -d /var/lib/puppet/ssl # for enroll.py
 }
 
 setup_locale() {

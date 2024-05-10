@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+
+[project]
+name = "pontoon"
+version = "0.4.0"
+dependencies = ["ruamel.yaml"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["pontoon"]
+
+[project.scripts]
+pontoon-enc = "pontoon.enc:main"
+pontoonctl = "pontoon.ctl:main"
+
+[project.optional-dependencies]
+ctl = ["python-novaclient", "keystoneauth1"]
+dev = ["bpython"]

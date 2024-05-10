@@ -23,7 +23,7 @@ class pontoon::public_certs (
     }
 
     file { '/etc/apache2/sites-enabled/000-default.conf':
-        source => 'puppet:///modules/pontoon/public-certs-httpd.conf',
+        source => 'puppet:///modules/pontoon/public-certs/httpd.conf',
         mode   => '0444',
         owner  => 'root',
         group  => 'root',
@@ -39,7 +39,7 @@ class pontoon::public_certs (
     }
 
     file { '/etc/letsencrypt/renewal-hooks/deploy/pontoon-public-certs.sh':
-        source => 'puppet:///modules/pontoon/certbot-deploy.sh',
+        source => 'puppet:///modules/pontoon/public-certs/certbot-deploy.sh',
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
