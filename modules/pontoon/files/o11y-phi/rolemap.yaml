@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: Apache-2.0
+
+### base
+
+puppetserver::pontoon:
+- phi-puppet-01.o11y.eqiad1.wikimedia.cloud
+
+puppetdb:
+- phi-puppetdb-01.o11y.eqiad1.wikimedia.cloud
+
+pki::multirootca:
+- phi-pki-01.o11y.eqiad1.wikimedia.cloud
+
+### logs
+
+syslog::centralserver:
+- phi-syslog-01.o11y.eqiad1.wikimedia.cloud
+
+kafka::logging:
+- phi-kafka-01.o11y.eqiad1.wikimedia.cloud
+
+# logging::opensearch::collector:
+# - phi-logs-fe-01.o11y.eqiad1.wikimedia.cloud
+
+# logging::opensearch::data:
+# - phi-logs-be-01.o11y.eqiad1.wikimedia.cloud
+
+logging::mediawiki::udp2log:
+- phi-mwlog-01.o11y.eqiad1.wikimedia.cloud
+
+### metrics
+
+prometheus:
+- phi-prometheus-01.o11y.eqiad1.wikimedia.cloud
+- phi-prometheus-02.o11y.eqiad1.wikimedia.cloud
+
+kafka::monitoring_bullseye:
+- phi-kafkamon-01.o11y.eqiad1.wikimedia.cloud
+
+arclamp:
+- phi-arclamp-01.o11y.eqiad1.wikimedia.cloud
+
+webperf:
+- phi-webperf-01.o11y.eqiad1.wikimedia.cloud
+
+# netmon:
+# - phi-netmon-01.o11y.eqiad1.wikimedia.cloud
+
+titan:
+- phi-titan-01.o11y.eqiad1.wikimedia.cloud
+
+grafana:
+- phi-grafana-01.o11y.eqiad1.wikimedia.cloud
+
+# graphite::production:
+# - phi-graphite-01.o11y.eqiad1.wikimedia.cloud
+
+### alerts
+
+alerting_host:
+- phi-alert-01.o11y.eqiad1.wikimedia.cloud
+
+### pontoon services
+
+# pontoon::frontend:
+# - phi-fe-01.o11y.eqiad1.wikimedia.cloud
+
+pontoon::lb:
+- phi-lb-01.o11y.eqiad1.wikimedia.cloud

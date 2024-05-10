@@ -7,11 +7,17 @@ default:
   image: 'debian-12.0-bookworm'
   flavor: 'g4.cores1.ram2.disk20'
 
+# Roles with higher requirements than default
 puppetserver::pontoon:
   flavor: 'g4.cores2.ram4.disk20'
 
 logging::opensearch::collector:
   flavor: 'g4.cores2.ram4.disk20'
 
+prometheus:
+  flavor: 'g4.cores2.ram4.disk20'
+
+# Roles pinned to Debian release other than 'stable'
 kafka::logging:
   image: 'debian-11.0-bullseye'
+
