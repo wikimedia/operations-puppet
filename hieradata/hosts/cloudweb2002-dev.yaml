@@ -27,7 +27,7 @@ profile::mediawiki::apc_shm_size: 128M
 
 # Horizon things
 profile::base::overlayfs: true
-profile::openstack::codfw1dev::horizon::docker_version: 2024-04-30-003700-dev
+profile::openstack::codfw1dev::horizon::docker_version: 2024-05-10-130600
 profile::openstack::codfw1dev::horizon::port: 8084
 
 labsldapconfig:
