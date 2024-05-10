@@ -1,9 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # PuppetDB
-profile::puppetmaster::common::puppetdb_hosts: "%{alias('__hosts_for_role_puppetdb')}"
-profile::puppetmaster::common::storeconfigs: puppetdb
 puppetdb_host: "%{alias('__master_for_role_puppetdb')}"
 profile::puppetdb::master: "%{alias('__master_for_role_puppetdb')}"
+profile::puppetdb::slaves: []
 profile::puppetdb::jvm_opts: '-Xmx256m'
 profile::puppetdb::database::shared_buffers: '768MB'
 # Disable microservice in pontoon, because:
@@ -11,7 +10,10 @@ profile::puppetdb::database::shared_buffers: '768MB'
 # * microservice depends on pki, making bootstrap harder
 profile::puppetdb::microservice::enabled: false
 
-# To open puppetdb firewall
-puppetmaster::servers:
-  pontoon:
-    - { worker: "%{alias('__master_for_role_puppetmaster__pontoon')}", loadfactor: 10 }
+profile::puppetdb::sites:
+  puppetdb5:
+    port: 8443
+    cert_source: "/var/lib/puppet/ssl/certs/%{facts.networking.fqdn}.pem"
+    key_source: "/var/lib/puppet/ssl/private_keys/%{facts.networking.fqdn}.pem"
+    ca_source: "/etc/ssl/certs/wmf-ca-certificates.crt"
+    allowed_hosts: "%{alias('__hosts_for_role_puppetserver__pontoon')}"

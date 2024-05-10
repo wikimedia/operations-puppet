@@ -1,0 +1,36 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Hiera configuration used during role::puppetserver::pontoon bootstrap.
+
+# Environment available:
+# - FQDN
+# - PUPPET_REPO      puppet.git checkout
+# - PRIVATE_REPO     private.git checkout
+# - BOOTSTRAP_PATH   hiera variables path
+
+version: 5
+defaults:
+  datadir: "${PUPPET_REPO}/hieradata"
+  data_hash: yaml_data
+
+# Minimal hierarchy for bootstrap (e.g. no private)
+hierarchy:
+- name: "bootstrap variables"
+  path: "hiera-vars.yaml"
+  datadir: "${BOOTSTRAP_PATH}"
+
+- name: Pontoon settings from puppet.git
+  path: pontoon.yaml
+
+- name: role
+  paths:
+  - role/%{::site}/%{::_role}.yaml
+  - role/common/%{::_role}.yaml
+
+- name: expand_path site
+  path: "%{::site}"
+  lookup_key: wmflib::expand_path
+
+- name: common
+  lookup_key: wmflib::expand_path
+  path: common
