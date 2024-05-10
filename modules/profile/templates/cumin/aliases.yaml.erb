@@ -40,6 +40,7 @@ archiva: P{O:archiva}
 aux-etcd: P{O:etcd::v3::aux_k8s_etcd}
 aux-master: P{O:aux_k8s::master}
 aux-worker: P{O:aux_k8s::worker}
+aux-k8s: A:aux-master or A:aux-etcd or A:aux-worker
 backup: A:bacula or A:db-backups or A:mediabackups or P{O:dbbackups::monitoring}
 bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::production}
 bastion: P{O:bastionhost}
