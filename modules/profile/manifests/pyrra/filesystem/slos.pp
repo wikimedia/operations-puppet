@@ -199,6 +199,46 @@ class profile::pyrra::filesystem::slos (
 
     }
 
+    # Trafficserver SLO
+    #
+    # Trafficserver uses one combined latency-availability SLI: A response is satisfactory if it spends less than 150 ms processing time in Trafficserver,
+    # and it isn't a Trafficserver internal error.
+    #
+
+    ['cache_text', 'cache_upload'].each |$trafficserver_cluster| {
+        pyrra::filesystem::config { "trafficserver-combined-${datacenter}-${trafficserver_cluster}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'trafficserver-combined',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'traffic',
+                    'pyrra.dev/service' => 'haproxy',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                    'pyrra.dev/cluster' => "${trafficserver_cluster}",   #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '99.7',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "trafficserver_backend_sli_bad{cluster=~\"${trafficserver_cluster}\",site=~\"${datacenter}\"}",
+                        },
+                        'total' => {
+                            'metric' => "trafficserver_backend_sli_total{cluster=~\"${trafficserver_cluster}\",site=~\"${datacenter}\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+
+    }
+
     # Etcd SLOs
     #
 
