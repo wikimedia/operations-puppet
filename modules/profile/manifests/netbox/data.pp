@@ -9,5 +9,5 @@ class profile::netbox::data (
     Hash[String[3], Netbox::Device::Network]                $network_devices = lookup('profile::netbox::data::network_devices'),
     Hash[Stdlib::IP::Address, Netbox::Prefix]               $prefixes       = lookup('profile::netbox::data::prefixes'),
 ) {
-    requires_realm('production')
+  # requires_realm('production')
 }
