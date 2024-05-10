@@ -81,7 +81,7 @@ class profile::analytics::refinery::job::refine_sanitize(
         'output_path'         => '/wmf/data/event_sanitized',
         'salts_path'          => "${hdfs_salts_prefix}/event_sanitized",
         'should_email_report' => true,
-        'to_emails'           => 'data-engineering-alerts@lists.wikimedia.org',
+        'to_emails'           => 'data-engineering-alerts@wikimedia.org',
         'from_email'          => 'Refinery <noreply@wikimedia.org>',
     }
 

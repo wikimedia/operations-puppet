@@ -27,7 +27,7 @@ class statistics::user {
     $git_settings = {
         'user' => {
             'name'  => 'Statistics User',
-            'email' => 'data-engineering-alerts@lists.wikimedia.org',
+            'email' => 'data-engineering-alerts@wikimedia.org',
         },
         # Enable automated git/gerrit authentication via http
         # by using .git-credential file store.

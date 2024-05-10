@@ -312,13 +312,13 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-analytics'
   email_configs:
-    - to: 'data-engineering-alerts@lists.wikimedia.org'
+    - to: 'data-engineering-alerts@wikimedia.org'
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'data-engineering-mail'
   email_configs:
-    - to: 'data-engineering-alerts@lists.wikimedia.org'
+    - to: 'data-engineering-alerts@wikimedia.org'
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 

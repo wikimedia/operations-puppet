@@ -26,7 +26,7 @@ class profile::analytics::refinery::job::test::refine (
 
     # These configs will be used for all refine jobs unless otherwise overridden.
     $default_config = {
-        'to_emails'           => 'data-engineering-alerts@lists.wikimedia.org',
+        'to_emails'           => 'data-engineering-alerts@wikimedia.org',
         'from_email'          => 'Refinery <noreply@wikimedia.org>',
         'should_email_report' => true,
         'output_database'     => 'event',

@@ -29,7 +29,7 @@
 #
 #  [*send_mail_to*]
 #   If send_mail is true, send email to this address.
-#   Default: data-engineering-alerts@lists.wikimedia.org
+#   Default: data-engineering-alerts@wikimedia.org
 #
 #  [*logfile_basedir*]
 #   Base directory where to store the syslog output of the
@@ -89,7 +89,7 @@ define kerberos::systemd_timer(
     $user = 'analytics',
     $environment = {},
     $send_mail = true,
-    $send_mail_to = 'data-engineering-alerts@lists.wikimedia.org',
+    $send_mail_to = 'data-engineering-alerts@wikimedia.org',
     $logfile_basedir = '/var/log/',
     $logfile_name = undef,
     $logfile_owner = 'analytics',

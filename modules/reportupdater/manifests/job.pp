@@ -109,7 +109,7 @@ define reportupdater::job(
             },
             user              => $::reportupdater::user,
             send_mail         => $send_mail,
-            send_mail_to      => 'data-engineering-alerts@lists.wikimedia.org',
+            send_mail_to      => 'data-engineering-alerts@wikimedia.org',
             logfile_basedir   => $::reportupdater::log_path,
             logfile_name      => 'syslog.log',
             logfile_owner     => $::reportupdater::user,

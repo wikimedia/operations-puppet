@@ -22,7 +22,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $interval                   = undef,
     $environment                = {},
     $send_mail                 = true,
-    $send_mail_to               = 'data-engineering-alerts@lists.wikimedia.org',
+    $send_mail_to               = 'data-engineering-alerts@wikimedia.org',
     $ensure                     = 'present',
 ) {
     require ::profile::analytics::refinery
