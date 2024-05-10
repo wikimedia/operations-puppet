@@ -30,6 +30,8 @@ class role::cluster::management {
 
     include profile::sre::check_user
 
+    include profile::frtech::kafka_certificate
+
     include profile::kubernetes::kubeconfig::admin
 
     # Backup all of /srv, including deployment, homer and  pwstore
