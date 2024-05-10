@@ -162,7 +162,7 @@ class profile::icinga(
     }
     profile::idp::client::httpd::site { $virtual_host:
         vhost_content   => 'profile/idp/client/httpd-icinga.erb',
-        acme_chief_cert => 'icinga',
+        #acme_chief_cert => 'icinga',
         document_root   => '/usr/share/icinga/htdocs',
         protected_uri   => '/icinga',
         cookie_scope    => '/',

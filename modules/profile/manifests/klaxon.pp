@@ -14,9 +14,9 @@ class profile::klaxon (
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     profile::idp::client::httpd::site {'klaxon.wikimedia.org':
-        require         => [
-            Acme_chief::Cert['icinga'],
-        ],
+      #require         => [
+      #      Acme_chief::Cert['icinga'],
+      #  ],
         vhost_content   => 'profile/idp/client/httpd-klaxon.erb',
         # These four groups are the best current proxy for "trusted contributors".
         required_groups => [
