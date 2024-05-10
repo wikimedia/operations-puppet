@@ -34,3 +34,4 @@ profile::benthos::instances:
       topics:
         - "none"
 
+profile::lvs::realserver::ipip::enabled: true

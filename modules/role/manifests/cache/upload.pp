@@ -7,4 +7,5 @@ class role::cache::upload {
     include profile::cache::varnish::frontend
     include profile::prometheus::varnish_exporter
     include profile::trafficserver::backend
+    include profile::lvs::realserver::ipip
 }

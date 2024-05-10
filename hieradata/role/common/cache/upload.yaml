@@ -126,3 +126,5 @@ profile::firewall::provider: none
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+profile::lvs::realserver::ipip::ipv4_mss: 1440
+profile::lvs::realserver::ipip::ipv6_mss: 1400
