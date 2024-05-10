@@ -27,6 +27,8 @@ profile::idp::client::httpd::sites:
     environment: staging
     enable_monitor: false
 profile::contacts::role_contacts: ['Observability']
+profile::base::production::role_description: 'Real-time metrics processor'
+
 profile::netconsole::client::ensure: present
 
 profile::graphite::hosts:

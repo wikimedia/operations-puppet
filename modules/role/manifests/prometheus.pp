@@ -1,8 +1,4 @@
 class role::prometheus {
-    system::role { 'prometheus':
-        description => 'Prometheus server (main data centres)',
-    }
-
     include profile::base::production
     include profile::firewall
 

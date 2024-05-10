@@ -3,17 +3,12 @@
 # Setup rsyslog as a receiver of cluster wide syslog messages.
 #
 class role::syslog::centralserver {
-
-    system::role { 'syslog::centralserver':
-        description => 'Central syslog server and web requests debugging'
-    }
-
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::backup::host
-    include ::profile::syslog::centralserver
-    include ::profile::bird::anycast
-    include ::profile::kafkatee::webrequest::ops
-    include ::profile::netconsole::server
-    include ::profile::benthos
+    include profile::base::production
+    include profile::firewall
+    include profile::backup::host
+    include profile::syslog::centralserver
+    include profile::bird::anycast
+    include profile::kafkatee::webrequest::ops
+    include profile::netconsole::server
+    include profile::benthos
 }

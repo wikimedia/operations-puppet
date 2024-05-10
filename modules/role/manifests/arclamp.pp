@@ -6,16 +6,11 @@
 # See also profile::arclamp::processor.
 #
 class role::arclamp {
-
-    system::role { 'arclamp':
-        description => 'Arc Lamp service'
-    }
-
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::backup::host
-    include ::profile::arclamp::processor
-    include ::profile::arclamp::redis
+    include profile::base::production
+    include profile::firewall
+    include profile::backup::host
+    include profile::arclamp::processor
+    include profile::arclamp::redis
 
     # class httpd installs mpm_event by default, and once installed,
     # it cannot easily be uninstalled.

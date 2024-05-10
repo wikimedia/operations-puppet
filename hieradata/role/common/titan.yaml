@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Titan hosts Thanos components'
 
 cluster: titan
 profile::resolving::domain_search:

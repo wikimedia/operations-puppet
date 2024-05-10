@@ -1,8 +1,4 @@
 class role::prometheus::pop {
-    system::role { 'prometheus::pop':
-        description => 'Prometheus server (cache pop data centres)',
-    }
-
     include profile::base::production
     include profile::firewall
 

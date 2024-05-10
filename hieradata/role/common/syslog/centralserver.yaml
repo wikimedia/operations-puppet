@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Central syslog server and web requests debugging'
 
 cluster: syslog
 profile::syslog::centralserver::ssl_provider: 'cfssl'

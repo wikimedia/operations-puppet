@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Logstash, OpenSearch non-data node, and OpenSearch Dashboards host'
 cluster: logstash
 
 profile::lvs::realserver::pools:

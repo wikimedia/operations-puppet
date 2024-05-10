@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Prometheus server (cache pop data centres)'
 
 cluster: prometheus
 profile::prometheus::enable_thanos_upload: true

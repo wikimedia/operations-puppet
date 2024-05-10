@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Prometheus server (main data centres)'
 
 cluster: prometheus
 profile::resolving::domain_search:

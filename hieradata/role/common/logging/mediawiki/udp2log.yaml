@@ -11,6 +11,7 @@ profile::rsyslog::udp_tee::destinations:
   - 'mwlog2002.codfw.wmnet:8421'
 
 profile::contacts::role_contacts: ['Observability']
+profile::base::production::role_description: 'MediaWiki log collector'
 
 profile::logrotate::hourly: true
 

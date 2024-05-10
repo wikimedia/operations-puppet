@@ -8,14 +8,10 @@ class role::logging::mediawiki::udp2log(
     $forward_messages = false,
     $mirror_destinations = undef,
 ) {
-    system::role { 'logging:mediawiki::udp2log':
-        description => 'MediaWiki log collector',
-    }
-
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::mediawiki::mwlog
-    include ::profile::mediawiki::system_users
+    include profile::base::production
+    include profile::firewall
+    include profile::mediawiki::mwlog
+    include profile::mediawiki::system_users
     # Include geoip databases and CLI.
     class { '::geoip': }
 

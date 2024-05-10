@@ -45,6 +45,7 @@ profile::prometheus::statsd_exporter::mappings:
   # All other queries convert natively
 
 profile::contacts::role_contacts: ['Observability']
+profile::base::production::role_description: 'webperf processors and performance.wikimedia.org website'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

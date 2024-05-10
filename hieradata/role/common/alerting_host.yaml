@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'central host for health checking and alerting'
 
 cluster: alerting
 profile::resolving::domain_search:

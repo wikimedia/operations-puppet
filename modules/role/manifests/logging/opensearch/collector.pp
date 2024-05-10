@@ -4,10 +4,6 @@
 # Provisions Collector node for a Logstash cluster.
 #
 class role::logging::opensearch::collector {
-    system::role { 'logging::opensearch::collector':
-        description => 'Logstash, OpenSearch non-data node, and OpenSearch Dashboards host',
-    }
-
     include profile::base::production
     include profile::firewall
     include profile::opensearch::logstash

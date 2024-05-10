@@ -1,5 +1,7 @@
 # General configs
 profile::contacts::role_contacts: ['Observability']
+profile::base::production::role_description: 'OpenSearch data node'
+
 cluster: logstash
 
 profile::admin::groups:

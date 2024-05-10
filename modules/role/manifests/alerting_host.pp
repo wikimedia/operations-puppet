@@ -6,11 +6,6 @@
 # = Parameters
 #
 class role::alerting_host {
-
-    system::role{ 'alerting_host':
-        description => 'central host for health checking and alerting'
-    }
-
     include profile::base::production
     include profile::firewall
 
