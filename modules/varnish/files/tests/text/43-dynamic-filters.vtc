@@ -35,6 +35,10 @@ client c1 {
     rxresp
     expect resp.status == 200
 
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42" -hdr "Cookie: X-Wikimedia-Debug=backend%3Dmwdebug1001%3Blog"
+    rxresp
+    expect resp.status == 200
+
     txreq -req POST -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 192.0.2.10"
     rxresp
     expect resp.status == 403

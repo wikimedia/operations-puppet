@@ -428,6 +428,20 @@ sub cluster_fe_recv {
         return (pass);
     }
 
+    // Requests with an X-Wikimedia-Debug header get special treatment in lower layers so
+    // mustn't be served from cache. See https://wikitech.wikimedia.org/wiki/WikimediaDebug
+    // We also allow an X-Wikimedia-Debug cookie for debugging in clients which can't easily
+    // set headers (T350094), and normalize it here to reduce the amount of code that needs
+    // both cookie handling and header handling logic.
+    if (req.http.Cookie ~ "(^|;\s*)X-Wikimedia-Debug=") {
+        set req.http.X-Wikimedia-Debug = regsub(regsub(
+            regsub(
+                req.http.Cookie,
+                "^(?:.*;\s*)?X-Wikimedia-Debug=([^;]*).*$",
+                "\1"
+            ),
+        "%3D", "="), "%3B", ";");
+    }
     if (req.http.X-Wikimedia-Debug) {
         return (pass);
     }
