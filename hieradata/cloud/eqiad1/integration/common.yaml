@@ -9,6 +9,11 @@ puppetmaster::autosigner: true
 profile::ci::docker::settings:
   # Logging is unnecessary in CI as container output is streamed to Jenkins
   log-driver: none
+  # Keep the Docker build cache under control (T364773)
+  builder:
+    gc:
+      enabled: true
+      defaultKeepStorage: 20GB
 
 # We do not hit labstore but the traffic shapping hurts transfers to the CI
 # infrastructure (castor T232644 or the CI masters T255371)
