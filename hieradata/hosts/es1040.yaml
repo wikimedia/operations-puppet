@@ -1,6 +1,5 @@
 # es1040
 mariadb::shard: 'es7'
-profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
