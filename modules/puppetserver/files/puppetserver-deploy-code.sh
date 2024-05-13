@@ -31,7 +31,7 @@ trap cleanup SIGINT SIGHUP SIGABRT EXIT
 function main {
 	local codedir envdir g10k_envdir new_dir
 	codedir=$(puppet config --section server print codedir)
-	if ! current_branch=$(git -C /srv/git/operations/puppet/ branch --show-current); then
+	if ! current_branch=$(sudo -u gitpuppet git -C /srv/git/operations/puppet/ branch --show-current); then
 		printf 'ERROR: Unable to obtain the current branch\n' 1>&2
 		exit 1
 	fi
