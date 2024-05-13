@@ -1,19 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::broker
 #
-# NOTE that most Druid service profiles default ferm_srange
-# to profile::druid::ferm_srange, but broker
-# defaults to profile::druid::broker::ferm_srange, to
-# haver finer control over how Druid accepts queries.
-#
-# §firewall_access allows to specific a set of network defines and creates
-#        firewall definitions also compatible with nftables. If specified it
-#        takes precedence over the ferm-specific settings defined in
-#        profile::druid::broker::ferm_srange
 class profile::druid::broker(
     Hash[String, Any] $properties            = lookup('profile::druid::broker::properties', {'default_value' => {}}),
     Hash[String, String] $env                = lookup('profile::druid::broker::env', {'default_value' => {}}),
-    Optional[String] $ferm_srange            = lookup('profile::druid::broker::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
     Optional[Array[String]] $firewall_access = lookup('profile::druid::broker::firewall_access'),
     Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
     Boolean $monitoring_enabled              = lookup('profile::druid::broker::monitoring_enabled', {'default_value' => false}),
@@ -51,18 +41,10 @@ class profile::druid::broker(
         logger_prefix    => $class_prefix,
     }
 
-    if $firewall_access {
-        firewall::service { 'druid-broker':
-            proto    => 'tcp',
-            port     => $::druid::broker::runtime_properties['druid.port'],
-            src_sets => $firewall_access,
-        }
-    } else {
-        ferm::service { 'druid-broker':
-            proto  => 'tcp',
-            port   => $::druid::broker::runtime_properties['druid.port'],
-            srange => $ferm_srange,
-        }
+    firewall::service { 'druid-broker':
+        proto    => 'tcp',
+        port     => $::druid::broker::runtime_properties['druid.port'],
+        src_sets => $firewall_access,
     }
 
     if $monitoring_enabled {

@@ -1,16 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class: profile::druid::coordinator
 #
-# NOTE that most Druid service profiles default ferm_srange
-# to profile::druid::ferm_srange, but coordinator
-# defaults to profile::druid::coordinato::ferm_srange, to
-# haver finer control over how Druid accepts queries.
-#
 class profile::druid::coordinator(
     Hash[String, Any] $properties            = lookup('profile::druid::coordinator::properties', {'default_value' => {}}),
     Hash[String, String] $env                = lookup('profile::druid::coordinator::env', {'default_value' => {}}),
     Boolean $daemon_autoreload               = lookup('profile::druid::daemons_autoreload', {'default_value' => true}),
-    Optional[String] $ferm_srange            = lookup('profile::druid::coordinator::ferm_srange', {'default_value' => '$DOMAIN_NETWORKS'}),
     Optional[Array[String]] $firewall_access = lookup('profile::druid::coordinator::firewall_access'),
     Boolean $monitoring_enabled              = lookup('profile::druid::coordinator::monitoring_enabled', {'default_value' => false}),
 ) {
@@ -47,18 +41,10 @@ class profile::druid::coordinator(
         logger_prefix    => $class_prefix,
     }
 
-    if $firewall_access {
-        firewall::service { 'druid-coordinator':
-            proto    => 'tcp',
-            port     => $::druid::coordinator::runtime_properties['druid.port'],
-            src_sets => $firewall_access,
-        }
-    } else {
-        ferm::service { 'druid-coordinator':
-            proto  => 'tcp',
-            port   => $::druid::coordinator::runtime_properties['druid.port'],
-            srange => $ferm_srange,
-        }
+    firewall::service { 'druid-coordinator':
+        proto    => 'tcp',
+        port     => $::druid::coordinator::runtime_properties['druid.port'],
+        src_sets => $firewall_access,
     }
 
     if $monitoring_enabled {
