@@ -35,7 +35,7 @@
 class profile::acme_chief (
     Hash[String, Hash[String, String]] $accounts = lookup('profile::acme_chief::accounts'),
     Hash[String, Acme_chief::Certificate] $certificates = lookup('profile::acme_chief::certificates'),
-    Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('shared_acme_certificates', {default_value => {}}),
+    Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('certificates::acme_chief', {default_value => {}}),
     Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
     Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {default_value => undef}),
     Stdlib::Fqdn $active_host = lookup('profile::acme_chief::active'),

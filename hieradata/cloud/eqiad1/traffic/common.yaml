@@ -3,7 +3,7 @@ apt::use_experimental: true
 profile::cache::base::varnish_version: 5
 profile::cache::varnish::frontend::backends_in_etcd: false
 puppetmaster::enable_geoip: true
-shared_acme_certificates:
+certificates::acme_chief:
   non-canonical-redirect-1:
     CN: wikipedia.com.traffic.wmflabs.org
     SNI:

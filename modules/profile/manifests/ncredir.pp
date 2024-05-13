@@ -2,7 +2,7 @@
 class profile::ncredir(
     Stdlib::Port $http_port = lookup('profile::ncredir::http_port', {default_value                               => 80}),
     Stdlib::Port $https_port = lookup('profile::ncredir::https_port', {default_value                             => 443}),
-    Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('shared_acme_certificates'),
+    Hash[String, Hash[String, Any]] $shared_acme_certificates = lookup('certificates::acme_chief'),
     String $acme_chief_cert_prefix = lookup('profile::ncredir::acme_chief_cert_prefix', {default_value           => 'non-canonical-redirect-'}),
     Boolean $monitoring = lookup('profile::ncredir::monitoring', {default_value                                  => false}),
     Integer[0] $hsts_max_age = lookup('profile::ncredir::hsts_max_age', {default_value                           => 106384710}),
