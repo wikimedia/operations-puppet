@@ -1,4 +1,3 @@
 # db2183
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'backup1-codfw'
-mariadb::package: 'wmf-mariadb106'
