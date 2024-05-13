@@ -14,7 +14,7 @@ class profile::frtech::kafka_certificate() {
 
     profile::pki::get_cert('kafka', 'kafka_fundraising_client', {
         'outdir'  => $cert_target_directory,
-        'owner'   => 'fr-tech-admins',
+        'owner'   => 'root',
         'group'   => 'fr-tech-admins',
         'profile' => 'kafka_11',
     })
