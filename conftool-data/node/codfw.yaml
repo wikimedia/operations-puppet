@@ -430,6 +430,7 @@ codfw:
     kubestagemaster2001.codfw.wmnet: [kubemaster]
     kubestagemaster2002.codfw.wmnet: [kubemaster]
     kubestagemaster2003.codfw.wmnet: [kubemaster]
+    kubestagemaster2004.codfw.wmnet: [kubemaster]
     kubestage2001.codfw.wmnet: [kubesvc]
     kubestage2002.codfw.wmnet: [kubesvc]
   ldap-ro:
