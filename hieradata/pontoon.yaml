@@ -2,7 +2,7 @@
 profile::base::labs::unattended_wmf: 'present'
 profile::base::labs::unattended_distro: 'present'
 profile::base::labs::unattended_osbpo: 'present'
-profile::openstack::eqiad1::version: 'zed'
+profile::openstack::eqiad1::version: 'bobcat'
 profile::base::labs::clean_kernels: false
 profile::base::additional_purged_packages: []
 
