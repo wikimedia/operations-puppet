@@ -423,8 +423,8 @@ wikireplicas-dedicated: P{O:wmcs::db::wikireplicas::dedicated::analytics_multiin
 wikireplicas-analytics: P{O:wmcs::db::wikireplicas::analytics_multiinstance}
 wikireplicas-web: P{O:wmcs::db::wikireplicas::web_multiinstance}
 zookeeper-flink: P{O:zookeeper::flink}
-zookeeper-flink-eqiad: P{O:zookeeper::flink} and A:eqiad
-zookeeper-flink-codfw: P{O:zookeeper::flink} and A:codfw
+zookeeper-flink-eqiad: A:zookeeper-flink and A:eqiad
+zookeeper-flink-codfw: A:zookeeper-flink and A:codfw
 zookeeper-main-eqiad: P{O:configcluster} and A:eqiad
 zookeeper-main-codfw: P{O:configcluster} and A:codfw
 zookeeper-druid-public: P{O:druid::public::worker} and P{C:profile::zookeeper::server}
