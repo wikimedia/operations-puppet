@@ -17,7 +17,7 @@ acmechief: P{O:acme_chief}
 all-mw: A:mw-api or A:mw or A:mw-jobrunner or A:parsoid
 all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
-all-etcd: A:dse-k8s-etcd or A:wikikube-etcd or A:wikikube-staging-etcd or A:ml-serve-etcd or A:ml-staging-etcd or A:aux-etcd
+all-etcd: P{P:etcd::v3}
 an-conf: P{O:analytics_cluster::zookeeper}
 an-all-eqiad: A:hadoop-all or A:hadoop-testcluster or A:aqs or A:druid or A:kafka-jumbo or A:misc-analytics or A:an-airflow or A:an-tools or A:an-web or A:an-presto or A:an-launcher
 an-airflow: P{O:analytics_cluster::airflow::research or O:analytics_cluster::airflow::platform_eng_legacy or O:analytics_cluster::airflow::platform_eng or O:analytics_cluster::airflow::search or O:analytics_cluster::airflow::analytics_product or O:analytics_cluster::airflow::wmde} or A:an-launcher
@@ -228,12 +228,12 @@ kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
 karapace: P{O:karapace}
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
-wikikube-etcd: P{O:etcd::v3::kubernetes}
+wikikube-etcd: P{O:etcd::v3::kubernetes} or (A:wikikube-master and A:all-etcd)
 wikikube-etcd-all: A:wikikube-etcd or A:wikikube-staging-etcd
-wikikube-master: P{O:kubernetes::master}
+wikikube-master: P{O:kubernetes::master} or P{O:kubernetes::master_stacked}
 wikikube-worker: P{O:kubernetes::worker}
-wikikube-staging-etcd: P{O:etcd::v3::kubernetes::staging}
-wikikube-staging-master: P{O:kubernetes::staging::master}
+wikikube-staging-etcd: P{O:etcd::v3::kubernetes::staging} or (A:wikikube-staging-master and A:all-etcd)
+wikikube-staging-master: P{O:kubernetes::staging::master} or P{O:kubernetes::staging::master_stacked}
 wikikube-staging-worker: P{O:kubernetes::staging::worker}
 <% ['eqiad', 'codfw'].each do |dc| -%>
 wikikube-etcd-<%= dc %>: A:wikikube-etcd and A:<%= dc %>
