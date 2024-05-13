@@ -1258,6 +1258,10 @@ node /^kubestagemaster200[45]\.codfw\./ {
     role(insetup::serviceops)
 }
 
+node /^kubestagemaster100[345]\.eqiad\./ {
+    role(insetup::serviceops)
+}
+
 # kubernetes masters
 node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
     role(kubernetes::master)
