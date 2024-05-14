@@ -43,7 +43,8 @@ https://legalteam.wikimedia.org:
   assert_status: 200
   assert_body_contains: Legal Team Wiki
 
-https://totoro.wikimedia.org:
+# any subdomain (not necessarily known to DNS) should redirect to foundationwiki:
+https://intentionally-no-such-domain.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 301
   assert_headers:
