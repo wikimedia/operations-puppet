@@ -3,3 +3,4 @@ profile::firewall::enable_logging: true
 profile::firewall::defs_from_etcd: true
 profile::firewall::defs_from_etcd_nft: false
 profile::firewall::manage_nf_conntrack: true
+profile::firewall::ferm_icinga_retry_interval: 1

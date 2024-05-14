@@ -19,27 +19,28 @@
 # @param defs_from_etcd build ferm definitions from requestctl etcd data
 # @param defs_from_etcd_nft build ferm definitions from requestctl etcd data for nftables (temporary)
 class profile::firewall (
-    String                     $conftool_prefix         = lookup('conftool_prefix'),
-    Array[Stdlib::IP::Address] $monitoring_hosts        = lookup('monitoring_hosts'),
-    Array[Stdlib::IP::Address] $cumin_masters           = lookup('cumin_masters'),
-    Array[Stdlib::IP::Address] $bastion_hosts           = lookup('bastion_hosts'),
-    Array[Stdlib::IP::Address] $cache_hosts             = lookup('cache_hosts'),
-    Array[Stdlib::IP::Address] $kafka_brokers_main      = lookup('kafka_brokers_main'),
-    Array[Stdlib::IP::Address] $kafka_brokers_jumbo     = lookup('kafka_brokers_jumbo'),
-    Array[Stdlib::IP::Address] $kafka_brokers_logging   = lookup('kafka_brokers_logging'),
-    Array[Stdlib::IP::Address] $kafkamon_hosts          = lookup('kafkamon_hosts'),
-    Array[Stdlib::IP::Address] $zookeeper_hosts_main    = lookup('zookeeper_hosts_main'),
-    Array[Stdlib::IP::Address] $zookeeper_flink_hosts   = lookup('zookeeper_flink_hosts'),
-    Array[Stdlib::IP::Address] $druid_public_hosts      = lookup('druid_public_hosts'),
-    Array[Stdlib::IP::Address] $labstore_hosts          = lookup('labstore_hosts'),
-    Array[Stdlib::IP::Address] $mysql_root_clients      = lookup('mysql_root_clients'),
-    Array[Stdlib::IP::Address] $deployment_hosts        = lookup('deployment_hosts'),
-    Array[Stdlib::Host]        $prometheus_nodes        = lookup('prometheus_nodes'),
-    Firewall::Provider         $provider                = lookup('profile::firewall::provider'),
-    Boolean                    $manage_nf_conntrack     = lookup('profile::firewall::manage_nf_conntrack'),
-    Boolean                    $enable_logging          = lookup('profile::firewall::enable_logging'),
-    Boolean                    $defs_from_etcd          = lookup('profile::firewall::defs_from_etcd'),
-    Boolean                    $defs_from_etcd_nft      = lookup('profile::firewall::defs_from_etcd_nft'),
+    String                     $conftool_prefix             = lookup('conftool_prefix'),
+    Array[Stdlib::IP::Address] $monitoring_hosts            = lookup('monitoring_hosts'),
+    Array[Stdlib::IP::Address] $cumin_masters               = lookup('cumin_masters'),
+    Array[Stdlib::IP::Address] $bastion_hosts               = lookup('bastion_hosts'),
+    Array[Stdlib::IP::Address] $cache_hosts                 = lookup('cache_hosts'),
+    Array[Stdlib::IP::Address] $kafka_brokers_main          = lookup('kafka_brokers_main'),
+    Array[Stdlib::IP::Address] $kafka_brokers_jumbo         = lookup('kafka_brokers_jumbo'),
+    Array[Stdlib::IP::Address] $kafka_brokers_logging       = lookup('kafka_brokers_logging'),
+    Array[Stdlib::IP::Address] $kafkamon_hosts              = lookup('kafkamon_hosts'),
+    Array[Stdlib::IP::Address] $zookeeper_hosts_main        = lookup('zookeeper_hosts_main'),
+    Array[Stdlib::IP::Address] $zookeeper_flink_hosts       = lookup('zookeeper_flink_hosts'),
+    Array[Stdlib::IP::Address] $druid_public_hosts          = lookup('druid_public_hosts'),
+    Array[Stdlib::IP::Address] $labstore_hosts              = lookup('labstore_hosts'),
+    Array[Stdlib::IP::Address] $mysql_root_clients          = lookup('mysql_root_clients'),
+    Array[Stdlib::IP::Address] $deployment_hosts            = lookup('deployment_hosts'),
+    Array[Stdlib::Host]        $prometheus_nodes            = lookup('prometheus_nodes'),
+    Firewall::Provider         $provider                    = lookup('profile::firewall::provider'),
+    Boolean                    $manage_nf_conntrack         = lookup('profile::firewall::manage_nf_conntrack'),
+    Boolean                    $enable_logging              = lookup('profile::firewall::enable_logging'),
+    Boolean                    $defs_from_etcd              = lookup('profile::firewall::defs_from_etcd'),
+    Boolean                    $defs_from_etcd_nft          = lookup('profile::firewall::defs_from_etcd_nft'),
+    Integer                    $ferm_icinga_retry_interval  = lookup('profile::firewall::ferm_icinga_retry_interval'),
 ) {
     include network::constants
     class { 'firewall':
@@ -149,6 +150,7 @@ class profile::firewall (
                 contact_group  => 'admins',
                 notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
                 check_interval => 30,
+                retry_interval => $ferm_icinga_retry_interval,
             }
         }
 
