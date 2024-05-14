@@ -1,6 +1,9 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Unit]
 Description=Publish the public kubernetes service account signing key to etcd
+# The service is considered to have failed if it has been restarted 5 times within 200 seconds
+StartLimitInterval=200
+StartLimitBurst=5
 
 [Service]
 Type=oneshot
@@ -13,6 +16,9 @@ Environment="SA_CERT_PATH=<%= @sa_cert['cert'] %>"
 ExecStart=/bin/bash -c '/usr/bin/etcdctl put "$ETCD_KEY" < "$SA_CERT_PATH"'
 # Service shall be considered active even when the processes exited to not raise alerts.
 RemainAfterExit=yes
+# Restart the service on failure after 30 seconds (limited to 5 restarts, see StartLimit*)
+Restart=on-failure
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target
