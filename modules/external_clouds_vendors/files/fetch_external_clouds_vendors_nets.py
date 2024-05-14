@@ -243,7 +243,10 @@ def main() -> int:
                 "http://digitalocean.com/geo/google.csv"
             ),
             CSVExternalCloudVendor("Linode", "https://geoip.linode.com/"),
-            ExternalCloudVendorRIPE(name="Belcloud", asns=[44901])
+            ExternalCloudVendorRIPE(name="Belcloud", asns=[44901]),
+            ExternalCloudVendorRIPE(name="Alibaba", asns=[45102]),
+            ExternalCloudVendorRIPE(name="Huawei", asns=[136907]),
+            ExternalCloudVendorRIPE(name="Tencent", asns=[132203]),
         ],
         "known-clients": [
             ExternalCloudVendor(
