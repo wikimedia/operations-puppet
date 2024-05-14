@@ -1081,7 +1081,7 @@ node /^elastic210[0-9]\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 # External Storage, Shard 1 (es1) databases
-
+# RO section
 ## eqiad servers
 node /^es1027\.eqiad\./ {
     role(mariadb::core)
@@ -1112,7 +1112,7 @@ node /^es2032\.codfw\./ {
 }
 
 # External Storage, Shard 2 (es2) databases
-
+# RO section
 ## eqiad servers
 node /^es1026\.eqiad\./ {
     role(mariadb::core)
@@ -1142,7 +1142,7 @@ node /^es2033\.codfw\./ {
 }
 
 # External Storage, Shard 3 (es3) databases
-
+# RO section
 ## eqiad servers
 node /^es1028\.eqiad\./ {
     role(mariadb::core)
@@ -1173,6 +1173,7 @@ node /^es2034\.codfw\./ {
 }
 
 # External Storage, Shard 4 (es4) databases
+# RO section
 ## eqiad servers
 node /^es1020\.eqiad\./ {
     role(mariadb::core)
@@ -1192,6 +1193,7 @@ node /^es202[012]\.codfw\./ {
 }
 
 # External Storage, Shard 5 (es5) databases
+# RO section
 ## eqiad servers
 node /^es102[345]\.eqiad\./ {
     role(mariadb::core)
@@ -1204,6 +1206,7 @@ node /^es202[345]\.codfw\./ {
 }
 
 # External Storage, Shard 6 (es6) databases
+# RW section
 ## eqiad servers
 node /^es10(36|37|38)\.eqiad\./ {
     role(mariadb::core)
@@ -1216,6 +1219,7 @@ node /^es20(35|36|37)\.codfw\./ {
 }
 
 # External Storage, Shard 7 (es7) databases
+# RW section
 ## eqiad servers
 node /^es10(35|39|40)\.eqiad\./ {
     role(mariadb::core)
