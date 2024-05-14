@@ -7,6 +7,7 @@ class profile::stewards (
     Stdlib::Unixpath $userdb_dir = lookup('profile::stewards::userdb_dir', {default_value => "${repo_dir}/users-db"}),
     Stdlib::Unixpath $onboarding_system_dir = lookup('profile::stewards::onboarding_system_dir', {default_value => "${repo_dir}/onboarding-system"}),
     String $group_owner = lookup('profile::stewards::group_owner', {default_value => 'stewards-users'}),
+    Stdlib::Fqdn $lists_primary_host = lookup('lists_primary_host', {'default_value' => undef}),
 ){
 
     # T344164#9314186
@@ -72,4 +73,20 @@ class profile::stewards (
         creates => "${userdb_dir}/.git",
         require => File[$userdb_dir],
     }
+
+    # let lists primary host sync data from the export_dir
+    class { 'rsync::server': }
+
+    rsync::server::module { 'steward-data-export-dir':
+        ensure        => present,
+        comment       => "${export_dir} to lists servers",
+        read_only     => 'yes',
+        path          => $export_dir,
+        hosts_allow   => [$lists_primary_host],
+        auto_firewall => true,
+        require       => [
+            File[$export_dir],
+        ],
+    }
+
 }
