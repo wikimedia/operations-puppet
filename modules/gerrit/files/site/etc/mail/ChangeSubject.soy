@@ -15,7 +15,7 @@
  */
 
 /**
- * This template is the stock template from Gerrit v3.8.5 with the
+ * This template is the stock template from Gerrit v3.2.2 with the
  * following adaptions:
  *   - 'Change in' is replaced by '[Gerrit]'
  *   - (this ChangeLog comment :-) )
@@ -32,13 +32,10 @@
   {@param change: ?}
   {@param shortProjectName: ?}
   {@param instanceAndProjectName: ?}
-  {@param addInstanceNameInSubject: ?}    /** boolean */
-
+  {@param addInstanceNameInSubject: ?}  /** boolean */
   {if not $addInstanceNameInSubject}
-    [Gerrit] [{$change.sizeBucket}] {$shortProjectName}[{$branch.shortName}]: {$change
-    .shortSubject}
+    [Gerrit] {$shortProjectName}[{$branch.shortName}]: {$change.shortSubject}
   {else}
-    [Gerrit] [{$change.sizeBucket}] {$instanceAndProjectName}[{$branch.shortName}]: {$change
-    .shortSubject}
+    [Gerrit] {$instanceAndProjectName}[{$branch.shortName}]: {$change.shortSubject}
   {/if}
 {/template}
