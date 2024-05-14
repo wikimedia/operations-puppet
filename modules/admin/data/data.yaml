@@ -31,7 +31,7 @@ groups:
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
-              dbad2021]
+              dbad2021, bdgreenlee]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -423,7 +423,7 @@ groups:
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
-              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, bdgreenlee, fabfur,
+              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -6292,16 +6292,12 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   bdgreenlee:
-    ensure: present
+    ensure: absent
     realname: Brad Greenlee
-    email: bgreenlee-ctr@wikimedia.org
     uid: 46232
     gid: 500
-    ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC6WHdbLSyRkSQO7hKVB11nKkkYkTtw0eZmbQcNaX9rb1c4Bi2+4SiitEi1VJld+ZyF2yZjVYGHdjPbQ94gHx5uvMfR7kdAfzFnDMiicjMy2ZDUQhoIbg9YBg4La9P8E7qTI22I7IDM5i3QOrwP/m4r9GuUU1GaIbwsvvsi4FzHSSDVV4EGSaQ381vAZ44hVqhmvZoFvokeiL0eItt2BnskdDOS1/VDnq+iPEeSKBPPSgzGTvGfvUB2Qvw5a8qsWHrAMNUdCvibMVJ8iLcCJVvA9LoJjVn2RvTh8PfOKJEGa4SOLPGhfcEdie5BwDthJ3hdvBDJN94vw6LCUmae0Z2tvnFQHT0fbAEXN8axDYbuCLuLnmt8Duv2m6flEuYKIis1i6vuW2h7a4Oml/NKrrNe1VhyFqfjh72aKgd0CZSQdTTDvSuLD0AboDxMVUC96G78DP0+v3vHSrIFfEC0NXaGFGFbgYD2ovlQ7DLQQWiJmI4U0rkRH+JoiPONKQMDjaS7CRoL4woGDlTw4GRfNxtlfR8MDgdSIttOHTEk8vk78I0TE/efMCCgTK4YmWo3A3tuifQT1ZSKwOo3nEvy/huRFRjIgWeywSIPRMKh6ZTZlKdrgJPXJoxpShXy9GjLYDhmoHfnVXl8uYxVBkzOmvehUFCndshennRCatJwjs8QIw== bgreenlee-ctr@wikimedia.org'
-    krb: present
-    expiry_date: "2024-05-14"
-    expiry_contact: odimitrijevic@wikimedia.org
+    ssh_keys: []
+    krb: absent
   georgemikesell:
     ensure: present
     realname: George Mikesell
