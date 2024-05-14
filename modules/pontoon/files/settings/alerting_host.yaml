@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+
+profile::alertmanager::irc::nickname: 'jinxer-wm-test'
+profile::alertmanager::irc::nickname_password: 'dummy'
+profile::alertmanager::irc::channel: 'wikimedia-o11y-test'
+
+profile::alertmanager::web::vhost: "alerts.%{lookup('public_domain')}"
+
+alertmanagers: "%{alias('__hosts_for_role_alerting_host')}"
+
+profile::alertmanager::active_host: "%{alias('__master_for_role_alerting_host')}"
+profile::alertmanager::partners: "%{alias('__hosts_for_role_alerting_host')}"
+
+profile::alertmanager::sink_notifications: true
+
+# Icinga generic
+profile::icinga::logs_keep_days: 1
+profile::icinga::active_host: "%{alias('__master_for_role_alerting_host')}"
+profile::icinga::partners: []
+profile::icinga::max_concurrent_checks: 5
+
+# Don't start ircecho (with invalid credentials) - T287265
+profile::icinga::ircbot::ensure: absent
+
+# Required by the alerting_host role
+profile::dbbackups::check::db_password: 'foo'
+
+# Icinga o11y specific
+profile::icinga::stub_contactgroups: true
