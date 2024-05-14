@@ -62,6 +62,23 @@ def main():
     return_code = 0
     aliases = set()
     query = "SELECT value0, create_time, change_time FROM system_address"
+    # List of emails handled by gsuite that cannot be removed from VRTS, see T284145
+    known_invalid_addresses = [
+        "board@wikimedia.org",
+        "business@wikimedia.org",
+        "donations@wikimedia.org",
+        "glam@wikimedia.org",
+        "improve@wikimedia.org",
+        "legal-en@wikimedia.org",
+        "legal-tm-vio@wikimedia.org",
+        "postmaster@wikimedia.org",
+        "postmaster@wikipedia.org",
+        "press@wikimedia.org",
+        "privacy@wikimedia.org",
+        "security@wikimedia.org",
+        "ux@wikimedia.org",
+        "wm-cz@wikimedia.org"
+    ]
 
     config = ConfigParser()
     config.read(args.config)
@@ -118,6 +135,9 @@ def main():
         with conn.cursor() as cur:
             cur.execute(query)
             for row in cur.fetchall():
+                if row[0] in known_invalid_addresses:
+                    # Skip emails handled by gsuite that cannot be removed from VRTS, see T284145
+                    continue
                 if row[0].split("@")[1] not in valid_domains:
                     LOG.warning("we don't handle email for %s", row[0])
                     no_auth.append(row)
