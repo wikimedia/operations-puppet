@@ -137,7 +137,7 @@ groups:
       - Tyler Cipriani
   deployment:
     gid: 705
-    description: replaces 'mortals' for software deployment
+    description: software deployers, with access to deployment.eqiad.wmnet and other hosts
     members: &deployment_members [*platform_engineering_members, *ops_members, *releng_members,
               bd808, bvibber, cscott, ebernhardson,
               gjg, halfak, hoo,
