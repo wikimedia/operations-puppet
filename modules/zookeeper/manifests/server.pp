@@ -59,6 +59,18 @@ class zookeeper::server(
         target => '/etc/zookeeper/conf/myid',
     }
 
+    if debian::codename::eq('bookworm') {
+        # Add log4j backend to slf4j to make log4j.properties work
+        # See also https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1025012
+        file_line { 'zookeeper-log4j-classpath':
+            ensure   => present,
+            path     => '/etc/zookeeper/conf/environment',
+            line     => 'CLASSPATH="/etc/zookeeper/conf:/usr/share/java/zookeeper.jar:/usr/share/java/slf4j-log4j12.jar:/usr/share/java/log4j-1.2.jar"',
+            match    => '^CLASSPATH=',
+            multiple => false,
+        }
+    }
+
     service { 'zookeeper':
         ensure     => running,
         require    => [
