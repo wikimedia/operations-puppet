@@ -1,4 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
 [Service]
 ExecStart=
-ExecStart=/usr/bin/pyrra filesystem --config-files=<%= @config_files %> --prometheus-folder=<%= @prometheus_folder %> --generic-rules
+ExecStart=/usr/bin/pyrra filesystem --config-files=<%= @config_files %> --prometheus-folder=<%= @prometheus_folder %> --prometheus-url=<%= @prometheus_url %> --generic-rules

@@ -6,8 +6,10 @@
 # = Parameters
 # [*config_files*] The folder where Pyrra finds the config files to use.
 # [*prometheus_folder*] The folder where Pyrra writes the generated Prometheus rules and alerts.
+# [*prometheus_url*] The URL to the Prometheus to query
 
 class pyrra::filesystem(
+    String $prometheus_url    = 'http://localhost:17902/rule/', # issue reloads to local thanos rule T364645
     String $config_files      = '/etc/pyrra/config/*.yaml',
     String $prometheus_folder = '/etc/pyrra/output-rules/',
 ){
@@ -36,7 +38,7 @@ class pyrra::filesystem(
     }
 
     systemd::unit { 'pyrra-filesystem-notify-thanos.path':
-        ensure  => present,
+        ensure  => absent,
         restart => true,
         content => systemd_template('pyrra-filesystem-notify-thanos'),
     }
