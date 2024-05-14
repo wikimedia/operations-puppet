@@ -10,24 +10,20 @@ class profile::gerrit::migration (
 
     if $facts['fqdn'] in $dst_hosts {
 
-        firewall::service { 'gerrit-migration-rsync':
-            proto  => 'tcp',
-            port   => 873,
-            srange => [$src_host],
-        }
-
         class { 'rsync::server': }
 
         rsync::server::module { 'gerrit-data':
-            path        => $data_dir,
-            read_only   => 'no',
-            hosts_allow => [$src_host],
+            path          => $data_dir,
+            read_only     => 'no',
+            auto_firewall => true,
+            hosts_allow   => [$src_host],
         }
 
         rsync::server::module { 'gerrit-var-lib':
-            path        => $gerrit_site,
-            read_only   => 'no',
-            hosts_allow => [$src_host],
+            path          => $gerrit_site,
+            read_only     => 'no',
+            auto_firewall => true,
+            hosts_allow   => [$src_host],
         }
 
         file { "/srv/home-${src_host}/":
@@ -41,9 +37,10 @@ class profile::gerrit::migration (
         }
 
         rsync::server::module { 'gerrit-home':
-            path        => "/srv/home-${src_host}",
-            read_only   => 'no',
-            hosts_allow => [$src_host],
+            path          => "/srv/home-${src_host}",
+            read_only     => 'no',
+            auto_firewall => true,
+            hosts_allow   => [$src_host],
         }
     }
 }
