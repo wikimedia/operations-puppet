@@ -33,6 +33,14 @@ class profile::statistics::explorer::misc_jobs(
         # allow only pull based rsyncs, but after T211330 we needed a way
         # to unbreak that use case. This rsync might be removed in the future.
         # TODO: this should be moved to hdfs-rsync.
+        $weblog_dump_dirs = [
+            '/srv/log/webrequest',
+            '/srv/log/webrequest/archive',
+            '/srv/log/webrequest/archive/dumps.wikimedia.org',
+        ]
+        file { $weblog_dump_dirs:
+            ensure => directory,
+        }
         rsync::server::module { 'dumps-webrequest':
             path          => '/srv/log/webrequest/archive/dumps.wikimedia.org',
             read_only     => 'no',
