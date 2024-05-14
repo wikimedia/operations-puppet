@@ -312,6 +312,42 @@ class profile::pyrra::filesystem::slos (
 
     }
 
+    # Linkrecommendation internal service availability
+    #
+    # limited to primary sites only
+    if $datacenter in ['eqiad', 'codfw'] {
+        pyrra::filesystem::config { "linkrecommendation-requests-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'linkrecommendation-requests',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'ml',
+                    'pyrra.dev/service' => 'linkrecommendation',
+                    'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '95',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "linkrecommendation_gunicorn_requests_total{app=\"linkrecommendation\", site=~\"${datacenter}\", prometheus=\"k8s\", status!~\"2..\"}",
+                        },
+                        'total' => {
+                            'metric' => "linkrecommendation_gunicorn_requests_total{app=\"linkrecommendation\", site=~\"${datacenter}\", prometheus=\"k8s\"}",
+                        },
+                    },
+                },
+            },
+          })
+        }
+
+    }
+
     }
 
     #lint:endignore
