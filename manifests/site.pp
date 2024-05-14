@@ -1558,6 +1558,10 @@ node /^kafka-main200[1-5]\.codfw\./ {
     role(kafka::main)
 }
 
+node /^kafka-main[12]0(0[6-9]|10)\.(eqiad|codfw)\./ {
+    role(insetup::serviceops)
+}
+
 # kafka-jumbo is a large general purpose Kafka cluster.
 # This cluster exists only in eqiad, and serves various uses, including
 # mirroring all data from the main Kafka clusters in both main datacenters.
