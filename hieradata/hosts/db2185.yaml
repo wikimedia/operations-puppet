@@ -2,7 +2,6 @@
 # zarcillo / db_inventory
 profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: false
-mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true
