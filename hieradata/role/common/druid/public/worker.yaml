@@ -25,6 +25,7 @@ profile::zookeeper::cluster_name: druid-public-eqiad
 profile::zookeeper::override_java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 
 profile::zookeeper::firewall::srange: '$DRUID_PUBLIC_HOSTS'
+profile::zookeeper::firewall::access: ~
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 

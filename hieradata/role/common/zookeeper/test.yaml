@@ -2,6 +2,7 @@ cluster: zookeeper_test
 
 profile::zookeeper::cluster_name: test-eqiad
 profile::zookeeper::firewall::srange: '$DOMAIN_NETWORKS'
+profile::zookeeper::firewall::access: ~
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins,analytics'
 

@@ -27,6 +27,7 @@ profile::zookeeper::override_java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
 # This should be solved in https://github.com/druid-io/tranquility/issues/251
 # for Druid >= 0.11
 profile::zookeeper::firewall::srange: '$ANALYTICS_NETWORKS'
+profile::zookeeper::firewall::access: ~
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 

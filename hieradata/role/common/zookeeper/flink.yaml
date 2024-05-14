@@ -6,6 +6,7 @@ cluster: flink
 profile::zookeeper::cluster_name: "flink-%{::site}"
 # network range TBD
 profile::zookeeper::firewall::srange: '(($WIKIKUBE_KUBEPODS_NETWORKS $STAGING_KUBEPODS_NETWORKS $DSE_KUBEPODS_NETWORKS $ZOOKEEPER_FLINK_HOSTS))'
+profile::zookeeper::firewall::access: ~
 profile::zookeeper::prometheus_instance: 'analytics'
 profile::zookeeper::monitoring_enabled: true
 profile::zookeeper::monitoring_contact_group: 'admins'
