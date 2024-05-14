@@ -23,6 +23,7 @@ class profile::lvs::realserver::ipip(
     Integer[536, 1480] $ipv4_mss = lookup('profile::lvs::realserver::ipip::ipv4_mss', {'default_value'                       => 1400}),
     Integer[1220, 1440] $ipv6_mss = lookup('profile::lvs::realserver::ipip::ipv6_mss', {'default_value'                      => 1400}),
     Array[String, 1] $interfaces = lookup('profile::lvs::realserver::ipip::interfaces'),
+    Firewall::Provider $firewall_provider = lookup('profile::firewall::provider'),
 ) {
     $present_pools = $pools.keys()
     $services = wmflib::service::fetch(true).filter |$lvs_name, $svc| {$lvs_name in $present_pools}
@@ -72,14 +73,20 @@ class profile::lvs::realserver::ipip(
         }
     }
 
+    if $firewall_provider == 'ferm' {
+        $ensure_ferm_rules = $ensure
+    } else {
+        $ensure_ferm_rules = 'absent'
+    }
+
     # Allow inbound IPIP && IP6IP6 traffic
     ferm::rule { 'ipip':
-        ensure => $ensure,
+        ensure => $ensure_ferm_rules,
         rule   => 'saddr 172.16.0.0/12 proto ipencap ACCEPT;',
         domain => '(ip)',
     }
     ferm::rule { 'ip6ip6':
-        ensure => $ensure,
+        ensure => $ensure_ferm_rules,
         rule   => 'saddr 0100::/64 proto ipv6 ACCEPT;',
         domain => '(ip6)',
     }
