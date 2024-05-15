@@ -10,7 +10,7 @@ Type=oneshot
 User=kube
 SyslogIdentifier=%N
 Environment="ETCDCTL_API=3"
-Environment="ETCDCTL_ENDPOINTS=<%= @etcd_servers %>"
+Environment="ETCDCTL_ENDPOINTS=<%= @etcd_servers_string %>"
 Environment="ETCD_KEY=<%= @confd_prefix %>/<%= @fqdn %>"
 Environment="SA_CERT_PATH=<%= @sa_cert['cert'] %>"
 ExecStart=/bin/bash -c '/usr/bin/etcdctl put "$ETCD_KEY" < "$SA_CERT_PATH"'

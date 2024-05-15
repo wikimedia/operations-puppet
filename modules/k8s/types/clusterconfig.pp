@@ -54,8 +54,9 @@
 # @param [K8s::ClusterCIDR] cluster_cidr
 #     CIDRs (IPv4, IPv6) used to allocate Pod IPs.
 #
-# @param [Array[Stdlib::HTTPSUrl, 3]] etcd_urls
+# @param [Optional[Array[Stdlib::HTTPSUrl, 3]]] etcd_urls
 #     URLs of all etcd nodes for this cluster.
+#     Might be empty if this this cluster runs stacked control-planes.
 #
 # @param [Array[Stdlib::Port, 2, 2]] service_node_port_range
 #     A port range to reserve for services with NodePort visibility.
@@ -123,7 +124,7 @@ type K8s::ClusterConfig = Struct[{
   'cluster_dns'             => Array[Stdlib::IP::Address, 1],
   'service_cluster_cidr'    => K8s::ClusterCIDR,
   'cluster_cidr'            => K8s::ClusterCIDR,
-  'etcd_urls'               => Array[Stdlib::HTTPSUrl, 3],
+  'etcd_urls'               => Optional[Array[Stdlib::HTTPSUrl, 3]],
   'service_node_port_range' => Array[Stdlib::Port, 2, 2],
   'ipv6dualstack'           => Boolean,
   'infra_pod'               => String[1],

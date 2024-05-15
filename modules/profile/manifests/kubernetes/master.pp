@@ -9,17 +9,21 @@ class profile::kubernetes::master (
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     $stacked = defined(Class['profile::etcd::v3'])
 
-    # Create a comma separated list of etcd URLs to be consumed by the kube-publish-sa-cert service
-    # as well as k8s::apiserser.
     if $stacked {
         # In stacked mode, we use the local etcd server only.
         # TODO: This is the low effort solution. Ideally we would use a localhost connection
         # (the cert used does not have 127.0.0.1/localhost in SAN) or a unix socket (not supported
         # by etcd 3.3) instead of this.
-        $etcd_servers = "https://${facts['networking']['fqdn']}:2379"
+        $etcd_servers = ["https://${facts['networking']['fqdn']}:2379"]
     } else {
-        $etcd_servers = join($k8s_config['etcd_urls'], ',')
+        if $k8s_config['etcd_urls'] == undef {
+            fail("this is not a stacked control-plane, so etcd_urls must be defined for the k8s cluser ${kubernetes_cluster_name}")
+        }
+        $etcd_servers = $k8s_config['etcd_urls']
     }
+    # Create a comma separated list of etcd URLs to be consumed by the kube-publish-sa-cert service
+    # as well as k8s::apiserser.
+    $etcd_servers_string = join($etcd_servers, ',')
 
     # FIXME: Ensure kube user/group as well as /etc/kubernetes/pki is created with proper permissions
     # before the first pki::get_cert call: https://phabricator.wikimedia.org/T337826
@@ -99,7 +103,7 @@ class profile::kubernetes::master (
             'backend' => 'etcdv3',
             'prefix'  => $confd_prefix,
             # confd with etcdv3 does not work well with srv_dns as it does not prepend the scheme in that case
-            'hosts'   => $k8s_config['etcd_urls'],
+            'hosts'   => $etcd_servers,
         },
     }
     class { 'profile::confd':
@@ -156,7 +160,7 @@ class profile::kubernetes::master (
     }
 
     class { 'k8s::apiserver':
-        etcd_servers            => $etcd_servers,
+        etcd_servers            => $etcd_servers_string,
         apiserver_cert          => $apiserver_cert,
         sa_cert                 => $sa_cert,
         additional_sa_certs     => [$other_apiserver_sa_certs,],
