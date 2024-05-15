@@ -75,9 +75,6 @@
 #   that all keystore, truststores, and keys use the same password.
 #   Default: undef
 #
-# [*use_pki_settings*]
-#  If true, the TLS certificates will be generated using PKI. Default: true
-#
 # [*inter_broker_ssl_enabled*]
 #   Vary security.inter.broker.protocol based on this and $ssl_enabled.
 #   If this is undef (default) and $ssl_enabled, we'll pick SSL.
@@ -169,7 +166,6 @@ class profile::kafka::broker(
     Boolean $ssl_enabled                                         = lookup('profile::kafka::broker::ssl_enabled', {'default_value' => false}),
     Optional[String] $ssl_password                               = lookup('profile::kafka::broker::ssl_password', {'default_value' => undef}),
     Optional[Boolean] $inter_broker_ssl_enabled                  = lookup('profile::kafka::broker::inter_broker_ssl_enabled', {'default_value' => undef}),
-    Boolean $use_pki_settings                                    = lookup('profile::kafka::broker:use_pki_settings', {'default_value' => true}),
     Array[Stdlib::Unixpath] $log_dirs                            = lookup('profile::kafka::broker::log_dirs', {'default_value' => ['/srv/kafka/data']}),
     Boolean $auto_leader_rebalance_enable                        = lookup('profile::kafka::broker::auto_leader_rebalance_enable', {'default_value' => true}),
     Integer $log_retention_hours                                 = lookup('profile::kafka::broker::log_retention_hours', {'default_value' => 168}),
@@ -272,60 +268,33 @@ class profile::kafka::broker(
             "User:CN=${hostname}"
         }
 
-        if $use_pki_settings {
-            $super_users = $super_users_brokers
-            $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
-            $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+        $super_users = $super_users_brokers
+        $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+        $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
 
-            # Set kafka broker certificates to renew 1 month before expiration as kafka uses a
-            # custom 1 year certificate lifespan.  This aims to provide ample time for manual
-            # broker restarts to activate new certificates, and ensure that renewed certs are
-            # present on-disk before alerting warns of upcoming expiration T358870
-            $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
-                'renew_seconds' => 2678400, #1 month
-                'outdir'        => $ssl_location,
-                'owner'         => 'kafka',
-                'profile'       => 'kafka_11',
-                notify          => Sslcert::X509_to_pkcs12['kafka_keystore'],
-                require         => Class['::confluent::kafka::common'],
-                }
-            )
+        # Set kafka broker certificates to renew 1 month before expiration as kafka uses a
+        # custom 1 year certificate lifespan.  This aims to provide ample time for manual
+        # broker restarts to activate new certificates, and ensure that renewed certs are
+        # present on-disk before alerting warns of upcoming expiration T358870
+        $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
+            'renew_seconds' => 2678400, #1 month
+            'outdir'        => $ssl_location,
+            'owner'         => 'kafka',
+            'profile'       => 'kafka_11',
+            notify          => Sslcert::X509_to_pkcs12['kafka_keystore'],
+            require         => Class['::confluent::kafka::common'],
+        })
 
-            $ssl_keystore_location   = "${ssl_location}/kafka_${cluster_name}_broker.keystore.p12"
-            sslcert::x509_to_pkcs12 { 'kafka_keystore' :
-                owner       => 'kafka',
-                group       => 'kafka',
-                public_key  => $ssl_cert['chained'],
-                private_key => $ssl_cert['key'],
-                certfile    => $ssl_cert['ca'],
-                outfile     => $ssl_keystore_location,
-                password    => $ssl_password,
-                require     => Class['::confluent::kafka::common'],
-            }
-        } else {
-            $super_users = ["User:CN=kafka_${cluster_name}_broker"]
-            $ssl_truststore_location = "${ssl_location}/truststore.jks"
-            $ssl_truststore_password = $ssl_password
-            $ssl_truststore_secrets_path = "certificates/kafka_${cluster_name}_broker/truststore.jks"
-            if !defined(File[$ssl_truststore_location]) {
-                file { $ssl_truststore_location:
-                    content => secret($ssl_truststore_secrets_path),
-                    owner   => 'kafka',
-                    group   => 'kafka',
-                    mode    => '0444',
-                    before  => Class['::confluent::kafka::broker'],
-                }
-            }
-            $ssl_keystore_location       = "${ssl_location}/kafka_${cluster_name}_broker.keystore.jks"
-            $ssl_keystore_secrets_path   = "certificates/kafka_${cluster_name}_broker/kafka_${cluster_name}_broker.keystore.jks"
-
-            file { $ssl_keystore_location:
-                content => secret($ssl_keystore_secrets_path),
-                owner   => 'kafka',
-                group   => 'kafka',
-                mode    => '0440',
-                before  => Class['::confluent::kafka::broker'],
-            }
+        $ssl_keystore_location   = "${ssl_location}/kafka_${cluster_name}_broker.keystore.p12"
+        sslcert::x509_to_pkcs12 { 'kafka_keystore' :
+            owner       => 'kafka',
+            group       => 'kafka',
+            public_key  => $ssl_cert['chained'],
+            private_key => $ssl_cert['key'],
+            certfile    => $ssl_cert['ca'],
+            outfile     => $ssl_keystore_location,
+            password    => $ssl_password,
+            require     => Class['::confluent::kafka::common'],
         }
     }
     else {

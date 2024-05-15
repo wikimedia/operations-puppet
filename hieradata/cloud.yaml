@@ -1008,12 +1008,6 @@ profile::bgpalerter::reports:
     params:
       persistAlertData: false
 
-# By default in Production all Kafka clusters
-# use PKI to generate TLS certificates.
-# Let specific cloud projects to enable it,
-# if available with their specific settings.
-profile::kafka::broker:use_pki_settings: false
-
 profile::wmcs::cloud_private_subnet::host: "not-in-cloud-realm.example.com"
 profile::wmcs::cloud_private_subnet::gw_template: "not-in-cloud-realm.example.com"
 profile::wmcs::cloud_private_subnet::supernet: "127.0.0.1/32"
