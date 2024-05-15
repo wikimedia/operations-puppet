@@ -201,6 +201,13 @@ class profile::ganeti (
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
+        prometheus::blackbox::check::tcp { 'ganeti-noded':
+            port          => 1811,
+            ip_families   => ['ip4',],
+            probe_runbook => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+        }
+
+
         nrpe::monitor_service{ 'ganeti-confd':
             description  => 'ganeti-confd running',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-confd -C ganeti-confd',
@@ -208,6 +215,7 @@ class profile::ganeti (
         }
 
         nrpe::monitor_service{ 'ganeti-mond':
+            ensure       => absent,
             description  => 'ganeti-mond running',
             nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond',
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
