@@ -18,3 +18,11 @@ profile::openstack::eqiad1::neutron::network_flat_name: "cloudinstances2b"
 profile::openstack::eqiad1::neutron::l3_agent_bridge_mappings:
   br-external: "br-external"
   cloudinstances2b: "br-internal"
+profile::openstack::eqiad1::neutron::provider_networks_internal:
+  cloudinstances2b:
+    bridge: br-internal
+    interface: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan')}"
+profile::openstack::eqiad1::neutron::provider_networks_external:
+  br-external:
+    bridge: br-external
+    interface: "vlan%{lookup('profile::openstack::eqiad1::neutron::network_flat_interface_vlan_external')}"

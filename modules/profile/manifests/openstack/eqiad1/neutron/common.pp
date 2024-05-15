@@ -15,7 +15,8 @@ class profile::openstack::eqiad1::neutron::common(
     $agent_down_time = lookup('profile::openstack::eqiad1::neutron::agent_down_time'),
     $log_agent_heartbeats = lookup('profile::openstack::eqiad1::neutron::log_agent_heartbeats'),
     Stdlib::Port $bind_port = lookup('profile::openstack::eqiad1::neutron::bind_port'),
-    ) {
+    Boolean $use_ovs = lookup('profile::openstack::eqiad1::neutron::use_ovs', {default_value => false}),
+) {
 
     require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::neutron::common':
@@ -35,6 +36,7 @@ class profile::openstack::eqiad1::neutron::common(
         bind_port                   => $bind_port,
         enforce_policy_scope        => $enforce_policy_scope,
         enforce_new_policy_defaults => $enforce_new_policy_defaults,
+        use_ovs                     => $use_ovs,
     }
     contain '::profile::openstack::base::neutron::common'
 }

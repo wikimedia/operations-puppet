@@ -11,14 +11,25 @@ class profile::openstack::eqiad1::nova::compute::service(
     Optional[String] $ceph_rbd_pool = lookup('profile::cloudceph::client::rbd::pool', {'default_value' => undef}),
     Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
+    Hash[String[1], OpenStack::Neutron::ProviderNetwork] $provider_networks_internal = lookup('profile::openstack::eqiad1::neutron::provider_networks_internal', {default_value => {}}),
+    Boolean $use_ovs = lookup('profile::openstack::eqiad1::neutron::use_ovs', {default_value => false}),
     ) {
 
     require ::profile::openstack::eqiad1::neutron::common
-    class {'::profile::openstack::base::neutron::linuxbridge_agent':
-        version                     => $version,
-        physical_interface_mappings => $physical_interface_mappings,
+    if $use_ovs {
+        class { 'profile::openstack::base::neutron::ovs_agent':
+            version           => $version,
+            provider_networks => $provider_networks_internal,
+            before            => Class['profile::openstack::base::nova::compute::service'],
+        }
+    } else {
+        class {'::profile::openstack::base::neutron::linuxbridge_agent':
+            version                     => $version,
+            physical_interface_mappings => $physical_interface_mappings,
+            before                      => Class['profile::openstack::base::nova::compute::service'],
+        }
+        contain '::profile::openstack::base::neutron::linuxbridge_agent'
     }
-    contain '::profile::openstack::base::neutron::linuxbridge_agent'
 
     require ::profile::openstack::eqiad1::nova::common
     $all_cloudvirts = unique(
