@@ -1615,12 +1615,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::class_config{ "ldap_${::site}":
-        dest       => "${targets_path}/ldap_${::site}.yaml",
-        class_name => 'profile::prometheus::openldap_exporter',
-        port       => 9142,
-    }
-
     $logstash_jobs= [
         {
             'job_name'        => 'logstash',
