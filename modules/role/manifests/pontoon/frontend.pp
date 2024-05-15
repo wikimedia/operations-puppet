@@ -1,3 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# NOTE consider using a Cloud VPS webproxy pointed to role::pontoon::lb
+# instead of this role. It will be simpler to manage and not require a
+# floating IP allocated to work.
+# See also https://wikitech.wikimedia.org/wiki/Help:Using_a_web_proxy_to_reach_Cloud_VPS_servers_from_the_internet#wmcloud.org_zone_delegations
+
 # The Pontoon frontend takes care of the following tasks:
 # * Acquire TLS certificates for publicly-available services
 # * Proxy traffic from external clients to the service's hosts.
