@@ -3,3 +3,6 @@ profile::openldap::certname: ldap
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Writable LDAP servers (based on OpenLDAP)'
 profile::openldap::storage_backend: hdb
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
