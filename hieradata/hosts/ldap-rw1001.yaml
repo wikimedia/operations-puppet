@@ -3,6 +3,3 @@ profile::openldap::hostname: ldap-rw-next.eqiad.wikimedia.org
 profile::openldap::server_id: 15
 profile::openldap::hash_passwords: SSHA
 profile::openldap::storage_backend: mdb
-
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
