@@ -1,0 +1,16 @@
+profile::base::production::role_description: 'Cloud VPS OpenStack L3 router (Open vSwitch)'
+profile::admin::groups:
+  - wmcs-roots
+
+profile::contacts::role_contacts: ["WMCS"]
+contactgroups: wmcs-team-email
+cluster: wmcs
+
+profile::firewall::provider: none
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
+  - "%{facts.ipaddress6}"
+prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
+
+profile::openstack::eqiad1::neutron::use_ovs: true
+profile::openstack::eqiad1::neutron::legacy_vlan_naming: false
