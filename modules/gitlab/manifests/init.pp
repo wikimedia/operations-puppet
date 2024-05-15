@@ -298,7 +298,7 @@ class gitlab (
     git::clone { 'repos/sre/gitlab-exporter':
         ensure        => $ensure_custom_exporter,
         update_method => 'checkout',
-        git_tag       => 'v1.0.2',
+        git_tag       => 'v1.0.3',
         directory     => '/srv/gitlab-exporter',
         source        => 'gitlab',
         owner         => 'prometheus',
