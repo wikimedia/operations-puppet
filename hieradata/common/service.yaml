@@ -2967,6 +2967,8 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: mh
+      ipip_encapsulation:
+        - ulsfo
     probes:
       - type: http
         host: upload.wikimedia.org
@@ -3009,6 +3011,8 @@ service::catalog:
           url:
             - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: mh
+      ipip_encapsulation:
+        - ulsfo
     probes:
       - type: http
         host: upload.wikimedia.org
