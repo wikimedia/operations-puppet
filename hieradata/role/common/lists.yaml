@@ -11,8 +11,6 @@ mtail::logs:
   - /var/log/mailman/subscribe
 # NOTE: this is what enables mtail to read the files in the exim4 log directory
 mtail::group: 'adm'
-profile::lists::primary_host: 'lists1001.wikimedia.org'
-#profile::lists::standby_host: ''
 
 profile::lists::acme_chief_cert: lists
 

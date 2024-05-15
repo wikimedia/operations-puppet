@@ -1253,6 +1253,9 @@ tcpircbot_port: 9200
 
 graphite_primary_host: graphite1005.eqiad.wmnet
 
+lists_primary_host: lists1001.wikimedia.org
+lists_standby_host: ~
+
 # User for Jenkins controllers SSH connections to the agents
 jenkins_agent_username: 'jenkins-agent'
 
