@@ -427,8 +427,6 @@ codfw:
     parse2019.codfw.wmnet: [kubesvc]
     parse2020.codfw.wmnet: [kubesvc]
   kubernetes-staging:
-    kubestagemaster2001.codfw.wmnet: [kubemaster]
-    kubestagemaster2002.codfw.wmnet: [kubemaster]
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
     kubestagemaster2005.codfw.wmnet: [kubemaster]

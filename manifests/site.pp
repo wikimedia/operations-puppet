@@ -1249,17 +1249,18 @@ node /^kubestagetcd200[123]\.codfw\./ {
     role(etcd::v3::kubernetes::staging)
 }
 
-# kubernetes master for staging
-node /^kubestagemaster[12]00[12]\.(eqiad|codfw)\./ {
+# kubernetes masters for staging-eqiad
+node /^kubestagemaster100[12]\.eqiad\./ {
     role(kubernetes::staging::master)
-}
-
-node /^kubestagemaster200[345]\.codfw\./ {
-    role(kubernetes::staging::master_stacked)
 }
 
 node /^kubestagemaster100[345]\.eqiad\./ {
     role(insetup::serviceops)
+}
+
+# kubernetes masters for staging-codfw
+node /^kubestagemaster200[345]\.codfw\./ {
+    role(kubernetes::staging::master_stacked)
 }
 
 # kubernetes masters
