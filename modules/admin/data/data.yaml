@@ -6425,6 +6425,10 @@ ldap_only_users:
   delphinepro:
     ensure: absent
     realname: Delphine Menard
+  dmuthuri:
+    ensure: present
+    realname: Dennis Mburugu
+    email: dmburugu@wikimedia.org
   dwalden:
     ensure: present
     realname: Dominic Walden
