@@ -733,9 +733,6 @@ profile::openstack::base::radosgw::service_user: "swift"
 profile::openstack::base::radosgw::service_user_project: "swift"
 profile::openstack::base::radosgw::api_bind_port: "18080"
 
-profile::openstack::base::cinder::backup::path: /dev/null
-profile::openstack::base::cinder::backup::user: nobody
-
 # The puppet linter demands these, though they are not used anywhere:
 profile::openstack::base::cinder::db_name: "cinder"
 profile::openstack::base::cinder::db_user: "cinder"

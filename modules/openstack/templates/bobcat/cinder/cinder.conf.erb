@@ -14,43 +14,6 @@ my_ip = <%= @ipaddress %>
 # Availability zone of this node. Can be overridden per volume backend with the option "backend_availability_zone". (string value)
 storage_availability_zone = nova
 
-#
-# backup stuff
-#
-# Testing suggests that zstd is a great deal faster than
-#  the default zlib
-backup_compression_algorithm = zstd
-
-backup_driver = cinder.backup.drivers.posix.PosixBackupDriver
-backup_workers = 2
-backup_max_operations = 8
-# this is for ceilometer, but we don't use it
-backup_enable_progress_timer = False
-# where to store backups
-backup_posix_path = <%= @backup_path %>
-# The size in bytes that changes are tracked for incremental backups.
-# backup_file_size has to be multiple of backup_sha_block_size_bytes.
-backup_sha_block_size_bytes = <%= 32 * 1024 %>
-
-
-# split binary backup files in chunks of this size.
-# This needs to be an integer multiple of backup_sha_block_size_bytes
-#
-# This number is the file size but it's also the buffer size
-#  (as of Victoria at least). So a large number here will
-#  cause OOM failures that leave orphaned jobs.
-#
-# I want this value to be be something like
-#  (<system RAM> - <safety margin>)/<number of workers> 
-#
-# But testing suggests that there's a number hidden multiplier in there someplace
-#  (a thread count?) so we divide everything by 32 at the end, based on experimentation
-#
-# The div(32)*32 no-op here is to round things off to an even multiple of
-# backup_sha_block_size_bites_data
-#
-backup_file_size = <%= ((((@facts['memorysize_mb'] - 1024)/64).div(2)  * 1024).div(32) * 32 * 1024) %>
-
 # Default availability zone for new volumes. If not set, the storage_availability_zone option value is used as the default for new volumes.
 # (string value)
 #default_availability_zone = <None>
