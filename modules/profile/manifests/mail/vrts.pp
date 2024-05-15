@@ -74,9 +74,6 @@ class profile::mail::vrts (
         description       => "Generate VRTS aliases file for ${aliases_format}",
         command           => "/usr/local/bin/vrts_aliases --config ${vrts_aliases_conf}",
         user              => 'root',
-        ignore_errors     => true,
-        # We should set this to true once T284145 is resolved
-        send_mail         => false,
         interval          => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         timeout_start_sec => 1800,
     }
