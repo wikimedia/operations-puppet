@@ -35,3 +35,4 @@ profile::benthos::instances:
         - "none"
 
 profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
