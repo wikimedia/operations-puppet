@@ -73,3 +73,21 @@ https://donate.wikimedia.org:
   assert_status: 302
   assert_headers:
     Location: https://donate.wikimedia.org/?utm_medium=podcast&utm_campaign=wikihole&utm_source=wikihole
+# T25216, remove after gerrit:527909 is in production and verified correct
+https://nrf.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://nrm.wikipedia.org/
+# T204830, remove after gerrit:481540 is in production and verified correct
+https://sgs.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://bat-smg.wikipedia.org/
+# T31186, remove after gerrit:527915 is in production and verified correct
+https://vro.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+      Location: https://fiu-vro.wikipedia.org/
