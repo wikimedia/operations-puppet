@@ -116,6 +116,8 @@ class zuul::merger (
 
     # Configuration file for the zuul merger
     $zuul_role = 'merger'
+    $gearman_server_ip = ipresolve($gearman_server, 4)
+
     file { '/etc/zuul/zuul-merger.conf':
         owner   => 'root',
         group   => 'root',
