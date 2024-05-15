@@ -23,6 +23,14 @@ class profile::ci::docker(
         settings => $settings,
     }
 
+    profile::auto_restarts::service { 'docker':
+        ensure => absent,
+    }
+
+    profile::auto_restarts::service { 'containerd':
+        ensure => absent,
+    }
+
     # Upstream package versions are always suffixed with "-codename"
     $full_docker_version = "${docker_version}-${::lsbdistcodename}"
 
@@ -36,9 +44,6 @@ class profile::ci::docker(
             ],
         },
     )
-
-    profile::auto_restarts::service { 'docker': }
-    profile::auto_restarts::service { 'containerd': }
 
     # Upstream docker debian package does not enable the service and it thus
     # does not start on reboot T313119
