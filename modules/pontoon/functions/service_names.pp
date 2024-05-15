@@ -34,4 +34,3 @@ function pontoon::service_names(
 
     Hash($t)
 }
-

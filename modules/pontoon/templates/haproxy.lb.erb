@@ -1,4 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+
 frontend lb
 <%- @ports.sort.each do |p| -%>
     bind *:<%= p %>
@@ -11,24 +12,51 @@ frontend lb
     tcp-request content accept if HTTP
     tcp-request content accept if { req.ssl_hello_type 1 }
 
+    # Backend selection for internal services.
 <%- @services.sort.each do |name, svc| -%>
-    <% if svc['backend_use_tls'] %>
     use_backend <%= name %> if { req.ssl_sni -i <%= svc['names'].sort.join(' ') %> }
-    <% else %>
     use_backend <%= name %> if { hdr(host) -i <%= svc['names'].sort.join(' ') %> }
-    <% end %>
 <% end %>
 
+    # Backend selection for public services.
+    bind *:80
+<%- @services.sort.each do |name, svc| -%>
+    <%- unless svc['names_public'].empty? -%>
+    use_backend <%= name %>-public if { hdr(host) -i <%= svc['names_public'].sort.join(' ') %> }
+    <%- end -%>
+<% end %>
+
+# Internal services backends.
+# TCP-only proxying for HTTP(s); no private material needed.
 <%- @services.sort.each do |name, svc| -%>
 backend <%= name %>
     mode tcp
     balance roundrobin
     <%- if svc['backend_use_tls'] -%>
-    # We don't verify certificates here to be closer to pybal
-    <% else %>
+    # We don't verify certificates on health checks here to mimick what production does
+    <%- else -%>
     option tcp-check
-    <% end %>
+    <%- end -%>
   <%- svc['hosts'].sort.each do |host| -%>
     server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> <%= svc['backend_use_tls'] ? 'check-ssl verify none' : 'check' %>
   <% end %>
 <% end %>
+
+# Public services backends.
+# These are proxied by Cloud VPS webproxy over HTTP. Therefore HTTP-level
+# proxying is needed here to contact servers over HTTPS.
+<%- @services.sort.each do |name, svc| -%>
+<%- unless svc['names_public'].empty? -%>
+backend <%= name %>-public
+    mode http
+    balance roundrobin
+    <%- if svc['backend_use_tls'] -%>
+    # We don't verify certificates on health checks here to mimick what production does
+    <%- else -%>
+    option http-check
+    <%- end -%>
+  <%- svc['hosts'].sort.each do |host| -%>
+    server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> <%= svc['backend_use_tls'] ? 'ssl check-ssl verify none' : 'check' %>
+  <% end %>
+<%- end -%>
+<%- end -%>
