@@ -10,7 +10,7 @@
 #    Which Pybal monitors to configure. For details, see the Pybal documentation. Configuration options are written as key: value
 # @param [Optional[Boolean]] bgp  Whether to advertise the service via bgp, or not. Defaults to true
 # @param [Optional[Enum]] protocol  Whether the service uses tcp or udp. Defaults to 'tcp'.
-# @param [Optional[Boolean] ipip_encapsulation  Whether the real servers receive traffic from the load balancers using IPIP encapsulation. Defaults to false
+# @param [Optional[Array[Wmflib::Sites]] ipip_encapsulation  List of sites where the real servers receive traffic from the load balancers using IPIP encapsulation. Defaults to an empty array
 type Wmflib::Service::Lvs = Struct[{
     'enabled'            => Boolean,
     'class'              => Enum['low-traffic', 'high-traffic1', 'high-traffic2'],
@@ -20,5 +20,5 @@ type Wmflib::Service::Lvs = Struct[{
     'monitors'           => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash]],
     'bgp'                => Optional[Boolean],
     'protocol'           => Optional[Enum['tcp', 'udp']],
-    'ipip_encapsulation' => Optional[Boolean],
+    'ipip_encapsulation' => Optional[Array[Wmflib::Sites]],
 }]

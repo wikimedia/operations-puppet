@@ -12,7 +12,7 @@ services = {
       'enabled' => true,
       'class' => 'high-traffic1',
       'conftool' => { 'cluster' => 'foo', 'service' => 'bar' },
-      'depool_threshold' => '.5', 'ipip_encapsulation' => true
+      'depool_threshold' => '.5', 'ipip_encapsulation' => ['eqiad']
     },
   },
   'service-https' => {
@@ -26,7 +26,7 @@ services = {
       'enabled' => true,
       'class' => 'high-traffic1',
       'conftool' => { 'cluster' => 'foo', 'service' => 'bar' },
-      'depool_threshold' => '.5', 'ipip_encapsulation' => true
+      'depool_threshold' => '.5', 'ipip_encapsulation' => ['eqiad']
     },
   },
 }

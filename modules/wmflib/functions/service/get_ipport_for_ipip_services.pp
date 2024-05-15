@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 function wmflib::service::get_ipport_for_ipip_services(
     Hash[String, Wmflib::Service] $services,
-    String $site,
+    Wmflib::Sites $site,
 ) >> Array[String] {
     $services.filter |$lvs_name, $svc| {
-        $site in $svc['ip'] and $svc['lvs'] and $svc['lvs']['ipip_encapsulation']
+        $site in $svc['ip'] and $svc['lvs'] and $svc['lvs']['ipip_encapsulation'] and $site in $svc['lvs']['ipip_encapsulation']
     }
     .map |$lvs_name, $svc| {
         $svc['ip'][$site].values().map|Stdlib::IP::Address $ip| {

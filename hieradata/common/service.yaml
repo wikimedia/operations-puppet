@@ -1811,7 +1811,14 @@ service::catalog:
           url:
             - http://en.wikipedia.com/_status
       scheduler: wrr
-      ipip_encapsulation: true
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+        - esams
+        - ulsfo
+        - eqsin
+        - drmrs
+        - magru
     page: false
     probes:
       - type: http
@@ -1844,7 +1851,14 @@ service::catalog:
           url:
             - https://en.wikipedia.com/_status
       scheduler: wrr
-      ipip_encapsulation: true
+      ipip_encapsulation:
+        - eqiad
+        - codfw
+        - esams
+        - ulsfo
+        - eqsin
+        - drmrs
+        - magru
     probes:
       - type: http
         host: en.wikipedia.com
