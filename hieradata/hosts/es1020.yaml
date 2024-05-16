@@ -1,7 +1,6 @@
 # es1020
-# candidate master for es4
 mariadb::shard: 'es4'
-mariadb::binlog_format: 'ROW'
+profile::mariadb::mysql_role: 'standalone'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
