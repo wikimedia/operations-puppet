@@ -1802,7 +1802,7 @@ node /^cloudelastic1010\.eqiad\./ {
 }
 
 node /^cloudnet1005\.eqiad\./ {
-    role(insetup_noferm)
+    role(wmcs::openstack::eqiad1::net_ovs)
 }
 
 node /^cloudnet1006\.eqiad\./ {
