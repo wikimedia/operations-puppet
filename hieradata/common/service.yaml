@@ -3722,6 +3722,20 @@ service::catalog:
       - codfw
     state: production
 
+  data-gateway:
+    description: data gateway service, data-gateway.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube_ips
+    page: false
+    port: *k8s-ingress-wikikube_port
+    probes:
+      - type: http
+        path: /healthz
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
   developer-portal:
     description: Static documentation site, developer-portal.discovery.wmnet
     encryption: true
