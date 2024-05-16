@@ -266,6 +266,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-mcrouter
         - name: mw-mcrouter-deploy
+    data-gateway:
+      usernames:
+        - name: data-gateway
+        - name: data-gateway-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
