@@ -40,6 +40,12 @@ profile::mariadb::section_params:
   es3:
     writeable_dc: 'none'
     replication_type: 'none'
+  es4:
+    writeable_dc: 'none'
+    replication_type: 'none'
+  es5:
+    writeable_dc: 'none'
+    replication_type: 'none'
   m1:
     writeable_dc: 'eqiad'
     replication_type: 'unidir'
