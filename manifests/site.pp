@@ -1203,7 +1203,15 @@ node /^es2022\.codfw\./ {
 # External Storage, Shard 5 (es5) databases
 # RO section
 ## eqiad servers
-node /^es102[345]\.eqiad\./ {
+node /^es1023\.eqiad\./ {
+    role(mariadb::core)
+}
+
+node /^es1024\.eqiad\./ {
+    role(mariadb::core)
+}
+
+node /^es1025\.eqiad\./ {
     role(mariadb::core)
 }
 
