@@ -10,7 +10,7 @@ class docker::gc(
     String                    $volumes_high_water_mark = '20gb',
     String                    $volumes_low_water_mark  = '10gb',
 ){
-    $gc_version      = '1.2.0'
+    $gc_version      = '1.3.0'
     $image_repo_path = 'docker-registry.wikimedia.org/repos/releng/docker-gc'
     $ensure_monitor = $use_creation_dates ? {
         true    => absent,
