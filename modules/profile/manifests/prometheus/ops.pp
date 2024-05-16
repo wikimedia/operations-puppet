@@ -1014,17 +1014,6 @@ class profile::prometheus::ops (
         port       => 9132,
     }
 
-    # Job definition for etcd_exporter
-    $etcd_jobs = [
-      {
-        'job_name'        => 'etcd',
-        'scheme'          => 'https',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/etcd_*.yaml" ]}
-        ],
-      },
-    ]
-
     $etcdmirror_jobs = [
       {
         'job_name'        => 'etcdmirror',
@@ -1033,13 +1022,6 @@ class profile::prometheus::ops (
         ],
       },
     ]
-
-    # Gather etcd metrics from machines exposing them via http
-    prometheus::class_config{ "etcd_servers_${::site}":
-        dest       => "${targets_path}/etcd_${::site}.yaml",
-        class_name => 'role::configcluster',
-        port       => 4001,
-    }
 
     # Gather replication stats where etcd-mirror is running.
     prometheus::class_config{ "etcdmirror_${::site}":
@@ -1051,51 +1033,54 @@ class profile::prometheus::ops (
         port             => 8000,
     }
 
-    # kubernetes etcd. TODO: Investigate whether all of these can be merged with
-    # the above using ::profile::etcd::v3. But this requires conf200X hosts
-    # first to be upgraded
+    # Job definition for etcd_exporter
+    $etcd_jobs = [{
+      'job_name'        => 'etcd',
+      'scheme'          => 'https',
+      'file_sd_configs' => [{ 'files' => ["${targets_path}/etcd_*.yaml"] }],
+    }]
+
+    # Gather etcd metrics from configcluster hosts exposing them via http
+    prometheus::class_config{ "etcd_servers_${::site}":
+        dest       => "${targets_path}/etcd_${::site}.yaml",
+        class_name => 'role::configcluster',
+        port       => 4001,
+    }
+
+    # Gather metrics from all etcd nodes with the client-port 2379
+    # configcluster nodes do set adv_client_port 4001, so they are
+    # not included here.
+    prometheus::class_config{ "etcd_2379_${::site}":
+        dest             => "${targets_path}/etcd_2379_${::site}.yaml",
+        class_name       => 'profile::etcd::v3',
+        class_parameters => {
+            'adv_client_port' => 2379,
+        },
+        port             => 2379,
+    }
+
+    # Absent the dedicated kubernetes etcd configs in favor of the above
     prometheus::class_config{ "kubetcd_${::site}":
+        ensure         => 'absent',
         dest           => "${targets_path}/kubetcd_${::site}.yaml",
         class_name     => 'role::etcd::v3::kubernetes',
         port           => 2379,
         hostnames_only => false,
     }
     prometheus::class_config{ "kubetcd_staging_${::site}":
+        ensure         => 'absent',
         dest           => "${targets_path}/kubetcd_staging_${::site}.yaml",
         class_name     => 'role::etcd::v3::kubernetes::staging',
         port           => 2379,
         hostnames_only => false,
     }
-    $kubetcd_jobs = [
-      {
-        'job_name'        => 'kubetcd',
-        'scheme'          => 'https',
-        'file_sd_configs' => [
-          { 'files' => [
-              "${targets_path}/kubetcd_*.yaml",
-              ],}
-        ],
-      },
-    ]
-
     prometheus::class_config{ "ml_etcd_${::site}":
+        ensure         => 'absent',
         dest           => "${targets_path}/ml_etcd_${::site}.yaml",
         class_name     => 'role::etcd::v3::ml_etcd',
         port           => 2379,
         hostnames_only => false,
     }
-
-    $ml_etcd_jobs = [
-      {
-        'job_name'        => 'ml_etcd',
-        'scheme'          => 'https',
-        'file_sd_configs' => [
-          { 'files' => [
-              "${targets_path}/ml_etcd_*.yaml",
-              ],}
-        ],
-      },
-    ]
 
     # mcrouter
     # Job definition for mcrouter_exporter
@@ -2466,7 +2451,7 @@ class profile::prometheus::ops (
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra           => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,
-            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $kubetcd_jobs, $ml_etcd_jobs, $mcrouter_jobs, $pdu_jobs,
+            $apache_jobs, $etcd_jobs, $etcdmirror_jobs, $mcrouter_jobs, $pdu_jobs,
             $pybal_jobs, $blackbox_jobs, $probes_jobs, $jmx_exporter_jobs,
             $redis_jobs, $mtail_jobs, $ldap_jobs, $pdns_rec_jobs,
             $etherpad_jobs, $elasticsearch_jobs, $wmf_elasticsearch_jobs,
