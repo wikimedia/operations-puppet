@@ -3709,7 +3709,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: production
 
   developer-portal:
     description: Static documentation site, developer-portal.discovery.wmnet
