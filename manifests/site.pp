@@ -1801,7 +1801,11 @@ node /^cloudelastic1010\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudnet100[5-6]\.eqiad\./ {
+node /^cloudnet1005\.eqiad\./ {
+    role(insetup_noferm)
+}
+
+node /^cloudnet1006\.eqiad\./ {
     role(wmcs::openstack::eqiad1::net)
 }
 
