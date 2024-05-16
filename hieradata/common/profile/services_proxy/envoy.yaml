@@ -208,6 +208,11 @@ profile::services_proxy::envoy::listeners:
     upstream: "ipoid.discovery.wmnet"
     sets_sni: true
     keepalive: "4s" # T356766
+  - name: data-gateway
+    port: 6036
+    service: data-gateway
+    timeout: "10s"
+    keepalive: "4s"
 
   # Non-discovery records
   # Eqiad ports are at 61xx
