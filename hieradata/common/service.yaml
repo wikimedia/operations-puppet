@@ -2969,6 +2969,7 @@ service::catalog:
       scheduler: mh
       ipip_encapsulation:
         - ulsfo
+        - eqsin
     probes:
       - type: http
         host: upload.wikimedia.org
@@ -3013,6 +3014,7 @@ service::catalog:
       scheduler: mh
       ipip_encapsulation:
         - ulsfo
+        - eqsin
     probes:
       - type: http
         host: upload.wikimedia.org
