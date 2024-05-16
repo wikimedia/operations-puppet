@@ -8,7 +8,7 @@ define prometheus::node_lvs_realserver_mss (
     Array[String] $clamped_ipport,
     Pattern[/\.prom$/] $outfile = '/var/lib/prometheus/node.d/lvs-realserver-mss.prom',
 ) {
-    ensure_packages(['python3-scapy', 'python3-prometheus-client', 'python3-pyroute2'])
+    ensure_packages(['python3-prometheus-client'])
 
     file { '/usr/local/bin/prometheus-lvs-realserver-mss':
         ensure => stdlib::ensure($ensure, 'file'),

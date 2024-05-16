@@ -14,61 +14,31 @@ from prometheus_client import (
     write_to_textfile
 )
 
-from pyroute2 import NDB
-
-from scapy.all import (
-    IP,
-    IPv6,
-    L3RawSocket,
-    L3RawSocket6,
-    TCP,
-    sr1
-)
-from scapy.all import conf as scapyconf
-scapyconf.use_pcap = False
-
-
-# https://github.com/secdev/scapy/issues/4201
-def fix_scapy_ipv4_route_table(ip: str) -> None:
-    ndb = NDB()
-
-    # RecordSet count() method isn't available on pyroute2 0.5.14 (bullseye)
-    # if ndb.routes.summary().filter(dst=ip).count() == 0:
-    if not any(ndb.routes.summary().filter(dst=ip)):
-        # No route on the local routing table for the specified IP
-        return None
-
-    scapyconf.route.add(host=ip, gw='0.0.0.0', dev='lo')
+try:
+    TCP_REPAIR = socket.TCP_REPAIR
+except AttributeError:  # only available on python 3.12+
+    TCP_REPAIR = 19
 
 
 def get_mss(host: str, port: int, version: int) -> Optional[int]:
     if version == 4:
-        scapyconf.L3socket = L3RawSocket
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(("0.0.0.0", 0))
+        family = socket.AF_INET
     else:
-        scapyconf.L3socket = L3RawSocket6
-        s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)
-        s.bind(("::", 0))
+        family = socket.AF_INET6
 
-    sport = s.getsockname()[1]
-
-    if version == 4:
-        syn_packet = IP(dst=host)/TCP(sport=sport, dport=port, flags="S", seq=1000)
-    else:
-        syn_packet = IPv6(dst=host)/TCP(sport=sport, dport=port, flags="S", seq=1000)
-    synack = sr1(syn_packet, timeout=3, verbose=0)
-    s.close()
-
-    if synack is None or synack[TCP] is None:
-        print(f"[!] Unexpected answer: {synack}", file=sys.stderr)
+    s = socket.socket(family, socket.SOCK_STREAM)
+    s.settimeout(3)
+    try:
+        s.connect((host, port))
+        # enable TCP_REPAIR to be able to access on-the-wire MSS
+        s.setsockopt(socket.IPPROTO_TCP, TCP_REPAIR, 1)
+        max_seg = s.getsockopt(socket.IPPROTO_TCP, socket.TCP_MAXSEG)
+        # disable it to get a clean close
+        s.setsockopt(socket.IPPROTO_TCP, TCP_REPAIR, 0)
+        s.close()
+        return max_seg
+    except (TimeoutError, OSError):
         return None
-
-    for option in synack[TCP].options:
-        if option[0] == 'MSS':
-            return option[1]
-
-    return None
 
 
 if __name__ == '__main__':
@@ -106,9 +76,6 @@ if __name__ == '__main__':
         except ValueError:
             print(f'Invalid IP: {ip}', file=sys.stderr)
             sys.exit(1)
-
-        if version == 4:
-            fix_scapy_ipv4_route_table(ip)
 
         mss = get_mss(ip, int(port), version)
         if mss is not None:
