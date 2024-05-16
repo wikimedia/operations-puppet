@@ -1057,6 +1057,7 @@ class profile::prometheus::ops (
             'adv_client_port' => 2379,
         },
         port             => 2379,
+        hostnames_only   => false,
     }
 
     # Absent the dedicated kubernetes etcd configs in favor of the above
