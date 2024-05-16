@@ -10,7 +10,6 @@
 class prometheus::node_amd_rocm (
     Wmflib::Ensure   $ensure = 'present',
     Stdlib::Unixpath $outfile = '/var/lib/prometheus/node.d/rocm.prom',
-    Stdlib::Unixpath $rocm_smi_path = '/opt/rocm/bin/rocm-smi',
 ) {
     if $outfile !~ '\.prom$' {
         fail("outfile (${outfile}): Must have a .prom extension")
@@ -20,6 +19,17 @@ class prometheus::node_amd_rocm (
         'python3-prometheus-client',
         'python3-requests',
     ] )
+
+    # After T363191 on Bookworm we can rely on the rocm-smi
+    # package, that has only few dependencies and can be deployed
+    # standalone (without rocm-dev etc.. like it happens for ROCm native
+    # Ubuntu packages).
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['rocm-smi'])
+        $rocm_smi_path = '/usr/bin/rocm-smi'
+    } else {
+        $rocm_smi_path = '/opt/rocm/bin/rocm-smi'
+    }
 
     file { '/usr/local/bin/prometheus-amd-rocm-stats':
         ensure => file,

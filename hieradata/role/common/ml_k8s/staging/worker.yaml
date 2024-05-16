@@ -20,9 +20,6 @@ profile::lvs::realserver::pools:
   inference-staging: {}
   k8s-ingress-ml-staging: {}
 
-profile::amd_gpu::is_kubernetes_node: true
-profile::amd_gpu::allow_gpu_broader_access: true
-
 prometheus::node_exporter::collectors_extra:
   - processes
 

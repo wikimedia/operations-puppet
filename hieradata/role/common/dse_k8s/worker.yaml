@@ -27,8 +27,5 @@ profile::contacts::role_contacts:
   - 'Data Platform'
   - 'Machine Learning'
 
-profile::amd_gpu::allow_gpu_broader_access: true
-profile::amd_gpu::is_kubernetes_node: true
-
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

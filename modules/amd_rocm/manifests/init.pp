@@ -25,8 +25,6 @@
 #
 class amd_rocm (
     String $version = '42',
-    Boolean $allow_gpu_broader_access = false,
-    Boolean $is_kubernetes_node = false,
 ) {
 
     $supported_versions = ['42', '431', '45', '54']
@@ -36,11 +34,11 @@ class amd_rocm (
     }
 
     if debian::codename::ge('bullseye') and ! ($version == '54') {
-        fail('Please use ROCm 5.4 with Bullseye, other versions are not supported.')
+        fail('Please use ROCm 5.4 with Bullseye+, other versions are not supported.')
     }
 
     # AMD firmware for GPU cards
-    if debian::codename::eq('bullseye') {
+    if debian::codename::ge('bullseye') {
         # The default firmware-amd-graphics package in bullseye does not have
         # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
         apt::package_from_bpo { 'firmware-amd-graphics':
@@ -51,34 +49,6 @@ class amd_rocm (
         # away anyway), and on Bookworm and later, the standard package has the
         # right files.
         package { 'firmware-amd-graphics':
-            ensure => present,
-        }
-    }
-
-    # In most cases, like the stat100x nodes, we are able to control all the users
-    # and add them to the 'render' group, needed to access the various devices
-    # exposed by ROCm to the OS. In cases like k8s, we delegate the GPU
-    # to a device plugin that then exposes the GPU to the Kubelet, and it gets
-    # complicated to respect the 'render' posix group access restriction
-    # (see https://github.com/RadeonOpenCompute/k8s-device-plugin/issues/39 for
-    # more info).
-    if $allow_gpu_broader_access {
-        file { '/etc/udev/rules.d/70-kfd.rules':
-            group   => 'root',
-            owner   => 'root',
-            mode    => '0544',
-            content => "SUBSYSTEM==\"kfd\", KERNEL==\"kfd\", MODE=\"0666\"",
-        }
-        file { '/etc/udev/rules.d/70-render.rules':
-            group   => 'root',
-            owner   => 'root',
-            mode    => '0544',
-            content => "SUBSYSTEM==\"drm\", KERNEL==\"renderD*\", MODE=\"0666\"",
-        }
-    }
-
-    if $is_kubernetes_node {
-        package { 'amd-k8s-device-plugin':
             ensure => present,
         }
     }
