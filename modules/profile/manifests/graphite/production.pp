@@ -34,6 +34,9 @@ class profile::graphite::production (
             },
             cluster_routes   => [
                 ['^cassandra\.', 'big_users'],
+                # spammy metrics https://phabricator.wikimedia.org/T365111
+                ['^MediaWiki\.rest_api_latency\.', 'blackhole'],
+                ['^MediaWiki\.rest_api_errors\.', 'blackhole'],
             ],
             'queue_depth'    => 500000,
             'batch_size'     => 8000,
