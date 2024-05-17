@@ -224,7 +224,7 @@ customviews:
   abuse_filter:
     source: abuse_filter
     view: >
-      select af_id, if(af_hidden,null,af_pattern) as af_pattern, af_user, af_user_text,
+      select af_id, if(af_hidden,null,af_pattern) as af_pattern,
       af_actor, af_timestamp, af_enabled, if(af_hidden,null,af_comments) as af_comments,
       af_public_comments, af_hidden, af_hit_count, af_throttled, af_deleted, af_actions,
       af_global, af_group
@@ -241,7 +241,7 @@ customviews:
       - abuse_filter_history
       - abuse_filter
     view: >
-      select afh_id, afh_filter, afh_user, afh_user_text, afh_timestamp, afh_actor,
+      select afh_id, afh_filter, afh_timestamp, afh_actor,
       afh_pattern, afh_comments, afh_flags, afh_public_comments, afh_actions,
       afh_deleted, afh_changed_fields, afh_group
     where: af_id = afh_filter AND NOT find_in_set("hidden",afh_flags) AND af_hidden = 0
