@@ -50,9 +50,9 @@ class profile::druid::middlemanager(
     }
 
     firewall::service { 'druid-middlemanager-indexer-task':
-        proto    => 'tcp',
-        port     => "${peon_start_port}:${peon_end_port}",
-        src_sets => $firewall_access,
+        proto      => 'tcp',
+        port_range => [$peon_start_port, $peon_end_port],
+        src_sets   => $firewall_access,
     }
 
     if $monitoring_enabled {
