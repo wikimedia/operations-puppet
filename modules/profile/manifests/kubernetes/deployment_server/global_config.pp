@@ -362,6 +362,19 @@ class profile::kubernetes::deployment_server::global_config (
             'analytics' => wmflib::role::ips('analytics_cluster::postgresql'),
           }
         },
+        'opensearch' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'client',
+                'port' => 9200,
+              },
+            ],
+          },
+          'instances' => {
+            'datahubsearch' => wmflib::role::ips('analytics_cluster::datahub::opensearch'),
+          }
+        },
       },
       $external_service_redis,
       $external_services_elasticsearch,
