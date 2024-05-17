@@ -324,7 +324,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts-test.cfg
     - partman/custom/reuse-raid10-8dev.cfg
   'kafka-main[12]00[6-9]|kafka-main[12]010':
-    - partman/custom/reuse-raid10-4dev.cfg
+    - partman/raid10-4dev.cfg
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
