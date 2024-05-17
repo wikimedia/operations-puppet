@@ -518,9 +518,9 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
-- name: 'sre-collab-releng-critical'
+- name: 'collaboration-services-releng-critical'
   webhook_configs:
-    # sre-collab x releng - task, IRC, (mail) for both teams
+    # collaboration-services x releng - task, IRC, (mail) for both teams
     # single URL, multiple phids = one ticket with multiple tags.
     # multiple URLs = multiple tickets
     # PHID-PROJ-pjhy3ymh5pitgp2jflcb = https://phabricator.wikimedia.org/tag/collaboration-services/

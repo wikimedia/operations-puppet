@@ -35,7 +35,7 @@ class profile::gerrit(
 
     if !$is_replica and $enable_monitoring {
         prometheus::blackbox::check::tcp { 'gerrit-ssh':
-            team     => 'sre-collab-releng',
+            team     => 'collaboration-services-releng',
             severity => 'critical',
             port     => 29418,
         }
