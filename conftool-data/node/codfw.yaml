@@ -144,7 +144,7 @@ codfw:
     elastic2087.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2088.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2089.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
-    elastic2090.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
+    elastic2090.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2091.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2092.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2093.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
