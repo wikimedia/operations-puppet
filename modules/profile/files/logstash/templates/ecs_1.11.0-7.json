@@ -1,11 +1,11 @@
 {
   "index_patterns": [
-    "ecs-1.11.0-8-*",
-    "ecs-*-1.11.0-8-*"
+    "ecs-1.11.0-7-*",
+    "ecs-*-1.11.0-7-*"
   ],
   "mappings": {
     "_meta": {
-      "version": "1.11.0-8"
+      "version": "1.11.0-7"
     },
     "date_detection": false,
     "dynamic_templates": [
