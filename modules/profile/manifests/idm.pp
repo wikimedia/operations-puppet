@@ -190,10 +190,10 @@ class profile::idm(
         prometheus::blackbox::check::http { $service_fqdn:
             team               => 'infrastructure-foundations',
             severity           => 'critical',
-            path               => '/signup/',
+            path               => '/accounts/login/',
             force_tls          => true,
             status_matches     => [200],
-            body_regex_matches => ['signup'],
+            body_regex_matches => ['account'],
             follow_redirects   => true,
             probe_runbook      => 'https://wikitech.wikimedia.org/wiki/IDM/Runbook'
         }
