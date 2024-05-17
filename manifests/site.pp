@@ -1275,11 +1275,6 @@ node /^kubestagetcd100[456]\.eqiad\./ {
     role(etcd::v3::kubernetes::staging)
 }
 
-# kubernetes masters for staging-eqiad
-node /^kubestagemaster100[12]\.eqiad\./ {
-    role(kubernetes::staging::master)
-}
-
 # kubernetes masters for staging clusters
 node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
     role(kubernetes::staging::master_stacked)

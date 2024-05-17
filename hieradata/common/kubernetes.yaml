@@ -525,8 +525,6 @@ kubernetes::clusters:
         name: k8s-staging
         port: 9907
       control_plane_nodes:
-        - kubestagemaster1001.eqiad.wmnet
-        - kubestagemaster1002.eqiad.wmnet
         - kubestagemaster1003.eqiad.wmnet
         - kubestagemaster1004.eqiad.wmnet
         - kubestagemaster1005.eqiad.wmnet
@@ -538,13 +536,7 @@ kubernetes::clusters:
       cluster_cidr:
         v4: "10.64.75.0/24"
         v6: "2620:0:861:babe::/64"
-      etcd_urls:
-        - https://kubestagetcd1004.eqiad.wmnet:2379
-        - https://kubestagetcd1005.eqiad.wmnet:2379
-        - https://kubestagetcd1006.eqiad.wmnet:2379
       cluster_nodes:
-        - kubestagemaster1001.eqiad.wmnet
-        - kubestagemaster1002.eqiad.wmnet
         - kubestagemaster1003.eqiad.wmnet
         - kubestagemaster1004.eqiad.wmnet
         - kubestagemaster1005.eqiad.wmnet

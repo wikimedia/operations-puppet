@@ -411,8 +411,6 @@ eqiad:
     parse1023.eqiad.wmnet: [kubesvc]
     parse1024.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
-    kubestagemaster1001.eqiad.wmnet: [kubemaster]
-    kubestagemaster1002.eqiad.wmnet: [kubemaster]
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]
     kubestagemaster1005.eqiad.wmnet: [kubemaster]
