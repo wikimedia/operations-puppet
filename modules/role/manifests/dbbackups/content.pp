@@ -6,15 +6,11 @@
 # Additionally, add the client daemon for Bacula and
 # setup its backup to the corresponding long term storage.
 class role::dbbackups::content {
-    system::role { 'dbbackups::content':
-        description => 'External Storage dumps',
-    }
+    include profile::firewall
+    include profile::base::production
 
-    include ::profile::firewall
-    include ::profile::base::production
-
-    include ::profile::dbbackups::mydumper
-    include ::profile::dbbackups::snapshot
-    include ::profile::backup::host
-    include ::profile::dbbackups::bacula_es
+    include profile::dbbackups::mydumper
+    include profile::dbbackups::snapshot
+    include profile::backup::host
+    include profile::dbbackups::bacula_es
 }

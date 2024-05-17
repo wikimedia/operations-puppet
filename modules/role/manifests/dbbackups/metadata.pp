@@ -10,16 +10,12 @@
 # backups to the long-term storage. In the future, we will want
 # to send them to both, in a cross-dc way.
 class role::dbbackups::metadata {
-    system::role { 'dbbackups::metadata':
-        description => 'Metadata databases dumps and backups',
-    }
+    include profile::firewall
+    include profile::base::production
 
-    include ::profile::firewall
-    include ::profile::base::production
-
-    include ::profile::backup::host
-    include ::profile::mariadb::wmfmariadbpy
-    include ::profile::dbbackups::mydumper
-    include ::profile::dbbackups::snapshot
-    include ::profile::dbbackups::bacula
+    include profile::backup::host
+    include profile::mariadb::wmfmariadbpy
+    include profile::dbbackups::mydumper
+    include profile::dbbackups::snapshot
+    include profile::dbbackups::bacula
 }

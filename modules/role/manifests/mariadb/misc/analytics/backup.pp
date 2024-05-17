@@ -1,11 +1,6 @@
 class role::mariadb::misc::analytics::backup {
+    include profile::base::production
+    include profile::firewall
 
-    system::role { 'mariadb::misc::analytics::backup':
-        description => 'Backup Analytics Multiinstance Databases',
-    }
-
-    include ::profile::base::production
-    include ::profile::firewall
-
-    include ::profile::mariadb::misc::analytics::multiinstance
+    include profile::mariadb::misc::analytics::multiinstance
 }

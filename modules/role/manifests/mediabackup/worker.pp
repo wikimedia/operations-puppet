@@ -3,12 +3,8 @@
 # perform recoveries in case of incidents.
 # Actual backup storage will live in backup* hosts.
 class role::mediabackup::worker {
-    system::role { 'mediabackup::worker':
-        description => 'Media backups worker server',
-    }
+    include profile::base::production
+    include profile::firewall
 
-    include ::profile::base::production
-    include ::profile::firewall
-
-    include ::profile::mediabackup::worker
+    include profile::mediabackup::worker
 }
