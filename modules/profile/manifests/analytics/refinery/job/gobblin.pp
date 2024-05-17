@@ -80,11 +80,11 @@ class profile::analytics::refinery::job::gobblin(
     }
 
     profile::analytics::refinery::job::gobblin_job { 'event_default':
-        interval         => '*-*-* *:05:00',
+        interval         => '*-*-* *:15:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy':
-        interval         => '*-*-* *:10:00',
+        interval         => '*-*-* *:20:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'webrequest_frontend_rc0':
