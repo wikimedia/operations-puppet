@@ -75,7 +75,10 @@ class profile::stewards (
     }
 
     # let lists primary host sync data from the export_dir
-    class { 'rsync::server': }
+    # passing an empty string to address = listens on IPv6 as well, not just 0.0.0.0
+    class { 'rsync::server':
+        address => '',
+    }
 
     rsync::server::module { 'steward-data-export-dir':
         ensure        => present,
