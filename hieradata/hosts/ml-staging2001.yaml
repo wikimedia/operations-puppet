@@ -1,2 +1,1 @@
-profile::amd_gpu::rocm_version: '54'
 profile::amd_gpu::is_kubernetes_node: true
