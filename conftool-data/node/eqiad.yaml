@@ -413,6 +413,9 @@ eqiad:
   kubernetes-staging:
     kubestagemaster1001.eqiad.wmnet: [kubemaster]
     kubestagemaster1002.eqiad.wmnet: [kubemaster]
+    kubestagemaster1003.eqiad.wmnet: [kubemaster]
+    kubestagemaster1004.eqiad.wmnet: [kubemaster]
+    kubestagemaster1005.eqiad.wmnet: [kubemaster]
     kubestage1003.eqiad.wmnet: [kubesvc]
     kubestage1004.eqiad.wmnet: [kubesvc]
   druid-public:

@@ -527,6 +527,9 @@ kubernetes::clusters:
       control_plane_nodes:
         - kubestagemaster1001.eqiad.wmnet
         - kubestagemaster1002.eqiad.wmnet
+        - kubestagemaster1003.eqiad.wmnet
+        - kubestagemaster1004.eqiad.wmnet
+        - kubestagemaster1005.eqiad.wmnet
       cluster_dns:
         - "10.64.76.3"
       service_cluster_cidr:
@@ -542,6 +545,9 @@ kubernetes::clusters:
       cluster_nodes:
         - kubestagemaster1001.eqiad.wmnet
         - kubestagemaster1002.eqiad.wmnet
+        - kubestagemaster1003.eqiad.wmnet
+        - kubestagemaster1004.eqiad.wmnet
+        - kubestagemaster1005.eqiad.wmnet
         - kubestage1003.eqiad.wmnet
         - kubestage1004.eqiad.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
