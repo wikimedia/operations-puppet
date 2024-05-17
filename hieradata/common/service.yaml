@@ -1224,7 +1224,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    role: "kubernetes::staging::master"
+    role: "kubernetes::staging::master_stacked"
     state: production
 
   labweb-ssl:
