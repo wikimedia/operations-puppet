@@ -2148,8 +2148,9 @@ node /^mw14(2[6-8])\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw1429\.eqiad\./ {
-    role(mediawiki::appserver)
+# T353464
+node /^wikikube-ctrl1002\.eqiad\./ {
+    role(insetup::serviceops)
 }
 
 # rack B3 and B5
@@ -2164,8 +2165,9 @@ node /^mw1407\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
-node /^mw1436\.eqiad\./ {
-    role(mediawiki::appserver)
+# T353464
+node /^wikikube-ctrl1003\.eqiad\./ {
+    role(insetup::serviceops)
 }
 
 # rack C8
@@ -2181,8 +2183,13 @@ node /^mw136[45]\.eqiad\./ {
 }
 
 # rack D6
-node /^mw13(66|7[2-3])\.eqiad\./ {
+node /^mw13(66|73)\.eqiad\./ {
     role(mediawiki::appserver)
+}
+
+# T353464
+node /^wikikube-ctrl1001\.eqiad\./ {
+    role(insetup::serviceops)
 }
 
 # rack D8 - API servers
@@ -2272,7 +2279,12 @@ node /^mw2(29[8-9]|300)\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
-node /^mw239[123]\.codfw\./ {
+# T353464
+node /^wikikube-ctrl2003\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw239[23]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
@@ -2311,7 +2323,13 @@ node /^mw232[3-4]\.codfw\./ {
 }
 
 # rack B6
-node /^mw23(2[79]|31)\.codfw\./ {
+
+# T353464
+node /^wikikube-ctrl2001\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw232[79]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
@@ -2323,7 +2341,13 @@ node /^mw243[23]\.codfw\./ {
 # Row C
 
 # rack C6
-node /^mw236[135]\.codfw\./ {
+
+# T353464
+node /^wikikube-ctrl2002\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw236[35]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
