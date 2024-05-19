@@ -63,6 +63,7 @@ class vrts(
     class { '::vrts::web':
         domain_name => $public_dns,
     }
+
     class { '::vrts::mail':
         vrts_mysql_database => $exim_database_name,
         vrts_mysql_user     => $exim_database_user,
@@ -128,82 +129,57 @@ class vrts(
         mode  => '0755',
     })
 
-    file { '/etc/vrts/install-script-vars':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-        content => template('vrts/install-script-vars.erb'),
+    # Maintenance Scripts
+    file {
+        default:
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0744';
+        '/etc/vrts/install-script-vars':
+            content => template('vrts/install-script-vars.erb');
+        '/usr/local/bin/install_vrts':
+            source  => 'puppet:///modules/vrts/install_vrts.sh';
+        '/usr/local/bin/upgrade_vrts':
+            source  => 'puppet:///modules/vrts/upgrade_vrts.sh';
     }
 
-    file { '/usr/local/bin/install_vrts':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/vrts/install_vrts.sh',
+    # Configs
+    file {
+        default:
+            ensure => file,
+            owner  => 'otrs',
+            mode   => '0755',
+            group  => 'www-data';
+        '/opt/otrs/Kernel/Config.pm':
+            mode    => '0440',
+            content => template('vrts/Config.pm.erb');
+        '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
+            source => 'puppet:///modules/vrts/vrts.TicketExport2Mbox.pl';
+        '/opt/otrs/scripts/apache2-perl-startup.pl':
+            source => 'puppet:///modules/vrts/apache2-perl-startup.pl';
     }
 
-    file { '/usr/local/bin/upgrade_vrts':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => 'puppet:///modules/vrts/upgrade_vrts.sh',
-    }
-
-    file { '/opt/otrs/Kernel/Config.pm':
-        ensure  => file,
-        owner   => 'otrs',
-        group   => 'www-data',
-        mode    => '0440',
-        content => template('vrts/Config.pm.erb'),
-    }
-
-    file { '/opt/otrs/bin/otrs.TicketExport2Mbox.pl':
-        ensure => file,
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0755',
-        source => 'puppet:///modules/vrts/vrts.TicketExport2Mbox.pl',
-    }
-
-    # Enable Database Connection Pooling
-    file { '/opt/otrs/scripts/apache2-perl-startup.pl':
-        ensure => file,
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0755',
-        source => 'puppet:///modules/vrts/apache2-perl-startup.pl',
-    }
-
-    # WMF skin customizations
-    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
-        ensure => file,
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0664',
-        source => 'puppet:///modules/vrts/wmf.ico',
-    }
-    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/logo_bg_wmf.png':
-        ensure => file,
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0664',
-        source => 'puppet:///modules/vrts/logo_bg_wmf.png',
-    }
-    file { '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_wmf.png':
-        ensure => file,
-        owner  => 'otrs',
-        group  => 'www-data',
-        mode   => '0664',
-        source => 'puppet:///modules/vrts/loginlogo_wmf.png',
+    # WMF Skin Customizations
+    file {
+        default:
+            ensure => file,
+            owner  => 'otrs',
+            group  => 'www-data',
+            mode   => '0664';
+        '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/icons/product.ico':
+            source => 'puppet:///modules/vrts/wmf.ico';
+        '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/logo_bg_wmf.png':
+            source => 'puppet:///modules/vrts/logo_bg_wmf.png';
+        '/opt/otrs/var/httpd/htdocs/skins/Agent/default/img/loginlogo_wmf.png':
+            source => 'puppet:///modules/vrts/loginlogo_wmf.png';
     }
 
     $daemon_ensure = $vrts_daemon ? {
         true    => present,
         default => absent,
     }
+
     systemd::service { 'vrts-daemon':
         ensure         => $daemon_ensure,
         content        => systemd_template('vrts-daemon'),
