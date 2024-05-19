@@ -5,3 +5,4 @@ profile::ncmonitor::nameservers:
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+profile::contacts::role_contacts: ['Traffic']
