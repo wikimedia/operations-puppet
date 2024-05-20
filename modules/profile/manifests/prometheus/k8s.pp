@@ -34,7 +34,9 @@ class profile::prometheus::k8s (
         $storage_retention_size = $k8s_config['prometheus']['retention_size']
 
         $client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'prometheus', {
-            'renew_seconds' => $k8s_config['pki_renew_seconds'],
+            # 8759h in seconds. Temporarily longer client certs - https://phabricator.wikimedia.org/T343529
+            'renew_seconds' => 31532400,
+            'profile'       => 'prometheus',
             'names'         => [{ 'organisation' => 'system:monitoring' }],
             'owner'         => 'prometheus',
             'outdir'        => "/srv/prometheus/${k8s_cluster}/pki",
