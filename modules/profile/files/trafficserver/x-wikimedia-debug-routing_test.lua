@@ -55,6 +55,21 @@ describe("Busted unit testing framework", function()
 
       require("x-wikimedia-debug-routing")
 
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mwdebug"
+      _G.ts.client_request.header['Host'] = 'www.wikidata.org'
+
+      do_remap()
+
+      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug.discovery.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4444)
+    end)
+
+    it("test - X-Wikimedia-Debug on k8s, old alias name", function()
+      stub(ts.client_request, "set_url_host")
+      stub(ts.client_request, "set_url_port")
+
+      require("x-wikimedia-debug-routing")
+
       _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-experimental"
       _G.ts.client_request.header['Host'] = 'www.wikidata.org'
 

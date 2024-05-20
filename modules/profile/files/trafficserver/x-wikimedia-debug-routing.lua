@@ -39,6 +39,7 @@ function do_remap()
     end
 
     local debug_map = {
+        ["k8s-mwdebug"]             = "mwdebug.discovery.wmnet",
         ["1"]                       = "mwdebug1001.eqiad.wmnet",
         ["mwdebug1001.eqiad.wmnet"] = "mwdebug1001.eqiad.wmnet",
         ["mwdebug1002.eqiad.wmnet"] = "mwdebug1002.eqiad.wmnet",
@@ -58,7 +59,7 @@ function do_remap()
     if debug_map[backend] then
         ts.client_request.set_url_host(debug_map[backend])
         -- Set the port, so this works seamlessly also for things on k8s
-        if backend == "k8s-experimental" then
+        if backend == "k8s-mwdebug" or backend == "k8s-experimental" then
             ts.client_request.set_url_port(4444)
         else
             ts.client_request.set_url_port(443)
