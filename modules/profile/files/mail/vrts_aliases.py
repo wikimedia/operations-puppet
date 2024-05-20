@@ -62,10 +62,12 @@ def main():
     return_code = 0
     aliases = set()
     query = "SELECT value0, create_time, change_time FROM system_address"
-    # List of emails handled by gsuite that cannot be removed from VRTS, see T284145
+    # List of emails handled by gsuite or postfix that cannot be removed from VRTS, see T284145
     known_invalid_addresses = [
+        # gsuite
         "board@wikimedia.org",
         "business@wikimedia.org",
+        "donation@wikimedia.org",
         "donations@wikimedia.org",
         "glam@wikimedia.org",
         "improve@wikimedia.org",
@@ -77,7 +79,18 @@ def main():
         "privacy@wikimedia.org",
         "security@wikimedia.org",
         "ux@wikimedia.org",
+        "wikimania@wikimedia.org",
         "wm-cz@wikimedia.org"
+        # postfix
+        "donations@wikipedia.org",
+        "donation@wikipedia.org",
+        "jobs@wikipedia.org",
+        "noc@wikimedia.org",
+        "otrs@wikimedia.org",
+        "privacy@wikidata.org",
+        "security@wikipedia.org",
+        "webmaster@wikimedia.org",
+        "webmaster@wikipedia.org"
     ]
 
     config = ConfigParser()
