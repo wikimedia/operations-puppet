@@ -3,8 +3,14 @@
 
 # http://hadoop.apache.org/zookeeper/docs/current/zookeeperAdmin.html
 
+<% if @facts['os']['release']['major'].to_i > 11 -%>
+# https://zookeeper.apache.org/doc/r3.4.10/zookeeperAdmin.html#sc_zkCommands
+# T365400 Really we should check zk version >= 3.4.10 but for now just check os
+4lw.commands.whitelist=*
+<%- end -%>
+
 # specify all zookeeper servers
-# The fist port is used by followers to connect to the leader
+# The first port is used by followers to connect to the leader
 # The second one is used for leader election
 <%
 if @hosts
