@@ -799,7 +799,7 @@ groups:
   fr-tech-devs:
     gid: 789
     description: fundraising tech developers
-    members: &fr_tech_devs [eileen, ejegg, jgleeson, damilare, wfan219]
+    members: &fr_tech_devs [eileen, ejegg, jgleeson, damilare, wfan219, ceec]
     approval:
       - Greg Grossmeier
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
@@ -6346,6 +6346,14 @@ users:
     uid: 35756
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  ceec:
+    ensure: present
+    realname: Christine Stone
+    email: cstone@wikimedia.org
+    uid: 20611
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5p15G/QYTPNw+VhcJOK6GospIZ4fO/sCyUU2AQpPjU cc@shiny'
 
 ldap_only_users:
   adavenport:
@@ -6403,10 +6411,6 @@ ldap_only_users:
   coreyfloyd:
     ensure: absent
     realname: Corey Floyd
-  ceec:
-    ensure: present
-    realname: Christine Stone
-    email: cstone@wikimedia.org
   daisy:
     ensure: present
     realname: Daisy Chen
