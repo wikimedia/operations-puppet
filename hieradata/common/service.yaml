@@ -2968,6 +2968,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: mh
       ipip_encapsulation:
+        - codfw
         - ulsfo
         - eqsin
     probes:
@@ -3013,6 +3014,7 @@ service::catalog:
             - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: mh
       ipip_encapsulation:
+        - codfw
         - ulsfo
         - eqsin
     probes:
