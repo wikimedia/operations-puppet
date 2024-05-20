@@ -55,3 +55,6 @@ acmechief_host: acmechief2002.codfw.wmnet
 
 profile::phabricator::logmail::sndr_address: 'aklapper@wikimedia.org'
 
+profile::mail::default_mail_relay::smarthosts:
+- 'mx-out1001.wikimedia.org'
+- 'mx-out2001.wikimedia.org'
