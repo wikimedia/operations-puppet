@@ -112,6 +112,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   wikikube_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
@@ -139,6 +147,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   wikikube_staging_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
@@ -157,6 +173,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   mlserve_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
@@ -184,6 +208,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   mlserve_staging_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
@@ -202,6 +234,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   aux_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
@@ -218,6 +258,14 @@ profile::pki::multirootca::intermediates:
         usages:
           - 'digital signature'
           - 'key encipherment'
+      # Temporary profile for longer Prometheus certs expiration
+      # https://phabricator.wikimedia.org/T343529
+      prometheus:
+        expiry: '8760h' # 1 year
+        usages:
+          - 'digital signature'
+          - 'key encipherment'
+          - 'client auth'
   dse_front_proxy:
     # Separate CA for the front proxy, using the same as for client-auth won't work:
     # https://v1-23.docs.kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#ca-reusage-and-conflicts
