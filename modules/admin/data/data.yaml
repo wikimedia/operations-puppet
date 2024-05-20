@@ -7179,3 +7179,7 @@ ldap_only_users:
     ensure: present
     realname: Daniel Erenrich
     email: derenrich@wikimedia.org
+  jaycano:
+    ensure: present
+    realname: Juan Cano
+    email: jcanonunez@wikimedia.org
