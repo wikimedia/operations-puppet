@@ -23,3 +23,7 @@ profile::java::enable_dbg: true
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+profile::mail::default_mail_relay::smarthosts:
+- 'mx-out1001.wikimedia.org'
+- 'mx-out2001.wikimedia.org'
