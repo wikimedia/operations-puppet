@@ -61,3 +61,11 @@ profile::contacts::role_contacts: ["ServiceOps"]
 
 # Increase the number of open files T344428
 profile::mediawiki::php::increase_open_files: true
+
+# Move role to new postfix mx servers, T365395
+profile::mail::default_mail_relay::smarthosts:
+- 'mx-out1001.wikimedia.org'
+- 'mx-out2001.wikimedia.org'
+profile::mail::default_mail_relay::mediawiki_smarthosts:
+- 'mx-out1001.wikimedia.org'
+- 'mx-out2001.wikimedia.org'
