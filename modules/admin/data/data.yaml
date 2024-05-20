@@ -6177,7 +6177,7 @@ users:
     uid: 45522
     gid: 500
     ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC2WVhp1NXs349cOJWkkKsP88yeyYRF2LVEjOwSSbhxT7ewIMs3zoQyQXUS9h+2Fsvi8tgZerdu8fo95fhiT+SVcUSNYGjTHFN/U6WW3R0MGo3Ytb1IcvseaAuIvgzvlaRl57lUkdCTtPUrj+vxhtblZuipZrGgvY5o1SCmW7L+bA3tyfytbXrRfBP7rWtz1YTFMprpruYHRL7QN+p/qPDYSwqWTdwhl9hxNZJ0BNaVA3RCYJaehQq+r1G9oYYe/goZIoh1WCyo6HD9Auk3R0DjqAqmJZhpiTeGUbVp5VnZ52mOjAWqEe7F0bfFesfGnlsAzeYIqaQf507+/bWCCnxEhpjm5uC6p2jyncYfBax0zyV+IeGtIPfXHGHhaRomB4wrhOfxkayw4iHVP1vnJpOTUpveHuXx0OIQi/rt7X1RHcGJ/qAVQppXfLW+7hFcyepy6pesyunvVyxpqUfNeCpsWpfLlzEG/SdFyua04cLEOAbsw311M1plyRxqNQPqs5KVqS6PeJBKsbxb4aq9clPP9mY9WWgoSo8DWR6p4ZZAWrQ8TkzhewAA93e6xhkhSH6IKZGDRLeAx69Dln30YdYNFq19H6kG6/jjxfI6eLL77aOlPlx7cHmv2xdYptGN2IO6v0JP0jMGh3yzRtGq899RuRELZGIGX55VTYRwgvXmHQ== grace@wmf3410'
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGtvGaNpxjirVuGlDRaAHg6ttz+6668qQyFyoGEZCxoO gchoi@wikimedia.org'
   ehughes:
     ensure: present
     realname: Emma Hughes
