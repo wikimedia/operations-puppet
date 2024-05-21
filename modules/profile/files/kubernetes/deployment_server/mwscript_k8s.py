@@ -93,19 +93,20 @@ def main() -> int:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
 
-    # We set allow_abbrev to False to limit the chance that parse_known_args eats something intended
-    # for MWScript.php, or for the maintenance script itself.
     parser = argparse.ArgumentParser(
-        allow_abbrev=False,
         description="Start a MediaWiki maintenance script on Kubernetes.\n\n"
-                    "After the options listed below are stripped out, the remainder of argv is "
-                    "passed to MWScript.php. A typical invocation looks like:\n\n"
-                    "%(prog)s Filename.php --wiki=aawiki --script-specific-arg")
+                    "Pass any options below for this script, then '--', then all remaining "
+                    "arguments are passed to MWScript.php. A typical invocation looks like:\n\n"
+                    "%(prog)s --comment='backfill for T123456' -- Filename.php --wiki=aawiki "
+                    "--script-specific-arg",
+        formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Print extra output from the underlying helmfile invocation.')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
-    args, mwscript_args = parser.parse_known_args()
-    script_name = mwscript_args[0]
+    parser.add_argument('script_name',
+                        help='Filename of maintenance script (first arg to MWScript.php).')
+    parser.add_argument('script_args', nargs='*', help='Additional arguments to MWScript.php.')
+    args = parser.parse_args()
 
     environment = get_primary_dc()
     # If we can't open the config, bail out with a clear error message, instead of running helmfile.
@@ -124,11 +125,11 @@ def main() -> int:
             'image': mediawiki_image(),
         },
         'mwscript': {
-            'args': mwscript_args,
+            'args': [args.script_name, *args.script_args],
             'labels': {
                 'username': interactive.get_username(),
                 # The label can't contain slashes. If script_name is a path, use the file only.
-                'script': script_name.split('/')[-1],
+                'script': args.script_name.split('/')[-1],
             },
             'comment': args.comment,
         }
@@ -137,7 +138,7 @@ def main() -> int:
         yaml.dump(values, f)
         values_filename = f.name
 
-    logger.info('⏳ Starting %s on Kubernetes...', script_name)
+    logger.info('⏳ Starting %s on Kubernetes...', args.script_name)
     release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
     try:
         subprocess.run([
