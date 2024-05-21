@@ -217,10 +217,13 @@ Version: 12
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/calico323
  component/dnsdist
  component/elastic710
  component/exim4-arc
  component/haproxy26
+ component/istio115
+ component/kubernetes123
  component/puppet5
  component/puppetdb7
  component/prometheus-openstack-exporter
