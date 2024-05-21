@@ -99,6 +99,9 @@ profile::cassandra::settings:
     permissions_validity_in_ms: 600000
     trickle_fsync: false
     client_encryption_enabled: true
+    # Client encryption has been made optional here for the same reason it was
+    # in the aqs cluster (see: T309229 & T310820).
+    client_encryption_optional: true
     internode_encryption: all
   users:
     - restbase_dev
