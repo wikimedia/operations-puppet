@@ -7,5 +7,4 @@ The WMF Analytics team should code review jobs that publish this data
 Some guidelines:
 
 * Please name your folders in a friendly way, think of strangers browsing through this data
-* Take a look at https://wikitech.wikimedia.org/wiki/Analytics/Reportupdater for ongoing reports
 * Always Remember: be careful what you share here
