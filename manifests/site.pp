@@ -1801,12 +1801,8 @@ node /^cloudelastic1010\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
 
-node /^cloudnet1005\.eqiad\./ {
+node /^cloudnet100[56]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::net_ovs)
-}
-
-node /^cloudnet1006\.eqiad\./ {
-    role(insetup_noferm)
 }
 
 # New cloudnet nodes T342455
