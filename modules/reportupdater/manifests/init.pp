@@ -14,7 +14,7 @@
 #   $log_path         - string. Path where to put reportupdater's logs.
 #                       Default: ${base_path}/log
 #
-class reportupdater(
+class reportupdater (
     $user,
     $base_path = '/srv/reportupdater',
     $log_path  = undef,
@@ -38,7 +38,7 @@ class reportupdater(
 
     # Ensure these directories exist and are writeable by $user.
     file { [$base_path, $output_path, $log_path, $jobs_path]:
-        ensure => 'directory',
+        ensure => absent,
         owner  => $user,
         group  => $group,
         mode   => '0775',
@@ -46,20 +46,21 @@ class reportupdater(
 
     # Add logrotate for $log_path/*.log.
     logrotate::conf { 'reportupdater':
+        ensure  => absent,
         content => template('reportupdater/logrotate.erb'),
         require => File[$log_path],
     }
 
     package { 'python3-pid':
-        ensure => 'installed'
+        ensure => absent,
     }
 
     # Ensure reportupdater is cloned and latest version.
     git::clone { 'analytics/reportupdater':
-        ensure    => 'latest',
+        ensure    => absent,
         directory => $source_path,
         origin    => 'https://gerrit.wikimedia.org/r/analytics/reportupdater.git',
         owner     => $user,
-        require   => [File[$base_path], Package['python3-pid']]
+        require   => [File[$base_path], Package['python3-pid']],
     }
 }
