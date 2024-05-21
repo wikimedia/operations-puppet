@@ -3,7 +3,7 @@
 
 [ -z "$PS1" ] && return
 
-export TERMINFO=/home/klausman/.terminfo
+export TERMINFO_DIRS=/home/klausman/.terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo
 
 tput &>/dev/null ; retval=$?
 if [[ $retval == 3 ]]; then
