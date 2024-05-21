@@ -117,3 +117,6 @@ profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 
 # We need to retain python2 on bullseye because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
