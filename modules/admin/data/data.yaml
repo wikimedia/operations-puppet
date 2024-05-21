@@ -1268,7 +1268,7 @@ groups:
   cassandra-staging-devs:
     gid: 717
     description: People who can run the CQL shell in Cassandra staging.
-    members: [jgiannelos, xcollazo]
+    members: [jgiannelos, xcollazo, sg912]
     privileges: ['ALL = (cassandra_devel) NOPASSWD: /usr/bin/cqlsh *']
     approval:
       - Kwaku Addo Ofori
