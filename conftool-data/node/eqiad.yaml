@@ -6,7 +6,6 @@ eqiad:
     mw1364.eqiad.wmnet: [nginx]
     mw1365.eqiad.wmnet: [nginx]
     mw1366.eqiad.wmnet: [nginx]
-    mw1372.eqiad.wmnet: [nginx]
     mw1373.eqiad.wmnet: [nginx]
     mw1401.eqiad.wmnet: [nginx]
     mw1403.eqiad.wmnet: [nginx]
@@ -16,8 +15,6 @@ eqiad:
     mw1417.eqiad.wmnet: [nginx, canary]
     mw1418.eqiad.wmnet: [nginx, canary]
     mw1420.eqiad.wmnet: [nginx]
-    mw1429.eqiad.wmnet: [nginx]
-    mw1436.eqiad.wmnet: [nginx]
     mw1456.eqiad.wmnet: [nginx]
   api_appserver:
     mw1358.eqiad.wmnet: [nginx]
