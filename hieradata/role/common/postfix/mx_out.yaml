@@ -11,6 +11,10 @@ profile::postfix::mx::rspamd_config:
     signing_table:
       - 'wiki@wikimedia.org wiki-mail'
       - '*@wikimedia.org wikimedia'
+      # DKIM Sign subdomains of wikimedia.org with the wikimedia key. This is
+      # permissible, since our DMARC has adkim=r or relaxed, which matches on
+      # subdomains.
+      - '*@*.wikimedia.org wikimedia'
     key_table:
       - 'wiki-mail wikimedia.org:wiki-mail:/etc/rspamd/dkim/wikimedia.org-wiki-mail.key'
       - 'wikimedia wikimedia.org:wikimedia:/etc/rspamd/dkim/wikimedia.org-wikimedia.key'
