@@ -176,7 +176,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'datahubsearch*':
     - partman/flat.cfg
     - virtual.cfg
-  'db999|db1246':
+  'db999':
     - partman/custom/db.cfg
   'db888':
     - partman/manual-setup.cfg
