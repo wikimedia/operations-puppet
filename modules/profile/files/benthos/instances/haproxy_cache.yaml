@@ -133,7 +133,7 @@ pipeline:
             - label: "ttfb_metric_switch"
               switch:
                 # If it's an hc request, increment also this timing
-                - check: this.uri_host.contains("healthcheck.wikimedia.org")
+                - check: this.exists("uri_host") && this.uri_host.contains("healthcheck.wikimedia.org")
                   processors:
                     - label: "ttfb_metric_healthcheck"
                       metric:
