@@ -1806,7 +1806,7 @@ node /^cloudnet1005\.eqiad\./ {
 }
 
 node /^cloudnet1006\.eqiad\./ {
-    role(wmcs::openstack::eqiad1::net)
+    role(insetup_noferm)
 }
 
 # New cloudnet nodes T342455
