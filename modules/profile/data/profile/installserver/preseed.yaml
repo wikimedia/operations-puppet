@@ -275,6 +275,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
+  'wikikube-ctrl*':
+    - partman/flat.cfg
+    - partman/flat-noswap.cfg
+    - virtual.cfg
   'failoid*':
     - partman/flat.cfg
     - virtual.cfg
