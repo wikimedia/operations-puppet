@@ -36,8 +36,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts-test.cfg
     - partman/reuse-raid10-4dev.cfg
   'an-launcher1002*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-analytics-raid1-2dev.cfg
   'an-mariadb100[1-2]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
