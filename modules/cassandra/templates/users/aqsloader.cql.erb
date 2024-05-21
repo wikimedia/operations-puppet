@@ -33,3 +33,7 @@ GRANT MODIFY ON KEYSPACE "local_group_default_T_unique_devices" TO 'aqsloader';
 -- was added as a break-fix (see: https://phabricator.wikimedia.org/T356400).
 GRANT SELECT ON KEYSPACE image_suggestions TO aqsloader;
 GRANT MODIFY ON KEYSPACE image_suggestions TO aqsloader;
+
+-- Commons Impact Metrics — https://phabricator.wikimedia.org/T362697
+GRANT SELECT ON KEYSPACE commons TO aqsloader;
+GRANT MODIFY ON KEYSPACE commons TO aqsloader;
