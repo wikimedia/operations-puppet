@@ -85,6 +85,8 @@ esac
 
 [ -f ~/.less_termcap ] && source ~/.less_termcap
 
+alias br="sudo -i bash --rcfile /home/klausman/.bashrc_root -i"
+
 # No Proxy
 function proxyoff
 {
