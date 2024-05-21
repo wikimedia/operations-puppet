@@ -106,7 +106,8 @@ pipeline:
 
           # Metadata
           meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
-          meta domain = this.uri_host
+          # When no host is present better to delete metadata field
+          meta domain = this.uri_host.catch(deleted())
           meta stream = "webrequest_frontend"
           root.meta = root_meta()
 
@@ -276,3 +277,10 @@ tests:
       -
         - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"301","ip":"127.0.0.1","meta":{"domain":"en.wikipedia.org","stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_host":"en.wikipedia.org","uri_path":"/","webrequest_source":"unknown"}
         - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"301","ip":"127.0.0.1","meta":{"domain":"en.wikipedia.org","stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_host":"en.wikipedia.org","uri_path":"/","webrequest_source":"unknown"}
+  - name: test missing host
+    target_processors: /pipeline/processors
+    environment: {}
+    input_batch:
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message": "7660 186 0 0 301 {} {miss} -- newlog 12345 127.0.0.1:36999 17107989907660 [18/Mar/2024:21:56:30.914] tls~ tls/backend_server 0/0/0/186/186 400 1484 - - ---- 17/9/0/0/0 0/0 {||||||vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new} {miss|text/html; charset=UTF-8|https=1;client_port=36999;nocookies=1|cp4037 miss, cp4037 miss|mw-web.codfw.main-6479988cdc-rs5xk} GET / ","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+    output_batches:
+      - - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"400","ip":"127.0.0.1","meta":{"stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_path":"/","webrequest_source":"unknown"}    
