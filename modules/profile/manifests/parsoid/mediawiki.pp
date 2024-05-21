@@ -4,7 +4,8 @@
 # on a parsoid testreduce server.
 class profile::parsoid::mediawiki {
 
+    $php_version = wmflib::wmf_php_version()
     profile::auto_restarts::service { 'apache2': }
-    profile::auto_restarts::service { 'php7.4-fpm': }
+    profile::auto_restarts::service { "php${php_version}-fpm": }
     profile::auto_restarts::service { 'envoyproxy': }
 }
