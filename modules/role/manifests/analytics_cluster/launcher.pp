@@ -18,9 +18,6 @@ class role::analytics_cluster::launcher {
 
     include profile::hadoop::balancer
 
-    # Run Hadoop/Hive reportupdater jobs here.
-    include profile::reportupdater::jobs
-
     include profile::statistics::dataset_mount
 
     # Include airflow instances as defined in role hiera.
