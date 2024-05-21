@@ -68,7 +68,7 @@ PROMPTCOLOR="\[$(tput setaf 3)\]\[$(tput bold)\]"
 RED="\[$(tput setaf 9)\]\[$(tput bold)\]"
 PROMPTRESET="\[$(tput sgr0)\]"
 case ${TERM} in
-    xterm*|rxvt*|Eterm|aterm|kterm|gnome)
+    xterm*|rxvt*|foot)
         export PS1="${RED}root${PROMPTCOLOR}@$HN\W\$($gitps) # $PROMPTRESET"
         PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME%%.*}:${PWD/$HOME/\~}\007";stty echo'
         ;;

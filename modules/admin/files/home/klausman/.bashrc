@@ -3,6 +3,8 @@
 
 [ -z "$PS1" ] && return
 
+export TERMINFO_DIRS=/home/klausman/.terminfo:/etc/terminfo:/lib/terminfo:/usr/share/terminfo
+
 tput &>/dev/null ; retval=$?
 if [[ $retval == 3 ]]; then
     echo "tput does not know your terminal \"$TERM\""
@@ -63,7 +65,7 @@ fi
 PROMPTCOLOR="\[$(tput setaf 3)\]\[$(tput bold)\]"
 PROMPTRESET="\[$(tput sgr0)\]"
 case ${TERM} in
-    xterm*|rxvt*|Eterm|aterm|kterm|gnome)
+    xterm*|rxvt*|foot*)
         export PS1="$PROMPTCOLOR$HN\W\$($gitps) \$ $PROMPTRESET"
         PROMPT_COMMAND='echo -ne "\033]0;${HOSTNAME%%.*}:${PWD/$HOME/\~}\007";stty echo'
         ;;
