@@ -21,17 +21,17 @@ class profile::dns::auth::monitoring {
     }
 
     # port 5353 monitoring listeners (which humans and other tools may hit!)
-    ferm::service { 'udp_dns_auth_monitor':
+    firewall::service { 'udp_dns_auth_monitor':
         proto   => 'udp',
         notrack => true,
-        port    => '5353',
-        srange  => "(${network::constants::aggregate_networks.join(' ')})",
+        port    => 5353,
+        srange  => $network::constants::aggregate_networks,
     }
-    ferm::service { 'tcp_dns_auth_monitor':
+    firewall::service { 'tcp_dns_auth_monitor':
         proto   => 'tcp',
         notrack => true,
-        port    => '5353',
-        srange  => "(${network::constants::aggregate_networks.join(' ')})",
+        port    => 5353,
+        srange  => $network::constants::aggregate_networks,
     }
 
     # ensure exactly one copy of the daemon is running (there may be rare bugs
