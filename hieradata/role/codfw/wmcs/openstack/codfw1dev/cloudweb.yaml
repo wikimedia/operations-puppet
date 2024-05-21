@@ -12,6 +12,7 @@ profile::openstack::base::nutcracker::memcached::size: 6000
 
 profile::openstack::codfw1dev::cloudweb_memcached_size: 6000
 profile::openstack::codfw1dev::cloudweb::mcrouter_port: 11213
+profile::openstack::codfw1dev::cloudweb::memcached_user: 'nobody'
 
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::openstack::base::nutcracker::redis::shards:
