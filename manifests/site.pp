@@ -1280,6 +1280,10 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
     role(kubernetes::master)
 }
 
+node /^wikikube-ctrl2001\.codfw\./ {
+    role(kubernetes::master_stacked)
+}
+
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
     role(etherpad)
@@ -2315,11 +2319,6 @@ node /^mw232[3-4]\.codfw\./ {
 }
 
 # rack B6
-
-# T353464
-node /^wikikube-ctrl2001\.codfw\./ {
-    role(insetup::serviceops)
-}
 
 node /^mw232[79]\.codfw\./ {
     role(mediawiki::appserver)

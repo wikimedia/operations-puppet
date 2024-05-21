@@ -302,6 +302,9 @@ kubernetes::clusters:
       control_plane_nodes:
         - kubemaster2001.codfw.wmnet
         - kubemaster2002.codfw.wmnet
+        - wikikube-ctrl2001.codfw.wmnet
+        - wikikube-ctrl2002.codfw.wmnet
+        - wikikube-ctrl2003.codfw.wmnet
       cluster_dns:
         - "10.192.72.3"
       service_cluster_cidr:
@@ -317,6 +320,9 @@ kubernetes::clusters:
       cluster_nodes:
         - kubemaster2001.codfw.wmnet
         - kubemaster2002.codfw.wmnet
+        - wikikube-ctrl2001.codfw.wmnet
+        - wikikube-ctrl2002.codfw.wmnet
+        - wikikube-ctrl2003.codfw.wmnet
         - kubernetes2005.codfw.wmnet
         - kubernetes2006.codfw.wmnet
         - kubernetes2007.codfw.wmnet
