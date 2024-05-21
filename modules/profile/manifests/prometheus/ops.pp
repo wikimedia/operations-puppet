@@ -1060,29 +1060,6 @@ class profile::prometheus::ops (
         hostnames_only   => false,
     }
 
-    # Absent the dedicated kubernetes etcd configs in favor of the above
-    prometheus::class_config{ "kubetcd_${::site}":
-        ensure         => 'absent',
-        dest           => "${targets_path}/kubetcd_${::site}.yaml",
-        class_name     => 'role::etcd::v3::kubernetes',
-        port           => 2379,
-        hostnames_only => false,
-    }
-    prometheus::class_config{ "kubetcd_staging_${::site}":
-        ensure         => 'absent',
-        dest           => "${targets_path}/kubetcd_staging_${::site}.yaml",
-        class_name     => 'role::etcd::v3::kubernetes::staging',
-        port           => 2379,
-        hostnames_only => false,
-    }
-    prometheus::class_config{ "ml_etcd_${::site}":
-        ensure         => 'absent',
-        dest           => "${targets_path}/ml_etcd_${::site}.yaml",
-        class_name     => 'role::etcd::v3::ml_etcd',
-        port           => 2379,
-        hostnames_only => false,
-    }
-
     # mcrouter
     # Job definition for mcrouter_exporter
     $mcrouter_jobs = [

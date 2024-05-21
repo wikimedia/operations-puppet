@@ -232,7 +232,7 @@ wikikube-etcd: P{O:etcd::v3::kubernetes} or (A:wikikube-master and A:all-etcd)
 wikikube-etcd-all: A:wikikube-etcd or A:wikikube-staging-etcd
 wikikube-master: P{O:kubernetes::master} or P{O:kubernetes::master_stacked}
 wikikube-worker: P{O:kubernetes::worker}
-wikikube-staging-etcd: P{O:etcd::v3::kubernetes::staging} or (A:wikikube-staging-master and A:all-etcd)
+wikikube-staging-etcd: A:wikikube-staging-master and A:all-etcd
 wikikube-staging-master: P{O:kubernetes::staging::master_stacked}
 wikikube-staging-worker: P{O:kubernetes::staging::worker}
 <% ['eqiad', 'codfw'].each do |dc| -%>
