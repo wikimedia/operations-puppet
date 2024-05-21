@@ -1,2 +1,4 @@
 # db1208
+# Analytics host
+# Analytics Backup Multi-instance
 mariadb::package: 'wmf-mariadb106'
