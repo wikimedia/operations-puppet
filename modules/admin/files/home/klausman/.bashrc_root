@@ -3,6 +3,8 @@
 
 [ -z "$PS1" ] && return
 
+export TERMINFO=/home/klausman/.terminfo
+
 tput &>/dev/null ; retval=$?
 if [[ $retval == 3 ]]; then
     echo "tput does not know your terminal \"$TERM\""
@@ -87,6 +89,8 @@ case ${TERM} in
 esac
 
 [ -f ~klausman/.less_termcap ] && source ~klausman/.less_termcap
+
+alias br="sudo -i bash --rcfile /home/klausman/.bashrc_root -i"
 
 # No Proxy
 function proxyoff
