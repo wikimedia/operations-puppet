@@ -1,3 +1,2 @@
 # db2102
 mariadb::shard: 'test-s1'
-mariadb::package: 'wmf-mariadb106'
