@@ -5,4 +5,3 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s3: 48G
   s5: 8G
   s8: 48G
-mariadb::package: 'wmf-mariadb106'
