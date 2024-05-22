@@ -155,12 +155,10 @@ class profile::postfix::mx (
         'null-client' => 'mx-null-client',
         default       => fail('mta_mode not supported'),
     }
-    acme_chief::cert { $acme_chief_cert:
-        puppet_rsc => Service['postfix'],
-        key_group  => 'postfix',
-    }
+    $acme_chief_host = lookup('acmechief_host') # lint:ignore:wmf_styleguide
     $cert_resources = ['rsa-2048', 'ec-prime256v1'].map |$tls_key_type| {
         profile::postfix::acme_chief_cert(
+            $acme_chief_host,
             $acme_chief_cert,
             $tls_key_type,
         )
