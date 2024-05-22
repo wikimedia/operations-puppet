@@ -2968,6 +2968,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: mh
       ipip_encapsulation:
+        - eqiad
         - codfw
         - ulsfo
         - eqsin
@@ -2979,8 +2980,8 @@ service::catalog:
         expect_redirect: true
     port: 80
     sites:
-      - codfw
       - eqiad
+      - codfw
       - esams
       - ulsfo
       - eqsin
@@ -3015,6 +3016,7 @@ service::catalog:
             - https://healthcheck.wikimedia.org/varnish-fe
       scheduler: mh
       ipip_encapsulation:
+        - eqiad
         - codfw
         - ulsfo
         - eqsin
@@ -3025,8 +3027,8 @@ service::catalog:
         path: /monitoring/backend
     port: 443
     sites:
-      - codfw
       - eqiad
+      - codfw
       - esams
       - ulsfo
       - eqsin
