@@ -323,6 +323,7 @@ kubernetes::clusters:
         - wikikube-ctrl2001.codfw.wmnet
         - wikikube-ctrl2002.codfw.wmnet
         - wikikube-ctrl2003.codfw.wmnet
+        - wikikube-worker2001.codfw.wmnet
         - kubernetes2005.codfw.wmnet
         - kubernetes2006.codfw.wmnet
         - kubernetes2007.codfw.wmnet
@@ -341,7 +342,6 @@ kubernetes::clusters:
         - kubernetes2020.codfw.wmnet
         - kubernetes2021.codfw.wmnet
         - kubernetes2022.codfw.wmnet
-        - kubernetes2023.codfw.wmnet
         - kubernetes2024.codfw.wmnet
         - kubernetes2025.codfw.wmnet
         - kubernetes2026.codfw.wmnet

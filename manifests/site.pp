@@ -1624,6 +1624,10 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
+node /^wikikube-worker2001\.codfw\./ {
+    role(kubernetes::worker)
+}
+
 # START Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
 node /^mw1349\.eqiad\./ {
   role(kubernetes::worker)
