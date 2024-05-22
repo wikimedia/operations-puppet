@@ -1,16 +1,16 @@
+profile::base::production::role_description: 'Cloud VPS OpenStack L3 router'
 profile::admin::groups:
   - wmcs-roots
 
-# routing and nat host with lots of addresses
-# lock down SSH to administrative IP only
-profile::ssh::server::listen_addresses:
-  - "%{facts.ipaddress}"
-
-prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
-
+profile::contacts::role_contacts: ["WMCS"]
 contactgroups: wmcs-team-email
 cluster: wmcs
-profile::base::production::enable_ip6_mapped: false
-profile::contacts::role_contacts: ["WMCS"]
 
 profile::firewall::provider: none
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
+  - "%{facts.ipaddress6}"
+prometheus::node_exporter::web_listen_address: "%{facts.ipaddress}:9100"
+
+profile::openstack::eqiad1::neutron::use_ovs: true
+profile::openstack::eqiad1::neutron::legacy_vlan_naming: false

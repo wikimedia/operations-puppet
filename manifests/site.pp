@@ -1438,7 +1438,7 @@ node /^cloudweb2002-dev\.wikimedia\./ {
 }
 
 node /^cloudnet200[5-6]-dev\.codfw\./ {
-    role(wmcs::openstack::codfw1dev::net_ovs)
+    role(wmcs::openstack::codfw1dev::net)
 }
 
 # New clouddb node T306854
@@ -1802,7 +1802,7 @@ node /^cloudelastic1010\.eqiad\./ {
 }
 
 node /^cloudnet100[56]\.eqiad\./ {
-    role(wmcs::openstack::eqiad1::net_ovs)
+    role(wmcs::openstack::eqiad1::net)
 }
 
 # New cloudnet nodes T342455
