@@ -1,0 +1,25 @@
+[user]
+	name = Jesse Hathaway
+	email = jesse@mbuki-mvuki.org
+	signingkey = /home/jhathaway/.ssh/id_rsa_git.pub
+[pull]
+	ff = only
+[init]
+	defaultBranch = main
+[gitreview]
+	username = jhathaway
+[core]
+	excludesfile = ~/.config/git/ignore
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	allowedSignersFile = /home/jhathaway/.config/git/allowed_signers
+[alias]
+	# typing is hard!
+	grpe = grep
+	shwo = show
+	wc = whatchanged
+	grep-changed = "!f(){ git diff-index -U -G \"$@\" HEAD; };f "
+	grep-staged  = "!f(){ git diff-index -U --cached -G \"$@\" HEAD; };f "
+[commit]
+	verbose = true

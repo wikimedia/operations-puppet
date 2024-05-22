@@ -1,3 +1,13 @@
 $include ~/.bash-rsi/inputrc
 # Don't echo ^C when hitting Ctrl-C
 set echo-control-characters Off
+# https://github.com/reeflective/readline
+$if example
+set autopairs on
+set cursor-vi-insert beam
+set cursor-vi beam
+set cursor-vi-command block
+set cursor-vi-move block
+set cursor-vi-visual block
+set cursor-vi-opp block
+$endif

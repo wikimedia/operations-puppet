@@ -1,0 +1,290 @@
+" XDG support, https://jorenar.com/blog/vim-xdg
+
+if empty($XDG_CACHE_HOME)  | let $XDG_CACHE_HOME  = $HOME."/.cache"       | endif
+if empty($XDG_CONFIG_HOME) | let $XDG_CONFIG_HOME = $HOME."/.config"      | endif
+if empty($XDG_DATA_HOME)   | let $XDG_DATA_HOME   = $HOME."/.local/share" | endif
+if empty($XDG_STATE_HOME)  | let $XDG_STATE_HOME  = $HOME."/.local/state" | endif
+
+set backupdir=$XDG_STATE_HOME/vim/backup | call mkdir(&backupdir, 'p', 0700)
+set directory=$XDG_STATE_HOME/vim/swap   | call mkdir(&directory, 'p', 0700)
+set undodir=$XDG_STATE_HOME/vim/undo     | call mkdir(&undodir,   'p', 0700)
+set viewdir=$XDG_STATE_HOME/vim/view     | call mkdir(&viewdir,   'p', 0700)
+
+" newtrw history & bookmarks
+let g:netrw_home = $XDG_STATE_HOME."/vim"
+
+" Install vim plugins
+let plugged_path = $XDG_STATE_HOME . '/vim/plugged'
+
+if filereadable(expand("~/.vim/vimrc.bundles"))
+  source ~/.vim/vimrc.bundles
+endif
+
+if !isdirectory(expand(plugged_path))
+  autocmd VimEnter * PlugInstall --sync
+endif
+
+" ========= Options ========
+
+" compiler ruby
+syntax on
+set shortmess-=S
+set hlsearch
+" set number
+set showmatch
+set incsearch
+set hidden
+set backspace=indent,eol,start
+" set textwidth=0 nosmartindent tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+set ruler
+set wrap
+set dir=/tmp//
+set scrolloff=5
+set ignorecase
+set smartcase
+set wildignore+=*.pyc,*.o,*.class,*.lo,.git,vendor/*,node_modules/**,bower_components/**,*/build_gradle/*,*/build_intellij/*,*/build/*,*/cassandra_data/*
+set tags+=gems.tags
+set backupcopy=yes " Setting backup copy preserves file inodes, which are needed for Docker file mounting
+set complete-=t " Don't use tags for autocomplete
+set updatetime=200
+" persistent undo
+set undofile
+set undoreload=10000 "maximum number lines to save for undo on a buffer reload
+set undolevels=1000 "maximum number of changes that can be undone
+
+" File Types
+
+autocmd FileType php setlocal tabstop=4 shiftwidth=4 softtabstop=4
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+autocmd FileType cs setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+" Status
+set laststatus=2
+set statusline=
+set statusline+=%<\                       " cut at start
+set statusline+=%2*[%n%H%M%R%W]%*\        " buffer number, and flags
+set statusline+=%-40f\                    " relative path
+set statusline+=%=                        " seperate between right- and left-aligned
+set statusline+=%1*%y%*%*\                " file type
+set statusline+=%10(L(%l/%L)%)\           " line
+set statusline+=%2(C(%v/125)%)\           " column
+set statusline+=%P                        " percentage of file
+
+let g:ale_enabled = 1                     " Enable linting by default
+let g:ale_lint_on_text_changed = 'normal' " Only lint while in normal mode
+let g:ale_lint_on_insert_leave = 1        " Automatically lint when leaving insert mode
+let g:ale_set_signs = 1                   " Enable signs showing in the gutter to reduce interruptive visuals
+let g:ale_linters_explicit = 1            " Only run linters that are explicitly listed below
+let g:ale_set_highlights = 1              " Disable highlighting as it interferes with readability and accessibility
+let g:ale_linters = {}
+let g:ale_fixers = {}
+
+let g:netrw_banner = 0
+
+" FZF
+" Initialize configuration dictionary
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window = []
+let $FZF_DEFAULT_COMMAND = 'find . -name "*" -type f 2>/dev/null
+                            \ | grep -v -E "tmp\/|.gitmodules|.git\/|deps\/|_build\/|node_modules\/|vendor\/"
+                            \ | sed "s|^\./||"'
+let $FZF_DEFAULT_OPTS = '--reverse'
+let g:fzf_tags_command = 'ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f --langmap=Lisp:+.clj'
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit' }
+function! SmartFuzzy()
+  let root = split(system('git rev-parse --show-toplevel'), '\n')
+  if len(root) == 0 || v:shell_error
+    Files
+  else
+    GFiles -co --exclude-standard -- . ':!:vendor/*'
+  endif
+endfunction
+
+command! -nargs=* SmartFuzzy :call SmartFuzzy()
+map <silent> <leader>ff :SmartFuzzy<CR>
+map <silent> <leader>fg :GFiles<CR>
+map <silent> <leader>fb :Buffers<CR>
+map <silent> <leader>ft :Tags<CR>
+map <silent> <C-p> :Files<CR>
+
+" ALE
+map <silent> <leader>an :ALENextWrap<CR>
+map <silent> <leader>ap :ALEPreviousWrap<CR>
+map <silent> <leader>aj :ALENextWrap<CR>
+map <silent> <leader>ak :ALEPreviousWrap<CR>
+map <silent> <leader>al :ALELint<CR>
+map <silent> <leader>af :ALEFix<CR>
+map <silent> <leader>ai :ALEInfo<CR>
+
+" NERDTree
+let NERDTreeHijackNetrw = 0
+map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
+map <silent> <LocalLeader>nr :NERDTree<CR>
+map <silent> <LocalLeader>nf :NERDTreeFind<CR>
+
+" vim-unimpaired
+nmap <silent> <C-k> <Plug>unimpairedMoveUp
+nmap <silent> <C-j> <Plug>unimpairedMoveDown
+nmap <silent> ]h :GitGutterNextHunk<CR>
+nmap <silent> [h :GitGutterPrevHunk<CR>
+xmap <silent> <C-k> <Plug>unimpairedMoveSelectionUp<esc>gv
+xmap <silent> <C-j> <Plug>unimpairedMoveSelectionDown<esc>gv
+
+" TComment
+map <silent> <LocalLeader>cc :TComment<CR>
+map <silent> <LocalLeader>uc :TComment<CR>
+
+" Pasting over a selection does not replace the clipboard
+xnoremap <expr> p 'pgv"'.v:register.'y'
+
+" White terminal background
+set background=light
+colorscheme default
+
+set signcolumn=auto
+set tabstop=4
+let g:ale_enabled = 1
+let g:ale_fix_on_save = 1
+augroup filetypes
+	autocmd!
+	autocmd FileType sh setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 noexpandtab
+	autocmd FileType puppet setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 expandtab smarttab
+	autocmd FileType epuppet setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 expandtab smarttab
+	autocmd FileType yaml setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=-1 expandtab smarttab
+	autocmd FileType json setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=-1 expandtab smarttab
+augroup END
+let g:ale_fixers['sh'] = ['shfmt']
+let g:ale_fixers['bats'] = ['shfmt']
+" not yet used for wikimedia python
+" let g:ale_fixers['python'] = ['black']
+let g:ale_fixers['c'] = ['clang-format']
+let g:ale_fixers['cpp'] = ['clang-format']
+let g:ale_fixers['ruby'] = ['syntax_tree']
+let g:ale_fixers['css'] = ['prettier']
+let g:ale_fixers['javascript'] = ['clang-format']
+let g:ale_fixers['json'] = ['clang-format']
+let g:ale_fixers['java'] = ['google_java_format']
+let g:ale_fixers['puppet'] = ['puppetlint']
+let g:ale_linters['c'] = ['clangtidy']
+let g:ale_linters['json'] = ['jq']
+
+" HACK: to fix spelling on light backgrounds
+hi clear SpellBad
+hi SpellBad cterm=reverse
+
+" HACK: Fix unreadable highlight foreground color under the cursor for
+" vim-lsp, probably a bug related to using vim with a light background
+hi clear Error
+hi Error cterm=reverse ctermfg=9 ctermbg=15
+
+" HACK: to remove linelength errors
+highlight LineLengthError ctermbg=white guibg=white
+autocmd ColorScheme * highlight LineLengthError ctermbg=white guibg=white
+
+" Change cursor shape
+let &t_SI .= "\e[6 q"
+let &t_EI .= "\e[2 q"
+
+" Give me back my 🐁!
+set mouse=a
+set ttymouse=sgr
+" HACK: fix visual selection
+hi Visual term=reverse cterm=reverse
+" set termguicolors
+" set cursorline
+" highlight Cursorline cterm=none guibg=#eb28ad
+" hi Normal guibg=#300A24
+" virtual text only on current line
+let g:ale_virtualtext_cursor = 'disable'
+" Don't highlight vertical split
+highlight VertSplit cterm=NONE
+" Set vertical split chars to heavy unicode box drawing line
+set fillchars+=vert:\┃
+" show highlight group under cursor
+function! SynStack ()
+    for i1 in synstack(line("."), col("."))
+        let i2 = synIDtrans(i1)
+        let n1 = synIDattr(i1, "name")
+        let n2 = synIDattr(i2, "name")
+        echo n1 "->" n2
+    endfor
+endfunction
+map gm :call SynStack()<CR>
+" toggle ale fix on save
+nnoremap <silent> <Leader>tf :let g:ale_fix_on_save = !g:ale_fix_on_save<CR>
+
+" vim-lsp settings
+" disable virtual text for errors
+let g:lsp_diagnostics_virtual_text_enabled = 0
+" display diagnostics messages at the bottom
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_document_code_action_signs_enabled = 0
+" let g:lsp_log_verbose = 1
+" let g:lsp_log_file = expand('~/vim-lsp.log')
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+	" conflicts with tab next command
+    " nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+" Register clangd with vim-lsp
+if executable('clangd')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'clangd',
+        \ 'cmd': {server_info->['clangd', '-background-index']},
+        \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        \ })
+endif
+
+" Configure the python-language-server to use flake8 settings rather than
+" pycodestyle settings
+let g:lsp_settings = {
+\  'marksman': {
+\    'disabled': 1,
+\   },
+\  'remark-language-server': {
+\    'disabled': 1,
+\   },
+\  'vscode-json-language-server': {
+\    'disabled': 1,
+\   },
+\  'solargraph': {
+\    'disabled': 1,
+\   },
+\  'bash-language-server': {
+\    'disabled': 1,
+\   },
+\   'pylsp-all': {
+\     'workspace_config': {
+\       'pylsp': {
+\         'configurationSources': ['flake8']
+\       }
+\     }
+\   },
+\}

@@ -282,11 +282,12 @@ function wmf-past-work {
 
 	printf '\n## Git Commits\n'
 	declare -A wmf_repos=(
-		['puppet']='production'
-		['production-images']='master'
+		['dcl']='main'
 		['deployment-charts']='master'
 		['docker-pkg']='master'
-		['dcl']='main'
+		['mx-tests']='main'
+		['production-images']='master'
+		['puppet']='production'
 	)
 	for repo in "${!wmf_repos[@]}"; do
 		PAGER='' git -C ~/src/wmf/"$repo" fetch 2>/dev/null
@@ -336,14 +337,16 @@ function gdoc-img-copy {
 
 # Disposable Debian container
 function bubble-up {
-	# TODO pull down dotfiles, but don't mount home?, re-use sync-dotfiles
-	# TODO default image
+	printf 'Bubbling...🫧\n'
+	# TODO: pull down dotfiles, but don't mount home? Re-use sync-dotfiles?
+	# TODO: default image
 	if [[ $# -gt 0 ]]; then
 		args=("$@")
 	else
 		args=('debian:stable')
 	fi
 	podman run --rm -it -w /root --entrypoint bash "${args[@]}"
+	printf '¡Pop!\n'
 }
 
 # Kubernetes functions
@@ -384,12 +387,15 @@ wmf-site() {
 #   sync-dotfiles -e "ssh -p 22220" localhost:
 # NOTE: rsync must be present on the remote side
 sync-dotfiles() {
-	rsync --exclude '.git' -a \
+	# TODO: switch to git ls-files??
+	rsync -v --exclude '.git' -a \
 		~/.profile \
 		~/.bash-rsi \
 		~/.inputrc \
 		~/.bashrc \
+		~/.gitconfig \
 		~/.tmux.conf \
+		~/.vim \
 		"$@"
 }
 
@@ -526,6 +532,17 @@ fi
 alias v='view'
 # ipcalc-ng has IPv6 support
 alias ipcalc='ipcalc-ng'
+function noop { { sudo puppet agent -t --noop; } 2>&1 | tee puppet.out; }
+function noopply {
+	{ sudo puppet agent -t --noop; } 2>&1 | tee puppet.out
+	read -r -p 'Apply? [y/n]: '
+	if [[ $REPLY =~ ^[Yy]$ ]]; then
+		{ sudo puppet agent -t; } 2>&1 | tee puppet.out
+	else
+		printf 'Apply skipped.\n'
+	fi
+}
+function apply { { sudo puppet agent -t; } 2>&1 | tee puppet.out; }
 
 # shellcheck disable=SC2016
 PS1_DEMO='$(dollar $?) '

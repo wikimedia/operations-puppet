@@ -1,0 +1,74 @@
+call plug#begin(plugged_path)
+
+" Syntax highlighting
+Plug 'aliou/bats.vim'
+Plug 'aklt/plantuml-syntax'
+Plug 'ekalinin/Dockerfile.vim'
+Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'hashivim/vim-terraform'
+Plug 'uarun/vim-protobuf'
+Plug 'chikamichi/mediawiki.vim'
+Plug 'mmarchini/bpftrace.vim'
+Plug 'ClockworkNet/vim-junos-syntax'
+
+" Testing: looks, interesting, I should try it!
+Plug 'janko-m/vim-test'
+
+" Buffers
+Plug 'jlanzarotta/bufexplorer'
+
+" FZF
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
+" LSP
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+
+" Nerdtree
+Plug 'scrooloose/nerdtree'
+
+" Toggle comments
+Plug 'tomtom/tcomment_vim'
+
+" Inserts ends for certain structrues, if; fi
+Plug 'tpope/vim-endwise'
+
+" Git functions
+Plug 'tpope/vim-fugitive'
+
+" Dep, adds . repeat to some other plugs
+Plug 'tpope/vim-repeat'
+
+" Change surrounding quotes
+Plug 'tpope/vim-surround'
+
+" Complementary pairs of mappings, i.e. toggle spelling
+Plug 'tpope/vim-unimpaired'
+
+" Enhances vim's built in file explorer netrw
+Plug 'tpope/vim-vinegar'
+
+" Autofix typing errors, need to configure
+Plug 'tpope/vim-abolish'
+
+" Adds Emacs style readline shortcuts to vim
+Plug 'tpope/vim-rsi'
+
+" This plugins breaks using `gq` to format long lines, as a hack I just stole
+" the syntax and indent files from this project, I'll probably regret this
+" Plug 'rodjek/vim-puppet'
+
+" Not sure if this is used, provides quick fix mappings
+"Plug 'romainl/vim-qf'
+
+" Colorizes hex codes
+Plug 'chrisbra/Colorizer'
+
+" Ale fixers and formatters
+Plug 'w0rp/ale'
+
+" YAML bread crumbs
+Plug 'Einenlum/yaml-revealer'
+
+call plug#end()
