@@ -27,9 +27,4 @@ class openstack::clientpackages::bobcat::bookworm(
         owner  => 'root',
         group  => 'root',
     }
-
-    openstack::patch { '/usr/lib/python3/dist-packages/openstack/config/loader.py':
-        source  => 'puppet:///modules/openstack/bobcat/openstacksdk/hacks/allow_overriding_cloud_yaml.patch',
-        require => Package['python3-openstacksdk'],
-    }
 }
