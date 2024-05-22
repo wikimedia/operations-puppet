@@ -2971,6 +2971,7 @@ service::catalog:
         - codfw
         - ulsfo
         - eqsin
+        - magru
     probes:
       - type: http
         host: upload.wikimedia.org
@@ -3017,6 +3018,7 @@ service::catalog:
         - codfw
         - ulsfo
         - eqsin
+        - magru
     probes:
       - type: http
         host: upload.wikimedia.org
