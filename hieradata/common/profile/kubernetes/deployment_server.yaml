@@ -391,6 +391,62 @@ profile::kubernetes::deployment_server::services:
           owner: root
           group: deploy-ml-service
   dse-k8s:
+    airflow-analytics:
+      usernames:
+        - name: airflow-analytics
+          owner: root
+          group: analytics-deployers
+        - name: airflow-analytics-deploy
+          owner: root
+          group: analytics-deployers
+    airflow-test:
+      usernames:
+        - name: airflow-test
+          owner: root
+          group: analytics-deployers
+        - name: airflow-test-deploy
+          owner: root
+          group: analytics-deployers
+    airflow-search:
+      usernames:
+        - name: airflow-search
+          owner: root
+          group: analytics-search-users
+        - name: airflow-search-deploy
+          owner: root
+          group: analytics-search-users
+    airflow-research:
+      usernames:
+        - name: airflow-research
+          owner: root
+          group: analytics-research
+        - name: airflow-research-deploy
+          owner: root
+          group: research-deployers
+    airflow-platform-eng:
+      usernames:
+        - name:  airflow-platform-eng
+          owner: root
+          group: analytics-platform-eng
+        - name: analytics-platform-eng-deploy
+          owner: root
+          group: analytics-platform-eng
+    airflow-analytics-product:
+      usernames:
+        - name: airflow-analytics-product
+          owner: root
+          group: analytics-product-users
+        - name: product-analytics-deploy
+          owner: root
+          group: analytics-product-users
+    airflow-analytics-wmde:
+      usernames:
+        - name: airflow-analytics-wmde
+          owner: root
+          group: analytics-wmde
+        - name: analytics-wmde-deploy
+          owner: root
+          group: analytics-wmde
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
