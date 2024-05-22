@@ -5,25 +5,32 @@
 # Watch error log spam.  See /usr/bin/logspam for log-filtering implementation
 # details.
 
+# Various color vars below might not all be used at any given time, so disable
+# warnings about unused vars.  This directive only seems to take effect at the
+# top of the file, and can't be re-enabled, note that this could mask other
+# bugs:
+# shellcheck disable=SC2034
+
 set -eu -o pipefail
 
 # shellcheck disable=SC1091
 . /etc/profile.d/mw-log.sh
 
 # Define some control characters - see tput(1):
-readonly BOLD=$(tput bold)
-readonly UNDERL=$(tput smul)
-readonly NORMAL=$(tput sgr0)
 
-readonly BLACK=$(tput setaf 0)
-readonly RED=$(tput setaf 1)
-readonly GREEN=$(tput setaf 2)
-readonly YELLOW=$(tput setaf 3)
-readonly BLUE=$(tput setaf 4)
-readonly MAGENTA=$(tput setaf 5)
-readonly CYAN=$(tput setaf 6)
-readonly WHITE=$(tput setaf 7)
-readonly WHITE_BG=$(tput setab 7)
+BOLD=$(tput bold); readonly BOLD
+UNDERL=$(tput smul); readonly UNDERL
+NORMAL=$(tput sgr0); readonly NORMAL
+
+BLACK=$(tput setaf 0); readonly BLACK
+RED=$(tput setaf 1); readonly RED
+GREEN=$(tput setaf 2); readonly GREEN
+YELLOW=$(tput setaf 3); readonly YELLOW
+BLUE=$(tput setaf 4); readonly BLUE
+MAGENTA=$(tput setaf 5); readonly MAGENTA
+CYAN=$(tput setaf 6); readonly CYAN
+WHITE=$(tput setaf 7); readonly WHITE
+WHITE_BG=$(tput setab 7); readonly WHITE_BG
 
 COLUMN_LABELS=(
   [1]="count"
@@ -38,6 +45,7 @@ MINIMUM_HITS=1
 LOGSPAM_WINDOW=60 # Minutes
 SHOW_JUNK=0
 
+# shellcheck disable=SC1090
 if [ -r ~/.logspamwatchrc ]; then
   . ~/.logspamwatchrc
 fi
@@ -124,7 +132,8 @@ function titlebar {
   printf '%s%s' "$WHITE_BG$BLACK" "$text"
 
   # Finish the line across the console
-  cols=$(expr "$(tput cols)" - $length)
+  tput_cols=$(tput cols)
+  cols=$((tput_cols - length))
   printf "%${cols}s"
 
   # Clear the background color and start a new line
@@ -211,7 +220,7 @@ while [ -z "$quit" ]; do
   # seconds (-t$TICK_LEN), and don't error out if nothing is read:
   read -s -r -n1 -t$TICK_LEN input || true
 
-  if [ ! -z "$input" ]; then
+  if [ -n "$input" ]; then
     case "$input" in
       [123456])
         # If we're already sorting on this column, flip the direction:
@@ -264,7 +273,7 @@ while [ -z "$quit" ]; do
       [hH?])
         helptext
         ticks="$MAXTICKS"
-	;;
+        ;;
 
       [qQ])
         quit="yep"
