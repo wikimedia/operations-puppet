@@ -53,7 +53,7 @@ pipeline:
                 - '%{MESSAGELOG}'
               use_default_patterns: True
               pattern_definitions:
-                HAPROXYTS: '%{MONTHDAY}/%{MONTH}/%{YEAR}:%{HOUR}:%{MINUTE}:{SECOND}\.%{INT}'
+                HAPROXYTS: '%{MONTHDAY}/%{MONTH}/%{YEAR}:%{HOUR}:%{MINUTE}:%{SECOND}\.%{INT}'
                 HAPROXYCAPTUREDREQUESTHEADERS: '%{DATA:uri_host}\|(%{DATA:referer})?\|(%{DATA:user_agent})?\|(%{DATA:accept_language})?\|(%{DATA:range})?\|(?:%{DATA:accept})?\|(?:%{DATA:tls})?'
                 HAPROXYCAPTUREDRESPONSEHEADERS: '%{DATA:cache_status}\|%{DATA:content_type}\|%{DATA:x_analytics}\|%{DATA:x_cache}\|%{DATA:backend}'
                 MESSAGELOG: '%{NUMBER:haproxy_pid:int} %{IP:ip} %{INT:sequence:int} \[%{HAPROXYTS:accept_date}\] %{INT:time_backend_response:int} %{INT:http_status} %{NOTSPACE:response_size:int} %{NOTSPACE:termination_state} \{(%{HAPROXYCAPTUREDREQUESTHEADERS})?\}( )?\{(%{HAPROXYCAPTUREDRESPONSEHEADERS})?\}( )?%{WORD:http_method} (?:%{NOTSPACE:uri_path})?( )?(?:%{NOTSPACE:uri_query})?'
