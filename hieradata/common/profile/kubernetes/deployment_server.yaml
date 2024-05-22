@@ -459,6 +459,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mpic-next
         - name: mpic-next-deploy
+    datahub:
+      usernames:
+        - name: datahub
+        - name: datahub-deploy
+    datahub-next:
+      usernames:
+        - name: datahub-next
+        - name: datahub-next-deploy
   aux-k8s:
     jaeger:
       usernames:
