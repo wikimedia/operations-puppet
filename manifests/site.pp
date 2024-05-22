@@ -1280,7 +1280,7 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
     role(kubernetes::master)
 }
 
-node /^wikikube-ctrl2001\.codfw\./ {
+node /^wikikube-ctrl200[12]\.codfw\./ {
     role(kubernetes::master_stacked)
 }
 
@@ -2332,11 +2332,6 @@ node /^mw243[23]\.codfw\./ {
 # Row C
 
 # rack C6
-
-# T353464
-node /^wikikube-ctrl2002\.codfw\./ {
-    role(insetup::serviceops)
-}
 
 node /^mw236[35]\.codfw\./ {
     role(mediawiki::appserver)
