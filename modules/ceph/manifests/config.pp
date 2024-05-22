@@ -11,6 +11,10 @@
 #        Enables Ceph messenger version 2 ( >= Nautilus release)
 #    - $enable_libvirt_rbd
 #        Configure Ceph for libvirt based RBD clients
+#    - $with_location_hook
+#        If set, will add the custom location hook to the config, note that it will not create the hook script.
+#    - $rgw_frontend
+#        The type of web server that is used by the radosgw service. Can be civetweb or beast or undef
 #    - $osd_hosts [Optional]
 #        Hash that defines the ceph object storage hosts, and public and private IPv4 information
 #    - $radosgw_port [Optional]
@@ -23,9 +27,6 @@
 #        Project for radosgw service user (probably 'service'). Only used if radosgw_port is set.
 #    - $radosgw_service_user_password [Optional]
 #        Password for radosgw service user. Only used if radosgw_port is set.
-#    - $with_location_hook
-#        If set, will add the custom location hook to the config, note that it will not create the hook script.
-#
 class ceph::config (
     Boolean                     $enable_libvirt_rbd,
     Boolean                     $enable_v2_messenger,
@@ -33,13 +34,14 @@ class ceph::config (
     Array[Stdlib::IP::Address]  $cluster_networks,
     Array[Stdlib::IP::Address]  $public_networks,
     String                      $fsid,
+    Boolean                     $with_location_hook = false,
+    Enum['civetweb','beast']    $rgw_frontend = 'civetweb',
     Optional[Hash[String,Hash]] $osd_hosts = {},
     Optional[Stdlib::Port]      $radosgw_port = 0,
     Optional[String]            $keystone_internal_uri = '',
     Optional[String]            $radosgw_service_user = '',
     Optional[String]            $radosgw_service_user_project = '',
     Optional[String]            $radosgw_service_user_pass = '',
-    Boolean                     $with_location_hook = false,
 ) {
 
     Class['ceph::common'] -> Class['ceph::config']
@@ -64,6 +66,7 @@ class ceph::config (
             radosgw_service_user_project => $radosgw_service_user_project,
             radosgw_service_user_pass    => $radosgw_service_user_pass,
             with_location_hook           => $with_location_hook,
+            rgw_frontend                 => $rgw_frontend,
         }),
         require => Package['ceph-common'],
     }

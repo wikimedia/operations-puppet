@@ -24,4 +24,5 @@ class role::ceph::server {
     include profile::ceph::core
     include profile::ceph::mon
     include profile::ceph::osds
+    include profile::ceph::radosgw
 }

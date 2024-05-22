@@ -8,6 +8,7 @@
       Boolean                    $enable_v2_messenger,
       Boolean                    $with_location_hook = false,
       Stdlib::Port               $radosgw_port = 0,
+      Enum['civetweb','beast']   $rgw_frontend = 'civetweb',
       Optional[String]           $keystone_internal_uri = '',
       Optional[String]           $radosgw_service_user = '',
       Optional[String]           $radosgw_service_user_project = '',
@@ -70,7 +71,10 @@
 [client.radosgw]
     host = <%= $ipaddress %>
     keyring = /etc/ceph/ceph.client.radosgw.keyring
-    rgw frontends = "civetweb port=<%= $radosgw_port %>"
+    rgw frontends = "<%= $rgw_frontend %> port=<%= $radosgw_port %>"
+    <%#- The following block of settings applies to the WMCS clusters, where cloudcontrollers
+    have rados gateways installed in order to provide object storage to OpenStack projects. -%>
+    <%- if $keystone_internal_uri != '' { -%>
     rgw_keystone_verify_ssl = false
     rgw_keystone_api_version = 3
     rgw_keystone_url = <%= $keystone_internal_uri %>
@@ -95,4 +99,6 @@
     rgw_user_default_quota_max_objects = 4096
     # max_size is in bytes. This is 8GB:
     rgw_user_default_quota_max_size = 8589934592
+    <%#- End of WMCS configuration block -%>
+    <%-} -%>
 <%} -%>

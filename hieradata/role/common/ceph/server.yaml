@@ -89,8 +89,15 @@ profile::ceph::auth::load_all::configuration:
       mon: allow profile osd
       mgr: allow profile osd
       osd: allow *
+  radosgw:
+    caps:
+      mon: allow rw
+      osd: allow rwx
 
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
+
+profile::ceph::radosgw::port: 443
+profile::ceph::radosgw::firewall_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))
 
 # Generated with uuidgen
 profile::ceph::fsid: 6d4278e1-ea45-4d29-86fe-85b44c150813

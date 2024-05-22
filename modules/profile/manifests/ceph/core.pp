@@ -10,6 +10,7 @@
     Stdlib::Unixpath           $data_dir                  = lookup('profile::ceph::data_dir', { default_value => '/var/lib/ceph' }),
     String                     $fsid                      = lookup('profile::ceph::fsid'),
     String                     $ceph_repository_component = lookup('profile::ceph::ceph_repository_component'),
+    Stdlib::Port               $radosgw_port              = lookup('profile::ceph::radosgw::port'),
     ) {
     require profile::ceph::auth::load_all
 
@@ -28,6 +29,8 @@
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
+        rgw_frontend        => 'beast',
+        radosgw_port        => $radosgw_port,
     }
 
     # TODO enable prometheus pinger
