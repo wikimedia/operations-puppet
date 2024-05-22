@@ -2972,6 +2972,7 @@ service::catalog:
         - codfw
         - ulsfo
         - eqsin
+        - drmrs
         - magru
     probes:
       - type: http
@@ -3020,6 +3021,7 @@ service::catalog:
         - codfw
         - ulsfo
         - eqsin
+        - drmrs
         - magru
     probes:
       - type: http
