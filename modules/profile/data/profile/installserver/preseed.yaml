@@ -264,9 +264,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'grafana*':
     - partman/flat.cfg
     - virtual.cfg
-  'kubestagetcd[12]00[1-6]':
-    - partman/flat.cfg
-    - virtual.cfg
   'kubestagemaster*':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
@@ -275,7 +272,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  'wikikube-ctrl*':
+  # Dedicated sessionstore kubernetes workers are ganeti VMs
+  'wikikube-worker[12]0[01][56]':
+    - partman/flat.cfg
+    - partman/flat-noswap.cfg
+    - virtual.cfg
+  'wikikube-ctrl*|wikikube-worker*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
