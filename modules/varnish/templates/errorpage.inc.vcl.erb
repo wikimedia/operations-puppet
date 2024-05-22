@@ -15,7 +15,21 @@ sub backend_error_errorpage {
 sub synth_errorpage {
     set resp.http.Content-Type = "text/html; charset=utf-8";
 
-    synthetic(regsub({"<%= @errorpage_html %>"}, "%error%",
+    if (resp.status == 429) {
+        synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%", resp.reason),
+            "%error%",
+            "Request from " + req.http.X-Client-IP +
+            " via " + server.hostname + " " + server.identity +
+            ", Varnish XID " + req.xid + "<br>" +
+            regsub(resp.http.X-Cache, ".+", "Upstream caches: \0<br>") +
+            "Error: " + resp.status + ", " +
+            resp.reason +
+            " at " + now
+        ));
+    } else {
+        synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%",
+        "Our servers are currently under maintenance or experiencing a technical issue"),
+        "%error",
         "Request from " + req.http.X-Client-IP +
         " via " + server.hostname + " " + server.identity +
         ", Varnish XID " + req.xid + "<br>" +
@@ -24,4 +38,5 @@ sub synth_errorpage {
         resp.reason +
         " at " + now
     ));
+    }
 }
