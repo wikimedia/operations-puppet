@@ -5,7 +5,7 @@
 http:
   enabled: true
   address: "0.0.0.0:${PORT}"
-  debug_endpoints: true
+  debug_endpoints: ${ENABLE_DEBUG}
 
 input:
   label: "syslog"

@@ -1,16 +1,4 @@
-profile::trafficserver::backend::storage_elements:
-  - devname: nvme0n1
-    id: disk.0
-
-# Enable extended haproxy log-format
-profile::cache::haproxy::extended_logging: true
-profile::cache::haproxy::log_length: 16384
-# Benthos
-# Use this boolean to gradually rollout benthos on cp hosts with configuration
-# for HAProxy log parser
-profile::cache::base::use_benthos: true
 profile::cache::base::benthos_socket_address: &benthos_address "127.0.0.1:1221"
-profile::benthos::use_geoip: false
 profile::benthos::instances:
   haproxy_cache:
     # Prometheus exporter port
@@ -20,7 +8,7 @@ profile::benthos::instances:
     env_variables:
       socket_address: *benthos_address
       webrequest_topic: "webrequest_text_test"
-      enable_debug: false
+      enable_debug: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       pipeline_threads: -1
       benthos_fqdn: '%{facts.fqdn}'
