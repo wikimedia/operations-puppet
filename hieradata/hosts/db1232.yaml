@@ -1,3 +1,2 @@
 # db1232
 mariadb::shard: 's1'
-mariadb::package: 'wmf-mariadb106'
