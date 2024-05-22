@@ -8,33 +8,9 @@
 #
 # == SSL Configuration
 #
-# To configure SSL for Kafka MirrorMaker, you have two options:
-# 1) Use the PKI infrastructure. You just need to set use_pki_settings: true and
+# To configure SSL for Kafka MirrorMaker the PKI infrastructure is used and
 #    everything will be handled by puppet. The only extra thing to add is the keystore
 #    password in puppet private.
-# 2) Use cergen, with the following files distributable by our Puppet secret() function.
-#
-# - A keystore.jks file   - Contains the key and certificate for the Kafka clients
-# - A truststore.jks file - Contains the CA certificate that signed the Kafka client certificate
-#
-# It is expected that the CA certificate in the truststore will also be used to sign
-# all Kafka client certificates.  These should be checked into the Puppet private repository's
-# secret module at
-#
-#   - secrets/certificates/kafka_mirror_maker/kafka_mirror_maker.keystore.jks
-#   - secrets/certificates/kafka_mirror_maker/truststore.jks
-#
-# The same certificate will be used for all Kafka MirrorMaker instances.  The expected
-# DN is CN=kafka_mirror_maker.
-#
-# This layout is built to work with certificates generated using cergen like
-#    cergen --base-path /srv/private/modules/secret/secrets/certificates ...
-#
-# Once these are in the Puppet private repository's secret module, set
-# $consumer_ssl_enabled and/or $producer_ssl_enabled to true and  $ssl_password to the password
-# used when genrating the key, keystore, and truststore.
-#
-# See https://wikitech.wikimedia.org/wiki/Cergen for more details.
 #
 # When you enable SSL for MirrorMaker, User:CN=kafka_mirror_maker should be granted
 # consumer and/or producer privileges via ACLs.  This will not be done for you.
@@ -112,68 +88,31 @@ class profile::kafka::mirror(
     # be named $mirror_instance_name@$process_num.
     $mirror_instance_name = "${source_config['name']}_to_${destination_config['name']}"
 
-
     $certificate_name = 'kafka_mirror_maker'
     $ssl_location     = '/etc/kafka/mirror/ssl'
 
     # Consumer and Producer use the same SSL properties.
     if $consumer_ssl_enabled or $producer_ssl_enabled {
-        if $use_pki_settings {
-            $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
-            $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
-            $ssl_cert = profile::pki::get_cert('kafka', $certificate_name, {
-                'outdir'  => $ssl_location,
-                'owner'   => 'kafka',
-                'group'   => 'kafka',
-                'profile' => 'kafka_11',
-                notify    => Sslcert::X509_to_pkcs12['kafka_mirror_keystore'],
-                }
-            )
+        $ssl_truststore_location = profile::base::certificates::get_trusted_ca_jks_path()
+        $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
+        $ssl_cert = profile::pki::get_cert('kafka', $certificate_name, {
+            'outdir'  => $ssl_location,
+            'owner'   => 'kafka',
+            'group'   => 'kafka',
+            'profile' => 'kafka_11',
+            notify    => Sslcert::X509_to_pkcs12['kafka_mirror_keystore'],
+        })
 
-            $ssl_keystore_location   = "${ssl_location}/${certificate_name}.keystore.p12"
-            sslcert::x509_to_pkcs12 { 'kafka_mirror_keystore' :
-                owner       => 'kafka',
-                group       => 'kafka',
-                public_key  => $ssl_cert['chained'],
-                private_key => $ssl_cert['key'],
-                certfile    => $ssl_cert['ca'],
-                outfile     => $ssl_keystore_location,
-                password    => $ssl_password,
-                notify      => Service['kafka-mirror'],
-            }
-
-        } else {
-            if !defined(File[$ssl_location]) {
-                file { $ssl_location:
-                    ensure => 'directory',
-                    owner  => 'kafka',
-                    group  => 'kafka',
-                    mode   => '0555',
-                }
-            }
-            $ssl_truststore_secrets_path = "certificates/${certificate_name}/truststore.jks"
-            $ssl_truststore_location = "${ssl_location}/truststore.jks"
-            $ssl_truststore_password = $ssl_password
-            $ssl_keystore_secrets_path = "certificates/${certificate_name}/${certificate_name}.keystore.jks"
-            $ssl_keystore_location = "${ssl_location}/${certificate_name}.keystore.jks"
-
-            file { $ssl_keystore_location:
-                content => secret($ssl_keystore_secrets_path),
-                owner   => 'kafka',
-                group   => 'kafka',
-                mode    => '0440',
-            }
-            File[$ssl_keystore_location] -> Confluent::Kafka::Mirror::Instance <| |>
-
-            if !defined(File[$ssl_truststore_location]) {
-                file { $ssl_truststore_location:
-                    content => secret($ssl_truststore_secrets_path),
-                    owner   => 'kafka',
-                    group   => 'kafka',
-                    mode    => '0444',
-                }
-            }
-            File[$ssl_truststore_location] -> Confluent::Kafka::Mirror::Instance <| |>
+        $ssl_keystore_location   = "${ssl_location}/${certificate_name}.keystore.p12"
+        sslcert::x509_to_pkcs12 { 'kafka_mirror_keystore' :
+            owner       => 'kafka',
+            group       => 'kafka',
+            public_key  => $ssl_cert['chained'],
+            private_key => $ssl_cert['key'],
+            certfile    => $ssl_cert['ca'],
+            outfile     => $ssl_keystore_location,
+            password    => $ssl_password,
+            notify      => Service['kafka-mirror'],
         }
 
         # https://phabricator.wikimedia.org/T182993#4208208
