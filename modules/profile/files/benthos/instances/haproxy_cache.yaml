@@ -35,7 +35,7 @@ pipeline:
         codec: "json"
     - label: "drop_unparsable_messages"
       mapping: |
-        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false)
+        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false) || this.message.has_prefix("Proxy ") || this.message.has_prefix("soft-stop ")
         {
           deleted()
         }
