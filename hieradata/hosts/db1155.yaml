@@ -5,5 +5,4 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s4: 46G
   s6: 30G
   s7: 38G
-mariadb::package: 'wmf-mariadb106'
 profile::monitoring::notifications_enabled: false
