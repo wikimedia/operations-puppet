@@ -296,6 +296,8 @@ hadoop_workers_sff_drives:
 memcached_servers_eqiad:
   __regex: !ruby/regexp /^mc105[0-4]\.eqiad\.wmnet$/
   profile::memcached::memcached_user: 'memcache'
+  profile::memcached::threads: 28
 memcached_servers_codfw:
   __regex: !ruby/regexp /^mc205[0-4]\.codfw\.wmnet$/
   profile::memcached::memcached_user: 'memcache'
+  profile::memcached::threads: 28
