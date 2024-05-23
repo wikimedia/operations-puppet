@@ -60,7 +60,7 @@ profile::idp::services:
   datahub_staging:
     id: 8
     service_class: 'OidcRegisteredService'
-    service_id: 'https://datahub-frontend\.k8s-staging\.discovery\.wmnet(/.*)?'
+    service_id: 'https://datahub-next\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
