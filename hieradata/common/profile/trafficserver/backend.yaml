@@ -45,6 +45,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://datahub.wikimedia.org
       replacement: https://datahub-frontend.discovery.wmnet:30443
     - type: map
+      target: http://datahub-next.wikimedia.org
+      replacement: https://datahub-frontend-next.svc.eqiad.wmnet:30443
+    - type: map
       target: http://datasets.wikimedia.org
       replacement: https://analytics-web.discovery.wmnet:8443
     - type: map
