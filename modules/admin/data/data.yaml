@@ -31,7 +31,7 @@ groups:
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
-              dbad2021, bdgreenlee]
+              dbad2021, bdgreenlee, kormat]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -62,7 +62,7 @@ groups:
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
-              rzl, hnowlan, jayme, kormat, ryankemper, klausman,
+              rzl, hnowlan, jayme, ryankemper, klausman,
               dcaro, legoktm, cmooney, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, eoghan, kamila,
@@ -4324,13 +4324,11 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2TjL7xYqQjY286d/CV+PjmE2vTd9FfoLZZRDkf38XH janis@norna'
   kormat:
-    ensure: present
+    ensure: absent
     realname: Stevie Beth Mhaol
-    email: sbmhaol@wikimedia.org
     uid: 24118
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ1YZhevj9nTDh7Gs2Sm9mY8Aq2PaZNUmXDAIOrYkZ38 kormat@prod.wmf'
+    ssh_keys: []
   klausman:
     ensure: present
     realname: Tobias Klausmann
