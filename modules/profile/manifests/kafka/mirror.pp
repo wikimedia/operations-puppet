@@ -76,7 +76,6 @@ class profile::kafka::mirror(
     Stdlib::Port $jmx_base_port           = lookup('profile::kafka:mirror:jmx_base_port', {'default_value' => 9900}),
     Stdlib::Port $jmx_exporter_base_port  = lookup('profile::kafka::mirror:jmx_exporter_base_port', {'default_value' => 7900}),
     Integer $message_max_bytes            = lookup('kafka_message_max_bytes'),
-    Boolean $use_pki_settings             = lookup('profile::kafka::mirror:use_pki_settings', {'default_value' => true}),
 ) {
     include profile::kafka::common
 
