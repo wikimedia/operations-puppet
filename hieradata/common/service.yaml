@@ -256,7 +256,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: blubberoid
         active_active: true
