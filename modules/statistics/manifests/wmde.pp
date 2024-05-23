@@ -33,11 +33,4 @@ class statistics::wmde(
         wmde_secrets  => $wmde_secrets,
         require       => [User[$user], File[$homedir]],
     }
-
-    # Wikidata concepts processing
-    class { 'statistics::wmde::wdcm':
-        dir     => "${homedir}/wdcm",
-        user    => $user,
-        require => [User[$user], File[$homedir]],
-    }
 }
