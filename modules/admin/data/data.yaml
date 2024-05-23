@@ -431,7 +431,8 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
-              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf]
+              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
+              mareikeheuer]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6363,6 +6364,15 @@ users:
     uid: 46809
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  mareikeheuer:
+    ensure: present
+    krb: present
+    realname: Mareike Heuer
+    email: mareike.heuer@wikimedia.de
+    uid: 44484
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHItdDrEyoB+LxAcKWQHfLRiqyzPHnOMKiBkaak5VBMP mareike.heuer@wmde-102987'
 
 ldap_only_users:
   adavenport:
@@ -7121,10 +7131,6 @@ ldap_only_users:
     email: radimer-ctr@wikimedia.org
     expiry_date: "2024-06-30"
     expiry_contact: lmccabe@wikimedia.org
-  mareikeheuer:
-    ensure: present
-    realname: Mareike Heuer
-    email: mareike.heuer@wikimedia.de
   scampos:
     ensure: present
     realname: Sara Campos
