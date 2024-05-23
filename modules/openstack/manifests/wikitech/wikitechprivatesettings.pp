@@ -20,10 +20,11 @@ class openstack::wikitech::wikitechprivatesettings(
     # Drop this file onto the wikitech host; this file exists to hand off
     #  settings from private puppet to mediawiki.
     file { '/etc/mediawiki/WikitechPrivateSettings.php':
-        ensure  => 'present',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template('openstack/wikitech/wikitech_private.php.erb'),
+        ensure    => 'present',
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0644',
+        content   => template('openstack/wikitech/wikitech_private.php.erb'),
+        show_diff => false,
     }
 }
