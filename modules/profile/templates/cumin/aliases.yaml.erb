@@ -262,6 +262,14 @@ lvs-canary: P{lvs4008.ulsfo.wmnet}
 <% @datacenters.each do |dc| -%>
 lvs-<%= dc %>: A:lvs and A:<%= dc %>
 <% end -%>
+# lvs-high-traffic1, lvs-high-traffic2, etc.
+<% @lvs_hosts.each do |lvs_class, lvs_host| -%>
+lvs-<%= lvs_class %>: P{<%= lvs_host.join("* or ") %>*}
+<% @datacenters.each do |dc| -%>
+<% next if lvs_class == "low-traffic" && dc != "eqiad" && dc != "codfw" -%>
+lvs-<%= lvs_class %>-<%= dc %>: A:lvs-<%= lvs_class %> and A:<%= dc %>
+<% end -%>
+<% end -%>
 maps: P{O:maps::master or O:maps::replica}
 maps-codfw: A:maps and A:codfw
 maps-eqiad: A:maps and A:eqiad
