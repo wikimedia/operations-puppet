@@ -245,8 +245,8 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-stat-4dev.cfg
   'stat1008':
-    - partman/standard.cfg
-    - partman/raid10-8dev.cfg
+    - reuse-parts-test.cfg
+    - partman/custom/reuse-analytics-raid10-8dev.cfg
   'stat1009|stat1010':
     - partman/custom/kafka-jumbo.cfg
   'stat1011':
