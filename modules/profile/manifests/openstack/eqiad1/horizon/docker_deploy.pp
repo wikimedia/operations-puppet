@@ -14,8 +14,6 @@ class profile::openstack::eqiad1::horizon::docker_deploy(
     Stdlib::Port::User $port = lookup('profile::openstack::eqiad1::horizon::docker_port', { 'default_value' => 8084 }),
 ) {
 
-    # TODO: check if we need the clientpackages at all when using docker deployments
-    require ::profile::openstack::eqiad1::clientpackages
     class {'::profile::openstack::base::horizon::docker_deploy':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,

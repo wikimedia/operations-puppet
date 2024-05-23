@@ -14,7 +14,6 @@ class profile::openstack::codfw1dev::horizon::docker_deploy(
     String          $docker_version = lookup('profile::openstack::codfw1dev::horizon::docker_version'),
 ) {
 
-    require ::profile::openstack::codfw1dev::clientpackages
     class {'::profile::openstack::base::horizon::docker_deploy':
         horizon_version      => $horizon_version,
         openstack_version    => $openstack_version,
