@@ -96,12 +96,10 @@ class profile::calico::kubernetes (
         srange => "(\$NETWORK_INFRA ${gateways_ferm})",
     }
     # All nodes need to talk to typha and it runs as hostNetwork pod
-    # TODO: If and when we move to a layered BGP hierarchy, revisit the use of
-    # $cluster_nodes.
-    $cluster_nodes_ferm = join($k8s_config['cluster_nodes'], ' ')
-    ferm::service { 'calico-typha':
+    # TODO: If and when we move to a layered BGP hierarchy, revisit the use of $cluster_nodes.
+    firewall::service { 'calico-typha':
         proto  => 'tcp',
-        port   => '5473',
-        srange => "(@resolve((${cluster_nodes_ferm})) @resolve((${cluster_nodes_ferm}), AAAA))",
+        port   => 5473,
+        srange => $k8s_config['cluster_nodes'],
     }
 }
