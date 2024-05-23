@@ -1,2 +1,2 @@
 profile::cache::haproxy::install_haproxy26_component: true
-profile::cache::purged::use_pki: true
+profile::cache::purge::use_pki: true
