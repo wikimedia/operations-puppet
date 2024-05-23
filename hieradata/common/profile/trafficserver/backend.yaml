@@ -199,7 +199,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://puppetboard.discovery.wmnet
     - type: map
       target: http://pyrra.wikimedia.org
-      replacement: http://titan1001.eqiad.wmnet
+      replacement: http://thanos-web.discovery.wmnet
     - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1015.eqiad.wmnet/bigdata/ldf
