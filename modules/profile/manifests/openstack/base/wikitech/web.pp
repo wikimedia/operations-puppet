@@ -87,6 +87,7 @@ class profile::openstack::base::wikitech::web(
         phabricator_api_token              => $phabricator_api_token,
         gerrit_api_user                    => $gerrit_api_user,
         gerrit_api_password                => $gerrit_api_password,
+        gitlab_api_token                   => $gitlab_api_token,
     }
 
     $php_version = wmflib::wmf_php_version()
