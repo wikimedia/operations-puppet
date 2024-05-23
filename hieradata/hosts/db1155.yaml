@@ -6,3 +6,4 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s6: 30G
   s7: 38G
 mariadb::package: 'wmf-mariadb106'
+profile::monitoring::notifications_enabled: false
