@@ -23,7 +23,6 @@ profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:
   mathoid: {}
   zotero: {}
-  blubberoid: {}
   eventgate-analytics: {}
   eventgate-main: {}
   eventgate-logging-external: {}
