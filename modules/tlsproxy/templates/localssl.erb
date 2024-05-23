@@ -33,16 +33,6 @@ server {
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
     <%- end -%>
-    <%- if @do_ocsp -%>
-    ssl_stapling on;
-      <%- @certs_nginx.each do |cert| -%>
-    ssl_stapling_file /var/cache/ocsp/<%= cert %>.ocsp;
-      <%- end -%>
-    <%- if @acme_chief and @certs_nginx.empty? -%>
-    ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.ocsp;
-    ssl_stapling_file /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.ocsp;
-    <%- end -%>
-    <%- end -%>
 
     keepalive_timeout <%= @keepalive_timeout %>;
     keepalive_requests <%= @keepalive_requests %>;

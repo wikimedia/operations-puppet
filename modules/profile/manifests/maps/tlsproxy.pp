@@ -2,7 +2,6 @@
 class profile::maps::tlsproxy(
     String $servicename      = lookup('profile::maps::tlsproxy::servicename'),
     Boolean $use_pki         = lookup('profile::maps::tlsproxy::use_pki', {'default_value' => false}),
-    String $ocsp_proxy       = lookup('http_proxy', {'default_value' => ''}),
 ){
     if $use_pki {
         $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
@@ -13,8 +12,6 @@ class profile::maps::tlsproxy(
             server_name    => $servicename,
             upstream_ports => [6533],
             default_server => true,
-            do_ocsp        => false,
-            ocsp_proxy     => $ocsp_proxy,
             enable_http2   => false,
             cfssl_paths    => $cfssl_paths,
             server_aliases => ['maps.wikimedia.org',"kartotherian.svc.${::site}.wmnet"],
@@ -25,8 +22,6 @@ class profile::maps::tlsproxy(
             certs          => [$servicename],
             upstream_ports => [6533],
             default_server => true,
-            do_ocsp        => false,
-            ocsp_proxy     => $ocsp_proxy,
             enable_http2   => false,
         }
     }

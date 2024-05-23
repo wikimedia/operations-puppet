@@ -47,12 +47,6 @@
 #   Boolean. Adds the 'default_server' option to the listen statement.
 #   Exactly one instance should have this set to true.
 #
-# [*do_ocsp*]
-#   Boolean. Sets up OCSP Stapling for this server.  This both enables the
-#   correct configuration directives in the site's nginx config file as well
-#   as creates the OCSP data file itself and ensures a cron is running to
-#   keep it up to date.  Does not work for ACME (letsencrypt) yet!
-#
 # [*access_log*]
 #   Boolean. If true, sets up the access log for the localssl virtualhost.
 #   Do NOT enable on the cache nodes. Defaults to false
@@ -97,13 +91,11 @@ define tlsproxy::localssl(
     Array[Stdlib::Port]               $upstream_ports     = [80],
     Stdlib::Port                      $tls_port           = 443,
     Optional[Stdlib::Port]            $redir_port         = undef,
-    Boolean                           $do_ocsp            = false,
     Boolean                           $skip_private       = false,
     Boolean                           $access_log         = false,
     Integer                           $keepalive_timeout  = 60,
     Integer                           $keepalive_requests = 100,
     Integer                           $read_timeout       = 180,
-    String                            $ocsp_proxy         = '',
     Boolean                           $only_get_requests  = false,
     Boolean                           $enable_http2       = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {}
@@ -154,27 +146,11 @@ define tlsproxy::localssl(
         }
     }
 
-    if $do_ocsp {
-        require tlsproxy::ocsp
-
-        $certs.each |String $cert| {
-            if !defined(Sslcert::Ocsp::Conf[$cert]) {
-                sslcert::ocsp::conf { $cert:
-                    proxy  => $ocsp_proxy,
-                    before => [Service['nginx'], Exec['nginx-reload']],
-                }
-            }
-        }
-    }
-
     if $acme_chief {
         if !defined(Acme_chief::Cert[$acme_certname]) {
             acme_chief::cert { $acme_certname:
                 puppet_svc => 'nginx',
             }
-        }
-        if $do_ocsp {
-            File["/etc/acmecerts/${acme_certname}"] ~> Exec['nginx-reload']
         }
     }
     unless $cfssl_paths.empty {
