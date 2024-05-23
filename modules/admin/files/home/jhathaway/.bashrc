@@ -532,17 +532,21 @@ fi
 alias v='view'
 # ipcalc-ng has IPv6 support
 alias ipcalc='ipcalc-ng'
-function noop { { sudo puppet agent -t --noop; } 2>&1 | tee puppet.out; }
+function noop {
+	{ sudo puppet agent -t --noop "$@"; } 2>&1 | tee puppet-noop.out
+}
+function apply {
+	{ sudo puppet agent -t "$@"; } 2>&1 | tee puppet-apply.out
+}
 function noopply {
-	{ sudo puppet agent -t --noop; } 2>&1 | tee puppet.out
+	noop "$@"
 	read -r -p 'Apply? [y/n]: '
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
-		{ sudo puppet agent -t; } 2>&1 | tee puppet.out
+		apply "$@"
 	else
-		printf 'Apply skipped.\n'
+		printf 'Puppet apply skipped.\n'
 	fi
 }
-function apply { { sudo puppet agent -t; } 2>&1 | tee puppet.out; }
 
 # shellcheck disable=SC2016
 PS1_DEMO='$(dollar $?) '
