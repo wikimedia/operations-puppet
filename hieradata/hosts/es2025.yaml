@@ -1,6 +1,5 @@
 # es2025
 mariadb::shard: 'es5'
-mariadb::package: 'wmf-mariadb106'
 profile::mariadb::mysql_role: 'standalone'
 
 profile::puppet::agent::force_puppet7: true
