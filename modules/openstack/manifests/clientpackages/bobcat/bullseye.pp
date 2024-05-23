@@ -27,4 +27,9 @@ class openstack::clientpackages::bobcat::bullseye(
         owner  => 'root',
         group  => 'root',
     }
+
+    openstack::patch { '/usr/lib/python3/dist-packages/openstack/config/loader.py':
+        source  => 'puppet:///modules/openstack/bobcat/openstacksdk/hacks/allow_overriding_cloud_yaml.bullseye.patch',
+        require => Package['python3-openstacksdk'],
+    }
 }
