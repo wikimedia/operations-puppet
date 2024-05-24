@@ -2431,7 +2431,8 @@ class profile::prometheus::ops (
         dest             => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
         class_name       => 'profile::lvs::realserver::ipip',
         class_parameters => {
-          'enabled' => true,
+          'enabled'           => true,
+          'firewall_provider' => 'none', # only tcp-mss-clamper exposes metrics
         },
         port             => 2200,
     }

@@ -30,6 +30,11 @@ class profile::lvs::realserver::ipip(
     $clamped_ipport = wmflib::service::get_ipport_for_ipip_services($services, $::site)
 
     $ensure = stdlib::ensure($enabled)
+    $ensure_clamper = stdlib::ensure($enabled and $firewall_provider == 'none')
+    $ensure_ferm_mss = stdlib::ensure($enabled and $firewall_provider == 'ferm')
+    if $enabled and $ensure_clamper == 'absent' and $ensure_ferm_mss == 'absent' {
+        fail('unsupported realserver setup')
+    }
 
     # Provide ingress interfaces for both IPv4 and IPv6 traffic
     interface::ipip { 'ipip_ipv4':
@@ -46,7 +51,7 @@ class profile::lvs::realserver::ipip(
 
     $interfaces.each |String $interface| {
         interface::clsact { "clsact_${interface}":
-            ensure    => $ensure,
+            ensure    => $ensure_clamper,
             interface => $interface,
         }
     }
@@ -69,19 +74,19 @@ class profile::lvs::realserver::ipip(
 
     # We need TCP MSS clamping here
     package { 'tcp-mss-clamper':
-        ensure => $ensure,
+        ensure => $ensure_clamper,
     }
 
     $prometheus_addr = ':2200'
     systemd::service { 'tcp-mss-clamper':
-        ensure               => $ensure,
+        ensure               => $ensure_clamper,
         content              => systemd_template('tcp-mss-clamper'),
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/LVS#IPIP_encapsulation_experiments',
         restart              => false,
     }
 
-    if $enabled {
+    if $ensure_clamper == 'present' {
         exec { 'enable_tcp-mss-clamper_service':
             command => '/usr/bin/systemctl enable tcp-mss-clamper.service',
             unless  => '/usr/bin/systemctl -q is-enabled tcp-mss-clamper.service',
@@ -104,6 +109,37 @@ class profile::lvs::realserver::ipip(
     ferm::rule { 'ip6ip6':
         ensure => $ensure_ferm_rules,
         rule   => 'saddr 0100::/64 proto ipv6 ACCEPT;',
+        domain => '(ip6)',
+    }
+    # ferm based TCP MSS clamping
+    $clamped_ips = $clamped_ipport.map|$ipport| {
+        $ipport.match('\[?(.*)\]?:(.*)')[1]
+    }.flatten().unique().sort()
+    $clamped_ports = $clamped_ipport.map|$ipport| {
+        $ipport.match('\[?(.*)\]?:(.*)')[2]
+    }.flatten().unique().sort()
+
+    $rule_ips = $clamped_ips? {
+        Array[Stdlib::IP::Address, 1, 1] => $clamped_ips[0],
+        Array                            => sprintf('(%s)', $clamped_ips.join(' ')),
+    }
+    $rule_ports = $clamped_ports? {
+        Array[Stdlib::Port, 1, 1] => $clamped_ports[0],
+        Array                     => sprintf('(%s)', $clamped_ports.join(' ')),
+    }
+
+    $outerfaces = $interfaces.join(' ')
+
+    ferm::rule { 'clamp-mss-ipv4':
+        ensure => $ensure_ferm_mss,
+        chain  => 'FORWARD',
+        rule   => "outerface (${outerfaces}) saddr @ipfilter(${rule_ips}) proto tcp sport ${rule_ports} tcp-flags (SYN) SYN TCPMSS set-mss ${ipv4_mss};",
+        domain => '(ip)',
+    }
+    ferm::rule { 'clamp-mss-ipv6':
+        ensure => $ensure_ferm_mss,
+        chain  => 'FORWARD',
+        rule   => "outerface (${$outerfaces}) saddr @ipfilter(${rule_ips}) proto tcp sport ${rule_ports} tcp-flags (SYN) SYN TCPMSS set-mss ${ipv6_mss};",
         domain => '(ip6)',
     }
 
