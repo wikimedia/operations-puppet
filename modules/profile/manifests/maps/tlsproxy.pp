@@ -26,9 +26,9 @@ class profile::maps::tlsproxy(
         }
     }
 
-    ferm::service { 'maps-proxy-https':
+    firewall::service { 'maps-proxy-https':
         proto   => 'tcp',
         notrack => true,
-        port    => '443',
+        port    => 443,
     }
 }
