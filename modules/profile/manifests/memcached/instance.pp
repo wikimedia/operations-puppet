@@ -80,6 +80,9 @@ class profile::memcached::instance (
     Integer                    $min_slab_size    = lookup('profile::memcached::min_slab_size'),
     Float                      $growth_factor    = lookup('profile::memcached::growth_factor'),
     String                     $memcached_user   = lookup('profile::memcached::memcached_user'),
+    Optional[WMFlib::Ensure]   $extstore_ensure  = lookup('profile::memcached::extstore_ensure'),
+    Optional[Integer]          $extstore_size    = lookup('profile::memcached::extstore_size'),
+    Optional[Stdlib::Unixpath] $extstore_path    = lookup('profile::memcached::extstore_path'),
     Optional[Boolean]          $enable_tls       = lookup('profile::memcached::enable_tls'),
     Optional[Stdlib::Port]     $notls_port       = lookup('profile::memcached::notls_port'),
     Optional[Stdlib::Unixpath] $ssl_cert         = lookup('profile::memcached::ssl_cert'),
@@ -91,8 +94,13 @@ class profile::memcached::instance (
 ) {
     include ::profile::prometheus::memcached_exporter
 
+    $extstore = $extstore_ensure ? {
+        present => ["ext_path=${extstore_path}:${extstore_size}G"],
+        default => [],
+    }
+
     $base_extra_options = {
-        '-o' => join($extended_options, ','),
+        '-o' => join($extended_options+$extstore, ','),
         '-D' => ':',
     }
 
@@ -107,6 +115,7 @@ class profile::memcached::instance (
     } else {
         $threads_opt = {}
     }
+
 
     $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
 

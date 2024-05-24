@@ -647,6 +647,9 @@ profile::memcached::size: ~
 profile::memcached::extended_options: []
 profile::memcached::port: 11211
 profile::memcached::memcached_user: 'nobody'
+profile::memcached::extstore_ensure: absent
+profile::memcached::extstore_size: ~
+profile::memcached::extstore_path: ~
 profile::memcached::enable_tls: false
 profile::memcached::notls_port: ~
 profile::memcached::ssl_cert: ~

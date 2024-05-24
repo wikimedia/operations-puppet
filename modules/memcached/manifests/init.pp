@@ -84,6 +84,12 @@
 # [*unix_socket_name*]
 #   Name of the unix socket, eg memcached.sock
 #
+# [*ext_path*]
+#   Path to the extstore path. This enables the extstore feature
+#   in memcached. https://github.com/memcached/memcached/wiki/Extstore
+#
+# [*ext_path_size*]
+#   Size of the extstore path in gigabytes. Default is 20.
 
 # === Examples
 #
@@ -107,10 +113,14 @@ class memcached(
     Boolean                    $enable_tls_localhost  = false,
     Boolean                    $enable_unix_socket    = false,
     String                     $unix_socket_name      = 'memcached.sock',
+    WMFlib::Ensure             $extstore_ensure       = absent,
     Optional[Stdlib::Port]     $notls_port            = undef,
     Optional[Stdlib::Unixpath] $ssl_cert              = undef,
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
     Optional[Stdlib::Unixpath] $localcacert           = undef,
+    Optional[Stdlib::Unixpath] $extstore_path         = '/srv/memcached',
+    Optional[Integer]          $extstore_size         = 20,
+
 ) {
     if $enable_tls and (!$ssl_key or !$ssl_key) {
         fail('you must provide ssl_cert and ssl_key if you enable_tls')
@@ -187,6 +197,14 @@ class memcached(
         ensure   => present,
         override => $override,
         content  => systemd_template('memcached'),
+    }
+
+    file { $extstore_path:
+        ensure  => stdlib::ensure($extstore_ensure, 'directory'),
+        owner   => $memcached_user,
+        group   => $memcached_user,
+        mode    => '0700',
+        require => Package['memcached'],
     }
 
     # Prefer a direct check if memcached is not running on localhost.
