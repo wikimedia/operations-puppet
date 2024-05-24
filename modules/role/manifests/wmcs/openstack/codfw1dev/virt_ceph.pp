@@ -1,7 +1,6 @@
 # Nova hypervisors with ceph for instance storage
 #
 class role::wmcs::openstack::codfw1dev::virt_ceph {
-    system::role { $name: }
     include profile::base::production
     # include profile::firewall
     include profile::base::cloud_production
