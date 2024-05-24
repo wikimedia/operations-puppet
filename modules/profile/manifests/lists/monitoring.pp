@@ -117,7 +117,7 @@ class profile::lists::monitoring (
     }
 
     user { 'mtail':
-        ensure  => $ensure,
+        ensure  => 'present',
         groups  => ['list'],
         require => Package['mailman3']
     }
