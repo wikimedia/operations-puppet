@@ -139,6 +139,7 @@ C{
         // result.  Also, if the name ends in '.beta.wmflabs.org', make a
         // special case for that.
         if (!strcmp(third_last, ".beta.wmflabs.org")
+                || !strcmp(third_last, ".beta.wmcloud.org")
                 || (pos - last) <= 3
                 || (last - second_last) <= 3) {
             top_cookie_domain = third_last;

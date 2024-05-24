@@ -599,7 +599,10 @@ mediawiki::sites:
       - name: wikipedia
         params:
           docroot: "/srv/mediawiki/docroot/wikipedia.org"
-          server_aliases: ["*.wikipedia.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikipedia.beta.wmflabs.org",
+            "*.wikipedia.beta.wmcloud.org"
+          ]
           additional_rewrites:
             early: []
             late:
