@@ -167,6 +167,8 @@ cache::alternate_domains:
     caching: 'normal'
   mpic-next.wikimedia.org:
     caching: 'normal'
+  datahub.wikimedia.org:
+    caching: 'normal'
   datahub-next.wikimedia.org:
     caching: 'normal'
   datasets-config.wikimedia.org:
