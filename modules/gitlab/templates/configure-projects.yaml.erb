@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+gitlab:
+  url: <%= @external_url %>
+  # User isn't currently required by configure-projects, but it seems useful
+  # for future-proofing.
+  user: <%= @configure_projects_bot %>
+  token: <%= @configure_projects_bot_token %>

@@ -63,8 +63,14 @@ class gitlab (
     Boolean           $letsencrypt_enable                       = false,
     String            $omniauth_identifier                      = 'gitlab_oidc',
     Boolean           $omniauth_auto_link_saml_user             = true,
+    String                   $gitlab_settings_user              = 'gitlab-settings',
+    Boolean                  $enable_configure_projects         = false,
+    String                   $configure_projects_bot            = 'configure-projects-bot',
+    String                   $configure_projects_bot_token      = 'configure-projects-bot-token-not-supplied',
+    Systemd::Timer::Schedule $configure_projects_interval       = {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:00'},
     Boolean                  $enable_ldap_group_sync            = false,
     Hash                     $ldap_config                       = {},
+    # TODO: Get rid of this value once ldapgroupsync user is gone?
     String                   $ldap_group_sync_user              = 'ldapgroupsync',
     String                   $ldap_group_sync_bot               = 'ldap-sync-bot',
     String                   $ldap_group_sync_bot_token         = 'ldap-sync-bot-token-not-supplied',
@@ -252,46 +258,78 @@ class gitlab (
         source => 'puppet:///modules/gitlab/provision-backup-fs.sh';
     }
 
-    ### Group management stuff
+    ### gitlab-settings dependencies, including group management and configure-projects
     ensure_packages('python3-ldap')
 
-    $ensure_ldap_group_sync = $enable_ldap_group_sync.bool2str('present','absent')
-    systemd::sysuser { $ldap_group_sync_user:
-        ensure      => $ensure_ldap_group_sync,
-        description => 'sync-gitlab-group-with-ldap user',
+    # TODO: Is this needed to remove the now-unused ldap user?
+    # systemd::sysuser { $ldap_group_sync_user:
+    #     ensure               => 'absent',
+    #     description          => 'old sync-gitlab-group-with-ldap user',
+
+    $ensure_gitlab_settings_user = ($enable_ldap_group_sync or $enable_configure_projects).bool2str('present','absent')
+    systemd::sysuser { $gitlab_settings_user:
+        ensure      => $ensure_gitlab_settings_user,
+        description => 'user for scripts under gitlab-settings',
     }
 
-    # NOTE: Gitlab needs to be operational for this to work.
-    $ensure_gitlab_settings = $enable_ldap_group_sync.bool2str('latest','absent')
+    # Clone gitlab-settings repo for use by the LDAP sync and project
+    # configuration bots.  Both will run as $gitlab_settings_user.
+    $ensure_gitlab_settings = ($enable_ldap_group_sync or $enable_configure_projects).bool2str('latest','absent')
+    # NOTE: Gitlab needs to be operational for this to work:
     git::clone { 'repos/releng/gitlab-settings':
         ensure        => $ensure_gitlab_settings,
         update_method => 'checkout',
         git_tag       => 'v1.3.0',
         directory     => '/srv/gitlab-settings',
         source        => 'gitlab',
-        owner         => $ldap_group_sync_user,
-        group         => $ldap_group_sync_user,
-        require       => Systemd::Sysuser[$ldap_group_sync_user],
+        owner         => $gitlab_settings_user,
+        group         => $gitlab_settings_user,
+        require       => Systemd::Sysuser[$gitlab_settings_user],
     }
 
+    # LDAP sync config file:
+    $ensure_ldap_group_sync = $enable_ldap_group_sync.bool2str('present','absent')
     $ldap_url = "ldaps://${ldap_config[ro-server]}:636"
     file { "${config_dir}/group-management-config.yaml":
         ensure  => $ensure_ldap_group_sync,
-        owner   => $ldap_group_sync_user,
-        group   => $ldap_group_sync_user,
+        owner   => $gitlab_settings_user,
+        group   => $gitlab_settings_user,
         mode    => '0400',
         content => template('gitlab/group-management-config.yaml.erb'),
-        require => Systemd::Sysuser[$ldap_group_sync_user],
+        require => Systemd::Sysuser[$gitlab_settings_user],
     }
 
+    # LDAP sync timer:
     $sync_cmd = "/srv/gitlab-settings/group-management/sync-gitlab-group-with-ldap -c ${config_dir}/group-management-config.yaml --yes"
     systemd::timer::job { 'sync-gitlab-group-with-ldap':
         ensure      => $ensure_ldap_group_sync,
-        user        => $ldap_group_sync_user,
+        user        => $gitlab_settings_user,
         description => 'Sync various GitLab groups with their LDAP groups',
         command     => "${sync_cmd} repos/mediawiki wmf ops ; ${sync_cmd} --access-level Owner repos/sre ops",
         interval    => $ldap_group_sync_interval,
-        require     => Systemd::Sysuser[$ldap_group_sync_user],
+        require     => Systemd::Sysuser[$gitlab_settings_user],
+    }
+
+    # configure-projects config file (T355097)
+    $ensure_configure_projects = $enable_configure_projects.bool2str('present', 'absent')
+    file { "${config_dir}/configure-projects.yaml":
+        ensure  => $ensure_configure_projects,
+        owner   => $gitlab_settings_user,
+        group   => $gitlab_settings_user,
+        mode    => '0400',
+        content => template('gitlab/configure-projects.yaml.erb'),
+        require => Systemd::Sysuser[$gitlab_settings_user],
+    }
+
+    # configure-projects timer (T355097)
+    $configure_projects_cmd = "/srv/gitlab-settings/configure-projects -c ${config_dir}/configure-projects.yaml"
+    systemd::timer::job { 'gitlab-settings-configure-projects':
+        ensure      => $ensure_configure_projects,
+        user        => $gitlab_settings_user,
+        description => 'Configure all projects on instance',
+        command     => $configure_projects_cmd,
+        interval    => $configure_projects_interval,
+        require     => Systemd::Sysuser[$gitlab_settings_user],
     }
 
     $ensure_custom_exporter = $enable_custom_exporter.bool2str('present','absent')
@@ -313,12 +351,12 @@ class gitlab (
 
     $ensure_custom_exporter_secret = $enable_custom_exporter.bool2str('file','absent')
     file { '/etc/gitlab-exporter-auth':
-    ensure  => $ensure_custom_exporter_secret,
-    owner   => 'prometheus',
-    group   => 'prometheus',
-    mode    => '0400',
-    content => secret('gitlab/gitlab-exporter-auth'),
-  }
+        ensure  => $ensure_custom_exporter_secret,
+        owner   => 'prometheus',
+        group   => 'prometheus',
+        mode    => '0400',
+        content => secret('gitlab/gitlab-exporter-auth'),
+    }
 
     ensure_packages(['python3-gitlab'])
 }
