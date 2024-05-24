@@ -2719,9 +2719,6 @@ node /^stat10(1[0-1]|0[4-9])\.eqiad\./ {
 # and to hieradata/hosts/ if running dumps for enwiki or wikidata.
 # They should also be added to the dumps/scap repo in dumps_targets,
 # https://gerrit.wikimedia.org/r/plugins/gitiles/operations/dumps/scap
-node /^snapshot1008\.eqiad\./ {
-    role(insetup::data_engineering)
-}
 node /^snapshot1010\.eqiad\./ {
     role(dumps::generation::worker::dumper_monitor)
 }
