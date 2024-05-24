@@ -4,15 +4,10 @@
 # Data on Commons dataset inside Wikimedia Cloud Services.
 class role::wcqs::cloud {
     # Standard for all roles
-    include ::profile::base::production
-    include ::profile::firewall
+    include profile::base::production
+    include profile::firewall
     # Standard wcqs installation
-    require ::profile::query_service::wcqs
+    require profile::query_service::wcqs
     # Cloud specific profiles
-    require ::role::labs::lvm::srv
-
-    system::role { 'wcqs::cloud':
-        ensure      => 'present',
-        description => 'Wikimedia Commons Query Service in WMCS'
-    }
+    require role::labs::lvm::srv
 }

@@ -12,9 +12,4 @@ class role::wcqs::public {
     include profile::tlsproxy::envoy # TLS termination
     # Production specific profiles
     include profile::lvs::realserver
-
-    system::role { 'wcqs::public':
-        ensure      => 'present',
-        description => 'Wikimedia Commons Query Service - publicly available service'
-    }
 }

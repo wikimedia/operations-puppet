@@ -12,10 +12,4 @@ class role::wdqs::test {
     # T350106 temporary firewall rules
     require profile::query_service::graph_split
     include profile::tlsproxy::envoy # TLS termination
-
-    system::role { 'wdqs::test':
-        ensure      => 'present',
-        description => 'Wikidata Query Service - test cluster',
-    }
-
 }

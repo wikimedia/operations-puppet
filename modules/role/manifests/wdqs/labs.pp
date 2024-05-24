@@ -13,9 +13,4 @@ class role::wdqs::labs () {
     require profile::query_service::wikidata
     # Specific to instances in cloud services
     require role::labs::lvm::srv
-
-    system::role { 'wdqs::labs':
-        ensure      => 'present',
-        description => 'Wikidata Query Service',
-    }
 }

@@ -76,7 +76,6 @@ profile::query_service::legacy_updater::journal: 'wikidata'
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
 profile::contacts::role_contacts: ['Search Platform']
 
-
 # kill blazegraph when we detect 300 seconds of GC time vs 1sec*5 of runtime
 # ref: https://github.com/Netflix-Skunkworks/jvmquake#knobs-and-options
 profile::query_service::jvmquake_options: "300,5,0"

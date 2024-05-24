@@ -51,6 +51,7 @@ profile::query_service::legacy_updater::journal: 'wikidata'
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'Wikidata Query Service - internally available service'
 
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []

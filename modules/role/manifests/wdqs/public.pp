@@ -14,9 +14,4 @@ class role::wdqs::public {
     include profile::lvs::realserver
     # Public endpoint specific profiles
     include profile::tlsproxy::envoy # TLS termination
-
-    system::role { 'wdqs::public':
-        ensure      => 'present',
-        description => 'Wikidata Query Service - publicly available service',
-    }
 }
