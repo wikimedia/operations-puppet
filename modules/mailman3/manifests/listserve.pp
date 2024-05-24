@@ -51,7 +51,6 @@ class mailman3::listserve (
 
     service { 'mailman3':
         ensure    => $service_ensure,
-        hasstatus => false,
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
