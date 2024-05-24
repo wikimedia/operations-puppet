@@ -228,39 +228,6 @@ service::catalog:
       - eqiad
     state: production
 
-  blubberoid:
-    description: Blubberoid, blubberoid.discovery.wmnet (https)
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.31
-      eqiad:
-        default: 10.2.2.31
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: kubernetes
-        service: kubesvc
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-    page: false
-    probes:
-      - type: http
-        path: /?spec
-    port: 4666
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: blubberoid
-        active_active: true
-
   citoid:
     description: Citation lookup service, citoid.discovery.wmnet
     encryption: true
