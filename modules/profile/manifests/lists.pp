@@ -36,10 +36,10 @@ class profile::lists (
     include network::constants
     include privateexim::listserve
 
-    $is_standby = ($facts['fqdn'] in $standby_hosts)
+    $is_primary = $facts['fqdn'] == $primary_host
 
     # Disable mailman service on the sandby host
-    $mailman_service_ensure = $is_standby.bool2str('stopped', 'running')
+    $mailman_service_ensure = stdlib::ensure($is_primary)
 
     class { '::mailman3':
         host            => $lists_servername,
@@ -143,7 +143,7 @@ class profile::lists (
         use_bayes         => '0',
         bayes_auto_learn  => '0',
         trusted_networks  => $trusted_networks,
-        monitoring_ensure => $is_standby.bool2str('absent', 'present'),
+        monitoring_ensure => $mailman_service_ensure,
     }
 
     $list_outbound_ips = [
@@ -189,8 +189,11 @@ class profile::lists (
 
     class { 'profile::lists::monitoring':
         lists_servername => $lists_servername,
-        ensure           => $is_standby.bool2str('absent', 'present')
+        ensure           => $mailman_service_ensure,
     }
     class { 'profile::lists::ferm': }
-    class { 'profile::lists::automation': }
+
+    class { 'profile::lists::automation':
+        ensure => $mailman_service_ensure,
+    }
 }

@@ -16,7 +16,7 @@ class mailman3 (
     String $web_secret,
     String $archiver_key,
     Integer $uwsgi_processes,
-    String $service_ensure = 'running',
+    Wmflib::Ensure $service_ensure = 'present',
     Optional[String] $memcached = undef,
 ) {
     # We do not want to use the dbconfig system

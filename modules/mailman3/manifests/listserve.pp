@@ -13,7 +13,7 @@ class mailman3::listserve (
     String $db_user,
     String $db_password,
     String $api_password,
-    String $service_ensure = 'running',
+    Wmflib::Ensure $service_ensure = 'present',
 ) {
 
     ensure_packages([
@@ -50,7 +50,7 @@ class mailman3::listserve (
     }
 
     service { 'mailman3':
-        ensure    => $service_ensure,
+        ensure    => stdlib::ensure($service_ensure, 'service'),
         pattern   => 'mailmanctl',
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
@@ -82,7 +82,7 @@ class mailman3::listserve (
     }
 
     systemd::timer::job { 'discard_held_messages':
-        ensure      => 'present',
+        ensure      => $service_ensure,
         user        => 'root',
         description => 'discard un-moderated held messages after 90 days (T109838)',
         command     => '/usr/local/sbin/discard_held_messages 90',
