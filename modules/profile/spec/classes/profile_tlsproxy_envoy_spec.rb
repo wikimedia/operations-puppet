@@ -77,16 +77,11 @@ describe 'profile::tlsproxy::envoy' do
             sni_support: 'strict',
             services: [
               {server_names: ['citoid.discovery.wmnet', 'citoid'], port: 8080, cert_name: 'citoid'},
-              {server_names: ['blubberoid.discovery.wmnet', 'blubberoid'], port: 8081, cert_name: 'blubberoid'}
             ]
           )
         end
 
         it { is_expected.to compile.with_all_deps }
-        it {
-          is_expected.to contain_sslcert__certificate('blubberoid')
-                           .with_ensure('present')
-        }
         it {
           is_expected.to contain_envoyproxy__tls_terminator('4443')
                           .with_retry_policy({})

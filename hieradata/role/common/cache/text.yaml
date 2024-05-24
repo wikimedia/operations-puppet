@@ -19,8 +19,6 @@ cache::alternate_domains:
     caching: 'normal'
   api.wikimedia.org:
     caching: 'normal'
-  blubberoid.wikimedia.org:
-    caching: 'pass'
   bienvenida.wikimedia.org:
     caching: 'normal'
   bugs.wikimedia.org:

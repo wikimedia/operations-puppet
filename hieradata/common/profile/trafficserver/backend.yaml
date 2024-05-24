@@ -21,9 +21,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://bienvenida.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
-      target: http://blubberoid.wikimedia.org
-      replacement: https://blubberoid.discovery.wmnet:4666
-    - type: map
       target: http://bugs.wikimedia.org
       replacement: https://phabricator.discovery.wmnet
     - type: map

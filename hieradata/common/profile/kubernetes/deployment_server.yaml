@@ -14,10 +14,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: zotero
         - name: zotero-deploy
-    blubberoid:
-      usernames:
-        - name: blubberoid
-        - name: blubberoid-deploy
     eventgate-analytics:
       usernames:
         - name: eventgate-analytics
