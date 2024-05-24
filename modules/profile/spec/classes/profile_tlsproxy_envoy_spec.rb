@@ -1,7 +1,7 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::tlsproxy::envoy' do
-  on_supported_os(WMFConfig.test_on).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 13)).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
       let(:params) {
@@ -11,25 +11,6 @@ describe 'profile::tlsproxy::envoy' do
           tls_port: 4443
         }
       }
-
-      context "global TLS, non-SNI" do
-        let(:params) { super().merge(tls_port: 443) }
-
-        it { is_expected.to compile.with_all_deps }
-        it {
-          is_expected.to contain_class('envoyproxy')
-                           .with_ensure('present')
-        }
-        it {
-          is_expected.to contain_envoyproxy__tls_terminator('443')
-                           .with_global_certs([{'cert_path' => '/etc/ssl/localcerts/example.crt', 'key_path' => '/etc/ssl/private/example.key'}])
-                           .with_retry_policy({"num_retries" => 1, "retry_on" => "5xx"})
-        }
-        it {
-          is_expected.to contain_sslcert__certificate('example')
-                           .with_ensure('present')
-        }
-      end
 
       context 'test upstream_addr' do
         context "default" do

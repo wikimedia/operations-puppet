@@ -43,14 +43,13 @@
 # @param upstream_response_timeout timeout on a request in seconds.  Default: 65
 # @param retries If true enable retries. Default: true
 # @param use_remote_address If true append the client address to the x-forwarded-for header
-# @param ssl_provider the ssl provider e.g. sslcert, acme_chief
+# @param ssl_provider the ssl provider: acme_chief or cfssl
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
 # @param upstream_addr the address of the backend service.  must be a locally configured ipaddress,
 #                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The use of this certificate depends on the value of ssl_provider.
-#   when ssl_provider is sslcert this value is passed to sslcert::certificate { $global_cert_name: }
 #   when ssl_provider is acme this value is passed to acme_chief::cert {$global_cert_name: }
 #   when ssl_provider is cfssl this value is passed to profile::pki::get_cert($cfssl_label, $global_cert_name, ...)
 # @param access_log Whether to use an access log or not.
@@ -82,7 +81,7 @@ class profile::tlsproxy::envoy(
     Boolean                          $access_log                = lookup('profile::tlsproxy::envoy::access_log'),
     Envoyproxy::Headerkeyformat      $header_key_format         = lookup('profile::tlsproxy::envoy::header_key_format'),
     Boolean                          $listen_ipv6               = lookup('profile::tlsproxy::envoy::listen_ipv6'),
-    Enum['sslcert', 'acme', 'cfssl'] $ssl_provider              = lookup('profile::tlsproxy::envoy::ssl_provider'),
+    Enum['acme', 'cfssl']            $ssl_provider              = lookup('profile::tlsproxy::envoy::ssl_provider'),
     Hash                             $cfssl_options             = lookup('profile::tlsproxy::envoy::cfssl_options'),
     Array[Profile::Tlsproxy::Envoy::Service] $services          = lookup('profile::tlsproxy::envoy::services'),
     Optional[Stdlib::Host]           $upstream_addr             = lookup('profile::tlsproxy::envoy::upstream_addr'),
@@ -130,17 +129,6 @@ class profile::tlsproxy::envoy(
             # ensure all the needed certs are present. Given these are internal services,
             # we want certs declared with the traditional sslcert for now.
             case $ssl_provider {
-                'sslcert': {
-                    sslcert::certificate { $service['cert_name']:
-                        ensure => $ensure,
-                        group  => 'envoy',
-                        notify => Service['envoyproxy.service'],
-                    }
-                    $certificates = [{
-                        'cert_path' => "/etc/ssl/localcerts/${service['cert_name']}.crt",
-                        'key_path'  => "/etc/ssl/private/${service['cert_name']}.key",
-                    }]
-                }
                 'acme': {
                     acme_chief::cert { $service['cert_name']:
                         puppet_svc => 'envoyproxy.service',
@@ -200,17 +188,6 @@ class profile::tlsproxy::envoy(
                   'profile::tlsproxy::envoy::global_cert_name'].join(''))
         }
         case $ssl_provider {
-            'sslcert': {
-                sslcert::certificate { $global_cert_name:
-                    ensure => $ensure,
-                    group  => 'envoy',
-                    notify => Service['envoyproxy.service'],
-                }
-                $global_certs = [{
-                    'cert_path' => "/etc/ssl/localcerts/${global_cert_name}.crt",
-                    'key_path'  => "/etc/ssl/private/${global_cert_name}.key",
-                }]
-            }
             'acme': {
                 acme_chief::cert {$global_cert_name:
                     puppet_svc => 'envoyproxy.service',
