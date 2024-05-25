@@ -27,6 +27,7 @@ class profile::cumin::cloud_master (
     $mariadb_roles = Profile::Mariadb::Role
     $mariadb_sections = Profile::Mariadb::Valid_section
     $owners = profile::contacts::get_owners().values.flatten.unique
+    $lvs_hosts = wmflib::service::get_lvs_class_hosts()
 
     keyholder::agent { 'cloud_cumin_master':
         trusted_groups => ['root'],
