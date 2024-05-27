@@ -35,15 +35,15 @@ class profile::aptrepo::wikimedia (
     Optional[Stdlib::Port]  $private_repo_port         = lookup('profile::aptrepo::wikimedia::private_port'),
     Optional[Array[String]] $upload_keys               = lookup('profile::aptrepo::wikimedia::upload_keys'),
 ) {
-    ferm::service { 'aptrepos_public_http':
+    firewall::service { 'aptrepos_public_http':
         proto => 'tcp',
         port  => [80,443],
     }
 
-    ferm::service { 'aptrepos_private_http':
-        proto  => 'tcp',
-        port   => [$private_repo_port],
-        srange => '($DOMAIN_NETWORKS $MGMT_NETWORKS)',
+    firewall::service { 'aptrepos_private_http':
+        proto    => 'tcp',
+        port     => $private_repo_port,
+        src_sets => ['DOMAIN_NETWORKS', 'MGMT_NETWORKS'],
     }
 
     class { 'aptrepo::common':
