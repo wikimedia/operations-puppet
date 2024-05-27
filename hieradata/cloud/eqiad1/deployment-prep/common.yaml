@@ -678,6 +678,14 @@ mediawiki::sites:
               "zh-sg",
               "zh-tw",
             ]
+      - name: sso
+        params:
+          server_aliases: ["sso.wikimedia.beta.wmflabs.org"]
+          additional_rewrites:
+            early:
+              - "    # T365162 strip the prefix used to identify the wiki"
+              - "    RewriteRule ^/([^/]*)/(.*)$ /$2"
+            late: []
 profile::mediawiki::webserver::default_php_version: "7.4"
 profile::mediawiki::jobrunner::default_php_version: "7.4"
 # Enable icu67 component - T345561
