@@ -247,6 +247,12 @@ def main() -> int:
             ExternalCloudVendorRIPE(name="Alibaba", asns=[45102]),
             ExternalCloudVendorRIPE(name="Huawei", asns=[136907]),
             ExternalCloudVendorRIPE(name="Tencent", asns=[132203]),
+            ExternalCloudVendor(
+                name="Vultr",
+                url="https://geofeed.constant.com/?json",
+                subkeys={"ip_prefix"},
+                prefixes="subnets",
+            ),
         ],
         "known-clients": [
             ExternalCloudVendor(
