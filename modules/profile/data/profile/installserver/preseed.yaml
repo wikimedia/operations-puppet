@@ -554,7 +554,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-serve[12]00[1-8]|ml-staging200[1-3]|dse-k8s-worker100[1-8]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-    - partman/custom/kubernetes-node-overlay.cfg
+    - partman/custom/kubernetes-node-overlay-large-kubelet.cfg
   'ml-etcd*':
     - partman/flat.cfg
     - virtual.cfg
