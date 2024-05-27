@@ -51,9 +51,9 @@ https://www.mediawiki.org:
 - path: /wiki/User_hub
   assert_status: 200
   assert_body_contains: User hub - MediaWiki
-- path: /wiki/Wikimedia_Technology
+- path: /wiki/Wikimedia_Product
   assert_status: 200
-  assert_body_contains: Wikimedia Technology - MediaWiki
+  assert_body_contains: Wikimedia Product - MediaWiki
 - path: /wiki/MediaWiki
   assert_status: 200
   assert_body_contains: MediaWiki is a collaboration and documentation platform
