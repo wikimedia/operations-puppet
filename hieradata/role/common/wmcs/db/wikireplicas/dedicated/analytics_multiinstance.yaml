@@ -2,6 +2,7 @@
 profile::contacts::role_contacts: ['Data Platform','WMCS']
 profile::admin::groups:
     - wmcs-admin
+    - wikireplica-roots
 contactgroups: 'admins,team-data-platform,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']
 

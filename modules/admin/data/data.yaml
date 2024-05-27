@@ -105,6 +105,13 @@ groups:
     members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper, sandeeps]
     approval:
       - Tyler Cipriani
+  wikireplica-roots:
+    gid: 841
+    description: People with root access on the wikireplicas
+    members: [joanna]
+    privileges: ['ALL = (ALL) NOPASSWD: ALL']
+    approval:
+      - Joanna Borun
   parsoid-roots:
     gid: 701
     description: RT 5934
