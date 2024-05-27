@@ -16,7 +16,7 @@ counter haproxy_sli_bad
 hidden text cstatus
 hidden gauge process_time
 
-/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
+/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})/ {
   haproxy_sli_total++
   process_time = 0
 
