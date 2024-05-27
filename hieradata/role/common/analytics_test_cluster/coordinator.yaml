@@ -138,7 +138,7 @@ profile::presto::server::ssl_certnames:
   - analytics-test-presto.eqiad.wmnet
 
 profile::analytics::database::meta::monitoring_enabled: true
-profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
+profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS $DSE_KUBEPODS_NETWORKS))'
 profile::analytics::database::meta::datadir: '/srv/mysql'
 profile::analytics::refinery::job::data_purge::public_druid_host: 'an-test-druid1001.eqiad.wmnet'
 profile::analytics::refinery::ensure_hdfs_dirs: true
