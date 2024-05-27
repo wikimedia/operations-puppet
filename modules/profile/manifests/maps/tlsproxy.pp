@@ -14,7 +14,6 @@ class profile::maps::tlsproxy(
             default_server => true,
             enable_http2   => false,
             cfssl_paths    => $cfssl_paths,
-            server_aliases => ['maps.wikimedia.org',"kartotherian.svc.${::site}.wmnet"],
         }
     } else {
         tlsproxy::localssl { $servicename:
