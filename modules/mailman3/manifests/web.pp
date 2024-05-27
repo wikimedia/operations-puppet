@@ -18,7 +18,7 @@ class mailman3::web (
     String $secret,
     String $archiver_key,
     Integer $uwsgi_processes,
-    String $service_ensure = 'running',
+    Stdlib::Ensure::Service $service_ensure = 'running',
     Optional[String] $memcached,
 ) {
 

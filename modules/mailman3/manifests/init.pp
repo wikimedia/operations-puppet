@@ -42,7 +42,7 @@ class mailman3 (
 
     class { 'mailman3::web':
         host            => $host,
-        service_ensure  => $service_ensure,
+        service_ensure  => stdlib::ensure($service_ensure, 'service'),
         db_host         => $db_host,
         db_name         => $webdb_name,
         db_user         => $webdb_user,
