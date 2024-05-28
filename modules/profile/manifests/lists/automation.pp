@@ -25,7 +25,7 @@ class profile::lists::automation (
         ensure       => $ensure,
         user         => 'root',
         description  => 'sync stewards lists members with imported subscriber data',
-        command      => @(CMD/L),
+        command      => @("CMD"/L),
           /usr/bin/mailman-wrapper syncmembers -n\
           /${data_dir}/mailman_list/lists.wikimedia.org/stewards-l\
           stewards-l@lists.wikimedia.org\
