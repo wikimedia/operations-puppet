@@ -33,16 +33,12 @@ class profile::openldap::management(
         ensure => present,
         source => 'puppet:///modules/openldap/cross-validate-accounts.py',
         mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     file { '/usr/local/bin/offboard-user':
         ensure => present,
         source => 'puppet:///modules/openldap/offboard-user.py',
         mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
     }
 
     user { 'accountcheck':
@@ -61,6 +57,7 @@ class profile::openldap::management(
         interval      => {'start' => 'OnCalendar', 'interval' => 'Mon..Fri 04:00'},
         user          => 'accountcheck',
         send_mail     => true,
+        send_mail_to  => 'sre-foundations@wikimedia.org',
         ignore_errors => true,
         require       => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']],
     }
