@@ -334,6 +334,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-main1009':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
+  'kafka-main1010':
+    - partman/standard.cfg
+    - partman/raid10-4dev.cfg
   'kafka-main[12]00[6-9]|kafka-main[12]010':
     - reuse-parts.cfg
     - partman/reuse-raid10-4dev.cfg
