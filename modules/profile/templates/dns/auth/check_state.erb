@@ -23,6 +23,6 @@ if grep -q '^yes$' $STATE_FILE; then
         exit 1
     fi
 else
-echo "Host $(hostname -f) is not pooled for <%= @service_type %>."
+    echo "Host $(hostname -f) is not pooled for <%= @service_type %>."
     exit 1
 fi
