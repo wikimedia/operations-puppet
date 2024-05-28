@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-EMAILS="lsobanski@wikimedia.org marostegui@wikimedia.org jcrespo@wikimedia.org sbmhaol@wikimedia.org asarabadani@wikimedia.org root@wikimedia.org abran@wikimedia.org"
+EMAILS="lsobanski@wikimedia.org marostegui@wikimedia.org jcrespo@wikimedia.org asarabadani@wikimedia.org root@wikimedia.org abran@wikimedia.org"
 PRIVATE_DATA="/usr/local/sbin/check_private_data.py"
 REPORT_PATH="/var/log/private_data_report_${HOSTNAME}.log"
 SOCKET="/run/mysqld/mysqld"
