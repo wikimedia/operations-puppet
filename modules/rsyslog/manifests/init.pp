@@ -32,4 +32,28 @@ class rsyslog {
     }
 
     profile::auto_restarts::service { 'rsyslog': }
+
+    $rsyslog_global_conf = '/etc/rsyslog.d/00-global.conf'
+    concat { $rsyslog_global_conf:
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        order  => 'alpha',
+        notify => Service['rsyslog'],
+    }
+    concat::fragment { "${rsyslog_global_conf}-header":
+        target  => $rsyslog_global_conf,
+        order   => '000',
+        content => "global(\n",
+    }
+    concat::fragment { "${rsyslog_global_conf}-trailer":
+        target  => $rsyslog_global_conf,
+        order   => 'zzz',
+        content => ")\n",
+    }
+
+    # Include slashes in program names, as used in programs like
+    # 'postfix/smtpd', rather than stopping at the slash.
+    rsyslog::global_entry('parser.permitSlashInProgramName', 'on')
 }

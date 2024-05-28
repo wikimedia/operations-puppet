@@ -1,0 +1,5 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String[1] $key,
+      String[1] $value
+| -%>
+  <%= $key %>="<%= $value %>"
