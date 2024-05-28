@@ -50,7 +50,7 @@ profile::spicerack::elasticsearch_config_data:
     logging-eqiad: 'http://logging-hd1001.eqiad.wmnet:9200'
     logging-codfw: 'http://logging-hd2001.codfw.wmnet:9200'
 profile::spicerack::mysql_config_data:
-  replication_user: repl
+  replication_user: repl2024
   # replication_password: overiden in the private repo
 profile::homer::private_git_peer: ~
 profile::homer::diff_timer_interval: ~
