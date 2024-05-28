@@ -13,5 +13,8 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --skip-list <%= @skip_list %> \
     <%- end -%>
     --dump-type <%= @dump_type %> \
+    <%- if @success_flag -%>
+    --success-flag <%= @success_flag %> \
+    <%- end -%>
     --log-file <%= @log_file %> \
     --dump-date $(/bin/date +'%Y%m01')

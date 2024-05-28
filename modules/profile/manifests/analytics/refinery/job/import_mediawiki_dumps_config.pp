@@ -35,6 +35,11 @@
 # [*skip_list*]
 #   A comma-separated list of wikis (database-name) to be skipped
 #   from the projects present in wiki_file
+#   Default:
+#
+# [*success_flag*]
+#   The name of the success flag to be used to mark the import successful
+#   in HDFS. If no value is provided the script uses _SUCCESS by default.
 #   Default: undef
 #
 # [*script_path*]
@@ -51,6 +56,7 @@ define profile::analytics::refinery::job::import_mediawiki_dumps_config(
     $input_directory_base = '/mnt/data/xmldatadumps/public',
     $output_directory_base = '/wmf/data/raw/mediawiki/dumps',
     $skip_list = undef,
+    $success_flag = undef,
     $script_path = "/usr/local/bin/${title}",
     $ensure = 'present',
 ) {
