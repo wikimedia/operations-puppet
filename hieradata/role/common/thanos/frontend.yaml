@@ -28,23 +28,15 @@ profile::lvs::realserver::pools:
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'yes'
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - thanos-swift.discovery.wmnet
+    - thanos-swift.svc.%{::site}.wmnet
 profile::tlsproxy::envoy::services:
-   - server_names:
-     - 'thanos-swift'
-     - 'thanos-swift.svc.eqiad.wmnet'
-     - 'thanos-swift.svc.codfw.wmnet'
-     - 'thanos-swift.discovery.wmnet'
-     port: 8888
-     cert_name: 'thanos-swift.discovery.wmnet'
-   - server_names:
-     - 'thanos-query'
-     - 'thanos-query.svc.eqiad.wmnet'
-     - 'thanos-query.svc.codfw.wmnet'
-     - 'thanos-query.discovery.wmnet'
-     - 'thanos.wikimedia.org'
-     port: 80
-     cert_name: 'thanos-query.discovery.wmnet'
-profile::tlsproxy::envoy::global_cert_name: 'thanos-fe-combined.discovery.wmnet'
+  - server_names: ['*']
+    port: 8888
+profile::tlsproxy::envoy::global_cert_name: 'thanos-swift.discovery.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true
 # force to talk on local internal v4 address
