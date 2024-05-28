@@ -26,9 +26,9 @@ class profile::lists::automation (
         user         => 'root',
         description  => 'sync stewards lists members with imported subscriber data',
         command      => @(CMD/L),
-          "/usr/bin/mailman-wrapper syncmembers -n\
+          /usr/bin/mailman-wrapper syncmembers -n\
           /${data_dir}/mailman_list/lists.wikimedia.org/stewards-l\
-          stewards-l@lists.wikimedia.org\"
+          stewards-l@lists.wikimedia.org\
           | CMD
         interval     => {'start' => 'OnCalendar', 'interval' => 'hourly'},
         logfile_name => 'stewards_subscriber_list_sync.log',
