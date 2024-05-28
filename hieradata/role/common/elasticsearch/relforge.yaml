@@ -9,7 +9,6 @@ acmechief_host: acmechief2002.codfw.wmnet
 profile::elasticsearch::cirrus::ssl_provider: cfssl
 profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
 profile::elasticsearch::cirrus::expose_http: false
-profile::elasticsearch::cirrus::enable_http2: false
 
 # T130329
 profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs

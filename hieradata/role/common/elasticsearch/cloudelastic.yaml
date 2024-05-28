@@ -12,7 +12,6 @@ profile::elasticsearch::cirrus::storage_device: dm-2
 profile::elasticsearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::elasticsearch::cirrus::ferm_ro_srange: '(($LABS_NETWORKS $DOMAIN_NETWORKS))'
 profile::elasticsearch::cirrus::expose_http: false
-profile::elasticsearch::cirrus::enable_http2: false
 profile::elasticsearch::version: '7.10'
 profile::elasticsearch::config_version: '7'
 profile::elasticsearch::base_data_dir: /srv/elasticsearch

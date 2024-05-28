@@ -17,7 +17,6 @@ class profile::elasticsearch::cirrus(
     Boolean $expose_http = lookup('profile::elasticsearch::cirrus::expose_http'),
     String $storage_device = lookup('profile::elasticsearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::elasticsearch::cirrus::enable_remote_search'),
-    Boolean $enable_http2 = lookup('profile::elasticsearch::cirrus::enable_http2', {default_value => false}),
     Profile::Pki::Provider $ssl_provider = lookup('profile::elasticsearch::cirrus::ssl_provider'),
 ) {
     include ::profile::elasticsearch
@@ -85,7 +84,7 @@ class profile::elasticsearch::cirrus(
         $proxy_params = merge($proxy_cert_params, {
             upstream_port => $http_port,
             tls_port      => $tls_port,
-            enable_http2  => $enable_http2,
+            enable_http2  => false,
         })
 
         elasticsearch::tlsproxy { $cluster_name:
