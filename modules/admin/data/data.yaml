@@ -431,7 +431,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
-              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich]
+              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6354,6 +6354,13 @@ users:
     realname: Daniel Erenrich
     email: derenrich@wikimedia.org
     uid: 46587
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  sperry-wmf:
+    ensure: present
+    realname: Sonja Perry
+    email: sperry@wikimedia.org
+    uid: 46809
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
