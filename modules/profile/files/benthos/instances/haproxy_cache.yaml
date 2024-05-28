@@ -29,74 +29,58 @@ buffer:
 pipeline:
   threads: ${PIPELINE_THREADS}
   processors:
-    - label: "syslog_format"
-      parse_log:
-        format: "syslog_rfc3164"
-        codec: "json"
     - label: "drop_unparsable_messages"
       mapping: |
-        root = if this.message.contains("SSL handshake failure").catch(false) || this.message.contains("<BADREQ> <BADREQ> <BADREQ>").catch(false) || this.message.has_prefix("Proxy ") || this.message.has_prefix("soft-stop ")
+        root = if content().contains("SSL handshake failure").catch(false) || content().contains("<BADREQ> <BADREQ> <BADREQ>").catch(false)
         {
           deleted()
         }
-    - label: "drop_first_part"
+    - label: "syslog_format"
+      parse_log:
+        format: "syslog_rfc5424"
+        codec: "json"
+    - label: "parse_bug_workaround" # see github.com/benthosdev/benthos/issues/2192
+      mapping: root = this.string().parse_json()
+    - label: "drop_high_priority_messages"
+      mapping: root = if this.severity.number() < 6 { deleted() }
+    - label: "get_structureddata"
+      mapping: root = this.structureddata.benthoslog
+    - label: "transform_json_fields"
       mapping: |
         root = this
-        root.message = this.message.re_replace_all("^.* newlog (.*)$", "$1")
-    - branch:
-        request_map: |
-          root = this.message
-        processors:
-          - label: "parse_haproxy"
-            grok:
-              expressions:
-                - '%{MESSAGELOG}'
-              use_default_patterns: True
-              pattern_definitions:
-                HAPROXYTS: '%{MONTHDAY}/%{MONTH}/%{YEAR}:%{HOUR}:%{MINUTE}:%{SECOND}\.%{INT}'
-                HAPROXYCAPTUREDREQUESTHEADERS: '%{DATA:uri_host}\|(%{DATA:referer})?\|(%{DATA:user_agent})?\|(%{DATA:accept_language})?\|(%{DATA:range})?\|(?:%{DATA:accept})?\|(?:%{DATA:tls})?'
-                HAPROXYCAPTUREDRESPONSEHEADERS: '%{DATA:cache_status}\|%{DATA:content_type}\|%{DATA:x_analytics}\|%{DATA:x_cache}\|%{DATA:backend}'
-                MESSAGELOG: '%{NUMBER:haproxy_pid:int} %{IP:ip} %{INT:sequence:int} \[%{HAPROXYTS:accept_date}\] %{INT:time_backend_response:int} %{INT:http_status} %{NOTSPACE:response_size:int} %{NOTSPACE:termination_state} \{(%{HAPROXYCAPTUREDREQUESTHEADERS})?\}( )?\{(%{HAPROXYCAPTUREDRESPONSEHEADERS})?\}( )?%{WORD:http_method} (?:%{NOTSPACE:uri_path})?( )?(?:%{NOTSPACE:uri_query})?'
-        result_map: |
-          root.result = this
-          root.result.priority = deleted()
-          # time_firstbyte is ms (HAProxy default), should be in seconds
-          root.time_firstbyte = (this.time_backend_response.number() / 1000)
-          # time_firstbyte_ns is the equivalent in ns used by metrics and deleted afterwards
-          root.time_firstbyte_ns = (this.time_backend_response.number() * 1000000).int64()
-          root.result.time_backend_response = deleted()
+        # time_firstbyte is ms (HAProxy default), should be in seconds
+        root.time_firstbyte = (this.time_backend_response.number() / 1000)
+        # time_firstbyte_ns is the equivalent in ns used by metrics and deleted afterwards
+        root.time_firstbyte_ns = (this.time_backend_response.number() * 1000000).int64()
+        root.time_backend_response = deleted()
 
-          # Parse accept_date into expected format
-          # root.dt is the HAProxy request timestamp
-          # while meta.dt is the Benthos processing timestamp
-          root.dt = this.accept_date.ts_parse("02/Jan/2006:15:04:05.000").ts_format("2006-01-02T15:04:05Z", "UTC")
-          root.result.accept_date = deleted()
+        # Parse accept_date into expected format
+        # root.dt is the HAProxy request timestamp
+        # while meta.dt is the Benthos processing timestamp
+        root.dt = this.accept_date.ts_parse("02/Jan/2006:15:04:05.000").ts_format("2006-01-02T15:04:05Z", "UTC")
+        root.accept_date = deleted()
 
-          # To be sure response size is actually converted to a number
-          root.result.response_size = this.response_size.number().or(0)
+        # To be sure response size is actually converted to a number
+        root.response_size = this.response_size.number().or(0)
 
-          root.result.uri_path = this.uri_path.or("/")
+        root.uri_path = if this.uri_path.length() == 0 { "/" }
+        root.http_status = this.http_status.number()
 
-          # Metadata
-          meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
-          # When no host is present better to delete metadata field
-          meta domain = this.uri_host.catch(deleted())
-          meta stream = "webrequest_frontend"
-          root.meta = root_meta()
+        # Metadata
+        meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
+        # When no host is present better to delete metadata field
+        meta domain = this.uri_host.catch(deleted())
+        meta stream = "webrequest_frontend"
+        root.meta = root_meta()
 
-          root = root.merge(root.result)
-          root.result = deleted()
-          root.message = deleted()
-          # Note that hostname() (or other bloblang functions) doesn't return FQDN.
-          # This must be passed as envvar
-          root.hostname = env("BENTHOS_FQDN").or(hostname())
-          # Set by envvar, webrequest_source can be text|upload
-          root.webrequest_source = env("BENTHOS_SOURCE").or("unknown")
-          # Drop these keys after all processing
-          root.priority = deleted()
-          root.timestamp = deleted()
-          root.severity = deleted()
-          root."$schema" = "/webrequest/1.0.0"
+        root.message = deleted()
+        # Note that hostname() (or other bloblang functions) doesn't return FQDN.
+        # This must be passed as envvar
+        root.hostname = env("BENTHOS_FQDN").or(hostname())
+        # Set by envvar, webrequest_source can be text|upload
+        root.webrequest_source = env("BENTHOS_SOURCE").or("unknown")
+        # Drop these keys after all processing
+        root."$schema" = "/webrequest/1.0.0"
 
     - label: "ttfb_metric_condition"
       switch:
@@ -138,9 +122,6 @@ pipeline:
     - label: "delete_unused_fields"
       mapping: |
         root = this
-        root.appname = deleted()
-        root.procid = deleted()
-        root.facility = deleted()
         root.time_firstbyte_ns = deleted()
         root.termination_state = deleted()
 
@@ -212,48 +193,51 @@ tests:
     target_processors: syslog_format
     environment: {}
     input_batch:
-      - content: "<134>Feb  9 14:50:17 localhost haproxy[3789103]: 31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar"
+      - content: '<134>1 2024-05-23T15:23:41.859657+00:00 localhost haproxy 1498510 - [benthoslog haproxy_pid="1498510" ip="127.0.0.1" sequence="-" accept_date="23/May/2024:15:23:41.858" time_backend_response="-1" http_status="301" response_size="81" termination_state="LR" uri_host="-" referer="-" user_agent="-" accept_language="-" range="-" accept="-" tls="-" cache_status="-" content_type="-" x_analytics="-" x_cache="-" backend="-" http_method="GET" uri_path="/wiki/Main_Page" uri_query="?foo=bar"] 12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar'
     output_batches:
       -
-        - content_equals: '{"appname":"haproxy","facility":16,"hostname":"localhost","message":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"31 2 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576","severity":6,"timestamp":"2024-02-09T14:50:17Z"}'
+        - content_equals: '{"appname":"haproxy","facility":16,"hostname":"localhost","message":"12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"1498510","severity":6,"structureddata":{"benthoslog":{"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_method":"GET","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","sequence":"-","termination_state":"LR","time_backend_response":"-1","tls":"-","uri_host":"-","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"-","x_analytics":"-","x_cache":"-"}},"timestamp":"2024-05-23T15:23:41.859657Z","version":1}'
   - name: drop ssl errors
     target_processors: drop_unparsable_messages
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"SSL handshake failure","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 12345 127.0.0.1 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"SSL handshake failure","priority":134,"procid":"12345 127.0.0.1 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
     output_batches: []
   - name: drop badreq errors
     target_processors: drop_unparsable_messages
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"127.0.0.1 - [22/Mar/2024:09:47:45.058] -1 400 0 PR-- 5437/5429/68/0/0 0/0 <BADREQ> <BADREQ> <BADREQ>]","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+      - content: '<134>1 2024-05-24T05:54:02.044062+00:00 - haproxy 1499272 - [benthoslog haproxy_pid="1499272" ip="127.0.0.1" sequence="-" accept_date="24/May/2024:05:54:02.044" time_backend_response="-1" http_status="400" response_size="0" termination_state="CR" uri_host="-" referer="-" user_agent="-" accept_language="-" range="-" accept="-" tls="-" cache_status="-" content_type="-" x_analytics="-" x_cache="-" backend="-" http_method="<BADREQ>" uri_path="<BADREQ>" uri_query="<BADREQ>"] 1499272 41.45.162.137 - [24/May/2024:05:54:02.044] -1 400 0 CR-- <BADREQ> <BADREQ> <BADREQ>'
     output_batches: []
-  - name: main pipeline parsing
-    target_processors: /pipeline/processors
+  - name: drop non-info messages
+    target_processors: drop_high_priority_messages
     environment: {}
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 12345 127.0.0.1 170749193534 [09/Feb/2024:15:18:55.660] 5 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/9|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
-    output_batches:
-      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-02-09T15:18:55Z","http_method":"GET","http_status":"200","ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
-  - name: test 301
-    target_processors: /pipeline/processors
+      - json_content: {"appname":"haproxy","facility":16,"message":"Server default is DOWN, reason: Layer4 connection problem, info: \"Connection refused\", check duration: 0ms. 1 active and 0 backup servers left. 0 sessions active, 0 requeued, 0 remaining in queue.","priority":129,"procid":"1508141","severity":1,"timestamp":"2024-05-24T08:21:40.739856Z","version":1}
+    output_batches: []
+  - name: get structured data
+    target_processors: get_structureddata
     environment: {}
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message": "7660 186 0 0 301 {en.wikipedia.org} {miss} -- newlog 12345 127.0.0.1 17107989907660 [18/Mar/2024:21:56:30.914] 186 301 1484 ---- {en.wikipedia.org||||||vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new} {miss|text/html; charset=UTF-8|https=1;client_port=36999;nocookies=1|cp4037 miss, cp4037 miss|mw-web.codfw.main-6479988cdc-rs5xk} GET / ","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"1498510","severity":6,"structureddata":{"benthoslog":{"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","sequence":"-","termination_state":"LR","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}},"timestamp":"2024-05-23T15:23:41.859657Z","version":1}
     output_batches:
-      - - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"301","ip":"127.0.0.1","meta":{"domain":"en.wikipedia.org","stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_host":"en.wikipedia.org","uri_path":"/","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","sequence":"-","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}
+  - name: test transform json fields
+    target_processors: transform_json_fields
+    environment: {}
+    input_batch:
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
+    output_batches:
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
   - name: test missing path
-    target_processors: /pipeline/processors
+    target_processors: transform_json_fields
     environment: {}
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message": "7660 186 0 0 301 {en.wikipedia.org} {miss} -- newlog 12345 127.0.0.1 17107989907660 [18/Mar/2024:21:56:30.914] 186 301 1484 ---- {en.wikipedia.org||||||vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new} {miss|text/html; charset=UTF-8|https=1;client_port=36999;nocookies=1|cp4037 miss, cp4037 miss|mw-web.codfw.main-6479988cdc-rs5xk} GET ","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message": "7660 186 0 0 301 {en.wikipedia.org} {miss} -- newlog 12345 127.0.0.1 17107989907660 [18/Mar/2024:21:56:30.914] 186 301 1484 ---- {en.wikipedia.org||||||vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new} {miss|text/html; charset=UTF-8|https=1;client_port=36999;nocookies=1|cp4037 miss, cp4037 miss|mw-web.codfw.main-6479988cdc-rs5xk} GET  ","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
     output_batches:
-      -
-        - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"301","ip":"127.0.0.1","meta":{"domain":"en.wikipedia.org","stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_host":"en.wikipedia.org","uri_path":"/","webrequest_source":"unknown"}
-        - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"301","ip":"127.0.0.1","meta":{"domain":"en.wikipedia.org","stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_host":"en.wikipedia.org","uri_path":"/","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
   - name: test missing host
-    target_processors: /pipeline/processors
+    target_processors: transform_json_fields
     environment: {}
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message": "7660 186 0 0 301 {} {miss} -- newlog 12345 127.0.0.1 17107989907660 [18/Mar/2024:21:56:30.914] 186 400 1484 ---- {||||||vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new} {miss|text/html; charset=UTF-8|https=1;client_port=36999;nocookies=1|cp4037 miss, cp4037 miss|mw-web.codfw.main-6479988cdc-rs5xk} GET / ","priority":134,"procid":"34 5 0 0 200 {en.wikipedia.beta.wmflabs.org} {hit-remote} -- newlog 127.0.0.1:58192 170749193534 [09/Feb/2024:15:18:55.660","severity":6,"timestamp":"2024-02-09T15:18:55Z", "webrequest_source":"unknown"}
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
     output_batches:
-      - - json_contains: {"backend":"mw-web.codfw.main-6479988cdc-rs5xk","cache_status":"miss","content_type":"text/html; charset=UTF-8", "dt": "2024-03-18T21:56:30Z","haproxy_pid":12345,"http_method":"GET","http_status":"400","ip":"127.0.0.1","meta":{"stream":"webrequest_frontend"},"response_size":1484,"$schema":"/webrequest/1.0.0","sequence":17107989907660,"time_firstbyte":0.186,"tls": "vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=h2;sess=new","uri_path":"/","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
