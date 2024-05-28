@@ -1337,6 +1337,7 @@ class ImageBackupsState:
     def delete_expired(self, noop: bool) -> None:
         for image_backup in self.image_backups.values():
             image_backup.delete_expired(noop=noop)
+        cleanup(noop=noop)
 
     def print_dangling_snapshots(self) -> None:
         for snapshot in self.get_dangling_snapshots():
