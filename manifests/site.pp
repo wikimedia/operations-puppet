@@ -2173,11 +2173,6 @@ node /^mw13(66|73)\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
-# T353464
-node /^wikikube-ctrl1001\.eqiad\./ {
-    role(insetup::serviceops)
-}
-
 # rack D8 - API servers
 node /^mw144[3-4]\.eqiad\./ {
     role(mediawiki::appserver::api)
