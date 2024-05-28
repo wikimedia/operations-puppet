@@ -80,6 +80,9 @@ kubernetes::clusters:
       control_plane_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
+        - wikikube-ctrl1001.eqiad.wmnet
+        - wikikube-ctrl1002.eqiad.wmnet
+        - wikikube-ctrl1003.eqiad.wmnet
       cluster_dns:
         - "10.64.72.3"
       service_cluster_cidr:
@@ -95,6 +98,9 @@ kubernetes::clusters:
       cluster_nodes:
         - kubemaster1001.eqiad.wmnet
         - kubemaster1002.eqiad.wmnet
+        - wikikube-ctrl1001.eqiad.wmnet
+        - wikikube-ctrl1002.eqiad.wmnet
+        - wikikube-ctrl1003.eqiad.wmnet
         - kubernetes1005.eqiad.wmnet
         - kubernetes1006.eqiad.wmnet
         - kubernetes1007.eqiad.wmnet

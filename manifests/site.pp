@@ -1276,7 +1276,7 @@ node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
     role(kubernetes::master)
 }
 
-node /^wikikube-ctrl200[1-3]\.codfw\./ {
+node /^wikikube-ctrl[12]00[1-3]\.(eqiad|codfw)\./ {
     role(kubernetes::master_stacked)
 }
 
@@ -2144,11 +2144,6 @@ node /^mw14(2[6-8])\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 
-# T353464
-node /^wikikube-ctrl1002\.eqiad\./ {
-    role(insetup::serviceops)
-}
-
 # rack B3 and B5
 node /^mw140[13]\.eqiad\./ {
     role(mediawiki::appserver)
@@ -2159,11 +2154,6 @@ node /^mw140[13]\.eqiad\./ {
 # rack C3
 node /^mw1407\.eqiad\./ {
     role(mediawiki::appserver)
-}
-
-# T353464
-node /^wikikube-ctrl1003\.eqiad\./ {
-    role(insetup::serviceops)
 }
 
 # rack C8
