@@ -80,7 +80,7 @@ def main():
         "security@wikimedia.org",
         "ux@wikimedia.org",
         "wikimania@wikimedia.org",
-        "wm-cz@wikimedia.org"
+        "wm-cz@wikimedia.org",
         # postfix
         "donations@wikipedia.org",
         "donation@wikipedia.org",
@@ -90,7 +90,7 @@ def main():
         "privacy@wikidata.org",
         "security@wikipedia.org",
         "webmaster@wikimedia.org",
-        "webmaster@wikipedia.org"
+        "webmaster@wikipedia.org",
     ]
 
     config = ConfigParser()
