@@ -36,7 +36,7 @@ class docker_registry_ha::web (
     Array[String]                        $ssl_settings,
     Hash                                 $ssl_paths            = undef,
     Array[Stdlib::IP::Address::Nosubnet] $jwt_allowed_ips      = [],
-    Stdlib::HTTPUrl                      $jwt_keys_url         = 'https://gitlab.wikimedia.org/-/jwks',
+    Stdlib::HTTPUrl                      $jwt_keys_url         = 'https://gitlab.wikimedia.org/oauth/discovery/keys',
     Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],
     Boolean                              $read_only_mode       = false,
     String                               $homepage             = '/srv/homepage',
