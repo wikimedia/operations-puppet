@@ -411,10 +411,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: airflow-search
           owner: root
-          group: analytics-search-users
+          group: analytics-search
         - name: airflow-search-deploy
           owner: root
-          group: analytics-search-users
+          group: analytics-search
     airflow-research:
       usernames:
         - name: airflow-research
@@ -435,10 +435,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: airflow-analytics-product
           owner: root
-          group: analytics-product-users
+          group: analytics-product
         - name: product-analytics-deploy
           owner: root
-          group: analytics-product-users
+          group: analytics-product
     airflow-analytics-wmde:
       usernames:
         - name: airflow-analytics-wmde
