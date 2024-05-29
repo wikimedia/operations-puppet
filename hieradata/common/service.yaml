@@ -1345,7 +1345,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
 
   datahub-gms:
     description: DataHub Generalized Metadata Service
@@ -1360,7 +1360,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
 
   dse-k8s-ctrl:
     description: Kubernetes master service for DSE cluster. dse-k8s-ctrl.discovery.wmnet
