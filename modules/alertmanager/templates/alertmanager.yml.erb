@@ -258,6 +258,12 @@ route:
             severity: 'critical'
           receiver: 'growth-critical'
     - match:
+        team: 'trust-and-safety-product'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'trust-and-safety-product-critical'
+    - match:
         team: 'mediawiki-platform'
       receiver: 'mediawiki-platform-ircmail'
 
@@ -640,6 +646,13 @@ receivers:
   # growth-engine-room Slack channel
   email_configs:
     - to: 'growth-engine-room-aaaab2fjcsigknmf7zv7adyzum@<%= @facts["networking"]["domain"] %>.slack.com'
+      send_resolved: true
+      headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'trust-and-safety-product-critical'
+  # tsp-engineering Slack channel
+  email_configs:
+    - to: 'tsp-engineering-aaaakyq5dmxxielrt7srokuhua@<%= @facts["networking"]["domain"] %>.slack.com'
       send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
