@@ -37,11 +37,10 @@ class profile::rsyslog::kafka_shipper (
         notify  => Service['rsyslog'],
     }
 
-    rsyslog::conf { 'max_message_size':
-        ensure   => $ensure,
-        content  => template('profile/rsyslog/max_message_size.conf.erb'),
-        priority => 00,
-    }
+    # Rsyslog defaults to a MaxMessageSize of 8k which is too short for certain
+    # types of logs (for instance multi-line events containing stack traces),
+    # increase to 64k to avoid dropping large logs to the floor.
+    rsyslog::global_entry('maxMessageSize', '64k')
 
     rsyslog::conf { 'lookup_output':
         ensure   => $ensure,
