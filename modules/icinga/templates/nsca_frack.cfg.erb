@@ -1012,6 +1012,12 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_cert_kafkatee
+    hostgroup_name           fundraising-banner-logger
+}
+
+define service {
+    use                      passive-service
     service_description      check_impression_logs
     hostgroup_name           fundraising-banner-logger
 }
