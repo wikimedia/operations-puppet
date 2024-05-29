@@ -6,7 +6,7 @@ function rsyslog::global_entry(
     String[1] $key,
     String[1] $value,
 ) >> Type[Concat::Fragment] {
-    $concat_rsc = concat::fragment { "${rsyslog_global_conf}-${key}":
+    $concat_rsc = concat::fragment { "${rsyslog::rsyslog_global_conf}-${key}":
         target  => $rsyslog::rsyslog_global_conf,
         order   => $key,
         content => epp(
