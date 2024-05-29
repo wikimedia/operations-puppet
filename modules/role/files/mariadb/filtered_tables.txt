@@ -329,7 +329,6 @@ globaluser,gu_name,K
 globaluser,gu_home_db,K
 globaluser,gu_email,F
 globaluser,gu_email_authenticated,F
-globaluser,gu_salt,F
 globaluser,gu_password,F
 globaluser,gu_password_reset_key,F
 globaluser,gu_password_reset_expiration,F
