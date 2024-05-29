@@ -105,7 +105,7 @@ class profile::memcached::instance (
     include ::profile::prometheus::memcached_exporter
 
     $extstore = $extstore_ensure ? {
-        present => ["ext_path=${extstore_path}:${extstore_size}G"],
+        present => ["ext_path=${extstore_path}/datafile:${extstore_size}G"],
         default => [],
     }
 
