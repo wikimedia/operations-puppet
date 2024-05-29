@@ -31,7 +31,7 @@ groups:
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
-              dbad2021, bdgreenlee, kormat, kwakuofori]
+              dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -164,7 +164,7 @@ groups:
               hmonroy, derick, egardner, cjming, saisuman, mmartorana, taavi, bwang,
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
-              dr0ptp4kt, mabualruz, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
+              dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               sbailey, tjones, jsn, ecarg
     ]
     system_members: [mwbuilder, mwpresync]
@@ -428,7 +428,7 @@ groups:
               stevemunene, ryasmeen, abartov, wfan219, eileen,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
-              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, mabualruz, brouberol, acooper,
+              hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou]
@@ -6104,13 +6104,11 @@ users:
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDZMvLWML3HYfq2Tc1TvfUFInGtmN8DS01pcdYDetuiCklmTUFuRwYfeIhevlpwFKxauefEDs04YH/i0aupTfrGfORRtS/qLhn8lSQY3z73c/XlMOYwozfHeojc5eBUhEQXSPMbhm5cCZyBjubj933HFwA1FSA2gMju4m53ehQPJEH5U8CG2br4iSNcRDNn+YmLvXcmXGl8ehw0dSVyFJwaakbbP+Xux2c0mQnmjafBWoxEz8ExyIC/8EgZqRIMcPJYswobp73h+eI2A58MClPQnuJz7n4p0NxzUFJW88dfwLjk5d1o7prCisp2NpI7CKhwsd409zTbWGsqSMcqW4vLP1ZWltJISOSUrxU1byrJJW5u5Z3sWuOtOjjAU6ZBFxjEuK/LtPeLMa813CpKfMEwVHV+6/0u7ymsGFN+7eoOOT7CGwe/Fjhym9zyUqkNtFKPo2I/Ib6HDOpYsAjuNupND7+7L7D3XzWWTduvTlWJo3vJ8F6pJGYZqFyaT4Q1GTk= ricki.jay@wikimedia.de'
   mabualruz:
-    ensure: present
+    ensure: absent
     realname: Moh'd Abualruz
-    email: mabualruz@wikimedia.org
     uid: 39232
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGla5S5N4SYzbpqWnSzO9AIk2EmjwRoQe807+yQ5zAT'
+    ssh_keys: []
   brouberol:
     ensure: present
     realname: Balthazar Rouberol
