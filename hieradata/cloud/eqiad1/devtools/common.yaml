@@ -148,8 +148,10 @@ profile::gerrit::ssh_allowed_hosts:
 
 profile::gerrit::replica_hosts: []
 
+profile::gerrit::lfs_replica_sync: false
+
 # No IPv6 in cloud
-profile::gerrit::ipv6: ~
+profile::gerrit::ipv6: '::1'
 
 # No replication to github from cloud
 profile::gerrit::replication: {}

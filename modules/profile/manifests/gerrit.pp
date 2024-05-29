@@ -23,6 +23,7 @@ class profile::gerrit(
     Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
     Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
     Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
+    Boolean                           $lfs_replica_sync  = lookup('profile::gerrit::lfs_replica_sync'),
 ) {
     require ::profile::java
 
@@ -111,6 +112,7 @@ class profile::gerrit(
         java_home         => $java_home,
         mask_service      => $mask_service,
         active_host       => $active_host,
+        lfs_replica_sync  => $lfs_replica_sync,
     }
 
     class { 'gerrit::replication_key':

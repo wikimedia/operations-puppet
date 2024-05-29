@@ -13,6 +13,8 @@ profile::gerrit::replica_hosts:
 
 profile::gerrit::migration::data_dir: '/srv/gerrit'
 
+profile::gerrit::lfs_replica_sync: true
+
 # External backups
 profile::gerrit::backups_enabled: true
 profile::gerrit::backup_set: 'gerrit-repo-data'

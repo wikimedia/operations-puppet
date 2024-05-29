@@ -29,6 +29,7 @@ class gerrit(
     Optional[Stdlib::IP::Address::V6] $ipv6              = undef,
     Optional[String]                  $scap_key_name     = undef,
     Boolean                           $mask_service      = false,
+    Boolean                           $lfs_replica_sync  = true,
 ) {
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
@@ -321,13 +322,15 @@ class gerrit(
         }
     }
 
-    $gerrit_replica_hosts = wmflib::role::hosts('gerrit').filter |$gerrit_host| { $gerrit_host != $active_host }
+    if $lfs_replica_sync {
+        $gerrit_replica_hosts = wmflib::role::hosts('gerrit').filter |$gerrit_host| { $gerrit_host != $active_host }
 
-    rsync::quickdatacopy { 'lfs_replica_sync':
-        ensure                     => present,
-        source_host                => $active_host,
-        dest_host                  => $gerrit_replica_hosts,
-        module_path                => '/srv/gerrit/data/lfs',
-        ignore_missing_file_errors => true,
+        rsync::quickdatacopy { 'lfs_replica_sync':
+            ensure                     => present,
+            source_host                => $active_host,
+            dest_host                  => $gerrit_replica_hosts,
+            module_path                => '/srv/gerrit/data/lfs',
+            ignore_missing_file_errors => true,
+        }
     }
 }
