@@ -84,12 +84,12 @@
 # [*unix_socket_name*]
 #   Name of the unix socket, eg memcached.sock
 #
-# [*ext_path*]
+# [*extstore_path*]
 #   Path to the extstore path. This enables the extstore feature
 #   in memcached. https://github.com/memcached/memcached/wiki/Extstore
 #
-# [*ext_path_size*]
-#   Size of the extstore path in gigabytes. Default is 20.
+# [*extstore_ensure*]
+#   Ensure state of the extstore path. Default: absent
 
 # === Examples
 #
@@ -119,7 +119,6 @@ class memcached(
     Optional[Stdlib::Unixpath] $ssl_key               = undef,
     Optional[Stdlib::Unixpath] $localcacert           = undef,
     Optional[Stdlib::Unixpath] $extstore_path         = '/srv/memcached',
-    Optional[Integer]          $extstore_size         = 20,
 
 ) {
     if $enable_tls and (!$ssl_key or !$ssl_key) {

@@ -33,6 +33,16 @@
 #   User to run memcached as.
 #   Default: undef
 #
+# [*extstore_ensure*]
+#   Ensure state of the extstore path.  This enables the extstore featur Default: absent
+#   https://github.com/memcached/memcached/wiki/Extstore
+#
+# [*extstore_path*]
+#   Path to the extstore path. Default: /mnt/memcached.
+#
+# [*extstore_size*]
+#   Size of extstore. Default: 20
+#
 # [*min_slab_size*]
 #   Size of the first/smallest slab. The other slabs will be created
 #   using the growth_factor parameter.
@@ -120,19 +130,22 @@ class profile::memcached::instance (
     $extra_options = $base_extra_options + $max_seq_reqs_opt + $threads_opt
 
     class { '::memcached':
-        size           => $size,
-        port           => $port,
-        enable_16      => $enable_16,
-        version        => $version,
-        growth_factor  => $growth_factor,
-        min_slab_size  => $min_slab_size,
-        extra_options  => $extra_options,
-        memcached_user => $memcached_user,
-        enable_tls     => $enable_tls,
-        notls_port     => $notls_port,
-        ssl_cert       => $ssl_cert,
-        ssl_key        => $ssl_key,
-        localcacert    => $localcacert,
+        size            => $size,
+        port            => $port,
+        enable_16       => $enable_16,
+        version         => $version,
+        growth_factor   => $growth_factor,
+        min_slab_size   => $min_slab_size,
+        extra_options   => $extra_options,
+        memcached_user  => $memcached_user,
+        enable_tls      => $enable_tls,
+        notls_port      => $notls_port,
+        ssl_cert        => $ssl_cert,
+        ssl_key         => $ssl_key,
+        localcacert     => $localcacert,
+        extstore_ensure => $extstore_ensure,
+        extstore_path   => $extstore_path,
+
     }
     ferm::service { 'memcached':
         proto  => 'tcp',
