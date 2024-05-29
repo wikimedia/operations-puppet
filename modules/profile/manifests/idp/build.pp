@@ -24,8 +24,6 @@ class profile::idp::build {
         path => '/srv/cas-build/',
     }
 
-    profile::auto_restarts::service { 'rsync': }
-
     firewall::service { 'cas_build_rsync':
         proto  => 'tcp',
         port   => [873],
