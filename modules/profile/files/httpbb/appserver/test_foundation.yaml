@@ -28,7 +28,7 @@ https://donate.wikimedia.org:
 - path: /w/index.php?title=Special:FundraiserRedirector&reloaded=true
   assert_status: 302
   assert_headers:
-    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&utm_medium=spontaneous&utm_source=fr-redir&utm_campaign=spontaneous
+    Location: https://donate.wikimedia.org/w/index.php?title=Special:LandingPage&country=XX&wmf_medium=spontaneous&wmf_source=fr-redir&wmf_campaign=spontaneous
 - path: /w/index.php?title=Special:LandingPage
   assert_status: 200
   assert_body_contains: Make your donation now - Wikimedia Foundation
