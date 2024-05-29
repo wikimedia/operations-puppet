@@ -1,9 +1,0 @@
-profile::memcached::memcached_user: 'memcache'
-profile::memcached::threads: 28
-profile::memcached::extstore_ensure: present
-profile::memcached::extstore_size: 50
-profile::memcached::extstore_path: /srv/memcached
-profile::memcached::extended_options:
-  - "modern"
-  - "ext_item_size=176"
-  - "ext_threads=2"
