@@ -71,6 +71,7 @@ class puppetmaster::geoip(
             data_directory => $geoip_destdir,
             proxy          => $webproxy,
             product_ids    => [
+                'GeoLite2-ASN',
                 'GeoLite2-Country',
                 'GeoLite2-City',
                 ],
