@@ -2280,8 +2280,12 @@ node /^mwdebug200[12]\.codfw\./ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw2(29[8-9]|300)\.codfw\./ {
+node /^mw229[8-9]\.codfw\./ {
     role(mediawiki::appserver::api)
+}
+
+node /^mw2300\.codfw\./ {
+    role(mediawiki::appserver::canary_api)
 }
 
 node /^mw239[23]\.codfw\./ {
@@ -2401,7 +2405,7 @@ node /^mw23(58|6[024])\.codfw\./ {
 
 # rack D4
 node /^mw228[34]\.codfw\./ {
-    role(mediawiki::appserver::canary_api)
+    role(mediawiki::appserver::api)
 }
 node /^mw22(8[5-9]|90)\.codfw\./ {
     role(mediawiki::appserver::api)
