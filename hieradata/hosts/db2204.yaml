@@ -2,5 +2,3 @@
 # candidate master for s2
 mariadb::shard: 's2'
 mariadb::binlog_format: 'STATEMENT'
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
