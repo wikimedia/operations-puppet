@@ -497,7 +497,7 @@ class profile::phabricator::main (
     }
     if $_mx_in_hosts and $_mx_in_hosts.length > 0 {
         ferm::service { 'phabmain-smtp':
-            ensure => present,
+            ensure => $ferm_ensure,
             port   => '25',
             proto  => 'tcp',
             srange => $_mx_in_hosts,
