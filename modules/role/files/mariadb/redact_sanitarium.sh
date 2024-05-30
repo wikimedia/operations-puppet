@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# This script is used to redact data and install triggers on the sanitarium hosts. 
 host=localhost                   # default host localhost
 port=3306                        # default port 3306
 socket="/run/mysqld/mysqld.sock" # default socket to connect. If host & port are unset this parameter will used as dsn
