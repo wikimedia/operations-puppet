@@ -431,7 +431,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
-              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou]
+              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6356,6 +6356,13 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB5p15G/QYTPNw+VhcJOK6GospIZ4fO/sCyUU2AQpPjU cc@shiny'
+  derenrich:
+    ensure: present
+    realname: Daniel Erenrich
+    email: derenrich@wikimedia.org
+    uid: 46587
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7177,10 +7184,6 @@ ldap_only_users:
     ensure: present
     realname: Katherine Graessle
     email: kgraessle@wikimedia.org
-  derenrich:
-    ensure: present
-    realname: Daniel Erenrich
-    email: derenrich@wikimedia.org
   jaycano:
     ensure: present
     realname: Juan Cano
