@@ -6488,6 +6488,10 @@ ldap_only_users:
   jmatazzoni:
     ensure: absent
     realname: James Matazzoni
+  joelyrookewmde:
+    ensure: present
+    realname: Joely Rooke
+    email: joely.rooke@wikimedia.de
   jrobell:
     ensure: absent
     realname: Jessica Robell
