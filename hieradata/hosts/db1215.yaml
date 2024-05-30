@@ -2,3 +2,4 @@
 # zarcillo / db_inventory
 mariadb::package: 'wmf-mariadb106'
 profile::mariadb::mysql_role: 'master'
+profile::monitoring::notifications_enabled: false
