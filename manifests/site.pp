@@ -1248,7 +1248,15 @@ node /^es20(35|36|37)\.codfw\./ {
 # External Storage, Shard 7 (es7) databases
 # RW section
 ## eqiad servers
-node /^es10(35|39|40)\.eqiad\./ {
+node /^es1035\.eqiad\./ {
+    role(mariadb::core)
+}
+
+node /^es1039\.eqiad\./ {
+    role(mariadb::core)
+}
+
+node /^es1040\.eqiad\./ {
     role(mariadb::core)
 }
 
