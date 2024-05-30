@@ -294,7 +294,7 @@ hadoop_workers_sff_drives:
 
 # Extstore experiment T352885
 
-memcached_servers_extstore:
+memcached_servers_extstore_45_49:
   __regex: !ruby/regexp /^mc(104[5-9]\.eqiad|204[5-9]\.codfw)\.wmnet$/
   profile::memcached::memcached_user: 'memcache'
   profile::memcached::threads: 28
@@ -307,11 +307,11 @@ memcached_servers_extstore:
     - "ext_threads=2"
 
 # Mediawiki memcached servers (remove after 1034839 is merged)
-memcached_servers_eqiad:
-  __regex: !ruby/regexp /^mc105[0-4]\.eqiad\.wmnet$/
+memcached_servers_40_44:
+  __regex: !ruby/regexp /^mc(104[0-4]\.eqiad|204[0-4]\.codfw)\.wmnet$/
   profile::memcached::memcached_user: 'memcache'
   profile::memcached::threads: 28
-memcached_servers_codfw:
-  __regex: !ruby/regexp /^mc205[0-5]\.codfw\.wmnet$/
+memcached_servers_50_55:
+  __regex: !ruby/regexp /^mc(105[0-4]\.eqiad|205[0-5]\.codfw)\.wmnet$/
   profile::memcached::memcached_user: 'memcache'
   profile::memcached::threads: 28
