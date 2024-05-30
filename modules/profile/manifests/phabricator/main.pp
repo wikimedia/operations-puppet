@@ -93,6 +93,10 @@ class profile::phabricator::main (
                                                       { 'default_value' => '' }),
     Stdlib::Unixpath            $database_datadir   = lookup('profile::phabricator::main::database_datadir',
                                                       {default_value => '/var/lib/mysql'}),
+    Optional[
+        Array[Stdlib::Fqdn]
+    ]                           $mx_in_hosts        = lookup('profile::phabricator::main::mx_in_hosts',
+                                                      { 'default_value' => undef }),
 ) {
 
     $mail_alias = $::realm ? {
@@ -474,12 +478,30 @@ class profile::phabricator::main (
         },
     }
 
-    # receive mail from mail smarthosts
-    ferm::service { 'phabmain-smtp':
-        ensure => $ferm_ensure,
-        port   => '25',
-        proto  => 'tcp',
-        srange => $smarthosts,
+    # Receive mail from inbound mail hosts
+    if $mx_in_hosts == undef {
+        $pql =
+            @(PQL)
+            nodes[certname] {
+                resources {
+                    type = 'Class' and
+                    tag = 'mx_in'
+                }
+            }
+            | PQL
+        $_mx_in_hosts = wmflib::puppetdb_query($pql).map |$node| {
+            $node['certname']
+        }.sort
+    } else {
+        $_mx_in_hosts = $mx_in_hosts
+    }
+    if $_mx_in_hosts and $_mx_in_hosts.length > 0 {
+        ferm::service { 'phabmain-smtp':
+            ensure => present,
+            port   => '25',
+            proto  => 'tcp',
+            srange => $_mx_in_hosts,
+        }
     }
 
     # ssh between phabricator servers for clustering support
