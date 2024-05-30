@@ -1,4 +1,2 @@
 # db1243
 mariadb::shard: 's4'
-mariadb::package: 'wmf-mariadb106'
-
