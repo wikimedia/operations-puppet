@@ -333,11 +333,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-main[12]00[45]':
     - reuse-parts-test.cfg
     - partman/custom/reuse-raid10-8dev.cfg
-  # TODO: T363212. Remove this rule after mgmt is fixed for kafka-main1009 and
-  # a first image has been done
-  'kafka-main1009':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
+  # TODO: T363212. Remove this rule after kafka-main1010 has been imaged once
   'kafka-main1010':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
