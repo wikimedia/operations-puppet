@@ -4,7 +4,7 @@ function cephadm::ssh_keys (
 ) >> String[1] {
     $pql = @("PQL")
         inventory[facts.cephadm.ssh.key] {
-		    certname = "${cephadm_controller}"
+            certname = "${cephadm_controller}"
         }
         | PQL
     wmflib::puppetdb_query($pql).reduce('') |$memo, $res| {
