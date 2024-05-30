@@ -69,6 +69,8 @@ class profile::puppetserver::volatile (
     file { [$geoip_destdir, $geoip_destdir_ipinfo]:
         ensure => directory,
     }
+
+
     if $geoip_fetch_private {
         include passwords::geoip
         class { 'geoip::data::maxmind':
@@ -84,13 +86,20 @@ class profile::puppetserver::volatile (
                 'GeoIP2-ISP',
             ],
         }
+        # TODO: after I53708b14ed36c6ae0ca7d71df0fc704c60ab749b is merged, we can modify
+        # accordingly to just include the freely available product_ids
         class { 'geoip::data::maxmind::ipinfo':
             data_directory => $geoip_destdir_ipinfo,
             proxy          => $http_proxy,
             ca_server      => $profile::puppetserver::ca_server,
             user_id        => $passwords::geoip::user_id_ipinfo,
             license_key    => $passwords::geoip::license_key_ipinfo,
-            product_ids    => ['GeoIP2-Enterprise'],
+            product_ids    => [
+                'GeoIP2-Enterprise',
+                'GeoLite2-ASN',
+                'GeoLite2-Country',
+                'GeoLite2-City',
+          ],
         }
     } else {
         class { 'geoip::data::maxmind':

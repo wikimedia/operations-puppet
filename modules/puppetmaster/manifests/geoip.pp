@@ -41,13 +41,16 @@ class puppetmaster::geoip(
                 ],
         }
 
+
         # T288844
+        #
+        # TODO: after I53708b14ed36c6ae0ca7d71df0fc704c60ab749b is merged, we can modify
+        # accordingly to just include the freely available product_ids
         $geoip_destdir_ipinfo = "${puppetmaster::volatiledir}/GeoIPInfo"
 
         file { $geoip_destdir_ipinfo:
             ensure => directory,
         }
-
         # FIXME: modules should not use other modules directly
         class { 'geoip::data::maxmind::ipinfo': # lint:ignore:wmf_styleguide
             data_directory => $geoip_destdir_ipinfo,
@@ -55,9 +58,13 @@ class puppetmaster::geoip(
             ca_server      => $ca_server,
             user_id        => $passwords::geoip::user_id_ipinfo,
             license_key    => $passwords::geoip::license_key_ipinfo,
-            product_ids    => ['GeoIP2-Enterprise'],
+            product_ids    => [
+                'GeoIP2-Enterprise',
+                'GeoLite2-ASN',
+                'GeoLite2-Country',
+                'GeoLite2-City',
+                ],
         }
-
     } else {
     # fall back to public legacy databases
         class { 'geoip::data::maxmind':  # lint:ignore:wmf_styleguide
