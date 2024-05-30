@@ -480,18 +480,7 @@ class profile::phabricator::main (
 
     # Receive mail from inbound mail hosts
     if $mx_in_hosts == undef {
-        $pql =
-            @(PQL)
-            nodes[certname] {
-                resources {
-                    type = 'Class' and
-                    tag = 'mx_in'
-                }
-            }
-            | PQL
-        $_mx_in_hosts = wmflib::puppetdb_query($pql).map |$node| {
-            $node['certname']
-        }.sort
+        $_mx_in_hosts = profile::postfix::mx_inbound_hosts()
     } else {
         $_mx_in_hosts = $mx_in_hosts
     }

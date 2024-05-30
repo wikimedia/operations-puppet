@@ -19,6 +19,9 @@ class profile::vrts(
     String $dns_name                 = lookup('profile::vrts::public_dns'),
     Boolean $local_database          = lookup('profile::vrts::local_database', {default_value => false}),
     Stdlib::Unixpath $db_datadir     = lookup('profile::vrts::db_datadir', {default_value => '/var/lib/mysql'}),
+    Optional[
+        Array[Stdlib::Fqdn]
+    ] $mx_in_hosts                   = lookup('profile::vrts::mx_in_hosts', { 'default_value' => undef }),
 ){
     include network::constants
     include ::profile::prometheus::apache_exporter
@@ -82,10 +85,16 @@ class profile::vrts(
         src_sets => ['CACHES'],
     }
 
+    # Receive mail from inbound mail hosts
+    if $mx_in_hosts == undef {
+        $_mx_in_hosts = profile::postfix::mx_inbound_hosts()
+    } else {
+        $_mx_in_hosts = $mx_in_hosts
+    }
     firewall::service { 'vrts_smtp':
         proto  => 'tcp',
         port   => 25,
-        srange => $profile::mail::default_mail_relay::smarthosts,
+        srange => $_mx_in_hosts,
     }
 
     prometheus::blackbox::check::tcp { 'vrts-smtp':
