@@ -6,5 +6,3 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s5: 8G
   s8: 48G
 profile::monitoring::notifications_enabled: false
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
