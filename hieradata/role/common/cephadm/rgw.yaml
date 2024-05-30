@@ -1,0 +1,20 @@
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
+
+profile::contacts::role_contacts: ['Data Persistence']
+
+profile::envoy::ensure: present
+
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::upstream_addr: "localhost"
+# Like swift, use a 180s timeout between reads rather than a timeout
+# for the whole request; this should enable large objects to be streamed
+profile::tlsproxy::envoy::stream_idle_timeout: 180.0
+profile::tlsproxy::envoy::upstream_response_timeout: 0.0
+
+profile::tlsproxy::envoy::global_cert_name: "%{lookup('profile::cephadm::cluster_label')}.discovery.wmnet"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - "%{lookup('profile::cephadm::cluster_label')}.svc.%{::site}.wmnet"
+    - "%{lookup('profile::cephadm::cluster_label')}.discovery.wmnet"

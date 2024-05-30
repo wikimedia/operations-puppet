@@ -2074,7 +2074,7 @@ node /^moscovium\.eqiad\./ {
 }
 
 node /^moss-fe1002\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(cephadm::rgw)
 }
 
 node /^moss-fe1001\.eqiad\./ {
