@@ -1332,36 +1332,6 @@ service::catalog:
       - codfw
     state: production
 
-  datahub-frontend:
-    description: DataHub Frontend Web Service
-    encryption: true
-    ip: *k8s-ingress-wikikube_ips
-    page: false
-    probes:
-      - type: http
-        path: /admin
-        host: datahub-frontend.discovery.wmnet
-    port: *k8s-ingress-wikikube_port
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-
-  datahub-gms:
-    description: DataHub Generalized Metadata Service
-    encryption: true
-    ip: *k8s-ingress-wikikube_ips
-    page: false
-    probes:
-      - type: http
-        path: /health
-        host: datahub-gms.discovery.wmnet
-    port: *k8s-ingress-wikikube_port
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-
   dse-k8s-ctrl:
     description: Kubernetes master service for DSE cluster. dse-k8s-ctrl.discovery.wmnet
     encryption: true
