@@ -9,7 +9,8 @@ profile::memcached::min_slab_size: 48
 profile::memcached::size: 109568  # multiple of 1024
 profile::memcached::extended_options:
   - 'modern'
-profile::memcached::memcached_user: 'nobody'
+profile::memcached::memcached_user: 'memcache'
+profile::memcached::threads: 28
 profile::memcached::enable_tls: true
 profile::memcached::ssl_cert: "%{facts.puppet_config.hostcert}"
 profile::memcached::ssl_key: "%{facts.puppet_config.hostprivkey}"
