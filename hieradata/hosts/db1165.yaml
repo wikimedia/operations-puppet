@@ -1,4 +1,3 @@
 # db1165
 # sanitarium master for s6
 mariadb::shard: 's6'
-mariadb::package: 'wmf-mariadb106'
