@@ -31,7 +31,9 @@ class snapshot::dumps::systemdjobs(
     # wikidump.conf.dumps plus some stage files, make explicit
 
     systemd::timer::job { 'fulldumps-rest':
-        ensure             => present,
+        #ensure             => present,
+        # We are temporarily disabling the XML dumps, while working on #T365155
+        ensure             => absent,
         description        => 'snapshot - full dumps - rest',
         user               => $user,
         monitoring_enabled => false,
