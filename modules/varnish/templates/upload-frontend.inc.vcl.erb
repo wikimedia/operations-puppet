@@ -302,6 +302,13 @@ sub cluster_fe_ratelimit_hit {
             return (synth(429, "Too many requests"));
         }
     }
+    if ((req.url == "/wikipedia/commons/3/3a/Bloemen_van_adderwortel_%28Persicaria_bistorta%2C_synoniem%2C_Polygonum_bistorta%29_06-06-2021._%28d.j.b%29.jpg") && (req.http.Host ~ "upload\.wikimedia\.org")) {
+        set req.http.X-Requestctl = req.http.X-Requestctl + ",hotlink_from_jio_and_others";
+        if (vsthrottle.is_denied("requestctl:hotlink_from_jio_set_top", 4, 30s, 600s)) {
+            set req.http.Retry-After = 600;
+            return (synth(429, "Too many requests"));
+        }
+    }
     set req.http.X-Requestctl = regsub(req.http.X-Requestctl, "^,", "");
 }
 
