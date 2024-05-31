@@ -11,9 +11,7 @@ class profile::puppetserver::git::private (
     }
     file { '/usr/local/bin/git_ssh_wrapper.sh':
         ensure => file,
-        source => 'puppet:///modules/puppetmaster/git/private/ssh_wrapper.sh',
-        owner  => 'root',
-        group  => 'root',
+        source => 'puppet:///modules/profile/puppetserver/gitprivate/git_ssh_wrapper.sh',
         mode   => '0555',
     }
 }
