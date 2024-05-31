@@ -3,8 +3,8 @@
 # This also installs a timer job to do this weekly.
 #
 # @param data_directory Where the data files should live.
-# @param license_key    MaxMind license key.
-# @param user_id        MaxMind user id.
+# @param user_id        MaxMind user id. Defaults to 999999, a special user ID for downloading GeoLite2 products
+# @param license_key    MaxMind license key. Defaults to 000000000000,  a special license key for downloading GeoLite2 products
 # @param product_ids    Array of MaxMind product ids to specify which data files
 #                   to download.  default: [506] (GeoLite Country)
 # @param ca_server      Proxy server to use to fetch files.
