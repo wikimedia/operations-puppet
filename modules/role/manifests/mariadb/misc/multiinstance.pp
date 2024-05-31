@@ -1,13 +1,8 @@
 # miscellaneous services clusters
 class role::mariadb::misc::multiinstance {
+    include profile::base::production
+    include profile::firewall
 
-    system::role { 'mariadb::misc::multiinstance':
-        description => 'Misc Services Multiinstance Databases',
-    }
-
-    include ::profile::base::production
-    include ::profile::firewall
-
-    include ::profile::mariadb::misc::multiinstance
+    include profile::mariadb::misc::multiinstance
 }
 

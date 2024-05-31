@@ -7,7 +7,7 @@ define profile::mariadb::section(
         true => " (alias: mysql.${title})",
         false => '',
     }
-    # Add the db section to the motd, directly after the system::role line.
+    # Add the db section to the motd
     motd::script { "db-section-${title}":
         priority => 6,
         content  => "#!/bin/sh\necho 'DB section ${title}${alias}'\n",

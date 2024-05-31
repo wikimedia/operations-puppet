@@ -1,5 +1,6 @@
 profile::contacts::role_contacts:
 - Data Persistence
+profile::base::production::role_description: 'Object stash database'
 mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::is_critical: true
 profile::mariadb::config::sync_binlog: '0'

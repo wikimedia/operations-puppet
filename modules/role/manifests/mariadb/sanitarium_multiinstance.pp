@@ -7,16 +7,11 @@
 # sanitarium2/sanitarium_multisource
 
 class role::mariadb::sanitarium_multiinstance {
+    include profile::base::production
+    include profile::firewall
 
-    system::role { 'mariadb::sanitarium':
-        description => 'Sanitarium DB Server',
-    }
+    include profile::wmcs::db::scriptconfig
+    include profile::mariadb::check_private_data
 
-    include ::profile::base::production
-    include ::profile::firewall
-
-    include ::profile::wmcs::db::scriptconfig
-    include ::profile::mariadb::check_private_data
-
-    include ::profile::mariadb::sanitarium_multiinstance
+    include profile::mariadb::sanitarium_multiinstance
 }

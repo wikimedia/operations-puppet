@@ -3,6 +3,7 @@ mariadb::monitor_disk::is_critical: false
 profile::monitoring::notifications_enabled: false
 
 profile::contacts::role_contacts: ['Data Persistence']
+profile::base::production::role_description: 'Core test DB server'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
