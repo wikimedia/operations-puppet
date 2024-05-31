@@ -25,7 +25,7 @@ groups:
               clarakosi, jdl, keepit-ssh, nikkin, statwithlatte, razzi, dsharpe, mewoph, mattcleinman,
               aniketars, effeietsanders, dpifke, eyener, ricby, mmandere, jmads, nokafor, bmansurov,
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
-              cmacholan, echetty, kelhurd, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
+              cmacholan, echetty, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, fsero, demon, paramd, neilpquinn-wmf,
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
@@ -44,7 +44,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena]
+              kassiameq, maurelio, dmantena, kelhurd]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -5797,13 +5797,6 @@ users:
     uid: 42819
     gid: 500
     rename: true  # T325004
-  kelhurd:
-    ensure: absent
-    realname: Kelton Hurd
-    email: khurd@wikimedia.org
-    uid: 42652
-    gid: 500
-    ssh_keys: []
   eileen:
     ensure: present
     realname: Eileen Mcnaughton
@@ -7066,9 +7059,8 @@ ldap_only_users:
     realname: Jonathan Solomon Giles Blay Amar
     email: jon.amar@wikimedia.de
   kelhurd:
-    ensure: present
+    ensure: absent
     realname: Kelton Hurd
-    email: khurd@wikimedia.org
   lwatson:
     ensure: present
     realname: Lauralyn Watson
