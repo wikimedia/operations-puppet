@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::wmcs::toolforge::bastion {
-    system::role { $name:
-        description => 'Toolforge bastion',
-    }
-
     include profile::toolforge::base
     include profile::block_local_crontabs
 

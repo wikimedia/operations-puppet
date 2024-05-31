@@ -1,9 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class role::wmcs::toolforge::grid::bastion {
-    system::role { $name:
-        description => 'Toolforge bastion (with Grid Engine access)'
-    }
-
     include profile::toolforge::base
     include profile::toolforge::apt_pinning
 
