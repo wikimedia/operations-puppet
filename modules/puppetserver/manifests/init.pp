@@ -87,9 +87,15 @@ class puppetserver (
         true  => Service['puppetserver'],
         false => Exec['restart puppetserver required'],
     }
+
+    # Frustratingly, puppet requires us to specify 'none' when
+    #  we don't want reports (e.g. on cloud-vps.). When appending
+    #  to that list we need to remove the 'none' to avoid a weird
+    #  situation of having ['none', 'something'] in the list of
+    #  report types.
     $_reports = $puppetdb_urls.empty ? {
         true  => $reports,
-        false => $reports + 'puppetdb',
+        false => $reports.delete('none') + 'puppetdb',
     }
 
     wmflib::dir::mkdir_p(
