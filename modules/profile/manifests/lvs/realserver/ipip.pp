@@ -54,9 +54,15 @@ class profile::lvs::realserver::ipip(
     if $enabled {
         $disable_rp_filter_ifaces = ['ipip0', 'ipip60', $facts['interface_primary']]
         $disable_rp_filter_ifaces.each |String $interface| {
+            $require_interface = $interface? {
+                'ipip0'  => Interface::Ipip['ipip_ipv4'],
+                'ipip60' => Interface::Ipip['ipip_ipv6'],
+                default  => undef,
+            }
             exec { "disable-rp-filter-${interface}":
                 command => "/usr/sbin/sysctl -q net.ipv4.conf.${interface}.rp_filter=0",
                 unless  => "/usr/sbin/sysctl -n net.ipv4.conf.${interface}.rp_filter |grep -- '0'",
+                require => $require_interface,
             }
         }
     }
