@@ -1,3 +1,1 @@
-
 do_paging: false
-profile::maps::tlsproxy::use_pki: true
