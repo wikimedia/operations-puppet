@@ -14,7 +14,7 @@ class profile::dumps::distribution::datasets::rsync_config(
     $mntpoint = $rsyncer_settings['dumps_mntpoint']
 
     file { '/etc/rsyncd.d/30-rsync-media.conf':
-        ensure  => 'present',
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -23,7 +23,7 @@ class profile::dumps::distribution::datasets::rsync_config(
     }
 
     file { '/etc/rsyncd.d/30-rsync-pagecounts_ez.conf':
-        ensure  => 'present',
+        ensure  => absent,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
