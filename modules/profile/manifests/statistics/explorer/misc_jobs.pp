@@ -2,8 +2,8 @@
 # == Class profile::statistics::explorer::misc_jobs
 #
 # This class is meant to collect crons/timers/scripts from
-# various teams (Discovery, WMDE, etc..) that used to be run
-# only on stat1007. Ideally in the future these jobs will be run
+# various teams (Discovery, WMDE, etc..) that run only on
+# stat1011. Ideally in the future these jobs will be run
 # on a dedicated VM or similar.
 #
 class profile::statistics::explorer::misc_jobs(

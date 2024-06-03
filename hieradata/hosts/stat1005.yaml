@@ -1,3 +1,0 @@
-# This stat server has a GPU card present
-profile::amd_gpu::rocm_version: '42'
-profile::base::use_linux510_on_buster: true

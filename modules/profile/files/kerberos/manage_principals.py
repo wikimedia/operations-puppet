@@ -109,11 +109,11 @@ def send_email(email_address, principal, password, subject):
         servers.
 
         Your kerberos username is {}, that should be the same as the one
-        that you use on Analytics Hadoop clients (like stat1007, etc..).
-        If not, please reach out to the Analytics team for a follow up.
+        that you use on Analytics Hadoop clients.
+        If not, please reach out to the Data Platform SRE team for a follow up.
 
         Please ssh to any of the Hadoop client hosts
-        (like stat1005.eqiad.wmnet, stat1008.eqiad.wmnet, etc..) and set your
+        (like stat1008.eqiad.wmnet, stat1009.eqiad.wmnet etc..) and set your
         own password with the following command:
 
         kinit

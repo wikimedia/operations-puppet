@@ -2714,9 +2714,16 @@ node /^mirror1001\.wikimedia\./ {
     role(mirrors)
 }
 
+# These hosts are to be decommisisoned, but we wish to leave them
+# in setup mode for a week or so, in case we need to retrieve any data
+# See #T353785 for more information.
+node /^stat100[4-7]\.eqiad\./ {
+    role(insetup::buster)
+}
+
 # The hosts contain all the tools and libraries to access
 # the Analytics Cluster services.
-node /^stat10(1[0-1]|0[4-9])\.eqiad\./ {
+node /^stat10(0[8-9]|1[0-1])\.eqiad\./ {
     role(statistics::explorer)
 }
 

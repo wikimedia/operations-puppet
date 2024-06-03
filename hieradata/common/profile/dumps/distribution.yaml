@@ -16,10 +16,6 @@ profile::dumps::distribution::rsync_config:
 profile::dumps::distribution::phab_dump_host: "%{lookup('phabricator_active_server')}"
 
 profile::dumps::distribution::nfs_clients:
-  - stat1004.eqiad.wmnet
-  - stat1005.eqiad.wmnet
-  - stat1006.eqiad.wmnet
-  - stat1007.eqiad.wmnet
   - stat1008.eqiad.wmnet
   - stat1009.eqiad.wmnet
   - stat1010.eqiad.wmnet

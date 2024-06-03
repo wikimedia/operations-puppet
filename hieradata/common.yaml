@@ -620,10 +620,6 @@ manage_puppet_ca_file: false
 # This list is mostly maintained for rsync hosts_allow.
 # Servers listed here can rsync pull from each other.
 statistics_servers:
-  - stat1004.eqiad.wmnet
-  - stat1005.eqiad.wmnet
-  - stat1006.eqiad.wmnet
-  - stat1007.eqiad.wmnet
   - stat1008.eqiad.wmnet
   - stat1009.eqiad.wmnet
   - stat1010.eqiad.wmnet

@@ -11,8 +11,6 @@ profile::dumps::rsync_internal_clients:
   - dumpsdata1007.eqiad.wmnet
   - clouddumps1001.wikimedia.org
   - clouddumps1002.wikimedia.org
-  - stat1006.eqiad.wmnet
-  - stat1007.eqiad.wmnet
   - wdqs1022.eqiad.wmnet
   - wcqs2001.codfw.wmnet
   - wdqs2009.codfw.wmnet
