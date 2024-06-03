@@ -11,6 +11,7 @@
 # instances per host (preventing configuration by profile), and multiple roles
 # per datasource (preventing configuration by role).
 class profile::query_service::wikidata(
+    String $journal = lookup('profile::query_service::journal'),
     String $username = lookup('profile::query_service::username'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
@@ -43,7 +44,7 @@ class profile::query_service::wikidata(
     $prometheus_agent_port = 9102
 
     profile::query_service::blazegraph { $instance_name:
-        journal                 => 'wikidata',
+        journal                 => $journal,
         blazegraph_main_ns      => $blazegraph_main_ns,
         username                => $username,
         package_dir             => $package_dir,

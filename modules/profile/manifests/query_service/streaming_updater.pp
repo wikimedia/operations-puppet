@@ -9,7 +9,7 @@ class profile::query_service::streaming_updater (
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
-    String $journal = lookup('profile::query_service::streaming_updater::journal'),
+    String $journal = lookup('profile::query_service::journal'),
     Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
     Boolean $enable_updater = lookup('profile::query_service::enable_updater', { 'default_value' => true }),
 ) {

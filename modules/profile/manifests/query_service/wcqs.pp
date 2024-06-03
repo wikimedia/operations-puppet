@@ -5,6 +5,7 @@
 # necessary for a query service installation servicing the commons.wikimedia.org
 # dataset.
 class profile::query_service::wcqs(
+    String $journal = lookup('profile::query_service::journal'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
@@ -46,6 +47,7 @@ class profile::query_service::wcqs(
     ]
 
     profile::query_service::blazegraph { $instance_name:
+        journal                 => $journal,
         username                => $username,
         package_dir             => $package_dir,
         data_dir                => $data_dir,
@@ -66,7 +68,6 @@ class profile::query_service::wcqs(
         config_file_name        => 'RWStore.wcqs.properties',
         prefixes_file           => 'prefixes-sdc.conf',
         use_geospatial          => true,
-        journal                 => 'wcqs',
         blazegraph_main_ns      => $blazegraph_main_ns,
         use_oauth               => true,
         federation_user_agent   => $federation_user_agent,

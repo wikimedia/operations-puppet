@@ -45,7 +45,7 @@ profile::query_service::federation_user_agent: 'Wikidata Query Service (internal
 profile::nginx::variant: 'full'
 
 profile::query_service::streaming_updater::kafka_cluster: main
-profile::query_service::streaming_updater::journal: 'wikidata'
+profile::query_service::journal: 'wikidata'
 
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet

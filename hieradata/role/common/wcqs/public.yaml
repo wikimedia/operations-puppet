@@ -47,7 +47,7 @@ profile::query_service::federation_user_agent: 'Wikimedia Commons Query Service;
 profile::nginx::variant: 'full'
 
 profile::query_service::streaming_updater::kafka_cluster: main
-profile::query_service::streaming_updater::journal: 'wcqs'
+profile::query_service::journal: 'wcqs'
 
 # Proxy non-blazegraph requests to the gui hosted on microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
