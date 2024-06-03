@@ -10,7 +10,6 @@ class profile::idp::memcached (
     Boolean             $auto_restarts    = lookup('profile::idp::memcached::auto_restarts'),
 ) {
     class { 'memcached':
-        enable_16      => debian::codename::eq('buster'),
         enable_tls     => $enable_tls,
         ssl_cert       => $ssl_cert,
         ssl_key        => $ssl_key,

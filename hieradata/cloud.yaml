@@ -637,7 +637,6 @@ profile::swift::proxy::rewrite_account: ~
 profile::swift::proxy::thumborhost: ~
 profile::swift::proxy::inactivedc_thumborhost: ~
 
-profile::memcached::enable_16: false
 profile::memcached::threads: ~
 profile::memcached::version: "present"
 profile::memcached::growth_factor: 1.05

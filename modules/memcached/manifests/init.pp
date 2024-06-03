@@ -43,14 +43,6 @@
 #   on Bullseye in component/memcached-tls.
 #   Default: false
 #
-# [*enable_16*]
-#   Debian Buster has memcached 1.5.6. If this option is enabled
-#   a 1.6 backport gets installed. This backport also has TLS
-#   enabled. On Bullseye this option isn't needed, it has 1.6.9
-#   by default. If you however need TLS on Bullseye, see the
-#   'enable_tls' option.
-#   Default: false
-#
 # [*notls_port]
 #   By default, when we `enable_tls`, the host will listen
 #   `port` for TLS connections. By defining a `notls_port`,
@@ -107,7 +99,6 @@ class memcached(
     Integer                    $min_slab_size         = 48,
     Float                      $growth_factor         = 1.25,
     Hash[String, Any]          $extra_options         = {},
-    Boolean                    $enable_16             = false,
     String                     $memcached_user        = undef,
     Boolean                    $enable_tls            = false,
     Boolean                    $enable_tls_localhost  = false,
@@ -143,14 +134,7 @@ class memcached(
     } else {
         $listen = [$ip] + $notls_listen
     }
-    if debian::codename::eq('buster') and $enable_16 {
-            apt::package_from_component { 'memcached_16':
-                component => 'component/memcached16',
-                packages  => ['memcached'],
-                before    => Service['memcached'],
-            }
-        }
-    elsif debian::codename::eq('bullseye') and $enable_tls {
+    if debian::codename::eq('bullseye') and $enable_tls {
         apt::package_from_component { 'memcached_tls':
             component => 'component/memcached-tls',
             packages  => ['memcached'],
@@ -166,9 +150,6 @@ class memcached(
 
     if $enable_tls {
         $override = true
-        if ! $enable_16 and debian::codename::eq('buster'){
-            fail('You must set \$enable_16 when using \$enable_tls on Buster')
-        }
     } else {
         $override = false
     }
