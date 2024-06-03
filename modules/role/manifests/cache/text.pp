@@ -6,6 +6,7 @@ class role::cache::text {
     include profile::prometheus::varnish_exporter
     include profile::cache::varnish::frontend::text
     include profile::trafficserver::backend
+    include profile::lvs::realserver::ipip
 
     # varnishkafka statsv listens for special stats related requests
     # and sends them to the 'statsv' topic in Kafka. A kafka consumer

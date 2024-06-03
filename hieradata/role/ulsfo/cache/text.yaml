@@ -32,3 +32,5 @@ profile::benthos::instances:
       site: eqiad
       topics:
         - "none"
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
