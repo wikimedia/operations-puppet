@@ -1,0 +1,25 @@
+-- SPDX-License-Identifier: Apache-2.0
+
+-- User/role for the Commons Impact Metrics service: https://phabricator.wikimedia.org/T361835
+
+-- Note: This is intended to be temporary; This service will eventually use the Data Gateway
+-- (https://phabricator.wikimedia.org/T364921) instead of connecting to Cassandra directly. When
+-- that happens these GRANTs, and the role, can be removed.
+
+CREATE ROLE IF NOT EXISTS commons_impact_analytics
+    WITH PASSWORD = '<%= @application_password %>' AND LOGIN = true AND SUPERUSER = false;
+
+GRANT SELECT ON commons.category_metrics_snapshot        TO commons_impact_analytics;
+GRANT SELECT ON commons.media_file_metrics_snapshot      TO commons_impact_analytics;
+GRANT SELECT ON commons.pageviews_per_category_monthly   TO commons_impact_analytics;
+GRANT SELECT ON commons.pageviews_per_media_file_monthly TO commons_impact_analytics;
+GRANT SELECT ON commons.edits_per_category_monthly       TO commons_impact_analytics;
+GRANT SELECT ON commons.edits_per_user_monthly           TO commons_impact_analytics;
+GRANT SELECT ON commons.top_pages_per_category_monthly   TO commons_impact_analytics;
+GRANT SELECT ON commons.top_wikis_per_category_monthly   TO commons_impact_analytics;
+GRANT SELECT ON commons.top_viewed_categories_monthly    TO commons_impact_analytics;
+GRANT SELECT ON commons.top_pages_per_media_file_monthly TO commons_impact_analytics;
+GRANT SELECT ON commons.top_wikis_per_media_file_monthly TO commons_impact_analytics;
+GRANT SELECT ON commons.top_viewed_media_files_monthly   TO commons_impact_analytics;
+GRANT SELECT ON commons.top_edited_categories_monthly    TO commons_impact_analytics;
+GRANT SELECT ON commons.top_editors_monthly              TO commons_impact_analytics;

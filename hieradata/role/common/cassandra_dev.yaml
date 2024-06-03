@@ -109,6 +109,7 @@ profile::cassandra::settings:
     - cassandra_devel
     - data_gateway
     - aqsloader
+    - commons_impact_analytics
 
 # Port to use for SSL certificate monitoring
 profile::cassandra::monitor_tls_port: 7000
