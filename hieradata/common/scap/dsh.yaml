@@ -82,9 +82,6 @@ scap::dsh::groups:
   cirrus:
     conftool:
         - {'cluster': 'elasticsearch', 'service': 'elasticsearch', 'datacenters': ['eqiad', 'codfw']}
-  discovery-analytics:
-    hosts:
-      - stat1007.eqiad.wmnet
   search-airflow:
     hosts:
       - an-airflow1005.eqiad.wmnet
