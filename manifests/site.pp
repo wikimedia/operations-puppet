@@ -1652,6 +1652,11 @@ node /^wikikube-worker100[1-47]\.eqiad\./ {
     role(kubernetes::worker)
 }
 
+# Pending idrac update for rename to wikikube-worker1001.eqiad.wmnet
+node /^mw1358\.eqiad\./ {
+    role(insetup::serviceops)
+}
+
 node /^wikikube-worker200[12]\.codfw\./ {
     role(kubernetes::worker)
 }
