@@ -141,10 +141,25 @@ class profile::etcd::v3(
         srange => $prometheus_all_nodes,
     }
 
-    ferm::service { 'etcd_peers':
+    firewall::service { 'etcd_peers':
+        proto    => 'tcp',
+        port     => 2380,
+        src_sets => ['DOMAIN_NETWORKS'],
+    }
+
+    # Allow all etcd cluster nodes to connect to each other
+    # via client port.
+    if $peers_list != undef {
+        # If peers are defined in hiera, use the list directly
+        $peers = split($peers_list, ',')
+    } else {
+        # If peers are defined via DNS, resolve the SRV record from $certname
+        $peers = dnsquery::srv($certname).map |$srv| { $srv['target'] }
+    }
+    firewall::service { 'etcd_peers_client_port':
         proto  => 'tcp',
-        port   => 2380,
-        srange => '$DOMAIN_NETWORKS',
+        port   => $adv_client_port,
+        srange => $peers,
     }
 
     # Backup
