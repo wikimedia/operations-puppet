@@ -13,7 +13,7 @@ define interface::clsact(
         command   => $tc_add_cmd,
     }
 
-    if ensure == 'absent' {
+    if $ensure == 'absent' {
         exec { $tc_del_cmd:
             onlyif => "/usr/sbin/tc qdisc show dev ${interface} | grep -q clsact",
         }
