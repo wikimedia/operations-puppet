@@ -5,9 +5,12 @@
 # i.e. a node that will be part of a cephadm-managed Ceph cluster.
 #
 # @param [Stdlib::Fqdn] cephadm_controller
-#     cephadm controller node (which will be allowed access to the ssh port)
+#     cephadm controller node (whose key will be used)
+# @param [Array[Stdlib::Fqdn]] cephadm_mgrs
+#     cephadm manager nodes (which will be allowed access to the ssh port)
 class cephadm::target(
     Optional[Stdlib::Fqdn] $cephadm_controller = undef,
+    Optional[Array[Stdlib::Fqdn]] $cephadm_mgrs = undef,
 ) {
     # podman, and necessary packages for running Ceph containers.
     ensure_packages([
@@ -17,11 +20,11 @@ class cephadm::target(
         'podman',
     ])
 
-    if $cephadm_controller {
+    if $cephadm_mgrs and $cephadm_controller {
         firewall::service { 'cephadm-ssh':
             proto  => 'tcp',
             port   => '22',
-            srange => [ $cephadm_controller ],
+            srange => $cephadm_mgrs,
         }
 
         file { '/etc/ssh/userkeys/root.d/cephadm':

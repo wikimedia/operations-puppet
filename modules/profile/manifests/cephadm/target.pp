@@ -9,8 +9,11 @@ class profile::cephadm::target(
 ) {
 
     $controller = $cephadm_clusters[$cephadm_cluster_label]['controller']
+    # Monitor nodes run mgr daemons, and need ssh access to targets
+    $mgrs = $cephadm_clusters[$cephadm_cluster_label]['monitors']
 
     class { 'cephadm::target':
         cephadm_controller => $controller,
+        cephadm_mgrs       => $mgrs,
     }
 }
