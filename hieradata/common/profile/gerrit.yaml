@@ -67,4 +67,4 @@ profile::gerrit::replication:
         replicationDelay: 5
         rescheduleDelay: 5
 
-profile::gerrit::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
+profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'

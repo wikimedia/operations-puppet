@@ -17,7 +17,7 @@ profile::ssh::server::authorized_keys_file:
 profile::ssh::server::disable_nist_kex: false
 
 profile::java::java_packages:
-  - version: '11'
+  - version: '17'
     variant: 'jdk'
 profile::java::enable_dbg: true
 
