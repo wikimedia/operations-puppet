@@ -35,7 +35,6 @@ profile::nginx::variant: 'full'
 
 profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::streaming_updater::journal: 'wikidata'
-profile::query_service::legacy_updater::journal: 'wikidata'
 
 # Proxy non-blazegraph requests to the microsites
 profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
