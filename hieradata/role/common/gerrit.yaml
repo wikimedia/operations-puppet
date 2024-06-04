@@ -21,6 +21,9 @@ profile::java::java_packages:
     variant: 'jdk'
 profile::java::enable_dbg: true
 
+# Set JAVA_HOME explicitly for the systemd unit
+profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
+
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 
