@@ -18,6 +18,7 @@ class mailman3 (
     Integer $uwsgi_processes,
     Wmflib::Ensure $service_ensure = 'present',
     Optional[String] $memcached = undef,
+    Boolean $allow_incoming_mail = true,
 ) {
     # We do not want to use the dbconfig system
     # that tries to apply database updates on
@@ -31,13 +32,14 @@ class mailman3 (
     }
 
     class { 'mailman3::listserve':
-        host           => $host,
-        service_ensure => $service_ensure,
-        db_host        => $db_host,
-        db_name        => $db_name,
-        db_user        => $db_user,
-        db_password    => $db_password,
-        api_password   => $api_password,
+        host                => $host,
+        service_ensure      => $service_ensure,
+        db_host             => $db_host,
+        db_name             => $db_name,
+        db_user             => $db_user,
+        db_password         => $db_password,
+        api_password        => $api_password,
+        allow_incoming_mail => $allow_incoming_mail,
     }
 
     class { 'mailman3::web':

@@ -113,4 +113,14 @@ class mailman3::web (
         creates => '/var/lib/mailman3/redirects/redirects.dbm',
         require => File['/var/lib/mailman3/redirects/'],
     }
+
+    ferm::service { 'mailman-http':
+        proto => 'tcp',
+        port  => '80',
+    }
+
+    ferm::service { 'mailman-https':
+        proto => 'tcp',
+        port  => '443',
+    }
 }

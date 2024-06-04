@@ -14,8 +14,8 @@ class mailman3::listserve (
     String $db_password,
     String $api_password,
     Wmflib::Ensure $service_ensure = 'present',
+    Boolean $allow_incoming_mail = true,
 ) {
-
     ensure_packages([
         'python3-pymysql',
         'python3-mailman-hyperkitty',
@@ -159,5 +159,16 @@ class mailman3::listserve (
             mode    => '0555',
             require => File["/var/lib/mailman3/templates/domains/${host}/en"],
         }
+    }
+
+    ferm::service { 'mailman-smtp':
+        ensure => stdlib::ensure($allow_incoming_mail),
+        proto  => 'tcp',
+        port   => '25',
+    }
+
+    ferm::rule { 'mailman-spamd-local':
+        ensure => absent, # This is no longer needed, so removing the rule for cleanup.
+        rule   => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }',
     }
 }

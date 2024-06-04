@@ -31,7 +31,8 @@ class profile::lists (
     Hash[String, String] $renamed_lists       = lookup('profile::lists::renamed_lists'),
     # Conditions to deny access to the lists web interface. Found in the private repository if needed.
     Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []}),
-    Array[String] $security_cfgs              = lookup('profile::lists::security_cfgs', {'default_value' => []})
+    Array[String] $security_cfgs              = lookup('profile::lists::security_cfgs', {'default_value' => []}),
+    Boolean $allow_incoming_mail              = lookup('profile::lists::allow_incoming_mail', { 'default_value' => true }),
 ){
     include network::constants
     include privateexim::listserve
@@ -41,23 +42,23 @@ class profile::lists (
     # Disable mailman service on the sandby host
     $mailman_service_ensure = stdlib::ensure($is_primary)
 
-    class { '::mailman3':
-        host            => $lists_servername,
-        db_host         => $db_host,
-        db_name         => $db_name,
-        db_user         => $db_user,
-        db_password     => $db_password,
-        webdb_name      => $webdb_name,
-        webdb_user      => $webdb_user,
-        webdb_password  => $webdb_password,
-        api_password    => $api_password,
-        archiver_key    => $archiver_key,
-        uwsgi_processes => $uwsgi_processes,
-        web_secret      => $web_secret,
-        memcached       => $memcached,
-        service_ensure  => $mailman_service_ensure,
+    class { 'mailman3':
+        host                => $lists_servername,
+        db_host             => $db_host,
+        db_name             => $db_name,
+        db_user             => $db_user,
+        db_password         => $db_password,
+        webdb_name          => $webdb_name,
+        webdb_user          => $webdb_user,
+        webdb_password      => $webdb_password,
+        api_password        => $api_password,
+        archiver_key        => $archiver_key,
+        uwsgi_processes     => $uwsgi_processes,
+        web_secret          => $web_secret,
+        memcached           => $memcached,
+        service_ensure      => $mailman_service_ensure,
+        allow_incoming_mail => $is_primary and $allow_incoming_mail,
     }
-
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     class { 'httpd':
         modules => [
@@ -191,7 +192,6 @@ class profile::lists (
         lists_servername => $lists_servername,
         ensure           => $mailman_service_ensure,
     }
-    class { 'profile::lists::ferm': }
 
     class { 'profile::lists::automation':
         ensure => $mailman_service_ensure,
