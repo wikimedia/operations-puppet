@@ -10,3 +10,6 @@ profile::mediawiki::apc_shm_size: 128M
 profile::contacts::role_contacts: ["Data Platform"]
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
