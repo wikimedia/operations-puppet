@@ -3,8 +3,8 @@
 Description=HAProxy Load Balancer
 Documentation=man:haproxy(1)
 Documentation=file:/usr/share/doc/haproxy/configuration.txt.gz
-After=network.target syslog.service
-Wants=syslog.service
+After=network-online.target syslog.service
+Wants=network-online.target syslog.service
 
 [Service]
 Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
