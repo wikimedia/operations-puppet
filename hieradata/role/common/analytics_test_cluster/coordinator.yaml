@@ -210,3 +210,5 @@ acmechief_host: acmechief2002.codfw.wmnet
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
 profile::hadoop::spark3::spark_yarn_history_address: spark-history-test.svc.eqiad.wmnet:30443
+
+mariadb::package: wmf-mariadb106
