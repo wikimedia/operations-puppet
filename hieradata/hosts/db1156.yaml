@@ -2,3 +2,4 @@
 # sanitarium master for s2
 mariadb::shard: 's2'
 mariadb::package: 'wmf-mariadb106'
+profile::monitoring::notifications_enabled: false
