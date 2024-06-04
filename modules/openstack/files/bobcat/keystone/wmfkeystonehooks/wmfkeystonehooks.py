@@ -217,7 +217,7 @@ class KeystoneHooks(notifier.Driver):
             password=CONF.wmfhooks.admin_pass,
             user_domain_name='Default',
             project_domain_name='Default',
-            project_name=project_id)
+            project_id=project_id)
         session = keystone_session.Session(auth=auth)
         client = neutron_client.Client(session=session, connect_retries=5)
         allgroups = client.list_security_groups(project_id=project_id)['security_groups']
