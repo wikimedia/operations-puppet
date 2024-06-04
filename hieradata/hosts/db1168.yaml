@@ -1,4 +1,2 @@
 # db1168
 mariadb::shard: 's6'
-mariadb::package: 'wmf-mariadb106'
-
