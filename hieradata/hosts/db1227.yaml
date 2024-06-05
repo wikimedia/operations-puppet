@@ -1,4 +1,2 @@
 # db1227
 mariadb::shard: 's7'
-mariadb::package: 'wmf-mariadb106'
-
