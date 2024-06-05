@@ -18,7 +18,7 @@ profile::microsites::peopleweb::rsync_src_host: 'people2003.codfw.wmnet'
 profile::microsites::peopleweb::rsync_dst_host: 'people1004.eqiad.wmnet'
 
 # send a warning email to users if their home dir becomes larger than this (bytes)
-profile::microsites::peopleweb::home_dir_limit: 1000000
+profile::microsites::peopleweb::home_dir_limit: 2147483648
 
 profile::idp::client::httpd::sites:
   "%{alias('profile::microsites::peopleweb::sitename')}":
