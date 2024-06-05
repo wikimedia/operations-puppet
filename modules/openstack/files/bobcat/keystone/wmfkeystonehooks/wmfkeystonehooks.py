@@ -100,7 +100,7 @@ class KeystoneHooks(notifier.Driver):
         self.page_editor = pageeditor.PageEditor()
 
     def _get_project_name_by_id(self, project_id):
-        return PROVIDERS.resource_api.get_project(project_id).name
+        return PROVIDERS.resource_api.get_project(project_id)["name"]
 
     def _get_role_dict(self):
         rolelist = PROVIDERS.role_api.list_roles()
