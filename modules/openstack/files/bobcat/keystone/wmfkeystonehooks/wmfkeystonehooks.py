@@ -99,6 +99,9 @@ class KeystoneHooks(notifier.Driver):
     def __init__(self, conf, topics, transport, version=1.0):
         self.page_editor = pageeditor.PageEditor()
 
+    def _get_project_name_by_id(project_id):
+        return PROVIDERS.resource_api.get_project(project_id).name
+
     def _get_role_dict(self):
         rolelist = PROVIDERS.role_api.list_roles()
         roledict = {}
@@ -147,8 +150,11 @@ class KeystoneHooks(notifier.Driver):
             roledict[CONF.wmfhooks.user_role_name])
 
     def _on_project_delete(self, project_id):
+        project_name = self._get_project_name_by_id(project_id)
+        LOG.warning("Beginning wmf hooks for project deletion: %s (%s)", project_id, project_name)
+
         ldapgroups.delete_ldap_project_group(project_id)
-        self.page_editor.edit_page("", project_id, True)
+        self.page_editor.edit_page("", project_name, True)
         # Fixme: Replace this cleanup when we have a version of Designate
         #  that supports an all-projects flag
         # designatemakedomain.deleteDomain(
@@ -159,18 +165,18 @@ class KeystoneHooks(notifier.Driver):
         #    all=True,
         #    region=CONF.wmfhooks.region)
 
-    def _create_project_page(self, project_id):
+    def _create_project_page(self, project_id, project_name):
         # Create wikitech project page
-        resource_name = project_id
         template_param_dict = {}
         template_param_dict['Resource Type'] = 'project'
-        template_param_dict['Project Name'] = project_id
+        template_param_dict['Project ID'] = project_id
+        template_param_dict['Project Name'] = project_name
 
         fields_string = ""
         for key in template_param_dict:
             fields_string += "\n|%s=%s" % (key, template_param_dict[key])
 
-        self.page_editor.edit_page(fields_string, resource_name, False,
+        self.page_editor.edit_page(fields_string, project_name, False,
                                    template='Nova Resource')
 
     @staticmethod
@@ -207,7 +213,8 @@ class KeystoneHooks(notifier.Driver):
         return newrule
 
     def _on_project_create(self, project_id):
-        LOG.warning("Beginning wmf hooks for project creation: %s" % project_id)
+        project_name = self._get_project_name_by_id(project_id)
+        LOG.warning("Beginning wmf hooks for project creation: %s (%s)", project_id, project_name)
 
         LOG.warning("Adding security groups to project %s" % project_id)
         # Use the neutron api to set up security groups for the new project
@@ -311,7 +318,7 @@ class KeystoneHooks(notifier.Driver):
         LOG.warning("Setting up default sudoers in ldap for project %s" % project_id)
         # Set up default sudoers in ldap
         ldapgroups.create_sudo_defaults(project_id)
-        self._create_project_page(project_id)
+        self._create_project_page(project_id, project_name)
 
         # This bit will take a while:
         if CONF.wmfhooks.region.endswith('-r'):
