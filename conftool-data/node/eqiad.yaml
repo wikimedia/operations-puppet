@@ -17,7 +17,6 @@ eqiad:
     mw1420.eqiad.wmnet: [nginx]
     mw1456.eqiad.wmnet: [nginx]
   api_appserver:
-    mw1358.eqiad.wmnet: [nginx]
     mw1359.eqiad.wmnet: [nginx]
     mw1398.eqiad.wmnet: [nginx]
     mw1400.eqiad.wmnet: [nginx]
@@ -381,7 +380,7 @@ eqiad:
     parse1022.eqiad.wmnet: [kubesvc]
     parse1023.eqiad.wmnet: [kubesvc]
     parse1024.eqiad.wmnet: [kubesvc]
-    # wikikube-worker1001.eqiad.wmnet: [kubesvc] - reserved for mw1358 pending idrac update
+    wikikube-worker1001.eqiad.wmnet: [kubesvc]
     wikikube-worker1002.eqiad.wmnet: [kubesvc]
     wikikube-worker1003.eqiad.wmnet: [kubesvc]
     wikikube-worker1004.eqiad.wmnet: [kubesvc]

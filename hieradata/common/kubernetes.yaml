@@ -292,7 +292,7 @@ kubernetes::clusters:
         - parse1022.eqiad.wmnet
         - parse1023.eqiad.wmnet
         - parse1024.eqiad.wmnet
-      # - wikikube-worker1001.eqiad.wmnet - reserved for mw1358 pending idrac update
+        - wikikube-worker1001.eqiad.wmnet
         - wikikube-worker1002.eqiad.wmnet
         - wikikube-worker1003.eqiad.wmnet
         - wikikube-worker1004.eqiad.wmnet
