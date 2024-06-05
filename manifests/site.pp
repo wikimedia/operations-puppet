@@ -2574,6 +2574,10 @@ node /^ping[12]003\.(eqiad|codfw)\./ {
     role(ping_offload)
 }
 
+node /^ping[12]004\.(eqiad|codfw)\./ {
+    role(ping_offload)
+}
+
 # virtual machines hosting https://wikitech.wikimedia.org/wiki/Planet.wikimedia.org
 node /^planet[12]003\.(eqiad|codfw)\./ {
     role(planet)
