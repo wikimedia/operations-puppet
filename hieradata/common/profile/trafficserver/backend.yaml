@@ -199,7 +199,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://puppetboard.discovery.wmnet
     - type: map
       target: http://pyrra.wikimedia.org
-      replacement: http://thanos-web.discovery.wmnet
+      replacement: https://thanos-web.discovery.wmnet
     - type: map
       target: http://query.wikidata.org/bigdata/ldf
       replacement: https://wdqs1015.eqiad.wmnet/bigdata/ldf
@@ -271,10 +271,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://slo.wikimedia.org
-      replacement: http://titan1001.eqiad.wmnet
+      replacement: https://thanos-web.discovery.wmnet
     - type: map
       target: http://slos.wikimedia.org
-      replacement: http://titan1001.eqiad.wmnet
+      replacement: https://thanos-web.discovery.wmnet
     - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
