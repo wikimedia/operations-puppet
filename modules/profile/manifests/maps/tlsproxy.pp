@@ -5,7 +5,7 @@ class profile::maps::tlsproxy(
 ){
     if $use_pki {
         $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-            hosts => ['maps.wikimedia.org', "kartotherian.svc.${::site}.wmnet"],
+            hosts => ['maps.wikimedia.org', "kartotherian.svc.${::site}.wmnet", 'kartotherian.discovery.wmnet'],
         })
 
         tlsproxy::localssl { $servicename:
