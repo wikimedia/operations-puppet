@@ -121,6 +121,8 @@ profile::idp::u2f_token_expiry_days: 3650
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'CAS Identity provider (staging setup)'
 
+profile::memcached::memcached_user: 'memcache'
+
 profile::java::hardened_tls: true
 profile::java::java_packages:
   - version: "17"
