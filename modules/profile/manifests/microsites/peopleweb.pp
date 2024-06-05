@@ -121,7 +121,7 @@ class profile::microsites::peopleweb (
 
     file { '/usr/local/bin/home_size_warning':
         content => file('profile/microsites/peopleweb/home_size_warning.sh'),
-        mode    => '0444',
+        mode    => '0544',
         owner   => 'root',
         group   => 'root',
     }
