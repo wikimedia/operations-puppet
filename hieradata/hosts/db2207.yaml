@@ -1,5 +1,5 @@
 # db2207
-profile::mariadb::mysql_role: 'master'
+# candidate master for s2
 mariadb::shard: 's2'
 mariadb::binlog_format: 'STATEMENT'
 
