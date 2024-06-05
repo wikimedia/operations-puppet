@@ -14,14 +14,12 @@ from gitlab.v4.objects import jobs as jobs_type, projects as projects_type
 from gitlab.base import RESTObject  # Required for typing
 
 import gitlab
-import requests
 
 JobsType = Union[jobs_type.ProjectJob, RESTObject]
 ProjectsType = Union[projects_type.Project, RESTObject]
 
-JSON_TRUSTED_PROEJCTS_LIST_PATH = (
-    "/repos/releng/gitlab-trusted-runner/-/raw/main/projects.json"
-)
+TRUSTED_PROJECT_ID = "339"
+TRUSTED_PROJECT_FILE = "projects.json"
 
 
 class GitlabPackagePuller:
@@ -90,15 +88,16 @@ class GitlabPackagePuller:
     def get_project_ids_from_trusted_list(self) -> list[int]:
         """Downloads the trusted projects json file from gitlab and fetches project IDs that are
         allowed run on trusted runners"""
-        url = f"https://{self.gitlab_host}{JSON_TRUSTED_PROEJCTS_LIST_PATH}"
-        logging.debug(
-            "Downloading JSON trusted projects lists from %s",
-            url,
-        )
-        response = requests.get(url, timeout=5)
-        response.raise_for_status()
 
-        json_content = json.loads(response.content)
+        logging.debug(
+            "Downloading JSON trusted projects lists from project id %s file %s",
+            TRUSTED_PROJECT_ID, TRUSTED_PROJECT_FILE
+        )
+
+        trusted_project = self.client.projects.get(TRUSTED_PROJECT_ID)
+        response = trusted_project.files.raw(file_path=TRUSTED_PROJECT_FILE, ref="main")
+        json_content = json.loads(response)
+
         keys = json_content.keys()
         logging.debug(
             "Found %d trusted project IDs from trusted project list", len(keys)
@@ -110,7 +109,9 @@ class GitlabPackagePuller:
         """Fetches packages for each project given as a parameter to the class"""
         for project_id in self.project_ids:
             project = self.client.projects.get(project_id)
-            jobs = project.jobs.list()
+            # get the last 20 jobs only because this script runs every 5 minutes
+            # default when get_all=False is used
+            jobs = project.jobs.list(get_all=False)
             logging.info("Found %d jobs for project %s", len(jobs), project.name)
 
             for job in jobs:
