@@ -29,7 +29,7 @@ class profile::webperf::processors(
     # This is configured by the value of the hiera param
     # profile::cache::kafka::statsv::kafka_cluster_name when the statsv varnishkafka
     # profile is included (as of this writing on text caches).
-    $kafka_main_config = kafka_config('main')
+    $kafka_main_config = kafka_config("main-${::site}")
     $kafka_main_brokers = $kafka_main_config['brokers']['ssl_string']
 
     $kafka_ssl_cafile = profile::base::certificates::get_trusted_ca_path()
@@ -49,7 +49,7 @@ class profile::webperf::processors(
     # EventLogging is on the jumbo kafka. Unlike the main one, this
     # is not yet mirrored to other data centers, so for prod,
     # assume eqiad.
-    $kafka_config  = kafka_config('jumbo', 'eqiad')
+    $kafka_config  = kafka_config('jumbo-eqiad')
     $kafka_brokers = $kafka_config['brokers']['ssl_string']
 
     # Aggregate client-side latency measurements collected via the
