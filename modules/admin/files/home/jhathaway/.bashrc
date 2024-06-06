@@ -533,10 +533,10 @@ alias v='view'
 # ipcalc-ng has IPv6 support
 alias ipcalc='ipcalc-ng'
 function noop {
-	{ sudo puppet agent -t --noop "$@"; } 2>&1 | tee puppet-noop.out
+	{ sudo puppet agent -t --noop "$@"; } 2>&1 | tee ~/puppet-noop.out
 }
 function apply {
-	{ sudo puppet agent -t "$@"; } 2>&1 | tee puppet-apply.out
+	{ sudo puppet agent -t "$@"; } 2>&1 | tee ~/puppet-apply.out
 }
 function noopply {
 	noop "$@"
