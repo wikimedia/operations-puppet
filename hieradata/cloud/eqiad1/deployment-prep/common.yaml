@@ -662,7 +662,10 @@ mediawiki::sites:
           variant_aliases: []
       - name: wikivoyage
         params:
-          server_aliases: ["*.wikivoyage.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikivoyage.beta.wmflabs.org",
+            "*.wikivoyage.beta.wmcloud.org"
+          ]
           variant_aliases:
             [
               "zh",
