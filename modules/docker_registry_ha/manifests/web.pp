@@ -115,6 +115,16 @@ class docker_registry_ha::web (
         require => Package['nginx-common'],
     }
 
+    file { '/etc/nginx/nginx.conf':
+        ensure  => present,
+        source  => 'puppet:///modules/docker/nginx.conf',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
+    }
+
     # Create a separate cache and socket location for internal auth_request
     # subrequests (see templates/registry.nginx.conf.erb)
     $nginx_auth_cache_dir = '/var/cache/nginx-auth'
