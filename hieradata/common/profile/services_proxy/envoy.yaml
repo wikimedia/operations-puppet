@@ -271,6 +271,11 @@ profile::services_proxy::envoy::listeners:
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
+  - name: inference-staging
+    port: 6205
+    service: inference-staging
+    timeout: "60s"
+    upstream: inference-staging.svc.codfw.wmnet
   # Other services, mostly used by restbase
   - name: parsoid-async # Parsoid-php for long-lasting async requests.
     port: 6502
