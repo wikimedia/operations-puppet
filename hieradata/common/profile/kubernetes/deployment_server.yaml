@@ -190,14 +190,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: toolhub
         - name: toolhub-deploy
-    datahub:
-      usernames:
-        - name: datahub
-        - name: datahub-deploy
-    datahub-next:
-      usernames:
-        - name: datahub-next
-        - name: datahub-next-deploy
     developer-portal:
       usernames:
         - name: developer-portal
