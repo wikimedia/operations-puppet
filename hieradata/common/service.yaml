@@ -1137,6 +1137,9 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+    discovery:
+      - dnsdisc: logstash
+        active_active: false
     role: "opensearch::collector"
     public_endpoint: "logstash"
 
