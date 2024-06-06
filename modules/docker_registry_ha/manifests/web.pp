@@ -117,7 +117,7 @@ class docker_registry_ha::web (
 
     file { '/etc/nginx/nginx.conf':
         ensure  => present,
-        source  => 'puppet:///modules/docker/nginx.conf',
+        source  => 'puppet:///modules/docker_registry_ha/nginx.conf',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
