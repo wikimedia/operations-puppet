@@ -1,3 +1,6 @@
 # Cassandra rack equivalencies are: A_D, B_E & C_F
 profile::cassandra::rack: 'B_E'
 profile::cassandra::auto_apply_grants: true
+profile::java::java_packages:
+  - version: '11'
+    variant: 'jdk'
