@@ -28,7 +28,14 @@ class profile::webperf::site (
     String $excimer_mysql_password                 = lookup('profile::webperf::site::excimer_mysql_password'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
-    ensure_packages(['libapache2-mod-php7.4', 'php7.4-mysql', 'mariadb-client'])
+    ensure_packages(['libapache2-mod-php', 'php-mysql', 'mariadb-client'])
+
+    $php_version = wmflib::debian_php_version()
+
+    class { '::httpd':
+        modules   => ["php${php_version}", 'rewrite', 'proxy', 'proxy_http', 'remoteip', 'headers', 'ssl'],
+        http_only => true,
+    }
 
     file { '/srv/org':
         ensure => directory,
@@ -91,7 +98,7 @@ class profile::webperf::site (
         require   => File['/etc/excimer-ui-server']
     }
 
-    file { '/etc/php/7.4/apache2/conf.d/50-webperf.ini':
+    file { "/etc/php/${php_version}/apache2/conf.d/50-webperf.ini":
         ensure  => file,
         content => wmflib::php_ini({
             # XHGui requires more than the default 128M
