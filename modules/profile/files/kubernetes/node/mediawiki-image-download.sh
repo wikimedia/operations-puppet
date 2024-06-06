@@ -18,7 +18,7 @@ IMAGE="$IMAGE_BASE_NAME:$1"
 PULL_THRESHOLD="99/100"  # This is a percentage
 # Make it useful for a quick comparison to $RANDOM
 ABSOLUTE_THRESHOLD=$(( 32767 * ${PULL_THRESHOLD}))
-if [ $RANDOM -ge $ABSOLUTE_THRESHOLD ]; then
+if [ $RANDOM -le $ABSOLUTE_THRESHOLD ]; then
     echo "Pulling '$IMAGE'..."
     docker --config /var/lib/kubelet pull "$IMAGE"
     echo "Removing all mediawiki images but the last ${IMAGES_TO_KEEP}"
