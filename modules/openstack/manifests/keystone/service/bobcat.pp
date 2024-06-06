@@ -127,4 +127,17 @@ class openstack::keystone::service::bobcat(
             notify    => Service[$wsgi_server],
             require   => Package['keystone'];
     }
+
+    # Map toolsbeta service users to keystone users in the 'toolsbeta' domain
+    #  part of T358496
+    file {'/etc/keystone/domains/keystone.toolsbeta.conf':
+            ensure    => 'present',
+            owner     => 'keystone',
+            group     => 'keystone',
+            mode      => '0444',
+            show_diff => false,
+            content   => template('openstack/bobcat/keystone/keystone.toolsbeta.conf.erb'),
+            notify    => Service[$wsgi_server],
+            require   => Package['keystone'];
+    }
 }
