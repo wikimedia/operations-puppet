@@ -180,11 +180,10 @@ class profile::lists (
 
     if $primary_host and $standby_hosts != [] {
         rsync::quickdatacopy { 'var-lib-mailman3':
-            source_host         => $primary_host,
-            dest_host           => $standby_hosts,
-            auto_sync           => false,
-            module_path         => '/var/lib/mailman3',
-            server_uses_stunnel => true,
+            source_host => $primary_host,
+            dest_host   => $standby_hosts,
+            auto_sync   => false,
+            module_path => '/var/lib/mailman3',
         }
     }
 
