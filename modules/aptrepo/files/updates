@@ -433,3 +433,11 @@ Flat: thirdparty/kubeadm-k8s-1-24
 Architectures: amd64
 VerifyRelease: 234654DA9A296436
 ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
+
+Name: thirdparty/tofu
+Method: https://packages.opentofu.org/opentofu/tofu/any/
+Suite: any
+Components: main>thirdparty/tofu
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 70DF59811A8B9109
