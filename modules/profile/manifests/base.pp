@@ -6,7 +6,6 @@
 # @param enable_contacts use the contacts module
 # @param core_dump_pattern the core dump pattern
 # @param unprivileged_userns_clone enable kernel.unprivileged_userns_clone
-# @param use_linux510_on_buster whether to setup kernel 5.10 on buster hosts
 # @param additional_purged_packages A list of additional packages to purge
 # @param manage_resolvconf set this to false to disable managing resolv.conf
 #   useful in container environments
@@ -23,7 +22,6 @@ class profile::base (
     Boolean                             $enable_contacts                    = lookup('profile::base::enable_contacts'),
     String                              $core_dump_pattern                  = lookup('profile::base::core_dump_pattern'),
     Boolean                             $unprivileged_userns_clone          = lookup('profile::base::unprivileged_userns_clone'),
-    Boolean                             $use_linux510_on_buster             = lookup('profile::base::use_linux510_on_buster', {'default_value' => false}),
     Boolean                             $remove_python2_on_bullseye         = lookup('profile::base::remove_python2_on_bullseye', {'default_value' => true}),
     Boolean                             $manage_resolvconf                  = lookup('profile::base::manage_resolvconf', {'default_value' => true}),
     Array[String[1]]                    $additional_purged_packages         = lookup('profile::base::additional_purged_packages'),
@@ -57,10 +55,6 @@ class profile::base (
     }
     unless $facts['wmflib']['is_container']  {
         class { 'grub::defaults': }
-    }
-
-    if $use_linux510_on_buster {
-        include profile::base::linux510
     }
 
     include passwords::root
