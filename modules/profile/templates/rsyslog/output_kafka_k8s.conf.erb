@@ -1,0 +1,25 @@
+<%# SPDX-License-Identifier: Apache-2.0 %>
+
+if ( $programname contains 'input-file-kubernetes' ) or
+    ( $.log_outputs contains "kafka-k8s" ) then {
+    action(type="mmjsonparse" name="mmjsonparse_kafka_k8s")
+
+    action(type="omkafka"
+           name="omkafka_k8s"
+           broker=<%= @kafka_brokers.to_json %>
+           topic="<%= @log_topic_name %>"
+           partitions.auto="on"
+           template="syslog_cee"
+           queue.type="LinkedList" queue.size="10000" queue.filename="output_kafka_k8s"
+           queue.highWatermark="7000" queue.lowWatermark="6000"
+           queue.checkpointInterval="5"
+           queue.maxDiskSpace="40960000"
+           confParam=[ "security.protocol=ssl",
+                       "ssl.ca.location=<%= @trusted_ca_path %>",
+                       "compression.codec=snappy",
+                       "socket.timeout.ms=10000",
+                       "socket.keepalive.enable=true",
+                       "queue.buffering.max.ms=50",
+                       "batch.num.messages=1000" ]
+    )
+}
