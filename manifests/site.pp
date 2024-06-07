@@ -885,7 +885,7 @@ node /^db2201\.codfw\./ {
 }
 ## test-s1, bullseye
 node /^db2102\.codfw\./ {
-    role(mariadb::core_test)
+    role(insetup::data_persistence)
 }
 ## test-s1, bookworm, 10.6
 node /^db2202\.codfw\./ {
