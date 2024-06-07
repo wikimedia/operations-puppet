@@ -253,6 +253,10 @@ monitoring_hosts: []
 
 # We do not have support for LVS systems in Cloud VPS
 has_lvs: false
+profile::lvs::realserver::ipip::enabled: false
+profile::lvs::realserver::ipip::interfaces:
+  - lo
+
 service::catalog: {}
 
 # WMCS clusters are squashed into 'misc'
