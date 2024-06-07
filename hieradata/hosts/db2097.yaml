@@ -1,7 +1,0 @@
-# db2097
-# Buffer pool sizes/instance enabled
-profile::mariadb::dbstore_multiinstance::instances:
-  s2: 165G
-  s6: 165G
-  x1: 80G
-mariadb::package: 'wmf-mariadb106'
