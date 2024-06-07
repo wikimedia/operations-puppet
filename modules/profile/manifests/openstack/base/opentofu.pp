@@ -29,12 +29,16 @@ class profile::openstack::base::opentofu (
     do_script              => false,
   }
 
-  file { '/root/.config/.tofurc':
+  file { '/root/.tofurc':
     ensure => file,
     source => 'puppet:///modules/profile/openstack/base/opentofu/tofurc',
     owner  => 'root',
     group  => 'root',
     mode   => '0550',
+  }
+
+  file { '/root/.config/.tofurc':
+    ensure => absent,
   }
 
   file { '/usr/local/bin/tofu':
