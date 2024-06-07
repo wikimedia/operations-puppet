@@ -12,10 +12,7 @@
 # maintainer: dzahn
 # phabricator-tag: VPS-project-Wikistats
 class role::wikistats::instance {
-
-    system::role { 'wikistats': description => 'wikistats instance' }
-
-    require ::profile::wikistats
-    require ::profile::wikistats::db
-    require ::profile::wikistats::httpd
+    require profile::wikistats
+    require profile::wikistats::db
+    require profile::wikistats::httpd
 }

@@ -9,11 +9,5 @@
 # MariaDB instead of MySQL and the httpd instead of the apache module.
 #
 class role::simplelamp2 {
-
-    system::role { 'simplelamp2':
-        ensure      => 'present',
-        description => 'httpd, memcached, PHP, mariadb',
-    }
-
-    include ::profile::simplelamp2
+    include profile::simplelamp2
 }
