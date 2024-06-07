@@ -266,6 +266,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: data-gateway
         - name: data-gateway-deploy
+    ratelimit:
+      usernames:
+        - name: ratelimit
+        - name: ratelimit-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
