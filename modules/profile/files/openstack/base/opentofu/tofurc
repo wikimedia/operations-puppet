@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+provider_installation {
+  filesystem_mirror {
+    path    = "/srv/tofu-infra/vendor-providers"
+    include = ["*"]
+  }
+}

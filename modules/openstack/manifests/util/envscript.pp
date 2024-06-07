@@ -14,6 +14,7 @@ define openstack::util::envscript(
     Optional[String]           $os_project_domain_id   = undef,
     Optional[String]           $os_user_domain_id      = undef,
     Optional[String]           $os_system_scope        = undef,
+    Boolean                    $do_script              = true,
   ) {
     if $clouds_files {
         $clouds_files.each |$clouds_file| {
@@ -24,22 +25,24 @@ define openstack::util::envscript(
         }
     }
 
-    file { "/etc/${title}.yaml":
-        content => template('openstack/util/envscript.yaml.erb'),
-        mode    => $yaml_mode,
-        owner   => 'root',
-        group   => 'root',
-    }
+    if $do_script {
+        file { "/etc/${title}.yaml":
+            content => template('openstack/util/envscript.yaml.erb'),
+            mode    => $yaml_mode,
+            owner   => 'root',
+            group   => 'root',
+        }
 
-    $script = $scriptpath ? {
-        undef   => "/usr/local/bin/${title}.sh",
-        default => $scriptpath,
-    }
+        $script = $scriptpath ? {
+            undef   => "/usr/local/bin/${title}.sh",
+            default => $scriptpath,
+        }
 
-    file { $script:
-        content => template('openstack/util/envscript.sh.erb'),
-        mode    => '0555',
-        owner   => 'root',
-        group   => 'root',
+        file { $script:
+            content => template('openstack/util/envscript.sh.erb'),
+            mode    => '0555',
+            owner   => 'root',
+            group   => 'root',
+        }
     }
 }
