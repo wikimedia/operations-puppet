@@ -18,3 +18,6 @@
 <% end -%>
     region_name: <%= @region %>
     identity_api_version: 3
+<% if @keystone_api_interface != 'public' -%>
+    interface: <%= @keystone_api_interface %>
+<% end -%>
