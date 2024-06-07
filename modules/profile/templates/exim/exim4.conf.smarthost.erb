@@ -19,7 +19,7 @@ domainlist system_hostname = @
 # The <; at the beginning tells exim to use ';' as the delimiter instead of the default ':' (which interferes with ipv6)
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('relay_from_hosts').join(" ; ") %>
 
-domainlist dkim_domains = <%= @dkim_domains.keys.join(' : ') %>
+domainlist dkim_domains = <%= @dkim_domains.values.map { |config| config['domain'] }.join(' : ') %>
 
 # Administration
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
