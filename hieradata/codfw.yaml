@@ -40,7 +40,7 @@ mediabackup:
           host: db2139.codfw.wmnet
           port: 3313
       s4:
-          host: db2099.codfw.wmnet
+          host: db2199.codfw.wmnet
           port: 3314
       s5:
           host: db2201.codfw.wmnet

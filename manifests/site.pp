@@ -863,9 +863,9 @@ node /^db2097\.codfw\./ {
 node /^db2098\.codfw\./ {
     role(insetup::data_persistence)
 }
-## s4, bullseye, to be decommed
+## to be decommed
 node /^db2099\.codfw\./ {
-    role(mariadb::backup_source)
+    role(insetup::data_persistence)
 }
 ## s3 & s4, bullseye, 10.6
 node /^db2139\.codfw\./ {
