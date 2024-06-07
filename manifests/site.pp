@@ -855,18 +855,6 @@ node /^db1245\.eqiad\./ {
 }
 
 # codfw backup sources
-## to be decommed
-node /^db2097\.codfw\./ {
-    role(insetup::data_persistence)
-}
-## to be decommed
-node /^db2098\.codfw\./ {
-    role(insetup::data_persistence)
-}
-## to be decommed
-node /^db2099\.codfw\./ {
-    role(insetup::data_persistence)
-}
 ## s3 & s4, bullseye, 10.6
 node /^db2139\.codfw\./ {
     role(mariadb::backup_source)
