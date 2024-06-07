@@ -417,6 +417,8 @@ class profile::toolforge::prometheus (
             pod_name  => 'envvars-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 9000,
         },
+        # This is for Toolforge infrastructure only. Do not add any
+        # user workloads here.
     ].map |Hash $job| {
         $result = {
             'job_name'              => $job['name'],
