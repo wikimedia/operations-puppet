@@ -84,7 +84,7 @@ acl_check_rcpt:
 
 	warn hosts          = +relay_from_hosts
 	     sender_domains = !+dkim_domains
-	     message        = Mail sent from Cloud VPS using non-supported domain $sender_address_domain
+	     log_message    = Mail sent from Cloud VPS using non-supported domain $sender_address_domain
 
 	# Accept relaying from hosts (and networks) permitted to use this smarthost
 	accept hosts = +relay_from_hosts
