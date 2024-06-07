@@ -1,4 +1,3 @@
 # db1152
 mariadb::shard: 'x2'
 profile::mariadb::mysql_role: 'master'
-mariadb::package: 'wmf-mariadb106'
