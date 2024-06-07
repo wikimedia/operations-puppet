@@ -25,6 +25,8 @@ class profile::openstack::base::opentofu (
     os_user                => $admin_username,
     os_password            => $admin_password,
     os_project             => 'admin',
+    os_user_domain_id      => 'default',
+    os_project_domain_id   => 'default',
     clouds_files           => [$clouds_file],
     do_script              => false,
   }
@@ -56,7 +58,7 @@ class profile::openstack::base::opentofu (
     'AWS_ACCESS_KEY_ID'     => $s3_access_key,
     'AWS_SECRET_ACCESS_KEY' => $s3_secret_key,
     # openstack related
-    'OS_CLOUD'              => $clouds_file,
+    'OS_CLOUD'              => 'tofu',
     'OS_REGION_NAME'        => $region,
   }
 
