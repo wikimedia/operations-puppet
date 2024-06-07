@@ -127,7 +127,7 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Development & test storage service'
 
 profile::java::java_packages:
-  - version: '8'
+  - version: '11'
     variant: 'jdk'
 
 profile::puppet::agent::force_puppet7: true
