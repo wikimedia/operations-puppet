@@ -16,8 +16,4 @@ class role::kubernetes::staging::master_stacked {
     include profile::calico::kubernetes
     # Kubernetes staging masters are LVS backend servers
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::staging::master_stacked':
-        description => 'Kubernetes master server (staging setup) with etcd',
-    }
 }

@@ -11,8 +11,4 @@ class role::kubernetes::master {
 
     # Kubernetes masters are LVS backend servers
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::master':
-        description => 'Kubernetes master server',
-    }
 }

@@ -12,8 +12,4 @@ class role::kubernetes::staging::worker {
     include profile::calico::kubernetes
     # Setup LVS
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::staging::worker':
-        description => 'Kubernetes worker node (staging setup)',
-    }
 }

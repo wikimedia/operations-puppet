@@ -14,8 +14,4 @@ class role::kubernetes::worker {
     include profile::calico::kubernetes
     # Setup LVS
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::worker':
-        description => 'Kubernetes worker node',
-    }
 }

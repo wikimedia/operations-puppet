@@ -9,6 +9,7 @@ profile::lvs::realserver::pools:
       - "kube-apiserver"
 
 profile::contacts::role_contacts: ['ServiceOps']
+profile::base::production::role_description: 'Kubernetes master server with etcd'
 
 # Configuration to add the Kubelet to Master nodes for limited use cases
 # (like running bird for Calico, see T285927)

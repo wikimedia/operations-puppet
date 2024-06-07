@@ -16,8 +16,4 @@ class role::kubernetes::master_stacked {
     include profile::calico::kubernetes
     # Kubernetes masters are LVS backend servers
     include profile::lvs::realserver
-
-    system::role { 'kubernetes::master_stacked':
-        description => 'Kubernetes master server with etcd',
-    }
 }
