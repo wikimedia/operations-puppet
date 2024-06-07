@@ -19,6 +19,8 @@ domainlist system_hostname = @
 # The <; at the beginning tells exim to use ';' as the delimiter instead of the default ':' (which interferes with ipv6)
 hostlist relay_from_hosts = <; @[] ; 127.0.0.1 ; ::1 ; <%= scope.lookupvar('relay_from_hosts').join(" ; ") %>
 
+domainlist dkim_domains = <%= @dkim_domains.keys.join(' : ') %>
+
 # Administration
 log_selector = +address_rewrite +all_parents +delivery_size +deliver_time +incoming_interface +incoming_port +smtp_confirmation +smtp_protocol_error +smtp_syntax_error +tls_cipher +tls_peerdn
 message_logs = false
@@ -79,6 +81,10 @@ acl_check_rcpt:
 
 	# Deny if the local part contains @, %, /, | or !, or starts with a dot
 	deny local_parts = ^.*[@%!/|] : ^\\.
+
+	warn hosts          = +relay_from_hosts
+	     sender_domains = !+dkim_domains
+	     message        = Mail sent from Cloud VPS using non-supported domain $sender_address_domain
 
 	# Accept relaying from hosts (and networks) permitted to use this smarthost
 	accept hosts = +relay_from_hosts
