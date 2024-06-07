@@ -841,7 +841,7 @@ node /^db1216\.eqiad\./ {
 node /^db1225\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s1 & s2, bullseye
+## s1 & s2, 10.6, bullseye
 node /^db1239\.eqiad\./ {
     role(mariadb::backup_source)
 }
