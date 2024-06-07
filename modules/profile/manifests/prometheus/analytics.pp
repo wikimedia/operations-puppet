@@ -313,24 +313,6 @@ class profile::prometheus::analytics (
         }
     }
 
-    # Temporary monitoring for T366144
-    $wmde_tewu_scraper_jobs = [
-      {
-        'job_name'        => 'wmde_tewu_scraper',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => ["${targets_path}/wmde_tewu_scraper.yaml"] },
-        ]
-      },
-    ]
-
-    file { "${targets_path}/wmde_tewu_scraper.yaml":
-        ensure  => present,
-        content => to_yaml([
-          { 'targets' => [ 'stat1009.eqiad.wmnet:9568' ] }
-        ]),
-    }
-
     $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
         true    => '2h',
         default => '24h',
@@ -342,7 +324,7 @@ class profile::prometheus::analytics (
         max_chunks_to_persist => $max_chunks_to_persist,
         memory_chunks         => $memory_chunks,
         global_config_extra   => $config_extra,
-        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs, $wmde_tewu_scraper_jobs].flatten,
+        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs].flatten,
         min_block_duration    => '2h',
         max_block_duration    => $max_block_duration,
         alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
