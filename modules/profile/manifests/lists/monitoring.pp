@@ -2,6 +2,7 @@
 class profile::lists::monitoring (
     Stdlib::Fqdn $lists_servername = lookup('mailman::lists_servername'),
     Wmflib::Ensure $ensure         = lookup('mailman::include_monitoring', default_value => 'absent'),
+    Stdlib::Unixpath $mailman_root = lookup('profile::lists::mailman_root', default_value => '/var/lib/mailman3')
 ) {
     monitoring::service { 'smtp':
         ensure        => $ensure,
@@ -57,13 +58,13 @@ class profile::lists::monitoring (
         nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
-    prometheus::node_file_count {'track mailman3 queue depths':
+    prometheus::node_file_count { 'track mailman3 queue depths':
         ensure  => $ensure,
         paths   => [
-            '/var/lib/mailman3/queue/in',
-            '/var/lib/mailman3/queue/bounces',
-            '/var/lib/mailman3/queue/virgin',
-            '/var/lib/mailman3/queue/out',
+            "${$mailman_root}/queue/in",
+            "${$mailman_root}/queue/bounces",
+            "${$mailman_root}/queue/virgin",
+            "${$mailman_root}/queue/out",
         ],
         outfile => '/var/lib/prometheus/node.d/mailman3_queues.prom'
     }

@@ -23,9 +23,15 @@ import argparse
 from pathlib import Path
 import sys
 import traceback
+import wmflib.config
 
 # Queues to monitor
 QUEUES = ["bounces", "in", "virgin"]
+
+
+def get_root_dir() -> Path:
+    cfg = wmflib.config.load_ini_config("/etc/mailman3/mailman.cfg")
+    return Path(cfg["paths.debian"]["var_dir"])
 
 
 def parse_args():
@@ -42,7 +48,7 @@ def parse_args():
 def main() -> int:
     args = parse_args()
     if args.mailman3:
-        mailman_base = Path("/var/lib/mailman3/queue")
+        mailman_base = get_root_dir() / "queue"
     else:
         mailman_base = Path("/var/lib/mailman/qfiles")
     critical_queues = []

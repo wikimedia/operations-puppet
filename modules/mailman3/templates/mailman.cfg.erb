@@ -120,7 +120,7 @@ history_file:
 #
 # This is the root of the directory structure that Mailman will use to store
 # its run-time data.
-var_dir: /var/lib/mailman3
+var_dir: <%= @mailman_root %>
 # This is where the Mailman queue files directories will be created.
 queue_dir: $var_dir/queue
 # This is the directory containing the Mailman 'runner' and 'master' commands

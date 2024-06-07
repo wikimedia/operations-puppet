@@ -33,7 +33,8 @@ class profile::lists (
     Array[String] $web_deny_conditions        = lookup('profile::lists::web_deny_conditions', {'default_value' => []}),
     Array[String] $security_cfgs              = lookup('profile::lists::security_cfgs', {'default_value' => []}),
     Boolean $allow_incoming_mail              = lookup('profile::lists::allow_incoming_mail', { 'default_value' => true }),
-){
+    Stdlib::Unixpath $mailman_root            = lookup('profile::lists::mailman_root', { 'default_value' => '/var/lib/mailman3' }),
+) {
     include network::constants
     include privateexim::listserve
 
@@ -41,6 +42,13 @@ class profile::lists (
 
     # Disable mailman service on the sandby host
     $mailman_service_ensure = stdlib::ensure($is_primary)
+
+    file { 'mailman-root':
+        ensure => directory,
+        path   => $mailman_root,
+        owner  => 'list',
+        group  => 'list',
+    }
 
     class { 'mailman3':
         host                => $lists_servername,
@@ -80,6 +88,7 @@ class profile::lists (
       ssl_settings        => $ssl_settings,
       web_deny_conditions => $web_deny_conditions,
       security_cfgs       => $security_cfgs,
+      mailman_root        => $mailman_root,
     }
     httpd::site { $lists_servername:
         content => epp('profile/lists/apache.conf.epp', $apache_conf),
@@ -231,6 +240,7 @@ class profile::lists (
     class { 'profile::lists::monitoring':
         lists_servername => $lists_servername,
         ensure           => $mailman_service_ensure,
+        mailman_root     => $mailman_root,
     }
 
     class { 'profile::lists::automation':

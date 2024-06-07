@@ -28,6 +28,7 @@ import tempfile
 
 import requests
 import sys
+import wmflib.config
 
 from pathlib import Path
 from typing import Optional
@@ -39,6 +40,11 @@ RE_WHITESPACE = re.compile(r"\s")
 
 
 session = requests.session()
+
+
+def get_root_dir() -> Path:
+    cfg = wmflib.config.load_ini_config("/etc/mailman3/mailman.cfg")
+    return Path(cfg["paths.debian"]["var_dir"])
 
 
 def parse_args():
@@ -101,7 +107,7 @@ def handle_email(listname: str, path: Path) -> (str, str, str):
 
 
 def rebuild_dbm():
-    folder = Path("/var/lib/mailman3/redirects/")
+    folder = get_root_dir() / "redirects/"
     tmp = folder / "redirects.dbm.new"
     dbm = folder / "redirects.dbm"
     # Grab all the *.txt files to turn into one dbm
@@ -122,14 +128,15 @@ def main() -> int:
         rebuild_dbm()
         return 0
     listname = args.listname
+    mailman3_root_dir = get_root_dir()
     public = Path(f"/var/lib/mailman/archives/public/{listname}")
     if not public.exists():
         print(f"List {listname} has no public archives, skipping.")
         return 0
-    if not Path(f"/var/lib/mailman3/lists/{listname}.{DOMAIN}").exists():
+    if not (mailman3_root_dir / "lists" / f"{listname}.{DOMAIN}").exists():
         print(f"List {listname} doesn't exist in Mailman3 yet.")
         return 1
-    txt = Path(f"/var/lib/mailman3/redirects/{listname}.txt")
+    txt = mailman3_root_dir / "redirects" / f"{listname}.txt"
     if txt.exists():
         print(f"{txt} already exists, overwriting.")
         txt.unlink()

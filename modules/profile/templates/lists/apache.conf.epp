@@ -5,6 +5,7 @@
       Array[String]        $ssl_settings,
       Array[String]        $web_deny_conditions,
       Array[String]        $security_cfgs,
+      Stdlib::Unixpath     $mailman_root,
 | -%>
 <VirtualHost *:80>
     ServerAdmin noc@wikimedia.org
@@ -47,9 +48,9 @@
       <%- } -%>
     <%- } -%>
     Header set Content-Security-Policy "default-src 'self'; connect-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' https://upload.wikimedia.org"
-    Alias /mailman3/favicon.ico /var/lib/mailman3/web/static/postorius/img/favicon.ico
-    Alias /mailman3/static      /var/lib/mailman3/web/static
-    <Directory "/var/lib/mailman3/web/static">
+    Alias /mailman3/favicon.ico <%= $mailman_root %>/web/static/postorius/img/favicon.ico
+    Alias /mailman3/static      <%= $mailman_root %>/web/static
+    <Directory "<%= $mailman_root %>/web/static">
         Require all granted
     </Directory>
     <IfModule mod_proxy_uwsgi.c>
@@ -141,12 +142,12 @@
 
     # If the Mailman3 list directory exists, redirect listinfo/admin pages to postorius
     RewriteMap lc int:tolower
-    RewriteCond /var/lib/mailman3/lists/${lc:$2}.<%= $lists_servername %> -d
+    RewriteCond <%= $mailman_root %>/lists/${lc:$2}.<%= $lists_servername %> -d
     RewriteRule ^/mailman/(listinfo|admin|admindb|options|subscribe)/([a-zA-Z0-9\._-]*?)($|/) https://<%= $lists_servername %>/postorius/lists/${lc:$2}.<%= $lists_servername %>/ [R=301]
 
     # Use the map to redirect pipermail URLs. Test that the key is present,
     # and if so, emit a 301 redirect.
-    RewriteMap pipermail "dbm:/var/lib/mailman3/redirects/redirects.dbm"
+    RewriteMap pipermail "dbm:<%= $mailman_root %>/redirects/redirects.dbm"
     RewriteCond "${pipermail:$1}" !=""
     RewriteRule "^/pipermail/(.*)" "/hyperkitty/list/${pipermail:$1}" [R=302]
 

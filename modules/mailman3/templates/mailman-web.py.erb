@@ -99,7 +99,7 @@ CACHES = {
 HAYSTACK_CONNECTIONS = {
       'default': {
           'ENGINE': 'xapian_backend.XapianEngine',
-          'PATH': '/var/lib/mailman3/web/fulltext_xapian_index',
+          'PATH': '<%= @mailman_root %>/web/fulltext_xapian_index',
       },
 }
 

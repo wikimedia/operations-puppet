@@ -15,6 +15,7 @@ class mailman3::listserve (
     String $api_password,
     Wmflib::Ensure $service_ensure = 'present',
     Boolean $allow_incoming_mail = true,
+    Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
 ) {
     ensure_packages([
         'python3-pymysql',
@@ -97,27 +98,27 @@ class mailman3::listserve (
         source => 'puppet:///modules/mailman3/scripts/migrate_to_mailman3.py',
     }
 
-    file { '/var/lib/mailman3/templates/domains/':
+    file { "${$mailman_root}/templates/domains/":
         ensure => directory,
         owner  => 'root',
         group  => 'list',
         mode   => '0555',
     }
 
-    file { "/var/lib/mailman3/templates/domains/${host}/":
+    file { "${$mailman_root}/templates/domains/${host}/":
         ensure  => directory,
         owner   => 'root',
         group   => 'list',
         mode    => '0555',
-        require => File['/var/lib/mailman3/templates/domains/'],
+        require => File["${$mailman_root}/templates/domains/"],
     }
 
-    file { "/var/lib/mailman3/templates/domains/${host}/en/":
+    file { "${$mailman_root}/templates/domains/${host}/en/":
         ensure  => directory,
         owner   => 'root',
         group   => 'list',
         mode    => '0555',
-        require => File["/var/lib/mailman3/templates/domains/${host}/"],
+        require => File["${$mailman_root}/templates/domains/${host}/"],
     }
 
     $templates = [
@@ -151,13 +152,13 @@ class mailman3::listserve (
 
     $templates.each |String $template| {
         $dest_filename = regsubst($template, /_/, ':', 'G')
-        file { "/var/lib/mailman3/templates/domains/${host}/en/${dest_filename}":
+        file { "${$mailman_root}/templates/domains/${host}/en/${dest_filename}":
             ensure  => file,
             source  => "puppet:///modules/mailman3/templates/${template}",
             owner   => 'root',
             group   => 'list',
             mode    => '0555',
-            require => File["/var/lib/mailman3/templates/domains/${host}/en"],
+            require => File["${$mailman_root}/templates/domains/${host}/en"],
         }
     }
 

@@ -1,6 +1,7 @@
 # List of available backup filesets
 class profile::backup::filesets(
     Stdlib::Unixpath $helmfile_general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Stdlib::Unixpath $mailman_root         = lookup('profile::lists::mailman_root', { default_value => '/var/lib/mailman3' }),
 ) {
     # This has been taken straight from old files/backup/disklist-*
     bacula::director::fileset { 'root':
@@ -60,15 +61,15 @@ class profile::backup::filesets(
             # Contains pipermail archives
             '/var/lib/mailman',
             # Contains various data files and state that isn't in MariaDB
-            '/var/lib/mailman3',
+            $mailman_root,
         ],
         excludes => [
             # In progress digests, see T279237#7025093
-            '/var/lib/mailman3/lists/*/digest.mmdf',
+            "${$mailman_root}/lists/*/digest.mmdf",
             # Queue state
-            '/var/lib/mailman3/queue/',
+            "${$mailman_root}/queue/",
             # Packaged stuff
-            '/var/lib/mailman3/web/static/',
+            "${$mailman_root}/web/static/",
         ],
     }
     bacula::director::fileset { 'var-lib-puppet-ssl':

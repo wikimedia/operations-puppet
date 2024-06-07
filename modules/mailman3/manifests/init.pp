@@ -19,6 +19,7 @@ class mailman3 (
     Wmflib::Ensure $service_ensure = 'present',
     Optional[String] $memcached = undef,
     Boolean $allow_incoming_mail = true,
+    Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
 ) {
     # We do not want to use the dbconfig system
     # that tries to apply database updates on
@@ -40,6 +41,7 @@ class mailman3 (
         db_password         => $db_password,
         api_password        => $api_password,
         allow_incoming_mail => $allow_incoming_mail,
+        mailman_root        => $mailman_root,
     }
 
     class { 'mailman3::web':
@@ -54,5 +56,6 @@ class mailman3 (
         archiver_key    => $archiver_key,
         uwsgi_processes => $uwsgi_processes,
         memcached       => $memcached,
+        mailman_root    => $mailman_root,
     }
 }

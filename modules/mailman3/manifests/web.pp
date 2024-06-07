@@ -20,6 +20,7 @@ class mailman3::web (
     Integer $uwsgi_processes,
     Stdlib::Ensure::Service $service_ensure = 'running',
     Optional[String] $memcached,
+    Stdlib::Unixpath $mailman_root = '/var/lib/mailman3',
 ) {
 
     ensure_packages([
@@ -108,10 +109,10 @@ class mailman3::web (
     }
 
     # Create an empty dbm file so Apache doesn't complain
-    exec { '/usr/sbin/httxt2dbm -i /dev/null -o /var/lib/mailman3/redirects/redirects.dbm':
+    exec { "/usr/sbin/httxt2dbm -i /dev/null -o ${$mailman_root}/redirects/redirects.dbm":
         user    => 'root',
-        creates => '/var/lib/mailman3/redirects/redirects.dbm',
-        require => File['/var/lib/mailman3/redirects/'],
+        creates => "${$mailman_root}/redirects/redirects.dbm",
+        require => File["${$mailman_root}/redirects/"],
     }
 
     ferm::service { 'mailman-http':

@@ -8,7 +8,7 @@ CONFDIR=/etc/exim4
 
 # Mailman
 MM3_LMTP_PORT=8024
-MM3_HOME=/var/lib/mailman3
+MM3_HOME=<%= @mailman_root %>
 MM3_UID=list
 MM3_GID=list
 MM3_LISTCHK=MM3_HOME/lists/${local_part}.${domain}
