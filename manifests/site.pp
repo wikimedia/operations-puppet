@@ -859,9 +859,9 @@ node /^db1245\.eqiad\./ {
 node /^db2097\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bullseye, to be decommed
+## to be decommed
 node /^db2098\.codfw\./ {
-    role(mariadb::backup_source)
+    role(insetup::data_persistence)
 }
 ## s4, bullseye, to be decommed
 node /^db2099\.codfw\./ {
