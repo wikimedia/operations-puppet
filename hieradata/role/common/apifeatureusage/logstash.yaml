@@ -65,6 +65,7 @@ profile::apifeatureusage::logstash::curator_actions:
         unit_count: 2
 
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'API feature usage Logstash collector'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

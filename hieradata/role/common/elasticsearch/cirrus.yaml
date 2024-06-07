@@ -76,6 +76,7 @@ profile::elasticsearch::common_settings:
 profile::elasticsearch::cirrus::enable_remote_search: true
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'Elasticsearch cirrus'
 
 logstash_host: 'localhost'
 profile::elasticsearch::s3_username: 'search:platform'

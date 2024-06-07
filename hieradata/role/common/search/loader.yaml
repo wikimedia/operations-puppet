@@ -35,6 +35,7 @@ profile::mjolnir::kafka_bulk_daemon::es_cluster_endpoint: 'https://search.svc.%{
 profile::mjolnir::kafka_msearch_daemon::es_cluster_endpoint: 'https://search.svc.%{::site}.wmnet:9243'
 
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'Search models loader for ElasticSearch'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet

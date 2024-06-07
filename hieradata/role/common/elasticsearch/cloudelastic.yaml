@@ -109,6 +109,7 @@ profile::lvs::realserver::use_conftool: true
 
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'Elasticsearch cloud elastic cirrus'
 
 logstash_host: 'localhost'
 

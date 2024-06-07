@@ -85,5 +85,6 @@ profile::kibana::enable_phatality: false
 
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::contacts::role_contacts: ['Search Platform']
+profile::base::production::role_description: 'Elasticsearch relforge'
 
 logstash_host: 'localhost'
