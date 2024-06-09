@@ -30,10 +30,18 @@ a { color: #0645ad; text-decoration: none; }
 a:hover { text-decoration: underline; }
 code { font-family: sans-serif; }
 .text-muted { color: #777; }
+@media (prefers-color-scheme: dark) {
+  a { color: #9e9eff; }
+  body { background: transparent; color: #ddd; }
+  .footer { border-top: 1px solid #444; background: #060606; }
+  #logo { filter: invert(1) hue-rotate(180deg); }
+  .text-muted { color: #888; }
+}
 </style>
+<meta name="color-scheme" content="light dark">
 <div class="content" role="main">
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
-<a href="<%= @errorpage['logo_link'] %>"><% end %><img src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
+<a href="<%= @errorpage['logo_link'] %>"><% end %><img id="logo" src="<%= @errorpage['logo_src'] %>" srcset="<%= @errorpage['logo_srcset'] %>" alt="<%= @errorpage['logo_alt'] %>" width="<%= @errorpage['logo_width'] %>"<% if @errorpage['logo_height'] && @errorpage['logo_height'] != :undef %> height="<%= @errorpage['logo_height'] %>"<% end %>>
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>

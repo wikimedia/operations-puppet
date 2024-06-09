@@ -126,9 +126,17 @@ a { color: #0645ad; text-decoration: none; }
 a:hover { text-decoration: underline; }
 code { font-family: inherit; }
 .text-muted { color: #777; }
+@media (prefers-color-scheme: dark) {
+  a { color: #9e9eff; }
+  body { background: transparent; color: #ddd; }
+  .footer { border-top: 1px solid #444; background: #060606; }
+  #logo { filter: invert(1) hue-rotate(180deg); }
+  .text-muted { color: #888; }
+}
 </style>
+<meta name="color-scheme" content="light dark">
 <div class="content" role="main">
-<a href="https://www.wikimedia.org"><img src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
+<a href="https://www.wikimedia.org"><img id="logo" src="https://www.wikimedia.org/static/images/wmf.png" srcset="https://www.wikimedia.org/static/images/wmf-2x.png 2x" alt=Wikimedia width=135 height=135></a>
 <h1>Error</h1>
 <p>Our servers are currently under maintenance or experiencing a technical problem. Please <a href="" title="Reload this page" onclick="location.reload(false); return false">try again</a> in a few&nbsp;minutes.</p><p>See the error message at the bottom of this page for more&nbsp;information.</p>
 </div>
