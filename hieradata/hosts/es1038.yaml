@@ -1,4 +1,3 @@
 # es1038
+# candidate master for es6
 mariadb::shard: 'es6'
-profile::mariadb::mysql_role: 'master'
-
