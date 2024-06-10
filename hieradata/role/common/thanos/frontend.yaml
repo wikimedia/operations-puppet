@@ -12,19 +12,9 @@ profile::resolving::domain_search:
   - drmrs.wmnet
   - magru.wmnet
 profile::lvs::realserver::pools:
-  thanos-query:
-    services:
-      - thanos-query
-      - thanos-query-frontend
-      - apache2
   thanos-swift:
     services:
       - swift-proxy
-  thanos-web:
-    services:
-      - thanos-query
-      - thanos-query-frontend
-      - apache2
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::sni_support: 'yes'
@@ -46,12 +36,7 @@ profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
 profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
 
-# Hit object storage only for data older than max_time
-profile::thanos::store::max_time: '-15d'
 profile::thanos::swift::memcached_size_mb: 768
-
-# Retention custom settings -- see also T311690
-profile::thanos::retention::raw: '54w'
 
 profile::prometheus::statsd_exporter::mappings:
   # Authentication subsystem (tempauth)
