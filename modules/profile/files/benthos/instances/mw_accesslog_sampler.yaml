@@ -9,7 +9,7 @@ input:
     seed_brokers: [ "${KAFKA_BROKERS}" ]
     topics: [ "${KAFKA_TOPICS}" ]
     regexp_topics: false
-    consumer_group: "benthos-${SITE}"
+    consumer_group: "benthos-mw-accesslog-sampler"
     tls:
       enabled: true
     batching:
