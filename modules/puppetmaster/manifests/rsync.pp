@@ -25,8 +25,9 @@ class puppetmaster::rsync(
         description        => 'rsync puppet volatile data to another server',
         command            => "/usr/bin/rsync -avz --delete ${server}::puppet_volatile /var/lib/puppet/volatile",
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
-        monitoring_enabled => false,
-        logging_enabled    => false,
+        logging_enabled    => true,
+        monitoring_enabled => true,
+        timeout_start_sec  => 300,
     }
 
     systemd::timer::job { 'sync-puppet-ca':
@@ -35,7 +36,8 @@ class puppetmaster::rsync(
         description        => 'rsync puppet CA data to another server',
         command            => "/usr/bin/rsync -avz --delete ${server}::puppet_ca /var/lib/puppet/server/ssl/ca",
         interval           => {'start' => 'OnUnitInactiveSec', 'interval' => 'daily'},
-        monitoring_enabled => false,
-        logging_enabled    => false,
+        logging_enabled    => true,
+        monitoring_enabled => true,
+        timeout_start_sec  => 300,
     }
 }
