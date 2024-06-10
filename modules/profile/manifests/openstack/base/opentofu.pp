@@ -9,6 +9,7 @@ class profile::openstack::base::opentofu (
   Stdlib::HTTPSUrl $s3_endpoint       = lookup('profile::openstack::base::opentofu::s3_endpoint'),
   String[1]        $s3_access_key     = lookup('profile::openstack::base::opentofu::s3_access_key'),
   String[1]        $s3_secret_key     = lookup('profile::openstack::base::opentofu::s3_secret_key'),
+  Stdlib::Fqdn     $diff_host         = lookup('profile::openstack::base::opentofu::diff_host'),
 ) {
   apt::package_from_component { 'tofu':
     component => 'thirdparty/tofu',
@@ -83,5 +84,18 @@ class profile::openstack::base::opentofu (
     owner     => 'root',
     group     => 'root',
     mode      => '0444',
+  }
+
+  # Monitoring: This will trigger the generic systemd unit failure alert
+  #  if there are unapplied changes. And after investigating the changes
+  #  one can do systemctl reset-failed to clear the alert.
+  systemd::timer::job { 'opentofu-infra-diff':
+    ensure              => stdlib::ensure($diff_host == $facts['networking']['fqdn']),
+    user                => 'root',
+    description         => 'check for unapplied changes in the opentofu-infra setup',
+    working_directory   => '/srv/tofu-infra',
+    command             => '/usr/local/bin/tofu plan -detailed-exitcode',
+    interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:10:00'},
+    max_runtime_seconds => 1800,
   }
 }
