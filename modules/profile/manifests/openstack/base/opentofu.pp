@@ -67,11 +67,12 @@ class profile::openstack::base::opentofu (
   }
 
   file { '/etc/tofu.env':
-    ensure  => file,
-    content => $tofu_env_str,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0550',
+    ensure    => file,
+    content   => $tofu_env_str,
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0550',
+    show_diff => false,
   }
 
   git::clone { 'repos/cloud/cloud-vps/tofu-infra':
