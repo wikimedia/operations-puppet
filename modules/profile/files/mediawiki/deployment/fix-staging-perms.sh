@@ -26,4 +26,4 @@ find /srv/mediawiki-staging -not -group "$group" -print0 | xargs -0 -r chgrp --n
 find /srv/patches -not -group "$group" -print0 | xargs -0 -r chgrp --no-dereference "$group"
 
 # Ensure set-group-id flag is set on patches and .git directories
-find /srv/patches -type d -not -perm /g+s -print0 | xargs -0 chmod g+s
+find /srv/patches -type d -not -perm /g+s -print0 | xargs -0 -r chmod g+s
