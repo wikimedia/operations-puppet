@@ -80,6 +80,6 @@ class profile::openstack::base::opentofu (
     directory => '/srv/tofu-infra',
     owner     => 'root',
     group     => 'root',
-    mode      => '0440',
+    mode      => '0444',
   }
 }
