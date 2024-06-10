@@ -155,8 +155,8 @@ class profile::kubernetes::deployment_server::global_config (
       }
     }
 
-    $analytics_meta_master_fqdn =  wmflib::puppetdb_query('resources[certname] {type = "Class" and title = "Profile::Analytics::Database::Meta" and parameters.is_mariadb_replica = false and certname ~ "an-mariadb" }')[0]['certname']
-    $analytics_meta_master_ips = [ipresolve($analytics_meta_master_fqdn, 4), ipresolve($analytics_meta_master_fqdn, 6)]
+    $analytics_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-mariadb')
+    $analytics_test_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-test-coord')
 
     $external_services_elasticsearch_cirrus = profile::kubernetes::deployment_server::elasticsearch_external_services_config('cirrus', ['eqiad', 'codfw'])
     $external_services_elasticsearch_cloudelastic = profile::kubernetes::deployment_server::elasticsearch_external_services_config('cloudelastic', ['eqiad'])
@@ -346,7 +346,10 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'analytics_meta' => $analytics_meta_master_ips,
+            'analytics_meta_master' => $analytics_meta_master_ips,
+            'analytics_meta' => wmflib::role::ips('analytics_cluster::mariadb'),
+            'analytics_test_meta_master' => $analytics_test_meta_master_ips,
+            'analytics_test_meta' => wmflib::role::ips('analytics_test_cluster::coordinator'),
           }
         },
         'postgresql' => {
