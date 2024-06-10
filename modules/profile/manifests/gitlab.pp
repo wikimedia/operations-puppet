@@ -84,6 +84,11 @@ class profile::gitlab(
             ip6                => $service_ip_v6,
             body_regex_matches => ['GitLab Community Edition'],
         }
+        prometheus::blackbox::check::tcp { "${service_name}-ssh":
+            team     => 'collaboration-services',
+            severity => $severity,
+            port     => 22,
+        }
     }
 
     exec {'Reload nginx':
