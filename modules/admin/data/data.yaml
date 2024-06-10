@@ -386,6 +386,8 @@ groups:
                  membership to either the 'wmf' or the 'nda' LDAP groups.
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
+                 For "no-ssh, no-kerberos" access create a shell account with an empty ssh key, grep for
+                 "Added with no SSH access" to find examples in this file
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, mneisler,
               nuria, otto, jgreen, sguebo,
