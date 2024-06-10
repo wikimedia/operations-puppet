@@ -53,13 +53,14 @@ class profile::openstack::base::opentofu (
 
   $tofu_env = {
     # s3 related
-    'AWS_ENDPOINT_URL_S3'   => $s3_endpoint,
-    'AWS_REGION'            => $region,
-    'AWS_ACCESS_KEY_ID'     => $s3_access_key,
-    'AWS_SECRET_ACCESS_KEY' => $s3_secret_key,
+    'AWS_ENDPOINT_URL_S3'    => $s3_endpoint,
+    'AWS_REGION'             => $region,
+    'AWS_ACCESS_KEY_ID'      => $s3_access_key,
+    'AWS_SECRET_ACCESS_KEY'  => $s3_secret_key,
     # openstack related
-    'OS_CLOUD'              => 'tofu',
-    'OS_REGION_NAME'        => $region,
+    'OS_CLOUD'               => 'tofu',
+    'OS_REGION_NAME'         => $region,
+    'TF_VAR_cloudvps_region' => $region,
   }
 
   $tofu_env_str = $tofu_env.reduce('') |$memo, $value| {
