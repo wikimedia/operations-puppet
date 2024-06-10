@@ -30,6 +30,12 @@ class profile::kubernetes::deployment_server::helmfile (
         mode   => '0750',
     }
 
+    file { '/usr/local/bin/prometheus-check-admin-ng-pending-changes':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/kubernetes/deployment_server/check_admin_ng_pending_changes.py'
+    }
+
     # Install the private values for each service
     k8s::fetch_cluster_groups().each | String $cluster_group, Hash $cluster | {
         $merged_services = deep_merge($services[$cluster_group], $services_secrets[$cluster_group])
@@ -123,6 +129,13 @@ class profile::kubernetes::deployment_server::helmfile (
                         }
                     }
                 }
+            }
+
+            prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
+                ensure         => 'present',
+                interval       => 'Mon..Fri 04:00:00',
+                run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
+                extra_packages => ['python3-prometheus-client'],
             }
         }
     }

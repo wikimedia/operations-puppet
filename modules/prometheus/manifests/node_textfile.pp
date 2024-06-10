@@ -23,21 +23,23 @@
 #   Configures the user to run the script under, defaults to "root"
 #
 define prometheus::node_textfile (
-    Stdlib::Filesource         $filesource,
-    String                     $interval,
-    String                     $run_cmd,
-    Wmflib::Ensure             $ensure          = 'present',
-    Optional[String]           $user            = 'root',
-    Optional[Array[String]]    $extra_packages  = [],
+    String                       $interval,
+    String                       $run_cmd,
+    Wmflib::Ensure               $ensure          = 'present',
+    Optional[Stdlib::Filesource] $filesource      = undef,
+    Optional[String]             $user            = 'root',
+    Optional[Array[String]]      $extra_packages  = [],
 ) {
     if $extra_packages {
         ensure_packages($extra_packages, {'ensure' => $ensure})
     }
 
-    file { "/usr/local/bin/${title}":
-        ensure => $ensure,
-        mode   => '0555',
-        source => $filesource
+    if $filesource {
+        file { "/usr/local/bin/${title}":
+            ensure => $ensure,
+            mode   => '0555',
+            source => $filesource
+        }
     }
 
     systemd::timer::job { "prometheus-node-textfile-${title}":
