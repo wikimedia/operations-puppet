@@ -6,7 +6,7 @@
 # This will made obsolete by Stdlib::IP::Address::CIDR
 # in puppet-stdlib v9, and can be replaced by it then.
 
-type Wmflib::IP::Address::CIDR = Variant [
+type Wmflib::IP::Address::CIDR = Variant[
     Stdlib::IP::Address::V4::CIDR,
     Stdlib::IP::Address::V6::CIDR,
 ]

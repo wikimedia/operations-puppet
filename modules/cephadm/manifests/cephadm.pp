@@ -10,7 +10,15 @@
 # @param Optional[String] ceph_repository_component
 #     Component within our apt repo to install cephadm from
 class cephadm::cephadm (
-    Optional[String ] $ceph_repository_component = 'thirdparty/ceph-reef',
+    Array[Stdlib::Host, 1] $osds,
+    Array[Stdlib::Host, 1] $mons,
+    Array[Stdlib::Host] $rgws,
+    Hash $host_details,
+    Hash[Stdlib::Host, String] $rack_locations,
+    Wmflib::IP::Address::CIDR $mon_network,
+    Optional[String] $rgw_realm = undef,
+    Optional[String] $ceph_repository_component = 'thirdparty/ceph-reef',
+    Optional[Wmflib::Ensure] $ensure = present,
 ) {
     apt::package_from_component { 'cephadm':
         component => $ceph_repository_component,
@@ -23,6 +31,40 @@ class cephadm::cephadm (
         command => '/usr/bin/ssh-keygen -C "cephadm root ssh key" -f /root/.ssh/id_cephadm -t ed25519 -N ""',
         creates => '/root/.ssh/id_cephadm.pub',
     }
-    # TODO will need to template out config for cephadm based on
-    # e.g. OSD facts.
+
+    file { '/etc/cephadm':
+        ensure => stdlib::ensure($ensure, 'directory'),
+    }
+
+    file { '/etc/cephadm/bootstrap-ceph.conf':
+        ensure => $ensure,
+        source => 'puppet:///modules/cephadm/bootstrap-ceph.conf',
+    }
+
+    file { '/etc/cephadm/osd_spec.yaml':
+        ensure => $ensure,
+        source => 'puppet:///modules/cephadm/osd_spec.yaml',
+    }
+
+    file { '/etc/cephadm/hosts.yaml':
+        ensure  => $ensure,
+        content => epp('cephadm/hosts.epp', {
+            'mon_network'    => $mon_network,
+            'osds'           => $osds,
+            'mons'           => $mons,
+            'rgws'           => $rgws,
+            'host_details'   => $host_details,
+            'rack_locations' => $rack_locations,
+        }),
+    }
+
+    if $rgw_realm {
+        file { '/etc/cephadm/rgw_spec.yaml':
+            ensure  => $ensure,
+            content => epp('cephadm/rgw_spec.epp', {
+                'rgw_realm' => $rgw_realm,
+                'zone'      => $::site,
+            }),
+        }
+    }
 }

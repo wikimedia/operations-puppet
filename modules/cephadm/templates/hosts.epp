@@ -1,0 +1,42 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Wmflib::IP::Address::CIDR $mon_network,
+      Array[Stdlib::Host, 1] $osds,
+      Array[Stdlib::Host, 1] $mons,
+      Array[Stdlib::Host] $rgws,
+      Hash $host_details,
+      Hash[Stdlib::Host, String] $rack_locations,
+| -%>
+<%- $cluster_nodes = unique($mons + $osds + $rgws) -%>
+<%- $cluster_nodes.each |$node| { -%>
+---
+service_type: host
+hostname: <%= $node.split('\.')[0] %>
+addr: <%= $host_details[$node]['ipaddress6'] %>
+<%- if $node in $osds { -%>
+location:
+  root: default
+  rack: <%= $rack_locations[$node] %>
+<%- } -%>
+labels:
+<%- if $node in $mons { -%>
+  - _admin
+<%- } -%>
+<%- if $node in $rgws { -%>
+  - rgw
+<%- } -%>
+<%- if $node in $osds { -%>
+<%- if 'blockdevice_nvme0n1_model' in $host_details[$node] { -%>
+<%- if $host_details[$node]['blockdevice_nvme0n1_model'].match(/NVMe/) { -%>
+  - NVMe
+<%- } } else { -%>
+  - Unknown_storage # We won't be able to put OSDs on this node!
+<%- } -%>
+<%- } -%>
+<%- } -%>
+---
+service_type: mon
+config:
+  public_network: <%= $mon_network %>
+placement:
+  label: "_admin"
+  count: 3

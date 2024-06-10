@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+# Specification for osds with data on rrd, block.db on NVME
+service_type: osd
+service_id: rrd_NVMe
+placement:
+  label: "NVMe"
+spec:
+  data_devices:
+    rotational: 1
+  # This a quasi-glob on the model name
+  db_devices:
+    model: "NVMe"

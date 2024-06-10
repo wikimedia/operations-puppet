@@ -1,0 +1,9 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String $rgw_realm,
+      String $zone,
+| -%>
+rgw_realm: <%= $rgw_realm %>
+rgw_zonegroup: <%= $rgw_realm %>_zg
+rgw_zone: <%= $zone %>
+placement:
+  label: "rgw"

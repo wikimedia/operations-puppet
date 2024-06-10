@@ -12,6 +12,8 @@ class role::cephadm::controller {
     include profile::base::production
     include profile::firewall
     include profile::cephadm::target
+    # Needed so we can find hosts' rack locations
+    include profile::netbox::data
     include profile::cephadm::controller
     include profile::cephadm::storage
 }
