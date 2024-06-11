@@ -102,10 +102,6 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: linkrecommendation
         - name: linkrecommendation-deploy
-    similar-users:
-      usernames:
-        - name: similar-users
-        - name: similar-users-deploy
     shellbox:
       usernames:
         - name: shellbox
