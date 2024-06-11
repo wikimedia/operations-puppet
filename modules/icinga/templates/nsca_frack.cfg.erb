@@ -1210,6 +1210,13 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_audit_downloads
+    hostgroup_name           fundraising-civicrm
+    contact_groups           fr-tech
+}
+
+define service {
+    use                      passive-service
     service_description      check_coworker
     hostgroup_name           fundraising-civicrm
 }
