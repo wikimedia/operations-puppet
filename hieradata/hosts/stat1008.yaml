@@ -1,0 +1,2 @@
+# This stat server has a GPU card present
+profile::amd_gpu::rocm_version: '54'
