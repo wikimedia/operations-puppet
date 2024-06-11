@@ -51,7 +51,7 @@ profile::gitlab::runner::allowed_services:
     host: 'gitlab.wikimedia.org'
     port: 443
   gitlab-replica-https: # for failover between instances without restarting ferm on runners
-    host: 'gitlab-replica.wikimedia.org'
+    host: 'gitlab-replica-a.wikimedia.org'
     port: 443
   docker-registry-wikimedia-https:
     host: 'docker-registry.wikimedia.org'
