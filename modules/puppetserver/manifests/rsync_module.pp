@@ -29,8 +29,9 @@ define puppetserver::rsync_module (
         description        => "rsync puppet ${title} data from primary server",
         command            => "/usr/bin/rsync -avz --delete ${ca_server}::puppet_${title} ${path}",
         interval           => $interval,
-        monitoring_enabled => false,
-        logging_enabled    => false,
+        monitoring_enabled => true,
+        logging_enabled    => true,
+        timeout_start_sec  => 300,
     }
 
     firewall::service { "puppet-rsync-${title}":
