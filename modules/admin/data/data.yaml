@@ -427,7 +427,7 @@ groups:
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
               damilare, isaranto, anakanishi,
-              stevemunene, ryasmeen, abartov, wfan219, eileen,
+              stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
@@ -6382,6 +6382,14 @@ users:
     uid: 31008
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  ifrahkh:
+    ensure: present
+    realname: Ifrah Khanyaree
+    email: ifrah.khanyaree@wikimedia.de
+    uid: 44753
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPywhMZMslMnOl/7stpDB8YXNo4STAd8xUFSqeGQjK6J ifrah.khanyaree@wmde-102977'
 
 ldap_only_users:
   adavenport:
@@ -7122,10 +7130,6 @@ ldap_only_users:
     ensure: present
     realname: Maciej Jaros
     email: egil@wp.pl
-  ifrahkh:
-    ensure: present
-    realname: Ifrah Khanyaree
-    email: ifrah.khanyaree@wikimedia.de
   cyndywikime:
     ensure: present
     realname: Cynthia Simiyu
