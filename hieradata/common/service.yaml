@@ -3343,40 +3343,6 @@ service::catalog:
       - dnsdisc: api-gateway
         active_active: true
 
-  similar-users:
-    description: Similar-users/sockpuppet, similar-users.discovery.wmnet
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.57
-      eqiad:
-        default: 10.2.2.57
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: kubernetes
-        service: kubesvc
-      depool_threshold: ".5"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-      protocol: tcp
-    page: false
-    probes:
-      - type: http
-        path: /healthz
-    port: 4110
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: similar-users
-        active_active: true
-
   linkrecommendation:
     description: Link Recommendation, linkrecommendation.discovery.wmnet
     encryption: true
