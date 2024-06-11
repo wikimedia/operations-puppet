@@ -86,20 +86,11 @@ class profile::kubernetes::deployment_server::global_config (
         }.filter |$key, $val| { $val =~ NotUndef }
         $retval = {
             $listener['name'] => {
-                # TODO: remove after all charts are at
-                # mesh.configuration 1.5.0 or later
-                'keepalive' => $listener['keepalive'],
                 'port' => $listener['port'],
                 'http_host' => $listener['http_host'],
                 'timeout'   => $listener['timeout'],
                 'retry_policy' => $listener['retry'],
                 'xfp' => $listener['xfp'],
-                # TODO: remove after all charts are at
-                # mesh.configuration 1.5.0 or later
-                'uses_ingress' => $listener['uses_ingress'],
-                # TODO: remove after all charts are at
-                # mesh.configuration 1.5.0 or later
-                'sets_sni' => $listener['sets_sni'],
                 'upstream' => $upstream,
                 'split' => $split,
             }.filter |$key, $val| { $val =~ NotUndef },

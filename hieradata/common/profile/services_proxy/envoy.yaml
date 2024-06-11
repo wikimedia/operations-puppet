@@ -116,9 +116,6 @@ profile::services_proxy::envoy::listeners:
     port: 6022
     service: thanos-swift
     timeout: "120s"
-    # drop this value once all k8s charts have updated the mesh module.
-    # sets_sni should replace, long term, uses_ingress.
-    uses_ingress: true
     sets_sni: true
   - name: schema
     port: 6023
@@ -177,9 +174,6 @@ profile::services_proxy::envoy::listeners:
     service: image-suggestion
     timeout: "10s"
     keepalive: "4s"
-    # drop this value once all k8s charts have updated the mesh module.
-    # sets_sni should replace, long term, uses_ingress.
-    uses_ingress: true
     sets_sni: true
   - name: inference
     port: 6031
@@ -200,16 +194,12 @@ profile::services_proxy::envoy::listeners:
     service: wikifunctions
     # function calls are terminated after 15s + some room for the orchestrator to answer
     timeout: "15.5s"
-    # drop this value once all k8s charts have updated the mesh module.
-    # sets_sni should replace, long term, uses_ingress.
-    uses_ingress: true
     sets_sni: true
   - name: ipoid
     port: 6035
     service: ipoid
     timeout: "5s"
     upstream: "ipoid.discovery.wmnet"
-    uses_ingress: true
     sets_sni: true
     keepalive: "4s" # T356766
 
@@ -344,9 +334,6 @@ profile::services_proxy::envoy::listeners:
     port: 6504
     service: machinetranslation
     timeout: "120s"
-    # drop this value once all k8s charts have updated the mesh module.
-    # sets_sni should replace, long term, uses_ingress.
-    uses_ingress: true
     sets_sni: true
   - name: mw-wikifunctions-ro  # used by wikifunctions instead of mw-api-int T347544
     port: 6501  # NOTE: re-use "mwapi" port to make the transition easier

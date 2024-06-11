@@ -8,7 +8,6 @@ type Profile::Service_listener =  Struct[{
     'upstream'     => Optional[Stdlib::Fqdn],
     'retry'        => Optional[Hash],
     'keepalive'    => Optional[String],
-    'uses_ingress' => Optional[Boolean],
     'sets_sni'     => Optional[Boolean],
     'split'        => Optional[Struct[{
         'service' => String,
