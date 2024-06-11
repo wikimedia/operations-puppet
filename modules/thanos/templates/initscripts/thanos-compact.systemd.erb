@@ -1,6 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 Slice=thanos.slice
+# force sigkill due to https://github.com/thanos-io/thanos/issues/6398
+SendSIGKILL=yes
 ExecStart=
 ExecStart=/usr/bin/thanos compact \
   --http-address <%= @http_address %> \
