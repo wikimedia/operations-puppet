@@ -143,7 +143,7 @@ profile::idp::services:
     service_id: 'https://idp\.wmcloud\.org(/.*)?'
   gitlab-replica:
     id: 25
-    service_id: 'https://gitlab-replica(-new|-old)?\.wikimedia\.org(/.*)?'
+    service_id: 'https://gitlab-replica(-new|-old|-a|-b)?\.wikimedia\.org(/.*)?'
     required_groups:
       - wmf
       - nda
