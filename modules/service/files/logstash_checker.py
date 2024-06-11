@@ -11,12 +11,12 @@ Theory of operation:
 
 
 import argparse
+import datetime
 import getpass
 import json
 import logging
 import os
 import sys
-import time
 import yaml
 
 import urllib3
@@ -89,7 +89,8 @@ class CheckService(object):
     def __init__(self, host, service_name, logstash_host, user='', password='',
                  verbose=False, delay=120.0, fail_threshold=2.0,
                  absolute_threshold=1.0,
-                 mediawiki_deployments_file="/etc/helmfile-defaults/mediawiki-deployments.yaml"):
+                 mediawiki_deployments_file="/etc/helmfile-defaults/mediawiki-deployments.yaml",
+                 time=None):
         """Initialize the checker."""
         self.host = host
         self.service_name = service_name
@@ -103,6 +104,14 @@ class CheckService(object):
 
         if user:
             self.auth = '{}:{}'.format(user, password)
+
+        if time:
+            try:
+                self.time = datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%S")
+            except ValueError as e:
+                raise SystemExit(e)
+        else:
+            self.time = datetime.datetime.now()
 
     def _logstash_query(self):
         if self.service_name == 'mwdeploy':
@@ -138,6 +147,17 @@ class CheckService(object):
 
     def _one_of_query(self, key, values) -> str:
         return f"{key}:(" + " OR ".join(values) + ")"
+
+    def _timestamp_query(self):
+        end = self.time.strftime("%Y-%m-%dT%H:%M:%S")
+
+        return {
+            "@timestamp": {
+                "lte": end,
+                # xref https://opensearch.org/docs/latest/query-dsl/term/range/#relative-dates
+                "gte": f"{end}||-1h"
+            }
+        }
 
     def _mwdeploy_query(self):
         """Return a query that tracks MediaWiki deploy problems."""
@@ -177,12 +197,7 @@ class CheckService(object):
                 "bool": {
                     "filter": [
                         {
-                            "range": {
-                                "@timestamp": {
-                                    "lte": "now",
-                                    "gte": "now-60m"
-                                }
-                            }
+                            "range": self._timestamp_query()
                         },
                         {
                             "query_string": {
@@ -222,12 +237,7 @@ class CheckService(object):
                 "bool": {
                     "filter": [
                         {
-                            "range": {
-                                "@timestamp": {
-                                    "lte": "now",
-                                    "gte": "now-60m"
-                                }
-                            }
+                            "range": self._timestamp_query()
                         },
                         {
                             "query_string": {
@@ -311,7 +321,8 @@ class CheckService(object):
         # The "key" appears to be a unix timestamp with millisecond resolution.
 
         entries = r['aggregations']['2']['buckets']
-        cutoff_ts = (time.time() - self.delay) * 1000
+
+        cutoff_ts = (self.time - datetime.timedelta(seconds=self.delay)).timestamp() * 1000
 
         counts_before = [entry['doc_count'] for entry in entries
                          if entry['key'] < cutoff_ts]
@@ -370,6 +381,10 @@ def main():
     parser.add_argument('--logstash-host',
                         default='https://logstash.wikimedia.org:9200',
                         help='The logstash host.')
+    parser.add_argument('--time',
+                        metavar="YYYY-MM-DDTHH:MM:SS",
+                        help='Execute as if the checker was run at '
+                             'the supplied date/time')
     parser.add_argument('--delay', default=120.0, type=float,
                         help='Length of the delay (in seconds) between a '
                              'deploy & the call to this check script')
