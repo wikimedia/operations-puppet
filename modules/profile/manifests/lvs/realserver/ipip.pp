@@ -132,13 +132,13 @@ class profile::lvs::realserver::ipip(
 
     ferm::rule { 'clamp-mss-ipv4':
         ensure => $ensure_ferm_mss,
-        chain  => 'FORWARD',
+        chain  => 'OUTPUT',
         rule   => "outerface (${outerfaces}) saddr @ipfilter(${rule_ips}) proto tcp sport ${rule_ports} tcp-flags (SYN) SYN TCPMSS set-mss ${ipv4_mss};",
         domain => '(ip)',
     }
     ferm::rule { 'clamp-mss-ipv6':
         ensure => $ensure_ferm_mss,
-        chain  => 'FORWARD',
+        chain  => 'OUTPUT',
         rule   => "outerface (${$outerfaces}) saddr @ipfilter(${rule_ips}) proto tcp sport ${rule_ports} tcp-flags (SYN) SYN TCPMSS set-mss ${ipv6_mss};",
         domain => '(ip6)',
     }
