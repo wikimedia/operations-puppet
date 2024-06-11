@@ -13,7 +13,8 @@ class profile::openstack::base::observerenv(
     wmflib::dir::mkdir_p($root_clouds_file.dirname, {'mode' => '0700'})
 
     concat { $root_clouds_file:
-        mode => '0400',
+        mode      => '0400',
+        show_diff => false,
     }
 
     concat::fragment { 'root_clouds_file_header':
@@ -26,7 +27,8 @@ class profile::openstack::base::observerenv(
     ensure_resource('file', $clouds_file.dirname, { 'ensure' => 'directory',
                                                     'mode' => '0755' })
     concat { $clouds_file:
-        mode    => '0444'
+        mode      => '0444',
+        show_diff => false,
     }
     concat::fragment { 'observer_clouds_file_header':
         target  => $clouds_file,
