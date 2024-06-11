@@ -443,6 +443,7 @@ groups:
       - Dan Andreescu
       - Will Doran
       - Andreas Hoelzl
+      - Andrew Otto
   analytics-admins:
     gid: 732
     description: Admin access to analytics cluster.
