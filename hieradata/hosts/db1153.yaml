@@ -1,4 +1,5 @@
 # db1153
 mariadb::shard: 'x2'
 profile::monitoring::notifications_enabled: false
+# Testing MariaDB 10.11 T365805 - do not promote to master
 mariadb::package: 'wmf-mariadb1011'
