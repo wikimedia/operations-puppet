@@ -87,6 +87,8 @@ class profile::gitlab(
         prometheus::blackbox::check::tcp { "${service_name}-ssh":
             team     => 'collaboration-services',
             severity => $severity,
+            ip4      => $service_ip_v4,
+            ip6      => $service_ip_v6,
             port     => 22,
         }
     }
