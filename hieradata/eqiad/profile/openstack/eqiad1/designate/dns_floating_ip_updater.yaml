@@ -1,2 +1,2 @@
-profile::openstack::eqiad1::designate::dns_floating_ip_updater::project_zone_template: '{project}.wmcloud.org.'
+profile::openstack::eqiad1::designate::dns_floating_ip_updater::project_zone_template: '{project_id}.wmcloud.org.'
 profile::openstack::eqiad1::designate::dns_floating_ip_updater::reverse_zone_project: 'cloudinfra'

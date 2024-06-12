@@ -84,12 +84,12 @@ def update_tenant(
     public_addrs,
     existing_As,
 ):
-    logger.debug("Updating project %s", tenant.name)
+    logger.debug("Updating project %s (%s)", tenant.id, tenant.name)
     if tenant.name == "admin":
         return
 
     server_addresses = {}
-    nova_client = client.novaclient(tenant.name)
+    nova_client = client.novaclient(tenant.id)
     # Go through every instance
     for server in nova_client.servers.list():
         for network_name, addresses in server.addresses.items():
@@ -108,10 +108,10 @@ def update_tenant(
                 A_FQDN = FQDN_TEMPLATE.format(
                     server=server.name, zone=project_zone_name
                 )
-                public_addrs[A_FQDN, tenant.name] = True, public
+                public_addrs[A_FQDN, tenant.id] = True, public
                 logger.debug("Found public IP %s -> %s", public, A_FQDN)
 
-    dns = mwopenstackclients.DnsManager(client, tenant=tenant.name)
+    dns = mwopenstackclients.DnsManager(client, tenant=tenant.id)
     existing_match_regex = re.compile(FQDN_REGEX.format(zone=project_zone_name))
 
     # Now go through every zone the project controls
@@ -119,7 +119,7 @@ def update_tenant(
         logger.debug("Checking zone %s", zone["name"])
         # If this is their main zone, record the ID for later use
         if zone["name"] == project_zone_name:
-            project_main_zone_ids[tenant.name] = zone["id"]
+            project_main_zone_ids[tenant.id] = zone["id"]
 
         # Go through every recordset in the zone
         for recordset in dns.recordsets(zone["id"]):
@@ -180,7 +180,7 @@ def update_tenant(
                 # Recordset is not one of our FQDN_TEMPLATE ones, so just
                 # store it so we can reflect its existence in PTR records
                 # where appropriate.
-                public_addrs[recordset["name"], tenant.name] = (
+                public_addrs[recordset["name"], tenant.id] = (
                     False,
                     recordset["records"],
                 )
@@ -211,8 +211,8 @@ def try_update_tenant(
         except Exception:
             retry += 1
             logger.exception(
-                "Failed to update tenant %s, retrying %s out of %s"
-                % (tenant.name, retry, retries)
+                "Failed to update tenant %s (%s), retrying %s out of %s"
+                % (tenant.id, tenant.name, retry, retries)
             )
             if retry == retries:
                 raise
@@ -233,7 +233,7 @@ def update(config, os_cloud, retries, retry_interval):
         try_update_tenant(
             client=client,
             tenant=tenant,
-            project_zone_name=config["project_zone_template"].format(project=tenant.name),
+            project_zone_name=config["project_zone_template"].format(project_id=tenant.id),
             project_main_zone_ids=project_main_zone_ids,
             public_addrs=public_addrs,
             existing_As=existing_As,
@@ -243,17 +243,17 @@ def update(config, os_cloud, retries, retry_interval):
 
     # Now we go through all the A record data we have stored
     public_PTRs = {}
-    for (A_FQDN, project), (managed_here, IPs) in public_addrs.items():
+    for (A_FQDN, project_id), (managed_here, IPs) in public_addrs.items():
         # Set up any that need to be and don't already exist
         if managed_here and A_FQDN not in existing_As:
-            dns = mwopenstackclients.DnsManager(client, tenant=project)
-            # Create instance-$instance.$project.wmflabs.org 120 IN A $IP
-            # No IPv6 support in labs so no AAAAs
+            dns = mwopenstackclients.DnsManager(client, tenant=project_id)
+            # Create instance-$instance.$project_id.wmcloud.org 120 IN A $IP
+            # No IPv6 support yet so no AAAAs
             logger.info("Creating A record for %s", A_FQDN)
-            if project in project_main_zone_ids:
+            if project_id in project_main_zone_ids:
                 try:
                     dns.create_recordset(
-                        project_main_zone_ids[project],
+                        project_main_zone_ids[project_id],
                         A_FQDN,
                         "A",
                         IPs,
@@ -262,7 +262,7 @@ def update(config, os_cloud, retries, retry_interval):
                 except Exception:
                     logger.exception("Failed to create %s", A_FQDN)
             else:
-                logger.warning("Oops! No main zone for project %s.", project)
+                logger.warning("Oops! No main zone for project %s.", project_id)
 
         # Generate PTR record data, handling rewriting for RFC 2317 delegation as
         # configured
@@ -285,7 +285,7 @@ def update(config, os_cloud, retries, retry_interval):
     proxies = (k for k in public_PTRs if len(public_PTRs[k]) > 10)
     proxy_fqdn_re = re.compile(
         FQDN_REGEX.format(
-            zone=config["project_zone_template"].replace(r".", r"\.").format(project="(.*)")
+            zone=config["project_zone_template"].replace(r".", r"\.").format(project_id="(.*)")
         )
     )
     for ptr in proxies:
