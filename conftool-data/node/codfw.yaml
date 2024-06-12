@@ -32,14 +32,6 @@ codfw:
   api_appserver:
     mw2261.codfw.wmnet: [nginx]
     mw2262.codfw.wmnet: [nginx]
-    mw2283.codfw.wmnet: [nginx]
-    mw2284.codfw.wmnet: [nginx]
-    mw2285.codfw.wmnet: [nginx]
-    mw2286.codfw.wmnet: [nginx]
-    mw2287.codfw.wmnet: [nginx]
-    mw2288.codfw.wmnet: [nginx]
-    mw2289.codfw.wmnet: [nginx]
-    mw2290.codfw.wmnet: [nginx]
     mw2298.codfw.wmnet: [nginx]
     mw2299.codfw.wmnet: [nginx]
     mw2300.codfw.wmnet: [nginx, canary]
@@ -66,7 +58,6 @@ codfw:
     mw2266.codfw.wmnet: [apache2, nginx]
     mw2278.codfw.wmnet: [apache2, nginx, canary]
     mw2279.codfw.wmnet: [apache2, nginx, canary]
-    mw2281.codfw.wmnet: [apache2, nginx]
     mw2410.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
     mw2411.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
   videoscaler: *jobrunner

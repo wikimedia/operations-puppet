@@ -2371,19 +2371,7 @@ node /^mw23(58|6[024])\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
-# Row D
-
-# rack D4
-node /^mw228[34]\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-node /^mw22(8[5-9]|90)\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
 # Jobrunners
-
-# Row A
 
 # Row B
 
@@ -2397,17 +2385,10 @@ node /^mw226[3-6]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
-# Row C
-
 # Row D
 
 # rack D4 - canary jobrunners
 node /^mw227[8-9]\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
-
-# rack D4 - jobrunners
-node /^mw2281\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
