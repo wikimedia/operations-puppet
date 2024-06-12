@@ -108,7 +108,7 @@ acmechief_host: acmechief2002.codfw.wmnet
 # T355836
 profile::benthos::instances:
   mw_accesslog_sampler:
-    port: 4153
+    port: 4155
     kafka:
       cluster: logging
       site: "%{::site}"
