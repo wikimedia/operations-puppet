@@ -7074,7 +7074,7 @@ ldap_only_users:
     ensure: present
     realname: Eugene Wang'ombe
     email: ewangombe-ctr@wikimedia.org
-    expiry_date: "2024-06-30"
+    expiry_date: "2025-06-30"
     expiry_contact: nlaxstrom@wikimedia.org
   stef25:
     ensure: absent
