@@ -13,7 +13,7 @@ export PYTHONPATH=\${PYTHONPATH}:<%= @refinery_path %>/python
     --output-dir <%= @output_directory_private %> \
     --force \
     --wiki-file /mnt/hdfs/wmf/refinery/current/static_data/mediawiki/grouped_wikis/grouped_wikifunctions_wikis.csv \
-    --tables wikilambda_zobject_labels,wikilambda_zobject_function_join \
+    --tables wikilambda_zobject_labels,wikilambda_zobject_function_join,wikilambda_zobject_join \
     --user <%= @private_db_user %> \
     --password-file <%= @db_password_private %> \
     --partition-name snapshot \
