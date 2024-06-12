@@ -42,7 +42,6 @@ class profile::openstack::eqiad1::nova::compute::service(
         network_flat_interface_vlan        => $network_flat_interface_vlan,
         all_cloudvirts                     => $all_cloudvirts,
         libvirt_cpu_model                  => $libvirt_cpu_model,
-        require                            => Class['::profile::openstack::base::neutron::linuxbridge_agent'],
         ceph_rbd_pool                      => $ceph_rbd_pool,
         ceph_rbd_client_name               => $ceph_rbd_client_name,
         libvirt_rbd_uuid                   => $libvirt_rbd_uuid,
