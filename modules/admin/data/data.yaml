@@ -5718,7 +5718,7 @@ users:
     krb: present
     realname: Hamid Ghani
     email: hghani-ctr@wikimedia.org
-    expiry_date: "2024-06-30"
+    expiry_date: "2025-06-30"
     expiry_contact: osefu@wikimedia.org
     uid: 42383
     gid: 500
