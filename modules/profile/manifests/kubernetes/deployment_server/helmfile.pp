@@ -139,7 +139,7 @@ class profile::kubernetes::deployment_server::helmfile (
             if $cluster_config.dig('cluster_alias') != $cluster_name {
                 prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
                     ensure         => 'present',
-                    interval       => 'Mon..Fri 04:00:00',
+                    interval       => '*:00:00',
                     run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
                     extra_packages => ['python3-prometheus-client'],
                     environment    => {
