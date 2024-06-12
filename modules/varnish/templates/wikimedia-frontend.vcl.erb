@@ -766,7 +766,9 @@ sub vcl_recv {
         call translation_engine_recv;
     }
 
-    if (req.url ~ "^/beacon\/[^/?]+") {
+
+<% if @vcl_config['beacon_uri_regex'] -%>
+    if (req.url ~ "<%= @vcl_config['beacon_uri_regex'] %>") {
         // Logging beacon endpoints
         //
         // They are handled by the log tailer (varnishkafka) that filters the
@@ -774,6 +776,7 @@ sub vcl_recv {
         // processors for storage and analysis.
         return (synth(204, ""));
     }
+<%- end -%>
 
     call cluster_fe_recv_pre_purge;
     call wm_recv_purge;

@@ -21,6 +21,7 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::eventlogging(
+    Wmflib::Ensure $ensure = lookup('profile::cache::kafka::eventlogging::ensure', {'default_value' => 'present'}),
     String $kafka_cluster_name = lookup('profile::cache::kafka::eventlogging::kafka_cluster_name'),
     Boolean $ssl_enabled = lookup('profile::cache::kafka::eventlogging::ssl_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::eventlogging::monitoring_enabled', {'default_value' => false}),
@@ -66,6 +67,7 @@ class profile::cache::kafka::eventlogging(
     $user_agent_exclude_pattern = '^Fuzz Faster U Fool'
 
     varnishkafka::instance { 'eventlogging':
+        ensure                      => $ensure,
         brokers                     => $kafka_brokers,
         # Note that this format uses literal tab characters.
         format                      => '%q	%l	%n	%{%FT%T}t	%{X-Client-IP}o	"%{User-agent}i"',
@@ -95,6 +97,7 @@ class profile::cache::kafka::eventlogging(
 
         # Generate icinga alert if varnishkafka is not running.
         nrpe::monitor_service { 'varnishkafka-eventlogging':
+            ensure        => $ensure,
             description   => 'eventlogging Varnishkafka log producer',
             nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/eventlogging.conf'",
             contact_group => 'admins,analytics,team-data-platform',
