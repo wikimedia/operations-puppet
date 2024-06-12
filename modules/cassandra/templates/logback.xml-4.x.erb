@@ -94,7 +94,7 @@ appender reference in the root level section below.
   <appender name="UDP" class="net.logstash.logback.appender.LogstashSocketAppender">
     <host><%= @logstash_host %></host>
     <port><%= @logstash_port %></port>
-    <customFields>{"program":"cassandra", "cluster":"<%= @cluster_name %>", "instance_name":"<%= @instance_name %>", "HOSTNAME": "${HOSTNAME}"}</customFields>
+    <customFields>{"program":"cassandra", "cluster":"<%= @cluster_name %>", "instance_name":"<%= @instance_name %>", "HOSTNAME": "<%= @fqdn %>"}</customFields>
     <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
       <level>INFO</level>
     </filter>
