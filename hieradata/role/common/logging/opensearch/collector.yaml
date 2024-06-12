@@ -90,6 +90,7 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - 'kibana7.svc.codfw.wmnet'
     - 'kibana7.svc.eqiad.wmnet'
+    - 'logstash.discovery.wmnet'
     - 'logs-api.discovery.wmnet'
     - 'logs-api.svc.codfw.wmnet'
     - 'logs-api.svc.eqiad.wmnet'
