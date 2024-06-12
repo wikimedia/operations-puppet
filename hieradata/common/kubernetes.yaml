@@ -747,6 +747,7 @@ kubernetes::clusters:
         - ml-staging2002.codfw.wmnet
         - ml-staging-ctrl2001.codfw.wmnet
         - ml-staging-ctrl2002.codfw.wmnet
+        - ml-staging-ctrl2003.codfw.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
       cni_config:

@@ -2037,18 +2037,15 @@ node /^ml-serve100[1-8]\.eqiad\./ {
     role(ml_k8s::worker)
 }
 
-# New ml-staging etcd T302503
 node /^ml-staging-etcd200[123]\.codfw\./ {
     role(etcd::v3::ml_etcd::staging)
 }
 
-# New ml-staging ctrl T302503
 node /^ml-staging-ctrl200[12]\.codfw\./ {
     role(ml_k8s::staging::master)
 }
 
-# New ml-staging nodes T294946
-node /^ml-staging200[12]\.codfw\./ {
+node /^ml-staging200[123]\.codfw\./ {
     role(ml_k8s::staging::worker)
 }
 
