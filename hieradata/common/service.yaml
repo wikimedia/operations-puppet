@@ -2745,6 +2745,7 @@ service::catalog:
       ipip_encapsulation:
         - eqiad
         - codfw
+        - esams
         - ulsfo
         - eqsin
         - drmrs
@@ -2794,6 +2795,7 @@ service::catalog:
       ipip_encapsulation:
         - eqiad
         - codfw
+        - esams
         - ulsfo
         - eqsin
         - drmrs
