@@ -5541,7 +5541,7 @@ users:
     email: ddesouza-ctr@wikimedia.org
     uid: 39452
     gid: 500
-    expiry_date: "2024-06-30"
+    expiry_date: "2025-06-30"
     expiry_contact: bgerdemann@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdz7yeGq3MZf/MYLZBTB/b/skfmaaunWLSf16vL8Zmz dan@wmf-cluster
