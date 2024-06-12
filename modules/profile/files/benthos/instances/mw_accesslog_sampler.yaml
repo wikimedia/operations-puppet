@@ -4,7 +4,7 @@ http:
   address: "0.0.0.0:${PORT}"
 
 input:
-  label: 'mw_accesslog_sampler_input_kafka'
+  label: 'mw_accesslog_in'
   kafka_franz:
     seed_brokers: [ "${KAFKA_BROKERS}" ]
     topics: [ "${KAFKA_TOPICS}" ]
@@ -18,12 +18,12 @@ input:
 
 pipeline:
   processors:
-    - label: "mw_accesslog_sampler_processors_mapping_drop_99_pct"
+    - label: "sample"
       mapping: |
         if random_int(max:100) <= 99 { deleted() }
 
 output:
-  label: 'mw_accesslog_sampler_output_kafka'
+  label: 'mw_accesslog_out'
   kafka_franz:
     seed_brokers: [ "${KAFKA_BROKERS}" ]
     topic: 'mediawiki.httpd.accesslog-sampled'
@@ -35,3 +35,5 @@ metrics:
     use_histogram_timing: true
     add_process_metrics: true
     add_go_metrics: true
+  mapping: |
+    root = "benthos_" + this

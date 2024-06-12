@@ -114,5 +114,3 @@ profile::benthos::instances:
       site: "%{::site}"
       topics:
         - "mediawiki.httpd.accesslog"
-    env_variables:
-      site: "%{::site}"
