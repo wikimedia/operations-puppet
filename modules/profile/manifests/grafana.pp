@@ -156,8 +156,8 @@ class profile::grafana (
         notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
     }
 
-    # Configure a local Apache which will serve as a reverse proxy for Performance Team's
-    # Graphite instance for WebPageTest. That Apache uses our outbound proxy as its forward
+    # Configure a local Apache which will serve as a reverse proxy for Performance Testing
+    # Graphite instance. That Apache uses our outbound proxy as its forward
     # proxy for those requests. Despite being a mouthful, this seems preferable to setting the
     # http_proxy env var for the grafana process itself (and then also needing to set
     # no_proxy for every datasource URL other than the one of the perf-team Graphite).

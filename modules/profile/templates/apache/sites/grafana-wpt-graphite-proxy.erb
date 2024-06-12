@@ -5,7 +5,7 @@
 Listen <%= @wpt_graphite_proxy_port %>
 <VirtualHost *:<%= @wpt_graphite_proxy_port %>>
   <Location "/">
-    ProxyPass "http://wpt-graphite.wmftest.org:8080/"
+    ProxyPass "http://performance-testing-graphite.wmftest.org:8080/"
   </Location>
   ProxyRemote "*" "http://webproxy.<%= @site %>.wmnet:8080"
 </VirtualHost>
