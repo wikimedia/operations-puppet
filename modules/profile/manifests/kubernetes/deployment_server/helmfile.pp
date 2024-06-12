@@ -149,19 +149,6 @@ class profile::kubernetes::deployment_server::helmfile (
                         'HELM_CONFIG_HOME' => $helm_home,
                     }
                 }
-            } else {
-                # Temporary else block, that only needs to run once, to absent the previously created resources.
-                prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
-                    ensure      => 'absent',
-                    interval    => 'Mon..Fri 04:00:00',
-                    run_cmd     => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
-                    environment => {
-                        'HELM_HOME'        => $helm_home,
-                        'HELM_DATA_HOME'   => $helm_data,
-                        'HELM_CACHE_HOME'  => $helm_cache,
-                        'HELM_CONFIG_HOME' => $helm_home,
-                    }
-                }
             }
         }
     }
