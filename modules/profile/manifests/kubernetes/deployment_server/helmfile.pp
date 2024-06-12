@@ -9,6 +9,9 @@ class profile::kubernetes::deployment_server::helmfile (
     Hash[String, Any] $default_secrets                                  = lookup('profile::kubernetes::deployment_server_secrets::defaults', { 'default_value' => {} }),
     Hash[String, Any] $admin_services_secrets                           = lookup('profile::kubernetes::deployment_server_secrets::admin_services', { 'default_value' => {} }),
     String $helm_user_group                                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
+    Stdlib::Unixpath $helm_home                                         = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm' }),
+    Stdlib::Unixpath $helm_data                                         = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm' }),
+    Stdlib::Unixpath $helm_cache                                        = lookup('profile::kubernetes::helm_cache', { default_value => '/var/cache/helm' }),
 ) {
     # Add the global configuration for all deployments.
     require profile::kubernetes::deployment_server::global_config
@@ -136,6 +139,12 @@ class profile::kubernetes::deployment_server::helmfile (
                 interval       => 'Mon..Fri 04:00:00',
                 run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
                 extra_packages => ['python3-prometheus-client'],
+                environment    => {
+                    'HELM_HOME'        => $helm_home,
+                    'HELM_DATA_HOME'   => $helm_data,
+                    'HELM_CACHE_HOME'  => $helm_cache,
+                    'HELM_CONFIG_HOME' => $helm_home,
+                }
             }
         }
     }

@@ -23,12 +23,14 @@
 #   Configures the user to run the script under, defaults to "root"
 #
 define prometheus::node_textfile (
-    String                       $interval,
-    String                       $run_cmd,
-    Wmflib::Ensure               $ensure          = 'present',
-    Optional[Stdlib::Filesource] $filesource      = undef,
-    Optional[String]             $user            = 'root',
-    Optional[Array[String]]      $extra_packages  = [],
+    String                         $interval,
+    String                         $run_cmd,
+    Wmflib::Ensure                 $ensure          = 'present',
+    Optional[Stdlib::Filesource]   $filesource      = undef,
+    Optional[String]               $user            = 'root',
+    Optional[Array[String]]        $extra_packages  = [],
+    Optional[Hash[String, String]] $environment     = {},
+
 ) {
     if $extra_packages {
         ensure_packages($extra_packages, {'ensure' => $ensure})
@@ -48,5 +50,6 @@ define prometheus::node_textfile (
         user        => $user,
         command     => $run_cmd,
         interval    => {'start' => 'OnCalendar', 'interval' => $interval},
+        environment => $environment
     }
 }
