@@ -31,7 +31,7 @@ groups:
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
-              dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz]
+              dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -410,7 +410,7 @@ groups:
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, gtzatchkova, mttp,
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, gtzatchkova,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, akhatun, oljad, cmadeo,
@@ -4615,12 +4615,11 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC9NUdOb4+i0s1qwJjc02Nl8uPVxA+gH4ddDwQbu335/raSV9scp1bZzqAM/r5w7xiqkrmnfLWzBgiRWzfHPD1hmKFwKW5Mr2xDDym90UN9qhujqdw9VTkq28VDNRNQ8BWurT8Ec30D79L6kiF+RpT9i8LcX91HBpJJ864A4oNyovjgvAQ+Zt5aASlNC2QJAnGIzIeSlWgOL2ds4fMu/k4Vz4fvobY21HZJupNZbpZSCfcF4oinH/gQhLk2M9VY/O5eyqPuJZlvCQ1iaF2rISnszFwxq/vZpCueLZVfXU2/AGxzdGzH5UU7jFBkCbXDgkp/+xAYqn92u8ZxBsiWwQgCPSrlsCC9hbQ1jfW1EBj63u2hXmAyg1v/RJfXU6vtioNdBCKK0hOfOMMQttKc8OetME3YZfCB3CFwaLwozTcl8yk1bg5bHjWfz7l5abGeMM4I9kiQmwrZw3aKa3l/rC5F0Y+Zjgim4HNWMBPBX9lBG1bMN87vcSdp4K/nRQKyBgTbsyxTXo3j4T9KYaWiZ13xWL9k7koQp2SorDk2maGnqw1sXv8D5vE4kacIHdePAAotnwaZqmUMb6QrALqHTHuL4OV1nXSInlyvMrmH6zq4XmvgfWNNrRFdWo74+95a+0nqoU9RMgUHHx4kX6bz02+1yzsYbp1CvJxNPUkzOxBJ1Q== stran@wikimedia.org
   mttp:
-    ensure: present
+    ensure: absent
     realname: Mike Pham
-    email: mpham@wikimedia.org
     uid: 28311
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   rmaung:
     ensure: present
     realname: Rebecca Maung
