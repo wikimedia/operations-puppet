@@ -156,6 +156,8 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             "/usr/bin/ssh",
             "-o",
             "StrictHostKeyChecking=no",
+            "-o",
+            "UserKnownHostsFile=/dev/null",
             "-l%s" % username,
             server,
             command,
