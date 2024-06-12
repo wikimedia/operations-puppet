@@ -33,7 +33,7 @@ class profile::kubernetes::deployment_server::helmfile (
     file { '/usr/local/bin/prometheus-check-admin-ng-pending-changes':
         ensure => present,
         mode   => '0555',
-        source => 'puppet:///modules/kubernetes/deployment_server/check_admin_ng_pending_changes.py'
+        source => 'puppet:///modules/profile/kubernetes/deployment_server/check_admin_ng_pending_changes.py'
     }
 
     # Install the private values for each service
