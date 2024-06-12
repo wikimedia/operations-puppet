@@ -7207,3 +7207,7 @@ ldap_only_users:
     ensure: present
     realname: Kwaku Addo Ofori
     email: kofori@wikimedia.org
+  gonyeahialam:
+    ensure: present
+    realname: Gregory Onyeahialam
+    email: gonyeahialam@wikimedia.org
