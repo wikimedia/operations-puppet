@@ -1,6 +1,3 @@
 # Analytics Query Service next - rack1 instances
 
 profile::cassandra::rack: 'rack1'
-profile::java::java_packages:
-  - version: '11'
-    variant: 'jdk'
