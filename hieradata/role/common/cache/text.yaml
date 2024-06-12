@@ -300,6 +300,8 @@ profile::lvs::realserver::pools:
       - cdn
 profile::lvs::realserver::ipip::ipv4_mss: 1440
 profile::lvs::realserver::ipip::ipv6_mss: 1400
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'text HAProxy/Varnish/ATS cache server'
 
