@@ -84,7 +84,7 @@ class ExternalCloudVendorAzure:
     """Class to fetch data from  Azure"""
 
     name: str = "Azure"
-    url: str = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519"
+    url: str = "https://www.microsoft.com/en-us/download/details.aspx?id=56519"
 
     def get_networks(self, session: Session) -> Set[str]:
         """Fetch Azure networks
@@ -98,7 +98,7 @@ class ExternalCloudVendorAzure:
         page = session.get(self.url)
         tree = html.fromstring(page.content)
         download_url = tree.xpath(
-            "//a[contains(@class, 'failoverLink') and "
+            "//a[contains(@class, 'download-btn') and "
             "contains(@href,'download.microsoft.com/download/')]/@href"
         )[0]
 
