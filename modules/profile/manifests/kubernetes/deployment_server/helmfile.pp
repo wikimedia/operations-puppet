@@ -88,7 +88,7 @@ class profile::kubernetes::deployment_server::helmfile (
             }
         }
 
-        $cluster.each() | String $cluster_name, K8s::ClusterConfig $_ | {
+        $cluster.each() | String $cluster_name, K8s::ClusterConfig $cluster_config | {
             $merged_services.map | String $svcname, Hash $data | {
                 # Permission and file presence setup
                 if $data['private_files'] {
@@ -133,17 +133,34 @@ class profile::kubernetes::deployment_server::helmfile (
                     }
                 }
             }
-
-            prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
-                ensure         => 'present',
-                interval       => 'Mon..Fri 04:00:00',
-                run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
-                extra_packages => ['python3-prometheus-client'],
-                environment    => {
-                    'HELM_HOME'        => $helm_home,
-                    'HELM_DATA_HOME'   => $helm_data,
-                    'HELM_CACHE_HOME'  => $helm_cache,
-                    'HELM_CONFIG_HOME' => $helm_home,
+            # If cluster_config['cluster_alias'] == cluster_name, it means that we're currently
+            # iterating over the config of an alias cluster, which we'd like to ignore, as we
+            # don't use cluster alias names as helmfile environments
+            if $cluster_config.dig('cluster_alias') != $cluster_name {
+                prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
+                    ensure         => 'present',
+                    interval       => 'Mon..Fri 04:00:00',
+                    run_cmd        => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
+                    extra_packages => ['python3-prometheus-client'],
+                    environment    => {
+                        'HELM_HOME'        => $helm_home,
+                        'HELM_DATA_HOME'   => $helm_data,
+                        'HELM_CACHE_HOME'  => $helm_cache,
+                        'HELM_CONFIG_HOME' => $helm_home,
+                    }
+                }
+            } else {
+                # Temporary else block, that only needs to run once, to absent the previously created resources.
+                prometheus::node_textfile { "prometheus-check-admin-ng-pending-changes-${cluster_name}":
+                    ensure      => 'absent',
+                    interval    => 'Mon..Fri 04:00:00',
+                    run_cmd     => "/usr/local/bin/prometheus-check-admin-ng-pending-changes --environment ${cluster_name} --outfile /var/lib/prometheus/node.d/admin-ng-${cluster_name}.prom",
+                    environment => {
+                        'HELM_HOME'        => $helm_home,
+                        'HELM_DATA_HOME'   => $helm_data,
+                        'HELM_CACHE_HOME'  => $helm_cache,
+                        'HELM_CONFIG_HOME' => $helm_home,
+                    }
                 }
             }
         }
