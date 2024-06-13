@@ -13,6 +13,9 @@ input {
 <%- if @group_id -%>
     group_id                => "<%= @group_id %>"
 <%- end -%>
+<%- if @auto_offset_reset -%>
+    auto_offset_reset       => "<%= @auto_offset_reset %>"
+<%- end -%>
 <%- if @type -%>
     type                    => "<%= @type %>"
 <%- end -%>

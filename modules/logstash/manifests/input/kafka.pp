@@ -27,6 +27,9 @@
 # [*group_id*]
 #   Kafka consumer group id. Default: None (use logstash implemented default of "logstash")
 #
+# [*auto_offset_reset*]
+#   What to do when there is no initial offset in Kafka or if an offset is out of range.
+#
 # [*security_protocol*]
 #   Security protocol to use, which can be either of PLAINTEXT,SSL,SASL_PLAINTEXT,SASL_SSL
 #   must be set to SSL for ssl_truststore* configs to be set
@@ -73,6 +76,7 @@ define logstash::input::kafka(
     String $topic                                                                    = $title,
     Optional[String] $topics_pattern                                                 = undef,
     Optional[String] $group_id                                                       = undef,
+    Optional[Enum['earliest', 'latest', 'none']] $auto_offset_reset                  = undef,
     Optional[Enum['PLAINTEXT','SSL','SASL_PLAINTEXT','SASL_SSL']] $security_protocol = undef,
     Optional[String] $ssl_truststore_location                                        = undef,
     Optional[String] $ssl_truststore_password                                        = undef,
