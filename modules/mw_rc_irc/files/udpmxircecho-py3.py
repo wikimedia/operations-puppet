@@ -43,7 +43,7 @@ class EchoReader(threading.Thread):
         while True:
             try:
                 s = udpsock.recv(65535)
-                sp = s.split("\t")
+                sp = s.split(b"\t")
                 if len(sp) == 2:
                     channel = sp[0]
                     text = sp[1].lstrip().replace('\r', '').replace('\n', '')
