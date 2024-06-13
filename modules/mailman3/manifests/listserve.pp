@@ -166,9 +166,4 @@ class mailman3::listserve (
         proto  => 'tcp',
         port   => '25',
     }
-
-    ferm::rule { 'mailman-spamd-local':
-        ensure => absent, # This is no longer needed, so removing the rule for cleanup.
-        rule   => 'proto tcp dport 783 { saddr (127.0.0.1 ::1) ACCEPT; }',
-    }
 }
