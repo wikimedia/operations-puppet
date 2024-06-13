@@ -67,3 +67,48 @@ profile::mail::vrts::aliases_folder: /etc/postfix/aliases
 profile::mail::vrts::mysql_dbname: otrs
 profile::mail::vrts::mysql_host: m2-master.eqiad.wmnet
 profile::mail::vrts::mysql_user: exim
+
+profile::postfix::mx::verp_config:
+  post_connect_server: meta.wikimedia.org
+  bounce_post_url: https://api-rw.discovery.wmnet/w/api.php
+profile::postfix::mx::config:
+  relay_domains: &relay_domains
+    # source, puppet:///modules/role/exim/wikimedia_domains
+    # top-level project domains
+    - mediawiki.org
+    - wikibooks.org
+    - wikidata.org
+    - wikimediafoundation.org
+    - wikinews.org
+    - wikimedia.org
+    - wikipedia.org
+    - wikiquote.org
+    - wikisource.org
+    - wikispecies.org
+    - wikiversity.org
+    - wikivoyage.org
+    - wiktionary.org
+    - wmflabs.org
+    - wmcloud.org
+    - w.wiki
+    # wikivoyage.de -> WMF migration; aliases
+    - wikivoyage.de
+    # Domains handled by VRT
+    - wikilovesmonuments.be
+    - wikilovesmonuments.cat
+    - wikilovesmonuments.eu
+    - wikilovesmonuments.nl
+    - wikilovesmonuments.org
+    - wikimedia.community
+    - wikimedia.com
+    - wikipedia.com
+    # routed by special-case routers
+    - donate.wikimedia.org
+    - civicrm.wikimedia.org
+    - rt.wikimedia.org
+    - phabricator.wikimedia.org
+    - benefactors.wikimedia.org
+    # pr.wikimedia.org outbound mail is delegated to MuckRack (https://muckrack.com)
+    # with inbound mail handled via aliases - T231387
+    - pr.wikimedia.org
+profile::mail::vrts::wikimedia_domains: *relay_domains
