@@ -2077,19 +2077,23 @@ node /^moss-be100[23]\.eqiad\./ {
     role(cephadm::storage)
 }
 
-# New moss-be nodes T276642 and T342674
-node /^moss-be200[123]\.codfw\./ {
-    role(insetup::data_persistence)
+# Controller for the codfw apus cephadm cluster
+node /^moss-be2001\.codfw\./ {
+    role(cephadm::controller)
+}
+
+node /^moss-be200[23]\.codfw\./ {
+    role(cephadm::storage)
+}
+
+node /^moss-fe2002\.codfw\./ {
+    role(cephadm::rgw)
 }
 
 # New moss-fe nodes T275513
 node /^moss-fe2001\.codfw\./ {
     role(swift::proxy)
     include lvs::realserver # lint:ignore:wmf_styleguide
-}
-
-node /^moss-fe2002\.codfw\./ {
-    role(insetup::data_persistence)
 }
 
 node /^ms-backup100[12]\.eqiad\./ {

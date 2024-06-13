@@ -223,6 +223,10 @@ apus_eqiad:
   __regex: !ruby/regexp /^(moss|apus)-(be|fe)1[0-9]+\.eqiad\./
   profile::cephadm::cluster_label: apus
 
+apus_codfw:
+  __regex: !ruby/regexp /^(moss|apus)-(be|fe)2[0-9]+\.codfw\./
+  profile::cephadm::cluster_label: apus
+
 # Legacy hosts with a single object-server per port
 # https://phabricator.wikimedia.org/T222366
 swift_servers_per_port:
