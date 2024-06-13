@@ -33,7 +33,7 @@ class profile::cephadm::controller(
     # Look up OSD rack locations - the hash is keyed by management hostname
     # So we construct that first (by inserting "mgmt").
     $rack_locations = $osds.reduce( {} ) |$memo, $hostname| {
-        $hn_array = $hostname.split('.')
+        $hn_array = $hostname.split('\.')
         $management_hostname = join(flatten([ $hn_array[0], 'mgmt', $hn_array[1,-1] ]),'.')
         $memo + { $hostname => $profile::netbox::data::mgmt["$management_hostname"]['rack'] }
         }
