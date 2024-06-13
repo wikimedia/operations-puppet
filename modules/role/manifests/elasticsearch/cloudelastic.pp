@@ -8,5 +8,6 @@ class role::elasticsearch::cloudelastic {
     include profile::elasticsearch::cirrus
     include profile::elasticsearch::monitor::base_checks
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
     include profile::logstash::gelf_relay
 }

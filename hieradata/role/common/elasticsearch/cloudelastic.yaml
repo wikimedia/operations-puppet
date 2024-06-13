@@ -106,6 +106,10 @@ profile::lvs::realserver::pools:
     services:
       - "elasticsearch_6@cloudelastic-omega-eqiad.service"
 profile::lvs::realserver::use_conftool: true
+# enable IPIP encapsulation, see T365616
+profile::lvs::realserver::ipip::ipv4_mss: 1440
+profile::lvs::realserver::ipip::ipv6_mss: 1400
+profile::lvs::realserver::ipip::enabled: true
 
 profile::tlsproxy::instance::nginx_variant: 'light'
 # Role contacts appears to express ownership (comment 1 of 2)
@@ -113,6 +117,8 @@ profile::contacts::role_contacts: ['Search Platform']
 # Whereas contact groups appears to define which team(s) receive alerts (comment 2 of 2)
 contactgroups: 'team-data-platform,team-discovery'
 profile::base::production::role_description: 'Elasticsearch cloud elastic cirrus'
+# required for IPIP encapsulation, see T365616
+profile::base::enable_rp_filter: false
 
 logstash_host: 'localhost'
 

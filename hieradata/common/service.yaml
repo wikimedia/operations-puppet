@@ -285,6 +285,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 9243
     sites:
       - eqiad
@@ -312,6 +314,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 8243
     sites:
       - eqiad
@@ -339,6 +343,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 9443
     sites:
       - eqiad
@@ -366,6 +372,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 8443
     sites:
       - eqiad
@@ -393,6 +401,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 9643
     sites:
       - eqiad
@@ -420,6 +430,8 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+      ipip_encapsulation:
+        - eqiad
     port: 8643
     sites:
       - eqiad
