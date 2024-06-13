@@ -277,7 +277,7 @@ node /^backup1010\.eqiad\./ {
 
 # new node T355571
 node /^an-redacteddb1001\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
 }
 
 # codfw storage daemon

@@ -1,0 +1,17 @@
+# Disable notifications until the service is ready for production use.
+profile::monitoring::notifications_enabled: false
+
+# an-redacteddb1001
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
+  s1: 70G
+  s2: 40G
+  s3: 40G
+  s4: 70G
+  s5: 40G
+  s6: 30G
+  s7: 50G
+  s8: 70G
+
+mariadb::package: 'wmf-mariadb106'
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
+profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
