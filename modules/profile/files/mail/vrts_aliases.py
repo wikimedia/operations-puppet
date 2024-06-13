@@ -140,10 +140,10 @@ def main():
 
     try:
         conn = pymysql.connect(
-            config["DB"]["host"],
-            config["DB"]["user"],
-            config["DB"]["pass"],
-            config["DB"]["name"],
+            host=config["DB"]["host"],
+            user=config["DB"]["user"],
+            password=config["DB"]["pass"],
+            database=config["DB"]["name"],
         )
         with conn.cursor() as cur:
             cur.execute(query)
