@@ -13,7 +13,7 @@
 #     The IP port on which the service is exposed
 # @param [Boolean] encryption
 #     Whether the service uses TLS or not.
-# @param [Wmflib::Service::Lvs] lvs
+# @param [Optional[Wmflib::Service::Lvs]] lvs
 #     A collection of information on the load-balancing of the service
 # @param [Optional[Wmflib::Service::Probes]] probes
 #     A list of network probes for the service.
