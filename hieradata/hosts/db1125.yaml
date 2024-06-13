@@ -2,6 +2,6 @@
 # Testing section
 mariadb::binlog_format: 'STATEMENT'
 mariadb::shard: 'test-s4'
-# Not needed the line below, but leaving it for testinf future versions
+# Not needed the line below, but leaving it for testing future versions
 #mariadb::package: 'wmf-mariadb106'
 profile::mariadb::mysql_role: 'master'
