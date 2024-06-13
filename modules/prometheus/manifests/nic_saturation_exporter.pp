@@ -26,6 +26,8 @@ class prometheus::nic_saturation_exporter(
         content   => systemd_template('prometheus-nic-saturation-exporter'),
         restart   => true,
         subscribe => File[$script_path],
+        # For the prometheus user
+        require   => Package['prometheus-node-exporter'],
     }
 
     profile::auto_restarts::service { $service_name:
