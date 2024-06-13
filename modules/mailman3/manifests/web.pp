@@ -115,13 +115,13 @@ class mailman3::web (
         require => File["${$mailman_root}/redirects/"],
     }
 
-    ferm::service { 'mailman-http':
+    firewall::service { 'mailman-http':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
     }
 
-    ferm::service { 'mailman-https':
+    firewall::service { 'mailman-https':
         proto => 'tcp',
-        port  => '443',
+        port  => 443,
     }
 }

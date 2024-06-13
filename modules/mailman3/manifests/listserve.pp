@@ -162,9 +162,9 @@ class mailman3::listserve (
         }
     }
 
-    ferm::service { 'mailman-smtp':
+    firewall::service { 'mailman-smtp':
         ensure => stdlib::ensure($allow_incoming_mail),
         proto  => 'tcp',
-        port   => '25',
+        port   => 25,
     }
 }
