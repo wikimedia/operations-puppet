@@ -164,7 +164,8 @@ def main():
                     return_code = 1
                     gsuite.append(row)
                 else:
-                    available.append(row)
+                    if row[0] not in available:
+                        available.append(row[0])
     except (
         pymysql.MySQLError,
         smtplib.SMTPServerDisconnected,
@@ -175,9 +176,9 @@ def main():
         return 1
     with Path(config["DEFAULT"]["aliases_file"]).open("w") as aliases_fh:
         if config["DEFAULT"]["aliases_format"] == "exim":
-            aliases_fh.writelines([f"{row[0]}: {row[0]}\n" for row in available])
+            aliases_fh.writelines([f"{address}: {address}\n" for address in available])
         elif config["DEFAULT"]["aliases_format"] == "postfix":
-            aliases_fh.writelines([f"{row[0]}\t{next_hop}\n" for row in available])
+            aliases_fh.writelines([f"{address}\t{next_hop}\n" for address in available])
     if config["DEFAULT"]["aliases_format"] == "postfix":
         subprocess.run(["postmap", Path(config["DEFAULT"]["aliases_file"])])
     return return_code
