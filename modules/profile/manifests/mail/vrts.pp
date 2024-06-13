@@ -30,6 +30,7 @@ class profile::mail::vrts (
     Stdlib::Host            $mysql_host        = lookup('profile::mail::vrts::mysql_host'),
     String[1]               $mysql_user        = lookup('profile::mail::vrts::mysql_user'),
     Array[Stdlib::Host]     $wikimedia_domains = lookup('profile::mail::vrts::wikimedia_domains'),
+    String[1]               $next_hop          = lookup('profile::mail::vrts::next_hop'),
 ){
     file { '/etc/vrts':
         ensure => directory,
@@ -59,6 +60,7 @@ class profile::mail::vrts (
             vrts_mysql_server      => $mysql_host,
             vrts_mysql_user        => $mysql_user,
             wikimedia_domains_path => $wikimedia_domains_path,
+            next_hop               => $next_hop,
         })
     }
 

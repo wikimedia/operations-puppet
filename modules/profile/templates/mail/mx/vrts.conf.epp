@@ -7,7 +7,8 @@
       Sensitive[String[1]] $vrts_mysql_password,
       String[1] $wikimedia_domains_path,
       String[1] $vrts_aliases_format,
-      String[1] $vrts_aliases_folder
+      String[1] $vrts_aliases_folder,
+      Optional[String[1]] $next_hop = undef
 | -%>
 [DEFAULT]
 valid_domains = <%= $wikimedia_domains_path %>
@@ -15,6 +16,9 @@ smtp_server = <%= $gmail_smtp_server %>
 aliases_file = <%= $vrts_aliases_file %>
 aliases_format = <%= $vrts_aliases_format %>
 aliases_folder = <%= $vrts_aliases_folder %>
+<%- if $next_hop { -%>
+next_hop = <%= $next_hop %>
+<%- } -%>
 [DB]
 host = <%= $vrts_mysql_server %>
 name = <%= $vrts_mysql_dbname %>
