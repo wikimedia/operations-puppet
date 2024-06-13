@@ -12,7 +12,6 @@ class profile::thanos::swift::frontend (
     Hash[String, String] $swift_keys         = lookup('profile::thanos::swift::accounts_keys'),
     String $stats_reporter_host              = lookup('profile::swift::stats_reporter_host'),
     Array[String] $shard_container_list      = lookup('profile::swift::proxy::shard_container_list'),
-    Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('puppetmaster::servers'),
     Optional[Stdlib::Host] $statsd_host      = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port      = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account     = lookup('profile::swift::proxy::dispersion_account'),
@@ -130,6 +129,6 @@ class profile::thanos::swift::frontend (
     class { 'swift::ring_manager':
         ensure        => $ring_manager_ensure,
         swift_cluster => $swift_cluster_name,
-        puppetmasters => keys($puppetmasters) + $puppetservers,
+        puppetmasters => $puppetservers,
     }
 }
