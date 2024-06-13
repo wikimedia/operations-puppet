@@ -9,18 +9,6 @@
 # [*server_aliases*]
 #   List of server aliases, host names also served.
 #
-# [*certs*]
-#   Optional - specify either this or cfssl_paths.
-#   Array of certs, normally just one.  If more than one, special patched nginx
-#   support is required.  This is intended to support duplicate keys with
-#   differing crypto (e.g. ECDSA + RSA).
-#
-# [*certs_active*]
-#   Optional - if "certs" above is used, this defines the subset of the certs to
-#   actually configure on the server.  This allows for additional certs to be
-#   fully deployed and OCSP stapled (ready for use), which aren't actually used
-#   to serve traffic.  Defaults to the entire set from "certs".
-#
 # [*acme_chief*]
 #   Optional - specify either this or cfssl_paths.
 #   If true, download, and potentially use, certificates from acme-chief.
@@ -75,13 +63,12 @@
 #  this on public facing instances since in internal services (even if proxied
 #  by the edge cache) it adds 1 more moving part without providing considerable
 #  benefits
+#
 # [*cfssl_certs*]
 #   A hash of paths pointing to ssl certificate files,  created by profile::pki::get_cert
 #   if this is present it takes precedence
 
 define tlsproxy::localssl(
-    Array                             $certs              = [],
-    Array                             $certs_active       = [],
     Boolean                           $acme_chief         = false,
     String[1]                         $acme_certname      = $title,
     Stdlib::Host                      $server_name        = $::fqdn,
@@ -100,8 +87,8 @@ define tlsproxy::localssl(
     Boolean                           $enable_http2       = false,
     Hash[String[1], Stdlib::Unixpath] $cfssl_paths        = {}
 ) {
-    if $cfssl_paths.empty and $certs.empty and !acme_chief {
-        fail('Must provide exactly one of certs, cfssl_paths or acme_chief')
+    if $cfssl_paths.empty and !acme_chief {
+        fail('Must provide exactly one of cfssl_paths or acme_chief')
     }
 
     if $redir_port != undef and $tls_port != 443 {
@@ -127,22 +114,6 @@ define tlsproxy::localssl(
             command     => '/bin/true',
             onlyif      => '/bin/false',
             refreshonly => true,
-        }
-    }
-
-    if !empty($certs) and !empty($certs_active) {
-        # Ideally, we'd sanity-check that active is a subset of certs, too
-        $certs_nginx = $certs_active
-    } else {
-        $certs_nginx = $certs
-    }
-
-    $certs.each |String $cert| {
-        if !defined(Sslcert::Certificate[$cert]) {
-            sslcert::certificate { $cert:
-                skip_private => $skip_private,
-                before       => Service['nginx'],
-            }
         }
     }
 

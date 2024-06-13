@@ -23,11 +23,7 @@ server {
     ssl_certificate <%= @cfssl_paths['chained'] %>;
     ssl_certificate_key <%= @cfssl_paths['key'] %>;
     <%- end -%>
-    <%- @certs_nginx.each do |cert| -%>
-    ssl_certificate /etc/ssl/localcerts/<%= cert %>.chained.crt;
-    ssl_certificate_key /etc/ssl/private/<%= cert %>.key;
-    <%- end -%>
-    <%- if @acme_chief and @certs_nginx.empty? -%>
+    <%- if @acme_chief -%>
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/rsa-2048.key;
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
