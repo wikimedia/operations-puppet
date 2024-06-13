@@ -2427,7 +2427,7 @@ node /^mx-out[1-9][0-9]{3}\.wikimedia\./ {
 }
 
 node /^mx-in[1-9][0-9]{3}\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(postfix::mx_in)
 }
 
 node /^ncmonitor[1-9][0-9]{3}\./ {
