@@ -4,8 +4,6 @@ define openstack::nova::libvirt::secret (
     String[1]        $libvirt_uuid,
     Stdlib::Unixpath $data_dir = '/etc/libvirt',
 ) {
-    ensure_packages(['libvirt-clients'])
-
     $xmlfile = "${data_dir}/libvirt-secret-${client_name}.xml"
     file { $xmlfile:
         ensure    => present,
@@ -17,7 +15,7 @@ define openstack::nova::libvirt::secret (
             { 'uuid' => $libvirt_uuid, 'ceph_client_name' => $client_name },
         ),
         show_diff => false,
-        require   => Package['libvirt-clients'],
+        require   => Service['libvirtd'],
     }
 
     $check_secret_exec_name = "check-virsh-secret-for-${client_name}"
