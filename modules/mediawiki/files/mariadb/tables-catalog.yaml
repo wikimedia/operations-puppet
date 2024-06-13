@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: Apache-2.0
+# Attention: It's incomplete. Work in progress.
+---
+version: 0
+tables:
+  - name: site_identifiers
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: updatelog
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: actor
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: user_former_groups
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: bot_passwords
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: comment
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: slots
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: site_stats
+    source: core
+    canonicality: derivative
+    visibility: public
+sources:
+   core:
+      - path: maintenance/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/maintenance/tables.json
+dropped_tables:
+  - flaggedtemplates
+  - flaggedimages
+  - cur
