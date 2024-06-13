@@ -81,11 +81,7 @@
 "os_compute_api:servers:index": ""
 "os_compute_api:servers:reboot": "rule:admin_or_member"
 "os_compute_api:servers:rebuild": "rule:admin_or_unmanaged"
-
-# Temporary disable resizing for normal users during the OVS migration
-# "os_compute_api:servers:resize": "rule:admin_or_member"
-"os_compute_api:servers:resize": "rule:context_is_admin"
-
+"os_compute_api:servers:resize": "rule:admin_or_member"
 "os_compute_api:servers:revert_resize": "rule:admin_or_member"
 "os_compute_api:servers:show": ""
 "os_compute_api:servers:start": "rule:admin_or_member"
