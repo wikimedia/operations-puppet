@@ -58,6 +58,39 @@ class profile::logstash::production (
     ssl_endpoint_identification_algorithm => '',
   }
 
+  # k8s dedicated topics https://phabricator.wikimedia.org/T366710
+  logstash::input::kafka { 'k8s-eqiad':
+    kafka_cluster_name                    => 'logging-eqiad',
+    topics_pattern                        => 'k8s-.*',
+    group_id                              => $input_kafka_consumer_group_id,
+    auto_offset_reset                     => 'latest',
+    type                                  => 'syslog',
+    tags                                  => ['input-kafka-k8s', 'rsyslog-shipper', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
+  logstash::input::kafka { 'k8s-codfw':
+    kafka_cluster_name                    => 'logging-codfw',
+    topics_pattern                        => 'k8s-.*',
+    group_id                              => $input_kafka_consumer_group_id,
+    auto_offset_reset                     => 'latest',
+    type                                  => 'syslog',
+    tags                                  => ['input-kafka-k8s', 'rsyslog-shipper', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_location               => $ssl_truststore_location,
+    ssl_truststore_password               => $ssl_truststore_password,
+    manage_truststore                     => $manage_truststore,
+    ssl_endpoint_identification_algorithm => '',
+    consumer_threads                      => 3,
+  }
+
   logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
     kafka_cluster_name                    => 'logging-eqiad',
     topics_pattern                        => 'udp_localhost-.*',
