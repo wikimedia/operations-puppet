@@ -17,35 +17,12 @@ class ircecho (
     $ensure = 'present',
 ) {
 
-    if debian::codename::eq('buster') {
-        ensure_packages(['python-pyinotify', 'python-irc'])
-
-        file { '/usr/local/bin/ircecho':
-            ensure => 'present',
-            source => 'puppet:///modules/ircecho/ircecho.py',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            notify => Service['ircecho'],
-        }
-
-        file { '/usr/local/lib/python2.7/dist-packages/ib3_auth.py':
-            ensure => 'present',
-            source => 'puppet:///modules/ircecho/ib3_auth.py',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0755',
-            notify => Service['ircecho'],
-        }
-
-    } else {
+    if debian::codename::eq('bookworm') {
         ensure_packages(['python3-pyinotify', 'python3-irc'])
 
         file { '/usr/local/bin/ircecho':
             ensure => 'present',
             source => 'puppet:///modules/ircecho/ircecho3.py',
-            owner  => 'root',
-            group  => 'root',
             mode   => '0755',
             notify => Service['ircecho'],
         }
@@ -53,8 +30,6 @@ class ircecho (
         file { '/usr/local/lib/python3.11/dist-packages/ib3_auth.py':
             ensure => 'present',
             source => 'puppet:///modules/ircecho/ib3_auth.py',
-            owner  => 'root',
-            group  => 'root',
             mode   => '0755',
             notify => Service['ircecho'],
         }
