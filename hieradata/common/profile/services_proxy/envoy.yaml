@@ -404,7 +404,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - cloudelastic-chi-eqiad
   - cloudelastic-omega-eqiad
   - cloudelastic-psi-eqiad
-  - mwapi
+  - mw-api-int
   - linkrecommendation
   - image-suggestion
   - device-analytics
