@@ -50,6 +50,8 @@ class profile::mail::vrts (
     file { $vrts_aliases_conf:
         ensure  => present,
         mode    => '0440',
+        owner   => 'postfix',
+        group   => 'postfix',
         content => epp('profile/mail/mx/vrts.conf.epp', {
             gmail_smtp_server      => $gmail_host,
             vrts_aliases_file      => $aliases_file,
@@ -75,7 +77,7 @@ class profile::mail::vrts (
         ensure            => 'present',
         description       => "Generate VRTS aliases file for ${aliases_format}",
         command           => "/usr/local/bin/vrts_aliases --config ${vrts_aliases_conf}",
-        user              => 'root',
+        user              => 'postfix',
         interval          => {'start' => 'OnUnitInactiveSec', 'interval' => '1h'},
         timeout_start_sec => 1800,
     }
