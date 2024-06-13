@@ -11,7 +11,7 @@ profile::analytics::postgresql::databases:
   - airflow_search
   - airflow_analytics_product
   - airflow_wmde
-  - airflow_test_k8s
+  - airflow-test-k8s
   - superset_next
   - superset_staging
 

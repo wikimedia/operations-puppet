@@ -439,6 +439,14 @@ profile::kubernetes::deployment_server::services:
         - name: analytics-wmde-deploy
           owner: root
           group: analytics-wmde
+    airflow-test-k8s:
+      usernames:
+        - name: airflow-test-k8s
+          owner: root
+          group: analytics-deployers
+        - name: airflow-test-k8s-deploy
+          owner: root
+          group: analytics-deployers
     rdf-streaming-updater:
       usernames:
         - name: rdf-streaming-updater
