@@ -48,7 +48,7 @@ profile::idp::services:
   gitlab_replica_oidc:
     id: 6
     service_class: 'OidcRegisteredService'
-    service_id: 'https://gitlab(-replica|-replica-old)\.wikimedia\.org(/.*)?'
+    service_id: 'https://gitlab-replica(-a|-b)\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
