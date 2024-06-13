@@ -36,7 +36,6 @@ profile::query_service::nodes:
   - 'wdqs2020.codfw.wmnet'
   - 'wdqs2021.codfw.wmnet'
   - 'wdqs2022.codfw.wmnet'
-  - 'wdqs2023.codfw.wmnet'
   - 'wdqs2024.codfw.wmnet'
   - 'wdqs2025.codfw.wmnet'
 profile::admin::groups:
