@@ -8,10 +8,16 @@ define apt::repository(
     Optional[Stdlib::Unixpath]         $keyfile_path  = undef,
     Wmflib::Ensure                     $ensure        = present,
     Boolean                            $trust_repo    = false,
+    Boolean                            $allow_releaseinfo_change = false,
     Optional[Stdlib::Unixpath]         $concat_target = undef,
 ) {
     if $ensure == 'present' and ! ($uri and $dist and $components) {
       fail('uri, dist and component are all required if ensure =>  present')
+    }
+
+    $releaseinfo_flag = $allow_releaseinfo_change ? {
+        true    => ' --allow-releaseinfo-change',
+        default => '',
     }
 
     if $keyfile and $keyfile_path {
@@ -24,7 +30,7 @@ define apt::repository(
     # applied before the apt class as we may need to install a package before
     # this define.
     exec { "apt_repository_${title}":
-        command     => '/usr/bin/apt-get update',
+        command     => "/usr/bin/apt-get update ${releaseinfo_flag}",
         refreshonly => true,
     }
 
