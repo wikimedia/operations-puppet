@@ -65,6 +65,9 @@ class profile::postfix::mx (
     $domain_aliases_maps = $domain_aliases.map |$domain, $_| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
+    $local_mail_maps = [ $facts['fqdn'] ].map |$domain| {
+        "hash:/etc/postfix/aliases/virtual-${domain}"
+    }
     $domain_aliases_generic_maps = $domain_aliases_generic.map |$domain| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
@@ -88,6 +91,9 @@ class profile::postfix::mx (
         compatibility_level          => '3.6',
         mynetworks                   => $agg_nets,
         myhostname                   => $facts['fqdn'],
+        # HACK: we want an empty array, but the provider and lens does not
+        # support one
+        mydestination                => ['/dev/null'],
         inet_interfaces              => case $mta_mode {
             'null-client': { ['loopback-only'] }
             default:       { ['all'] }
@@ -100,7 +106,6 @@ class profile::postfix::mx (
         header_checks                => ['regexp:/etc/postfix/header_checks'],
         smtpd_sender_restrictions    => [
             'reject_unknown_sender_domain',
-            'reject_authenticated_sender_login_mismatch'
         ],
         smtpd_relay_restrictions     => [
             'permit_mynetworks',
@@ -120,15 +125,14 @@ class profile::postfix::mx (
         strict_rfc821_envelopes      => 'yes',
         # Reject egress mail that is not configured
         smtpd_reject_unlisted_sender => 'yes',
+        # Add $myhostname, so we can relay local mail
+        relay_domains                => get($config, 'relay_domains', []) +
+                                        '$myhostname',
+        virtual_alias_maps           => $domain_aliases_maps +
+                                        $domain_aliases_generic_maps +
+                                        $local_mail_maps,
     }
 
-    if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
-        $virtual_alias_maps = {
-            virtual_alias_maps => $domain_aliases_maps + $domain_aliases_generic_maps
-        }
-    } else {
-        $virtual_alias_maps = {}
-    }
     if length($static_transport_maps_paths + $dynamic_transport_maps) > 0 {
         $transport_maps = {
             transport_maps => $static_transport_maps_paths + $dynamic_transport_maps_paths
@@ -183,6 +187,9 @@ class profile::postfix::mx (
             smtpd_sender_login_maps         => [
                 'hash:/etc/postfix/controlled_envelope_senders'
             ],
+            smtpd_sender_restrictions       =>
+                $base_config['smtpd_sender_restrictions'] +
+                ['reject_authenticated_sender_login_mismatch'],
         }
         ensure_packages(['dovecot-core'])
         file { '/etc/dovecot/plain_auth_logins':
@@ -237,8 +244,10 @@ class profile::postfix::mx (
 
     # lint:ignore:2sp_soft_tabs
     class { 'postfix':
+        # *NOTE*: the order matters, for example $dovecot_config may overwrite
+        # params in the $base_config
         * => $config + $base_config + $tls_config + $dovecot_config +
-             $virtual_alias_maps + $transport_maps
+             $transport_maps
     }
     # lint:endignore
 
@@ -508,6 +517,15 @@ class profile::postfix::mx (
     file { '/etc/postfix/aliases':
         ensure => directory,
         mode   => '0755',
+    }
+
+    # lookup database for local_mail_maps
+    postfix::lookup::database {
+    "/etc/postfix/aliases/virtual-${facts['fqdn']}":
+        content => epp(
+            'profile/postfix/mx/generic_aliases.epp',
+            { domain => $facts['fqdn'] }
+        )
     }
 
     $domain_aliases_generic.each |$domain| {
