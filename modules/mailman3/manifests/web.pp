@@ -93,7 +93,7 @@ class mailman3::web (
         require => Package['mailman3-web'],
     }
 
-    file { '/var/lib/mailman3/redirects/':
+    file { "${mailman_root}/redirects/":
         ensure => directory,
         owner  => 'root',
         group  => 'list',

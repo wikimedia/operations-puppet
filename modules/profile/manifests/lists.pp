@@ -224,7 +224,7 @@ class profile::lists (
             ensure      => $is_primary_host.bool2str('absent', 'present'),
             user        => 'root',
             description => 'rsync /var/lib/mailman3',
-            command     => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman3-sync /srv/mailman3",
+            command     => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman3-sync ${mailman_root}",
             interval    => { 'start' => 'OnUnitInactiveSec', 'interval' => '10m' },
         }
 
