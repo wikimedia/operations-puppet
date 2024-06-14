@@ -13,7 +13,6 @@ class profile::swift::proxy (
     Boolean $use_tls                           = lookup('profile::swift::proxy::use_tls'),
     String $proxy_service_host                 = lookup('profile::swift::proxy::proxy_service_host'),
     Array[String] $shard_container_list        = lookup('profile::swift::proxy::shard_container_list'),
-    Hash[String, Puppetmaster::Backends] $puppetmasters = lookup('puppetmaster::servers'),
     Optional[Stdlib::Host] $statsd_host        = lookup('profile::swift::proxy::statsd_host'),
     Optional[Stdlib::Port] $statsd_port        = lookup('profile::swift::proxy::statsd_port'),
     Optional[String] $dispersion_account       = lookup('profile::swift::proxy::dispersion_account'),
@@ -169,6 +168,6 @@ class profile::swift::proxy (
     class { 'swift::ring_manager':
         ensure        => $ring_manager_ensure,
         swift_cluster => $swift_cluster_name,
-        puppetmasters => keys($puppetmasters) + $puppetservers,
+        puppetmasters => $puppetservers,
     }
 }
