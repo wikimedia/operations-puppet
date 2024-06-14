@@ -466,6 +466,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-test*':
     - partman/flat.cfg
     - virtual.cfg
+  'ldap-maint*':
+    - partman/flat.cfg
+    - virtual.cfg
   'ldap-replica*':
     - partman/flat.cfg
     - virtual.cfg
