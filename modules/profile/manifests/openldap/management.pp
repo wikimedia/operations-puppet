@@ -24,10 +24,14 @@ class profile::openldap::management(
         password => $ldap['script_user_pass'],
     }
 
-    ensure_packages([
-        'python-yaml', 'python-ldap',
-        'python3-yaml', 'python3-ldap', 'python3-phabricator',
-    ])
+    if debian::codename::ge('bookworm') {
+        ensure_packages(['python3-yaml', 'python3-ldap', 'python3-phabricator'])
+    } else {
+        ensure_packages([
+            'python-yaml', 'python-ldap',
+            'python3-yaml', 'python3-ldap', 'python3-phabricator',
+        ])
+    }
 
     file { '/usr/local/bin/cross-validate-accounts':
         ensure => present,
@@ -41,9 +45,13 @@ class profile::openldap::management(
         mode   => '0555',
     }
 
-    user { 'accountcheck':
-        ensure => present,
-        system => true,
+    if debian::codename::ge('bookworm') {
+        systemd::sysuser { 'accountcheck': }
+    } else {
+        user { 'accountcheck':
+            ensure => present,
+            system => true,
+        }
     }
 
     $ensure = $timer_active ? {
@@ -58,7 +66,6 @@ class profile::openldap::management(
         user          => 'accountcheck',
         send_mail     => true,
         ignore_errors => true,
-        require       => [ File['/usr/local/bin/cross-validate-accounts'], User['accountcheck']],
     }
 
     class { 'phabricator::bot':
