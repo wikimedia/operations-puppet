@@ -122,6 +122,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: shellbox-timeline
         - name: shellbox-timeline-deploy
+    shellbox-video:
+      usernames:
+        - name: shellbox-video
+        - name: shellbox-video-deploy
     machinetranslation:
       usernames:
         - name: machinetranslation
