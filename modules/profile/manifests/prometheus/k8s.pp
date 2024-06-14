@@ -423,7 +423,7 @@ class profile::prometheus::k8s (
                 'metric_relabel_configs' => [
                     {
                         'source_labels' => ['__name__'],
-                        'regex'         => '^envoy_((http_down|cluster_up)stream_(rq|cx)|runtime_).*$',
+                        'regex'         => '^envoy_((http_down|cluster_up)stream_(rq|cx)|runtime_|cluster_ratelimit).*$',
                         'action'        => 'keep'
                     },
                 ],
