@@ -66,6 +66,7 @@ class profile::lists (
         memcached           => $memcached,
         service_ensure      => $mailman_service_ensure,
         allow_incoming_mail => $is_primary and $allow_incoming_mail,
+        mailman_root        => $mailman_root,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'mid', true)
     class { 'httpd':
