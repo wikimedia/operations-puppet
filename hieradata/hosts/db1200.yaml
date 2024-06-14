@@ -1,4 +1,2 @@
 #db1200
 mariadb::shard: 's5'
-mariadb::package: 'wmf-mariadb106'
-
