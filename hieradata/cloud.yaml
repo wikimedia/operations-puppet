@@ -405,7 +405,6 @@ profile::puppetmaster::frontend: chain
 puppetmaster::servers: {}
 profile::puppetmaster::frontend::extra_auth_rules: ~
 profile::puppetmaster::frontend::canary_hosts: []
-profile::puppetmaster::frontend::mcrouter_ca_secret: ~
 profile::puppetmaster::common::base_config: {}
 profile::puppetmaster::common::storeconfigs: "none"
 profile::puppetmaster::common::puppetdb_hosts: []

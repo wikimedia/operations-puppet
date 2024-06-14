@@ -13,7 +13,6 @@
 # @param servers list of puppetmaster backend servers with wieghts
 # @param ssl_ca_revocation_check the type of SSL revocation check to perform
 # @param http_proxy the HTTP proxy if one is required
-# @param mcrouter_ca_secret The secret for mcrouter CA
 # @param ip_reputation_config The configuration of the ip reputation download script
 # @param ip_reputation_proxies The list of proxy families to use in the ip reputation script
 class profile::puppetmaster::frontend(
@@ -33,7 +32,6 @@ class profile::puppetmaster::frontend(
     Array[Stdlib::Host]           $canary_hosts            = lookup('profile::puppetmaster::frontend::canary_hosts'),
     Enum['chain', 'leaf', 'none'] $ssl_ca_revocation_check = lookup('profile::puppetmaster::frontend::ssl_ca_revocation_check'),
     Optional[String]              $extra_auth_rules        = lookup('profile::puppetmaster::frontend::extra_auth_rules'),
-    Optional[String[1]]           $mcrouter_ca_secret      = lookup('profile::puppetmaster::frontend::mcrouter_ca_secret'),
     # Should be defined in the private repo.
     Hash[String, Any]             $ip_reputation_config    = lookup('profile::puppetmaster::frontend::ip_reputation_config'),
     Array[String]                 $ip_reputation_proxies   = lookup('profile::puppetmaster::frontend::ip_reputation_proxies'),
@@ -62,11 +60,6 @@ class profile::puppetmaster::frontend(
         # Ensure cergen is present for managing TLS keys and
         # x509 certificates signed by the Puppet CA.
         class { 'cergen': }
-        if $mcrouter_ca_secret {
-            class { 'cergen::mcrouter_ca':
-                ca_secret => $mcrouter_ca_secret,
-            }
-        }
 
         # Ship cassandra-ca-manager (precursor of cergen)
         class { 'cassandra::ca_manager': }
