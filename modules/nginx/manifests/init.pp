@@ -93,7 +93,6 @@ class nginx(
         recurse => true,
         purge   => true,
         force   => true,
-        tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 
     if $variant == 'extras' {

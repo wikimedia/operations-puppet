@@ -40,13 +40,11 @@ define nginx::site(
         ensure  => $ensure,
         content => $content,
         source  => $source,
-        tag     => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
         notify  => Exec['nginx-reload'],
     }
 
     file { "/etc/nginx/sites-enabled/${basename}":
         ensure => stdlib::ensure($ensure, 'link'),
         target => "/etc/nginx/sites-available/${basename}",
-        tag    => 'nginx', # workaround PUP-2689, can remove w/ puppetmaster 3.6.2+
     }
 }
