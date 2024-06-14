@@ -18,6 +18,7 @@ profile::kafka::monitoring::config:
     burrow_exporter_port: 9501
 profile::contacts::role_contacts:
   - 'Observability'
+profile::base::production::role_description: 'Kafka consumer groups lag monitoring'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
