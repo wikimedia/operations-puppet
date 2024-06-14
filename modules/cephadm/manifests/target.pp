@@ -16,6 +16,7 @@ class cephadm::target(
     ensure_packages([
         'catatonit',
         'fuse-overlayfs',
+        'lvm2',
         'thin-provisioning-tools',
         'podman',
     ])

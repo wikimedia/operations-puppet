@@ -11,7 +11,6 @@
 class cephadm::osd(
     Array[Stdlib::Host] $cluster_nodes,
 ) {
-    ensure_packages(['lvm2'])
 
     firewall::service { 'ceph-daemons':
         proto      => 'tcp',
