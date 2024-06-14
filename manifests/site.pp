@@ -2531,10 +2531,6 @@ node /^pc2016\.codfw\./ {
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
-node /^ping[12]003\.(eqiad|codfw)\./ {
-    role(ping_offload)
-}
-
 node /^ping[12]004\.(eqiad|codfw)\./ {
     role(ping_offload)
 }
