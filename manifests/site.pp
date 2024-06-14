@@ -1868,7 +1868,7 @@ node /^ldap-replica100[3-4]\.wikimedia\./ {
 }
 
 node /^ldap-maint[12]001\.(eqiad|codfw)\./ {
-    role(insetup::infrastructure_foundations)
+    role(openldap::maintenance)
 }
 
 node /^ldap-rw1001\.wikimedia\./ {
