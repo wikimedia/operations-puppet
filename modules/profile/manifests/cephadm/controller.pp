@@ -35,8 +35,13 @@ class profile::cephadm::controller(
     $rack_locations = $osds.reduce( {} ) |$memo, $hostname| {
         $hn_array = $hostname.split('\.')
         $management_hostname = join(flatten([ $hn_array[0], 'mgmt', $hn_array[1,-1] ]),'.')
-        $memo + { $hostname => $profile::netbox::data::mgmt["$management_hostname"]['rack'] }
+        if $management_hostname in $profile::netbox::data::mgmt {
+            $memo + { $hostname => $profile::netbox::data::mgmt["$management_hostname"]['rack'] }
+        } else {
+            warning("profile::cephadm::controller: did not find mgmt data for host ${hostname} (${management_hostname})")
+            $memo + { $hostname => 'UNDEFINED' }
         }
+    }
 
     # cephadm::cephadm has a sensible default repository component,
     # only override it if hiera specifies something else
