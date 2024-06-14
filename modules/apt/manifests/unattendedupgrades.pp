@@ -78,7 +78,7 @@ class apt::unattendedupgrades (
         priority => '52',
         # Key with trailing '::' to append to potentially existing entry
         key      => 'Unattended-Upgrade::Origins-Pattern::',
-        value    => 'origin=Infomaniak',
+        value    => 'origin=osbpo',
     }
 
     # Clean up the apt cache to avoid filling the disk periodically T127374
