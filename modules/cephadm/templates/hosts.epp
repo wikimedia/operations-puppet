@@ -11,11 +11,15 @@
 ---
 service_type: host
 hostname: <%= $node.split('\.')[0] %>
+<%- if $node in $host_details { -%>
 addr: <%= $host_details[$node]['ipaddress6'] %>
 <%- if $node in $osds { -%>
 location:
   root: default
   rack: <%= $rack_locations[$node] %>
+<%- } -%>
+<%- } else { -%>
+addr: HOST LOOKUP FAILED!
 <%- } -%>
 labels:
 <%- if $node in $mons { -%>
