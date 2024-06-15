@@ -1,12 +1,13 @@
-# Apache configuration for proxying requests to performance teams AWS
-# instance that holds meta data for synthetic tests.
+# Apache configuration for proxying requests to performance teams
+# instance that holds meta data for synthetic tests
+# https://phabricator.wikimedia.org/T367488
 # https://phabricator.wikimedia.org/T304583
 # This file is managed by puppet.
 
 Listen <%= @wpt_json_proxy_port %>
 <VirtualHost *:<%= @wpt_json_proxy_port %>>
   <Location "/">
-    ProxyPass "http://synthetic-tests-result-wikimedia.s3.amazonaws.com/"
+    ProxyPass "https://wikimedia.sitespeed.io/"
   </Location>
   ProxyRemote "*" "http://webproxy.<%= @site %>.wmnet:8080"
 </VirtualHost>
