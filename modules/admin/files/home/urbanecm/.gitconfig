@@ -17,6 +17,8 @@
 	email = martin.urbanec@wikimedia.cz
 [push]
 	default = matching
+[init]
+	defaultBranch = master
 [gitreview]
 	remote = origin
 	username = urbanecm
