@@ -1332,6 +1332,13 @@ ntp_peers:
     - 'dns7001.wikimedia.org'
     - 'dns7002.wikimedia.org'
 
+# T366360, switch to NTP anycast servers. This is going to be the default and
+# the above ntp_peers will be deprecated.
+ntp_anycast_peers:
+  - 'ntp-a.anycast.wmnet'
+  - 'ntp-b.anycast.wmnet'
+  - 'ntp-c.anycast.wmnet'
+
 # Url to use for reaching graphite
 
 graphite_host: 'graphite-in.eqiad.wmnet'

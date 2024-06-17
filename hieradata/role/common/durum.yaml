@@ -73,3 +73,5 @@ profile::base::production::role_description: 'Check service for Wikidough'
 
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
+
+profile::systemd::timesyncd::ntp_servers: "%{alias('ntp_anycast_peers')}"
