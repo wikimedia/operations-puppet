@@ -1,13 +1,16 @@
-#! /usr/bin/env python3
-# SPDX-License-Identifier: Apache-2.0
-
-from irc.bot import SingleServerIRCBot
+#! /usr/bin/env python2
+try:
+    from irc.bot import SingleServerIRCBot
+except ImportError:
+    from ircbot import SingleServerIRCBot
 import prometheus_client
 import argparse
 import json
 import threading
 import socket
 import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 argparser = argparse.ArgumentParser()
 argparser.add_argument(
@@ -36,14 +39,14 @@ class EchoReader(threading.Thread):
 
         try:
             udpsock.bind(('', config_data['udp_port']))
-        except socket.error as msg:
+        except socket.error, msg:
             sys.stderr.write("[ERROR] %s\n" % msg[1])
             sys.exit(2)
 
         while True:
             try:
                 s = udpsock.recv(65535)
-                sp = s.split(b"\t")
+                sp = s.split("\t")
                 if len(sp) == 2:
                     channel = sp[0]
                     text = sp[1].lstrip().replace('\r', '').replace('\n', '')
@@ -58,7 +61,7 @@ class EchoReader(threading.Thread):
                 # Once the input is finished, the bot should exit
                 sys.exit()
             except Exception as e:
-                print(e)
+                print e
 
 
 class EchoBot(SingleServerIRCBot):
@@ -66,18 +69,18 @@ class EchoBot(SingleServerIRCBot):
         port = config_data['irc_port']
         nickname = config_data['irc_nickname']
         server = config_data['irc_server']
-        print("connecting to %s as %s on port %s" % (server, nickname, port))
+        print "connecting to %s as %s on port %s" % (server, nickname, port)
         server_list = [(server, port)]
         realname = config_data['irc_realname']
         SingleServerIRCBot.__init__(self, server_list, nickname, realname)
         self.chans = []
 
     def on_nicknameinuse(self, c, e):
-        print('%s nickname in use!' % (c.get_nickname(),))
+        print '%s nickname in use!' % (c.get_nickname(),)
         c.nick(c.get_nickname() + "_")
 
     def on_welcome(self, c, e):
-        print("got welcome")
+        print "got welcome"
         c.oper("rc", config_data['irc_oper_pass'])
 
         for chan in self.chans:

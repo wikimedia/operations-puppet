@@ -11,9 +11,18 @@ class mw_rc_irc::irc_echo(
         $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho.py'
         $py_interpreter = 'python'
     } else {
-        ensure_packages(['python3-irc', 'python3-prometheus-client'])
-        $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho-py3.py'
-        $py_interpreter = 'python3'
+        apt::package_from_component { 'irc-python-prometheus-client':
+            component => 'component/pybal',
+        }
+
+        apt::package_from_component { 'irc-py-irc':
+            component => 'main',
+            packages  => ['python-irc'],
+            priority  => 1002,
+        }
+
+        $echo_source = 'puppet:///modules/mw_rc_irc/udpmxircecho-bullseye.py'
+        $py_interpreter = 'python2'
     }
 
     file { '/etc/udpmxircecho-config.json':
