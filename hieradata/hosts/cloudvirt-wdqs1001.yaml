@@ -1,2 +1,0 @@
-profile::openstack::base::nova::instance_dev: '/dev/mapper/tank-data'
-profile::openstack::base::nova::compute::id: 45030264-68b1-4df7-bed6-96c3737ebf46
