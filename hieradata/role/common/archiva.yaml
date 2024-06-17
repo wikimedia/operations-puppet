@@ -13,3 +13,6 @@ profile::java::java_packages:
 
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Data Platform']
+
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
