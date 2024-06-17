@@ -6,7 +6,7 @@ profile::query_service::package_dir: '/srv/deployment/wdqs/wdqs'
 profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::deploy_name: 'wdqs'
-profile::query_service::endpoint: 'https://query.wikidata.org'
+profile::query_service::endpoint: 'https://query-main.wikidata.org'
 profile::query_service::deploy_mode: 'scap3'
 profile::query_service::enable_ldf: true
 profile::query_service::high_query_time_port: true
@@ -15,29 +15,15 @@ profile::query_service::event_service_endpoint: 'https://eventgate-analytics.dis
 profile::query_service::lag_warning: 21600 # 6 hours
 profile::query_service::lag_critical: 43200 # 12 hours
 profile::query_service::nodes:
-  - 'wdqs1012.eqiad.wmnet'
-  - 'wdqs1013.eqiad.wmnet'
-  - 'wdqs1014.eqiad.wmnet'
-  - 'wdqs1015.eqiad.wmnet'
-  - 'wdqs1018.eqiad.wmnet'
-  - 'wdqs1019.eqiad.wmnet'
-  - 'wdqs1020.eqiad.wmnet'
-  - 'wdqs2007.codfw.wmnet'
-  - 'wdqs2009.codfw.wmnet'
-  - 'wdqs2010.codfw.wmnet'
-  - 'wdqs2011.codfw.wmnet'
-  - 'wdqs2012.codfw.wmnet'
-  - 'wdqs2013.codfw.wmnet'
-  - 'wdqs2016.codfw.wmnet'
-  - 'wdqs2017.codfw.wmnet'
-  - 'wdqs2018.codfw.wmnet'
-  - 'wdqs2019.codfw.wmnet'
-  - 'wdqs2020.codfw.wmnet'
+  - 'wdqs1021.eqiad.wmnet'
+  - 'wdqs1022.eqiad.wmnet'
+  - 'wdqs2021.codfw.wmnet'
+  - 'wdqs2022.codfw.wmnet'
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
 cluster: wdqs
-contactgroups: 'team-data-platform,wdqs-admins'
+contactgroups: admins,wdqs-admins
 profile::lvs::realserver::pools:
   wdqs:
     services:
@@ -49,15 +35,15 @@ profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - wdqs-ldf.discovery.wmnet
-    - wdqs.svc.%{::site}.wmnet
-    - wdqs.wikimedia.org
-    - query.wikidata.org
-profile::tlsproxy::envoy::global_cert_name: "wdqs.discovery.wmnet"
+    - wdqs-main.svc.%{::site}.wmnet
+    - wdqs-main.wikimedia.org
+    - query-main.wikidata.org
+profile::tlsproxy::envoy::global_cert_name: "wdqs-main.discovery.wmnet"
 profile::tlsproxy::envoy::listen_ipv6: true
 
 profile::query_service::blazegraph::monitoring_enabled: true
 profile::query_service::oauth: false
-profile::query_service::federation_user_agent: 'Wikidata Query Service; https://query.wikidata.org/'
+profile::query_service::federation_user_agent: 'Wikidata Query Service Main; https://query-main.wikidata.org/'
 
 # Includes module for connection limits
 profile::nginx::variant: 'full'
@@ -80,6 +66,7 @@ profile::query_service::uri_scheme_options: []
 profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
 profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
 
 # User agents known to send monitoring queries
 profile::query_service::monitoring_user_agents:
@@ -87,5 +74,3 @@ profile::query_service::monitoring_user_agents:
   - "Twisted PageGetter"
   - "prometheus-public-sparql-ep-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
-
-profile::query_service::only_throttle_cdn: true

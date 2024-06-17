@@ -381,6 +381,16 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
+    wdqs-main:
+    description: "Wikidata Query Service - Main cluster"
+    sites:
+      eqiad: []
+      codfw: []
+    wdqs-scholarly:
+    description: "Wikidata Query Service - Scholarly cluster"
+    sites:
+      eqiad: []
+      codfw: []
   dnsbox:
     description: "DNS and NTP Combo Infra Boxes"
     sites:
