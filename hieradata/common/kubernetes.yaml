@@ -306,10 +306,6 @@ kubernetes::clusters:
         - wikikube-worker1014.eqiad.wmnet
         - wikikube-worker1017.eqiad.wmnet
         - wikikube-worker1018.eqiad.wmnet
-        - wikikube-worker1019.eqiad.wmnet
-        - wikikube-worker1020.eqiad.wmnet
-        - wikikube-worker1021.eqiad.wmnet
-        - wikikube-worker1022.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
