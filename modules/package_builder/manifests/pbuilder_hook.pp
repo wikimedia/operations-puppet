@@ -148,6 +148,12 @@ define package_builder::pbuilder_hook(
       source => 'puppet:///modules/package_builder/hooks/A04opensearch1'
     }
 
+    file { "${basepath}/hooks/${distribution}/D04java21":
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04java21'
+    }
+
     file { "${basepath}/hooks/${distribution}/D04component":
       ensure  => file,
       owner   => 'root',

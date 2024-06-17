@@ -1,0 +1,10 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+if [ "$JDK21" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-jdk21.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/jdk21
+    deb-src http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/jdk21
+EOF
+    apt-get update
+fi
