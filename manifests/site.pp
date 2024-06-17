@@ -2764,11 +2764,6 @@ node /^cloudvirt10(3[1-9]|4[0-9]|5[0-9]|6[0-7])\.eqiad\./ {
     role(wmcs::openstack::eqiad1::virt_ceph)
 }
 
-# Decom in progress, T367773
-node /^cloudvirt-wdqs100[123]\.eqiad\./ {
-    role(insetup::wmcs)
-}
-
 node /^wcqs100[123]\.eqiad\./ {
     role(wcqs::public)
 }
