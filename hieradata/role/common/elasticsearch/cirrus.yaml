@@ -75,7 +75,10 @@ profile::elasticsearch::common_settings:
 
 profile::elasticsearch::cirrus::enable_remote_search: true
 profile::tlsproxy::instance::nginx_variant: 'light'
+# Role contacts appears to express ownership (comment 1 of 2)
 profile::contacts::role_contacts: ['Search Platform']
+# Whereas contact groups appears to define which team(s) receive alerts (comment 2 of 2)
+contactgroups: 'team-data-platform,team-discovery'
 profile::base::production::role_description: 'Elasticsearch cirrus'
 
 logstash_host: 'localhost'
