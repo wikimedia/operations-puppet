@@ -10,11 +10,6 @@ profile::resolving::domain_search:
   - codfw.wmnet
 profile::mariadb::maintenance::ensure: present
 
-# by default, the account consistency check is turned off
-profile::openldap::management::timer_active: false
-
-profile::ldap::bitu::group: ldap-admins
-
 profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::apc_shm_size: 128M
 profile::mediawiki::php::fpm_workers_multiplier: 0.32
