@@ -1,7 +1,6 @@
 profile::admin::groups:
   - restricted
   - deployment
-  - ldap-admins
   - maintenance-log-readers
   - perf-roots
 profile::resolving::domain_search:
