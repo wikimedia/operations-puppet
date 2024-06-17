@@ -21,5 +21,5 @@ magru:
     ncredir7001.magru.wmnet: [nginx]
     ncredir7002.magru.wmnet: [nginx]
   dnsbox:
-    dns7001.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp]
-    dns7002.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp]
+    dns7001.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp, ntp-a]
+    dns7002.wikimedia.org: [authdns-update, authdns-ns2, recdns, ntp, ntp-b]
