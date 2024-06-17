@@ -1,12 +1,9 @@
 #!/bin/sh
 
-# If pbuilder is called by gbp DIST is stored in GBP_PBUILDER_DIST
-DIST=${GBP_PBUILDER_DIST:-$DIST}
-
 if [ "$JDK8" = "yes" ]; then
     cat > /etc/apt/sources.list.d/wikimedia-jdk8.list <<-'EOF'
-    deb http://apt.wikimedia.org/wikimedia ${DIST}-wikimedia component/jdk8
-    deb-src http://apt.wikimedia.org/wikimedia ${DIST}-wikimedia component/jdk8
+    deb http://apt.wikimedia.org/wikimedia bullseye-wikimedia component/jdk8
+    deb-src http://apt.wikimedia.org/wikimedia bullseye-wikimedia component/jdk8
 EOF
     apt-get update
 fi
