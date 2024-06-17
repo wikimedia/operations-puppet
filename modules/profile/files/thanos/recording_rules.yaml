@@ -173,13 +173,3 @@ groups:
       # SLx: Request counts with status
       - record: istio_sli_availability_requests_total:increase5m
         expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{kubernetes_namespace="istio-system"}[5m]))
-      # same as above with v2 suffix for clean history (due to thanos rule label reconfig)
-      # SLx: Buckets for latency
-      - record: istio_sli_latency_request_duration_milliseconds_bucket_v2:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, le, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", le=~"(50|100|250|500|1000|2500|5000|10000|30000|\\+Inf)"}[5m]))
-      # SLx: Total requests for latency.
-      - record: istio_sli_latency_request_duration_milliseconds_count_v2:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_count{kubernetes_namespace="istio-system"}[5m]))
-      # SLx: Request counts with status
-      - record: istio_sli_availability_requests_total_v2:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{kubernetes_namespace="istio-system"}[5m]))
