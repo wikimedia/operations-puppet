@@ -5310,12 +5310,10 @@ users:
     gid: 500
     uid: 33473
     realname: Tanja Anđić
-    email: tandic-ctr@wikimedia.org
+    email: tandic@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhg5l9FdMRyic4YF1+EDVbxatxyEhn6K8SGwIBpAY9V tandic-ctr@wikimedia.org
     krb: present
-    expiry_date: "2024-06-30"
-    expiry_contact: mredi@wikimedia.org
   dannyh:
     ensure: absent
     uid: 12078
