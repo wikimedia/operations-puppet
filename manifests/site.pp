@@ -2170,11 +2170,6 @@ node /^mw13(66|73)\.eqiad\./ {
     role(mediawiki::appserver)
 }
 
-# rack D8 - API servers
-node /^mw1444\.eqiad\./ {
-    role(mediawiki::appserver::api)
-}
-
 # rack D8 - canary jobrunners
 node /^mw143[7-8]\.eqiad\./ {
     role(mediawiki::jobrunner)
@@ -2212,15 +2207,6 @@ node /^mw1412\.eqiad\./ {
 
 # rack D1
 node /^mw1359\.eqiad\./ {
-    role(mediawiki::appserver::api)
-}
-# rack D8
-node /^mw1447\.eqiad\./ {
-    role(mediawiki::appserver::canary_api)
-}
-
-# Row E
-node /^mw1489\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 

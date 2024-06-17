@@ -17,10 +17,7 @@ eqiad:
     mw1398.eqiad.wmnet: [nginx]
     mw1404.eqiad.wmnet: [nginx]
     mw1412.eqiad.wmnet: [nginx]
-    mw1444.eqiad.wmnet: [nginx]
-    mw1447.eqiad.wmnet: [nginx, canary]
     mw1450.eqiad.wmnet: [nginx, canary]
-    mw1489.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
     mw1437.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1438.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
@@ -387,6 +384,9 @@ eqiad:
     wikikube-worker1014.eqiad.wmnet: [kubesvc]
     wikikube-worker1017.eqiad.wmnet: [kubesvc]
     wikikube-worker1018.eqiad.wmnet: [kubesvc]
+    wikikube-worker1019.eqiad.wmnet: [kubesvc]
+    wikikube-worker1020.eqiad.wmnet: [kubesvc]
+    wikikube-worker1021.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]
