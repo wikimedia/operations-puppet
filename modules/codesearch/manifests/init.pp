@@ -11,10 +11,6 @@ class codesearch(
     $hound_dir  = "${base_dir}/hound"
     $clone_dir  = "${base_dir}/codesearch"
 
-    apt::package_from_component { 'thirdparty-kubeadm-k8s':
-        component => 'thirdparty/kubeadm-k8s-1-15',
-        packages  => ['docker-ce'],
-    }
 
     ensure_packages([
         'gunicorn3',
@@ -22,6 +18,10 @@ class codesearch(
         'python3-requests',
         'python3-yaml',
     ])
+
+    if debian::codename::ge('bookworm') {
+        ensure_packages('docker.io')
+    }
 
     if debian::codename::eq('buster') {
         # We need iptables 1.8.3+ for compatibility with docker
@@ -32,6 +32,12 @@ class codesearch(
             priority => 1001,
             before   => Package['docker-ce'],
         }
+
+        apt::package_from_component { 'thirdparty-kubeadm-k8s':
+            component => 'thirdparty/kubeadm-k8s-1-15',
+            packages  => ['docker-ce'],
+        }
+
     }
 
     systemd::sysuser { 'codesearch':
