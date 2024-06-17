@@ -50,9 +50,18 @@ class profile::openstack::eqiad1::designate::service(
         enforce_new_policy_defaults       => $enforce_new_policy_defaults,
     }
 
+    $run_dnsleaks = $openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']
+
     prometheus::node_textfile { 'wmcs-dnsleaks':
+        ensure     => stdlib::ensure($run_dnsleaks),
         filesource => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-dnsleaks.py",
-        interval   => '*:0/30',
+        interval   => '*:12/30',
         run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus',
+    }
+
+    if !$run_dnsleaks {
+        file { '/var/lib/prometheus/node.d/designateleaks.prom':
+            ensure => absent,
+        }
     }
 }
