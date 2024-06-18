@@ -55,24 +55,6 @@ funnel	*wikijunior.com	https://en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.org	https://en.wikibooks.org/wiki/Wikijunior
 funnel	*wikijunior.net	https://en.wikibooks.org/wiki/Wikijunior
 
-# Language aliases
-
-rewrite	cz.wikipedia.com	https://cs.wikipedia.org
-rewrite	cz.wikibooks.com	https://cs.wikibooks.org
-rewrite	cz.wikiquote.com	https://cs.wikiquote.org
-rewrite	cz.wikisource.com	https://cs.wikisource.org
-rewrite	cz.wikiversity.com	https://cs.wikiversity.org
-rewrite	cz.wiktionary.com	https://cs.wiktionary.org
-rewrite	cz.wikinews.com	https://cs.wikinews.org
-rewrite	dk.wikipedia.com	https://da.wikipedia.org
-rewrite	dk.wikibooks.com	https://da.wikibooks.org
-rewrite	dk.wiktionary.com	https://da.wiktionary.org
-rewrite	jp.wikipedia.com	https://ja.wikipedia.org
-rewrite	lzh.wikipedia.com	https://zh-classical.wikipedia.org
-rewrite	nrf.wikipedia.com	https://nrm.wikipedia.org
-rewrite	sgs.wikipedia.com	https://bat-smg.wikipedia.org
-rewrite	vro.wikipedia.com	https://fiu-vro.wikipedia.org
-
 # Localised TLDs
 
 rewrite	*wikibooks.pt	https://pt.wikibooks.org
