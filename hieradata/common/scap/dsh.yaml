@@ -15,13 +15,8 @@ scap::dsh::scap_masters:
 
 scap::dsh::groups:
   kubernetes-workers:
-    # We only want to fetch k8s nodes where mediawiki can be installed
-    pdb_query: |
-      nodes[certname] {
-        resources {type =  "Class" and title = "Profile::Kubernetes::Mediawiki_runner"}
-        and resources {type = "User" and title = "mwdeploy" and parameters.ensure = "present"}
-        order by certname
-      }
+    conftool:
+      - {'cluster': 'kubernetes', 'service': 'kubesvc'}
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
