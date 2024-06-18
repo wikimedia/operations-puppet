@@ -322,7 +322,7 @@ class gitlab (
     }
 
     # configure-projects timer (T355097)
-    $configure_projects_cmd = "/srv/gitlab-settings/configure-projects -c ${config_dir}/configure-projects.yaml"
+    $configure_projects_cmd = "/srv/gitlab-settings/configure-projects/configure-projects -c ${config_dir}/configure-projects.yaml"
     systemd::timer::job { 'gitlab-settings-configure-projects':
         ensure      => $ensure_configure_projects,
         user        => $gitlab_settings_user,
