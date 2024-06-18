@@ -31,12 +31,12 @@ GRANT PROCESS, REPLICATION CLIENT
 GRANT SELECT
     ON heartbeat.heartbeat TO 'nagios'@'localhost';
 
--- Grants for 'repl'@'10.64.%' (replication eqiad)
+-- Grants for 'repl2024'@'10.64.%' (replication eqiad)
 GRANT REPLICATION SLAVE, SLAVE MONITOR
     ON *.* TO 'repl2024'@'10.64.%'
     IDENTIFIED BY '<%= @repl_pass %>';
 
--- Grants for 'repl'@'10.192.%' (replication codfw)
+-- Grants for 'repl2024'@'10.192.%' (replication codfw)
 GRANT REPLICATION SLAVE, SLAVE MONITOR
     ON *.* TO 'repl2024'@'10.192.%'
     IDENTIFIED BY '<%= @repl_pass %>';
