@@ -82,7 +82,6 @@ codfw:
     ms-fe2012.codfw.wmnet: [swift-fe, nginx]
     ms-fe2013.codfw.wmnet: [swift-fe, nginx]
     ms-fe2014.codfw.wmnet: [swift-fe, nginx]
-    moss-fe2001.codfw.wmnet: [swift-fe, nginx]
   maps:
     maps2005.codfw.wmnet: [kartotherian, kartotherian-ssl]
     maps2006.codfw.wmnet: [kartotherian, kartotherian-ssl]

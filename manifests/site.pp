@@ -2053,13 +2053,8 @@ node /^moscovium\.eqiad\./ {
     role(requesttracker)
 }
 
-node /^moss-fe1002\.eqiad\./ {
+node /^moss-fe100[12]\.eqiad\./ {
     role(cephadm::rgw)
-}
-
-node /^moss-fe1001\.eqiad\./ {
-    role(swift::proxy)
-    include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
 # Controller for the eqiad apus cephadm cluster
@@ -2080,14 +2075,8 @@ node /^moss-be200[23]\.codfw\./ {
     role(cephadm::storage)
 }
 
-node /^moss-fe2002\.codfw\./ {
+node /^moss-fe200[12]\.codfw\./ {
     role(cephadm::rgw)
-}
-
-# New moss-fe nodes T275513
-node /^moss-fe2001\.codfw\./ {
-    role(swift::proxy)
-    include lvs::realserver # lint:ignore:wmf_styleguide
 }
 
 node /^ms-backup100[12]\.eqiad\./ {
