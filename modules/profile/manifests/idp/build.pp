@@ -2,13 +2,10 @@
 # @summary Class to build debs for Apereo CAS
 class profile::idp::build {
 
-    ensure_packages(['dpkg-dev', 'debhelper'])
-    ensure_packages(['dh-exec', 'build-essential', 'default-jdk-headless'])
+    ensure_packages(['dpkg-dev', 'debhelper', 'dh-exec', 'build-essential'])
 
     file { '/srv/cas-build/cas':
         ensure => directory,
-        owner  => 'root',
-        group  => 'root',
     }
 
     git::clone { 'operations/software/cas-overlay-template':
@@ -16,6 +13,15 @@ class profile::idp::build {
         owner     => 'root',
         group     => 'root',
         directory => '/srv/cas-build/cas',
+    }
+
+    if debian::codename::eq('bullseye') {
+        ensure_packages(['default-jdk-headless'])
+    } else {
+        apt::package_from_component { 'openjdk-21':
+            component => 'component/jdk21',
+            packages  => ['openjdk-21-jre', 'openjdk-21-jre-headless', 'openjdk-21-jdk', 'openjdk-21-jdk-headless'],
+        }
     }
 
     # Set up an rsync module to allow easy copying of the built DEB
