@@ -1,5 +1,3 @@
-profile::lists::ipv4: '208.80.154.21'
-profile::lists::ipv6: '2620:0:861:1:208:80:154:21'
 profile::puppet::agent::force_puppet7: true
 acmechief_host: acmechief2002.codfw.wmnet
 profile::lists::mailman_root: /srv/mailman3
