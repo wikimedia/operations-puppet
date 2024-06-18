@@ -57,15 +57,13 @@ class profile::postfix::mx (
     Optional[Profile::Postfix::Mail_aliases] $mail_aliases           = lookup('profile::postfix::mx::mail_aliases', {'default_value' => undef}),
     Optional[Profile::Postfix::Verp]         $verp_config            = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
     Profile::Postfix::Mta_mode               $mta_mode               = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
+    Array[Stdlib::Fqdn]                      $smarthosts             = lookup('profile::mail::default_mail_relay::smarthosts'),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
     }
 
     $domain_aliases_maps = $domain_aliases.map |$domain, $_| {
-        "hash:/etc/postfix/aliases/virtual-${domain}"
-    }
-    $local_mail_maps = [ $facts['fqdn'] ].map |$domain| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
     $domain_aliases_generic_maps = $domain_aliases_generic.map |$domain| {
@@ -128,17 +126,18 @@ class profile::postfix::mx (
         # Add $myhostname, so we can relay local mail
         relay_domains                => get($config, 'relay_domains', []) +
                                         '$myhostname',
-        virtual_alias_maps           => $domain_aliases_maps +
-                                        $domain_aliases_generic_maps +
-                                        $local_mail_maps,
+        smtp_generic_maps            => ['hash:/etc/postfix/aliases/generic-local'],
+        transport_maps               => $static_transport_maps_paths +
+                                        $dynamic_transport_maps_paths +
+                                        ['hash:/etc/postfix/transport-local'],
     }
 
-    if length($static_transport_maps_paths + $dynamic_transport_maps) > 0 {
-        $transport_maps = {
-            transport_maps => $static_transport_maps_paths + $dynamic_transport_maps_paths
+    if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
+        $virtual_alias_maps = {
+            virtual_alias_maps => $domain_aliases_maps + $domain_aliases_generic_maps
         }
     } else {
-        $transport_maps = {}
+        $virtual_alias_maps = {}
     }
 
     if 'virtual_alias_maps' in $config {
@@ -247,7 +246,7 @@ class profile::postfix::mx (
         # *NOTE*: the order matters, for example $dovecot_config may overwrite
         # params in the $base_config
         * => $config + $base_config + $tls_config + $dovecot_config +
-             $transport_maps
+             $virtual_alias_maps
     }
     # lint:endignore
 
@@ -519,13 +518,14 @@ class profile::postfix::mx (
         mode   => '0755',
     }
 
-    # lookup database for local_mail_maps
+    # lookup database for local mail
     postfix::lookup::database {
-    "/etc/postfix/aliases/virtual-${facts['fqdn']}":
-        content => epp(
-            'profile/postfix/mx/generic_aliases.epp',
-            { domain => $facts['fqdn'] }
-        )
+    '/etc/postfix/aliases/generic-local':
+        content => @("EOF"),
+                   # Redirect all local mail to root@wikimedia.org
+                   # regardless of user
+                   @${facts['fqdn']} root@wikimedia.org
+                   | EOF
     }
 
     $domain_aliases_generic.each |$domain| {
@@ -548,5 +548,11 @@ class profile::postfix::mx (
         postfix::lookup::database { "/etc/postfix/transport-${name}":
             content => $data['content']
         }
+    }
+
+    postfix::lookup::database { '/etc/postfix/transport-local':
+        content => @("EOF"),
+                   ${facts['fqdn']} smtp:${join($smarthosts, ', ')}
+                   | EOF
     }
 }
