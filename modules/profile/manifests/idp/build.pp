@@ -4,9 +4,7 @@ class profile::idp::build {
 
     ensure_packages(['dpkg-dev', 'debhelper', 'dh-exec', 'build-essential'])
 
-    file { '/srv/cas-build/cas':
-        ensure => directory,
-    }
+    wmflib::dir::mkdir_p('/srv/cas-build/cas')
 
     git::clone { 'operations/software/cas-overlay-template':
         ensure    => latest,
