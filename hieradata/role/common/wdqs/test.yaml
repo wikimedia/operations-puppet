@@ -23,7 +23,7 @@ profile::admin::groups:
   - wdqs-admins
   - wdqs-test-roots
 cluster: wdqs-test
-contactgroups: admins,wdqs-admins
+contactgroups: 'team-data-platform,wdqs-admins'
 profile::query_service::use_revisions: true
 
 profile::query_service::blazegraph::monitoring_enabled: false

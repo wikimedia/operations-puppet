@@ -25,7 +25,7 @@ profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
 cluster: wcqs
-contactgroups: admins,wdqs-admins
+contactgroups: 'team-data-platform,wdqs-admins'
 profile::lvs::realserver::pools:
     wcqs:
       services:

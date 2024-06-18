@@ -42,7 +42,7 @@ profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
 cluster: wdqs
-contactgroups: admins,wdqs-admins
+contactgroups: 'team-data-platform,wdqs-admins'
 profile::lvs::realserver::pools:
   wdqs:
     services:
