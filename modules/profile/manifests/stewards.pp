@@ -85,7 +85,7 @@ class profile::stewards (
         comment       => "${export_dir} to lists servers",
         read_only     => 'yes',
         path          => $export_dir,
-        hosts_allow   => [$lists_primary_host],
+        hosts_allow   => [$lists_primary_host, 'lists.wikimedia.org'], # Temporary fix until we get new service IPs for lists1004
         auto_firewall => true,
         require       => [
             File[$export_dir],
