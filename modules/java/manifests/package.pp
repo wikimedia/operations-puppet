@@ -26,6 +26,15 @@ define java::package(
             component => 'component/jdk8',
             packages  => [$package_name],
         }
+    } elsif $package_info['version'] == '21' {
+        if debian::codename::eq('bookworm') {
+            apt::package_from_component { $package_name:
+                component => 'component/jdk21',
+                packages  => [$package_name],
+            }
+        } else {
+            fail('Java 21 is only available for Bookworm')
+        }
     } else {
         ensure_packages($package_name)
     }
