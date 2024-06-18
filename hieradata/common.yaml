@@ -1249,7 +1249,7 @@ tcpircbot_port: 9200
 graphite_primary_host: graphite1005.eqiad.wmnet
 
 lists_primary_host: lists1004.wikimedia.org
-lists_standby_host: ['lists2001.wikimedia.org', 'lists1001.wikimedia.org']
+lists_standby_host: ['lists2001.wikimedia.org']
 
 stewards_primary_host: stewards1001.eqiad.wmnet
 stewards_standby_host: ~

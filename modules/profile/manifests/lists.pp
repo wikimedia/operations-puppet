@@ -189,15 +189,15 @@ class profile::lists (
     backup::set { 'var-lib-mailman3': }
 
     if $primary_host and $standby_hosts != [] {
-        rsync::quickdatacopy { 'var-lib-mailman3':
-            ensure      => absent, # This is removed temporarily while we do the migration,
+        rsync::quickdatacopy { "${mailman_root}-sync":
+            ensure      => present,
             source_host => $primary_host,
             dest_host   => $standby_hosts,
             module_path => '/var/lib/mailman3',
         }
 
         rsync::quickdatacopy { 'var-lib-mailman':
-            ensure      => absent, # Clean up the old rsync job that was changed without being made 'absent'
+            ensure      => present,
             source_host => $primary_host,
             dest_host   => $standby_hosts,
             module_path => '/var/lib/mailman',
@@ -206,7 +206,7 @@ class profile::lists (
         $is_primary_host = $facts['fqdn'] == $primary_host
 
         rsync::server::module { 'var-lib-mailman3-sync':
-            ensure        => $is_primary_host.bool2str('present', 'absent'),
+            ensure        => 'absent',
             path          => '/var/lib/mailman3',
             read_only     => 'yes',
             hosts_allow   => $standby_hosts + $primary_host,
@@ -214,7 +214,7 @@ class profile::lists (
         }
 
         rsync::server::module { 'var-lib-mailman-sync':
-            ensure        => $is_primary_host.bool2str('present', 'absent'),
+            ensure        => 'absent',
             path          => '/var/lib/mailman',
             read_only     => 'yes',
             hosts_allow   => $standby_hosts + $primary_host,
@@ -222,7 +222,7 @@ class profile::lists (
         }
 
         systemd::timer::job { 'rsync-mailman3-root':
-            ensure              => $is_primary_host.bool2str('absent', 'present'),
+            ensure              => 'absent',
             user                => 'root',
             description         => 'rsync /var/lib/mailman3',
             command             => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman3-sync ${mailman_root}",
@@ -231,7 +231,7 @@ class profile::lists (
         }
 
         systemd::timer::job { 'rsync-mailman-root':
-            ensure              => $is_primary_host.bool2str('absent', 'present'),
+            ensure              => 'absent',
             user                => 'root',
             description         => 'rsync /var/lib/mailman',
             command             => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman-sync /var/lib/mailman/",
