@@ -59,7 +59,7 @@ class profile::analytics::postgresql (
     firewall::service { 'postgres':
         proto    => 'tcp',
         port     => 5432,
-        src_sets => ['ANALYTICS_NETWORKS'],
+        src_sets => ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS'],
     }
     # This is a simplistic method of creating users with an identically named database
     $users.each |$user, $pass| {
