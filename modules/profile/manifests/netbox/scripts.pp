@@ -20,8 +20,10 @@ class profile::netbox::scripts {
         'LANG=C.UTF-8',
         'PYTHONENCODING=utf-8',
     ]
-    $venv_path = '/srv/deployment/netbox/venv'
-    $script_path = '/srv/deployment/netbox-extras/tools/custom_script_proxy.py'
+    $deploy_project = $profile::netbox::deploy_project
+    $scap_repo = $profile::netbox::netbox_scap_repo
+    $venv_path = $profile::netbox::netbox_venv_path
+    $script_path = "${profile::netbox::netbox_extras_path}/tools/custom_script_proxy.py"
     $service_port=8002
     $apache_port=8443
 
@@ -42,7 +44,7 @@ class profile::netbox::scripts {
         icinga_check    => false,
         core_limit      => '30G',
         require         => [
-            Scap::Target[$profile::netbox::scap_repo],
+            Scap::Target[$scap_repo],
             Git::Clone['operations/software/netbox-extras']
         ],
     }

@@ -69,7 +69,7 @@ class profile::netbox (
     Stdlib::Fqdn                $discovery_name          = lookup('profile::netbox::discovery_name'),
     Array[Stdlib::Host]         $additional_sans         = lookup('profile::netbox::additional_sans'),
     Array[String]               $slaves                  = lookup('profile::netbox::slaves'),
-    String                      $scap_repo               = lookup('profile::netbox::scap_repo'),
+    String                      $deploy_project          = lookup('profile::netbox::deploy_project'),
     String                      $rw_token                = lookup('profile::netbox::rw_token'),
     String                      $ro_token                = lookup('profile::netbox::ro_token'),
     Stdlib::Fqdn                $db_primary              = lookup('profile::netbox::db_primary'),
@@ -134,10 +134,16 @@ class profile::netbox (
     $ganeti_ca_cert = '/etc/ssl/certs/wmf-ca-certificates.crt'
     $puppetdb_api = "https://${puppetdb_microservice_fqdn}:${puppetdb_microservice_port}/"
 
-    $extras_path = '/srv/deployment/netbox-extras/'
     # TODO: Note this prevents overriding other verify options
     # https://github.com/psf/requests/issues/3829
     $systemd_environment = {'REQUESTS_CA_BUNDLE' => '/etc/ssl/certs/ca-certificates.crt'}
+
+    # Netbox deployment dirs configuration
+    $netbox_scap_repo = "${deploy_project}/deploy"
+    $netbox_venv_path = "/srv/deployment/${deploy_project}/venv"
+    $netbox_src_path = "/srv/deployment/${deploy_project}/deploy/src"
+    $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
+    $netbox_extras_path = '/srv/deployment/netbox-extras'
 
     # Used for LDAP auth
     include passwords::ldap::production
@@ -154,13 +160,15 @@ class profile::netbox (
     class { 'netbox':
         service_hostname            => $service_hostname,
         discovery_name              => $discovery_name,
-        directory                   => '/srv/deployment/netbox/deploy/src',
         db_host                     => $db_primary,
         db_password                 => $db_password,
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
-        extras_path                 => $extras_path,
-        scap_repo                   => $scap_repo,
+        extras_path                 => $netbox_extras_path,
+        scap_repo                   => $netbox_scap_repo,
+        config_path                 => $netbox_config_path,
+        src_path                    => $netbox_src_path,
+        venv_path                   => $netbox_venv_path,
         swift_auth_url              => $swift_auth_url,
         swift_user                  => $swift_user,
         swift_key                   => $swift_key,
@@ -224,7 +232,7 @@ class profile::netbox (
     }
 
     httpd::site { $service_hostname:
-        content => template('profile/netbox/netbox.wikimedia.org.erb'),
+        content => template('profile/netbox/netbox-apache.erb'),
     }
 
     profile::auto_restarts::service { 'apache2': }
@@ -236,21 +244,21 @@ class profile::netbox (
     # FIXME service::uwsgi seems to create the directory /etc/netbox/, counter intuitively.
     #
     class { 'python_deploy::venv':
-        project_name => 'netbox',
+        project_name => $deploy_project,
         deploy_user  => 'netbox',
     }
 
     git::systemconfig { 'safe.directory-netbox-src':
         settings => {
             'safe' => {
-                'directory' => '/srv/deployment/netbox/current/src',
+                'directory' => "/srv/deployment/${deploy_project}/current/src",
             },
         },
     }
 
     git::clone { 'operations/software/netbox-extras':
         ensure    => 'present',
-        directory => $extras_path,
+        directory => $netbox_extras_path,
     }
 
     # Configuration for the Netbox-Ganeti synchronizer
@@ -335,7 +343,7 @@ class profile::netbox (
                 ensure          => $active_ensure,
                 description     => "Run report ${reportclass} in Netbox",
                 environment     => $systemd_environment,
-                command         => "/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py runreport ${reportclass}",
+                command         => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py runreport ${reportclass}",
                 interval        => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval'],
@@ -357,7 +365,7 @@ class profile::netbox (
         ensure      => $active_ensure,
         description => 'Run Netbox Housekeeping cleanups',
         environment => $systemd_environment,
-        command     => '/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py housekeeping',
+        command     => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py housekeeping",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 3:10:00',
@@ -370,7 +378,7 @@ class profile::netbox (
             ensure          => $active_ensure,
             description     => "Automatically access Ganeti API at ${profile['profile']} to synchronize to Netbox",
             environment     => $systemd_environment,
-            command         => "/srv/deployment/netbox/venv/bin/python3 /srv/deployment/netbox-extras/tools/ganeti-netbox-sync.py ${profile['profile']}",
+            command         => "${netbox_venv_path}/bin/python3 ${netbox_extras_path}/tools/ganeti-netbox-sync.py ${profile['profile']}",
             interval        => {
                 'start'    => 'OnCalendar',
                 # Splay by 1 minute per profile, offset by 5 minutes from 00 (sync process takes far less than 1 minute)

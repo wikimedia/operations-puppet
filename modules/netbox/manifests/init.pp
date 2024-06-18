@@ -56,7 +56,7 @@ class netbox (
     Stdlib::Port                  $port                        = 8001,
     Stdlib::Unixpath              $config_path                 = '/srv/deployment/netbox/deploy',
     Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
-    Stdlib::Unixpath              $directory                   = '/srv/deployment/netbox/deploy/src',
+    Stdlib::Unixpath              $src_path                    = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
     String                        $scap_repo                   = 'netbox/deploy',
     Stdlib::Port                  $redis_port                  = 6380,
@@ -181,7 +181,7 @@ class netbox (
       repo            => $scap_repo,
       config          => {
           need-plugins => 'python3',
-          chdir        => "${directory}/netbox",
+          chdir        => "${src_path}/netbox",
           venv         => $venv_path,
           wsgi         => 'netbox.wsgi',
           vacuum       => true,
@@ -207,7 +207,7 @@ class netbox (
 
   systemd::service { 'rq-netbox':
     ensure  => $ensure,
-    content => file('netbox/rq-netbox.service'),
+    content => template('netbox/rq-netbox.service.erb'),
   }
 
   profile::auto_restarts::service { 'uwsgi-netbox': }

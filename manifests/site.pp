@@ -2413,7 +2413,7 @@ node /^netboxdb[12]002\.(eqiad|codfw)\./ {
     role(netbox::database)
 }
 
-node /^netbox-dev2002\.codfw\./ {
+node /^netbox-dev[12]00[0-9]\.(eqiad|codfw)\./ {
     role(netbox::standalone)
 }
 

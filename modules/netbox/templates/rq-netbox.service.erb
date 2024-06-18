@@ -11,9 +11,9 @@ Type=simple
 
 User=netbox
 Group=netbox
-WorkingDirectory=/srv/deployment/netbox/deploy/src/netbox
+WorkingDirectory=<%= @src_path %>/netbox
 
-ExecStart=/srv/deployment/netbox/venv/bin/python /srv/deployment/netbox/deploy/src/netbox/manage.py rqworker high default low
+ExecStart=<%= @venv_path %>/bin/python <%= @src_path %>/netbox/manage.py rqworker high default low
 
 Restart=on-failure
 RestartSec=30
