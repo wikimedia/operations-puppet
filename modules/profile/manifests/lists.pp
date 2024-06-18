@@ -193,7 +193,7 @@ class profile::lists (
             ensure      => present,
             source_host => $primary_host,
             dest_host   => $standby_hosts,
-            module_path => '/var/lib/mailman3',
+            module_path => $mailman_root,
         }
 
         rsync::quickdatacopy { 'var-lib-mailman':
