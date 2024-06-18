@@ -40,14 +40,8 @@ class mailman3::web (
     ]
 
     # Use stock mailman3 in bookworm and newer
-    if debian::codename::ge('bookworm') {
-        ensure_packages($mailman3_web_debs)
-    } else {
-        apt::package_from_component { 'mailman3-web':
-            component => 'component/mailman3',
-            packages  => $mailman3_web_debs,
-        }
-    }
+    ensure_packages($mailman3_web_debs)
+
     Package['dbconfig-no-thanks'] ~> Package['mailman3-web']
 
     file { '/etc/mailman3/mailman-web.py':
