@@ -13,6 +13,7 @@ class mw_rc_irc::irc_echo(
     } else {
         apt::package_from_component { 'irc-python-prometheus-client':
             component => 'component/pybal',
+            packages  => ['python-prometheus-client'],
         }
 
         apt::package_from_component { 'irc-py-irc':
