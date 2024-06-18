@@ -9,11 +9,10 @@ frontend k8s-api
 
 backend k8s-api
     mode tcp
-    option tcplog
-    option tcp-check
+    option httpchk GET /healthz
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 250 maxqueue 256 weight 100
 <% @control_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @api_port %> check
+    server <%= server %> <%= server %>:<%= @api_port %> check check-ssl verify none
 <% end -%>
