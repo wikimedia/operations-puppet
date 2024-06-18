@@ -45,7 +45,7 @@ profile::postfix::mx::static_transport_maps:
 
 # Config for script to send wikipedia.org mail aliases to ITS for review
 profile::postfix::mx::mail_aliases:
-  path: '/etc/postfix/virtual-wikipedia.org'
+  path: '/etc/postfix/aliases/virtual-wikipedia.org'
   rcpt: 'its@wikimedia.org'
   subject: 'wikimedia.org mail aliases'
 
