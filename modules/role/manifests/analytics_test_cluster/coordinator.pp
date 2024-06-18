@@ -5,11 +5,6 @@
 #
 #
 class role::analytics_test_cluster::coordinator {
-
-    system::role { 'analytics_test_cluster::coordinator':
-        description => 'Analytics Cluster host running various Hadoop services (Hive and Presto) MariaDB instance',
-    }
-
     include profile::analytics::cluster::gitconfig
 
     include profile::java

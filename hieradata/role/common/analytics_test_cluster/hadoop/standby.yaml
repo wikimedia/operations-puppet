@@ -76,6 +76,7 @@ profile::monitoring::notifications_enabled: false
 
 profile::hadoop::common::use_puppet_ssl_certs: true
 profile::contacts::role_contacts: ['Data Platform']
+profile::base::production::role_description: 'Hadoop standby NameNode'
 
 # We need to prevent the removal of the python2 because this role still needs hive
 profile::base::remove_python2_on_bullseye: false

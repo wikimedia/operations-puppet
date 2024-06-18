@@ -11,18 +11,13 @@
 #   "discovery-server.enabled": true
 #   #
 class role::analytics_test_cluster::presto::server {
-    system::role { 'analytics_test_cluster::presto::server':
-        description => 'Presto server',
-    }
+    include profile::base::production
+    include profile::firewall
 
-    include ::profile::base::production
-    include ::profile::firewall
+    include profile::java
+    include profile::hadoop::common
+    include profile::presto::server
 
-    include ::profile::java
-    include ::profile::hadoop::common
-    include ::profile::presto::server
-
-    include ::profile::kerberos::client
-    include ::profile::kerberos::keytabs
-
+    include profile::kerberos::client
+    include profile::kerberos::keytabs
 }

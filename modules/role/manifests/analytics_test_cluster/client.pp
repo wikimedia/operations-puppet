@@ -2,18 +2,14 @@
 # Simple role class that only includes a hadoop client.
 #
 class role::analytics_test_cluster::client {
-    system::role { 'analytics_test_cluster::client':
-        description => 'Analytics Hadoop test client',
-    }
+    include profile::java
+    include profile::base::production
+    include profile::firewall
+    include profile::analytics::cluster::client
+    include profile::kerberos::client
+    include profile::kerberos::keytabs
 
-    include ::profile::java
-    include ::profile::base::production
-    include ::profile::firewall
-    include ::profile::analytics::cluster::client
-    include ::profile::kerberos::client
-    include ::profile::kerberos::keytabs
-
-    include ::profile::analytics::cluster::gitconfig
+    include profile::analytics::cluster::gitconfig
 
     # Airflow job scheduler.
     # We run this here in the analytics-test cluster
@@ -26,13 +22,13 @@ class role::analytics_test_cluster::client {
     # a more an-test-client instances, that the airflow-analytics-test
     # instance is not created there accidentally.
     if $::fqdn == 'an-test-client1002.eqiad.wmnet' {
-        include ::profile::airflow
+        include profile::airflow
     }
 
-    include ::profile::presto::client
+    include profile::presto::client
 
     # Need refinery to test Refine jobs
-    include ::profile::analytics::refinery
+    include profile::analytics::refinery
 
-    include ::profile::analytics::jupyterhub
+    include profile::analytics::jupyterhub
 }
