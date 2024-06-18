@@ -883,11 +883,8 @@ node /^db2200\.codfw\./ {
 node /^db2201\.codfw\./ {
     role(mariadb::backup_source)
 }
-## test-s1, bullseye
-node /^db2102\.codfw\./ {
-    role(insetup::data_persistence)
-}
-## test-s1, bookworm, 10.6
+
+# test-s1, bookworm
 node /^db2202\.codfw\./ {
     role(mariadb::core_test)
 }
