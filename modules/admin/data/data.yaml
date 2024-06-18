@@ -7210,3 +7210,7 @@ ldap_only_users:
     ensure: present
     realname: Gregory Onyeahialam
     email: gonyeahialam@wikimedia.org
+  audreypenven:
+    ensure: present
+    realname: Audrey Penven
+    email: audrey.penven@wikimedia.de
