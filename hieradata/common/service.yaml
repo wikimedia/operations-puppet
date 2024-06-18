@@ -1263,6 +1263,8 @@ service::catalog:
           max-delay: 30
           timeout-clean-reconnect: 3
       scheduler: wrr
+      ipip_encapsulation:
+        - codfw
     port: 389
     probes:
       - type: tcp
@@ -1291,6 +1293,8 @@ service::catalog:
           max-delay: 30
           timeout-clean-reconnect: 3
       scheduler: wrr
+      ipip_encapsulation:
+        - codfw
     port: 636
     probes:
       - type: tcp

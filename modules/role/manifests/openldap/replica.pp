@@ -5,4 +5,5 @@ class role::openldap::replica {
     include profile::firewall
     include profile::openldap
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
