@@ -189,7 +189,7 @@ class profile::lists (
     backup::set { 'var-lib-mailman3': }
 
     if $primary_host and $standby_hosts != [] {
-        rsync::quickdatacopy { "${mailman_root}-sync":
+        rsync::quickdatacopy { 'mailman-root-sync':
             ensure      => present,
             source_host => $primary_host,
             dest_host   => $standby_hosts,
