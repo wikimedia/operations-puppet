@@ -44,3 +44,7 @@ config:
 placement:
   label: "_admin"
   count: 3
+---
+service_type: mgr
+placement:
+  label: "_admin"
