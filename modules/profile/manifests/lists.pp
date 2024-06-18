@@ -43,11 +43,26 @@ class profile::lists (
     # Disable mailman service on the sandby host
     $mailman_service_ensure = stdlib::ensure($is_primary)
 
-    file { 'mailman-root':
-        ensure => directory,
-        path   => $mailman_root,
-        owner  => 'list',
-        group  => 'list',
+    if $mailman_root == '/var/lib/mailman3' {
+        file { 'mailman-root':
+            ensure => directory,
+            path   => $mailman_root,
+            owner  => 'list',
+            group  => 'list',
+        }
+    } else {
+        file { 'mailman-root-symlink':
+            ensure => 'link',
+            path   => '/var/lib/mailman3',
+            target => $mailman_root,
+        }
+
+        file { 'mailman-root':
+            ensure => directory,
+            path   => $mailman_root,
+            owner  => 'list',
+            group  => 'list',
+        }
     }
 
     class { 'mailman3':
