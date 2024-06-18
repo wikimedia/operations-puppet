@@ -1,7 +1,3 @@
-profile::trafficserver::backend::storage_elements:
-  - devname: nvme0n1
-    id: disk.0
-
 # Enable extended haproxy log-format
 profile::cache::haproxy::extended_logging: true
 profile::cache::haproxy::log_length: 16384

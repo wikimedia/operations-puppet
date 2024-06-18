@@ -1,8 +1,3 @@
-profile::trafficserver::backend::storage_elements:
-  - devname: nvme0n1
-    id: disk.0
-  - devname: nvme1n1
-    id: disk.1
 profile::cache::base::benthos_socket_address: &benthos_address "127.0.0.1:1221"
 profile::benthos::instances:
   haproxy_cache:

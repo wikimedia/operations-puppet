@@ -7,3 +7,8 @@ profile::trafficserver::backend::logs:
     mode: ascii_pipe
     ensure: present
     prometheus_port: 3400
+profile::trafficserver::backend::storage_elements:
+  - devname: nvme0n1
+    id: disk.0
+  - devname: nvme1n1
+    id: disk.1
