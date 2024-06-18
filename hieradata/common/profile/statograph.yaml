@@ -21,7 +21,7 @@ profile::statograph::metrics:
 
   - statuspage_id: lyfcttm2lhw4  # Wiki response time
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
-    query: 'histogram_quantile(0.5, sum(rate(envoy_cluster_upstream_rq_time_bucket{app="mediawiki", deployment="mw-web", envoy_cluster_name=~"local_service"}[5m])) by (le))/1000'
+    query: 'sum(rate(mediawiki_http_requests_duration_sum{deployment="mw-web",method="GET"}[5m]))/sum(rate(mediawiki_http_requests_duration_count{deployment="mw-web",method="GET"}[5m]))'
 
   - statuspage_id: h5mvbny28713  # Error responses
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
