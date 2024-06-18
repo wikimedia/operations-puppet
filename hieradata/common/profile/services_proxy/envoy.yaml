@@ -165,6 +165,12 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
+  - name: shellbox-video
+    port: 6036
+    timeout: "60s"
+    service: shellbox-video
+    keepalive: "4s"
+    # Explicitly do not retry
   - name: linkrecommendation
     port: 6029
     service: linkrecommendation
@@ -393,6 +399,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - shellbox-media
   - shellbox-syntaxhighlight
   - shellbox-timeline
+  - shellbox-video
   - swift-eqiad
   - swift-codfw
   - search-chi-eqiad
