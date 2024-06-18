@@ -14,12 +14,8 @@
 # routed to the frontend.
 
 class role::pontoon::frontend {
-    system::role { 'pontoon::frontend':
-        description => 'Pontoon frontend (public LB)',
-    }
+    include profile::base::production
+    include profile::firewall
 
-    include ::profile::base::production
-    include ::profile::firewall
-
-    include ::profile::pontoon::frontend
+    include profile::pontoon::frontend
 }

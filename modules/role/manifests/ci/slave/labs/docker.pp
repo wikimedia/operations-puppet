@@ -5,9 +5,6 @@
 class role::ci::slave::labs::docker {
     requires_realm('labs')
 
-    system::role { 'role::ci::slave::labs::docker':
-        description => 'CI Jenkins slave using Docker on labs' }
-
     include profile::ci::slave::labs::common
     include profile::ci::docker
     # Extended volume for /var/lib/docker

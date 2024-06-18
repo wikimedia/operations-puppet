@@ -51,10 +51,6 @@ class role::puppetmaster::standalone(
     Hash[String, Puppetmaster::R10k::Source] $r10k_sources        = {},
     Optional[String[1]]                      $realm_override      = undef,
 ) {
-    system::role { 'puppetmaster::standalone':
-        description => 'Cloud VPS project puppetmaster',
-    }
-
     include profile::openstack::base::puppetmaster::enc_client
     include profile::openstack::base::puppetmaster::stale_certs_exporter
     include profile::openstack::base::puppetmaster::safe_dirs

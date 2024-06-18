@@ -5,10 +5,6 @@
 class role::ci::castor::server {
     requires_realm( 'labs' )
 
-    system::role { 'role::ci::castor::server':
-        description => 'rsync server to store caches artifacts'
-    }
-
     # Castor uses an attached volume...
     include profile::labs::cindermount::srv
 
@@ -17,7 +13,7 @@ class role::ci::castor::server {
         manage_srv => false
     }
 
-    include ::profile::ci::castor::server
+    include profile::ci::castor::server
 
     Class['::profile::ci::slave::labs::common'] ~> Class['::profile::ci::castor::server']
 
