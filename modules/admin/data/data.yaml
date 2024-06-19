@@ -2553,9 +2553,9 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFet3ceayitBe5wjmUVZ6Pf+HPtlUlN+Q/V5plK++VoA agreen-ctr@wikimedia.org'
     uid: 3609
     krb: present
-    email: agreen-ctr@wikimedia.org
-    expiry_date: "2024-07-15"
-    expiry_contact: bgerdemann@wikimedia.org
+    email: andrew.green@extern.wikimedia.de
+    expiry_date: "2024-07-30"
+    expiry_contact: cynthia.makonyango@wikimedia.de
   mobrovac:
     ensure: present
     gid: 500
