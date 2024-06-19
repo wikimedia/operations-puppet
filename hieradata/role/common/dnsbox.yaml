@@ -48,6 +48,39 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: ntp
 
+# These are the anycast NTP VIPs that are announced from various DNS boxes. The
+# logic here is simple: we have three addresses ntp-[abc].anycast.wmnet. In the
+# core sites, we advertise one each from the three DNS boxes (ntp-[abc]). In
+# the edge sites, we just do ntp-a and ntp-b.
+#
+# If you are adding a new site, simply create a per-host override for the new
+# DNS boxes. See the existing hieradata per-host overrides; for example for
+# dns7001 and dns7002 (magru): dns7001 is advertising ntp-a while dns7002 is
+# advertising ntp-b.
+
+profile::dns::auth::ntp_check: '/usr/lib/nagios/plugins/check_ntp_peer -H 127.0.0.1 -w 0.05 -c 0.1'
+
+profile::dns::auth::anycast_ntp_a:
+  ntp-a.anycast.wmnet:
+    address: 10.3.0.5 # ntp-a VIP /32
+    check_cmd: "/usr/local/bin/check_ntp_a_state %{lookup('profile::dns::auth::ntp_check')}"
+    ensure: present
+    service_type: ntp-a
+
+profile::dns::auth::anycast_ntp_b:
+  ntp-b.anycast.wmnet:
+    address: 10.3.0.6 # ntp-b VIP /32
+    check_cmd: "/usr/local/bin/check_ntp_b_state %{lookup('profile::dns::auth::ntp_check')}"
+    ensure: present
+    service_type: ntp-b
+
+profile::dns::auth::anycast_ntp_c:
+  ntp-c.anycast.wmnet:
+    address: 10.3.0.7 # ntp-c VIP /32
+    check_cmd: "/usr/local/bin/check_ntp_c_state %{lookup('profile::dns::auth::ntp_check')}"
+    ensure: present
+    service_type: ntp-c
+
 profile::dns::auth::acmechief_target::acmechief_hosts:
 - acmechief1001.eqiad.wmnet
 - acmechief2001.codfw.wmnet
