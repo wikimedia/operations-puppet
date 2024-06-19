@@ -167,7 +167,7 @@ profile::services_proxy::envoy::listeners:
       num_retries: 1
   - name: shellbox-video
     port: 6036
-    timeout: "60s"
+    timeout: "86400s"
     service: shellbox-video
     keepalive: "4s"
     # Explicitly do not retry
