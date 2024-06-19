@@ -66,7 +66,7 @@ pipeline:
         root.uri_path = if this.uri_path.length() == 0 { "/" }
         root.http_status = this.http_status.number()
         root.sequence = this.sequence.number()
-        root.server_pid = this.server_pid.number()
+        root.haproxy_pid = this.haproxy_pid.number()
 
         # Metadata
         meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
