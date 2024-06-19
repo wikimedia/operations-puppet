@@ -1,2 +1,2 @@
 profile::cache::purge::use_pki: true
-profile::cache::haproxy::version: haproxy26
+profile::cache::haproxy::version: haproxy28
