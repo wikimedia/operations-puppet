@@ -46,7 +46,9 @@ class karapace (
     }
 
     systemd::service { 'karapace':
-        ensure    => 'present',
+        # We are in the process of deleting the Karapace hosts, but before we do,
+        # we disable the services to see if anything unexpected breaks.
+        ensure    => 'absent',
         restart   => true,
         content   => file('karapace/initscripts/karapace.service'),
         subscribe => File['/etc/karapace/karapace.config.json'],
