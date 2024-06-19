@@ -65,7 +65,7 @@ pipeline:
 
         root.uri_path = if this.uri_path.length() == 0 { "/" }
         root.http_status = this.http_status.number()
-        root.sequence = this.sequence.number()
+        root.sequence = this.sequence.number().catch(deleted())
         root.haproxy_pid = this.haproxy_pid.number()
 
         # Metadata
