@@ -19,7 +19,7 @@ labsldapconfig:
   secondary_hostname: "cloudservices2005-dev.private.codfw.wikimedia.cloud"
 
 ldap:
-  ro-server: ldap-ro.codfw.wikimedia.org
+  ro-server: ldap-ro.eqiad.wikimedia.org
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
 
 profile::systemd::timesyncd::ntp_servers:
