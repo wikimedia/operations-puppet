@@ -4,10 +4,8 @@ class profile::puppetmaster::updatenetboot {
 
     file { '/usr/local/sbin/update-netboot-image':
         ensure => present,
-        source => 'puppet:///modules/profile/puppetmaster/update-netboot-image.sh',
+        source => 'puppet:///modules/profile/puppetserver/update-netboot-image.sh',
         mode   => '0544',
-        owner  => 'root',
-        group  => 'root',
     }
 
     ensure_packages('pax')

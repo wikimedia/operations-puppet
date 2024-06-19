@@ -37,7 +37,7 @@ class profile::puppetserver::volatile (
 
     file { '/usr/local/sbin/update-netboot-image':
         ensure => present,
-        source => 'puppet:///modules/profile/puppetmaster/update-netboot-image.sh',
+        source => 'puppet:///modules/profile/puppetserver/update-netboot-image.sh',
         mode   => '0544',
     }
 
