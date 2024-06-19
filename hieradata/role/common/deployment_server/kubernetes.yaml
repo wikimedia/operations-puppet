@@ -233,6 +233,9 @@ scap::sources:
   # Netbox software
   netbox/deploy:
     repository: operations/software/netbox-deploy
+  # Netbox software (dev)
+  netbox-dev/deploy:
+    repository: operations/software/netbox-deploy
   search/mjolnir/deploy:
     repository: search-platform/mjolnir-deploy
     origin: gitlab
