@@ -87,10 +87,8 @@ class profile::puppetdb::database(
     }
     file { "/etc/postgresql/${pgversion}/main/tuning.conf":
         ensure  => 'file',
-        owner   => 'root',
-        group   => 'root',
         mode    => '0444',
-        content => template('puppetmaster/puppetdb/tuning.conf.erb'),
+        content => template('profile/puppetdb/tuning.conf.erb'),
         before  => Service[$postgresql::server::service_name],
     }
     $users.each |$pg_name, $config| {
