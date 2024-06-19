@@ -1303,7 +1303,7 @@ authdns_addrs:
     skip_loopback: true # bird::anycast takes care of this one
 
 # acme-chief active host
-acmechief_host: 'acmechief1001.eqiad.wmnet'
+acmechief_host: 'acmechief1002.eqiad.wmnet'
 
 # These are our servers - they all peer to each other and sync to upstream NTP
 # pool servers.
