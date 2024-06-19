@@ -1,7 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 
-profile::puppetmaster::pontoon::pki_enabled: true
-
 profile::pki::client::signer_host: "%{alias('__master_for_role_pki__multirootca')}"
 profile::pki::client::bundles_source: "puppet:///volatile/pontoon/pki"
 

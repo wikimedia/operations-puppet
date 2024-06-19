@@ -5,7 +5,6 @@
 class profile::pontoon::base (
     String  $provider   = lookup('profile::pontoon::provider', { default_value => 'cloud_vps' }),
     Boolean $sd_enabled = lookup('profile::pontoon::sd_enabled', { default_value => false }),
-    Boolean $pki_enabled = lookup('profile::puppetmaster::pontoon::pki_enabled', { default_value => false }),
     Cfssl::Ca_name $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''}),
 ) {
     if $sd_enabled {
@@ -48,14 +47,6 @@ class profile::pontoon::base (
         ensure => present,
         source => '/var/lib/puppet/ssl/certs/ca.pem',
         notify => Exec['reconfigure-wmf-certificates'],
-    }
-
-    if $pki_enabled and $root_ca_name != '' {
-        file { "/usr/share/ca-certificates/wikimedia/${root_ca_name}.crt":
-            ensure  => present,
-            content => file('/etc/pontoon/pki/ca.pem'),
-            notify  => Exec['reconfigure-wmf-certificates'],
-        }
     }
 
     exec { 'reconfigure-wmf-certificates':
