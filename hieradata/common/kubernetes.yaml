@@ -542,6 +542,12 @@ kubernetes::clusters:
         - wikikube-worker2008.codfw.wmnet
         - wikikube-worker2009.codfw.wmnet
         - wikikube-worker2010.codfw.wmnet
+        - wikikube-worker2011.codfw.wmnet
+        - wikikube-worker2012.codfw.wmnet
+        - wikikube-worker2013.codfw.wmnet
+        - wikikube-worker2014.codfw.wmnet
+        - wikikube-worker2017.codfw.wmnet
+        - wikikube-worker2018.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.

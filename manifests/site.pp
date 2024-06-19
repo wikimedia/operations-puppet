@@ -1637,7 +1637,7 @@ node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-1])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker20(0[1-47-9]|10)\.codfw\./ {
+node /^wikikube-worker20(0[1-47-9]|1[0-8])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -2226,19 +2226,6 @@ node /^mw2300\.codfw\./ {
 }
 
 node /^mw239[23]\.codfw\./ {
-    role(mediawiki::appserver)
-}
-
-node /^mw2400\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
-# rack A5 (T279599)
-node /^mw240[3-5]\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
-node /^mw240[89]\.codfw\./ {
     role(mediawiki::appserver)
 }
 
