@@ -251,4 +251,8 @@ gitlab_rails['env'] = {
 <%- if @local_gems_enabled -%>
   'BUNDLE_GEMFILE' => '<%= @rails_path %>/Gemfile.local',
 <%- end -%>
+
 }
+<%- if @custom_nginx_config -%>
+nginx['custom_gitlab_server_config'] = <%= @custom_nginx_config.join("\n").inspect %>
+<%- end -%>

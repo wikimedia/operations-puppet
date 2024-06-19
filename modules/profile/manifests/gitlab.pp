@@ -53,6 +53,7 @@ class profile::gitlab(
     Hash[Stdlib::Unixpath, Array[String]] $local_gems = lookup('profile::gitlab::local_gems', {default_value => {}}),
     Integer $max_storage_concurrency = lookup('profile::gitlab::max_storage_concurrency'),
     Integer $max_concurrency = lookup('profile::gitlab::max_concurrency'),
+    Array[String] $custom_nginx_config = lookup('profile::gitlab::custom_nginx_config'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -261,5 +262,6 @@ class profile::gitlab(
         local_gems                   => $local_gems,
         max_storage_concurrency      => $max_storage_concurrency,
         max_concurrency              => $max_concurrency,
+        custom_nginx_config          => $custom_nginx_config,
     }
 }

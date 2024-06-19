@@ -271,6 +271,8 @@ profile::gitlab::runner::allowed_docker_services:
   # Database engines
   - "mariadb:*"
 
+profile::gitlab::trusted_runner_id_regex: "(77|79)"
+
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 profile::mail::smarthost::support_ipv6: false
 

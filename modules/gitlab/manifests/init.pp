@@ -80,8 +80,9 @@ class gitlab (
     String                   $thanos_storage_password           = '',
     Boolean                  $local_gems_enabled                = false,
     Hash[Stdlib::Unixpath, Array[String]] $local_gems           = {},
-    Integer           $max_storage_concurrency                  = 4,
-    Integer           $max_concurrency                          = 2,
+    Integer                  $max_storage_concurrency           = 4,
+    Integer                  $max_concurrency                   = 2,
+    Array[String]            $custom_nginx_config               = [],
 
 ) {
     $oidc_defaults = {

@@ -107,3 +107,8 @@ acmechief_host: acmechief2002.codfw.wmnet
 profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'
 - 'mx-out2001.wikimedia.org'
+
+profile::gitlab::trusted_runner_id_regex: "(1484|1504)"
+
+profile::gitlab::custom_nginx_config:
+  - "location ~* ^(?:(?!admin).)*/runners/%{lookup('profile::gitlab::trusted_runner_id_regex')}/edit$ {\n deny all;\n}\n" # block edit page of Trusted runners
