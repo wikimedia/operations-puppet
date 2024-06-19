@@ -289,15 +289,15 @@ profile::services_proxy::envoy::listeners:
     timeout: "120s"
   - name: mwapi-async # mediawiki api for long-lasting async requests
     port: 6500
-    service: "api-https"
-    upstream: "api-rw.discovery.wmnet"
+    service: "mw-api-int"
+    upstream: "mw-api-int.discovery.wmnet"
     keepalive: "4s"
     timeout: "120s"
     xfp: https
   - name: mwapi  # MediaWiki-internal requests (T288848)
     port: 6501
-    service: "api-https"
-    upstream: "api-rw.discovery.wmnet"
+    service: "mw-api-int"
+    upstream: "mw-api-int.discovery.wmnet"
     keepalive: "4s"
     timeout: "60s"
     xfp: https
@@ -353,18 +353,6 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "60s"
     xfp: https
-  - name: mw-api-async-transition
-    port: 6500  # NOTE: re-use "mwapi-async" port to make the transition easier
-    service: "api-https"
-    upstream: "api-rw.discovery.wmnet"
-    keepalive: "4s"
-    timeout: "120s"
-    xfp: https
-    split:
-      percentage: 50
-      service: "mw-api-int"
-      upstream: "mw-api-int.discovery.wmnet"
-      keepalive: "4s"
   - name: mw-jobrunner
     port: 6506
     service: mw-jobrunner

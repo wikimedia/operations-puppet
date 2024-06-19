@@ -39,7 +39,7 @@
 #   Default: false
 #
 class service::configuration(
-    $mwapi_host     = 'https://api-rw.discovery.wmnet',
+    $mwapi_host    = 'https://mw-api-int.discovery.wmnet:4446',
     $restbase_uri  = 'https://restbase.discovery.wmnet:7443',
     $http_proxy    = undef,
     $statsd_host   = 'localhost',
