@@ -184,6 +184,7 @@ class profile::netbox::db (
     if $auto_restart {
         $pgversion = $::lsbdistcodename ? {
             'bullseye'  => 13,
+            'bookworm'  => 15,
         }
 
         profile::auto_restarts::service { "postgresql@${pgversion}-main": }
