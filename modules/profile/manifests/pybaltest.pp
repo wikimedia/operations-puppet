@@ -28,10 +28,4 @@ class profile::pybaltest (
             component => 'component/pybal',
         }
     }
-
-    # Install conftool-master for conftool testing
-    class  { 'puppetmaster::base_repo':
-        gitdir   => '/var/lib/git',
-        gitowner => 'root',
-    }
 }
