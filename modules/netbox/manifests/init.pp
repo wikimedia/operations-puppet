@@ -116,7 +116,7 @@ class netbox (
             databases                => 3,
             protected-mode           => 'yes',
             dbfilename               => '""',
-            appendfilename           => '""',
+            appendfilename           => '"appendonly.aof"',
         },
         }
         prometheus::redis_exporter { String($redis_port): }
