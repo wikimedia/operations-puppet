@@ -1,5 +1,6 @@
 # @summary service::uwsgi provides a common wrapper for setting up python services
-#   based on uwsgi on.
+#   based on uwsgi on. The repository containing the code is assumed to be
+#   already deploy by other means.
 # @param port Port on which to run the service
 # @param config
 #   The individual service's config to use. It must be a hash of
@@ -14,16 +15,9 @@
 #   answer. If has_spec it true, this is supposed to be the base url
 #   for the spec request
 # @param has_spec If the service specifies a swagger spec, use it to thoroughly monitor it
-# @param repo The name of the repo to use for deployment. Default: ${title}/deploy
 # @param firejail run in firejail
 # @param local_logging Whether to store log entries on the target node as well.
 # @param icinga_check Whether to include an Icinga check for monitoring the service.
-# @param deployment What deployment system to use for deploying this service.
-#   Note: this parameter will be removed onces ores.wmflabs.org stops using service::uwsgi
-# @param deployment_user The user that will own the service code. Only applicable when
-#   $deployment ='scap3'.
-# @param deployment_manage_user Boolean. Whether or not scap::target manages user.
-#   Only applicable when $deployment ='scap3'.
 # @param sudo_rules
 #   An array of string representing sudo rules in the sudoers format that you
 #   want the service to have.
@@ -59,13 +53,9 @@ define service::uwsgi(
     Integer                    $no_workers             = $facts['processors']['count'],
     String                     $healthcheck_url        = '/_info',
     Boolean                    $has_spec               = false,
-    String                     $repo                   = "${title}/deploy",
     Boolean                    $firejail               = true,
     Boolean                    $icinga_check           = true,
     Boolean                    $local_logging          = true,
-    String                     $deployment_user        = 'deploy-service',
-    Boolean                    $deployment_manage_user = true,
-    String                     $deployment             = 'scap3',
     Array[String]              $sudo_rules             = [],
     Boolean                    $add_logging_config     = true,
     String                     $core_limit             = '0',
@@ -74,16 +64,6 @@ define service::uwsgi(
     String        $contact_groups         = lookup('contactgroups', {'default_value' => 'admins'}),
     # lint:endignore
 ) {
-    if $deployment == 'scap3' {
-        scap::target { $repo:
-            service_name => $title,
-            deploy_user  => $deployment_user,
-            before       => Uwsgi::App[$title],
-            manage_user  => $deployment_manage_user,
-            sudo_rules   => $sudo_rules,
-        }
-    }
-
     # Import all common configuration
     include service::configuration
 

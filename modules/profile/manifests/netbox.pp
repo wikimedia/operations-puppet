@@ -15,7 +15,6 @@
 # @param discovery_name The fqdn name used internally
 # @param additional_sans A list of fqdn names to be added to the certificate SAN
 # @param slaves list of secondary netbox serveres
-# @param scap_repo The repo to use for scap deploys
 # @param rw_token api read write token key
 # @param ro_token api read only token key
 # @param db_primary primary database name
@@ -139,7 +138,6 @@ class profile::netbox (
     $systemd_environment = {'REQUESTS_CA_BUNDLE' => '/etc/ssl/certs/ca-certificates.crt'}
 
     # Netbox deployment dirs configuration
-    $netbox_scap_repo = "${deploy_project}/deploy"
     $netbox_venv_path = "/srv/deployment/${deploy_project}/venv"
     $netbox_src_path = "/srv/deployment/${deploy_project}/deploy/src"
     $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
@@ -152,8 +150,9 @@ class profile::netbox (
     include passwords::redis
     $redis_password = ($redis_host == 'localhost').bool2str('', $passwords::redis::main_password)
 
-    # packages required by netbox-extras
-    ensure_packages(['python3-git', 'python3-pynetbox', 'python3-requests'])
+    # Allow the creation of venvs and add packages required by netbox-extras
+    ensure_packages(
+        ['python3-venv', 'python3-git', 'python3-pynetbox', 'python3-requests'])
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { 'profile::rsyslog::udp_json_logback_compat': }
@@ -165,7 +164,6 @@ class profile::netbox (
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
         extras_path                 => $netbox_extras_path,
-        scap_repo                   => $netbox_scap_repo,
         config_path                 => $netbox_config_path,
         src_path                    => $netbox_src_path,
         venv_path                   => $netbox_venv_path,

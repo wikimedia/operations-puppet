@@ -58,7 +58,6 @@ class netbox (
     Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath              $src_path                    = '/srv/deployment/netbox/deploy/src',
     Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
-    String                        $scap_repo                   = 'netbox/deploy',
     Stdlib::Port                  $redis_port                  = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
     Stdlib::Fqdn                  $redis_host                  = 'localhost',
@@ -137,7 +136,6 @@ class netbox (
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/configuration.py.erb'),
-        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -148,7 +146,6 @@ class netbox (
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/ldap_config.py.erb'),
-        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -158,7 +155,6 @@ class netbox (
         group   => 'www-data',
         mode    => '0440',
         content => template('netbox/cas_configuration.py.erb'),
-        require => Scap::Target[$scap_repo],
         before  => Uwsgi::App['netbox'],
         notify  => [Service['uwsgi-netbox'], Service['rq-netbox']],
     }
@@ -177,8 +173,6 @@ class netbox (
   ]
   service::uwsgi { 'netbox':
       port            => $port,
-      deployment_user => 'netbox',
-      repo            => $scap_repo,
       config          => {
           need-plugins => 'python3',
           chdir        => "${src_path}/netbox",

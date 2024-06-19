@@ -91,7 +91,6 @@ class profile::puppetboard (
     $systemd_group = ($puppetdb_key and $puppetdb_cert).bool2str('puppet', 'www-data')
     service::uwsgi { 'puppetboard':
         port            => $uwsgi_port,
-        deployment      => 'No Deploy',
         nrpe_check_http => $nrpe_check_http,
         no_workers      => 4,
         systemd_group   => $systemd_group,

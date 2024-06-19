@@ -21,17 +21,14 @@ class profile::netbox::scripts {
         'PYTHONENCODING=utf-8',
     ]
     $deploy_project = $profile::netbox::deploy_project
-    $scap_repo = $profile::netbox::netbox_scap_repo
     $venv_path = $profile::netbox::netbox_venv_path
     $script_path = "${profile::netbox::netbox_extras_path}/tools/custom_script_proxy.py"
     $service_port=8002
     $apache_port=8443
 
     service::uwsgi { 'netbox-scriptproxy':
-        port            => $service_port,
-        deployment_user => 'netbox',
-        deployment      => '',
-        config          => {
+        port         => $service_port,
+        config       => {
             need-plugins => 'python3',
             venv         => $venv_path,
             wsgi-file    => $script_path,
@@ -41,12 +38,9 @@ class profile::netbox::scripts {
             env          => $uwsgi_environ,
             max-requests => 300,
         },
-        icinga_check    => false,
-        core_limit      => '30G',
-        require         => [
-            Scap::Target[$scap_repo],
-            Git::Clone['operations/software/netbox-extras']
-        ],
+        icinga_check => false,
+        core_limit   => '30G',
+        require      => Git::Clone['operations/software/netbox-extras']
     }
 
     profile::auto_restarts::service { 'uwsgi-netbox-scriptproxy': }
