@@ -167,7 +167,7 @@ class cassandra (
         '2.2' => pick($version, '2.2.6-wmf5'),
         '3.x' => pick($version, '3.11.14'),
         '4.x' => pick($version, '4.1.1'),
-        'dev' => pick($version, '4.1.1-wmf1')
+        'dev' => pick($version, '4.1.5')
     }
 
     $component = $target_version  ? {
