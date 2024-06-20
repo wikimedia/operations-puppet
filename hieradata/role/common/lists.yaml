@@ -25,6 +25,9 @@ profile::lists::web::db_user: mailman3web
 #profile::lists::web::secret -- set in private repo
 #profile::lists::archiver_key -- set in private repo
 
+profile::puppet::agent::force_puppet7: true
+acmechief_host: acmechief2002.codfw.wmnet
+
 profile::lists::renamed_lists:
   boardexec:            board-l
   foundation-l:         wikimedia-l
