@@ -11,6 +11,7 @@ global
     log /var/lib/haproxy/dev/log local0 info
     <%- if @use_benthos -%>
     log <%= @benthos_socket %> len <%= @log_length %> format rfc5424 local0 info
+    tune.http.logurilen 2048
     <%- end -%>
     # do not keep old processes longer than 5m after a reload
     hard-stop-after 5m
