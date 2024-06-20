@@ -2,6 +2,3 @@ profile::wmcs::backy2::instance_backup_time: '*-*-* 17:00:00'
 
 profile::wmcs::backy2::image_backup_time: '*-*-* 13:00:00'
 profile::wmcs::backy2::backup_glance_images::enabled: false
-
-profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
