@@ -89,7 +89,7 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
-  netbox_next:
+  netbox_dev:
     id: 12
     service_class: 'OidcRegisteredService'
     service_id: 'https://netbox-dev\.wikimedia\.org\/[\w\/]*'
