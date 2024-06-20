@@ -190,10 +190,11 @@ class profile::lists (
 
     if $primary_host and $standby_hosts != [] {
         rsync::quickdatacopy { 'mailman-root-sync':
-            ensure      => present,
-            source_host => $primary_host,
-            dest_host   => $standby_hosts,
-            module_path => $mailman_root,
+            ensure                     => present,
+            source_host                => $primary_host,
+            dest_host                  => $standby_hosts,
+            module_path                => $mailman_root,
+            ignore_missing_file_errors => true,
         }
 
         rsync::quickdatacopy { 'var-lib-mailman':
@@ -201,42 +202,6 @@ class profile::lists (
             source_host => $primary_host,
             dest_host   => $standby_hosts,
             module_path => '/var/lib/mailman',
-        }
-
-        $is_primary_host = $facts['fqdn'] == $primary_host
-
-        rsync::server::module { 'var-lib-mailman3-sync':
-            ensure        => 'absent',
-            path          => '/var/lib/mailman3',
-            read_only     => 'yes',
-            hosts_allow   => $standby_hosts + $primary_host,
-            auto_firewall => true,
-        }
-
-        rsync::server::module { 'var-lib-mailman-sync':
-            ensure        => 'absent',
-            path          => '/var/lib/mailman',
-            read_only     => 'yes',
-            hosts_allow   => $standby_hosts + $primary_host,
-            auto_firewall => true,
-        }
-
-        systemd::timer::job { 'rsync-mailman3-root':
-            ensure              => 'absent',
-            user                => 'root',
-            description         => 'rsync /var/lib/mailman3',
-            command             => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman3-sync ${mailman_root}",
-            interval            => { 'start' => 'OnUnitInactiveSec', 'interval' => '10m' },
-            success_exit_status => [24], # Allow 'some files vanished before they could be transferred' errors
-        }
-
-        systemd::timer::job { 'rsync-mailman-root':
-            ensure              => 'absent',
-            user                => 'root',
-            description         => 'rsync /var/lib/mailman',
-            command             => "/usr/bin/rsync -avp --delete rsync://${primary_host}/var-lib-mailman-sync /var/lib/mailman/",
-            interval            => { 'start' => 'OnUnitInactiveSec', 'interval' => '10m' },
-            success_exit_status => [24], # Allow 'some files vanished before they could be transferred' errors
         }
     }
 
