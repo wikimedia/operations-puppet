@@ -446,7 +446,7 @@ profile::trafficserver::backend::mapping_rules:
       # REST api
     - type: regex_map
       target: 'http://(.*)/w/rest.php'
-      replacement: https://api-rw.discovery.wmnet/w/rest.php
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -461,17 +461,14 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=api-ro.discovery.wmnet' # dest
-          # mw-on-k8s
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     # Action API
     - type: regex_map
       target: 'http://(.*)/w/api.php'
-      replacement: https://api-rw.discovery.wmnet/w/api.php
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/api.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
@@ -480,10 +477,7 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=api-ro.discovery.wmnet' # dest
-          # mw-on-k8s
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
@@ -495,7 +489,7 @@ profile::trafficserver::backend::mapping_rules:
     # each of which causes the ats-be<->nginx connection to be closed.
     - type: map
       target: http://www.wikidata.org
-      replacement: https://appservers-rw.discovery.wmnet
+      replacement: https://mw-web.discovery.wmnet:4450
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -510,13 +504,10 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=appservers-ro.discovery.wmnet' # dest
-          # mw-on-k8s
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          - '@pparam=mw-web-ro.discovery.wmnet' # dest
     - type: map
       target: /
-      replacement: https://appservers-rw.discovery.wmnet
+      replacement: https://mw-web.discovery.wmnet:4450
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -531,10 +522,7 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=appservers-ro.discovery.wmnet' # dest
-          # mw-on-k8s
-          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
-          - '@pparam=/etc/trafficserver/lua/mw-on-k8s.lua'
+          - '@pparam=mw-web-ro.discovery.wmnet' # dest
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
