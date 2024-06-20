@@ -382,6 +382,15 @@ Architectures: amd64
 VerifyRelease: F1656F24C74CD1D8
 ListShellHook: grep-dctrl \( -S mariadb-10.5 \) -o \( -e galera-4 \) || [ $? -eq 1 ]
 
+Name: thirdparty/conda
+Method: https://repo.anaconda.com/pkgs/misc/debrepo/conda
+Components: main>thirdparty/conda
+UDebComponents:
+Suite: stable
+Architectures: amd64
+VerifyRelease: 8AEB4F8B29D82806
+ListShellHook: grep-dctrl -X -S 'conda' || [ $? -eq 1 ]
+
 Name: node14-bullseye
 Method: https://deb.nodesource.com/node_14.x
 Components: main>thirdparty/node14

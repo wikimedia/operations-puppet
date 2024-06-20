@@ -60,6 +60,7 @@ Components: main
  thirdparty/bigtop15
  thirdparty/ceph-octopus
  thirdparty/ci
+ thirdparty/conda
  thirdparty/confluent
  thirdparty/confluent7
  thirdparty/docker-ci-buster
@@ -103,6 +104,7 @@ Update:
  matomo
  pyall
  thirdparty/ceph-octopus
+ thirdparty/conda
  thirdparty/docker-ci-buster
  thirdparty/gitlab-runner
  thirdparty/haproxy24
@@ -151,6 +153,7 @@ Components: main
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
  thirdparty/ci
+ thirdparty/conda
  thirdparty/confluent
  thirdparty/confluent7
  thirdparty/elastic710
@@ -187,6 +190,7 @@ Update:
  thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
+ thirdparty/conda
  thirdparty/docker-ci-bullseye
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
