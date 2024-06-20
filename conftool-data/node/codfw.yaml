@@ -443,6 +443,6 @@ codfw:
     ml-staging2002.codfw.wmnet: [kubesvc]
     ml-staging2003.codfw.wmnet: [kubesvc]
   dnsbox:
-    dns2004.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp, ntp-a]
-    dns2005.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp, ntp-b]
-    dns2006.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp, ntp-c]
+    dns2004.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-a]
+    dns2005.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-b]
+    dns2006.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-c]
