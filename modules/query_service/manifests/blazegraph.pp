@@ -16,6 +16,8 @@
 # - $extra_jvm_opts: Extra JVM configs for blazegraph
 # - $use_geospatial: Turn on blazegraph geospatial features
 # - $journal: Name to assign instance journal. Must be unique per data_dir.
+# - $use_oauth: Set to true to protect the service with OAuth
+# - $internal_federated_endpoints: Map of internal federated endpoints with a list of their service aliases
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -34,6 +36,7 @@ define query_service::blazegraph(
     String $federation_user_agent,
     String $prefixes_file,
     Boolean $use_oauth,
+    Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints
 ) {
     $data_file = "${data_dir}/${journal}.jnl"
 
@@ -59,17 +62,35 @@ define query_service::blazegraph(
     }
 
     file { "/etc/${deploy_name}/allowlist-${title}.txt":
-        ensure => present,
-        source => 'puppet:///modules/query_service/allowlist.txt',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-        before => Service[$title],
+        ensure  => present,
+        content => epp('query_service/allowlist.txt.epp', { 'endpoints' => $internal_federated_endpoints }),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        before  => Service[$title],
+    }
+    $internal_federated_hosts = query_service::get_federated_endpoint_hostnames($internal_federated_endpoints)
+    $proxy_bypass_hosts_jvm_opts = $internal_federated_hosts ? {
+        default => ["-Dhttp.proxyExcludedHosts=${internal_federated_hosts}"],
+        undef   => [],
     }
 
     file { "/etc/default/${title}":
         ensure  => present,
-        content => template('query_service/blazegraph-default.erb'),
+        content => epp('query_service/blazegraph-default.epp',
+            {
+                'deploy_name'           => $deploy_name,
+                'title'                 => $title,
+                'heap_size'             => $heap_size,
+                'blazegraph_main_ns'    => $blazegraph_main_ns,
+                'log_dir'               => $log_dir,
+                'port'                  => $port,
+                'extra_jvm_opts'        => $extra_jvm_opts + $proxy_bypass_hosts_jvm_opts,
+                'prefixes_file'         => $prefixes_file,
+                'use_oauth'             => $use_oauth,
+                'federation_user_agent' => $federation_user_agent,
+            }
+        ),
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

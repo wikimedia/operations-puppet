@@ -27,6 +27,10 @@ describe 'query_service::blazegraph', :type => :define do
         :blazegraph_main_ns => 'wdq',
         :prefixes_file => 'prefixes.conf',
         :use_oauth => false,
+        :internal_federated_endpoints => {
+          "https://internal/sparql" => ["https://alias1/sparql", "https://alias2/sparql"],
+          "https://internal2/sparql" => ["https://alias3/sparql"],
+        },
         }
    }
 
@@ -41,6 +45,12 @@ describe 'query_service::blazegraph', :type => :define do
     }
     it { is_expected.to contain_file('/etc/wdqs/RWStore.wikidata.properties')
       .with_content(%r{AbstractJournal.file=/srv/wdqs/wikidata.jnl})
+    }
+    it { is_expected.to contain_file('/etc/wdqs/allowlist-wdqs-blazegraph.txt')
+      .with_content(%r{https://internal/sparql,https://alias1/sparql,https://alias2/sparql})
+    }
+    it { is_expected.to contain_file('/etc/default/wdqs-blazegraph')
+      .with_content(/-Dhttp.proxyExcludedHosts=internal,internal2/)
     }
   end
 end
@@ -71,6 +81,7 @@ describe 'query_service::blazegraph', :type => :define do
         :blazegraph_main_ns => 'wdq',
         :prefixes_file => 'prefixes.conf',
         :use_oauth => false,
+        :internal_federated_endpoints => {},
         }
    }
 
@@ -112,6 +123,7 @@ describe 'query_service::blazegraph', :type => :define do
         :blazegraph_main_ns => 'wdq',
         :prefixes_file => 'prefixes.conf',
         :use_oauth => false,
+        :internal_federated_endpoints => {},
         }
    }
 

@@ -28,6 +28,7 @@ define profile::query_service::blazegraph (
     Optional[String] $jvmquake_options = undef,
     Optional[Integer] $jvmquake_warn_threshold = undef,
     String $jvmquake_warn_file = "/tmp/jvmquake_warn_gc_${title}",
+    Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = undef,
 ) {
     require ::profile::query_service::common
 
@@ -68,7 +69,6 @@ define profile::query_service::blazegraph (
         ],
         undef   => []
     }
-
     if $jvmquake_jvm_opts != [] {
         ensure_packages('jvmquake')
     }
@@ -95,27 +95,28 @@ define profile::query_service::blazegraph (
     }
 
     query_service::blazegraph { $instance_name:
-        journal               => $journal,
-        package_dir           => $package_dir,
-        data_dir              => $data_dir,
-        logstash_logback_port => $logstash_logback_port,
-        log_dir               => $log_dir,
-        deploy_name           => $deploy_name,
-        username              => $username,
-        use_deployed_config   => $use_deployed_config,
-        port                  => $blazegraph_port,
-        config_file_name      => $config_file_name,
-        heap_size             => $heap_size,
-        extra_jvm_opts        => $default_extra_jvm_opts
-                                    + $event_service_jvm_opts
-                                    + $extra_jvm_opts
-                                    + $prometheus_jvm_opts
-                                    + $jvmquake_jvm_opts,
-        use_geospatial        => $use_geospatial,
-        blazegraph_main_ns    => $blazegraph_main_ns,
-        prefixes_file         => $prefixes_file,
-        federation_user_agent => $federation_user_agent,
-        use_oauth             => $use_oauth,
+        journal                      => $journal,
+        package_dir                  => $package_dir,
+        data_dir                     => $data_dir,
+        logstash_logback_port        => $logstash_logback_port,
+        log_dir                      => $log_dir,
+        deploy_name                  => $deploy_name,
+        username                     => $username,
+        use_deployed_config          => $use_deployed_config,
+        port                         => $blazegraph_port,
+        config_file_name             => $config_file_name,
+        heap_size                    => $heap_size,
+        extra_jvm_opts               => $default_extra_jvm_opts
+                                          + $event_service_jvm_opts
+                                          + $extra_jvm_opts
+                                          + $prometheus_jvm_opts
+                                          + $jvmquake_jvm_opts,
+        use_geospatial               => $use_geospatial,
+        blazegraph_main_ns           => $blazegraph_main_ns,
+        prefixes_file                => $prefixes_file,
+        federation_user_agent        => $federation_user_agent,
+        use_oauth                    => $use_oauth,
+        internal_federated_endpoints => $internal_federated_endpoints,
     }
 
     if $monitoring_enabled {
