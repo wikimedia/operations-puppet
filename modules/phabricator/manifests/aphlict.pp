@@ -112,16 +112,6 @@ class phabricator::aphlict (
         require => File['/var/log/aphlict/'],
     }
 
-    # TODO: remove this after puppet has ran on all hosts
-    systemd::timer::job { 'aphlict_logrotate':
-        ensure      => $ensure,
-        user        => 'root',
-        command     => '/usr/sbin/logrotate /etc/logrotate.conf',
-        description => 'Runs logrotate hourly',
-        interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
-        require     => File['/var/log/aphlict'],
-    }
-
     # accounts
     group { $group:
         ensure => present,
