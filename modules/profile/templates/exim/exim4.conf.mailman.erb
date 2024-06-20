@@ -278,7 +278,7 @@ list_aliases:
 	driver = redirect
 	domains = +local_domains
 	require_files = CONFDIR/aliases/$domain
-	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain}}
+	data = ${lookup{$local_part}lsearch*{CONFDIR/aliases/$domain_data}}
 	qualify_preserve_domain
 	allow_fail
 	allow_defer
