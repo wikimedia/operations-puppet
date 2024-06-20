@@ -31,10 +31,6 @@ class profile::bird::anycast_monitoring (
         critical      => true, # Page
     }
 
-    monitoring::host { '10.3.0.2':
-        ip_address => '10.3.0.2',
-    }
-
     $ntp_anycast_peers.each |Stdlib::Fqdn $ntp_anycast_peer| {
         $ntp_anycast_ip = ipresolve($ntp_anycast_peer, 4)
         monitoring::host { $ntp_anycast_peer:
@@ -47,13 +43,6 @@ class profile::bird::anycast_monitoring (
             check_command => 'check_ntp_peer!0.1!0.5',
             notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
         }
-    }
-
-    monitoring::service { 'NTP anycast VIP':
-        host          => '10.3.0.2',
-        description   => 'NTP anycast VIP',
-        check_command => 'check_ntp_peer!0.1!0.5',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
     }
 
     monitoring::host { 'syslog.anycast.wmnet':

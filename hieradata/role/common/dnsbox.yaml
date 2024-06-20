@@ -42,11 +42,6 @@ profile::bird::advertise_vips:
     check_cmd: '/usr/local/bin/check_authdns_ns2_state /usr/lib/nagios/plugins/check_dns_query -H 198.35.27.27 -a -l -d www.wikipedia.org -t 1'
     ensure: present
     service_type: authdns-ns2
-  ntp.anycast.wmnet:
-    address: 10.3.0.2 # VIP to advertise (limited to a /32)
-    check_cmd: '/usr/local/bin/check_ntp_state /usr/lib/nagios/plugins/check_ntp_peer -H 127.0.0.1 -w 0.05 -c 0.1'
-    ensure: present
-    service_type: ntp
 
 # These are the anycast NTP VIPs that are announced from various DNS boxes. The
 # logic here is simple: we have three addresses ntp-[abc].anycast.wmnet. In the
