@@ -1302,7 +1302,7 @@ node /^eventlog1003\.eqiad\./ {
 
 # virtual machine for mailman list server
 node /^lists1001\.wikimedia\./ {
-    role(lists)
+    role(insetup::buster)
 }
 
 #add new list server T342374
