@@ -61,9 +61,6 @@ class profile::puppetmaster::frontend(
         # x509 certificates signed by the Puppet CA.
         class { 'cergen': }
 
-        # Ship cassandra-ca-manager (precursor of cergen)
-        class { 'cassandra::ca_manager': }
-
         # TODO: this was set to let an NRPE check read the files
         # now that it's gone, we should check if a more strict
         # mode could be used
