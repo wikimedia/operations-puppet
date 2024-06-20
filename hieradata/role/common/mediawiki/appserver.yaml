@@ -57,11 +57,3 @@ profile::mediawiki::common::fetch_ipinfo_dbs: true
 
 # Add a proper error page to 502-504s from envoy (T287983)
 profile::tlsproxy::envoy::error_page: true
-
-# Move role to new postfix mx servers, T365395
-profile::mail::default_mail_relay::smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'
-profile::mail::default_mail_relay::mediawiki_smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'

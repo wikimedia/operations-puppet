@@ -1,6 +1,0 @@
-profile::mail::default_mail_relay::smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'
-profile::mail::default_mail_relay::mediawiki_smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'

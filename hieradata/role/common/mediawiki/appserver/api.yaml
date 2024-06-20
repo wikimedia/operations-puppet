@@ -50,11 +50,3 @@ profile::mediawiki::php::icu67: true
 profile::contacts::role_contacts: ["ServiceOps"]
 # Fetch additional Maxmind databases for the IPInfo extension (T288844)
 profile::mediawiki::common::fetch_ipinfo_dbs: true
-
-# Move role to new postfix mx servers, T365395
-profile::mail::default_mail_relay::smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'
-profile::mail::default_mail_relay::mediawiki_smarthosts:
-- 'mx-out1001.wikimedia.org'
-- 'mx-out2001.wikimedia.org'
