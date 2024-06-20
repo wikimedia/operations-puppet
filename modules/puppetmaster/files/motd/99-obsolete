@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo
-printf "\033[1;31m\n"
-echo "This system is no longer an active puppetmaster."
-echo "Everything you did here should now be done on puppetmaster1001."
-printf "\033[0m\n"
-echo
