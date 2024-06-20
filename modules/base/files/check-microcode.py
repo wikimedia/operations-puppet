@@ -21,7 +21,16 @@ def ok(msg):
 
 
 def main():
-    expected_cpu_flags = {'ssbd', 'md_clear'}
+    expected_cpu_flags = {'ssbd'}
+
+    try:
+        with open('/sys/devices/system/cpu/vulnerabilities/mds', 'r') as proc_file:
+            if proc_file.readline() != 'Not affected\n':
+                expected_cpu_flags.add('md_clear')
+
+    except IOError:
+        unknown('Failed to read MDS status from proc')
+
     available_cpu_flags = set()
 
     try:
@@ -35,7 +44,13 @@ def main():
         virtual_host = True
 
     if not virtual_host:
-        expected_cpu_flags.add('flush_l1d')
+        try:
+            with open('/sys/devices/system/cpu/vulnerabilities/l1tf', 'r') as proc_file:
+                if proc_file.readline() != 'Not affected\n':
+                    expected_cpu_flags.add('flush_l1d')
+
+        except IOError:
+            unknown('Failed to read L1TF status from proc')
 
     # Could be ported to lscp at some point
     try:
