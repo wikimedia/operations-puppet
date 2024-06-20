@@ -7,7 +7,9 @@
 # The service check will only check the health of the server closest to Icinga
 # in term of BGP distance (or multiple servers if load-balancing is enabled).
 
-class profile::bird::anycast_monitoring{
+class profile::bird::anycast_monitoring (
+    Array[Stdlib::Fqdn] $ntp_anycast_peers = lookup('ntp_anycast_peers'),
+) {
 
     # Anycast recdns: Note use of the raw IP in the host title and ip_address -
     # otherwise the checks end up using local DNS lookups on icinga itself to
@@ -31,6 +33,20 @@ class profile::bird::anycast_monitoring{
 
     monitoring::host { '10.3.0.2':
         ip_address => '10.3.0.2',
+    }
+
+    $ntp_anycast_peers.each |Stdlib::Fqdn $ntp_anycast_peer| {
+        $ntp_anycast_ip = ipresolve($ntp_anycast_peer, 4)
+        monitoring::host { $ntp_anycast_peer:
+            ip_address => $ntp_anycast_ip,
+        }
+
+        monitoring::service { "NTP anycast VIP ${ntp_anycast_ip}":
+            host          => $ntp_anycast_peer,
+            description   => "NTP anycast VIP ${ntp_anycast_ip} ${ntp_anycast_peer}",
+            check_command => 'check_ntp_peer!0.1!0.5',
+            notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+        }
     }
 
     monitoring::service { 'NTP anycast VIP':
