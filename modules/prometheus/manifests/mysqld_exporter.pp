@@ -62,7 +62,9 @@ define prometheus::mysqld_exporter (
 --collect.global_variables \
 --collect.info_schema.processlist \
 --collect.slave_status \
---no-collect.info_schema.tables"
+--no-collect.info_schema.tables \
+--collect.heartbeat \
+--collect.heartbeat.utc"
     }
     else {
         $options = $arguments

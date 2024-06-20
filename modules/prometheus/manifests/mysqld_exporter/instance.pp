@@ -40,6 +40,8 @@ define prometheus::mysqld_exporter::instance (
         'collect.global_variables',
         'collect.info_schema.processlist',
         'collect.slave_status',
+        'collect.heartbeat',
+        'collect.heartbeat.utc',
     ]
 
     $option_switch = '--'
