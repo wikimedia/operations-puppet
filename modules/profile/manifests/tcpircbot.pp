@@ -24,10 +24,10 @@ class profile::tcpircbot(
             '2620:0:861:102:10:64:16:77/128',   # maintenance eqiad v6: mwmaint1002
             '::ffff:10.192.32.34/128',          # maintenance codfw v4: mwmaint2002
             '2620:0:860:103:10:192:32:34/128',  # maintenance codfw v6: mwmaint2002
-            '::ffff:10.64.16.73/128',           # puppetmaster1001.eqiad.wmnet
-            '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet
-            '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet
-            '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet
+            '::ffff:10.64.16.73/128',           # puppetmaster1001.eqiad.wmnet (for conftool notifications)
+            '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet (for conftool notifications)
+            '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet (for conftool notifications)
+            '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet (for conftool notifications)
             '::ffff:10.64.48.98/128',           # cumin1002.eqiad.wmnet
             '2620:0:861:107:10:64:48:98/128',   # cumin1002.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
