@@ -435,10 +435,13 @@ receivers:
 
 - name: 'search-platform-ircmail'
   webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-data-platform-alerts'
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
   email_configs:
-    - to: 'discovery-alerts@lists.wikimedia.org'
+    - to: 'data-platform-alerts@wikimedia.org'
       headers: {'Auto-Submitted':'auto-generated'}
+    - to: 'discovery-alerts@lists.wikimedia.org'
+      headers: { 'Auto-Submitted': 'auto-generated' }
 
 - name: 'wmcs-ircmail'
   webhook_configs:
