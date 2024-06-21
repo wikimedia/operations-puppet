@@ -164,6 +164,9 @@ class profile::netbox (
     if $deploy_project == 'netbox-dev' {
         $extras_path = '/srv/netbox'
 
+        file { $extras_path:
+            ensure => directory,  # Create the parent directory for the one below
+        }
         file { "${extras_path}/customscripts":
             ensure => directory,
             owner  => 'www-data',  # needed for manual creation through the UI
