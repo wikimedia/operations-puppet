@@ -154,6 +154,23 @@ class profile::netbox (
     ensure_packages(
         ['python3-venv', 'python3-git', 'python3-pynetbox', 'python3-requests'])
 
+    # TODO: normalize after Netbox 4 upgrade
+    if $deploy_project == 'netbox-dev' {
+        $extras_path = '/srv/netbox'
+
+        file { "${extras_path}/customscripts":
+            ensure => directory,
+            owner  => 'www-data',  # needed for manual creation through the UI
+            group  => 'netbox',  # needed for automatic sync
+            mode   => '2775',  # needed for manually created files to have the 'netbox' group
+        }
+        $debug = true  # TODO remove or set to false after Netbox 4 upgrade
+    }
+    else {
+        $extras_path = $netbox_extras_path
+        $debug = false
+    }
+
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { 'profile::rsyslog::udp_json_logback_compat': }
     class { 'netbox':
@@ -163,7 +180,7 @@ class profile::netbox (
         db_password                 => $db_password,
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
-        extras_path                 => $netbox_extras_path,
+        extras_path                 => $extras_path,
         config_path                 => $netbox_config_path,
         src_path                    => $netbox_src_path,
         venv_path                   => $netbox_venv_path,
@@ -192,6 +209,7 @@ class profile::netbox (
         cas_group_required          => $cas_group_required,
         oidc_key                    => $oidc_key,
         oidc_secret                 => $oidc_secret,
+        debug                       => $debug,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
