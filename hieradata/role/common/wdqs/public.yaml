@@ -92,3 +92,5 @@ profile::query_service::monitoring_user_agents:
   - "Twisted PageGetter"
   - "prometheus-public-sparql-ep-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
+
+profile::query_service::only_throttle_cdn: true

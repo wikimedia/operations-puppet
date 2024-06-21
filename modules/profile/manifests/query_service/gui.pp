@@ -12,7 +12,8 @@ class profile::query_service::gui (
     String $blazegraph_main_ns = lookup('profile::query_service::blazegraph_main_ns'),
     Boolean $oauth = lookup('profile::query_service::oauth'),
     Optional[Stdlib::HTTPSUrl] $gui_url = lookup('profile::query_service::gui_url', {default_value => undef}),
-    Array[String] $monitoring_user_agents = lookup('profile::query_service::monitoring_user_agents', {default_value => []})
+    Array[String] $monitoring_user_agents = lookup('profile::query_service::monitoring_user_agents', {default_value => []}),
+    Boolean $only_throttle_cdn = lookup('profile::query_service::only_throttle_cdn', {'default_value' => false}),
 ) {
     require ::profile::query_service::common
 
@@ -28,7 +29,8 @@ class profile::query_service::gui (
         blazegraph_main_ns     => $blazegraph_main_ns,
         oauth                  => $oauth,
         gui_url                => $gui_url,
-        monitoring_user_agents => $monitoring_user_agents
+        monitoring_user_agents => $monitoring_user_agents,
+        only_throttle_cdn      => $only_throttle_cdn,
     }
 
     if $high_query_time_port {

@@ -2,7 +2,5 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dhttp.proxyHost=webproxy.eqiad.wmnet'
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
-  # Disable throttling on test while we run some analysis (T354555)
-  - '-Dwdqs.throttling-filter.enabled=false'
 
 profile::query_service::streaming_updater::kafka_topic: eqiad.rdf-streaming-updater.mutation

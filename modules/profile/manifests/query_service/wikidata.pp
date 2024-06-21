@@ -33,6 +33,7 @@ class profile::query_service::wikidata(
     Array[String] $uri_scheme_options = lookup('profile::query_service::uri_scheme_options'),
     Stdlib::Fqdn $ldf_host = lookup('profile::query_service::ldf_host', {'default_value' => 'placeholder.wmnet'}),
     Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = lookup('profile::query_service::internal_federated_endpoints', {'default_value' => undef}),
+    Boolean $only_throttle_cdn = lookup('profile::query_service::only_throttle_cdn', {'default_value' => false}),
 ) {
     require ::profile::query_service::common
     require ::profile::query_service::streaming_updater
@@ -73,7 +74,8 @@ class profile::query_service::wikidata(
         jvmquake_options             => $jvmquake_options,
         jvmquake_warn_threshold      => $jvmquake_warn_threshold,
         jvmquake_warn_file           => $jvmquake_warn_file,
-        internal_federated_endpoints => $internal_federated_endpoints
+        internal_federated_endpoints => $internal_federated_endpoints,
+        only_throttle_cdn            => $only_throttle_cdn,
     }
 
     class { 'toil::systemd_scope_cleanup': }  # T265323

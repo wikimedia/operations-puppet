@@ -29,6 +29,7 @@ define profile::query_service::blazegraph (
     Optional[Integer] $jvmquake_warn_threshold = undef,
     String $jvmquake_warn_file = "/tmp/jvmquake_warn_gc_${title}",
     Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints = undef,
+    Boolean $only_throttle_cdn = false,
 ) {
     require ::profile::query_service::common
 
@@ -117,6 +118,7 @@ define profile::query_service::blazegraph (
         federation_user_agent        => $federation_user_agent,
         use_oauth                    => $use_oauth,
         internal_federated_endpoints => $internal_federated_endpoints,
+        only_throttle_cdn            => $only_throttle_cdn,
     }
 
     if $monitoring_enabled {

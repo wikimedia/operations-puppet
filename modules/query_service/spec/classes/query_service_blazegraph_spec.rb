@@ -31,6 +31,7 @@ describe 'query_service::blazegraph', :type => :define do
           "https://internal/sparql" => ["https://alias1/sparql", "https://alias2/sparql"],
           "https://internal2/sparql" => ["https://alias3/sparql"],
         },
+        :only_throttle_cdn => true,
         }
    }
 
@@ -51,6 +52,9 @@ describe 'query_service::blazegraph', :type => :define do
     }
     it { is_expected.to contain_file('/etc/default/wdqs-blazegraph')
       .with_content(/-Dhttp.proxyExcludedHosts=internal,internal2/)
+    }
+    it { is_expected.to contain_file('/etc/default/wdqs-blazegraph')
+      .with_content(/-Dwdqs.enable-throttling-if-header=X-BIGDATA-READ-ONLY&&!X-Disable-Throttling/)
     }
   end
 end
@@ -82,6 +86,7 @@ describe 'query_service::blazegraph', :type => :define do
         :prefixes_file => 'prefixes.conf',
         :use_oauth => false,
         :internal_federated_endpoints => {},
+        :only_throttle_cdn => false,
         }
    }
 
@@ -124,6 +129,7 @@ describe 'query_service::blazegraph', :type => :define do
         :prefixes_file => 'prefixes.conf',
         :use_oauth => false,
         :internal_federated_endpoints => {},
+        :only_throttle_cdn => false,
         }
    }
 

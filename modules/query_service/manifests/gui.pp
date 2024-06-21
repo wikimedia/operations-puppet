@@ -13,6 +13,8 @@
 # - $max_query_time_millis: maximum query time in milliseconds
 # - $blazegraph_main_ns: The blazegraph namespace to expose over http at /sparql
 # - $gui_url: Url hosting the ui to forward non-blazegraph requests to. Undefined
+# - $monitoring_user_agents list of user-agents used to monitor the service
+# - $only_throttle_cdn throttle only requests coming from the CDN (external requests)
 #    triggers back compat for a locally installed gui which must be found at
 #    $package_dir/gui.
 class query_service::gui(
@@ -27,7 +29,8 @@ class query_service::gui(
     String $blazegraph_main_ns,
     Boolean $oauth,
     Optional[Stdlib::HTTPSUrl] $gui_url,
-    Array[String] $monitoring_user_agents
+    Array[String] $monitoring_user_agents,
+    Boolean $only_throttle_cdn,
 ) {
     $port = 80
     $additional_port = 8888

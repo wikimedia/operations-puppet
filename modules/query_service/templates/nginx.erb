@@ -28,6 +28,14 @@ map $http_user_agent $monitoring_ua {
 }
 <% end -%>
 
+<%- if @only_throttle_cdn %>
+# Identify internal requests using the presence of the X-Client-IP header
+map $http_x_client_ip $internal_request {
+  "" "1"
+  default ""
+}
+<%- end %>
+
 server {
     listen <%= @port %> default_server;
     listen [::]:<%= @port %> default_server;
@@ -234,7 +242,9 @@ server {
 
         proxy_set_header X-BIGDATA-MAX-QUERY-MILLIS $xmaxqueryheader;
         proxy_set_header X-BIGDATA-READ-ONLY "yes";
-
+        <%- if @only_throttle_cdn %>
+        proxy_set_header X-Disable-Throttling $internal_request;
+        <%- end %>
         add_header X-Served-By <%= @hostname %> always;
         <%- if @oauth %>
         add_header Access-Control-Allow-Origin $http_origin always;

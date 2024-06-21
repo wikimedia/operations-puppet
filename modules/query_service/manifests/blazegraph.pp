@@ -18,6 +18,7 @@
 # - $journal: Name to assign instance journal. Must be unique per data_dir.
 # - $use_oauth: Set to true to protect the service with OAuth
 # - $internal_federated_endpoints: Map of internal federated endpoints with a list of their service aliases
+# - $only_throttle_cdn: Set to true to only throttle requests coming from the CDN (external requests)
 define query_service::blazegraph(
     Stdlib::Port $port,
     String $config_file_name,
@@ -36,7 +37,8 @@ define query_service::blazegraph(
     String $federation_user_agent,
     String $prefixes_file,
     Boolean $use_oauth,
-    Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints
+    Optional[Hash[Stdlib::HTTPSUrl, Array[Stdlib::HTTPSUrl]]] $internal_federated_endpoints,
+    Boolean $only_throttle_cdn,
 ) {
     $data_file = "${data_dir}/${journal}.jnl"
 
@@ -74,6 +76,10 @@ define query_service::blazegraph(
         default => ["-Dhttp.proxyExcludedHosts=${internal_federated_hosts}"],
         undef   => [],
     }
+    $throttling_header_jvm_opts = $only_throttle_cdn ? {
+        true => ['-Dwdqs.enable-throttling-if-header=X-BIGDATA-READ-ONLY&&!X-Disable-Throttling'],
+        false => []
+    }
 
     file { "/etc/default/${title}":
         ensure  => present,
@@ -85,7 +91,7 @@ define query_service::blazegraph(
                 'blazegraph_main_ns'    => $blazegraph_main_ns,
                 'log_dir'               => $log_dir,
                 'port'                  => $port,
-                'extra_jvm_opts'        => $extra_jvm_opts + $proxy_bypass_hosts_jvm_opts,
+                'extra_jvm_opts'        => $extra_jvm_opts + $proxy_bypass_hosts_jvm_opts + $throttling_header_jvm_opts,
                 'prefixes_file'         => $prefixes_file,
                 'use_oauth'             => $use_oauth,
                 'federation_user_agent' => $federation_user_agent,
