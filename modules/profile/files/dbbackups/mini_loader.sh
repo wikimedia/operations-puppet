@@ -57,7 +57,7 @@ done
 find . -type f \! -name '*-schema-create.sql.gz' \! -name '*-schema.sql.gz' -name '*.sql.gz' -printf '%s %f\n' |
     sort -nr |
     cut -d' ' -f2- |
-    parallel -j$NJOBS -a - "(echo \"SET sql_log_bin = OFF; START TRANSACTION; \" ; $DECOMPRESS_COMMAND {}; echo \"COMMIT;\") | $LOAD_FILE {}" || exit 1
+    parallel -j$NJOBS -a - "(echo \"SET sql_log_bin = OFF; SET sql_mode = ''; START TRANSACTION; \" ; $DECOMPRESS_COMMAND {}; echo \"COMMIT;\") | $LOAD_FILE {}" || exit 1
 
 # Trigger creation: Iterate over all files ending in "-schema-triggers.sql.gz"
 find . -type f -name '*-schema-triggers.sql.gz' -printf '%f\n' | while read triggers_schema_file; do
