@@ -37,8 +37,18 @@ table_open_cache       = 50000
 table_definition_cache = 50000
 
 # binary log and replication options
-## Note: no binary log enabled!
+# We are temporarily enabling the binlogs on these servers to evaluate
+# CDC functionality with paimon/flink.
+#
+# We will revert this change once the evaluation is complete.
+# See #T258511 for a discussion about the long-term aim and #T358373.
+log-bin
+log-slave-updates
 binlog-format                  = <%= @binlog_format %>
+sync-binlog                    = 1
+binlog_cache_size              = 10M
+max-binlog_size                = 1000M
+expire-logs-days               = 7
 
 # InnoDB file-per-table + TokuDB love those file descriptors
 open-files-limit = 200000
