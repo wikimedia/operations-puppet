@@ -151,12 +151,16 @@ action.destructive_requires_name: true
 # 1k is too low to allow mwgrep to operate.
 action.search.shard_count.limit: <%= @search_shard_count_limit %>
 
+# https://www.elastic.co/guide/en/elasticsearch/reference/7.12/modules-cluster.html#disk-based-shard-allocation
 # Enable the disk space aware shard allocator
-cluster.routing.allocation.disk.threshold_enabled: true
-# Stop allocating new shards to nodes with 75% disk utilization
-cluster.routing.allocation.disk.watermark.low: 0.75
-# Move shards off of nodes with 80% disk utilization
-cluster.routing.allocation.disk.watermark.high: 0.80
+cluster.routing.allocation.disk.threshold_enabled: <%= @watermark_settings['enabled'] %>
+# Stop allocating shards to nodes (default 80%)
+cluster.routing.allocation.disk.watermark.low: <%= @watermark_settings['low'] %>
+# Begin evicting shards off the node (default 90%)
+cluster.routing.allocation.disk.watermark.high: <%= @watermark_settings['high'] %>
+# Set indexes read-only with allocated shards on affected node (default 95%)
+cluster.routing.allocation.disk.watermark.flood_stage: <%= @watermark_settings['flood_stage'] %>
+
 # Check disk utilization every 60 seconds
 cluster.info.update.interval: 60s
 

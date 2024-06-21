@@ -151,6 +151,7 @@ define opensearch::instance(
     Optional[Enum['ssd','hdd']] $disktype                           = undef,
     Boolean                     $use_cms_gc                         = false,
     Integer                     $cms_gc_init_occupancy_fraction     = 75,
+    Hash                        $watermarks                         = {},
 
     # Dummy parameters consumed upstream of opensearch::instance,
     # but convenient to unify per-cluster configuration
@@ -211,6 +212,13 @@ define opensearch::instance(
         group  => 'root',
         mode   => '0755',
     }
+
+    $watermark_settings = merge({
+        'enabled'     => 'true',
+        'low'         => '0.75',
+        'high'        => '0.80',
+        'flood_stage' => '0.95'
+    }, $watermarks)
 
     file { "${config_dir}/opensearch.yml":
         ensure  => file,
