@@ -2470,7 +2470,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: shellbox-video
         active_active: true
