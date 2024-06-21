@@ -137,6 +137,9 @@ eqiad:
     ms-fe1012.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1013.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1014.eqiad.wmnet: [swift-fe, nginx]
+  apus:
+    moss-fe1001.eqiad.wmnet: [apus]
+    moss-fe1002.eqiad.wmnet: [apus]
   eventschemas:
     schema1003.eqiad.wmnet: [eventschemas]
     schema1004.eqiad.wmnet: [eventschemas]
