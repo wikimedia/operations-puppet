@@ -813,34 +813,6 @@ define service {
     contact_groups           fr-tech
 }
 
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_contribs_missed
-    host_name                frdb1005
-    contact_groups           fr-tech
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_failures_missed
-    host_name                frdb1005
-    contact_groups           fr-tech
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_jobs_required
-    host_name                frdb1005
-    contact_groups           fr-tech
-}
-
-define service {
-    use                      passive-service
-    service_description      check_recurring_gc_schedule_sanity
-    host_name                frdb1005
-    contact_groups           fr-tech
-}
-
 # frdev1002
 
 define service {
@@ -1381,12 +1353,6 @@ define service {
     service_description      check_endpoints
     hostgroup_name           fundraising-listener
     contact_groups           fr-tech
-}
-
-define service {
-    use                      passive-service
-    service_description      check_listener_gc
-    hostgroup_name           fundraising-listener
 }
 
 define service {
