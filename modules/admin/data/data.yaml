@@ -7213,3 +7213,7 @@ ldap_only_users:
     ensure: present
     realname: Audrey Penven
     email: audrey.penven@wikimedia.de
+  daphnesmit:
+    ensure: present
+    realname: Daphne Smit
+    email: dsmit@wikimedia.org
