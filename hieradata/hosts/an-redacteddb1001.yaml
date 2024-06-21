@@ -1,6 +1,3 @@
-# Disable notifications until the service is ready for production use.
-profile::monitoring::notifications_enabled: false
-
 # an-redacteddb1001
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s1: 70G
