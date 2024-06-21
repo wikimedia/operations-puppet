@@ -2,3 +2,4 @@ motd::messages:
   'karapace_production':
     message: 'This server supports DataHub deployments in production'
 karapace::bootstrap_uri: kafka-jumbo1007.eqiad.wmnet:9092
+profile::monitoring::notifications_enabled: false
