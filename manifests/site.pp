@@ -2125,15 +2125,16 @@ node /^mw141([7-8])\.eqiad\./ {
     role(mediawiki::canary_appserver)
 }
 
+# rack A3 jobrunner and scap::proxy
 node /^mw1420\.eqiad\./ {
-    role(mediawiki::appserver)
+    role(mediawiki::jobrunner)
 }
 
 # Row C
 
 # rack C3
 node /^mw1407\.eqiad\./ {
-    role(mediawiki::appserver)
+    role(mediawiki::jobrunner)
 }
 
 # rack C8
