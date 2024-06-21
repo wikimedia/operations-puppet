@@ -70,8 +70,6 @@ class gitlab (
     Systemd::Timer::Schedule $configure_projects_interval       = {'start' => 'OnCalendar', 'interval' => '*-*-* 4:30:00'},
     Boolean                  $enable_ldap_group_sync            = false,
     Hash                     $ldap_config                       = {},
-    # TODO: Get rid of this value once ldapgroupsync user is gone?
-    String                   $ldap_group_sync_user              = 'ldapgroupsync',
     String                   $ldap_group_sync_bot               = 'ldap-sync-bot',
     String                   $ldap_group_sync_bot_token         = 'ldap-sync-bot-token-not-supplied',
     Systemd::Timer::Schedule $ldap_group_sync_interval          = {'start' => 'OnCalendar', 'interval' => '*:0/15'},
@@ -262,10 +260,12 @@ class gitlab (
     ### gitlab-settings dependencies, including group management and configure-projects
     ensure_packages('python3-ldap')
 
-    # TODO: Is this needed to remove the now-unused ldap user?
-    # systemd::sysuser { $ldap_group_sync_user:
-    #     ensure               => 'absent',
-    #     description          => 'old sync-gitlab-group-with-ldap user',
+    # TODO: Presumably this can go away once the user is gone?
+    # Remove the now-unused ldap_group_sync_user:
+    systemd::sysuser { 'ldapgroupsync':
+        ensure      => 'absent',
+        description => 'old sync-gitlab-group-with-ldap user',
+    }
 
     $ensure_gitlab_settings_user = ($enable_ldap_group_sync or $enable_configure_projects).bool2str('present','absent')
     systemd::sysuser { $gitlab_settings_user:

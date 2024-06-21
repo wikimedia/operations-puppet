@@ -308,7 +308,6 @@ profile::gitlab::restore_interval:
   interval: '*-*-* 02:00:00'
 
 # LDAP group sync configuration
-profile::gitlab::ldap_group_sync_user: ldapgroupsync
 profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
 # profile::gitlab::ldap_group_sync_bot_token in private repo
 profile::gitlab::ldap_group_sync_interval_interval:

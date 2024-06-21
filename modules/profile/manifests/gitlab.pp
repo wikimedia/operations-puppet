@@ -41,7 +41,6 @@ class profile::gitlab(
     Gitlab::Omniauth_providers $auto_sign_in_with = lookup('profile::gitlab::auto_sign_in_with'),
     Hash[String, Gitlab::Omniauth_provider] $omniauth_providers = lookup('profile::gitlab::omniauth_providers'),
     Hash $ldap_config = lookup('ldap'),
-    String $ldap_group_sync_user = lookup('profile::gitlab::ldap_group_sync_user'),
     String $ldap_group_sync_bot = lookup('profile::gitlab::ldap_group_sync_bot_user'),
     String $ldap_group_sync_bot_token = lookup('profile::gitlab::ldap_group_sync_bot_token'),
     String $configure_projects_bot_token = lookup('profile::gitlab::configure_projects_bot_token'),
@@ -249,7 +248,6 @@ class profile::gitlab(
         omniauth_identifier          => $omniauth_identifier,
         enable_ldap_group_sync       => $active_host == $facts['fqdn'], # enable LDAP group sync on active Gitlab server
         ldap_config                  => $ldap_config,
-        ldap_group_sync_user         => $ldap_group_sync_user,
         ldap_group_sync_bot          => $ldap_group_sync_bot,
         ldap_group_sync_bot_token    => $ldap_group_sync_bot_token,
         ldap_group_sync_interval     => $ldap_group_sync_interval,
