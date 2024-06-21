@@ -128,6 +128,41 @@ service::catalog:
     aliases:
       - "appservers"
 
+  apus:
+    description: 'Ceph-backed async-replicated S3 cluster'
+    discovery:
+      - dnsdisc: apus
+        active_active: true
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.10
+      eqiad:
+        default: 10.2.2.10
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: apus
+        service: envoyproxy
+      depool_threshold: ".3"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - http://localhost/
+    page: false
+    port: 443
+    probes:
+      - type: http
+        path: /
+    sites:
+      - codfw
+      - eqiad
+    state: service_setup
+
   aux-k8s-ctrl:
     description: 'Kubernetes API service for aux cluster'
     encryption: true

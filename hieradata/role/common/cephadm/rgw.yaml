@@ -23,3 +23,8 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - "%{lookup('profile::cephadm::cluster_label')}.svc.%{::site}.wmnet"
     - "%{lookup('profile::cephadm::cluster_label')}.discovery.wmnet"
+
+profile::lvs::realserver::pools:
+  "%{lookup('profile::cephadm::cluster_label')}":
+    services:
+      - envoyproxy

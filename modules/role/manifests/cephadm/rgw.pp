@@ -12,6 +12,8 @@ class role::cephadm::rgw {
     include profile::base::production
     include profile::firewall
 
+    include profile::lvs::realserver
+
     include profile::tlsproxy::envoy
 
     include profile::cephadm::target
