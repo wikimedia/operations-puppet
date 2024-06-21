@@ -105,7 +105,8 @@ then
 fi
 
 # clouddb1021 replicates all sections in a multi-instance setup, for analytics
-if [ "$HOSTNAME" == "clouddb1021" ]
+# clouddb1021 is being refreshed with a new host in the same role, called an-redacteddb1001
+if [ "$HOSTNAME" == "clouddb1021" ] || [ "$HOSTNAME" == "an-redacteddb1001" ]
 then
 	for SECTION in s1 s2 s3 s4 s5 s6 s7 s8
 	do
