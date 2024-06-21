@@ -81,7 +81,7 @@ testcases:
         }
       }
   - expected:
-    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
+    - __target_index: "ecs-thumbor-1-1.11.0-N-weekly"
 #      '@timestamp': "2023-03-20T22:36:59.000Z"
       message: 'backtracking required because of match "thumbor.swift.original.*.miss", matching performance may be degraded'
       host:

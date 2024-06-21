@@ -215,6 +215,23 @@ profile::opensearch::logstash::curator_actions:
         unit: days
         unit_count: 32
 
+  '11':
+    description: 'thumbor: delete older than 7 days'
+    action: delete_indexes
+    options:
+      ignore_empty_list: true
+      timeout_override: 120
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'logstash-thumbor-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%m.%d'
+        unit: days
+        unit_count: 7
+
   '20':
     description: 'all: after 31 days set number of replicas to 1'
     action: replicas
