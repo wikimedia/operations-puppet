@@ -141,6 +141,32 @@ class profile::prometheus::cloud (
     ]
 
 
+    # https://phabricator.wikimedia.org/T348643#9916509
+    if $::site == 'eqiad' {
+        $ebpf_exporter_jobs = [
+            {
+                'job_name'        => "ebpf_exporter_${::site}",
+                'scheme'          => 'http',
+                'file_sd_configs' => [
+                    { 'files' => [ "${targets_path}/ebpf_exporter_*.yaml" ]}
+                ],
+            },
+        ]
+        file { "${targets_path}/ebpf_exporter_osds.yaml":
+            content => to_yaml([{
+                'labels'  => {
+                    'deployment' => $openstack_deployment,
+                },
+                'targets' => [
+                    'cloudcephosd1034:9435',
+                    'cloudcephosd1020:9435',
+                ],
+            }]),
+        }
+    } else {
+        $ebpf_exporter_jobs = []
+    }
+
     file { "${targets_path}/blackbox_http_keystone.yaml":
         content => to_yaml([{
             'labels'  => {
@@ -259,7 +285,7 @@ class profile::prometheus::cloud (
         scrape_configs_extra           => [
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
-            $galera_jobs, $cloudlb_haproxy_jobs,
+            $galera_jobs, $cloudlb_haproxy_jobs, $ebpf_exporter_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
