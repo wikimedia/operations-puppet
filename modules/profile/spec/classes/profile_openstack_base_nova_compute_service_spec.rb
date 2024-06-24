@@ -69,32 +69,12 @@ describe 'profile::openstack::base::nova::compute::service' do
             'cloudvirt01', 'cloudvirt02',
         ],
         'libvirt_cpu_model' => 'Haswell-noTSX-IBRS',
-        'modern_nic_setup' => true,
       }}
       let(:node_params) {{'_role' => 'sretest'}}
       it 'compiles without errors' do
           is_expected.to compile.with_all_deps
       end
-
-      context "when single NIC is used" do
-        let(:params) {
-          super().merge({
-            'modern_nic_setup' => true,
-            'network_flat_interface' => 'vlan1105',
-            'network_flat_interface_vlan' => '1105',
-          })
-        }
-        it { is_expected.to compile.with_all_deps }
-        it {
-          is_expected.to contain_interface__tagged("vlan1105")
-              .with_base_interface("eno1")
-              .with_vlan_id("1105")
-              .with_method("manual")
-              .with_legacy_vlan_naming(false)
-        }
-      end
-
-      context "when no config specified, single NIC is the default" do
+      context "NIC configuration is generated correctly" do
         let(:params) {
           super().merge({
             'network_flat_interface' => 'vlan1105',
@@ -108,28 +88,6 @@ describe 'profile::openstack::base::nova::compute::service' do
               .with_vlan_id("1105")
               .with_method("manual")
               .with_legacy_vlan_naming(false)
-        }
-      end
-
-      context "when double NIC is used" do
-        let(:params) {
-          super().merge({
-            'modern_nic_setup' => false,
-            'legacy_vlan_naming' => true,
-            'network_flat_interface' => 'eno1.1105',
-            'network_flat_tagged_base_interface' => 'eno1',
-            'network_flat_interface_vlan' => '1105',
-          })
-        }
-        it { is_expected.to compile.with_all_deps }
-        it {
-          is_expected.to contain_interface__tagged("eno1.1105")
-              .with_base_interface("eno1")
-              .with_vlan_id("1105")
-              .with_method("manual")
-              .with_up("ip link set $IFACE up")
-              .with_down("ip link set $IFACE down")
-              .with_legacy_vlan_naming(true)
         }
       end
     end

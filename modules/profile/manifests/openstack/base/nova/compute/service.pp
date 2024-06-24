@@ -5,14 +5,12 @@ class profile::openstack::base::nova::compute::service(
     String[1] $network_flat_interface = lookup('profile::openstack::base::nova::network_flat_interface'),
     Optional[String[1]] $network_flat_tagged_base_interface = lookup('profile::openstack::base::nova::network_flat_tagged_base_interface', {default_value => undef}),
     String $network_flat_interface_vlan = lookup('profile::openstack::base::nova::network_flat_interface_vlan'),
-    Boolean $legacy_vlan_naming = lookup('legacy_vlan_naming', {default_value => true}),
     Array[Stdlib::Fqdn] $all_cloudvirts = lookup('profile::openstack::base::nova::all_cloudvirts'),
     String $libvirt_cpu_model = lookup('profile::openstack::base::nova::libvirt_cpu_model'),
     Optional[Boolean] $enable_nova_rbd = lookup('profile::cloudceph::client::rbd::enable_nova_rbd', {'default_value' => false}),
     Optional[String] $ceph_rbd_pool = lookup('profile::cloudceph::client::rbd::pool', {'default_value' => undef}),
     Optional[String] $ceph_rbd_client_name = lookup('profile::cloudceph::client::rbd::client_name', {'default_value' => undef}),
     Optional[String] $libvirt_rbd_uuid = lookup('profile::cloudceph::client::rbd::libvirt_rbd_uuid', {'default_value' => undef}),
-    Boolean          $modern_nic_setup = lookup('profile::openstack::base::nova::modern_nic_setup', {default_value => true}),
     Optional[String[1]] $compute_id = lookup('profile::openstack::base::nova::compute::id', {default_value => undef}),
 ) {
     ensure_packages('conntrack')
@@ -23,22 +21,11 @@ class profile::openstack::base::nova::compute::service(
         ensure  => absent,
     }
 
-    if $modern_nic_setup {
-        interface::tagged { $network_flat_interface:
-            base_interface     => $facts['interface_primary'],
-            vlan_id            => $network_flat_interface_vlan,
-            method             => 'manual',
-            legacy_vlan_naming => false,
-        }
-    } else {
-        interface::tagged { $network_flat_interface:
-            base_interface     => $network_flat_tagged_base_interface,
-            vlan_id            => $network_flat_interface_vlan,
-            method             => 'manual',
-            up                 => 'ip link set $IFACE up',
-            down               => 'ip link set $IFACE down',
-            legacy_vlan_naming => $legacy_vlan_naming,
-        }
+    interface::tagged { $network_flat_interface:
+        base_interface     => $facts['interface_primary'],
+        vlan_id            => $network_flat_interface_vlan,
+        method             => 'manual',
+        legacy_vlan_naming => false,
     }
 
     if $instance_dev == 'srvlink' {
@@ -51,7 +38,7 @@ class profile::openstack::base::nova::compute::service(
             recurse =>  true,
         }
 
-        # The nova package will create an empty directory here, 
+        # The nova package will create an empty directory here,
         #  replace with a link
         file { '/var/lib/nova/instances':
             ensure  => 'link',
