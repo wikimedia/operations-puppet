@@ -8,6 +8,9 @@ profile::lvs::realserver::pools:
   ldap-ro:
     services:
       - slapd
+  ldap-ro-ssl:
+    services:
+      - slapd
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'LDAP read-only replica'
 profile::lvs::realserver::ipip::ipv4_mss: 1440
