@@ -93,8 +93,11 @@ class package_builder(
         'unzip',
         'wdiff',
         'zip',
-        'python-all',
     ])
+
+    if !debian::codename::ge('bookworm') {
+        ensure_packages(['python-all'])
+    }
 
     file { '/etc/pbuilderrc':
         ensure  => file,
