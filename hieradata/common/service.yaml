@@ -152,7 +152,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/
+            - https://localhost/
     page: false
     port: 443
     probes:
