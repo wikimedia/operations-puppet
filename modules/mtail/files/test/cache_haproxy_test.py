@@ -41,13 +41,14 @@ class CacheHAProxyTest(unittest.TestCase):
         s = self.store.get_samples('haproxy_termination_states_total')
         self.assertIn(('termination_state=--', 6), s)
         self.assertIn(('termination_state=IH', 1), s)
+        self.assertIn(('termination_state=CD', 1), s)
 
     def testSLI(self):
         sli_total = self.store.get_samples('haproxy_sli_total')
-        self.assertIn(('', 7), sli_total)
+        self.assertIn(('', 8), sli_total)
 
         sli_good = self.store.get_samples('haproxy_sli_good')
-        self.assertIn(('', 6), sli_good)
+        self.assertIn(('', 7), sli_good)
 
         sli_bad = self.store.get_samples('haproxy_sli_bad')
         self.assertIn(('', 1), sli_bad)

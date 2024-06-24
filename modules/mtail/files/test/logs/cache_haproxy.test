@@ -5,3 +5,4 @@ Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 4 120 0 1 200
 Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 5 1 0 0 200 {healthcheck.wikimedia.org} {int-front} --
 Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 6 1 -1 0 500 {healthcheck.wikimedia.org} {} IH
 Nov 17 12:02:34 traffic-cache-haproxyupload-buster haproxy[31919]: 5 1 500 0 200 {healthcheck.wikimedia.org} {int-front} --
+2024-06-24T13:46:52.422444+00:00 cp7001 haproxy[2780368]: 180684 -1 0 0 -1 {es.wikipedia.org} {} CD

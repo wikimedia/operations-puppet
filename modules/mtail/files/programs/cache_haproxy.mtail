@@ -15,10 +15,17 @@ counter haproxy_sli_good
 counter haproxy_sli_bad
 hidden text cstatus
 hidden gauge process_time
+hidden text http_status_family
 
-/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5])\d\d {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
+/ \d+ (?P<client_ttfb>\-?\d+) (?P<queue_time>\-?\d+) (?P<server_connection_time>\-?\d+) (?P<http_status_family>[1-5|\-])(1|\d\d) {(?P<host>[0-9A-Za-z\-\.:]+)} {(?P<cache_status>[a-z-]*)} (?P<termination_state>[A-Za-z-]{2})$/ {
   haproxy_sli_total++
   process_time = 0
+
+  $http_status_family =~ /^\-/ {
+    http_status_family = "none"
+  } else {
+    http_status_family = $http_status_family
+  }
 
   len($cache_status) == 0 {
     cstatus = "none"
@@ -26,9 +33,9 @@ hidden gauge process_time
     cstatus = $cache_status
   }
   $client_ttfb >= 0 {
-      haproxy_client_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
+      haproxy_client_ttfb[cstatus][http_status_family] = float($client_ttfb) * 0.001
       $host =~ /^healthcheck\.wikimedia\.org$/ {
-        haproxy_client_healthcheck_ttfb[cstatus][$http_status_family] = float($client_ttfb) * 0.001
+        haproxy_client_healthcheck_ttfb[cstatus][http_status_family] = float($client_ttfb) * 0.001
       }
   }
   haproxy_termination_states_total[$termination_state]++
