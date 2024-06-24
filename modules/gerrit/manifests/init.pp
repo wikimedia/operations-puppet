@@ -34,8 +34,6 @@ class gerrit(
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
 
-    class { 'gerrit::jobs': }
-
     group { $daemon_user:
         ensure => present,
     }
