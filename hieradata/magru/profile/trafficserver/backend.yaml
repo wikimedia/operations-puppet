@@ -3,3 +3,12 @@ profile::trafficserver::backend::storage_elements:
     id: disk.0
   - devname: nvme1n1
     id: disk.1
+profile::trafficserver::backend::logs:
+  - filename: notpurge
+    format: wmf
+    filters:
+    - notpurge
+    - notvarnishcheck
+    mode: ascii_pipe
+    ensure: present
+    prometheus_port: 3400
