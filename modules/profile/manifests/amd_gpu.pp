@@ -31,6 +31,8 @@ class profile::amd_gpu (
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
+
+        class { 'prometheus::node_amd_rocm': }
     }
 
     if $rocm_version {
