@@ -124,11 +124,11 @@ cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.crypto.encryption.key=<%= @oauth_token_signing_key %><% end %>
 <%- end -%>
 
-<%- if cas_version >= Gem::Version.new('7.0') -%>
-<% if @oauth_session_encryption_key %>cas.authn.oauth.session-replication.cookie.crypto.encryption.key=<%= @oauth_session_encryption_key %><% end %>
-<% if @oauth_session_signing_key %>cas.authn.oauth.session-replication.cookie.crypto.signing.key=<%= @oauth_session_signing_key %><% end %>
-<% if @authn_pac4j_encryption_key %>cas.authn.pac4j.core.session-replication.cookie.crypto.encryption.key=<%= @authn_pac4j_encryption_key %><% end %>
-<% if @authn_pac4j_signing_key %>cas.authn.pac4j.core.session-replication.cookie.crypto.signing.key=<%= @authn_pac4j_signing_key %><% end %>
+<%- if @tomcat_version == 'tomcat10' -%>
+cas.authn.oauth.session-replication.cookie.crypto.encryption.key=<%= @oauth_session_encryption_key %>
+cas.authn.oauth.session-replication.cookie.crypto.signing.key=<%= @oauth_session_signing_key %>
+cas.authn.pac4j.core.session-replication.cookie.crypto.encryption.key=<%= @authn_pac4j_encryption_key %>
+cas.authn.pac4j.core.session-replication.cookie.crypto.signing.key=<%= @authn_pac4j_signing_key %>
 <%- end -%>
 
 <%- if @memcached_enable -%>

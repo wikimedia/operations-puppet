@@ -90,6 +90,10 @@ class apereo_cas (
     Optional[String[1]]               $oauth_crypto_encryption_key   = undef,
     Optional[String[1]]               $oauth_token_signing_key       = undef,
     Optional[String[1]]               $oauth_token_encryption_key    = undef,
+    Optional[String[1]]               $oauth_session_encryption_key  = undef,
+    Optional[String[1]]               $oauth_session_signing_key     = undef,
+    Optional[String[1]]               $authn_pac4j_encryption_key    = undef,
+    Optional[String[1]]               $authn_pac4j_signing_key       = undef,
     String[1]                         $spring_username               = 'casuser',
     Optional[String[1]]               $spring_password               = undef,
     Optional[Stdlib::Filesource]      $keystore_source               = undef,
@@ -148,6 +152,7 @@ class apereo_cas (
     Array[Apereo_cas::Delegate]       $delegated_authenticators      = [],
     Boolean                           $enable_webauthn               = false,
     Stdlib::Fqdn                      $webauthn_relaying_party       = 'example.org',
+    String                            $tomcat_version                = 'tomcat9',
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         fail('you must provide either $keystore_source or $keystore_content')
