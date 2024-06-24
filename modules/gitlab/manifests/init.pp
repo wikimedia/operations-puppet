@@ -260,13 +260,6 @@ class gitlab (
     ### gitlab-settings dependencies, including group management and configure-projects
     ensure_packages('python3-ldap')
 
-    # TODO: Presumably this can go away once the user is gone?
-    # Remove the now-unused ldap_group_sync_user:
-    systemd::sysuser { 'ldapgroupsync':
-        ensure      => 'absent',
-        description => 'old sync-gitlab-group-with-ldap user',
-    }
-
     $ensure_gitlab_settings_user = ($enable_ldap_group_sync or $enable_configure_projects).bool2str('present','absent')
     systemd::sysuser { $gitlab_settings_user:
         ensure      => $ensure_gitlab_settings_user,
