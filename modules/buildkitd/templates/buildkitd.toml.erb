@@ -1,11 +1,11 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 
-<% if @allowed_frontends && @allowed_frontends != :undef -%>
-allowed-frontends = <%= @allowed_frontends.to_json %>
-<% end -%>
-<% if @allowed_gateway_sources && @allowed_gateway_sources != :undef -%>
-allowed-gateway-sources = <%= @allowed_gateway_sources.to_json %>
-<% end -%>
+[frontend."dockerfile.v0"]
+enabled = <%= @dockerfile_frontend_enabled.to_json %>
+
+[frontend."gateway.v0"]
+enabled = <%= @gateway_frontend_enabled.to_json %>
+allowedRepositories = <%= @allowed_gateway_sources.to_json %>
 
 [worker.oci]
 enabled = true

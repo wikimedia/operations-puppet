@@ -10,18 +10,23 @@
 # @param environment Environment variables to set for the buildkitd container.
 # @param gckeepstorage Local buildkitd cache to keep after garbage collection (e.g. "10Gb")
 # @param cni_pool_size Size of the preallocated pool of CNI network namespaces.
+# @param dockerfile_frontend_enabled Enable/disable the Dockerfile frontend
+# @param gateway_frontend_enabled Boolean Enable/disabled the gateway.v0 frontend
+# @param allowed_gateway_sources The list of allowed gateway image repos (without tags).
+#        undef/empty means all gateway images are allowed.
 #
 class buildkitd(
     Wmflib::Ensure           $ensure,
     String                   $network,
     Stdlib::IP::Address      $address = '0.0.0.0',
     Stdlib::Port             $port = 1234,
-    String                   $image = 'docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.13.2-1',
+    String                   $image = 'docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.14.1-3',
     Array[Stdlib::Host]      $nameservers = [],
     Wmflib::POSIX::Variables $environment = {},
     Optional[String]         $gckeepstorage = undef,
     Integer                  $cni_pool_size = 20,
-    Optional[Array[String]]  $allowed_frontends = undef,
+    Optional[Boolean]        $dockerfile_frontend_enabled = false,
+    Optional[Boolean]        $gateway_frontend_enabled = true,
     Optional[Array[String]]  $allowed_gateway_sources = undef,
 ){
     group { 'buildkitd':
