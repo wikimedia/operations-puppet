@@ -1,2 +1,4 @@
 ---
 profile::openstack::base::nova::compute::id: 5de093c1-efa8-4564-8ba6-8e86369311ed
+
+profile::openstack::eqiad1::neutron::use_ovs: true
