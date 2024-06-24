@@ -5,6 +5,8 @@ class profile::ntp (
     Array[Stdlib::Host]                      $monitoring_hosts = lookup('monitoring_hosts'),
     Hash[Wmflib::Sites, Array[Stdlib::Fqdn]] $ntp_peers        = lookup('ntp_peers'),
 ){
+    include network::constants
+
     # required for monitoring changes to the ntp.conf file
     ensure_packages(['python3-pystemd'])
 
@@ -30,20 +32,6 @@ class profile::ntp (
         magru   => 'br',
         default => 'us',
     }
-
-    # TODO: generate from $network::constants::aggregate_networks
-    $our_networks_acl = [
-      '10.0.0.0 mask 255.0.0.0',
-      '208.80.152.0 mask 255.255.252.0',
-      '198.35.26.0 mask 255.255.254.0',
-      '103.102.166.0 mask 255.255.255.0',
-      '185.15.58.0 mask 255.255.255.0',
-      '185.15.59.0 mask 255.255.255.0',
-      '195.200.68.0 mask 255.255.255.0',
-      '2620:0:860:: mask ffff:ffff:fffc::',
-      '2a02:ec80:: mask ffff:ffff::',
-      '2001:df2:e500:: mask ffff:ffff:ffff::',
-    ]
 
     $wmf_server_upstream_pools = ["0.${pool_zone}.pool.ntp.org"]
     $wmf_server_upstreams = []
@@ -82,11 +70,16 @@ class profile::ntp (
     #     * One extra to account for the dummy "0.X.pool.ntp.org" entry
     $maxclock = length($wmf_server_peers) + 4 + 1
 
+    # Generate a list of ACLs from "external networks" automatically. We also
+    # need 10.0.0.0/8 in addition to these. We cannot use production_networks
+    # since that will also include 127.0.0.0/8 and ::1/128.
+    $time_acl = $network::constants::external_networks << '10.0.0.0/8'
+
     ntp::daemon { 'server':
         servers      => $wmf_server_upstreams,
         pools        => $wmf_server_upstream_pools,
         peers        => $wmf_server_peers,
-        time_acl     => $our_networks_acl,
+        time_acl     => $time_acl,
         extra_config => "tos minsane ${minsane} orphan ${orphan} maxclock ${maxclock}",
         query_acl    => $monitoring_hosts,
     }
