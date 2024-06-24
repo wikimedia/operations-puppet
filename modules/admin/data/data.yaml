@@ -994,6 +994,9 @@ groups:
       'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
     ]
     system_members: [analytics-research]
+    approval:
+      - Xiao Xiao
+      - Miriam Redi
   analytics-platform-eng-admins:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
