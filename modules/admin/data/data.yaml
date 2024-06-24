@@ -5088,8 +5088,8 @@ users:
     krb: present
   mnz:
     ensure: present
-    email: munaslam001@gmail.com
-    realname: MunizaA
+    email: maslam-ctr@wikimedia.org
+    realname: Muniza Aslam
     expiry_date: "2025-06-28"
     expiry_contact: xxiao@wikimedia.org
     gid: 500
