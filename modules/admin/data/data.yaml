@@ -44,7 +44,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6736,9 +6736,8 @@ ldap_only_users:
     realname: Birgit Mueller
     email: bmueller@wikimedia.org
   lea-wmde:
-    ensure: present
+    ensure: absent
     realname: Lea Voget
-    email: lea.voget@wikimedia.de
   mkramer:
     ensure: present
     realname: Mel Kramer
