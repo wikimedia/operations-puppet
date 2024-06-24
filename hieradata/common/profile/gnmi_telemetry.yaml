@@ -17,8 +17,9 @@ profile::gnmi_telemetry::outputs:
     metric-prefix: "gnmi"
     cache: {}
     event-processors:
+       - enabled-to-tag
+       - drop-disabled
        - description-to-tag
-       - queues-counters-only
        - delete-tag-name
        - group-by-queue-number
 
@@ -31,14 +32,19 @@ profile::gnmi_telemetry::subscriptions:
     encoding: proto
 
 profile::gnmi_telemetry::processors:
+  enabled-to-tag:
+    event-value-tag:
+      value-name: "/interfaces/interface/state/enabled"
+      tag-name: enabled
+      consume: false
+  drop-disabled:
+    event-drop:
+      condition: .tags.enabled == "false"
   description-to-tag:
     event-value-tag:
       value-name: "/interfaces/interface/state/description"
       tag-name: "interface_description"
       consume: false
-  queues-counters-only:
-    event-allow:
-      condition: ".tags | has(\"out-queue_queue-number\")"
   group-by-queue-number:
     event-group-by:
       tags:
@@ -50,3 +56,4 @@ profile::gnmi_telemetry::processors:
       tag-names:
         - "^subscription-name"
         - "^source"
+        - "^enabled"
