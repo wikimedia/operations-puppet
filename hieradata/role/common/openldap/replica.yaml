@@ -15,3 +15,5 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'LDAP read-only replica'
 profile::lvs::realserver::ipip::ipv4_mss: 1440
 profile::lvs::realserver::ipip::ipv6_mss: 1400
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false

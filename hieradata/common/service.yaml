@@ -1302,6 +1302,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       ipip_encapsulation:
+        - eqiad
         - codfw
     port: 389
     probes:
@@ -1332,6 +1333,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       ipip_encapsulation:
+        - eqiad
         - codfw
     port: 636
     probes:
