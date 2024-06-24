@@ -158,6 +158,7 @@ service::catalog:
     probes:
       - type: http
         path: /
+        host: apus.discovery.wmnet
     sites:
       - codfw
       - eqiad
