@@ -1892,7 +1892,7 @@ node /^logging-hd200[1-3]\.codfw\./ {
 }
 
 # Logging data nodes (codfw)
-node /^logstash20(0[123]|2[6789]|3[34567])\.codfw\./ {
+node /^logstash20(2[6789]|3[34567])\.codfw\./ {
     role(logging::opensearch::data)
 }
 

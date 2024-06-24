@@ -503,10 +503,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
-  'logstash200[1-3]':
-    - partman/standard.cfg
-    - partman/raid0.cfg
-    - partman/raid0-4dev.cfg
   'logstash200[4-6]':
     - partman/flat.cfg
     - virtual.cfg
