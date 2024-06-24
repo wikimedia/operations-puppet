@@ -143,7 +143,7 @@ service::catalog:
       class: low-traffic
       conftool:
         cluster: apus
-        service: envoyproxy
+        service: apus
       depool_threshold: ".3"
       enabled: true
       monitors:
