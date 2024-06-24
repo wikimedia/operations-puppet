@@ -217,7 +217,7 @@ profile::opensearch::logstash::curator_actions:
 
   '11':
     description: 'thumbor: delete older than 7 days'
-    action: delete_indexes
+    action: delete_indices
     options:
       ignore_empty_list: true
       timeout_override: 120
