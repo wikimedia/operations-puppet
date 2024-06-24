@@ -151,14 +151,16 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
         ProxyFetch:
+          # codfw gateways will recognise this as their own
+          # we should move to the discovery hostname when it exists
           url:
-            - https://localhost/
+            - https://apus.svc.eqiad.wmnet/
     page: false
     port: 443
     probes:
       - type: http
         path: /
-        host: apus.discovery.wmnet
+        host: apus.svc.eqiad.wmnet
     sites:
       - codfw
       - eqiad
