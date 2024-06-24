@@ -5090,8 +5090,8 @@ users:
     ensure: present
     email: munaslam001@gmail.com
     realname: MunizaA
-    expiry_date: "2024-06-30"
-    expiry_contact: diego@wikimedia.org
+    expiry_date: "2025-06-28"
+    expiry_contact: xxiao@wikimedia.org
     gid: 500
     uid: 32084
     krb: present
