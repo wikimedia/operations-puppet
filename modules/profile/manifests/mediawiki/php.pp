@@ -36,6 +36,7 @@ class profile::mediawiki::php(
     Array[Wmflib::Php_version] $absented_php_versions = lookup('profile::mediawiki::php::absented_php_versions', {'default_value' => []}),
     Boolean $increase_open_files = lookup('profile::mediawiki::php::increase_open_files', {'default_value' => false}),
     Boolean $enable_php83_icu72 = lookup('profile::mediawiki::php::enable_php83_icu72', {'default_value' => false}),
+    Boolean $enable_dogstatsd = lookup('profile::mediawiki::php::enable_dogstatsd', {'default_value' => true}),
 ){
     # The first listed php version is the default one
     $default_php_version = $php_versions[0]

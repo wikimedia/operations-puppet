@@ -4,6 +4,7 @@ class mediawiki::web::yaml_defs(
     String $domain_suffix,
     String $fcgi_proxy,
     String $statsd,
+    Boolean $enable_dogstatsd,
 ) {
     $all_defs = $siteconfigs.map |$siteconfig| {
         # the eventual disk path is used as a key, so that

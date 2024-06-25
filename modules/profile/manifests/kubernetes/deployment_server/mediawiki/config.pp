@@ -14,7 +14,8 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     Stdlib::Port $memcached_tls_port                    = lookup('profile::mediawiki::mcrouter_wancache::memcached_tls_port'),
     Optional[Array[String]]          $enabled_listeners = lookup('profile::services_proxy::envoy::enabled_listeners', {'default_value' => undef}),
     String $statsd_server                               = lookup('statsd'),
-    String $udp2log_aggregator                          = lookup('udp2log_aggregator')
+    String $udp2log_aggregator                          = lookup('udp2log_aggregator'),
+    Boolean $enable_dogstatsd                           = lookup('profile::mediawiki::php::enable_dogstatsd', {'default_value' => true}),
 ){
     # Generate the apache-config defining yaml, and save it to
     # $general_dir/mediawiki/httpd.yaml
@@ -26,11 +27,12 @@ class profile::kubernetes::deployment_server::mediawiki::config(
     # $fcgi_proxy = 'fcgi://127.0.0.1:9000'
     $all_sites = $mediawiki_sites + $common_sites
     class { '::mediawiki::web::yaml_defs':
-        path          => "${general_dir}/mediawiki/httpd.yaml",
-        siteconfigs   => $all_sites,
-        fcgi_proxy    => $fcgi_proxy,
-        domain_suffix => $domain_suffix,
-        statsd        => $statsd_server,
+        path             => "${general_dir}/mediawiki/httpd.yaml",
+        siteconfigs      => $all_sites,
+        fcgi_proxy       => $fcgi_proxy,
+        domain_suffix    => $domain_suffix,
+        statsd           => $statsd_server,
+        enable_dogstatsd => $enable_dogstatsd
     }
 
     # logging.
