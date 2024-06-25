@@ -380,7 +380,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
       # T347544 Send wikifunctions to its own mw-on-k8s deployment for isolation
       # Setup before (api|rest).php rules on purpose to send wikifunctions API calls
-      # to the right mw-on-k8s deployment, bypassing the mw-on-k8s.lua logic.
+      # to the right mw-on-k8s deployment.
       # First, catch REST API for path normalization with the right params
     - type: map
       target: http://www.wikifunctions.org/w/rest.php
