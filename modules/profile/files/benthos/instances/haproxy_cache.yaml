@@ -39,6 +39,12 @@ pipeline:
       parse_log:
         format: "syslog_rfc5424"
         codec: "json"
+    - catch:
+        - log:
+            level: WARN
+            message: "Cannot parse syslog format: ${!content()}"
+            fields_mapping: |
+              root.reason = error()
     - label: "parse_bug_workaround" # see github.com/benthosdev/benthos/issues/2192
       mapping: root = this.string().parse_json()
     - label: "drop_high_priority_messages"
