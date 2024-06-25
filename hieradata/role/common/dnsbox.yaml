@@ -105,4 +105,3 @@ profile::dns::recursor::bind_service: 'gdnsd.service'
 profile::base::manage_resolvconf: false
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
