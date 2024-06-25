@@ -1,9 +1,0 @@
-profile::trafficserver::backend::logs:
-  - filename: notpurge
-    format: wmf
-    filters:
-    - notpurge
-    - notvarnishcheck
-    mode: ascii_pipe
-    ensure: present
-    prometheus_port: 3400
