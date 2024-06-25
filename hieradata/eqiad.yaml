@@ -7,7 +7,7 @@
 puppetdb_host: puppetdb1003.eqiad.wmnet
 
 labsldapconfig:
-  hostname: ldap-ro.eqiad.wikimedia.org
+  hostname: ldap-ro.codfw.wikimedia.org
 
 # /> Cloud Services
 #
@@ -23,7 +23,7 @@ arclamp_host: arclamp1001.eqiad.wmnet
 public_tls_unified_cert_vendor: "lets-encrypt"
 
 ldap:
-  ro-server: ldap-ro.eqiad.wikimedia.org
+  ro-server: ldap-ro.codfw.wikimedia.org
   ro-server-fallback: ldap-ro.codfw.wikimedia.org
   rw-server: ldap-rw.eqiad.wikimedia.org
   rw-server-fallback: ldap-rw.codfw.wikimedia.org
