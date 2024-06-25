@@ -285,7 +285,7 @@ delete: userPassword
             if disable_user:
                 cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='
                 cmd += uid + ' > disable-' + uid + '.pre.ldif\n'
-            cmd += 'ldapmodify -h ldap-rw.eqiad.wikimedia.org -p 389 -x'
+            cmd += 'ldapmodify -H "ldap://ldap-rw.eqiad.wikimedia.org:389/" -x'
             cmd += ' -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W -f ' + uid + ".ldif\n"
             if disable_user:
                 cmd += 'ldapsearch -x -D "cn=scriptuser,ou=profile,dc=wikimedia,dc=org" -W uid='
