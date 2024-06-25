@@ -8,15 +8,13 @@ class profile::netbox::host (
 ) {
     unless $status == 'active' {
         warning("${facts['networking']['fqdn']} is ${status} in Netbox")
+
+        motd::message { 'netbox status':
+            message  => "Netbox status: ${wmflib::ansi::fg($status, 'red')}",
+            priority => 1,
+        }
     }
-    $_status = $status ? {
-        'active' => wmflib::ansi::fg($status, 'green'),
-        default  => wmflib::ansi::fg($status, 'red'),
-    }
-    motd::message { 'netbox status':
-        message  => "Netbox Status: ${_status}",
-        priority => 1,
-    }
+
     unless $location {
         warning("${facts['networking']['fqdn']}: no Netbox location found")
     } else {
