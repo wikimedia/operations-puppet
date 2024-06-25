@@ -1411,11 +1411,11 @@ node /^htmldumper1001\.eqiad\./ {
 }
 
 node /^irc1001\.wikimedia\./ {
-    role(mw_rc_irc)
+    role(insetup::buster)
 }
 
 node /^irc2001\.wikimedia\./ {
-    role(mw_rc_irc)
+    role(insetup::buster)
 }
 
 node /^irc[12]002\.wikimedia\./ {
