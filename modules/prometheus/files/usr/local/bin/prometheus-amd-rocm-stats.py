@@ -93,9 +93,9 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
             # High-bandwidth memory. On the MI100, these seem to always be 0.
             # Since this might become useful at some point (and a reading of 0
             # is definitely not correct), we drop the metric if the value is 0
-            # and export it otherwise.
+            # or N/A, and export it otherwise.
             elif metric.startswith('Temperature (Sensor HBM'):
-                if rocm_metrics[card][metric].strip() == "0":
+                if rocm_metrics[card][metric].strip() in ["0", "N/A"]:
                     continue
                 toks = metric.split()
                 if len(toks) < 4:
