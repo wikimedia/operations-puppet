@@ -164,7 +164,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: service_setup
+    state: lvs_setup
 
   aux-k8s-ctrl:
     description: 'Kubernetes API service for aux cluster'
