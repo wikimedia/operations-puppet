@@ -12,7 +12,7 @@ profile::resolving::nameservers:
   - "ns-recursor.openstack.eqiad1.wikimediacloud.org"
 
 ldap:
-  ro-server: ldap-ro.codfw.wikimedia.org
+  ro-server: ldap-ro.eqiad.wikimedia.org
   ro-server-fallback: ldap-ro.codfw.wikimedia.org
   rw-server: ldap-rw.eqiad.wikimedia.org
   rw-server-fallback: ldap-rw.codfw.wikimedia.org
@@ -168,7 +168,7 @@ bigtop::hadoop::datanode_mounts:
 bigtop::hadoop::users::groups: project-%{::wmcs_project}
 
 labsldapconfig:
-  hostname: ldap-ro.codfw.wikimedia.org
+  hostname: ldap-ro.eqiad.wikimedia.org
 
 profile::openldap::hostname: ldap-rw.eqiad.wikimedia.org
 
