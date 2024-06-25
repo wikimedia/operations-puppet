@@ -184,6 +184,13 @@ profile::cache::haproxy::del_headers:
     - direction: response
       name: 'X-Varnish'
       acl: missing_xwd
+    - direction: response
+      name: 'traceparent'
+      acl: missing_xwd
+    - direction: response
+      name: 'tracestate'
+      acl: missing_xwd
+
 
 profile::cache::haproxy::available_unified_certificates:
   digicert-2023:
