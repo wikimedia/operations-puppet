@@ -63,14 +63,15 @@ class profile::puppet::agent (
                 default       => "${site_nearest_core[$::site]}.wmnet",
             }
         }
-        motd::message { 'Host has been migrated to puppet7':
-            color    => 'yellow',
-            priority => 90,
-        }
     } else {
         $_certificate_revocation = $certificate_revocation
         $_use_srv_records = false
         $_srv_domain = undef
+
+        motd::message { 'Host is still on Puppet 5':
+            color    => 'yellow',
+            priority => 90,
+        }
     }
     class { 'puppet::agent':
         ca_source              => $ca_source,
