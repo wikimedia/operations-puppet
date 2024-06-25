@@ -1,5 +1,4 @@
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::idp::tgc_cookie_same_site: 'lax'
 profile::idp::tgc_cookie_pin_to_session: false

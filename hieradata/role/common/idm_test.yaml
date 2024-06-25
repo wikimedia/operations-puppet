@@ -3,7 +3,6 @@ profile::base::production::role_description: 'Wikimedia identity management port
 profile::idm::processes: 4
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 # OIDC
 profile::idm::oidc_service: idm_dev
 
