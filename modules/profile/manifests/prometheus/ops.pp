@@ -647,6 +647,32 @@ class profile::prometheus::ops (
         }
     }
 
+    $fifo_log_demux_jobs = [
+      {
+        'job_name'        => 'fifo_log_demux',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/fifo_log_demux_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::cluster_config { "fifo_log_demux_notpurge_text_${::site}":
+        dest    => "${targets_path}/fifo_log_demux_notpurge_text_${::site}.yaml",
+        cluster => 'cache_text',
+        port    => 3400,
+        labels  => {
+          'cluster' => 'cache_text',
+        }
+    }
+    prometheus::cluster_config { "fifo_log_demux_notpurge_upload_${::site}":
+        dest    => "${targets_path}/fifo_log_demux_notpurge_upload_${::site}.yaml",
+        cluster => 'cache_upload',
+        port    => 3400,
+        labels  => {
+          'cluster' => 'cache_upload',
+        }
+    }
+
     $cache_haproxy_tls_jobs = [
       {
         'job_name'        => 'cache_haproxy_tls',
@@ -2468,7 +2494,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs,
+            $postfix_jobs, $fifo_log_demux_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
