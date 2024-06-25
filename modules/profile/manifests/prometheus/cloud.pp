@@ -159,7 +159,7 @@ class profile::prometheus::cloud (
                 },
                 'targets' => [
                     'cloudcephosd1034:9435',
-                    'cloudcephosd1020:9435',
+                    'cloudcephosd1010:9435',
                 ],
             }]),
         }
