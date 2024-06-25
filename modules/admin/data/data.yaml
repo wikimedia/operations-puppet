@@ -31,7 +31,8 @@ groups:
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
-              dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez]
+              dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
+              twentyafterfour]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -548,7 +549,7 @@ groups:
   phabricator-roots:
     gid: 748
     description: people who have full root on phabricator
-    members: [*releng_members, twentyafterfour]
+    members: [*releng_members]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -770,7 +771,7 @@ groups:
   deploy-phabricator:
     gid: 778
     description: Group of phabricator deployers
-    members: [*releng_members, twentyafterfour]
+    members: [*releng_members]
     approval:
       - Tyler Cipriani
   notebook-roots:
@@ -2439,13 +2440,11 @@ users:
     email: eeggleston@wikimedia.org
     krb: present
   twentyafterfour:
-    ensure: present
+    ensure: absent
     gid: 500
     name: twentyafterfour
-    realname: Mukunda Modell
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDtjIbmBa1rAlQzNsJmXoU1pEd75rXZGvl6xOcEpKdaGM97737m74O5bSvzWctuQGCQywt0ACmou2ETIo0cw5TuZqO6BypC2b0k70ufos9Jaq88ssiXfhPbR1JoL1DTQXtBNn3Q4qDXrtlQHxH/NdlnZWpsUUbOXXXs4H518FFT63p3BhJZnX3hucdWT3okRvYdkE5LWbGJn8SR+0aXdq5F/8E3f5QGyd/7OnZhmhJkUa4EyiUaTIaQWhuAdd6XLtFjes/66dHqyh31ITps/ZVZvOdAyxTnDrT+uu04otYxtJ0qRHNSzVfspG7cxfyAQcR2Xuzf1VbA/hw2LL7v/AXh twentyafterfour@wmnet]
+    ssh_keys: []
     uid: 4967
-    email: twentyafterfour@gmail.com
   declerambaul:
     ensure: absent
     gid: 500
