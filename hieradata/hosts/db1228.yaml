@@ -1,3 +1,4 @@
 # db1228
-mariadb::shard: 's1'
+mariadb::shard: 'm2'
+profile::monitoring::is_critical: true
 profile::monitoring::notifications_enabled: false
