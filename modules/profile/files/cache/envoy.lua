@@ -70,5 +70,7 @@ function envoy_on_response(response_handle)
         response_handle:headers():remove('X-Timestamp')
         response_handle:headers():remove('X-Trans-Id')
         response_handle:headers():remove('X-Varnish')
+        response_handle:headers():remove('Traceparent')
+        response_handle:headers():remove('Tracestate')
     end
 end
