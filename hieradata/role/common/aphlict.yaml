@@ -21,4 +21,3 @@ profile::tlsproxy::envoy::websockets: true
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Notification server for Phabricator'
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

@@ -48,4 +48,3 @@ profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Wikimedia Software Releases Server'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
