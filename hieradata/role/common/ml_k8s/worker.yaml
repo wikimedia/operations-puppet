@@ -29,7 +29,6 @@ profile::base::production::role_description: 'ML Kubernetes worker node'
 
 # Puppet v7 migration (T349619)
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
