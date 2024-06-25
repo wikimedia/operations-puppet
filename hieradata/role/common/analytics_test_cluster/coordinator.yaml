@@ -206,7 +206,6 @@ profile::analytics::refinery::job::test::gobblin::ensure_timers: present
 profile::base::remove_python2_on_bullseye: false
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark

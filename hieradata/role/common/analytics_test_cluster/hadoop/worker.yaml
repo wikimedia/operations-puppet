@@ -81,7 +81,6 @@ profile::hadoop::spark2::install_yarn_shuffle_jar: false
 profile::hadoop::spark3::install_yarn_shuffle_jar: false
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # Store historical data about spark jobs in HDFS
 profile::hadoop::spark3::event_log_dir: hdfs:///var/log/spark
