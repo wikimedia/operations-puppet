@@ -23,7 +23,7 @@ arclamp_host: arclamp2001.codfw.wmnet
 public_tls_unified_cert_vendor: "lets-encrypt"
 
 ldap:
-  ro-server: ldap-ro.eqiad.wikimedia.org
+  ro-server: ldap-ro.codfw.wikimedia.org
   ro-server-fallback: ldap-ro.eqiad.wikimedia.org
   rw-server: ldap-rw.codfw.wikimedia.org
   rw-server-fallback: ldap-rw.eqiad.wikimedia.org
