@@ -6,4 +6,3 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Core test DB server'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
