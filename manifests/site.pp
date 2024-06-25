@@ -1627,6 +1627,10 @@ node /^krb1001\.eqiad\./ {
     role(kerberos::kdc)
 }
 
+node /^krb1002\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
