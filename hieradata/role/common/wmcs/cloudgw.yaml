@@ -5,7 +5,6 @@ profile::admin::groups:
 cluster: wmcs
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::firewall::provider: nftables
 # cloudgw applies custom conntrack settings
 profile::firewall::manage_nf_conntrack: false

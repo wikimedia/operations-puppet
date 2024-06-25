@@ -7,4 +7,3 @@ contactgroups: 'admins,team-data-platform,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
