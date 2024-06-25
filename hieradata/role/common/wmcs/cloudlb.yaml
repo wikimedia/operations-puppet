@@ -7,4 +7,3 @@ profile::bird::bind_anycast_services:
   - haproxy
 profile::firewall::provider: nftables
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
