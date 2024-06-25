@@ -13,4 +13,3 @@ profile::etcd::v3::use_pki_certs: true
 profile::contacts::role_contacts: ['ServiceOps']
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
