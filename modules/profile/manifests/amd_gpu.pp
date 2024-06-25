@@ -31,8 +31,6 @@ class profile::amd_gpu (
         package { 'amd-k8s-device-plugin':
             ensure => present,
         }
-
-        class { 'prometheus::node_amd_rocm': }
     }
 
     if $rocm_version {
@@ -44,7 +42,9 @@ class profile::amd_gpu (
         class { 'amd_rocm':
             version => $rocm_version,
         }
+    }
 
+    if $is_kubernetes_node or $rocm_version {
         class { 'prometheus::node_amd_rocm': }
     }
 }
