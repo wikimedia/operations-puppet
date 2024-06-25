@@ -1,7 +1,6 @@
 # ::profile::base
 cluster: 'aux_k8s_etcd'
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::etcd::v3::cluster_name: "aux_k8s_etcd.%{::site}"
 profile::etcd::v3::cluster_bootstrap: false

@@ -1,7 +1,6 @@
 # This is the conftool cluster name, don't be confused
 cluster: 'aux-k8s'
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 # cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
 profile::kubernetes::cluster_name: "aux-k8s-%{::site}"
 
