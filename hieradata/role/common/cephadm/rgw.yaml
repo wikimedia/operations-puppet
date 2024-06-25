@@ -27,5 +27,4 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::lvs::realserver::pools:
   "%{lookup('profile::cephadm::cluster_label')}":
     services:
-      - "%{lookup('profile::cephadm::cluster_label')}"
       - envoyproxy
