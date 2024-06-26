@@ -209,7 +209,7 @@
 #   Whether or not to enable the legacy SSL storage port.  Must be enabled during
 #   upgrades from 3.x to 4.x; Should be disabled after upgrade to 4.x.
 #   Default: false
-define cassandra::instance(
+define cassandra::instance (
     # the following parameters are injected by the main cassandra class
     Optional[String]                 $cluster_name            = undef,
     Optional[String]                 $memory_allocator        = undef,

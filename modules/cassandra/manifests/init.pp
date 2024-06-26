@@ -86,8 +86,8 @@
 #   Default: []
 #
 # [*target_version*]
-#   The Cassandra version to configure for.  Valid choices are '2.2', '3.x', '4.x', and 'dev'
-#   Default: 2.2
+#   The Cassandra version to configure for.  Valid choices are '3.x', '4.x', and 'dev'
+#   Default: 3.x
 #
 # [*memory_allocator*]
 #   The off-heap memory allocator.
@@ -142,7 +142,7 @@ class cassandra (
     Stdlib::IP::Address              $listen_address          = $::ipaddress,
     Array[String]                    $additional_jvm_opts     = [],
     Array[String]                    $extra_classpath         = [],
-    Enum['2.2', '3.x', 'dev', '4.x'] $target_version          = '2.2',
+    Enum['3.x', 'dev', '4.x']        $target_version          = '3.x',
     String                           $memory_allocator        = 'JEMallocAllocator',
     Hash[String, String]             $cassandra_passwords     = {},
     Stdlib::Port                     $native_transport_port   = 9042,
@@ -159,31 +159,27 @@ class cassandra (
     Optional[String]                 $java_package            = undef,
     Boolean                          $auto_apply_grants       = false,
 ) {
-
     ensure_packages(['cassandra-tools-wmf', 'jvm-tools'])
 
     # We pin the version to a specific one.
     $package_version = $target_version ? {
-        '2.2' => pick($version, '2.2.6-wmf5'),
         '3.x' => pick($version, '3.11.14'),
         '4.x' => pick($version, '4.1.5'),
         'dev' => pick($version, '4.1.5')
     }
 
     $component = $target_version  ? {
-        '2.2' => 'component/cassandra22',
         '3.x' => 'component/cassandra311',
         '4.x' => 'component/cassandra41',
         'dev' => 'component/cassandradev'
     }
-
 
     $cassandra_require = $java_package ? {
         undef   => undef,
         default => Package[$java_package]
     }
     apt::package_from_component { 'cassandra':
-        packages  => { 'cassandra' => $package_version},
+        packages  => { 'cassandra' => $package_version },
         component => $component,
         require   => $cassandra_require,
     }
@@ -248,7 +244,7 @@ class cassandra (
             $default_instance_params
         )
         $instances_to_create = {
-            'default' => {}
+            'default' => {},
         }
     } else {
         $instances_to_create = $instances
@@ -262,7 +258,7 @@ class cassandra (
         }
     }
     $instances_to_create.each |$instance, $params| {
-        cassandra::instance {$instance:
+        cassandra::instance { $instance:
             * => $actual_defaults + $params,
         }
     }
@@ -335,5 +331,4 @@ class cassandra (
         mode    => '0755',
         require => Package['cassandra'],
     }
-
 }
