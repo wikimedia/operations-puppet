@@ -400,7 +400,7 @@ groups:
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
-              mareikeheuer, hnordeen, rickijay, radimer]
+              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6356,6 +6356,13 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk6iL85nJBiz2te7Y9RmrWctCtyGVWeiqu0T5MX7n6YT34IXgiyiqTHLaHyxq58scWztvqKz05A2B8JNs5gpVxRBwjGCef4WPqLQ2tmQEmpZuMJpUPk+1u6W9jTgD3nM5ZvM59SdHzgSpoQGTAtAqJqZ9h7YKpjtwJjFnaYaJbpsZL6k04F1F+WyeuBIjeoCzGhaHSemHhBhJLhncfMrb+Njq1LVijKV936y+rA4e3z5/QlwUybQ4xSVI0g9q9KS5W6q0lQc8wre6+pLFfP+GpqXu8GwBHrIAjo2mYwSAMLVUyIaypOKPAETdvvyo6sSg/wnNHGrnmCZ+S9HEwxWGrmYVrAOa55oS+dHeGi2lIN/2lfWIkIaOA5mx6/C6XmEdrm1dirYAGL5MNZlqDnsebNqxpHisnWGkK+GyDb8ULCUSSUNFdAq33TecZPwKIdQeff4hnIgNNz3t1K1zlRB0Vpa1wUeD2PpmR3CixfzhehW7e2vAfi9sGTh4Sxz7OtP0='
+  dmuthuri:
+    ensure: present
+    realname: Dennis Mburugu
+    email: dmburugu@wikimedia.org
+    uid: 32579
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6431,10 +6438,6 @@ ldap_only_users:
   delphinepro:
     ensure: absent
     realname: Delphine Menard
-  dmuthuri:
-    ensure: present
-    realname: Dennis Mburugu
-    email: dmburugu@wikimedia.org
   dwalden:
     ensure: present
     realname: Dominic Walden
