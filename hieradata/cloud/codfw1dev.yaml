@@ -54,11 +54,10 @@ profile::openstack::codfw1dev::cumin::project_pub_key: undef
 puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.codfw1dev.pem
 
 cumin_masters:
-  - 172.16.128.19 # bastion-codfw1dev-02.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 172.16.128.58 # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 
 bastion_hosts:
-  - 172.16.128.14 # bastion-codfw1dev-01.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
-  - 172.16.128.19 # bastion-codfw1dev-02.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - 172.16.128.58 # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 
 cache_hosts:
   - 172.16.128.60 # proxy-02.proxy-codfw1dev.codfw1dev.wikimedia.cloud
