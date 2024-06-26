@@ -5,7 +5,6 @@ profile::admin::groups:
   - wmcs-roots
   - wmcs-admin
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::contacts::role_contacts: ['WMCS']
 profile::cumin::monitor_agentrun: false

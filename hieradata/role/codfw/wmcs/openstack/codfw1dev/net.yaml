@@ -6,7 +6,6 @@ profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::firewall::provider: none
 profile::ssh::server::listen_addresses:

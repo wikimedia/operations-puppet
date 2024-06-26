@@ -5,7 +5,6 @@ profile::admin::groups:
 cluster: wmcs
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # Currently unused:
 profile::openstack::base::nutcracker::memcached::size: 6000
