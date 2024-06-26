@@ -116,7 +116,7 @@ def main():
             )
         elif zone.endswith("db.svc.wikimedia.cloud."):
             dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(oscloud=args.os_cloud), "clouddb-services"
+                mwopenstackclients.Clients(oscloud=args.os_cloud), "cloudinfra"
             )
         else:
             logging.error(
@@ -131,7 +131,7 @@ def main():
                 "Zone %s does not exist.  Please create it and re-run.\n"
                 "Example: \n\n"
                 "openstack zone create --sudo-project-id "
-                "clouddb-services --email root@wmcloud.org %s\n" % (zone, zone)
+                "cloudinfra --email root@wmcloud.org %s\n" % (zone, zone)
             )
             continue
         else:
