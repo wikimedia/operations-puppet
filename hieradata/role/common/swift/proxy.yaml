@@ -189,4 +189,3 @@ profile::tlsproxy::envoy::stream_idle_timeout: 180.0
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

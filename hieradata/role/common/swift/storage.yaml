@@ -195,4 +195,3 @@ profile::prometheus::statsd_exporter::mappings:
 profile::contacts::role_contacts: ['Data Persistence']
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

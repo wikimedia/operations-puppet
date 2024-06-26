@@ -221,4 +221,3 @@ profile::prometheus::statsd_exporter::mappings:
       storage_policy: "$2"
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
