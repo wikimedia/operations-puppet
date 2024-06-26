@@ -85,7 +85,6 @@ profile::query_service::uri_scheme_options: []
 profile::query_service::ldf_host: "wdqs1015.eqiad.wmnet"
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # User agents known to send monitoring queries
 profile::query_service::monitoring_user_agents:

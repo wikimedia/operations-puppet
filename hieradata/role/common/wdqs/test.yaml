@@ -1,5 +1,4 @@
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::java::java_packages:
   - version: '8'
     variant: 'jre-headless'

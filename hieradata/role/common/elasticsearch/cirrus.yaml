@@ -85,4 +85,3 @@ logstash_host: 'localhost'
 profile::elasticsearch::s3_username: 'search:platform'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

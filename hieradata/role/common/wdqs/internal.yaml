@@ -56,7 +56,6 @@ profile::base::production::role_description: 'Wikidata Query Service - internall
 profile::query_service::uri_scheme_options: []
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # User agents known to send monitoring queries
 profile::query_service::monitoring_user_agents:
