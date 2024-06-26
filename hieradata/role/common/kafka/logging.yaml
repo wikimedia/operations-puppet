@@ -48,4 +48,3 @@ profile::contacts::role_contacts: ['Observability']
 profile::base::production::role_description: 'Kafka broker in the logging-${::site} Kafka cluster'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
