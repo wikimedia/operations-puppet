@@ -10,4 +10,3 @@ profile::base::production::role_description: 'pybal testing/development'
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

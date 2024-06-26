@@ -19,4 +19,3 @@ profile::lvs::ipip_enabled: false
 profile::base::enable_rp_filter: false
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
