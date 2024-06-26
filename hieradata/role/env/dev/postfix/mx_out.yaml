@@ -1,0 +1,5 @@
+profile::postfix::mx::config:
+  # Testing only
+  smtpd_authorized_xclient_hosts: ['192.168.0.0/16']
+profile::postfix::mx::recipient_discards:
+  wiki@wikimedia.org: essentially a no-reply address for wikis
