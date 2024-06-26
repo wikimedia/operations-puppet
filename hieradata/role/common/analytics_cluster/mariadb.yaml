@@ -6,4 +6,3 @@ profile::analytics::database::meta::ferm_srange: '(($DRUID_PUBLIC_HOSTS $ANALYTI
 profile::analytics::database::meta::innodb_pool_size: '48G'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
