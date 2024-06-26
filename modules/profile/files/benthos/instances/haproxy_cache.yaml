@@ -17,17 +17,6 @@ input:
       cert_file: ""
       key_file: ""
       self_signed: false
-
-buffer:
- memory:
-   limit: ${BUFFER_MEMORY_LIMIT_BYTES}
-   batch_policy:
-     enabled: true
-     count: 1024
-     period: 100ms
-
-pipeline:
-  threads: ${PIPELINE_THREADS}
   processors:
     - label: "drop_unparsable_messages"
       mapping: |
@@ -45,6 +34,18 @@ pipeline:
             message: "Cannot parse syslog format: ${!content()}"
             fields_mapping: |
               root.reason = error()
+
+buffer:
+ memory:
+   limit: ${BUFFER_MEMORY_LIMIT_BYTES}
+   batch_policy:
+     enabled: true
+     count: 1024
+     period: 100ms
+
+pipeline:
+  threads: ${PIPELINE_THREADS}
+  processors:
     - label: "parse_bug_workaround" # see github.com/benthosdev/benthos/issues/2192
       mapping: root = this.string().parse_json()
     - label: "drop_high_priority_messages"
@@ -225,27 +226,27 @@ tests:
     target_processors: get_structureddata
     environment: {}
     input_batch:
-      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"1498510","severity":6,"structureddata":{"benthoslog":{"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","sequence":"-","termination_state":"LR","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}},"timestamp":"2024-05-23T15:23:41.859657Z","version":1}
+      - json_content: {"appname":"haproxy","facility":16,"hostname":"localhost","message":"12345 127.0.0.1 170749021731 [09/Feb/2024:14:50:17.576] 2 200 72124 ---- {en.wikipedia.beta.wmflabs.org|test.test|curl/7.74.0|en|-|*/*|vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new} {hit-remote|text/html; charset=UTF-8|ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58186;nocookies=1|traffic-cache-bullseye miss, traffic-cache-bullseye hit/6|deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud} GET /wiki/Main_Page ?foo=bar","priority":134,"procid":"1498510","severity":6,"structureddata":{"benthoslog":{"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","termination_state":"LR","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}},"timestamp":"2024-05-23T15:23:41.859657Z","version":1}
     output_batches:
-      - - json_contains: {"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","sequence":"-","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}
+      - - json_contains: {"accept":"-","accept_date":"23/May/2024:15:23:41.858","accept_language":"-","backend":"-","cache_status":"-","content_type":"-","haproxy_pid":"1498510","http_status":"301","ip":"127.0.0.1","range":"-","referer":"-","response_size":"81","time_backend_response":"-1","tls":"-","uri_host":"-","user_agent":"-","x_analytics":"-","x_cache":"-"}
   - name: test transform json fields
     target_processors: transform_json_fields
     environment: {}
     input_batch:
-      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
     output_batches:
-      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
   - name: test missing path
     target_processors: transform_json_fields
     environment: {}
     input_batch:
-      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
     output_batches:
-      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"meta":{"domain":"en.wikipedia.beta.wmflabs.org","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"en.wikipedia.beta.wmflabs.org","uri_path":"/","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
   - name: test missing host
     target_processors: transform_json_fields
     environment: {}
     input_batch:
-      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
+      - json_content: {"accept":"*/*","accept_date":"23/May/2024:15:23:41.858","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","termination_state":"LR","time_backend_response":"5","tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9"}
     output_batches:
-      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":"12345","meta":{"domain":"","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"sequence":"-","$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
+      - - json_contains: {"accept":"*/*","accept_language":"en","backend":"deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud","cache_status":"hit-remote","content_type":"text/html; charset=UTF-8","haproxy_pid":12345,"meta":{"domain":"","stream":"webrequest_frontend"},"dt":"2024-05-23T15:23:41Z","http_method":"GET","http_status":200,"ip":"127.0.0.1","range":"-","referer":"test.test","response_size":72124,"$schema":"/webrequest/1.0.0","time_firstbyte":0.005,"tls":"vers=TLSv1.3;keyx=UNKNOWN;auth=ECDSA;ciph=AES-256-GCM-SHA384;prot=;sess=new","uri_host":"","uri_path":"/wiki/Main_Page","uri_query":"?foo=bar","user_agent":"curl/7.74.0","x_analytics":"ns=0;page_id=1;rev_id=587739;proxy=OperaMini;https=1;client_port=58192;nocookies=1","x_cache":"traffic-cache-bullseye miss, traffic-cache-bullseye hit/9","webrequest_source":"unknown"}
