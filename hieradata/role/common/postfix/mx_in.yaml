@@ -77,6 +77,7 @@ profile::postfix::mx::config:
     - mediawiki.org
     - wikibooks.org
     - wikidata.org
+    - wikifunctions.org
     - wikimediafoundation.org
     - wikinews.org
     - wikimedia.org
