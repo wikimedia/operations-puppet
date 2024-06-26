@@ -1,0 +1,78 @@
+# SPDX-License-Identifier: Apache-2.0
+https://arwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/arwiki-articletopic:predict
+  json_body:
+    rev_id: 60469331
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cswiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/cswiki-articletopic:predict
+  json_body:
+    rev_id: 22284455
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/enwiki-articletopic:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://euwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/euwiki-articletopic:predict
+  json_body:
+    rev_id: 9131611
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://huwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/huwiki-articletopic:predict
+  json_body:
+    rev_id: 25662950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hywiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/hywiki-articletopic:predict
+  json_body:
+    rev_id: 12345
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://kowiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/kowiki-articletopic:predict
+  json_body:
+    rev_id: 33902574
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://srwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/srwiki-articletopic:predict
+  json_body:
+    rev_id: 25467687
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/ukwiki-articletopic:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://viwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/viwiki-articletopic:predict
+  json_body:
+    rev_id: 69495346
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-itemtopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/wikidatawiki-itemtopic:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
