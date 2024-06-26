@@ -2589,7 +2589,7 @@ users:
     uid: 3609
     krb: present
     email: agreen-ctr@wikimedia.org
-    expiry_date: "2024-06-30"
+    expiry_date: "2024-07-15"
     expiry_contact: bgerdemann@wikimedia.org
   mobrovac:
     ensure: present
