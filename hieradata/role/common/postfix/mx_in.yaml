@@ -28,8 +28,8 @@ profile::postfix::mx::static_transport_maps:
     type: 'hash'
     content: |
       # Forward fundraising contacts to civicrm
-      donate.wikimedia.org	smtp:civi1001.frack.eqiad.wmnet
-      civicrm.wikimedia.org	smtp:civi1001.frack.eqiad.wmnet
+      donate.wikimedia.org	smtp:civi1002.frack.eqiad.wmnet
+      civicrm.wikimedia.org	smtp:civi1002.frack.eqiad.wmnet
   phabricator:
     type: 'hash'
     content: |
