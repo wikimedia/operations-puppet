@@ -1,3 +1,2 @@
 profile::lists::acme_chief_cert: 'lists'
-acmechief_host: acmechief1001.eqiad.wmnet
 profile::lists::allow_incoming_mail: false

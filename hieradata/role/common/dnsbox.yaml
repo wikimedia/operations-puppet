@@ -77,9 +77,7 @@ profile::dns::auth::anycast_ntp_c:
     service_type: ntp-c
 
 profile::dns::auth::acmechief_target::acmechief_hosts:
-- acmechief1001.eqiad.wmnet
 - acmechief1002.eqiad.wmnet
-- acmechief2001.codfw.wmnet
 - acmechief2002.codfw.wmnet
 - acmechief-test1001.eqiad.wmnet
 - acmechief-test2001.codfw.wmnet

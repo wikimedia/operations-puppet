@@ -17,7 +17,7 @@
 
 # Ganeti VMs for acme-chief service
 node /^acmechief1001\.eqiad\./ {
-    role(acme_chief)
+    role(insetup::buster)
 }
 
 node /^acmechief1002\.eqiad\./ {
@@ -25,7 +25,7 @@ node /^acmechief1002\.eqiad\./ {
 }
 
 node /^acmechief2001\.codfw\./ {
-    role(acme_chief)
+    role(insetup::buster)
 }
 
 node /^acmechief2002\.codfw\./ {
