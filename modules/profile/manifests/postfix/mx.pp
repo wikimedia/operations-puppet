@@ -80,7 +80,7 @@ class profile::postfix::mx (
 
     # Postfix style with ipv6 networks surrounded by square braces
     $agg_nets = regsubst(
-        $network::constants::aggregate_networks,
+        $trusted_networks,
         '^([a-f0-9:]+)(\/.*)',
         '[\1]\2',
     )
