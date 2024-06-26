@@ -1,6 +1,4 @@
 profile::puppet::agent::force_puppet7: true
-# Needed for puppet 7 hosts
-acmechief_host: acmechief2002.codfw.wmnet
 profile::base::production::role_description: 'Postfix outbound email server'
 # Disable the use of our default exim config
 profile::mail::default_mail_relay::enabled: false

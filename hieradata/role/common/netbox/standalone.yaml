@@ -2,7 +2,6 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Netbox frontend and database in one box'
 profile::monitoring::notifications_enabled: false
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # Netbox
 profile::netbox::validators:

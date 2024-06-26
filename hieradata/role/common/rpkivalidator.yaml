@@ -1,7 +1,6 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'RPKI validator'
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::bgpalerter::reports:
 - file: reportPullAPI
   channels:
