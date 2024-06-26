@@ -116,6 +116,8 @@ class profile::postfix::mx (
         smtpd_tls_auth_only          => 'yes',
         header_checks                => ['regexp:/etc/postfix/header_checks'],
         smtpd_sender_restrictions    => [
+            'permit_mynetworks',
+            'reject_non_fqdn_sender',
             'reject_unknown_sender_domain',
         ],
         smtpd_relay_restrictions     => [
@@ -125,6 +127,7 @@ class profile::postfix::mx (
         ],
         smtpd_recipient_restrictions => [
             'permit_mynetworks',
+            'reject_non_fqdn_recipient',
             'reject_unknown_recipient_domain',
         ],
         smtpd_milters                => ['unix:/rspamd/milter.sock'],
@@ -132,6 +135,11 @@ class profile::postfix::mx (
         local_transport              => 'error:local mail delivery is disabled',
         # Require mail clients to say helo
         smtpd_helo_required          => 'yes',
+        smtpd_helo_restrictions      => [
+            'permit_mynetworks',
+            'reject_non_fqdn_helo_hostname',
+            'reject_invalid_helo_hostname',
+        ],
         # Require mail clients to use standard envelope commands
         strict_rfc821_envelopes      => 'yes',
         # Reject egress mail that is not configured
