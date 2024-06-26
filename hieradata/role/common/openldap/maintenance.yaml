@@ -4,6 +4,5 @@ profile::admin::groups:
 profile::ldap::bitu::group: ldap-admins
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Tools and jobs for helping manage the users/groups in LDAP'
