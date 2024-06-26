@@ -94,4 +94,18 @@ class profile::phabricator::logmail (
         mysql_slave      => $mysql_slave,
         mysql_slave_port => $mysql_slave_port,
         mysql_db_name    => 'phabricator_maniphest',
-    }}
+    }
+
+    # weekly tech news mail (T368460)
+    phabricator::logmail {'tech_news_weekly_stats':
+        ensure           => $logmail_ensure,
+        rcpt_address     => [ 'nwilson@wikimedia.org' ],
+        sndr_address     => 'aklapper@wikimedia.org',
+        weekday          => 'Thursday',
+        hour             => 12,
+        require          => Package[$deploy_target],
+        mysql_slave      => $mysql_slave,
+        mysql_slave_port => $mysql_slave_port,
+        mysql_db_name    => 'phabricator_maniphest',
+    }
+}
