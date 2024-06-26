@@ -6,16 +6,12 @@ class profile::systemd::timesyncd (
     Wmflib::Ensure                           $ensure            = lookup('profile::systemd::timesyncd::ensure'),
     Hash[Wmflib::Sites, Wmflib::Sites]       $site_nearest_core = lookup('site_nearest_core'),
     Hash[Wmflib::Sites, Array[Stdlib::Fqdn]] $ntp_peers         = lookup('ntp_peers'),
+    Array[Stdlib::Fqdn]                      $ntp_anycast_peers = lookup('ntp_anycast_peers'),
     Optional[Array[Stdlib::Host]]            $ntp_servers       = lookup('profile::systemd::timesyncd::ntp_servers', {'default_value' => undef}),
 ) {
 
-    # For historical context, this array was manually managed via
-    # hieradata/$::site/profile/systemd/timesyncd.yaml.
-    #
-    # To set ntp_servers in a site, use the ntp_peers under it and the peers of
-    # the closest core site, which we determine from $::datacenters_tree.
     if $ntp_servers == undef {
-        $_ntp_servers = [$ntp_peers[$::site], $ntp_peers[$site_nearest_core[$::site]]].flatten
+        $_ntp_servers = $ntp_anycast_peers
     } else {
         $_ntp_servers = $ntp_servers
     }
