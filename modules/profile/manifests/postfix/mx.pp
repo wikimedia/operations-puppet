@@ -68,9 +68,6 @@ class profile::postfix::mx (
     $domain_aliases_maps = $domain_aliases.map |$domain, $_| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
-    $local_mail_maps = [ $facts['fqdn'] ].map |$domain| {
-        "hash:/etc/postfix/aliases/virtual-${domain}"
-    }
     $domain_aliases_generic_maps = $domain_aliases_generic.map |$domain| {
         "hash:/etc/postfix/aliases/virtual-${domain}"
     }
@@ -102,9 +99,6 @@ class profile::postfix::mx (
         compatibility_level          => '3.6',
         mynetworks                   => $agg_nets,
         myhostname                   => $facts['fqdn'],
-        # HACK: we want an empty array, but the provider and lens does not
-        # support one
-        mydestination                => ['/dev/null'],
         inet_interfaces              => case $mta_mode {
             'null-client': { ['loopback-only'] }
             default:       { ['all'] }
@@ -131,8 +125,6 @@ class profile::postfix::mx (
             'reject_unknown_recipient_domain',
         ],
         smtpd_milters                => ['unix:/rspamd/milter.sock'],
-        # Disable local mail delivery
-        local_transport              => 'error:local mail delivery is disabled',
         # Require mail clients to say helo
         smtpd_helo_required          => 'yes',
         smtpd_helo_restrictions      => [
@@ -144,15 +136,18 @@ class profile::postfix::mx (
         strict_rfc821_envelopes      => 'yes',
         # Reject egress mail that is not configured
         smtpd_reject_unlisted_sender => 'yes',
-        # Add $myhostname, so we can relay local mail
-        relay_domains                => get($config, 'relay_domains', []) +
-                                        '$myhostname',
         transport_maps               => $static_transport_maps_paths +
                                         $dynamic_transport_maps_paths +
                                         $recipient_discard_transport_maps_paths,
-        virtual_alias_maps           => $domain_aliases_maps +
-                                        $domain_aliases_generic_maps +
-                                        $local_mail_maps,
+    }
+
+    if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
+        $virtual_alias_maps = {
+            virtual_alias_maps => $domain_aliases_maps +
+                                  $domain_aliases_generic_maps,
+        }
+    } else {
+        $virtual_alias_maps = {}
     }
 
     if 'virtual_alias_maps' in $config {
@@ -160,10 +155,6 @@ class profile::postfix::mx (
     }
     if 'transport_maps' in $config {
         fail('transport_maps may not be provided in $config, as it will be masked by $transport_maps_{static,dynamic}')
-    }
-
-    mailalias { 'root':
-        recipient => 'root@wikimedia.org',
     }
 
     # TLS Config
@@ -260,7 +251,8 @@ class profile::postfix::mx (
     class { 'postfix':
         # *NOTE*: the order matters, for example $dovecot_config may overwrite
         # params in the $base_config
-        * => $config + $base_config + $tls_config + $dovecot_config
+        * => $config + $base_config + $tls_config + $dovecot_config +
+             $virtual_alias_maps
     }
     # lint:endignore
 
@@ -370,11 +362,31 @@ class profile::postfix::mx (
     # Install an email debugging tool
     ensure_packages(['swaks'])
 
-    postfix::lookup::database { '/etc/aliases':
-        type => 'hash',
+    file { '/etc/aliases':
+        ensure  => file,
+        mode    => '0444',
+        content => @(EOF),
+            mailer-daemon: root
+            postmaster: root
+            nobody: root
+            hostmaster: root
+            usenet: root
+            news: root
+            webmaster: root
+            www: root
+            ftp: root
+            abuse: root
+            noc: root
+            security: root
+            root: root@wikimedia.org
+            | EOF
+        notify  => Exec['newaliases'],
     }
 
-    Mailalias <||> -> Postfix::Lookup::Database['/etc/aliases']
+    exec { 'newaliases':
+        command     => '/usr/bin/newaliases',
+        refreshonly => true,
+    }
 
     file { '/etc/postfix':
         ensure  => directory,
@@ -530,15 +542,6 @@ class profile::postfix::mx (
     file { '/etc/postfix/aliases':
         ensure => directory,
         mode   => '0755',
-    }
-
-    # lookup database for local_mail_maps
-    postfix::lookup::database {
-    "/etc/postfix/aliases/virtual-${facts['fqdn']}":
-        content => epp(
-            'profile/postfix/mx/generic_aliases.epp',
-            { domain => $facts['fqdn'] }
-        )
     }
 
     $domain_aliases_generic.each |$domain| {
