@@ -2,7 +2,6 @@ cluster: backup
 profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Database backups monitoring dashboard and metrics endpoint'
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 profile::mariadb::wmfmariadbpy::role: 'library'
 profile::dbbackups::check::backups:
   s1:

@@ -5,7 +5,6 @@ profile::contacts::role_contacts: ['Data Persistence']
 profile::base::production::role_description: 'Metadata databases dumps and backups'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::dbbackups::mydumper::statistics: 'profile/dbbackups/statistics.ini.erb'
 profile::dbbackups::mydumper::stats_host: db1164.eqiad.wmnet
