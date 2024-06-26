@@ -29,6 +29,5 @@ profile::idp::client::httpd::sites:
 profile::contacts::role_contacts: ['Collaboration Services']
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::firewall::provider: nftables

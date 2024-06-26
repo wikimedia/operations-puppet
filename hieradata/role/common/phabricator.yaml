@@ -51,7 +51,6 @@ profile::phabricator::main::dumps_rsync_clients:
 phabricator::vcs::enable: true
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::phabricator::logmail::sndr_address: 'aklapper@wikimedia.org'
 

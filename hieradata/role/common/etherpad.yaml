@@ -17,6 +17,5 @@ profile::base::production::role_description: 'Etherpad-lite server'
 profile::etherpad::listen_ip: '::'
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 profile::etherpad::service_ensure: running
