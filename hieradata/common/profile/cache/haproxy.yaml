@@ -155,6 +155,9 @@ profile::cache::haproxy::add_headers:
 
 profile::cache::haproxy::del_headers:
   tls:
+    - direction: request
+      name: 'X-Request-Id'
+      acl: '!wikimedia_trust'
     - direction: response
       name: 'X-Analytics'
     - direction: response
