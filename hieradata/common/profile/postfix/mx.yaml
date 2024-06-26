@@ -1,0 +1,4 @@
+profile::postfix::mx::recipient_discards:
+  wiki@wikimedia.org: essentially a no-reply address for wikis
+  no-reply@wikimedia.org: no-reply address for wikis
+  gerrit@wikimedia.org: gerrit is not configured to accept mail
