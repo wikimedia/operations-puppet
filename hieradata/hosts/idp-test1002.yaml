@@ -1,6 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-profile::idp::tomcat_version: 'tomcat10'
-profile::java::hardened_tls: false
-profile::java::java_packages:
-  - version: "21"
-    variant: "jdk"
