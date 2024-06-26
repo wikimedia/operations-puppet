@@ -147,4 +147,3 @@ profile::grafana::loki::config:
     retention_delete_delay: 2h
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

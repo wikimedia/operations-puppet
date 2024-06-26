@@ -104,7 +104,6 @@ mtail::logs:
 profile::base::certificates::include_bundle_jks: true
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # T355836
 profile::benthos::instances:
