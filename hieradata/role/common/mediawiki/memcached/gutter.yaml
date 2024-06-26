@@ -20,4 +20,3 @@ profile::contacts::role_contacts: ['ServiceOps']
 
 # for puppet 7 migration
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
