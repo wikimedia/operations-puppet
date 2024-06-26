@@ -1777,11 +1777,6 @@ node /^kubestage200[12]\.codfw\./ {
     role(kubernetes::staging::worker)
 }
 
-# Soon to be decom'd -- T368536
-node /^cloudvirt200[1-3]\-dev\.codfw\./ {
-    role(insetup::wmcs)
-}
-
 node /^cloudcontrol100[567]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
