@@ -26,7 +26,13 @@
 # @param thread_pool_max Maximum threads per pool
 # @param vsl_size Size of the space for VSL records (default 160M)
 # @param fe_mem_gb_reserved Frontend memory cache size will be set to total host memory minus this many GB (def 170)
-# @param fe_beacon_uri_regex URI path regex to use when intercepting '/beacon' URIs to return a synthetic 204.  For e.g. /beacon/event, /beacon/statsv, etc.  Default: matches /beacon/*.  If undefined, this feature will be disabled.
+# @param fe_beacon_uri_regex
+#   URI path regex to use when intercepting '/beacon' URIs to return a synthetic 204.
+#   For e.g. /beacon/statsv, etc.  If undefined, this feature will be disabled.
+#   The default matches everything except /beacon/event, as this endpoint has been
+#   removed as part of https://phabricator.wikimedia.org/T238230.
+#   Default: '^/beacon\/(?!event)[^/?]+'
+
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix         = lookup('conftool_prefix'),
@@ -59,7 +65,7 @@ class profile::cache::varnish::frontend (
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
     Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => '160M'}),
     Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value' => 170}),
-    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value' => '^/beacon\/[^/?]+'})
+    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value' => '^/beacon\/(?!event)[^/?]+'})
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
