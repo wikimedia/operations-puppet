@@ -400,7 +400,7 @@ groups:
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
-              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri]
+              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6363,6 +6363,13 @@ users:
     uid: 32579
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  kgraessle:
+    ensure: present
+    realname: Katherine Graessle
+    email: kgraessle@wikimedia.org
+    uid: 46586
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7160,10 +7167,6 @@ ldap_only_users:
     ensure: present
     realname: Michael Grosse
     email: mgrosse@wikimedia.org
-  kgraessle:
-    ensure: present
-    realname: Katherine Graessle
-    email: kgraessle@wikimedia.org
   jaycano:
     ensure: present
     realname: Juan Cano
