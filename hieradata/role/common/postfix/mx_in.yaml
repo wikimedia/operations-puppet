@@ -111,4 +111,12 @@ profile::postfix::mx::config:
     # pr.wikimedia.org outbound mail is delegated to MuckRack (https://muckrack.com)
     # with inbound mail handled via aliases - T231387
     - pr.wikimedia.org
+  # Re-use the vrt transport map as a list of valid vrt recipients
+  relay_recipient_maps: [ 'hash:/var/lib/postfix/transport-vrt' ]
 profile::mail::vrts::wikimedia_domains: *relay_domains
+profile::postfix::mx::verify_domains:
+    - wikimedia.org
+profile::postfix::mx::unverifiable_domains:
+    - donate.wikimedia.org
+    - civicrm.wikimedia.org
+    - phabricator.wikimedia.org

@@ -44,6 +44,11 @@
 #     General mode of postfix instance: null-client, outbound, or inbound
 # @param recipient_discards
 #     Recipient addresses to silently discard
+# @param verify_domains
+#     List of domains, which postfix should verify recipients by using the
+#     verify(8) daemon
+# @param unverifiable_domains
+#     List of domains whose recipients cannot be verified
 class profile::postfix::mx (
     Hash                                     $config                 = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
     Profile::Postfix::Static_transport_maps  $static_transport_maps  = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
@@ -60,6 +65,8 @@ class profile::postfix::mx (
     Optional[Profile::Postfix::Verp]         $verp_config            = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
     Profile::Postfix::Mta_mode               $mta_mode               = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
     Hash[Stdlib::Email, String[1]]           $recipient_discards     = lookup('profile::postfix::mx::recipient_discards', {'default_value' => {}}),
+    Array[Stdlib::Host]                      $verify_domains         = lookup('profile::postfix::mx::verify_domains', {'default_value' => []}),
+    Array[Stdlib::Host]                      $unverifiable_domains   = lookup('profile::postfix::mx::unverifiable_domains', {'default_value' => []}),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
@@ -91,6 +98,29 @@ class profile::postfix::mx (
         content => $recipient_discards.reduce('') |$memo, $v| {
             "${memo}${v[0]} discard:${v[1]}\n"
         },
+    }
+
+    if $mta_mode == 'inbound' {
+        $verify_domains_path = '/etc/postfix/verify_domains'
+        postfix::lookup::database { $verify_domains_path:
+            content => $verify_domains.reduce('') |$memo, $domain| {
+                "${memo}${domain} reject_unverified_recipient\n"
+            },
+        }
+
+        $wild_card_verify_domains_path = '/etc/postfix/wild_card_verify_domains'
+        postfix::lookup::database { $wild_card_verify_domains_path:
+            content => $verify_domains.reduce('') |$memo, $domain| {
+                "${memo}@${domain} OK\n"
+            },
+        }
+
+        $wild_card_unverifiable_domains_path = '/etc/postfix/wild_card_unverifiable_domains'
+        postfix::lookup::database { $wild_card_unverifiable_domains_path:
+            content => $unverifiable_domains.reduce('') |$memo, $domain| {
+                "${memo}@${domain} OK\n"
+            },
+        }
     }
 
     $base_config = {
@@ -248,12 +278,26 @@ class profile::postfix::mx (
         $dovecot_config = {}
     }
 
+    $mta_mode_config = $mta_mode ? {
+        'inbound'     => {
+            relay_recipient_maps         => get($config, 'relay_recipient_maps', []) +
+                                            ["hash:${wild_card_unverifiable_domains_path}"] +
+                                            ["hash:${wild_card_verify_domains_path}"],
+            smtpd_recipient_restrictions => get($base_config, 'smtpd_recipient_restrictions') +
+                                            ["check_recipient_access hash:${verify_domains_path}"],
+        },
+        'outbound'    => {},
+        'null-client' => {},
+        default       => fail('mta_mode not supported'),
+    }
+
     # lint:ignore:2sp_soft_tabs
     class { 'postfix':
         # *NOTE*: the order matters, for example $dovecot_config may overwrite
         # params in the $base_config
         * => $config + $base_config + $tls_config + $dovecot_config +
-             $virtual_alias_maps
+             $virtual_alias_maps +
+             $mta_mode_config
     }
     # lint:endignore
 
