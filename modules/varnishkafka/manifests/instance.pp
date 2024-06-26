@@ -199,7 +199,6 @@ define varnishkafka::instance(
         refresh        => $should_subscribe,
         require        => Package['varnishkafka'],
         service_params => {
-            enable     => true,
             hasstatus  => true,
             hasrestart => true,
         }
