@@ -65,7 +65,7 @@ profile::mail::vrts::aliases_folder: /etc/postfix/aliases
 profile::mail::vrts::mysql_dbname: otrs
 profile::mail::vrts::mysql_host: m2-master.eqiad.wmnet
 profile::mail::vrts::mysql_user: exim
-profile::mail::vrts::next_hop: smtp:vrts1001.eqiad.wmnet
+profile::mail::vrts::next_hop: smtp:ticket.discovery.wmnet
 
 profile::postfix::mx::verp_config:
   post_connect_server: meta.wikimedia.org
