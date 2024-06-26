@@ -98,6 +98,10 @@ listen tls
 <%- end -%>
 <%- end -%>
 
+<%- if @wikimedia_trust -%>
+    acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
+<%- end -%>
+
 <%- if @acls and @acls['tls'] -%>
 <%- @acls['tls'].each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>

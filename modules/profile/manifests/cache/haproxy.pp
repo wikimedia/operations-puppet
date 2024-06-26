@@ -209,6 +209,7 @@ class profile::cache::haproxy(
         dedicated_hc_backend   => $dedicated_hc_backend,
         hc_sources             => $hc_sources,
         extended_logging       => $extended_logging,
+        wikimedia_trust        => $profile::cache::base::wikimedia_trust,
     }
 
     if $monitoring_enabled {

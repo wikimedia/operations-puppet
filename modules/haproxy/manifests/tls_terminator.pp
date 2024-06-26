@@ -74,6 +74,9 @@
 # @param extended_logging
 #   Bool to enable configuration to allow richer logging
 #   Default: false
+# @param wikimedia_trust
+#   List of IP addresses that are trusted to set headers like X-Request-Id.
+#   Default: undef
 define haproxy::tls_terminator(
     Stdlib::Port $port,
     Haproxy::Backend $backend,
@@ -111,6 +114,7 @@ define haproxy::tls_terminator(
     Boolean $dedicated_hc_backend = false,
     Optional[Array[Stdlib::IP::Address]] $hc_sources = undef,
     Boolean $extended_logging = false,
+    Optional[Array[Stdlib::IP::Address]] $wikimedia_trust = undef,
 ) {
     # First of all, we can't configure a tls terminator if haproxy is not installed.
     if !defined(Class['haproxy']) {
