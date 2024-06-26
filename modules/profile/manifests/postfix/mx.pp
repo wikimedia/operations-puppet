@@ -42,6 +42,8 @@
 #     Config for enabling VERP for wikimedia bounces.
 # @param mta_mode
 #     General mode of postfix instance: null-client, outbound, or inbound
+# @param recipient_discards
+#     Recipient addresses to silently discard
 class profile::postfix::mx (
     Hash                                     $config                 = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
     Profile::Postfix::Static_transport_maps  $static_transport_maps  = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
@@ -57,6 +59,7 @@ class profile::postfix::mx (
     Optional[Profile::Postfix::Mail_aliases] $mail_aliases           = lookup('profile::postfix::mx::mail_aliases', {'default_value' => undef}),
     Optional[Profile::Postfix::Verp]         $verp_config            = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
     Profile::Postfix::Mta_mode               $mta_mode               = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
+    Hash[Stdlib::Email, String[1]]           $recipient_discards     = lookup('profile::postfix::mx::recipient_discards', {'default_value' => {}}),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
@@ -84,6 +87,14 @@ class profile::postfix::mx (
         '^([a-f0-9:]+)(\/.*)',
         '[\1]\2',
     )
+
+    $recipient_discard_transport_map_path = '/etc/postfix/transport-recipient-discards'
+    $recipient_discard_transport_maps_paths = [ "hash:${recipient_discard_transport_map_path}" ]
+    postfix::lookup::database { $recipient_discard_transport_map_path:
+        content => $recipient_discards.reduce('') |$memo, $v| {
+            "${memo}${v[0]} discard:${v[1]}\n"
+        },
+    }
 
     $base_config = {
         # Disable any compatibility settings prior to version 3.6, which
@@ -128,17 +139,12 @@ class profile::postfix::mx (
         # Add $myhostname, so we can relay local mail
         relay_domains                => get($config, 'relay_domains', []) +
                                         '$myhostname',
+        transport_maps               => $static_transport_maps_paths +
+                                        $dynamic_transport_maps_paths +
+                                        $recipient_discard_transport_maps_paths,
         virtual_alias_maps           => $domain_aliases_maps +
                                         $domain_aliases_generic_maps +
                                         $local_mail_maps,
-    }
-
-    if length($static_transport_maps_paths + $dynamic_transport_maps) > 0 {
-        $transport_maps = {
-            transport_maps => $static_transport_maps_paths + $dynamic_transport_maps_paths
-        }
-    } else {
-        $transport_maps = {}
     }
 
     if 'virtual_alias_maps' in $config {
@@ -246,8 +252,7 @@ class profile::postfix::mx (
     class { 'postfix':
         # *NOTE*: the order matters, for example $dovecot_config may overwrite
         # params in the $base_config
-        * => $config + $base_config + $tls_config + $dovecot_config +
-             $transport_maps
+        * => $config + $base_config + $tls_config + $dovecot_config
     }
     # lint:endignore
 
