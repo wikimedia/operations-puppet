@@ -8,11 +8,6 @@
 #
 # === Parameters
 #
-# [*ensure*]
-#   Default: absent.
-#   We are removing for https://phabricator.wikimedia.org/T238230.
-#   TODO: remove this class and other related code once resources have been ensured absent.
-#
 # [*kafka_cluster_name*]
 #   Name of the Kafka cluster in the kafka_clusters hash to be passed to the
 #   kafka_config() function.
@@ -26,7 +21,7 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::eventlogging(
-    Wmflib::Ensure $ensure = lookup('profile::cache::kafka::eventlogging::ensure', {'default_value' => 'absent'}),
+    Wmflib::Ensure $ensure = lookup('profile::cache::kafka::eventlogging::ensure', {'default_value' => 'present'}),
     String $kafka_cluster_name = lookup('profile::cache::kafka::eventlogging::kafka_cluster_name'),
     Boolean $ssl_enabled = lookup('profile::cache::kafka::eventlogging::ssl_enabled', {'default_value' => false}),
     Boolean $monitoring_enabled = lookup('profile::cache::kafka::eventlogging::monitoring_enabled', {'default_value' => false}),
