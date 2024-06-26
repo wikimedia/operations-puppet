@@ -2,4 +2,5 @@
 mariadb::shard: 's4'
 mariadb::binlog_format: 'ROW'
 # Testing MariaDB 10.11 T365805 - do not promote to master
+# Before pooling it - talk to marostegui
 mariadb::package: 'wmf-mariadb1011'
