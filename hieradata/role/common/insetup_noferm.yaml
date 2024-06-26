@@ -5,4 +5,3 @@ profile::base::production::role_description: 'Host being setup for later applica
 profile::firewall::provider: none
 
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet

@@ -3,7 +3,6 @@ profile::admin::groups:
 - fr-tech-devs
 profile::contacts::role_contacts: ['Fundraising Tech']
 profile::puppet::agent::force_puppet7: true
-acmechief_host: acmechief2002.codfw.wmnet
 
 # envoy for TLS termination for community-crm.wikimedia.org behind ATS
 profile::tlsproxy::envoy::ensure: present
