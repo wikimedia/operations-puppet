@@ -96,49 +96,50 @@ class profile::postfix::mx (
     $base_config = {
         # Disable any compatibility settings prior to version 3.6, which
         # had the last change in defaults
-        compatibility_level          => '3.6',
-        mynetworks                   => $agg_nets,
-        myhostname                   => $facts['fqdn'],
-        inet_interfaces              => case $mta_mode {
+        compatibility_level              => '3.6',
+        mynetworks                       => $agg_nets,
+        myhostname                       => $facts['fqdn'],
+        inet_interfaces                  => case $mta_mode {
             'null-client': { ['loopback-only'] }
             default:       { ['all'] }
         },
         # Override the default 'mail' syslog facility so our rsyslog config
         # doesn't result in double logging.
-        syslog_facility              => 'local0',
+        syslog_facility                  => 'local0',
         # Require TLS to advertise SMTP auth
-        smtpd_tls_auth_only          => 'yes',
-        header_checks                => ['regexp:/etc/postfix/header_checks'],
-        smtpd_sender_restrictions    => [
+        smtpd_tls_auth_only              => 'yes',
+        header_checks                    => ['regexp:/etc/postfix/header_checks'],
+        smtpd_sender_restrictions        => [
             'permit_mynetworks',
             'reject_non_fqdn_sender',
             'reject_unknown_sender_domain',
         ],
-        smtpd_relay_restrictions     => [
+        smtpd_relay_restrictions         => [
             'permit_mynetworks',
             'permit_sasl_authenticated',
             'reject_unauth_destination',
         ],
-        smtpd_recipient_restrictions => [
+        smtpd_recipient_restrictions     => [
             'permit_mynetworks',
             'reject_non_fqdn_recipient',
             'reject_unknown_recipient_domain',
         ],
-        smtpd_milters                => ['unix:/rspamd/milter.sock'],
+        smtpd_milters                    => ['unix:/rspamd/milter.sock'],
         # Require mail clients to say helo
-        smtpd_helo_required          => 'yes',
-        smtpd_helo_restrictions      => [
+        smtpd_helo_required              => 'yes',
+        smtpd_helo_restrictions          => [
             'permit_mynetworks',
             'reject_non_fqdn_helo_hostname',
             'reject_invalid_helo_hostname',
         ],
         # Require mail clients to use standard envelope commands
-        strict_rfc821_envelopes      => 'yes',
+        strict_rfc821_envelopes          => 'yes',
         # Reject egress mail that is not configured
-        smtpd_reject_unlisted_sender => 'yes',
-        transport_maps               => $static_transport_maps_paths +
-                                        $dynamic_transport_maps_paths +
-                                        $recipient_discard_transport_maps_paths,
+        smtpd_reject_unlisted_sender     => 'yes',
+        transport_maps                   => $static_transport_maps_paths +
+                                            $dynamic_transport_maps_paths +
+                                            $recipient_discard_transport_maps_paths,
+        parent_domain_matches_subdomains => ['debug_peer_list'],
     }
 
     if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
