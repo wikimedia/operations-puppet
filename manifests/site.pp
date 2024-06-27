@@ -2686,6 +2686,10 @@ node /^deploy[12]002\.(eqiad|codfw)\./ {
     role(deployment_server::kubernetes)
 }
 
+node /^deploy1003\.eqiad\./ {
+    role(insetup::serviceops)
+}
+
 node /^urldownloader[12]00[12]\.wikimedia\./ {
     role(insetup::infrastructure_foundations)
 }
