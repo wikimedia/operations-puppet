@@ -82,9 +82,9 @@ class profile::gitlab::runner (
     Boolean                                     $enable_registry_proxy = lookup('profile::gitlab::runner::enable_registry_proxy'),
     Hash                                        $registry_proxy_environment = lookup('profile::gitlab::runner::registry_proxy_environment'),
     String                                      $registry_proxy_image = lookup('profile::gitlab::runner::registry_proxy_image'),
-    Optional[Boolean]                           $buildkitd_dockerfile_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled', {default_value => true}),
-    Optional[Boolean]                           $buildkitd_gateway_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_gateway_frontend_enabled', {default_value => true}),
-    Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources', {default_value => []}),
+    Optional[Boolean]                           $buildkitd_dockerfile_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled'),
+    Optional[Boolean]                           $buildkitd_gateway_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_gateway_frontend_enabled'),
+    Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
