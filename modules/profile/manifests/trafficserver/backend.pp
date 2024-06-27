@@ -145,13 +145,6 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/multi-dc.lua.conf',
     }
 
-    trafficserver::lua_script { 'mw-on-k8s':
-        ensure    => absent,
-        source    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua',
-        unit_test => 'puppet:///modules/profile/trafficserver/mw-on-k8s_test.lua',
-        config    => 'puppet:///modules/profile/trafficserver/mw-on-k8s.lua.conf',
-    }
-
     trafficserver::lua_script { 'gateway-check':
         source    => 'puppet:///modules/profile/trafficserver/gateway-check.lua',
         unit_test => 'puppet:///modules/profile/trafficserver/gateway-check_test.lua',
