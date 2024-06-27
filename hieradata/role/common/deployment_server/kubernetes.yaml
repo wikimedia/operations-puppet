@@ -333,7 +333,7 @@ profile::kubernetes::deployment_server::general:
     # TODO: autogenerate this from the registry.
     common_images:
       httpd:
-        exporter: prometheus-apache-exporter:0.0.3-20231015
+        exporter: prometheus-apache-exporter:0.0.4-20240623
       mcrouter:
         mcrouter: mcrouter:0.41.0-4-20231022
         exporter: prometheus-mcrouter-exporter:0.0.1-2-20211010
