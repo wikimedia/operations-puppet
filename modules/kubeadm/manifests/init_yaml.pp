@@ -27,10 +27,6 @@ class kubeadm::init_yaml (
         require => File['/etc/kubernetes'],
     }
 
-    file { '/etc/kubernetes/psp':
-        ensure  => absent,
-    }
-
     file { '/etc/kubernetes/admission':
         ensure  => directory,
         owner   => 'root',
