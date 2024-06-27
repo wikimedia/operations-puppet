@@ -158,6 +158,14 @@ profile::cache::haproxy::del_headers:
     - direction: request
       name: 'X-Request-Id'
       acl: '!wikimedia_trust'
+    - direction: request
+      name: 'tracestate'
+      acl: '!wikimedia_trust'
+    - direction: request
+      name: 'traceparent'
+      acl: '!wikimedia_trust'
+    - direction: request
+      name: 'X-Forwarded-Proto'
     - direction: response
       name: 'X-Analytics'
     - direction: response

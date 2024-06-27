@@ -371,22 +371,6 @@ sub recv_fe_ip_processing {
     // Same for the *request* header Retry-After, also managed by requestctl.
     unset req.http.Retry-After;
 
-    if (client.ip !~ wikimedia_trust && remote.ip !~ local_tls_terminator) {
-        // Ensure we only accept XFP from our own networks.  Ideally
-        // it should only be set by our nginx TLS terminator
-        // specifically, but there are known cases where internal apps
-        // set XFP to fake HTTPS when making a request to our public
-        // endpoints from the inside.
-        unset req.http.X-Forwarded-Proto;
-        // Ensure external clients do not set X-Request-Id because we
-        // generate, use and propagate it internally in order to be able
-        // to trace request chains. If internal clients propagate it,
-        // though, let it pass through.  Do the same for W3C tracing headers.
-        unset req.http.X-Request-Id;
-        unset req.http.tracestate;
-        unset req.http.traceparent;
-    }
-
     if (client.ip !~ local_host && remote.ip !~ local_tls_terminator) {
         // only the local nginx TLS terminator should set these at all -
         // there are no other internal exceptions to that rule
