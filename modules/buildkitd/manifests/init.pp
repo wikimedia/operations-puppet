@@ -13,7 +13,7 @@
 # @param dockerfile_frontend_enabled Enable/disable the Dockerfile frontend
 # @param gateway_frontend_enabled Boolean Enable/disabled the gateway.v0 frontend
 # @param allowed_gateway_sources The list of allowed gateway image repos (without tags).
-#        undef/empty means all gateway images are allowed.
+#        An empty list means all gateway images are allowed.
 #
 class buildkitd(
     Wmflib::Ensure           $ensure,
@@ -27,7 +27,7 @@ class buildkitd(
     Integer                  $cni_pool_size = 20,
     Optional[Boolean]        $dockerfile_frontend_enabled = false,
     Optional[Boolean]        $gateway_frontend_enabled = true,
-    Optional[Array[String]]  $allowed_gateway_sources = undef,
+    Optional[Array[String]]  $allowed_gateway_sources = [],
 ){
     group { 'buildkitd':
         ensure => $ensure,

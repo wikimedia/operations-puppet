@@ -39,7 +39,7 @@
 # @param registry_proxy_image image to execute as the registry
 # @param buildkitd_dockerfile_frontend_enabled Enable/disable the Dockerfile frontend
 # @param buildkitd_gateway_frontend_enabled Enable/disable the gateway.v0 frontend
-# @param buildkitd_allowed_gateway_sources A list of gateway sources that buildkitd will allow. If undef, all are allowed
+# @param buildkitd_allowed_gateway_sources A list of gateway sources that buildkitd will allow. If empty, all are allowed
 class profile::gitlab::runner (
     Wmflib::Ensure                              $ensure             = lookup('profile::gitlab::runner::ensure'),
     Integer                                     $concurrent         = lookup('profile::gitlab::runner::concurrent'),
@@ -84,7 +84,7 @@ class profile::gitlab::runner (
     String                                      $registry_proxy_image = lookup('profile::gitlab::runner::registry_proxy_image'),
     Optional[Boolean]                           $buildkitd_dockerfile_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled', {default_value => true}),
     Optional[Boolean]                           $buildkitd_gateway_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_gateway_frontend_enabled', {default_value => true}),
-    Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources', {default_value => undef}),
+    Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources', {default_value => []}),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
