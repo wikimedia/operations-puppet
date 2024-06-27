@@ -5,6 +5,7 @@ case $- in
 esac
 
 ### Aliasing
+alias grep='rg'
 alias cp='cp -i'
 alias l="ls -l --color"
 alias la="ls -al --color"
