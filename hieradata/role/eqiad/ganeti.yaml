@@ -10,7 +10,6 @@ profile::ganeti::nodes:
   - ganeti1016.eqiad.wmnet
   - ganeti1017.eqiad.wmnet
   - ganeti1018.eqiad.wmnet
-  - ganeti1019.eqiad.wmnet
   - ganeti1020.eqiad.wmnet
   - ganeti1021.eqiad.wmnet
   - ganeti1022.eqiad.wmnet
