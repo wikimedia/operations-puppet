@@ -18,9 +18,6 @@ input:
     batching:
       count: 2048
       period: 100ms
-    # Throw away bad messages immediately. Test for T367076 to see whether this improves the weird
-    # consumer lag, as we now have more bad logs than before.
-    auto_replay_nacks: false
 
 pipeline:
   processors:
