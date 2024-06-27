@@ -10,7 +10,7 @@ http:
 input:
   label: "syslog"
   socket_server:
-    network: tcp
+    network: udp
     address: "${SOCKET_ADDRESS}"
     codec: lines
     tls:
