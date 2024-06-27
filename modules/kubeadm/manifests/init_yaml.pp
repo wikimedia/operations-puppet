@@ -28,19 +28,7 @@ class kubeadm::init_yaml (
     }
 
     file { '/etc/kubernetes/psp':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        require => File['/etc/kubernetes'],
-    }
-
-    file { '/etc/kubernetes/psp/base-pod-security-policies.yaml':
-        ensure  => present,
-        source  => 'puppet:///modules/kubeadm/psp/base-pod-security-policies.yaml',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        require => File['/etc/kubernetes/psp'],
+        ensure  => absent,
     }
 
     file { '/etc/kubernetes/admission':
