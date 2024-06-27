@@ -1,3 +1,2 @@
-profile::puppet::agent::force_puppet7: true
 profile::acme_chief::ssl_client_certificate: "%{facts.puppet_config.localcacert}"
 profile::acme_chief::ssl_client_certificate_source: ~

@@ -305,3 +305,4 @@ profile::acme_chief::passive:
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'ACME certificate manager'
+profile::puppet::agent::force_puppet7: true
