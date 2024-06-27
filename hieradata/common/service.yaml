@@ -75,7 +75,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery: &api_discovery
       - dnsdisc: api-rw
         active_active: false
@@ -119,7 +119,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery: &appservers-disc
       - dnsdisc: appservers-ro
         active_active: true

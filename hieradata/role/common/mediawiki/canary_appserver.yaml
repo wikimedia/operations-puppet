@@ -26,13 +26,6 @@ profile::services_proxy::envoy::listen_ipv6: true
 
 profile::mediawiki::httpd::logrotate_retention: 12
 
-profile::lvs::realserver::pools:
-  appservers-https:
-    services:
-      - php7.4-fpm
-      - apache2
-      - mcrouter
-      - envoyproxy
 # bail out in case a long-lasting C function is called and
 # excimer can't throw its exception
 profile::mediawiki::php::request_timeout: 201
