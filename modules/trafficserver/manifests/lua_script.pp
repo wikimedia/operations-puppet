@@ -9,6 +9,10 @@
 #
 # === Parameters
 #
+# [*ensure*]
+#   Optional. Defaults to present.
+#   Installs or remove a lua script.
+#
 # [*source*]
 #   Lua script source file
 #
@@ -24,6 +28,7 @@
 #
 define trafficserver::lua_script(
     Stdlib::Filesource           $source,
+    Wmflib::Ensure               $ensure        = 'present',
     Optional[Stdlib::Filesource] $unit_test     = undef,
     Optional[Stdlib::Filesource] $config        = undef,
     String                       $service_name  = 'trafficserver',
@@ -39,6 +44,7 @@ define trafficserver::lua_script(
     $lua_path = "${config_prefix}/lua"
 
     $defaults = {
+        ensure  => $ensure,
         owner   => $trafficserver::user,
         require => File[$lua_path],
     }
@@ -66,5 +72,9 @@ define trafficserver::lua_script(
 
     # Upon Lua scripts modification, run busted and reload trafficserver iff
     # all tests are green
-    File["${lua_path}/${title}.lua"] ~> Exec["unit_tests_${service_name}"] ~> Exec["trigger_lua_reload_${config_prefix}"] ~> Service[$service_name]
+    if $ensure == 'present' {
+        File["${lua_path}/${title}.lua"] ~> Exec["unit_tests_${service_name}"] ~> Exec["trigger_lua_reload_${config_prefix}"] ~> Service[$service_name]
+    } else {
+        File["${lua_path}/${title}.lua"] ~> Exec["trigger_lua_reload_${config_prefix}"] ~> Service[$service_name]
+    }
 }
