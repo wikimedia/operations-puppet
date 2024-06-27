@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
+https://zhwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/zhwiki-goodfaith:predict
+  json_body:
+    rev_id: 75314627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST

@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+https://article-descriptions.article-descriptions.wikimedia.org:
+- path: /v1/models/article-descriptions:predict
+  json_body:
+    lang: "en"
+    title: "Clandonald"
+    num_beams: 2
+  assert_status: 200
+  assert_body_contains: prediction
+  method: POST

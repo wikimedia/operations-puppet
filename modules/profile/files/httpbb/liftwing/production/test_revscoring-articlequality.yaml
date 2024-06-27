@@ -1,0 +1,99 @@
+# SPDX-License-Identifier: Apache-2.0
+https://enwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/enwiki-articlequality:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://euwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/euwiki-articlequality:predict
+  json_body:
+    rev_id: 9131611
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fawiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/fawiki-articlequality:predict
+  json_body:
+    rev_id: 36244297
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://frwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/frwiki-articlequality:predict
+  json_body:
+    rev_id: 200018599
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://glwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/glwiki-articlequality:predict
+  json_body:
+    rev_id: 6267716
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nlwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/nlwiki-articlequality:predict
+  json_body:
+    rev_id: 63565650
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ptwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ptwiki-articlequality:predict
+  json_body:
+    rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ruwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ruwiki-articlequality:predict
+  json_body:
+    rev_id: 127588746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/simplewiki-articlequality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://svwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/svwiki-articlequality:predict
+  json_body:
+    rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/testwiki-articlequality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://trwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/trwiki-articlequality:predict
+  json_body:
+    rev_id: 29017280
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ukwiki-articlequality:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-itemquality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/wikidatawiki-itemquality:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST

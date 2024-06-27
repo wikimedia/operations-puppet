@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: Apache-2.0
+https://bnwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/bnwiki-reverted:predict
+  json_body:
+    rev_id: 6302831
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://elwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/elwiki-reverted:predict
+  json_body:
+    rev_id: 9843950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiktionary-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/enwiktionary-reverted:predict
+  json_body:
+    rev_id: 3457
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://glwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/glwiki-reverted:predict
+  json_body:
+    rev_id: 6267716
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hrwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/hrwiki-reverted:predict
+  json_body:
+    rev_id: 6558494
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://idwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/idwiki-reverted:predict
+  json_body:
+    rev_id: 22529746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://iswiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/iswiki-reverted:predict
+  json_body:
+    rev_id: 1789896
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://tawiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/tawiki-reverted:predict
+  json_body:
+    rev_id: 3629578
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://viwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/viwiki-reverted:predict
+  json_body:
+    rev_id: 69495346
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
