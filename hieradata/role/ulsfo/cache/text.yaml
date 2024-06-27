@@ -5,7 +5,7 @@ profile::cache::haproxy::log_length: 16384
 # Use this boolean to gradually rollout benthos on cp hosts with configuration
 # for HAProxy log parser
 profile::cache::base::use_benthos: true
-profile::cache::base::benthos_socket_address: &benthos_address "127.0.0.1:1221"
+profile::cache::base::benthos_socket_address: "tcp@127.0.0.1:1221"
 profile::benthos::use_geoip: false
 profile::benthos::instances:
   haproxy_cache:
@@ -14,7 +14,8 @@ profile::benthos::instances:
     # List of envvars that will be copied by benthos::instance in
     # separate file (template) and used by main configuration file
     env_variables:
-      socket_address: *benthos_address
+      socket_proto: "tcp"
+      socket_address: "127.0.0.1:1221"
       webrequest_topic: "webrequest_text_test"
       enable_debug: false
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
