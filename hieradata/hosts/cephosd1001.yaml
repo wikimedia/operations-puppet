@@ -2,9 +2,3 @@ profile::bird::neighbors_list:
   - 10.64.130.1
   - 2620:0:861:109::1
 profile::bird::multihop: false
-profile::firewall::provider: nftables
-profile::tlsproxy::envoy::firewall_src_sets:
-  - ANALYTICS_NETWORKS
-  - DSE_KUBEPODS_NETWORKS
-profile::tlsproxy::envoy::firewall_srange:
-  - db1208.eqiad.wmnet
