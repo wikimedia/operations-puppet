@@ -541,9 +541,9 @@ profile::trafficserver::backend::outbound_tls_settings:
   verify_server_policy: ENFORCED
   cacert_filename: "%{lookup('profile::trafficserver::backend::trusted_ca_path')}"
 profile::trafficserver::backend::storage_elements:
-    - devname: sda3
+    - devname: nvme0n1
       id: disk.0
-    - devname: sdb3
+    - devname: nvme1n1
       id: disk.1
 # See https://docs.trafficserver.apache.org/en/latest/admin-guide/logging/formatting.en.html
 profile::trafficserver::backend::log_formats:
