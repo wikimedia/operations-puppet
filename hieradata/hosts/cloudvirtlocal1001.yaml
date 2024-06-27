@@ -1,2 +1,4 @@
 profile::openstack::base::nova::instance_dev: 'srvlink'
 profile::openstack::base::nova::compute::id: d1612d53-b3dd-485f-8f9d-83bf0fc9b3b5
+
+profile::openstack::eqiad1::neutron::use_ovs: true
