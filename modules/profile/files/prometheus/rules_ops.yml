@@ -436,6 +436,18 @@ groups:
     expr: sum by(job, role, shard) (rate(mysql_global_status_bytes_sent[5m]))
   - record: job_shard:mysql_slave_status_seconds_behind_master:max
     expr: max by(job, shard) (mysql_slave_status_seconds_behind_master)
+  # For alerting purposes. Percentage of mariadb RSS vs host memory.
+  - record: cluster_id_instance:mariadb_memory_rss:percent
+    expr: |
+      (
+        sum(label_replace(
+          container_memory_rss{id=~".*mariadb.*\\.service"}, "instance", "$1", "instance", "([^:]+):?.*")
+        ) by (instance, cluster, id)
+          / on(instance) group_left
+        label_replace(
+          node_memory_MemTotal_bytes, "instance", "$1", "instance", "([^:]+):?.*"
+        )
+      ) * 100
 
 - name: memcache
   rules:
