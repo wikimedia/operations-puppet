@@ -13,7 +13,6 @@ class statistics::sites::analytics {
     $working_path = $::statistics::working_path
     # /srv/analytics.wikimedia.org
     $document_root = "${working_path}/analytics.wikimedia.org"
-    # Allow statistics-web-users to modify files in this directory.
 
     git::clone { 'analytics.wikimedia.org':
         ensure    => 'latest',

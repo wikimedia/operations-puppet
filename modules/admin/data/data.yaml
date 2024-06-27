@@ -75,7 +75,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782
+  # 782 714 725 726 724
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
@@ -271,12 +271,6 @@ groups:
     gid: 713
     description: general user tasks for udp2log (RT 5391)
     members: [milimetric]
-  researchers:
-    gid: 714
-    description: This was used in the past to access statistics hosts and
-                 access to research mysql credentials. Deprecated.
-    members: []
-    deprecated: true
   ldap-admins:
     gid: 715
     description: ldap admins
@@ -342,35 +336,6 @@ groups:
     description: users with root access on logstash nodes (rt 6366, 6896)
     members: [reedy]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
-  statistics-web-users:
-    gid: 724
-    description: access for stats.wikimedia.org (Deprecated since 2020-03)
-    members: []
-    deprecated: true
-  statistics-privatedata-users:
-    gid: 725
-    description: Access to stat boxes that host private data, including
-                 sampled webrequest logs.  This group should not be used just to
-                 grant someone Hadoop access.  (Deprecated in 2020-03)
-    members: []
-    deprecated: true
-  statistics-users:
-    gid: 726
-    description: Access statistics number crunching hosts. NO PRIVS. (Deprecated since 2020-03)
-    members: []
-    deprecated: true
-  statistics-admins:
-    posix_name: stats
-    description: access files created by stats user cron jobs (Deprecated since 2020-03)
-    members: []
-    privileges: []
-    deprecated: true
-  analytics-users:
-    gid: 7080
-    description: Gives generic client access to the Analytics cluster
-                 via stat100x. Deprecated since 2020-03
-    members: []
-    deprecated: true
   analytics-privatedata-users:
     gid: 731
     description: This group is the main entry point to the Analytics cluster, since it gives
