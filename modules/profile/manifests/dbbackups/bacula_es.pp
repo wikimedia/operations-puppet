@@ -27,11 +27,11 @@ class profile::dbbackups::bacula_es (
         # enabled when one-time backups are taken, or every 5 years
         # JobIds for read only backups:
         # taken on eqiad, stored on codfw:
-        # { es1:334775 es2:336775 es3:338718 es4:TBD es5:TBD}
+        # { es1:334775 es2:336775 es3:338718 es4:574430 (WIP) es5:TBD}
         # taken on codfw, stored on eqiad:
-        # { es1:334776 es2:334788 es3:334903 es4:TBD es5:TBD}
-        backup::set { 'mysql-srv-backups-dumps-latest':
-            jobdefaults => $jobdefaults_ro,
-        }
+        # { es1:334776 es2:334788 es3:334903 es4:574429 (WIP) es5:TBD}
+        # backup::set { 'mysql-srv-backups-dumps-latest':
+        #     jobdefaults => $jobdefaults_ro,
+        # }
     }
 }
