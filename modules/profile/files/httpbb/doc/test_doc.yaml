@@ -17,6 +17,10 @@ http://doc.wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://doc.wikimedia.org/mediawiki-core/master/
+- path: /analytics-api
+  assert_status: 301
+  assert_headers:
+    Location: https://doc.wikimedia.org/generated-data-platform/aqs/analytics-api/
 - path: /mediawiki-core/master/
   assert_status: 200
   assert_body_contains: master
