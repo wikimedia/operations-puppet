@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # ! this file is managed by puppet !
 # ./modules/phabricator/files/tech_news_weekly_stats.sh
-source /etc/tech_news_weekly_stats.conf
+source /etc/phab_tech_news_weekly_stats.conf
 timestamp=$(date)
 #echo "result_tasks"
 result_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
