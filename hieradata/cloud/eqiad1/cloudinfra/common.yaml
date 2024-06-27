@@ -5,7 +5,7 @@
 profile::openstack::eqiad1::designate_hosts:
   - cloudservices1005.private.eqiad.wikimedia.cloud
   - cloudservices1006.private.eqiad.wikimedia.cloud
-profile::openstack::eqiad1::labweb_hosts:
+profile::openstack::eqiad1::cloudweb_hosts:
   - cloudweb1003.wikimedia.org
   - cloudweb1004.wikimedia.org
 # We don't have per-deployment versions of profile::openstack::base::puppetserver::cert_cleaning, so

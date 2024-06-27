@@ -40,7 +40,7 @@ profile::openstack::codfw1dev::ldap_hosts:
   - 'cloudservices2004-dev.private.codfw.wikimedia.cloud'
   - 'cloudservices2005-dev.private.codfw.wikimedia.cloud'
 profile::openstack::codfw1dev::ldap_proxyuser_pass: 'Eche0ieng8UaNoo'
-profile::openstack::codfw1dev::labweb_hosts:
+profile::openstack::codfw1dev::cloudweb_hosts:
   - cloudweb2002-dev.wikimedia.org
 profile::openstack::codfw1dev::all_regions: ['codfw', 'codfw1dev-r']
 

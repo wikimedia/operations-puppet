@@ -4,13 +4,13 @@
 # can be ripped out.
 define profile::mariadb::ferm_wikitech(
     Stdlib::Port $port = 3306,
-    Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::eqiad1::labweb_hosts'),  # lint:ignore:wmf_styleguide
+    Array[Stdlib::Fqdn] $cloudweb_hosts = lookup('profile::openstack::eqiad1::cloudweb_hosts'),  # lint:ignore:wmf_styleguide
     ) {
 
     ferm::service{ 'labweb':
         proto   => 'tcp',
         port    => $port,
         notrack => true,
-        srange  => "@resolve((${labweb_hosts.join(' ')}))",
+        srange  => "@resolve((${cloudweb_hosts.join(' ')}))",
     }
 }

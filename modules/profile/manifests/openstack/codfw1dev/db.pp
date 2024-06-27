@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::codfw1dev::db(
-    Array[Stdlib::Fqdn] $labweb_hosts = lookup('profile::openstack::codfw1dev::labweb_hosts'),
+    Array[Stdlib::Fqdn] $cloudweb_hosts = lookup('profile::openstack::codfw1dev::cloudweb_hosts'),
     Array[Stdlib::IP::Address] $mysql_root_clients = lookup('mysql_root_clients', {default_value => []}),
     Array[Stdlib::IP::Address] $maintenance_hosts = lookup('maintenance_hosts'),
 ) {
@@ -34,7 +34,7 @@ class profile::openstack::codfw1dev::db(
     firewall::service { 'labweb_mysql':
         proto  => 'tcp',
         port   => 3306,
-        srange => $labweb_hosts,
+        srange => $cloudweb_hosts,
     }
 
     # mysql monitoring and administration from root clients/tendril

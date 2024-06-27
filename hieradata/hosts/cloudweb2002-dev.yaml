@@ -2,7 +2,7 @@ profile::openstack::codfw1dev::horizon::webserver_hostname: labtesthorizon.wikim
 profile::openstack::codfw1dev::horizon::maintenance_mode: false
 profile::openstack::codfw1dev::horizon::puppet_git_repo_name: instance-puppet-dev
 
-profile::openstack::codfw1dev::labweb_hosts:
+profile::openstack::codfw1dev::cloudweb_hosts:
   - cloudweb2002-dev.wikimedia.org
 
 profile::openstack::base::nutcracker::redis::shards:
