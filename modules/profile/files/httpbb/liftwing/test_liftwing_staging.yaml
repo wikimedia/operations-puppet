@@ -1,0 +1,103 @@
+https://enwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/enwiki-articlequality:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-itemquality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/wikidatawiki-itemquality:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/enwiki-articletopic:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/enwiki-draftquality:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-drafttopic.revscoring-drafttopic.wikimedia.org:
+- path: /v1/models/enwiki-drafttopic:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/enwiki-damaging:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/wikidatawiki-damaging:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://zhwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/zhwiki-goodfaith:predict
+  json_body:
+    rev_id: 75314627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://viwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/viwiki-reverted:predict
+  json_body:
+    rev_id: 69495346
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://revertrisk-language-agnostic.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-language-agnostic:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
+  method: POST
+https://revertrisk-multilingual.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-multilingual:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
+  method: POST
+https://outlink-topic-model.articletopic-outlink.wikimedia.org:
+- path: /v1/models/outlink-topic-model:predict
+  json_body:
+    lang: en
+    page_title: "Victoria_Jubilee_Government_High_School"
+  assert_status: 200
+  assert_body_contains: score
+  method: POST
+https://langid.llm.wikimedia.org:
+- path: /v1/models/langid:predict
+  json_body:
+    text: "Αυτό το μοντέλο χρησιμοποιείται για αναγνώριση γλώσσας"
+  assert_status: 200
+  assert_body_contains: Greek
+  method: POST
+https://article-descriptions.article-descriptions.wikimedia.org:
+- path: /v1/models/article-descriptions:predict
+  json_body:
+    lang: "en"
+    title: "Clandonald"
+    num_beams: 2
+  assert_status: 200
+  assert_body_contains: prediction
+  method: POST

@@ -1,9 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-https://outlink-topic-model.articletopic-outlink.wikimedia.org:
-- path: /v1/models/outlink-topic-model:predict
-  json_body:
-    lang: en
-    page_title: "Victoria_Jubilee_Government_High_School"
-  assert_status: 200
-  assert_body_contains: score
-  method: POST

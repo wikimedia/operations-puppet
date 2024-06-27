@@ -1,0 +1,803 @@
+https://enwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/enwiki-articlequality:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://euwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/euwiki-articlequality:predict
+  json_body:
+    rev_id: 9131611
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fawiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/fawiki-articlequality:predict
+  json_body:
+    rev_id: 36244297
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://frwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/frwiki-articlequality:predict
+  json_body:
+    rev_id: 200018599
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://glwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/glwiki-articlequality:predict
+  json_body:
+    rev_id: 6267716
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nlwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/nlwiki-articlequality:predict
+  json_body:
+    rev_id: 63565650
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ptwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ptwiki-articlequality:predict
+  json_body:
+    rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ruwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ruwiki-articlequality:predict
+  json_body:
+    rev_id: 127588746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/simplewiki-articlequality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://svwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/svwiki-articlequality:predict
+  json_body:
+    rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/testwiki-articlequality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://trwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/trwiki-articlequality:predict
+  json_body:
+    rev_id: 29017280
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-articlequality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/ukwiki-articlequality:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-itemquality.revscoring-articlequality.wikimedia.org:
+- path: /v1/models/wikidatawiki-itemquality:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://arwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/arwiki-articletopic:predict
+  json_body:
+    rev_id: 60469331
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cswiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/cswiki-articletopic:predict
+  json_body:
+    rev_id: 22284455
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/enwiki-articletopic:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://euwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/euwiki-articletopic:predict
+  json_body:
+    rev_id: 9131611
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://huwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/huwiki-articletopic:predict
+  json_body:
+    rev_id: 25662950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hywiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/hywiki-articletopic:predict
+  json_body:
+    rev_id: 12345
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://kowiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/kowiki-articletopic:predict
+  json_body:
+    rev_id: 33902574
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://srwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/srwiki-articletopic:predict
+  json_body:
+    rev_id: 25467687
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/ukwiki-articletopic:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://viwiki-articletopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/viwiki-articletopic:predict
+  json_body:
+    rev_id: 69495346
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-itemtopic.revscoring-articletopic.wikimedia.org:
+- path: /v1/models/wikidatawiki-itemtopic:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/enwiki-draftquality:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ptwiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/ptwiki-draftquality:predict
+  json_body:
+    rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/simplewiki-draftquality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-draftquality.revscoring-draftquality.wikimedia.org:
+- path: /v1/models/testwiki-draftquality:predict
+  json_body:
+    rev_id: 1
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-drafttopic.revscoring-drafttopic.wikimedia.org:
+- path: /v1/models/enwiki-drafttopic:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://arwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/arwiki-damaging:predict
+  json_body:
+    rev_id: 60469331
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://bswiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/bswiki-damaging:predict
+  json_body:
+    rev_id: 3474627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/cawiki-damaging:predict
+  json_body:
+    rev_id: 31131157
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cswiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/cswiki-damaging:predict
+  json_body:
+    rev_id: 22284455
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://dewiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/dewiki-damaging:predict
+  json_body:
+    rev_id: 229368098
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/enwiki-damaging:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikibooks-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswikibooks-damaging:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswiki-damaging:predict
+  json_body:
+    rev_id: 148304768
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikiquote-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/eswikiquote-damaging:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://etwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/etwiki-damaging:predict
+  json_body:
+    rev_id: 6285110
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/fawiki-damaging:predict
+  json_body:
+    rev_id: 36244297
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fiwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/fiwiki-damaging:predict
+  json_body:
+    rev_id: 21152534
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://frwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/frwiki-damaging:predict
+  json_body:
+    rev_id: 200018599
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hewiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/hewiki-damaging:predict
+  json_body:
+    rev_id: 35382373
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hiwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/hiwiki-damaging:predict
+  json_body:
+    rev_id: 5729839
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://huwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/huwiki-damaging:predict
+  json_body:
+    rev_id: 25662950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://itwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/itwiki-damaging:predict
+  json_body:
+    rev_id: 131264973
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://jawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/jawiki-damaging:predict
+  json_body:
+    rev_id: 93168735
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://kowiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/kowiki-damaging:predict
+  json_body:
+    rev_id: 33902574
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://lvwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/lvwiki-damaging:predict
+  json_body:
+    rev_id: 3754418
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nlwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/nlwiki-damaging:predict
+  json_body:
+    rev_id: 63565650
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nowiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/nowiki-damaging:predict
+  json_body:
+    rev_id: 23205990
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://plwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/plwiki-damaging:predict
+  json_body:
+    rev_id: 6522
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ptwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/ptwiki-damaging:predict
+  json_body:
+    rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://rowiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/rowiki-damaging:predict
+  json_body:
+    rev_id: 15370986
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ruwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/ruwiki-damaging:predict
+  json_body:
+    rev_id: 127588746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://sqwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/sqwiki-damaging:predict
+  json_body:
+    rev_id: 2506498
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://srwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/srwiki-damaging:predict
+  json_body:
+    rev_id: 25467687
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/simplewiki-damaging:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://svwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/svwiki-damaging:predict
+  json_body:
+    rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/testwiki-damaging:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://trwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/trwiki-damaging:predict
+  json_body:
+    rev_id: 29017280
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/ukwiki-damaging:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/wikidatawiki-damaging:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://zhwiki-damaging.revscoring-editquality-damaging.wikimedia.org:
+- path: /v1/models/zhwiki-damaging:predict
+  json_body:
+    rev_id: 75314627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://arwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/arwiki-goodfaith:predict
+  json_body:
+    rev_id: 60469331
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://bswiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/bswiki-goodfaith:predict
+  json_body:
+    rev_id: 3474627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cawiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/cawiki-goodfaith:predict
+  json_body:
+    rev_id: 31131157
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://cswiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/cswiki-goodfaith:predict
+  json_body:
+    rev_id: 22284455
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://dewiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/dewiki-goodfaith:predict
+  json_body:
+    rev_id: 229368098
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/enwiki-goodfaith:predict
+  json_body:
+    rev_id: 1130787305
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikibooks-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/eswikibooks-goodfaith:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/eswiki-goodfaith:predict
+  json_body:
+    rev_id: 148304768
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://eswikiquote-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/eswikiquote-goodfaith:predict
+  json_body:
+    rev_id: 4364
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://etwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/etwiki-goodfaith:predict
+  json_body:
+    rev_id: 6285110
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fawiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/fawiki-goodfaith:predict
+  json_body:
+    rev_id: 36244297
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://fiwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/fiwiki-goodfaith:predict
+  json_body:
+    rev_id: 21152534
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://frwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/frwiki-goodfaith:predict
+  json_body:
+    rev_id: 200018599
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hewiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/hewiki-goodfaith:predict
+  json_body:
+    rev_id: 35382373
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hiwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/hiwiki-goodfaith:predict
+  json_body:
+    rev_id: 5729839
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://huwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/huwiki-goodfaith:predict
+  json_body:
+    rev_id: 25662950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://itwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/itwiki-goodfaith:predict
+  json_body:
+    rev_id: 131264973
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://jawiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/jawiki-goodfaith:predict
+  json_body:
+    rev_id: 93168735
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://kowiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/kowiki-goodfaith:predict
+  json_body:
+    rev_id: 33902574
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://lvwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/lvwiki-goodfaith:predict
+  json_body:
+    rev_id: 3754418
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nlwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/nlwiki-goodfaith:predict
+  json_body:
+    rev_id: 63565650
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://nowiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/nowiki-goodfaith:predict
+  json_body:
+    rev_id: 23205990
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://plwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/plwiki-goodfaith:predict
+  json_body:
+    rev_id: 6522
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ptwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/ptwiki-goodfaith:predict
+  json_body:
+    rev_id: 65009367
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://rowiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/rowiki-goodfaith:predict
+  json_body:
+    rev_id: 15370986
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ruwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/ruwiki-goodfaith:predict
+  json_body:
+    rev_id: 127588746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://sqwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/sqwiki-goodfaith:predict
+  json_body:
+    rev_id: 2506498
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://srwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/srwiki-goodfaith:predict
+  json_body:
+    rev_id: 25467687
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://simplewiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/simplewiki-goodfaith:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://svwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/svwiki-goodfaith:predict
+  json_body:
+    rev_id: 51706742
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://testwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/testwiki-goodfaith:predict
+  json_body:
+    rev_id: 21
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://trwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/trwiki-goodfaith:predict
+  json_body:
+    rev_id: 29017280
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://ukwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/ukwiki-goodfaith:predict
+  json_body:
+    rev_id: 37912396
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://wikidatawiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/wikidatawiki-goodfaith:predict
+  json_body:
+    rev_id: 1799693453
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://zhwiki-goodfaith.revscoring-editquality-goodfaith.wikimedia.org:
+- path: /v1/models/zhwiki-goodfaith:predict
+  json_body:
+    rev_id: 75314627
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://bnwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/bnwiki-reverted:predict
+  json_body:
+    rev_id: 6302831
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://elwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/elwiki-reverted:predict
+  json_body:
+    rev_id: 9843950
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://enwiktionary-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/enwiktionary-reverted:predict
+  json_body:
+    rev_id: 3457
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://glwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/glwiki-reverted:predict
+  json_body:
+    rev_id: 6267716
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://hrwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/hrwiki-reverted:predict
+  json_body:
+    rev_id: 6558494
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://idwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/idwiki-reverted:predict
+  json_body:
+    rev_id: 22529746
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://iswiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/iswiki-reverted:predict
+  json_body:
+    rev_id: 1789896
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://tawiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/tawiki-reverted:predict
+  json_body:
+    rev_id: 3629578
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://viwiki-reverted.revscoring-editquality-reverted.wikimedia.org:
+- path: /v1/models/viwiki-reverted:predict
+  json_body:
+    rev_id: 69495346
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST
+https://outlink-topic-model.articletopic-outlink.wikimedia.org:
+- path: /v1/models/outlink-topic-model:predict
+  json_body:
+    lang: en
+    page_title: "Victoria_Jubilee_Government_High_School"
+  assert_status: 200
+  assert_body_contains: score
+  method: POST
+https://revertrisk-language-agnostic.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-language-agnostic:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
+  method: POST
+https://revertrisk-multilingual.revertrisk.wikimedia.org:
+- path: /v1/models/revertrisk-multilingual:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: probabilities
+  method: POST
+https://langid.llm.wikimedia.org:
+- path: /v1/models/langid:predict
+  json_body:
+    text: "Αυτό το μοντέλο χρησιμοποιείται για αναγνώριση γλώσσας"
+  assert_status: 200
+  assert_body_contains: Greek
+  method: POST
+https://article-descriptions.article-descriptions.wikimedia.org:
+- path: /v1/models/article-descriptions:predict
+  json_body:
+    lang: "en"
+    title: "Clandonald"
+    num_beams: 2
+  assert_status: 200
+  assert_body_contains: prediction
+  method: POST
