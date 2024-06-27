@@ -2,10 +2,6 @@ eqiad:
   testserver:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
-  appserver:
-    mw1364.eqiad.wmnet: [nginx]
-  api_appserver:
-    mw1398.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
     mw1407.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
     mw1420.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler

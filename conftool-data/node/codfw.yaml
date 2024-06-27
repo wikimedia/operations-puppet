@@ -2,22 +2,6 @@ codfw:
   testserver:
     mwdebug2001.codfw.wmnet: [apache2]
     mwdebug2002.codfw.wmnet: [apache2]
-  appserver:
-    mw2268.codfw.wmnet: [nginx]
-    mw2269.codfw.wmnet: [nginx]
-    mw2270.codfw.wmnet: [nginx]
-    mw2271.codfw.wmnet: [nginx]
-    mw2272.codfw.wmnet: [nginx]
-    mw2273.codfw.wmnet: [nginx]
-    mw2274.codfw.wmnet: [nginx]
-    mw2275.codfw.wmnet: [nginx]
-    mw2276.codfw.wmnet: [nginx]
-    mw2277.codfw.wmnet: [nginx]
-    mw2441.codfw.wmnet: [nginx]
-  api_appserver:
-    mw2261.codfw.wmnet: [nginx]
-    mw2262.codfw.wmnet: [nginx]
-    mw2299.codfw.wmnet: [nginx]
   jobrunner: &jobrunner
     mw2259.codfw.wmnet: [apache2, nginx]
     mw2263.codfw.wmnet: [apache2, nginx]
