@@ -22,36 +22,27 @@ class profile::ceph::server::firewall (
     }
 
     # Remove duplicates for co-located mon and osd nodes
-    $ceph_server_addrs = unique([$mon_addrs,$osd_public_addrs, $osd_cluster_addrs])
+    $ceph_server_addrs = unique([$mon_addrs,$osd_public_addrs, $osd_cluster_addrs]).flatten
 
-    # TODO - In order to make this profile work for any ceph cluster, we will need a flexible mechanism
-    # of specifying which client hosts and networks can access the daemons. In the cloudceph profiles,
-    # from which these drew inspiration, there were a number of client IP ranges configured and different
-    # server roles, such as cinder backup hosts, cloudstack controllers etc. For the new ceph cluster the
-    # only known client networks will be the DSE-K8S pod range, since the radosgw clients are co-located
-    # with the OSDs and mon processes.
-    #
-    # During this bootstrapping phase we will therefore only allow server traffic from within the cluster
-    # and will return to the configuration mechanism for RBD client networks, such as the dse-k8s cluster
-    # pod ranges.
-    $ferm_srange = join($ceph_server_addrs, ' ')
-
-    ferm::service { 'ceph_daemons':
+    firewall::service { 'ceph_daemons':
         proto      => 'tcp',
         port_range => [6800, 7300],
-        srange     => "(${ferm_srange})",
+        srange     => $ceph_server_addrs,
+        src_sets   => ['DSE_KUBEPODS_NETWORKS'],
         before     => Class['ceph::common'],
     }
-    ferm::service { 'ceph_mon_v1':
-      proto  => 'tcp',
-      port   => 6789,
-      srange => "(${ferm_srange})",
-      before => Class['ceph::common'],
+    firewall::service { 'ceph_mon_v1':
+        proto    => 'tcp',
+        port     => 6789,
+        srange   => $ceph_server_addrs,
+        src_sets => ['DSE_KUBEPODS_NETWORKS'],
+        before   => Class['ceph::common'],
     }
-    ferm::service { 'ceph_mon_v2':
-      proto  => 'tcp',
-      port   => 3300,
-      srange => "(${ferm_srange})",
-      before => Class['ceph::common'],
+    firewall::service { 'ceph_mon_v2':
+        proto    => 'tcp',
+        port     => 3300,
+        srange   => $ceph_server_addrs,
+        src_sets => ['DSE_KUBEPODS_NETWORKS'],
+        before   => Class['ceph::common'],
     }
 }
