@@ -1641,7 +1641,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-1])\.eqiad\./ {
+node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-6])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2148,13 +2148,8 @@ node /^mw1413\.eqiad\./ {
 # Row D
 
 # rack D3
-node /^mw136[45]\.eqiad\./ {
-    role(mediawiki::appserver)
-}
-
-# rack D6
-node /^mw13(66|73)\.eqiad\./ {
-    role(mediawiki::appserver)
+node /^mw1364\.eqiad\./ {
+    role(mediawiki::appserver) # Left pooled until service turndown
 }
 
 # rack D8 - canary jobrunners
@@ -2179,21 +2174,14 @@ node /^mw1450\.eqiad\./ {
 # Row B
 
 # rack B3 and B5
-node /^mw1(398|404)\.eqiad\./ {
-    role(mediawiki::appserver::api)
+node /^mw1398\.eqiad\./ {
+    role(mediawiki::appserver::api) # Left pooled until service turndown
 }
 
 # Row C
 
 # rack C8
 node /^mw1412\.eqiad\./ {
-    role(mediawiki::appserver::api)
-}
-
-# Row D
-
-# rack D1
-node /^mw1359\.eqiad\./ {
     role(mediawiki::appserver::api)
 }
 

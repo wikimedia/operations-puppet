@@ -4,16 +4,11 @@ eqiad:
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
     mw1364.eqiad.wmnet: [nginx]
-    mw1365.eqiad.wmnet: [nginx]
-    mw1366.eqiad.wmnet: [nginx]
-    mw1373.eqiad.wmnet: [nginx]
     mw1413.eqiad.wmnet: [nginx]
     mw1417.eqiad.wmnet: [nginx]
     mw1418.eqiad.wmnet: [nginx]
   api_appserver:
-    mw1359.eqiad.wmnet: [nginx]
     mw1398.eqiad.wmnet: [nginx]
-    mw1404.eqiad.wmnet: [nginx]
     mw1412.eqiad.wmnet: [nginx]
     mw1450.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
@@ -389,6 +384,11 @@ eqiad:
     wikikube-worker1019.eqiad.wmnet: [kubesvc]
     wikikube-worker1020.eqiad.wmnet: [kubesvc]
     wikikube-worker1021.eqiad.wmnet: [kubesvc]
+    wikikube-worker1022.eqiad.wmnet: [kubesvc]
+    wikikube-worker1023.eqiad.wmnet: [kubesvc]
+    wikikube-worker1024.eqiad.wmnet: [kubesvc]
+    wikikube-worker1025.eqiad.wmnet: [kubesvc]
+    wikikube-worker1026.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]
