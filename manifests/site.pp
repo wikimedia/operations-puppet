@@ -1410,14 +1410,6 @@ node /^htmldumper1001\.eqiad\./ {
     role(dumps::web::htmldumps)
 }
 
-node /^irc1001\.wikimedia\./ {
-    role(insetup::buster)
-}
-
-node /^irc2001\.wikimedia\./ {
-    role(insetup::buster)
-}
-
 node /^irc[12]002\.wikimedia\./ {
     role(mw_rc_irc)
 }
