@@ -29,7 +29,7 @@ https://docker-registry.wikimedia.org:
   method: POST
   assert_status: 401
   assert_headers:
-    WWW-Authenticate: Basic realm="docker-registry (regular-push)"
+    WWW-Authenticate: Basic realm="docker-registry (push)"
 - path: /v2/nonexistent/blobs/upload
   method: POST
   request_headers:
