@@ -1641,7 +1641,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-6])\.eqiad\./ {
+node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-1])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2121,13 +2121,6 @@ node /^mwdebug100[12]\.eqiad\./ {
 
 # Appservers (serving normal website traffic)
 
-# Row A
-
-# rack A3
-node /^mw141([7-8])\.eqiad\./ {
-    role(mediawiki::canary_appserver)
-}
-
 # rack A3 jobrunner and scap::proxy
 node /^mw1420\.eqiad\./ {
     role(mediawiki::jobrunner)
@@ -2138,11 +2131,6 @@ node /^mw1420\.eqiad\./ {
 # rack C3
 node /^mw1407\.eqiad\./ {
     role(mediawiki::jobrunner)
-}
-
-# rack C8
-node /^mw1413\.eqiad\./ {
-    role(mediawiki::appserver)
 }
 
 # Row D
@@ -2164,25 +2152,11 @@ node /^mw14(45|46)\.eqiad\./ {
 
 ## Api servers
 
-# Row A
-
-# rack A5
-node /^mw1450\.eqiad\./ {
-  role(mediawiki::appserver::canary_api)
-}
-
 # Row B
 
 # rack B3 and B5
 node /^mw1398\.eqiad\./ {
     role(mediawiki::appserver::api) # Left pooled until service turndown
-}
-
-# Row C
-
-# rack C8
-node /^mw1412\.eqiad\./ {
-    role(mediawiki::appserver::api)
 }
 
 # mediawiki maintenance server (periodic jobs)

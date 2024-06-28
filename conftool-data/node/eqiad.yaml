@@ -4,13 +4,8 @@ eqiad:
     mwdebug1002.eqiad.wmnet: [apache2]
   appserver:
     mw1364.eqiad.wmnet: [nginx]
-    mw1413.eqiad.wmnet: [nginx]
-    mw1417.eqiad.wmnet: [nginx]
-    mw1418.eqiad.wmnet: [nginx]
   api_appserver:
     mw1398.eqiad.wmnet: [nginx]
-    mw1412.eqiad.wmnet: [nginx]
-    mw1450.eqiad.wmnet: [nginx]
   jobrunner: &jobrunner
     mw1407.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
     mw1420.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
@@ -389,6 +384,11 @@ eqiad:
     wikikube-worker1024.eqiad.wmnet: [kubesvc]
     wikikube-worker1025.eqiad.wmnet: [kubesvc]
     wikikube-worker1026.eqiad.wmnet: [kubesvc]
+    wikikube-worker1027.eqiad.wmnet: [kubesvc]
+    wikikube-worker1028.eqiad.wmnet: [kubesvc]
+    wikikube-worker1029.eqiad.wmnet: [kubesvc]
+    wikikube-worker1030.eqiad.wmnet: [kubesvc]
+    wikikube-worker1031.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]
