@@ -2643,7 +2643,7 @@ node /^deploy[12]002\.(eqiad|codfw)\./ {
 }
 
 node /^deploy1003\.eqiad\./ {
-    role(insetup::serviceops)
+    role(deployment_server::kubernetes)
 }
 
 node /^urldownloader[12]00[12]\.wikimedia\./ {

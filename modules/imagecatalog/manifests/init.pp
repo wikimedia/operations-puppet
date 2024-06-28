@@ -4,7 +4,7 @@
 # Installs the OCI image catalog.
 #
 # TODO: For now, this assumes a singly-homed deployment model; we'll install on both deploy hosts
-# but only use deploy1002. Soon it'll instead be active-passive behind a service hostname.
+# but only use eqiad. Soon it'll instead be active-passive behind a service hostname.
 #
 # == Parameters
 # - $port: Port for web serving.
