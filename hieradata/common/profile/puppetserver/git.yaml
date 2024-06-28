@@ -4,6 +4,7 @@ profile::puppetserver::git::basedir: '/srv/git'
 profile::puppetserver::git::user: 'gitpuppet'
 profile::puppetserver::git::group: 'gitpuppet'
 profile::puppetserver::git::control_repo: 'operations/puppet'
+profile::puppetserver::git::exclude_servers: []
 profile::puppetserver::git::repos:
   'operations/puppet':
     branch: 'production'

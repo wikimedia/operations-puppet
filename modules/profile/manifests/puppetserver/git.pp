@@ -5,7 +5,8 @@
 # @param user the owner of the git repo
 # @param group the group owner of the git repo
 # @param control_repo the name of the main puppet control repo
-# @param repos addtional repos to configure
+# @param repos additional repos to configure
+# @param exclude_servers exclude servers under maintenance from various configs
 class profile::puppetserver::git (
     Wmflib::Ensure      $ensure             = lookup('profile::puppetserver::git::ensure'),
     Stdlib::Unixpath    $basedir            = lookup('profile::puppetserver::git::basedir'),
@@ -14,10 +15,12 @@ class profile::puppetserver::git (
     String[1]           $control_repo       = lookup('profile::puppetserver::git::control_repo'),
     Hash[String, Hash]  $repos              = lookup('profile::puppetserver::git::repos'),
     Stdlib::Unixpath    $code_dir           = lookup('profile::puppetserver::code_dir'),
+    Array[Stdlib::Host] $exclude_servers    = lookup('profile::puppetserver::git::exclude_servers')
 ) {
     $servers = (wmflib::role::hosts('puppetmaster::frontend') +
                 wmflib::role::hosts('puppetmaster::backend') +
-                wmflib::role::hosts('puppetserver')).sort.unique
+                wmflib::role::hosts('puppetserver') -
+                $exclude_servers).sort.unique
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
