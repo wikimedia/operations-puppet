@@ -1645,7 +1645,7 @@ node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-1])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker20(0[1-47-9]|1[0-9]|2[0-4])\.codfw\./ {
+node /^wikikube-worker20(0[1-47-9]|1[0-9]|2[0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -2183,12 +2183,9 @@ node /^mwdebug200[12]\.codfw\./ {
 # New mw server hardware 2021 (T274171)
 
 # rack A3 (T278396)
-node /^mw229[8-9]\.codfw\./ {
+# Last api appserver left until service turndown
+node /^mw2299\.codfw\./ {
     role(mediawiki::appserver::api)
-}
-
-node /^mw2300\.codfw\./ {
-    role(mediawiki::appserver::canary_api)
 }
 
 node /^mw239[23]\.codfw\./ {
@@ -2251,20 +2248,10 @@ node /^mw227[3-7]\.codfw\./ {
 
 # Row A
 
-# rack A6
-node /^mw230[68]\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
 # Row B
 
 # rack B3
 node /^mw226[1-2]\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
-# rack B6
-node /^mw2330\.codfw\./ {
     role(mediawiki::appserver::api)
 }
 
