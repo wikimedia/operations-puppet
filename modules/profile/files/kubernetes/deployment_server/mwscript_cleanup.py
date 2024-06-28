@@ -51,8 +51,8 @@ def all_jobs_expired(batch: client.BatchV1Api, release: str) -> bool:
         # If the job's status has the Completed or Failed condition, the job's end time is the time
         # that condition was set. There shouldn't be more than one matching condition, but if there
         # are, we'll return the most recent time.
-        end_times = [condition.lastTransitionTime for condition in job.status.conditions
-                     if condition.status == 'True' and condition.type in {'Completed', 'Failed'}]
+        end_times = [condition.last_transition_time for condition in job.status.conditions
+                     if condition.status == 'True' and condition.type in {'Complete', 'Failed'}]
         if not end_times:
             # No Completed/Failed condition, so the job is still running (or suspended).
             logger.debug('Skipping release %s: job has no end time', release)
@@ -77,7 +77,10 @@ def destroy(release: str, cluster: str, dry_run: bool) -> None:
         '--selector', f'name={release}',
         'destroy'
         ],
-        env={'RELEASE_NAME': release},  # RELEASE_NAME is consumed by the helmfile template.
+        env={
+            'PATH': '/usr/bin',  # Our helmfiles use an unqualified path for helmBinary.
+            'RELEASE_NAME': release,  # RELEASE_NAME is consumed by the helmfile template.
+        },
         check=True
     )
 
