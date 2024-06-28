@@ -393,14 +393,13 @@ sub cluster_fe_recv {
         return (synth(302, "Foundation Wiki Moved"));
     }
 
-    call mobile_redirect;
-
-    # We mangle donate above in mobile_redirect, so we should do it here.
     # T368645, temporary, till Google fixes it.
-    if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage/") {
-        set req.url = "/";
+    if (req.http.Host == "donate.m.wikimedia.org") {
+        set req.http.Location = "https://donate.wikimedia.org/";
         return (synth(302, "Mobile Redirect"));
     }
+
+    call mobile_redirect;
 
     // shortener URLs can be validated and restricted here
     if (req.http.host == "<%= @vcl_config.fetch('shortener_domain') %>") {
