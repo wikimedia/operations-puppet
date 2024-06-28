@@ -26,6 +26,10 @@ from toolforge_weld.kubernetes_config import Kubeconfig
 USER_AGENT = "replica_cnf_api"
 
 
+class EnvvarsBackedError(Exception):
+    pass
+
+
 @dataclass
 class EnvvarsConfig(Config):
     # this is the templated path to a kubeconfig file
@@ -79,8 +83,8 @@ class ToolforgeToolEnvvarsBackend(Backend):
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == http.HTTPStatus.NOT_FOUND:
                 client.post(
-                    url=f"/envvars/v1/envvar/{name}",
-                    json={"value": value},
+                    url="/envvars/v1/envvar",
+                    json={"name": name, "value": value},
                 )
             else:
                 raise
@@ -124,17 +128,26 @@ class ToolforgeToolEnvvarsBackend(Backend):
         # TODO: We will want to change the return value if we ever have different user/pass for
         #       replicas and toolsdb
         try:
-            db_user_envvar = cli.get(url=f"/envvars/v1/envvar/{self.USER_ENVVARS[0]}")
-            db_password_envvar = cli.get(url=f"/envvars/v1/envvar/{self.PASSWORD_ENVVARS[0]}")
+            db_user_response = cli.get(url=f"/envvars/v1/envvar/{self.USER_ENVVARS[0]}")
+            db_password_response = cli.get(url=f"/envvars/v1/envvar/{self.PASSWORD_ENVVARS[0]}")
         except requests.exceptions.HTTPError as e:
             raise Skip(
                 f"Skipping failed envvars backend, maybe the variable is not yet set? {e}",
                 dest_path="OK",
             ) from e
 
+        try:
+            db_password = db_password_response["envvar"]["value"]
+            db_user = db_user_response["envvar"]["value"]
+        except Exception as error:
+            raise EnvvarsBackedError(
+                "Got error trying to parse response from server: "
+                f"{error}\nResponse:\n{db_password_response}\n{db_user_response}\n"
+            ) from error
+
         return ReplicaCnf(
             user_type=user_type,
             user=user,
-            db_password=db_password_envvar["value"],
-            db_user=db_user_envvar["value"],
+            db_password=db_password,
+            db_user=db_user,
         )

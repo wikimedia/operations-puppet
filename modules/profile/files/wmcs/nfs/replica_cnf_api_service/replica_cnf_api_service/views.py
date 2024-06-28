@@ -289,6 +289,9 @@ def read_replica_cnf() -> tuple[Response, int]:
             current_app.logger.info("Skipping backend %s: %s", backend.__class__, str(skip))
             continue
         except Exception as error:
+            current_app.logger.error(
+                "Got error from backend %s: %s:%s", backend.__class__, error.__class__, str(error)
+            )
             return get_error_response(reason=str(error))
 
         if not replica_cnf:

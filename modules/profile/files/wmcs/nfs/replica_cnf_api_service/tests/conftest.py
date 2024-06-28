@@ -196,11 +196,19 @@ def mock_envvars_api(requests_mock: Mocker):
             "name": var,
             "value": USERNAME,
         }
+        wrapped_response = {
+            "envvar": name_envvar,
+            "messages": {
+                "info": [],
+                "warning": [],
+                "error": [],
+            },
+        }
         user_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
 
-        requests_mock.get(user_url, json=name_envvar)
-        requests_mock.post(user_url, json=name_envvar)
-        requests_mock.delete(user_url, json=name_envvar)
+        requests_mock.get(user_url, json=wrapped_response)
+        requests_mock.post(user_url, json=wrapped_response)
+        requests_mock.delete(user_url, json=wrapped_response)
 
     for var in ToolforgeToolEnvvarsBackend.PASSWORD_ENVVARS:
         pass_envvar = {
@@ -208,9 +216,17 @@ def mock_envvars_api(requests_mock: Mocker):
             "value": PASSWORD,
         }
         pass_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
+        wrapped_response = {
+            "envvar": pass_envvar,
+            "messages": {
+                "info": [],
+                "warning": [],
+                "error": [],
+            },
+        }
 
-        requests_mock.get(pass_url, json=pass_envvar)
-        requests_mock.post(pass_url, json=pass_envvar)
-        requests_mock.delete(pass_url, json=pass_envvar)
+        requests_mock.get(pass_url, json=wrapped_response)
+        requests_mock.post(pass_url, json=wrapped_response)
+        requests_mock.delete(pass_url, json=wrapped_response)
 
     return requests_mock
