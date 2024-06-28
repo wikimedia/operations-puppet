@@ -394,8 +394,8 @@ sub cluster_fe_recv {
     }
 
     # T368645, temporary, till Google fixes it.
-    if (req.http.Host == "donate.m.wikimedia.org") {
-        set req.http.Location = "https://donate.wikimedia.org/";
+    if (req.http.Host == "donate.m.wikimedia.org" && req.url == "/wiki/Special:LandingPage/") {
+        set req.http.Location = "https://donate.wikimedia.org";
         return (synth(302, "Mobile Redirect"));
     }
 
