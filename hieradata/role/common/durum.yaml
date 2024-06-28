@@ -72,5 +72,3 @@ profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'Check service for Wikidough'
 
 profile::puppet::agent::force_puppet7: true
-
-profile::systemd::timesyncd::ntp_servers: "%{alias('ntp_anycast_peers')}"
