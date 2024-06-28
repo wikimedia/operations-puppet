@@ -16,6 +16,7 @@ profile::gnmi_telemetry::outputs:
     type: prometheus
     metric-prefix: "gnmi"
     cache: {}
+    export-timestamps: true
     event-processors:
        - enabled-to-tag
        - drop-disabled
@@ -28,7 +29,7 @@ profile::gnmi_telemetry::subscriptions:
     paths:
       - "/interfaces/interface/state"
     stream-mode: sample
-    sample-interval: 30s
+    sample-interval: 60s
     encoding: proto
 
 profile::gnmi_telemetry::processors:

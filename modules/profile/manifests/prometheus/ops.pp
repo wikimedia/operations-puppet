@@ -1286,6 +1286,7 @@ class profile::prometheus::ops (
     $gnmi_jobs = [
       {
         'job_name'               => 'gnmi',
+        'scrape_timeout'         => '20s',
         'scheme'                 => 'http',
         'file_sd_configs'        => [
           { 'files' => [ "${targets_path}/gnmi_*.yaml" ]}
