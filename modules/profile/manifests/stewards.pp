@@ -6,6 +6,7 @@ class profile::stewards (
     Stdlib::Unixpath $export_dir = lookup('profile::stewards::export_dir', {default_value => '/srv/exports'}),
     Stdlib::Unixpath $userdb_dir = lookup('profile::stewards::userdb_dir', {default_value => "${repo_dir}/users-db"}),
     Stdlib::Unixpath $onboarding_system_dir = lookup('profile::stewards::onboarding_system_dir', {default_value => "${repo_dir}/onboarding-system"}),
+    String $gitlab_api_token = lookup('profile::stewards::gitlab_api_token', {default_value => 'snakeoil'}),
     String $group_owner = lookup('profile::stewards::group_owner', {default_value => 'stewards-users'}),
     Stdlib::Fqdn $lists_primary_host = lookup('lists_primary_host', {'default_value' => undef}),
 ){
@@ -37,8 +38,8 @@ class profile::stewards (
     }
 
     file { "${conf_dir}/steward-onboarder.yaml":
-        ensure => 'present',
-        source => 'puppet:///modules/profile/stewards/steward-onboarder.yaml',
+        ensure  => 'present',
+        content => template('profile/stewards/steward-onboarder.yaml.erb'),
     }
 
     git::systemconfig { 'safe.directory-onboarding_system_dir':

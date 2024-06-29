@@ -1,11 +1,15 @@
 # SPDX-License-Identifier: Apache-2.0
 config_paths:
-  roles: /srv/repos/onboarding-system/config/roles.yaml
-  users: /srv/repos/users-db/users.yaml
+  roles: <%= @onboarding_system_dir %>/config/roles.yaml
+  users: <%= @userdb_dir %>/users.yaml
 
 mediawiki_api:
   global: https://meta.wikimedia.org/w/api.php
   metawiki: https://meta.wikimedia.org/w/api.php
   loginwiki: https://login.wikimedia.org/w/api.php
+
+gitlab_api:
+  api_root: https://gitlab.wikimedia.org/api/v4
+  api_token: <%= @gitlab_api_token %>
 
 export_base_dir: /srv/exports
