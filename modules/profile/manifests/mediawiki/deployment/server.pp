@@ -209,9 +209,11 @@ class profile::mediawiki::deployment::server(
     # php-readline T126262
     # Make sure to install php-readline from the component/php72, otherwise this picks up
     # the 7.3 version from default buster
-    apt::package_from_component { 'php-readline':
-        component => 'component/php72',
-        packages  => ['php-readline']
+    if debian::codename::eq('buster') {
+      apt::package_from_component { 'php-readline':
+          component => 'component/php72',
+          packages  => ['php-readline']
+      }
     }
 
     # benchmarking tools (sessionstorage testing, k8s ml infra benchmarking) (T230178)
