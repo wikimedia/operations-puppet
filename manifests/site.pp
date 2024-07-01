@@ -751,7 +751,7 @@ node /^db1195\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# future master
+# new master
 node /^db1228\.eqiad\./ {
     role(mariadb::misc)
 }
