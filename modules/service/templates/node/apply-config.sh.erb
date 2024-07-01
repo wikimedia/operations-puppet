@@ -10,6 +10,6 @@ set -e
 # Sleep a random time between 0 and <%= @max_splay %> seconds to avoid herd effects
 sleep $[ $RANDOM % <%= @max_splay %> ]
 <%- end -%>
-/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force restart_service;
+/usr/bin/scap deploy-local -D 'log_json:False' --repo <%= @repo %> --force handle_service;
 <% if @deployment_user != 'root' %>/bin/chmod 0644 /etc/<%= @title %>/config.yaml || true<% end %>
 <%- end -%>
