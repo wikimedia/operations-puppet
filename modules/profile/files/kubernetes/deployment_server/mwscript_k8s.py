@@ -16,6 +16,8 @@ from typing import Dict
 
 import yaml
 from conftool.cli import ConftoolClient
+from kubernetes import client, config, watch
+from kubernetes.client.models.v1_pod import V1Pod
 from wmflib import interactive
 
 logger = logging.Logger(__name__)
@@ -89,6 +91,47 @@ def check_config_file(namespace: str, cluster: str) -> None:
         raise
 
 
+def is_started(pod: V1Pod, container: str) -> bool:
+    if pod.status.phase in {'Running', 'Succeeded', 'Failed'}:
+        return True
+    if pod.status.phase == 'Unknown':
+        return False
+    # The pod status is Pending. Find our container and see if it's ready yet.
+    for container_status in pod.status.container_statuses:
+        if container_status.name == container:
+            return container_status.state.running or container_status.state.terminated
+    return False
+
+
+def wait_until_started(env_vars: Dict[str, str], job: str, container: str) -> None:
+    kube_config = config.load_kube_config(config_file=env_vars['KUBECONFIG'])
+    core_client = client.CoreV1Api(client.ApiClient(kube_config))
+    pod_list = core_client.list_namespaced_pod(
+        namespace=NAMESPACE, label_selector=f'job-name={job}')
+    if pod_list.items and is_started(pod_list.items[0], container):
+        logger.info('🚀 Job is running.')
+        return
+    resource_version = pod_list.metadata.resource_version
+
+    logger.info('⏳ Waiting for the container to start...')
+    w = watch.Watch()
+    for event in w.stream(core_client.list_namespaced_pod,
+                          namespace=NAMESPACE,
+                          label_selector=f'job-name={job}',
+                          resource_version=resource_version,
+                          timeout_seconds=300):
+        pod = event['object']
+        if is_started(pod, container):
+            logger.info('🚀 Job is running.')
+            break
+    else:
+        env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
+        logger.warning('🚩 Timed out waiting for the container to start. Proceeding anyway, but '
+                       'this might not work. To check on the job, run:\n'
+                       '%s kubectl describe job %s', env_vars_str, job)
+    w.stop()
+
+
 def main() -> int:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
@@ -103,6 +146,14 @@ def main() -> int:
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Print extra output from the underlying helmfile invocation.')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-f', '--follow', action='store_true',
+                       help='When the script is started, stream its logs.')
+    group.add_argument('--attach', action='store_true',
+                       help='When the script is started, attach to it interactively (see `kubectl '
+                            'help attach`).')
+
     parser.add_argument('script_name',
                         help='Filename of maintenance script (first arg to MWScript.php).')
     parser.add_argument('script_args', nargs='*', help='Additional arguments to MWScript.php.')
@@ -132,6 +183,8 @@ def main() -> int:
                 'script': args.script_name.split('/')[-1],
             },
             'comment': args.comment,
+            'stdin': args.attach,
+            'tty': args.attach and sys.stdin.isatty(),
         }
     }
     with tempfile.NamedTemporaryFile(mode='w', delete=False) as f:
@@ -169,13 +222,39 @@ def main() -> int:
         logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
         return 1
 
-    # TODO: Add an --attach flag and if passed, shell out to kubectl attach here instead
-    env_vars = kube_env(NAMESPACE, environment)
-    env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
     job = job_name(NAMESPACE, environment, release)
-    logger.info('🚀 Job is running. For streaming logs, run:\n'
-                '%s kubectl logs -f job/%s mediawiki-%s-app',
-                env_vars_str, job, release)
+    container = f'mediawiki-{release}-app'
+    env_vars = kube_env(NAMESPACE, environment)
+    if args.follow:
+        wait_until_started(env_vars, job, container)
+        logger.info('📜 Streaming logs:')
+        try:
+            subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
+                           env=env_vars)
+        except subprocess.CalledProcessError as e:
+            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
+    elif args.attach:
+        wait_until_started(env_vars, job, container)
+        logger.info('📜 Attaching to stdin/stdout:')
+        # Switch from the read-only user to the deploy user, which has privileges to attach.
+        env_vars = kube_env(f'{NAMESPACE}-deploy', environment)
+        try:
+            subprocess.run([
+                '/usr/bin/kubectl',
+                'attach',
+                *(['--quiet'] if not args.verbose else []),
+                f'job/{job}',
+                '--container', f'mediawiki-{release}-app',
+                '-it' if sys.stdin.isatty() else '-i'
+                ],
+                env=env_vars, check=True)
+        except subprocess.CalledProcessError as e:
+            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
+    else:
+        env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
+        logger.info('🚀 Job is running. For streaming logs, run:\n'
+                    '%s kubectl logs -f job/%s mediawiki-%s-app',
+                    env_vars_str, job, release)
 
     os.unlink(values_filename)
     return 0
