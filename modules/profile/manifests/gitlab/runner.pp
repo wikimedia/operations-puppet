@@ -182,14 +182,19 @@ class profile::gitlab::runner (
     # Define common proxy environment variables for both buildkitd and jobs
     # that are executed by the runner
     # See https://wikitech.wikimedia.org/wiki/HTTP_proxy
+    $augmented_no_proxy = $no_proxy ? {
+        undef => undef,
+        default => "${no_proxy},buildkitd.${docker_network}"
+    }
+
     $proxy_variables = $enable_webproxy ? {
         true    => {
             'http_proxy'  => $http_proxy,
             'https_proxy' => $https_proxy,
-            'no_proxy'    => $no_proxy,
+            'no_proxy'    => $augmented_no_proxy,
             'HTTP_PROXY'  => $http_proxy,
             'HTTPS_PROXY' => $https_proxy,
-            'NO_PROXY'    => $no_proxy,
+            'NO_PROXY'    => $augmented_no_proxy,
         }.filter |$k,$v| { $v != undef },
         default =>  {},
     }
