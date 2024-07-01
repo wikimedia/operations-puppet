@@ -1,5 +1,4 @@
 profile::cache::purge::use_pki: true
-profile::cache::haproxy::version: haproxy28
 profile::trafficserver::backend::storage_elements:
   - devname: nvme0n1
     id: disk.0
