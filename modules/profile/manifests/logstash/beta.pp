@@ -43,6 +43,25 @@ filter {
     '
   }
 
+  file { '/etc/logstash/conf.d/71-filter_test_labels_to_strings.conf':
+    ensure  => 'present',
+    mode    => '0440',
+    owner   => 'logstash',
+    group   => 'logstash',
+    notify  => Service['logstash'],
+    content => '
+filter {
+  # Testing normalize_labels.rb
+  if [@metadata][output] == "ecs" {
+    ruby {
+      path => "/etc/logstash/filter_scripts/normalize_labels.rb"
+      id => "filter/ecs_cleanup/ruby/normalize_labels"
+    }
+  }
+}
+    '
+  }
+
   # Inputs (10)
   logstash::input::dlq { 'main': }
 
