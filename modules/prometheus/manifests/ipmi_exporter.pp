@@ -6,7 +6,7 @@
 class prometheus::ipmi_exporter (
     Stdlib::Unixpath                            $config_file        = '/etc/prometheus/ipmi_exporter.yml',
     Array[Integer[1,255]]                       $exclude_sensor_ids = [],
-    Array[Prometheus::Ipmi_exporter::Collector] $collectors         = ['bmc', 'ipmi', 'chassis', 'dcmi', 'sel'],
+    Array[Prometheus::Ipmi_exporter::Collector] $collectors         = ['bmc', 'ipmi', 'chassis', 'dcmi', 'sel', 'sel-events'],
 ) {
     # prometheus-ipmi-exporter depends already on freeipmi-tools package, no
     # need to care for it specifically
@@ -14,11 +14,12 @@ class prometheus::ipmi_exporter (
 
     # Maps the collector name to the binary to execute
     $collector_maps = {
-        'bmc'     => 'bmc-info',
-        'ipmi'    => 'ipmimonitoring',
-        'chassis' => 'ipmi-chassis',
-        'dcmi'    => 'ipmi-dcmi',
-        'sel'     => 'ipmi-sel',
+        'bmc'        => 'bmc-info',
+        'ipmi'       => 'ipmimonitoring',
+        'chassis'    => 'ipmi-chassis',
+        'dcmi'       => 'ipmi-dcmi',
+        'sel'        => 'ipmi-sel',
+        'sel-events' => 'ipmi-sel',
     }
 
     $privileges = ($collector_maps.values + ['ipmi-sensors', 'ipmi-raw']).map |$cmd| {
