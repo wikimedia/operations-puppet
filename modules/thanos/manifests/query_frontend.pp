@@ -41,8 +41,8 @@ class thanos::query_frontend (
       $cache_config = {
         'type'   => 'IN-MEMORY',
         'config' => {
-          'max_size'      => '1GB',
-          'max_item_size' => '1MB',
+          'max_size'      => '16GB',
+          'max_item_size' => '30MB',
         }
       }
     } else {
