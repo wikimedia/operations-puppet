@@ -45,7 +45,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd, lea-wmde]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7138,11 +7138,8 @@ ldap_only_users:
     realname: Ifeatu Nnaobi
     email: ifeatu.nnaobi@wikimedia.de
   febinbellamy:
-    ensure: present
+    ensure: absent
     realname: Febin Bellamy
-    email: fbellamy-ctr@wikimedia.org
-    expiry_date: "2024-06-28"
-    expiry_contact: slopes@wikimedia.org
   zoe:
     ensure: present
     realname: Zoe Leiper
