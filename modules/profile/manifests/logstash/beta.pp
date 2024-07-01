@@ -35,14 +35,10 @@ class profile::logstash::beta (
     notify  => Service['logstash'],
     content => '
 filter {
-  # DLQ mitigations in deployment-prep environment appear broken.
-  if [loggerName] == "org.logstash.common.io.DeadLetterQueueWriter" {
-    drop { id => "filter/drop/spam/dead_letter_queue_errors" }
-  }
+  # Placeholder
 }
     '
   }
-
   file { '/etc/logstash/conf.d/71-filter_test_labels_to_strings.conf':
     ensure  => 'present',
     mode    => '0440',
