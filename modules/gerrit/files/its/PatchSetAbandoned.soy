@@ -30,8 +30,10 @@
 
   Change #{$changeNumber} **abandoned** by {$abandonerName}:{\n}
   %%%[{$project}@{$branch}] {$subject}%%%{\n}
-  Reason:{\n}
-    %%%{$reason}%%%{\n}
+  {if $reason}
+    Reason:{\n}
+      %%%{$reason}%%%{\n}
+  {/if}
 
   https://gerrit.wikimedia.org/r/{$changeNumber}
 {/template}
