@@ -13,10 +13,10 @@ frontend elastic_frontend
     # Add CORS headers
     capture request header origin len 128
     http-response add-header Access-Control-Allow-Origin %[capture.req.hdr(0)] if { capture.req.hdr(0) -m found }
-    rspadd Access-Control-Allow-Methods:\ GET,\ POST,\ PUT,\ DELETE,\ OPTIONS  if { capture.req.hdr(0) -m found }
-    rspadd Access-Control-Allow-Credentials:\ true  if { capture.req.hdr(0) -m found }
-    rspadd Access-Control-Allow-Headers:\ Authorization,\ Content-Type,\ Accept,\ Origin,\ User-Agent,\ DNT,\ Cache-Control,\ X-Mx-ReqToken,\ Keep-Alive,\ X-Requested-With,\ If-Modified-Since if { capture.req.hdr(0) -m found }
-    rspadd Access-Control-Max-Age:\ 1728000
+    http-response add-header Access-Control-Allow-Methods "GET, HEAD, OPTIONS, POST, PUT" if { capture.req.hdr(0) -m found }
+    http-response add-header Access-Control-Allow-Credentials true if { capture.req.hdr(0) -m found }
+    http-response add-header Access-Control-Allow-Headers "Authorization, Content-Type, Accept, Origin, User-Agent, DNT, Cache-Control, X-Mx-ReqToken, Keep-Alive, X-Requested-With, If-Modified-Since" if { capture.req.hdr(0) -m found }
+    http-response add-header Access-Control-Max-Age: 1728000
 
     default_backend elastic_backend
 
