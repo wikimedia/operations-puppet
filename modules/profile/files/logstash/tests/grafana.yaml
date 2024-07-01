@@ -29,10 +29,10 @@ testcases:
         host:
           name: "grafana0000"
         labels:
-          traceID: 0
-          userId: 0
-          orgId: 1
-          uname: true
+          traceID: "0"
+          userId: "0"
+          orgId: "1"
+          uname: "true"
           datasource_type: "datasource-plugin-genericdatasource"
         log:
           logger: "context"
@@ -66,12 +66,12 @@ testcases:
         labels:
           duration: "6.683093ms"
           handler: "/api/live/ws"
-          orgId: 1
-          size: 12
-          time_ms: 6
-          userId: 0
-          uname: true
-          referer: true
+          orgId: "1"
+          size: "12"
+          time_ms: "6"
+          userId: "0"
+          uname: "true"
+          referer: "true"
         log:
           logger: "context"
           level: "INFO"
@@ -106,8 +106,8 @@ testcases:
         host:
           name: "grafana0000"
         labels:
-          count: 1
-          org_id: 1
+          count: "1"
+          org_id: "1"
           rule_uid: "mp0FSj14z"
         log:
           logger: "ngalert.sender.router"
@@ -140,8 +140,8 @@ testcases:
           name: "grafana0000"
         labels:
           component: "dispatcher"
-          num_alerts: 1
-          org: 1
+          num_alerts: "1"
+          org: "1"
         log:
           logger: "alertmanager"
           level: "ERROR"

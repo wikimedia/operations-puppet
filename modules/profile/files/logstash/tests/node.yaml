@@ -407,7 +407,7 @@ testcases:
         labels:
           level_path: "warn"
           query_lang: "ar"
-          query_groups: ["_f0f1729e33129fae22015c99dd3e1f60a34a8177"]
+          query_groups: "[\"_f0f1729e33129fae22015c99dd3e1f60a34a8177\"]"
           query_title: "%D8%A8%D9%88%D8%AD%D9%85%D8%A7%D9%85%D8%A9"
         log:
           level: "WARN"
