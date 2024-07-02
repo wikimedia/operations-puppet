@@ -337,8 +337,9 @@ class gitlab (
         group         => 'prometheus',
     }
 
+    $ensure_custom_exporter_service = $enable_custom_exporter.bool2str('present','absent')
     systemd::service { 'gitlab-exporter':
-        ensure  => $ensure_custom_exporter,
+        ensure  => $ensure_custom_exporter_service,
         content => template('gitlab/gitlab-exporter.service.erb'),
         restart => true,
     }
