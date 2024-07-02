@@ -326,7 +326,7 @@ class gitlab (
         require     => Systemd::Sysuser[$gitlab_settings_user],
     }
 
-    $ensure_custom_exporter = $enable_custom_exporter.bool2str('present','absent')
+    $ensure_custom_exporter = $enable_custom_exporter.bool2str('latest','absent')
     git::clone { 'repos/sre/gitlab-exporter':
         ensure        => $ensure_custom_exporter,
         update_method => 'checkout',
