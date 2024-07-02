@@ -119,10 +119,7 @@ depmod
 modprobe qemu_fw_cfg
 
 # If a qemu VM:
-if [ -f "/sys/firmware/qemu_fw_cfg/by_name/opt/ip/raw" ]; then
-    # Set the v4 to a /32
-    sed -i 's/\(address [0-9.]\+\/\)23/\132/g' /target/etc/network/interfaces
-    
+if [ -f "/sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw" ]; then
     # Get the v6 from qemu and configure the v6 IP and route.
     IP6=$(cat /sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw)
     printf '\tup ip addr add %s/128 dev %s\n' "${IP6}" "${IFACE}" >> /target/etc/network/interfaces
