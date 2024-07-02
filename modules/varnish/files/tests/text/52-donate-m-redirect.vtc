@@ -1,0 +1,48 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_text donate mobile redirect"
+
+server s1 {
+    loop 2 {
+        rxreq
+        txresp
+    }
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/wiki/Special:LandingPage/" -hdr "Host: donate.m.wikimedia.org"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.Location == "https://donate.wikimedia.org"
+
+    txreq -url "/wiki/Special:LandingPage" -hdr "Host: donate.m.wikimedia.org"
+    rxresp
+    expect resp.status == 302
+    expect resp.http.Location == "https://donate.wikimedia.org"
+
+    txreq -url "/wiki/Special:LandingPage" -hdr "Host: donate.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+
+    txreq -url "/wiki/Ways_to_Give" -hdr "Host: donate.m.wikimedia.org"
+    rxresp
+    expect resp.status == 200
+} -run

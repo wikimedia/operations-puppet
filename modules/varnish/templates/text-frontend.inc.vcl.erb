@@ -393,7 +393,7 @@ sub cluster_fe_recv {
         return (synth(302, "Foundation Wiki Moved"));
     }
 
-    # T368645, temporary, till Google fixes it.
+    # T368645, Google showing donate.m links with a hardcoded incorrect donation page.
     if (req.http.Host == "donate.m.wikimedia.org" && req.url ~ "^/wiki/Special:LandingPage/?") {
         set req.http.Location = "https://donate.wikimedia.org";
         return (synth(302, "Mobile Redirect"));
