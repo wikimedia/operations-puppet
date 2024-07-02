@@ -5,6 +5,7 @@ from __future__ import annotations
 import configparser
 import io
 import os
+import re
 import subprocess
 from pathlib import Path
 from typing import Any
@@ -204,18 +205,17 @@ def mock_envvars_api(requests_mock: Mocker):
                 "error": [],
             },
         }
-        user_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
+        user_url_match = re.compile(f"{DUMMY_TOOLFORGE_API}/envvars/v1/tool/[^/]+/envvar/{var}")
 
-        requests_mock.get(user_url, json=wrapped_response)
-        requests_mock.post(user_url, json=wrapped_response)
-        requests_mock.delete(user_url, json=wrapped_response)
+        for method in ("GET", "POST", "DELETE"):
+            requests_mock.register_uri(method, user_url_match, json=wrapped_response)
 
     for var in ToolforgeToolEnvvarsBackend.PASSWORD_ENVVARS:
         pass_envvar = {
             "name": var,
             "value": PASSWORD,
         }
-        pass_url = f"{DUMMY_TOOLFORGE_API}/envvars/v1/envvar/{var}"
+        pass_url_match = re.compile(f"{DUMMY_TOOLFORGE_API}/envvars/v1/tool/[^/]+/envvar/{var}")
         wrapped_response = {
             "envvar": pass_envvar,
             "messages": {
@@ -225,8 +225,7 @@ def mock_envvars_api(requests_mock: Mocker):
             },
         }
 
-        requests_mock.get(pass_url, json=wrapped_response)
-        requests_mock.post(pass_url, json=wrapped_response)
-        requests_mock.delete(pass_url, json=wrapped_response)
+        for method in ("GET", "POST", "DELETE"):
+            requests_mock.register_uri(method, pass_url_match, json=wrapped_response)
 
     return requests_mock

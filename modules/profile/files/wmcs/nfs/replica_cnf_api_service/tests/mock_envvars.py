@@ -14,8 +14,8 @@ def healthz():
     return jsonify({"status": "ok"}), 200
 
 
-@app.route("/envvars/v1/envvar/<varname>", methods=["GET"])
-def getvar(varname):
+@app.route("/envvars/v1/tool/<toolname>/envvar/<varname>", methods=["GET"])
+def getvar(toolname, varname):
     if varname in envvars:
         return (
             jsonify(
@@ -27,8 +27,8 @@ def getvar(varname):
     return jsonify({"messages": {"error": [f"GET: {varname} not found"]}}), 404
 
 
-@app.route("/envvars/v1/envvar/<varname>", methods=["DELETE"])
-def delvar(varname):
+@app.route("/envvars/v1/tool/<toolname>/envvar/<varname>", methods=["DELETE"])
+def delvar(toolname, varname):
     if varname in envvars:
         myvar = envvars[varname]
         del envvars[varname]
@@ -37,8 +37,8 @@ def delvar(varname):
     return jsonify({"messages": {"error": [f"DELETE: {varname} not found"]}}), 404
 
 
-@app.route("/envvars/v1/envvar", methods=["POST"])
-def addvar():
+@app.route("/envvars/v1/tool/<toolname>/envvar", methods=["POST"])
+def addvar(toolname):
     data = request.get_json()
 
     name = data.get("name")

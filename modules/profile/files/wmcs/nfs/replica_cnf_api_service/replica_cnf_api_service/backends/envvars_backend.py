@@ -76,14 +76,14 @@ class ToolforgeToolEnvvarsBackend(Backend):
     def handles_user_type(self, user_type: UserType) -> bool:
         return self.USER_TYPE == user_type
 
-    def _create_envvar(self, name: str, value: str, client) -> None:
+    def _create_envvar(self, name: str, value: str, client, toolname: str) -> None:
         try:
-            client.get(url=f"/envvars/v1/envvar/{name}")
+            client.get(url=f"/envvars/v1/tool/{toolname}/envvar/{name}")
             current_app.logger.debug("Skipping setting existing var %s", name)
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == http.HTTPStatus.NOT_FOUND:
                 client.post(
-                    url="/envvars/v1/envvar",
+                    url=f"/envvars/v1/tool/{toolname}/envvar",
                     json={"name": name, "value": value},
                 )
             else:
@@ -96,21 +96,25 @@ class ToolforgeToolEnvvarsBackend(Backend):
         if dry_run:
             return replica_cnf
 
+        toolname = replica_cnf.user.split(".", 1)[-1]
         for var in self.USER_ENVVARS:
-            self._create_envvar(name=var, value=replica_cnf.db_user, client=cli)
+            self._create_envvar(name=var, value=replica_cnf.db_user, client=cli, toolname=toolname)
 
         for var in self.PASSWORD_ENVVARS:
-            self._create_envvar(name=var, value=replica_cnf.db_password, client=cli)
+            self._create_envvar(
+                name=var, value=replica_cnf.db_password, client=cli, toolname=toolname
+            )
 
         return replica_cnf
 
     def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> None:
         cli = self._get_user_client(user_name=user)
+        toolname = user.split(".", 1)[-1]
         if dry_run:
             return
 
         for var in self.USER_ENVVARS + self.PASSWORD_ENVVARS:
-            cli.delete(url=f"/envvars/v1/envvar/{var}")
+            cli.delete(url=f"/envvars/v1/tool/{toolname}/envvar/{var}")
 
     def get_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> ReplicaCnf:
         """Note that we don't store the mysql hash but the plain password."""
@@ -123,13 +127,18 @@ class ToolforgeToolEnvvarsBackend(Backend):
             )
 
         cli = self._get_user_client(user_name=user)
+        toolname = user.split(".", 1)[-1]
 
         # TODO: Once all the users have the auth on envvars, we should fail instead of skipping
         # TODO: We will want to change the return value if we ever have different user/pass for
         #       replicas and toolsdb
         try:
-            db_user_response = cli.get(url=f"/envvars/v1/envvar/{self.USER_ENVVARS[0]}")
-            db_password_response = cli.get(url=f"/envvars/v1/envvar/{self.PASSWORD_ENVVARS[0]}")
+            db_user_response = cli.get(
+                url=f"/envvars/v1/tool/{toolname}/envvar/{self.USER_ENVVARS[0]}"
+            )
+            db_password_response = cli.get(
+                url=f"/envvars/v1/tool/{toolname}/envvar/{self.PASSWORD_ENVVARS[0]}"
+            )
         except requests.exceptions.HTTPError as e:
             raise Skip(
                 f"Skipping failed envvars backend, maybe the variable is not yet set? {e}",
