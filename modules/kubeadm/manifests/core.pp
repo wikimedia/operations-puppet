@@ -37,27 +37,23 @@ class kubeadm::core (
     }
 
     if $extra_labels != [] {
-        $extra_labels_joined = " --node-labels='${extra_labels.join(',')}'"
+        $extra_labels_joined = "--node-labels='${extra_labels.join(',')}'"
     } else {
         $extra_labels_joined = ''
     }
 
-    file { '/etc/default/kubelet':
-        ensure  => 'present',
-        mode    => '0444',
-        notify  => Service['kubelet'],
-        content => @("ARGS"/L),
-        KUBELET_EXTRA_ARGS="--read-only-port=0 --protect-kernel-defaults=true\
-         --tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE\
-        _RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,\
-        TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,\
-        TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,\
-        TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,\
-        TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256 \
-        --pod-infra-container-image=${pause_image}\
-        ${extra_labels_joined}\
-        "
-        |-ARGS
+    if $extra_labels_joined == '' {
+        file { '/etc/default/kubelet':
+            ensure => 'absent',
+            notify => Service['kubelet'],
+        }
+    } else {
+        file { '/etc/default/kubelet':
+            ensure  => 'present',
+            mode    => '0444',
+            notify  => Service['kubelet'],
+            content => "KUBELET_EXTRA_ARGS=\"${extra_labels_joined}\"\n",
+        }
     }
 
     # If kubelet is failing, there's no notice offered by kubernetes directly
