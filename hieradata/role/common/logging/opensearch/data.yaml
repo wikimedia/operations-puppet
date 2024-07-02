@@ -232,6 +232,23 @@ profile::opensearch::logstash::curator_actions:
         unit: days
         unit_count: 7
 
+  '12':
+    description: 'ecs-k8s policy rev 1: delete older than 12 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+      timeout_override: 120
+    filters:
+      - filtertype: pattern
+        kind: prefix
+        value: 'ecs-k8s-1-'
+      - filtertype: age
+        source: name
+        direction: older
+        timestring: '%Y.%W'
+        unit: weeks
+        unit_count: 12
+
   '20':
     description: 'all: after 31 days set number of replicas to 1'
     action: replicas
