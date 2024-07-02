@@ -30,11 +30,9 @@
 
 <VirtualHost *:443>
     SSLEngine on
-    SSLCertificateFile /etc/acmecerts/mirrors/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/mirrors/live/ec-prime256v1.chain.crt
+    SSLCertificateFile /etc/acmecerts/mirrors/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/mirrors/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/mirrors/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/mirrors/live/rsa-2048.chain.crt
+    SSLCertificateFile /etc/acmecerts/mirrors/live/rsa-2048.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/mirrors/live/rsa-2048.key
     <%= $ssl_settings.join("\n    ") %>
     Use Mirrors
