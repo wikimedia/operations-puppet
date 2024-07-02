@@ -3165,6 +3165,7 @@ users:
     email: cwhite@wikimedia.org
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDXTCL4y5N84pX2mKw53Ihs1AOfAFaLAv7WJqt0ijU3A8F8+k2ONCgL4qAuyOSPtHG4rbuscoAZlwsqVIriMLmUwlFXWe5oSWK221FDtvWVl4FmdGSvgou/Ehhrj+13XGD35S/uUhq07N3QfNjj42unrxID7WtkPHWbirksACqEoy6m5v7mga0+tMeKqv2z6jmWrHjmpXjcWwPfmkx54DELov0G9sOJvrYzm7ol5wvdRQGQln5yAm3Ycn126EK0VAwrXDomD/+p75a5dAcwSwci+h4mPiYQAnctEApxPUP1+0fXzkMolymNlwkjAWJBTevWjoUtPHUoVckO0t+lTwqVqRlM7XZ2nN7MIWp3UutV9ng2Fz6XDDwQxrX69QGooQTn3/7mj3ir74tU/UqRexrh0iC0oU69qu+lkYulpJQ2Ld1W+kEUWB4Qg5EXxWnaosSll8OOH2/VPhFi+xpGZLqCys6o0F5r5i0UkdapGyrIwZXHTYRfL577VkB7JIofXEK8ju0ichhF6WuYS404oPspPtBwwPB76RCaM050KhB4DPs27+RJs/Xebz3cKjrZaNBaUGgILzxbSU+nR1MJ7hirGhkq3+4rhxIPV4RofZOgazeWreGbku9o52FAermiRsoTFTt14HvqrmuyMBxBfwzWc7/ktjS1YUpsKpcx038h0w==
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKviuxeJq2LiRqoHhZbOKwJC47V2XzNzO0OMlV3g58d9
     krb: present
   crusnov:
     ensure: absent
