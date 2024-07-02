@@ -260,10 +260,6 @@ flaggedpage_config,fpc_page_id,K
 flaggedpage_config,fpc_override,K
 flaggedpage_config,fpc_level,K
 flaggedpage_config,fpc_expiry,K
-flaggedpage_pending,fpp_page_id,K
-flaggedpage_pending,fpp_quality,K
-flaggedpage_pending,fpp_rev_id,K
-flaggedpage_pending,fpp_pending_since,K
 flaggedpages,fp_page_id,K
 flaggedpages,fp_reviewed,K
 flaggedpages,fp_pending_since,K
@@ -298,8 +294,6 @@ flaggedrevs_stats2,ave_pending_time,K
 flaggedrevs_tracking,ftr_from,K
 flaggedrevs_tracking,ftr_namespace,K
 flaggedrevs_tracking,ftr_title,K
-flaggedtemplates,ft_rev_id,K
-flaggedtemplates,ft_tmp_rev_id,K
 geo_killlist,gk_id,K
 geo_killlist,gk_killed_id,K
 geo_killlist,gk_touched,K
