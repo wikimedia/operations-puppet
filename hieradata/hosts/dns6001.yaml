@@ -1,5 +1,1 @@
 profile::bird::advertise_vips: "%{alias('profile::dns::auth::anycast_ntp_a')}"
-
-profile::bird::anycasthc_logging:
-  level: 'warning'
-  num_backups: 1
