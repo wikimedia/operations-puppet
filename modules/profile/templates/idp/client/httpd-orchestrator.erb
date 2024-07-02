@@ -28,11 +28,9 @@
     RequestHeader unset Proxy early
 
     SSLEngine On
-    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.chain.crt
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chain.crt
+    SSLCertificateFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/<%= @acme_chief_cert %>/live/rsa-2048.key
     <%= @ssl_settings.join("\n    ") %>
 
