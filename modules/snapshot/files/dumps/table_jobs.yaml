@@ -104,10 +104,6 @@ tables:
       job: flaggedpageconfig
       description: This stores settings on how to select the stable/default revision.
       type: public
-    flaggedpage_pending:
-      job: flaggedpagepending
-      description: This contains tracking information for edits needing review.
-      type: public
     flaggedrevs_promote:
       job: flaggedrevspromote
       description: This contains information about users who were demoted from being able to review flagged revisions, so they do not get autopromoted by mistake.
@@ -119,10 +115,6 @@ tables:
     flaggedrevs_tracking:
       job: flaggedrevstracking
       description: Tracks links in stable versions.
-      type: public
-    flaggedtemplates:
-      job: flaggedtemplates
-      description: This contains a row for each template included in a flagged revision containing the rev id and name of the template as well as the rev id of the flagged revision.
       type: public
 
     # wikibase tables
