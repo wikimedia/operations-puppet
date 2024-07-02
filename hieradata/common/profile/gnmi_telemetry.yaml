@@ -17,6 +17,7 @@ profile::gnmi_telemetry::outputs:
     metric-prefix: "gnmi"
     cache: {}
     export-timestamps: true
+    timeout: 30s
     event-processors:
        - enabled-to-tag
        - drop-disabled
