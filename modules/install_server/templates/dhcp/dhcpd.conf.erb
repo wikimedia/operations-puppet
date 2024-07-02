@@ -59,8 +59,12 @@ group {
         <%- datacenter_config['public']['subnets'].each_entry do |subnet_name, subnet_config| -%>
         # <%= subnet_name %> subnet
         subnet <%= subnet_config['ip'] %> netmask <%= subnet_config['network_mask'] %> {
+            <%- if subnet_name.include? '-virtual-' -%>
+            option subnet-mask 255.255.255.255;
+            <%- else -%>
             option broadcast-address <%= subnet_config['broadcast_address'] %>;
             option subnet-mask <%= subnet_config['network_mask'] %>;
+            <%- end -%>
             option routers <%= subnet_config['gateway_ip'] %>;
         }
         <%- end -%>
@@ -73,8 +77,12 @@ group {
         <%- datacenter_config['private']['subnets'].each_entry do |subnet_name, subnet_config| -%>
         # <%= subnet_name %> subnet
         subnet <%= subnet_config['ip'] %> netmask <%= subnet_config['network_mask'] %> {
+            <%- if subnet_name.include? '-virtual-' -%>
+            option subnet-mask 255.255.255.255;
+            <%- else -%>
             option broadcast-address <%= subnet_config['broadcast_address'] %>;
             option subnet-mask <%= subnet_config['network_mask'] %>;
+            <%- end -%>
             option routers <%= subnet_config['gateway_ip'] %>;
         }
         <%- end -%>
