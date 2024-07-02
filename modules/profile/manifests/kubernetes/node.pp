@@ -277,6 +277,13 @@ class profile::kubernetes::node (
         srange => "(@resolve((${control_plane_nodes_ferm})) @resolve((${control_plane_nodes_ferm}), AAAA))",
     }
 
+    # Override for ferm.service to autorestart in case of kube-proxy race-condition
+    # T354855
+    systemd::override { 'ferm-service-auto-restart':
+        unit   => 'ferm',
+        source => 'puppet:///modules/profile/kubernetes/node/ferm_systemd_override',
+    }
+
     # kube-proxy on startup sets the following. However sysctl values may be
     # changed after that. Enforce them in puppet as well to avoid nasty
     # surprises. Furthermore, since we don't want our kubernetes nodes, which
