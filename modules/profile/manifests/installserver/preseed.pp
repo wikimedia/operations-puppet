@@ -12,7 +12,10 @@ class profile::installserver::preseed (
         }.map |$subnet_name, $subnet_config| {
           [$subnet_name, {
               'subnet_gateway' => wmflib::cidr_first_address($subnet_config['ipv4']),
-              'subnet_mask' => wmflib::cidr2mask($subnet_config['ipv4']),
+              'subnet_mask' => $subnet_name =~ /-virtual-/ ? {
+                true => '255.255.255.255',
+                default => wmflib::cidr2mask($subnet_config['ipv4']),
+              },
               'datacenter_name' => $datacenter_name,
               'public_subnet' => $subnet_name =~ /^public/,
           }]
