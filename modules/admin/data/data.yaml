@@ -400,7 +400,7 @@ groups:
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
-              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn]
+              mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6374,6 +6374,13 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBiD9svJWVmi4Irs402yAnNxaMrF/R1QRHt6tY5LjrKz daphne@wmf3518'
+  cwylo:
+    ensure: present
+    realname: Claudia Lo
+    email: clo@wikimedia.org
+    uid: 25945
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6847,10 +6854,6 @@ ldap_only_users:
     ensure: present
     realname: Alex Stinson
     email: astinson@wikimedia.org
-  cwylo:
-    ensure: present
-    realname: Claudia Lo
-    email: clo@wikimedia.org
   ryanbrounley:
     ensure: absent
     realname: Ryan Brounley
