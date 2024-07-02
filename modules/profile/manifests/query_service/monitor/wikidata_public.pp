@@ -20,6 +20,7 @@ class profile::query_service::monitor::wikidata_public {
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-public-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
+        alert_after        => '8m',
     }
     prometheus::blackbox::check::http { 'wdqs_external_sparql_endpoint_search':
         server_name        => 'query.wikidata.org',
@@ -33,7 +34,6 @@ class profile::query_service::monitor::wikidata_public {
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-public-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
+        alert_after        => '8m',
     }
 }
-
-

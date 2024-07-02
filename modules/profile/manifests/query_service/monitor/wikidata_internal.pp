@@ -18,6 +18,7 @@ class profile::query_service::monitor::wikidata_internal {
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-internal-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
+        alert_after        => '8m',
     }
     prometheus::blackbox::check::http { 'wdqs_internal_sparql_endpoint_search':
         server_name        => 'wdqs-internal.discovery.wmnet',
@@ -31,5 +32,6 @@ class profile::query_service::monitor::wikidata_internal {
         req_headers        => { 'Accept' => '*/*', 'User-Agent' => 'prometheus-internal-sparql-ep-check' },
         ip4                => $facts['ipaddress'],
         ip6                => $facts['ipaddress6'],
+        alert_after        => '8m',
     }
 }
