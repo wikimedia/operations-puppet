@@ -9,70 +9,72 @@ class profile::pyrra::filesystem::slos (
 
     #lint:ignore:arrow_alignment
 
-    $liftwing_revscoring_requests_slo = {
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'liftwing-requests-revscoring',
-            'namespace' => 'pyrra-o11y-pilot',
-            'labels' => {
-                'pyrra.dev/team' => 'ml',
-                'pyrra.dev/service' => 'liftwing-revscoring',
-            },
-        },
-        'spec' => {
-            'target' => '98.0',
-            'window' => '12w',
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => 'istio_requests_total{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"5.."}',
-                    },
-                    'total' => {
-                        'metric' => 'istio_requests_total{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default"}',
-                    },
-                    'grouping' => ['site'],
+    # workaround grouping exported metrics limitation by setting site/datacenter via puppet
+    $datacenters.each |$datacenter| {
+
+    # liftwing is in eqiad/codfw only
+    if $datacenter in [ 'eqiad', 'codfw' ] {
+        pyrra::filesystem::config { "liftwing-articlequality-requests-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'liftwing-articlequality-requests',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'ml',
+                    'pyrra.dev/service' => 'liftwing',
+                    'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
                 },
             },
-        },
-    }
-
-    pyrra::filesystem::config { 'liftwing-requests.yaml':
-      ensure  => absent,
-      content => to_yaml($liftwing_revscoring_requests_slo),
-    }
-
-    $liftwing_revscoring_latency_slo = {
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'liftwing-latency-revscoring',
-            'namespace' => 'pyrra-o11y-pilot',
-            'labels' => {
-                'pyrra.dev/team' => 'ml',
-                'pyrra.dev/service' => 'liftwing-revscoring',
-            },
-        },
-        'spec' => {
-            'target' => '98.0',
-            'window' => '12w',
-            'indicator' => {
-                'latency' => {
-                    'success' => {
-                        'metric' => 'istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", le="5000", response_code=~"2.."}'
+            'spec' => {
+                'target' => '98.0',
+                'window' => '12w',
+                'indicator' => {
+                    'ratio' => {
+                        'errors' => {
+                            'metric' => "istio_requests_total{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", response_code=~\"5..\", site=\"${datacenter}\" }",
+                        },
+                        'total' => {
+                            'metric' => "istio_requests_total{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", site=\"${datacenter}\" }",
+                        },
                     },
-                    'total' => {
-                        'metric' => 'istio_request_duration_milliseconds_count{kubernetes_namespace="istio-system", destination_canonical_service="enwiki-articlequality-predictor-default", response_code=~"2.."}',
-                    },
-                    'grouping' => ['site'],
                 },
             },
-        },
+          })
+        }
     }
 
-    pyrra::filesystem::config { 'liftwing-latency.yaml':
-      ensure  => absent,
-      content => to_yaml($liftwing_revscoring_latency_slo),
+    if $datacenter in [ 'eqiad', 'codfw' ] {
+        pyrra::filesystem::config { "liftwing-articlequality-latency-${datacenter}.yaml":
+          content => to_yaml({
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'liftwing-articlequality-latency',
+                'namespace' => 'pyrra-o11y-pilot',
+                'labels' => {
+                    'pyrra.dev/team' => 'ml',
+                    'pyrra.dev/service' => 'liftwing',
+                    'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '98.0',
+                'window' => '12w',
+                'indicator' => {
+                    'latency' => {
+                        'success' => {
+                            'metric' => "istio_request_duration_milliseconds_bucket{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", le=\"5000\", response_code=~\"2..\", site=\"${datacenter}\" }",
+                        },
+                        'total' => {
+                            'metric' => "istio_request_duration_milliseconds_count{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", response_code=~\"2..\", site=\"${datacenter}\" }",
+                        },
+                    },
+                },
+            },
+          })
+        }
     }
 
     # Varnish uses one combined latency-availability SLI: A response is satisfactory IF it spends less than 100 ms processing time in Varnish, AND it isn't a Varnish internal error.
@@ -81,8 +83,6 @@ class profile::pyrra::filesystem::slos (
     # https://wikitech.wikimedia.org/wiki/SLO/Varnish
 
 
-    # workaround grouping exported metrics limitation by setting datacenter
-    $datacenters.each |$datacenter| {
 
 
     # Logstash Requests SLO - please see wikitech for details
