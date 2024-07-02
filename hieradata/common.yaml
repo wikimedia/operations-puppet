@@ -2162,6 +2162,91 @@ infra_devices:
     ipv6: 2620:0:860:13f::10
     site: codfw
     role: l3sw
+  lsw1-c1-codfw:
+    ipv4: 10.192.255.20
+    ipv6: 2620:0:860:13f::15
+    site: codfw
+    role: l3sw
+  lsw1-c2-codfw:
+    ipv4: 10.192.255.21
+    ipv6: 2620:0:860:13f::16
+    site: codfw
+    role: l3sw
+  lsw1-c3-codfw:
+    ipv4: 10.192.255.22
+    ipv6: 2620:0:860:13f::17
+    site: codfw
+    role: l3sw
+  lsw1-c4-codfw:
+    ipv4: 10.192.255.23
+    ipv6: 2620:0:860:13f::18
+    site: codfw
+    role: l3sw
+  lsw1-c5-codfw:
+    ipv4: 10.192.255.24
+    ipv6: 2620:0:860:13f::19
+    site: codfw
+    role: l3sw
+  lsw1-c6-codfw:
+    ipv4: 10.192.255.25
+    ipv6: 2620:0:860:13f::1a
+    site: codfw
+    role: l3sw
+  lsw1-c7-codfw:
+    ipv4: 10.192.255.26
+    ipv6: 2620:0:860:13f::1b
+    site: codfw
+    role: l3sw
+  ssw1-d1-codfw:
+    ipv4: 10.192.255.18
+    ipv6: 2620:0:860:13f::13
+    site: codfw
+    role: l3sw
+  ssw1-d8-codfw:
+    ipv4: 10.192.255.19
+    ipv6: 2620:0:860:13f::14
+    site: codfw
+    role: l3sw
+  lsw1-d1-codfw:
+    ipv4: 10.192.255.1
+    ipv6: 2620:0:860:13f::2
+    site: codfw
+    role: l3sw
+  lsw1-d2-codfw:
+    ipv4: 10.192.255.27
+    ipv6: 2620:0:860:13f::1c
+    site: codfw
+    role: l3sw
+  lsw1-d3-codfw:
+    ipv4: 10.192.255.28
+    ipv6: 2620:0:860:13f::1d
+    site: codfw
+    role: l3sw
+  lsw1-d4-codfw:
+    ipv4: 10.192.255.29
+    ipv6: 2620:0:860:13f::1e
+    site: codfw
+    role: l3sw
+  lsw1-d5-codfw:
+    ipv4: 10.192.255.30
+    ipv6: 2620:0:860:13f::1f
+    site: codfw
+    role: l3sw
+  lsw1-d6-codfw:
+    ipv4: 10.192.255.31
+    ipv6: 2620:0:860:13f::20
+    site: codfw
+    role: l3sw
+  lsw1-d7-codfw:
+    ipv4: 10.192.255.32
+    ipv6: 2620:0:860:13f::21
+    site: codfw
+    role: l3sw
+  lsw1-d8-codfw:
+    ipv4: 10.192.255.33
+    ipv6: 2620:0:860:13f::22
+    site: codfw
+    role: l3sw
   fasw-c-codfw:
     ipv4: 10.193.0.57
     parents:

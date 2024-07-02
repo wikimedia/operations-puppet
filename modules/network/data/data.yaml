@@ -327,6 +327,51 @@ network::subnets:
         private1-b8-codfw:
           ipv4: 10.192.22.0/24
           ipv6: 2620:0:860:112::/64
+        private1-c1-codfw:
+          ipv4: 10.192.4.0/24
+          ipv6: 2620:0:860:100::/64
+        private1-c2-codfw:
+          ipv4: 10.192.26.0/24
+          ipv6: 2620:0:860:105::/64
+        private1-c3-codfw:
+          ipv4: 10.192.27.0/24
+          ipv6: 2620:0:860:114::/64
+        private1-c4-codfw:
+          ipv4: 10.192.28.0/24
+          ipv6: 2620:0:860:115::/64
+        private1-c5-codfw:
+          ipv4: 10.192.29.0/24
+          ipv6: 2620:0:860:116::/64
+        private1-c6-codfw:
+          ipv4: 10.192.30.0/24
+          ipv6: 2620:0:860:119::/64
+        private1-c7-codfw:
+          ipv4: 10.192.31.0/24
+          ipv6: 2620:0:860:11a::/64
+        private1-d1-codfw:
+          ipv4: 10.192.36.0/24
+          ipv6: 2620:0:860:11b::/64
+        private1-d2-codfw:
+          ipv4: 10.192.37.0/24
+          ipv6: 2620:0:860:11c::/64
+        private1-d3-codfw:
+          ipv4: 10.192.38.0/24
+          ipv6: 2620:0:860:11d::/64
+        private1-d4-codfw:
+          ipv4: 10.192.39.0/24
+          ipv6: 2620:0:860:11e::/64
+        private1-d5-codfw:
+          ipv4: 10.192.40.0/24
+          ipv6: 2620:0:860:11f::/64
+        private1-d6-codfw:
+          ipv4: 10.192.41.0/24
+          ipv6: 2620:0:860:120::/64
+        private1-d7-codfw:
+          ipv4: 10.192.42.0/24
+          ipv6: 2620:0:860:121::/64
+        private1-d8-codfw:
+          ipv4: 10.192.43.0/24
+          ipv6: 2620:0:860:122::/64
         cloud-hosts1-b1-codfw:
           ipv4: 10.192.20.0/24
           ipv6: 2620:0:860:118::/64
