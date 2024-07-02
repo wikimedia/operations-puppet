@@ -191,7 +191,12 @@ function setup_route {
 
     # WMF - set the hypervisor side IPv4
     # IPv6 uses the link-local IP automatically
-    ip addr add <%= @tap_ip4 %>/32 dev $INTERFACE scope link
+
+    if [[ $INSTANCE == *.wmnet ]]; then
+      ip addr add <%= @tap_ip4['private'] %>/32 dev $INTERFACE scope link
+    else
+      ip addr add <%= @tap_ip4['public'] %>/32 dev $INTERFACE scope link
+    fi
 
     # WMF - kill any DHCP relay that could be running on the interface - not pretty
     pkill -f "dhcrelay.*$INTERFACE.*"

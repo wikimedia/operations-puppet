@@ -43,7 +43,7 @@
 #   See https://wikitech.wikimedia.org/wiki/Ganeti#Routed_Ganeti
 #
 # [*tap_ip4*]
-#   Required in routed mode only, specify the IPv4 assigned to all the VM facing interfaces.
+#   Required in routed mode only, specify the public and private IPv4 assigned to all the VM facing interfaces.
 #   IPv6 automatically uses the link-local address.
 #
 # [*tftp_servers*]
@@ -51,19 +51,19 @@
 #   keyed by site.
 
 class profile::ganeti (
-    Array[Stdlib::Fqdn]                      $nodes            = lookup('profile::ganeti::nodes'),
-    Array[Stdlib::Fqdn]                      $rapi_nodes       = lookup('profile::ganeti::rapi_nodes'),
-    String                                   $rapi_certificate = lookup('profile::ganeti::rapi::certificate'),
-    Optional[String]                         $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
-                                                                        { default_value => undef }),
-    Optional[String]                         $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
-                                                                        { default_value => undef }),
-    Integer[0, 100]                          $critical_memory  = lookup('profile::ganeti::critical_memory'),
-    Integer[0, 100]                          $warning_memory   = lookup('profile::ganeti::warning_memory'),
-    Boolean                                  $routed           = lookup('profile::ganeti::routed'),
-    Optional[Stdlib::IP::Address]            $tap_ip4          = lookup('profile::ganeti::tap_ip4',
-                                                                        { default_value => undef }),
-    Hash[Wmflib::Sites, Stdlib::IP::Address] $tftp_servers     = lookup('profile::installserver::dhcp::tftp_servers'),
+    Array[Stdlib::Fqdn]                         $nodes            = lookup('profile::ganeti::nodes'),
+    Array[Stdlib::Fqdn]                         $rapi_nodes       = lookup('profile::ganeti::rapi_nodes'),
+    String                                      $rapi_certificate = lookup('profile::ganeti::rapi::certificate'),
+    Optional[String]                            $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
+                                                                            { default_value => undef }),
+    Optional[String]                            $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
+                                                                            { default_value => undef }),
+    Integer[0, 100]                             $critical_memory  = lookup('profile::ganeti::critical_memory'),
+    Integer[0, 100]                             $warning_memory   = lookup('profile::ganeti::warning_memory'),
+    Boolean                                     $routed           = lookup('profile::ganeti::routed'),
+    Optional[Hash[String, Stdlib::IP::Address]] $tap_ip4          = lookup('profile::ganeti::tap_ip4',
+                                                                            { default_value => undef }),
+    Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers     = lookup('profile::installserver::dhcp::tftp_servers'),
 ) {
 
     class { 'ganeti':
