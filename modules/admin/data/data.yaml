@@ -166,7 +166,7 @@ groups:
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
-              sbailey, tjones, jsn, ecarg, amastilovic, ebysans
+              sbailey, tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -6366,6 +6366,14 @@ users:
     uid: 46586
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  daphnesmit:
+    ensure: present
+    realname: Daphne Smit
+    email: dsmit@wikimedia.org
+    uid: 47056
+    gid: 500
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBiD9svJWVmi4Irs402yAnNxaMrF/R1QRHt6tY5LjrKz daphne@wmf3518'
 
 ldap_only_users:
   adavenport:
@@ -7176,7 +7184,3 @@ ldap_only_users:
     ensure: present
     realname: Audrey Penven
     email: audrey.penven@wikimedia.de
-  daphnesmit:
-    ensure: present
-    realname: Daphne Smit
-    email: dsmit@wikimedia.org
