@@ -28,6 +28,14 @@ tar -C firmware -zxf firmware.tar.gz
 pax -x sv4cpio -s'%firmware%/firmware%' -w firmware | gzip -c >firmware.cpio.gz
 cat firmware.cpio.gz >> "$distro"-installer/debian-installer/amd64/initrd.gz
 
-echo The updated netboot environment can be found in "$WD"/"$distro"-installer, if everyone looks fine, move it to /var/lib/puppet/volatile/tftpboot
-echo if the script is run on a Puppet 5 server and to /srv/puppet_fileserver/volatile/tftpboot on a Puppet 7 server
-echo and make sure to remove "$WD"
+TFTPBOOT_DIR="/srv/puppet_fileserver/volatile/tftpboot/${distro}-installer"
+TFTPBOOT_TEMP_DIR="${WD}/${distro}-installer"
+echo -e "\n\n"
+echo "The updated netboot environment can be found in ${TFTPBOOT_TEMP_DIR}"
+echo "Next steps:"
+echo "1) Check if everything looks fine in the new dir, comparing the files with previous versions etc.."
+echo "2) Save ${TFTPBOOT_DIR} under a different name, so you can roll it back easily if needed."
+echo "3) mv ${TFTPBOOT_TEMP_DIR} ${TFTPBOOT_DIR}"
+echo "4) rm -rf ${WD}".
+echo "5) Remember to run puppet on install servers to update their tftpboot config."
+echo -e "\n\n"
