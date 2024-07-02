@@ -178,8 +178,6 @@ codfw:
     wdqs2014.codfw.wmnet: [wdqs]
     wdqs2015.codfw.wmnet: [wdqs]
   kubernetes:
-    kubemaster2001.codfw.wmnet: [kubemaster]
-    kubemaster2002.codfw.wmnet: [kubemaster]
     wikikube-ctrl2001.codfw.wmnet: [kubemaster]
     wikikube-ctrl2002.codfw.wmnet: [kubemaster]
     wikikube-ctrl2003.codfw.wmnet: [kubemaster]

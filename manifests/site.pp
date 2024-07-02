@@ -1282,7 +1282,7 @@ node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
 }
 
 # kubernetes masters
-node /^kubemaster[12]00[12]\.(eqiad|codfw)\./ {
+node /^kubemaster100[12]\.eqiad\./ {
     role(kubernetes::master)
 }
 
