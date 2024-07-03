@@ -101,7 +101,7 @@ def get_run(step_by_step: bool) -> Callable:
 
 if False:
     # codfw1dev
-    flavorid = "74307309-258b-435c-a1b0-3d684bb0062c"
+    flavorid = "946ac6c4-f81d-4acd-8fd5-7da9222fa746"
     networkid = "05a5494a-184f-4d5c-9e98-77ae61c56daa"
 else:
     # eqiad1
@@ -109,7 +109,7 @@ else:
     # It saves us time and space to use an extra-tiny VM here.
     # This is the ID of g3.cores1.ram2.disk4.  We could probably
     # fit into 3GB but I'm leaving a little room to grow.
-    flavorid = "e4b7a447-c3d6-4f5e-b0b2-4f2ac19670ec"
+    flavorid = "95aecdfc-24b2-4ea5-8aec-0b303dd27d9d"
 
     # This is the id of the standard VM network.
     # In eqiad1 that's 'lan-flat-cloudinstances2b'
