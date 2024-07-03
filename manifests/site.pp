@@ -944,6 +944,11 @@ node /^dbproxy102[8-9]\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
+# New databases T368922
+node /^db22(21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # New proxies T361352
 node /^dbproxy200(5|6|7|8)\.codfw\./ {
     role(insetup::data_persistence)
