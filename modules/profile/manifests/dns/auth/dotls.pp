@@ -6,7 +6,7 @@ class profile::dns::auth::dotls(
     include ::profile::prometheus::haproxy_exporter
 
     # HAProxy needs the full chained cert *and* the private key in a single file
-    $kchained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.alt.chained.crt.key"
+    $kchained_path = "/etc/acmecerts/${cert_name}/live/ec-prime256v1.chained.crt.key"
 
     acme_chief::cert { $cert_name:
         puppet_rsc => Service['haproxy'],

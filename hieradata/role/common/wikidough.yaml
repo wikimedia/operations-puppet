@@ -10,8 +10,8 @@ profile::wikidough::dnsdist::resolver:
   port: 53
 
 profile::wikidough::dnsdist::tls_common:
-  cert_chain_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.alt.chained.crt'
-  cert_privkey_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.alt.chained.crt.key'
+  cert_chain_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.chained.crt'
+  cert_privkey_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.chained.crt.key'
   ocsp_response_path: '/etc/acmecerts/wikidough/live/ec-prime256v1.ocsp'
 
 profile::wikidough::dnsdist::tls_doh:
