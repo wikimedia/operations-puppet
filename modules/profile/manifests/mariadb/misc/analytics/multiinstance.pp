@@ -5,7 +5,7 @@
 # a mariadb multi-instance environment that can be used as replica.
 #
 # This class is used to do MariaDB logical backups via profile::dbbackups::mydumper.
-# (As of 2021-11, dbprov1002 is taking remote backups.)
+# (As of 2024-07, dbprov1004 is taking remote backups.)
 # See: https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Logical_backups
 #
 class profile::mariadb::misc::analytics::multiinstance (
