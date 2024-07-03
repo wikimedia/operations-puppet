@@ -54,42 +54,4 @@ class deployment::rsync(
             server_uses_stunnel => true,
         }
     }
-
-    # TODO: remove everything below after running puppet
-    $sync_command = "/usr/bin/rsync -avz --delete ${deployment_server}::deployment_module ${deployment_path}"
-
-    systemd::timer::job { 'sync_deployment_dir':
-        ensure      => absent,
-        user        => 'root',
-        description => "rsync the deployment server data directory ${deployment_path}",
-        command     => $sync_command,
-        interval    => [
-            {
-            'start'    => 'OnBootSec', # initially start the unit
-            'interval' => '10sec',
-            },{
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:00:00', # then hourly on the hour
-            },
-        ],
-    }
-
-    $sync_patches_command = "/usr/bin/rsync -avz --delete ${deployment_server}::patches_module ${patches_path}"
-
-    systemd::timer::job { 'sync_patches_dir':
-        ensure      => absent,
-        user        => 'root',
-        description => "rsync the deployment server patches directory ${patches_path}",
-        command     => $sync_patches_command,
-        interval    => [
-            {
-            'start'    => 'OnBootSec', # initially start the unit
-            'interval' => '15sec',
-            },{
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* *:30:00', # then hourly on the half hour
-            },
-        ],
-    }
-
 }
