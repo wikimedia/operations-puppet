@@ -6,6 +6,7 @@ profile::environment::custom_skel_zshrc: null
 profile::environment::editor: 'vim'
 profile::environment::wikimedia_domains: "%{alias('wikimedia_domains')}"
 profile::environment::no_proxy_domains:
+  - 'wikimediacloud.org'
   - 'wmnet'
   - '127.0.0.1'
   - '::1'
