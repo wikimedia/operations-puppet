@@ -545,13 +545,13 @@ profile::mediawiki::mcrouter_wancache::shards:
   gutter:
     eqiad:
       shard01:
-        host: deployment-memc10
+        host: deployment-memc13
   wancache:
     eqiad:
       shard01:
-        host: deployment-memc08
+        host: deployment-memc11
       shard02:
-        host: deployment-memc09
+        host: deployment-memc12
   wikifunctions:
     eqiad: {}
 
