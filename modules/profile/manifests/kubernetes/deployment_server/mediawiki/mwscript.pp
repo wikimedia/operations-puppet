@@ -24,7 +24,7 @@ class profile::kubernetes::deployment_server::mediawiki::mwscript {
             start    => 'OnUnitActiveSec',
             interval => '1 day',
         },
-        user               => 'www-data',
+        user               => 'mwdeploy',
         monitoring_enabled => true,
         team               => 'ServiceOps'
     }
