@@ -15,4 +15,17 @@ class profile::kubernetes::deployment_server::mediawiki::mwscript {
         mode   => '0555',
         source => 'puppet:///modules/profile/kubernetes/deployment_server/mwscript_cleanup.py'
     }
+
+    systemd::timer::job { 'mwscript-cleanup':
+        ensure             => present,
+        description        => 'Remove lingering Helm releases from completed maintenance scripts.',
+        command            => "/usr/local/bin/mwscript-cleanup --debug ${::site}",
+        interval           => {
+            start    => 'OnUnitActiveSec',
+            interval => '1 day',
+        },
+        user               => 'www-data',
+        monitoring_enabled => true,
+        team               => 'ServiceOps'
+    }
 }
