@@ -329,6 +329,11 @@ def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -
         raise Exception(f"Unable to find nodnsupdate file {nodnsupdate}, aborting")
     nodnsupdate.unlink()
 
+    # Clear machine id
+    machine_id = mountpath / "etc/machine-id"
+    with open(machine_id, "w") as text_file:
+        print("uninitialized\n", file=text_file)
+
     run("umount", mountpath)
     run("qemu-nbd", "--disconnect", "/dev/nbd0")
 
