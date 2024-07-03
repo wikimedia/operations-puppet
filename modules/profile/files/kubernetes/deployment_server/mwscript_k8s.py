@@ -97,6 +97,8 @@ def is_started(pod: V1Pod, container: str) -> bool:
     if pod.status.phase == 'Unknown':
         return False
     # The pod status is Pending. Find our container and see if it's ready yet.
+    if not pod.status.container_statuses:  # Sometimes it's None instead of an empty list.
+        return False
     for container_status in pod.status.container_statuses:
         if container_status.name == container:
             return container_status.state.running or container_status.state.terminated
