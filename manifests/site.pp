@@ -178,6 +178,11 @@ node /^an-conf100[1-3]\.eqiad\./ {
     role(analytics_cluster::zookeeper)
 }
 
+# Refreshed hardware for Analytics Zookeeper cluster - See #T364429
+node /^an-conf100[4-6]\.eqiad\./ {
+    role(data_engineering::insetup)
+}
+
 # Analytics Presto nodes. 1001 - 1015
 node /^an-presto10(0[1-9]|1[0-5])\.eqiad\./ {
     role(analytics_cluster::presto::server)
