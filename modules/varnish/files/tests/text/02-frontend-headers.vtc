@@ -1,11 +1,6 @@
 varnishtest "cache_text frontend headers"
 
 server s1 {
-    loop 12 {
-        rxreq
-        txresp
-    }
-
     rxreq
     # Data here corresponds to test data entries for 216.160.83.56 (see client section)
     expect req.http.Host == "intake-logging.wikimedia.org"
@@ -25,6 +20,12 @@ server s1 {
     expect req.http.X-GeoIP-Country == "BT"
     expect req.http.X-GeoIP-Subdivision == <undef>
     txresp
+
+    loop 10 {
+        rxreq
+        txresp
+    }
+
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -49,13 +50,23 @@ varnish v1 -vcl {
 # We return Set-Cookie twice: the first time for WMF-Last-Access, the second
 # one for GeoIP. logexpect seems to be the only sane way to check that the
 # latter is also set.
+
 logexpect l1 -v v1 -g request {
-    expect  0 1001  Begin       "^req .* rxreq"
+    expect  * 1005  Begin       "^req .* rxreq"
     expect  * = RespHeader "Set-Cookie: GeoIP="
     expect  * = End
 } -start
 
 client c1 {
+    # Test POSTing some reports, and (in the server section up top) make sure they get the right headers attached to their bereq.
+
+    # This IP address is one of the few in the City test data that has a subdivision (US state) while also being present in the ISP test data.
+    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 216.160.83.56" -body ""
+    rxresp
+
+    # This is a randomly-chosen IP address that overlaps between City and ISP test data.
+    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 67.43.156.1" -body ""
+    rxresp
     txreq -url "/" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
     expect resp.http.Strict-Transport-Security == "max-age=106384710; includeSubDomains; preload"
@@ -118,6 +129,7 @@ client c1 {
     expect resp.http.Report-To == "{ \"group\": \"wm_nel\", \"max_age\": 604800, \"endpoints\": [{ \"url\": \"https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0\" }] }"
     expect resp.http.NEL == "{ \"report_to\": \"wm_nel\", \"max_age\": 604800, \"failure_fraction\": 0.05, \"success_fraction\": 0.0}"
 
+    # this request triggers an int-front response and doesn't need to be accounted on the server s1 definition
     txreq -url "/" -hdr "Host: thisisnotawmfdomain.com" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 91.198.174.192"
     rxresp
     expect resp.status == 400
@@ -125,15 +137,6 @@ client c1 {
     expect resp.http.NEL == <undef>
 
 
-    # Test POSTing some reports, and (in the server section up top) make sure they get the right headers attached to their bereq.
-
-    # This IP address is one of the few in the City test data that has a subdivision (US state) while also being present in the ISP test data.
-    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 216.160.83.56" -body ""
-    rxresp
-
-    # This is a randomly-chosen IP address that overlaps between City and ISP test data.
-    txreq -req "POST" -url "/" -hdr "Host: intake-logging.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 67.43.156.1" -body ""
-    rxresp
 } -run
 
 logexpect l1 -wait
