@@ -556,7 +556,7 @@ class profile::phabricator::main (
     # then notify to build the config
     exec { 'phab-git-safedir':
         command => '/usr/local/bin/phab_git_safedir.sh',
-        unless  => 'test -f /etc/gitconfig.d/10-phab-deploy-safedir.gitconfig',
+        unless  => '/usr/bin/test -f /etc/gitconfig.d/10-phab-deploy-safedir.gitconfig',
         notify  => Exec['update-safedir-gitconfig'],
     }
 }
