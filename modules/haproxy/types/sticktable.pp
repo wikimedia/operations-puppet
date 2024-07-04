@@ -1,6 +1,6 @@
 type Haproxy::Sticktable = Struct[{
     'name'      => String,
-    'type'      => Enum['ipv6', 'string'],  # TODO add more but this is all we need for now
+    'type'      => Enum['ipv6', 'string', 'integer'],  # TODO add more but this is all we need for now
     'len'       => Optional[Integer[1]],
     'size'      => String,  # e.g. "1m"
     'expire'    => Optional[String],  # e.g. "60s"

@@ -86,7 +86,7 @@ listen tls
 <%- end -%>
 <%- end -%>
 
-<%- if @filters and @haproxy_version == 'haproxy27' -%>
+<%- if @filters -%>
 <%- @filters.each do |filter| -%>
     filter bwlim-<%= filter['direction'] %> <%= filter['name'] %> key <%= filter['key'] %> table <%= filter['table'] %> limit <%= filter['size'] %>
 <%- end -%>
