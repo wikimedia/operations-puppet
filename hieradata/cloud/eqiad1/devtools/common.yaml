@@ -318,6 +318,9 @@ profile::gitlab::ldap_group_sync_interval_interval:
 profile::gitlab::runner::gitlab_url: https://gitlab.devtools.wmcloud.org/
 # profile::gitlab::runner::token: private
 profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled: false
+profile::gitlab::runner::buildkitd_gateway_frontend_enabled: true
+profile::gitlab::runner::buildkitd_allowed_gateway_sources:
+  - 'docker-registry.wikimedia.org/repos/releng/blubber/buildkit'
 
 # VRTS
 profile::vrts::daemon: true
