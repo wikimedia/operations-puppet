@@ -54,7 +54,9 @@ class karapace (
         subscribe => File['/etc/karapace/karapace.config.json'],
     }
 
-    profile::auto_restarts::service { 'karapace': }
+    profile::auto_restarts::service { 'karapace':
+        ensure => absent,
+    }
 
     monitoring::service { 'karapace':
         ensure        => present,
