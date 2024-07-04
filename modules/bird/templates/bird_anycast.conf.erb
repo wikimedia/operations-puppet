@@ -114,10 +114,9 @@ protocol bgp {
     };
     local <%= @ipv6_src %> as 64605;
 <% if neighbor_v6.start_with?('fe80') -%>
-    neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
-<% else -%>
-    neighbor <%= neighbor_v6 %> external;
+    interface "<%= @facts['networking']['primary'] %>";
 <% end -%>
+    neighbor <%= neighbor_v6 %> external;
 }
 <% end -%>
 <% end -%>

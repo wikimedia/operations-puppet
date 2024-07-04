@@ -45,6 +45,7 @@ protocol bgp {
         export all;
     };
     local <%= @ipv6_src %> as 64612;
-    neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
+    interface "<%= @facts['networking']['primary'] %>";
+    neighbor <%= neighbor_v6 %> external;
 }
 <% end -%>
