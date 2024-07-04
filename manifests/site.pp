@@ -2346,6 +2346,11 @@ node /^parse1001\.eqiad\./ {
     role(parsoid)
 }
 
+# T363399 - replaces scandium and or testreduce*
+node /^parsoidtest[1-2]00([1-9])\.(eqiad|codfw)\./ {
+    role(insetup::serviceops)
+}
+
 # parser cache databases
 # eqiad
 # pc1
