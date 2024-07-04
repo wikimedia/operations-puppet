@@ -147,6 +147,15 @@ class profile::mediawiki::httpd(
         require => Package['apache2'],
     }
 
+    # Add the APACHE_RUN_PORT variable to the environment
+    ::httpd::env { 'apache_run_port':
+        vars    => {
+            'APACHE_RUN_PORT' => '80',
+        },
+        before  => Service['apache2'],
+        require => Package['apache2'],
+    }
+
     # Set the Server response header to be equal to the app server FQDN.
     package { 'libapache2-mod-security2':
         ensure => present
