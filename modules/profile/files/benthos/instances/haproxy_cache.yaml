@@ -94,7 +94,7 @@ pipeline:
         # Metadata
         meta dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
 
-        meta domain = root.uri_host()
+        meta domain = root.uri_host
         meta stream = "webrequest_frontend"
         root.meta = root_meta()
 
