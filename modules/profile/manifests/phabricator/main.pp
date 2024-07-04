@@ -552,11 +552,13 @@ class profile::phabricator::main (
         refreshonly => true,
     }
 
-    # determine phab deploy dir and set it as safedir unless the config snippet already exists
-    # then notify to build the config
+    # determine phab deploy dir and set it as safedir
+    # unless it's already in the generated config file
+    # notify to build the config from snippets
+    # puppet will removed the snippet in gitconfig.d afterwards
     exec { 'phab-git-safedir':
         command => '/usr/local/bin/phab_git_safedir.sh',
-        unless  => '/usr/bin/test -f /etc/gitconfig.d/10-phab-deploy-safedir.gitconfig',
+        unless  => '/usr/bin/grep -q deployment-cache /etc/gitconfig',
         notify  => Exec['update-safedir-gitconfig'],
     }
 }
