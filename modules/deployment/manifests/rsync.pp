@@ -7,6 +7,7 @@ class deployment::rsync(
     Array[Stdlib::Fqdn] $deployment_hosts = [],
     Stdlib::Unixpath $deployment_path     = '/srv/deployment',
     Stdlib::Unixpath $patches_path        = '/srv/patches',
+    Optional[Hash] $ssl_paths             = undef,
 ){
     if $deployment_hosts.length > 0
     {
@@ -16,6 +17,7 @@ class deployment::rsync(
             module_path         => '/home',
             auto_sync           => false,
             server_uses_stunnel => true,
+            ssl_paths           => $ssl_paths,
         }
 
         rsync::quickdatacopy { 'deployment_module':
@@ -34,6 +36,7 @@ class deployment::rsync(
                 },
             ],
             server_uses_stunnel => true,
+            ssl_paths           => $ssl_paths,
         }
 
         rsync::quickdatacopy { 'patches_module':
@@ -52,6 +55,7 @@ class deployment::rsync(
                 },
             ],
             server_uses_stunnel => true,
+            ssl_paths           => $ssl_paths,
         }
     }
 }
