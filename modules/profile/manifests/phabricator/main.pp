@@ -535,4 +535,28 @@ class profile::phabricator::main (
             }
         }
     }
+
+    # set git safedir on the phab deploy repo to properly display version info (T360756)
+    # see comments inside the script why it's a bash script and not just puppet
+    file { '/usr/local/bin/phab_git_safedir.sh':
+        source => 'puppet:///modules/phabricator/phab_git_safedir.sh',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0550',
+    }
+
+    # update gitconfig in the same way that git::systemconfig does it to avoid conflicts
+    # but only when notified by our script
+    exec { 'update-safedir-gitconfig':
+        command     => '/bin/cat /etc/gitconfig.d/*.gitconfig > /etc/gitconfig',
+        refreshonly => true,
+    }
+
+    # determine phab deploy dir and set it as safedir unless the config snippet already exists
+    # then notify to build the config
+    exec { 'phab-git-safedir':
+        command => '/usr/local/bin/phab_git_safedir.sh',
+        unless  => 'test -f /etc/gitconfig.d/10-phab-deploy-safedir.gitconfig',
+        notify  => Exec['update-safedir-gitconfig'],
+    }
 }
