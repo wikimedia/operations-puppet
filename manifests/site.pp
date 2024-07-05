@@ -959,6 +959,11 @@ node /^pc1017\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
+# New parsercache T368919
+node /^pc2017\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # New proxies T361352
 node /^dbproxy200(5|6|7|8)\.codfw\./ {
     role(insetup::data_persistence)
