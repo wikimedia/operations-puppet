@@ -227,6 +227,7 @@ Components: main
  thirdparty/ceph-reef
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
+ thirdparty/gitlab-runner
  thirdparty/grafana
  thirdparty/haproxy26
  thirdparty/haproxy28
@@ -250,6 +251,7 @@ Update:
  node20
  routinator-bookworm
  thirdparty/ceph-reef
+ thirdparty/gitlab-runner
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
