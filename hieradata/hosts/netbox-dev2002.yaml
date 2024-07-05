@@ -1,1 +1,0 @@
-profile::netbox::http_proxy: "%{alias('http_proxy')}"

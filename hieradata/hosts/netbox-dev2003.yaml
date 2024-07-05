@@ -1,5 +1,0 @@
-profile::netbox::http_proxy: "%{alias('http_proxy')}"
-profile::netbox::service_hostname: netbox-dev.wikimedia.org
-profile::netbox::discovery_name: netbox-dev.discovery.wmnet
-profile::netbox::oidc_service: 'netbox_dev'
-profile::netbox::deploy_project: 'netbox-dev'
