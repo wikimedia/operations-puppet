@@ -164,8 +164,6 @@ profile::cache::haproxy::del_headers:
     - direction: request
       name: 'traceparent'
       acl: '!wikimedia_trust'
-    - direction: request
-      name: 'X-Forwarded-Proto'
     - direction: response
       name: 'X-Analytics'
     - direction: response
