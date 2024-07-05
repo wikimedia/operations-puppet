@@ -45,6 +45,9 @@ profile::kerberos::keytabs::keytabs_metadata:
     owner: 'analytics-product'
     group: 'analytics-product'
     filename: 'analytics-product.keytab'
+  - role: 'analytics-wmde'
+    owner: 'analytics-wmde'
+    filename: 'analytics-wmde.keytab'
 
 # Context https://phabricator.wikimedia.org/T278353#6976509
 profile::kerberos::client::dns_canonicalize_hostname: false
