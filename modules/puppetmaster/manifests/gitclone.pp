@@ -121,7 +121,7 @@ class puppetmaster::gitclone(
             }
 
             file { "${private_repo_dir}/.git/hooks/commit-msg":
-                ensure  => file,
+                ensure  => 'absent', #T368023
                 source  => 'puppet:///modules/puppetmaster/git/private/commit-msg-master',
                 owner   => $user,
                 group   => $group,
@@ -133,7 +133,7 @@ class puppetmaster::gitclone(
             # This hook updates /var/lib and pushes changes to the backend workers
             $puppet_servers = wmflib::role::hosts('puppetserver')
             file { "${private_repo_dir}/.git/hooks/post-commit":
-                ensure  => file,
+                ensure  => 'absent', #T368023
                 content => template('puppetmaster/git-master-postcommit.erb'),
                 owner   => $user,
                 group   => $group,
