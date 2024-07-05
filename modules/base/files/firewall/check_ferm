@@ -7,7 +7,7 @@ if [ ! -x /sbin/iptables ]; then
     exit 1
 fi
 
-input_policy=$(iptables -nL INPUT | sed -nr 's/^Chain INPUT \(policy (.*)\)$/\1/p')
+input_policy=$(iptables -w 5 -nL INPUT | sed -nr 's/^Chain INPUT \(policy (.*)\)$/\1/p')
 if [ $input_policy = "DROP" ]; then
     echo "OK ferm input default policy is set"
     exit 0
