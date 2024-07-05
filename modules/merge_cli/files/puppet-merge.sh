@@ -79,6 +79,11 @@ check_remote_error() {
   fi
 }
 
+# Note: The "true" command is passed on purpose to show that the command passed
+# to the SSH sessions is irrelevant. It's the SSH forced command trick on the
+# worker end that does the actual work.
+# For example: you can find the gitpuppet user's configured forced command under
+# /etc/ssh/userkeys/gitpuppet
 merge() {
   servers=$1
   repo=$2
@@ -209,11 +214,7 @@ fi
 LABSPRIVATE_SHA=$(cat /srv/config-master/labsprivate-sha1.txt)
 OPS_SHA=$(cat /srv/config-master/puppet-sha1.txt)
 
-# Note: The "true" command is passed on purpose to show that the command passed
-# to the SSH sessions is irrelevant. It's the SSH forced command trick on the
-# worker end that does the actual work. Note that args (the SHA1 and
-# --labsprivate/--ops switch) are used.
-
+# Note that args (the SHA1 and --labsprivate/--ops switch) are used.
 if [ $LABS_PRIVATE -eq 1 ] && [ ${LABS_EXIT} -eq 0 ]; then
   merge "${MASTERS}" 'labsprivate' "${LABSPRIVATE_SHA}" "${git_user}"
 elif [ $LABS_PRIVATE -eq 0 ]; then
