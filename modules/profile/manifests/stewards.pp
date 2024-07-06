@@ -11,8 +11,8 @@ class profile::stewards (
     Stdlib::Fqdn $lists_primary_host = lookup('lists_primary_host', {'default_value' => undef}),
 ){
 
-    # T344164#9314186
-    ensure_packages(['python3-click', 'python3-requests-oauthlib'])
+    # T344164#9314186, T369322
+    ensure_packages(['python3-click', 'python3-requests-oauthlib', 'python3-phabricator'])
 
     # conf dir and repo dir not writable
     wmflib::dir::mkdir_p([$conf_dir, $repo_dir], {
