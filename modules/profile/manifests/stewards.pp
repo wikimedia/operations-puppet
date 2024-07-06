@@ -6,6 +6,7 @@ class profile::stewards (
     Stdlib::Unixpath $export_dir = lookup('profile::stewards::export_dir', {default_value => '/srv/exports'}),
     Stdlib::Unixpath $userdb_dir = lookup('profile::stewards::userdb_dir', {default_value => "${repo_dir}/users-db"}),
     Stdlib::Unixpath $onboarding_system_dir = lookup('profile::stewards::onboarding_system_dir', {default_value => "${repo_dir}/onboarding-system"}),
+    String $userdb_gitlab_token = lookup('profile::stewards::gitlab_clone_token', {default_value => 'snakeoil'}),
     String $gitlab_api_token = lookup('profile::stewards::gitlab_api_token', {default_value => 'snakeoil'}),
     String $phabricator_api_token = lookup('profile::stewards::phabricator_api_token', {default_value => 'snakeoil'}),
     String $group_owner = lookup('profile::stewards::group_owner', {default_value => 'stewards-users'}),
@@ -51,12 +52,14 @@ class profile::stewards (
         }
     }
 
-    # create a local-only repo to hold private onboarding app data
-    file { $userdb_dir:
-        ensure => directory,
-        owner  => 'root',
-        group  => $group_owner,
-        mode   => '2775',
+    # pull users DB from gitlab (T369430)
+    git::clone { 'repos/stewards/users':
+        ensure    => 'present',
+        source    => 'gitlab',
+        origin    => "https://stewards:${userdb_gitlab_token}@gitlab.wikimedia.org/repos/stewards/users.git",
+        group     => $group_owner,
+        shared    => true,
+        directory => $userdb_dir,
     }
 
     git::systemconfig { 'safe.directory-userdb_dir':
@@ -65,15 +68,6 @@ class profile::stewards (
                 'directory' => $userdb_dir
             }
         }
-    }
-
-    exec { "${userdb_dir} git init":
-        command => '/usr/bin/git init',
-        user    => 'root',
-        group   => $group_owner,
-        cwd     => $userdb_dir,
-        creates => "${userdb_dir}/.git",
-        require => File[$userdb_dir],
     }
 
     # let lists primary host sync data from the export_dir
