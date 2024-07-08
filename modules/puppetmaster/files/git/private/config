@@ -7,4 +7,4 @@
 	denyCurrentBranch = ignore
 [user]
 	name = "gitpuppet for private repo"
-	email = git@wikimedia.org
+	email = git@puppetmaster1001.eqiad.wmnet
