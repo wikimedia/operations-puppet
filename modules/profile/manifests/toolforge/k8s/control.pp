@@ -23,4 +23,9 @@ class profile::toolforge::k8s::control (
     class { '::toolforge::k8s::deployer':
         toolforge_secrets => $toolforge_secrets,
     }
+
+    apt::package_from_component { 'thirdparty-k9s':
+        component => 'thirdparty/k9s',
+        packages  => ['k9s']
+    }
 }
