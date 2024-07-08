@@ -321,7 +321,7 @@ profile::kubernetes::deployment_server::general:
   default:
     # envoy
     mesh:
-      image_version: 1.23.10-2-s4-20231203
+      image_version: 1.23.10-3
       telemetry:
         enabled: true
     # prometheus-statsd-exporter
@@ -431,4 +431,3 @@ profile::mediawiki::deployment::server::enable_auto_deploy: true
 # of the branch cut job that auto deployment relies on.
 profile::mediawiki::deployment::server::auto_deploy_interval: Mon *-*-* 20:00:00 America/Los_Angeles
 profile::mediawiki::deployment::server::auto_clean_interval: Mon *-*-* 21:00:00 America/Los_Angeles
-
