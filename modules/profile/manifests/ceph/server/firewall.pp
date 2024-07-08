@@ -24,24 +24,28 @@ class profile::ceph::server::firewall (
     # Remove duplicates for co-located mon and osd nodes
     $ceph_server_addrs = unique([$mon_addrs,$osd_public_addrs, $osd_cluster_addrs]).flatten
 
+    # We need to open the Ceph ports to the ds-k8s workers as well, since the csi-rbdplugin
+    # runs with host networking. Therefore it is not covered by the DSE_KUBEPODS_NETWORK src_set.
+    $dse_k8s_workers_ips = wmflib::role::ips('dse_k8s::worker')
+
     firewall::service { 'ceph_daemons':
         proto      => 'tcp',
         port_range => [6800, 7300],
-        srange     => $ceph_server_addrs,
+        srange     => $ceph_server_addrs + $dse_k8s_workers_ips,
         src_sets   => ['DSE_KUBEPODS_NETWORKS'],
         before     => Class['ceph::common'],
     }
     firewall::service { 'ceph_mon_v1':
         proto    => 'tcp',
         port     => 6789,
-        srange   => $ceph_server_addrs,
+        srange   => $ceph_server_addrs + $dse_k8s_workers_ips,
         src_sets => ['DSE_KUBEPODS_NETWORKS'],
         before   => Class['ceph::common'],
     }
     firewall::service { 'ceph_mon_v2':
         proto    => 'tcp',
         port     => 3300,
-        srange   => $ceph_server_addrs,
+        srange   => $ceph_server_addrs + $dse_k8s_workers_ips,
         src_sets => ['DSE_KUBEPODS_NETWORKS'],
         before   => Class['ceph::common'],
     }
