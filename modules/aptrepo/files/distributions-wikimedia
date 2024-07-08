@@ -234,6 +234,7 @@ Components: main
  thirdparty/hwraid
  thirdparty/kubeadm-k8s-1-23
  thirdparty/kubeadm-k8s-1-24
+ thirdparty/kubeadm-k8s-1-25
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
@@ -256,6 +257,7 @@ Update:
  thirdparty/haproxy28
  thirdparty/helm3
  thirdparty/kubeadm-k8s-1-24
+ thirdparty/kubeadm-k8s-1-25
  thirdparty/tofu
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
