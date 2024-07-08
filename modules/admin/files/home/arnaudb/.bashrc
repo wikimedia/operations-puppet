@@ -51,7 +51,7 @@ function my() {
 }
 
 function quick_show_slave() {
-    sudo mysql -e 'show slave status \G'|grep -iE 'second|run|state|log_|Master_Host|Exec'
+    sudo mysql -e 'show slave status \G'|grep -i 'second|run|state|log_|Master_Host|Exec'
     echo "######"
     sudo mysql -e 'SELECT greatest(0, TIMESTAMPDIFF(MICROSECOND, max(ts), UTC_TIMESTAMP(6)) - 500000)/1000000 FROM heartbeat.heartbeat ORDER BY ts LIMIT 1;'
     echo "######"
