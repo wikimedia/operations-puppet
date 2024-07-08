@@ -52,6 +52,8 @@ mediawiki::sites:
               - "    RewriteRule ^/w/index\\.php  %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org/%2/%3.html? [R=301,L]"
               - "    RewriteCond %%{}{QUERY_STRING} title=Special:Code(Review)?"
               - "    RewriteRule ^/w/index\\.php %%{}{ENV:RW_PROTO}://static-codereview.wikimedia.org? [R=301,L]"
+              - "# EventLogging LegacyBeaconHandler: https://phabricator.wikimedia.org/T353817#9959609"
+              - "    RewriteRule ^/beacon/event$ /w/rest.php/eventlogging/v0/beacon [L]"
             late:
               - "# T171807, T359643"
               - "    RewriteRule ^/ontology/ontology\\.owl$ /w/static.php [PT]"
