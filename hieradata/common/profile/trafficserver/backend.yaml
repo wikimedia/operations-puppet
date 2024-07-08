@@ -445,7 +445,7 @@ profile::trafficserver::backend::mapping_rules:
       # mediawiki
       # REST api
     - type: regex_map
-      target: 'http://(.*)/w/rest.php'
+      target: 'http://(.*)/(w/rest.php|api/)'
       replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
