@@ -32,7 +32,7 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun]
+              twentyafterfour, akhatun, ezachte, chelsyx]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -188,8 +188,8 @@ groups:
     description: access to mwmaint hosts, mwlog hosts (private data) and bastion hosts
                  restricted folks use sudo to access www-data resources
     members: [bearloga, tjones, cparle,
-              ezachte, jamesur, jdlrobson, sguebo,
-              santhosh, amire80, foks, chelsyx, karen,
+              jamesur, jdlrobson, sguebo,
+              santhosh, amire80, foks, karen,
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
@@ -358,13 +358,13 @@ groups:
               halfak, dr0ptp4kt, bearloga, elukey, mneisler,
               nuria, otto, jgreen, sguebo,
               dbrant, nettrom, leizi, jmm,
-              ezachte, mforns, reedy, west1, phuedx, awight,
+              mforns, reedy, west1, phuedx, awight,
               joal, akosiaris,
               hoo, daniel, krinkle, tgr,
               ebernhardson, addshore,
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
-              jdlrobson, chelsyx, ovasileva, filippo, pmiazga,
+              jdlrobson, ovasileva, filippo, pmiazga,
               piccardi, ladsgroup, musikanimal,
               dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
@@ -687,7 +687,7 @@ groups:
   analytics-search-users:
     gid: 771
     description: Group of users for managing search related analytics jobs
-    members: [ebernhardson, dcausse, gehel, bearloga, chelsyx, tjones, pfischer, dr0ptp4kt]
+    members: [ebernhardson, dcausse, gehel, bearloga, tjones, pfischer, dr0ptp4kt]
     privileges: ['ALL = (analytics-search) NOPASSWD: ALL']
     system_members: [analytics-search]
   parsoid-test-roots:
@@ -907,7 +907,7 @@ groups:
   airflow-search-admins:
     gid: 816
     description: administrators of the Apache Airflow service
-    members: [ebernhardson, dcausse, bearloga, chelsyx, tjones, mfossati, pfischer, dr0ptp4kt]
+    members: [ebernhardson, dcausse, bearloga, tjones, mfossati, pfischer, dr0ptp4kt]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service airflow-webserver@search *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-scheduler@search *',
                  'ALL = NOPASSWD: /usr/sbin/service airflow-kerberos@search *',
@@ -2084,14 +2084,12 @@ users:
     ssh_keys: []
     uid: 503
   ezachte:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ezachte
     realname: Erik Zachte
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDO4nsmOD2zgf2nvLyH522TdM/ie5tWHDdN5HuZSod6QOv0s8sVwz37zuAbK7DxB1DS9TT5WKK2IEKYddkd5f6fMxWNSY+B86rtUm/rzljn5Aen+1lsvhWFn48HL9VT9Ulyc1wME93olBCMPMTLOKbWz5ARydIw+uNeO10mqqDOQ18smPaWGj+I2HTMNuQ4SU1r+5/BbVUDAbv44vN0T2vLtQnUUnCGLoQ5pkG8UMu5+ysrm0eVrjcbP6DeQ+L+Eq0o+kBtkrDWg1Jmnfa7wG7ShYWgDolLZSmSZxZG5a+18fJLe9IqMHrpL0XDaP4LityhjKNnFTCtQ5moVVk2J+3lTUEJCsG8nmOU4VP7+jMSDetYL7reCU8Tu/1he+kHCvjppFxFf+G0fqRQwaQYWIIOuNSRRoiBmrsN+uQft4fTvxQuiTg23g7xMcJsSuvuGkPYp3hAdg8VIWsBAeY8XzO4Hpg3Zog7ybX/w2eWpkOKaFvwNXywQUH/k5OgEqUoHYOA57hC1Y5oMSG6lVn7qTykwrc/H8SsJbiIRgJ6aGJA2k20+Y64w/OIDZInxfMuWYG4jdw3KiLZWpFhQoBaz7EteDDALfZW9no/TuGBmTyPhn9Bu3GQuHa2a5JtFFuqKC2R8D5JWQQWiGZaYzlcGPqktJ/1jbKyXFIJDivkHXjXyw== erikzachte@infodisiac.com
+    ssh_keys: []
     uid: 523
-    email: erikzachte@infodisiac.com
   jamesur:
     ensure: present
     gid: 500
@@ -3119,14 +3117,12 @@ users:
     uid: 4103
     email: nkohli@wikimedia.org
   chelsyx:
-    ensure: present
+    ensure: absent
     gid: 500
     name: chelsyx
     realname: Chelsy Xie
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCpSTjqJly0lX3xY5TtBwHwcH7kir4hAkVGhDXkPjnfdycvXFCXHjrrONLQh6M+lIy4DIgXrK90aLUOgcPRPFLD2pQl7SrYBSSJKSf2Xv6nz7lc3fCsIk0lK+jWfPvc659z91IFsqizgiMqpNJavZoHqxMvqO6JTnxpJQzJ2Elno2lEJCWIKZ1nP+U8/M6BC45bYEHWRH+RyCfMgCkJ5B6+R7B3u0gPjmeICkS5WF0oiW7ktQ2Fo4Go2n0chRXVWyff0+JUA4twC+8YPkfDZhDgvI0r8dH2MOhln9Ex6xqRfgkqXL6V812z3sTn6O4UIfOq3C5X3JCzww9bUXwvv+IpVpklxJyt/Nll8ux1tGJkRVEmb0u6JUTf7gzdscWuoxNHsPEFHtxEiOwfh2QDjn4nfiNixvWPfV8Q9QEBGtx7NCXbv4wrkpQ4eIrqKH9Y0MyhtZ2LnOH2CB9git/vERIBIcFFiKG7U6fYhsTwbtXPghVoUa6hYqaFQr3WYejjllv0wBYWcs0l+gINhl+lqqmx7yc54jEsdyWRml+InrYCcONeMEnJrqytL/K4fNxcjWQ4s7jnG3zVVe9RKmN1Ab06D2QTLZgg8QNS127sAjyxc+IRqaT/xVHnr29B9ymrKFrh0jDEfJ3+TSFrwb2Lnjwc0W+9hSevhQYUJEmZczBQQ== cxie@wikimedia.org
+    ssh_keys: []
     uid: 15196
-    email: xiaoxi.tse@gmail.com
   ovasileva:
     ensure: present
     gid: 500
