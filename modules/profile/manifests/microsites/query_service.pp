@@ -18,12 +18,6 @@ class profile::microsites::query_service {
         'scholarly-experimental':
             domain_name => 'query-scholarly-experimental.wikidata.org',
         ;
-        'main':
-            domain_name => 'query-main.wikidata.org',
-        ;
-        'scholarly':
-            domain_name => 'query-scholarly.wikidata.org',
-        ;
     }
 
     wmflib::dir::mkdir_p('/srv/org/wikidata/query')
