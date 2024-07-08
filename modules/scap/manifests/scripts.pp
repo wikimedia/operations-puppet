@@ -13,14 +13,6 @@ class scap::scripts (
     Wmflib::Ensure $sql_scripts = present,
 ){
 
-    file { '/usr/local/bin/logstash_checker.py':
-        ensure => 'absent',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/service/logstash_checker.py',
-    }
-
     file { '/usr/local/bin/dologmsg':
         owner  => 'root',
         group  => 'root',
