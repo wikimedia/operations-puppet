@@ -5,6 +5,38 @@ profile::admin::groups:
 
 profile::puppet::agent::force_puppet7: true
 
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::sni_support: "yes" # you need the double quotes, because yaml.
+profile::tlsproxy::envoy::tls_port: 1
+profile::tlsproxy::envoy::services:
+  - server_names:
+      - relforge1003.eqiad.wmnet
+      - relforge1004.eqiad.wmnet
+    port: 9200
+  - server_names:
+      - relforge1003.eqiad.wmnet
+      - relforge1004.eqiad.wmnet
+    port: 9300
+  - server_names:
+      - relforge1003.eqiad.wmnet
+      - relforge1004.eqiad.wmnet
+    port: 9400
+profile::tlsproxy::envoy::global_cert_name: "relforge1003.eqiad.wmnet"
+profile::tlsproxy::envoy::ssl_provider: 'cfssl'
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - relforge1003.eqiad.wmnet
+    - relforge1004.eqiad.wmnet
+
+#  Set up a global TLS proxy to apache listening on TCP port 444.
+#profile::envoy::ensure: present
+#profile::tlsproxy::envoy::sni_support: "no" # you need the double quotes, because yaml.
+#profile::tlsproxy::envoy::tls_port: 444
+#profile::tlsproxy::envoy::services:
+#  - server_names: ['*']
+#    port: 80
+#profile::tlsproxy::envoy::global_cert_name: "appserver"
+
 profile::elasticsearch::cirrus::ssl_provider: cfssl
 profile::elasticsearch::cirrus::ferm_srange: '(($CUMIN_MASTERS $ANALYTICS_NETWORKS $STAGING_KUBEPODS_NETWORKS))'
 profile::elasticsearch::cirrus::expose_http: false
