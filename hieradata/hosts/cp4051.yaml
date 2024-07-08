@@ -15,7 +15,7 @@ profile::cache::haproxy::filters:
 
 profile::cache::haproxy::post_acl_actions:
   tls:
-    - context: http-response
+    - context: http-request
       verb: set-bandwidth-limit limit-by-path
 
 lookup_options:
