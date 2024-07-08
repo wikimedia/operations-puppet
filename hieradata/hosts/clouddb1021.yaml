@@ -1,3 +1,6 @@
+# Disable notifications whilst we stop the services, prior to decommissioning #T368518
+profile::monitoring::notifications_enabled: false
+
 # clouddb1021
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s1: 70G
