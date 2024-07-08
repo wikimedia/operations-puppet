@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dns::auth::update (
-    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
-    Stdlib::HTTPSUrl $gitrepo = lookup('profile::dns::auth::gitrepo'),
-    Stdlib::Unixpath $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
-    Stdlib::Fqdn $netbox_exports_domain = lookup('profile::dns::auth::update::netbox_exports_domain'),
-    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips = lookup('profile::dns::auth::authdns_servers_ips'),
-    Array[Wmflib::Sites] $datacenters = lookup('datacenters'),
-    Hash[String, Wmflib::Advertise_vip] $advertise_vips = lookup('profile::bird::advertise_vips', {'merge' => hash}),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers         = lookup('authdns_servers'),
+    Stdlib::HTTPSUrl                                  $gitrepo                 = lookup('profile::dns::auth::gitrepo'),
+    Stdlib::Unixpath                                  $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
+    Stdlib::Fqdn                                      $netbox_exports_domain   = lookup('profile::dns::auth::update::netbox_exports_domain'),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips     = lookup('profile::dns::auth::authdns_servers_ips'),
+    Array[Wmflib::Sites]                              $datacenters             = lookup('datacenters'),
+    Hash[String, Wmflib::Advertise_vip]               $advertise_vips          = lookup('profile::bird::advertise_vips', {'merge' => hash}),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
