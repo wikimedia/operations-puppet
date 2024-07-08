@@ -11,8 +11,8 @@
 
 [DEFAULT]
 
-block_device_mapping = vdb
-device_path = /dev/vdb
+block_device_mapping = sdb
+device_path = /dev/sdb
 
 
 #=========== RPC Configuration ======================
@@ -113,7 +113,7 @@ kombu_reconnect_delay=0.1
 
 [mysql]
 docker_image = quay.io/wikimedia-cloud-services/mysql
-device_path = /dev/vdb
+device_path = /dev/sdb
 
 # A terrible thing is happening here: a bug in the mysql backup driver in version bobcat
 # doubles up the version. So this setting results in us looking for a container named
@@ -128,11 +128,11 @@ backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-mysql:5.7
 
 [mariadb]
 docker_image = quay.io/wikimedia-cloud-services/mariadb
-device_path = /dev/vdb
+device_path = /dev/sdb
 backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-mariadb:10.5.10
 
 [redis]
-device_path = /dev/vdb
+device_path = /dev/sdb
 docker_image = quay.io/wikimedia-cloud-services/redis
 # For redis, the following are the defaults for backup, and restore:
 # backup_strategy = RedisBackup
@@ -140,17 +140,17 @@ docker_image = quay.io/wikimedia-cloud-services/redis
 # restore_namespace = trove.guestagent.strategies.restore.experimental.redis_impl
 
 [postgresql]
-device_path = /dev/vdb
+device_path = /dev/sdb
 docker_image = quay.io/wikimedia-cloud-services/postgres
 backup_docker_image = quay.io/wikimedia-cloud-services/db-backup-postgresql:12.7
 
 [percona]
-device_path = /dev/vdb
+device_path = /dev/sdb
 backup_namespace = trove.guestagent.strategies.backup.mysql_impl
 restore_namespace = trove.guestagent.strategies.restore.mysql_impl
 
 [guest_agent]
-device_path = /dev/vdb
+device_path = /dev/sdb
 container_registry = quay.io/wikimedia-cloud-services
 container_registry_username = <%= @trove_quay_user %>
 container_registry_password = <%= @trove_quay_pass %>
