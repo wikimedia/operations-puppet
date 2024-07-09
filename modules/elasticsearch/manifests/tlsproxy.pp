@@ -38,6 +38,19 @@ define elasticsearch::tlsproxy (
         enable_http2      => $enable_http2,
         cfssl_paths       => $cfssl_paths,
     }
+
+    if $server_name =~ /relforge/ {
+        $envoy_tls_port = 10000 + $tls_port
+        envoyproxy::tls_terminator { String($envoy_tls_port):
+            upstreams => [{
+                server_names => ['*'],
+                upstream     => {
+                    port => $upstream_port,
+                }
+            }]
+        }
+    }
+
     $check_command = $acme_chief ? {
         true    => 'check_ssl_on_port_letsencrypt',
         default => 'check_ssl_on_port',
