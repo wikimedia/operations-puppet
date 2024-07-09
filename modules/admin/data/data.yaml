@@ -863,6 +863,8 @@ groups:
     description: Allow releng team to be in the docker group for contint. No gid on purpose
     members: [*ops_members, *releng_members, gjg, addshore, reedy, krinkle, jforrester]
     system_members: [jenkins-agent]
+    approval:
+      - Tyler Cipriani
   deployment-docker:
     # See the comment above regarding both security and the use of the posix name instead than the gid.
     # Might be removed in the future if there is no more need. See T303450
