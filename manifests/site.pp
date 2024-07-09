@@ -1291,11 +1291,6 @@ node /^failoid[12]002\.(eqiad|codfw)\./ {
     role(failoid)
 }
 
-# Etcd clusters for kubernetes, v3
-node /^kubetcd[12]00[456]\.(eqiad|codfw)\./ {
-    role(etcd::v3::kubernetes)
-}
-
 # kubernetes masters for staging clusters
 node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
     role(kubernetes::staging::master_stacked)

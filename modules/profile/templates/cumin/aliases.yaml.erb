@@ -228,7 +228,7 @@ kafka-mirror-maker-test-eqiad: A:kafka-test-eqiad and A:kafka-mirror-maker
 karapace: P{O:karapace}
 kerberos: P{O:kerberos::kdc}
 kerberos-kadmin: P{<%= @kerberos_kadmin_host %>}
-wikikube-etcd: P{O:etcd::v3::kubernetes} or (A:wikikube-master and A:all-etcd)
+wikikube-etcd: (A:wikikube-master and A:all-etcd)
 wikikube-etcd-all: A:wikikube-etcd or A:wikikube-staging-etcd
 wikikube-master: P{O:kubernetes::master_stacked}
 wikikube-worker: P{O:kubernetes::worker}

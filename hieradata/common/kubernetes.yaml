@@ -89,10 +89,6 @@ kubernetes::clusters:
       cluster_cidr:
         v4: "10.67.128.0/18"
         v6: "2620:0:861:cabe::/64"
-      etcd_urls:
-        - https://kubetcd1004.eqiad.wmnet:2379
-        - https://kubetcd1005.eqiad.wmnet:2379
-        - https://kubetcd1006.eqiad.wmnet:2379
       cluster_nodes:
         - kubernetes1005.eqiad.wmnet
         - kubernetes1006.eqiad.wmnet
@@ -340,10 +336,6 @@ kubernetes::clusters:
       cluster_cidr:
         v4: "10.194.128.0/18"
         v6: "2620:0:860:cabe::/64"
-      etcd_urls:
-        - https://kubetcd2004.codfw.wmnet:2379
-        - https://kubetcd2005.codfw.wmnet:2379
-        - https://kubetcd2006.codfw.wmnet:2379
       cluster_nodes:
         - kubernetes2005.codfw.wmnet
         - kubernetes2006.codfw.wmnet

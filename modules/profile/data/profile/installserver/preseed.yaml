@@ -344,9 +344,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'karapace*':
     - partman/flat.cfg
     - virtual.cfg
-  'kubetcd*':
-    - partman/flat.cfg
-    - virtual.cfg
   'kubernetes[12]0[01][56]':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
