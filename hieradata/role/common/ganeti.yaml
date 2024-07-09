@@ -5,7 +5,6 @@ profile::ssh::server::authorized_keys_file:
 profile::ganeti::rapi_nodes:
     - netbox1002.eqiad.wmnet
     - netbox2002.codfw.wmnet
-    - netbox-dev2002.codfw.wmnet
     - netbox-dev2003.codfw.wmnet
     - netmon1003.wikimedia.org
     - netmon2002.wikimedia.org
