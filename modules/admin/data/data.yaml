@@ -7192,3 +7192,7 @@ ldap_only_users:
     ensure: present
     realname: Sohom Datta
     email: sohomdatta1@gmail.com
+  eup:
+    ensure: present
+    realname: Euphemia Uwandu
+    email: euwandu@wikimedia.org
