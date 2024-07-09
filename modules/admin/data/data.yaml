@@ -152,7 +152,7 @@ groups:
               kartik, krinkle, marktraceur, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
-              mobrovac, nuria, joal,
+              mobrovac, joal,
               mforns, dcausse,
               addshore, niharika29,
               pmiazga, jdrewniak, sbisson, jforrester, mbsantos,
@@ -417,7 +417,7 @@ groups:
                  This will grant shell access on all Analytics Cluster nodes, as well
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
-    members: &analytics_admins_members [joal, nuria, mforns, milimetric, oljad, ebysans, aqu,
+    members: &analytics_admins_members [joal, mforns, milimetric, oljad, ebysans, aqu,
               xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
               btullis, stevemunene, brouberol, ryankemper, bking, gehel, amastilovic]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
