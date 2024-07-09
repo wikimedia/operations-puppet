@@ -83,6 +83,20 @@ SELECT CONCAT("https://phabricator.wikimedia.org/project/board/", prj.id) AS url
 END
 )
 
+#echo "result_editengine_changes"
+result_editengine_changes=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
+
+SELECT CONCAT("https://phabricator.wikimedia.org/transactions/editengine/maniphest.task/view/", seec.id) AS form, seect.transactionType, u.userName AS
+user
+    FROM phabricator_search.search_editengineconfigurationtransaction seect
+    INNER JOIN phabricator_search.search_editengineconfiguration seec ON seec.phid = seect.objectPHID
+    INNER JOIN phabricator_user.user u ON seect.authorPHID = u.phid
+    WHERE seect.dateModified > UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL 1 WEEK)) 
+    ORDER BY seec.id,seect.dateModified;
+
+END
+)
+
 #echo "result_archived_projects_open_tasks"
 # see https://phabricator.wikimedia.org/T133649
 result_archived_projects_open_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
@@ -551,9 +565,14 @@ PROJECT POLICY/LOCKING/ARCHIVING CHANGES:
 ${result_policy_locking_archiving_changes}
 
 
-PROJECT WORKBOARD COLUMN CHANGES:
-(newValue and oldValue values: 0 = shown, 1 = hidden)
+PROJECT WORKBOARD COLUMN CHANGES
+(newValue and oldValue values: 0 = shown, 1 = hidden):
 ${result_column_changes}
+
+
+EDIT ENGINE / FORM CREATIONS AND CHANGES
+(to potentially review, see T369548):
+${result_editengine_changes}
 
 
 USER ACCOUNTS WHO BECAME AN ASSIGNEE RECENTLY AND HAD LESS THAN 5 TASKS EVER ASSIGNED
