@@ -878,7 +878,7 @@ hive_services:
     # Please note that this value is overridden by the coordinators to force
     # them to use their local Metastore. Check the coordinators' role for more info.
     metastore_host: 'analytics-hive.eqiad.wmnet'
-    metastore_jdbc_host: 'an-mariadb1001.eqiad.wmnet'
+    metastore_jdbc_host: 'an-mariadb1002.eqiad.wmnet'
     metastore_sasl_enabled: true
     metastore_kerberos_keytab_file: '/etc/security/keytabs/hive/hive.keytab'
     metastore_kerberos_principal: 'hive/analytics-hive.eqiad.wmnet@WIKIMEDIA'
