@@ -14,7 +14,6 @@ class scap::scripts (
 ){
 
     file { '/usr/local/bin/logstash_checker.py':
-        ensure => 'absent',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
