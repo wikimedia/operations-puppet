@@ -7184,3 +7184,7 @@ ldap_only_users:
     ensure: present
     realname: Audrey Penven
     email: audrey.penven@wikimedia.de
+  lferreira:
+    ensure: present
+    realname: Levi Ferreira
+    email: lferreira@wikimedia.org
