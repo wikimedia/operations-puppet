@@ -6,7 +6,19 @@
 # ./modules/phabricator/files/quarterly_wmf_qls.sh
 source /etc/phab_quarterly_wmf_qls.conf
 
-lastquarter=$(date +"Q$(expr $(expr $(date -d '-1 month' +%m) - 1) / 3 + 1)/%Y")
+lastquarterint=$(expr $(expr $(date -d '-1 month' +%m) - 1) / 3 + 1)
+
+if (( $lastquarterint % 4 == 1 ))
+then lastquarterintfy=3
+elif (( $lastquarterint % 4 == 2 ))
+then lastquarterintfy=4
+elif (( $lastquarterint % 4 == 3 ))
+then lastquarterintfy=1
+elif (( $lastquarterint % 4 == 0 ))
+then lastquarterintfy=2
+fi
+
+lastquarterstr=$(date +"Q$lastquarterint/%Y (Q$lastquarterintfy in FY)")
 
 #echo "result_tasks"
 result_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
@@ -40,7 +52,7 @@ END
 )
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator data for WMF QLS - ${lastquarter}" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator data for WMF QLS - ${lastquarterstr}" ${rcpt_address}
 This is the automatic quarterly Phabricator mail for WMF QLS.
 
 It is supposed to list Phabricator tasks reported by folks who are
