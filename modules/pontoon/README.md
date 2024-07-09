@@ -8,20 +8,13 @@ example to create new hosts.
 You will need a `puppet.git` checkout, and specifically the
 `modules/pontoon/files` directory, where stack configurations are stored.
 
-**NOTE** while https://phabricator.wikimedia.org/T352640 is in progress, make
-sure to `git checkout sandbox/filippo/pontoon-puppetserver`. This is the
-development branch that will be merged in `production`. The branch gets `git push -f`
-to and therefore you might see git complaining. If that happens, you can
-`git reset --hard origin/sandbox/filippo/pontoon-puppetserver` to get the latest
-changes.
 
 To install `pontoonctl` on your Debian system:
 
     # Dependencies
     cd <local puppet.git checkout>/modules/pontoon/files
     sudo apt install python3-novaclient python3-keystoneauth1 pipx
-    # See NOTE above re: using the sandbox branch
-    git checkout sandbox/filippo/pontoon-puppetserver
+    git checkout production
     # Run pontoonctl from puppet.git checkout
     pipx install --system-site-packages --editable .[ctl]
 
