@@ -397,6 +397,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephmon100[1-3]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'cloudcephmon100[4-6]':
+    - partman/standard.cfg
+    - partman/raid10-4dev.cfg
   'cloudcephosd1*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
