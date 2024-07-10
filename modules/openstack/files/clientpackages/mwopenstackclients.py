@@ -4,7 +4,6 @@ import logging
 import os
 import requests
 from tenacity import before_sleep_log, retry, stop_after_attempt, wait_random
-import yaml
 
 import glanceclient
 from keystoneauth1.identity.v3 import Password as KeystonePassword
@@ -25,7 +24,6 @@ class Clients(object):
 
     def __init__(
         self,
-        envfile="",
         username="",
         password="",
         url="",
@@ -36,12 +34,10 @@ class Clients(object):
         """
         Read config from one of:
          - clouds.yaml (config specified by oscloud)
-         - envfile arg
          - username, password, url, project args
          - execution environment varaiables
            (i.e. OS_USERNAME, OS_PASSWORD, OS_AUTH_URL, OS_PROJECT_ID)
 
-        :param envfile: A puppetized yaml file like /etc/observerenv.yaml
         :param username: OpenStack user
         :param password: OpenStack password
         :param url: OpenStack authentication URL
@@ -78,17 +74,6 @@ class Clients(object):
                     break
             else:
                 raise Exception("%s not found in clouds.yaml", oscloud)
-        elif envfile:
-            if username or password or url or project:
-                raise Exception("envfile is incompatible with specific args")
-
-            with open(envfile) as f:
-                env = yaml.safe_load(f)
-                self.username = env["OS_USERNAME"]
-                self.password = env["OS_PASSWORD"]
-                self.url = env["OS_AUTH_URL"]
-                self.project = env["OS_PROJECT_ID"]
-                self.region = env["OS_REGION_NAME"]
         else:
             if username:
                 self.username = username
