@@ -322,7 +322,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 9243
@@ -351,7 +351,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 8243
@@ -380,7 +380,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 9443
@@ -409,7 +409,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 8443
@@ -438,7 +438,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 9643
@@ -467,7 +467,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
     port: 8643
