@@ -15,7 +15,6 @@
 
 import argparse
 import logging
-import os
 import sys
 import time
 
@@ -154,21 +153,6 @@ if __name__ == "__main__":
     argparser = argparse.ArgumentParser(
         "wmcs-drain-hypervisor", description="Move all VMs off a given hypervisor"
     )
-    argparser.add_argument(
-        "--nova-user",
-        help="username for nova auth",
-        default=os.environ.get("OS_USERNAME", None),
-    )
-    argparser.add_argument(
-        "--nova-pass",
-        help="password for nova auth",
-        default=os.environ.get("OS_PASSWORD", None),
-    )
-    argparser.add_argument(
-        "--nova-url",
-        help="url for nova auth",
-        default=os.environ.get("OS_AUTH_URL", None),
-    )
     argparser.add_argument("hypervisor", help="name of hypervisor to drain")
 
     args = argparser.parse_args()
@@ -179,7 +163,7 @@ if __name__ == "__main__":
         stream=sys.stdout,
     )
 
-    osclients = mwopenstackclients.clients()
+    osclients = mwopenstackclients.clients(oscloud='novaadmin')
     nova = osclients.novaclient()
 
     retries = 1
