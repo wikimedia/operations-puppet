@@ -221,11 +221,19 @@ sub cluster_fe_ratelimit {
         }
 
         // Requests in violation of the User-Agent policy
-        if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/|Scrapy/)") {
+        if (req.http.User-Agent ~ "^(Go-http-client|Python-urllib|Java/|Wget/)") {
             // UA-policy violations: 10/10s (1/s long term, with 10 burst)
             if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
                 set req.http.X-Requestctl = req.http.X-Requestctl + ",static_ua_policy";
                 return (synth(429, "Too many requests. Please comply with the User-Agent policy to get a higher rate limit: https://meta.wikimedia.org/wiki/User-Agent_policy"));
+            }
+        }
+
+        if (req.http.User-Agent ~ "^Scrapy/") {
+            // Scrapy whole-user-agent rate limiting: 10/100s (0.1/s long term, with 10 burst)
+            if (vsthrottle.is_denied("ua-policy:scrapy", 10, 100s)) {
+                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_scrapy";
+                return (synth(429, "Too Many Requests"));
             }
         }
 
