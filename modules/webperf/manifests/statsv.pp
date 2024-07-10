@@ -36,15 +36,9 @@ class webperf::statsv(
     }
 
     # Uses $kafka_brokers, $kafka_security_protocol, $kafka_ssl_cafile, and $statsd
-    systemd::unit { 'statsv':
-        ensure  => present,
+    systemd::service { 'statsv':
         content => template('webperf/statsv.service.erb'),
         restart => true,
-    }
-
-    service { 'statsv':
-        ensure   => running,
-        provider => systemd,
     }
 
     nrpe::monitor_service { 'statsv':
