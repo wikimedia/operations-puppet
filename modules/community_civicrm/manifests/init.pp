@@ -12,7 +12,8 @@
 # tag a ticket with 'Fundraising-Backlog'.
 #
 # @param config_nonce a unique value to use in the site configuration dir
-# @param hast_salt salt for one-time login links, cancel links, form tokens, etc.
+# @param hash_salt salt for one-time login links, cancel links, form tokens, etc.
+# @param git_branch branch to check out of git for civicrm code
 # @param site_name endpoint dns name for civicrm web interface
 # @param db_host host of where the civicrm db is located
 # @param db_user civicrm admin db user
@@ -24,6 +25,7 @@
 class community_civicrm (
     String $config_nonce,
     String $hash_salt,
+    String $git_branch,
     Stdlib::Fqdn $site_name,
     Stdlib::Host $db_host = 'localhost',
     String $db_user = 'civi_admin',
@@ -147,12 +149,13 @@ class community_civicrm (
     }
 
     git::clone { 'repos/fundraising-tech/community-civicrm':
-        ensure    => latest,
-        directory => '/srv/community_civicrm',
-        branch    => 'main',
-        owner     => 'civiadmin',
-        group     => 'www-data',
-        source    => 'gitlab',
+        ensure        => latest,
+        directory     => '/srv/community_civicrm',
+        branch        => $git_branch,
+        owner         => 'civiadmin',
+        group         => 'www-data',
+        source        => 'gitlab',
+        update_method => 'checkout',
     }
 
     # install a db on localhost

@@ -8,6 +8,7 @@ describe 'profile::community_civicrm' do
       let(:params) do
         {
           config_nonce: 'random',
+          git_branch: 'main',
           hash_salt: 'salt',
           db_pass: 'supper_safe',
         }
