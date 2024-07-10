@@ -22,6 +22,7 @@ profile::puppetserver::git::repos:
   # has a post-receive hook which force the readonly version of this repo (defined below) to perform a pull
   'private':
     init: true
+    safedir: true
     branch: 'master'
     hooks:
       'commit-msg': 'puppet:///modules/puppetmaster/git/private/commit-msg-master'

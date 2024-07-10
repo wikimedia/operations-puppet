@@ -85,11 +85,23 @@ class profile::puppetserver::git (
     $repos.each |$repo, $config| {
         $dir = "${basedir}/${repo}"
 
-        git::systemconfig { "mark puppet repo ${dir} as safe":
-            ensure   => absent,
-            settings => {},
+        if $config.has_key('safedir') and $config['safedir'] {
+            git::systemconfig { "mark puppet repo ${dir} as safe":
+                settings => {
+                    'safe' => {
+                        'directory' => $dir,
+                    },
+                },
+            }
+        } else {
+            # By default in environments like Cloud we want to leverage the git's
+            # safe directory checks to avoid users messing up with repos that should
+            # be managed only by system users (like gitpuppet).
+            git::systemconfig { "mark puppet repo ${dir} as safe":
+                ensure   => absent,
+                settings => {},
+            }
         }
-
         $origin = $config['origin'].lest || { "https://gerrit.wikimedia.org/r/${repo}" }
         ensure_resource('file', $dir.dirname, {
             ensure => stdlib::ensure($ensure, 'directory'),
