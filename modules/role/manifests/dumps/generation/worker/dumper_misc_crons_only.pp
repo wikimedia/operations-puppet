@@ -3,8 +3,7 @@ class role::dumps::generation::worker::dumper_misc_crons_only {
     include ::profile::firewall
 
     include profile::dumps::generation::worker::common
-    # Temporarily disable the miscellaneous dumps - See #T368098#9949574
-    # include profile::dumps::generation::worker::systemdjobrunner
+    include profile::dumps::generation::worker::systemdjobrunner
 
     system::role { 'dumps::generation::worker::dumper_misc_crons':
         description => 'dumper of misc dumps (such as wikidata weeklies, cirrussearch)',
