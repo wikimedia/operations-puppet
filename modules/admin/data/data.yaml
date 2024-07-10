@@ -7188,3 +7188,7 @@ ldap_only_users:
     ensure: present
     realname: Levi Ferreira
     email: lferreira@wikimedia.org
+  soda:
+    ensure: present
+    realname: Sohom Datta
+    email: sohomdatta1@gmail.com
