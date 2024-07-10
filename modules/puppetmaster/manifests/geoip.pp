@@ -59,7 +59,6 @@ class puppetmaster::geoip(
             user_id        => $passwords::geoip::user_id_ipinfo,
             license_key    => $passwords::geoip::license_key_ipinfo,
             product_ids    => [
-                'GeoIP2-Enterprise',
                 'GeoLite2-ASN',
                 'GeoLite2-Country',
                 'GeoLite2-City',
