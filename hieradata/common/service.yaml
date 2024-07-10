@@ -1806,7 +1806,7 @@ service::catalog:
         ProxyFetch:
           url:
             - http://en.wikipedia.com/_status
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
         - codfw
@@ -1846,7 +1846,7 @@ service::catalog:
         ProxyFetch:
           url:
             - https://en.wikipedia.com/_status
-      scheduler: wrr
+      scheduler: mh
       ipip_encapsulation:
         - eqiad
         - codfw
