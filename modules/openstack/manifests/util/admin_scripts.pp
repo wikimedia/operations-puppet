@@ -10,31 +10,13 @@ class openstack::util::admin_scripts(
         ensure => 'present',
     }
 
-    # We need a mysql client in order to run wmcs-cold-migrate and wmcs-ceph-migrate;
-    #  they modify the VM host directly in the db
-    # Make the custom component explicit so this is not installed from the debian archive
-    # which would result in puppet trying to downgrade later the package when galera's
-    # module mariadb-backup is installed
-    if debian::codename::eq('bullseye') {
-        apt::package_from_component { 'openstack-mariadb-client':
-            component => 'thirdparty/openstack-db',
-            packages  => ['mariadb-client'],
-        }
-    } else {
-        ensure_packages(['mariadb-client'])
-    }
-
     package{ 'python3-pytest':
         ensure => 'present',
     }
 
     # Script to cold-migrate instances between compute nodes
     file { '/usr/local/sbin/wmcs-cold-nova-migrate':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-nova-migrate.py",
+        ensure => absent,
     }
 
     # Scripts to backup up/restore cinder volumes
@@ -182,15 +164,8 @@ class openstack::util::admin_scripts(
         require   => File['/root/.ssh'],
     }
 
-    # Script to rsync shutoff instances between compute nodes.
-    #  This ignores most nova facilities so is a good last resort
-    #  when nova is misbehaving.
     file { '/usr/local/sbin/wmcs-cold-migrate':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-cold-migrate.py",
+        ensure => absent,
     }
 
     # Script to drain a ceph-enabled cloudvirt via live migration
