@@ -33,6 +33,12 @@ define prometheus::mysqld_exporter (
     }
 
     ensure_packages('prometheus-mysqld-exporter', {'notify' => Exec['systemctl try-restart prometheus-mysqld-exporter']})
+    if debian::codename::eq('bullseye') {
+      # Needed to get the latest version 0.13 see https://phabricator.wikimedia.org/T369722
+      apt::package_from_bpo {'prometheus-mysqld-exporter':
+        distro => 'bullseye',
+      }
+    }
 
     file { '/var/lib/prometheus':
         ensure  => directory,
