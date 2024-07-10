@@ -48,17 +48,11 @@ class webperf::navtiming(
         deploy_user  => 'deploy-service',
     }
 
-    systemd::unit { 'navtiming':
-        ensure  => present,
+    systemd::service { 'navtiming':
         # uses $statsd_host, $statsd_port, $kafka_brokers,
         # $kafka_security_protocol, and $kafka_ssl_cafile
         content => template('webperf/navtiming.systemd.erb'),
         restart => true,
-    }
-
-    service { 'navtiming':
-        ensure   => running,
-        provider => systemd,
     }
 
     profile::auto_restarts::service { 'navtiming': }
