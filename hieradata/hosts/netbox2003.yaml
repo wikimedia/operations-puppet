@@ -1,0 +1,6 @@
+# TODO - move to hieradata/role/common/netbox/frontend.yaml after Netbox 4 upgrade
+profile::netbox::automation::frontends:
+  - netbox1003.eqiad.wmnet
+  - netbox2003.codfw.wmnet
+profile::netbox::db_primary: netboxdb1003.eqiad.wmnet
+profile::netbox::active_server: netbox1003.eqiad.wmnet

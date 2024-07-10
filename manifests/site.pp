@@ -2306,11 +2306,11 @@ node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
 
-node /^netbox[12]002\.(eqiad|codfw)\./ {
+node /^netbox[12]00[0-9]\.(eqiad|codfw)\./ {
     role(netbox::frontend)
 }
 
-node /^netboxdb[12]002\.(eqiad|codfw)\./ {
+node /^netboxdb[12]00[0-9]\.(eqiad|codfw)\./ {
     role(netbox::database)
 }
 
