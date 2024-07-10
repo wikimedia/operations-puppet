@@ -16,8 +16,8 @@ Note that this only works with the keystone v2.0 API.
 
 """
 import argparse
-import os
 
+import openstack.config
 import designatemakedomain
 
 if __name__ == "__main__":
@@ -26,25 +26,9 @@ if __name__ == "__main__":
     )
 
     argparser.add_argument(
-        "--designate-user",
-        help="username for nova auth",
-        default=os.environ.get("OS_USERNAME", None),
+        "--os-cloud", help="clouds.yaml section to use for auth", default="novaadmin"
     )
-    argparser.add_argument(
-        "--designate-pass",
-        help="password for nova auth",
-        default=os.environ.get("OS_PASSWORD", None),
-    )
-    argparser.add_argument(
-        "--keystone-url",
-        help="url for keystone auth and catalog",
-        default=os.environ.get("OS_AUTH_URL", None),
-    )
-    argparser.add_argument(
-        "--region",
-        help="keystone/designate region",
-        default=os.environ.get("OS_REGION_NAME", None),
-    )
+
     argparser.add_argument(
         "--project", help="project for domain creation", required=True
     )
@@ -81,23 +65,32 @@ if __name__ == "__main__":
             if not args.domain.endswith("."):
                 args.domain = "%s." % args.domain
 
+    auth = {}
+    cloud_config = openstack.config.OpenStackConfig().get_all_clouds()
+    for cloud in cloud_config:
+        if cloud.name == args.os_cloud:
+            auth["url"] = cloud.auth["auth_url"]
+            auth["username"] = cloud.auth["username"]
+            auth["password"] = cloud.auth["password"]
+            auth["region"] = cloud.region_name
+
     if args.delete:
         designatemakedomain.deleteDomain(
-            args.keystone_url,
-            args.designate_user,
-            args.designate_pass,
+            auth["url"],
+            auth["username"],
+            auth["password"],
             args.project,
             args.domain,
-            args.region,
+            auth["region"],
             args.all,
         )
     else:
         designatemakedomain.createDomain(
-            args.keystone_url,
-            args.designate_user,
-            args.designate_pass,
+            auth["url"],
+            auth["username"],
+            auth["password"],
             args.project,
             args.domain,
             args.orig_project,
-            region=args.region,
+            region=auth["region"],
         )
