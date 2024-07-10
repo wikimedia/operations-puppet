@@ -950,6 +950,8 @@ groups:
     members: [*fr_tech_admins]
     privileges:
       - 'ALL = NOPASSWD: /usr/local/sbin/authdns-update'
+    approval:
+      - Kwaku Addo Ofori
   zuul-deployers:
     gid: 818
     description: 'deploy Zuul'
