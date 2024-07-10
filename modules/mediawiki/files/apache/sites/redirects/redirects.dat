@@ -248,6 +248,9 @@ funnel	fixcopyright.wikimedia.org	https://wikimediafoundation.org/advocacy/
 # T300398
 funnel  unseen.wikimedia.org      https://wikimediafoundation.org/participate/unseen/
 
+# T367012
+funnel benefactors.wikimedia.org https://wikimediafoundation.org/support/benefactors/
+
 # rewrite old-bugzilla to the static version
 rewrite	old-bugzilla.wikimedia.org	https://static-bugzilla.wikimedia.org
 rewrite	bug-attachment.wikimedia.org	https://static-bugzilla.wikimedia.org

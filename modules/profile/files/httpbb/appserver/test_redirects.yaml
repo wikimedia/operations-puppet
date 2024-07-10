@@ -91,3 +91,10 @@ https://vro.wikipedia.org:
   assert_status: 301
   assert_headers:
       Location: https://fiu-vro.wikipedia.org/
+
+# T367012
+https://benefactors.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikimediafoundation.org/support/benefactors/
