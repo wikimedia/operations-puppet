@@ -6,7 +6,7 @@
 #
 # [*mwapi_host*]
 #   The host/IP where to reach the MW appservers. Default:
-#   http://api-rw.discovery.wmnet
+#   https://mw-api-int.discovery.wmnet:4446
 #
 # [*restbase_uri*]
 #   The host/IP where to reach RESTBase. Default:
