@@ -23,8 +23,8 @@ define prometheus::mysqld_exporter (
     $client_user = 'prometheus',
     $client_password = '',
     $arguments = '',
+    $enable_heartbeat_monitoring = true,
 ) {
-
     #We only want to restart if the service is running
     #(which it won't be if mariadb isn't)
     exec { 'systemctl try-restart prometheus-mysqld-exporter':
@@ -68,20 +68,24 @@ define prometheus::mysqld_exporter (
 --collect.global_variables \
 --collect.info_schema.processlist \
 --collect.slave_status \
---no-collect.info_schema.tables \
---collect.heartbeat \
---collect.heartbeat.utc"
+--no-collect.info_schema.tables"
     }
     else {
         $options = $arguments
     }
-
+    if $enable_heartbeat_monitoring == true {
+        $final_options = "${options} \
+--collect.heartbeat \
+--collect.heartbeat.utc"
+    } else {
+        $final_options = $options
+    }
     file { '/etc/default/prometheus-mysqld-exporter':
         ensure  => present,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
-        content => "ARGS=\"${options}\"",
+        content => "ARGS=\"${final_options}\"",
         notify  => Exec['systemctl try-restart prometheus-mysqld-exporter'],
     }
 
