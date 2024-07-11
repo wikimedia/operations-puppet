@@ -52,7 +52,8 @@ funnel	shop.wikimedia.org	https://store.wikimedia.org
 funnel	shop.wikipedia.org	https://store.wikimedia.org
 funnel	store.wikipedia.org	https://store.wikimedia.org
 
-funnel	sep11.wikipedia.org	https://wayback.archive.org/web/20030315000000*/http://sep11.wikipedia.org/wiki/In_Memoriam
+# T367014 (before: gerrit:225043)
+funnel	sep11.wikipedia.org	https://meta.wikimedia.org/wiki/Sep11wiki
 
 # Language aliases
 rewrite	be-x-old.wikisource.org	https://be.wikisource.org # T43755

@@ -98,3 +98,11 @@ https://benefactors.wikimedia.org:
   assert_status: 301
   assert_headers:
     Location: https://wikimediafoundation.org/support/benefactors/
+
+# T367014
+https://sep11.wikipedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://meta.wikimedia.org/wiki/Sep11wiki
+
