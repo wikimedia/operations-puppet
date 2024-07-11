@@ -5,5 +5,5 @@ if [ "$(id -u)" != "0" ] ; then
 	exit 1
 fi
 
-OS_CLOUD=novaadmin
+export OS_CLOUD=novaadmin
 openstack "$@"
