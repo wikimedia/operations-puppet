@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
 # automate subscribing users to certain lists
-# intoduced for steward-related lists (T351202)
+# introduced for steward-related lists (T351202)
 #
 class profile::lists::automation (
     Stdlib::Unixpath $data_dir = lookup('profile::lists::automation::data_dir', {default_value => '/srv/exports'}),
     Stdlib::Host $lists_host = lookup('lists_primary_host'),
     Stdlib::Host $stewards_host = lookup('stewards_primary_host'),
-    Wmflib::Ensure $ensure = lookup('profile::lists::automation::ensure', { default_value => 'absent' })
+    Wmflib::Ensure $ensure = lookup('profile::lists::automation::ensure', { default_value => 'absent' }),
+    Array[String] $lists_to_sync = lookup('profile::lists::automation::lists_to_sync'),
 ){
 
     wmflib::dir::mkdir_p($data_dir, {
@@ -21,16 +22,9 @@ class profile::lists::automation (
         interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
     }
 
-    systemd::timer::job { 'stewards_subscriber_list_sync':
-        ensure       => $ensure,
-        user         => 'root',
-        description  => 'sync stewards lists members with imported subscriber data',
-        command      => @("CMD"/L),
-          /usr/bin/mailman-wrapper syncmembers -n \
-          ${data_dir}/mailman_list/lists.wikimedia.org/stewards-l \
-          stewards-l@lists.wikimedia.org\
-          | CMD
-        interval     => {'start' => 'OnCalendar', 'interval' => 'hourly'},
-        logfile_name => 'stewards_subscriber_list_sync.log',
+    each($lists_to_sync) |$list_name| {
+        mailman3::sync_list_members { "sync-members-${list_name}":
+            list_name => $list_name,
+        }
     }
 }
