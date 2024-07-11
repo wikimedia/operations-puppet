@@ -12,6 +12,8 @@ profile::tlsproxy::envoy::cfssl_options:
     - query-main-experimental.wikidata.org
     - query-scholarly-experimental.wikidata.org
     - query.wikidata.org
+    - query-main.wikidata.org
+    - query-scholarly.wikidata.org
 profile::miscweb::rsync::src_host: 'miscweb1003.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb2003.codfw.wmnet'
