@@ -225,7 +225,8 @@ class TaskGen < ::Rake::TaskLib
     return [] if @changed_files.empty?
     excluded_files = [
       'typos',  # The typos file itself
-      'hieradata/common/certificates.yaml'  # Houses domain typos
+      'hieradata/common/certificates.yaml',  # Houses domain typos
+      'modules/ncredir/files/nc_redirects.dat'  # Houses domain typos
     ]
     shell_files = Shellwords.join(@changed_files - excluded_files)
     # If only typos was modified, bail out immediately
