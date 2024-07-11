@@ -335,10 +335,10 @@ ncredir: P{O:ncredir}
 <% @datacenters.each do |dc| -%>
 ncredir-<%= dc %>: A:ncredir and A:<%= dc %>
 <% end -%>
-netbox: P{O:netbox::frontend}
+netbox: P{netbox1002.eqiad.wmnet or netbox2002.codfw.wmnet}
 netbox-canary: P{O:netbox::standalone}
 netbox-all: A:netbox or A:netbox-canary
-netboxdb: P{O:netbox::database}
+netboxdb: P{netboxdb1002.eqiad.wmnet or netboxdb2002.codfw.wmnet}
 netflow: P{O:netinsights}
 netmon: P{O:network::monitor}
 orchestrator: P{O:orchestrator}
