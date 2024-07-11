@@ -241,6 +241,7 @@ Components: main
  thirdparty/opensearch2
  thirdparty/routinator
  thirdparty/tofu
+ thirdparty/yarn
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
@@ -260,6 +261,7 @@ Update:
  thirdparty/kubeadm-k8s-1-24
  thirdparty/kubeadm-k8s-1-25
  thirdparty/tofu
+ thirdparty/yarn
 Description: Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override

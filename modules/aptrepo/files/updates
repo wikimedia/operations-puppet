@@ -449,3 +449,11 @@ Components: main>thirdparty/tofu
 UDebComponents:
 Architectures: amd64
 VerifyRelease: 70DF59811A8B9109
+
+Name: thirdparty/yarn
+Method: https://dl.yarnpkg.com/debian/
+Suite: stable
+Components: main>thirdparty/yarn
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 1646B01B86E50310
