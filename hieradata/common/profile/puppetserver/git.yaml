@@ -17,9 +17,18 @@ profile::puppetserver::git::repos:
     branch: 'master'
     origin: 'https://netbox-exports.wikimedia.org/netbox-hiera'
     link: '/etc/puppet/netbox'
-  # This is the copy of the private repo that will be edited by users.  it will live in $basedir/private.
-  # There is post-commit hook which automatically syncs commits to all other puppet servers. The repo also
-  # has a post-receive hook which force the readonly version of this repo (defined below) to perform a pull
+  # This is the copy of the private repo that will be edited by user, living in $basedir/private.
+  # Useful info about the configured git hooks:
+  # 1) There is post-commit hook which automatically syncs commits to all other puppet servers,
+  #    and that also refreshes the read-only copy of the repo that Puppet uses
+  #    (see below for operations/private for more details).
+  # 2) The repo also has a post-receive hook which force the read-only version of
+  #    this repo (defined below) to perform a pull. The hook is used when the repo
+  #    receives an update (via git push) from another puppetserver.
+  # The above hooks ensure the consistency of the "editable" private repos and
+  # the "read-only" repos between each other.
+  # Please note: the post-commit and post-receive hooks assume a repository named
+  # operations/private under $basedir.
   'private':
     init: true
     safedir: true
@@ -30,13 +39,13 @@ profile::puppetserver::git::repos:
       'pre-commit': 'puppet:///modules/profile/puppetserver/git/private/hooks/pre-commit.sh'
       'post-receive': 'profile/puppetserver/git/private/hooks/post-receive.erb'
     config: 'puppet:///modules/puppetmaster/git/private/config'
-  # This is a readonly version of the private repo.  readonly is enforced by various pre-* hooks.
-  # This repo is linked into the /etc/puppet and is the repo that the puppet servers actully read.
+  # This is a readonly version of the private repo (readonly is enforced by various pre-* hooks).
+  # This repo is linked into the /etc/puppet, it is the repo that the puppet servers actully read.
   # Updates to this repo are handled by a post-reiceve hook in the above private repo which forces
   # this repo to perform a pull.
   # The main reason for this duplication is to ensure puppet only acts on files that have been committed.
   # i.e. if we simply used the above repo it would be possible for puppet to act on files that where still
-  # being edited, not committed and potentially broken
+  # being edited, not committed and potentially broken.
   'operations/private':
     init: true
     branch: master
