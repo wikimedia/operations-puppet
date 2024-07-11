@@ -154,6 +154,12 @@ class profile::netbox (
     ensure_packages(
         ['python3-venv', 'python3-git', 'python3-pynetbox', 'python3-requests'])
 
+    # Make sure the deployment directory exists before creating sub-directories
+    # Needs to happen before the netbox Class is instanciated
+    file { '/srv/deployment/':
+        ensure => directory
+    }
+
     # TODO: normalize after Netbox 4 upgrade
     if $deploy_project == 'netbox-dev' {
         $extras_path = '/srv/netbox'
