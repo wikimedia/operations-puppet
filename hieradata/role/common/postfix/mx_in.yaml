@@ -65,7 +65,7 @@ profile::mail::vrts::next_hop: smtp:ticket.discovery.wmnet
 # Config for enabling VERP for wikimedia bounces
 profile::postfix::mx::verp_config:
   post_connect_server: meta.wikimedia.org
-  bounce_post_url: https://api-rw.discovery.wmnet/w/api.php
+  bounce_post_url: https://mw-api-int.discovery.wmnet:4446/w/api.php
 
 profile::postfix::mx::config:
   relay_domains: &relay_domains
