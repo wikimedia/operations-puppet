@@ -18,7 +18,7 @@ customization:
   # the shortner fails if it sees a port in the url, so the regex below is not quite perfect
   urlShortener: |
     const req = {
-      url: 'https://api-rw.discovery.wmnet/w/api.php?format=json&action=shortenurl',
+      url: 'https://mw-api-int.discovery.wmnet:4446/w/api.php?format=json&action=shortenurl',
       proxy: 'http://webproxy.eqiad.wmnet:8080',
       form: { url: url.replace(/localhost[:0-9]*/, 'turnilo.wikimedia.org') },
       headers: {
