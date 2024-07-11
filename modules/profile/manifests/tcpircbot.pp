@@ -30,6 +30,18 @@ class profile::tcpircbot(
             '2620:0:861:102:10:64:16:73/128',   # puppetmaster1001.eqiad.wmnet (for conftool notifications)
             '::ffff:10.192.0.27/128',           # puppetmaster2001.codfw.wmnet (for conftool notifications)
             '2620:0:860:101:10:192:0:27/128',   # puppetmaster2001.codfw.wmnet (for conftool notifications)
+            '::ffff:10.64.32.39/128',           # puppetserver1001.eqiad.wmnet (for conftool notifications)
+            '2620:0:861:103:10:64:32:39/128',   # puppetserver1001.eqiad.wmnet (for conftool notifications)
+            '::ffff:10.64.16.19/128',           # puppetserver1002.eqiad.wmnet (for conftool notifications)
+            '2620:0:861:102:10:64:16:19/128',   # puppetserver1002.eqiad.wmnet (for conftool notifications)
+            '::ffff:10.64.0.23/128',            # puppetserver1003.eqiad.wmnet (for conftool notifications)
+            '2620:0:861:101:10:64:0:23/128',    # puppetserver1003.eqiad.wmnet (for conftool notifications)
+            '::ffff:10.192.32.10/128',          # puppetserver2001.codfw.wmnet (for conftool notifications)
+            '2620:0:860:103:10:192:32:10/128',  # puppetserver2001.codfw.wmnet (for conftool notifications)
+            '::ffff:10.192.0.19/128',           # puppetserver2002.codfw.wmnet (for conftool notifications)
+            '2620:0:860:101:10:192:0:19/128',   # puppetserver2002.codfw.wmnet (for conftool notifications)
+            '::ffff:10.192.14.6/128',           # puppetserver2003.codfw.wmnet (for conftool notifications)
+            '2620:0:860:10f:10:192:14:6/128',   # puppetserver2003.codfw.wmnet (for conftool notifications)
             '::ffff:10.64.48.98/128',           # cumin1002.eqiad.wmnet
             '2620:0:861:107:10:64:48:98/128',   # cumin1002.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
