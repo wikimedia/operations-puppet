@@ -42,9 +42,6 @@
 # [*ignore_missing_file_errors*] If provided, it will specify a SuccessExitStatus of 24 to the systemd unit file.
 #                                This allows a non-zero exit code that occurs following a "some files vanished
 #                                before they could be transferred (code 24)" error to be considered a success.
-# [*foo*] If provided,  it will specify a SuccessExitStatus of 24 to the systemd unit file.
-#                                This allows a non-zero exit code that occurs following a "some files vanished
-#                                before they could be transferred (code 24)" error to be considered a success.
 define rsync::quickdatacopy(
   Stdlib::Fqdn $source_host,
   Variant[
@@ -64,7 +61,6 @@ define rsync::quickdatacopy(
       Systemd::Timer::Schedule,
       Array[Systemd::Timer::Schedule, 1]] $auto_interval = {'start' => 'OnCalendar', 'interval' => '*-*-* *:00/10:00'}, # every 10 min
   Boolean $ignore_missing_file_errors = false,
-  Optional[Hash] $ssl_paths = undef,
   ) {
       if ($title =~ /\s/) {
           fail('the title of rsync::quickdatacopy must not include whitespace')
@@ -82,11 +78,7 @@ define rsync::quickdatacopy(
           include rsync::server
 
           if $server_uses_stunnel {
-              if ! defined(Class['rsync::server::stunnel']) {
-                  class { 'rsync::server::stunnel':
-                      ssl_paths => $ssl_paths,
-                  }
-              }
+              include rsync::server::stunnel
           }
 
           rsync::server::module { $title:

@@ -4,7 +4,6 @@
 class rsync::server::stunnel(
     Wmflib::Ensure          $ensure         = present,
     Stdlib::Ensure::Service $ensure_service = 'running',
-    Optional[Hash]          $ssl_paths      = undef,
 ) {
     include rsync::server
 

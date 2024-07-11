@@ -23,7 +23,6 @@ class profile::mediawiki::deployment::server(
     Boolean $enable_auto_deploy                              = lookup('profile::mediawiki::deployment::server::enable_auto_deploy', {default_value => false}),
     Optional[Systemd::Timer::Datetime] $auto_deploy_interval = lookup('profile::mediawiki::deployment::server::auto_deploy_interval', {default_value => undef}),
     Optional[Systemd::Timer::Datetime] $auto_clean_interval  = lookup('profile::mediawiki::deployment::server::auto_clean_interval', {default_value => undef}),
-    Boolean $use_pki                                         = lookup('profile::mediawiki::deployment::server::use_pki', {default_value => false}),
 ) {
     # Class scap gets included via profile::mediawiki::common
     # Also a lot of needed things are called from there.
@@ -32,12 +31,6 @@ class profile::mediawiki::deployment::server(
     include network::constants
     $deployable_networks = $::network::constants::deployable_networks
     $deployable_networks_ferm = join($deployable_networks, ' ')
-
-    # A certificate from PKI infra. Otherwise we 'll be falling back to Puppet
-    if $use_pki {
-        $ssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'])
-    }
-
     # Install the scap master
     class { 'rsync::server': }
 
@@ -170,7 +163,6 @@ class profile::mediawiki::deployment::server(
     class { '::deployment::rsync':
         deployment_server => $deployment_server,
         deployment_hosts  => $deployment_hosts_fqdn,
-        ssl_paths         => $ssl_paths,
     }
 
     motd::script { 'inactive_warning':
