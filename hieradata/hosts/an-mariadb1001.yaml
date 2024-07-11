@@ -1,2 +1,0 @@
-# We are temporarily performing a role swap due to #T348977
-profile::analytics::database::meta::is_mariadb_replica: true
