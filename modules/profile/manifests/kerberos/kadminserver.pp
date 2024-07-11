@@ -2,7 +2,7 @@
 class profile::kerberos::kadminserver (
     Stdlib::Fqdn $krb_realm_name = lookup('kerberos_realm_name'),
     Stdlib::Fqdn $krb_kadmin_primary = lookup('kerberos_kadmin_server_primary'),
-    Stdlib::Fqdn $krb_kadmin_keytabs_repo = lookup('kerberos_kadmin_keytabs_repo'),
+    Array[Stdlib::Fqdn] $krb_kadmin_keytabs_repo = lookup('kerberos_kadmin_keytabs_repo'),
     Array[String] $rsync_secrets_file_auth_users = lookup('profile::kerberos::kadminserver', { 'default_value' => ['kerb'] }),
     Optional[Boolean] $enable_replication = lookup('profile::kerberos::kadminserver::enable_replication', {'default_value' => false} ),
     Optional[Boolean] $monitoring_enabled = lookup('profile::kerberos::kadminserver::monitoring_enabled', { 'default_value' => false }),
@@ -116,7 +116,7 @@ class profile::kerberos::kadminserver (
         ensure        => $ensure_rsync,
         path          => '/srv/kerberos/keytabs',
         read_only     => 'yes',
-        hosts_allow   => [$krb_kadmin_keytabs_repo],
+        hosts_allow   => $krb_kadmin_keytabs_repo,
         auto_firewall => true,
         auth_users    => $rsync_secrets_file_auth_users,
         secrets_file  => $rsync_secrets_file,
