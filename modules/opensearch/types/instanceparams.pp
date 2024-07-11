@@ -42,6 +42,7 @@ type Opensearch::InstanceParams = Struct[{
     'disktype'                           => Optional[Enum['ssd','hdd']],
     'use_cms_gc'                         => Optional[Boolean],
     'cms_gc_init_occupancy_fraction'     => Optional[Integer],
+    'watermarks'                         => Optional[Hash],
     'compatibility_mode'                 => Optional[Boolean],
     'disable_security_plugin'            => Optional[Boolean],
 
