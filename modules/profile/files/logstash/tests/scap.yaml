@@ -92,8 +92,8 @@ testcases:
         "levelname": "INFO",
         "pathname": "/usr/lib/python2.7/dist-packages/scap/cli.py",
         "channel": "scap.announce",
-        "logsource": "deployment-deploy03",
-        "host": "deployment-deploy03",
+        "logsource": "deployment-deploy04",
+        "host": "deployment-deploy04",
         "process": 10857
         }
     expected:
@@ -120,7 +120,7 @@ testcases:
             function: "announce"
           logger: "cli"
         host:
-          name: "deployment-deploy03"
+          name: "deployment-deploy04"
         service:
           type: "scap"
         user:

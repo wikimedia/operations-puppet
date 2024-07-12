@@ -1,2 +1,0 @@
-profile::mediawiki::scap_client::is_master: true
-profile::base::labs::cleanup_puppet_client_bucket: true
