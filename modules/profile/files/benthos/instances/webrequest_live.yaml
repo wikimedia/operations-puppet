@@ -23,7 +23,9 @@ input:
       period: 500ms
 
 pipeline:
-  threads: 10
+  # webrequest (text + upload) topics have 24 partitions each
+  # make sure we can process at least webrequest_text in parallel
+  threads: 24
   processors:
   # varnishkafka will set dt to '-' on request timeout (e.g. started and never finished)
   # these messages can't be indexed into druid (we don't know when they happened)
@@ -100,7 +102,7 @@ output:
     # force re-batching of messages into bigger (outgoing) batches
     batching:
       count: 1024
-      period: 500ms
+      period: 250ms
 
 metrics:
   prometheus:
