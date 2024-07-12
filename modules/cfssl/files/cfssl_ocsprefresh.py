@@ -131,7 +131,13 @@ def update_required(responses_file: Path, dbconfig: Path, update: bool) -> bool:
     config = json.loads(dbconfig.read_bytes())
     db_conn = pymysql.connect(**config)
     try:
-        return last_update < get_db_update_time(db_conn, config['db'], table_name)
+        result = get_db_update_time(db_conn, config['db'], table_name)
+        if result is None:
+            logging.debug(
+                "NULL value returned for get_db_update_time for table %s",
+                table_name)
+            return False
+        return last_update < result
     finally:
         db_conn.close()
 
