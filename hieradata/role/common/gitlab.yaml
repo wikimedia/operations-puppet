@@ -62,7 +62,7 @@ profile::base::production::role_description: 'GitLab server for code review'
 profile::gitlab::use_acmechief: true
 
 # firewalling - destination range - different in prod vs cloud due to floating IP setup
-profile::gitlab::ferm_drange: "(%{lookup('profile::gitlab::service_ip_v4')} %{lookup('profile::gitlab::service_ip_v6')})"
+profile::gitlab::firewall_drange: "(%{lookup('profile::gitlab::service_ip_v4')} %{lookup('profile::gitlab::service_ip_v6')})"
 
 # listen on IPv4 and IPv6
 profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]

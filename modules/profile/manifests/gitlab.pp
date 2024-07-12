@@ -33,7 +33,7 @@ class profile::gitlab(
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
-    String $ferm_drange = lookup('profile::gitlab::ferm_drange'),
+    String $firewall_drange = lookup('profile::gitlab::firewall_drange'),
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
     Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
     Systemd::Timer::Schedule $full_backup_interval = lookup('profile::gitlab::full_backup_interval'),
@@ -125,10 +125,10 @@ class profile::gitlab(
             interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 05:05:00'},
         }
         # Certbot has to be reached over port 80
-        ferm::service { 'gitlab-http-certbot':
+        firewall::service { 'gitlab-http-certbot':
           proto  => 'tcp',
           port   => 80,
-          drange => $ferm_drange,
+          drange => $firewall_drange,
         }
     }
 
@@ -142,17 +142,17 @@ class profile::gitlab(
     # open ports in firewall - T276144
 
     # world -> service IP, HTTPS
-    ferm::service { 'gitlab-https-public':
+    firewall::service { 'gitlab-https-public':
         proto  => 'tcp',
         port   => 443,
-        drange => $ferm_drange,
+        drange => $firewall_drange,
     }
 
     # world -> service IP, SSH
-    ferm::service { 'gitlab-ssh-public':
+    firewall::service { 'gitlab-ssh-public':
         proto  => 'tcp',
         port   => 22,
-        drange => $ferm_drange,
+        drange => $firewall_drange,
     }
 
     # JSON Logs
