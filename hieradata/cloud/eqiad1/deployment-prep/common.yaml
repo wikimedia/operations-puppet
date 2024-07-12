@@ -371,7 +371,7 @@ profile::mail::default_mail_relay::mediawiki_smarthosts:
 - 'deployment-mx03.deployment-prep.eqiad1.wikimedia.cloud'
 
 deployment_hosts:
-- '172.16.4.233' # deployment-deploy04.deployment-prep.eqiad1.wikimedia.cloud
+- '172.16.1.63' # deployment-deploy04.deployment-prep.eqiad1.wikimedia.cloud
 
 profile::rsyslog::kafka_destination_clusters:
   eqiad: logging-eqiad
