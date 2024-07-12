@@ -281,9 +281,6 @@ profile::gitlab::csp_report_only: false
 
 profile::gitlab::monitoring_whitelist: ['127.0.0.1/32']
 
-# firewalling - destination range - different in prod vs cloud due to floating IP setup and no IPv6 support
-profile::gitlab::firewall_drange: "(%{lookup('profile::gitlab::service_ip_v4')})"
-
 # don't listen on IPv6 in WMCS
 profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}"]
 

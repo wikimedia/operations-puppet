@@ -61,9 +61,6 @@ profile::base::production::role_description: 'GitLab server for code review'
 # SSL/TLS certs - in prod use acmechief, in cloud use certbot to get them
 profile::gitlab::use_acmechief: true
 
-# firewalling - destination range - different in prod vs cloud due to floating IP setup
-profile::gitlab::firewall_drange: "(%{lookup('profile::gitlab::service_ip_v4')} %{lookup('profile::gitlab::service_ip_v6')})"
-
 # listen on IPv4 and IPv6
 profile::gitlab::ssh_listen_addresses: ["%{lookup('profile::gitlab::service_ip_v4')}", "%{lookup('profile::gitlab::service_ip_v6')}"]
 
@@ -115,3 +112,4 @@ profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
 profile::gitlab::logrotate_maxsize: "nil" # logs will not be rotated when they grow bigger than size
 profile::gitlab::logrotate_size: "nil" # do not rotate by size by default
 profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
+profile::firewall::provider: nftables

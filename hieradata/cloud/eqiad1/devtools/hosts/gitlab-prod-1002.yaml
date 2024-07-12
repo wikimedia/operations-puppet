@@ -4,3 +4,4 @@
 # No ipv6 because of WMCS.
 profile::ssh::server::listen_addresses: ["172.16.3.213"]
 profile::ssh::server::manage_host_keys: false
+profile::firewall::provider: nftables

@@ -33,7 +33,6 @@ class profile::gitlab(
     Stdlib::Unixpath $cert_path = lookup('profile::gitlab::cert_path'),
     Stdlib::Unixpath $key_path = lookup('profile::gitlab::key_path'),
     Boolean $use_acmechief = lookup('profile::gitlab::use_acmechief'),
-    String $firewall_drange = lookup('profile::gitlab::firewall_drange'),
     Array[Stdlib::IP::Address] $ssh_listen_addresses = lookup('profile::gitlab::ssh_listen_addresses'),
     Array[Stdlib::IP::Address] $nginx_listen_addresses = lookup('profile::gitlab::nginx_listen_addresses'),
     Systemd::Timer::Schedule $full_backup_interval = lookup('profile::gitlab::full_backup_interval'),
@@ -128,7 +127,7 @@ class profile::gitlab(
         firewall::service { 'gitlab-http-certbot':
           proto  => 'tcp',
           port   => 80,
-          drange => $firewall_drange,
+          drange => [$service_ip_v4, $service_ip_v6]
         }
     }
 
@@ -145,14 +144,14 @@ class profile::gitlab(
     firewall::service { 'gitlab-https-public':
         proto  => 'tcp',
         port   => 443,
-        drange => $firewall_drange,
+        drange => [$service_ip_v4, $service_ip_v6],
     }
 
     # world -> service IP, SSH
     firewall::service { 'gitlab-ssh-public':
         proto  => 'tcp',
         port   => 22,
-        drange => $firewall_drange,
+        drange => [$service_ip_v4, $service_ip_v6],
     }
 
     # JSON Logs
