@@ -5,6 +5,10 @@
 #   from signing in until they are approved by an administrator.
 # @param omniauth_providers hash of providers to configure.  the key is the label
 # @param auto_sign_in_with automatically redirect to this provider
+# @logrotate_frequency frequency to rotate the logs (daily, weekly, monthly, or yearly)
+# @logrotate_maxsize logs will be rotated when they grow bigger than size specified for `maxsize`, even before the specified time interval
+# @logrotate_size enable or disable rotation by size
+# @logrotate_rotate keep number of spcified logs
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -53,6 +57,10 @@ class profile::gitlab(
     Integer $max_storage_concurrency = lookup('profile::gitlab::max_storage_concurrency'),
     Integer $max_concurrency = lookup('profile::gitlab::max_concurrency'),
     Array[String] $custom_nginx_config = lookup('profile::gitlab::custom_nginx_config'),
+    String $logrotate_frequency = lookup('profile::gitlab::logrotate_frequency'),
+    String $logrotate_maxsize = lookup('profile::gitlab::logrotate_maxsize'),
+    String $logrotate_size = lookup('profile::gitlab::logrotate_size'),
+    Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -261,5 +269,9 @@ class profile::gitlab(
         max_storage_concurrency      => $max_storage_concurrency,
         max_concurrency              => $max_concurrency,
         custom_nginx_config          => $custom_nginx_config,
+        logrotate_frequency          => $logrotate_frequency,
+        logrotate_maxsize            => $logrotate_maxsize,
+        logrotate_size               => $logrotate_size,
+        logrotate_rotate             => $logrotate_rotate,
     }
 }

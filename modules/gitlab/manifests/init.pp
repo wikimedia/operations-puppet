@@ -9,6 +9,10 @@
 # @omniauth_auto_link_saml_user automatically link SAML users with existing GitLab users if their email addresses match
 # @max_storage_concurrency The maximum number of projects to back up at the same time on each storage
 # @max_concurrency The maximum number of projects to back up at the same time. Should be to the number of logical CPUs.
+# @logrotate_frequency frequency to rotate the logs (daily, weekly, monthly, or yearly)
+# @logrotate_maxsize logs will be rotated when they grow bigger than size specified for `maxsize`, even before the specified time interval
+# @logrotate_size enable or disable rotation by size
+# @logrotate_rotate keep number of spcified logs
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -81,6 +85,10 @@ class gitlab (
     Integer                  $max_storage_concurrency           = 4,
     Integer                  $max_concurrency                   = 2,
     Array[String]            $custom_nginx_config               = [],
+    String                   $logrotate_frequency               = 'daily',
+    String                   $logrotate_maxsize                 = 'nil',
+    String                   $logrotate_size                    = 'nil',
+    Integer                  $logrotate_rotate                  = 10,
 
 ) {
     $oidc_defaults = {

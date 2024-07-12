@@ -276,6 +276,11 @@ profile::gitlab::trusted_runner_id_regex: "(77|79)"
 profile::gitlab::custom_nginx_config:
   - "location ~* ^(?:(?!admin).)*/runners/%{lookup('profile::gitlab::trusted_runner_id_regex')}/edit$ {\n deny all;\n}\n" # block edit page of Trusted runners
 
+profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
+profile::gitlab::logrotate_maxsize: "500M" # logs will be rotated when they grow bigger than 500M
+profile::gitlab::logrotate_size: "500M" # do rotate by size
+profile::gitlab::logrotate_rotate: 3 # keep 3 rotated logs to save disk space
+
 profile::mail::mx::gmail_smtp_server: aspmx.l.google.com
 profile::mail::smarthost::support_ipv6: false
 

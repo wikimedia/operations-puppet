@@ -256,3 +256,8 @@ gitlab_rails['env'] = {
 <%- if @custom_nginx_config -%>
 nginx['custom_gitlab_server_config'] = <%= @custom_nginx_config.join("\n").inspect %>
 <%- end -%>
+
+logging['logrotate_frequency'] = "<%= @logrotate_frequency %>"
+logging['logrotate_maxsize'] = "<%= @logrotate_maxsize %>"
+logging['logrotate_size'] = "<%= @logrotate_size %>"
+logging['logrotate_rotate'] = "<%= @logrotate_rotate %>"
