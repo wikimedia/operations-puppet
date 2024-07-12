@@ -13,6 +13,9 @@ eqiad:
     mw1438.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1445.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
     mw1446.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
+    mw1349.eqiad.wmnet: [apache2, nginx]
+    mw1350.eqiad.wmnet: [apache2, nginx]
+    mw1351.eqiad.wmnet: [apache2, nginx]
   videoscaler: *jobrunner
   cache_text:
     cp1100.eqiad.wmnet: [cdn, ats-be]
@@ -225,9 +228,6 @@ eqiad:
     kubernetes1060.eqiad.wmnet: [kubesvc]
     kubernetes1061.eqiad.wmnet: [kubesvc]
     kubernetes1062.eqiad.wmnet: [kubesvc]
-    mw1349.eqiad.wmnet: [kubesvc]
-    mw1350.eqiad.wmnet: [kubesvc]
-    mw1351.eqiad.wmnet: [kubesvc]
     mw1352.eqiad.wmnet: [kubesvc]
     mw1353.eqiad.wmnet: [kubesvc]
     mw1354.eqiad.wmnet: [kubesvc]

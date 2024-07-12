@@ -1649,11 +1649,7 @@ node /^wikikube-worker20(0[1-47-9]|1[0-9]|2[0-9]|3[0-4])\.codfw\./ {
 }
 
 # START Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
-node /^mw1349\.eqiad\./ {
-  role(kubernetes::worker)
-}
-
-node /^mw135([0-7])\.eqiad\./ {
+node /^mw135([2-7])\.eqiad\./ {
   role(kubernetes::worker)
 }
 
@@ -2119,6 +2115,10 @@ node /^mwdebug100[12]\.eqiad\./ {
 }
 
 # Appservers (serving normal website traffic)
+
+node /^mw13(49|50|51)\.eqiad\./ {
+    role(mediawiki::jobrunner)
+}
 
 # rack A3 jobrunner and scap::proxy
 node /^mw1420\.eqiad\./ {
