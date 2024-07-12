@@ -19,8 +19,8 @@ input:
     consumer_group: 'benthos-webrequest-sampled-live-franz'
     start_from_oldest: false
     batching:
-      count: 2048
-      period: 100ms
+      count: 4096
+      period: 500ms
 
 pipeline:
   threads: 10
@@ -97,6 +97,10 @@ output:
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       # See https://phabricator.wikimedia.org/T291905
       skip_cert_verify: true
+    # force re-batching of messages into bigger (outgoing) batches
+    batching:
+      count: 1024
+      period: 500ms
 
 metrics:
   prometheus:
