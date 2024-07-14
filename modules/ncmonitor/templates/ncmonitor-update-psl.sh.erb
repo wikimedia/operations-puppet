@@ -1,0 +1,13 @@
+#!/bin/sh -eu
+# SPDX-License-Identifier: Apache-2.0
+#
+# Fetch the latest copy of the Public Suffix List, a data file containing all
+# TLDs.
+
+url="<%= @suffix_list_url %>"
+dest="<%= @suffix_list_abs_path %>"
+tmpfile="$(mktemp)"
+
+curl -s -o "$tmpfile" "$url"
+install -Dm0644 "$tmpfile" "$dest"
+rm -f "$tmpfile"

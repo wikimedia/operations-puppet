@@ -2,6 +2,24 @@ profile::ncmonitor::nameservers:
   - ns0.wikimedia.org
   - ns1.wikimedia.org
   - ns2.wikimedia.org
+profile::ncmonitor::reviewers:
+  - bcornwall@wikimedia.org
+  - cdobbins@wikimedia.org
+  - ffurnari@wikimedia.org
+  - ssingh@wikimedia.org
+  - vgutierrez@wikimedia.org
+profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat'
+
+profile::ncmonitor::acmechief::conf_path: 'hieradata/common/certificates.yaml'
+profile::ncmonitor::acmechief::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
+
+profile::ncmonitor::dnsrepo::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/dns'
+profile::ncmonitor::dnsrepo::target_zone_path: 'templates/ncredir-parking'
+
+profile::ncmonitor::gerrit::ssh_key_path: '/etc/ncmonitor/gerrit.key'
+
+profile::ncmonitor::ncredir::datfile_path: 'modules/ncredir/files/nc_redirects.dat'
+profile::ncmonitor::ncredir::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
 
 profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['Traffic']

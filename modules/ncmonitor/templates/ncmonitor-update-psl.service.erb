@@ -1,0 +1,49 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Automatic update of Public Suffix List
+Documentation=https://gerrit.wikimedia.org/r/admin/repos/operations/puppet,general
+After=network-online.target
+ConditionPathExists=<%= @suffix_list_dir %>
+
+[Service]
+Type=oneshot
+User=ncmonitor
+<%- if @http_proxy -%>
+Environment=HTTP_PROXY=<%= @http_proxy %>
+Environment=HTTPS_PROXY=<%= @http_proxy %>
+<%- end -%>
+ExecStart=/usr/local/bin/ncmonitor-update-psl
+
+CapabilityBoundingSet=
+DevicePolicy=closed
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+PrivateUsers=yes
+ProcSubset=pid
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=true
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectProc=invisible
+ProtectSystem=strict
+ProtectSystem=strict
+ReadOnlyDirectories=/
+ReadWriteDirectories=/tmp <%= @suffix_list_dir %>
+RemoveIPC=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

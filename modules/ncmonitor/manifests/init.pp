@@ -10,8 +10,40 @@
 #
 #   Default: 'present'
 #
-# [*nameservers*]
-#   An array of domain names to use as nameservers.
+# [*acmechief_conf_path*]
+#   Relative path from the base of the acme-chief repo to the certificate
+#   configuration.
+#
+#   Default: undef
+#
+# [*acmechief_remote_url*]
+#   Git remote URL to the upstream repository.
+#
+#   Default: undef
+#
+# [*dnsrepo_remote_url*]
+#   Git remote URL to the upstream repository.
+#
+#   Default: undef
+#
+# [*dnsrepo_target_zone_path*]
+#   Relative path from the base of the dns repo to the symlink target
+#
+#   Default: undef
+#
+# [*gerrit_ssh_key*]
+#   SSH key contents with access to Gerrit.
+#
+#   Default: undef
+#
+# [*gerrit_ssh_key_path*]
+#   Filesystem path to the SSH private key.
+#
+#   Default: undef
+#
+# [*gerrit_ssh_pubkey*]
+#   Corresponding public key to the private key. Only used for
+#   convenience of setting up access in services.
 #
 #   Default: undef
 #
@@ -25,14 +57,28 @@
 #
 #   Default: undef
 #
-# [*gerrit_ssh_key*]
-#   SSH key contents with access to Gerrit.
+# [*nameservers*]
+#   An array of domain names to use as nameservers.
 #
 #   Default: undef
 #
-# [*gerrit_ssh_pubkey*]
-#   Corresponding public key to the private key. Only used for
-#   convenience of setting up access in services..
+# [*ncredir_datfile_path*]
+#   Relative path from the base of the ncredir repo to the redirects datfile.
+#
+#   Default: undef
+#
+# [*ncredir_remote_url*]
+#   Git remote URL to the upstream repository.
+#
+#   Default: undef
+#
+# [*reviewers*]
+#   List of email addresses corresponding to those that will review the changes.
+#
+#   Default: undef
+#
+# [*suffix_list_path*]
+#   Filesystem path to the data file containing all TLDs.
 #
 #   Default: undef
 #
@@ -44,41 +90,45 @@
 
 class ncmonitor(
     Wmflib::Ensure            $ensure,
-    Array[Stdlib::Host]       $nameservers,
+    String                    $acmechief_conf_path,
+    String                    $acmechief_remote_url,
+    String                    $dnsrepo_remote_url,
+    String                    $dnsrepo_target_zone_path,
+    String                    $gerrit_ssh_key,
+    String                    $gerrit_ssh_key_path,
     String                    $markmon_api_user,
     String                    $markmon_api_pass,
-    String                    $gerrit_ssh_key,
+    Array[Stdlib::Host]       $nameservers,
+    String                    $ncredir_datfile_path,
+    String                    $ncredir_remote_url,
+    Array[String]             $reviewers,
+    Stdlib::Absolutepath      $suffix_list_path,
     Optional[String]          $gerrit_ssh_pubkey,
     Optional[Stdlib::HTTPUrl] $http_proxy,
 ) {
     $config = {
-        acmechief   => {
-            conf-path  => 'hieradata/common/certificates.yaml',
-            remote-url => 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet',
+        acmechief        => {
+            conf-path  => $acmechief_conf_path,
+            remote-url => $acmechief_remote_url,
         },
-        dnsrepo     => {
-            remote-url       => 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/dns',
-            target-zone-path => 'templates/ncredir-parking',
+        dnsrepo          => {
+            remote-url       => $dnsrepo_remote_url,
+            target-zone-path => $dnsrepo_target_zone_path,
         },
-        gerrit      => {
-            reviewers    => [
-                'bcornwall@wikimedia.org',
-                'cdobbins@wikimedia.org',
-                'ffurnari@wikimedia.org',
-                'ssingh@wikimedia.org',
-                'vgutierrez@wikimedia.org',
-            ],
-            ssh-key-path => '/etc/ncmonitor/gerrit.key',
+        gerrit           => {
+            reviewers    => $reviewers,
+            ssh-key-path => $gerrit_ssh_key_path,
         },
-        markmonitor => {
+        markmonitor      => {
             username => $markmon_api_user,
             password => $markmon_api_pass,
         },
-        nameservers => $nameservers,
-        ncredir     => {
-            datfile-path => 'modules/ncredir/files/nc_redirects.dat',
-            remote-url   => 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
+        nameservers      => $nameservers,
+        ncredir          => {
+            datfile-path => $ncredir_datfile_path,
+            remote-url   => $ncredir_remote_url,
         },
+        suffix-list-path => $suffix_list_path,
     }
 
     package { 'ncmonitor':
@@ -114,7 +164,7 @@ class ncmonitor(
         show_diff => false,
     }
 
-    file { '/etc/ncmonitor/gerrit.key':
+    file { $gerrit_ssh_key_path:
         ensure    => $ensure,
         owner     => 'ncmonitor',
         group     => 'root',
@@ -150,6 +200,7 @@ class ncmonitor(
             'interval' => 'daily',
         },
         require     => Package['ncmonitor'],
+        path_exists => $suffix_list_path,
     }
 
     $timer = $http_proxy? {
