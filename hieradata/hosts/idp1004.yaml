@@ -5,9 +5,6 @@ profile::java::java_packages:
   - version: "21"
     variant: "jdk"
 
-# TODO: Add idp2004 once it exists.
-# Puppet will fail to run if added before the
-# hosts is created.
 profile::idp::idp_nodes:
   - idp1004.wikimedia.org
-
+  - idp2004.wikimedia.org
