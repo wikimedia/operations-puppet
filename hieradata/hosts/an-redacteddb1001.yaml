@@ -9,6 +9,5 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s7: 50G
   s8: 70G
 
-mariadb::package: 'wmf-mariadb106'
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::critical_threshold: 98
 profile::wmcs::db::wikireplicas::mariadb_multiinstance::warning_threshold: 95
