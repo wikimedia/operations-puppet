@@ -68,8 +68,14 @@ class profile::tcpircbot(
         'deploy1002.eqiad.wmnet',       # deployment eqiad
         'deploy1003.eqiad.wmnet',       # deployment eqiad
         'deploy2002.codfw.wmnet',       # deployment codfw
-        'puppetmaster1001.eqiad.wmnet', # puppet eqiad
-        'puppetmaster2001.codfw.wmnet', # puppet codfw
+        'puppetmaster1001.eqiad.wmnet', # puppet 5 eqiad
+        'puppetmaster2001.codfw.wmnet', # puppet 5 codfw
+        'puppetserver1001.eqiad.wmnet', # puppet 7 eqiad
+        'puppetserver1002.eqiad.wmnet', # puppet 7 eqiad
+        'puppetserver1003.eqiad.wmnet', # puppet 7 eqiad
+        'puppetserver2001.codfw.wmnet', # puppet 7 codfw
+        'puppetserver2002.codfw.wmnet', # puppet 7 codfw
+        'puppetserver2003.codfw.wmnet', # puppet 7 codfw
         'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1002.eqiad.wmnet',        # cluster mgmt eqiad
