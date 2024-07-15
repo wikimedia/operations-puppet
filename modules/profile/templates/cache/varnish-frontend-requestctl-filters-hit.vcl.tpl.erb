@@ -1,0 +1,13 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{- $path := "/request-vcl/cache-<%= @cache_cluster %>" -}}
+{{ $hitLocal := printf "%s/hit-<%= @site %>" $path }}{{ $hitGlobal := printf "%s/hit-global" $path }}
+// Actions generated from etcd rules, if any.
+{{- if exists $hitGlobal }}
+// Actions enabled globally for cache hits
+{{ $value := json (getv $hitGlobal) }}{{ $value.vcl }}
+{{- end }}
+
+{{- if exists $hitLocal }}
+// Site-specific actions for cache hits
+{{ $value := json (getv $hitLocal) }}{{ $value.vcl }}
+{{- end }}

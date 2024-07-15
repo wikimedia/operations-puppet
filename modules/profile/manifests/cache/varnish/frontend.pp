@@ -183,6 +183,10 @@ class profile::cache::varnish::frontend (
                 watch_keys => ["/request-vcl/cache-${cache_cluster}"],
                 content    => template('profile/cache/varnish-frontend-requestctl-filters.vcl.tpl.erb'),
                 prefix     => $conftool_prefix;
+            '/etc/varnish/requestctl-filters-hit.inc.vcl':
+                watch_keys => ["/request-vcl/cache-${cache_cluster}"],
+                content    => template('profile/cache/varnish-frontend-requestctl-filters-hit.vcl.tpl.erb'),
+                prefix     => $conftool_prefix;
         }
     } else {
         # deployment-prep still uses the old template.
@@ -195,7 +199,7 @@ class profile::cache::varnish::frontend (
             mode    => '0444',
         }
 
-        file { '/etc/varnish/requestctl-filters.inc.vcl':
+        file { ['/etc/varnish/requestctl-filters.inc.vcl', '/etc/varnish/requestctl-filters-hit.inc.vcl']:
             ensure => absent,
         }
     }
