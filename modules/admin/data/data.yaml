@@ -6122,6 +6122,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+E7DCVBFUZ7tZrSgEhcCD/sWCI54aujtG0owaoxFEunY5HcNbl9nPjza1SLQsO6GeWV1e6VoHhvDyChJVkWljWApr4qMN0PJVg9nxQJmHfBHaEepDCF9xBvQ25dekZ0POxCxcOoKKXpdJWZCTWMxPOELyVRFeMG+o9xxEZODsobKG15BsnqgJ31KRDtuYdYyVs527fPxL6uc/Ju6rWsAK+y6mpFMYE9bRu4DWQEhYLPMO76MxYLilPAEuynv/M8B/WNtq33kMM7andMt/Pqh4dN/KTZ4vqtS5rIEGrrNbZauU54abBFGFhgSGJ3Shwo+dDsNAoSHeLO8VqealzsPcLQb6nGq/68PXKCat7blJ4njeoJzbgFjCWbtqeS5Bs4i6PpHpao9JP2i54Cc39H4xvn/dB9nWT7zN1DcFFoNVVMCgBhSGu5mBgxXj+INX2aG1k+GE0gcMxkFJLJ3Xr1Ngehcq2ds+moaMdsIkha7mIVIXk7mjoodf+HzdxPxZQSbnAFUGQ2zUBSKa8JC3vzxBGsOT69nZjVnpN8+TT1lLVyYuyE2PuzpxfsTfKyeK8T4+terqTLz5yiEFKNgD8daiO9jtFCXoAW5J6iSve9IMH3e9yfwTGhmcWIvDGyK9z32HD5CQgG/6PVcxbmuQSTS7VP1wsTi417mWJTAozyKl9Q== xiaoxiao@wikimedia.org'
+    krb: present
   ecarg:
     ensure: present
     realname: Grace Choi
