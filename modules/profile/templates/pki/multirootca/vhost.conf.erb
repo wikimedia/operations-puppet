@@ -52,7 +52,7 @@
   ProxyPass /  http://127.0.0.1:8888/
   ProxyPassReverse / http://127.0.0.1:8888/
 
-  LogLevel warn
+  LogLevel warn ssl:info
   ErrorLog /var/log/apache2/<%= @vhost %>_ssl_error.log
   CustomLog /var/log/apache2/<%= @vhost %>_ssl_access.log wmf
 </VirtualHost>
@@ -72,7 +72,7 @@
   ProxyPass /  http://127.0.0.1:8888/
   ProxyPassReverse / http://127.0.0.1:8888/
 
-  LogLevel warn
+  LogLevel warn ssl:info
   ErrorLog /var/log/apache2/<%= @vhost %>_k8s_error.log
   CustomLog /var/log/apache2/<%= @vhost %>_k8s_access.log wmf
 </VirtualHost>
