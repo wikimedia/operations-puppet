@@ -31,8 +31,8 @@ map $http_user_agent $monitoring_ua {
 <%- if @only_throttle_cdn %>
 # Identify internal requests using the presence of the X-Client-IP header
 map $http_x_client_ip $internal_request {
-  "" "1"
-  default ""
+  "" "1";
+  default "";
 }
 <%- end %>
 
