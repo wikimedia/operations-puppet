@@ -1,7 +1,0 @@
-profile::query_service::mount_dumps: true
-profile::query_service::enable_updater: false
-profile::query_service::internal_federated_endpoints:
-  "https://wdqs1023.eqiad.wmnet/sparql":
-    - "https://query-scholarly-experimental.wikidata.org/sparql"
-  "https://wdqs1024.eqiad.wmnet/sparql":
-    - "https://query-main-experimental.wikidata.org/sparql"

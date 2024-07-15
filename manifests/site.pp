@@ -2670,28 +2670,39 @@ node /^wdqs101[167]\.eqiad\./ {
     role(wdqs::internal)
 }
 
-node /^wdqs101[2-5]\.eqiad\./ {
+node /^wdqs101([2-5]|[89])\.eqiad\./ {
     role(wdqs::public)
 }
 
-node /^wdqs10(1[89]|2[01])\.eqiad\./ {
+node /^wdqs1020\.eqiad\./ {
     role(wdqs::public)
 }
 
-node /^wdqs10([2][2-4])\.eqiad\./ {
-    role(wdqs::test)
-}
-
-node /^(wdqs2008|wdqs201[45])\.codfw\./ {
+node /^wdqs(2008|201[45])\.codfw\./ {
     role(wdqs::internal)
 }
 
-node /^(wdqs200[7,9]|wdqs201[0-3]|wdqs201[6-9]|wdqs202([0-2]|[4-5]))\.codfw\./ {
+node /^wdqs(200[79]|201[0-3]|201[6-9]|2020)\.codfw\./ {
     role(wdqs::public)
 }
 
-# Temporary role switch T362920
-node /^wdqs2023.codfw\./ {
+node /^wdqs102[1-2].eqiad\./ {
+    role(wdqs::main)
+}
+
+node /^wdqs102[3-4].eqiad\./ {
+    role(wdqs::scholarly)
+}
+
+node /^wdqs202[1-2].codfw\./ {
+    role(wdqs::main)
+}
+
+node /^wdqs202[3-4].codfw\./ {
+    role(wdqs::scholarly)
+}
+
+node /^wdqs2025.codfw\./ {
     role(wdqs::test)
 }
 
