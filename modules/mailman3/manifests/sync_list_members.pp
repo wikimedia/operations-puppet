@@ -35,7 +35,7 @@ define mailman3::sync_list_members(
       user         => 'root',
       description  => "sync members of list '${list_name}' with imported subscriber data",
       command      => @("CMD"/L),
-          /usr/bin/mailman-wrapper syncmembers ${dry_run_param}\
+          /usr/bin/mailman-wrapper syncmembers ${dry_run_param} \
           ${data_dir}/mailman_list/${list_domain}/${list_name} \
           ${list_name}@${list_domain}\
           | CMD
