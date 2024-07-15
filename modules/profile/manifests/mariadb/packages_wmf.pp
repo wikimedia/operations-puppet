@@ -7,8 +7,6 @@ class profile::mariadb::packages_wmf (
         $mariadb_package = 'wmf-mariadb106'
     } elsif debian::codename::eq('bullseye') {
         $mariadb_package = 'wmf-mariadb104'
-    } elsif debian::codename::eq('buster') {
-        $mariadb_package = 'wmf-mariadb104'
     } else {
         fail("Debian release ${facts['os']['distro']['codename']} is not supported")
     }
