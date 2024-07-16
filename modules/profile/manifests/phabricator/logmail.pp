@@ -73,7 +73,7 @@ class profile::phabricator::logmail (
     # quarterly metrics mail (T337387)
     phabricator::logmail {'quarterly_metrics':
         ensure           => $logmail_ensure,
-        rcpt_address     => [ 'oonifade@wikimedia.org', 'aklapper@wikimedia.org' ],
+        rcpt_address     => [ 'dtankersley@wikimedia.org', 'aklapper@wikimedia.org' ],
         sndr_address     => $sndr_address,
         month            => '01,04,07,10',
         monthday         => 1,
