@@ -22,8 +22,14 @@ class profile::lists::automation (
         interval    => {'start' => 'OnCalendar', 'interval' => 'hourly'},
     }
 
+    $list_sync_ensure = $lists_host ? {
+        $::fqdn => 'present',
+        default => 'absent',
+    }
+
     each($lists_to_sync) |$list_name| {
         mailman3::sync_list_members { "sync-members-${list_name}":
+            ensure    => $list_sync_ensure,
             list_name => $list_name,
         }
     }
