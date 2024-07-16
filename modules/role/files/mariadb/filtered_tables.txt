@@ -263,10 +263,8 @@ flaggedrevs,fr_page_id,K
 flaggedrevs,fr_rev_id,K
 flaggedrevs,fr_user,K
 flaggedrevs,fr_timestamp,K
-flaggedrevs,fr_comment,K
 flaggedrevs,fr_quality,K
 flaggedrevs,fr_tags,K
-flaggedrevs,fr_text,K
 flaggedrevs,fr_flags,K
 flaggedrevs,fr_img_name,K
 flaggedrevs,fr_img_timestamp,K
