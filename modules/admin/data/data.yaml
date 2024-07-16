@@ -45,7 +45,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7096,9 +7096,8 @@ ldap_only_users:
     realname: Kamil Bach
     email: kbach@wikimedia.org
   fjoseph:
-    ensure: present
+    ensure: absent
     realname: Frantz Joseph
-    email: fjoseph@wikimedia.org
   lorenjohnson:
     ensure: present
     realname: Loren Johnson
