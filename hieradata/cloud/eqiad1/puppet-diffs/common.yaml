@@ -3,9 +3,6 @@ etcd::autogen_pwd_seed: dummyseed
 etcd::peers_list: '%{::hostname}=http://127.0.0.1:2380'
 etcd::use_ssl: true
 mount_nfs: true
-profile::java::java_packages:
-- variant: jre-headless
-  version: '11'
 profile::puppet_compiler::cloud_puppetmaster: puppetmaster.cloudinfra.wmflabs.org
 profile::puppet_compiler::puppetdb::ssldir: '/var/lib/catalog-differ/puppet/ssl'
 profile::puppet_compiler::puppetdb::master: "%{facts.networking.fqdn}"
