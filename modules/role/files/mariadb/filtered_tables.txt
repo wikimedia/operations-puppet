@@ -246,8 +246,6 @@ change_tag,ct_log_id,K
 change_tag,ct_rev_id,K
 change_tag,ct_params,K
 externallinks,el_from,K
-externallinks,el_to,K
-externallinks,el_index,K
 externallinks,el_to_domain_index,K
 externallinks,el_to_path,K
 filearchive,fa_description_id,K
