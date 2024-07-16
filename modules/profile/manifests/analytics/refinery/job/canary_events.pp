@@ -8,7 +8,7 @@
 # that have no data, and ones that have a broken produce pipeline.
 #
 class profile::analytics::refinery::job::canary_events(
-    String $ensure_timers = lookup('profile::analytics::refinery::job::canary_events::ensure_timers', { 'default_value' => 'present' }),
+    String $ensure_timers = lookup('profile::analytics::refinery::job::canary_events::ensure_timers', { 'default_value' => 'absent' }),
 ) {
 
     require ::profile::analytics::refinery
