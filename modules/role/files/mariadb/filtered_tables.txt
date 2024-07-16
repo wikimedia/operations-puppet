@@ -266,9 +266,6 @@ flaggedrevs,fr_timestamp,K
 flaggedrevs,fr_quality,K
 flaggedrevs,fr_tags,K
 flaggedrevs,fr_flags,K
-flaggedrevs,fr_img_name,K
-flaggedrevs,fr_img_timestamp,K
-flaggedrevs,fr_img_sha1,K
 flaggedrevs,fr_rev_timestamp,K
 flaggedrevs_promote,frp_user_id,K
 flaggedrevs_promote,frp_user_params,K
