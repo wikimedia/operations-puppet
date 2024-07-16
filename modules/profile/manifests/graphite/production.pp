@@ -137,6 +137,5 @@ class profile::graphite::production (
     # alert only on the primary server
     if $::fqdn == $primary_host {
         include profile::graphite::alerts
-        include profile::elasticsearch::alerts
     }
 }
