@@ -12,9 +12,6 @@ profile::parsoid::vd_server::service_ensure: 'stopped'
 profile::parsoid::rt_client::service_ensure: 'running'
 profile::parsoid::rt_server::service_ensure: 'running'
 
-
-parsoid::testing::default_api_proxy_uri: "https://mw-api-int.discovery.wmnet:4446"
-
 parsoid::logging_name: parsoid-tests
 parsoid::statsd_prefix: parsoid-tests
 

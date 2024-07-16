@@ -2,7 +2,6 @@
 # Parsoid testing rig: repo clone, nginx site, mysql client, firewall holes
 class profile::parsoid::testing (
     Stdlib::Port $parsoid_port = lookup('parsoid::testing::parsoid_port'),
-    Stdlib::Httpurl $default_api_proxy_uri = lookup('parsoid::testing::default_api_proxy_uri'),
 ) {
 
     git::clone { 'mediawiki/services/parsoid':

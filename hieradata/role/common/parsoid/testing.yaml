@@ -1,6 +1,5 @@
 cluster: parsoid
 parsoid::testing::parsoid_port: 8142
-parsoid::testing::default_api_proxy_uri: "https://mw-api-int.discovery.wmnet:4446"
 
 profile::admin::groups:
   - parsoid-roots
