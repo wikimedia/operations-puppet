@@ -16,7 +16,7 @@ class profile::analytics::refinery::job::canary_events(
 
     # Update this when you want to change the version of the refinery job jar
     # being used for the job.
-    $refinery_version = '0.2.26'
+    $refinery_version = '0.2.44'
     $refinery_job_jar = "${::profile::analytics::refinery::path}/artifacts/org/wikimedia/analytics/refinery/refinery-job-${refinery_version}-shaded.jar"
 
     $event_intake_service_url_config_file = $::profile::analytics::refinery::event_service_config::event_intake_service_url_config_file
