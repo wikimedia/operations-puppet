@@ -74,11 +74,11 @@
 #   an explicit SyslogIdentifier in fact they would end up sharing
 #   the same identifier and rsyslog rules wouldn't work anymore.
 # @param max_runtime_seconds
-#   Add a RuntimeMaxSec=... stanza to the systemd unit triggered by the timer.
+#   Add a TimeoutStartSec=... stanza to the systemd unit triggered by the timer.
 #   This can be useful when setting a timer to run some code every N minutes
 #   and the process run by the unit has a potential for deadlocking rather
 #   than exiting under some internal error condition. See
-#   <https://www.freedesktop.org/software/systemd/man/systemd.service.html#RuntimeMaxSec=>
+#   <https://www.freedesktop.org/software/systemd/man/systemd.service.html#TimeoutStartSec=>
 #   for more details.
 # @param slice
 #    Run the systemd timer's service unit under a specific slice.

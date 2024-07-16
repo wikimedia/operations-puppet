@@ -44,7 +44,7 @@ ExecStart=<% if @ignore_errors %>-<% end %><%= @command %>
 ExecStartPre=<%= @exec_start_pre %>
 <%- end -%>
 <%- if @max_runtime_seconds -%>
-RuntimeMaxSec=<%= @max_runtime_seconds %>
+TimeoutStartSec=<%= @max_runtime_seconds %>
 <%- end -%>
 <%- if @stdin -%>
 StandardInput=<%= @stdin %>
