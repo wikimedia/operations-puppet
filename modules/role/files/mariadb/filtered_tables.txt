@@ -580,8 +580,6 @@ tag_summary,ts_log_id,K
 tag_summary,ts_rev_id,K
 tag_summary,ts_tags,K
 templatelinks,tl_from,K
-templatelinks,tl_namespace,K
-templatelinks,tl_title,K
 templatelinks,tl_target_id,K
 transcode,transcode_id,K
 transcode,transcode_image_name,K
