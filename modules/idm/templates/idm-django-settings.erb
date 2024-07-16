@@ -237,6 +237,17 @@ CAPTCHA_IMAGE_SIZE = (130,40)
 ENABLE_API = True
 <%- end -%>
 
+<%- if @mediawiki_oauth -%>
+MEDIAWIKI = {
+  'host': 'https://meta.wikimedia.org',
+  'consumer_token': '<%= @mediawiki_oauth["consumer_token"] %>',
+  'consumer_secret': '<%= @mediawiki_oauth["consumer_secret"] %>',
+  'access_token': '<%= @mediawiki_oauth["access_token"] %>',
+  'access_secret': '<%= @mediawiki_oauth["access_secret"] %>',
+  'user_agent': ''Bitu IDM'
+}
+<%- end -%>
+
 <%- if @install_via_git -%>
 STATICFILES_DIRS = [
   '/srv/idm/bitu/src/bitu/static/',

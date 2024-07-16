@@ -21,6 +21,7 @@ class profile::idm(
     Optional[String[1]] $mediawiki_key             = lookup('profile::idm::mediawiki_key'),
     Optional[String[1]] $mediawiki_secret          = lookup('profile::idm::mediawiki_secret'),
     Optional[String[1]] $mediawiki_callback        = lookup('profile::idm::mediaback_callback'),
+    Optional[Hash]      $mediawiki_oauth           = lookup('profile::idm::mediawiki_oauth', {'default_value'              => undef}),
     Stdlib::Fqdn        $redis_master              = lookup('profile::idm::redis_master'),
     Array[Stdlib::Fqdn] $redis_replicas            = lookup('profile::idm::redis_replicas', {'default_value'               => []}),
     String              $redis_password            = lookup('profile::idm::redis_password', {'default_value'               => 'secret'}),
