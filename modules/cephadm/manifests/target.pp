@@ -21,6 +21,9 @@ class cephadm::target(
         'podman',
     ])
 
+    # Buggy and unnecessary T370255
+    systemd::mask { 'podman-auto-update.service': }
+
     if $cephadm_mgrs and $cephadm_controller {
         firewall::service { 'cephadm-ssh':
             proto  => 'tcp',
