@@ -6,7 +6,7 @@ fstype="$1"; shift
 sopt=("-L" "$size")
 
 if (echo "$size"|grep '%'); then
-  sopt=("-l $size")
+  sopt=("-l" "$size")
 fi
 
 # `--wipesignatures n` disables the check looking up for an existing file
