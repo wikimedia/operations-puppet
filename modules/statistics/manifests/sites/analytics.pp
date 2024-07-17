@@ -20,7 +20,6 @@ class statistics::sites::analytics {
         origin    => 'https://gerrit.wikimedia.org/r/analytics/analytics.wikimedia.org',
         owner     => 'root',
         group     => 'root',
-        mode      => '0775',
     }
 
     # Use hardsync script to hardlink merge files from various stat box published-dataset
