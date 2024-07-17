@@ -83,7 +83,6 @@ class profile::openstack::base::opentofu (
     directory     => '/srv/tofu-infra',
     owner         => 'root',
     group         => 'root',
-    mode          => '0444',
     update_method => 'checkout',
   }
 
