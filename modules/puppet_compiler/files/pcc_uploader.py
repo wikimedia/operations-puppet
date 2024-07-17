@@ -13,12 +13,13 @@ from pathlib import Path
 from time import time
 
 import magic
+import json
 import werkzeug.exceptions
 
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-app.config.from_json('pcc_uploader.json')
+app.config.from_file('pcc_uploader.json', load=json.load)
 
 
 def verify_sigiture(upload, signature, pkey):
