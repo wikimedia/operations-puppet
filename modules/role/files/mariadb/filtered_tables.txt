@@ -597,7 +597,6 @@ user,user_real_name,K
 user,user_password,F
 user,user_newpassword,F
 user,user_email,F
-user,user_options,F
 user,user_touched,K
 user,user_token,F
 user,user_email_authenticated,F
