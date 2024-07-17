@@ -401,7 +401,7 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel]
+              sharvaniharan, ariel, quiddity]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6381,6 +6381,13 @@ users:
     uid: 25945
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  quiddity:
+    ensure: present
+    realname: Nick Wilson
+    email: nwilson@wikimedia.org
+    uid: 3797
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6599,10 +6606,6 @@ ldap_only_users:
     ensure: present
     realname: Quim Gil
     email: qgil@wikimedia.org
-  quiddity:
-    ensure: present
-    realname: Nick Wilson
-    email: nwilson@wikimedia.org
   raqstallman:
     ensure: present
     realname: Rachel Stallman
