@@ -21,9 +21,6 @@ class grafana::grizzly (
     git::clone { 'operations/grafana-grizzly':
         ensure    => 'latest',
         directory => '/srv/grafana-grizzly',
-        owner     => 'root',
-        group     => 'ops',
-        mode      => '0440',
     }
 
     # /usr/local/bin/grr wrapper calls /usr/bin/grr with environment variables set
