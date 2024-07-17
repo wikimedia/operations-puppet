@@ -72,13 +72,25 @@ def update_puppetdb(facts_dir: Path, config: ControllerConfig) -> None:
                 continue
             try:
                 pdb_node = pdb.node(node)
-                if not pdb_node.expired:
+                if not pdb_node.expired and pdb_node.catalog_timestamp:
                     logging.debug('skipping node: %s', node)
                     continue
-                logging.warning('Refreshing expired node: %s', node)
-            except requests.exceptions.HTTPError:
-                # dont have info yet
-                pass
+                else:
+                    if pdb_node.expired:
+                        logging.warning('Refreshing expired node: %s', node)
+                    else:
+                        logging.warning(
+                            'Compiling catalog for node without a catalog timestamp: %s',
+                            node
+                        )
+            except requests.exceptions.HTTPError as err:
+                if err.response.status_code == 404:
+                    logging.warning(
+                        'Compiling catalog for node not found in puppetdb: %s',
+                        node
+                    )
+                else:
+                    raise err
             # As we are just using the root logger the following logging check should be fine
             # at least until volans sees it ...
             populate_node(node, config, logging.root.level == logging.DEBUG)
