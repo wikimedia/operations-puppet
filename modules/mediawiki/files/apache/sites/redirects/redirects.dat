@@ -159,7 +159,6 @@ rewrite ombudsmen.wikimedia.org https://ombuds.wikimedia.org
 
 # Continuous Integration T83381, T83399
 rewrite	doc.mediawiki.org	https://doc.wikimedia.org
-rewrite	integration.mediawiki.org	https://integration.wikimedia.org
 
 # CI docs -> doc (T100349)
 funnel	docs.mediawiki.org	https://doc.wikimedia.org
