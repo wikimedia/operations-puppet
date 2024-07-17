@@ -7,10 +7,9 @@
 #
 # == Parameters
 #
-# [*gobblin_jar_file*]
-#   Path to shaded jar that will be used to launch gobblin.
-#   You should set this in your role hiera to a versioned gobblin-wmf jar.
-#   Usually this is deployed alongside of analytics/refinery artifacts.
+# [*gobblin_wmf_version*]
+#   gobblin-wmf-core version to use.  This will be used to infer the gobblin_wmf_jar path
+#   to use out of the analytics/refinery/artifacts directory.
 #
 # [*ensure_timers*]
 #   This parameter can be used to disable gobblin test jobs, effectively pausing
@@ -18,7 +17,7 @@
 #   during HDFS maintenance work
 #
 class profile::analytics::refinery::job::test::gobblin(
-    Stdlib::Unixpath $gobblin_jar_file = lookup('profile::analytics::refinery::job::test::gobblin_jar_file'),
+    String $gobblin_wmf_version = lookup('profile::analytics::refinery::job::test::gobblin_wmf_version', { 'default_value' => '1.0.2' }),
     String $ensure_timers = lookup('profile::analytics::refinery::job::test::gobblin::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
@@ -27,7 +26,7 @@ class profile::analytics::refinery::job::test::gobblin(
     # analytics-test-hadoop gobblin jobs should all use analytics-test-hadoop.sysconfig.properties.
     Profile::Analytics::Refinery::Job::Gobblin_job {
         sysconfig_properties_file => "${refinery_path}/gobblin/common/analytics-test-hadoop.sysconfig.properties",
-        gobblin_jar_file          => $gobblin_jar_file,
+        gobblin_jar_file          => "${refinery_path}/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-${gobblin_wmf_version}-jar-with-dependencies.jar"
     }
 
     profile::analytics::refinery::job::gobblin_job { 'webrequest_test':
