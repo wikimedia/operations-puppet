@@ -63,3 +63,7 @@ https://phabricator.wikimedia.org:
   assert_status: 302
   assert_headers:
     Location: https://phabricator.wikimedia.org/source/mediawiki/browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5
+
+https://phabricator.wikimedia.org:
+- path: /maniphest/task/edit/form/default/?title=%3f
+  assert_status: 200
