@@ -190,6 +190,9 @@ if (!defined('CIVICRM_TEMPLATE_COMPILEDIR')) {
   define( 'CIVICRM_TEMPLATE_COMPILEDIR', '<%= @web_root -%>/sites/default/files/civicrm/templates_c');
 }
 
+// Use Smarty4
+define('CIVICRM_SMARTY_AUTOLOAD_PATH', '/var/www/community_civicrm/vendor/civicrm/civicrm-packages/smarty4/vendor/autoload.php');
+
 /**
  * SMARTY Compile Check:
  *
@@ -261,6 +264,10 @@ if (!defined('CIVICRM_UF_BASEURL')) {
 
 // By setting community messages URL to false we stop ET from phoning home.
 $civicrm_setting['CiviCRM Preferences']['communityMessagesUrl'] = FALSE;
+
+// Disable automatic download / installation of extensions
+// We are behind a firewall so this fails but it is slow to fail.
+$civicrm_setting['Extension Preferences']['ext_repo_url'] = false;
 
  // Override the Temporary Files directory.
  // $civicrm_setting['domain']['uploadDir'] = '/path/to/upload-dir' ;
