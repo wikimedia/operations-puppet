@@ -28,7 +28,6 @@ abuse_filter_history,afh_deleted,K
 abuse_filter_history,afh_changed_fields,K
 abuse_filter_history,afh_group,K
 abuse_filter_log,afl_id,K
-abuse_filter_log,afl_filter,K
 abuse_filter_log,afl_user,K
 abuse_filter_log,afl_user_text,K
 abuse_filter_log,afl_ip,F
