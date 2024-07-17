@@ -36,6 +36,7 @@ class community_civicrm (
 ){
 
     ensure_packages([
+        'gnupg',
         'libapache2-mod-php',
         'php-bcmath',
         'php-curl',
