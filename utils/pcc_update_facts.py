@@ -27,7 +27,7 @@ def get_args() -> None:
         help='Wait for pcc_facts_processor to complete on the pcc-db host',
     )
     parser.add_argument(
-        '--pcc-db', default='pcc-db1001.puppet-diffs.eqiad1.wikimedia.cloud'
+        '--pcc-db', default='pcc-db1002.puppet-diffs.eqiad1.wikimedia.cloud'
     )
     parser.add_argument(
         '-m',
