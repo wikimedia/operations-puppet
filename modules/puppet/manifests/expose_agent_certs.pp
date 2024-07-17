@@ -52,6 +52,9 @@ define puppet::expose_agent_certs (
 
     $target_basedir = $title
     $puppet_cert_name = $facts['networking']['fqdn']
+    $hostprivkey = "${ssldir}/private_keys/${puppet_cert_name}.pem"
+    $hostcert = "${ssldir}/certs/${puppet_cert_name}.pem"
+    $localcacert = "${ssldir}/certs/ca.pem"
 
     file { "${target_basedir}/ssl":
         ensure => stdlib::ensure($ensure, 'directory'),
@@ -82,7 +85,7 @@ define puppet::expose_agent_certs (
         concat::fragment { "${title}_puppet_agent_cert":
             target => $cert_dest,
             order  => '01',
-            source => $facts['puppet_config']['hostcert'],
+            source => $hostcert,
         }
         # Here we add the full chain including the root CA, but we only strictly need
         # the intermediate certificate.  however its much harder to try and extract the
@@ -91,7 +94,7 @@ define puppet::expose_agent_certs (
         concat::fragment { "${title}_puppet_ca_chain":
             target => $cert_dest,
             order  => '02',
-            source => $facts['puppet_config']['localcacert'],
+            source => $localcacert,
         }
 
     } else {
@@ -100,7 +103,7 @@ define puppet::expose_agent_certs (
             mode   => '0444',
             owner  => $user,
             group  => $group,
-            source => "${ssldir}/certs/${puppet_cert_name}.pem",
+            source => $hostcert,
         }
     }
 
@@ -118,7 +121,7 @@ define puppet::expose_agent_certs (
         owner     => $user,
         group     => $group,
         show_diff => false,
-        source    => "${ssldir}/private_keys/${puppet_cert_name}.pem",
+        source    => $hostprivkey,
     }
     # Provide a keypair of key and cert concatenated. The file resource is used
     # to ensure file attributes/presence and the exec resource the contents
@@ -141,8 +144,8 @@ define puppet::expose_agent_certs (
             require => File["${target_basedir}/ssl"],
             creates => "${target_basedir}/ssl/server-keypair.pem",
             command => "/bin/cat \
-                         ${ssldir}/private_keys/${puppet_cert_name}.pem \
-                         ${ssldir}/certs/${puppet_cert_name}.pem \
+                         ${hostprivkey} \
+                         ${hostcert} \
                         > ${target_basedir}/ssl/server-keypair.pem",
         }
     }
@@ -157,10 +160,10 @@ define puppet::expose_agent_certs (
         ensure      => $p12_key_ensure,
         owner       => $user,
         group       => $group,
-        public_key  => $facts['puppet_config']['hostcert'],
-        private_key => $facts['puppet_config']['hostprivkey'],
+        public_key  => $hostcert,
+        private_key => $hostprivkey,
         outfile     => "${target_basedir}/ssl/server.p12",
-        certfile    => $facts['puppet_config']['localcacert'],
+        certfile    => $localcacert,
         password    => $p12_password,
     }
 }
