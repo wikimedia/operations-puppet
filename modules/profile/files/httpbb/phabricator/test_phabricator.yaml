@@ -52,30 +52,6 @@ https://bugs.wikimedia.org:
   assert_headers:
     Location: https://phabricator.wikimedia.org
 
-https://git.wikimedia.org:
-- path: /
-  assert_status: 301
-  assert_headers:
-    Location: https://phabricator.wikimedia.org/diffusion
-
-https://git.wikimedia.org:
-- path: /activity
-  assert_status: 301
-  assert_headers:
-    Location: https://phabricator.wikimedia.org/diffusion/query/active/
-
-https://git.wikimedia.org:
-- path: /lucene
-  assert_status: 301
-  assert_headers:
-    Location: https://phabricator.wikimedia.org/diffusion/query/advanced/
-
-https://git.wikimedia.org:
-- path: /blame/mediawiki%2Fcore.git/b3492e41f93f54561a4af8d8127b37e59e157a84/includes%2Fspecials%2FSpecialActiveusers.php
-  assert_status: 301
-  assert_headers:
-    Location: https://phabricator.wikimedia.org/r/p/mediawiki/core;browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e59e157a84
-
 https://phabricator.wikimedia.org:
 - path: /r/p/mediawiki/core;browse/master/includes/specials/SpecialActiveusers.php;b3492e41f93f54561a4af8d8127b37e5
   assert_status: 302
