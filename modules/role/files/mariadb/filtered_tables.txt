@@ -459,17 +459,6 @@ page,page_random,K
 page,page_touched,K
 page,page_latest,K
 page,page_len,K
-page_broken,page_id,K
-page_broken,page_namespace,K
-page_broken,page_title,K
-page_broken,page_restrictions,K
-page_broken,page_counter,K
-page_broken,page_is_redirect,K
-page_broken,page_is_new,K
-page_broken,page_random,K
-page_broken,page_touched,K
-page_broken,page_latest,K
-page_broken,page_len,K
 page_props,pp_page,K
 page_props,pp_propname,K
 page_props,pp_value,K
