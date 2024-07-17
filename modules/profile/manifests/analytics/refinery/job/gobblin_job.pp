@@ -11,6 +11,9 @@
 #   Path to gobblin jobconfig pull properties file.
 #   Default: /srv/deployment/analytics/refinery/gobblin/jobs/${title}.pull
 #
+# [*gobblin_jar_file*]
+#   Defaults to $::profile::analytics::refinery::path/artifacts/gobblin-wmf-core-jar-with-dependencies.jar
+#
 define profile::analytics::refinery::job::gobblin_job (
     $sysconfig_properties_file,
     $jobconfig_properties_file  = undef,
@@ -34,7 +37,7 @@ define profile::analytics::refinery::job::gobblin_job (
     }
 
     $_gobblin_jar_file = $gobblin_jar_file ? {
-        undef   => "${refinery_path}/artifacts/gobblin-wmf.jar",
+        undef   => "${refinery_path}/artifacts/gobblin-wmf-core-jar-with-dependencies.jar",
         default => $gobblin_jar_file,
     }
 
