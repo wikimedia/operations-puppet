@@ -12,6 +12,7 @@ profile::idp::client::httpd::sites:
     required_groups:
       - 'cn=ops,ou=groups,dc=wikimedia,dc=org'
       - 'cn=sre-admins,ou=groups,dc=wikimedia,dc=org'
+      - 'cn=ops-limited,ou=groups,dc=wikimedia,dc=org'
       - 'cn=wmf,ou=groups,dc=wikimedia,dc=org'
       - 'cn=nda,ou=groups,dc=wikimedia,dc=org'
     vhost_settings:

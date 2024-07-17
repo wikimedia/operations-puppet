@@ -23,6 +23,7 @@ profile::idp::services:
     required_groups:
       - ops
       - sre-admins
+      - ops-limited
       - idptest-users
   idp_cloud_dev:
     id: 2

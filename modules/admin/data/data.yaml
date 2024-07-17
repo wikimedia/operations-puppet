@@ -75,17 +75,60 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 714 725 726 724
+  # 782 714 725 726
+  datacenter-ops:
+    # Moved upward to allow to be referenced in 'ops-limited'.
+    # The group is used on a subset of nodes (puppet/install/apt/etc..) to
+    # allow DCops to perform day-to-day maintenance tasks.
+    gid: 765
+    description: Group of datacenter ops engineers
+    members: &datacenter_ops [wpao, jclark, pt1979, robh, jhancock, vriley]
+    privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
+                 'ALL = NOPASSWD: /usr/local/bin/install-console *',
+                 'ALL = NOPASSWD: /usr/sbin/megacli *',
+                 'ALL = NOPASSWD: /usr/sbin/hpssacli *',
+                 'ALL = NOPASSWD: /usr/bin/puppet cert *',
+                 'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
+                 'ALL = NOPASSWD: /bin/journalctl *',
+                 'ALL = (syslog) NOPASSWD: ALL',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hardware.upgrade-firmware *',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.provision *',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.reimage *',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.network.configure-switch-interfaces *',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox *',
+                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.puppet.sync-netbox-hiera *']
+    approval:
+      - Willy Pao
   sre-admins:
+    # DEPRECATED: please use ops-limited
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members [tappof]
+    members: &sre_admins_members []
+    approval:
+      - Joanna Borun
+  ops-limited:
+    # SRE members without full root.
+    # Use cases: DCops ssh/throubleshooting, new SRE members, etc..
+    # Ideally this group will be coupled with sudo_pair (or similar).
+    # Note about the allowed privileges: the idea is to provide tools
+    # (that require root privileges) to be able to successfully troubleshoot
+    # a server with a little more than "read-only" access. Please be very mindful
+    # with the extra tools that we allow.
+    gid: 724
+    description: 'Used for SREs without full root privileges'
+    members: &ops_limited [*datacenter_ops, tappof]
+    privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
+                 'ALL = NOPASSWD: /usr/bin/dmesg *',
+                 'ALL = NOPASSWD: /usr/sbin/lldpctl *',
+                 'ALL = NOPASSWD: /usr/sbin/traceroute *',
+                 'ALL = NOPASSWD: /usr/sbin/ipmi-sensors',
+                 'ALL = NOPASSWD: /usr/bin/lshw']
     approval:
       - Joanna Borun
   ops-adm-group:
     # No gid for this group on purpose, it's a system provided one
     description: Use the standard system provided adm group to provide ops with privileges that would allow easier administrative tasks
-    members: *ops_members
+    members: [*ops_members, *ops_limited]
     posix_name: adm
   platform-engineering:
     description: People in the Platform Engineering team.
@@ -231,7 +274,7 @@ groups:
   sretest-roots:
     gid: 716
     description: users with root on sretest servers
-    members: *sre_admins_members
+    members: [*sre_admins_members, *ops_limited]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
@@ -635,26 +678,6 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl start cassandra-[ab]',
                  'ALL = NOPASSWD: /bin/systemctl stop cassandra-[ab]',
                  'ALL = NOPASSWD: /bin/systemctl restart cassandra-[ab]']
-  datacenter-ops:
-    gid: 765
-    description: Group of datacenter ops engineers
-    members: [*sre_admins_members, wpao, jclark, pt1979, robh, jhancock, vriley]
-    privileges: ['ALL = NOPASSWD: /usr/local/bin/install_console *',
-                 'ALL = NOPASSWD: /usr/local/bin/install-console *',
-                 'ALL = NOPASSWD: /usr/sbin/megacli *',
-                 'ALL = NOPASSWD: /usr/sbin/hpssacli *',
-                 'ALL = NOPASSWD: /usr/bin/puppet cert *',
-                 'ALL = NOPASSWD: /usr/local/sbin/run-puppet-agent *',
-                 'ALL = NOPASSWD: /bin/journalctl *',
-                 'ALL = (syslog) NOPASSWD: ALL',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hardware.upgrade-firmware *',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.provision *',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.hosts.reimage *',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.network.configure-switch-interfaces *',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.dns.netbox *',
-                 'ALL = (ALL) NOPASSWD: /usr/local/bin/secure-cookbook sre.puppet.sync-netbox-hiera *']
-    approval:
-      - Willy Pao
   perf-team:
     gid: 796
     description: performance team members with access to webperf, and arclamp servers

@@ -19,4 +19,5 @@ profile::puppet_compiler::puppetdb::max_content_length: 16000000  # 16MB
 profile::ldap::client::labs::restricted_to:
   - ops
   - sre-admins
+  - ops-limited
   - project-puppet-diffs
