@@ -1,5 +1,8 @@
+# SPDX-License-Identifier: Apache-2.0
 # This profile sets up an bastion/dev instance in the Toolforge model.
-class profile::toolforge::bastion () {
+class profile::toolforge::bastion (
+    String[1]              $component           = lookup('profile::wmcs::kubeadm::component'),
+) {
     if debian::codename::eq('buster') {
         include profile::toolforge::shell_environ
     } else {
