@@ -1,0 +1,170 @@
+---
+puppetdb::app::bind_ip_insecure: '0.0.0.0'
+puppet_compiler::uploader::realms:
+  production7:
+    puppetserver1001: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAql419SE+5PyPPiY4YJjN
+      yD/z4T3OrvIFTqKSJgyBcxDsjYehVrz6NEaBLRjkGd26ktS7VbtSgG/xkVNpiQWv
+      jrZbBXsAMeLJMtnkPOXq60k0WyxjT1JTuLQr7u0yMSBVvzacJRGgK0ByfZ7gjN1v
+      Md0wvCbBh2a7RmMPLOmEEFxyFyE2ugEbUsTXpxKt64AU8kvAytigiRv04rvcesDW
+      kF6cn1DIXZ5LvP1KVZzHeSKrU2AeimYPc5hEtSAAiFFPqnDpVmeJWuNBmFXMUq5f
+      pMV0FpgiOCYMY3l5rJSml/ToSHDpr5IYAs5Dffq8rVkrCT0AAuhyXqFMzA7v621Z
+      xnsO7JV/a9BUcGxpEdf4AP5drlPlj5cP1phlIUwxHOlRi4f+Wd6kZJ2hzVvQTpok
+      7N/5sDRknQmBvys0dbrOtSo6vz172NxjAOWFI9Kx+GQbuoKCNpMicUtnB2PM02DB
+      0waJeV4kkdEx47wPaBdWUbTKDl0E56I6rJ3NURVv+DRUc7XNGtprj26f7vs3whby
+      2zkThEaTo1jnrY/VNarkdRdxDiaftDz2kcv7CSRKnYitUF1cH+Mbq6rbOQpCAJjx
+      uzGNshZJqg6NphOAhcx123TKhOBu+/58usSktJH2Ud4v8AlkdMGtXn3WssTMkA7z
+      FnfHySxj7A+/1I9TQJL0FysCAwEAAQ==
+      -----END PUBLIC KEY-----
+  production:
+    puppetmaster1001: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAl+eoPKZrnvwYsQyolUZn
+      QmR3pCPAy+8uu0qm9Buy537OhONHAbnEkemKvQtPsc9wM+G9oUu+kjUEJeMd/KjW
+      E6SR+XAZv5+/dSfkckcoXDZQ4w0fk6XaH5Q2gZXa8axYSCnMi+cXOWxmegeHG857
+      8VlLkBy+sUwEvBqdyi8a14G7dn1DTCqB89xA0hwFrGpfewqEeMQWi2ic/3DFSlvm
+      ydDhDw0KGDYNG2+1jcfFZrs6fUt7tmiepNcr2Zas17l/JvKzp6h4+WiF7cX0LNd/
+      9K1j9bXdZBGV/QltY3vVp//8L1pEj8JVDrlKZD6LGNO1RL1Ej7dw5lyU+1R9/wW9
+      KDfxA7Ktp0oNZ1jVcL06NqiG680vBbNGGd4uYSEo+Vf/OfiiTiffP5MhFxnPSvPj
+      El1ojUV28kKfjoEuo584OjI7rIy1K6kk5PuRmeIbrbx2oQCdOg85mUxlGaTuHIgN
+      YBuNYYfqxZ0jwZNKIrgwZxFseE/Mb4FYu8qPQPfyX0NXqngEu5+u+YNB/pIApDbJ
+      XEGc1iku5HzFu03J2MRwgOLUX8CIIGvaWse6UeeezX3VT7AJjrpuYKzE0m1+8M8k
+      y3hOQS4EW3C2l0tknlM07hwWU8KCzfoT+JBstH5FTwXYqlMfPANzrJIE5t7FNhu4
+      kOHUQwj4Rl5xXaZ8GCV6feECAwEAAQ==
+      -----END PUBLIC KEY-----
+  cloudinfra:
+    cloudinfra-cloudvps-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAx/vEMPhgLyiCta/a2NkxpWjRitiApuPUw/F0rwq+wIiJjLdZu1et
+      koexGa54dpycNh/UzTGlQppo8jVsslU+FEkxZhR4ZeBYP2BzLtO8puT12f0Sj4Fg
+      qzGKibx9+fKTAd5ehegUmGFkN7fUsDZ5P5NLR9MmAhDljAQOMmrsdCLfaVDwf8wu
+      TZr7OfsXTAbcQ8INydGA5GutOsYI2Jf6zvcu51nTuuksqtDaEX/fPQVHJ2fz3a3Z
+      +3d80Xj1mYiey0Om9jgH58NRI2iqqlGhxbTqrZgqjBBAgaUatFKnofBeR4yca/Hc
+      vyQzCgczrreusu1RmYM7HfQ+RGD/02E0q/U579d8wCMa6hdHXiGOovP4xBSboNIz
+      wLokULGhtJHSH9HKy8xy9+xQeLVNWAyxEzPt3CMZ6/UDLIy5x1dd+OrXXAsaWDBP
+      RQHsoIe3oK0YbZQ1u+39ITFboj55RKJhCjACi+g2xcJLwdQsm11SUQJD+TeyWy3S
+      MKs79NBYa+M8eKkY8vjaIP+csTnBVNDIf0SR1/HwHXHl67USc1FpElFKAIfb2d9t
+      d9l5Nglp4i3Eta/w6xGCPPLJAw0HM7LxcHJ1edskIRSeHXNICciz30fZ7QFus/rQ
+      SzB5+w+BfoKRXmFA8Z4bazQJMd/i76LPDK8EaNFv6IQmmJ5MTFxBtFcCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+    cloudinfra-internal-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAkUFC6QwqjvLdCVMWSdbaa0U/a3rZsH0Fagw2V3W2VfWXR9nFLidW
+      oPxgVNZbWISnSV+ny7iGUEdvjTODuYFxzt1RWtC66gLTk8+WghCHcPHX8jNJnYib
+      ELfIdQQXBBgE+ficv2reuXzfSrsquo/0Px2OmzRRlY8h4wntjLZSmFIRh0nuBDWW
+      h59LQMLQG3x8gUBH3bzprAZLAlFiv75G3OtVPlaey5NklIgIeHXpXTb8QzQH21Bc
+      HzBnOV6F5c0AQisCilSx6ktBK+Ptkw+QrYrpEFW9kF8cOvfgAvFSSZcisabVALD4
+      F8kn0p163MDtrDchS2XBMIEM5HAxx1wsX6IShe/w46/0k1H3voPbCJHvPhT8MrOt
+      u+ie34x+pDUw3xEmf9yDeSXuoziyFW+NGcLf5uSClGt3n7fRKFICarRD39nrRwjg
+      LJxa582VAzrSOWO3J4HTeQcyuy0YS7RBgR6/fXfjIj+8uSCB7vwxZcCT2j12IyHp
+      jkABRPEIXsCJS/gHrf/ed1PEeZXxXBuq1MlsROW6VfUGXX+gVGS2JapoT3DRtPOf
+      PkN4FhG/6mA1fl3aJ6fEbAAp3uR/AU0ffJXd2WTaDj6MI6YFiBWDoneC3uDVzyT4
+      7shTy+Jpm2c/ydv2U5tHetiNeeRNCLm9LGgvLZdcT7mVJHfUZrhr+mUCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  clouddb-services:
+    clouddb-services-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAvZu0dAJG+xj5hmYqhOFmblhf7pJ7rkUHeaGEpWIJGMUZY/aohTyK
+      GSK6kDbDQR/X9EgUOG9/Gfesd/ABs4+Xf6NA5DCDSaK86i+sUommIPraBdloNese
+      w0ivnb4k4eEPR3QzD7pdhB7+IPuPv64Zd+VYVF8JsOnCWyOhoJvq6hL0Pm6z2sf9
+      D8lacbtMR5BSZ/zs2GZz8BucPGdGjkDKZoLKfxwaArhqg9SVP9MpmF3KR3iRfdYS
+      2Ej5Yp2MRZkikj/Fw3la1gNh8dTnfYhTGQviE9ZXREgwu8oTjeG/2aFDW7IYXw8F
+      ffFL0uivA0pxwuw8QZ2rCdJQoUqlaIg3bssa/Qk1IiiXjotZHLJNdmwhvB7R5hZa
+      AIdEw9HI89vYKveBUdeEiH1lFz2+EBAXJBtlCc3Ha3dUx486tQWObqfw46cvXukk
+      2mSHWDaW7MRfFl7fqoJ9uukUcsZkOVwI9jzXOLBYNmLqyfHpARKWJe0MakLIZ8OS
+      Bf7Z9zeiB2y71lzR9YuWw1sfOzA0AR56CiTMfdzu/CzydifuUYKYxboTCUnM8+hP
+      B1J2Vp5j8nH1PXNJ7Z20QdjnwvuBFid8zI+xP6AcG8/xpXGgrIzUmWlXzb1G0aoR
+      yZodrOW40RKNdjdJ+ZF5FJCpGLJiJ81fOVoLs75VGGq4dg0l2gWvhRMCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  deployment-prep:
+    deployment-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAtXtpFReMcmDv/xOOLQY4WbIT5FsYzxREy0PLKjGWsg06cx1de2B+
+      w8O6MCaqnaGH3nAwkAQ9TZa20gFb6GrFqFgiLtCS+exAzejCeeuzhYWLvxlfesuY
+      BBwo9ZsGTDxIMfr2TFoiBOaULl6TpR3N+K4kRT7EHSYZmaU6Kutyw/cYcQw0fMNp
+      Gke0v8mR6DaaqG2dVcnhLcI8LaMnKdYE6DZyBliYk3mjRVlQST2eVd+efLKGIJNA
+      bg4klgRLaBbwpHViXJPIPnxUk975bvDQja62+EKPVG3I8bPEscV5LXAbb54DncMV
+      pKEFIdowrMXkKqGFfXAUnrAxqxxpa3TeSPAAPPvCWHPvh8b9ntawaDNPPqge4HYs
+      7Tu/54qFhxiUUnAn10UcWOhc8xj3dQR1Ay/ZWkwhsSEpjDaWMRjFPzn2K5H82PTD
+      lbEtSBYnieow7kje4Qg0Jw1nOVwSQmjB6cY6oW4XJcHdM1+brOoqCPBuHQk54oVn
+      /11I9rZ1sf3qiR4SqtfX7wTmK6pdr5Wt8ut7aCfgCECB7bZBpFzphrqknV5FwAZW
+      ynrvVK62kPe2crM4UCNCL6nzqk//GrqRQIfmq977GXX9adjwyzUv+JhCR0pxKnQ+
+      uKISShzpmW/m+n5teVkEaoZjQ53/+EUeEPDi6PMX/OS5OTcg6CPGDxkCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  metricsinfra:
+    metricsinfra-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAvmt33xtEiCq09RBhtXN1GkjPBNg8UtEacnzrNFj4i18t7b9jleXy
+      jHupsRoPe2pNJGlm6QkYKvn2ndO00DB4Zt2lPICHIdmRo/ffmSeBGkj0w6u/Sj8d
+      D8QtMbg2vWHnHmJvGsjX7n7ReD/m+b/lwcGuuDcKcWqKC9zNCGI0pt/049SLBc8o
+      nIynAQ4Q0Vr/0TDE4ySecAAKew3LnzAqsgzUyM3OMHmdrOdLlldz9fczHihLVQZk
+      P4bm5VCW30j7Kswe4KH524KxAbMj5YFzkdS35JfzuvhtFinn4k2uWb/qxNPwdLrd
+      vF9u098p++01a4HGU6LVU8/oldgwmjqS+Ukk3MlXazYSZ7mcpRCOqKGLQpDQBLYj
+      NZzhGGkEDLcoM8+XIlVB1mBj9pEYaHFSyQPlB+M46DjEydNZlB2RJvRkV4cg+s15
+      SiRS3gwQC1awTwaimBZCTsGyuVpPrgFqvvD/+v1+5V8a7UqCUoue8j+r0Miedjji
+      kU0romjFy54r+eWVIFv8gK2Gtk1qxKBn+4R6IUdNa2Zc3XSmvmhYjj1982e6Utuv
+      0CS7pCK0dxbz5LYPCexBl7mmngZxIYsoo4xLxGB28+F/DU8/Wwu07bVyazFYnety
+      h4cgjIaqrK9NG0t86+OwGyfFBHcYLZnQCuMAvVo6UTw2uNjOButMrBMCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  project-proxy:
+    project-proxy-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEA4H+4x6cJDPDKLim4HJ9wqBRA+3OjuQwtuWVpZZGBqrYvBqwVNXRr
+      4DLTa+9MhUis3MtQoSJW/93PUMZVrl6c2CMwqpGpCDtFo9t309Z4WMncyi2QiGqd
+      MMWV0KR4ebLiMMBD3tO9fDc0Kbom0q4pvZ3NxceIxCn4209nwm+3tqVCspiugoFw
+      BZeFN5U6bmnawWfokPbumqw0yYJpvEtIkm3AKaND01EDin8TsDUdD/Lh9CCW268A
+      q65+zl+8kS1NUJ+OKo3TfxoiFbIWWUU1z7t/OfXuHVJmWI6KUwBi3iTj2XH+852q
+      06mxI2A2Mgv9//zmxC6KrJYp6vYaimpBXemi8JeuiCb7MzoGdh0zQNOiyJYyAyRY
+      cTBzTarM835jaLNmcPcjlEi8Ufq1tuJ3gRZVCbJnVn4Cuj+rR+r2r77+0QTZidV1
+      BrepaUMXrq9WRH3FpmJ+Eqo96TN1C9TVoqRwUW6nyGKH8k79YnjSYudiPIdnpzy3
+      NDEle93CrwG9J5puATVbDOqHeCHD3wwhKQMT9JOnOQEOhA8VSSZ8YzmX1L/OHXJy
+      4aacxAqevDoKb68uLpdemia64b9hiIyv7k3Pff33VygfX0NP7FU+GjTNCPsxcb8/
+      T9mkqpU4f8U/+sJN7odI0/8X0xF4jFS3VKbl1lT3BRhEwPjBFzaXbykCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  tools:
+    tools-puppetserver-01: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEA2bRChpAW1eYJP6YwvGu2KV6XbhLhrFRtSA/ZMPUrmuyn0xZnHsOM
+      COWlmt8GXj1VHEnAHEIJeR1TmgwTOdNkQByvbYlcsqoyvlGuXuMlkAppZUPk5asv
+      4fFwYvRuEl2vilESbnzjSnz1VJxcLvxjRwmTdx0KCLoK3U4u1ll+wvovOPMa34LI
+      1qTTZjxtgU1bNoBD8hi5LJsl7ieLkCezZoBFUJ/vqJLB5E0NuRrV4vUZXpVmGykI
+      +AaHDUhYez6lX6Ux8W/Am0voDpOkoLKL7S2pKKlij9tsEijmcimsV0w+h5lVbGXe
+      odnFP4/5gOKQXQaaiQL6rRMe156d/06nvWBqwjkmTooWYoBR6aiCrhLx2G2K0Xdi
+      02vitzZ/wTuo0DhCtpUL0VF3Hy7A9bUjfryT25oyYKxfIUlJMWh8xK3CfJ4OcelS
+      62oXRSPSirw2LyEEfPSWrpZOj3gy7r5domzpnQD2G3UHTVfXTyng5FR9QGC5hSsn
+      mVqT1e8a1FZdGPB7qzDPDbTo/A6IOlvOksHi7vNLYi2IoGjH35QdI92LFd7GNz6K
+      ymBdV/VRuGF21YIByv9dFJyJ1s+RAuPbVI4J2TOMBdcZ3Xl1ojiTSmh9N4G9H5Eb
+      87IjioTZYMRoud5sEFsNSHT51srXqNvMQPvuT40IGu6IPOCLOLX/1N8CAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  toolsbeta:
+    toolsbeta-puppetserver-1: |
+      -----BEGIN RSA PUBLIC KEY-----
+      MIICCgKCAgEAnZYEx7Um3N1B1ifQivkefH7vQZ51fxXHw38f5SsPDNH6Ed9iCDtl
+      jbHrh4C7sRUnQ5GJGu3lFWe2PnJMvVbMaPn9dy94V1BPoYzpQIoYrZLSjyVM6nGo
+      4mpVdhlDSgkbMuvolvwW/WPcp4XGJvndn9eactwF59rscI8wgHe7UzZn861xdHu6
+      hQx7+cJ++PoxT0QR4HLPVSZHxsFftv6mWuxyz2xW1/K2MVYjydmhkfFvSNFUrwle
+      aYl/VmBzGerH7dyuVvqn4yF3PkvKK1oAf/Wazg6X3C0WFPrc3bqFS6gCkxkV13yi
+      Gg2j45hadnkJbPiGKjcwzlHY0bqEAX1UeRxtumPrjWRZAh8SDBRIa3XNEupGIEO8
+      +zAJs+TNCzjYFfOhMFddfqkl7zEhPWCE1//MWil825qjycXAJZmSKyVK8Qza2WZ/
+      83tdKHgw1Mb+4/WelpQhgjvNvj2hQyRH2CUUfX7y2RNnpdRU7SCXofXiZHprzo8D
+      l6Mww5lC5mEIY2/itr2Lfc6gjBBsHLC3K/5wEHCOH8GOGBXsERCHADlqErrPnq67
+      Qelw9bNcngacvSOiclfAwWTcPkrKoucILs+HaK4Fa22gEZqlT02mj8P9NcL+K+Lt
+      mUAZNt/5RatFDhqPO+S/Hxl5fYjZ+VQ0kEa4fsSkuEqR3gTYjGwb7bMCAwEAAQ==
+      -----END RSA PUBLIC KEY-----
+  devtools:
+    puppetmaster-1003: |
+      -----BEGIN PUBLIC KEY-----
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEArUbZi/jroeZdLtaXW1U+
+      D0JXHTRlDF1Xh/uxu+ty+8oUrnVAsHHEgjnHYmfo3X4BzJCwubImw5S+dGOcqh5D
+      7+UMRAdBNSPkqOym44wsjeOxUgZu/s1dmaB4q/+AFVUljCPTKYl+KBoKcHsns2Wf
+      HmMdjQTd3WXhG0i4Cg+W7l4C7xUSlUI88NTONv3WNDp41xgJ+LtbaizBgsHxEnPe
+      +r27Hi5EOQq613t2ya3MrnEhk6TRbygEdW2dh+BjQgku1hfBk/fMgppvyQOsjNCF
+      AQTYG1kYE8JAubOvzWsh4iSiPITxGqFzobVjgF66xMk5tn2MCQRTyBZKZ8LuKve0
+      NhnixkVp0Xo9tVdQo7ja/jY+W6F5M+8KWgC+7py0nZ1P4RAfE7EJdwqqUb0yoDS0
+      zy3ETvDomY/RFd9NSNIIFWSDNDXQx/zjp72jQBpqiX4qeRo3/Pz5AkacCmGas0rH
+      75bjPu454kfx9DlooeGH4eo9Bp7cbYPGuUfqWVi48jY0E/CwiPp6Qp34acb9vFRB
+      gD/8Ai8MwqrYejhCu4yHYr2aveNViUSP8pYp8CHEc8U/LwSFZjU5jn69wiocQEBX
+      +0dCG8Y2MQZTN75Hth0dYKxMw+kPdd8EMGcWf9HbshUpmD9865Yi09iB19oXXYlu
+      nYy+QmTKlI9uFBnblDhe74UCAwEAAQ==
+      -----END PUBLIC KEY-----
