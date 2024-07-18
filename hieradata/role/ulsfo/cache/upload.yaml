@@ -29,3 +29,31 @@ profile::benthos::instances:
       site: eqiad
       topics:
         - "none"
+
+profile::cache::haproxy::sticktables:
+  - name: limit-by-path
+    type: integer
+    size: 1m
+    expire: 60s
+    store:
+      - bytes_out_rate(1s)
+
+profile::cache::haproxy::filters:
+  - direction: out
+    name: limit-by-path
+    size: 300m
+    key: path,sdbm(1)
+    table: limit-by-path
+
+profile::cache::haproxy::post_acl_actions:
+  tls:
+    - context: http-request
+      verb: set-bandwidth-limit limit-by-path
+
+lookup_options:
+  profile::cache::haproxy::sticktables:
+    merge:
+      strategy: deep
+  profile::cache::haproxy::post_acl_actions:
+    merge:
+      strategy: deep
