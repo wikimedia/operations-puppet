@@ -28,3 +28,6 @@ profile::ci::package_builder::extra_packages:
         - eatmydata
     buster:
         - eatmydata
+
+# package_builder installs python-all - T370337
+profile::base::remove_python2_on_bullseye: false
