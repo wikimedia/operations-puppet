@@ -78,12 +78,13 @@ class profile::openstack::base::opentofu (
   }
 
   git::clone { 'repos/cloud/cloud-vps/tofu-infra':
-    ensure    => 'latest',
-    source    => 'gitlab',
-    directory => '/srv/tofu-infra',
-    owner     => 'root',
-    group     => 'root',
-    mode      => '0444',
+    ensure        => 'latest',
+    source        => 'gitlab',
+    directory     => '/srv/tofu-infra',
+    owner         => 'root',
+    group         => 'root',
+    mode          => '0444',
+    update_method => 'checkout',
   }
 
   # Monitoring: This will trigger the generic systemd unit failure alert
