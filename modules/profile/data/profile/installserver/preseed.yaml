@@ -563,7 +563,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/reuse-raid1-2dev.cfg
   'moss-*':
     - partman/custom/cephadm_raid1_leavelvm.cfg
-  'ms-be2050|ms-be20[7-8]*|ms-be107[2-9]|ms-be108*':
+  'ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*':
     - partman/custom/ms-be_simple.cfg
   'ms-be*':
     - partman/custom/ms-be.cfg

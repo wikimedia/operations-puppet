@@ -264,7 +264,7 @@ swift_24_drives:
 
 # hosts using the new storage schema (JBOD not RAID) cf T308677
 swift_new_storage:
-  __regex: !ruby/regexp /^ms-be(107[2-9]|108[0-9]|2050|20[7-8][0-9])\.(codfw|eqiad)\.wmnet$/
+  __regex: !ruby/regexp /^ms-be(107[2-9]|10[8-9][0-9]|2050|20[7-9][0-9])\.(codfw|eqiad)\.wmnet$/
   profile::swift::storage::disks_by_path: true
 
 # require WriteBack policy to all hosts (independent of the role) that look
