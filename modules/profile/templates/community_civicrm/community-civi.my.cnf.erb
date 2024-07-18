@@ -28,7 +28,7 @@ expire_logs_days   = 7
 slow_query_log
 
 innodb_file_per_table   = 1
-innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.75).round %>G
+innodb_buffer_pool_size = <%= (Float(@memorysize.split[0]) * 0.5).round %>G
 innodb_log_file_size    = 50M
 innodb_flush_method     = O_DIRECT
 
