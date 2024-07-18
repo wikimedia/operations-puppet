@@ -1,4 +1,5 @@
 # db1179
+# Crashed T369855
 # candidate master for x1
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
