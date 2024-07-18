@@ -152,6 +152,10 @@
 #    Map-reduce History server JVM opts.
 #    Default: undef
 #
+#  [*mapreduce_history_heap_size*]
+#    MapReduce History Server heap size, in megabytes
+#    Default: 1000
+#
 #  [*yarn_scheduler_minimum_allocation_vcores*]
 #    Yarn scheduler specific setting.
 #    Default: undef
@@ -346,6 +350,11 @@ class profile::hadoop::common (
         default => $hadoop_config['mapreduce_reduce_java_opts'],
     }
 
+    $mapreduce_history_heap_size              = $hadoop_config['mapreduce_history_heap_size'] ? {
+        undef   => 1000,
+        default => $hadoop_config['mapreduce_history_heap_size'],
+    }
+
     # Yarn ApplicationMaster container size and  max heap size (-Xmx)
     $yarn_app_mapreduce_am_resource_mb        = $hadoop_config['yarn_app_mapreduce_am_resource_mb'] ? {
         undef   => 4096, # 2 * 2G
@@ -535,6 +544,7 @@ class profile::hadoop::common (
         hadoop_datanode_opts                             => $hadoop_datanode_opts,
         hadoop_journalnode_opts                          => $hadoop_journalnode_opts,
         mapreduce_history_java_opts                      => $mapreduce_history_java_opts,
+        mapreduce_history_heap_size                      => $mapreduce_history_heap_size,
 
         yarn_app_mapreduce_am_resource_mb                => $yarn_app_mapreduce_am_resource_mb,
         yarn_app_mapreduce_am_command_opts               => $yarn_app_mapreduce_am_command_opts,

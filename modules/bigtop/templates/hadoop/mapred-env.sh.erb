@@ -1,0 +1,6 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Note: This file is managed by Puppet.
+
+<% if @mapreduce_history_heap_size -%>
+export HADOOP_JOB_HISTORYSERVER_HEAPSIZE=<%= @mapreduce_history_heap_size -%>
+<% end -%>

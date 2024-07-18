@@ -136,6 +136,9 @@
 #   [*mapreduce_history_java_opts*]
 #     Java opts for the MapReduce History server process.
 #
+#   [*mapreduce_history_heap_size*]
+#     The number of megabytes to be used for the Java heap of the MapReduce History server.
+#
 #   [*mapreduce_child_java_opts*]
 #
 #   [*yarn_app_mapreduce_am_resource_mb*]
@@ -389,6 +392,7 @@ class bigtop::hadoop(
     $mapreduce_map_java_opts                            = undef,
     $mapreduce_reduce_java_opts                         = undef,
     $mapreduce_history_java_opts                        = undef,
+    $mapreduce_history_heap_size                        = undef,
     $mapreduce_shuffle_port                             = undef,
     $mapreduce_intermediate_compression                 = false,
     $mapreduce_intermediate_compression_codec           = 'org.apache.hadoop.io.compress.DefaultCodec',
@@ -691,6 +695,14 @@ class bigtop::hadoop(
 
     file { "${config_directory}/mapred-site.xml":
         content => template('bigtop/hadoop/mapred-site.xml.erb'),
+    }
+
+    # We only run the mapreduce history server on the primary namenode
+    # and we only need to include this file to configure that service. See #T369278
+    if $primary_namenode_host == $facts['networking']['fqdn'] {
+        file { "${config_directory}/mapred-env.sh":
+            content => template('bigtop/hadoop/mapred-env.sh.erb'),
+        }
     }
 
     # Here we determine whether one or multiple spark shuffle services is available
