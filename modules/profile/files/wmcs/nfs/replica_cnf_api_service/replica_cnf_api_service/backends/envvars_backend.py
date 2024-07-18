@@ -78,7 +78,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
 
     def _create_envvar(self, name: str, value: str, client, toolname: str) -> None:
         try:
-            client.get(url=f"/envvars/v1/tool/{toolname}/envvar/{name}")
+            client.get(url=f"/envvars/v1/tool/{toolname}/envvars/{name}")
             current_app.logger.debug("Skipping setting existing var %s", name)
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == http.HTTPStatus.NOT_FOUND:
@@ -114,7 +114,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
             return
 
         for var in self.USER_ENVVARS + self.PASSWORD_ENVVARS:
-            cli.delete(url=f"/envvars/v1/tool/{toolname}/envvar/{var}")
+            cli.delete(url=f"/envvars/v1/tool/{toolname}/envvars/{var}")
 
     def get_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> ReplicaCnf:
         """Note that we don't store the mysql hash but the plain password."""
@@ -134,10 +134,10 @@ class ToolforgeToolEnvvarsBackend(Backend):
         #       replicas and toolsdb
         try:
             db_user_response = cli.get(
-                url=f"/envvars/v1/tool/{toolname}/envvar/{self.USER_ENVVARS[0]}"
+                url=f"/envvars/v1/tool/{toolname}/envvars/{self.USER_ENVVARS[0]}"
             )
             db_password_response = cli.get(
-                url=f"/envvars/v1/tool/{toolname}/envvar/{self.PASSWORD_ENVVARS[0]}"
+                url=f"/envvars/v1/tool/{toolname}/envvars/{self.PASSWORD_ENVVARS[0]}"
             )
         except requests.exceptions.HTTPError as e:
             raise Skip(
