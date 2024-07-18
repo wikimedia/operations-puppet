@@ -6,6 +6,8 @@ cluster: thanos
 # Temporary to allow tegola container deletion/cleanup
 # https://phabricator.wikimedia.org/T306424
 profile::swift::storage::disable_fallocate: true
+# Default to old-style storage layout
+profile::swift::storage::disks_by_path: false
 
 profile::prometheus::statsd_exporter::mappings:
   # Account-related services

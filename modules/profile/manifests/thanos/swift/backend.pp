@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
+# @summary profile to configure swift storage for thanos nodes
+# @param disks_by_path if true configure drives using the pci path
 class profile::thanos::swift::backend (
     Array $thanos_backends                           = lookup('profile::thanos::swift::backends'),
     Array $thanos_frontends                          = lookup('profile::thanos::swift::frontends'),
@@ -18,6 +20,7 @@ class profile::thanos::swift::backend (
     Optional[String] $loopback_device_size           = lookup('profile::swift::storage::loopback_device_size'),
     Optional[Integer] $loopback_device_count         = lookup('profile::swift::storage::loopback_device_count'),
     Boolean $disable_fallocate                       = lookup('profile::swift::storage::disable_fallocate'),
+    Boolean $disks_by_path                           = lookup('profile::swift::storage::disks_by_path'),
 ) {
     # TODO: we should be able to replace a lot of this with include profile::swift::storage
     class { '::swift':
@@ -59,13 +62,18 @@ class profile::thanos::swift::backend (
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Swift',
     }
 
-    swift::init_device { $drives:
-        partition_nr => '1',
+    if $disks_by_path {
+        class { 'profile::swift::storage::configure_disks':
+            swift_storage_dir => $swift::storage::swift_data_dir,
+        }
+    } else {
+        swift::init_device { $drives:
+            partition_nr => '1',
+        }
+        # these are already partitioned and xfs formatted by the installer
+        swift::label_filesystem { $aux_partitions: }
+        swift::mount_filesystem { $aux_partitions: }
     }
-
-    # these are already partitioned and xfs formatted by the installer
-    swift::label_filesystem { $aux_partitions: }
-    swift::mount_filesystem { $aux_partitions: }
 
     $swift_access = concat($thanos_backends, $thanos_frontends)
 

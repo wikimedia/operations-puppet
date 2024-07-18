@@ -266,6 +266,8 @@ swift_24_drives:
 swift_new_storage:
   __regex: !ruby/regexp /^ms-be(107[2-9]|10[8-9][0-9]|2050|20[7-9][0-9])\.(codfw|eqiad)\.wmnet$/
   profile::swift::storage::disks_by_path: true
+thanos_new_storage:
+  __regex: !ruby/regexp /^thanos-be(1005|2005)\.(codfw|eqiad)\.wmnet$/
 
 # require WriteBack policy to all hosts (independent of the role) that look
 # like databases. Currently this only works for megacli systems, but it will
