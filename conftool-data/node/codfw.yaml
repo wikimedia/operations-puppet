@@ -13,10 +13,6 @@ codfw:
     mw2275.codfw.wmnet: [nginx]
     mw2276.codfw.wmnet: [nginx]
     mw2277.codfw.wmnet: [nginx]
-    mw2432.codfw.wmnet: [nginx]
-    mw2433.codfw.wmnet: [nginx]
-    mw2438.codfw.wmnet: [nginx]
-    mw2439.codfw.wmnet: [nginx]
     mw2441.codfw.wmnet: [nginx]
   api_appserver:
     mw2261.codfw.wmnet: [nginx]
@@ -394,6 +390,10 @@ codfw:
     wikikube-worker2032.codfw.wmnet: [kubesvc]
     wikikube-worker2033.codfw.wmnet: [kubesvc]
     wikikube-worker2034.codfw.wmnet: [kubesvc]
+    wikikube-worker2035.codfw.wmnet: [kubesvc]
+    wikikube-worker2036.codfw.wmnet: [kubesvc]
+    wikikube-worker2037.codfw.wmnet: [kubesvc]
+    wikikube-worker2038.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
