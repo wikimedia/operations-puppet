@@ -1,8 +1,7 @@
 ## These url templates are expanded for every wiki in large.dblist.
-## The resulting set is then run once over an appserver cluster,
-## with the requests distributed randomly via the loadbalancer.
 ##
-## This is for warming up shared resources behind appservers, such as memcached and rdbms.
+## These particular urls are useful for warming up resources shared by all mediawiki pods, such
+## as memcached and rdbms.
 
 # Purpose: Skin memcached, Sidebar memcached, Localisation memcached, Main Page parsercache
 https://%server/wiki/Main_Page

@@ -1,7 +1,7 @@
 ## These url templates are expanded for every wiki in large.dblist.
-## The resulting set is then run against *each server* individually.
 ##
-## This is for warming up resources local to the appserver, such as APCu.
+## These particular urls are useful for warming up resources local to each mediawiki pod, such as
+## APCu.
 
 # Purpose: Shared MW code in opcache, EtcdConfig in apcu, ResourceLoader in apcu
 https://%server/w/load.php?lang=en&modules=startup&only=scripts&raw=1&skin=vector

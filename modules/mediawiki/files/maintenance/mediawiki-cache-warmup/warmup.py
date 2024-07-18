@@ -4,19 +4,26 @@ import argparse
 import dataclasses
 import datetime
 import heapq
-import json
 import operator
 import queue
 import random
-import subprocess
+import re
 import sys
 import threading
-from typing import Dict, List, Optional, TextIO, Tuple
+from os.path import exists
+from typing import Any, Dict, List, Optional, TextIO, Tuple
 from urllib import parse
 
 import requests
 import urllib3
 from requests import adapters
+
+try:
+    from kubernetes import client, config
+
+    has_k8s = True
+except ImportError:
+    has_k8s = False
 
 
 @dataclasses.dataclass
@@ -56,6 +63,9 @@ class Request:
 
     method: str
     url: str
+
+    def __str__(self) -> str:
+        return f"{self.method} {self.url}"
 
 
 @dataclasses.dataclass
@@ -171,13 +181,37 @@ def expand_urls(f: TextIO) -> List[Request]:
     return reqs
 
 
-def get_target_hostnames(data_center: str, cluster: str) -> List[str]:
-    """Read pool status in conftool and return all pooled hostnames in the given cluster and DC."""
-    selector = f"dc={data_center},cluster={cluster},service=nginx"
-    command = ["confctl", "tags", selector, "--action", "get", "all"]
-    confctl_stdout = subprocess.run(command, capture_output=True).stdout
-    conftool_data = json.loads(confctl_stdout)
-    return [host for host, state in conftool_data.items() if state["pooled"] == "yes"]
+def get_endpoint_hostports(core: "client.CoreV1Api", namespace: str) -> List[str]:
+    """Fetch all host:port endpoints on the inbound TLS service in `namespace`."""
+    resp = core.list_namespaced_endpoints(namespace=namespace)
+    if resp.items is None:
+        return []
+    # Matches the Endpoints object name structure we use for the inbound TLS service.
+    pattern = re.compile("mediawiki-(main|pinkunicorn)-tls-service")
+    targets = []
+    for endpoints in resp.items:
+        if pattern.match(endpoints.metadata.name) is None:
+            continue
+        # In practice, subsets will always be non-empty ...
+        for subset in endpoints.subsets:
+            # ... and should have only one port configured.
+            if len(subset.ports) != 1:
+                raise ValueError(
+                    f"{endpoints.metadata.name} contains an endpoint subset with "
+                    "{len(subset.ports)} ports (want: exactly 1 port)."
+                )
+            port = subset.ports[0].port
+            for address in subset.addresses:
+                targets.append(f"{address.ip}:{port}")
+            num_not_ready = (
+                0 if subset.not_ready_addresses is None else len(subset.not_ready_addresses)
+            )
+            if num_not_ready > 0:
+                print(
+                    f"WARNING: Skipping {num_not_ready} endpoint addresses on "
+                    "{endpoints.metadata.name} that are currently not ready."
+                )
+    return targets
 
 
 def do_requests(
@@ -265,10 +299,30 @@ def worker(
 def do_task(task: Task, session: requests.Session) -> datetime.timedelta:
     """Perform an HTTP request, discard the response, and return the amount of time it took."""
     parsed_url = parse.urlparse(task.url)
-    # Move the URL's virtual host into the Host header, and substitute the target hostname.
+    # Move the URL's virtual host into the Host header, and substitute the target host:port.
     vhost = parsed_url.hostname
     parsed_url = parsed_url._replace(netloc=task.target)
     return session.request(task.method, parsed_url.geturl(), headers={"Host": vhost}).elapsed
+
+
+def print_prefix(items: List[Any], limit: Optional[int] = None):
+    """Print up to limit of items, reporting the number elided."""
+    for item in items if limit is None else items[:limit]:
+        print(f" {item}")
+    if limit is not None and len(items) > limit:
+        print(f" ... (and {len(items) - limit} more)")
+
+
+def print_summary(args: argparse.Namespace, reqs: List[Request], targets: List[str]):
+    """Print a summary of warmup requests and targets."""
+    message_prefix = "Would send" if args.dry_run else "Sending"
+    print(f"{message_prefix} {len(reqs)} requests to each of {len(targets)} targets.")
+    limit = None if args.full else 10
+    print("Requests:")
+    print_prefix(reqs, limit=limit)
+    print("Targets:")
+    print_prefix(targets, limit=limit)
+    print()
 
 
 def main() -> int:
@@ -280,44 +334,68 @@ def main() -> int:
         help="Path to a text file containing a newline-separated list of URLs. Entries may use "
         "%%server or %%mobileServer.",
     )
+    parser.add_argument(
+        "--dry-run",
+        help=(
+            "do not send requests; exit after printing a sample of the URL and target lists that "
+            "would have been used"
+        ),
+        action="store_true",
+    )
+    parser.add_argument(
+        "--full",
+        help="print full URL and target lists, rather than a sample",
+        action="store_true",
+    )
+
     subparsers = parser.add_subparsers(title="commands", dest="command")
 
     spread = subparsers.add_parser("spread", help="distribute URLs via load balancer")
-    spread.add_argument("target", help="target host, e.g. appservers.svc.codfw.wmnet")
+    spread.add_argument("target", help="target host:port, e.g. mw-web.svc.codfw.wmnet:4450")
 
-    clone = subparsers.add_parser("clone", help="send each URL to each server")
-    clone.add_argument("cluster", help="target cluster, e.g. appserver")
-    clone.add_argument("dc", help="target data center, e.g. codfw")
-
-    dry = subparsers.add_parser("dry", help="print list of URLs to standard out")
-    dry.add_argument("--all", action="store_true", help="dump the full list of URLs")
+    clone = subparsers.add_parser("clone", help="send each URL to each mediawiki kubernetes pod")
+    clone.add_argument("cluster", help="target kubernetes cluster, e.g. codfw")
+    clone.add_argument("namespace", help="target kubernetes namespace, e.g. mw-web")
 
     args = parser.parse_args()
     reqs = expand_urls(args.file)
     if args.command == "spread":
-        stats = do_requests([args.target], reqs, global_concurrency=1000, target_concurrency=1000)
-        stats.print()
-        return 0
+        targets = [args.target]
+        concurrency = {"global_concurrency": 1000, "target_concurrency": 1000}
     elif args.command == "clone":
-        targets = get_target_hostnames(args.dc, args.cluster)
+        if not has_k8s:
+            print(
+                "'clone' now requires a kubernetes client. Is this not a deployment server?"
+                " (T369921)"
+            )
+            return 1
+        config_path = f"/etc/kubernetes/{args.namespace}-{args.cluster}.config"
+        if not exists(config_path):
+            print(
+                f"'clone' now requires kubernetes client configuration, but {config_path} does not "
+                "exist. Is this not a deployment server? (T369921)"
+            )
+            return 1
+        core = client.CoreV1Api(client.ApiClient(config.load_kube_config(config_path)))
+        targets = get_endpoint_hostports(core, args.namespace)
+        if not targets:
+            print(f"No targets found in namespace {args.namespace} in cluster {args.cluster}.")
+            return 1
         # target_concurrency is lower in this mode, because each target is a single machine, rather
         # than a load-balanced group like in spread mode. But global_concurrency can eventually be
         # higher than this; see the TODO comment in do_requests. (Until then, target_concurrency has
         # no effect; no more than 50 requests can be in flight anyway!)
-        stats = do_requests(targets, reqs, global_concurrency=50, target_concurrency=150)
-        stats.print()
-        return 0
-    elif args.command == "dry":
-        print(f"Would send {len(reqs)} URLs:")
-        random.shuffle(reqs)
-        for request in reqs if args.all else reqs[:20]:
-            print(f"{request.method} {request.url}")
-        if not args.all and len(reqs) > 20:
-            print("...")
-        return 0
+        concurrency = {"global_concurrency": 50, "target_concurrency": 150}
     else:
         parser.print_usage()
         return 1
+
+    print_summary(args, reqs, targets)
+
+    if not args.dry_run:
+        do_requests(targets, reqs, **concurrency).print()
+
+    return 0
 
 
 if __name__ == "__main__":
