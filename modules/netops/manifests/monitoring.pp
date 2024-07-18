@@ -161,6 +161,8 @@ class netops::monitoring(
         # codfw prod
         'ssw1-a1-codfw.mgmt' => { ipv4 => '10.193.1.204', parents => ['msw1-codfw'] },
         'ssw1-a8-codfw.mgmt' => { ipv4 => '10.193.2.1', parents => ['msw1-codfw'] },
+        'ssw1-d1-codfw.mgmt' => { ipv4 => '10.193.2.208', parents => ['msw1-codfw'] },
+        'ssw1-d8-codfw.mgmt' => { ipv4 => '10.193.2.210', parents => ['msw1-codfw'] },
         'lsw1-a2-codfw.mgmt' => { ipv4 => '10.193.1.207', parents => ['msw1-codfw'] },
         'lsw1-a3-codfw.mgmt' => { ipv4 => '10.193.2.18', parents => ['msw1-codfw'] },
         'lsw1-a4-codfw.mgmt' => { ipv4 => '10.193.2.19', parents => ['msw1-codfw'] },
