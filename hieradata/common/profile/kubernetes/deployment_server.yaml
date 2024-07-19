@@ -523,6 +523,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: datahub-next
         - name: datahub-next-deploy
+    growthbook:
+      usernames:
+        - name: growthbook
+        - name: growthbook-deploy
   aux-k8s:
     jaeger:
       usernames:
