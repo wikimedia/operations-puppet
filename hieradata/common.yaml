@@ -2050,7 +2050,6 @@ infra_devices:
   cr1-codfw:
     ipv4: 208.80.153.192
     ipv6: 2620:0:860:ffff::1
-    vrrp_peer: cr2-codfw.wikimedia.org
     alarms: true
     site: codfw
     role: cr
