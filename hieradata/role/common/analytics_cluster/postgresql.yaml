@@ -14,5 +14,6 @@ profile::analytics::postgresql::databases:
   - airflow-test-k8s
   - superset_next
   - superset_staging
+  - growthbook
 
 profile::puppet::agent::force_puppet7: true
