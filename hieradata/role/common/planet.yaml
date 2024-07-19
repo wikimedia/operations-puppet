@@ -4,6 +4,7 @@ profile::planet::meta_link: 'https://meta.wikimedia.org/wiki/Planet_Wikimedia'
 profile::planet::https_proxy: "http://url-downloader.%{::site}.wikimedia.org:8080"
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: 'planet.discovery.wmnet'
+profile::tlsproxy::envoy::firewall_srange: [CACHES]
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - planet.wikimedia.org
@@ -13,3 +14,5 @@ profile::planet::updatejob_ensure: 'present'
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Planet (rawdog) RSS feed aggregator'
 profile::puppet::agent::force_puppet7: true
+
+profile::firewall::provider: nftables

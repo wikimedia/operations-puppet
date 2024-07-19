@@ -199,8 +199,8 @@ class profile::planet (
 
     firewall::service { 'planet-http-envoy':
         proto  => 'tcp',
-        port   => '80',
-        srange => "(${::ipaddress} ${::ipaddress6})",
+        port   => [80],
+        srange => [$::ipaddress, $::ipaddress6],
     }
 
 
