@@ -232,12 +232,13 @@ else:
         ):
             repo_changes += 1
 
+if repo_changes > 0:
+    deploy_puppet_code()
+
 if os.geteuid() != 0:
     # Switch back to root
     os.seteuid(0)
     os.environ = old_environ
-    if repo_changes > 0:
-        deploy_puppet_code()
 
 if args.prometheus_file is not None:
     write_to_textfile(args.prometheus_file, prometheus_registry)
