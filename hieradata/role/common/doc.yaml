@@ -6,6 +6,7 @@ contactgroups: 'admins,contint'
 
 # envoy for TLS termination for doc.wikimedia.org behind ATS
 profile::tlsproxy::envoy::ensure: present
+profile::tlsproxy::envoy::firewall_srange: [CACHES]
 profile::tlsproxy::envoy::services:
   - server_names: ['*']
     port: 80
@@ -22,3 +23,5 @@ profile::base::production::role_description: 'Wikimedia documentation server'
 
 
 profile::puppet::agent::force_puppet7: true
+
+profile::firewall::provider: nftables
