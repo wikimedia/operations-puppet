@@ -19,16 +19,6 @@ input:
       count: 32768
       period: 1000ms
 
-# Ack messages immediately on input, storing them in memory before processing.
-# May improve back pressure handling (at the cost of possibly losing messages).
-buffer:
-  memory:
-    limit: 524288000
-    batch_policy:
-      enabled: true
-      count: 32768
-      period: 1000ms
-
 pipeline:
   processors:
     - label: response_size_bytes
