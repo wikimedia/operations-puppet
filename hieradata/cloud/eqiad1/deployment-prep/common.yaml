@@ -14,7 +14,7 @@ has_lvs: false
 profile::lvs::realserver::use_conftool: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
-service::configuration::mwapi_host: http://deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
+service::configuration::mwapi_host: http://appservers.svc.deployment-prep.eqiad1.wikimedia.cloud
 service::configuration::restbase_uri: http://deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud:7231
 #service::configuration::http_proxy:
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
@@ -143,6 +143,8 @@ scap::dsh::groups:
             - deployment-jobrunner05.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki13.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
@@ -170,6 +172,8 @@ scap::dsh::groups:
         hosts:
             - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki13.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
     api_appserver:
         hosts: []
     testserver:
