@@ -19,4 +19,5 @@ class profile::kubernetes::deployment_server::mediawiki(
     include profile::kubernetes::deployment_server::mediawiki::release
     include profile::kubernetes::deployment_server::mediawiki::repl
     include profile::kubernetes::deployment_server::mediawiki::mwscript
+    include profile::kubernetes::deployment_server::mediawiki::cache_warmup
 }

@@ -89,11 +89,17 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::campaignevents
     include ::profile::mediawiki::maintenance::purge_loginnotify
 
-    # Include the cache warmup script; requires node and conftool
-    require ::profile::conftool::client
+    # Include the cache warmup script
+    # TODO: T369921 - absent and remove, then consider moving the class and
+    # files to a more appropriate location.
     class { '::mediawiki::maintenance::cache_warmup':
         ensure => present,
     }
+
+    # TODO: T369921 - conftool was previously required by the cache warmup
+    # script, but no longer is. Remove after verifying nothing else on the
+    # maintenance hosts needs conftool.
+    require ::profile::conftool::client
 
     # backup home directories to bacula, people work on these
     include ::profile::backup::host
