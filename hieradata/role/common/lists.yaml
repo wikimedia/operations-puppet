@@ -13,6 +13,8 @@ mtail::group: 'adm'
 
 profile::lists::acme_chief_cert: lists
 
+profile::firewall::provider: nftables
+
 profile::lists::db_host: m5-master.eqiad.wmnet
 profile::lists::db_name: mailman3
 profile::lists::db_user: mailman3
