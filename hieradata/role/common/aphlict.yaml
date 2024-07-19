@@ -10,6 +10,7 @@ profile::phabricator::aphlict::puppet_controlled_phabricator_config: true
 
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "aphlict.discovery.wmnet"
+profile::tlsproxy::envoy::firewall_srange: []
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - phabricator.wikimedia.org
@@ -21,3 +22,5 @@ profile::tlsproxy::envoy::websockets: true
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Notification server for Phabricator'
 profile::puppet::agent::force_puppet7: true
+
+profile::firewall::provider: nftables
