@@ -4,6 +4,7 @@ profile::tlsproxy::envoy::services:
 
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::global_cert_name: "etherpad.discovery.wmnet"
+profile::tlsproxy::envoy::firewall_srange: [CACHES]
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - etherpad.wikimedia.org
@@ -19,3 +20,5 @@ profile::etherpad::listen_ip: '::'
 profile::puppet::agent::force_puppet7: true
 
 profile::etherpad::service_ensure: running
+
+profile::firewall::provider: nftables
