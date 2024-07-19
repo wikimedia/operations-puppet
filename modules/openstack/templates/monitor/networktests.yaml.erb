@@ -163,11 +163,11 @@
 
 - name: puppetmasters can sync git tree
   tests:
-    - cmd: $SSH $GENERAL_PUPPETMASTER 'sudo git-sync-upstream --base-dir /srv/git --git-user gitpuppet 2>&1 | grep -q Up-to-date'
+    - cmd: $SSH $GENERAL_PUPPETMASTER 'sudo -u gitpuppet git-sync-upstream --base-dir /srv/git 2>&1 | grep -q Up-to-date'
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: $SSH $LOCAL_PUPPETMASTER 'sudo git-sync-upstream --base-dir /srv/git --git-user gitpuppet 2>&1 | grep -q Up-to-date'
+    - cmd: $SSH $LOCAL_PUPPETMASTER 'sudo -u gitpuppet git-sync-upstream --base-dir /srv/git 2>&1 | grep -q Up-to-date'
       stdout: ""
       retcode: 0
       stderr: ""
