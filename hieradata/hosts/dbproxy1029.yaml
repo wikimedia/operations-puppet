@@ -1,3 +1,8 @@
-# Future host
 # dbproxy1029
+# m5
+profile::mariadb::proxy::master::primary_name: 'db1176'
+profile::mariadb::proxy::master::primary_addr: '10.64.0.143:3306'
+profile::mariadb::proxy::master::secondary_name: 'db1217:3325'
+profile::mariadb::proxy::master::secondary_addr: '10.64.32.33:3325'
+profile::mariadb::proxy::firewall: 'cloud+lists'
 profile::monitoring::notifications_enabled: false
