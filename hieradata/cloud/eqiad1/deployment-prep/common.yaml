@@ -43,7 +43,7 @@ profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
     - "datacenter1"
 profile::restbase::cassandra_local_dc: "datacenter1"
-profile::restbase::parsoid_uri: http://deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
+profile::restbase::parsoid_uri: http://parsoid.svc.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
 profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps01.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid02.deployment-prep.eqiad1.wikimedia.cloud:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
@@ -146,6 +146,7 @@ scap::dsh::groups:
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
@@ -177,6 +178,7 @@ scap::dsh::groups:
     parsoid_php:
         hosts:
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
 
 
 # Etcd client global configuration
