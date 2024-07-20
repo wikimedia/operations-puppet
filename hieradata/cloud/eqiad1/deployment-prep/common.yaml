@@ -141,8 +141,6 @@ scap::dsh::groups:
     mediawiki-installation:
         hosts:
             - deployment-jobrunner05.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki13.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
@@ -150,7 +148,7 @@ scap::dsh::groups:
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
-            - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-api-canaries:
         hosts: []
     restbase-betacluster:
@@ -170,8 +168,6 @@ scap::dsh::groups:
             - deployment-jobrunner05.deployment-prep.eqiad1.wikimedia.cloud
     appserver:
         hosts:
-            - deployment-mediawiki11.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-mediawiki12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki13.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
     api_appserver:
