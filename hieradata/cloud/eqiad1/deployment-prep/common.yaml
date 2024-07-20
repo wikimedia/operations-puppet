@@ -145,6 +145,7 @@ scap::dsh::groups:
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-mwmaint03.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
