@@ -144,9 +144,7 @@ scap::dsh::groups:
             - deployment-mediawiki13.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot03.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-mwmaint02.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint03.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
@@ -178,7 +176,6 @@ scap::dsh::groups:
         hosts: []
     parsoid_php:
         hosts:
-            - deployment-parsoid12.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
 
 
