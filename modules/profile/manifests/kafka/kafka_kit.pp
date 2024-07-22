@@ -15,6 +15,7 @@ define profile::kafka::kafka_kit(
 ) {
 
   $broker_mapping = $brokers.map |$broker, $broker_meta| { "${broker.split('\.')[0]}:9100=${broker_meta['id']}" }.join(',')
+  $broker_node_instances = $brokers.map |$broker, $broker_meta| { "${broker.split('\.')[0]}:9100" }.join('|')
 
   ensure_packages(['kafka-kit', 'kafka-kit-prometheus-metricsfetcher'])
   file { '/etc/profile.d/kafka_kit.sh':
@@ -26,6 +27,7 @@ define profile::kafka::kafka_kit(
       kafka_cluster_prometheus_label => $kafka_cluster_prometheus_label,
       prometheus_url                 => $prometheus_url,
       broker_mapping                 => $broker_mapping,
+      broker_node_instances          => $broker_node_instances,
     }),
     owner   => 'root',
     group   => 'root',
