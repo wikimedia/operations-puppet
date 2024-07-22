@@ -113,3 +113,9 @@ profile::gitlab::logrotate_maxsize: "nil" # logs will not be rotated when they g
 profile::gitlab::logrotate_size: "nil" # do not rotate by size by default
 profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
 profile::firewall::provider: nftables
+
+profile::firewall::nftables_throttling::ensure: absent
+# allow 300 requests per 60 seconds, ban clients above for 300 seconds
+profile::firewall::nftables_throttling::throttle_requests: 300
+profile::firewall::nftables_throttling::throttle_duration: 300
+profile::firewall::nftables_throttling::port: 443
