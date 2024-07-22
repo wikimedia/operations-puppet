@@ -525,8 +525,10 @@ network::subnets:
           ipv4: 10.195.0.32/27
         frack-listenerdmz-codfw:
           ipv4: 10.195.0.80/29
-        frack-management-codfw:
+        frack-management-legacy-codfw: # Remove after T370164
           ipv4: 10.195.0.96/27
+        frack-management-codfw:
+          ipv4: 10.195.1.0/25
   sandbox:
     eqiad:
       public:
