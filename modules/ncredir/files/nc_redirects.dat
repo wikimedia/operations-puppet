@@ -45,232 +45,135 @@
 # loops and accidental listing of important domains such as en.wikipedia.org
 # as a source.
 #
-
-# Shop redirects
-funnel	shop.wikipedia.com	https://store.wikimedia.org
-funnel	store.wikipedia.com	https://store.wikimedia.org
-
-
-funnel	*wikijunior.com	https://en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.org	https://en.wikibooks.org/wiki/Wikijunior
-funnel	*wikijunior.net	https://en.wikibooks.org/wiki/Wikijunior
-
-# Localised TLDs
-
-rewrite	*wikibooks.pt	https://pt.wikibooks.org
-rewrite	*wikinews.de	https://de.wikinews.org
-rewrite	*wikinews.pt	https://pt.wikinews.org
-rewrite	*wikipedia.org.il	https://he.wikipedia.org
-rewrite	*wikipedia.co.il	https://he.wikipedia.org
-rewrite	*wikipedia.bg	https://bg.wikipedia.org
-rewrite	*wikipedia.id	https://id.wikipedia.org
-rewrite	*wikipedia.is	https://is.wikipedia.org
-rewrite	*wikipedia.co.za	https://af.wikipedia.org
-rewrite	*wikisource.pl	https://pl.wikisource.org
-rewrite	*wikisource.pt	https://pt.wikisource.org
-rewrite	*wiktionary.pl	https://pl.wiktionary.org
-rewrite	*wiktionary.pt	https://pt.wiktionary.org
-rewrite	*wikipedia.es	https://es.wikipedia.org
-rewrite	*wikipedia.com.ar	https://es.wikipedia.org
-rewrite	*wikipediya.com	https://kbp.wikipedia.org
-rewrite	*wikipedia.co.uk	https://en.wikipedia.org
-rewrite	*wikipedia.uk	https://en.wikipedia.org
-rewrite	*wikipedia.sk	https://sk.wikipedia.org
-rewrite	*wikiquote.pt	https://pt.wikiquote.org
-rewrite	*wikiversity.pt	https://pt.wikiversity.org
-
-# wikipedia.ee - T165733#3355736
-rewrite	*wikipedia.ee	https://et.wikipedia.org
-
-rewrite	*wikipedia.gr	https://el.wikipedia.org
-
-rewrite	*wikimedia.jp.net	https://www.wikimedia.org
-
-rewrite	*wikimedia.lt	https://foundation.wikimedia.org
-rewrite	*wikipedia.lt	https://lt.wikipedia.org
-rewrite	*wikipedia.fi	https://fi.wikipedia.org
-
-# Wikipedia
-
-# Enterprise redirect for .com - T296445
-rewrite enterprise.wikipedia.com	https://enterprise.wikimedia.com
-# T321804
-rewrite *wikimediaenterprise.com    https://enterprise.wikimedia.com
-
-
-rewrite	*en-wp.com	https://en.wikipedia.org
-rewrite	*en-wp.org	https://en.wikipedia.org
-
-rewrite	wikipedia.com	https://www.wikipedia.org
-rewrite	wikipedia.net	https://www.wikipedia.org
-rewrite	wikipedia.info	https://www.wikipedia.org
-
-
-rewrite	*.wikipedia.com	https://*.wikipedia.org
-rewrite	*.wikipedia.net	https://*.wikipedia.org
-rewrite	*.wikipedia.info	https://*.wikipedia.org
-rewrite	*.wiki-pedia.org	https://*.wikipedia.org
-rewrite	wiki-pedia.org	https://www.wikipedia.org
-
-# wikipedia typo domains to www. instead of en - T165733#3355736
+funnel	*indianwikimedia.com	https://www.wikimedia.org
+funnel	*pywikibot.org	https://pywikibot.toolforge.org/
+funnel	*pywikipedia.org	https://pywikibot.toolforge.org/
+funnel	*wekipedia.com	https://www.wikipedia.org
 funnel	*wiikipedia.com	https://www.wikipedia.org
+funnel	*wikepedia.org	https://www.wikipedia.org
+funnel	*wikidpedia.org	https://www.wikipedia.org
 funnel	*wikiepdia.com	https://www.wikipedia.org
 funnel	*wikiepdia.org	https://www.wikipedia.org
 funnel	*wikiipedia.org	https://www.wikipedia.org
-funnel	*wikpedia.org	https://www.wikipedia.org
-funnel	*wkipedia.org	https://www.wikipedia.org
-funnel	*wikkipedia.com	https://www.wikipedia.org
-funnel	*wilkipedia.org	https://www.wikipedia.org
-funnel	*wilipedia.com	https://www.wikipedia.org
+funnel	*wikijunior.com	https://en.wikibooks.org/wiki/Wikijunior
+funnel	*wikijunior.net	https://en.wikibooks.org/wiki/Wikijunior
+funnel	*wikijunior.org	https://en.wikibooks.org/wiki/Wikijunior
+funnel	*wikimedia.biz	https://www.wikimedia.org
+funnel	*wikimedia.com.pt	https://www.wikimedia.org
+funnel	*wikimedia.community	https://www.wikimedia.org
+funnel	*wikimedia.is	https://www.wikimedia.org
+funnel	*wikimedia.us	https://www.wikimedia.org
+funnel	*wikimedia.xyz	https://www.wikimedia.org
+funnel	*wikipaedia.net	https://www.wikipedia.org
 funnel	*wikipdia.org	https://www.wikipedia.org
+funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
+funnel	*wikipedial.org	https://www.wikipedia.org
+funnel	*wikipediazero.org	https://foundation.wikimedia.org/wiki/Wikipedia_Zero
 funnel	*wikipedoa.org	https://www.wikipedia.org
 funnel	*wikipeedia.org	https://www.wikipedia.org
 funnel	*wikjpedia.org	https://www.wikipedia.org
-funnel	*wikipedial.org	https://www.wikipedia.org
-funnel	*wikidpedia.org	https://www.wikipedia.org
-funnel	*wekipedia.com	https://www.wikipedia.org
-funnel	*wikipaedia.net	https://www.wikipedia.org
-funnel	*wikepedia.org	https://www.wikipedia.org
-
-# Wiktionary
-
-rewrite	*.wiktionary.com	https://*.wiktionary.org
-rewrite	wiktionary.com	https://www.wiktionary.org
+funnel	*wikkipedia.com	https://www.wikipedia.org
+funnel	*wikpedia.org	https://www.wikipedia.org
 funnel	*wiktionary.eu	https://www.wiktionary.org
-
-# Wikibooks - T87039
-
+funnel	*wilipedia.com	https://www.wikipedia.org
+funnel	*wilkipedia.org	https://www.wikipedia.org
+funnel	*wkipedia.org	https://www.wikipedia.org
+funnel	*wwwwikimedia.com	https://www.wikimedia.org
+funnel	shop.wikipedia.com	https://store.wikimedia.org
+funnel	store.wikipedia.com	https://store.wikimedia.org
+rewrite	*.voyagewiki.com	https://*.wikivoyage.org
+rewrite	*.voyagewiki.org	https://*.wikivoyage.org
+rewrite	*.wiki-pedia.org	https://*.wikipedia.org
+rewrite	*.wiki.voyage	https://*.wikivoyage.org
 rewrite	*.wikibook.com	https://*.wikibooks.org
 rewrite	*.wikibooks.com	https://*.wikibooks.org
-
-rewrite	wikibook.com	https://www.wikibooks.org
-rewrite	wikibooks.com	https://www.wikibooks.org
-
-# Wikidata
-rewrite	*wikidata.es	https://wikidata.org
-rewrite	*wikidata.pt	https://wikidata.org
-rewrite	*wikidata.us	https://wikidata.org
-
-
-# Wikisource
-
-rewrite	*.wikisource.com	https://*.wikisource.org
-rewrite	wikisource.com	https://wikisource.org
-
-# Wikiquote
-
-rewrite	wikiquote.com	https://www.wikiquote.org
-rewrite	*.wikiquote.com	https://*.wikiquote.org
-rewrite	wikiquote.net	https://www.wikiquote.org
-rewrite	*.wikiquote.net	https://*.wikiquote.org
-rewrite	wikiquotes.info	https://www.wikiquote.org
-rewrite	*.wikiquotes.info	https://*.wikiquote.org
-
-# Wikinews
-
-rewrite	wikinews.com	https://www.wikinews.org
 rewrite	*.wikinews.com	https://*.wikinews.org
-
-# Wikispecies
-
-# Temporarily at species.wikipedia.org until DNS is sorted out
-rewrite	*wikispecies.com	https://species.wikimedia.org
-rewrite	*wikispecies.org	https://species.wikimedia.org
-rewrite	*wikispecies.net	https://species.wikimedia.org
-
-# Wikiversity
-
+rewrite	*.wikipedia.com	https://*.wikipedia.org
+rewrite	*.wikipedia.info	https://*.wikipedia.org
+rewrite	*.wikipedia.net	https://*.wikipedia.org
+rewrite	*.wikiquote.com	https://*.wikiquote.org
+rewrite	*.wikiquote.net	https://*.wikiquote.org
+rewrite	*.wikiquotes.info	https://*.wikiquote.org
+rewrite	*.wikisource.com	https://*.wikisource.org
 rewrite	*.wikiversity.com	https://*.wikiversity.org
-
-rewrite	wikiversity.com	https://www.wikiversity.org
-
-# Wikivoyage
 rewrite	*.wikivoyage.com	https://*.wikivoyage.org
 rewrite	*.wikivoyage.de	https://*.wikivoyage.org
 rewrite	*.wikivoyage.eu	https://*.wikivoyage.org
 rewrite	*.wikivoyage.net	https://*.wikivoyage.org
-rewrite	*.wiki.voyage	https://*.wikivoyage.org
+rewrite	*.wikivoyager.de	https://*.wikivoyage.org
+rewrite	*.wikivoyager.org	https://*.wikivoyage.org
+rewrite	*.wiktionary.com	https://*.wiktionary.org
+rewrite	*en-wp.com	https://en.wikipedia.org
+rewrite	*en-wp.org	https://en.wikipedia.org
+rewrite	*mediawiki.com	https://www.mediawiki.org
+rewrite	*wikibooks.pt	https://pt.wikibooks.org
+rewrite	*wikidata.es	https://wikidata.org
+rewrite	*wikidata.pt	https://wikidata.org
+rewrite	*wikidata.us	https://wikidata.org
+rewrite	*wikimania.com	https://wikimania.wikimedia.org
+rewrite	*wikimania.org	https://wikimania.wikimedia.org
+rewrite	*wikimedia.jp.net	https://www.wikimedia.org
+rewrite	*wikimedia.lt	https://foundation.wikimedia.org
+rewrite	*wikimediacommons.co.uk	https://commons.wikimedia.org
+rewrite	*wikimediacommons.info	https://commons.wikimedia.org
+rewrite	*wikimediacommons.jp.net	https://commons.wikimedia.org
+rewrite	*wikimediacommons.mobi	https://commons.wikimedia.org
+rewrite	*wikimediacommons.net	https://commons.wikimedia.org
+rewrite	*wikimediacommons.org	https://commons.wikimedia.org
+rewrite	*wikimediafoundation.com	https://wikimediafoundation.org
+rewrite	*wikimediafoundation.info	https://wikimediafoundation.org
+rewrite	*wikimediafoundation.net	https://wikimediafoundation.org
+rewrite	*wikinews.de	https://de.wikinews.org
+rewrite	*wikinews.pt	https://pt.wikinews.org
+rewrite	*wikipedia.bg	https://bg.wikipedia.org
+rewrite	*wikipedia.co.il	https://he.wikipedia.org
+rewrite	*wikipedia.co.uk	https://en.wikipedia.org
+rewrite	*wikipedia.co.za	https://af.wikipedia.org
+rewrite	*wikipedia.com.ar	https://es.wikipedia.org
+rewrite	*wikipedia.ee	https://et.wikipedia.org
+rewrite	*wikipedia.es	https://es.wikipedia.org
+rewrite	*wikipedia.fi	https://fi.wikipedia.org
+rewrite	*wikipedia.gr	https://el.wikipedia.org
+rewrite	*wikipedia.id	https://id.wikipedia.org
+rewrite	*wikipedia.is	https://is.wikipedia.org
+rewrite	*wikipedia.lt	https://lt.wikipedia.org
+rewrite	*wikipedia.org.il	https://he.wikipedia.org
+rewrite	*wikipedia.sk	https://sk.wikipedia.org
+rewrite	*wikipedia.uk	https://en.wikipedia.org
+rewrite	*wikipediafoundation.org	https://wikimediafoundation.org
+rewrite	*wikipediya.com	https://kbp.wikipedia.org
+rewrite	*wikiquote.pt	https://pt.wikiquote.org
+rewrite	*wikisource.pl	https://pl.wikisource.org
+rewrite	*wikisource.pt	https://pt.wikisource.org
+rewrite	*wikispecies.com	https://species.wikimedia.org
+rewrite	*wikispecies.net	https://species.wikimedia.org
+rewrite	*wikispecies.org	https://species.wikimedia.org
+rewrite	*wikiversity.pt	https://pt.wikiversity.org
+rewrite	*wiktionary.pl	https://pl.wiktionary.org
+rewrite	*wiktionary.pt	https://pt.wiktionary.org
+rewrite	quality.wikipedia.com	https://quality.wikimedia.org
+rewrite	voyagewiki.com	https://www.wikivoyage.org
+rewrite	voyagewiki.org	https://www.wikivoyage.org
+rewrite	wiki-pedia.org	https://www.wikipedia.org
+rewrite	wiki.voyage	https://www.wikivoyage.org
+rewrite	wikibook.com	https://www.wikibooks.org
+rewrite	wikibooks.com	https://www.wikibooks.org
+rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
+rewrite	wikinews.com	https://www.wikinews.org
+rewrite	wikipedia.com	https://www.wikipedia.org
+rewrite	wikipedia.info	https://www.wikipedia.org
+rewrite	wikipedia.net	https://www.wikipedia.org
+rewrite	wikiquote.com	https://www.wikiquote.org
+rewrite	wikiquote.net	https://www.wikiquote.org
+rewrite	wikiquotes.info	https://www.wikiquote.org
+rewrite	wikisource.com	https://wikisource.org
+rewrite	wikiversity.com	https://www.wikiversity.org
 rewrite	wikivoyage.com	https://www.wikivoyage.org
 rewrite	wikivoyage.de	https://www.wikivoyage.org
 rewrite	wikivoyage.eu	https://www.wikivoyage.org
 rewrite	wikivoyage.net	https://www.wikivoyage.org
-rewrite	wiki.voyage	https://www.wikivoyage.org
-
-# Wikivoyager (T165733#3355736)
-rewrite	*.wikivoyager.org	https://*.wikivoyage.org
-rewrite	*.wikivoyager.de	https://*.wikivoyage.org
-rewrite	wikivoyager.org	https://www.wikivoyage.org
 rewrite	wikivoyager.de	https://www.wikivoyage.org
-
-# Voyagewiki (T165733#3355736)
-rewrite	*.voyagewiki.com	https://*.wikivoyage.org
-rewrite	*.voyagewiki.org	https://*.wikivoyage.org
-rewrite	voyagewiki.com	https://www.wikivoyage.org
-rewrite	voyagewiki.org	https://www.wikivoyage.org
-
-# wikimediafoundation
-rewrite	*wikimediafoundation.com	https://wikimediafoundation.org
-rewrite	*wikimediafoundation.net	https://wikimediafoundation.org
-rewrite	*wikimediafoundation.info	https://wikimediafoundation.org
-rewrite	*wikipediafoundation.org	https://wikimediafoundation.org
-
-# Commons
-
-rewrite	*wikimediacommons.net	https://commons.wikimedia.org
-rewrite	*wikimediacommons.info	https://commons.wikimedia.org
-rewrite	*wikimediacommons.mobi	https://commons.wikimedia.org
-rewrite	*wikimediacommons.org	https://commons.wikimedia.org
-rewrite	*wikimediacommons.jp.net	https://commons.wikimedia.org
-rewrite	*wikimediacommons.co.uk	https://commons.wikimedia.org
-
-# Other projects
-
-rewrite	quality.wikipedia.com	https://quality.wikimedia.org
-
-rewrite	*mediawiki.com	https://www.mediawiki.org
-
-
-###############
-## chapters
-###############
-
-# Wikimania
-rewrite	*wikimania.org	https://wikimania.wikimedia.org
-rewrite	*wikimania.com	https://wikimania.wikimedia.org
-rewrite	wikimania2019.wikimedia.org	https://wikimania.wikimedia.org
-
-# wikimedia.community redirect
-funnel	*wikimedia.community	https://www.wikimedia.org
-
-# wikimedia.us redirect
-funnel	*wikimedia.us	https://www.wikimedia.org
-
-# wikimedia.is redirect
-funnel	*wikimedia.is	https://www.wikimedia.org
-
-# wikimedia.com.pt redirect
-funnel	*wikimedia.com.pt	https://www.wikimedia.org
-
-# indianwikimedia.com redirect
-funnel	*indianwikimedia.com	https://www.wikimedia.org
-
-# wikimedia.biz redirect
-funnel	*wikimedia.biz	https://www.wikimedia.org
-
-# wikimedia.xyz redirect
-funnel	*wikimedia.xyz	https://www.wikimedia.org
-
-# wwwwikimedia.com redirect
-funnel	*wwwwikimedia.com	https://www.wikimedia.org
-
-# wikipedia.in
-funnel	*wikipedia.in	http://wikimedia.in/wikipedia.html
-
-# wikipediazero.org - T82495
-funnel	*wikipediazero.org	https://foundation.wikimedia.org/wiki/Wikipedia_Zero
-
-# pywikipedia.org (T60803). This domain uses non-WMF DNS servers
-funnel	*pywikipedia.org	https://pywikibot.toolforge.org/
-
-# pywikibot.org (T106311). This domain uses non-WMF DNS servers
-funnel	*pywikibot.org	https://pywikibot.toolforge.org/
+rewrite	wikivoyager.org	https://www.wikivoyage.org
+rewrite	wiktionary.com	https://www.wiktionary.org
+rewrite	*wikimediaenterprise.com	https://enterprise.wikimedia.com
+rewrite	enterprise.wikipedia.com	https://enterprise.wikimedia.com
