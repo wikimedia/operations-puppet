@@ -13,7 +13,7 @@
 # @param config_path Path to the deploy directory
 # @param venv_path Path to the python virtualenv
 # @param directory Path to the netbox app
-# @param extras_path The path which the extras repository will be cloned to
+# @param scripts_path The path in which the scripts will be copied into by Netbox
 # @param scap_repo The repo to use for scap deploys
 # @param ensure installs/removes config files
 # @param redis_port The port (as a string) that the required Redis instance should listen on
@@ -57,7 +57,7 @@ class netbox (
     Stdlib::Unixpath              $config_path                 = '/srv/deployment/netbox/deploy',
     Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath              $src_path                    = '/srv/deployment/netbox/deploy/src',
-    Stdlib::Unixpath              $extras_path                 = '/srv/deployment/netbox-extras',
+    Stdlib::Unixpath              $scripts_path                = '/srv/netbox/customscripts',
     Stdlib::Port                  $redis_port                  = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
     Stdlib::Fqdn                  $redis_host                  = 'localhost',

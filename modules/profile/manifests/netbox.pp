@@ -141,8 +141,8 @@ class profile::netbox (
     $netbox_venv_path = "/srv/deployment/${deploy_project}/venv"
     $netbox_src_path = "/srv/deployment/${deploy_project}/deploy/src"
     $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
-    $netbox_extras_path = '/srv/netbox'
-
+    $netbox_extras_path = '/srv/deployment/netbox-extras'
+    $netbox_scripts_path = '/srv/netbox'
     # Used for LDAP auth
     include passwords::ldap::production
     $proxypass = $passwords::ldap::production::proxypass
@@ -160,10 +160,10 @@ class profile::netbox (
         ensure => directory
     }
 
-    file { $netbox_extras_path:
+    file { $netbox_scripts_path:
         ensure => directory,  # Create the parent directory for the one below
     }
-    file { "${netbox_extras_path}/customscripts":
+    file { "${netbox_scripts_path}/customscripts":
         ensure => directory,
         owner  => 'www-data',  # needed for manual creation through the UI
         group  => 'netbox',  # needed for automatic sync
@@ -179,7 +179,7 @@ class profile::netbox (
         db_password                 => $db_password,
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
-        extras_path                 => $netbox_extras_path,
+        scripts_path                => $netbox_scripts_path,
         config_path                 => $netbox_config_path,
         src_path                    => $netbox_src_path,
         venv_path                   => $netbox_venv_path,
