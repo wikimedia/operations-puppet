@@ -141,7 +141,7 @@ class profile::netbox (
     $netbox_venv_path = "/srv/deployment/${deploy_project}/venv"
     $netbox_src_path = "/srv/deployment/${deploy_project}/deploy/src"
     $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
-    $netbox_extras_path = '/srv/deployment/netbox-extras'
+    $netbox_extras_path = '/srv/netbox'
 
     # Used for LDAP auth
     include passwords::ldap::production
@@ -160,24 +160,14 @@ class profile::netbox (
         ensure => directory
     }
 
-    # TODO: normalize after Netbox 4 upgrade
-    if $deploy_project == 'netbox-dev' {
-        $extras_path = '/srv/netbox'
-
-        file { $extras_path:
-            ensure => directory,  # Create the parent directory for the one below
-        }
-        file { "${extras_path}/customscripts":
-            ensure => directory,
-            owner  => 'www-data',  # needed for manual creation through the UI
-            group  => 'netbox',  # needed for automatic sync
-            mode   => '2775',  # needed for manually created files to have the 'netbox' group
-        }
-        $debug = true  # TODO remove or set to false after Netbox 4 upgrade
+    file { $netbox_extras_path:
+        ensure => directory,  # Create the parent directory for the one below
     }
-    else {
-        $extras_path = $netbox_extras_path
-        $debug = false
+    file { "${netbox_extras_path}/customscripts":
+        ensure => directory,
+        owner  => 'www-data',  # needed for manual creation through the UI
+        group  => 'netbox',  # needed for automatic sync
+        mode   => '2775',  # needed for manually created files to have the 'netbox' group
     }
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
@@ -189,7 +179,7 @@ class profile::netbox (
         db_password                 => $db_password,
         secret_key                  => $secret_key,
         ldap_password               => $proxypass,
-        extras_path                 => $extras_path,
+        extras_path                 => $netbox_extras_path,
         config_path                 => $netbox_config_path,
         src_path                    => $netbox_src_path,
         venv_path                   => $netbox_venv_path,
@@ -218,7 +208,6 @@ class profile::netbox (
         cas_group_required          => $cas_group_required,
         oidc_key                    => $oidc_key,
         oidc_secret                 => $oidc_secret,
-        debug                       => $debug,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
@@ -368,7 +357,7 @@ class profile::netbox (
                 ensure          => $active_ensure,
                 description     => "Run report ${reportclass} in Netbox",
                 environment     => $systemd_environment,
-                command         => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py runreport ${reportclass}",
+                command         => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py runscript ${reportclass}",
                 interval        => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval'],
