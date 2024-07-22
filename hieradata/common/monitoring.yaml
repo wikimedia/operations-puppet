@@ -106,6 +106,40 @@ monitoring::groups:
     description: Equipment with lsw1-b7-codfw as uplink
   lsw1-b8-codfw:
     description: Equipment with lsw1-b8-codfw as uplink
+  ssw1-d1-codfw:
+    description: Equipment with ssw1-d1-codfw as uplink
+  ssw1-d8-codfw:
+    description: Equipment with ssw1-d8-codfw as uplink
+  lsw1-c1-codfw:
+    description: Equipment with lsw1-c1-codfw as uplink
+  lsw1-c2-codfw:
+    description: Equipment with lsw1-c2-codfw as uplink
+  lsw1-c3-codfw:
+    description: Equipment with lsw1-c3-codfw as uplink
+  lsw1-c4-codfw:
+    description: Equipment with lsw1-c4-codfw as uplink
+  lsw1-c5-codfw:
+    description: Equipment with lsw1-c5-codfw as uplink
+  lsw1-c6-codfw:
+    description: Equipment with lsw1-c6-codfw as uplink
+  lsw1-c7-codfw:
+    description: Equipment with lsw1-c7-codfw as uplink
+  lsw1-d1-codfw:
+    description: Equipment with lsw1-d1-codfw as uplink
+  lsw1-d2-codfw:
+    description: Equipment with lsw1-d2-codfw as uplink
+  lsw1-d3-codfw:
+    description: Equipment with lsw1-d3-codfw as uplink
+  lsw1-d4-codfw:
+    description: Equipment with lsw1-d4-codfw as uplink
+  lsw1-d5-codfw:
+    description: Equipment with lsw1-d5-codfw as uplink
+  lsw1-d6-codfw:
+    description: Equipment with lsw1-d6-codfw as uplink
+  lsw1-d7-codfw:
+    description: Equipment with lsw1-d7-codfw as uplink
+  lsw1-d8-codfw:
+    description: Equipment with lsw1-d8-codfw as uplink
   cloudsw1-b1-codfw:
     description: Equipment with cloudsw1-b1-codfw as uplink
   asw1-by27-esams:
