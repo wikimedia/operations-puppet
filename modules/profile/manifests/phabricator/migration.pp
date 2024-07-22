@@ -40,9 +40,9 @@ class profile::phabricator::migration (
             ensure => directory,
         }
 
-        ferm::service { 'phabricator-migration-rsync':
+        firewall::service { 'phabricator-migration-rsync':
             proto  => 'tcp',
-            port   => '873',
+            port   => [873],
             srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
         }
 

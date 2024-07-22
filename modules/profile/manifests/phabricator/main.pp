@@ -121,7 +121,7 @@ class profile::phabricator::main (
     # things configured differently if we are on the
     # "phabricator_active_server" defined in Hiera
     if $::fqdn == $active_server {
-        $ferm_ensure = 'present'
+        $firewall_ensure = 'present'
         if $local_aphlict_enabled {
             $aphlict_ensure = 'present'
         } else {
@@ -133,7 +133,7 @@ class profile::phabricator::main (
         $phd_service_ensure = 'running'
         $phd_service_enable = true
     } else {
-        $ferm_ensure = 'absent'
+        $firewall_ensure = 'absent'
         $aphlict_ensure = 'absent'
         $mysql_host = $mysql_slave
         $mysql_port = $mysql_slave_port
@@ -144,7 +144,7 @@ class profile::phabricator::main (
 
     # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
     # in cloud we need to also open it for proxies which don't speak TLS to backends
-    ferm::service { 'phabmain_http':
+    firewall::service { 'phabmain_http':
         ensure => present,
         proto  => 'tcp',
         port   => '80',
@@ -485,26 +485,26 @@ class profile::phabricator::main (
         $_mx_in_hosts = $mx_in_hosts
     }
     if $_mx_in_hosts and $_mx_in_hosts.length > 0 {
-        ferm::service { 'phabmain-smtp':
-            ensure => $ferm_ensure,
-            port   => '25',
+        firewall::service { 'phabmain-smtp':
+            ensure => $firewall_ensure,
+            port   => [25],
             proto  => 'tcp',
             srange => $_mx_in_hosts,
         }
     }
 
     # ssh between phabricator servers for clustering support
-    ferm::service { 'ssh_cluster':
-        port   => '22',
+    firewall::service { 'ssh_cluster':
+        port   => [22],
         proto  => 'tcp',
         srange => "@resolve((${active_server} ${passive_server}))",
     }
 
     if $local_aphlict_enabled {
-        ferm::service { 'notification_server':
-            ensure => $ferm_ensure,
+        firewall::service { 'notification_server':
+            ensure => $firewall_ensure,
             proto  => 'tcp',
-            port   => '22280',
+            port   => [22280],
         }
     }
 
