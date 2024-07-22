@@ -24,6 +24,7 @@ class profile::puppetmaster::frontend(
     # Class scope
     # TODO: we should probably configure theses in P:puppetmaster::common
     Hash[String, Puppetmaster::Backends] $servers        = lookup('puppetmaster::servers'),
+    Array[String] $puppetservers                         = lookup('profile::puppetmaster::frontend::puppetservers'),
     # Locals
     Hash                          $config                  = lookup('profile::puppetmaster::frontend::config'),
     Boolean                       $secure_private          = lookup('profile::puppetmaster::frontend::secure_private'),
@@ -158,21 +159,22 @@ class profile::puppetmaster::frontend(
     }
 
     $puppetmaster_frontend_ferm = join(keys($servers), ' ')
+    $puppetservers_puppetmasters_ferm = join($puppetservers + keys($servers), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => "(@resolve((${servers.keys.join(' ')})))",
+        srange => "(@resolve((${puppetservers_puppetmasters_ferm})))",
     }
 
     ferm::service { 'rsync_puppet_frontends':
         proto  => 'tcp',
         port   => '873',
-        srange => "(@resolve((${servers.keys.join(' ')})))",
+        srange => "(@resolve((${puppetmaster_frontend_ferm})))",
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',
         port   => 8141,
-        srange => "(@resolve((${servers.keys.join(' ')})))",
+        srange => "(@resolve((${puppetmaster_frontend_ferm})))",
     }
 
     # Let's download the public cloud IP ranges, save them to etcd.

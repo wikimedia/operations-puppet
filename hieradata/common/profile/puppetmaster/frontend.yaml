@@ -9,3 +9,16 @@ profile::puppetmaster::frontend::ssl_ca_revocation_check: chain
 # To define in puppet/private
 # profile::puppetmaster::frontend::ip_reputation_config: {}
 # profile::puppetmaster::frontend::ip_reputation_proxies: []
+
+# Temporary list to allow puppetservers to connect to puppetmaster
+# frontend via ssh. Needed to allow the various git post-commit hooks
+# to work from Puppetserver nodes as well.
+# TODO: remove when we deprecate Puppet 5
+# More info: T368023
+profile::puppetmaster::frontend::puppetservers:
+- puppetserver1001.eqiad.wmnet
+- puppetserver1002.eqiad.wmnet
+- puppetserver1003.eqiad.wmnet
+- puppetserver2001.codfw.wmnet
+- puppetserver2002.codfw.wmnet
+- puppetserver2003.codfw.wmnet
