@@ -197,7 +197,7 @@ class profile::planet (
         modules => ['rewrite', 'headers'],
     }
 
-    ferm::service { 'planet-http-envoy':
+    firewall::service { 'planet-http-envoy':
         proto  => 'tcp',
         port   => '80',
         srange => "(${::ipaddress} ${::ipaddress6})",
