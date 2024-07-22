@@ -3773,10 +3773,10 @@ service::catalog:
     encryption: true
     ip:
       codfw:
-        default: 10.192.0.54
+        default: 10.192.0.96
       eqiad:
-        default: 10.64.0.103
-    page: false
+        default: 10.64.0.186
+    page: true
     probes:
       - type: http
         host: netbox.wikimedia.org
@@ -3786,6 +3786,7 @@ service::catalog:
       - codfw
     port: 443
     state: production
+    page: false
     discovery:
       - dnsdisc: netbox
         active_active: false
