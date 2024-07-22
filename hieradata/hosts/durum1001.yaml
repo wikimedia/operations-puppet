@@ -1,0 +1,3 @@
+profile::bird::anycasthc_logging:
+  level: 'warning'
+  num_backups: 1
