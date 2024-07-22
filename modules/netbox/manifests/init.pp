@@ -57,7 +57,7 @@ class netbox (
     Stdlib::Unixpath              $config_path                 = '/srv/deployment/netbox/deploy',
     Stdlib::Unixpath              $venv_path                   = '/srv/deployment/netbox/venv',
     Stdlib::Unixpath              $src_path                    = '/srv/deployment/netbox/deploy/src',
-    Stdlib::Unixpath              $scripts_path                = '/srv/netbox/customscripts',
+    Stdlib::Unixpath              $scripts_path                = '/srv/netbox',
     Stdlib::Port                  $redis_port                  = 6380,
     Integer                       $local_redis_maxmem          = 1610612736,  # 1.5Gb
     Stdlib::Fqdn                  $redis_host                  = 'localhost',
