@@ -9,6 +9,12 @@ class kubeadm::helm (
         tag    => 'kubeadm-k8s',
     }
 
+    file { '/usr/local/bin/helm-sudo':
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/kubeadm/helm-sudo.sh',
+    }
+
     systemd::environment { 'helm':
         variables => {
             # Let's not set full HELM_HOME so that full root isn't needed to run
