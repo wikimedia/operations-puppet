@@ -57,3 +57,4 @@ profile::netbox::cas_group_required: []
 profile::netbox::cas_username_attribute: 'uid'
 profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.base_url')}"
 profile::netbox::oidc_service: ~
+profile::netbox::netbox4: false  # TODO remove after Netbox 4 migration

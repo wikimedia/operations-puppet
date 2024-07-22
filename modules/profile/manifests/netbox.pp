@@ -31,6 +31,7 @@
 # @param puppetdb_microservice_port the port where the puppetd micro service listens
 # @param puppetdb_microservice_fqdn the fqdn where the puppetd micro service listens
 # @param report_checks a list of report checks
+# @param netbox4 Netbox 4 migration flag
 # @param librenms_db_user librenms DB user
 # @param librenms_db_password librenms DB password
 # @param librenms_db_host librenms DB host
@@ -85,6 +86,7 @@ class profile::netbox (
     Boolean                     $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
     Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
+    Boolean                     $netbox4                 = lookup('profile::netbox::netbox4'),
 
     #ganeti config
     Optional[String]           $ganeti_user                 = lookup('profile::netbox::ganeti_user'),
@@ -142,7 +144,16 @@ class profile::netbox (
     $netbox_src_path = "/srv/deployment/${deploy_project}/deploy/src"
     $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
     $netbox_extras_path = '/srv/deployment/netbox-extras'
-    $netbox_scripts_path = '/srv/netbox'
+
+    if $netbox4 {
+        $netbox_scripts_path = '/srv/netbox'
+        $run_report_command = 'runscript --user sre_bot'
+    }
+    else {
+        $netbox_scripts_path = '/srv/deployment/netbox-extras'
+        $run_report_command = 'runreport'
+    }
+
     # Used for LDAP auth
     include passwords::ldap::production
     $proxypass = $passwords::ldap::production::proxypass
@@ -357,7 +368,7 @@ class profile::netbox (
                 ensure          => $active_ensure,
                 description     => "Run report ${reportclass} in Netbox",
                 environment     => $systemd_environment,
-                command         => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py runscript ${reportclass}",
+                command         => "${netbox_venv_path}/bin/python ${netbox_src_path}/netbox/manage.py ${run_report_command} ${reportclass}",
                 interval        => {
                     'start'    => 'OnCalendar',
                     'interval' => $report['run_interval'],
