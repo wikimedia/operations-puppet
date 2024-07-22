@@ -73,7 +73,7 @@ profile::airflow::instances:
       datahub_kafka_test:
         conn_type: datahub_kafka
         host: kafka-test1006.eqiad.wmnet:9092
-        extra_dejson: {"connection": {"schema_registry_url": "http://karapace1002.eqiad.wmnet:8081"}}
+        extra_dejson: {"connection": {"schema_registry_url": "https://datahub-gms-next.discovery.wmnet:30443/schema-registry/api/"}}
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
