@@ -6,5 +6,5 @@ profile::netbox::db_primary: netboxdb1003.eqiad.wmnet
 profile::netbox::active_server: netbox1003.eqiad.wmnet
 
 profile::netbox::authentication_provider: 'oidc'
-profile::netbox::oidc_service: 'netbox'
+profile::netbox::oidc_service: 'netbox_oidc'
 profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.oidc_endpoint')}"
