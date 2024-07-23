@@ -214,6 +214,12 @@ profile::services_proxy::envoy::listeners:
     service: data-gateway
     timeout: "10s"
     keepalive: "4s"
+  - name: mpic
+    port: 6037
+    service: mpic
+    timeout: "30s"
+    sets_sni: true
+    keepalive: "4s"
 
   # Non-discovery records
   # Eqiad ports are at 61xx
@@ -412,6 +418,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - inference
   - wikifunctions
   - ipoid
+  - mpic
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
