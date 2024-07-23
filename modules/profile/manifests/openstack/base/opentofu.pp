@@ -94,6 +94,7 @@ class profile::openstack::base::opentofu (
     user                => 'root',
     description         => 'check for unapplied changes in the opentofu-infra setup',
     working_directory   => '/srv/tofu-infra',
+    exec_start_pre      => '/usr/local/bin/tofu init',
     command             => '/usr/local/bin/tofu plan -detailed-exitcode',
     interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:10:00'},
     max_runtime_seconds => 1800,
