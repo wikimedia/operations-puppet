@@ -15,6 +15,7 @@ class profile::puppetmaster::backend(
     Boolean                              $secure_private      = lookup('profile::puppetmaster::backend::secure_private'),
     Boolean                              $prevent_cherrypicks = lookup('profile::puppetmaster::backend::prevent_cherrypicks'),
     Optional[String]                     $extra_auth_rules    = lookup('profile::puppetmaster::backend::extra_auth_rules'),
+    Array[String] $puppetservers                         = lookup('profile::puppetmaster::backend::puppetservers'),
 ) {
 
     ensure_packages(['libapache2-mod-passenger'])
@@ -48,10 +49,11 @@ class profile::puppetmaster::backend(
         servers             => $servers,
     }
 
+    $puppetservers_puppetmasters_ferm = join($puppetservers + keys($servers), ' ')
     ferm::service { 'ssh_puppet_merge':
         proto  => 'tcp',
         port   => '22',
-        srange => $servers.keys,
+        srange => "(@resolve((${puppetservers_puppetmasters_ferm})))",
     }
     ferm::service { 'puppetmaster-backend':
         proto  => 'tcp',

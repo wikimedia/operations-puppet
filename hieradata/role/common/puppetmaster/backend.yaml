@@ -19,3 +19,17 @@ profile::conftool::state::ensure: present
 profile::conftool::state::query_interval: 30
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Puppetmaster backend'
+
+
+# Temporary list to allow puppetservers to connect to puppetmaster
+# backends via ssh. Needed to allow the various git post-commit hooks
+# to work from Puppetserver nodes as well.
+# TODO: remove when we deprecate Puppet 5
+# More info: T368023
+profile::puppetmaster::backend::puppetservers:
+- puppetserver1001.eqiad.wmnet
+- puppetserver1002.eqiad.wmnet
+- puppetserver1003.eqiad.wmnet
+- puppetserver2001.codfw.wmnet
+- puppetserver2002.codfw.wmnet
+- puppetserver2003.codfw.wmnet
