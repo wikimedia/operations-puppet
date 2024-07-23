@@ -20,8 +20,8 @@ describe 'profile::services_proxy::envoy' do
                 },
                 keepalive: '5s',
                 http_host: 'commons.wikimedia.org',
-                service: 'appservers-https',
-                upstream: 'appservers-rw.discovery.wmnet',
+                service: 'mw-api-int',
+                upstream: 'mw-api-int.discovery.wmnet',
                 xfp: 'https'
               },
               {
@@ -45,9 +45,9 @@ describe 'profile::services_proxy::envoy' do
                            .without_content(/common_http_protocol_options/)
         }
         it {
-          is_expected.to contain_envoyproxy__cluster('appservers-rw_cluster')
-                           .with_content(/address: appservers-rw.discovery.wmnet/)
-                           .with_content(/name: appservers-rw/)
+          is_expected.to contain_envoyproxy__cluster('mw-api-int_cluster')
+                           .with_content(/address: mw-api-int.discovery.wmnet/)
+                           .with_content(/name: mw-api-int/)
                            .with_content(/idle_timeout: 5s/)
         }
         it {
@@ -56,7 +56,7 @@ describe 'profile::services_proxy::envoy' do
                            .with_content(/value: "https"/)
                            .with_content(/retry_on: "5xx"/)
                            .with_content(/num_retries: 1/)
-                           .with_content(/cluster: appservers-rw/)
+                           .with_content(/cluster: mw-api-int/)
         }
         it {
           is_expected.to contain_envoyproxy__listener('meta')
