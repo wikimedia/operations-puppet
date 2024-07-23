@@ -161,6 +161,7 @@ class puppetmaster::gitclone(
             puppetmaster::gitprivate { $private_repo_dir:
                 bare     => true,
                 dir_mode => '0700',
+                umask    => '077',
                 owner    => $user,
                 group    => $group,
             }
@@ -185,6 +186,7 @@ class puppetmaster::gitclone(
             owner    => $user,
             group    => 'puppet',
             dir_mode => '0750',
+            umask    => '027',
         }
 
         if $is_git_master {
