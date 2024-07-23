@@ -7,7 +7,7 @@ profile::mediawiki::php::enable_fpm: true
 profile::mediawiki::mcrouter_wancache::num_proxies: 5
 # Use the gutter pool for failover
 profile::mediawiki::mcrouter_wancache::gutter_ttl: 600
-has_lvs: true
+has_lvs: false  # turndown T367949
 # TLS configuration: go via Envoy
 profile::mediawiki::webserver::has_tls: true
 profile::envoy::ensure: present
