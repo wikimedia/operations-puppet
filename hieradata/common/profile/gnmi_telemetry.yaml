@@ -16,11 +16,11 @@ profile::gnmi_telemetry::outputs:
     type: prometheus
     metric-prefix: "gnmi"
     cache: {}
+    expiration: 120s
+    num-workers: 2
     export-timestamps: true
-    timeout: 30s
+    timeout: 50s
     event-processors:
-       - enabled-to-tag
-       - drop-disabled
        - description-to-tag
        - delete-tag-name
        - group-by-queue-number
@@ -34,14 +34,6 @@ profile::gnmi_telemetry::subscriptions:
     encoding: proto
 
 profile::gnmi_telemetry::processors:
-  enabled-to-tag:
-    event-value-tag:
-      value-name: "/interfaces/interface/state/enabled"
-      tag-name: enabled
-      consume: false
-  drop-disabled:
-    event-drop:
-      condition: .tags.enabled == "false"
   description-to-tag:
     event-value-tag:
       value-name: "/interfaces/interface/state/description"
@@ -58,4 +50,3 @@ profile::gnmi_telemetry::processors:
       tag-names:
         - "^subscription-name"
         - "^source"
-        - "^enabled"
