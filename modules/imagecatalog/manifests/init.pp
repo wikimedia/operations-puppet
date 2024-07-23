@@ -17,7 +17,13 @@ class imagecatalog(
     Array[Tuple[String, Stdlib::Unixpath]] $kubernetes_clusters,
     Wmflib::Ensure $ensure,
 ) {
-  ensure_packages(['gunicorn3', 'python3-imagecatalog'])
+  if debian::codename::le('buster') {
+      $gunicorn_package = 'gunicorn3'
+  } else {
+      $gunicorn_package = 'gunicorn'
+  }
+
+  ensure_packages([$gunicorn_package, 'python3-imagecatalog'])
 
   systemd::sysuser { 'imagecatalog':
       home_dir => '/var/lib/imagecatalog',
