@@ -26,6 +26,10 @@ class imagecatalog(
   ensure_packages([$gunicorn_package, 'python3-imagecatalog'])
 
   systemd::sysuser { 'imagecatalog':
+      # The following is a bit of a historical accident, and thus is harcoded.
+      # We used to have this stanza without a uid/gid definition, but added it
+      # as we had issues with rsyncing between hosts and permissions/ownership
+      # It's hardcoded to what we had on 1 of the deploy hosts to avoid a total
       id          => '494:496',
       description => 'imagecatalog server user',
       home_dir    => '/var/lib/imagecatalog',
