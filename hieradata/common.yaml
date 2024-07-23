@@ -381,12 +381,12 @@ wikimedia_clusters:
     sites:
       eqiad: []
       codfw: []
-    wdqs-main:
+  wdqs-main:
     description: "Wikidata Query Service - Main cluster"
     sites:
       eqiad: []
       codfw: []
-    wdqs-scholarly:
+  wdqs-scholarly:
     description: "Wikidata Query Service - Scholarly cluster"
     sites:
       eqiad: []
