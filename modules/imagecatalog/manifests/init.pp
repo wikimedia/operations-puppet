@@ -34,7 +34,6 @@ class imagecatalog(
       description => 'imagecatalog server user',
       home_dir    => '/var/lib/imagecatalog',
       shell       => '/bin/bash',
-      require     => File[$data_dir],
   }
 
   file { $data_dir:
