@@ -26,8 +26,11 @@ class imagecatalog(
   ensure_packages([$gunicorn_package, 'python3-imagecatalog'])
 
   systemd::sysuser { 'imagecatalog':
-      home_dir => '/var/lib/imagecatalog',
-      shell    => '/bin/bash',
+      id          => '494:496',
+      description => 'imagecatalog server user',
+      home_dir    => '/var/lib/imagecatalog',
+      shell       => '/bin/bash',
+      require     => File[$data_dir],
   }
 
   file { $data_dir:
