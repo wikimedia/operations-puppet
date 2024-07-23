@@ -6,7 +6,7 @@
   DocumentRoot <%= @document_root %>
 
   RewriteEngine on
-  RewriteRule ^(.*)$    /index.php?__path__=$1  [B,L,QSA]
+  RewriteRule ^(.*)$    /index.php?__path__=$1  [B,L,QSA,UnsafeAllow3F]
 
   <Directory <%= @document_root %>>
     Require all granted
