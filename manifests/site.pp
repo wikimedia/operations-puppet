@@ -992,7 +992,7 @@ node /^dns[1-9][0-9]{3}\.wikimedia\./ {
     role(dnsbox)
 }
 
-node /^doc[12]00[123]\.(codfw|eqiad)\./ {
+node /^doc(1003|2002)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
