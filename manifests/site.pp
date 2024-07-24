@@ -2123,7 +2123,7 @@ node /^mwdebug100[12]\.eqiad\./ {
     role(mediawiki::canary_appserver)
 }
 
-# Appservers (serving normal website traffic)
+# Jobrunners
 
 node /^mw13(49|50|51)\.eqiad\./ {
     role(mediawiki::jobrunner)
@@ -2141,13 +2141,6 @@ node /^mw1407\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
-# Row D
-
-# rack D3
-node /^mw1364\.eqiad\./ {
-    role(mediawiki::appserver) # Left pooled until service turndown
-}
-
 # rack D8 - canary jobrunners
 node /^mw143[7-8]\.eqiad\./ {
     role(mediawiki::jobrunner)
@@ -2158,14 +2151,12 @@ node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
-## Api servers
+# Waiting for reinstall to wikikube-worker following T367949
 
-# Row B
-
-# rack B3 and B5
-node /^mw1398\.eqiad\./ {
-    role(mediawiki::appserver::api) # Left pooled until service turndown
+node /^mw13(64|98)\.eqiad\./ {
+    role(insetup::serviceops)
 }
+
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
@@ -2184,61 +2175,12 @@ node /^mwdebug200[12]\.codfw\./ {
     role(mediawiki::canary_appserver)
 }
 
-# Appservers
+# Jobrunners
 
 # Row A
-
-# New mw server hardware 2021 (T274171)
-
-# rack A3 (T278396)
-# Last api appserver left until service turndown
-node /^mw2299\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
 node /^mw241[01]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
-
-# Row B
-
-# rack B3
-node /^mw22(6[89]|70)\.codfw\./ {
-    role(mediawiki::appserver)
-}
-
-# Row C
-
-# rack C5 (T331609)
-node /^mw2441\.codfw\./ {
-    role(mediawiki::appserver)
-}
-
-# Row D
-
-# rack D3
-node /^mw227[12]\.codfw\./ {
-    role(mediawiki::canary_appserver)
-}
-
-# rack D3
-node /^mw227[3-7]\.codfw\./ {
-    role(mediawiki::appserver)
-}
-
-
-# API
-
-# Row A
-
-# Row B
-
-# rack B3
-node /^mw226[1-2]\.codfw\./ {
-    role(mediawiki::appserver::api)
-}
-
-# Jobrunners
 
 # Row B
 
@@ -2257,6 +2199,32 @@ node /^mw226[3-6]\.codfw\./ {
 # rack D4 - canary jobrunners
 node /^mw227[8-9]\.codfw\./ {
     role(mediawiki::jobrunner)
+}
+
+# Waiting for reinstall to wikikube-worker following T367949
+
+node /^mw2299\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw22(6[89]|70)\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw2441\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw227[12]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw227[3-7]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^mw226[1-2]\.codfw\./ {
+    role(insetup::serviceops)
 }
 
 ## END MEDIAWIKI APPLICATION SERVERS
