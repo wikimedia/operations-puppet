@@ -62,7 +62,7 @@ profile::bird::bind_anycast_services:
   - 'nginx'
 
 profile::bird::anycasthc_logging:
-  level: 'critical'
+  level: 'info'
   num_backups: 1
 
 profile::nginx::variant: 'custom'
