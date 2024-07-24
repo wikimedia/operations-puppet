@@ -5,6 +5,7 @@ class role::gerrit {
     include profile::base::production
     include profile::backup::host
     include profile::firewall
+    include profile::firewall::nftables_throttling
     # lint:ignore:wmf_styleguide - It is neither a role nor a profile
     include ::passwords::gerrit
     # lint:endignore
