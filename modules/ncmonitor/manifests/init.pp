@@ -194,10 +194,10 @@ class ncmonitor(
         ensure      => $ensure,
         user        => 'ncmonitor',
         description => 'Verify/Sync non-canonical domains with downstream services',
-        command     => '/usr/bin/ncmonitor',
+        command     => '/usr/bin/ncmonitor --email-ns-issues --submit-patch',
         interval    => {
             'start'    => 'OnCalendar',
-            'interval' => 'daily',
+            'interval' => 'monthly',
         },
         require     => Package['ncmonitor'],
         path_exists => $suffix_list_path,
