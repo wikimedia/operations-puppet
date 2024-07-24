@@ -176,7 +176,7 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'enp152s0f0np0:208.80.153.79'
-      'lvs2012': 'enp152s0f0np0:208.80.153.80'
+      'lvs2012': 'eno12399np0:208.80.153.80'
       'lvs2013': 'eno12399np0:208.80.153.81'
       'lvs2014': 'enp152s0f1np1:208.80.153.82'
   public1-d-codfw:
@@ -184,7 +184,7 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.224'
     iface:
       'lvs2011': 'enp152s0f1np1:208.80.153.112'
-      'lvs2012': 'enp152s0f1np1:208.80.153.113'
+      'lvs2012': 'eno12399np0:208.80.153.113'
       'lvs2013': 'enp152s0f1np1:208.80.153.114'
       'lvs2014': 'eno12399np0:208.80.153.115'
   private1-a-codfw:
@@ -208,14 +208,14 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'enp152s0f0np0:10.192.33.8'
-      'lvs2012': 'enp152s0f0np0:10.192.33.9'
+      'lvs2012': 'eno12399np0:10.192.33.9'
       'lvs2014': 'enp152s0f1np1:10.192.33.10'
   private1-d-codfw:
     id: "2020"
     netmask: '255.255.252.0'
     iface:
       'lvs2011': 'enp152s0f1np1:10.192.49.8'
-      'lvs2012': 'enp152s0f1np1:10.192.49.9'
+      'lvs2012': 'eno12399np0:10.192.49.9'
       'lvs2013': 'enp152s0f1np1:10.192.49.10'
   private1-a2-codfw:
     id: "2022"
@@ -329,6 +329,81 @@ lvs::interfaces::vlan_data:
       lvs2012: 'eno12399np0:10.192.22.3'
       lvs2013: 'eno12409np1:10.192.22.4'
       lvs2014: 'eno12409np1:10.192.22.5'
+  private1-c1-codfw:
+    id: "2036"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.4.3'
+  private1-c2-codfw:
+    id: "2037"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.26.3'
+  private1-c3-codfw:
+    id: "2038"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.27.3'
+  private1-c4-codfw:
+    id: "2039"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.28.3'
+  private1-c5-codfw:
+    id: "2040"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.29.3'
+  private1-c6-codfw:
+    id: "2041"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.30.3'
+  private1-c7-codfw:
+    id: "2042"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.31.3'
+  private1-d1-codfw:
+    id: "2043"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.36.3'
+  private1-d2-codfw:
+    id: "2044"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.37.3'
+  private1-d3-codfw:
+    id: "2045"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.38.3'
+  private1-d4-codfw:
+    id: "2046"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.39.4'
+  private1-d5-codfw:
+    id: "2047"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.40.3'
+  private1-d6-codfw:
+    id: "2048"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.41.3'
+  private1-d7-codfw:
+    id: "2049"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.42.3'
+  private1-d8-codfw:
+    id: "2050"
+    netmask: '255.255.255.0'
+    iface:
+      lvs2012: 'eno12399np0:10.192.43.3'
   public1-ulsfo:
     id: "1201"
     netmask: '255.255.255.240'
