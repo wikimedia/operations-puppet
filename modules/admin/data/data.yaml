@@ -79,7 +79,7 @@ groups:
   sre-admins:
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members []
+    members: &sre_admins_members [tappof]
     approval:
       - Joanna Borun
   ops-adm-group:
@@ -6388,6 +6388,15 @@ users:
     uid: 3797
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  tappof:
+    ensure: present
+    gid: 500
+    name: tappof
+    realname: Tiziano Fogli
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKABHRgNMjahSFE1aNr2SneAn5+MzwO8Bp1bBFu4emNm tappof
+    uid: 47319
+    email: tfogli@wikimedia.org
 
 ldap_only_users:
   adavenport:
