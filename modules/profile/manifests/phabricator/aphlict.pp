@@ -98,10 +98,10 @@ class profile::phabricator::aphlict (
         }
     }
 
-    ferm::service { 'notification_server':
+    firewall::service { 'notification_server':
         ensure => present,
         proto  => 'tcp',
-        port   => $client_port,
+        port   => [$client_port],
     }
 
     file { $base_dir:
@@ -114,9 +114,9 @@ class profile::phabricator::aphlict (
     ensure_packages('php-cli')
 
     # phabricator server needs to connect to the aphlict admin port
-    ferm::service { 'phab_aphlict_admin_port':
+    firewall::service { 'phab_aphlict_admin_port':
         proto  => 'tcp',
-        port   => $admin_port,
+        port   => [$admin_port],
         srange => [$phabricator_active_server],
     }
 }
