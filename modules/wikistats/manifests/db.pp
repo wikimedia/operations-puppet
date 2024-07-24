@@ -5,6 +5,7 @@ class wikistats::db (
     String $db_pass,
     String $db_name = 'wikistats',
     Stdlib::Unixpath $backupdir = '/usr/lib/wikistats/backup',
+    Stdlib::Unixpath $backupdir_ext = '/srv/wikistats/backup',
     String $dumpname = 'wikistats_db',
     Stdlib::Unixpath $mysqldump = '/usr/bin/mysqldump',
 ){
@@ -61,6 +62,17 @@ class wikistats::db (
         group   => 'wikistatsuser',
         mode    => '0400',
         content => $db_pass,
+    }
+
+    # copy backups to external cinder volume
+    # attach cinder volume 'backup' to instance in Horizon
+    # mounts any volume larger than 1 and smaller than 2 GB
+    wmflib::dir::mkdir_p($backupdir_ext)
+
+    cinderutils::ensure { 'cinder_backup_volume':
+        mount_point => $backupdir_ext,
+        min_gb      => 1,
+        max_gb      => 2,
     }
 
     # database schema
