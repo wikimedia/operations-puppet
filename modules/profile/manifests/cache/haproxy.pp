@@ -6,7 +6,7 @@ class profile::cache::haproxy(
     Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
     Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value'                                   => undef}),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
-    Haproxy::Backend $varnish_socket = lookup('profile::cache::haproxy::varnish_socket'),
+    Haproxy::Backend $backend = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
     Integer[0] $tls_cachesize = lookup('profile::cache::haproxy::tls_cachesize'),
@@ -169,6 +169,7 @@ class profile::cache::haproxy(
         $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]]
     }
 
+    ## HAProxy configuration
     file { '/etc/haproxy/tls.lua':
         ensure  => absent,
         owner   => 'haproxy',
@@ -177,47 +178,51 @@ class profile::cache::haproxy(
         content => file('profile/cache/haproxy-tls.lua'),
     }
 
-    haproxy::tls_terminator { 'tls':
-        port                   => $tls_port,
-        backend                => $varnish_socket,
-        certificates           => $certificates,
-        tls_ciphers            => $tls_ciphers,
-        tls13_ciphers          => $tls13_ciphers,
-        timeout                => $timeout,
-        h2settings             => $h2settings,
-        proxy_protocol         => $proxy_protocol,
-        tls_cachesize          => $tls_cachesize,
-        tls_session_lifetime   => $tls_session_lifetime,
-        tls_ticket_keys_path   => $tls_ticket_keys_path,
-        http_reuse             => 'always',
-        vars                   => $vars,
-        acls                   => $acls,
-        add_headers            => $add_headers,
-        del_headers            => $del_headers,
-        pre_acl_actions        => $pre_acl_actions,
-        post_acl_actions       => $post_acl_actions,
-        prometheus_port        => $prometheus_port,
-        numa_iface             => $numa_iface,
-        sticktables            => $sticktables,
-        haproxy_version        => $haproxy_version,
-        http_redirection_port  => $http_redirection_port,
-        redirection_timeout    => $redirection_timeout,
-        http_disable_keepalive => $http_disable_keepalive,
-        filters                => $filters,
-        dedicated_hc_backend   => $dedicated_hc_backend,
-        hc_sources             => $hc_sources,
-        extended_logging       => $extended_logging,
-        wikimedia_trust        => $profile::cache::base::wikimedia_trust,
+    $wikimedia_trust = $profile::cache::base::wikimedia_trust
+    $crt_list_path = '/etc/haproxy/crt-list.cfg'
+    $hc_sources_file_path = '/etc/haproxy/allowed-hc-sources.lst'
+
+    # Build the list of certificates to be used in the tls terminator
+    $ecdhe_curves = ['X25519', 'P-256']
+    $alpn = ['h2', 'http/1.1']
+    file { $crt_list_path:
+        mode    => '0444',
+        content => template('profile/cache/haproxy/crt-list.cfg.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    mediawiki::errorpage { '/etc/haproxy/tls-terminator-tls-plaintext-error.html':
+        ensure  => ($http_redirection_port != undef).bool2str('present', 'absent'),
+        content => '<p>Insecure request forbidden, use HTTPS instead. For details see <a href="https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/">https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/</a>.</p>',
+        before  => Haproxy::Site['tls'],
+    }
+
+    # This contains the PyBal IPs allowed to perform healthchecks
+    file { $hc_sources_file_path:
+        ensure  => bool2str($dedicated_hc_backend, 'present','absent'),
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/cache/haproxy/allowed-hc-sources.lst.erb'),
+        notify  => Service['haproxy'],
+    }
+
+    $http_reuse = 'always'
+    # The haproxy site configuration
+    $min_tls_version = 'TLSv1.2'
+    $max_tls_version = 'TLSv1.3'
+    haproxy::site { 'tls':
+        content => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
     }
 
     if $monitoring_enabled {
-      profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
-          port         => $tls_port,
-          certificates => $certificates,
-          do_ocsp      => $do_ocsp,
-          acme_chief   => $unified_acme_chief,
-          require      => Haproxy::Tls_terminator['tls'],
-      }
+        profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
+            port         => $tls_port,
+            certificates => $certificates,
+            do_ocsp      => $do_ocsp,
+            acme_chief   => $unified_acme_chief,
+            require      => Haproxy::Site['tls'],
+        }
     }
 
     systemd::service { 'haproxy-mtail@tls.socket':

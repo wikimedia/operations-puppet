@@ -18,7 +18,7 @@ global
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>
     ssl-default-bind-ciphersuites <%= @tls13_ciphers %>
-    ssl-dh-param-file <%= @tls_dh_param_path %>
+    ssl-dh-param-file /etc/ssl/dhparam.pem
     tune.ssl.cachesize <%= @tls_cachesize %>
     tune.ssl.lifetime <%= @tls_session_lifetime %>
     maxconn 200000
@@ -39,9 +39,9 @@ backend <%= table['name'] %>
 listen tls
     log global
     maxconn 199000
-    bind :<%= @port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+    bind :<%= @tls_port -%> tfo ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
-    bind :::<%= @port -%> tfo v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
+    bind :::<%= @tls_port -%> tfo v6only ssl crt-list <%= @crt_list_path %><%- if @tls_ticket_keys_path -%> tls-ticket-keys <%= @tls_ticket_keys_path %><%- end %>
 
     http-reuse <%= @http_reuse %>
 
@@ -272,5 +272,5 @@ frontend http
     # METH_GET is a predefined ACL that includes GET and HEAD requests
     # http://docs.haproxy.org/2.6/configuration.html#7.4
     http-request redirect scheme https code 301 if METH_GET
-    http-request deny status 403 content-type text/html file /etc/haproxy/tls-terminator-<%= @title %>-plaintext-error.html
+    http-request deny status 403 content-type text/html file /etc/haproxy/tls-terminator-tls-plaintext-error.html
 <%- end -%>
