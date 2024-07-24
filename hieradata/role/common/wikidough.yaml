@@ -62,7 +62,7 @@ profile::bird::advertise_vips:
     service_type: wikidough
 
 profile::bird::anycasthc_logging:
-  level: 'critical'
+  level: 'info'
   num_backups: 1
 
 profile::firewall::enable_logging: false
