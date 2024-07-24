@@ -1,10 +1,11 @@
-# @summary This class sets up a simple nginx proxy to remote services.
+# @summary This class sets up a simple envoy proxy to remote services.
 # @param ensure Whether the proxy should be present or not. We don't use it in deployment-prep.
 # @param all_listeners A hash of listener definitions.
 #   Each listener should have the following structure:
 #   name - the name of the listener
 #   port - the local port to listen on
 #   timeout - the time after which we timeout on a call
+#   idle_timeout - the optional time after which we will timeout if there is no activity
 #   service - The label for the service we're connecting to in service::catalog in hiera
 #   http_host - optional http Host: header to add to the request
 #   upstream - upstream host to contact. If unspecified, <service>.discovery.wmnet will be assumed.

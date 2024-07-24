@@ -81,6 +81,9 @@ filter_chains:
               <%- end -%>
               cluster: <%= @svc_name %>
               timeout: <%= @listener['timeout'] %>
+              <%- if @listener['idle_timeout'] -%>
+              idle_timeout: <%= @listener['idle_timeout'] %>
+              <%- end -%>
               retry_policy:
               <%- @retry_policy.each do |k,v| -%>
                 <%= k %>: <%= scope.call_function('to_json',[v]) %>
