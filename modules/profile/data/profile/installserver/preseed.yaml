@@ -262,9 +262,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'moscovium|seaborgium|serpens':
     - partman/flat.cfg
     - virtual.cfg
-  'vrts*':
+  'vrts[1-2]001':
     - partman/flat.cfg
     - virtual.cfg
+  'vrts[1-2]00[2-3]':
+    - partman/standard.cfg
+    - partman/raid10-4dev.cfg
   'grafana*':
     - partman/flat.cfg
     - virtual.cfg
