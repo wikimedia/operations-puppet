@@ -37,7 +37,7 @@ def delvar(toolname, varname):
     return jsonify({"messages": {"error": [f"DELETE: {varname} not found"]}}), 404
 
 
-@app.route("/envvars/v1/tool/<toolname>/envvar", methods=["POST"])
+@app.route("/envvars/v1/tool/<toolname>/envvars", methods=["POST"])
 def addvar(toolname):
     data = request.get_json()
 

@@ -83,7 +83,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
         except requests.exceptions.HTTPError as e:
             if e.response.status_code == http.HTTPStatus.NOT_FOUND:
                 client.post(
-                    url=f"/envvars/v1/tool/{toolname}/envvar",
+                    url=f"/envvars/v1/tool/{toolname}/envvars",
                     json={"name": name, "value": value},
                 )
             else:
