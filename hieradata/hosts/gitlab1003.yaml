@@ -8,3 +8,4 @@ profile::firewall::nftables_throttling::ensure: present
 profile::firewall::nftables_throttling::throttle_requests: 60
 profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::nft_logging: true
+profile::firewall::nftables_throttling::nft_policy: 'drop'
