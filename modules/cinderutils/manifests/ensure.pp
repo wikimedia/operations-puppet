@@ -75,7 +75,7 @@ define cinderutils::ensure(
                 $volume['size'] >= $min_size_bytes and
                 $volume['size'] <= $max_size_bytes) {
                 exec { "prepare_cinder_volume_${mount_point}":
-                    command => "/usr/local/sbin/wmcs-prepare-cinder-volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode}",
+                    command => "/usr/local/sbin/wmcs-prepare-cinder-volume --force --device ${volume['dev']} --mountpoint ${mount_point} --options ${mount_options} --mountmode ${mount_mode} --allow-unattended-format",
                     user    => 'root',
                 }
                 # After running the script, the volume will become mounted and on the next run will go to the other if
