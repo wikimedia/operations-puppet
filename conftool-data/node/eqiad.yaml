@@ -358,8 +358,6 @@ eqiad:
     wikikube-worker1002.eqiad.wmnet: [kubesvc]
     wikikube-worker1003.eqiad.wmnet: [kubesvc]
     wikikube-worker1004.eqiad.wmnet: [kubesvc]
-    # wikikube-worker1005.eqiad.wmnet - reserved for sessionstore vm
-    # wikikube-worker1006.eqiad.wmnet - reserved for sessionstore vm
     wikikube-worker1007.eqiad.wmnet: [kubesvc]
     wikikube-worker1008.eqiad.wmnet: [kubesvc]
     wikikube-worker1009.eqiad.wmnet: [kubesvc]
@@ -383,6 +381,7 @@ eqiad:
     wikikube-worker1029.eqiad.wmnet: [kubesvc]
     wikikube-worker1030.eqiad.wmnet: [kubesvc]
     wikikube-worker1031.eqiad.wmnet: [kubesvc]
+    wikikube-worker1032.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]

@@ -1652,7 +1652,7 @@ node /^kubernetes20(0[5-9]|[1-4][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-1])\.eqiad\./ {
+node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-2])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2158,7 +2158,7 @@ node /^mw14(45|46)\.eqiad\./ {
 
 # Waiting for reinstall to wikikube-worker following T367949
 
-node /^mw13(64|98)\.eqiad\./ {
+node /^mw1398\.eqiad\./ {
     role(insetup::serviceops)
 }
 
