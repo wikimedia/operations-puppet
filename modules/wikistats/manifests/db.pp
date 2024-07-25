@@ -53,6 +53,16 @@ class wikistats::db (
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 23:23:00'},
     }
 
+    # copy local backups to external cinder volume
+    systemd::timer::job { 'wikistats-backup-external':
+        ensure          => present,
+        user            => 'root',
+        description     => 'copy database backups to external cinder volume',
+        command         => "/usr/bin/rsync --delete --exclude lost+found -avp ${backupdir} ${backupdir_ext}",
+        logging_enabled => false,
+        interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 0:30:00'},
+    }
+
     # (random) db pass is stored here to that deployment-script can
     # get it and replace it in the config file after deploying
     wmflib::dir::mkdir_p('/usr/lib/wikistats')
