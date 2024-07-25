@@ -40,6 +40,7 @@ class homer(
       owner     => 'root',
       group     => 'ops',
       mode      => '0440',
+      umask     => '337',
       require   => File['/srv/homer'],
   }
 
@@ -55,6 +56,7 @@ class homer(
       owner                 => 'root',
       group                 => 'ops',
       mode                  => '0440',
+      umask                 => '337',
       require               => File['/srv/homer'],
   }
 
