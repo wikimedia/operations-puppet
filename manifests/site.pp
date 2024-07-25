@@ -183,8 +183,8 @@ node /^an-conf100[4-6]\.eqiad\./ {
     role(data_engineering::insetup)
 }
 
-# Analytics Presto nodes. 1001 - 1015
-node /^an-presto10(0[1-9]|1[0-5])\.eqiad\./ {
+# Analytics Presto nodes
+node /^an-presto10(0[1-9]|1[0-9]|20)\.eqiad\./ {
     role(analytics_cluster::presto::server)
 }
 
