@@ -36,8 +36,8 @@ define cinderutils::ensure(
     Stdlib::Unixpath $mount_point   = '/srv',
     String           $mount_options = 'discard,nofail,x-systemd.device-timeout=2s',
     String           $mount_mode    = '755',
-    Integer          $min_gb        = 10,
-    Integer          $max_gb        = 1000,
+    Variant[Integer, Float] $min_gb = 10,
+    Variant[Integer, Float] $max_gb = 1000,
 ){
     if has_key($facts['mountpoints'], $mount_point) {
         # account for ~3% needed for the ext4 filesystem with default options
