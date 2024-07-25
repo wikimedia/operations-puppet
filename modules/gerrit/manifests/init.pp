@@ -320,13 +320,11 @@ class gerrit(
         }
     }
 
-    if $lfs_replica_sync {
-        $gerrit_replica_hosts = wmflib::role::hosts('gerrit').filter |$gerrit_host| { $gerrit_host != $active_host }
-
+    if $lfs_replica_sync and !empty($replica_hosts) {
         rsync::quickdatacopy { 'lfs_replica_sync':
             ensure                     => present,
             source_host                => $active_host,
-            dest_host                  => $gerrit_replica_hosts,
+            dest_host                  => $replica_hosts,
             module_path                => '/srv/gerrit/data/lfs',
             ignore_missing_file_errors => true,
         }
