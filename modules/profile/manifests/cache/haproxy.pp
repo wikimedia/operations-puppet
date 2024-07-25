@@ -42,6 +42,8 @@ class profile::cache::haproxy(
     Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
     Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
+    Boolean $use_etcd_req_filters = lookup('profile::cache::haproxy::use_etcd_req_filters', {'default_value'                                     => false}),
+    String $conftool_prefix = lookup('conftool_prefix'),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -211,8 +213,18 @@ class profile::cache::haproxy(
     # The haproxy site configuration
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
-    haproxy::site { 'tls':
-        content => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
+    if $use_etcd_req_filters {
+        haproxy::confd_site { 'tls':
+            ensure     => present,
+            prefix     => $conftool_prefix,
+            watch_keys => ['/request-haproxy_dsl/'],
+            template   => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
+        }
+    } else {
+        haproxy::site { 'tls':
+            ensure  => present,
+            content => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
+        }
     }
 
     if $monitoring_enabled {
