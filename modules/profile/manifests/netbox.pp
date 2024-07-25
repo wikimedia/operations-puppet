@@ -219,6 +219,7 @@ class profile::netbox (
         cas_group_required          => $cas_group_required,
         oidc_key                    => $oidc_key,
         oidc_secret                 => $oidc_secret,
+        netbox4                     => $netbox4
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
