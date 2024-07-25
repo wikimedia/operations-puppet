@@ -9,7 +9,6 @@ profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
-    - 'gerrit-replica-new.wikimedia.org'
 
 profile::gerrit::migration::data_dir: '/srv/gerrit'
 
