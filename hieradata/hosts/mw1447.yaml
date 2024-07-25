@@ -1,4 +1,0 @@
-# Use this api_appserver as sample for Apache logs (T244472)
-profile::mediawiki::webserver::stream_to_logstash: true
-# T255568
-profile::services_proxy::envoy::listen_ipv6: true

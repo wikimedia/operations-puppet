@@ -1,2 +1,0 @@
-# Use this appserver as sample for Apache logs (T244472)
-profile::mediawiki::webserver::stream_to_logstash: true
