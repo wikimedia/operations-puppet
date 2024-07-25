@@ -71,7 +71,6 @@ class wikistats::db (
 
     cinderutils::ensure { 'cinder_backup_volume':
         mount_point => $backupdir_ext,
-        min_gb      => 1,
         max_gb      => 2,
     }
 
