@@ -22,10 +22,11 @@ lastquarterstr=$(date +"Q$lastquarterint/%Y (Q$lastquarterintfy in FY)")
 
 #echo "result_tasks"
 result_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
-SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS url, t.title AS taskTitle, autr.userName AS author, ownr.userName AS assignee
+SELECT DISTINCT t.phid AS phid, autr.userName AS author, t.status AS status, ownr.userName AS owner, FROM_UNIXTIME(t.closedEpoch, '%Y-%m-%d') AS closedDate, clsr.userName AS closer, t.priority AS priority, t.subtype AS subtype, CONCAT("https://phabricator.wikimedia.org/T", t.id) AS url, t.title AS taskTitle, FROM_UNIXTIME(t.dateCreated, '%Y-%m-%d') AS createdDate, ROUND((t.closedEpoch - t.dateCreated) / 86400) AS daysBetween
     FROM phabricator_maniphest.maniphest_task t
     INNER JOIN phabricator_user.user autr ON autr.phid = t.authorPHID
     INNER JOIN phabricator_user.user ownr ON ownr.phid = t.ownerPHID
+    INNER JOIN phabricator_user.user clsr ON clsr.phid = t.closerPHID
     WHERE t.status = "resolved"
     AND FROM_UNIXTIME(t.closedEpoch,'%Y%m')>=DATE_FORMAT(NOW() - INTERVAL 3 MONTH,'%Y%m')
     AND autr.phid NOT IN
@@ -42,12 +43,83 @@ SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS url, t.ti
          INNER JOIN phabricator_user.user_email ue
          ON ue.userPHID = u.phid
          WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com'))
-    AND (autr.userName != "dbarratt" AND autr.userName != "Samwilson" AND autr.userName != "Amire80" AND autr.userName != "Dreamy_Jazz" AND autr.userName != "Ladsgroup" AND autr.userName != "Tchanders" AND autr.userName != "Daimona" AND autr.userName != "Nikerabbit" AND autr.userName != "Mooeypoo" AND autr.userName != "demon" AND autr.userName != "jbond")
     AND (ownr.phid IN
             (SELECT ua.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_externalaccount ua ON ua.userPHID = u.phid WHERE ua.accountType = "mediawiki" AND ((ua.username LIKE '%(WMF)' OR ua.username LIKE '%-WMF') OR (ua.username LIKE '%(WMDE)' OR ua.username LIKE '%-WMDE')))
          OR ownr.phid IN
-            (SELECT ue.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_email ue ON ue.userPHID = u.phid WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com'))
-         OR (ownr.userName = "dbarratt" OR ownr.userName = "Samwilson" OR ownr.userName = "Amire80" OR ownr.userName = "Dreamy_Jazz" OR ownr.userName = "Ladsgroup" OR ownr.userName = "Tchanders" OR ownr.userName = "Daimona" OR ownr.userName = "Nikerabbit" OR ownr.userName = "Mooeypoo" OR ownr.userName = "demon" OR ownr.userName = "jbond"));
+            (SELECT ue.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_email ue ON ue.userPHID = u.phid WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com')));
+END
+)
+
+#echo "result_projects"
+result_projects=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
+SELECT t.id AS taskId, t.phid AS phid, p.name AS projectTag
+    FROM phabricator_maniphest.maniphest_task t
+    INNER JOIN phabricator_maniphest.edge e ON t.phid = e.src
+    INNER JOIN phabricator_project.project p ON e.dst = p.phid
+    WHERE e.type = 41
+    AND t.phid IN
+        (SELECT DISTINCT t.phid
+         FROM phabricator_maniphest.maniphest_task t
+         INNER JOIN phabricator_user.user autr ON autr.phid = t.authorPHID
+         INNER JOIN phabricator_user.user ownr ON ownr.phid = t.ownerPHID
+         WHERE t.status = "resolved"
+         AND FROM_UNIXTIME(t.closedEpoch,'%Y%m')>=DATE_FORMAT(NOW() - INTERVAL 3 MONTH,'%Y%m')
+         AND autr.phid NOT IN
+             (SELECT ua.userPHID
+              FROM phabricator_user.user u
+              INNER JOIN phabricator_user.user_externalaccount ua
+              ON ua.userPHID = u.phid
+              WHERE ua.accountType = "mediawiki"
+              AND ((ua.username LIKE '%(WMF)' OR ua.username LIKE '%-WMF')
+              OR (ua.username LIKE '%(WMDE)' OR ua.username LIKE '%-WMDE')))
+         AND autr.phid NOT IN
+             (SELECT ue.userPHID
+              FROM phabricator_user.user u
+              INNER JOIN phabricator_user.user_email ue
+              ON ue.userPHID = u.phid
+              WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com'))
+         AND (ownr.phid IN
+                 (SELECT ua.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_externalaccount ua ON ua.userPHID = u.phid WHERE ua.accountType = "mediawiki" AND ((ua.username LIKE '%(WMF)' OR ua.username LIKE '%-WMF') OR (ua.username LIKE '%(WMDE)' OR ua.username LIKE '%-WMDE')))
+              OR ownr.phid IN
+                 (SELECT ue.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_email ue ON ue.userPHID = u.phid WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com')))) 
+    ORDER BY t.id;
+END
+)
+
+#echo "result_subscribers"
+result_subscribers=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
+SELECT t.id AS taskId, t.phid AS phid, u.userName AS subscriber
+    FROM phabricator_maniphest.maniphest_task t
+    INNER JOIN phabricator_maniphest.edge e ON t.phid = e.src
+    INNER JOIN phabricator_user.user u ON e.dst = u.phid
+    WHERE e.type = 21 
+    AND t.phid IN
+        (SELECT DISTINCT t.phid
+         FROM phabricator_maniphest.maniphest_task t
+         INNER JOIN phabricator_user.user autr ON autr.phid = t.authorPHID
+         INNER JOIN phabricator_user.user ownr ON ownr.phid = t.ownerPHID
+         WHERE t.status = "resolved"
+         AND FROM_UNIXTIME(t.closedEpoch,'%Y%m')>=DATE_FORMAT(NOW() - INTERVAL 3 MONTH,'%Y%m')
+         AND autr.phid NOT IN
+             (SELECT ua.userPHID
+              FROM phabricator_user.user u
+              INNER JOIN phabricator_user.user_externalaccount ua
+              ON ua.userPHID = u.phid
+              WHERE ua.accountType = "mediawiki"
+              AND ((ua.username LIKE '%(WMF)' OR ua.username LIKE '%-WMF')
+              OR (ua.username LIKE '%(WMDE)' OR ua.username LIKE '%-WMDE')))
+         AND autr.phid NOT IN
+             (SELECT ue.userPHID
+              FROM phabricator_user.user u
+              INNER JOIN phabricator_user.user_email ue
+              ON ue.userPHID = u.phid
+              WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com'))
+         AND (ownr.phid IN
+                 (SELECT ua.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_externalaccount ua ON ua.userPHID = u.phid WHERE ua.accountType = "mediawiki" AND ((ua.username LIKE '%(WMF)' OR ua.username LIKE '%-WMF') OR (ua.username LIKE '%(WMDE)' OR ua.username LIKE '%-WMDE')))
+              OR ownr.phid IN
+                 (SELECT ue.userPHID FROM phabricator_user.user u INNER JOIN phabricator_user.user_email ue ON ue.userPHID = u.phid WHERE (ue.address LIKE '%@wikimedia.org' OR ue.address LIKE '%@wikimedia.de' OR ue.address LIKE '%@speedandfunction.com')))) 
+    AND u.isDisabled != 1 
+    ORDER BY t.id;
 END
 )
 
@@ -59,16 +131,32 @@ It is supposed to list Phabricator tasks reported by folks who are
 not with WMF, WMDE, or contractors, and resolved in the last quarter
 by folks who are with WMF, WMDE, or contractors.
 
-WARNING: The results below are incorrect as long as staff and
-contractors are allowed to use non-staff accounts and non-staff /
-personal email addresses for their staff activity in Phabricator.
+WARNING: Results and numbers of tasks below are incorrect as staff
+and contractors can use non-staff accounts and non-staff / personal
+email addresses for their staff activity. There is no way to
+reliably identify staff or contractors due to lack of WMF policies.
 
+
+=== TASKS ===
+
+Meaning of priority values:
+100=Unbreak Now!, 90=Needs Triage, 80=High, 50=Medium, 25=Low, 10=Lowest.
 
 ${result_tasks}
 
 
+=== PROJECT TAGS ===
+
+${result_projects}
+
+
+=== NON-DISABLED SUBSCRIBERS ===
+
+${result_subscribers}
+
+
 Yours sincerely,
 Fab Rick Aytor
-(via $(basename $0) on $(hostname) at $(date); see T362804)
+(via $(basename $0) on $(hostname) at $(date); see T362804, T370947)
 EOF
 
