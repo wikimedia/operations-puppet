@@ -148,6 +148,16 @@ class profile::netbox (
     if $netbox4 {
         $netbox_scripts_path = '/srv/netbox'
         $run_report_command = 'runscript --user sre_bot'
+
+        file { $netbox_scripts_path:
+            ensure => directory,  # Create the parent directory for the one below
+        }
+        file { "${netbox_scripts_path}/customscripts":
+            ensure => directory,
+            owner  => 'www-data',  # needed for manual creation through the UI
+            group  => 'netbox',  # needed for automatic sync
+            mode   => '2775',  # needed for manually created files to have the 'netbox' group
+        }
     }
     else {
         $netbox_scripts_path = '/srv/deployment/netbox-extras'
@@ -169,16 +179,6 @@ class profile::netbox (
     # Needs to happen before the netbox Class is instanciated
     file { '/srv/deployment/':
         ensure => directory
-    }
-
-    file { $netbox_scripts_path:
-        ensure => directory,  # Create the parent directory for the one below
-    }
-    file { "${netbox_scripts_path}/customscripts":
-        ensure => directory,
-        owner  => 'www-data',  # needed for manual creation through the UI
-        group  => 'netbox',  # needed for automatic sync
-        mode   => '2775',  # needed for manually created files to have the 'netbox' group
     }
 
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
