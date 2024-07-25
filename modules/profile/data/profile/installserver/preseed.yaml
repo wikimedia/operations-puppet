@@ -489,6 +489,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
+  'logging-sd[12]00[1-4]':
+    - partman/standard.cfg
+    - partman/raid0.cfg
+    - partman/raid0-4dev.cfg
   'logstash100[7-9]':
     - partman/flat.cfg
     - virtual.cfg
