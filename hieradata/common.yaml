@@ -1190,7 +1190,7 @@ hadoop_clusters:
     # will be redirected to
     yarn_spark_history_server_address: "https://spark-history.svc.eqiad.wmnet:30443"
 
-deployment_server: deploy1002.eqiad.wmnet
+deployment_server: deploy1003.eqiad.wmnet
 
 netmon_server: netmon1003.wikimedia.org
 netmon_servers_failover:
