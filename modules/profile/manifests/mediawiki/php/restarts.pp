@@ -104,7 +104,7 @@ class profile::mediawiki::php::restarts(
             owner   => 'root',
             group   => 'root',
             mode    => '0500',
-            content => "#!/bin/bash\nfor svc in ${all_php_fpm_pools}; do systemctl restart \$svc; done"
+            content => "#!/bin/bash\nfor svc in ${all_php_fpms}; do systemctl restart \$svc; done"
         }
     }
 

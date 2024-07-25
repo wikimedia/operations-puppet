@@ -1,7 +1,7 @@
 #!/bin/bash
 <%-
 realm = scope.lookupvar('::realm')
-if realm != 'production' || @lvs_pools == nil -%>
+if realm != 'production' || @lvs_pools == nil || @lvs_pools.empty? -%>
 echo "Safe-restart is not needed here."
 systemctl restart <%= @title %>
 <%- else -%>
