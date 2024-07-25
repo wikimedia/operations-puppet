@@ -8,8 +8,7 @@ scap::dsh::scap_proxies:
 
 scap::dsh::scap_masters:
   - "deploy1002.eqiad.wmnet"
-  # comment out due to inadvertent side-effects T364417#9942184
-  #- "deploy1003.eqiad.wmnet"
+  - "deploy1003.eqiad.wmnet"
   - "deploy2002.codfw.wmnet"
 
 scap::dsh::groups:
