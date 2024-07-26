@@ -19,12 +19,13 @@
     Require all denied
   </Directory>
 
-   # Cache json, yaml, csv, and tsv files 1 hour
-   # (could be all files but wanted to be more restrictive to start)
+   # Initially we cached just json, yaml, csv, and tsv files
+   # But we found that mod_autoindex responses were not cached
+   # so applying a more thorough cache on anything under /published
    <IfModule mod_headers.c>
-      <FilesMatch "\.(json|yaml|csv|tsv)$">
+     <LocationMatch "/published">
          Header set Cache-Control "max-age=3600, public, must-revalidate"
-     </FilesMatch>
+     </LocationMatch>
    </IfModule>
 
    <IfModule mod_expires.c>
@@ -33,12 +34,13 @@
    </IfModule>
 
   <IfModule mod_rewrite.c>
-      # Redirect all requests to datasets.wikimedia.org to
-      # analytics.wikimedia.org/published/datasets/archive
+      # NOTE: this used to redirect to /published/datasets/archive
+      #   but that was for historical reasons that no longer apply
+      # Redirect all requests to datasets.wikimedia.org to analytics.wikimedia.org/published
       RewriteEngine On
 
       RewriteCond %{HTTP_HOST}  ^datasets.wikimedia.org [nocase]
-      RewriteRule ^(.*)$        https://analytics.wikimedia.org/published/datasets/archive$1 [last,redirect=301]
+      RewriteRule ^(.*)$        https://analytics.wikimedia.org/published [last,redirect=301]
 
       # Redirect all requests to analytics.wikimedia.org/datasets to
       # analytics.wikimedia.org/published/datasets.
