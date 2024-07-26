@@ -126,7 +126,7 @@ class profile::gitlab(
         # Certbot has to be reached over port 80
         firewall::service { 'gitlab-http-certbot':
           proto  => 'tcp',
-          port   => 80,
+          port   => [80],
           drange => [$service_ip_v4, $service_ip_v6]
         }
     }
