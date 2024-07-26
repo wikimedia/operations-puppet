@@ -183,7 +183,7 @@ class profile::puppetmaster::frontend(
         ensure      => 'present',
         user        => 'root',
         manage_user => false,
-        conftool    => false,
+        conftool    => $ca,
         outfile     => '/var/lib/puppet/volatile/external_cloud_vendors/public_clouds.json',
         http_proxy  => $http_proxy,
     }
