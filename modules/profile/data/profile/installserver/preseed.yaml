@@ -291,7 +291,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'failoid*':
     - partman/flat.cfg
     - virtual.cfg
-  'gerrit[1-2]00[1-3]':
+  'gerrit[1-2]00[1-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'krb[12]*':
