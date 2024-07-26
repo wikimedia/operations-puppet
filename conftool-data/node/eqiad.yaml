@@ -430,6 +430,9 @@ eqiad:
     ml-serve1006.eqiad.wmnet: [kubesvc]
     ml-serve1007.eqiad.wmnet: [kubesvc]
     ml-serve1008.eqiad.wmnet: [kubesvc]
+    ml-serve1009.eqiad.wmnet: [kubesvc]
+    ml-serve1010.eqiad.wmnet: [kubesvc]
+    ml-serve1011.eqiad.wmnet: [kubesvc]
   datahubsearch:
     datahubsearch1001.eqiad.wmnet: [opensearch]
     datahubsearch1002.eqiad.wmnet: [opensearch]
