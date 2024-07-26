@@ -1049,6 +1049,10 @@ node /^dse-k8s-worker100[1-8]\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
+node /^dse-k8s-worker1009\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # to be decommed
 node /^dumpsdata100[12]\.eqiad\./ {
     role(insetup::data_engineering)

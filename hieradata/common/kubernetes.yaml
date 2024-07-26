@@ -811,6 +811,7 @@ kubernetes::clusters:
         - dse-k8s-worker1006.eqiad.wmnet
         - dse-k8s-worker1007.eqiad.wmnet
         - dse-k8s-worker1008.eqiad.wmnet
+        - dse-k8s-worker1009.eqiad.wmnet
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
