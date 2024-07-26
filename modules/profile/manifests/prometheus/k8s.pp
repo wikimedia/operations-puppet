@@ -7,9 +7,6 @@ class profile::prometheus::k8s (
     Boolean                    $enable_thanos_upload   = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String]           $thanos_min_time        = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host]        $alertmanagers          = lookup('alertmanagers', { 'default_value' => [] }),
-    Integer                    $max_chunks_to_persist  = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
-    Integer                    $memory_chunks          = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
-    Boolean                    $disable_compaction     = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
 ) {
     # Get all prometheus enabled k8s clusters for this DC, excluding aliases
     $enabled_k8s_clusters = k8s::fetch_clusters(false).filter | String $_, K8s::ClusterConfig $config | {
@@ -604,21 +601,12 @@ class profile::prometheus::k8s (
             },
         ]
 
-        $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
-            true    => '2h',
-            default => '24h',
-        }
-
         prometheus::server { $k8s_cluster:
             listen_address         => "127.0.0.1:${port}",
             storage_retention      => $storage_retention,
             storage_retention_size => $storage_retention_size,
-            max_chunks_to_persist  => $max_chunks_to_persist,
-            memory_chunks          => $memory_chunks,
             global_config_extra    => $config_extra,
             scrape_configs_extra   => $scrape_configs_extra,
-            min_block_duration     => '2h',
-            max_block_duration     => $max_block_duration,
             alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
         }
 

@@ -7,15 +7,12 @@ class profile::prometheus::ops (
     String $replica_label                                     = lookup('prometheus::replica_label'),
     String $storage_retention                                 = lookup('profile::prometheus::ops::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
     Optional[Stdlib::Datasize] $storage_retention_size        = lookup('profile::prometheus::ops::storage_retention_size', {default_value => undef}),
-    Integer $max_chunks_to_persist                            = lookup('prometheus::server::max_chunks_to_persist', { 'default_value' => 524288 }),
-    Integer $memory_chunks                                    = lookup('prometheus::server::memory_chunks', { 'default_value' => 1048576 }),
     Stdlib::Unixpath $targets_path                            = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
     Array[Stdlib::Host] $bastion_hosts                        = lookup('bastion_hosts', { 'default_value' => [] }),
     Stdlib::Host $netmon_server                               = lookup('netmon_server'),
     Boolean $enable_thanos_upload                             = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time                         = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
-    Boolean $disable_compaction                               = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_http_check_urls = lookup('profile::prometheus::ops::blackbox_pingthing_http_check_urls', { 'default_value' => [] }),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_proxied_urls    = lookup('profile::prometheus::ops::blackbox_pingthing_proxied_urls', { 'default_value' => [] }),
     Optional[Stdlib::HTTPUrl] $http_proxy                     = lookup('http_proxy', {default_value => undef}),
@@ -2465,19 +2462,10 @@ class profile::prometheus::ops (
         port             => 2200,
     }
 
-    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
-        true    => '2h',
-        default => '24h',
-    }
-
     prometheus::server { 'ops':
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
-        max_chunks_to_persist          => $max_chunks_to_persist,
-        memory_chunks                  => $memory_chunks,
-        min_block_duration             => '2h',
-        max_block_duration             => $max_block_duration,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         scrape_configs_extra           => [
             $mysql_jobs, $varnish_jobs, $trafficserver_jobs, $purged_jobs, $memcached_jobs,

@@ -3,12 +3,9 @@ class profile::prometheus::cloud (
     String $openstack_deployment = lookup('profile::prometheus::cloud::openstack_deployment'),
     String $storage_retention = lookup('profile::prometheus::cloud::storage_retention', {'default_value' => '4032h'}),
     Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::prometheus::cloud::storage_retention_size', {default_value => undef}),
-    Integer $max_chunks_to_persist = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
-    Integer $memory_chunks = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
-    Boolean $disable_compaction = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
     String $replica_label = lookup('prometheus::replica_label'),
 ) {
     $targets_path = '/srv/prometheus/cloud/targets'
@@ -264,19 +261,10 @@ class profile::prometheus::cloud (
         port       => 9900,
     }
 
-    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
-        true    => '2h',
-        default => '24h',
-    }
-
     prometheus::server { 'cloud':
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
-        max_chunks_to_persist          => $max_chunks_to_persist,
-        memory_chunks                  => $memory_chunks,
-        min_block_duration             => '2h',
-        max_block_duration             => $max_block_duration,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => [
             # Add 'team' label, https://phabricator.wikimedia.org/T302493#7759642

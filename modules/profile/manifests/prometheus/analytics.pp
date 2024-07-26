@@ -12,9 +12,6 @@ class profile::prometheus::analytics (
     Optional[String] $thanos_min_time  = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
     String $storage_retention          = lookup('profile::prometheus::analytics::storage_retention', {'default_value' => '4032h'}),
-    Integer $max_chunks_to_persist     = lookup('prometheus::server::max_chunks_to_persist', {'default_value' => 524288}),
-    Integer $memory_chunks             = lookup('prometheus::server::memory_chunks', {'default_value' => 1048576}),
-    Boolean $disable_compaction        = lookup('profile::prometheus::thanos::disable_compaction', { 'default_value' => false }),
 ){
 
     $targets_path = '/srv/prometheus/analytics/targets'
@@ -313,21 +310,12 @@ class profile::prometheus::analytics (
         }
     }
 
-    $max_block_duration = ($enable_thanos_upload and $disable_compaction) ? {
-        true    => '2h',
-        default => '24h',
-    }
-
     prometheus::server { 'analytics':
-        listen_address        => "127.0.0.1:${port}",
-        storage_retention     => $storage_retention,
-        max_chunks_to_persist => $max_chunks_to_persist,
-        memory_chunks         => $memory_chunks,
-        global_config_extra   => $config_extra,
-        scrape_configs_extra  => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs].flatten,
-        min_block_duration    => '2h',
-        max_block_duration    => $max_block_duration,
-        alertmanagers         => $alertmanagers.map |$a| { "${a}:9093" },
+        listen_address       => "127.0.0.1:${port}",
+        storage_retention    => $storage_retention,
+        global_config_extra  => $config_extra,
+        scrape_configs_extra => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs].flatten,
+        alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
     prometheus::web { 'analytics':

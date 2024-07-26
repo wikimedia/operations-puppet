@@ -77,8 +77,6 @@ define prometheus::server (
     Stdlib::Unixpath           $base_path                      = "/srv/prometheus/${title}",
     String                     $storage_retention              = '730h',
     Optional[Stdlib::Datasize] $storage_retention_size         = undef,
-    Integer                    $max_chunks_to_persist          = 524288,
-    Integer                    $memory_chunks                  = 1048576,
     Hash                       $global_config_extra            = {},
     Array                      $scrape_configs_extra           = [],
     Array                      $rule_files_extra               = [],
