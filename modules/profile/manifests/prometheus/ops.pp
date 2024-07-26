@@ -42,6 +42,8 @@ class profile::prometheus::ops (
         },
     }
 
+    include profile::prometheus::ops_mysql
+
     class{ '::prometheus::swagger_exporter': }
 
     $swagger_exporter_jobs = [
@@ -1783,13 +1785,6 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/haproxy_${::site}.yaml",
         class_name => 'profile::prometheus::haproxy_exporter',
         port       => 9901,
-    }
-
-    file { [
-      "${targets_path}/cloudlb_haproxy_${::site}.yaml",
-      "${targets_path}/openstack_haproxy_${::site}.yaml",
-    ]:
-      ensure => absent,
     }
 
     $statsd_exporter_jobs = [

@@ -638,10 +638,6 @@ class profile::prometheus::k8s (
             source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',
         }
 
-        file { "/srv/prometheus/${k8s_cluster}/k8s.token":
-            ensure  => absent,
-        }
-
         prometheus::pint::source { $k8s_cluster:
             port => $port,
         }

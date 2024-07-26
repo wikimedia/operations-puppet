@@ -29,15 +29,6 @@ define prometheus::web (
 ) {
     include ::prometheus
 
-    # Previously installed hosts with this class used nginx;
-    #  turn off and remove nginx to avoid collisions
-    #  on port 80.
-    if !defined(Class['::nginx']) {
-        class { '::nginx':
-            ensure => absent,
-        }
-    }
-
     # Apache configuration snippet with proxy pass.
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
     file { "/etc/apache2/prometheus.d/${title_safe}.conf":
