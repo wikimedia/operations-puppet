@@ -412,7 +412,12 @@ node /^gerrit(1003|2002)\.wikimedia\./ {
     role(gerrit)
 }
 
-# new hardware - T369670
+# new hardware (eqiad) - T369671
+node /^gerrit1004\.wikimedia\./ {
+    role(insetup::collaboration_services)
+}
+
+# new hardware (codfw) - T369670
 node /^gerrit2003\.wikimedia\./ {
     role(insetup::collaboration_services)
 }
