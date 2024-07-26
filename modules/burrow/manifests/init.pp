@@ -87,6 +87,17 @@ define burrow (
 {
     ensure_packages('burrow')
 
+    $pidfile_dir = '/var/run/burrow'
+    if !defined(File[$pidfile_dir]) {
+        file { $pidfile_dir:
+            ensure  => 'directory',
+            owner   => 'burrow',
+            group   => 'burrow',
+            mode    => '0755',
+            require => Package['burrow'],
+        }
+    }
+
     # Burrow 1.0 accepts one parameter named '--config-dir' that
     # expects a directory containing a file named 'burrow.toml'.
     # Since multiple instances of Burrow can run on the same hosts,
@@ -114,6 +125,7 @@ define burrow (
         subscribe => File["${config_dir}/burrow.toml"],
         require   => [
             Package['burrow'],
+            File[$pidfile_dir],
         ],
     }
 
