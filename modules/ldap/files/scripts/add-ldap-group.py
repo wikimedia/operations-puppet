@@ -3,8 +3,6 @@
 import argparse
 import sys
 
-from typing import List
-
 import bituldap as ldap
 
 
@@ -18,7 +16,7 @@ def main():
     parser.add_argument("--gid", action="store", default=0, type=int,
                         help="The group's gid (default: next available gid)")
     parser.add_argument("--members", action="store", nargs='+', default=None,
-                        help="A comma separated list of group members to add to this group")
+                        help="A list of group members to add to this group (space separated).")
     parser.add_argument("--ignore-existing", action="store_true",
                         help="If the group exist, do not attempt to create, "
                              + "but do add any members given.")
@@ -40,7 +38,6 @@ def main():
         # Set true, to indicate successful "creation" of existing group.
         success = True
 
-    members: List[str] = []
     if args.members and success:
         store = False
         # Add any missing members to the group.
@@ -66,7 +63,7 @@ def main():
     # Everything went well.
     if success:
         print(f"successfully created group {args.name}, "
-              + f"with gidNumber {group.gidNumber} and {len(members)} members")
+              + f"with gidNumber {group.gidNumber} and {len(args.members)} members")
         return 0
 
     # Failed to create group
