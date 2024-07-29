@@ -306,6 +306,7 @@ profile::gitlab::restore_interval:
 
 # reduce concurrency because of IO issues of the WMCS volume
 profile::gitlab::max_storage_concurrency: 1
+profile::gitlab::max_concurrency: 4
 
 # LDAP group sync configuration
 profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
