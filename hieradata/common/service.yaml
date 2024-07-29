@@ -1965,9 +1965,11 @@ service::catalog:
           max-delay: 300
           timeout-clean-reconnect: 3
       scheduler: wrr
-    probes:
-      - type: http
-        path: /robots.txt
+    # This used to have probes until we discovered it was failing them for ~20%
+    # of the time. Since 2024-07-29, they are disabled. T338471
+    #probes:
+    #  - type: http
+    #    path: /robots.txt
     port: 4632
     sites:
       - eqiad
