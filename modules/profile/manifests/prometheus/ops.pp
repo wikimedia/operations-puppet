@@ -2508,9 +2508,9 @@ class profile::prometheus::ops (
         backup  => false,
     }
 
-    ferm::service { 'prometheus-web':
+    firewall::service { 'prometheus-web':
         proto  => 'tcp',
-        port   => '80',
+        port   => [80],
         srange => '$DOMAIN_NETWORKS',
     }
 
