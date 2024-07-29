@@ -104,6 +104,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  airflow_test_k8s:
+    id: 14
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://airflow-test-k8s\.wikimedia\.org\/[\w\/]*'
+    profile_format: 'FLAT'
+    required_groups:
+      - wmf
+      - nda
 
 profile::idp::ldap_attributes:
   - cn
