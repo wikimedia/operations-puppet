@@ -6,7 +6,6 @@ import sys
 from typing import List
 
 import bituldap as ldap
-import bituldap.utils
 
 
 def main():
@@ -41,16 +40,16 @@ def main():
         # Set true, to indicate successful "creation" of existing group.
         success = True
 
-    # We need to member list for out later.
     members: List[str] = []
     if args.members and success:
-        members = bituldap.utils.uids_to_dn(args.members)
         store = False
-
         # Add any missing members to the group.
-        for member in members:
-            if member not in group.member:
-                group.member += member
+        for member in args.members:
+            member_dn = ldap.get_user(member).entry_dn
+            if not member_dn:
+                print(f"The user {member} seems not present in LDAP, skipping.")
+            elif member_dn not in group.member:
+                group.member += member_dn
                 store = True  # Note that we need to call commit.
 
         # One or more members where added, commit to LDAP.
