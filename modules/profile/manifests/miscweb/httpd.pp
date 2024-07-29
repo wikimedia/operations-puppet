@@ -28,15 +28,15 @@ class profile::miscweb::httpd (
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    ferm::service { 'miscweb-http-envoy':
+    firewall::service { 'miscweb-http-envoy':
         proto  => 'tcp',
-        port   => '80',
+        port   => [80],
         srange => "(${::ipaddress} ${::ipaddress6})"
     }
 
-    ferm::service { 'miscweb-http-deployment':
+    firewall::service { 'miscweb-http-deployment':
         proto  => 'tcp',
-        port   => '80',
+        port   => [80],
         srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
     }
 
