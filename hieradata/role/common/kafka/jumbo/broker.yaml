@@ -111,7 +111,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((kafka-test1008.eqiad.wmnet)) @resolve((kafka-test1008.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1009.eqiad.wmnet)) @resolve((kafka-test1009.eqiad.wmnet), AAAA))'
   - '(@resolve((kafka-test1010.eqiad.wmnet)) @resolve((kafka-test1010.eqiad.wmnet), AAAA))'
-  - '(@resolve((karapace1001.eqiad.wmnet)) @resolve((karapace1001.eqiad.wmnet), AAAA))'
 
 # Kafka doesn't support Java 11 for versions
 # lower than 2.1

@@ -344,9 +344,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'kafka-stretch[12]00[1-2]':
     - partman/custom/kafka-jumbo.cfg
-  'karapace*':
-    - partman/flat.cfg
-    - virtual.cfg
   'kubernetes[12]0[01][56]':
     - partman/flat.cfg
     - partman/flat-noswap.cfg

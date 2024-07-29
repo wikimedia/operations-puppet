@@ -1627,11 +1627,6 @@ node /^kafka-stretch200[12]\.codfw\./ {
     role(insetup::data_engineering)
 }
 
-# Two karapace VMs in support of DataHub
-node /^karapace100[12]\.eqiad\./ {
-    role(karapace)
-}
-
 # virtual machines for misc. applications and static sites
 # replaced miscweb1001/2001 in T247648 and bromine/vega in T247650
 #
