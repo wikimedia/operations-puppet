@@ -36,12 +36,10 @@ class profile::rsyslog::kubernetes (
     $log_topic_name = sprintf('k8s-%s', $kubernetes_cluster_name)
     $trusted_ca_path = profile::base::certificates::get_trusted_ca_path()
 
-    if 'staging' in $kubernetes_cluster_name {
-        rsyslog::conf { 'output_kafka_k8s':
-            ensure   => $ensure,
-            content  => template('profile/rsyslog/output_kafka_k8s.conf.erb'),
-            priority => 35,
-        }
+    # Dedicated per-k8s-cluster kafka topics. https://phabricator.wikimedia.org/T366710
+    rsyslog::conf { 'output_kafka_k8s':
+        ensure   => $ensure,
+        content  => template('profile/rsyslog/output_kafka_k8s.conf.erb'),
+        priority => 35,
     }
-
 }
