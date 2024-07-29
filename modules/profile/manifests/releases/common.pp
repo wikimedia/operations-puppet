@@ -93,15 +93,15 @@ class profile::releases::common(
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    ferm::service { 'releases_http':
+    firewall::service { 'releases_http':
         proto  => 'tcp',
-        port   => '80',
+        port   => [80],
         srange => "(${::ipaddress} ${::ipaddress6})",
     }
 
-    ferm::service { 'releases_http_deployment_cumin':
+    firewall::service { 'releases_http_deployment_cumin':
         proto  => 'tcp',
-        port   => '80',
+        port   => [80],
         srange => '($DEPLOYMENT_HOSTS $CUMIN_MASTERS)',
     }
 
