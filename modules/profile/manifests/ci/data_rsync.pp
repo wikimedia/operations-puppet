@@ -8,9 +8,9 @@ class profile::ci::data_rsync (
 
     if $::fqdn in $dst_hosts {
 
-        ferm::service { 'ci-migration-rsync':
+        firewall::service { 'ci-migration-rsync':
             proto  => 'tcp',
-            port   => '873',
+            port   => [873],
             srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
         }
 
