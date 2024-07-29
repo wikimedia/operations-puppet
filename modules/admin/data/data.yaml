@@ -2555,7 +2555,7 @@ users:
     uid: 3609
     krb: present
     email: andrew.green@extern.wikimedia.de
-    expiry_date: "2024-07-30"
+    expiry_date: "2024-08-31"
     expiry_contact: cynthia.makonyango@wikimedia.de
   mobrovac:
     ensure: present
