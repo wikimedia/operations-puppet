@@ -304,6 +304,9 @@ profile::gitlab::restore_interval:
   start: 'OnCalendar'
   interval: '*-*-* 02:00:00'
 
+# reduce concurrency because of IO issues of the WMCS volume
+profile::gitlab::max_storage_concurrency: 1
+
 # LDAP group sync configuration
 profile::gitlab::ldap_group_sync_bot_user: ldap-sync-bot
 # profile::gitlab::ldap_group_sync_bot_token in private repo
