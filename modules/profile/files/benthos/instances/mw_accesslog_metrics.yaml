@@ -16,8 +16,8 @@ input:
       enabled: true
     consumer_group: "benthos-mw-accesslog-metrics"
     batching:
-      count: 32768
-      period: 1000ms
+      count: 2048
+      period: 500ms
 
 pipeline:
   processors:
