@@ -1,2 +1,4 @@
+# candidate master for s6
 # db1201
 mariadb::shard: 's6'
+mariadb::binlog_format: 'STATEMENT'
