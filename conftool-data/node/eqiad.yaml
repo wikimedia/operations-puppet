@@ -32,7 +32,7 @@ eqiad:
     cp1113.eqiad.wmnet: [cdn, ats-be]
     cp1115.eqiad.wmnet: [cdn, ats-be]
   parsoid:
-    parse1001.eqiad.wmnet: [parsoid-php, canary]
+    parse1001.eqiad.wmnet: [canary]
   restbase:
     restbase1028.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1029.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]

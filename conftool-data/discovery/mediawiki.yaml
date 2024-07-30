@@ -1,4 +1,3 @@
-parsoid-php: [eqiad, codfw]
 swift: [eqiad, codfw]
 swift-rw: [eqiad, codfw]
 swift-ro: [eqiad, codfw]

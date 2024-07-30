@@ -25,7 +25,6 @@ scap::dsh::groups:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
       - {'cluster': 'testserver', 'service': 'apache2'}
-      - {'cluster': 'parsoid', 'service': 'parsoid-php'}
     hosts:
       - cloudweb2002-dev.wikimedia.org
       - cloudweb1003.wikimedia.org
@@ -41,18 +40,6 @@ scap::dsh::groups:
       - snapshot1015.eqiad.wmnet
       - snapshot1016.eqiad.wmnet
       - snapshot1017.eqiad.wmnet
-  parsoid:
-    conftool:
-      - {'cluster': 'parsoid', 'service': 'parsoid'}
-  parsoid-canaries:
-    # Also update $wgLinterSubmitterWhitelist in operations/mediawiki-config
-    hosts:
-      - parse1001.eqiad.wmnet
-      - parse2001.codfw.wmnet
-  parsoid_php:
-    conftool:
-      - {'cluster': 'parsoid', 'service': 'parsoid-php'}
-  # The mediawiki canary lists change dynamically depending on the active dc
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
