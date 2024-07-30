@@ -2,3 +2,4 @@
 # candidate master for s4
 mariadb::shard: 's4'
 mariadb::binlog_format: 'STATEMENT'
+profile::monitoring::notifications_enabled: false
