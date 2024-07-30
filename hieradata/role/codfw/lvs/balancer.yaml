@@ -23,6 +23,21 @@ profile::lvs::tagged_subnets:
   - private1-b6-codfw
   - private1-b7-codfw
   - private1-b8-codfw
+  - private1-c1-codfw
+  - private1-c2-codfw
+  - private1-c3-codfw
+  - private1-c4-codfw
+  - private1-c5-codfw
+  - private1-c6-codfw
+  - private1-c7-codfw
+  - private1-d1-codfw
+  - private1-d2-codfw
+  - private1-d3-codfw
+  - private1-d4-codfw
+  - private1-d5-codfw
+  - private1-d6-codfw
+  - private1-d7-codfw
+  - private1-d8-codfw
 profile::lvs::interface_tweaks:
   eno12399np0:
     txqlen: 10000
