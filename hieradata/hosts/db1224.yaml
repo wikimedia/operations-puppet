@@ -1,3 +1,4 @@
 # db1224
-mariadb::shard: 's6'
-
+mariadb::shard: 'x1'
+mariadb::binlog_format: 'ROW'
+profile::monitoring::notifications_enabled: false

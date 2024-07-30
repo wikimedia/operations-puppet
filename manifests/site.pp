@@ -664,7 +664,7 @@ node /^db2128\.codfw\./ {
 }
 
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
-node /^db1(168|173|180|187|201|224|231)\.eqiad\./ {
+node /^db1(168|173|180|187|201|231)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -725,7 +725,7 @@ node /^db2164\.codfw\./ {
 
 ## x1 shard
 # eqiad
-node /^db1(179|220|237)\.eqiad\./ {
+node /^db1(179|220|224|237)\.eqiad\./ {
     role(mariadb::core)
 }
 
