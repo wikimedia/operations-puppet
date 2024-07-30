@@ -293,6 +293,7 @@ datasources:
    version: 1
    jsonData:
     prometheusType: "Thanos"
+    timeInterval: 30s # "scrape interval" in the Grafana datasources UI
 
  - name: thanos-downsample-5m
    type: prometheus
@@ -307,6 +308,7 @@ datasources:
    jsonData:
     customQueryParameters: "max_source_resolution=5m"
     prometheusType: "Thanos"
+    timeInterval: 30s
 
  - name: thanos-downsample-1h
    type: prometheus
@@ -321,3 +323,4 @@ datasources:
    jsonData:
     customQueryParameters: "max_source_resolution=1h"
     prometheusType: "Thanos"
+    timeInterval: 30s
