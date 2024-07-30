@@ -30,6 +30,7 @@ class gerrit(
     Optional[String]                  $scap_key_name     = undef,
     Boolean                           $mask_service      = false,
     Boolean                           $lfs_replica_sync  = true,
+    Array[Stdlib::Fqdn]               $lfs_sync_dest     = [],
 ) {
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
@@ -320,11 +321,11 @@ class gerrit(
         }
     }
 
-    if $lfs_replica_sync and !empty($replica_hosts) {
+    if $lfs_replica_sync and !empty($lfs_sync_dest) {
         rsync::quickdatacopy { 'lfs_replica_sync':
             ensure                     => present,
             source_host                => $active_host,
-            dest_host                  => $replica_hosts,
+            dest_host                  => $lfs_sync_dest,
             module_path                => '/srv/gerrit/data/lfs',
             ignore_missing_file_errors => true,
         }

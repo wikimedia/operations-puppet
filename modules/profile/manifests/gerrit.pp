@@ -24,6 +24,7 @@ class profile::gerrit(
     Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
     Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
     Boolean                           $lfs_replica_sync  = lookup('profile::gerrit::lfs_replica_sync'),
+    Array[Stdlib::Fqdn]               $lfs_sync_dest     = lookup('profile::gerrit::lfs_sync_dest'),
 ) {
     require ::profile::java
 
@@ -113,6 +114,7 @@ class profile::gerrit(
         mask_service      => $mask_service,
         active_host       => $active_host,
         lfs_replica_sync  => $lfs_replica_sync,
+        lfs_sync_dest     => $lfs_sync_dest,
     }
 
     class { 'gerrit::replication_key':
