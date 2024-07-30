@@ -43,7 +43,6 @@ profile::idp::services:
     service_id: 'https://puppetboard(-next)?\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
-      - sre-admins
       - ops-limited
   graphite:
     id: 4

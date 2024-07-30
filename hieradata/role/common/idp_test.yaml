@@ -22,7 +22,6 @@ profile::idp::services:
     service_id: 'https://puppetboard-(idp|saml)test\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
-      - sre-admins
       - ops-limited
       - idptest-users
   idp_cloud_dev:

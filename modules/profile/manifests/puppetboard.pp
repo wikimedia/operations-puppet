@@ -130,7 +130,6 @@ class profile::puppetboard (
         vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
-            'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
             'cn=ops-limited,ou=groups,dc=wikimedia,dc=org',
         ],
         proxied_as_https => true,
@@ -142,7 +141,6 @@ class profile::puppetboard (
             vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
             required_groups  => [
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
-                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
                 'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
             ],
             proxied_as_https => true,
@@ -157,7 +155,6 @@ class profile::puppetboard (
             vhost_content    => 'profile/idp/client/httpd-puppetboard-ng.erb',
             required_groups  => [
                 'cn=ops,ou=groups,dc=wikimedia,dc=org',
-                'cn=sre-admins,ou=groups,dc=wikimedia,dc=org',
                 'cn=idptest-users,ou=groups,dc=wikimedia,dc=org',
             ],
             proxied_as_https => true,

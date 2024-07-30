@@ -103,9 +103,7 @@ groups:
     # DEPRECATED: please use ops-limited
     gid: 707
     description: 'Used for SREs without full root privileges'
-    members: &sre_admins_members []
-    approval:
-      - Joanna Borun
+    members: []
   ops-limited:
     # SRE members without full root.
     # Use cases: DCops ssh/throubleshooting, new SRE members, etc..
@@ -274,7 +272,7 @@ groups:
   sretest-roots:
     gid: 716
     description: users with root on sretest servers
-    members: [*sre_admins_members, *ops_limited]
+    members: [*ops_limited]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun

@@ -8,5 +8,4 @@ profile::admin::always_groups:
   - 'ops'
   - 'wikidev'
   - 'ops-adm-group'
-  - 'sre-admins'
   - 'ops-limited'
