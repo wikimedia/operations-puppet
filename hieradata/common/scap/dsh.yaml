@@ -18,19 +18,11 @@ scap::dsh::groups:
   jobrunner:
     conftool:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
-  appserver:
-    conftool:
-      - {'cluster': 'appserver', 'service': 'nginx'}
-  api_appserver:
-    conftool:
-      - {'cluster': 'api_appserver', 'service': 'nginx'}
   testserver:
     conftool:
       - {'cluster': 'testserver', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
-      - {'cluster': 'appserver', 'service': 'nginx'}
-      - {'cluster': 'api_appserver', 'service': 'nginx'}
       - {'cluster': 'jobrunner', 'service': 'nginx'}
       - {'cluster': 'testserver', 'service': 'apache2'}
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
@@ -56,9 +48,7 @@ scap::dsh::groups:
     # Also update $wgLinterSubmitterWhitelist in operations/mediawiki-config
     hosts:
       - parse1001.eqiad.wmnet
-      - parse1003.eqiad.wmnet
       - parse2001.codfw.wmnet
-      - parse2002.codfw.wmnet
   parsoid_php:
     conftool:
       - {'cluster': 'parsoid', 'service': 'parsoid-php'}
