@@ -39,6 +39,8 @@ if [[ ! -d "${CACHE_DIR}" ]]; then
     git -C "${PROJECT_DIR}" clone --recursive "http://${DEPLOYMENT_SERVER}/${PROJECT}/deploy/.git" cache
 fi
 
+# Update the submodule URL in case it changed in .gitmodules
+git -C "${CACHE_DIR}" submodule sync
 # Update cache
 git -C "${CACHE_DIR}" pull --ff-only --recurse-submodules
 
