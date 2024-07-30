@@ -278,7 +278,6 @@ lvs::interfaces::vlan_data:
     netmask: '255.255.255.0'
     iface:
       lvs2011: 'eno12399np0:10.192.11.2'
-      lvs2012: 'eno12399np0:10.192.11.3'
       lvs2013: 'eno12409np1:10.192.11.4'
       lvs2014: 'eno12409np1:10.192.11.5'
   private1-b3-codfw:
