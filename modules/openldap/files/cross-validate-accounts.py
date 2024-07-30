@@ -49,6 +49,8 @@ def get_ldap_group_members(group_name):
     )
 
     for member_dn in ldapdata[0][1]['member']:
+        if not member_dn:
+            continue
         members.append(member_dn.decode().split(",")[0].split("=")[1])
 
     return members
@@ -175,7 +177,11 @@ def read_members_yaml(yamldata, group):
 # Every account in the LDAP ops should be in either the ops, datacenter-ops or
 # fr-tech-admins YAML groups
 def validate_common_ops_group(yamldata):
-    ldap_ops = set(get_ldap_group_members('ops'))
+    ldap_ops = set(
+        get_ldap_group_members('ops')
+        + get_ldap_group_members('ops-limited')
+    )
+
     yml_ops = set(
         read_members_yaml(yamldata, 'ops')
         + read_members_yaml(yamldata, 'datacenter-ops')
