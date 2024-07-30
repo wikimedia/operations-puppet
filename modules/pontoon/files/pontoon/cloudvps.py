@@ -384,7 +384,9 @@ class CloudVPS(object):
         if no_block:
             return True
 
-        return self._wait_hosts_access(set([x.name for x in to_reboot]))
+        return self._wait_hosts_access(
+            set([f"{x.name}.{self.nova.project_id}.{HOST_DOMAIN}" for x in to_reboot])
+        )
 
     def new_stack(self, host_prefix):
         if host_prefix is None:
