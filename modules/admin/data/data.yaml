@@ -30,7 +30,7 @@ groups:
               mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
-              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, migr, lsobanski,
+              shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx]
   absent_ldap:
@@ -4566,15 +4566,6 @@ users:
     krb: present
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjd61raR4jmiUPk6rt2PY/38YOj/n8VIY9hTbevGLL36IRpT9pRjSbywhWb1KLI/WqZX+FcntRe485zgysZja9jAL9VnvU50LLQMB8gnbIVvHjxIO3xhdmenBer17fH5tyIevs2UI4TeWzm7eZGkbJDxfR3rl6S09CQhfDVA4hj6Byi0ocNu3dtbRca9OuH0HMmso2bkiElUQc+KwX2VajGELb/z+mAAG2huvkJ8Z7rNWD/lpay2f/4MEtMLnU/9n2pRQQwbnj/T8HMj0DQT7/rOEvEKWgw72OuHscJ5qbFCpRL7O8UzZ4BX2QT8wYbyRvCBjTnMpqLDa7hJqKGR8WLIMr+BVYr7LDWTPUNGuPQUkB2NYU50mSLA9Azm37fbELW8fge8GsZNHnH0ZGP60TPtpI/Lz/7cwXTsr/Ttt07ztMyKI58nRyrsJdUjaB/NilLrX5HDJrcdyrnRzkvH394YhJXVKQJB53QSq7X5WHa60hju/bQUHuDqBcEUWTeIbSZXYVqtL+ioHQXyMEIUDa75O2I07DVQ7/MVNorudcO+sV+bStl01+1xSKFQX349QTOpZ6srNLwk9A1BB/7BZ9DTy2Ewno+O3jkqgE8n3nC3/F7Iq5TyUWB/6RDMTMzVYz3orojrB3+eGFMZ0fyrZMPeNuzSKkRCGM5ZSLv/wSuQ== gmodena@wikimedia.org
-  migr:
-    ensure: absent
-    name: migr
-    realname: Michael Grosse
-    email: michael.grosse@wikimedia.de
-    uid: 20428
-    gid: 500
-    ssh_keys: []
-    krb: absent
   gtzatchkova:
     ensure: present
     realname: Guergana Tzatchkova
@@ -6420,6 +6411,15 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKABHRgNMjahSFE1aNr2SneAn5+MzwO8Bp1bBFu4emNm tappof
     uid: 47319
     email: tfogli@wikimedia.org
+  migr:
+    ensure: present
+    gid: 500
+    uid: 20428
+    name: migr
+    realname: Michael Grosse
+    email: mgrosse@wikimedia.org
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmD2OeIfZEKxa0eWseTSUQSXgFJ2IOEDKpLDpH7zLUM migr:wmf-production'
 
 ldap_only_users:
   adavenport:
@@ -7201,10 +7201,6 @@ ldap_only_users:
     ensure: present
     realname: Lukasz Sobanski
     email: lsobanski@wikimedia.org
-  migr:
-    ensure: present
-    realname: Michael Grosse
-    email: mgrosse@wikimedia.org
   jaycano:
     ensure: present
     realname: Juan Cano
