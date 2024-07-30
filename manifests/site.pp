@@ -2607,11 +2607,13 @@ node /^testvm200[1-9]\.wikimedia\./ {
     role(test)
 }
 
-node /^thanos-be100[1234]\.eqiad\./ {
+# Newly provisioned thanos-be hosts are safe to add to thanos::backend at
+# any time, like ms-be/swift::storage nodes
+node /^thanos-be1\d\d\d\.eqiad\./ {
     role(thanos::backend)
 }
 
-node /^thanos-be200[1234]\.codfw\./ {
+node /^thanos-be2\d\d\d\.codfw\./ {
     role(thanos::backend)
 }
 
