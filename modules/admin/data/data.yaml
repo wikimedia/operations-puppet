@@ -234,7 +234,7 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas, arthurtaylor, rkhan]
+              dbrant, tsev, ngkountas, arthurtaylor, rkhan, migr]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
