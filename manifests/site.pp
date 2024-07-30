@@ -1664,7 +1664,7 @@ node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-2])\.eqiad\./ {
 # T368933, T369743 NOTE: We use those hostnames because we are going to be
 # renaming parse*, mw*, kubernetes* and those add up to 1231. Leeway included
 node /^wikikube-worker1(2[4-9][0-9]|3[0-4])\.eqiad\./ {
-    role(kubernetes::worker)
+    role(insetup::serviceops)
 }
 
 node /^wikikube-worker20(0[1-47-9]|1[0-9]|2[0-9]|3[0-9])\.codfw\./ {
