@@ -79,6 +79,7 @@ class community_civicrm (
         "/var/www/community_civicrm/web/sites/default/files/config_${config_nonce}",
         "/var/www/community_civicrm/web/sites/default/files/config_${config_nonce}/sync",
         '/var/www/community_civicrm/web/sites/default/files/civicrm',
+        '/var/www/community_civicrm/web/sites/default/files/civicrm/custom',
         '/var/www/community_civicrm/web/sites/default/files/civicrm/templates_c',
         '/var/www/community_civicrm/web/sites/default/files/css',
         '/var/www/community_civicrm/web/sites/default/files/js',
