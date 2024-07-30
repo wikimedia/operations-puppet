@@ -363,7 +363,6 @@ profile::services_proxy::envoy::listeners:
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
-  - parsoid-php
   - mathoid
   - eventgate-analytics
   - eventgate-analytics-external

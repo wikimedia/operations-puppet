@@ -1807,15 +1807,11 @@ service::catalog:
             - https://en.wikipedia.org/wiki/Special:BlankPage?force_php74=1
           check_all: true
       scheduler: wrr
-    probes:
-      - type: http
-        path: /wiki/Special:BlankPage
-        host: en.wikipedia.org
     port: 443
     sites:
       - eqiad
       - codfw
-    state: production
+    state: service_setup
     discovery:
       - dnsdisc: parsoid-php
         active_active: false
