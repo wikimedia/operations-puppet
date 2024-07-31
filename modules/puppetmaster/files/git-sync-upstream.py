@@ -7,7 +7,6 @@ import argparse
 import datetime
 from enum import Enum
 import logging
-import pwd
 import os
 import shutil
 import subprocess
@@ -163,7 +162,6 @@ parser.add_argument(
     help="Only sync the /labs/private repo",
 )
 parser.add_argument("--base-dir", default=Path("/var/lib/git"), type=Path)
-parser.add_argument("--git-user", default="root")
 parser.add_argument(
     "--prometheus-file",
     dest="prometheus_file",
@@ -188,13 +186,6 @@ gauge_is_up_to_date = Gauge(
     labelnames=["repository"],
     registry=prometheus_registry,
 )
-if args.git_user != "root":
-    # Switch to git user for git operations
-    os.seteuid(pwd.getpwnam(args.git_user).pw_uid)
-    old_environ = os.environ.copy()
-    os.environ["USER"] = args.git_user
-    os.environ["HOME"] = pwd.getpwnam(args.git_user).pw_dir
-
 
 repo_changes = 0
 if args.private:
@@ -234,11 +225,6 @@ else:
 
 if repo_changes > 0:
     deploy_puppet_code()
-
-if os.geteuid() != 0:
-    # Switch back to root
-    os.seteuid(0)
-    os.environ = old_environ
 
 if args.prometheus_file is not None:
     write_to_textfile(args.prometheus_file, prometheus_registry)

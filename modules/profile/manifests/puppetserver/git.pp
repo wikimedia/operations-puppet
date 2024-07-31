@@ -29,8 +29,9 @@ class profile::puppetserver::git (
     $home_dir = "/home/${user}"
 
     systemd::sysuser { $user:
-        home_dir => $home_dir,
-        shell    => '/bin/sh',
+        home_dir          => $home_dir,
+        shell             => '/bin/sh',
+        additional_groups => [ 'prometheus-node-exporter' ],
     }
     file { $home_dir:
         ensure  => directory,

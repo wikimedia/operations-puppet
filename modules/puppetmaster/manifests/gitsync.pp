@@ -29,13 +29,12 @@ class puppetmaster::gitsync (
     $command = @("COMMAND"/L)
         /usr/local/bin/git-sync-upstream --prometheus-file ${prometheus_file} \
         --base-dir ${base_dir} \
-        --git-user ${git_user} \
         ${private_arg}
         |- COMMAND
 
     systemd::timer::job { 'puppet-git-sync-upstream':
         ensure      => 'present',
-        user        => 'root',
+        user        => $git_user,
         description => 'Update local Puppet repository copies',
         command     => $command,
         interval    => {
