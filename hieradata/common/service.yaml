@@ -1782,42 +1782,6 @@ service::catalog:
       - magru
     state: production
 
-  parsoid-php:
-    description: Parsoid/PHP wikitext parser for VisualEditor
-    encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.28
-      eqiad:
-        default: 10.2.2.28
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: parsoid
-        service: parsoid-php
-      depool_threshold: ".6"
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://en.wikipedia.org/wiki/Special:BlankPage
-            - https://en.wikipedia.org/wiki/Special:BlankPage?force_php74=1
-          check_all: true
-      scheduler: wrr
-    port: 443
-    sites:
-      - eqiad
-      - codfw
-    state: service_setup
-    discovery:
-      - dnsdisc: parsoid-php
-        active_active: false
-    aliases:
-      - "parsoid"
-
   prometheus: &prometheus_default
     description: Prometheus monitoring
     encryption: false
