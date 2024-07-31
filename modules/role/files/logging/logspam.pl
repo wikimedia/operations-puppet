@@ -59,15 +59,27 @@ use Time::Seconds;
 use Getopt::Long;
 use Pod::Usage;
 
-# YYYY-MM-DD HH:MM:SS.MMMMMM [requestid] host wiki version ......
-my $header_pat = qr{^([\d-]{10} [\d:]{8})[.]\d{6} \[\S+\] (\S+)};
-
 # Silence rare but irritating UTF-8 warnings.  You may wish to disable this for
 # development purposes:
 local $SIG{__WARN__} = sub {
   my $message = shift;
   warn($message) unless $message =~ m/^utf.*/i;
 };
+
+# A pattern for extracting some metadata from header lines:
+# YYYY-MM-DD HH:MM:SS.MMMMMM [requestid] host wiki version ......
+my $header_pat = qr{
+
+  ^                             # Start of line:
+
+    ([\d-]{10} [ ] [\d:]{8})    # Date/timestamp including second
+    [.]\d{6} [ ]                # Microseconds (discard)
+    \[\S+\] [ ]                 # [requestid]
+    (\S+) [ ]                   # Host
+    (\S+) [ ]                   # Wiki
+    \d+[.]\d+[.]\d+-wmf[.](\d+) # Version
+
+}x;
 
 my $window = 1440; # minutes. Default is 24 hour window.
 my $minimum_hits = 0;
@@ -115,6 +127,7 @@ if (defined $ARGV[0]) {
   }
 }
 
+# See `man tput`
 chomp(my $terminal_width = `tput cols`);
 
 # Default to /srv/mw-log, use MW_LOG_DIRECTORY if available from
@@ -148,13 +161,12 @@ my @junk_patterns = (
 
 # A pattern for extracting exception names and the invariant error messages /
 # stack traces from errors looking like so:
-
 my $exception_pat = qr{
 
   ^                      # Start of exception line
 
-    \[                   # Yank out the class of our exception / error
-      (Exception|Error)
+    \[
+      (Exception|Error)  # Yank out the class of our exception / error
       [ ]
       (.*?)
     \]
@@ -167,7 +179,7 @@ my $exception_pat = qr{
 
 # Count times each error message appears.
 # Values are Time::Piece objects.
-my (%error_count, %error_timestamps, %first_dates, %last_dates);
+my (%error_count, %error_timestamps, %first_dates, %last_dates, %versions);
 
 my $now = localtime();
 my $start_time;
@@ -176,12 +188,16 @@ if ($window) {
 }
 my $timestamp;
 my $host;
+my $version;
+my $wiki;
 
 LINES: while (my $line = <$logstream>) {
   if ($line =~ /$header_pat/) {
-    # Set timestamp then skip ahead to look for Exception:
+    # Set timestamp and other metadata, then skip ahead to look for Exception:
     $timestamp = Time::Piece->strptime($1, "%Y-%m-%d %T");
     $host = $2;
+    $wiki = $3;
+    $version = $4;
 
     # If we haven't got a start time, use with the first thing in the log:
     $start_time //= $timestamp;
@@ -203,7 +219,7 @@ LINES: while (my $line = <$logstream>) {
 
   if (!$junk) {
     # Strip some junk
-    for my $pattern (@junk_patterns,keys %consolidate_patterns) {
+    for my $pattern (@junk_patterns, keys %consolidate_patterns) {
       next LINES if ($stack_trace =~ $pattern);
     }
   }
@@ -229,6 +245,11 @@ LINES: while (my $line = <$logstream>) {
   $error_timestamps{$error_key} //= [ ];
   push @{ $error_timestamps{$error_key} }, $timestamp->epoch;
 
+  # Do similar for versions, but with a hashref, and just track whether
+  # we've seen a given version (this could also accumulate a count):
+  $versions{$error_key} //= { };
+  $versions{$error_key}{$version} = 1;
+
   # If a first-seen date isn't defined, set it:
   $first_dates{$error_key} //= $timestamp;
   $last_dates{$error_key} = $timestamp;
@@ -250,7 +271,7 @@ foreach (keys %error_timestamps) {
 
 # Set a hard limit of 20 characters for exceptions, for pathological cases:
 my $max_exception_len = 20;
-my $trace_width = $terminal_width - (38 + $max_exception_len);
+my $trace_width = $terminal_width - (44 + $max_exception_len);
 my $hidden = 0;
 
 # Display loop:
@@ -269,6 +290,7 @@ foreach (keys %error_count) {
     $error_count{$_},
     $histograms{$_}->($max_bin_height),
     display_time($first_dates{$_}, $last_dates{$_}),
+    join(',', reverse sort keys %{ $versions{$_} }),
     pad_exception($exception),
     substr($trace, 0, $trace_width),
   );
@@ -323,10 +345,10 @@ sub shorten {
   # Strip trailing / leading whitespace:
   $stack_trace =~ s/^ \s+ | \s+ $//gx;
 
-  if ( $stack_trace =~ m{^ \( $mw_root php-.*wmf([.].*?)/ (.*?) \) (.*) $}x ) {
-    my ($version, $path, $trace) = ($1, $2, $3);
+  if ( $stack_trace =~ m{^ \( $mw_root php-.*wmf[.].*?/ (.*?) \) (.*) $}x ) {
+    my ($path, $trace) = ($1, $2);
     $path = condense_path($path);
-    $stack_trace = "$version $path $trace";
+    $stack_trace = "$path $trace";
   }
 
   return $stack_trace;

@@ -37,8 +37,9 @@ COLUMN_LABELS=(
   [2]="histo"
   [3]="first"
   [4]="last"
-  [5]="exception          "
-  [6]="message"
+  [5]="ver"
+  [6]="exception          "
+  [7]="message"
 )
 
 MINIMUM_HITS=1
@@ -84,7 +85,7 @@ function display {
   printf '[%sp%sat: %s]' "$BOLD" "$NORMAL" "$GREEN$filter$NORMAL"
   printf ' [%sw%sindow: %s%d%s mins]' "$BOLD" "$NORMAL" "$GREEN" "$LOGSPAM_WINDOW" "$NORMAL"
   printf ' [%sm%sin hits: %s%d%s]' "$BOLD" "$NORMAL" "$GREEN" "$MINIMUM_HITS" "$NORMAL"
-  printf ' [%s123456%s sort]' "$BOLD" "$NORMAL"
+  printf ' [%s1234567%s sort]' "$BOLD" "$NORMAL"
   printf ' [%sh%selp]' "$BOLD" "$NORMAL"
   printf ' [%sq%suit]' "$BOLD" "$NORMAL"
   if [ "$SHOW_JUNK" = 1 ]; then
@@ -131,9 +132,13 @@ function titlebar {
   # Set color, print message:
   printf '%s%s' "$WHITE_BG$BLACK" "$text"
 
-  # Finish the line across the console
+  # Finish the line across the console.  fudge here is because I think length
+  # is operating on bytes rather than characters, and we've jammed 3 emoji
+  # in here so we get a too-long titlebar otherwise.  (I'm slightly fuzzy on
+  # this, but it seems to work in practice for the moment.)
   tput_cols=$(tput cols)
-  cols=$((tput_cols - length))
+  fudge=3
+  cols=$((tput_cols - length - fudge))
   printf "%${cols}s"
 
   # Clear the background color and start a new line
@@ -222,7 +227,7 @@ while [ -z "$quit" ]; do
 
   if [ -n "$input" ]; then
     case "$input" in
-      [123456])
+      [1234567])
         # If we're already sorting on this column, flip the direction:
         if [ "$input" == "$sort_key" ]; then
           flip_sort
