@@ -1,3 +1,9 @@
+# NOTE: ADDING OR REMOVING VLANS? READ BELOW.
+#
+# If you are adding/removing VLANs here, you MUST update the relevant
+# site file as well for profile::lvs::tagged_subnets. An example of this is
+# that if you make changes to codfw VLANs, you MUST update
+# hieradata/role/codfw/lvs/balancer.yaml.
 lvs::interfaces::vlan_data:
   private1-a-eqiad:
     id: "1017"
