@@ -35,6 +35,13 @@ class profile::toolforge::bastion (
         source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-bastion-banner.sh",
     }
 
+    if debian::codename::eq('buster') {
+        motd::script { 'deprecated-bastion-banner':
+            ensure => present,
+            source => "puppet:///modules/profile/toolforge/50-${::wmcs_project}-deprecated-bastion-banner.sh",
+        }
+    }
+
     package { 'mosh':
         ensure => present,
     }
