@@ -99,10 +99,6 @@ output:
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       # See https://phabricator.wikimedia.org/T291905
       skip_cert_verify: true
-    # force re-batching of messages into bigger (outgoing) batches
-    batching:
-      count: 1024
-      period: 250ms
 
 metrics:
   prometheus:
