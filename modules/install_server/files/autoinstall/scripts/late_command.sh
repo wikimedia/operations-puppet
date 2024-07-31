@@ -9,7 +9,7 @@ wget -O /target/root/.ssh/authorized_keys http://apt.wikimedia.org/autoinstall/s
 chmod go-rwx /target/root/.ssh/authorized_keys
 PUPPET_VERSION_PATH="/tmp/puppet_version"
 i=1
-while [ "${i}" -le  5 ]; do
+while [ "${i}" -le  10 ]; do
   if [ -f "${PUPPET_VERSION_PATH}" ]; then
     PUPPET_VERSION=$(cat "${PUPPET_VERSION_PATH}")
     if [ -n "${PUPPET_VERSION}" ]; then
@@ -17,13 +17,13 @@ while [ "${i}" -le  5 ]; do
     fi
   fi
   echo "Puppet version to install not found at ${PUPPET_VERSION_PATH}"
-  sleep 10
+  sleep 30
   i=$((i + 1))
 done
 
 if [ "$PUPPET_VERSION" -ne 5 ] && [ "$PUPPET_VERSION" -ne 7 ]; then
-  printf "Unable to determine PUPPET_VERSION (%s) will default to 5\n" "$PUPPET_VERSION"
-  PUPPET_VERSION=5
+  printf "Unable to determine PUPPET_VERSION (%s) will default to 7\n" "$PUPPET_VERSION"
+  PUPPET_VERSION=7
 fi
 
 # lsb-release: allows conditionals in this script on in-target release codename
