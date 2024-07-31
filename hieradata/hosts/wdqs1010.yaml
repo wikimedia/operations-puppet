@@ -1,2 +1,0 @@
-profile::query_service::mount_dumps: true
-profile::query_service::blazegraph::monitoring_enabled: false
