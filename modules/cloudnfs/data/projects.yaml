@@ -109,6 +109,10 @@ spi-tools: # T279555
   gid: 54698
   mounts:
     dumps: true
+statanalyser: # T326904
+  gid: 55264
+  mounts:
+    scratch: scratch.svc.cloudinfra-nfs.eqiad1.wikimedia.cloud:/srv/scratch
 testlabs:
   gid: 50302
   mounts:
