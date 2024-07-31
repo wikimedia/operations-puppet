@@ -275,8 +275,8 @@ node /^backup1009\.eqiad\./ {
     role(backup::production)
 }
 
-# new backup node T326684
-node /^backup1010\.eqiad\./ {
+# new backup node T326684 and T371416
+node /^backup10(10|12)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
