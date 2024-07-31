@@ -15,6 +15,7 @@ class role::cluster::cloud_management {
 
     include profile::cumin::cloud_master
     include profile::spicerack
+    include profile::wmcs::gitlab_tokens
 
     # Backup all of /srv
     include profile::backup::host
