@@ -9,7 +9,7 @@ class profile::openstack::eqiad1::trove(
     String                        $ldap_user_pass          = lookup('profile::openstack::eqiad1::ldap_user_pass'),
     Stdlib::Fqdn                  $keystone_fqdn           = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String                        $region                  = lookup('profile::openstack::eqiad1::region'),
-    String                        $rabbit_pass             = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
+    String                        $rabbit_pass             = lookup('profile::openstack::eqiad1::trove::rabbit_pass'),
     String                        $trove_guest_rabbit_pass = lookup('profile::openstack::eqiad1::trove::trove_guest_rabbit_pass'),
     String                        $trove_service_user_pass = lookup('profile::openstack::eqiad1::trove::trove_user_pass'),
     String                        $trove_quay_user         = lookup('profile::openstack::eqiad1::trove::quay_user'),

@@ -29,6 +29,8 @@ class profile::openstack::base::rabbitmq(
     String $nova_rabbit_password = lookup('profile::openstack::base::nova::rabbit_pass'),
     String $neutron_rabbit_user = lookup('profile::openstack::base::neutron::rabbit_user'),
     String $neutron_rabbit_password = lookup('profile::openstack::base::neutron::rabbit_pass'),
+    String $trove_rabbit_user = lookup('profile::openstack::base::trove::rabbit_user'),
+    String $trove_rabbit_pass = lookup('profile::openstack::base::trove::rabbit_pass'),
     String $trove_guest_rabbit_user = lookup('profile::openstack::base::trove::trove_guest_rabbit_user'),
     String $trove_guest_rabbit_pass = lookup('profile::openstack::base::trove::trove_guest_rabbit_pass'),
     String $heat_rabbit_user = lookup('profile::openstack::base::heat::rabbit_user'),
@@ -134,6 +136,8 @@ class profile::openstack::base::rabbitmq(
     }
 
     class { '::openstack::trove::rabbit':
+        username       => $trove_rabbit_user,
+        password       => $trove_rabbit_pass,
         guest_username => $trove_guest_rabbit_user,
         guest_password => $trove_guest_rabbit_pass,
     }
