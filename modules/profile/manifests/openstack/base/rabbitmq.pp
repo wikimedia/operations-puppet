@@ -35,6 +35,8 @@ class profile::openstack::base::rabbitmq(
     String $heat_rabbit_password = lookup('profile::openstack::base::heat::rabbit_pass'),
     String $magnum_rabbit_user = lookup('profile::openstack::base::magnum::rabbit_user'),
     String $magnum_rabbit_password = lookup('profile::openstack::base::magnum::rabbit_pass'),
+    String $cinder_rabbit_user = lookup('profile::openstack::base::cinder::rabbit_user'),
+    String $cinder_rabbit_password = lookup('profile::openstack::base::cinder::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
@@ -124,6 +126,11 @@ class profile::openstack::base::rabbitmq(
     class { '::openstack::magnum::rabbit':
         username => $magnum_rabbit_user,
         password => $magnum_rabbit_password,
+    }
+
+    class { '::openstack::cinder::rabbit':
+        username => $cinder_rabbit_user,
+        password => $cinder_rabbit_password,
     }
 
     class { '::openstack::trove::rabbit':

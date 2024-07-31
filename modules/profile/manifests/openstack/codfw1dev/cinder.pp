@@ -8,7 +8,7 @@ class profile::openstack::codfw1dev::cinder(
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::cinder::db_host'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::cinder::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::codfw1dev::cinder::ceph_pool'),
-    String $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
+    String $rabbit_pass = lookup('profile::openstack::codfw1dev::cinder::rabbit_pass'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     String $region = lookup('profile::openstack::codfw1dev::region'),
     Hash   $cinder_backup_volumes = lookup('profile::openstack::codfw1dev::cinder_backup_volumes'),
