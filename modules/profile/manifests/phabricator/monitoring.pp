@@ -12,7 +12,8 @@ class profile::phabricator::monitoring (
     if $::fqdn == $active_server {
         prometheus::blackbox::check::http { 'phabricator.wikimedia.org':
             severity    => 'page',
-            alert_after => '4m',
+            alert_after => '5m',
+            timeout     => '6s',
         }
 
         # dedicated check with collab team and severity task
@@ -25,6 +26,7 @@ class profile::phabricator::monitoring (
             force_tls          => true,
             port               => 443,
             ip_families        => [ip4],
+            timeout            => '6s',
             body_regex_matches => ['Welcome to Wikimedia Phabricator'],
         }
 
