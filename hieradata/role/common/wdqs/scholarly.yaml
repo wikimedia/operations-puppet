@@ -74,7 +74,7 @@ profile::query_service::monitoring_user_agents:
   - "Twisted PageGetter"
   - "prometheus-public-sparql-ep-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
-  -
+
 profile::query_service::internal_federated_endpoints:
   "https://wdqs-main.discovery.wmnet/sparql":
     - "https://query-main.wikidata.org/sparql"
