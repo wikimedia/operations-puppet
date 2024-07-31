@@ -8,7 +8,6 @@ profile::base::overlayfs: true
 profile::admin::groups:
   - deployment
   - deploy-ml-service
-  - parsoid-admin
   - wdqs-admins
   - airflow-search-admins
   - eventlogging-admins
@@ -200,9 +199,6 @@ scap::sources:
   logstash/plugins:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy: {}
-  parsoid/deploy:
-    repository: mediawiki/services/parsoid/deploy
-  #    lvs_service: parsoid
   phabricator/deployment:
     repository: phabricator/deployment
     origin: gitlab

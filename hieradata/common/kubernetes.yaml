@@ -255,6 +255,7 @@ kubernetes::clusters:
         - mw1494.eqiad.wmnet
         - mw1495.eqiad.wmnet
         - mw1496.eqiad.wmnet
+        - parse1001.eqiad.wmnet
         - parse1002.eqiad.wmnet
         - parse1003.eqiad.wmnet
         - parse1004.eqiad.wmnet
@@ -504,6 +505,7 @@ kubernetes::clusters:
         - mw2449.codfw.wmnet
         - mw2450.codfw.wmnet
         - mw2451.codfw.wmnet
+        - parse2001.codfw.wmnet
         - parse2002.codfw.wmnet
         - parse2003.codfw.wmnet
         - parse2004.codfw.wmnet

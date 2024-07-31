@@ -31,8 +31,6 @@ eqiad:
     cp1111.eqiad.wmnet: [cdn, ats-be]
     cp1113.eqiad.wmnet: [cdn, ats-be]
     cp1115.eqiad.wmnet: [cdn, ats-be]
-  parsoid:
-    parse1001.eqiad.wmnet: [canary]
   restbase:
     restbase1028.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1029.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
@@ -331,6 +329,7 @@ eqiad:
     mw1494.eqiad.wmnet: [kubesvc]
     mw1495.eqiad.wmnet: [kubesvc]
     mw1496.eqiad.wmnet: [kubesvc]
+    parse1001.eqiad.wmnet: [kubesvc]
     parse1002.eqiad.wmnet: [kubesvc]
     parse1003.eqiad.wmnet: [kubesvc]
     parse1004.eqiad.wmnet: [kubesvc]

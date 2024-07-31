@@ -13,8 +13,6 @@ codfw:
     mw2410.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
     mw2411.codfw.wmnet: [apache2, nginx] # Only pooled as videoscaler
   videoscaler: *jobrunner
-  parsoid:
-    parse2001.codfw.wmnet: [canary]
   cache_text:
     cp2027.codfw.wmnet: [cdn, ats-be]
     cp2029.codfw.wmnet: [cdn, ats-be]
@@ -325,6 +323,7 @@ codfw:
     mw2449.codfw.wmnet: [kubesvc]
     mw2450.codfw.wmnet: [kubesvc]
     mw2451.codfw.wmnet: [kubesvc]
+    parse2001.codfw.wmnet: [kubesvc]
     parse2002.codfw.wmnet: [kubesvc]
     parse2003.codfw.wmnet: [kubesvc]
     parse2004.codfw.wmnet: [kubesvc]

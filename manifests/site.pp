@@ -1776,10 +1776,10 @@ node /^mw244[02-9]\.codfw\./ {
 node /^mw245[01]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^parse10(0[2-9]|1[0-9]|2[01234])\.eqiad\./ {
+node /^parse10(0[1-9]|1[0-9]|2[01234])\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^parse20(0[2-9]|1[0-9]|20)\.codfw\./ {
+node /^parse20(0[1-9]|1[0-9]|20)\.codfw\./ {
   role(kubernetes::worker)
 }
 # END Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
@@ -2318,15 +2318,6 @@ node /^vrts1001\.eqiad\./ {
 # T323515: WIP
 node /^vrts2001\.codfw\./ {
     role(vrts)
-}
-
-# new parsoid nodes - codfw (T243112, T247441) - eqiad (T299573)
-node /^parse2001\.codfw\./ {
-    role(parsoid)
-}
-
-node /^parse1001\.eqiad\./ {
-    role(parsoid)
 }
 
 # T363399 - replaces scandium and or testreduce*
