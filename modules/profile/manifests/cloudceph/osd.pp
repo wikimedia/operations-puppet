@@ -89,9 +89,16 @@ class profile::cloudceph::osd(
         port_range => [6800, 7100],
         srange     => $firewall_osd_access,
         drange     => [$host_conf['cluster']['addr']],
+        qos        => 'low',
         before     => Class['ceph::common'],
     }
 
+    ferm::rule { 'osd_heartbeat_qos_high':
+        table => 'mangle',
+        chain => 'POSTROUTING',
+        prio  => '5',
+        rule  => 'proto tcp sport 6800:7100 mod dscp dscp 0x30 DSCP set-dscp-class AF21; RETURN;',
+    }
 
     # Set a static route with the gateway to the rest of the osds networks
     # We are assuming /24 for each network, and .254 to be the GW
