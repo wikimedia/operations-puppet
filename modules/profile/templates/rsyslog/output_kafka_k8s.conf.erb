@@ -1,6 +1,6 @@
 <%# SPDX-License-Identifier: Apache-2.0 %>
 
-if ( $.log_outputs contains "kafka-k8s" ) then {
+if ( $.log_outputs contains "k8s" ) then {
     action(type="mmjsonparse" name="mmjsonparse_kafka_k8s")
 
     action(type="omkafka"
