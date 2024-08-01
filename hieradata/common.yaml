@@ -1750,8 +1750,6 @@ monitoring_hosts:
 - 2620:0:860:3:208:80:153:84 # alert2001.wikimedia.org
 
 deployment_hosts:
-- 10.64.32.28                 # deploy1002.eqiad.wmnet
-- 2620:0:861:103:10:64:32:28  # deploy1002.eqiad.wmnet
 - 10.64.16.93                 # deploy1003.eqiad.wmnet
 - 2620:0:861:102:10:64:16:93  # deploy1003.eqiad.wmnet
 - 10.192.32.7                 # deploy2002.codfw.wmnet

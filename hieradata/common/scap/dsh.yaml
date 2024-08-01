@@ -7,7 +7,6 @@ scap::dsh::scap_proxies:
   - "mw2410.codfw.wmnet" # A5 codfw
 
 scap::dsh::scap_masters:
-  - "deploy1002.eqiad.wmnet"
   - "deploy1003.eqiad.wmnet"
   - "deploy2002.codfw.wmnet"
 
