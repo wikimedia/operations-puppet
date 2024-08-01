@@ -130,6 +130,18 @@ mediawiki::sites:
           https_only: true
           legacy_rewrites: false
           short_urls: false
+      - name: wikitech.wikimedia.org
+        params:
+          docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          short_urls: false # T341470
+          https_only: true
+          legacy_rewrites: false
+          # Compatibility with urls from the original Wikitech,
+          # that used wgActionPaths. – https://phabricator.wikimedia.org/T193848
+          additional_rewrites:
+            "early":
+              - "RewriteRule ^/view/(.*) /wiki/$1 [R=301]"
+            "late": []
       - name: vote.wikimedia.org
         params:
           docroot: "/srv/mediawiki/docroot/wikimedia.org"
