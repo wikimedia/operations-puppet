@@ -102,26 +102,26 @@ def main():
         failedstatus = STATUS_WARNING
 
     report = args.report
-    netboxconfig = safe_load(open(args.config, "r"))
+    netboxconfig = safe_load(open(args.config, "r", encoding="utf-8"))
     api = pynetbox.api(url=netboxconfig["url"], token=netboxconfig["token"])
     try:
-        robj = api.extras.reports.get(report)
-    except pynetbox.core.query.RequestError as ex:
-        logger.error("Excepting getting report %s: %s", report, ex)
+        robj = api.extras.scripts.get(report)
+    except pynetbox.core.query.RequestError as e:
+        logger.error("Excepting getting report %s: %s", report, e)
         return print_status(
             STATUS_UNKNOWN,
             failedstatus,
-            "Netbox exception getting report data for report {}".format(robj.url)
+            f"Netbox exception getting report data for report '{report}'"
         )
 
     if robj.result.status.value == 'failed':
         return print_status(
             STATUS_CRITICAL,
             failedstatus,
-            "Netbox report {}\n{}".format(report, robj.url)
+            f"Netbox report {report}\n{robj.url}"
         )
 
-    return print_status(STATUS_OK, failedstatus, "Netbox report {}\n{}".format(report, robj.url))
+    return print_status(STATUS_OK, failedstatus, f"Netbox report {report}\n{robj.url}")
 
 
 if __name__ == "__main__":
