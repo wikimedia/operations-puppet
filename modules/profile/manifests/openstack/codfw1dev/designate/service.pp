@@ -15,7 +15,7 @@ class profile::openstack::codfw1dev::designate::service(
     $db_admin_pass = lookup('profile::openstack::codfw1dev::designate::db_admin_pass'),
     Array[Hash] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
-    $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
+    $rabbit_pass = lookup('profile::openstack::codfw1dev::designate::rabbit_pass'),
     $osm_host = lookup('profile::openstack::codfw1dev::osm_host'),
     $region = lookup('profile::openstack::codfw1dev::region'),
     Integer $mcrouter_port = lookup('profile::openstack::codfw1dev::designate::mcrouter_port'),

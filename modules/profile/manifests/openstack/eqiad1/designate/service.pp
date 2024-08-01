@@ -14,7 +14,7 @@ class profile::openstack::eqiad1::designate::service(
     $db_admin_pass = lookup('profile::openstack::eqiad1::designate::db_admin_pass'),
     Array[Hash] $pdns_hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
-    $rabbit_pass = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
+    $rabbit_pass = lookup('profile::openstack::eqiad1::designate::rabbit_pass'),
     $osm_host = lookup('profile::openstack::eqiad1::osm_host'),
     $region = lookup('profile::openstack::eqiad1::region'),
     Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
