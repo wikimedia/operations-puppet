@@ -1,11 +1,16 @@
 profile::cache::haproxy::post_acl_actions:
   tls:
+    - context: http-request
+      verb: track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
     # To disable concurrency enforcement, comment out this entire block below.
     - context: http-request
       verb: silent-drop
-      condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
+      condition: if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
       comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
   http:
+    - context: http-request
+      verb: track-sc0 src table httpreqrate_http
+    # To disable concurrency enforcement, comment out this entire block below.
     - context: http-request
       verb: silent-drop
       condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
@@ -27,21 +32,13 @@ profile::cache::haproxy::sticktables:
       - 'http_req_rate(10s)'
       - 'gpc0_rate(300s)'
 
-profile::cache::haproxy::pre_acl_actions:
-  tls:
-    - context: http-request
-      verb: track-sc0 src table httpreqrate
-  http:
-    - context: http-request
-      verb: track-sc0 src table httpreqrate_http
-
 profile::cache::haproxy::vars:
   tls:
     - direction: request
       name: 'req.dummy_silent_drop'  # exists only for logging purposes
       value: 'src,debug(silent-drop_for_300s,stderr)'
       # only log the first time an IP violates too_many_concurrent_queries and starts being silent-dropped
-      acl: 'too_many_concurrent_queries !too_much_recent_concurrency'
+      acl: '!wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency'
     - direction: request
       name: 'txn.xwd_count'
       value: 'req.hdr_cnt(X-Wikimedia-Debug)'
@@ -119,6 +116,10 @@ profile::cache::haproxy::acls:
       criterion: 'ssl_fc_cipher'
       operator: '-m reg'
       value: '^ECDHE-RSA'
+    - name: mathoid_as_a_service
+      criterion: path
+      operator: '-m beg'
+      value: /api/rest_v1/media/math/
   http:
     - name: 'too_many_concurrent_queries'
       criterion: 'sc0_trackers(httpreqrate_http)'
