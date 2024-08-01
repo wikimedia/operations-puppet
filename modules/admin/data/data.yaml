@@ -32,7 +32,7 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun, ezachte, chelsyx]
+              twentyafterfour, akhatun, ezachte, chelsyx, sbailey]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -207,7 +207,7 @@ groups:
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
-              sbailey, tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit
+              tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -715,7 +715,7 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry, sbailey, arlolra, cscott, ihurbain, mbsantos, jgiannelos]
+    members: [ssastry, arlolra, cscott, ihurbain, mbsantos, jgiannelos]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Subramanya Sastry
@@ -4287,14 +4287,11 @@ users:
      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOiHafWCjGy8aC+Xvq1YoqGHkOnEz4HjMhw+Bpo/4pkK moriel@mowmf'
     krb: present
   sbailey:
-    ensure: present
+    ensure: absent
     realname: Shannon Bailey
-    email: sbailey@wikimedia.org
     uid: 18035
     gid: 500
-    ssh_keys:
-     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH7N+9wSCC9MdjE0ZNA4qp09RLcDarwNYQgcZakDS44t sbailey@wikimedia.org'
-     - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGZi22PWQ1BOdO36Rvk8WuG8OL2lXBWcRGOQCvyHmuPo sbailey@wikimedia.org'
+    ssh_keys: []
   holger:
     ensure: absent
     realname: Holger Knust
