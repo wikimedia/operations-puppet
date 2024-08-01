@@ -27,6 +27,8 @@ profile::durum::service::ips:
 profile::durum::service::common:
   durum_path: '/srv/durum'
 
+profile::firewall::provider: nftables
+
 profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   check.wikimedia-dns.org:
