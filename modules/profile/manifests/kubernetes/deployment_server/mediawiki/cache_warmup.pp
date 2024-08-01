@@ -2,7 +2,7 @@
 class profile::kubernetes::deployment_server::mediawiki::cache_warmup {
     ensure_packages('python3-kubernetes')
 
-    class { '::mediawiki::maintenance::cache_warmup':
+    class { '::mediawiki::tools::cache_warmup':
         ensure => present,
     }
 }
