@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::spicerack::cookbooks::production {
     $firmware_store_dir = '/srv/firmware'
+    require passwords::misc::scripts  # For the databases replication credentials
 
     wmflib::dir::mkdir_p($firmware_store_dir, {
         group => 'datacenter-ops',
@@ -34,6 +35,17 @@ class profile::spicerack::cookbooks::production {
         group   => 'ops',
         mode    => '0440',
         content => template('profile/cookbooks/sre.switchdc.services.yaml.erb'),
+    }
+
+    file { '/etc/spicerack/cookbooks/sre.switchdc.databases.yaml':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'ops',
+        mode    => '0440',
+        content => {
+            'repl_user' => $passwords::misc::scripts::mysql_repl_user,
+            'repl_pass' => $passwords::misc::scripts::mysql_repl_pass,
+        }.to_yaml,
     }
 
 }
