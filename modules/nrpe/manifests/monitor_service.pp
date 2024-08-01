@@ -42,8 +42,8 @@ define nrpe::monitor_service(
     $timeout          = 10,
     Boolean $critical = false,
     $event_handler    = undef,
-    $check_interval   = 1,
-    $retry_interval   = 1,
+    $check_interval   = 1, # min
+    $retry_interval   = 1, # min
     Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
     Optional[String] $sudo_user = undef,
     Wmflib::Ensure $ensure = present,
