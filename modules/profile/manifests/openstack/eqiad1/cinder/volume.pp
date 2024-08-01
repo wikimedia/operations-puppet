@@ -7,7 +7,7 @@ class profile::openstack::eqiad1::cinder::volume(
     String $db_pass                     = lookup('profile::openstack::eqiad1::cinder::db_pass'),
     Stdlib::Fqdn $db_host               = lookup('profile::openstack::eqiad1::cinder::db_host'),
     String $ceph_pool                   = lookup('profile::openstack::eqiad1::cinder::ceph_pool'),
-    String $rabbit_pass                 = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
+    String $rabbit_pass                 = lookup('profile::openstack::eqiad1::cinder::rabbit_pass'),
     String $libvirt_rbd_cinder_uuid     = lookup('profile::cloudceph::client::rbd::libvirt_rbd_cinder_uuid'),
     String $ceph_rbd_client_name        = lookup('profile::openstack::eqiad1::cinder::ceph_rbd_client_name'),
     Array[String] $all_backend_names    = lookup('profile::openstack::eqiad1::cinder::all_backend_names'),
