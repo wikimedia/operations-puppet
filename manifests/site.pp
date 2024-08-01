@@ -2625,11 +2625,7 @@ node /^thanos-fe200[1234]\.codfw\./ {
 }
 
 # deployment servers
-node /^deploy[12]002\.(eqiad|codfw)\./ {
-    role(deployment_server::kubernetes)
-}
-
-node /^deploy1003\.eqiad\./ {
+node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
     role(deployment_server::kubernetes)
 }
 
