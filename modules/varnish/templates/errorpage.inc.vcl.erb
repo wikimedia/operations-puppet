@@ -29,7 +29,7 @@ sub synth_errorpage {
     } else {
         synthetic(regsub(regsub({"<%= @errorpage_html %>"}, "%error_body_content%",
         "Our servers are currently under maintenance or experiencing a technical issue"),
-        "%error",
+        "%error%",
         "Request from " + req.http.X-Client-IP +
         " via " + server.hostname + " " + server.identity +
         ", Varnish XID " + req.xid + "<br>" +

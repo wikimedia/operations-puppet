@@ -1,9 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
-varnishtest "verifying that 429s from backend will result in a 429 on the frontend"
+varnishtest "verifying that 429s from backend will result in a 429 on the frontend and that the response from other errors isn't affected"
 
 server s1 {
+    # for 429, a body with the text "Too Many Requests" should be returned
     rxreq
     txresp -status 429
+
+    # non-429 cases; these should result in the usual "Our servers are under
+    # maintenance..." message in the body
+    rxreq
+    txresp -status 502
+    # because 503s are handled with a retry, it's necessary to handle two
+    # requests despite only sending one from the client
+    rxreq
+    txresp -status 503
+    rxreq
+    txresp -status 503
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -28,4 +40,19 @@ client c1 {
     rxresp
     expect resp.status == 429
     expect resp.reason == "Too Many Requests"
+
+    txreq -url "/" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.status == 502
+    expect resp.body !~ "Too Many Requests"
+    expect resp.body ~ "Our servers are currently under maintenance or experiencing a technical issue"
+
+    # testing 503s requires a slightly different approach (see the comment at
+    # line 14 for details)
+    txreq -url "/" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.status == 503
+    expect resp.body !~ "Too Many Requests"
+    expect resp.body ~ "Our servers are currently under maintenance or experiencing a technical issue"
+
 } -run
