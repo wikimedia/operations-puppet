@@ -114,7 +114,7 @@ class netbox (
             lazyfree-lazy-expire     => 'yes',
             lazyfree-lazy-server-del => 'yes',
             lua-time-limit           => 5000,
-            databases                => 3,
+            databases                => 5,  # We switched to DB 2 and 3 with NEtbox 4 to prevent colision
             protected-mode           => 'yes',
             dbfilename               => '""',
             appendfilename           => '"appendonly.aof"',
