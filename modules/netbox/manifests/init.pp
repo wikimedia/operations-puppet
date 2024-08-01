@@ -89,7 +89,7 @@ class netbox (
     Optional[String]              $swift_url_key               = undef,
     Optional[Stdlib::Unixpath]    $ca_certs                    = undef,
 ) {
-    ensure_packages(['virtualenv', 'python3-pip', 'python3-pynetbox'])
+    ensure_packages(['virtualenv', 'python3-pip', 'python3-pynetbox', 'libpq-dev'])
     $home_path = '/var/lib/netbox'
 
     file { $home_path:
