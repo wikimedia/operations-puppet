@@ -7,16 +7,19 @@
 #
 # You should look instead at role::ci::labs::slave
 #
-
+#
 class profile::ci::agent(
     String $user = lookup('jenkins_agent_username'),
+    Array[String] $ssh_keys = lookup('profile::ci::agent::ssh_keys'),
 ) {
 
     include ::profile::java
 
+    # the old RSA key is going to be replaced by a new ECDSA key - T177826
+
     class { 'jenkins::agent':
         # Master connect to itself via the fqdn / primary IP ipaddress
-        ssh_key => "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4QGc1Zs/S4s7znEYw7RifTuZ4y4iYvXl5jp5tJA9kGUGzzfL0dc4ZEEhpu+4C/TixZJXqv0N6yke67cM8hfdXnLOVJc4n/Z02uYHQpRDeLAJUAlGlbGZNvzsOLw39dGF0u3YmwDm6rj85RSvGqz8ExbvrneCVJSaYlIRvOEKw0e0FYs8Yc7aqFRV60M6fGzWVaC3lQjSnEFMNGdSiLp3Vl/GB4GgvRJpbNENRrTS3Te9BPtPAGhJVPliTflVYvULCjYVtPEbvabkW+vZznlcVHAZJVTTgmqpDZEHqp4bzyO8rBNhMc7BjUVyNVNC5FCk+D2LagmIriYxjirXDNrWlw== jenkins@gallium from=\"${::ipaddress}\"",
+        ssh_key => join($ssh_keys, " from=\"${::ipaddress}\"\n"),
         user    => $user,
         workdir => "/srv/${user}",
     }

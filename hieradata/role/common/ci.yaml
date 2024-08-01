@@ -19,6 +19,10 @@ profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
 
 profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
 
+profile::ci::agent::ssh_keys:
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4QGc1Zs/S4s7znEYw7RifTuZ4y4iYvXl5jp5tJA9kGUGzzfL0dc4ZEEhpu+4C/TixZJXqv0N6yke67cM8hfdXnLOVJc4n/Z02uYHQpRDeLAJUAlGlbGZNvzsOLw39dGF0u3YmwDm6rj85RSvGqz8ExbvrneCVJSaYlIRvOEKw0e0FYs8Yc7aqFRV60M6fGzWVaC3lQjSnEFMNGdSiLp3Vl/GB4GgvRJpbNENRrTS3Te9BPtPAGhJVPliTflVYvULCjYVtPEbvabkW+vZznlcVHAZJVTTgmqpDZEHqp4bzyO8rBNhMc7BjUVyNVNC5FCk+D2LagmIriYxjirXDNrWlw== jenkins@gallium"
+  - "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBItg0O9gOhArg3cJ7cU3QUcxMRoEaXPmGtqSYwbw9GTEhFyMX1kukEAli/K1dOw97BhidV2pMsbcVC3eY3CpUwg= jenkins@contint"
+
 profile::ci::docker::settings:
   data-root: '/srv/docker'
   iptables: false
