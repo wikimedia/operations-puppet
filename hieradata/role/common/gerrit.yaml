@@ -31,8 +31,10 @@ profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'
 - 'mx-out2001.wikimedia.org'
 
-profile::firewall::nftables_throttling::ensure: absent
+profile::firewall::nftables_throttling::ensure: present
+profile::firewall::nftables_throttling::policy: accept
 # allow 300 requests per 60 seconds, ban clients above for 300 seconds
 profile::firewall::nftables_throttling::throttle_requests: 300
 profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::port: 443
+profile::firewall::nftables_throttling::nft_logging: true
