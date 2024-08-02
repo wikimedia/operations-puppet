@@ -52,7 +52,8 @@ hosts:
     - ms-be1053
     - ms-be1054
     - ms-be1055
-    - ms-be1056
+    - ms-be1056:
+        - sdh1: failed
     - ms-be1057
     - ms-be1058
     - ms-be1059
