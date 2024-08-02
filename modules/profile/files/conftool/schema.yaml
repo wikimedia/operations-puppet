@@ -84,3 +84,15 @@ dbconfig-section:
       default: "regular"
     omit_replicas_in_mwconfig:
       default: false
+
+geodns:
+  path: "geodns"
+  tags:
+    - geodns
+  schema:
+    pooled:
+      type: "enum:yes|no"
+      default: "yes"
+    weight:
+      type: "int"
+      default: 100
