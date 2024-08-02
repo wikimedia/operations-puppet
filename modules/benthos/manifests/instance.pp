@@ -41,11 +41,13 @@ define benthos::instance(
     }
 
     systemd::service { $service_name:
-        ensure  => present,
+        ensure  => $ensure,
         content => systemd_template('benthos@'),
         restart => true,
         require => File[$config_path],
     }
 
-    profile::auto_restarts::service { $service_name: }
+    profile::auto_restarts::service { $service_name:
+        ensure => $ensure,
+    }
 }

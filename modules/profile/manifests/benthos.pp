@@ -5,10 +5,13 @@
 # and configurations, together with base package etc..
 #
 class profile::benthos(
+    Wmflib::Ensure $ensure = lookup('profile::benthos::ensure', { 'default_value' => present }),
     Hash[String, Any] $instances = lookup('profile::benthos::instances'),
     Boolean $use_geoip = lookup('profile::benthos::use_geoip', { 'default_value' => false} ),
 ) {
-    class { 'benthos': }
+    class { 'benthos':
+        ensure => $ensure,
+    }
 
     if $use_geoip {
         class { 'geoip': }
@@ -34,8 +37,14 @@ class profile::benthos(
             undef   => {},
             default => $instance_config['env_variables'],
         }
+
+        $instance_ensure = $ensure == 'absent' ? {
+            true    => 'absent',
+            default => $instance_config['ensure'],
+        }
+
         benthos::instance { $instance:
-            ensure        => $instance_config['ensure'],
+            ensure        => $instance_ensure,
             env_variables => $base_env_variables + $kafka_env_variables + $custom_env_variables,
             config_source => "profile/benthos/instances/${instance}.yaml",
             port          => $instance_config['port'],
