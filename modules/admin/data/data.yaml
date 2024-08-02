@@ -442,7 +442,7 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel, quiddity]
+              sharvaniharan, ariel, quiddity, wmdecyn]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6416,6 +6416,13 @@ users:
     email: mgrosse@wikimedia.org
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmD2OeIfZEKxa0eWseTSUQSXgFJ2IOEDKpLDpH7zLUM migr:wmf-production'
+  wmdecyn:
+    ensure: present
+    gid: 500
+    uid: 45925
+    realname: Cynthia Makonyango
+    email: cynthia.makonyango@wikimedia.de
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7166,10 +7173,6 @@ ldap_only_users:
     ensure: present
     realname: Christopher Ciufo
     email: cciufo@wikimedia.org
-  wmdecyn:
-    ensure: present
-    realname: Cynthia Makonyango
-    email: cynthia.makonyango@wikimedia.de
   frri:
     ensure: present
     realname: Frederik Ring
