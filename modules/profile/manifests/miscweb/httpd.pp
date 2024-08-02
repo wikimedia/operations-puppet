@@ -31,13 +31,13 @@ class profile::miscweb::httpd (
     firewall::service { 'miscweb-http-envoy':
         proto  => 'tcp',
         port   => [80],
-        srange => "(${::ipaddress} ${::ipaddress6})"
+        srange => [$facts['networking']['fqdn']],
     }
 
     firewall::service { 'miscweb-http-deployment':
         proto  => 'tcp',
         port   => [80],
-        srange => "(@resolve((${deployment_server})) @resolve((${deployment_server}), AAAA))"
+        srange => [$deployment_server]
     }
 
     rsyslog::input::file { 'miscweb-apache2-error':

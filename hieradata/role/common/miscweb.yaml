@@ -18,6 +18,9 @@ profile::miscweb::rsync::src_host: 'miscweb1003.eqiad.wmnet'
 profile::miscweb::rsync::dst_hosts:
   - 'miscweb2003.codfw.wmnet'
 
+profile::firewall::provider: nftables
+profile::tlsproxy::envoy::firewall_srange: []
+
 profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'WMF misc apps and sites web server'
