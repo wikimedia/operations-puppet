@@ -57,7 +57,7 @@ class external_clouds_vendors (
         content => '{}',
     }
     $opts = $conftool.bool2str('-c', '')
-    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets --repo ${private_repo} ${opts} -vv ${outfile}"
+    $command = "/usr/local/bin/fetch-external-clouds-vendors-nets --repo ${private_repo} ${opts} -vvv ${outfile}"
     systemd::timer::job { 'dump_cloud_ip_ranges':
         ensure            => $ensure,
         command           => $command,
@@ -69,4 +69,3 @@ class external_clouds_vendors (
         interval          => {'start' => 'OnCalendar', 'interval' => 'daily'},
     }
 }
-
