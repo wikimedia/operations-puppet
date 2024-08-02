@@ -1,1 +1,3 @@
 profile::bird::advertise_vips: "%{alias('profile::dns::auth::anycast_ntp_b')}"
+
+profile::dns::auth::confd_admin_state: true   # T369366

@@ -1,0 +1,34 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# CONFD GENERATED SECTION FOLLOWS. DO NOT EDIT MANUALLY AS IT WILL BE OVERWRITTEN
+# CONFD START
+{{ range gets "/geodns/*/*" }}{{ $data := json .Value }}{{ if eq $data.pooled "no" -}}
+{{ $service := split .Key "/" -}}
+geoip/{{ index $service 2 }}/{{ base .Key }} => DOWN
+{{ end -}}
+{{ end -}}
+# CONFD END
+#
+# MANUAL EDITS SECTION FOLLOWS. OVERRIDES CONFD ABOVE.
+# NOTES:
+#     1) Map-level overrides have lower precedence than service-level
+#        overrides, regardless of any globbing, because the service-level is
+#        the more specific of the two.
+#     2) Lines are processed in-order, and the last one wins in case
+#        of any direct overlap/conflict at the per-map or per-service
+#        level.
+#
+# Examples (for manual edits):
+#
+#     # Disable all traffic to eqiad:
+#     geoip/generic-map/eqiad => DOWN
+#
+#     # Disable just text-addrs, text-addrs-v4, and upload-addrs in codfw:
+#     geoip/text*/codfw => DOWN
+#     geoip/upload-addrs/codfw => DOWN
+#
+#     Disable all services except text-addrs in ulsfo:
+#     geoip/generic-map/ulsfo => DOWN
+#     geoip/text-*/ulsfo => UP # marks both text UP as prev example, but...
+#     geoip/text-addrs-v4/ulsfo => DOWN # this overrides the above for -v4
+#
+# MANUAL EDITS GO BELOW THIS LINE.
