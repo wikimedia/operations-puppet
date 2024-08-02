@@ -1,14 +1,53 @@
 # SPDX-License-Identifier: Apache-2.0
-# TODO: add profile and parameter description.
-# @summary configure and manage gitlab server
-# @param block_auto_created_users Blocks users that are automatically created
-#   from signing in until they are approved by an administrator.
-# @param omniauth_providers hash of providers to configure.  the key is the label
-# @param auto_sign_in_with automatically redirect to this provider
-# @logrotate_frequency frequency to rotate the logs (daily, weekly, monthly, or yearly)
-# @logrotate_maxsize logs will be rotated when they grow bigger than size specified for `maxsize`, even before the specified time interval
-# @logrotate_size enable or disable rotation by size
-# @logrotate_rotate keep number of spcified logs
+# @summary Configure and manage GitLab server
+# @param active_host The fully qualified domain name (FQDN) of the active GitLab host.
+# @param auto_sign_in_with The provider to automatically sign in users with.
+# @param backup_dir_config The directory path where configuration backups are stored.
+# @param backup_dir_data The directory path where data backups are stored.
+# @param backup_keep_time The duration (in seconds) to keep backups before deletion.
+# @param block_auto_created_users Blocks users automatically created from signing in until approved by an administrator.
+# @param configure_projects_bot_token The token for the bot user that configures project default settings.
+# @param csp_enabled Enables Content Security Policy (CSP) for GitLab.
+# @param csp_report_only Enables CSP in report-only mode, logging violations without enforcing the policy.
+# @param custom_exporter_interval The interval (in seconds) at which the custom exporter collects data.
+# @param custom_exporter_port The port on which the custom exporter listens.
+# @param custom_nginx_config A list of custom NGINX configuration directives. Will be injected into the NGINX config.
+# @param default_projects_features Default features to be enabled for new projects created in GitLab.
+# @param enable_backup_sync Whether to enable synchronization of backups between active and passive hosts.
+# @param enable_custom_exporter Whether to enable a custom exporter for metrics.
+# @param external_url The external URL through which the GitLab instance is accessible.
+# @param exporters A hash of exporter configurations for monitoring purposes.
+# @param full_backup_interval The interval at which full backups should be taken (systemd timer notation).
+# @param key_path The path to the SSL certificate key file.
+# @param ldap_config The configuration hash for LDAP integration.
+# @param ldap_group_sync_bot The username of the bot user for syncing LDAP groups.
+# @param ldap_group_sync_bot_token The token for authenticating the LDAP group sync bot.
+# @param ldap_group_sync_interval The interval at which LDAP group synchronization should occur.
+# @param local_gems A hash mapping Unix paths to arrays of local gems to be installed. For extending GitLab with custom code/features)
+# @param local_gems_enabled Whether to enable the use of local gems.
+# @param logrotate_frequency The frequency at which log files should be rotated (daily, weekly, monthly, or yearly).
+# @param logrotate_maxsize The maximum size a log file can reach before being rotated.
+# @param logrotate_rotate The number of rotated log files to keep.
+# @param logrotate_size Whether to enable log rotation based on file size.
+# @param manage_host_keys Whether to manage git-ssh host keys through Puppet.
+# @param max_concurrency The maximum number of concurrent operations during a backup.
+# @param max_storage_concurrency The maximum number of concurrent storage operations during a backup.
+# @param monitoring_whitelist A list of IP addresses allowed to access monitoring endpoints.
+# @param nginx_listen_addresses An array of IP addresses on which NGINX should listen.
+# @param omniauth_providers A hash of providers for configuring OmniAuth authentication.
+# @param passive_hosts An array of FQDNs for passive GitLab hosts, used for failover.
+# @param partial_backup_interval The interval at which partial backups should be taken (systemd timer notation).
+# @param restore_interval The interval at which restores should be done (systemd timer notation).
+# @param rsync_interval The interval for synchronizing data between active and passive hosts using rsync (systemd timer notation).
+# @param service_ip_v4 The IPv4 address for the GitLab service.
+# @param service_ip_v6 The IPv6 address for the GitLab service.
+# @param service_name The name of the GitLab service, used for identification in various configurations.
+# @param smtp_enabled Whether to enable SMTP for sending emails from GitLab.
+# @param ssh_listen_addresses An array of IP addresses on which ssh-git daemon should listen.
+# @param thanos_storage_enabled Whether to enable Thanos storage for GitLab.
+# @param thanos_storage_password A hash containing the passwords for Thanos storage accounts.
+# @param thanos_storage_username The username for accessing Thanos storage.
+# @param use_acmechief Whether to use AcmeChief for certificate management.
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
