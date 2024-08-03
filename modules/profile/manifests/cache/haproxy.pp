@@ -214,6 +214,31 @@ class profile::cache::haproxy(
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
     if $use_etcd_req_filters {
+        file { '/etc/haproxy/ipblocks.d/':
+            ensure => directory,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+        }
+        ['cloud', 'abuse', 'known-clients'].each |String $scope| {
+            confd::file { "ipblocks_${scope}":
+                ensure     => present,
+                target     => "/etc/haproxy/ipblocks.d/${scope}.map",
+                prefix     => $conftool_prefix,
+                watch_keys => ["/request-ipblock/${scope}"],
+                content    => template('profile/cache/haproxy/ipblock.map.tpl.erb'),
+                # Please, whoever sees this in the future, don't @ me about this.
+                # An haproxy map file can contain either blank lines, comments,
+                # or lines with key-value pairs separated by spaces.
+                # The check command is a perl one-liner that checks for these three cases.
+                # If you find a nicer solution that doesn't involve writing a custom
+                # parser, please fix this.
+                check      => '/usr/bin/perl -pe \'die("bad line") unless (/^\s*$/ || /^#/ || /^\S+\s+\S+$/)\' {{.src}} > /dev/null',
+                reload     => '/usr/bin/systemctl reload haproxy.service',
+                before     => Service['haproxy'],
+            }
+        }
+
         haproxy::confd_site { 'tls':
             ensure     => present,
             prefix     => $conftool_prefix,
