@@ -1,0 +1,1 @@
+profile::cache::haproxy::use_etcd_req_filters: true

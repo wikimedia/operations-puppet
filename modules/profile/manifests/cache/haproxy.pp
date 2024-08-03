@@ -51,7 +51,11 @@ class profile::cache::haproxy(
         class { 'sslcert::ocsp::init':
         }
     }
-
+    if $use_etcd_req_filters {
+        $site_resource = Haproxy::Confd_site['tls']
+    } else {
+        $site_resource = Haproxy::Site['tls']
+    }
     # variable used inside HAProxy's systemd unit
     $pid = '/run/haproxy/haproxy.pid'
 
@@ -129,7 +133,7 @@ class profile::cache::haproxy(
     unless empty($unified_certs) {
         $unified_certs.each |String $cert| {
             sslcert::certificate { $cert:
-                before => Haproxy::Site['tls']
+                before => $site_resource,
             }
 
             if $do_ocsp {
@@ -196,7 +200,7 @@ class profile::cache::haproxy(
     mediawiki::errorpage { '/etc/haproxy/tls-terminator-tls-plaintext-error.html':
         ensure  => ($http_redirection_port != undef).bool2str('present', 'absent'),
         content => '<p>Insecure request forbidden, use HTTPS instead. For details see <a href="https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/">https://lists.wikimedia.org/hyperkitty/list/mediawiki-api-announce@lists.wikimedia.org/message/VKQJRS36NXLIMHOWBOXJPUH35KETQCG5/</a>.</p>',
-        before  => Haproxy::Site['tls'],
+        before  => $site_resource,
     }
 
     # This contains the PyBal IPs allowed to perform healthchecks
@@ -221,12 +225,11 @@ class profile::cache::haproxy(
             mode   => '0755',
         }
         ['cloud', 'abuse', 'known-clients'].each |String $scope| {
-            confd::file { "ipblocks_${scope}":
+            confd::file { "/etc/haproxy/ipblocks.d/${scope}.map":
                 ensure     => present,
-                target     => "/etc/haproxy/ipblocks.d/${scope}.map",
                 prefix     => $conftool_prefix,
                 watch_keys => ["/request-ipblock/${scope}"],
-                content    => template('profile/cache/haproxy/ipblock.map.tpl.erb'),
+                content    => template('profile/cache/haproxy/ipblocks.map.tpl.erb'),
                 # Please, whoever sees this in the future, don't @ me about this.
                 # An haproxy map file can contain either blank lines, comments,
                 # or lines with key-value pairs separated by spaces.
@@ -243,7 +246,7 @@ class profile::cache::haproxy(
             ensure     => present,
             prefix     => $conftool_prefix,
             watch_keys => ['/request-haproxy_dsl/'],
-            template   => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
+            content    => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
         }
     } else {
         haproxy::site { 'tls':
@@ -258,7 +261,7 @@ class profile::cache::haproxy(
             certificates => $certificates,
             do_ocsp      => $do_ocsp,
             acme_chief   => $unified_acme_chief,
-            require      => Haproxy::Site['tls'],
+            require      => $site_resource,
         }
     }
 

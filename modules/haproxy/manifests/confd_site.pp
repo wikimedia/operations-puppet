@@ -12,10 +12,9 @@ define haproxy::confd_site (
     String $prefix = '',
 ) {
     $safe_title = regsubst($title, '[^a-zA-Z0-9]', '_', 'G')
-    confd::file { "confd_site_${safe_title}":
+    confd::file { "/etc/haproxy/conf.d/${safe_title}.cfg":
         ensure     => $ensure,
         content    => $content,
-        target     => "/etc/haproxy/conf.d/${safe_title}.cfg",
         watch_keys => $watch_keys,
         prefix     => $prefix,
         check      => '/usr/sbin/haproxy -c -V -f /etc/haproxy/haproxy.cfg -f {{.src}}',
