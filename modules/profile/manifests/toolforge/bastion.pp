@@ -10,8 +10,9 @@ class profile::toolforge::bastion (
 
         ensure_packages([
             'emacs-nox',
-            'rsync',  # T362679
+            'joe',  # T371556
             'neovim',
+            'rsync',  # T362679
         ])
     }
 
