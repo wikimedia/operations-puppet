@@ -330,8 +330,8 @@ ncredir: P{O:ncredir}
 <% @datacenters.each do |dc| -%>
 ncredir-<%= dc %>: A:ncredir and A:<%= dc %>
 <% end -%>
-netbox: P{O:netbox::frontend}
-netbox4: P{netbox1003.eqiad.wmnet or netbox2003.codfw.wmnet}  # TODO remove after Netbox upgrade
+netbox: P{netbox1003.eqiad.wmnet or netbox2003.codfw.wmnet}  # TODO remove after Netbox upgrade
+#netbox: P{O:netbox::frontend}
 netbox-canary: P{O:netbox::standalone}
 netbox-all: A:netbox or A:netbox-canary
 netboxdb: P{O:netbox::database}

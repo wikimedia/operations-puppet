@@ -1,6 +1,5 @@
 # TODO - move to hieradata/role/common/netbox/frontend.yaml after Netbox 4 upgrade
 profile::netbox::db_primary: netboxdb1003.eqiad.wmnet
-profile::netbox::active_server: netbox1003.eqiad.wmnet
 
 profile::netbox::authentication_provider: 'oidc'
 profile::netbox::oidc_service: 'netbox_oidc'
