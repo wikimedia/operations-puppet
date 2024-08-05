@@ -12,7 +12,10 @@ reporterr() {
 }
 
 # Refresh the local copy
-su -c 'cd /var/lib/git/operations/private && git pull' gitpuppet
+# Note: we unset GIT_INDEX_FILE since tools like gitpython may cause
+# unwanted side effects if the variable is not set correctly.
+# More info: https://phabricator.wikimedia.org/T368023#10041744
+su -c 'cd /var/lib/git/operations/private && unset GIT_INDEX_FILE && git pull' gitpuppet
 
 # Now refresh the other masters
 <%-
