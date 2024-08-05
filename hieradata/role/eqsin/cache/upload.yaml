@@ -17,6 +17,7 @@ profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request
       verb: set-bandwidth-limit limit-by-path
+      condition: if !wikimedia_trust
 
 lookup_options:
   profile::cache::haproxy::sticktables:
