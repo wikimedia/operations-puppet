@@ -180,7 +180,7 @@ node /^an-conf100[1-3]\.eqiad\./ {
 
 # Refreshed hardware for Analytics Zookeeper cluster - See #T364429
 node /^an-conf100[4-6]\.eqiad\./ {
-    role(data_engineering::insetup)
+    role(insetup::data_engineering)
 }
 
 # Analytics Presto nodes
