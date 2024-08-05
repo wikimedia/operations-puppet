@@ -32,6 +32,7 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         group      => 'deployment',
         privileges => [
             'ALL = (mwbuilder) NOPASSWD: /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile *',
+            'ALL = (mwbuilder) NOPASSWD: /srv/mwbuilder/release/make-container-image/build-images.py *',
             'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release'
         ]
     }
