@@ -45,7 +45,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7166,9 +7166,8 @@ ldap_only_users:
     realname: (known to legal)
     email: info@gno.de
   mcastro-wmf:
-    ensure: present
+    ensure: absent
     realname: Miguel Castro
-    email: mcastro@wikimedia.org
   dimakoushha:
     ensure: present
     realname: Dima Koushha
