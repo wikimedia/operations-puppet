@@ -74,7 +74,7 @@ class profile::analytics::cluster::secrets(
       user    => 'hdfs',
     }
 
-    # mysql clouddb1021 analytics user creds
+    # mysql an-redacteddb1001 analytics user creds
     include ::passwords::mysql::analytics_labsdb
     $labsdb_user = $::passwords::mysql::analytics_labsdb::user
     $labsdb_pass = $::passwords::mysql::analytics_labsdb::pass

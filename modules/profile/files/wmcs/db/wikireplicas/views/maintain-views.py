@@ -44,8 +44,8 @@ try:
 
     conftool_available = True
 except Exception:
-    # The analytics special replicas (clouddb1021) do not have conftool
-    # available as they're not behind cloudlb.
+    # The analytics special replica (an-redacteddb1001) does not have conftool
+    # available as it is not behind cloudlb.
     conftool_available = False
 
 

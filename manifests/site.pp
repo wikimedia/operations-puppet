@@ -1858,12 +1858,6 @@ node /^clouddb10(17|18|19|20)\.eqiad\./ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
 
-# This host is to be decommissioned shortly. We will set it to insetup mode
-# whilst turning down services on it. See: #T368518
-node /^clouddb1021\.eqiad\./ {
-    role(insetup::data_engineering)
-}
-
 node /^cloudbackup100[34]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::instance_backups)
 }
