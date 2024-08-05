@@ -166,7 +166,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'clouddb1*':
-    - reuse-parts.cfg
+    - reuse-parts-test.cfg
     - partman/custom/reuse-db.cfg
   'conf[12]*':
     - partman/standard.cfg
