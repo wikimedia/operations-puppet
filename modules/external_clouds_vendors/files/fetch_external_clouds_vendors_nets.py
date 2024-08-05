@@ -248,6 +248,7 @@ def main() -> int:
             ExternalCloudVendorRIPE(name="Huawei", asns=[136907]),
             ExternalCloudVendorRIPE(name="Tencent", asns=[132203]),
             ExternalCloudVendorRIPE(name="Byteplus", asns=[150436]),
+            ExternalCloudVendorRIPE(name="GeekyWorks", asns=[203999]),
             ExternalCloudVendor(
                 name="Vultr",
                 url="https://geofeed.constant.com/?json",
