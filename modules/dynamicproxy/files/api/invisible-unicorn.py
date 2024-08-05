@@ -27,10 +27,12 @@ Redis until the data has been commited to the database. Hence it is possible
 for the db call to succeed and the redis call to fail, causing the db and
 redis to be out of sync. Currently this is not really handled by the API."""
 import flask
+import ipaddress
 import json
 import mwopenstackclients
 import redis
 import re
+from urllib.parse import urlparse
 
 from designateclient.v2 import client as designateclient
 from flask_keystone import FlaskKeystone
@@ -279,6 +281,7 @@ dns = Dns(
         url=cfg.CONF.dynamicproxy.dns_updater_keystone_api_url,
     ),
 )
+osclients = mwopenstackclients.Clients(oscloud="novaobserver")
 
 
 class Forbidden(HTTPException):
@@ -392,6 +395,71 @@ def all_mappings(project_id):
             )
 
     return flask.jsonify(**data)
+
+
+@app.route("/v1/<project_id>/scrub_mapping", methods=["PUT"])
+def scrub_mappings(project_id):
+    """For the specified project, check each existing mapping and delete
+    any that don't correspond to an existing nova VM. This is called
+    by designate in response to a VM deletion."""
+    enforce_policy("proxy:delete", project_id)
+
+    # Gather all assigned IPs in the project
+    instances = osclients.allinstances(project_id)
+    valid_ips = []
+    for instance in instances:
+        for network in instance.addresses:
+            valid_ips.extend(
+                [
+                    address["addr"]
+                    for address in instance.addresses[network]
+                    if instance.status != "DELETED" and instance.status != "DELETING"
+                ]
+            )
+
+    project = Project.query.filter_by(openstack_id=project_id).first()
+    if not project:
+        return "Project not found", 404
+
+    for route in project.routes:
+        removed_something = False
+        remaining_urls = [backend.url for backend in route.backends]
+
+        for backend in route.backends:
+            # backend is in url form, e.g. "http://<ip>:<port>"
+            backend_ip = urlparse(backend.url).hostname
+
+            try:
+                ipaddress.ip_address(backend_ip)
+            except ValueError:
+                # There are some weird proxies that refer to service names
+                # instead of IPs. Don't delete them.
+                continue
+
+            if backend_ip not in valid_ips:
+                # We've found a stray backend entry. Let's clean it up!
+                remaining_urls.remove(backend.url)
+                removed_something = True
+
+        if removed_something:
+            if remaining_urls:
+                print("Removing backend(s) from %s" % route.domain)
+                route.backends.delete()
+                for remaining_url in remaining_urls:
+                    route.backends.append(Backend(url=remaining_url))
+
+                db.session.add(route)
+                db.session.commit()
+
+                redis_store.update_route(route)
+            else:
+                print("Removing %s" % route.domain)
+                db.session.delete(route)
+                db.session.commit()
+                redis_store.delete_route(route)
+                dns.delete_records_for(project_id, route.domain)
+
+    return "OK", 200
 
 
 @app.route("/v1/<project_id>/mapping", methods=["PUT"])
@@ -515,7 +583,7 @@ def update_mapping(project_id, domain):
         route.domain = new_domain
         db.session.add(route)
 
-    # Not the most effecient, but I'm sitting in an airplane and this is the simplest from here
+    # Not the most efficient, but I'm sitting in an airplane and this is the simplest from here
     route.backends.delete()
     for backend_url in backend_urls:
         route.backends.append(Backend(url=backend_url))
