@@ -17,7 +17,7 @@ define haproxy::confd_site (
         content    => $content,
         watch_keys => $watch_keys,
         prefix     => $prefix,
-        check      => '/usr/sbin/haproxy -c -V -f /etc/haproxy/haproxy.cfg -f {{.src}}',
+        check      => '/usr/sbin/haproxy -c -V -f /etc/haproxy/haproxy.cfg -f',
         reload     => '/usr/bin/systemctl reload haproxy.service',
         before     => Service['haproxy'],
     }

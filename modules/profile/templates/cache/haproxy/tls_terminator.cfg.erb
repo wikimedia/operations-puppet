@@ -149,7 +149,7 @@ listen tls
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 
 <%- if @use_etcd_req_filters -%>
-    {{- $path := "/request-haproxy_dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
+    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
     {{- if exists $path }}
     # Skip the request filters if the request comes from trusted sources
     use_backend backend_server if wikimedia_trust

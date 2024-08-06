@@ -244,7 +244,7 @@ class profile::cache::haproxy(
                 # The check command is a perl one-liner that checks for these three cases.
                 # If you find a nicer solution that doesn't involve writing a custom
                 # parser, please fix this.
-                check      => '/usr/local/bin/check-haproxy-map {{.src}}',
+                check      => '/usr/local/bin/check-haproxy-map',
                 reload     => '/usr/bin/systemctl reload haproxy.service',
                 before     => Service['haproxy'],
             }
@@ -253,7 +253,7 @@ class profile::cache::haproxy(
         haproxy::confd_site { 'tls':
             ensure     => present,
             prefix     => $conftool_prefix,
-            watch_keys => ['/request-haproxy_dsl/'],
+            watch_keys => ['/request-haproxy-dsl/'],
             content    => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
         }
     } else {
