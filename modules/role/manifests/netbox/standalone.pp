@@ -15,7 +15,6 @@
 class role::netbox::standalone {
     include profile::base::production
     include profile::netbox
-    include profile::netbox::scripts
     include profile::netbox::db
     include profile::prometheus::postgres_exporter
     include profile::firewall

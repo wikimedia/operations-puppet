@@ -313,16 +313,6 @@ class profile::netbox (
         }),
     }
 
-    # configurations for other scripts (migrate to this configuration unless
-    # there are special needs or permissions are complicated).
-    file { '/etc/netbox/scripts.cfg':
-        ensure  => absent,
-        owner   => 'netbox',
-        group   => 'www-data',
-        mode    => '0440',
-        content => template('profile/netbox/netbox-scripts.cfg.erb'),
-    }
-
     # Deploy the report checker
     nrpe::plugin { 'check_netbox_report.py':
         source => 'puppet:///modules/icinga/check_netbox_report.py',
