@@ -72,7 +72,7 @@ acmechief_host: acmechief2002.codfw.wmnet
 profile::query_service::monitoring_user_agents:
   - "check_http/v2.3.3 (monitoring-plugins 2.3.3)"
   - "Twisted PageGetter"
-  - "prometheus-public-sparql-ep-check"
+  - "prometheus-scholarly-sparql-ep-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
 
 profile::query_service::internal_federated_endpoints:
