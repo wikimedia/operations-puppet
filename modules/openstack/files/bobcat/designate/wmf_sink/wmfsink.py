@@ -74,14 +74,14 @@ class NovaFixedWMFHandler(BaseAddressWMFHandler):
 
     def get_event_types(self):
         return [
-            'compute.instance.delete.start',
+            'compute.instance.delete.end',
         ]
 
     def process_notification(self, context, event_type, payload):
         LOG.debug('received notification - %s' % event_type)
 
         # This plugin only handles cleanup.
-        if event_type == 'compute.instance.delete.start':
+        if event_type == 'compute.instance.delete.end':
             try:
                 self._delete(payload,
                              resource_id=payload['instance_id'],
