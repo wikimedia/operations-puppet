@@ -2,6 +2,10 @@ profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request
       verb: track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
+    - context: http-request
+      verb: 'set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr)'
+      condition: if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
+      comment: "exists only for logging side-effect"
     # To disable concurrency enforcement, comment out this entire block below.
     - context: http-request
       verb: silent-drop
@@ -34,11 +38,6 @@ profile::cache::haproxy::sticktables:
 
 profile::cache::haproxy::vars:
   tls:
-    - direction: request
-      name: 'req.dummy_silent_drop'  # exists only for logging purposes
-      value: 'src,debug(silent-drop_for_300s,stderr)'
-      # only log the first time an IP violates too_many_concurrent_queries and starts being silent-dropped
-      acl: '!wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency'
     - direction: request
       name: 'txn.xwd_count'
       value: 'req.hdr_cnt(X-Wikimedia-Debug)'
