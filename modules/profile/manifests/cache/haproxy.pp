@@ -218,6 +218,13 @@ class profile::cache::haproxy(
     $min_tls_version = 'TLSv1.2'
     $max_tls_version = 'TLSv1.3'
     if $use_etcd_req_filters {
+        file { '/usr/local/bin/check-haproxy-map':
+            ensure => present,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0555',
+            source => 'puppet:///modules/profile/cache/check-haproxy-map.sh',
+        }
         file { '/etc/haproxy/ipblocks.d/':
             ensure => directory,
             owner  => 'root',
@@ -236,7 +243,7 @@ class profile::cache::haproxy(
                 # The check command is a perl one-liner that checks for these three cases.
                 # If you find a nicer solution that doesn't involve writing a custom
                 # parser, please fix this.
-                check      => '/usr/bin/perl -pe \'die() unless (/^\s*$/ || /^#/ || /^\S+\s+\S+$/)\' {{.src}} > /dev/null',
+                check      => '/usr/local/bin/check-haproxy-map {{.src}}',
                 reload     => '/usr/bin/systemctl reload haproxy.service',
                 before     => Service['haproxy'],
             }
