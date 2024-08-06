@@ -22,7 +22,7 @@ profile::query_service::nodes:
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins
-cluster: wdqs
+cluster: wdqs-scholarly
 contactgroups: admins,wdqs-admins
 profile::lvs::realserver::pools:
   wdqs:
