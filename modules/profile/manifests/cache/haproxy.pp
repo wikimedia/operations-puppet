@@ -236,7 +236,7 @@ class profile::cache::haproxy(
                 # The check command is a perl one-liner that checks for these three cases.
                 # If you find a nicer solution that doesn't involve writing a custom
                 # parser, please fix this.
-                check      => '/usr/bin/perl -pe \'die("bad line") unless (/^\s*$/ || /^#/ || /^\S+\s+\S+$/)\' {{.src}} > /dev/null',
+                check      => '/usr/bin/perl -pe \'die() unless (/^\s*$/ || /^#/ || /^\S+\s+\S+$/)\' {{.src}} > /dev/null',
                 reload     => '/usr/bin/systemctl reload haproxy.service',
                 before     => Service['haproxy'],
             }
