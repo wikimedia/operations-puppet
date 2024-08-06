@@ -17,7 +17,6 @@
 
 from oslo_config import cfg
 from designate.central import rpcapi as central_rpcapi
-from designate.context import DesignateContext
 from designate.notification_handler.base import BaseAddressHandler
 from novaclient import client as novaclient
 from oslo_log import log as logging
@@ -113,42 +112,16 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 self._run_remote_command(
                     cfg.CONF[self.name].puppet_master_host,
                     cfg.CONF[self.name].certmanager_user,
-                    "sudo /usr/bin/puppetserver ca clean --certname %s" % pipes.quote(legacy_fqdn),
+                    "sudo /usr/bin/puppetserver ca clean --certname %s"
+                    % pipes.quote(legacy_fqdn),
                 )
 
         # Finally, delete any proxy records pointing to this instance.
-        #
-        # For that, we need the IP which we can dig out of the old DNS record.
-        crit = criterion.copy()
-
-        # Make sure we only look at forward records
-        crit["zone_id"] = cfg.CONF[self.name].domain_id
-
-        if managed:
-            crit.update(
-                {
-                    "managed": managed,
-                    "managed_resource_id": resource_id,
-                    "managed_resource_type": resource_type,
-                }
-            )
-
-        context = DesignateContext().elevated()
-        context.all_tenants = True
-        context.edit_managed_records = True
-
-        records = central_api.find_records(context, crit)
-
-        if records:
-            # We only care about the IP, and that's the same in both records.
-            ip = records[0].data
-            LOG.debug("Cleaning up proxy records for IP %s" % ip)
-            try:
-                self._delete_proxies_for_ip(data["project_name"], ip)
-            except requests.exceptions.ConnectionError:
-                LOG.warning(
-                    "Caught exception when deleting proxy records", exc_info=True
-                )
+        LOG.debug("Cleaning up proxy records for project %s" % data["project_name"])
+        try:
+            self._remove_stray_proxies_for_project(data["project_name"])
+        except requests.exceptions.ConnectionError:
+            LOG.warning("Caught exception when scrubbing proxy records", exc_info=True)
 
     @staticmethod
     def _run_remote_command(server, username, command):
@@ -189,22 +162,11 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         if response.status_code != 404:
             response.raise_for_status()
 
-    def _delete_proxies_for_ip(self, project, ip):
+    def _remove_stray_proxies_for_project(self, project):
         project_proxies = self._get_proxy_list_for_project(project)
-        for proxy in project_proxies:
-            if len(proxy["backends"]) > 1:
-                LOG.warning(
-                    "This proxy record has multiple backends. "
-                    "That's unexpected and not handled, "
-                    "we may be leaking proxy records."
-                )
-            elif proxy["backends"][0].split(":")[1].strip("/") == ip:
-                # found match, deleting.
-                LOG.debug("Cleaning up proxy record %s" % proxy)
-                zone = proxy["domain"]
-
-                proxy_url, session = self._get_proxy_client(project)
-                session.delete("{}/mapping/{}".format(proxy_url, zone))
+        if project_proxies:
+            proxy_url, session = self._get_proxy_client(project)
+            session.put("{}/scrub_mapping".format(proxy_url))
 
     def _get_proxy_list_for_project(self, project):
         proxy_url, session = self._get_proxy_client(project)
