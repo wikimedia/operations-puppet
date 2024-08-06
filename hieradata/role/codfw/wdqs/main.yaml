@@ -3,4 +3,4 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - '-Dhttp.proxyPort=8080'
   - '-XX:+ExitOnOutOfMemoryError'
 
-profile::query_service::streaming_updater::kafka_topic: codfw.rdf-streaming-updater.mutation
+profile::query_service::streaming_updater::kafka_topic: codfw.rdf-streaming-updater.mutation-main
