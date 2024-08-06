@@ -62,6 +62,7 @@ scap::dsh::groups:
       - {'cluster': 'wdqs-internal', 'service': 'wdqs'}
     hosts:
       - wdqs1016.eqiad.wmnet
+      - wdqs1021.eqiad.wmnet
       - wdqs1022.eqiad.wmnet
       - wdqs1023.eqiad.wmnet
       - wdqs1024.eqiad.wmnet
