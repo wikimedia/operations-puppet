@@ -27,6 +27,7 @@ class profile::netbox::scripts {
     $apache_port=8443
 
     service::uwsgi { 'netbox-scriptproxy':
+        ensure       => absent,
         port         => $service_port,
         config       => {
             need-plugins => 'python3',
@@ -43,11 +44,14 @@ class profile::netbox::scripts {
         require      => Git::Clone['operations/software/netbox-extras']
     }
 
-    profile::auto_restarts::service { 'uwsgi-netbox-scriptproxy': }
+    profile::auto_restarts::service { 'uwsgi-netbox-scriptproxy':
+        ensure  => absent,
+    }
 
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
 
     firewall::service { 'netbox_scripts_https':
+        ensure => absent,
         proto  => 'tcp',
         port   => $apache_port,
         desc   => 'Semi-restricted access to Netbox script proxy',
@@ -55,6 +59,7 @@ class profile::netbox::scripts {
     }
 
     httpd::site { $facts['networking']['fqdn']:
+        ensure  => absent,
         content => template('profile/netbox/netbox-scripts.erb'),
     }
 

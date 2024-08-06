@@ -316,6 +316,7 @@ class profile::netbox (
     # configurations for other scripts (migrate to this configuration unless
     # there are special needs or permissions are complicated).
     file { '/etc/netbox/scripts.cfg':
+        ensure  => absent,
         owner   => 'netbox',
         group   => 'www-data',
         mode    => '0440',
