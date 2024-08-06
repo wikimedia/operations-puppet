@@ -5,6 +5,7 @@
 import argparse
 import glob
 import grp
+import json
 import logging
 import os
 import random
@@ -22,7 +23,9 @@ from wmflib import interactive
 
 logger = logging.Logger(__name__)
 
-LAST_BUILD_PATH = '/srv/mwbuilder/release/make-container-image/last-build'
+BUILD_REPORT_PATH = '/srv/mediawiki-staging/scap/image-build/report.json'
+BUILD_REPORT_IMAGE_TYPE = 'mediawiki'
+BUILD_REPORT_IMAGE_NAME = 'multiversion-image'
 NAMESPACE = 'mw-script'
 
 
@@ -47,12 +50,22 @@ def get_primary_dc() -> str:
 
 
 def mediawiki_image():
-    with open(LAST_BUILD_PATH) as f:
-        last_build = f.read().strip()
+    with open(BUILD_REPORT_PATH) as f:
+        build_report = json.load(f)
+
+    last_build = build_report.get(BUILD_REPORT_IMAGE_TYPE, {}).get(BUILD_REPORT_IMAGE_NAME)
+    if not last_build:
+        raise ValueError(
+            f'No image for "{BUILD_REPORT_IMAGE_TYPE}.{BUILD_REPORT_IMAGE_NAME}" found in '
+            f'{BUILD_REPORT_PATH}'
+        )
 
     prefix = 'docker-registry.discovery.wmnet/'
     if not last_build.startswith(prefix):
-        raise ValueError(f'Unexpected value "{last_build}" in {LAST_BUILD_PATH}')
+        raise ValueError(
+            f'Unexpected value "{last_build}" for image '
+            f'"{BUILD_REPORT_IMAGE_TYPE}.{BUILD_REPORT_IMAGE_NAME}" found in {BUILD_REPORT_PATH}'
+        )
     return last_build[len(prefix):]
 
 
