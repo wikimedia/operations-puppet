@@ -235,7 +235,7 @@ class profile::cache::haproxy(
             confd::file { "/etc/haproxy/ipblocks.d/${scope}.map":
                 ensure     => present,
                 prefix     => $conftool_prefix,
-                watch_keys => ["/request-ipblock/${scope}"],
+                watch_keys => ["/request-ipblocks/${scope}"],
                 content    => template('profile/cache/haproxy/ipblocks.map.tpl.erb'),
                 # Please, whoever sees this in the future, don't @ me about this.
                 # An haproxy map file can contain either blank lines, comments,
