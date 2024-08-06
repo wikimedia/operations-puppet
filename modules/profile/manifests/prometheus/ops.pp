@@ -2099,44 +2099,41 @@ class profile::prometheus::ops (
         port       => 17902,
     }
 
-    # Jobs for Netbox script-based exported metrics
-    # 2m of scrape interval as they're high level data (number of devices, etc),
-    # which don't change at a high rate, but it's also not recommended to have
-    # an interval > 2m (see related CR)
-    $netbox_jobs = [
-        # device statistics
-        {
-            'job_name'     => 'netbox_device_statistics',
-            'metrics_path' => '/getstats.GetDeviceStats',
-            'scheme'          => 'https',
-            'file_sd_configs' => [
-                { 'files' => [ "${targets_path}/netbox_scripts_exporter_${::site}.yaml"] },
-            ],
-            'scrape_interval'    => '2m',
-        }
-    ]
-    prometheus::class_config { "netbox_scripts_exporter_${::site}":
-        dest           => "${targets_path}/netbox_scripts_exporter_${::site}.yaml",
-        hostnames_only => false,
-        class_name     => 'role::netbox::frontend',
-        port           => 8443
-    }
-
     # Jobs for Netbox django health metrics - T243928
-    $netbox_django_jobs = [
+    # As well as custom metrics since Netbox 4 - T311052
+    $netbox_global_jobs = [
         {
-            'job_name'     => 'netbox_django',
+            'job_name'     => 'netbox_global',
             'scheme'          => 'https',
             'file_sd_configs' => [
-                { 'files' => [ "${targets_path}/netbox_django_*.yaml"] },
+                { 'files' => [ "${targets_path}/netbox_global_*.yaml"] },
             ],
             'tls_config'        => {
                 'server_name'   => 'netbox.wikimedia.org',
             },
+            # rename (copy then delete) metric labels for backward compatibility
+            'metric_relabel_configs' => [
+              {
+                'source_labels' => ['device_type__manufacturer__slug'],
+                'target_label'  => 'manufacturer',
+              },
+              {
+                'source_labels' => ['rack__location__slug'],
+                'target_label'  => 'rackgroup',
+              },
+              {
+                'source_labels' => ['site__slug'],
+                'target_label'  => 'datacenter',
+              },
+              {
+                'regex'  => '.*__slug',
+                'action' => 'labeldrop',
+              },
+            ]
         }
     ]
-    prometheus::class_config { "netbox_django_${::site}":
-        dest       => "${targets_path}/netbox_django_${::site}.yaml",
+    prometheus::class_config { "netbox_global_${::site}":
+        dest       => "${targets_path}/netbox_global_${::site}.yaml",
         class_name => 'role::netbox::frontend',
         port       => 443
     }
@@ -2479,10 +2476,10 @@ class profile::prometheus::ops (
             $gerrit_jobs, $routinator_jobs, $varnishkafka_jobs, $bird_jobs,
             $cloud_dev_pdns_jobs, $cloud_dev_pdns_rec_jobs, $bacula_jobs, $poolcounter_exporter_jobs,
             $atlas_exporter_jobs, $cadvisor_jobs,
-            $envoy_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs, $netbox_jobs,
+            $envoy_jobs, $squid_jobs, $nic_saturation_exporter_jobs, $thanos_jobs,
             $wikidough_jobs, $chartmuseum_jobs, $es_exporter_jobs, $alertmanager_jobs, $pushgateway_jobs,
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
-            $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_django_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
+            $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
             $postfix_jobs, $fifo_log_demux_jobs,
         ].flatten,
