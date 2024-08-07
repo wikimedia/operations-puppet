@@ -16,7 +16,7 @@ class profile::mariadb::ferm_misc (
         proto   => 'tcp',
         port    => '3306',
         notrack => true,
-        srange  => '@resolve((netbox1002.eqiad.wmnet netbox2002.codfw.wmnet netbox1003.eqiad.wmnet netbox2003.codfw.wmnet))',
+        srange  => '@resolve((netbox1003.eqiad.wmnet netbox2003.codfw.wmnet))',
     }
     ferm::service { 'rt':
         proto   => 'tcp',
