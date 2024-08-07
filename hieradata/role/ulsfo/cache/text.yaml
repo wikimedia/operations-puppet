@@ -1,7 +1,5 @@
-# Benthos
-# VERY MINIMAL CONFIGURATION TO TEST 1059265 (T371492)
-# Use this boolean to gradually rollout benthos on cp hosts with configuration
-# for HAProxy log parser
+# Following section is used to fully remove Benthos
+# will be removed later
 profile::cache::base::use_benthos: true
 profile::cache::base::benthos_socket_address: "tcp@127.0.0.1:1221"
 profile::benthos::use_geoip: false
