@@ -150,7 +150,7 @@ listen tls
 
 <%- if @use_etcd_req_filters -%>
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
-    {{- if not exists $path }}
+    {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
     {{- end }}
     {{- if exists $path }}
