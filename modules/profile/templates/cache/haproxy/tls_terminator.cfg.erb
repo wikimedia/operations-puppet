@@ -180,6 +180,7 @@ backend requestctl_filters
     {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
     {{ . }}
     {{- end }}
+    {{- end}}
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
 
