@@ -1,7 +1,0 @@
-# TODO - move to hieradata/role/common/netbox/frontend.yaml after Netbox 4 upgrade
-profile::netbox::db_primary: netboxdb1003.eqiad.wmnet
-
-profile::netbox::authentication_provider: 'oidc'
-profile::netbox::oidc_service: 'netbox_oidc'
-profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.oidc_endpoint')}"
-profile::netbox::netbox4: true  # TODO remove after Netbox 4 migration

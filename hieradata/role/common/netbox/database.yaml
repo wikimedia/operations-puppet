@@ -6,11 +6,11 @@ profile::puppet::agent::force_puppet7: true
 profile::netbox::db::do_backup: true
 profile::netbox::db::auto_restart: false
 profile::netbox::db::dump_interval: '*-*-* *:37:00'
-profile::netbox::db::primary: netboxdb1002.eqiad.wmnet
+profile::netbox::db::primary: netboxdb1003.eqiad.wmnet
 profile::netbox::db::frontends:
-  - netbox1002.eqiad.wmnet
-  - netbox2002.codfw.wmnet
+  - netbox1003.eqiad.wmnet
+  - netbox2003.codfw.wmnet
 profile::netbox::db::replicas:
-    - netboxdb2002.codfw.wmnet
+    - netboxdb2003.codfw.wmnet
 
 profile::firewall::provider: nftables
