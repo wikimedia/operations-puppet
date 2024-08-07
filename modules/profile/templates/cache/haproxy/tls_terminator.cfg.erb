@@ -150,6 +150,9 @@ listen tls
 
 <%- if @use_etcd_req_filters -%>
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
+    {{- if not exists $path }}
+    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
+    {{- end }}
     {{- if exists $path }}
     # Skip the request filters if the request comes from trusted sources
     use_backend backend_server if wikimedia_trust
