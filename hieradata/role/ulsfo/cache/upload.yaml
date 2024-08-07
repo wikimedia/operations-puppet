@@ -26,32 +26,3 @@ lookup_options:
   profile::cache::haproxy::post_acl_actions:
     merge:
       strategy: deep
-
-# Following section is used to fully remove Benthos
-# will be removed later
-profile::cache::base::use_benthos: true
-profile::cache::base::benthos_socket_address: "tcp@127.0.0.1:1221"
-profile::benthos::use_geoip: false
-profile::benthos::ensure: absent
-profile::benthos::instances:
-  haproxy_cache:
-    # Prometheus exporter port
-    port: 4153
-    # List of envvars that will be copied by benthos::instance in
-    # separate file (template) and used by main configuration file
-    env_variables:
-      socket_proto: "tcp"
-      socket_address: "127.0.0.1:1221"
-      webrequest_topic: "webrequest_upload_test"
-      enable_debug: false
-      root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
-      pipeline_threads: -1
-      benthos_fqdn: '%{facts.fqdn}'
-      benthos_source: "%{lookup('cache::cluster')}"
-      buffer_memory_limit_bytes: 524288000
-    # These will be used as envvars for kafka input
-    kafka:
-      cluster: jumbo
-      site: eqiad
-      topics:
-        - "none"
