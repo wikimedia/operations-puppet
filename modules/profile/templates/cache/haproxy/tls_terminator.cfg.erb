@@ -146,21 +146,37 @@ listen tls
     use_backend healthcheck if hc-host hc-path hc-allowed-src
 <%- end -%>
 
-    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
-
-<%- if @use_etcd_req_filters -%>
+    option forwardfor
+<%- if @use_etcd_req_filters  -%>
+    <%- if @wikimedia_trust %>
+    use_backend requestctl_filters if !wikimedia_trust
+    <%- else %>
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
     {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
     {{- end }}
     {{- if exists $path }}
-    # Skip the request filters if the request comes from trusted sources
-    use_backend backend_server if wikimedia_trust
     # REQUESTCTL FILTERS
     {{ $value := json (getv $path) }}{{ $value.dsl }}
     {{- end }}
+    <%- end %>
 <%- end -%>
-    option forwardfor
+
+    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
+
+
+<%- if ( @use_etcd_req_filters && @wikimedia_trust ) -%>
+backend requestctl_filters
+    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
+    {{- if not (exists $path) }}
+    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
+    {{- end }}
+    {{- if exists $path }}
+    # REQUESTCTL FILTERS
+    {{ $value := json (getv $path) }}{{ $value.dsl }}
+    {{- end }}
+    server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
+<%- end -%>
 
 <%- if @dedicated_hc_backend -%>
 backend healthcheck
