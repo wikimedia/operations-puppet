@@ -267,6 +267,38 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.6.5"
       prefix: "24"
       iface: "enp175s0f1np1"
+  "cloudcephosd1035.eqiad.wmnet":
+    public:
+      addr: "10.64.151.7"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.6"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1036.eqiad.wmnet":
+    public:
+      addr: "10.64.150.8"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.7"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1037.eqiad.wmnet":
+    public:
+      addr: "10.64.149.17"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.8"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1038.eqiad.wmnet":
+    public:
+      addr: "10.64.149.18"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.6.9"
+      prefix: "24"
+      iface: "eno12409np1"
   "cloudcephosd1004.eqiad.wmnet":
     public:
       addr: "10.64.149.14"
