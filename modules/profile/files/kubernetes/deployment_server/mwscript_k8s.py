@@ -161,6 +161,10 @@ def main() -> int:
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='Print extra output from the underlying helmfile invocation.')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
+    parser.add_argument('--mediawiki_image',
+                        help='Specify a MediaWiki image (without registry), e.g. '
+                             'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
+                             '(Default: Use most recent build)')
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-f', '--follow', action='store_true',
@@ -186,9 +190,9 @@ def main() -> int:
     # long as we're doing that, we'll set all these values that way.
     values = {
         # For normal deployments, this value is managed by scap. For scripts, we'll use the latest
-        # build.  TODO: Add a flag to specify an image version?
+        # build (except when overridden by command-line flag).
         'main_app': {
-            'image': mediawiki_image(),
+            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(),
         },
         'mwscript': {
             'args': [args.script_name, *args.script_args],
