@@ -31,7 +31,6 @@ class librenms(
         'graphviz',
         'ipmitool',
         'libapache2-mod-php',
-        'mtr-tiny',
         'nmap',
         'php-cli',
         'php-curl',

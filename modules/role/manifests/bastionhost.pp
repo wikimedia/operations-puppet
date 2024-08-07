@@ -4,7 +4,7 @@ class role::bastionhost{
     include profile::firewall
     include profile::backup::host
 
-    ensure_packages(['mtr-tiny', 'traceroute', 'mosh'])
+    ensure_packages(['traceroute', 'mosh'])
 
     backup::set {'home': }
 

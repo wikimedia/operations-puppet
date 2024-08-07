@@ -15,7 +15,7 @@ class base::standard_packages (
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
         'tmux', 'tree', 'vim', 'vim-addon-manager', 'vim-scripts', 'wipe', 'xfsprogs', 'zsh',
         'icdiff', 'linux-perf', 'bsd-mailx', 'ack', 'netcat-openbsd', 'tshark', 'fzf',
-        'ripgrep', 'fd-find', 'kitty-terminfo'
+        'ripgrep', 'fd-find', 'kitty-terminfo', 'mtr-tiny'
     ])
     if debian::codename::lt('bullseye') {
         # bullseye has version 2.30 which uses version 2 by default
