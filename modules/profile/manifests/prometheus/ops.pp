@@ -402,12 +402,8 @@ class profile::prometheus::ops (
       targets_file => "${targets_path}/smoke-mgmt_site.yaml",
     }
 
-    # Only probe for SSH on servers and PDUs - T368513
-    $site_mgmt_hosts_ssh = $site_mgmt_hosts.filter |$host, $config| {
-      $config['role'] in ['server', 'pdu']
-    }
     prometheus::targets::mgmt { 'site':
-      targets      => $site_mgmt_hosts_ssh,
+      targets      => $site_mgmt_hosts,
       targets_file => "${targets_path}/probes-mgmt_site.yaml",
     }
 
