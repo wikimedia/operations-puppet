@@ -70,7 +70,7 @@ gerrit_push_user: trainbranchbot
 # Settings for mediawiki container image building (T297673)
 release_repo_dir: /srv/mwbuilder/release
 release_repo_update_cmd: sudo -u mwbuilder /usr/local/bin/update-mediawiki-tools-release
-release_repo_build_and_push_images_cmd: sudo -u mwbuilder /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile build-and-push-all-images http_proxy=http://webproxy.eqiad.wmnet:8080 https_proxy=http://webproxy.eqiad.wmnet:8080
+release_repo_build_and_push_images_cmd: sudo -u mwbuilder /srv/mwbuilder/release/make-container-image/build-images.py
 
 <%- if @deploy_k8s -%>
 ## Settings for deploying mediawiki to kubernetes
