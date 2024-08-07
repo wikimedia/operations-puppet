@@ -31,7 +31,6 @@
 # @param puppetdb_microservice_port the port where the puppetd micro service listens
 # @param puppetdb_microservice_fqdn the fqdn where the puppetd micro service listens
 # @param report_checks a list of report checks
-# @param netbox4 Netbox 4 migration flag
 # @param librenms_db_user librenms DB user
 # @param librenms_db_password librenms DB password
 # @param librenms_db_host librenms DB host
@@ -86,7 +85,6 @@ class profile::netbox (
     Boolean                     $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
     Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
-    Boolean                     $netbox4                 = lookup('profile::netbox::netbox4'),
 
     #ganeti config
     Optional[String]           $ganeti_user                 = lookup('profile::netbox::ganeti_user'),
@@ -145,23 +143,17 @@ class profile::netbox (
     $netbox_config_path = "/srv/deployment/${deploy_project}/deploy"
     $netbox_extras_path = '/srv/deployment/netbox-extras'
 
-    if $netbox4 {
-        $netbox_scripts_path = '/srv/netbox'
-        $run_report_command = 'runscript --user sre_bot'
+    $netbox_scripts_path = '/srv/netbox'
+    $run_report_command = 'runscript --user sre_bot'
 
-        file { $netbox_scripts_path:
-            ensure => directory,  # Create the parent directory for the one below
-        }
-        file { "${netbox_scripts_path}/customscripts":
-            ensure => directory,
-            owner  => 'www-data',  # needed for manual creation through the UI
-            group  => 'netbox',  # needed for automatic sync
-            mode   => '2775',  # needed for manually created files to have the 'netbox' group
-        }
+    file { $netbox_scripts_path:
+        ensure => directory,  # Create the parent directory for the one below
     }
-    else {
-        $netbox_scripts_path = '/srv/deployment/netbox-extras'
-        $run_report_command = 'runreport'
+    file { "${netbox_scripts_path}/customscripts":
+        ensure => directory,
+        owner  => 'www-data',  # needed for manual creation through the UI
+        group  => 'netbox',  # needed for automatic sync
+        mode   => '2775',  # needed for manually created files to have the 'netbox' group
     }
 
     # Used for LDAP auth
@@ -219,7 +211,6 @@ class profile::netbox (
         cas_group_required          => $cas_group_required,
         oidc_key                    => $oidc_key,
         oidc_secret                 => $oidc_secret,
-        netbox4                     => $netbox4
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }

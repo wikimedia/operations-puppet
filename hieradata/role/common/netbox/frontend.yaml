@@ -36,7 +36,6 @@ profile::netbox::do_backups: true
 profile::netbox::authentication_provider: 'oidc'
 profile::netbox::oidc_service: 'netbox_oidc'
 profile::netbox::cas_server_url: "%{lookup('apereo_cas.production.oidc_endpoint')}"
-profile::netbox::netbox4: true  # TODO remove after Netbox 4 migration
 
 profile::netbox::cas_rename_attributes:
   cn: 'first_name'

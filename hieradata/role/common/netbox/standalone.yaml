@@ -47,5 +47,3 @@ profile::netbox::oidc_service: 'netbox_next'
 profile::firewall::provider: nftables
 
 profile::netbox::http_proxy: "%{alias('http_proxy')}"
-
-profile::netbox::netbox4: true  # TODO remove after Netbox 4 migration

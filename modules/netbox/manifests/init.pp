@@ -22,7 +22,6 @@
 # @param changelog_retention how many days to keep the changelog
 # @param job_retention how many days to keep the changelog
 # @param prefer_ipv4 prefer IPv4 over IPV6
-# @param netbox4 Netbox 4 migration flag
 # @param local_redis_maxmem The amount of memory in bytes that the local Redis instance should use
 # @param ldap_server The LDAP server to specify in the configuration
 # @param enable_ldap Enable/disable LDAP authentication
@@ -66,7 +65,6 @@ class netbox (
     Integer[0]                    $changelog_retention         = 90,
     Integer[0]                    $job_retention               = 90,
     Boolean                       $prefer_ipv4                 = false,
-    Boolean                       $netbox4                     = false,
     Optional[Stdlib::Fqdn]        $ldap_server                 = undef,
     Boolean                       $enable_ldap                 = false,
     Optional[Enum['ldap', 'cas', 'oidc']] $authentication_provider     = undef,

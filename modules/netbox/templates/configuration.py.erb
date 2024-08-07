@@ -216,13 +216,13 @@ REDIS = {
         'HOST': '<%= @redis_host %>',
         'PORT': <%= @redis_port %>,
         'PASSWORD': '<%= @redis_password %>',
-        'DATABASE': <%= @netbox4 ? 2 : 0 %>,
+        'DATABASE': 2,
     },
     'caching': {
         'HOST': '<%= @redis_host %>',
         'PORT': <%= @redis_port %>,
         'PASSWORD': '<%= @redis_password %>',
-        'DATABASE': <%= @netbox4 ? 3 : 1 %>,
+        'DATABASE': 3,
         'DEFAULT_TIMEOUT': 300,
     },
 }
