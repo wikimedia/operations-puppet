@@ -22,7 +22,6 @@ class profile::cache::base(
     String $conftool_prefix                          = lookup('conftool_prefix'),
     Boolean $use_ip_reputation                       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
     Boolean $use_noflow_iface_preup                  = lookup('profile::cache::base::use_noflow_iface_preup', {'default_value' => false}),
-    Boolean $use_benthos                             = lookup('profile::cache::base::use_benthos', {'default_value' => false}),
 ){
 
     require network::constants
@@ -146,11 +145,5 @@ class profile::cache::base(
         class { 'conftool::scripts::initialize':
             services => $default_weights,
         }
-    }
-
-    # Benthos
-    # Multiple benthos instances and relative configurations are defined in hiera
-    if $use_benthos {
-        include ::profile::benthos
     }
 }
