@@ -155,9 +155,12 @@ listen tls
     {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
     {{- end }}
-    {{- if exists $path }}
+
+    {{ if exists $path }}
     # REQUESTCTL FILTERS
-    {{ $value := json (getv $path) }}{{ $value.dsl }}
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
+    {{- end }}
     {{- end }}
     <%- end %>
 <%- end -%>
