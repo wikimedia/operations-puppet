@@ -148,6 +148,7 @@ listen tls
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
+    http-request set-header x-requestctl " "
     <%- if @wikimedia_trust %>
     use_backend requestctl_filters if !wikimedia_trust
     <%- else %>
@@ -174,9 +175,10 @@ backend requestctl_filters
     {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
     {{- end }}
-    {{- if exists $path }}
+    {{ if exists $path }}
     # REQUESTCTL FILTERS
-    {{ $value := json (getv $path) }}{{ $value.dsl }}
+    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
+    {{ . }}
     {{- end }}
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
