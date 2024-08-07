@@ -9,7 +9,10 @@ profile::netbox::validators:
   - dcim.cable
   - dcim.device
   - dcim.interface
+  - dcim.consoleport
+  - dcim.consoleserverport
   - dcim.poweroutlet
+  - dcim.powerport
   - dcim.site
 profile::netbox::puppetdb_microservice_fqdn: puppetdb-api.discovery.wmnet
 profile::netbox::discovery_name: netbox-next.discovery.wmnet
