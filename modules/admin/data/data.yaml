@@ -6354,6 +6354,7 @@ users:
     gid: 500
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPywhMZMslMnOl/7stpDB8YXNo4STAd8xUFSqeGQjK6J ifrah.khanyaree@wmde-102977'
+    krb: present
   radimer:
     ensure: present
     realname: Rae Adimer
