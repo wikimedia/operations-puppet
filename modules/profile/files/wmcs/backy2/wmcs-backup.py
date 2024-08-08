@@ -22,6 +22,7 @@ from rbd2backy2 import (
     cleanup,
     get_backups,
     get_snapshots_for_image,
+    get_trash_entries,
 )
 
 # This holds cached openstack information
@@ -1548,6 +1549,27 @@ class ImageBackupsState:
         else:
             logging.info("No backups removed, skipping cleanup")
 
+    def empty_trash(self, noop: bool = True, only_expired: bool = True) -> None:
+        logging.info("%sSearching for snapshots of trashed images...", "NOOP:" if noop else "")
+        trash_entries = get_trash_entries(pool=self.config.ceph_pool)
+        num_deleted = 0
+        skipped = 0
+        for trash_entry in trash_entries:
+            if not only_expired or trash_entry.expired:
+                logging.info("  Deleting %s", str(trash_entry))
+                trash_entry.remove(noop=noop)
+                num_deleted += 1
+
+            else:
+                logging.info("  Skipping %s (not expired)", str(trash_entry))
+                skipped += 1
+
+        logging.info("Deleted %d trashed images from %d", num_deleted, len(trash_entries))
+        if skipped:
+            logging.info(
+                "   Skipped %d as they were not yet expired (and only_expired passed)", skipped
+            )
+
     def __str__(self) -> str:
         self.update_usages()
         return (
@@ -2111,6 +2133,26 @@ def _add_volumes_parser(subparser: argparse._SubParsersAction) -> None:
     remove_unhandled_backups_parser.set_defaults(
         func=lambda: get_current_volumes_state(from_cache=args.from_cache).remove_unhandled_backups(
             from_cache=args.from_cache, noop=args.noop
+        )
+    )
+
+    empty_trash_parser = volumes_subparser.add_parser(
+        "empty-trash",
+        help=(
+            "Currently deleting volumes from openstack moves the image to the trash but does not "
+            "prune snapshots first, so the trash can't be emptied in the normal cleanup, this "
+            "works around that (see T358774)"
+        ),
+    )
+    empty_trash_parser.add_argument(
+        "-n",
+        "--noop",
+        action="store_true",
+        help="If set, will not really do anything, just tell you what would be done.",
+    )
+    empty_trash_parser.set_defaults(
+        func=lambda: get_current_volumes_state(from_cache=args.from_cache).empty_trash(
+            noop=args.noop
         )
     )
 

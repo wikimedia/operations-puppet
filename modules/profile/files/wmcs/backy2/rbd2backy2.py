@@ -30,6 +30,36 @@ def run_command(args: List[str], stdout: Optional[IO[Any]] = None, noop: bool = 
 
 
 @dataclass
+class TrashEntry:
+    image_id: str
+    image_name: str
+    expired: bool
+    pool: str
+
+    @classmethod
+    def from_trash_ls_line(cls, pool: str, trash_ls_line: str):
+        """
+        Parses one line from the command:
+        >> rbd trash ls -l <pool_name>
+
+        Example of supported lines:
+            ff8c794c3aee2e volume-6faff28f-b0db-46c9-9ca6-e613076c58f2 USER   \
+                Wed May 29 14:09:55 2024 expired at Wed May 29 14:09:55 2024
+        """
+        line_chunks = trash_ls_line.split()
+        image_id, image_name = line_chunks[:2]
+        expired = " expired at " in trash_ls_line
+        return cls(image_id=image_id, image_name=image_name, expired=expired, pool=pool)
+
+    def remove(self, noop: bool) -> None:
+        run_command(
+            ["rbd", "snap", "purge", f"--pool={self.pool}", f"--image-id={self.image_id}"],
+            noop=noop,
+        )
+        run_command(["rbd", "trash", "rm", f"{self.pool}/{self.image_id}"], noop=noop)
+
+
+@dataclass
 class RBDSnapshot:
     image: str
     snapshot: str
@@ -619,6 +649,15 @@ def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
     raw_lines = subprocess.check_output([RBD, "ls", "-l", pool])
     return [
         RBDSnapshot.from_rbd_ls_line(pool=pool, rbd_ls_line=line.decode("utf8"))
+        # skip the header
+        for line in raw_lines.splitlines()[1:]
+    ]
+
+
+def get_trash_entries(pool: str) -> List[TrashEntry]:
+    raw_lines = subprocess.check_output([RBD, "trash", "ls", "-l", pool])
+    return [
+        TrashEntry.from_trash_ls_line(pool=pool, trash_ls_line=line.decode("utf8"))
         # skip the header
         for line in raw_lines.splitlines()[1:]
     ]
