@@ -5,20 +5,20 @@ import logging
 import subprocess
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
-from typing import List, Optional
+from typing import IO, Any, List, Optional
 
 RBD = "/usr/bin/rbd"
 BACKY = "/usr/bin/backy2"
 
 
-def run_command(args: List[str], stdout: Optional[str] = None, noop: bool = False) -> str:
+def run_command(args: List[str], stdout: Optional[IO[Any]] = None, noop: bool = False) -> str:
     if noop:
         logging.info("NOOP: Would have run %s", args)
         return ""
 
     logging.debug("Running command %s", args)
     if stdout:
-        result = subprocess.run(args, stdout=stdout)
+        result = subprocess.run(args=args, stdout=stdout)
         if result.returncode != 0:
             raise Exception(f"Command execution returned != 0:\n" f"command:{args}")
 
@@ -75,7 +75,7 @@ class RBDSnapshot:
         )
 
     @classmethod
-    def create(cls, pool: str, image: str, snapshot: str, noop: bool = True) -> None:
+    def create(cls, pool: str, image: str, snapshot: str, noop: bool = True) -> "RBDSnapshot":
         new_snapshot = RBDSnapshot(
             pool=pool,
             image=image,
@@ -95,7 +95,7 @@ class RBDSnapshot:
             logging.debug(subprocess.check_output(args))
 
     def get_date(self) -> datetime.datetime:
-        return (datetime.datetime.strptime(self.snapshot, "%Y-%m-%dT%H:%M:%S"),)
+        return datetime.datetime.strptime(self.snapshot, "%Y-%m-%dT%H:%M:%S")
 
     def __str__(self) -> str:
         return f"{self.pool}/{self.image}@{self.snapshot}"
@@ -527,8 +527,14 @@ def backup_volume(pool, volume, live_for_days):
             )
             _initial_backup(pool, volume, expire)
         else:
-            backy_snap_version_uid = backup.split(b"|")[5]
-            _differential_backup(pool, volume, last_snap, backy_snap_version_uid, expire)
+            backy_snap_version_uid = backup.decode("utf-8").split("|")[5]
+            _differential_backup(
+                pool=pool,
+                volume=volume,
+                last_snap=last_snap,
+                backy_snap_version_uid=backy_snap_version_uid,
+                expire=expire,
+            )
 
 
 def cleanup(noop: bool = True):
@@ -612,7 +618,7 @@ def get_snapshots_for_image(pool: str, image_name: str) -> List[RBDSnapshot]:
 def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
     raw_lines = subprocess.check_output([RBD, "ls", "-l", pool])
     return [
-        RBDSnapshot.from_rbd_ls_line(pool=pool, rbd_snap_ls_line=line.decode("utf8"))
+        RBDSnapshot.from_rbd_ls_line(pool=pool, rbd_ls_line=line.decode("utf8"))
         # skip the header
         for line in raw_lines.splitlines()[1:]
     ]
