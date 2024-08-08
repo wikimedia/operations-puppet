@@ -7,13 +7,13 @@ import logging
 import subprocess
 from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
-from typing import IO, Any, List, Optional
+from typing import IO, Any, Optional
 
 RBD = "/usr/bin/rbd"
 BACKY = "/usr/bin/backy2"
 
 
-def run_command(args: List[str], stdout: Optional[IO[Any]] = None, noop: bool = False) -> str:
+def run_command(args: list[str], stdout: Optional[IO[Any]] = None, noop: bool = False) -> str:
     if noop:
         logging.info("NOOP: Would have run %s", args)
         return ""
@@ -202,7 +202,7 @@ class BackupEntry:
     uid: str
     valid: bool
     protected: bool
-    tags: List[str]
+    tags: list[str]
     expire: datetime.datetime
 
     @classmethod
@@ -693,7 +693,7 @@ def get_backups():
     return [BackupEntry.from_ls_line(ls_line.decode("utf8")) for ls_line in backup.splitlines()]
 
 
-def get_snapshots_for_image(pool: str, image_name: str) -> List[RBDSnapshot]:
+def get_snapshots_for_image(pool: str, image_name: str) -> list[RBDSnapshot]:
     raw_lines = run_command([RBD, "snap", "ls", f"{pool}/{image_name}"])
     return [
         RBDSnapshot.from_rbd_snap_ls_line(
@@ -706,7 +706,7 @@ def get_snapshots_for_image(pool: str, image_name: str) -> List[RBDSnapshot]:
     ]
 
 
-def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
+def get_snapshots_for_pool(pool: str) -> list[RBDSnapshot]:
     raw_lines = subprocess.check_output([RBD, "ls", "-l", pool])
     return [
         RBDSnapshot.from_rbd_ls_line(pool=pool, rbd_ls_line=line.decode("utf8"))
@@ -715,7 +715,7 @@ def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
     ]
 
 
-def get_trash_entries(pool: str) -> List[TrashEntry]:
+def get_trash_entries(pool: str) -> list[TrashEntry]:
     raw_lines = subprocess.check_output([RBD, "trash", "ls", "--format=json", "-l", pool])
     result_data = json.loads(raw_lines)
     return [TrashEntry.from_trash_ls_data(pool=pool, trash_ls_data=entry) for entry in result_data]

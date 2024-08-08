@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 
 import argparse
 import datetime
@@ -10,7 +11,7 @@ import socket
 import sys
 from dataclasses import dataclass
 from itertools import chain
-from typing import Any, ClassVar, Dict, List, Optional, Set, Tuple, Union
+from typing import Any, ClassVar
 
 # this one is not available at test time (installed by puppet)
 import mwopenstackclients  # type: ignore
@@ -61,7 +62,7 @@ class MinimalConfig:
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_instances.yaml"
 
     @classmethod
-    def from_file(cls, config_file: Optional[str] = None):
+    def from_file(cls, config_file: str | None = None):
         if config_file is None:
             config_file = cls.CONFIG_FILE
 
@@ -74,9 +75,9 @@ class MinimalConfig:
 
 @dataclass
 class InstanceBackupsConfig(MinimalConfig):
-    exclude_servers: Dict[str, List[Regex]]
+    exclude_servers: dict[str, list[Regex]]
     # project name | ALLOTHERS -> hostname
-    project_assignments: Dict[str, str]
+    project_assignments: dict[str, str]
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_instances.yaml"
 
     def get_host_for_project(self, project: str) -> str:
@@ -84,7 +85,7 @@ class InstanceBackupsConfig(MinimalConfig):
             project, self.project_assignments.get("ALLOTHERS", "unknown_host")
         )
 
-    def get_host_for_vm(self, project: str, vm_name: Optional[str] = None) -> str:
+    def get_host_for_vm(self, project: str, vm_name: str | None = None) -> str:
         if vm_name is not None:
             for vm_regex in self.exclude_servers.get(project, []):
                 if re.match(vm_regex, vm_name):
@@ -99,14 +100,14 @@ class ImageBackupsConfig(MinimalConfig):
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_images.yaml"
 
     # Backup everything everywhere
-    def get_host_for_image(self, project: str, image_info: Optional[Dict[str, Any]] = None) -> str:
+    def get_host_for_image(self, project: str, image_info: dict[str, Any] | None = None) -> str:
         return socket.gethostname()
 
 
 @dataclass
 class VolumeBackupsConfig(MinimalConfig):
-    exclude_volumes: Dict[str, List[Regex]]
-    project_assignments: Dict[str, str]
+    exclude_volumes: dict[str, list[Regex]]
+    project_assignments: dict[str, str]
     CONFIG_FILE: ClassVar[str] = "/etc/wmcs_backup_volumes.yaml"
 
     def get_host_for_project(self, project: str) -> str:
@@ -114,7 +115,7 @@ class VolumeBackupsConfig(MinimalConfig):
             project, self.project_assignments.get("ALLOTHERS", "unknown_host")
         )
 
-    def get_host_for_image(self, project: str, image_info: Dict[str, Any]) -> str:
+    def get_host_for_image(self, project: str, image_info: dict[str, Any]) -> str:
         if image_info is not None:
             for volume_regex in self.exclude_volumes.get(project, []):
                 image_name = image_info.get("name", "no_name_found")
@@ -129,14 +130,14 @@ class ImageBackup:
     image_id: str
     ceph_id: str
     image_name: str
-    image_info: Dict[str, Any]
+    image_info: dict[str, Any]
     backup_entry: BackupEntry
     size_mb: int
-    snapshot_entry: Optional[RBDSnapshot]
-    size_percent: Optional[float] = None
+    snapshot_entry: RBDSnapshot | None
+    size_percent: float | None = None
 
     @classmethod
-    def from_entry_and_images(cls, entry: BackupEntry, images: Dict[str, Dict[str, Any]]):
+    def from_entry_and_images(cls, entry: BackupEntry, images: dict[str, dict[str, Any]]):
         ceph_id = entry.name
         image_id = entry.name.split("-", 1)[1]
         if image_id not in images:
@@ -172,7 +173,7 @@ class ImageBackup:
         pool: str,
         image_id: str,
         ceph_id: str,
-        image_info: Dict[str, Any],
+        image_info: dict[str, Any],
         reference_backup: "ImageBackup",
         live_for_days: int,
         noop: bool = True,
@@ -215,7 +216,7 @@ class ImageBackup:
             size_mb=new_entry.size_mb,
         )
 
-    def load_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
+    def load_snapshot(self, pool: str) -> RBDSnapshot | None:
         self.snapshot = self.backup_entry.get_snapshot(pool=pool)
         return self.snapshot
 
@@ -225,7 +226,7 @@ class ImageBackup:
         pool: str,
         image_id: str,
         ceph_id: str,
-        image_info: Dict[str, Any],
+        image_info: dict[str, Any],
         live_for_days: int,
         noop: bool = True,
     ):
@@ -270,14 +271,14 @@ class ImageBackup:
 
 @dataclass(unsafe_hash=True)
 class ImageBackups:
-    backups: List[ImageBackup]
+    backups: list[ImageBackup]
     image_id: str
     ceph_id: str
-    image_name: Optional[str]
-    image_info: Dict[str, Any]
+    image_name: str | None
+    image_info: dict[str, Any]
     config: ImageBackupsConfig
     size_mb: int = 0
-    size_percent: Optional[float] = None
+    size_percent: float | None = None
 
     def add_backup(self, backup: ImageBackup) -> bool:
         if backup.image_id != self.image_id:
@@ -327,7 +328,7 @@ class ImageBackups:
         this snapshot has to be the oldest one that has a matching backups for
         that image.
         """
-        dangling_snapshots: List[RBDSnapshot] = []
+        dangling_snapshots: list[RBDSnapshot] = []
 
         if not self.image_info:
             # If the image is gone then it won't have any snapshots!
@@ -444,7 +445,7 @@ class ImageBackups:
         last_valid_date = datetime.datetime.now() - datetime.timedelta(
             days=self.config.live_for_days
         )
-        to_delete: List[ImageBackup] = []
+        to_delete: list[ImageBackup] = []
         for backup in sorted(
             self.backups,
             key=lambda backup: backup.backup_entry.date,
@@ -503,16 +504,16 @@ class ImageBackups:
 @dataclass
 class VMBackup:
     vm_id: str
-    project: Optional[str]
-    vm_info: Dict[str, Any]
+    project: str | None
+    vm_info: dict[str, Any]
     backup_entry: BackupEntry
-    snapshot_entry: Optional[RBDSnapshot]
+    snapshot_entry: RBDSnapshot | None
     size_mb: int
-    size_percent: Optional[float] = None
+    size_percent: float | None = None
 
     @classmethod
     def from_entry_and_servers(
-        cls, entry: BackupEntry, servers: Dict[str, Dict[str, Any]], pool: str
+        cls, entry: BackupEntry, servers: dict[str, dict[str, Any]], pool: str
     ):
         vm_id = entry.name.split("_", 1)[0]
         if vm_id not in servers:
@@ -533,7 +534,7 @@ class VMBackup:
         cls,
         pool: str,
         vm_id: str,
-        vm_info: Dict[str, Dict[str, Any]],
+        vm_info: dict[str, dict[str, Any]],
         project: str,
         reference_backup: "VMBackup",
         live_for_days: int,
@@ -577,7 +578,7 @@ class VMBackup:
             size_mb=new_entry.size_mb,
         )
 
-    def load_snapshot(self, pool: str) -> Optional[RBDSnapshot]:
+    def load_snapshot(self, pool: str) -> RBDSnapshot | None:
         self.snapshot = self.backup_entry.get_snapshot(pool=pool)
         return self.snapshot
 
@@ -586,7 +587,7 @@ class VMBackup:
         cls,
         pool: str,
         vm_id: str,
-        vm_info: Dict[str, Dict[str, Any]],
+        vm_info: dict[str, dict[str, Any]],
         project: str,
         live_for_days: int,
         noop: bool = True,
@@ -643,13 +644,13 @@ class VMBackup:
 
 @dataclass(unsafe_hash=True)
 class VMBackups:
-    backups: List[VMBackup]
+    backups: list[VMBackup]
     vm_id: str
-    project: Optional[str]
-    vm_info: Dict[str, Any]
+    project: str | None
+    vm_info: dict[str, Any]
     config: InstanceBackupsConfig
     size_mb: int = 0
-    size_percent: Optional[float] = None
+    size_percent: float | None = None
 
     """
     The way the backups work is:
@@ -743,7 +744,7 @@ class VMBackups:
         last_valid_date = datetime.datetime.now() - datetime.timedelta(
             days=self.config.live_for_days
         )
-        to_delete: List[VMBackup] = []
+        to_delete: list[VMBackup] = []
         for backup in sorted(
             self.backups,
             key=lambda backup: backup.backup_entry.date,
@@ -860,8 +861,8 @@ class VMBackups:
         this snapshot has to be the oldest one that has a matching backups for
         that VM/image.
         """
-        dangling_snapshots: List[RBDSnapshot] = []
-        vm_images: Set[str] = {vm_backup.backup_entry.name for vm_backup in self.backups}
+        dangling_snapshots: list[RBDSnapshot] = []
+        vm_images: set[str] = {vm_backup.backup_entry.name for vm_backup in self.backups}
         if len(vm_images) > 1:
             raise Exception("VMs with more than one image are not supported: " f"{self}")
 
@@ -938,11 +939,11 @@ class VMBackups:
 
 @dataclass(unsafe_hash=True)
 class ProjectBackups:
-    vms_backups: Dict[str, VMBackups]
-    project: Optional[str]
+    vms_backups: dict[str, VMBackups]
+    project: str | None
     config: InstanceBackupsConfig
     size_mb: int = 0
-    size_percent: Optional[int] = None
+    size_percent: int | None = None
 
     def add_vm_backup(self, backup: VMBackup, noop: bool) -> bool:
         if backup.vm_id not in self.vms_backups:
@@ -994,7 +995,7 @@ class ProjectBackups:
 
         return total_removed
 
-    def create_vm_backup(self, vm_info: Dict[str, Any], noop: bool = True) -> VMBackup:
+    def create_vm_backup(self, vm_info: dict[str, Any], noop: bool = True) -> VMBackup:
         vm_id = vm_info["id"]
         if vm_id not in self.vms_backups:
             self.vms_backups[vm_id] = VMBackups(
@@ -1030,7 +1031,7 @@ class ProjectBackups:
 
 @dataclass(unsafe_hash=True)
 class InstanceBackupsState:
-    projects_backups: Dict[str, ProjectBackups]
+    projects_backups: dict[str, ProjectBackups]
     config: InstanceBackupsConfig
     size_mb: int = 0
 
@@ -1195,7 +1196,7 @@ class InstanceBackupsState:
         for snapshot in self.get_dangling_snapshots():
             print(str(snapshot))
 
-    def get_dangling_snapshots(self) -> List[RBDSnapshot]:
+    def get_dangling_snapshots(self) -> list[RBDSnapshot]:
         """
         This returns the list of snapshots for every VM that are not being
         used for backups.
@@ -1240,8 +1241,8 @@ class InstanceBackupsState:
         if failed_snapshots:
             sys.exit(1)
 
-    def get_assigned_vms(self, from_cache: bool = True) -> List[Dict[str, Any]]:
-        assigned_vms: List[Dict[str, Any]] = []
+    def get_assigned_vms(self, from_cache: bool = True) -> list[dict[str, Any]]:
+        assigned_vms: list[dict[str, Any]] = []
         this_hostname = socket.gethostname()
         server_id_to_server_dict = get_servers_info(from_cache)
         ceph_servers = ceph_named_volumes(pool=self.config.ceph_pool, postfix="_disk")
@@ -1290,7 +1291,7 @@ class InstanceBackupsState:
 
     def remove_unhandled_backups(self, from_cache: bool = True, noop: bool = True) -> None:
         logging.info("%sSearching for unhandled backups...", "NOOP:" if noop else "")
-        handled_vm_ids_projects: Set[Tuple[str, str]] = {
+        handled_vm_ids_projects: set[tuple[str, str]] = {
             (vm_info["id"], vm_info.get("tenant_id", "no_project"))
             for vm_info in self.get_assigned_vms(from_cache)
         }
@@ -1320,8 +1321,8 @@ class InstanceBackupsState:
 
 @dataclass(unsafe_hash=True)
 class ImageBackupsState:
-    image_backups: Dict[str, ImageBackups]
-    images_info: Dict[str, Dict[str, Any]]
+    image_backups: dict[str, ImageBackups]
+    images_info: dict[str, dict[str, Any]]
     config: ImageBackupsConfig
     image_prefix: str = ""
     image_postfix: str = ""
@@ -1364,7 +1365,7 @@ class ImageBackupsState:
         for snapshot in self.get_dangling_snapshots():
             print(str(snapshot))
 
-    def get_dangling_snapshots(self) -> List[RBDSnapshot]:
+    def get_dangling_snapshots(self) -> list[RBDSnapshot]:
         """
         This returns the list of snapshots for every image that are not being
         used for backups.
@@ -1410,7 +1411,7 @@ class ImageBackupsState:
             sys.exit(1)
 
     def create_image_backup(
-        self, image_info: Dict[str, Any], project_name: Optional[str] = None, noop: bool = True
+        self, image_info: dict[str, Any], project_name: str | None = None, noop: bool = True
     ) -> None:
         image_id = image_info["id"]
         if project_name:
@@ -1485,8 +1486,8 @@ class ImageBackupsState:
             len(all_images),
         )
 
-    def get_assigned_images(self) -> List[Dict[str, Any]]:
-        assigned_images: List[Dict[str, Any]] = []
+    def get_assigned_images(self) -> list[dict[str, Any]]:
+        assigned_images: list[dict[str, Any]] = []
         this_hostname = socket.gethostname()
         image_id_to_image_dict = self.images_info
         ceph_vols = ceph_named_volumes(
@@ -1528,7 +1529,7 @@ class ImageBackupsState:
 
     def remove_unhandled_backups(self, from_cache: bool = True, noop: bool = True) -> None:
         logging.info("%sSearching for unhandled backups...", "NOOP:" if noop else "")
-        handled_image_ids: List[str] = [
+        handled_image_ids: list[str] = [
             images_info["id"] for images_info in self.get_assigned_images()
         ]
         backups_removed = 0
@@ -1583,7 +1584,7 @@ class ImageBackupsState:
         )
 
 
-def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
+def get_servers_info(from_cache: bool) -> dict[str, dict[str, Any]]:
     if not from_cache or not os.path.exists(INSTANCES_CACHE_FILE):
         openstackclients = mwopenstackclients.Clients(oscloud="novaobserver")
         logging.debug("Getting instances...")
@@ -1600,7 +1601,7 @@ def get_servers_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     return server_id_to_server_info
 
 
-def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
+def get_images_info(from_cache: bool) -> dict[str, dict[str, Any]]:
     if not from_cache or not os.path.exists(IMAGES_CACHE_FILE):
         logging.debug("Getting images from the server...")
         clients = mwopenstackclients.Clients(oscloud="novaadmin")
@@ -1615,7 +1616,7 @@ def get_images_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
     return image_id_to_image_info
 
 
-def get_volumes_info(from_cache: bool) -> Dict[str, Dict[str, Any]]:
+def get_volumes_info(from_cache: bool) -> dict[str, dict[str, Any]]:
     if not from_cache or not os.path.exists(VOLUMES_CACHE_FILE):
         logging.debug("Getting images from the server...")
         clients = mwopenstackclients.Clients(oscloud="novaadmin")
@@ -1702,7 +1703,7 @@ def get_current_instances_state(
     return projects_backups
 
 
-def summary(current_state: Union[InstanceBackupsState, ImageBackupsState]) -> None:
+def summary(current_state: InstanceBackupsState | ImageBackupsState) -> None:
     print(str(current_state))
 
 
