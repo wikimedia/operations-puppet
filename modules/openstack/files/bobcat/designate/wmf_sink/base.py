@@ -57,10 +57,6 @@ class BaseAddressWMFHandler(BaseAddressHandler):
         LOG.debug("Event data: %s" % data)
         data["zone"] = zone["name"]
 
-        data["project_name"] = wmfdesignatelib.project_name_from_id(
-            keystone, data["tenant_id"]
-        )
-
         event_data = data.copy()
 
         fqdn = cfg.CONF[self.name].fqdn_format % event_data
@@ -117,9 +113,9 @@ class BaseAddressWMFHandler(BaseAddressHandler):
                 )
 
         # Finally, delete any proxy records pointing to this instance.
-        LOG.debug("Cleaning up proxy records for project %s" % data["project_name"])
+        LOG.debug("Cleaning up proxy records for project %s" % data["tenant_id"])
         try:
-            self._remove_stray_proxies_for_project(data["project_name"])
+            self._remove_stray_proxies_for_project(data["tenant_id"])
         except requests.exceptions.ConnectionError:
             LOG.warning("Caught exception when scrubbing proxy records", exc_info=True)
 
