@@ -9,6 +9,12 @@ profile::ncmonitor::reviewers:
   - ssingh@wikimedia.org
   - vgutierrez@wikimedia.org
 profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat'
+profile::ncmonitor::markmonitor_ignored_domains:
+  - "wikimedia.cloud"
+  - "wikimediacloud.org"
+  - "wmftest.com"
+  - "wmftest.net"
+  - "wmftest.org"
 
 profile::ncmonitor::acmechief::conf_path: 'hieradata/common/certificates.yaml'
 profile::ncmonitor::acmechief::remote_url: 'ssh://ncmonitor@gerrit.wikimedia.org:29418/operations/puppet'
