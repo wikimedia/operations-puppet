@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: Apache-2.0
+
+varnishtest "sec-warning redirection for clients using the RSA certificates"
+
+server s1 {
+   rxreq
+   txresp
+   rxreq
+   txresp
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+} -start
+
+# with seed=55, std.random(0,100) returns 0.716
+# Make sure the "bad" connection gets the page randomly.
+varnish v1 -cliok "debug.srandom 55"
+client c1 {
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=TLS_RSA_WITH_AES_128_CBC_SHA256; EC=UNDEF; KA=RSA;"
+    rxresp
+    expect resp.status == 302
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=TLS_RSA_WITH_AES_128_CBC_SHA256; EC=UNDEF; KA=RSA;"
+    rxresp
+    expect resp.status == 200
+} -run
+
+# Reset the seed and make sure the "good" connection doesn't get hit with the
+# page.
+varnish v1 -cliok "debug.srandom 55"
+client c2 {
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256; EC=X25519; KA=ECDSA;"
+    rxresp
+    expect resp.status == 200
+} -run
+
+# Reset the seed and make sure not to serve the warning on the page with
+# instructions on how to update.
+varnish v1 -cliok "debug.srandom 55"
+client c3 {
+    txreq -url "/wiki/HTTPS/Browser_Recommendations" -hdr "Host: wikitech.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Connection-Properties: H2=0; SSR=0; SSL=TLSv1.2; C=TLS_RSA_WITH_AES_128_CBC_SHA256; EC=UNDEF; KA=RSA;"
+    rxresp
+    expect resp.status == 200
+} -run

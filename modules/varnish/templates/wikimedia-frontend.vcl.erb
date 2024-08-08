@@ -758,6 +758,20 @@ sub vcl_recv {
     call cluster_fe_recv_pre_purge;
     call wm_recv_purge;
 
+    // Occasionally throw an error to clients connecting with RSA - We're
+    // removing support for that soon. (T370837)
+    if (req.http.X-Connection-Properties ~ "KA=RSA;"
+        && req.url ~ "^/wiki/" && req.url !~ ":" && req.method == "GET"
+        && req.url !~ "^/wiki/HTTPS/Browser_Recommendations"
+        && std.random(0,100) < 1.0) {
+        set req.http.Location = "https://" + req.http.Host + "/sec-warning";
+        return (synth(302, "Browser RSA certificate connection redirect"));
+    }
+
+    if (req.url == "/sec-warning") {
+         return (synth(200, "Browser RSA certificate connection warning"));
+    }
+
     call cluster_fe_recv;
     call wm_recv_pass;
     call cluster_fe_recv_tail;
@@ -1161,6 +1175,21 @@ sub vcl_synth {
             set resp.http.Connection = "keep-alive";
             set resp.http.Content-Length = "0"; // BZ #62245
             set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
+        }
+
+        // Browser sec warning (RSA cert intercepted request)
+        if (resp.reason == "Browser RSA certificate connection redirect") {
+            set resp.http.Location = req.http.Location;
+            set resp.http.Content-Length = "0";
+            return (deliver);
+        }
+
+        // Browser sec warning
+        if (resp.reason == "Browser RSA certificate connection warning") {
+            set resp.http.Connection = "keep-alive";
+            set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
+            call browser_sec_synth;
+            return (deliver);
         }
 
         if (resp.status >= 400) {
