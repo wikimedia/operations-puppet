@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
+from __future__ import annotations
+
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 
 # Silly memory store
-envvars = {}
+envvars: dict[str, dict[str, str]] = {}
 
 
 @app.route("/healthz", methods=["GET"])

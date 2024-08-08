@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import unittest
-from typing import Any
+from typing import Any, cast
 from unittest import mock
 
 import maintain_dbusers
@@ -23,17 +23,17 @@ class MockResponse:
 
     def raise_for_status(self) -> None:
         if self.status_code >= 400:
-            raise requests.HTTPError(response=self)
+            raise requests.HTTPError(response=cast(requests.Response, self))
 
 
 class StubLdapConnection:
-    def __init__(self, mocked_response_pages: list[list[dict[str, Any]]]):
+    def __init__(self, mocked_response_pages: list[Any]):
         self._cur_response = 0
         self._responses = mocked_response_pages
         self._initialized = False
 
     @property
-    def response(self) -> list[dict[str, Any]]:
+    def response(self) -> list[Any]:
         return self._responses[self._cur_response]
 
     @property
@@ -678,7 +678,7 @@ class FindPawsUsersTestCase(unittest.TestCase):
 
     @mock.patch("maintain_dbusers.fetch_paws_uids", return_value=None)
     def test_should_return_empty_list_if_fetch_paws_uids_returns_none(self, mocked_fetch_paws_uids):
-        expected_result = []
+        expected_result: list[tuple[str, int]] = []
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)
@@ -688,7 +688,7 @@ class FindPawsUsersTestCase(unittest.TestCase):
     def test_should_return_empty_list_if_fetch_paws_uids_returns_empty_list(
         self, mocked_fetch_paws_uids
     ):
-        expected_result = []
+        expected_result: list[tuple[str, int]] = []
         gotten_result = maintain_dbusers.find_paws_users(**self.get_dummy_params())
 
         self.assertEqual(gotten_result, expected_result)

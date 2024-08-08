@@ -2,8 +2,9 @@
 # SPDX-License-Identifier: Apache-2.0
 from __future__ import annotations
 
-from distutils.core import setup
 from pathlib import Path
+
+from setuptools import setup
 
 cur_file = Path(__file__)
 requirements = [

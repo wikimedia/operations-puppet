@@ -27,6 +27,7 @@ class Skip(BackendError):
 
     def __init__(self, message: str, dest_path: Path):
         super().__init__(message)
+        # TODO: this makes no sense for envvars though, maybe remove eventually
         self.dest_path = dest_path
 
 
@@ -92,7 +93,7 @@ class Backend(ABC):
         pass
 
     @abstractmethod
-    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> str:
+    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> None:
         pass
 
     @abstractmethod
@@ -126,7 +127,7 @@ def run_script(
     args: list[str],
 ) -> subprocess.CompletedProcess[bytes]:
     env = {
-        "PATH": os.getenv("PATH"),
+        "PATH": os.getenv("PATH", ""),
     }
     # In the VMs we can't set it at all because sudo prevents us,
     # so only setting it if it's actually passed (testing)

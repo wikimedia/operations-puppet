@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
-from typing import Optional
+from typing import Any, Optional, Type
 
 import yaml
-from flask import Blueprint, Flask, current_app, jsonify, request
+from flask import Blueprint, Flask, Response, current_app, jsonify, request
 from replica_cnf_api_service.backends.common import (
     Backend,
     BackendError,
+    Config,
     ReplicaCnf,
     Skip,
     UserType,
@@ -27,12 +27,11 @@ from replica_cnf_api_service.backends.file_backend import (
     ToolforgeToolFileBackend,
     ToolforgeUserFileBackend,
 )
-from requests import Response
 
 bp_v1 = Blueprint("replica_cnf", __name__, url_prefix="/v1")
 DRY_RUN_USERNAME = "dry.run.username"
 DRY_RUN_PASSWORD = "dry.run.password"
-BACKEND_CONFIGS = {
+BACKEND_CONFIGS: dict[str, Type[Config]] = {
     "FileConfig": FileConfig,
     "ToolforgeToolBackendConfig": ToolforgeToolBackendConfig,
     "EnvvarsConfig": EnvvarsConfig,
@@ -43,6 +42,11 @@ BACKENDS = {
     "ToolforgeUserFileBackend": ToolforgeUserFileBackend,
     "ToolforgeToolEnvvarsBackend": ToolforgeToolEnvvarsBackend,
 }
+
+
+class ReplicaCnfApp(Flask):
+    def set_backends(self, replica_cnf_backends: list[Backend]):
+        self.replica_cnf_backends = replica_cnf_backends
 
 
 def get_error_response(reason: str) -> tuple[Response, int]:
@@ -98,7 +102,7 @@ def get_bad_usertype_response(bad_account_type: str) -> tuple[Response, int]:
     )
 
 
-def load_backends(backend_spec: dict[str, dict[str, str]]) -> list[Backend]:
+def load_backends(backend_spec: dict[str, dict[str, Any]]) -> list[Backend]:
     backends: list[Backend] = []
     for backend_name, config in backend_spec.items():
         if backend_name not in BACKENDS:
@@ -113,6 +117,7 @@ def load_backends(backend_spec: dict[str, dict[str, str]]) -> list[Backend]:
                 f"only one is supported: {config}"
             )
 
+        parsed_config: None | Config = None
         for config_name, config_params in config.items():
             if config_name not in BACKEND_CONFIGS:
                 raise ValueError(
@@ -120,18 +125,20 @@ def load_backends(backend_spec: dict[str, dict[str, str]]) -> list[Backend]:
                     f"known configs: {' ,'.join(BACKEND_CONFIGS.keys())}"
                 )
 
-            config = BACKEND_CONFIGS[config_name].from_yaml(**config_params)
+            parsed_config = BACKEND_CONFIGS[config_name].from_yaml(**config_params)
 
-        backends.append(BACKENDS[backend_name](config=config))
+        if parsed_config:
+            backends.append(BACKENDS[backend_name](config=parsed_config))
+
     return backends
 
 
-def create_app(test_config=None):
+def create_app(test_config=None) -> ReplicaCnfApp:
     """
     The return value of this function servers also as entry point for uwsgi.
     """
     # create and configure the app
-    app = Flask(__name__)
+    app = ReplicaCnfApp(__name__)
 
     config = None
     if test_config is None:
@@ -156,7 +163,7 @@ def create_app(test_config=None):
             f"{os.getenv('CONF_FILE', 'no custom file')}): {app.config}\n\n{config}"
         )
 
-    app.replica_cnf_backends: list[Backend] = load_backends(backend_spec=app.config["BACKENDS"])
+    app.set_backends(load_backends(backend_spec=app.config["BACKENDS"]))
 
     return app
 
@@ -275,7 +282,7 @@ def read_replica_cnf() -> tuple[Response, int]:
 
     dry_run = request_data["dry_run"]
 
-    replica_cnf: Optional[Path] = None
+    replica_cnf: Optional[ReplicaCnf] = None
     prev_backend = None
     for backend in get_backends():
         if not backend.handles_user_type(UserType(account_type)):

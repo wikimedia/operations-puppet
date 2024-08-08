@@ -133,7 +133,7 @@ class ToolforgeUserFileBackend(Backend):
             use_sudo=self.config.use_sudo,
             args=[
                 str(account_uid),
-                self.get_relative_path(user=replica_cnf.user),
+                str(self.get_relative_path(user=replica_cnf.user)),
                 replica_cnf.to_mysql_conf_str(),
                 replica_cnf.user_type.value,
             ],
@@ -148,7 +148,7 @@ class ToolforgeUserFileBackend(Backend):
                     scripts_path=self.config.scripts_path,
                     use_sudo=self.config.use_sudo,
                     args=[
-                        self.get_relative_path(user=replica_cnf.user),
+                        str(self.get_relative_path(user=replica_cnf.user)),
                         replica_cnf.user_type.value,
                     ],
                 )
@@ -160,14 +160,14 @@ class ToolforgeUserFileBackend(Backend):
         LOGGER.info("created conf file at %s.", replica_path)
         return replica_cnf
 
-    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> Path:
+    def delete_replica_cnf(self, user: str, user_type: UserType, dry_run: bool) -> None:
         """
         Shared among all file backends
         """
         dest_path = self.config.replica_cnf_path / self.get_relative_path(user=user)
         if dry_run:
             # do not attempt to write replica.my.cnf file to replica_path if dry_run is True
-            return dest_path
+            return
 
         res = run_script(
             script="delete_replica_cnf.sh",
@@ -180,7 +180,7 @@ class ToolforgeUserFileBackend(Backend):
         )
 
         if res.returncode == 0:
-            return res.stdout.decode("utf-8").strip()
+            return
 
         raise BackendError(res.stderr.decode("utf-8").strip())
 

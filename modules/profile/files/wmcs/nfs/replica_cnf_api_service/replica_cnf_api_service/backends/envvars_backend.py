@@ -62,8 +62,8 @@ class ToolforgeToolEnvvarsBackend(Backend):
         if kubeconfig_data_run.returncode != 0:
             raise RuntimeError(
                 f"Unable to get kubeconfig for user '{user_name}':"
-                f"\nout:{kubeconfig_data_run.stdout}"
-                f"\nerr:{kubeconfig_data_run.stderr}"
+                f"\nout:{kubeconfig_data_run.stdout!r}"
+                f"\nerr:{kubeconfig_data_run.stderr!r}"
             )
         kubeconfig_data = json.loads(kubeconfig_data_run.stdout.decode("utf-8"))
         kubeconfig = Kubeconfig(**kubeconfig_data)
@@ -142,7 +142,7 @@ class ToolforgeToolEnvvarsBackend(Backend):
         except requests.exceptions.HTTPError as e:
             raise Skip(
                 f"Skipping failed envvars backend, maybe the variable is not yet set? {e}",
-                dest_path="OK",
+                dest_path=Path("OK"),
             ) from e
 
         try:
