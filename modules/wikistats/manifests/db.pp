@@ -79,10 +79,11 @@ class wikistats::db (
     # mounts any volume larger than 1 and smaller than 2 GB
     wmflib::dir::mkdir_p($backupdir_ext)
 
-    #cinderutils::ensure { 'cinder_backup_volume':
-    #    mount_point => $backupdir_ext,
-    #    max_gb      => 2,
-    #}
+    cinderutils::ensure { 'cinder_backup_volume':
+        mount_point => $backupdir_ext,
+        min_gb      => 0.9,
+        max_gb      => 1.5,
+    }
 
     # database schema
     file { '/usr/lib/wikistats/schema.sql':
