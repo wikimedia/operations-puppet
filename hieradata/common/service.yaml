@@ -1837,6 +1837,10 @@ service::catalog:
       scheduler: wrr
     port: 443
     state: lvs_setup
+    # public endpoint for https only
+    public_endpoint: "prometheus-eqiad"
+    public_aliases:
+      - "prometheus-codfw"
 
   proton:
     description: Proton PDF rendering service. proton.discovery.wmnet

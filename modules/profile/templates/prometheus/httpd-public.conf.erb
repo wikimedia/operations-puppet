@@ -1,0 +1,12 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# The virtualhost is accessed by oauth2-proxy only, on localhost
+<VirtualHost 127.0.0.1:80>
+    ServerName <%= @vhost %>
+
+    # Redirect authenticated homepage requests to 'ops' instance.
+    RewriteEngine on
+    RewriteCond %{HTTP_COOKIE} \b_oauth2_proxy=
+    RewriteRule ^/$ https://<%= @vhost %>/ops [R=302]
+
+    Include /etc/apache2/prometheus.d/*.conf
+</VirtualHost>
