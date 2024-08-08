@@ -33,6 +33,7 @@
 #   is needed.
 #   Values: 'unlimited', 'nG' (n is a number of Gigabytes), or '0' for no core.
 # @param nrpe_check_http a list of arguments to pass to check_http
+# @param ensure whether the service should be `present` or `absent` (default=present)
 # @example
 #    service::uwsgi { 'myservice':
 #        port   => 8520,
@@ -59,6 +60,7 @@ define service::uwsgi(
     Array[String]              $sudo_rules             = [],
     Boolean                    $add_logging_config     = true,
     String                     $core_limit             = '0',
+    Wmflib::Ensure             $ensure                 = present,
     Optional[Nrpe::Check_http] $nrpe_check_http        = undef,
     # lint:ignore:wmf_styleguide
     String        $contact_groups         = lookup('contactgroups', {'default_value' => 'admins'}),
@@ -80,14 +82,14 @@ define service::uwsgi(
       if $local_logging {
           ensure_resource('file', '/srv/log', {'ensure' => 'directory' })
           file { $local_logdir:
-              ensure => directory,
+              ensure => $ensure == present ? {true => directory, default => absent},
               owner  => 'www-data',
               group  => 'root',
               mode   => '0755',
               before => Uwsgi::App[$title],
           }
           logrotate::conf { $title:
-              ensure  => present,
+              ensure  => $ensure,
               content => template('service/logrotate.uwsgi.erb'),
           }
           $log_config_local = {
@@ -128,6 +130,8 @@ define service::uwsgi(
       $logging_config = {}
     }
 
+    # This can't be set to ensure absent as names can conflict with other usages
+    # For example /etc/netbox is used for netbox related config/scripts
     if !defined(File["/etc/${title}"]) {
         file { "/etc/${title}":
             ensure => directory,
@@ -151,6 +155,7 @@ define service::uwsgi(
     $complete_config = deep_merge($base_config, $logging_config, $config)
 
     uwsgi::app { $title:
+        ensure        => $ensure,
         core_limit    => $core_limit,
         systemd_user  => $systemd_user,
         systemd_group => $systemd_group,
@@ -168,6 +173,7 @@ define service::uwsgi(
             $fact_ip = $facts['networking']['ip']
             $monitor_url = "http://${fact_ip}:${port}${healthcheck_url}"
             nrpe::monitor_service{ "endpoints_${title}":
+                ensure        => $ensure,
                 description   => "${title} endpoints health",
                 nrpe_command  => "/usr/bin/service-checker-swagger -t 5 ${fact_ip} ${monitor_url}",
                 contact_group => $contact_groups,
@@ -175,10 +181,12 @@ define service::uwsgi(
             # we also support smart-releases
             # TODO: Enable has_autorestart
             service::deployment_script { $name:
-                monitor_url     => $monitor_url,
+                ensure      => $ensure,
+                monitor_url => $monitor_url,
             }
         } elsif $nrpe_check_http {
             nrpe::monitor_service {"uwsgi-nrpe-${title}":
+                ensure        => $ensure,
                 description   => "uWSGI ${title} (http via nrpe)",
                 nrpe_command  => wmflib::argparse($nrpe_check_http, '/usr/lib/nagios/plugins/check_http'),
                 contact_group => $contact_groups,
@@ -188,6 +196,7 @@ define service::uwsgi(
         } else {
             # Basic monitoring
             monitoring::service { $title:
+                ensure        => $ensure,
                 description   => $title,
                 check_command => "check_http_port_url!${port}!${healthcheck_url}",
                 contact_group => $contact_groups,
