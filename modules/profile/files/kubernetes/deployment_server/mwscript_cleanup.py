@@ -51,7 +51,8 @@ def all_jobs_expired(batch: client.BatchV1Api, release: str) -> bool:
         # If the job's status has the Completed or Failed condition, the job's end time is the time
         # that condition was set. There shouldn't be more than one matching condition, but if there
         # are, we'll return the most recent time.
-        end_times = [condition.last_transition_time for condition in job.status.conditions
+        end_times = [condition.last_transition_time
+                     for condition in (job.status.conditions if job.status.conditions else [])
                      if condition.status == 'True' and condition.type in {'Complete', 'Failed'}]
         if not end_times:
             # No Completed/Failed condition, so the job is still running (or suspended).
