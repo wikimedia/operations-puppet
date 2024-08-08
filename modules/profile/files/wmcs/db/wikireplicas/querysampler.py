@@ -4,6 +4,7 @@
 Get a list of currently running queries in the wikireplicas and store them for
 later retrieval. Optionally, do this at random intervals as a service.
 """
+from __future__ import annotations
 
 import argparse
 import json
@@ -13,10 +14,12 @@ import time
 from contextlib import closing
 from datetime import datetime
 from random import randrange
-from typing import Any, Dict, List
+from typing import Any
 
 import pymysql
-import xlsxwriter
+
+# xlsxwriter does not provide types
+import xlsxwriter  # type: ignore
 import yaml
 
 PROC_QUERY = """
@@ -70,7 +73,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def query_replicas(config: Dict, dry_run: bool) -> List:
+def query_replicas(config: dict, dry_run: bool) -> list:
     queries = []
     for host in config["hosts"]:
         repl_config = {"host": host, "user": config["user"], "password": config["password"]}
@@ -104,7 +107,7 @@ def get_queries(config, dry_run):
     return output
 
 
-def save_queries(db_location: str, queries: List):
+def save_queries(db_location: str, queries: list):
     with closing(sqlite3.connect(db_location)) as connection:
         with closing(connection.cursor()) as cursor:
             sql = """
@@ -148,7 +151,7 @@ def dump_queries(db_location: str, xlsx: bool):
                 print("]")
 
 
-def load_config(path) -> Dict[str, Any]:
+def load_config(path) -> dict[str, Any]:
     with open(path) as conf_file:
         try:
             config = yaml.safe_load(conf_file)

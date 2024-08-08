@@ -24,6 +24,7 @@
 #  Information on available and operational databases is sourced from
 #  a checkout of mediawiki-config.
 #
+from __future__ import annotations
 
 import argparse
 import logging
@@ -31,16 +32,17 @@ import re
 import socket
 import sys
 import time
-from typing import Dict, List, Optional
+from typing import Any, Optional
 
 import pymysql
 import yaml
 
 try:
-    from conftool import configuration
-    from conftool.kvobject import KVObject
-    from conftool.loader import Schema
-    from conftool.node import Node
+    # conftool does not provide any types for mypy
+    from conftool import configuration  # type: ignore
+    from conftool.kvobject import KVObject  # type: ignore
+    from conftool.loader import Schema  # type: ignore
+    from conftool.node import Node  # type: ignore
 
     conftool_available = True
 except Exception:
@@ -62,7 +64,7 @@ class DepoolManager:
         self.config_file = config_file
         self.schema_file = schema_file
 
-        self.depooled: "List[str]" = []
+        self.depooled: list[str] = []
         self.schema: "Optional[Schema]" = None
 
     def _get_schema(self) -> "Schema":
@@ -128,7 +130,7 @@ class SchemaOperations:
         self.cursor = cursor
         self.depool_manager = depool_manager
         self.definer = "viewmaster"
-        self.views_missing_tables: List[str] = []
+        self.views_missing_tables: list[str] = []
 
     def write_execute(self, query):
         """Do operation or simulate
@@ -517,7 +519,7 @@ def read_dblist(db_list, mwroot):
         lines = f.read().splitlines()
     if not lines:
         raise RuntimeError(f"No databases found in dblist {db_list}")
-    dbs = []
+    dbs: list[str] = []
     for line in lines:
         # Strip comments and trim whitespace
         comment = line.find("#")
@@ -556,16 +558,16 @@ def eval_dblist(expr, mwroot):
 
 
 def dbrun(
-    db_connections: Dict[str, pymysql.connections.Connection],
+    db_connections: dict[str, pymysql.connections.Connection],
     instance: str,
-    dbs_with_metadata: Dict[str, Dict],
+    dbs_with_metadata: dict[str, dict],
     dry_run: bool,
     replace_all: bool,
     drop: bool,
-    fullviews: List[str],
+    fullviews: list[str],
     clean: bool,
-    customviews: Dict[str, Dict],
-    all_tables: List[str],
+    customviews: dict[str, dict],
+    all_tables: list[str],
     depool_manager: DepoolManager,
 ) -> int:
     exit_status = 0
@@ -613,7 +615,7 @@ def dbrun(
     return exit_status
 
 
-def main():
+def main() -> int:
     exit_status = 0
     argparser = argparse.ArgumentParser(
         "maintain-views",
@@ -701,7 +703,7 @@ def main():
             logging.critical(exc)
             return 2
 
-    all_tables = []
+    all_tables: list[str] = []
     all_tables = all_tables + config["fullviews"]
     all_tables = all_tables + config["allowed_logtypes"]
     all_tables = all_tables + list(config["customviews"].keys())
@@ -778,7 +780,7 @@ def main():
             return 1
 
         # assign all metadata from lists
-        dbs_with_metadata = {x: {} for x in allowed_dbs}
+        dbs_with_metadata: dict[str, dict[str, Any]] = {x: {} for x in allowed_dbs}
         for db_list, meta in dbs_metadata.items():
             for db in read_dblist(db_list, args.mediawiki_config):
                 if db in dbs_with_metadata:

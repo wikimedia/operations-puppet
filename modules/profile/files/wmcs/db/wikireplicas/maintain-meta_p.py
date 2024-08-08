@@ -17,12 +17,14 @@
 #  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 #  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 #
+from __future__ import annotations
 
 import argparse
 import logging
 import os
 import re
 import sys
+from typing import Any
 
 import pymysql
 import requests
@@ -105,7 +107,7 @@ def seed_schema(ops):
     )
 
 
-def main():
+def main() -> None:
     argparser = argparse.ArgumentParser(
         "maintain-meta_p", description="Maintain metadatabase of wiki's"
     )
@@ -212,7 +214,9 @@ def main():
             ops.write_execute("TRUNCATE meta_p.wiki;")
 
         alldbs = "{}/dblists/all.dblist".format(args.mediawiki_config)
-        dbs = {db: {"has_visualeditor": True} for db in open(alldbs).read().splitlines()}
+        dbs: dict[str, Any] = {
+            db: {"has_visualeditor": True} for db in open(alldbs).read().splitlines()
+        }
 
         if args.databases:
             dbs = {k: v for k, v in dbs.items() if k in args.databases}
@@ -272,6 +276,8 @@ def main():
                 url = canonical[db]
             else:
                 matches = re.match("^(.*)(wik[it].*)", db)
+                if not matches:
+                    raise Exception(f"DB '{db}' does not match a wiki database")
                 lang = matches.group(1)
                 url = canonical[dbInfo["family"]].replace("$lang", lang)
 
