@@ -28,6 +28,8 @@ class role::alerting_host {
     include profile::klaxon
     include profile::vopsbot
 
+    include profile::corto
+
     class { 'httpd::mpm':
         mpm => 'prefork'
     }

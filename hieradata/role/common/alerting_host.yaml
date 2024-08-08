@@ -96,3 +96,19 @@ profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -
 profile::base::overlayfs: true
 
 profile::puppet::agent::force_puppet7: true
+
+profile::corto::active_host: 'alert1001.wikimedia.org'
+profile::corto::irc_config::server: 'irc.libera.chat'
+profile::corto::irc_config::port: 6697
+profile::corto::irc_config::use_tls: true
+profile::corto::irc_config::channels:
+  - '#corto-test'
+profile::corto::irc_config::db_dsn: 'sqlite3:///var/lib/corto/ircbot.db'
+profile::corto::irc_config::admins:
+  - 'hnowlan'
+
+profile::corto::phabricator_url: 'https://phabricator.wmcloud.org'
+profile::corto::phabricator_proj_phid: 'PHID-PROJ-hxlfvdumta7urfj3f3az'
+profile::corto::phabricator_phid: 'PHID-USER-ca2zmrdgzg4iool4fgaw'
+
+profile::corto::log_level: 'info'
