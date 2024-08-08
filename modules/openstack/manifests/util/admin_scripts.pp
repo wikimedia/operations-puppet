@@ -95,7 +95,7 @@ class openstack::util::admin_scripts(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-empty-rbd-trash",
+        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-empty-rbd-trash.py",
     }
 
 
