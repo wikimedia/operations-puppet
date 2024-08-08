@@ -33,8 +33,6 @@ class nagios_common::commands(
         'libtime-duration-perl',
         # check_vrrp
         'python3-nagiosplugin',
-        # check_etcd_mw_config_lastindex
-        'python3-requests',
         # check_bfd
         'python3-cffi-backend',
         # perl dependencies for check_galera_nodes.pl
@@ -59,7 +57,6 @@ class nagios_common::commands(
         'check_bfd.py',
         'check_bgp',
         'check_dsh_groups',
-        'check_etcd_mw_config_lastindex.py',
         'check_graphite.py',
         'check_ifstatus_nomon',
         'check_jnx_alarms',
