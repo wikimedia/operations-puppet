@@ -1,6 +1,8 @@
 #!/usr/bin/python3
+from __future__ import annotations
 
 import datetime
+import json
 import logging
 import subprocess
 from dataclasses import dataclass
@@ -37,21 +39,80 @@ class TrashEntry:
     pool: str
 
     @classmethod
-    def from_trash_ls_line(cls, pool: str, trash_ls_line: str):
+    def from_trash_ls_data(cls, pool: str, trash_ls_data: dict[str, Any]):
         """
         Parses one line from the command:
-        >> rbd trash ls -l <pool_name>
+        >> rbd trash ls --format=json -l <pool_name>
 
-        Example of supported lines:
-            ff8c794c3aee2e volume-6faff28f-b0db-46c9-9ca6-e613076c58f2 USER   \
-                Wed May 29 14:09:55 2024 expired at Wed May 29 14:09:55 2024
+        Example of supported data:
+            [
+                {
+                    "id": "ff8c794c3aee2e",
+                    "name": "volume-6faff28f-b0db-46c9-9ca6-e613076c58f2",
+                    "source": "USER",
+                    "deleted_at": "Wed May 29 14:09:55 2024",
+                    "status": "expired at Wed May 29 14:09:55 2024"
+                }
+            ]
+
         """
-        line_chunks = trash_ls_line.split()
-        image_id, image_name = line_chunks[:2]
-        expired = " expired at " in trash_ls_line
-        return cls(image_id=image_id, image_name=image_name, expired=expired, pool=pool)
+        expired = trash_ls_data["status"].startswith("expired at")
+        return cls(
+            image_id=trash_ls_data["id"],
+            image_name=trash_ls_data["name"],
+            expired=expired,
+            pool=pool,
+        )
+
+    def _get_snapshots(self, noop: bool) -> list[dict[str, Any]]:
+        """ "
+        Example return value:
+        [
+            {
+                "id": 2220,
+                "name": "snapshot-8ea087a6-6997-41b2-928b-f0293d41e3d1",
+                "size": 42949672960,
+                "protected": "true",
+                "timestamp": "Fri Jul 29 18:46:11 2022"
+            }
+        ]
+        """
+        snapshots_raw = run_command(
+            [
+                "rbd",
+                "snap",
+                "--format=json",
+                "ls",
+                f"--pool={self.pool}",
+                f"--image-id={self.image_id}",
+            ]
+        )
+        return json.loads(snapshots_raw)
+
+    def _unprotect_snapshot(self, snapshot_name: str, noop: bool) -> None:
+        run_command(
+            [
+                "rbd",
+                "snap",
+                "unprotect",
+                f"--pool={self.pool}",
+                f"--image-id={self.image_id}",
+                f"--snap={snapshot_name}",
+            ],
+            noop=noop,
+        )
+
+    def _unprotect_snapshots(self, noop: bool) -> None:
+        for snapshot in self._get_snapshots(noop=noop):
+            # we actually get a string :/, just in case cast it too
+            if str(snapshot["protected"]) == "true":
+                logging.info(
+                    "   Unprotecting snapshot %s for trash entry %s", snapshot["name"], self
+                )
+                self._unprotect_snapshot(snapshot_name=snapshot["name"], noop=noop)
 
     def remove(self, noop: bool) -> None:
+        self._unprotect_snapshots(noop=noop)
         run_command(
             ["rbd", "snap", "purge", f"--pool={self.pool}", f"--image-id={self.image_id}"],
             noop=noop,
@@ -655,9 +716,6 @@ def get_snapshots_for_pool(pool: str) -> List[RBDSnapshot]:
 
 
 def get_trash_entries(pool: str) -> List[TrashEntry]:
-    raw_lines = subprocess.check_output([RBD, "trash", "ls", "-l", pool])
-    return [
-        TrashEntry.from_trash_ls_line(pool=pool, trash_ls_line=line.decode("utf8"))
-        # skip the header
-        for line in raw_lines.splitlines()[1:]
-    ]
+    raw_lines = subprocess.check_output([RBD, "trash", "ls", "--format=json", "-l", pool])
+    result_data = json.loads(raw_lines)
+    return [TrashEntry.from_trash_ls_data(pool=pool, trash_ls_data=entry) for entry in result_data]
