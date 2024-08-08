@@ -72,7 +72,7 @@ class profile::mediawiki::webserver(
         }
 
         monitoring::service { 'etcd_mw_config':
-            ensure        => present,
+            ensure        => absent,
             description   => 'MediaWiki EtcdConfig up-to-date',
             check_command => "check_etcd_mw_config_lastindex!${::site}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Etcd',
