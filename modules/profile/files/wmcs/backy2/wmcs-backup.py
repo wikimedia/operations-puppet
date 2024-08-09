@@ -1098,7 +1098,8 @@ class InstanceBackupsState:
         was already there.
         """
         if not vm_backup.project:
-            raise Exception("Unable to add a backup when no project was passed: %s", self)
+            logging.error("Skipping backup without project (probably deleted): %s", vm_backup)
+            return False
 
         if vm_backup.project not in self.projects_backups:
             self.projects_backups[vm_backup.project] = ProjectBackups(
