@@ -168,6 +168,7 @@ profile::idp::services:
     service_id: 'https://netbox(-next)?\.wikimedia\.org\/[\w\/]*'
     profile_format: 'FLAT'
     required_groups:
+      - nda
       - wmf
   datahub:
     id: 34
