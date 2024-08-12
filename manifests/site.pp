@@ -312,6 +312,11 @@ node /^backup200[4567]\.codfw\./ {
 node /^backup2011\.codfw\./ {
     role(mediabackup::storage)
 }
+# New backup node for codfw T371984
+node /^backup2012\.codfw\./ {
+    # role(mediabackup::storage)
+    role(insetup::data_persistence)
+}
 
 # New backup node for codfw T294973
 node /^backup2008\.codfw\./ {
