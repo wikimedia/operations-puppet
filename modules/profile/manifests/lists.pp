@@ -151,6 +151,7 @@ class profile::lists (
         class { 'sslcert::dhparam': }
         acme_chief::cert{ $acme_chief_cert:
             puppet_svc => 'apache2',
+            puppet_rsc => Service['exim4'],
             key_group  => 'Debian-exim',
         }
     }
