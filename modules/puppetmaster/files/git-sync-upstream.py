@@ -36,7 +36,7 @@ def deploy_puppet_code():
     if Path("/usr/local/bin/puppetserver-deploy-code").is_file():
         logger.info("Deploying updated puppet code")
         try:
-            subprocess.check_call(["/usr/local/bin/puppetserver-deploy-code"])
+            subprocess.check_call(["/usr/bin/sudo", "/usr/local/bin/puppetserver-deploy-code"])
             return True
         except subprocess.CalledProcessError:
             logger.error("Call to puppetserver-deploy-code failed")
