@@ -39,7 +39,7 @@ backend <%= name %>
     <%- end -%>
   <%- svc['hosts'].sort.each do |host| -%>
     server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> <%= svc['backend_use_tls'] ? 'check-ssl verify none' : 'check' %>
-  <% end %>
+  <%- end %>
 <% end %>
 
 # Public services backends.
@@ -53,10 +53,10 @@ backend <%= name %>-public
     <%- if svc['backend_use_tls'] -%>
     # We don't verify certificates on health checks here to mimick what production does
     <%- else -%>
-    option http-check
+    option httpchk
     <%- end -%>
   <%- svc['hosts'].sort.each do |host| -%>
     server <%= host.split('.')[0] %> <%= "#{host}:#{svc['port']}" %> <%= svc['backend_use_tls'] ? 'ssl check-ssl verify none' : 'check' %>
-  <% end %>
+  <%- end %>
 <%- end -%>
 <%- end -%>
