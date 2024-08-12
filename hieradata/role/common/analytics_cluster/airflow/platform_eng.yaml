@@ -26,7 +26,8 @@ profile::java::extra_args:
 
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
-profile::airflow::airflow_version: '2.9.3-py3.10-20240812'
+#Airflow version override
+#profile::airflow::airflow_version: '2.9.3-py3.10-20240812'
 
 # Set up airflow instances.
 profile::airflow::instances:

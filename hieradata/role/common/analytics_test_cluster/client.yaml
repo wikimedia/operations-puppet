@@ -44,7 +44,8 @@ profile::monitoring::notifications_enabled: false
 profile::presto::cluster_name: analytics-test-presto
 profile::presto::discovery_uri: https://analytics-test-presto.eqiad.wmnet:8281
 
-profile::airflow::airflow_version: '2.9.3-py3.10-20240812'
+#Airflow version override
+#profile::airflow::airflow_version: '2.9.3-py3.10-20240812'
 
 # Set up airflow instances.
 profile::airflow::instances:
