@@ -96,6 +96,14 @@ profile::idp::services:
     required_groups:
       - wmf
       - nda
+  prometheus_oidc:
+    id: 13
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://prometheus-(.+)\.wmcloud\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn

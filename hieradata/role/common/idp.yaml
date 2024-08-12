@@ -233,6 +233,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  prometheus_oidc:
+    id: 42
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://prometheus-(.+)\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
