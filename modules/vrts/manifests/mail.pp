@@ -63,7 +63,7 @@ class vrts::mail(
     }
 
     mailalias { 'root':
-        recipient => 'sre-service-ops-collab@wikimedia.org',
+        recipient => 'root@wikimedia.org',
     }
 
     file { '/etc/exim4/defer_domains':
