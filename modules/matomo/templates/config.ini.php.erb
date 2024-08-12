@@ -44,6 +44,15 @@ record_statistics = 1
 username = "<%= @admin_username %>"
 password = "<%= @admin_password %>"
 
+[CustomReports]
+datatable_archiving_maximum_rows_custom_reports = 500
+datatable_archiving_maximum_rows_subtable_custom_reports = 500
+custom_reports_validate_report_content_all_websites = 1
+custom_reports_always_show_unique_visitors = 0
+custom_reports_max_execution_time = 0
+custom_reports_disabled_dimensions = ""
+custom_reports_periods_force_aggregate_report_unique_metrics_evolution = ""
+
 [Plugins]
 Plugins[] = "CorePluginsAdmin"
 Plugins[] = "CoreAdminHome"
@@ -109,6 +118,7 @@ Plugins[] = "ProfessionalServices"
 Plugins[] = "UserId"
 Plugins[] = "TagManager"
 Plugins[] = "MarketingCampaignsReporting"
+Plugins[] = "CustomReports"
 
 [PluginsInstalled]
 PluginsInstalled[] = "Diagnostics"
@@ -176,3 +186,4 @@ PluginsInstalled[] = "Marketplace"
 PluginsInstalled[] = "TagManager"
 PluginsInstalled[] = "GeoIp2"
 PluginsInstalled[] = "MarketingCampaignsReporting"
+PluginsInstalled[] = "CustomReports"
