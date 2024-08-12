@@ -27,8 +27,7 @@ profile::java::java_packages:
 profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
-# Temporarily override airflow version to permit phased deployment
-#profile::airflow::airflow_version: '2.7.3-py3.10-20231127'
+profile::airflow::airflow_version: '2.9.3-py3.10-20240812'
 
 # Set up airflow instances.
 profile::airflow::instances:
