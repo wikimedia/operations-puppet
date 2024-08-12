@@ -59,7 +59,7 @@ profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
 
 # This parameter can be used to disable ingestion via gobblin temporarily,
 # such as when Hadoop maintenance work is required
-#profile::analytics::refinery::job::gobblin::ensure_timers: absent
+profile::analytics::refinery::job::gobblin::ensure_timers: absent
 
 # These parameters can be used to disable the refinery jobs temporarily,
 # such as when Hadoop maintenance work is required
