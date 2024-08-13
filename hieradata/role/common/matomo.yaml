@@ -1,6 +1,9 @@
 # Notify the Data Platform SRE team about services on these hosts
 contactgroups: 'admins,team-data-platform'
 
+# We require a non-free matomo plugin on this host. See #T370203
+profile::apt::private_components: ['matomo_plugins']
+
 profile::admin::groups:
   - analytics-admins
 

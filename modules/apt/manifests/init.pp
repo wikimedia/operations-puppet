@@ -1,15 +1,18 @@
 class apt(
-    Boolean $purge_sources           = false,
-    Boolean $purge_preferences       = false,
-    Boolean $use_proxy               = true,
-    Boolean $install_audit_installed = false,
-    String  $mirror                  = 'mirrors.wikimedia.org',
-    Boolean $use_private_repo        = false,
+    Boolean       $purge_sources           = false,
+    Boolean       $purge_preferences       = false,
+    Boolean       $use_proxy               = true,
+    Boolean       $install_audit_installed = false,
+    String        $mirror                  = 'mirrors.wikimedia.org',
+    Boolean       $use_private_repo        = false,
+    Array[String] $private_components      = [],
 ) {
     $components =  $facts['is_virtual'] ? {
         true    => 'main',
         default => 'main thirdparty/hwraid',
     }
+
+    $private_repo_components = (['thirdparty/hwraid'] + $private_components).join(' ')
 
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -166,7 +169,9 @@ class apt(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    if debian::codename::ge('bullseye') and $use_private_repo and !$facts['is_virtual']{
+    if debian::codename::ge('bullseye') and $use_private_repo and !$facts['is_virtual'] {
+        $ensure_private_repo = present
+    } elsif length($private_components) > 0 and $use_private_repo {
         $ensure_private_repo = present
     } else {
         $ensure_private_repo = absent
@@ -176,7 +181,7 @@ class apt(
         ensure     => $ensure_private_repo,
         uri        => 'http://apt.wikimedia.org:8080',
         dist       => "${::lsbdistcodename}-wikimedia-private",
-        components => 'thirdparty/hwraid',
+        components => $private_repo_components,
         keyfile    => $wikimedia_apt_keyfile,
     }
 

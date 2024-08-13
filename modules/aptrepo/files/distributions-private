@@ -7,6 +7,7 @@ Version: 11
 Architectures: source amd64
 Components: main
 # sorted list, leading whitespace matters!
+ matomo_plugins
  thirdparty/hwraid
 Description: Private Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
@@ -22,6 +23,7 @@ Version: 12
 Architectures: source amd64
 Components: main
 # sorted list, leading whitespace matters!
+ matomo_plugins
  thirdparty/hwraid
 Description: Private Wikimedia packages for Debian bookworm
 SignWith: 9D392D3FFADF18FB
