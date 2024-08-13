@@ -55,7 +55,8 @@ hosts:
     - ms-be1056:
         - sdh1: failed
     - ms-be1057
-    - ms-be1058
+    - ms-be1058:
+        - sdc1: failed
     - ms-be1059
   prod24:
     - ms-be1060
