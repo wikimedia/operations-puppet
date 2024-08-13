@@ -10,8 +10,9 @@ class profile::analytics::postgresql (
     Array[Stdlib::Host] $replicas             = lookup('profile::analytics::postgresql::replicas'),
     Boolean             $ipv6_ok              = lookup('profile::analytics::postgresql::ipv6_ok', default_value => true),
     Boolean             $do_backups           = lookup('profile::analytics::postgresql::do_backup', default_value => true),
-    Array[String]       $databases            = lookup('profile::analytics::postgresql::databases', default_value => [] ),
-    Hash[String,String] $users                = lookup('profile::analytics::postgresql::users', default_value => {} ),
+    Array[String]       $databases            = lookup('profile::analytics::postgresql::databases', default_value => []),
+    Hash[String,String] $users                = lookup('profile::analytics::postgresql::users', default_value => {}),
+    Integer             $max_connections      = lookup('profile::analytics::postgresql::max_connections', default_value => 100)
 )
 {
   # We continue to use non-inclusive language here until T280268 can be addressed
@@ -104,7 +105,7 @@ class profile::analytics::postgresql (
       class { 'postgresql::backup':
         do_backups    => $do_backups,
         dump_interval => $dump_interval,
-        rotate_days   => 2
+        rotate_days   => 2,
       }
     }
 
@@ -115,6 +116,21 @@ class profile::analytics::postgresql (
     type     => 'local',
     method   => 'peer',
   }
+
+  $pgversion = $::lsbdistcodename ? {
+      'bullseye' => 13,
+      'bookworm' => 15,
+    }
+
+  # Tuning
+  file { "/etc/postgresql/${pgversion}/main/tuning.conf":
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      content => template('profile/analytics/postgresql/tuning.conf.erb'),
+  }
+
   if $do_backups {
     include profile::backup::host
     backup::set { 'data-engineering-postgres':
