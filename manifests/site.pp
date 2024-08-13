@@ -1560,7 +1560,7 @@ node /^alert[12]001\.wikimedia\./ {
 
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T370111, T370112)
 node /^alert[12]002\.wikimedia\./ {
-    role(insetup::observability)
+    role(alerting_host)
 }
 
 # Phabricator eqiad (T280540, T279176) (production)
