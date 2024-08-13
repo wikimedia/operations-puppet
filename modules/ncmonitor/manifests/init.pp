@@ -142,12 +142,6 @@ class ncmonitor(
         ensure  => $ensure,
     }
 
-    systemd::sysuser { 'ncmonitor':
-        ensure   => $ensure,
-        shell    => '/bin/sh',
-        home_dir => '/nonexistent',
-    }
-
     $ensure_conf_dir = $ensure ? {
         absent  => $ensure,
         default => 'directory',
