@@ -7236,3 +7236,7 @@ ldap_only_users:
     ensure: present
     realname: Mate Szabo
     email: mszabo@wikimedia.org
+  sarai-wmf:
+    ensure: present
+    realname: Sarai Sanchez
+    email: ssanchez@wikimedia.org
