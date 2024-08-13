@@ -21,6 +21,7 @@ class profile::analytics::postgresql (
       # We do this for the require in postgres::db
       $require_class = 'postgresql::master'
       class { 'postgresql::master':
+          includes => ['tuning.conf'],
           root_dir => '/srv/postgres',
           use_ssl  => true,
       }
@@ -94,6 +95,7 @@ class profile::analytics::postgresql (
   else {
       $require_class = 'postgresql::slave'
       class { 'postgresql::slave':
+          includes         => ['tuning.conf'],
           master_server    => $primary,
           root_dir         => '/srv/postgres',
           replication_pass => $replication_password,
