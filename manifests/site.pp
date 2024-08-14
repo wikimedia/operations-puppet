@@ -1911,6 +1911,10 @@ node /^logging-hd200[1-3]\.codfw\./ {
     role(logging::opensearch::data)
 }
 
+node /^logging-hd200[4-5]\.codfw\./ {
+    role(insetup::observability)
+}
+
 # Logging data nodes, ssd class (codfw)
 node /^logstash20(2[6789]|3[34567])\.codfw\./ {
     role(logging::opensearch::data)
@@ -1928,6 +1932,10 @@ node /^logstash20(2[345]|3[012])\.codfw\./ {
 # Logging data nodes, hdd class (eqiad)
 node /^logging-hd100[1-3]\.eqiad\./ {
     role(logging::opensearch::data)
+}
+
+node /^logging-hd100[4-5]\.eqiad\./ {
+    role(insetup::observability)
 }
 
 # Logging data nodes, ssd class (eqiad)
