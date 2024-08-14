@@ -2074,12 +2074,8 @@ node /^ml-serve-ctrl200[12]\.codfw\./ {
     role(ml_k8s::master)
 }
 
-node /^ml-serve200[1-8]\.codfw\./ {
+node /^ml-serve20(0[1-9]|1[01])\.codfw\./ {
     role(ml_k8s::worker)
-}
-
-node /^ml-serve(2009|2010|2011)\.codfw\./ {
-    role(insetup::machine_learning)
 }
 
 node /^ml-serve100[1-8]\.eqiad\./ {
