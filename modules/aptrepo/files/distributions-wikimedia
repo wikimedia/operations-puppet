@@ -140,6 +140,7 @@ Components: main
  component/logrotate
  component/memcached-tls
  component/php74
+ component/php81
  component/puppet7
  component/pdns-recursor
  component/prometheus-openstack-exporter
