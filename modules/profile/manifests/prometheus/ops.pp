@@ -875,6 +875,13 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
+    # Special config for SQL Exporter on VRTS
+    prometheus::class_config{ "sql_vrts_${::site}":
+        dest       => "${targets_path}/sql_vrts_${::site}.yaml",
+        class_name => 'profile::vrts',
+        port       => 9237,
+    }
+
     # Job definition for icinga_exporter
     $icinga_jobs = [
       {
@@ -2453,6 +2460,15 @@ class profile::prometheus::ops (
       },
     ]
 
+    $sql_exporter_jobs = [
+      {
+        'job_name'        => 'sql_exporter',
+        'file_sd_configs' => [
+          { 'files' => ["${targets_path}/sql_*.yaml"]},
+        ],
+      },
+    ]
+
     prometheus::class_config{ "lvs_realserver_clamper_${::site}":
         dest             => "${targets_path}/lvs_realserver_clamper_${::site}.yaml",
         class_name       => 'profile::lvs::realserver::ipip',
@@ -2485,7 +2501,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs, $fifo_log_demux_jobs,
+            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
