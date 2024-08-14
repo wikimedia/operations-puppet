@@ -63,7 +63,7 @@ define package_builder::pbuilder_hook(
         content => template('package_builder/D05localsources.erb'),
     }
 
-    ['72', '74'].each|String $php_version| {
+    ['72', '74', '81'].each|String $php_version| {
         file { "${basepath}/hooks/${distribution}/D04php${php_version}":
             ensure  => present,
             mode    => '0555',
