@@ -7240,3 +7240,7 @@ ldap_only_users:
     ensure: present
     realname: Sarai Sanchez
     email: ssanchez@wikimedia.org
+  jfk:
+    ensure: present
+    realname: Jasmine Kilani
+    email: jkilani@wikimedia.org
