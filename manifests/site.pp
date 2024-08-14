@@ -2094,6 +2094,10 @@ node /^ml-staging200[123]\.codfw\./ {
     role(ml_k8s::staging::worker)
 }
 
+node /^ml-lab100[12]\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 node /^moscovium\.eqiad\./ {
     role(requesttracker)
 }
