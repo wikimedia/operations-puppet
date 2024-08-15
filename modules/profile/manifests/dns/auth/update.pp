@@ -7,7 +7,6 @@ class profile::dns::auth::update (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips     = lookup('profile::dns::auth::authdns_servers_ips'),
     Array[Wmflib::Sites]                              $datacenters             = lookup('datacenters'),
     Hash[String, Wmflib::Advertise_vip]               $advertise_vips          = lookup('profile::bird::advertise_vips', {'merge' => hash}),
-    Boolean                                           $confd_admin_state       = lookup('profile::dns::auth::confd_admin_state', {'default_value' => false}),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts
@@ -97,14 +96,13 @@ class profile::dns::auth::update (
         }
     }
 
-    if $confd_admin_state {
-        $confd_admin_state_file = '/var/lib/gdnsd/admin_state'
-        confd::file { $confd_admin_state_file:
-            ensure     => present,
-            watch_keys => ['/geodns'],
-            content    => template('profile/dns/auth/admin_state.tpl.erb'),
-            before     => Exec['authdns-local-update'],
-        }
+    # confd now manages admin_state; see T369366
+    $confd_admin_state_file = '/var/lib/gdnsd/admin_state'
+    confd::file { $confd_admin_state_file:
+        ensure     => present,
+        watch_keys => ['/geodns'],
+        content    => template('profile/dns/auth/admin_state.tpl.erb'),
+        before     => Exec['authdns-local-update'],
     }
 
     ferm::service { 'authdns_update_ssh_rule':
