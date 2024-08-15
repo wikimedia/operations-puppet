@@ -98,7 +98,7 @@ class profile::dns::auth::update (
     }
 
     if $confd_admin_state {
-        $confd_admin_state_file = "${workingdir}/admin_state"
+        $confd_admin_state_file = '/var/lib/gdnsd/admin_state'
         confd::file { $confd_admin_state_file:
             ensure     => present,
             watch_keys => ['/geodns'],
