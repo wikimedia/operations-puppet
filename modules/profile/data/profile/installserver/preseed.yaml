@@ -336,7 +336,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-main[12]00[45]':
     - reuse-parts-test.cfg
     - partman/custom/reuse-raid10-8dev.cfg
-  # Join the following two sections after additional disks have been installed in eqiad (T371422)
+  # Join the following 3 sections after additional disks have been installed in eqiad (T371422)
+  # These nodes have been reimaged with standard + raid10-6dev, but cookbook failed due to mkfs /srv taking too long.
+  # Trying to reimage with reuse...
+  'kafka-main2006|kafka-main2009|kafka-main2010':
+    - reuse-parts.cfg
+    - partman/reuse-raid10-6dev.cfg
   # standard + raid10-6dev is used for initial imaging, switch to reuse-parts + reuse-raid10-6dev after
   'kafka-main200[6-9]|kafka-main2010':
     - partman/standard.cfg
