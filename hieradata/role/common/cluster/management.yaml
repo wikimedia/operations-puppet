@@ -26,6 +26,7 @@ profile::spicerack::cookbooks_dependencies:
   - transferpy
   - python3-aiohttp
   - python3-cryptography
+  - python3-snappy
 profile::spicerack::peeringdb_config_data:
   cachedir: /tmp/peeringdb-cache
   # peeringdb_token_ro: overiden in the private repo
