@@ -29,7 +29,7 @@ RUN set -e; \
 
 USER ${C_USER}
 
-COPY --chown=${C_USER}:${C_USER} public_clouds.json carriers.json trusted_proxies.json vendor_proxies.json /usr/share/varnish/tests/
+COPY --chown=${C_USER}:${C_USER} public_clouds.json trusted_proxies.json vendor_proxies.json /usr/share/varnish/tests/
 COPY --chown=${C_USER}:${C_USER} confd_stub_data.yaml /${C_USER}/
 COPY dp.daily.key /etc/varnish/
 COPY usr/share/GeoIP/*.mmdb /usr/share/GeoIP/

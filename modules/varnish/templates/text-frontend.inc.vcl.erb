@@ -211,12 +211,9 @@ sub cluster_fe_recv_pre_purge {
             set req.http.X-Subdomain = "M";
         }
 
-        // The following headers were removed by zero's tag_carrier_cleanup.
-        // MediaWiki takes them into account, so make sure they cannot be
-        // injected from the outside
+        // MediaWiki takes this header into account, so make sure it cannot
+        // be injected from the outside
         unset req.http.X-Forwarded-By;
-        unset req.http.X-CS;
-        unset req.http.X-CS2;
 
         // mobile-subdomains-only for Host-rewrite
         if (req.http.X-Subdomain) {

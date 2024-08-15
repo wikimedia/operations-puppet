@@ -356,11 +356,9 @@ sub normalize_request {
 // Must be done at the top of vcl_recv, in our varnish-frontend layer only,
 // and should be guarded against running on request restarts.
 sub recv_fe_ip_processing {
-    // this subroutine "owns" these 5 headers - nothing else in our VCL or
+    // this subroutine "owns" these 3 headers - nothing else in our VCL or
     // anywhere in our network should be setting them.
     unset req.http.X-Trusted-Proxy;
-    unset req.http.X-Carrier;
-    unset req.http.X-Carrier-Meta;
     unset req.http.X-Public-Cloud;
     unset req.http.X-Abuse-Network;
 
@@ -526,8 +524,6 @@ include "directors.frontend.vcl";
 
     // args here are map-name (for .map()), data file, and seconds between mtime checks for reload
     netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
-    // TODO: We no longer use carriers, will remove this in a follow up patch - jbond 10-03-2022
-    netmapper.init("carriers", "<%= @netmapper_dir %>/carriers.json", 89);
     netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
     netmapper.init("known_clients", "<%= @netmapper_dir %>/known_clients.json", 89);
     <%- if @ip_reputation -%>
