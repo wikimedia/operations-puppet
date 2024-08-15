@@ -347,7 +347,7 @@ profile::phorge::repo_path: '/srv/repo'
 
 # throttling with nftables
 profile::firewall::nftables_throttling::ensure: absent
-# allow 300 requests per 60 seconds, ban clients above for 300 seconds
-profile::firewall::nftables_throttling::throttle_requests: 300
+# allow 300 packets per 60 seconds, ban clients above for 300 seconds
+profile::firewall::nftables_throttling::throttle_packets: 300
 profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::port: 443
