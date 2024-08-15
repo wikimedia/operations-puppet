@@ -87,6 +87,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'arclamp[12]001':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  # First install (https://phabricator.wikimedia.org/T372514)
+  'aqs1022':
+    - partman/custom/aqs-cassandra-8ssd-2srv.cfg
   'aqs*':
     - reuse-parts.cfg
     - partman/custom/reuse-aqs-cassandra-8ssd-2srv.cfg
