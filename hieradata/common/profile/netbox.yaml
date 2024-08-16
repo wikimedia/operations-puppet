@@ -17,7 +17,6 @@ profile::netbox::do_backup: false
 profile::netbox::http_proxy: ~
 profile::netbox::changelog_retention: 730
 profile::netbox::job_retention: 90
-profile::netbox::prefer_ipv4: false
 profile::netbox::validators: []
 profile::netbox::report_checks: []
 

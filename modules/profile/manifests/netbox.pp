@@ -50,7 +50,6 @@
 #        Set this to 0 to retain changes in the database indefinitely.
 # @param job_retention The number of days to retain job results (scripts and reports).
 #        Set this to 0 to retain job results in the database indefinitely.
-# @param prefer_ipv4 When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
 # @param validators a list of form validators to install
 #        Set this to True to prefer IPv4 instead.
 # @param cas_rename_attributes a mapping of attributes that should be renamed
@@ -82,7 +81,6 @@ class profile::netbox (
     Optional[Stdlib::HTTPUrl]   $http_proxy              = lookup('profile::netbox::http_proxy'),
     Integer[0]                  $changelog_retention     = lookup('profile::netbox::changelog_retention'),
     Integer[0]                  $job_retention           = lookup('profile::netbox::job_retention'),
-    Boolean                     $prefer_ipv4             = lookup('profile::netbox::prefer_ipv4'),
     Array[String[1]]            $validators              = lookup('profile::netbox::validators'),
     Array[Profile::Netbox::Report_check] $report_checks  = lookup('profile::netbox::report_checks'),
 
@@ -200,7 +198,6 @@ class profile::netbox (
         http_proxy                  => $http_proxy,
         changelog_retention         => $changelog_retention,
         job_retention               => $job_retention,
-        prefer_ipv4                 => $prefer_ipv4,
         validators                  => $validators,
         ca_certs                    => $ca_certs,
         cas_server_url              => $cas_server_url,

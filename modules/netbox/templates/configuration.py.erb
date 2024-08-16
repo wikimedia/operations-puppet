@@ -162,10 +162,6 @@ LOGIN_REQUIRED = True
 # Expose Prometheus monitoring metrics at the HTTP endpoint '/metrics'
 METRICS_ENABLED = True
 
-# When determining the primary IP address for a device, IPv6 is preferred over IPv4 by default.
-# Set this to True to prefer IPv4 instead.
-PREFER_IPV4 = <%= @prefer_ipv4.to_s.capitalize %>
-
 # To be removed after Netbox >= 3.7
 # The default value for this parameter was changed from False to True in NetBox v3.7.
 ENFORCE_GLOBAL_UNIQUE = True
