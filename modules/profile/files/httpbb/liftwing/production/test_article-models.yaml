@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+https://articlequality.article-models.wikimedia.org:
+- path: /v1/models/articlequality:predict
+  json_body:
+    rev_id: 21774755
+    lang: en
+  assert_status: 200
+  assert_body_contains: score
+  method: POST
