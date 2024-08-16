@@ -351,6 +351,14 @@ profile::kubernetes::deployment_server::services:
         - name: article-descriptions-deploy
           owner: root
           group: deploy-ml-service
+    article-models:
+      usernames:
+        - name: article-models
+          owner: root
+          group: deploy-ml-service
+        - name: article-models-deploy
+          owner: root
+          group: deploy-ml-service
     logo-detection:
       usernames:
         - name: logo-detection
