@@ -73,15 +73,13 @@ profile::acme_chief::certificates:
         SNI:
         - 'icinga.wikimedia.org'
         - 'alerts.wikimedia.org'
-        - 'alert1001.wikimedia.org'
-        - 'alert2001.wikimedia.org'
         - 'alert1002.wikimedia.org'
         - 'alert2002.wikimedia.org'
         - 'icinga-extmon.wikimedia.org'
         - 'klaxon.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
-        - '^alert[12]00[12]\.wikimedia\.org$'
+        - '^alert[12]002\.wikimedia\.org$'
     idm:
         CN: 'idm.wikimedia.org'
         SNI:

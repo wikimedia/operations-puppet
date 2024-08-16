@@ -161,9 +161,7 @@ prometheus_migrations:
     dst_host: 'prometheus6002.drmrs.wmnet'
 
 alertmanagers:
-  - alert1001.wikimedia.org
   - alert1002.wikimedia.org
-  - alert2001.wikimedia.org
   - alert2002.wikimedia.org
 
 # NOTE: Do *not* add new clusters *per site* anymore,
@@ -1786,10 +1784,6 @@ mysql_root_clients:
 - 208.80.155.103 # dborch1001.wikimedia.org
 
 monitoring_hosts:
-- 208.80.154.88              # alert1001.wikimedia.org
-- 2620:0:861:3:208:80:154:88 # alert1001.wikimedia.org
-- 208.80.153.84              # alert2001.wikimedia.org
-- 2620:0:860:3:208:80:153:84 # alert2001.wikimedia.org
 - 208.80.154.78              # alert1002.wikimedia.org
 - 2620:0:861:3:208:80:154:78 # alert1002.wikimedia.org
 - 208.80.153.42              # alert2002.wikimedia.org
@@ -2514,10 +2508,6 @@ blackbox_smoke_hosts:
     realm: frack
     site: eqiad
     rack: C1
-  alert1001.wikimedia.org:
-    realm: production
-    site: eqiad
-    rack: C6
   alert1002.wikimedia.org:
     realm: production
     site: eqiad
@@ -2539,10 +2529,6 @@ blackbox_smoke_hosts:
     realm: production
     site: codfw
     rack: B5
-  alert2001.wikimedia.org:
-    realm: production
-    site: codfw
-    rack: C5
   alert2002.wikimedia.org:
     realm: production
     site: codfw
