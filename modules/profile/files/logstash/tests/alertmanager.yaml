@@ -9,16 +9,16 @@ testcases:
       - >
         {
           "rsyslog.timereported": "2021-08-26T19:39:19.208",
-          "rsyslog.hostname": "alert2001",
+          "rsyslog.hostname": "alert2002",
           "rsyslog.programname": "alertmanager-webhook-logger",
           "rsyslog.severity": "INFO",
           "rsyslog.facility": "user",
           "timestamp": "2021-08-26T19:39:19.208Z",
-          "host": "alert2001",
-          "logsource": "alert2001",
-          "instance": "alert1001",
-          "summary": "cluster=alerting instance=alert2001 job=icinga site=codfw",
-          "msg": "<14>Aug 26 19:39:19 alertmanager-webhook-logger[18408]:{\"alertname\":\"Icinga/Elevated latency for icinga checks in codfw\",\"dashboard\":\"https://grafana.wikimedia.org/d/rsCfQfuZz/icinga\",\"endsAt\":\"2021-08-26T19:36:08.660803Z\",\"externalURL\":\"http://alert2001:9093\",\"generatorURL\":\"\",\"instance\":\"alert1001\",\"receiver\":\"logger\",\"runbook\":\"https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link\",\"severity\":\"warning\",\"startsAt\":\"2021-08-26T19:18:49.052190569Z\",\"status\":\"resolved\",\"summary\":\"cluster=alerting instance=alert2001 job=icinga site=codfw\",\"team\":\"sre\",\"timestamp\":\"2021-08-26T19:39:19.054744781Z\"}",
+          "host": "alert2002",
+          "logsource": "alert2002",
+          "instance": "alert1002",
+          "summary": "cluster=alerting instance=alert2002 job=icinga site=codfw",
+          "msg": "<14>Aug 26 19:39:19 alertmanager-webhook-logger[18408]:{\"alertname\":\"Icinga/Elevated latency for icinga checks in codfw\",\"dashboard\":\"https://grafana.wikimedia.org/d/rsCfQfuZz/icinga\",\"endsAt\":\"2021-08-26T19:36:08.660803Z\",\"externalURL\":\"http://alert2002:9093\",\"generatorURL\":\"\",\"instance\":\"alert1002\",\"receiver\":\"logger\",\"runbook\":\"https://wikitech.wikimedia.org/wiki/Monitoring/Missing_notes_link\",\"severity\":\"warning\",\"startsAt\":\"2021-08-26T19:18:49.052190569Z\",\"status\":\"resolved\",\"summary\":\"cluster=alerting instance=alert2002 job=icinga site=codfw\",\"team\":\"sre\",\"timestamp\":\"2021-08-26T19:39:19.054744781Z\"}",
           "timestamp": "2021-08-26T19:39:19.054744781Z",
           "facility": "user",
           "endsAt": "2021-08-26T19:36:08.660803Z",
@@ -29,7 +29,7 @@ testcases:
           "severity": "warning",
           "program": "alertmanager-webhook-logger",
           "team": "sre",
-          "externalURL": "http://alert2001:9093",
+          "externalURL": "http://alert2002:9093",
           "startsAt": "2021-08-26T19:18:49.052190569Z",
           "source": "icinga",
           "status": "resolved",
@@ -39,9 +39,9 @@ testcases:
     expected:
       - __target_index: "ecs-alerts-2-1.11.0-N-yearly"
         '@timestamp': "2021-08-26T19:39:19.054Z"
-        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2001 job=icinga site=codfw - )"
+        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2002 job=icinga site=codfw - )"
         host:
-          name: "alert2001"
+          name: "alert2002"
         log:
           level: "INFO"
           syslog:
@@ -58,8 +58,8 @@ testcases:
           status: "resolved"
           team: "sre"
           alertname: "Icinga/Elevated latency for icinga checks in codfw"
-          summary: "cluster=alerting instance=alert2001 job=icinga site=codfw"
-          instance: "alert1001"
+          summary: "cluster=alerting instance=alert2002 job=icinga site=codfw"
+          instance: "alert1002"
           source: "icinga"
           alert_severity: "warning"
           generatorURL: ""
@@ -68,25 +68,25 @@ testcases:
         event:
           kind: "alert"
       - '@timestamp': "2021-08-26T19:39:19.054Z"
-        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2001 job=icinga site=codfw - )"
+        message: "[resolved] Icinga/Elevated latency for icinga checks in codfw (cluster=alerting instance=alert2002 job=icinga site=codfw - )"
         status: "resolved"
         channel: "alert"
         source: "icinga"
-        instance: "alert1001"
+        instance: "alert1002"
   - input:
       - >
         {
           "rsyslog.timereported": "2021-08-27T15:19:00.738126887",
-          "rsyslog.hostname": "alert2001",
+          "rsyslog.hostname": "alert2002",
           "rsyslog.programname": "alertmanager-webhook-logger",
           "rsyslog.severity": "INFO",
           "rsyslog.facility": "user",
           "timestamp": "2021-08-27T15:19:00.738126887Z",
           "timestamp": "2021-08-27T15:19:00.883Z",
           "metric": "speedindex",
-          "host": "alert2001",
+          "host": "alert2002",
           "summary": "Increased Speed Index for en.wiki on desktop",
-          "msg": "<14>Aug 27 15:19:00 alertmanager-webhook-logger[18408]:{\"alertname\":\"Increased Speed Index for en.wiki on desktop\",\"browser\":\"firefox\",\"description\":\"All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.\",\"endsAt\":\"0001-01-01T00:00:00Z\",\"externalURL\":\"http://alert2001:9093\",\"generatorURL\":\"https://grafana.wikimedia.org/d/000000318/webpagetest-alerts?tab=alert\\u0026viewPanel=89\\u0026orgId=1\",\"metric\":\"speedindex\",\"receiver\":\"logger\",\"severity\":\"warning\",\"startsAt\":\"2021-08-27T07:18:24Z\",\"status\":\"firing\",\"summary\":\"Increased Speed Index for en.wiki on desktop\",\"team\":\"perf\",\"timestamp\":\"2021-08-27T15:19:00.738126887Z\",\"tool\":\"webpagetest\"}",
+          "msg": "<14>Aug 27 15:19:00 alertmanager-webhook-logger[18408]:{\"alertname\":\"Increased Speed Index for en.wiki on desktop\",\"browser\":\"firefox\",\"description\":\"All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.\",\"endsAt\":\"0001-01-01T00:00:00Z\",\"externalURL\":\"http://alert2002:9093\",\"generatorURL\":\"https://grafana.wikimedia.org/d/000000318/webpagetest-alerts?tab=alert\\u0026viewPanel=89\\u0026orgId=1\",\"metric\":\"speedindex\",\"receiver\":\"logger\",\"severity\":\"warning\",\"startsAt\":\"2021-08-27T07:18:24Z\",\"status\":\"firing\",\"summary\":\"Increased Speed Index for en.wiki on desktop\",\"team\":\"perf\",\"timestamp\":\"2021-08-27T15:19:00.738126887Z\",\"tool\":\"webpagetest\"}",
           "tool": "webpagetest",
           "facility": "user",
           "endsAt": "0001-01-01T00:00:00Z",
@@ -98,9 +98,9 @@ testcases:
           "severity": "warning",
           "browser": "firefox",
           "program": "alertmanager-webhook-logger",
-          "logsource": "alert2001",
+          "logsource": "alert2002",
           "team": "perf",
-          "externalURL": "http://alert2001:9093",
+          "externalURL": "http://alert2002:9093",
           "startsAt": "2021-08-27T07:18:24Z",
           "status": "firing"
         }
@@ -110,7 +110,7 @@ testcases:
         '@timestamp': "2021-08-27T15:19:00.883Z"
         message: "[firing] Increased Speed Index for en.wiki on desktop (Increased Speed Index for en.wiki on desktop - All three URLS for enwiki (using Firefox desktop) fired with a difference of 100 ms.)"
         host:
-          name: "alert2001"
+          name: "alert2002"
         log:
           level: "INFO"
           syslog:
