@@ -339,14 +339,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-main[12]00[45]':
     - reuse-parts-test.cfg
     - partman/custom/reuse-raid10-8dev.cfg
-  # Join the following 2 sections after additional disks have been installed in eqiad (T371422)
-  'kafka-main200[6-9]|kafka-main2010':
+  'kafka-main[12]00[6-9]|kafka-main[12]010':
     - reuse-parts.cfg
     - partman/reuse-raid10-6dev.cfg
-  # standard + raid10-6dev is used for initial imaging, switch to reuse-parts + reuse-raid10-6dev after
-  'kafka-main[12]00[6-9]|kafka-main[12]010':
-    - partman/standard.cfg
-    - partman/raid10-6dev.cfg
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
