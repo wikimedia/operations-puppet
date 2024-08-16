@@ -7,6 +7,9 @@ class profile::statistics::explorer {
 
     class { '::deployment::umask_wikidev': }
 
+    # enable CPU performance governor; see T362922
+    class { 'cpufrequtils': }
+
     # Include the MySQL research password at
     # /etc/mysql/conf.d/analytics-research-client.cnf
     # and only readable by users in the
