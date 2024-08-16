@@ -15,22 +15,21 @@ if ! [ -f "${TEMPLATE}" ]; then
 fi;
 
 FILE_TS=$(stat -c "%Y" "${TEMPLATE}")
-GLOB="${CONFD_RUN_DIR}/.$(basename ${TEMPLATE})"
+TEMPLATE_SAFE_NAME=$(echo "${TEMPLATE}" | sed 's:/:_:g')
+ERROR_STATE_FILE="${CONFD_RUN_DIR}/${TEMPLATE_SAFE_NAME}.err"
 
-# If the glob doesn't expand, it will report just one item
-if ! stat -t ${GLOB}* > /dev/null 2>&1; then
+# If there is no error state file, there is no problem.
+if ! [ -f "${ERROR_STATE_FILE}" ]; then
     echo "No errors detected";
     exit $STATE_OK;
 fi;
 
-for glob in $GLOB*;
-do
-    TS=$(stat -c "%Y" ${glob})
-    if [ ${TS} -gt ${FILE_TS} ]; then
-       echo "Compilation of file '${TEMPLATE}' is broken";
-       exit $STATE_CRITICAL;
-    fi;
-done;
+TS=$(stat -c "%Y" "${ERROR_STATE_FILE}")
+if [ ${TS} -gt ${FILE_TS} ]; then
+    echo "Compilation of file '${TEMPLATE}' is broken";
+    exit $STATE_CRITICAL;
+fi;
+
 #If we got here, we have errors that are now stale; still issue a warning
 echo "Stale template error files present for '${TEMPLATE}'"
 exit $STATE_WARNING
