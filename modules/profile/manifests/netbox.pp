@@ -171,6 +171,8 @@ class profile::netbox (
         ensure => directory
     }
 
+    $active_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
+
     # rsyslog forwards json messages sent to localhost along to logstash via kafka
     class { 'profile::rsyslog::udp_json_logback_compat': }
     class { 'netbox':
@@ -208,6 +210,7 @@ class profile::netbox (
         cas_group_required          => $cas_group_required,
         oidc_key                    => $oidc_key,
         oidc_secret                 => $oidc_secret,
+        rq_netbox_ensure            => $active_ensure,
     }
     $ssl_settings = ssl_ciphersuite('apache', 'strong', true)
     class { 'sslcert::dhparam': }
@@ -250,8 +253,6 @@ class profile::netbox (
     }
 
     profile::auto_restarts::service { 'apache2': }
-
-    $active_ensure = ($active_server == $facts['networking']['fqdn']).bool2str('present', 'absent')
 
     # Report Deployment
     #
@@ -315,7 +316,7 @@ class profile::netbox (
         source => 'puppet:///modules/icinga/check_netbox_report.py',
     }
 
-    # Generate report checker icinga checks from Hier data
+    # Generate report checker icinga checks from Hiera data
     $report_checks.each |$report| {
         $repname = $report['name']
         $reportclass = $report['class']

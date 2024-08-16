@@ -40,6 +40,7 @@
 # @param swift_container The name of the SWIFT container to store images to
 # @param swift_url_key The swift url key
 # @param ca_certs The path to the CA certificates that signs internal certs.
+# @param rq_netbox_ensure If rq-netbox needs to be running or not
 #
 class netbox (
     Stdlib::Fqdn                  $service_hostname,
@@ -68,6 +69,7 @@ class netbox (
     Optional[Enum['ldap', 'cas', 'oidc']] $authentication_provider     = undef,
     Optional[Stdlib::HTTPUrl]     $swift_auth_url              = undef,
     Optional[Stdlib::HTTPUrl]     $http_proxy                  = undef,
+    Wmflib::Ensure                $rq_netbox_ensure            = 'present',
     # Cas specific config
     Hash[String, String]          $cas_rename_attributes       = {},
     Hash[String, Array]           $cas_group_attribute_mapping = {},
@@ -198,10 +200,12 @@ class netbox (
   }
 
   systemd::service { 'rq-netbox':
-    ensure  => $ensure,
+    ensure  => $rq_netbox_ensure,
     content => template('netbox/rq-netbox.service.erb'),
   }
 
   profile::auto_restarts::service { 'uwsgi-netbox': }
-  profile::auto_restarts::service { 'rq-netbox': }
+  profile::auto_restarts::service { 'rq-netbox':
+    ensure => $rq_netbox_ensure,
+  }
 }
