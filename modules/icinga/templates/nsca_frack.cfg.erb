@@ -613,6 +613,32 @@ define host {
     hostgroups               fundraising-payments
 }
 
+define host {
+    host_name                payments2004
+    address                  10.195.0.10
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
+define host {
+    host_name                payments2005
+    address                  10.195.0.11
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-payments
+}
+
 # HOSTGROUP DEFINITIONS
 
 define hostgroup {
