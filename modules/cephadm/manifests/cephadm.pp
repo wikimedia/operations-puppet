@@ -59,6 +59,14 @@ class cephadm::cephadm (
     }
 
     if $rgw_realm {
+        file { '/etc/cephadm/zone_spec.yaml':
+            ensure    => $ensure,
+            show_diff => false,
+            content   => epp('cephadm/zone_spec.epp', {
+                'rgw_realm' => $rgw_realm,
+                'zone'      => $::site,
+            }),
+        }
         file { '/etc/cephadm/rgw_spec.yaml':
             ensure  => $ensure,
             content => epp('cephadm/rgw_spec.epp', {

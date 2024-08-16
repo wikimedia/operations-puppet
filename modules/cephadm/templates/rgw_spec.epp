@@ -2,8 +2,11 @@
 <%- | String $rgw_realm,
       String $zone,
 | -%>
-rgw_realm: <%= $rgw_realm %>
-rgw_zonegroup: <%= $rgw_realm %>_zg
-rgw_zone: <%= $zone %>
+service_type: rgw
+service_id: rgw.<%= $rgw_realm %>.<%= $zone %>
+spec:
+  rgw_realm: <%= $rgw_realm %>
+  rgw_zonegroup: <%= $rgw_realm %>_zg
+  rgw_zone: <%= $zone %>
 placement:
   label: "rgw"
