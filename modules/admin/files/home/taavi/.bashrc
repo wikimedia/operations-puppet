@@ -49,3 +49,5 @@ if [ -f /usr/bin/kubectl ]; then
 	source <(kubectl completion bash)
 	complete -F __start_kubectl k
 fi
+
+export DEBEMAIL=taavi@debian.org
