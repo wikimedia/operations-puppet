@@ -9,20 +9,33 @@
 #   The unique name of the job e.g. some_service_metrics
 #
 # [**db_connection**]
-#   The database connection string e.g. mysql://user:Password123!@tcp(127.0.0.1:3306)/database
+#   The database connection string e.g. mysql://user:Password123!@tcp(127.0.0.1)/database
 #   A valid connection string for the given database should be fine.
 #
 # [**metrics**]
 #   This is a key-value pair of the metrics to collect. The key is the name of the metric
-#   and the value is the query e.g.
-#     metrics       => {
-#       'active_users'   => 'select count(*) from users where last_login > some_date;'
+#   and the value is map with the columns (provided as an array) to be used as the metric
+#   and the query provided as a string e.g.
+#   metrics       => {
+#    'metric_1'   => {
+#         'columns' => ['count'],
+#         'query'  => 'select count(*) AS count where some_column=value_1',
+#     },
+#     'metric_2' => {
+#         'columns' => ['count'],
+#         'query'  => 'select count(*) AS count where some_column=value_2',
 #     }
+#   }
+#
+# [**scrape_interval**]
+#   The time between each job runs. Default to five minutes.
+#
 class prometheus::sql_exporter (
   String $job_name,
   String $db_connection,
+  Hash[String, Hash[String, Variant[String, Array]]] $metrics,
+  String $scrape_interval = '5m',
   Wmflib::Ensure $ensure = 'present',
-  Hash[String, String] $metrics = {},
 ) {
   ensure_packages(['prometheus-sql-exporter'])
 
@@ -30,15 +43,15 @@ class prometheus::sql_exporter (
     jobs => [
       {
           name => $job_name,
-          interval => '5m',
+          interval => $scrape_interval,
           connections => [ $db_connection ],
-          queries => $metrics.map | String $name, String $query | {
-              {
+          queries => $metrics.map | String $name, Hash $metric | {
+            {
                 name             => $name,
-                values           => ['count'],
-                query            => $query,
+                values           => assert_type(Array, $metric['columns']),
+                query            => assert_type(String, $metric['query']),
                 allows_zero_rows => true,
-              }
+            }
           },
       },
     ],

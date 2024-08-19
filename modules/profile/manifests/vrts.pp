@@ -60,12 +60,20 @@ class profile::vrts(
     }
 
     class { 'prometheus::sql_exporter':
-        db_connection => "mysql://${vrts_database_user}:${vrts_database_pw}@tcp(${vrts_database_host})/${vrts_database_name}",
-        job_name      => 'vrts_sql_metrics',
-        metrics       => {
-            'valid_queues'   => 'select count(*) from queue where valid_id=1;',
-            'invalid_queues' => 'select count(*) from queue where valid_id=2;',
+        db_connection   => "mysql://${vrts_database_user}:${vrts_database_pw}@tcp(${vrts_database_host})/${vrts_database_name}",
+        job_name        => 'vrts_sql_metrics',
+        scrape_interval => '30m',
+        metrics         => {
+            'valid_queues'   => {
+                'columns' => ['count'],
+                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count WHERE valid_id=1',
+            },
+            'invalid_queues' => {
+                'columns' => ['count'],
+                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count WHERE valid_id=2',
+            }
         },
+
     }
 
     class { '::httpd':
