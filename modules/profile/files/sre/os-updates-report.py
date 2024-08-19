@@ -79,7 +79,7 @@ def get_current_quarter():
     return "{}-{}".format(today.year, (today.month-1)//3+1)
 
 
-# Fetch all roles and return a dictionary of fqdn[rolename]
+# Fetch all roles and return a dictionary of rolename[fqdn]
 def get_roles():
 
     db = connect()
@@ -274,6 +274,11 @@ def prepare_todo_report(owners, roles, hosts, distro, target_dir):
     hosts_todo = defaultdict(list)
 
     for host in hosts:
+
+        if host not in roles:
+            # Hosts without a role are flagged in the central report
+            continue
+
         role = roles[host]
         # Roles without an owner are flagged in the central report
         if owners.get(role, None):
