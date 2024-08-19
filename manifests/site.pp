@@ -1789,13 +1789,8 @@ node /^cloudcephmon100[4-6]\.eqiad\./ {
     role(insetup::wmcs)
 }
 
-# new cloudceph storage nodes T361366
-node /^cloudcephosd10(39|4[0-1])\.eqiad\./ {
-    role(insetup::wmcs)
-}
-
 # cloudceph storage nodes
-node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {
+node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-9]|4[0-1])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 

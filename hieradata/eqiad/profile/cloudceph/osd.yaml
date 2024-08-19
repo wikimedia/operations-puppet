@@ -244,6 +244,30 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.5.8"
       prefix: "24"
       iface: "enp101s0f1np1"
+  "cloudcephosd1039.eqiad.wmnet":
+    public:
+      addr: "10.64.148.17"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.5.9"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1040.eqiad.wmnet":
+    public:
+      addr: "10.64.148.18"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.5.10"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd1041.eqiad.wmnet":
+    public:
+      addr: "10.64.148.19"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.5.11"
+      prefix: "24"
+      iface: "eno12409np1"
   # add new ones before this line for rack E
   # Use the next free internal ip
 
