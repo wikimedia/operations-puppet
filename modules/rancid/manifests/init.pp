@@ -17,6 +17,14 @@ class rancid (
         trusted_groups => ['rancid'],
     }
 
+    git::systemconfig { 'safe.directory-rancid':
+        settings => {
+            'safe' => {
+                'directory' => '/var/lib/rancid/core',
+            },
+        },
+    }
+
     file {
         default:
             ensure => file,
