@@ -40,7 +40,7 @@ profile::gitlab::runner::allowed_services:
     host: 'gitlab.devtools.wmcloud.org'
     port: 443
 profile::gitlab::runner::ensure_buildkitd: present
-profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.15.1-1
+profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.15.2-1
 profile::gitlab::runner::clear_interval:
   start: 'OnCalendar'
   interval: '*-*-* 05:00:00'
