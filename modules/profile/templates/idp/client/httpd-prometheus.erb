@@ -1,5 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-<VirtualHost *:80>
+<VirtualHost 127.0.0.1:80>
     ServerName <%= @virtual_host %>
     <%- @cas_settings.each_pair do |key, setting| -%>
       <%- unless setting.nil? or setting == :undef -%>
