@@ -424,7 +424,7 @@ node /^gerrit(1003|2002)\.wikimedia\./ {
 
 # new hardware (eqiad) - T369671
 node /^gerrit1004\.wikimedia\./ {
-    role(insetup::collaboration_services)
+    role(insetup::collaboration_services::gerrit)
 }
 
 # new hardware (codfw) - T369670
