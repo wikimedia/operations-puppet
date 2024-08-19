@@ -34,7 +34,7 @@
       document.getElementById("check-result").textContent = "We were unable to determine if you are using Wikimedia DNS.";
   })
   .finally(() => {
-      document.getElementById("check-info").textContent = `Tested at ${testTime} with test ID ${testUUID} (host ${check.host})`;
+      document.getElementById("check-info").textContent = `Tested at ${testTime} with test ID ${testUUID}`;
       console.log("Open the unencrypted DNS ports, HAL.\nI am sorry, Dave. I am afraid I can't do that.");
   });
 })();
