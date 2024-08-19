@@ -6,6 +6,7 @@ class profile::vrts(
     Stdlib::Fqdn $active_host        = lookup('profile::vrts::active_host'),
     Stdlib::Fqdn $passive_host       = lookup('profile::vrts::passive_host'),
     Stdlib::Fqdn $vrts_database_host = lookup('profile::vrts::database_host'),
+    String $install_version          = lookup('profile::vrts::install_version'),
     String $vrts_database_name       = lookup('profile::vrts::database_name'),
     String $vrts_database_user       = lookup('profile::vrts::database_user'),
     String $vrts_database_pw         = lookup('profile::vrts::database_pass'),
@@ -41,6 +42,7 @@ class profile::vrts(
     $enable_service = $active_host == $facts['fqdn']
 
     class { '::vrts':
+        install_version    => $install_version,
         vrts_database_host => $vrts_database_host,
         active_host        => $active_host,
         passive_host       => $passive_host,

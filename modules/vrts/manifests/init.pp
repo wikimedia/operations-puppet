@@ -41,6 +41,7 @@
 #  }
 #
 class vrts(
+    String $install_version,
     Stdlib::Host $vrts_database_host,
     Stdlib::Host $active_host,
     Stdlib::Host $passive_host,
@@ -139,9 +140,17 @@ class vrts(
         '/etc/vrts/install-script-vars':
             content => template('vrts/install-script-vars.erb');
         '/usr/local/bin/install_vrts':
+            require => File['/etc/vrts/install-script-vars'],
             source  => 'puppet:///modules/vrts/install_vrts.sh';
         '/usr/local/bin/upgrade_vrts':
             source  => 'puppet:///modules/vrts/upgrade_vrts.sh';
+    }
+
+    exec { 'Fresh Install':
+        path    => '/usr/local/bin',
+        command => "/usr/local/bin/install_vrts ${install_version}",
+        unless  => 'test -L /opt/otrs',
+        require => File['/usr/local/bin/install_vrts'],
     }
 
     # Configs

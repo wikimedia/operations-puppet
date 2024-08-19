@@ -8,6 +8,7 @@ profile::vrts::database_user: otrs
 profile::vrts::database_port: '3306'
 profile::vrts::exim_database_name: otrs
 profile::vrts::exim_database_user: exim
+profile::vrts::install_version: '6.5.10'
 profile::vrts::download_url: 'https://download.znuny.org/releases'
 profile::vrts::https_proxy: 'webproxy.eqiad.wmnet:8080'
 profile::vrts::http_proxy: 'webproxy.eqiad.wmnet:8080'
