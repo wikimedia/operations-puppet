@@ -6353,7 +6353,7 @@ users:
     uid: 44753
     gid: 500
     ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPywhMZMslMnOl/7stpDB8YXNo4STAd8xUFSqeGQjK6J ifrah.khanyaree@wmde-102977'
+      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZsyiWrAdr3CvogLIIh5i6DbvKTO658IXKg2YnPxSAbMFkkO16aSrdJWy2LqF6LHXspEfheimYy+3lSbdgdyXBYLbkN/ab7jc4k8W+kjkTUOsKz54lCKqRa9DZerAIsbsCneqpgguly2JNkFRqNEAZZFlrHA229CdU3vXQIJN/F5Y2StzO8apeXLTp8YA/G8t+jXefryqYE154iIGj4JmULqk2zjMUpR7wrasBxZlVLN+MVvKT19g+7GVXw1eBOtbkLNK9aXasDXx1UmBD8aKjyuqSr5qMUOgvSM0JUaQYzoAd8eX6LeIYBkpd6xX7gaY76hajwUn7S/aDfK3ntfdPOHrKWjOWlP4VbfJGeqz7C0EREaxq7Ay7BMIB/L9mMQ1DUL6mkhNd3U1QbROyq28T6XEI0w+rDgMB5uYBah0yzuB0KRoENJz0fJFS5Apl8aaAgKIljxSdE77Wj7Z6fPP4+5/N51cS5REdfu/Pe/a1g4ovJSVOFw7y8StbhCyzucgbN8OSfiQLIRQNFKcc4fuOW1kAgoH31nMOZGtKZxyQr/XJN+lwjkFJJOF+fIWkxevLY+iqZ2Yk2ZEYNYogVDB9wjPM1F0FNY2DSEnZqvW6yxu0loKZn266i6kSNqXdiuALsF+xZg7mgso5bC4/pxXzWCaVBn/DBDkhM7nck4XWzQ== ifrah.khanyaree@wmde-102977'
     krb: present
   radimer:
     ensure: present
