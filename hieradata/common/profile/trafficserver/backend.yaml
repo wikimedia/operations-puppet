@@ -216,42 +216,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-scholarly.wikidata.org
       replacement: https://webserver-misc-sites.discovery.wmnet
     - type: map
-      target: http://query-full-experimental.wikidata.org/bigdata/ldf
-      replacement: https://wdqs1022.eqiad.wmnet/bigdata/ldf
-    - type: map
-      target: http://query-full-experimental.wikidata.org/sparql
-      replacement: https://wdqs1022.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-full-experimental.wikidata.org/bigdata
-      replacement: https://wdqs1022.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-full-experimental.wikidata.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
-    - type: map
-      target: http://query-main-experimental.wikidata.org/bigdata/ldf
-      replacement: https://wdqs1024.eqiad.wmnet/bigdata/ldf
-    - type: map
-      target: http://query-main-experimental.wikidata.org/sparql
-      replacement: https://wdqs1024.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-main-experimental.wikidata.org/bigdata
-      replacement: https://wdqs1024.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-main-experimental.wikidata.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
-    - type: map
-      target: http://query-scholarly-experimental.wikidata.org/bigdata/ldf
-      replacement: https://wdqs1023.eqiad.wmnet/bigdata/ldf
-    - type: map
-      target: http://query-scholarly-experimental.wikidata.org/sparql
-      replacement: https://wdqs1023.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-scholarly-experimental.wikidata.org/bigdata
-      replacement: https://wdqs1023.eqiad.wmnet/sparql
-    - type: map
-      target: http://query-scholarly-experimental.wikidata.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
-    - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
     - type: map
