@@ -423,7 +423,7 @@ node /^gerrit(1003|2002)\.wikimedia\./ {
 
 # new hardware (codfw) - T369670
 node /^gerrit2003\.wikimedia\./ {
-    role(insetup::collaboration_services::gerrit)
+    role(gerrit)
 }
 
 # Zookeeper and Etcd discovery service nodes
