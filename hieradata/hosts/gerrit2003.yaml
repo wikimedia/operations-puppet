@@ -2,3 +2,14 @@
 profile::gerrit::ipv4: '208.80.153.116'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:116'
 profile::gerrit::backups_enabled: false
+
+# FIXME - remove after gerrit role applies it
+profile::firewall::provider: nftables
+
+profile::admin::groups:
+  - gerrit-root
+  - gerrit-admin
+contactgroups: 'admins,gerrit'
+profile::contacts::role_contacts: ['Collaboration Services']
+profile::base::production::role_description: 'Gerrit Code Review server'
+
