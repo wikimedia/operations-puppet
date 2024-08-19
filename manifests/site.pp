@@ -1825,24 +1825,13 @@ node /^cloudcephmon100[4-6]\.eqiad\./ {
     role(insetup::wmcs)
 }
 
-# new cloudceph storage nodes T351332
-node /^cloudcephosd103[578]\.eqiad\./ {
-    role(wmcs::ceph::osd)
-}
-
-# new cloudceph storage nodes T351332
-# still in setup pending switch maintenance
-node /^cloudcephosd1036\.eqiad\./ {
-    role(insetup::wmcs)
-}
-
 # new cloudceph storage nodes T361366
 node /^cloudcephosd10(39|4[0-1])\.eqiad\./ {
     role(insetup::wmcs)
 }
 
 # cloudceph storage nodes
-node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-4])\.eqiad\./ {
+node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
