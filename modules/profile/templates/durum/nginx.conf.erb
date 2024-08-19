@@ -50,7 +50,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "doh", "site": "<%= scope.lookupvar('::site') %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
+    return 200   '{"wikidough": true, "service": "doh", "site": "<%= scope.lookupvar('::site') %>", "host": "<%= @facts['hostname'] %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
   }
 
 }
@@ -70,7 +70,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": false, "service": null, "site": null, "ipv": null}';
+    return 200   '{"wikidough": false, "service": null, "site": null, "host": "<%= @facts['hostname'] %>", "ipv": null}';
   }
 
 }
@@ -94,7 +94,7 @@ server {
 
   location /check {
     default_type application/json;
-    return 200   '{"wikidough": true, "service": "dot", "site": "<%= scope.lookupvar('::site') %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
+    return 200   '{"wikidough": true, "service": "dot", "site": "<%= scope.lookupvar('::site') %>", "host": "<%= @facts['hostname'] %>", "ipv": <%= ipv6 ? '"ipv6"': '"ipv4"' %>}';
   }
 
 }
