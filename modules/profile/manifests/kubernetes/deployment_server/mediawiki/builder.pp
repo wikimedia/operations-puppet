@@ -23,15 +23,12 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         owner     => 'mwbuilder',
         source    => 'gitlab',
     }
-    # Make sure "make" is installed
-    ensure_packages(['make'])
 
     # Deployers should be able to execute whatever wrapper we will write for repos/releng/release
     # as user mwbuilder. And also the wrapper that updates the repos/releng/release repo
     sudo::group { 'deploy_build_image':
         group      => 'deployment',
         privileges => [
-            'ALL = (mwbuilder) NOPASSWD: /usr/bin/make -C /srv/mwbuilder/release/make-container-image -f Makefile *',
             'ALL = (mwbuilder) NOPASSWD: /srv/mwbuilder/release/make-container-image/build-images.py *',
             'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release'
         ]
