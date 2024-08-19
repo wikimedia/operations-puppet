@@ -25,5 +25,9 @@ profile::tlsproxy::envoy::cfssl_options:
      - "%{facts.networking.fqdn}"
 profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
+profile::tlsproxy::envoy::upstream_addr: '127.0.0.1'
+profile::tlsproxy::envoy::services:
+  - server_names: ['*']
+    port: 80
 
 profile::puppet::agent::force_puppet7: true
