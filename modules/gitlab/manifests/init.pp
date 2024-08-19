@@ -13,6 +13,7 @@
 # @logrotate_maxsize logs will be rotated when they grow bigger than size specified for `maxsize`, even before the specified time interval
 # @logrotate_size enable or disable rotation by size
 # @logrotate_rotate keep number of spcified logs
+# @param enable_robots_txt serve a custom robots.txt
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -89,6 +90,7 @@ class gitlab (
     String                   $logrotate_maxsize                 = 'nil',
     String                   $logrotate_size                    = 'nil',
     Integer                  $logrotate_rotate                  = 10,
+    Boolean                  $enable_robots_txt                 = false,
 
 ) {
     $oidc_defaults = {
@@ -190,6 +192,21 @@ class gitlab (
         tries       => 5,
         require     => Package['gitlab-ce'],
         notify      => Service['gitlab-ce'],
+    }
+
+    $ensure_robots_txt = $enable_robots_txt ? {
+        true    => 'present',
+        default => 'absent',
+    }
+
+    file { '/srv/robots.txt':
+        ensure  => stdlib::ensure($ensure_robots_txt),
+        owner   => 'gitlab-www',
+        group   => 'gitlab-www',
+        mode    => '0644',
+        source  => 'puppet:///modules/gitlab/robots.txt',
+        require => Package['gitlab-ce'],
+        notify  => Exec['Reconfigure GitLab'],
     }
 
     service{ 'gitlab-ce':

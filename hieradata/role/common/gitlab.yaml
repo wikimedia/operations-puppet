@@ -108,6 +108,8 @@ profile::gitlab::trusted_runner_id_regex: "(1484|1504)"
 profile::gitlab::custom_nginx_config:
   - "location ~* ^(?:(?!admin).)*/runners/%{lookup('profile::gitlab::trusted_runner_id_regex')}/edit$ {\n deny all;\n}\n" # block edit page of Trusted runners
 
+profile::gitlab::enable_robots_txt: false
+
 profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
 profile::gitlab::logrotate_maxsize: "nil" # logs will not be rotated when they grow bigger than size
 profile::gitlab::logrotate_size: "nil" # do not rotate by size by default

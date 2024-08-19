@@ -48,6 +48,7 @@
 # @param thanos_storage_password A hash containing the passwords for Thanos storage accounts.
 # @param thanos_storage_username The username for accessing Thanos storage.
 # @param use_acmechief Whether to use AcmeChief for certificate management.
+# @param enable_robots_txt serve a custom robots.txt
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -99,6 +100,7 @@ class profile::gitlab(
     String $logrotate_maxsize = lookup('profile::gitlab::logrotate_maxsize'),
     String $logrotate_size = lookup('profile::gitlab::logrotate_size'),
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
+    Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -311,5 +313,6 @@ class profile::gitlab(
         logrotate_maxsize            => $logrotate_maxsize,
         logrotate_size               => $logrotate_size,
         logrotate_rotate             => $logrotate_rotate,
+        enable_robots_txt            => $enable_robots_txt,
     }
 }

@@ -275,6 +275,9 @@ profile::gitlab::trusted_runner_id_regex: "(77|79)"
 
 profile::gitlab::custom_nginx_config:
   - "location ~* ^(?:(?!admin).)*/runners/%{lookup('profile::gitlab::trusted_runner_id_regex')}/edit$ {\n deny all;\n}\n" # block edit page of Trusted runners
+  - "location =/robots.txt { alias /srv/robots.txt; }\n"
+
+profile::gitlab::enable_robots_txt: true
 
 profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
 profile::gitlab::logrotate_maxsize: "500M" # logs will be rotated when they grow bigger than 500M
