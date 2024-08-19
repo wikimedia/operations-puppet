@@ -422,11 +422,6 @@ node /^gerrit(1003|2002)\.wikimedia\./ {
     role(gerrit)
 }
 
-# new hardware (eqiad) - T369671
-node /^gerrit1004\.wikimedia\./ {
-    role(insetup::collaboration_services::gerrit)
-}
-
 # new hardware (codfw) - T369670
 node /^gerrit2003\.wikimedia\./ {
     role(insetup::collaboration_services)
@@ -1552,6 +1547,11 @@ node /^alert[12]002\.wikimedia\./ {
 # Phabricator eqiad (T280540, T279176) (production)
 node /^phab1004\.eqiad\./ {
     role(phabricator)
+}
+
+# new hardware (eqiad) - T369671
+node /^phab1005\.eqiad\./ {
+    role(insetup::collaboration_services)
 }
 
 # Phabricator codfw (T280544, T279177) (failover)
