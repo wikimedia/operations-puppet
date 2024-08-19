@@ -84,6 +84,7 @@ class profile::analytics::refinery::job::gobblin(
     }
 
     profile::analytics::refinery::job::gobblin_job { 'webrequest_frontend_rc0':
-        ensure => absent,
+        ensure   => absent,
+        interval => '*-*-* *:8/10:00',
     }
 }
