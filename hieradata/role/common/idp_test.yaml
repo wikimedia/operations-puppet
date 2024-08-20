@@ -20,6 +20,7 @@ profile::idp::services:
   puppetboard:
     id: 1
     service_id: 'https://puppetboard-(idp|saml)test\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
       - ops
       - ops-limited

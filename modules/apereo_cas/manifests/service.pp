@@ -13,14 +13,15 @@
 define apereo_cas::service (
     Integer                              $id,
     String                               $service_id,
-    Apereo_cas::Service::Class           $service_class    = 'CasRegisteredService',
-    Apereo_cas::Service::Release_policy  $release_policy   = 'ReturnAllAttributeReleasePolicy',
-    Apereo_cas::Service::Access_strategy $access_strategy  = 'DefaultRegisteredServiceAccessStrategy',
-    ENUM['FLAT', 'NESTED']               $profile_format   = 'NESTED',
-    Array[String]                        $required_groups  = [],
-    Hash                                 $properties       = {},
-    Optional[String[1]]                  $allowed_delegate = undef,
-    Optional[String[1]]                  $client_secret    = undef,
+    Apereo_cas::Service::Class           $service_class      = 'CasRegisteredService',
+    Apereo_cas::Service::Release_policy  $release_policy     = 'ReturnAllAttributeReleasePolicy',
+    Apereo_cas::Service::Access_strategy $access_strategy    = 'DefaultRegisteredServiceAccessStrategy',
+    ENUM['FLAT', 'NESTED']               $profile_format     = 'NESTED',
+    Array[String]                        $required_groups    = [],
+    Hash                                 $properties         = {},
+    Optional[String[1]]                  $allowed_delegate   = undef,
+    Optional[String[1]]                  $client_secret      = undef,
+    Optional[String[1]]                  $member_of_exclude  = undef,
 ) {
     if $service_class == 'OidcRegisteredService' {
         if !$client_secret {
@@ -66,14 +67,36 @@ define apereo_cas::service (
             },
         }
     }
+
+    if $member_of_exclude {
+        $attribute_release_policy = {
+            '@class'            => "org.apereo.cas.services.${release_policy}",
+            'attributeFilter'   => {
+                '@class' => 'org.apereo.cas.services.support.RegisteredServiceReverseMappedRegexAttributeFilter',
+                'patterns'                  => {
+                    '@class'   => 'java.util.TreeMap',
+                    'memberOf' => $member_of_exclude
+                },
+                'excludeUnmappedAttributes' => true,
+                'completeMatch'             => false,
+                'caseInsensitive'           => true,
+                'order'                     => 0
+            },
+            'allowedAttributes' => [ 'java.util.HashSet', [ 'cn', 'sn', 'mail', 'memberOf', 'uid' ]]
+        }
+    } else {
+        $attribute_release_policy = { '@class' => "org.apereo.cas.services.${release_policy}" }
+    }
+
     $base_data = {
         '@class'                 => "org.apereo.cas.services.${service_class}",
         'name'                   => $title,
         'serviceId'              => $service_id,
-        'attributeReleasePolicy' => { '@class' => "org.apereo.cas.services.${release_policy}" },
+        'attributeReleasePolicy' => $attribute_release_policy,
         'id'                     => $id,
         'accessStrategy'         => $_access_strategy + $delegate,
     } + $additional_params
+
     $data = $properties.empty ? {
         true    => $base_data,
         default => $base_data + { 'properties' => $properties },
