@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+https://recommendation-api-ng.discovery.wmnet:31443:
+- path: /service/lw/recommendation/api/v1/translation
+  json_body:
+    source: "en"
+    target: "fr"
+    seed: "Apple"
+    count: 3
+  assert_status: 200
+  assert_body_contains: title
+  method: GET
