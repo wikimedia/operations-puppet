@@ -23,7 +23,7 @@ JobsType = Union[jobs_type.ProjectJob, RESTObject]
 ProjectsType = Union[projects_type.Project, RESTObject]
 ProtectedBranchesType = Union[branches_types.ProjectProtectedBranch, RESTObject]
 
-TRUSTED_PROJECT_ID = "339"
+TRUSTED_PROJECT_PATH = "repos/releng/gitlab-trusted-runner"
 TRUSTED_PROJECT_FILE = "projects.json"
 
 
@@ -42,14 +42,16 @@ class GitlabPackagePuller:
             f"https://{self.gitlab_host}", private_token=self.gitlab_token()
         )
 
-        self.trusted_project_ids = self.get_project_ids_from_trusted_list()
+        self.trusted_project_paths = self.get_project_paths_from_trusted_list()
         self.allow_untrusted_projects = args.allow_untrusted_projects
-        if args.project_ids:
-            self.project_ids = self.check_project_ids_in_trusted_list(args.project_ids)
+        if args.project_paths:
+            self.project_paths = self.check_project_paths_in_trusted_list(
+                args.project_paths
+            )
         else:
-            self.project_ids = self.trusted_project_ids
+            self.project_paths = self.trusted_project_paths
 
-        if len(self.project_ids) <= 0:
+        if len(self.project_paths) <= 0:
             raise RuntimeError("You must provide some projects to fetch artifacts from")
 
         self.artifact_creation_job_pattern = args.job
@@ -74,47 +76,49 @@ class GitlabPackagePuller:
                 "Couldn't find GITLAB_TOKEN env variable set, or /etc/gitlab-puller-auth for token"
             )
 
-    def check_project_ids_in_trusted_list(
+    def check_project_paths_in_trusted_list(
         self,
-        project_ids: int | list[int],
-    ) -> list[int]:
-        """Checks the list of trusted_project_ids against the project IDs given, and raises an
+        project_paths: str | list[str],
+    ) -> list[str]:
+        """Checks the list of trusted_project_paths against the project paths given, and raises an
         exception if any are found"""
-        if isinstance(project_ids, int):
-            project_ids = [project_ids]
+        if isinstance(project_paths, str):
+            project_paths = [project_paths]
 
-        untrusted_pids = list(set(project_ids) - set(self.trusted_project_ids))
-        if len(untrusted_pids) != 0 and not self.allow_untrusted_projects:
+        untrusted_paths = list(set(project_paths) - set(self.trusted_project_paths))
+        if len(untrusted_paths) != 0 and not self.allow_untrusted_projects:
             raise RuntimeError(
-                f"Project ID {untrusted_pids} not in trusted projects list"
+                f"Project paths {untrusted_paths} not in trusted projects list"
             )
 
-        return project_ids
+        return project_paths
 
-    def get_project_ids_from_trusted_list(self) -> list[int]:
-        """Downloads the trusted projects json file from gitlab and fetches project IDs that are
+    def get_project_paths_from_trusted_list(self) -> list[str]:
+        """Downloads the trusted projects json file from gitlab and fetches project paths that are
         allowed run on trusted runners"""
 
         logging.debug(
-            "Downloading JSON trusted projects lists from project id %s file %s",
-            TRUSTED_PROJECT_ID, TRUSTED_PROJECT_FILE
+            "Downloading JSON trusted projects lists from project %s file %s",
+            TRUSTED_PROJECT_PATH,
+            TRUSTED_PROJECT_FILE,
         )
 
-        trusted_project = self.client.projects.get(TRUSTED_PROJECT_ID)
+        trusted_project = self.client.projects.get(TRUSTED_PROJECT_PATH)
         response = trusted_project.files.raw(file_path=TRUSTED_PROJECT_FILE, ref="main")
         json_content = json.loads(response)
 
         keys = json_content.keys()
         logging.debug(
-            "Found %d trusted project IDs from trusted project list", len(keys)
+            "Found %d trusted project paths from trusted project list", len(keys)
         )
 
         return keys
 
     def fetch_packages_for_project(self) -> None:
         """Fetches packages for each project given as a parameter to the class"""
-        for project_id in self.project_ids:
-            project = self.client.projects.get(project_id)
+        for project_path in self.project_paths:
+            logging.debug("Fetching packages for %s", project_path)
+            project = self.client.projects.get(project_path)
             # get the last 20 jobs only because this script runs every 5 minutes
             # default when get_all=False is used
             jobs = project.jobs.list(get_all=False, per_page=self.number_of_jobs)
@@ -168,7 +172,9 @@ class GitlabPackagePuller:
         and moves to the destination dir
         """
         with tempfile.TemporaryDirectory() as tmpdir:
-            zipfile_path = os.path.join(tmpdir, f"{project.id}_{job.id}_artifacts.zip")
+            zipfile_path = os.path.join(
+                tmpdir, f"{project.name}_{job.id}_artifacts.zip"
+            )
             job_artifact_path = os.path.join(
                 self.destination_dir, f"{project.name}_{job.id}"
             )
@@ -233,7 +239,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--allow-untrusted-projects",
         action="store_true",
-        help="Allows project IDs that aren't in the list of jobs run on trusted runners",
+        help="Allows project paths that aren't in the list of jobs run on trusted runners",
     )
     parser.add_argument(
         "-l",
@@ -242,12 +248,12 @@ if __name__ == "__main__":
         help="Log level (debug, info, warning, error, critical)",
     )
     parser.add_argument(
-        "project_ids",
-        metavar="ID",
-        type=int,
+        "project_paths",
+        metavar="PATH",
+        type=str,
         nargs="?",
-        help="List of project IDs to fetch packages from. This is usually from the list of "
-        "projects specified in the trusted runner list.",
+        help="List of project paths (e.g., '/repos/sre/miscweb') to fetch packages from. This is "
+        "usually from the list of projects specified in the trusted runner list.",
     )
     parser.add_argument(
         "-n",
