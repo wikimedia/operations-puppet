@@ -320,6 +320,7 @@ class profile::netbox (
     $report_checks.each |$report| {
         $repname = $report['name']
         $reportclass = $report['class']
+        $reportid = $report['id']
 
         if $report['alert'] {
             $check_args = ''
@@ -333,7 +334,7 @@ class profile::netbox (
                 description    => "Netbox report ${repname}",
                 nrpe_command   => "${netbox_venv_path}/bin/python3 /usr/local/lib/nagios/plugins/check_netbox_report.py ${check_args} ${reportclass}",
                 check_interval => $report['check_interval'],
-                notes_url      => "https://netbox.wikimedia.org/extras/reports/${reportclass}/",
+                notes_url      => "https://netbox.wikimedia.org/extras/scripts/${reportid}/",
                 contact_group  => 'team-dcops',
             }
         }

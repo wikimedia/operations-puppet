@@ -59,41 +59,49 @@ profile::netbox::cas_group_required:
 profile::netbox::report_checks:
     -   name: puppetdb_physical
         class: 'puppetdb.PhysicalHosts'
+        id: 18
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:06/30:00' # every 30 minutes
     -   name: puppetdb_virtual
         class: 'puppetdb.VirtualMachines'
+        id: 17
         alert: false
         check_interval: 5
         run_interval: '*-*-* *:08/30:00' # every 30 minutes
     -   name: coherence_rack
         class: 'coherence.Rack'
+        id: 14
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:11/30:00' # every 30 minutes
     -   name: management
         class: 'management.ManagementConsole'
+        id: 15
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:12/30:00' # every 30 minutes
     -   name: accounting
         class: 'accounting.Accounting'
+        id: 12
         alert: false
         check_interval: 5
         run_interval: '*-*-* *:14/30:00' # every 30 minutes
     -   name: cables
         class: 'cables.Cables'
+        id: 13
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:16/30:00' # every 30 minutes
     -   name: librenms
         class: 'librenms.LibreNMS'
+        id: 3
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:18/30:00' # every 30 minutes
     -   name: network
         class: 'network.Network'
+        id: 16
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:20/30:00' # every 30 minutes
