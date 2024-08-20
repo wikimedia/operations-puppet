@@ -1,15 +1,15 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 {
     "irc": {
-        "channels": <%= Array(@channels).to_pson %>,
+        "channels": <%= Array(@channels).to_json %>,
         "network": ["<%= @server_host %>", <%= @server_port %>, "<%= @nickname %>:<%= @password %>"],
         <% if @ssl %>"ssl": true,<% end %>
         "nickname": "<%= @nickname %>"
     },
-    <% if @infiles %>"infiles": <%= Array(@infiles).to_pson %>,<% end %>
+    <% if @infiles %>"infiles": <%= Array(@infiles).to_json %>,<% end %>
     "tcp": {
         "max_clients": <%= @max_clients %>,
-        <% if @cidr %>"cidr": <%= Array(@cidr).to_pson %>,<% end %>
+        <% if @cidr %>"cidr": <%= Array(@cidr).to_json %>,<% end %>
         "port": <%= @listen_port %>
     }
 }
