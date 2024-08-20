@@ -5,7 +5,7 @@ class ceph::radosgw {
     }
     ensure_packages('radosgw')
 
-    service { 'radosgw':
+    service { 'ceph-radosgw@radosgw':
         ensure    => running,
         enable    => true,
         subscribe => File['/etc/ceph/ceph.conf'],
