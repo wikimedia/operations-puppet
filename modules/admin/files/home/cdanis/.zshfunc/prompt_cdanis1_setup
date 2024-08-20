@@ -93,7 +93,7 @@ prompt_cdanis1_precmd () {
     ;;
   esac
 
-  PS1="$base_prompt$path_prompt $clock_prompt%(!.⁉️ .$hour_prompt) $post_prompt"
+  PS1="$base_prompt$path_prompt $clock_prompt%(!.🙃.$hour_prompt) $post_prompt"
   PS2="$base_prompt$path_prompt %_> $post_prompt"
   PS3="$base_prompt$path_prompt ?# $post_prompt"
 }

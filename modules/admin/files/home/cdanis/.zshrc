@@ -27,6 +27,14 @@ setopt hist_ignore_space
 WORDCHARS=${WORDCHARS/\/}  # slashes are words
 WORDCHARS=${WORDCHARS/=}   # and so are equalses
 
+# ISO8601 tab-delimited ts
+function isotabts() {
+    ts "%Y-%m-%dT%H:%M:%.S"$'\t'
+}
+
+function interarrivalts() {
+    ts -i '%.S'$'\t'
+}
 
 # some hooks for xterm for now
 # TODO: screen/tmux
