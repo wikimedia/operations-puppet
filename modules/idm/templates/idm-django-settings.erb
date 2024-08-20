@@ -235,6 +235,13 @@ CAPTCHA_IMAGE_SIZE = (130,40)
 <%- if @enable_api -%>
 # Bitu API
 ENABLE_API = True
+API_PERMISSIONS = (
+  'accounts.add_token',
+)
+<%- end -%>
+
+<%- if @production == false -%>
+ENABLE_2FA = True
 <%- end -%>
 
 <%- if @mediawiki_oauth -%>
