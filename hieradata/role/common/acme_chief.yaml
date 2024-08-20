@@ -50,10 +50,7 @@ profile::acme_chief::certificates:
         CN: 'gerrit.wikimedia.org'
         SNI:
         - 'gerrit.wikimedia.org'
-        - 'gerrit-new.wikimedia.org'
-        - 'gerrit-old.wikimedia.org'
         - 'gerrit-replica.wikimedia.org'
-        - 'gerrit-replica-new.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'gerrit1003.wikimedia.org'
