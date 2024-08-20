@@ -49,6 +49,7 @@ class profile::cache::kafka::certificate(
 
         $ssl_key_location = $ssl_files['key']
         $ssl_certificate_location = $ssl_files['chained']
+        $ssl_key_password = $ssl_key_pass
 
     } else {
         $ssl_location_private = '/etc/varnishkafka/ssl/private'
@@ -61,7 +62,6 @@ class profile::cache::kafka::certificate(
         $ssl_certificate_location = "${ssl_location}/${certificate_name}.crt.pem"
 
         $ssl_keystore_password = undef
-        $ssl_keystore_location = undef
 
         file { $ssl_location:
             ensure => 'directory',

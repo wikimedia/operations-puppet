@@ -39,7 +39,6 @@ class profile::cache::kafka::eventlogging(
         $ssl_cipher_suites = $profile::cache::kafka::certificate::ssl_cipher_suites
         $ssl_curves_list = $profile::cache::kafka::certificate::ssl_curves_list
         $ssl_sigalgs_list = $profile::cache::kafka::certificate::ssl_sigalgs_list
-        $ssl_keystore_location = $profile::cache::kafka::certificate::ssl_keystore_location
         $ssl_keystore_password = $profile::cache::kafka::certificate::ssl_key_password
         $ssl_key_password = $profile::cache::kafka::certificate::ssl_key_password
         $ssl_key_location = $profile::cache::kafka::certificate::ssl_key_location
@@ -55,7 +54,6 @@ class profile::cache::kafka::eventlogging(
         $ssl_cipher_suites = undef
         $ssl_curves_list = undef
         $ssl_sigalgs_list = undef
-        $ssl_keystore_location = undef
         $ssl_keystore_password = undef
     }
 
@@ -88,7 +86,7 @@ class profile::cache::kafka::eventlogging(
         ssl_cipher_suites           => $ssl_cipher_suites,
         ssl_curves_list             => $ssl_curves_list,
         ssl_sigalgs_list            => $ssl_sigalgs_list,
-        ssl_keystore_location       => $ssl_keystore_location,
+        ssl_keystore_location       => undef,
         ssl_keystore_password       => $ssl_keystore_password,
     }
 

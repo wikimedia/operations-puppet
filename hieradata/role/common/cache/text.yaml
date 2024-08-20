@@ -313,7 +313,7 @@ profile::cache::haproxy::enable_coredumps: true
 
 # T337825
 profile::cache::kafka::certificate::use_pki_settings: true
-profile::cache::kafka::certificate::ssl_key_password: undef
+profile::cache::kafka::certificate::ssl_key_password: ~
 
 profile::trafficserver::backend::http_settings:
   accept_no_activity_timeout: 180
