@@ -102,7 +102,7 @@ class profile::idp(
         tomcat_proxy                 => true,
         groovy_source                => $groovy_source,
         prometheus_nodes             => $prometheus_nodes,
-        keystore_content             => secret('casserver/thekeystore'),
+        keystore_content             => wmflib::secret('casserver/thekeystore', true),
         keystore_password            => $keystore_password,
         key_password                 => $key_password,
         tgc_signing_key              => $tgc_signing_key,

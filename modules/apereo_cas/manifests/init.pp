@@ -97,7 +97,7 @@ class apereo_cas (
     String[1]                         $spring_username               = 'casuser',
     Optional[String[1]]               $spring_password               = undef,
     Optional[Stdlib::Filesource]      $keystore_source               = undef,
-    Optional[String[1]]               $keystore_content              = undef,
+    Optional[Binary]                  $keystore_content              = undef,
     Integer[60,604800]                $max_session_length            = 604800,
     Integer[60,604800]                $max_rememberme_session_length = $max_session_length,
     Integer[60,86400]                 $session_inactivity_timeout    = 3600,
