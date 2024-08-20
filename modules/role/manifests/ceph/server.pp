@@ -25,4 +25,5 @@ class role::ceph::server {
     include profile::ceph::mon
     include profile::ceph::osds
     include profile::ceph::radosgw
+    include profile::tlsproxy::envoy
 }

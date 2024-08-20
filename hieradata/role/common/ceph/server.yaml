@@ -116,8 +116,7 @@ profile::ceph::auth::load_all::configuration:
 
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
 
-profile::ceph::radosgw::port: 443
-profile::ceph::radosgw::firewall_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))
+profile::ceph::radosgw::port: 80
 
 # Generated with uuidgen
 profile::ceph::fsid: 6d4278e1-ea45-4d29-86fe-85b44c150813
@@ -160,3 +159,12 @@ profile::monitoring::nrpe_check_disk_options:
 profile::contacts::role_contacts: ['Data Platform']
 
 profile::puppet::agent::force_puppet7: true
+
+# TLS Terminator settings
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+   - server_names: ['*']
+     port: 80
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::global_cert_name: rgw.%{::site}.dpe.anycast.wmnet
+profile::tlsproxy::envoy::ferm_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))
