@@ -65,9 +65,6 @@ define varnish::wikimedia_vcl(
             group   => 'root',
             mode    => '0444',
             content => template($template_path),
-            notify  => $notify,
-            require => $require,
-            before  => $before,
         }
     }
 }
