@@ -15,7 +15,7 @@ class profile::swift::storage::configure_disks (
             # disk is of the form pci-0000:3b:00.0-scsi-0:0:1:0
             # The system disks are always the last two disks so to avoid having them numbered
             # 12,13 or 23,24 depending on the model we mod 2 them to get them to 0, 1
-            $idx = $partition.split(/:/)[-2] % 2
+            $idx = String(Integer($partition.split(/:/)[-2]) % 2)
             $partition_path = "/dev/disk/by-path/${partition}"
             $mount_point = "${swift_storage_dir}${$storage_type}${idx}"
             swift::mount_filesystem { $partition_path:
