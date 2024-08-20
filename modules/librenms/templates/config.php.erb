@@ -8,7 +8,7 @@ def phpdump(o, level = 1)
     contents = ''
     o.sort.each do |k, v|
       contents += indent * level
-      contents += k.to_pson + " => " + phpdump(v, level + 1)
+      contents += k.to_json + " => " + phpdump(v, level + 1)
       contents += ",\n"
     end
     "array(\n" + contents + indent * (level - 1) + ")"
@@ -24,7 +24,7 @@ def phpdump(o, level = 1)
     begin
       o.include?('.') ? Float(o).to_s : Integer(o).to_s
     rescue
-      o.to_pson
+      o.to_json
     end
   end
 end
