@@ -93,6 +93,26 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
+  client.rgw.cephosd1001:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd1002:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd1003:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd1004:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd1005:
+    caps:
+      mon: allow rw
+      osd: allow rwx
 
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
 
