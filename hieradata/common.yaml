@@ -2484,6 +2484,10 @@ blackbox_smoke_hosts:
     realm: production
     site: eqiad
     rack: C6
+  alert1002.wikimedia.org:
+    realm: production
+    site: eqiad
+    rack: C7
   gerrit1003.wikimedia.org:
     realm: production
     site: eqiad
@@ -2505,6 +2509,10 @@ blackbox_smoke_hosts:
     realm: production
     site: codfw
     rack: C5
+  alert2002.wikimedia.org:
+    realm: production
+    site: codfw
+    rack: B7
   puppetmaster2002.codfw.wmnet:
     realm: production
     site: codfw
