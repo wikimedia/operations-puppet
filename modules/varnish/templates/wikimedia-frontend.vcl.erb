@@ -1170,20 +1170,6 @@ sub vcl_synth {
             set resp.http.Cache-Control = "private, s-maxage=0, max-age=0, must-revalidate";
         }
 
-        // Browser sec warning (TLSv1.1/TLSv1.1 intercepted request)
-        if (resp.reason == "Browser Connection Security Redirect") {
-            set resp.http.Location = req.http.Location;
-            set resp.http.Content-Length = "0";
-            return (deliver);
-        }
-        // Browser sec warning
-        if (resp.reason == "Browser Connection Security Warning") {
-            set resp.http.Connection = "keep-alive";
-            set resp.http.Cache-Control = "public, max-age=3600, s-maxage=3600";
-            call browser_sec_synth;
-            return (deliver);
-        }
-
         if (resp.status >= 400) {
             call synth_errorpage;
         }
