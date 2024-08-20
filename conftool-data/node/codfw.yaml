@@ -207,7 +207,6 @@ codfw:
     mw2260.codfw.wmnet: [kubesvc]
     mw2267.codfw.wmnet: [kubesvc]
     mw2282.codfw.wmnet: [kubesvc]
-    mw2291.codfw.wmnet: [kubesvc]
     mw2292.codfw.wmnet: [kubesvc]
     mw2293.codfw.wmnet: [kubesvc]
     mw2294.codfw.wmnet: [kubesvc]
@@ -374,6 +373,7 @@ codfw:
     wikikube-worker2037.codfw.wmnet: [kubesvc]
     wikikube-worker2038.codfw.wmnet: [kubesvc]
     wikikube-worker2039.codfw.wmnet: [kubesvc]
+    wikikube-worker2040.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
