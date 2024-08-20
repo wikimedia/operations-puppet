@@ -244,7 +244,8 @@ class gerrit(
     if $ssh_host_key != undef {
         file { "${gerrit_site}/etc/ssh_host_key":
             ensure    => present,
-            content   => secret("gerrit/${ssh_host_key}"),
+            # Java binary key format
+            content   => wmflib::secret("gerrit/${ssh_host_key}", true),
             owner     => $daemon_user,
             group     => $daemon_user,
             mode      => '0440',
