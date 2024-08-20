@@ -39,7 +39,7 @@ class profile::cache::varnish::frontend::text (
         mode      => '0600',
         show_diff => false,
         backup    => false,
-        content   => secret('varnish/dp.master.key'),
+        content   => wmflib::secret('varnish/dp.master.key', true),
     }
 
     # provide an initial sub key file
