@@ -93,7 +93,7 @@ class profile::dns::auth::config(
         owner     => 'gdnsd',
         group     => 'gdnsd',
         mode      => '0400',
-        content   => secret('dns/dnscookies.key'),
+        content   => wmflib::secret('dns/dnscookies.key', true),
         show_diff => false,
         notify    => Service['gdnsd'],
         before    => Exec['authdns-local-update'],
