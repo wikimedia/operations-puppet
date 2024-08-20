@@ -39,6 +39,7 @@ profile::opensearch::common_settings:
     flood_stage: '100gb'
 
 profile::opensearch::monitoring::enable_shard_size_check: false
+profile::opensearch::monitoring::enable_unassigned_shard_check: false
 
 # the logstash cluster has 3 data nodes, and each shard has 3 replica (each
 # shard is present on each node). If one node is lost, 1/3 of the shards

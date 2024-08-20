@@ -5,6 +5,7 @@ class profile::opensearch::monitoring::base_checks(
     String  $threshold               = lookup('profile::opensearch::monitoring::threshold',               { 'default_value' => '>=0.15' }),
     Integer $timeout                 = lookup('profile::opensearch::monitoring::timeout',                 { 'default_value' => 4 }),
     Boolean $enable_shard_size_check = lookup('profile::opensearch::monitoring::enable_shard_size_check', { 'default_value' => true }),
+    Boolean $enable_unassigned_shard_check = lookup('profile::opensearch::monitoring::enable_unassigned_shard_check', { 'default_value' => true }),
 ) {
     require ::profile::opensearch::server
 
@@ -23,15 +24,17 @@ class profile::opensearch::monitoring::base_checks(
           description   => "OpenSearch health check for shards on ${port}",
         }
 
-        nrpe::monitor_service { "opensearch_unassigned_shard_check_${port}":
-          critical       => false,
-          contact_group  => 'admins,team-discovery',
-          notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
-          nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py --url http://localhost:${port} --timeout ${timeout}",
-          description    => "OpenSearch unassigned shard check - ${port}",
-          check_interval => 720, # 12h
-          retry_interval => 120, # 2h
-          retries        => 1,
+        if $enable_unassigned_shard_check {
+            nrpe::monitor_service { "opensearch_unassigned_shard_check_${port}":
+              critical       => false,
+              contact_group  => 'admins,team-discovery',
+              notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+              nrpe_command   => "/usr/lib/nagios/plugins/check_elasticsearch_unassigned_shards.py --url http://localhost:${port} --timeout ${timeout}",
+              description    => "OpenSearch unassigned shard check - ${port}",
+              check_interval => 720, # 12h
+              retry_interval => 120, # 2h
+              retries        => 1,
+            }
         }
 
         if $enable_shard_size_check {
