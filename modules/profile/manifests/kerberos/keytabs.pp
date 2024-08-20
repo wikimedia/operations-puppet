@@ -38,7 +38,7 @@ class profile::kerberos::keytabs (
             owner     => $keytab_metadata['owner'],
             group     => $keytab_metadata['group'],
             mode      => '0440',
-            content   => secret("kerberos/keytabs/${::fqdn}/${keytab_metadata['role']}/${keytab_metadata['filename']}"),
+            content   => wmflib::secret("kerberos/keytabs/${::fqdn}/${keytab_metadata['role']}/${keytab_metadata['filename']}", true),
             show_diff => false,
             require   => File["/etc/security/keytabs/${keytab_metadata['role']}"]
         }
