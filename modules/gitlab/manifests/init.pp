@@ -91,6 +91,7 @@ class gitlab (
     String                   $logrotate_size                    = 'nil',
     Integer                  $logrotate_rotate                  = 10,
     Boolean                  $enable_robots_txt                 = false,
+    Array[Stdlib::Fqdn]      $replica_hosts                     = [],
 
 ) {
     $oidc_defaults = {
@@ -143,6 +144,13 @@ class gitlab (
         group => 'root',
         mode  => '0500',
     })
+
+    # add replica hosts to Icinga
+    each($replica_hosts) |$replica_host| {
+        @monitoring::host { $replica_host:
+            host_fqdn => $replica_host,
+        }
+    }
 
     file {'/etc/gitlab/gitlab.rb':
         ensure  => $ensure,

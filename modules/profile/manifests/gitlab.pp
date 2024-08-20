@@ -49,6 +49,7 @@
 # @param thanos_storage_username The username for accessing Thanos storage.
 # @param use_acmechief Whether to use AcmeChief for certificate management.
 # @param enable_robots_txt serve a custom robots.txt
+# #param replica_hosts list of replica hosts to be added to Icinga monitoring.
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -101,6 +102,7 @@ class profile::gitlab(
     String $logrotate_size = lookup('profile::gitlab::logrotate_size'),
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
     Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
+    Array[Stdlib::Fqdn] $replica_hosts = lookup('profile::gitlab::replica_hosts'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -314,5 +316,6 @@ class profile::gitlab(
         logrotate_size               => $logrotate_size,
         logrotate_rotate             => $logrotate_rotate,
         enable_robots_txt            => $enable_robots_txt,
+        replica_hosts                => $replica_hosts,
     }
 }
