@@ -265,6 +265,8 @@ profile::gitlab::runner::allowed_images:
   - "docker-registry.tools.wmflabs.org/**/*"
   # SonarQube cli image
   - "sonarsource/sonar-scanner-cli:*"
+  # T372848: Blubber + Kokkuri images created from the "cloud" runners on DO
+  - "registry.cloud.releng.team/**/*"
 profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
