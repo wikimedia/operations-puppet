@@ -60,7 +60,7 @@ class aptrepo::common (
             owner     => $gpg_user,
             group     => $gpg_user,
             mode      => '0400',
-            content   => secret($gpg_secring),
+            content   => wmflib::secret($gpg_secring, true),
             show_diff => false,
         }
     }
