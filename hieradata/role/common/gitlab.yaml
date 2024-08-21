@@ -114,11 +114,6 @@ profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
 profile::gitlab::logrotate_maxsize: "nil" # logs will not be rotated when they grow bigger than size
 profile::gitlab::logrotate_size: "nil" # do not rotate by size by default
 profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
-
-profile::gitlab::replica_hosts:
-  - gitlab-replica-a.wikimedia.org
-  - gitlab-replica-b.wikimedia.org
-
 profile::firewall::provider: nftables
 
 profile::firewall::nftables_throttling::ensure: present
