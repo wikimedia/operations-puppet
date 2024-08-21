@@ -66,11 +66,11 @@ class profile::vrts(
         metrics         => {
             'valid_queues'   => {
                 'columns' => ['count'],
-                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count WHERE valid_id=1',
+                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count FROM queue WHERE valid_id=1',
             },
             'invalid_queues' => {
                 'columns' => ['count'],
-                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count WHERE valid_id=2',
+                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count FROM queue WHERE valid_id=2',
             }
         },
 
