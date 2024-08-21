@@ -72,12 +72,26 @@ EOF
 debconf-set-selections /tmp/dynamic_disc.cfg
 }
 
+# The following function is used to remove LVM signatures from a subset
+# of the devices, whilst leaving others in place. This is intended to be used
+# for reimaging cephosd servers, where we wish to reinstall the O/S using LVM
+# but leave the LV associated with each OSD intact. See #T372783 for more info.
+remove_my_hostname_lvm() {
+  PV=$(pvs -o pv_name --select 'pv_name=~/dev/md' --noheadings)
+  if [ -n "$PV" ]; then
+    lvremove -ff -y --devices ${PV} --select all
+    vgremove -ff -y $(hostname)-vg
+    pvremove -ff -y ${PV}
+  fi
+}
+
 
 case $(hostname) in
   ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be1005|thanos-be2005)
     configure_swift_disks
     ;;
   cephosd*|cloudcephosd*)
+    remove_my_hostname_lvm
     configure_cephosd_disks
     ;;
 esac
