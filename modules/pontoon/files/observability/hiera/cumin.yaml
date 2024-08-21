@@ -1,7 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-cumin_masters:
-  - 172.16.4.160 # cloud-cumin-03.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.0.204 # pontoon-cumin-01.monitoring.eqiad1.wikimedia.cloud
-
-profile::sre::check_user::super_admin: foo@bar.com

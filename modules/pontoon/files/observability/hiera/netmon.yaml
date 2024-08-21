@@ -1,5 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-netmon_server: "%{alias('__master_for_role_netmon')}"
-profile::librenms::dbhost: 'localhost'
-profile::librenms::auth_mechanism: 'sso'
-profile::librenms::sitename: "librenms.%{lookup('public_domain')}"
