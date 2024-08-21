@@ -2,6 +2,6 @@
 type Netbox::Device = Struct[{
     site    => Wmflib::Sites,
     row     => String[2],
-    role    => Optional[String[2]],  # Optional only for the transition period
+    role    => String[2],
     rack    => String[2],
 }]
