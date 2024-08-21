@@ -7,6 +7,14 @@ class icinga::monitor::gitlab {
         host_fqdn => 'gitlab.wikimedia.org',
     }
 
+    @monitoring::host { 'gitlab-replica-a.wikimedia.org':
+        host_fqdn => 'gitlab-replica-a.wikimedia.org',
+    }
+
+    @monitoring::host { 'gitlab-replica-b.wikimedia.org':
+        host_fqdn => 'gitlab-replica-b.wikimedia.org',
+    }
+
     monitoring::service {
         default:
             host      => 'gitlab.wikimedia.org',
