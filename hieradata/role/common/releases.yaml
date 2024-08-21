@@ -36,10 +36,8 @@ profile::monitoring::nrpe_check_disk_options: -w 6% -c 3% -W 6% -K 3% -l -e -A -
 # Docker requires the overlay / overlayFS kernel module
 profile::base::overlayfs: true
 
-profile::releases::mediawiki::jenkins_java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
-
 profile::java::java_packages:
-  - version: "11"
+  - version: "17"
     variant: "jdk"
 
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
