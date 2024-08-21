@@ -24,6 +24,7 @@ class profile::puppetserver::pontoon (
         mode   => '0755',
     }
 
+    # XXX refactor to use profile::puppetserver::git instead
     ['operations/puppet', 'labs/private'].each |$repo| {
         wmflib::dir::mkdir_p("${git_basedir}/${repo}", {
             owner  => 'puppet',
@@ -145,5 +146,19 @@ class profile::puppetserver::pontoon (
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
+    }
+
+    # XXX refactor to use profile::puppetserver::git instead
+    git::clone { 'netbox-hiera':
+        ensure    => present,
+        origin    => 'https://netbox-exports.wikimedia.org/netbox-hiera',
+        owner     => 'puppet',
+        mode      => '0755',
+        directory => "${git_basedir}/netbox-hiera",
+    }
+
+    file { '/etc/puppet/netbox':
+        ensure => link,
+        target => "${git_basedir}/netbox-hiera",
     }
 }
