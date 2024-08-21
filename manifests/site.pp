@@ -1522,19 +1522,9 @@ node /^idp[12]004\.wikimedia\./ {
     role(idp)
 }
 
-# CAS 6.6 hosts
-node /^idp-test[12]002\.wikimedia\./ {
-    role(idp_test)
-}
-
 # CAS 7.0 hosts
 node /^idp-test[12]004\.wikimedia\./ {
     role(idp_test)
-}
-
-# CAS 6.6 Build host
-node /^idp-test1003\.wikimedia\./ {
-    role(idp_build)
 }
 
 node /^install[12]004\.wikimedia\./ {
