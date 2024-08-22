@@ -3487,7 +3487,7 @@ service::catalog:
       - eqiad
     ip:
       codfw:
-        default: 208.80.153.84
+        default: 208.80.153.42
       eqiad:
         default: 208.80.154.88
     state: production
