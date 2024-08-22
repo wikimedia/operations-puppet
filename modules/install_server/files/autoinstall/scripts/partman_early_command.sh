@@ -72,26 +72,13 @@ EOF
 debconf-set-selections /tmp/dynamic_disc.cfg
 }
 
-# The following function is used to remove LVM signatures and software RAID metadata
-# from devices required for the OS install, whilst leaving others in place. This is intended
-# to be used for reimaging cephosd servers, where we wish to reinstall the O/S using LVM
-# on MD RAID but leave the LV associated with each OSD intact. See #T372783 for more info.
-remove_os_lvm_md() {
-  # Disable any swap devices that are actively using MD RAID devices
-  SWAPDEVS=$(grep md /proc/swaps | awk '{print $1}')
-  if [ -n "$SWAPDEVS" ]; then
-    for d in ${SWAPDEVS}; do
-      swapoff ${d}
-    done
-  fi
-  # Identify any physical volumes that are stored on MD RAID devices
-  PV=$(pvs -o pv_name --select 'pv_name=~/dev/md' --noheadings)
-  if [ -n "$PV" ]; then
-    # Remove all logical volumes, the volume group maching the hostname, and the physical volume.
-    lvremove -ff -y --devices ${PV} --select all
-    vgremove -ff -y $(hostname)-vg
-    pvremove -ff -y ${PV}
-  fi
+# The following function is used to remove software RAID metadata from devices required
+# for the OS install. This is intended to be used for reimaging cephosd servers, where we
+# wish to reinstall the O/S using LVM on MD RAID but leave the LV associated with each OSD
+# intact. See #T372783 for more info.
+remove_os_md() {
+  # Assemble any software RAID arrays that are discovered
+  mdadm --assemble --scan
   # Identify all member devices of software RAID arrays, stop the array and zero the MD metadata on each one.
   DEVS=$(grep -q 'md' /proc/mdstat | tr ' ' '\n' | sed -n 's|^|/dev/|;s/\[.*//p')
   if [ -n "$DEVS" ]; then
@@ -110,7 +97,7 @@ case $(hostname) in
     configure_swift_disks
     ;;
   cephosd*|cloudcephosd*)
-    remove_os_lvm_md
+    remove_os_md
     configure_cephosd_disks
     ;;
 esac
