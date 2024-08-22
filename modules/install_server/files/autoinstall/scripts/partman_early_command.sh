@@ -77,6 +77,13 @@ debconf-set-selections /tmp/dynamic_disc.cfg
 # to be used for reimaging cephosd servers, where we wish to reinstall the O/S using LVM
 # on MD RAID but leave the LV associated with each OSD intact. See #T372783 for more info.
 remove_os_lvm_md() {
+  # Disable any swap devices that are actively using MD RAID devices
+  SWAPDEVS=$(grep md /proc/swaps | awk '{print $1}')
+  if [ -n "$SWAPDEVS" ]; then
+    for d in ${SWAPDEVS}; do
+      swapoff ${d}
+    done
+  fi
   # Identify any physical volumes that are stored on MD RAID devices
   PV=$(pvs -o pv_name --select 'pv_name=~/dev/md' --noheadings)
   if [ -n "$PV" ]; then
