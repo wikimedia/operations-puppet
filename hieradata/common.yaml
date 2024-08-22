@@ -1779,6 +1779,10 @@ monitoring_hosts:
 - 2620:0:861:3:208:80:154:88 # alert1001.wikimedia.org
 - 208.80.153.84              # alert2001.wikimedia.org
 - 2620:0:860:3:208:80:153:84 # alert2001.wikimedia.org
+- 208.80.154.78              # alert1002.wikimedia.org
+- 2620:0:861:3:208:80:154:78 # alert1002.wikimedia.org
+- 208.80.153.42              # alert2002.wikimedia.org
+- 2620:0:860:2:208:80:153:42 # alert2002.wikimedia.org
 
 deployment_hosts:
 - 10.64.16.93                 # deploy1003.eqiad.wmnet
