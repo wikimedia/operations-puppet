@@ -32,7 +32,7 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun, ezachte, chelsyx, sbailey]
+              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -417,7 +417,7 @@ groups:
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob, gtzatchkova,
+              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, oljad, cmadeo,
@@ -772,7 +772,7 @@ groups:
     description: Group of WMDE analytics users
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
-              awight, wmde-fisch, wmde-leszek, jakob, gtzatchkova, sihe, ollieshotton,
+              awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
               muja, andrewtavis-wmde, manuel-wmde, kpayne]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
@@ -4564,14 +4564,12 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDjd61raR4jmiUPk6rt2PY/38YOj/n8VIY9hTbevGLL36IRpT9pRjSbywhWb1KLI/WqZX+FcntRe485zgysZja9jAL9VnvU50LLQMB8gnbIVvHjxIO3xhdmenBer17fH5tyIevs2UI4TeWzm7eZGkbJDxfR3rl6S09CQhfDVA4hj6Byi0ocNu3dtbRca9OuH0HMmso2bkiElUQc+KwX2VajGELb/z+mAAG2huvkJ8Z7rNWD/lpay2f/4MEtMLnU/9n2pRQQwbnj/T8HMj0DQT7/rOEvEKWgw72OuHscJ5qbFCpRL7O8UzZ4BX2QT8wYbyRvCBjTnMpqLDa7hJqKGR8WLIMr+BVYr7LDWTPUNGuPQUkB2NYU50mSLA9Azm37fbELW8fge8GsZNHnH0ZGP60TPtpI/Lz/7cwXTsr/Ttt07ztMyKI58nRyrsJdUjaB/NilLrX5HDJrcdyrnRzkvH394YhJXVKQJB53QSq7X5WHa60hju/bQUHuDqBcEUWTeIbSZXYVqtL+ioHQXyMEIUDa75O2I07DVQ7/MVNorudcO+sV+bStl01+1xSKFQX349QTOpZ6srNLwk9A1BB/7BZ9DTy2Ewno+O3jkqgE8n3nC3/F7Iq5TyUWB/6RDMTMzVYz3orojrB3+eGFMZ0fyrZMPeNuzSKkRCGM5ZSLv/wSuQ== gmodena@wikimedia.org
   gtzatchkova:
-    ensure: present
+    ensure: absent
     realname: Guergana Tzatchkova
-    email: guergana.tzatchkova@wikimedia.de
     uid: 24953
     gid: 500
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDww6LwxZbh9bX4srcYZ911tFdXmUpXUD4tpIDnSQ3BTti8uDxcUfJ5Z2FSEYpolOYareiTOAcsk7QUVMxVm3oS6ineVLBTSvVtjaaR+4Me4BGba/GmNhwaw6V/bKaYHNmDZRlOJzKQOgOQN4MZogA0Pc2H2GPFWpwZ+FEZH8ljTI2A7M2O2cE5I8iwYk4PLaihkqVud8SFe8dzW7BMfLj0RPxek4u7y2/HpLw4gIygcvWDKIl6MTOPdO63ZQuLYxtVReoq1PayKUce4jR8dYzl+Wq09/O8RguhRw7MD/86AfG3YkIguXwAKZvYaZbk3DGLNArKPJUhZ9CiqDIh6w7yyWSTS/gNUBtN7HwjMsAcF8D8xed1Al10v7paX9iO3kasAEUYXJPt1jvcnV7feFZe2Wx04SD5RG3jLyW98VjjFy9fCujZ7HwWFiyqo8+lwLFkpFLDEp2az68aB3Z04fIKKGwjOQe6n63QUcUF08Eg6GrAhe/vRq1xF/qnMpWNb90=
-    krb: present
+    ssh_keys: []
+    krb: absent
   toan:
     ensure: absent
     realname: Tobias Andersson
