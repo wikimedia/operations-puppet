@@ -3160,7 +3160,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: wdqs-main
         active_active: true
@@ -3195,7 +3195,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: wdqs-scholarly
         active_active: true
