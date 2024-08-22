@@ -28,7 +28,7 @@ describe 'profile::openstack::base::nova::compute::service' do
           fsid => \'dummyfsid-17bc-44dc-9aeb-1d044c9bba9e\',
        }',
       'class{ \'openstack::nova::common\':
-          version => \'bobcat\',
+          version => \'caracal\',
           region => \'eqiad1-r\',
           db_user => \'dummydbuser\',
           db_pass => \'dummydbpass\',
@@ -61,7 +61,7 @@ describe 'profile::openstack::base::nova::compute::service' do
           })
       end
       let(:params) {{
-        'version' => 'bobcat',
+        'version' => 'caracal',
         'instance_dev' => 'thinvirt',
         'network_flat_interface' => 'eno50.1105',
         'network_flat_interface_vlan' => '1105',
