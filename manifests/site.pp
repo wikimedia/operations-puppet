@@ -1512,11 +1512,6 @@ node /^idm-test[12]001\.wikimedia\./ {
     role(idm_test)
 }
 
-# CAS 6.6 hosts
-node /^idp[12]003\.wikimedia\./ {
-    role(idp)
-}
-
 # CAS 7.0 hosts
 node /^idp[12]004\.wikimedia\./ {
     role(idp)
