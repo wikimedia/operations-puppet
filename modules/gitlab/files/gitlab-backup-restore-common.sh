@@ -50,5 +50,7 @@ send_prometheus_metrics() {
     duration_data="gitlab_${mode}_duration_seconds{instance=\"${host}:0\", type=\"${type}\"} ${duration}"
     last_run_data="gitlab_${mode}_last_run{instance=\"${host}:0\", type=\"${type}\"} $(date +%s)"
 
-    echo -e "${duration_data}\n${last_run_data}" | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_${mode}"
+    # We will allow this to fail, since it's only metrics. Otherwise, if this command fails because the push gateway is down or
+    # not available (e.g., WMCS), the whole backup/restore will be marked as a failure.
+    echo -e "${duration_data}\n${last_run_data}" | curl --data-binary @- "http://${PROMETHEUS_PUSHGATEWAY_HOST}/metrics/job/gitlab_${mode}" || true
 }
