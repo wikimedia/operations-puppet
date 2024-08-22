@@ -45,7 +45,9 @@ https://en.wikipedia.org:
 # https://phabricator.wikimedia.org/T106732
 - path: /w/resources/Resources.php
   assert_status: 404
-
+- path: /api/
+  assert_status: 200
+  assert_body_contains: providing rich queries, editing and content access
 
 https://www.mediawiki.org:
 - path: /wiki/User_hub
