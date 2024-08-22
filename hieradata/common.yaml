@@ -1662,6 +1662,17 @@ kafka_brokers_main:
 - 2620:0:860:104:10:192:48:38  # kafka-main2004.codfw.wmnet
 - 10.192.48.46                 # kafka-main2005.codfw.wmnet
 - 2620:0:860:104:10:192:48:46  # kafka-main2005.codfw.wmnet
+# Replacement kafka nodes T363210
+- 10.192.5.9                   # kafka-main2006.codfw.wmnet
+- 2620:0:860:106:10:192:5:9    # kafka-main2006.codfw.wmnet
+- 10.192.22.6                  # kafka-main2007.codfw.wmnet
+- 2620:0:860:112:10:192:22:6   # kafka-main2007.codfw.wmnet
+- 10.192.32.4                  # kafka-main2008.codfw.wmnet
+- 2620:0:860:103:10:192:32:4   # kafka-main2008.codfw.wmnet
+- 10.192.48.33                 # kafka-main2009.codfw.wmnet
+- 2620:0:860:104:10:192:48:33  # kafka-main2009.codfw.wmnet
+- 10.192.48.35                 # kafka-main2010.codfw.wmnet
+- 2620:0:860:104:10:192:48:35  # kafka-main2010.codfw.wmnet
 kafka_brokers_jumbo:
 - 10.64.32.106                # kafka-jumbo1007.eqiad.wmnet
 - 2620:0:861:103:10:64:32:106 # kafka-jumbo1007.eqiad.wmnet
