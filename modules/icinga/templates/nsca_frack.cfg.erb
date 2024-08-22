@@ -42,6 +42,19 @@ define host {
 }
 
 define host {
+    host_name                fran2001
+    address                  10.195.0.36
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-misc
+}
+
+define host {
     host_name                frauth1002
     address                  10.64.40.69
     check_command            check_ping!500,20%!2000,100%
@@ -239,6 +252,19 @@ define host {
 define host {
     host_name                frdb2003
     address                  10.195.0.35
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-database
+}
+
+define host {
+    host_name                frdb2004
+    address                  10.195.0.53
     check_command            check_ping!500,20%!2000,100%
     max_check_attempts       2
     notification_options     d,u,r,f
@@ -746,6 +772,15 @@ define service {
     use                      passive-service
     service_description      check_ipsec
     host_name                fran1001
+    contact_groups           fr-tech
+}
+
+# fran2001
+
+define service {
+    use                      passive-service
+    service_description      check_ipsec
+    host_name                fran2001
     contact_groups           fr-tech
 }
 
