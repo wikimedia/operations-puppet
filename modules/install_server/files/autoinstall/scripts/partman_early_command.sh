@@ -93,7 +93,7 @@ remove_os_lvm_md() {
     pvremove -ff -y ${PV}
   fi
   # Identify all member devices of software RAID arrays, stop the array and zero the MD metadata on each one.
-  DEVS=$(grep 'md' /proc/mdstat | tr ' ' '\n' | sed -n 's|^|/dev/|;s/\[.*//p')
+  DEVS=$(grep -q 'md' /proc/mdstat | tr ' ' '\n' | sed -n 's|^|/dev/|;s/\[.*//p')
   if [ -n "$DEVS" ]; then
     for n in /dev/md/*; do
       mdadm --stop ${n}
