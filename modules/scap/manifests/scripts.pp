@@ -96,10 +96,4 @@ class scap::scripts (
         mode   => '0555',
         source => 'puppet:///modules/scap/sudo-withagent',
     }
-    file { '/usr/local/lib/mw-deployment-vars.sh':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => template('scap/mw-deployment-vars.erb'),
-    }
 }
