@@ -10,10 +10,14 @@ server s1 {
     # maintenance..." message in the body
     rxreq
     txresp -status 502
-    # because 503s are handled with a retry, it's necessary to handle two
+    # because most 503s are handled with a retry, it's necessary to handle two
     # requests despite only sending one from the client
     rxreq
     txresp -status 503
+    rxreq
+    txresp -status 503
+
+    # POST requests are an exception to the above
     rxreq
     txresp -status 503
 } -start
@@ -55,4 +59,10 @@ client c1 {
     expect resp.body !~ "Too Many Requests"
     expect resp.body ~ "Our servers are currently under maintenance or experiencing a technical issue"
 
+    txreq -req "POST" -url "/" -hdr "Host: en.wikipedia.org"
+    rxresp
+    expect resp.status == 503
+    expect resp.body !~ "Too Many Requests"
+    expect resp.body !~ "%error"
+    expect resp.body ~ "Our servers are currently under maintenance or experiencing a technical issue"
 } -run
