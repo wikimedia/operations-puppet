@@ -28,7 +28,6 @@ MAPPING = {
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
     'lmata': ['observability'],
     'lsobanski': ['collaboration_services'],
-    'wdoran': ['core_platform'],
 }
 
 

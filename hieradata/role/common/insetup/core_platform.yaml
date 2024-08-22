@@ -1,4 +1,0 @@
-profile::contacts::role_contacts: ["Core Platform"]
-profile::monitoring::notifications_enabled: false
-
-profile::puppet::agent::force_puppet7: true

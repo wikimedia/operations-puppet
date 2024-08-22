@@ -481,8 +481,6 @@ role::phabricator:
   phab-task: 334519
 role::insetup::search_platform:
   target-q: 2023-2
-role::insetup::core_platform:
-  target-q: 2023-2
 role::insetup_noferm:
   target-q: 2023-2
 role::insetup::data_persistence:

@@ -1079,7 +1079,7 @@ profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 7231
 profile::tlsproxy::envoy::global_cert_name: "restbase.discovery.wmnet"
-profile::contacts::role_contacts: ['Core Platform']
+profile::contacts::role_contacts: ['ServiceOps']
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'

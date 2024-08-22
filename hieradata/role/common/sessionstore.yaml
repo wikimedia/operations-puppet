@@ -75,7 +75,7 @@ profile::cassandra::monitor_tls_port: 7000
 #
 profile::admin::groups:
   - sessionstore-roots
-profile::contacts::role_contacts: ['Core Platform']
+profile::contacts::role_contacts: ['Data Persistence']
 profile::java::java_packages:
   - version: '11'
     variant: 'jdk'

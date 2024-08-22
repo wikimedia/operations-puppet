@@ -25,7 +25,7 @@ profile::maps::apps::use_proxy: true
 profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
 profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
 profile::tlsproxy::instance::nginx_variant: 'light'
-profile::contacts::role_contacts: ['Core Platform']
+profile::contacts::role_contacts: ['ServiceOps']
 
 profile::java::java_packages:
   - version: '8'

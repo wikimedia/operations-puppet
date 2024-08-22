@@ -349,8 +349,6 @@ role::phabricator:
   target-q: TBD
 role::insetup::search_platform:
   target-q: TBD
-role::insetup::core_platform:
-  target-q: TBD
 role::insetup_noferm:
   target-q: TBD
 role::insetup::data_persistence:
