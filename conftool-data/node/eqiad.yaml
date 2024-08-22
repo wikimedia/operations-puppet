@@ -150,11 +150,11 @@ eqiad:
     wdqs1016.eqiad.wmnet: [wdqs]
     wdqs1017.eqiad.wmnet: [wdqs]
   wdqs-main:
-    wdqs1021.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
-    wdqs1022.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs1021.eqiad.wmnet: [wdqs-main]
+    wdqs1022.eqiad.wmnet: [wdqs-main]
   wdqs-scholarly:
-    wdqs1023.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
-    wdqs1024.eqiad.wmnet: [wdqs, wdqs-ssl, wdqs-heavy-queries]
+    wdqs1023.eqiad.wmnet: [wdqs-scholarly]
+    wdqs1024.eqiad.wmnet: [wdqs-scholarly]
   kibana7:
     logstash1023.eqiad.wmnet: [kibana7, logs-api]
     logstash1024.eqiad.wmnet: [kibana7, logs-api]
