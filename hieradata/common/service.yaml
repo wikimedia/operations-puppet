@@ -3130,6 +3130,76 @@ service::catalog:
       - dnsdisc: wdqs-internal
         active_active: true
 
+  wdqs-main:
+    description: Wikidata Query Service - main
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.33
+      eqiad:
+        default: 10.2.2.33
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs-main
+        service: wdqs-main
+      depool_threshold: ".3"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - http://localhost/readiness-probe
+      scheduler: wrr
+    probes:
+      - type: http
+        path: /readiness-probe
+    port: 80
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: wdqs-main
+        active_active: true
+
+  wdqs-scholarly:
+    description: Wikidata Query Service - scholarly
+    encryption: false
+    ip:
+      codfw:
+        default: 10.2.1.36
+      eqiad:
+        default: 10.2.2.36
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: wdqs-scholarly
+        service: wdqs-scholarly
+      depool_threshold: ".3"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+        ProxyFetch:
+          url:
+            - http://localhost/readiness-probe
+      scheduler: wrr
+    probes:
+      - type: http
+        path: /readiness-probe
+    port: 80
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: wdqs-scholarly
+        active_active: true
+
   wdqs-ssl:
     description: Wikidata Query Service - HTTPS
     encryption: true

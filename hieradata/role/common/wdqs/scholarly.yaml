@@ -25,7 +25,7 @@ profile::admin::groups:
 cluster: wdqs-scholarly
 contactgroups: admins,wdqs-admins
 profile::lvs::realserver::pools:
-  wdqs:
+  wdqs-scholarly:
     services:
       - wdqs-blazegraph
       - nginx
