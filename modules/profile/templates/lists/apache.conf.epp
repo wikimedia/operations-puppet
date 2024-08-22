@@ -68,8 +68,12 @@
         # Exempt IPv4 addresses of monitoring hosts
         # alert1001.wikimedia.org
         SecRule REMOTE_ADDR "208.80.154.88"  "id:1005,allow"
+        # alert1002.wikimedia.org
+        SecRule REMOTE_ADDR "208.80.154.78"  "id:1007,allow"
         # alert2001.wikimedia.org
         SecRule REMOTE_ADDR "208.80.153.84"  "id:1006,allow"
+        # alert2002.wikimedia.org
+        SecRule REMOTE_ADDR "208.80.153.42"  "id:1008,allow"
 
         # Increment per IP subscribe counter and set expiration to 60 minutes
         SecRule REQUEST_METHOD "POST" "id:1100,chain,pass,nolog"
