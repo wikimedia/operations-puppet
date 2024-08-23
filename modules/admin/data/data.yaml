@@ -6121,7 +6121,8 @@ users:
     email: ngkountas@wikimedia.org
     uid: 24336
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILInfdooHG0VTLNV6TSlNiYTvNpgtWuM7Vy25CGqngKA ngkountas@wikimedia.org'
   xiaoxiao:
     ensure: present
     realname: Xiao Xiao
