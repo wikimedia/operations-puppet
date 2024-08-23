@@ -88,6 +88,9 @@ block_deployments: <%= @block_scap_deployments %>
 # T359643
 manage_mediawiki_php_symlink: False
 
+# T361724: Make scap require screen/tmux for certain subcommands
+require_tty_multiplexer: True
+
 [eqiad.wmnet]
 # Wikimedia Foundation production eqiad datacenter
 datacenter: eqiad
