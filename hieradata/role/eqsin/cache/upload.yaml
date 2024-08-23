@@ -9,7 +9,7 @@ profile::cache::haproxy::sticktables:
 profile::cache::haproxy::filters:
   - direction: out
     name: limit-by-path
-    size: 300m
+    size: 38m
     key: path,sdbm(1)
     table: limit-by-path
 
