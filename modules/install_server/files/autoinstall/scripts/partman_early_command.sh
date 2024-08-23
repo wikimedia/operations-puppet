@@ -78,7 +78,7 @@ debconf-set-selections /tmp/dynamic_disc.cfg
 # intact. See #T372783 for more info.
 remove_os_md() {
   # Assemble any software RAID arrays that are discovered
-  mdadm --assemble --scan
+  mdadm --assemble --scan || true
   # Identify all member devices of software RAID arrays, stop the array and zero the MD metadata on each one.
   DEVS=$(grep 'md' /proc/mdstat | tr ' ' '\n' | sed -n 's|^|/dev/|;s/\[.*//p')
   if [ -n "$DEVS" ]; then
