@@ -44,7 +44,7 @@ profile::restbase::cassandra_datacenters:
     - "datacenter1"
 profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://parsoid.svc.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
-profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps01.deployment-prep.eqiad1.wikimedia.cloud:8888
+profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps02.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid02.deployment-prep.eqiad1.wikimedia.cloud:10044
 profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::event_service_uri: http://deployment-eventgate-4.deployment-prep.eqiad1.wikimedia.cloud:8292/v1/events
