@@ -93,7 +93,7 @@ state_path = /var/lock/magnum
 # Use syslog for logging. Existing syslog format is DEPRECATED and
 # will be changed later to honor RFC5424. This option is ignored if
 # log_config_append is set. (boolean value)
-#use_syslog = false
+use_syslog = True
 
 # Enable journald for logging. If running in a systemd environment you
 # may wish to enable journal support. Doing so will use the journal
@@ -104,11 +104,11 @@ state_path = /var/lock/magnum
 
 # Syslog facility to receive log lines. This option is ignored if
 # log_config_append is set. (string value)
-#syslog_log_facility = LOG_USER
+syslog_log_facility = LOG_LOCAL0
 
 # Use JSON formatting for logging. This option is ignored if
 # log_config_append is set. (boolean value)
-#use_json = false
+use_json = True
 
 # Log output to standard error. This option is ignored if
 # log_config_append is set. (boolean value)
