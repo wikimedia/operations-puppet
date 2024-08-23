@@ -1,4 +1,4 @@
 # es2039
-# candidate master for es7
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'es7'
 
