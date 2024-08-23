@@ -23,8 +23,8 @@ source_dir=$PWD
 dest_dir=$(git remote get-url origin)
 cd "$dest_dir"
 echo "Pulling $source_dir into $dest_dir"
-sudo env "$git_debug" git fetch --keep --no-auto-gc "$source_dir"
+sudo env $git_debug git fetch --keep --no-auto-gc "$source_dir"
 
-fetch_head=$(sudo env "$git_debug" git rev-parse FETCH_HEAD)
+fetch_head=$(sudo env $git_debug git rev-parse FETCH_HEAD)
 reflog_action="$USER moved from $fetch_head via git push"
-sudo env GIT_REFLOG_ACTION="$reflog_action" "$git_debug" git checkout -B production FETCH_HEAD
+sudo env GIT_REFLOG_ACTION="$reflog_action" $git_debug git checkout -B production FETCH_HEAD

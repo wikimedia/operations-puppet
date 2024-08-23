@@ -15,16 +15,19 @@ url=$2
 git_dir=$3
 push_path=$4
 
-hook_path=/srv/git/operations/puppet/modules/pontoon/files/bootstrap/git-post-receive.sh
-repo_hook_path="$git_dir/hooks/post-receive"
+hooks="post-receive pre-receive"
 
 if [ ! -d "$git_dir" ]; then
   git clone --bare --branch "$branch" "$url" "$git_dir"
 fi
 
-if [ ! -e "$repo_hook_path" ] || [ "$hook_path" -nt "$repo_hook_path" ]; then
-  install -v -m755 "$hook_path" "$repo_hook_path"
-fi
+for hook in $hooks; do
+  hook_path=/srv/git/operations/puppet/modules/pontoon/files/bootstrap/git-${hook}.sh
+  repo_hook_path="$git_dir/hooks/${hook}"
+  if [ ! -e "$repo_hook_path" ] || [ "$hook_path" -nt "$repo_hook_path" ]; then
+    install -v -m755 "$hook_path" "$repo_hook_path"
+  fi
+done
 
 GIT_DIR=$git_dir git remote set-url origin "$push_path"
 
