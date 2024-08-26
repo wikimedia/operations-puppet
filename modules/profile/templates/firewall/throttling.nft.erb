@@ -4,6 +4,21 @@ table inet filter {
         include "/etc/nftables/sets/PRODUCTION_NETWORKS*"
         include "/etc/nftables/sets/CLOUD_NETWORKS*"
 
+        # used to meter IPv4 IPs
+        set TRACKINGLIST {
+                type ipv4_addr
+                flags dynamic,timeout
+                timeout <%= @throttle_duration %>s
+        }
+
+        # used to meter IPv6 IPs
+        set TRACKINGLIST_V6 {
+                type ipv6_addr
+                flags dynamic,timeout
+                timeout <%= @throttle_duration %>s
+        }
+
+        # used to block actual IPv4 IPs
         set DENYLIST {
                 type ipv4_addr
                 size 65535
@@ -11,6 +26,7 @@ table inet filter {
                 timeout <%= @throttle_duration %>s
         }
 
+        # used to block actual IPv6 IPs
         set DENYLIST_V6 {
                 type ipv6_addr
                 size 65535
@@ -19,8 +35,8 @@ table inet filter {
         }
         chain throttling {
                 type filter hook input priority filter - 5; policy accept;
-                ip saddr != @PRODUCTION_NETWORKS_ipv4 ip saddr != @CLOUD_NETWORKS_ipv4 tcp dport <%= @port %> ct state new limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %>add @DENYLIST { ip saddr }
-                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 tcp dport <%= @port %> ct state new limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %>add @DENYLIST_V6 { ip6 saddr }
+                ip saddr != @PRODUCTION_NETWORKS_ipv4 ip saddr != @CLOUD_NETWORKS_ipv4 ct state new tcp dport <%= @port %> update @TRACKINGLIST { ip saddr limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %> } add @DENYLIST { ip saddr }
+                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 ct state new tcp dport <%= @port %> update @TRACKINGLIST_V6 { ip6 saddr limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %> } add @DENYLIST_V6 { ip6 saddr }
                 ip saddr @DENYLIST <%= @nft_do_log %><%= @nft_policy %>
                 ip6 saddr @DENYLIST_V6 <%= @nft_do_log %><%= @nft_policy %>
         }
