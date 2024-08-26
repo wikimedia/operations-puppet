@@ -252,7 +252,9 @@ profile::idp::ldap_attributes:
   - uid
 profile::tlsproxy::instance::ssl_compatibility_mode: strong
 profile::idp::server_name: https://idp.wikimedia.org
-profile::idp::idp_nodes: []
+profile::idp::idp_nodes:
+  - idp1004.wikimedia.org
+  - idp2004.wikimedia.org
 profile::idp::deploy_deb: true
 profile::idp::actuators:
   - sso
@@ -267,11 +269,10 @@ profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas
 profile::idp::u2f_token_expiry_days: 3650
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
-profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'CAS Identity provider'
 
 profile::java::java_packages:
-  - version: "17"
+  - version: "21"
     variant: "jdk"

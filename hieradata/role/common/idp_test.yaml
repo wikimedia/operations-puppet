@@ -125,8 +125,8 @@ profile::idp::actuators:
   - ssoSessions
 profile::idp::server_name: https://idp-test.wikimedia.org
 profile::idp::idp_nodes:
-  - idp-test1002.wikimedia.org
-  - idp-test2002.wikimedia.org
+  - idp-test1004.wikimedia.org
+  - idp-test2004.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: true
 profile::idp::memcached::memcached_user: 'memcache'
@@ -138,13 +138,11 @@ profile::idp::u2f_jpa_enable: true
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas_staging
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
-profile::java::hardened_tls: true
 profile::java::egd_source: '/dev/urandom'
 profile::idp::u2f_token_expiry_days: 3650
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'CAS Identity provider (staging setup)'
 
-profile::java::hardened_tls: true
 profile::java::java_packages:
-  - version: "17"
+  - version: "21"
     variant: "jdk"

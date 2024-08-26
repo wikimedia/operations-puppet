@@ -152,7 +152,6 @@ class apereo_cas (
     Array[Apereo_cas::Delegate]       $delegated_authenticators      = [],
     Boolean                           $enable_webauthn               = false,
     Stdlib::Fqdn                      $webauthn_relaying_party       = 'example.org',
-    String                            $tomcat_version                = 'tomcat9',
 ) {
     if $keystore_source == undef and $keystore_content == undef and $server_enable_ssl {
         fail('you must provide either $keystore_source or $keystore_content')
