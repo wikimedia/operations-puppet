@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 Origin: Wikimedia
 Label: Wikimedia
-Suite: bullseye-wikimedia-staging
-Codename: bullseye-wikimedia-staging
+Suite: bullseye-wikimedia
+Codename: bullseye-wikimedia
 Version: 11
 Architectures: source amd64
 Components: main
@@ -12,8 +12,8 @@ DebOverride: deb-override
 
 Origin: Wikimedia
 Label: Wikimedia
-Suite: bookworm-wikimedia-staging
-Codename: bookworm-wikimedia-staging
+Suite: bookworm-wikimedia
+Codename: bookworm-wikimedia
 Version: 12
 Architectures: source amd64
 Components: main
