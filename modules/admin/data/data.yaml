@@ -45,7 +45,7 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7240,10 +7240,13 @@ ldap_only_users:
     ensure: present
     realname: Sarai Sanchez
     email: ssanchez@wikimedia.org
-  jfk:
+  jasmine:
     ensure: present
     realname: Jasmine Kilani
     email: jkilani@wikimedia.org
+  jfk:
+    ensure: absent
+    realname: Jasmine Kilani
   hcoplin:
     ensure: present
     realname: Halley Coplin
