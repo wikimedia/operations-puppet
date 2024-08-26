@@ -2,8 +2,3 @@
 ExecStart=
 ExecStart=/usr/bin/prometheus-blackbox-exporter --config.file /etc/prometheus/blackbox.yml --log.level=debug
 LimitNOFILE=16535
-
-# Turn on CN validation: as of Jul 2022 there are certificates deployed
-# on the fleet with CN only and no SAN (most notably Puppet host
-# certificates). See also https://golang.google.cn/doc/go1.15#commonname
-Environment=GODEBUG=x509ignoreCN=0
