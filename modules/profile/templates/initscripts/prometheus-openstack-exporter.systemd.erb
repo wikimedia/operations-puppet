@@ -5,7 +5,7 @@ Description=prometheus openstack exporter
 [Service]
 Type=simple
 Restart=always
-ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper --web.listen-address=":<%= @listen_port %>" --os-client-config=<%= @config_file %> --disable-slow-metrics <%= @cloud %>
+ExecStart=/usr/local/sbin/prometheus-openstack-exporter-wrapper --web.listen-address=":<%= @listen_port %>" --disable-slow-metrics <%= @cloud %>
 ProtectSystem=full
 ProtectHome=read-only
 PrivateTmp=true

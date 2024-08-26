@@ -11,6 +11,5 @@ if [ "$(id -u)" != "0" ] ; then
 fi
 
 set -e
-source /root/novaenv.sh
-unset OS_USER_DOMAIN_ID
+export OS_CLOUD=novaadmin
 sudo -E -u prometheus /usr/bin/prometheus-openstack-exporter "$@"

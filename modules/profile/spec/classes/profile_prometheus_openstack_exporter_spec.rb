@@ -11,7 +11,6 @@ describe 'profile::prometheus::openstack_exporter' do
       context "compiles without errors" do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_service('prometheus-openstack-exporter').with_ensure('running') }
-        it { is_expected.to contain_file('/etc/prometheus-openstack-exporter.yaml').with_ensure('file') }
         it { is_expected.to contain_file('/usr/local/sbin/prometheus-openstack-exporter-wrapper').with_ensure('file') }
       end
 
@@ -21,7 +20,6 @@ describe 'profile::prometheus::openstack_exporter' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_service('prometheus-openstack-exporter').with_ensure('stopped') }
-        it { is_expected.to contain_file('/etc/prometheus-openstack-exporter.yaml').with_ensure('absent') }
         it { is_expected.to contain_file('/usr/local/sbin/prometheus-openstack-exporter-wrapper').with_ensure('absent') }
       end
     end

@@ -12,16 +12,6 @@ class profile::prometheus::openstack_exporter (
         packages  => { 'prometheus-openstack-exporter' => 'present'}
     }
 
-    $config_file = '/etc/prometheus-openstack-exporter.yaml'
-
-    file { $config_file:
-        ensure  => stdlib::ensure($ensure, 'file'),
-        owner   => 'prometheus',
-        group   => 'prometheus',
-        mode    => '0440',
-        content => template('profile/prometheus/openstack-exporter.yaml.erb'),
-    }
-
     file { '/usr/local/sbin/prometheus-openstack-exporter-wrapper':
         ensure => stdlib::ensure($ensure, 'file'),
         source => 'puppet:///modules/profile/prometheus/prometheus-openstack-exporter-wrapper.sh',
@@ -31,14 +21,9 @@ class profile::prometheus::openstack_exporter (
     }
 
     systemd::service { 'prometheus-openstack-exporter':
-        ensure    => $ensure,
-        content   => systemd_template('prometheus-openstack-exporter'),
-        restart   => true,
-        override  => false,
-        require   => File[$config_file],
-        subscribe => [
-            File[$config_file],
-        ],
+        ensure   => $ensure,
+        content  => systemd_template('prometheus-openstack-exporter'),
+        restart  => true,
+        override => false,
     }
-
 }
