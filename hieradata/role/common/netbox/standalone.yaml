@@ -8,6 +8,7 @@ profile::netbox::validators:
   - ipam.ipaddress
   - dcim.cable
   - dcim.device
+  - dcim.devicetype
   - dcim.interface
   - dcim.consoleport
   - dcim.consoleserverport
