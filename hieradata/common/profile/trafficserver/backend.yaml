@@ -213,8 +213,26 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query.wikidata.org
       replacement: https://webserver-misc-eqiad.discovery.wmnet
     - type: map
+      target: http://query-main.wikidata.org/bigdata/ldf
+      replacement: https://wdqs1021.eqiad.wmnet/bigdata/ldf
+    - type: map
+      target: http://query-main.wikidata.org/sparql
+      replacement: https://wdqs-main.discovery.wmnet/sparql
+    - type: map
+      target: http://query-main.wikidata.org/bigdata
+      replacement: https://wdqs-main.discovery.wmnet/bigdata
+    - type: map
       target: http://query-main.wikidata.org
       replacement: https://webserver-misc-sites.discovery.wmnet
+    - type: map
+      target: http://query-scholarly.wikidata.org/bigdata/ldf
+      replacement: https://wdqs1023.eqiad.wmnet/bigdata/ldf
+    - type: map
+      target: http://query-scholarly.wikidata.org/sparql
+      replacement: https://wdqs-scholarly.discovery.wmnet/sparql
+    - type: map
+      target: http://query-scholarly.wikidata.org/bigdata
+      replacement: https://wdqs-scholarly.discovery.wmnet/bigdata
     - type: map
       target: http://query-scholarly.wikidata.org
       replacement: https://webserver-misc-sites.discovery.wmnet
