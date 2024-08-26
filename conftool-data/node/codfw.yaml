@@ -174,7 +174,6 @@ codfw:
     kubernetes2021.codfw.wmnet: [kubesvc]
     kubernetes2022.codfw.wmnet: [kubesvc]
     kubernetes2024.codfw.wmnet: [kubesvc]
-    kubernetes2025.codfw.wmnet: [kubesvc]
     kubernetes2026.codfw.wmnet: [kubesvc]
     kubernetes2027.codfw.wmnet: [kubesvc]
     kubernetes2028.codfw.wmnet: [kubesvc]
@@ -380,6 +379,7 @@ codfw:
     wikikube-worker2039.codfw.wmnet: [kubesvc]
     wikikube-worker2040.codfw.wmnet: [kubesvc]
     wikikube-worker2041.codfw.wmnet: [kubesvc]
+    wikikube-worker2042.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
