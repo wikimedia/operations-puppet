@@ -2528,7 +2528,7 @@ node /^cassandra-dev200[1-3]\.codfw\./ {
 }
 
 # virtual machines for https://wikitech.wikimedia.org/wiki/RPKI#Validation
-node /^rpki[12]00[12]\.(eqiad|codfw)\./ {
+node /^rpki[12]00[1-9]\.(eqiad|codfw)\./ {
     role(rpkivalidator)
 }
 
