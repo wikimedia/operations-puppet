@@ -23,6 +23,7 @@
 "volume:get_snapshot_metadata": ""
 "volume:get_all_snapshots": ""
 "volume:get_all_transfers": ""
+"volume_extension:services:index": ""
 
 "backup:get_all": "is_admin:True"
 "backup:get": "is_admin:True"
@@ -37,6 +38,7 @@
 "group:get_all": ""
 "group:get": ""
 "group:get_group_snapshot": ""
+"scheduler_extension:scheduler_stats:get_pools": ""
 "volume_extension:qos_specs_manage:get_all": ""
 "volume_extension:qos_specs_manage:get": ""
 "volume_extension:quotas:show": ""

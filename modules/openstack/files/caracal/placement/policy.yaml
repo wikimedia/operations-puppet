@@ -6,3 +6,6 @@
 
 "admin_or_member": "is_admin:True or role:member"
 "default": "rule:admin_or_member"
+
+# Allow for prometheus-openstack exporter:
+"placement:resource_providers:list": ""
