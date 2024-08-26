@@ -23,3 +23,6 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Ganeti node (staging/test)'
 
 profile::firewall::provider: nftables
+
+prometheus::node_exporter::collectors_extra:
+    - drbd
