@@ -11,5 +11,5 @@ if [ "$(id -u)" != "0" ] ; then
 fi
 
 set -e
-export OS_CLOUD=novaadmin
+export OS_CLOUD=novaobserver
 sudo -E -u prometheus /usr/bin/prometheus-openstack-exporter "$@"
