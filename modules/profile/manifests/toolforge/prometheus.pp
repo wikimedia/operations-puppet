@@ -346,6 +346,19 @@ class profile::toolforge::prometheus (
         },
     ]
 
+    # dropping the heaviest unused series (https://tools-prometheus.wmflabs.org/tools/tsdb-status)
+    $kubernetes_series_to_drop = [
+        'kyverno_admission_review_duration_seconds_bucket',
+        'kyverno_policy_execution_duration_seconds_bucket',
+        'nginx_ingress_controller_request_duration_seconds_bucket',
+        'nginx_ingress_controller_response_duration_seconds_bucket',
+        'nginx_ingress_controller_connect_duration_seconds_bucket',
+        'nginx_ingress_controller_response_size_bucket',
+        'nginx_ingress_controller_request_size_bucket',
+        'nginx_ingress_controller_header_duration_seconds_bucket',
+        'nginx_ingress_controller_bytes_sent_bucket',
+    ]
+    $kubernetes_series_to_drop_regex = join($kubernetes_series_to_drop, '|')
     $kubernetes_pod_jobs = [
         {
             name      => 'k8s-cert-manager',
@@ -467,6 +480,11 @@ class profile::toolforge::prometheus (
                     'regex'         => "(${job['pod_name']})",
                     'target_label'  => '__metrics_path__',
                     'replacement'   => "/api/v1/namespaces/${job['namespace']}/pods/\${1}:${job['port']}/proxy/metrics",
+                },
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__name__'],
+                    'regex'         => "(${kubernetes_series_to_drop_regex})",
                 },
             ]
         }
