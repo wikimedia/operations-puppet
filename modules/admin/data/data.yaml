@@ -114,7 +114,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops]
+    members: &ops_limited [*datacenter_ops, jasmine]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -6436,6 +6436,14 @@ users:
     realname: Ifeatu Nnaobi
     email: ifeatu.nnaobi@wikimedia.de
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  jasmine:
+    ensure: present
+    gid: 500
+    uid: 46233
+    realname: Jasmine Kilani
+    email: jkilani@wikimedia.org
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4M0myi7SLE1Jd9wijOd71oXj1mB3Z1NpLyeX7bxrHFGC1BcTZkbvkCoVDvByBq38ZfVdOIwKdstSuYz4krTq+60ijapC7Eu60NuiGT6i/lETGF7xQ+u0LoXAWXIl+ooT1wbqdgrz7bFQqJASsVx7wIxoeHYjMpaqBrroOA2qfPObGgErYYHPoH8ph1r4FmZqFMA8s5aR9pAkOz7WhYQAPLRhDCOY03Z/VMZ/mH+KlLP/7kA6GtWnYaz1OTkwTF4tiZZd8Qn4vwlaPPbgZ57jWcJ+HMeH9BiGvk2tAmpoHTfNSKQXiyum5QSDxyLrujkmPh8pz+hnPrekMazfjMdtiz8QntpX9l/m2g7gSm2RUYs/2V0fGTvLKQY8mUDQn70DzuDDzhHdjeZC7BqnN6Tsrsl+z9miCpTfe2HrwrJuox8c6iVw5nEe9pUYcPNh+clKQ3qv9VkSJxqvHGTOgnnhuP1BSuaOOIOsHuLRlW/9DL+OlYjS8T4eED8diOS+tMN3/W4lXa50c1nEMn1esS7yuoW0t9H9oVsP1hI/qb7WWNMnjvhojPB2524nPI/Ok1QbmRp3DIdpbFbsiGqsOGAHsT0tce4MlJYllx3M+TdDUfJyyph/Z3wGXDi9uVNXQAhZR6j6n3gQJtlIcBU61TzQ3cfuQi5HKvYEyaIWNkmqO2Q== cardno:27 735 342
 
 ldap_only_users:
   adavenport:
@@ -7240,10 +7248,6 @@ ldap_only_users:
     ensure: present
     realname: Sarai Sanchez
     email: ssanchez@wikimedia.org
-  jasmine:
-    ensure: present
-    realname: Jasmine Kilani
-    email: jkilani@wikimedia.org
   jfk:
     ensure: absent
     realname: Jasmine Kilani
