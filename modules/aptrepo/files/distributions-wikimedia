@@ -24,6 +24,7 @@ Components: main
  component/dnsdist
  component/envoy-future
  component/elastic710
+ component/ffmpeg
  component/ganeti3
  component/icu67
  component/idp-test
