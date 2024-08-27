@@ -1600,7 +1600,7 @@ node /^kafka-main10(0[6-9]|10)\.eqiad\./ {
     role(insetup::serviceops)
 }
 
-node /^kafka-main200[1-6]\.codfw\./ {
+node /^kafka-main200[2-6]\.codfw\./ {
     role(kafka::main)
 }
 
