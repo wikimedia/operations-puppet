@@ -391,7 +391,6 @@ kubernetes::clusters:
         - mw2260.codfw.wmnet
         - mw2267.codfw.wmnet
         - mw2282.codfw.wmnet
-        - mw2292.codfw.wmnet
         - mw2293.codfw.wmnet
         - mw2294.codfw.wmnet
         - mw2295.codfw.wmnet
@@ -563,6 +562,7 @@ kubernetes::clusters:
         - wikikube-worker2040.codfw.wmnet
         - wikikube-worker2041.codfw.wmnet
         - wikikube-worker2042.codfw.wmnet
+        - wikikube-worker2043.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
