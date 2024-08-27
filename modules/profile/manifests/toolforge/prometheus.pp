@@ -457,6 +457,11 @@ class profile::toolforge::prometheus (
             ],
             'relabel_configs'       => [
                 {
+                    'action'        => 'drop',
+                    'source_labels' => ['__name__'],
+                    'regex'         => "(${kubernetes_series_to_drop_regex})",
+                },
+                {
                     'action'        => 'keep',
                     'regex'         => $job['pod_name'],
                     'source_labels' => ['__meta_kubernetes_pod_name'],
@@ -480,11 +485,6 @@ class profile::toolforge::prometheus (
                     'regex'         => "(${job['pod_name']})",
                     'target_label'  => '__metrics_path__',
                     'replacement'   => "/api/v1/namespaces/${job['namespace']}/pods/\${1}:${job['port']}/proxy/metrics",
-                },
-                {
-                    'action'        => 'drop',
-                    'source_labels' => ['__name__'],
-                    'regex'         => "(${kubernetes_series_to_drop_regex})",
                 },
             ]
         }
