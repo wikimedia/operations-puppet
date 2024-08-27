@@ -11,6 +11,7 @@ profile::vrts::exim_database_user: exim
 profile::vrts::download_url: 'https://download.znuny.org/releases'
 profile::vrts::https_proxy: 'webproxy.eqiad.wmnet:8080'
 profile::vrts::http_proxy: 'webproxy.eqiad.wmnet:8080'
+profile::vrts::sql_exporter_start_date: '2024-01-01'
 # Set up in the private repo
 #profile::vrts::database_pass:
 #profile::vrts::exim_database_pass:

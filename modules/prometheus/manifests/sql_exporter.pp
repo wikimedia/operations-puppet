@@ -13,17 +13,20 @@
 #   A valid connection string for the given database should be fine.
 #
 # [**metrics**]
-#   This is a key-value pair of the metrics to collect. The key is the name of the metric
+#   This is a key-value pair of the metrics to collect. The key is the description of the metric
 #   and the value is map with the columns (provided as an array) to be used as the metric
 #   and the query provided as a string e.g.
 #   metrics       => {
 #    'metric_1'   => {
+#         'name'  => 'my_metric',
 #         'columns' => ['count'],
 #         'query'  => 'select count(*) AS count where some_column=value_1',
 #     },
 #     'metric_2' => {
+#         'name'  => 'my_metric',
 #         'columns' => ['count'],
-#         'query'  => 'select count(*) AS count where some_column=value_2',
+#         'labels'  => ['label_1', 'label_2'],
+#         'query'   => 'select count(*) AS count where some_column=value_2',
 #     }
 #   }
 #
@@ -47,8 +50,9 @@ class prometheus::sql_exporter (
           connections => [ $db_connection ],
           queries => $metrics.map | String $name, Hash $metric | {
             {
-                name             => $name,
+                name             => $metric['name'],
                 values           => assert_type(Array, $metric['columns']),
+                labels           => assert_type(Array, $metric['labels']),
                 query            => assert_type(String, $metric['query']),
                 allows_zero_rows => true,
             }

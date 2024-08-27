@@ -19,6 +19,7 @@ class profile::vrts(
     String $dns_name                 = lookup('profile::vrts::public_dns'),
     Boolean $local_database          = lookup('profile::vrts::local_database', {default_value => false}),
     Stdlib::Unixpath $db_datadir     = lookup('profile::vrts::db_datadir', {default_value => '/var/lib/mysql'}),
+    String $start_date               = lookup('profile::vrts::sql_exporter_start_date'),
     Optional[
         Array[Stdlib::Fqdn]
     ] $mx_in_hosts                   = lookup('profile::vrts::mx_in_hosts', { 'default_value' => undef }),
@@ -64,13 +65,45 @@ class profile::vrts(
         job_name        => 'vrts_sql_metrics',
         scrape_interval => '30m',
         metrics         => {
-            'valid_queues'   => {
+            'valid_queues'         => {
+                'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
-                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count FROM queue WHERE valid_id=1',
+                'labels'  => ['name'],
+                'query'   => @(QUERY/)
+                            SELECT CAST(COUNT(*) AS DECIMAL) AS count, v.name AS name
+                            FROM queue q INNER JOIN valid v ON q.valid_id = v.id
+                            WHERE q.valid_id = 1;
+                            | QUERY
             },
-            'invalid_queues' => {
+            'invalid_queues'       => {
+                'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
-                'query'   => 'SELECT CAST(COUNT(*) AS DECIMAL) AS count FROM queue WHERE valid_id=2',
+                'labels'  => ['name'],
+                'query'   => @(QUERY/)
+                            SELECT CAST(COUNT(*) AS DECIMAL) AS count, v.name AS name
+                            FROM queue q INNER JOIN valid v ON q.valid_id = v.id
+                            WHERE q.valid_id = 2;
+                            | QUERY
+            },
+            'info_ticket_count'    => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'info_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'info%' AND t.create_time >= ${start_date};
+                            | QUERY
+            },
+            'chapter_ticket_count' => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'chapter_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'chapter%' AND t.create_time >= ${start_date};
+                            | QUERY
             }
         },
 
