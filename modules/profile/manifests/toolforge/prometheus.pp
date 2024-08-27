@@ -433,7 +433,7 @@ class profile::toolforge::prometheus (
         {
             name      => 'kyverno',
             namespace => 'kyverno',
-            pod_name  => 'kyverno-.*',
+            pod_name  => 'kyverno-.*controller.*',
             port      => 8000,
         },
         # This is for Toolforge infrastructure only. Do not add any
