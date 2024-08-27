@@ -346,19 +346,6 @@ class profile::toolforge::prometheus (
         },
     ]
 
-    # dropping the heaviest unused series (https://tools-prometheus.wmflabs.org/tools/tsdb-status)
-    $kubernetes_series_to_drop = [
-        'kyverno_admission_review_duration_seconds_bucket',
-        'kyverno_policy_execution_duration_seconds_bucket',
-        'nginx_ingress_controller_request_duration_seconds_bucket',
-        'nginx_ingress_controller_response_duration_seconds_bucket',
-        'nginx_ingress_controller_connect_duration_seconds_bucket',
-        'nginx_ingress_controller_response_size_bucket',
-        'nginx_ingress_controller_request_size_bucket',
-        'nginx_ingress_controller_header_duration_seconds_bucket',
-        'nginx_ingress_controller_bytes_sent_bucket',
-    ]
-    $kubernetes_series_to_drop_regex = join($kubernetes_series_to_drop, '|')
     $kubernetes_pod_jobs = [
         {
             name      => 'k8s-cert-manager',
@@ -379,10 +366,22 @@ class profile::toolforge::prometheus (
             port      => 9153,
         },
         {
-            name      => 'k8s-ingress-nginx',
-            namespace => 'ingress-nginx-gen2',
-            pod_name  => 'ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
-            port      => 10254,
+            name                  => 'k8s-ingress-nginx',
+            namespace             => 'ingress-nginx-gen2',
+            pod_name              => 'ingress-nginx-gen2-controller-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port                  => 10254,
+            extra_config          => {
+                scrape_interval => '4m',
+                scrape_timeout  => '60s',
+            },
+            extra_relabel_configs => [
+                # dropping the heaviest unused series (https://tools-prometheus.wmflabs.org/tools/tsdb-status)
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__name__'],
+                    'regex'         => '.*_bucket',
+                },
+            ],
         },
         {
             name         => 'k8s-cadvisor',
@@ -439,6 +438,7 @@ class profile::toolforge::prometheus (
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
+        $extra_relabel_configs = pick($job['extra_relabel_configs'], [])
         $result = {
             'job_name'              => $job['name'],
             'scheme'                => 'https',
@@ -455,12 +455,7 @@ class profile::toolforge::prometheus (
                     },
                 },
             ],
-            'relabel_configs'       => [
-                {
-                    'action'        => 'drop',
-                    'source_labels' => ['__name__'],
-                    'regex'         => "(${kubernetes_series_to_drop_regex})",
-                },
+            'relabel_configs'       => $extra_relabel_configs + [
                 {
                     'action'        => 'keep',
                     'regex'         => $job['pod_name'],
