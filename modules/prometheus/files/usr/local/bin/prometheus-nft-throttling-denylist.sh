@@ -25,7 +25,7 @@ cat <<EOF >"$tmpoutfile"
 nftables_throttling_denylist_v4_length $nftables_throttling_denylist_v4_length
 # HELP nftables_throttling_denylist_v6_length nft throttling denylist IPv6
 # TYPE nftables_throttling_denylist_v6_length gauge
-nftables_throttling_denylist_v6_length nftables_throttling_denylist_v6_length
+nftables_throttling_denylist_v6_length $nftables_throttling_denylist_v6_length
 EOF
 
 mv "$tmpoutfile" "$outfile"
