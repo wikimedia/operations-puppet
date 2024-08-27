@@ -65,7 +65,7 @@ class profile::vrts(
         job_name        => 'vrts_sql_metrics',
         scrape_interval => '30m',
         metrics         => {
-            'valid_queues'         => {
+            'valid_queues'             => {
                 'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -75,7 +75,7 @@ class profile::vrts(
                             WHERE q.valid_id = 1;
                             | QUERY
             },
-            'invalid_queues'       => {
+            'invalid_queues'           => {
                 'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -85,24 +85,92 @@ class profile::vrts(
                             WHERE q.valid_id = 2;
                             | QUERY
             },
-            'info_ticket_count'    => {
+            'info_ticket_count'        => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
                 'query'   => @("QUERY"/)
                             SELECT COUNT(t.id) AS count, 'info_queues' AS name FROM ticket t
                             INNER JOIN queue q ON t.queue_id = q.id
-                            WHERE q.valid_id=1 AND q.name LIKE 'info%' AND t.create_time >= ${start_date};
+                            WHERE q.valid_id=1 AND q.name LIKE 'info%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'chapter_ticket_count' => {
+            'chapter_ticket_count'     => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
                 'query'   => @("QUERY"/)
                             SELECT COUNT(t.id) AS count, 'chapter_queues' AS name FROM ticket t
                             INNER JOIN queue q ON t.queue_id = q.id
-                            WHERE q.valid_id=1 AND q.name LIKE 'chapter%' AND t.create_time >= ${start_date};
+                            WHERE q.valid_id=1 AND q.name LIKE 'chapter%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'permission_ticket_count'  => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'permission_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'permission%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'oversight_ticket_count'   => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'oversight_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'oversight%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'mobile_ticket_count'      => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'mobile_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'mobile%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'photosub_ticket_count'    => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'photosubmission_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'photo%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'sister_proj_ticket_count' => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'sister_project_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.name LIKE 'sister%' AND t.create_time >= '${start_date}';
+                            | QUERY
+            },
+            'other_ticket_count'       => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'other_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1
+                            AND q.name NOT LIKE 'info%'
+                            AND q.name NOT LIKE 'chapter%'
+                            AND q.name NOT LIKE 'permission%'
+                            AND q.name NOT LIKE 'oversight%'
+                            AND q.name NOT LIKE 'mobile%'
+                            AND q.name NOT LIKE 'photo%'
+                            AND q.name NOT LIKE 'sister%'
+                            AND t.create_time >= '${start_date}';
                             | QUERY
             }
         },
