@@ -106,7 +106,7 @@ class profile::ntp (
     $services_to_check.each |$service, $conf_file| {
         nrpe::monitor_service { "check_service_restart_${service}":
             description    => "Check if ${service} has been restarted after ${conf_file} was changed",
-            nrpe_command   => "/usr/local/lib/nagios/plugins/check_ntp_service --service ${service} --file ${conf_file}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_ntp_service --service ${service} --file ${conf_file} --critical 2",
             sudo_user      => 'root',
             check_interval => 60, # 60mins
             retry_interval => 30, # 30mins
