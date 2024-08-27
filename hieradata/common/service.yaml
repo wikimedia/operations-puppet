@@ -3151,7 +3151,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/readiness-probe
+            - https://localhost/readiness-probe
       scheduler: wrr
     probes:
       - type: http
@@ -3186,7 +3186,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - http://localhost/readiness-probe
+            - https://localhost/readiness-probe
       scheduler: wrr
     probes:
       - type: http
