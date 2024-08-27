@@ -19,3 +19,6 @@ profile::base::production::enable_ip6_mapped: false
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Ganeti node'
 profile::puppet::agent::force_puppet7: true
+
+prometheus::node_exporter::collectors_extra:
+    - drbd
