@@ -16,10 +16,19 @@ if [ "$(id -u)"  != "0" ] ; then
     exit 1
 fi
 
+nftables_throttling_trackinglist_v4_length=$(nft --json list set inet filter TRACKINGLIST | jq -cr '.nftables[1].set.elem[]?'  | wc -l)
+nftables_throttling_trackinglist_v6_length=$(nft --json list set inet filter TRACKINGLIST_V6 | jq -cr '.nftables[1].set.elem[]?'  | wc -l)
+
 nftables_throttling_denylist_v4_length=$(nft --json list set inet filter DENYLIST | jq -cr '.nftables[1].set.elem[]?'  | wc -l)
 nftables_throttling_denylist_v6_length=$(nft --json list set inet filter DENYLIST_V6 | jq -cr '.nftables[1].set.elem[]?'  | wc -l)
 
 cat <<EOF >"$tmpoutfile"
+# HELP nftables_throttling_trackinglist_v4_length nft throttling trackinglist IPv4
+# TYPE nftables_throttling_trackinglist_v4_length gauge
+nftables_throttling_trackinglist_v4_length $nftables_throttling_trackinglist_v4_length
+# HELP nftables_throttling_trackinglist_v6_length nft throttling trackinglist IPv6
+# TYPE nftables_throttling_trackinglist_v6_length gauge
+nftables_throttling_trackinglist_v6_length $nftables_throttling_trackinglist_v6_length
 # HELP nftables_throttling_denylist_v4_length nft throttling denylist IPv4
 # TYPE nftables_throttling_denylist_v4_length gauge
 nftables_throttling_denylist_v4_length $nftables_throttling_denylist_v4_length
