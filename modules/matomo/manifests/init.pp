@@ -30,12 +30,13 @@ class matomo (
         packages  => ['matomo'],
     }
 
-    # Prior to bookworm/matomo1003 we installed this package manually.
-    # Once matomo1002 is decommissioned we will be able to remove this condition.
-    if debian::codename::ge('bullseye') {
-        package { 'matomo-plugin-marketingcampaignsreporting':
-            require => Package['matomo'],
-        }
+    package { 'matomo-plugin-marketingcampaignsreporting':
+        require => Package['matomo'],
+    }
+
+    # This package is hosted on the private APT repository. See #T370203 for details.
+    package { 'matomo-plugin-customreports':
+        require => Package['matomo'],
     }
 
     $database_name = 'piwik'
