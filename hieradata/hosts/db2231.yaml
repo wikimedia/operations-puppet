@@ -1,8 +1,2 @@
 # db2231
-# Testing section
-mariadb::binlog_format: 'STATEMENT'
-mariadb::shard: 'test-s4'
-# Not needed the line below, but leaving it for testing future versions
-#mariadb::package: 'wmf-mariadb106'
-profile::prometheus::mysqld_exporter::arguments: "--collect.global_status --collect.global_variables --collect.info_schema.processlist --collect.slave_status --no-collect.info_schema.tables --collect.heartbeat --collect.heartbeat.utc"
 profile::monitoring::notifications_enabled: false
