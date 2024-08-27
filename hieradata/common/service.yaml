@@ -3132,7 +3132,7 @@ service::catalog:
 
   wdqs-main:
     description: Wikidata Query Service - main
-    encryption: false
+    encryption: true
     ip:
       codfw:
         default: 10.2.1.33
@@ -3156,7 +3156,7 @@ service::catalog:
     probes:
       - type: http
         path: /readiness-probe
-    port: 80
+    port: 443
     sites:
       - eqiad
       - codfw
@@ -3167,7 +3167,7 @@ service::catalog:
 
   wdqs-scholarly:
     description: Wikidata Query Service - scholarly
-    encryption: false
+    encryption: true
     ip:
       codfw:
         default: 10.2.1.36
@@ -3191,7 +3191,7 @@ service::catalog:
     probes:
       - type: http
         path: /readiness-probe
-    port: 80
+    port: 443
     sites:
       - eqiad
       - codfw
