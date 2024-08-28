@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-Listen 5000
-Listen 35357
+Listen <%= @public_bind_port %>
+Listen <%= @admin_bind_port %>
 
 <VirtualHost *:<%= @public_bind_port %>>
     ProxyPass / uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
