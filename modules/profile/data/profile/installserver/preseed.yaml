@@ -182,7 +182,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'datahubsearch*':
     - partman/flat.cfg
     - virtual.cfg
-  'db999|db2230|db2231|db2232|db2233|db2234|db2236|db2237|db2238':
+  'db999|db2231|db2232|db2233|db2234|db2236|db2237|db2238':
     - partman/custom/db.cfg
   'db888':
     - partman/manual-setup.cfg
