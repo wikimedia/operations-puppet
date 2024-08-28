@@ -65,7 +65,7 @@ class profile::vrts(
         job_name        => 'vrts_sql_metrics',
         scrape_interval => '30m',
         metrics         => {
-            'valid_queues'                => {
+            'valid_queues'             => {
                 'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -75,7 +75,7 @@ class profile::vrts(
                             WHERE q.valid_id = 1;
                             | QUERY
             },
-            'invalid_queues'              => {
+            'invalid_queues'           => {
                 'name'    => 'vrts_queue_validity',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -85,7 +85,7 @@ class profile::vrts(
                             WHERE q.valid_id = 2;
                             | QUERY
             },
-            'info_ticket_count'           => {
+            'info_ticket_count'        => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -95,7 +95,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'info%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'chapter_ticket_count'        => {
+            'chapter_ticket_count'     => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -105,7 +105,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'chapter%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'permission_ticket_count'     => {
+            'permission_ticket_count'  => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -115,7 +115,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'permission%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'oversight_ticket_count'      => {
+            'oversight_ticket_count'   => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -125,7 +125,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'oversight%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'mobile_ticket_count'         => {
+            'mobile_ticket_count'      => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -135,7 +135,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'mobile%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'photosub_ticket_count'       => {
+            'photosub_ticket_count'    => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -145,7 +145,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'photo%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'sister_proj_ticket_count'    => {
+            'sister_proj_ticket_count' => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -155,7 +155,7 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'sister%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'other_ticket_count'          => {
+            'other_ticket_count'       => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
                 'labels'  => ['name'],
@@ -172,26 +172,6 @@ class profile::vrts(
                             AND q.name NOT LIKE 'sister%'
                             AND t.create_time >= '${start_date}';
                             | QUERY
-            },
-            'info_yearly_ticket_count'    => {
-                'name'    => 'vrts_yearly_ticket_count',
-                'columns' => ['count'],
-                'labels'  => ['name', 'year'],
-                'query'   => @("QUERY"/)
-                            SELECT COUNT(t.id) AS count, YEAR(t.create_time) AS year, 'info_queues' AS name
-                            FROM ticket t INNER JOIN queue q ON t.queue_id = q.id
-                            WHERE q.name LIKE 'info%' GROUP BY year;
-                          | QUERY
-            },
-            'chapter_yearly_ticket_count' => {
-                'name'    => 'vrts_yearly_ticket_count',
-                'columns' => ['count'],
-                'labels'  => ['name', 'year'],
-                'query'   => @("QUERY"/)
-                            SELECT COUNT(t.id) AS count, YEAR(t.create_time) AS year, 'chapter_queues' AS name
-                            FROM ticket t INNER JOIN queue q ON t.queue_id = q.id
-                            WHERE q.name LIKE 'chapter%' GROUP BY year;
-                          | QUERY
             }
         },
 
