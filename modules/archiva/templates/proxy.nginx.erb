@@ -29,7 +29,7 @@ server {
   location / {
     return 404;
   }
-  location ~* ^\/(repository\/(mirrored|python|releases|snapshots|mirror-spark|mirror-maven-central|mirror-cloudera|analytics-old-uploads)\/[\w\s\-@\.\/#&\(\)\+\?\,\:\!\~\*\'\=]*)$ {
+  location ~* ^\/(repository\/(mirrored|python|releases|snapshots|mirror-spark|mirror-maven-central|mirror-cloudera|analytics-old-uploads)(\/[\w\s\-@\.\/#&\(\)\+\?\,\:\!\~\*\'\=]*)?)$ {
     proxy_pass <%= @proxy_pass %>;
     proxy_redirect off;
     proxy_buffering off;
