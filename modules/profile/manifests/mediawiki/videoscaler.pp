@@ -2,5 +2,8 @@ class profile::mediawiki::videoscaler()
 {
     include mediawiki::users
 
-    ensure_packages('ffmpeg')
+    apt::package_from_component { 'ffmpeg':
+        packages  => ['ffmpeg'],
+        component => 'component/ffmpeg',
+    }
 }
