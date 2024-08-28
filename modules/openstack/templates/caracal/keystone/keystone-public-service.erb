@@ -96,11 +96,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 	if [ -n "${BIND_PARAMS}" ] ; then
 		DAEMON_ARGS="${BIND_PARAMS}${UWSGI_PROCESSES}"
 	else
-		if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
-			DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}${UWSGI_PROCESSES}"
-		else
-			DAEMON_ARGS="--uwsgi-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
-		fi
+		DAEMON_ARGS="--uwsgi-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
 	fi
 
 	DAEMON_ARGS="${DAEMON_ARGS} --ini ${UWSGI_INI_PATH}"
