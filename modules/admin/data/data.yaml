@@ -7207,7 +7207,7 @@ ldap_only_users:
     realname: Febin Bellamy
   zoe:
     ensure: present
-    realname: Zoe Leiper
+    realname: Zoe
     email: zoe@wikimedia.org
   kcoleman:
     ensure: present
