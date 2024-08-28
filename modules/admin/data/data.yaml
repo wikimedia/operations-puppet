@@ -7275,3 +7275,7 @@ ldap_only_users:
     ensure: present
     realname: Sean Leong
     email: sean.leong@wikimedia.de
+  southparkfan:
+    ensure: present
+    realname: Ferran Tufan
+    email: southparkfan223@hotmail.com
