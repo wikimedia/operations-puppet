@@ -3,7 +3,7 @@ include "geoip.inc.vcl";
 sub cluster_fe_vcl_switch {
     // We need to be able to tell that this domain is an alt domain down the
     // line.
-    set req.http.X-IS-ALT-DOMAIN = "1";
+    var.set_int("is_alt_domain", 1);
 }
 
 sub cluster_fe_recv_pre_purge {

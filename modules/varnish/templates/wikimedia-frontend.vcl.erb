@@ -27,6 +27,7 @@ import cookie;
 import directors;
 import netmapper;
 import querysort;  // T138093
+import var;
 
 // rate limiting
 import vsthrottle;
@@ -657,7 +658,6 @@ sub vcl_recv {
     unset req.http.Proxy; // https://httpoxy.org/
     unset req.http.X-ATS-Debug; // We use this header for the XDebug Traffic Server plugin
     unset req.http.X-Analytics-TLS; // Used by atskafka
-    unset req.http.X-IS-ALT-DOMAIN; // Conditionals if an alt domain in hiera
 
     if (req.restarts == 0) {
         // IP processing is req->req mangling that shouldn't be re-done on restart
@@ -714,6 +714,9 @@ sub vcl_recv {
 
         // Possibly switch to separate VCL
         call cluster_fe_vcl_switch;
+        if (var.get_int("is_alt_domain")) {
+            std.log("is_alt_domain: " + var.get_int("is_alt_domain"));
+        }
 
         // This normalizes query parameters.
         call normalize_request_nonmisc;
@@ -744,7 +747,7 @@ sub vcl_recv {
 
     if(req.restarts == 0) {
         call analytics_recv;
-        if (!req.http.X-IS-ALT-DOMAIN &&
+        if (var.get_int("is_alt_domain") != 1 &&
             req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
             call analytics_last_access_recv;
         }
@@ -842,7 +845,6 @@ sub vcl_pipe {
 sub vcl_backend_fetch {
     // Prevent sending the header on any inwards-facing requests to
     // applayer services.
-    unset bereq.http.X-IS-ALT-DOMAIN;
     unset bereq.http.X-WMF-DP;
 
     call cluster_fe_backend_fetch;
@@ -1136,7 +1138,7 @@ sub deliver_synth_ {
     call https_deliver_networkerrorlogging;
 
     call analytics_deliver_pre;
-    if (!req.http.X-IS-ALT-DOMAIN &&
+    if (var.get_int("is_alt_domain") != 1 &&
         req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
         call analytics_deliver_last_access;
     }
