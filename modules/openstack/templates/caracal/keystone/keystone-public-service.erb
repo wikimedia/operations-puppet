@@ -15,7 +15,7 @@
 DESC="OpenStack Keystone API (keystone)"
 PROJECT_NAME=keystone
 NAME=${PROJECT_NAME}
-UWSGI_PORT=<%= @public_bind_port %>
+UWSGI_PORT=<%= @public_bind_port + 1 %>
 UWSGI_INI_PATH=/etc/keystone/keystone-uwsgi.ini
 UWSGI_INI_APP=/usr/bin/keystone-wsgi-public
 #!/bin/sh
@@ -84,7 +84,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 				COUNT=0
 				while [ "${COUNT}" != "${NUM_DEVICES}" ] ; do
 					CUR_PORT=$(( ${UWSGI_PORT} + ${COUNT} ))
-					BIND_PARAMS="${BIND_PARAMS} --http-socket ${UWSGI_BIND_IP}:${CUR_PORT}"
+					BIND_PARAMS="${BIND_PARAMS} --uwsgi-socket ${UWSGI_BIND_IP}:${CUR_PORT}"
 					COUNT=$(( ${COUNT} + 1 ))
 				done
 			fi
@@ -99,7 +99,7 @@ if [ -n "${UWSGI_PORT}" ] && [ -n "${UWSGI_INI_PATH}" ] && [ -n "${UWSGI_INI_APP
 		if [ -n "${KEY_FILE}" ] && [ -n "${CERT_FILE}" ] ; then
 			DAEMON_ARGS="--https-socket ${UWSGI_BIND_IP}:${UWSGI_PORT},${CERT_FILE},${KEY_FILE}${UWSGI_PROCESSES}"
 		else
-			DAEMON_ARGS="--http-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
+			DAEMON_ARGS="--uwsgi-socket ${UWSGI_BIND_IP}:${UWSGI_PORT}${UWSGI_PROCESSES}"
 		fi
 	fi
 

@@ -15,7 +15,7 @@
 DESC="OpenStack Keystone API (keystone)"
 PROJECT_NAME=keystone
 NAME=${PROJECT_NAME}
-UWSGI_PORT=<%= @admin_bind_port %>
+UWSGI_PORT=<%= @admin_bind_port + 1 %>
 UWSGI_INI_PATH=/etc/keystone/keystone-uwsgi.ini
 UWSGI_INI_APP=/usr/bin/keystone-wsgi-public
 #!/bin/sh

@@ -8,6 +8,7 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::metrics
     include profile::openstack::eqiad1::observerenv
 
+    include profile::openstack::eqiad1::keystone::apache
     include profile::openstack::eqiad1::keystone::service
     include profile::openstack::eqiad1::keystone::fernet_keys
     include profile::openstack::eqiad1::envscripts
