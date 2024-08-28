@@ -20,11 +20,3 @@ profile::puppet::agent::force_puppet7: true
 profile::mail::default_mail_relay::smarthosts:
 - 'mx-out1001.wikimedia.org'
 - 'mx-out2001.wikimedia.org'
-
-profile::firewall::nftables_throttling::ensure: present
-# allow 1000 packets per 60 seconds, ban clients above for 300 seconds
-profile::firewall::nftables_throttling::throttle_packets: 1000
-profile::firewall::nftables_throttling::throttle_duration: 300
-profile::firewall::nftables_throttling::allowed_burst_packets: 1000
-profile::firewall::nftables_throttling::port: 443
-profile::firewall::nftables_throttling::nft_policy: drop
