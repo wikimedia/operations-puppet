@@ -165,6 +165,11 @@ def main() -> int:
                         help='Specify a MediaWiki image (without registry), e.g. '
                              'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
                              '(Default: Use most recent build)')
+    # Allow overriding the default helmfile. This should only be needed for development of the
+    # mw-script infrastructure, and not by users of maintenance scripts.
+    parser.add_argument(
+        '--helmfile', help=argparse.SUPPRESS,
+        default=f'/srv/deployment-charts/helmfile.d/services/{NAMESPACE}/helmfile.yaml')
 
     group = parser.add_mutually_exclusive_group()
     group.add_argument('-f', '--follow', action='store_true',
@@ -216,7 +221,7 @@ def main() -> int:
         subprocess.run([
             '/usr/bin/helmfile',
             *(['--quiet'] if not args.verbose else []),
-            '--file', f'/srv/deployment-charts/helmfile.d/services/{NAMESPACE}/helmfile.yaml',
+            '--file', args.helmfile,
             '--environment', environment,
             # As of this writing, we don't need a selector because this is the only thing in the
             # helmfile. But it's included anyway, for futureproofing.
