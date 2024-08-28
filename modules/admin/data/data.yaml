@@ -4079,7 +4079,7 @@ users:
     gid: 500
     name: abi
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA8AxZJ1UMh/1XTm9olXipQfIriiZGvpk8ZpVxen+2rt apatro@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHJa8gs0Zxg2bChGzYxzykXT23BU2ntUEmdaklx699Tk apatro@wikimedia.org
   mgerlach:
     ensure: present
     realname: Martin Gerlach
