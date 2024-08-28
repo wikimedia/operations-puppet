@@ -443,7 +443,7 @@ VerifyRelease: 234654DA9A296436
 ListShellHook: grep-dctrl \( -P 'kubeadm' -o -P 'kubelet' -o -P 'kubectl' -o -P 'kubernetes-cni' -o  -P 'cri-tools' \) || [ $? -eq 1 ]
 
 Name: thirdparty/kubeadm-k8s-1-26
-Method: https://pkgs.k8s.io/core:/stable:/v1.25/deb
+Method: https://pkgs.k8s.io/core:/stable:/v1.26/deb
 Suite: /
 Flat: thirdparty/kubeadm-k8s-1-26
 Architectures: amd64
