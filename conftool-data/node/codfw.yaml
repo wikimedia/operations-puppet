@@ -158,7 +158,6 @@ codfw:
     wikikube-ctrl2003.codfw.wmnet: [kubemaster]
     kubernetes2005.codfw.wmnet: [kubesvc]
     kubernetes2006.codfw.wmnet: [kubesvc]
-    kubernetes2007.codfw.wmnet: [kubesvc]
     kubernetes2008.codfw.wmnet: [kubesvc]
     kubernetes2009.codfw.wmnet: [kubesvc]
     kubernetes2010.codfw.wmnet: [kubesvc]
@@ -380,6 +379,7 @@ codfw:
     wikikube-worker2044.codfw.wmnet: [kubesvc]
     wikikube-worker2045.codfw.wmnet: [kubesvc]
     wikikube-worker2046.codfw.wmnet: [kubesvc]
+    wikikube-worker2047.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
