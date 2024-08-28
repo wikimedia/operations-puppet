@@ -543,6 +543,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: growthbook
         - name: growthbook-deploy
+    postgresql-test:
+      usernames:
+        - name: postgresql-test
+        - name: postgresql-test-deploy
   aux-k8s:
     jaeger:
       usernames:
