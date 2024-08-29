@@ -35,7 +35,7 @@ labsldapconfig:
   secondary_hostname: cloudservices2004-dev.codfw.wmnet
 
 ldap:
-  ro-server: cloudservices2004-dev.codfw.wmnet
-  ro-server-fallback: cloudservices2005-dev.codfw.wmnet
-  rw-server: cloudservices2004-dev.codfw.wmnet
-  rw-server-fallback: cloudservices2005-dev.codfw.wmnet
+  ro-server: ns0.openstack.codfw1dev.wikimediacloud.org
+  ro-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
+  rw-server: ns0.openstack.codfw1dev.wikimediacloud.org
+  rw-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
