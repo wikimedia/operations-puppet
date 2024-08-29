@@ -148,8 +148,6 @@ profile::acme_chief::certificates:
         - 'ns1.openstack.codfw1dev.wikimediacloud.org'
         - 'cloudservices2004-dev.private.codfw.wikimedia.cloud'
         - 'cloudservices2005-dev.private.codfw.wikimedia.cloud'
-        - 'cloudservices2004-dev.codfw.wmnet'
-        - 'cloudservices2005-dev.codfw.wmnet'
         challenge: dns-01
         authorized_hosts:
         - 'cloudservices2004-dev.codfw.wmnet'
