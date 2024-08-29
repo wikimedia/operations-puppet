@@ -642,6 +642,11 @@ node /^db1125\.eqiad\./ {
     role(mariadb::core_test)
 }
 
+# Testing host - will need to be wiped after the DC switch tests
+node /^db2230\.codfw\./ {
+    role(mariadb::core_test)
+}
+
 # s4 (commons) core production dbs on codfw
 node /^db2(136|137|140|147|172|179|206|210|219)\.codfw\./ {
     role(mariadb::core)
@@ -965,7 +970,7 @@ node /^dbproxy10(12|13|14|15|16|20|21|22|23|24|25|26|27|28|29)\.eqiad\./ {
 }
 
 # New databases T368922
-node /^db22(21|22|23|24|25|26|27|28|29|30|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
+node /^db22(21|22|23|24|25|26|27|28|29|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
