@@ -5,6 +5,9 @@ class profile::openstack::base::keystone::apache(
     Stdlib::Port $admin_bind_port = lookup('profile::openstack::base::admin_bind_port'),
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
 ) {
+
+    ensure_packages('libapache2-mod-auth-openidc')
+
     class { '::httpd':
         modules => ['proxy_uwsgi', 'auth_openidc'],
     }
