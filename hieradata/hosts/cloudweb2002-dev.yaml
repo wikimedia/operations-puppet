@@ -39,3 +39,48 @@ ldap:
   ro-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
   rw-server: ns0.openstack.codfw1dev.wikimediacloud.org
   rw-server-fallback: ns1.openstack.codfw1dev.wikimediacloud.org
+
+# Apereo CAS / IDP
+profile::idp::tomcat_version: 'tomcat9'
+profile::idp::web_authn_signing_key: ''
+profile::idp::web_authn_encryption_key: ''
+
+profile::idp::enable_cors: true
+profile::idp::cors_allow_credentials: true
+profile::idp::cors_allowed_origins: []
+profile::idp::tgc_cookie_same_site: 'strict'
+profile::idp::tgc_cookie_pin_to_session: false
+profile::idp::envoy_termination: false
+profile::idp::memcached_enable: false
+
+profile::idp::ldap_attributes:
+  - cn
+  - memberOf
+  - mail
+  - mfa-method
+  - uid
+profile::tlsproxy::instance::ssl_compatibility_mode: strong
+profile::idp::actuators:
+  - sso
+  - ssoSessions
+profile::idp::server_name: https://cloudidp-dev.wikimedia.org
+profile::idp::idp_nodes: []
+profile::idp::is_staging_host: true
+profile::idp::u2f_jpa_enable: false
+profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
+profile::java::egd_source: '/dev/urandom'
+profile::idp::u2f_token_expiry_days: 3650
+
+profile::java::java_packages:
+  - version: "17"
+    variant: "jdk"
+
+profile::idp::services:
+  horizon:
+    id: 1
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://horizon-dev\.wikimedia\.org\/[\w\/]*'
+    profile_format: 'FLAT'
+    required_groups:
+      - wmf
+      - nda

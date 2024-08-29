@@ -71,7 +71,11 @@ class profile::idp(
       $firewall_port = 8080
     }
 
-    class { $tomcat: }
+    if $tomcat == 'tomcat9' {
+        class { 'tomcat': }
+    } else {
+        class { $tomcat: }
+    }
 
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'

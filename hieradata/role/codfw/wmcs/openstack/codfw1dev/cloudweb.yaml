@@ -49,6 +49,8 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::services:
   - server_names: ['labtesthorizon.wikimedia.org']
     port: 8084
+  - server_names: ['cloudidp-dev.wikimedia.org']
+    port: 8080
   - server_names: ['*']
     port: 80
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
