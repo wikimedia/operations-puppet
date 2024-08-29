@@ -288,7 +288,7 @@ class profile::kubernetes::deployment_server::global_config (
                 'name'     => 'historical',
                 'port'     => 8083,
               },
-            ]
+            ],
           },
           'instances' => {
             'analytics'      => wmflib::role::ips('druid::analytics::worker'),
@@ -341,7 +341,7 @@ class profile::kubernetes::deployment_server::global_config (
             'analytics_meta' => wmflib::role::ips('analytics_cluster::mariadb'),
             'analytics_test_meta_master' => $analytics_test_meta_master_ips,
             'analytics_test_meta' => wmflib::role::ips('analytics_test_cluster::coordinator'),
-          }
+          },
         },
         'postgresql' => {
           '_meta' => {
@@ -354,7 +354,7 @@ class profile::kubernetes::deployment_server::global_config (
           },
           'instances' => {
             'analytics' => wmflib::role::ips('analytics_cluster::postgresql'),
-          }
+          },
         },
         'opensearch' => {
           '_meta' => {
@@ -367,7 +367,20 @@ class profile::kubernetes::deployment_server::global_config (
           },
           'instances' => {
             'datahubsearch' => wmflib::role::ips('analytics_cluster::datahub::opensearch'),
-          }
+          },
+        },
+        'pki' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'https',
+                'port' => 8443,
+              },
+            ],
+          },
+          'instances' => {
+            'multirootca' => wmflib::role::ips('pki::multirootca'),
+          },
         },
       },
       $external_service_redis,
