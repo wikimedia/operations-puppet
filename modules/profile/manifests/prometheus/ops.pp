@@ -1415,6 +1415,13 @@ class profile::prometheus::ops (
         ],
       },
       {
+        'job_name'        => 'jmx_puppetserver',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/jmx_puppetserver_*.yaml" ]}
+        ],
+      },
+      {
         'job_name'        => 'jmx_wcqs_blazegraph',
         'scheme'          => 'http',
         'file_sd_configs' => [
@@ -1474,6 +1481,11 @@ class profile::prometheus::ops (
     prometheus::jmx_exporter_config{ "puppetdb_${::site}":
         dest       => "${targets_path}/jmx_puppetdb_${::site}.yaml",
         class_name => 'role::puppetdb',
+    }
+
+    prometheus::jmx_exporter_config{ "puppetserver_${::site}":
+        dest       => "${targets_path}/jmx_puppetserver_${::site}.yaml",
+        class_name => 'role::puppetserver',
     }
 
     prometheus::jmx_exporter_config{ "wcqs_blazegraph_${::site}":
