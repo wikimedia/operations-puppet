@@ -115,10 +115,12 @@ profile::acme_chief::certificates:
         - 'idp-test.wikimedia.org'
         - 'idp-test1004.wikimedia.org'
         - 'idp-test2004.wikimedia.org'
+        - 'idp-test2005.wikimedia.org'
         challenge: dns-01
         authorized_hosts:
         - 'idp-test1004.wikimedia.org'
         - 'idp-test2004.wikimedia.org'
+        - 'idp-test2005.wikimedia.org'
     ldap:
         CN: 'ldap-ro.eqiad.wikimedia.org'
         SNI:
