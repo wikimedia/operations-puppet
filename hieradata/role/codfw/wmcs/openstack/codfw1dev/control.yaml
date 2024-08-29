@@ -56,3 +56,7 @@ labsldapconfig:
 profile::openstack::base::opentofu::s3_endpoint: https://object.codfw1dev.wikimediacloud.org
 profile::openstack::base::opentofu::s3_access_key: 63a5da22d9ad4131b6c132c5e203a705
 profile::openstack::base::opentofu::diff_host: cloudcontrol2006-dev.codfw.wmnet
+
+profile::openstack::codfw1dev::horizon::webserver_hostname: labtesthorizon.wikimedia.org
+
+profile::idp::server_name: https://cloudidp-dev.wikimedia.org

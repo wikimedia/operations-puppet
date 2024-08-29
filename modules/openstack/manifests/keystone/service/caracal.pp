@@ -40,6 +40,7 @@ class openstack::keystone::service::caracal(
     Stdlib::Port $admin_bind_port,
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips,
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports,
+    Stdlib::Fqdn $horizon_hostname,
 ) {
     class { "openstack::keystone::service::caracal::${::lsbdistcodename}":
         public_bind_port => $public_bind_port,

@@ -4,6 +4,22 @@ Listen <%= @admin_bind_port %>
 
 <VirtualHost *:<%= @public_bind_port %>>
     ProxyPass / uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
+
+    OIDCClaimPrefix "OIDC-"
+    OIDCResponseType "id_token"
+    OIDCScope "openid email profile"
+    OIDCProviderMetadataURL <%= @idp_server_name %>/oidc
+    OIDCClientID keystone
+    OIDCClientSecret <%= @idp_client_secret %>
+    OIDCCryptoPassphrase openstack
+    OIDCRedirectURI http://<%= @webserver_hostname %>:15000/v3/auth/OS-FEDERATION/identity_providers/keystone/protocols/openid
+
+    <Location ~ "/v3/auth/OS-FEDERATION/websso/oidc">
+      AuthType openid-connect
+      Require valid-user
+      LogLevel debug
+    </Location>
+
 </VirtualHost>
 
 <VirtualHost *:<%= @admin_bind_port %>>

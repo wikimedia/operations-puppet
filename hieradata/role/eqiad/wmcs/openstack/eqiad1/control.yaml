@@ -56,3 +56,5 @@ profile::openstack::base::nova::fullstack::nameservers:
 profile::openstack::base::opentofu::s3_endpoint: https://object.eqiad1.wikimediacloud.org
 profile::openstack::base::opentofu::s3_access_key: 34dbafeea19d4c369d75712467aa1eb2
 profile::openstack::base::opentofu::diff_host: cloudcontrol1007.eqiad.wmnet
+
+profile::idp::server_name: https://sso-idp.wmcloud.org

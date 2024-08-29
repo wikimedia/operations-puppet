@@ -62,3 +62,5 @@ profile::mediawiki::php::icu67: true
 
 # T255568
 profile::services_proxy::envoy::listen_ipv6: true
+
+profile::idp::server_name: https://cloudidp-dev.wikimedia.org

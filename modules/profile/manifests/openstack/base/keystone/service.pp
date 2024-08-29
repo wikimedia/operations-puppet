@@ -45,6 +45,7 @@ class profile::openstack::base::keystone::service(
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::base::prometheus_metricsinfra_default_ports'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Optional[Stdlib::IP::Address::V4] $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet', {default_value => undef}),
+    Stdlib::Fqdn $horizon_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
 ) {
 
     $keystone_admin_uri = "${auth_protocol}://${keystone_fqdn}:${auth_port}/v3"
@@ -101,6 +102,7 @@ class profile::openstack::base::keystone::service(
         admin_bind_port                       => $admin_bind_port,
         prometheus_metricsinfra_reserved_ips  => $prometheus_metricsinfra_reserved_ips,
         prometheus_metricsinfra_default_ports => $prometheus_metricsinfra_default_ports,
+        horizon_hostname                      => $horizon_hostname,
     }
     contain '::openstack::keystone::service'
 

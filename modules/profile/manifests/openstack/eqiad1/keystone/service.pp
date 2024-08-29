@@ -35,6 +35,7 @@ class profile::openstack::eqiad1::keystone::service(
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips = lookup('profile::openstack::eqiad1::prometheus_metricsinfra_reserved_ips'),
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports = lookup('profile::openstack::eqiad1::prometheus_metricsinfra_default_ports'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
+    Stdlib::Fqdn $horizon_hostname = lookup('profile::openstack::eqiad1::horizon::webserver_hostname'),
 ) {
 
     require ::profile::openstack::eqiad1::clientpackages
@@ -70,6 +71,7 @@ class profile::openstack::eqiad1::keystone::service(
         prometheus_metricsinfra_reserved_ips  => $prometheus_metricsinfra_reserved_ips,
         prometheus_metricsinfra_default_ports => $prometheus_metricsinfra_default_ports,
         haproxy_nodes                         => $haproxy_nodes,
+        horizon_hostname                      => $horizon_hostname,
     }
     contain '::profile::openstack::base::keystone::service'
 

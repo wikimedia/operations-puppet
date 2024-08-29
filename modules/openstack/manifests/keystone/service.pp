@@ -44,6 +44,7 @@ class openstack::keystone::service(
     Stdlib::Port $admin_bind_port,
     Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips,
     Array[Stdlib::Port] $prometheus_metricsinfra_default_ports,
+    Stdlib::Fqdn $horizon_hostname,
 ) {
     class { "openstack::keystone::service::${version}":
         memcached_nodes                       => $memcached_nodes,
@@ -85,6 +86,7 @@ class openstack::keystone::service(
         admin_bind_port                       => $admin_bind_port,
         prometheus_metricsinfra_reserved_ips  => $prometheus_metricsinfra_reserved_ips,
         prometheus_metricsinfra_default_ports => $prometheus_metricsinfra_default_ports,
+        horizon_hostname                      => $horizon_hostname,
     }
 
     group { 'keystone':

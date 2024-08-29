@@ -78,7 +78,10 @@ public_workers = <%= @public_workers %>
 admin_workers = <%= @admin_workers %>
 
 [eventlet_server_ssl]
+
 [federation]
+trusted_dashboard = https://<%= @horizon_hostname %>/auth/websso/
+
 [fernet_tokens]
 max_active_keys = <%= @max_active_keys %>
 
