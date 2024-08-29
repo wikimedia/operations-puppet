@@ -8,11 +8,22 @@ define profile::lvs::interface_tweaks(
   $rss_pattern='',
   $do_rps=true,
   $ipip_enabled=false,
+  $do_ipv6_ra_primary=false,
 ) {
     if $interface != $facts['interface_primary'] {
         interface::manual { $name:
             interface => $interface,
         }
+    }
+
+    if $do_ipv6_ra_primary {
+      # Enable default route creation from IPv6 RA on primary interface: T358260
+      if $interface == $facts['interface_primary'] {
+          interface::pre_up_command { "${interface}-accept_ra_defrtr":
+            interface => $interface,
+            command   => "sysctl -w net.ipv6.conf.${interface}.accept_ra_defrtr=1",
+          }
+      }
     }
 
     # Disable LRO to avoid merging important headers for flow control and such

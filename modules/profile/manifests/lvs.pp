@@ -8,6 +8,7 @@ class profile::lvs(
     Hash[String, Hash] $vlan_data = lookup('lvs::interfaces::vlan_data'),
     Hash[String, Hash] $interface_tweaks = lookup('profile::lvs::interface_tweaks'),
     Boolean $ipip_enabled = lookup('profile::lvs::ipip_enabled'),
+    Boolean $do_ipv6_ra_primary = lookup('profile::lvs::do_ipv6_ra_primary', {'default_value' => false}),
 ){
     require profile::lvs::configuration
 
@@ -19,7 +20,9 @@ class profile::lvs(
     class { '::cpufrequtils': }
 
     # kernel-level parameters
-    class { '::lvs::kernel_config': }
+    class { 'lvs::kernel_config':
+        do_ipv6_ra_primary => $do_ipv6_ra_primary,
+    }
 
     ## LVS IPs setup
     # Obtain all the IPs configured for this class of load-balancers,
@@ -48,7 +51,7 @@ class profile::lvs(
 
     # Apply needed interface tweaks
 
-    create_resources(profile::lvs::interface_tweaks, $interface_tweaks, {ipip_enabled => $ipip_enabled})
+    create_resources(profile::lvs::interface_tweaks, $interface_tweaks, {ipip_enabled => $ipip_enabled, do_ipv6_ra_primary => $do_ipv6_ra_primary})
 
 
     # Install ipip-multiqueue-optimizer

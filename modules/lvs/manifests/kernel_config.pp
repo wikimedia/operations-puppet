@@ -2,7 +2,9 @@
 #
 # Sets up kernel-level parameters for lvs
 #
-class lvs::kernel_config {
+class lvs::kernel_config (
+    Boolean $do_ipv6_ra_primary = false,
+) {
 
     # ethtool is also a package needed but it is included from base
     file { '/etc/modprobe.d/lvs.conf':
@@ -55,6 +57,21 @@ class lvs::kernel_config {
             # https://phabricator.wikimedia.org/T163312#3193182
             'net.ipv4.icmp_msgs_per_sec'      => 3000,
         },
+    }
+
+    if $do_ipv6_ra_primary {
+        sysctl::parameters { 'lvs-ipv6-ra-primary':
+            values => {
+              # Control IPv6 RA processing.
+              # We enable accept_ra on all interfaces, to support address autoconfig,
+              # but disable accept_ra_defrtr by default so RAs on an interface don't
+              # automatically cause a default route to be added via it (T358260)
+              'net.ipv6.conf.all.accept_ra'            => 1,
+              'net.ipv6.conf.default.accept_ra'        => 1,
+              'net.ipv6.conf.all.accept_ra_defrtr'     => 0,
+              'net.ipv6.conf.default.accept_ra_defrtr' => 0,
+            }
+        }
     }
 
     # The ip_vs kernel module is loaded upon pybal.service startup. However,

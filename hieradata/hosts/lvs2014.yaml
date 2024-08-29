@@ -1,1 +1,3 @@
 profile::pybal::primary: false
+
+profile::lvs::do_ipv6_ra_primary: true  # temporary override till we test T358260
