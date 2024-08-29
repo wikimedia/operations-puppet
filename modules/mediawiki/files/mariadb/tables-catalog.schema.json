@@ -1,0 +1,95 @@
+{
+	"type": "object",
+	"required": [
+		"version",
+		"tables",
+		"sources",
+		"dropped_tables"
+	],
+	"properties": {
+		"version": {
+			"type": "string"
+		},
+		"tables": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"required": [
+					"name",
+					"source",
+					"canonicality",
+					"visibility"
+				],
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"source": {
+						"type": "string"
+					},
+					"canonicality": {
+						"type": "string",
+						"enum": [
+							"canonical",
+							"canonical with acceptable loss",
+							"derivative"
+						]
+					},
+					"visibility": {
+						"type": "string",
+						"enum": [
+							"public",
+							"partially public",
+							"private"
+						]
+					},
+					"sections": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"dbs": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"dblist": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"sources": {
+			"type": "object",
+			"required": [],
+			"properties": {
+				"core": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"required": [
+							"path",
+							"gerrit"
+						],
+						"properties": {
+							"path": {
+								"type": "string"
+							},
+							"gerrit": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"dropped_tables": {
+			"type": "array",
+			"items": {
+				"type": "string"
+			}
+		}
+	}
+}

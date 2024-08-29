@@ -508,6 +508,15 @@ class TaskGen < ::Rake::TaskLib
           end
           tasks << 'tox:alerts'
         end
+        tables_catalog_files = filter_files_by("modules/mediawiki/files/mariadb/**")
+        unless tables_catalog_files.empty?
+          desc 'Run tox for tables catalog'
+          task :tables_catalog do
+            res = system("tox -e tables_catalog")
+            raise 'Tests for tables_catalog failed!'.red unless res
+          end
+          tasks << 'tox:tables_catalog'
+        end
         tslua_files = filter_files_by("modules/profile/files/trafficserver/**")
         unless tslua_files.empty?
           desc 'Run tox for tslua'

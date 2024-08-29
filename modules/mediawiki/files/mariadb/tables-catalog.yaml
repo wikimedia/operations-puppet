@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Attention: It's incomplete. Work in progress.
 ---
-version: 0
+version: "0"
 tables:
   - name: site_identifiers
     source: core
