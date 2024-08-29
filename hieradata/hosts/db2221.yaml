@@ -1,2 +1,3 @@
 # db2221
+mariadb::shard: 's7'
 profile::monitoring::notifications_enabled: false

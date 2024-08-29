@@ -704,7 +704,7 @@ node /^db1158\.eqiad\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
-node /^db2(121|122|150|168|182|218|208|220)\.codfw\./ {
+node /^db2(121|122|150|168|182|218|208|220|221|222)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -964,8 +964,8 @@ node /^dbproxy10(12|13|14|15|16|20|21|22|23|24|25|26|27|28|29)\.eqiad\./ {
     role(mariadb::proxy::master)
 }
 
-# New databases T368922
-node /^db22(21|22|23|24|25|26|27|28|29|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
+# New databases T373579
+node /^db22(23|24|25|26|27|28|29|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
