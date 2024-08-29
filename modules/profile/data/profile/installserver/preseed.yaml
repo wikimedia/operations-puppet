@@ -226,7 +226,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  'dse-k8s-worker100[1-8]':
+  'dse-k8s-worker100[1-9]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
@@ -573,6 +573,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-cache*':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
+  'ml-lab':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
   'moss-*':
     - partman/custom/cephadm_raid1_leavelvm.cfg
   'ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*':
