@@ -4839,7 +4839,7 @@ users:
   htriedman:
     ensure: present
     realname: Hal Triedman
-    email: htriedman@wikimedia.org
+    email: htriedman@gmail.com
     uid: 30945
     gid: 500
     ssh_keys:
