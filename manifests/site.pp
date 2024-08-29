@@ -1523,7 +1523,7 @@ node /^idp[12]004\.wikimedia\./ {
 }
 
 # CAS 7.0 hosts
-node /^idp-test[12]004\.wikimedia\./ {
+node /^idp-test[12]00[45]\.wikimedia\./ {
     role(idp_test)
 }
 
