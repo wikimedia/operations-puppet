@@ -704,7 +704,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest100[1-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'sretest200[3-4]':
+  'sretest200[1-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'sretest2005':
