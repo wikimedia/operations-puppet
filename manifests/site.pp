@@ -1050,12 +1050,8 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
 }
 
 # new dse-k8s-workers T29157 and T3074009
-node /^dse-k8s-worker100[1-8]\.eqiad\./ {
+node /^dse-k8s-worker100[1-9]\.eqiad\./ {
     role(dse_k8s::worker)
-}
-
-node /^dse-k8s-worker1009\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # to be decommed
@@ -2071,12 +2067,8 @@ node /^ml-serve20(0[1-9]|1[01])\.codfw\./ {
     role(ml_k8s::worker)
 }
 
-node /^ml-serve100[1-8]\.eqiad\./ {
+node /^ml-serve10(0[1-9]|1[01])\.eqiad\./ {
     role(ml_k8s::worker)
-}
-
-node /^ml-serve(1009|1010|1011)\.eqiad\./ {
-    role(insetup::machine_learning)
 }
 
 node /^ml-staging-etcd200[123]\.codfw\./ {
