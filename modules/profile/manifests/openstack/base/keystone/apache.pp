@@ -6,7 +6,7 @@ class profile::openstack::base::keystone::apache(
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
 ) {
     class { '::httpd':
-        modules => ['proxy_uwsgi'],
+        modules => ['proxy_uwsgi', 'auth_openidc'],
     }
 
     httpd::site { 'proxy-wsgi-keystone':
