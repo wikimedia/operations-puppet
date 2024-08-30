@@ -208,7 +208,7 @@ groups:
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              mszabo, ihurbain
+              mszabo, ihurbain, zoe
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -6457,6 +6457,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Tex6HM+R0rT7rHFpM78bSS05YbrEC1Cg+/dOG59IF csimiyu@wikimedia.org
     krb: present
+  zoe:
+    ensure: present
+    gid: 500
+    uid: 46431
+    realname: Zoe
+    email: zoe@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGKJIQsjHWNRooyZsI3+ALzR020/JjvcjbgKnO5L8svA zoe-prod-key
 
 ldap_only_users:
   adavenport:
@@ -7212,10 +7220,6 @@ ldap_only_users:
   febinbellamy:
     ensure: absent
     realname: Febin Bellamy
-  zoe:
-    ensure: present
-    realname: Zoe
-    email: zoe@wikimedia.org
   kcoleman:
     ensure: present
     realname: Katie Coleman
