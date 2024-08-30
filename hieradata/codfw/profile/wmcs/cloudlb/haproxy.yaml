@@ -35,10 +35,12 @@ profile::wmcs::cloudlb::haproxy::config:
     http:
       timeout_server: "600s"
 
+  # Even in codfw1dev this api needs to be open to the internet so that
+  #  browsers can redirect to keystone for OIDC
   keystone-api-public:
     type: http
     firewall:
-      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+      open_to_internet: true
     frontends:
       - port: 5000
       - port: 25000
