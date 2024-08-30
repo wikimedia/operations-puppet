@@ -24,7 +24,6 @@ class profile::icinga(
     Hash[String, String]          $apache2_auth_users    = lookup('profile::icinga::apache2_auth_users'),
     Wmflib::Ensure                $ircbot_ensure         = lookup('profile::icinga::ircbot::ensure'),
     Array[String]                 $datacenters           = lookup('datacenters'),
-    Hash[String, Hash]            $atlas_measurements    = lookup('ripeatlas_measurements'),
     Wmflib::Infra::Devices        $infra_devices         = lookup('infra_devices'),
     Integer[1]                    $logs_keep_days        = lookup('profile::icinga::logs_keep_days'),
     Hash[String, String]          $mgmt_parents          = lookup('profile::icinga::mgmt_parents'),
@@ -45,7 +44,6 @@ class profile::icinga(
     }
 
     class { 'netops::monitoring':
-        atlas_measurements => $atlas_measurements,
         infra_devices      => $infra_devices,
     }
     class { 'facilities':

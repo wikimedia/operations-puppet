@@ -1,11 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary Sets up monitoring checks for networking equipment.
-# @param atlas_measurements a hash of datacenter => ipv4 and ipv6 array measurements IDs
 # @param infra_devices A hash of devices
 # @example include netops::monitoring
 
 class netops::monitoring(
-    Hash[String, Hash] $atlas_measurements,
     Wmflib::Infra::Devices $infra_devices,
 ) {
     include passwords::network
@@ -213,8 +211,7 @@ class netops::monitoring(
     }
     create_resources(netops::check, $atlas)
 
-    # RIPE Atlas Anchor measurements -- implicit dependency on the above host checks
-    create_resources(netops::ripeatlas, $atlas_measurements)
+    # RIPE Atlases measurements checks moved to prometheus/alertmanar
 
     # SCS -- Serial Console Servers
     $scs = $infra_devices.filter |$device, $config| {
