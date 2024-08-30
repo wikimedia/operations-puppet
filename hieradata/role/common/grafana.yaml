@@ -155,4 +155,8 @@ profile::grafana::loki::config:
     retention_enabled: true
     retention_delete_delay: 2h
 
+  ingester:
+    chunk_idle_period: 168h
+    max_chunk_age: 168h
+
 profile::puppet::agent::force_puppet7: true
