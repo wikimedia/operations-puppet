@@ -15,7 +15,7 @@ profile::lvs::realserver::use_conftool: false
 "puppetmaster::scripts::keep_reports_minutes": 360
 puppetmaster::autosigner: true
 service::configuration::mwapi_host: http://appservers.svc.deployment-prep.eqiad1.wikimedia.cloud
-service::configuration::restbase_uri: http://deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud:7231
+service::configuration::restbase_uri: http://deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud:7231
 #service::configuration::http_proxy:
 service::configuration::logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
 profile::cache::purge::kafka_cluster_name: main-deployment-prep
@@ -59,14 +59,14 @@ profile::restbase::cassandra_password: cassandra
 profile::restbase::monitor_domain: en.wikipedia.org
 profile::restbase::cassandra_tls: {}
 profile::restbase::hosts:
-  - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
+  - deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud
 profile::restbase::seeds_ng:
-  - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
+  - deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud
 # Cassandra (profile::cassandra)
 profile::cassandra::allow_analytics: false
 profile::cassandra::rack: rack1
 profile::cassandra::instances:
-  "deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud": {}
+  "deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud": {}
 profile::cassandra::settings:
   listen_address: '%{::ipaddress}'
   logstash_host: deployment-logstash03.deployment-prep.eqiad.wmflabs
@@ -153,7 +153,7 @@ scap::dsh::groups:
         hosts: []
     restbase-betacluster:
         hosts:
-            - deployment-restbase04.deployment-prep.eqiad1.wikimedia.cloud
+            - deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud
     librenms:
         hosts:
             - deployment-netbox.deployment-prep.eqiad.wmflabs
