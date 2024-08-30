@@ -17,7 +17,7 @@ profile::ci::proxy_jenkins::prefix: "/ci"
 profile::ci::jenkins::builds_dir: "/srv/jenkins/builds/${ITEM_FULL_NAME}"
 profile::ci::jenkins::workspaces_dir: "/srv/jenkins/workspace/${ITEM_FULL_NAME}"
 
-profile::ci::jenkins::java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
+profile::ci::jenkins::java_home: "/usr/lib/jvm/java-17-openjdk-amd64"
 
 profile::ci::agent::ssh_keys:
   - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA4QGc1Zs/S4s7znEYw7RifTuZ4y4iYvXl5jp5tJA9kGUGzzfL0dc4ZEEhpu+4C/TixZJXqv0N6yke67cM8hfdXnLOVJc4n/Z02uYHQpRDeLAJUAlGlbGZNvzsOLw39dGF0u3YmwDm6rj85RSvGqz8ExbvrneCVJSaYlIRvOEKw0e0FYs8Yc7aqFRV60M6fGzWVaC3lQjSnEFMNGdSiLp3Vl/GB4GgvRJpbNENRrTS3Te9BPtPAGhJVPliTflVYvULCjYVtPEbvabkW+vZznlcVHAZJVTTgmqpDZEHqp4bzyO8rBNhMc7BjUVyNVNC5FCk+D2LagmIriYxjirXDNrWlw== jenkins@gallium"
@@ -28,9 +28,9 @@ profile::ci::docker::settings:
   iptables: false
 
 profile::java::java_packages:
-  - version: "11"
-    variant: "jdk"
   - version: "17"
+    variant: "jdk"
+  - version: "11"
     variant: "jdk"
 
 # Zuul merger
