@@ -386,6 +386,7 @@ eqiad:
     wikikube-worker1030.eqiad.wmnet: [kubesvc]
     wikikube-worker1031.eqiad.wmnet: [kubesvc]
     wikikube-worker1032.eqiad.wmnet: [kubesvc]
+    wikikube-worker1033.eqiad.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster1003.eqiad.wmnet: [kubemaster]
     kubestagemaster1004.eqiad.wmnet: [kubemaster]

@@ -1661,7 +1661,7 @@ node /^kubernetes20(0[5-68-9]|1[0-7]|2[0-478]|[34][0-9]|5[0-9]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-2])\.eqiad\./ {
+node /^wikikube-worker10(0[1-47-9]|1[0-47-9]|2[0-9]|3[0-3])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2181,13 +2181,6 @@ node /^mw143[7-8]\.eqiad\./ {
 node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
-
-# Waiting for reinstall to wikikube-worker following T367949
-
-node /^mw1398\.eqiad\./ {
-    role(insetup::serviceops)
-}
-
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
