@@ -30,8 +30,6 @@ profile::ci::docker::settings:
 profile::java::java_packages:
   - version: "17"
     variant: "jdk"
-  - version: "11"
-    variant: "jdk"
 
 # Zuul merger
 
