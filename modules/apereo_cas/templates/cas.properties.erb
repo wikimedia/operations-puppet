@@ -124,10 +124,12 @@ cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.crypto.encryption.key=<%= @oauth_token_signing_key %><% end %>
 <%- end -%>
 
+<%- if @tomcat_version == 'tomcat10' -%>
 cas.authn.oauth.session-replication.cookie.crypto.encryption.key=<%= @oauth_session_encryption_key %>
 cas.authn.oauth.session-replication.cookie.crypto.signing.key=<%= @oauth_session_signing_key %>
 cas.authn.pac4j.core.session-replication.cookie.crypto.encryption.key=<%= @authn_pac4j_encryption_key %>
 cas.authn.pac4j.core.session-replication.cookie.crypto.signing.key=<%= @authn_pac4j_signing_key %>
+<%- end -%>
 
 <%- if @memcached_enable -%>
 cas.ticket.registry.memcached.servers=<%= @memcached_server %>:<%= @memcached_port %>

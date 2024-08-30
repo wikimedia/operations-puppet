@@ -55,6 +55,7 @@ class profile::idp(
     Array[Apereo_cas::Delegate]       $delegated_authenticators  = lookup('profile::idp::delegated_authenticators'),
     Boolean                           $enable_webauthn           = lookup('profile::idp::enable_webauthn'),
     Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
+    String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value' => 'tomcat10' }),
 ){
 
     ensure_packages(['python3-pymysql'])
@@ -70,7 +71,7 @@ class profile::idp(
       $firewall_port = 8080
     }
 
-    class { 'tomcat10': }
+    class { $tomcat: }
 
     $jmx_port = 9200
     $jmx_config = '/etc/prometheus/cas_jmx_exporter.yaml'
@@ -151,9 +152,10 @@ class profile::idp(
         delegated_authenticators     => $delegated_authenticators,
         enable_webauthn              => $enable_webauthn,
         webauthn_relaying_party      => $webauthn_relaying_party,
+        tomcat_version               => $tomcat,
     }
 
-    systemd::unit{ 'tomcat10':
+    systemd::unit{ $tomcat:
         override => true,
         restart  => true,
         content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\nEnvironment=JAVA_HOME=${profile::java::default_java_home}",
