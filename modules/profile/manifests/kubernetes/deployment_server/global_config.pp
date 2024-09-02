@@ -179,6 +179,8 @@ class profile::kubernetes::deployment_server::global_config (
       }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
+    $gilab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
+
     $external_service_opts = deep_merge(
       {
         'kafka'  => {
@@ -382,6 +384,19 @@ class profile::kubernetes::deployment_server::global_config (
             'multirootca' => wmflib::role::ips('pki::multirootca'),
           },
         },
+        'gitlab' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'https',
+                'port' => 443,
+              },
+            ],
+          },
+          'instances' => {
+            'wikimedia' => $gilab_ips,
+          }
+        }
       },
       $external_service_redis,
       $external_services_elasticsearch,
