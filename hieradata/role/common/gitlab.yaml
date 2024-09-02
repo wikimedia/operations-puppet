@@ -118,9 +118,9 @@ profile::firewall::provider: nftables
 
 profile::firewall::nftables_throttling::ensure: present
 profile::firewall::nftables_throttling::policy: accept
-# allow 300 packets per 60 seconds, ban clients above for 300 seconds
-profile::firewall::nftables_throttling::throttle_packets: 300
+# allow 200 new TCP packets per 60 seconds, ban clients above for 300 seconds
+profile::firewall::nftables_throttling::throttle_packets: 200
 profile::firewall::nftables_throttling::throttle_duration: 300
-profile::firewall::nftables_throttling::allowed_burst_packets: 1000
+profile::firewall::nftables_throttling::allowed_burst_packets: 100
 profile::firewall::nftables_throttling::port: 443
 profile::firewall::nftables_throttling::nft_logging: true
