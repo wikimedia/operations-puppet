@@ -26,6 +26,7 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::upstream_addr: '127.0.0.1'
+profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::services:
   # enable oauth2-proxy/oidc, see 'profile::prometheus::web_idp::auth_type'
   - server_names:
