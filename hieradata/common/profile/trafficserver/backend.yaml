@@ -433,7 +433,28 @@ profile::trafficserver::backend::mapping_rules:
       # mediawiki
       # REST api
     - type: regex_map
-      target: 'http://(.*)/(w/rest.php|api/)'
+      target: 'http://(.*)/w/rest.php'
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
+      params:
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
+          # decode    :  @  !  $  (  )  *  ,  ;  '
+          - '@pparam="3A 40 21 24 28 29 2A 2C 3B 27"'
+          # encode    [  ]  &  +  =
+          - '@pparam="5B 5D 26 2B 3D"'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
+          # Multi-DC
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
+          - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
+          # Re-use origin server connections if origin IP and port match
+          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
+          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+    - type: regex_map
+      target: 'http://(.*)/api/'
       replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
