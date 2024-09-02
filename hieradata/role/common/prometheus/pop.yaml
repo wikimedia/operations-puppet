@@ -27,7 +27,13 @@ profile::tlsproxy::envoy::global_cert_name: prometheus.discovery.wmnet
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::upstream_addr: '127.0.0.1'
 profile::tlsproxy::envoy::services:
+  # enable oauth2-proxy/oidc, see 'profile::prometheus::web_idp::auth_type'
+  - server_names:
+     - "prometheus-%{::site}.%{lookup('public_domain')}"
+    port: 4180
   - server_names: ['*']
     port: 80
+
+profile::prometheus::web_idp::auth_type: 'oidc'
 
 profile::puppet::agent::force_puppet7: true
