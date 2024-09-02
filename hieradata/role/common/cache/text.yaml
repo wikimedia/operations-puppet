@@ -27,6 +27,8 @@ cache::alternate_domains:
     caching: 'normal'
   bugzilla.wikimedia.org:
     caching: 'normal'
+  cloudidp-dev.wikimedia.org:
+    caching: 'pass'
   cloudtestidm.wikimedia.org:
     caching: 'pass'
   commons-query.wikimedia.org:
