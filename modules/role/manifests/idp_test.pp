@@ -5,5 +5,6 @@ class role::idp_test {
     include profile::base::production
     include profile::firewall
     include profile::idp
+    include profile::idp::build
     include profile::java
 }
