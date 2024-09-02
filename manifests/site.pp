@@ -2222,24 +2222,6 @@ node /^mw227[8-9]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
-# Waiting for reinstall to wikikube-worker following T367949
-
-node /^mw22(6[89]|70)\.codfw\./ {
-    role(insetup::serviceops)
-}
-
-node /^mw227[12]\.codfw\./ {
-    role(insetup::serviceops)
-}
-
-node /^mw227[3-7]\.codfw\./ {
-    role(insetup::serviceops)
-}
-
-node /^mw226[1-2]\.codfw\./ {
-    role(insetup::serviceops)
-}
-
 ## END MEDIAWIKI APPLICATION SERVERS
 
 # mw logging host eqiad
