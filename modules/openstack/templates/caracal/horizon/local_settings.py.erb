@@ -570,3 +570,17 @@ REST_API_REQUIRED_SETTINGS = [
 # Just show us all the projects. A scroll bar is better than
 #  mysterious truncation
 DROPDOWN_MAX_ITEMS=1000000
+
+# Enable SSO things
+WEBSSO_ENABLED=True
+WEBSSO_CHOICES = (
+    ("credentials", _("Keystone Credentials")),
+    ("openid", _("OpenID Connect")),
+)
+WEBSSO_INITIAL_CHOICE = "openid"
+
+# Comment out the next two lines to skip sso and authenticate
+#  via keystone directly
+WEBSSO_DEFAULT_REDIRECT = True
+WEBSSO_DEFAULT_REDIRECT_PROTOCOL = "openid"
+WEBSSO_DEFAULT_REDIRECT_REGION = OPENSTACK_KEYSTONE_URL
