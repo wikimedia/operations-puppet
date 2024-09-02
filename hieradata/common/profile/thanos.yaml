@@ -5,8 +5,7 @@ profile::thanos::frontends:
   - titan2002.codfw.wmnet
 
 # The host to run compact on, must be only one globally
-# Temp disabled per https://phabricator.wikimedia.org/T351927
-profile::thanos::compact_host: disabled
+profile::thanos::compact_host: titan2001.codfw.wmnet
 
 profile::thanos::rule_hosts:
   "titan1001.eqiad.wmnet":
