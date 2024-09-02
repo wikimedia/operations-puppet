@@ -1657,7 +1657,7 @@ node /^kubernetes10(0[5-9]|[1-5][0-9]|6[0-2]|)\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^kubernetes20(0[5-69]|1[0-7]|2[0-48]|3[1-9]|4[0-9]|5[0-689]|60)\.codfw\./ {
+node /^kubernetes20(0[5-69]|1[0-7]|2[0-4]|3[1-9]|4[0-9]|5[0-4689]|60)\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -1762,7 +1762,7 @@ node /^mw240[267]\.codfw\./ {
 node /^mw241[2-9]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw242[0-9]\.codfw\./ {
+node /^mw242[014-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw243[014-7]\.codfw\./ {
