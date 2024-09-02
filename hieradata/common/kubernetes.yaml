@@ -821,6 +821,14 @@ kubernetes::clusters:
       admission_configuration: ~
       cni_config:
         <<: *ml-serve_cni_config
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
   aux-k8s:
     aux-k8s-eqiad:
       dc: eqiad
