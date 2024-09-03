@@ -24,8 +24,15 @@ wiki_access_secret=<%= @wiki_status_access_secret %>
 [assignment]
 driver = sql
 
+# Seems weird but both of the following [openid] and [oidc] are needed.
+[openid]
+remote_id_attribute = HTTP_OIDC_ISS
+
+[oidc]
+remote_id_attribute = HTTP_OIDC_ISS
+
 [auth]
-methods = external,password,token,wmtotp,application_credential
+methods = external,password,token,wmtotp,application_credential,openid
 
 # Override the default password plugin with a custom
 #  one that checks source IPs.

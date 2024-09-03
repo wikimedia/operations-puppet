@@ -6,7 +6,8 @@ class profile::openstack::base::keystone::apache(
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
     Stdlib::HTTPSUrl $idp_server_name = lookup('profile::idp::server_name'),
     String $idp_client_secret = lookup('profile::openstack::base::keystone::oidc_secret'),
-    String $webserver_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
+    Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
+    Stdlib::Port $keystone_port = lookup('profile::openstack::base::keystone::public_port'),
 ) {
 
     ensure_packages('libapache2-mod-auth-openidc')

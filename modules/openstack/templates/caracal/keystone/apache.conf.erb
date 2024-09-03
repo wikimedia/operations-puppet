@@ -6,15 +6,33 @@ Listen <%= @admin_bind_port %>
     ProxyPass / uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
 
     OIDCClaimPrefix "OIDC-"
-    OIDCResponseType "id_token"
+    OIDCResponseType "id_token token"
     OIDCScope "openid email profile"
     OIDCProviderMetadataURL <%= @idp_server_name %>/oidc/.well-known
     OIDCClientID keystone
     OIDCClientSecret <%= @idp_client_secret %>
     OIDCCryptoPassphrase openstack
-    OIDCRedirectURI https://<%= @webserver_hostname %>:15000/v3/auth/OS-FEDERATION/identity_providers/keystone/protocols/openid
 
-    <Location ~ "/v3/auth/OS-FEDERATION/websso/oidc">
+    # Need these because we're behind a reverse-proxy that does ssl termination
+    OIDCXForwardedHeaders X-Forwarded-Host
+    OIDCXForwardedHeaders X-Forwarded-Proto
+
+    <Location /v3/auth/OS-FEDERATION/identity_providers/openid/protocols/oidc/auth>
+      AuthType openid-connect
+      Require valid-user
+      LogLevel debug
+    </Location>
+
+    <Location "/v3/auth/OS-FEDERATION/websso/openid">
+      AuthType openid-connect
+      Require valid-user
+      LogLevel debug
+    </Location>
+
+    # The docs say to make this an arbitrary protected endpoint,
+    #  so this is as arbirary as I can make it.
+    OIDCRedirectURI https://<%= @keystone_fqdn %>:<%= @keystone_port %>/protected
+    <Location "/protected">
       AuthType openid-connect
       Require valid-user
       LogLevel debug
