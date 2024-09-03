@@ -37,6 +37,7 @@ class profile::idp(
     Array[Stdlib::Fqdn]               $idp_nodes                   = lookup('profile::idp::idp_nodes'),
     Boolean                           $is_staging_host             = lookup('profile::idp::is_staging_host'),
     Boolean                           $memcached_enable            = lookup('profile::idp::memcached_enable'),
+    Boolean                           $memcached_install           = lookup('profile::idp::memcached_install'),
     Stdlib::Port                      $memcached_port              = lookup('profile::idp::memcached_port'),
     Apereo_cas::Memcached::Transcoder $memcached_transcoder      = lookup('profile::idp::memcached_transcoder'),
     Boolean                           $enable_u2f                = lookup('profile::idp::enable_u2f'),
@@ -56,6 +57,7 @@ class profile::idp(
     Boolean                           $enable_webauthn           = lookup('profile::idp::enable_webauthn'),
     Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
     String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value' => 'tomcat10' }),
+    String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
 ){
 
     ensure_packages(['python3-pymysql'])
@@ -157,6 +159,7 @@ class profile::idp(
         enable_webauthn              => $enable_webauthn,
         webauthn_relaying_party      => $webauthn_relaying_party,
         tomcat_version               => $tomcat,
+        oidc_issuers_pattern         => $oidc_issuers_pattern
     }
 
     systemd::unit{ $tomcat:
@@ -177,7 +180,7 @@ class profile::idp(
         config_file => $jmx_config,
         content     => file('profile/idp/cas_jmx_exporter.yaml'),
     }
-    if $memcached_enable {
+    if ($memcached_enable and $memcached_install) {
         class {'profile::idp::memcached':
             idp_nodes => $idp_nodes,
         }

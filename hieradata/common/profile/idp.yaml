@@ -33,6 +33,7 @@ profile::idp::actuators: []
 profile::idp::server_name: "https://${facts.networking.fqdn}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: false
+profile::idp::memcached_install: true
 # We use mcrouter in production
 profile::idp::memcached_port: 11213
 profile::idp::memcached_transcoder: 'SERIAL'
@@ -45,3 +46,4 @@ profile::idp::envoy_termination: true
 profile::idp::delegated_authenticators: []
 profile::idp::enable_webauthn: false
 profile::idp::webauthn_relaying_party: wikimedia.org
+profile::idp::oidc_issuers_pattern: 'a^'

@@ -17,6 +17,7 @@ define apereo_cas::service (
     Apereo_cas::Service::Release_policy  $release_policy     = 'ReturnAllAttributeReleasePolicy',
     Apereo_cas::Service::Access_strategy $access_strategy    = 'DefaultRegisteredServiceAccessStrategy',
     ENUM['FLAT', 'NESTED']               $profile_format     = 'NESTED',
+    String                               $response_type      = 'code',
     Array[String]                        $required_groups    = [],
     Hash                                 $properties         = {},
     Optional[String[1]]                  $allowed_delegate   = undef,
@@ -33,7 +34,7 @@ define apereo_cas::service (
             'clientSecret'           => $client_secret,
             'userProfileViewType'    => $profile_format,
             'bypassApprovalPrompt'   => true,
-            'supportedResponseTypes' => [ 'java.util.HashSet', [ 'code' ] ],
+            'supportedResponseTypes' => [ 'java.util.HashSet', [ $response_type ] ],
             'supportedGrantTypes'    => [ 'java.util.HashSet', [ 'authorization_code' ] ],
             'scopes'                 => [ 'java.util.HashSet', [ 'profile', 'openid', 'email', 'groups', 'memberOf'] ],
         }

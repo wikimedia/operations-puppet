@@ -45,13 +45,14 @@ profile::idp::tomcat_version: 'tomcat9'
 profile::idp::web_authn_signing_key: ''
 profile::idp::web_authn_encryption_key: ''
 
-profile::idp::enable_cors: true
-profile::idp::cors_allow_credentials: true
-profile::idp::cors_allowed_origins: []
+profile::idp::enable_cors: false
 profile::idp::tgc_cookie_same_site: 'strict'
 profile::idp::tgc_cookie_pin_to_session: false
 profile::idp::envoy_termination: false
-profile::idp::memcached_enable: false
+profile::idp::memcached_enable: true
+profile::idp::memcached_install: false
+profile::idp::memcached_port: 11000
+profile::idp::memcached::auto_restarts: false
 
 profile::idp::ldap_attributes:
   - cn
@@ -70,17 +71,15 @@ profile::idp::u2f_jpa_enable: false
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::java::egd_source: '/dev/urandom'
 profile::idp::u2f_token_expiry_days: 3650
-
+profile::idp::oidc_issuers_pattern: '.*'
 profile::java::java_packages:
   - version: "17"
     variant: "jdk"
 
 profile::idp::services:
-  horizon:
+  keystone:
     id: 1
     service_class: 'OidcRegisteredService'
-    service_id: 'https://horizon-dev\.wikimedia\.org\/[\w\/]*'
+    service_id: 'https://.*'
     profile_format: 'FLAT'
-    required_groups:
-      - wmf
-      - nda
+    response_type: 'id_token token'
