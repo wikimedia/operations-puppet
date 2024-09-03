@@ -3118,6 +3118,7 @@ service::catalog:
           url:
             - http://localhost/readiness-probe
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /readiness-probe
@@ -3153,6 +3154,7 @@ service::catalog:
           url:
             - https://localhost/readiness-probe
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /readiness-probe
@@ -3188,6 +3190,7 @@ service::catalog:
           url:
             - https://localhost/readiness-probe
       scheduler: wrr
+    page: false
     probes:
       - type: http
         path: /readiness-probe
