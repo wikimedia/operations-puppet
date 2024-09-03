@@ -8,11 +8,11 @@ Listen <%= @admin_bind_port %>
     OIDCClaimPrefix "OIDC-"
     OIDCResponseType "id_token"
     OIDCScope "openid email profile"
-    OIDCProviderMetadataURL <%= @idp_server_name %>/oidc
+    OIDCProviderMetadataURL <%= @idp_server_name %>/oidc/.well-known
     OIDCClientID keystone
     OIDCClientSecret <%= @idp_client_secret %>
     OIDCCryptoPassphrase openstack
-    OIDCRedirectURI http://<%= @webserver_hostname %>:15000/v3/auth/OS-FEDERATION/identity_providers/keystone/protocols/openid
+    OIDCRedirectURI https://<%= @webserver_hostname %>:15000/v3/auth/OS-FEDERATION/identity_providers/keystone/protocols/openid
 
     <Location ~ "/v3/auth/OS-FEDERATION/websso/oidc">
       AuthType openid-connect
