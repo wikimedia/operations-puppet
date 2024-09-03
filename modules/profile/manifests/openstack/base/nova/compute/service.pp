@@ -71,10 +71,12 @@ class profile::openstack::base::nova::compute::service(
     }
 
     # Increase the size of conntrack table size (default is 65536)
-    #  T139598 T355222
+    #  T139598 T355222 T373816
     sysctl::parameters { 'nova_conntrack':
         values => {
-            'net.netfilter.nf_conntrack_max'                   => 524288,
+            # 4 entries per bucket resembles the default ratio
+            'net.netfilter.nf_conntrack_buckets'               => 1250000,
+            'net.netfilter.nf_conntrack_max'                   => 5000000,
             'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
         },
     }
