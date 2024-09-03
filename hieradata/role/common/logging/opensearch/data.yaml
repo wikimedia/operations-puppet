@@ -52,7 +52,7 @@ profile::opensearch::logstash::curator_actions:
     action: delete_indices
     options:
       ignore_empty_list: true
-      timeout_override: 120
+      timeout_override: 300
     filters:
       - filtertype: pattern
         kind: prefix
