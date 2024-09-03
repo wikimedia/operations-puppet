@@ -162,9 +162,7 @@ prometheus_migrations:
 
 alertmanagers:
   - alert1001.wikimedia.org
-  - alert1002.wikimedia.org
   - alert2001.wikimedia.org
-  - alert2002.wikimedia.org
 
 # NOTE: Do *not* add new clusters *per site* anymore,
 # the site name will automatically be appended now,
