@@ -1,10 +1,8 @@
 profile::puppetserver::enc_source: ~
 profile::puppetserver::enc_path: ~
-# Note: start and max are not the same, see T373527
-# for details and rationale.
-profile::puppetserver::java_start_mem: 40g
-profile::puppetserver::java_max_mem: 48g
+profile::puppetserver::java_start_mem: 48g
 profile::puppetserver::server_id: "%{facts.networking.fqdn}"
+profile::puppetserver::java_max_mem: 48g
 profile::puppetserver::reports: ['store']
 profile::puppetserver::puppetdb_urls: []
 profile::puppetserver::puppetdb_submit_only_urls: []
