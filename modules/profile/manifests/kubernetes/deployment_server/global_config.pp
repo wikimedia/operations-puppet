@@ -396,6 +396,23 @@ class profile::kubernetes::deployment_server::global_config (
           'instances' => {
             'wikimedia' => $gilab_ips,
           }
+        },
+        'wikimail' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'smtp',
+                'port' => 25,
+              },
+              {
+                'name' => 'smtps',
+                'port' => 465,
+              },
+            ],
+          },
+          'instances' => {
+            'mx' => wmflib::role::ips('mail::mx'),
+          }
         }
       },
       $external_service_redis,
