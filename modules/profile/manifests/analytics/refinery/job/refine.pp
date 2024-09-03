@@ -251,16 +251,14 @@ class profile::analytics::refinery::job::refine(
     # === EventLogging Analytics (capsule based) data ===
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     # This job is being phased out in favor of the eventlogging_legacy one defined above.
-    # As we migrate tables into $eventlogging_legacy_table_include_list, they will be added to
-    # the exclude_list here, as only one of these two jobs should be responsible for refining an
-    # EventLogging stream into Hive.
     $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging_legacy'
     $eventlogging_analytics_input_path_regex = "${eventlogging_analytics_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
     $eventlogging_analytics_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
-    $eventlogging_analytics_table_exclude_list =
-        $eventlogging_legacy_table_exclude_list + $eventlogging_legacy_table_include_list
-    $eventlogging_analytics_table_exclude_regex = downcase("^(${join($eventlogging_analytics_table_exclude_list, '|')})$")
+    # As of 2024-09, the only remaining non migrated eventlogging legacy stream is
+    # eventlogging_MediaWikiPingback.
+    # Manually set the table_include_regex to only refine the mediawikipingback table.
+    $eventlogging_analytics_table_include_regex = '^mediawikipingback$'
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
         ensure           => $ensure_timers,
@@ -269,7 +267,7 @@ class profile::analytics::refinery::job::refine(
             input_path_regex                => $eventlogging_analytics_input_path_regex,
             input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
             input_path_datetime_format      => $hive_input_path_datetime_format,
-            table_exclude_regex             => $eventlogging_analytics_table_exclude_regex,
+            table_include_regex             => $eventlogging_analytics_table_include_regex,
             transform_functions             => $eventlogging_legacy_transform_functions,
             # Get EventLogging JSONSchemas from meta.wikimedia.org.
             schema_base_uris                => 'eventlogging',
