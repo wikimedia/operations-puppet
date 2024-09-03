@@ -75,8 +75,8 @@ class profile::openstack::base::nova::compute::service(
     sysctl::parameters { 'nova_conntrack':
         values => {
             # 4 entries per bucket resembles the default ratio
-            'net.netfilter.nf_conntrack_buckets'               => 1250000,
-            'net.netfilter.nf_conntrack_max'                   => 5000000,
+            'net.netfilter.nf_conntrack_buckets'               => 1048576,  # 2^20
+            'net.netfilter.nf_conntrack_max'                   => 4194304,  # 4 * 2^20
             'net.netfilter.nf_conntrack_tcp_timeout_time_wait' => 65,
         },
     }
