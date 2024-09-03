@@ -8,9 +8,6 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - os-reports.wikimedia.org
     - commons-query.wikimedia.org
-    - query-full-experimental.wikidata.org
-    - query-main-experimental.wikidata.org
-    - query-scholarly-experimental.wikidata.org
     - query.wikidata.org
     - query-main.wikidata.org
     - query-scholarly.wikidata.org

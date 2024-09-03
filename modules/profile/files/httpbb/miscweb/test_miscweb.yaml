@@ -13,18 +13,6 @@ https://commons-query.wikimedia.org:
 - path: /
   assert_status: 200
 
-https://query-full-experimental.wikidata.org:
-- path: /
-  assert_status: 200
-
-https://query-main-experimental.wikidata.org:
-- path: /
-  assert_status: 200
-
-https://query-scholarly-experimental.wikidata.org:
-- path: /
-  assert_status: 200
-
 https://os-reports.wikimedia.org:
 - path: /
   assert_status: 200

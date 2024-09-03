@@ -53,9 +53,6 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - "%{facts.fqdn}"
-    - 'query-full-experimental.wikidata.org'
-    - 'query-main-experimental.wikidata.org'
-    - 'query-scholarly-experimental.wikidata.org'
 profile::tlsproxy::envoy::global_cert_name: 'query-experimental.eqiad.wmnet'
 profile::tlsproxy::envoy::use_remote_address: true
 profile::tlsproxy::envoy::listen_ipv6: true

@@ -9,15 +9,6 @@ class profile::microsites::query_service {
         'wcqs':
             domain_name => 'commons-query.wikimedia.org',
         ;
-        'full-experimental':
-            domain_name => 'query-full-experimental.wikidata.org',
-        ;
-        'main-experimental':
-            domain_name => 'query-main-experimental.wikidata.org',
-        ;
-        'scholarly-experimental':
-            domain_name => 'query-scholarly-experimental.wikidata.org',
-        ;
         'main':
             domain_name => 'query-main.wikidata.org',
         ;
