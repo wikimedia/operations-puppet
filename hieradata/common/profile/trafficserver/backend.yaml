@@ -462,7 +462,7 @@ profile::trafficserver::backend::mapping_rules:
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
     - type: regex_map
       target: 'http://(.*)/api/'
-      replacement: https://mw-api-ext.discovery.wmnet:4447/w/rest.php
+      replacement: https://mw-api-ext.discovery.wmnet:4447/w/api/
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
