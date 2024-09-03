@@ -104,6 +104,10 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://wikitech.wikimedia.org
       replacement: https://labweb.svc.eqiad.wmnet:7443
+      params:
+        # Testing wikitech on mwdebug T371537
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/x-wikimedia-debug-routing.lua'
     - type: map
       target: http://integration.wikimedia.org
       replacement: https://contint.wikimedia.org:1443
