@@ -1671,7 +1671,7 @@ node /^wikikube-worker1(2[4-9][0-9]|30[0-4])\.eqiad\./ {
     role(insetup::serviceops)
 }
 
-node /^wikikube-worker20(0[1-47-9]|[1-4][0-9]|5[0-9]|6[0-9]|7[0-8])\.codfw\./ {
+node /^wikikube-worker20(0[1-47-9]|[1-7][0-9]|80)\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -1726,7 +1726,7 @@ node /^mw149[1-6]\.eqiad\./ {
 node /^mw1453\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw226[07]\.codfw\./ {
+node /^mw2267\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw2282\.codfw\./ {
@@ -1735,7 +1735,7 @@ node /^mw2282\.codfw\./ {
 node /^mw230[1-5]\.codfw\./ {
   role(kubernetes::worker)
 }
-node /^mw231[0-9]\.codfw\./ {
+node /^mw231[013-9]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw232[0-25]\.codfw\./ {
