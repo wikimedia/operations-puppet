@@ -33,8 +33,8 @@ profile::mail::default_mail_relay::smarthosts:
 
 profile::firewall::nftables_throttling::ensure: present
 # allow 250 packets per 60 seconds, ban clients above for 300 seconds
-profile::firewall::nftables_throttling::throttle_packets: 250
+profile::firewall::nftables_throttling::throttle_packets: 300
 profile::firewall::nftables_throttling::throttle_duration: 300
-profile::firewall::nftables_throttling::allowed_burst_packets: 150
+profile::firewall::nftables_throttling::allowed_burst_packets: 200
 profile::firewall::nftables_throttling::port: 443
 profile::firewall::nftables_throttling::nft_policy: accept
