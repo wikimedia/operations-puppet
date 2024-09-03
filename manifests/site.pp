@@ -1906,7 +1906,7 @@ node /^logstash20(2[6789]|3[34567])\.codfw\./ {
 }
 
 node /^logging-sd200[1-4]\.codfw\./ {
-    role(insetup::observability)
+    role(logging::opensearch::data)
 }
 
 # Logging collector nodes (codfw)
