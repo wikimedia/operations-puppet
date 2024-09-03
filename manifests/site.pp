@@ -1919,7 +1919,7 @@ node /^logstash10(2[6789]|3[34567])\.eqiad\./ {
 }
 
 node /^logging-sd100[1-4]\.eqiad\./ {
-    role(insetup::observability)
+    role(logging::opensearch::data)
 }
 
 # Logging collector nodes (eqiad)

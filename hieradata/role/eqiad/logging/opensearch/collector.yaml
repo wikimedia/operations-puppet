@@ -5,6 +5,10 @@ profile::opensearch::dc_settings:
     - logging-hd1001.eqiad.wmnet
     - logging-hd1002.eqiad.wmnet
     - logging-hd1003.eqiad.wmnet
+    - logging-sd1001.eqiad.wmnet
+    - logging-sd1002.eqiad.wmnet
+    - logging-sd1003.eqiad.wmnet
+    - logging-sd1004.eqiad.wmnet
     - logstash1026.eqiad.wmnet
     - logstash1027.eqiad.wmnet
     - logstash1028.eqiad.wmnet
@@ -18,6 +22,10 @@ profile::opensearch::dc_settings:
     - logging-hd1001.eqiad.wmnet
     - logging-hd1002.eqiad.wmnet
     - logging-hd1003.eqiad.wmnet
+    - logging-sd1001.eqiad.wmnet
+    - logging-sd1002.eqiad.wmnet
+    - logging-sd1003.eqiad.wmnet
+    - logging-sd1004.eqiad.wmnet
     - logstash1023.eqiad.wmnet
     - logstash1024.eqiad.wmnet
     - logstash1025.eqiad.wmnet

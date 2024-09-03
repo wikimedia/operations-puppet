@@ -1,0 +1,3 @@
+profile::opensearch::common_settings:
+  disktype: 'ssd'
+  heap_memory: '32G'
