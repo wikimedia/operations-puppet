@@ -73,6 +73,8 @@ def main():
         "improve@wikimedia.org",
         "legal-en@wikimedia.org",
         "legal-tm-vio@wikimedia.org",
+        "mobile-android-wikipedia@wikimedia.org",
+        "mobile-ios-wikipedia@wikimedia.org",
         "postmaster@wikimedia.org",
         "postmaster@wikipedia.org",
         "press@wikimedia.org",
