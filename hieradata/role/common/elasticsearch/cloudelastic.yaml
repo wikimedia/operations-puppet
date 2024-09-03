@@ -34,7 +34,7 @@ profile::elasticsearch::instances:
     tls_port: 9443
     tls_ro_port: 8443
     transport_tcp_port: 9500
-    heap_memory: '12G'
+    heap_memory: '14G'
     certificate_name: 'cloudelastic.wikimedia.org'
   cloudelastic-psi-eqiad:
     cluster_name: cloudelastic-psi-eqiad
@@ -43,7 +43,7 @@ profile::elasticsearch::instances:
     tls_port: 9643
     tls_ro_port: 8643
     transport_tcp_port: 9700
-    heap_memory: '12G'
+    heap_memory: '14G'
     certificate_name: 'cloudelastic.wikimedia.org'
 profile::elasticsearch::common_settings:
     awareness_attributes: 'row'
