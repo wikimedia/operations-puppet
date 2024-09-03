@@ -114,11 +114,11 @@ class profile::wmcs::cloudgw (
 
             # Increase connection tracking size
             # and bucket since all of CloudVPS VM instances ingress/egress
-            # are flowing through cloudgw servers
-            # default buckets is 65536. Let's use x8; 65536 * 8 = 524288
-            # default max is buckets x4; 524288 * 4 = 2097152
-            'net.netfilter.nf_conntrack_buckets'        => 524288,
-            'net.netfilter.nf_conntrack_max'            => 2097152,
+            # are flowing through cloudgw servers.
+            # The values here are somewhat related to the ones in the hypervisors.
+            # lets try to keep a 4x ratio between buckets and max
+            'net.netfilter.nf_conntrack_buckets'        => 8388608,  # 2^22
+            'net.netfilter.nf_conntrack_max'            => 33554432, # 4 * 2^22
         },
         priority => 50,
     }
