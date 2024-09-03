@@ -94,6 +94,35 @@ class profile::prometheus::analytics (
       },
     ]
 
+    $ceph_jobs = [
+      {
+        'job_name'        => 'ceph',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/ceph_*.yaml" ]}
+            ],
+            'metric_relabel_configs' => [
+                $hostname_to_instance_config,
+            ],
+      },
+    ]
+
+    $hostname_to_instance_config = {
+        'source_labels' => ['hostname', 'instance'],
+        'separator'     => ';',
+        # This matches either the hostname if it's there, or the instance if it's not.
+        # It uses the separator as marker
+        'regex'         => '^([^;:]+);.*|^;(.*)',
+        'target_label'  => 'instance',
+        'replacement'   => '$1',
+    }
+
+    prometheus::class_config{ "ceph_${::site}":
+        dest       => "${targets_path}/ceph_${::site}.yaml",
+        class_name => 'role::ceph::server',
+        port       => 9283,
+    }
+
     prometheus::class_config{ "matomo_mysql_${::site}":
         dest       => "${targets_path}/mysql_analytics_matomo_${::site}.yaml",
         class_name => 'role::matomo',
@@ -314,7 +343,7 @@ class profile::prometheus::analytics (
         listen_address       => "127.0.0.1:${port}",
         storage_retention    => $storage_retention,
         global_config_extra  => $config_extra,
-        scrape_configs_extra => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs].flatten,
+        scrape_configs_extra => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs, $ceph_jobs].flatten,
         alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
