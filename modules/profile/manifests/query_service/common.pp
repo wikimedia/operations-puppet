@@ -6,7 +6,6 @@ class profile::query_service::common(
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $endpoint = lookup('profile::query_service::endpoint'),
-    Boolean $run_tests = lookup('profile::query_service::run_tests', { 'default_value' => false }),
     Enum['none', 'daily', 'weekly'] $load_categories = lookup('profile::query_service::load_categories', { 'default_value' => 'daily' }),
     Array[String] $nodes = lookup('profile::query_service::nodes'),
     Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
@@ -57,7 +56,6 @@ class profile::query_service::common(
       deploy_name     => $deploy_name,
       username        => $username,
       load_categories => $load_categories,
-      run_tests       => $run_tests,
     }
 
     ensure_packages(['python3-dateutil', 'python3-prometheus-client'])

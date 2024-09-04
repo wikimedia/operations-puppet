@@ -9,7 +9,6 @@
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
 # - $load_categories: frequency of loading categories
-# - $run_tests: run test queries periodically (useful for test servers)
 class query_service::crontasks(
     String $package_dir,
     String $data_dir,
@@ -17,7 +16,6 @@ class query_service::crontasks(
     String $username,
     String $deploy_name,
     Enum['none', 'daily', 'weekly'] $load_categories,
-    Boolean $run_tests,
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
@@ -103,22 +101,6 @@ class query_service::crontasks(
         logfile_basedir => $log_dir,
         logfile_name    => 'reloadDCATAP.log',
         interval        => {'start' => 'OnCalendar', 'interval' => "Fri *-*-* 07:${fqdn_rand(60)}:00"},
-    }
-
-    $ensure_tests = $run_tests ? {
-        true    => present,
-        default => absent,
-    }
-
-    # Run test queries
-    systemd::timer::job { 'run-query-service-test-queries':
-        ensure       => $ensure_tests,
-        description  => 'Run test queries for query service',
-        command      => "${package_dir}/queries/test.sh",
-        user         => $username,
-        send_mail_to => 'wdqs-admin@wikimedia.org',
-        send_mail    => true,
-        interval     => {'start' => 'OnCalendar', 'interval' => '*:0/30:00' }
     }
 
     logrotate::rule { 'query-service-reload-categories':
