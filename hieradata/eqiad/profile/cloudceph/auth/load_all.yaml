@@ -77,7 +77,7 @@ profile::cloudceph::auth::load_all::configuration:
     caps:
       mon: allow *
   mon.cloudcephmon1005:
-    keyring_path: /etc/ceph/ceph.mon.cloudcephmon1005.keyring
+    keyring_path: /var/lib/ceph/mon/ceph-cloudcephmon1005/keyring
     import_to_ceph: false
     caps:
       mon: allow *
