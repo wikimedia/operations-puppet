@@ -194,7 +194,6 @@ codfw:
     kubernetes2058.codfw.wmnet: [kubesvc]
     kubernetes2059.codfw.wmnet: [kubesvc]
     kubernetes2060.codfw.wmnet: [kubesvc]
-    mw2267.codfw.wmnet: [kubesvc]
     mw2282.codfw.wmnet: [kubesvc]
     mw2301.codfw.wmnet: [kubesvc]
     mw2302.codfw.wmnet: [kubesvc]

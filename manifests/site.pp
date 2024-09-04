@@ -1726,9 +1726,6 @@ node /^mw149[1-6]\.eqiad\./ {
 node /^mw1453\.eqiad\./ {
     role(kubernetes::worker)
 }
-node /^mw2267\.codfw\./ {
-  role(kubernetes::worker)
-}
 node /^mw2282\.codfw\./ {
   role(kubernetes::worker)
 }
