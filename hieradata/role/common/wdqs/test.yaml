@@ -8,10 +8,6 @@ profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::deploy_name: 'wdqs'
 profile::query_service::endpoint: 'https://query.wikidata.org'
-profile::query_service::deploy_mode: 'scap3'
-  # enable by defaults when switching to the streaming_updater
-  # required to have wikibase:isSomeValue using skolems instead of blank nodes
-  # - '-DwikibaseSomeValueMode=skolem'
 profile::query_service::nodes:
   - 'wdqs2025.codfw.wmnet'
 profile::admin::groups:

@@ -1,6 +1,5 @@
 class profile::query_service::common(
     String $username = lookup('profile::query_service::username'),
-    Query_service::DeployMode $deploy_mode = lookup('profile::query_service::deploy_mode'),
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
@@ -38,7 +37,6 @@ class profile::query_service::common(
     class { 'cpufrequtils': }
 
     class { '::query_service::common':
-      deploy_mode         => $deploy_mode,
       username            => $username,
       deploy_name         => $deploy_name,
       deploy_user         => $deploy_user,

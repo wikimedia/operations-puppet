@@ -7,7 +7,6 @@ profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::deploy_name: 'wdqs'
 profile::query_service::endpoint: 'https://query.wikidata.org'
-profile::query_service::deploy_mode: 'scap3'
 profile::query_service::max_query_time_millis: 30000
 profile::query_service::sparql_query_stream: 'wdqs-internal.sparql-query'
 profile::query_service::event_service_endpoint: 'https://eventgate-analytics.discovery.wmnet:4592/v1/events?hasty=true'

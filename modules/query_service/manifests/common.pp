@@ -4,7 +4,6 @@
 # Dump data must be loaded manually.
 #
 # == Parameters:
-# - $deploy_mode: whether scap deployment is being used or git for autodeployment.
 # - $username: Username owning the service.
 # - $endpoint: External endpoint name.
 # - $package_dir:  Directory where the service should be installed.
@@ -12,7 +11,6 @@
 # - $log_dir: Directory where the logs go.
 # - $categories_endpoint: Endpoint which category scripts will be using.
 class query_service::common(
-    Query_service::DeployMode $deploy_mode,
     String $username,
     String $deploy_user,
     String $endpoint,
@@ -24,18 +22,11 @@ class query_service::common(
 ) {
     include ::query_service::packages
 
-    case $deploy_mode {
-
-        'scap3': {
-            class {'::query_service::deploy::scap':
-                deploy_user => $deploy_user,
-                username    => $username,
-                package_dir => $package_dir,
-                deploy_name => $deploy_name,
-            }
-        }
-
-        default: { }
+    class {'::query_service::deploy::scap':
+      deploy_user => $deploy_user,
+      username    => $username,
+      package_dir => $package_dir,
+      deploy_name => $deploy_name,
     }
 
     group { $username:
@@ -88,10 +79,7 @@ class query_service::common(
         tag    => 'in-wdqs-data-dir',
     }
 
-    $config_dir_group = $deploy_mode ? {
-        'scap3'    => $deploy_user,
-        default => 'root',
-    }
+    $config_dir_group = $deploy_user
 
     file { "/etc/${deploy_name}":
         ensure => directory,

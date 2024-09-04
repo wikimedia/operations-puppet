@@ -7,7 +7,6 @@ profile::query_service::data_dir: '/srv/wdqs'
 profile::query_service::log_dir: '/var/log/wdqs'
 profile::query_service::deploy_name: 'wdqs'
 profile::query_service::endpoint: 'https://query-scholarly.wikidata.org'
-profile::query_service::deploy_mode: 'scap3'
 profile::query_service::enable_ldf: true
 profile::query_service::high_query_time_port: true
 profile::query_service::sparql_query_stream: 'wdqs-external.sparql-query'

@@ -8,7 +8,6 @@
 # - $data_dir: Where the data is installed.
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
-# - $deploy_mode: deployment mode. e.g scap3, manual etc
 # - enable_ldf: boolean flag for enabling or disabling ldf
 # - $max_query_time_millis: maximum query time in milliseconds
 # - $blazegraph_main_ns: The blazegraph namespace to expose over http at /sparql
@@ -23,7 +22,6 @@ class query_service::gui(
     String $log_dir,
     String $deploy_name,
     String $username,
-    Query_service::DeployMode $deploy_mode,
     Boolean $enable_ldf,
     Integer $max_query_time_millis,
     String $blazegraph_main_ns,

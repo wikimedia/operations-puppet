@@ -4,7 +4,6 @@ class profile::query_service::gui (
     Stdlib::Unixpath $package_dir = lookup('profile::query_service::package_dir'),
     Stdlib::Unixpath $data_dir = lookup('profile::query_service::data_dir'),
     Stdlib::Unixpath $log_dir = lookup('profile::query_service::log_dir'),
-    Query_service::DeployMode $deploy_mode = lookup('profile::query_service::deploy_mode'),
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     Boolean $enable_ldf = lookup('profile::query_service::enable_ldf', {default_value => false}),
     Integer $max_query_time_millis = lookup('profile::query_service::max_query_time_millis', {default_value => 60000}),
@@ -18,7 +17,6 @@ class profile::query_service::gui (
     require ::profile::query_service::common
 
     class { 'query_service::gui':
-        deploy_mode            => $deploy_mode,
         package_dir            => $package_dir,
         data_dir               => $data_dir,
         log_dir                => $log_dir,

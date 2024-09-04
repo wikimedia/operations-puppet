@@ -1,7 +1,3 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 ALIAS_FILE="<%= @alias_map %>"
 LOG_DIR="<%= @log_dir %>"
-<% if @deploy_mode == 'autodeploy' -%>
-DEPLOY_DIR=<%= @package_dir %>
-DATA_DIR=<%= @data_dir %>
-<% end -%>
