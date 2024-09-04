@@ -8,6 +8,7 @@ import smtplib
 from argparse import ArgumentParser
 from configparser import ConfigParser
 from pathlib import Path
+from wmflib.decorators import retry
 
 import pymysql
 import dbm
@@ -34,18 +35,61 @@ def get_log_level(args_level):
     }.get(args_level, logging.DEBUG)
 
 
-def verify_email(email, smtp_server):
-    """Ensure email is a gsuite email address at smtp_server"""
+@retry(
+    tries=5,
+    backoff_mode="exponential",
+    exceptions=(
+            pymysql.MySQLError,
+            smtplib.SMTPServerDisconnected,
+            smtplib.SMTPConnectError,
+            ConnectionError,
+    ),
+)
+def verify_emails(mysql_conf, smtp_host, known_invalid_addresses, valid_domains, aliases):
+    query = "SELECT value0, create_time, change_time FROM system_address ORDER BY value0"
+    mysql_conn = pymysql.connect(
+        host=mysql_conf["host"],
+        user=mysql_conf["user"],
+        password=mysql_conf["pass"],
+        database=mysql_conf["name"],
+    )
+    smtp_conn = smtplib.SMTP()
+    smtp_conn.connect(smtp_host)
+    available, no_auth, gsuite = [], [], []
+    with mysql_conn.cursor() as cur:
+        cur.execute(query)
+        for row in cur.fetchall():
+            if row[0] in known_invalid_addresses:
+                # Skip emails handled by gsuite that cannot be removed
+                # from VRTS, see T284145
+                continue
+            if row[0].split("@")[1] not in valid_domains:
+                LOG.warning("we don't handle email for %s", row[0])
+                no_auth.append(row)
+                continue
+            if row[0] in aliases:
+                # Skip emails managed in aliases files
+                LOG.error("email is handled by postfix alias: %s", row[0])
+                continue
+            if verify_email(row[0], smtp_conn):
+                LOG.error("email is handled by gsuite: %s", row[0])
+                gsuite.append(row)
+            else:
+                if row[0] not in available:
+                    available.append(row[0])
+    return available, no_auth, gsuite
+
+
+def verify_email(email, smtp):
+    """Ensure email is a gsuite email address at smtp server"""
     LOG.debug("Test: %s", email)
-    smtp = smtplib.SMTP()
-    smtp.connect(smtp_server)
     status, _ = smtp.helo()
     if status != 250:
         smtp.quit()
         raise ConnectionError("Failed helo status: {status}")
     smtp.mail("")
     status, _ = smtp.rcpt(email)
-    smtp.quit()
+    smtp.rset()
     if status == 250:
         LOG.debug("Valid (%d): %s", status, email)
         return True
@@ -57,11 +101,9 @@ def main():
     """main entry point"""
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
-    available, no_auth, gsuite = [], [], []
     valid_domains = []
     return_code = 0
     aliases = set()
-    query = "SELECT value0, create_time, change_time FROM system_address"
     # List of emails handled by gsuite or postfix that cannot be removed from VRTS, see T284145
     known_invalid_addresses = [
         # gsuite
@@ -140,42 +182,16 @@ def main():
         ]
     LOG.debug("valid domains: %s", ", ".join(valid_domains))
 
-    try:
-        conn = pymysql.connect(
-            host=config["DB"]["host"],
-            user=config["DB"]["user"],
-            password=config["DB"]["pass"],
-            database=config["DB"]["name"],
-        )
-        with conn.cursor() as cur:
-            cur.execute(query)
-            for row in cur.fetchall():
-                if row[0] in known_invalid_addresses:
-                    # Skip emails handled by gsuite that cannot be removed from VRTS, see T284145
-                    continue
-                if row[0].split("@")[1] not in valid_domains:
-                    LOG.warning("we don't handle email for %s", row[0])
-                    no_auth.append(row)
-                    continue
-                if row[0] in aliases:
-                    # Skip emails managed in aliases files
-                    LOG.error("email is handled by postfix alias: %s", row[0])
-                    continue
-                if verify_email(row[0], config["DEFAULT"]["smtp_server"]):
-                    LOG.error("email is handled by gsuite: %s", row[0])
-                    return_code = 1
-                    gsuite.append(row)
-                else:
-                    if row[0] not in available:
-                        available.append(row[0])
-    except (
-        pymysql.MySQLError,
-        smtplib.SMTPServerDisconnected,
-        smtplib.SMTPConnectError,
-        ConnectionError,
-    ) as error:
-        LOG.error(error)
-        return 1
+    available, no_auth, gsuite = verify_emails(
+            config["DB"],
+            config["DEFAULT"]["smtp_server"],
+            known_invalid_addresses,
+            valid_domains,
+            aliases,
+            )
+    if len(gsuite) > 0:
+        # Exit 1 if we found VRTS emails already handled by gmail
+        return_code = 1
     with Path(config["DEFAULT"]["aliases_file"]).open("w") as aliases_fh:
         if config["DEFAULT"]["aliases_format"] == "exim":
             aliases_fh.writelines([f"{address}: {address}\n" for address in available])
