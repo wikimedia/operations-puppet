@@ -105,3 +105,11 @@ profile::cloudceph::auth::load_all::configuration:
       mon: allow profile mgr
       osd: allow *
       mds: allow *
+  mgr.cloudcephmon1005:
+    # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
+    # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup
+    keyring_path: /var/lib/ceph/mgr/ceph-cloudcephmon1005/keyring
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+      mds: allow *
