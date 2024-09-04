@@ -433,7 +433,7 @@ groups:
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
-              hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary, manuel-wmde,
+              hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
               jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin, mvolz,
@@ -774,7 +774,7 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              muja, andrewtavis-wmde, manuel-wmde, kpayne]
+              muja, andrewtavis-wmde, kpayne]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -1078,7 +1078,7 @@ groups:
   airflow-wmde-admins:
     gid: 951
     description: Group of users for managing WMDE related analytics/data jobs and for deploying airflow-dags/wmde
-    members: [*analytics_wmde_users_members, andrewtavis-wmde, manuel-wmde]
+    members: [*analytics_wmde_users_members, andrewtavis-wmde]
     privileges: [
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
       'ALL = NOPASSWD: /usr/sbin/service airflow-webserver@wmde *',
@@ -5642,15 +5642,6 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAp9HZgEjlrH3YaXTgk/QChP8Gq2ilAwTewK47qG8z19 cmyrick@wmf3148
-  manuel-wmde:
-    ensure: present
-    realname: Manuel Merz
-    email: manuel.merz@wikimedia.de
-    uid: 31163
-    gid: 500
-    krb: present
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDRfx0qyiPeMovMrMFvFI0g8uZpN4kmuV9ypP8GIPuYJ4IiI7J5p5DJJeA4DKToQeHTujhoHQhu4PXeTYRowYMFbpiDC8ntz71RMxFLrzwmc68arid67o4WZkJ1t0YQoWyAYzSz+B3cfdxyWz9n4v1dBNGJR/U9/G+4cjeOzkIQ16paqUNX5rCLCfd6jz45muOEZY0bpfVvqnjVOlBXT7ajYPwDJq9dWlsXIVVbIBoDCTQYjEeHoqNMfcJOnangB/siTXMoIMqDxobEn4lRnDnq7PGHoHXqc51EqFCFz1Hos7g59KNYyGGad7UCmj15RpkzyOiR7z7ZBXZJOiNddGi8i0PlSRtruydqkr5t/qi8ApvrCsHFlpqvQYtC3dRn81odD7PIn/kK8EB9YonKxqIptkq7H4dMz3E5+QsPbgJ1ztMZSyJoopagjiwD7X6SWEQ0Vh8musYl59JThVTU2mze+sXIdLDTAmcX9YX0TMpx4/uTHInqARG1NOanGdqXMqN26tRPidueo2ANVdEePlMOy4tDHX7I5dAZWy0xEvTT0i6fEdFqqsiJWqt6WoBMjelj74pSg0eXeJqNRLenXzXkneoccI3QzvCM0MnXczkzQGVvkuKaIZ6FgWXe1glY5J5SddUvlZRD//+W9iAbLMraGoO5CVm/X5V3IOMcsXfT1Q== manuel.merz@wikimedia.de
   damilare:
     ensure: present
     realname: Damilare Adedoyin
