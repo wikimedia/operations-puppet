@@ -398,7 +398,6 @@ kubernetes::clusters:
         - mw2320.codfw.wmnet
         - mw2321.codfw.wmnet
         - mw2322.codfw.wmnet
-        - mw2325.codfw.wmnet
         - mw2332.codfw.wmnet
         - mw2333.codfw.wmnet
         - mw2334.codfw.wmnet
@@ -563,6 +562,7 @@ kubernetes::clusters:
         - wikikube-worker2076.codfw.wmnet
         - wikikube-worker2077.codfw.wmnet
         - wikikube-worker2078.codfw.wmnet
+        - wikikube-worker2079.codfw.wmnet
         - wikikube-worker2080.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
