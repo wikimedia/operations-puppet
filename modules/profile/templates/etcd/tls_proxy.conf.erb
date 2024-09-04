@@ -9,8 +9,8 @@ server {
 
     # SSL settings
     ssl on;
-    ssl_certificate /etc/ssl/localcerts/<%= @cert_name %>.chained.crt;
-    ssl_certificate_key /etc/ssl/private/<%= @cert_name %>.key;
+    ssl_certificate <%= @ssl_paths['chained'] %>;
+    ssl_certificate_key <%= @ssl_paths['key'] %>;
 
     # keepalive timeout for long-polling watch
     keepalive_timeout 3600;
