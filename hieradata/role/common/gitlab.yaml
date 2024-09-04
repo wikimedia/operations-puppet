@@ -117,10 +117,9 @@ profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
 profile::firewall::provider: nftables
 
 profile::firewall::nftables_throttling::ensure: present
-profile::firewall::nftables_throttling::nft_policy: drop
-# allow 200 new TCP packets per 60 seconds, ban clients above for 300 seconds
-profile::firewall::nftables_throttling::throttle_packets: 200
+profile::firewall::nftables_throttling::nft_policy: accept
+# allow 32 parallel TCP connections, ban clients above for 300 seconds
+profile::firewall::nftables_throttling::max_connections: 32
 profile::firewall::nftables_throttling::throttle_duration: 300
-profile::firewall::nftables_throttling::allowed_burst_packets: 100
 profile::firewall::nftables_throttling::port: 443
 profile::firewall::nftables_throttling::nft_logging: true

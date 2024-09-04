@@ -35,8 +35,8 @@ table inet filter {
         }
         chain throttling {
                 type filter hook input priority filter - 5; policy accept;
-                ip saddr != @PRODUCTION_NETWORKS_ipv4 ip saddr != @CLOUD_NETWORKS_ipv4 ct state new tcp dport <%= @port %> update @TRACKINGLIST { ip saddr limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %> } add @DENYLIST { ip saddr }
-                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 ct state new tcp dport <%= @port %> update @TRACKINGLIST_V6 { ip6 saddr limit rate over <%= @throttle_packets %>/minute <% if defined?(@allowed_burst_packets) %>burst <%= @allowed_burst_packets %> packets <% end %> } add @DENYLIST_V6 { ip6 saddr }
+                ip saddr != @PRODUCTION_NETWORKS_ipv4 ip saddr != @CLOUD_NETWORKS_ipv4 tcp dport <%= @port %> add @TRACKINGLIST { ip saddr ct count over <%= @max_connections %> } add @DENYLIST { ip saddr }
+                ip6 saddr != @PRODUCTION_NETWORKS_ipv6 ip6 saddr != @CLOUD_NETWORKS_ipv6 tcp dport <%= @port %> add @TRACKINGLIST_V6 { ip6 saddr ct count over <%= @max_connections %> } add @DENYLIST_V6 { ip6 saddr }
                 ip saddr @DENYLIST <%= @nft_do_log %><%= @nft_policy %>
                 ip6 saddr @DENYLIST_V6 <%= @nft_do_log %><%= @nft_policy %>
         }
