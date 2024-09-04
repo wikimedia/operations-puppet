@@ -17,7 +17,7 @@ mlstage_kubepods_networks = scope.lookupvar('network::constants::mlstage_kubepod
 dse_kubepods_networks = scope.lookupvar('network::constants::dse_kubepods_networks')
 -%>
 
-@def $INTERNAL = (10.0.0.0/8 2620:0:860:100::/56 2620:0:861:100::/56 2620:0:863:100::/56 2a02:ec80:300:100::/56 2a02:ec80:600:100::/56 2001:df2:e500:100::/56);
+@def $INTERNAL = (10.0.0.0/8 2620:0:860:100::/56 2620:0:861:100::/56 2620:0:863:100::/56 2001:df2:e500:100::/56 2a02:ec80:300:100::/56 2a02:ec80:600:100::/56 2a02:ec80:700:100::/56 2a02:ec80:ff00:100::/56);
 # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.
 # a domain is a realm currently, but the notion is more generic than that on purpose
 @def $DOMAIN_NETWORKS = (<%- domain_networks.each do |net| -%><%= net %> <% end -%>);

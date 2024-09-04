@@ -29,7 +29,8 @@ class profile::firewall::nftables_base_sets (
                   '2a02:ec80:300:100::/56',  # esams
                   '2a02:ec80:600:100::/56',  # drmrs
                   '2a02:ec80:700:100::/56',  # magru
-                  '2001:df2:e500:100::/56'],  # eqsin
+                  '2001:df2:e500:100::/56',  # eqsin
+                  '2a02:ec80:ff00:100::/56'], # global
     }
 
     # $DOMAIN_NETWORKS is a set of all networks belonging to a domain.
