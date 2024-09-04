@@ -76,6 +76,11 @@ profile::cloudceph::auth::load_all::configuration:
     import_to_ceph: false
     caps:
       mon: allow *
+  mon.cloudcephmon1005:
+    keyring_path: /etc/ceph/ceph.mon.cloudcephmon1005.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
   mgr.cloudcephmon1001:
     # /var/lib/ceph here should most likely be kept in sync with hiera 'profile::cloudceph::data_dir'
     # the path is not arbitrary, see https://docs.ceph.com/en/latest/mgr/administrator/#manual-setup

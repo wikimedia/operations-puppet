@@ -409,6 +409,7 @@ eqiad:
     cloudcephmon1001.eqiad.wmnet: [cloudceph]
     cloudcephmon1002.eqiad.wmnet: [cloudceph]
     cloudcephmon1003.eqiad.wmnet: [cloudceph]
+    cloudcephmon1005.eqiad.wmnet: [cloudceph]
   wikireplica-db-analytics:
     clouddb1017.eqiad.wmnet: [s1, s3]
     clouddb1018.eqiad.wmnet: [s2, s7]
