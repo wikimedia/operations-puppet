@@ -14,7 +14,7 @@ Environment="QUERY_SERVICE=<%= @deploy_name %>"
 WorkingDirectory=<%= @package_dir %>
 ExecStart=/bin/bash <%= @package_dir %>/<%= @updater_startup_script %> <%= @options.join(' ') %>
 User=<%= @username %>
-StandardOutput=journal+console
+StandardOutput=journal
 Restart=always
 RestartSec=10
 SyslogIdentifier=%N

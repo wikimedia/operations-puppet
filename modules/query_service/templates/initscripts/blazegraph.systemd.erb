@@ -8,7 +8,7 @@ Environment="BLAZEGRAPH_CONFIG=/etc/default/<%= @title %>"
 WorkingDirectory=<%= @package_dir %>
 ExecStart=/bin/bash <%= @package_dir %>/runBlazegraph.sh -f <%= @config_file %>
 User=<%= @username %>
-StandardOutput=journal+console
+StandardOutput=journal
 Restart=always
 SyslogIdentifier=%N
 
