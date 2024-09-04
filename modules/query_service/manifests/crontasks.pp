@@ -18,7 +18,6 @@ class query_service::crontasks(
     String $deploy_name,
     Enum['none', 'daily', 'weekly'] $load_categories,
     Boolean $run_tests,
-    Boolean $reload_wcqs_data,
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
@@ -111,11 +110,6 @@ class query_service::crontasks(
         default => absent,
     }
 
-    $ensure_reload_wcqs_data = $reload_wcqs_data ? {
-        true    => present,
-        default => absent,
-    }
-
     # Run test queries
     systemd::timer::job { 'run-query-service-test-queries':
         ensure       => $ensure_tests,
@@ -125,16 +119,6 @@ class query_service::crontasks(
         send_mail_to => 'wdqs-admin@wikimedia.org',
         send_mail    => true,
         interval     => {'start' => 'OnCalendar', 'interval' => '*:0/30:00' }
-    }
-
-    systemd::timer::job { 'wcqs-data-reload-weekly':
-        ensure          => $ensure_reload_wcqs_data,
-        description     => 'WCQS data reload',
-        command         => "${package_dir}/wcqs-data-reload.sh",
-        user            => 'root', # we need to restart blazegraph, so we need sudo priviliges
-        logfile_basedir => $log_dir,
-        logfile_name    => 'reloadWCQS.log',
-        interval        => {'start' => 'OnCalendar', 'interval' => "Tue *-*-* 07:${fqdn_rand(60)}:00"},
     }
 
     logrotate::rule { 'query-service-reload-categories':
