@@ -242,6 +242,12 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  keystone:
+    id: 43
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://openstack.*.wikimediacloud.org:25000.*'
+    profile_format: 'FLAT'
+    response_type: 'id_token token'
 
 profile::idp::ldap_attributes:
   - cn
