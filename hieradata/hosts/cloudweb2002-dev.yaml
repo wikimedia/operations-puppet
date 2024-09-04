@@ -80,6 +80,6 @@ profile::idp::services:
   keystone:
     id: 1
     service_class: 'OidcRegisteredService'
-    service_id: 'https://.*'
+    service_id: 'https://openstack.*.wikimediacloud.org:25000.*'
     profile_format: 'FLAT'
     response_type: 'id_token token'
