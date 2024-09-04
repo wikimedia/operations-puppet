@@ -31,6 +31,46 @@ remote_id_attribute = HTTP_OIDC_ISS
 [oidc]
 remote_id_attribute = HTTP_OIDC_ISS
 
+# The setup for openid/oidc requires some keystone resources to be created.
+# OpenTofu doesn't have a provider for these resources, so it needs to be
+# done by hand.
+#
+# First, you need a mapping (mapping.json) file to map the oidc username to
+#  the keystone account:
+#
+#[
+#    {
+#        "local": [
+#            {
+#                "user": {
+#                    "name": "{0}",
+#                     "type": "local",
+#                     "domain": {
+#                         "name": "Default"
+#                     }
+#                }
+#            }
+#        ],
+#        "remote": [
+#            {
+#                "type": "HTTP_OIDC_NAME"
+#            }
+#        ]
+#    }
+#]
+#
+# Load that mapping into keystone with
+#
+# # openstack mapping create --rules ./mapping.json oidc_mapping
+#
+# Then create the identity and protocol to use that mapping (replacing in the real idp endoint)
+#
+# # openstack identity provider create --remote-id https://cloudidp-dev.wikimedia.org/oidc openid
+#
+# # openstack federation protocol create openid --mapping oidc_mapping --identity-provider openid
+#
+# All of this is via the tutorial at https://docs.openstack.org/keystone/latest/admin/federation/configure_federation.html
+#
 [auth]
 methods = external,password,token,wmtotp,application_credential,openid
 

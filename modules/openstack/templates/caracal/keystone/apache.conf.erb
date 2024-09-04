@@ -5,6 +5,8 @@ Listen <%= @admin_bind_port %>
 <VirtualHost *:<%= @public_bind_port %>>
     ProxyPass / uwsgi://127.0.0.1:<%= @public_bind_port + 1 %>/
 
+    # Making OIDC work requires some unpuppetized keystone setup,
+    # documented in keystone.conf
     OIDCClaimPrefix "OIDC-"
     OIDCResponseType "id_token token"
     OIDCScope "openid email profile"
