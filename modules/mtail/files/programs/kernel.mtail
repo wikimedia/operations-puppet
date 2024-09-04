@@ -30,7 +30,7 @@ counter traps by binary,hostname
   mce_events[$hostname]++
 }
 
-/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] .* above threshold, cpu clock throttled/ {
+/(?P<hostname>[\w\.-]+)\s+kernel: \[[\d.]+\] .* above threshold, cpu clock( is)? throttled/ {
   cpu_throttled[$hostname]++
 }
 
