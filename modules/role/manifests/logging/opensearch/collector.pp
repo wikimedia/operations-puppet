@@ -25,4 +25,6 @@ class role::logging::opensearch::collector {
     } else {
         include profile::logstash::beta
     }
+
+    include profile::jaeger::scripts
 }
