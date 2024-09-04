@@ -96,10 +96,10 @@ class profile::phabricator::logmail (
         mysql_db_name    => 'phabricator_maniphest',
     }
 
-    # weekly tech news mail (T368460)
+    # weekly tech news mail (T368460, T373952)
     phabricator::logmail {'tech_news_weekly_stats':
         ensure           => $logmail_ensure,
-        rcpt_address     => [ 'nwilson@wikimedia.org' ],
+        rcpt_address     => [ 'nwilson@wikimedia.org', 'jjonsson@wikimedia.org', 'bevellin@wikimedia.org', 'uzoma@wikimedia.org'],
         sndr_address     => 'aklapper@wikimedia.org',
         weekday          => 'Thursday',
         hour             => 12,

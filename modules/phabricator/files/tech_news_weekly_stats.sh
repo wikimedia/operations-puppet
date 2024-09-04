@@ -9,12 +9,13 @@ source /etc/phab_tech_news_weekly_stats.conf
 timestamp=$(date)
 #echo "result_tasks"
 result_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -t -h $sql_host -P $sql_port -u $sql_user phabricator_maniphest << END
-SELECT DISTINCT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS url, t.title AS taskTitle, autr.userName AS author, ownr.userName AS assignee
+SELECT DISTINCT CONCAT("[[phab:T", t.id, "]]") AS url, t.title AS taskTitle, autr.userName AS author, ownr.userName AS assignee
     FROM phabricator_maniphest.maniphest_task t
     INNER JOIN phabricator_user.user autr ON autr.phid = t.authorPHID
     INNER JOIN phabricator_user.user ownr ON ownr.phid = t.ownerPHID
     WHERE t.status = "resolved"
     AND FROM_UNIXTIME(t.closedEpoch)>=(NOW() - INTERVAL 168 HOUR)
+    AND t.viewPolicy = "public"
     AND autr.phid NOT IN
         (SELECT ua.userPHID
          FROM phabricator_user.user u
@@ -54,5 +55,5 @@ ${result_tasks}
 
 Yours sincerely,
 Fab Rick Aytor
-(via $(basename $0) on $(hostname) at $(date); see T368460)
+(via $(basename $0) on $(hostname) at $(date); see T368460, T373952)
 EOF
