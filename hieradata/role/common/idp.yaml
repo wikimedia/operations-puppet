@@ -35,6 +35,7 @@ profile::idp::services:
   debmonitor:
     id: 2
     service_id: '^https://debmonitor\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
       - wmf
       - nda
