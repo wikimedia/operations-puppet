@@ -15,7 +15,7 @@ IMAGE="$IMAGE_BASE_NAME:$1"
 # percentage of nodes that will actually pull the mediawiki image. This allows
 # us to run some tests about how much useful this script is
 # NOTE: We are doing some bash trickery here since bash doesn't support floats
-PULL_THRESHOLD="25/100"  # This is a percentage
+PULL_THRESHOLD="5/100"  # This is a percentage
 # Make it useful for a quick comparison to $RANDOM
 ABSOLUTE_THRESHOLD=$(( 32767 * ${PULL_THRESHOLD}))
 if [ $RANDOM -le $ABSOLUTE_THRESHOLD ]; then
