@@ -35,6 +35,54 @@ tables:
     source: core
     canonicality: derivative
     visibility: public
+  - name: user_properties
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: log_search
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: change_tag
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: content
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: l10n_cache
+    source: core
+    canonicality: derivative
+    visibility: private
+  - name: module_deps
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: redirect
+    source: core
+    canonicality: derivative
+    visibility: partially public
+  - name: pagelinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: templatelinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: imagelinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: langlinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: iwlinks
+    source: core
+    canonicality: derivative
+    visibility: public
 sources:
    core:
       - path: maintenance/tables.json
