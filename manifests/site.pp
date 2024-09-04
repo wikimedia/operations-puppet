@@ -1671,8 +1671,12 @@ node /^wikikube-worker1(2[4-9][0-9]|30[0-4])\.eqiad\./ {
     role(insetup::serviceops)
 }
 
-node /^wikikube-worker20(0[1-47-9]|[1-7][0-9]|80)\.codfw\./ {
+node /^wikikube-worker20(0[1-47-9]|[1-7][0-8]|80)\.codfw\./ {
     role(kubernetes::worker)
+}
+
+node /^wikikube-worker2079\.codfw\./ {
+    role(insetup::serviceops)
 }
 
 # START Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
