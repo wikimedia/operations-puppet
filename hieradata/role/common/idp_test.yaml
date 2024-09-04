@@ -107,7 +107,7 @@ profile::idp::services:
   airflow_test_k8s:
     id: 14
     service_class: 'OidcRegisteredService'
-    service_id: 'https://airflow-test-k8s\.wikimedia\.org\/[\w\/]*'
+    service_id: 'https://airflow-test-k8s\.wikimedia\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - wmf
