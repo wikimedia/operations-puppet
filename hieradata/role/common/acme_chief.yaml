@@ -299,10 +299,8 @@ profile::acme_chief::accounts:
   cb6556464272a118e117b3b0039bd261:
     regr: '{"body": {}, "uri": "https://acme-v02.api.letsencrypt.org/acme/acct/45156774"}'
     directory: "https://acme-v02.api.letsencrypt.org/directory"
-profile::acme_chief::active: acmechief1001.eqiad.wmnet
+profile::acme_chief::active: acmechief1002.eqiad.wmnet
 profile::acme_chief::passive:
-  - 'acmechief1002.eqiad.wmnet'
-  - 'acmechief2001.codfw.wmnet'
   - 'acmechief2002.codfw.wmnet'
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Traffic']
