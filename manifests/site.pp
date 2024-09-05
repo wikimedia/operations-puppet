@@ -2279,13 +2279,12 @@ node /^vrts1003\.eqiad\./ {
     role(insetup::collaboration_services)
 }
 
-# T323515: WIP
 node /^vrts2001\.codfw\./ {
-    role(vrts)
+    role(insetup::collaboration_services)
 }
 
 node /^vrts2002\.codfw\./ {
-    role(insetup::collaboration_services)
+    role(vrts)
 }
 
 # T363399 - replaces scandium and or testreduce*
