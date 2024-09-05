@@ -12,6 +12,10 @@ if [ -r /etc/$deploy_name/gui_vars.sh ]; then
   . /etc/$deploy_name/gui_vars.sh
 fi
 
+if [ -r /etc/default/categories-endpoint ]; then
+  . /etc/default/categories-endpoint
+fi
+
 if [ -z "${DATA_DIR}" -o -z "${LOG_DIR}" -o -z "${DEPLOY_DIR}" ]; then
 	echo "Variables not set up right!"
 	exit 1

@@ -58,6 +58,5 @@ profile::query_service::uri_scheme_options: ['-DwikibaseConceptUri=http://www.wi
 
 profile::query_service::blazegraph_heap_size: 31g
 profile::query_service::blazegraph_use_deployed_config: false
-profile::query_service::load_categories: 'none'
 
 profile::puppet::agent::force_puppet7: true

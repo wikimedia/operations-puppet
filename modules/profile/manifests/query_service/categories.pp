@@ -21,6 +21,8 @@ class profile::query_service::categories(
     Array[String] $extra_jvm_opts = lookup('profile::query_service::blazegraph_extra_jvm_opts'),
     String $contact_groups = lookup('contactgroups', {'default_value' => 'admins'}),
     String $federation_user_agent = lookup('profile::query_service::federation_user_agent'),
+    Enum['none', 'daily', 'weekly'] $load_categories = lookup('profile::query_service::load_categories', { 'default_value' => 'daily' }),
+    Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
 ) {
     require ::profile::query_service::common
     include ::profile::query_service::monitor::categories
@@ -30,6 +32,16 @@ class profile::query_service::categories(
     $blazegraph_port = 9990
     $prometheus_port = 9194
     $prometheus_agent_port = 9103
+
+    class { 'query_service::categories_reload_crontasks':
+      package_dir         => $package_dir,
+      data_dir            => $data_dir,
+      log_dir             => $log_dir,
+      deploy_name         => $deploy_name,
+      username            => $username,
+      load_categories     => $load_categories,
+      categories_endpoint => $categories_endpoint,
+    }
 
     profile::query_service::blazegraph { $instance_name:
         journal                => 'categories',

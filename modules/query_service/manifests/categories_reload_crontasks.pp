@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class: query_service::crontasks
+# == Class: query_service::categories_reload_crontasks
 #
 # Installs all the major recurring jobs for Query service
 #
@@ -9,13 +9,14 @@
 # - $log_dir: Directory where the logs go
 # - $username: Username owning the service
 # - $load_categories: frequency of loading categories
-class query_service::crontasks(
+class query_service::categories_reload_crontasks(
     String $package_dir,
     String $data_dir,
     String $log_dir,
     String $username,
     String $deploy_name,
     Enum['none', 'daily', 'weekly'] $load_categories,
+    Stdlib::Httpurl $categories_endpoint,
 ) {
     file { '/usr/local/bin/cronUtils.sh':
         ensure => present,
@@ -47,6 +48,14 @@ class query_service::crontasks(
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
+    }
+
+    file { '/etc/default/categories-endpoint':
+        ensure  => present,
+        content => epp('query_service/categories-endpoint-default.epp', { 'endpoint' => $categories_endpoint }),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
     }
 
     $reload_categories_log = "${log_dir}/reloadCategories.log"

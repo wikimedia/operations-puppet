@@ -36,9 +36,6 @@ profile::base::production::role_description: 'Wikidata Query Service - test clus
 # Use defaults for wikidata
 profile::query_service::uri_scheme_options: []
 
-# Currently not using categories for test hosts
-profile::query_service::load_categories: 'none'
-
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::sni_support: 'yes'
