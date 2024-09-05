@@ -373,15 +373,16 @@ class profile::toolforge::prometheus (
             extra_config          => {
                 scrape_interval => '4m',
                 scrape_timeout  => '60s',
+                metrics_relabel_config => [
+                    # keeping only the series we actually use
+                    #   see https://phabricator.wikimedia.org/T370143
+                    {
+                        'action'        => 'keep',
+                        'source_labels' => ['__name__'],
+                        'regex'         => '.*(requests|process_connections).*',
+                    },
+                ],
             },
-            extra_relabel_configs => [
-                # dropping the heaviest unused series (https://tools-prometheus.wmflabs.org/tools/tsdb-status)
-                {
-                    'action'        => 'drop',
-                    'source_labels' => ['__name__'],
-                    'regex'         => '.*_bucket',
-                },
-            ],
         },
         {
             name         => 'k8s-cadvisor',
@@ -438,7 +439,6 @@ class profile::toolforge::prometheus (
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
-        $extra_relabel_configs = pick($job['extra_relabel_configs'], [])
         $result = {
             'job_name'              => $job['name'],
             'scheme'                => 'https',
@@ -455,7 +455,7 @@ class profile::toolforge::prometheus (
                     },
                 },
             ],
-            'relabel_configs'       => $extra_relabel_configs + [
+            'relabel_configs'       => [
                 {
                     'action'        => 'keep',
                     'regex'         => $job['pod_name'],
