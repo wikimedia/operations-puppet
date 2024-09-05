@@ -373,7 +373,7 @@ class profile::toolforge::prometheus (
             extra_config          => {
                 scrape_interval => '4m',
                 scrape_timeout  => '60s',
-                metrics_relabel_config => [
+                metric_relabel_configs => [
                     # keeping only the series we actually use
                     #   see https://phabricator.wikimedia.org/T370143
                     {
