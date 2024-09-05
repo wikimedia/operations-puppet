@@ -27,6 +27,8 @@ class profile::grafana::production (
         chown               => 'grafana:grafana',
     }
 
+    profile::auto_restarts::service { 'rsync': }
+
     class {'::grafana::ldap_sync':
         ensure => $on_active_host,
     }
