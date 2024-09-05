@@ -5,5 +5,8 @@ class role::ml_cache::storage {
     include profile::base::certificates
     include profile::firewall
 
+    # lint:ignore:wmf_styleguide - It is neither a role nor a profile
+    include passwords::cassandra
+    # lint:endignore
     include profile::cassandra
 }

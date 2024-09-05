@@ -14,7 +14,6 @@ class profile::cassandra(
     Optional[String] $tls_keystore_password = lookup('profile::cassandra::tls_keystore_password', {'default_value' => undef}),
 ){
 
-    include ::passwords::cassandra
     contain ::profile::java
     $instances = $all_instances[$::fqdn]
     # We get the cassandra seeds from $all_instances, with a template hack
