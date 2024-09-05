@@ -70,11 +70,14 @@ class profile::puppetserver::git (
             owner     => $user,
             group     => $group,
             mode      => '0400',
-            show_diff => false;
+            show_diff => false,
+        ;
         "${home_dir}/.ssh/id_rsa":
-            content   => secret('ssh/gitpuppet/gitpuppet.key');
+            content => secret('ssh/gitpuppet/gitpuppet.key'),
+        ;
         "${home_dir}/.ssh/gitpuppet-private-repo":
-            content   => secret('ssh/gitpuppet/gitpuppet-private.key');
+            content => secret('ssh/gitpuppet/gitpuppet-private.key'),
+        ;
     }
     ssh::userkey { $user:
         content => template('profile/puppetserver/git/gitpuppet_authorized_keys.erb'),
