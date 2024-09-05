@@ -9,7 +9,6 @@ class role::wdqs::main {
     # Standard wdqs installation
     require profile::nginx
     require profile::query_service::wikidata
-    require profile::query_service::categories
     require profile::query_service::monitor::wikidata_main
     # Production specific profiles
     include profile::lvs::realserver
