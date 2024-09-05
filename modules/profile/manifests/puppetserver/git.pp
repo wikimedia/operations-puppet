@@ -183,7 +183,7 @@ class profile::puppetserver::git (
         creates   => "${code_dir}/environments/production",
         notify    => Service['puppetserver'],
         require   => [Package['g10k'], File['/usr/local/bin/puppetserver-deploy-code']],
-        subscribe => [Git::Clone[$control_repo], File[$puppetserver::g10k::config_file]],
+        subscribe => [Git::Clone[$control_repo], Class['puppetserver::g10k']],
     }
 
     file { '/usr/local/bin/pgit':
