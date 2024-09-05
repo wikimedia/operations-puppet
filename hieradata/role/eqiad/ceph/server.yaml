@@ -1,0 +1,9 @@
+profile::bird::do_ipv6: true
+profile::bird::advertise_vips:
+  rgw.eqiad.dpe.anycast.wmnet:
+    ensure: present
+    service_type: "ceph radosgw"
+    address: 10.3.0.8
+    address_ipv6: 2a02:ec80:ff00:101::8
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H 127.0.0.1 --ssl --sni -u / -t 1"
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H ::1 --ssl --sni -u / -t 1"
