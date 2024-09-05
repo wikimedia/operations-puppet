@@ -564,7 +564,7 @@ groups:
   stewards-users:
     description: People with access to the stewards VMs
     gid: 751
-    members: [urbanecm]
+    members: [urbanecm, jjmc89]
     approval:
       - Martin Urbanec
   maps-admins:
@@ -6440,6 +6440,14 @@ users:
     email: mszabo@wikimedia.org
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJSRj+gNTsld5r9OKrDk7j9Wbi/f0NEEnv044Qtwzkn0AAAABHNzaDo= mszabo@wikimedia.org
+  jjmc89:
+    ensure: present
+    gid: 500
+    uid: 14207
+    realname: JJMC89
+    email: JJMC89.Wikimedia@gmail.com
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYQTEgOYTG1zSFkRGGYCVHfXCzJarVSqMczMKVA1LLb JJMC89.Wikimedia@gmail.com wmf_prod
 
 ldap_only_users:
   adavenport:
