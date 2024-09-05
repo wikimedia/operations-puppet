@@ -55,7 +55,7 @@ class profile::lists::monitoring (
         ensure       => $ensure,
         description  => 'mailman3_runners',
         # As of Mailman Core 3.3.3, there are 14 runners
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14:14 -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
+        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14: -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
     }
     prometheus::node_file_count { 'track mailman3 queue depths':
