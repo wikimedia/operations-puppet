@@ -88,4 +88,5 @@ class profile::stewards (
         ],
     }
 
+    profile::auto_restarts::service { 'rsync': }
 }
