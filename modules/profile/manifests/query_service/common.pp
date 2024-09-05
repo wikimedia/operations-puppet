@@ -6,7 +6,6 @@ class profile::query_service::common(
     String $deploy_name = lookup('profile::query_service::deploy_name'),
     String $endpoint = lookup('profile::query_service::endpoint'),
     Array[String] $nodes = lookup('profile::query_service::nodes'),
-    Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
     Optional[String] $forward_rsyslog_host = lookup('profile::query_service::forward_rsyslog_host', { 'default_value' => undef }),
     Array[String] $dumps_servers = lookup('dumps_dist_nfs_servers'),
     String $dumps_active_server = lookup('dumps_dist_active_web'),
@@ -36,14 +35,13 @@ class profile::query_service::common(
     class { 'cpufrequtils': }
 
     class { '::query_service::common':
-      username            => $username,
-      deploy_name         => $deploy_name,
-      deploy_user         => $deploy_user,
-      package_dir         => $package_dir,
-      data_dir            => $data_dir,
-      log_dir             => $log_dir,
-      endpoint            => $endpoint,
-      categories_endpoint => $categories_endpoint,
+      username    => $username,
+      deploy_name => $deploy_name,
+      deploy_user => $deploy_user,
+      package_dir => $package_dir,
+      data_dir    => $data_dir,
+      log_dir     => $log_dir,
+      endpoint    => $endpoint,
     }
 
     ensure_packages(['python3-dateutil', 'python3-prometheus-client'])
