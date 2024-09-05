@@ -3,6 +3,6 @@
       Stdlib::HTTPUrl $bounce_post_url
 | -%>
 pipe
-  flags= user=nobody:nogroup argv=/usr/bin/curl -sS -H
+  flags= user=nobody:nogroup argv=/usr/bin/curl -sS -H {X-Client-IP: <%= $ipaddress %>} -H
   {Host: <%= $post_connect_server %>} <%= $bounce_post_url %>
   -d action=bouncehandler --data-urlencode email@- -o /dev/null
