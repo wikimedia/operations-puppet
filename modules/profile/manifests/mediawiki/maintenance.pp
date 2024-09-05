@@ -110,13 +110,6 @@ class profile::mediawiki::maintenance (
     # Readline support for PHP maintenance scripts (T126262)
     ensure_packages('php-readline')
 
-    # Make sure to install php-readline from the component/php72, otherwise this picks up
-    # the 7.3 version from default buster
-    apt::package_from_component { 'php-readline':
-        component => 'component/php72',
-        packages  => ['php-readline']
-    }
-
     # GNU version of 'time' provides extra info like peak resident memory
     # anomie needs it, as opposed to the shell built-in time command
     ensure_packages('time')
