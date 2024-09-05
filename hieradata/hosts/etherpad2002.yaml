@@ -1,1 +1,2 @@
 profile::etherpad::service_ensure: stopped
+profile::prometheus::etherpad_exporter::service_ensure: stopped
