@@ -47,6 +47,9 @@ class prometheus::blackbox::modules::service_catalog (
             } + $tcp_options,
           } + $module_options,
         }
+      } else {
+        # Unknown probe type
+        $service_modules = {}
       }
     } else {
       $service_modules = {}
