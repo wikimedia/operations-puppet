@@ -211,5 +211,7 @@ class profile::librenms (
             server_uses_stunnel => true,
             chown               => 'librenms:librenms',
         }
+
+        profile::auto_restarts::service { 'rsync': }
     }
 }
