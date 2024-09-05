@@ -415,7 +415,7 @@ address_pipe:
 # POST VERP bounce emails to a MediaWiki 'bouncehandler' API
 mwverpbounceprocessor:
 	driver = pipe
-	command = /usr/bin/curl -H 'Host: <%= @verp_post_connect_server %>' <%= @verp_bounce_post_url %> -d "action=bouncehandler" --data-urlencode "email@-" -o /dev/null
+	command = /usr/bin/curl -H 'X-Client-IP: <%= @facts['ipaddress'] %>' -H 'Host: <%= @verp_post_connect_server %>' <%= @verp_bounce_post_url %> -d "action=bouncehandler" --data-urlencode "email@-" -o /dev/null
 	user = nobody
 	group = nogroup
 
