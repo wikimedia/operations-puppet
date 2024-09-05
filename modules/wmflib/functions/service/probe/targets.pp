@@ -32,15 +32,15 @@ function wmflib::service::probe::targets(
         'targets' => [ "${service_name}:${port}@${scheme}://[${address}]:${port}${path}" ],
       },
     ]
-  }
-
-  if $probe['type'] =~ /^tcp/ {
+  } elsif $probe['type'] =~ /^tcp/ {
     $probes = [
       {
         'labels'  => $common_labels + { 'module' => "tcp_${service_name}_${af}" },
         'targets' => [ "${service_name}:${port}@[${address}]:${port}" ],
       },
     ]
+  } else {
+    $probes = []
   }
 
   return flatten($probes)
