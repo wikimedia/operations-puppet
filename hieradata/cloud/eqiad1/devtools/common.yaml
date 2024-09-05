@@ -22,7 +22,9 @@ phabricator::mysql::slave::port: '3306'
 
 profile::phabricator::main::manage_scap_user: true
 
-profile::phabricator::main::http_srange: '($DEPLOYMENT_HOSTS $CACHES)'
+profile::phabricator::main::http_srange:
+  - DEPLOYMENT_HOSTS
+  - CACHES
 
 profile::phabricator::main::rate_limits:
 # Number of requests per minute for logged out users (per client IP)

@@ -39,7 +39,8 @@ profile::tlsproxy::envoy::cfssl_options:
 profile::tlsproxy::envoy::websockets: true
 profile::tlsproxy::envoy::listen_ipv6: true
 
-profile::phabricator::main::http_srange: '$DEPLOYMENT_HOSTS'
+profile::phabricator::main::http_srange:
+  - DEPLOYMENT_HOSTS
 
 profile::phabricator::main::dumps_rsync_clients:
   - "%{lookup('phabricator_active_server')}"

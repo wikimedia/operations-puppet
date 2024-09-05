@@ -85,7 +85,7 @@ class profile::phabricator::main (
     Boolean                     $dump_enabled       = lookup('profile::phabricator::main::dump_enabled',
                                                       { 'default_value' => false }),
 
-    String                      $http_srange        = lookup('profile::phabricator::main::http_srange'),
+    Variant[String,Array[String]] $http_srange      = lookup('profile::phabricator::main::http_srange'),
 
     Boolean                     $manage_scap_user   = lookup('profile::phabricator::main::manage_scap_user',
                                                       { 'default_value' => true }),
@@ -145,10 +145,10 @@ class profile::phabricator::main (
     # in prod we just open port 80 for deployment_hosts for testing, caching layer speaks TLS to envoy
     # in cloud we need to also open it for proxies which don't speak TLS to backends
     firewall::service { 'phabmain_http':
-        ensure => present,
-        proto  => 'tcp',
-        port   => 80,
-        srange => $http_srange,
+        ensure   => present,
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => $http_srange,
     }
 
     if $local_aphlict_enabled {
