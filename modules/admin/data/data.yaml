@@ -137,7 +137,6 @@ groups:
     approval:
       - Mat Nadrofsky
       - Will Doran
-      - Frantz Joseph
       - Jean-René Branaa
   release-engineering:
     gid: 837
@@ -494,7 +493,6 @@ groups:
     approval:
       - Will Doran
       - Mat Nadrofsky
-      - Frantz Joseph
       - Jean-René Branaa
   dumpsdata-admins:
     gid: 825
@@ -504,7 +502,6 @@ groups:
     approval:
       - Will Doran
       - Mat Nadrofsky
-      - Frantz Joseph
       - Jean-René Branaa
   dumps-roots:
     gid: 828
@@ -514,7 +511,6 @@ groups:
     approval:
       - Will Doran
       - Mat Nadrofsky
-      - Frantz Joseph
       - Jean-René Branaa
   restbase-roots:
     gid: 744
@@ -868,7 +864,6 @@ groups:
     approval:
       - Will Doran
       - Mat Nadrofsky
-      - Frantz Joseph
       - Jean-René Branaa
   wdqs-test-roots:
     gid: 803
