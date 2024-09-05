@@ -39,7 +39,6 @@ Components: main
  component/memcached16
  component/mtail
  component/pdns-recursor
- component/php72
  component/php74
  component/postgis
  component/pygments
