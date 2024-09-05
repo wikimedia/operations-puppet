@@ -246,6 +246,7 @@ ldap-replicas: P{O:openldap::replica}
 ldap-replicas-eqiad: A:ldap-replicas and A:eqiad
 ldap-replicas-codfw: A:ldap-replicas and A:codfw
 ldap-rw: P{O:openldap::rw}
+ldap-maintenance: P{O:openldap::maintenance}
 ldap-main: A:ldap-rw
 ldap-all: A:ldap-replicas or A:ldap-rw
 lists: P{O:lists}
