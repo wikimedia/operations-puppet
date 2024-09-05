@@ -36,8 +36,6 @@
     <%- end -%>
     RewriteCond %{QUERY_STRING} force_php74
     RewriteRule ^/w/health-check.php - [E=backend:7.4]
-    RewriteCond %{QUERY_STRING} force_php72
-    RewriteRule ^/w/health-check.php - [E=backend:7.2]
     # Only selected paths are allowed here
     RewriteCond %{REQUEST_URI} !^/(w/health-check|rpc/RunSingleJob)\.php
     RewriteRule ^ - [R=404,L]

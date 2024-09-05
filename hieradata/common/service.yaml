@@ -768,7 +768,6 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://localhost/w/health-check.php?force_php72=1
             - https://localhost/w/health-check.php?force_php74=1
           check_all: true
       scheduler: wrr
