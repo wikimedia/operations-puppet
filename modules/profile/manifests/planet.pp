@@ -197,13 +197,6 @@ class profile::planet (
         modules => ['rewrite', 'headers'],
     }
 
-    firewall::service { 'planet-http-envoy':
-        proto  => 'tcp',
-        port   => [80],
-        srange => [$::ipaddress, $::ipaddress6],
-    }
-
-
     prometheus::blackbox::check::http { 'en.planet.wikimedia.org':
         team               => 'collaboration-services',
         severity           => 'task',
