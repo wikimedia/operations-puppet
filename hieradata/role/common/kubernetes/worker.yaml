@@ -38,6 +38,7 @@ profile::lvs::realserver::pools:
   proton: {}
   mobileapps: {}
   mwdebug: {}
+  mwdebug-next: {}
   api-gateway: {}
   push-notifications: {}
   recommendation-api: {}

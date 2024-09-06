@@ -1443,6 +1443,41 @@ service::catalog:
       - dnsdisc: mwdebug
         active_active: true
 
+  mwdebug-next:
+    description: mwdebug-next, mwdebug-next.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.9
+      eqiad:
+        default: 10.2.2.9
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    page: false
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4453
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: mwdebug-next
+        active_active: true
+
   mw-web:
     description: mw-web, mw-web.svc.discovery.wmnet
     encryption: true
