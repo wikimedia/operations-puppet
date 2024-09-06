@@ -78,9 +78,9 @@ wmfkeystone_opts = [
     cfg.IntOpt('minimum_gid_number',
                default=40000,
                help='Starting gid number for posix groups'),
-    cfg.StrOpt('instance_ip_range',
+    cfg.StrOpt('instance_ip_ranges',
                default='172.16.0.0/21',
-               help='Range of instances to accept SSH from by default'),
+               help='Comma-separated list of CIDRs of instances to accept SSH from by default'),
     cfg.StrOpt('prometheus_metricsinfra_reserved_ips',
                default='',
                help='Comma-separated list of IP addresses to be added to default security groups.'),
@@ -241,15 +241,17 @@ class KeystoneHooks(notifier.Driver):
             except (exceptions.NeutronClientException):
                 LOG.warning("icmp security rule already exists.")
 
-            try:
-                client.create_security_group_rule(
-                    KeystoneHooks._security_group_dict(groupid,
-                                                       'tcp',
-                                                       22,
-                                                       22,
-                                                       cidr=CONF.wmfhooks.instance_ip_range))
-            except (exceptions.NeutronClientException):
-                LOG.warning("Port 22 security rule already exists.")
+            for instances_cidr in CONF.wmfhooks.instance_ip_ranges.split(','):
+                cidr = instances_cidr.strip()
+                try:
+                    client.create_security_group_rule(
+                        KeystoneHooks._security_group_dict(groupid,
+                                                           'tcp',
+                                                           22,
+                                                           22,
+                                                           cidr=cidr))
+                except (exceptions.NeutronClientException):
+                    LOG.warning("Port 22 security rule already exists for CIDR %s" % cidr)
 
             try:
                 client.create_security_group_rule(

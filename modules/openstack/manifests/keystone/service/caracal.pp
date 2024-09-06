@@ -29,7 +29,7 @@ class openstack::keystone::service::caracal(
     $wiki_access_token,
     $wiki_access_secret,
     String $wsgi_server,
-    Stdlib::IP::Address::V4::CIDR $instance_ip_range,
+    Array[Stdlib::IP::Address::V4::CIDR] $instance_ip_ranges,
     String $wmcloud_domain_owner,
     String $bastion_project_id,
     Array[String] $prod_networks,

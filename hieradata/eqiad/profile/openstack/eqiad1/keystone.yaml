@@ -5,7 +5,7 @@ profile::openstack::eqiad1::keystone::db_user: "keystone"
 profile::openstack::eqiad1::keystone::public_bind_port: 15000
 profile::openstack::eqiad1::keystone::token_driver: "normal"
 profile::openstack::eqiad1::keystone::wsgi_server: "keystone"
-profile::openstack::eqiad1::keystone::instance_ip_range: 172.16.0.0/21
+profile::openstack::eqiad1::keystone::instance_ip_ranges: ['172.16.0.0/21']
 profile::openstack::eqiad1::keystone::wmcloud_domain_owner: "cloudinfra"
 profile::openstack::eqiad1::keystone::bastion_project_id: "bastion"
 profile::openstack::eqiad1::keystone::enforce_policy_scope: false

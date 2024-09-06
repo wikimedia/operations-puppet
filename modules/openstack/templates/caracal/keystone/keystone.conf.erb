@@ -150,7 +150,7 @@ driver = sql
 #  max_pool_size = 4
 #
 #
-# Such config files should be puppetized; there's a ready-made template 
+# Such config files should be puppetized; there's a ready-made template
 #  named 'keystone.sqldomain.conf.erb'
 #
 # Currently (June 2022) this is only used for a special 'magnum' domain.
@@ -229,7 +229,7 @@ expiration = 613440
 region = <%= @region %>
 admin_pass = <%= @ldap_user_pass %>
 auth_url = <%= @keystone_admin_uri %>
-instance_ip_range = <%= @instance_ip_range %>
+instance_ip_ranges = <%= @instance_ip_ranges.join(',') %>
 wmcloud_domain_owner = <%= @wmcloud_domain_owner %>
 bastion_project_id = <%= @bastion_project_id %>
 ldap_rw_uri = ldap://<%= @ldap_rw_host %>
