@@ -1,0 +1,11 @@
+[user]
+	email = swfrench@wikimedia.org
+	name = Scott French
+[core]
+	editor = vim
+[alias]
+	co = checkout
+	br = branch
+	cm = commit
+	st = status
+	lg = log --decorate --graph --oneline --all
