@@ -349,7 +349,6 @@ kubernetes::clusters:
         - kubernetes2021.codfw.wmnet
         - kubernetes2022.codfw.wmnet
         - kubernetes2024.codfw.wmnet
-        - kubernetes2034.codfw.wmnet
         - kubernetes2036.codfw.wmnet
         - kubernetes2037.codfw.wmnet
         - kubernetes2038.codfw.wmnet
@@ -563,6 +562,7 @@ kubernetes::clusters:
         - wikikube-worker2099.codfw.wmnet
         - wikikube-worker2100.codfw.wmnet
         - wikikube-worker2101.codfw.wmnet
+        - wikikube-worker2102.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
