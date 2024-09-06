@@ -93,20 +93,13 @@ class profile::releases::common(
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    firewall::service { 'releases_http':
-        proto  => 'tcp',
-        port   => [80],
-        srange => "(${::ipaddress} ${::ipaddress6})",
-    }
-
     firewall::service { 'releases_http_deployment_cumin':
-        proto  => 'tcp',
-        port   => [80],
-        srange => '($DEPLOYMENT_HOSTS $CUMIN_MASTERS)',
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['DEPLOYMENT_HOSTS', 'CUMIN_MASTERS']
     }
 
     backup::set { 'srv-org-wikimedia': }
-
 
     prometheus::blackbox::check::http { 'releases.wikimedia.org':
         team               => 'collaboration-services',
@@ -116,5 +109,4 @@ class profile::releases::common(
         force_tls          => true,
         body_regex_matches => ['Wikimedia'],
     }
-
 }
