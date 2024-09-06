@@ -10,9 +10,9 @@ class profile::codesearch (
         source => 'puppet:///modules/codesearch/ferm/docker-preserve.conf',
     }
 
-    firewall::service { 'codesearch':
+    ferm::service { 'codesearch':
         proto  => 'tcp',
-        port   => [3002],
+        port   => '3002',
         # Disallow direct access from other WMCS projects. They must use the
         # stable (and rate-limited) codesearch-backend.wmcloud.org URL instead.
         #
