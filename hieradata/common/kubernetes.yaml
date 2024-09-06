@@ -349,7 +349,6 @@ kubernetes::clusters:
         - kubernetes2021.codfw.wmnet
         - kubernetes2022.codfw.wmnet
         - kubernetes2024.codfw.wmnet
-        - kubernetes2031.codfw.wmnet
         - kubernetes2034.codfw.wmnet
         - kubernetes2036.codfw.wmnet
         - kubernetes2037.codfw.wmnet
@@ -384,9 +383,6 @@ kubernetes::clusters:
         - mw2313.codfw.wmnet
         - mw2314.codfw.wmnet
         - mw2315.codfw.wmnet
-        - mw2320.codfw.wmnet
-        - mw2321.codfw.wmnet
-        - mw2322.codfw.wmnet
         - mw2332.codfw.wmnet
         - mw2333.codfw.wmnet
         - mw2334.codfw.wmnet
@@ -563,6 +559,10 @@ kubernetes::clusters:
         - wikikube-worker2092.codfw.wmnet
         - wikikube-worker2093.codfw.wmnet
         - wikikube-worker2094.codfw.wmnet
+        - wikikube-worker2095.codfw.wmnet
+        - wikikube-worker2096.codfw.wmnet
+        - wikikube-worker2097.codfw.wmnet
+        - wikikube-worker2098.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
       # cluster_alias: staging makes this the "active" staging cluster.
