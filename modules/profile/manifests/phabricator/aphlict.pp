@@ -98,10 +98,12 @@ class profile::phabricator::aphlict (
         }
     }
 
-    firewall::service { 'notification_server':
-        ensure => present,
-        proto  => 'tcp',
-        port   => [$client_port],
+    if $client_port {
+        firewall::service { 'notification_server':
+            ensure => present,
+            proto  => 'tcp',
+            port   => $client_port,
+        }
     }
 
     file { $base_dir:
@@ -113,10 +115,12 @@ class profile::phabricator::aphlict (
     # needed by deployment scripts only
     ensure_packages('php-cli')
 
-    # phabricator server needs to connect to the aphlict admin port
-    firewall::service { 'phab_aphlict_admin_port':
-        proto  => 'tcp',
-        port   => [$admin_port],
-        srange => [$phabricator_active_server],
+    if $phabricator_active_server {
+        # phabricator server needs to connect to the aphlict admin port
+        firewall::service { 'phab_aphlict_admin_port':
+            proto  => 'tcp',
+            port   => $admin_port,
+            srange => [$phabricator_active_server],
+        }
     }
 }
