@@ -147,7 +147,7 @@ class profile::phabricator::main (
     firewall::service { 'phabmain_http':
         ensure => present,
         proto  => 'tcp',
-        port   => '80',
+        port   => 80,
         srange => $http_srange,
     }
 
@@ -486,7 +486,7 @@ class profile::phabricator::main (
     if $_mx_in_hosts and $_mx_in_hosts.length > 0 {
         firewall::service { 'phabmain-smtp':
             ensure => $firewall_ensure,
-            port   => [25],
+            port   => 25,
             proto  => 'tcp',
             srange => $_mx_in_hosts,
         }
@@ -494,16 +494,16 @@ class profile::phabricator::main (
 
     # ssh between phabricator servers for clustering support
     firewall::service { 'ssh_cluster':
-        port   => [22],
+        port   => 22,
         proto  => 'tcp',
-        srange => "@resolve((${active_server} ${passive_server}))",
+        srange => [$active_server, $passive_server],
     }
 
     if $local_aphlict_enabled {
         firewall::service { 'notification_server':
             ensure => $firewall_ensure,
             proto  => 'tcp',
-            port   => [22280],
+            port   => 22280,
         }
     }
 
