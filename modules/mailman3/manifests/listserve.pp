@@ -50,6 +50,12 @@ class mailman3::listserve (
         subscribe => File['/etc/mailman3/mailman.cfg'],
     }
 
+    if $service_ensure == 'present' {
+        systemd::unmask { 'mailman3.service': }
+    } else {
+        systemd::mask { 'mailman3.service': }
+    }
+
     file { '/etc/logrotate.d/mailman3':
         ensure  => 'present',
         owner   => 'root',
