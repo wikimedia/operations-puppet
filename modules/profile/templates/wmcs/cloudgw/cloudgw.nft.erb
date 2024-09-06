@@ -1,12 +1,26 @@
 # variables, convert puppet vars into nft vars
 define routing_source_ip   = <%= @routing_source %>
-define virtual_subnet_cidr = <%= @virt_subnet %>
 define cloud_private_supernet = <%= @cloud_private_supernet %>
 define nic_virt = "<%= @nic_virt %>"
 define nic_wan = "<%= @nic_wan %>"
 
 # single table for everything
 table inet cloudgw {
+    set virtual_subnets_cidrs {
+        type ipv4_addr
+        flags interval
+        # use auto-merge to collapse overlapping elements, see T346432
+        auto-merge
+        counter
+        <%- if !@virt_subnets.empty? -%>
+        elements = {
+        <% @virt_subnets.each do |element| -%>
+            <%= element %> ,
+        <% end -%>
+        }
+        <%- end -%>
+    }
+
     set dmz_cidr_set {
         type ipv4_addr
         flags interval
@@ -67,7 +81,7 @@ table inet cloudgw {
         # check the packet is flowing virt --> wan
         oifname != $nic_wan counter accept
         # check the packet uses virt addressing
-        ip saddr != $virtual_subnet_cidr counter accept
+        ip saddr != @virtual_subnets_cidrs counter accept
 
         # dmz_cidr is the list of hosts explicitely excluded from the egress NAT.
         ip daddr @dmz_cidr_set counter accept comment "dmz_cidr"

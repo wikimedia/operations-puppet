@@ -1,5 +1,5 @@
 class profile::wmcs::cloudgw (
-    Stdlib::IP::Address::V4::CIDR                  $virt_subnet               = lookup('profile::wmcs::cloudgw::virt_subnet_cidr',         {default_value => '172.16.128.0/24'}),
+    Array[Stdlib::IP::Address::V4::CIDR]           $virt_subnets              = lookup('profile::wmcs::cloudgw::virt_subnets_cidr',        {default_value => ['172.16.128.0/24']}),
     Integer                                        $virt_vlan                 = lookup('profile::wmcs::cloudgw::virt_vlan',                {default_value => 2107}),
     Stdlib::IP::Address                            $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer',                {default_value => '127.0.0.5'}),
     Stdlib::IP::Address                            $virt_addr                 = lookup('profile::wmcs::cloudgw::virt_addr',                {default_value => '127.0.0.4'}),
@@ -79,10 +79,12 @@ class profile::wmcs::cloudgw (
         command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
     }
 
-    # route internal VM network to neutron
-    interface::post_up_command { "route_${nic_virt}_virt_subnet" :
-        interface => $nic_virt,
-        command   => "ip route add ${virt_subnet} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+    # route internal VM networks to neutron
+    $virt_subnets.each |$net| {
+        interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
+            interface => $nic_virt,
+            command   => "ip route add ${net} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+        }
     }
     # route floating IPs to neutron
     $virt_floating.each |$net| {
