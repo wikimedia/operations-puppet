@@ -262,6 +262,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: ratelimit
         - name: ratelimit-deploy
+    wikidata-query-gui:
+      usernames:
+        - name: wikidata-query-gui
+        - name: wikidata-query-gui-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
