@@ -10,8 +10,8 @@ class profile::ci::data_rsync (
 
         firewall::service { 'ci-migration-rsync':
             proto  => 'tcp',
-            port   => [873],
-            srange => "(@resolve((${src_host})) @resolve((${src_host}), AAAA))",
+            port   => 873,
+            srange => [$src_host],
         }
 
         class { '::rsync::server': }

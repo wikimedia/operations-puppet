@@ -5,7 +5,7 @@ class profile::ci::firewall::jenkinsagent (
 ) {
     firewall::service { 'jenkins_controller_ssh':
         proto  => 'tcp',
-        port   => [22],
+        port   => 22,
         srange => $jenkins_controller_hosts,
     }
 }
