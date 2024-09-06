@@ -28,15 +28,9 @@ class profile::miscweb::httpd (
     profile::auto_restarts::service { 'apache2': }
     profile::auto_restarts::service { 'envoyproxy': }
 
-    firewall::service { 'miscweb-http-envoy':
-        proto  => 'tcp',
-        port   => [80],
-        srange => [$facts['networking']['fqdn']],
-    }
-
     firewall::service { 'miscweb-http-deployment':
         proto  => 'tcp',
-        port   => [80],
+        port   => 80,
         srange => [$deployment_server]
     }
 

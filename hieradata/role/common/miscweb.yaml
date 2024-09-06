@@ -16,7 +16,7 @@ profile::miscweb::rsync::dst_hosts:
   - 'miscweb2003.codfw.wmnet'
 
 profile::firewall::provider: nftables
-profile::tlsproxy::envoy::firewall_srange: []
+profile::tlsproxy::envoy::firewall_srange: [CACHES]
 
 profile::sre::os_reports::host: puppetdb2003.codfw.wmnet
 profile::contacts::role_contacts: ['Collaboration Services']
