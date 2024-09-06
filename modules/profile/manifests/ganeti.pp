@@ -307,5 +307,9 @@ class profile::ganeti (
             multihop        => false,
             config_template => 'bird/bird_ganeti.conf.erb',
         }
+    } else {
+        if debian::codename::ge('bookworm') {
+            ensure_packages('bridge-utils')
+        }
     }
 }
