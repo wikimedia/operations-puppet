@@ -5,6 +5,9 @@ class profile::statistics::explorer {
 
     include ::profile::statistics::base
 
+    # enable resource controls via cgroups, see T372416
+    class { '::statistics::cgroups': }
+
     class { '::deployment::umask_wikidev': }
 
     # enable CPU performance governor; see T362922
