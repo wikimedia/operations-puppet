@@ -83,6 +83,114 @@ tables:
     source: core
     canonicality: derivative
     visibility: public
+  - name: category
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: watchlist_expiry
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: change_tag_def
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: ipblocks_restrictions
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: querycache
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: querycachetwo
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: page_restrictions
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: user_groups
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: querycache_info
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: public
+  - name: watchlist
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: sites
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: user_newtalk
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: interwiki
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: protected_titles
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: externallinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: ip_changes
+    source: core
+    canonicality: derivative
+    visibility: partially public
+  - name: page_props
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: job
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: slot_roles
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: content_models
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: categorylinks
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: logging
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: uploadstash
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: filearchive
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: text
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: oldimage
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: objectcache
+    source: core
+    canonicality: derivative
+    visibility: private
 sources:
    core:
       - path: maintenance/tables.json
