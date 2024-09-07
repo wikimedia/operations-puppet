@@ -30,6 +30,20 @@ local function add_or_replace_cookie(name, value)
     ts.client_request.header.Cookie = cookie
 end
 
+-- A mapping from backend name to host and port.
+local debug_map = {
+    ["k8s-mwdebug"]             = { host = "mwdebug.discovery.wmnet",      port = 4444 },
+    ["1"]                       = { host = "mwdebug1001.eqiad.wmnet",      port =  443 },
+    ["mwdebug1001.eqiad.wmnet"] = { host = "mwdebug1001.eqiad.wmnet",      port =  443 },
+    ["mwdebug1002.eqiad.wmnet"] = { host = "mwdebug1002.eqiad.wmnet",      port =  443 },
+    ["mwdebug2001.codfw.wmnet"] = { host = "mwdebug2001.codfw.wmnet",      port =  443 },
+    ["mwdebug2002.codfw.wmnet"] = { host = "mwdebug2002.codfw.wmnet",      port =  443 },
+    ["k8s-mwdebug-eqiad"]       = { host = "mwdebug.svc.eqiad.wmnet",      port = 4444 },
+    ["k8s-mwdebug-codfw"]       = { host = "mwdebug.svc.codfw.wmnet",      port = 4444 },
+    ["k8s-mwdebug-next"]        = { host = "mwdebug-next.discovery.wmnet", port = 4453 },
+    ["k8s-mwdebug-next-eqiad"]  = { host = "mwdebug-next.svc.eqiad.wmnet", port = 4453 },
+    ["k8s-mwdebug-next-codfw"]  = { host = "mwdebug-next.svc.codfw.wmnet", port = 4453 },
+}
 
 function do_remap()
     local xwd = ts.client_request.header['X-Wikimedia-Debug']
@@ -37,17 +51,6 @@ function do_remap()
         -- Stop immediately if no XWD header has been specified
         return TS_LUA_REMAP_NO_REMAP
     end
-
-    local debug_map = {
-        ["k8s-mwdebug"]             = "mwdebug.discovery.wmnet",
-        ["1"]                       = "mwdebug1001.eqiad.wmnet",
-        ["mwdebug1001.eqiad.wmnet"] = "mwdebug1001.eqiad.wmnet",
-        ["mwdebug1002.eqiad.wmnet"] = "mwdebug1002.eqiad.wmnet",
-        ["mwdebug2001.codfw.wmnet"] = "mwdebug2001.codfw.wmnet",
-        ["mwdebug2002.codfw.wmnet"] = "mwdebug2002.codfw.wmnet",
-        ["k8s-mwdebug-eqiad"]       = "mwdebug.svc.eqiad.wmnet",
-        ["k8s-mwdebug-codfw"]       = "mwdebug.svc.codfw.wmnet",
-    }
 
     local backend = string.match(xwd, 'backend=([%a%d%.-]+)')
     -- For backward-compatibility, if the header does not contain a
@@ -57,14 +60,10 @@ function do_remap()
         backend = xwd
     end
 
-    if debug_map[backend] then
-        ts.client_request.set_url_host(debug_map[backend])
-        -- Set the port, so this works seamlessly also for things on k8s
-        if string.match(backend, "^k8s%-mwdebug") then
-            ts.client_request.set_url_port(4444)
-        else
-            ts.client_request.set_url_port(443)
-        end
+    local target = debug_map[backend]
+    if target then
+        ts.client_request.set_url_host(target.host)
+        ts.client_request.set_url_port(target.port)
 
         -- Skip the cache if XWD is valid
         ts.http.config_int_set(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)

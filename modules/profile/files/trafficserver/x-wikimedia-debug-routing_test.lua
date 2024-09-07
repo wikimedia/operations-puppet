@@ -79,6 +79,36 @@ describe("Busted unit testing framework", function()
       assert.stub(ts.client_request.set_url_port).was.called_with(4444)
     end)
 
+    it("test - X-Wikimedia-Debug on k8s next", function()
+      stub(ts.client_request, "set_url_host")
+      stub(ts.client_request, "set_url_port")
+
+      require("x-wikimedia-debug-routing")
+
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mwdebug-next"
+      _G.ts.client_request.header['Host'] = 'www.wikidata.org'
+
+      do_remap()
+
+      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug-next.discovery.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4453)
+    end)
+
+    it("test - X-Wikimedia-Debug on k8s next, route to specific DC", function()
+      stub(ts.client_request, "set_url_host")
+      stub(ts.client_request, "set_url_port")
+
+      require("x-wikimedia-debug-routing")
+
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mwdebug-next-codfw"
+      _G.ts.client_request.header['Host'] = 'www.wikidata.org'
+
+      do_remap()
+
+      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug-next.svc.codfw.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4453)
+    end)
+
     it("test - X-Wikimedia-Debug with invalid value", function()
       stub(ts.client_request, "set_url_host")
       stub(ts.client_request, "set_url_port")
