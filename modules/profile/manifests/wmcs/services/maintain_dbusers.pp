@@ -16,7 +16,7 @@ class profile::wmcs::services::maintain_dbusers (
     String                    $tools_replica_cnf_user       = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_user'),
     String                    $tools_replica_cnf_htpassword = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_htpassword'),
     String                    $tools_replica_cnf_root_url   = lookup('profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url'),
-    String                    $maintain_dbusers_primary     = lookup('profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary'),
+    String                    $maintain_dbusers_primary     = lookup('wmcs_maintain_dbusers_primary'),
 ){
     ensure_packages([
         'python3-ldap3',

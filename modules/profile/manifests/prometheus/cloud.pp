@@ -7,6 +7,7 @@ class profile::prometheus::cloud (
     Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Optional[String] $thanos_min_time = lookup('profile::prometheus::thanos::min_time', { 'default_value' => undef }),
     String $replica_label = lookup('prometheus::replica_label'),
+    String $maintain_dbusers_primary = lookup('wmcs_maintain_dbusers_primary'),
 ) {
     $targets_path = '/srv/prometheus/cloud/targets'
 
@@ -137,6 +138,28 @@ class profile::prometheus::cloud (
         },
     ]
 
+    $maintain_dbusers_jobs = [
+        {
+            'job_name'        => "maintain_dbusers_${::site}",
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/maintain_dbusers_*.yaml" ]}
+            ],
+            'metric_relabel_configs' => [
+                $hostname_to_instance_config,
+            ],
+        },
+    ]
+    file { "${targets_path}/maintain_dbusers_eqiad1.yaml":
+        content => to_yaml([{
+            'labels'  => {
+                'deployment' => $openstack_deployment,
+            },
+            'targets' => [
+                "${maintain_dbusers_primary}:9090",
+            ],
+        }]),
+    }
 
     # https://phabricator.wikimedia.org/T348643#9916509
     if $::site == 'eqiad' {
@@ -274,6 +297,7 @@ class profile::prometheus::cloud (
             $blackbox_jobs, $rabbitmq_jobs, $pdns_jobs,
             $pdns_rec_jobs, $openstack_jobs, $ceph_jobs,
             $galera_jobs, $cloudlb_haproxy_jobs, $ebpf_exporter_jobs,
+            $maintain_dbusers_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],

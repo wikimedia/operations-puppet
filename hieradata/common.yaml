@@ -2954,3 +2954,6 @@ private_tables:
  - 'wikimedia_editor_tasks_counts'
  - 'wikimedia_editor_tasks_keys'
  - 'wikimedia_editor_tasks_targets_passed'
+
+# needed to scrape the maintain_dbusers service, only one maintain_dbusers primary is needed in all DCs
+wmcs_maintain_dbusers_primary: cloudcontrol1005.eqiad.wmnet

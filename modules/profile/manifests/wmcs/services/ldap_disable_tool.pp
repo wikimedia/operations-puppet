@@ -4,7 +4,7 @@
 #  ldap entries of deleted tools. It needs to run in the prod
 #  realm to write to ldap.
 class profile::wmcs::services::ldap_disable_tool(
-    String                    $maintain_dbusers_primary     = lookup('profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary'),
+    String                    $maintain_dbusers_primary     = lookup('wmcs_maintain_dbusers_primary'),
 ) {
     require profile::toolforge::disable_tool
 
