@@ -534,6 +534,8 @@ class profile::postfix::mx (
         require             => File['/var/spool/postfix'],
     }
 
+    profile::auto_restarts::service { 'rspamd': }
+
     $rspamd_override_config_base =  {
         'options.inc' => {
             'local_addrs' => $trusted_networks_filtered,
