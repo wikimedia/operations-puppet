@@ -88,6 +88,8 @@ profile::airflow::instances:
     service_group: analytics
     statsd_monitoring_enabled: true
     monitoring_enabled: true
+    # Drop retention time from 90 to 60 days due to disk space issues. See #T370437
+    clean_logs_older_than_days: 60
     airflow_config:
       datahub:
         enabled: False
