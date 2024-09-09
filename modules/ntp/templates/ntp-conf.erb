@@ -44,10 +44,11 @@ restrict <%= val %> notrap nomodify nopeer
 
 ### Stats/Files: ###############################################
 
-driftfile /var/lib/ntp/ntp.drift
+driftfile /var/lib/ntpsec/ntp.drift
 
 # Enable this if you want statistics to be logged.
-#statsdir /var/log/ntpstats/
+# currently errors in the journal as the directory below does not exist
+#statsdir /var/log/ntpsec/
 
 statistics loopstats peerstats clockstats
 filegen loopstats file loopstats type day enable
