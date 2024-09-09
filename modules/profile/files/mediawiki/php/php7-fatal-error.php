@@ -113,6 +113,7 @@ if ( !headers_sent() ) {
 <html lang="en" dir="ltr">
 <meta charset="utf-8">
 <title>Wikimedia Error</title>
+<!-- reqId <?php echo htmlspecialchars( $reqId ); ?> -->
 <style>
 * { margin: 0; padding: 0; }
 body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
