@@ -7270,7 +7270,7 @@ ldap_only_users:
     ensure: present
     realname: Natasha Creasy
     email: ncreasy-ctr@wikimedia.org
-    expiry_date: "2024-09-15"
+    expiry_date: "2025-06-30"
     expiry_contact: rmurthy@wikimedia.org
   seanleong-wmde:
     ensure: present
