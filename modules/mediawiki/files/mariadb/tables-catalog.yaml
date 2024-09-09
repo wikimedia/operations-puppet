@@ -191,6 +191,46 @@ tables:
     source: core
     canonicality: derivative
     visibility: private
+  - name: block
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: block_target
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: image
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: recentchanges
+    source: core
+    canonicality: canonical with acceptable loss
+    visibility: partially public
+  - name: archive
+    source: core
+    canonicality: canonical
+    visibility: private
+  - name: page
+    source: core
+    canonicality: canonical
+    visibility: public
+  - name: user
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: revision
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: searchindex
+    source: core
+    canonicality: derivative
+    visibility: public
+  - name: linktarget
+    source: core
+    canonicality: derivative
+    visibility: partially public
 sources:
    core:
       - path: maintenance/tables.json
