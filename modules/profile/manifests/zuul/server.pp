@@ -23,6 +23,10 @@ class profile::zuul::server(
       logs => ['/var/log/zuul/error.log'],
     }
 
+    class { '::profile::prometheus::statsd_exporter':
+        enable_relay => true
+    }
+
     profile::gerrit::sshkey { 'gerrit':
         target => '/var/lib/zuul/.ssh/known_hosts',
     }

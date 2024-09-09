@@ -138,3 +138,91 @@ profile::base::production::role_description: 'CI server'
 
 # keep Python2 packages on bullseye to be able to run Zuul v2
 profile::base::remove_python2_on_bullseye: false
+
+profile::prometheus::statsd_exporter::mappings:
+  # Geard metrics
+  - match: 'zuul.geard.workers'
+    name: 'zuul_geard_workers_count'
+
+  - match: 'zuul.geard.queue.*'
+    name: 'zuul_geard_queue_${1}_count'
+
+  - match: 'zuul.geard.packet.*'
+    # Force counter type
+    # geard sends timer + counter with the same metric name
+    match_metric_type: 'counter'
+    name: 'zuul_geard_packet_total'
+    labels:
+      name: '$1'
+
+  # Pipeline current changes
+  - match: 'zuul\.pipeline\.(.+)\.current_changes'
+    name: 'zuul_pipeline_current_changes_count'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+
+  # Jobs completed
+  - match: 'zuul\.pipeline\.(.+)\.all_jobs'
+    name: 'zuul_pipeline_jobs_total'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+
+  # For total_changes and resident_time metrics only consider default matching
+  # to capture the pipeline name. Zuul sends both for pipeline name (which can
+  # contain dots, but most don't) and for "project name" so when using regex
+  # capture it means we'd be double-accounting when summing the metric.
+  # As an effect of the above, pipeline names with dots won't get accounted
+  # here (e.g. gate-and-submit-1.31)
+  - match: 'zuul\.pipeline\.(.+)\.total_changes'
+    name: 'zuul_pipeline_changes_total'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+
+  # The time spent in queue, for all items
+  - match: 'zuul\.pipeline\.(.+)\.resident_time'
+    name: 'zuul_pipeline_resident_time_seconds'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+
+  # Breakdown by job and label
+  - match: 'zuul\.pipeline\.(.+)\.job\.(.+)\.wait_time'
+    name: 'zuul_pipeline_job_wait_time_seconds'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+      job_name: '$2'
+
+  - match: 'zuul\.pipeline\.(.+)\.label\.(.+)\.wait_time'
+    name: 'zuul_pipeline_label_wait_time_seconds'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+      label: '$2'
+
+  # Force 'counter' type because the same metric name is sent as counter and as
+  # timer on success/failure.
+  # Use this rule after wait_time so all job statuses are collected here
+  - match: 'zuul\.pipeline\.(.+)\.job\.(.+)\.(.+)'
+    name: 'zuul_pipeline_job_completed_total'
+    match_metric_type: 'counter'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+      job_name: '$2'
+      status: '$3'
+
+  # Gerrit events
+  - match: 'gerrit.event.*'
+    name: 'gerrit_events_total'
+    labels:
+      action: '$1'
+
+  # Drop remaining zuul metrics
+  - match: "^zuul"
+    action: 'drop'
+    match_type: 'regex'
+    name: "zuul_dropped"
