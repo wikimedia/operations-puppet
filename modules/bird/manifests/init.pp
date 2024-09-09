@@ -67,12 +67,12 @@ class bird(
     firewall::service { 'bird-bfd-control':
         proto  => 'udp',
         port   => 3784,
-        srange => $_neighbors_list,
+        srange => $_neighbors_list + ['fe80::/10'],
     }
     firewall::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => 3785,
-        srange => $_neighbors_list,
+        srange => $_neighbors_list + ['fe80::/10'],
     }
     if $_multihop {
       firewall::service { 'bird-bfd-multi-ctl':  # Multihop BFD
