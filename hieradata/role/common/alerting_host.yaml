@@ -21,13 +21,13 @@ profile::tcpircbot::irc::host: 'irc.libera.chat'
 profile::tcpircbot::irc::port: 6697
 
 profile::icinga::virtual_host: "icinga.%{lookup('public_domain')}"
-profile::icinga::active_host: alert1001.wikimedia.org
+profile::icinga::active_host: alert2002.wikimedia.org
 profile::icinga::partners:
+  - 'alert1001.wikimedia.org'
   - 'alert1002.wikimedia.org'
   - 'alert2001.wikimedia.org'
-  - 'alert2002.wikimedia.org'
 
-profile::alertmanager::active_host: alert1001.wikimedia.org
+profile::alertmanager::active_host: alert2002.wikimedia.org
 profile::alertmanager::partners:
   - 'alert1001.wikimedia.org'
   - 'alert1002.wikimedia.org'
@@ -97,7 +97,7 @@ profile::base::overlayfs: true
 
 profile::puppet::agent::force_puppet7: true
 
-profile::corto::active_host: 'alert1001.wikimedia.org'
+profile::corto::active_host: 'alert2002.wikimedia.org'
 profile::corto::irc_config::server: 'irc.libera.chat'
 profile::corto::irc_config::port: 6697
 profile::corto::irc_config::use_tls: true
