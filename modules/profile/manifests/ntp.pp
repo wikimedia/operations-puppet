@@ -101,7 +101,7 @@ class profile::ntp (
     }
 
     $services_to_check = {
-        'ntp.service' => '/etc/ntp.conf',
+        'ntpsec.service' => '/etc/ntpsec/ntp.conf',
     }
     $services_to_check.each |$service, $conf_file| {
         nrpe::monitor_service { "check_service_restart_${service}":
