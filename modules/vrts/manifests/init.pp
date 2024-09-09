@@ -149,7 +149,7 @@ class vrts(
     exec { 'Fresh Install':
         path    => '/usr/local/bin',
         command => "/usr/local/bin/install_vrts ${install_version}",
-        unless  => 'test -L /opt/otrs',
+        unless  => '/usr/bin/test -L /opt/otrs',
         require => File['/usr/local/bin/install_vrts'],
     }
 
