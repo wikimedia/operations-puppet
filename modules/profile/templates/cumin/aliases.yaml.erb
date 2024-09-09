@@ -329,6 +329,7 @@ mx: P{O:mail::mx}
 mx-canary: P{mx2001.wikimedia.org}
 mx-in: P{O:postfix::mx_in}
 mx-out: P{O:postfix::mx_out}
+ncmonitor: P{O:ncmonitor}
 ncredir: P{O:ncredir}
 <% @datacenters.each do |dc| -%>
 ncredir-<%= dc %>: A:ncredir and A:<%= dc %>
