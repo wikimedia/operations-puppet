@@ -143,7 +143,7 @@ code { font-family: inherit; }
 <div class="footer">
 <p>If you report this error to the Wikimedia System Administrators, please include the details below.</p>
 <p class="text-muted"><code>
-  Request ID: <?php echo htmlspecialchars( $reqId ?? 'unknown' ); ?><br/>
+  Request ID: <?php echo htmlspecialchars( $reqId ); ?><br/>
   <?php echo htmlspecialchars( $message ); ?>
 </code></p></div>
 </html>
