@@ -41,8 +41,7 @@ profile::wmcs::services::maintain_dbusers::paws_replica_cnf_user: tools-db-repli
 profile::wmcs::services::maintain_dbusers::paws_replica_cnf_root_url: https://nfs-paws.wmcloud.org/v1
 profile::wmcs::services::maintain_dbusers::tools_replica_cnf_user: tools-db-replica-cnf
 profile::wmcs::services::maintain_dbusers::tools_replica_cnf_root_url: https://nfs.svc.toolforge.org/v1
-# we need this one also available for prometheus, so it's under the common eqiad.yaml
-#profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary: ~
+profile::wmcs::services::maintain_dbusers::maintain_dbusers_primary: cloudcontrol1005.eqiad.wmnet
 profile::wmcs::services::maintain_dbusers::mysql_variances:
   s52788: 48 # Quarry T180141
   u12903: 15 # wikiscan T227462
