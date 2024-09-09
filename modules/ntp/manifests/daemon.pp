@@ -9,16 +9,18 @@ define ntp::daemon(
     Wmflib::Ensure      $ensure       = lookup('ntp::daemon::ensure', {'default_value' => 'present'}),
 ){
 
-    ensure_packages(['ntp'])
+    # Debian bookworm and above use ntpsec and alias the ntp service but be
+    # explicit here so that we know what we are running in production.
+    ensure_packages(['ntpsec'])
 
-    file { 'ntp.conf':
+    file { 'ntpsec.conf':
         mode    => '0644',
-        path    => '/etc/ntp.conf',
+        path    => '/etc/ntpsec/ntp.conf',
         content => template('ntp/ntp-conf.erb'),
     }
 
-    service { 'ntp':
+    service { 'ntpsec':
         ensure  => stdlib::ensure($ensure, 'service'),
-        require => [ File['ntp.conf'], Package['ntp'] ],
+        require => [ File['ntpsec.conf'], Package['ntpsec'] ],
     }
 }
