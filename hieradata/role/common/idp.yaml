@@ -83,6 +83,7 @@ profile::idp::services:
   turnilo:
     id: 11
     service_id: 'https://turnilo\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
       - nda
       - wmf
