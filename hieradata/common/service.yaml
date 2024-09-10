@@ -1834,6 +1834,9 @@ service::catalog:
           url:
             - https://prometheus-%{::site}.wikimedia.org/
       scheduler: wrr
+    probes:
+      - type: http
+        host: prometheus-%{::site}.wikimedia.org
     port: 443
     state: production
     page: false
