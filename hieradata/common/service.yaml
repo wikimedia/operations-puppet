@@ -1836,6 +1836,7 @@ service::catalog:
       scheduler: wrr
     port: 443
     state: production
+    page: false
     # public endpoint for https only
     public_endpoint: "prometheus-eqiad"
     public_aliases:
