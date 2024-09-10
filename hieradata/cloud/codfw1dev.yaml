@@ -71,7 +71,7 @@ profile::puppetmaster::common::hiera_config: wmcs-codfw1dev
 profile::mariadb::cloudinfra::enc_servers:
   - enc-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 profile::mariadb::cloudinfra::cloudinfra_dbs:
-  - cloudinfra-db-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
+  - cloudinfra-db-02.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
 
 profile::openstack::codfw1dev::keystone_api_fqdn: "openstack.codfw1dev.wikimediacloud.org"
 
