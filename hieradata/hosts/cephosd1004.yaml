@@ -1,4 +1,4 @@
 profile::bird::neighbors_list:
   - 10.64.134.1
-  - 2620:0:861:10d:1
+  - 2620:0:861:10d::1
 profile::bird::multihop: false
