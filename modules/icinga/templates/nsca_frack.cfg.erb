@@ -341,6 +341,19 @@ define host {
 }
 
 define host {
+    host_name                frlog2002
+    address                  10.195.0.68
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-logger
+}
+
+define host {
     host_name                frmon1002
     address                  10.64.40.68
     check_command            check_ping!500,20%!2000,100%
