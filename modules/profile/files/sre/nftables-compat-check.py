@@ -41,18 +41,18 @@ def run_checks():
 
     # 'filter_log_filter-bootp': Filters bootp/installation traffic from logs
     # 'log_everything'         : Default logging rule for ferm
-    expected_ferm_fules = {'filter_log_filter_bootp', 'log_everything'}
+    expected_ferm_rules = {'filter_log_filter_bootp', 'log_everything', 'dscp_default'}
 
     # Those are the standard Ferm rules and cluster definitions
     expected_ferm_confs = {'main', 'defs'}
 
     if 'drop_blocked_nets' in ferm_rules:
         print("Warning: This server uses defs_from_etcd, which isn't implemented for nft yet\n")
-        expected_ferm_fules.add('drop_blocked_nets')
+        expected_ferm_rules.add('drop_blocked_nets')
 
-    if ferm_rules - expected_ferm_fules:
+    if ferm_rules - expected_ferm_rules:
         print("The following Ferm rules need to be replaced with nftables::file definitions")
-        print(ferm_rules - expected_ferm_fules)
+        print(ferm_rules - expected_ferm_rules)
         print()
 
     if ferm_confs - expected_ferm_confs:
