@@ -1,0 +1,2 @@
+profile::firewall::provider: nftables
+profile::tlsproxy::envoy::firewall_srange: [CACHES]
