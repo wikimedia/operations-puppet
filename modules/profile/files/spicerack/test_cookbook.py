@@ -118,7 +118,13 @@ class CookbookTesting:
 
     def setup_config(self) -> None:
         """Sync the config file from official spicerack and modify the path to the cookbooks."""
-        config = yaml.safe_load(self.spicerack_config.read_text())
+        config_raw = run(
+            ["sudo", "/usr/bin/cat", str(self.spicerack_config)],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        config = yaml.safe_load(config_raw.stdout)
         config["cookbooks_base_dirs"] = [str(self.cookbooks_symlink)]
         config["logs_base_dir"] = str(self.logs_dir)
 
