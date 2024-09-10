@@ -179,7 +179,8 @@ class profile::kubernetes::deployment_server::global_config (
       }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
 
-    $gilab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
+    $gitlab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
+    $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -394,7 +395,7 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'wikimedia' => $gilab_ips,
+            'wikimedia' => $gitlab_ips,
           }
         },
         'wikimail' => {
@@ -412,6 +413,19 @@ class profile::kubernetes::deployment_server::global_config (
           },
           'instances' => {
             'mx' => wmflib::role::ips('mail::mx'),
+          }
+        },
+        's3' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'https',
+                'port' => 443
+              }
+            ]
+          },
+          'instances' => {
+            'eqiad-dpe' => $rgw_eqiad_dpe_ips
           }
         }
       },
