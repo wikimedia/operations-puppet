@@ -2,8 +2,6 @@
 # @summary install and configure puppet agent
 # @param puppetmaster the puppet server
 # @param ca_server the ca server
-# @param ca_source to source of the CA file
-# @param manage_ca_file if true manage the puppet ca file
 # @param site_nearest_core list of mappings to a sites nearest core
 # @param use_srv_records if true use SRV records to resolve the puppet server and ca server
 # @param srv_domain the domain to use when resolving SRV records.  puppet will look for records al
@@ -22,8 +20,6 @@
 class profile::puppet::agent (
     String                             $puppetmaster           = lookup('puppetmaster'),
     Optional[String[1]]                $ca_server              = lookup('puppet_ca_server'),
-    Stdlib::Filesource                 $ca_source              = lookup('puppet_ca_source'),
-    Boolean                            $manage_ca_file         = lookup('manage_puppet_ca_file'),
     Hash[Wmflib::Sites, Wmflib::Sites] $site_nearest_core      = lookup('site_nearest_core'),
     Boolean                            $use_srv_records        = lookup('profile::puppet::agent::use_srv_records'),
     Optional[Stdlib::Fqdn]             $srv_domain             = lookup('profile::puppet::agent::srv_domain'),
@@ -74,8 +70,6 @@ class profile::puppet::agent (
         }
     }
     class { 'puppet::agent':
-        ca_source              => $ca_source,
-        manage_ca_file         => $manage_ca_file,
         server                 => $puppetmaster,
         ca_server              => $ca_server,
         use_srv_records        => $_use_srv_records,

@@ -41,6 +41,3 @@ preferred_serialization_format = <%= @serialization_format %>
 <%- unless @environment.nil? -%>
 environment = <%= @environment %>
 <%- end -%>
-<% if @manage_ca_file -%>
-localcacert = <%= @ca_file_path %>
-<% end -%>

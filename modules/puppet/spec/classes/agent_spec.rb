@@ -8,10 +8,6 @@ describe 'puppet::agent' do
       context "default params" do
         it { is_expected.to compile }
       end
-      context "with ca_source" do
-        let(:params) { { 'ca_source' => 'puppet:///modules/foo/ca.pem' } }
-        it { is_expected.to compile }
-      end
       context "With use_srv_records with no srv_domain" do
         let(:params) {{ use_srv_records: true }}
         it { is_expected.to compile.and_raise_error(/You must set \$srv_domain/) }
