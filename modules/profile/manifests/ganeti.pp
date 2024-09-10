@@ -301,6 +301,15 @@ class profile::ganeti (
             },
         }
 
+        # Unlike the legacy bridged mode routed packets are processed by hypervisor
+        # local firewall, so we need to not re-mark DSCP in packets from VMs
+        nftables::rules { 'trust-vm-dscp':
+            desc  => 'Skip DSCP marking rules in postrouting for packets from VMs',
+            chain => 'postrouting',
+            prio  => 5,
+            rules => ['iifname "tap*" return'],
+        }
+
         class { 'bird':
             bfd             => false,
             do_ipv6         => true,
