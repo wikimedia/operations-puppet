@@ -12,6 +12,7 @@ class profile::puppetserver::configmaster (
     # puppet-merge.py will need to be written when running the script.
     file { $document_root:
         ensure => directory,
+        owner  => 'gitpuppet',
         mode   => '0755',
     }
 
