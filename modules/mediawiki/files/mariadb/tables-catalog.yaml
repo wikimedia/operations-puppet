@@ -231,10 +231,100 @@ tables:
     source: core
     canonicality: derivative
     visibility: partially public
+  - name: abuse_filter
+    source: abuse_filter
+    canonicality: canonical
+    visibility: partially public
+  - name: abuse_filter_action
+    source: abuse_filter
+    canonicality: canonical
+    visibility: public
+  - name: abuse_filter_log
+    source: abuse_filter
+    canonicality: canonical
+    visibility: partially public
+  - name: abuse_filter_history
+    source: abuse_filter
+    canonicality: canonical
+    visibility: partially public
+  - name: babel
+    source: babel
+    canonicality: derivative
+    visibility: public
+  - name: betafeatures_user_counts
+    source: betafeatures
+    canonicality: derivative
+    visibility: private
+  - name: cu_changes
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_log_event
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_private_event
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_useragent
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_useragent_clienthints
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_useragent_clienthints_map
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cu_log
+    source: checkuser
+    canonicality: canonical
+    visibility: private
+  - name: discussiontools_items
+    source: discussiontools
+    canonicality: derivative
+    visibility: public
+  - name: discussiontools_item_ids
+    source: discussiontools
+    canonicality: derivative
+    visibility: public
+  - name: discussiontools_item_pages
+    source: discussiontools
+    canonicality: derivative
+    visibility: public
+  - name: discussiontools_item_revisions
+    source: discussiontools
+    canonicality: derivative
+    visibility: public
+  - name: geo_tags
+    source: geo_data
+    canonicality: derivative
+    visibility: public
 sources:
-   core:
+    core:
       - path: maintenance/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/maintenance/tables.json
+    abuse_filter:
+      - path: extensions/AbuseFilter/db_patches/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AbuseFilter/+/master/db_patches/tables.json
+    babel:
+      - path: extensions/Babel/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Babel/+/master/sql/tables.json
+    betafeatures:
+      - path: extensions/BetaFeatures/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BetaFeatures/+/master/sql/tables.json
+    checkuser:
+      - path: extensions/CheckUser/schema/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables.json
+    discussiontools:
+      - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
+    geo_data:
+      - path: extensions/GeoData/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
