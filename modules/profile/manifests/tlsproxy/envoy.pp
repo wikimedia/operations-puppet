@@ -104,6 +104,7 @@ class profile::tlsproxy::envoy(
         'group'   => 'envoy',
         'outdir'  => '/etc/envoy/ssl',
         'notify'  => Service['envoyproxy.service'],
+        'require' => Package['envoyproxy'],
     }
     $upstreams = $services.map |$service| {
         if $service['cert_name'] and $sni_support != 'no' {
