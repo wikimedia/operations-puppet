@@ -2,4 +2,4 @@
 <%- |
     Stdlib::Httpurl $endpoint,
 | -%>
-CATEGORIES_ENDPOINT=<%= $endpoint %>
+CATEGORY_ENDPOINT=<%= $endpoint %>

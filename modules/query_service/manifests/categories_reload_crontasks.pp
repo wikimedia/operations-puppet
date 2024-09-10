@@ -51,8 +51,12 @@ class query_service::categories_reload_crontasks(
     }
 
     file { '/etc/default/categories-endpoint':
+      ensure => absent
+    }
+
+    file { '/etc/default/category-endpoint':
         ensure  => present,
-        content => epp('query_service/categories-endpoint-default.epp', { 'endpoint' => $categories_endpoint }),
+        content => epp('query_service/category-endpoint-default.epp', { 'endpoint' => $categories_endpoint }),
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
