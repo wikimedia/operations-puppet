@@ -36,6 +36,7 @@ class bird(
   Stdlib::IP::Address                  $ipv6_src        = $facts['ipaddress6'],
   Optional[String]                     $bind_service    = undef,
   Optional[Array[Stdlib::IP::Address]] $neighbors       = undef,
+  Optional[Firewall::Provider]         $fw_provider     = undef,
   ){
 
   ensure_packages(['bird2', 'prometheus-bird-exporter'])
@@ -64,15 +65,29 @@ class bird(
 
   # Ports from https://github.com/BIRD/bird/blob/master/proto/bfd/bfd.h#L28-L30
   if $bfd {
+    if $fw_provider == 'ferm' {
+        # Add the IPv6 link-local range to the list of neighbors for ferm rule
+        $_bfd_neighbors = $_neighbors_list + ['fe80::/10']
+    } else {
+        $_bfd_neighbors = $_neighbors_list
+    }
+    if $fw_provider == 'nftables' {
+        # Use a rule for the link-local range as we can't have a CIDR in srange
+        nftables::rules { 'bird-bfd-ll':
+            desc  => 'Allow BFD packets in from router link-local IP',
+            chain => 'input',
+            rules => ['ip6 saddr fe80::/10 udp dport 3784-3785 accept']
+        }
+    }
     firewall::service { 'bird-bfd-control':
         proto  => 'udp',
         port   => 3784,
-        srange => $_neighbors_list,
+        srange => $_bfd_neighbors,
     }
     firewall::service { 'bird-bfd-echo':
         proto  => 'udp',
         port   => 3785,
-        srange => $_neighbors_list,
+        srange => $_bfd_neighbors,
     }
     if $_multihop {
       firewall::service { 'bird-bfd-multi-ctl':  # Multihop BFD
