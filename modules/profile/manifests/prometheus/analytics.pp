@@ -94,6 +94,16 @@ class profile::prometheus::analytics (
       },
     ]
 
+    $hostname_to_instance_config = {
+        'source_labels' => ['hostname', 'instance'],
+        'separator'     => ';',
+        # This matches either the hostname if it's there, or the instance if it's not.
+        # It uses the separator as marker
+        'regex'         => '^([^;:]+);.*|^;(.*)',
+        'target_label'  => 'instance',
+        'replacement'   => '$1',
+    }
+
     $ceph_jobs = [
       {
         'job_name'        => 'ceph',
@@ -106,16 +116,6 @@ class profile::prometheus::analytics (
             ],
       },
     ]
-
-    $hostname_to_instance_config = {
-        'source_labels' => ['hostname', 'instance'],
-        'separator'     => ';',
-        # This matches either the hostname if it's there, or the instance if it's not.
-        # It uses the separator as marker
-        'regex'         => '^([^;:]+);.*|^;(.*)',
-        'target_label'  => 'instance',
-        'replacement'   => '$1',
-    }
 
     prometheus::class_config{ "ceph_server_${::site}":
         dest       => "${targets_path}/ceph_${::site}.yaml",
