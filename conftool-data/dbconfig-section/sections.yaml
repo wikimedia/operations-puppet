@@ -21,7 +21,6 @@ eqiad:
   - pc2
   - pc3
   - pc4
-  - pc5
 codfw:
   - s1
   - s2
@@ -45,4 +44,3 @@ codfw:
   - pc2
   - pc3
   - pc4
-  - pc5
