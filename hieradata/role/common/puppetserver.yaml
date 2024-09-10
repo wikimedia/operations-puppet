@@ -59,3 +59,16 @@ profile::conftool::state::ensure: present
 profile::conftool::state::query_interval: 30
 profile::puppetserver::extra_mounts:
   volatile: "/srv/puppet_fileserver/volatile"  # see https://wikitech.wikimedia.org/wiki/Puppet#Volatile_mount
+
+# We use a simple envoy (TLS) + httpd (HTTP) stack to expose the SHA1 values
+# produced by puppet-merge.py. They are published by config-master.discovery.wmnet,
+# since it proxies to the active/canonical/authoritative puppetserver that allows
+# puppet-merge to be run.
+profile::envoy::ensure: present
+profile::tlsproxy::envoy::services:
+   - server_names: ['*']
+     port: 80
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::global_cert_name: "%{facts.networking.fqdn}"
+profile::puppetserver::configmaster::server_name: "%{facts.networking.fqdn}"
+profile::puppetserver::configmaster::document_root: /srv/config-master

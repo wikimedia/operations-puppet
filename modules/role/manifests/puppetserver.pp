@@ -9,6 +9,7 @@ class role::puppetserver {
     include profile::puppetserver::git::private
     include profile::puppetserver::scripts
     include profile::puppetserver::volatile
+    include profile::puppetserver::configmaster
     # conftool
     include profile::conftool::master
     include profile::conftool::requestctl_client
