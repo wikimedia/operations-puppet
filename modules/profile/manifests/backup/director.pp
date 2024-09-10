@@ -28,7 +28,7 @@ class profile::backup::director(
 
     # Default pool for "normal" backups (not archivals or database-related)
     bacula::director::pool { $pool:
-        max_vols         => 140,
+        max_vols         => 150,
         storage          => "${onsite_sd}-${file_storage_production}",
         volume_retention => '90 days',
         label_fmt        => $pool,
