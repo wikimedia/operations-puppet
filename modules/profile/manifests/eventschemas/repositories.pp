@@ -15,8 +15,8 @@
 #
 class profile::eventschemas::repositories(
     Hash[String, String] $repositories = lookup('profile::eventschemas::repositories', {default_value => {
-        'primary'   => 'schemas/event/primary',
-        'secondary' => 'schemas/event/secondary',
+        'primary'   => 'repos/data-engineering/schemas-event-primary',
+        'secondary' => 'repos/data-engineering/schemas-event-secondary',
     }})
 ) {
     class { '::eventschemas': }

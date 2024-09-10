@@ -12,9 +12,13 @@
 # [*ensure*]
 #   Passed to git::clone.  Default: latest
 #
+# [*git_source*]
+#   The Git platform to request the repository from. Default: gitlab
+#
 define eventschemas::repository(
     String $origin,
     String $ensure = 'latest',
+    String $git_source = 'gitlab',
 ) {
     require ::eventschemas
 
@@ -22,5 +26,6 @@ define eventschemas::repository(
     git::clone { $origin:
         ensure    => $ensure,
         directory => $path,
+        source    => $git_source,
     }
 }
