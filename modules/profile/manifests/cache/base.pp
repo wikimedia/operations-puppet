@@ -21,6 +21,7 @@ class profile::cache::base(
     Optional[Hash[String, Integer]] $default_weights = lookup('profile::cache::base::default_weights', {'default_value' => undef}),
     String $conftool_prefix                          = lookup('conftool_prefix'),
     Boolean $use_ip_reputation                       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
+    Boolean $enable_monitoring                       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
     Boolean $use_noflow_iface_preup                  = lookup('profile::cache::base::use_noflow_iface_preup', {'default_value' => false}),
 ){
 
@@ -73,8 +74,11 @@ class profile::cache::base(
     class { [
         '::varnish::common::errorpage',
         '::varnish::common::browsersec',
-        '::varnish::common::director_scripts',
     ]:
+    }
+
+    if $enable_monitoring {
+        class { '::varnish::common::director_scripts': }
     }
 
     class { '::varnish::netmapper_update_common': }
