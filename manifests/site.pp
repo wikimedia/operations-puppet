@@ -969,16 +969,6 @@ node /^db22(23|26|28|29|31|32|33|34|35|36|37|38|39|40)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
-# New parsercache T368920
-node /^pc1017\.eqiad\./ {
-    role(insetup::data_persistence)
-}
-
-# New parsercache T368919
-node /^pc2017\.codfw\./ {
-    role(insetup::data_persistence)
-}
-
 # New proxies T361352
 node /^dbproxy200(5|6|7|8)\.codfw\./ {
     role(insetup::data_persistence)
@@ -2332,6 +2322,10 @@ node /^pc1015\.eqiad\./ {
 node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
 }
+# pc5
+node /^pc1017\.eqiad\./ {
+    role(mariadb::parsercache)
+}
 # codfw
 # pc1
 node /^pc2011\.codfw\./ {
@@ -2356,6 +2350,11 @@ node /^pc2015\.codfw\./ {
 
 # pc4
 node /^pc2016\.codfw\./ {
+    role(mariadb::parsercache)
+}
+
+# pc5
+node /^pc2017\.codfw\./ {
     role(mariadb::parsercache)
 }
 

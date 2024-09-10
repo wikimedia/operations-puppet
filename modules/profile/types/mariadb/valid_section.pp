@@ -10,7 +10,7 @@ type Profile::Mariadb::Valid_section = Enum[
     # MediaWiki page content (External Storage)
     'es1', 'es2', 'es3', 'es4', 'es5', 'es6', 'es7',
     # MediaWiki ParserCache
-    'pc1', 'pc2', 'pc3', 'pc4',
+    'pc1', 'pc2', 'pc3', 'pc4','pc5',
     # Misc
     'm1', 'm2', 'm3', 'm5', 'backup1-eqiad', 'backup1-codfw',
     # Test
