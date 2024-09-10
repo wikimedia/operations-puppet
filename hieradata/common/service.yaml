@@ -1835,7 +1835,7 @@ service::catalog:
             - https://prometheus-%{::site}.wikimedia.org/
       scheduler: wrr
     port: 443
-    state: lvs_setup
+    state: production
     # public endpoint for https only
     public_endpoint: "prometheus-eqiad"
     public_aliases:
