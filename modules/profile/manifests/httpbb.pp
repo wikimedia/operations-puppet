@@ -65,6 +65,7 @@ class profile::httpbb (
             '/srv/deployment/httpbb-tests/liftwing/production',
             '/srv/deployment/httpbb-tests/liftwing/staging',
             '/srv/deployment/httpbb-tests/ores_legacy',
+            '/srv/deployment/httpbb-tests/wikifunctions',
         ]:
             ensure => directory,
             purge  => true
@@ -219,6 +220,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'ores_legacy/test_ores_production.yaml':
         source => 'puppet:///modules/profile/httpbb/ores_legacy/test_ores_production.yaml'
+    }
+    httpbb::test_suite {'wikifunctions/test_main.yaml':
+        source => 'puppet:///modules/profile/httpbb/wikifunctions/test_main.yaml'
     }
 
     if $basicauth_credentials and $basicauth_credentials['docker-registry'] {

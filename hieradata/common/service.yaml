@@ -1664,7 +1664,7 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    httpbb_dir: appserver
+    httpbb_dir: wikifunctions
     page: true
     probes:
       - type: http

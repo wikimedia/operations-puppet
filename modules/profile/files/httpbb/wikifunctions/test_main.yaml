@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+https://www.wikifunctions.org:
+- path: /wiki/Wikifunctions:Main_Page
+  assert_status: 200
+  assert_body_contains: Welcome to Wikifunctions
+- path: /wiki/Z1
+  assert_status: 200
+  assert_body_contains: Object
+- path: /view/en/Z1
+  assert_status: 200
+  assert_body_contains: Object
+- path: /view/fr/Z1
+  assert_status: 200
+  assert_body_contains: Objet
