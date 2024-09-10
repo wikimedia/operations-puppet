@@ -117,7 +117,7 @@ profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
 profile::firewall::provider: nftables
 
 profile::firewall::nftables_throttling::ensure: present
-profile::firewall::nftables_throttling::nft_policy: accept
+profile::firewall::nftables_throttling::nft_policy: drop
 # allow 32 parallel TCP connections, ban clients above for 300 seconds
 profile::firewall::nftables_throttling::max_connections: 32
 profile::firewall::nftables_throttling::throttle_duration: 300
