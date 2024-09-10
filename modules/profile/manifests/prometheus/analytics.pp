@@ -117,7 +117,7 @@ class profile::prometheus::analytics (
         'replacement'   => '$1',
     }
 
-    prometheus::class_config{ "ceph_${::site}":
+    prometheus::class_config{ "ceph_server_${::site}":
         dest       => "${targets_path}/ceph_${::site}.yaml",
         class_name => 'role::ceph::server',
         port       => 9283,
