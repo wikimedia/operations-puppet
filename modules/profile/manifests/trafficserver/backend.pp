@@ -162,36 +162,37 @@ class profile::trafficserver::backend (
             user                     => $user,
             network_settings         => $network_settings,
         }
-    }
 
-    profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
-        instance_name    => $instance_name,
-        user             => $user,
-        logs             => $logs,
-        paths            => $paths,
-        conftool_service => $conftool_service,
-    }
+        profile::trafficserver::logs { "trafficserver_${instance_name}_logs":
+            instance_name    => $instance_name,
+            user             => $user,
+            logs             => $logs,
+            paths            => $paths,
+            conftool_service => $conftool_service,
+        }
 
-    profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
-        instance_name  => $instance_name,
-        atsmtail_progs => $atsmtail_backend_progs,
-        atsmtail_port  => $atsmtail_backend_port,
-        wanted_by      => 'fifo-log-demux@notpurge.service',
-        mtail_args     => $mtail_args,
-    }
+        profile::trafficserver::atsmtail { "trafficserver_${instance_name}_atsmtail":
+            instance_name  => $instance_name,
+            atsmtail_progs => $atsmtail_backend_progs,
+            atsmtail_port  => $atsmtail_backend_port,
+            wanted_by      => 'fifo-log-demux@notpurge.service',
+            mtail_args     => $mtail_args,
+        }
 
-    mtail::program { 'atsbackend':
-        source      => 'puppet:///modules/mtail/programs/atsbackend.mtail',
-        destination => $atsmtail_backend_progs,
-        notify      => Service["atsmtail@${instance_name}"],
-    }
+        mtail::program { 'atsbackend':
+            source      => 'puppet:///modules/mtail/programs/atsbackend.mtail',
+            destination => $atsmtail_backend_progs,
+            notify      => Service["atsmtail@${instance_name}"],
+        }
 
-    # Parse Backend-Timing origin server response header and make the values
-    # available to Prometheus
-    mtail::program { 'atsbackendtiming':
-        source      => 'puppet:///modules/mtail/programs/atsbackendtiming.mtail',
-        destination => $atsmtail_backend_progs,
-        notify      => Service["atsmtail@${instance_name}"],
+        # Parse Backend-Timing origin server response header and make the values
+        # available to Prometheus
+        mtail::program { 'atsbackendtiming':
+            source      => 'puppet:///modules/mtail/programs/atsbackendtiming.mtail',
+            destination => $atsmtail_backend_progs,
+            notify      => Service["atsmtail@${instance_name}"],
+        }
+
     }
 
     # Make sure the default varnish.service is never started
