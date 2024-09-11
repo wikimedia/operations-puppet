@@ -125,7 +125,6 @@ profile::base::core_dump_pattern: "/var/tmp/core/core.%h.%e.%p.%t"
 profile::base::unprivileged_userns_clone: false
 http_proxy: ~
 puppet_ca_server: "%{lookup('puppetmaster')}"
-manage_puppet_ca_file: false
 
 profile::cumin::monitor_agentrun: false
 profile::cumin::unprivmaster::puppetdb_micro_host: "%{lookup('puppetdb_host')}"

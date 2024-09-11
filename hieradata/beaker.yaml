@@ -37,10 +37,6 @@ ntp_peers:
 # Disable insetup role report
 # profile::cumin::master::insetup_role_report_day: 0
 
-## Puppet CA management
-# manage_puppet_ca_file: false
-
-
 # profile::base::certificates::trusted_certs: ~
 
 # Set bastion_hosts to localhost so that beaker can ssh in to the image

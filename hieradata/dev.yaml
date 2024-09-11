@@ -63,8 +63,6 @@ profile::puppet::agent::environment: 'dev'
 # Set our dev puppet server hostname, otherwise we grab eqiad's from common.yaml
 puppetmaster: 'puppet'
 puppet_ca_server: "%{lookup('puppetmaster')}"
-# Don't install the production Puppet CA
-manage_puppet_ca_file: false
 # Don't burn CPU on our dev's laptop by running the agent periodically, this is
 # a stop gap until a better solution is devised.
 profile::puppet::agent::create_timer: false

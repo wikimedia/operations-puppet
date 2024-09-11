@@ -51,8 +51,6 @@ profile::openstack::base::puppetmaster::enc_client::api_endpoint: "https://puppe
 profile::openstack::codfw1dev::cumin::project_masters: []
 profile::openstack::codfw1dev::cumin::project_pub_key: undef
 
-puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.codfw1dev.pem
-
 cumin_masters:
   - 172.16.128.58 # bastion-codfw1dev-03.bastioninfra-codfw1dev.codfw1dev.wikimedia.cloud
 

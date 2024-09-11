@@ -5,8 +5,6 @@
 #   Otherwise, some magic is done to have local repositories and sync between puppetmasters.
 # @param web_hostname hostname of the website
 # @param ca_server the CA server
-# @param ca_source source of the CA file
-# @param manage_ca_file if true manage the CA file
 # @param prevent_cherrypicks disable cherry picks
 # @param extra_auth_rules Addtional auth rules
 # @param canary_hosts list of hosts used for caanary testing
@@ -18,8 +16,6 @@
 class profile::puppetmaster::frontend(
     # Globals
     Stdlib::Host        $ca_server               = lookup('puppet_ca_server'),
-    Stdlib::Filesource  $ca_source               = lookup('puppet_ca_source'),
-    Boolean             $manage_ca_file          = lookup('manage_puppet_ca_file'),
     Optional[Stdlib::HTTPUrl] $http_proxy        = lookup('http_proxy'),
     # Class scope
     # TODO: we should probably configure theses in P:puppetmaster::common
@@ -44,15 +40,6 @@ class profile::puppetmaster::frontend(
 
     backup::set { 'var-lib-puppet-ssl': }
     backup::set { 'var-lib-puppet-volatile': }
-    if $manage_ca_file {
-        file{[$facts['puppet_config']['master']['localcacert'],
-              "${facts['puppet_config']['master']['ssldir']}/ca/ca_crt.pem"]:
-            ensure => file,
-            owner  => 'puppet',
-            group  => 'puppet',
-            source => $ca_source,
-        }
-    }
     # Puppet frontends are git masters at least for their datacenter
     $ca = $ca_server == $facts['networking']['fqdn']
     $sync_ensure = $ca.bool2str('absent', 'present')

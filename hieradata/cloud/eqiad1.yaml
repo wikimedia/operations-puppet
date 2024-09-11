@@ -148,7 +148,6 @@ zookeeper_clusters:
 profile::ssh::server::disable_agent_forwarding: false
 
 puppetmaster: "puppetmaster.cloudinfra.wmflabs.org"
-puppet_ca_source: puppet:///modules/profile/puppet/ca.labs.pem
 
 keystone_public_port: "25000"
 

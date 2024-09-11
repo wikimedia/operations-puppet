@@ -66,7 +66,6 @@ cumin_masters:
   - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
 
 ## Puppet CA management
-manage_puppet_ca_file: false
 puppetmaster: "%{alias('__master_for_role_puppetserver__pontoon')}"
 puppet_ca_server: "%{alias('__master_for_role_puppetserver__pontoon')}"
 profile::puppet::agent::puppetmaster: "%{alias('__master_for_role_puppetserver__pontoon')}"
