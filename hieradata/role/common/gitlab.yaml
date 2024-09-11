@@ -111,9 +111,9 @@ profile::gitlab::custom_nginx_config:
 profile::gitlab::enable_robots_txt: false
 
 profile::gitlab::logrotate_frequency: "daily" # rotate logs daily
-profile::gitlab::logrotate_maxsize: "nil" # logs will not be rotated when they grow bigger than size
-profile::gitlab::logrotate_size: "nil" # do not rotate by size by default
-profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs
+profile::gitlab::logrotate_maxsize: "5G" # logs will be rotated when they grow bigger than 5G
+profile::gitlab::logrotate_size: "5G" # do rotate by size
+profile::gitlab::logrotate_rotate: 10 # keep 10 rotated logs to save disk space
 profile::firewall::provider: nftables
 
 profile::firewall::nftables_throttling::ensure: present
