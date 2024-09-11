@@ -97,7 +97,6 @@ profile::postfix::mx::config:
     - wikilovesmonuments.nl
     - wikilovesmonuments.org
     - wikimedia.community
-    - wikimedia.com
     - wikipedia.com
     # routed by special-case routers
     - donate.wikimedia.org
