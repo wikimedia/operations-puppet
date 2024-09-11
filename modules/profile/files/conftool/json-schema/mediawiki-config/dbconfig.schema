@@ -71,7 +71,7 @@
         "externalLoads": {
             "type": "object",
             "patternProperties": {
-                "^es[1234567]|pc[1234]|x[12]$": {"$ref": "#/definitions/sectionInstances"}
+                "^es[1234567]|pc[12345]|x[12]$": {"$ref": "#/definitions/sectionInstances"}
             },
             "additionalProperties": false
         },
