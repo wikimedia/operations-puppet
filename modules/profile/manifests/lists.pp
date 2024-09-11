@@ -37,6 +37,7 @@ class profile::lists (
 ) {
     include network::constants
     include privateexim::listserve
+    include profile::tlsproxy::envoy
 
     $is_primary = $facts['fqdn'] == $primary_host
 

@@ -58,3 +58,14 @@ profile::lists::renamed_lists:
   langcom-l:            langcom-internal
 
 profile::firewall::provider: nftables
+
+profile::tlsproxy::envoy::ssl_provider: cfssl
+profile::tlsproxy::envoy::firewall_srange: []
+profile::tlsproxy::envoy::services:
+  - server_names: ["*"]
+    port: 443
+profile::tlsproxy::envoy::tls_port: 8443
+profile::tlsproxy::envoy::global_cert_name: "lists.wikimedia.org"
+profile::tlsproxy::envoy::cfssl_options:
+  hosts:
+    - "%{facts.networking.fqdn}"
