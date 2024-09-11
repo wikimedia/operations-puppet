@@ -1,2 +1,2 @@
-profile::cache::haproxy::extended_logging: yes
-profile::cache::haproxy::use_haproxykafka: yes
+profile::cache::haproxy::extended_logging: false
+profile::cache::haproxy::use_haproxykafka: false
