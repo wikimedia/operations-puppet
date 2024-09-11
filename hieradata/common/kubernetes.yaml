@@ -862,3 +862,11 @@ kubernetes::clusters:
         - aux-k8s-worker1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
