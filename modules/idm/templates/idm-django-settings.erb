@@ -134,6 +134,7 @@ BITU_SUB_SYSTEMS = {
     'ldapbackend': {
         'default_gid': 500,
         'manage_ssh_keys': True,
+        'permissions': 'ldapbackend.permission.LDAPPermissions',
         'ssh_keys_display_name': 'Wikimedia Cloud Services SSH keys',
         'password_hash': 'ldapbackend.helpers.hash_password',
         'password_hash_method': HASHED_SALTED_SHA,
@@ -242,7 +243,15 @@ API_PERMISSIONS = (
 <%- end -%>
 
 <%- if @production == false -%>
-ENABLE_2FA = True
+ACCESS_REQUEST_RULES = {
+    'ldapbackend': {
+        'cn=idptest-users,ou=groups,dc=wikimedia,dc=org': [{
+            'module': 'permissions.validators.manager_approval',
+            'managers': ['slyngshede', 'jmm'],
+            'count': 2
+        }],
+    }
+}
 <%- end -%>
 
 <%- if @mediawiki_oauth -%>
