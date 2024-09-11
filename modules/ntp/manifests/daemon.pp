@@ -2,7 +2,6 @@
 define ntp::daemon(
     Array[Stdlib::Host] $servers      = [],
     Array[Stdlib::Host] $pools        = [],
-    Array[Stdlib::Host] $peers        = [],
     Array[Stdlib::Host] $query_acl    = [],
     Array[String]       $time_acl     = [],
     String              $extra_config = '',

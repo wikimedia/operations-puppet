@@ -13,9 +13,8 @@ class profile::wmcs::services::ntp (
     $extra_config = 'tos orphan 12'
 
     $query_acl = []
-    $server_upstreams = []
 
-    $peers = $server_peers.filter |Stdlib::Host $host| { $host != $::facts['networking']['fqdn'] }
+    $servers = $server_peers.filter |Stdlib::Host $host| { $host != $::facts['networking']['fqdn'] }
 
     # On Bookworm (or, really, src:ntpsec, but that's replacing src:ntp in Bookworm),
     # we can pass CIDR ranges directly in the config file. For now, we need to pass the
@@ -27,9 +26,8 @@ class profile::wmcs::services::ntp (
     }
 
     ntp::daemon { 'server':
-        servers      => $server_upstreams,
+        servers      => $servers,
         pools        => $server_upstream_pools,
-        peers        => $peers,
         time_acl     => $time_acl,
         extra_config => $extra_config,
         query_acl    => $query_acl,

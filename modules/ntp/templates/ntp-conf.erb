@@ -9,16 +9,12 @@ restrict default ignore
 
 restrict source notrap nomodify noquery
 
-<% @peers.each do |val| -%>
-peer <%= val %>
-<% end -%>
-
 <% @servers.each do |val| -%>
-server <%= val %> iburst
+server <%= val %>
 <% end -%>
 
 <% @pools.each do |val| -%>
-pool <%= val %> iburst
+pool <%= val %>
 <% end -%>
 
 
@@ -31,14 +27,14 @@ restrict ::1
 <% if @time_acl.count -%>
 # Allow non-peering time service from these:
 <% @time_acl.each do |val| -%>
-restrict <%= val %> notrap nomodify noquery nopeer
+restrict <%= val %> nomodify noquery
 <% end -%>
 <% end -%>
 
 <% if @query_acl.count -%>
 # Allow non-peering time service *and* info queries:
 <% @query_acl.each do |val| -%>
-restrict <%= val %> notrap nomodify nopeer
+restrict <%= val %> nomodify
 <% end -%>
 <% end -%>
 
