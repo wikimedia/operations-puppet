@@ -1,17 +1,17 @@
 # @summary A profile to configure the config-master.wikimedia.org site content
 # @param conftool_prefix th conftool_prefix
-# @param puppet_ca_server the location of the puppet ca server
+# @param puppet_merge_server: The server from which Puppet changes are merged
 # @param server_name the main server name
 # @param server_aliases a list of alternate server names
 # @param enable_nda if true enable the nda uri
 # @param proxy_sha1 if true proxy the sha1's used by puppet-merge from the puppetmaster ca host
 class profile::configmaster (
-    Stdlib::Unixpath    $conftool_prefix  = lookup('conftool_prefix'),
-    Stdlib::Fqdn        $puppet_ca_server = lookup('puppet_ca_server'),
-    Stdlib::Host        $server_name      = lookup('profile::configmaster::server_name'),
-    Array[Stdlib::Host] $server_aliases   = lookup('profile::configmaster::server_aliases'),
-    Boolean             $enable_nda       = lookup('profile::configmaster::enable_nda'),
-    Boolean             $proxy_sha1       = lookup('profile::configmaster::proxy_sha1'),
+    Stdlib::Unixpath    $conftool_prefix     = lookup('conftool_prefix'),
+    Stdlib::Fqdn        $puppet_merge_server = lookup('puppet_merge_server'),
+    Stdlib::Host        $server_name         = lookup('profile::configmaster::server_name'),
+    Array[Stdlib::Host] $server_aliases      = lookup('profile::configmaster::server_aliases'),
+    Boolean             $enable_nda          = lookup('profile::configmaster::enable_nda'),
+    Boolean             $proxy_sha1          = lookup('profile::configmaster::proxy_sha1'),
 ) {
     ensure_packages(['python3-conftool'])
     $real_server_aliases = $server_aliases + [
@@ -22,9 +22,9 @@ class profile::configmaster (
     $protected_uri = '/nda'
     $nda_dir       = "${document_root}${protected_uri}"
     $vhost_settings = {
-        'enable_nda'       => $enable_nda,
-        'proxy_sha1'       => $proxy_sha1,
-        'puppet_ca_server' => $puppet_ca_server,
+        'enable_nda'          => $enable_nda,
+        'proxy_sha1'          => $proxy_sha1,
+        'puppet_merge_server' => $puppet_merge_server,
     }
 
     # The installer dir is used by the reimage cookbook to pass info to late_command.sh

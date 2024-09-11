@@ -37,8 +37,8 @@
     # TODO: once migrated to puppet7 re-enable verification
     SSLProxyVerify none
     SSLProxyCheckPeerCN off
-    ProxyPass /puppet-sha1.txt https://<%= @vhost_settings['puppet_ca_server'] %>/puppet-sha1.txt
-    ProxyPass /labsprivate-sha1.txt https://<%= @vhost_settings['puppet_ca_server'] %>/labsprivate-sha1.txt
+    ProxyPass /puppet-sha1.txt https://<%= @vhost_settings['puppet_merge_server'] %>/puppet-sha1.txt
+    ProxyPass /labsprivate-sha1.txt https://<%= @vhost_settings['puppet_merge_server'] %>/labsprivate-sha1.txt
 <%- end -%>
     CustomLog ${APACHE_LOG_DIR}/configmaster-access.log wmf
     ErrorLog ${APACHE_LOG_DIR}/configmaster-error.log

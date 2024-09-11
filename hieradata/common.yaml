@@ -630,6 +630,7 @@ wikimedia_clusters:
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_ca_source: puppet:///modules/profile/puppet/ca.production.pem
+puppet_merge_server: puppetmaster1001.eqiad.wmnet
 manage_puppet_ca_file: false
 # This list is mostly maintained for rsync hosts_allow.
 # Servers listed here can rsync pull from each other.
