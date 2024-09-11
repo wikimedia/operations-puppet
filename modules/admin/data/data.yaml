@@ -6660,6 +6660,10 @@ ldap_only_users:
   petarpetkovic:
     ensure: absent
     realname: Petar Petkovic
+  philippesaade:
+    ensure: present
+    realname: Philippe Saade
+    email: philippe.saade@wikimedia.de
   prtksxna:
     ensure: absent
     realname: Prateek Saxena
