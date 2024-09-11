@@ -1,0 +1,58 @@
+# SPDX-License-Identifier: Apache-2.0
+# XXX should work out of the box with existing hieradata
+profile::kafka::broker::kafka_cluster_name: logging-eqiad
+profile::kafka::broker::max_heap_size: '1g'
+profile::kafka::broker::num_partitions: 1
+
+# XXX ip address required here, can't use %{alias}
+kafka_brokers_logging:
+ - 172.16.5.8 # phi-puppet-01.o11y.eqiad1.wikimedia.cloud
+profile::zookeeper::firewall::srange: '$DOMAIN_NETWORKS'
+
+# XXX the %{alias} parametrization here supports only one host now!
+zookeeper_clusters:
+  main-eqiad:
+    hosts:
+      "%{alias('__master_for_role_puppetserver__pontoon')}": '1042'
+
+profile::zookeeper::cluster_name: main-eqiad
+profile::puppetserver::pontoon::zk_enabled: true
+profile::zookeeper::firewall::access: ['DOMAIN_NETWORKS']
+
+# XXX the %{alias} parametrization here supports only one host now!
+kafka_clusters:
+  main-eqiad:
+    ipv6: false
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
+  main-codfw:
+    ipv6: false
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
+  logging-eqiad:
+    ipv6: false
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
+  logging-codfw:
+    ipv6: false
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na
+  jumbo-eqiad:
+    ipv6: false
+    zookeeper_cluster_name: main-eqiad
+    brokers:
+      "%{alias('__master_for_role_kafka__logging')}":
+        id: 1042
+        rack: na

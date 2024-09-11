@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+
+### base
+
+puppetserver::pontoon:
+- filippo-puppet-01.o11y.eqiad1.wikimedia.cloud
+
+puppetdb:
+- filippo-puppetdb-01.o11y.eqiad1.wikimedia.cloud
+
+pki::multirootca:
+- filippo-pki-01.o11y.eqiad1.wikimedia.cloud
+
+### metrics
+
+prometheus:
+- filippo-prometheus-01.o11y.eqiad1.wikimedia.cloud
+- filippo-prometheus-02.o11y.eqiad1.wikimedia.cloud
+
+titan:
+- filippo-titan-01.o11y.eqiad1.wikimedia.cloud
+
+alerting_host:
+- filippo-alert-01.o11y.eqiad1.wikimedia.cloud
+
+pontoon::lb:
+- filippo-lb-01.o11y.eqiad1.wikimedia.cloud
