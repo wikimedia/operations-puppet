@@ -6532,6 +6532,10 @@ ldap_only_users:
     ensure: present
     realname: Eduardo Medina
     email: eamedina@wikimedia.org
+  echukwukere:
+    ensure: present
+    realname: Emeka Chukwukere
+    email: echukwukere@wikimedia.org
   elapps:
     ensure: present
     realname: Elena Lappen
