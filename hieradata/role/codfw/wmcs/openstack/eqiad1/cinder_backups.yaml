@@ -51,6 +51,12 @@ profile::cloudceph::mon::hosts:
   "cloudcephmon1003.eqiad.wmnet":
     public:
       addr: "10.64.20.69"
+  "cloudcephmon1005.eqiad.wmnet":
+    public:
+      addr: "10.64.148.27"
+  "cloudcephmon1006.eqiad.wmnet":
+    public:
+      addr: "10.64.149.19"
 
 profile::wmcs::backy2::backup_cinder_volumes::scheduler_config:
   ceph_pool: eqiad1-cinder

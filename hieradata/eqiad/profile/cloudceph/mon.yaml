@@ -11,3 +11,6 @@ profile::cloudceph::mon::hosts:
   "cloudcephmon1005.eqiad.wmnet":
     public:
       addr: "10.64.148.27"
+  "cloudcephmon1006.eqiad.wmnet":
+    public:
+      addr: "10.64.149.19"
