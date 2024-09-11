@@ -761,9 +761,9 @@ kafka_clusters:
   main-codfw:
     zookeeper_cluster_name: main-codfw
     brokers:
-      kafka-main2003.codfw.wmnet:
-        id: 2003
-        rack: C
+      # kafka-main2003.codfw.wmnet:
+      #   id: 2003
+      #   rack: C
       kafka-main2004.codfw.wmnet:
         id: 2004
         rack: D
@@ -777,9 +777,9 @@ kafka_clusters:
       kafka-main2007.codfw.wmnet:
         id: 2002
         rack: B
-      # kafka-main2008.codfw.wmnet:
-      #   id: 2003
-      #   rack: C
+      kafka-main2008.codfw.wmnet:
+        id: 2003
+        rack: C
       # kafka-main2009.codfw.wmnet:
       #   id: 2004
       #   rack: D
