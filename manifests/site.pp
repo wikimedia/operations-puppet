@@ -2365,7 +2365,7 @@ node /^planet[12]003\.(eqiad|codfw)\./ {
     role(planet)
 }
 
-node /^poolcounter[12]00[345]\.(codfw|eqiad)\./ {
+node /^poolcounter[12]00[3-6]\.(codfw|eqiad)\./ {
     role(poolcounter::server)
 }
 
