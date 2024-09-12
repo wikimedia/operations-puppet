@@ -7,7 +7,7 @@ User=zuul
 Group=zuul
 <% if @statsd_host != "" %>
 Environment=STATSD_HOST=<%= @statsd_host %>
-Environment=STATSD_PORT=8125
+Environment=STATSD_PORT=9125
 <% end %>
 <% if @facts['os']['release']['major'].to_i > 9 -%>
 ExecStart=/srv/deployment/zuul/venv/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
