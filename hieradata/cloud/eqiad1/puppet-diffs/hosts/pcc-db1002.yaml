@@ -1,5 +1,5 @@
 ---
-puppet_compiler::version: 3.2.2
+puppet_compiler::version: 3.2.3
 puppetdb::app::bind_ip_insecure: '0.0.0.0'
 puppet_compiler::uploader::realms:
   production7:
