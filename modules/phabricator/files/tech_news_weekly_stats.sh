@@ -49,7 +49,7 @@ result_tasks=$(echo "$result_tasks" | sed -r 's/^.//')
 result_tasks=$(echo "$result_tasks" | sed ':a;N;$!ba;s/\n/\n|\-\n/g')
 
 # the actual email
-cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Weekly Phabricator data for Tech News - ${timestamp}" ${rcpt_address}
+cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Weekly Phabricator data for Tech News - ${timestamp}" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 This is the automatic weekly Phabricator mail for Tech News.
 
 It is supposed to list Phabricator tasks reported by folks who are
