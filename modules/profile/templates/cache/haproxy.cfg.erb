@@ -23,7 +23,7 @@ defaults
     mode       http
     <%- if @extended_logging -%>
     log-format "%rt %Tr %Tw %Tc %ST {%[capture.req.hdr(0)]} {%[capture.res.hdr(0)]} %ts"
-    log-format-sd %{+E}o\ [haproxykafka@0\ haproxy_pid=\"%pid\"\ ip=\"%ci\"\ sequence=\"%ID\"\ accept_date=\"%tr\"\ time_backend_response=\"%Tr\"\ http_status=\"%ST\"\ response_size=\"%B\"\ termination_state=\"%ts\"\ uri_host=\"%[capture.req.hdr(0)]\"\ referer=\"%[capture.req.hdr(1)]\"\ user_agent=\"%[capture.req.hdr(2)]\"\ accept_language=\"%[capture.req.hdr(3)]\"\ range=\"%[capture.req.hdr(4)]\"\ accept=\"%[capture.req.hdr(5)]\"\ tls=\"%[capture.req.hdr(6)]\"\ cache_status=\"%[capture.res.hdr(0)]\"\ content_type=\"%[capture.res.hdr(1)]\"\ x_analytics=\"%[capture.res.hdr(2)]\"\ x_cache=\"%[capture.res.hdr(3)]\"\ backend=\"%[capture.res.hdr(4)]\"\ http_method=\"%HM\"\ uri_path=\"%HPO\"\ uri_query=\"%HQ\"]
+    log-format-sd %{+E}o\ [haproxykafka@0\ $schema=\"/webrequest/1.0.0\"\ haproxy_pid=\"%pid\"\ ip=\"%ci\"\ sequence=\"%ID\"\ accept_date=\"%tr\"\ time_backend_response=\"%Tr\"\ http_status=\"%ST\"\ response_size=\"%B\"\ termination_state=\"%ts\"\ uri_host=\"%[capture.req.hdr(0)]\"\ referer=\"%[capture.req.hdr(1)]\"\ user_agent=\"%[capture.req.hdr(2)]\"\ accept_language=\"%[capture.req.hdr(3)]\"\ range=\"%[capture.req.hdr(4)]\"\ accept=\"%[capture.req.hdr(5)]\"\ tls=\"%[capture.req.hdr(6)]\"\ cache_status=\"%[capture.res.hdr(0)]\"\ content_type=\"%[capture.res.hdr(1)]\"\ x_analytics=\"%[capture.res.hdr(2)]\"\ x_cache=\"%[capture.res.hdr(3)]\"\ backend=\"%[capture.res.hdr(4)]\"\ http_method=\"%HM\"\ uri_path=\"%HPO\"\ uri_query=\"%HQ\"]
     <%- else -%>
     log-format "%rt %Tr %Tw %Tc %ST %hr %hs %ts"
     <%- end -%>
