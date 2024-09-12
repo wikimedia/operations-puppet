@@ -135,7 +135,6 @@ groups:
     members: &platform_engineering_members [bpirkle, cicalese,
               daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
     approval:
-      - Mat Nadrofsky
       - Will Doran
       - Jean-René Branaa
   release-engineering:
@@ -492,7 +491,6 @@ groups:
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Mat Nadrofsky
       - Jean-René Branaa
   dumpsdata-admins:
     gid: 825
@@ -501,7 +499,6 @@ groups:
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Mat Nadrofsky
       - Jean-René Branaa
   dumps-roots:
     gid: 828
@@ -510,7 +507,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Mat Nadrofsky
       - Jean-René Branaa
   restbase-roots:
     gid: 744
