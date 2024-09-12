@@ -61,7 +61,7 @@ class profile::puppetserver (
         Enum['unlimited'],
         Integer
     ]                                  $environment_timeout       = lookup('profile::puppetserver::environment_timeout'),
-
+    Optional[Stdlib::Host]             $puppet_merge_server       = lookup('puppet_merge_server'),
 ) {
     $enable_ca = $ca_server == $facts['networking']['fqdn']
     if $git_pull {
@@ -81,13 +81,13 @@ class profile::puppetserver (
                 'sha1' => '/srv/config-master/puppet-sha1.txt',
             },
         }
-        # TODO: once the migration is complete update to use ca_server instead
-        class { 'merge_cli':
-            #ca_server => $ca_server,
-            ca_server => 'puppetmaster1001.eqiad.wment',
-            masters   => $profile::puppetserver::git::servers,
-            workers   => $profile::puppetserver::git::servers,
-            paths     => $paths,
+        if $puppet_merge_server {
+            class { 'merge_cli':
+                ca_server => $puppet_merge_server,
+                masters   => $profile::puppetserver::git::servers,
+                workers   => $profile::puppetserver::git::servers,
+                paths     => $paths,
+            }
         }
         $g10k_sources = {
             'production'  => {
@@ -101,6 +101,7 @@ class profile::puppetserver (
     $exluded_args = [
         'enc_source', 'git_pull', 'intermediate_ca',
         'ca_public_key', 'ca_crl', 'ca_private_key_secret',
+        'puppet_merge_server',
     ]
     class { 'puppetserver':
         * => wmflib::resource::filter_params($exluded_args),
