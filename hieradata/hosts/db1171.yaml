@@ -1,6 +1,6 @@
 # db1171
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
-  s7: 150G
-  s8: 200G
+  s7: 120G
+  s8: 264G
 mariadb::package: 'wmf-mariadb106'
