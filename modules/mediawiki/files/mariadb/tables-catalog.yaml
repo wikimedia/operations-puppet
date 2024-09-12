@@ -219,6 +219,10 @@ tables:
     source: core
     canonicality: canonical
     visibility: partially public
+  - name: user_autocreate_serial
+    source: core
+    canonicality: canonical
+    visibility: public
   - name: revision
     source: core
     canonicality: canonical
@@ -303,6 +307,70 @@ tables:
     source: geo_data
     canonicality: derivative
     visibility: public
+  - name: linter
+    source: linter
+    canonicality: derivative
+    visibility: public
+  - name: spoofuser
+    source: spoofuser
+    canonicality: derivative
+    visibility: private
+  - name: securepoll_entity
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_properties
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_questions
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_options
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_lists
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_log
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_msgs
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_elections
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_voters
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_votes
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_strike
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: securepoll_cookie_match
+    source: securepoll_main
+    canonicality: canonical
+    visibility: private
+  - name: transcode
+    source: timed_media_handler
+    canonicality: canonical with acceptable loss
+    visibility: public
+  - name: wbc_entity_usage
+    source: wikibase_client
+    canonicality: derivative
+    visibility: public
 sources:
     core:
       - path: maintenance/tables.json
@@ -325,6 +393,21 @@ sources:
     geo_data:
       - path: extensions/GeoData/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
+    linter:
+      - path: extensions/Linter/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
+    spoofuser:
+      - path: extensions/AntiSpoof/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AntiSpoof/+/master/sql/tables.json
+    securepoll_main:
+      - path: extensions/SecurePoll/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/SecurePoll/+/master/sql/tables.json
+    timed_media_handler:
+      - path: extensions/TimedMediaHandler/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/TimedMediaHandler/+/master/sql/tables.json
+    wikibase_client:
+      - path: extensions/Wikibase/client/sql/abstract/entity_usage.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/client/sql/abstract/entity_usage.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
