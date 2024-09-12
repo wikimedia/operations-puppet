@@ -32,7 +32,7 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde]
+              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -143,7 +143,7 @@ groups:
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
                   gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
                   zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
-    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper, sandeeps]
+    members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper]
     approval:
       - Tyler Cipriani
   wikireplica-roots:
@@ -6149,13 +6149,11 @@ users:
     ssh_keys:
       - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC4zw34NTTT9pZBUL0m+kjk2PkPqtLrVGFsun7e3Bl8QAvq9Z6KU2keYfF/RjR/yOjSQhkgEwGkVyvzh7zlKiKDq9BpvIqNANcCHHi+C0ZZmuwHYmrLV+9aUMHtaVvYCCcu2flCPhIq3sHevRaUn4Xux8hbcrgq4G7gZ0Ko2keVlAy2lkZYmAwmyNN+rTnHBY3L7nbBWQ7kfAnNysP7oBq0vrcdSqufQebj1ArDUPnKduNCpYhIiH2BNpl9O+NkogGt9iM7UTRT5z/zaDOaiqQVl44Rw6MWDigM5+fhofBTeHh9kPIP23OSAqgV2CuQn4X743ep6JdKkhAPkZ4Kk4uq+eMskZhXpE0caqn1QYaUgqGdSIj55NEANFV/ks2OBtL/BondRYcawJN/zQeRY5QCK2efQayfsK3uFuqo2Sdma2ouWOkv3jWb9V8OmLBnjIOI3kTlhgkfXLVWsp9+CDMC83Z67IgNtj6RWHw9CF3aKXq8Y4oxFRakYbmBX6XKi7Mr8ipnbHCT4MCsJ7Ury/oUG/Dj5mfoeWnPmX01LTUigTvl4z8T6zSz9eAnE19hmWFRRMDdjWsjmYk3Xzcxy/ZXR5+aDrS20Ert4DzITaMB2py33VmEk3PtnGQGKiu8hrYtA0h3MxuUBuZHNrWTElsrluRnjaQhqAo1px/GEQZ7Vw== anakanishi@wmf2997'
   sandeeps:
-    ensure: present
+    ensure: absent
     realname: Sandeep Singh
-    email: sandeep.singh@wikimedia.org
     uid: 45632
     gid: 500
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBox9lAhzQ4sSC7sGC4Ca/jVv7TripiJMj8UcxrilUxB sandeep.singh@wikimedia.org'
+    ssh_keys: []
   rkhan:
     ensure: present
     realname: Riddy Khan
