@@ -57,6 +57,13 @@ function quick_show_slave() {
     echo "######"
 }
 
+function watch_replication(){
+    while : ; do quick_show_slave ; sleep 1 ; done
+}
+
+function disable_semi_sync(){
+    sudo mysql -e "STOP SLAVE ; SET GLOBAL rpl_semi_sync_slave_enabled=OFF; START SLAVE; "
+}
 
 ### Exporting
 export HISTFILESIZE=100000
