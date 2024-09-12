@@ -16,6 +16,7 @@ class profile::puppetmaster::backend(
     Boolean                              $prevent_cherrypicks = lookup('profile::puppetmaster::backend::prevent_cherrypicks'),
     Optional[String]                     $extra_auth_rules    = lookup('profile::puppetmaster::backend::extra_auth_rules'),
     Array[String] $puppetservers                         = lookup('profile::puppetmaster::backend::puppetservers'),
+    Optional[Stdlib::Host]               $puppet_merge_server = lookup('puppet_merge_server'),
 ) {
 
     ensure_packages(['libapache2-mod-passenger'])
@@ -47,6 +48,7 @@ class profile::puppetmaster::backend(
         enable_merge_cli    => $profile::puppetmaster::common::enable_merge_cli,
         ca_server           => $ca_server,
         servers             => $servers,
+        puppet_merge_server => $puppet_merge_server,
     }
 
     $puppetservers_puppetmasters_ferm = join($puppetservers + keys($servers), ' ')

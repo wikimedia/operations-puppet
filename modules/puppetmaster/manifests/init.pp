@@ -55,6 +55,7 @@ class puppetmaster(
     Optional[Stdlib::HTTPUrl]                $http_proxy          = undef,
     Optional[String]                         $extra_auth_rules    = undef,
     Optional[String]                         $realm_override      = undef,
+    Optional[String]                         $puppet_merge_server = undef,
 ){
 
     $workers = $servers[$facts['fqdn']]
@@ -157,13 +158,14 @@ class puppetmaster(
             'sha1' => '/srv/config-master/labsprivate-sha1.txt',
         },
     }
-    class { 'merge_cli':  # lint:ignore:wmf_styleguide
-        ensure    => $enable_merge_cli.bool2str('present', 'absent'),
-        ca_server => $ca_server,
-        paths     => $paths,
-        masters   => $servers.keys(),
-        workers   => $all_workers + wmflib::role::hosts('puppetserver'),
-
+    if $enable_merge_cli {
+        class { 'merge_cli': # lint:ignore:wmf_styleguide
+            ensure    => $enable_merge_cli.bool2str('present', 'absent'),
+            ca_server => $puppet_merge_server,
+            paths     => $paths,
+            masters   => $servers.keys(),
+            workers   => $all_workers + wmflib::role::hosts('puppetserver'),
+        }
     }
 
     if $enable_geoip {

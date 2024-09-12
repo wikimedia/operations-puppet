@@ -32,6 +32,7 @@ class profile::puppetmaster::frontend(
     # Should be defined in the private repo.
     Hash[String, Any]             $ip_reputation_config    = lookup('profile::puppetmaster::frontend::ip_reputation_config'),
     Array[String]                 $ip_reputation_proxies   = lookup('profile::puppetmaster::frontend::ip_reputation_proxies'),
+    Optional[Stdlib::Host]        $puppet_merge_server     = lookup('puppet_merge_server'),
 ) {
     ensure_packages([
       'libapache2-mod-passenger',
@@ -105,6 +106,7 @@ class profile::puppetmaster::frontend(
         http_proxy          => $http_proxy,
         netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
         enable_merge_cli    => $profile::puppetmaster::common::enable_merge_cli,
+        puppet_merge_server => $puppet_merge_server,
     }
 
     $workers = $servers[$facts['networking']['fqdn']]
