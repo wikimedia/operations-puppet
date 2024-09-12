@@ -1,1 +1,2 @@
 profile::lists::mailman_root: /srv/mailman3
+profile::firewall::provider: nftables
