@@ -1,4 +1,4 @@
-puppet_compiler::version: 3.2.1
+puppet_compiler::version: 3.2.2
 profile::java::java_packages:
 - variant: jre-headless
   version: '17'
