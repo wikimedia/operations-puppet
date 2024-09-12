@@ -6,4 +6,5 @@ ExecStart=/usr/bin/thanos query \
   --http-address <%= @http_address %> \
   --query.replica-label <%= @replica_label %> \
   --store.sd-files <%= @sd_files %> \
+  <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   <%= @logging_cmdline %>

@@ -13,6 +13,7 @@ class thanos::query (
     Stdlib::Port::Unprivileged $http_port,
     String $replica_label = 'replica',
     String $sd_files = '/etc/thanos-query/stores/*.yml',
+    Boolean $tracing_enabled = false,
     Boolean $request_debug = false,
 ) {
     ensure_packages(['thanos'])
@@ -40,6 +41,12 @@ class thanos::query (
     file { '/etc/thanos-query/request-logging.yml':
         ensure  => present,
         content => $logging_config,
+    }
+
+    $tracing_config_file = '/etc/thanos-query/tracing-config.yml'
+    file { $tracing_config_file:
+        ensure  => present,
+        content => template('thanos/tracing-config.yaml.erb'),
     }
 
     $logging_cmdline = $request_debug ? {

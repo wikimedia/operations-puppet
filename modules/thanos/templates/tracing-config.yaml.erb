@@ -1,0 +1,20 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+type: OTLP
+config:
+    client_type: "grpc"
+    service_name: "thanos-query"
+    resource_attributes: {}
+    reconnection_period: 0s
+    compression: ""
+    insecure: true
+    endpoint: "localhost:4317"
+    url_path: ""
+    timeout: 0s
+    retry_config:
+        retry_enabled: false
+        retry_initial_interval: 0s
+        retry_max_interval: 0s
+        retry_max_elapsed_time: 0s
+    headers: {}
+    sampler_type: ""
+    sampler_param: ""
