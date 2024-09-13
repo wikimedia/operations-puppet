@@ -2491,6 +2491,24 @@ class profile::prometheus::ops (
         port             => 2200,
     }
 
+    $haproxykafka_jobs = [
+      {
+        'job_name'        => 'haproxykafka',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/haproxykafka_*.yaml"] },
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "haproxykafka_${::site}":
+        dest             => "${targets_path}/haproxykafka_${::site}.yaml",
+        port             => 9341,
+        class_name       => 'haproxykafka',
+        class_parameters => {
+            'ensure' => 'present'
+        },
+    }
+
     prometheus::server { 'ops':
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
@@ -2513,7 +2531,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs,
+            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs,
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,

@@ -19,4 +19,5 @@ class role::cache::text {
     # topic into many JSON based kafka topics for further
     # consumption.
     include profile::cache::kafka::eventlogging
+    include profile::cache::haproxykafka
 }

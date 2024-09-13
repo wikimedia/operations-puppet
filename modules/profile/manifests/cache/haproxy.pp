@@ -299,5 +299,4 @@ class profile::cache::haproxy(
         group   => 'root',
         content => file('profile/cache/haproxy_restart.sh'),
     }
-
 }
