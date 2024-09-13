@@ -324,7 +324,7 @@ class gitlab (
         ensure      => $ensure_ldap_group_sync,
         user        => $gitlab_settings_user,
         description => 'Sync various GitLab groups with their LDAP groups',
-        command     => "${sync_cmd} repos/mediawiki wmf ops ; ${sync_cmd} --access-level Owner repos/sre ops",
+        command     => "${sync_cmd} repos/mediawiki wmf ops ; ${sync_cmd} --access-level Owner repos/sre ops ; ${sync_cmd} people/wmde wmde",
         interval    => $ldap_group_sync_interval,
         require     => Systemd::Sysuser[$gitlab_settings_user],
     }
