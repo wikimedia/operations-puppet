@@ -298,7 +298,7 @@ class gitlab (
     git::clone { 'repos/releng/gitlab-settings':
         ensure        => $ensure_gitlab_settings,
         update_method => 'checkout',
-        git_tag       => 'v1.6.0',
+        git_tag       => 'v1.7.0',
         directory     => '/srv/gitlab-settings',
         source        => 'gitlab',
         owner         => $gitlab_settings_user,
