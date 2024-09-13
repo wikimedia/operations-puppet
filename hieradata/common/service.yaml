@@ -1473,7 +1473,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: production
     discovery:
       - dnsdisc: mwdebug-next
         active_active: true
