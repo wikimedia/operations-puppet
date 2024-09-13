@@ -78,27 +78,27 @@ class profile::mediawiki::deployment::server(
 
     ensure_packages('default-mysql-client')
 
-    ferm::service { 'rsyncd_scap_master':
-        proto  => 'tcp',
-        port   => 873,
-        srange => "(${deployable_networks_ferm})",
+    firewall::service { 'rsyncd_scap_master':
+        proto    => 'tcp',
+        port     => 873,
+        src_sets => ['MW_APPSERVER_NETWORKS', 'ANALYTICS_NETWORKS']
     }
 
     # T113351
-    ferm::service { 'http_deployment_server':
-        desc   => 'HTTP on deployment servers, for serving actual files to deploy',
-        proto  => 'tcp',
-        port   => 80,
-        srange => "(${deployable_networks_ferm})",
+    firewall::service { 'http_deployment_server':
+        desc     => 'HTTP on deployment servers, for serving actual files to deploy',
+        proto    => 'tcp',
+        port     => 80,
+        src_sets => ['MW_APPSERVER_NETWORKS', 'ANALYTICS_NETWORKS']
     }
 
     # T298165
     $releases_servers = [ $releases_server ] + $other_releases_servers
-    ferm::service { 'git-daemon':
+    firewall::service { 'git-daemon':
         desc   => 'Git daemon',
         proto  => 'tcp',
         port   => 9418,
-        srange => "(@resolve((${releases_servers.join(' ')})))",
+        srange => $releases_servers,
     }
     ### End firewall rules
 
