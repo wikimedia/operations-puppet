@@ -44,6 +44,7 @@ class profile::cache::haproxy(
     Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
     Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
     Boolean $use_etcd_req_filters = lookup('profile::cache::haproxy::use_etcd_req_filters', {'default_value'                                     => false}),
+    Boolean $numa_networking = lookup('profile::cache::haproxy::numa_networking', {'default_value'                                               => true}),
     String $conftool_prefix = lookup('conftool_prefix'),
 ) {
     class { 'sslcert::dhparam':
@@ -79,7 +80,7 @@ class profile::cache::haproxy(
     # otherwise use 'lo' for this purpose.  Assumes NUMA data has "lo" interface
     # mapped to all cpu cores in the non-NUMA case.  The numa_iface variable is
     # in turn consumed by the systemd unit and config templates.
-    if $::numa_networking != 'off' {
+    if $numa_networking {
         $numa_iface = $facts['interface_primary']
     } else {
         $numa_iface = 'lo'
