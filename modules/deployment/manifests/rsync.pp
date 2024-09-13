@@ -15,7 +15,7 @@ class deployment::rsync(
             dest_host           => $deployment_hosts,
             module_path         => '/home',
             auto_sync           => false,
-            server_uses_stunnel => false,
+            server_uses_stunnel => true,
         }
 
         rsync::quickdatacopy { 'deployment_module':
@@ -33,7 +33,7 @@ class deployment::rsync(
                 'interval' => '*-*-* *:00:00', # then hourly on the hour
                 },
             ],
-            server_uses_stunnel => false,
+            server_uses_stunnel => true,
         }
 
         rsync::quickdatacopy { 'patches_module':
@@ -51,7 +51,7 @@ class deployment::rsync(
                 'interval' => '*-*-* *:30:00', # then hourly on the half hour
                 },
             ],
-            server_uses_stunnel => false,
+            server_uses_stunnel => true,
         }
     }
 }
