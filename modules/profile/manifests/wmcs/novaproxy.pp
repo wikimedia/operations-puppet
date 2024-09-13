@@ -30,28 +30,27 @@ class profile::wmcs::novaproxy (
     String[1]                         $keepalived_password      = lookup('profile::wmcs::novaproxy::keepalived_password', {default_value => 'notarealpassword'}),
     Stdlib::Host                      $acmechief_host           = lookup('acmechief_host'),
 ) {
-    $proxy_nodes = join($all_proxies, ' ')
     # Open up redis to all proxies!
-    ferm::service { 'redis-replication':
+    firewall::service { 'redis-replication':
         proto  => 'tcp',
-        port   => '6379',
-        srange => "@resolve((${proxy_nodes}))",
+        port   => 6379,
+        srange => $all_proxies,
     }
 
-    ferm::service { 'http':
+    firewall::service { 'http':
         proto => 'tcp',
-        port  => '80',
+        port  => 80,
         desc  => 'HTTP webserver for the entire world',
     }
 
-    ferm::service { 'https':
+    firewall::service { 'https':
         proto => 'tcp',
-        port  => '443',
+        port  => 443,
         desc  => 'HTTPS webserver for the entire world',
     }
 
-    ferm::service { 'dynamicproxy-api-http':
-        port  => '5668',
+    firewall::service { 'dynamicproxy-api-http':
+        port  => 5668,
         proto => 'tcp',
         desc  => 'Web proxy management API',
     }
