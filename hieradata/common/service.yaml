@@ -1665,7 +1665,7 @@ service::catalog:
       scheduler: wrr
       protocol: tcp
     httpbb_dir: wikifunctions
-    page: true
+    page: false
     probes:
       - type: http
         path: /wiki/Special:BlankPage
