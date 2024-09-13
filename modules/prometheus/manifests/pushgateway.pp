@@ -18,4 +18,8 @@ class prometheus::pushgateway (
             hasrestart => true,
         },
     }
+
+    profile::auto_restarts::service { 'prometheus-pushgateway':
+        ensure         => $ensure,
+    }
 }
