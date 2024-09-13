@@ -80,6 +80,7 @@ class profile::tlsproxy::envoy(
     Optional[Float]                  $stream_idle_timeout       = lookup('profile::tlsproxy::envoy::stream_idle_timeout'),
     Optional[String]                 $ferm_srange               = lookup('profile::tlsproxy::envoy::ferm_srange'),
     Optional[Firewall::Range]        $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
+    Optional[Array[String[1]]]       $firewall_src_sets         = lookup('profile::tlsproxy::envoy::firewall_src_sets'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
     Optional[Float]                  $upstream_idle_timeout     = lookup('profile::tlsproxy::envoy::upstream_idle_timeout'),
@@ -294,6 +295,15 @@ class profile::tlsproxy::envoy(
                 notrack => true,
                 port    => $tls_port,
                 srange  => $ferm_srange,
+            }
+        }
+
+        if $firewall_src_sets {
+            firewall::service { 'envoy_tls_termination':
+                proto    => 'tcp',
+                notrack  => true,
+                port     => $tls_port,
+                src_sets => $firewall_src_sets,
             }
         }
     }
