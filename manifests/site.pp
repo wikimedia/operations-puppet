@@ -1591,12 +1591,8 @@ node /^kafka-main10(0[6-9]|10)\.eqiad\./ {
     role(insetup::serviceops)
 }
 
-node /^kafka-main200[5-9]\.codfw\./ {
+node /^kafka-main20(0[5-9]|10)\.codfw\./ {
     role(kafka::main)
-}
-
-node /^kafka-main2010\.codfw\./ {
-    role(insetup::serviceops)
 }
 
 # kafka-jumbo is a large general purpose Kafka cluster.
