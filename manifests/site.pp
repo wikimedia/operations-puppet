@@ -2513,10 +2513,10 @@ node /^snapshot1010\.eqiad\./ {
 node /^snapshot101[123]\.eqiad\./ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot101[456]\.eqiad\./ {
+node /^snapshot101[457]\.eqiad\./ {
     role(dumps::generation::worker::testbed)
 }
-node /^snapshot1017\.eqiad\./ {
+node /^snapshot1016\.eqiad\./ {
     role(dumps::generation::worker::dumper_misc_crons_only)
 }
 # Servers for SRE tests which are not suitable for Cloud VPS
