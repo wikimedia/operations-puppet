@@ -47,6 +47,8 @@ profile::tlsproxy::envoy::sni_support: "no"
 # for jobrunner.* and videoscaler.* respectively.
 profile::tlsproxy::envoy::upstream_response_timeout: 86402.5
 profile::tlsproxy::envoy::access_log: true
+profile::tlsproxy::envoy::upstream_idle_timeout: 86405.5
+profile::tlsproxy::envoy::downstream_idle_timeout: 86408.5
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 9006
