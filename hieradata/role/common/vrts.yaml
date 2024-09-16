@@ -1,6 +1,6 @@
 profile::admin::groups:
   - vrts-roots
-profile::vrts::active_host: 'vrts1001.eqiad.wmnet'
+profile::vrts::active_host: 'vrts1003.eqiad.wmnet'
 profile::vrts::passive_host: 'vrts2002.codfw.wmnet'
 profile::vrts::database_host: m2-master.eqiad.wmnet
 profile::vrts::database_name: otrs
