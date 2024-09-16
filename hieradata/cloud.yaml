@@ -447,6 +447,7 @@ profile::puppetserver::ca_crl: ~
 profile::puppetserver::ca_private_key_secret: ~
 profile::puppetserver::ca_allow_san: false
 profile::puppetserver::ca_name: ~
+profile::puppetserver::strict_mode: false
 profile::puppetserver::separate_ssldir: true
 profile::puppetserver::ssldir_on_srv: true
 profile::puppetserver::enable_jmx: false

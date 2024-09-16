@@ -23,6 +23,7 @@
 # @param ca_private_key_secret the content of the W
 # @param ca_allow_san whether to allow agents to request SANs
 # @param ca_name override the default Puppet CA name
+# @param strict_mode enable "strict mode", same as defaults in Puppet 8, https://github.com/puppetlabs/puppet/wiki/Puppet-8-Compatibility#strict-mode
 # @param git_pull whether to pull puppet code from git, defaults to true
 # @param auto_restart if true changes to config files will cause the puppetserver to either restart or
 #   reload the puppetserver service
@@ -56,6 +57,7 @@ class profile::puppetserver (
     Optional[String]                   $ca_private_key_secret     = lookup('profile::puppetserver::ca_private_key_secret'),
     Boolean                            $ca_allow_san              = lookup('profile::puppetserver::ca_allow_san'),
     Optional[String[1]]                $ca_name                   = lookup('profile::puppetserver::ca_name'),
+    Boolean                            $strict_mode               = lookup('profile::puppetserver::strict_mode', { 'default_value' => true }),
     Hash[String, Stdlib::Unixpath]     $extra_mounts              = lookup('profile::puppetserver::extra_mounts'),
     Variant[
         Enum['unlimited'],

@@ -25,6 +25,7 @@
 # @param environment_timeout, number of seconds to cache code from an environment, or unlimited to never evict the cache
 # @param ca_allow_san whether to allow agents to request SANs
 # @param ca_name override the default Puppet CA name
+# @param strict_mode enable "strict mode", same as defaults in Puppet 8, https://github.com/puppetlabs/puppet/wiki/Puppet-8-Compatibility#strict-mode
 class puppetserver (
     Wmflib::Ensure                           $ensure                    = 'present',
     Stdlib::Fqdn                             $server_id                 = $facts['networking']['fqdn'],
@@ -51,6 +52,7 @@ class puppetserver (
     Variant[Enum['unlimited'], Integer]      $environment_timeout       = 0,
     Boolean                                  $ca_allow_san              = false,
     Optional[String[1]]                      $ca_name                   = undef,
+    Boolean                                  $strict_mode               = true,
 ) {
     systemd::mask { 'puppetserver.service':
         unless => '/usr/bin/dpkg -s puppetserver | /bin/grep -q "^Status: install ok installed$"',
@@ -241,6 +243,22 @@ class puppetserver (
             target  => '/etc/puppet/puppet.conf',
             order   => '25',
             content => "ca_name = ${ca_name}\n",
+            notify  => $service_reload_notify,
+            require => Systemd::Unmask['puppetserver.service'],
+        }
+    }
+    if $strict_mode {
+        $strict_mode_config = @("STRICT_MODE_CONFIG")
+        # Puppet 8 strict mode defaults for Puppet 7, these
+        # settings may be removed when we have upgraded to
+        # Puppet 8
+        strict_variables = true
+        strict = error
+        | STRICT_MODE_CONFIG
+        concat::fragment { 'server-strict-mode':
+            target  => '/etc/puppet/puppet.conf',
+            order   => '26',
+            content => $strict_mode_config,
             notify  => $service_reload_notify,
             require => Systemd::Unmask['puppetserver.service'],
         }
