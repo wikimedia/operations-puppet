@@ -66,13 +66,19 @@ class k8s::kubelet (
         },
     }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
+    $filtered_config_yaml = $config_yaml.filter |$k, $v| {
+        $v ? {
+            Undef   => false,
+            Numeric => true,
+            default => !$v.empty,
+        }
+    }
     file { $config_file:
         ensure  => file,
         owner   => 'kube',
         group   => 'kube',
         mode    => '0400',
-        # FIXME: Warning: Calling function empty() with Numeric value is deprecated.
-        content => $config_yaml.filter |$k, $v| { $v =~ NotUndef and !$v.empty }.to_yaml,
+        content => to_yaml($filtered_config_yaml),
         notify  => Service['kubelet'],
         require => K8s::Package['kubelet'],
     }
