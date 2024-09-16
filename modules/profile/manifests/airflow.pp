@@ -67,7 +67,7 @@ class profile::airflow(
     Hash $airflow_instances_secrets       = lookup('profile::airflow::instances_secrets', { 'default_value' => {} }),
     Boolean $use_wmf_defaults             = lookup('profile::airflow::use_wmf_defaults', { 'default_value' => true }),
     String $airflow_database_host_default = lookup('profile::airflow::database_host_default', { 'default_value' => 'an-db1001.eqiad.wmnet' }),
-    Optional[String] $airflow_version     = lookup('profile::airflow::airflow_version', { 'default_value' => '2.9.3-py3.10-20240814' }),
+    Optional[String] $airflow_version     = lookup('profile::airflow::airflow_version', { 'default_value' => '2.9.3-py3.10-20240916' }),
     Boolean $renew_skein_certificate      = lookup('profile::airflow::renew_skein_certificate', { 'default_value' => true }),
     Array $statsd_exporter_mappings       = lookup('profile::airflow::statsd_exporter_default_mappings', { 'default_value' => [] })
 ) {
