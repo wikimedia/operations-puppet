@@ -18,7 +18,7 @@ profile::openstack::codfw1dev::nova::network_flat_interface: "vlan%{lookup('prof
 profile::openstack::codfw1dev::nova::physical_interface_mappings:
   cloudinstances2b: "%{lookup('profile::openstack::codfw1dev::nova::network_flat_interface')}"
 
-profile::openstack::codfw1dev::nova::instance_network_id: "05a5494a-184f-4d5c-9e98-77ae61c56daa"
+profile::openstack::codfw1dev::nova::instance_network_id: "7d5adac7-fa5f-4282-a02c-4ced95b871ed"
 profile::openstack::codfw1dev::nova::fullstack_bastion_ip: 185.15.57.2
 
 profile::openstack::codfw1dev::nova::default_schedule_zone: "nova"
