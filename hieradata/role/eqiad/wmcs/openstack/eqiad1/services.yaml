@@ -14,7 +14,7 @@ profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikime
 profile::openstack::base::pdns::recursor::bgp_vip: 172.20.255.1
 
 profile::dbbackups::mydumper::enabled: true
-profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
+profile::dbbackups::mydumper::calendar: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'
 
 # a few different domains that designate serves as authoritative

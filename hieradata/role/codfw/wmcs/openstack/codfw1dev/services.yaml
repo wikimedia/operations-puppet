@@ -29,5 +29,5 @@ profile::bird::advertise_vips:
     check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.254.1 -d www.wikimedia.org -t 1"
 
 profile::dbbackups::mydumper::enabled: true
-profile::dbbackups::mydumper::schedule: '*-*-* 00:00:00'
+profile::dbbackups::mydumper::calendar: '*-*-* 00:00:00'
 profile::dbbackups::mydumper::config: 'profile/openstack/base/dbbackups/pdns.cnf.erb'

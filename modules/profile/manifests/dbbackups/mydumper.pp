@@ -10,8 +10,8 @@
 # * enabled:    A boolean value that, if false, removes the execution
 #               of the systemd timer (defaulting to true for backwards
 #               compatiblity)
-# * schedule:   A string containing the systemd timer's execution
-#               schedule definition (defaulting to
+# * calendar:   A string containing the systemd timer's execution
+#               calendar definition (defaulting to
 #               'Tue *-*-* 00:00:00' for backwards compatibility)
 # * config:     Relative path where the template with the dbbackups
 #               config is, by default, on:
@@ -27,7 +27,7 @@
 class profile::dbbackups::mydumper (
     Boolean $enabled  = lookup('profile::dbbackups::mydumper::enabled',
       {default_value => true}),
-    String  $schedule = lookup('profile::dbbackups::mydumper::schedule',
+    String  $calendar = lookup('profile::dbbackups::mydumper::calendar',
       {default_value => 'Tue *-*-* 00:00:00'}),
     String  $config = lookup('profile::dbbackups::mydumper::config',
       {default_value => ''}),
@@ -163,7 +163,7 @@ class profile::dbbackups::mydumper (
         description   => 'MariaDB backups',
         command       => '/usr/bin/backup-mariadb --config-file=/etc/wmfbackups/backups.cnf',
         user          => 'dump',
-        interval      => { 'start' => 'OnCalendar', 'interval' => $schedule},
+        interval      => { 'start' => 'OnCalendar', 'interval' => $calendar},
         # Ignore any errors to avoid triggering Icinga alerts
         # if one or several of the backups fail.
         # Backup status notifications are handled in the backup check script.
