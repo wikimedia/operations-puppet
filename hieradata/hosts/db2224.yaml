@@ -1,3 +1,2 @@
 # db2224
 mariadb::shard: 's6'
-profile::monitoring::notifications_enabled: false

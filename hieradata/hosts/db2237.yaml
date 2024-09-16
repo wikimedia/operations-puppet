@@ -1,3 +1,2 @@
 # db2237
 mariadb::shard: 's4'
-profile::monitoring::notifications_enabled: false
