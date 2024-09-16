@@ -46,6 +46,7 @@ profile::tlsproxy::envoy::sni_support: "no"
 # We already set the web timeout one layer below in apache to 20 minutes and 1 day
 # for jobrunner.* and videoscaler.* respectively.
 profile::tlsproxy::envoy::upstream_response_timeout: 86402.5
+profile::tlsproxy::envoy::access_log: true
 profile::tlsproxy::envoy::services:
   - server_names: ["*"]
     port: 9006
