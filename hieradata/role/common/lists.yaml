@@ -56,3 +56,5 @@ profile::lists::renamed_lists:
   eliso:                wikimedia-eo
   eliso-anoncoj:        wikimedia-eo-anoncoj
   langcom-l:            langcom-internal
+
+profile::firewall::provider: nftables
