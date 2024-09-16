@@ -60,16 +60,22 @@ class ferm (
     if $ensure == 'present' {
         service { 'ferm':
             ensure  => running,
-            # This is a bit of an abuse of the puppet DSL
+            # This is a bit of an abuse of the puppet DSL.
             # We use the status command to ensure that the rules on disk match the rules loaded in the
-            # kernel; if not we want to reload the rule base
+            # kernel (ferm-status returns 0); if not we want to reload the rule base (ferm-status returns 1).
             status  => '/usr/local/sbin/ferm-status',
-            # When the service status command fails, puppet sets the service status to stopped:
+            # When the service status command returns 1, puppet sets the service status to stopped:
             # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/provider/service/base.rb#L77
-            # which means that it calls the startcmd (not restartcmd). As such we need to update the start command
-            # so that it calls systemd reload instead of systemd restart.  However we also need to account for
-            # when the service is actually stopped which is why we use reload-or-restart.
+            # which means that it calls the startcmd (instead of restartcmd).
+            # As such we need to update the start command so that it calls systemd reload instead of systemd restart.
+            # However we also need to account for when the service is actually stopped which is why we use reload-or-restart.
             start   => '/bin/systemctl reload-or-restart ferm',
+            # When the service status command returns 0, puppet sets the service status to running, which means that
+            # restartcmd ('systemctl restart') is called which will call the ferm init script with stop and start sequentially.
+            # This does flush all(!) rules before reapplying them, so we use reload-or-restart here as well to prevent this.
+            # Note that start,reload,restart,force-reload are all handled by the same ferm init script (apart from different
+            # log messages).
+            restart => '/bin/systemctl reload-or-restart ferm',
             require => [
                 Package['ferm'],
                 File['/usr/local/sbin/ferm-status'],
