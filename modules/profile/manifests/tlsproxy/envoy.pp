@@ -57,6 +57,8 @@
 #                     It should match the idle timeout of the upstream service.
 # @param stream_idle_timeout If set, set the stream idle timeout (otherwise, 5 minutes is what envoy defaults to)
 # @param cfssl_label if using cfssl this parameter is mandatory and should specify the CA label sign CSR's
+# @param downstream_idle_timeout Idle timeout for downstream connections
+# @param upstream_idle_timeout Idle timeout for upstream connections
 # @param error_page  boolean true if an error page should be added; false by default.
 # @param local_otel_reporting_pct float, the percentage (e.g. 37.5) of traffic to be sampled for tracing
 class profile::tlsproxy::envoy(
@@ -80,6 +82,8 @@ class profile::tlsproxy::envoy(
     Optional[Firewall::Range]        $firewall_srange           = lookup('profile::tlsproxy::envoy::firewall_srange'),
     Optional[Integer]                $max_requests              = lookup('profile::tlsproxy::envoy::max_requests'),
     Optional[String]                 $cfssl_label               = lookup('profile::tlsproxy::envoy::cfssl_label'),
+    Optional[Float]                  $upstream_idle_timeout     = lookup('profile::tlsproxy::envoy::upstream_idle_timeout'),
+    Optional[Float]                  $downstream_idle_timeout   = lookup('profile::tlsproxy::envoy::downstream_idle_timeout'),
     Boolean                          $error_page                = lookup('profile::tlsproxy::envoy::error_page'),
     Float                            $local_otel_reporting_pct  = lookup('profile::tlsproxy::envoy::local_otel_reporting_pct'),
 ) {
@@ -245,6 +249,8 @@ class profile::tlsproxy::envoy(
             max_requests_per_conn     => $max_requests,
             has_error_page            => $error_page,
             local_otel_reporting_pct  => $local_otel_reporting_pct,
+            upstream_idle_timeout     => $upstream_idle_timeout,
+            downstream_idle_timeout   => $downstream_idle_timeout,
         }
 
         if $local_otel_reporting_pct > 0 {

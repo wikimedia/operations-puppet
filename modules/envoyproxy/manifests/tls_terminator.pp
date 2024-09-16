@@ -104,6 +104,9 @@
 #     The time in seconds to wait before closing a keepalive connection when inactive.
 # @param downstream_idle_timeout
 #     The time in seconds to wait before closing a downstream keepalive connection when inactive.
+# @param upstream_idle_timeout
+#     Specific route-level idle timeout to the upstream. Necessary when specifying long
+#     connections to services that might not answer for long periods of time such as videoscalers.
 # @param stream_idle_timeout
 #     The stream idle timeout for connections managed by the connection manager.
 #     If not specified, this defaults to 5 minutes.
@@ -158,6 +161,7 @@ define envoyproxy::tls_terminator(
     Optional[Envoyproxy::Alpn]         $global_alpn_protocols     = undef,
     Optional[Float]                    $idle_timeout              = undef,
     Optional[Float]                    $downstream_idle_timeout   = undef,
+    Optional[Float]                    $upstream_idle_timeout     = undef,
     Optional[Float]                    $stream_idle_timeout       = undef,
     Optional[Float]                    $request_timeout           = undef,
     Optional[Float]                    $request_headers_timeout   = undef,

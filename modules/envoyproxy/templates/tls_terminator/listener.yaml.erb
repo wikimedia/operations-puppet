@@ -176,6 +176,9 @@ filter_chains:
               cluster: local_path_<%= upstream['upstream']['path'] %>
 <%- end -%>
               timeout: <%= @upstream_response_timeout %>s
+<%- if @upstream_idle_timeout -%>
+              idle_timeout: <%= @upstream_idle_timeout %>s
+<%- end -%>
               <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>
@@ -347,6 +350,9 @@ filter_chains:
               cluster: local_path_<%= upstream['upstream']['path'] %>
 <%- end -%>
               timeout: <%= @upstream_response_timeout %>s
+<%- if @upstream_idle_timeout -%>
+              idle_timeout: <%= @upstream_idle_timeout %>s
+<%- end -%>
               <%- unless @retry_policy.empty? -%>
               retry_policy:
                 <%- @retry_policy.each do |k, v| -%>

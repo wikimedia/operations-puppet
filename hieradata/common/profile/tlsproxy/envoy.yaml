@@ -17,6 +17,8 @@ profile::tlsproxy::envoy::listen_ipv6: false
 profile::tlsproxy::envoy::global_cert_name: ~
 profile::tlsproxy::envoy::idle_timeout: ~
 profile::tlsproxy::envoy::stream_idle_timeout: ~
+profile::tlsproxy::envoy::downstream_idle_timeout: ~
+profile::tlsproxy::envoy::upstream_idle_timeout: ~
 profile::tlsproxy::envoy::ferm_srange: ~
 profile::tlsproxy::envoy::firewall_srange: ~
 profile::tlsproxy::envoy::max_requests: ~
