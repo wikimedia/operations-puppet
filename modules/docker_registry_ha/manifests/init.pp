@@ -17,8 +17,20 @@ class docker_registry_ha (
     }
 
     if debian::codename::ge('bookworm') {
+        systemd::sysuser { 'docker-registry':
+            shell  => '/bin/bash',
+            before => Package['docker-registry'],
+        }
         ensure_packages('python3-swiftclient')
     } else {
+        user { 'docker-registry':
+            ensure => present,
+            system => true,
+            home   => '/nonexistent',
+            shell  => '/bin/bash',
+            before => Package['docker-registry'],
+        }
+
         ensure_packages('python-swiftclient')
         apt::pin { 'strech_wikimedia_docker_registry_27':
             package  => 'docker-registry',
@@ -27,13 +39,6 @@ class docker_registry_ha (
         }
     }
 
-    user { 'docker-registry':
-        ensure => present,
-        system => true,
-        home   => '/nonexistent',
-        shell  => '/bin/bash',
-        before => Package['docker-registry'],
-    }
     file { '/etc/swift':
         ensure => 'directory',
         owner  => 'root',
