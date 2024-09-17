@@ -58,6 +58,7 @@ class profile::idp(
     Stdlib::Fqdn                      $webauthn_relaying_party   = lookup('profile::idp::webauthn_relaying_party'),
     String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value' => 'tomcat10' }),
     String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
+    Boolean                           $expose_tomcat             = lookup('profile::idp::expose_tomcat'),
 ){
 
     ensure_packages(['python3-pymysql'])
@@ -168,9 +169,11 @@ class profile::idp(
         content  => "[Service]\nReadWritePaths=${apereo_cas::log_dir}\nEnvironment=JAVA_HOME=${profile::java::default_java_home}",
     }
 
-    firewall::service {'cas-https':
-        proto => 'tcp',
-        port  => $firewall_port,
+    if ($expose_tomcat) {
+        firewall::service {'cas-https':
+            proto => 'tcp',
+            port  => $firewall_port,
+        }
     }
 
     profile::prometheus::jmx_exporter{ "idp_${facts['networking']['hostname']}":

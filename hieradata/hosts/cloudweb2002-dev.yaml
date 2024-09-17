@@ -68,6 +68,7 @@ profile::idp::server_name: https://cloudidp-dev.wikimedia.org
 profile::idp::idp_nodes: []
 profile::idp::is_staging_host: true
 profile::idp::u2f_jpa_enable: false
+profile::idp::expose_tomcat: false
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
 profile::java::egd_source: '/dev/urandom'
 profile::idp::u2f_token_expiry_days: 3650
