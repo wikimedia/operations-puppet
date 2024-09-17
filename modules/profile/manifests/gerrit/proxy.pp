@@ -81,6 +81,6 @@ class profile::gerrit::proxy(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => "${gerrit_site}/static/wikimedia-codereview-logo.cache.png",
+        target => "${gerrit_site}/static/wikimedia-codereview-logo.cache.png",
     }
 }
