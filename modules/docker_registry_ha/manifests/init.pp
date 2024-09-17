@@ -22,7 +22,12 @@ class docker_registry_ha (
     package {'docker-registry':
         ensure => present,
     }
-    ensure_packages('python-swiftclient')
+
+    if debian::codename::ge('bookworm') {
+        ensure_packages('python3-swiftclient')
+    } else {
+        ensure_packages('python-swiftclient')
+    }
 
     user { 'docker-registry':
         ensure => present,
