@@ -2426,7 +2426,7 @@ node /^rdb20(08|10)\.codfw\./ {
     role(redis::misc::slave)
 }
 
-node /^registry[12]00[34]\.(eqiad|codfw)\./ {
+node /^registry[12]00[345]\.(eqiad|codfw)\./ {
     role(docker_registry_ha::registry)
 }
 
