@@ -5,4 +5,4 @@
 home_dir_limit=<%= @home_dir_limit %>
 hostname=$(hostname -f)
 sndr_address="root@${hostname}"
-rcpt_address='dzahn@wikimedia.org'
+rcpt_address='<%= @home_dir_size_warning_recipient %>'

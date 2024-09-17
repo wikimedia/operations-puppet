@@ -9,6 +9,7 @@ class profile::microsites::peopleweb (
     Stdlib::Host     $rsync_src_host    = lookup('profile::microsites::peopleweb::rsync_src_host'),
     Stdlib::Host     $rsync_dst_host    = lookup('profile::microsites::peopleweb::rsync_dst_host'),
     Integer          $home_dir_limit    = lookup('profile::microsites::peopleweb::home_dir_limit'),
+    String           $home_dir_size_warning_recipient = lookup('profile::microsites::peopleweb::home_dir_size_warning_recipient'),
 ){
 
     # firewall: allow caching layer to talk to http backend
