@@ -643,7 +643,7 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(136|137|140|147|172|179|206|210|219|237)\.codfw\./ {
+node /^db2(136|140|147|172|179|206|210|219|237)\.codfw\./ {
     role(mariadb::core)
 }
 
