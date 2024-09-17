@@ -683,13 +683,16 @@ sub cluster_fe_deliver {
     // Overrides the default network probe limit value
     // Current default value is 0.001 (0.1%)
     // Set NetworkProbeLimit to 0 to stop all probes
-    header.append(resp.http.Set-Cookie,
-        "NetworkProbeLimit=0.001;"
-        + "Path=/;"
-        + "Secure;"
-        + "SameSite=Lax;"
-        + "Max-Age=3600"
-    );
+    if (req.http.X-Orig-Cookie !~ "(^|;)\s*NetworkProbeLimit=0.001;"
+        && req.http.Cookie !~ "(^|;)\s*NetworkProbeLimit=0.001;") {
+        header.append(resp.http.Set-Cookie,
+            "NetworkProbeLimit=0.001;"
+            + "Path=/;"
+            + "Secure;"
+            + "SameSite=Lax;"
+            + "Max-Age=3600"
+            );
+    }
 }
 
 sub cluster_fe_err_synth {
