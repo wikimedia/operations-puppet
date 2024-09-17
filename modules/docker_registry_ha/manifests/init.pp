@@ -12,13 +12,6 @@ class docker_registry_ha (
     String $registry_shared_secret
 ){
 
-    # this could be removed when buster or next debian includes a 2.7+ version
-    apt::pin { 'strech_wikimedia_docker_registry_27':
-        package  => 'docker-registry',
-        pin      => 'version 2.7.0~rc0~wmf1-1',
-        priority => 1002,
-    }
-
     package {'docker-registry':
         ensure => present,
     }
@@ -27,6 +20,11 @@ class docker_registry_ha (
         ensure_packages('python3-swiftclient')
     } else {
         ensure_packages('python-swiftclient')
+        apt::pin { 'strech_wikimedia_docker_registry_27':
+            package  => 'docker-registry',
+            pin      => 'version 2.7.0~rc0~wmf1-1',
+            priority => 1002,
+        }
     }
 
     user { 'docker-registry':
