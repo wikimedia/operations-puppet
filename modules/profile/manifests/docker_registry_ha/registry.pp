@@ -55,6 +55,7 @@ class profile::docker_registry_ha::registry(
         'outdir'          => '/etc/nginx/ssl',
         'hosts'           => $alt_names,
     })
+    class { 'sslcert::dhparam': }
 
     $swift_account = $swift_accounts['docker_registry']
     # Get the local site's swift credentials
