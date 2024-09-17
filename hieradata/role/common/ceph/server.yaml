@@ -1,3 +1,4 @@
+cluster: cephosd
 profile::ceph::auth::load_all::configuration:
   dse-k8s-csi:
     caps:
