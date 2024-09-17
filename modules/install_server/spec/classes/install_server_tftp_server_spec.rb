@@ -19,7 +19,9 @@ describe 'install_server::tftp_server', :type => :class do
           'mode'    => '0444',
           'owner'   => 'root',
           'group'   => 'root',
-          'recurse' => 'remote',
+          'recurse' => 'true',
+          'purge'   => 'true',
+          'force'   => 'true',
         })
       end
     end

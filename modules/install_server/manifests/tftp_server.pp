@@ -27,7 +27,9 @@ class install_server::tftp_server () {
         mode         => '0444',
         owner        => 'root',
         group        => 'root',
-        recurse      => remote,
+        recurse      => true,
+        purge        => true,
+        force        => true,
         backup       => false,
     }
 
