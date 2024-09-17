@@ -33,9 +33,9 @@ metadata:
 # Tables we 1:1 to a view
 #
 #  Note that the maintain-view script will ignore tables
-#   that don't exist.  So for example globalblocks is only
-#   present in centralauth but we want it there so it stays
-#   in this list.
+#   that don't exist.  So for example FlaggedRevs tables
+#   are not present on non-FlaggedRevs wikis, but we
+#   still want it present for FlaggedRevs wikis
 fullviews:
   - abuse_filter_action
   - article_assessment
@@ -141,7 +141,6 @@ fullviews:
   - global_group_permissions
   - global_group_restrictions
   - global_user_groups
-  - globalblocks
   - wikiset
   - wb_changes_subscription
   - wb_id_counters
@@ -523,6 +522,26 @@ customviews:
     source: global_preferences
     view: select gp_user, gp_property, gp_value
     where: gp_property in ( 'disablemail', 'fancysig', 'gender', 'nickname' )
+  globalblocks:
+    source:
+      - globalblocks
+    view: >
+      select gb_id,
+             if(gb_autoblock_parent_id != null, null, gb_address) as gb_address,
+             gb_target_central_id,
+             gb_by_central_id,
+             gb_by_wiki,
+             gb_reason,
+             gb_timestamp,
+             gb_anon_only,
+             gb_create_account,
+             gb_enable_autoblock,
+             gb_autoblock_parent_id,
+             gb_expiry,
+             if(gb_autoblock_parent_id != null, null, gb_range_start) as gb_range_start,
+             if(gb_autoblock_parent_id != null, null, gb_range_end) as gb_range_end
+    where: >
+      not exists ( select 1 from globaluser where gu_id = gb_target_central_id AND gu_hidden_level != 0 )
   globaluser:
     source: globaluser
     view: >
