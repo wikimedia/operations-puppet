@@ -16,12 +16,13 @@ describe 'install_server::tftp_server', :type => :class do
       end
       it do
         is_expected.to contain_file('/srv/tftpboot').with({
-          'mode'    => '0444',
-          'owner'   => 'root',
-          'group'   => 'root',
-          'recurse' => 'true',
-          'purge'   => 'true',
-          'force'   => 'true',
+          'mode'      => '0444',
+          'owner'     => 'root',
+          'group'     => 'root',
+          'recurse'   => 'true',
+          'purge'     => 'true',
+          'force'     => 'true',
+          'max_files' => 9000
         })
       end
     end

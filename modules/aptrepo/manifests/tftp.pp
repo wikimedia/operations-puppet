@@ -18,6 +18,10 @@ class aptrepo::tftp () {
         recurse      => true,
         purge        => true,
         force        => true,
+        # Set max_files to avoid warning in puppetserver logs, T374885
+        # We allow three debian releases, each at 300 files, as well as up to
+        # ten old versions, 3 * 300 * 10
+        max_files    => 9000,
         backup       => false,
     }
 }
