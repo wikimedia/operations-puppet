@@ -48,6 +48,11 @@ class profile::gerrit::proxy(
         wait_network_online => true,
     }
 
+    file { '/var/www':
+        ensure  => directory,
+        require => Class['httpd'],
+    }
+
     httpd::site { $tls_host:
         content => template('profile/gerrit/apache.erb'),
     }
