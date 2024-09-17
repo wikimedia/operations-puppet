@@ -133,6 +133,7 @@ class corto(
         owner  => 'corto',
         group  => 'root',
         mode   => '0700',
+        force  => true,
     }
 
     file { '/var/lib/corto/':
@@ -140,6 +141,7 @@ class corto(
         owner  => 'corto',
         group  => 'root',
         mode   => '0700',
+        force  => true,
     }
 
     file { '/etc/corto/config.yaml':
