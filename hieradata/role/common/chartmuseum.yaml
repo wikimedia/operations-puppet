@@ -21,3 +21,4 @@ profile::tlsproxy::envoy::services:
 profile::tlsproxy::envoy::global_cert_name: "helm-charts.discovery.wmnet"
 
 profile::contacts::role_contacts: ['ServiceOps']
+profile::puppet::agent::force_puppet7: true
