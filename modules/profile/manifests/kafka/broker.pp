@@ -276,11 +276,17 @@ class profile::kafka::broker(
         # custom 1 year certificate lifespan.  This aims to provide ample time for manual
         # broker restarts to activate new certificates, and ensure that renewed certs are
         # present on-disk before alerting warns of upcoming expiration T358870
-        $ssl_cert = profile::pki::get_cert('kafka', $facts['fqdn'], {
+        $ssl_cert = profile::pki::get_cert('kafka', $facts['networking']['fqdn'], {
             'renew_seconds' => 2678400, #1 month
             'outdir'        => $ssl_location,
             'owner'         => 'kafka',
             'profile'       => 'kafka_11',
+            'hosts'         => [
+                $facts['networking']['hostname'],
+                $facts['networking']['fqdn'],
+                $facts['networking']['ip'],
+                $facts['networking']['ip6'],
+            ],
             notify          => Sslcert::X509_to_pkcs12['kafka_keystore'],
             require         => Class['::confluent::kafka::common'],
         })
