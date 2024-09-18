@@ -393,7 +393,8 @@ groups:
                  In case of doubt, please ask to the Analytics team.
                  More info https://wikitech.wikimedia.org/wiki/Analytics/Data_access#Access_Groups
                  For "no-ssh, no-kerberos" access create a shell account with an empty ssh key, grep for
-                 "Added with no SSH access" to find examples in this file
+                 "Added with no SSH access" to find examples in this file.
+                 Approval requests for this group can be expedited by tagging Data-Engineering on phabricator
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
               halfak, dr0ptp4kt, bearloga, elukey, mneisler,
               nuria, otto, jgreen, sguebo,
@@ -441,7 +442,7 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde]
+              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6449,6 +6450,15 @@ users:
     email: JJMC89.Wikimedia@gmail.com
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYQTEgOYTG1zSFkRGGYCVHfXCzJarVSqMczMKVA1LLb JJMC89.Wikimedia@gmail.com wmf_prod
+  cyndywikime:
+    ensure: present
+    gid: 500
+    uid: 40557
+    realname: Cyndy Simiyu
+    email: csimiyu@wikimedia.org
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM3Tex6HM+R0rT7rHFpM78bSS05YbrEC1Cg+/dOG59IF csimiyu@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7179,10 +7189,6 @@ ldap_only_users:
     ensure: present
     realname: Maciej Jaros
     email: egil@wp.pl
-  cyndywikime:
-    ensure: present
-    realname: Cynthia Simiyu
-    email: csimiyu@wikimedia.org
   scampos:
     ensure: present
     realname: Sara Campos
