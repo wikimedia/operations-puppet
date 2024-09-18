@@ -225,6 +225,7 @@ Components: main
  component/prometheus-openstack-exporter
  component/tomcat9
  component/wmf-laptop
+ thirdparty/amd-rocm61
  thirdparty/ceph-reef
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
@@ -246,6 +247,7 @@ Components: main
 UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
+ amd-rocm61
  elastic710
  elasticsearch-curator5
  grafana

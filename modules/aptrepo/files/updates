@@ -194,6 +194,15 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|miopen-opencl|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|miopengemm|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft|rocm-core|hsa-rocr|hipify-clang|hip-runtime-amd|rocm-llvm|openmp-extras-runtime|rocm-ocl-icd|hip-dev|openmp-extras-dev|hipblas-dev|hipcub-dev|hipfft-dev|hipsolver|hipsolver-dev|hipsparse-dev|miopen-hip-dev|rccl-dev|rocalution-dev|rocblas-dev|rocfft-dev|rocprim-dev|rocrand-dev|rocsolver-dev|rocsparse-dev|rocthrust-dev|rocwmma-dev)$' || [ $? -eq 1 ]
 
+Name: amd-rocm61
+Method: http://repo.radeon.com/rocm/apt/6.1/
+Suite: jammy
+Components: main>thirdparty/amd-rocm61
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 9386B48A1A693C5C
+ListShellHook: grep-dctrl -e -S '^(rocthrust|hipcub|hcc|hip-hcc|hip-base|hip-doc|hip-samples|hip-rocclr|llvm-amdgpu|rocm-gdb|rocm-dbgapi|rocm-smi-lib|rocm-debug-agent|roctracer-dev|hsa-rocr-dev|hsakmt-roct|miopen-hip|mivisionx|rocblas|rocfft|rocm-cmake|rocm-dev|rocm-device-libs|rocm-opencl|rocm-opencl-dev|rocm-utils|rocrand|hsakmt-roct-dev|rocprofiler-dev|hip_hcc|hip_base|rocm-clang-ocl|hip_doc|hip_samples|rccl|rocm-libs|hipblas|rocminfo|comgr|rocr_debug_agent|hsa-amd-aqlprofile|rocsparse|hipsparse|rocalution|rocprim|hip-rocclr|rocsolver|migraphx|half|openmp-extras|hipfft|rocm-core|hsa-rocr|hipify-clang|hip-runtime-amd|rocm-llvm|openmp-extras-runtime|rocm-opencl-icd-loader|hip-dev|openmp-extras-dev|hipblas-dev|hipcub-dev|hipfft-dev|hipsolver|hipsolver-dev|hipsparse-dev|miopen-hip-dev|rccl-dev|rocalution-dev|rocblas-dev|rocfft-dev|rocprim-dev|rocrand-dev|rocsolver-dev|rocsparse-dev|rocthrust-dev|rocwmma-dev)$' || [ $? -eq 1 ]
+
 Name: thirdparty/ceph-octopus
 Method: https://mirror.croit.io/debian-octopus
 Components: main>thirdparty/ceph-octopus
