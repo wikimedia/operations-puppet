@@ -135,6 +135,7 @@ class profile::prometheus::cloud (
             'metric_relabel_configs' => [
                 $hostname_to_instance_config,
             ],
+            'scrape_timeout'  => '30s',
         },
     ]
 
