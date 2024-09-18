@@ -1128,7 +1128,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    role: "kubernetes::master"
+    role: "kubernetes::master_stacked"
     state: production
 
   kubestagemaster:
