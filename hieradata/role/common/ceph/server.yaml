@@ -168,5 +168,5 @@ profile::tlsproxy::envoy::services:
      port: 80
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::global_cert_name: rgw.%{::site}.dpe.anycast.wmnet
-profile::tlsproxy::envoy::ferm_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))
+profile::tlsproxy::envoy::ferm_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS (@resolve((db1208.eqiad.wmnet)) @resolve((db1208.eqiad.wmnet), AAAA))))
 profile::tlsproxy::envoy::listen_ipv6: true
