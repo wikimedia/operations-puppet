@@ -11,6 +11,11 @@ profile::puppetserver::ca_public_key: 'puppet:///modules/profile/puppetserver/pu
 profile::puppetserver::ca_crl: 'puppet:///modules/profile/puppetserver/pki_crl.pem'
 profile::puppetserver::ca_private_key_secret: 'puppetserver/puppet_ca.key'
 profile::puppetserver::reports: ['logstash']
+# This value is based on the available memory (64GB) on all puppetservers,
+# rather than focusing only on the CPU count. This shold limit the heap
+# usage for each JRuby worker, and avoid trashing/OOM.
+# More info: T373527
+profile::puppetserver::max_active_instances: 35
 profile::puppetserver::hierarchy:
   - name: "private node"
     datadir: "/etc/puppet/private/hieradata"
