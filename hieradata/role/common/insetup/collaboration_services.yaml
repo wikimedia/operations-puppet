@@ -4,3 +4,4 @@ profile::base::production::role_description: 'Host being setup by Collaboration 
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true
+cluster: insetup

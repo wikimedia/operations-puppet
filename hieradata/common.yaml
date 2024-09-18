@@ -173,6 +173,16 @@ wikimedia_clusters:
   decommissioned:
     description: "Decommissioned servers"
     sites: {}
+  insetup:
+    description: "Servers being set up"
+    sites:
+      eqiad: []
+      codfw: []
+      esams: []
+      ulsfo: []
+      eqsin: []
+      drmrs: []
+      magru: []
   lvs:
     description: "LVS loadbalancers"
     sites:

@@ -2,3 +2,4 @@ profile::monitoring::notifications_enabled: false
 profile::base::production::role_description: 'Host being setup'
 
 profile::puppet::agent::force_puppet7: true
+cluster: insetup
