@@ -93,6 +93,7 @@ class profile::netbox::automation (
         description    => 'Uncommitted DNS changes in Netbox',
         nrpe_command   => "${check_command} ${icinga_state_file} ${max_age}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
+        contact_group  => 'team-dcops',
     }
 
     prometheus::blackbox::check::http {
