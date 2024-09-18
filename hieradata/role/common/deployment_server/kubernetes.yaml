@@ -407,6 +407,7 @@ profile::mediawiki::deployment::server::rsync_host: "deployment.%{::site}.wmnet"
 profile::mediawiki::apc_shm_size: 128M
 
 profile::contacts::role_contacts: ["ServiceOps"]
+profile::puppet::agent::force_puppet7: true
 
 # enable docker with the desired settings
 profile::docker::engine::declare_service: false
