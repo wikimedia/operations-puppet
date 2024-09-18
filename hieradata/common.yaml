@@ -629,6 +629,12 @@ wikimedia_clusters:
       eqsin: []
       drmrs: []
       magru: []
+  grafana:
+    description: "Grafana monitoring"
+    sites:
+      eqiad: []
+      codfw: []
+
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_merge_server: puppetmaster1001.eqiad.wmnet

@@ -1,6 +1,7 @@
 profile::contacts::role_contacts:
   - 'Observability'
 profile::base::production::role_description: 'Grafana monitoring web server'
+cluster: grafana
 
 profile::grafana::domain: "grafana.%{lookup('public_domain')}"
 profile::grafana::domainrw: "grafana-rw.%{lookup('public_domain')}"
