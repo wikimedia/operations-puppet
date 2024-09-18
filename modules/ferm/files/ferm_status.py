@@ -7,6 +7,7 @@ from ipaddress import ip_network
 from re import match
 from socket import getservbyname
 from subprocess import check_output, CalledProcessError
+from pathlib import Path
 
 
 def get_quoted_string(words_array, idx):
@@ -50,9 +51,19 @@ class Table:
         self._chains = {}
 
     def __eq__(self, obj):
-        return (
-            self.name == obj.name and sorted(self.chains) == sorted(obj.chains)
-        )
+        if not self.name == obj.name:
+            return False
+
+        if self.chains.keys() ^ obj.chains.keys():
+            # Chains differ, return early
+            return False
+
+        # Actually compare the chains
+        for chain_name, chain in self.chains.items():
+            if chain != obj.chains[chain_name]:
+                return False
+
+        return True
 
     def __str__(self):
         lines = ['*{}'.format(self.name)]
@@ -198,7 +209,7 @@ class Rule:
     def __str__(self):
         output = ['-A {}'.format(self.chain)]
         for token, value in vars(self).items():
-            if isinstance(value, str):
+            if value:
                 value = [value]
             if token.startswith('_raw') or token == 'chain' or not isinstance(value, list):
                 continue
@@ -230,14 +241,15 @@ class Rule:
     def _parse(self):
         for idx, word in enumerate(self._raw_words):
             if word in self.argument_switch.keys():
+                next_word = self._raw_words[idx + 1]
                 # don't track -m (tcp|udp)
-                if word in ['-m', '--match'] and self._raw_words[idx + 1] in ['tcp', 'udp']:
+                if word in ['-m', '--match'] and next_word in ['tcp', 'udp']:
                     continue
                 if word == '--comment':
                     # We can have multiple comments so this is an array
                     self.comments.append(get_quoted_string(self._raw_words, idx + 1))
                     continue
-                vars(self)[self.argument_switch.get(word)] = self._raw_words[idx + 1]
+                vars(self)[self.argument_switch.get(word)] = next_word
 
         # perform a bit of normalisation
         if self.match == 'state':
@@ -341,11 +353,28 @@ class Parser:
         self._chain = self._table.chains[chain]
         self._chain.add(Rule(line))
 
+    def print(self):
+        """Print the parsed output"""
+        for table in self.tables.values():
+            print(f'*{table.name}')
+            for chain_name, chain in table.chains.items():
+                print(f':{chain_name} {chain.policy}')
+                for rule in chain.rules:
+                    print(rule)
+
 
 def get_args():
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
     parser.add_argument('-v', '--verbose', action='store_true')
+    parser.add_argument('--no-ipv6', action='store_true', default=False,
+                        help="Don't compare the state of IPv6 chains")
+    parser.add_argument('--iptables-save', type=Path, required=False,
+                        help='File containing iptables-save output to use for comparison '
+                        'instead of calling iptables-save')
+    parser.add_argument('--ferm-nl', type=Path, required=False,
+                        help="File containing 'ferm -nl --domain ip' output to use for "
+                        "comparison instead of calling ferm")
     return parser.parse_args()
 
 
@@ -353,34 +382,42 @@ def main():
     """Main entry point"""
     args = get_args()
 
+    ret_code = 0
+    if not args.iptables_save and not args.ferm_nl:
+        # Actually check the service's status so it trigger puppet's ensure => running
+        try:
+            check_output('systemctl is-active --quiet ferm.service'.split())
+        except CalledProcessError as systemctl_error:
+            ret_code = systemctl_error.returncode
+            if args.verbose:
+                print('ferm.service is in error state, check systemctl status ferm.service')
+            # Return early if ferm.service is in a bad state
+            return ret_code
+
     # calico creates dynamic rules in chains prefixed with cali-
     # as well as the following chains  KUBE-SERVICES, KUBE-FIREWALL and KUBE-FORWARD
     # docker creates DOCKER and DOCKER_USER
     ignored_chain_prefix = ('DOCKER', 'cali-', 'KUBE-')
     ignored_comment_prefixs = ('cali:')
 
-    iptables = check_output(['iptables-save'])
-    ferm = check_output('ferm -nl --domain ip /etc/ferm/ferm.conf'.split())
-    ip6tables = check_output(['ip6tables-save'])
-    ferm6 = check_output('ferm -nl --domain ip6 /etc/ferm/ferm.conf'.split())
+    if args.iptables_save:
+        iptables = args.iptables_save.read_text()
+    else:
+        iptables = check_output(['iptables-save']).decode()
+    if args.ferm_nl:
+        ferm = args.ferm_nl.read_text()
+    else:
+        ferm = check_output('ferm -nl --domain ip /etc/ferm/ferm.conf'.split()).decode()
+    ferm_parsed = Parser(ferm, ignored_chain_prefix, ignored_comment_prefixs)
+    iptables_parsed = Parser(iptables, ignored_chain_prefix, ignored_comment_prefixs)
 
-    ferm_parsed = Parser(ferm.decode(), ignored_chain_prefix, ignored_comment_prefixs)
-    iptables_parsed = Parser(iptables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
-    ferm6_parsed = Parser(ferm6.decode(), ignored_chain_prefix, ignored_comment_prefixs)
-    ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
+    if not args.no_ipv6:
+        ip6tables = check_output(['ip6tables-save'])
+        ferm6 = check_output('ferm -nl --domain ip6 /etc/ferm/ferm.conf'.split())
+        ferm6_parsed = Parser(ferm6.decode(), ignored_chain_prefix, ignored_comment_prefixs)
+        ip6tables_parsed = Parser(ip6tables.decode(), ignored_chain_prefix, ignored_comment_prefixs)
 
-    ret_code = 0
-    # Actually check the service's status so it trigger puppet's ensure=> running
-    try:
-        check_output('systemctl is-active --quiet ferm.service'.split())
-    except CalledProcessError as systemctl_error:
-        ret_code = systemctl_error.returncode
-        if args.verbose:
-            print('ferm.service is in error state, check systemctl status ferm.service')
-        # Return early if ferm.service is in a bad state
-        return ret_code
-
-    if ferm6_parsed != ip6tables_parsed:
+    if not args.no_ipv6 and (ferm6_parsed != ip6tables_parsed):
         ret_code = 1
         if args.verbose:
             print('ipv6:\n{}'.format(ip6tables_parsed.diff(ferm6_parsed)))
@@ -389,6 +426,11 @@ def main():
         if args.verbose:
             print('ipv4:\n{}'.format(iptables_parsed.diff(ferm_parsed)))
 
+    if args.verbose:
+        if ret_code == 0:
+            print('iptables and ferm are in sync')
+        else:
+            print('iptables and ferm are out of sync')
     return ret_code
 
 
