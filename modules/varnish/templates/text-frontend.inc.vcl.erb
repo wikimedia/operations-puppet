@@ -683,8 +683,8 @@ sub cluster_fe_deliver {
     // Overrides the default network probe limit value
     // Current default value is 0.001 (0.1%)
     // Set NetworkProbeLimit to 0 to stop all probes
-    if (req.http.X-Orig-Cookie !~ "(^|;)\s*NetworkProbeLimit=0.001;"
-        && req.http.Cookie !~ "(^|;)\s*NetworkProbeLimit=0.001;") {
+    if (req.http.X-Orig-Cookie !~ "(^|;)\s*NetworkProbeLimit=0\.001\s*(;|$)"
+        && req.http.Cookie !~ "(^|;)\s*NetworkProbeLimit=0\.001\s*(;|$)") {
         header.append(resp.http.Set-Cookie,
             "NetworkProbeLimit=0.001;"
             + "Path=/;"
