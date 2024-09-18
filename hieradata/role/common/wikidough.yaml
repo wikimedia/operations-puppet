@@ -17,9 +17,9 @@ profile::wikidough::dnsdist::tls_common:
 profile::wikidough::dnsdist::tls_doh:
   min_tls_version: 'tls1.3'
   ciphers_tls13:
-    - 'TLS_AES_256_GCM_SHA384'
-    - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_128_GCM_SHA256'
+    - 'TLS_CHACHA20_POLY1305_SHA256'
+    - 'TLS_AES_256_GCM_SHA384'
 
 profile::wikidough::dnsdist::tls_dot:
   min_tls_version: 'tls1.2'
