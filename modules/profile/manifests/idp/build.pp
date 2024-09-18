@@ -26,9 +26,4 @@ class profile::idp::build {
     }
 
     profile::auto_restarts::service { 'rsync': }
-
-    apt::package_from_component { 'openjdk-21':
-        component => 'component/jdk21',
-        packages  => ['openjdk-21-jre', 'openjdk-21-jre-headless', 'openjdk-21-jdk', 'openjdk-21-jdk-headless'],
-    }
 }
