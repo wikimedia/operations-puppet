@@ -12,10 +12,12 @@ class alertmanager (
 
     service { 'prometheus-alertmanager':
         ensure => running,
+        enable => true,
     }
 
     service { 'alertmanager-webhook-logger':
         ensure => running,
+        enable => true,
     }
 
     profile::auto_restarts::service { 'alertmanager-webhook-logger': }

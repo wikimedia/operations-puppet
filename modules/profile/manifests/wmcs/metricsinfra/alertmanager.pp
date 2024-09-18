@@ -71,5 +71,6 @@ class profile::wmcs::metricsinfra::alertmanager (
 
     service { 'prometheus-alertmanager':
         ensure => running,
+        enable => true,
     }
 }
