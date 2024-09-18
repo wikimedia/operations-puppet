@@ -1,4 +1,4 @@
 # db2218
-# candidate master for s7
+profile::mariadb::mysql_role: 'master'
 mariadb::shard: 's7'
 mariadb::binlog_format: 'STATEMENT'
