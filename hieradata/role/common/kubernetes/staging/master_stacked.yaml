@@ -42,3 +42,7 @@ profile::etcd::v3::max_latency: 10
 # We use the v3 api directly.
 profile::etcd::v3::adv_client_port: 2379
 profile::etcd::v3::use_pki_certs: true
+
+# Disable requestctl ferm rules and definitions from etcd
+profile::firewall::defs_from_etcd: false
+profile::firewall::defs_from_etcd_nft: false

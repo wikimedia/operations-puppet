@@ -68,3 +68,7 @@ profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Kubernetes worker node'
 
 profile::puppet::agent::force_puppet7: true
+
+# Disable requestctl ferm rules and definitions from etcd
+profile::firewall::defs_from_etcd: false
+profile::firewall::defs_from_etcd_nft: false
