@@ -41,10 +41,12 @@ class profile::firewall (
     Boolean                    $defs_from_etcd              = lookup('profile::firewall::defs_from_etcd'),
     Boolean                    $defs_from_etcd_nft          = lookup('profile::firewall::defs_from_etcd_nft'),
     Integer                    $ferm_icinga_retry_interval  = lookup('profile::firewall::ferm_icinga_retry_interval'),
+    Stdlib::Unixpath           $ferm_status_script          = lookup('profile::firewall::ferm_status_script'),
 ) {
     include network::constants
     class { 'firewall':
-        provider => $provider,
+        provider           => $provider,
+        ferm_status_script => $ferm_status_script,
     }
 
     if $enable_logging and $provider == 'ferm' {
@@ -191,7 +193,7 @@ class profile::firewall (
 
                 nftables::file::input { 'drop-blocked-nets':
                     order   => 5,
-                    content => 'ip saddr $BLOCKED_NETS drop'
+                    content => 'ip saddr $BLOCKED_NETS drop',
                 }
             }
 

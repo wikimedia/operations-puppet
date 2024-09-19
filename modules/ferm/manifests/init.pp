@@ -2,7 +2,8 @@
 # https://wiki.debian.org/ferm
 # @param ensure ensure parameter
 class ferm (
-    Wmflib::Ensure $ensure ='present'
+    Wmflib::Ensure $ensure = 'present',
+    Stdlib::Unixpath $ferm_status_script = '/usr/local/sbin/ferm-status',
 ) {
     # @resolve requires libnet-dns-perl
     ensure_packages('libnet-dns-perl')
@@ -63,7 +64,7 @@ class ferm (
             # This is a bit of an abuse of the puppet DSL.
             # We use the status command to ensure that the rules on disk match the rules loaded in the
             # kernel (ferm-status returns 0); if not we want to reload the rule base (ferm-status returns 1).
-            status  => '/usr/local/sbin/ferm-status',
+            status  => $ferm_status_script,
             # When the service status command returns 1, puppet sets the service status to stopped:
             # https://github.com/puppetlabs/puppet/blob/main/lib/puppet/provider/service/base.rb#L77
             # which means that it calls the startcmd (instead of restartcmd).
