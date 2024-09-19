@@ -95,30 +95,31 @@ class profile::firewall (
 
     ensure_packages('conntrack')
 
-    if $defs_from_etcd {
-        confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
-            ensure          => stdlib::ensure($provider == 'ferm'),
-            reload          => '/bin/systemctl reload ferm',
-            watch_keys      => ['/request-ipblocks/abuse'],
-            content         => file('profile/firewall/defs_requestctl.tpl'),
-            prefix          => $conftool_prefix,
-            relative_prefix => false,
-        }
+    $ensure_defs_from_etcd = $provider == 'ferm' and $defs_from_etcd
+    confd::file { '/etc/ferm/conf.d/00_defs_requestctl':
+        ensure          => stdlib::ensure($ensure_defs_from_etcd),
+        reload          => '/bin/systemctl reload ferm',
+        watch_keys      => ['/request-ipblocks/abuse'],
+        content         => file('profile/firewall/defs_requestctl.tpl'),
+        prefix          => $conftool_prefix,
+        relative_prefix => false,
     }
 
     case $provider {
         'ferm': {
-            if $defs_from_etcd {
-                # unmanaged files under /etc/ferm/conf.d are purged
-                # so we define the file to stop it being deleted
+            if $ensure_defs_from_etcd {
+                # confd::file will _not_ create this file but the confd config for it.
+                # condf will create this file so from puppet perspective it is not managed.
+                # Unmanaged files under /etc/ferm/conf.d are purged, so we define the file to stop it being deleted
                 file { '/etc/ferm/conf.d/00_defs_requestctl':
                     ensure => file,
                 }
-                ferm::rule { 'drop-blocked-nets':
-                    prio => '01',
-                    rule => 'saddr $BLOCKED_NETS DROP;',
-                    desc => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
-                }
+            }
+            ferm::rule { 'drop-blocked-nets':
+                ensure => stdlib::ensure($ensure_defs_from_etcd),
+                prio   => '01',
+                rule   => 'saddr $BLOCKED_NETS DROP;',
+                desc   => 'drop abuse/blocked_nets.yaml defined in the requestctl private repo',
             }
             ferm::conf { 'main':
                 prio   => '02',
