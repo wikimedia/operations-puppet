@@ -39,7 +39,7 @@ class profile::gnmi_telemetry (
     }
 
     $targets = Hash($infra_devices.filter |$device, $attributes| {
-        $attributes['role'] in ['asw', 'cr'] and $attributes['site'] == $::site
+        $attributes['role'] in ['asw', 'cr', 'cloudsw'] and $attributes['site'] == $::site
     }.values.map |$device| {
         ["${device['primary_fqdn']}:${ports[$device['manufacturer']]}",
         {'subscriptions' => $targets_sub[$device['manufacturer']]}]
