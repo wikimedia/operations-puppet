@@ -1,0 +1,17 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<% | Hash[String,Hash[String,String]] $sources | -%>
+<% $sources.each |$bucket| {-%>
+[<%= $bucket[0] -%>]
+type = s3
+provider = Ceph
+access_key_id = <%= Sensitive($bucket[1]['access_key']) %>
+secret_access_key = <%= Sensitive($bucket[1]['secret_key']) %>
+endpoint = https://rgw.eqiad.dpe.anycast.wmnet
+acl = private
+
+<% } -%>
+<% if $sources != {} {-%>
+[everything]
+type = combine
+upstreams = <% $sources.each | $bucket | {%><%= $bucket[0] %>=<%= $bucket[0] %>/<%= $bucket[0] %> <% } -%>
+<% } -%>

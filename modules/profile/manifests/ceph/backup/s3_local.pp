@@ -9,10 +9,8 @@
 #     present/absent to install/remove config/timer
 # @param [Stdlib::Unixpath] backup_dir
 #     This is the directory which will contain the backups and config
-# @param Array[String] bucket_list
-#     This is a list of buckets that will be synchonised to the local file system
-# @param Hash[String,Hash[String,String]] Hash of credentials
-#     The structure is:
+# @param Hash[String,Hash[String,String]] sources
+#     The required data structure is:
 #       bucket_name_1:
 #         access_key: foo
 #         secret_key: bar
@@ -21,10 +19,9 @@
 #         secret_key: foobarbaz
 
 class profile::ceph::backup::s3_local (
-    WMFlib::Ensure                   $ensure      = lookup('profile::ceph::backup::s3_local:ensure',default_value => absent),
-    Stdlib::Unixpath                 $backup_dir  = lookup('profile::ceph::backup::s3_local:ensure',default_value => '/srv/postgresql_backups'),
-    Array[String]                    $bucket_list = lookup('profile::ceph::backup::s3_local:bucket_list',default_value => []),
-    Hash[String,Hash[String,String]] $credentials = lookup('profile::ceph::backup::s3_local:credentials',default_value => {}),
+    WMFlib::Ensure                   $ensure     = lookup('profile::ceph::backup::s3_local:ensure',default_value => absent),
+    Stdlib::Unixpath                 $backup_dir = lookup('profile::ceph::backup::s3_local:ensure',default_value => '/srv/postgresql_backups'),
+    Hash[String,Hash[String,String]] $sources    = lookup('profile::ceph::backup::s3_local:sources',default_value => {}),
 ) {
     ensure_packages('rclone')
 
@@ -35,10 +32,12 @@ class profile::ceph::backup::s3_local (
         mode   => '0600',
     }
     file { "${backup_dir}/rclone.conf":
-        ensure => $ensure,
-        owner  => 'backup',
-        group  => 'backup',
-        mode   => '0600',
-        #content  => template('profile/ceph/backup/s3_local/rclone.conf.erb'), TODO
+        ensure  => $ensure,
+        owner   => 'backup',
+        group   => 'backup',
+        mode    => '0600',
+        content => epp ('profile/ceph/backup/s3_local/rclone.conf.epp', {
+            sources => $sources,
+        }),
     }
 }
