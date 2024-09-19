@@ -559,6 +559,14 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: postgresql-test
         - name: postgresql-test-deploy
+    mw-dump-rev-content-reconcile-enrich-next:
+      usernames:
+        - name: mw-dump-rev-content-reconcile-enrich-next
+        - name: mw-dump-rev-content-reconcile-enrich-next-deploy
+    mw-dump-rev-content-reconcile-enrich:
+      usernames:
+        - name: mw-dump-rev-content-reconcile-enrich
+        - name: mw-dump-rev-content-reconcile-enrich-deploy
   aux-k8s:
     jaeger:
       usernames:
