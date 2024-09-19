@@ -45,8 +45,13 @@ def get_log_level(args_level):
             ConnectionError,
     ),
 )
-def verify_emails(mysql_conf, smtp_host, known_invalid_addresses, valid_domains, aliases):
-    query = "SELECT value0, create_time, change_time FROM system_address ORDER BY value0"
+def verify_emails(mysql_conf, smtp_host, valid_domains, aliases):
+    query = '''
+    SELECT value0, create_time, change_time
+    FROM system_address
+    WHERE valid_id = 1
+    ORDER BY value0
+    '''
     mysql_conn = pymysql.connect(
         host=mysql_conf["host"],
         user=mysql_conf["user"],
@@ -59,10 +64,6 @@ def verify_emails(mysql_conf, smtp_host, known_invalid_addresses, valid_domains,
     with mysql_conn.cursor() as cur:
         cur.execute(query)
         for row in cur.fetchall():
-            if row[0] in known_invalid_addresses:
-                # Skip emails handled by gsuite that cannot be removed
-                # from VRTS, see T284145
-                continue
             if row[0].split("@")[1] not in valid_domains:
                 LOG.warning("we don't handle email for %s", row[0])
                 no_auth.append(row)
@@ -104,39 +105,6 @@ def main():
     valid_domains = []
     return_code = 0
     aliases = set()
-    # List of emails handled by gsuite or postfix that cannot be removed from VRTS, see T284145
-    known_invalid_addresses = [
-        # gsuite
-        "board@wikimedia.org",
-        "business@wikimedia.org",
-        "donation@wikimedia.org",
-        "donations@wikimedia.org",
-        "glam@wikimedia.org",
-        "improve@wikimedia.org",
-        "legal-en@wikimedia.org",
-        "legal-tm-vio@wikimedia.org",
-        "mobile-android-wikipedia@wikimedia.org",
-        "mobile-ios-wikipedia@wikimedia.org",
-        "postmaster@wikimedia.org",
-        "postmaster@wikipedia.org",
-        "press@wikimedia.org",
-        "privacy@wikimedia.org",
-        "security@wikimedia.org",
-        "ux@wikimedia.org",
-        "wikimania@wikimedia.org",
-        "wm-cz@wikimedia.org",
-        # postfix
-        "donations@wikipedia.org",
-        "donation@wikipedia.org",
-        "jobs@wikipedia.org",
-        "noc@wikimedia.org",
-        "otrs@wikimedia.org",
-        "privacy@wikidata.org",
-        "security@wikipedia.org",
-        "webmaster@wikimedia.org",
-        "webmaster@wikipedia.org",
-    ]
-
     config = ConfigParser()
     config.read(args.config)
     if "aliases_folder" not in config["DEFAULT"]:
@@ -185,7 +153,6 @@ def main():
     available, no_auth, gsuite = verify_emails(
             config["DB"],
             config["DEFAULT"]["smtp_server"],
-            known_invalid_addresses,
             valid_domains,
             aliases,
             )
