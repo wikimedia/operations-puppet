@@ -214,23 +214,8 @@ class profile::ganeti (
             notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
         }
 
-        nrpe::monitor_service{ 'ganeti-mond':
-            ensure       => absent,
-            description  => 'ganeti-mond running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u root -C ganeti-mond',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
-        }
-
         # Memory monitoring
         ensure_packages( 'monitoring-plugins-contrib' )  # for pmp-check-unix-memory
-        $check_path = '/usr/lib/nagios/plugins/pmp-check-unix-memory'
-        $check_command = "${check_path} -c ${critical_memory} -w ${warning_memory}"
-        nrpe::monitor_service { 'ganeti_memory':
-            ensure       => absent,
-            description  => 'Ganeti memory',
-            nrpe_command => $check_command,
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti#Memory_pressure',
-        }
 
         if $facts['ganeti_master'] == $facts['fqdn'] {
             nrpe::monitor_service { "https-gnt-rapi-${::site}":
