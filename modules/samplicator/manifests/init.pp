@@ -30,11 +30,4 @@ class samplicator(
     }
 
     profile::auto_restarts::service { 'samplicator': }
-
-    nrpe::monitor_service { 'samplicator-process':
-        ensure       => absent,
-        description  => 'Samplicator process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C samplicate',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Netflow#Process',
-    }
   }
