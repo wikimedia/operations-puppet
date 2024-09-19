@@ -13,12 +13,6 @@ class profile::statsd (
         backend_ports => range(8126, 8131),
     }
 
-    nrpe::monitor_service { 'statsd-proxy':
-        description  => 'statsd-proxy process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C statsd-proxy',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Statsd',
-    }
-
     # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
     ferm::service { 'statsd':
         proto   => 'udp',
