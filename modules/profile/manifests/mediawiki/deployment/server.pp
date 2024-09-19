@@ -130,9 +130,6 @@ class profile::mediawiki::deployment::server(
         require => File['/usr/local/etc/fix-staging-perms.sh'],
     }
 
-
-    # This is symlink is accessed indirectly by
-    # modules/profile/files/mediawiki/monitor_versions/check_mw_versions.py
     file { '/srv/deployment/mediawiki-staging':
         ensure  => link,
         target  => '/srv/mediawiki-staging',

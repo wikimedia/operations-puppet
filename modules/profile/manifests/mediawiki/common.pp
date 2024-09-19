@@ -68,8 +68,6 @@ class profile::mediawiki::common(
 
     # Install scap
     include ::profile::mediawiki::scap_client
-    # Monitor mediawiki versions (T242023)
-    include ::profile::mediawiki::monitor_versions
 
     class { '::mediawiki::syslog':
         log_aggregator => $log_aggregator,
