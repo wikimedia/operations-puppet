@@ -15,3 +15,6 @@ profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Backup analytics multiinstance databases'
 
 profile::puppet::agent::force_puppet7: true
+
+# Use rclone to back up named S3 buckets to the local filesystem. See #T372908
+profile::ceph::backup::s3_local::ensure: present
