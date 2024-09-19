@@ -86,7 +86,7 @@ class profile::puppetserver (
         if $puppet_merge_server {
             class { 'merge_cli':
                 ca_server => $puppet_merge_server,
-                masters   => $profile::puppetserver::git::servers,
+                masters   => $profile::puppetserver::git::masters,
                 workers   => $profile::puppetserver::git::servers,
                 paths     => $paths,
             }

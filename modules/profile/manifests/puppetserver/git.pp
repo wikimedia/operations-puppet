@@ -21,6 +21,16 @@ class profile::puppetserver::git (
                 wmflib::role::hosts('puppetmaster::backend') +
                 wmflib::role::hosts('puppetserver') -
                 $exclude_servers).sort.unique
+
+    # FIXME: the name "masters" is tightly coupled with the MASTERS
+    # bash env variable in puppet-merge.sh, that at the time of its
+    # creation was meant to target only puppetmaster frontend nodes.
+    # Once puppetmasters are gone from our infra, we can remove
+    # the MASTERS config and the following one as well.
+    $masters = (wmflib::role::hosts('puppetmaster::frontend') +
+                wmflib::role::hosts('puppetserver') -
+                $exclude_servers).sort.unique
+
     unless $repos.has_key($control_repo) {
         fail("\$control_repo (${control_repo}) must be defined in \$repos")
     }
