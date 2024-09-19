@@ -41,11 +41,6 @@ node /^acmechief-test2001\.codfw\./ {
     role(acme_chief)
 }
 
-#old namenodes - to be decommissioned
-node /^an-master100[12]\.eqiad\./ {
-    role(insetup::data_engineering)
-}
-
 # The Hadoop master node:
 # - primary active NameNode
 # - YARN ResourceManager
