@@ -109,6 +109,9 @@ class vrts(
         # Added in 6.4.5 as required
         'libical-parser-perl',
 
+        # Added in 6.5.10 as required
+        'libdata-uuid-perl',
+
         'default-mysql-client',
 
     ]
