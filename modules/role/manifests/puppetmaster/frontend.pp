@@ -16,7 +16,6 @@ class role::puppetmaster::frontend {
     require profile::conftool::state
 
     # config-master.wikimedia.org
-    include profile::configmaster
     include profile::discovery::client
 
     # IPMI management

@@ -23,15 +23,6 @@ profile::puppetmaster::common::reports:
   - logstash
 profile::puppetmaster::common::puppetdb_port: 8443
 profile::conftool::client::etcd_user: 'root'
-profile::configmaster::server_name: config-master.wikimedia.org
-profile::configmaster::server_aliases:
-  - 'config-master.eqiad.wmnet'
-  - 'config-master.codfw.wmnet'
-  - 'config-master.esams.wmnet'
-  - 'config-master.ulsfo.wmnet'
-  - 'config-master.eqsin.wmnet'
-  - 'config-master.drmrs.wmnet'
-profile::configmaster::enable_nda: true
 profile::java::java_packages:
   - version: '11'
     variant: 'jre-headless'
