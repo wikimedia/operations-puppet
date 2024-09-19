@@ -223,4 +223,8 @@ class profile::backup::filesets(
         includes => [ '/srv/postgres-backup/psql-all-dbs-latest.sql.gz' ]
     }
 
+    # Data Platform Postgresql backups via S3/Ceph (T372908)
+    bacula::director::fileset { 'data-platform-postgres-s3':
+        includes => [ '/srv/postgresql_backups' ],
+    }
 }

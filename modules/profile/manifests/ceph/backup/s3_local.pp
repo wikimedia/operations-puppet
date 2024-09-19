@@ -40,4 +40,6 @@ class profile::ceph::backup::s3_local (
             sources => $sources,
         }),
     }
+
+    backup::set { 'data-platform-postgres-s3': }
 }

@@ -4,4 +4,5 @@ class role::mariadb::misc::analytics::backup {
 
     include profile::mariadb::misc::analytics::multiinstance
     include profile::ceph::backup::s3_local
+    include profile::backup::host
 }
