@@ -1,4 +1,0 @@
-# db2129
-# candidate master for s6
-mariadb::shard: 's6'
-mariadb::binlog_format: 'STATEMENT'
