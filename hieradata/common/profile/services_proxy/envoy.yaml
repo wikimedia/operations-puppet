@@ -156,13 +156,6 @@ profile::services_proxy::envoy::listeners:
     retry:
       retry_on: "5xx"
       num_retries: 1
-  - name: shellbox-video
-    port: 6036
-    timeout: "86400s"
-    idle_timeout: "86400s"
-    service: shellbox-video
-    keepalive: "4s"
-    # Explicitly do not retry
   - name: linkrecommendation
     port: 6029
     service: linkrecommendation
@@ -200,16 +193,23 @@ profile::services_proxy::envoy::listeners:
     upstream: "ipoid.discovery.wmnet"
     sets_sni: true
     keepalive: "4s" # T356766
-  - name: data-gateway
+  - name: shellbox-video
     port: 6036
-    service: data-gateway
-    timeout: "10s"
+    timeout: "86400s"
+    idle_timeout: "86400s"
+    service: shellbox-video
     keepalive: "4s"
+    # Explicitly do not retry
   - name: mpic
     port: 6037
     service: mpic
     timeout: "30s"
     sets_sni: true
+    keepalive: "4s"
+  - name: data-gateway
+    port: 6038
+    service: data-gateway
+    timeout: "10s"
     keepalive: "4s"
 
   # Non-discovery records
