@@ -13,5 +13,5 @@ acl = private
 <% if $sources != {} {-%>
 [everything]
 type = combine
-upstreams = <% $sources.each | $bucket | {%><%= $bucket[0] %>=<%= $bucket[0] %>/<%= $bucket[0] %> <% } -%>
+upstreams = <% $sources.each | $bucket | {%><%= $bucket[0] %>=<%= $bucket[0] %>:/<%= $bucket[0] %> <% } -%>
 <% } -%>
