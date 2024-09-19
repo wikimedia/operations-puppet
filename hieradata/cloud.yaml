@@ -392,6 +392,7 @@ profile::firewall::log::log_rate: 1/second
 profile::firewall::log::log_burst: 5
 profile::firewall::log::separate_file: false
 profile::firewall::ferm_icinga_retry_interval: 1
+profile::firewall::ferm_status_script: /usr/local/sbin/ferm-status
 
 prometheus_nodes: []
 profile::prometheus::cadvisor::ensure: absent
