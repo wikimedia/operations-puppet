@@ -180,24 +180,6 @@ class profile::kerberos::kdc (
     include ::profile::backup::host
     backup::set { 'krb-srv-backup': }
 
-    # If additional worker nodes are spawned, the supervisor process also shows up as a krb5kdc process
-    if $kdc_workers > 1 {
-        $mon_workers = $kdc_workers + 1
-    } else {
-        $mon_workers = 1
-    }
-
-    if $monitoring_enabled {
-        nrpe::monitor_service { 'krb-kdc':
-            ensure        => absent,
-            description   => 'Kerberos KDC daemon',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${mon_workers}:${mon_workers} -a '/usr/sbin/krb5kdc'",
-            contact_group => 'admins,team-data-platform',
-            require       => Service['krb5-kdc'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Kerberos#Daemons_and_their_roles',
-        }
-    }
-
     # Needed to cope with bursty requests T329525
     sysctl::parameters {'kdc-sysctl':
         priority => 90,
