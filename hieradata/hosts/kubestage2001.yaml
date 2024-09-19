@@ -1,1 +1,1 @@
-profile::firewall::ferm_status_script: /usr/local/sbin/ferm-status-debug
+profile::firewall::ferm_status_restart: true

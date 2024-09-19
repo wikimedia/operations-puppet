@@ -6,8 +6,9 @@ from argparse import ArgumentParser
 from ipaddress import ip_network
 from re import match
 from socket import getservbyname
-from subprocess import check_output, CalledProcessError
+from subprocess import check_output, run, CalledProcessError
 from pathlib import Path
+from syslog import syslog
 
 
 def get_quoted_string(words_array, idx):
@@ -369,6 +370,9 @@ def get_args():
     parser.add_argument('-v', '--verbose', action='store_true')
     parser.add_argument('--no-ipv6', action='store_true', default=False,
                         help="Don't compare the state of IPv6 chains")
+    parser.add_argument('--start-ferm', action='store_true', default=False,
+                        help="Start ferm if a diff was detected, will return with the "
+                        "exitcode from ferm")
     parser.add_argument('--iptables-save', type=Path, required=False,
                         help='File containing iptables-save output to use for comparison '
                         'instead of calling iptables-save')
@@ -389,8 +393,10 @@ def main():
             check_output('systemctl is-active --quiet ferm.service'.split())
         except CalledProcessError as systemctl_error:
             ret_code = systemctl_error.returncode
+            msg = 'ferm.service is in error state, check systemctl status ferm.service'
             if args.verbose:
-                print('ferm.service is in error state, check systemctl status ferm.service')
+                print(msg)
+            syslog(msg + f', exitcode: {ret_code}')
             # Return early if ferm.service is in a bad state
             return ret_code
 
@@ -426,11 +432,21 @@ def main():
         if args.verbose:
             print('ipv4:\n{}'.format(iptables_parsed.diff(ferm_parsed)))
 
-    if args.verbose:
-        if ret_code == 0:
+    if ret_code == 0:
+        if args.verbose:
             print('iptables and ferm are in sync')
-        else:
+        syslog(f'iptables and ferm are in sync, exitcode: {ret_code}')
+    else:
+        if args.verbose:
             print('iptables and ferm are out of sync')
+        if args.start_ferm:
+            if args.verbose:
+                print('Starting ferm')
+            syslog('Starting ferm')
+            return run('ferm /etc/ferm/ferm.conf'.split()).returncode
+        else:
+            syslog(f'iptables and ferm are out of sync, exitcode: {ret_code}')
+
     return ret_code
 
 
