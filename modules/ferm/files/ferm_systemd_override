@@ -1,3 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
 [Service]
+ExecReload=
 ExecReload=/usr/local/sbin/ferm-status --start-ferm
