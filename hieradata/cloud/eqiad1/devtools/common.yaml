@@ -241,8 +241,8 @@ profile::gitlab::passive_hosts: []
 
 profile::base::ssh_server_settings:
     listen_addresses:
-    - "%{facts.ipaddress}"
-#    - "%{facts.ipaddress6}" # no ipv6 on cloud test instance
+    - "%{facts.networking.ip}"
+#   - "%{facts.networking.ip6}" # no ipv6 on cloud VPS yet, progress at T37947#10144123
 
 
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
