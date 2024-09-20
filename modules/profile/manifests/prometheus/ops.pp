@@ -273,6 +273,17 @@ class profile::prometheus::ops (
         ],
         'relabel_configs' => $probes_relabel_configs,
       },
+
+      # Probes for grpc/gnmi on network devices.
+      {
+        'job_name'        => 'probes/grpc',
+        'metrics_path'    => '/probe',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/probes-grpc_*.yaml" ] }
+        ],
+        'relabel_configs' => $probes_relabel_configs,
+      },
+
       # Probes for the management network (ssh). Scrape interval is higher since mgmt is lower
       # priority and mgmt SSH interfaces have been historically finicky
       {
@@ -415,6 +426,16 @@ class profile::prometheus::ops (
     prometheus::blackbox::import_checks { 'ops':
       prometheus_instance => 'ops',
       site                => $::site,
+    }
+
+    $site_network_gnmi_devices = $profile::netbox::data::network_devices.filter |$host, $config| {
+      # Must match the filter defined in modules/profile/manifests/gnmi_telemetry.pp
+      # to monitor the same endpoints that we collect
+      $config['site'] == $::site and $config['role'] in ['cloudsw', 'asw', 'cr']
+    }
+    netops::prometheus::grpc { 'site':
+      targets      => $site_network_gnmi_devices,
+      targets_file => "${targets_path}/probes-grpc_site.yaml",
     }
 
     # Export local textfile metrics.
