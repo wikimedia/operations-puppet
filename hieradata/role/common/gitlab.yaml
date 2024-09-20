@@ -7,8 +7,8 @@ profile::gitlab::passive_hosts: ['gitlab1003.wikimedia.org', 'gitlab1004.wikimed
 
 profile::ssh::server::manage_host_keys: true
 profile::ssh::server::listen_addresses:
-  - "%{facts.ipaddress}"
-  - "%{facts.ipaddress6}"
+  - "%{facts.networking.ip}"
+  - "%{facts.networking.ip6}"
 
 profile::gitlab::backup_dir_data: '/srv/gitlab-backup'
 profile::gitlab::backup_dir_config: '/etc/gitlab/config_backup'
