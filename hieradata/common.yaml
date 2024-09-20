@@ -648,6 +648,10 @@ wikimedia_clusters:
     description: "Ceph clusters providing services to the Data Platform teams"
     sites:
       eqiad: []
+  datahubsearch:
+    description: "OpenSearch cluster that services DataHub"
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_merge_server: puppetserver1001.eqiad.wmnet

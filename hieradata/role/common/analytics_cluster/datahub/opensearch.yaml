@@ -1,5 +1,6 @@
 # Notify the Data Platform SRE team about services on these hosts
 contactgroups: 'admins,team-data-platform'
+cluster: datahubsearch
 
 profile::opensearch::rack: ''
 profile::opensearch::logstash_transport: syslog
