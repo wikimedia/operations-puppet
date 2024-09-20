@@ -113,8 +113,8 @@ class profile::elasticsearch::cirrus(
             http_port => $http_port,
         }
 
-        # Also limit this check to only the master nodes to reduce duplication
-        # of this check on all nodes until we find a better way to run this check
+        # Also limit these checks to only the master nodes to reduce duplication
+        # of these checks on all nodes until we find a better way to run these checks
         # only on icinga nodes
         if $facts['fqdn'] in $instance_params['unicast_hosts'] {
             elasticsearch::cross_cluster_settings { $instance_title:
@@ -127,6 +127,17 @@ class profile::elasticsearch::cirrus(
                 port                 => $http_port,
                 settings             => $::profile::elasticsearch::configured_instances,
                 enable_remote_search => $enable_remote_search,
+            }
+            # T357146 monitor Elastic snapshot repository
+            # All clusters use the same repo, which enables cross-cluster snapshot restores.
+            prometheus::blackbox::check::http { "${facts['fqdn']}_${instance_title}_snapshot":
+                server_name    => $facts['fqdn'],
+                team           => 'data-platform-sre',
+                severity       => 'task',
+                path           => '/_snapshot/elastic_snaps',
+                ip_families    => ['ip4','ip6'],
+                status_matches => [200],
+                force_tls      => true,
             }
         }
     }
