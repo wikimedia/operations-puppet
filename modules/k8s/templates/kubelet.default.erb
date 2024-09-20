@@ -49,5 +49,11 @@ if @system_reserved
     daemon_args.push("--system-reserved=#{reserved.join(',')}")
   end
 end
+
+# TODO: Kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option, use that instead
+if @containerd_cri
+  daemon_args.push("--container-runtime=remote")
+  daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
+end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

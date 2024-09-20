@@ -1744,7 +1744,10 @@ node /^kubestage100[34]\.eqiad\./ {
 }
 
 # codfw new kubernetes staging nodes T252185
-node /^kubestage200[12]\.codfw\./ {
+node /^kubestage2001\.codfw\./ {
+    role(kubernetes::staging::worker_containerd)
+}
+node /^kubestage2002\.codfw\./ {
     role(kubernetes::staging::worker)
 }
 

@@ -1,12 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-class role::kubernetes::staging::worker {
+class role::kubernetes::staging::worker_containerd {
     include profile::base::production
     include profile::firewall
 
-    # Sets up docker on the machine
-    include profile::docker::engine
-    # Setup dfdaemon and configure docker to use it
+    # Setup dfdaemon
     include profile::dragonfly::dfdaemon
+    # Sets up containerd for kubernetes
+    # It will configure containerd to use the dfdaemon as the registry proxy if dfdaemon is included earlier
+    include profile::containerd
     # Setup kubernetes stuff
     include profile::kubernetes::node
     # Setup calico

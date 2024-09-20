@@ -41,6 +41,7 @@ class profile::dragonfly::dfdaemon (
     docker_registry_fqdn => $docker_registry_fqdn,
     proxy_urls_regex     => $proxy_urls_regex,
     ratelimit            => $ratelimit,
+    containerd_cri       => !defined(Class['profile::docker::engine']),
   }
 
   # This is the port dfget (called by dfdaemon) will listen and serve chunks on.

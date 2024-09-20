@@ -23,6 +23,9 @@
 #   Rate network bandwith rate limit for the dfget calls in format of G(B)/g/M(B)/m/K(B)/k/B, pure number will also
 #   be parsed as Byte.
 #
+# @param containerd_cri
+#   Don't configure the docker daemon to use the local dfdaemon as https_proxy if containerd is used as CRI.
+#
 class dragonfly::dfdaemon (
   Wmflib::Ensure       $ensure,
   Array[String]        $supernodes,
@@ -31,6 +34,7 @@ class dragonfly::dfdaemon (
   Stdlib::Fqdn         $docker_registry_fqdn,
   Array[String]        $proxy_urls_regex = ['blobs/sha256.*'],
   String               $ratelimit = '100M',
+  Boolean              $containerd_cri = false,
 ) {
   ensure_packages(['dragonfly-dfdaemon', 'dragonfly-dfget'], { 'ensure' => $ensure })
 
@@ -53,13 +57,15 @@ class dragonfly::dfdaemon (
     notify  => Service['dragonfly-dfdaemon'],
   }
 
-  # Configure the docker daemon to use the local dfdaemon as https_proxy
-  $proxy_host = '127.0.0.1:65001'
-  systemd::unit { 'docker':
-    ensure   => $ensure,
-    override => true,
-    restart  => true,
-    content  => "[Service]\nEnvironment=\"HTTPS_PROXY=https://${proxy_host}\"",
+  if $containerd_cri {
+    # Configure the docker daemon to use the local dfdaemon as https_proxy
+    $proxy_host = '127.0.0.1:65001'
+    systemd::unit { 'docker':
+      ensure   => $ensure,
+      override => true,
+      restart  => true,
+      content  => "[Service]\nEnvironment=\"HTTPS_PROXY=https://${proxy_host}\"",
+    }
   }
 
   service { 'dragonfly-dfdaemon':

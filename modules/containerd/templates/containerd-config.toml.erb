@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: Apache-2.0
+# This is based on the config shipped with the containerd package in Debian (1.6.20~ds1-1+b1)
+#
+# All possible config values including their defaults can be found by running:
+# containerd config default
+version = 2
+
+[plugins]
+  [plugins."io.containerd.grpc.v1.cri"]
+    # Define our sandbox image
+    sandbox_image = "<%= @sandbox_image %>"
+    [plugins."io.containerd.grpc.v1.cri".cni]
+      # Debian overrides bin_dir from /opt/cni/bin
+      bin_dir = "/usr/lib/cni"
+      # Debian sets conf_dir to /etc/cni/net.d, which is the default
+      conf_dir = "/etc/cni/net.d"
+    [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
+        # With cgroup v2 we need to use the systemd cgroup driver
+        SystemdCgroup = true
+    # If dragonfly is enabled, configure the local dfget as registry mirror
+    # https://d7y.io/docs/v2.0.2/setup/runtime/containerd/mirror
+    <%- if @dragonfly_enabled -%>
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker-registry.discovery.wmnet"]
+      endpoint = ["https://127.0.0.1:65001","https://docker-registry.discovery.wmnet"]
+    <%- end -%>
+    <%- if @registry_auth -%>
+    # NOTE: registry.configs.*.auth is DEPRECATED and will NOT have an equivalent way to store unencrypted secrets in the host
+    # configuration files. However, it will not be removed until a suitable secret management alternative is available as a plugin.
+    # It remains supported in 1.x releases, including the 1.6 LTS release.
+    # Source: https://github.com/containerd/containerd/blob/main/docs/cri/registry.md
+      <%- if @dragonfly_enabled -%>
+    [plugins."io.containerd.grpc.v1.cri".registry.configs."127.0.0.1:65001".auth]
+      auth = "<%= @registry_auth %>"
+      <%- end -%>
+    [plugins."io.containerd.grpc.v1.cri".registry.configs."docker-registry.discovery.wmnet".auth]
+      auth = "<%= @registry_auth %>"
+    <%- end -%>
+  [plugins."io.containerd.internal.v1.opt"]
+    # Debian overrides path from /opt/containerd
+    path = "/var/lib/containerd/opt"

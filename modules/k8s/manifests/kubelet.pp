@@ -11,6 +11,7 @@ class k8s::kubelet (
     Stdlib::Unixpath $cni_conf_dir = '/etc/cni/net.d',
     Integer $v_log_level = 0,
     Boolean $ipv6dualstack = false,
+    Boolean $containerd_cri = false,
     Optional[Stdlib::IP::Address] $listen_address = undef,
     Optional[String] $docker_kubernetes_user_password = undef,
     Optional[Array[Stdlib::IP::Address,1]] $cluster_dns = undef,

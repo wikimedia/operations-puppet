@@ -216,6 +216,15 @@ class profile::kubernetes::node (
         }
     }
 
+    # Check if containerd should be used as CRI
+    if defined(Class['profile::containerd']) {
+        $containerd_cri = $profile::containerd::ensure ? {
+            'absent'  => false,
+            default   => true,
+        }
+    } else {
+        $containerd_cri = false
+    }
     class { 'k8s::kubelet':
         cni                             => $k8s_config['use_cni'],
         cluster_dns                     => $k8s_config['cluster_dns'],
@@ -229,6 +238,7 @@ class profile::kubernetes::node (
         ipv6dualstack                   => $k8s_config['ipv6dualstack'],
         docker_kubernetes_user_password => $docker_kubernetes_user_password,
         system_reserved                 => $system_reserved,
+        containerd_cri                  => $containerd_cri,
     }
 
     # Setup kube-proxy

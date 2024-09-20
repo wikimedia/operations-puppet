@@ -1,0 +1,26 @@
+# This is the conftool cluster name, don't be confused
+cluster: kubernetes-staging
+# cluster_name is used to look up cluster settings from kubernetes_clusters hiera key.
+profile::kubernetes::cluster_name: "staging-%{::site}"
+
+profile::base::overlayfs: true
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
+profile::firewall::ferm_icinga_retry_interval: 15
+
+profile::dragonfly::dfdaemon::ensure: present
+# Use containerd
+profile::containerd::ensure: present
+
+# We don't need conftool safe restart scripts on k8s.
+profile::lvs::realserver::use_conftool: false
+profile::lvs::realserver::pools:
+  k8s-ingress-staging: {}
+
+profile::contacts::role_contacts: ['ServiceOps']
+profile::base::production::role_description: 'Kubernetes containerd worker node (staging setup)'
+
+profile::puppet::agent::force_puppet7: true
+
+# Disable requestctl ferm rules and definitions from etcd
+profile::firewall::defs_from_etcd: false
+profile::firewall::defs_from_etcd_nft: false
