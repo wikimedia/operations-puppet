@@ -98,18 +98,18 @@ class jenkins(
         mode   => '0755',
     }
 
-    if $use_scap3_deployment {
-        apt::repository { 'repository_jenkins-thirdparty-ci':
-          uri        => 'http://apt.wikimedia.org/wikimedia',
-          dist       => "${::lsbdistcodename}-wikimedia",
-          components => 'thirdparty/ci',
-        }
-    } else {
-        apt::package_from_component { 'jenkins-thirdparty-ci':
-          component => 'thirdparty/ci',
-          packages  => ['jenkins']
-        }
 
+    apt::repository { 'jenkins-thirdparty-ci':
+      uri        => 'http://apt.wikimedia.org/wikimedia',
+      dist       => "${::lsbdistcodename}-wikimedia",
+      components => 'thirdparty/ci',
+    }
+
+    if ! $use_scap3_deployment {
+        package { 'jenkins':
+            ensure  => present,
+            require => Apt::Repository['jenkins-thirdparty-ci'],
+        }
         file { '/etc/jenkins/logging.properties':
           content => template('jenkins/logging.properties.erb'),
           owner   => 'jenkins',
