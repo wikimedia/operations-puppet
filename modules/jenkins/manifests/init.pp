@@ -99,16 +99,9 @@ class jenkins(
     }
 
 
-    apt::repository { 'jenkins-thirdparty-ci':
-      uri        => 'http://apt.wikimedia.org/wikimedia',
-      dist       => "${::lsbdistcodename}-wikimedia",
-      components => 'thirdparty/ci',
-    }
-
     if ! $use_scap3_deployment {
         package { 'jenkins':
             ensure  => present,
-            require => Apt::Repository['jenkins-thirdparty-ci'],
         }
         file { '/etc/jenkins/logging.properties':
           content => template('jenkins/logging.properties.erb'),

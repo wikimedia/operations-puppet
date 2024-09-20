@@ -12,6 +12,8 @@ class profile::ci::jenkins(
     include profile::ci
     include ::profile::java
     Class['::profile::java'] ~> Class['::jenkins']
+    include ::profile::ci::thirdparty_apt
+    Class['::profile::ci::thirdparty_apt'] ~> Class['::jenkins']
 
     # Load the Jenkins module, that setup a Jenkins controller
     $service_enable = $profile::ci::manager ? {

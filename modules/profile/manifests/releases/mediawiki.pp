@@ -16,6 +16,8 @@ class profile::releases::mediawiki (
     include profile::docker::engine
     include profile::java
     Class['::profile::java'] ~> Class['::jenkins']
+    include ::profile::ci::thirdparty_apt
+    Class['::profile::ci::thirdparty_apt'] ~> Class['::jenkins']
 
     class { '::jenkins':
         http_port            => $http_port,

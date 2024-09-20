@@ -9,15 +9,10 @@ class profile::ci::docker(
     $docker_version = lookup('profile::ci::docker::docker_version'),
 ) {
     include profile::docker::prune
+    include profile::ci::thirdparty_apt
 
     # Let us elevate permissions to the user running a containerized process
     ensure_packages('acl')
-
-    apt::repository { 'thirdparty-ci':
-        uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
-        components => 'thirdparty/ci',
-    }
 
     class { 'docker::configuration':
         settings => $settings,
@@ -40,7 +35,7 @@ class profile::ci::docker(
             'ensure'  => $full_docker_version,
             'require' => [
                 Class['docker::configuration'],
-                Apt::Repository['thirdparty-ci'],
+                Class['profile::ci::thirdparty_apt'],
             ],
         },
     )
