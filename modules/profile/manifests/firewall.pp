@@ -41,13 +41,10 @@ class profile::firewall (
     Boolean                    $defs_from_etcd              = lookup('profile::firewall::defs_from_etcd'),
     Boolean                    $defs_from_etcd_nft          = lookup('profile::firewall::defs_from_etcd_nft'),
     Integer                    $ferm_icinga_retry_interval  = lookup('profile::firewall::ferm_icinga_retry_interval'),
-    # Temporary flag to control the restart of ferm by ferm-status
-    Boolean                    $ferm_status_restart         = lookup('profile::firewall::ferm_status_restart', { 'default_value' => false }),
 ) {
     include network::constants
     class { 'firewall':
-        provider            => $provider,
-        ferm_status_restart => $ferm_status_restart,
+        provider => $provider,
     }
 
     if $enable_logging and $provider == 'ferm' {
