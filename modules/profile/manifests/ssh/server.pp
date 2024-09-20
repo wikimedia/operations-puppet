@@ -5,7 +5,6 @@
 # @param permit_root if true allow root logins
 # @param authorized_keys_file space seperated list of authorized keys files
 # @param lookup_keys_from_ldap if true, user keys will be looked up from ldap
-# @param disable_nist_kex Allow uses to temporarily opt out of nist kex disabling
 # @param explicit_macs Allow users to opt out of more secure MACs
 # @param enable_hba enable host based authentication
 # @param enable_kerberos enable kerberos
@@ -29,7 +28,6 @@ class profile::ssh::server (
     Ssh::Config::PermitRootLogin $permit_root                = lookup('profile::ssh::server::permit_root'),
     Array[Stdlib::Unixpath]      $authorized_keys_file       = lookup('profile::ssh::server::authorized_keys_file'),
     Boolean                      $lookup_keys_from_ldap      = lookup('profile::ssh::server::lookup_keys_from_ldap'),
-    Boolean                      $disable_nist_kex           = lookup('profile::ssh::server::disable_nist_kex'),
     Boolean                      $explicit_macs              = lookup('profile::ssh::server::explicit_macs'),
     Boolean                      $enable_hba                 = lookup('profile::ssh::server::enable_hba'),
     Boolean                      $enable_kerberos            = lookup('profile::ssh::server::enable_kerberos'),

@@ -30,9 +30,7 @@ AuthorizedPrincipalsFile <%= @authorized_principals_file %>
   <%- end -%>
 <%- end -%>
 
-<%- if @disable_nist_kex -%>
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
-<%- end -%>
 
 # Logging
 SyslogFacility AUTH
