@@ -18,9 +18,9 @@ class profile::backup::storage::common(
         notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
     }
 
-    ferm::service { 'bacula-storage-demon':
-        proto  => 'tcp',
-        port   => '9103',
-        srange => '$PRODUCTION_NETWORKS',
+    firewall::service { 'bacula-storage-demon':
+        proto    => 'tcp',
+        port     => 9103,
+        src_sets => ['PRODUCTION_NETWORKS'],
     }
 }
