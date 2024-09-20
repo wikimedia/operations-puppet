@@ -652,6 +652,10 @@ wikimedia_clusters:
     description: "OpenSearch cluster that services DataHub"
     sites:
       eqiad: []
+  airflow:
+    description: "Airflow instances and related database servers"
+    sites:
+      eqiad: []
 puppetmaster: "puppet"
 puppet_ca_server: puppetmaster1001.eqiad.wmnet
 puppet_merge_server: puppetserver1001.eqiad.wmnet

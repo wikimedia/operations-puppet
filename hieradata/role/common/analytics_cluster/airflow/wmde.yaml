@@ -2,7 +2,7 @@
 contactgroups: 'admins,team-data-platform'
 
 nagios_group: analytics_eqiad
-cluster: analytics
+cluster: airflow
 profile::admin::groups:
   - analytics-admins
   - airflow-wmde-admins
