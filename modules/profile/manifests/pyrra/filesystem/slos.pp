@@ -65,10 +65,10 @@ class profile::pyrra::filesystem::slos (
                 'indicator' => {
                     'latency' => {
                         'success' => {
-                            'metric' => "istio_request_duration_milliseconds_bucket{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", le=\"5000\", response_code=~\"2..\", site=\"${datacenter}\" }",
+                            'metric' => "istio_request_duration_milliseconds_bucket{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", le=\"5000\", response_code!~\"[345]..\", site=\"${datacenter}\" }",
                         },
                         'total' => {
-                            'metric' => "istio_request_duration_milliseconds_count{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", response_code=~\"2..\", site=\"${datacenter}\" }",
+                            'metric' => "istio_request_duration_milliseconds_count{kubernetes_namespace=\"istio-system\", destination_canonical_service=\"enwiki-articlequality-predictor-default\", response_code!~\"[345]..\", site=\"${datacenter}\" }",
                         },
                     },
                 },
