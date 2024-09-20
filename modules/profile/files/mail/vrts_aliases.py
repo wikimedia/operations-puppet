@@ -60,25 +60,26 @@ def verify_emails(mysql_conf, smtp_host, valid_domains, aliases):
     )
     smtp_conn = smtplib.SMTP()
     smtp_conn.connect(smtp_host)
-    available, no_auth, gsuite = [], [], []
+    available, no_auth_matches, gsuite_matches, alias_matches = [], [], [], []
     with mysql_conn.cursor() as cur:
         cur.execute(query)
         for row in cur.fetchall():
             if row[0].split("@")[1] not in valid_domains:
-                LOG.warning("we don't handle email for %s", row[0])
-                no_auth.append(row)
+                LOG.warning("Skipping, we don't handle email for %s", row[0])
+                no_auth_matches.append(row)
                 continue
-            if row[0] in aliases:
-                # Skip emails managed in aliases files
-                LOG.error("email is handled by postfix alias: %s", row[0])
+            elif row[0] in aliases:
+                LOG.error("Skipping, email is handled by an alias: %s", row[0])
+                alias_matches.append(row)
                 continue
-            if verify_email(row[0], smtp_conn):
-                LOG.error("email is handled by gsuite: %s", row[0])
-                gsuite.append(row)
+            elif verify_email(row[0], smtp_conn):
+                LOG.error("Skipping, email is handled by gsuite: %s", row[0])
+                gsuite_matches.append(row)
+                continue
             else:
                 if row[0] not in available:
                     available.append(row[0])
-    return available, no_auth, gsuite
+    return available, no_auth_matches, gsuite_matches, alias_matches
 
 
 def verify_email(email, smtp):
@@ -150,14 +151,21 @@ def main():
         ]
     LOG.debug("valid domains: %s", ", ".join(valid_domains))
 
-    available, no_auth, gsuite = verify_emails(
+    available, no_auth_matches, gsuite_matches, alias_matches = verify_emails(
             config["DB"],
             config["DEFAULT"]["smtp_server"],
             valid_domains,
             aliases,
             )
-    if len(gsuite) > 0:
-        # Exit 1 if we found VRTS emails already handled by gmail
+    if len(available) < 100:
+        LOG.error(f"Expected more than 100 VRTS addresses, but found {len(available)}")
+        LOG.error("Leaving existing alias file as is")
+        return 1
+    if len(gsuite_matches) > 0:
+        LOG.error("Found VRTS emails already handled by gmail")
+        return_code = 1
+    if len(alias_matches) > 0:
+        LOG.error("Found VRTS emails already handled by aliases")
         return_code = 1
     with Path(config["DEFAULT"]["aliases_file"]).open("w") as aliases_fh:
         if config["DEFAULT"]["aliases_format"] == "exim":
