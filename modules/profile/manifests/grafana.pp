@@ -150,12 +150,6 @@ class profile::grafana (
         ensure => present,
     }
 
-    monitoring::service { 'grafana':
-        description   => $domain,
-        check_command => "check_http_url!${domain}!/",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Grafana.wikimedia.org',
-    }
-
     # Configure a local Apache which will serve as a reverse proxy for Performance Testing
     # Graphite instance. That Apache uses our outbound proxy as its forward
     # proxy for those requests. Despite being a mouthful, this seems preferable to setting the
