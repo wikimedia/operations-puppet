@@ -21,30 +21,4 @@ class profile::librenms::web {
             content => template('profile/librenms/apache.conf.erb'),
         }
     }
-
-
-    $monitoring_ensure = $active_server ? {
-        $facts['fqdn'] => 'present',
-        default        => 'absent',
-    }
-
-    monitoring::service { 'https':
-        ensure        => $monitoring_ensure,
-        description   => 'HTTPS',
-        check_command => 'check_ssl_http_letsencrypt!librenms.wikimedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/LibreNMS',
-    }
-
-    monitoring::service { 'librenms':
-        ensure        => $monitoring_ensure,
-        description   => 'LibreNMS HTTPS',
-        check_command => "check_https_url!${sitename}!http://${sitename}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/LibreNMS',
-    }
-    monitoring::service { 'librenms-ssl-expiry':
-        ensure        => $monitoring_ensure,
-        description   => 'LibreNMS HTTPS sl expiry',
-        check_command => "check_https_expiry!${sitename}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/LibreNMS',
-    }
 }
