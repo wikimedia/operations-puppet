@@ -42,4 +42,15 @@ class profile::ceph::backup::s3_local (
     }
 
     backup::set { 'data-platform-postgres-s3': }
+
+    systemd::timer::job { 'backup_s3_postgresql':
+        user        => 'backup',
+        description => 'Create local copies of S3 buckets containing PostgreSQL backups to the local filesystem',
+        command     => '/usr/bin/rclone -v --config /srv/postgresql_backup/rclone.conf --exclude /rclone.conf sync everything: /srv/postgresql_backups',
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => '*-*-* 00:00:00',  # Every day at midnight
+        },
+        require     => File["${backup_dir}/rclone.conf"],
+    }
 }
