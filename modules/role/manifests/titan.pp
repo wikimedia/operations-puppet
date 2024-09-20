@@ -22,4 +22,6 @@ class role::titan {
 
     include profile::pyrra::api
     include profile::pyrra::filesystem
+
+    include profile::opentelemetry::collector
 }
