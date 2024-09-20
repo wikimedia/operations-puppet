@@ -18,16 +18,19 @@
 # @pool_pwd_seed the secret seed for generating password for automatic users
 # @etcd_user the etcd user to install the credentials for under /root/.etcdrc.
 #    Defaults to '__auto__', which will try to autogenerate the password.
+# @conftool2git_address the address of the conftool2git server, if any
 #
-class profile::conftool::client(
-    Stdlib::Host           $srv_domain     = lookup('etcd_client_srv_domain'),
-    Stdlib::Unixpath       $namespace      = lookup('conftool_prefix').dirname(),
-    Stdlib::Host           $tcpircbot_host = lookup('tcpircbot_host'),
-    Stdlib::Port           $tcpircbot_port = lookup('tcpircbot_port'),
-    Optional[Stdlib::Host] $host           = lookup('etcd_host', {'default_value' => undef}),
-    Optional[Stdlib::Port] $port           = lookup('etcd_port', {'default_value' => undef}),
-    String                 $pool_pwd_seed  = lookup('etcd::autogen_pwd_seed'),
-    String                 $etcd_user      = lookup('profile::conftool::client::etcd_user', {'default_value' => '__auto__'})
+class profile::conftool::client (
+    Stdlib::Host           $srv_domain             = lookup('etcd_client_srv_domain'),
+    Stdlib::Unixpath       $namespace              = lookup('conftool_prefix').dirname(),
+    Stdlib::Host           $tcpircbot_host         = lookup('tcpircbot_host'),
+    Stdlib::Port           $tcpircbot_port         = lookup('tcpircbot_port'),
+    Optional[Stdlib::Host] $host                   = lookup('etcd_host', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $port                   = lookup('etcd_port', { 'default_value' => undef }),
+    String                 $pool_pwd_seed          = lookup('etcd::autogen_pwd_seed'),
+    String                 $etcd_user              = lookup('profile::conftool::client::etcd_user', { 'default_value' => '__auto__' }),
+    Stdlib::Fqdn           $conftool2git_host      = lookup('profile::conftool2git::active_host', { 'default_value' => '' }),
+    String                 $conftool2git_bind_addr = lookup('profile::conftool2git::address', { 'default_value' => '0.0.0.0:1312' }),
 ) {
     ensure_packages(['python3-conftool'])
 
@@ -42,17 +45,17 @@ class profile::conftool::client(
 
     if $etcd_user != '__auto__' {
         $user = $etcd_user
-        $pwd = $::passwords::etcd::accounts[$etcd_user]
+        $pwd = $passwords::etcd::accounts[$etcd_user]
         $conftool_cluster = undef
     } else {
         # When autogenerating the password, use conftool as a fallback if we're not in a LVS cluster.
         $user = 'conftool'
-        $pwd = $::passwords::etcd::accounts['conftool']
+        $pwd = $passwords::etcd::accounts['conftool']
         # determine which conftool cluster we're part of, if any.
         $module_path = get_module_path('profile')
         $site_nodes = loadyaml("${module_path}/../../conftool-data/node/${::site}.yaml")[$::site]
         $conftool_clusters = $site_nodes.filter |$cl, $pools| {
-            $::fqdn in $pools.keys()
+            $facts['networking']['fqdn'] in $pools.keys()
         }
         .map |$cl, $pools| { $cl }.unique()
         # if we found one and only one cluster, install the cluster-site specifc credentials
@@ -65,19 +68,27 @@ class profile::conftool::client(
 
     # This is the configuration for the user root will access.
     etcd::client::config { '/root/.etcdrc':
-        settings => conftool::cluster_credentials($user, $pwd, $pool_pwd_seed, $conftool_cluster)
+        settings => conftool::cluster_credentials($user, $pwd, $pool_pwd_seed, $conftool_cluster),
     }
 
-    class  { 'conftool::config':
-        namespace      => $namespace,
-        tcpircbot_host => $tcpircbot_host,
-        tcpircbot_port => $tcpircbot_port,
-        hosts          => [],
+    if $conftool2git_host != '' {
+        $parsed_addr = split($conftool2git_bind_addr, /:/)
+        $conftool2git_address = "${conftool2git_host}:${parsed_addr[1]}"
+    } else {
+        $conftool2git_address = ''
+    }
+
+    class { 'conftool::config':
+        namespace            => $namespace,
+        tcpircbot_host       => $tcpircbot_host,
+        tcpircbot_port       => $tcpircbot_port,
+        hosts                => [],
+        conftool2git_address => $conftool2git_address,
     }
 
     # Conftool schema. Let's assume we will only have one.
     file { '/etc/conftool/schema.yaml':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/conftool/schema.yaml',
         owner  => 'root',
         group  => 'root',
@@ -85,7 +96,7 @@ class profile::conftool::client(
     }
 
     # json schemas container
-    file {'/etc/conftool/json-schema/':
+    file { '/etc/conftool/json-schema/':
         ensure  => directory,
         source  => 'puppet:///modules/profile/conftool/json-schema/',
         owner   => 'root',

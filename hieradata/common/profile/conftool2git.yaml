@@ -1,0 +1,2 @@
+profile::conftool2git::active_host: puppetserver1003.eqiad.wmnet
+profile::conftool2git::address: "0.0.0.0:1312"
