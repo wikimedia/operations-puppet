@@ -159,7 +159,6 @@ define service::uwsgi(
         core_limit    => $core_limit,
         systemd_user  => $systemd_user,
         systemd_group => $systemd_group,
-        monitoring    => bool2str($icinga_check, 'present','absent'),
         settings      => {
             uwsgi => $complete_config,
         },

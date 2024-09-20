@@ -42,9 +42,8 @@ class profile::puppetdb::microservice (
         notify => Service['uwsgi-puppetdb-microservice'],
     }
     uwsgi::app { 'puppetdb-microservice':
-        ensure     => stdlib::ensure($enabled),
-        monitoring => absent,
-        settings   => {
+        ensure   => stdlib::ensure($enabled),
+        settings => {
             uwsgi => {
                 'plugins'     => 'python3',
                 'socket'      => '/run/uwsgi/puppetdb-microservice.sock',

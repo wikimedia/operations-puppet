@@ -45,7 +45,6 @@ class idm::deployment (
     }
 
     uwsgi::app{ $project:
-        monitoring => absent,
         settings   => {
             uwsgi => {
                 'plugins'      => 'python3',

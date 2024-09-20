@@ -39,7 +39,6 @@ define uwsgi::app(
     String[1]           $systemd_user       = 'www-data',
     String[1]           $systemd_group      = 'www-data',
     Hash                $extra_systemd_opts = {},
-    Wmflib::Ensure      $monitoring         = present,
 ) {
     include uwsgi
 
@@ -62,24 +61,12 @@ define uwsgi::app(
             systemd   => systemd_template('uwsgi'),
             subscribe => File["/etc/uwsgi/apps-available/${basename}.ini"],
         }
-
-        nrpe::monitor_service { "uwsgi-${title}":
-            ensure       => $monitoring,
-            description  => "${title} uWSGI web app",
-            nrpe_command => "/bin/systemctl status uwsgi-${title}",
-            require      => Base::Service_unit["uwsgi-${title}"],
-            notes_url    => "https://wikitech.wikimedia.org/wiki/Monitoring/Services/${title}",
-        }
     } else {
         file { $inipath:
             ensure => absent,
         }
 
         base::service_unit { "uwsgi-${title}": # lint:ignore:wmf_styleguide
-            ensure => absent,
-        }
-
-        nrpe::monitor_service { "uwsgi-${title}":
             ensure => absent,
         }
     }
