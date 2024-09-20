@@ -323,6 +323,8 @@ class profile::icinga(
         trusted_groups => ['metamonitor'],
     }
 
+    profile::auto_restarts::service { 'keyholder-proxy': }
+
     systemd::timer::job { 'sync_check_icinga_contacts':
         ensure          => present,
         description     => 'Automatically sync the Icinga contacts to the metamonitoring host',
