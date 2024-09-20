@@ -49,7 +49,7 @@ private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')
 if File.exist?(File.join(private_modules_path, '.git'))
-  system('git', '-C', private_modules_path, 'pull', out: File::NULL)
+  system('git', '-C', private_modules_path, 'pull', '--ff-only', out: File::NULL)
 else
   system('git', 'clone', private_repo, private_modules_path, out: File::NULL)
 end

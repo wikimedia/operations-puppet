@@ -16,7 +16,7 @@ Rake::Task[:spec_prep].clear
 unless ENV['SPEC_PREP_DONE'] == 'DONE'
   task :spec_prep do
     if File.exist?(File.join(private_modules_path, '.git'))
-      system('git', '-C', private_modules_path, 'pull', out: File::NULL)
+      system('git', '-C', private_modules_path, 'pull', '--ff-only', out: File::NULL)
     else
       system('git', 'clone', private_repo, private_modules_path, out: File::NULL)
     end
