@@ -262,6 +262,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
   - namespace: mw-debug
     releases:
       pinkunicorn: {}
+      next: {}
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: true
