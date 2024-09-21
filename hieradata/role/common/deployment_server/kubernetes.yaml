@@ -273,44 +273,54 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     web_flavour: "webserver"
     debug: true
   - namespace: mw-web
-    release: main
-    canary: canary
+    releases:
+      main: {}
+      canary:
+        stage: "canaries"
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-api-int
-    release: main
-    canary: canary
+    releases:
+      main: {}
+      canary:
+        stage: "canaries"
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-api-ext
-    release: main
-    canary: canary
+    releases:
+      main: {}
+      canary:
+        stage: "canaries"
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-jobrunner
-    release: main
-    canary: canary
+    releases:
+      main: {}
+      canary:
+        stage: "canaries"
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-parsoid
-    release: main
-    canary: canary
+    releases:
+      main: {}
+      canary:
+        stage: "canaries"
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-misc
-    release: main
-    canary: ~
+    releases:
+      main: {}
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: true
   - namespace: mw-wikifunctions
-    release: main
-    canary: ~
+    releases:
+      main: {}
     mw_flavour: "publish"
     web_flavour: "webserver"
     debug: false
