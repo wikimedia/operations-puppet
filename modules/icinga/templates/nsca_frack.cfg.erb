@@ -1188,7 +1188,19 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_cert_apple_api_cert
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
     service_description      check_cert_clientcert_ca
+    hostgroup_name           fundraising-build
+}
+
+define service {
+    use                      passive-service
+    service_description      check_cert_paypal_api_cert
     hostgroup_name           fundraising-build
 }
 
