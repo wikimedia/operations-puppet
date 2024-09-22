@@ -80,7 +80,7 @@ class profile::puppetserver (
             # vulnerabilities that may be present via hiera injections.  e.g. injecting a user
             'labsprivate'  => {
                 'repo' => "${profile::puppetserver::git::basedir}/labs/private",
-                'sha1' => '/srv/config-master/puppet-sha1.txt',
+                'sha1' => '/srv/config-master/labsprivate-sha1.txt',
             },
         }
         if $puppet_merge_server {
