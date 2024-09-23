@@ -15,6 +15,9 @@ class role::analytics_test_cluster::hadoop::master {
 
     include profile::analytics::cluster::hadoop::yarn_capacity_scheduler
 
+  # Include some test secrets
+    include profile::analytics::cluster::secrets_test
+
     # Set up druid cluster deep storage directories.
     include profile::analytics::cluster::druid_deep_storage
 
