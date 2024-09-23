@@ -1,5 +1,5 @@
 profile::lvs::realserver::poolcounter_backends:
   - label: pc1
-    fqdn: poolcounter2003.codfw.wmnet
+    fqdn: poolcounter2005.codfw.wmnet
   - label: pc2
-    fqdn: poolcounter2004.codfw.wmnet
+    fqdn: poolcounter2006.codfw.wmnet

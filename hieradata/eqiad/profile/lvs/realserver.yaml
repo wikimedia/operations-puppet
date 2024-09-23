@@ -1,5 +1,5 @@
 profile::lvs::realserver::poolcounter_backends:
   - label: pc1
-    fqdn: poolcounter1004.eqiad.wmnet
+    fqdn: poolcounter1006.eqiad.wmnet
   - label: pc2
-    fqdn: poolcounter1005.eqiad.wmnet
+    fqdn: poolcounter1007.eqiad.wmnet
