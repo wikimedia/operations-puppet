@@ -1,0 +1,32 @@
+#!/bin/bash
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+
+set -e
+set -u
+
+trap 'reporterr' ERR
+
+reporterr() {
+  echo "⚠️  Something went wrong!  Maybe you attempted to rewrite history?"
+  echo "You can't rebase or commit --amend in this repo.  If you tried that,"
+  echo "perform the repair steps under = What NOT to do = in the README of puppet/private."
+}
+
+
+
+# Push to the other servers
+<%-
+
+@servers.each do |server|
+  next if server == @facts['networking']['fqdn']
+-%>
+echo "🫸 💻 Pushing to <%= server %>"
+su -c "export GIT_SSH=<%= @git_ssh_wrapper %> ; git push ssh://<%= server %><%= @title %> main" <%= @user %>
+echo "🫸 💻 ✅"
+<%- end -%>
+
+<% if @mail_changes %>
+echo "📨 Sending email to <%= @mailto %>"
+# Finally, announce this change
+git log --pretty=format:'From %H %cd%nFrom: %ae%nTo: <%= @mailto %>%nDate: %ad%nSubject: [<%= @title %>] (%h) %s%n%b%n' -1 --name-status | sendmail -i <%= @mailto %>
+<% end %>
