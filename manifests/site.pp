@@ -1323,8 +1323,8 @@ node /^ganeti10(09|1[0-9]|2[0-9]|3[0-8])\.eqiad\./ {
     role(ganeti)
 }
 
-node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
-    role(ganeti)
+node /^ganeti10(39|4[0-9]|5[0-2]|)\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
 }
 
 # Routed Ganeti nodes
