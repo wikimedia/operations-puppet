@@ -18,6 +18,10 @@
 #
 # [*restart_service*]
 #  (bool) Specifies if the pdns-recursor service should be restarted when the config file changes
+#
+# [*allow_extended_errors*]
+#  (bool) Specifies if RFC 8914 (EDNS Extended Error) should be enabled in responses
+
 
 class dnsrecursor (
     Array[Variant[Stdlib::IP::Address, Array[Stdlib::IP::Address]]] $listen_addresses         = [$::ipaddress],
@@ -52,6 +56,7 @@ class dnsrecursor (
     Boolean                                                         $restart_service          = true,
     Array[Stdlib::IP::Address]                                      $api_allow_from           = [],
     Array[Stdlib::IP::Address::Nosubnet]                            $query_local_address      = [],
+    Boolean                                                         $allow_extended_errors    = false,
 ) {
 
     ensure_packages(['pdns-recursor'])

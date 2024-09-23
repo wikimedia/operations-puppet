@@ -53,6 +53,7 @@ class profile::wikidough (
         edns_padding_from        => '127.0.0.0/8',
         edns_padding_mode        => 'padded-queries-only',
         restart_service          => false,
+        allow_extended_errors    => true,
     }
 
     acme_chief::cert { 'wikidough':

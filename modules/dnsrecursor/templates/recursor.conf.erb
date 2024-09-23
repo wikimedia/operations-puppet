@@ -147,3 +147,7 @@ webserver-address=<%= @ipaddress %>
 webserver-loglevel=<%= @webserver_log_level %>
 webserver-allow-from=<%= flatten_ips(@api_allow_from).sort.join(" ") %>
 <%- end -%>
+<% if @allow_extended_errors -%>
+# EDNS Extended Error; will be 'yes' by default in 5.0.0
+extended-resolution-errors=yes
+<%- end -%>
