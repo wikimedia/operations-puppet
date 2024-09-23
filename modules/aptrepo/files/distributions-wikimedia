@@ -241,6 +241,7 @@ Components: main
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
+ thirdparty/otelcol-contrib
  thirdparty/routinator
  thirdparty/tofu
  thirdparty/yarn
