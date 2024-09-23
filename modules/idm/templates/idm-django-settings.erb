@@ -3,6 +3,9 @@ from django.urls import reverse_lazy
 from ldap3 import HASHED_SALTED_SHA
 
 from bitu.base_settings import *
+<%- if @production == false -%>
+import structlog
+<%- end -%>
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '<%= @django_secret_key %>'
@@ -50,6 +53,12 @@ LOGGING = {
             'format': '{levelname} {asctime} {message}',
             'style': '{',
         },
+        <%- if @production == false -%>
+        'json': {
+            '()': structlog.stdlib.ProcessorFormatter,
+            'processor': structlog.processors.JSONRenderer(),
+        },
+        <%- end -%>
     },
     'handlers': {
         'mail_admins': {
@@ -69,6 +78,14 @@ LOGGING = {
             'filename': '<%= @log_dir %>/idm.log',
             'formatter': 'simple',
         },
+        <%- if @production == false -%>
+        'audit': {
+            'level': 'INFO',
+            'class': 'logging.handlers.WatchedFileHandler',
+            'filename': '<%= @log_dir %>/audit.log',
+            'formatter': 'json'
+        },
+        <%- end -%>
     },
     'loggers': {
         'django': {
@@ -85,7 +102,14 @@ LOGGING = {
             'handlers': ['bitu'],
             'level': 'DEBUG',
             'propagate': True,
-        }
+        },
+        <%- if @production == false -%>
+        'audit': {
+            'handlers': ['audit',],
+            'level': 'INFO',
+            'propagate': True
+        },
+        <%- end -%>
     },
 }
 
