@@ -1,2 +1,3 @@
 cluster: poolcounter
+profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts: ['ServiceOps']
