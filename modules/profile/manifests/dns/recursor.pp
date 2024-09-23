@@ -51,17 +51,18 @@ class profile::dns::recursor (
     ]
 
     class { '::dnsrecursor':
-        version_hostname  => true,
-        allow_from        => $network::constants::aggregate_networks,
-        listen_addresses  => $listen_addrs,
-        allow_from_listen => false,
-        log_common_errors => 'no',
-        threads           => $facts['physicalcorecount'],
-        enable_webserver  => debian::codename::ge('bullseye'),
-        webserver_port    => 9199,
-        api_allow_from    => $network::constants::aggregate_networks,
-        bind_service      => $bind_service,
-        require           => Systemd::Service['gdnsd'],
+        version_hostname      => true,
+        allow_from            => $network::constants::aggregate_networks,
+        listen_addresses      => $listen_addrs,
+        allow_from_listen     => false,
+        log_common_errors     => 'no',
+        threads               => $facts['physicalcorecount'],
+        enable_webserver      => debian::codename::ge('bullseye'),
+        webserver_port        => 9199,
+        api_allow_from        => $network::constants::aggregate_networks,
+        bind_service          => $bind_service,
+        allow_extended_errors => true,
+        require               => Systemd::Service['gdnsd'],
     }
 
     ferm::service { 'udp_dns_recursor':
