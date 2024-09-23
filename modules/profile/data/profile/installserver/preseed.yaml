@@ -226,7 +226,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  'dse-k8s-worker100[1-9]':
+  # The following for dse-k8s nodes have a RAID controller and an additional
+  # pair of SSDs to be used for local storage - See #T365283 for details.
+  'dse-k8s-worker100[1-4]':
+    - partman/standard.cfg
+    - partman/custom/kubernetes-node-overlay-local-storage.cfg
+  'dse-k8s-worker100[5-9]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
