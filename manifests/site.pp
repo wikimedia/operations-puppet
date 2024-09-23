@@ -2295,12 +2295,12 @@ node /^pc1012\.eqiad\./ {
     role(mariadb::parsercache)
 }
 # pc3
-
-# hw issue: T375382
-node /^pc1013\.eqiad\./ {
+node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
 }
-node /^pc1015\.eqiad\./ {
+
+# old pc3 master, hw issue: T375382
+node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
 

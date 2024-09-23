@@ -1,5 +1,7 @@
 # pc1013
+# old pc3 master
+# hw issues: T375382
+profile::monitoring::notifications_enabled: false
 mariadb::parsercache::shard: 'pc3'
-profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
 profile::mariadb::config::innodb_flush_log_at_trx_commit: '0'
