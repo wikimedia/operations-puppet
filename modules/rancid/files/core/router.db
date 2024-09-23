@@ -42,8 +42,6 @@ asw2-ulsfo.mgmt.ulsfo.wmnet;juniper;up;
 cr1-codfw.wikimedia.org;juniper;up;
 cr2-codfw.wikimedia.org;juniper;up;
 cr2-eqdfw.wikimedia.org;juniper;up;
-asw-c-codfw.mgmt.codfw.wmnet;juniper;up;
-asw-d-codfw.mgmt.codfw.wmnet;juniper;up;
 ssw1-a1-codfw.mgmt.codfw.wmnet;juniper;up;
 ssw1-a8-codfw.mgmt.codfw.wmnet;juniper;up;
 ssw1-d1-codfw.mgmt.codfw.wmnet;juniper;up;

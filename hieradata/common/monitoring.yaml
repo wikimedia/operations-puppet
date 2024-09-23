@@ -70,10 +70,6 @@ monitoring::groups:
     description: Equipment with lsw1-f7-eqiad as uplink
   asw2-ulsfo:
     description: Equipment with asw2-ulsfo as uplink
-  asw-c-codfw:
-    description: Equipment with asw-c-codfw as uplink
-  asw-d-codfw:
-    description: Equipment with asw-d-codfw as uplink
   ssw1-a1-codfw:
     description: Equipment with ssw1-a1-codfw as uplink
   ssw1-a8-codfw:
