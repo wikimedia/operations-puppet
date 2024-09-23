@@ -50,5 +50,6 @@ class opentelemetry::collector(
         group   => $otel_user,
         mode    => '0640',
         notify  => Service['otelcol-contrib'],
+        require => Package['otelcol-contrib'],
     }
 }
