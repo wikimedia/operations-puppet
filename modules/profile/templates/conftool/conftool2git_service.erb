@@ -1,0 +1,14 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Conftool2git service
+Documentation=https://wikitech.wikimedia.org/wiki/Conftool2git
+After=network.target
+
+[Service]
+Type=simple
+User=conftool2git
+EnvironmentFile=-/etc/default/conftool2git
+ExecStart=/usr/sbin/conftool2git --config /etc/conftool2git/config.yaml --bind-address $BIND_ADDRESS --port $PORT $REPO
+
+[Install]
+WantedBy=multi-user.target
