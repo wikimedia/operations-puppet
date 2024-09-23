@@ -114,7 +114,7 @@ class profile::puppetdb (
         hostname    => $facts['networking']['hostname'],
         port        => $prometheus_jmx_exporter_port,
         config_file => $jmx_exporter_config_file,
-        content     => file('profile/puppetmaster/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'),
+        source      => 'puppet:///modules/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml',
     }
 
     # Firewall rules
