@@ -2295,17 +2295,20 @@ node /^pc1012\.eqiad\./ {
     role(mariadb::parsercache)
 }
 # pc3
+
+# hw issue: T375382
 node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
+node /^pc1015\.eqiad\./ {
+    role(mariadb::parsercache)
+}
+
 # floating spares
 node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-node /^pc1015\.eqiad\./ {
-    role(mariadb::parsercache)
-}
 # pc 4
 node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
