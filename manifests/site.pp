@@ -129,6 +129,11 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-5])\.eqi
     role(analytics_cluster::hadoop::worker)
 }
 
+# New an-worker nodes T353788
+node /^an-worker117[67]\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
 node /^an-tool1007\.eqiad\./ {
@@ -1604,11 +1609,6 @@ node /^kafka-jumbo10(0[7-9]|1[0-5])\.eqiad\./ {
 # Kafkamon bullseye hosts
 node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring_bullseye)
-}
-
-# New Kafka nodes T314156
-node /^kafka-stretch100[12]\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # New Kafka nodes T314160
