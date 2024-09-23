@@ -12,7 +12,9 @@ class idm::deployment (
         'python3-jose', 'python3-ldap3', 'python3-openid', 'python3-paramiko',
         'python3-redis', 'python3-social-auth-core', 'python3-social-django',
         'python3-bitu-ldap', 'libjs-jquery', 'python3-djangorestframework',
-        'python3-sshpubkeys', 'python3-mwclient', 'python3-qrcode', 'python3-pyotp'])
+        'python3-sshpubkeys', 'python3-mwclient', 'python3-qrcode', 'python3-pyotp',
+        'python3-structlog'
+        ])
 
     $uwsgi_socket = "/run/uwsgi/${project}.sock"
 
