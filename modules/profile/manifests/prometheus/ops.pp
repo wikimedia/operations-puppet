@@ -1330,6 +1330,23 @@ class profile::prometheus::ops (
         port       => 9804,
     }
 
+    # gNMIc deamon's health metrics
+    $gnmic_jobs = [
+      {
+        'job_name'        => 'gnmic',
+        'scheme'          => 'http',
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/gnmic_*.yaml" ]}
+        ],
+      },
+    ]
+
+    prometheus::class_config{ "gnmic_${::site}":
+        dest       => "${targets_path}/gnmic_${::site}.yaml",
+        class_name => 'role::netinsights',
+        port       => 7890,
+    }
+
     $squid_jobs = [
       {
         'job_name'        => 'squid',
@@ -2531,7 +2548,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs,
+            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
