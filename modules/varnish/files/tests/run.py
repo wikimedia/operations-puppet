@@ -71,7 +71,7 @@ def dump_files(url, hostname):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "wb") as f:
             print("\tCreating {}".format(path))
-            f.write(resource["parameters"]["content"].encode("utf-8"))
+            f.write(str(resource["parameters"]["content"]).encode("utf-8"))
 
 
 def run_confd():
