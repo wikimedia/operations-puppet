@@ -7,6 +7,3 @@ profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled: true
 profile::gitlab::runner::buildkitd_gateway_frontend_enabled: true
 profile::gitlab::runner::buildkitd_allowed_gateway_sources: []
 puppetmaster: gitlab-runners-puppetserver-01.gitlab-runners.eqiad1.wikimedia.cloud
-
-# don't exclude /var/lib/docker T328972
-prometheus::node_exporter::ignored_mount_points: '^/(sys|proc|dev|var/lib/kubelet|run/credentials)($|/)'
