@@ -13,6 +13,7 @@ import string
 import subprocess
 import sys
 import tempfile
+from pathlib import Path
 from typing import Dict
 
 import yaml
@@ -23,7 +24,7 @@ from wmflib import interactive
 
 logger = logging.Logger(__name__)
 
-BUILD_REPORT_PATH = '/srv/mediawiki-staging/scap/image-build/report.json'
+BUILD_REPORT_PATH = Path('/srv/mediawiki-staging/scap/image-build/report.json')
 BUILD_REPORT_IMAGE_TYPE = 'mediawiki'
 BUILD_REPORT_IMAGE_NAME = 'multiversion-image'
 NAMESPACE = 'mw-script'
@@ -50,9 +51,7 @@ def get_primary_dc() -> str:
 
 
 def mediawiki_image():
-    with open(BUILD_REPORT_PATH) as f:
-        build_report = json.load(f)
-
+    build_report = json.loads(BUILD_REPORT_PATH.read_text())
     last_build = build_report.get(BUILD_REPORT_IMAGE_TYPE, {}).get(BUILD_REPORT_IMAGE_NAME)
     if not last_build:
         raise ValueError(
@@ -190,6 +189,14 @@ def main() -> int:
     except (PermissionError, FileNotFoundError):
         return 1
 
+    # Launching jobs from the other DC is fine, as far as kubectl is concerned. The only problem is
+    # that report.json is only updated in the active DC. If --mediawiki_image is passed, we're fine
+    # to proceed. (But that use case is so rare that we keep the message simple.)
+    local_cluster = Path('/etc/wikimedia-cluster').read_text().strip()
+    if local_cluster != environment and not args.mediawiki_image:
+        logger.fatal('☠️ Maintenance scripts must be started from the active data center,'
+                     'currently %s. (T359127)', environment)
+
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
@@ -259,7 +266,13 @@ def main() -> int:
             logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
     elif args.attach:
         wait_until_started(env_vars, job, container)
-        logger.info('📜 Attaching to stdin/stdout:')
+        if sys.stdin.isatty():
+            logger.info(
+                "ℹ️ Expecting a prompt but don't see it? Due to a race condition, the beginning of "
+                "the output might be missing. " + (
+                    'Try pressing enter.' if args.script_name in ['eval.php', 'shell.php']
+                    else 'Try passing your input.'))
+        logger.info('📜 Attached to stdin/stdout:')
         # Switch from the read-only user to the deploy user, which has privileges to attach.
         env_vars = kube_env(f'{NAMESPACE}-deploy', environment)
         try:
