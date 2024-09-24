@@ -40,6 +40,12 @@ class prometheus::blackbox_exporter(
         purge   => $manage_config,
     }
 
+    # Needed for gnmic_connect
+    file { '/etc/ssl/localcerts/network_devices.pem':
+        ensure => file,
+        source => 'http://pki.discovery.wmnet/bundles/network_devices.pem',
+    }
+
     ['misc', 'common'].each |$frag| {
         prometheus::blackbox::module { $frag:
             ensure  => $default_modules,

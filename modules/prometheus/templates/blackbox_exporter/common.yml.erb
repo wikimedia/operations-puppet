@@ -14,11 +14,13 @@ modules:
     prober: icmp
     timeout: 5s
 
-  grpc_connect:
+  gnmi_connect:
     prober: grpc
     timeout: 5s
     grpc:
       tls: true
+      tls_config:
+        ca_file: '/etc/ssl/localcerts/network_devices.pem'
 
   http_connect:
     prober: http

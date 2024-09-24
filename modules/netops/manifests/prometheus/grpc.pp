@@ -26,7 +26,7 @@ define netops::prometheus::grpc (
       $extra_config = {
         targets => [ "${fqdn}:${grpc_port}" ],
         labels => {
-          module => 'grpc_connect',
+          module => 'gnmi_connect',
           role   => $config['role'],
         } + $extra_labels,
       }
