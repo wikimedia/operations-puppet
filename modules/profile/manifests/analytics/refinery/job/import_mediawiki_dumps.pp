@@ -23,7 +23,7 @@ class profile::analytics::refinery::job::import_mediawiki_dumps (
         ensure            => $ensure_timers,
         dump_type         => 'pages-meta-history',
         log_file_name     => 'import_pages_history_dumps.log',
-        skip_list         => 'wikidatawiki',
+        skip_list         => 'wikidatawiki,labswiki',
         timer_description => 'Schedules daily an incremental import of the current month of pages-meta-history xmldumps into HDFS (all projects but wikidata)',
         timer_interval    => '*-*-* 03:00:00',
     }
