@@ -102,7 +102,7 @@ class profile::puppetmaster::frontend(
         ca_server           => $ca_server,
         ssl_verify_depth    => $profile::puppetmaster::common::ssl_verify_depth,
         servers             => $servers,
-        upload_facts        => $ca, # We only want to upload from one place
+        upload_facts        => false,
         http_proxy          => $http_proxy,
         netbox_hiera_enable => $profile::puppetmaster::common::netbox_hiera_enable,
         enable_merge_cli    => $profile::puppetmaster::common::enable_merge_cli,
