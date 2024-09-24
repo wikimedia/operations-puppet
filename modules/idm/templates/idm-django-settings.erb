@@ -158,6 +158,7 @@ BITU_LDAP = {
     'uri': ['ldaps://<%= @ldap_config["rw-server"] %>',],
     'username': '<%= @ldap_dn %>',
     'password': '<%= @ldap_dn_password %>',
+    'ppolicy': 'cn=disabled,ou=ppolicies,<%= @ldap_config["base-dn"] %>',
     'readonly': False,
     'connection_timeout': 5,
     'users': {
@@ -306,6 +307,24 @@ MEDIAWIKI = {
   'user_agent': 'Bitu IDM'
 }
 <%- end -%>
+
+# Settings for integrations for account blocking features.
+USER_AGENT = 'Bitu Identity Manager/0.1'
+ACCOUNT_MANAGERS = []
+
+GERRIT = {
+    'base_url': 'https://gerrit.wikimedia.org',
+    'user': '<%= @gerrit_user %>',
+    'password': '<%= @gerrit_password %>''
+}
+
+GITLAB = {
+  'base_url': '<%- if @production -%>https://gitlab.wikimedia.org/api/v4/<%- else -%>http://gitlab.devtools.wmcloud.org/api/v4/<%- end -%>',
+  'token': '<%= @gitlab_token %>'
+}
+
+PHABRICATOR_URI = 'https://phabricator.wikimedia.org'
+PHABRICATOR_API_TOKEN = '<%= @phabricator_token %>'
 
 <%- if @install_via_git -%>
 STATICFILES_DIRS = [

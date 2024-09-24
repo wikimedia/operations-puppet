@@ -38,6 +38,9 @@ profile::idm::ldap_dn: 'cn=bitu,ou=profile,dc=wikimedia,dc=org'
 # MediaWiki OIDC callback
 profile::idm::mediaback_callback: 'https://idm-test.wikimedia.org/complete/mediawiki'
 
+# Account blocking setings
+profile::idm::gerrit_username: 'wikitechgerritaccountbot'
+
 # Bitu API
 profile::idm::enable_api: true
 

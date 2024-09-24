@@ -29,7 +29,11 @@ class profile::idm(
     Integer             $redis_maxmem              = lookup('profile::idm::redis_maxmem', {'default_value'                 => 1610612736 }),
     Boolean             $enable_monitoring         = lookup('profile::idm::enable_monitoring'),
     String              $config_template           = lookup('profile::idm::config_template', {'default_value'              => 'idm/idm-django-settings.erb'}),
-    Boolean             $enable_api                = lookup('profile::idm::enable_api', {'default_value'                   => false})
+    Boolean             $enable_api                = lookup('profile::idm::enable_api', {'default_value'                   => false}),
+    Optional[String[1]] $gitlab_token              = lookup('profile::idm::gitlab_token'),
+    Optional[String[1]] $phabricator_token         = lookup('profile::idm::phabricator_token'),
+    Optional[String[1]] $gerrit_user               = lookup('profile::idm::gerrit_username'),
+    Optional[String[1]] $gerrit_password           = lookup('profile::idm::gerrit_password')
 ) {
 
     ensure_packages(['python3-django-uwsgi', 'python3-django-auth-ldap'])
