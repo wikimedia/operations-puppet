@@ -4,13 +4,15 @@
 # @param active_node  The active node
 # @param standby_node The standby node
 # @param ssl_certificate_name The acme cert to use
+# @param index_redirect url to redirect curious people visiting the domain root to
 class profile::toolforge::docker::registry(
-    String       $user         = lookup('docker::username'),
-    String       $hash         = lookup('docker::password_hash'),
-    Stdlib::Host $builder_host = lookup('docker::builder_host'),
-    Stdlib::Host $active_node  = lookup('profile::toolforge::docker::registry::active_node'),
-    Stdlib::Host $standby_node = lookup('profile::toolforge::docker::registry::standby_node'),
-    String       $ssl_certificate_name = lookup('profile::toolforge::docker::registry::ssl_certificate_name', {default_value => 'toolforge'}),
+    String                     $user                 = lookup('docker::username'),
+    String                     $hash                 = lookup('docker::password_hash'),
+    Stdlib::Host               $builder_host         = lookup('docker::builder_host'),
+    Stdlib::Host               $active_node          = lookup('profile::toolforge::docker::registry::active_node'),
+    Stdlib::Host               $standby_node         = lookup('profile::toolforge::docker::registry::standby_node'),
+    String                     $ssl_certificate_name = lookup('profile::toolforge::docker::registry::ssl_certificate_name', {default_value => 'toolforge'}),
+    Optional[Stdlib::HTTPSUrl] $index_redirect       = lookup('profile::toolforge::docker::registry::index_redirect', {default_value => undef}),
 ) {
     acme_chief::cert { $ssl_certificate_name:
         before     => Class['docker::registry'],
@@ -40,6 +42,7 @@ class profile::toolforge::docker::registry(
         ssl_certificate_name => $ssl_certificate_name,
         ssl_settings         => ssl_ciphersuite('nginx', 'compat'),
         cors                 => true,
+        index_redirect       => $index_redirect,
     }
 
     # This may deliberately be un-set for some cases, like toolsbeta

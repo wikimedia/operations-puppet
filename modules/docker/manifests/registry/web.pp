@@ -9,17 +9,19 @@
 # @param http_allowed_hosts A loist of host allowed to use http
 # @param cors configuer cors
 # @param ssl_certificate_name The ssl certificate name to use
+# @param index_redirect url to redirect curious people visiting the domain root to
 class docker::registry::web (
-    String              $docker_username,
-    String              $docker_password_hash,
-    Array[Stdlib::Host] $allow_push_from,
-    Array[String]       $ssl_settings,
-    Boolean             $use_puppet_certs     = false,
-    Boolean             $use_acme_chief_certs = false,
-    Boolean             $http_endpoint        = false,
-    Array[Stdlib::Host] $http_allowed_hosts   = [],
-    Boolean             $cors                 = false,
-    Optional[String]    $ssl_certificate_name = undef,
+    String                     $docker_username,
+    String                     $docker_password_hash,
+    Array[Stdlib::Host]        $allow_push_from,
+    Array[String]              $ssl_settings,
+    Boolean                    $use_puppet_certs     = false,
+    Boolean                    $use_acme_chief_certs = false,
+    Boolean                    $http_endpoint        = false,
+    Array[Stdlib::Host]        $http_allowed_hosts   = [],
+    Boolean                    $cors                 = false,
+    Optional[String]           $ssl_certificate_name = undef,
+    Optional[Stdlib::HTTPSUrl] $index_redirect       = undef,
 ) {
     if (!$use_puppet_certs and ($ssl_certificate_name == undef)) {
         fail('Either puppet certs should be used, or an ssl cert name should be provided')

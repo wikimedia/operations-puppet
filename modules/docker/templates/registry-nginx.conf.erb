@@ -39,6 +39,12 @@ server {
     # Tell everyone we're v2, not v1!
     add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
 
+<%- if @index_redirect -%>
+    location = / {
+      return 302 <%= @index_redirect %>;
+    }
+<%- end -%>
+
     # Let me prefix by saying that the Docker v2 registry protocol apparently
     # is much better than the v1 protocol. I have not read enough about both
     # to make a comparative analysis, but I can tell that the auth design for

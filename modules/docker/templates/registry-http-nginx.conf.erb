@@ -16,6 +16,12 @@ server {
     # Bug: T211719
     add_header 'Cache-Control' 'no-cache,must-revalidate' always;
 
+<%- if @index_redirect -%>
+    location = / {
+      return 302 <%= @index_redirect %>;
+    }
+<%- end -%>
+
     location / {
         # The HTTP endpoint cannot be used to upload images
         limit_except GET HEAD OPTIONS {
