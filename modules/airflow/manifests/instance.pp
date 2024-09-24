@@ -106,12 +106,21 @@
 #   If set, a systemd timer will be created to clean files from
 #   airflow base_log_folder older than this many days.
 #   If undef, the timer will not be created.
-#   Default: 90
+#   Default:
 #
 # [*firewall_srange*]
 #   A firewall set used to configure firewall access using the generic firewall module.
 #   Default: ANALYTICS_NETWORKS
 #
+# [*scheduler_srange*]
+#   A string that resolves to a network range. This network range should be allowed
+#   to reach the Airflow instances on their scheduler port ( which defaults to 8793/tcp ).
+#   Default: DSE_KUBEPODS_NETWORKS
+
+# [*scheduler_port* ]
+#   An integer that represents the listening port for the Airflow instance's scheduler service.
+#   Default: 8793
+
 # [*scap_targets*]
 #   scap::target resource definitions to declare.
 #   This is useful to have here at the airflow::instance level so that we
@@ -137,6 +146,8 @@ define airflow::instance(
     Boolean $statsd_monitoring_enabled  = false,
     Integer $clean_logs_older_than_days = 90,
     String $firewall_srange             = 'ANALYTICS_NETWORKS',
+    String $scheduler_srange            = 'DSE_KUBEPODS_NETWORKS',
+    Integer $scheduler_port             = 8793,
     Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
     Boolean $renew_skein_certificate    = true
@@ -542,6 +553,12 @@ define airflow::instance(
         proto    => 'tcp',
         port     => $webserver_port,
         src_sets => [$firewall_srange],
+    }
+
+    firewall::service { 'scheduler-port':
+        proto    => 'tcp',
+        port     => $scheduler_port,
+        src_sets => [$scheduler_srange],
     }
 
     $skein_cert_path = "${airflow_home}/.skein/skein.crt"
