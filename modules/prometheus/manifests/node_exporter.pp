@@ -31,7 +31,7 @@
 
 class prometheus::node_exporter (
     String $ignored_fs_types  = '^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$',
-    String $ignored_mount_points  = '^/(sys|proc|dev|var/lib/docker|var/lib/kubelet|run/credentials)($|/)',
+    String $ignored_mount_points  = '^/(sys|proc|dev|var/lib/docker/.+|var/lib/kubelet/.+|var/lib/containerd/.+|run/credentials)($|/)',
     String $netstat_fields = '^(.*)',
     String $vmstat_fields = '^(.*)',
     Array[String] $collectors_extra = [],

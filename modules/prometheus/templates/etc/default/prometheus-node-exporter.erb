@@ -23,4 +23,4 @@
 <%- if @collect_systemd_restart_count -%>
   <%- arguments << "--collector.systemd.enable-restarts-metrics" -%>
 <%- end -%>
-ARGS='<%= arguments.sort.join(' ') %>'
+ARGS="<%= arguments.sort.join(" \\\n ") %>"
