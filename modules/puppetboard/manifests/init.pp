@@ -141,7 +141,7 @@ class puppetboard (
         'DAILY_REPORTS_CHART_DAYS'    => $daily_reports_chart_days,
         'WITH_EVENT_NUMBERS'          => $with_event_numbers,
     }.reduce('') |$memo, $value| {
-        "${memo}${value[0]} = ${value[1].wmflib::to_python}\n"
+        "${memo}${value[0]} = ${value[1].to_python}\n"
     }
     $config_content = @("CONFIG")
     import os
