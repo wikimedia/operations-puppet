@@ -5,14 +5,11 @@
 # configuration hash.
 #
 
-def config_to_hash(conf)
-  return YAML.load(conf) unless conf.is_a?(Hash)
-  conf
-end
-
 module Puppet::Parser::Functions
   newfunction(:merge_config, :type => :rvalue, :arity => 2) do |args|
-    main_conf, service_conf = *args.map { |arg|  config_to_hash(arg)}
+    main_conf, service_conf = *args.map do |arg|
+      arg.is_a?(Hash) ? arg : YAML.load(arg)
+    end
     begin
       main_conf['services'][0]['conf'].update service_conf
     rescue
