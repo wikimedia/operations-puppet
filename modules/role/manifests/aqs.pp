@@ -9,7 +9,6 @@ class role::aqs {
     include profile::firewall
 
     include profile::cassandra
-    include profile::aqs
 
     include profile::rsyslog::udp_localhost_compat
 }

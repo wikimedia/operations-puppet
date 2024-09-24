@@ -178,7 +178,6 @@ profile::cassandra::settings:
     client_encryption_optional: true
 
   users:
-    - aqs
     - aqsloader
     - image_suggestions
     - aqs_testing
@@ -211,32 +210,8 @@ profile::cassandra::client_ips:
   - 10.194.128.0/18
   - 2620:0:860:cabe::/64
 
-#
-# AQS service
-#
-# This configuration forces Restbase to use a specific user. Please make sure
-# to create the user first.
-profile::aqs::cassandra_user: aqs
-
-profile::aqs::monitoring_enabled: false
-
-profile::aqs::druid_properties:
-  scheme: http
-  port: 8082
-  host: druid-public-broker.svc.eqiad.wmnet
-  query_path: '/druid/v2/'
-
-profile::aqs::druid_datasources:
-  mediawiki_history: mediawiki_history_reduced_2023_11
-
-profile::aqs::druid_uri_pattern: '^http:\/\/druid-public-broker.svc.eqiad.wmnet:8082\/druid\/v2'
-
-profile::aqs::cassandra_default_consistency: localQuorum
-profile::aqs::cassandra_local_dc: "%{::site}"
-profile::aqs::statsd_host: statsd.eqiad.wmnet
-
 profile::contacts::role_contacts: ['Data Persistence']
-profile::base::production::role_description: 'Analytics Query Service Node - next generation'
+profile::base::production::role_description: 'Analytics Query Service - Cassandra instance'
 
 profile::java::java_packages:
   - version: '11'

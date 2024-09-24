@@ -28,13 +28,6 @@ profile::cache::varnish::frontend::enable_monitoring: false
 profile::envoy::ensure: absent
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
-# AQS
-aqs_hosts:
-  - deployment-aqs01.deployment-prep.eqiad.wmflabs
-  - deployment-aqs02.deployment-prep.eqiad.wmflabs
-  - deployment-aqs03.deployment-prep.eqiad.wmflabs
-aqs::cassandra_default_consistency: localOne
-# END AQS
 # Parsoid
 profile::parsoid::port: 8001
 # Restbase (profile::restbase)
@@ -46,7 +39,6 @@ profile::restbase::cassandra_local_dc: "datacenter1"
 profile::restbase::parsoid_uri: http://parsoid.svc.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
 profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps02.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid02.deployment-prep.eqiad1.wikimedia.cloud:10044
-profile::restbase::aqs_uri: https://wikimedia.org/api/rest_v1/metrics
 profile::restbase::event_service_uri: http://deployment-eventgate-4.deployment-prep.eqiad1.wikimedia.cloud:8292/v1/events
 profile::restbase::proton_uri: http://deployment-docker-proton01.deployment-prep.eqiad1.wikimedia.cloud:3030
 profile::restbase::citoid_uri: http://deployment-docker-citoid02.deployment-prep.eqiad1.wikimedia.cloud:1970

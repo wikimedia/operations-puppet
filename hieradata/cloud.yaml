@@ -632,7 +632,6 @@ profile::alertmanager::web::vhost: "alerts.%{facts.domain}"
 profile::alertmanager::api::vhost_alias: "alertmanager-*.%{facts.domain}"
 profile::alertmanager::api::ro: []
 profile::alertmanager::api::rw: []
-profile::restbase::aqs_uri: http://aqs.svc.eqiad.wmnet:7232/analytics.wikimedia.org/v1
 profile::graphite::base::cluster_servers: []
 profile::graphite::base::uwsgi_processes: 8
 
