@@ -35,6 +35,8 @@ lookup_options:
     merge: deep
   profile::cache::haproxy::sticktables:
     merge: deep
+  profile::conftool2git::ssh_privkey:
+    convert_to: 'Sensitive'
   profile::docker::engine::settings:
     merge: hash
   profile::debdeploy::client::filter_services:

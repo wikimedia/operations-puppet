@@ -14,4 +14,5 @@ class role::puppetserver {
     include profile::conftool::master
     include profile::conftool::requestctl_client
     require profile::conftool::state
+    require profile::conftool::conftool2git
 }

@@ -79,3 +79,9 @@ profile::puppetserver::configmaster::server_name: "%{facts.networking.fqdn}"
 profile::puppetserver::configmaster::document_root: /srv/config-master
 profile::puppetserver::swift_fetch_rings::active_server: puppetserver1001.eqiad.wmnet
 cluster: puppet
+
+
+# Setup conftool2git
+profile::conftool2git::address: '0.0.0.0:1312'
+profile::conftool2git::pubkey: 'placeholder'
+# You also need to define profile::conftool2git::ssh_privkey in the private repo
