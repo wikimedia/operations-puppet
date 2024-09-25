@@ -45,7 +45,8 @@ groups:
               cdunn, vyuen, scfc, relgu, emedina, ddw, tobias-schumann-wmde-ext, ahollender, jrabah,
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
-              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk]
+              kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
+              rudolphampofo]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -6870,9 +6871,8 @@ ldap_only_users:
     realname: NDA On File
     email: wikitech.rxy@rxy.jp
   rudolphampofo:
-    ensure: present
+    ensure: absent
     realname: Rudolph Ampofo
-    email: rampofo@wikimedia.org
   spramudya:
     ensure: present
     realname: Sakti Pramudya
