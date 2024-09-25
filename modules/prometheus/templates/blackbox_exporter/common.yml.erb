@@ -15,9 +15,9 @@ modules:
     timeout: 5s
 
   gnmi_connect:
-    prober: grpc
+    prober: tcp
     timeout: 5s
-    grpc:
+    tcp:
       tls: true
       tls_config:
         ca_file: '/etc/ssl/localcerts/network_devices.pem'
