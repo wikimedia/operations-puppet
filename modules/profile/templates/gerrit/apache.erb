@@ -49,8 +49,6 @@
     <%- if @use_acmechief -%>
     SSLCertificateFile /etc/acmecerts/gerrit/live/ec-prime256v1.chained.crt
     SSLCertificateKeyFile /etc/acmecerts/gerrit/live/ec-prime256v1.key
-    SSLCertificateFile /etc/acmecerts/gerrit/live/rsa-2048.chained.crt
-    SSLCertificateKeyFile /etc/acmecerts/gerrit/live/rsa-2048.key
     <%- else -%>
     SSLCertificateFile /etc/letsencrypt/live/gerrit.devtools.wmflabs.org/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/gerrit.devtools.wmflabs.org/privkey.pem
