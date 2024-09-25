@@ -106,13 +106,26 @@ remove_os_md() {
   fi
 }
 
+remove_lvm() {
+  cat > '/tmp/remove_lvm.cfg' <<EOF
+d-i partman-lvm/device_remove_lvm       boolean true
+EOF
+  debconf-set-selections /tmp/remove_lvm.cfg
+}
+
 
 case $(hostname) in
   ms-be2050|ms-be20[7-9]*|ms-be107[2-9]|ms-be10[8-9]*|moss-*|thanos-be1005|thanos-be2005)
     configure_swift_disks
     ;;
-  cephosd*|cloudcephosd*)
+  cephosd*)
     remove_os_md
+    configure_cephosd_disks
+    ;;
+  cloudcephosd*)
+    # For cloudceph nodes we want to completely wipe the drives as we handle a reimage
+    # as taking completely out and in a new node
+    remove_lvm
     configure_cephosd_disks
     ;;
 esac
