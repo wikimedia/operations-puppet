@@ -22,9 +22,9 @@
     ServerName tools.wmflabs.org
 
     SSLEngine on
-    SSLCertificateFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.crt
-    SSLCertificateChainFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.chained.crt
-    SSLCertificateKeyFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/rsa-2048.key
+    SSLCertificateFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/ec-prime256v1.crt
+    SSLCertificateChainFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/ec-prime256v1.chained.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= @ssl_certificate_name %>/live/ec-prime256v1.key
     <%= @ssl_settings.join("\n    ") %>
 <%- end -%>
 
