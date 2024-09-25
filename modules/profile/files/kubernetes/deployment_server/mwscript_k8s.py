@@ -9,6 +9,7 @@ import json
 import logging
 import os
 import random
+import shlex
 import string
 import subprocess
 import sys
@@ -222,8 +223,9 @@ def main() -> int:
         yaml.dump(values, f)
         values_filename = f.name
 
-    logger.info('⏳ Starting %s on Kubernetes...', args.script_name)
     release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+    job = job_name(NAMESPACE, environment, release)
+    logger.info('⏳ Starting %s on Kubernetes as job %s ...', args.script_name, job)
     try:
         subprocess.run([
             '/usr/bin/helmfile',
@@ -244,16 +246,21 @@ def main() -> int:
                 'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
                 'RELEASE_NAME': release,  # Consumed by the helmfile template.
             },
-            check=True)
+            check=True,
+            stdout=subprocess.PIPE if not args.verbose else None,
+            stderr=subprocess.STDOUT if not args.verbose else None,
+            text=True if not args.verbose else None)
     except subprocess.CalledProcessError as e:
+        # If we were keeping the subprocess output to ourselves, print it now.
+        if not args.verbose:
+            print(e.stdout)
         # helmfile and/or helm will have already printed an error, so we don't need to add anything
         # (except the specific command we ran). This doesn't delete the values file, which we leave
         # in case it's needed for debugging. It lives in /tmp anyway, so failing to clean it up
-        # isn't a disaster.  TODO: shlex.join() would make this more readable, but we're on Buster.
-        logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
+        # isn't a disaster.
+        logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
         return 1
 
-    job = job_name(NAMESPACE, environment, release)
     container = f'mediawiki-{release}-app'
     env_vars = kube_env(NAMESPACE, environment)
     if args.follow:
@@ -263,7 +270,12 @@ def main() -> int:
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
                            env=env_vars)
         except subprocess.CalledProcessError as e:
-            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
+            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
+        except KeyboardInterrupt:
+            env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
+            logger.info('🔁 To resume streaming logs, run:\n'
+                        '%s kubectl logs -f job/%s mediawiki-%s-app',
+                        env_vars_str, job, release)
     elif args.attach:
         wait_until_started(env_vars, job, container)
         if sys.stdin.isatty():
@@ -286,7 +298,7 @@ def main() -> int:
                 ],
                 env=env_vars, check=True)
         except subprocess.CalledProcessError as e:
-            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, e.cmd)
+            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
     else:
         env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
         logger.info('🚀 Job is running. For streaming logs, run:\n'
