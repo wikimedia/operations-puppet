@@ -2,6 +2,3 @@
 profile::gitlab::service_ip_v4: '208.80.154.15'
 profile::gitlab::service_ip_v6: '2620:0:861:1:208:80:154:15'
 profile::gitlab::service_name: 'gitlab-replica-b.wikimedia.org'
-
-profile::firewall::defs_from_etcd: true
-profile::firewall::defs_from_etcd_nft: true
