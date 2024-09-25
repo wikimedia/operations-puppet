@@ -9,7 +9,8 @@ class docker_registry_ha (
     Stdlib::Host $redis_host,
     Stdlib::Port::Unprivileged $redis_port,
     String $redis_passwd,
-    String $registry_shared_secret
+    String $registry_shared_secret,
+    Integer $catalog_maxentries,
 ){
 
     package {'docker-registry':
