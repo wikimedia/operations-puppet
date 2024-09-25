@@ -12,11 +12,12 @@
 # @param default_modules whether to provision some default modules
 # @param http_proxy HTTP proxy to use with some default modules
 class prometheus::blackbox_exporter(
-    Boolean                   $manage_config   = true,
-    String[1]                 $directory_owner = 'root',
-    String[1]                 $directory_group = 'root',
-    Wmflib::Ensure            $default_modules = 'present',
-    Optional[Stdlib::HTTPUrl] $http_proxy      = undef,
+    Boolean                   $manage_config     = true,
+    String[1]                 $directory_owner   = 'root',
+    String[1]                 $directory_group   = 'root',
+    Wmflib::Ensure            $default_modules   = 'present',
+    Optional[Stdlib::HTTPUrl] $http_proxy        = undef,
+    Boolean                   $with_gnmi_connect = true,
 ) {
     require prometheus::assemble_config
 
@@ -40,10 +41,12 @@ class prometheus::blackbox_exporter(
         purge   => $manage_config,
     }
 
-    # Needed for gnmic_connect
-    file { '/etc/ssl/localcerts/network_devices.pem':
-        ensure => file,
-        source => 'http://pki.discovery.wmnet/bundles/network_devices.pem',
+    if $with_gnmi_connect {
+        # Needed for gnmi_connect
+        file { '/etc/ssl/localcerts/network_devices.pem':
+            ensure => file,
+            source => 'http://pki.discovery.wmnet/bundles/network_devices.pem',
+        }
     }
 
     ['misc', 'common'].each |$frag| {

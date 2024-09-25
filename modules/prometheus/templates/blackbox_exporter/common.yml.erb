@@ -14,6 +14,7 @@ modules:
     prober: icmp
     timeout: 5s
 
+<% if @with_gnmi_connect -%>
   gnmi_connect:
     prober: tcp
     timeout: 5s
@@ -21,6 +22,7 @@ modules:
       tls: true
       tls_config:
         ca_file: '/etc/ssl/localcerts/network_devices.pem'
+<% end -%>
 
   http_connect:
     prober: http

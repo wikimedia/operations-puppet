@@ -103,8 +103,9 @@ class profile::wmcs::metricsinfra::prometheus(
     }
 
     class { 'prometheus::blackbox_exporter':
-        manage_config   => false,
-        default_modules => 'absent',
-        directory_group => 'prometheus-configurator',
+        manage_config     => false,
+        default_modules   => 'absent',
+        directory_group   => 'prometheus-configurator',
+        with_gnmi_connect => false,
     }
 }
