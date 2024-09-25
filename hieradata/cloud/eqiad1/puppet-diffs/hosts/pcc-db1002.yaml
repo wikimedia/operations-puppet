@@ -21,18 +21,18 @@ puppet_compiler::uploader::realms:
   production:
     puppetmaster1001: |
       -----BEGIN PUBLIC KEY-----
-      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAl+eoPKZrnvwYsQyolUZn
-      QmR3pCPAy+8uu0qm9Buy537OhONHAbnEkemKvQtPsc9wM+G9oUu+kjUEJeMd/KjW
-      E6SR+XAZv5+/dSfkckcoXDZQ4w0fk6XaH5Q2gZXa8axYSCnMi+cXOWxmegeHG857
-      8VlLkBy+sUwEvBqdyi8a14G7dn1DTCqB89xA0hwFrGpfewqEeMQWi2ic/3DFSlvm
-      ydDhDw0KGDYNG2+1jcfFZrs6fUt7tmiepNcr2Zas17l/JvKzp6h4+WiF7cX0LNd/
-      9K1j9bXdZBGV/QltY3vVp//8L1pEj8JVDrlKZD6LGNO1RL1Ej7dw5lyU+1R9/wW9
-      KDfxA7Ktp0oNZ1jVcL06NqiG680vBbNGGd4uYSEo+Vf/OfiiTiffP5MhFxnPSvPj
-      El1ojUV28kKfjoEuo584OjI7rIy1K6kk5PuRmeIbrbx2oQCdOg85mUxlGaTuHIgN
-      YBuNYYfqxZ0jwZNKIrgwZxFseE/Mb4FYu8qPQPfyX0NXqngEu5+u+YNB/pIApDbJ
-      XEGc1iku5HzFu03J2MRwgOLUX8CIIGvaWse6UeeezX3VT7AJjrpuYKzE0m1+8M8k
-      y3hOQS4EW3C2l0tknlM07hwWU8KCzfoT+JBstH5FTwXYqlMfPANzrJIE5t7FNhu4
-      kOHUQwj4Rl5xXaZ8GCV6feECAwEAAQ==
+      MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAx/ETtrXlo98zGHMTpcjY
+      DQhul4qoWz6PRuAoRbWcUJDpCGTwYj2uTQr/Ml9N/euJp9rHTe2Hq/AKkcuAZ+Xf
+      NnwKSBcGcmk4mJi+/l5YtlOMc3QC6zK7Ewubdgfuc0fwq50Las7hieFUOaZNw8mH
+      BOaLYJd+qHJyAsAr8Bi4fGPCEukITSU2+xwZX4mBC2FD1NSl2gl3m9c8fMJc4yau
+      kpHTM9Y4kcHSsn2RUVyhkpMo4ZhCS1yOm6/U/Rbk4nAvZ5ncpQTnu2WXKp2xwmIp
+      cKhovez5YghlSrPGNXGRCOKZ7jZcmVglN7zW7A4L7xiKQ4POX8FOFwI7UzG5Ig5w
+      F01smwrdKfDWq41SGXeFhQeTIY81kXGHQEUVMGNMZqjiPw92n61gYUvQRhOxQC5F
+      iDXf9MitOb6+OwKyRtgoYWi9e1H8GDiY2CzBCDGL8F9mwDvW84t9Z3JuN43IZOEV
+      yNmuoxByePC2mU6v6vKGvkiXZ/ljipFqaRvgzCbbIHF/pmD+jZ++ZkPVS4BKUgza
+      HdlSRN3wQtm7ogYwSjBfssYWmmvaPZ3tKQSkMnEzmS92Vps58p1j4GSWaf5RMl+K
+      26rqYLR3SRJMCVIQ+7tEahfVpXsqX6k1DbMW78zN3NLAKgS2dwZpNLZkhrKHFvKS
+      yhG840dIZjEOejWC1P2kd/0CAwEAAQ==
       -----END PUBLIC KEY-----
   cloudinfra:
     cloudinfra-cloudvps-puppetserver-1: |
