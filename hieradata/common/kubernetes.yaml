@@ -311,6 +311,72 @@ kubernetes::clusters:
         - wikikube-worker1031.eqiad.wmnet
         - wikikube-worker1032.eqiad.wmnet
         - wikikube-worker1033.eqiad.wmnet
+          # This space intentionally left blank
+        - wikikube-worker1240.eqiad.wmnet
+        - wikikube-worker1241.eqiad.wmnet
+        - wikikube-worker1242.eqiad.wmnet
+        - wikikube-worker1243.eqiad.wmnet
+        - wikikube-worker1244.eqiad.wmnet
+        - wikikube-worker1245.eqiad.wmnet
+        - wikikube-worker1246.eqiad.wmnet
+        - wikikube-worker1247.eqiad.wmnet
+        - wikikube-worker1248.eqiad.wmnet
+        - wikikube-worker1249.eqiad.wmnet
+        - wikikube-worker1250.eqiad.wmnet
+        - wikikube-worker1251.eqiad.wmnet
+        - wikikube-worker1252.eqiad.wmnet
+        - wikikube-worker1253.eqiad.wmnet
+        - wikikube-worker1254.eqiad.wmnet
+        - wikikube-worker1255.eqiad.wmnet
+        - wikikube-worker1256.eqiad.wmnet
+        - wikikube-worker1257.eqiad.wmnet
+        - wikikube-worker1258.eqiad.wmnet
+        - wikikube-worker1259.eqiad.wmnet
+        - wikikube-worker1260.eqiad.wmnet
+        - wikikube-worker1261.eqiad.wmnet
+        - wikikube-worker1262.eqiad.wmnet
+        - wikikube-worker1263.eqiad.wmnet
+        - wikikube-worker1264.eqiad.wmnet
+        - wikikube-worker1265.eqiad.wmnet
+        - wikikube-worker1266.eqiad.wmnet
+        - wikikube-worker1267.eqiad.wmnet
+        - wikikube-worker1268.eqiad.wmnet
+        - wikikube-worker1269.eqiad.wmnet
+        - wikikube-worker1270.eqiad.wmnet
+        - wikikube-worker1271.eqiad.wmnet
+        - wikikube-worker1272.eqiad.wmnet
+        - wikikube-worker1273.eqiad.wmnet
+        - wikikube-worker1274.eqiad.wmnet
+        - wikikube-worker1275.eqiad.wmnet
+        - wikikube-worker1276.eqiad.wmnet
+        - wikikube-worker1277.eqiad.wmnet
+        - wikikube-worker1278.eqiad.wmnet
+        - wikikube-worker1279.eqiad.wmnet
+        - wikikube-worker1280.eqiad.wmnet
+        - wikikube-worker1281.eqiad.wmnet
+        - wikikube-worker1282.eqiad.wmnet
+        - wikikube-worker1283.eqiad.wmnet
+        - wikikube-worker1284.eqiad.wmnet
+        - wikikube-worker1285.eqiad.wmnet
+        - wikikube-worker1286.eqiad.wmnet
+        - wikikube-worker1287.eqiad.wmnet
+        - wikikube-worker1288.eqiad.wmnet
+        - wikikube-worker1289.eqiad.wmnet
+        - wikikube-worker1290.eqiad.wmnet
+        - wikikube-worker1291.eqiad.wmnet
+        - wikikube-worker1292.eqiad.wmnet
+        - wikikube-worker1293.eqiad.wmnet
+        - wikikube-worker1294.eqiad.wmnet
+        - wikikube-worker1295.eqiad.wmnet
+        - wikikube-worker1296.eqiad.wmnet
+        - wikikube-worker1297.eqiad.wmnet
+        - wikikube-worker1298.eqiad.wmnet
+        - wikikube-worker1299.eqiad.wmnet
+        - wikikube-worker1300.eqiad.wmnet
+        - wikikube-worker1301.eqiad.wmnet
+        - wikikube-worker1302.eqiad.wmnet
+        - wikikube-worker1303.eqiad.wmnet
+        - wikikube-worker1304.eqiad.wmnet
       apparmor_profiles: &wikikube_apparmor_profiles
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
