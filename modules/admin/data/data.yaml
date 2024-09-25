@@ -32,7 +32,8 @@ groups:
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
-              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps]
+              twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
+              dumisani]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -418,7 +419,7 @@ groups:
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
               chrisalbon, wikigit, nahidunlimited, swagoel,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
-              dumisani, janstee, gmodena, cdanis, wmde-leszek, jakob,
+              janstee, gmodena, cdanis, wmde-leszek, jakob,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, oljad, cmadeo,
@@ -4514,15 +4515,13 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOe8yGmiYe4TX6NLuqjO16X6vXJZnyoh6pdFS//eywhI swati@Swatis-Air.volcano.net
     krb: present
   dumisani:
-    ensure: present
+    ensure: absent
     name: dumisani
     realname: Dumisani Ndubane
-    email: dndubane@wikimedia.org
     uid: 27436
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAjJGjEU/bTRc57QXmiXIvA6ru0xYEgmgFoExwLCpXzP dumisani@MacBook-Pro.local
-    krb: present
+    ssh_keys: []
+    krb: absent
   janstee:
     ensure: present
     name: janstee
