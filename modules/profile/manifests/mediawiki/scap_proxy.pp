@@ -18,10 +18,10 @@ class profile::mediawiki::scap_proxy(
             hosts_allow => $::network::constants::mw_appserver_networks;
         }
 
-        ferm::service { 'rsyncd_scap_proxy':
-            proto  => 'tcp',
-            port   => '873',
-            srange => '$MW_APPSERVER_NETWORKS',
+        firewall::service { 'rsyncd_scap_proxy':
+            proto    => 'tcp',
+            port     => 873,
+            src_sets => ['MW_APPSERVER_NETWORKS']
         }
     }
 
