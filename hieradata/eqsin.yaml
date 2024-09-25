@@ -6,3 +6,8 @@ prometheus_nodes:
 
 # Which of our redundant unified cert vendors to use in each DC
 public_tls_unified_cert_vendor: "digicert-2024"
+
+
+lookup_options:
+  profile::cache::haproxy::sticktables:
+    merge: first

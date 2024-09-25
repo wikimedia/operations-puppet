@@ -1,0 +1,15 @@
+profile::cache::haproxy::sticktables:
+  - name: httpreqrate
+    type: ipv6
+    size: 1m
+    expire: 300s
+    store:
+      - 'http_req_rate(10s)'
+      - 'gpc_rate(10,300s)'
+  - name: httpreqrate_http
+    type: ipv6
+    size: 1m
+    expire: 300s
+    store:
+      - 'http_req_rate(10s)'
+      - 'gpc_rate(10,300s)'
