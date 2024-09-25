@@ -2255,16 +2255,8 @@ node /^netflow[1-7]00[1-9]\.(eqiad|codfw|ulsfo|esams|eqsin|drmrs|magru)\./ {
     role(netinsights)
 }
 
-node /^vrts1001\.eqiad\./ {
-    role(insetup::collaboration_services)
-}
-
 node /^vrts1003\.eqiad\./ {
     role(vrts)
-}
-
-node /^vrts2001\.codfw\./ {
-    role(insetup::collaboration_services)
 }
 
 node /^vrts2002\.codfw\./ {
