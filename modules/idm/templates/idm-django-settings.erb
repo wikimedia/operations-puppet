@@ -285,7 +285,11 @@ API_PERMISSIONS = (
 )
 <%- end -%>
 
-<%- if @production == false -%>
+<%- if @production -%>
+ACCESS_REQUEST_RULES = {
+    'ldapbackend': {},
+}
+<%- else -%>
 ACCESS_REQUEST_RULES = {
     'ldapbackend': {
         'cn=idptest-users,ou=groups,dc=wikimedia,dc=org': [{
