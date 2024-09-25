@@ -172,10 +172,12 @@ server {
       proxy_set_header Host $host;
 
       # Some responses are very slow (e.g. T179696#6772661)
-      proxy_connect_timeout       240;
-      proxy_send_timeout          240;
-      proxy_read_timeout          240;
-      send_timeout                240;
+      # For example, fetching the catalog of images takes
+      # time and it get worse without proper GC/cleanup.
+      proxy_connect_timeout       300;
+      proxy_send_timeout          300;
+      proxy_read_timeout          300;
+      send_timeout                300;
     }
 
     location ~ ^/v2/restricted/.* {
