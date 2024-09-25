@@ -102,12 +102,10 @@ class vopsbot(
     }
 
     systemd::service { 'vopsbot':
-        ensure               => $run_service.bool2str('present', 'absent'),
-        override             => false,
-        monitoring_enabled   => true,
-        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Vopsbot',
-        content              => template('vopsbot/systemd.unit.erb'),
-        require              => Systemd::Sysuser[$daemon_user],
+        ensure   => $run_service.bool2str('present', 'absent'),
+        override => false,
+        content  => template('vopsbot/systemd.unit.erb'),
+        require  => Systemd::Sysuser[$daemon_user],
     }
 
     profile::auto_restarts::service { 'vopsbot':
