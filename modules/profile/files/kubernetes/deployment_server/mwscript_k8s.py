@@ -5,7 +5,6 @@
 import argparse
 import glob
 import grp
-import json
 import logging
 import os
 import random
@@ -14,7 +13,6 @@ import string
 import subprocess
 import sys
 import tempfile
-from pathlib import Path
 from typing import Dict
 
 import yaml
@@ -25,17 +23,18 @@ from wmflib import interactive
 
 logger = logging.Logger(__name__)
 
-BUILD_REPORT_PATH = Path('/srv/mediawiki-staging/scap/image-build/report.json')
-BUILD_REPORT_IMAGE_TYPE = 'mediawiki'
-BUILD_REPORT_IMAGE_NAME = 'multiversion-image'
 NAMESPACE = 'mw-script'
+
+
+def config_file(namespace: str, cluster: str) -> str:
+    return f'/etc/kubernetes/{namespace}-{cluster}.config'
 
 
 def kube_env(namespace: str, cluster: str) -> Dict[str, str]:
     # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
     return {
         'K8S_CLUSTER': cluster,
-        'KUBECONFIG': f'/etc/kubernetes/{namespace}-{cluster}.config',
+        'KUBECONFIG': config_file(namespace, cluster),
     }
 
 
@@ -51,30 +50,26 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
-def mediawiki_image():
-    build_report = json.loads(BUILD_REPORT_PATH.read_text())
-    last_build = build_report.get(BUILD_REPORT_IMAGE_TYPE, {}).get(BUILD_REPORT_IMAGE_NAME)
-    if not last_build:
+def mediawiki_image(cluster: str) -> str:
+    # Find out what multiversion image is in use by mw-web, and use the same one.
+    kube_config = config.load_kube_config(config_file=config_file('mw-web', cluster))
+    apps_client = client.AppsV1Api(client.ApiClient(kube_config))
+    deployment_name = f'mw-web.{cluster}.main'
+    deployment = apps_client.read_namespaced_deployment(name=deployment_name, namespace='mw-web')
+    containers = [container for container in deployment.spec.template.spec.containers
+                  if container.name == 'mediawiki-main-app']
+    if not containers:
         raise ValueError(
-            f'No image for "{BUILD_REPORT_IMAGE_TYPE}.{BUILD_REPORT_IMAGE_NAME}" found in '
-            f'{BUILD_REPORT_PATH}'
-        )
-
-    prefix = 'docker-registry.discovery.wmnet/'
-    if not last_build.startswith(prefix):
-        raise ValueError(
-            f'Unexpected value "{last_build}" for image '
-            f'"{BUILD_REPORT_IMAGE_TYPE}.{BUILD_REPORT_IMAGE_NAME}" found in {BUILD_REPORT_PATH}'
-        )
-    return last_build[len(prefix):]
+            f'Container mediawiki-main-app not found in the {deployment_name} deployment template')
+    [container] = containers
+    return container.image.removeprefix('docker-registry.discovery.wmnet/')
 
 
 def check_config_file(namespace: str, cluster: str) -> None:
     # Make sure we can open the kubernetes config file. If not, either the namespace/cluster are
     # wrong or we're not in the appropriate usergroup.
     try:
-        config_path = kube_env(namespace, cluster)['KUBECONFIG']
-        with open(config_path, 'r'):
+        with open(config_file(namespace, cluster), 'r'):
             pass
     except PermissionError as e:
         stat = os.stat(e.filename)
@@ -164,7 +159,7 @@ def main() -> int:
     parser.add_argument('--mediawiki_image',
                         help='Specify a MediaWiki image (without registry), e.g. '
                              'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
-                             '(Default: Use most recent build)')
+                             '(Default: Use the same image as mw-web)')
     # Allow overriding the default helmfile. This should only be needed for development of the
     # mw-script infrastructure, and not by users of maintenance scripts.
     parser.add_argument(
@@ -190,22 +185,14 @@ def main() -> int:
     except (PermissionError, FileNotFoundError):
         return 1
 
-    # Launching jobs from the other DC is fine, as far as kubectl is concerned. The only problem is
-    # that report.json is only updated in the active DC. If --mediawiki_image is passed, we're fine
-    # to proceed. (But that use case is so rare that we keep the message simple.)
-    local_cluster = Path('/etc/wikimedia-cluster').read_text().strip()
-    if local_cluster != environment and not args.mediawiki_image:
-        logger.fatal('☠️ Maintenance scripts must be started from the active data center,'
-                     'currently %s. (T359127)', environment)
-
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
     values = {
-        # For normal deployments, this value is managed by scap. For scripts, we'll use the latest
-        # build (except when overridden by command-line flag).
+        # For normal deployments, this value is managed by scap. For scripts, we'll use the image
+        # currently used in the mw-web deployment (except when overridden by command-line flag).
         'main_app': {
-            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(),
+            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(environment),
         },
         'mwscript': {
             'args': [args.script_name, *args.script_args],
