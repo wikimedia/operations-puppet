@@ -36,6 +36,8 @@ pfw3-eqiad.wikimedia.org;juniper;up;
 fasw-c-eqiad.mgmt.eqiad.wmnet;juniper;up;
 pfw1-codfw.wikimedia.org;juniper;up;
 fasw-c-codfw.mgmt.codfw.wmnet;juniper;up;
+fasw2-c8a-codfw.mgmt.codfw.wmnet;juniper;up;
+fasw2-c8b-codfw.mgmt.codfw.wmnet;juniper;up;
 cr3-ulsfo.wikimedia.org;juniper;up;
 cr4-ulsfo.wikimedia.org;juniper;up;
 asw2-ulsfo.mgmt.ulsfo.wmnet;juniper;up;

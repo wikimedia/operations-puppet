@@ -2297,6 +2297,18 @@ infra_devices:
     - pfw1-codfw
     site: codfw
     role: l2sw
+  fasw2-c8a-codfw:
+    ipv4: 10.193.0.19
+    parents:
+    - pfw1-codfw
+    site: codfw
+    role: l2sw
+  fasw2-c8b-codfw:
+    ipv4: 10.193.0.18
+    parents:
+    - pfw1-codfw
+    site: codfw
+    role: l2sw
   cloudsw1-b1-codfw:
     ipv4: 10.192.255.255
     ipv6: 2620:0:860:13f::1
