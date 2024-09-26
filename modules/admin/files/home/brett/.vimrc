@@ -4,9 +4,6 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 set nojoinspaces
-set formatoptions-=cro
-set modeline
-set mouse=
 
 set relativenumber
 set number
@@ -17,12 +14,22 @@ set autochdir
 " I prefer new vertical splits to go right, just like i3/tmux
 set splitright
 
+" Turn off that annoying auto-commenting on new line
+set formatoptions-=cro
+
 " True Color
 set termguicolors
+
+" Read vim: settings in files
+set modeline
 
 " Fix hash symbols being de-indented when using cindent
 set cinkeys-=0#
 set indentkeys-=0#
+
+" nvim defaults to irritating mouse-selection weirdness.
+" I like vim's method
+set mouse=
 
 " Show tab characters - Keep the trailing space!
 set list
@@ -58,6 +65,8 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+nmap <leader>dg :diffget<CR>
+nmap <leader>dp :diffput<CR>
 
 " Remove trailing whitespace at end of line
 nmap <leader>e :%s/\s\+$//e<CR>

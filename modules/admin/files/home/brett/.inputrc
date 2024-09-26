@@ -28,6 +28,7 @@ set keymap vi-command
 "\C-l": clear-screen
 
 set keymap vi-insert
+"\C-a": beginning-of-line
 "\C-l": clear-screen
 "\C-e": end-of-line
 "\C-k": kill-line
