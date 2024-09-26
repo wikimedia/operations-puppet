@@ -11,7 +11,7 @@ class ceph::radosgw {
         subscribe => File['/etc/ceph/ceph.conf'],
     }
 
-    systemd::syslog { 'ceph-radosgw@radosgw':
+    systemd::syslog { 'radosgw':
         force_stop  => true,
         owner       => 'root',
         group       => 'adm',
