@@ -48,14 +48,14 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [[ "$include_cdbs" ]]; then
-    cdb_exclude=
+    cdb_exclude=()
 else
-    cdb_exclude='--exclude="**/cache/l10n/*.cdb"'
+    cdb_exclude=(--exclude="**/cache/l10n/*.cdb")
 fi
 
 /usr/bin/rsync \
     --archive --delete-delay --delay-updates --compress --new-compress --delete \
-    $cdb_exclude \
+    "${cdb_exclude[@]}" \
     --exclude="*.swp" \
     "${MASTER}::common" /srv/mediawiki-staging
 
