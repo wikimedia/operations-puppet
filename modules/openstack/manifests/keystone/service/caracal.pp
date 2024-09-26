@@ -29,7 +29,6 @@ class openstack::keystone::service::caracal(
     $wiki_access_token,
     $wiki_access_secret,
     String $wsgi_server,
-    Array[Stdlib::IP::Address::V4::CIDR] $instance_ip_ranges,
     String $wmcloud_domain_owner,
     String $bastion_project_id,
     Array[String] $prod_networks,
@@ -38,8 +37,6 @@ class openstack::keystone::service::caracal(
     Boolean $enforce_new_policy_defaults,
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
-    Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips,
-    Array[Stdlib::Port] $prometheus_metricsinfra_default_ports,
     Stdlib::Fqdn $horizon_hostname,
 ) {
     class { "openstack::keystone::service::caracal::${::lsbdistcodename}":

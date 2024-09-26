@@ -59,5 +59,3 @@ profile::openstack::codfw1dev::rabbitmq_heartbeat_timeout: 180
 #  so we only backup once
 profile::openstack::codfw1dev::cinder_backup_volumes: {}
 
-profile::openstack::codfw1dev::prometheus_metricsinfra_reserved_ips: []
-profile::openstack::codfw1dev::prometheus_metricsinfra_default_ports: []

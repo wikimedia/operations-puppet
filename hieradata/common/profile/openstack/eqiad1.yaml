@@ -67,9 +67,3 @@ profile::openstack::eqiad1::purge_projects:
       days_to_delete: 15
 
 profile::openstack::eqiad1::cinder_backup_volumes: {}
-
-profile::openstack::eqiad1::prometheus_metricsinfra_reserved_ips:
-  - 172.16.0.229
-  - 172.16.6.65
-profile::openstack::eqiad1::prometheus_metricsinfra_default_ports:
-  - 9100 # prometheus-node-exporter

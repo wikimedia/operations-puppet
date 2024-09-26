@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# for ops/puppet CI: explicitly mark this file as python3 otherwise it defaults to py2
+
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2016 Andrew Bogott for the Wikimedia Foundation
 # All Rights Reserved.
@@ -14,12 +17,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from keystoneauth1.identity import v3
 from keystone.common import rbac_enforcer
-from keystoneauth1 import session as keystone_session
 from keystone.common import provider_api
-from neutronclient.v2_0 import client as neutron_client
-from neutronclient.common import exceptions
+
 
 from oslo_log import log as logging
 from oslo_config import cfg
@@ -78,16 +78,7 @@ wmfkeystone_opts = [
     cfg.IntOpt('minimum_gid_number',
                default=40000,
                help='Starting gid number for posix groups'),
-    cfg.StrOpt('instance_ip_ranges',
-               default='172.16.0.0/21',
-               help='Comma-separated list of CIDRs of instances to accept SSH from by default'),
-    cfg.StrOpt('prometheus_metricsinfra_reserved_ips',
-               default='',
-               help='Comma-separated list of IP addresses to be added to default security groups.'),
-    cfg.StrOpt('prometheus_metricsinfra_default_ports',
-               default='',
-               help='Comma-separated list of ports to be added to default security groups.')]
-
+]
 
 CONF = cfg.CONF
 CONF.register_opts(wmfkeystone_opts, group='wmfhooks')
@@ -179,138 +170,9 @@ class KeystoneHooks(notifier.Driver):
         self.page_editor.edit_page(fields_string, project_name, False,
                                    template='Nova Resource')
 
-    @staticmethod
-    def _security_group_dict(
-        group_id,
-        protocol,
-        from_port,
-        to_port,
-        cidr=None,
-        group=None,
-        description=None
-    ):
-        newrule = {'security_group_rule': {
-                   'security_group_id': group_id,
-                   'direction': 'ingress',
-                   'ethertype': 'IPv4',
-                   'protocol': protocol,
-                   'port_range_min': from_port,
-                   'port_range_max': to_port}}
-
-        if from_port < 0 and to_port < 0:
-            del newrule['security_group_rule']['port_range_min']
-            del newrule['security_group_rule']['port_range_max']
-
-        if cidr:
-            newrule['security_group_rule']['remote_ip_prefix'] = cidr
-
-        if group:
-            newrule['security_group_rule']['remote_group_id'] = group
-
-        if description:
-            newrule['security_group_rule']['description'] = description
-
-        return newrule
-
     def _on_project_create(self, project_id):
         project_name = self._get_project_name_by_id(project_id)
         LOG.warning("Beginning wmf hooks for project creation: %s (%s)", project_id, project_name)
-
-        LOG.warning("Adding security groups to project %s" % project_id)
-        # Use the neutron api to set up security groups for the new project
-        auth = v3.Password(
-            auth_url=CONF.wmfhooks.auth_url,
-            username=CONF.wmfhooks.admin_user,
-            password=CONF.wmfhooks.admin_pass,
-            user_domain_name='Default',
-            project_domain_name='Default',
-            project_id=project_id)
-        session = keystone_session.Session(auth=auth)
-        client = neutron_client.Client(session=session, connect_retries=5)
-        allgroups = client.list_security_groups(project_id=project_id)['security_groups']
-        defaultgroup = [group for group in allgroups if group['name'] == 'default']
-        if defaultgroup:
-            groupid = defaultgroup[0]["id"]
-            try:
-                client.create_security_group_rule(
-                    KeystoneHooks._security_group_dict(groupid,
-                                                       'icmp',
-                                                       -1,
-                                                       -1,
-                                                       cidr='0.0.0.0/0'))
-            except (exceptions.NeutronClientException):
-                LOG.warning("icmp security rule already exists.")
-
-            for instances_cidr in CONF.wmfhooks.instance_ip_ranges.split(','):
-                cidr = instances_cidr.strip()
-                try:
-                    client.create_security_group_rule(
-                        KeystoneHooks._security_group_dict(groupid,
-                                                           'tcp',
-                                                           22,
-                                                           22,
-                                                           cidr=cidr))
-                except (exceptions.NeutronClientException):
-                    LOG.warning("Port 22 security rule already exists for CIDR %s" % cidr)
-
-            try:
-                client.create_security_group_rule(
-                    KeystoneHooks._security_group_dict(groupid,
-                                                       'tcp',
-                                                       22,
-                                                       22,
-                                                       group=groupid))
-            except (exceptions.NeutronClientException):
-                LOG.warning("Project security rule for TCP already exists.")
-
-            try:
-                client.create_security_group_rule(
-                    KeystoneHooks._security_group_dict(groupid,
-                                                       'udp',
-                                                       1,
-                                                       65535,
-                                                       group=groupid))
-            except (exceptions.NeutronClientException):
-                LOG.warning("Project security rule for UDP already exists.")
-
-            try:
-                client.create_security_group_rule(
-                    KeystoneHooks._security_group_dict(groupid,
-                                                       'icmp',
-                                                       -1,
-                                                       -1,
-                                                       group=groupid))
-            except (exceptions.NeutronClientException):
-                LOG.warning("Project security rule for ICMP already exists.")
-
-            metricsinfra_ips = [
-                ip for ip in CONF.wmfhooks.prometheus_metricsinfra_reserved_ips.split(',')
-                if ip.strip() != ''
-            ]
-
-            for ip in metricsinfra_ips:
-                for port_str in CONF.wmfhooks.prometheus_metricsinfra_default_ports.split(','):
-                    port = int(port_str)
-
-                    try:
-                        client.create_security_group_rule(
-                            KeystoneHooks._security_group_dict(
-                                groupid,
-                                'tcp',
-                                port,
-                                port,
-                                cidr="{}/32".format(ip),
-                                description="Cloud VPS Prometheus monitoring",
-                            )
-                        )
-                    except exceptions.NeutronClientException:
-                        LOG.warning(
-                            "Project security rule for metricsinfra "
-                            "scraping (%s %s) already exists.",
-                            ip, port_str
-                        )
-        else:
-            LOG.warning("Failed to find default security group in new project.")
 
         LOG.warning("Syncing membership with ldap for project %s" % project_id)
         assignments = self._get_current_assignments(project_id)
@@ -390,8 +252,8 @@ class KeystoneHooks(notifier.Driver):
                 project_id = message['payload']['project']
                 role_id = message['payload']['role']
                 self._on_member_update(project_id)
-                if (project_id != CONF.wmfhooks.bastion_project_id and
-                        project_id != CONF.wmfhooks.toolforge_project_id):
+                if (project_id != CONF.wmfhooks.bastion_project_id
+                        and project_id != CONF.wmfhooks.toolforge_project_id):
                     # If a user is added to a project, they will probably
                     #  want to ssh.  And for that, they will need to belong
                     #  to the bastion project.

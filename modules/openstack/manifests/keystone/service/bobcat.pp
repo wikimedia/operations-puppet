@@ -38,8 +38,6 @@ class openstack::keystone::service::bobcat(
     Boolean $enforce_new_policy_defaults,
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
-    Array[Stdlib::IP::Address::V4::Nosubnet] $prometheus_metricsinfra_reserved_ips,
-    Array[Stdlib::Port] $prometheus_metricsinfra_default_ports,
 ) {
     class { "openstack::keystone::service::bobcat::${::lsbdistcodename}":
         public_bind_port => $public_bind_port,
