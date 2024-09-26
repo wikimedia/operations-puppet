@@ -510,6 +510,7 @@ profile::puppetserver::volatile::geoip_fetch_private: false
 profile::backup::director_seed: changeme
 profile::debdeploy::client::exclude_mounts: []
 profile::debdeploy::client::exclude_filesystems: []
+
 profile::idp::ldap_schema: ldap
 # We set this to true so one has to consciously disable it
 profile::idp::ldap_start_tls: true
@@ -556,6 +557,8 @@ profile::idp::enable_webauthn: false
 profile::idp::webauthn_relaying_party: wikimedia.org
 profile::idp::memcached_install: true
 profile::idp::oidc_issuers_pattern: 'a^'
+profile::idp::expose_tomcat: true
+
 # Service proxy
 profile::services_proxy::envoy::listen_ipv6: false
 profile::services_proxy::envoy::listeners: []
