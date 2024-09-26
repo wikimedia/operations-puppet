@@ -180,14 +180,15 @@ profile::cloudceph::osd::hosts:
   # Use the next free internal ip
 
   # Rack E4 has it's own internal ip block
-  "cloudcephosd1025.eqiad.wmnet":
-    public:
-      addr: "10.64.148.2"
-      iface: "enp175s0f0np0"
-    cluster:
-      addr: "192.168.5.1"
-      prefix: "24"
-      iface: "enp175s0f1np1"
+  # Temporary removed https://phabricator.wikimedia.org/T348643#10170362
+  #"cloudcephosd1025.eqiad.wmnet":
+  #  public:
+  #    addr: "10.64.148.2"
+  #    iface: "enp175s0f0np0"
+  #  cluster:
+  #    addr: "192.168.5.1"
+  #    prefix: "24"
+  #    iface: "enp175s0f1np1"
   "cloudcephosd1026.eqiad.wmnet":
     public:
       addr: "10.64.148.3"
