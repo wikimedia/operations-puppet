@@ -18,6 +18,8 @@ profile::postfix::mx::domain_aliases_generic:
   - 'wikivoyage.de'
   - 'wiktionary.org'
   - 'wikifunctions.org'
+  - 'wmfusercontent.org'
+  - 'wikimediafoundation.org'
 
 profile::postfix::mx::static_transport_maps:
   wiki-verp-bounce-handler:
