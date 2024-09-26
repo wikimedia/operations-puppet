@@ -32,8 +32,6 @@ scap::dsh::groups:
       - mwmaint2002.codfw.wmnet
       - scandium.eqiad.wmnet
       - parsoidtest1001.eqiad.wmnet
-      - snapshot1008.eqiad.wmnet
-      - snapshot1009.eqiad.wmnet
       - snapshot1010.eqiad.wmnet
       - snapshot1011.eqiad.wmnet
       - snapshot1012.eqiad.wmnet
