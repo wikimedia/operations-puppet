@@ -112,9 +112,9 @@ profile::cache::haproxy::acls:
       operator: 'eq'
       value: '1'
     - name: ssl_auth_rsa
-      criterion: 'ssl_fc_cipher'
-      operator: '-m reg'
-      value: '^ECDHE-RSA'
+      criterion: 'ssl_f_key_alg'
+      operator: '-m str'
+      value: 'rsaEncryption'
     - name: mathoid_as_a_service
       criterion: path
       operator: '-m beg'
@@ -148,7 +148,7 @@ profile::cache::haproxy::add_headers:
       value: 'https'
     - direction: request
       name: 'X-Connection-Properties'
-      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN;'
+      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=[%var(req.auth)];'
     - direction: request
       name: 'X-Analytics-TLS'
       value: 'vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
