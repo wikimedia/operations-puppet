@@ -1,2 +1,2 @@
 profile::ssh::server::enable_kerberos: true
-profile::firewall::defs_from_etcd_nft: true
+profile::firewall::defs_from_etcd_nft: false
