@@ -5413,7 +5413,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFUWkbN5/6nDSKi4x+wvs5bo1wt6KmwBinBrYYB8SfT5 baiaitolkyn@gmail.com
     krb: present
-    expiry_date: "2024-10-01"
+    expiry_date: "2024-12-03"
     expiry_contact: fnavas@wikimedia.org
   drochford:
     ensure: present
