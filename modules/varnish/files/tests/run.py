@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import base64
 import os
 import re
 import sys
@@ -71,7 +72,16 @@ def dump_files(url, hostname):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "wb") as f:
             print("\tCreating {}".format(path))
-            f.write(str(resource["parameters"]["content"]).encode("utf-8"))
+            content = resource["parameters"]["content"]
+            if isinstance(content, str):
+                f.write(resource["parameters"]["content"].encode("utf-8"))
+            elif isinstance(content, dict):
+                if "__ptype" in content and content["__ptype"] == "Binary":
+                    f.write(base64.b64decode(content["__pvalue"]))
+                else:
+                    raise NotImplementedError(f"implement support to serialize {content}")
+            else:
+                raise NotImplementedError(f"implement support for type {type(content)}")
 
 
 def run_confd():
