@@ -13,7 +13,7 @@ processors:
 
 exporters:
   logging:
-  <% if defined?(@otel_gateway_otlp_port) %>
+  <% if defined?(@otel_gateway_fqdn) %>
   otlp: # https://github.com/open-telemetry/opentelemetry-collector/tree/main/exporter
     endpoint: "<%= @otel_gateway_fqdn %>:<%= @otel_gateway_otlp_port %>"
   <% end %>
@@ -25,7 +25,7 @@ service:
       processors: [batch]
       exporters:
         - logging
-        <% if defined?(@otel_gateway_otlp_port) %>
+        <% if defined?(@otel_gateway_fqdn) %>
         - otlp
         <% end %>
   extensions: [health_check]
