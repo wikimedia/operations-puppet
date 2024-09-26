@@ -27,6 +27,7 @@ profile::lvs::realserver::pools:
 profile::nginx::variant: 'light'
 profile::nginx::tmpfs_size: '2g'
 profile::contacts::role_contacts: ['ServiceOps']
+profile::puppet::agent::force_puppet7: true
 
 # Set the size of the nginx's working dir space. It represents the maximum
 # size limit for a compressed Docker layer to be accepted by the Registry.
