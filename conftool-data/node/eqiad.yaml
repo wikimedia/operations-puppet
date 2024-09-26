@@ -466,7 +466,6 @@ eqiad:
     druid1010.eqiad.wmnet: [druid-public-broker]
     druid1011.eqiad.wmnet: [druid-public-broker]
   docker-registry:
-    registry1003.eqiad.wmnet: [docker-registry]
     registry1004.eqiad.wmnet: [docker-registry]
     registry1005.eqiad.wmnet: [docker-registry]
   ncredir:

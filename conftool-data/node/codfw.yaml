@@ -396,7 +396,6 @@ codfw:
     logstash2031.codfw.wmnet: [kibana7, logs-api]
     logstash2032.codfw.wmnet: [kibana7, logs-api]
   docker-registry:
-    registry2003.codfw.wmnet: [docker-registry]
     registry2004.codfw.wmnet: [docker-registry]
     registry2005.codfw.wmnet: [docker-registry]
   ncredir:
