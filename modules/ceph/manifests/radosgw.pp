@@ -12,10 +12,12 @@ class ceph::radosgw {
     }
 
     systemd::syslog { 'radosgw':
-        force_stop  => true,
-        owner       => 'root',
-        group       => 'adm',
-        readable_by => 'group',
-        require     => Package['radosgw'],
+        force_stop   => true,
+        base_dir     => '/var/log/ceph',
+        owner        => 'ceph',
+        group        => 'ceph',
+        readable_by  => 'group',
+        log_filename => 'radosgw.log',
+        require      => Package['radosgw'],
     }
 }
