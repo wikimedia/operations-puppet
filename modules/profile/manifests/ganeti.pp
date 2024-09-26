@@ -51,19 +51,20 @@
 #   keyed by site.
 
 class profile::ganeti (
-    Array[Stdlib::Fqdn]                         $nodes            = lookup('profile::ganeti::nodes'),
-    Array[Stdlib::Fqdn]                         $rapi_nodes       = lookup('profile::ganeti::rapi_nodes'),
-    String                                      $rapi_certificate = lookup('profile::ganeti::rapi::certificate'),
-    Optional[String]                            $rapi_ro_user     = lookup('profile::ganeti::rapi::ro_user',
-                                                                            { default_value => undef }),
-    Optional[String]                            $rapi_ro_password = lookup('profile::ganeti::rapi::ro_password',
-                                                                            { default_value => undef }),
-    Integer[0, 100]                             $critical_memory  = lookup('profile::ganeti::critical_memory'),
-    Integer[0, 100]                             $warning_memory   = lookup('profile::ganeti::warning_memory'),
-    Boolean                                     $routed           = lookup('profile::ganeti::routed'),
-    Optional[Hash[String, Stdlib::IP::Address]] $tap_ip4          = lookup('profile::ganeti::tap_ip4',
-                                                                            { default_value => undef }),
-    Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers     = lookup('profile::installserver::dhcp::tftp_servers'),
+    Array[Stdlib::Fqdn]                         $nodes              = lookup('profile::ganeti::nodes'),
+    Array[Stdlib::Fqdn]                         $rapi_nodes         = lookup('profile::ganeti::rapi_nodes'),
+    String                                      $rapi_certificate   = lookup('profile::ganeti::rapi::certificate'),
+    Optional[String]                            $rapi_ro_user       = lookup('profile::ganeti::rapi::ro_user',
+                                                                              { default_value => undef }),
+    Optional[String]                            $rapi_ro_password   = lookup('profile::ganeti::rapi::ro_password',
+                                                                              { default_value => undef }),
+    Integer[0, 100]                             $critical_memory    = lookup('profile::ganeti::critical_memory'),
+    Integer[0, 100]                             $warning_memory     = lookup('profile::ganeti::warning_memory'),
+    Boolean                                     $routed             = lookup('profile::ganeti::routed'),
+    Optional[Hash[String, Stdlib::IP::Address]] $tap_ip4            = lookup('profile::ganeti::tap_ip4',
+                                                                              { default_value => undef }),
+    Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
+    Boolean                                     $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
 ) {
 
     class { 'ganeti':
@@ -230,6 +231,19 @@ class profile::ganeti (
                 notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
             }
         }
+
+        if $manage_known_hosts {
+            $known_hosts = ganeti::known_hosts($facts['ganeti_cluster'])
+
+            file { '/var/lib/ganeti/known_hosts':
+                ensure  => present,
+                mode    => '0755',
+                owner   => 'gnt-masterd',
+                group   => 'gnt-masterd',
+                content => $known_hosts,
+            }
+        }
+
         # Run a montly rebalancing for all nodegroups
         # Note: We only run this on the first Wednesday of the month
         # This should only be run on the master and absented from all other
