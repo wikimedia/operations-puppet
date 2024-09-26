@@ -97,6 +97,18 @@ server s1 {
     expect req.http.x-tls-ciph == "invalid"
 
     txresp
+
+    rxreq
+    expect req.url == "/10"
+
+    expect req.http.x-tls-prot == "h1"
+    expect req.http.x-tls-vers == "TLSv1.3"
+    expect req.http.x-tls-sess == "reused"
+    expect req.http.x-tls-keyx == "X25519"
+    expect req.http.x-tls-auth == "ECDSA"
+    expect req.http.x-tls-ciph == "AES-256-GCM-SHA384"
+
+    txresp
 } -start
 
 varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
@@ -130,5 +142,8 @@ client c1 {
     rxresp
 
     txreq -url "/9" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=1; SSR=3; SSL=TLSv1.3; C=TLS_CHACHA20_POLY1305_SHA256; EC=X25519;"
+    rxresp
+
+    txreq -url "/10" -hdr "X-Forwarded-Proto: https" -hdr "Host: upload.wikimedia.org" -hdr "X-Connection-Properties: H2=0; SSR=1; SSL=TLSv1.3; C=TLS_AES_256_GCM_SHA384; EC=X25519; KA=ECDSA;"
     rxresp
 } -run

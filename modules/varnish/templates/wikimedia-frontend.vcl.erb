@@ -196,8 +196,8 @@ sub https_deliver_networkerrorlogging {
 
 // *** X-Connection-Properties parsing recv code
 sub log_xcps_info {
-    // Sanity-check the overall format defined by the config of ATS-TLS/envoyproxy
-    if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[012]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+;$") {
+    // Sanity-check the overall format defined by the config of HAProxy
+    if (req.http.X-Connection-Properties !~ "^H2=[01]; SSR=[012]; SSL=[^; ]+; C=[^; ]+; EC=[^; ]+;( KA=[^; ]+;)?$") {
         set req.http.x-tls-prot = "invalid";
         set req.http.x-tls-sess = "invalid";
         set req.http.x-tls-vers = "invalid";
