@@ -207,7 +207,7 @@ groups:
               aikochou, kevinbazira, samtar, pfischer, kindrobot,
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
-              tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku, jiawang,
+              tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain
     ]
     system_members: [mwbuilder, mwpresync]
@@ -1048,7 +1048,7 @@ groups:
   airflow-analytics-product-admins:
     gid: 840
     description: Group of users for managing Product Analytics related analytics/data jobs and deploying airflow-dags/analytics_product
-    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga]
+    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang]
     privileges: [
       'ALL = (analytics-product) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
