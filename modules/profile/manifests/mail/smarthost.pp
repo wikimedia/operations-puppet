@@ -39,9 +39,9 @@ class profile::mail::smarthost (
         config  => template('profile/exim/exim4.conf.smarthost.erb'),
     }
 
-    ferm::service { 'exim-smtp':
+    firewall::service { 'exim-smtp':
         proto => 'tcp',
-        port  => '25',
+        port  => 25,
     }
 
     mailalias { 'root':
