@@ -148,7 +148,7 @@ profile::cache::haproxy::add_headers:
       value: 'https'
     - direction: request
       name: 'X-Connection-Properties'
-      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=[%var(req.auth)];'
+      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];'
     - direction: request
       name: 'X-Analytics-TLS'
       value: 'vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
