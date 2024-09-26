@@ -122,7 +122,7 @@ class docker_registry_ha::web (
         group   => 'root',
         mode    => '0644',
         before  => Service['nginx'],
-        require => Package['nginx-common'],
+        require => Package['nginx'],
     }
 
     # Create a separate cache and socket location for internal auth_request
