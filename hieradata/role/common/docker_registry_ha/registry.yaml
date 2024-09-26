@@ -24,7 +24,8 @@ profile::lvs::realserver::pools:
 # Envoy will be added later, see T215810
 #      - envoyproxy
 
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 profile::nginx::tmpfs_size: '2g'
 profile::contacts::role_contacts: ['ServiceOps']
 profile::puppet::agent::force_puppet7: true
