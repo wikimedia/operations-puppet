@@ -17,6 +17,7 @@ profile::postfix::mx::domain_aliases_generic:
   - 'wikiversity.org'
   - 'wikivoyage.de'
   - 'wiktionary.org'
+  - 'wikifunctions.org'
 
 profile::postfix::mx::static_transport_maps:
   wiki-verp-bounce-handler:
