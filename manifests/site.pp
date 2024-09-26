@@ -247,6 +247,16 @@ node /^aux-k8s-worker100[1-2]\.eqiad\./ {
     role(aux_k8s::worker)
 }
 
+# control-plane servers for aux kubernetes cluster
+node /^aux-k8s-ctrl1003\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
+# worker nodes for aux kubernetes cluster
+node /^aux-k8s-worker1003\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # Primary bacula director and storage daemon
 node /^backup1001\.eqiad\./ {
     role(backup)
