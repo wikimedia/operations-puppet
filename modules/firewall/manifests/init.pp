@@ -3,12 +3,10 @@
 # @param provider which firewall provider to use
 class firewall (
     Firewall::Provider $provider = 'none',
-    Boolean $ferm_status_restart = false,
 ) {
     unless $provider == 'none' {
         class { 'ferm': # lint:ignore:wmf_styleguide
             ensure              => stdlib::ensure($provider == 'ferm'),
-            ferm_status_restart => $ferm_status_restart,
         }
 
         # There is currently no Puppet-driven migration path ferm->nft,
