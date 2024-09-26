@@ -207,10 +207,10 @@ server {
       proxy_set_header Host $host;
 
       # Some responses are very slow (e.g. T179696#6772661)
-      proxy_connect_timeout       240;
-      proxy_send_timeout          240;
-      proxy_read_timeout          240;
-      send_timeout                240;
+      proxy_connect_timeout       300;
+      proxy_send_timeout          300;
+      proxy_read_timeout          300;
+      send_timeout                300;
 
       <%- if @nginx_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
@@ -245,10 +245,10 @@ server {
       proxy_set_header Host $host;
 
       # Some responses are very slow (e.g. T179696#6772661)
-      proxy_connect_timeout       240;
-      proxy_send_timeout          240;
-      proxy_read_timeout          240;
-      send_timeout                240;
+      proxy_connect_timeout       300;
+      proxy_send_timeout          300;
+      proxy_read_timeout          300;
+      send_timeout                300;
     }
 
     # Capture the original request path here so we can pass it to
@@ -292,10 +292,10 @@ server {
       proxy_set_header Host $host;
 
       # Some responses are very slow (e.g. T179696#6772661)
-      proxy_connect_timeout       240;
-      proxy_send_timeout          240;
-      proxy_read_timeout          240;
-      send_timeout                240;
+      proxy_connect_timeout       300;
+      proxy_send_timeout          300;
+      proxy_read_timeout          300;
+      send_timeout                300;
 
       # But cache the _catalog endpoint for a few mins as it's pretty expensive
       location ~ ^/v2/_catalog$ {
