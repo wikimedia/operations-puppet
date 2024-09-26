@@ -37,7 +37,7 @@ class profile::docker_registry_ha::registry(
     Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry_ha::registry::jwt_allowed_ips', { 'default_value' => [] }),
     # Which k8s clusters should be able to pull restricted images
     Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry_ha::registry::authorized_k8s_clusters', { 'default_value' => [] }),
-    Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry_ha::registry::catalog_maxentries', { 'default_value' => 25}),
+    Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry_ha::registry::catalog_maxentries', { 'default_value' => 50}),
 ) {
     # if this looks pretty similar to profile::docker::registry
     # is intended.
