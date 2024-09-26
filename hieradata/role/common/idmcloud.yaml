@@ -1,4 +1,4 @@
-profile::contacts::role_contacts: ['WMCS']
+profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Wikimedia identity management portal (labtest)'
 profile::idm::processes: 2
 
