@@ -59,7 +59,7 @@ class docker_registry_ha::web (
         group   => 'www-data',
         mode    => '0440',
         before  => Service['nginx'],
-        require => Package['nginx-common'],
+        require => Package['nginx'],
     }
 
     # Read access to /restricted/
@@ -71,7 +71,7 @@ class docker_registry_ha::web (
         group   => 'www-data',
         mode    => '0440',
         before  => Service['nginx'],
-        require => Package['nginx-common'],
+        require => Package['nginx'],
     }
 
     # Push access to /
@@ -84,7 +84,7 @@ class docker_registry_ha::web (
         group   => 'www-data',
         mode    => '0440',
         before  => Service['nginx'],
-        require => Package['nginx-common'],
+        require => Package['nginx'],
     }
 
     # Find k8s nodes that have auth credentials (for restricted/)
@@ -112,7 +112,7 @@ class docker_registry_ha::web (
         owner   => 'root',
         group   => 'root',
         source  => 'puppet:///modules/docker_registry_ha/registry-nginx-cache.conf',
-        require => Package['nginx-common'],
+        require => Package['nginx'],
     }
 
     file { '/etc/nginx/nginx.conf':
