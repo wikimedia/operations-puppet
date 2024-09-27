@@ -1,4 +1,5 @@
 profile::contacts::role_contacts: ["ServiceOps"]
+profile::base::production::role_description: 'Host being setup by Serviceops SREs'
 profile::monitoring::notifications_enabled: false
 
 profile::puppet::agent::force_puppet7: true

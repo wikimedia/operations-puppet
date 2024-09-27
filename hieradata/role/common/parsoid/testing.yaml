@@ -45,6 +45,7 @@ profile::parsoid::testreduce::install_node: false
 profile::nginx::variant: "light"
 
 profile::contacts::role_contacts: ["ServiceOps"]
+profile::base::production::role_description: 'Parsoid test server'
 
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true

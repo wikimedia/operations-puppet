@@ -35,6 +35,7 @@ profile::tlsproxy::envoy::firewall_srange: []
 profile::nginx::variant: 'light'
 
 profile::contacts::role_contacts: ['ServiceOps']
+profile::base::production::role_description: 'Parsoid visual diffing tests'
 
 profile::firewall::provider: nftables
 

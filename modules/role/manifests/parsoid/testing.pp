@@ -1,10 +1,5 @@
 # Parsoid testing, MW appserver plus parsoid testing setup
 class role::parsoid::testing {
-
-    system::role { 'parsoid::testing':
-        description => 'Parsoid test server'
-    }
-
     ## Basics
     include profile::base::production
     include profile::firewall

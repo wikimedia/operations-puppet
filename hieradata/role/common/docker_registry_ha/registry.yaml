@@ -28,6 +28,7 @@ profile::nginx::variant: 'custom'
 profile::nginx::modules: []
 profile::nginx::tmpfs_size: '2g'
 profile::contacts::role_contacts: ['ServiceOps']
+profile::base::production::role_description: 'Docker registry HA'
 profile::puppet::agent::force_puppet7: true
 
 # Set the size of the nginx's working dir space. It represents the maximum

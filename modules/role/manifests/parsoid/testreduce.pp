@@ -1,10 +1,5 @@
 # testreduce, nodejs-based - T257906
 class role::parsoid::testreduce {
-
-    system::role { 'parsoid::testreduce':
-        description => 'Parsoid visual diffing tests'
-    }
-
     include profile::base::production
     include profile::firewall
 
