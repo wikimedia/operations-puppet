@@ -78,3 +78,4 @@ profile::tlsproxy::envoy::global_cert_name: "%{facts.networking.fqdn}"
 profile::puppetserver::configmaster::server_name: "%{facts.networking.fqdn}"
 profile::puppetserver::configmaster::document_root: /srv/config-master
 profile::puppetserver::swift_fetch_rings::active_server: puppetserver1001.eqiad.wmnet
+cluster: puppet
