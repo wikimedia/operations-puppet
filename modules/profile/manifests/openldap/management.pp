@@ -51,6 +51,7 @@ class profile::openldap::management(
         interval      => {'start' => 'OnCalendar', 'interval' => 'Mon..Fri 04:00'},
         user          => 'accountcheck',
         send_mail     => true,
+        send_mail_to  => 'sre-foundations@wikimedia.org',
         ignore_errors => true,
     }
 
