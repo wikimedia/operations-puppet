@@ -357,7 +357,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # START Kubernetes workers that used to be mw app/api servers
-  'mw135[2-7]|mw136[0-37-9]|mw137[14-90]|mw138[0-9]|mw139[0-79]|mw140[589]|mw141[4-69]|mw142[1-5]':
+  'mw141[4-69]|mw142[1-5]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg

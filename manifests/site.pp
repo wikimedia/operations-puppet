@@ -1674,27 +1674,6 @@ node /^wikikube-worker21(0[0-9]|1[0-9]|2[0-7])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-# START Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
-node /^mw135([2-7])\.eqiad\./ {
-  role(kubernetes::worker)
-}
-
-node /^mw136[0-37-9]\.eqiad\./ {
-  role(kubernetes::worker)
-}
-
-node /^mw137[014-9]\.eqiad\./ {
-  role(kubernetes::worker)
-}
-node /^mw138[0-9]\.eqiad\./ {
-  role(kubernetes::worker)
-}
-node /^mw139[0-79]\.eqiad\./ {
-  role(kubernetes::worker)
-}
-node /^mw140[589]\.eqiad\./ {
-  role(kubernetes::worker)
-}
 node /^mw141[4-69]\.eqiad\./ {
   role(kubernetes::worker)
 }
