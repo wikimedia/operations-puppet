@@ -36,10 +36,10 @@ class profile::query_service::gui (
         # Let's allow $DOMAIN_NETWORKS access this port for now while
         # we find a way around limiting access to only
         # $ANALYTICS_NETWORKS and LVSes.
-        ferm::service { 'query_service_heavy_queries_http':
-            proto  => 'tcp',
-            port   => '8888',
-            srange => '$DOMAIN_NETWORKS';
+        firewall::service { 'query_service_heavy_queries_http':
+            proto    => 'tcp',
+            port     => 8888,
+            src_sets => ['DOMAIN_NETWORKS'],
         }
     }
 
