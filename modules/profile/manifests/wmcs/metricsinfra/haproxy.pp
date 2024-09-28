@@ -31,6 +31,8 @@ class profile::wmcs::metricsinfra::haproxy (
     }
 
     class { '::prometheus::haproxy_exporter':
+        ensure      => absent,
         listen_port => 9901,
+        before      => File['/etc/haproxy/conf.d/prometheus.cfg'],
     }
 }
