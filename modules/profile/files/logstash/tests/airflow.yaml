@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: Apache-2.0
+codec: "json_lines"
+ignore:
+  - "level"
+  - "program"
+  - "type"
+  - "host"
+  - "@timestamp"
+  - "normalized_message"
+  - "tags"
+testcases:
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2021-08-27T15:19:00.738126",
+          "rsyslog.hostname": "ml-serve1001",
+          "rsyslog.programname": "input-file-kubernetes",
+          "rsyslog.severity": "NOTICE",
+          "rsyslog.facility": "local0",
+          "program": "input-file-kubernetes",
+          "caller": {
+            "file": "main.go",
+            "line": 673
+          },
+          "kubernetes": {
+            "namespace_name": "airflow-test-k8s",
+            "labels": {
+              "app": "airflow"
+            }
+          },
+          "type": "syslog"
+        }
+
+    expected:
+      - __target_index: "logstash-k8s-1-1.0.0-N-daily"
+        caller: "{\"line\":673,\"file\":\"main.go\"}"
+        kubernetes:
+          namespace_name: "airflow-test-k8s"
+          labels:
+            app: "airflow"
