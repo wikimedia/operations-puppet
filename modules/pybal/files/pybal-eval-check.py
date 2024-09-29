@@ -55,7 +55,7 @@ def main():
 
         try:
             server = eval(line)
-            assert type(server) == dict
+            assert type(server) is dict
             assert all(map(lambda k: k in server,
                            ['host', 'enabled', 'weight']))
             socket.gethostbyname_ex(server['host'])
