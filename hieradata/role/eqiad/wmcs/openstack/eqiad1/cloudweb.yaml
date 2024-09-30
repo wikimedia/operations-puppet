@@ -24,7 +24,7 @@ profile::wmcs::striker::docker::instances:
   # This is the main instance for the main Toolforge project.
   striker:
     port: 8080
-    version: 2024-07-20-113830-production
+    version: 2024-09-30-162529-production
     env:
       OAUTH_CONSUMER_KEY: 3f0e3e91f2cba000c7d81932f59d615a
       DB_NAME: striker
