@@ -371,6 +371,41 @@ tables:
     source: wikibase_client
     canonicality: derivative
     visibility: public
+  - name: pr_index
+    source: proofread
+    canonicality: derivative
+    visibility: public
+    dblist: wikisource
+  - name: flaggedpages
+    source: flaggedrevs
+    canonicality: derivative
+    visibility: public
+    dblist: flaggedrevs
+  - name: flaggedrevs
+    source: flaggedrevs
+    canonicality: canonical with acceptable loss
+    visibility: public
+    dblist: flaggedrevs
+  - name: flaggedpage_config
+    source: flaggedrevs
+    canonicality: canonical with acceptable loss
+    visibility: public
+    dblist: flaggedrevs
+  - name: flaggedrevs_tracking
+    source: flaggedrevs
+    canonicality: derivative
+    visibility: public
+    dblist: flaggedrevs
+  - name: flaggedrevs_promote
+    source: flaggedrevs
+    canonicality: derivative
+    visibility: public
+    dblist: flaggedrevs
+  - name: flaggedrevs_statistics
+    source: flaggedrevs
+    canonicality: derivative
+    visibility: public
+    dblist: flaggedrevs
 sources:
     core:
       - path: maintenance/tables.json
@@ -390,12 +425,18 @@ sources:
     discussiontools:
       - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
+    flaggedrevs:
+      - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json
     geo_data:
       - path: extensions/GeoData/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
     linter:
       - path: extensions/Linter/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
+    proofread:
+      - path: extensions/ProofreadPage/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ProofreadPage/+/master/sql/tables.json
     spoofuser:
       - path: extensions/AntiSpoof/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AntiSpoof/+/master/sql/tables.json
