@@ -1438,7 +1438,7 @@ node /^irc[12]002\.wikimedia\./ {
 }
 
 node /^irc1003\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(ircstream)
 }
 
 # Cloud cumin hosts

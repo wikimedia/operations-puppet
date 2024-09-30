@@ -1,0 +1,2 @@
+profile::contacts::role_contacts: ['Infrastructure Foundations']
+profile::base::production::role_description: 'IRC service for broadcasting recent Wiki events'
