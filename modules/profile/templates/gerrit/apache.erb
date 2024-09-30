@@ -79,6 +79,11 @@
     SetEnvIf Remote_Addr 124.156.200.6 bad_browser
     SetEnvIf Remote_Addr 106.55.60.114 bad_browser
 
+    # ByteDance crawling network - T375996
+    SetEnvIfExpr "-R '101.47.0.0/18'" bad_browser
+    # CacheFly - T375996
+    SetEnvIfExpr "-R '2605:4C40::/32'" bad_browser
+
     DocumentRoot /var/www
     <Directory />
         Options FollowSymLinks
