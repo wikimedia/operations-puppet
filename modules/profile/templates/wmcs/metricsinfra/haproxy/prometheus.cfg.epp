@@ -51,12 +51,9 @@ frontend http-public
     use_backend grafana if is_grafana_host
     use_backend config_manager if is_config_manager_host
 
-frontend stats
+frontend prometheus_exporter
     bind *:9901
     http-request use-service prometheus-exporter if { path /metrics }
-    stats enable
-    stats uri /stats
-    stats refresh 10s
 
 backend prometheus_alertmanager
     mode http
