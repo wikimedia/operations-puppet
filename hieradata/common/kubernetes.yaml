@@ -635,6 +635,14 @@ kubernetes::clusters:
       service_node_port_range: [1, 65535]
       prometheus:
         <<: *wikikube_staging_prometheus
+      admission_plugins:
+        disable:
+          - DenyServiceExternalIPs
+          - PersistentVolumeClaimResize
+          - StorageObjectInUseProtection
+        enable:
+          - NodeRestriction
+          - PodSecurityPolicy
       control_plane_nodes:
         - kubestagemaster2003.codfw.wmnet
         - kubestagemaster2004.codfw.wmnet
