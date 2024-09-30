@@ -17,7 +17,7 @@ class profile::mirrors::tails {
     include profile::mirrors
 
     $local_dir = '/srv/mirrors/tails'
-    $remote_path = 'mirrors.rsync.tails.boum.org::amnesia-archive/tails/'
+    $remote_path = 'rsync.tails.net::amnesia-archive/tails/'
 
     file { $local_dir:
         ensure => directory,
