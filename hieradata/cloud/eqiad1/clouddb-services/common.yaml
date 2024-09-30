@@ -1,3 +1,0 @@
-labstore::traffic_shaping::egress: 800mbps # The full bandwidth is 1250 megabytes per sec, this is most of it
-labstore::traffic_shaping::nfs_read: 800mbps # The NFS servers don't mount volumes, but they do need to talk to mysql, quickly.
-labstore::traffic_shaping::nfs_write: 800mbps
