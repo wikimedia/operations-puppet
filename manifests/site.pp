@@ -1437,6 +1437,10 @@ node /^irc[12]002\.wikimedia\./ {
     role(mw_rc_irc)
 }
 
+node /^irc1003\.wikimedia\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # Cloud cumin hosts
 node /^cloudcumin1001\.eqiad\./ {
     role(cluster::cloud_management)
