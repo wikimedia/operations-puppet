@@ -49,10 +49,16 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
+    # Keep this many days of data for analysis on some datasets relative to unique devices.
+    # This value has been extended to 180 days to allow for analysis of long-term trends and in accordance with the
+    # privacy team. https://phabricator.wikimedia.org/T373630
+    # Revert to 90 days after the analysis is done.
+    $long_term_analysis_retention_days = 180
+
     kerberos::systemd_timer { 'refinery-drop-webrequest-refined-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Webrequest refined data imported on HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='7fda1bf5f04e6883293a6b4a019b3b02'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest' --base-path='/wmf/data/wmf/webrequest' --path-format='.+/${hive_date_path_format}' --older-than='${long_term_analysis_retention_days}' --allowed-interval='3' --skip-trash --execute='aab323f301c0660e7e0976d773c3201b'",
         interval    => '*-*-* 00/4:45:00',
         environment => $systemd_env,
         user        => 'analytics',
@@ -85,7 +91,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'refinery-drop-pageview-actor-hourly-partitions':
         ensure      => $ensure_timers,
         description => 'Drop pageview_actor_hourly data from HDFS following data retention policies.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor' --base-path='/wmf/data/wmf/pageview/actor' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='4ea5bad542091393c2e2dcd088e49544'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='pageview_actor' --base-path='/wmf/data/wmf/pageview/actor' --path-format='${hive_date_path_format}' --older-than='${long_term_analysis_retention_days}' --allowed-interval='3' --skip-trash --execute='264d06ccd4b5ca2f036bbfbf1c33ef8a'",
         interval    => '*-*-* 00/4:50:00',
         environment => $systemd_env,
         user        => 'analytics',
@@ -306,7 +312,7 @@ class profile::analytics::refinery::job::data_purge (
         kerberos::systemd_timer { 'drop-webrequest-actor-metrics-hourly':
         ensure      => $ensure_timers,
         description => 'Drop wmf.webrequest_actor_metrics_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='2981b49bfdfb75e6f664341054a7c6ad'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/hourly' --path-format='${hive_date_path_format}' --older-than='${long_term_analysis_retention_days}' --allowed-interval='3' --skip-trash --execute='5f0df64634f68dfd443333877568898d'",
         environment => $systemd_env,
         interval    => '*-*-* 00/4:40:00',
         user        => 'analytics',
@@ -314,7 +320,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'drop-webrequest-actor-metrics-rollup-hourly':
         ensure      => $ensure_timers,
         description => 'Drop wmf.webrequest_actor_metrics_rollup_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_rollup_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/rollup/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='ff84c4df0443e4c1aed0287cea5172b5'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_metrics_rollup_hourly' --base-path='/wmf/data/wmf/webrequest_actor/metrics/rollup/hourly' --path-format='${hive_date_path_format}' --older-than='${long_term_analysis_retention_days}' --allowed-interval='3' --skip-trash --execute='b2bf881a21280478bcb63deb9c1708da'",
         environment => $systemd_env,
         interval    => '*-*-* 00/4:45:00',
         user        => 'analytics',
@@ -322,7 +328,7 @@ class profile::analytics::refinery::job::data_purge (
     kerberos::systemd_timer { 'drop-webrequest-actor-label-hourly':
         ensure      => $ensure_timers,
         description => 'Drop wmf.webrequest_actor_label_hourly data from Hive and HDFS after 90 days.',
-        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_label_hourly' --base-path='/wmf/data/wmf/webrequest_actor/label/hourly' --path-format='${hive_date_path_format}' --older-than='${retention_days}' --allowed-interval='3' --skip-trash --execute='ad7b71960cf4dc53b13c39f901aeb536'",
+        command     => "${refinery_path}/bin/refinery-drop-older-than --database='wmf' --tables='webrequest_actor_label_hourly' --base-path='/wmf/data/wmf/webrequest_actor/label/hourly' --path-format='${hive_date_path_format}' --older-than='${long_term_analysis_retention_days}' --allowed-interval='3' --skip-trash --execute='f2cc832c9e98a5f51003be74186a8be8'",
         environment => $systemd_env,
         interval    => '*-*-* 00/4:50:00',
         user        => 'analytics',
