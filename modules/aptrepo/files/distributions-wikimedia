@@ -78,6 +78,7 @@ Components: main
  thirdparty/opensearch1
  thirdparty/opensearch2
  thirdparty/otelcol-contrib
+ thirdparty/otel-cli
  thirdparty/php56
  thirdparty/postgres96
  thirdparty/pyall
@@ -170,6 +171,7 @@ Components: main
  thirdparty/opensearch2
  thirdparty/openstack-db
  thirdparty/otelcol-contrib
+ thirdparty/otel-cli
  thirdparty/routinator
  thirdparty/terraform
 UDebComponents: main
@@ -242,6 +244,7 @@ Components: main
  thirdparty/node20
  thirdparty/opensearch2
  thirdparty/otelcol-contrib
+ thirdparty/otel-cli
  thirdparty/routinator
  thirdparty/tofu
  thirdparty/yarn

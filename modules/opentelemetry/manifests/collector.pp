@@ -34,6 +34,12 @@ class opentelemetry::collector(
         ensure_packages => true,
     }
 
+    apt::package_from_component { 'otel-cli':
+        component       => 'thirdparty/otel-cli',
+        packages        => { 'otel-cli' => $ensure },
+        ensure_packages => true,
+    }
+
     $service_ensure = $ensure ? {
         'present' => 'running',
         default   => 'stopped',
