@@ -190,9 +190,13 @@ class profile::firewall (
                     ensure => file,
                 }
 
-                nftables::file::input { 'drop-blocked-nets':
+                nftables::file::input { 'drop-blocked-nets-ipv4':
                     order   => 5,
-                    content => 'ip saddr $BLOCKED_NETS drop',
+                    content => 'ip saddr $BLOCKED_NETS_ipv4 drop',
+                }
+                nftables::file::input { 'drop-blocked-nets-ipv6':
+                    order   => 5,
+                    content => 'ip6 saddr $BLOCKED_NETS_ipv6 drop',
                 }
             }
 
