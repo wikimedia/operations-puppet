@@ -866,6 +866,7 @@ kubernetes::clusters:
       control_plane_nodes:
         - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
+        - aux-k8s-ctrl1003.eqiad.wmnet
       cluster_dns:
         - "10.67.64.3"
       service_cluster_cidr:
@@ -881,8 +882,10 @@ kubernetes::clusters:
       cluster_nodes:
         - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
+        - aux-k8s-ctrl1003.eqiad.wmnet
         - aux-k8s-worker1001.eqiad.wmnet
         - aux-k8s-worker1002.eqiad.wmnet
+        - aux-k8s-worker1003.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
       admission_plugins:
