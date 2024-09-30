@@ -2647,6 +2647,10 @@ node /^wdqs2025.codfw\./ {
     role(wdqs::test)
 }
 
+node /^wdqs-categories1001.eqiad\./ {
+    role(insetup::search)
+}
+
 node /^webperf1003.eqiad\./ {
     role(webperf)
 }

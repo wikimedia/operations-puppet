@@ -749,13 +749,20 @@ profile::installserver::preseed::preseed_per_hostname:
   'wdqs101[1-3]|wdqs200[7-8]':
     - partman/standard.cfg
     - partman/raid10-8dev.cfg
-  'wdqs2009|wdqs201[0-9]|wdqs202[0-5]|wdqs101[4-6]':
+  'wdqs2009|wdqs201[0-9]|wdqs202[0-5]|wdqs101[4-9]|wdqs1020':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'wcqs*':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'wdqs*':
+  'wdqs-categories*':
+    - partman/flat.cfg
+    - virtual.cfg
+  'wdqs-main*':
+    - partman/standard.cfg
+    - partman/raid0.cfg
+    - partman/raid0-4dev.cfg
+  'wdqs-scholarly*':
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
