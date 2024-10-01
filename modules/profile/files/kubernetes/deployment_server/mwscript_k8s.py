@@ -142,6 +142,12 @@ def wait_until_started(env_vars: Dict[str, str], job: str, container: str) -> No
     w.stop()
 
 
+def logs_command(env_vars: Dict[str, str], release: str) -> str:
+    env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
+    job = job_name(NAMESPACE, env_vars['K8S_CLUSTER'], release)
+    return f'{env_vars_str} kubectl logs -f job/{job} mediawiki-{release}-app'
+
+
 def main() -> int:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
@@ -259,10 +265,7 @@ def main() -> int:
         except subprocess.CalledProcessError as e:
             logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
         except KeyboardInterrupt:
-            env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
-            logger.info('🔁 To resume streaming logs, run:\n'
-                        '%s kubectl logs -f job/%s mediawiki-%s-app',
-                        env_vars_str, job, release)
+            logger.info('🔁 To resume streaming logs, run:\n%s', logs_command(env_vars, release))
     elif args.attach:
         wait_until_started(env_vars, job, container)
         if sys.stdin.isatty():
@@ -285,12 +288,11 @@ def main() -> int:
                 ],
                 env=env_vars, check=True)
         except subprocess.CalledProcessError as e:
-            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
+            logger.fatal('☠️ Command failed with status %d: %s\nFor logs (may not work) run:\n%s',
+                         e.returncode, shlex.join(e.cmd), logs_command(env_vars, release))
     else:
-        env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
-        logger.info('🚀 Job is running. For streaming logs, run:\n'
-                    '%s kubectl logs -f job/%s mediawiki-%s-app',
-                    env_vars_str, job, release)
+        logger.info('🚀 Job is running. For streaming logs, run:\n%s',
+                    logs_command(env_vars, release))
 
     os.unlink(values_filename)
     return 0
