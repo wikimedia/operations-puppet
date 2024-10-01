@@ -54,12 +54,6 @@ disabled, use mariadb@<instance_name> instead'; exit 1\"",
             wikiuser_username  => $wikiuser_username,
             wikiuser_pass      => $passwords::misc::scripts::wikiuser_pass,
         }
-
-        # hack; remove after wikitech moves to a standard app server
-        #  T282209
-        if $section == 's6' {
-            profile::mariadb::ferm_wikitech { $section: port => $port }
-        }
     }
 
     $is_critical = $instances.any |$section, $buffer_pool| {

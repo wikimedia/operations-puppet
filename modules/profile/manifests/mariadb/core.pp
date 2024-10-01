@@ -92,12 +92,5 @@ class profile::mariadb::core (
         enabled    => $mysql_role == 'master',
     }
 
-    # hack; remove after wikitech moves to a standard app server
-    #  s6  T282209
-    #  es* T339079
-    if $shard == 's6' or $shard.stdlib::start_with('es') {
-        profile::mariadb::ferm_wikitech { $shard: }
-    }
-
     class { 'mariadb::monitor_memory': }
 }
