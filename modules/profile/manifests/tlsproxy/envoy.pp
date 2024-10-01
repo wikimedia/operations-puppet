@@ -61,6 +61,9 @@
 # @param upstream_idle_timeout Idle timeout for upstream connections
 # @param error_page  boolean true if an error page should be added; false by default.
 # @param local_otel_reporting_pct float, the percentage (e.g. 37.5) of traffic to be sampled for tracing
+# @param ferm_srange A group of hosts and/or ferm macros to grant access to Envoy (if firewall_srange is set, this has no effect)
+# @param firewall_srange: An array of hosts/IPs to grant access to Envoy (takes precedence over $ferm_srange)
+# @param firewall_src_sets An array of nftables sets to grant access to Envoy (only active is firewall_srange is also used)
 class profile::tlsproxy::envoy(
     Profile::Tlsproxy::Envoy::Sni    $sni_support               = lookup('profile::tlsproxy::envoy::sni_support'),
     Stdlib::Port                     $tls_port                  = lookup('profile::tlsproxy::envoy::tls_port'),
@@ -298,7 +301,7 @@ class profile::tlsproxy::envoy(
             }
         }
 
-        if $firewall_src_sets {
+        if $firewall_src_sets and $ferm_srange == Undef {
             firewall::service { 'envoy_tls_termination':
                 proto    => 'tcp',
                 notrack  => true,
