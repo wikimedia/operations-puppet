@@ -26,8 +26,6 @@ scap::dsh::groups:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - cloudweb2002-dev.wikimedia.org
-      - cloudweb1003.wikimedia.org
-      - cloudweb1004.wikimedia.org
       - mwmaint1002.eqiad.wmnet
       - mwmaint2002.codfw.wmnet
       - scandium.eqiad.wmnet
