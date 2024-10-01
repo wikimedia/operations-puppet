@@ -47,7 +47,7 @@ class openstack::wikitech::web(
     }
 
     systemd::timer::job { 'wikitech_run_jobs':
-        ensure             => present,
+        ensure             => absent,
         description        => 'Run Wikitech runJobs.php maintenance script',
         command            => "/usr/local/bin/mwscript maintenance/runJobs.php --wiki=${wikidb}",
         interval           => {
