@@ -1432,7 +1432,7 @@ node /^irc[12]002\.wikimedia\./ {
     role(mw_rc_irc)
 }
 
-node /^irc1003\.wikimedia\./ {
+node /^irc[12]003\.wikimedia\./ {
     role(ircstream)
 }
 
