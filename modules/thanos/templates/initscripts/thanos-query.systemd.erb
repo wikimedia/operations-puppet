@@ -1,6 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 Slice=thanos.slice
+Environment=OTEL_SERVICE_NAME=%N
 ExecStart=
 ExecStart=/usr/bin/thanos query \
   --http-address <%= @http_address %> \
