@@ -1159,7 +1159,7 @@ service::catalog:
     state: production
 
   labweb-ssl:
-    description: "lvs for cloudweb services: horizon, striker, wikitech - HTTPS"
+    description: "lvs for cloudweb services: horizon, striker - HTTPS"
     encryption: true
     ip:
       eqiad:
@@ -1176,14 +1176,13 @@ service::catalog:
           max-delay: 30
           timeout-clean-reconnect: 3
         ProxyFetch:
-          http_status: 301
+          http_status: 200
           url:
-            - https://wikitech.wikimedia.org:7443
+            - https://toolsadmin.wikimedia.org:7443/
       scheduler: wrr
     probes:
       - type: http
-        expect_redirect: true
-        host: wikitech.wikimedia.org
+        host: toolsadmin.wikimedia.org
     page: false
     port: 7443
     sites:
