@@ -67,8 +67,6 @@ cache::alternate_domains:
     caching: 'pass'
   horizon.wikimedia.org:
     caching: 'normal'
-  wikitech.wikimedia.org:
-    caching: 'normal'
   intake-logging.wikimedia.org:
     caching: 'normal'
   intake-analytics.wikimedia.org:
