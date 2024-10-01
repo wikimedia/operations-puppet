@@ -170,6 +170,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-script
         - name: mw-script-deploy
+    mw-cron:
+      usernames:
+        - name: mw-cron
+        - name: mw-cron-deploy
     mw-videoscaler:
       usernames:
         - name: mw-videoscaler
