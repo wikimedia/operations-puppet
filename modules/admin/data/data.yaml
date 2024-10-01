@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani]
+              dumisani, lbowmaker]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -425,7 +425,7 @@ groups:
               mwilliams, samwalton, apine, mlitn, sihe, oljad, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
-              ifried, etonkovidova, ldelench, cjming, mnz, lbowmaker,
+              ifried, etonkovidova, ldelench, cjming, mnz,
               wmde-fisch, ksiebert, tchanders,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
@@ -1022,7 +1022,7 @@ groups:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
-      *platform_engineering_members, lbowmaker, cparle, mfossati, mlitn, fab, htriedman
+      *platform_engineering_members, cparle, mfossati, mlitn, fab, htriedman
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
@@ -5059,14 +5059,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZiBjvl5o40Ile7UjKq2OrMczkHMA4L6Md/6z+llKnY mnz@wlt
   lbowmaker:
-    ensure: present
-    email: lbowmaker@wikimedia.org
+    ensure: absent
     realname: Luke Bowmaker
     gid: 500
     uid: 34472
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIDFAMA39ztgFi5ECZb5JUN8BEUNR6UdckIzZBP8gQq9 lbowmaker@wikimedia.org
+    krb: absent
+    ssh_keys: []
   statwithlatte:
     ensure: absent
     realname: Namrata Ray
