@@ -259,6 +259,7 @@ profile::opensearch::logstash::curator_actions:
     options:
       count: 1
       ignore_empty_list: true
+      timeout_override: 120
     filters:
       - filtertype: pattern
         kind: prefix
