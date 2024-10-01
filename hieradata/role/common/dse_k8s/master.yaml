@@ -17,7 +17,7 @@ profile::contacts::role_contacts:
 # The nodes are also tainted to force kubernetes to consider these nodes not
 # usable to schedule pods onto.
 profile::kubernetes::node::kubelet_node_taints:
-  - key: node-role.kubernetes.io/master
+  - key: node-role.kubernetes.io/control-plane
     effect: NoSchedule
 
 profile::base::overlayfs: true
