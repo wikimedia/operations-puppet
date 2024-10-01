@@ -4,7 +4,7 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - rt.wikimedia.org
 
-profile::tlsproxy::envoy::firewall_srange: ~
+profile::tlsproxy::envoy::firewall_srange: []
 profile::tlsproxy::envoy::firewall_src_sets:
   - CACHES
 
