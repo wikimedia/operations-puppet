@@ -5,8 +5,8 @@ profile::tlsproxy::envoy::cfssl_options:
     - rt.wikimedia.org
 
 profile::tlsproxy::envoy::firewall_srange: []
-profile::tlsproxy::envoy::firewall_src_sets:
-  - CACHES
+#profile::tlsproxy::envoy::firewall_src_sets:
+#  - CACHES
 
 profile::idp::client::httpd::sites:
   'rt.wikimedia.org':
