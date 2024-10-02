@@ -232,6 +232,10 @@ node /^aux-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::aux_k8s_etcd)
 }
 
+node /^aux-k8s-etcd100[45]\.eqiad\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 # control-plane servers for aux kubernetes cluster
 node /^aux-k8s-ctrl100[1-3]\.eqiad\./ {
     role(aux_k8s::master)
