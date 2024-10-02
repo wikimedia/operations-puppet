@@ -219,6 +219,7 @@ Components: main
  component/elastic710
  component/exim4-arc
  component/haproxy26
+ component/ircstream-sse
  component/istio115
  component/jdk21
  component/kubernetes123
