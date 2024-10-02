@@ -8,8 +8,6 @@ daemon_args = [
   "--kubeconfig=#{@kubeconfig}",      # No KubeletConfiguration equivalent
   "--v=#{@v_log_level}",              # There is a replacement in KubeletConfiguration but the flag is not deprecated (1.23) an I like it here
   "--hostname-override=#{@fqdn}",     # No KubeletConfiguration equivalent
-  # TODO: Split pod-infra-container-image in image and version. Let the cluster decide the image and the k8s version the version?
-  "--pod-infra-container-image=#{@pod_infra_container_image}", # No KubeletConfiguration equivalent
   # When joining the cluster for the first time, the node will set itself unschedulable.
   # This option is marked as deprecated (still available in 1.29), but there is no alternative as of now.
   # The "registerWithTaint" option does not work here because the taint "node.kubernetes.io/unschedulable" is not allowed to be set by kubelet.
@@ -50,10 +48,13 @@ if @system_reserved
   end
 end
 
-# TODO: Kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option, use that instead
 if @containerd_cri
+  # TODO: Kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option, use that instead
   daemon_args.push("--container-runtime=remote")
   daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
+else
+  # --pod-infra-container-image is ignored in kubelet when a remote container runtime is used (and issues a warning)
+  daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"
