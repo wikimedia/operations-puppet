@@ -10,19 +10,13 @@ class role::wmcs::openstack::eqiad1::cloudweb {
     #  the soon-to-be-moved wikitech/mediawiki install;
     #  Mcrouter is used by Horizon.  They share the same
     #  memcached backends.
-    include ::profile::openstack::eqiad1::nutcracker
     include ::profile::openstack::eqiad1::cloudweb_mcrouter
-
     include ::profile::lvs::realserver
-
-    # Wikitech:
-    include ::profile::openstack::eqiad1::wikitech::web
 
     # Horizon:
     include ::profile::openstack::eqiad1::horizon::docker_deploy
 
     # Striker:
     include ::profile::wmcs::striker::docker
-
     include ::profile::tlsproxy::envoy # TLS termination
 }
