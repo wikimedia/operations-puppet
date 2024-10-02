@@ -5,6 +5,8 @@ profile::opensearch::dc_settings:
     - logging-hd2001.codfw.wmnet
     - logging-hd2002.codfw.wmnet
     - logging-hd2003.codfw.wmnet
+    - logging-hd2004.codfw.wmnet
+    - logging-hd2005.codfw.wmnet
     - logging-sd2001.codfw.wmnet
     - logging-sd2002.codfw.wmnet
     - logging-sd2003.codfw.wmnet
@@ -22,6 +24,8 @@ profile::opensearch::dc_settings:
     - logging-hd2001.codfw.wmnet
     - logging-hd2002.codfw.wmnet
     - logging-hd2003.codfw.wmnet
+    - logging-hd2004.codfw.wmnet
+    - logging-hd2005.codfw.wmnet
     - logging-sd2001.codfw.wmnet
     - logging-sd2002.codfw.wmnet
     - logging-sd2003.codfw.wmnet

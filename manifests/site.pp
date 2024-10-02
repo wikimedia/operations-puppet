@@ -1851,12 +1851,8 @@ node /^ldap-replica200[5-6]\.wikimedia\./ {
 }
 
 # Logging data nodes, hdd class (codfw)
-node /^logging-hd200[1-3]\.codfw\./ {
+node /^logging-hd200[1-5]\.codfw\./ {
     role(logging::opensearch::data)
-}
-
-node /^logging-hd200[4-5]\.codfw\./ {
-    role(insetup::observability)
 }
 
 # Logging data nodes, ssd class (codfw)
