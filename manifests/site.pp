@@ -385,8 +385,12 @@ node /^cloudgw200[23]-dev\.codfw\./ {
     role(wmcs::cloudgw)
 }
 
-node /^cloudlb200[1234]-dev\.codfw\./ {
+node /^cloudlb200[123]-dev\.codfw\./ {
     role(wmcs::cloudlb)
+}
+
+node /^cloudlb200[4]-dev\.codfw\./ {
+    role(insetup::wmcs)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\./ {
