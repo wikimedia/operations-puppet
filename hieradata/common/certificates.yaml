@@ -1760,3 +1760,5 @@ certificates::acme_chief:
     - '*.wikipedia25.org'
     - wikipedia25.com
     - '*.wikipedia25.com'
+    - enwp.org
+    - '*.enwp.org'

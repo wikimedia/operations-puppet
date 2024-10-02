@@ -790,3 +790,5 @@ funnel	*wiki25.org	https://wikimediafoundation.org/wikipedia25
 funnel	*wiki25.com	https://wikimediafoundation.org/wikipedia25
 funnel	*wikipedia25.org	https://wikimediafoundation.org/wikipedia25
 funnel	*wikipedia25.com	https://wikimediafoundation.org/wikipedia25
+rewrite	enwp.org	https://en.wikipedia.org/wiki
+rewrite	c.enwp.org	https://commons.wikimedia.org
