@@ -14,8 +14,8 @@ class snapshot::dumps::dblists {
     $labs_bigwikis = ['enwiki', 'simplewiki', 'wikidatawiki']
     $labs_bigwikis_dblist = join($labs_bigwikis, "\n")
 
-    # labswiki(s) can't be dumped from snapshot hosts
-    $excludewikis = ['labswiki', 'labtestwiki']
+    # labtestwiki can't be dumped from snapshot hosts
+    $excludewikis = ['labtestwiki']
     $excludewikis_dblist = join($excludewikis, "\n")
 
     $skip_dblist = "${enwiki_dblist}\n${wikidatawiki_dblist}\n${bigwikis_dblist}\n${excludewikis_dblist}"
