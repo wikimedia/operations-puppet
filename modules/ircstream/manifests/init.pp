@@ -16,14 +16,24 @@ class ircstream (
             component => 'component/ircstream-sse',
             priority  => 1002,
         }
-
     } else {
         ensure_packages(['ircstream'])
+    }
+
+    $epp_params = {
+        irc_listen_address        => $irc_listen_address,
+        irc_listen_port           => $irc_listen_port,
+        irc_servername            => $irc_servername,
+        rc2udp_listen_address     => $rc2udp_listen_address,
+        rc2udp_listen_port        => $rc2udp_listen_port,
+        prometheus_listen_address => $prometheus_listen_address,
+        prometheus_listen_port    => $prometheus_listen_port,
+        eventstream               => $eventstream,
     }
 
     file { '/etc/ircstream.conf':
         mode    => '0444',
         before  => Package['ircstream'],
-        content => template('ircstream/ircstream.conf.erb'),
+        content => epp('ircstream/ircstream.conf.epp', $epp_params),
     }
 }

@@ -1,8 +1,17 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Host $irc_listen_address,
+      Stdlib::Port $irc_listen_port,
+      String $irc_servername,
+      Stdlib::Host $rc2udp_listen_address,
+      Stdlib::Port $rc2udp_listen_port,
+      Stdlib::Host $prometheus_listen_address,
+      Stdlib::Port $prometheus_listen_port,
+      Boolean      $eventstream,
+| -%>
 [irc]
-listen_address = <%= @irc_listen_address %>
-listen_port = <%= @irc_listen_port %>
-servername = <%= @irc_servername %>
+listen_address = <%= $irc_listen_address %>
+listen_port = <%= $irc_listen_port %>
+servername = <%= $irc_servername %>
 network = Wikimedia
 botname = rc-pmtpa
 #topic_tmpl = Stream for topic {channel}
@@ -27,10 +36,15 @@ welcome_msg =
   which streams recent changes as JSON using the SSE protocol.
   See https://wikitech.wikimedia.org/wiki/EventStreams for details.
 
+<%- if $eventstream { -%>
+[sse]
+url = https://stream.wikimedia.org/v2/stream/recentchange
+<%- } else { -%>
 [rc2udp]
-listen_address = <%= @rc2udp_listen_address %>
-listen_port = <%= @rc2udp_listen_port %>
+listen_address = <%= $rc2udp_listen_address %>
+listen_port = <%= $rc2udp_listen_port %>
+<%- } -%>
 
 [prometheus]
-listen_address = <%= @prometheus_listen_address %>
-listen_port = <%= @prometheus_listen_port %>
+listen_address = <%= $prometheus_listen_address %>
+listen_port = <%= $prometheus_listen_port %>
