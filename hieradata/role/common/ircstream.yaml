@@ -1,4 +1,5 @@
 profile::contacts::role_contacts: ['Infrastructure Foundations']
-profile::base::production::role_description: 'IRC service for broadcasting recent Wiki events'
+profile::base::production::role_description: 'IRC service for broadcasting recent Wiki events (using UDP broadcasts)'
 profile::firewall::provider: nftables
 profile::puppet::agent::force_puppet7: true
+profile::ircstream::use_eventstream: false
