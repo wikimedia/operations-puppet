@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker]
+              dumisani, lbowmaker, andyrussg]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -442,7 +442,7 @@ groups:
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
-              georgemikesell, bblack, toyofuku, andyrussg, linafaridwmde, yliou, derenrich, sperry-wmf,
+              georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -2564,17 +2564,13 @@ users:
     ssh_keys: []
     uid: 3029
   andyrussg:
-    ensure: present
+    ensure: absent
     gid: 500
     name: andyrussg
     realname: Andrew Green
-    ssh_keys:
-      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFet3ceayitBe5wjmUVZ6Pf+HPtlUlN+Q/V5plK++VoA agreen-ctr@wikimedia.org'
+    ssh_keys: []
     uid: 3609
-    krb: present
-    email: andrew.green@extern.wikimedia.de
-    expiry_date: "2024-10-01"
-    expiry_contact: cynthia.makonyango@wikimedia.de
+    krb: absent
   mobrovac:
     ensure: present
     gid: 500
