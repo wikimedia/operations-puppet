@@ -966,6 +966,23 @@ class profile::prometheus::ops (
         port       => 9221
     }
 
+    # Job definition for ircstream
+    $ircstream_jobs = [
+        {
+            'job_name'        => 'ircstream',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/ircstream_*.yaml}" ] },
+            ],
+        },
+    ]
+
+    prometheus::class_config { "ircstream_${::site}":
+        dest       => "${targets_path}/ircstream_${::site}.yaml",
+        class_name => 'ircstream',
+        port       => 16667
+    }
+
+
     # Job definition for alertmanager
     $alertmanager_jobs = [
       {
@@ -2569,7 +2586,7 @@ class profile::prometheus::ops (
             $udpmxircecho_jobs, $minio_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs
+            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs, $ircstream_jobs
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
