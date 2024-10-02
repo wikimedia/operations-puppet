@@ -966,6 +966,26 @@ class profile::prometheus::ops (
         port       => 9221
     }
 
+    # Job definition for ircstream
+    $ircstream_jobs = [
+        {
+            'job_name'        => 'ircstream',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/ircstream_*.yaml" ] },
+            ],
+        },
+    ]
+
+    prometheus::class_config { "ircstream_${::site}":
+        dest             => "${targets_path}/ircstream_${::site}.yaml",
+        class_name       => 'ircstream',
+        class_parameters => { 'eventstream' => false},
+        labels           => { 'eventsource' => 'udp'},
+        port             => 16667
+    }
+
+
     # Job definition for alertmanager
     $alertmanager_jobs = [
       {
