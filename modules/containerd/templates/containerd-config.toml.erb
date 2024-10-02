@@ -9,12 +9,11 @@ version = 2
   [plugins."io.containerd.grpc.v1.cri"]
     # Define our sandbox image
     sandbox_image = "<%= @sandbox_image %>"
-    [plugins."io.containerd.grpc.v1.cri".cni]
-      # Debian overrides bin_dir from /opt/cni/bin
-      bin_dir = "/usr/lib/cni"
-      # Debian sets conf_dir to /etc/cni/net.d, which is the default
-      conf_dir = "/etc/cni/net.d"
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+      # Re-define the runtime type as defining runc.options would shadow the default setting.
+      # Without this kubelet will fail to run containers with the following error:
+      # failed to create containerd container: create container failed validation: container.Runtime.Name must be set: invalid argument
+      runtime_type = "io.containerd.runc.v2"
       [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
         # With cgroup v2 we need to use the systemd cgroup driver
         SystemdCgroup = true

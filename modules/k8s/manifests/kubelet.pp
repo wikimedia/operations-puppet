@@ -121,4 +121,12 @@ class k8s::kubelet (
             File[$kubeconfig],
         ],
     }
+    # The default kubelet.service does depend on docker.service in After= and Requires=
+    # Override that in case we run containerd
+    systemd::override { 'containerd':
+        ensure  => stdlib::ensure($containerd_cri),
+        unit    => 'kubelet',
+        restart => true,
+        content => "[Unit]\nAfter=\nRequires=\nAfter=network.target\nAfter=containerd.service\nRequires=containerd.service\n",
+    }
 }
