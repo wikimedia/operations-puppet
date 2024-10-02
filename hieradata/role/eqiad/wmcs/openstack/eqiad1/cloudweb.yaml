@@ -1,7 +1,6 @@
 ---
 profile::admin::groups:
   - wmcs-roots
-  - deployment
   - ldap-admins
 cluster: wmcs
 

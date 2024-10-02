@@ -1,7 +1,6 @@
 ---
 profile::admin::groups:
   - wmcs-roots
-  - deployment
 cluster: wmcs
 
 profile::puppet::agent::force_puppet7: true
