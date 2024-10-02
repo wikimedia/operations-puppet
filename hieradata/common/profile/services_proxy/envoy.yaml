@@ -211,6 +211,7 @@ profile::services_proxy::envoy::listeners:
     service: data-gateway
     timeout: "10s"
     keepalive: "4s"
+    sets_sni: true
 
   # Non-discovery records
   # Eqiad ports are at 61xx
