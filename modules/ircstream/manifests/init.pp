@@ -10,7 +10,17 @@ class ircstream (
     Stdlib::Port $prometheus_listen_port = 16667,
     Boolean      $eventstream = false,
 ){
-    ensure_packages(['ircstream'])
+    if $eventstream {
+        apt::package_from_component { 'ircstream':
+            packages  => ['python3-aiohttp-sse-client', 'ircstream'],
+            component => 'component/ircstream-sse',
+            priority  => 1002,
+        }
+
+    } else {
+        ensure_packages(['ircstream'])
+    }
+
     file { '/etc/ircstream.conf':
         mode    => '0444',
         before  => Package['ircstream'],
