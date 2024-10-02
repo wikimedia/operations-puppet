@@ -443,7 +443,8 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime]
+              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
+              seanleong-wmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6471,6 +6472,13 @@ users:
     email: zoe@wikimedia.org
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGKJIQsjHWNRooyZsI3+ALzR020/JjvcjbgKnO5L8svA zoe-prod-key
+  seanleong-wmde:
+    ensure: present
+    gid: 500
+    uid: 47368
+    realname: Sean Leong
+    email: sean.leong@wikimedia.de
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7285,10 +7293,6 @@ ldap_only_users:
     email: ncreasy-ctr@wikimedia.org
     expiry_date: "2025-06-30"
     expiry_contact: rmurthy@wikimedia.org
-  seanleong-wmde:
-    ensure: present
-    realname: Sean Leong
-    email: sean.leong@wikimedia.de
   southparkfan:
     ensure: present
     realname: Ferran Tufan
