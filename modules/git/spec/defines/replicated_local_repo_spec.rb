@@ -39,9 +39,8 @@ describe 'git::replicated_local_repo' do
           .with_mode('0600')
           .with_owner('pinkunicorn')
         }
-        it { is_expected.to contain_file_line('authorized_keys foobar')
-          .with_line('foobar_pub')
-          .with_path('/home/pinkunicorn/.ssh/authorized_keys')
+        it { is_expected.to contain_ssh__userkey('pinkunicorn')
+          .with_content('foobar_pub')
         }
         it { is_expected.to contain_file('/home/pinkunicorn/.ssh/ssh_wrapper_foobar')
           .with_content(%r{-i '/home/pinkunicorn/.ssh/id_foobar'})

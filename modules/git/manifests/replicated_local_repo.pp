@@ -14,7 +14,9 @@
 #
 # @param user_homedir The home directory of the user that owns the repository.
 #
-# @param ssh_pubkey The public key to add to the authorized_keys file.
+# @param ssh_pubkey The public key to add to the authorized_keys file. If this is left
+#                   empty, no key will be added and you will need to add the key
+#                   elsehwere
 #
 # @param ssh_privkey The private key to use for the git clone.
 #
@@ -28,8 +30,8 @@ define git::replicated_local_repo (
     Array[Stdlib::Fqdn] $servers,
     String $user,
     String $user_homedir,
-    String $ssh_pubkey,
     Sensitive[String] $ssh_privkey,
+    Optional[String] $ssh_pubkey = undef,
     Boolean $mail_changes = false,
     String $mailto = 'ops@wikimedia.org',
 ) {
@@ -46,7 +48,6 @@ define git::replicated_local_repo (
 
     $privkey_path = "${user_homedir}/.ssh/id_${safe_title}"
     $git_ssh_wrapper = "${user_homedir}/.ssh/ssh_wrapper_${safe_title}"
-    $authorized_keys = "${user_homedir}/.ssh/authorized_keys"
 
     # We want to be able to connect to other servers
     file { $privkey_path:
@@ -57,20 +58,16 @@ define git::replicated_local_repo (
         mode    => '0600',
     }
 
-    # And to allow other servers to connect to us
-    if (!defined(File[$authorized_keys])) {
-        file { $authorized_keys:
-            ensure => file,
-            owner  => $user,
-            group  => $user,
-            mode   => '0600',
+    # If you have declared the ssh_pubkey parameter, we will add it to the
+    # authorized_keys file. If you have not, you will need to add the key.
+    # This is to support cases where the same user has multiple ssh userkeys.
+    # They will need to be declared separately.
+    if $ssh_pubkey != undef {
+        ssh::userkey { $user:
+            ensure  => present,
+            user    => $user,
+            content => $ssh_pubkey,
         }
-    }
-    file_line { "authorized_keys ${safe_title}" :
-        ensure  => 'present',
-        path    => $authorized_keys,
-        line    => $ssh_pubkey,
-        require => File[$authorized_keys],
     }
 
     file { $git_ssh_wrapper:
