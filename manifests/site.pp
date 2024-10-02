@@ -2643,7 +2643,7 @@ node /^wdqs2025.codfw\./ {
 }
 
 node /^wdqs-categories1001.eqiad\./ {
-    role(insetup::search)
+    role(insetup::search_platform)
 }
 
 node /^webperf1003.eqiad\./ {
