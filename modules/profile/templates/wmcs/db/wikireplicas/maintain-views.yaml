@@ -227,14 +227,6 @@ customviews:
       af_actor, af_timestamp, af_enabled, if(af_hidden,null,af_comments) as af_comments,
       af_public_comments, af_hidden, af_hit_count, af_throttled, af_deleted, af_actions,
       af_global, af_group
-  abuse_filter_log:
-    source: abuse_filter_log
-    view: >
-      select afl_id, afl_global, afl_filter_id, afl_user, afl_user_text,
-      NULL as afl_ip, afl_action, afl_actions, afl_var_dump, afl_timestamp, afl_namespace,
-      afl_title, afl_wiki, afl_deleted, afl_patrolled_by, afl_rev_id
-    where:
-      afl_deleted=0
   abuse_filter_history:
     source:
       - abuse_filter_history
