@@ -303,6 +303,10 @@ tables:
     source: discussiontools
     canonicality: derivative
     visibility: public
+  - name: discussiontools_subscription
+    source: discussiontools_subscription
+    canonicality: canonical with acceptable loss
+    visibility: private
   - name: geo_tags
     source: geo_data
     canonicality: derivative
@@ -406,6 +410,50 @@ tables:
     canonicality: derivative
     visibility: public
     dblist: flaggedrevs
+  - name: revtag
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_groupreviews
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_groupstats
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_messageindex
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_metadata
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_reviews
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_sections
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: translate_translatable_bundles
+    source: translate
+    canonicality: derivative
+    visibility: public
+    dblist: translate
+  - name: global_block_whitelist
+    source: globalblock_whitelist
+    canonicality: canonical
+    visibility: public
 sources:
     core:
       - path: maintenance/tables.json
@@ -425,12 +473,18 @@ sources:
     discussiontools:
       - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
+    discussiontools_subscription:
+      - path: extensions/DiscussionTools/sql/discussiontools_subscription.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_subscription.json
     flaggedrevs:
       - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json
     geo_data:
       - path: extensions/GeoData/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
+    globalblock_whitelist:
+      - path: extensions/GlobalBlocking/sql/tables-global_block_whitelist.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GlobalBlocking/+/master/sql/tables-global_block_whitelist.json
     linter:
       - path: extensions/Linter/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
@@ -446,6 +500,9 @@ sources:
     timed_media_handler:
       - path: extensions/TimedMediaHandler/sql/tables.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/TimedMediaHandler/+/master/sql/tables.json
+    translate:
+      - path: extensions/Translate/sql/tables.json
+        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Translate/+/master/sql/tables.json
     wikibase_client:
       - path: extensions/Wikibase/client/sql/abstract/entity_usage.json
         gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/client/sql/abstract/entity_usage.json
