@@ -23,6 +23,9 @@ Example usage:
     # Use a specific PS of Gerrit change 12345 to make a REAL run of the downtime cookbook
     test-cookbook -c 12345 --ps 3 sre.hosts.dowmtime -h
 
+    # Just checkout the latest PS of Gerrit change 12345 listing the existing cookbooks
+    test-cookbook -c 12345 -l
+
     # Cleanup a previously tested change
     test-cookbook --delete -c 12345
 
