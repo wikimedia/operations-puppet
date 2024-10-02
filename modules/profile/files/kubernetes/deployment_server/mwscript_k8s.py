@@ -159,8 +159,9 @@ def main() -> int:
                     "%(prog)s --comment='backfill for T123456' -- Filename.php --wiki=aawiki "
                     "--script-specific-arg",
         formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Print extra output from the underlying helmfile invocation.')
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='Print extra output from the underlying helmfile invocation. (-vv: '
+                             'Include the full helmfile diff.)')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
     parser.add_argument('--mediawiki_image',
                         help='Specify a MediaWiki image (without registry), e.g. '
@@ -230,7 +231,7 @@ def main() -> int:
             '--selector', f'name={release}',
             'apply',
             '--values', values_filename,
-            *(['--suppress-diff'] if not args.verbose else []),
+            *(['--suppress-diff'] if args.verbose < 2 else []),
             ],
             env={
                 'PATH': os.environ['PATH'],  # Our helmfiles use an unqualified path for helmBinary.
