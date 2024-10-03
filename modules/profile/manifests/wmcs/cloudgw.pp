@@ -1,14 +1,21 @@
 class profile::wmcs::cloudgw (
     Array[Stdlib::IP::Address::V4::CIDR]           $virt_subnets              = lookup('profile::wmcs::cloudgw::virt_subnets_cidr',        {default_value => ['172.16.128.0/24']}),
+    Optional[Array[Stdlib::IP::Address::V6::CIDR]] $virt_subnets_v6           = lookup('profile::wmcs::cloudgw::virt_subnets_cidr_v6',     {default_value => undef}),
     Integer                                        $virt_vlan                 = lookup('profile::wmcs::cloudgw::virt_vlan',                {default_value => 2107}),
     Stdlib::IP::Address                            $virt_peer                 = lookup('profile::wmcs::cloudgw::virt_peer',                {default_value => '127.0.0.5'}),
     Stdlib::IP::Address                            $virt_addr                 = lookup('profile::wmcs::cloudgw::virt_addr',                {default_value => '127.0.0.4'}),
     Integer[1,32]                                  $virt_netm                 = lookup('profile::wmcs::cloudgw::virt_netm',                {default_value => 8}),
+    Optional[Stdlib::IP::Address::V6]              $virt_peer_v6              = lookup('profile::wmcs::cloudgw::virt_peer_v6',             {default_value => undef}),
+    Optional[Stdlib::IP::Address::V6]              $virt_addr_v6              = lookup('profile::wmcs::cloudgw::virt_addr_v6',             {default_value => undef}),
+    Optional[Integer[1,128]]                       $virt_netm_v6              = lookup('profile::wmcs::cloudgw::virt_netm_v6',             {default_value => undef}),
     Array[Stdlib::IP::Address::V4::CIDR]           $virt_floating             = lookup('profile::wmcs::cloudgw::virt_floating',            {default_value => ['127.0.0.5/24']}),
     Integer                                        $wan_vlan                  = lookup('profile::wmcs::cloudgw::wan_vlan',                 {default_value => 2120}),
     Stdlib::IP::Address                            $wan_addr                  = lookup('profile::wmcs::cloudgw::wan_addr',                 {default_value => '127.0.0.4'}),
     Integer                                        $wan_netm                  = lookup('profile::wmcs::cloudgw::wan_netm',                 {default_value => 8}),
     Stdlib::IP::Address                            $wan_gw                    = lookup('profile::wmcs::cloudgw::wan_gw',                   {default_value => '127.0.0.1'}),
+    Optional[Stdlib::IP::Address::V6]              $wan_addr_v6               = lookup('profile::wmcs::cloudgw::wan_addr_v6',              {default_value => undef}),
+    Optional[Integer[1,128]]                       $wan_netm_v6               = lookup('profile::wmcs::cloudgw::wan_netm_v6',              {default_value => undef}),
+    Optional[Stdlib::IP::Address::V6]              $wan_gw_v6                 = lookup('profile::wmcs::cloudgw::wan_gw_v6',                {default_value => undef}),
     Array[String]                                  $vrrp_vips                 = lookup('profile::wmcs::cloudgw::vrrp_vips',                {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address                            $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer',                {default_value => '127.0.0.1'}),
     String[1]                                      $vrrp_passwd               = lookup('profile::wmcs::cloudgw::vrrp_passwd',              {default_value => 'dummy'}),
@@ -44,12 +51,28 @@ class profile::wmcs::cloudgw (
         legacy_vlan_naming => false,
     }
 
+    if $virt_addr_v6 != undef {
+        interface::ip { "cloudgw_v6_${nic_virt}":
+            interface => $nic_virt,
+            address   => $virt_addr_v6,
+            prefixlen => $virt_netm_v6,
+        }
+    }
+
     interface::tagged { "cloudgw_${nic_wan}":
         base_interface     => $facts['interface_primary'],
         vlan_id            => $wan_vlan,
         address            => $wan_addr,
         netmask            => $wan_netm,
         legacy_vlan_naming => false,
+    }
+
+    if $wan_addr_v6 != undef {
+        interface::ip { "cloudgw_v6_${nic_wan}":
+            interface => $nic_wan,
+            address   => $wan_addr_v6,
+            prefixlen => $wan_netm_v6,
+        }
     }
 
     [$nic_virt, $nic_wan].each |$nic| {
@@ -69,12 +92,30 @@ class profile::wmcs::cloudgw (
             interface => $nic,
             command   => "sysctl -w net.ipv6.conf.${nic}.accept_ra=0",
         }
+
+        if $wan_addr_v6 != undef {
+            interface::post_up_command { "cloudgw_${nic}_ipv6_forwarding":
+                interface => $nic,
+                command   => "sysctl -w net.ipv6.conf.${nic}.forwarding=1",
+            }
+            interface::post_up_command { "cloudgw_${nic}_rp_filter_v6":
+                interface => $nic,
+                command   => "sysctl -w net.ipv6.conf.${nic}.rp_filter=0",
+            }
+        }
     }
 
     # NOTE: not using interface::route because it doesn't support custom table. We can do the refactor later.
     interface::post_up_command { 'default_vrf_route' :
         interface => $nic_wan,
         command   => "ip route add table ${rt_table_name} default via ${wan_gw} dev ${nic_wan}",
+    }
+
+    if $wan_gw_v6 != undef {
+        interface::post_up_command { 'default_vrf_route_v6' :
+            interface => $nic_wan,
+            command   => "ip -6 route add table ${rt_table_name} default via ${wan_gw_v6} dev ${nic_wan}",
+        }
     }
 
     # route internal VM networks to neutron
@@ -89,6 +130,16 @@ class profile::wmcs::cloudgw (
         interface::post_up_command { "route_${nic_virt}_floating_ips_${net}":
             interface => $nic_virt,
             command   => "ip route add ${net} table ${rt_table_name} nexthop via ${virt_peer} dev ${nic_virt}",
+        }
+    }
+
+    # route virtual IPv6 networks to neutron
+    if $virt_subnets_v6 != undef {
+        $virt_subnets_v6.each |$net| {
+            interface::post_up_command { "route_${nic_virt}_virt_subnet_${net}" :
+                interface => $nic_virt,
+                command   => "ip -6 route add ${net} table ${rt_table_name} nexthop via ${virt_peer_v6} dev ${nic_virt}",
+            }
         }
     }
 

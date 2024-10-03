@@ -7,6 +7,8 @@ profile::monitoring::notifications_enabled: false
 profile::wmcs::cloudgw::virt_addr: 185.15.57.12
 profile::wmcs::cloudgw::virt_netm: 29
 profile::wmcs::cloudgw::virt_peer: 185.15.57.10
+profile::wmcs::cloudgw::virt_addr_v6: 2a02:ec80:a100:fe04::2003:1
+profile::wmcs::cloudgw::virt_netm_v6: 64
 
 # leg in the cloud-instances-transport1-b-codfw (vlan 2120) 185.15.57.128/29
 # for now using the old 208.80.153.184/29
@@ -17,5 +19,7 @@ profile::wmcs::cloudgw::wan_addr: 208.80.153.188
 profile::wmcs::cloudgw::wan_netm: 29
 # this is vrrp-gw-2120.wikimedia.org
 profile::wmcs::cloudgw::wan_gw: 208.80.153.185
+profile::wmcs::cloudgw::wan_addr_v6: 2a02:ec80:a100:fe03::2003:1
+profile::wmcs::cloudgw::wan_netm_v6: 64
 
 profile::wmcs::cloudgw::vrrp_peer: 208.80.153.189
