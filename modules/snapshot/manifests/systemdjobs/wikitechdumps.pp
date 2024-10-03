@@ -26,7 +26,7 @@ class snapshot::systemdjobs::wikitechdumps(
             send_mail          => false,
             environment        => {'MAILTO' => 'sre-service-ops@wikimedia.org'},
             working_directory  => $repodir,
-            command            => "/usr/local/sbin/wikitechdumps.sh ${systemdjobsdir}/wikitech",
+            command            => "${scriptpath} ${systemdjobsdir}/wikitech",
             interval           => {'start' => 'OnCalendar', 'interval' => "*-*-* 1:${minute}:00"},
         }
     }
