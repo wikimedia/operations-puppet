@@ -31,7 +31,6 @@ class visualdiff {
     }
 
     git::clone { 'integration/visualdiff':
-        branch    => 'scandium',
         owner     => 'root',
         group     => 'wikidev',
         directory => '/srv/visualdiff',

@@ -2528,7 +2528,7 @@ node /^stewards[12]001.(eqiad|codfw)\./ {
 }
 
 # parsoid visual diff and roundtrip testing (T257940)
-# also see scandium.eqiad.wmnet
+# also see parsoidtest1001.eqiad.wmnet
 node /^testreduce1002\.eqiad\./ {
     role(parsoid::testreduce)
 }
