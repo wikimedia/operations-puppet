@@ -76,7 +76,7 @@ profile::analytics::refinery::job::hdfs_cleaner::ensure_timer: present
 profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 
 #Airflow version override
-profile::airflow::airflow_version: '2.10.2-py3.10-20241002'
+# profile::airflow::airflow_version: '2.10.2-py3.10-20241002'
 
 # Set up airflow instances.
 profile::airflow::instances:
