@@ -63,7 +63,7 @@ class profile::conftool::conftool2git (
         notify  => Service['conftool2git'],
     }
     $is_active_host = $facts['networking']['fqdn'] == $active_host
-    $service_ensure = $is_active_host.bool2str('running', 'stopped')
+    $service_ensure = $is_active_host.bool2str('present', 'absent')
 
     systemd::service { 'conftool2git':
         ensure               => $service_ensure,
