@@ -77,7 +77,7 @@ def main():
         handler = os.path.join(
             parser.get(parser_mode, "root_dir"), "scripts/mail/mail_handler.php"
         )
-        process = subprocess.Popen([handler], stdin=subprocess.PIPE)
+        process = subprocess.Popen([handler], stdin=subprocess.PIPE, encoding="utf-8")
         process.communicate(email)
 
     # If maint is true then reject all email interaction
