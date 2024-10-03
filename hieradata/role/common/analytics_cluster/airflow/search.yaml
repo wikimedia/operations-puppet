@@ -28,7 +28,7 @@ profile::java::extra_args:
   JAVA_TOOL_OPTIONS: "-Dfile.encoding=UTF-8"
 
 #Airflow version override
-#profile::airflow::airflow_version: '2.9.3-py3.10-20240916'
+profile::airflow::airflow_version: '2.10.2-py3.10-20241002'
 
 # Set up airflow instances.
 profile::airflow::instances:
