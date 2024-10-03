@@ -20,14 +20,6 @@ gem 'puppet-lint', '2.4.2'
 gem 'rubocop', '~> 0.49.1', require: false
 gem 'puppet-lint-wmf_styleguide-check', '1.1.4'
 
-# last versions supporting ruby 2.3 (Stretch)
-gem 'byebug', '~> 11.0.1'
-gem 'pry-byebug', '~> 3.7.0'
-
-# pry 0.13.0 is a breaking change release incompatible with pry-byebug 3.7.0
-# defined above.
-gem 'pry', '~> 0.12.2', :require => false
-
 gem 'sorted_set' if RUBY_VERSION >= '3.0.0'
 
 # Theses are required for running beaker acceptance test
@@ -45,4 +37,12 @@ group :system_tests do
   # gem 'rbnacl-libsodium',                   :require => false
   gem 'bcrypt_pbkdf',                       :require => false
   gem 'ed25519'
+end
+
+# Optional dev gems, include with:
+# `$ bundle config set --local with development`
+group :development, optional: true do
+  gem 'byebug'
+  gem 'pry-byebug'
+  gem 'pry'
 end
