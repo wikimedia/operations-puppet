@@ -83,5 +83,5 @@ cluster: puppet
 
 # Setup conftool2git
 profile::conftool2git::address: '0.0.0.0:1312'
-profile::conftool2git::pubkey: 'placeholder'
+profile::conftool2git::pubkey: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFxBFG366Oc6hluBmYjFdQVCKxntZ2aOmXU8YIzv+A6c'
 # You also need to define profile::conftool2git::ssh_privkey in the private repo
