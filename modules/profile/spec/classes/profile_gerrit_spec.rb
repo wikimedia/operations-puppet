@@ -9,6 +9,7 @@ describe 'profile::gerrit' do
           ldap_config: {},
           ipv4: '198.51.100.1',
           ipv6: '2001:DB8::CAFE',
+          bind_service_ip: true,
           host: 'gerrit.example.org',
           backups_enabled: true,
           backup_set: 'gerrit-backup',

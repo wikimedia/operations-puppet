@@ -8,6 +8,11 @@ profile::base::production::role_description: 'Gerrit Code Review server'
 profile::firewall::provider: nftables
 profile::firewall::defs_from_etcd: true
 
+# Whether to actually bind the service IP to the network interface.
+# defaults to true but allows to test gerrit on new machines without
+# causing IP conflicts or having to request a separate service IP.
+profile::gerrit::bind_service_ip: true
+
 # Allow use of supplemental key for scap deployment
 profile::ssh::server::authorized_keys_file:
   - '/etc/ssh/userkeys/%u'

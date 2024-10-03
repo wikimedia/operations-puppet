@@ -4,6 +4,7 @@ class profile::gerrit(
     Hash                              $ldap_config       = lookup('ldap'),
     Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
     Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
+    Boolean                           $bind_service_ip   = lookup('profile::gerrit::bind_service_ip'),
     Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
     Boolean                           $backups_enabled   = lookup('profile::gerrit::backups_enabled'),
     String                            $backup_set        = lookup('profile::gerrit::backup_set'),
@@ -30,9 +31,11 @@ class profile::gerrit(
 
     $is_replica = $facts['fqdn'] != $active_host
 
-    interface::alias { 'gerrit server':
-        ipv4 => $ipv4,
-        ipv6 => $ipv6,
+    if $bind_service_ip {
+        interface::alias { 'gerrit server':
+            ipv4 => $ipv4,
+            ipv6 => $ipv6,
+        }
     }
 
     if !$is_replica and $enable_monitoring {
