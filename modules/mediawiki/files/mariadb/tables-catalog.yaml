@@ -454,58 +454,106 @@ tables:
     source: globalblock_whitelist
     canonicality: canonical
     visibility: public
+  - name: wikilambda_zlanguages
+    source: wiki_lambda_zlanguages
+    dbname: wikifunctionswiki
+    canonicality: derivative
+    visibility: public
+  - name: wikilambda_zobject_function_join
+    source: wiki_lambda_zobject_function_join
+    dbname: wikifunctionswiki
+    canonicality: derivative
+    visibility: public
+  - name: wikilambda_zobject_join
+    source: wiki_lambda_zobject_join
+    dbname: wikifunctionswiki
+    canonicality: derivative
+    visibility: public
+  - name: wikilambda_zobject_label_conflicts
+    source: wiki_lambda_zobject_label_conflicts
+    dbname: wikifunctionswiki
+    canonicality: derivative
+    visibility: public
+  - name: wikilambda_zobject_labels
+    source: wiki_lambda_zobject_labels
+    dbname: wikifunctionswiki
+    canonicality: derivative
+    visibility: public
+  - name: wikilambda_ztester_results
+    source: wiki_lambda_ztester_results
+    dbname: wikifunctionswiki
+    canonicality: canonical with acceptable loss
+    visibility: public
 sources:
-    core:
-      - path: maintenance/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/maintenance/tables.json
-    abuse_filter:
-      - path: extensions/AbuseFilter/db_patches/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AbuseFilter/+/master/db_patches/tables.json
-    babel:
-      - path: extensions/Babel/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Babel/+/master/sql/tables.json
-    betafeatures:
-      - path: extensions/BetaFeatures/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BetaFeatures/+/master/sql/tables.json
-    checkuser:
-      - path: extensions/CheckUser/schema/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables.json
-    discussiontools:
-      - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
-    discussiontools_subscription:
-      - path: extensions/DiscussionTools/sql/discussiontools_subscription.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_subscription.json
-    flaggedrevs:
-      - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json
-    geo_data:
-      - path: extensions/GeoData/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
-    globalblock_whitelist:
-      - path: extensions/GlobalBlocking/sql/tables-global_block_whitelist.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GlobalBlocking/+/master/sql/tables-global_block_whitelist.json
-    linter:
-      - path: extensions/Linter/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
-    proofread:
-      - path: extensions/ProofreadPage/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ProofreadPage/+/master/sql/tables.json
-    spoofuser:
-      - path: extensions/AntiSpoof/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AntiSpoof/+/master/sql/tables.json
-    securepoll_main:
-      - path: extensions/SecurePoll/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/SecurePoll/+/master/sql/tables.json
-    timed_media_handler:
-      - path: extensions/TimedMediaHandler/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/TimedMediaHandler/+/master/sql/tables.json
-    translate:
-      - path: extensions/Translate/sql/tables.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Translate/+/master/sql/tables.json
-    wikibase_client:
-      - path: extensions/Wikibase/client/sql/abstract/entity_usage.json
-        gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/client/sql/abstract/entity_usage.json
+  core:
+    - path: maintenance/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/core/+/refs/heads/master/maintenance/tables.json
+  abuse_filter:
+    - path: extensions/AbuseFilter/db_patches/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AbuseFilter/+/master/db_patches/tables.json
+  babel:
+    - path: extensions/Babel/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Babel/+/master/sql/tables.json
+  betafeatures:
+    - path: extensions/BetaFeatures/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BetaFeatures/+/master/sql/tables.json
+  checkuser:
+    - path: extensions/CheckUser/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables.json
+  discussiontools:
+    - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
+  discussiontools_subscription:
+    - path: extensions/DiscussionTools/sql/discussiontools_subscription.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_subscription.json
+  flaggedrevs:
+    - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json
+  geo_data:
+    - path: extensions/GeoData/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
+  globalblock_whitelist:
+    - path: extensions/GlobalBlocking/sql/tables-global_block_whitelist.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GlobalBlocking/+/master/sql/tables-global_block_whitelist.json
+  linter:
+    - path: extensions/Linter/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
+  proofread:
+    - path: extensions/ProofreadPage/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ProofreadPage/+/master/sql/tables.json
+  spoofuser:
+    - path: extensions/AntiSpoof/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/AntiSpoof/+/master/sql/tables.json
+  securepoll_main:
+    - path: extensions/SecurePoll/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/SecurePoll/+/master/sql/tables.json
+  timed_media_handler:
+    - path: extensions/TimedMediaHandler/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/TimedMediaHandler/+/master/sql/tables.json
+  translate:
+    - path: extensions/Translate/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Translate/+/master/sql/tables.json
+  wikibase_client:
+    - path: extensions/Wikibase/client/sql/abstract/entity_usage.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/client/sql/abstract/entity_usage.json
+  wiki_lambda_zlanguages:
+    - path: extensions/WikiLambda/sql/table-zlanguages.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zlanguages.json
+  wiki_lambda_zobject_function_join:
+    - path: extensions/WikiLambda/sql/table-zobject_function_join.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zobject_function_join.json
+  wiki_lambda_zobject_join:
+    - path: extensions/WikiLambda/sql/table-zobject_join.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zobject_join.json
+  wiki_lambda_zobject_label_conflicts:
+    - path: extensions/WikiLambda/sql/table-zobject_label_conflicts.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zobject_label_conflicts.json
+  wiki_lambda_zobject_labels:
+    - path: extensions/WikiLambda/sql/table-zobject_labels.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zobject_labels.json
+  wiki_lambda_ztester_results:
+    - path: extensions/WikiLambda/sql/table-ztester_results.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-ztester_results.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
