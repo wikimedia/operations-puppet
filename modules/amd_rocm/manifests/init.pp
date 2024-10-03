@@ -27,18 +27,22 @@ class amd_rocm (
     String $version = '42',
 ) {
 
-    $supported_versions = ['42', '431', '45', '54']
+    $supported_versions = ['42', '431', '45', '54', '61']
 
     if ! ($version in $supported_versions) {
         fail('The version of ROCm requested is not supported or misspelled.')
     }
 
-    if debian::codename::ge('bullseye') and ! ($version == '54') {
-        fail('Please use ROCm 5.4 with Bullseye+, other versions are not supported.')
+    if debian::codename::eq('bullseye') and ! ($version == '54') {
+        fail('Please use ROCm 5.4 with Bullseye, other versions are not supported.')
+    }
+
+    if debian::codename::eq('bookworm') and ! ($version == '61') {
+        fail('Please use ROCm 6.1 with Bookworm, other versions are not supported.')
     }
 
     # AMD firmware for GPU cards
-    if debian::codename::ge('bullseye') {
+    if debian::codename::eq('bullseye') {
         # The default firmware-amd-graphics package in bullseye does not have
         # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
         apt::package_from_bpo { 'firmware-amd-graphics':
@@ -61,7 +65,6 @@ class amd_rocm (
     package{'linux-headers-amd64':
         ensure => present,
     }
-
 
     # Note: the miopen-opencl package is imported
     # in the amd-rocm component, but not listed
@@ -91,12 +94,16 @@ class amd_rocm (
     ]
 
     # See workarounds outlined in https://github.com/RadeonOpenCompute/ROCm/issues/1125#issuecomment-925362329
-    if debian::codename::ge('bullseye') {
+    if debian::codename::eq('bullseye') {
         $basepkgs = $_basepkgs + [
           'fake-libgcc-7-dev',
           'fake-libpython3.8',
           'libstdc++-10-dev',
           'libgcc-10-dev'
+        ]
+    } elsif debian::codename::eq('bookworm') {
+        $basepkgs = $_basepkgs + [
+          'fake-mesa-amdgpu-va-drivers',
         ]
     } else {
         $basepkgs = $_basepkgs + [

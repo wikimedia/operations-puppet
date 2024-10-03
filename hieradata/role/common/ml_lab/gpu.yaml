@@ -1,0 +1,11 @@
+profile::admin::groups:
+  - deploy-ml-service
+  - ml-team-admins
+  - ml-lab-users
+
+profile::amd_gpu::rocm_version: '61'
+
+profile::puppet::agent::force_puppet7: true
+
+profile::contacts::role_contacts: ['Machine Learning']
+profile::base::production::role_description: 'ML Lab experimentation server'

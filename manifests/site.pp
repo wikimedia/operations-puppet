@@ -2041,7 +2041,7 @@ node /^ml-staging200[123]\.codfw\./ {
 }
 
 node /^ml-lab100[12]\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(ml_lab::gpu)
 }
 
 node /^moscovium\.eqiad\./ {
