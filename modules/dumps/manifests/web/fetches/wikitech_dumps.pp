@@ -20,7 +20,7 @@ class dumps::web::fetches::wikitech_dumps(
     }
 
     systemd::timer::job { 'dumps-fetches-wikitech':
-        ensure      => 'present',
+        ensure      => 'absent',
         description => 'Download XML dumps for WikiTech',
         user        => 'root',
         command     => "/usr/local/sbin/wikitech-dumps.sh ${url} ${wikitechdir}",

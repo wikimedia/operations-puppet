@@ -73,4 +73,9 @@ class snapshot::systemdjobs(
         group     => $group,
         filesonly => $filesonly,
     }
+
+    class { '::snapshot::systemdjobs::wikitechdumps':
+        user      => $miscdumpsuser,
+        filesonly => $filesonly,
+    }
 }

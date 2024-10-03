@@ -33,6 +33,7 @@ class dumps::generation::server::dirs(
     $otherwikidatadir             = "${miscdatasetsdir}/wikidata"
     $otherwikibasecommonsdir      = "${miscdatasetsdir}/wikibase/commonswiki"
     $othercommonsdir              = "${miscdatasetsdir}/commons"
+    $wikitechdir                  = "${miscdatasetsdir}/wikitech"
 
     # top level directories for various dumps/datasets, on generation hosts only
     file { $tempdir:
@@ -45,7 +46,7 @@ class dumps::generation::server::dirs(
     # subdirs for various generated dumps
     file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
         $categoriesrdfdailydir, $globalblocksdir, $medialistsdir, $incrsdir,
-        $mediatitlesdir, $pagetitlesdir, $shorturlsdir, $machinevisiondir ]:
+        $mediatitlesdir, $pagetitlesdir, $shorturlsdir, $machinevisiondir, $wikitechdir ]:
 
         ensure => 'directory',
         mode   => '0755',
