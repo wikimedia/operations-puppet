@@ -5,4 +5,4 @@ prometheus_nodes:
   - prometheus3003.esams.wmnet
 
 # Which of our redundant unified cert vendors to use in each DC
-public_tls_unified_cert_vendor: "digicert-2023"
+public_tls_unified_cert_vendor: "digicert-2024"
