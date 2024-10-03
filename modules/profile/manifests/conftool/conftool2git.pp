@@ -45,7 +45,7 @@ class profile::conftool::conftool2git (
     # is installed, it will now see there's a server already installed and source the repository
     # from it. Then the post-commit hook is installed.
     $servers = wmflib::puppetdb_query(
-        'nodes[certname] { resources { type = "Class" and title = "Profile::Conftool2git" } order by certname}'
+        'nodes[certname] { resources { type = "Class" and title = "Profile::Conftool::Conftool2git" } order by certname}'
     ).map |$node| { $node['certname'] }
 
     git::replicated_local_repo { 'conftool/auditlog':
