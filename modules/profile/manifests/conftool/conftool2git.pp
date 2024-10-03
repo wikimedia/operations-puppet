@@ -16,7 +16,7 @@ class profile::conftool::conftool2git (
     require profile::conftool::client
 
     # Install the python3-conftool-conftool2git package
-    ensure_packages(['python3-conftool-conftool2git'])
+    ensure_packages(['python3-aiohttp', 'python3-conftool-conftool2git'])
 
     $ctgit_user_home = '/var/lib/conftool2git'
     # Create the system user.
@@ -26,13 +26,12 @@ class profile::conftool::conftool2git (
         home_dir => $ctgit_user_home,
     }
 
-    systemd::service { 'conftool2git':
-        ensure               => present,
-        content              => template('profile/conftool/conftool2git_service.erb'),
-        restart              => false, # We don't want to restart the service during a random puppet run, but control when that happens.
-        monitoring_enabled   => true,
-        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Conftool2git',
-        monitoring_critical  => false,
+    file { $ctgit_user_home:
+        ensure  => directory,
+        owner   => 'conftool2git',
+        group   => 'conftool2git',
+        mode    => '0755',
+        require => Systemd::Sysuser['conftool2git'],
     }
 
     $parsed_addr = split($conftool2git_address, /:/)
@@ -60,5 +59,14 @@ class profile::conftool::conftool2git (
         content => template('profile/conftool/conftool2git_default.erb'),
         mode    => '0444',
         notify  => Service['conftool2git'],
+    }
+
+    systemd::service { 'conftool2git':
+        ensure               => present,
+        content              => template('profile/conftool/conftool2git_service.erb'),
+        restart              => false, # We don't want to restart the service during a random puppet run, but control when that happens.
+        monitoring_enabled   => true,
+        monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Conftool2git',
+        monitoring_critical  => false,
     }
 }

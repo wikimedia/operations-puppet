@@ -8,7 +8,7 @@ After=network.target
 Type=simple
 User=conftool2git
 EnvironmentFile=-/etc/default/conftool2git
-ExecStart=/usr/sbin/conftool2git --config /etc/conftool2git/config.yaml --bind-address $BIND_ADDRESS --port $PORT $REPO
+ExecStart=/usr/sbin/conftool2git --config /etc/conftool2git/config.yaml --bind-addr $BIND_ADDR --port $PORT $REPO
 
 [Install]
 WantedBy=multi-user.target
