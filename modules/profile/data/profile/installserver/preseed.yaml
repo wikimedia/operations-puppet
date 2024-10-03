@@ -711,11 +711,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'sretest100[1-4]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'sretest200[1-4]':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
   'sretest2005':
     - partman/flat.cfg
     - virtual.cfg
