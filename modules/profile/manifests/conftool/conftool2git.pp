@@ -7,10 +7,12 @@
 #
 # @param pubkey The public key to add to the authorized_keys file.
 #
+# @param active_host The active host to use for the conftool2git service.
 class profile::conftool::conftool2git (
     String $conftool2git_address = lookup('profile::conftool2git::address', { 'default_value' => '0.0.0.0:1312' }),
     Sensitive[String] $ssh_privkey = lookup('profile::conftool2git::ssh_privkey'),
     String $pubkey = lookup('profile::conftool2git::pubkey'),
+    Stdlib::Fqdn $active_host = lookup('profile::conftool2git::active_host'),
 ) {
     # We definitely need conftool client to be configured.
     require profile::conftool::client
@@ -60,13 +62,24 @@ class profile::conftool::conftool2git (
         mode    => '0444',
         notify  => Service['conftool2git'],
     }
+    $is_active_host = $facts['networking']['fqdn'] == $active_host
+    $service_ensure = $is_active_host.bool2str('running', 'stopped')
 
     systemd::service { 'conftool2git':
-        ensure               => present,
+        ensure               => $service_ensure,
         content              => template('profile/conftool/conftool2git_service.erb'),
         restart              => false, # We don't want to restart the service during a random puppet run, but control when that happens.
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Conftool2git',
         monitoring_critical  => false,
+    }
+
+    if $is_active_host {
+        # We only want to run conftool2git on the active host.
+        ferm::service { 'conftool2git':
+            proto  => 'tcp',
+            port   => $parsed_addr[1],
+            srange => '$DOMAIN_NETWORKS',
+        }
     }
 }
