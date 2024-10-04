@@ -106,7 +106,7 @@ define git::replicated_local_repo (
         user        => $user,
     }
 
-    file { "${repo_path}/.git/hooks/postcommit":
+    file { "${repo_path}/.git/hooks/post-commit":
         ensure  => $hook_ensure,
         content => template('git/replicated_local_postcommit.sh.erb'),
         owner   => $user,

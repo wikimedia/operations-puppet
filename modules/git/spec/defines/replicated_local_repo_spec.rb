@@ -19,7 +19,7 @@ describe 'git::replicated_local_repo' do
           .with_command(%r{git -C '/srv/git/foobar' init})
           .with_creates('/srv/git/foobar/.git')
         }
-        it { is_expected.to contain_file('/srv/git/foobar/.git/hooks/postcommit').with_ensure('absent') }
+        it { is_expected.to contain_file('/srv/git/foobar/.git/hooks/post-commit').with_ensure('absent') }
       end
       context 'with_servers' do
         let(:facts) {
@@ -29,7 +29,7 @@ describe 'git::replicated_local_repo' do
         }
         let(:params) { super().merge({servers: ['test1.foo', 'test2.foo']}) }
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_file('/srv/git/foobar/.git/hooks/postcommit')
+        it { is_expected.to contain_file('/srv/git/foobar/.git/hooks/post-commit')
           .with_ensure('file')
           .without_content(/test1.foo\"/)
           .with_content(/test2.foo\"/)
