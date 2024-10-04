@@ -900,6 +900,15 @@ groups:
     privileges: []
     approval:
       - Chris Albon
+  ml-lab-users:
+    # This will eventually contain more people than the above group (e.g. Research), but we'll
+    # start with a small group for now.
+    gid: 842
+    description: Group of users that have access to ML Team lab/experimentation machines
+    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto]
+    privileges: []
+    approval:
+      - Chris Albon
   gpu-testers:
     description: People with access to Analytics hosts with GPUs (deprecated since 2020-12).
     gid: 810
