@@ -111,6 +111,7 @@ define git::replicated_local_repo (
         content => template('git/replicated_local_postcommit.sh.erb'),
         owner   => $user,
         group   => $user,
+        mode    => '0755',
         require => Exec[$create],
     }
 }
