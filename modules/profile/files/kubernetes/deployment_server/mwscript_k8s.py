@@ -261,8 +261,10 @@ def main() -> int:
         wait_until_started(env_vars, job, container)
         logger.info('📜 Streaming logs:')
         try:
+            # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
+            # .kube/cache there, instead of dropping it rudely into $PWD.
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
-                           env=env_vars)
+                           env={**env_vars, 'HOME': os.environ['HOME']})
         except subprocess.CalledProcessError as e:
             logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
         except KeyboardInterrupt:
@@ -287,7 +289,7 @@ def main() -> int:
                 '--container', f'mediawiki-{release}-app',
                 '-it' if sys.stdin.isatty() else '-i'
                 ],
-                env=env_vars, check=True)
+                env={**env_vars, 'HOME': os.environ['HOME']}, check=True)
         except subprocess.CalledProcessError as e:
             logger.fatal('☠️ Command failed with status %d: %s\nFor logs (may not work) run:\n%s',
                          e.returncode, shlex.join(e.cmd), logs_command(env_vars, release))
