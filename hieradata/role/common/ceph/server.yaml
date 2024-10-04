@@ -114,6 +114,36 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
+  mds.cephosd1001:
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd1002:
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd1003:
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd1004:
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd1005:
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
 
 profile::ceph::ceph_repository_component: 'thirdparty/ceph-reef'
 
