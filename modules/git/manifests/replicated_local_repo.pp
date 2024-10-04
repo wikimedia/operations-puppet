@@ -87,7 +87,7 @@ define git::replicated_local_repo (
         $git_command = "GIT_SSH=${git_ssh_wrapper} /usr/bin/git clone 'ssh://${user}@${controller}:${repo_path}' '${repo_path}'"
         $hook_ensure = file
     } else {
-        $git_command = "/usr/bin/git -C '${repo_path}' init"
+        $git_command = "/usr/bin/git -C '${repo_path}' init && git switch -c main"
         $hook_ensure = absent
         # TODO: add a README with a "What not to do" section?
     }
@@ -97,6 +97,13 @@ define git::replicated_local_repo (
     exec { $create:
         command => "/usr/bin/mkdir -p '${repo_path}' && ${git_command} && chown -R '${user}:${user}' '${repo_path}'",
         creates => "${repo_path}/.git",
+        notify  => Exec["set config for ${safe_title}"],
+    }
+
+    exec { "set config for ${safe_title}":
+        command     => "/usr/bin/git -C '${repo_path}' config receive.denyCurrentBranch ignore",
+        refreshonly => true,
+        user        => $user,
     }
 
     file { "${repo_path}/.git/hooks/postcommit":

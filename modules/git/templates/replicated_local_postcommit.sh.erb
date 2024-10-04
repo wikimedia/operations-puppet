@@ -21,7 +21,9 @@ reporterr() {
   next if server == @facts['networking']['fqdn']
 -%>
 echo "🫸 💻 Pushing to <%= server %>"
-su -c "export GIT_SSH=<%= @git_ssh_wrapper %> ; git push ssh://<%= server %><%= @title %> main" <%= @user %>
+su -c "export GIT_SSH=<%= @git_ssh_wrapper %> ; git push ssh://<%= server %>:/srv/git/<%= @title %> main" <%= @user %>
+# Given we're not using bare repos, we need to update the working tree
+su -c "<%= @git_ssh_wrapper %> <%= server %> git -C /srv/git/<%= @title %> reset --hard HEAD" <%= @user %>
 echo "🫸 💻 ✅"
 <%- end -%>
 

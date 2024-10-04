@@ -47,6 +47,11 @@ class profile::conftool::conftool2git (
     $servers = wmflib::puppetdb_query(
         'nodes[certname] { resources { type = "Class" and title = "Profile::Conftool::Conftool2git" } order by certname}'
     ).map |$node| { $node['certname'] }
+    if $active_host in $servers {
+        $sorted_servers = [$active_host] + $servers.filter |$server| { $server != $active_host }
+    } else {
+        $sorted_servers = $servers
+    }
 
     git::replicated_local_repo { 'conftool/auditlog':
         servers      => $servers,
