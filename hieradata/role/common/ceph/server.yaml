@@ -115,30 +115,35 @@ profile::ceph::auth::load_all::configuration:
       mon: allow rw
       osd: allow rwx
   mds.cephosd1001:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd1001/keyring
     caps:
       mon: profile mds
       mgr: profile mds
       mds: allow *
       osd: allow *
   mds.cephosd1002:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd1002/keyring
     caps:
       mon: profile mds
       mgr: profile mds
       mds: allow *
       osd: allow *
   mds.cephosd1003:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd1003/keyring
     caps:
       mon: profile mds
       mgr: profile mds
       mds: allow *
       osd: allow *
   mds.cephosd1004:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd1004/keyring
     caps:
       mon: profile mds
       mgr: profile mds
       mds: allow *
       osd: allow *
   mds.cephosd1005:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd1005/keyring
     caps:
       mon: profile mds
       mgr: profile mds
