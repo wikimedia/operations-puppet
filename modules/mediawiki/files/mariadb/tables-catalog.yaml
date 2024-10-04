@@ -484,6 +484,61 @@ tables:
     dbname: wikifunctionswiki
     canonicality: canonical with acceptable loss
     visibility: public
+  - name: wbt_item_terms
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wbt_property_terms
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wbt_term_in_lang
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wbt_text
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wbt_text_in_lang
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wbt_type
+    source: wikibase_term_store
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wb_changes
+    source: wb_changes
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wb_changes_subscription
+    source: wb_changes_subscription
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wb_id_counters
+    source: wb_id_counters
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wb_items_per_site
+    source: wb_items_per_site
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
+  - name: wb_property_info
+    source: wb_property_info
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
 sources:
   core:
     - path: maintenance/tables.json
@@ -536,6 +591,24 @@ sources:
   wikibase_client:
     - path: extensions/Wikibase/client/sql/abstract/entity_usage.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/client/sql/abstract/entity_usage.json
+  wikibase_term_store:
+    - path: extensions/Wikibase/repo/sql/abstract/term_store.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/term_store.json
+  wb_changes:
+    - path: extensions/Wikibase/repo/sql/abstract/wb_changes.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_changes.json
+  wb_changes_subscription:
+    - path: extensions/Wikibase/repo/sql/abstract/wb_changes_subscription.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_changes_subscription.json
+  wb_id_counters:
+    - path: extensions/Wikibase/repo/sql/abstract/wb_id_counters.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_id_counters.json
+  wb_items_per_site:
+    - path: extensions/Wikibase/repo/sql/abstract/wb_items_per_site.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_items_per_site.json
+  wb_property_info:
+    - path: extensions/Wikibase/repo/sql/abstract/wb_property_info.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_property_info.json
   wiki_lambda_zlanguages:
     - path: extensions/WikiLambda/sql/table-zlanguages.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-zlanguages.json
