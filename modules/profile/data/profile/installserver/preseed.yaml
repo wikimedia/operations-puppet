@@ -61,8 +61,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-web*':
     - reuse-parts-test.cfg
     - partman/custom/reuse-analytics-raid1-2dev.cfg
-  'an-worker1149|an-worker115*|an-worker116*|an-worker117*':
-    - partman/custom/analytics-flex.cfg
   'an-tool10[0-1][1-9]*|an-test-presto*':
     - partman/flat.cfg
     - virtual.cfg
@@ -72,7 +70,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-worker109[6-9]|an-worker110[01]':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-worker-24dev.cfg
-  'analytics105[1-9]|analytics106[0-9]|analytics107[0-9]|an-worker*':
+  'analytics107[0-9]|an-worker*':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-worker-12dev.cfg
   'apifeatureusage[12]001':
