@@ -8,6 +8,7 @@ class role::apt_repo {
     include profile::nginx
     include profile::installserver::http
     include profile::installserver::preseed
+    include profile::installserver::efiboot
     include profile::aptrepo::wikimedia
     include profile::opensearch::plugin_repo
 }

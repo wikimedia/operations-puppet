@@ -1,0 +1,15 @@
+#!ipxe
+# SPDX-License-Identifier: Apache-2.0
+# NOTE: This file is autoloaded by iPXE when loaded under UEFI
+
+# HACK: re-dhcp to grab the root-path, this is necessary because UEFI's DHCP
+# client only exposes minimal DHCP data, but we require the root-path to
+# determine the OS release. We could in the future have iPXE query the OS
+# release directly.
+dhcp
+
+kernel http://apt.wikimedia.org/tftpboot/${root-path}/debian-installer/amd64/linux initrd=one.gz vga=normal auto-install/enable=true preseed/url=http://apt.wikimedia.org/autoinstall/preseed.cfg DEBCONF_DEBUG=5 netcfg/choose_interface=auto netcfg/get_hostname=unassigned netcfg/get_domain=unassigned netcfg/dhcp_timeout=60 --- console=ttyS1,115200n8 raid0.default_layout=2
+
+initrd --name one.gz http://apt.wikimedia.org/tftpboot/${root-path}/debian-installer/amd64/initrd.gz
+
+boot
