@@ -4,8 +4,8 @@
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /etc/profile.d/mediawiki.sh
 
-# Warn on stderr, and only if stderr is a terminal. Exclude sql.php until T375910 is resolved.
-if [ -t 2 ] && [ "$1" != "sql.php" ]; then
+# Warn on stderr, and only if stderr is a terminal. Exclude sql.php, mysql.php until T375910 is resolved.
+if [ -t 2 ] && [ "$1" != "sql.php" ] && [ "$1" != "mysql.php" ]; then
 	echo >&2 "DEPRECATION WARNING: Maintenance scripts are moving to Kubernetes. See"
 	echo >&2 "https://wikitech.wikimedia.org/wiki/Maintenance_scripts for the new process."
 	echo >&2 "Maintenance hosts will be going away; please submit feedback promptly if"
