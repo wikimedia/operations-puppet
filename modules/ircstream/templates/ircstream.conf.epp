@@ -38,7 +38,7 @@ welcome_msg =
 
 <%- if $eventstream { -%>
 [sse]
-url = https://stream.wikimedia.org/v2/stream/recentchange
+url = https://eventstreams-internal.discovery.wmnet:4992/v2/stream/mediawiki.recentchange
 <%- } else { -%>
 [rc2udp]
 listen_address = <%= $rc2udp_listen_address %>
