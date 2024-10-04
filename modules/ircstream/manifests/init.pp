@@ -11,8 +11,9 @@ class ircstream (
     Boolean      $eventstream = false,
 ){
     if $eventstream {
+        ensure_packages(['python3-aiohttp'])
         apt::package_from_component { 'ircstream':
-            packages  => ['python3-aiohttp-sse-client', 'ircstream'],
+            packages  => ['ircstream'],
             component => 'component/ircstream-sse',
             priority  => 1002,
         }
