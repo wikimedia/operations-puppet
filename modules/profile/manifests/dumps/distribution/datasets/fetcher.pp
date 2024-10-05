@@ -22,8 +22,6 @@ class profile::dumps::distribution::datasets::fetcher(
         user            => $user,
     }
 
-    class {'dumps::web::fetches::wikitech_dumps': }
-
     class {'dumps::web::fetches::phab':
         src             => "${phab_dump_host}::srv-dumps",
         miscdatasetsdir => $miscdatasetsdir,
