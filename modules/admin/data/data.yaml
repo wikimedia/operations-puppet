@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg]
+              dumisani, lbowmaker, andyrussg, ssastry]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -164,7 +164,7 @@ groups:
   parsoid-admin:
     gid: 702
     description: RT 5934
-    members: [ssastry, cscott, arlolra]
+    members: [cscott, arlolra]
     privileges: ['ALL = NOPASSWD: /usr/sbin/service parsoid *',
                  'ALL = NOPASSWD: /usr/sbin/service parsoid-rt-client restart',
                  'ALL = (mwdeploy) NOPASSWD: /usr/bin/scap pull']
@@ -191,7 +191,7 @@ groups:
               bd808, bvibber, cscott, ebernhardson,
               gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
-              nikerabbit, reedy, ssastry, phedenskog,
+              nikerabbit, reedy, phedenskog,
               tgr, ejegg, catrope,
               mobrovac, joal,
               mforns, dcausse,
@@ -242,7 +242,7 @@ groups:
   cassandra-test-roots:
     gid: 708
     description: users with root on cassandra hosts
-    members: [ssastry]
+    members: []
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   elasticsearch-roots:
     gid: 709
@@ -711,7 +711,7 @@ groups:
   parsoid-test-roots:
     gid: 772
     description: T125166 T125435
-    members: [ssastry, arlolra, cscott, ihurbain, mbsantos, jgiannelos]
+    members: [arlolra, cscott, ihurbain, mbsantos, jgiannelos]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Subramanya Sastry
@@ -2006,7 +2006,7 @@ users:
     ssh_keys: []
     uid: 2479
   ssastry:
-    ensure: present
+    ensure: absent
     gid: 500
     name: ssastry
     realname: Subramanya Sastry
