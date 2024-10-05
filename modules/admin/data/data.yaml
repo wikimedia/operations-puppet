@@ -2010,8 +2010,7 @@ users:
     gid: 500
     name: ssastry
     realname: Subramanya Sastry
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpsA8yuweHpvf1MqoURe7npQV5PlqwVjIGSshN2BWUrqO4tzC9mvy4vfGyvKdfPMFUlsk8hs6BQgMbIY3Qr3cF1+62CH7jx6FWzRWTZpFfyckUhdJu22vaxwYxzZu0au2zIkeVaHqnV+QYPrhjnvcOrwosF4ArfW3guXH5gjBF9RsJWqlC0xejiaVVefsaEKan6cOLslLG+caQalJdNfJ7mBs4hPKLQWF6d8tbWld5/jJUL/hFe188/hkyLyfD/TSmRyWtoN0q4Ubcqx3LMDoX3EKYAl95i42a7TT+zg2GOOZXLk9rruFKk55hNfg4R3T+JxAffkJygKykyPvlfhp
-        subbu@earth]
+    ssh_keys: []
     uid: 2316
     email: ssastry@wikimedia.org
   demon:
