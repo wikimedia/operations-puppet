@@ -5,6 +5,11 @@ profile::ceph::auth::load_all::configuration:
       mon: profile rbd
       mgr: profile rbd pool=dse-k8s-csi-ssd
       osd: profile rbd pool=dse-k8s-csi-ssd
+  dse-k8s-csi-cephfs:
+    caps:
+      mon: profile csi-cephfs
+      mgr: profile csi-cephfs pool=cephfs.dpe.data-ssd,cephfs.dpe.data-hdd
+      osd: profile csi-cephfs pool=cephfs.dpe.data-ssd,cephfs.dpe.data-hdd
   admin:
     caps:
       mgr: allow *
