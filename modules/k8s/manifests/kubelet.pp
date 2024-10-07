@@ -133,11 +133,4 @@ class k8s::kubelet (
         restart => true,
         content => "[Unit]\nAfter=${container_runtime}.service\nRequires=${container_runtime}.service\n",
     }
-    # Remove the containerd named override, not needed anymore
-    systemd::override { 'containerd':
-        ensure  => absent,
-        unit    => 'kubelet',
-        restart => true,
-        content => "[Unit]\nAfter=\nRequires=\nAfter=network.target\nAfter=containerd.service\nRequires=containerd.service\n",
-    }
 }
