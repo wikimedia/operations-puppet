@@ -1972,6 +1972,10 @@ node /^mc-misc100[1-2]\.eqiad\./ {
     role(insetup::serviceops)
 }
 
+node /^mc-misc200[1-2]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 # new mc-wf nodes T313963
 node /^mc-wf100[12]\.eqiad\./ {
     role(memcached)
