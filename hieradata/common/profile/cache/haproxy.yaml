@@ -300,8 +300,8 @@ profile::cache::haproxy::available_unified_certificates:
     critical_threshold: 15
   lets-encrypt:
     cert_paths:
-        - /etc/acmecerts/unified/live/rsa-2048.chained.crt.key
         - /etc/acmecerts/unified/live/ec-prime256v1.chained.crt.key
+        - /etc/acmecerts/unified/live/rsa-2048.chained.crt.key
     server_names:
         - wikipedia.org
         - '*.wikipedia.org'
