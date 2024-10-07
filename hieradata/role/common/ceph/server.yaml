@@ -40,26 +40,31 @@ profile::ceph::auth::load_all::configuration:
     caps:
       mon: allow profile mgr
       osd: allow *
+      mgr: allow *
   mgr.cephosd1002:
     keyring_path: /var/lib/ceph/mgr/ceph-cephosd1002/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
+      mgr: allow *
   mgr.cephosd1003:
     keyring_path: /var/lib/ceph/mgr/ceph-cephosd1003/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
+      mgr: allow *
   mgr.cephosd1004:
     keyring_path: /var/lib/ceph/mgr/ceph-cephosd1004/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
+      mgr: allow *
   mgr.cephosd1005:
     keyring_path: /var/lib/ceph/mgr/ceph-cephosd1005/keyring
     caps:
       mon: allow profile mgr
       osd: allow *
+      mgr: allow *
   bootstrap-osd:
     keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
     caps:
