@@ -9,6 +9,21 @@ version = 2
   [plugins."io.containerd.grpc.v1.cri"]
     # Define our sandbox image
     sandbox_image = "<%= @sandbox_image %>"
+    # By default docker does set net.ipv4.ip_unprivileged_port_start=0 allowing containers to bind to ports
+    # below 1024 without explicit NET_BIND_SERVICE capability.
+    # It also sets net.ipv4.ping_group_range="0 2147483647", allowing ICMP sockets without CAP_NET_RAW.
+    # The following two options ensure compatibility with current workloads.
+    #
+    # enable_unprivileged_ports configures net.ipv4.ip_unprivileged_port_start=0
+    # for all containers which are not using host network and if it is not overwritten by PodSandboxConfig
+    # Note that currently default is set to disabled but target change it in future, see:
+    # https://github.com/kubernetes/kubernetes/issues/102612
+    enable_unprivileged_ports = true
+    # enable_unprivileged_icmp configures net.ipv4.ping_group_range="0 2147483647"
+    # for all containers which are not using host network, are not running in user namespace and if it is not
+    # overwritten by PodSandboxConfig.
+    # Note that currently default is set to disabled but target change it in future together with enable_unprivileged_ports
+    enable_unprivileged_icmp = true
     [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
       # Re-define the runtime type as defining runc.options would shadow the default setting.
       # Without this kubelet will fail to run containers with the following error:
