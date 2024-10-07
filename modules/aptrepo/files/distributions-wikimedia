@@ -238,9 +238,9 @@ Components: main
  thirdparty/haproxy28
  thirdparty/hwraid
  thirdparty/k9s
- thirdparty/kubeadm-k8s-1-25
  thirdparty/kubeadm-k8s-1-26
  thirdparty/kubeadm-k8s-1-27
+ thirdparty/kubeadm-k8s-1-28
  thirdparty/matomo
  thirdparty/node20
  thirdparty/opensearch2
@@ -266,9 +266,9 @@ Update:
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
  thirdparty/helm3
- thirdparty/kubeadm-k8s-1-25
  thirdparty/kubeadm-k8s-1-26
  thirdparty/kubeadm-k8s-1-27
+ thirdparty/kubeadm-k8s-1-28
  thirdparty/tofu
  thirdparty/yarn
 Description: Wikimedia packages for Debian bookworm
