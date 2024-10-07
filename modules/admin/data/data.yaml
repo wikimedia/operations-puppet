@@ -47,7 +47,7 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo, jrbranaa]
+              rudolphampofo, jrbranaa, wdoran]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -450,7 +450,6 @@ groups:
     approval:
       - Olja Dimitrjevic
       - Dan Andreescu
-      - Will Doran
       - Andreas Hoelzl
       - Andrew Otto
   analytics-admins:
@@ -857,7 +856,6 @@ groups:
     description: People who have shell access to snapshot hosts and bastions only.
     members: []
     approval:
-      - Will Doran
       - Mat Nadrofsky
   wdqs-test-roots:
     gid: 803
@@ -6833,9 +6831,8 @@ ldap_only_users:
     ensure: absent
     realname: Evan Prodromou
   wdoran:
-    ensure: present
+    ensure: absent
     realname: Will Doran
-    email: wdoran@wikimedia.org
   josepita:
     ensure: absent
     realname: Jose Pita
