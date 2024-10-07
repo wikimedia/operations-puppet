@@ -48,7 +48,8 @@ class keepalived(
         $content = $config
     }
 
-    file { '/etc/keepalived/keepalived.conf':
+    $conf_file = '/etc/keepalived/keepalived.conf'
+    file { $conf_file :
         ensure    => present,
         mode      => '0444',
         owner     => 'root',
@@ -56,11 +57,13 @@ class keepalived(
         content   => $content,
         show_diff => false,
         require   => Package['keepalived'],
-        notify    => Exec['restart-keepalived'],
     }
 
-    exec { 'restart-keepalived':
-        command     => '/bin/systemctl restart keepalived',
-        refreshonly => true,
+    service { 'keepalived':
+        ensure    => running,
+        subscribe => [
+            Package['keepalived'],
+            File[$conf_file],
+        ],
     }
 }
