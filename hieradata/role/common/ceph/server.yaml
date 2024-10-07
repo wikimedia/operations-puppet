@@ -10,6 +10,7 @@ profile::ceph::auth::load_all::configuration:
       mgr: allow *
       mon: allow *
       osd: allow *
+      mds: allow *
   mon.:
     keyring_path: /etc/ceph/ceph.mon.keyring
     import_to_ceph: false
