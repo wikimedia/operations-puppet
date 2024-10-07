@@ -549,6 +549,11 @@ tables:
     dblist: wikidata
     canonicality: derivative
     visibility: public
+  - name: wbs_propertypairs
+    source: property_suggester
+    dblist: wikidata
+    canonicality: derivative
+    visibility: public
 sources:
   core:
     - path: maintenance/tables.json
@@ -643,6 +648,9 @@ sources:
   entityschema:
     - path: extensions/EntitySchema/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/EntitySchema/+/refs/heads/master/sql/tables.json
+  property_suggester:
+    - path: extensions/PropertySuggester/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/PropertySuggester/+/refs/heads/master/sql/tables.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
