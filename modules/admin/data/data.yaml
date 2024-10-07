@@ -491,21 +491,30 @@ groups:
     members: [*platform_engineering_members, hoo]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
-      - Will Doran
+      - Olja Dimitrjevic
+      - Dan Andreescu
+      - Andreas Hoelzl
+      - Andrew Otto
   dumpsdata-admins:
     gid: 825
     description: People who can sudo into the dumpsgen user on dumpsdata hosts.
     members: [*platform_engineering_members]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
-      - Will Doran
+      - Olja Dimitrjevic
+      - Dan Andreescu
+      - Andreas Hoelzl
+      - Andrew Otto
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
     members: [hokwelum, milimetric, jebe]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
-      - Will Doran
+      - Olja Dimitrjevic
+      - Dan Andreescu
+      - Andreas Hoelzl
+      - Andrew Otto
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
