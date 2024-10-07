@@ -316,6 +316,9 @@ profile::kubernetes::deployment_server::include_admin: true
 #   ..
 profile::kubernetes::deployment_server::general:
   default:
+    # Use the internal discovery domain as default registry
+    docker:
+      registry: "docker-registry.discovery.wmnet"
     # envoy
     mesh:
       image_version: 1.23.10-3
