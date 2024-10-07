@@ -47,7 +47,7 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo]
+              rudolphampofo, jrbranaa]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -138,7 +138,6 @@ groups:
               daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
     approval:
       - Will Doran
-      - Jean-René Branaa
   release-engineering:
     gid: 837
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
@@ -494,7 +493,6 @@ groups:
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Jean-René Branaa
   dumpsdata-admins:
     gid: 825
     description: People who can sudo into the dumpsgen user on dumpsdata hosts.
@@ -502,7 +500,6 @@ groups:
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Jean-René Branaa
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
@@ -510,7 +507,6 @@ groups:
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Will Doran
-      - Jean-René Branaa
   restbase-roots:
     gid: 744
     description: people who have full root on restbase nodes
@@ -863,7 +859,6 @@ groups:
     approval:
       - Will Doran
       - Mat Nadrofsky
-      - Jean-René Branaa
   wdqs-test-roots:
     gid: 803
     description: users with root on WDQS test cluster
@@ -6591,9 +6586,8 @@ ldap_only_users:
     ensure: absent
     realname: Jack Rabah
   jrbranaa:
-    ensure: present
+    ensure: absent
     realname: Jean-Rene Branaa
-    email: jbranaa@wikimedia.org
   jbuatti:
     ensure: present
     realname: James Buatti
