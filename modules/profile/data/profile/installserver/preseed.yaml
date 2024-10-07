@@ -378,7 +378,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
   # END Kubernetes workers that used to be mw app/api servers
-  'kubestage2001':
+  'kubestage200[12]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
