@@ -121,10 +121,21 @@ class k8s::kubelet (
             File[$kubeconfig],
         ],
     }
-    # The default kubelet.service does depend on docker.service in After= and Requires=
-    # Override that in case we run containerd
-    systemd::override { 'containerd':
+    # Add a dependency from kubelet to the configured container runtime
+    # The kubelet.service is shipped by the kubernetes-node debian package
+    $container_runtime = $containerd_cri ? {
+        true => 'containerd',
+        default => 'docker',
+    }
+    systemd::override { 'container-runtime':
         ensure  => stdlib::ensure($containerd_cri),
+        unit    => 'kubelet',
+        restart => true,
+        content => "[Unit]\nAfter=${container_runtime}.service\nRequires=${container_runtime}.service\n",
+    }
+    # Remove the containerd named override, not needed anymore
+    systemd::override { 'containerd':
+        ensure  => absent,
         unit    => 'kubelet',
         restart => true,
         content => "[Unit]\nAfter=\nRequires=\nAfter=network.target\nAfter=containerd.service\nRequires=containerd.service\n",
