@@ -24,4 +24,6 @@ profile::ganeti::nodes:
   - ganeti2030.codfw.wmnet
   - ganeti2031.codfw.wmnet
   - ganeti2032.codfw.wmnet
+  - ganeti2035.codfw.wmnet
+  - ganeti2036.codfw.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.codfw.wmnet
