@@ -2,15 +2,13 @@
 profile::wmcs::cloudgw::routing_source_ip: 185.15.56.1
 profile::wmcs::cloudgw::virt_subnets_cidr: [172.16.0.0/21]
 profile::wmcs::cloudgw::virt_floating: [185.15.56.0/25]
-profile::wmcs::cloudgw::transport_cidr: 185.15.56.232/29
-profile::wmcs::cloudgw::transport_vip: 185.15.56.237
 profile::wmcs::cloudgw::virt_vlan: 1107
 profile::wmcs::cloudgw::wan_vlan: 1120
 profile::wmcs::cloudgw::vrrp_vips:
   # expected format by keepalived:
   # xx.yy.zz.ww/29 dev vlanXYZW
   # TODO: this would be more robust if using a custom data type
-  - "%{lookup('profile::wmcs::cloudgw::transport_vip')}/29 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
+  - "185.15.56.237/29 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
   - "185.15.56.244/29 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
 
 profile::wmcs::cloudgw::conntrackd:

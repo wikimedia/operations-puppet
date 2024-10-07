@@ -14,8 +14,6 @@ class profile::wmcs::cloudgw (
     String[1]                                      $vrrp_passwd               = lookup('profile::wmcs::cloudgw::vrrp_passwd',              {default_value => 'dummy'}),
     Hash                                           $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd',               {default_value => {}}),
     Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',        {default_value => '127.0.0.7'}),
-    Stdlib::IP::Address::V4::CIDR                  $transport_cidr            = lookup('profile::wmcs::cloudgw::transport_cidr'),
-    Stdlib::IP::Address::V4::Nosubnet              $transport_vip             = lookup('profile::wmcs::cloudgw::transport_vip'),
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',             {default_value => []}),
     Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                 {default_value => []}),
     Array[Stdlib::IP::Address::V4::Cidr]           $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',{default_value => []}),
