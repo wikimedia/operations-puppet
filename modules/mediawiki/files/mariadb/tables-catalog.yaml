@@ -539,6 +539,11 @@ tables:
     dblist: wikibaserepo
     canonicality: derivative
     visibility: public
+  - name: wbqc_constraints
+    source: wikibase_quality_constraints
+    dblist: wikibaserepo
+    canonicality: derivative
+    visibility: public
 sources:
   core:
     - path: maintenance/tables.json
@@ -627,6 +632,9 @@ sources:
   wiki_lambda_ztester_results:
     - path: extensions/WikiLambda/sql/table-ztester_results.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLambda/+/refs/heads/master/sql/table-ztester_results.json
+  wikibase_quality_constraints:
+    - path: extensions/WikibaseQualityConstraints/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikibaseQualityConstraints/+/refs/heads/master/sql/tables.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
