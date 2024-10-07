@@ -1742,12 +1742,8 @@ node /^kubestage100[34]\.eqiad\./ {
     role(kubernetes::staging::worker)
 }
 
-# codfw new kubernetes staging nodes T252185
-node /^kubestage2001\.codfw\./ {
+node /^kubestage200[12]\.codfw\./ {
     role(kubernetes::staging::worker_containerd)
-}
-node /^kubestage2002\.codfw\./ {
-    role(kubernetes::staging::worker)
 }
 
 node /^cloudcontrol100[567]\.eqiad\./ {
