@@ -4459,7 +4459,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEdflcuMhIJ5BVKdg2C4/3VqM9jeSoGnJoclTEXyPHp1 edward@Edwards-MacBook-Pro.local
     krb: present
     expiry_date: "2025-06-30"
-    expiry_contact: jbranaa@wikimedia.org
+    expiry_contact: lferreira@wikimedia.org
   dvrandecic:
     ensure: present
     gid: 500
@@ -6270,7 +6270,7 @@ users:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOnm+TGg4lLdOeDMaeB+X8Gtkjn84OJvzX4FRkjTUvnm gmikesell-ctr@wikimedia.org'
     krb: present
     expiry_date: "2025-06-30"
-    expiry_contact: jbranaa@wikimedia.org
+    expiry_contact: lferreira@wikimedia.org
   toyofuku:
     ensure: present
     realname: Steph Toyofuku
