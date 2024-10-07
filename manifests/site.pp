@@ -1340,12 +1340,12 @@ node /^ganeti203[3-4]\.codfw\./ {
     role(ganeti_routed)
 }
 
-node /^ganeti20(09|1[0-9]|2[0-9]|3[0-2])\.codfw\./ {
+node /^ganeti20(09|1[0-9]|2[0-9]|3[01256])\.codfw\./ {
     role(ganeti)
 }
 
 # New Codfw  Ganeti nodes
-node /^ganeti20(3[5-9]|4[0-4])\.codfw\./ {
+node /^ganeti20(3[7-9]|4[0-4])\.codfw\./ {
     role(insetup::infrastructure_foundations)
 }
 
