@@ -148,6 +148,23 @@ def logs_command(env_vars: Dict[str, str], release: str) -> str:
     return f'{env_vars_str} kubectl logs -f job/{job} mediawiki-{release}-app'
 
 
+def parse_duration(duration: str) -> int:
+    try:
+        if duration.endswith('d'):
+            return int(duration[:-1]) * 86400
+        elif duration.endswith('h'):
+            return int(duration[:-1]) * 3600
+        elif duration.endswith('m'):
+            return int(duration[:-1]) * 60
+        elif duration.endswith('s'):
+            return int(duration[:-1])
+        else:
+            return int(duration)
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            'must be a plain number of seconds, or a number with a unit like 1d, 2h, 30m, 40s')
+
+
 def main() -> int:
     logger.setLevel(logging.INFO)
     logger.addHandler(logging.StreamHandler())
@@ -167,6 +184,10 @@ def main() -> int:
                         help='Specify a MediaWiki image (without registry), e.g. '
                              'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
                              '(Default: Use the same image as mw-web)')
+    parser.add_argument('--timeout', type=parse_duration,
+                        help='Set a deadline for the job, to interrupt it after a set interval. '
+                             'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
+                             '(Default: No deadline)')
     # Allow overriding the default helmfile. This should only be needed for development of the
     # mw-script infrastructure, and not by users of maintenance scripts.
     parser.add_argument(
@@ -210,6 +231,7 @@ def main() -> int:
             },
             'comment': args.comment,
             'stdin': args.attach,
+            'activeDeadlineSeconds': args.timeout,
             'tty': args.attach and sys.stdin.isatty(),
         }
     }
