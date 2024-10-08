@@ -121,6 +121,37 @@ class profile::pyrra::filesystem::slos (
         }
     }
 
+    # Logstash Availability SLO - please see wikitech for details
+    # https://wikitech.wikimedia.org/wiki/SLO/logstash
+
+    # logstash is eqiad/codfw only
+    if $datacenter in [ 'eqiad', 'codfw' ] {
+        pyrra::filesystem::config { "logstash-availability-${datacenter}.yaml":
+          content => to_yaml( {
+            'apiVersion' => 'pyrra.dev/v1alpha1',
+            'kind' => 'ServiceLevelObjective',
+            'metadata' => {
+                'name' => 'logstash-availability',
+                'namespace' => 'pyrra-o11y',
+                'labels' => {
+                    'pyrra.dev/team' => 'o11y',
+                    'pyrra.dev/service' => 'logging',
+                    'pyrra.dev/site' => "${datacenter}", #lint:ignore:only_variable_string
+                },
+            },
+            'spec' => {
+                'target' => '99.95',
+                'window' => '12w',
+                'indicator' => {
+                    'bool_gauge' => {
+                        'metric' => "logstash_sli_availability:bool{site=\"${datacenter}\"}",
+                    },
+                },
+            },
+          })
+        }
+    }
+
 
     # Varnish uses one combined latency-availability SLI: A response is satisfactory IF it spends less than 100 ms processing time in Varnish, AND it isn't a Varnish internal error.
     # SLO: In each DC, 99.9% of requests get satisfactory responses. (grouping by site)
