@@ -31,9 +31,7 @@ class profile::gerrit::migration (
         }
 
         if !defined(File[$gerrit_site]) {
-            file { $gerrit_site:
-                ensure => directory,
-            }
+            ensure_resource('file', $gerrit_site, {'ensure' => 'directory'})
         }
 
         rsync::server::module { 'gerrit-home':
