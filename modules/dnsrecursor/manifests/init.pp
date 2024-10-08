@@ -57,6 +57,8 @@ class dnsrecursor (
     Array[Stdlib::IP::Address]                                      $api_allow_from           = [],
     Array[Stdlib::IP::Address::Nosubnet]                            $query_local_address      = [],
     Boolean                                                         $allow_extended_errors    = false,
+    Array[Stdlib::IP::Address]                                      $dont_query               = [],
+    Array[Stdlib::IP::Address]                                      $dont_query_negations     = [],
 ) {
 
     ensure_packages(['pdns-recursor'])

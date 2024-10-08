@@ -2,11 +2,13 @@
 # A profile class for a DNS recursor
 
 class profile::dns::recursor (
-  Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips    = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
-  Optional[String]                                  $bind_service      = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
-  Hash[Wmflib::Sites, Array[Stdlib::Fqdn]]          $ntp_peers         = lookup('ntp_peers'),
-  Hash[Wmflib::Sites, Wmflib::Sites]                $site_nearest_core = lookup('site_nearest_core'),
-  Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers   = lookup('authdns_servers'),
+    Optional[Hash[String, Wmflib::Advertise_vip]]     $advertise_vips           = lookup('profile::bird::advertise_vips', {'default_value' => {}, 'merge' => hash}),
+    Optional[String]                                  $bind_service             = lookup('profile::dns::recursor::bind_service', {'default_value' => undef}),
+    Hash[Wmflib::Sites, Array[Stdlib::Fqdn]]          $ntp_peers                = lookup('ntp_peers'),
+    Hash[Wmflib::Sites, Wmflib::Sites]                $site_nearest_core        = lookup('site_nearest_core'),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers          = lookup('authdns_servers'),
+    Array[Stdlib::IP::Address]                        $dont_query               = lookup('profile::dns::recursor::dont_query', {'default_value' => []}),
+    Array[Stdlib::IP::Address]                        $dont_query_negations     = lookup('profile::dns::recursor::dont_query_negations', {'default_value' => []}),
 ) {
     include network::constants
     include profile::firewall
@@ -63,6 +65,8 @@ class profile::dns::recursor (
         bind_service          => $bind_service,
         allow_extended_errors => true,
         require               => Systemd::Service['gdnsd'],
+        dont_query            => $dont_query,
+        dont_query_negations  => $dont_query_negations,
     }
 
     ferm::service { 'udp_dns_recursor':

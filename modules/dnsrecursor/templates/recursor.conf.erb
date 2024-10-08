@@ -54,6 +54,9 @@ allow-from=<%= (@allow_from + flatten_ips(@listen_addresses)).join(", ") %>
 <%- else -%>
 allow-from=<%= @allow_from.join(", ") %>
 <%- end -%>
+<%- if @dont_query && !@dont_query.empty? -%>
+dont-query=<%= (@dont_query + @dont_query_negations.map { |x| "!" + x }).join(", ") %>
+<%- end -%>
 
 <% if @allow_forward_zones -%>
 # Zones for which we forward queries, comma separated domain=ip pairs
