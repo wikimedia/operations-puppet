@@ -135,9 +135,8 @@ class icinga::plugins(
         group      => $icinga_group,
     }
 
-    nagios_common::check_command::config { 'check_ripe_atlas.cfg':
-        ensure     => absent,
-        config_dir => '/etc/icinga',
+    file { '/etc/icinga/commands/check_ripe_atlas.cfg.cfg':
+        ensure => absent,
     }
 
     nagios_common::check_command::config { 'check_librenms.cfg':
