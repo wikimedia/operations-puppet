@@ -62,9 +62,6 @@ class icinga::plugins(
     }
 
     # WMF custom service checks
-    file { '/usr/lib/nagios/plugins/check_ripe_atlas.py':
-        ensure => absent,
-    }
     file { '/usr/lib/nagios/plugins/check_librenms.py':
         source => 'puppet:///modules/icinga/check_librenms.py',
         owner  => 'root',
@@ -133,10 +130,6 @@ class icinga::plugins(
         config_dir => '/etc/icinga',
         owner      => $icinga_user,
         group      => $icinga_group,
-    }
-
-    file { '/etc/icinga/commands/check_ripe_atlas.cfg.cfg':
-        ensure => absent,
     }
 
     nagios_common::check_command::config { 'check_librenms.cfg':
