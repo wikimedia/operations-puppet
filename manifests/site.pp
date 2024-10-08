@@ -1748,12 +1748,8 @@ node /^parse20(0[1-9]|1[0-9]|20)\.codfw\./ {
 }
 # END Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
 
-node /^kubestage1003\.eqiad\./ {
+node /^kubestage100[34]\.eqiad\./ {
     role(kubernetes::staging::worker_containerd)
-}
-
-node /^kubestage1004\.eqiad\./ {
-    role(kubernetes::staging::worker)
 }
 
 node /^kubestage200[12]\.codfw\./ {
