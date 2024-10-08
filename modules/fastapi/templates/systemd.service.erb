@@ -1,0 +1,15 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# This file is managed by puppet!
+[Unit]
+Description=<%= @title %> - a FastAPI application
+
+[Service]
+# This is where the application configuration should be sourced
+EnvironmentFile=-/etc/default/<%= @title %>
+WorkingDirectory=<%= @app_basedir %>/deploy/src
+ExecStart=<%= @app_basedir %>/venv/bin/uvicorn main:app --host <%= @bind_addr %> --port <%= @port %> --workers <%= @workers %> --log-level <%= @log_level %><% unless @disable_reload %> --reload<% end %>
+User=deploy-<%= @title %>
+SyslogIdentifier=fastapi-<%= @title %>
+
+[Install]
+WantedBy=multi-user.target

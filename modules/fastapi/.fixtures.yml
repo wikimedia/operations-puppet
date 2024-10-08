@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+fixtures:
+    symlinks:
+        python_deploy: "../../../../python_deploy"
+        systemd: "../../../../systemd"
