@@ -6,9 +6,6 @@ class role::gerrit {
     include profile::backup::host
     include profile::firewall
     include profile::firewall::nftables_throttling
-    # lint:ignore:wmf_styleguide - It is neither a role nor a profile
-    include ::passwords::gerrit
-    # lint:endignore
     include profile::gerrit
     include profile::gerrit::proxy
     include profile::gerrit::migration

@@ -28,6 +28,7 @@ class profile::gerrit(
     Array[Stdlib::Fqdn]               $lfs_sync_dest     = lookup('profile::gerrit::lfs_sync_dest'),
 ) {
     require ::profile::java
+    require ::passwords::gerrit
 
     $is_replica = $facts['fqdn'] != $active_host
 
