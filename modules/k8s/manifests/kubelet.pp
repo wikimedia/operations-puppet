@@ -128,7 +128,7 @@ class k8s::kubelet (
         default => 'docker',
     }
     systemd::override { 'container-runtime':
-        ensure  => stdlib::ensure($containerd_cri),
+        ensure  => present,
         unit    => 'kubelet',
         restart => true,
         content => "[Unit]\nAfter=${container_runtime}.service\nRequires=${container_runtime}.service\n",
