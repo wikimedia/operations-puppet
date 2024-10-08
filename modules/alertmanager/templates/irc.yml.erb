@@ -33,6 +33,8 @@ msg_template: >-
   {{ .GroupLabels.alertname }}:
   {{ if eq .GroupLabels.alertname "DatasourceError" -}}
   {{ (index .Alerts 0).Labels.rulename }} - {{ (index .Alerts 0).GeneratorURL }} - https://wikitech.wikimedia.org/wiki/Monitoring/DatasourceError
+  {{ else if eq .GroupLabels.alertname "ErrorBudgetBurn" -}}
+  {{ (index .Alerts 0).Labels.service }} - {{ (index .Alerts 0).Labels.slo }} - https://wikitech.wikimedia.org/wiki/Monitoring/ErrorBudgetBurn
   {{- else -}}
   {{ (index .Alerts 0).Annotations.summary }}
   {{- end }}
