@@ -15,6 +15,7 @@ profile::gerrit::migration::data_dir: '/srv/gerrit'
 profile::gerrit::lfs_replica_sync: true
 profile::gerrit::lfs_sync_dest:
     - 'gerrit2002.wikimedia.org'
+    - 'gerrit2003.wikimedia.org'
 
 # External backups
 profile::gerrit::backups_enabled: true
