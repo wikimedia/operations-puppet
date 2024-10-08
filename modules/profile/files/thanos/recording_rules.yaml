@@ -173,3 +173,8 @@ groups:
       # SLx: Request counts with status
       - record: istio_sli_availability_requests_total:increase5m
         expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{kubernetes_namespace="istio-system"}[5m]))
+  - name: logstash_slos
+    rules:
+      # record boolean logstash availabilty metric for pyrra logstash-availability bool_gauge SLO
+      - record: logstash_sli_availability:bool
+        expr: increase(logstash_node_pipeline_events_filtered_total[1m]) > bool 1
