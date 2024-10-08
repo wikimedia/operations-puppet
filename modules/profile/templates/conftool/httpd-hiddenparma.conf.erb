@@ -1,0 +1,73 @@
+<%# - SPDX-License-Identifier: Apache-2.0 -%>
+#####################################################################
+### THIS FILE IS MANAGED BY PUPPET
+#####################################################################
+# vim: filetype=apache
+<VirtualHost *:443>
+    ServerName <%= @virtual_host %>
+    ServerAdmin noc@wikimedia.org
+    # Not used since this VHost will only act as proxy,
+    # but it is needed to avoid error messages in the httpd
+    # logs and logrotate crons.
+    DocumentRoot <%= @document_root %>
+
+    # Mostly copied from icinga's httpd configuration.
+    SSLEngine On
+    SSLCertificateFile /etc/acmecerts/icinga/live/ec-prime256v1.chained.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/ec-prime256v1.key
+    SSLCertificateFile /etc/acmecerts/icinga/live/rsa-2048.chained.crt
+    SSLCertificateKeyFile /etc/acmecerts/icinga/live/rsa-2048.key
+    <%= @ssl_settings.join("\n    ") %>
+
+    <%- @cas_settings.each_pair do |key, setting| -%>
+      <%- unless setting.nil? or setting == :undef -%>
+    <%= key %> <%= setting %>
+      <%-end -%>
+    <%-end -%>
+    <Directory />
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Location />
+        <%- @cas_auth_settings.each_pair do |key, setting| -%>
+          <%- if setting.is_a?(Array) -%>
+            <%- setting.each do |_setting| -%>
+          <%= key %> <%= _setting %>
+            <%- end -%>
+          <%- else -%>
+          <%= key %> <%= setting %>
+          <%- end -%>
+        <%- end -%>
+        ProxyPass <%= @proxy_pass %>/api
+        ProxyPassReverse <%= @proxy_pass %>/api
+    </Location>
+
+    <Location /health_check>
+        Require all granted
+        Alias /var/www/health_check
+        ProxyPass !
+    </Location>
+
+    <Location /api>
+        Require all granted
+        ProxyPass <%= @proxy_pass %>
+        ProxyPassReverse <%= @proxy_pass %>/api
+    </Location>
+
+    CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
+    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName <%= @virtual_host %>
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot <%= @document_root %>
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= @virtual_host %>/$1 [L,R=301]
+
+    ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
+    LogLevel warn
+</VirtualHost>
