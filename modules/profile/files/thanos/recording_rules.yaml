@@ -177,4 +177,4 @@ groups:
     rules:
       # record boolean logstash availabilty metric for pyrra logstash-availability bool_gauge SLO
       - record: logstash_sli_availability:bool
-        expr: increase(logstash_node_pipeline_events_filtered_total[1m]) > bool 1
+        expr: increase(logstash_node_pipeline_events_filtered_total[5m]) > bool 1
