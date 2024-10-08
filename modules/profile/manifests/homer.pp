@@ -12,11 +12,7 @@ class profile::homer (
 ){
 
     unless $disable_homer {
-
-        class { 'python_deploy::venv':
-            project_name => 'homer',
-            deploy_user  => 'deploy-homer',
-        }
+        python_deploy::venv { 'homer': }
 
         keyholder::agent { 'homer':
             trusted_groups => ['ops', 'root'],
