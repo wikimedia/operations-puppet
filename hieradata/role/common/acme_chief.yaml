@@ -77,6 +77,7 @@ profile::acme_chief::certificates:
         - 'alert2002.wikimedia.org'
         - 'icinga-extmon.wikimedia.org'
         - 'klaxon.wikimedia.org'
+        - 'requestctl.wikimedia.org'
         challenge: dns-01
         authorized_regexes:
         - '^alert[12]002\.wikimedia\.org$'
