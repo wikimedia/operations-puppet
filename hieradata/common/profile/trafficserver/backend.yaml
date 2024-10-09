@@ -33,9 +33,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://cloudidp-dev.wikimedia.org
       replacement: https://cloudweb2002-dev.wikimedia.org:7443
     - type: map
-      target: http://cloudtestidm.wikimedia.org
-      replacement: https://cloudidm2001-dev.codfw.wmnet
-    - type: map
       target: http://config-master.wikimedia.org
       replacement: https://config-master.discovery.wmnet
     - type: map
