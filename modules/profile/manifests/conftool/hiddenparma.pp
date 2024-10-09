@@ -3,7 +3,7 @@
 #
 # @param api_tokens Hash[str, str] a dictionary of username-token pairs
 class profile::conftool::hiddenparma (
-    Hash[str, str] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
+    Hash[String, String] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
 ) {
     require profile::conftool::client
     $user = 'deploy-hiddenparma'
