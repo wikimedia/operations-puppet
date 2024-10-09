@@ -133,6 +133,7 @@ sub cluster_fe_recv {
                 # Consultants working in T276317
                 |gospatial\.org
                 |go-spatial\.org
+                |pediapress\.com              # T375761
             )(/|$)        # Anchor to the end of the hostname portion: either end of string or a /.
         "}) {
             return (synth(403, "Forbidden: Map tiles are restricted to Wikimedia & affiliated sites only.  See https://wikitech.wikimedia.org/wiki/Maps/External_usage if you believe your usage supports the Movement."));
