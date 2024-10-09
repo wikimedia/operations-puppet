@@ -907,9 +907,12 @@ groups:
   ml-lab-users:
     # This will eventually contain more people than the above group (e.g. Research), but we'll
     # start with a small group for now.
+    # Note that even the SREs which normally have access via the ops group should be added here,
+    # to allow access to the GPU devices (via the render group).
     gid: 842
     description: Group of users that have access to ML Team lab/experimentation machines
-    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto]
+    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto, klausman]
+    posix_name: render
     privileges: []
     approval:
       - Chris Albon
