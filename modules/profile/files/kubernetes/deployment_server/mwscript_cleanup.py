@@ -4,6 +4,7 @@
 """Remove lingering Helm releases from completed maintenance scripts on K8s."""
 import argparse
 import datetime
+import itertools
 import json
 import logging
 import re
@@ -23,21 +24,31 @@ NAMESPACE = 'mw-script'
 def get_releases(config_file: str) -> Iterable[str]:
     # mwscript_k8s generates the release names, outside of helmfile, so we can't ask helmfile to
     # list all the releases that exist. Instead, we can get them from helm.
-    p = subprocess.run(['helm', '--namespace', NAMESPACE, 'list', '--output', 'json'],
-                       env={'KUBECONFIG': config_file}, check=True, capture_output=True, text=True)
-    releases = json.loads(p.stdout)
-    for release in releases:
-        # Helm's release timestamps end with " +0000 UTC". Pre-3.11, fromisoformat() wants "+00:00".
-        updated_str = release['updated'].replace(' +0000 UTC', '+00:00')
-        # Helm also includes nanoseconds, but datetime only takes microseconds.
-        updated_str = re.sub(r'(\.\d{6})\d*', r'\1', updated_str)
-        updated = datetime.datetime.fromisoformat(updated_str)
-        age = datetime.datetime.now(tz=datetime.timezone.utc) - updated
-        # Avoid a race condition where we'd delete a brand-new release before its job is created.
-        if age < MINIMUM_AGE:
-            logger.debug('Skipping release %s: updated recently', release['name'])
-            continue
-        yield release['name']
+    for offset in itertools.count(0, step=256):
+        p = subprocess.run([
+            'helm',
+            '--namespace', NAMESPACE,
+            'list',
+            '--output', 'json',
+            '--max', '256',
+            '--offset', str(offset)],
+            env={'KUBECONFIG': config_file}, check=True, capture_output=True, text=True)
+        releases = json.loads(p.stdout)
+        if not releases:
+            return
+        for release in releases:
+            # Helm's release timestamps end with " +0000 UTC". Pre-3.11, fromisoformat() wants
+            # "+00:00".
+            updated_str = release['updated'].replace(' +0000 UTC', '+00:00')
+            # Helm also includes nanoseconds, but datetime only takes microseconds.
+            updated_str = re.sub(r'(\.\d{6})\d*', r'\1', updated_str)
+            updated = datetime.datetime.fromisoformat(updated_str)
+            age = datetime.datetime.now(tz=datetime.timezone.utc) - updated
+            # Avoid a race condition where we'd delete a new release before its job is created.
+            if age < MINIMUM_AGE:
+                logger.debug('Skipping release %s: updated recently', release['name'])
+                continue
+            yield release['name']
 
 
 def all_jobs_expired(batch: client.BatchV1Api, release: str) -> bool:
