@@ -217,6 +217,8 @@ scap::sources:
   # Cassandra logback encoder for Logstash
   cassandra/logstash-logback-encoder:
     repository: operations/software/logstash-logback-encoder
+  hiddenparma/deploy:
+    repository: operations/software/hiddenparma/deploy
   homer/deploy:
     repository: operations/software/homer/deploy
   zuul/deploy:
