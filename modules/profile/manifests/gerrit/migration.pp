@@ -30,9 +30,14 @@ class profile::gerrit::migration (
             ensure => directory,
         }
 
-        if !defined(File[$gerrit_site]) {
-            ensure_resource('file', $gerrit_site, {'ensure' => 'directory'})
-        }
+        # This was here to ensure the site directory exists before gerrit has been deployed
+        # with scap the first time. But now it causes a duplicate declaration.
+        # Probably a race condition. Commenting for now to unbreak puppet on new machine.
+        # It only matters about once every 2 years.
+
+        #if !defined(File[$gerrit_site]) {
+        #    ensure_resource('file', $gerrit_site, {'ensure' => 'directory'})
+        #}
 
         rsync::server::module { 'gerrit-home':
             path          => "/srv/home-${src_host}",
