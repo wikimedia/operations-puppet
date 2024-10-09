@@ -186,7 +186,7 @@ groups:
   deployment:
     gid: 705
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
-    members: &deployment_members [*platform_engineering_members, *ops_members, *releng_members,
+    members: &deployment_members [*ops_members, *releng_members,
               bd808, bvibber, cscott, ebernhardson,
               gjg, halfak, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
@@ -207,7 +207,8 @@ groups:
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab, acooper,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              mszabo, ihurbain, zoe
+              mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
+              tchin, xcollazo, sg912
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
