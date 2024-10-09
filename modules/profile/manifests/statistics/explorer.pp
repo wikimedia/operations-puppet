@@ -5,8 +5,8 @@ class profile::statistics::explorer {
 
     include ::profile::statistics::base
 
-    # enable resource controls via cgroups, see T372416
-    class { '::statistics::cgroups': }
+    # protect/optimize stat host workflows, see
+    class { '::statistics::optimize': }
 
     class { '::deployment::umask_wikidev': }
 

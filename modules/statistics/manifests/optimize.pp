@@ -4,10 +4,10 @@
 # Enables resource management via cgroups v2 on statistics
 # nodes.
 
-class statistics::cgroups (
+class statistics::optimize (
 ) {
-    Class['::statistics']       -> Class['::statistics::cgroups']
-    Class['::statistics::user'] -> Class['::statistics::cgroups']
+    Class['statistics']       -> Class['statistics::optimize']
+    Class['statistics::user'] -> Class['statistics::optimize']
 
     systemd::override {'total-user-resources.conf':
         source => 'puppet:///modules/statistics/total-user-resources.conf',
@@ -21,5 +21,20 @@ class statistics::cgroups (
         # for more details
         unit   => 'user-.slice'
     }
+
+    # install and configure zram-based swap (https://en.wikipedia.org/wiki/Zram).
+    # This gives much better swap performance without using much RAM, particularly
+    # on hosts that lack SSDs.
+    package { 'zram-tools':
+        ensure => present,
+    }
+    file {'/etc/default/zramswap':
+        source => 'puppet:///modules/statistics/zramswap',
+        mode   => '0644',
+        owner  => 'root',
+        group  => 'root',
+
+    }
+
 }
 
