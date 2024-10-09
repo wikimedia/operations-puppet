@@ -7,9 +7,9 @@ profile::ceph::auth::load_all::configuration:
       osd: profile rbd pool=dse-k8s-csi-ssd
   dse-k8s-csi-cephfs:
     caps:
-      mon: profile csi-cephfs
-      mgr: profile csi-cephfs pool=cephfs.dpe.data-ssd,cephfs.dpe.data-hdd
-      osd: profile csi-cephfs pool=cephfs.dpe.data-ssd,cephfs.dpe.data-hdd
+      mds: allow rw fsname=dpe
+      mon: allow r fsname=dpe
+      osd: allow rw tag cephfs data=dpe
   admin:
     caps:
       mgr: allow *
