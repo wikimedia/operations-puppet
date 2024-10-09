@@ -28,6 +28,7 @@ class opensearch (
     Optional[String]                                   $rack                    = undef,
     Optional[String]                                   $row                     = undef,
     Optional[String]                                   $java_home               = undef,
+    Boolean                                            $enable_curator          = false,
 ) {
     # Check arguments and set package
     case $version {
@@ -65,7 +66,9 @@ class opensearch (
         }
     }
 
-    class { '::opensearch::curator': }
+    if ($enable_curator) {
+        class { '::opensearch::curator': }
+    }
 
     # Overwrite default env file provided by opensearch
     # so that it does not conflict without our var set by systemd unit

@@ -12,7 +12,7 @@
 # - $row: Row server is in. Used for allocation awareness.
 # - $version: version of the package to install
 # - $java_home: optionally specify the JAVA_HOME path in the opensearch systemd unit.
-#
+# - $enable_curator: installs curator.  default false
 #
 class profile::opensearch::server(
     Hash[String, Opensearch::InstanceParams] $instances             = lookup('profile::opensearch::instances'),
@@ -25,6 +25,7 @@ class profile::opensearch::server(
     String                                   $row                   = lookup('profile::opensearch::row'),
     Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
     Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',          { 'default_value' => undef }),
+    Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable',    { 'default_value' => false }),
 ) {
 
     require ::profile::java
@@ -111,6 +112,7 @@ class profile::opensearch::server(
         rack                  => $rack,
         row                   => $row,
         java_home             => pick($java_home, $profile::java::default_java_home),
+        enable_curator        => $enable_curator,
     } -> file { '/usr/share/opensearch/plugins':
         ensure => 'directory',
         force  => true,

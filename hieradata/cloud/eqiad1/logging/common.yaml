@@ -82,6 +82,7 @@ profile::opensearch::common_settings:
   disable_security_plugin: true
 
 profile::opensearch::logstash::jobs_host: 'logging-logstash-03.logging.eqiad1.wikimedia.cloud'
+profile::opensearch::curator::enable: true
 profile::opensearch::logstash::curator_actions:
   '01':
     description: 'logstash: delete older than 14 days'

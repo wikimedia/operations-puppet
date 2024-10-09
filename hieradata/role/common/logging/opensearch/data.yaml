@@ -45,7 +45,7 @@ profile::opensearch::monitoring::enable_shard_size_check: false
 # will be unassigned, with no way to reallocate them on another node, which
 # is fine and should not raise an alert. So threshold needs to be > 1/3.
 profile::opensearch::monitoring::threshold: '>=0.34'
-
+profile::opensearch::curator::enable: true
 profile::opensearch::logstash::curator_actions:
   '01':
     description: 'logstash: delete older than 91 days'
