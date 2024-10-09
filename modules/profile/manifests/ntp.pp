@@ -90,8 +90,8 @@ class profile::ntp (
 
     monitoring::service { 'ntp peers':
         description    => 'NTP peers and stratum check',
-        check_interval => 5, # min
-        retry_interval => 5, # min
+        check_interval => 10, # min
+        retry_interval => 1,  # min
         check_command  => 'check_ntp_peer_and_stratum!0.05!0.1!5!10',   # -W stratum 5, -C stratum 10
         notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
