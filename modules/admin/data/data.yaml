@@ -7301,3 +7301,7 @@ ldap_only_users:
     ensure: present
     realname: William Rai
     email: wrai@wikimedia.org
+  jtweed:
+    ensure: present
+    realname: Jonathan Tweed
+    email: jtweed@wikimedia.org
