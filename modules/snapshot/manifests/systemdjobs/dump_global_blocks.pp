@@ -13,7 +13,7 @@ class snapshot::systemdjobs::dump_global_blocks(
 
     if !$filesonly {
         systemd::timer::job { 'global_blocks_dump':
-            ensure             => present,
+            ensure             => absent,
             description        => 'Regular jobs to build snapshot of globally blocked users',
             user               => $user,
             monitoring_enabled => false,
