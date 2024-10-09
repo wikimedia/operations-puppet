@@ -224,8 +224,4 @@ class profile::wmcs::cloudgw (
         order   => 110,
         content => "add rule inet base input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
     }
-
-    class { 'prometheus::node_kernel_panic':
-        ensure => 'present',
-    }
 }
