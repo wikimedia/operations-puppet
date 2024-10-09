@@ -43,7 +43,7 @@ GRANT REPLICATION SLAVE, SLAVE MONITOR
 
 -- Grants for 'prometheus'@'localhost' (prometheus monitoring)
 
-GRANT PROCESS, REPLICATION CLIENT
+GRANT PROCESS, REPLICATION CLIENT, SLAVE MONITOR
     ON *.* TO 'prometheus'@'localhost'
     IDENTIFIED VIA unix_socket
     WITH MAX_USER_CONNECTIONS 5;
