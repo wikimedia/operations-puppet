@@ -7,6 +7,8 @@ class profile::toolforge::proxy (
     Array[Stdlib::IP::Address] $banned_ips               = lookup('dynamicproxy::banned_ips', {default_value => []}),
     Optional[String[1]]        $blocked_user_agent_regex = lookup('dynamicproxy::blocked_user_agent_regex', {default_value => undef}),
     Optional[String[1]]        $blocked_referer_regex    = lookup('dynamicproxy::blocked_referer_regex', {default_value => undef}),
+    Stdlib::Fqdn               $toolforge_api_vip_fqdn   = lookup('profile::toolforge::proxy:toolforge_api_vip_fqdn',{default_value => 'api.svc.tools.eqiad1.wikimedia.cloud'}),
+    Stdlib::Port               $toolforge_api_vip_port   = lookup('profile::toolforge::proxy:toolforge_api_vip_port',{default_value => 30003}),
 ) {
     $acme_certname = 'toolforge'
     acme_chief::cert { $acme_certname:
@@ -37,6 +39,20 @@ class profile::toolforge::proxy (
     $ssl_settings = ssl_ciphersuite('nginx', 'compat')
     nginx::site { 'proxy':
         content => template('profile/toolforge/proxy/nginx-site.conf.erb'),
+    }
+    nginx::site { 'toolforge-api':
+        content => epp('profile/toolforge/proxy/toolforge-api.epp',
+            {
+                toolforge_api_vip_fqdn => $toolforge_api_vip_fqdn,
+                toolforge_api_vip_port => $toolforge_api_vip_port,
+                banned_ips             => $banned_ips,
+                acme_certname          => $acme_certname,
+                resolver               => $resolver,
+                rate_limit_requests    => $rate_limit_requests,
+                ssl_settings           => $ssl_settings,
+                web_domain             => $web_domain,
+            }
+        ),
     }
 
     logrotate::conf { 'nginx':

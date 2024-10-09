@@ -1,0 +1,174 @@
+<%#- #SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Stdlib::Fqdn $toolforge_api_vip_fqdn,
+      Stdlib::Port $toolforge_api_vip_port,
+      Array[Stdlib::IP::Address] $banned_ips,
+      String[1] $acme_certname,
+      String[1] $web_domain,
+      Optional[String[1]] $resolver,
+      Integer $rate_limit_requests,
+      Array[String[1]] $ssl_settings,
+| -%>
+# Copyright 2020-2024 Wikimedia Foundation and contributors
+# SPDX-License-Identifier: Apache-2.0
+#
+#Licensed under the Apache License, Version 2.0 (the "License");
+#you may not use this file except in compliance with the License.
+#You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+#Unless required by applicable law or agreed to in writing, software
+#distributed under the License is distributed on an "AS IS" BASIS,
+#WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#See the License for the specific language governing permissions and
+#limitations under the License.
+
+# Add a simple, arbitrarily picked per-IP rate limit to prevent
+# a single client for causing Toolforge-wide issues.
+limit_req_zone $binary_remote_addr zone=toolforgeapi:10m rate=<%= $rate_limit_requests %>r/s;
+
+server {
+
+    resolver <%= $resolver %>;
+
+    listen 443 ssl http2;
+    server_name api.<%= $web_domain %>;
+
+    ssl_certificate /etc/acmecerts/<%= $acme_certname %>/live/rsa-2048.chained.crt;
+    ssl_certificate_key /etc/acmecerts/<%= $acme_certname %>/live/rsa-2048.key;
+
+    # Copied from modules/tlsproxy/templates/nginx.conf.erb. Eugh
+    # Enable a shared cache, since it is defined at this level
+    # it will be used for all virtual hosts. 1m = 4000 active sessions,
+    # so we are allowing 200,000 active sessions.
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_timeout 5m;
+
+    <%= $ssl_settings.join("\n    ") %>
+
+    # http -> https redirects handled by separate server block above.
+    # T102367: 366 days
+    add_header Strict-Transport-Security "max-age=31622400" always;
+
+    # Some projects have tools that take data in and process them
+    # for a long time. While ideally they should be made async, this
+    # is an interim solution that works for now.
+    # This is doubly important for websockets
+    proxy_read_timeout 3600s;
+
+    # People upload large files, and that is okay.
+    # We can make this larger if need be.
+    client_max_body_size 128m;
+
+    # Block requests with no UA string
+    if ($http_user_agent = "") {
+        return 403 "Requests must have a user agent";
+    }
+
+    <% if $blocked_user_agent_regex {%>
+    if ($http_user_agent ~* "<%= $blocked_user_agent_regex -%>") {
+        return 403 "Blocked user agent";
+    }
+    <% } -%>
+
+    <% if $blocked_referer_regex {%>
+    if ($http_referer ~* "<%= $blocked_referer_regex -%>") {
+        return 403 "Blocked referer";
+    }
+    <% } -%>
+
+    include uwsgi_params;
+    include fastcgi_params;
+
+    # See http://www.gnuterrypratchett.com/
+    add_header X-Clacks-Overhead "GNU Terry Pratchett" always;
+    # T353589: Opt-out of Google's "topics" interest-based advertising system
+    add_header Permissions-Policy "browsing-topics=()" always;
+    proxy_hide_header Permissions-Policy;
+
+    # Common reverse proxy setup
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection $connection_upgrade;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Host $host;
+    proxy_set_header X-Forwarded-Port $server_port;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Original-URI $request_uri;
+
+    # For upstream servers, all requests appear to come over http,
+    # thus emitting redirects to that as well.  So we need to
+    # rewrite redirects with the /actual/ scheme the request came
+    # in over.  There may be fringe cases where upstream servers
+    # want https requests to redirect to non-Tools servers over
+    # http, so we limit the rewriting to the current $host.
+    proxy_redirect http://$host/ $scheme://$host/;
+
+    location /.well-known/healthz {
+        default_type text/plain;
+        return 200 'proxy ok!';
+    }
+
+    location /.error/ {
+        alias /var/www/error/;
+        default_type text/html;
+    }
+
+    # A block like this is needed for anything used as a rewrite target.
+    # An `error_page` directive to the HTML directly is enough for most
+    # error pages.
+    location /.error/banned/ {
+        error_page 403 /.error/banned.html;
+        return 403;
+    }
+
+    location /.error/technicalissues/ {
+        error_page 503 /.error/errorpage.html;
+        return 503;
+    }
+
+    location = /favicon.ico {
+        # T251628: Serve a default /favicon.ico on a 404 from the backend
+        proxy_intercept_errors on;
+        error_page 404 =200 /.error/favicon.ico;
+
+        # The api has it's own ssl termination
+        proxy_pass 'https://<%= $toolforge_api_vip_fqdn %>:<%= $toolforge_api_vip_port %>';
+    }
+
+    location = /robots.txt {
+        # T251628: Serve a default /robots.txt on a 404 from the backend
+        proxy_intercept_errors on;
+        error_page 404 =200 /.error/robots.txt;
+
+        # The api has it's own ssl termination
+        proxy_pass 'https://<%= $toolforge_api_vip_fqdn %>:<%= $toolforge_api_vip_port %>';
+    }
+
+    location / {
+        if ($bad_user) {
+            rewrite ^ /.error/banned/;
+        }
+
+        # To enable the 'This server is experiencing technical difficulties' message:
+        #  disable Puppet, and remove the # from the next line
+        # rewrite ^ /.error/technicalissues/;
+
+        # NOTE: These error_page directives only apply to errors
+        # generated by this Nginx instance (and not to those proxied
+        # from the backends) as proxy_intercept_errors defaults to no.
+        error_page 429 '/.error/ratelimit.html';
+        error_page 502 503 504 '/.error/errorpage.html';
+
+        # The api has it's own ssl termination
+        proxy_pass 'https://<%= $toolforge_api_vip_fqdn %>:<%= $toolforge_api_vip_port %>';
+    }
+
+    limit_req zone=toolforgeapi burst=<%= $rate_limit_requests %> nodelay;
+
+    # GZIP ALL THE THINGS!
+    gzip on;
+    gzip_proxied any;
+    gzip_types text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript;
+}
+# vim:sw=4:ts=4:sts=4:et:ft=nginx
