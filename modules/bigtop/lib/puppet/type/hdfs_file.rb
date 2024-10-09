@@ -12,7 +12,9 @@ Puppet::Type.newtype(:hdfs_file) do
 
       When ensuring that a resource is absent, the provider call the hdfs cli.
 
-      The HDFS path should be expressed as a normal posix path, so without an hdfs:// prefix.
+      The HDFS path should be expressed as a normal posix path, so without an hdfs:// prefix. The path
+      must start with a slash and contain only alphanumeric characters, plus hyphens and underscores.
+      The file name element may also contain dots.
 
       The resource will use the fs.defaultFS value from /etc/hadoop/conf/core-site.xml on the host,
       so we cannot yet specify a non-default HDFS file system.
@@ -26,8 +28,8 @@ Puppet::Type.newtype(:hdfs_file) do
   newparam(:path) do
     desc "The path to the file on HDFS."
     validate do |value|
-      unless value =~ %r{\A/([a-zA-Z0-9]+/)*[a-zA-Z0-9]+\z}
-        raise ArgumentError, "Invalid path. This must start with a forward slash, use alphanumeric directories and not end with a trailing slash."
+      unless value =~ %r{\A/([a-zA-Z0-9_-]+/)*[a-zA-Z0-9\._-]+\z}
+        raise ArgumentError, "Invalid path format"
       end
     end
     isnamevar
