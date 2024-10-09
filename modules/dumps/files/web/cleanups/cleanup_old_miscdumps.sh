@@ -61,7 +61,6 @@ fi
 
 cd "$miscdumpsdir" || exit 1
 config_entries=$( grep ':' "$configfile" | grep -v '^#' )
-# globalblocks:6
 # cirrussearch:10
 
 for entry in $config_entries; do

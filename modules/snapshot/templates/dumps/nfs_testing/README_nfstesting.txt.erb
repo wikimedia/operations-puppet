@@ -47,17 +47,13 @@ This should be sufficient testing for the SQL/XML dumps for a new nfs share.
 
 TESTING OTHER DUMPS
 
-We will test only the following: the rdf weekly category dumps, the globalblocks dump, the adds-changes dumps,
+We will test only the following: the rdf weekly category dumps, the adds-changes dumps,
 the pagetitles dump, and wikidata entity dumps for a small range of entities.
  
 Test the categories rdf dump:
 /usr/bin/php /srv/mediawiki/multiversion/MWScript.php maintenance/dumpCategoriesAsRdf.php --wiki=olowiki --format=ttl 2> <%= @homedir -%>/nfs_testing/categories_rdf.log | /usr/bin/gzip > <%= @otherdumpsdir -%>/categoriesrdf/testrun
 Check the output to see that it looks reasonable.
 
-Test the global blocks dump:
-/usr/local/bin/dump-global-blocks.sh --config <%= @confsdir -%>/otherdumps.conf --outputdir <%= @otherdumpsdir -%>/globalblocks
-Check the output to see that it looks reasonable.
- 
 Test the wikidata entity dumps:
 Remove any files from a previous run.
 rm -f <%= @homedir -%>/nfs_testing/wikidata_entities.log

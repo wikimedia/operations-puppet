@@ -21,7 +21,6 @@ class dumps::generation::server::dirs(
     $xlationdir                   = "${miscdatasetsdir}/contenttranslation"
     $categoriesrdfdir             = "${miscdatasetsdir}/categoriesrdf"
     $categoriesrdfdailydir        = "${miscdatasetsdir}/categoriesrdf/daily"
-    $globalblocksdir              = "${miscdatasetsdir}/globalblocks"
     $medialistsdir                = "${miscdatasetsdir}/imageinfo"
     $incrsdir                     = "${miscdatasetsdir}/incr"
     $machinevisiondir             = "${miscdatasetsdir}/machinevision"
@@ -41,11 +40,6 @@ class dumps::generation::server::dirs(
         mode   => '0755',
         owner  => $user,
         group  => $group,
-    }
-
-    # Mark globalblocksdir as absent, pending its complete removal (T376726)
-    file { [ $globalblocksdir ]:
-        ensure => absent,
     }
 
     # subdirs for various generated dumps

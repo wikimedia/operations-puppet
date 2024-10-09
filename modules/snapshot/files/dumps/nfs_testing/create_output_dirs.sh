@@ -44,6 +44,6 @@ done
 # we choose a subset of the "other" dumps since many can't be tested quickly. most of them
 # should not be impacted by changing to a new nfs share, even with a different distro
 # version on the nfs server.
-for dirname in  'categoriesrdf' 'globalblocks' 'incr' 'pagetitles' 'wikibase' ; do
+for dirname in  'categoriesrdf' 'incr' 'pagetitles' 'wikibase' ; do
   mkdir -p "$otherdumpsdir/$dirname"
 done

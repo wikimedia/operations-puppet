@@ -33,10 +33,6 @@ class snapshot::systemdjobs(
         user      => $miscdumpsuser,
         filesonly => $filesonly,
     }
-    class { '::snapshot::systemdjobs::dump_global_blocks':
-        user      => $miscdumpsuser,
-        filesonly => $filesonly,
-    }
     class { '::snapshot::systemdjobs::contentxlation':
         user      => $miscdumpsuser,
         filesonly => $filesonly,
