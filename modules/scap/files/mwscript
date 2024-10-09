@@ -5,7 +5,7 @@
 . /etc/profile.d/mediawiki.sh
 
 # Warn on stderr, and only if stderr is a terminal. Exclude sql.php, mysql.php until T375910 is resolved.
-if [ -t 2 ] && [ "$1" != "sql.php" ] && [ "$1" != "mysql.php" ]; then
+if [ -t 2 ] && [ "${1%.php}" != "sql" ] && [ "${1%.php}" != "mysql" ]; then
 	echo >&2 "DEPRECATION WARNING: Maintenance scripts are moving to Kubernetes. See"
 	echo >&2 "https://wikitech.wikimedia.org/wiki/Maintenance_scripts for the new process."
 	echo >&2 "Maintenance hosts will be going away; please submit feedback promptly if"
