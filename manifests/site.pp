@@ -1676,6 +1676,11 @@ node /^wikikube-worker21(2[8-9]|3[0-9]|4[0-9]|5[0-5])\.codfw\./ {
     role(insetup::serviceops)
 }
 
+# T376665
+node /^wikikube-worker21(5[6-9]|6[0-9]|70)\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^mw141[4-69]\.eqiad\./ {
   role(kubernetes::worker)
 }
