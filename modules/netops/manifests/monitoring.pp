@@ -211,6 +211,22 @@ class netops::monitoring(
     }
     create_resources(netops::check, $atlas)
 
+    # RIPE Atlases -- ping checks from prometheus blackbox
+    $atlas_blackbox_exporter = $atlas.map |$device, $config| {
+        {
+          "${device}" => {
+            'instance_label'      => $device,
+            'ip4'                 => $config['ipv4'],
+            'ip6'                 => $config['ipv6'],
+            'site'                => $config['site'],
+            'prometheus_instance' => 'ops'
+          }
+        }
+    }.reduce( {} ) | $memo, $x | {
+      $memo + $x
+    }
+    create_resources(prometheus::blackbox::check::icmp, $atlas_blackbox_exporter)
+
     # RIPE Atlases measurements checks moved to prometheus/alertmanar
 
     # SCS -- Serial Console Servers
