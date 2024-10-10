@@ -9,6 +9,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://airflow-test-k8s.wikimedia.org
       replacement: https://airflow-test-k8s.discovery.wmnet:30443
     - type: map
+      target: http://airflow-analytics-test.wikimedia.org
+      replacement: https://airflow-analytics-test.discovery.wmnet:30443
+    - type: map
       target: http://apt-staging.wikimedia.org
       replacement: https://apt-staging.discovery.wmnet
     - type: map

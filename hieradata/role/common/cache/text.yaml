@@ -13,6 +13,8 @@ cache::req_handling:
 cache::alternate_domains:
   15.wikipedia.org:
     caching: 'normal'
+  airflow-analytics-test.wikimedia.org:
+    caching: 'normal'
   airflow-test-k8s.wikimedia.org:
     caching: 'normal'
   analytics.wikimedia.org:
