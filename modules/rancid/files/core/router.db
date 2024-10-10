@@ -34,7 +34,7 @@ lab-ex4200-1.mgmt.eqiad.wmnet;juniper;down;
 lab-ex4500-1.mgmt.eqiad.wmnet;juniper;down;
 pfw3-eqiad.wikimedia.org;juniper;up;
 fasw-c-eqiad.mgmt.eqiad.wmnet;juniper;up;
-pfw3-codfw.wikimedia.org;juniper;up;
+pfw1-codfw.wikimedia.org;juniper;up;
 fasw-c-codfw.mgmt.codfw.wmnet;juniper;up;
 cr3-ulsfo.wikimedia.org;juniper;up;
 cr4-ulsfo.wikimedia.org;juniper;up;

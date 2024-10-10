@@ -2109,7 +2109,7 @@ infra_devices:
     alarms: true
     site: codfw
     role: cr
-  pfw3-codfw:
+  pfw1-codfw:
     ipv4: 208.80.153.197
     site: codfw
     role: pfw
@@ -2294,7 +2294,7 @@ infra_devices:
   fasw-c-codfw:
     ipv4: 10.193.0.57
     parents:
-    - pfw3-codfw
+    - pfw1-codfw
     site: codfw
     role: l2sw
   cloudsw1-b1-codfw:
