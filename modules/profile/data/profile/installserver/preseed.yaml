@@ -431,9 +431,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcontrol100[8-9]|cloudcontrol1010':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'cloudidm*':
-    - partman/flat.cfg
-    - virtual.cfg
   'cloudrabbit100[1-3]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
