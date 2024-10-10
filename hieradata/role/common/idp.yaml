@@ -250,6 +250,14 @@ profile::idp::services:
     service_id: 'https://openstack.*.wikimediacloud.org:25000.*'
     profile_format: 'FLAT'
     response_type: 'id_token token'
+  airflow_analytics_test:
+    id: 44
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://airflow-analytics-test\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
