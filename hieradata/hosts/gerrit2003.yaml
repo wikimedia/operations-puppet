@@ -2,10 +2,17 @@
 profile::gerrit::mask_service: true
 profile::gerrit::enable_monitoring: false
 
+# This prevents the gerrit service IP from being bound on the network interface.
+# It is still used in firewall rules etc but won't actually be activated.
+# This prevents causing duplicate IPs on the network (bad!) or having to request
+# additional service IPs just to test and bring up a new Gerrit machine. (T372804)
+profile::gerrit::bind_service_ip: false
+
 # FIXME - before production change this to service IP
 profile::gerrit::ipv4: '208.80.153.116'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:116'
 profile::gerrit::backups_enabled: false
+
 
 # FIXME - remove after gerrit role applies it
 profile::firewall::provider: nftables
