@@ -18,6 +18,8 @@ class profile::wmcs::cloudgw (
     Optional[Stdlib::IP::Address::V6]              $wan_gw_v6                 = lookup('profile::wmcs::cloudgw::wan_gw_v6',                {default_value => undef}),
     Array[String]                                  $vrrp_vips                 = lookup('profile::wmcs::cloudgw::vrrp_vips',                {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address                            $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer',                {default_value => '127.0.0.1'}),
+    Optional[Array[String]]                        $vrrp_vips_v6              = lookup('profile::wmcs::cloudgw::vrrp_vips_v6',             {default_value => undef}),
+    Optional[Stdlib::IP::Address::V6]              $vrrp_peer_v6              = lookup('profile::wmcs::cloudgw::vrrp_peer_v6',             {default_value => undef}),
     String[1]                                      $vrrp_passwd               = lookup('profile::wmcs::cloudgw::vrrp_passwd',              {default_value => 'dummy'}),
     Hash                                           $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd',               {default_value => {}}),
     Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',        {default_value => '127.0.0.7'}),

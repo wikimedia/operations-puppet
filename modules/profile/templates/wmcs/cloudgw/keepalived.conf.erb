@@ -30,3 +30,32 @@ vrrp_instance VRRP1 {
     <%= @vrrp_peer %>
   }
 }
+
+<% if @wan_addr_v6 -%>
+# VRRP requires per-IP family instance, see T376879
+vrrp_instance VRRP2 {
+  state BACKUP
+  interface <%= @nic_wan %>
+  virtual_router_id 52
+  # leave primary peer as is even if lower priority: avoids some flapping
+  nopreempt
+  priority <%= scope.call_function('fqdn_rand', [100]) %>
+  advert_int 1
+  authentication {
+    auth_type PASS
+    auth_pass <%= @vrrp_passwd %>
+  }
+  # go to FAULT state if the cloud-facing NIC goes down
+  track_interface {
+    <%= @nic_virt %>
+  }
+  virtual_ipaddress {
+<% @vrrp_vips_v6.each do |vip| -%>
+    <%= vip %>
+<% end -%>
+  }
+  unicast_peer {
+    <%= @vrrp_peer_v6 %>
+  }
+}
+<% end -%>
