@@ -39,7 +39,9 @@ class profile::analytics::refinery::job::data_purge (
     $retention_days = 90
 
     # Keep this many days of raw webrequest data.
-    $webrequest_raw_retention_days = 31
+    # $webrequest_raw_retention_days = 31
+    # Temporarily changing retention to fix T376882
+    $webrequest_raw_retention_days = 60
     kerberos::systemd_timer { 'refinery-drop-webrequest-raw-partitions':
         ensure      => $ensure_timers,
         description => 'Drop Webrequest raw data imported on HDFS following data retention policies.',
