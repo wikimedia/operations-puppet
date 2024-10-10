@@ -266,6 +266,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: wikidata-query-gui
         - name: wikidata-query-gui-deploy
+    chart-renderer:
+      usernames:
+        - name: chart-renderer
+        - name: chart-renderer-deploy
   ml-serve:
     revscoring-editquality-goodfaith:
       usernames:
