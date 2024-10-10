@@ -183,6 +183,13 @@ class profile::wmcs::cloudgw (
         config    => template('profile/wmcs/cloudgw/keepalived.conf.erb'),
     }
 
+    if $vrrp_peer_v6 != undef {
+        nftables::file { 'keepalived_vrrp_v6':
+            order   => 104,
+            content => "add rule inet base input ip6 saddr ${vrrp_peer_v6} ip6 nexthdr vrrp accept\n",
+        }
+    }
+
     nftables::file { 'keepalived_vrrp':
         order   => 105,
         content => "add rule inet base input ip saddr ${vrrp_peer} ip protocol vrrp accept\n",

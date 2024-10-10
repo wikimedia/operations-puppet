@@ -3,9 +3,10 @@
 # modules/profile/templates/wmcs/cloudgw/keepalived.conf.erb
 
 global_defs {
+  vrrp_version 3
 }
 
-vrrp_instance VRRP1 {
+vrrp_instance VRRP_IPv4 {
   state BACKUP
   interface <%= @nic_wan %>
   virtual_router_id 52
@@ -31,11 +32,13 @@ vrrp_instance VRRP1 {
   }
 }
 
-<% if @wan_addr_v6 -%>
+<% if @virt_addr_v6 -%>
 # VRRP requires per-IP family instance, see T376879
-vrrp_instance VRRP2 {
+vrrp_instance VRRP_IPv6 {
   state BACKUP
   interface <%= @nic_wan %>
+  # force this source address otherwise a link-local one might be used
+  unicast_src_ip <%= @virt_addr_v6 %>
   virtual_router_id 52
   # leave primary peer as is even if lower priority: avoids some flapping
   nopreempt
