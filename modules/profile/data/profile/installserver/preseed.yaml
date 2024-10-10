@@ -295,6 +295,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
+  'wikikube-worker123[5-9]|wikikube-worker124[0-2]':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
+  # END New wikikube workers with containerd by default
   'wikikube-ctrl*|wikikube-worker*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
