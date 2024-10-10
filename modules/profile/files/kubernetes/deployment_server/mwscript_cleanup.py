@@ -4,13 +4,9 @@
 """Remove lingering Helm releases from completed maintenance scripts on K8s."""
 import argparse
 import datetime
-import itertools
-import json
 import logging
-import re
 import subprocess
 import sys
-from typing import Iterable
 
 from kubernetes import client, config
 
@@ -22,39 +18,50 @@ MINIMUM_AGE = datetime.timedelta(minutes=5)
 NAMESPACE = 'mw-script'
 
 
-def get_releases(config_file: str) -> Iterable[str]:
+def get_releases(api_client: client.ApiClient) -> list[str]:
     # mwscript_k8s generates the release names, outside of helmfile, so we can't ask helmfile to
-    # list all the releases that exist. Instead, we can get them from helm.
-    for offset in itertools.count(0, step=256):
-        p = subprocess.run([
-            'helm',
-            '--namespace', NAMESPACE,
-            'list',
-            '--output', 'json',
-            '--max', '256',
-            '--offset', str(offset)],
-            env={'KUBECONFIG': config_file}, check=True, capture_output=True, text=True)
-        releases = json.loads(p.stdout)
-        if not releases:
-            return
-        for release in releases:
-            if release['name'] in EXCLUDE_RELEASES:
-                continue
-            # Helm's release timestamps end with " +0000 UTC". Pre-3.11, fromisoformat() wants
-            # "+00:00".
-            updated_str = release['updated'].replace(' +0000 UTC', '+00:00')
-            # Helm also includes nanoseconds, but datetime only takes microseconds.
-            updated_str = re.sub(r'(\.\d{6})\d*', r'\1', updated_str)
-            updated = datetime.datetime.fromisoformat(updated_str)
-            age = datetime.datetime.now(tz=datetime.timezone.utc) - updated
-            # Avoid a race condition where we'd delete a new release before its job is created.
-            if age < MINIMUM_AGE:
-                logger.debug('Skipping release %s: updated recently', release['name'])
-                continue
-            yield release['name']
+    # list all the releases that exist. Instead, we can get them from the k8s API. (We could also
+    # get them from `helm list`, but it's slow and doesn't offer consistent-snapshot pagination,
+    # so we get bad data if the list of releases changes while we're trying to iterate over it.)
+    core = client.CoreV1Api(api_client)
+    secrets_list = core.list_namespaced_secret(
+        namespace=NAMESPACE, field_selector='type=helm.sh/release.v1')
+    # Store the release names in a set, since duplicate names will appear if Helm has two revisions
+    # of the same release.
+    releases = set[str]()
+    for secret in secrets_list.items:
+        # Secret names are of the form 'sh.helm.release.v1.abcde123.v42', for revision 42 of a
+        # release named 'abcde123'.
+        if not secret.metadata.name.startswith('sh.helm.release.v1.'):
+            # We could just log this and skip it, but with our field selector we really expect to
+            # only see Helm-release secrets with a digestible name. If something's changed in the
+            # format, crash noisily so we can fix it, instead of quietly skipping all the releases.
+            raise ValueError(f'Unexpected secret name: {secret.metadata.name}')
+        release_name, _ = secret.metadata.name.removeprefix('sh.helm.release.v1.').split('.v')
+        if release_name in EXCLUDE_RELEASES:
+            continue
+        # Avoid a race condition where we'd delete a new release before its job is created. Helm's
+        # modifiedAt label should be the same time as Kubernetes's creation_timestamp, but it's the
+        # Helm semantics that we care about, so use the timestamp that `helm list` would report.
+        try:
+            updated_ts = secret.metadata.labels['modifiedAt']
+        except KeyError:
+            logger.debug('Skipping release %s: modifiedAt label not set', release_name)
+            continue
+        updated = datetime.datetime.fromtimestamp(int(updated_ts), tz=datetime.timezone.utc)
+        age = datetime.datetime.now(tz=datetime.timezone.utc) - updated
+        if age < MINIMUM_AGE:
+            logger.debug('Skipping release %s: updated recently', release_name)
+            continue
+        releases.add(release_name)
+    logger.info('Found %d releases', len(releases))
+    # Sort the releases before returning, just for convenience: it makes it easier to gauge progress
+    # while tailing the logs.
+    return sorted(releases)
 
 
-def all_jobs_expired(batch: client.BatchV1Api, release: str) -> bool:
+def all_jobs_expired(api_client: client.ApiClient, release: str) -> bool:
+    batch = client.BatchV1Api(api_client)
     job_list = batch.list_namespaced_job(namespace=NAMESPACE, label_selector=f'release={release}')
     # Usually, the job is cleaned up via ttlSecondsAfterFinished. So if there are no jobs, we'll go
     # ahead and uninstall the release. If the job is terminated but still here, we'll assume it was
@@ -113,11 +120,10 @@ def main() -> int:
     logger.addHandler(logging.StreamHandler())
 
     config_file = f'/etc/kubernetes/{NAMESPACE}-deploy-{args.cluster}.config'
-    batch = client.BatchV1Api(client.ApiClient(config.load_kube_config(config_file)))
-
+    api_client = client.ApiClient(config.load_kube_config(config_file))
     errors = False
-    for release in get_releases(config_file):
-        if all_jobs_expired(batch, release):
+    for release in get_releases(api_client):
+        if all_jobs_expired(api_client, release):
             try:
                 destroy(release, args.cluster, args.dry_run)
             except subprocess.SubprocessError:
