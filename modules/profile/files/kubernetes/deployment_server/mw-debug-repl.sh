@@ -18,6 +18,7 @@ OPTIONS:
   -d|--datacenter    Pick a specific datacenter (by default the master will be picked)
   -v|--verbose       Use verbose logging (equivalent of passing --d 2 to REPL)
   -w|--wiki          Pick a wiki. For compatibility reasons, the flag can be omitted.
+  -n|--next          Use the mwdebug-next release to launch the REPL
   -h|--help          Show this help message
 
 EXAMPLES:
@@ -42,8 +43,9 @@ REPL="shell.php"
 PARAMS=""
 WIKI=""
 DC=""
+RELEASE="pinkunicorn"
 
-OPTS=$(getopt -o hew:d:v -l help,wiki:,datacenter:,verbose -- "$@")
+OPTS=$(getopt -o hew:d:vn -l help,wiki:,datacenter:,verbose,next -- "$@")
 eval set -- "$OPTS"
 while true; do
     case "$1" in
@@ -56,6 +58,8 @@ while true; do
             WIKI="$2"; shift 2;;
         -d | --datacenter )
             DC="$2"; shift 2;;
+        -n | --next )
+            RELEASE="next"; shift;;
         -v | --verbose )
             PARAMS="$PARAMS --d 2"; shift;;
         -- )
@@ -81,10 +85,10 @@ if [[ "$DC" == "" ]]; then
 fi
 echo "Finding a mw-debug pod in $DC..."
 export KUBECONFIG="/etc/kubernetes/admin-$DC.config"
-PODNAME=$(kubectl -n mw-debug get pods --field-selector=status.phase=Running -o name | head -n 1)
+PODNAME=$(kubectl -n mw-debug get pods -l release=${RELEASE} --field-selector=status.phase=Running -o name | head -n 1)
 if [ -z "$PODNAME" ]; then
     echo "Could not find a running pod. Check if the datacenter you picked is running mw-debug at the moment"
     exit 1
 fi
-echo "Now running $REPL for $WIKI inside ${PODNAME}..."
-kubectl -n mw-debug exec "$PODNAME" -c mediawiki-pinkunicorn-app -ti -- php /srv/mediawiki/multiversion/MWScript.php "$REPL" --wiki "$WIKI" $PARAMS
+echo "Now running $REPL for $WIKI inside ${PODNAME} on release ${RELEASE}..."
+kubectl -n mw-debug exec "$PODNAME" -c mediawiki-${RELEASE}-app -ti -- php /srv/mediawiki/multiversion/MWScript.php "$REPL" --wiki "$WIKI" $PARAMS
