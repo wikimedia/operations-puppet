@@ -1767,6 +1767,10 @@ node /^kubestage200[12]\.codfw\./ {
     role(kubernetes::staging::worker)
 }
 
+node /^kubestage200[34]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^cloudcontrol100[567]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
