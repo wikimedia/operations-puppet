@@ -41,7 +41,7 @@ class profile::ci::gitcache {
         ensure      => present,
         description => 'Regular job to update the CI git cache',
         user        => 'root',
-        command     => '/usr/bin/find /srv/git -type d -name \'*.git\' -exec git -C {} fetch origin --prune --prune-tags --force \;',
+        command     => '/usr/bin/find /srv/git -type d -name \'*.git\' -exec git -C {} fetch origin --prune --prune-tags --force \'+refs/heads/*:refs/heads/*\' \'+refs/tags/*:refs/tags/*\' \;',
         interval    => {'start' => 'OnCalendar', 'interval' => "*-*-* 3:${minute}:00"},
     }
 }
