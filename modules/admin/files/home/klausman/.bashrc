@@ -102,7 +102,8 @@ function proxyon
     HTTP_PROXY=$http_proxy
     https_proxy=$http_proxy
     HTTPS_PROXY=$https_proxy
-    export http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+    no_proxy=127.0.0.1,::1,localhost,.wmnet,.wikimedia.org,.wikipedia.org,.wikibooks.org,.wikiquote.org,.wiktionary.org,.wikisource.org,.wikispecies.org,.wikiversity.org,.wikidata.org,.mediawiki.org,.wikinews.org,.wikivoyage.org
+    export http_proxy https_proxy HTTP_PROXY HTTPS_PROXY no_proxy
 }
 
 # vim: ft=sh expandtab autoindent smartindent tabstop=4 shiftwidth=4
