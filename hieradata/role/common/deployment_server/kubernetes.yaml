@@ -93,6 +93,10 @@ profile::keyholder::server::agents:
     trusted_groups:
       - ops
 
+  deploy-hiddenparma:
+    trusted_groups:
+      - ops
+
   deploy-ci-docroot:
     trusted_groups:
       - deployment-ci-admins
