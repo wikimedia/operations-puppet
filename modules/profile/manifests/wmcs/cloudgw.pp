@@ -73,6 +73,20 @@ class profile::wmcs::cloudgw (
             address   => $wan_addr_v6,
             prefixlen => $wan_netm_v6,
         }
+
+        # NOTE: it seems the kernel flushes routes when changing this
+        # so make sure in the resulting system config, this sysctl is applied
+        # before injecting the routes (below)
+        # also, 'all' forwarding seems to enable $whatever that makes the IPv6
+        # forwarding work for real on the VRF
+        # however, explicitly disable on the primary interface, because it conflicts
+        # with the accept_ra and token settings that we have per the d-i
+        sysctl::parameters {'cloudgw-ipv6-forwarding':
+            values   => {
+                'net.ipv6.conf.all.forwarding'                           => 1,
+                "net.ipv6.conf.${facts['interface_primary']}.forwarding" => 0,
+            },
+        }
     }
 
     [$nic_virt, $nic_wan].each |$nic| {
@@ -91,13 +105,6 @@ class profile::wmcs::cloudgw (
         interface::post_up_command { "cloudgw_${nic}_accept_ra":
             interface => $nic,
             command   => "sysctl -w net.ipv6.conf.${nic}.accept_ra=0",
-        }
-
-        if $wan_addr_v6 != undef {
-            interface::post_up_command { "cloudgw_${nic}_ipv6_forwarding":
-                interface => $nic,
-                command   => "sysctl -w net.ipv6.conf.${nic}.forwarding=1",
-            }
         }
     }
 
