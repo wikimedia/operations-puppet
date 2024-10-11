@@ -170,6 +170,11 @@ server {
         access_log   off;
     }
 
+    set $monitoring_endpoint "";
+    if ( $uri ~ ^/readiness-probe$ ) {
+        set $monitoring_endpoint "true";
+    }
+
     rewrite ^/readiness-probe$ /sparql?query=%20ASK%7B%20%3Fx%20%3Fy%20%3Fz%20%7D;
 
     rewrite ^/sparql$ /bigdata/namespace/<%= @blazegraph_main_ns %>/sparql;
@@ -217,9 +222,16 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+        set $monitoring_query "";
+        if ( $monitoring_endpoint = "true" ) {
+            set $monitoring_query "true";
+        }
         <%- if @monitoring_user_agents != [] %>
-        proxy_set_header X-Monitoring-Query $monitoring_ua;
+        if ( $monitoring_ua = "true" ) {
+            set $monitoring_query "true";
+        }
         <%- end %>
+        proxy_set_header X-Monitoring-Query $monitoring_query;
 
         # Default 60 second max query time
         set $xmaxqueryheader "<%= @max_query_time_millis %>";
