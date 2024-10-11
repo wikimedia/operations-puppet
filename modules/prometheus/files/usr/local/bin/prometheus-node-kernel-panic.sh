@@ -20,12 +20,14 @@ fi
 # try to detect older messages in case of a reboot or if the node was down for whatever reason
 SINCE="30m ago"
 
-journal=$(journalctl --quiet --dmesg --boot=all --since "${SINCE}")
+# instead of _TRANSPORT=kernel we could be using '--dmesg --boot=all'
+# if all servers were >= buster, but they aren't as of this writing
+journal=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}")
 panic=$(grep --count "\[ cut here \]" <<< "${journal}" || :)
 warning=$(grep --ignore-case --count "warning" <<< "${journal}" || :)
 taint=$(grep --ignore-case --count "taint" <<< "${journal}" || :)
 
-err_prio=$(journalctl --quiet --dmesg --boot=all --since "${SINCE}" --priority=err | wc -l)
+err_prio=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" --priority=err | wc -l)
 
 cat <<EOF >"$tmpoutfile"
 # HELP kernel_dmesg_panic Number of kernel panic messages since ${SINCE}
