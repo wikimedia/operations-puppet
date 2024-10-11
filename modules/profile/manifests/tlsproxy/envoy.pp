@@ -301,8 +301,8 @@ class profile::tlsproxy::envoy(
             }
         }
 
-        if $firewall_src_sets and $ferm_srange == Undef {
-            firewall::service { 'envoy_tls_termination':
+        if $firewall_src_sets {
+            firewall::service { 'envoy_tls_termination_src_sets':
                 proto    => 'tcp',
                 notrack  => true,
                 port     => $tls_port,
