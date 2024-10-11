@@ -100,8 +100,16 @@ table inet cloudgw {
         ip saddr @cloud_filter counter drop
         ip daddr @cloud_filter counter drop
 
-        # only forward packets in the VRF
-        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+        # for IPv4, forward all packets only in the VRF
+        meta nfproto ipv4 iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
+
+        # for IPv6, allow forwarding of all ICMP
+        ip6 nexthdr ipv6-icmp counter accept
+        # for IPv6, allow all egress traffic in the VRF
+        meta nfproto ipv6 iifname "vrf-cloudgw" oifname $nic_wan counter accept
+        # for IPv6, only allow ingress taffic if established or related, in the VRF
+        meta nfproto ipv6 iifname "vrf-cloudgw" oifname $nic_virt ct state established,related counter accept
+
         counter comment "counter dropped packets"
     }
 }
