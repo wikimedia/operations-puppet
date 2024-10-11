@@ -295,8 +295,8 @@ class profile::ganeti (
                 'net.ipv4.ip_forward'                                     => 1,
                 "net.ipv4.conf.${$facts['interface_primary']}.ip_forward" => 1,
                 "net.ipv6.conf.${$facts['interface_primary']}.accept_ra"  => 2,
-                "net.ipv6.conf.${$facts['interface_primary']}.ip_forward" => 1,
-                'net.ipv6.conf.all.ip_forward'                            => 1,
+                "net.ipv6.conf.${$facts['interface_primary']}.forwarding" => 1,
+                'net.ipv6.conf.all.forwarding'                            => 1,
             },
         }
 
