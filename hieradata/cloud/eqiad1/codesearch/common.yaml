@@ -19,5 +19,3 @@ profile::codesearch::ports:
     shouthow: 6096
     wmcs: 6097
     devtools: 6098
-    discovery: 6099
-    design: 6100
