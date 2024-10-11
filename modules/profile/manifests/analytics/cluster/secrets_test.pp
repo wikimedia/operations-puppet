@@ -19,12 +19,12 @@ class profile::analytics::cluster::secrets_test (
     owner   => 'btullis',
     group   => 'btullis',
   }
-  hdfs_file { '/user/btullis/secrets_test_3.txt':
-    source => 'puppet:///modules/profile/analytics/cluster/secrets_test_3.txt',
-    mode   => '644',
-    owner  => 'analytics',
-    group  => 'analytics',
-  }
+  # hdfs_file { '/user/btullis/secrets_test_3.txt':
+  #   source => 'puppet:///modules/profile/analytics/cluster/secrets_test_3.txt',
+  #   mode   => '644',
+  #   owner  => 'analytics',
+  #   group  => 'analytics',
+  # }
   hdfs_file { '/user/btullis/secrets_test_4.txt':
     ensure => absent,
   }
