@@ -7,9 +7,5 @@
 # T127797 - needs at least one comment line for each class
 --no-documentation-check
 
-# We are working on disabling legacy facts, T372666, but no need to warn folks,
-# until they are disabled.
---no-legacy_facts-check
-
 # When using strict_indent (which is the case in the puppet vscode extension) we need to declare our indent
 --load=./rake_modules/chars_per_indent4.rb
