@@ -25,7 +25,7 @@ class profile::analytics::cluster::secrets_test (
   #   owner  => 'analytics',
   #   group  => 'analytics',
   # }
-  hdfs_file { '/user/btullis/secrets_test_4.txt':
-    ensure => absent,
-  }
+  # hdfs_file { '/user/btullis/secrets_test_4.txt':
+  #   ensure => absent,
+  # }
 }
