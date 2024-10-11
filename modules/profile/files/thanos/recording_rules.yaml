@@ -178,3 +178,10 @@ groups:
       # record boolean logstash availabilty metric for pyrra logstash-availability bool_gauge SLO
       - record: logstash_sli_availability:bool
         expr: increase(logstash_node_pipeline_events_filtered_total[5m]) > bool 1
+
+  - name: phpfpm_workers
+    rules:
+      # Use a recording rule to allow querying historical data without caring
+      # about the very high cardinality labels
+      - record: phpfpm_processes_total:sum
+        expr: sum without (instance, pod_template_hash, kubernetes_pod_name) (phpfpm_processes_total)
