@@ -11,7 +11,8 @@ class role::kubernetes::staging::master_stacked {
     # Sets up kubernetes on the machine
     include profile::kubernetes::master
 
-    include profile::docker::engine
+    # Sets up the container runtime used by kubernetes
+    include profile::kubernetes::container_runtime
     include profile::kubernetes::node
     include profile::calico::kubernetes
     # Kubernetes staging masters are LVS backend servers

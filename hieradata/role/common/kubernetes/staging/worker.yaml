@@ -17,7 +17,7 @@ profile::lvs::realserver::pools:
   k8s-ingress-staging: {}
 
 profile::contacts::role_contacts: ['ServiceOps']
-profile::base::production::role_description: 'Kubernetes containerd worker node (staging setup)'
+profile::base::production::role_description: 'Kubernetes worker node (staging setup)'
 
 profile::puppet::agent::force_puppet7: true
 
