@@ -19,8 +19,6 @@ class profile::wmcs::cloudgw (
     Array[String]                                  $vrrp_vips                 = lookup('profile::wmcs::cloudgw::vrrp_vips',                {default_value => ['127.0.0.1 dev eno2']}),
     Stdlib::IP::Address                            $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer',                {default_value => '127.0.0.1'}),
     Optional[Array[String]]                        $vrrp_vips_v6              = lookup('profile::wmcs::cloudgw::vrrp_vips_v6',             {default_value => undef}),
-    Optional[Stdlib::IP::Address::V6]              $vrrp_peer_v6              = lookup('profile::wmcs::cloudgw::vrrp_peer_v6',             {default_value => undef}),
-    String[1]                                      $vrrp_passwd               = lookup('profile::wmcs::cloudgw::vrrp_passwd',              {default_value => 'dummy'}),
     Hash                                           $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd',               {default_value => {}}),
     Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',        {default_value => '127.0.0.7'}),
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',             {default_value => []}),
@@ -100,10 +98,6 @@ class profile::wmcs::cloudgw (
                 interface => $nic,
                 command   => "sysctl -w net.ipv6.conf.${nic}.forwarding=1",
             }
-            interface::post_up_command { "cloudgw_${nic}_rp_filter_v6":
-                interface => $nic,
-                command   => "sysctl -w net.ipv6.conf.${nic}.rp_filter=0",
-            }
         }
     }
 
@@ -181,13 +175,6 @@ class profile::wmcs::cloudgw (
         auth_pass => 'ignored',       # overriden by config template
         vips      => ['127.0.0.1'],   # overriden by config template
         config    => template('profile/wmcs/cloudgw/keepalived.conf.erb'),
-    }
-
-    if $vrrp_peer_v6 != undef {
-        nftables::file { 'keepalived_vrrp_v6':
-            order   => 104,
-            content => "add rule inet base input ip6 saddr ${vrrp_peer_v6} ip6 nexthdr vrrp accept\n",
-        }
     }
 
     nftables::file { 'keepalived_vrrp':

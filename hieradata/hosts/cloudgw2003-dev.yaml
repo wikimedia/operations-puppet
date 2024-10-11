@@ -23,4 +23,3 @@ profile::wmcs::cloudgw::wan_addr_v6: 2a02:ec80:a100:fe03::2003:1
 profile::wmcs::cloudgw::wan_netm_v6: 64
 
 profile::wmcs::cloudgw::vrrp_peer: 208.80.153.189
-profile::wmcs::cloudgw::vrrp_peer_v6: 2a02:ec80:a100:fe04::2002:1

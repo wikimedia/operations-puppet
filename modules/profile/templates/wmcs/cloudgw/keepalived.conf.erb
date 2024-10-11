@@ -14,10 +14,6 @@ vrrp_instance VRRP_IPv4 {
   nopreempt
   priority <%= scope.call_function('fqdn_rand', [100]) %>
   advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass <%= @vrrp_passwd %>
-  }
   # go to FAULT state if the cloud-facing NIC goes down
   track_interface {
     <%= @nic_virt %>
@@ -37,17 +33,11 @@ vrrp_instance VRRP_IPv4 {
 vrrp_instance VRRP_IPv6 {
   state BACKUP
   interface <%= @nic_wan %>
-  # force this source address otherwise a link-local one might be used
-  unicast_src_ip <%= @virt_addr_v6 %>
   virtual_router_id 52
   # leave primary peer as is even if lower priority: avoids some flapping
   nopreempt
   priority <%= scope.call_function('fqdn_rand', [100]) %>
   advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass <%= @vrrp_passwd %>
-  }
   # go to FAULT state if the cloud-facing NIC goes down
   track_interface {
     <%= @nic_virt %>
@@ -56,9 +46,6 @@ vrrp_instance VRRP_IPv6 {
 <% @vrrp_vips_v6.each do |vip| -%>
     <%= vip %>
 <% end -%>
-  }
-  unicast_peer {
-    <%= @vrrp_peer_v6 %>
   }
 }
 <% end -%>
