@@ -6,6 +6,13 @@ class profile::conftool::hiddenparma (
     Hash[String, String] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
 ) {
     require profile::conftool::client
+    # Create the /srv/deployment directory if it doesn't exist
+    if (!defined(File['/srv/deployment'])) {
+        file { '/srv/deployment':
+            ensure => directory,
+        }
+    }
+
     $user = 'deploy-hiddenparma'
     file { '/etc/default/hiddenparma':
         ensure  => file,
@@ -16,14 +23,15 @@ class profile::conftool::hiddenparma (
     }
 
     fastapi::application { 'hiddenparma':
-        port => 8080,
+        port   => 8080,
     }
 
     file { '/etc/HIDDENPARMA':
-        ensure => directory,
-        owner  => $user,
-        group  => $user,
-        mode   => '0550',
+        ensure  => directory,
+        owner   => $user,
+        group   => $user,
+        mode    => '0550',
+        require => Fastapi::Application['hiddenparma'],
     }
 
     file { '/etc/HIDDENPARMA/api_tokens.json':

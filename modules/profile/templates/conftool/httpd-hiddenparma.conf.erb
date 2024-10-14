@@ -39,8 +39,8 @@
           <%= key %> <%= setting %>
           <%- end -%>
         <%- end -%>
-        ProxyPass <%= @proxy_pass %>/api
-        ProxyPassReverse <%= @proxy_pass %>/api
+        ProxyPass <%= @vhost_settings['proxy_pass'] %>
+        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>
     </Location>
 
     <Location /health_check>
@@ -51,8 +51,8 @@
 
     <Location /api>
         Require all granted
-        ProxyPass <%= @proxy_pass %>
-        ProxyPassReverse <%= @proxy_pass %>/api
+        ProxyPass <%= @vhost_settings['proxy_pass'] %>
+        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>
     </Location>
 
     CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
