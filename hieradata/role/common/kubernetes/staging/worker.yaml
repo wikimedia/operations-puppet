@@ -7,9 +7,6 @@ profile::base::overlayfs: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
 profile::firewall::ferm_icinga_retry_interval: 15
 
-# Use containerd
-profile::containerd::ensure: present
-
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:

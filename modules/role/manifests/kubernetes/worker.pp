@@ -5,8 +5,8 @@ class role::kubernetes::worker {
 
     # Setup dfdaemon (needs to be included before the container runtime)
     include profile::dragonfly::dfdaemon
-    # Sets up docker on the machine
-    include profile::docker::engine
+    # Sets up the container runtime used by kubernetes
+    include profile::kubernetes::container_runtime
     # Setup kubernetes stuff
     include profile::kubernetes::node
     # Set up mediawiki-related stuff

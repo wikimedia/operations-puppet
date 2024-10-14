@@ -4,6 +4,7 @@ cluster: kubernetes
 profile::kubernetes::cluster_name: "%{::site}"
 
 profile::base::overlayfs: true
+
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   bridge: none
@@ -12,7 +13,8 @@ profile::docker::engine::settings:
   log-opts:
     max-size: 100m
   live-restore: true
-profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet)/*' --exclude-type=tracefs
+
+profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
 profile::firewall::ferm_icinga_retry_interval: 15
 
 # Defined in the private repo

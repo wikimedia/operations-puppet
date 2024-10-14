@@ -2,7 +2,7 @@
 # @summary
 #   Install and configure containerd for kubernetes
 class profile::containerd (
-  Wmflib::Ensure $ensure = lookup('profile::containerd::ensure', { 'default_value' => absent }),
+  Wmflib::Ensure $ensure = lookup('profile::containerd::ensure', { 'default_value' => present }),
   String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
   Optional[String] $registry_username = lookup('profile::containerd::registry_username', { 'default_value' => 'kubernetes' }),
   Optional[String] $registry_password = lookup('profile::containerd::registry_password', { 'default_value' => undef }),
