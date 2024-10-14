@@ -40,7 +40,6 @@ class profile::conftool::hiddenparma (
         group   => $user,
         mode    => '0440',
         content => to_json($api_tokens),
-        notify  => Service['hiddenparma'],
     }
     # Apache and CAS auth setup
     profile::idp::client::httpd::site { 'requestctl.wikimedia.org':
