@@ -6,6 +6,7 @@ profile::puppet::agent::force_puppet7: true
 # Netbox
 profile::netbox::validators:
   - ipam.ipaddress
+  - ipam.prefix
   - dcim.cable
   - dcim.device
   - dcim.devicetype
