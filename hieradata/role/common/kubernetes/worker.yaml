@@ -17,7 +17,6 @@ profile::firewall::ferm_icinga_retry_interval: 15
 
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
-profile::dragonfly::dfdaemon::ensure: present
 # We don't need conftool safe restart scripts on k8s.
 profile::lvs::realserver::use_conftool: false
 profile::lvs::realserver::pools:

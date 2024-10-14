@@ -7,7 +7,6 @@ profile::base::overlayfs: true
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|run)/(docker|kubelet|containerd)/*' --exclude-type=tracefs
 profile::firewall::ferm_icinga_retry_interval: 15
 
-profile::dragonfly::dfdaemon::ensure: present
 # Use containerd
 profile::containerd::ensure: present
 

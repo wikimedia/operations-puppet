@@ -33,7 +33,6 @@ profile::puppet::agent::force_puppet7: true
 
 # Defined in the private repo
 #profile::kubernetes::node::docker_kubernetes_user_password
-profile::dragonfly::dfdaemon::ensure: present
 profile::dragonfly::dfdaemon::proxy_urls_regex:
   - 'wikimedia/machinelearning-liftwing.*/blobs/sha256.*'
   - 'amd-pytorch.*/blobs/sha256.*'
