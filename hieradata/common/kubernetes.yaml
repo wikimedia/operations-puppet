@@ -875,9 +875,9 @@ kubernetes::clusters:
         v4: "10.67.80.0/21"
         v6: "2620:0:861:305::/64"
       etcd_urls:
-        - https://aux-k8s-etcd1001.eqiad.wmnet:2379
-        - https://aux-k8s-etcd1002.eqiad.wmnet:2379
         - https://aux-k8s-etcd1003.eqiad.wmnet:2379
+        - https://aux-k8s-etcd1004.eqiad.wmnet:2379
+        - https://aux-k8s-etcd1005.eqiad.wmnet:2379
       cluster_nodes:
         - aux-k8s-ctrl1002.eqiad.wmnet
         - aux-k8s-ctrl1003.eqiad.wmnet
