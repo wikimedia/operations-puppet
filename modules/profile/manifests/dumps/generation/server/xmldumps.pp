@@ -23,10 +23,4 @@ class profile::dumps::generation::server::xmldumps(
             xmlremotedirs => $xmlremotedirs,
         }
     }
-
-    nrpe::monitor_service { 'dumps_store_load_average':
-        description  => 'high load average on dumps nfs store',
-        nrpe_command => '/usr/lib/nagios/plugins/check_load -w 30,20,10 -c 100,80,50',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Dumps/XML-SQL_Dumps#Troubleshooting',
-    }
 }
