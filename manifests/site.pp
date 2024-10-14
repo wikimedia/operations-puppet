@@ -233,7 +233,7 @@ node /^archiva1002\.wikimedia\./ {
 }
 
 # etcd cluster for aux kubernetes cluster
-node /^aux-k8s-etcd100[1-5]\.eqiad\./ {
+node /^aux-k8s-etcd100[3-5]\.eqiad\./ {
     role(etcd::v3::aux_k8s_etcd)
 }
 
