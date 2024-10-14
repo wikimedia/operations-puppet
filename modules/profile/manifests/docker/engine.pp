@@ -46,4 +46,24 @@ class profile::docker::engine (
             ensure => 'running',
         }
     }
+
+    # Check if dragonfly::dfdaemon is configured for this host
+    if defined(Class['profile::dragonfly::dfdaemon']) {
+        $dragonfly_enabled = $profile::dragonfly::dfdaemon::ensure ? {
+        'absent'  => false,
+        default   => true,
+        }
+    } else {
+        $dragonfly_enabled = false
+    }
+    if $dragonfly_enabled {
+        # Configure the docker daemon to use the local dfdaemon as https_proxy
+        $proxy_host = '127.0.0.1:65001'
+        systemd::unit { 'docker':
+            ensure   => present,
+            override => true,
+            restart  => true,
+            content  => "[Service]\nEnvironment=\"HTTPS_PROXY=https://${proxy_host}\"",
+        }
+    }
 }

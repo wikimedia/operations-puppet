@@ -3,7 +3,7 @@ class role::kubernetes::staging::worker {
     include profile::base::production
     include profile::firewall
 
-    # Setup dfdaemon
+    # Setup dfdaemon (needs to be included before the container runtime)
     include profile::dragonfly::dfdaemon
     # Sets up the container runtime used by kubernetes
     include profile::kubernetes::container_runtime
