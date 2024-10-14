@@ -864,7 +864,6 @@ kubernetes::clusters:
         name: k8s-aux
         port: 9911
       control_plane_nodes:
-        - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
         - aux-k8s-ctrl1003.eqiad.wmnet
       cluster_dns:
@@ -880,10 +879,8 @@ kubernetes::clusters:
         - https://aux-k8s-etcd1002.eqiad.wmnet:2379
         - https://aux-k8s-etcd1003.eqiad.wmnet:2379
       cluster_nodes:
-        - aux-k8s-ctrl1001.eqiad.wmnet
         - aux-k8s-ctrl1002.eqiad.wmnet
         - aux-k8s-ctrl1003.eqiad.wmnet
-        - aux-k8s-worker1001.eqiad.wmnet
         - aux-k8s-worker1002.eqiad.wmnet
         - aux-k8s-worker1003.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.

@@ -238,12 +238,12 @@ node /^aux-k8s-etcd100[1-5]\.eqiad\./ {
 }
 
 # control-plane servers for aux kubernetes cluster
-node /^aux-k8s-ctrl100[1-3]\.eqiad\./ {
+node /^aux-k8s-ctrl100[23]\.eqiad\./ {
     role(aux_k8s::master)
 }
 
 # worker nodes for aux kubernetes cluster
-node /^aux-k8s-worker100[1-3]\.eqiad\./ {
+node /^aux-k8s-worker100[23]\.eqiad\./ {
     role(aux_k8s::worker)
 }
 
