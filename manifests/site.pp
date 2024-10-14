@@ -1993,6 +1993,11 @@ node /^mc-gp200[1-3]\.codfw\./ {
     role(mediawiki::memcached::gutter)
 }
 
+# T376968
+node /^mc-gp200[4-6]\.codfw\./ {
+    role(insetup::serviceops)
+}
+
 node /^mc-misc100[1-2]\.eqiad\./ {
     role(insetup::serviceops)
 }
