@@ -9,6 +9,10 @@ version = 2
   [plugins."io.containerd.grpc.v1.cri"]
     # Define our sandbox image
     sandbox_image = "<%= @sandbox_image %>"
+    # max_container_log_line_size is the maximum log line size in bytes for a container.
+    # Log line longer than the limit will be split into multiple lines. -1 means no
+    # limit.
+    max_container_log_line_size = -1
     # By default docker does set net.ipv4.ip_unprivileged_port_start=0 allowing containers to bind to ports
     # below 1024 without explicit NET_BIND_SERVICE capability.
     # It also sets net.ipv4.ping_group_range="0 2147483647", allowing ICMP sockets without CAP_NET_RAW.
