@@ -1989,6 +1989,11 @@ node /^mc-gp100[1-3]\.eqiad\./ {
     role(mediawiki::memcached::gutter)
 }
 
+# T376186
+node /^mc-gp100[4-6]\.eqiad\./ {
+    role(insetup::serviceops)
+}
+
 node /^mc-gp200[1-3]\.codfw\./ {
     role(mediawiki::memcached::gutter)
 }
