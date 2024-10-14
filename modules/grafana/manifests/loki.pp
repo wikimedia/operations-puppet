@@ -27,4 +27,6 @@ class grafana::loki (
       require => Package['grafana-loki']
     }
   }
+
+  profile::auto_restarts::service { 'grafana-loki': }
 }
