@@ -46,7 +46,7 @@ class profile::ceph::backup::s3_local (
     systemd::timer::job { 'backup_s3_postgresql':
         user        => 'backup',
         description => 'Create local copies of S3 buckets containing PostgreSQL backups to the local filesystem',
-        command     => '/usr/bin/rclone -v --config /srv/postgresql_backup/rclone.conf --exclude /rclone.conf sync everything: /srv/postgresql_backups',
+        command     => "/usr/bin/rclone -v --config ${backup_dir}/rclone.conf --exclude /rclone.conf sync everything: ${backup_dir}",
         interval    => {
             'start'    => 'OnCalendar',
             'interval' => '*-*-* 00:00:00',  # Every day at midnight
