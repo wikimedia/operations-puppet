@@ -18,4 +18,7 @@ class toolforge::k8s::deployer (
         mode      => '0400',
         show_diff => false,
     }
+
+    # quite useful for deployment scripts
+    ensure_packages(['python3-click'])
 }
