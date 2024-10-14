@@ -21,8 +21,9 @@ frequently alerting sysops: T317169.
 import argparse
 import logging
 import sys
-from urllib.request import urlopen, Request
 from urllib.error import URLError
+from urllib.parse import urljoin
+from urllib.request import urlopen, Request
 
 from bs4 import BeautifulSoup
 
@@ -38,26 +39,21 @@ ICINGA_CRITICAL = 2
 ICINGA_UNKNOWN = 3
 
 
-def uniformize_url(url):
+def uniformize_url(site, url):
     """
     Make sure provided urls are complete, valid ones, as sometimes
     humans and browsers use shortcuts. Return the provided one, completed.
     """
-    if url.startswith('//'):  # for urls like '//foundation.wikimedia.org'
-        url = 'https:' + url
-    elif not url.startswith('http://') and not url.startswith('https://'):
-        # for urls like 'locahost', '127.0.0.1' or 'wikipedia.org'
-        url = 'https://' + url
-    return url
+    return urljoin(site, url)  # Should we enforce https or not this layer concern?
 
 
-def download_page(url):
+def download_page(site, url):
     """
     Given a URL with the address of a website, send a GET request
     to download it and return its html
     """
     logging.info('Downloading website: %s', url)
-    url = uniformize_url(url)
+    url = uniformize_url(site, url)
     try:
         html = urlopen(Request(url, headers={'User-Agent': UA}))
     except URLError as error:
@@ -77,18 +73,18 @@ def text_contains_all_words(text, words):
     return True
 
 
-def link_contains_all_words(url, words):
+def link_contains_all_words(site, url, words):
     """
     Check that the given url, once downloaded contains every single world in the given list,
     returns true if that is the case, false in other cases. Produces an error if the page fails
     to load correctly.
     """
-    html = download_page(url)
+    html = download_page(site, url)
     text = BeautifulSoup(html, 'html.parser').get_text().lower()
     return text_contains_all_words(text, words)
 
 
-def link_contains_cc_license(url):
+def link_contains_cc_license(site, url):
     """
     Check that the given url is a link to creative commons or an internal link containing all
     of the following words "license creative commons share remix attribution share+alike <version>"
@@ -99,10 +95,10 @@ def link_contains_cc_license(url):
         return True
     words = ['license', 'creative', 'commons', 'share', 'remix', 'attribution',
              'share alike', LICENSE_VERSION]
-    return link_contains_all_words(url, words)
+    return link_contains_all_words(site, url, words)
 
 
-def copyright(footer):
+def copyright(site, footer):
     """
     Check that the footer contains a copyright link with the words "creative commons attribution
     sharealike" or "cc by sa", and the url linked is a valid license. Return true if valid.
@@ -117,22 +113,22 @@ def copyright(footer):
         logging.info('Checking text: "%s"', text)
         if (text_contains_all_words(text, ['attribution', 'sharealike'])
                 or text_contains_all_words(text, ['by', 'sa'])):
-            return link_contains_cc_license(href)
+            return link_contains_cc_license(site, href)
     logging.info('No link was found on the footer containing references to Creative Commons!')
     return False
 
 
-def link_contains_wikimedia_terms(url):
+def link_contains_wikimedia_terms(site, url):
     """
     Check that the given url is a link to Wikimedia's term of use"
     """
     words = ['services', 'privacy policy', 'content', 'activities', 'illegal', 'password',
              'trademarks', 'licensing', 'dmca', 'third-party', 'management', 'termination',
              'disclaimers',  'liability', 'modifications']
-    return link_contains_all_words(url, words)
+    return link_contains_all_words(site, url, words)
 
 
-def terms(footer):
+def terms(site, footer):
     """
     Check that the footer contains a terms of use link with the text 'terms' & 'use' and it links
     to a url containing valid terms of use. Return true if valid.
@@ -146,22 +142,22 @@ def terms(footer):
         text = link.get_text()
         logging.info('Checking text: "%s"', text)
         if len(text) > 0:
-            return link_contains_wikimedia_terms(href)
+            return link_contains_wikimedia_terms(site, href)
     logging.info('No link was found on the footer containing references to Terms of use!')
     return False
 
 
-def link_contains_wikimedia_privacy_policy(url):
+def link_contains_wikimedia_privacy_policy(site, url):
     """
     Check that the given url is a link to Wikimedia's privacy policy
     """
-    words = ['wikimedia', 'introduction', 'site', 'personal information', 'third party',
+    words = ['wikimedia', 'introduction', 'site', 'personal information', 'third part',
              'collect', 'contribution', 'metadata', 'information',
              'sharing', 'protect', 'contact']
-    return link_contains_all_words(url, words)
+    return link_contains_all_words(site, url, words)
 
 
-def privacy(footer):
+def privacy(site, footer):
     """
     Check that the footer contains a privacy policy link with the text 'privacy' & 'policy' and
     it links to a url containing a valid privacy policy. Return true if valid.
@@ -172,12 +168,12 @@ def privacy(footer):
 
     for links in privacy_policy_links:
         href = links.get('href')
-        return link_contains_wikimedia_privacy_policy(href)
+        return link_contains_wikimedia_privacy_policy(site, href)
     logging.info('No link was found on the footer containing references to a Privacy policy!')
     return False
 
 
-def trademark(footer):
+def trademark(_site, footer):
     """
     Check that the footer contains a trademark link with the text 'trademark' and it links to a
     url containing a valid trademark description. Return true if valid.
@@ -216,13 +212,13 @@ def get_checks():
     }
 
 
-def site_footer(url):
+def site_footer(site, url):
     """
     Request and retrieve the HTML parsed tree of the footer
     section (area contained within the <footer> html tag) of a given
     webpage. Return the DOM of the first one found.
     """
-    html = download_page(url)
+    html = download_page(site, url)
     footers = BeautifulSoup(html, 'html.parser').find_all('footer')
     if len(footers) == 0:
         logging.error("Found no footer section on html")
@@ -277,11 +273,11 @@ def main():
     check_list = ', '.join([c.__name__ for c in ensures])
 
     logging.info('Checking site: %s', site)
-    footer = site_footer(site)
+    footer = site_footer('localhost', site)
 
     for check in ensures:
         logging.info('Executing check of %s...', check.__name__)
-        found = check(footer)
+        found = check(site, footer)
         if not found:
             logging.error('%s html not found for %s (%s).', check.__name__, site, site_version)
             sys.exit(ICINGA_CRITICAL)
