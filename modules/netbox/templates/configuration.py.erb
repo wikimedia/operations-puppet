@@ -129,7 +129,7 @@ LOGGING = {
                         'class': 'logging.StreamHandler',
                 },
                 'django.server': {
-                        'level': 'INFO',
+                        'level': 'DEBUG',
                         'class': 'logging.StreamHandler',
                         'formatter': 'django.server',
                 }
@@ -143,6 +143,10 @@ LOGGING = {
                         'handlers': ['django.server'],
                         'level': 'INFO',
                         'propagate': False,
+                },
+                'netbox.data_backends': {
+                        'handlers': ['django.server'],
+                        'level': 'DEBUG',
                 }
         }
 }
