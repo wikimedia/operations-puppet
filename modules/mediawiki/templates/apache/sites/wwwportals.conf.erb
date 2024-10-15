@@ -36,7 +36,10 @@ end
     RewriteEngine On
     # Clean out query parameters on the root url.
     RewriteCond %{REQUEST_URI} ^/$
-    RewriteCond %{QUERY_STRING} ^.
+    # Don't redirect search= (T318285)
+    RewriteCond %{QUERY_STRING} !search=
+    # Don't redirect uselang= (T318285)
+    RewriteCond %{QUERY_STRING} !uselang=
     RewriteRule . https://www.wikipedia.<%= @domain_suffix %>/? [R=301,L]
     RewriteRule . - [E=RW_PROTO:%{HTTP:X-Forwarded-Proto}]
     RewriteCond %{ENV:RW_PROTO} !=https
