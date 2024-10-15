@@ -77,6 +77,8 @@ table inet cloudgw {
         type nat hook postrouting priority srcnat; policy accept;
 
         # 'accept' in this chain/hook means: don't do NAT
+        # don't NAT IPv6 packets
+        meta nfproto ipv6 accept
         # we are only interested in NAT for traffic leaving from the virtual network
         # check the packet is flowing virt --> wan
         oifname != $nic_wan counter accept
@@ -100,15 +102,8 @@ table inet cloudgw {
         ip saddr @cloud_filter counter drop
         ip daddr @cloud_filter counter drop
 
-        # for IPv4, forward all packets only in the VRF
-        meta nfproto ipv4 iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
-
-        # for IPv6, allow forwarding of all ICMP
-        ip6 nexthdr ipv6-icmp counter accept
-        # for IPv6, allow all egress traffic in the VRF
-        meta nfproto ipv6 iifname "vrf-cloudgw" oifname $nic_wan counter accept
-        # for IPv6, only allow ingress taffic if established or related, in the VRF
-        meta nfproto ipv6 iifname "vrf-cloudgw" oifname $nic_virt ct state established,related counter accept
+        # forward all packets only in the VRF
+        iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
 
         counter comment "counter dropped packets"
     }
