@@ -16,6 +16,7 @@ from kubernetes import client, config
 
 logger = logging.Logger(__name__)
 
+EXCLUDE_RELEASES = {'prometheus'}
 EXPIRY_TIME = datetime.timedelta(days=7)
 MINIMUM_AGE = datetime.timedelta(minutes=5)
 NAMESPACE = 'mw-script'
@@ -37,6 +38,8 @@ def get_releases(config_file: str) -> Iterable[str]:
         if not releases:
             return
         for release in releases:
+            if release['name'] in EXCLUDE_RELEASES:
+                continue
             # Helm's release timestamps end with " +0000 UTC". Pre-3.11, fromisoformat() wants
             # "+00:00".
             updated_str = release['updated'].replace(' +0000 UTC', '+00:00')
