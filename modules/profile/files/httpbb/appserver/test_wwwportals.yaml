@@ -22,3 +22,9 @@ https://www.wikipedia.org:
   assert_status: 301
   assert_headers:
     Location: https://www.wikipedia.org/
+- path: /
+  assert_status: 200
+- path: /?search=foobar
+  assert_status: 200
+- path: /?search=foobar&uselang=de
+  assert_status: 200
