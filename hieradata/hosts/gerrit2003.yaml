@@ -13,30 +13,3 @@ profile::gerrit::ipv4: '208.80.153.116'
 profile::gerrit::ipv6: '2620:0:860:4:208:80:153:116'
 profile::gerrit::backups_enabled: false
 
-
-# FIXME - remove after gerrit role applies it
-profile::firewall::provider: nftables
-profile::firewall::defs_from_etcd: true
-
-profile::admin::groups:
-  - gerrit-root
-  - gerrit-admin
-contactgroups: 'admins,gerrit'
-profile::contacts::role_contacts: ['Collaboration Services']
-profile::base::production::role_description: 'Gerrit Code Review server'
-
-# Allow use of supplemental key for scap deployment
-profile::ssh::server::authorized_keys_file:
-  - '/etc/ssh/userkeys/%u'
-  - '/etc/ssh/userkeys/%u.d/cumin'
-  - '/etc/ssh/userkeys/%u.d/gerrit-scap'
-
-profile::java::java_packages:
-  - version: '17'
-    variant: 'jdk'
-profile::java::enable_dbg: true
-# Set JAVA_HOME explicitly for the systemd unit
-profile::gerrit::java_home: '/usr/lib/jvm/java-17-openjdk-amd64'
-
-profile::puppet::agent::force_puppet7: true
-
