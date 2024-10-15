@@ -2298,13 +2298,13 @@ infra_devices:
     site: codfw
     role: l2sw
   fasw2-c8a-codfw:
-    ipv4: 10.193.0.19
+    ipv4: 10.193.1.19
     parents:
     - pfw1-codfw
     site: codfw
     role: l2sw
   fasw2-c8b-codfw:
-    ipv4: 10.193.0.18
+    ipv4: 10.193.1.18
     parents:
     - pfw1-codfw
     site: codfw
