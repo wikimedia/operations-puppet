@@ -41,7 +41,7 @@
 # In production, URIs are looked up automatically. In other environments,
 # you will need to define via hiera the following variables:
 # [*parsoid_uri*]
-#   URI to reach Parsoid. Format: http://parsoid.svc.eqiad.wmnet:8000
+#   URI to reach Parsoid. Format: https://mw-parsoid.svc.eqiad.wmnet:4452
 #
 # [*mobileapps_uri*]
 #   MobileApps service URI. Format: https://mobileapps.svc.eqiad.wmnet:4102
