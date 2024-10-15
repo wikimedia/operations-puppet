@@ -201,12 +201,22 @@ profile::prometheus::statsd_exporter::mappings:
       pipeline: '$1'
       label: '$2'
 
-  # Force 'counter' type because the same metric name is sent as counter and as
+  # Catch 'counter' type because the same metric name is sent as counter and as
   # timer on success/failure.
   # Use this rule after wait_time so all job statuses are collected here
   - match: 'zuul\.pipeline\.(.+)\.job\.(.+)\.(.+)'
     name: 'zuul_pipeline_job_completed_total'
     match_metric_type: 'counter'
+    match_type: 'regex'
+    labels:
+      pipeline: '$1'
+      job_name: '$2'
+      status: '$3'
+
+  # Catch 'observer' (timer) type
+  - match: 'zuul\.pipeline\.(.+)\.job\.(.+)\.(.+)'
+    name: 'zuul_pipeline_job_completed_duration_seconds'
+    match_metric_type: 'observer'
     match_type: 'regex'
     labels:
       pipeline: '$1'
