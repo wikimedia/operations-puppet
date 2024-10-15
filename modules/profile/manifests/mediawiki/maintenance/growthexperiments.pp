@@ -25,6 +25,15 @@ class profile::mediawiki::maintenance::growthexperiments {
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
         interval => '*-*-* 07:20:00',
     }
+    # monitor eswiki and frwiki more closely to see the impact of changing the hook to clear outdated recommendations (T372337)
+    profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun-eswiki':
+      command  => '/usr/local/bin/mwscript --wiki=eswiki extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
+      interval => '*-*-* *:10:00',
+    }
+    profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun-frwiki':
+      command  => '/usr/local/bin/mwscript --wiki=frwiki extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
+      interval => '*-*-* *:10:00',
+    }
 
     # purge expired rows from the database (Mentor dashboard, T280307)
     profile::mediawiki::periodic_job { 'growthexperiments-purgeExpiredMentorStatus':
