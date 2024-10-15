@@ -5,6 +5,8 @@ class snapshot::systemdjobs::dump_global_blocks(
     $confsdir = $snapshot::dumps::dirs::confsdir
 
     file { '/usr/local/bin/dump-global-blocks.sh':
+        # Mark as absent pending complete removal (T376726)
+        ensure => absent,
         mode   => '0755',
         owner  => 'root',
         group  => 'root',

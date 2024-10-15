@@ -43,9 +43,14 @@ class dumps::generation::server::dirs(
         group  => $group,
     }
 
+    # Mark globalblocksdir as absent, pending its complete removal (T376726)
+    file { [ $globalblocksdir ]:
+        ensure => absent,
+    }
+
     # subdirs for various generated dumps
     file { [ $cirrussearchdir, $xlationdir, $categoriesrdfdir,
-        $categoriesrdfdailydir, $globalblocksdir, $medialistsdir, $incrsdir,
+        $categoriesrdfdailydir, $medialistsdir, $incrsdir,
         $mediatitlesdir, $pagetitlesdir, $shorturlsdir, $machinevisiondir, $wikitechdir ]:
 
         ensure => 'directory',
