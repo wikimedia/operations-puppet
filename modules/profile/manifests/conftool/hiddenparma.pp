@@ -51,6 +51,6 @@ class profile::conftool::hiddenparma (
         required_groups => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
         ],
-        vhost_settings  => { proxy_pass => 'http://localhost:8080' },
+        vhost_settings  => { proxy_pass => 'http://localhost:8080/' },
     }
 }

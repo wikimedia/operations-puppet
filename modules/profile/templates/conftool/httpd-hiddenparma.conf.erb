@@ -55,6 +55,15 @@
         ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>
     </Location>
 
+    # Static files
+    Alias "/static" "/srv/deployment/hiddenparma/deploy/src/static"
+    # Static assets are not protected by the CAS auth
+    <Directory /srv/deployment/hiddenparma/deploy/src/static">
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+
     CustomLog /var/log/apache2/<%= @virtual_host %>-access.log wmf
     ErrorLog /var/log/apache2/<%= @virtual_host %>-error.log
 </VirtualHost>
