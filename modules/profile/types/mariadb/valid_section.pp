@@ -14,7 +14,7 @@ type Profile::Mariadb::Valid_section = Enum[
     # Misc
     'm1', 'm2', 'm3', 'm5', 'backup1-eqiad', 'backup1-codfw',
     # Test
-    'test-s1', 'test-s4', 'test-pc1',
+    'test-s1', 'test-s4',
     # Analytics
     'analytics_meta', 'matomo', 'staging',
     # Tendril/Zarcillo
