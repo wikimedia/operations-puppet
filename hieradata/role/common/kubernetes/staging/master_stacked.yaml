@@ -21,7 +21,6 @@ profile::kubernetes::node::kubelet_node_taints:
 
 profile::base::overlayfs: true
 
-profile::kubernetes::container_runtime: docker
 profile::docker::engine::declare_service: true
 profile::docker::engine::settings:
   bridge: none
