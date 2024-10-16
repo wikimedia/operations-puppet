@@ -1547,7 +1547,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: service_setup
+    state: lvs_setup
     discovery:
       - dnsdisc: mw-web-next
         active_active: false
