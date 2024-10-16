@@ -1516,6 +1516,44 @@ service::catalog:
       - dnsdisc: mw-web-ro
         active_active: true
 
+  mw-web-next:
+    description: mw-web-next, mw-web-next.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.6
+      eqiad:
+        default: 10.2.2.6
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    # httpbb_dir: appserver  # TODO: T377040 - enable httpbb checks
+    page: false  # TODO: T377040 - promote to page
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4454
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: mw-web-next
+        active_active: false
+      - dnsdisc: mw-web-next-ro
+        active_active: true
+
   mw-api-ext:
     description: mw-api-ext, mw-api-ext.svc.discovery.wmnet
     encryption: true
@@ -1552,6 +1590,44 @@ service::catalog:
       - dnsdisc: mw-api-ext
         active_active: false
       - dnsdisc: mw-api-ext-ro
+        active_active: true
+
+  mw-api-ext-next:
+    description: mw-api-ext-next, mw-api-ext-next.discovery.wmnet
+    encryption: true
+    ip:
+      codfw:
+        default: 10.2.1.7
+      eqiad:
+        default: 10.2.2.7
+    lvs:
+      class: low-traffic
+      conftool:
+        cluster: kubernetes
+        service: kubesvc
+      depool_threshold: ".5"
+      enabled: true
+      monitors:
+        IdleConnection:
+          max-delay: 300
+          timeout-clean-reconnect: 3
+      scheduler: wrr
+      protocol: tcp
+    # httpbb_dir: appserver  # TODO: T377040 - enable httpbb checks
+    page: false  # TODO: T377040 - promote to page
+    probes:
+      - type: http
+        path: /wiki/Special:BlankPage
+        host: en.wikipedia.org
+    port: 4455
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+    discovery:
+      - dnsdisc: mw-api-ext-next
+        active_active: false
+      - dnsdisc: mw-api-ext-next-ro
         active_active: true
 
   mw-api-int:

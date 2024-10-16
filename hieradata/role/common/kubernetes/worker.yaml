@@ -56,10 +56,12 @@ profile::lvs::realserver::pools:
   tegola-vector-tiles: {}
   k8s-ingress-wikikube: {}
   mw-api-ext: {}
+  mw-api-ext-next: {}
   mw-api-int: {}
   mw-jobrunner: {}
   mw-parsoid: {}
   mw-web: {}
+  mw-web-next: {}
   mw-wikifunctions: {}
   device-analytics: {}
   rest-gateway: {}
