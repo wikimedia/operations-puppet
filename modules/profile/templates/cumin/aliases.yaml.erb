@@ -119,7 +119,7 @@ db-store: P{O:mariadb::analytics_replica}
 db-role-<%= role %>: P{P:mariadb::mysql_role%role = <%= role %>}
 <% end -%>
 <% @mariadb_sections.each do |section| -%>
-<% unless section.start_with?("test-") or section == "tendril" -%>
+<% unless section == "tendril" -%>
 db-section-<%= section %>: P{R:profile::mariadb::section%section = <%= section %>}
 <% end -%>
 <% end -%>
