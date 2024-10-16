@@ -35,6 +35,15 @@ class statistics::optimize (
         group  => 'root',
 
     }
+    sysctl::parameters { 'zram_swappiness':
+        values => {
+            # Since we have RAM-based swap, encourage the system to use swap when it's under pressure. See
+            # https://facebookmicrosites.github.io/cgroup2/docs/memory-controller.html#using-swap for
+            # further justification
+            'vm.swappiness' => 30,
+        },
+    }
+
 
 }
 
