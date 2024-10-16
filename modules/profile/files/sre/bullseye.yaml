@@ -9,8 +9,6 @@ role::mediawiki::memcached:
   target-q: TBD
 role::mediawiki::memcached::gutter:
   target-q: TBD
-role::etcd::v3::kubernetes:
-  target-q: TBD
 role::etcd::v3::ml_etcd:
   target-q: TBD
 role::etcd::v3::ml_etcd::staging:

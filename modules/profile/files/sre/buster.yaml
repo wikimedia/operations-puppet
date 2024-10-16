@@ -11,12 +11,6 @@ role::mediawiki::memcached:
 role::mediawiki::memcached::gutter:
   target-q: 2023-1
   phab-task: 293216
-role::etcd::v3::kubernetes:
-  target-q: 2023-1
-  phab-task: 307943
-role::etcd::v3::kubernetes::staging:
-  target-q: 2023-1
-  phab-task: 307943
 role::etcd::v3::ml_etcd:
   target-q: 2023-1
 role::etcd::v3::ml_etcd::staging:
