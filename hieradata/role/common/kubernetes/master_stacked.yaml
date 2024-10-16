@@ -35,7 +35,7 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 profile::puppet::agent::force_puppet7: true
 
 # This is a stacked (with local etcd) kubernetes master node
-profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
+profile::etcd::v3::allow_from: "localhost"
 profile::etcd::v3::cluster_name: "k8s3.%{::site}"
 profile::etcd::v3::cluster_bootstrap: false
 profile::etcd::v3::discovery: "dns:k8s3.%{::site}.wmnet"
