@@ -27,6 +27,7 @@ class phabricator::vcs (
 
     systemd::sysuser { $vcs_user:
         ensure            => present,
+        id                => '497:497',
         shell             => '/bin/sh',
         allow_login       => true,
         description       => 'Phabricator vcs user',
