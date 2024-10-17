@@ -1,1 +1,3 @@
+# please adjust modules/profile/spec/classes/profile_puppetserver_spec.rb
+# accordingly if puppetserver1001 stops being a ca host
 profile::puppetserver::intermediate_ca: true

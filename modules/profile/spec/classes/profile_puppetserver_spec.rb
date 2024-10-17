@@ -21,20 +21,22 @@ describe 'profile::puppetserver' do
       context "on #{os} using puppetserver role (ca host)" do
         let(:facts) do
           os_facts.merge({
-            'networking' => os_facts[:networking].merge({'fqdn' => 'puppetserver1001.eqiad.wmnet'})
+              'hostname' => 'puppetserver1001',
           })
         end
         let(:node_params) {{ _role: 'puppetserver' }}
         it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('puppetserver::ca').with_intermediate_ca(true) }
       end
       context "on #{os} using puppetserver role (not ca host)" do
         let(:facts) do
           os_facts.merge({
-            'networking' => os_facts[:networking].merge({'fqdn' => 'puppetserver2001.codfw.wmnet'})
+              'hostname' => 'puppetserver2001',
           })
         end
         let(:node_params) {{ _role: 'puppetserver' }}
         it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('puppetserver::ca').with_intermediate_ca(false) }
       end
     end
   end
