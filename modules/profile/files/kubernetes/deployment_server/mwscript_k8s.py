@@ -76,26 +76,26 @@ def check_config_file(namespace: str, cluster: str) -> None:
         group = grp.getgrgid(stat.st_gid).gr_name
         is_group_readable = stat.st_mode & 0o200
         if group == 'root' or not is_group_readable:
-            logger.error(
+            logger.critical(
                 "🚩 You don't have permission to read the Kubernetes config file %s (try sudo)",
                 e.filename)
         else:
-            logger.error(
+            logger.critical(
                 "🚩 You don't have permission to read the Kubernetes config file %s (are you in the "
                 "%s group?)",
                 e.filename, group)
         raise
     except FileNotFoundError as e:
         if not glob.glob(f'/etc/kubernetes/*-{glob.escape(cluster)}.config'):
-            logger.error('🚩 Kubernetes config file %s not found: there is no cluster %s.',
-                         e.filename, cluster)
+            logger.critical('🚩 Kubernetes config file %s not found: there is no cluster %s.',
+                            e.filename, cluster)
         elif not glob.glob(f'/etc/kubernetes/{glob.escape(NAMESPACE)}-*.config'):
-            logger.error('🚩 Kubernetes config file %s not found: there is no namespace %s.',
-                         e.filename, NAMESPACE)
+            logger.critical('🚩 Kubernetes config file %s not found: there is no namespace %s.',
+                            e.filename, NAMESPACE)
         else:
-            logger.error('🚩 Kubernetes config file %s not found: namespace %s is not configured in'
-                         ' cluster %s.',
-                         e.filename, NAMESPACE, cluster)
+            logger.critical('🚩 Kubernetes config file %s not found: namespace %s is not '
+                            'configured in cluster %s.',
+                            e.filename, NAMESPACE, cluster)
         raise
 
 
@@ -269,12 +269,12 @@ def main() -> int:
     except subprocess.CalledProcessError as e:
         # If we were keeping the subprocess output to ourselves, print it now.
         if not args.verbose:
-            print(e.stdout)
+            logger.error(e.stdout)
         # helmfile and/or helm will have already printed an error, so we don't need to add anything
         # (except the specific command we ran). This doesn't delete the values file, which we leave
         # in case it's needed for debugging. It lives in /tmp anyway, so failing to clean it up
         # isn't a disaster.
-        logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
+        logger.critical('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
         return 1
 
     container = f'mediawiki-{release}-app'
@@ -288,7 +288,8 @@ def main() -> int:
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
                            env={**env_vars, 'HOME': os.environ['HOME']})
         except subprocess.CalledProcessError as e:
-            logger.fatal('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
+            logger.critical('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
+            return 1
         except KeyboardInterrupt:
             logger.info('🔁 To resume streaming logs, run:\n%s', logs_command(env_vars, release))
     elif args.attach:
@@ -300,8 +301,6 @@ def main() -> int:
                     'Try pressing enter.' if args.script_name in ['eval.php', 'shell.php']
                     else 'Try passing your input.'))
         logger.info('📜 Attached to stdin/stdout:')
-        # Switch from the read-only user to the deploy user, which has privileges to attach.
-        env_vars = kube_env(f'{NAMESPACE}-deploy', environment)
         try:
             subprocess.run([
                 '/usr/bin/kubectl',
@@ -311,10 +310,18 @@ def main() -> int:
                 '--container', f'mediawiki-{release}-app',
                 '-it' if sys.stdin.isatty() else '-i'
                 ],
-                env={**env_vars, 'HOME': os.environ['HOME']}, check=True)
+                env={
+                    # Switch from the read-only user to the deploy user, which has privileges to
+                    # attach.
+                    **kube_env(f'{NAMESPACE}-deploy', environment),
+                    'HOME': os.environ['HOME']
+                },
+                check=True)
         except subprocess.CalledProcessError as e:
-            logger.fatal('☠️ Command failed with status %d: %s\nFor logs (may not work) run:\n%s',
-                         e.returncode, shlex.join(e.cmd), logs_command(env_vars, release))
+            logger.critical(
+                '☠️ Command failed with status %d: %s\nFor logs (may not work) run:\n%s',
+                e.returncode, shlex.join(e.cmd), logs_command(env_vars, release))
+            return 1
     else:
         logger.info('🚀 Job is running. For streaming logs, run:\n%s',
                     logs_command(env_vars, release))
