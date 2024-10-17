@@ -5,10 +5,8 @@ class mariadb::heartbeat (
     $shard      = 'unknown',
     $datacenter = 'none',
     $socket     = '/run/mysqld/mysqld.sock',
-    $override_binlog_format = undef,
+    $override_binlog_format = 'STATEMENT',
 ) {
-
-
     # custom modified version of pt-heartbeat that includes an
     # extra column "shard"
     file { '/usr/local/bin/pt-heartbeat-wikimedia':
@@ -18,10 +16,9 @@ class mariadb::heartbeat (
         source => 'puppet:///modules/mariadb/pt-heartbeat-wikimedia',
     }
 
-    $binlog_format = $override_binlog_format ? {
-        undef => $mariadb::config::binlog_format,
-        default => $override_binlog_format
-    }
+    $binlog_format = $override_binlog_format  # Do not use anything other than STATEMENT
+                                              # unless you know what you are doing, or
+                                              # bad things will happen: T375144
     systemd::service { 'pt-heartbeat-wikimedia':
         content        => template('mariadb/pt-heartbeat-wikimedia.service.erb'),
         restart        => true,
