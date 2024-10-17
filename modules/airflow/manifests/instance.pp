@@ -140,6 +140,7 @@ define airflow::instance(
     Stdlib::Unixpath $airflow_home      = "/srv/airflow-${title}",
     String $db_user                     = "airflow_${title}",
     String $db_password                 = 'batman',
+    Optional[String] $secret_key        = undef,
     Optional[Hash] $connections         = undef,
     Hash $environment_extra             = {},
     Boolean $monitoring_enabled         = false,
@@ -178,13 +179,13 @@ define airflow::instance(
             'base_log_folder' => "${airflow_home}/logs",
         },
         'webserver' => {
-            'web_server_host' => '0.0.0.0',
-            'web_server_port' => 8600,
-            'instance_name' => $title,
+            'web_server_host'   => '0.0.0.0',
+            'web_server_port'   => 8600,
+            'instance_name'     => $title,
             # Since the webserver Public as Admin role, and is only accessible on 127.0.0.1 by default,
             # expose config for admins, except sensitives like passwords.
-            'expose_config' => 'non-sensitive-only',
-            'expose_hostname' => 'True',
+            'expose_config'     => 'non-sensitive-only',
+            'expose_hostname'   => 'True',
             'expose_stacktrace' => 'True',
         },
         'scheduler' => {
@@ -218,7 +219,15 @@ define airflow::instance(
 
     # Value to be used for sql_alchemy_conn if is not set in provided $airflow_config.
     $sql_alchemy_conn_default = "sqlite:///${airflow_home}/airflow.db"
-
+    if $secret_key != '' and $secret_key != undef {
+        $airflow_config_webserver_secret_key = {
+            'webserver' => {
+                'secret_key' => $secret_key,
+            }
+        }
+    } else {
+        $airflow_config_webserver_secret_key = {}
+    }
     # This logic to be smart about core.sql_alchemy_conn can be removed
     # Once all airflow instances are upgraded.
     if $::airflow::version != undef and versioncmp($::airflow::version, '2.3.0') >= 0 {
@@ -316,6 +325,7 @@ define airflow::instance(
         $airflow_config_kerberos,
         $airflow_config_secrets,
         $airflow_config_versioned,
+        $airflow_config_webserver_secret_key,
         $airflow_config,
         # Usually, we'd put $airflow_config last,
         # so it would take precedence over all default configs.
