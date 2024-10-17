@@ -47,9 +47,10 @@ class profile::conftool::hiddenparma (
             Acme_chief::Cert['icinga'],
         ],
         vhost_content   => 'profile/conftool/httpd-hiddenparma.conf.erb',
-        # Only full roots can access this.
+        # Only full roots are granted read-write access in the configuration.
         required_groups => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',
+            'cn=wmf,ou=groups,dc=wikimedia,dc=org',
         ],
         vhost_settings  => { proxy_pass => 'http://localhost:8080/' },
     }
