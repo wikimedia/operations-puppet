@@ -107,6 +107,12 @@ profile::netbox::report_checks:
         alert: true
         check_interval: 5
         run_interval: '*-*-* *:20/30:00' # every 30 minutes
+    -   name: vlan_migration
+        class: 'vlan_migration.Vlan_migration'
+        id: 19
+        alert: false
+        check_interval: 5
+        run_interval: '*-*-* 0/2:22:00' # every 2 hours at :22
 
 profile::netbox::ganeti_sync_profiles:
     - profile: eqiad
