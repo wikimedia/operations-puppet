@@ -50,7 +50,7 @@ testcases:
         }
 
     expected:
-      - __target_index: "logstash-k8s-1-1.0.0-N-daily"
+      - __target_index: "logstash-k8s2-1-1.0.0-N-daily"
         error:
           message: "error roundtripping http://10.64.77.193:80/healthz: context deadline exceeded"
         kubernetes:
