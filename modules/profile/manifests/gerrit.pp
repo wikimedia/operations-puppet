@@ -25,7 +25,7 @@ class profile::gerrit(
     Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
     Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
     Boolean                           $lfs_replica_sync  = lookup('profile::gerrit::lfs_replica_sync'),
-    Array[Stdlib::Fqdn]               $lfs_sync_dest     = lookup('profile::gerrit::lfs_sync_dest'),
+    Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest     = lookup('profile::gerrit::lfs_sync_dest'),
 ) {
     require ::profile::java
     require ::passwords::gerrit
