@@ -24,13 +24,22 @@ class profile::kubernetes::deployment_server::mediawiki::builder(
         source    => 'gitlab',
     }
 
-    # Deployers should be able to execute whatever wrapper we will write for repos/releng/release
-    # as user mwbuilder. And also the wrapper that updates the repos/releng/release repo
+    # Deployers should be able to execute build-images.py, the wrapper that updates the
+    # repos/releng/release checkout, and the scap subcommands that execute mwscript via docker.
+    $scap_mwscript_allowed_args = [
+        '--no-local-config',
+        '--directory', '/srv/mediawiki-staging',
+        '--user', 'www-data'
+    ]
+    $scap_mwscript_args = join($scap_mwscript_allowed_args, ' ')
     sudo::group { 'deploy_build_image':
         group      => 'deployment',
         privileges => [
             'ALL = (mwbuilder) NOPASSWD: /srv/mwbuilder/release/make-container-image/build-images.py *',
-            'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release'
+            'ALL = (mwbuilder) NOPASSWD: /usr/local/bin/update-mediawiki-tools-release',
+            "ALL = (mwbuilder) NOPASSWD: /usr/bin/scap mwscript ${scap_mwscript_args} -- *",
+            "ALL = (mwbuilder) NOPASSWD: /usr/bin/scap mwscript ${scap_mwscript_args} --network -- *",
+            "ALL = (mwbuilder) NOPASSWD: /usr/bin/scap mwshell ${scap_mwscript_args} -- *",
         ]
     }
 

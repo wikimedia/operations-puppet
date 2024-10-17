@@ -67,6 +67,10 @@ use_syslog: True
 # deploy-promote)
 gerrit_push_user: trainbranchbot
 
+# The user to sudo as when running scap subcommands that require access to
+# docker (e.g. scap mwscript and scap mwshell).
+docker_user: mwbuilder
+
 # Settings for mediawiki container image building (T297673)
 release_repo_dir: /srv/mwbuilder/release
 release_repo_update_cmd: sudo -u mwbuilder /usr/local/bin/update-mediawiki-tools-release
