@@ -1,6 +1,6 @@
 ## etcd(1) daemon options
 ## See "/usr/share/doc/etcd/Documentation/configuration.md.gz".
-<%- etcd_version = Gem::Version.new(@facts.fetch('etcd_version', '0.a')) -%>
+<%- etcd_version = @facts.fetch('etcd_version', '0.a') -%>
 
 ### Member Flags
 ETCD_NAME="<%= @member_name %>"
@@ -31,7 +31,7 @@ Since etcd 3.4, setting --trusted-ca-file will also automatically enable
 client cert authentication no matter what value is set for --client-cert-auth
 https://etcd.io/docs/v3.4/op-guide/configuration/#--trusted-ca-file
 -%>
-<%- if etcd_version < Gem::Version.new('3.4') or @use_client_certs -%>
+<%- if @use_client_certs or (etcd_version != '0.a' and Gem::Version.new(etcd_version) < Gem::Version.new('3.4')) -%>
 ETCD_TRUSTED_CA_FILE="<%= @trusted_ca %>"
 <%- end -%>
 ETCD_PEER_TRUSTED_CA_FILE="<%= @trusted_ca %>"
