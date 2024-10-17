@@ -143,7 +143,8 @@ mediawiki::sites: []
 profile::gerrit::config: 'gerrit.config.erb'
 profile::gerrit::host: 'gerrit.devtools.wmcloud.org'
 
-profile::gerrit::mask_service: false
+profile::gerrit::mask_service: true
+profile::gerrit::enable_monitoring: false
 
 profile::gerrit::ssh_allowed_hosts:
 - gerrit-bullseye.devtools.eqiad1.wikimedia.cloud
@@ -151,6 +152,9 @@ profile::gerrit::ssh_allowed_hosts:
 profile::gerrit::replica_hosts: []
 
 profile::gerrit::lfs_replica_sync: false
+
+# FIXME: have a service IP in devtools
+# profile::gerrit::ipv4: ~
 
 # No IPv6 in cloud
 profile::gerrit::ipv6: '::1'
