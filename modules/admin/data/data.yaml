@@ -1063,7 +1063,7 @@ groups:
   airflow-analytics-product-admins:
     gid: 840
     description: Group of users for managing Product Analytics related analytics/data jobs and deploying airflow-dags/analytics_product
-    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang]
+    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang, jebe]
     privileges: [
       'ALL = (analytics-product) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
