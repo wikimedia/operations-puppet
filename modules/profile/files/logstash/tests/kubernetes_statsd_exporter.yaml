@@ -114,7 +114,7 @@ testcases:
       ecs:
         version: "1.11.0"
 
-    - __target_index: "ecs-k8s2-1-1.11.0-N-weekly"
+    - __target_index: "ecs-k8s-1-1.11.0-N-weekly"
 #      '@timestamp': "2023-03-21T22:19:28.000Z"
       message: "backtracking required because of match \"*.heap.*\", matching performance may be degraded"
       host:
