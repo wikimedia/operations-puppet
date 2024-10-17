@@ -192,6 +192,7 @@ profile::gerrit::backup_set: 'gerrit-repo-data'
 
 profile::gerrit::active_host: 'gerrit-bullseye.devtools.eqiad1.wikimedia.cloud'
 profile::gerrit::bind_service_ip: false
+profile::gerrit::lfs_replica_sync: false
 
 ## data for server migration
 profile::gerrit::migration::daemon_user: gerrit2
