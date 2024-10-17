@@ -419,62 +419,14 @@ profile::kubernetes::deployment_server::services:
           owner: root
           group: deploy-ml-service
   dse-k8s:
-    airflow-analytics:
+    airflow-analytics-test:
       usernames:
-        - name: airflow-analytics
+        - name: airflow-analytics-test
           owner: root
           group: analytics-deployers
-        - name: airflow-analytics-deploy
+        - name: airflow-analytics-test-deploy
           owner: root
           group: analytics-deployers
-    airflow-test:
-      usernames:
-        - name: airflow-test
-          owner: root
-          group: analytics-deployers
-        - name: airflow-test-deploy
-          owner: root
-          group: analytics-deployers
-    airflow-search:
-      usernames:
-        - name: airflow-search
-          owner: root
-          group: analytics-search
-        - name: airflow-search-deploy
-          owner: root
-          group: analytics-search
-    airflow-research:
-      usernames:
-        - name: airflow-research
-          owner: root
-          group: analytics-research
-        - name: airflow-research-deploy
-          owner: root
-          group: research-deployers
-    airflow-platform-eng:
-      usernames:
-        - name:  airflow-platform-eng
-          owner: root
-          group: analytics-platform-eng
-        - name: analytics-platform-eng-deploy
-          owner: root
-          group: analytics-platform-eng
-    airflow-analytics-product:
-      usernames:
-        - name: airflow-analytics-product
-          owner: root
-          group: analytics-product
-        - name: product-analytics-deploy
-          owner: root
-          group: analytics-product
-    airflow-analytics-wmde:
-      usernames:
-        - name: airflow-analytics-wmde
-          owner: root
-          group: analytics-wmde
-        - name: analytics-wmde-deploy
-          owner: root
-          group: analytics-wmde
     airflow-test-k8s:
       usernames:
         - name: airflow-test-k8s
