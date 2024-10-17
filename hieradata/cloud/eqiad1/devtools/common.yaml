@@ -153,8 +153,9 @@ profile::gerrit::replica_hosts: []
 
 profile::gerrit::lfs_replica_sync: false
 
-# FIXME: have a service IP in devtools
-# profile::gerrit::ipv4: ~
+# service: gerrit.devtools.wmcloud.org.
+# Horizon Floating IP
+profile::gerrit::ipv4: '185.15.56.70'
 
 # No IPv6 in cloud
 profile::gerrit::ipv6: '::1'
@@ -195,7 +196,7 @@ profile::gerrit::backups_enabled: false
 profile::gerrit::backup_set: 'gerrit-repo-data'
 
 profile::gerrit::active_host: 'gerrit-bullseye.devtools.eqiad1.wikimedia.cloud'
-profile::gerrit::bind_service_ip: false
+profile::gerrit::bind_service_ip: true
 profile::gerrit::lfs_replica_sync: false
 profile::gerrit::lfs_sync_dest:
  - 'doesnotexist.example.org'
