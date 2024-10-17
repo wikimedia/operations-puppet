@@ -28,5 +28,12 @@ class grafana::loki (
     }
   }
 
+  systemd::service { 'grafana-loki':
+      ensure   => present,
+      content  => init_template('grafana-loki', 'systemd_override'),
+      override => true,
+      restart  => true,
+  }
+
   profile::auto_restarts::service { 'grafana-loki': }
 }
