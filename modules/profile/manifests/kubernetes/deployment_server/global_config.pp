@@ -412,7 +412,7 @@ class profile::kubernetes::deployment_server::global_config (
             ],
           },
           'instances' => {
-            'mx' => wmflib::role::ips('mail::mx'),
+            'mx' => wmflib::role::ips('postfix::mx_out'),
           }
         },
         's3' => {
