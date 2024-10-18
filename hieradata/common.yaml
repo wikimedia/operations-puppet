@@ -2291,12 +2291,6 @@ infra_devices:
     ipv6: 2620:0:860:13f::22
     site: codfw
     role: l3sw
-  fasw-c-codfw:
-    ipv4: 10.193.0.57
-    parents:
-    - pfw1-codfw
-    site: codfw
-    role: l2sw
   fasw2-c8a-codfw:
     ipv4: 10.193.1.19
     parents:
