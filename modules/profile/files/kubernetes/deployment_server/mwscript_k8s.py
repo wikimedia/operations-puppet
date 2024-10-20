@@ -5,6 +5,7 @@
 import argparse
 import glob
 import grp
+import json
 import logging
 import os
 import random
@@ -35,15 +36,17 @@ class ServerError(Exception):
     icon = '☠️'
 
 
-def config_file(namespace: str, cluster: str) -> str:
+def config_file(namespace: str, cluster: str, deploy: bool = False) -> str:
+    if deploy:
+        namespace += '-deploy'
     return f'/etc/kubernetes/{namespace}-{cluster}.config'
 
 
-def kube_env(namespace: str, cluster: str) -> dict[str, str]:
+def kube_env(namespace: str, cluster: str, deploy: bool = False) -> dict[str, str]:
     # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
     return {
         'K8S_CLUSTER': cluster,
-        'KUBECONFIG': config_file(namespace, cluster),
+        'KUBECONFIG': config_file(namespace, cluster, deploy),
     }
 
 
@@ -59,17 +62,23 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
+def app_container(release: str) -> str:
+    # Duplicates the name in the Helm chart (based on base.name.release).
+    return f'mediawiki-{release}-app'
+
+
 def mediawiki_image(cluster: str) -> str:
     # Find out what multiversion image is in use by mw-web, and use the same one.
     kube_config = config.load_kube_config(config_file=config_file('mw-web', cluster))
     apps_client = client.AppsV1Api(client.ApiClient(kube_config))
     deployment_name = f'mw-web.{cluster}.main'
     deployment = apps_client.read_namespaced_deployment(name=deployment_name, namespace='mw-web')
+    container_name = app_container('main')
     containers = [container for container in deployment.spec.template.spec.containers
-                  if container.name == 'mediawiki-main-app']
+                  if container.name == container_name]
     if not containers:
         raise ValueError(
-            f'Container mediawiki-main-app not found in the {deployment_name} deployment template')
+            f'Container {container_name} not found in the {deployment_name} deployment template')
     [container] = containers
     return container.image.removeprefix('docker-registry.discovery.wmnet/')
 
@@ -148,7 +157,7 @@ def wait_until_started(env_vars: dict[str, str], job: str, container: str) -> No
 def logs_command(env_vars: dict[str, str], release: str) -> str:
     env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
     job = job_name(NAMESPACE, env_vars['K8S_CLUSTER'], release)
-    return f'{env_vars_str} kubectl logs -f job/{job} mediawiki-{release}-app'
+    return f'{env_vars_str} kubectl logs -f job/{job} {app_container(release)}'
 
 
 def parse_duration(duration: str) -> int:
@@ -168,7 +177,7 @@ def parse_duration(duration: str) -> int:
             'must be a plain number of seconds, or a number with a unit like 1d, 2h, 30m, 40s')
 
 
-def start(args: argparse.Namespace) -> None:
+def start(args: argparse.Namespace) -> dict[str, str]:
     environment = get_primary_dc()
     # If we can't open the config, bail out with a clear error message, instead of running helmfile.
     check_config_file(NAMESPACE, environment)
@@ -236,7 +245,7 @@ def start(args: argparse.Namespace) -> None:
         # isn't a disaster.
         raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
 
-    container = f'mediawiki-{release}-app'
+    container = app_container(release)
     env_vars = kube_env(NAMESPACE, environment)
     if args.follow:
         wait_until_started(env_vars, job, container)
@@ -265,13 +274,13 @@ def start(args: argparse.Namespace) -> None:
                 'attach',
                 *(['--quiet'] if not args.verbose else []),
                 f'job/{job}',
-                '--container', f'mediawiki-{release}-app',
+                '--container', container,
                 '-it' if sys.stdin.isatty() else '-i'
                 ],
                 env={
                     # Switch from the read-only user to the deploy user, which has privileges to
                     # attach.
-                    **kube_env(f'{NAMESPACE}-deploy', environment),
+                    **kube_env(NAMESPACE, environment, deploy=True),
                     'HOME': os.environ['HOME']
                 },
                 check=True)
@@ -284,6 +293,14 @@ def start(args: argparse.Namespace) -> None:
                     logs_command(env_vars, release))
 
     os.unlink(values_filename)
+    return {
+        'cluster': env_vars['K8S_CLUSTER'],
+        'config': env_vars['KUBECONFIG'],
+        'deploy_config': config_file(NAMESPACE, environment, deploy=True),
+        'job': job,
+        'mediawiki_container': container,
+        'namespace': NAMESPACE,
+    }
 
 
 def main() -> int:
@@ -309,6 +326,11 @@ def main() -> int:
                         help='Set a deadline for the job, to interrupt it after a set interval. '
                              'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
                              '(Default: No deadline)')
+    parser.add_argument('-o', '--output', choices=['none', 'json'], default='none',
+                        help='Machine-readable output on stdout, in addition to normal logging on '
+                             'stderr. Options other than "none" are incompatible with --attach, '
+                             '--follow, and --verbose due to conflicting use of stdout. (Default: '
+                             'none)')
     # Allow overriding the default helmfile. This should only be needed for development of the
     # mw-script infrastructure, and not by users of maintenance scripts.
     parser.add_argument(
@@ -328,10 +350,31 @@ def main() -> int:
     args = parser.parse_args()
 
     try:
-        start(args)
+        if args.output != 'none':
+            if args.attach:
+                raise ClientError(f'--output={args.output} cannot be passed with --attach.')
+            elif args.follow:
+                raise ClientError(f'--output={args.output} cannot be passed with --follow.')
+            elif args.verbose:
+                raise ClientError(f'--output={args.output} cannot be passed with --verbose.')
+        job_info = start(args)
     except (ServerError, ClientError) as e:
         logger.critical(f'{e.icon}️ {e}')
+        if args.output == 'json':
+            print(json.dumps(
+                {
+                    'error': str(e),
+                    'mwscript': None
+                },
+                indent=4))
         return 1
+    if args.output == 'json':
+        print(json.dumps(
+            {
+                'error': None,
+                'mwscript': job_info,
+            },
+            indent=4))
     return 0
 
 
