@@ -13,7 +13,6 @@ import string
 import subprocess
 import sys
 import tempfile
-from typing import Dict
 
 import yaml
 from conftool.cli import ConftoolClient
@@ -26,11 +25,21 @@ logger = logging.Logger(__name__)
 NAMESPACE = 'mw-script'
 
 
+class ClientError(Exception):
+    """Something went wrong on our end; incorrect invocation or config. Think 4xx."""
+    icon = '🚩'
+
+
+class ServerError(Exception):
+    """Something went wrong beyond this wrapper; local subcommand failure, API error. Think 5xx."""
+    icon = '☠️'
+
+
 def config_file(namespace: str, cluster: str) -> str:
     return f'/etc/kubernetes/{namespace}-{cluster}.config'
 
 
-def kube_env(namespace: str, cluster: str) -> Dict[str, str]:
+def kube_env(namespace: str, cluster: str) -> dict[str, str]:
     # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
     return {
         'K8S_CLUSTER': cluster,
@@ -76,27 +85,21 @@ def check_config_file(namespace: str, cluster: str) -> None:
         group = grp.getgrgid(stat.st_gid).gr_name
         is_group_readable = stat.st_mode & 0o200
         if group == 'root' or not is_group_readable:
-            logger.critical(
-                "🚩 You don't have permission to read the Kubernetes config file %s (try sudo)",
-                e.filename)
+            raise ClientError(f"You don't have permission to read the Kubernetes config file "
+                              f"{e.filename} (try sudo)")
         else:
-            logger.critical(
-                "🚩 You don't have permission to read the Kubernetes config file %s (are you in the "
-                "%s group?)",
-                e.filename, group)
-        raise
+            raise ClientError(f"You don't have permission to read the Kubernetes config file "
+                              f"{e.filename} (are you in the {group} group?)")
     except FileNotFoundError as e:
         if not glob.glob(f'/etc/kubernetes/*-{glob.escape(cluster)}.config'):
-            logger.critical('🚩 Kubernetes config file %s not found: there is no cluster %s.',
-                            e.filename, cluster)
+            raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
+                              f'cluster {cluster}.')
         elif not glob.glob(f'/etc/kubernetes/{glob.escape(NAMESPACE)}-*.config'):
-            logger.critical('🚩 Kubernetes config file %s not found: there is no namespace %s.',
-                            e.filename, NAMESPACE)
+            raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
+                              f'namespace {NAMESPACE}.')
         else:
-            logger.critical('🚩 Kubernetes config file %s not found: namespace %s is not '
-                            'configured in cluster %s.',
-                            e.filename, NAMESPACE, cluster)
-        raise
+            raise ClientError(f'Kubernetes config file {e.filename} not found: namespace '
+                              f'{NAMESPACE} is not configured in cluster {cluster}.')
 
 
 def is_started(pod: V1Pod, container: str) -> bool:
@@ -113,7 +116,7 @@ def is_started(pod: V1Pod, container: str) -> bool:
     return False
 
 
-def wait_until_started(env_vars: Dict[str, str], job: str, container: str) -> None:
+def wait_until_started(env_vars: dict[str, str], job: str, container: str) -> None:
     kube_config = config.load_kube_config(config_file=env_vars['KUBECONFIG'])
     core_client = client.CoreV1Api(client.ApiClient(kube_config))
     pod_list = core_client.list_namespaced_pod(
@@ -142,7 +145,7 @@ def wait_until_started(env_vars: Dict[str, str], job: str, container: str) -> No
     w.stop()
 
 
-def logs_command(env_vars: Dict[str, str], release: str) -> str:
+def logs_command(env_vars: dict[str, str], release: str) -> str:
     env_vars_str = ' '.join(f'{key}={value}' for key, value in env_vars.items())
     job = job_name(NAMESPACE, env_vars['K8S_CLUSTER'], release)
     return f'{env_vars_str} kubectl logs -f job/{job} mediawiki-{release}-app'
@@ -165,53 +168,10 @@ def parse_duration(duration: str) -> int:
             'must be a plain number of seconds, or a number with a unit like 1d, 2h, 30m, 40s')
 
 
-def main() -> int:
-    logger.setLevel(logging.INFO)
-    logger.addHandler(logging.StreamHandler())
-
-    parser = argparse.ArgumentParser(
-        description="Start a MediaWiki maintenance script on Kubernetes.\n\n"
-                    "Pass any options below for this script, then '--', then all remaining "
-                    "arguments are passed to MWScript.php. A typical invocation looks like:\n\n"
-                    "%(prog)s --comment='backfill for T123456' -- Filename.php --wiki=aawiki "
-                    "--script-specific-arg",
-        formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('-v', '--verbose', action='count', default=0,
-                        help='Print extra output from the underlying helmfile invocation. (-vv: '
-                             'Include the full helmfile diff.)')
-    parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
-    parser.add_argument('--mediawiki_image',
-                        help='Specify a MediaWiki image (without registry), e.g. '
-                             'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
-                             '(Default: Use the same image as mw-web)')
-    parser.add_argument('--timeout', type=parse_duration,
-                        help='Set a deadline for the job, to interrupt it after a set interval. '
-                             'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
-                             '(Default: No deadline)')
-    # Allow overriding the default helmfile. This should only be needed for development of the
-    # mw-script infrastructure, and not by users of maintenance scripts.
-    parser.add_argument(
-        '--helmfile', help=argparse.SUPPRESS,
-        default=f'/srv/deployment-charts/helmfile.d/services/{NAMESPACE}/helmfile.yaml')
-
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument('-f', '--follow', action='store_true',
-                       help='When the script is started, stream its logs.')
-    group.add_argument('--attach', action='store_true',
-                       help='When the script is started, attach to it interactively (see `kubectl '
-                            'help attach`).')
-
-    parser.add_argument('script_name',
-                        help='Filename of maintenance script (first arg to MWScript.php).')
-    parser.add_argument('script_args', nargs='*', help='Additional arguments to MWScript.php.')
-    args = parser.parse_args()
-
+def start(args: argparse.Namespace) -> None:
     environment = get_primary_dc()
     # If we can't open the config, bail out with a clear error message, instead of running helmfile.
-    try:
-        check_config_file(NAMESPACE, environment)
-    except (PermissionError, FileNotFoundError):
-        return 1
+    check_config_file(NAMESPACE, environment)
 
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
@@ -274,8 +234,7 @@ def main() -> int:
         # (except the specific command we ran). This doesn't delete the values file, which we leave
         # in case it's needed for debugging. It lives in /tmp anyway, so failing to clean it up
         # isn't a disaster.
-        logger.critical('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
-        return 1
+        raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
 
     container = f'mediawiki-{release}-app'
     env_vars = kube_env(NAMESPACE, environment)
@@ -288,8 +247,7 @@ def main() -> int:
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
                            env={**env_vars, 'HOME': os.environ['HOME']})
         except subprocess.CalledProcessError as e:
-            logger.critical('☠️ Command failed with status %d: %s', e.returncode, shlex.join(e.cmd))
-            return 1
+            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
         except KeyboardInterrupt:
             logger.info('🔁 To resume streaming logs, run:\n%s', logs_command(env_vars, release))
     elif args.attach:
@@ -318,15 +276,62 @@ def main() -> int:
                 },
                 check=True)
         except subprocess.CalledProcessError as e:
-            logger.critical(
-                '☠️ Command failed with status %d: %s\nFor logs (may not work) run:\n%s',
-                e.returncode, shlex.join(e.cmd), logs_command(env_vars, release))
-            return 1
+            raise ServerError(
+                f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}\n'
+                f'For logs (may not work) run:\n{logs_command(env_vars, release)}')
     else:
         logger.info('🚀 Job is running. For streaming logs, run:\n%s',
                     logs_command(env_vars, release))
 
     os.unlink(values_filename)
+
+
+def main() -> int:
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler())
+
+    parser = argparse.ArgumentParser(
+        description="Start a MediaWiki maintenance script on Kubernetes.\n\n"
+                    "Pass any options below for this script, then '--', then all remaining "
+                    "arguments are passed to MWScript.php. A typical invocation looks like:\n\n"
+                    "%(prog)s --comment='backfill for T123456' -- Filename.php --wiki=aawiki "
+                    "--script-specific-arg",
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='Print extra output from the underlying helmfile invocation. (-vv: '
+                             'Include the full helmfile diff.)')
+    parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
+    parser.add_argument('--mediawiki_image',
+                        help='Specify a MediaWiki image (without registry), e.g. '
+                             'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
+                             '(Default: Use the same image as mw-web)')
+    parser.add_argument('--timeout', type=parse_duration,
+                        help='Set a deadline for the job, to interrupt it after a set interval. '
+                             'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
+                             '(Default: No deadline)')
+    # Allow overriding the default helmfile. This should only be needed for development of the
+    # mw-script infrastructure, and not by users of maintenance scripts.
+    parser.add_argument(
+        '--helmfile', help=argparse.SUPPRESS,
+        default=f'/srv/deployment-charts/helmfile.d/services/{NAMESPACE}/helmfile.yaml')
+
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-f', '--follow', action='store_true',
+                       help='When the script is started, stream its logs.')
+    group.add_argument('--attach', action='store_true',
+                       help='When the script is started, attach to it interactively (see `kubectl '
+                            'help attach`).')
+
+    parser.add_argument('script_name',
+                        help='Filename of maintenance script (first arg to MWScript.php).')
+    parser.add_argument('script_args', nargs='*', help='Additional arguments to MWScript.php.')
+    args = parser.parse_args()
+
+    try:
+        start(args)
+    except (ServerError, ClientError) as e:
+        logger.critical(f'{e.icon}️ {e}')
+        return 1
     return 0
 
 
