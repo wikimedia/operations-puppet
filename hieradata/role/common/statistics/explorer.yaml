@@ -70,3 +70,10 @@ profile::base::remove_python2_on_bullseye: false
 profile::base::certificates::include_bundle_jks: true
 
 profile::puppet::agent::force_puppet7: true
+
+# better visibility into process/cgroups interactions;
+# implmented via modules/prometheus/manifests/cadvisor.pp
+# and https://github.com/google/cadvisor/blob/master/docs/storage/prometheus.md
+profile::prometheus::cadvisor::metrics_enabled_extra:
+  - 'process'
+  - 'sched'
