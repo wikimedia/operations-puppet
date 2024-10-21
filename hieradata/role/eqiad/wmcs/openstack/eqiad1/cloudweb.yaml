@@ -100,20 +100,13 @@ profile::openstack::base::nutcracker::redis::shards:
         host: 208.80.155.117
         port: 6379
 
-
-# Wikitech things:
-profile::openstack::eqiad1::wikitech::web::osm_host: 'wikitech.wikimedia.org'
-profile::openstack::eqiad1::wikitech::web::db_name: 'labswiki'
-
 # Horizon things:
 profile::openstack::eqiad1::horizon::maintenance_mode: false
 profile::openstack::eqiad1::horizon::puppet_git_repo_name: instance-puppet
 
 
-profile::mediawiki::php::enable_fpm: true
 # Leaving this because of wikitech
 profile::monitoring::is_critical: true
-profile::mediawiki::apc_shm_size: 128M
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
 profile::prometheus::memcached_exporter::arguments: '--memcached.address=localhost:11000'
@@ -130,7 +123,6 @@ profile::tlsproxy::envoy::cfssl_options:
     - horizon.wikimedia.org
     - toolsadmin.wikimedia.org
     - toolsadmin-toolsbeta.wikimedia.org
-    - wikitech.wikimedia.org
 # T306469: Use primary IPv4 address rather than FQDN to avoid IPv6 results.
 # The Docker container used by toolsadmin is not IPv6 accessible.
 profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"

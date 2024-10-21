@@ -25,15 +25,6 @@ profile::openstack::base::nutcracker::redis::shards:
         host: 208.80.153.41
         port: 6378
 
-
-# Wikitech things:
-
-profile::mediawiki::php::enable_fpm: true
-profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
-
-profile::mediawiki::apc_shm_size: 128M
-
 profile::contacts::role_contacts: ['WMCS']
 
 # TLS for caches -> web interfaces

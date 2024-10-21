@@ -17,14 +17,6 @@ profile::openstack::base::nutcracker::redis::shards:
         host: 208.80.153.41
         port: 6378
 
-
-# Wikitech things:
-profile::openstack::codfw1dev::wikitech::web::osm_host: 'labtestwikitech.wikimedia.org'
-profile::openstack::codfw1dev::wikitech::web::db_name: 'labtestwiki'
-
-profile::mediawiki::php::enable_fpm: true
-profile::mediawiki::apc_shm_size: 128M
-
 # Horizon things
 profile::base::overlayfs: true
 profile::openstack::codfw1dev::horizon::docker_version: 2024-05-30-200100

@@ -13,9 +13,6 @@ class role::wmcs::openstack::codfw1dev::cloudweb {
     include profile::openstack::codfw1dev::nutcracker
     include profile::openstack::codfw1dev::cloudweb_mcrouter
 
-    # Wikitech:
-    include profile::openstack::codfw1dev::wikitech::web
-
     # Horizon:
     include profile::openstack::codfw1dev::horizon::docker_deploy
 
