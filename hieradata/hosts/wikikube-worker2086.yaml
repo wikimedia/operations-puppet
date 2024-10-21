@@ -1,3 +1,0 @@
-# This worker is running docker on bookworm currently.
-# Set docker as runtime explicitly.
-profile::kubernetes::container_runtime: docker

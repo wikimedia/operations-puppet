@@ -277,11 +277,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'grafana*':
     - partman/flat.cfg
     - virtual.cfg
+  # Wikikube staging control planes (VMs)
   'kubestagemaster*':
-    - partman/flat.cfg
-    - partman/flat-noswap.cfg
-    - virtual.cfg
-  'kubemaster*':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
@@ -291,6 +288,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # New wikikube workers with containerd by default
+  'wikikube-worker208[5689]':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   'wikikube-worker212[8-9]|wikikube-worker21[3-7][0-9]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
