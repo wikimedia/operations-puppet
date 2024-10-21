@@ -111,7 +111,7 @@ profile::trafficserver::backend::mapping_rules:
       target: http://labtestwikitech.wikimedia.org
       replacement: https://cloudweb2002-dev.wikimedia.org:7443
     - type: map
-      target: https://lists.wikimedia.org
+      target: http://lists.wikimedia.org
       replacement: https://lists1004.wikimedia.org:8443
     - type: map
       target: http://logstash.wikimedia.org
