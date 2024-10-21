@@ -642,7 +642,7 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(136|140|147|172|179|206|210|219|237)\.codfw\./ {
+node /^db2(136|140|147|172|179|206|210|219|237|240)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -964,7 +964,7 @@ node /^dbproxy10(12|13|14|15|16|20|21|22|23|24|25|26|27|28|29)\.eqiad\./ {
 }
 
 # New databases T373579
-node /^db22(23|26|28|31|32|33|34|35|36|39|40)\.codfw\./ {
+node /^db22(23|26|28|31|32|33|34|35|36|39)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
