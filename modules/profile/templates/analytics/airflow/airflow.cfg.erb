@@ -320,7 +320,10 @@ default_wrap = False
 # analytics_id = XXXXXXXXXXX
 
 [email]
+
 email_backend = airflow.utils.email.send_email_smtp
+# T377745. We want to be alerted only after exhausting all retries.
+default_email_on_retry = False
 
 
 [smtp]
