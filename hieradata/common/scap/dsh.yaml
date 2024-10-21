@@ -25,7 +25,6 @@ scap::dsh::groups:
       - {'cluster': 'jobrunner', 'service': 'nginx'}
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
-      - cloudweb2002-dev.wikimedia.org
       - mwmaint1002.eqiad.wmnet
       - mwmaint2002.codfw.wmnet
       - parsoidtest1001.eqiad.wmnet
