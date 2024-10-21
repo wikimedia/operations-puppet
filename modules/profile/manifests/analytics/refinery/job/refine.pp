@@ -60,6 +60,7 @@ class profile::analytics::refinery::job::refine(
         'to_emails'                          => 'data-engineering-alerts@wikimedia.org',
         'from_email'                         => 'Refinery <noreply@wikimedia.org>',
         'should_email_report'                => true,
+        'smtp_uri'                           => 'localhost:25',
         'output_database'                    => 'event',
         'output_path'                        => '/wmf/data/event',
         'hive_server_url'                    => "${::profile::hive::client::hiveserver_host}:${::profile::hive::client::hiveserver_port}",
