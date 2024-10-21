@@ -28,7 +28,7 @@ class profile::webperf::site (
     String $excimer_mysql_password                 = lookup('profile::webperf::site::excimer_mysql_password'),
     Hash[String, Hash] $swift_accounts             = lookup('profile::swift::accounts'),
 ) {
-    ensure_packages(['libapache2-mod-php', 'php-mysql', 'mariadb-client'])
+    ensure_packages(['libapache2-mod-php', 'php-mbstring', 'php-mysql', 'mariadb-client'])
 
     $php_version = wmflib::debian_php_version()
 
