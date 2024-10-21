@@ -285,6 +285,9 @@ profile::idp::memcached_enable: true
 profile::idp::memcached::mcrouter_cluster: 'idp'
 profile::idp::memcached::enable_tls: true
 profile::idp::memcached::auto_restarts: false
+profile::idp::redis_enable: false
+profile::idp::redis_server: localhost
+profile::idp::redis_port: 6973
 profile::idp::u2f_jpa_enable: true
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas

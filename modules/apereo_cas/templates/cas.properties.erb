@@ -136,6 +136,14 @@ cas.ticket.registry.memcached.servers=<%= @memcached_server %>:<%= @memcached_po
 cas.ticket.registry.memcached.transcoder=<%= @memcached_transcoder %>
 <%- end -%>
 
+<%- if @redis_enable -%>
+cas.ticket.registry.redis.enabled=true
+cas.ticket.registry.redis.cluster.nodes[0].host=<%= @redis_server %>
+cas.ticket.registry.redis.cluster.nodes[0].port=<%= @redis_port %>
+<%- else -%>
+cas.ticket.registry.redis.enabled=false
+<%- end -%>
+
 <%- if @enable_cors -%>
 cas.http-web-request.cors.enabled=true
 cas.http-web-request.cors.allow-credentials=<%= @cors_allow_credentials.to_s %>
