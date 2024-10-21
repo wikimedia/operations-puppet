@@ -6,10 +6,12 @@ profile::ceph::auth::load_all::configuration:
       mgr: profile rbd pool=dse-k8s-csi-ssd
       osd: profile rbd pool=dse-k8s-csi-ssd
   dse-k8s-csi-cephfs:
+    # Cf https://github.com/ceph/ceph-csi/blob/devel/docs/capabilities.md#cephfs
     caps:
-      mds: allow rw fsname=dpe
+      mgr: allow rw
+      osd: allow rw tag cephfs metadata=dpe, allow rw tag cephfs data=dpe
+      mds: allow r fsname=dpe path=/volumes, allow rws fsname=dpe path=/volumes/csi"
       mon: allow r fsname=dpe
-      osd: allow rw tag cephfs data=dpe
   admin:
     caps:
       mgr: allow *
