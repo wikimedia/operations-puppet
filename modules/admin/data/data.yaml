@@ -330,7 +330,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [*releng_members, jforrester]
+    members: &contint_roots_members [*releng_members, jforrester, bd808]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -881,7 +881,7 @@ groups:
     # Allow this for CI users. There is no gid on purpose, to allow reusing the package provided one
     posix_name: docker  # Use posix_name to avoid potential conflicts with other uses of the docker group
     description: Allow releng team to be in the docker group for contint. No gid on purpose
-    members: [*ops_members, *releng_members, gjg, addshore, reedy, krinkle, jforrester, arthurtaylor]
+    members: [*ops_members, *releng_members, gjg, addshore, reedy, krinkle, jforrester, arthurtaylor, bd808]
     system_members: [jenkins-agent]
     approval:
       - Tyler Cipriani
