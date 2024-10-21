@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+# enable resource management for user.slice. This controls
+# the combined total of all processes launched by
+# users, **not** individual users or processes, which
+# belong to child cgroups.
+# In other words, this config prevents user
+# processes from contending with system processes.
+# It does not prevent user processes from contending with
+# other user processes. Instead, that behavior is implemented via
+# /etc/systemd/system/user-.slice.d/individual-user-resources.conf
+
+[Slice]
+CPUAccounting=yes
+# CPUWeight=100 is the default; you can find it at `cat
+# /sys/fs/cgroup/user.slice/cpu.weight` on hosts with cgroupsv2.
+CPUWeight=100
+# From the docs: 'Use values > 100% for allotting CPU time on more than one CPU'
+CPUQuota=<%= @cpu_quota %>%
+IOAccounting=yes
+IOWeight=100
+MemoryAccounting=yes
+# Reserve 95% of total memory for users, leaving 5% for the system. We don't want
+# a gap between hard and soft limit, because that causes the system to freeze
+# as it tries to reclaim memory. Oomkilling the process immediately keeps the system responsive.
+# Soft limit
+MemoryHigh=95%
+# Hard limit
+MemoryMax=95%
+

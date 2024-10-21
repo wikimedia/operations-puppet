@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: Apache-2.0
+# enable resource management for children of user.slice. This controls
+# the combined total of all processes individual users or processes, which
+# belong to child cgroups.
+# In other words, this config sets limits on individual user processes.
+# It does not directly prevent user processes from contending with system processes.
+# That goal is implemented via /etc/systemd/system/user.slice/total-user-resources.conf.
+
+[Slice]
+CPUAccounting=yes
+# WHEN AND ONLY WHEN the host is under full load, no single user may access more than 25/100
+# of CPU resources or I/O resources (the total of 100 is defined in /etc/systemd/system/total-user-resources.conf).
+# No limits are enforced unless there is resource contention.
+CPUWeight=25
+# Allow a single user to claim up to 95% of the CPU time allotted to user.slice (which is itself
+# allotted 95% of CPU time).
+CPUQuota=<%= @cpu_quota %>%
+IOAccounting=yes
+# The same limits mentioned above for CPU also apply to I/O.
+IOWeight=25
+MemoryAccounting=yes
+# Allow a single user to claim up to 96% of the memory allotted to user.slice (which is itself
+# allotted 95% of total system memory).
+We don't want a gap between hard and soft limit, because that causes the
+# system to freeze as it tries to reclaim memory. Oomkilling the process immediately keeps the system responsive.
+# Soft limit
+MemoryHigh=96%
+# Hard limit
+MemoryMax=96%

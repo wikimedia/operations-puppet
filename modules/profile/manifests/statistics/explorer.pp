@@ -5,7 +5,7 @@ class profile::statistics::explorer {
 
     include ::profile::statistics::base
 
-    # protect/optimize stat host workflows, see
+    # optimize/protect stat host workflows, see T373446
     class { '::statistics::optimize': }
 
     class { '::deployment::umask_wikidev': }
