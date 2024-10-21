@@ -48,3 +48,5 @@ profile::contacts::role_contacts: ["ServiceOps"]
 
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
+
+profile::puppet::agent::force_puppet7: true
