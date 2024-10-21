@@ -17,6 +17,8 @@ Each table entry can have these options:
   - public: All of the data can be queried by anyyone in the internet. Example: pagelinks
   - partially public: Some parts of data needs to be hidden via views. Example: user
   - private: Should not be replicated to the cloud at all. Example: bot_passwords
- - sections (optional): Which sections this table might exist in. Default: core sections (s1-s8)
- - dbs (optional): Which databases this table might exist in. Default: wiki's db.
- - dblist (optional): Database of which wikis can have this table. Default: all.dblist
+ - databases (optional): Where the table can be found. An array of objects.
+   Each object should have at least "dbname" or "dblist" and optionally "cluster" (such as "x1")
+   Default: wiki's core database.
+ - dblist (optional): Database of which wikis can have this table. This is a shortcut for common cases where "databases" would have only one "dblist" entry only.
+   Default: all.dblist

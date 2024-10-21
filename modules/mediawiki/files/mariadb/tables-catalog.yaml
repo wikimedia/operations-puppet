@@ -456,32 +456,38 @@ tables:
     visibility: public
   - name: wikilambda_zlanguages
     source: wiki_lambda_zlanguages
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: derivative
     visibility: public
   - name: wikilambda_zobject_function_join
     source: wiki_lambda_zobject_function_join
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: derivative
     visibility: public
   - name: wikilambda_zobject_join
     source: wiki_lambda_zobject_join
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: derivative
     visibility: public
   - name: wikilambda_zobject_label_conflicts
     source: wiki_lambda_zobject_label_conflicts
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: derivative
     visibility: public
   - name: wikilambda_zobject_labels
     source: wiki_lambda_zobject_labels
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: derivative
     visibility: public
   - name: wikilambda_ztester_results
     source: wiki_lambda_ztester_results
-    dbname: wikifunctionswiki
+    databases:
+      - dbname: wikifunctionswiki
     canonicality: canonical with acceptable loss
     visibility: public
   - name: wbt_item_terms
@@ -554,6 +560,197 @@ tables:
     dblist: wikidata
     canonicality: derivative
     visibility: public
+  - name: cn_notices
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_assignments
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_templates
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_languages
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_countries
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_regions
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_template_mixins
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_mixins
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_mixin_params
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_known_devices
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_template_devices
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_known_mobile_carriers
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_mobile_carriers
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_notice_log
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cn_template_log
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cognate_pages
+    source: cognate
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: cognate_sites
+    source: cognate
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: cognate_titles
+    source: cognate
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: derivative
+    visibility: public
+  - name: echo_event
+    source: echo
+    databases:
+      - dblist: all
+        cluster: x1
+      - dbname: labswiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: metawiki
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: echo_notification
+    source: echo
+    databases:
+      - dblist: all
+        cluster: x1
+      - dbname: labswiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: metawiki
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: echo_email_batch
+    source: echo
+    databases:
+      - dblist: all
+        cluster: x1
+      - dbname: labswiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: metawiki
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: echo_target_page
+    source: echo
+    databases:
+      - dblist: all
+        cluster: x1
+      - dbname: labswiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: metawiki
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: echo_push_provider
+    source: echo
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: canonical
+    visibility: private
+  - name: echo_push_subscription
+    source: echo
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: canonical
+    visibility: private
+  - name: echo_push_topic
+    source: echo
+    databases:
+      - dbname: wikishared
+        cluster: x1
+    canonicality: canonical
+    visibility: private
 sources:
   core:
     - path: maintenance/tables.json
@@ -567,15 +764,24 @@ sources:
   betafeatures:
     - path: extensions/BetaFeatures/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/BetaFeatures/+/master/sql/tables.json
+  central_notice:
+    - path: extensions/CentralNotice/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CentralNotice/+/master/sql/tables.json
   checkuser:
     - path: extensions/CheckUser/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CheckUser/+/master/schema/tables.json
+  cognate:
+    - path: extensions/Cognate/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Cognate/+/master/sql/tables.json
   discussiontools:
     - path: extensions/DiscussionTools/sql/discussiontools_persistent.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_persistent.json
   discussiontools_subscription:
     - path: extensions/DiscussionTools/sql/discussiontools_subscription.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/DiscussionTools/+/master/sql/discussiontools_subscription.json
+  echo:
+    - path: extensions/Echo/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Echo/+/master/sql/tables.json
   flaggedrevs:
     - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json

@@ -49,16 +49,36 @@
 							"type": "string"
 						}
 					},
-					"dbs": {
+					"databases": {
 						"type": "array",
 						"items": {
-							"type": "string"
+							"type": "object",
+							"properties": {
+								"dbname": {
+									"type": "string"
+								},
+								"dblist": {
+									"type": "string"
+								},
+								"cluster":{
+									"type": "string"
+								}
+							},
+							"oneOf": [
+								{
+									"required": [
+										"dbname"
+									]
+								},
+								{
+									"required": [
+										"dblist"
+									]
+								}
+							]
 						}
 					},
 					"dblist": {
-						"type": "string"
-					},
-					"dbname": {
 						"type": "string"
 					}
 				}
