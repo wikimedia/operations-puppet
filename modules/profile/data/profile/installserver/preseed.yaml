@@ -702,6 +702,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'restbase201[3-9]|restbase202[0-9]|restbase203[0-5]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
+  # Temporary; Configure for reuse after first install (T377896)
+  'restbase203[6-8]':
+    - partman/custom/cassandrahosts-3ssd-jbod.cfg
   'restbase103[4-9]|restbase104*':
     - partman/custom/cassandrahosts-3ssd-jbod.cfg
   'rpki*':

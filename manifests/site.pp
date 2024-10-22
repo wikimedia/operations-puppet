@@ -2455,6 +2455,11 @@ node /^restbase20(2[1-9]|3[0-5])\.codfw\./ {
     role(restbase::production)
 }
 
+# restbase refresh (temporary)
+node /^restbase203[6-8]\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
 # New cassandra dev nodes T324113
 node /^cassandra-dev200[1-3]\.codfw\./ {
     role(cassandra_dev)
