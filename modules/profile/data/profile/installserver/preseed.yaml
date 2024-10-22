@@ -696,7 +696,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-4dev.cfg
-  'restbase102[8-9]|restbase103[0-3]':
+  'restbase102[8-9]|restbase103*|restbase104[0-2]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
   'restbase201[3-9]|restbase202[0-9]|restbase203[0-5]':
@@ -704,8 +704,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
   # Temporary; Configure for reuse after first install (T377896)
   'restbase203[6-8]':
-    - partman/custom/cassandrahosts-3ssd-jbod.cfg
-  'restbase103[4-9]|restbase104*':
     - partman/custom/cassandrahosts-3ssd-jbod.cfg
   'rpki*':
     - partman/flat.cfg
