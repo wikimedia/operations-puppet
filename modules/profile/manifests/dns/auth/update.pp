@@ -111,6 +111,18 @@ class profile::dns::auth::update (
         srange => "(${authdns_servers_ips.values().join(' ')})",
     }
 
+    nrpe::plugin { 'check_authdns_update_run':
+        content => template('profile/dns/auth/check_authdns_update_run.erb'),
+    }
+
+    nrpe::monitor_service { 'authdns_update_run':
+        description    => 'check if authdns-update was run after a change was submitted to dns.git',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_authdns_update_run',
+        check_interval => 5, # min
+        retry_interval => 1, # min
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS#authdns_update_run',
+    }
+
     # The clones and exec below are only for the initial puppetization of a
     # fresh host, ensuring that the data and configuration are fully present
     # *before* the daemon is ever started for the first time (which can only be

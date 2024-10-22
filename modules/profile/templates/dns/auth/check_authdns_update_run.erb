@@ -1,0 +1,39 @@
+#!/bin/bash
+# SPDX-License-Identifier: Apache-2.0
+#
+# Checks if HEAD on the dns.git repo matches that of the local DNS repo. It
+# does this by comparing the SHA-1 and then alerts to Icinga (CRITICAL). The
+# purpose of this script is to alert if a change was submitted but
+# authdns-update was not run to actually deploy that change.
+
+AUTHDNS_CONF_FILE="<%= @authdns_conf %>"
+
+# We use this to get $NAMESERVERS (DNS host state), $WORKINGDIR (local Git), and $ORIGIN (Git repo).
+[ -f $AUTHDNS_CONF_FILE ] && source $AUTHDNS_CONF_FILE
+
+for host in $NAMESERVERS; do
+    if [ "$FQDN" = "$host" ]; then
+        host_pooled=true
+        break
+    fi
+done
+
+if [ "$host_pooled" = true ]; then
+    local_authdns_sha=$(git -C $WORKINGDIR rev-parse HEAD)
+    if git_authdns_head=$(git ls-remote $ORIGIN HEAD 2>/dev/null); then
+        git_authdns_sha=$(echo "$git_authdns_head" | cut -f1)
+        if [ "$local_authdns_sha" == "$git_authdns_sha" ]; then
+            echo "DNS git repository and local zone files are in sync"
+            exit 0
+        else
+            echo "Local zone files are NOT in sync with operations/dns.git (SHA: local is $local_authdns_sha, dns.git is $git_authdns_sha)"
+            exit 2
+        fi
+    else
+        echo "Unable to fetch the SHA-1 HEAD from operations/dns.git"
+        exit 2
+    fi
+else
+    echo "The check was skipped as the host is not pooled for authdns-update"
+    exit 1
+fi
