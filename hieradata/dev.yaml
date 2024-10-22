@@ -55,6 +55,7 @@ profile::firewall::defs_from_etcd_nft: false
 
 # TODO: Runs but is a large CPU hog for reasons not fully understood
 profile::prometheus::cadvisor::ensure: absent
+profile::prometheus::cadvisor::metrics_enabled_extra: []
 
 # Puppet agent
 

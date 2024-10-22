@@ -398,6 +398,7 @@ profile::firewall::ferm_icinga_retry_interval: 1
 
 prometheus_nodes: []
 profile::prometheus::cadvisor::ensure: absent
+profile::prometheus::cadvisor::metrics_enabled_extra: []
 
 # We don't want prometheus scraping NFS on the clients, it locks up
 prometheus::node_exporter::ignored_fs_types: "^(overlay|autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|nfs.*|nsfs|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"

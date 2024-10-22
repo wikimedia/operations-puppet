@@ -1,1 +1,2 @@
 profile::prometheus::cadvisor::ensure: present
+profile::prometheus::cadvisor::metrics_enabled_extra: []
