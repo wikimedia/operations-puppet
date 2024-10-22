@@ -20,7 +20,6 @@ class profile::toolforge::apt_pinning {
         'toolforge-libpam-pinning',
         'toolforge-libpam-ldapd-pinning',
         'toolforge-libnss-db-pinning',
-        'toolforge-libpam-ldapd-pinning',
         'toolforge-ldap-utils-pinning',
         'toolforge-libnss3-pinning',
     ]:
