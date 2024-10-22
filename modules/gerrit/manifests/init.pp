@@ -35,18 +35,29 @@ class gerrit(
 
     $daemon_user_dir = "/var/lib/${daemon_user}"
 
-    group { $daemon_user:
-        ensure => present,
-    }
+    # converting system user to systemd::sysuser (T338470)
+    if debian::codename::ge('bookworm') {
+        systemd::sysuser { $daemon_user:
+            id          => '925:925',
+            shell       => '/bin/bash',
+            description => 'Gerrit daemon user',
+            home_dir    => $daemon_user_dir,
+        }
+    # TODO remove once all gerrit servers are on bookworm
+    } else {
 
-    # TODO convert to systemd::sysuser
-    user { $daemon_user:
-        ensure     => present,
-        gid        => $daemon_user,
-        shell      => '/bin/bash',
-        home       => $daemon_user_dir,
-        system     => true,
-        managehome => true,
+        group { $daemon_user:
+            ensure => present,
+        }
+
+        user { $daemon_user:
+            ensure     => present,
+            gid        => $daemon_user,
+            shell      => '/bin/bash',
+            home       => $daemon_user_dir,
+            system     => true,
+            managehome => true,
+        }
     }
 
     file { $daemon_user_dir:

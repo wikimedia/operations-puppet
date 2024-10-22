@@ -1,3 +1,7 @@
+# different system user gerrit2 -> gerrit (T338470)
+profile::gerrit::migration::daemon_user: 'gerrit'
+profile::gerrit::daemon_user: 'gerrit'
+
 # Gerrit service is not ready yet - T372804
 profile::gerrit::mask_service: true
 profile::gerrit::enable_monitoring: false
