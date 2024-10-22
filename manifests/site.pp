@@ -265,8 +265,8 @@ node /^backup1003\.eqiad\./ {
 node /^backup100[4567]\.eqiad\./ {
     role(mediabackup::storage)
 }
-# temporary-ish expansion
-node /^backup1011\.eqiad\./ {
+# eqiad media backup expansion
+node /^backup101[12]\.eqiad\./ {
     role(mediabackup::storage)
 }
 
@@ -280,8 +280,8 @@ node /^backup1009\.eqiad\./ {
     role(backup::production)
 }
 
-# new backup node T326684 and T371416
-node /^backup10(10|12)\.eqiad\./ {
+# new backup node T326684
+node /^backup1010\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
@@ -308,13 +308,12 @@ node /^backup2003\.codfw\./ {
 node /^backup200[4567]\.codfw\./ {
     role(mediabackup::storage)
 }
-# temporary-ish expansion
+# codfw media backup expansion
 node /^backup2011\.codfw\./ {
     role(mediabackup::storage)
 }
-# New backup node for codfw T371984
+# pending to be setup as codfw media backup expansion
 node /^backup2012\.codfw\./ {
-    # role(mediabackup::storage)
     role(insetup::data_persistence)
 }
 
