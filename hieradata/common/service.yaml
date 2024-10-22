@@ -22,7 +22,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -58,7 +58,7 @@ service::catalog:
       conftool:
         cluster: apus
         service: apus
-      depool_threshold: ".3"
+      depool_threshold: 0.3
       enabled: true
       monitors:
         IdleConnection:
@@ -89,7 +89,7 @@ service::catalog:
       conftool:
         cluster: 'aux-k8s'
         service: 'kubemaster'
-      depool_threshold: '.5'
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -112,7 +112,7 @@ service::catalog:
       conftool:
         cluster: aux-k8s
         service: kubesvc
-      depool_threshold: '.5'
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -191,7 +191,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -225,7 +225,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-chi-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -254,7 +254,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-chi-ssl-public
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -283,7 +283,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-omega-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -312,7 +312,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-omega-ssl-public
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -341,7 +341,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-psi-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -370,7 +370,7 @@ service::catalog:
       conftool:
         cluster: cloudelastic
         service: cloudelastic-psi-ssl-public
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -400,7 +400,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -431,7 +431,7 @@ service::catalog:
       conftool:
         cluster: datahubsearch
         service: opensearch
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: false
       monitors:
         IdleConnection:
@@ -459,7 +459,7 @@ service::catalog:
       conftool:
         cluster: docker-registry
         service: docker-registry
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -489,7 +489,7 @@ service::catalog:
       conftool:
         cluster: druid-public
         service: druid-public-broker
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -521,7 +521,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -557,7 +557,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -590,7 +590,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -624,7 +624,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -659,7 +659,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -692,7 +692,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -726,7 +726,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -760,7 +760,7 @@ service::catalog:
       conftool:
         cluster: jobrunner
         service: nginx
-      depool_threshold: ".2"
+      depool_threshold: 0.2
       enabled: true
       monitors:
         IdleConnection:
@@ -797,7 +797,7 @@ service::catalog:
       conftool:
         cluster: kubernetes-staging
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -841,7 +841,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -885,7 +885,7 @@ service::catalog:
       conftool:
         cluster: ml_staging
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -928,7 +928,7 @@ service::catalog:
       conftool:
         cluster: ml_serve
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -971,7 +971,7 @@ service::catalog:
       conftool:
         cluster: dse-k8s
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1014,7 +1014,7 @@ service::catalog:
       conftool:
         cluster: maps
         service: kartotherian
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1043,7 +1043,7 @@ service::catalog:
       conftool:
         cluster: maps
         service: kartotherian-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1079,7 +1079,7 @@ service::catalog:
       conftool:
         cluster: kibana7
         service: kibana7
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1117,7 +1117,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubemaster
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1144,7 +1144,7 @@ service::catalog:
       conftool:
         cluster: kubernetes-staging
         service: kubemaster
-      depool_threshold: ".2"
+      depool_threshold: 0.2
       enabled: true
       monitors:
         IdleConnection:
@@ -1169,7 +1169,7 @@ service::catalog:
       conftool:
         cluster: cloudweb
         service: cloudweb-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1204,7 +1204,7 @@ service::catalog:
       conftool:
         cluster: ldap-ro
         service: ldap-ro
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1235,7 +1235,7 @@ service::catalog:
       conftool:
         cluster: ldap-ro
         service: ldap-ro-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1267,7 +1267,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1312,7 +1312,7 @@ service::catalog:
       conftool:
         cluster: dse-k8s
         service: kubemaster
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1337,7 +1337,7 @@ service::catalog:
       conftool:
         cluster: ml_serve
         service: kubemaster
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1361,7 +1361,7 @@ service::catalog:
       conftool:
         cluster: ml_staging
         service: kubemaster
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1388,7 +1388,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1421,7 +1421,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1456,7 +1456,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1491,7 +1491,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1529,7 +1529,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1567,7 +1567,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1605,7 +1605,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1643,7 +1643,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1694,7 +1694,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1730,7 +1730,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".6"
+      depool_threshold: 0.6
       enabled: true
       monitors:
         IdleConnection:
@@ -1766,7 +1766,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1821,7 +1821,7 @@ service::catalog:
       conftool:
         cluster: ncredir
         service: nginx
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         ProxyFetch:
@@ -1861,7 +1861,7 @@ service::catalog:
       conftool:
         cluster: ncredir
         service: nginx
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         ProxyFetch:
@@ -1904,7 +1904,7 @@ service::catalog:
       conftool:
         cluster: prometheus
         service: prometheus
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1933,7 +1933,7 @@ service::catalog:
       conftool:
         cluster: prometheus
         service: prometheus
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -1968,7 +1968,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2002,7 +2002,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2035,7 +2035,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2069,7 +2069,7 @@ service::catalog:
       conftool:
         cluster: restbase
         service: restbase-backend
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2098,7 +2098,7 @@ service::catalog:
       conftool:
         cluster: restbase
         service: restbase-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2137,7 +2137,7 @@ service::catalog:
       conftool:
         cluster: eventschemas
         service: eventschemas
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2173,7 +2173,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2198,7 +2198,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2228,7 +2228,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-omega-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2257,7 +2257,7 @@ service::catalog:
       conftool:
         cluster: elasticsearch
         service: elasticsearch-psi-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2290,7 +2290,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2325,7 +2325,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2358,7 +2358,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2391,7 +2391,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2424,7 +2424,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2457,7 +2457,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2490,7 +2490,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2523,7 +2523,7 @@ service::catalog:
       conftool:
         cluster: swift
         service: swift-fe
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2554,7 +2554,7 @@ service::catalog:
       conftool:
         cluster: swift
         service: nginx
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2595,7 +2595,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2629,7 +2629,7 @@ service::catalog:
       conftool:
         cluster: thanos
         service: thanos-query
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2665,7 +2665,7 @@ service::catalog:
       conftool:
         cluster: thanos
         service: thanos-web
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2715,7 +2715,7 @@ service::catalog:
       conftool:
         cluster: thanos
         service: thanos-swift
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2754,7 +2754,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2818,7 +2818,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: cdn
-      depool_threshold: ".66"
+      depool_threshold: 0.66
       enabled: true
       monitors:
         IdleConnection:
@@ -2865,7 +2865,7 @@ service::catalog:
       conftool:
         cluster: cache_text
         service: cdn
-      depool_threshold: ".66"
+      depool_threshold: 0.66
       enabled: true
       monitors:
         IdleConnection:
@@ -2911,7 +2911,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2945,7 +2945,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -2996,7 +2996,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: cdn
-      depool_threshold: ".66"
+      depool_threshold: 0.66
       enabled: true
       monitors:
         IdleConnection:
@@ -3043,7 +3043,7 @@ service::catalog:
       conftool:
         cluster: cache_upload
         service: cdn
-      depool_threshold: ".66"
+      depool_threshold: 0.66
       enabled: true
       monitors:
         IdleConnection:
@@ -3089,7 +3089,7 @@ service::catalog:
       conftool:
         cluster: videoscaler
         service: nginx
-      depool_threshold: ".2"
+      depool_threshold: 0.2
       enabled: true
       monitors:
         IdleConnection:
@@ -3125,7 +3125,7 @@ service::catalog:
       conftool:
         cluster: wcqs
         service: wcqs
-      depool_threshold: ".3"
+      depool_threshold: 0.3
       enabled: true
       monitors:
         IdleConnection:
@@ -3161,7 +3161,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3191,7 +3191,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs-heavy-queries
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3221,7 +3221,7 @@ service::catalog:
       conftool:
         cluster: wdqs-internal
         service: wdqs
-      depool_threshold: ".3"
+      depool_threshold: 0.3
       enabled: true
       monitors:
         IdleConnection:
@@ -3257,7 +3257,7 @@ service::catalog:
       conftool:
         cluster: wdqs-main
         service: wdqs-main
-      depool_threshold: ".3"
+      depool_threshold: 0.3
       enabled: true
       monitors:
         IdleConnection:
@@ -3293,7 +3293,7 @@ service::catalog:
       conftool:
         cluster: wdqs-scholarly
         service: wdqs-scholarly
-      depool_threshold: ".3"
+      depool_threshold: 0.3
       enabled: true
       monitors:
         IdleConnection:
@@ -3329,7 +3329,7 @@ service::catalog:
       conftool:
         cluster: wdqs
         service: wdqs-ssl
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3365,7 +3365,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3398,7 +3398,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3480,7 +3480,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3514,7 +3514,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3544,7 +3544,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3696,7 +3696,7 @@ service::catalog:
       conftool:
         cluster: ml_serve
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3728,7 +3728,7 @@ service::catalog:
       conftool:
         cluster: ml_staging
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3869,7 +3869,7 @@ service::catalog:
       conftool:
         cluster: kibana7
         service: logs-api
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -3916,7 +3916,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
@@ -4048,7 +4048,7 @@ service::catalog:
       conftool:
         cluster: kubernetes
         service: kubesvc
-      depool_threshold: ".5"
+      depool_threshold: 0.5
       enabled: true
       monitors:
         IdleConnection:
