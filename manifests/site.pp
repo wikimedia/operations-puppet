@@ -1612,6 +1612,11 @@ node /^kafka-jumbo10(0[7-9]|1[0-5])\.eqiad\./ {
     role(kafka::jumbo::broker)
 }
 
+# New kafka-jumbo hosts - See #T377874
+node /^kafka-jumbo101[6-8]\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # Kafkamon bullseye hosts
 node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring_bullseye)

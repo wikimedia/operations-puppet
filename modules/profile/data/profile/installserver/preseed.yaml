@@ -342,7 +342,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-jumbo100[7-9]':
     - reuse-parts-test.cfg
     - partman/custom/reuse-kafka-jumbo.cfg
-  'kafka-jumbo101[0-5]':
+  'kafka-jumbo101[0-8]':
     - partman/custom/kafka-jumbo.cfg
   'kafka-logging*':
     - partman/standard.cfg
