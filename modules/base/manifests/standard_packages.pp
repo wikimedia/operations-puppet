@@ -32,7 +32,7 @@ class base::standard_packages (
     ensure_packages(['python3-wmflib'])
 
     if debian::codename::ge('bullseye') {
-        ensure_packages(['bat'])
+        ensure_packages(['bat', 'efibootmgr'])
     }
 
     # Starship is a nice prompt for various shells. Exists in trixie and up only

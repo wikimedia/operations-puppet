@@ -48,6 +48,29 @@ class raid::md (
       interval    => {'start' => 'OnCalendar', 'interval' => "${dow} *-*-* 05:57:00"}
   }
 
+  if $facts['efi'] {
+      file { '/usr/local/bin/dup-uefi':
+          ensure => $timer_ensure,
+          source => 'puppet:///modules/raid/dup-uefi.sh',
+          mode   => '0755',
+      }
+
+      # HACK: The /boot/efi partition is seldom written to, but it is not
+      # static. Any new version of grub should trigger a grub install which
+      # writes the latest version of the bootloader to the UEFI partition. Grub
+      # updates are fairly rare, so we could run the dup-uefi script more
+      # infrequently. However, we want to be sure it is run soon after the
+      # install, in case we have an early disk failure. This could perhaps be
+      # replaced with inotifywait and running the script daemonized.
+      systemd::timer::job {'dup-uefi':
+          ensure      => $timer_ensure,
+          description => 'Dup the UEFI part, so we survive a disk failure',
+          user        => 'root',
+          command     => '/usr/local/bin/dup-uefi',
+          interval    => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
+      }
+  }
+
   nrpe::monitor_service { 'raid_md':
     description    => 'MD RAID',
     nrpe_command   => "${raid::check_raid} md",
