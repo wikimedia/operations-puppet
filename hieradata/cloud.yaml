@@ -541,6 +541,9 @@ profile::idp::actuators: []
 profile::idp::server_name: "https://%{facts.fqdn}"
 profile::idp::is_staging_host: false
 profile::idp::memcached_enable: true
+profile::idp::redis_enable: false
+profile::idp::redis_server: localhost
+profile::idp::redis_port: 6973
 profile::idp::enable_cors: false
 profile::idp::cors_allow_credentials: false
 profile::idp::cors_allowed_origins: []
