@@ -223,9 +223,9 @@ def write_replica_cnf() -> tuple[Response, int]:
                 dry_run=dry_run,
             )
             current_app.logger.debug("Backend %s created ok", backend)
-            results[
-                backend_key
-            ] = f"OK (user={new_replica_cnf.user}, db_user={new_replica_cnf.db_user})"
+            results[backend_key] = (
+                f"OK (user={new_replica_cnf.user}, db_user={new_replica_cnf.db_user})"
+            )
 
         except Skip as skip:
             results[backend_key] = str(skip)
