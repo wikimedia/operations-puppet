@@ -22,16 +22,4 @@ class profile::ircstream(
             src_sets => ['MW_APPSERVER_NETWORKS']
         }
     }
-
-    # Monitoring. Send NICK and USER commands to the IRC server.
-    # Look for the 376 (RPL_ENDOFMOTD) at the end of the MOTD.
-    # See: https://www.rfc-editor.org/rfc/rfc1459$
-    prometheus::blackbox::check::tcp { 'ircstream':
-        port           => 6667,
-        query_response => [
-            { 'send'   => 'NICK prober' },
-            { 'send'   => 'USER prober prober prober :prober' },
-            { 'expect' => '^:[^ ]+ 376 .*' }, # end of MOTD
-        ],
-    }
 }
