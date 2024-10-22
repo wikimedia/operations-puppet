@@ -9,6 +9,16 @@ class profile::puppetserver::wmcs (
     # To ensure the server is restarted on unattended java upgrades
     profile::auto_restarts::service { 'puppetserver': }
 
+    # to prevent java from being upgraded via unattended-upgrades
+    # see also T377803
+    apt::pin { 'cloud-vps-puppetserver-openjdk':
+        package  => 'openjdk-*',
+        pin      => 'version *',
+        # priority 0 < P < 100
+        # causes a version to be installed only if there is no prior installed version of the package
+        priority => 99,
+    }
+
     class { 'puppetmaster::gitsync':
         base_dir => $git_basedir,
         # TODO: make git_user a param to puppetmaster::gitpuppet and use that here
