@@ -10,4 +10,4 @@ profile::docker_registry_ha::registry::jwt_allowed_ips:
   - '10.64.48.141'  # gitlab-runner1004
   - '10.192.22.13'  # gitlab-runner2002
   - '10.192.29.6'   # gitlab-runner2003
-  - '10.192.48.71'  # gitlab-runner2004
+  - '10.192.40.6'   # gitlab-runner2004
