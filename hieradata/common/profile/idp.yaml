@@ -37,6 +37,9 @@ profile::idp::memcached_install: true
 # We use mcrouter in production
 profile::idp::memcached_port: 11213
 profile::idp::memcached_transcoder: 'SERIAL'
+profile::idp::redis_enable: false
+profile::idp::redis_server: localhost
+profile::idp::redis_port: 6973
 profile::idp::ldap_attributes:
   - cn
   - memberOf
