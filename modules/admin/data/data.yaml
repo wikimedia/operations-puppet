@@ -5281,7 +5281,7 @@ users:
     realname: Tanja Anđić
     email: tandic@wikimedia.org
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhg5l9FdMRyic4YF1+EDVbxatxyEhn6K8SGwIBpAY9V tandic-ctr@wikimedia.org
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJm0oOnGgg1SsbjZtELh5aR97Y4fE2E/qtaK2lRcGCMV tandic@wmf3526
     krb: present
   dannyh:
     ensure: absent
