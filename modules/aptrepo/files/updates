@@ -288,7 +288,7 @@ UDebComponents:
 Suite: bullseye
 Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 17.3 -a -FVersion --ge 17.2 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -P 'gitlab-ce' -a -FVersion --lt 17.4 -a -FVersion --ge 17.3 \) || [ $? -eq 1 ]
 
 Name: thirdparty/gitlab-runner
 Method: https://packages.gitlab.com/runner/gitlab-runner/debian/
@@ -297,7 +297,7 @@ UDebComponents:
 Suite: buster
 Architectures: amd64
 VerifyRelease: 3F01618A51312F3F
-ListShellHook: grep-dctrl \( -P 'gitlab-runner' -a -FVersion --lt 17.3 -a -FVersion --ge 17.2 \) || [ $? -eq 1 ]
+ListShellHook: grep-dctrl \( -P 'gitlab-runner' -a -FVersion --lt 17.4 -a -FVersion --ge 17.3 \) || [ $? -eq 1 ]
 
 Name: routinator
 Method: https://packages.nlnetlabs.nl/linux/debian/
