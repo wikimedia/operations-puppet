@@ -117,7 +117,7 @@ class profile::dns::auth::update (
 
     nrpe::monitor_service { 'authdns_update_run':
         description    => 'check if authdns-update was run after a change was submitted to dns.git',
-        nrpe_command   => '/usr/lib/nagios/plugins/check_authdns_update_run',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_authdns_update_run',
         check_interval => 5, # min
         retry_interval => 1, # min
         notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS#authdns_update_run',
