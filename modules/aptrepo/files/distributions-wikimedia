@@ -221,6 +221,7 @@ Components: main
  component/haproxy26
  component/ircstream-sse
  component/istio115
+ component/jdk8
  component/jdk21
  component/kubernetes123
  component/puppet5
