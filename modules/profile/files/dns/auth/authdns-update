@@ -14,8 +14,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Source the configuration file
 [ -f $CONFFILE ] && . $CONFFILE
 
-# Per-node timeouts: 10s connect + 45s execution
-CLUSH_OPTIONS="-S -B -n -t 10 -u 45"
+# Per-node timeouts: 10s connect + 90s execution
+CLUSH_OPTIONS="-S -B -n -t 10 -u 90"
 SSH_OPTIONS="-l authdns -i /srv/authdns/.ssh/id_ed25519 -F /srv/authdns/.ssh/config -oCheckHostIP=no -oUserKnownHostsFile=/dev/null"
 
 if [ -z "$NAMESERVERS" -o -z "$FQDN" ]; then
