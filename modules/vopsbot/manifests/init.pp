@@ -8,6 +8,8 @@
 # @param password irc password to use
 # @param vo_api_id VictorOps ID
 # @param vo_api_key VictorOps API key
+# @param active_alert_host fqdn of the active alert host
+# @param passive_alert_hosts array of fqdn of the passive alertmanager hosts
 # @param database_name name of the database to use
 # @param run_service indicate if we should run the service
 # @param daemon_user the user used to run the vopsbot daemon
@@ -20,6 +22,8 @@ class vopsbot(
     String $password,
     String $vo_api_id,
     String $vo_api_key,
+    Stdlib::Host $active_alert_host,
+    Array[Stdlib::Host] $passive_alert_hosts,
     String $database_name = 'ircbot',
     Boolean $run_service = false,
     String $daemon_user = 'vopsbot',
@@ -82,8 +86,7 @@ class vopsbot(
         mode   => '0755',
     }
     # pre-generate the database
-    # TODO: sync from active => passive instance.
-    # TODO2: maybe use mysql
+    # TODO: maybe use mysql
     $schema_file = "${data_path}/schema.sql"
     file { $schema_file:
         ensure => file,
@@ -99,6 +102,19 @@ class vopsbot(
         group      => $daemon_user,
         db_path    => $db_path,
         sql_schema => $schema_file,
+        require    => File[$schema_file],
+    }
+
+    $passive_alert_hosts.each |Stdlib::Fqdn $passive_host| {
+        rsync::quickdatacopy { "vopsbot-sync-db-to-${passive_host}":
+            ensure              => present,
+            auto_sync           => true,
+            source_host         => $active_alert_host,
+            dest_host           => $passive_host,
+            module_path         => $schema_file,
+            server_uses_stunnel => true,
+            chown               => "${daemon_user}:${daemon_user}",
+        }
     }
 
     systemd::service { 'vopsbot':
