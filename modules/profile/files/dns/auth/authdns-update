@@ -68,6 +68,11 @@ for other in $NAMESERVERS; do
     OTHERS_OPT="${OTHERS_OPT} -w ${other}"
 done
 
-clush $CLUSH_OPTIONS -o "${SSH_OPTIONS}" $OTHERS_OPT authdns-local-update $FQDN
+if clush $CLUSH_OPTIONS -o "${SSH_OPTIONS}" $OTHERS_OPT authdns-local-update $FQDN; then
+    echo ""; echo "clush ran successfully on all nodes"
+else
+    echo ""; echo "Error: authdns-update failed as clush returned a non-zero exit code; check the output above!"
+    exit 1
+fi
 
 echo ""; echo "OK - authdns-update successful on all nodes!"
