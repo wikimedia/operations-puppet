@@ -67,6 +67,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-test-client*|an-test-ui*|an-test-druid*':
     - partman/flat.cfg
     - virtual.cfg
+  'an-worker117[8-9]|an-worker118[0-6]':
+    - partman/custom/analytics-flex.cfg
   'an-worker109[6-9]|an-worker110[01]':
     - reuse-parts.cfg
     - partman/custom/reuse-analytics-hadoop-worker-24dev.cfg

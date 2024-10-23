@@ -129,6 +129,11 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7])\.eqi
     role(analytics_cluster::hadoop::worker)
 }
 
+# New an-worker nodes - See #T377878
+node /^an-worker11(7[8-9]|8[0-6])\.eqiad\./ {
+    role(insetup::data_engineering)
+}
+
 # turnilo.wikimedia.org
 # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Turnilo-Pivot
 node /^an-tool1007\.eqiad\./ {
