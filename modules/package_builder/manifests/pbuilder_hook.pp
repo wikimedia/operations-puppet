@@ -28,6 +28,14 @@ define package_builder::pbuilder_hook(
         }
     }
 
+    if $distribution == 'bookworm' {
+        file { "${basepath}/hooks/${distribution}/D04java8-bookworm":
+            ensure => present,
+            mode   => '0555',
+            source => 'puppet:///modules/package_builder/hooks/D04java8-bookworm',
+        }
+    }
+
     if $distribution == 'bullseye' {
         # add a hook for building packages against backported pybal stack
         file { "${basepath}/hooks/${distribution}/D04pybal":
