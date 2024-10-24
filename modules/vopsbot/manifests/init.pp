@@ -110,7 +110,7 @@ class vopsbot(
         auto_sync           => true,
         source_host         => $alertmanager_active_host,
         dest_host           => $alertmanager_passive_hosts,
-        module_path         => $schema_file,
+        module_path         => $data_path,
         server_uses_stunnel => true,
         chown               => "${daemon_user}:${daemon_user}",
     }
