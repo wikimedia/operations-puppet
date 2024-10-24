@@ -108,7 +108,7 @@ profile::netbox::report_checks:
         check_interval: 5
         run_interval: '*-*-* *:20/30:00' # every 30 minutes
     -   name: vlan_migration
-        class: 'vlan_migration.Vlan_migration'
+        class: 'vlan_migration.VlanMigration'
         id: 19
         alert: false
         check_interval: 5
