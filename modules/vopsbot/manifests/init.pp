@@ -22,8 +22,8 @@ class vopsbot(
     String $password,
     String $vo_api_id,
     String $vo_api_key,
-    Stdlib::Host $active_alert_host,
-    Array[Stdlib::Host] $passive_alert_hosts,
+    Stdlib::Host $alertmanager_active_host,
+    Array[Stdlib::Host] $alertmanager_passive_hosts,
     String $database_name = 'ircbot',
     Boolean $run_service = false,
     String $daemon_user = 'vopsbot',
@@ -105,16 +105,14 @@ class vopsbot(
         require    => File[$schema_file],
     }
 
-    $passive_alert_hosts.each |Stdlib::Fqdn $passive_host| {
-        rsync::quickdatacopy { "vopsbot-sync-db-to-${passive_host}":
-            ensure              => present,
-            auto_sync           => true,
-            source_host         => $active_alert_host,
-            dest_host           => $passive_host,
-            module_path         => $schema_file,
-            server_uses_stunnel => true,
-            chown               => "${daemon_user}:${daemon_user}",
-        }
+    rsync::quickdatacopy { 'vopsbot-sync-db':
+        ensure              => present,
+        auto_sync           => true,
+        source_host         => $alertmanager_active_host,
+        dest_host           => $alertmanager_passive_hosts,
+        module_path         => $schema_file,
+        server_uses_stunnel => true,
+        chown               => "${daemon_user}:${daemon_user}",
     }
 
     systemd::service { 'vopsbot':
