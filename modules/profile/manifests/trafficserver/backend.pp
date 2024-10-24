@@ -151,6 +151,12 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/gateway-check.lua.conf',
     }
 
+    trafficserver::lua_script { 'mw-php-migration':
+        source    => 'puppet:///modules/profile/trafficserver/mw-php-migration.lua',
+        unit_test => 'puppet:///modules/profile/trafficserver/mw-php-migration_test.lua',
+        config    => 'puppet:///modules/profile/trafficserver/mw-php-migration.lua.conf',
+    }
+
     if $monitor_enable {
         # Monitoring
         profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":

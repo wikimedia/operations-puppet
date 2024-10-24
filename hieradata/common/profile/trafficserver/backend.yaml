@@ -480,6 +480,9 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
           - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
+          # PHP migration
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-php-migration.lua'
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
@@ -496,6 +499,9 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
           - '@pparam=mw-api-ext-ro.discovery.wmnet' # dest
+          # PHP migration
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-php-migration.lua'
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
@@ -523,6 +529,9 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
           - '@pparam=mw-web-ro.discovery.wmnet' # dest
+          # PHP migration
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-php-migration.lua'
     - type: map
       target: /
       replacement: https://mw-web.discovery.wmnet:4450
@@ -541,6 +550,9 @@ profile::trafficserver::backend::mapping_rules:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
           - '@pparam=mw-web-ro.discovery.wmnet' # dest
+          # PHP migration
+          - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
+          - '@pparam=/etc/trafficserver/lua/mw-php-migration.lua'
           # Re-use origin server connections if origin IP and port match
           - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
           - '@pparam=proxy.config.http.server_session_sharing.match=ip'
