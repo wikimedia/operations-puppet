@@ -290,7 +290,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # New wikikube workers with containerd by default
-  'wikikube-worker208[5689]':
+  'wikikube-worker208[5689]|wikikube-worker128[5689]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
