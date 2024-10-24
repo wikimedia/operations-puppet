@@ -2311,19 +2311,22 @@ node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# floating spares
+# pc4
+node /^pc1016\.eqiad\./ {
+    role(mariadb::parsercache)
+}
+
+# pc5
 node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# pc 4
-node /^pc1016\.eqiad\./ {
-    role(mariadb::parsercache)
-}
-# pc5
+# old pc5 master, another hw issue? T378068
+# Needs discussion before repooling
 node /^pc1017\.eqiad\./ {
     role(mariadb::parsercache)
 }
+
 # codfw
 # pc1
 node /^pc2011\.codfw\./ {
