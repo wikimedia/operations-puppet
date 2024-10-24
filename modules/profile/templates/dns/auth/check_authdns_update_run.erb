@@ -23,7 +23,7 @@ if [ "$host_pooled" = true ]; then
     if git_authdns_head=$(git ls-remote $ORIGIN HEAD 2>/dev/null); then
         git_authdns_sha=$(echo "$git_authdns_head" | cut -f1)
         if [ "$local_authdns_sha" == "$git_authdns_sha" ]; then
-            echo "DNS git repository and local zone files are in sync"
+            echo "Local zone files and operations/dns.git are in sync"
             exit 0
         else
             echo "Local zone files are NOT in sync with operations/dns.git (SHA: local is $local_authdns_sha, dns.git is $git_authdns_sha)"
