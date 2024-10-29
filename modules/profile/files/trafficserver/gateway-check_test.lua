@@ -8,47 +8,41 @@ local function make_ts(request)
     client_request = {
       get_uri = function() return request.uri end
     },
-    http = {
-      id = function() return 1 end
-    },
-    now = function() return os.clock() end,
     get_config_dir = function() return base_dir end,
-    error = function(msg) error(msg) end
   }
   if request.host ~= nil then
     ts.client_request.header = {Host = request.host}
   else
     ts.client_request.header = {}
   end
+  if request.now ~= nil then
+    ts.now = function() return request.now end
+  else
+    ts.now = function() return os.clock() end
+  end
+  ts.error = function(msg) ts.error_msg = msg end
   ts.client_request.set_url_host = function(host) ts.client_request.mapped_host = host end
   ts.client_request.set_url_port = function(port) ts.client_request.mapped_port = port end
   return ts
 end
 
-local function run(request, config)
-  local result = {}
+local function setup(request, config)
   _G.ts = make_ts(request)
   _G.dofile = function ()
     return config
   end
+  _G.TS_LUA_REMAP_DID_REMAP = 'DID_REMAP'
+  _G.TS_LUA_REMAP_NO_REMAP = 'NO_REMAP'
+end
 
+local function run(request, config)
+  setup(request, config)
   gateway_file()
+  local result = {}
   result.remap_value = do_remap()
   result.host = _G.ts.client_request.mapped_host
   result.port = _G.ts.client_request.mapped_port
   return result
-end
-
-function expect(result, is_gateway, host, port)
-  if is_gateway then
-    assert.are.equals(TS_LUA_REMAP_DID_REMAP, result.remap_value)
-    assert.are.equals(result.host, host)
-    assert.are.equals(result.port, port)
-  else
-    assert.are.equals(TS_LUA_REMAP_NO_REMAP, result.remap_value)
-    assert.are.equals(result.host, nil)
-    assert.are.equals(result.port, nil)
-  end
 end
 
 local default_config = {
@@ -73,7 +67,10 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, true, 'rest-gateway.discovery.wmnet', 4113)
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
     end)
 
     it("test - route with one match group and a dash in the match", function()
@@ -83,7 +80,10 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, true, 'api-gateway.discovery.wmnet', 8087)
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('api-gateway.discovery.wmnet', result.host)
+      assert.are.same(8087, result.port)
+      assert.is_nil(ts.error_msg)
     end)
 
     it("test - route that doesn't match", function()
@@ -93,7 +93,58 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, false, nil, nil)
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("should remap nothing on initial load failure", function()
+      result = run({
+          host = 'en.wikipedia.org',
+          uri = '/api/rest_v1/page/pdf/Tornado'
+        },
+        'clearly not a table'
+      )
+      -- Expectation: an error is logged on load failure, and nothing is
+      -- remapped.
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.are.same("gateway-check.lua: invalid config file", ts.error_msg)
+    end)
+
+    it("should retain the existing config on reload failure", function()
+      setup({
+          host = 'en.wikipedia.org',
+          uri = '/api/rest_v1/page/pdf/Tornado',
+          now = 0
+        },
+        default_config
+      )
+
+      gateway_file()
+
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, do_remap())
+      assert.are.same('rest-gateway.discovery.wmnet', _G.ts.client_request.mapped_host)
+      assert.are.same(4113, _G.ts.client_request.mapped_port)
+      assert.is_nil(ts.error_msg)
+
+      -- Advance the clock by 11 seconds and replace with a bogus config table.
+      setup({
+          host = 'en.wikipedia.org',
+          uri = '/api/rest_v1/page/pdf/Tornado',
+          now = 11
+        },
+        'clearly not a table'
+      )
+
+      -- Expectation: an error is logged on load failure, and the previous
+      -- configuration remains intact.
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, do_remap())
+      assert.are.same('rest-gateway.discovery.wmnet', _G.ts.client_request.mapped_host)
+      assert.are.same(4113, _G.ts.client_request.mapped_port)
+      assert.are.same("gateway-check.lua: invalid config file", ts.error_msg)
     end)
 
     it("test - specific wiki route that matches", function()
@@ -103,8 +154,12 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, true, 'rest-gateway.discovery.wmnet', 4113)
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
+      assert.is_nil(ts.error_msg)
     end)
+
     it("test - specific wiki route that fails", function()
       result = run({
           host = 'test.wikipedia.org',
@@ -112,8 +167,12 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, false, nil, nil)
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
     end)
+
     it("test - specific wiki matches default routes", function()
       result = run({
           host = 'test.wikipedia.org',
@@ -121,7 +180,10 @@ describe("Busted unit testing framework", function()
         },
         default_config
       )
-      expect(result, true, 'api-gateway.discovery.wmnet', 8087)
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('api-gateway.discovery.wmnet', result.host)
+      assert.are.same(8087, result.port)
+      assert.is_nil(ts.error_msg)
     end)
   end)
 end)

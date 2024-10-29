@@ -7,15 +7,18 @@ jit.off(true, true)
 
 local config_read_time = nil
 -- Paths to match upon that will require us to change the host and port
-local gateway_paths = {}
+-- The default value of gateway_paths is a structurally valid noop config, and
+-- is only relevant in the case where initial config loading fails.
+local gateway_paths = {["default"] = {}}
 
--- Read the configuration file and return the resulting table
+-- Read the configuration file and return the resulting table, or nil if the
+-- configuration was invalid.
 local function read_config()
     local configfile = ts.get_config_dir() .. "/lua/gateway-check.lua.conf"
     local conf = dofile(configfile)
     if (type(conf) ~= "table" or conf["default"] == nil) then
         ts.error("gateway-check.lua: invalid config file")
-        return {}
+        return nil
     end
     return conf
 end
@@ -33,9 +36,9 @@ local function reload_config()
     local now = ts.now()
     if config_read_time == nil or now - config_read_time > 10 then
         config_read_time = now
-        -- only reload the configuration if it's valid
+        -- Only accept the new config if it's valid (non-nil).
         local conf = read_config()
-        if conf ~= {} then
+        if conf ~= nil then
             gateway_paths = conf
         end
     end
