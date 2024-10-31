@@ -20,7 +20,6 @@ class php::default_extensions {
         'ftp',
         'gettext',
         'iconv',
-        'json',
         'phar',
         'posix',
         'readline',
@@ -37,6 +36,15 @@ class php::default_extensions {
     php::extension { $base_extensions:
         install_packages => false,
         versions         => $php::versions,
+        priority         => 20,
+    }
+
+    # T378752: json is compiled into the binary starting with PHP 8.1.
+    $_json_builtin = [ '8.1', '8.2' ]
+    $_load_json_versions = $php::versions.filter |$version| { ! ($version in $_json_builtin) }
+    php::extension { 'json':
+        install_packages => false,
+        versions         => $_load_json_versions,
         priority         => 20,
     }
 

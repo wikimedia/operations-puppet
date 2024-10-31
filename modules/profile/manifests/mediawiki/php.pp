@@ -67,6 +67,30 @@ class profile::mediawiki::php(
             ensure => absent,
         }
     }
+    # Use component/php81 if php 8.1 is installed.
+    if ('8.1' in $php_versions) {
+        apt::repository { 'wikimedia-php81':
+            uri        => 'http://apt.wikimedia.org/wikimedia',
+            dist       => "${::lsbdistcodename}-wikimedia",
+            components => 'component/php81',
+            notify     => Exec['apt_update_php'],
+            before     => Package['php8.1-common', 'php8.1-opcache']
+        }
+
+        $php_common_version = '2:92+wmf11u1'
+
+        # Install explicitly php-common from the php81 component
+        # as the one installed elsewhere misses
+        package { 'php-common':
+            ensure  => $php_common_version,
+            require => Exec['apt_update_php'],
+            before  => Package['php8.1-common', 'php8.1-opcache']
+        }
+    } elsif ('8.1' in $absented_php_versions) {
+        apt::repository { 'wikimedia-php81':
+            ensure => absent,
+        }
+    }
     # remove all php versions we want to absent, completely.
     profile::mediawiki::php::absented_version{ $absented_php_versions: }
 
@@ -211,18 +235,18 @@ class profile::mediawiki::php(
         versions           => $php_versions
     }
 
-    # Extensions that are installed with package-name php-$extension and, based
-    # on the php version selected above, will install the proper extension
-    # version based on apt priorities.
-    # php-luasandbox and  php-wikidiff2 are special cases as the package is *not*
-    # compatible with all supported PHP versions.
-    # Technically, it would be needed to inject ensure => latest in the packages,
-    # but we prefer to handle the transitions with other tools than puppet.
-    # As a complication, these extensions have a different package name under php
-    # 7.4.
+    # Extensions that are installed with package-name php-$extension and,
+    # based on the php version selected above, will install the proper
+    # extension version based on apt priorities.
+    # php-luasandbox and  php-wikidiff2 are special cases as the package is
+    # *not* compatible with all supported PHP versions.
+    # Technically, it would be enough to inject ensure => latest in the
+    # packages, but we prefer to handle the transitions with other tools than
+    # puppet.
+    # As a complication, these extensions have a different package name under
+    # php 7.4 & 8.1.
     $generic_name_extensions = [
         'apcu',
-        'geoip',
         'msgpack',
         'redis',
         'luasandbox',
@@ -231,7 +255,16 @@ class profile::mediawiki::php(
     ]
     $generic_name_extensions.each |$ext| {
         php::extension { $ext:
-            package_overrides => {'7.4' => "php7.4-${ext}"}
+            package_overrides => {
+                '7.4' => "php7.4-${ext}",
+                '8.1' => "php8.1-${ext}",
+            }
+        }
+    }
+    # XXX: php-geoip doesn't exist for PHP 8+ per T372507#10088733
+    if ('7.4' in $php_versions) {
+        php::extension { 'geoip':
+            package_overrides => {'7.4' => 'php7.4-geoip'},
         }
     }
 
@@ -255,7 +288,10 @@ class profile::mediawiki::php(
     # Group 2: extensions that have a mix if 7.4 is involved.
     php::extension {
         'memcached':
-            package_overrides => {'7.4' => 'php7.4-memcached'},
+            package_overrides => {
+                '7.4' => 'php7.4-memcached',
+                '8.1' => 'php8.1-memcached',
+            },
             priority          => 25,
             config            => {
                 'extension'                   => 'memcached.so',
@@ -263,7 +299,10 @@ class profile::mediawiki::php(
                 'memcached.store_retry_count' => '0'
             };
         'igbinary':
-            package_overrides => {'7.4' => 'php7.4-igbinary'},
+            package_overrides => {
+                '7.4' => 'php7.4-igbinary',
+                '8.1' => 'php8.1-igbinary',
+            },
             config            => {
                 'extension'                => 'igbinary.so',
                 'igbinary.compact_strings' => 'Off',
@@ -313,7 +352,10 @@ class profile::mediawiki::php(
     }
     php::extension { 'tideways-xhprof':
         ensure            => $profiling_ensure,
-        package_overrides => {'7.4' => 'php7.4-tideways'},
+        package_overrides => {
+            '7.4' => 'php7.4-tideways',
+            '8.1' => 'php8.1-tideways',
+        },
         priority          => 30,
         config            => {
             'extension'                       => 'tideways_xhprof.so',
@@ -328,7 +370,10 @@ class profile::mediawiki::php(
     if $php_versions != ['7.0'] {
         php::extension { 'excimer':
             ensure            => present,
-            package_overrides => {'7.4' => 'php7.4-excimer'};
+            package_overrides => {
+                '7.4' => 'php7.4-excimer',
+                '8.1' => 'php8.1-excimer',
+            };
         }
     }
     # Set the default interpreter to php7
@@ -344,7 +389,10 @@ class profile::mediawiki::php(
     if $php_versions != ['7.0'] and $enable_fpm {
         php::extension { 'wmerrors':
             ensure            => present,
-            package_overrides => {'7.4' => 'php7.4-wmerrors'},
+            package_overrides => {
+                '7.4' => 'php7.4-wmerrors',
+                '8.1' => 'php8.1-wmerrors',
+            },
             sapis             => ['fpm'],
             config            => {
                 'extension'                  => 'wmerrors.so',
