@@ -836,7 +836,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, sstefanova, raymond-ndibe, samtar]
+    members: &wmcs_roots [bd808, taavi, sstefanova, raymond-ndibe, samtar, komla]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
