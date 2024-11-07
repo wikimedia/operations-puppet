@@ -51,6 +51,7 @@ opts = [
     cfg.StrOpt("dns_updater_project"),
     cfg.StrOpt("zones_json_file"),
     cfg.StrOpt("proxy_dns_ipv4"),
+    cfg.StrOpt("proxy_dns_ipv6"),
     cfg.StrOpt("sqlalchemy_uri", secret=True),
     cfg.StrOpt("redis_uri"),
 ]
@@ -163,10 +164,15 @@ class Dns:
     RECORD_DESCRIPTION = "managed by Cloud VPS web proxy service"
 
     def __init__(
-        self, zones: dict, target_ipv4: str, clients: mwopenstackclients.Clients
+        self,
+        zones: dict,
+        target_ipv4: str,
+        target_ipv6: str,
+        clients: mwopenstackclients.Clients,
     ):
         self.zones = zones
         self.target_ipv4 = target_ipv4
+        self.target_ipv6 = target_ipv6
         self.clients = clients
 
     def designateclient(self, project) -> designateclient.Client:
@@ -240,9 +246,13 @@ class Dns:
         if zone_id:
             client = self.designateclient(project)
 
-            existing_records = client.recordsets.list(
-                zone_id, criterion={"name": hostname, "type": "A"}
-            )
+            existing_records = [
+                record
+                for record in client.recordsets.list(
+                    zone_id, criterion={"name": hostname}
+                )
+                if record["type"] in ("A", "AAAA")
+            ]
             if len(existing_records) != 0:
                 log.logger.info(
                     "Rejecting can_use_hostname (%s %s), found existing records: %s",
@@ -273,6 +283,16 @@ class Dns:
                 description=Dns.RECORD_DESCRIPTION,
             )
 
+        if not client.recordsets.list(
+            zone_id, criterion={"name": hostname, "type": "AAAA"}
+        ):
+            client.recordsets.create(
+                zone_id,
+                hostname,
+                "AAAA", [self.target_ipv6],
+                description=Dns.RECORD_DESCRIPTION,
+            )
+
     def delete_records_for(self, project: str, hostname: str):
         hostname, project, zone_id = self.get_zone(project, hostname)
         if not zone_id:
@@ -280,11 +300,10 @@ class Dns:
 
         client = self.designateclient(project)
 
-        a_recordsets = client.recordsets.list(
-            zone_id, criterion={"name": hostname, "type": "A"}
-        )
-        if a_recordsets:
-            client.recordsets.delete(zone_id, a_recordsets[0]["id"])
+        for record in client.recordsets.list(zone_id, criterion={"name": hostname}):
+            if record["type"] not in ("A", "AAAA"):
+                continue
+            client.recordsets.delete(zone_id, record["id"])
 
 
 with open(cfg.CONF.dynamicproxy.zones_json_file, "r") as f:
@@ -294,6 +313,7 @@ redis_store = RedisStore(redis.Redis.from_url(cfg.CONF.dynamicproxy.redis_uri))
 dns = Dns(
     zones,
     cfg.CONF.dynamicproxy.proxy_dns_ipv4,
+    cfg.CONF.dynamicproxy.proxy_dns_ipv6,
     mwopenstackclients.Clients(
         username=cfg.CONF.dynamicproxy.dns_updater_username,
         password=cfg.CONF.dynamicproxy.dns_updater_password,

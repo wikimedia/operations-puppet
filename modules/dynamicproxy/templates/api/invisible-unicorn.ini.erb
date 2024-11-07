@@ -9,6 +9,7 @@ dns_updater_project = <%= @dns_updater_project %>
 
 zones_json_file = '/etc/dynamicproxy-api/zones.json'
 proxy_dns_ipv4 = <%= @proxy_dns_ipv4 %>
+proxy_dns_ipv6 = <%= @proxy_dns_ipv6 %>
 sqlalchemy_uri = 'mysql+pymysql://<%= @mariadb_username %>:<%= @mariadb_password %>@<%= @mariadb_host %>/<%= @mariadb_db %>?charset=utf8mb4'
 redis_uri = 'redis://<%= @redis_primary_host %>'
 

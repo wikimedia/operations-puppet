@@ -12,6 +12,7 @@ class dynamicproxy::api (
     String[1]                         $mariadb_password,
     Stdlib::Host                      $redis_primary_host,
     Stdlib::IP::Address::V4::Nosubnet $proxy_dns_ipv4,
+    Stdlib::IP::Address::V6::Nosubnet $proxy_dns_ipv6,
     Hash[String, Dynamicproxy::Zone]  $supported_zones,
     Optional[String]                  $acme_certname = undef,
     Optional[Array[String]]           $ssl_settings = undef,

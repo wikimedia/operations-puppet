@@ -20,6 +20,7 @@ describe 'dynamicproxy::api' do
           'mariadb_password'         => 'secret3',
           'redis_primary_host'       => 'someredis.proxy.someregion.wikimedia.cloud',
           'proxy_dns_ipv4'           => '192.0.2.123',
+          'proxy_dns_ipv6'           => '2001:db8::123',
           'supported_zones'          => {
             'zone1.example.' => {
               'id'             => 'aaaaaaaaaaa',
