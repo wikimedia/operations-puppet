@@ -20,6 +20,10 @@ class prometheus::node_kernel_panic (
             'start'    => 'OnCalendar',
             'interval' => 'minutely',
         },
-        require     => [File[$script], Class['prometheus::node_exporter'],]
+        require     => [
+          File[$script],
+          Class['prometheus::node_exporter'],
+          Package['jq'],
+        ],
     }
 }
