@@ -8,10 +8,10 @@ profile::etcd::v3::allow_from: "$DOMAIN_NETWORKS"
 profile::etcd::v3::max_latency: 10
 profile::etcd::v3::adv_client_port: 4001
 profile::etcd::v3::do_backup: true
-# This cert is generated using puppet-ecdsacert, and includes
-# all the hostnames for the etcd machines in the SANs
-# Will need to be regenerated if we add servers to the cluster.
+# TLS proxy certs are now managed with cfssl-based PKI and cert_name only
+# functions as the CN.
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
+profile::etcd::tlsproxy::use_pki_certs: true
 profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"]}
 # This should come from the private hieradata
 #profile::etcd::tlsproxy::salt
