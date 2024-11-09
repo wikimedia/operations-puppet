@@ -1,1 +1,0 @@
-profile::etcd::tlsproxy::use_pki_certs: true
