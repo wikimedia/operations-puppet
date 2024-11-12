@@ -1,5 +1,4 @@
-# = Class: role::elasticsearch::relforge
-#
+# SPDX-License-Identifier: Apache-2.0
 # This class sets up Elasticsearch for relevance forge.
 #
 class role::elasticsearch::relforge {

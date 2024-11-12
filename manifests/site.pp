@@ -2321,10 +2321,15 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
     role(releases)
 }
 
-# New relforge servers T241791 (provision), T262211 (service impl.)
-node /^relforge100[3-4]\.eqiad\./ {
+# relevance forge servers T241791 (provision), T262211 (service impl.)
+node /^relforge1003\.eqiad\./ {
     role(elasticsearch::relforge)
 }
+
+node /^relforge1004\.eqiad\./ {
+    role(cirrus::relforge)
+}
+
 
 # restbase eqiad cluster
 node /^restbase10(2[8-9]|3[0-9]|4[0-2])\.eqiad\./ {
