@@ -14,7 +14,7 @@ class profile::openstack::base::puppetserver::cert_cleaning (
 
   # Allow remote execution for cert cleanup
   ssh::userkey { 'certmanager.pub':
-    content => template('puppetmaster/puppet_cert_manager.pub.erb'),
+    content => template('profile/openstack/base/puppetserver/puppet_cert_manager.pub.erb'),
     user    => 'certmanager',
   }
 
