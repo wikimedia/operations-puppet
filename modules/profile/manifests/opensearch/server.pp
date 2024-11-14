@@ -13,6 +13,8 @@
 # - $version: version of the package to install
 # - $java_home: optionally specify the JAVA_HOME path in the opensearch systemd unit.
 # - $enable_curator: installs curator.  default false
+# - $s3_username: Username used by s3-repository plugin
+# - $s3_password: Password used by s3-repository plugin
 #
 class profile::opensearch::server(
     Hash[String, Opensearch::InstanceParams] $instances             = lookup('profile::opensearch::instances'),
@@ -26,6 +28,8 @@ class profile::opensearch::server(
     Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
     Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',          { 'default_value' => undef }),
     Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable',    { 'default_value' => false }),
+    Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',        { 'default_value' => undef }),
+    Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',        { 'default_value' => undef }),
 ) {
 
     require ::profile::java
@@ -82,6 +86,24 @@ class profile::opensearch::server(
             notrack => true,
             srange  => "@resolve((${opensearch_nodes_ferm}))",
         }
+
+        $cluster_name = $instance_params['cluster_name']
+
+        if $s3_username != undef and $s3_username != '' {
+            opensearch::keystore { "s3-credentials-user-${cluster_name}":
+                cluster_name => $cluster_name,
+                key          => 's3.client.default.access_key',
+                value        => $s3_username,
+            }
+        }
+
+        if $s3_password != undef and $s3_password != '' {
+            opensearch::keystore { "s3-credentials-password-${cluster_name}":
+                cluster_name => $cluster_name,
+                key          => 's3.client.default.secret_key',
+                value        => $s3_password,
+            }
+        }
     }
 
     $major_version = split($version, '[.]')[0]
@@ -122,7 +144,7 @@ class profile::opensearch::server(
     }
 
     # TODO: use fork when available
-    $::profile::opensearch::server::configured_instances.reduce(9108) |$prometheus_port, $kv_pair| {
+    $filtered_instances.reduce(9108) |$prometheus_port, $kv_pair| {
         $cluster_name = $kv_pair[0]
         $cluster_params = $kv_pair[1]
         $http_port = $cluster_params['http_port']
