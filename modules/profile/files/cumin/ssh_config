@@ -12,6 +12,7 @@ Host cr?-* asw-* asw?-* lsw?-* ssw?-* fasw-* mr?-* msw?-* pfw?-* cloudsw?-* fasw
 
 Host *
     BatchMode yes
+    RequestTTY no
     StrictHostKeyChecking yes
     UserKnownHostsFile /dev/null
     # Note: do not set ConnectTimeout here, because Cumin will ignore it.
