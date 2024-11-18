@@ -48,6 +48,8 @@ class profile::conftool::hiddenparma (
         port   => 8080,
     }
 
+    profile::auto_restarts::service { 'hiddenparma': }
+
     file { '/etc/HIDDENPARMA':
         ensure  => directory,
         owner   => $user,
