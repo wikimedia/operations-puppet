@@ -162,6 +162,10 @@ class profile::mediawiki::deployment::server(
         deployment_hosts  => $deployment_hosts_fqdn,
     }
 
+    class { 'profile::scap::spiderpig':
+        ensure_services => $primary_deploy_ensure,
+    }
+
     motd::script { 'inactive_warning':
         ensure   => $secondary_deploy_ensure,
         priority => 1,
