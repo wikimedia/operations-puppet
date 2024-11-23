@@ -39,7 +39,7 @@ def collect_openstack_cert_data(registry: CollectorRegistry, signed_certs_dir: P
     signed_certs = [
         cn
         for cn in get_signed_certificates(signed_certs_dir)
-        if (cn.endswith(".wmflabs") or cn.endswith(".wikimedia.cloud"))
+        if cn.endswith(".wikimedia.cloud")
     ]
 
     stalecerts = Gauge(

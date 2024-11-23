@@ -8,8 +8,6 @@ import sys
 def _is_valid_hostname(name):
     """
     Check that hostname is of the form:
-     * <host>.(eqiad|codfw).wmflabs
-     * <host>.<project>.(eqiad|codfw).wmflabs
      * <host>.(eqiad1|codfw1dev).wikimedia.cloud
      * <host>.<project>.(eqiad1|codfw1dev).wikimedia.cloud
 
@@ -17,33 +15,21 @@ def _is_valid_hostname(name):
     """
     host_parts = name.split('.')[::-1]
 
-    # this must be either 'wmflabs' or 'cloud'
     tld = host_parts.pop(0)
-    if tld != 'wmflabs' and tld != 'cloud':
+    if tld != 'cloud':
         print('Invalid hostname ({}) Unknown TLD.'.format(name))
         return False
 
-    if tld == 'wmflabs':
-        # current / legacy FQDN case
-        # this must be either eqiad or codfw
-        realm = host_parts.pop(0)
-        if realm != 'eqiad' and realm != 'codfw':
-            print('Invalid hostname ({}) Unknown realm.'.format(name))
-            return False
+    wikimedia = host_parts.pop(0)
+    if wikimedia != 'wikimedia':
+        print('Invalid hostname ({}) Unknown domain.'.format(name))
+        return False
 
-    if tld == 'cloud':
-        # new domain case
-        # must be wikimedia.cloud
-        wikimedia = host_parts.pop(0)
-        if wikimedia != 'wikimedia':
-            print('Invalid hostname ({}) Unknown domain.'.format(name))
-            return False
-
-        # must be deployment name, either eqiad1 or codfw1dev
-        deployment = host_parts.pop(0)
-        if deployment != 'eqiad1' and deployment != 'codfw1dev':
-            print('Invalid hostname ({}) Unknown deployment (outdated script?).'.format(name))
-            return False
+    # must be deployment name, either eqiad1 or codfw1dev
+    deployment = host_parts.pop(0)
+    if deployment != 'eqiad1' and deployment != 'codfw1dev':
+        print('Invalid hostname ({}) Unknown deployment (outdated script?).'.format(name))
+        return False
 
     hostname = [x.replace('-', '').replace('_', '') for x in host_parts]
     # list of fqdn parts that are not alphanumeric should be empty

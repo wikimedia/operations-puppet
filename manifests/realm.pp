@@ -36,35 +36,17 @@ $_trusted_certname = $trusted['certname'].lest || { $facts['fqdn'] }
 unless($_trusted_certname) {
     fail("unable to determine \$_trusted_certname: from trusted (${trusted['certname']} or facts (${facts['fqdn']})")
 }
-if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.cloud$' {
+if $_trusted_certname =~ '\.wikimedia.cloud$' {
     $realm = 'labs'
-    # Pull the project name from the certname. CloudVPS VM certs can be:
-    #  * <hostname>.<projname>.<site>.wmflabs
-    #  * <hostname>.<projname>.<deployment>.wikimedia.cloud
+    # Pull the project name from the certname. CloudVPS VM certs are now all
+    # have the <hostname>.<projname>.<deployment>.wikimedia.cloud format.
     #
     # See following page for additional context:
     # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
     $pieces = $_trusted_certname.split('[.]')
-
-    # current / legacy FQDN.
-    # This whole branch will go away eventually
-    if $pieces[-1] == 'wmflabs' {
-        if $pieces[2] != $site {
-            fail("Incorrect site in certname. Should be ${site} but is ${pieces[2]}")
-        }
-        $labsproject = $pieces[1]
-        $wmcs_project = $pieces[1]
-        $wmcs_deployment = $pieces[2] ? {
-            'eqiad' => 'eqiad1',
-            'codfw' => 'codfw1dev',
-            default => fail("site (${pieces[2]}) is not supported")
-        }
-    } else {
-        # new FQDN wikimedia.cloud
-        $labsproject = $pieces[1] # $wmcs_project may make more sense
-        $wmcs_project = $pieces[1]
-        $wmcs_deployment = $pieces[2]
-    }
+    $labsproject = $pieces[1] # $wmcs_project may make more sense
+    $wmcs_project = $pieces[1]
+    $wmcs_deployment = $pieces[2]
 
     # some final checks before we move on
     if $pieces[0] != $::hostname {
@@ -80,7 +62,6 @@ if $_trusted_certname =~ '\.wmflabs$' or $_trusted_certname =~ '\.wikimedia.clou
         fail('Failed to determine $::wmcs_deployment')
     }
     $projectgroup = "project-${labsproject}"
-
 } else {
     $realm = 'production'
 }

@@ -69,10 +69,6 @@ def _preprocess_prefix(prefix):
     if prefix == "_":
         return ""
 
-    # If the VM thinks it's under .eqiad.wmflabs, give it
-    #  a .eqiad1.wikimedia.cloud config anyway.
-    prefix = re.sub(r"\.eqiad\.wmflabs$", ".eqiad1.wikimedia.cloud", prefix)
-
     return prefix
 
 
