@@ -103,7 +103,7 @@ def process_tar(tar_file: Path, config: ControllerConfig, realm: str) -> bool:
     facts_dir = config.puppet_var / 'yaml' / realm
     tar = tarfile.open(tar_file)
     matcher = re.compile(
-        r'^yaml(\/facts(\/[a-z-\d\.]+\.(wmnet|wikimedia.(cloud|org)|wmflabs)\.yaml)?)?$',
+        r'^yaml(\/facts(\/[a-z-\d\.]+\.(wmnet|wikimedia.(cloud|org))\.yaml)?)?$',
         re.IGNORECASE,
     )
     valid_members = []
