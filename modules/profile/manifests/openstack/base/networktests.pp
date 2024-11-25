@@ -4,6 +4,7 @@ class profile::openstack::base::networktests (
     Stdlib::Fqdn                  $sshbastion              = lookup('profile::openstack::base::networktests::sshbastion'),
     Hash                          $envvars                 = lookup('profile::openstack::base::networktests::envvars'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
+    Optional[Boolean]             $ipv6                    = lookup('profile::openstack::base::networktests::ipv6', {default_value => false}),
 ) {
     class { 'cmd_checklist_runner': }
 
@@ -13,5 +14,6 @@ class profile::openstack::base::networktests (
         region       => $region,
         sshbastion   => $sshbastion,
         envvars      => $envvars,
+        ipv6         => $ipv6,
     }
 }

@@ -7,6 +7,104 @@
     <%= key %>: <%= value %>
 <% end -%>
 ---
+
+<% if @ipv6 %>
+- name: basic IPv6 ping to cloudgw addresses (raw addresses) from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A_IPV6 >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_B_IPV6 >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_IPV6 >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_WAN_IPV6 >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic IPv6 ping to cloudgw addresses (DNS names) from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_B_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_WAN_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic IPv6 ping to neutron WAN from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping6 -c1 $NEUTRON_WAN_IPV6 >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping6 -c1 $NEUTRON_WAN_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic IPv6 ping to neutron VIRT gateway from within the cloud virtual network, no floating IP
+  tests:
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping6 -c1 $NEUTRON_VIRT_IPV6 >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping6 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic IPv6 ping to neutron VIRT gateway from within the cloud virtual network, with floating IP
+  tests:
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping6 -c1 $NEUTRON_VIRT_IPV6 >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping6 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, no floating IP, VXLAN/IPv4-only
+  tests:
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_IP_VXLAN_IPV4_ONLY >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_FQDN_VXLAN_IPV4_ONLY >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, with floating IP, VXLAN/IPv4-only
+  tests:
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_IP_VXLAN_IPV4_ONLY >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping -c1 $NEUTRON_VIRT_FQDN_VXLAN_IPV4_ONLY >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+<% else %>
+# not including IPv6 tests
+<% end %>
+
 - name: basic ping to cloudgw addresses (raw addresses) from outside the cloud network
   tests:
     - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_IP >/dev/null

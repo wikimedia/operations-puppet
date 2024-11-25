@@ -2,6 +2,7 @@ class openstack::monitor::networktests (
     String[1]    $region,
     Stdlib::Fqdn $sshbastion,
     Hash         $envvars,
+    Boolean      $ipv6,
     Boolean      $timer_active,
 ) {
     $usr = 'srv-networktests'
