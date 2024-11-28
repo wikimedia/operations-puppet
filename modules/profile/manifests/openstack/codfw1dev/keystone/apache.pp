@@ -15,4 +15,6 @@ class profile::openstack::codfw1dev::keystone::apache(
         idp_client_secret => $idp_client_secret,
         keystone_fqdn     => $keystone_fqdn,
     }
+
+    profile::auto_restarts::service { 'apache2': }
 }
