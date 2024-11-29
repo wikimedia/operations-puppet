@@ -1,4 +1,7 @@
 ---
+profile::wmcs::cloudgw::blackboxmonitor::wan_fqdn: wan.cloudgw.codfw1dev.wikimediacloud.org
+profile::wmcs::cloudgw::blackboxmonitor::virt_fqdn: virt.cloudgw.codfw1dev.wikimediacloud.org
+profile::wmcs::cloudgw::blackboxmonitor::do_ipv6: true
 profile::wmcs::cloudgw::virt_subnets_cidr_v6:
   - 2a02:ec80:a100::/55
 profile::wmcs::cloudgw::virt_peer_v6: 2a02:ec80:a100:fe04::2:1
