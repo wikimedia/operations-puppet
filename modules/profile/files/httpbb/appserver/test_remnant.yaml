@@ -169,3 +169,11 @@ https://advisors.wikimedia.org:
 - path: /wiki/Main_Page
   assert_status: 200
   assert_body_contains: Advisors
+
+https://auth.wikimedia.org:
+- path: /enwiki/wiki/Special:UserLogin
+  assert_status: 200
+  assert_body_contains: username
+- path: /enwiki/wiki/Special:CreateAccount
+  assert_status: 200
+  assert_body_contains: username
