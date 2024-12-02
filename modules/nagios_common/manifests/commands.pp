@@ -75,7 +75,6 @@ class nagios_common::commands(
         'apt',
         'breeze',
         'check_dns_query',
-        'check_ssl_unified',
         'dhcp',
         'disk',
         'disk-smb',
