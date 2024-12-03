@@ -67,7 +67,7 @@ profile::cache::haproxy::vars:
       acl: 'ssl_session_reused'
     - direction: request
       name: 'req.ciph'
-      value: "ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^ECDHE-RSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')"
+      value: "ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')"
     - direction: request
       name: 'req.auth'
       value: 'str(ECDSA)'
