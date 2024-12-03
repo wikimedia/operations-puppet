@@ -59,6 +59,15 @@ class profile::hadoop::worker (
         class { 'bigtop::hadoop::journalnode': }
     }
 
+    # Specific rule for HDFS datanode-data to set qos mark
+    ferm::service{ 'hadoop-data':
+        proto  => 'tcp',
+        port   => '50010',
+        srange => $ferm_srange,
+        prio   => 9,
+        qos    => 'low',
+    }
+
     # This allows Hadoop daemons to talk to each other.
     ferm::service{ 'hadoop-access':
         proto  => 'tcp',
