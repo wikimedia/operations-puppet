@@ -86,7 +86,7 @@ sub init {
     );
     $ng->arg(
         spec => 'authalg=s',
-        help => 'authentication algorithm (DSS, RSA, ECDSA)',
+        help => 'authentication algorithm',
     );
     $ng->arg(
         spec => 'subject|s=s',
@@ -273,13 +273,11 @@ sub ssl_expiry_check {
     my $ssl  = $client->_get_ssl_object;
     my $x509 = Net::SSLeay::get_peer_certificate($ssl);
 
-    # append (RSA) or (ECDSA) to the certificate if an authalg was picked
+    # append algorithm to the certificate if an authalg was picked
     if ( defined $ng->authalg ) {
         my $pubkey = Net::SSLeay::X509_get_pubkey($x509);
         my $type = Net::SSLeay::OBJ_nid2sn(Net::SSLeay::EVP_PKEY_id($pubkey));
-        if ( $type eq 'rsaEncryption' ) {
-            $name .= ' (RSA)';
-        } elsif ( $type eq 'id-ecPublicKey' ) {
+        if ( $type eq 'id-ecPublicKey' ) {
             $name .= ' (ECDSA)';
         }
     }
