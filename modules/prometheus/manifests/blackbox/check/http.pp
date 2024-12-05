@@ -206,17 +206,17 @@ define prometheus::blackbox::check::http (
     }
     $module_params = {
         'content' => $module_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::module",
+        'tag'     => "prometheus::blackbox::check::http::${site}::${prometheus_instance}::module",
     }
     $alert_rule_params  = {
         'instance' => $prometheus_instance,
         'content' => $alert_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::alert",
+        'tag'     => "prometheus::blackbox::check::http::${site}::${prometheus_instance}::alert",
     }
     $target_frag_params = {
         'ensure'  => 'file',
         'content' => $target_config.wmflib::to_yaml,
-        'tag'     => "prometheus::blackbox::check::http::${::site}::${prometheus_instance}::target",
+        'tag'     => "prometheus::blackbox::check::http::${site}::${prometheus_instance}::target",
     }
 
     wmflib::resource::export('prometheus::blackbox::module', $module_title, $title, $module_params)
