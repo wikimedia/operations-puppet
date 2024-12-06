@@ -604,6 +604,9 @@ define profile::prometheus::k8s (
         enable_upload       => $thanos_upload
     }
 
+    # Checks for alerting rules, defined in puppet
+    prometheus::alert::import { $instance: }
+
     prometheus::rule { "rules_${instance}.yml":
         instance => $instance,
         source   => 'puppet:///modules/profile/prometheus/rules_k8s.yml',

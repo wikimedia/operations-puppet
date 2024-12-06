@@ -354,6 +354,9 @@ class profile::prometheus::analytics (
         enable_upload       => $thanos_upload,
     }
 
+    # Checks for alerting rules, defined in puppet
+    prometheus::alert::import { $instance: }
+
     prometheus::rule { 'rules_analytics.yml':
         instance => 'analytics',
         source   => 'puppet:///modules/profile/prometheus/rules_analytics.yml',

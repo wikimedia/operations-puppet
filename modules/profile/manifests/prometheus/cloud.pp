@@ -313,6 +313,9 @@ class profile::prometheus::cloud (
         enable_upload       => $thanos_upload,
     }
 
+    # Checks for alerting rules, defined in puppet
+    prometheus::alert::import { $instance: }
+
     prometheus::pint::source { $instance:
         port => $port,
     }

@@ -94,6 +94,9 @@ class profile::prometheus::services (
         enable_upload       => $thanos_upload,
     }
 
+    # Checks for alerting rules, defined in puppet
+    prometheus::alert::import { $instance: }
+
     prometheus::rule { 'rules_services.yml':
         instance => 'services',
         source   => 'puppet:///modules/profile/prometheus/rules_services.yml',

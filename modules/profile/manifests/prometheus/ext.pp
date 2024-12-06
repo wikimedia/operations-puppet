@@ -82,6 +82,9 @@ class profile::prometheus::ext (
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
     }
 
+    # Checks for alerting rules, defined in puppet
+    prometheus::alert::import { $instance: }
+
     prometheus::rule { 'rules_ext.yml':
         instance => 'ext',
         source   => 'puppet:///modules/profile/prometheus/rules_ext.yml',
