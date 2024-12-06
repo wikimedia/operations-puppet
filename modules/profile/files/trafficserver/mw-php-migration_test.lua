@@ -3,6 +3,7 @@
 local file_name = debug.getinfo(1, "S").source:sub(1)
 local base_dir = (file_name:reverse():match("/([^@]*)") or ""):reverse()
 local mw_php_migration_file = loadfile(base_dir .. "/mw-php-migration.lua")
+local mw_php_migration_config_file = loadfile(base_dir .. "/mw-php-migration.lua.conf")
 
 local function make_ts(request)
     ts = {
@@ -245,5 +246,18 @@ describe("MediaWiki PHP 8.1 migration script for ATS Lua Plugin", function()
         assert.are.same("mw-web-next.discovery.wmnet", ts_reload.client_request.mapped_host)
         assert.are.same(4454, ts_reload.client_request.mapped_port)
         assert.has.match("invalid config file", ts_reload.error_msg)
+    end)
+
+    it("emits no errors when using the production config", function()
+        local result = run(
+            {
+                url_host = "mw-web.discovery.wmnet",
+                header = { Cookie = "PHP_ENGINE=8.1" }
+            },
+            mw_php_migration_config_file()
+        )
+        -- We do not care about the remapping outcome, only whether errors
+        -- were emitted that indicate the production config is invalid.
+        assert.is_nil(result.error_msg)
     end)
 end)
