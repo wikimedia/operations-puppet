@@ -1573,8 +1573,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    # httpbb_dir: appserver  # TODO: T377040 - enable httpbb checks
-    page: false  # TODO: T377040 - promote to page
+    httpbb_dir: appserver
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
@@ -1649,8 +1649,8 @@ service::catalog:
           timeout-clean-reconnect: 3
       scheduler: wrr
       protocol: tcp
-    # httpbb_dir: appserver  # TODO: T377040 - enable httpbb checks
-    page: false  # TODO: T377040 - promote to page
+    httpbb_dir: appserver
+    page: true
     probes:
       - type: http
         path: /wiki/Special:BlankPage
