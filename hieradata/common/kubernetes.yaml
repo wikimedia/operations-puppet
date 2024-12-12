@@ -166,7 +166,6 @@ kubernetes::clusters:
         - wikikube-ctrl1002.eqiad.wmnet
         - wikikube-ctrl1003.eqiad.wmnet
         - wikikube-ctrl1004.eqiad.wmnet
-        - wikikube-worker1001.eqiad.wmnet
         - wikikube-worker1002.eqiad.wmnet
         - wikikube-worker1003.eqiad.wmnet
         - wikikube-worker1004.eqiad.wmnet

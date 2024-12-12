@@ -246,7 +246,6 @@ eqiad:
     parse1022.eqiad.wmnet: [kubesvc]
     parse1023.eqiad.wmnet: [kubesvc]
     parse1024.eqiad.wmnet: [kubesvc]
-    wikikube-worker1001.eqiad.wmnet: [kubesvc]
     wikikube-worker1002.eqiad.wmnet: [kubesvc]
     wikikube-worker1003.eqiad.wmnet: [kubesvc]
     wikikube-worker1004.eqiad.wmnet: [kubesvc]
