@@ -46,6 +46,10 @@ module Puppet::Parser::Functions
     # the labs masters don't
     return default if lookupvar('::settings::certname') =~ /\.wikimedia\.org$/
 
+
+    # XXX TMP HACK to skip error on lookupvar("puppetmaster")
+    return default
+
     puppetmaster = lookupvar('puppetmaster')
     if puppetmaster == '' || puppetmaster.nil?
       default
