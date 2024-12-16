@@ -9,10 +9,10 @@ profile::puppetserver::git::repos:
   'operations/puppet':
     branch: 'production'
     hooks:
-      'pre-commit': 'puppet:///modules/puppetmaster/git/pre-commit'
-      'pre-merge': 'puppet:///modules/puppetmaster/git/pre-merge'
+      'pre-commit': 'puppet:///modules/profile/puppetserver/git/operations/hooks/pre-commit'
+      'pre-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/pre-merge'
       'post-merge': 'puppet:///modules/profile/puppetserver/git/operations/hooks/deploy-code.sh'
-      'pre-rebase': 'puppet:///modules/puppetmaster/git/pre-rebase'
+      'pre-rebase': 'puppet:///modules/profile/puppetserver/git/operations/hooks/pre-rebase'
   'netbox-hiera':
     branch: 'master'
     origin: 'https://netbox-exports.wikimedia.org/netbox-hiera'
