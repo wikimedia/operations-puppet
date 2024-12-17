@@ -101,6 +101,9 @@ listen_addresses = '<%= @listen_addresses %>'
 
 # - Memory -
 
+<%- if defined?(@work_mem) %>
+work_mem = <%= @work_mem %>
+<% end -%>
 #temp_buffers = 8MB			# min 800kB
 #max_prepared_transactions = 0		# zero disables the feature
 					# (change requires restart)

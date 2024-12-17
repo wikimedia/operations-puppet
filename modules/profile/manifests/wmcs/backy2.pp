@@ -4,6 +4,7 @@ class profile::wmcs::backy2(
     String               $db_pass           = lookup('profile::wmcs::backy2::db_pass'),
     String               $backup_dir        = lookup('profile::wmcs::backy2::backup_dir'),
     Stdlib::Unixpath     $postgres_root_dir = lookup('profile::wmcs::backy2::postgres_root_dir'),
+    String               $work_mem          = lookup('profile::wmcs::backy2::warm_mem', {default_value => '4MB'}),
 ) {
     require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
@@ -45,6 +46,7 @@ class profile::wmcs::backy2(
 
     class {'::postgresql::server':
         root_dir => $postgres_root_dir,
+        work_mem => $work_mem,
     }
 
     postgresql::db { 'backy2':

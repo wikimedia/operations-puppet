@@ -12,6 +12,10 @@
 #   includes
 #       An array of files that will be included in the config. It is
 #       the caller's responsibility to provide these
+#   work_mem
+#       Override the postgresql default work_mem setting, default 4MB
+#       This override is needed to work around an upstream bug in version 15,
+#       see T381548 for details.
 #   root_dir
 #       The root directory for postgresql data. The actual directory will be
 #       "${root_dir}/${pgversion}/main".
@@ -34,6 +38,7 @@ class postgresql::server(
     Stdlib::Unixpath           $root_dir                    = '/var/lib/postgresql',
     Boolean                    $use_ssl                     = false,
     String                     $log_line_prefix             = '%t ',
+    Optional[String]           $work_mem                    = undef,
     Optional[Integer[250]]     $log_min_duration_statement  = undef,
     Optional[Integer]          $log_autovacuum_min_duration = undef,
     Optional[Numeric]          $pgversion                   = undef,

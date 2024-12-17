@@ -1,3 +1,4 @@
 profile::wmcs::backy2::volume_backup_time: '*-*-* 07:00:00'
 profile::wmcs::backy2::backup_cinder_volumes::div: 2
 profile::wmcs::backy2::backup_cinder_volumes::remainder: 1
+profile::wmcs::backy2::work_mem: 16MB
