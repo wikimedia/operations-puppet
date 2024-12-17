@@ -68,18 +68,6 @@ table inet cloudgw {
         <%- end -%>
     }
 
-    set paws_workers {
-        # PAWS K8S Nodes get special treatment due to abuse T381078
-        type ipv4_addr
-        elements = {
-            172.16.5.100,  #  paws-127a-m3mctzr7itba-node-0
-            172.16.1.161,  #  paws-127a-m3mctzr7itba-node-1
-            172.16.5.229,  #  paws-127a-m3mctzr7itba-node-2
-            172.16.0.46,   #  paws-127a-m3mctzr7itba-node-3
-            172.16.5.253,  #  paws-127a-m3mctzr7itba-node-4
-        }
-    }
-
     # empty NAT chain on purpose
     chain prerouting {
         type nat hook prerouting priority dstnat; policy accept;
@@ -104,17 +92,11 @@ table inet cloudgw {
         ip daddr @cloud_public_v4_set counter accept comment "cloud_public_v4"
         ip daddr $cloud_private_supernet counter accept comment "cloud_private_v4"
 
-        ip saddr @paws_workers counter snat ip to 185.15.56.2 comment "separate nat ip"
         counter snat ip to $routing_source_ip comment "routing_source_ip"
     }
 
     chain forward {
         type filter hook forward priority filter; policy drop;
-        # PAWS specific rules to block abusive use as DDOS source
-        ip saddr @paws_workers udp dport 53 counter accept
-        ip saddr @paws_workers udp dport 123 counter accept
-        ip saddr @paws_workers ip protocol udp counter drop
-
         # general cloud perimetral firewall
         # drop here traffic before the general VRF accept below
         ip saddr @cloud_filter counter drop
