@@ -1,0 +1,6 @@
+# testing enable: false on cp1100 as prep for T238230.
+# We will eventually remove this host override and apply on all cache text hosts.
+profile::cache::kafka::eventlogging::ensure: absent
+
+# Disable varnish handling of /beacon/event, but allow all other usages.
+profile::cache::varnish::frontend::fe_beacon_uri_regex: '^/beacon\/(?!event)[^/?]+'
