@@ -21,13 +21,16 @@
 #   The URL relative to '/' that will be redirected from, usually just $title.
 
 define prometheus::web (
-    String $proxy_pass,
+    Variant[String,Array] $proxy_pass,
     Wmflib::Ensure $ensure = present,
     Integer $maxconn = 10,
     Boolean $homepage = false,
     String $redirect_url = $title,
 ) {
     include ::prometheus
+
+    $default_instance = lookup('prometheus::default_web_instance') # lint:ignore:wmf_styleguide
+    $redirect_to_homepage = ($homepage) or ($title == $default_instance)
 
     # Apache configuration snippet with proxy pass.
     $title_safe  = regsubst($title, '[\W_]', '-', 'G')
@@ -39,7 +42,7 @@ define prometheus::web (
         mode    => '0444',
     }
 
-    # Single prometheus apache site, will include /etc/prometheus-apache/*.conf
+    # Single prometheus apache site, will include /etc/apache2/prometheus.d/*.conf
     if !defined(Httpd::Site['prometheus']) {
         httpd::site{ 'prometheus':
             content => template('prometheus/prometheus-apache-vhost.erb'),

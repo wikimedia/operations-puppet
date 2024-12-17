@@ -4,14 +4,16 @@
 #
 class profile::prometheus::services (
     String $replica_label                 = lookup('prometheus::replica_label'),
-    Boolean $enable_thanos_upload         = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Array[Stdlib::Host] $alertmanagers    = lookup('alertmanagers', {'default_value' => []}),
-    String $storage_retention             = lookup('profile::prometheus::services::storage_retention', {'default_value' => '4032h'}),
     Array $alerting_relabel_configs_extra = lookup('profile::prometheus::services::alerting_relabel_configs_extra'),
 ){
-
-    $targets_path = '/srv/prometheus/services/targets'
-    $port = 9903
+    $instance = 'services'
+    $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
+    $port = $config['port']
+    $storage_retention = $config['retention_time']
+    $storage_retention_size = $config['retention_size']
+    $thanos_upload = $config['thanos_upload']
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -19,7 +21,7 @@ class profile::prometheus::services (
         'external_labels' => {
             'site'       => $::site,
             'replica'    => $replica_label,
-            'prometheus' => 'services',
+            'prometheus' => $instance,
         },
     }
 
@@ -60,23 +62,20 @@ class profile::prometheus::services (
         class_name => 'role::sessionstore',
     }
 
-    prometheus::server { 'services':
+    prometheus::server { $instance:
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
+        storage_retention_size         => $storage_retention_size,
         scrape_configs_extra           => $jmx_exporter_jobs,
         global_config_extra            => $config_extra,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
     }
 
-    prometheus::web { 'services':
-        proxy_pass => "http://localhost:${port}/services",
-    }
-
-    profile::thanos::sidecar { 'services':
+    profile::thanos::sidecar { $instance:
         prometheus_port     => $port,
-        prometheus_instance => 'services',
-        enable_upload       => $enable_thanos_upload,
+        prometheus_instance => $instance,
+        enable_upload       => $thanos_upload,
     }
 
     prometheus::rule { 'rules_services.yml':
@@ -84,7 +83,7 @@ class profile::prometheus::services (
         source   => 'puppet:///modules/profile/prometheus/rules_services.yml',
     }
 
-    prometheus::pint::source { 'services':
+    prometheus::pint::source { $instance:
         port => $port,
     }
 }

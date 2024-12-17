@@ -1,0 +1,55 @@
+
+prometheus::instances_defaults:
+  retention_time: 4032h
+  retention_size: ~
+  thanos_upload: true
+  k8s_master_url: ~
+  pki_name: ~
+  hosts: ~
+
+prometheus::instances:
+  services:
+    port: 9903
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  cloud:
+    port: 9904
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  analytics:
+    port: 9905
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  ext:
+    port: 9908
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
+# Pick this instance as the "homepage" for e.g. prometheus-eqiad.w.o
+prometheus::default_web_instance: 'ops'
+
+# If an instance is not yet assigned above, default it to these hosts.
+# This setting is temporary until 'ops' and 'k8s-*' instances have been
+# migrated to prometheus::instances as part of T371087
+prometheus::unassigned_instance_hosts:
+  - prometheus7001.magru.wmnet
+  - prometheus3003.esams.wmnet
+  - prometheus4002.ulsfo.wmnet
+  - prometheus5002.eqsin.wmnet
+  - prometheus6002.drmrs.wmnet
+  - prometheus1005.eqiad.wmnet
+  - prometheus1006.eqiad.wmnet
+  - prometheus2005.codfw.wmnet
+  - prometheus2006.codfw.wmnet

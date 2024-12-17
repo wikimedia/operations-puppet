@@ -5,24 +5,23 @@
 # This Prometheus instance is for metrics that come in from outside of the infrastructure.
 # E.g. Statsv
 class profile::prometheus::ext (
-    String           $storage_retention              = lookup('profile::prometheus::ext::storage_retention', { 'default_value' => '730h'  }),
     String           $replica_label                  = lookup('prometheus::replica_label'),
-    Boolean          $enable_thanos_upload           = lookup('profile::prometheus::enable_thanos_upload',      { 'default_value' => false   }),
     Array            $alertmanagers                  = lookup('alertmanagers', {'default_value' => []}),
     Array            $alerting_relabel_configs_extra = lookup('profile::prometheus::ext::alerting_relabel_configs_extra'),
 ){
-    $instance_name  = 'ext'
-    $targets_path   = "/srv/prometheus/${instance_name}/targets"
-    $listen_address = '127.0.0.1'
-    $listen_port    = 9908
+    $instance = 'ext'
+    $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
+    $port = $config['port']
+    $storage_retention = $config['retention_time']
+    $storage_retention_size = $config['retention_size']
+    $thanos_upload = $config['thanos_upload']
 
     $config_extra = {
-        # All metrics will get an additional 'site' label when queried by
-        # external systems (e.g. via federation)
         'external_labels' => {
             'site'       => $::site,
             'replica'    => $replica_label,
-            'prometheus' => $instance_name,
+            'prometheus' => $instance,
         },
     }
 
@@ -73,17 +72,14 @@ class profile::prometheus::ext (
         port       => 80,
     }
 
-    prometheus::server { $instance_name:
-        listen_address                 => "${listen_address}:${listen_port}",
+    prometheus::server { $instance:
+        listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
+        storage_retention_size         => $storage_retention_size,
         global_config_extra            => $config_extra,
         scrape_configs_extra           => $scrape_configs_extra,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
-    }
-
-    prometheus::web { $instance_name:
-        proxy_pass => "http://${listen_address}:${listen_port}/${instance_name}",
     }
 
     prometheus::rule { 'rules_ext.yml':
@@ -91,13 +87,13 @@ class profile::prometheus::ext (
         source   => 'puppet:///modules/profile/prometheus/rules_ext.yml',
     }
 
-    profile::thanos::sidecar { $instance_name:
-        prometheus_port     => $listen_port,
-        prometheus_instance => $instance_name,
-        enable_upload       => $enable_thanos_upload,
+    profile::thanos::sidecar { $instance:
+        prometheus_port     => $port,
+        prometheus_instance => $instance,
+        enable_upload       => $thanos_upload,
     }
 
-    prometheus::pint::source { 'ext':
-        port => $listen_port,
+    prometheus::pint::source { $instance:
+        port => $port,
     }
 }

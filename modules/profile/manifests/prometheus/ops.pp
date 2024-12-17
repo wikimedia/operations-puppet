@@ -2587,7 +2587,6 @@ class profile::prometheus::ops (
 
     prometheus::web { 'ops':
         proxy_pass => "http://localhost:${port}/ops",
-        homepage   => true,
     }
 
     profile::thanos::sidecar { 'ops':

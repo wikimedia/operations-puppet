@@ -1,24 +1,25 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::cloud (
     String $openstack_deployment = lookup('profile::prometheus::cloud::openstack_deployment'),
-    String $storage_retention = lookup('profile::prometheus::cloud::storage_retention', {'default_value' => '4032h'}),
-    Optional[Stdlib::Datasize] $storage_retention_size = lookup('profile::prometheus::cloud::storage_retention_size', {default_value => undef}),
     Array $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
-    Boolean $enable_thanos_upload     = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     String $replica_label = lookup('prometheus::replica_label'),
     String $maintain_dbusers_primary = lookup('wmcs_maintain_dbusers_primary'),
 ) {
-    $targets_path = '/srv/prometheus/cloud/targets'
+    $instance = 'cloud'
+    $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
+    $port = $config['port']
+    $storage_retention = $config['retention_time']
+    $storage_retention_size = $config['retention_size']
+    $thanos_upload = $config['thanos_upload']
 
     $config_extra = {
         'external_labels' => {
             'site'       => $::site,
             'replica'    => $replica_label,
-            'prometheus' => 'cloud',
+            'prometheus' => $instance,
         },
     }
-
-    $port = 9904
 
     $blackbox_jobs = [
         {
@@ -284,7 +285,7 @@ class profile::prometheus::cloud (
         port       => 9900,
     }
 
-    prometheus::server { 'cloud':
+    prometheus::server { $instance:
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
@@ -303,17 +304,13 @@ class profile::prometheus::cloud (
         rule_files_extra               => ['/srv/alerts/cloud/*.yaml'],
     }
 
-    profile::thanos::sidecar { 'cloud':
+    profile::thanos::sidecar { $instance:
         prometheus_port     => $port,
-        prometheus_instance => 'cloud',
-        enable_upload       => $enable_thanos_upload,
+        prometheus_instance => $instance,
+        enable_upload       => $thanos_upload,
     }
 
-    prometheus::pint::source { 'cloud':
+    prometheus::pint::source { $instance:
         port => $port,
-    }
-
-    prometheus::web { 'cloud':
-        proxy_pass => "http://localhost:${port}/cloud",
     }
 }

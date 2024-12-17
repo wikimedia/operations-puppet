@@ -8,21 +8,22 @@
 
 class profile::prometheus::analytics (
     String $replica_label              = lookup('prometheus::replica_label'),
-    Boolean $enable_thanos_upload      = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers', {'default_value' => []}),
-    String $storage_retention          = lookup('profile::prometheus::analytics::storage_retention', {'default_value' => '4032h'}),
 ){
 
-    $targets_path = '/srv/prometheus/analytics/targets'
-    $port = 9905
+    $instance = 'analytics'
+    $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
+    $port = $config['port']
+    $storage_retention = $config['retention_time']
+    $storage_retention_size = $config['retention_size']
+    $thanos_upload = $config['thanos_upload']
 
     $config_extra = {
-        # All metrics will get an additional 'site' label when queried by
-        # external systems (e.g. via federation)
         'external_labels' => {
             'site'       => $::site,
             'replica'    => $replica_label,
-            'prometheus' => 'analytics',
+            'prometheus' => $instance,
         },
     }
 
@@ -338,22 +339,19 @@ class profile::prometheus::analytics (
         }
     }
 
-    prometheus::server { 'analytics':
-        listen_address       => "127.0.0.1:${port}",
-        storage_retention    => $storage_retention,
-        global_config_extra  => $config_extra,
-        scrape_configs_extra => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs, $ceph_jobs].flatten,
-        alertmanagers        => $alertmanagers.map |$a| { "${a}:9093" },
+    prometheus::server { $instance:
+        listen_address         => "127.0.0.1:${port}",
+        storage_retention      => $storage_retention,
+        storage_retention_size => $storage_retention_size,
+        global_config_extra    => $config_extra,
+        scrape_configs_extra   => [$jmx_exporter_jobs, $druid_jobs, $mysql_jobs, $statsd_airflow_exporter_jobs, $ceph_jobs].flatten,
+        alertmanagers          => $alertmanagers.map |$a| { "${a}:9093" },
     }
 
-    prometheus::web { 'analytics':
-        proxy_pass => "http://localhost:${port}/analytics",
-    }
-
-    profile::thanos::sidecar { 'analytics':
+    profile::thanos::sidecar { $instance:
         prometheus_port     => $port,
-        prometheus_instance => 'analytics',
-        enable_upload       => $enable_thanos_upload,
+        prometheus_instance => $instance,
+        enable_upload       => $thanos_upload,
     }
 
     prometheus::rule { 'rules_analytics.yml':
@@ -361,7 +359,7 @@ class profile::prometheus::analytics (
         source   => 'puppet:///modules/profile/prometheus/rules_analytics.yml',
     }
 
-    prometheus::pint::source { 'analytics':
+    prometheus::pint::source { $instance:
         port => $port,
     }
 }
