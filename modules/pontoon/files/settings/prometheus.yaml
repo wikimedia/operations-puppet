@@ -4,9 +4,10 @@ prometheus_nodes: "%{alias('__hosts_for_role_prometheus')}"
 prometheus_all_nodes: "%{alias('__hosts_for_role_prometheus')}"
 profile::prometheus::pushgateway_host: "%{alias('__master_for_role_prometheus')}"
 
-profile::prometheus::analytics::storage_retention_size: '1GB'
-profile::prometheus::cloud::storage_retention_size: '1GB'
-profile::prometheus::ext::storage_retention_size: '1GB'
 profile::prometheus::ops::storage_retention_size: '1GB'
-profile::prometheus::services::storage_retention_size: '1GB'
 prometheus::replica_label: 'a'
+
+prometheus::instances_overrides:
+  retention_size: '1GB'
+  hosts:
+    - "%{alias('__master_for_role_prometheus')}"
