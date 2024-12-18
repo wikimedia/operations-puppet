@@ -8,5 +8,5 @@ profile::openstack::eqiad1::pdns::extra_allow_from:
 
 # Extra records that the Labs DNS recursor should respond to.
 # REMEMBER THE TRAILING DOT.
-profile::openstack::eqiad1::pdns::recursor_aliaser_extra_records:
+profile::openstack::eqiad1::pdns::recursor_extra_records:
   puppet.: 172.16.7.124 # cloudinfra-cloudvps-puppetserver-1.cloudinfra.eqiad1.wikimedia.cloud

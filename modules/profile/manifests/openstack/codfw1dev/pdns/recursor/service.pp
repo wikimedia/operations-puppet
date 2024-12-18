@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
     Array[Hash] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),
     $legacy_tld = lookup('profile::openstack::codfw1dev::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::codfw1dev::pdns::private_reverse_zones'),
-    $aliaser_extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_aliaser_extra_records'),
+    $extra_records = lookup('profile::openstack::codfw1dev::pdns::recursor_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::codfw1dev::pdns::extra_allow_from', {default_value => []}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::codfw1dev::openstack_control_nodes'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
@@ -19,7 +19,7 @@ class profile::openstack::codfw1dev::pdns::recursor::service(
         pdns_hosts              => $pdns_hosts,
         legacy_tld              => $legacy_tld,
         private_reverse_zones   => $private_reverse_zones,
-        aliaser_extra_records   => $aliaser_extra_records,
+        extra_records           => $extra_records,
         extra_allow_from        => $extra_allow_from,
         openstack_control_nodes => $openstack_control_nodes,
         pdns_api_allow_from     => flatten([
