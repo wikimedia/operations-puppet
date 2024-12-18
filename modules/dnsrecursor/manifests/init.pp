@@ -21,7 +21,11 @@
 #
 # [*allow_extended_errors*]
 #  (bool) Specifies if RFC 8914 (EDNS Extended Error) should be enabled in responses
-
+#
+# [*extra_records*]
+#  (hash) Optional list of additional dns records to serve from the recursor. For example:
+#    puppet.: 172.16.128.65
+#
 
 class dnsrecursor (
     Array[Variant[Stdlib::IP::Address, Array[Stdlib::IP::Address]]] $listen_addresses         = [$::ipaddress],
@@ -59,6 +63,7 @@ class dnsrecursor (
     Boolean                                                         $allow_extended_errors    = false,
     Array[Stdlib::IP::Address]                                      $dont_query               = [],
     Array[Stdlib::IP::Address]                                      $dont_query_negations     = [],
+    Optional[Hash]                                                  $extra_records            = undef,
 ) {
 
     ensure_packages(['pdns-recursor'])
@@ -79,6 +84,15 @@ class dnsrecursor (
       $service = Service['pdns-recursor']
     } else {
       $service = undef
+    }
+
+    # Hard code extra hostnames, e.g. 'puppet'
+    if $extra_records != undef {
+        file { '/etc/powerdns/extrarecursorhosts':
+            ensure  => present,
+            mode    => '0440',
+            content => inline_template("<% @extra_records.each do |key,value| %><%=value %> <%=key %>\n<% end -%>")
+        }
     }
 
     file { '/etc/powerdns/recursor.conf':

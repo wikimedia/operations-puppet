@@ -107,9 +107,14 @@ stats-ringbuffer-entries=1000
 # where the controlsocket will live
 socket-dir=<%= @socket_dir %>
 
+<%- if @extra_records -%>
+etc-hosts-file=/etc/powerdns/extrarecursorhosts
+export-etc-hosts=on
+<%- else -%>
 # loads /etc/host entries on start
 # useful for debugging
 export-etc-hosts=<%= @export_etc_hosts %>
+<%- end -%>
 
 <% if @version_hostname -%>
 # Use version-string to query the server hostname under LVS and/or anycast
