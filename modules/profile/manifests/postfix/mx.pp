@@ -142,6 +142,10 @@ class profile::postfix::mx (
         # Override the default 'mail' syslog facility so our rsyslog config
         # doesn't result in double logging.
         syslog_facility                  => 'local0',
+        # Log a summary message on TLS handshake completion, useful for tracking
+        # TLS usage
+        smtp_tls_loglevel                => '1',
+        smtpd_tls_loglevel               => '1',
         # Require TLS to advertise SMTP auth
         smtpd_tls_auth_only              => 'yes',
         header_checks                    => ['regexp:/etc/postfix/header_checks'],
