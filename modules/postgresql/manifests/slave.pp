@@ -6,7 +6,7 @@
 #
 # @param master_server The FQDN of the master server to connect to
 # @param replication_pass The password the replication user should use
-# @param pgversion Defaults to 9.6 in Debian Stretch and 11 in Buster
+# @param pgversion Defaults to the Postgres default version in Debian
 # @param ensure Defaults to present
 # @param max_wal_senders the max wal senders
 # @param root_dir $postgresql::server::root_dir
@@ -42,12 +42,7 @@ class postgresql::slave(
 ) {
 
     $_pgversion = $pgversion ? {
-        undef   => debian::codename() ? {
-            'buster'   => 11,
-            'bullseye' => 13,
-            'bookworm' => 15,
-            default    => fail("${title} not supported by: ${debian::codename()})")
-        },
+        undef   => Integer(wmflib::debian_postgresql_version()),
         default => $pgversion,
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
@@ -64,8 +59,6 @@ class postgresql::slave(
 
     file { '/usr/local/bin/pg-resync-replica':
         ensure => $ensure,
-        owner  => 'root',
-        group  => 'root',
         mode   => '0755',
         source => 'puppet:///modules/postgresql/resync-replica.sh',
     }
@@ -77,8 +70,6 @@ class postgresql::slave(
 
     file { "/etc/postgresql/${_pgversion}/main/slave.conf":
         ensure  => $ensure,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0444',
         content => template('postgresql/slave.conf.erb'),
         require => Package["postgresql-${_pgversion}"],
@@ -124,8 +115,6 @@ class postgresql::slave(
     }
 
     file { '/usr/bin/prometheus_postgresql_replication_lag':
-        owner   => 'root',
-        group   => 'root',
         mode    => '0755',
         content => template('postgresql/prometheus/postgresql_replication_lag.sh.erb'),
     }
