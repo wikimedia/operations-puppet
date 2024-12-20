@@ -260,7 +260,7 @@ groups:
     gid: 711
     description: people who upload mediawiki releases
     members: [catrope, hashar, reedy, thcipriani, brennen,
-              jforrester, mah, arlolra, atieno]
+              jforrester, mah, arlolra, atieno, mbsantos]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/service jenkins *']
     approval:
@@ -3699,7 +3699,7 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNASXlpQe9lamZ5WvX2bvZvI65edok3MjgmhIvMgUfh7GU1v1/PNEieICsaWfZe0LEl5khZrpSRJi9eCif78pjzGOBjNMhD4diC8Drhgp/mUBYw3UECwD2QeWOP1hrgfSo3cvfAE0MmRixyQAI2G+6+sCNXpmme+fqYQvUB+myJ++XBqk6W+D/x+5E8ApBc0HETw1SZvgrR8mknnj8kic+2YIOYl9qQFCJoDwYy6ILif/f8jJB9u9GNoe239delNTsGpFvO+xP6hkzbXodFBsseSl/H2IixoreSUbsXR0A/rjKhbAuIGD4FJ4utdvg4+muCeYi+FnvaPThMObZU8IH msantos@wikimedia.org
     uid: 19579
-    email: mbsantos@wikimedia.org
+    email: msantos@wikimedia.org
   pirroh:
     ensure: absent
     realname: Michele Catasta
