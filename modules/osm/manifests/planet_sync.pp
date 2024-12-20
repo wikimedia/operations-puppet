@@ -3,8 +3,6 @@
 # Definition: osm::planet_sync
 #
 # This definition provides a way to sync planet_osm in a gis enabled db
-# Important: it's required to select whitch replication tool will be used:
-# imposm3 or osm2pgsql
 #
 # Parameters:
 #   $use_proxy
@@ -29,18 +27,8 @@
 #       Minute for cronjob, format is the same as for cron resource
 #   $expire_levels
 #       For which levels should expiry files be generated.
-#       [imposm] corresponds to
-#       [osm2pgsql] Corresponds to osm2pgslq option -e and can be in format "<level>" or
-#       "<from level>-<to level>"
-#   $memory_limit
-#       [osm2pgsql] Memory in megabytes osm2pgsql should occupy
-#   $num_threads
-#       [osm2pgsql] Number of threads to use during sync
 #   $postreplicate_command
 #       command to run after replication of OSM data
-#   $input_reader_format
-#       [osm2pgsql] Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
-#       needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
 #   $disable_replication_timer
 #       Don't run the systemd timer that initiates OSM replication
 #   $disable_tile_generation_timer
@@ -71,11 +59,8 @@ define osm::planet_sync (
     Variant[String,Integer] $minute         = '*/30',
     Boolean $flat_nodes                     = false,
     Integer $expire_levels                  = 15,
-    Integer $memory_limit                   = floor($::memorysize_mb) / 12,
-    Integer $num_threads                    = $::processorcount,
     Optional[String] $postreplicate_command = undef,
     Optional[String] $postreplicate_user    = 'osmupdater',
-    String $input_reader_format             = 'xml',
     Boolean $disable_replication_timer      = false,
     Boolean $disable_tile_generation_timer  = false,
     String $eventgate_endpoint              = 'https://eventgate-main.discovery.wmnet:4492/v1/events',

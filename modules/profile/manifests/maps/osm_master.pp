@@ -180,7 +180,6 @@ class profile::maps::osm_master (
     osm::planet_sync { $db_name:
         ensure                        => present,
         expire_levels                 => 15,
-        num_threads                   => 4,
         use_proxy                     => $use_proxy,
         proxy_host                    => "webproxy.${::site}.wmnet",
         proxy_port                    => 8080,
