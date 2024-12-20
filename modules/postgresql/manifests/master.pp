@@ -67,12 +67,7 @@ class postgresql::master(
 ) {
 
     $_pgversion = $pgversion ? {
-        undef   => debian::codename() ? {
-            'buster'   => 11,
-            'bullseye' => 13,
-            'bookworm' => 15,
-            default    => fail("${title} not supported by: ${debian::codename()})")
-        },
+        undef   => Integer(wmflib::debian_postgresql_version()),
         default => $pgversion,
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
