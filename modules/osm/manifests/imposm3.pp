@@ -10,7 +10,7 @@ class osm::imposm3 (
     String $osm_log_dir               = '/srv/osm/log',
     String $expire_dir                = '/srv/osm_expire',
     Integer $expire_levels            = 15,
-    Boolean $disable_replication_cron = false,
+    Boolean $disable_replication_timer = false,
     String $eventgate_endpoint        = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
 
@@ -71,7 +71,7 @@ class osm::imposm3 (
             source => 'puppet:///modules/osm/event-template.json';
     }
 
-    $ensure_replication = $disable_replication_cron ? {
+    $ensure_replication = $disable_replication_timer ? {
         true    => absent,
         default => $ensure,
     }

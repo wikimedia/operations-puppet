@@ -41,12 +41,10 @@
 #   $input_reader_format
 #       [osm2pgsql] Format passed to osm2pgsql as --input-reader parameter. osm2pgsql < 0.90
 #       needs 'libxml2' (which is default) and osm2pgsql >= 0.90 needs 'xml'.
-#   $disable_replication_cron
-#       [imposm] disable OSM replication only because for imposm tile generation
-#       and OSM replication are decoupled
-#       [osm2pgsql] disables cron that executes OSM replication and tile generation
-#   $disable_tile_generation_cron
-#       [imposm] disable cron that only run tile generation
+#   $disable_replication_timer
+#       Don't run the systemd timer that initiates OSM replication
+#   $disable_tile_generation_timer
+#       Don't run the systemd timer that initiates tile generation
 #
 # Actions:
 #   sync with planet.osm
@@ -78,8 +76,8 @@ define osm::planet_sync (
     Optional[String] $postreplicate_command = undef,
     Optional[String] $postreplicate_user    = 'osmupdater',
     String $input_reader_format             = 'xml',
-    Boolean $disable_replication_cron       = false,
-    Boolean $disable_tile_generation_cron   = false,
+    Boolean $disable_replication_timer      = false,
+    Boolean $disable_tile_generation_timer  = false,
     String $eventgate_endpoint              = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
     include ::osm::users
@@ -103,17 +101,17 @@ define osm::planet_sync (
     $tile_generation_command = $postreplicate_command
 
     class { 'osm::imposm3':
-        ensure                   => $ensure,
-        proxy_host               => $proxy_host,
-        proxy_port               => $proxy_port,
-        osm_log_dir              => $osm_log_dir,
-        expire_dir               => $expire_dir,
-        expire_levels            => $expire_levels,
-        disable_replication_cron => $disable_replication_cron,
-        eventgate_endpoint       => $eventgate_endpoint,
-        swift_key_id             => $swift_key_id,
-        swift_password           => $swift_password,
-        tegola_swift_container   => $tegola_swift_container
+        ensure                    => $ensure,
+        proxy_host                => $proxy_host,
+        proxy_port                => $proxy_port,
+        osm_log_dir               => $osm_log_dir,
+        expire_dir                => $expire_dir,
+        expire_levels             => $expire_levels,
+        disable_replication_timer => $disable_replication_timer,
+        eventgate_endpoint        => $eventgate_endpoint,
+        swift_key_id              => $swift_key_id,
+        swift_password            => $swift_password,
+        tegola_swift_container    => $tegola_swift_container
     }
 
     file { $osm_log_dir:
@@ -124,7 +122,7 @@ define osm::planet_sync (
     }
 
     if $tile_generation_command {
-        $ensure_timer = $disable_tile_generation_cron ? {
+        $ensure_timer = $disable_tile_generation_timer ? {
             true    => absent,
             default => $ensure,
         }

@@ -12,8 +12,8 @@ class profile::maps::osm_master (
     String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
     String $tegola_swift_container               = lookup('profile::maps::osm_master::tegola_swift_container'),
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
-    Boolean $disable_replication_cron            = lookup('profile::maps::osm_master::disable_replication_cron', { 'default_value' => false }),
-    Boolean $disable_tile_generation_cron        = lookup('profile::maps::osm_master::disable_tile_generation_cron', { 'default_value' => false }),
+    Boolean $disable_replication_timer           = lookup('profile::maps::osm_master::disable_replication_timer'),
+    Boolean $disable_tile_generation_timer       = lookup('profile::maps::osm_master::disable_tile_generation_timer'),
     Boolean $disable_admin_timer                 = lookup('profile::maps::osm_master::disable_admin_timer', { 'default_value' => false }),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
     String $eventgate_endpoint                         = lookup('profile::maps::osm_master::eventgate_endpoint'),
@@ -178,22 +178,22 @@ class profile::maps::osm_master (
     }
 
     osm::planet_sync { $db_name:
-        ensure                       => present,
-        expire_levels                => 15,
-        num_threads                  => 4,
-        use_proxy                    => $use_proxy,
-        proxy_host                   => "webproxy.${::site}.wmnet",
-        proxy_port                   => 8080,
-        period                       => $planet_sync_period,
-        day                          => $planet_sync_day,
-        hours                        => $planet_sync_hours,
-        minute                       => $planet_sync_minute,
-        disable_replication_cron     => $disable_replication_cron,
-        disable_tile_generation_cron => $disable_tile_generation_cron,
-        eventgate_endpoint           => $eventgate_endpoint,
-        swift_key_id                 => $swift_key_id,
-        swift_password               => $swift_password,
-        tegola_swift_container       => $tegola_swift_container
+        ensure                        => present,
+        expire_levels                 => 15,
+        num_threads                   => 4,
+        use_proxy                     => $use_proxy,
+        proxy_host                    => "webproxy.${::site}.wmnet",
+        proxy_port                    => 8080,
+        period                        => $planet_sync_period,
+        day                           => $planet_sync_day,
+        hours                         => $planet_sync_hours,
+        minute                        => $planet_sync_minute,
+        disable_replication_timer     => $disable_replication_timer,
+        disable_tile_generation_timer => $disable_tile_generation_timer,
+        eventgate_endpoint            => $eventgate_endpoint,
+        swift_key_id                  => $swift_key_id,
+        swift_password                => $swift_password,
+        tegola_swift_container        => $tegola_swift_container
     }
 
     $state_path = '/srv/osm/diff/last.state.txt'
