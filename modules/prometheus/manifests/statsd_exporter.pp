@@ -28,6 +28,11 @@
 #   This determines which prometheus instance scrapes these statsd metrics.
 #   defaults to 'ops'
 #
+# [*ttl*]
+#   Defines expriation time for stale metrics.
+#   Valid values are integer duration(s) with valid time unit(s): ns, us, ms, s, m, h. Can be combined, e.g 1h30m.
+#   defaults to '0' - metrics do not expire
+#
 class prometheus::statsd_exporter (
     Enum['summary', 'histogram'] $timer_type,
     Array[Variant[Integer, Float]] $histogram_buckets,
@@ -37,6 +42,7 @@ class prometheus::statsd_exporter (
     String $arguments = '',
     Boolean $enable_scraping = true,
     String $prometheus_instance = 'ops',
+    String $ttl = '0'
 ) {
     ensure_packages('prometheus-statsd-exporter')
 
@@ -55,6 +61,7 @@ class prometheus::statsd_exporter (
         { 'quantile' => 0.50,
           'error'    => 0.005  },
       ],
+      'ttl' => '0'
     }
 
     if (!defined(File[$basedir])) {

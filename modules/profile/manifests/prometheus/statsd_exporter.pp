@@ -7,6 +7,7 @@ class profile::prometheus::statsd_exporter (
     Array[Variant[Integer, Float]] $histogram_buckets = lookup('profile::prometheus::statsd_exporter::histogram_buckets', { 'default_value' => [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],}),
     Boolean     $enable_scraping = lookup('profile::prometheus::statsd_exporter::enable_scraping', { 'default_value' => true }),
     String $prometheus_instance = lookup('profile::prometheus::statsd_exporter::prometheus_instance', { 'default_value' => 'ops' }),
+    String $ttl = lookup('profile::prometheus::statsd_exporter::ttl', { 'default_value' => '720h' }),
 ) {
     if $enable_relay {
         $relay_addr = $relay_address
@@ -21,6 +22,7 @@ class profile::prometheus::statsd_exporter (
         histogram_buckets   => $histogram_buckets,
         enable_scraping     => $enable_scraping,
         prometheus_instance => $prometheus_instance,
+        ttl                 => $ttl,
     }
 
     # Don't spam conntrack with localhost statsd clients
