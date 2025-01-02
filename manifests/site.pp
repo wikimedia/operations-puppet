@@ -986,7 +986,7 @@ node /^dbproxy200(5|6|7|8)\.codfw\./ {
 }
 
 # Old codfw proxies for misc databases - will be decommissioned T381962
-node /^dbproxy20(02|03|04)\.codfw\./ {
+node /^dbproxy20(03|04)\.codfw\./ {
     role(mariadb::proxy::master)
 }
 
