@@ -78,7 +78,7 @@ GRANT USAGE
 GRANT SELECT
     ON `recommendationapi`.* TO 'recommendationapiservice'@'10.64.48.33';
 
--- dbproxy2002
+-- dbproxy2006
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.192.21.11';
@@ -272,7 +272,7 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 -- Grants for 'debmonitor'@'10.64.16.7' -- dbproxy1023
 GRANT USAGE ON *.* TO `debmonitor`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `debmonitor`.* TO `debmonitor`@`10.64.16.7`;
--- Grants for 'debmonitor'@'10.192.21.11' -- dbproxy2002
+-- Grants for 'debmonitor'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `debmonitor`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `debmonitor`.* TO `debmonitor`@`10.192.21.11`;
 
@@ -292,11 +292,11 @@ GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.16.7`;
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.64.48.33` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.64.48.33`;
 
--- Grants for 'adminlinkrecommendation'@'10.192.21.11' -- dbproxy2002
+-- Grants for 'adminlinkrecommendation'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `adminlinkrecommendation`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT DROP, SELECT, DELETE, CREATE, INSERT ON `mwaddlink`.* TO `adminlinkrecommendation`@`10.192.21.11`;
 
--- Grants for 'linkrecommendation'@'10.192.21.11' -- dbproxy2002
+-- Grants for 'linkrecommendation'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `linkrecommendation`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `mwaddlink`.* TO `linkrecommendation`@`10.192.21.11`;
 
@@ -316,10 +316,10 @@ GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.6
 GRANT USAGE ON *.* TO `sockpuppet_service`@`10.64.16.7` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.64.16.7`;
 
--- Grants for 'sockpuppet_import'@'10.192.21.11' -- dbproxy2002
+-- Grants for 'sockpuppet_import'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `sockpuppet_import`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT CREATE, DROP, INSERT, INDEX ON `sockpuppet`.* TO `sockpuppet_import`@`10.192.21.11`;
 
--- Grants for 'sockpuppet_service'@'10.192.21.11' -- dbproxy2002
+-- Grants for 'sockpuppet_service'@'10.192.21.11' -- dbproxy2006
 GRANT USAGE ON *.* TO `sockpuppet_service`@`10.192.21.11` IDENTIFIED BY PASSWORD 'REDACTED';
 GRANT SELECT ON `sockpuppet`.* TO `sockpuppet_service`@`10.192.21.11`;
