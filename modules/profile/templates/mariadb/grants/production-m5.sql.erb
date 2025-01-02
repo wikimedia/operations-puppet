@@ -19,7 +19,7 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.32.70'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
--- dbproxy2004
+-- dbproxy2008
 GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.192.48.31'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
@@ -30,7 +30,7 @@ GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.134.16' IDENTIFIED BY '<%= @m
 -- dbproxy1021
 GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.32.70' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.32.70' IDENTIFIED BY '<%= @mailman3web_pass %>';
--- dbproxy2004
+-- dbproxy2008
 GRANT ALL ON mailman3.* TO 'mailman3'@'10.192.48.31' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.192.48.31' IDENTIFIED BY '<%= @mailman3web_pass %>';
 
@@ -138,7 +138,7 @@ CREATE USER 'ipoid_ro'@'10.64.32.70' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.64.32.70';
 GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.32.70';
 
--- > dbproxy2004
+-- > dbproxy2008
 CREATE USER 'ipoid_rw'@'10.192.48.31' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
 CREATE USER 'ipoid_ro'@'10.192.48.31' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
 
