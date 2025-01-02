@@ -1,6 +1,6 @@
 -- haproxy
 CREATE USER 'haproxy'@'10.64.134.16';
-CREATE USER 'haproxy'@'10.64.32.180';
+CREATE USER 'haproxy'@'10.64.32.70';
 CREATE USER 'haproxy'@'10.192.48.31';
 
 -- labsdbaccounts user
@@ -16,7 +16,7 @@ GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.134.16'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
 -- dbproxy1021
-GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.32.180'
+GRANT ALL ON labsdbaccounts.* TO 'labsdbaccounts'@'10.64.32.70'
 IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 
 -- dbproxy2004
@@ -28,8 +28,8 @@ IDENTIFIED BY '<%= @labsdbaccounts_pass %>';
 GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.134.16' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.134.16' IDENTIFIED BY '<%= @mailman3web_pass %>';
 -- dbproxy1021
-GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.32.180' IDENTIFIED BY '<%= @mailman3_pass %>';
-GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.32.180' IDENTIFIED BY '<%= @mailman3web_pass %>';
+GRANT ALL ON mailman3.* TO 'mailman3'@'10.64.32.70' IDENTIFIED BY '<%= @mailman3_pass %>';
+GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.64.32.70' IDENTIFIED BY '<%= @mailman3web_pass %>';
 -- dbproxy2004
 GRANT ALL ON mailman3.* TO 'mailman3'@'10.192.48.31' IDENTIFIED BY '<%= @mailman3_pass %>';
 GRANT ALL ON mailman3web.* TO 'mailman3web'@'10.192.48.31' IDENTIFIED BY '<%= @mailman3web_pass %>';
@@ -42,9 +42,9 @@ GRANT SELECT ON cxserverdb.* TO 'cxserver'@'10.%' IDENTIFIED BY '<%= @cxserver_p
 -- dbproxy hosts
 --eqiad proxies
 GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.134.16' IDENTIFIED BY '<%= @toolhub_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.32.180' IDENTIFIED BY '<%= @toolhub_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.64.32.70' IDENTIFIED BY '<%= @toolhub_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.64.134.16' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
-GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.64.32.180' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.64.32.70' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
 --codfw proxies
 GRANT DELETE, INSERT, SELECT, UPDATE ON `toolhub`.* TO 'toolhub'@'10.192.48.31' IDENTIFIED BY '<%= @toolhub_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.192.48.31' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
@@ -53,9 +53,9 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.64.16.77' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `toolhub`.* TO 'toolhub_admin'@'10.192.32.34' IDENTIFIED BY '<%= @toolhub_admin_pass %>';
 
--- Grants for 'striker'@'10.64.32.180'
-GRANT USAGE ON *.* TO `striker`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `striker`.* TO `striker`@`10.64.32.180`;
+-- Grants for 'striker'@'10.64.32.70'
+GRANT USAGE ON *.* TO `striker`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @striker_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `striker`.* TO `striker`@`10.64.32.70`;
 -- Grants for 'striker'@'10.64.134.16'
 GRANT USAGE ON *.* TO `striker`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `striker`.* TO `striker`@`10.64.134.16`;
@@ -71,9 +71,9 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 -- Grants for 'striker_admin'@'10.64.16.77'
 GRANT USAGE ON *.* TO `striker_admin`@`10.64.16.77` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`10.64.16.77`;
--- Grants for 'striker_admin'@'10.64.32.180'
-GRANT USAGE ON *.* TO `striker_admin`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
-GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`10.64.32.180`;
+-- Grants for 'striker_admin'@'10.64.32.70'
+GRANT USAGE ON *.* TO `striker_admin`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`10.64.32.70`;
 -- Grants for 'striker_admin'@'10.64.134.16'
 GRANT USAGE ON *.* TO `striker_admin`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`10.64.134.16`;
@@ -84,9 +84,9 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 GRANT USAGE ON *.* TO `striker_admin`@`208.80.155.117` IDENTIFIED BY PASSWORD '<%= @striker_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker`.* TO `striker_admin`@`208.80.155.117`;
 
--- Grants for 'striker_toolsbeta'@'10.64.32.180'
-GRANT USAGE ON *.* TO `striker_toolsbeta`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_pass %>';
-GRANT DELETE, INSERT, SELECT, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta`@`10.64.32.180`;
+-- Grants for 'striker_toolsbeta'@'10.64.32.70'
+GRANT USAGE ON *.* TO `striker_toolsbeta`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_pass %>';
+GRANT DELETE, INSERT, SELECT, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta`@`10.64.32.70`;
 -- Grants for 'striker_toolsbeta'@'10.64.134.16'
 GRANT USAGE ON *.* TO `striker_toolsbeta`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_pass %>';
 GRANT DELETE, INSERT, SELECT, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta`@`10.64.134.16`;
@@ -96,9 +96,9 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 -- Grants for 'striker_toolsbeta_admin'@'10.64.16.77'
 GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.16.77` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.16.77`;
--- Grants for 'striker_toolsbeta_admin'@'10.64.32.180'
-GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
-GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.32.180`;
+-- Grants for 'striker_toolsbeta_admin'@'10.64.32.70'
+GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.32.70`;
 -- Grants for 'striker_toolsbeta_admin'@'10.64.134.16'
 GRANT USAGE ON *.* TO `striker_toolsbeta_admin`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @striker_toolsbeta_admin_pass %>';
 GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `striker_toolsbeta`.* TO `striker_toolsbeta_admin`@`10.64.134.16`;
@@ -106,18 +106,18 @@ GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CRE
 -- Grants for 'idm'@'10.192.48.31'
 GRANT USAGE ON *.* TO `idm`@`10.192.48.31` IDENTIFIED BY PASSWORD '<%= @idm_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm`.* TO `idm`@`10.192.48.31`;
--- Grants for 'idm'@'10.64.32.180'
-GRANT USAGE ON *.* TO `idm`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @idm_pass %>';
-GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm`.* TO `idm`@`10.64.32.180`;
+-- Grants for 'idm'@'10.64.32.70'
+GRANT USAGE ON *.* TO `idm`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @idm_pass %>';
+GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm`.* TO `idm`@`10.64.32.70`;
 -- Grants for 'idm'@'10.64.134.16'
 GRANT USAGE ON *.* TO `idm`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @idm_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm`.* TO `idm`@`10.64.134.16`;
 -- Grants for 'idm_staging'@'10.192.48.31'
 GRANT USAGE ON *.* TO `idm_staging`@`10.192.48.31` IDENTIFIED BY PASSWORD '<%= @idm_staging_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_staging`.* TO `idm_staging`@`10.192.48.31`;
--- Grants for 'idm_staging'@'10.64.32.180'
-GRANT USAGE ON *.* TO `idm_staging`@`10.64.32.180` IDENTIFIED BY PASSWORD '<%= @idm_staging_pass %>';
-GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_staging`.* TO `idm_staging`@`10.64.32.180`;
+-- Grants for 'idm_staging'@'10.64.32.70'
+GRANT USAGE ON *.* TO `idm_staging`@`10.64.32.70` IDENTIFIED BY PASSWORD '<%= @idm_staging_pass %>';
+GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_staging`.* TO `idm_staging`@`10.64.32.70`;
 -- Grants for 'idm_staging'@'10.64.134.16'
 GRANT USAGE ON *.* TO `idm_staging`@`10.64.134.16` IDENTIFIED BY PASSWORD '<%= @idm_staging_pass %>';
 GRANT ALTER, CREATE, DELETE, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON `idm_staging`.* TO `idm_staging`@`10.64.134.16`;
@@ -132,11 +132,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`
 GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.134.16';
 
 -- > dbproxy1021
-CREATE USER 'ipoid_rw'@'10.64.32.180' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
-CREATE USER 'ipoid_ro'@'10.64.32.180' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
+CREATE USER 'ipoid_rw'@'10.64.32.70' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
+CREATE USER 'ipoid_ro'@'10.64.32.70' IDENTIFIED BY '<%= @ipoid_ro_pass %>';
 
-GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.64.32.180';
-GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.32.180';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES ON `ipoid`.* TO 'ipoid_rw'@'10.64.32.70';
+GRANT SELECT ON `ipoid`.* TO 'ipoid_ro'@'10.64.32.70';
 
 -- > dbproxy2004
 CREATE USER 'ipoid_rw'@'10.192.48.31' IDENTIFIED BY '<%= @ipoid_rw_pass %>';
