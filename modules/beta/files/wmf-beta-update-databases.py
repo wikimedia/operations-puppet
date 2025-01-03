@@ -69,7 +69,8 @@ def run_updates(staging, cores):
         for db in dbs:
             f = tempfile.TemporaryFile("w+")
             cmd = ("""echo '%(db)s'
-            /usr/local/bin/mwscript update.php --wiki=%(db)s --quick --skip-config-validation"""
+            /usr/local/bin/mwscript update.php \
+                --wiki=%(db)s --doshared --quick --skip-config-validation"""
                    % {'db': db})
             p = subprocess.Popen(cmd, stdout=f, stderr=f, shell=True, universal_newlines=True)
             procs.append((p, f, cmd))
