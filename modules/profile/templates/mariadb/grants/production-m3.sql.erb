@@ -276,3 +276,15 @@ GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.130.15';
 
 
+-- These grants are needed to connect from phab2002 directly to m3-slave without using the proxy T377643
+-- Grants for 'phabricatorphd'@'10.192.27.6'
+GRANT BINLOG MONITOR, SLAVE MONITOR ON *.* TO `phabricatorphd`@`10.192.27.6` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT CREATE, DROP ON `phabricator_cache`.`cache_markupcache` TO `phabricatorphd`@`10.192.27.6`;
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE ON `phabricator%`.* TO `phabricatorphd`@`10.192.27.6`;
+-- Grants for 'phadmin'@'10.192.27.6'
+GRANT USAGE ON *.* TO `phadmin`@`10.192.27.6` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT ALTER, ALTER ROUTINE, CREATE, CREATE ROUTINE, CREATE TEMPORARY TABLES, CREATE VIEW, DELETE, DROP, EVENT, EXECUTE, INDEX, INSERT, LOCK TABLES, REFERENCES, SELECT, SHOW VIEW, TRIGGER, UPDATE ON `phabricator%`.* TO `phadmin`@`10.192.27.6`;
+-- Grants for 'phuser'@'10.192.27.6'
+GRANT BINLOG MONITOR, SLAVE MONITOR ON *.* TO `phuser`@`10.192.27.6` IDENTIFIED BY PASSWORD 'REDACTED';
+GRANT CREATE, DROP ON `phabricator_cache`.`cache_markupcache` TO `phuser`@`10.192.27.6`;
+GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE ON `phabricator%`.* TO `phuser`@`10.192.27.6`;
