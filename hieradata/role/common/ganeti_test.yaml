@@ -23,6 +23,7 @@ profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Ganeti node (staging/test)'
 
 profile::ganeti::manage_known_hosts: true
+profile::ganeti::cluster_ssh_key: 'ganeti-test01.svc.codfw.wmnet ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2AI02IlzPSaHcqmP9AaUDq2KHOXi5jeh01vu01lhjc8AvT7N+Nk78eo9DSbAdtLvxbH4AZ9rdQLOCyKs54CCoiOk9+Qku74/b8rq3sbxpKlbnPy7xWGMX2mPyHo6+aK54ZAFgcBCF1rvnJ5t/5EkHNe/ZPzgdFPDc2SnlIUtV67e5wrOOAtibbfx/OK70HufHrTia3QGH85Wr3zsnPcBec4ZnT6KpJAUkXnu/TdpvAxR2fgaFBtLgMRnD79QmR1Qlv8rzWb6/tm4GmpldnAl+B5cwaeY8+bh4nTuRsCJGho7pHrxtAjsYLc6lc42KDuSnQ9XBNuJITsXO2tb7LmEj'
 
 profile::firewall::provider: nftables
 

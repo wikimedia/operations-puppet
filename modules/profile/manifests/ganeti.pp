@@ -65,7 +65,13 @@ class profile::ganeti (
                                                                               { default_value => undef }),
     Hash[Wmflib::Sites, Stdlib::IP::Address]    $tftp_servers       = lookup('profile::installserver::dhcp::tftp_servers'),
     Boolean                                     $manage_known_hosts = lookup('profile::ganeti::manage_known_hosts', { default_value => false }),
+    Optional[String]                            $cluster_ssh_key    = lookup('profile::ganeti::cluster_ssh_key',
+                                                                              { default_value => undef }),
 ) {
+
+    if $manage_known_hosts and $cluster_ssh_key == undef {
+        fail('You need to configure the cluster SSH pubkey when using the managed known_hosts')
+    }
 
     class { 'ganeti':
         certname => $rapi_certificate,
@@ -240,7 +246,7 @@ class profile::ganeti (
                 mode    => '0644',
                 owner   => 'gnt-masterd',
                 group   => 'gnt-masterd',
-                content => $known_hosts,
+                content => sprintf('%s%s', $known_hosts , $cluster_ssh_key),
             }
         }
 
