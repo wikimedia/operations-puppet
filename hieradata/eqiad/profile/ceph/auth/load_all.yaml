@@ -8,9 +8,9 @@ profile::ceph::auth::load_all::configuration:
     # Cf https://github.com/ceph/ceph-csi/blob/devel/docs/capabilities.md#cephfs
     caps:
       mgr: allow rw
-      osd: allow rw tag cephfs metadata=dpe, allow rw tag cephfs data=dpe
-      mds: allow r fsname=dpe path=/volumes, allow rws fsname=dpe path=/volumes/csi
-      mon: allow r fsname=dpe
+      osd: allow rw tag cephfs metadata=dpe, allow rw tag cephfs data=dpe, allow rw tag cephfs metadata=dumps, allow rw tag cephfs data=dumps
+      mds: allow r fsname=dpe path=/volumes, allow rws fsname=dpe path=/volumes/csi, allow r fsname=dumps path=/volumes, allow rws fsname=dumps path=/volumes/csi
+      mon: allow r fsname=dpe, allow r fsname=dumps
   ml_lab:
     caps:
       osd: allow rw tag cephfs data=home
