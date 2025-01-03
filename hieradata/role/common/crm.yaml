@@ -17,3 +17,6 @@ profile::tlsproxy::envoy::global_cert_name: 'community-crm.discovery.wmnet'
 profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - community-crm.wikimedia.org
+
+profile::tlsproxy::envoy::firewall_src_sets:
+    - CACHES
