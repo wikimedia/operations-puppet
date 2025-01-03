@@ -237,7 +237,7 @@ class profile::ganeti (
 
             file { '/var/lib/ganeti/known_hosts':
                 ensure  => present,
-                mode    => '0755',
+                mode    => '0644',
                 owner   => 'gnt-masterd',
                 group   => 'gnt-masterd',
                 content => $known_hosts,
