@@ -109,6 +109,7 @@ profile::presto::server::catalogs:
       hive.copy-on-first-write-configuration-enabled: false
 
 profile::presto::server::ferm_srange: $ANALYTICS_NETWORKS
+profile::presto::server::firewall_access: ~
 
 profile::presto::server::generate_certificate: true
 
