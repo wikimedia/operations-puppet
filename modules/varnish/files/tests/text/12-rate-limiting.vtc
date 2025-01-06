@@ -43,6 +43,6 @@ client c1 {
     # test the body
     expect resp.body ~ "<p>Too Many Requests"
     # test the footer
-    expect resp.body ~ "<code>Request from"
+    expect resp.body ~ "<code>Request served"
     expect resp.http.Retry-After == 1
 } -run
