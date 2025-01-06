@@ -26,8 +26,10 @@
 -XX:+UseParNewGC
 -XX:+UseConcMarkSweepGC
 <% end -%>
+<% if @java_package == 'openjdk-11-jdk' -%>
 -XX:CMSInitiatingOccupancyFraction=75
 -XX:+UseCMSInitiatingOccupancyOnly
+<% end -%>
 
 ## optimizations
 
@@ -82,6 +84,17 @@
 # log GC status to a file with time stamps
 # ensure the directory exists
 #-Xloggc:${LS_GC_LOG_FILE}
+
+<% if @java_package == 'openjdk-17-jdk' -%>
+# Entropy source for randomness
+-Djava.security.egd=file:/dev/urandom
+
+# Copy the logging context from parent threads to children
+-Dlog4j2.isThreadContextMapInheritable=true
+
+--add-opens java.base/sun.nio.ch=ALL-UNNAMED
+--add-opens java.base/java.io=ALL-UNNAMED
+<% end -%>
 
 # Custom flags for GC logging.
 <% @gc_log_flags.each do |gc_log_flag| -%>
