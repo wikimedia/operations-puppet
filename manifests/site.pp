@@ -1206,10 +1206,6 @@ node /^es1022\.eqiad\./ {
 }
 
 ## codfw servers
-node /^es2020\.codfw\./ {
-    role(mariadb::core)
-}
-
 node /^es2041\.codfw\./ {
     role(mariadb::core)
 }
