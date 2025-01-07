@@ -67,7 +67,11 @@ class profile::maps::osm_master (
 
     }
 
-    class { '::osm': }
+    ensure_packages('osm2pgsql')
+    ensure_packages('osmosis')
+    ensure_packages('osmium-tool')
+    ensure_packages('osmborder')
+
     class { '::osm::import_waterlines':
         use_proxy  => $use_proxy,
         proxy_host => "webproxy.${::site}.wmnet",
