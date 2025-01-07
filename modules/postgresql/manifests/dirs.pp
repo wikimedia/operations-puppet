@@ -29,11 +29,7 @@ class postgresql::dirs(
     Optional[Numeric] $pgversion = undef,
 ) {
     $_pgversion = $pgversion ? {
-        undef   => $facts['os']['distro']['codename'] ? {
-            'bullseye' => 13,
-            'bookworm' => 15,
-            default   => 11,
-        },
+        undef   => Integer(wmflib::debian_postgresql_version()),
         default => $pgversion,
     }
     $data_dir = "${root_dir}/${_pgversion}/main"
