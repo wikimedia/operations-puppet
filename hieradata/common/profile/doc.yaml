@@ -1,4 +1,4 @@
-profile::doc::active_host: doc1003.eqiad.wmnet
+profile::doc::active_host: doc2002.codfw.wmnet
 profile::doc::all_hosts:
   - doc1003.eqiad.wmnet
   - doc2002.codfw.wmnet
