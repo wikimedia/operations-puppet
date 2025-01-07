@@ -26,6 +26,7 @@ class profile::puppetdb::database(
     Optional[Stdlib::Unixpath] $ssldir                  = lookup('profile::puppetdb::database::ssldir'),
     Optional[Integer[250]] $log_min_duration_statement  = lookup('profile::puppetdb::database::log_min_duration_statement'),
     Optional[Integer]      $log_autovacuum_min_duration = lookup('profile::puppetdb::database::log_autovacuum_min_duration'),
+    Optional[Integer]          $wal_keep_segments       = lookup('profile::puppetdb::database::wal_keep_segments'),
 ) {
     $pgversion  = Integer(wmflib::debian_postgresql_version())
 
@@ -59,6 +60,7 @@ class profile::puppetdb::database(
             log_min_duration_statement  => $log_min_duration_statement,
             log_autovacuum_min_duration => $log_autovacuum_min_duration,
             replication_slots           => $replication_slots,
+            wal_keep_segments           => $wal_keep_segments,
         }
     } else {
         $replication_slot_name = $use_replication_slots ? {
