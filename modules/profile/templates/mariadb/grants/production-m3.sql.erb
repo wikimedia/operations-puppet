@@ -1,4 +1,4 @@
--- haproxy@dbproxy1020
+-- haproxy@dbproxy1028
 
 GRANT USAGE
     ON *.* TO 'haproxy'@'10.64.16.113';
@@ -13,7 +13,7 @@ GRANT ALL PRIVILEGES
     ON `phabricator%`.* TO 'phadmin'@'10.64.16.101';
 
 
--- phadmin@dbproxy1020
+-- phadmin@dbproxy1028
 GRANT USAGE
     ON *.* TO 'phadmin'@'10.64.16.113'
     IDENTIFIED BY '<%= @phab_admin_pass %>';
@@ -37,7 +37,7 @@ GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phuser'@'10.64.16.101';
 
 
--- phuser@dbproxy1020
+-- phuser@dbproxy1028
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phuser'@'10.64.16.113'
@@ -64,7 +64,7 @@ GRANT DELETE, EXECUTE, INSERT, SELECT, SHOW VIEW, UPDATE
 GRANT CREATE, DROP
     ON `phabricator_cache`.`cache_markupcache` TO 'phabricatorphd'@'10.64.16.101';
 
--- phabricatorphd@dbproxy1020
+-- phabricatorphd@dbproxy1028
 
 GRANT REPLICATION CLIENT
     ON *.* TO 'phabricatorphd'@'10.64.16.113'
@@ -101,7 +101,7 @@ GRANT SELECT ON `phabricator_repository`.* TO `phstats`@`10.64.16.101`;
 GRANT SELECT ON `phabricator_search`.* TO `phstats`@`10.64.16.101`;
 GRANT SELECT ON `phabricator_user`.* TO `phstats`@`10.64.16.101`;
 
--- phstats@dbproxy1020
+-- phstats@dbproxy1028
 
 GRANT USAGE
     ON *.* TO 'phstats'@'10.64.16.113'
@@ -127,7 +127,7 @@ GRANT SELECT
     ON `phabricator_maniphest`.* TO 'phmanifest'@'10.64.16.101';
 
 
--- phmanifest@dbproxy1020
+-- phmanifest@dbproxy1028
 
 GRANT USAGE
     ON *.* TO 'phmanifest'@'10.64.16.113'
