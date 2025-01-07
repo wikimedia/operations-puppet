@@ -18,7 +18,6 @@ class role::prometheus {
     $unassigned_instance_hosts = lookup('prometheus::unassigned_instance_hosts') # lint:ignore:wmf_styleguide
     if $facts['networking']['fqdn'] in $unassigned_instance_hosts {
         include profile::prometheus::k8s
-        include profile::prometheus::ops
     }
 
     include profile::prometheus::pushgateway

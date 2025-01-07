@@ -63,6 +63,3 @@ profile::tlsproxy::envoy::services:
 profile::prometheus::web_idp::auth_type: 'oidc'
 
 profile::puppet::agent::force_puppet7: true
-
-# Retention settings - https://phabricator.wikimedia.org/T351179
-profile::prometheus::ops::storage_retention_size: 3300GB

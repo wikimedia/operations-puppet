@@ -13,7 +13,9 @@ profile::resolving::domain_search:
   - eqsin.wmnet
   - drmrs.wmnet
   - magru.wmnet
-profile::prometheus::ops::storage_retention_size: 80GB
+
+prometheus::instances_overrides:
+  retention_size: 80GB
 
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: cfssl

@@ -3,14 +3,9 @@
 # needed for WMF production
 #
 class profile::prometheus::ops (
-    Array[Stdlib::Host] $prometheus_nodes                     = lookup('prometheus_nodes'),
     String $replica_label                                     = lookup('prometheus::replica_label'),
-    String $storage_retention                                 = lookup('profile::prometheus::ops::storage_retention', { 'default_value' => '3024h' }), # 4.5 months
-    Optional[Stdlib::Datasize] $storage_retention_size        = lookup('profile::prometheus::ops::storage_retention_size', {default_value => undef}),
-    Stdlib::Unixpath $targets_path                            = lookup('prometheus::server::target_path', { 'default_value' => '/srv/prometheus/ops/targets' }),
     Array[Stdlib::Host] $bastion_hosts                        = lookup('bastion_hosts', { 'default_value' => [] }),
     Stdlib::Host $netmon_server                               = lookup('netmon_server'),
-    Boolean $enable_thanos_upload                             = lookup('profile::prometheus::enable_thanos_upload', { 'default_value' => false }),
     Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_http_check_urls = lookup('profile::prometheus::ops::blackbox_pingthing_http_check_urls', { 'default_value' => [] }),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_proxied_urls    = lookup('profile::prometheus::ops::blackbox_pingthing_proxied_urls', { 'default_value' => [] }),
@@ -25,7 +20,13 @@ class profile::prometheus::ops (
     include passwords::wikidough::dnsdist
     $wikidough_password = $passwords::wikidough::dnsdist::password
 
-    $port = 9900
+    $instance = 'ops'
+    $config = prometheus::instance_config($instance)
+    $targets_path = $config['targets_path']
+    $port = $config['port']
+    $storage_retention = $config['retention_time']
+    $storage_retention_size = $config['retention_size']
+    $thanos_upload = $config['thanos_upload']
 
     $config_extra = {
         # All metrics will get an additional 'site' label when queried by
@@ -33,7 +34,7 @@ class profile::prometheus::ops (
         'external_labels' => {
             'site'       => $::site,
             'replica'    => $replica_label,
-            'prometheus' => 'ops',
+            'prometheus' => $instance,
         },
     }
 
@@ -404,8 +405,8 @@ class profile::prometheus::ops (
     }
 
     # Checks for custom probes, defined in puppet
-    prometheus::blackbox::import_checks { 'ops':
-      prometheus_instance => 'ops',
+    prometheus::blackbox::import_checks { $instance:
+      prometheus_instance => $instance,
       site                => $::site,
     }
 
@@ -1861,7 +1862,7 @@ class profile::prometheus::ops (
         class_name       => 'profile::prometheus::statsd_exporter',
         class_parameters => {
           'enable_scraping'     => true,
-          'prometheus_instance' => 'ops',
+          'prometheus_instance' => $instance,
         },
         port             => 9112,
     }
@@ -2557,7 +2558,7 @@ class profile::prometheus::ops (
         },
     }
 
-    prometheus::server { 'ops':
+    prometheus::server { $instance:
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
@@ -2585,14 +2586,10 @@ class profile::prometheus::ops (
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
     }
 
-    prometheus::web { 'ops':
-        proxy_pass => "http://localhost:${port}/ops",
-    }
-
-    profile::thanos::sidecar { 'ops':
+    profile::thanos::sidecar { $instance:
         prometheus_port     => $port,
-        prometheus_instance => 'ops',
-        enable_upload       => $enable_thanos_upload,
+        prometheus_instance => $instance,
+        enable_upload       => $thanos_upload,
     }
 
     file { '/srv/prometheus/ops/gerrit.token':
@@ -2648,14 +2645,14 @@ class profile::prometheus::ops (
             content => to_yaml([{'targets' => $blackbox_pingthing_proxied_urls}]);
     }
 
-    prometheus::rule { 'rules_ops.yml':
-        instance => 'ops',
-        source   => 'puppet:///modules/profile/prometheus/rules_ops.yml',
+    prometheus::rule { "rules_${instance}.yml":
+        instance => $instance,
+        source   => "puppet:///modules/profile/prometheus/rules_${instance}.yml",
     }
 
-    prometheus::rule { 'alerts_ops.yml':
-        instance => 'ops',
-        source   => 'puppet:///modules/role/prometheus/alerts_ops.yml',
+    prometheus::rule { "alerts_${instance}.yml":
+        instance => $instance,
+        source   => "puppet:///modules/role/prometheus/alerts_${instance}.yml",
     }
 
     prometheus::cluster_config{ 'text_frontend':
@@ -2691,7 +2688,7 @@ class profile::prometheus::ops (
         }
     }
 
-    prometheus::pint::source { 'ops':
+    prometheus::pint::source { $instance:
         port => $port,
     }
 }

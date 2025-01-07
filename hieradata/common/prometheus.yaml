@@ -8,6 +8,19 @@ prometheus::instances_defaults:
   hosts: ~
 
 prometheus::instances:
+  ops:
+    port: 9900
+    retention_size: 3300GB
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+      - prometheus3003.esams.wmnet
+      - prometheus4002.ulsfo.wmnet
+      - prometheus5002.eqsin.wmnet
+      - prometheus6002.drmrs.wmnet
+      - prometheus7001.magru.wmnet
   services:
     port: 9903
     hosts:
@@ -44,11 +57,6 @@ prometheus::default_web_instance: 'ops'
 # This setting is temporary until 'ops' and 'k8s-*' instances have been
 # migrated to prometheus::instances as part of T371087
 prometheus::unassigned_instance_hosts:
-  - prometheus7001.magru.wmnet
-  - prometheus3003.esams.wmnet
-  - prometheus4002.ulsfo.wmnet
-  - prometheus5002.eqsin.wmnet
-  - prometheus6002.drmrs.wmnet
   - prometheus1005.eqiad.wmnet
   - prometheus1006.eqiad.wmnet
   - prometheus2005.codfw.wmnet
