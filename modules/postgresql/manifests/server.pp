@@ -40,20 +40,7 @@ class postgresql::server(
     Optional[Stdlib::Unixpath] $ssldir                      = undef,
 ) {
 
-    case debian::codename() {
-        'buster': {
-            $_pgversion_default = 11
-        }
-        'bullseye': {
-            $_pgversion_default = 13
-        }
-        'bookworm': {
-            $_pgversion_default = 15
-        }
-        default: {
-            fail("${title} not supported by: ${debian::codename()})")
-        }
-    }
+    $_pgversion_default = Integer(wmflib::debian_postgresql_version())
     $_pgversion = $pgversion ? {
         undef   => $_pgversion_default,
         default => $pgversion,
