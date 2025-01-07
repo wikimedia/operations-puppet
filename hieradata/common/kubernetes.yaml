@@ -55,9 +55,6 @@ kubernetes::clusters_defaults:
     disable:
       - StorageObjectInUseProtection
       - PersistentVolumeClaimResize
-  prometheus:
-    retention: '4032h'
-    retention_size: ~
 
 # kubernetes clusters by group.
 # Clusters in the same group (first level key) are supposed
@@ -73,10 +70,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus: &wikikube_prometheus
-        name: k8s
-        port: 9906
-        retention_size: '1160GB'
       control_plane_nodes:
         - wikikube-ctrl1001.eqiad.wmnet
         - wikikube-ctrl1002.eqiad.wmnet
@@ -352,8 +345,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus:
-        <<: *wikikube_prometheus
       control_plane_nodes:
         - wikikube-ctrl2001.codfw.wmnet
         - wikikube-ctrl2002.codfw.wmnet
@@ -619,9 +610,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus: &wikikube_staging_prometheus
-        name: k8s-staging
-        port: 9907
       control_plane_nodes:
         - kubestagemaster1003.eqiad.wmnet
         - kubestagemaster1004.eqiad.wmnet
@@ -653,8 +641,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus:
-        <<: *wikikube_staging_prometheus
       control_plane_nodes:
         - kubestagemaster2003.codfw.wmnet
         - kubestagemaster2004.codfw.wmnet
@@ -684,9 +670,6 @@ kubernetes::clusters:
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve
-      prometheus: &ml-serve_prometheus
-        name: k8s-mlserve
-        port: 9909
       control_plane_nodes:
         - ml-serve-ctrl1001.eqiad.wmnet
         - ml-serve-ctrl1002.eqiad.wmnet
@@ -753,8 +736,6 @@ kubernetes::clusters:
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve
-      prometheus:
-        <<: *ml-serve_prometheus
       control_plane_nodes:
         - ml-serve-ctrl2001.codfw.wmnet
         - ml-serve-ctrl2002.codfw.wmnet
@@ -796,9 +777,6 @@ kubernetes::clusters:
       service_node_port_range: [1, 65535]
       pki_intermediate_base: mlserve_staging
       pki_renew_seconds: 172800
-      prometheus:
-        name: k8s-mlstaging
-        port: 9910
       control_plane_nodes:
         - ml-staging-ctrl2001.codfw.wmnet
         - ml-staging-ctrl2002.codfw.wmnet
@@ -832,9 +810,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus:
-        name: k8s-dse
-        port: 9910
       control_plane_nodes:
         - dse-k8s-ctrl1001.eqiad.wmnet
         - dse-k8s-ctrl1002.eqiad.wmnet
@@ -882,9 +857,6 @@ kubernetes::clusters:
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
       #       and then copied all over the place. The kubernetes default is 30000-32767.
       service_node_port_range: [1, 65535]
-      prometheus:
-        name: k8s-aux
-        port: 9911
       control_plane_nodes:
         - aux-k8s-ctrl1002.eqiad.wmnet
         - aux-k8s-ctrl1003.eqiad.wmnet

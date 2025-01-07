@@ -97,9 +97,6 @@
 # @param [Boolean] imagecatalog
 #   Enable imagecatalog scanning on this cluster.
 #
-# @param [Optional[K8s::ClusterConfig::Prometheus]] prometheus
-#   Configuration of the prometheus instances for this cluster
-#
 # @param [Optional[Array[String]] apparmor_profiles
 #   A list of apparmor profiles to populate in the cluster. The actual profiles
 #   will need to be placed in modules/profile/files/kubernetes/node/ and are
@@ -137,7 +134,6 @@ type K8s::ClusterConfig = Struct[{
   'istio_cni_version'       => String[1],
   'cni_config'              => Hash,
   'imagecatalog'            => Boolean,
-  'prometheus'              => Optional[K8s::ClusterConfig::Prometheus],
   'apparmor_profiles'       => Optional[Array[String]],
   'audit_policy'            => Optional[String],
 }]

@@ -3,8 +3,7 @@ prometheus::instances_defaults:
   retention_time: 4032h
   retention_size: ~
   thanos_upload: true
-  k8s_master_url: ~
-  pki_name: ~
+  k8s_cluster_name: ~
   hosts: ~
 
 prometheus::instances:
@@ -21,6 +20,7 @@ prometheus::instances:
       - prometheus5002.eqsin.wmnet
       - prometheus6002.drmrs.wmnet
       - prometheus7001.magru.wmnet
+
   services:
     port: 9903
     hosts:
@@ -28,6 +28,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+
   cloud:
     port: 9904
     hosts:
@@ -35,6 +36,7 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+
   analytics:
     port: 9905
     hosts:
@@ -42,6 +44,58 @@ prometheus::instances:
       - prometheus1006.eqiad.wmnet
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+
+  k8s:
+    port: 9906
+    retention_size: 1160GB
+    k8s_cluster_name: "%{::site}"
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
+  k8s-staging:
+    port: 9907
+    k8s_cluster_name: "staging-%{::site}"
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
+  k8s-mlserve:
+    port: 9909
+    k8s_cluster_name: "ml-serve-%{::site}"
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
+  k8s-mlstaging:
+    port: 9910 # conflicts with k8s-dse, see also T383223
+    k8s_cluster_name: "ml-staging-%{::site}"
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
+  k8s-dse:
+    port: 9910 # conflicts with k8s-mlstaging, see also T383223
+    k8s_cluster_name: "dse-k8s-%{::site}"
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+
+  k8s-aux:
+    port: 9911
+    k8s_cluster_name: "aux-k8s-%{::site}"
+    hosts:
+      - prometheus1005.eqiad.wmnet
+      - prometheus1006.eqiad.wmnet
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+
   ext:
     port: 9908
     hosts:
