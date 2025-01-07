@@ -976,7 +976,7 @@ node /^db12(50|51|52|53|54|55|56)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 # New external storage databases T378143
-node /^es104(1|2|3|4|5|6)\.eqiad\./ {
+node /^es104(2|3|4|5|6)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
@@ -1194,6 +1194,10 @@ node /^es2034\.codfw\./ {
 # RO section
 ## eqiad servers
 node /^es1020\.eqiad\./ {
+    role(mariadb::core)
+}
+
+node /^es1041\.eqiad\./ {
     role(mariadb::core)
 }
 
