@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford]
+              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -441,7 +441,7 @@ groups:
               hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
-              jebe, ollieshotton, muja, taavi, abhas, santhosh, frankie, dmartin, mvolz,
+              jebe, ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
@@ -787,7 +787,7 @@ groups:
     gid: 784
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
-              muja, andrewtavis-wmde, kpayne]
+              andrewtavis-wmde, kpayne]
     privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
   eventbus-admins:
     gid: 785
@@ -5827,14 +5827,11 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINuFg5jOB9ORSV/yG2rq+ZY/q7HNKGK7vJx2Bz0hB4Wh oliver.shotton@wikimedia.de
     krb: present
   muja:
-    ensure: present
+    ensure: absent
     realname: Muhammad Jaziraly
-    email: muhammad.jaziraly@wikimedia.de
     uid: 42686
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKl5dZELGsNPrSwmfHmNADYAXwrb/75Rz722wiNz2kdi muja@102979
-    krb: present
+    ssh_keys: []
   eoghan:
     ensure: absent
     realname: Eoghan Gaffney
