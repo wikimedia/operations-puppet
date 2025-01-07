@@ -39,12 +39,7 @@ define postgresql::user (
     Optional[String[1]]           $method        = undef,
 ) {
     $_pgversion = $pgversion ? {
-        undef   => $facts['os']['distro']['codename'] ? {
-            'bookworm' => 15,
-            'bullseye' => 13,
-            'buster'   => 11,
-            default    => fail("unsupported pgversion: ${pgversion}"),
-        },
+        undef   => Integer(wmflib::debian_postgresql_version()),
         default => $pgversion,
     }
     # lint:ignore:version_comparison
