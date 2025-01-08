@@ -263,3 +263,16 @@ certificates::acme_chief:
     - ^ncredir[0-9]{4,}\..*\.wmnet$
     prevalidate: true
     skip_invalid_snis: true
+  non-canonical-redirect-7:
+    CN: wikipedia.ro
+    SNI:
+    - wikipedia.ro
+    - '*.wikipedia.ro'
+    - wikimedia.ro
+    - '*.wikimedia.ro'
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
