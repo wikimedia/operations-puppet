@@ -71,13 +71,6 @@ class snapshot::dumps::dblists {
         group   => 'root',
         content => "${skip_labs_dblist}\n",
     }
-    file { "${dblistsdir}/skipmonitor.dblist":
-        ensure => 'absent',
-        path   => "${dblistsdir}/skipmonitor.dblist",
-        mode   => '0644',
-        owner  => 'root',
-        group  => 'root',
-    }
     file { "${dblistsdir}/skipnone.dblist":
         ensure  => 'present',
         path    => "${dblistsdir}/skipnone.dblist",
