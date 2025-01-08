@@ -15,12 +15,6 @@
 #   /wmf/data/raw/eventlogging -> /wmf/data/event into the Hive event database.
 #   This job is used for EventLogging legacy streams that have been migrated to EventGate.
 #
-# - eventlogging_analytics
-#   Uses schemas from meta.wikimedia.org and refines from
-#   /wmf/data/raw/eventlogging -> /wmf/data/event into the Hive event database.
-#   This job is being phased out and is used for EventLogging legacy streams
-#   that have not been migrated to EventGate.
-#
 # - netflow
 #   Infers schema from data and refines from
 #   /wmf/data/raw/netflow -> /wmf/data/event/netflow in the Hive event database.
@@ -139,10 +133,15 @@ class profile::analytics::refinery::job::refine(
     $eventlogging_legacy_input_path_regex = "${eventlogging_legacy_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
     $eventlogging_legacy_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
 
-    # While we migrate we will use an explicit include list of
-    # EventLogging streams that have been migrated to EventGate.
-    # TODO: We are done migration!
-    #       Remove this include_list as part of T238230
+    # This is the list of legacy eventlogging based streams that
+    # have been migrated to Event Platform.
+    # Only data for these streams still flow.
+    # We could technically remove this include_list, but
+    # it is kind of nice to have as documentation of what legacy streams
+    # are still refined (if they have data).
+    #
+    # This job will be eventually be removed in favor of airflow based refine scheduling.
+    # https://phabricator.wikimedia.org/T307505
     $eventlogging_legacy_table_include_list = [
         'ContentTranslationAbuseFilter',
         'DesktopWebUIActionsTracking',
@@ -250,40 +249,6 @@ class profile::analytics::refinery::job::refine(
         }),
         interval         => '*-*-* *:25:00',
         monitor_interval => '*-*-* 00:30:00',
-        use_keytab       => $use_kerberos_keytab,
-    }
-
-
-    # === EventLogging Analytics (capsule based) data ===
-    #
-    # THIS IS ENSURED ABSENT. TODO REMOVE THIS JOB.
-    #
-    #
-    # /wmf/data/raw/eventlogging -> /wmf/data/event
-    # This job is being phased out in favor of the eventlogging_legacy one defined above.
-    $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging_legacy'
-    $eventlogging_analytics_input_path_regex = "${eventlogging_analytics_input_path}/eventlogging_(.+)/${hive_hourly_path_regex}"
-    $eventlogging_analytics_input_path_regex_capture_groups = "table,${hive_hourly_path_regex_capture_groups}"
-
-    # As of 2024-09, the only remaining non migrated eventlogging legacy stream is
-    # eventlogging_MediaWikiPingback.
-    # Manually set the table_include_regex to only refine the mediawikipingback table.
-    $eventlogging_analytics_table_include_regex = '^$'
-
-    profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure           => 'absent',
-        job_config       => merge($default_config, {
-            input_path                      => $eventlogging_analytics_input_path,
-            input_path_regex                => $eventlogging_analytics_input_path_regex,
-            input_path_regex_capture_groups => $eventlogging_analytics_input_path_regex_capture_groups,
-            input_path_datetime_format      => $hive_input_path_datetime_format,
-            table_include_regex             => $eventlogging_analytics_table_include_regex,
-            transform_functions             => $eventlogging_legacy_transform_functions,
-            # Get EventLogging JSONSchemas from meta.wikimedia.org.
-            schema_base_uris                => 'eventlogging',
-        }),
-        interval         => '*-*-* *:30:00',
-        monitor_interval => '*-*-* 00:15:00',
         use_keytab       => $use_kerberos_keytab,
     }
 
