@@ -962,7 +962,7 @@ node /^dbprov2006\.codfw\./ {
 }
 
 # Active eqiad proxies for misc databases
-node /^dbproxy10(12|13|14|15|16|21|22|23|24|25|26|27|28|29)\.eqiad\./ {
+node /^dbproxy10(12|13|14|15|16|22|23|24|25|26|27|28|29)\.eqiad\./ {
     role(mariadb::proxy::master)
 }
 
