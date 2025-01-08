@@ -673,10 +673,14 @@ node /^db2(123|157|171|178|192|211|213|223)\.codfw\./ {
 }
 
 # codfw sanitarium master
+# Will be replaced by db2228
 node /^db2128\.codfw\./ {
     role(mariadb::sanitarium_master)
 }
 
+node /^db2228\.codfw\./ {
+    role(mariadb::sanitarium_master)
+}
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 node /^db1(168|173|180|187|201|231)\.eqiad\./ {
     role(mariadb::core)
@@ -971,7 +975,7 @@ node /^dbproxy10(12|13|14|15|16|22|23|24|25|26|27|28|29)\.eqiad\./ {
 }
 
 # New databases T373579, T382425 & T379757
-node /^db22(28|31|32|33|34|41|42|43)\.codfw\./ {
+node /^db22(31|32|33|34|41|42|43)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
