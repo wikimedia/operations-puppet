@@ -599,3 +599,5 @@ rewrite	*wikipediasearch.org	https://www.wikipedia.org
 rewrite	*wikipedia.or.id	https://id.wikipedia.org
 rewrite	*wikipedia.org.tr	https://tr.wikipedia.org
 rewrite	*wikiquotes.org	https://www.wikiquote.org
+rewrite	*wikipedia.ro	https://ro.wikipedia.org
+rewrite	*wikimedia.ro	https://romd.wikimedia.org
