@@ -1,10 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
 # Class: profile::openstack::pdns::recursor::service
 #
-# This class installs a pdns recursor for use by cloud-vps VMs.
+# Instances can't communicate directly with other instances
+#  via floating IP, but they often want to do DNS lookups for the
+#  public IP of other instances (e.g. beta.wmflabs.org).
 #
-# It also injects a simple 'puppet' hostname for bootstrapping
-#  new VMs.
+# This recursor does two useful things:
+#
+#  - It maintains a mapping between floating and private IPs
+#  for select instances.  Anytime the upstream DNS server returns
+#  a public IP in that mapping, we return the corresponding private
+#  IP instead.  This includes a deploy-specific resolution for the
+#  puppet. domain.
+#
+#  - It relays requests for *.wmflabs to the auth server that knows
+#  about such things (defined as $labs_forward)
+#
+#  Other than that it should act like any other WMF recursor.
+#
 
 class profile::openstack::base::pdns::recursor::service(
     Stdlib::Fqdn $keystone_api_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
@@ -13,7 +26,7 @@ class profile::openstack::base::pdns::recursor::service(
     $observer_project = lookup('profile::openstack::base::observer_project'),
     $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
     $private_reverse_zones = lookup('profile::openstack::base::pdns::private_reverse_zones'),
-    $extra_records = lookup('profile::openstack::base::pdns::recursor_extra_records'),
+    $aliaser_extra_records = lookup('profile::openstack::base::pdns::recursor_aliaser_extra_records'),
     Array[Stdlib::IP::Address] $extra_allow_from = lookup('profile::openstack::base::pdns::extra_allow_from', {default_value => []}),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes',  {default_value => []}),
@@ -33,6 +46,18 @@ class profile::openstack::base::pdns::recursor::service(
             dnsquery::lookup($node['cloud_private_fqdn'], true)
         }.flatten
     ])
+
+    #  We need to alias some public IPs to their corresponding private IPs.
+    $aliaser_source = 'puppet:///modules/profile/openstack/base/pdns/recursor/labsaliaser.lua'
+
+    $aliaser_file = '/etc/powerdns/labs-ip-aliaser.lua'
+    file { $aliaser_file:
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        source => $aliaser_source,
+    }
+    $lua_hooks = [$aliaser_file]
 
     file { '/var/zones':
         ensure => directory,
@@ -59,6 +84,7 @@ class profile::openstack::base::pdns::recursor::service(
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_auth_addrs}, ${reverse_zone_rules}",
         auth_zones               => 'labsdb=/var/zones/labsdb',
+        lua_hooks                => $lua_hooks,
         max_negative_ttl         => 30,
         max_tcp_per_client       => 10,
         max_cache_entries        => 3000000,
@@ -68,7 +94,14 @@ class profile::openstack::base::pdns::recursor::service(
         api_allow_from           => $pdns_api_allow_from,
         query_local_address      => dnsquery::lookup($query_local_address, true),
         threads                  => 12,
-        extra_records            => $extra_records,
+    }
+
+    class { '::dnsrecursor::labsaliaser':
+        username              => $observer_user,
+        password              => $observer_password,
+        nova_api_url          => "https://${keystone_api_fqdn}:25000/v3",
+        extra_records         => $aliaser_extra_records,
+        observer_project_name => $observer_project,
     }
 
     firewall::service { 'recursor_udp_dns_rec':

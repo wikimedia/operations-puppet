@@ -53,6 +53,7 @@ tilerator
 hdfs
 eventstreams
 gitdaemon
+labsaliaser
 helm
 zuul
 deploy-design
