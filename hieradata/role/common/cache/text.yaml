@@ -272,10 +272,6 @@ profile::cache::purge::frontend_addr: "/run/varnish-privileged.socket"
 # but statsv will have to send messages over UDP cross-DC to the active statsd instance.
 profile::cache::kafka::statsv::kafka_cluster_name: main-eqiad
 
-# Monitor varnishkafka-eventlogging process.
-profile::cache::kafka::eventlogging::monitoring_enabled: true
-profile::cache::kafka::eventlogging::kafka_cluster_name: jumbo-eqiad
-profile::cache::kafka::eventlogging::ssl_enabled: true
 prometheus::varnishkafka_exporter::config:
   stats_files:
     - '/var/cache/varnishkafka/webrequest.stats.json'
