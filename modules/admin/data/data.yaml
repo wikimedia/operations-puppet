@@ -7379,3 +7379,7 @@ ldap_only_users:
     ensure: present
     realname: Chris Petrillo
     email: cpetrillo@wikimedia.org
+  lmora:
+    ensure: present
+    realname: Loren Mora
+    email: lmora@wikimedia.org
