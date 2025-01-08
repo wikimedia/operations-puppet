@@ -8,17 +8,19 @@ class profile::eventlogging::analytics::server(
 ) {
 
     scap::target { 'eventlogging/analytics':
+        ensure      => 'absent',
         deploy_user => 'eventlogging',
         manage_user => false,
     }
 
     # Needed because scap::target doesn't manage_user.
     ssh::userkey { 'eventlogging':
-        ensure  => 'present',
+        ensure  => 'absent',
         content => secret('keyholder/eventlogging.pub'),
     }
 
     class { 'eventlogging::server':
+        ensure            => 'absent',
         eventlogging_path => '/srv/deployment/eventlogging/analytics',
         log_dir           => '/srv/log/eventlogging/systemd',
     }
@@ -35,10 +37,13 @@ class profile::eventlogging::analytics::server(
     $kafka_client_side_raw_uri = "${kafka_consumer_scheme}/${kafka_brokers_string}?topic=eventlogging-client-side&auto_offset_reset=earliest"
 
     eventlogging::plugin { 'plugins':
+        ensure => 'absent',
         source => 'puppet:///modules/eventlogging/plugins.py',
     }
 
     # make sure any defined eventlogging services are running
-    class { '::eventlogging::monitoring::jobs': }
+    class { '::eventlogging::monitoring::jobs':
+        ensure => 'absent',
+    }
 }
 

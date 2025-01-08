@@ -55,6 +55,7 @@ class profile::eventlogging::analytics::processor(
     #   %u          - userAgent
     $format = '%q %{recvFrom}s %{seqId}d %D %{ip}i %u'
     eventlogging::service::processor { $client_side_processors:
+        ensure         => 'absent',
         format         => $format,
         input          => $kafka_client_side_raw_uri,
         sid            => $kafka_consumer_group,
