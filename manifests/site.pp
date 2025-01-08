@@ -1339,7 +1339,7 @@ node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
 # Receives log data from Kafka processes it, and broadcasts
 # to Kafka Schema based topics.
 node /^eventlog1003\.eqiad\./ {
-    role(eventlogging::analytics)
+    role(insetup::data_engineering)
 }
 
 node /^lists1004\.wikimedia\./ {
