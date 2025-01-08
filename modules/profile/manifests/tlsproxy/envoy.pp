@@ -228,7 +228,7 @@ class profile::tlsproxy::envoy(
     if $ensure == 'present' {
 
         $retry_policy = $retries ? {
-            true    => undef,
+            true    => {'num_retries' => 1},
             default => {'num_retries' => 0},
         }
 

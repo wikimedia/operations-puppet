@@ -23,7 +23,7 @@ describe 'profile::tlsproxy::envoy' do
         it {
           is_expected.to contain_envoyproxy__tls_terminator('443')
                            .with_global_certs([{'cert_path' => '/etc/ssl/localcerts/example.crt', 'key_path' => '/etc/ssl/private/example.key'}])
-                           .with_retry_policy({})
+                           .with_retry_policy({"num_retries" => 1})
         }
         it {
           is_expected.to contain_sslcert__certificate('example')
@@ -84,7 +84,7 @@ describe 'profile::tlsproxy::envoy' do
         it { is_expected.to compile.with_all_deps }
         it {
           is_expected.to contain_envoyproxy__tls_terminator('4443')
-                          .with_retry_policy({})
+                          .with_retry_policy({"num_retries" => 1})
                           .with_upstream_response_timeout(65.0)
         }
         context "No retries" do
