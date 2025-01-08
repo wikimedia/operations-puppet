@@ -1249,10 +1249,6 @@ node /^es2044\.codfw\./ {
     role(mariadb::core)
 }
 
-node /^es2024\.codfw\./ {
-    role(mariadb::core)
-}
-
 node /^es2045\.codfw\./ {
     role(mariadb::core)
 }
