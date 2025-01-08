@@ -1,11 +1,17 @@
 class profile::tcpircbot(
-    Wmflib::Ensure $ensure = lookup('profile::tcpircbot::ensure'),
-    Stdlib::Host $irc_host = lookup('profile::tcpircbot::irc::host'),
-    Stdlib::Port $irc_port = lookup('profile::tcpircbot::irc::port'),
+    Wmflib::Ensure                                    $ensure          = lookup('profile::tcpircbot::ensure'),
+    Stdlib::Host                                      $irc_host        = lookup('profile::tcpircbot::irc::host'),
+    Stdlib::Port                                      $irc_port        = lookup('profile::tcpircbot::irc::port'),
+    Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers = lookup('authdns_servers'),
 ){
 
     include passwords::logmsgbot
     class {'tcpircbot': }
+
+    # We need to allow access from dnsXXXX hosts (A:dnsbox) so that
+    # authdns-update runs can be logged to SAL, automatically.
+    $authdns_hosts = $authdns_servers.keys()
+    $authdns_hosts_ips = $authdns_servers.values().map |$ip| { "::ffff:${ip}/128" }
 
     tcpircbot::instance { 'logmsgbot':
         ensure      => $ensure,
@@ -40,7 +46,7 @@ class profile::tcpircbot(
             '2620:0:861:107:10:64:48:98/128',   # cumin1002.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
             '2620:0:860:103:10:192:32:49/128',  # cumin2002.codfw.wmnet
-        ],
+        ] + $authdns_hosts_ips,
     }
     tcpircbot::instance { 'logmsgbot_cloud':
         ensure      => $ensure,
@@ -71,7 +77,8 @@ class profile::tcpircbot(
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1002.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
-    ]
+    ] + $authdns_hosts
+
     $allowed_hosts_cloud = [
         'cloudcumin1001.eqiad.wmnet',   # cloud cluster mgmt eqiad
         'cloudcumin2001.codfw.wmnet',   # cloud cluster mgmt codfw
