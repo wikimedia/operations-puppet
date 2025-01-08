@@ -90,7 +90,7 @@ class dnsrecursor (
     if $extra_records != undef {
         file { '/etc/powerdns/extrarecursorhosts':
             ensure  => present,
-            mode    => '0440',
+            mode    => '0444',
             content => inline_template("<% @extra_records.each do |key,value| %><%=value %> <%=key %>\n<% end -%>")
         }
     }
