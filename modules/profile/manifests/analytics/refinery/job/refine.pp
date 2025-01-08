@@ -129,9 +129,9 @@ class profile::analytics::refinery::job::refine(
     # === EventLogging Legacy data ===
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     #
-    # We are beginning the process of migrating legacy EventLogging events to EventGate
-    # and making them forward compatible with Event Platform schemas.  Once they go through
-    # EventGate, these events will _almost_ look exactly like the ones refined by the
+    # Legacy EventLogging events have been migrated to Event Platform.
+    # They are forward compatible with Event Platform schemas.
+    # These events _almost_ look exactly like the ones refined by the
     # event refine_job defined above.  The main difference is that they aren't (yet) using
     # datacenter topic prefixes.  If we ever make them start using topic prefixes, we can
     # merge this refine job into the regular 'event' one.
@@ -141,6 +141,8 @@ class profile::analytics::refinery::job::refine(
 
     # While we migrate we will use an explicit include list of
     # EventLogging streams that have been migrated to EventGate.
+    # TODO: We are done migration!
+    #       Remove this include_list as part of T238230
     $eventlogging_legacy_table_include_list = [
         'ContentTranslationAbuseFilter',
         'DesktopWebUIActionsTracking',
@@ -200,6 +202,9 @@ class profile::analytics::refinery::job::refine(
 
         # Readers Web schemas
         'WikipediaPortal',
+
+        # Sent by 3rd party MediaWiki installs. T323828
+        'MediaWikiPingback',
     ]
     $eventlogging_legacy_table_include_regex = downcase("^(${join($eventlogging_legacy_table_include_list, '|')})$")
 
@@ -250,6 +255,10 @@ class profile::analytics::refinery::job::refine(
 
 
     # === EventLogging Analytics (capsule based) data ===
+    #
+    # THIS IS ENSURED ABSENT. TODO REMOVE THIS JOB.
+    #
+    #
     # /wmf/data/raw/eventlogging -> /wmf/data/event
     # This job is being phased out in favor of the eventlogging_legacy one defined above.
     $eventlogging_analytics_input_path = '/wmf/data/raw/eventlogging_legacy'
@@ -259,10 +268,10 @@ class profile::analytics::refinery::job::refine(
     # As of 2024-09, the only remaining non migrated eventlogging legacy stream is
     # eventlogging_MediaWikiPingback.
     # Manually set the table_include_regex to only refine the mediawikipingback table.
-    $eventlogging_analytics_table_include_regex = '^mediawikipingback$'
+    $eventlogging_analytics_table_include_regex = '^$'
 
     profile::analytics::refinery::job::refine_job { 'eventlogging_analytics':
-        ensure           => $ensure_timers,
+        ensure           => 'absent',
         job_config       => merge($default_config, {
             input_path                      => $eventlogging_analytics_input_path,
             input_path_regex                => $eventlogging_analytics_input_path_regex,
