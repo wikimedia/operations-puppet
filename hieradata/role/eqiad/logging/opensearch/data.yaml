@@ -47,4 +47,4 @@ profile::opensearch::dc_settings:
     - logstash1037.eqiad.wmnet
 
 # nominate one host per cluster to run certain jobs
-profile::opensearch::logstash::jobs_host: 'logstash1026.eqiad.wmnet'
+profile::opensearch::logstash::jobs_host: 'logging-sd1001.eqiad.wmnet'
