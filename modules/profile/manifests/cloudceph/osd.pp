@@ -93,11 +93,20 @@ class profile::cloudceph::osd(
         before     => Class['ceph::common'],
     }
 
+    # Set DSCP for heartbeat traffic to high priority
     ferm::rule { 'osd_heartbeat_qos_high':
         table => 'mangle',
         chain => 'POSTROUTING',
-        prio  => '5',
-        rule  => 'proto tcp sport 6800:7100 mod dscp dscp 0x30 DSCP set-dscp-class AF21; RETURN;',
+        prio  => '05',
+        rule  => 'proto tcp sport 6800:7100 mod dscp dscp 0x30 DSCP set-dscp-class AF21;',
+    }
+
+    # Return from POSTROUTING chain so further rules are not processed for heartbeat traffic
+    ferm::rule { 'osd_heartbeat_qos_high_return':
+        table => 'mangle',
+        chain => 'POSTROUTING',
+        prio  => '06',
+        rule  => 'proto tcp sport 6800:7100 mod dscp dscp-class AF21 RETURN;',
     }
 
     # Set a static route with the gateway to the rest of the osds networks
