@@ -209,7 +209,7 @@ groups:
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
-              tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad
+              tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -439,7 +439,7 @@ groups:
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
-              damilare, isaranto, anakanishi,
+              damilare, isaranto, anakanishi, gkyziridis,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
               jebe, ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
@@ -911,7 +911,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis]
     privileges: []
     approval:
       - Chris Albon
@@ -923,7 +923,7 @@ groups:
     # should be added here, to allow access to the GPU devices (via the render
     # group).
     description: Group of users that have access to ML Team lab/experimentation machines
-    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto,
+    members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis,
                             klausman, dsaez, fab, isaacj, leizi, mgerlach,
                             mirrys, mnz, paragon, trokhymovych, xiaoxiao, bearloga]
     posix_name: render
@@ -6542,6 +6542,15 @@ users:
     krb: present
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDF/3Wjadtlpm29nPsVlCyCpCp+7KqxAQqrsVwMx/cy7 fceratto@wikimedia.org
+  gkyziridis:
+    ensure: present
+    realname: Georgios Kyziridis
+    email: gkyziridis@wikimedia.org
+    uid: 48310
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK/VTec0mSJN6slnNsIVI7Z4j79Wti5TxAMXr5iqqWz4 george@mac.home
+    krb: present
 
 ldap_only_users:
   adavenport:
