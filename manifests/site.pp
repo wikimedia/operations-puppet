@@ -1694,9 +1694,6 @@ node /^mw1439\.eqiad\./ {
 node /^mw144[0-28-9]\.eqiad\./ {
   role(kubernetes::worker)
 }
-node /^mw145[7-9]\.eqiad\./ {
-  role(kubernetes::worker)
-}
 node /^mw146[0-9]\.eqiad\./ {
   role(kubernetes::worker)
 }
