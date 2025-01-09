@@ -235,6 +235,18 @@ tables:
     source: core
     canonicality: derivative
     visibility: partially public
+  - name: file
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: filerevision
+    source: core
+    canonicality: canonical
+    visibility: partially public
+  - name: filetypes
+    source: core
+    canonicality: canonical
+    visibility: public
   - name: abuse_filter
     source: abuse_filter
     canonicality: canonical
@@ -965,6 +977,12 @@ tables:
         cluster: x1
     canonicality: canonical
     visibility: private
+  - name: oauth_ratelimit_client_tier
+    source: oauth_ratelimiter
+    databases:
+      - dbname: metawiki
+    canonicality: canonical
+    visibility: private
 sources:
   core:
     - path: sql/tables.json
@@ -1083,6 +1101,9 @@ sources:
   globalusage:
     - path: extensions/GlobalUsage/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GlobalUsage/+/refs/heads/master/sql/tables.json
+  oauth_ratelimiter:
+    - path: extensions/OAuthRateLimiter/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuthRateLimiter/+/refs/heads/master/schema/tables.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
