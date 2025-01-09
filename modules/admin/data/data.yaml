@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, aitolkyn]
+              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, aitolkyn, piccardi]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -412,7 +412,7 @@ groups:
               dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, ovasileva, filippo, pmiazga,
-              piccardi, ladsgroup, musikanimal,
+              ladsgroup, musikanimal,
               dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
               cicalese, gbirke, isaacj, sbassett,
@@ -3362,15 +3362,13 @@ users:
     ssh_keys: []
     uid: 15338
   piccardi:
-    ensure: present
+    ensure: absent
     gid: 500
     name: piccardi
     realname: Tiziano Piccardi
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC/gM+ET26j1I16ZWjbbcoWQhMNYj3AlS0yZQCSnLKbv6pbGCOs9xtTsxQQLH71ITdrlvS9E7KTjR4Ycn/gbgprkrtxCT89U4kU41kQTDHfAow8zodB7S99B0NR2cfUzAVglzw28mDfiCnlk7RS761Zgw+vJhrvGIwwwQngDXR7Y3PN8I3n6h4Jvv3Sm+NvWZD2j/OzeGWZF6XE60sRxXR9IriEjSpETqTwrAk6l0PhrJgzccfEtFWWcLy+ueSrSjL7TF6rxG663C8WA3F2NGm3GTGJCwxGyH94urPOoHZ/Xfqwa3vt6al8DLNpgVziUPnARXN0DsNsT0bUV2MIhRm1b0vapWUySFHr4yyGYjoMzB4WWqQZXeswJr4LYhf2j8RRhjacKp4ucKwbNO/ytwXzwvAGXXxgA+RGqxcKp6wwGVyZNDS0kRyI23xlaIM7N9nJxsK+q9n7uTDeeR+beUxmqoRg0x4pt8nNI2C+NnNL0vKdZtPtHBhunIN2ARycBm8Q8oEfOq/eA7RDw+srPFCaadG0z9jQ0qJB69RHCVZZohCHv7Jryz+iHTdiRcAPqUBCB9MwcpzqkWUirdpSQR1kz0qJpGN3BWxU6VlDpBpMRnjByTcAigVPfei2fOzAH3P7k1yE9eoT7ooyU+RtLreYbtCODpp03sTwRTOzvbjWiQ==
+    ssh_keys: []
     uid: 15999
-    email: tiziano.piccardi@epfl.ch
-    krb: present
+    krb: absent
   fdans:
     ensure: absent
     gid: 500
