@@ -215,6 +215,7 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/calico323
+ component/calico329
  component/dnsdist
  component/elastic710
  component/exim4-arc
@@ -224,6 +225,7 @@ Components: main
  component/jdk8
  component/jdk21
  component/kubernetes123
+ component/kubernetes131
  component/maps
  component/opensearch13
  component/puppet5
