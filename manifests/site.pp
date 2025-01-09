@@ -748,7 +748,7 @@ node /^db1(179|220|224|237)\.eqiad\./ {
 }
 
 # codfw
-node /^db2(131|191|196|215)\.codfw\./ {
+node /^db2(131|191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -975,7 +975,7 @@ node /^dbproxy10(12|13|14|15|16|22|23|24|25|26|27|28|29)\.eqiad\./ {
 }
 
 # New databases T373579, T382425 & T379757
-node /^db22(31|32|33|34|41|42|43)\.codfw\./ {
+node /^db22(32|33|34|41|42|43)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
