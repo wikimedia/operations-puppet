@@ -12,6 +12,8 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1008.eqiad.wmnet
           - cloudelastic1009.eqiad.wmnet
           - cloudelastic1010.eqiad.wmnet
+          - cloudelastic1011.eqiad.wmnet
+          - cloudelastic1012.eqiad.wmnet
         expected_nodes: 6
 
         # We should be able to run "OK" with 3 servers (half of the cluster).
