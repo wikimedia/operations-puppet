@@ -330,6 +330,8 @@ eqiad:
     wikikube-worker1093.eqiad.wmnet: [kubesvc]
     wikikube-worker1094.eqiad.wmnet: [kubesvc]
     wikikube-worker1095.eqiad.wmnet: [kubesvc]
+    wikikube-worker1096.eqiad.wmnet: [kubesvc]
+    wikikube-worker1097.eqiad.wmnet: [kubesvc]
     # This space intentionally left blank - new hosts start at 1240 (T369743), below reserved for renames
     wikikube-worker1240.eqiad.wmnet: [kubesvc]
     wikikube-worker1241.eqiad.wmnet: [kubesvc]

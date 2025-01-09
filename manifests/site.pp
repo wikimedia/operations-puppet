@@ -1665,7 +1665,7 @@ node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
 
-node /^wikikube-worker10(0[2-7]|1[12569]|[2-8][0-9]|9[0-5])\.eqiad\./ {
+node /^wikikube-worker10(0[2-7]|1[12569]|[2-8][0-9]|9[0-7])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2140,11 +2140,6 @@ node /^mw1407\.eqiad\./ {
 
 # rack D8 - canary jobrunners
 node /^mw143[7-8]\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
-# rack D8 - videoscaler jobrunners
-node /^mw14(45|46)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
