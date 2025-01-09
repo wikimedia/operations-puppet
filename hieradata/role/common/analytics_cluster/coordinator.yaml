@@ -123,8 +123,8 @@ profile::presto::server::catalogs:
       hive.copy-on-first-write-configuration-enabled: false
 
 
-profile::presto::server::ferm_srange: (($ANALYTICS_NETWORKS $DSE_KUBEPODS_NETWORKS))
-profile::presto::server::firewall_access: ~
+profile::presto::server::ferm_srange: ~
+profile::presto::server::firewall_access: ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS']
 
 profile::presto::server::generate_certificate: true
 profile::presto::server::ssl_certnames:
