@@ -7376,3 +7376,7 @@ ldap_only_users:
     ensure: present
     realname: Loren Mora
     email: lmora@wikimedia.org
+  fceratto:
+    ensure: present
+    realname: Federico Ceratto
+    email: fceratto@wikimedia.org
