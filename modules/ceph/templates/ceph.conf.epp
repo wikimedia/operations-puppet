@@ -13,6 +13,7 @@
       Optional[String]           $radosgw_service_user = '',
       Optional[String]           $radosgw_service_user_project = '',
       Optional[String]           $radosgw_service_user_pass = '',
+      Optional[Boolean]          $osd_heartbeat_use_min_delay_socket = undef,
 | -%>
 [global]
   auth cluster required = cephx
@@ -36,12 +37,19 @@
 <% } -%>
 [mon]
     mon cluster log to syslog = true
+<% if $osd_heartbeat_use_min_delay_socket {-%>
+    osd_heartbeat_use_min_delay_socket = true
+<% } -%>
 
-<% if $with_location_hook {-%>
 [osd]
+<% if $with_location_hook {-%>
     crush_location_hook = /usr/bin/custom-crush-location-hook
 
 <% } -%>
+<% if $osd_heartbeat_use_min_delay_socket {-%>
+    osd_heartbeat_use_min_delay_socket = true
+<% } -%>
+
 <% $mon_hosts.each |$fqdn, $host_data| {%>
 [mon.<%= $fqdn.split('[.]')[0] %>]
     host = <%= $fqdn.split('[.]')[0] %>
