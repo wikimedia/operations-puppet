@@ -7,6 +7,8 @@ class profile::dns::auth::update (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips     = lookup('profile::dns::auth::authdns_servers_ips'),
     Array[Wmflib::Sites]                              $datacenters             = lookup('datacenters'),
     Hash[String, Wmflib::Advertise_vip]               $advertise_vips          = lookup('profile::bird::advertise_vips', {'merge' => hash}),
+    Stdlib::Host                                      $tcpircbot_host          = lookup('tcpircbot_host'),
+    Stdlib::Port                                      $tcpircbot_port          = lookup('tcpircbot_port'),
 ) {
     require ::profile::dns::auth::update::account
     require ::profile::dns::auth::update::scripts

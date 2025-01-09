@@ -14,6 +14,20 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # Source the configuration file
 [ -f $CONFFILE ] && . $CONFFILE
 
+# Get the user running this script and log it to SAL.
+SCRIPTUSER="${SUDO_USER:-${USER}}"
+
+sal_log() {
+    MSG="!log ${SCRIPTUSER}@$(hostname): ${1} - running authdns-update"
+    if echo "${MSG}" | nc -4 -q 1 -w 1 "${IRCHOST}" "${IRCPORT}"; then
+        echo "Logging ${1} of authdns-update run to SAL"
+    else
+        echo "Could not log ${1} of authdns-update run to SAL. Please do so manually!"
+    fi
+}
+
+sal_log "START"
+
 # Per-node timeouts: 10s connect + 90s execution
 CLUSH_OPTIONS="-S -B -n -t 10 -u 90"
 SSH_OPTIONS="-l authdns -i /srv/authdns/.ssh/id_ed25519 -F /srv/authdns/.ssh/config -oCheckHostIP=no -oUserKnownHostsFile=/dev/null"
@@ -75,4 +89,5 @@ else
     exit 1
 fi
 
+sal_log "END"
 echo ""; echo "OK - authdns-update successful on all nodes!"
