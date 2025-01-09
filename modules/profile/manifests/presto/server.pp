@@ -55,8 +55,7 @@
 #    Default: {}
 #
 # [*firewall*]
-#   Optional array of firewall sets to be used in firewall restrictions based on
-#   firewall::service. This takes precedence over *ferm_srange'
+#   An array of firewall sets to be used in firewall restrictions
 #
 class profile::presto::server(
     String        $cluster_name              = lookup('profile::presto::cluster_name'),
@@ -67,12 +66,11 @@ class profile::presto::server(
     Hash          $catalogs                  = lookup('profile::presto::server::catalogs', { 'default_value' => {} }),
     Hash          $log_properties            = lookup('profile::presto::server::log_properties', { 'default_value' => {} }),
     String        $heap_max                  = lookup('profile::presto::server::heap_max', { 'default_value' => '2G' }),
-    Optional[String] $ferm_srange            = lookup('profile::presto::server::ferm_srange', { 'default_value' => '$DOMAIN_NETWORKS' }),
     Array[String] $ssl_certnames             = lookup('profile::presto::server::ssl_certnames', { 'default_value' => [] }),
     Boolean       $generate_certificate      = lookup('profile::presto::server::generate_certificate', { 'default_value' => false }),
     Boolean       $use_kerberos              = lookup('profile::presto::use_kerberos', { 'default_value' => true }),
     Boolean       $monitoring_enabled        = lookup('profile::presto::monitoring_enabled', { 'default_value' => false }),
-    Optional[Array[String]] $firewall_access = lookup('profile::presto::server::firewall_access'),
+    Array[String] $firewall_access           = lookup('profile::presto::server::firewall_access'),
     Optional[Hash[String, Hash[String, String]]] $presto_clusters_secrets = lookup('presto_clusters_secrets', { 'default_value' => {} }),
 ) {
 
@@ -216,46 +214,23 @@ class profile::presto::server(
         extra_jvm_configs => $extra_jvm_configs,
     }
 
-
-    if $firewall_access {
-        if $presto_clusters_secrets[$cluster_name] {
-            firewall::service{ 'presto-https':
-                proto    => 'tcp',
-                port     => $_config_properties['http-server.https.port'],
-                src_sets => $firewall_access,
-            }
-        } else {
-            firewall::service{ 'presto-http':
-                proto    => 'tcp',
-                port     => $_config_properties['http-server.http.port'],
-                src_sets => $firewall_access,
-            }
-        }
-
-        firewall::service{ 'presto-jmx-rmiregistry':
+    if $presto_clusters_secrets[$cluster_name] {
+        firewall::service{ 'presto-https':
             proto    => 'tcp',
-            port     => $_config_properties['jmx.rmiregistry.port'],
+            port     => $_config_properties['http-server.https.port'],
             src_sets => $firewall_access,
         }
     } else {
-        if $presto_clusters_secrets[$cluster_name] {
-            ferm::service{ 'presto-https':
-                proto  => 'tcp',
-                port   => $_config_properties['http-server.https.port'],
-                srange => $ferm_srange,
-            }
-        } else {
-            ferm::service{ 'presto-http':
-                proto  => 'tcp',
-                port   => $_config_properties['http-server.http.port'],
-                srange => $ferm_srange,
-            }
+        firewall::service{ 'presto-http':
+            proto    => 'tcp',
+            port     => $_config_properties['http-server.http.port'],
+            src_sets => $firewall_access,
         }
+    }
 
-        ferm::service{ 'presto-jmx-rmiregistry':
-            proto  => 'tcp',
-            port   => $_config_properties['jmx.rmiregistry.port'],
-            srange => $ferm_srange,
-        }
+    firewall::service{ 'presto-jmx-rmiregistry':
+        proto    => 'tcp',
+        port     => $_config_properties['jmx.rmiregistry.port'],
+        src_sets => $firewall_access,
     }
 }
