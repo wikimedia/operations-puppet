@@ -12,12 +12,20 @@ define k8s::package (
     Boolean                          $ensure_packages = true,
 ) {
     require k8s::base_dirs
-    $component_title = "kubernetes${regsubst($version, '\\.', '')}"
+    $version_no_dot = regsubst($version, '\\.', '')
+    $component_title = "kubernetes${version_no_dot}"
     ensure_resource('apt::package_from_component', $component_title, {
         component => "component/${component_title}",
         packages  => [],
     })
-    ensure_packages("kubernetes-${package}", {
+    if $package == 'client' {
+        # The kubernetes-client package (e.g. kubectl) carries the k8s version number in it's
+        # package name so that we can install multiple kubectl versions in parallel
+        $package_name = "kubernetes-client${version_no_dot}"
+    } else {
+        $package_name = "kubernetes-${package}"
+    }
+    ensure_packages($package_name, {
         'require' => Apt::Package_from_component[$component_title],
     })
 }
