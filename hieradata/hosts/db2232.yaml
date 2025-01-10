@@ -1,5 +1,5 @@
 # db2232
 mariadb::shard: 'm1'
-#profile::mariadb::mysql_role: 'master'
+profile::mariadb::mysql_role: 'master'
 profile::monitoring::is_critical: false
 profile::monitoring::notifications_enabled: false
