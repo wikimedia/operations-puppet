@@ -44,7 +44,7 @@ class k8s::kubelet (
         kind               => 'KubeletConfiguration',
         address            => $listen_address,
         tlsPrivateKeyFile  => $kubelet_cert['key'],
-        tlsCertFile        => $kubelet_cert['cert'],
+        tlsCertFile        => $kubelet_cert['chained'],
         clusterDomain      => $cluster_domain,
         clusterDNS         => $cluster_dns,
         # FIXME: Do we really need anonymous read only access to kubelets enabled?
