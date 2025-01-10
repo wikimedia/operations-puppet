@@ -2313,10 +2313,6 @@ node /^pc2012\.codfw\./ {
 node /^pc2013\.codfw\./ {
     role(mariadb::parsercache)
 }
-# floating spares
-node /^pc2014\.codfw\./ {
-    role(mariadb::parsercache)
-}
 
 node /^pc2015\.codfw\./ {
     role(mariadb::parsercache)
@@ -2324,6 +2320,10 @@ node /^pc2015\.codfw\./ {
 
 # pc4
 node /^pc2016\.codfw\./ {
+    role(mariadb::parsercache)
+}
+
+node /^pc2014\.codfw\./ {
     role(mariadb::parsercache)
 }
 
