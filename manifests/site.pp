@@ -597,11 +597,6 @@ node /^db2(148|175|189|204|207|225|238)\.codfw\./ {
 }
 
 # codfw sanitarium master
-# db2126 will be replaced by db2226
-node /^db2126\.codfw\./ {
-    role(mariadb::sanitarium_master)
-}
-
 node /^db2226\.codfw\./ {
     role(mariadb::sanitarium_master)
 }
