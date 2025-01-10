@@ -13,6 +13,8 @@ define k8s::package (
 ) {
     require k8s::base_dirs
     $version_no_dot = regsubst($version, '\\.', '')
+    $version_array = $version.split('\\.')
+    $next_version = "${$version_array[0]}.${version_array[1] + 1}"
     $component_title = "kubernetes${version_no_dot}"
     ensure_resource('apt::package_from_component', $component_title, {
         component => "component/${component_title}",
@@ -27,5 +29,6 @@ define k8s::package (
     }
     ensure_packages($package_name, {
         'require' => Apt::Package_from_component[$component_title],
+        'ensure'  => ">=${version} <${next_version}"
     })
 }

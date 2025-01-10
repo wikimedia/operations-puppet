@@ -38,8 +38,8 @@ class k8s::kubelet (
     }
     $authorization = { mode => 'Webhook' }
 
-    # Create the KubeletConfiguration YAML
-    $config_yaml = {
+    # Create the KubeletConfiguration YAML (compatible with 1.23)
+    $base_config_yaml = {
         apiVersion         => 'kubelet.config.k8s.io/v1beta1',
         kind               => 'KubeletConfiguration',
         address            => $listen_address,
@@ -60,11 +60,22 @@ class k8s::kubelet (
             'nodefs.inodesFree' => '5%',
         },
     }
+    if versioncmp($version, '1.23') > 0 {
+        # Additional KubeletConfiguration parameters that are not available in 1.23
+        $config_yaml = $base_config_yaml.merge({
+            containerRuntimeEndpoint => 'unix:///run/containerd/containerd.sock',
+            # Enables the use of RuntimeDefault as the default seccomp profile for all workloads
+            seccompDefault           => true,
+        })
+    } else {
+        $config_yaml = $base_config_yaml
+    }
     $config_file = '/etc/kubernetes/kubelet-config.yaml'
     $filtered_config_yaml = $config_yaml.filter |$k, $v| {
         $v ? {
             Undef   => false,
             Numeric => true,
+            Boolean => true,
             default => !$v.empty,
         }
     }

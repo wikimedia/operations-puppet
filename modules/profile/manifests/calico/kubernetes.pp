@@ -22,7 +22,7 @@ class profile::calico::kubernetes (
         master_fqdn        => $k8s_config['master'],
         calicoctl_username => $calicoctl_username,
         auth_cert          => $calicoctl_client_cert,
-        calico_version     => $k8s_config['calico_version'],
+        version            => $k8s_config['calico_version'],
     }
 
     # We don't install istio-cni on control-planes as they should not

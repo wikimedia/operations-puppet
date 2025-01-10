@@ -13,8 +13,9 @@ daemon_args = [
   # The "registerWithTaint" option does not work here because the taint "node.kubernetes.io/unschedulable" is not allowed to be set by kubelet.
   "--register-schedulable=false",
 ]
+k8s_version = Gem::Version.new(@version)
 
-if @cni
+if @cni and k8s_version < Gem::Version.new('1.24')
 	daemon_args.push("--network-plugin=cni") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
 	daemon_args.push("--cni-bin-dir=#{@cni_bin_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
 	daemon_args.push("--cni-conf-dir=#{@cni_conf_dir}") # DEPRECATED: will be removed along with dockershim (k8s >=1.24)
@@ -37,6 +38,8 @@ else
 end
 
 if @system_reserved
+  # While there is a systemReserved KubeletConfiguration option, it only supports cpu and memory (as of 1.31)
+  # Configuring all parameters here instead of splitting them up makes more sense.
   reserved = []
   for key in ['cpu', 'memory', 'pid', 'ephemeral-storage']
     if !@system_reserved[key].nil? && !@system_reserved[key].empty?
@@ -48,13 +51,15 @@ if @system_reserved
   end
 end
 
-if @containerd_cri
-  # TODO: Kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option, use that instead
-  daemon_args.push("--container-runtime=remote")
-  daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
-else
-  # --pod-infra-container-image is ignored in kubelet when a remote container runtime is used (and issues a warning)
-  daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
+if k8s_version < Gem::Version.new('1.27')
+  if @containerd_cri
+    # With kubernetes >= 1.27 kubelet has a containerRuntimeEndpoint KubeletConfiguration option which is used instead
+    daemon_args.push("--container-runtime=remote")
+    daemon_args.push("--container-runtime-endpoint=unix:///run/containerd/containerd.sock")
+  else
+    # --pod-infra-container-image is ignored in kubelet when a remote container runtime is used (and issues a warning)
+    daemon_args.push("--pod-infra-container-image=#{@pod_infra_container_image}")
+  end
 end
 -%>
 DAEMON_ARGS="<%= daemon_args.sort.join(" \\\n ") %>"

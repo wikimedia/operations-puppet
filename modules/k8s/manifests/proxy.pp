@@ -19,7 +19,7 @@ class k8s::proxy (
     }
 
     # Create the KubeProxyConfiguration YAML
-    $config_yaml = {
+    $base_config_yaml = {
         apiVersion         => 'kubeproxy.config.k8s.io/v1alpha1',
         kind               => 'KubeProxyConfiguration',
         hostnameOverride   => $facts['fqdn'],
@@ -27,6 +27,19 @@ class k8s::proxy (
         clusterCIDR        => $_clustercidr,
         mode               => $proxy_mode,
         metricsBindAddress => '0.0.0.0',
+    }
+    if versioncmp($version, '1.31') >= 0 {
+        # Additional KubeProxyConfiguration parameters since 1.31
+        $config_yaml = $base_config_yaml.merge({
+            # Connections to NodePort services will only be accepted on node IPs in one of
+            # the indicated ranges.In any mode but nftables, connections are accepted on
+            # any node IP. In nftables mode, only connections to the primary node IPs
+            # (according to the Node object) are accepted. So we explicitly define this
+            # here in order to avoid confusion in the future.
+            nodePortAddresses => ['0.0.0.0/0','::/0'],
+        })
+    } else {
+        $config_yaml = $base_config_yaml
     }
     $config_file = '/etc/kubernetes/kube-proxy-config.yaml'
     file { $config_file:

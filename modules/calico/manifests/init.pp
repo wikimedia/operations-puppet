@@ -6,7 +6,7 @@ class calico (
     Stdlib::Host                   $master_fqdn,
     String                         $calicoctl_username,
     Hash[String, Stdlib::Unixpath] $auth_cert,
-    Calico::CalicoVersion          $calico_version,
+    Calico::CalicoVersion          $version,
 ) {
     file { '/etc/calico':
         ensure => directory,
@@ -23,10 +23,15 @@ class calico (
         mode   => '0755',
     }
 
-    $component_title = "calico${regsubst($calico_version, '\\.', '')}"
+    $component_title = "calico${regsubst($version, '\\.', '')}"
+    $version_array = $version.split('\\.')
+    $next_version = "${$version_array[0]}.${version_array[1] + 1}"
     apt::package_from_component { $component_title:
         component => "component/${component_title}",
-        packages  => ['calicoctl', 'calico-cni'],
+        packages  => {
+            'calicoctl'  => ">=${version} <${next_version}",
+            'calico-cni' => ">=${version} <${next_version}",
+        },
     }
 
     # Create a kubeconfig for calicoctl to use.
