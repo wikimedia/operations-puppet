@@ -47,12 +47,6 @@ class k8s::kubelet (
         tlsCertFile        => $kubelet_cert['chained'],
         clusterDomain      => $cluster_domain,
         clusterDNS         => $cluster_dns,
-        # FIXME: Do we really need anonymous read only access to kubelets enabled?
-        #
-        # When kubelet is run without --config, --read-only-port defaults to 10255 (e.g. is enabled).
-        # Using --config the default changes to 0 (e.g. disabled).
-        # 10255 is used by prometheus to scrape kubelet and cadvisor metrics.
-        readOnlyPort       => 10255,
         authentication     => $authentication,
         authorization      => $authorization,
         registerWithTaints => $node_taints,
