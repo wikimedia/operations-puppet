@@ -50,15 +50,4 @@ provision() {
   mount_fs "$instance"
 }
 
-site=$(cat /etc/wikimedia-cluster 2>/dev/null || echo "")
-
-provision analytics 10g
-provision ext 10g
-provision k8s 500g
-provision k8s-dse 50g
-provision k8s-mlserve 50g
-provision k8s-staging 50g
-provision k8s-aux 50g
-provision ops 1.7t
-provision services 150g
-provision cloud 100g
+provision "$1" "$2"

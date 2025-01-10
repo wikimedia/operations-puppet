@@ -5,11 +5,13 @@ prometheus::instances_defaults:
   thanos_upload: true
   k8s_cluster_name: ~
   hosts: ~
+  provision_lv_size: '50g'
 
 prometheus::instances:
   ops:
     port: 9900
     retention_size: 3300GB
+    provision_lv_size: '3.6t'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -23,6 +25,7 @@ prometheus::instances:
 
   services:
     port: 9903
+    provision_lv_size: '250g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -39,6 +42,7 @@ prometheus::instances:
 
   analytics:
     port: 9905
+    provision_lv_size: '110g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -48,6 +52,7 @@ prometheus::instances:
   k8s:
     port: 9906
     retention_size: 1160GB
+    provision_lv_size: '1.4t'
     k8s_cluster_name: "%{::site}"
     hosts:
       - prometheus1005.eqiad.wmnet
@@ -58,6 +63,7 @@ prometheus::instances:
   k8s-staging:
     port: 9907
     k8s_cluster_name: "staging-%{::site}"
+    provision_lv_size: '100g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -67,6 +73,7 @@ prometheus::instances:
   k8s-mlserve:
     port: 9909
     k8s_cluster_name: "ml-serve-%{::site}"
+    provision_lv_size: '350g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -83,6 +90,7 @@ prometheus::instances:
   k8s-dse:
     port: 9910 # conflicts with k8s-mlstaging, see also T383223
     k8s_cluster_name: "dse-k8s-%{::site}"
+    provision_lv_size: '80g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
@@ -98,6 +106,7 @@ prometheus::instances:
 
   ext:
     port: 9908
+    provision_lv_size: '10g'
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
