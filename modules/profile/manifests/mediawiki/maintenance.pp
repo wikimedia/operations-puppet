@@ -115,14 +115,6 @@ class profile::mediawiki::maintenance (
     # anomie needs it, as opposed to the shell built-in time command
     ensure_packages('time')
 
-    # T112660 - kafka support
-    # The eventlogging code is useful for scripting
-    # EventLogging consumers.  Install this but don't
-    # run any daemons.  To use eventlogging code,
-    # add /srv/deployment/eventlogging/eventlogging
-    # to your PYTHONPATH or sys.path.
-    include ::eventlogging
-
     rsync::quickdatacopy { 'home-mwmaint':
         ensure      => present,
         auto_sync   => false,
