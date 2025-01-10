@@ -150,6 +150,8 @@ class profile::prometheus::k8s (
             {
                 # metrics from the kubelet running on each k8s node
                 'job_name'              => 'k8s-node',
+                'tls_config'            => $k8s_sd_tls_config,
+                'scheme'                => 'https',
                 'kubernetes_sd_configs' => [
                     {
                         'api_server'        => $master_url,
@@ -164,20 +166,19 @@ class profile::prometheus::k8s (
                         'regex'  => '__meta_kubernetes_node_label_(.+)',
                     },
                     {
-                        # Force read-only API for nodes. This listens on port 10255
-                        # so rewrite the __address__ label to use that port. It's
-                        # also HTTP, not HTTPS
                         'action'        => 'replace',  # Redundant but clearer
                         'source_labels' => ['__address__'],
                         'target_label'  => '__address__',
                         'regex'         => '([\d\.]+):(\d+)',
-                        'replacement'   => "\${1}:10255",
+                        'replacement'   => "\${1}:10250",
                     },
                 ]
             },
             {
                 # cadvisor metrics from the kubelet running on each k8s node
                 'job_name'              => 'k8s-node-cadvisor',
+                'tls_config'            => $k8s_sd_tls_config,
+                'scheme'                => 'https',
                 'metrics_path'          => '/metrics/cadvisor',
                 'kubernetes_sd_configs' => [
                     {
@@ -193,14 +194,11 @@ class profile::prometheus::k8s (
                         'regex'  => '__meta_kubernetes_node_label_(.+)',
                     },
                     {
-                        # Force read-only API for nodes. This listens on port 10255
-                        # so rewrite the __address__ label to use that port. It's
-                        # also HTTP, not HTTPS
                         'action'        => 'replace',  # Redundant but clearer
                         'source_labels' => ['__address__'],
                         'target_label'  => '__address__',
                         'regex'         => '([\d\.]+):(\d+)',
-                        'replacement'   => "\${1}:10255",
+                        'replacement'   => "\${1}:10250",
                     },
                 ],
                 'metric_relabel_configs' => [
