@@ -18,7 +18,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 SCRIPTUSER="${SUDO_USER:-${USER}}"
 
 sal_log() {
-    MSG="!log ${SCRIPTUSER}@$(hostname): ${1} - running authdns-update"
+    MSG="!log ${SCRIPTUSER}@$(hostname) ${1} - running authdns-update"
     if echo "${MSG}" | nc -4 -q 1 -w 1 "${IRCHOST}" "${IRCPORT}"; then
         echo "Logging ${1} of authdns-update run to SAL"
     else
