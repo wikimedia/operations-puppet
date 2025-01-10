@@ -1,6 +1,5 @@
 # pc1013
-# old pc3 master
-# hw issues: T375382
+# pc3
 profile::monitoring::notifications_enabled: false
 mariadb::parsercache::shard: 'pc3'
 profile::mariadb::config::sync_binlog: '0'

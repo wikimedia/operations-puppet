@@ -2279,8 +2279,7 @@ node /^pc1012\.eqiad\./ {
 node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
 }
-
-# old pc3 master, hw issue: T375382
+# This host will become pc3 master
 node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
