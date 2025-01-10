@@ -1,5 +1,5 @@
 # db2235
-# master
+# m5 master
 mariadb::shard: "m5"
 profile::mariadb::mysql_role: "master"
 profile::monitoring::is_critical: false
