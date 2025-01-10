@@ -108,3 +108,155 @@ testcases:
         severity: "NOTICE"
         stream: "stdout"
         time: "2022-12-13T16:49:32.417300477Z"
+
+  - input:
+      - >
+        {
+          "timestamp": "2025-01-10T21:31:29.436299+00:00",
+          "rsyslog.timereported": "2025-01-10T21:31:29.436299+00:00",
+          "metadata": {
+            "filename": "\/var\/log\/containers\/function-evaluator-python-evaluator-869bdddc7f-vgh76_wikifunctions_function-evaluator-python-evaluator-15ade4c2dfd473345310063eaef6300350065fe0c3210ad5f6cdf8384d06e881.log",
+            "fileoffset": "11661943"
+          },
+          "kubernetes": {
+            "namespace_id": "c044487d-4079-40ae-ae16-a14923292bf8",
+            "namespace_labels": {
+              "app": "raw",
+              "app_kubernetes_io\/managed-by": "Helm",
+              "chart": "raw-0.3.0",
+              "heritage": "Helm",
+              "kubernetes_io\/metadata_name": "wikifunctions",
+              "pod-security_kubernetes_io\/audit": "restricted",
+              "pod-security_kubernetes_io\/enforce": "restricted",
+              "pod-security_kubernetes_io\/warn": "restricted",
+              "release": "namespaces"
+            },
+            "creation_timestamp": "2023-06-26T16:22:31Z",
+            "pod_id": "a9a6f425-c864-4e7e-8302-b17a22fd3bb8",
+            "labels": {
+              "app": "function-evaluator",
+              "pod-template-hash": "869bdddc7f",
+              "release": "python-evaluator",
+              "routed_via": "python-evaluator"
+            },
+            "host": "parse1015.eqiad.wmnet",
+            "pod_name": "function-evaluator-python-evaluator-869bdddc7f-vgh76",
+            "namespace_name": "wikifunctions",
+            "container_name": "function-evaluator-python-evaluator",
+            "master_url": "https:\/\/kubemaster.svc.eqiad.wmnet:6443"
+          },
+          "docker": {
+            "container_id": "15ade4c2dfd473345310063eaef6300350065fe0c3210ad5f6cdf8384d06e881"
+          },
+          "log": "{\"@timestamp\":\"2025-01-10T21:31:29.435Z\",\"ecs.version\":\"8.10.0\",\"log.level\":\"info\",\"message\":\"Incoming evaluator request\",\"request\":{\"headers\":{\"user-agent\":\"kube-probe\/1.23\",\"x-request-id\":\"b3059da9-be9a-47c5-be35-eda150f0227f\"},\"method\":\"GET\",\"params\":{\"0\":\"\/_info\"},\"query\":{},\"remoteAddress\":\"10.64.32.110\",\"remotePort\":55134,\"url\":\"\/_info\"},\"requestId\":\"b3059da9-be9a-47c5-be35-eda150f0227f\",\"request_id\":\"b3059da9-be9a-47c5-be35-eda150f0227f\",\"service\":\"function-evaluator\"}\n",
+          "stream": "stdout",
+          "time": "2025-01-10T21:31:29.436164487Z"
+        }
+  - expected:
+    - __target_index: ecs-k8s-1-1.11.0-N-weekly
+      ecs:
+        version: 8.10.0
+      host:
+        name: kubestage1008
+      labels:
+        container_name: function-evaluator-python-evaluator
+        deployment: function-evaluator
+        release: python-evaluator
+      log:
+        level: INFO
+        syslog:
+          facility:
+            code: 16
+            name: local0
+          priority: 134
+          severity:
+            code: 6
+            name: informational
+      message: Incoming evaluator request
+      normalized:
+        message: incoming evaluator request
+      orchestrator:
+        cluster:
+          url: https://kubemaster.svc.eqiad.wmnet:6443
+        namespace: wikifunctions
+        resource:
+          name: function-evaluator-python-evaluator-869bdddc7f-vgh76
+        type: kubernetes
+      service:
+        type: input-file-kubernetes
+
+
+  - input:
+      - >
+        {
+          "timestamp": "2025-01-10T21:42:16.231538+00:00",
+          "rsyslog.timereported": "2025-01-10T21:42:16.231538+00:00",
+          "metadata": {
+            "filename": "\/var\/log\/containers\/function-evaluator-javascript-evaluator-5899854ddc-kzxfp_wikifunctions_function-evaluator-javascript-evaluator-e283104d523dbee9a19a4ebf678bf951a009c06f49ee4e00ce25447e1b8c6d23.log",
+            "fileoffset": "10318158"
+          },
+          "kubernetes": {
+            "namespace_id": "c044487d-4079-40ae-ae16-a14923292bf8",
+            "namespace_labels": {
+              "app": "raw",
+              "app_kubernetes_io\/managed-by": "Helm",
+              "chart": "raw-0.3.0",
+              "heritage": "Helm",
+              "kubernetes_io\/metadata_name": "wikifunctions",
+              "pod-security_kubernetes_io\/audit": "restricted",
+              "pod-security_kubernetes_io\/enforce": "restricted",
+              "pod-security_kubernetes_io\/warn": "restricted",
+              "release": "namespaces"
+            },
+            "creation_timestamp": "2023-06-26T16:22:31Z",
+            "pod_id": "b994b8d8-4f44-4540-94df-e443110bfdf7",
+            "labels": {
+              "app": "function-evaluator",
+              "pod-template-hash": "5899854ddc",
+              "release": "javascript-evaluator",
+              "routed_via": "javascript-evaluator"
+            },
+            "host": "wikikube-worker1242.eqiad.wmnet",
+            "pod_name": "function-evaluator-javascript-evaluator-5899854ddc-kzxfp",
+            "namespace_name": "wikifunctions",
+            "container_name": "function-evaluator-javascript-evaluator",
+            "master_url": "https:\/\/kubemaster.svc.eqiad.wmnet:6443"
+          },
+          "docker": {
+            "container_id": "e283104d523dbee9a19a4ebf678bf951a009c06f49ee4e00ce25447e1b8c6d23"
+          },
+          "msg": "2025-01-10T21:42:16.231458293Z stdout F {\"@timestamp\":\"2025-01-10T21:42:16.231Z\",\"ecs.version\":\"8.10.0\",\"log.level\":\"info\",\"message\":\"Incoming evaluator request\",\"request\":{\"headers\":{\"user-agent\":\"kube-probe\/1.23\",\"x-request-id\":\"258db3fa-d55c-4d72-a76d-8f93f944f9e2\"},\"method\":\"GET\",\"params\":{\"0\":\"\/_info\"},\"query\":{},\"remoteAddress\":\"10.64.0.105\",\"remotePort\":44150,\"url\":\"\/_info\"},\"requestId\":\"258db3fa-d55c-4d72-a76d-8f93f944f9e2\",\"request_id\":\"258db3fa-d55c-4d72-a76d-8f93f944f9e2\",\"service\":\"function-evaluator\"}"
+        }
+
+  - expected:
+    - __target_index: ecs-k8s-1-1.11.0-N-weekly
+      ecs:
+        version: 8.10.0
+      host:
+        name: kubestage1008
+      labels:
+        container_name: function-evaluator-javascript-evaluator
+        deployment: function-evaluator
+        release: javascript-evaluator
+      log:
+        level: INFO
+        syslog:
+          facility:
+            code: 16
+            name: local0
+          priority: 134
+          severity:
+            code: 6
+            name: informational
+      message: Incoming evaluator request
+      normalized:
+        message: incoming evaluator request
+      orchestrator:
+        cluster:
+          url: https://kubemaster.svc.eqiad.wmnet:6443
+        namespace: wikifunctions
+        resource:
+          name: function-evaluator-javascript-evaluator-5899854ddc-kzxfp
+        type: kubernetes
+      service:
+        type: input-file-kubernetes
