@@ -70,7 +70,7 @@ groups:
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins, tappof,
-              jasmine]
+              jasmine, fceratto]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
@@ -6536,6 +6536,15 @@ users:
     email: ammarpad@yahoo.com
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEUsjsFllP6LCfrNJ2dWH+Mpb0xtCMhMpXJrgzqc+d7Q ammarpad@wmf_prod
+  fceratto:
+    ensure: present
+    gid: 500
+    uid: 48322
+    realname: Federico Ceratto
+    email: fceratto@wikimedia.org
+    krb: present
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDF/3Wjadtlpm29nPsVlCyCpCp+7KqxAQqrsVwMx/cy7 fceratto@wikimedia.org
 
 ldap_only_users:
   adavenport:
@@ -7380,7 +7389,3 @@ ldap_only_users:
     ensure: present
     realname: Loren Mora
     email: lmora@wikimedia.org
-  fceratto:
-    ensure: present
-    realname: Federico Ceratto
-    email: fceratto@wikimedia.org
