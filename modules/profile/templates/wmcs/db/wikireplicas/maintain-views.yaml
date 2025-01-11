@@ -69,6 +69,7 @@ fullviews:
   - cn_templates
   - content_models
   - externallinks
+  - filetypes
   - flaggedpage_config
   - flaggedpage_pending
   - flaggedpages
@@ -461,6 +462,19 @@ customviews:
       LEFT JOIN revision ON(rev_id = slot_revision_id)
       WHERE content_id = slot_content_id
       AND (ar_deleted&1=0 OR rev_deleted&1=0))
+  file:
+    source: file
+    view: >
+      select file_id, file_name, file_latest, file_type, file_deleted
+    where: >
+      file_deleted&2 = 0
+  filerevision:
+    source: filerevision
+    view:
+      select fr_id, fr_file, fr_size, fr_width, fr_height, fr_metadata, fr_bits, fr_description_id, fr_actor
+      fr_timestamp, fr_sha1, fr_archive_name, fr_deleted
+    where: >
+      fr_deleted = 0
   filearchive:
     source: filearchive
     view: >
