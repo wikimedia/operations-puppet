@@ -1,3 +1,4 @@
 ---
+profile::wmcs::cloud_private_subnet::supernet_v6: 2a02:ec80:a100:200::/56
 profile::wmcs::cloud_private_subnet::public_cidrs:
  - 185.15.57.0/26
