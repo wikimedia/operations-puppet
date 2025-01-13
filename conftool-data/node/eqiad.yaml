@@ -111,12 +111,13 @@ eqiad:
     elastic1106.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic1107.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
   cloudelastic:
-    cloudelastic1005.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
-    cloudelastic1006.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1007.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1008.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1009.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1010.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
+    cloudelastic1011.eqiad.wmnet: [ cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public ]
+    cloudelastic1012.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
+
   swift:
     ms-fe1009.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1010.eqiad.wmnet: [swift-fe, nginx]
