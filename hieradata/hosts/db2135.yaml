@@ -1,6 +1,0 @@
-# db2135
-# Old master, will be decommissioned
-mariadb::shard: 'm5'
-#profile::mariadb::mysql_role: 'master'
-profile::monitoring::is_critical: false
-profile::monitoring::notifications_enabled: false

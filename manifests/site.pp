@@ -810,7 +810,7 @@ node /^db1176\.eqiad\./ {
 }
 
 # m5 codfw master
-node /^db2(1|2)35\.codfw\./ {
+node /^db2235\.codfw\./ {
     role(mariadb::misc)
 }
 
