@@ -78,7 +78,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 714 725 726
+  # 782 714 725 726 739
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -487,15 +487,11 @@ groups:
       - Olja Dimitrjevic
       - Ben Tullis
   eventlogging-admins:
-    gid: 733
-    description: Login access for EventLogging deployment and investigation
-    members: [*analytics_admins_members]
-  eventlogging-roots:
-    gid: 739
-    description: Full root on EventLogging servers. (Deprecated since 2020-03)
-    members: []
-    privileges: []
+    # T238230
     deprecated: true
+    gid: 733
+    description: Deprecated since 2025-01 - Login access for EventLogging deployment and investigation
+    members: []
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.

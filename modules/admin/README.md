@@ -11,7 +11,6 @@ see: `admin/data/data.yaml`
 ```yaml
     groups:
       mygroup:
-        ensure: present
         gid: 551
         members: [foo, bar]
 ```
@@ -31,22 +30,24 @@ Removing `bar` user from mygroup means removal from members array
 ```yaml
     groups:
       mygroup:
-        ensure: present
         gid: 551
         members: [foo, bar] -> members: [foo]
 ```
 
-### Removing a group
+### Deprecating a group
 
--> absenting a group will remove it where it was applied
+-> Deprecating a group will prevent users from being added to the group.
 ```yaml
     groups:
       mygroup:
         foo:
-          ensure: absent
+          deprecated: true
           gid: 679
           members: []
 ```
+
+See https://phabricator.wikimedia.org/T248161
+
 
 ### Adding user 'foo'
 
@@ -64,7 +65,6 @@ Removing `bar` user from mygroup means removal from members array
 ```yaml
     groups:
       mygroup:
-        ensure: present
         gid: 551
         members: [foo, bar]
         system_members: [www-data]
@@ -216,7 +216,6 @@ Users can be given sudo permissions in the same way:
 * this is a limited use approach.  these permissions would apply across the entire env.
 ```yaml
   foo:
-    ensure: present
     privileges: [ALL=(ALL:ALL) ALL]
 ```
 
