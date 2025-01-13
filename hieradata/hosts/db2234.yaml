@@ -1,2 +1,6 @@
 # db2234
+mariadb::shard: 'm3'
+profile::mariadb::mysql_role: 'master'
+mariadb::binlog_format: 'ROW'
+profile::monitoring::is_critical: false
 profile::monitoring::notifications_enabled: false
