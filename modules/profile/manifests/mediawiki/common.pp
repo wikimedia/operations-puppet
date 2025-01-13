@@ -149,14 +149,4 @@ class profile::mediawiki::common(
 
     # Go faster (T315398)
     class { 'cpufrequtils': }
-
-    unless $is_scap_master {
-        monitoring::service { 'mediawiki-installation DSH group':
-            description    => 'mediawiki-installation DSH group',
-            check_command  => 'check_dsh_groups!mediawiki-installation',
-            check_interval => 60,
-            notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_dsh_groups',
-        }
-    }
-
 }
