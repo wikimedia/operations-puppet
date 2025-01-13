@@ -19,8 +19,8 @@
 #   set in stream config to /wmf/data/raw/event
 #
 # - eventlogging_legacy
-#   Ingests legacy EventLogging streams. (No datacenter topic prefixes, topics start with
-#   'eventlogging_'.)
+#   Ingests all streams with consumers.analytics_hadoop_ingestion.job_name == 'eventlogging_legacy'
+#   set in stream config to /wmf/data/raw/eventlogging_legacy
 #
 # - webrequest_frontend
 #   Bug: T377931

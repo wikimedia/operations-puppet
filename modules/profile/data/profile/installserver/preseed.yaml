@@ -253,9 +253,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'etherpad*':
     - partman/flat.cfg
     - virtual.cfg
-  'eventlog1003':
-    - partman/flat.cfg
-    - virtual.cfg
   'cloudcontrol1005|relforge100[3-4]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg

@@ -62,7 +62,6 @@ profile::kafka::broker::max_heap_size: '2g'
 # - Kafka Jumbo brokers (as part of cluster maintenance)
 # - Fundraising (kafkatee via TLS)
 # - Analytics networks (various clients)
-# - eventlog1003 (not in the Analytics vlan)
 # - netflow* hosts (pmacct via TLS)
 # - weblog/centrallog hosts (kafkatee via TLS)
 # - cp cache hosts (varnishkafka via TLS, soon atskafka via TLS
@@ -84,7 +83,6 @@ profile::kafka::broker::custom_ferm_srange_components:
   - '(@resolve((centrallog2002.codfw.wmnet)) @resolve((centrallog2002.codfw.wmnet), AAAA))'
   - '(@resolve((search-loader1002.eqiad.wmnet)) @resolve((search-loader1002.eqiad.wmnet), AAAA))'
   - '(@resolve((search-loader2002.codfw.wmnet)) @resolve((search-loader2002.codfw.wmnet), AAAA))'
-  - '(@resolve((eventlog1003.eqiad.wmnet)) @resolve((eventlog1003.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow1002.eqiad.wmnet)) @resolve((netflow1002.eqiad.wmnet), AAAA))'
   - '(@resolve((netflow2003.codfw.wmnet)) @resolve((netflow2003.codfw.wmnet), AAAA))'
   - '(@resolve((netflow3003.esams.wmnet)) @resolve((netflow3003.esams.wmnet), AAAA))'

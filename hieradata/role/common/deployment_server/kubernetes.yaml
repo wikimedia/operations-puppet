@@ -54,10 +54,6 @@ profile::keyholder::server::agents:
     trusted_groups:
       - gerrit-deployers
 
-  eventlogging:
-    trusted_groups:
-      - eventlogging-admins
-
   deploy-service:
     trusted_groups:
       - aqs-admins
@@ -186,9 +182,6 @@ scap::sources:
   dumps/dumps:
     repository: operations/dumps
     scap_repository: operations/dumps/scap
-  eventlogging/analytics:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/analytics
   # Public EventStreams service
   eventstreams/deploy:
     repository: mediawiki/services/eventstreams/deploy

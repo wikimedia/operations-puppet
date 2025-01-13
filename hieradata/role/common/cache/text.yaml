@@ -276,7 +276,6 @@ prometheus::varnishkafka_exporter::config:
   stats_files:
     - '/var/cache/varnishkafka/webrequest.stats.json'
     - '/var/cache/varnishkafka/statsv.stats.json'
-    - '/var/cache/varnishkafka/eventlogging.stats.json'
 
   required_entries:
     - 'kafka'

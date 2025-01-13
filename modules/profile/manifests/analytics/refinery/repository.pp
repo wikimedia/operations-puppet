@@ -5,9 +5,7 @@
 # Hadoop or MediaWiki dependency. This profile is meant to be
 # mostly used as part of profile::analytics::refinery, but it
 # may also be deployed to hosts that don't need the full Refinery
-# potential but only a specific subset (for example, the eventlogging
-# database hosts need a whitelist file to purge data correctly, without
-# the need to install a ton of Hadoop packages).
+# potential but only a specific subset.
 #
 class profile::analytics::refinery::repository {
     # The analytics/refinery repo will deployed to this node via Scap3.

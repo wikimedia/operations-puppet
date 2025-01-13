@@ -257,10 +257,6 @@ profile::keyholder::server::agents:
     trusted_groups:
       - project-%{::wmcs_project}
 
-  eventlogging:
-    trusted_groups:
-      - project-%{::wmcs_project}
-
   deploy-service:
     trusted_groups:
       - wikidev
@@ -281,11 +277,6 @@ profile::keyholder::server::agents:
 # by the role deployment::server.  Each source listed here
 # will be cloned on the scap deploy server.
 scap::sources:
-
-  # eventlogging/analytics is the original EventLogging server deployment.
-  eventlogging/analytics:
-    repository: eventlogging
-    scap_repository: eventlogging/scap/analytics
 
   # webperf
   statsv/statsv:

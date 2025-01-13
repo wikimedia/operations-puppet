@@ -443,7 +443,7 @@ zookeeper-test: P{O:zookeeper::test}
 zookeeper-all: A:zookeeper-flink or A:zookeeper-main-eqiad or A:zookeeper-main-codfw or A:zookeeper-druid-public or A:zookeeper-druid-analytics or A:zookeeper-analytics or A:zookeeper-test
 
 # Miscellaneous groups
-misc-analytics: P{O:statistics::web or O:matomo or O:analytics_cluster::webserver} or A:eventlogging
+misc-analytics: P{O:statistics::web or O:matomo or O:analytics_cluster::webserver}
 misc-devel: P{O:webperf or O:arclamp or O:ve or O:archiva or O:docker::registry} or A:mwlog
 misc-nonprod: P{O:spare::system or O:test or O:pybaltest or O:sretest} or A:insetup
 #### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ####

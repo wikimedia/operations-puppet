@@ -369,10 +369,6 @@ define command {
     command_name    nrpe_check_udp2log_procs
     command_line    $USER1$/check_nrpe -2 -u -H $HOSTADDRESS$ -c check_udp2log_procs
 }
-define command {
-    command_name    check_eventlogging_jobs
-    command_line    $USER1$/check_eventlogging_jobs
-}
 
 #Generic NRPE check
 # ARG1: command to execute on remote host
