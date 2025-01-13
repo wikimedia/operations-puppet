@@ -789,6 +789,10 @@ node /^db2133\.codfw\./ {
     role(mariadb::misc)
 }
 
+# Future m2 master
+node /^db2233\.codfw\./ {
+    role(mariadb::misc)
+}
 ## m3 shard
 # See also multiinstance misc hosts db1217, db2160 below
 # m3 master
@@ -974,7 +978,7 @@ node /^dbproxy10(12|13|14|15|16|22|23|24|25|26|27|28|29)\.eqiad\./ {
 }
 
 # New databases T373579, T382425 & T379757
-node /^db22(33|34|41|42|43)\.codfw\./ {
+node /^db22(34|41|42|43)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
