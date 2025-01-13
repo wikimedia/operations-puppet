@@ -49,6 +49,10 @@
 #     verify(8) daemon
 # @param unverifiable_domains
 #     List of domains whose recipients cannot be verified
+# @param tls_provider the TLS provider, cfssl or acme
+# @param cfssl_label
+#     When using cfssl as the tls_provider this optional parameter specifies the
+#     intermediate signing cert
 class profile::postfix::mx (
     Hash                                     $config                 = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
     Profile::Postfix::Static_transport_maps  $static_transport_maps  = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
@@ -67,6 +71,8 @@ class profile::postfix::mx (
     Hash[Stdlib::Email, String[1]]           $recipient_discards     = lookup('profile::postfix::mx::recipient_discards', {'default_value' => {}}),
     Array[Stdlib::Host]                      $verify_domains         = lookup('profile::postfix::mx::verify_domains', {'default_value' => []}),
     Array[Stdlib::Host]                      $unverifiable_domains   = lookup('profile::postfix::mx::unverifiable_domains', {'default_value' => []}),
+    Enum['acme', 'cfssl']                    $tls_provider           = lookup('profile::postfix::mx::tls_provider', {'default_value' => 'acme'}),
+    Optional[String[1]]                      $cfssl_label            = lookup('profile::postfix::mx::cfssl_label', {'default_value' => undef}),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
@@ -194,24 +200,38 @@ class profile::postfix::mx (
     }
 
     # TLS Config
-    $acme_chief_cert = $mta_mode ? {
+    $cert_config_name = $mta_mode ? {
         'inbound'     => 'mx-in',
         'outbound'    => 'mx-out',
         'null-client' => 'mx-null-client',
         default       => fail('mta_mode not supported'),
     }
-    $acme_chief_host = lookup('acmechief_host') # lint:ignore:wmf_styleguide
-    $cert_resources = ['rsa-2048', 'ec-prime256v1'].map |$tls_key_type| {
-        profile::postfix::acme_chief_cert(
-            $acme_chief_host,
-            $acme_chief_cert,
-            $tls_key_type,
-        )
+    case $tls_provider {
+        'acme': {
+            $acme_chief_host = lookup('acmechief_host') # lint:ignore:wmf_styleguide
+            $cert_resources = ['rsa-2048', 'ec-prime256v1'].map |$tls_key_type| {
+                profile::postfix::acme_chief_cert(
+                    $acme_chief_host,
+                    $cert_config_name,
+                    $tls_key_type,
+                )
+            }
+        }
+        'cfssl': {
+            $cert_resources = [
+                profile::postfix::cfssl_cert($cert_config_name, $cfssl_label),
+            ]
+        }
+        default: {
+            fail("tls_provider (${tls_provider}) unsupported")
+        }
     }
+
     $cert_resources.each |$rsc| {
         # Restart postfix on cert changes
         $rsc ~> Service['postfix']
     }
+
     $tls_config = {
         smtpd_tls_chain_files =>
             $cert_resources.map |$rsc| {
