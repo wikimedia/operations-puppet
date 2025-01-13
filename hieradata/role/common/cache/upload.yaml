@@ -138,6 +138,12 @@ profile::cache::haproxy::sticktables:
     expire: 60s
     store:
       - bytes_out_rate(1s)
+  - name: limit-by-path
+    type: integer
+    size: 1m
+    expire: 60s
+    store:
+      - bytes_out_rate(1s)
 
 profile::cache::haproxy::filters:
   - direction: out
@@ -145,9 +151,17 @@ profile::cache::haproxy::filters:
     size: 32m
     key: src
     table: limit-by-source
+  - direction: out
+    name: limit-by-path
+    size: 38m  # 38MByte/sec * ~8 cache hosts/PoP =~ 2.4Gbit/sec/distinctURIpath/PoP egress budget
+    key: path,sdbm(1)
+    table: limit-by-path
 
 profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request
       verb: set-bandwidth-limit limit-by-source
+      condition: if !wikimedia_trust
+    - context: http-request
+      verb: set-bandwidth-limit limit-by-path
       condition: if !wikimedia_trust
