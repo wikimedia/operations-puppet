@@ -341,19 +341,6 @@ class profile::logstash::production (
     }
   }
 
-  # TODO: Remove this after ensured absent.  T238230
-  $kafka_topic_eventlogging = 'eventlogging_EventError'
-  logstash::input::kafka { $kafka_topic_eventlogging:
-    ensure                                => 'absent',
-    kafka_cluster_name                    => 'jumbo-eqiad',
-    topic                                 => $kafka_topic_eventlogging,
-    group_id                              => $input_kafka_consumer_group_id,
-    tags                                  => [$kafka_topic_eventlogging, 'kafka', 'input-kafka-eventlogging', 'es'],
-    type                                  => 'eventlogging',
-    codec                                 => 'json',
-    ssl_endpoint_identification_algorithm => '',
-  }
-
   # Outputs (90)
   # logstash-* indexes output
   logstash::output::opensearch { 'logstash':
