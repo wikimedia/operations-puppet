@@ -325,10 +325,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
-  'kubernetes2*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
-    - partman/custom/kubernetes-node-overlay.cfg
   # END everything wikikube
   'failoid*':
     - partman/flat.cfg
