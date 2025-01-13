@@ -172,6 +172,9 @@ class profile::postfix::mx (
         parent_domain_matches_subdomains => ['debug_peer_list'],
         # Prevent smtp smuggling, https://www.postfix.org/smtp-smuggling.html
         smtpd_forbid_bare_newline        => 'normalize',
+        # 50MiB total message size limit, which matches gmail's defaults
+        # - https://support.google.com/a/answer/1366776
+        message_size_limit               => '52428800',
     }
 
     if length($domain_aliases_maps + $domain_aliases_generic_maps) > 0 {
