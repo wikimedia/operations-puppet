@@ -17,30 +17,8 @@ class codesearch(
         'python3-flask',
         'python3-requests',
         'python3-yaml',
+        'docker.io',
     ])
-
-    if debian::codename::ge('bookworm') {
-        $docker_package='docker.io'
-        ensure_packages($docker_package)
-    }
-
-    if debian::codename::eq('buster') {
-        $docker_package='docker-ce'
-        # We need iptables 1.8.3+ for compatibility with docker
-        # (see comments on <https://gerrit.wikimedia.org/r/565752>)
-        apt::pin { 'iptables':
-            pin      => 'release a=buster-backports',
-            package  => 'iptables',
-            priority => 1001,
-            before   => Package[$docker_package],
-        }
-
-        apt::package_from_component { 'thirdparty-kubeadm-k8s':
-            component => 'thirdparty/kubeadm-k8s-1-15',
-            packages  => [$docker_package],
-        }
-
-    }
 
     systemd::sysuser { 'codesearch':
         additional_groups => ['docker'],
@@ -98,7 +76,7 @@ class codesearch(
         content => template('codesearch/initscripts/codesearch-frontend.service.erb'),
         require => [
             Git::Clone['labs/codesearch'],
-            Package[$docker_package],
+            Package['docker.io'],
         ]
     }
 
@@ -114,7 +92,7 @@ class codesearch(
             content => template('codesearch/initscripts/hound.service.erb'),
             restart => true,
             require => [
-                Package[$docker_package],
+                Package['docker.io'],
                 Systemd::Service['hound_proxy'],
                 Systemd::Timer::Job['codesearch-write-config'],
                 File['/etc/hound-gitconfig'],
