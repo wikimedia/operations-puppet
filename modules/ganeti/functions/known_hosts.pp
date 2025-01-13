@@ -9,6 +9,7 @@ function ganeti::known_hosts (
     $pql = @("PQL")
         inventory[certname, facts.ssh.rsa.key] {
             facts.ganeti_cluster = "${ganeti_cluster}"
+            order by certname
         }
         | PQL
     wmflib::puppetdb_query($pql).reduce('') |$memo, $host| {
