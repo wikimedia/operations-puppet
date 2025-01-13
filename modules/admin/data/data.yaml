@@ -209,7 +209,8 @@ groups:
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
-              tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis
+              tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
+              kemayo
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
