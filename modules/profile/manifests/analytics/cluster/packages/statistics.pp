@@ -20,21 +20,6 @@ class profile::analytics::cluster::packages::statistics {
     # More info https://phabricator.wikimedia.org/T292306
     # TBD: do we want to keep them permanently?
     ensure_packages(['libasound2-dev', 'libjack-dev', 'portaudio19-dev'])
-
-    if debian::codename::ge('bullseye') {
-        apt::pin { 'golang-go':
-            pin      => "release a=${debian::codename()}-backports",
-            package  => 'golang-go',
-            priority => 1001
-        }
-
-        apt::pin { 'golang-src':
-            pin      => "release a=${debian::codename()}-backports",
-            package  => 'golang-src',
-            priority => 1001
-        }
-    }
-
     ensure_packages([
         'time',
         'mc',
@@ -68,5 +53,6 @@ class profile::analytics::cluster::packages::statistics {
         'mariadb-client',
         'libyaml-cpp0.6',
         'libapache2-mod-python',
+        'golang-src',
     ])
 }
