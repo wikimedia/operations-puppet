@@ -983,7 +983,7 @@ node /^db12(50|51|52|53|54|55|56)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 # New external storage databases T378143
-node /^es104(4|5|6)\.eqiad\./ {
+node /^es104(5|6)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
