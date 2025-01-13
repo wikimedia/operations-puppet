@@ -2,10 +2,13 @@
 [Service]
 Slice=thanos.slice
 Environment=OTEL_SERVICE_NAME=%N
+RuntimeDirectoryPreserve=yes
+RuntimeDirectory=thanos-query
 ExecStart=
 ExecStart=/usr/bin/thanos query \
   --http-address <%= @http_address %> \
   --query.replica-label <%= @replica_label %> \
   --store.sd-files <%= @sd_files %> \
+  --query.active-query-path /run/thanos-query \
   <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   <%= @logging_cmdline %>
