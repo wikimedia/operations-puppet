@@ -1243,6 +1243,10 @@ node /^es1023\.eqiad\./ {
     role(mariadb::core)
 }
 
+node /^es1044\.eqiad\./ {
+    role(mariadb::core)
+}
+
 node /^es1024\.eqiad\./ {
     role(mariadb::core)
 }
