@@ -4,6 +4,7 @@
 # rsync server to store cache related material from CI jobs.
 #
 class profile::ci::castor::server {
+    ensure_packages('memcached')
 
     class { 'rsync::server':
         # Disable DNS lookup, they are only needed for host allow/deny which we
@@ -28,5 +29,17 @@ class profile::ci::castor::server {
         owner  => 'jenkins-deploy',
         group  => 'wikidev',
         mode   => '0775',
+    }
+
+    file { '/etc/memcached.conf':
+        source  => 'puppet:///modules/profile/ci/castor/memcached.conf',
+        require => Package['memcached'],
+    }
+
+    service { 'memcached':
+        ensure    => running,
+        enable    => true,
+        require   => Package['memcached'],
+        subscribe => File['/etc/memcached.conf'],
     }
 }
