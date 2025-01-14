@@ -15,6 +15,8 @@ labsldapconfig:
 prometheus_nodes:
   - prometheus2005.codfw.wmnet
   - prometheus2006.codfw.wmnet
+  - prometheus2007.codfw.wmnet
+  - prometheus2008.codfw.wmnet
 
 # webperf
 arclamp_host: arclamp2001.codfw.wmnet

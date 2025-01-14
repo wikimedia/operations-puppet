@@ -2302,16 +2302,12 @@ node /^poolcounter[12]00[5-7]\.(codfw|eqiad)\./ {
     role(poolcounter::server)
 }
 
-node /^prometheus200[56]\.codfw\./ {
+node /^prometheus200[5678]\.codfw\./ {
     role(prometheus)
 }
 
 node /^prometheus100[56]\.eqiad\./ {
     role(prometheus)
-}
-
-node /^prometheus200[78]\.codfw\./ {
-    role(insetup::observability)
 }
 
 node /^prometheus100[78]\.eqiad\./ {
