@@ -12,7 +12,7 @@ profile::etcd::v3::do_backup: true
 # all the hostnames for the etcd machines in the SANs
 # Will need to be regenerated if we add servers to the cluster.
 profile::etcd::tlsproxy::cert_name: "etcd-v3.%{::domain}"
-profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"], /eventlogging: []}
+profile::etcd::tlsproxy::acls: { /: ["root"], /conftool: ["root", "conftool"]}
 # This should come from the private hieradata
 #profile::etcd::tlsproxy::salt
 profile::etcd::tlsproxy::read_only: true
