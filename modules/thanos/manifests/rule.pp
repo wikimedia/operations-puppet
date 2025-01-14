@@ -26,6 +26,7 @@
 # [*query_url*] The publicly-reachable Thanos query URL to attach to alerts
 # [*http_port*] The port to use for HTTP
 # [*grpc_port*] The port to use for gRPC
+# [*retention_time*] Block retention time on local disk
 
 class thanos::rule (
     Hash[Stdlib::Fqdn, Hash] $rule_hosts,
@@ -39,6 +40,7 @@ class thanos::rule (
     Stdlib::Port::Unprivileged $query_port = 16902, #thanos query-frontend
     Stdlib::Port::Unprivileged $http_port = 17902,
     Stdlib::Port::Unprivileged $grpc_port = 17901,
+    String $retention_time = '2d',
 ) {
     ensure_packages(['thanos'])
 

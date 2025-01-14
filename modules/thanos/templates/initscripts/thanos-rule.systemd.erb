@@ -18,4 +18,5 @@ ExecStart=/usr/bin/thanos rule \
   --label 'recorder="thanos-rule"' \
   --label 'replica="<%= @replica %>"' \
   <%= @rule_files.map { |f| "--rule-file #{f}" }.join(" ") %> \
+  --tsdb.retention <%= @retention_time %> \
   --query http://localhost:<%= @query_port %>

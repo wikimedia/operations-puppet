@@ -18,6 +18,7 @@ class profile::thanos::rule (
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers'),
     String $public_domain = lookup('public_domain'),
+    Optional[String] $retention_time = lookup('profile::thanos::rule::retention_time', { 'default_value' => undef}),
 ) {
     $http_port = 17902
     $grpc_port = 17901
@@ -37,6 +38,7 @@ class profile::thanos::rule (
         http_port         => $http_port,
         grpc_port         => $grpc_port,
         query_url         => "https://thanos.${public_domain}",
+        retention_time    => $retention_time,
     }
 
     if $::fqdn in $thanos_rule_hosts {
