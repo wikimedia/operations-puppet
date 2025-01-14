@@ -1,3 +1,0 @@
-# db2128
-mariadb::shard: 's5'
-profile::monitoring::notifications_enabled: false
