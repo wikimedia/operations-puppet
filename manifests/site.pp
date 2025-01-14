@@ -2307,10 +2307,6 @@ node /^pc2013\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-node /^pc2015\.codfw\./ {
-    role(mariadb::parsercache)
-}
-
 # pc4
 node /^pc2014\.codfw\./ {
     role(mariadb::parsercache)
@@ -2326,6 +2322,9 @@ node /^pc2017\.codfw\./ {
     role(mariadb::parsercache)
 }
 
+node /^pc2015\.codfw\./ {
+    role(mariadb::parsercache)
+}
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
 node /^ping[12]004\.(eqiad|codfw)\./ {
     role(ping_offload)
