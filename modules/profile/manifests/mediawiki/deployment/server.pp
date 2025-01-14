@@ -185,7 +185,7 @@ class profile::mediawiki::deployment::server(
             ensure                  => $primary_deploy_ensure,
             description             => 'Clean up old train checkouts',
             user                    => 'mwpresync',
-            command                 => '/usr/bin/scap clean --delete-gerrit-branch auto',
+            command                 => '/usr/bin/scap clean --delete-gerrit-branch --no-logo auto',
             send_mail               => true,
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
