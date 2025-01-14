@@ -2312,11 +2312,12 @@ node /^pc2015\.codfw\./ {
 }
 
 # pc4
-node /^pc2016\.codfw\./ {
+node /^pc2014\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-node /^pc2014\.codfw\./ {
+# pc2016 will be moved to new pc6
+node /^pc2016\.codfw\./ {
     role(mariadb::parsercache)
 }
 
