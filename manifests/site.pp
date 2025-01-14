@@ -2268,18 +2268,17 @@ node /^pc1012\.eqiad\./ {
 node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
-# This host will become pc5 master
-node /^pc1015\.eqiad\./ {
+# pc4
+node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# pc4
 node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
 # pc5
-node /^pc1014\.eqiad\./ {
+node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
