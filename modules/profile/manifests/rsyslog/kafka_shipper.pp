@@ -57,10 +57,19 @@ class profile::rsyslog::kafka_shipper (
 
     include profile::base::certificates
     $trusted_ca_path = $profile::base::certificates::trusted_ca_path
-    rsyslog::conf { 'output_kafka':
-        ensure   => $ensure,
-        content  => template('profile/rsyslog/output_kafka.conf.erb'),
-        priority => 30,
+    # guard against logging_kafka_brokers being undefined
+    if $enable {
+        rsyslog::conf { 'output_kafka':
+            ensure   => 'present',
+            content  => template('profile/rsyslog/output_kafka.conf.erb'),
+            priority => 30,
+        }
+    } else {
+        rsyslog::conf { 'output_kafka':
+            ensure   => 'absent',
+            content  => '',
+            priority => 30,
+        }
     }
 
     rsyslog::conf { 'output_local':
