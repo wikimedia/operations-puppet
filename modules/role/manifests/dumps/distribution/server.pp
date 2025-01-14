@@ -8,7 +8,6 @@ class role::dumps::distribution::server {
     include profile::dumps::distribution::rsync
     include profile::dumps::distribution::ferm
     include profile::dumps::distribution::web
-    include profile::dumps::distribution::monitoring
 
     include profile::dumps::distribution::datasets::cleanup
     include profile::dumps::distribution::datasets::dumpstatusfiles_sync
