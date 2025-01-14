@@ -60,8 +60,8 @@ class presto::server(
         'coordinator'                        => false,
         'node-scheduler.include-coordinator' => false,
         # Use non-default http port to avoid conflicts with commonly used 8080
-        'http-server.http.port'              => '8280',
-        'jmx.rmiregistry.port'               => '8279',
+        'http-server.http.port'              => 8280,
+        'jmx.rmiregistry.port'               => 8279,
         'discovery.uri'                      => 'http://localhost:8280',
     }
 

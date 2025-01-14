@@ -83,7 +83,7 @@ class profile::presto::server(
     }
 
     $default_config_properties = {
-        'jmx.rmiregistry.port'               => '8279',
+        'jmx.rmiregistry.port'               => 8279,
         'discovery.uri'                      => $discovery_uri,
 
         # flat will try to schedule splits on the host where the data is located by reserving
@@ -96,7 +96,7 @@ class profile::presto::server(
         # ssh -NL 8280:an-test-coord1001.eqiad.wmnet:8280 an-test-coord1001.eqiad.wmnet
         # (for the test cluster, for the production cluster use an-coord1003).
         # Then visit http://localhost:8280 (which should redirect to http://localhost:8280/ui/)
-        'http-server.http.port'              => '8280',
+        'http-server.http.port'              => 8280,
         'http-server.http.enabled'           => true,
     }
 
@@ -164,7 +164,7 @@ class profile::presto::server(
             'internal-communication.https.keystore.key' => $ssl_keystore_password,
             'internal-communication.https.trust-store-path' => '/etc/ssl/certs/java/cacerts',
             'internal-communication.https.trust-store-password' => 'changeit',
-            'http-server.https.port' => '8281',
+            'http-server.https.port' => 8281,
             'http-server.https.enabled' => true,
         }
     } else {
