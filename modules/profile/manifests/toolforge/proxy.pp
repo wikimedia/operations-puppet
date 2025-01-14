@@ -69,32 +69,6 @@ class profile::toolforge::proxy (
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00/1:00:00'}
     }
 
-    if debian::codename::eq('buster') {
-        redis::instance { '6379':
-            ensure => absent,
-        }
-
-        prometheus::redis_exporter { '6379':
-            ensure => absent,
-        }
-
-        file { '/usr/local/sbin/proxylistener':
-            ensure => absent,
-        }
-
-        systemd::service { 'proxylistener':
-            ensure  => absent,
-            content => '',
-        }
-
-        file { '/etc/nginx/lua':
-            ensure  => absent,
-            recurse => true,
-            purge   => true,
-            force   => true,
-        }
-    }
-
     file { [
         '/var/www/',
         '/var/www/error',
