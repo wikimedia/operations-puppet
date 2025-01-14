@@ -84,10 +84,6 @@ kubernetes::clusters:
         v4: "10.67.128.0/18"
         v6: "2620:0:861:cabe::/64"
       cluster_nodes:
-        - mw1414.eqiad.wmnet
-        - mw1415.eqiad.wmnet
-        - mw1416.eqiad.wmnet
-        - mw1419.eqiad.wmnet
         - mw1421.eqiad.wmnet
         - mw1422.eqiad.wmnet
         - mw1423.eqiad.wmnet
@@ -245,6 +241,10 @@ kubernetes::clusters:
         - wikikube-worker1095.eqiad.wmnet
         - wikikube-worker1096.eqiad.wmnet
         - wikikube-worker1097.eqiad.wmnet
+        - wikikube-worker1098.eqiad.wmnet
+        - wikikube-worker1099.eqiad.wmnet
+        - wikikube-worker1100.eqiad.wmnet
+        - wikikube-worker1101.eqiad.wmnet
         # This space intentionally left blank - new hosts start at 1240 (T369743), below reserved for renames
         - wikikube-worker1240.eqiad.wmnet
         - wikikube-worker1241.eqiad.wmnet
