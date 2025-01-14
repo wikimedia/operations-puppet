@@ -1,4 +1,0 @@
-# es1020
-mariadb::shard: 'es4'
-profile::mariadb::mysql_role: 'standalone'
-profile::monitoring::notifications_enabled: false
