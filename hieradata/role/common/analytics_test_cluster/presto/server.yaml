@@ -132,3 +132,4 @@ profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Presto server'
 
 profile::puppet::agent::force_puppet7: true
+profile::firewall::provider: nftables
