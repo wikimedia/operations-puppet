@@ -2269,11 +2269,11 @@ node /^pc1012\.eqiad\./ {
     role(mariadb::parsercache)
 }
 # pc3
-node /^pc1015\.eqiad\./ {
+node /^pc1013\.eqiad\./ {
     role(mariadb::parsercache)
 }
-# This host will become pc3 master
-node /^pc1013\.eqiad\./ {
+# This host will become pc5 master
+node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
@@ -2287,8 +2287,7 @@ node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# old pc5 master, another hw issue? T378068
-# Needs discussion before repooling
+# This host will becoome pc7 master
 node /^pc1017\.eqiad\./ {
     role(mariadb::parsercache)
 }
