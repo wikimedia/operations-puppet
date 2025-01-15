@@ -15,7 +15,8 @@
 class postgresql::postgis(
     $ensure = 'present',
     $postgresql_postgis_package = $::lsbdistcodename ? {
-        'buster' => 'postgresql-11-postgis-3',
+        'buster'   => 'postgresql-11-postgis-3',
+        'bookworm' => 'postgresql-15-postgis-3',
     },
 ) {
     $postgis_packages = [
@@ -30,8 +31,6 @@ class postgresql::postgis(
             packages  => $postgis_packages,
         }
     } else {
-        package { $postgis_packages:
-            ensure  => $ensure,
-        }
+        ensure_packages($postgis_packages)
     }
 }
