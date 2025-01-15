@@ -27,9 +27,5 @@ profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
 profile::tlsproxy::instance::nginx_variant: 'light'
 profile::base::production::role_description: 'Maps replica (postgresql, kartotherian)'
 
-profile::java::java_packages:
-  - version: '8'
-    variant: 'jdk'
-
 profile::maps::osm_replica::log_min_duration_statement: 10000 # 10 seconds
 profile::maps::osm_replica::use_replication_slots: false
