@@ -64,4 +64,8 @@ class profile::url_downloader (
     }
 
     profile::auto_restarts::service { 'squid': }
+
+    # FIXME: this happens to work because webproxy squids run on the same port (8080)
+    # squid_exporter's profile should probably read from a different hiera?
+    include profile::prometheus::squid_exporter
 }
