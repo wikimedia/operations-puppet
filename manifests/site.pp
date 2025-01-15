@@ -894,8 +894,9 @@ node /^db1245\.eqiad\./ {
 node /^db2139\.codfw\./ {
     role(mariadb::backup_source)
 }
+## s3 & s4, bookworm
 node /^db2239\.codfw\./ {
-    role(insetup::data_persistence)
+    role(mariadb::backup_source)
 }
 ## s1, bullseye
 node /^db2141\.codfw\./ {
