@@ -67,34 +67,10 @@ profile::zuul::server::email_server: localhost
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
-# Kubernetes configuration.
-# It gives access only to the staging cluster, and the "ci" namespace specifically.
-# kubernetes clusters by group.
-kubernetes::clusters:
-  main:
-    staging:
-      dc: eqiad
-      master: kubestagemaster.svc.eqiad.wmnet
-      pki_intermediate_base: wikikube_staging
-      pki_renew_seconds: 172800
-      # The following are dummy values to satisfy type checks.
-      # We don't want ci/release servers to have credentials to k8s clusters
-      # apart from staging, so we re-declare kubernetes::clusters here.
-      # A bit of context is at: https://phabricator.wikimedia.org/T288629
-      control_plane_nodes: [dummy.x.y]
-      cluster_dns: ["0.0.0.0"]
-      service_cluster_cidr:
-        v4: "127.0.0.0/8"
-        v6: "::1/128"
-      cluster_cidr:
-        v4: "127.0.0.0/8"
-        v6: "::1/128"
-      etcd_urls:
-        - https://dummy.x.y
-        - https://dummy.x.y
-        - https://dummy.x.y
-      cluster_nodes: [dummy.x.y]
 
+# ci servers need access only to staging k8s
+profile::kubernetes::deployment_server::restrict_to_clusters:
+  - 'staging'
 
 profile::kubernetes::deployment_server::user_defaults:
   owner: "%{lookup('jenkins_agent_username')}"
