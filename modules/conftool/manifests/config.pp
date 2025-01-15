@@ -30,6 +30,11 @@ class conftool::config ($namespace, $tcpircbot_host, $tcpircbot_port, $hosts = [
             'suppress_san_warnings' => false
         },
         'namespace'      => $namespace,
+        'extensions_config' => {
+            'reqconfig' => {
+                'haproxy_reserved_slots' => [0],
+            }
+        }
     }
     if $conftool2git_address != '' {
         $extra_config = {
