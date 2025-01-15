@@ -312,6 +312,16 @@ sub analytics_recv {
         set req.http.X-WMF-SESSIONCOOKIE = 1;
     }
 
+    if (req.http.Authorization) {
+        if (req.http.Authorization ~ "^OAuth ") {
+            set req.http.X-WMF-AUTHORIZATION = "OAuth";
+        } else if (req.http.Authorization ~ "^Bearer ") {
+            set req.http.X-WMF-AUTHORIZATION = "Bearer";
+        } else {
+            set req.http.X-WMF-AUTHORIZATION = "unknown";
+        }
+    }
+
     call analytics_provenance_recv_;
 }
 
@@ -397,6 +407,10 @@ sub analytics_deliver_post {
     // request, including the Referer, can be combined for greater confidence.
     if (req.http.X-WMF-Translation-Engine) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=" + req.http.X-WMF-Translation-Engine;
+    }
+
+    if (req.http.X-WMF-AUTHORIZATION) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";authorization=" + req.http.X-WMF-AUTHORIZATION;
     }
 
     if (req.http.X-WMF-NOCOOKIES) {
