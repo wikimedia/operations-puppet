@@ -40,6 +40,7 @@ define prometheus::web (
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
+        notify  => Service['apache2'],
     }
 
     # Single prometheus apache site, will include /etc/apache2/prometheus.d/*.conf
