@@ -130,17 +130,27 @@ class GitlabPackagePuller:
             jobs = project.jobs.list(get_all=False, per_page=self.number_of_jobs)
             protected_branches = [b.name for b in project.protectedbranches.list()]
             logging.info("Found %d jobs for project %s", len(jobs), project.name)
-
+            # We might have multiple jobs for a project, but we only want to download the most
+            # recent artifacts for each of them.
+            job_names_seen = set()
             for job in jobs:
+                if job.name in job_names_seen:
+                    logging.debug(
+                        "Skipping job %s because we've already downloaded an artifact for it",
+                        job.name,
+                    )
+                    continue
                 if self.can_download_package(job, protected_branches):
                     if self.download_debs(job, project):
                         # We've successfully downloaded a job with a deb file,
-                        # no sense going any further
+                        # no sense going any further for this job name
                         logging.info(
-                            "Downloaded the most recent package for project %s, skipping the rest",
+                            "Downloaded the most recent package for project %s, "
+                            "job name %s, skipping the rest",
                             project.name,
+                            job.name
                         )
-                        break
+                        job_names_seen.add(job.name)
                 else:
                     logging.info(
                         "No packages meeting criteria for job %s in project %s found",
@@ -305,7 +315,7 @@ if __name__ == "__main__":
         metavar="PATH",
         type=str,
         nargs="?",
-        help="List of project paths (e.g., '/repos/sre/miscweb') to fetch packages from. This is "
+        help="List of project paths (e.g., 'repos/sre/miscweb') to fetch packages from. This is "
         "usually from the list of projects specified in the trusted runner list.",
     )
     parser.add_argument(
