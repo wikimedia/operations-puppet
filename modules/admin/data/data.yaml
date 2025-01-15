@@ -6381,6 +6381,7 @@ users:
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   kgraessle:
     ensure: present
+    krb: present
     realname: Katherine Graessle
     email: kgraessle@wikimedia.org
     uid: 46586
