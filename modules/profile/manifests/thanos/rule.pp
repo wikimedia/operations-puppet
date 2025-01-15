@@ -9,6 +9,7 @@
 # [*objstore_account*] The account to use to access object storage
 # [*objstore_password*] The password to access object storage
 # [*alertmanagers*] All alertmanagers to send alerts to
+# [*object_store_cutoff_days*] Block retention time (in days, as an Integer) on local disk.
 
 
 class profile::thanos::rule (
@@ -18,7 +19,7 @@ class profile::thanos::rule (
     String $objstore_password = lookup('profile::thanos::objstore_password'),
     Array[Stdlib::Host] $alertmanagers = lookup('alertmanagers'),
     String $public_domain = lookup('public_domain'),
-    Optional[String] $retention_time = lookup('profile::thanos::rule::retention_time', { 'default_value' => undef}),
+    Optional[Integer] $object_store_cutoff_days = lookup('profile::thanos::object_store_cutoff_days', { 'default_value' => undef}),
 ) {
     $http_port = 17902
     $grpc_port = 17901
@@ -38,7 +39,9 @@ class profile::thanos::rule (
         http_port         => $http_port,
         grpc_port         => $grpc_port,
         query_url         => "https://thanos.${public_domain}",
-        retention_time    => $retention_time,
+        # Thanos Rule accepts input in the form of an interval (e.g., '15d' represents 15 days).
+        # The cutoff parameter is expressed in days as an Integer, and here we adjust the format to the correct string.
+        retention_time    => sprintf('%dd', $object_store_cutoff_days + 1)
     }
 
     if $::fqdn in $thanos_rule_hosts {

@@ -46,13 +46,12 @@ profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 # Let idle_timeout kick in instead for long-running/streaming requests. T337251
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
-# Hit object storage only for data older than max_time
-profile::thanos::store::max_time: '-15d'
-
-# Local retention for thanos-rule
-# NOTE this value should be greater than store::max_time to avoid gaps
-# https://phabricator.wikimedia.org/T352756
-profile::thanos::rule::retention_time: '16d'
+# Hit object storage only for data older than this value. This represents the thanos store max_time.
+# It also defines the length of the local retention window for Thanos Rule,
+#  which must be greater than thanos store max_time to avoid gaps.
+#  (https://phabricator.wikimedia.org/T352756).
+# Arithmetic adjustments and type convertions are applied in the respective classes.
+profile::thanos::object_store_cutoff_days: 15
 
 # Retention custom settings -- see also T311690 and T351927
 profile::thanos::retention::raw: '44w'
