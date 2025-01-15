@@ -3,6 +3,7 @@
 # @param user_defaults user group and mode defaults
 # @param services Dict of services
 # @param include_admin if true include profile::kubernetes::kubeconfig::admin
+# @param restrict_to_clusters if set, restrict the kubernetes clusters for this deployment server, including aliases. If not set, all clusters are included.
 # @param helm_user_group the group used for the helm cache directory
 # @param helm_home the directory where helm plugins and config live (HELM_HOME, HELM_CONFIG_HOME)
 # @param helm_cache the helm cache directory (HELM_CACHE_HOME)
@@ -12,6 +13,7 @@ class profile::kubernetes::deployment_server (
     Profile::Kubernetes::User_defaults $user_defaults                  = lookup('profile::kubernetes::deployment_server::user_defaults'),
     Hash[String, Hash[String,Profile::Kubernetes::Services]] $services = lookup('profile::kubernetes::deployment_server::services', { default_value => {} }),
     Boolean $include_admin                                             = lookup('profile::kubernetes::deployment_server::include_admin', { default_value => false }),
+    Optional[Array[String]] $restrict_to_clusters                      = lookup('profile::kubernetes::deployment_server::restrict_to_clusters', { default_value => undef }),
     String $helm_user_group                                            = lookup('profile::kubernetes::helm_user_group'),
     Stdlib::Unixpath $helm_home                                        = lookup('profile::kubernetes::helm_home', { default_value => '/etc/helm' }),
     Stdlib::Unixpath $helm_data                                        = lookup('profile::kubernetes::helm_data', { default_value => '/usr/share/helm' }),
@@ -38,7 +40,15 @@ class profile::kubernetes::deployment_server (
 
     ensure_packages('istioctl')
 
-    $kubernetes_clusters = k8s::fetch_clusters()
+    # Apply filtering on cluster name and alias if requested
+    $kubernetes_clusters = k8s::fetch_clusters().filter | String $cluster_name, K8s::ClusterConfig $cluster_config | {
+        if ! $restrict_to_clusters {
+            true
+        } else {
+            $cluster_name in $restrict_to_clusters or $cluster_config['cluster_alias'] in $restrict_to_clusters
+        }
+    }
+
     # For each cluster we gather the list of services and build kubernetes configs for all of them.
     $kubernetes_clusters.map | String $cluster_name, K8s::ClusterConfig $cluster_config | {
         # Get all services installed on this cluster (group)
