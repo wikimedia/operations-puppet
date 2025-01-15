@@ -45,8 +45,9 @@ class amd_rocm (
     if debian::codename::eq('bullseye') {
         # The default firmware-amd-graphics package in bullseye does not have
         # the required firmware files (amdgpu/arcturus_*.bin) for MI100 AMD GPUs.
-        apt::package_from_bpo { 'firmware-amd-graphics':
-            distro => 'bullseye',
+        apt::package_from_component { 'amd-gpu-firmware':
+            component => 'component/amd-gpu-firmware',
+            packages  => ['firmware-amd-graphics'],
         }
     } else {
         # On buster, we can't install the backport (and that use case is going
