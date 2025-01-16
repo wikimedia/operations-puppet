@@ -2303,11 +2303,12 @@ node /^pc2016\.codfw\./ {
 }
 
 # pc5
-node /^pc2017\.codfw\./ {
+node /^pc2015\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-node /^pc2015\.codfw\./ {
+# This host will go to pc7
+node /^pc2017\.codfw\./ {
     role(mariadb::parsercache)
 }
 # virtual machines for https://wikitech.wikimedia.org/wiki/Ping_offload
