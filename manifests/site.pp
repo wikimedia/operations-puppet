@@ -986,10 +986,6 @@ node /^db22(41|42|43)\.codfw\./ {
 node /^db12(50|51|52|53|54|55|56)\.eqiad\./ {
     role(insetup::data_persistence)
 }
-# New external storage databases T378143
-node /^es104(6)\.eqiad\./ {
-    role(insetup::data_persistence)
-}
 
 # Passive codfw proxies for misc databases
 node /^dbproxy200(5|6|7|8)\.codfw\./ {
@@ -1259,6 +1255,9 @@ node /^es1025\.eqiad\./ {
     role(mariadb::core)
 }
 
+node /^es1046\.eqiad\./ {
+    role(mariadb::core)
+}
 ## codfw servers
 node /^es2044\.codfw\./ {
     role(mariadb::core)
