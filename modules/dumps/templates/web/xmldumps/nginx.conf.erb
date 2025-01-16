@@ -9,7 +9,7 @@ server {
    listen [::]:80 default ipv6only=off;
    server_name <%= @web_hostname %>;
 
-   return 403;
+   return 403 "HTTPS required";
 }
 
 server {
