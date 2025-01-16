@@ -2237,13 +2237,13 @@ node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# Will be moved to the new pc6
-node /^pc1016\.eqiad\./ {
+# pc5
+node /^pc1015\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# pc5
-node /^pc1015\.eqiad\./ {
+# pc6
+node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
@@ -2257,10 +2257,12 @@ node /^pc1017\.eqiad\./ {
 node /^pc2011\.codfw\./ {
     role(mariadb::parsercache)
 }
+
 # pc2
 node /^pc2012\.codfw\./ {
     role(mariadb::parsercache)
 }
+
 # pc3
 node /^pc2013\.codfw\./ {
     role(mariadb::parsercache)
@@ -2271,13 +2273,13 @@ node /^pc2014\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-# pc2016 will be moved to new pc6
-node /^pc2016\.codfw\./ {
+# pc5
+node /^pc2015\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-# pc5
-node /^pc2015\.codfw\./ {
+# pc6
+node /^pc2016\.codfw\./ {
     role(mariadb::parsercache)
 }
 
