@@ -8,7 +8,9 @@ class profile::prometheus::web () {
     profile::auto_restarts::service { 'envoyproxy': }
 
     prometheus::instances().each |$instance, $config| {
-        if $::fqdn in $config['hosts'] {
+        # Configure reverse proxy for prometheus instances belonging to this host or site
+        $hosts_for_site = $config['hosts'].filter |$h| { $h =~ "\\.${::site}" }
+        if $::fqdn in $config['hosts'] or !empty($hosts_for_site) {
             prometheus::web { $instance:
                 proxy_pass => prometheus::proxy_pass($config),
             }
