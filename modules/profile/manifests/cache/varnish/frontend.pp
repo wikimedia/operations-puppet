@@ -34,6 +34,11 @@
 #   The default matches everything except /beacon/event, as this endpoint has been
 #   removed as part of https://phabricator.wikimedia.org/T238230.
 #   Default: '^/beacon\/(?!event)[^/?]+'
+# @param varnish_ge_v7
+#   Is Varnish running version 7.0 or greater? This will alter the VCL deployments
+#   depending on whether this is true or false while we roll out Varnish upgrades
+#   from 6.0 (T378737).
+#   Default: false
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix         = lookup('conftool_prefix'),
@@ -68,7 +73,8 @@ class profile::cache::varnish::frontend (
     Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value' => 170}),
     Boolean                 $check_min_fe_mem        = lookup('profile::cache::varnish::frontend::check_min_fe_mem', {'default_value' => false}),
     Optional[Integer]       $check_min_fe_mem_value  = lookup('profile::cache::varnish::frontend::check_min_fe_mem_value', {'default_value' => 150}),
-    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value' => '^/beacon\/(?!event)[^/?]+'})
+    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value' => '^/beacon\/(?!event)[^/?]+'}),
+    Boolean                 $varnish_ge_v7           = lookup('profile::cache::varnish::frontend::varnish_ge_v7', {'default_value' => false}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -80,13 +86,25 @@ class profile::cache::varnish::frontend (
         include profile::lvs::realserver
     }
 
-    $packages = [
-        'varnish',
-        'varnish-modules',
-        'libvmod-netmapper',
-        'libvmod-re2',
-        'libvmod-querysort',  # T138093
-    ]
+    if $varnish_ge_v7 {
+        $packages = [
+            'libvmod-netmapper',
+            'libvmod-querysort',  # T138093
+            'varnish',
+            'varnish-modules',
+            # Debian ships with the package name "varnish-re2"
+            # instead of what we've been using ("libvmod-re2").
+            'varnish-re2',
+        ]
+    } else {
+        $packages = [
+            'libvmod-netmapper',
+            'libvmod-querysort',  # T138093
+            'libvmod-re2',
+            'varnish',
+            'varnish-modules',
+        ]
+    }
 
     # We need these two services disabled as we don't use them.
     systemd::mask { 'varnishncsa.service': }
@@ -154,11 +172,12 @@ class profile::cache::varnish::frontend (
     }
 
     $vcl_config = $fe_vcl_config + {
-        req_handling         => $req_handling,
-        alternate_domains    => $alternate_domains,
-        fe_mem_gb            => $fe_mem_gb,
-        do_esitest           => $do_esitest,
-        beacon_uri_regex     => $fe_beacon_uri_regex,
+        req_handling      => $req_handling,
+        alternate_domains => $alternate_domains,
+        fe_mem_gb         => $fe_mem_gb,
+        do_esitest        => $do_esitest,
+        beacon_uri_regex  => $fe_beacon_uri_regex,
+        varnish_ge_v7     => $varnish_ge_v7,
     }
 
     # VCL files common to all instances

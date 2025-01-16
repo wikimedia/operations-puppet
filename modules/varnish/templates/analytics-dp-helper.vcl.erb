@@ -32,7 +32,11 @@ C{
             HDR_REQ,
             "\007X-Hash:" // length prefixed string, in octal
         };
+<%- if @vcl_config['varnish_ge_v7'] -%>
+        VRT_SetHdr(ctx, &shdr, NULL, TOSTRAND(outputhash));
+<%- else -%>
         VRT_SetHdr(ctx, &shdr, outputhash, vrt_magic_string_end);
+<%- end -%>
     }
 }C
 
