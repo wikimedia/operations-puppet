@@ -9,6 +9,12 @@ Type=simple
 EnvironmentFile=/etc/default/gerrit
 ExecStart=<%= @java_home %>/bin/java <% @java_options.each do |jvm_opt| %><%= jvm_opt %> <% end %> -jar <%= @gerrit_site %>/bin/gerrit.war daemon -d <%= @gerrit_site %><% if @replica %> --replica --enable-httpd<% end %>
 
+# Give it a bit more time to terminate cleanly.
+#
+# Gerrit takes a while to terminate which is probably due to H2 compaction
+# happening serially (see T323754). Gerrit 3.10.4 has 18 caches opened.
+TimeOutStopSec=3m
+
 # JVM exit code is 128 + <signal>
 KillSignal=SIGINT
 SuccessExitStatus=130
