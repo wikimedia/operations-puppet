@@ -8,7 +8,6 @@ ExecStart=/usr/bin/thanos store \
   --grpc-address <%= @grpc_address %> \
   --data-dir <%= @data_dir %> \
   --index-cache.config-file <%= @cache_config_file %> \
-  --store.caching-bucket.config-file <%= @cache_config_file %> \
   --objstore.config-file <%= @objstore_config_file %> \
   <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
   <%= @max_time ? "--max-time=#{@max_time}" : '' %> \
