@@ -86,7 +86,7 @@ class profile::phabricator::logmail (
     # quarterly wmf qls mail (T362804)
     phabricator::logmail {'quarterly_wmf_qls':
         ensure           => $logmail_ensure,
-        rcpt_address     => [ 'abittaker@wikimedia.org', 'aramirez@wikimedia.org', 'aklapper@wikimedia.org' ],
+        rcpt_address     => [ 'abittaker@wikimedia.org', 'aramirez@wikimedia.org', 'cbogen@wikimedia.org', 'aklapper@wikimedia.org'],
         sndr_address     => 'aklapper@wikimedia.org',
         month            => '01,04,07,10',
         monthday         => 1,
