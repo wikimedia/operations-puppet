@@ -67,6 +67,7 @@ class prometheus::blackbox_exporter(
         command => 'prometheus-assemble-config blackbox',
         notify  => Service['prometheus-blackbox-exporter'],
         path    => '/usr/local/bin',
+        require => Package['prometheus-blackbox-exporter'],
     }
 
     systemd::service { 'prometheus-blackbox-exporter':
