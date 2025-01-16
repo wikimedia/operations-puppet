@@ -2240,6 +2240,7 @@ node /^pc1014\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
+# Will be moved to the new pc6
 node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
 }
