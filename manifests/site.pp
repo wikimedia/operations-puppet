@@ -1664,7 +1664,7 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker22([0-2][0-9]|3[0-5])\.codfw\./ {
+node /^wikikube-worker22([0-3][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -1690,9 +1690,6 @@ node /^mw2282\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^mw231[01]\.codfw\./ {
-  role(kubernetes::worker)
-}
-node /^mw233[5-8]\.codfw\./ {
   role(kubernetes::worker)
 }
 node /^parse10(0[1-9]|1[0-9]|2[01234])\.eqiad\./ {
