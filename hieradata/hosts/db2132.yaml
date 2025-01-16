@@ -1,4 +1,0 @@
-# db2132
-mariadb::shard: 'm1'
-profile::monitoring::is_critical: false
-profile::monitoring::notifications_enabled: false

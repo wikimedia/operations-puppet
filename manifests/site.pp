@@ -762,11 +762,6 @@ node /^db1164\.eqiad\./ {
 }
 
 # m1 codfw master
-node /^db2132\.codfw\./ {
-    role(mariadb::misc)
-}
-
-# Future m1 codfw master
 node /^db2232\.codfw\./ {
     role(mariadb::misc)
 }
