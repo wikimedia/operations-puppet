@@ -929,13 +929,6 @@ node /^dbstore100[789]\.eqiad\./ {
 }
 
 # database-provisioning and short-term/postprocessing backups servers
-
-node /^dbprov1001\.eqiad\./ {
-    role(insetup::data_persistence)
-}
-node /^dbprov1002\.eqiad\./ {
-    role(insetup::data_persistence)
-}
 node /^dbprov1003\.eqiad\./ {
     role(dbbackups::metadata)
 }
@@ -947,12 +940,6 @@ node /^dbprov1005\.eqiad\./ {
 }
 node /^dbprov1006\.eqiad\./ {
     role(dbbackups::metadata)
-}
-node /^dbprov2001\.codfw\./ {
-    role(insetup::data_persistence)
-}
-node /^dbprov2002\.codfw\./ {
-    role(insetup::data_persistence)
 }
 node /^dbprov2003\.codfw\./ {
     role(dbbackups::metadata)
