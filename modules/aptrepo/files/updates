@@ -474,3 +474,21 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^vopsbot$' || [ $? -eq 1 ]
+
+Name: conftool
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: bookworm-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
+
+Name: conftool
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: bullseye-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
