@@ -46,11 +46,13 @@ class profile::maps::osm_replica(
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            postgresql::user::hba { "tilerator_${_subnet}_kubepod":
-                user      => 'tilerator',
-                database  => 'all',
-                cidr      => $subnet,
-                pgversion => $pgversion,
+            unless debian::codename::eq('bookworm') {
+                postgresql::user::hba { "tilerator_${_subnet}_kubepod":
+                    user      => 'tilerator',
+                    database  => 'all',
+                    cidr      => $subnet,
+                    pgversion => $pgversion,
+                }
             }
             postgresql::user::hba { "kartotherian_${_subnet}_kubepod":
                 user      => 'kartotherian',

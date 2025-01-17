@@ -103,23 +103,28 @@ class profile::maps::osm_master (
         method   => 'peer',
     }
 
-    profile::maps::user_cidrs { 'tilerator@localhost':
-        user       => 'tilerator',
-        database   => 'all',
-        ip_address => '127.0.0.1/32',
-        password   => $tilerator_pass,
+    unless debian::codename::eq('bookworm') {
+        profile::maps::user_cidrs { 'tilerator@localhost':
+            user       => 'tilerator',
+            database   => 'all',
+            ip_address => '127.0.0.1/32',
+            password   => $tilerator_pass,
+        }
     }
+
     # * tegola-vector-tiles will connect as user tilerator from
     #   kubernetes pods.
     # * kartotherian will connect from kubernetes pods.
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
-                user       => 'tilerator',
-                database   => 'all',
-                ip_address => $subnet,
-                password   => $tilerator_pass,
+            unless debian::codename::eq('bookworm') {
+                profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
+                    user       => 'tilerator',
+                    database   => 'all',
+                    ip_address => $subnet,
+                    password   => $tilerator_pass,
+                }
             }
             profile::maps::user_cidrs { "kartotherian@${_subnet}_kubepod":
                 user       => 'kartotherian',
@@ -130,27 +135,32 @@ class profile::maps::osm_master (
         }
     }
 
-    $postgres_replicas.each |$replica, $ip_address| {
-        profile::maps::user_cidrs { "tilerator@${replica}":
-            user       => 'tilerator',
-            password   => $tilerator_pass,
-            database   => 'all',
-            ip_address => $ip_address['ip_address'],
+    unless debian::codename::eq('bookworm') {
+        $postgres_replicas.each |$replica, $ip_address| {
+            profile::maps::user_cidrs { "tilerator@${replica}":
+                user       => 'tilerator',
+                password   => $tilerator_pass,
+                database   => 'all',
+                ip_address => $ip_address['ip_address'],
+            }
         }
     }
 
-    # Grants
+    if debian::codename::eq('bookworm') {
+        $grants_file = 'profile/maps/grants-db-bookworm.sql.erb'
+        $grants_tiles_file = 'profile/maps/grants-tiles-bookworm.sql.erb'
+    } else {
+        $grants_file = 'profile/maps/grants-db.sql.erb'
+        $grants_tiles_file = 'profile/maps/grants-tiles.sql.erb'
+    }
+
     file { "/usr/local/bin/maps-grants-${db_name}.sql":
-        owner   => 'root',
-        group   => 'root',
         mode    => '0400',
-        content => template('profile/maps/grants-db.sql.erb'),
+        content => template($grants_file),
     }
     file { '/usr/local/bin/maps-grants-tiles.sql':
-        owner   => 'root',
-        group   => 'root',
         mode    => '0400',
-        content => template('profile/maps/grants-tiles.sql.erb'),
+        content => template($grants_tiles_file),
     }
 
     # DB setup
@@ -160,8 +170,6 @@ class profile::maps::osm_master (
     # performance issues
     file { "/etc/postgresql/${pgversion}/main/logging.conf":
         ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/profile/maps/logging.conf',
     }
@@ -169,8 +177,6 @@ class profile::maps::osm_master (
     file { '/root/.tegola_credentials':
         ensure  => 'present',
         mode    => '0600',
-        owner   => 'root',
-        group   => 'root',
         content => template('profile/maps/swift_config.erb'),
     }
 
