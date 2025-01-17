@@ -1,4 +1,6 @@
-<VirtualHost *:80>
+# Serve vhost on localhost too when reverse-proxied by envoy
+
+<VirtualHost *:80 [::1]:80 127.0.0.1:80>
     ServerName prometheus
     ServerAlias prometheus.*
     ServerAlias prometheus-*.*
