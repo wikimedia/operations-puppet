@@ -1664,7 +1664,7 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker22([0-3][0-9]|4[0-1])\.codfw\./ {
+node /^wikikube-worker22([0-3][0-9]|4[0-6])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -2112,18 +2112,6 @@ node /^mwdebug200[12]\.codfw\./ {
 
 # Row A
 node /^mw241[01]\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
-
-# Row B
-
-# rack B3
-node /^mw2259\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
-
-# rack B3
-node /^mw226[3-6]\.codfw\./ {
     role(mediawiki::jobrunner)
 }
 
