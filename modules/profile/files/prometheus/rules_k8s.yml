@@ -145,6 +145,25 @@ groups:
       histogram_quantile(0.99, sum by (le, app, kubernetes_namespace, envoy_cluster_name) (
         rate(envoy_cluster_upstream_cx_length_ms_bucket{envoy_cluster_name!="admin_interface"}[2m])))
 
+- name: mediawiki
+  rules:
+    ## aggregate edit rate https://phabricator.wikimedia.org/T383963
+
+    # by entry point
+    - record: entry_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate2m
+      expr: sum by (entry, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[2m]))
+
+    - record: entry_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m
+      expr: sum by (entry, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[5m]))
+
+    # by wiki
+    - record: wiki_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate2m
+      expr: sum by (wiki, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[2m]))
+
+    - record: wiki_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m
+      expr: sum by (wiki, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[5m]))
+
+
 - name: self
   rules:
     - record: job:up:avail
