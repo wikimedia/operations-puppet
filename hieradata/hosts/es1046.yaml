@@ -2,5 +2,4 @@
 # es1046
 mariadb::shard: 'es5'
 profile::mariadb::mysql_role: 'standalone'
-profile::monitoring::notifications_enabled: false
 
