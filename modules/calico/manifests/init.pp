@@ -15,6 +15,14 @@ class calico (
         mode   => '0755',
     }
 
+    # Certificates used for Felix-to-Typha mTLS will be stored here
+    file { '/etc/calico/pki':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     $component_title = "calico${regsubst($calico_version, '\\.', '')}"
     apt::package_from_component { $component_title:
         component => "component/${component_title}",

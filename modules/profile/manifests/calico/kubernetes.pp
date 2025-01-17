@@ -14,6 +14,49 @@ class profile::calico::kubernetes (
     $calicoctl_username = 'calicoctl'
     $istio_cni_username = 'istio-cni'
 
+    # FIXME: Only on staging-codfw for testing purposes
+    if $kubernetes_cluster_name == 'staging-codfw' {
+        # Create certificate used by calico-typha
+        $calico_pki_dir = '/etc/calico/pki'
+        $calico_typha_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'calico-typha', {
+            'profile'        => 'server',
+            'renew_seconds'  => $k8s_config['pki_renew_seconds'],
+            'outdir'         => $calico_pki_dir,
+        })
+        # Client cert used by calico-node/felix to authenticate to typha
+        $calico_node_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], 'calico-node', {
+            'renew_seconds'  => $k8s_config['pki_renew_seconds'],
+            'outdir'         => $calico_pki_dir,
+        })
+        # In order to be mounted and used by relevant pods, we need the files to have the same name
+        # regardless of the pki intermediate (e.g. kubernetes cluster).
+        file { "${calico_pki_dir}/calico-typha_chain.pem":
+            ensure    => link,
+            target    => $calico_typha_cert['chain'],
+            subscribe => File[$calico_typha_cert['chain']],
+        }
+        file { "${calico_pki_dir}/calico-typha.pem":
+            ensure    => link,
+            target    => $calico_typha_cert['cert'],
+            subscribe => File[$calico_typha_cert['cert']],
+        }
+        file { "${calico_pki_dir}/calico-typha_key.pem":
+            ensure    => link,
+            target    => $calico_typha_cert['key'],
+            subscribe => File[$calico_typha_cert['key']],
+        }
+        file { "${calico_pki_dir}/calico-node.pem":
+            ensure    => link,
+            target    => $calico_node_cert['cert'],
+            subscribe => File[$calico_node_cert['cert']],
+        }
+        file { "${calico_pki_dir}/calico-node_key.pem":
+            ensure    => link,
+            target    => $calico_node_cert['key'],
+            subscribe => File[$calico_node_cert['key']],
+        }
+    }
+
     $calicoctl_client_cert = profile::pki::get_cert($k8s_config['pki_intermediate_base'], $calicoctl_username, {
         'renew_seconds'  => $k8s_config['pki_renew_seconds'],
         'outdir'         => '/etc/kubernetes/pki',
@@ -60,6 +103,7 @@ class profile::calico::kubernetes (
         require     => File['/etc/cni/net.d'],
     }
 
+    # FIXME: Istio installation should go into it's own module
     # Install istio-cni package and provide a kubeconfig for it in case
     # a cni plugin of type "istio-cni" is configured.
     $ensure_istio_cni = pick($cni_config['plugins'], []).filter | $plugin | {
