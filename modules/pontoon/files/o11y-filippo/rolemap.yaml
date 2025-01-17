@@ -17,6 +17,9 @@ prometheus:
 - filippo-prometheus-01.o11y.eqiad1.wikimedia.cloud
 - filippo-prometheus-02.o11y.eqiad1.wikimedia.cloud
 
+titan:
+- filippo-titan-01.o11y.eqiad1.wikimedia.cloud
+
 alerting_host:
 - filippo-alert-01.o11y.eqiad1.wikimedia.cloud
 
