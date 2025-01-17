@@ -30,29 +30,30 @@ class profile::calico::kubernetes (
         })
         # In order to be mounted and used by relevant pods, we need the files to have the same name
         # regardless of the pki intermediate (e.g. kubernetes cluster).
+        # Symlinks have to be relative in order to be resolvable in hostPath volumes.
         file { "${calico_pki_dir}/calico-typha_chain.pem":
             ensure    => link,
-            target    => $calico_typha_cert['chain'],
+            target    => $calico_typha_cert['chain'].basename,
             subscribe => File[$calico_typha_cert['chain']],
         }
         file { "${calico_pki_dir}/calico-typha.pem":
             ensure    => link,
-            target    => $calico_typha_cert['cert'],
+            target    => $calico_typha_cert['cert'].basename,
             subscribe => File[$calico_typha_cert['cert']],
         }
         file { "${calico_pki_dir}/calico-typha_key.pem":
             ensure    => link,
-            target    => $calico_typha_cert['key'],
+            target    => $calico_typha_cert['key'].basename,
             subscribe => File[$calico_typha_cert['key']],
         }
         file { "${calico_pki_dir}/calico-node.pem":
             ensure    => link,
-            target    => $calico_node_cert['cert'],
+            target    => $calico_node_cert['cert'].basename,
             subscribe => File[$calico_node_cert['cert']],
         }
         file { "${calico_pki_dir}/calico-node_key.pem":
             ensure    => link,
-            target    => $calico_node_cert['key'],
+            target    => $calico_node_cert['key'].basename,
             subscribe => File[$calico_node_cert['key']],
         }
     }
