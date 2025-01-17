@@ -67,6 +67,7 @@ pipeline:
       root.is_debug = root.x_analytics_data.is_debug.or("0")
       root.client_port = root.x_analytics_data.client_port.or("-")
       root.https = root.x_analytics_data.https.or("0")
+      root.nocookies = root.x_analytics_data.nocookies.or("0")
 
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
@@ -85,6 +86,8 @@ pipeline:
       root.tls_key_exchange = root.tls_data.get("keyx").catch("-")
       root.tls_auth = root.tls_data.get("auth").catch("-")
       root.tls_cipher = root.tls_data.get("ciph").catch("-")
+      root.tls_sess = root.tls_data.get("sess").catch("-")
+
       root.tls_data = deleted()
       root.tls = deleted()
 
@@ -122,6 +125,7 @@ tests:
              tls_auth: ECDSA
              tls_cipher: AES-256-GCM-SHA384
              tls_key_exchange: UNKNOWN
+             tls_sess: new
 
   - name: analytics parsing
     target_processors: 'analytics'
@@ -137,3 +141,4 @@ tests:
              is_from_public_cloud: "1"
              is_pageview: "-"
              requestctl: "0"
+             nocookies: "1"
