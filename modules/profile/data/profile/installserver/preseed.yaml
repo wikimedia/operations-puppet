@@ -98,7 +98,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'archiva*':
     - partman/flat.cfg
     - virtual.cfg
-  'backup999|backup1012|backup2012':
+  'backup9999':
     - partman/custom/backup-format.cfg
   'backup[12]0[01][0-9]':
     - partman/manual-setup.cfg
@@ -189,7 +189,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/db.cfg
   'db888':
     - partman/manual-setup.cfg
-  'dbprov[12]00[123456]':
+  'dbprov[12]00[3456]':
     - reuse-parts.cfg
     - partman/custom/reuse-dbprov.cfg
   'db[12]*|dbstore100[7-9]|dbstore2*|es[12]*|pc[12]*':
