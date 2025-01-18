@@ -2477,22 +2477,6 @@ class profile::prometheus::ops (
         port_parameter => 'port'
     }
 
-    $otelcol_jobs = [
-      {
-        'job_name'        => 'otelcol',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/otelcol_*.yaml"] },
-        ],
-      },
-    ]
-
-    prometheus::class_config{ "otelcol_${::site}":
-        dest       => "${targets_path}/otelcol_${::site}.yaml",
-        class_name => 'opentelemetry::collector',
-        port       => 8888,
-    }
-
     $liberica_jobs = [
       {
         'job_name'        => 'liberica',
@@ -2596,8 +2580,7 @@ class profile::prometheus::ops (
             $minio_jobs, $cephadm_jobs, $dragonfly_jobs, $gitlab_jobs, $cfssl_jobs, $cache_haproxy_tls_jobs,
             $mini_textfile_jobs, $gitlab_runner_jobs, $netbox_global_jobs, $ipmi_jobs, $ganeti_jobs, $benthos_jobs,
             $pint_jobs, $swagger_exporter_jobs, $fastnetmon_jobs, $liberica_jobs, $gnmi_jobs, $lvs_realserver_jobs,
-            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs, $ircstream_jobs,
-            $otelcol_jobs,
+            $postfix_jobs, $fifo_log_demux_jobs, $sql_exporter_jobs, $haproxykafka_jobs, $gnmic_jobs, $ircstream_jobs
         ].flatten,
         global_config_extra            => $config_extra,
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
