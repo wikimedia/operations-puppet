@@ -2226,7 +2226,7 @@ node /^pc1016\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# This host will becoome pc7 master
+# pc7
 node /^pc1017\.eqiad\./ {
     role(mariadb::parsercache)
 }
@@ -2262,7 +2262,7 @@ node /^pc2016\.codfw\./ {
     role(mariadb::parsercache)
 }
 
-# This host will go to pc7
+# pc7
 node /^pc2017\.codfw\./ {
     role(mariadb::parsercache)
 }
