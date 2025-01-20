@@ -1,7 +1,5 @@
-# Scap proxy list
-#
-scap::dsh::scap_proxies:
-  - "mw1420.eqiad.wmnet" # A3 eqiad
+# Scap proxy list - no longer used as we deploy to so few hosts
+scap::dsh::scap_proxies: []
 
 scap::dsh::scap_masters:
   - "deploy1003.eqiad.wmnet"
