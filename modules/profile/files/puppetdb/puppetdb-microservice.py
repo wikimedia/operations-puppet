@@ -58,12 +58,15 @@ def _puppetdb_request(*paths, json=None, redacted=False):
         # Sometimes json['query'] is a string other times its an object
         # possibly just my testing with curl
         query = loads(json['query']) if isinstance(json['query'], str) else json['query']
-        json['query'] = [
-            "extract",
-            ["certname"],
-            query,
-            ["group_by", "certname"],
-        ]
+        # Cumin v5.0.0+ already does the extract+group by, apply it only if not already present
+        if not (len(query) == 4 and query[0] == "extract" and query[1] == ["certname"]
+                and query[3] == ["group_by", "certname"]):
+            json['query'] = [
+                "extract",
+                ["certname"],
+                query,
+                ["group_by", "certname"],
+            ]
     url = '/'.join([PUPPETDB_BASE_URL, *paths])
     response = requests.post(url, json=json)
 
