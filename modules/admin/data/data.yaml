@@ -47,7 +47,7 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez]
+              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7306,9 +7306,8 @@ ldap_only_users:
     realname: Lukasz Sobanski
     email: lsobanski@wikimedia.org
   jaycano:
-    ensure: present
+    ensure: absent
     realname: Juan Cano
-    email: jcanonunez@wikimedia.org
   kwakuofori:
     ensure: present
     realname: Kwaku Addo Ofori
