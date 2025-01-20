@@ -16,7 +16,6 @@ class profile::mediawiki::maintenance::parsercachepurging {
         command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc3 --age=2592000 --msleep 200',
         interval => '01:00',
     }
-
     profile::mediawiki::periodic_job { 'purge_parsercache_pc4':
         command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc4 --age=2592000 --msleep 200',
         interval => '01:00',
@@ -29,4 +28,9 @@ class profile::mediawiki::maintenance::parsercachepurging {
         command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc6 --age=2592000 --msleep 200',
         interval => '01:00',
     }
+    profile::mediawiki::periodic_job { 'purge_parsercache_pc7':
+        command  => '/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag pc7 --age=2592000 --msleep 200',
+        interval => '01:00',
+    }
+
 }
