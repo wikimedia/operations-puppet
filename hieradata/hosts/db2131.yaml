@@ -1,4 +1,0 @@
-# db2131
-mariadb::shard: 'x1'
-mariadb::binlog_format: 'ROW'
-
