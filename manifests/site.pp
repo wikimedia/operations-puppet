@@ -738,7 +738,7 @@ node /^db1(179|220|224|237)\.eqiad\./ {
 }
 
 # codfw
-node /^db2(131|191|196|215|231)\.codfw\./ {
+node /^db2(191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
