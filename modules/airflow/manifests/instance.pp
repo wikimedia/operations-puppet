@@ -128,6 +128,10 @@
 #   These must also be declared in scap::sources in deployment_server.yaml hiera.
 #   Default: undef
 #
+# [*services_ensure*]
+#   Whether the systemd services should be provisioned
+#   Default: present
+#
 # [*ensure*]
 #   Default: present
 #
@@ -151,7 +155,9 @@ define airflow::instance(
     Integer $scheduler_port             = 8793,
     Optional[Hash] $scap_targets        = undef,
     Wmflib::Ensure $ensure              = 'present',
+    Wmflib::Ensure $services_ensure     = 'present',
     Boolean $renew_skein_certificate    = true
+
 ) {
     # Require that something include the airflow base class
     # before using airflow::instance.
@@ -446,7 +452,7 @@ define airflow::instance(
 
     # Control service for all services for this airflow instance.
     systemd::service { "airflow@${title}":
-        ensure               => $ensure,
+        ensure               => $services_ensure,
         content              => systemd_template('airflow@'),
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
@@ -456,7 +462,7 @@ define airflow::instance(
 
     # Airflow webserver for this instance.
     systemd::service { "airflow-webserver@${title}":
-        ensure               => $ensure,
+        ensure               => $services_ensure,
         content              => systemd_template('airflow-webserver@'),
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
@@ -473,7 +479,7 @@ define airflow::instance(
 
     # Airflow scheduler for this instance.
     systemd::service { "airflow-scheduler@${title}":
-        ensure               => $ensure,
+        ensure               => $services_ensure,
         content              => systemd_template('airflow-scheduler@'),
         restart              => true,
         monitoring_enabled   => $monitoring_enabled,
@@ -490,7 +496,7 @@ define airflow::instance(
 
     # Only run airflow kerberos ticket renewer service if kerberos security is configured and
     # $ensure == 'present'
-    if $_airflow_config['core']['security'] == 'kerberos' and $ensure == 'present' {
+    if $_airflow_config['core']['security'] == 'kerberos' and $services_ensure == 'present' {
         $kerberos_ensure = 'present'
     } else {
         $kerberos_ensure = 'absent'

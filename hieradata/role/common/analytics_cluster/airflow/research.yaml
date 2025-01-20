@@ -33,26 +33,27 @@ profile::airflow::database_host_default: an-db1001.eqiad.wmnet
 # profile::airflow::airflow_version: 2.10.3-py3.10-20241112'
 
 # Set up airflow instances.
-# profile::airflow::instances:
-  # # airflow@research instance.
-  # research:
-  #   firewall_srange: ANALYTICS_NETWORKS
-  #   # Since we set security: kerberos a keytab must be deployed for the service_user.
-  #   service_user: analytics-research
-  #   service_group: analytics-research
-  #   statsd_monitoring_enabled: true
-  #   monitoring_enabled: true
-  #   connections:
-  #     analytics-hive:
-  #       conn_type: hive_metastore
-  #       host: analytics-hive.eqiad.wmnet
-  #       port: 9083
-  #       extra_dejson: {'authMechanism': 'GSSAPI'}
-  #   airflow_config:
-  #     datahub:
-  #       enabled: False
-  #     metrics:
-  #       statsd_on: True
+profile::airflow::instances:
+  # airflow@research instance.
+  research:
+    services_ensure: absent # setup everything EXCEPT the systemd services, while airflow is migrated to k8s
+    firewall_srange: ANALYTICS_NETWORKS
+    # Since we set security: kerberos a keytab must be deployed for the service_user.
+    service_user: analytics-research
+    service_group: analytics-research
+    statsd_monitoring_enabled: true
+    monitoring_enabled: true
+    connections:
+      analytics-hive:
+        conn_type: hive_metastore
+        host: analytics-hive.eqiad.wmnet
+        port: 9083
+        extra_dejson: {'authMechanism': 'GSSAPI'}
+    airflow_config:
+      datahub:
+        enabled: False
+      metrics:
+        statsd_on: True
 
 # We need to prevent the removal of the python2 packages because of hive and hive-hcatalog
 profile::base::remove_python2_on_bullseye: false
