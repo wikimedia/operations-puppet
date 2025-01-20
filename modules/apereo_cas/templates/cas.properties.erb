@@ -34,6 +34,9 @@ cas.server.tomcat.http-proxy.scheme=https
 cas.server.tomcat.http-proxy.protocol=HTTP/1.1
 <%- end -%>
 
+<%- if @theme != '' -%>
+cas.theme.default-theme-name=<%= @theme %>
+<%- end -%>
 
 management.endpoints.web.exposure.include=<%= @actuators.join(',') %>
 <% @actuators.each do |actuator| -%>

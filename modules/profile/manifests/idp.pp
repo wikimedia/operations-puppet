@@ -64,6 +64,7 @@ class profile::idp(
     String                            $tomcat                    = lookup('profile::idp::tomcat_version', {'default_value' => 'tomcat10' }),
     String                            $oidc_issuers_pattern      = lookup('profile::idp::oidc_issuers_pattern'),
     Boolean                           $expose_tomcat             = lookup('profile::idp::expose_tomcat'),
+    String                            $theme                     = lookup('profile::idp::theme'),
 ){
 
     ensure_packages(['python3-pymysql', 'python3-redis'])
@@ -182,7 +183,8 @@ class profile::idp(
         enable_webauthn              => $enable_webauthn,
         webauthn_relaying_party      => $webauthn_relaying_party,
         tomcat_version               => $tomcat,
-        oidc_issuers_pattern         => $oidc_issuers_pattern
+        oidc_issuers_pattern         => $oidc_issuers_pattern,
+        theme                        => $theme
     }
 
     systemd::unit{ $tomcat:
