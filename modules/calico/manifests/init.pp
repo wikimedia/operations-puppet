@@ -15,9 +15,9 @@ class calico (
         mode   => '0755',
     }
 
-    # Certificates used for Felix-to-Typha mTLS will be stored here
+    # FIXME: Was added for testing in T365687, can be removed
     file { '/etc/calico/pki':
-        ensure => directory,
+        ensure => absent,
         owner  => 'root',
         group  => 'root',
         mode   => '0755',
