@@ -2,4 +2,3 @@
 mariadb::parsercache::shard: 'pc5'
 profile::mariadb::config::sync_binlog: '0'
 profile::mariadb::config::innodb_flush_log_at_trx_commit: '0'
-profile::monitoring::notifications_enabled: false
