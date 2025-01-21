@@ -3,7 +3,7 @@
 class profile::wmcs::kubeadm::core (
     String[1]              $component           = lookup('profile::wmcs::kubeadm::component'),
     Optional[Stdlib::Fqdn] $label_custom_domain = lookup('profile::wmcs::kubeadm::label_custom_domain', {default_value => undef}),
-    String[1]              $pause_image         = lookup('profile::wmcs::kubeadm::pause_image', {default_value => 'docker-registry.tools.wmflabs.org/pause:3.1'}),
+    String[1]              $pause_image         = lookup('profile::wmcs::kubeadm::pause_image', {default_value => 'docker-registry.tools.wmflabs.org/pause:3.9'}),
     Boolean                $mount_nfs           = lookup('mount_nfs', {default_value => false}),
 ) {
     class { '::kubeadm::repo':
@@ -34,5 +34,10 @@ class profile::wmcs::kubeadm::core (
     class { '::kubeadm::core':
         extra_labels => $extra_labels,
         pause_image  => $pause_image,
+    }
+
+    # ensure that file /var/lib/kubelet/kubeadm-flags.env doesn't exist. See T370245
+    file { '/var/lib/kubelet/kubeadm-flags.env':
+        ensure => absent,
     }
 }
