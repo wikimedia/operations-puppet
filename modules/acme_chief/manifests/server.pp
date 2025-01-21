@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class acme_chief::server (
-    Hash[String, Hash[String, String]] $accounts = {},
+    Hash[String, Acme_chief::Account] $accounts = {},
     Hash[String, Acme_chief::Certificate] $certificates = {},
     Hash[String, Hash[String, Any]] $challenges = {},
     Optional[Stdlib::HTTPUrl] $http_proxy = undef,
@@ -15,8 +15,8 @@ class acme_chief::server (
     $passive_hosts = [$passive_host].flatten()
 
     ensure_packages([
-        'python3-clustershell', # For the gdnsd-sync script
-        'rsync', # For certificate syncing
+            'python3-clustershell', # For the gdnsd-sync script
+            'rsync', # For certificate syncing
     ])
 
     systemd::sysuser { 'acme-chief':
@@ -64,13 +64,13 @@ class acme_chief::server (
     }
 
     $config = {
-        accounts     => $accounts.map |String $account, Hash[String, String] $account_details| {
+        accounts     => $accounts.map |String $account, Acme_chief::Account $account_details| {
             $ret = {
                 id        => $account,
                 directory => $account_details['directory'],
             }
-            if has_key($account_details, 'default') {
-                merge($ret, { default => $account_details['default'] })
+            if 'default' in $account_details {
+                $ret + { 'default' => $account_details['default'] }
             } else {
                 $ret
             }
