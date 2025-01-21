@@ -6,9 +6,7 @@ class profile::toolforge::base(
     # T292289
     class { 'sslcert::ca_deselect_dstx3': }
 
-    package { 'nano':
-        ensure => latest,
-    }
+    ensure_packages(['nano', 'cron'])
 
     alternatives::select { 'editor':
         path => '/bin/nano',
