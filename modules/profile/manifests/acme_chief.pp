@@ -35,7 +35,7 @@
 # and mark your nginx::site with require => Acme_chief::Cert['testing']
 
 class profile::acme_chief (
-    Hash[String, Hash[String, String]] $accounts = lookup('profile::acme_chief::accounts'),
+    Hash[String, Acme_chief::Account] $accounts = lookup('profile::acme_chief::accounts'),
     Hash[String, Acme_chief::Certificate] $certificates = lookup('profile::acme_chief::certificates'),
     Hash[String, Acme_chief::Certificate] $shared_acme_certificates = lookup('certificates::acme_chief', {default_value => {}}),
     Hash[String, Hash[String, Any]] $challenges = lookup('profile::acme_chief::challenges'),
