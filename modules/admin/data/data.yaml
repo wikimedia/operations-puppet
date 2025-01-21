@@ -6617,6 +6617,10 @@ ldap_only_users:
   delphinepro:
     ensure: absent
     realname: Delphine Menard
+  dsantamaria:
+    ensure: present
+    realname: David Santamaria
+    email: dsantamaria@wikimedia.org
   dwalden:
     ensure: present
     realname: Dominic Walden
