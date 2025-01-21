@@ -183,7 +183,6 @@ class profile::kubernetes::deployment_server::global_config (
 
     $gitlab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
     $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
-    $ats_wikimedia_ips = dnsquery::lookup('dyna.wikimedia.org', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -490,19 +489,6 @@ class profile::kubernetes::deployment_server::global_config (
           'instances' => {
             'analytics'      => wmflib::role::ips('analytics_cluster::coordinator'),
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::coordinator'),
-          }
-        },
-        'ats' => {
-          '_meta' => {
-            'ports' => [
-              {
-                'name' => 'https',
-                'port' => 443
-              }
-            ],
-          },
-          'instances' => {
-            'wikimedia' => $ats_wikimedia_ips,
           }
         }
       },
