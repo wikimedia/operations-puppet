@@ -44,20 +44,6 @@ class profile::chartmuseum(
         debug                   => $debug,
     }
 
-    # Monitoring
-    $monitoring_notes_url = 'https://wikitech.wikimedia.org/wiki/ChartMuseum'
-    monitoring::service { 'check_chartmuseum_http':
-        description   => 'ChartMuseum HTTP',
-        check_command => "check_https_url_for_string!${hostname}!/health!true",
-        notes_url     => $monitoring_notes_url,
-    }
-
-    monitoring::service { 'check_chartmuseum_https_expiry':
-        description   => 'ChartMuseum HTTP certificate expiry',
-        check_command => "check_https_expiry!${hostname}!443",
-        notes_url     => $monitoring_notes_url,
-    }
-
     # Setup a to package and sync (new) charts automatically
     #
     package { 'python3-docker-report':
