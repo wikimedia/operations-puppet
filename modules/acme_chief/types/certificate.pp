@@ -8,4 +8,5 @@ type Acme_chief::Certificate = Struct[{
     'staging_time'       => Optional[Integer[1]],
     'prevalidate'        => Optional[Boolean],
     'skip_invalid_snis'  => Optional[Boolean],
+    'account'            => Optional[String],
 }]
