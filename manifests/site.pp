@@ -773,13 +773,7 @@ node /^db1228\.eqiad\./ {
     role(mariadb::misc)
 }
 
-
-# m2 codfw master
-node /^db2133\.codfw\./ {
-    role(mariadb::misc)
-}
-
-# Future m2 master
+# m2 master
 node /^db2233\.codfw\./ {
     role(mariadb::misc)
 }
