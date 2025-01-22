@@ -294,6 +294,9 @@ profile::trafficserver::backend::mapping_rules:
       target: http://slos.wikimedia.org
       replacement: https://thanos-web.discovery.wmnet
     - type: map
+      target: http://spiderpig.wikimedia.org
+      replacement: https://deployment.eqiad.wmnet
+    - type: map
       target: http://static-bugzilla.wikimedia.org
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
