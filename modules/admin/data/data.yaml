@@ -456,10 +456,13 @@ groups:
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
     # NOTE:
-    # Explicit approval is not required for WMF Staff.
-    # Any WMF staff that has fulfilled all other requirements (NDA, etc.)
-    # are automatically approved for analytics-privatedata-users membership.
+    # Explicit approval is not required for WMF or WMDE Staff.
+    # Any Wikimedia Foundation or Wikimedia Deutchland staff that has fulfilled
+    # all other requirements (NDA, manager approval, etc.) are automatically
+    # approved for analytics-privatedata-users membership without requiring
+    # explicit Data Engineering team approval.
     # https://phabricator.wikimedia.org/T370424
+    # https://phabricator.wikimedia.org/T381824
     approval:
       - Olja Dimitrjevic
       - Dan Andreescu
