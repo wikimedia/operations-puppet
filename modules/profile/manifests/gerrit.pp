@@ -80,18 +80,31 @@ class profile::gerrit(
         default => 'present',
     }
 
+    # nftables has a problem with dropping of empty sets, so make sure we just create the drop rule if needed
+    # Otherwise the sets have to be created with the dynamic flag
+    $ipv4_abusers = $gerrit_abusers.filter |$ip| { $ip =~ Stdlib::IP::Address::V4 }
+    $ipv6_abusers = $gerrit_abusers.filter |$ip| { $ip =~ Stdlib::IP::Address::V6 }
+    $ensure_abusers_v4 = empty($ipv4_abusers) ? {
+        true    => 'absent',
+        default => 'present',
+    }
+    $ensure_abusers_v6 = empty($ipv6_abusers) ? {
+        true    => 'absent',
+        default => 'present',
+    }
+
     # Create a nftables set GERRIT_ABUSERS and drop all traffic
     nftables::set { 'GERRIT_ABUSERS':
         ensure => $ensure_abusers,
         hosts  => $gerrit_abusers,
     }
     nftables::file::input { 'drop-abuser-nets-v4':
-        ensure  => $ensure_abusers,
+        ensure  => $ensure_abusers_v4,
         order   => 9,
         content => 'ip saddr @GERRIT_ABUSERS_ipv4 drop',
     }
     nftables::file::input { 'drop-abuser-nets-v6':
-        ensure  => $ensure_abusers,
+        ensure  => $ensure_abusers_v6,
         order   => 9,
         content => 'ip6 saddr @GERRIT_ABUSERS_ipv6 drop',
     }
