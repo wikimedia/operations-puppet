@@ -294,7 +294,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
   # START Kubernetes workers that used to be mw app/api servers
-  'mw147[6-9]|mw148[0-8]':
+  'mw148[2-8]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
@@ -537,7 +537,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'maps-test200[1-6]':
     - partman/standard.cfg
-    - partman/raid10-4dev.cfg 
+    - partman/raid10-4dev.cfg
   'maps*':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
