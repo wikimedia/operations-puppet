@@ -484,6 +484,7 @@ profile::services_proxy::envoy::enabled_listeners:
   - chart-renderer
   - wdqs-internal-main
   - wdqs-internal-scholarly
+  - data-gateway
 
 # Tracing percentage
 profile::services_proxy::envoy::local_otel_reporting_pct: 0.0
