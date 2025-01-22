@@ -1,6 +1,8 @@
 # the following passwords are defined in private repo:
 #profile::maps::osm_master::kartotherian_pass: some_password
 #profile::maps::osm_master::replication_pass: some_password
+#profile::maps::osm_master::swift_key_id: "tegola:prod"
+#profile::maps::osm_master::swift_password: some_password
 
 profile::admin::groups:
   - maps-roots
