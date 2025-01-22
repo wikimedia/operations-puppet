@@ -236,7 +236,8 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas, arthurtaylor, rkhan, migr, joelyrookewmde]
+              dbrant, tsev, ngkountas, arthurtaylor, rkhan, migr, joelyrookewmde,
+              suzannewood]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6524,7 +6525,8 @@ users:
     uid: 47922
     realname: Suzanne Wood
     email: suzanne.wood@wikimedia.de
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCkX6IhK8zoFeF6vfRhyVVsVcH96roTN2OPiudgUdKt0zLSJvbU//0z5XU1jwodPSbd3T8e0gOp0iM5E63Bb9Ym1Eupn35QYvwKBP8/YGMqCNGXwuAwezEyJuV87SkaBfArUqfK9kRfmXvvKcLUK1sLBOW10zNdlMnimzui2pqw4nut5QJvljcy398dkGbgVoDOiSqhk8aACsPDzKhHFaac/9XvqqBwNBeWM5NrC644cmJkAvPUrfFHRH1mJD4oGXwc1NvD7hNrXmF5uSkF1rM5yrTAcfxsdxF7tF5PooUxU7qGSu6x6wJmLDcl282yseUBNM4c7MQk+wakQGWDuUwlHJe6jYgRkzJs1HfRidTCH4CN463YSYBeLtCHs8hwjB8TEcV9Fu2VvIEcs+DXfUQ2FIfvyx9Cj/4lYW0LG/l/XqnAIBLo/l7B6eJW1kWlcBrP308v2ynEQP7lSi8ZeMLooI8w1MUElDTMR63rSx4u7DPfFAv99SXb3QiWqji2vXuqfAdILnS86KmXh7mhNRUEYP4u9rl3sPxxJY2m+hQarblOgkAe5XL032vttFYXPoh72vKzDTPoK0ZDaFk6sJQ5mnbcGmmG/zJGqt0GiCdw11m5vb9P7qESLAuMlNsaLLc5jJKRCNdU+hBHK3rYtD/e87l7whVVr0WgwLb+Ef0k4w== cardno:20_557_051
   ammarpad:
     ensure: present
     gid: 500
