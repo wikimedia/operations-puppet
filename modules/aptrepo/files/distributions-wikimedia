@@ -151,6 +151,7 @@ Components: main
  thirdparty/bigtop15
  thirdparty/bigtop33
  thirdparty/ceph-octopus
+ thirdparty/ceph-pacific
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
  thirdparty/ci
@@ -190,6 +191,7 @@ Update:
  node16-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
+ thirdparty/ceph-pacific
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
  thirdparty/conda

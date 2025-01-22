@@ -223,6 +223,17 @@ VerifyRelease: 718C1F180B5A84A3
 # skip any debugging package, as they are too big and can be manually installed if needed for debugging
 ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
 
+# From pacific we switch the ceph package source from croit.io to ceph.com. See #T326945 for more information.
+Name: thirdparty/ceph-pacific
+Method: https://download.ceph.com/debian-pacific
+Components: main>thirdparty/ceph-pacific
+UDebComponents:
+Suite: bullseye
+Architectures: amd64
+VerifyRelease: E84AC2C0460F3994
+# skip any debugging package, as they are too big and can be manually installed if needed for debugging
+ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
+
 # From quincy we switch the ceph package source from croit.io to ceph.com. See #T326945 for more information.
 Name: thirdparty/ceph-quincy
 Method: https://download.ceph.com/debian-quincy
