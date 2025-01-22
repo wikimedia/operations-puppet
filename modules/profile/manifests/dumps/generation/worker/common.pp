@@ -7,6 +7,7 @@ class profile::dumps::generation::worker::common(
     $extra_mountopts = lookup('profile::dumps::generation::worker::common::nfs_extra_mountopts'),
     $php = lookup('profile::dumps::generation::worker::common::php'),
     $dumps_misc_cronrunner = lookup('profile::dumps::generation::worker::common::dumps_misc_cronrunner'),
+    Boolean $use_analytics_replicas = lookup('profile::dumps::generation::worker::common::use_analytics_replicas', default_value => false)
 ) {
     # mw packages and dependencies
     require profile::mediawiki::scap_proxy
@@ -57,5 +58,12 @@ class profile::dumps::generation::worker::common(
     }
     ssh::userkey { 'dumpsgen':
         content => secret('keyholder/dumpsdeploy.pub'),
+    }
+
+    # Create a file that sets the dumps trait, which is picked up by
+    # mediwiki-config, allow us to use a custom database server config. See #T382947
+    file { '/etc/wikimedia-servergroup':
+        ensure  => $use_analytics_replicas.bool2str('present', 'absent'),
+        content => 'dumps',
     }
 }
