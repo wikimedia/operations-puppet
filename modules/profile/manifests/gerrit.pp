@@ -1,31 +1,33 @@
 # modules/profile/manifests/gerrit/server.pp
 #
 class profile::gerrit(
-    Hash                              $ldap_config       = lookup('ldap'),
-    Stdlib::IP::Address::V4           $ipv4              = lookup('profile::gerrit::ipv4'),
-    Optional[Stdlib::IP::Address::V6] $ipv6              = lookup('profile::gerrit::ipv6'),
-    Boolean                           $bind_service_ip   = lookup('profile::gerrit::bind_service_ip'),
-    Stdlib::Fqdn                      $host              = lookup('profile::gerrit::host'),
-    Boolean                           $backups_enabled   = lookup('profile::gerrit::backups_enabled'),
-    String                            $backup_set        = lookup('profile::gerrit::backup_set'),
-    Array[Stdlib::Fqdn]               $ssh_allowed_hosts = lookup('profile::gerrit::ssh_allowed_hosts'),
-    String                            $config            = lookup('profile::gerrit::config'),
-    Boolean                           $use_acmechief     = lookup('profile::gerrit::use_acmechief'),
-    Optional[Array[Stdlib::Fqdn]]     $replica_hosts     = lookup('profile::gerrit::replica_hosts'),
-    Optional[String]                  $daemon_user       = lookup('profile::gerrit::daemon_user'),
-    Stdlib::Unixpath                  $gerrit_site       = lookup('profile::gerrit::gerrit_site'),
-    Optional[String]                  $scap_user         = lookup('profile::gerrit::scap_user'),
-    Optional[Boolean]                 $manage_scap_user  = lookup('profile::gerrit::manage_scap_user'),
-    Optional[String]                  $scap_key_name     = lookup('profile::gerrit::scap_key_name'),
-    Boolean                           $enable_monitoring = lookup('profile::gerrit::enable_monitoring'),
-    Hash[String, Hash]                $replication       = lookup('profile::gerrit::replication'),
-    String                            $ssh_host_key      = lookup('profile::gerrit::ssh_host_key'),
-    Stdlib::Unixpath                  $git_dir           = lookup('profile::gerrit::git_dir'),
-    Stdlib::Unixpath                  $java_home         = lookup('profile::gerrit::java_home'),
-    Boolean                           $mask_service      = lookup('profile::gerrit::mask_service'),
-    Stdlib::Fqdn                      $active_host       = lookup('profile::gerrit::active_host'),
-    Boolean                           $lfs_replica_sync  = lookup('profile::gerrit::lfs_replica_sync'),
-    Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest     = lookup('profile::gerrit::lfs_sync_dest'),
+    Hash                              $ldap_config         = lookup('ldap'),
+    Stdlib::IP::Address::V4           $ipv4                = lookup('profile::gerrit::ipv4'),
+    Optional[Stdlib::IP::Address::V6] $ipv6                = lookup('profile::gerrit::ipv6'),
+    Boolean                           $bind_service_ip     = lookup('profile::gerrit::bind_service_ip'),
+    Stdlib::Fqdn                      $host                = lookup('profile::gerrit::host'),
+    Boolean                           $backups_enabled     = lookup('profile::gerrit::backups_enabled'),
+    String                            $backup_set          = lookup('profile::gerrit::backup_set'),
+    Array[Stdlib::Fqdn]               $ssh_allowed_hosts   = lookup('profile::gerrit::ssh_allowed_hosts'),
+    String                            $config              = lookup('profile::gerrit::config'),
+    Boolean                           $use_acmechief       = lookup('profile::gerrit::use_acmechief'),
+    Optional[Array[Stdlib::Fqdn]]     $replica_hosts       = lookup('profile::gerrit::replica_hosts'),
+    Optional[String]                  $daemon_user         = lookup('profile::gerrit::daemon_user'),
+    Stdlib::Unixpath                  $gerrit_site         = lookup('profile::gerrit::gerrit_site'),
+    Optional[String]                  $scap_user           = lookup('profile::gerrit::scap_user'),
+    Optional[Boolean]                 $manage_scap_user    = lookup('profile::gerrit::manage_scap_user'),
+    Optional[String]                  $scap_key_name       = lookup('profile::gerrit::scap_key_name'),
+    Boolean                           $enable_monitoring   = lookup('profile::gerrit::enable_monitoring'),
+    Hash[String, Hash]                $replication         = lookup('profile::gerrit::replication'),
+    String                            $ssh_host_key        = lookup('profile::gerrit::ssh_host_key'),
+    Stdlib::Unixpath                  $git_dir             = lookup('profile::gerrit::git_dir'),
+    Stdlib::Unixpath                  $java_home           = lookup('profile::gerrit::java_home'),
+    Boolean                           $mask_service        = lookup('profile::gerrit::mask_service'),
+    Stdlib::Fqdn                      $active_host         = lookup('profile::gerrit::active_host'),
+    Boolean                           $lfs_replica_sync    = lookup('profile::gerrit::lfs_replica_sync'),
+    Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest       = lookup('profile::gerrit::lfs_sync_dest'),
+    # TODO: Import them from confd/requestctl later T348734
+    Array[Stdlib::IP::Address]        $gerrit_abusers      = lookup('profile::gerrit::gerrit_abusers'),
 ) {
     require ::profile::java
     require ::passwords::gerrit
@@ -71,6 +73,27 @@ class profile::gerrit(
         proto  => 'tcp',
         port   => 443,
         drange => [$ipv4, $ipv6],
+    }
+
+    $ensure_abusers = empty($gerrit_abusers) ? {
+        true    => 'absent',
+        default => 'present',
+    }
+
+    # Create a nftables set GERRIT_ABUSERS and drop all traffic
+    nftables::set { 'GERRIT_ABUSERS':
+        ensure => $ensure_abusers,
+        hosts  => $gerrit_abusers,
+    }
+    nftables::file::input { 'drop-abuser-nets-v4':
+        ensure  => $ensure_abusers,
+        order   => 9,
+        content => 'ip saddr @GERRIT_ABUSERS_ipv4 drop',
+    }
+    nftables::file::input { 'drop-abuser-nets-v6':
+        ensure  => $ensure_abusers,
+        order   => 9,
+        content => 'ip6 saddr @GERRIT_ABUSERS_ipv6 drop',
     }
 
     if $backups_enabled and $backup_set != undef {

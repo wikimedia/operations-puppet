@@ -68,3 +68,5 @@ profile::gerrit::replication:
         threads: 4
         replicationDelay: 5
         rescheduleDelay: 5
+
+profile::gerrit::gerrit_abusers: []

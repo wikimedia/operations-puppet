@@ -204,6 +204,8 @@ profile::gerrit::lfs_sync_dest:
 profile::gerrit::migration::daemon_user: gerrit
 profile::gerrit::migration::data_dir: /srv/gerrit
 
+profile::gerrit::gerrit_abusers: []
+
 # Cache Proxy
 cache::nodes:
     text:
