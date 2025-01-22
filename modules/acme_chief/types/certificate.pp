@@ -1,4 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
+# [*key_types*]
+#  Optional list of key types to use,
+#  if not specified both rsa-2048 and ec-prime256v1 will be used
 type Acme_chief::Certificate = Struct[{
     'CN'                 => Wmflib::Host::Wildcard,
     'SNI'                => Array[Wmflib::Host::Wildcard],
@@ -9,4 +12,5 @@ type Acme_chief::Certificate = Struct[{
     'prevalidate'        => Optional[Boolean],
     'skip_invalid_snis'  => Optional[Boolean],
     'account'            => Optional[String],
+    'key_types'          => Optional[Array[Enum['rsa-2048', 'ec-prime256v1']]],
 }]
