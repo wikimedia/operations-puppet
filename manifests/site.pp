@@ -379,6 +379,10 @@ node /^cloudgw100[12]\.eqiad\./ {
     role(wmcs::cloudgw)
 }
 
+node /^cloudgw100[34]\.eqiad\./ {
+    role(insetup::wmcs)
+}
+
 node /^cloudgw200[23]-dev\.codfw\./ {
     role(wmcs::cloudgw)
 }

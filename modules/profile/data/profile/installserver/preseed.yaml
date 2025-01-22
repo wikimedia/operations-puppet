@@ -430,7 +430,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudvirt200[4-6]-dev':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'cloudgw100[12]':
+  'cloudgw100[1-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'cloudlb2001-dev':
