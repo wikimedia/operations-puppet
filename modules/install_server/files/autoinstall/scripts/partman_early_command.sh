@@ -30,12 +30,12 @@ configure_cephosd_disks() {
   devices=""
   for disk in /sys/block/sd*/queue/rotational
   do
-    # We are checking for two SSDs that are less than 3TB in size.
+    # We are checking for two SSDs that are less than 1.5TB in size.
     # These device names will be configured for the RAID array and grub boot devices.
     if grep -q 0 "${disk}"
     then
       device="$(printf "%s" "${disk}" | cut -d/ -f4 -)"
-      if [ $(/sbin/blockdev --getsize64 /dev/"${device}") -lt 3000000000000 ]
+      if [ $(/sbin/blockdev --getsize64 /dev/"${device}") -lt 1500000000000 ]
         then
           devices="${devices## } /dev/${device}"
         fi
