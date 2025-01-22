@@ -23,6 +23,8 @@ class profile::toolforge::k8s::control (
     class { '::toolforge::k8s::deployer':
         toolforge_secrets => $toolforge_secrets,
     }
+    class { '::toolforge::k8s::namespace_logs_to_journald': }
+
 
     apt::package_from_component { 'thirdparty-k9s':
         component => 'thirdparty/k9s',
