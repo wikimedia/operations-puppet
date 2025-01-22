@@ -1820,8 +1820,12 @@ node /^lvs30(0[89]|10)\.esams\./ {
 }
 
 # ULSFO lvs servers
-node /^lvs40(0[89]|1[0])\.ulsfo\./ {
+node /^lvs400([89])\.ulsfo\./ {
     role(lvs::balancer)
+}
+
+node /^lvs4010\.ulsfo\./ {
+    role(liberica)
 }
 
 # EQSIN lvs servers
