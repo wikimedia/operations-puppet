@@ -20,11 +20,4 @@ class profile::mediawiki::maintenance::cirrussearch {
         command  => '/usr/local/bin/cirrus_build_completion_indices.sh codfw',
         interval => '02:30',
     }
-
-    profile::mediawiki::periodic_job { 'cirrus_saneitize_jobs':
-        ensure   => absent,
-        # Saneitizer limited to private wikis, SUP handles all public wikis.
-        command  => '/usr/local/bin/foreachwikiindblist private extensions/CirrusSearch/maintenance/SaneitizeJobs.php --push --refresh-freq=7200',
-        interval => '0/2:10',
-    }
 }
