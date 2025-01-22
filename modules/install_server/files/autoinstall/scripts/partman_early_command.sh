@@ -55,26 +55,19 @@ configure_cephosd_disks() {
 cat > /tmp/dynamic_disc.cfg <<EOF
 d-i partman-auto/disk   string ${devices}
 d-i grub-installer/bootdev  string  ${devices}
-# DEBUG devices is ${devices}
-# DEBUG boot_parts is ${boot_parts}
-# DEBUG swap_parts is ${swap_parts}
-# DEBUG root_parts is ${root_parts}
-#
 # Parameters are:
 # <raidtype> <devcount> <sparecount> <fstype> <mountpoint> \\
 #   <devices> <sparedevices>
-d-i partman-auto-raid/recipe string  \
-        1    2    0    ext4    /boot \
-            ${boot_parts}      \
-        .                            \
-        1    2    0    swap    -     \
-            ${swap_parts}      \
-        .                            \
-        1    2    0    lvm    -      \
-            ${root_parts}      \
+d-i partman-auto-raid/recipe string  \\
+        1    2    0    ext4    /boot \\
+            ${boot_parts}      \\
+        .                            \\
+        1    2    0    swap    -     \\
+            ${swap_parts}      \\
+        .                            \\
+        1    2    0    lvm    -      \\
+            ${root_parts}      \\
         .
-
-# DEBUG and that's the end
 EOF
 debconf-set-selections /tmp/dynamic_disc.cfg
 }
