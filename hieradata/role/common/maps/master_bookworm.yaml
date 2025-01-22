@@ -15,5 +15,6 @@ profile::base::production::role_description: 'Maps master on bookworm (postgresq
 profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds
 profile::maps::osm_master::use_replication_slots: false
 profile::maps::osm_master::replication_slots: []
+profile::maps::osm_master::enable_tile_invalidation: false
 
 profile::firewall::provider: nftables

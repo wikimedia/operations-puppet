@@ -11,6 +11,7 @@ class osm::imposm3 (
     String $expire_dir                = '/srv/osm_expire',
     Integer $expire_levels            = 15,
     Boolean $disable_replication_timer = false,
+    Boolean $enable_tile_invalidation = true,
     String $eventgate_endpoint        = 'https://eventgate-main.discovery.wmnet:4492/v1/events',
 ) {
 
@@ -103,7 +104,7 @@ class osm::imposm3 (
     }
 
     systemd::timer::job { 'send_tile_invalidations':
-        ensure      => present,
+        ensure      => stdlib::ensure($enable_tile_invalidation),
         description => 'Send events to EventPlatform to invalidate stale tiles',
         interval    => {
             'start'    => 'OnCalendar',
