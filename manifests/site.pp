@@ -1726,11 +1726,6 @@ node /^cloudnet100[56]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::net)
 }
 
-# New cloudnet nodes T342455
-node /^cloudnet100[7-8]\-dev\.eqiad\./ {
-    role(insetup::wmcs)
-}
-
 ## Multi-instance wikireplica dbs
 node /^clouddb10(13|14|15|16)\.eqiad\./ {
     role(wmcs::db::wikireplicas::web_multiinstance)
