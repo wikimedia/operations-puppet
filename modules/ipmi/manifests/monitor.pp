@@ -37,29 +37,8 @@ class ipmi::monitor (
         before => Package['freeipmi-ipmiseld'],
     }
 
-    # ipmi_devintf needs to be loaded for the checks to work properly (T167121)
-    nrpe::plugin { 'check_ipmi_sensor':
-        ensure => absent,
-        source => 'puppet:///modules/base/monitoring/check_ipmi_sensor',
-    }
-
+    # TODO: Verify if ipmi-exporter needs this module to work
     kmod::module { 'ipmi_devintf':
         ensure => present,
-    }
-
-    sudo::user { 'nagios_ipmi_sensor':
-        ensure     => absent,
-        user       => 'nagios',
-        privileges => ['ALL = NOPASSWD: /usr/sbin/ipmi-sel, /usr/sbin/ipmi-sensors'],
-    }
-
-    nrpe::monitor_service { 'check_ipmi_sensor':
-        ensure         => absent,
-        description    => 'IPMI Sensor Status',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_ipmi_sensor --noentityabsent -T Temperature -T Power_Supply --nosel',
-        check_interval => 30,
-        retry_interval => 10,
-        timeout        => 60,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Power_Supply_Failures',
     }
 }
