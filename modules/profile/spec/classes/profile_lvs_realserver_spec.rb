@@ -16,9 +16,7 @@ describe 'profile::lvs::realserver' do
         it do
           is_expected.to contain_class('lvs::realserver').with_realserver_ips([
             '208.80.154.224',
-            '208.80.154.225',
             '2620:0:861:ed1a::1',
-            '2620:0:861:ed1a::2'
           ])
         end
       end
