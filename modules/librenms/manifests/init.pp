@@ -122,6 +122,15 @@ class librenms(
         mode   => '0660',
     }
 
+    # librenms writes the session files as librenms:librenms with 0644
+    # permissions as such we disable recurse and only manage the directory
+    file { "${install_dir}/storage/framework/sessions/cache/data/":
+        ensure => directory,
+        owner  => 'www-data',
+        group  => 'librenms',
+        mode   => '0660',
+    }
+
     # "lnms" insists on being run as its owner user, and 'daily.sh' runs
     # as 'librenms'
     file { "${install_dir}/lnms":
