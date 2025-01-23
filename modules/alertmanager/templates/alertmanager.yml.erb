@@ -146,6 +146,18 @@ route:
             severity: 'task'
           receiver: 'collaboration-services-task'
     - match:
+        team: 'collaboration-services-releng'
+      routes:
+        - match:
+            severity: 'critical'
+          receiver: 'collaboration-services-releng-critical'
+        - match:
+            severity: 'warning'
+          receiver: 'collaboration-services-releng-warning'
+        - match:
+            severity: 'task'
+          receiver: 'collaboration-services-releng-task'
+    - match:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
@@ -519,15 +531,24 @@ receivers:
 
 - name: 'collaboration-services-warning'
   webhook_configs:
-    # #serviceops mail & IRC
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
   email_configs:
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
+- name: 'collaboration-services-releng-warning'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-releng'
+  email_configs:
+    - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
+      headers: {'Auto-Submitted':'auto-generated'}
+    - to: 'releng@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
+
 - name: 'collaboration-services-critical'
   webhook_configs:
-    # #collaboration-services task & mail & IRC
+    # collaboration-services task & mail & IRC
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
@@ -543,6 +564,15 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
     - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
 
+- name: 'collaboration-services-releng-task'
+  webhook_configs:
+    # #collaboration-services task & IRC & releng IRC
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-pjhy3ymh5pitgp2jflcb'
+      send_resolved: false
+    - url: 'http://<%= @active_host %>:19190/wikimedia-sre-collab'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-operations'
+    - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
+
 - name: 'collaboration-services-releng-critical'
   webhook_configs:
     # collaboration-services x releng - task, IRC, (mail) for both teams
@@ -557,6 +587,8 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-releng'
   email_configs:
     - to: 'releng@lists.wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
+    - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'dcops-task'
