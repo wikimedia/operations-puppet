@@ -7,6 +7,7 @@ class profile::cache::haproxy(
     Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
     Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value'                                   => undef}),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
+    Array[String] $unified_acme_chief_certs = lookup('profile::cache::haproxy::unified_acme_chief_certs', {'default_value'                       => ['unified']}),
     Haproxy::Backend $backend = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
@@ -19,8 +20,8 @@ class profile::cache::haproxy(
     Hash[String, Array[Haproxy::Acl]] $acls = lookup('profile::cache::haproxy::acls'),
     Hash[String, Array[Haproxy::Header]] $add_headers = lookup('profile::cache::haproxy::add_headers'),
     Hash[String, Array[Haproxy::Header]] $del_headers = lookup('profile::cache::haproxy::del_headers'),
-    Optional[Hash[String, Array[Haproxy::Action]]] $pre_acl_actions = lookup('profile::cache::haproxy::pre_acl_actions', {'default_value'                      => undef}),
-    Optional[Hash[String, Array[Haproxy::Action]]] $post_acl_actions = lookup('profile::cache::haproxy::post_acl_actions', {'default_value'                    => undef}),
+    Optional[Hash[String, Array[Haproxy::Action]]] $pre_acl_actions = lookup('profile::cache::haproxy::pre_acl_actions', {'default_value'        => undef}),
+    Optional[Hash[String, Array[Haproxy::Action]]] $post_acl_actions = lookup('profile::cache::haproxy::post_acl_actions', {'default_value'      => undef}),
     Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value'                          => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', {'default_value'                                 => false}),
@@ -162,9 +163,11 @@ class profile::cache::haproxy(
     }
 
     if $unified_acme_chief {
-        acme_chief::cert { 'unified':
-            puppet_svc => 'haproxy',
-            key_group  => 'haproxy',
+        $unified_acme_chief_certs.each |String $acme_cert| {
+            acme_chief::cert { $acme_cert:
+                puppet_svc => 'haproxy',
+                key_group  => 'haproxy',
+            }
         }
     }
 
