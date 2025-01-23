@@ -1184,10 +1184,6 @@ node /^es1041\.eqiad\./ {
     role(mariadb::core)
 }
 
-node /^es1021\.eqiad\./ {
-    role(mariadb::core)
-}
-
 node /^es1042\.eqiad\./ {
     role(mariadb::core)
 }
