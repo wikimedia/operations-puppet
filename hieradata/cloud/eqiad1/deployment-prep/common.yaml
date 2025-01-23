@@ -144,7 +144,6 @@ scap::dsh::groups:
     restbase-betacluster:
         hosts:
             - deployment-restbase05.deployment-prep.eqiad1.wikimedia.cloud
-    librenms:
     webperf:
         hosts:
             - deployment-webperf21.deployment-prep.eqiad1.wikimedia.cloud
