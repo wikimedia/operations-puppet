@@ -473,7 +473,7 @@ define airflow::instance(
         }
     }
     profile::auto_restarts::service { "airflow-webserver@${title}":
-        ensure => $ensure,
+        ensure => $services_ensure,
     }
 
 
@@ -490,7 +490,7 @@ define airflow::instance(
         },
     }
     profile::auto_restarts::service { "airflow-scheduler@${title}":
-        ensure => $ensure,
+        ensure => $services_ensure,
     }
 
 
@@ -519,7 +519,7 @@ define airflow::instance(
 
 
     # Set up monitoring services if $monitoring_enabled and $ensure == present
-    if $monitoring_enabled and $ensure == 'present' {
+    if $monitoring_enabled and $services_ensure == 'present' {
         $monitoring_ensure = 'present'
     } else {
         $monitoring_ensure = 'absent'
