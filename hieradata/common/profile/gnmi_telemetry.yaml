@@ -4,10 +4,12 @@ profile::gnmi_telemetry::username: rancid
 profile::gnmi_telemetry::targets_sub:
   juniper:
     - interfaces-states
-    - bgp
+  dell:
+    - interfaces-states
 
 profile::gnmi_telemetry::ports:
   juniper: 32767
+  dell: 8080
 
 profile::gnmi_telemetry::outputs:
   prom-output:
@@ -20,39 +22,14 @@ profile::gnmi_telemetry::outputs:
     export-timestamps: true
     timeout: 50s
     event-processors:
-      - description-to-tag
-      - group-by-queue-number
-      - peer-as-to-tag
-      - peer-descr-to-tag
-      - peer-type-to-tag
-      - peer-group-to-tag
-      - group-bgp-neighbors
-      - rename-bgp-metrics
-      - rename-bgp-states
-      - delete-tags
-      - delete-metrics
+       - description-to-tag
+       - delete-tag-name
+       - group-by-queue-number
 
 profile::gnmi_telemetry::subscriptions:
   interfaces-states:
     paths:
       - "/interfaces/interface/state"
-    stream-mode: sample
-    sample-interval: 60s
-    encoding: proto
-  bgp:
-    paths:
-      - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-paths"
-      - "/network-instances/network-instance/protocols/protocol/bgp/global/state/total-prefixes"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-as"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/enabled"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/session-state"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/description"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-type"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-group"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/established-transitions"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/last-established"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/interface-error"
-      - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis/afi-safi/state/prefixes"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -63,72 +40,14 @@ profile::gnmi_telemetry::processors:
       value-name: "/interfaces/interface/state/description"
       tag-name: "interface_description"
       consume: false
-  peer-as-to-tag:
-    event-value-tag:
-      value-name: "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-as"
-      tag-name: peer_as
-      consume: false
-  peer-descr-to-tag:
-    event-value-tag:
-      value-name: "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/description"
-      tag-name: peer_descr
-      consume: false
-  peer-type-to-tag:
-    event-value-tag:
-      value-name: "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-type"
-      tag-name: peer_type
-      consume: false
-  peer-group-to-tag:
-    event-value-tag:
-      value-name: "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/peer-group"
-      tag-name: peer_group
-      consume: false
   group-by-queue-number:
     event-group-by:
       tags:
         - target
         - interface_name
         - out-queue_queue-number
-  group-bgp-neighbors:
-    event-group-by:
-      tags:
-        - target
-        - neighbor_neighbor_address
-  rename-bgp-states:
-    event-strings:
-      value-names: ["/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/session-state"]
-      transforms:
-        - replace: {apply-on: "value", old: "IDLE", new: "1"}
-        - replace: {apply-on: "value", old: "CONNECT", new: "2"}
-        - replace: {apply-on: "value", old: "ACTIVE", new: "3"}
-        - replace: {apply-on: "value", old: "OPENSENT", new: "4"}
-        - replace: {apply-on: "value", old: "OPENCONFIRM", new: "5"}
-        - replace: {apply-on: "value", old: "ESTABLISHED", new: "6"}
-  rename-bgp-metrics:
-    event-strings:
-      value-names: [".*bgp.*"]
-      transforms:
-        - replace:
-            apply-on: "name"
-            old: "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis/afi-safi/state"
-            new: "/bgp/neighbor"
-        - replace:
-            apply-on: "name"
-            old: "/network-instances/network-instance/protocols/protocol/bgp/neighbors"
-            new: "/bgp"
-        - replace:
-            apply-on: "name"
-            old: "/network-instances/network-instance/protocols/protocol/bgp/global/state"
-            new: "/bgp"
-  delete-tags:
+  delete-tag-name:
     event-delete:
       tag-names:
-      - "^subscription-name"
-      - "^source"
-  delete-metrics:
-    event-delete:
-      value-names:
-        - ".*neighbor/state/peer-as"
-        - ".*neighbor/state/description"
-        - ".*neighbor/state/peer-type"
-        - ".*neighbor/state/peer-group"
+        - "^subscription-name"
+        - "^source"
