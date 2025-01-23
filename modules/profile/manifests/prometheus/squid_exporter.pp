@@ -2,7 +2,7 @@
 # Installs prometheus-squid-exporter and open matching ACLs
 
 class profile::prometheus::squid_exporter (
-    Stdlib::HTTPUrl $http_proxy = lookup('http_proxy', {'default_value' => undef}),
+    Optional[Stdlib::HTTPUrl] $http_proxy = lookup('http_proxy', {'default_value' => undef}),
 ) {
     ensure_packages('prometheus-squid-exporter')
 
