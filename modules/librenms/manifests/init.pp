@@ -124,7 +124,7 @@ class librenms(
 
     # librenms writes the session files as librenms:librenms with 0644
     # permissions as such we disable recurse and only manage the directory
-    file { "${install_dir}/storage/framework/sessions/cache/data/":
+    file { "${install_dir}/storage/framework/cache/data/":
         ensure => directory,
         owner  => 'www-data',
         group  => 'librenms',
