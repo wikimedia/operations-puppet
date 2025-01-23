@@ -22,7 +22,7 @@ class profile::mediawiki::maintenance::cirrussearch {
     }
 
     profile::mediawiki::periodic_job { 'cirrus_saneitize_jobs':
-        ensure   => present,
+        ensure   => absent,
         # Saneitizer limited to private wikis, SUP handles all public wikis.
         command  => '/usr/local/bin/foreachwikiindblist private extensions/CirrusSearch/maintenance/SaneitizeJobs.php --push --refresh-freq=7200',
         interval => '0/2:10',
