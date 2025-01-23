@@ -6,7 +6,7 @@ class profile::maps::osm_master (
     Variant[String,Integer] $planet_sync_minute  = lookup('profile::maps::osm_master::planet_sync_minute', { 'default_value' => '00' }),
     Array[Stdlib::Host] $maps_hosts              = lookup('profile::maps::hosts'),
     String $kartotherian_pass                    = lookup('profile::maps::osm_master::kartotherian_pass'),
-    String $tilerator_pass                       = lookup('profile::maps::osm_master::tilerator_pass'),
+    Optional[String] $tilerator_pass             = lookup('profile::maps::osm_master::tilerator_pass'), # Can be removed when buster dropped
     String $replication_pass                     = lookup('profile::maps::osm_master::replication_pass'),
     String $swift_key_id                         = lookup('profile::maps::osm_master::swift_key_id'),
     String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
