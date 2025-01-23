@@ -4,6 +4,7 @@
 class profile::gnmi_telemetry (
     Hash[String[3], Netbox::Device::Network] $infra_devices = lookup('profile::netbox::data::network_devices'),
     Hash[String, Stdlib::Port] $ports                       = lookup('profile::gnmi_telemetry::ports'),
+    Hash[String, Array[String]] $site_mapping               = lookup('profile::gnmi_telemetry::site_mapping'),
     String $username                                        = lookup('profile::gnmi_telemetry::username'),
     String $password                                        = lookup('profile::gnmi_telemetry::password'),
     Hash[String, Any] $targets_sub                          = lookup('profile::gnmi_telemetry::targets_sub'),
@@ -38,14 +39,18 @@ class profile::gnmi_telemetry (
         require => File[$network_devices_ca_path],
     }
 
+    $local_sites = $site_mapping[$::site]
+
     $targets = Hash($infra_devices.filter |$device, $attributes| {
-        $attributes['role'] in ['asw', 'cr', 'cloudsw'] and $attributes['site'] == $::site
+        $attributes['site'] in $local_sites and
+        $attributes['role'] in ['asw', 'cr', 'cloudsw'] and
+        $device !~ /^(asw2|fasw)/
     }.values.map |$device| {
         ["${device['primary_fqdn']}:${ports[$device['manufacturer']]}",
         {'subscriptions' => $targets_sub[$device['manufacturer']]}]
     })
 
-    $filter_params = ['infra_devices', 'targets_sub', 'ports']
+    $filter_params = ['infra_devices', 'targets_sub', 'ports', 'site_mapping']
     class { 'gnmic':
         targets => $targets,
         tls_ca  => $bundle_path,

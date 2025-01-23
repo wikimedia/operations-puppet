@@ -7,6 +7,15 @@ profile::gnmi_telemetry::targets_sub:
   dell:
     - interfaces-states
 
+profile::gnmi_telemetry::site_mapping:
+  eqiad: ['eqiad', 'eqord']
+  codfw: ['codfw', 'eqdfw']
+  ulsfo: ['ulsfo']
+  esams: ['esams']
+  eqsin: ['eqsin']
+  drmrs: ['drmrs']
+  magru: ['magru']
+
 profile::gnmi_telemetry::ports:
   juniper: 32767
   dell: 8080
