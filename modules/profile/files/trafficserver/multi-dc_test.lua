@@ -282,14 +282,14 @@ describe("Multi-DC router", function ()
     assert.are.same("rw", result)
   end)
 
-  it("sends loginwiki", function ()
+  it("sends Special:CentralLogin", function ()
     local result = run(
       {default = {mode = "local"}},
       {
         method = "GET",
         uri_args = "",
         uri = "/wiki/Special:CentralLogin/start",
-        header = {Host = "login.wikimedia.org"}
+        header = {Host = "auth.wikimedia.org"}
       }
     )
     assert.are.same("rw", result)
