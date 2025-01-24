@@ -9,9 +9,12 @@
 #  prometheus endpoint configuration
 # [*forwarding_plane*]
 #  Forwarding plane used to balance the traffic (ipvs, katran)
+# [*katran*]
+#  Katran specific configuration
 type Liberica::FpConfig = Struct[{
         'log_level'        => Liberica::Logging,
         'grpc'             => Liberica::Grpc,
         'prometheus'       => Liberica::Prometheus,
         'forwarding_plane' => Enum['ipvs', 'katran'],
+        'katran'           => Optional[Liberica::Katran],
 }]

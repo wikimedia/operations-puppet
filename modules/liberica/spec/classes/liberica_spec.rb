@@ -45,7 +45,13 @@ describe 'liberica' do
                 prometheus: {
                   addresses: [':2022'],
                 },
-                forwarding_plane: 'ipvs',
+                forwarding_plane: 'katran',
+                katran: {
+                  forwarding_cores: [0],
+                  numa_node: 0,
+                  interface: 'eth0',
+                  conntrack_size: 8_000_000,
+                },
               },
               cp: {
                 log_level: 'info',
@@ -130,7 +136,13 @@ fp:
   prometheus:
     addresses:
     - ":2022"
-  forwarding_plane: ipvs
+  forwarding_plane: katran
+  katran:
+    forwarding_cores:
+    - 0
+    numa_node: 0
+    interface: eth0
+    conntrack_size: 8000000
 cp:
   log_level: info
   grpc:
