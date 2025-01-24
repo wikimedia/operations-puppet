@@ -294,7 +294,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
   # START Kubernetes workers that used to be mw app/api servers
-  'parse101[3-9]|parse102[01234]':
+  'parse101[8-9]|parse102[01234]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay.cfg
