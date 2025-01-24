@@ -9,9 +9,15 @@ class profile::toolforge::harbor (
     Profile::Toolforge::Harbor::Robot_accounts $robot_accounts = lookup('profile::toolforge::harbor::robot_accounts', {default_value => {}}),
     Optional[Profile::Toolforge::Harbor::S3_config] $s3_config = lookup('profile::toolforge::harbor::s3_config', {default_value => undef}),
 ) {
-    ensure_packages(['docker.io'])
+
+    apt::package_from_component { "thirdparty-docker-${::lsbdistcodename}":
+        component => 'thirdparty/ci',
+        packages  => ['docker-ce', 'docker-ce-cli', 'containerd.io'],
+    }
+
     service { 'docker':
-        ensure => 'running'
+        ensure => running,
+        enable => true,
     }
 
     file { '/etc/docker/daemon.json':
@@ -20,7 +26,14 @@ class profile::toolforge::harbor (
         group   => 'root',
         mode    => '0444',
         notify  => Service['docker'],
-        require => Package['docker.io'],
+        require => Package['docker-ce'],
+    }
+
+    # docker-compose version in main repo is old so we are installing from backports
+    apt::pin { "docker-compose-${::lsbdistcodename}-backports":
+        package  => 'docker-compose',
+        pin      => "release n=${::lsbdistcodename}-backports",
+        priority => 500,
     }
 
     # Useful packages as harbor runs in docker-compose
