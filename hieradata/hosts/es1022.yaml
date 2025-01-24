@@ -1,5 +1,0 @@
-# es1022
-mariadb::shard: 'es4'
-mariadb::binlog_format: 'ROW'
-profile::mariadb::mysql_role: 'standalone'
-profile::monitoring::notifications_enabled: false
