@@ -2015,7 +2015,6 @@ node /^ms-backup200[12]\.codfw\./ {
 
 node /^ms-fe1\d\d\d\.eqiad\./ {
     role(swift::proxy)
-    include lvs::realserver  # lint:ignore:wmf_styleguide
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time
@@ -2025,7 +2024,6 @@ node /^ms-be1\d\d\d\.eqiad\./ {
 
 node /^ms-fe2\d\d\d\.codfw\./ {
     role(swift::proxy)
-    include lvs::realserver  # lint:ignore:wmf_styleguide
 }
 
 # Newly provisioned ms-be hosts are safe to add to swift::storage at any time

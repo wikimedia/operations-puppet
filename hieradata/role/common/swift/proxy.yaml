@@ -190,3 +190,12 @@ profile::tlsproxy::envoy::stream_idle_timeout: 180.0
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
 profile::puppet::agent::force_puppet7: true
+profile::lvs::realserver::pools:
+  swift:
+    services:
+      - swift-proxy
+  swift-https:
+    services:
+      - swift-proxy
+      - envoy
+profile::lvs::realserver::use_conftool: true
