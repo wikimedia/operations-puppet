@@ -28,14 +28,4 @@ class profile::requesttracker {
         port     => [80],
         src_sets => ['CACHES'],
     }
-
-    prometheus::blackbox::check::http { 'rt.wikimedia.org':
-        team             => 'collaboration-services',
-        severity         => 'task',
-        path             => '/',
-        alert_after      => '10m',
-        status_matches   => [302], # Ensure we redirect to IDP
-        follow_redirects => false,
-        ip_families      => [ip4],
-    }
 }
