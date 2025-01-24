@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi]
+              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -308,7 +308,7 @@ groups:
   cloudelastic-roots:
     gid: 809
     description: manage cloudelastic nodes
-    members: [ebernhardson, dcausse, bd808, sstefanova, raymond-ndibe, pfischer, dr0ptp4kt]
+    members: [ebernhardson, dcausse, bd808, raymond-ndibe, pfischer, dr0ptp4kt]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Guillaume Lederrey
@@ -440,7 +440,7 @@ groups:
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
-              hokwelum, cmyrick, sstefanova, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
+              hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
               jebe, ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
@@ -837,7 +837,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, sstefanova, raymond-ndibe, samtar, komla]
+    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
@@ -5552,14 +5552,12 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFJP32mL1eV5dE6DMJTzUkDpPCXFY2wdJoCBr5+yOC+G
   sstefanova:
-    ensure: present
+    ensure: absent
     realname: Slavina Stefanova
-    email: sstefanova@wikimedia.org
     uid: 35710
     gid: 500
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuL12ew55XLwqKgUOYIq6DI1CjTH/3Bjab4QIcG18wj sstefanova@wikimedia.org
+    krb: absent
+    ssh_keys: []
   raymond-ndibe:
     ensure: present
     realname: Raymond Ndibe
