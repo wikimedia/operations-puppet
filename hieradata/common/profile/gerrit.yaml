@@ -69,4 +69,7 @@ profile::gerrit::replication:
         replicationDelay: 5
         rescheduleDelay: 5
 
-profile::gerrit::gerrit_abusers: ['47.80.0.0/13']
+profile::gerrit::gerrit_abusers:
+  - '47.80.0.0/13'
+  - '167.99.209.130/32'
+  - '178.62.222.136/32'
