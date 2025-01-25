@@ -181,9 +181,10 @@ class KeystoneHooks(notifier.Driver):
         LOG.warning("Setting up default sudoers in ldap for project %s" % project_id)
         # Set up default sudoers in ldap
         ldapgroups.create_sudo_defaults(project_id)
-        self._create_project_page(project_id, project_name)
 
         if project_domain == "default":
+            self._create_project_page(project_id, project_name)
+
             deployment = CONF.wmfhooks.region[:-2]
 
             LOG.warning(
