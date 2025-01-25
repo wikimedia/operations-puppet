@@ -383,15 +383,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephmon100[4-6]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'cloudcephosd103[5-9]':
+  'cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-9]|4[0-1])':
     - partman/custom/cephosd.cfg
-  'cloudcephosd104[0-1]':
-    - partman/custom/cephosd.cfg
-  'cloudcephosd1012':
-    - partman/custom/cephosd.cfg
-  'cloudcephosd1*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'cloudcephosd2004-dev':
     - partman/custom/cephosd.cfg
   'clouddumps100[1-2]':
