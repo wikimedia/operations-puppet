@@ -6749,6 +6749,10 @@ ldap_only_users:
     ensure: present
     realname: Maarten Dammers
     email: maarten@mdammers.nl
+  neslihanturan:
+    ensure: present
+    realname: Neslihan Turan
+    email: neslihan.turan@wikimedia.de
   nharateh:
     ensure: absent
     realname: Natalia Harateh
