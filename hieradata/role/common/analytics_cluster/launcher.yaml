@@ -119,3 +119,9 @@ profile::analytics::conda_analytics::remove_conda_env_pkgs_dir: false
 profile::base::remove_python2_on_bullseye: false
 
 profile::puppet::agent::force_puppet7: true
+
+# We use the services proxy on this host to make the URLs used by Airflow tasks
+# identical to those used in Kubernetes. See #T384329 for more details.
+profile::services_proxy::envoy::enabled_listeners:
+  - eventgate-analytics
+  - mw-api-int-async

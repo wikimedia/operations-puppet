@@ -34,6 +34,9 @@ class role::analytics_cluster::launcher {
     include profile::analytics::refinery::job::sqoop_mediawiki
     include profile::analytics::refinery::job::data_purge
 
+    # proxy for connection to other servers
+    include profile::services_proxy::envoy
+
     include profile::kerberos::client
     include profile::kerberos::keytabs
 
