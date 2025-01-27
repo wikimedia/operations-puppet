@@ -384,6 +384,12 @@ profile::services_proxy::envoy::listeners:
       retry_on: "5xx"
       num_retries: 1
     xfp: https
+  - name: mw-misc
+    port: 6508
+    service: mw-misc
+    timeout: "30s"
+    sets_sni: true
+    keepalive: "4s"
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
