@@ -51,6 +51,9 @@ protocol = <%= lvs.fetch('protocol', "tcp") %>
 ip = <%= subserviceip %>
 port = <%= service['port'] %>
 scheduler = <%= lvs.fetch('scheduler', "wrr") %>
+<% if lvs.fetch('scheduler_flag', nil) -%>
+scheduler_flag = <%= lvs.fetch('scheduler_flag') %>
+<% end -%>
 ops = false
 <% ipip_encapsulation = lvs.fetch('ipip_encapsulation', [])
 -%>
