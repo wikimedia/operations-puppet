@@ -91,10 +91,11 @@ profile::netconsole::client::ensure: absent
 profile::lvs::realserver::pools:
   upload-https:
     services:
-      - cdn
+      - haproxy
+      - varnish-frontend
   upload:
     services:
-      - cdn
+      - haproxy
 profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'upload HAProxy/Varnish/ATS cache server'
 

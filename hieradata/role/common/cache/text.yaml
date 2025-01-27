@@ -300,10 +300,11 @@ profile::cache::haproxy::extra_certificates:
 profile::lvs::realserver::pools:
   text-https:
     services:
-      - cdn
+      - haproxy
+      - varnish-frontend
   text:
     services:
-      - cdn
+      - haproxy
 profile::lvs::realserver::ipip::ipv4_mss: 1440
 profile::lvs::realserver::ipip::ipv6_mss: 1400
 profile::lvs::realserver::ipip::enabled: true
