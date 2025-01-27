@@ -1,6 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
 Slice=thanos.slice
+SendSIGKILL=yes
 Environment=OTEL_SERVICE_NAME=%N
 RuntimeDirectoryPreserve=yes
 RuntimeDirectory=thanos-query
