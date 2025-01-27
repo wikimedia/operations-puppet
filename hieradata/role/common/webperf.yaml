@@ -18,9 +18,6 @@ profile::tlsproxy::envoy::cfssl_options:
   hosts:
     - performance.wikimedia.org
 
-profile::tlsproxy::envoy::firewall_src_sets:
-  - CACHES
-
 profile::contacts::role_contacts: ['Observability']
 profile::base::production::role_description: 'webperf processors and performance.wikimedia.org website'
 
