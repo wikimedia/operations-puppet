@@ -1,3 +1,2 @@
 profile::cache::haproxy::extended_logging: true
 profile::cache::haproxy::use_haproxykafka: true
-profile::cache::haproxykafka::ensure: present
