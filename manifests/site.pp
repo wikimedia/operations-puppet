@@ -1627,7 +1627,7 @@ node /^wikikube-worker10(0[2-7]|1[12569]|[2-9][0-9])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker11([0-4][0-9]|5[0-8])\.eqiad\./ {
+node /^wikikube-worker11([0-5][0-9]|6[0-5])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -1648,11 +1648,6 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
 node /^wikikube-worker22([0-3][0-9]|4[0-1])\.codfw\./ {
     role(kubernetes::worker)
 }
-
-node /^parse10(1[8-9]|2[01234])\.eqiad\./ {
-  role(kubernetes::worker)
-}
-# END Kubernetes workers that used to be mw app/api/jobrunner/parsoid servers
 
 node /^kubestage100[3-6]\.eqiad\./ {
     role(kubernetes::staging::worker)
