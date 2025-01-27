@@ -125,3 +125,4 @@ profile::puppet::agent::force_puppet7: true
 profile::services_proxy::envoy::enabled_listeners:
   - eventgate-analytics
   - mw-api-int-async
+  - mw-misc
