@@ -1,1 +1,3 @@
 profile::cache::haproxy::use_etcd_req_filters: true
+profile::cache::haproxy::extended_logging: true
+profile::cache::haproxy::use_haproxykafka: true
