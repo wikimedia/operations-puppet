@@ -89,11 +89,12 @@ class base::kernel(
     }
 
     nrpe::plugin { 'check_microcode':
+        ensure => absent,
         source => 'puppet:///modules/base/check-microcode.py',
     }
 
     nrpe::monitor_service { 'cpu_microcode_status':
-        ensure         => 'present',
+        ensure         => absent,
         description    => 'Check whether microcode mitigations for CPU vulnerabilities are applied',
         nrpe_command   => '/usr/local/lib/nagios/plugins/check_microcode',
         contact_group  => 'admins',
