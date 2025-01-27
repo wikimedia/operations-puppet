@@ -1,11 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::query_service::monitor::wikidata_internal {
-    nrpe::monitor_service { 'Query_Service_Internal_HTTP_endpoint':
-        description  => 'Query Service HTTP Port',
-        nrpe_command => '/usr/lib/nagios/plugins/check_http -H 127.0.0.1 -p 80 -w 10 -u /readiness-probe',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service',
-    }
-
     prometheus::blackbox::check::http { 'wdqs_internal_sparql_endpoint_sre':
         server_name        => 'wdqs-internal.discovery.wmnet',
         instance_label     => $facts['hostname'],
