@@ -838,8 +838,6 @@ kubernetes::clusters:
         - dse-k8s-ctrl1002.eqiad.wmnet
       # This cluster does not have an admission configuration, override the default with null/none/empty.
       admission_configuration: ~
-      cni_config:
-        <<: *ml-serve_cni_config
       admission_plugins:
         enable:
           - DenyServiceExternalIPs
