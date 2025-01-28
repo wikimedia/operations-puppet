@@ -37,8 +37,8 @@ pipeline:
       mapping: |
         root = this.payload.parse_json()
         root.id = this.id
-        root."$schema" = "/requestctl/1.0.0"
-        root.meta.stream = "requestctl"
+        root."$schema" = "/analytics/requestctl/1.0.1"
+        root.meta.stream = "analytics.haproxy_requestctl"
         # root.dt /could/ be set by haproxy, but if not let's use now()
         let dt = now().ts_format("2006-01-02T15:04:05Z", "UTC")
         if root.dt == null {
@@ -70,15 +70,29 @@ output:
                 root = this
                 root.error = error()
       - output:
-          label: "out"
-          kafka_franz:
-            seed_brokers: [ "${KAFKA_BROKERS}" ]
-            topic: "${MSG_TOPIC}"
-            compression: "snappy"
-            tls:
-              enabled: true
-              root_cas_file: "${ROOT_CAS_FILE}"
-              skip_cert_verify: false
+          label: "broker"
+          broker:
+            pattern: fan_out # https://docs.redpanda.com/redpanda-connect/components/outputs/broker/#patterns
+            outputs:
+              - label: "http"
+                http_client:
+                  url: "${EVENTGATE_URL}"
+                  verb: POST
+                  headers:
+                    content-type: application/json
+                  rate_limit: ""
+                  timeout: 5s
+                  max_in_flight: 64
+                  batch_as_multipart: false
+              - label: "kafka"
+                kafka_franz:
+                  seed_brokers: [ "${KAFKA_BROKERS}" ]
+                  topic: "${MSG_TOPIC}"
+                  compression: "snappy"
+                  tls:
+                    enabled: true
+                    root_cas_file: "${ROOT_CAS_FILE}"
+                    skip_cert_verify: false
 
 tests:
   - name: simple parsing
@@ -88,7 +102,7 @@ tests:
       - content: '[debug] test-reqctl: type=str <{"host":"localhost","src":"127.0.0.1","path":"/"}>'
     output_batches:
       - - bloblang: '(this.meta.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp") && (this.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp")'
-          json_contains: '{"$schema":"/requestctl/1.0.0","host":"localhost","id":"test-reqctl","meta":{"stream":"requestctl"},"path":"/","src":"127.0.0.1"}'
+          json_contains: '{"$schema":"/analytics/requestctl/1.0.1","host":"localhost","id":"test-reqctl","meta":{"stream":"analytics.haproxy_requestctl"},"path":"/","src":"127.0.0.1"}'
   - name: test for root.dt provided by haproxy and unmodified by benthos
     target_processors: /pipeline/processors
     environment: {}
@@ -96,7 +110,7 @@ tests:
       - content: '[debug] test-reqctl: type=str <{"dt":"2024-12-13T17:45:00Z","host":"localhost","src":"127.0.0.1","path":"/"}>'
     output_batches:
       - - bloblang: '(this.meta.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp") && (this.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp")'
-          json_contains: '{"dt":"2024-12-13T17:45:00Z","$schema":"/requestctl/1.0.0","host":"localhost","id":"test-reqctl","meta":{"stream":"requestctl"},"path":"/","src":"127.0.0.1"}'
+          json_contains: '{"dt":"2024-12-13T17:45:00Z","$schema":"/analytics/requestctl/1.0.1","host":"localhost","id":"test-reqctl","meta":{"stream":"analytics.haproxy_requestctl"},"path":"/","src":"127.0.0.1"}'
   - name: test for root.dt set by benthos
     target_processors: /pipeline/processors
     environment: {}
@@ -104,7 +118,7 @@ tests:
       - content: '[debug] test-reqctl: type=str <{"host":"localhost","src":"127.0.0.1","path":"/"}>'
     output_batches:
       - - bloblang: '(this.meta.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp") && (this.dt.ts_parse("2006-01-02T15:04:05Z").type() == "timestamp")'
-          json_contains: '{"$schema":"/requestctl/1.0.0","host":"localhost","id":"test-reqctl","meta":{"stream":"requestctl"},"path":"/","src":"127.0.0.1"}'
+          json_contains: '{"$schema":"/analytics/requestctl/1.0.1","host":"localhost","id":"test-reqctl","meta":{"stream":"analytics.haproxy_requestctl"},"path":"/","src":"127.0.0.1"}'
   - name: drop malformed content
     target_processors: /pipeline/processors
     environment: {}
