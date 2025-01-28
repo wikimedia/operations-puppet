@@ -6,10 +6,12 @@
 #    * database - postgres database name
 #    * use_proxy - when set to true, proxy is used
 #    * proxy - web proxy used for downloading shapefiles
+#    * disable_waterlines_import_timer - if enabled, don't run the import periodically
 class osm::import_waterlines (
     Boolean $use_proxy,
     String $proxy_host,
     Stdlib::Port $proxy_port,
+    Boolean $disable_waterlines_import_timer,
     String $database = 'gis',
 ) {
 
@@ -23,8 +25,6 @@ class osm::import_waterlines (
 
     file { '/usr/local/bin/import_waterlines':
         ensure  => present,
-        owner   => 'root',
-        group   => 'root',
         mode    => '0555',
         content => template('osm/import_waterlines.erb'),
     }
@@ -36,12 +36,14 @@ class osm::import_waterlines (
         mode   => '0755',
     }
 
-    logrotate::conf { 'import_waterline':
-        ensure  => absent,
+    if $disable_waterlines_import_timer {
+        $ensure_waterlines = absent
+    } else {
+        $ensure_waterlines = present
     }
 
     systemd::timer::job { 'waterlines':
-        ensure          => present,
+        ensure          => $ensure_waterlines,
         description     => 'Regular jobs to set up the waterlines',
         user            => 'postgres',
         command         => '/usr/local/bin/import_waterlines',

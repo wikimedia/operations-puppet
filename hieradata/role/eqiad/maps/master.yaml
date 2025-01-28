@@ -9,6 +9,7 @@ profile::maps::hosts:
 profile::maps::osm_master::planet_sync_hours: '0/12'
 profile::maps::osm_master::disable_replication_timer: false
 profile::maps::osm_master::disable_tile_generation_timer: false
+profile::maps::osm_master::disable_waterlines_import_timer: false
 profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::enable_tile_invalidation: true
 profile::maps::osm_master::replicas:

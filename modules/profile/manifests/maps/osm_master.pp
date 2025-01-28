@@ -14,6 +14,7 @@ class profile::maps::osm_master (
     Hash[String, Struct[{ip_address => Stdlib::IP::Address}]] $postgres_replicas = lookup('profile::maps::osm_master::replicas', { 'default_value' => {}}),
     Boolean $disable_replication_timer           = lookup('profile::maps::osm_master::disable_replication_timer'),
     Boolean $disable_tile_generation_timer       = lookup('profile::maps::osm_master::disable_tile_generation_timer'),
+    Boolean $disable_waterlines_import_timer     = lookup('profile::maps::osm_master::disable_waterlines_import_timer'),
     Boolean $enable_tile_invalidation            = lookup('profile::maps::osm_master::enable_tile_invalidation'),
     Boolean $disable_admin_timer                 = lookup('profile::maps::osm_master::disable_admin_timer', { 'default_value' => false }),
     Boolean $use_proxy                           = lookup('profile::maps::apps::use_proxy'),
@@ -74,9 +75,10 @@ class profile::maps::osm_master (
     ensure_packages('osmborder')
 
     class { '::osm::import_waterlines':
-        use_proxy  => $use_proxy,
-        proxy_host => "webproxy.${::site}.wmnet",
-        proxy_port => 8080,
+        use_proxy                       => $use_proxy,
+        proxy_host                      => "webproxy.${::site}.wmnet",
+        proxy_port                      => 8080,
+        disable_waterlines_import_timer => $disable_waterlines_import_timer,
     }
 
     # Users
