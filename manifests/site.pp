@@ -1331,6 +1331,11 @@ node /^ganeti20(1[9]|2[0-9]|3[01256789]|4[0-4])\.codfw\./ {
     role(ganeti)
 }
 
+# T384838
+node /^ganeti20(4[56789]|5[0])\.codfw\./ {
+    role(insetup::infrastructure_foundations)
+}
+
 node /^ganeti-test200[123]\.codfw\./ {
     role(ganeti_test)
 }
