@@ -1784,7 +1784,7 @@ node /^krb2002\.codfw\./ {
     role(kerberos::kdc)
 }
 
-node /^wikikube-worker10(0[2-7]|1[12569]|[2-9][0-9])\.eqiad\./ {
+node /^wikikube-worker10(0[2-7]|1[12569]|2[016-9]|[3-9][0-9])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
