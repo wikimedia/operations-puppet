@@ -18,3 +18,5 @@ ProtectKernelModules=yes
 ProtectKernelTunables=yes
 ExecStart=/usr/bin/liberica cp
 Restart=on-failure
+KillSignal=SIGUSR1
+TimeoutStopSec=90
