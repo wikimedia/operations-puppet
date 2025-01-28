@@ -30,6 +30,9 @@ profile::liberica::fp_config:
 
 profile::liberica::cp_config:
   log_level: info
+  grpc:
+    network: tcp
+    address: 127.0.0.1:1103
   prometheus:
     address: "%{facts.networking.ip}:3003"
 

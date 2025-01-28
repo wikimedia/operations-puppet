@@ -48,8 +48,12 @@ describe 'liberica' do
               },
               cp: {
                 log_level: 'info',
+                grpc: {
+                  network: 'tcp',
+                  address: '127.0.0.1:3003',
+                },
                 prometheus: {
-                  address: ':2022',
+                  address: ':2023',
                 },
               },
               etcd: {
@@ -123,8 +127,11 @@ fp:
   forwarding_plane: ipvs
 cp:
   log_level: info
+  grpc:
+    network: tcp
+    address: 127.0.0.1:3003
   prometheus:
-    address: ":2022"
+    address: ":2023"
 etcd:
   conftool_domain: eqiad.wmnet
   datacenter: drmrs
