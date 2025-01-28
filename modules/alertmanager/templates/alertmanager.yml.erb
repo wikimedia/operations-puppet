@@ -459,7 +459,7 @@ receivers:
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+    - to: 'cloud-admin-feed@lists.wikimedia.org'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-taskircmail'
@@ -472,7 +472,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+    - to: 'cloud-admin-feed@lists.wikimedia.org'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-pagetaskircmail'
@@ -487,7 +487,7 @@ receivers:
       send_resolved: false
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
-    - to: 'cloud-admin-feed@<%= @facts["networking"]["domain"] %>'
+    - to: 'cloud-admin-feed@lists.wikimedia.org'
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'mediawiki-platform-ircmail'
