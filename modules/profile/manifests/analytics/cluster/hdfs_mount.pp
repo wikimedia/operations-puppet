@@ -45,4 +45,12 @@ class profile::analytics::cluster::hdfs_mount(
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Administration#Fixing_HDFS_mount_at_/mnt/hdfs',
         }
     }
+    # The HDFS FUSE mount is incompatible with the default security settings of envoyproxy, so
+    # set the following override on hosts where we know that envoyproxy is installed. See #T384329 for details.
+    if $facts['networking']['fqdn'] =~ /^(an-launcher|stat)[\d]{4}/ {
+        systemd::override { 'envoyproxy-exclude-hdfs':
+            unit    => 'envoyproxy',
+            content => "[Service]\nInaccessiblePaths=-/mnt",
+        }
+    }
 }
