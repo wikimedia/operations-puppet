@@ -43,7 +43,7 @@ class profile::cache::varnish::frontend (
     String                  $cache_cluster           = lookup('cache::cluster'),
     Profile::Cache::Sites   $req_handling            = lookup('cache::req_handling'),
     Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', {'default_value'                                   => {}}),
-    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'          => false}),
+    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'          => true}),
     # locals
     Hash[String, Any]       $fe_vcl_config           = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
     Hash[String, Any]       $fe_cache_be_opts        = lookup('profile::cache::varnish::frontend::cache_be_opts'),
