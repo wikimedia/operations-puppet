@@ -250,6 +250,10 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'dumpsdata100[3-7]':
     - partman/custom/dumpsdata100X-no-data-format.cfg
+  'elastic11(0[8-9]|1[0-9]|2[0-5])':
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-2dev-efi.cfg
   'elastic*':
     - partman/standard.cfg
     - partman/raid0.cfg

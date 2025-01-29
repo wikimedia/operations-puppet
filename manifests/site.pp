@@ -1093,6 +1093,11 @@ node /^elastic110[8-9]|elastic1110\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
+# T384966 refresh hosts
+node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
+    role(insetup::search_platform)
+}
+
 node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
     role(elasticsearch::cirrus)
 }
