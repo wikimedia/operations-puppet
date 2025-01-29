@@ -102,15 +102,6 @@ profile::swift::proxyhosts:
   - ms-fe2014.codfw.wmnet
 
 profile::swift::storagehosts:
-  - ms-be1051.eqiad.wmnet
-  - ms-be1052.eqiad.wmnet
-  - ms-be1053.eqiad.wmnet
-  - ms-be1054.eqiad.wmnet
-  - ms-be1055.eqiad.wmnet
-  - ms-be1056.eqiad.wmnet
-  - ms-be1057.eqiad.wmnet
-  - ms-be1058.eqiad.wmnet
-  - ms-be1059.eqiad.wmnet
   - ms-be1060.eqiad.wmnet
   - ms-be1061.eqiad.wmnet
   - ms-be1062.eqiad.wmnet
