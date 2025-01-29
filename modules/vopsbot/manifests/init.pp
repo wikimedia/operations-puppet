@@ -105,14 +105,16 @@ class vopsbot(
         require    => File[$schema_file],
     }
 
-    rsync::quickdatacopy { 'vopsbot-sync-db':
-        ensure              => present,
-        auto_sync           => true,
-        source_host         => $alertmanager_active_host,
-        dest_host           => $alertmanager_passive_hosts,
-        module_path         => $data_path,
-        server_uses_stunnel => true,
-        chown               => "${daemon_user}:${daemon_user}",
+    if length($alertmanager_passive_hosts) > 0 {
+        rsync::quickdatacopy { 'vopsbot-sync-db':
+            ensure              => present,
+            auto_sync           => true,
+            source_host         => $alertmanager_active_host,
+            dest_host           => $alertmanager_passive_hosts,
+            module_path         => $data_path,
+            server_uses_stunnel => true,
+            chown               => "${daemon_user}:${daemon_user}",
+        }
     }
 
     systemd::service { 'vopsbot':
