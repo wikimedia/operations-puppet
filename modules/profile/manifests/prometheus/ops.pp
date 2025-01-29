@@ -2494,13 +2494,13 @@ class profile::prometheus::ops (
     }
 
     $liberica_jobs = [
-      {
-        'job_name'        => 'liberica',
-        'scheme'          => 'http',
-        'file_sd_configs' => [
-          { 'files' => [ "${targets_path}/liberica_*.yaml"] },
-        ],
-      },
+        {
+            'job_name'        => 'liberica',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/liberica_*.yaml"] },
+            ],
+        },
     ]
 
     prometheus::class_config{ "liberica_hcforwarder_${::site}":
@@ -2525,6 +2525,12 @@ class profile::prometheus::ops (
         dest       => "${targets_path}/liberica_cp_${::site}.yaml",
         class_name => 'profile::liberica',
         port       => 3003,
+    }
+
+    prometheus::class_config{ "liberica_ipip-mq-optimizer_${::site}":
+        dest       => "${targets_path}/liberica_ipip-mq-optimizer_${::site}.yaml",
+        class_name => 'profile::liberica',
+        port       => 9095,
     }
 
     $lvs_realserver_jobs = [
