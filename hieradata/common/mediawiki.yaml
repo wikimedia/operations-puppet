@@ -516,22 +516,6 @@ mediawiki::sites:
             late: []
       - name: login.wikimedia.org
         params: {}
-      # not a real wiki, but an alternative way to reach other wikis for auth cookie sharing
-      # other than a path prefix, needs identical handling to proper wiki domains
-      - name: auth.wikimedia.org
-        params:
-          additional_rewrites:
-            early:
-              [
-                "# Redirect requests for the root of the domain to something nice",
-                "RewriteRule ^/$ https://www.wikimedia.org [R=302,L]",
-                "# T365162 strip the prefix used to identify the wiki",
-                "# (T380551#10368927 don't mess up the 404 error page)",
-                "RewriteCond %%{}{REQUEST_URI} !=/w/404.php",
-                "RewriteRule ^/([^/]*)/(.*)$ /$2",
-              ]
-            late: []
-          https_only: true
       - name: transitionteam.wikimedia.org
         params:
           https_only: true
@@ -546,6 +530,33 @@ mediawiki::sites:
           https_only: true
       - name: api.wikimedia.org
         params:
+          https_only: true
+  # not a real wiki, but an alternative way to reach other wikis for auth cookie sharing
+  # other than a path prefix, needs identical handling to proper wiki domains
+  - name: auth
+    priority: 9
+    defaults:
+      ensure: present
+      docroot: "/srv/mediawiki/docroot/auth"
+      legacy_rewrites: false
+      # robots.txt, favicon.ico are static files in the docroot instead
+      public_rewrites: false
+    vhosts:
+      - name: auth.wikimedia.org
+        params:
+          additional_rewrites:
+            early:
+              - "    # Redirect requests for the root of the domain to something nice"
+              - "    RewriteRule ^/$ https://www.wikimedia.org [R=302,L]"
+              - "    # T365162 strip the prefix used to identify the wiki"
+              - "    # (T380551#10368927 don't mess up the 404 error page)"
+              - "    RewriteCond %%{}{REQUEST_URI} !=/w/404.html"
+              - "    RewriteRule ^/([^/]*)/(.*)$ /$2"
+              - "    # Primary wiki redirector: [this applies after the prefix is stripped above]"
+              - "    RewriteRule ^/$ /w/index.php"
+              - "    # Custom error page (T383952)"
+              - "    ErrorDocument 404 /404.html"
+            late: []
           https_only: true
   # www.wikimedia.org also catches *.wikimedia.org
   # so it needs to come last.
