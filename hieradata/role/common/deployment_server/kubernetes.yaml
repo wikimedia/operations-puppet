@@ -6,6 +6,7 @@ cluster: misc
 # Needed for docker
 profile::base::overlayfs: true
 profile::admin::groups:
+  - restricted
   - deployment
   - deploy-ml-service
   - wdqs-admins

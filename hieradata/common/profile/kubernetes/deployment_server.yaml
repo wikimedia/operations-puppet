@@ -170,10 +170,18 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-script
         - name: mw-script-deploy
+        - name: mw-script-restricted
+          group: restricted
+        - name: mw-script-restricted-deploy
+          group: restricted
     mw-cron:
       usernames:
         - name: mw-cron
         - name: mw-cron-deploy
+        - name: mw-cron-restricted
+          group: restricted
+        - name: mw-cron-restricted-deploy
+          group: restricted
     mw-videoscaler:
       usernames:
         - name: mw-videoscaler
