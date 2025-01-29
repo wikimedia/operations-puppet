@@ -12,21 +12,21 @@ profile::wmcs::cloudgw::vrrp_vips:
   - "185.15.56.244/29 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
 
 profile::wmcs::cloudgw::conntrackd:
-  cloudgw1001:
-    local_addr: cloudgw1001.eqiad.wmnet
+  cloudgw1003:
+    local_addr: cloudgw1003.eqiad.wmnet
     remote_addr: cloudgw1004.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
-      - 10.64.20.4
+      - 10.64.20.25 # cloudgw1003.eqiad.wmnet
       - 10.64.20.26 # cloudgw1004.eqiad.wmnet
       - 185.15.56.237
       - 185.15.56.244
   cloudgw1004:
     local_addr: cloudgw1004.eqiad.wmnet
-    remote_addr: cloudgw1001.eqiad.wmnet
+    remote_addr: cloudgw1003.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
-      - 10.64.20.4
+      - 10.64.20.25 # cloudgw1003.eqiad.wmnet
       - 10.64.20.26 # cloudgw1004.eqiad.wmnet
       - 185.15.56.237
       - 185.15.56.244
