@@ -17,7 +17,7 @@ require 'syslog'
 Puppet::Reports.register_report(:logstash) do
   desc 'Send logs to a logstash instance'
 
-  SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first
+  SERVER_NAME = Addrinfo.getaddrinfo(Socket.gethostname, nil).first.getnameinfo.first
 
   def process
     # Convert Puppet::Transaction::Report object to a logstash event
