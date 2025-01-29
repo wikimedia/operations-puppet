@@ -28,7 +28,6 @@ profile::gnmi_telemetry::outputs:
     timeout: 50s
     event-processors:
       - delete-tag-name
-      - strip-source-domain
       - description-to-tag
 profile::gnmi_telemetry::subscriptions:
   interfaces-states:
@@ -42,18 +41,6 @@ profile::gnmi_telemetry::processors:
     event-delete:
       tag-names:
         - "^subscription-name"
-  strip-source-domain:
-    event-strings:
-      tag-names: ["source"]
-      transforms:
-        - split:
-            apply-on: "value"
-            split-on: "."
-            join-with: "."
-            ignore-last: 2
-        - trim-suffix:
-            apply-on: "value"
-            suffix: ".mgmt"
   description-to-tag:
     event-value-tag-v2:
       rules:

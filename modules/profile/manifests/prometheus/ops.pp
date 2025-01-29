@@ -1307,17 +1307,17 @@ class profile::prometheus::ops (
         'file_sd_configs'        => [
           { 'files' => [ "${targets_path}/gnmi_*.yaml" ]}
         ],
-        # Copy 'target' onto 'instance' and keep only the hostname
+        # Copy 'source' onto 'instance' and keep only the hostname
         'metric_relabel_configs' => [
         {
-          'source_labels' => ['target'],
+          'source_labels' => ['source'],
           'regex'         => '([^.]*).*',
           'target_label'  => 'instance',
           'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
         },
-        # Complete the 'target' -> 'instance' rename by dropping the former
+        # Complete the 'source' -> 'instance' rename by dropping the former
         {
-          'regex'  => 'target',
+          'regex'  => 'source',
           'action' => 'labeldrop',
         },
         # Drop 'cluster' as it doesn't apply in this context
