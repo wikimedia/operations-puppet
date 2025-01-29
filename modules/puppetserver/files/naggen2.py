@@ -184,7 +184,7 @@ class NagiosGeneratorPuppetDB:
             server_url,
             resource_type
         )
-        resources_raw = requests.get(url, cert=self.cert, params={
+        resources_raw = requests.get(url, params={
             'query': '["and", \
                         ["=", ["parameter", "ensure"], "present"], \
                         ["=", "exported", true] \
