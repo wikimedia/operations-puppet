@@ -384,11 +384,11 @@ node /^chartmuseum[12]001\.(eqiad|codfw)\./ {
     role(chartmuseum)
 }
 
-node /^cloudgw100[12]\.eqiad\./ {
+node /^cloudgw100[14]\.eqiad\./ {
     role(wmcs::cloudgw)
 }
 
-node /^cloudgw100[34]\.eqiad\./ {
+node /^cloudgw100[23]\.eqiad\./ {
     role(insetup::wmcs)
 }
 

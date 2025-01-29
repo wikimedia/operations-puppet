@@ -14,19 +14,19 @@ profile::wmcs::cloudgw::vrrp_vips:
 profile::wmcs::cloudgw::conntrackd:
   cloudgw1001:
     local_addr: cloudgw1001.eqiad.wmnet
-    remote_addr: cloudgw1002.eqiad.wmnet
+    remote_addr: cloudgw1004.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.64.20.4
-      - 10.64.20.5
+      - 10.64.20.26 # cloudgw1004.eqiad.wmnet
       - 185.15.56.237
       - 185.15.56.244
-  cloudgw1002:
-    local_addr: cloudgw1002.eqiad.wmnet
+  cloudgw1004:
+    local_addr: cloudgw1004.eqiad.wmnet
     remote_addr: cloudgw1001.eqiad.wmnet
     filter_ipv4:
       # don't sync conntrack info for the following local addresses
       - 10.64.20.4
-      - 10.64.20.5
+      - 10.64.20.26 # cloudgw1004.eqiad.wmnet
       - 185.15.56.237
       - 185.15.56.244
