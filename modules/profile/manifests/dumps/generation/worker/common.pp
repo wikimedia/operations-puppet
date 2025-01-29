@@ -7,7 +7,7 @@ class profile::dumps::generation::worker::common(
     $extra_mountopts = lookup('profile::dumps::generation::worker::common::nfs_extra_mountopts'),
     $php = lookup('profile::dumps::generation::worker::common::php'),
     $dumps_misc_cronrunner = lookup('profile::dumps::generation::worker::common::dumps_misc_cronrunner'),
-    Boolean $use_analytics_replicas = lookup('profile::dumps::generation::worker::common::use_analytics_replicas', default_value => false)
+    Boolean $use_analytics_replicas = lookup('profile::dumps::generation::worker::common::use_analytics_replicas', default_value => true)
 ) {
     # mw packages and dependencies
     require profile::mediawiki::scap_proxy
