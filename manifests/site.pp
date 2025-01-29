@@ -179,6 +179,11 @@ node /^an-presto10(0[1-9]|1[0-9]|20)\.eqiad\./ {
     role(analytics_cluster::presto::server)
 }
 
+# new node T355571
+node /^an-redacteddb1001\.eqiad\./ {
+    role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
+}
+
 # Analytics Web Node.
 node /^an-web1001\.eqiad\./ {
     role(analytics_cluster::webserver)
@@ -282,10 +287,9 @@ node /^backup1012\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
-
-# new node T355571
-node /^an-redacteddb1001\.eqiad\./ {
-    role(wmcs::db::wikireplicas::dedicated::analytics_multiinstance)
+# to be setup
+node /^backup101[34]\.eqiad\./ {
+    role(insetup::data_persistence)
 }
 
 # codfw storage daemon
@@ -310,11 +314,6 @@ node /^backup201[01]\.codfw\./ {
     role(mediabackup::storage)
 }
 
-# pending to be setup as bacula expansion
-node /^backup2012\.codfw\./ {
-    role(insetup::data_persistence)
-}
-
 # New backup node for codfw T294973
 node /^backup2008\.codfw\./ {
     role(backup::databases)
@@ -323,6 +322,16 @@ node /^backup2008\.codfw\./ {
 # New backup node for codfw T307049
 node /^backup2009\.codfw\./ {
     role(backup::production)
+}
+
+# pending to be setup as bacula expansion
+node /^backup2012\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
+# to be setup
+node /^backup201[34]\.codfw\./ {
+    role(insetup::data_persistence)
 }
 
 
