@@ -957,8 +957,8 @@ node /^db22(41|42|43)\.codfw\./ {
     role(insetup::data_persistence)
 }
 
-# New databases T379753 & T380083
-node /^db12(50|51|52|53|54|55|56)\.eqiad\./ {
+# New databases T379753, T380083 & T384979
+node /^db12(50|51|52|53|54|55|56|57)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
