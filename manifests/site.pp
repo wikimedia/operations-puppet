@@ -1642,7 +1642,7 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker22([0-3][0-9]|4[0-1])\.codfw\./ {
+node /^wikikube-worker22([0-3][0-9]|4[0-3])\.codfw\./ {
     role(kubernetes::worker)
 }
 
@@ -2069,11 +2069,6 @@ node /^mwdebug200[12]\.codfw\./ {
 }
 
 # Jobrunners
-
-# Row A
-node /^mw241[01]\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
 
 # Row D
 

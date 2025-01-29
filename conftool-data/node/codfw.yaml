@@ -390,6 +390,8 @@ codfw:
     wikikube-worker2239.codfw.wmnet: [kubesvc]
     wikikube-worker2240.codfw.wmnet: [kubesvc]
     wikikube-worker2241.codfw.wmnet: [kubesvc]
+    wikikube-worker2242.codfw.wmnet: [kubesvc]
+    wikikube-worker2243.codfw.wmnet: [kubesvc]
   kubernetes-staging:
     kubestagemaster2003.codfw.wmnet: [kubemaster]
     kubestagemaster2004.codfw.wmnet: [kubemaster]
