@@ -63,12 +63,13 @@ done
 # Publish the sa cert to etcd
 $etcdctl put "$etcd_key" < "$SA_CERT_PATH" >/dev/null
 
-# Proceed with deletion only if there are keys to keep
-if [ "$keys_to_keep" -gt 0 ]; then
+if [ "${#keys_to_delete[@]}" -gt 0 ]; then
+  # Proceed with deletion only if there are keys to keep
+  if [ "$keys_to_keep" -le 0 ]; then
+    echo "Error: All certificates are expired, refusing to delete any"
+    exit 3
+  fi
   for key in "${keys_to_delete[@]}"; do
     $etcdctl del "$key" >/dev/null
   done
-else
-  echo "Error: All certificates are expired, refusing to delete any"
-  exit 3
 fi
