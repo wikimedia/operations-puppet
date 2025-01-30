@@ -887,9 +887,9 @@ node /^db1245\.eqiad\./ {
 }
 
 # codfw backup sources
-## s3 & s4, bullseye
+## Old host for s3 & s4, bullseye, about to be decom. (T383971)
 node /^db2139\.codfw\./ {
-    role(mariadb::backup_source)
+    role(insetup::data_persistence)
 }
 ## s3 & s4, bookworm
 node /^db2239\.codfw\./ {
