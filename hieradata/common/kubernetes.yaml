@@ -665,6 +665,13 @@ kubernetes::clusters:
         - kubestage2003.codfw.wmnet
         - kubestage2004.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
   ml-serve:
     ml-serve-eqiad:
       dc: eqiad
