@@ -21,3 +21,5 @@ profile::maps::osm_master::replication_slots: []
 profile::maps::osm_master::enable_tile_invalidation: false
 
 profile::firewall::provider: nftables
+
+profile::puppet::agent::force_puppet7: true
