@@ -38,7 +38,7 @@
 "group:get_all": ""
 "group:get": ""
 "group:get_group_snapshot": ""
-"scheduler_extension:scheduler_stats:get_pools": ""
+"scheduler_extension:scheduler_stats:get_pools": "is_admin:True"
 "volume_extension:qos_specs_manage:get_all": ""
 "volume_extension:qos_specs_manage:get": ""
 "volume_extension:quotas:show": ""
