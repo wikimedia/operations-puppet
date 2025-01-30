@@ -456,15 +456,15 @@ def main():
 
     cloud = CloudVPS(p, NovaAuth(creds.id, creds.secret))
     if args.action == "list-hosts":
-        if args.stack and not args.all_hosts:
+        if not args.stack or args.all_hosts:
+            log.info("Loading hosts for project %r:" % cloud.project_id)
+            print("\n".join(as_table(*cloud.list_hosts(all=True))))
+        else:
             log.info(
                 "Loading hosts for project %r and stack %r:"
                 % (cloud.project_id, p.name)
             )
             print("\n".join(as_table(*cloud.list_hosts())))
-        else:
-            log.info("Loading hosts for project %r:" % cloud.project_id)
-            print("\n".join(as_table(*cloud.list_hosts(all=True))))
     elif args.action == "create-hosts":
         cloud.create_hosts(args.no_block)
         update_ssh_fingerprints(p, config_dir)

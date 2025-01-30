@@ -212,7 +212,7 @@ class CloudVPS(object):
                 ]
             )
 
-        return description, data
+        return description, sorted(data)
 
     def specs_for_role(self, role: str) -> Specs:
         """Get Specs for role.
