@@ -1,0 +1,7 @@
+# file maintained in puppet
+# one regexp per line, remember to scape non-regex characters
+# feel free to add more if required
+watchdog: watchdog0: watchdog did not stop!
+mpt3sas_cm0: Trace buffer memory 2048 KB allocated
+x86/cpu: VMX \(outside TXT\) disabled by BIOS
+x86/cpu: SGX disabled by BIOS

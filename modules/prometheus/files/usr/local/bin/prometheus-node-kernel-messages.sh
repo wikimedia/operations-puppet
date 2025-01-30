@@ -5,6 +5,7 @@
 set -eu
 set -o pipefail
 
+IGNORE_REGEX_FILE="/etc/prometheus-node-kernel-messages-ignore-regex.txt"
 outfile="$(realpath "${1:-/var/lib/prometheus/node.d/kernel-messages.prom}")"
 tmpoutfile="${outfile}.$$"
 function cleanup {
@@ -17,6 +18,15 @@ if [ "$(id -u)"  != "0" ] ; then
     exit 1
 fi
 
+if [[ -r "$IGNORE_REGEX_FILE" ]]; then
+    # ignore comment and empty lines, construct grep -Ev pattern from file
+    ignore_regex=$(grep -v ^[[:space:]]*# "$IGNORE_REGEX_FILE" | grep -v ^$ | sed ':a;N;$!ba;s/\n/|/g')
+    ignore_command="grep -Ev '${ignore_regex}'"
+else
+    # NOOP
+    ignore_command="cat"
+fi
+
 # this will also find messages that were logged before the last boot,
 # e.g. if a kernel panic caused a server reboot
 SINCE="30m ago"
@@ -24,7 +34,7 @@ SINCE="30m ago"
 # When all servers are > buster, we can simplify this line:
 # * instead of _TRANSPORT=kernel we can use  '--dmesg --boot=all'
 # * we can use "-o cat" instead of "-o json", removing the need of jq
-messages=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" -o json --output-fields=PRIORITY,MESSAGE |jq --raw-output '.PRIORITY + " " + .MESSAGE')
+messages=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" -o json --output-fields=PRIORITY,MESSAGE |jq --raw-output '.PRIORITY + " " + .MESSAGE' | eval "${ignore_command}")
 
 # For each log message, categorize it.
 # Each message can increase only one category, or no category.
