@@ -16,7 +16,7 @@ To install `pontoonctl` on your Debian system:
     sudo apt install python3-novaclient python3-keystoneauth1 pipx
     git checkout production
     # Run pontoonctl from puppet.git checkout
-    pipx install --system-site-packages --editable .[ctl]
+    pipx install --system-site-packages --editable '.[ctl]'
 
 Check Cloud VPS connectivity with `pontoonctl list-hosts` and follow the
 instructions to set up credentials.
