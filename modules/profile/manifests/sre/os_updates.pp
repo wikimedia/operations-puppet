@@ -93,7 +93,7 @@ class profile::sre::os_updates (
             ensure   => $os_reports_timer_ensure,
             proto    => 'tcp',
             port     => [873, 1873],
-            src_sets => ['AUX_KUBEPODS_NETWORKS'],
+            src_sets => ['AUX_KUBEPODS_NETWORKS', 'STAGING_KUBEPODS_NETWORKS'],
         }
     }
 }
