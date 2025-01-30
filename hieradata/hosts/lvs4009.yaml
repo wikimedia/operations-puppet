@@ -4,3 +4,7 @@ profile::liberica::bgp_config:
 profile::liberica::include_services:
   - upload
   - upload-https
+# keep bullseye device name of the NIC to avoid blocking the reimage
+profile::lvs::interface_tweaks:
+  enp175s0f0np0:
+    txqlen: 10000
