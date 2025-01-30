@@ -6319,7 +6319,9 @@ users:
     email: yliou@wikimedia.org
     uid: 35756
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDHv0OBzB/Md0WJ/7l9MB3G44yy0ReWnOREm48PnUXCR yu-mingliou@wmf3034
+    krb: present
   ceec:
     ensure: present
     realname: Christine Stone
