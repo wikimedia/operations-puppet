@@ -3,12 +3,12 @@
 #  fixups and optimizations specific to LVS in a single location
 
 define profile::lvs::interface_tweaks(
-  $interface=$name,
-  $txqlen=false,
-  $rss_pattern='',
-  $do_rps=true,
-  $ipip_enabled=false,
-  $do_ipv6_ra_primary=false,
+    $interface=$name,
+    $txqlen=false,
+    $rss_pattern='',
+    $do_rps=true,
+    $ipip_enabled=false,
+    $do_ipv6_ra_primary=false,
 ) {
     if $interface != $facts['interface_primary'] {
         interface::manual { $name:
@@ -17,13 +17,13 @@ define profile::lvs::interface_tweaks(
     }
 
     if $do_ipv6_ra_primary {
-      # Enable default route creation from IPv6 RA on primary interface: T358260
-      if $interface == $facts['interface_primary'] {
-          interface::pre_up_command { "${interface}-accept_ra_defrtr":
-            interface => $interface,
-            command   => "sysctl -w net.ipv6.conf.${interface}.accept_ra_defrtr=1",
-          }
-      }
+        # Enable default route creation from IPv6 RA on primary interface: T358260
+        if $interface == $facts['interface_primary'] {
+            interface::pre_up_command { "${interface}-accept_ra_defrtr":
+                interface => $interface,
+                command   => "sysctl -w net.ipv6.conf.${interface}.accept_ra_defrtr=1",
+            }
+        }
     }
 
     # Disable LRO to avoid merging important headers for flow control and such
@@ -49,13 +49,21 @@ define profile::lvs::interface_tweaks(
         }
     }
 
-    # Max out ring buffers, seems to eliminate the spurious drops under heavy traffic
-    $ring_size = $facts['net_driver'][$interface]['driver'] ? {
-        'bnx2x' => 4078,
-        'bnxt_en' => 2047,
+    if $interface in $facts['net_driver'] {
+        $net_driver = $facts['net_driver'][$interface]['driver']
+    } else {
+        $net_driver = 'unknown'
+        notice("WARNING: unknown net_driver for interface ${interface}")
     }
 
-    if $facts['net_driver'][$interface]['driver'] =~ /^bnx(2x|t_en)$/ {
+
+    if $net_driver =~ /^bnx(2x|t_en)$/ {
+        # Max out ring buffers, seems to eliminate the spurious drops under heavy traffic
+        $ring_size = $net_driver ? {
+            'bnx2x' => 4078,
+            'bnxt_en' => 2047,
+        }
+
         interface::ring { "${name} rxring":
             interface => $interface,
             setting   => 'rx',
@@ -64,14 +72,14 @@ define profile::lvs::interface_tweaks(
 
         # Disable ethernet PAUSE behavior, dropping is better than buffering (in reasonable cases!)
         interface::noflow { $interface: }
-    }
 
-    # bnxt_en also needs the tx set explicitly, unlike bnx2x above
-    if $facts['net_driver'][$interface]['driver'] == 'bnxt_en' {
-        interface::ring { "${name} txring":
-            interface => $interface,
-            setting   => 'tx',
-            value     => $ring_size,
+        # bnxt_en also needs the tx set explicitly, unlike bnx2x above
+        if $net_driver == 'bnxt_en' {
+            interface::ring { "${name} txring":
+                interface => $interface,
+                setting   => 'tx',
+                value     => $ring_size,
+            }
         }
     }
 
