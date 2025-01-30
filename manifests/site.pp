@@ -1692,6 +1692,10 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-9]|4[0-1])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
+node /^cloudcephosd104[2-7]\.eqiad\./ {
+    role(insetup::wmcs)
+}
+
 node /^cloudelastic100[7-9]\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
