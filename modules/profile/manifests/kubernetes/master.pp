@@ -57,6 +57,11 @@ class profile::kubernetes::master (
     class { 'k8s::client':
         version => $k8s_config['version'],
     }
+    # Ensure /usr/bin/kubectl does point to the kubectl version
+    # matching this cluster
+    alternatives::select { 'kubectl':
+        path => "/usr/bin/kubectl${k8s_config['version']}",
+    }
 
     # The first useable IPv4 IP of the service cluster-cidr is automatically used as ClusterIP for the internal
     # kubernetes apiserver service (kubernetes.default.cluster.local)
