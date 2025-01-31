@@ -857,45 +857,41 @@ node /^db2183|db2184\.codfw\./ {
 }
 
 # eqiad backup sources
-## s3 & s4, bullseye
+## s3 & s4, bookworm
 node /^db1150\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bullseye
+## s7 & s8, bookworm
 node /^db1171\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s5, s8 & x1, bullseye
+## s5, s8 & x1, bookworm
 node /^db1216\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s2, s6 & x1, bullseye
+## s2, s6 & x1, bookworm
 node /^db1225\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s1 & s2, bullseye
+## s1 & s2, bookworm
 node /^db1239\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s1 & s3, bullseye
+## s1 & s3, bookworm
 node /^db1240\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s4 & s5, bullseye
+## s4 & s5, bookworm
 node /^db1245\.eqiad\./ {
     role(mariadb::backup_source)
 }
 
 # codfw backup sources
-## Old host for s3 & s4, bullseye, about to be decom. (T383971)
-node /^db2139\.codfw\./ {
-    role(insetup::data_persistence)
-}
 ## s3 & s4, bookworm
 node /^db2239\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s1, bullseye
+## s1, bookworm
 node /^db2141\.codfw\./ {
     role(mariadb::backup_source)
 }
