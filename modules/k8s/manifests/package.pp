@@ -16,11 +16,16 @@ define k8s::package (
     $version_array = $version.split('\\.')
     $minor_version = Integer($version_array[1])
     $next_version = "${$version_array[0]}.${$minor_version + 1}"
+
+    # Creating the component manually here to avoid it being defined multiple times
+    # which raises warnings from apt.
     $component_title = "kubernetes${version_no_dot}"
     ensure_resource('apt::package_from_component', $component_title, {
-        component => "component/${component_title}",
-        packages  => [],
+        component       => "component/${component_title}",
+        packages        => [],
+        ensure_packages => false
     })
+
     if $package == 'client' {
         # The kubernetes-client package (e.g. kubectl) carries the k8s version number in it's
         # package name so that we can install multiple kubectl versions in parallel
@@ -28,6 +33,7 @@ define k8s::package (
     } else {
         $package_name = "kubernetes-${package}"
     }
+
     ensure_packages($package_name, {
         'require' => Apt::Package_from_component[$component_title],
         'ensure'  => ">=${version} <${next_version}"
