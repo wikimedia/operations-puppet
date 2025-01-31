@@ -15,17 +15,14 @@ class profile::dbbackups::bacula (
         } else {
             fail('Only eqiad or codfw pools are configured for database backups.')
         }
-        #backup::set { 'mysql-srv-backups-dumps-latest':
-        #    jobdefaults => $jobdefaults,
-        #}
+        backup::set { 'mysql-srv-backups-dumps-latest':
+            jobdefaults => $jobdefaults,
+        }
         # Disable snapshoting sending to long term storage.
         # It takes a lot of space and is rarely used beyond
         # the 1 week window.
         # backup::set { 'mysql-srv-backups-snapshots-latest':
         #     jobdefaults => $jobdefaults,
         # }
-    }
-    backup::set { 'mysql-srv-backups-dumps-latest':
-        jobdefaults => 'Weekly-Mon-ArchiveEqiad',
     }
 }
