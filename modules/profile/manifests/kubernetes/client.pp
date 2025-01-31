@@ -3,7 +3,7 @@
 # NOTE: Resist the urge to just old it in some other profile, it's been split
 # off in its own profile so that it can be reused in e.g. deployment servers
 class profile::kubernetes::client (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::client::version',),
+    Optional[K8s::KubernetesVersion] $version = lookup('profile::kubernetes::client::version', { default_value => undef }),
 ) {
     class { 'k8s::client':
         version => $version,
