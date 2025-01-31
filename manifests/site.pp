@@ -1899,11 +1899,7 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
     role(maps::replica)
 }
 
-node /^maps-test200[3-6]\.codfw\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
-node /^maps-test200[2]\.codfw\./ {
+node /^maps-test200[2-6]\.codfw\./ {
     role(maps::replica_bookworm)
 }
 
