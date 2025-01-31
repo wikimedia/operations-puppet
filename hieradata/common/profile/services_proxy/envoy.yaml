@@ -394,11 +394,11 @@ profile::services_proxy::envoy::listeners:
     port: 6509
     service: mw-misc
     timeout: "30s"
+    sets_sni: true
     # We duplicate the mw-misc service in order to make it work specifically
     # for noc, as the service is behind Kuberntes ingress, but the SNI rewrites
     # the Host HTTP header, required by the mediawiki instance itself.
-    # Instead of using `sets_sni: true`, we manually force the host header to
-    # use the right value.
+    # We manually force the host header to use the right value.
     http_host: 'noc.wikimedia.org'
     keepalive: "4s"
 
