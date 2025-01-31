@@ -232,7 +232,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
       target: http://query.wikidata.org
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://query.wikidata.org/querybuilder
       replacement: https://webserver-misc-eqiad.discovery.wmnet
@@ -247,7 +247,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs-main.discovery.wmnet/bigdata
     - type: map
       target: http://query-main.wikidata.org
-      replacement: https://webserver-misc-sites.discovery.wmnet
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://query-main.wikidata.org/querybuilder
       replacement: https://webserver-misc-sites.discovery.wmnet
