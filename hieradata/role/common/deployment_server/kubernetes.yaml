@@ -470,7 +470,3 @@ profile::mediawiki::deployment::server::auto_clean_interval: Mon *-*-* 21:00:00 
 profile::confd::instances:
   main:
     interval: 30
-
-# Unsetting the kubernetes client version will make it install kubectl versions matching all k8s versions
-# we are currently using.
-profile::kubernetes::client::version: null
