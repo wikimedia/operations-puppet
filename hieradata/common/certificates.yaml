@@ -270,6 +270,36 @@ certificates::acme_chief:
     - '*.wikipedia.ro'
     - wikimedia.ro
     - '*.wikimedia.ro'
+    - wikipeddia.org
+    - '*.wikipeddia.org'
+    - wikimedia-dns.com
+    - '*.wikimedia-dns.com'
+    - visualwikipedia.com
+    - '*.visualwikipedia.com'
+    - xn--wikisownik-e0b.pl
+    - '*.xn--wikisownik-e0b.pl'
+    - wikipeadia.com
+    - '*.wikipeadia.com'
+    - wikipedica.org
+    - '*.wikipedica.org'
+    - wikipeedia.com
+    - '*.wikipeedia.com'
+    - wikipediagroup.net
+    - '*.wikipediagroup.net'
+    - vvikipedla.com
+    - '*.vvikipedla.com'
+    - wikipedia-review.com
+    - '*.wikipedia-review.com'
+    - wikipedianetworktrust.org
+    - '*.wikipedianetworktrust.org'
+    - wikinews.gr
+    - '*.wikinews.gr'
+    - vikipedia.com
+    - '*.vikipedia.com'
+    - wikkipedia.be
+    - '*.wikkipedia.be'
+    - wikidata.ro
+    - '*.wikidata.ro'
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
