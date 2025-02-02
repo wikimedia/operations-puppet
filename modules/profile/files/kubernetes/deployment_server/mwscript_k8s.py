@@ -235,8 +235,9 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             'args': [args.script_name, *args.script_args],
             'labels': {
                 'username': interactive.get_username(),
-                # The label can't contain slashes. If script_name is a path, use the file only.
-                'script': args.script_name.split('/')[-1],
+                # The label can't contain slashes or colons. If script_name has a path or an
+                # extension name, use the filename only.
+                'script': re.split('[/:]', args.script_name)[-1],
             },
             'comment': args.comment,
             'stdin': args.attach,
