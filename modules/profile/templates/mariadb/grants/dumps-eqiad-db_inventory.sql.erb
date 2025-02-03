@@ -1,17 +1,16 @@
--- Grants for '<%= @dump_user %>'@'10.64.0.95'
-GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO '<%= @dump_user %>'@'10.64.0.95' IDENTIFIED BY '<%= @dump_pass %>';
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.64.0.95';
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.64.0.95';
--- Grants for '<%= @dump_user %>'@'10.64.16.31'
-GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO '<%= @dump_user %>'@'10.64.16.31' IDENTIFIED BY '<%= @dump_pass %>';
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.64.16.31';
-GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.64.16.31';
 -- Grants for '<%= @dump_user %>'@'10.64.32.26'
-GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO '<%= @dump_user %>'@'10.64.32.26' IDENTIFIED BY '<%= @dump_pass %>';
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.64.32.26' IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.64.32.26';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.64.32.26';
 -- Grants for '<%= @dump_user %>'@'10.64.48.146'
-GRANT FILE, RELOAD, REPLICATION CLIENT, SUPER ON *.* TO '<%= @dump_user %>'@'10.64.48.146' IDENTIFIED BY '<%= @dump_pass %>';
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.64.48.146' IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.64.48.146';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.64.48.146';
-
+-- Grants for '<%= @dump_user %>'@'10.192.6.9'
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.192.6.9' IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.192.6.9';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.192.6.9';
+-- Grants for '<%= @dump_user %>'@'10.192.13.8'
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO '<%= @dump_user %>'@'10.192.13.8' IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `orchestrator`.* TO '<%= @dump_user %>'@'10.192.13.8';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `zarcillo`.* TO '<%= @dump_user %>'@'10.192.13.8';
