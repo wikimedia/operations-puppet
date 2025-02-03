@@ -34,7 +34,7 @@ SINCE="30m ago"
 # When all servers are > buster, we can simplify this line:
 # * instead of _TRANSPORT=kernel we can use  '--dmesg --boot=all'
 # * we can use "-o cat" instead of "-o json", removing the need of jq
-messages=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" -o json --output-fields=PRIORITY,MESSAGE |jq --raw-output '.PRIORITY + " " + .MESSAGE' | eval "${ignore_command}")
+messages=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" -o json --output-fields=PRIORITY,MESSAGE |jq --raw-output '.PRIORITY + " " + .MESSAGE' | eval "${ignore_command}" || test $? = 1)
 
 # For each log message, categorize it.
 # Each message can increase only one category, or no category.
