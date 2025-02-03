@@ -229,7 +229,7 @@ node /^aux-k8s-etcd100[3-5]\.eqiad\./ {
 }
 
 node /^aux-k8s-etcd200[3-5]\.codfw\./ {
-    role(insetup::observability)
+    role(etcd::v3::aux_k8s_etcd)
 }
 
 # control-plane servers for aux kubernetes cluster
