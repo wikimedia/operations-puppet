@@ -17,7 +17,7 @@ class prometheus::node_kernel_messages (
         mode   => '0555',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/prometheus/prometheus-node-kernel-messages-ignore-regex.txt',
+        source => 'puppet:///modules/prometheus/kernel-messages-ignore-regex.txt',
     }
 
     systemd::timer::job { 'prometheus-node-kernel-messages':
