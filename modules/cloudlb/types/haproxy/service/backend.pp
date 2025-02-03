@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 type CloudLB::HAProxy::Service::Backend = Struct[{
+    'balance'      => Optional[String],
     'port'         => Stdlib::Port,
     'servers'      => Variant[
         Array[OpenStack::ControlNode],

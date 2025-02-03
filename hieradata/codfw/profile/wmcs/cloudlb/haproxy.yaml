@@ -37,6 +37,11 @@ profile::wmcs::cloudlb::haproxy::config:
 
   # Even in codfw1dev this api needs to be open to the internet so that
   #  browsers can redirect to keystone for OIDC
+  #
+  # This api uses 'source' balancing rather than the default 'leastconn'.
+  #  That's because when logging in Horizon needs to talk to the
+  #  same keystone backend several times in quick succession to complete
+  #  a login. T383370
   keystone-api-public:
     type: http
     firewall:
@@ -46,6 +51,7 @@ profile::wmcs::cloudlb::haproxy::config:
       - port: 25000
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
     backend:
+      balance: "source"
       port: "%{alias('profile::openstack::codfw1dev::keystone::public_bind_port')}"
       servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
     healthcheck:

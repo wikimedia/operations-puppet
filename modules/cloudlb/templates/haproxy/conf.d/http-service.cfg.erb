@@ -21,7 +21,11 @@ frontend <%= @title %>_frontend
     # log /dev/log local0 debug
 
 backend <%= @title %>_backend
+<%- if @balance -%>
+    balance <%= @balance %>
+<%- else -%>
     balance leastconn
+<%- end -%>
 <%- if @http and @http['set_headers'] -%>
 <%- @http['set_headers'].each do |header, value| -%>
     http-response set-header <%= header %> "<%= value %>"
