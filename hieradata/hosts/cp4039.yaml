@@ -30,3 +30,37 @@ profile::cache::haproxy::rings:
     backend_name: benthos
     backend_address: *benthos_address
     backend_log_proto: legacy
+
+profile::cache::haproxy::post_acl_actions:
+  tls:
+    - context: http-request
+      verb: set-var-fmt(req.silentdrop) '{"host":"%[req.hdr(Host)]","src":"%[src]"."path":"%[path]"}'
+      condition: if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
+      comment: "Prepares json payload as a variable used in successive debug function"
+    - context: http-request
+      verb: 'set-var(req.dummy) var(req.silentdrop),json(utf8),debug(silentdroplog,reqctl-ring)'
+      condition: if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
+      comment: "Logs into reqctl-ring the req.silentdrop variable defined earlier"
+    - context: http-request
+      verb: track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
+    - context: http-request
+      verb: 'set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr)'
+      condition: if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
+      comment: "exists only for logging side-effect"
+    # To disable concurrency enforcement, comment out this entire block below.
+    - context: http-request
+      verb: silent-drop
+      condition: if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
+      comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
+  http:
+    - context: http-request
+      verb: track-sc0 src table httpreqrate_http
+    # To disable concurrency enforcement, comment out this entire block below.
+    - context: http-request
+      verb: silent-drop
+      condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
+      comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
+
+lookup_options:
+  profile::cache::haproxy::post_acl_actions:
+      merge: first
