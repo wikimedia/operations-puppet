@@ -11,7 +11,7 @@ class prometheus::node_kernel_messages (
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-node-kernel-messages.sh',
     }
 
-    $ignore_regex_file = '/etc/prometheus-node-kernel-messages-ignore-regex.txt'
+    $ignore_regex_file = '/etc/prometheus/kernel-messages-ignore-regex.txt'
     file { $ignore_regex_file:
         ensure => $ensure,
         mode   => '0555',

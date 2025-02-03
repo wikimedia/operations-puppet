@@ -5,7 +5,7 @@
 set -eu
 set -o pipefail
 
-IGNORE_REGEX_FILE="/etc/prometheus-node-kernel-messages-ignore-regex.txt"
+IGNORE_REGEX_FILE="/etc/prometheus/kernel-messages-ignore-regex.txt"
 outfile="$(realpath "${1:-/var/lib/prometheus/node.d/kernel-messages.prom}")"
 tmpoutfile="${outfile}.$$"
 function cleanup {
