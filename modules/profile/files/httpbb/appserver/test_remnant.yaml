@@ -171,29 +171,9 @@ https://advisors.wikimedia.org:
   assert_body_contains: Advisors
 
 https://auth.wikimedia.org:
-- path: /
-  assert_status: 302
-  assert_headers:
-    Location: https://www.wikimedia.org
 - path: /enwiki/wiki/Special:UserLogin
   assert_status: 200
   assert_body_contains: username
 - path: /enwiki/wiki/Special:CreateAccount
   assert_status: 200
   assert_body_contains: username
-- path: /enwiki/wiki/Main_Page
-  assert_status: 200
-  assert_body_contains: Login required
-- path: /enwiki/invalid
-  assert_status: 404
-  assert_body_contains: <!-- 404.html -->
-- path: /invalidwiki
-  assert_status: 404
-  assert_body_contains: <!-- 404.html -->
-- path: /robots.txt
-  assert_status: 200
-  assert_body_contains: The auth.wikimedia.org domain
-- path: /favicon.ico
-  assert_status: 200
-  assert_headers:
-    Content-Type: image/vnd.microsoft.icon

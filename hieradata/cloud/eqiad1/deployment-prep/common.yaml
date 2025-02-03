@@ -656,17 +656,6 @@ mediawiki::sites:
               "zh-sg",
               "zh-tw",
             ]
-  # not a real wiki, but an alternative way to reach other wikis for auth cookie sharing
-  # other than a path prefix, needs identical handling to proper wiki domains
-  - name: auth
-    priority: 2
-    defaults:
-      docroot: "/srv/mediawiki/docroot/auth"
-      legacy_rewrites: false
-      # robots.txt, favicon.ico are static files in the docroot instead
-      public_rewrites: false
-      domain_suffix: "beta.wmflabs.org"
-    vhosts:
       - name: auth
         params:
           server_aliases: ["auth.wikimedia.beta.wmflabs.org"]
@@ -676,12 +665,8 @@ mediawiki::sites:
               - "    RewriteRule ^/$ https://www.wikimedia.beta.wmflabs.org [R=302,L]"
               - "    # T365162 strip the prefix used to identify the wiki"
               - "    # (T380551#10368927 don't mess up the 404 error page)"
-              - "    RewriteCond %%{}{REQUEST_URI} !=/w/404.html"
+              - "    RewriteCond %%{}{REQUEST_URI} !=/w/404.php"
               - "    RewriteRule ^/([^/]*)/(.*)$ /$2"
-              - "    # Primary wiki redirector: [this applies after the prefix is stripped above]"
-              - "    RewriteRule ^/$ /w/index.php"
-              - "    # Custom error page (T383952)"
-              - "    ErrorDocument 404 /404.html"
             late: []
   # www.wikimedia.beta.wmflabs.org also catches *.wikimedia.beta.wmflabs.org
   # so it needs to come last.
