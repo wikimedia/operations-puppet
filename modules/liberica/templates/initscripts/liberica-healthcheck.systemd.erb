@@ -18,4 +18,5 @@ PrivateTmp=yes
 ProtectKernelModules=yes
 ProtectKernelTunables=yes
 ExecStart=/usr/bin/libericad healthcheck
+ExecReload=/usr/bin/kill -SIGHUP $MAINPID
 Restart=on-failure

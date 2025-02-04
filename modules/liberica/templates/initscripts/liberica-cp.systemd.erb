@@ -17,6 +17,7 @@ PrivateTmp=yes
 ProtectKernelModules=yes
 ProtectKernelTunables=yes
 ExecStart=/usr/bin/libericad cp
+ExecReload=/usr/bin/kill -SIGHUP $MAINPID
 Restart=on-failure
 KillSignal=SIGUSR1
 TimeoutStopSec=90

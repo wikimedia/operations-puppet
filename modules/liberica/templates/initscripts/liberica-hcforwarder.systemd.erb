@@ -18,4 +18,5 @@ ProtectKernelModules=yes
 ProtectKernelTunables=yes
 LimitMEMLOCK=infinity
 ExecStart=/usr/bin/libericad hcforwarder
+ExecReload=/usr/bin/kill -SIGHUP $MAINPID
 Restart=on-failure
