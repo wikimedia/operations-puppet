@@ -1,6 +1,3 @@
-profile::liberica::bgp_config:
-  communities:
-    - "14907:0" # drop priority to not intefere with traffic during the reimage process
 profile::liberica::include_services:
   - ncredir
   - ncredir-https
