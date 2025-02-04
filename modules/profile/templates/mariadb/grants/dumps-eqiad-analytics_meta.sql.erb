@@ -10,6 +10,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`10.64.32.26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`10.64.32.26`;
+
 -- Grants for '<%= @dump_user %>'@'10.64.48.146'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.48.146` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`10.64.48.146`;
@@ -22,6 +25,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`10.64.48.146`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`10.64.48.146`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`10.64.48.146`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`10.64.48.146`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`10.64.48.146`;
+
 -- Grants for '<%= @dump_user %>'@'10.64.0.140'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.0.140` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`10.64.0.140`;
@@ -34,6 +40,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`10.64.0.140`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`10.64.0.140`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`10.64.0.140`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`10.64.0.140`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`10.64.0.140`;
+
 -- Grants for '<%= @dump_user %>'@'10.64.16.126'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.16.126` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`10.64.16.126`;
@@ -46,6 +55,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`10.64.16.126`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`10.64.16.126`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`10.64.16.126`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`10.64.16.126`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`10.64.16.126`;
+
 -- Grants for '<%= @dump_user %>'@'2620:0:861:103:10:64:32:26'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
@@ -58,6 +70,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`2620:0:861:103:10:64:32:26`;
+
 -- Grants for '<%= @dump_user %>'@'2620:0:861:107:10:64:48:146'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
@@ -70,6 +85,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`2620:0:861:107:10:64:48:146`;
+
 -- Grants for '<%= @dump_user %>'@'2620:0:861:101:10:64:0:140'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
@@ -82,6 +100,9 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`2620:0:861:101:10:64:0:140`;
+
 -- Grants for '<%= @dump_user %>'@'2620:0:861:102:10:64:16:126'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `druid_public_eqiad`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
@@ -94,3 +115,5 @@ GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_analytics`.* TO
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_research`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `airflow_platform_eng`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `datahub`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_production`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `mpic_staging`.* TO `<%= @dump_user %>`@`2620:0:861:102:10:64:16:126`;
