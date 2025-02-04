@@ -1,0 +1,11 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+    - name: <%= @title %>
+      schedule: "<%= @interval %>"
+      command:
+      <%- @command.split.each do |argv| -%>
+        - "<%= argv %>"
+      <%- end -%>
+      labels:
+        team: <%= @team %>
+        script: <%= @script_label %>
+      description: <%= @description %>
