@@ -1879,17 +1879,6 @@ apereo_cas:
     oidc_endpoint: 'https://idp-test.wikimedia.org/oidc'
 
 ripeatlas_measurements:
-  eqiad:  # https://atlas.ripe.net/frames/probes/6092/
-    ipv4:
-      - '1790945'  # anchors pings
-      - '1790944'  # anchors traceroutes
-      - '9183717'  # probes pings
-      - '9183716'  # probes traceroutes
-    ipv6:
-      - '1790947'  # anchors pings
-      - '1790946'  # anchors traceroutes
-      - '9183720'  # probes pings
-      - '9183719'  # probes traceroutes
   codfw:  # https://atlas.ripe.net/frames/probes/7038/
     ipv4:
       - '32390538'  # anchors pings
@@ -1912,17 +1901,6 @@ ripeatlas_measurements:
       - '59935538'  # anchors traceroutes
       - '59940414'  # probes pings
       - '59940413'  # probes traceroutes
-  eqsin:  # https://atlas.ripe.net/frames/probes/6345/
-    ipv4:
-      - '11645085'  # anchors pings
-      - '11645084'  # anchors traceroutes
-      - '11645097'  # probes pings
-      - '11645096'  # probes traceroutes
-    ipv6:
-      - '11645088'  # anchors pings
-      - '11645087'  # anchors traceroutes
-      - '11645100'  # probes pings
-      - '11645099'  # probes traceroutes
 
 asns:
   eqiad: 65001
@@ -2042,13 +2020,6 @@ infra_devices:
     - cloudsw1-d5-eqiad
     site: eqiad
     role: l3sw
-  ripe-atlas-eqiad:
-    ipv4: '208.80.155.69'
-    ipv6: '2620:0:861:202:208:80:155:69'
-    site: eqiad
-    role: atlas
-    parents:
-    - asw2-b-eqiad
   scs-a8-eqiad:
     ipv4: 10.65.0.11
     parents:
@@ -2490,13 +2461,6 @@ infra_devices:
     ipv4: 10.132.128.4
     site: eqsin
     role: l2sw
-  ripe-atlas-eqsin:
-    ipv4: 103.102.166.20
-    ipv6: 2001:df2:e500:201:103:102:166:20
-    parents:
-    - asw1-eqsin
-    site: eqsin
-    role: atlas
   scs-eqsin:
     ipv4: 10.132.128.5
     parents:
