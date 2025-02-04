@@ -254,7 +254,22 @@ def main() -> int:
                 # https://developers.google.com/search/docs/advanced/crawling/verifying-googlebot
                 "https://developers.google.com/search/apis/ipranges/googlebot.json",
                 {"ipv4Prefix", "ipv6Prefix"},
-            )
+            ),
+            ExternalCloudVendor(
+                "OpenAI-SearchBot",
+                "https://openai.com/searchbot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
+            ExternalCloudVendor(
+                "OpenAI-ChatGPT-user",
+                "https://openai.com/chatgpt-user.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
+            ExternalCloudVendor(
+                "OpenAI-GPTBot",
+                "https://openai.com/gptbot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
         ],
     }
 
