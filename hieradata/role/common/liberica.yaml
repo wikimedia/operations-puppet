@@ -3,3 +3,10 @@ profile::contacts::role_contacts: ['Traffic']
 profile::puppet::agent::force_puppet7: true
 profile::base::production::role_description: 'Liberica based loadbalancer'
 profile::base::enable_rp_filter: false
+profile::ssh::server::listen_addresses:
+  - "%{facts.ipaddress}"
+prometheus::node_exporter::web_listen_address: "%{::ipaddress}:9100"
+prometheus::node_exporter::collectors_extra:
+  - ipvs
+  - meminfo_numa
+profile::firewall::provider: none
