@@ -2703,11 +2703,18 @@ class profile::prometheus::ops (
     }
 
     if $::site in ['eqiad', 'codfw'] {
-        sysctl::parameters { 'prometheus_inotify_T246860':   # https://phabricator.wikimedia.org/T246860
+        # T246860
+        class { '::base::sysctl::inotify':
+            max_user_watches   => 32768,
+            max_user_instances => 512,
+        }
+        # clean up previous version of the above
+        sysctl::parameters { 'prometheus_inotify_T246860':
+            ensure => absent,
             values => {
                 'fs.inotify.max_user_watches'   => 32768,
                 'fs.inotify.max_user_instances' => 512
-            }
+            },
         }
     }
 
