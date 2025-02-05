@@ -104,7 +104,6 @@ profile::postfix::mx::config:
     # routed by special-case routers
     - donate.wikimedia.org
     - civicrm.wikimedia.org
-    - rt.wikimedia.org
     - phabricator.wikimedia.org
     - benefactors.wikimedia.org
     # pr.wikimedia.org outbound mail is delegated to MuckRack (https://muckrack.com)
