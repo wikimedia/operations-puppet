@@ -28,8 +28,8 @@ profile::statograph::metrics:
     query: 'sum by () (job_method_status:varnish_requests:rate5m{method!="PURGE", status=~"5.."})'
 
   - statuspage_id: trkbds94n87s  # Successful edits
-    graphite: "%{lookup('profile::statograph::graphite_url')}"
-    query: 'MediaWiki.timing.editResponseTime.sample_rate'
+    prometheus: "%{lookup('profile::statograph::thanos_url')}"
+    query: 'sum(entry_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate2m)'
 
   - statuspage_id: 1vzzyvjxzgsf  # User-reported networking errors
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
