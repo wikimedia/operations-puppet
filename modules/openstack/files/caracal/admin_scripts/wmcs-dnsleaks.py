@@ -71,7 +71,11 @@ def recordset_is_service(recordset):
     return False
 
 
-def purge_duplicates(project_id, delete=False):
+project_name_for_id = {project.id: project.name for project in clients.allprojects()}
+instances = clients.allinstances(allregions=True)
+
+
+def purge_duplicates(project_id, deployment, delete=False):
     strays = 0
     designateclient = clients.designateclient(project=project_id, edit_managed=True)
     zones = designateclient.zones.list()
@@ -87,59 +91,28 @@ def purge_duplicates(project_id, delete=False):
             print("skipping public zone: %s" % zone["name"])
             continue
 
+        if zone["name"].lower().endswith(".wmflabs."):
+            # This should be empty these days; skip
+            print("skipping legacy .wmflabs zone: %s" % zone["name"])
+            continue
+
         print("checking zone: %s" % zone["name"])
 
         recordsets = designateclient.recordsets.list(zone["id"])
 
-        # we need a fresh copy of all instances so we don't accidentally
-        #  delete things that have been created since we last checked.
-        instances = clients.allinstances(allregions=True)
-
         all_possible_names = []
-        all_eqiad_nova_instances_legacy = [
-            "%s.%s.eqiad.wmflabs."
-            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
+        all_nova_instances_project_id = [
+            "%s.%s.%s.wikimedia.cloud."
+            % (instance.name.lower(), instance.tenant_id, deployment)
             for instance in instances
         ]
-        all_possible_names.extend(all_eqiad_nova_instances_legacy)
-        all_eqiad_nova_instances_project_id = [
-            "%s.%s.eqiad1.wikimedia.cloud."
-            % (instance.name.lower(), instance.tenant_id)
+        all_possible_names.extend(all_nova_instances_project_id)
+        all_nova_instances_project_name = [
+            "%s.%s.%s.wikimedia.cloud."
+            % (instance.name.lower(), project_name_for_id[instance.tenant_id], deployment)
             for instance in instances
         ]
-        all_possible_names.extend(all_eqiad_nova_instances_project_id)
-        all_eqiad_nova_instances_project_name = [
-            "%s.%s.eqiad1.wikimedia.cloud."
-            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
-            for instance in instances
-        ]
-        all_possible_names.extend(all_eqiad_nova_instances_project_name)
-        all_eqiad_nova_shortname_instances = [
-            "%s.eqiad.wmflabs." % (instance.name.lower()) for instance in instances
-        ]
-        all_possible_names.extend(all_eqiad_nova_shortname_instances)
-        all_codfw1dev_nova_instances_project_id = [
-            "%s.%s.codfw1dev.wikimedia.cloud."
-            % (instance.name.lower(), instance.tenant_id)
-            for instance in instances
-        ]
-        all_possible_names.extend(all_codfw1dev_nova_instances_project_id)
-        all_codfw1dev_nova_instances_project_name = [
-            "%s.%s.codfw1dev.wikimedia.cloud."
-            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
-            for instance in instances
-        ]
-        all_possible_names.extend(all_codfw1dev_nova_instances_project_name)
-        all_codfw1dev_nova_instances_legacy = [
-            "%s.%s.codfw1dev.cloud."
-            % (instance.name.lower(), clients.project_name_for_id(instance.tenant_id))
-            for instance in instances
-        ]
-        all_possible_names.extend(all_codfw1dev_nova_instances_legacy)
-        all_codfw1dev_nova_instances_legacy_shortname = [
-            "%s.codfw1dev.cloud." % (instance.name.lower()) for instance in instances
-        ]
-        all_possible_names.extend(all_codfw1dev_nova_instances_legacy_shortname)
+        all_possible_names.extend(all_nova_instances_project_name)
 
         ptrcounts = {}
         for recordset in recordsets:
@@ -233,6 +206,12 @@ parser = argparse.ArgumentParser(
     description="Find (and, optionally, remove) leaked dns records."
 )
 parser.add_argument(
+    "--deployment",
+    help="cloud deployment, e.g. eqiad1",
+    choices=['eqiad1', 'codfw1dev'],
+    required=True,
+)
+parser.add_argument(
     "--delete",
     help="Actually delete leaked records",
     action="store_true",
@@ -248,9 +227,11 @@ if args.delete and args.to_prometheus:
     print("--delete and --to-prometheus are mutually exclusive")
     sys.exit(2)
 
-strays = purge_duplicates("cloudinfra", args.delete)
-strays += purge_duplicates("cloudinfra-codfw1dev", args.delete)
-strays += purge_duplicates("noauth-project", args.delete)
+strays = purge_duplicates("noauth-project", args.deployment, args.delete)
+if args.deployment == 'eqiad1':
+    strays += purge_duplicates("cloudinfra", args.deployment, args.delete)
+elif args.deployment == 'codfw1dev':
+    strays += purge_duplicates("cloudinfra-codfw1dev", args.deployment, args.delete)
 
 if args.to_prometheus:
     write_prom_file(strays)
