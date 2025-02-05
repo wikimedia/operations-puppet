@@ -68,6 +68,7 @@ pipeline:
       root.client_port = root.x_analytics_data.client_port.or("-")
       root.https = root.x_analytics_data.https.or("0")
       root.nocookies = root.x_analytics_data.nocookies.or("0")
+      root.authorization = root.x_analytics_data.authorization.or("-")
 
       root.x_analytics_data = deleted()
       root.x_analytics = deleted()
@@ -131,7 +132,7 @@ tests:
     target_processors: 'analytics'
     environment: {}
     input_batch:
-      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1"}'
+      - content: '{"x_analytics":"https=1;client_port=4181;nocookies=1;public_cloud=1;authorization=OAuth"}'
     output_batches:
       -
         - json_equals:
@@ -142,3 +143,4 @@ tests:
              is_pageview: "-"
              requestctl: "0"
              nocookies: "1"
+             authorization: "OAuth"
