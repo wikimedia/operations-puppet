@@ -1,3 +1,2 @@
 # db1251
-profile::monitoring::notifications_enabled: false
 mariadb::shard: 's1'
