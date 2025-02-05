@@ -152,8 +152,8 @@ cache::alternate_domains:
     caching: 'normal'
   research.wikimedia.org:
     caching: 'normal'
-  rt.wikimedia.org:
-    caching: 'normal'
+  # static-rt.wikimedia.org:
+  #   caching: 'normal'
   schema.wikimedia.org:
     caching: 'normal'
   security.wikimedia.org:
