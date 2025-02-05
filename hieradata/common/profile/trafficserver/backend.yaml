@@ -231,11 +231,13 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query.wikidata.org/bigdata
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
-      target: http://query.wikidata.org
-      replacement: https://miscweb.discovery.wmnet:30443
-    - type: map
       target: http://query.wikidata.org/querybuilder
       replacement: https://webserver-misc-eqiad.discovery.wmnet
+    - type: map
+      # mapping without a path must be the last entry
+      # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
+      target: http://query.wikidata.org
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://query-main.wikidata.org/bigdata/ldf
       replacement: https://wdqs1021.eqiad.wmnet/bigdata/ldf
@@ -246,11 +248,13 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-main.wikidata.org/bigdata
       replacement: https://wdqs-main.discovery.wmnet/bigdata
     - type: map
-      target: http://query-main.wikidata.org
-      replacement: https://miscweb.discovery.wmnet:30443
-    - type: map
       target: http://query-main.wikidata.org/querybuilder
       replacement: https://webserver-misc-sites.discovery.wmnet
+    - type: map
+      # mapping without a path must be the last entry
+      # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
+      target: http://query-main.wikidata.org
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://query-scholarly.wikidata.org/bigdata/ldf
       replacement: https://wdqs1023.eqiad.wmnet/bigdata/ldf
@@ -261,11 +265,13 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-scholarly.wikidata.org/bigdata
       replacement: https://wdqs-scholarly.discovery.wmnet/bigdata
     - type: map
-      target: http://query-scholarly.wikidata.org
-      replacement: https://miscweb.discovery.wmnet:30443
-    - type: map
       target: http://query-scholarly.wikidata.org/querybuilder
       replacement: https://webserver-misc-sites.discovery.wmnet
+    - type: map
+      # mapping without a path must be the last entry
+      # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
+      target: http://query-scholarly.wikidata.org
+      replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://commons-query.wikimedia.org
       replacement: https://wcqs.discovery.wmnet
