@@ -1,5 +1,4 @@
 # db1220
 profile::mariadb::mysql_role: 'master'
 mariadb::shard: 'x1'
-mariadb::binlog_format: 'ROW'
-
+mariadb::binlog_format: 'STATEMENT'
