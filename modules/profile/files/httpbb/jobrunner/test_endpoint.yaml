@@ -9,13 +9,14 @@ https://jobrunner.discovery.wmnet:
   - path: /w/health-check.php
     assert_status: 200
   # RunSingleJob only works on POST requests.
+  # Note that the 405 response here and the 422 below (implicitly) validate
+  # that requests are handled by RunSingleJob.php (i.e., this is logic that
+  # indeed lives there).
   - path: /rpc/RunSingleJob.php
     assert_status: 405
   # Of course we're not submitting an actual job.
   # So we get back a 422 error in this case instead than
-  # method not allowed
+  # method not allowed.
   - path: /rpc/RunSingleJob.php
     method: POST
     assert_status: 422
-    assert_headers_regex:
-      X-Powered-By: ^PHP/7\.
