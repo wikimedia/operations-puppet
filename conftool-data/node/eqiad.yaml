@@ -54,6 +54,9 @@ eqiad:
     maps1008.eqiad.wmnet: [kartotherian, kartotherian-ssl, kartotherian-k8s-ssl]
     maps1009.eqiad.wmnet: [kartotherian, kartotherian-ssl, kartotherian-k8s-ssl]
     maps1010.eqiad.wmnet: [kartotherian, kartotherian-ssl, kartotherian-k8s-ssl]
+    wikikube-worker1002.eqiad.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker1003.eqiad.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker1004.eqiad.wmnet: [kartotherian-k8s-ssl]
   elasticsearch:
     elastic1053.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1054.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
