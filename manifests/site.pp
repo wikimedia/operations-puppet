@@ -1975,7 +1975,7 @@ node /^ml-lab100[12]\.eqiad\./ {
 }
 
 node /^moscovium\.eqiad\./ {
-    role(requesttracker)
+    role(insetup::collaboration_services)
 }
 
 node /^moss-fe100[12]\.eqiad\./ {
