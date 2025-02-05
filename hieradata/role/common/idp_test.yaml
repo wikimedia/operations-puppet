@@ -69,7 +69,7 @@ profile::idp::services:
   thanos_oidc:
     id: 9
     service_class: 'OidcRegisteredService'
-    service_id: 'https://thanos\.(wikimedia|monitoring\.wmflabs)\.org(/.*)?'
+    service_id: 'https://thanos\.o11y\.wmcloud\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
@@ -101,7 +101,7 @@ profile::idp::services:
   prometheus_oidc:
     id: 13
     service_class: 'OidcRegisteredService'
-    service_id: 'https://prometheus-(.+)\.wmcloud\.org(/.*)?'
+    service_id: 'https://prometheus-(.+)\.o11y\.wmcloud\.org(/.*)?'
     profile_format: 'FLAT'
     required_groups:
       - nda
@@ -114,6 +114,14 @@ profile::idp::services:
     required_groups:
       - wmf
       - nda
+  alerts:
+    id: 15
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://alerts\.o11y\.wmcloud\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 
 profile::idp::ldap_attributes:
   - cn
