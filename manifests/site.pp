@@ -1768,7 +1768,7 @@ node /^logging-hd200[1-5]\.codfw\./ {
 }
 
 # Logging data nodes, ssd class (codfw)
-node /^logstash20(2[6789]|3[34567])\.codfw\./ {
+node /^logstash20(3[34567])\.codfw\./ {
     role(logging::opensearch::data)
 }
 
