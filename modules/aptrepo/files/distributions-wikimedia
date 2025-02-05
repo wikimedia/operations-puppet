@@ -90,6 +90,7 @@ Update:
  bigtop15-buster
  confluent
  confluent7
+ conftool-buster
  elastic74
  elastic78
  elastic79
@@ -181,6 +182,7 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm54
  confluent7
+ conftool-bullseye
  elastic710
  elasticsearch-curator5
  gvisor
@@ -264,8 +266,6 @@ Update:
 # sorted list, leading whitespace matters!
  amd-rocm61
  conftool-bookworm
- conftool-bullseye
- conftool-buster
  elastic710
  elasticsearch-curator5
  grafana
