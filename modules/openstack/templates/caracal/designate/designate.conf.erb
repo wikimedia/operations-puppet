@@ -217,7 +217,6 @@ ptr_v6_zone_id = <%= @domain_id_internal_reverse_v6 %>
 # Domain ID of domain to create records in. For a pre-existing domain,
 #  in this case eqiad1.wikimedia.cloud
 domain_id = '<%= @domain_id_internal_forward %>'
-legacy_domain_id = '<%= @domain_id_internal_forward_legacy %>'
 site = '<%= scope.lookupvar("::site") %>'
 notification_topics = monitor
 notification_topics = notifications
@@ -236,7 +235,6 @@ reverse_format = '%(hostname)s.%(project_id)s.%(zone)s'
 # Domain ID of domain for instances.
 #  For a pre-existing domain, in this case eqiad1.wikimedia.cloud
 domain_id = '<%= @domain_id_internal_forward %>'
-legacy_domain_id = '<%= @domain_id_internal_forward_legacy %>'
 notification_topics = monitor
 notification_topics = notifications
 control_exchange = nova

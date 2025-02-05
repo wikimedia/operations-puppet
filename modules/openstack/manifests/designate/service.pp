@@ -10,7 +10,6 @@ class openstack::designate::service(
     $db_pass,
     $db_host,
     $db_name,
-    $domain_id_internal_forward_legacy,
     String[1] $enabled_notification_handlers,
     String[1] $domain_id_internal_forward,
     String[1] $domain_id_internal_reverse_v4,
