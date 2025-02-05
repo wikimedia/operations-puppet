@@ -44,8 +44,8 @@ define profile::mediawiki::periodic_job(
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
 ) {
 
-    if $::_role == 'deployment_server/kubernetes' and $kubernetes {
-        if $ensure == 'present' {
+    if $::_role == 'deployment_server/kubernetes' {
+        if $kubernetes and $ensure == 'present' {
             concat_fragment { "mediawiki_job_${title}":
                     content => template('profile/mediawiki/maintenance/kubernetes_periodic_job.tmpl.erb'),
                     target  => "${helmfile_defaults_dir}/mediawiki/periodic-jobs.yaml",
