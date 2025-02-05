@@ -270,7 +270,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'stewards*':
     - partman/flat.cfg
     - virtual.cfg
-  'moscovium|seaborgium|serpens':
+  'seaborgium|serpens':
     - partman/flat.cfg
     - virtual.cfg
   'vrts[1-2]001':
