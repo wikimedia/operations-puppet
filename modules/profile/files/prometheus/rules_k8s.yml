@@ -163,6 +163,13 @@ groups:
     - record: wiki_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m
       expr: sum by (wiki, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[5m]))
 
+    # by wiki and user
+    - record: wiki_user_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate2m
+      expr: sum by (wiki, user, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[2m]))
+
+    - record: wiki_user_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m
+      expr: sum by (wiki, user, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[5m]))
+
 
 - name: self
   rules:
