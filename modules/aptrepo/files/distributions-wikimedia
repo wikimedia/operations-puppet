@@ -99,7 +99,6 @@ Update:
  jenkins
  hp-mcp-buster
  hwraid-megacli
- postgres
  matomo
  thirdparty/ceph-octopus
  thirdparty/conda
@@ -203,7 +202,6 @@ Update:
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
- thirdparty/openstack-db
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
