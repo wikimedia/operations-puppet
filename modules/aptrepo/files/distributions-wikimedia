@@ -263,6 +263,9 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm61
+ conftool-bookworm
+ conftool-bullseye
+ conftool-buster
  elastic710
  elasticsearch-curator5
  grafana

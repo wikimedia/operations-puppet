@@ -503,3 +503,12 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
+
+Name: conftool-buster
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main
+Suite: buster-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^conftool$' || [ $? -eq 1 ]
