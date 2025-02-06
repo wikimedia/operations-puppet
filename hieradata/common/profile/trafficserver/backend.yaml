@@ -232,7 +232,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
       target: http://query.wikidata.org/querybuilder
-      replacement: https://webserver-misc-eqiad.discovery.wmnet
+      replacement: https://webserver-misc-eqiad.discovery.wmnet/querybuilder
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
@@ -249,7 +249,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs-main.discovery.wmnet/bigdata
     - type: map
       target: http://query-main.wikidata.org/querybuilder
-      replacement: https://webserver-misc-sites.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet/querybuilder
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
@@ -266,7 +266,7 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://wdqs-scholarly.discovery.wmnet/bigdata
     - type: map
       target: http://query-scholarly.wikidata.org/querybuilder
-      replacement: https://webserver-misc-sites.discovery.wmnet
+      replacement: https://webserver-misc-sites.discovery.wmnet/querybuilder
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
