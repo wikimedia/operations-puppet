@@ -225,7 +225,7 @@ change_tag,ct_log_id,K
 change_tag,ct_rev_id,K
 change_tag,ct_params,K
 collation,collation_id,K
-collaction,collation_name,K
+collation,collation_name,K
 externallinks,el_from,K
 externallinks,el_to_domain_index,K
 externallinks,el_to_path,K
