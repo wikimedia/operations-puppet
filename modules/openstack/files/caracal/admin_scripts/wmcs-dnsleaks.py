@@ -72,13 +72,13 @@ def recordset_is_service(recordset):
 
 
 project_name_for_id = {project.id: project.name for project in clients.allprojects()}
-instances = clients.allinstances(allregions=True)
 
 
 def purge_duplicates(project_id, deployment, delete=False):
-    strays = 0
+    strayrecords = []
     designateclient = clients.designateclient(project=project_id, edit_managed=True)
     zones = designateclient.zones.list()
+    instances = clients.allinstances(allregions=True)
 
     for zone in zones:
         if "svc." in zone["name"].lower():
@@ -109,7 +109,11 @@ def purge_duplicates(project_id, deployment, delete=False):
         all_possible_names.extend(all_nova_instances_project_id)
         all_nova_instances_project_name = [
             "%s.%s.%s.wikimedia.cloud."
-            % (instance.name.lower(), project_name_for_id[instance.tenant_id], deployment)
+            % (
+                instance.name.lower(),
+                project_name_for_id[instance.tenant_id],
+                deployment,
+            )
             for instance in instances
         ]
         all_possible_names.extend(all_nova_instances_project_name)
@@ -126,28 +130,27 @@ def purge_duplicates(project_id, deployment, delete=False):
                 # For an A record, we can just delete the whole recordset
                 #  if it's for a missing instance.
                 if name not in all_possible_names:
-                    strays += 1
-                    print(("%s is linked to missing instance %s" % (recordsetid, name)))
+                    straystring = "%s is linked to missing instance %s" % (
+                        recordsetid,
+                        name,
+                    )
+                    strayrecords.append(straystring)
+                    print(straystring)
                     if delete:
                         designateclient.recordsets.delete(zone["id"], recordsetid)
                 # If the instance exists, check to see that it doesn't have multiple IPs.
                 if len(recordset["records"]) > 1:
-                    strays += 1
-                    print(
-                        (
-                            "A record for %s has multiple IPs: %s"
-                            % (name, recordset["records"])
-                        )
+                    straystring = "A record for %s has multiple IPs: %s" % (
+                        name,
+                        recordset["records"],
                     )
-                    print(
-                        "This needs cleanup but that isn't implemented and almost never happens."
-                    )
+                    strayrecords.append(straystring)
+                    print(straystring)
             elif recordset["type"] == "PTR":
                 # Check each record in this set and verify that instances still exist.
                 originalrecords = recordset["records"]
                 goodrecords = []
                 for record in originalrecords:
-
                     if ".svc." in record:
                         # We don't want to mess with service records
                         print("skipping ptr record for %s" % record)
@@ -165,8 +168,7 @@ def purge_duplicates(project_id, deployment, delete=False):
                         # Make sure we don't have multiple recordsets for the same VM
                         if record.lower() in ptrcounts:
                             ptrcounts[record.lower()].append(recordset["name"])
-                            strays += 1
-                            print(
+                            straystring = (
                                 "Found %s ptr recordsets for the same VM: %s %s"
                                 % (
                                     len(ptrcounts[record.lower()]),
@@ -174,17 +176,18 @@ def purge_duplicates(project_id, deployment, delete=False):
                                     ptrcounts[record.lower()],
                                 )
                             )
+                            strayrecords.append(straystring)
+                            print(straystring)
                         else:
                             ptrcounts[record.lower()] = [recordset["name"]]
 
                     else:
-                        strays += 1
-                        print(
-                            (
-                                "PTR %s is linked to missing instance %s"
-                                % (recordsetid, record)
-                            )
+                        straystring = "PTR %s is linked to missing instance %s" % (
+                            recordsetid,
+                            record,
                         )
+                        strayrecords.append(straystring)
+                        print(straystring)
                 if not goodrecords:
                     if delete:
                         print("Deleting the whole recordset.")
@@ -199,7 +202,18 @@ def purge_duplicates(project_id, deployment, delete=False):
                                 )
                             )
                             designateclient.update(zone["id"], recordset, goodrecords)
-    return strays
+    return strayrecords
+
+
+def list_strays(project_id, deployment, delete=False):
+    strayrecs = purge_duplicates("noauth-project", args.deployment, args.delete)
+    if deployment == "eqiad1":
+        strayrecords = purge_duplicates("cloudinfra", deployment, delete)
+        strayrecs.extend(strayrecords)
+    elif deployment == "codfw1dev":
+        strayrecords = purge_duplicates("cloudinfra-codfw1dev", deployment, delete)
+        strayrecs.extend(strayrecords)
+    return strayrecs
 
 
 parser = argparse.ArgumentParser(
@@ -208,12 +222,18 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--deployment",
     help="cloud deployment, e.g. eqiad1",
-    choices=['eqiad1', 'codfw1dev'],
+    choices=["eqiad1", "codfw1dev"],
     required=True,
 )
 parser.add_argument(
     "--delete",
     help="Actually delete leaked records",
+    action="store_true",
+)
+parser.add_argument(
+    "--doublecheck",
+    help="only report stray records that appear in two consecutive runs. "
+    "Works around designate race conditions. Cannot be used with --delete",
     action="store_true",
 )
 parser.add_argument(
@@ -227,13 +247,23 @@ if args.delete and args.to_prometheus:
     print("--delete and --to-prometheus are mutually exclusive")
     sys.exit(2)
 
-strays = purge_duplicates("noauth-project", args.deployment, args.delete)
-if args.deployment == 'eqiad1':
-    strays += purge_duplicates("cloudinfra", args.deployment, args.delete)
-elif args.deployment == 'codfw1dev':
-    strays += purge_duplicates("cloudinfra-codfw1dev", args.deployment, args.delete)
+if args.delete and args.doublecheck:
+    print("--delete and --doublecheck are mutually exclusive")
+    sys.exit(2)
+
+strayrecs = list_strays("noauth-project", args.deployment, args.delete)
+
+if args.doublecheck:
+    strayrecs2 = list_strays("noauth-project", args.deployment, args.delete)
+    persistentstrays = set(strayrecs).intersection(set(strayrecs))
+    strayrecs = list(persistentstrays)
+
+strays = len(strayrecs)
 
 if args.to_prometheus:
     write_prom_file(strays)
+else:
+    print("stray records:")
+    print(strayrecs)
 
 sys.exit(0)

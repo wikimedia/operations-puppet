@@ -62,7 +62,7 @@ class profile::openstack::eqiad1::designate::service(
         ensure     => stdlib::ensure($run_dnsleaks),
         filesource => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-dnsleaks.py",
         interval   => '*:12/30',
-        run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus --deployment eqiad1',
+        run_cmd    => '/usr/local/bin/wmcs-dnsleaks --to-prometheus --deployment eqiad1 --doublecheck',
     }
 
     if !$run_dnsleaks {
