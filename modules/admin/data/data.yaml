@@ -1230,8 +1230,8 @@ groups:
   #   gid: 918
   #   system: true
   #   members: []
-  # Placeholder to reserve the uid/gid.
-  # This service system user is managed by puppet in statistics::user
+  # Placeholder to reserve the gid.
+  # This service system user is managed by puppet in scap::user
   # scap:
   #   gid: 919
   #   system: true
