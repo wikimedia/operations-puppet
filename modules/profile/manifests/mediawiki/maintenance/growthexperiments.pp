@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::growthexperiments {
+class profile::mediawiki::maintenance::growthexperiments(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     # Purge old welcome survey data (personal data used in user options,
     # with 90-day retention) that's within 30 days of expiry, twice a month.
     # See T208369 and T252575. Logs are saved to
