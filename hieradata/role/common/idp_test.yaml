@@ -123,6 +123,12 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  phabricator_dev:
+    id: 16
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://phabricator\.wmcloud\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups: []
 
 profile::idp::ldap_attributes:
   - cn
