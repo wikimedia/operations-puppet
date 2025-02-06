@@ -247,6 +247,10 @@ tables:
     source: core
     canonicality: canonical
     visibility: public
+  - name: collation
+    source: core
+    canonicality: canonical
+    visibility: public
   - name: abuse_filter
     source: abuse_filter
     canonicality: canonical

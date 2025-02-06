@@ -67,6 +67,7 @@ fullviews:
   - cn_template_log
   - cn_template_mixins
   - cn_templates
+  - collation
   - content_models
   - externallinks
   - filetypes
