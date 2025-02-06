@@ -545,6 +545,8 @@ sub wm_recv_pass {
             return "return (pipe);"
         elsif uc == "websockets"
             return %Q[if (req.http.upgrade ~ "(?i)websocket") { return (pipe); } else { return (pass); }]
+        elsif uc == "websocketsandcache"
+            return %Q[if (req.http.upgrade ~ "(?i)websocket") { return (pipe); } else { return ""; }]
         elsif uc == "normal"
             return ""
         else
