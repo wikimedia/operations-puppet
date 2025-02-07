@@ -14,4 +14,9 @@ class role::wdqs::main {
     include profile::lvs::realserver
     # Public endpoint specific profiles
     include profile::tlsproxy::envoy # TLS termination
+
+    # temporarily add wdqs-categories role to internal-main hosts
+    # until the service has migrated. See T375520 for details.
+    require profile::query_service::categories
+
 }
