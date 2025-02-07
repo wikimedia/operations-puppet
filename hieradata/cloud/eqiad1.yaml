@@ -22,7 +22,6 @@ profile::monitoring::raid_check: false
 profile::resolving::domain_search:
   - "%{facts.networking.domain}"
   - "%{::wmcs_project}.eqiad1.wikimedia.cloud"
-  - "%{::wmcs_project}.eqiad.wmflabs"
 
 profile::openstack::eqiad1::version: "caracal"
 profile::openstack::base::region: "eqiad1-r"
