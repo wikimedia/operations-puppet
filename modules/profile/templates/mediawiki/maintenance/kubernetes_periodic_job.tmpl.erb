@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
     - name: <%= @title.gsub('_', '-') %>
-      schedule: "<%= @interval %>"
+      schedule: "<%= @cron_schedule %>"
       command:
       <%- @command.split.each do |argv| -%>
         - "<%= argv %>"

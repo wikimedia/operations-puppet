@@ -4,7 +4,7 @@ class profile::mediawiki::maintenance::serviceops_version(
 ) {
     profile::mediawiki::periodic_job { 'serviceops_version':
         command               => '/usr/local/bin/foreachwikiindblist testwikis.dblist Version.php',
-        interval              => '*/10 * * * *',
+        cron_schedule         => '*/10 * * * *',
         team                  => 'sre-serviceops',
         script_label          => 'Version.php',
         description           => 'Run version.php on all wikis in testwikis.dblist every 10 minutes to test cronjobs',
