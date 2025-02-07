@@ -181,9 +181,9 @@ class arclamp(
             description => 'PHP Excimer (k8s CPU)';
         'excimer-k8s-wall': # T288165
             description => 'PHP Excimer (k8s wall clock)';
-        'excimer-php8-k8s': # T385199
+        'excimer-k8s-php8': # T385199
             description => 'PHP Excimer (k8s, PHP8 CPU)';
-        'excimer-php8-k8s-wall': # T385199
+        'excimer-k8s-php8-wall': # T385199
             description => 'PHP Excimer (k8s, PHP8 wall clock)';
     }
 }
