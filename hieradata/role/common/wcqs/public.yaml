@@ -52,7 +52,7 @@ profile::query_service::streaming_updater::kafka_cluster: main
 profile::query_service::journal: 'wcqs'
 
 # Proxy non-blazegraph requests to the gui hosted on microsites
-profile::query_service::gui_url: https://webserver-misc-sites.discovery.wmnet
+profile::query_service::gui_url: https://miscweb.discovery.wmnet:30443
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'Wikimedia Commons Query Service - publicly available service'
 
