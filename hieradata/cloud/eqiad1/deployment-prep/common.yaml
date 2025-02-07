@@ -28,15 +28,12 @@ profile::cache::varnish::frontend::enable_monitoring: false
 profile::envoy::ensure: absent
 # Used to sync the setting between all Kafka clusters and clients.
 kafka_message_max_bytes: 4194304
-# Parsoid
-profile::parsoid::port: 8001
 # Restbase (profile::restbase)
 profile::restbase::salt_key: secretkey
 profile::restbase::logging_label: restbase
 profile::restbase::cassandra_datacenters:
     - "datacenter1"
 profile::restbase::cassandra_local_dc: "datacenter1"
-profile::restbase::parsoid_uri: http://parsoid.svc.deployment-prep.eqiad1.wikimedia.cloud/w/rest.php
 profile::restbase::mobileapps_uri: http://deployment-docker-mobileapps02.deployment-prep.eqiad1.wikimedia.cloud:8888
 profile::restbase::mathoid_uri: http://deployment-docker-mathoid02.deployment-prep.eqiad1.wikimedia.cloud:10044
 profile::restbase::event_service_uri: http://deployment-eventgate-4.deployment-prep.eqiad1.wikimedia.cloud:8292/v1/events
@@ -135,7 +132,6 @@ scap::dsh::groups:
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-snapshot05.deployment-prep.eqiad1.wikimedia.cloud
             - deployment-mwmaint03.deployment-prep.eqiad1.wikimedia.cloud
-            - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
     mediawiki-appserver-canaries:
         hosts:
             - deployment-mediawiki14.deployment-prep.eqiad1.wikimedia.cloud
@@ -161,9 +157,6 @@ scap::dsh::groups:
         hosts: []
     testserver:
         hosts: []
-    parsoid_php:
-        hosts:
-            - deployment-parsoid14.deployment-prep.eqiad1.wikimedia.cloud
 
 
 # Etcd client global configuration
