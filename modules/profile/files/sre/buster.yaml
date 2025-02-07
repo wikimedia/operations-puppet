@@ -330,8 +330,6 @@ role::dumps::web::htmldumps:
 role::kafka::monitoring_buster:
   target-q: 2023-2
   phab-task: 335424
-role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
-  target-q: TBD
 role::microsites::peopleweb:
   target-q: 2023-4
   phab-task: 280989

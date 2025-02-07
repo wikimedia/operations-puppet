@@ -243,8 +243,6 @@ role::dumps::web::htmldumps:
   target-q: TBD
 role::kafka::monitoring_buster:
   target-q: TBD
-role::wmcs::openstack::codfw1dev::puppetmaster::frontend:
-  target-q: TBD
 role::microsites::peopleweb:
   target-q: TBD
 role::prometheus::pop:
