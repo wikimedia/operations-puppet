@@ -1,3 +1,0 @@
-profile::openstack::base::optional_firewall: false
-profile::puppetmaster::common::storeconfigs: none
-puppetmaster: cloudinfra-internal-puppetmaster-02.cloudinfra.eqiad.wmflabs
