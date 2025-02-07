@@ -255,7 +255,7 @@ strayrecs = list_strays("noauth-project", args.deployment, args.delete)
 
 if args.doublecheck:
     strayrecs2 = list_strays("noauth-project", args.deployment, args.delete)
-    persistentstrays = set(strayrecs).intersection(set(strayrecs))
+    persistentstrays = set(strayrecs).intersection(set(strayrecs2))
     strayrecs = list(persistentstrays)
 
 strays = len(strayrecs)
