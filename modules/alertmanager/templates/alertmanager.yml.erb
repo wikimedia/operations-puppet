@@ -460,6 +460,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@lists.wikimedia.org'
+      send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-taskircmail'
@@ -473,6 +474,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@lists.wikimedia.org'
+      send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'wmcs-pagetaskircmail'
@@ -488,6 +490,7 @@ receivers:
     - url: 'http://<%= @active_host %>:19190/wikimedia-cloud-feed'
   email_configs:
     - to: 'cloud-admin-feed@lists.wikimedia.org'
+      send_resolved: true
       headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'mediawiki-platform-ircmail'
