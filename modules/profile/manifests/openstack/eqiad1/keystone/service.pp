@@ -73,4 +73,25 @@ class profile::openstack::eqiad1::keystone::service(
         version => $version,
     }
     contain '::profile::openstack::base::keystone::hooks'
+
+    # Detect and report users not in the bastion project
+    $run_bastionless = $openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']
+
+    prometheus::node_textfile { 'wmcs-bastionless':
+        ensure     => stdlib::ensure($run_bastionless),
+        filesource => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-bastionless.py",
+        interval   => '*:12/30',
+        run_cmd    => '/usr/local/bin/wmcs-bastionless --to-prometheus',
+    }
+
+    if !$run_bastionless {
+        file { '/var/lib/prometheus/node.d/bastionlessusers.prom':
+            ensure => absent,
+        }
+    }
+
+
+
+
+
 }
