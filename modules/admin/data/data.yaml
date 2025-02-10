@@ -4897,7 +4897,8 @@ users:
     email: btullis@wikimedia.org
     uid: 32741
     gid: 500
-    ssh_keys: []  # temporarily revoked
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMuqVZP2AFnCbKZBxnLgMbD5Wrt1xgYoR1zBBKNPXreH ben@skate
     krb: present
   cjming:
     ensure: present
