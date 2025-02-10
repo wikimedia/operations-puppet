@@ -34,6 +34,7 @@ class profile::lists (
     Array[String] $security_cfgs              = lookup('profile::lists::security_cfgs', {'default_value' => []}),
     Boolean $allow_incoming_mail              = lookup('profile::lists::allow_incoming_mail', { 'default_value' => true }),
     Stdlib::Unixpath $mailman_root            = lookup('profile::lists::mailman_root', { 'default_value' => '/var/lib/mailman3' }),
+    String $export_ip_ranges                  = lookup('profile::lists::export_ip_ranges', { 'default_value' => '10.0.0.0/8' }),
 ) {
     include network::constants
     include privateexim::listserve
@@ -106,6 +107,7 @@ class profile::lists (
       web_deny_conditions => $web_deny_conditions,
       security_cfgs       => $security_cfgs,
       mailman_root        => $mailman_root,
+      export_ip_ranges    => $export_ip_ranges,
     }
     httpd::site { $lists_servername:
         content => epp('profile/lists/apache.conf.epp', $apache_conf),
