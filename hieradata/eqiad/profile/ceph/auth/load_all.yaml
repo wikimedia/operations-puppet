@@ -1,4 +1,9 @@
 profile::ceph::auth::load_all::configuration:
+  aux-k8s-csi-rbd:
+    caps:
+      mon: profile rbd
+      mgr: profile rbd pool=aux-k8s-csi-rbd-ssd
+      osd: profile rbd pool=aux-k8s-csi-rbd-ssd
   dse-k8s-csi:
     caps:
       mon: profile rbd
