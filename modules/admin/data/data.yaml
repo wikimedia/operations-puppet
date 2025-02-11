@@ -66,7 +66,7 @@ groups:
               ayounsi, herron, vgutierrez, jiji, cwhite,
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, ryankemper, klausman,
-              dcaro, legoktm, cmooney, jelto,
+              dcaro, legoktm, cmooney, jelto, btullis,
               rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins, tappof,
@@ -429,7 +429,7 @@ groups:
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               mwilliams, samwalton, apine, mlitn, sihe, oljad, cmadeo,
-              htriedman, cooltey, schoenbaechler, jabrams, jm, nforrester,
+              htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming, mnz,
               wmde-fisch, ksiebert, tchanders,
@@ -476,7 +476,7 @@ groups:
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, oljad, ebysans, aqu,
               xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
-              stevemunene, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl, otto]
+              btullis, stevemunene, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl, otto]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
                  'ALL = (yarn)  NOPASSWD: ALL',
