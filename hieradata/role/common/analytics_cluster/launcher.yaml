@@ -107,6 +107,24 @@ profile::airflow::instances:
         conn_type: datahub_kafka
         host: kafka-jumbo1007.eqiad.wmnet:9092
         extra_dejson: {"connection": {"schema_registry_url": "https://datahub-gms.discovery.wmnet:30443/schema-registry/api/", "schema_registry_config": {"ssl.ca.location": "/etc/ssl/certs/ca-certificates.crt"}}}
+      kafka_test_eqiad:
+        conn_type: kafka
+        host: kafka-test1006.eqiad.wmnet,kafka-test1007.eqiad.wmnet,kafka-test1008.eqiad.wmnet,kafka-test1009.eqiad.wmnet,kafka-test1010.eqiad.wmnet
+        port: 9093
+        extra:
+          group.id: airflow-analytics
+          ssl.ca.location: /etc/ssl/certs/ca-certificates.crt
+          bootstrap.servers: kafka-test1006.eqiad.wmnet:9093,kafka-test1007.eqiad.wmnet:9093,kafka-test1008.eqiad.wmnet:9093,kafka-test1009.eqiad.wmnet:9093,kafka-test1010.eqiad.wmnet:9093
+          security.protocol: SSL
+      kafka_jumbo_eqiad:
+        conn_type: kafka
+        host: kafka-jumbo1006.eqiad.wmnet,kafka-jumbo1007.eqiad.wmnet,kafka-jumbo1008.eqiad.wmnet,kafka-jumbo1009.eqiad.wmnet,kafka-jumbo1010.eqiad.wmnet,kafka-jumbo1011.eqiad.wmnet,kafka-jumbo1012.eqiad.wmnet,kafka-jumbo1013.eqiad.wmnet,kafka-jumbo1014.eqiad.wmnet,kafka-jumbo1015.eqiad.wmnet
+        port: 9093
+        extra:
+          group.id: airflow-analytics
+          ssl.ca.location: /etc/ssl/certs/ca-certificates.crt
+          bootstrap.servers: kafka-jumbo1006.eqiad.wmnet:9093,kafka-jumbo1007.eqiad.wmnet:9093,kafka-jumbo1008.eqiad.wmnet:9093,kafka-jumbo1009.eqiad.wmnet:9093,kafka-jumbo1010.eqiad.wmnet:9093,kafka-jumbo1011.eqiad.wmnet:9093,kafka-jumbo1012.eqiad.wmnet:9093,kafka-jumbo1013.eqiad.wmnet:9093,kafka-jumbo1014.eqiad.wmnet:9093,kafka-jumbo1015.eqiad.wmnet:9093
+          security.protocol: SSL
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Analytics Cluster host launching jobs (airflow-analytics, Spark, Report Updater, etc..)'

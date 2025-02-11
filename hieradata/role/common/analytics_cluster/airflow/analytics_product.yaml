@@ -48,6 +48,24 @@ profile::airflow::instances:
         host: analytics-hive.eqiad.wmnet
         port: 9083
         extra_dejson: {'auth_mechanism': 'GSSAPI'}
+      kafka_test_eqiad:
+        conn_type: kafka
+        host: kafka-test1006.eqiad.wmnet,kafka-test1007.eqiad.wmnet,kafka-test1008.eqiad.wmnet,kafka-test1009.eqiad.wmnet,kafka-test1010.eqiad.wmnet
+        port: 9093
+        extra:
+          group.id: airflow-analytics-product
+          ssl.ca.location: /etc/ssl/certs/ca-certificates.crt
+          bootstrap.servers: kafka-test1006.eqiad.wmnet:9093,kafka-test1007.eqiad.wmnet:9093,kafka-test1008.eqiad.wmnet:9093,kafka-test1009.eqiad.wmnet:9093,kafka-test1010.eqiad.wmnet:9093
+          security.protocol: SSL
+      kafka_jumbo_eqiad:
+        conn_type: kafka
+        host: kafka-jumbo1006.eqiad.wmnet,kafka-jumbo1007.eqiad.wmnet,kafka-jumbo1008.eqiad.wmnet,kafka-jumbo1009.eqiad.wmnet,kafka-jumbo1010.eqiad.wmnet,kafka-jumbo1011.eqiad.wmnet,kafka-jumbo1012.eqiad.wmnet,kafka-jumbo1013.eqiad.wmnet,kafka-jumbo1014.eqiad.wmnet,kafka-jumbo1015.eqiad.wmnet
+        port: 9093
+        extra:
+          group.id: airflow-analytics-product
+          ssl.ca.location: /etc/ssl/certs/ca-certificates.crt
+          bootstrap.servers: kafka-jumbo1006.eqiad.wmnet:9093,kafka-jumbo1007.eqiad.wmnet:9093,kafka-jumbo1008.eqiad.wmnet:9093,kafka-jumbo1009.eqiad.wmnet:9093,kafka-jumbo1010.eqiad.wmnet:9093,kafka-jumbo1011.eqiad.wmnet:9093,kafka-jumbo1012.eqiad.wmnet:9093,kafka-jumbo1013.eqiad.wmnet:9093,kafka-jumbo1014.eqiad.wmnet:9093,kafka-jumbo1015.eqiad.wmnet:9093
+          security.protocol: SSL
     airflow_config:
       datahub:
         enabled: False
