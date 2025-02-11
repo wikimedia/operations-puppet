@@ -55,10 +55,6 @@ tables:
     source: core
     canonicality: derivative
     visibility: private
-  - name: module_deps
-    source: core
-    canonicality: derivative
-    visibility: public
   - name: redirect
     source: core
     canonicality: derivative
