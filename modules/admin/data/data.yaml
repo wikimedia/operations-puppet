@@ -7408,3 +7408,7 @@ ldap_only_users:
     ensure: present
     realname: Loren Mora
     email: lmora@wikimedia.org
+  ebomani:
+    ensure: present
+    realname: Esuvat Bomani
+    email: ebomani@wikimedia.org
