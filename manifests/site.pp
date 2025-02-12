@@ -1032,10 +1032,6 @@ node /^dse-k8s-worker100[1-9]\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
-# to be decommed
-node /^dumpsdata100[12]\.eqiad\./ {
-    role(insetup::data_engineering)
-}
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1006\.eqiad\./ {
