@@ -3,8 +3,8 @@ class role::dse_k8s::worker {
     include profile::base::production
     include profile::firewall
 
-    # Sets up docker on the machine
-    include profile::docker::engine
+    # Sets up containerd on the machine
+    include profile::kubernetes::container_runtime
     # Setup kubernetes stuff
     include profile::kubernetes::node
     # Setup calico

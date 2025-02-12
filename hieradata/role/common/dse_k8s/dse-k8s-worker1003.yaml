@@ -1,0 +1,2 @@
+# Temporarily sets up docker on the bookworm machines as we reimage the hosts to use containerd
+profile::kubernetes::container_runtime: docker
