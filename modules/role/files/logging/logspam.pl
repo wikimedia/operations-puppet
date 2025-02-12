@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+# -*- perl-indent-level: 2; indent-tabs-mode: nil -*-
 
 =pod
 
