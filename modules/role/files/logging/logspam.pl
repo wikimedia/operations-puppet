@@ -142,7 +142,7 @@ my $cat_files_cmd = "$0 --cat --window $orig_window ${mw_log_dir}/exception.log 
 open (my $logstream, "$cat_files_cmd |")
   or die("$0: Failed to run '$cat_files_cmd'\n$!\n");
 
-my %consolidate_patterns = (
+my %junk_consolidate_patterns = (
   qr/Allowed memory size of/                               => '[mem]',
   qr/the(?: maximum)? execution time(?: limit)? of \d+ seconds was exceeded/i => '[time]',
   qr/Memcached::setMulti\(\): failed to set key/           => '[memcache]',
@@ -152,7 +152,13 @@ my %consolidate_patterns = (
   qr/Database can't find our row and won't let us insert it on page .* revision .*/ => '[db-cantfindorinsert]',
 );
 
-# These (along with those in %consolidate_patterns) are a constant source of log noise.
+my %consolidate_patterns = (
+  qr/Failed to load data blob from Unable to fetch blob at tt:\d+/ => 'RevisionAccess',
+);
+
+my %all_consolidate_patterns = (%junk_consolidate_patterns, %consolidate_patterns);
+
+# These (along with those in %junk_consolidate_patterns) are a constant source of log noise.
 my @junk_patterns = (
   qr/A database query timeout has occurred\./,
   qr/A connection error occurred during a query\./,
@@ -220,15 +226,15 @@ LINES: while (my $line = <$logstream>) {
 
   if (!$junk) {
     # Strip some junk
-    for my $pattern (@junk_patterns, keys %consolidate_patterns) {
+    for my $pattern (@junk_patterns, keys %junk_consolidate_patterns) {
       next LINES if ($stack_trace =~ $pattern);
     }
   }
 
   # Condense some common errors:
-  for my $pattern (keys %consolidate_patterns) {
+  for my $pattern (keys %all_consolidate_patterns) {
     if ($stack_trace =~ $pattern) {
-      $exception_class = $consolidate_patterns{$pattern};
+      $exception_class = $all_consolidate_patterns{$pattern};
       $stack_trace = $pattern;
     }
   }
