@@ -71,33 +71,34 @@ class profile::opensearch::cirrus::server(
 
     ## BEGIN Temporary mitigation put in place for T264053
     # Source code lives here: https://phabricator.wikimedia.org/P5883
-    package {'opensearch-madvise':
-        ensure => present,
-    }
-
-    # Add opensearch bin to root's PATH
-    file_line { 'opensearch_bin_bashrc':
-      ensure => present,
-      path   => '/root/.bashrc',
-      line   => "PATH=\${PATH}:/usr/share/opensearch/bin  # Managed by puppet",
-    }
-
-    # Wrapper script to run opensearch-madvise-random once per opensearch process, passing PID
-    file { '/usr/local/bin/opensearch-disable-readahead.sh':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/opensearch/cirrus/opensearch-disable-readahead.sh',
-    }
-
-    # Run the wrapper every 30 mins
-    systemd::timer::job { 'opensearch-disable-readahead':
-        description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
-        command     => '/usr/local/bin/opensearch-disable-readahead.sh',
-        user        => 'root',
-        interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
-    }
+    ## madvise-related code disabled while we decide if we still need it (T386281).
+    # package {'opensearch-madvise':
+    #     ensure => present,
+    # }
+    #
+    # # Add opensearch bin to root's PATH
+    # file_line { 'opensearch_bin_bashrc':
+    #   ensure => present,
+    #   path   => '/root/.bashrc',
+    #   line   => "PATH=\${PATH}:/usr/share/opensearch/bin  # Managed by puppet",
+    # }
+    #
+    # # Wrapper script to run opensearch-madvise-random once per opensearch process, passing PID
+    # file { '/usr/local/bin/opensearch-disable-readahead.sh':
+    #     ensure => file,
+    #     owner  => 'root',
+    #     group  => 'root',
+    #     mode   => '0555',
+    #     source => 'puppet:///modules/profile/opensearch/cirrus/opensearch-disable-readahead.sh',
+    # }
+    #
+    # # Run the wrapper every 30 mins
+    # systemd::timer::job { 'opensearch-disable-readahead':
+    #     description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
+    #     command     => '/usr/local/bin/opensearch-disable-readahead.sh',
+    #     user        => 'root',
+    #     interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
+    # }
     ## END   Temporary mitigation put in place for T264053
 
     # Install custom prometheus data collection. Standard data collection is
