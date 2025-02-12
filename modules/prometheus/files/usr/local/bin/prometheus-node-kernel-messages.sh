@@ -40,6 +40,7 @@ messages=$(journalctl --quiet _TRANSPORT=kernel --since "${SINCE}" -o json --out
 # Each message can increase only one category, or no category.
 keyword_panic=0
 keyword_taint=0
+keyword_error=0
 keyword_warning=0
 priority_emerg=0
 priority_alert=0
@@ -49,23 +50,30 @@ priority_warning=0
 
 while read -r msg; do
 
-  # Some keywords are important regardless of their priority, e.g. "[ cut here ]"
-  # indicates a Kernel Panic but is logged with priority "warning".
+  # Some keywords are important regardless of their priority
+  #
+  # * [ cut here ] indicates a Kernel Panic but is logged with priority=warning
   if [[ "$msg" == *"[ cut here ]"* ]]; then
     keyword_panic=$((keyword_panic+1))
 
-  # I'm less fond of searching for "taint" and "warning" because they often
-  # include false positives (i.e. messages that include that word but are not a
-  # taint or a warning).
-  # TODO: evaluate if these filters ever catch a useful message, otherwise they
-  # can be removed.
-  elif [[ "$msg" == *"taint"* ]]; then
+  # * Some memory errors are logged with priority=warning, but can be caught
+  #   because they contain the "error" keyword.
+  #   Note: '${msg,,}' converts the string to lowercase
+  elif [[ "${msg,,}" == *"error"* ]]; then
+    keyword_error=$((keyword_error+1))
+
+  # * I'm less fond of searching for "taint" and "warning" because they often
+  #   include false positives (i.e. messages that include that word but are not a
+  #   taint or a warning).
+  #   TODO: evaluate if these filters ever catch a useful message, otherwise they
+  #   can be removed.
+  elif [[ "${msg,,}" == *"taint"* ]]; then
     keyword_taint=$((keyword_taint+1))
-  elif [[ "$msg" == *"warning"* ]]; then
+  elif [[ "${msg,,}" == *"warning"* ]]; then
     keyword_warning=$((keyword_warning+1))
 
   # If the message doesn't match a known keyword, we categorize it according to
-  # their priority, for priorities "warning" or higher.
+  # its priority, for priorities "warning" or higher.
   else
     case ${msg:0:1} in
       0)
@@ -91,6 +99,7 @@ cat <<EOF >"$tmpoutfile"
 # TYPE kernel_messages gauge
 kernel_messages{category="keyword_panic"} ${keyword_panic}
 kernel_messages{category="keyword_taint"} ${keyword_taint}
+kernel_messages{category="keyword_error"} ${keyword_error}
 kernel_messages{category="keyword_warning"} ${keyword_warning}
 kernel_messages{category="priority_emerg"} ${priority_emerg}
 kernel_messages{category="priority_alert"} ${priority_alert}

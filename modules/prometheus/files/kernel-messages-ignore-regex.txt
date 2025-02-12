@@ -8,3 +8,4 @@ x86/cpu: SGX disabled by BIOS
 ACPI Error: No handler for Region .*
 ACPI Error: Region .* has no handler
 ACPI Error: Aborting method .* due to previous error
+ERST: Error Record Serialization Table \(ERST\) support is initialized.
