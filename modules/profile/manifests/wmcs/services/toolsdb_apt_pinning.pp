@@ -9,15 +9,9 @@ class profile::wmcs::services::toolsdb_apt_pinning (
 
     # A pin with priority between 0 and 100 will allow the package to be installed
     # but will not allow upgrading it (unless manually asked to do so).
-    apt::pin { 'toolsdb_mariadb_104_no_auto_updates':
-      package  => 'wmf-mariadb104',
-      pin      => 'version *',
-      priority => 90,
-    }
-
-    apt::pin { 'toolsdb_no_mariadb_106':
+    apt::pin { 'toolsdb_mariadb_106_no_auto_updates':
       package  => 'wmf-mariadb106',
       pin      => 'version *',
-      priority => -1,
+      priority => 90,
     }
 }
