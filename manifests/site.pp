@@ -1066,7 +1066,7 @@ node /^(elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic110[3-7]\.eqiad\./ {
+node /^elastic1103|elastic1107\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
@@ -2317,7 +2317,7 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
     role(releases)
 }
 
-# relevance forge servers T241791 (provision), T262211 (service impl.)
+# relevance forge servers (run opensearch, owned by DPE SRE)
 node /^relforge1003\.eqiad\./ {
     role(elasticsearch::relforge)
 }
@@ -2326,6 +2326,10 @@ node /^relforge1004\.eqiad\./ {
     role(cirrus::relforge)
 }
 
+# Repurposed from elastic1104-06, see T386357
+node /^relforge100[5-7]\.eqiad\./ {
+    role(insetup::search_platform)
+}
 
 # restbase eqiad cluster
 node /^restbase10(2[8-9]|3[0-9]|4[0-2])\.eqiad\./ {

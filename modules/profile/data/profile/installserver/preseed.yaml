@@ -256,6 +256,10 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcontrol1005|relforge100[3-4]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
+  'relforge100[5-7]':
+    - partman/standard.cfg
+    - partman/raid0.cfg
+    - partman/raid0-2dev.cfg
   'mwlog[12]002':
     - reuse-parts-test.cfg
     - partman/custom/reuse-lvm-root-4dev.cfg
