@@ -2328,7 +2328,7 @@ node /^relforge1004\.eqiad\./ {
 
 # Repurposed from elastic1104-06, see T386357
 node /^relforge100[5-7]\.eqiad\./ {
-    role(insetup::search_platform)
+    role(elasticsearch::relforge)
 }
 
 # restbase eqiad cluster

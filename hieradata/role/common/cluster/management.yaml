@@ -41,8 +41,8 @@ profile::spicerack::elasticsearch_config_data:
       production-search-omega-codfw: 'https://search.svc.codfw.wmnet:9443'
       production-search-psi-codfw: 'https://search.svc.codfw.wmnet:9643'
     relforge:
-      relforge-eqiad: 'https://relforge1004.eqiad.wmnet:9243'
-      relforge-eqiad-small-alpha: 'https://relforge1004.eqiad.wmnet:9443'
+      relforge-eqiad: 'https://relforge1007.eqiad.wmnet:9243'
+      relforge-eqiad-small-alpha: 'https://relforge1007.eqiad.wmnet:9443'
     cloudelastic:
       cloudelastic-chi-https: 'https://cloudelastic.wikimedia.org:9243'
       cloudelastic-omega-https: 'https://cloudelastic.wikimedia.org:9443'

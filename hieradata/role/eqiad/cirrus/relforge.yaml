@@ -2,11 +2,16 @@ profile::opensearch::dc_settings:
     # ES-specific: Not default
     unicast_hosts:
       - relforge1003.eqiad.wmnet
+      - relforge1005.eqiad.wmnet
+      - relforge1006.eqiad.wmnet
+      - relforge1007.eqiad.wmnet
 
     cluster_hosts:
       - relforge1003.eqiad.wmnet
       - relforge1004.eqiad.wmnet
-
+      - relforge1005.eqiad.wmnet
+      - relforge1006.eqiad.wmnet
+      - relforge1007.eqiad.wmnet
     expected_nodes: 2
 
 profile::opensearch::s3_username: 'search:platform'
