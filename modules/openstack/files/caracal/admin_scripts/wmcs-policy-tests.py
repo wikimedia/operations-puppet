@@ -21,6 +21,7 @@ import time
 import uuid
 from functools import reduce
 
+import socket
 import pytest
 
 import keystoneauth1
@@ -31,7 +32,11 @@ from neutronclient.common import exceptions as neutronexceptions
 from novaclient import exceptions as novaexceptions
 from troveclient import exceptions as troveexceptions
 
-POLICY_TEST_PROJECT = "policy-test-project"
+
+if socket.getfqdn().endswith("codfw.wmnet"):
+    POLICY_TEST_PROJECT = "938cdff1ffce44c49657024f001fccb4"
+else:
+    POLICY_TEST_PROJECT = "policy-test-project"
 
 # Novaadmin: has project-admin rights in every project
 adminclients = mwopenstackclients.clients(oscloud="novaadmin")
@@ -85,7 +90,7 @@ def instancenetwork():
 instancenetwork.network = None
 
 
-# Helper function to find the instance network
+# Helper function to find an image for VM creation
 def instanceimage():
     if instanceimage.image:
         return instanceimage.image
@@ -93,7 +98,7 @@ def instanceimage():
     glanceclient = observerclients.glanceclient(project=POLICY_TEST_PROJECT)
 
     def activeimage(image1, image2):
-        if image2.status == "active":
+        if image2.status == "active" and "debian" in image2.name.lower():
             return image2
         return image1
 
@@ -110,7 +115,9 @@ class TestKeystone:
         projects = keystoneclient.projects.list()
         assert len(projects) > 0
 
-        newproject = keystoneclient.projects.create("policy-test-creation", domain="default")
+        newproject = keystoneclient.projects.create(
+            "policy-test-creation", domain="default"
+        )
         keystoneclient.projects.delete(newproject.id)
 
         rolelist = keystoneclient.roles.list()
