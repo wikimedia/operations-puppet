@@ -110,8 +110,8 @@ class TestKeystone:
         projects = keystoneclient.projects.list()
         assert len(projects) > 0
 
-        keystoneclient.projects.create("policy-test-creation", domain="default")
-        keystoneclient.projects.delete("policy-test-creation")
+        newproject = keystoneclient.projects.create("policy-test-creation", domain="default")
+        keystoneclient.projects.delete(newproject.id)
 
         rolelist = keystoneclient.roles.list()
         for role in rolelist:
@@ -353,7 +353,11 @@ class TestDesignate:
         # Generate an arbitrary zone to test with
         designateclient = adminclients.designateclient(project=POLICY_TEST_PROJECT)
         existingzones = designateclient.zones.list()
-        cls.zonename = "policytest%s.%s" % (str(uuid.uuid4()), existingzones[0]["name"])
+        for existing in existingzones:
+            if existing["name"].endswith(".cloud."):
+                existingname = existing["name"]
+                break
+        cls.zonename = "policytest%s.%s" % (str(uuid.uuid4()), existingname)
         cls.zone = designateclient.zones.create(cls.zonename, email="root@wmcloud.org")
         cls.recordset = designateclient.recordsets.create(
             cls.zone["id"], str(uuid.uuid4()), "A", ["192.168.0.1"]
