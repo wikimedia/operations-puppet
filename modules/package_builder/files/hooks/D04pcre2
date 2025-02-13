@@ -1,0 +1,15 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+# If pbuilder is called by gbp, DIST is stored in GBP_PBUILDER_DIST. It may
+# also have the -wikimedia suffix.
+DIST=${GBP_PBUILDER_DIST:-$DIST}
+DIST=${DIST%-wikimedia}
+
+if [ "$PCRE2" = "yes" ] && [ "$DIST" = "bullseye" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-pcre2.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia bullseye-wikimedia component/pcre2
+    deb-src http://apt.wikimedia.org/wikimedia bullseye-wikimedia component/pcre2
+EOF
+    apt-get update
+fi
