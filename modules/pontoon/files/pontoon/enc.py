@@ -115,6 +115,8 @@ def main():
     variables = {
         # role() emulation
         "_role": role.replace("::", "/"),
+        # needed to keep puppet_ssldir lookupvar('puppetmaster') working
+        "puppetmaster": p.server_fqdn,
     }
 
     YAML().dump(
