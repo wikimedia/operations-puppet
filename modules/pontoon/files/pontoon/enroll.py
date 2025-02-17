@@ -86,12 +86,17 @@ class Enroller(object):
             "sudo puppet config --section agent set ca_server %s" % self.agent_server
         )
         wipe_puppet_certs_cmd = "sudo find /var/lib/puppet/ssl -type f -delete"
+        # in Cloud VPS agents of a self-hosted puppetserver expect
+        # /var/lib/puppet/client/ssl instead of /var/lib/puppet/ssl. See also
+        # modules/wmflib/lib/puppet/parser/functions/puppet_ssldir.rb
+        agent_ssl_client_link = "sudo ln -s . /var/lib/puppet/client"
 
         enroll_cmd = "&&".join(
             (
                 set_master_cmd,
                 set_ca_server_cmd,
                 wipe_puppet_certs_cmd,
+                agent_ssl_client_link,
             )
         )
 
