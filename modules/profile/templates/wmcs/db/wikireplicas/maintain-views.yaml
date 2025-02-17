@@ -11,8 +11,6 @@ mysql_instances:
 <%- end -%>
 
 add_to_all_dbs:
-  s6:
-    - labswiki
   s7:
     - centralauth
 
