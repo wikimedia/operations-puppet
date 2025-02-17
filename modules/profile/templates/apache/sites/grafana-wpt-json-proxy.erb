@@ -6,6 +6,10 @@
 
 Listen <%= @wpt_json_proxy_port %>
 <VirtualHost *:<%= @wpt_json_proxy_port %>>
+
+  # enable mod_proxy to reverse-proxy to https
+  SSLProxyEngine on
+
   <Location "/">
     ProxyPass "https://wikimedia.sitespeed.io/"
   </Location>

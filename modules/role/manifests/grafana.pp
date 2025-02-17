@@ -3,7 +3,9 @@ class role::grafana {
     include profile::firewall
 
     class { '::httpd':
-        modules => ['authnz_ldap', 'headers', 'proxy', 'proxy_http', 'rewrite']
+        modules   => ['authnz_ldap', 'headers', 'proxy', 'proxy_http',
+                      'rewrite', 'ssl'],
+        http_only => true,
     }
 
     include profile::grafana::production

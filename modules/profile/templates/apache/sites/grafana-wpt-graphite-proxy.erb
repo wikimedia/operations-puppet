@@ -4,6 +4,10 @@
 
 Listen <%= @wpt_graphite_proxy_port %>
 <VirtualHost *:<%= @wpt_graphite_proxy_port %>>
+
+  # enable mod_proxy to reverse-proxy to https
+  SSLProxyEngine on
+
   <Location "/">
     ProxyPass "http://performance-testing-graphite.wmftest.org:8080/"
   </Location>
