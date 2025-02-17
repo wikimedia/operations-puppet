@@ -13,6 +13,9 @@ transTable = str.maketrans("./", "__")
 openFiles = {}
 nameRegex = re.compile(r"^[\040-\176]*$")
 
+# Don't bail on invalid utf8 - T386421
+sys.stdin.reconfigure(errors='replace')
+
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--basedir',
