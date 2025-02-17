@@ -548,6 +548,9 @@ mediawiki::sites:
             early:
               - "    # Redirect requests for the root of the domain to something nice"
               - "    RewriteRule ^/$ https://www.wikimedia.org [R=302,L]"
+              - "    # Serve static files before the below RewriteRule can match (T385520)"
+              - "    RewriteRule ^/\\.well-known/ - [L]"
+              - "    RewriteRule ^/static/ - [L]"
               - "    # T365162 strip the prefix used to identify the wiki"
               - "    # (T380551#10368927 don't mess up the 404 error page)"
               - "    RewriteCond %%{}{REQUEST_URI} !=/w/404.html"

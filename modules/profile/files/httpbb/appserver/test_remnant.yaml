@@ -193,6 +193,9 @@ https://auth.wikimedia.org:
 - path: /robots.txt
   assert_status: 200
   assert_body_contains: The auth.wikimedia.org domain
+- path: /.well-known/assetlinks.json
+  assert_status: 200
+  assert_body_contains: delegate_permission
 - path: /favicon.ico
   assert_status: 200
   assert_headers:
