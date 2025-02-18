@@ -107,8 +107,6 @@ profile::lvs::realserver::pools:
       - "elasticsearch_6@cloudelastic-omega-eqiad.service"
 profile::lvs::realserver::use_conftool: true
 # enable IPIP encapsulation, see T365616
-profile::lvs::realserver::ipip::ipv4_mss: 1440
-profile::lvs::realserver::ipip::ipv6_mss: 1400
 profile::lvs::realserver::ipip::enabled: true
 
 profile::tlsproxy::instance::nginx_variant: 'light'
