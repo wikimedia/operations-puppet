@@ -29,14 +29,17 @@ class profile::mediawiki::maintenance::growthexperiments(
     }
     # monitor eswiki and frwiki more closely to see the impact of changing the hook to clear outdated recommendations (T372337)
     profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun-eswiki':
+      ensure   => 'absent',
       command  => '/usr/local/bin/mwscript extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --wiki=eswiki --search-index --db-table --dry-run --statsd',
       interval => '*-*-* *:10:00',
     }
     profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun-frwiki':
+      ensure   => 'absent',
       command  => '/usr/local/bin/mwscript extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --wiki=frwiki --search-index --db-table --dry-run --statsd',
       interval => '*-*-* *:10:00',
     }
     profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun-cswiki':
+      ensure   => 'absent',
       command  => '/usr/local/bin/mwscript extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --wiki=cswiki --search-index --db-table --dry-run --statsd',
       interval => '*-*-* *:10:00',
     }
