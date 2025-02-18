@@ -16,7 +16,7 @@ profile::wikidough::dnsdist::tls_common:
 
 profile::wikidough::dnsdist::tls_doh:
   min_tls_version: 'tls1.3'
-  ciphers_tls13:
+  ciphers_tls13: &ciphers_tls13
     - 'TLS_AES_128_GCM_SHA256'
     - 'TLS_CHACHA20_POLY1305_SHA256'
     - 'TLS_AES_256_GCM_SHA384'
@@ -27,10 +27,7 @@ profile::wikidough::dnsdist::tls_dot:
     - 'ECDHE-ECDSA-AES256-GCM-SHA384'
     - 'ECDHE-ECDSA-CHACHA20-POLY1305'
     - 'ECDHE-ECDSA-AES128-GCM-SHA256'
-  ciphers_tls13:
-    - 'TLS_AES_256_GCM_SHA384'
-    - 'TLS_CHACHA20_POLY1305_SHA256'
-    - 'TLS_AES_128_GCM_SHA256'
+  ciphers_tls13: *ciphers_tls13
 
 profile::wikidough::dnsdist::custom_headers:
   strict-transport-security: 'max-age=106384710; includeSubDomains; preload'
