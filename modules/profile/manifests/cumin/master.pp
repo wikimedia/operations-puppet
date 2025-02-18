@@ -40,6 +40,7 @@ class profile::cumin::master (
         'python3-dnspython',
         'python3-phabricator',
         'python3-requests',
+        'python3-dbg',
     ])
 
     file { $cumin_log_path:

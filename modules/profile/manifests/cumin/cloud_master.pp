@@ -48,6 +48,7 @@ class profile::cumin::cloud_master (
         'python3-keystoneauth1',
         'python3-keystoneclient',
         'python3-novaclient',
+        'python3-dbg',
     ])
 
     file { $cumin_log_path:
