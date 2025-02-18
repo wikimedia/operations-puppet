@@ -17,7 +17,11 @@ cd $dest_dir
 if ! sudo env $git_debug git diff-index --quiet HEAD --; then
   echo
   echo "The canonical git repository at $dest_dir is not clean:"
+  echo "Unclean status found:"
   sudo env $git_debug git diff-index --name-status HEAD --
+  echo
+  echo
+  echo "Make sure the repository at $dest_dir is clean before pushing."
   echo
   exit 1
 fi
