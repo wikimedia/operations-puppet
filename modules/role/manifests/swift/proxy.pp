@@ -3,5 +3,6 @@ class role::swift::proxy {
     include profile::firewall
     include profile::prometheus::memcached_exporter
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
     include profile::swift::proxy
 }

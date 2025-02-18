@@ -2569,6 +2569,8 @@ service::catalog:
           url:
             - http://localhost/monitoring/frontend
       scheduler: wrr
+      ipip_encapsulation:
+        - codfw
     port: 80
     sites:
       - codfw
@@ -2600,6 +2602,8 @@ service::catalog:
           url:
             - https://localhost/monitoring/frontend
       scheduler: wrr
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /monitoring/frontend
