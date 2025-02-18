@@ -258,10 +258,13 @@ logstash-canary: P{logstash1023.eqiad.wmnet}
 logstash-eqiad: A:logstash and A:eqiad
 logstash-codfw: A:logstash and A:codfw
 lvs: P{O:lvs::balancer}
-lvs-canary: P{lvs4008.ulsfo.wmnet}
-<% @datacenters.each do |dc| -%>
-lvs-<%= dc %>: A:lvs and A:<%= dc %>
-<% end -%>
+lvs-canary: P{lvs7001.magru.wmnet}
+lvs-eqiad: A:lvs and A:eqiad
+lvs-codfw: A:lvs and A:codfw
+lvs-esams: A:lvs and A:esams
+lvs-eqsin: A:lvs and A:eqsin
+lvs-magru: A:lvs and A:magru
+lvs-drmrs: A:lvs and A:drmrs
 # lvs-high-traffic1, lvs-high-traffic2, etc.
 <% @lvs_hosts.each do |lvs_class, lvs_host| -%>
 lvs-<%= lvs_class %>: P{<%= lvs_host.join("* or ") %>*}
