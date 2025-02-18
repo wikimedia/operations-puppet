@@ -61,6 +61,19 @@ write_files:
         Pin: release o=wikimedia
         Pin-Priority: 1001
       path: /etc/apt/preferences.d/puppet.pref
+    - content: |
+        clouds:
+          novaobserver:
+            auth:
+              auth_url: https://<%= @keystone_fqdn %>:25000/v3
+              username: novaobserver
+              password: <%= @observer_password %>
+              project_id: observer
+              user_domain_id: default
+              project_domain_id: default
+            region_name: <%= @region %>
+            identity_api_version: 3
+      path: /etc/openstack/clouds.yaml
 
 # resetting ttys0 so root is logged in
 runcmd:
