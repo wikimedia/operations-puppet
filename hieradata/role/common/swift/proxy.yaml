@@ -199,3 +199,5 @@ profile::lvs::realserver::pools:
       - swift-proxy
       - envoy
 profile::lvs::realserver::use_conftool: true
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false

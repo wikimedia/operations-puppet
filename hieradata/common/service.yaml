@@ -2570,6 +2570,7 @@ service::catalog:
             - http://localhost/monitoring/frontend
       scheduler: wrr
       ipip_encapsulation:
+        - eqiad
         - codfw
     port: 80
     sites:
@@ -2603,6 +2604,7 @@ service::catalog:
             - https://localhost/monitoring/frontend
       scheduler: wrr
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
