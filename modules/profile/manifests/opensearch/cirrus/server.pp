@@ -22,6 +22,13 @@ class profile::opensearch::cirrus::server(
     # TODO: Check if still necessary w/opensearch
     include ::profile::rsyslog::udp_json_logback_compat
 
+    $apt_component = 'opensearch13'
+    apt::repository { 'wikimedia-opensearch-plugins':
+        uri        => 'http://apt.wikimedia.org/wikimedia',
+        dist       => "${::lsbdistcodename}-wikimedia",
+        components => "component/${apt_component}",
+    }
+
     package {'wmf-opensearch-search-plugins':
         ensure  => present,
         require => [Class['Java'], Package['opensearch']],
