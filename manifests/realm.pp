@@ -44,7 +44,6 @@ if $_trusted_certname =~ '\.wikimedia.cloud$' {
     # See following page for additional context:
     # https://wikitech.wikimedia.org/wiki/Wikimedia_Cloud_Services_team/EnhancementProposals/DNS_domain_usage#Resolution
     $pieces = $_trusted_certname.split('[.]')
-    $labsproject = $pieces[1] # $wmcs_project may make more sense
     $wmcs_project = $pieces[1]
     $wmcs_deployment = $pieces[2]
 
@@ -52,16 +51,13 @@ if $_trusted_certname =~ '\.wikimedia.cloud$' {
     if $pieces[0] != $::hostname {
         fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
     }
-    if $::labsproject == undef {
-        fail('Failed to determine $::labsproject')
-    }
     if $::wmcs_project == undef {
         fail('Failed to determine $::wmcs_project')
     }
     if $::wmcs_deployment == undef {
         fail('Failed to determine $::wmcs_deployment')
     }
-    $projectgroup = "project-${labsproject}"
+    $projectgroup = "project-${wmcs_project}"
 } else {
     $realm = 'production'
 }
