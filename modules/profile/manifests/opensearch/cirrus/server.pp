@@ -26,7 +26,9 @@ class profile::opensearch::cirrus::server(
     class { '::sslcert::dhparam': }
 
     # Install curator for opensearch
-    class { '::opensearch::curator': }
+    class { '::opensearch::curator':
+        version => '5.8.5-1~wmf4+deb11u1'
+    }
 
     $apt_component = 'opensearch13'
     apt::repository { 'wikimedia-opensearch-plugins':
