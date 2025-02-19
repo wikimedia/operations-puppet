@@ -51,6 +51,10 @@ write_files:
       path: /etc/block-ldap-key-lookup
     - content: "daemon.* |/dev/console"
       path: /etc/rsyslog.d/60-puppet.conf
+    - content: {{ds.meta_data.project_id}}
+      path: /etc/openstack/project_id
+    - content: UNKNOWN
+      path: /etc/openstack/project_name
     - content: |
         [Service]
         ExecStart=
@@ -82,16 +86,16 @@ runcmd:
 
 ssh_pwauth: False
 
-manage_etc_hosts: true
+manage_etc_hosts: false
 
 
 # gpg: needed for apt to function properly
 # pciutils: used by puppet to determine is_virtual
-# ruby-sorted-set: Needed for puppet to work on Bookworm. This will fail
-#  on other distros.
+# python3-keystoneclient: used to look up project name
 packages:
     - gpg
     - pciutils
+    - python3-keystoneclient
 
 # Mark out ephemeral0 so that cloud-init leaves it alone;
 #  we'll let puppet mount it later.
@@ -141,6 +145,26 @@ Content-Type: text/text/x-shellscript; charset="us-ascii"
 
 set -x
 
+# Set fqdn with project name.
+# We have to do this here since project_name isn't available via metadata.
+hostname=`hostname`
+project_id=`cat /etc/openstack/project_id`
+project_name=`openstack project show --os-cloud novaobserver -c name $project_id -f value`
+echo $project_name > /etc/openstack/project_name
+fqdn=$hostname.$project_name.<%= @dhcp_domain %>
+ip=`ip route show default | awk -F"src " 'NR==1{split($2,a," ");print a[1]}'`
+cat > /etc/hosts<< EOF
+$ip $fqdn $hostname
+127.0.0.1 localhost
+
+# The following lines are desirable for IPv6 capable hosts
+::1 ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+ff02::3 ip6-allhosts
+EOF
 
 if ! command -v apt-get >/dev/null; then
     # If we don't have apt then none of our init script will
