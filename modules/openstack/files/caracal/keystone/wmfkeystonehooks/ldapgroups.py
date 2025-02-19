@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# for ops/puppet CI: explicitly mark this file as python3 otherwise it defaults to py2
+
 # SPDX-License-Identifier: Apache-2.0
 
 # Copyright 2016 Andrew Bogott for the Wikimedia Foundation
@@ -85,9 +88,9 @@ def _get_ldap_group(ds, groupname):
         return None
 
 
-def delete_ldap_project_group(project_id):
+def delete_ldap_project_group(project_name):
     basedn = cfg.CONF.wmfhooks.ldap_group_base_dn
-    groupname = "project-%s" % project_id
+    groupname = "project-%s" % project_name
     dn = "cn=%s,%s" % (groupname, basedn)
 
     ds = _open_ldap()
@@ -102,7 +105,7 @@ def delete_ldap_project_group(project_id):
 
     # delete everything under the project subtree
     basedn = cfg.CONF.wmfhooks.ldap_project_base_dn
-    projectbase = "cn=%s,%s" % (project_id, basedn)
+    projectbase = "cn=%s,%s" % (project_name, basedn)
 
     try:
         search = ds.search_s(projectbase, ldap.SCOPE_SUBTREE)
@@ -116,11 +119,11 @@ def delete_ldap_project_group(project_id):
         try:
             ds.delete_s(record)
         except ldap.LDAPError as e:
-            LOG.warning("Failed to delete %s from ldap" % (record, e))
+            LOG.warning("Failed to delete %s from ldap: %s" % (record, e))
 
 
-def sync_ldap_project_group(project_id, keystone_assignments):
-    groupname = "project-%s" % project_id
+def sync_ldap_project_group(project_name, keystone_assignments):
+    groupname = "project-%s" % project_name
     LOG.info("Syncing keystone project membership with ldap group %s"
              % groupname)
     ds = _open_ldap()
@@ -175,7 +178,7 @@ def sync_ldap_project_group(project_id, keystone_assignments):
                             (dn, i, exc, modlist))
 
 
-def create_sudo_defaults(project_id):
+def create_sudo_defaults(project_name):
     ds = _open_ldap()
     if not ds:
         LOG.error("Failed to connect to ldap; Unable to create sudo rules.")
@@ -184,7 +187,7 @@ def create_sudo_defaults(project_id):
 
     userbasedn = cfg.CONF.wmfhooks.ldap_user_base_dn
     basedn = cfg.CONF.wmfhooks.ldap_project_base_dn
-    projectbase = "cn=%s,%s" % (project_id, basedn)
+    projectbase = "cn=%s,%s" % (project_name, basedn)
     # We may or may not already have one of these... if it fails just move on.
     projectEntry = {}
     projectEntry['objectClass'] = [b'extensibleobject', b'groupofnames', b'top']
@@ -229,7 +232,7 @@ def create_sudo_defaults(project_id):
     sudoEntry = {}
     defaultdn = "cn=default-sudo,%s" % sudoerbase
     sudoEntry['objectClass'] = [b'sudoRole']
-    sudoEntry['sudoUser'] = [('%%project-%s' % project_id).encode('utf-8')]
+    sudoEntry['sudoUser'] = [('%%project-%s' % project_name).encode('utf-8')]
     sudoEntry['sudoCommand'] = [b'ALL']
     sudoEntry['sudoOption'] = [b'!authenticate']
     sudoEntry['sudoHost'] = [b'ALL']
@@ -242,7 +245,7 @@ def create_sudo_defaults(project_id):
 
     defaultasdn = "cn=default-sudo-as,%s" % sudoerbase
     # The runas entry is the same as the default entry, plus one field
-    sudoEntry['sudoRunAsUser'] = [("%%project-%s" % project_id).encode('utf-8')]
+    sudoEntry['sudoRunAsUser'] = [("%%project-%s" % project_name).encode('utf-8')]
     sudoEntry['cn'] = [b'default-sudo-as']
     modlist = ldap.modlist.addModlist(sudoEntry)
     try:

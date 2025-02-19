@@ -116,12 +116,13 @@ class KeystoneHooks(notifier.Driver):
     #  we're probably going to wind up getting called several times in quick succession,
     #  possible in overlapping invocations.  Watch out for race conditions!
     def _on_member_update(self, project_id, assignments=None):
+        project_name = PROVIDERS.resource_api.get_project(project_id)["name"]
         if not assignments:
             assignments = self._get_current_assignments(project_id)
         if assignments:
-            ldapgroups.sync_ldap_project_group(project_id, assignments)
+            ldapgroups.sync_ldap_project_group(project_name, assignments)
         else:
-            ldapgroups.delete_ldap_project_group(project_id)
+            ldapgroups.delete_ldap_project_group(project_name)
 
     def _add_to_bastion(self, roledict, user_id):
         # First make sure the user isn't already assigned to bastion
@@ -141,7 +142,7 @@ class KeystoneHooks(notifier.Driver):
         project_name = PROVIDERS.resource_api.get_project(project_id)["name"]
         LOG.warning("Beginning wmf hooks for project deletion: %s (%s)", project_id, project_name)
 
-        ldapgroups.delete_ldap_project_group(project_id)
+        ldapgroups.delete_ldap_project_group(project_name)
         self.page_editor.edit_page("", project_name, True)
         # Fixme: Replace this cleanup when we have a version of Designate
         #  that supports an all-projects flag
@@ -176,11 +177,11 @@ class KeystoneHooks(notifier.Driver):
         LOG.warning("Syncing membership with ldap for project %s" % project_id)
         assignments = self._get_current_assignments(project_id)
         if assignments:
-            ldapgroups.sync_ldap_project_group(project_id, assignments)
+            ldapgroups.sync_ldap_project_group(project_name, assignments)
 
         LOG.warning("Setting up default sudoers in ldap for project %s" % project_id)
         # Set up default sudoers in ldap
-        ldapgroups.create_sudo_defaults(project_id)
+        ldapgroups.create_sudo_defaults(project_name)
 
         if project_domain == "default":
             self._create_project_page(project_id, project_name)
