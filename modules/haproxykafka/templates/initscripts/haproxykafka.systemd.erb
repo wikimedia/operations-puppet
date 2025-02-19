@@ -10,7 +10,9 @@ WantedBy=multi-user.target
 User=<%= @user %>
 Group=<%= @user %>
 ExecStart=/usr/bin/haproxykafka -c <%= @conffile_full_path %>
-Restart=on-failure
+Restart=always
+MemoryHigh=4.5%
+MemoryMax=5%
 # Hardening
 NoNewPrivileges=true
 PrivateTmp=true
