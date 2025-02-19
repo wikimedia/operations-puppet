@@ -9,7 +9,7 @@
 class profile::opensearch::cirrus::server(
     String $cluster = lookup('cluster'),
     String $ferm_srange = lookup('profile::opensearch::cirrus::ferm_srange'),
-    String $ferm_ro_srange = lookup('profile::opensearch::cirrus::ferm_ro_srange', {default_value => ''}),
+    String $ferm_ro_srange = lookup('profile::opensearch::cirrus::ferm_ro_srange', { default_value => '' }),
     Boolean $expose_http = lookup('profile::opensearch::cirrus::expose_http'),
     String $storage_device = lookup('profile::opensearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::opensearch::cirrus::enable_remote_search'),
@@ -29,7 +29,7 @@ class profile::opensearch::cirrus::server(
         components => "component/${apt_component}",
     }
 
-    package {'wmf-opensearch-search-plugins':
+    package { 'wmf-opensearch-search-plugins':
         ensure  => present,
         require => [Class['Java'], Package['opensearch']],
     }
