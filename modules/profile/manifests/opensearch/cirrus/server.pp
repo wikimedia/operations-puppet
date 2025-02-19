@@ -25,6 +25,9 @@ class profile::opensearch::cirrus::server(
     # nginx, which terminates tls for elasticsearch, needs `/etc/ssl/dhparam.pem` to be in place in order to function.
     class { '::sslcert::dhparam': }
 
+    # Install curator for opensearch
+    class { '::opensearch::curator': }
+
     $apt_component = 'opensearch13'
     apt::repository { 'wikimedia-opensearch-plugins':
         uri        => 'http://apt.wikimedia.org/wikimedia',
