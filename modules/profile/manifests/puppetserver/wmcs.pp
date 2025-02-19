@@ -23,13 +23,17 @@ class profile::puppetserver::wmcs (
         git_user => 'gitpuppet',
     }
 
-    # validatelabsfqdn will look up an instance certname in nova
+    # validatecloudvpsfqdn will look up an instance certname in nova
     #  and make sure it's for an actual instance before signing
-    file { '/usr/local/sbin/validatelabsfqdn.py':
+    file { '/usr/local/sbin/validatecloudvpsfqdn.py':
         ensure => 'present',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
-        source => 'puppet:///modules/puppetmaster/validatelabsfqdn.py',
+        source => 'puppet:///modules/puppetmaster/validatecloudvpsfqdn.py',
+    }
+
+    file { '/usr/local/sbin/validatelabsfqdn.py':
+        ensure => 'absent',
     }
 }
