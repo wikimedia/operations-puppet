@@ -65,6 +65,7 @@ profile::lvs::realserver::pools:
   mw-wikifunctions: {}
   device-analytics: {}
   rest-gateway: {}
+  kartotherian-k8s-ssl: {}
 
 prometheus::node_exporter::collectors_extra:
   - processes
