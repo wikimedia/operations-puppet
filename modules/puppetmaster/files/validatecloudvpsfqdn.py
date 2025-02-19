@@ -27,9 +27,17 @@ else:
 certhostname = pieces[0]
 certproject = pieces[1]
 
-projects = [project.id for project in clients.allprojects()]
-if certproject not in projects:
-    sys.exit("certname %s is not for a real project" % certname)
+id_for_names = {project.name: project.id for project in clients.allprojects()}
+project_names = list(id_for_names.keys())
+project_ids = list(id_for_names.values())
+
+if certproject not in project_ids:
+    if certproject in project_names:
+        # For name-based projects, we need to look up the ID for
+        #  future openstack calls.
+        certproject = id_for_names[certproject]
+    else:
+        sys.exit("certname %s is not for a real project" % certname)
 
 # the cert name will always be lowercase.  So we need to lower()
 #  the instance name for proper comparison
