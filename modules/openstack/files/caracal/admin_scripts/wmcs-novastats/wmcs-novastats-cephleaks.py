@@ -73,13 +73,29 @@ def purge_orphan_images(delete=False):
                 print("snapshot ignored: " + image)
             elif "_disk" in image:
                 print("Purging snapshots for " + image)
-                subprocess.check_output(
-                    ["rbd", "--pool", CEPH_POOL, "snap", "purge", image]
-                ).decode("utf8")
+                try:
+                    subprocess.check_output(
+                        ["rbd", "--pool", CEPH_POOL, "snap", "purge", image],
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                    )
+                except subprocess.CalledProcessError as e:
+                    if "No such file or directory" in e.output:
+                        print("No such file, continuing")
+                        continue
+
                 print("Deleting " + image)
-                subprocess.check_output(
-                    ["rbd", "--pool", CEPH_POOL, "rm", image]
-                ).decode("utf8")
+
+                try:
+                    subprocess.check_output(
+                        ["rbd", "--pool", CEPH_POOL, "rm", image],
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                    )
+                except subprocess.CalledProcessError as e:
+                    if "No such file or directory" in e.output:
+                        pass
+
                 delete_count += 1
             else:
                 # this could be anything, let's skip it
