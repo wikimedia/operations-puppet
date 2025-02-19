@@ -210,7 +210,7 @@ groups:
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
-              kemayo
+              kemayo, arthurtaylor
     ]
     system_members: [mwbuilder, mwpresync]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
@@ -237,7 +237,7 @@ groups:
               kharlan, abi, musikanimal, nahidunlimited,
               daimona, jabrams, nforrester, katelevan, cmaslak,
               komla, sgimeno, itamar, haak,
-              dbrant, tsev, ngkountas, arthurtaylor, rkhan, migr, joelyrookewmde,
+              dbrant, tsev, ngkountas, rkhan, migr, joelyrookewmde,
               suzannewood]
     privileges: ['ALL = (www-data) NOPASSWD: ALL']
     approval:
