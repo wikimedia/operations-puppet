@@ -40,27 +40,64 @@ class ServerError(Exception):
     icon = '☠️'
 
 
+class Job:
+    def __init__(self, cluster: str) -> None:
+        self.cluster = cluster
+        self.release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        # Duplicates the functionality of mw.name.namespace.env.release in the Helm chart.
+        self.name = f'{NAMESPACE}.{self.cluster}.{self.release}'
+        # Duplicates the name in the Helm chart (based on base.name.release).
+        self.app_container = f'mediawiki-{self.release}-app'
+
+    def kube_env(self, deploy: bool = False) -> dict[str, str]:
+        # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
+        return {
+            'K8S_CLUSTER': self.cluster,
+            'KUBECONFIG': config_file(NAMESPACE, self.cluster, deploy),
+        }
+
+    @property
+    def logs_command(self) -> str:
+        return (
+            f'{env_vars_str(self.kube_env())} kubectl logs -f job/{self.name} {self.app_container}')
+
+    def wait_until_started(self) -> None:
+        kube_config = config.load_kube_config(config_file=self.kube_env()['KUBECONFIG'])
+        core_client = client.CoreV1Api(client.ApiClient(kube_config))
+        pod_list = core_client.list_namespaced_pod(
+            namespace=NAMESPACE, label_selector=f'job-name={self.name}')
+        if pod_list.items and is_started(pod_list.items[0], self.app_container):
+            logger.info('🚀 Job is running.')
+            return
+        resource_version = pod_list.metadata.resource_version
+
+        logger.info('⏳ Waiting for the container to start...')
+        w = watch.Watch()
+        for event in w.stream(core_client.list_namespaced_pod,
+                              namespace=NAMESPACE,
+                              label_selector=f'job-name={self.name}',
+                              resource_version=resource_version,
+                              timeout_seconds=300):
+            pod = event['object']
+            if is_started(pod, self.app_container):
+                logger.info('🚀 Job is running.')
+                break
+        else:
+            logger.warning(
+                '🚩 Timed out waiting for the container to start. Proceeding anyway, but '
+                'this might not work. To check on the job, run:\n'
+                '%s kubectl describe job %s', env_vars_str(self.kube_env()), self.name)
+        w.stop()
+
+
 def config_file(namespace: str, cluster: str, deploy: bool = False) -> str:
     if deploy:
         namespace += '-deploy'
     return f'/etc/kubernetes/{namespace}-{cluster}.config'
 
 
-def kube_env(namespace: str, cluster: str, deploy: bool = False) -> dict[str, str]:
-    # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
-    return {
-        'K8S_CLUSTER': cluster,
-        'KUBECONFIG': config_file(namespace, cluster, deploy),
-    }
-
-
 def env_vars_str(env_vars: dict[str, str]) -> str:
     return ' '.join(f'{key}={value}' for key, value in env_vars.items())
-
-
-def job_name(namespace: str, cluster: str, release: str) -> str:
-    # Duplicates the functionality of mw.name.namespace.env.release in the Helm chart.
-    return f'{namespace}.{cluster}.{release}'
 
 
 def get_primary_dc() -> str:
@@ -70,18 +107,13 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
-def app_container(release: str) -> str:
-    # Duplicates the name in the Helm chart (based on base.name.release).
-    return f'mediawiki-{release}-app'
-
-
 def mediawiki_image(cluster: str) -> str:
     # Find out what multiversion image is in use by mw-web, and use the same one.
     kube_config = config.load_kube_config(config_file=config_file('mw-web', cluster))
     apps_client = client.AppsV1Api(client.ApiClient(kube_config))
     deployment_name = f'mw-web.{cluster}.main'
     deployment = apps_client.read_namespaced_deployment(name=deployment_name, namespace='mw-web')
-    container_name = app_container('main')
+    container_name = 'mediawiki-main-app'
     containers = [container for container in deployment.spec.template.spec.containers
                   if container.name == container_name]
     if not containers:
@@ -131,39 +163,6 @@ def is_started(pod: V1Pod, container: str) -> bool:
         if container_status.name == container:
             return container_status.state.running or container_status.state.terminated
     return False
-
-
-def wait_until_started(env_vars: dict[str, str], job: str, container: str) -> None:
-    kube_config = config.load_kube_config(config_file=env_vars['KUBECONFIG'])
-    core_client = client.CoreV1Api(client.ApiClient(kube_config))
-    pod_list = core_client.list_namespaced_pod(
-        namespace=NAMESPACE, label_selector=f'job-name={job}')
-    if pod_list.items and is_started(pod_list.items[0], container):
-        logger.info('🚀 Job is running.')
-        return
-    resource_version = pod_list.metadata.resource_version
-
-    logger.info('⏳ Waiting for the container to start...')
-    w = watch.Watch()
-    for event in w.stream(core_client.list_namespaced_pod,
-                          namespace=NAMESPACE,
-                          label_selector=f'job-name={job}',
-                          resource_version=resource_version,
-                          timeout_seconds=300):
-        pod = event['object']
-        if is_started(pod, container):
-            logger.info('🚀 Job is running.')
-            break
-    else:
-        logger.warning('🚩 Timed out waiting for the container to start. Proceeding anyway, but '
-                       'this might not work. To check on the job, run:\n'
-                       '%s kubectl describe job %s', env_vars_str(env_vars), job)
-    w.stop()
-
-
-def logs_command(env_vars: dict[str, str], release: str) -> str:
-    job = job_name(NAMESPACE, env_vars['K8S_CLUSTER'], release)
-    return f'{env_vars_str(env_vars)} kubectl logs -f job/{job} {app_container(release)}'
 
 
 def parse_duration(duration: str) -> int:
@@ -250,9 +249,8 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         yaml.dump(values, f)
         values_filename = f.name
 
-    release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
-    job = job_name(NAMESPACE, environment, release)
-    logger.info('⏳ Starting %s on Kubernetes as job %s ...', args.script_name, job)
+    job = Job(environment)
+    logger.info('⏳ Starting %s on Kubernetes as job %s ...', args.script_name, job.name)
     try:
         subprocess.run([
             '/usr/bin/helmfile',
@@ -261,7 +259,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             '--environment', environment,
             # As of this writing, we don't need a selector because this is the only thing in the
             # helmfile. But it's included anyway, for futureproofing.
-            '--selector', f'name={release}',
+            '--selector', f'name={job.release}',
             'apply',
             '--values', values_filename,
             *(['--suppress-diff'] if args.verbose < 2 else []),
@@ -271,7 +269,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
                 'HELM_CACHE_HOME': '/var/cache/helm',  # Use the shared cache.
                 'HELM_CONFIG_HOME': '/etc/helm',  # Needed for helm chart repos etc.
                 'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
-                'RELEASE_NAME': release,  # Consumed by the helmfile template.
+                'RELEASE_NAME': job.release,  # Consumed by the helmfile template.
             },
             check=True,
             stdout=subprocess.PIPE if not args.verbose else None,
@@ -287,26 +285,24 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         # isn't a disaster.
         raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
 
-    container = app_container(release)
-    env_vars = kube_env(NAMESPACE, environment)
     if args.follow:
-        wait_until_started(env_vars, job, container)
+        job.wait_until_started()
         logger.info('📜 Streaming logs:')
         try:
             # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
             # .kube/cache there, instead of dropping it rudely into $PWD.
-            subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job}', container],
-                           env={**env_vars, 'HOME': os.environ['HOME']})
+            subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job.name}', job.app_container],
+                           env={**(job.kube_env()), 'HOME': os.environ['HOME']})
         except subprocess.CalledProcessError as e:
             raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
         except KeyboardInterrupt:
             logger.info('🔁 To resume streaming logs, run:\n%s\n'
                         'ℹ️ To terminate your job and delete it, run:\n%s kubectl delete job %s',
-                        logs_command(env_vars, release),
-                        env_vars_str(kube_env(NAMESPACE, environment, deploy=True)),
-                        job)
+                        job.logs_command,
+                        env_vars_str(job.kube_env(deploy=True)),
+                        job.name)
     elif args.attach:
-        wait_until_started(env_vars, job, container)
+        job.wait_until_started()
         if sys.stdin.isatty():
             logger.info(
                 "ℹ️ Expecting a prompt but don't see it? Due to a race condition, the beginning of "
@@ -319,34 +315,33 @@ def start(args: argparse.Namespace) -> dict[str, str]:
                 '/usr/bin/kubectl',
                 'attach',
                 *(['--quiet'] if not args.verbose else []),
-                f'job/{job}',
-                '--container', container,
+                f'job/{job.name}',
+                '--container', job.app_container,
                 '-it' if sys.stdin.isatty() else '-i'
-                ],
+            ],
                 env={
                     # Switch from the read-only user to the deploy user, which has privileges to
                     # attach.
-                    **kube_env(NAMESPACE, environment, deploy=True),
+                    **job.kube_env(deploy=True),
                     'HOME': os.environ['HOME']
                 },
                 check=True)
         except subprocess.CalledProcessError as e:
             raise ServerError(
                 f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}\n'
-                f'For logs (may not work) run:\n{logs_command(env_vars, release)}')
+                f'For logs (may not work) run:\n{job.logs_command}')
     else:
-        logger.info('🚀 Job is running. For streaming logs, run:\n%s',
-                    logs_command(env_vars, release))
+        logger.info('🚀 Job is running. For streaming logs, run:\n%s', job.logs_command)
 
     os.unlink(values_filename)
     return {
-        'cluster': env_vars['K8S_CLUSTER'],
-        'config': env_vars['KUBECONFIG'],
-        'deploy_config': config_file(NAMESPACE, environment, deploy=True),
-        'job': job,
-        'mediawiki_container': container,
+        'cluster': job.cluster,
+        'config': config_file(NAMESPACE, job.cluster),
+        'deploy_config': config_file(NAMESPACE, job.cluster, deploy=True),
+        'job': job.name,
+        'mediawiki_container': job.app_container,
         'namespace': NAMESPACE,
-        'release': release,
+        'release': job.release,
     }
 
 
