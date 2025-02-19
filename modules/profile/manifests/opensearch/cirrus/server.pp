@@ -14,8 +14,6 @@ class profile::opensearch::cirrus::server(
     String $storage_device = lookup('profile::opensearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::opensearch::cirrus::enable_remote_search'),
     Profile::Pki::Provider $ssl_provider = lookup('profile::opensearch::cirrus::ssl_provider'),
-    Optional[String] $s3_username = lookup('profile::opensearch::s3_username', { 'default_value' => undef }),
-    Optional[String] $s3_password  = lookup('profile::opensearch::s3_password', { 'default_value' => undef }),
 ) {
     # Also brings in ::profile::opensearch::server
     include ::profile::opensearch::monitoring::base_checks
@@ -150,29 +148,6 @@ class profile::opensearch::cirrus::server(
         $http_port = $instance_params['http_port']
         $tls_port = $instance_params['tls_port']
         $tls_ro_port = $instance_params['tls_ro_port']
-
-        if $s3_username != undef and $s3_username != '' {
-            $config_dir = "/etc/opensearch/${cluster_name}"
-            exec { "s3-credentials-user-${cluster_name}":
-                command     => "echo ${s3_username} | /usr/share/opensearch/bin/opensearch-keystore add s3.client.default.access_key",
-                environment => ["OPENSEARCH_PATH_CONF=${config_dir}"],
-                group       => 'opensearch',
-                require     => File["${config_dir}/opensearch.keystore"],
-                path        => '/bin:/usr/bin',
-                unless      => '/usr/share/opensearch/bin/opensearch-keystore list | grep s3.client.default.access_key',
-            }
-        }
-
-        if $s3_password != undef and $s3_password != '' {
-            exec { "s3-credentials-pass-${cluster_name}":
-                command     => "echo ${s3_password} | /usr/share/opensearch/bin/opensearch-keystore add s3.client.default.secret_key",
-                environment => ["OPENSEARCH_PATH_CONF=${config_dir}"],
-                group       => 'opensearch',
-                require     => File["${config_dir}/opensearch.keystore"],
-                path        => '/bin:/usr/bin',
-                unless      => '/usr/share/opensearch/bin/opensearch-keystore list | grep s3.client.default.secret_key',
-            }
-        }
 
         if $expose_http {
             ferm::service { "opensearch-http-${http_port}":
