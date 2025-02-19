@@ -1970,10 +1970,6 @@ node /^ml-lab100[12]\.eqiad\./ {
     role(ml_lab::gpu)
 }
 
-node /^moscovium\.eqiad\./ {
-    role(insetup::collaboration_services)
-}
-
 node /^moss-fe100[12]\.eqiad\./ {
     role(cephadm::rgw)
 }
