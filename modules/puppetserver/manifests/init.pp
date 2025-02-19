@@ -134,16 +134,16 @@ class puppetserver (
     )
 
     if $ssldir_on_srv {
-        ensure_resource(
-            'file',
-            '/srv/puppet/server',
+
+        wmflib::dir::mkdir_p(
+            [ '/srv/puppet/server' ],
             {
-                'ensure' => 'directory',
-                'owner'  => 'puppet',
-                'group'  => 'puppet',
-                'mode'   => '0751',
+              'mode'  => '0751',
+              'owner' => 'puppet',
+              'group' => 'puppet',
             },
         )
+
         ensure_resource(
             'file',
             '/etc/puppet/puppetserver/ca',
