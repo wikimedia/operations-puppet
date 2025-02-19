@@ -22,6 +22,9 @@ class profile::opensearch::cirrus::server(
     # TODO: Check if still necessary w/opensearch
     include ::profile::rsyslog::udp_json_logback_compat
 
+    # nginx, which terminates tls for elasticsearch, needs `/etc/ssl/dhparam.pem` to be in place in order to function.
+    class { '::sslcert::dhparam': }
+
     $apt_component = 'opensearch13'
     apt::repository { 'wikimedia-opensearch-plugins':
         uri        => 'http://apt.wikimedia.org/wikimedia',
