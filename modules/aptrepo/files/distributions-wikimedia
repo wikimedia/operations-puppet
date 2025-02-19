@@ -166,6 +166,7 @@ Components: main
  thirdparty/haproxy26
  thirdparty/haproxy27
  thirdparty/haproxy28
+ thirdparty/haproxy31
  thirdparty/hwraid
  thirdparty/node14
  thirdparty/node16
@@ -202,6 +203,7 @@ Update:
  thirdparty/haproxy26-bullseye
  thirdparty/haproxy27
  thirdparty/haproxy28-bullseye
+ thirdparty/haproxy31-bullseye
 Description: Wikimedia packages for Debian bullseye
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
