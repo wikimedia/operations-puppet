@@ -47,6 +47,11 @@ if $_trusted_certname =~ '\.wikimedia.cloud$' {
     $wmcs_project = $pieces[1]
     $wmcs_deployment = $pieces[2]
 
+    $wmcs_project_id = $facts['openstack_project_id'] ? {
+        undef   => $wmcs_project,
+        default => $facts['openstack_project_id']
+    }
+
     # some final checks before we move on
     if $pieces[0] != $::hostname {
         fail("Cert hostname ${pieces[0]} does not match reported hostname ${::hostname}")
