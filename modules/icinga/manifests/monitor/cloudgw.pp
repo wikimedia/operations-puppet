@@ -10,13 +10,13 @@ class icinga::monitor::cloudgw {
         ip_families    => ['ip4'],
     }
 
-    $virt_fqdn = 'virt.cloudgw.eqiad1.wikimediacloud.org'
-    prometheus::blackbox::check::icmp { $virt_fqdn:
-        site           => 'eqiad',
-        instance_label => $virt_fqdn,
-        team           => 'wmcs',
-        # TODO: change once https://phabricator.wikimedia.org/T312840 is done
-        ip4            => ipresolve($virt_fqdn, 4),
-        ip_families    => ['ip4'],
-    }
+    #$virt_fqdn = 'virt.cloudgw.eqiad1.wikimediacloud.org'
+    #prometheus::blackbox::check::icmp { $virt_fqdn:
+    #    site           => 'eqiad',
+    #    instance_label => $virt_fqdn,
+    #    team           => 'wmcs',
+    #    # TODO: change once https://phabricator.wikimedia.org/T312840 is done
+    #    ip4            => ipresolve($virt_fqdn, 4),
+    #    ip_families    => ['ip4'],
+    #}
 }
