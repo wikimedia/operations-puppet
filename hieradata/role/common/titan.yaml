@@ -54,8 +54,9 @@ profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 profile::thanos::object_store_cutoff_days: 15
 
 # Retention custom settings -- see also T311690 and T351927
-profile::thanos::retention::raw: '44w'
-profile::thanos::retention::5m: '5w'
+profile::thanos::retention::raw: '60w'
+profile::thanos::retention::5m: '60w'
+profile::thanos::retention::1h: '280w'
 
 profile::thanos::compactor::concurrency: 3
 
