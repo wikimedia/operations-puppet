@@ -193,6 +193,7 @@ Update:
  jenkins
  node14-bullseye
  node16-bullseye
+ pcre2-php81-bullseye
  routinator
  thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-pacific
