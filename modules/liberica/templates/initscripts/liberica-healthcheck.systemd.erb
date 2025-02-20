@@ -8,9 +8,9 @@ WantedBy=multi-user.target
 
 [Service]
 User=liberica
-# setsockopt(2) SO_MARK requires CAP_NET_ADMIN
-CapabilityBoundingSet=CAP_NET_ADMIN
-AmbientCapabilities=CAP_NET_ADMIN
+# setsockopt(2) SO_MARK requires CAP_NET_RAW
+CapabilityBoundingSet=CAP_NET_RAW
+AmbientCapabilities=CAP_NET_RAW
 SystemCallFilter=~@keyring @clock @cpu-emulation @obsolete @module @raw-io @reboot @swap
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
 ProtectSystem=strict
