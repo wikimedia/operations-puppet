@@ -36,6 +36,8 @@ NAMESPACE = 'mw-script'
 KUBE_CONFIGS = [
     'mw-script',
 ]
+# Read main_app.image from this values file to determine the live MW image version.
+VALUES = '/etc/helmfile-defaults/mediawiki/release/mw-web-main.yaml'
 
 
 class ClientError(Exception):
@@ -123,20 +125,14 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
-def mediawiki_image(cluster: str) -> str:
-    # Find out what multiversion image is in use by mw-web, and use the same one.
-    kube_config = config.load_kube_config(config_file=config_file('mw-web', cluster))
-    apps_client = client.AppsV1Api(client.ApiClient(kube_config))
-    deployment_name = f'mw-web.{cluster}.main'
-    deployment = apps_client.read_namespaced_deployment(name=deployment_name, namespace='mw-web')
-    container_name = 'mediawiki-main-app'
-    containers = [container for container in deployment.spec.template.spec.containers
-                  if container.name == container_name]
-    if not containers:
-        raise ValueError(
-            f'Container {container_name} not found in the {deployment_name} deployment template')
-    [container] = containers
-    return container.image.removeprefix('docker-registry.discovery.wmnet/')
+def mediawiki_image() -> str:
+    # Find out what multiversion image is in use by mw-web, and use the same one. This might not be
+    # the same image that's actually running (particularly if we're in the middle of a deployment or
+    # rollback) but the values file is world-readable so this works even if the user isn't in the
+    # deployment group.
+    with open(VALUES, 'r') as f:
+        values = yaml.safe_load(f)
+    return values['main_app']['image']
 
 
 def check_config_files(cluster: str) -> tuple[str, str]:
@@ -249,9 +245,9 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     # long as we're doing that, we'll set all these values that way.
     values = {
         # For normal deployments, this value is managed by scap. For scripts, we'll use the image
-        # currently used in the mw-web deployment (except when overridden by command-line flag).
+        # currently used in the mw-web helmfile (except when overridden by command-line flag).
         'main_app': {
-            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(environment),
+            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(),
         },
         'mwscript': {
             'args': [args.script_name, *args.script_args],
