@@ -436,6 +436,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'kyverno-.*controller.*',
             port      => 8000,
         },
+        {
+            name      => 'jobs-emailer',
+            namespace => 'jobs-emailer',
+            pod_name  => 'jobs-emailer-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 8081,
+        },
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
