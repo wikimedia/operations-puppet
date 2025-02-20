@@ -57,4 +57,14 @@ class liberica(
         restart => false,
         require => [File['/etc/liberica/config.yaml'], Systemd::Sysuser['liberica']],
     }
+
+    # Collect every minute
+    systemd::timer::job { 'prometheus_liberica_cp_checks':
+        ensure      => present,
+        description => 'Regular job to collect liberica control plane checks',
+        user        => 'liberica',
+        command     => '/usr/bin/liberica cp check /var/lib/prometheus/node.d/liberica-cp.prom',
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        require     => [File['/etc/liberica/config.yaml'], Systemd::Sysuser['liberica']],
+    }
 }
