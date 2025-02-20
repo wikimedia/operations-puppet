@@ -91,7 +91,7 @@ profile::mail::default_mail_relay::mediawiki_smarthosts:
 profile::puppetserver::hierarchy:
   - name: "Http Yaml"
     data_hash: cloudlib::httpyaml
-    uri: "https://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org/v1/%{literal('%')}{::wmcs_project}/node/%{literal('%')}{facts.networking.fqdn}"
+    uri: "https://puppet-enc.cloudinfra-codfw1dev.codfw1dev.wmcloud.org/v1/%{literal('%')}{::wmcs_project_id}/node/%{literal('%')}{facts.networking.fqdn}"
   - name: "cloud hierarchy"
     paths:
       - "cloud/%{literal('%')}{::wmcs_deployment}/%{literal('%')}{::wmcs_project}/hosts/%{literal('%')}{facts.networking.hostname}.yaml"
