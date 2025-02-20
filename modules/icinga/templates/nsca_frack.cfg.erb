@@ -917,56 +917,14 @@ define service {
 
 define service {
     use                      passive-service
+    service_description      check_dagster
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
     service_description      check_disk
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_load
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_procs
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_puppetrun
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_raid
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_rsyslog_backlog
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_memory
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_timesync
-    hostgroup_name           fundraising-misc
-}
-
-define service {
-    use                      passive-service
-    service_description      check_zombie
-    hostgroup_name           fundraising-misc
+    hostgroup_name           fundraising-analytics
 }
 
 define service {
@@ -977,13 +935,55 @@ define service {
 
 define service {
     use                      passive-service
-    service_description      check_dagster
+    service_description      check_load
     hostgroup_name           fundraising-analytics
 }
 
 define service {
     use                      passive-service
     service_description      check_metabase
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_memory
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
     hostgroup_name           fundraising-analytics
 }
 
