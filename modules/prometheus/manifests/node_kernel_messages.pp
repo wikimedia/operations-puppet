@@ -11,13 +11,25 @@ class prometheus::node_kernel_messages (
         source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-node-kernel-messages.sh',
     }
 
-    $ignore_regex_file = '/etc/prometheus/kernel-messages-ignore-regex.txt'
+    $ensure_dir = $ensure ? {
+        absent  => $ensure,
+        default => 'directory',
+    }
+
+    $dir = '/etc/prometheus'
+    file { $dir:
+        ensure => $ensure_dir,
+        mode   => '0755',
+    }
+
+    $ignore_regex_file = "${dir}/kernel-messages-ignore-regex.txt"
     file { $ignore_regex_file:
-        ensure => $ensure,
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/kernel-messages-ignore-regex.txt',
+        ensure  => $ensure,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        source  => 'puppet:///modules/prometheus/kernel-messages-ignore-regex.txt',
+        require => File[$dir],
     }
 
     systemd::timer::job { 'prometheus-node-kernel-messages':
@@ -30,6 +42,7 @@ class prometheus::node_kernel_messages (
             'interval' => 'minutely',
         },
         require     => [
+          File[$dir],
           File[$script],
           Class['prometheus::node_exporter'],
           Package['jq'],
