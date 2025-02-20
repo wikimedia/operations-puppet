@@ -58,8 +58,10 @@ while read -r msg; do
 
   # * Some memory errors are logged with priority=warning, but can be caught
   #   because they contain the "error" keyword.
-  #   Note: '${msg,,}' converts the string to lowercase
-  elif [[ "${msg,,}" == *"error"* ]]; then
+  #   Note: '${msg,,}' converts the string to lowercase,
+  #   and ${msg:0:1} extracts the priority (4=warning)
+  elif [[ "${msg,,}" == *"error"* && ${msg:0:1} == 4 ]]; then
+
     keyword_error=$((keyword_error+1))
 
   # * I'm less fond of searching for "taint" and "warning" because they often
