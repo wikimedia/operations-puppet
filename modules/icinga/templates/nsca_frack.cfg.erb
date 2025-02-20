@@ -51,7 +51,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-analytics
 }
 
 define host {
@@ -64,7 +64,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-analytics
 }
 
 define host {
@@ -681,6 +681,11 @@ define host {
 # HOSTGROUP DEFINITIONS
 
 define hostgroup {
+    hostgroup_name           fundraising-analytics
+    alias                    Fundraising Analytics
+}
+
+define hostgroup {
     hostgroup_name           fundraising-auth
     alias                    Fundraising Auth
 }
@@ -778,15 +783,6 @@ define service {
 }
 
 # SERVICES - HOST
-
-# fran1001
-
-define service {
-    use                      passive-service
-    service_description      check_ipsec
-    host_name                fran1001
-    contact_groups           fr-tech
-}
 
 # fran2001
 
@@ -916,6 +912,80 @@ define service {
 }
 
 # SERVICES - HOSTGROUP
+
+# fundraising-analytics
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_memory
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-misc
+}
+
+define service {
+    use                      passive-service
+    service_description      check_ipsec
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_dagster
+    hostgroup_name           fundraising-analytics
+}
+
+define service {
+    use                      passive-service
+    service_description      check_metabase
+    hostgroup_name           fundraising-analytics
+}
 
 # fundraising-auth
 
