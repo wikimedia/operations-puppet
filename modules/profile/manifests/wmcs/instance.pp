@@ -30,16 +30,6 @@ class profile::wmcs::instance(
         require      => Class['sudo'],
     }
 
-    # Temporary: before we start using project name
-    #  rather than ID, make sure we have the IDs populated.
-    #  As of today, wmcs_project is always the project id.
-    file { '/etc/openstack/project_id':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0440',
-        content => $::wmcs_project
-    }
-
     class { 'profile::ldap::client::labs': }
 
     # TODO: remove after a full puppet cycle
