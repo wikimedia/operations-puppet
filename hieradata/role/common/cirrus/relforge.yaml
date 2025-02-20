@@ -68,14 +68,14 @@ profile::opensearch::common_settings:
       - analysis-hebrew
       - analysis-icu
       - analysis-smartcn
-      - analysis-stconvert
       - analysis-stempel
       - analysis-ukrainian
       - cirrus-highlighter
-      - extra
-      - extra-analysis-esperanto
-      - extra-analysis-serbian
-      - extra-analysis-slovak
+      - opensearch-analysis-stconvert
+      - opensearch-extra
+      - opensearch-extra-analysis-esperanto
+      - opensearch-extra-analysis-serbian
+      - opensearch-extra-analysis-slovak
       - ltr
 
     filter_cache_size: '20%'
