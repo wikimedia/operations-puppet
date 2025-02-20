@@ -28,6 +28,14 @@ from wmflib import interactive
 logger = logging.Logger(__name__)
 
 NAMESPACE = 'mw-script'
+# Kubernetes config files to attempt to use for operations in this namespace, under
+# /etc/kubernetes/{KUBE_CONFIG}-{CLUSTER}.yaml. For each of these, there's a second config with the
+# same file permissions and a -deploy suffix. See profile::kubernetes::deployment_server::services
+# in hieradata, where this matches the `kubeconfig` value (or, by default if that's missing, the
+# `name` value).
+KUBE_CONFIGS = [
+    'mw-script',
+]
 
 
 class ClientError(Exception):
@@ -41,28 +49,38 @@ class ServerError(Exception):
 
 
 class Job:
-    def __init__(self, cluster: str) -> None:
+    def __init__(self, cluster: str, config_file: str, deploy_config_file: str) -> None:
         self.cluster = cluster
+        self.config_file = config_file
+        self.deploy_config_file = deploy_config_file
         self.release = ''.join(random.choices(string.ascii_lowercase + string.digits, k=8))
         # Duplicates the functionality of mw.name.namespace.env.release in the Helm chart.
         self.name = f'{NAMESPACE}.{self.cluster}.{self.release}'
         # Duplicates the name in the Helm chart (based on base.name.release).
         self.app_container = f'mediawiki-{self.release}-app'
 
-    def kube_env(self, deploy: bool = False) -> dict[str, str]:
+    @property
+    def kube_env(self) -> dict[str, str]:
         # Duplicates the functionality of modules/profile/files/kubernetes/kube-env.sh.
         return {
             'K8S_CLUSTER': self.cluster,
-            'KUBECONFIG': config_file(NAMESPACE, self.cluster, deploy),
+            'KUBECONFIG': self.config_file,
+        }
+
+    @property
+    def deploy_kube_env(self) -> dict[str, str]:
+        return {
+            'K8S_CLUSTER': self.cluster,
+            'KUBECONFIG': self.deploy_config_file,
         }
 
     @property
     def logs_command(self) -> str:
         return (
-            f'{env_vars_str(self.kube_env())} kubectl logs -f job/{self.name} {self.app_container}')
+            f'{env_vars_str(self.kube_env)} kubectl logs -f job/{self.name} {self.app_container}')
 
     def wait_until_started(self) -> None:
-        kube_config = config.load_kube_config(config_file=self.kube_env()['KUBECONFIG'])
+        kube_config = config.load_kube_config(config_file=self.config_file)
         core_client = client.CoreV1Api(client.ApiClient(kube_config))
         pod_list = core_client.list_namespaced_pod(
             namespace=NAMESPACE, label_selector=f'job-name={self.name}')
@@ -86,14 +104,12 @@ class Job:
             logger.warning(
                 '🚩 Timed out waiting for the container to start. Proceeding anyway, but '
                 'this might not work. To check on the job, run:\n'
-                '%s kubectl describe job %s', env_vars_str(self.kube_env()), self.name)
+                '%s kubectl describe job %s', env_vars_str(self.kube_env), self.name)
         w.stop()
 
 
-def config_file(namespace: str, cluster: str, deploy: bool = False) -> str:
-    if deploy:
-        namespace += '-deploy'
-    return f'/etc/kubernetes/{namespace}-{cluster}.config'
+def config_file(kube_config: str, cluster: str) -> str:
+    return f'/etc/kubernetes/{kube_config}-{cluster}.config'
 
 
 def env_vars_str(env_vars: dict[str, str]) -> str:
@@ -123,32 +139,39 @@ def mediawiki_image(cluster: str) -> str:
     return container.image.removeprefix('docker-registry.discovery.wmnet/')
 
 
-def check_config_file(namespace: str, cluster: str) -> None:
-    # Make sure we can open the kubernetes config file. If not, either the namespace/cluster are
-    # wrong or we're not in the appropriate usergroup.
-    try:
-        with open(config_file(namespace, cluster), 'r'):
-            pass
-    except PermissionError as e:
-        stat = os.stat(e.filename)
-        group = grp.getgrgid(stat.st_gid).gr_name
-        is_group_readable = stat.st_mode & 0o200
-        if group == 'root' or not is_group_readable:
-            raise ClientError(f"You don't have permission to read the Kubernetes config file "
-                              f"{e.filename} (try sudo)")
-        else:
-            raise ClientError(f"You don't have permission to read the Kubernetes config file "
-                              f"{e.filename} (are you in the {group} group?)")
-    except FileNotFoundError as e:
-        if not glob.glob(f'/etc/kubernetes/*-{glob.escape(cluster)}.config'):
-            raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
-                              f'cluster {cluster}.')
-        elif not glob.glob(f'/etc/kubernetes/{glob.escape(NAMESPACE)}-*.config'):
-            raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
-                              f'namespace {NAMESPACE}.')
-        else:
-            raise ClientError(f'Kubernetes config file {e.filename} not found: namespace '
-                              f'{NAMESPACE} is not configured in cluster {cluster}.')
+def check_config_files(cluster: str) -> tuple[str, str]:
+    # Make sure we can open one of the kubernetes configs, and return the first pair of paths
+    # (regular and deploy) that work. If not, either the namespace/cluster are wrong or we're not in
+    # the appropriate usergroups.
+    groups_tried = set()
+    for kube_config in KUBE_CONFIGS:
+        path = config_file(kube_config, cluster)
+        deploy_path = config_file(kube_config + '-deploy', cluster)
+        try:
+            with open(path, 'r'):
+                pass
+            with open(deploy_path, 'r'):
+                pass
+            return path, deploy_path
+        except PermissionError as e:
+            stat = os.stat(e.filename)
+            group = grp.getgrgid(stat.st_gid).gr_name
+            groups_tried.add(group)
+        except FileNotFoundError as e:
+            if not glob.glob(f'/etc/kubernetes/*-{glob.escape(cluster)}.config'):
+                raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
+                                  f'cluster {cluster}.')
+            elif not glob.glob(f'/etc/kubernetes/{glob.escape(kube_config)}-*.config'):
+                raise ClientError(f'Kubernetes config file {e.filename} not found: there is no '
+                                  f'config {kube_config}.')
+            else:
+                raise ClientError(f'Kubernetes config file {e.filename} not found: config '
+                                  f'{kube_config} does not exist in cluster {cluster}.')
+    files = 'file' if len(KUBE_CONFIGS) == 1 else 'files'
+    joined_groups = ' or '.join(groups_tried)
+    groups = 'group' if len(groups_tried) == 1 else 'groups'
+    raise ClientError(f"You don't have permission to read the Kubernetes config {files} for the "
+                      f"namespace {NAMESPACE}. (Are you in the {joined_groups} {groups}?).")
 
 
 def is_started(pod: V1Pod, container: str) -> bool:
@@ -212,7 +235,7 @@ def parse_filename_pair(filenames: str) -> tuple[str, TextIO]:
 def start(args: argparse.Namespace) -> dict[str, str]:
     environment = get_primary_dc()
     # If we can't open the config, bail out with a clear error message, instead of running helmfile.
-    check_config_file(NAMESPACE, environment)
+    config_file, deploy_config_file = check_config_files(environment)
 
     if args.file:
         try:
@@ -249,7 +272,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         yaml.dump(values, f)
         values_filename = f.name
 
-    job = Job(environment)
+    job = Job(environment, config_file, deploy_config_file)
     logger.info('⏳ Starting %s on Kubernetes as job %s ...', args.script_name, job.name)
     try:
         subprocess.run([
@@ -292,14 +315,14 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
             # .kube/cache there, instead of dropping it rudely into $PWD.
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job.name}', job.app_container],
-                           env={**(job.kube_env()), 'HOME': os.environ['HOME']})
+                           env={**job.kube_env, 'HOME': os.environ['HOME']})
         except subprocess.CalledProcessError as e:
             raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
         except KeyboardInterrupt:
             logger.info('🔁 To resume streaming logs, run:\n%s\n'
                         'ℹ️ To terminate your job and delete it, run:\n%s kubectl delete job %s',
                         job.logs_command,
-                        env_vars_str(job.kube_env(deploy=True)),
+                        env_vars_str(job.deploy_kube_env),
                         job.name)
     elif args.attach:
         job.wait_until_started()
@@ -322,7 +345,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
                 env={
                     # Switch from the read-only user to the deploy user, which has privileges to
                     # attach.
-                    **job.kube_env(deploy=True),
+                    **job.deploy_kube_env,
                     'HOME': os.environ['HOME']
                 },
                 check=True)
@@ -336,8 +359,8 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     os.unlink(values_filename)
     return {
         'cluster': job.cluster,
-        'config': config_file(NAMESPACE, job.cluster),
-        'deploy_config': config_file(NAMESPACE, job.cluster, deploy=True),
+        'config': job.config_file,
+        'deploy_config': job.deploy_config_file,
         'job': job.name,
         'mediawiki_container': job.app_container,
         'namespace': NAMESPACE,
