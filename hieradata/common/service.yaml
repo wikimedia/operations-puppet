@@ -2568,7 +2568,8 @@ service::catalog:
         ProxyFetch:
           url:
             - http://localhost/monitoring/frontend
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
       ipip_encapsulation:
         - eqiad
         - codfw
@@ -2602,7 +2603,8 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/monitoring/frontend
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
       ipip_encapsulation:
         - eqiad
         - codfw
