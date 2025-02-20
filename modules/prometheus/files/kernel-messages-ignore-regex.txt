@@ -1,5 +1,5 @@
 # file maintained in puppet
-# one regexp per line, remember to scape non-regex characters
+# one regexp per line, remember to escape non-regex characters
 # feel free to add more if required
 watchdog: watchdog0: watchdog did not stop!
 mpt3sas_cm0: Trace buffer memory 2048 KB allocated
@@ -8,4 +8,5 @@ x86/cpu: SGX disabled by BIOS
 ACPI Error: No handler for Region .*
 ACPI Error: Region .* has no handler
 ACPI Error: Aborting method .* due to previous error
+ACPI Error: AE_NOT_EXIST.*
 ERST: Error Record Serialization Table \(ERST\) support is initialized.
