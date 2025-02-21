@@ -133,16 +133,32 @@ class puppetserver (
         },
     )
 
+    # The puppetserver process itself enforces mode 0771 on the ssl dir, so this
+    # should not be changed or it will create a perma-diff
+    file { $ssl_dir:
+        ensure => directory,
+        owner  => $owner,
+        group  => $group,
+        mode   => '0771',
+    }
+
     if $ssldir_on_srv {
 
         wmflib::dir::mkdir_p(
-            [ '/srv/puppet/server/ssl/ca' ],
+            [ '/srv/puppet/server' ],
             {
               'mode'  => '0751',
               'owner' => 'puppet',
               'group' => 'puppet',
             },
         )
+
+        file { "${ssl_dir}/ca":
+            ensure => directory,
+            owner  => $owner,
+            group  => $group,
+            mode   => '0771',
+        }
 
         ensure_resource(
             'file',
@@ -163,16 +179,6 @@ class puppetserver (
                 'mode'   => '0751',
             },
         )
-    }
-
-
-    # The puppetserver process itself enforces mode 0771 on the ssl dir, so this
-    # should not be changed or it will create a perma-diff
-    file { $ssl_dir:
-        ensure => directory,
-        owner  => $owner,
-        group  => $group,
-        mode   => '0771',
     }
 
     wmflib::dir::mkdir_p(
