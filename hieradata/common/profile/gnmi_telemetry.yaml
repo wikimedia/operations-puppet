@@ -22,9 +22,8 @@ profile::gnmi_telemetry::outputs:
   prom-output:
     type: prometheus
     metric-prefix: "gnmi"
-    expiration: 120s
-    num-workers: 4
-    num-writers: 4
+    expiration: 300s
+    num-workers: 8
     export-timestamps: true
     timeout: 50s
     event-processors:
