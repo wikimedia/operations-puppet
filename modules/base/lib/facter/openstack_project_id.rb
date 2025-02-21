@@ -7,7 +7,7 @@ Facter.add('openstack_project_id') do
   setcode do
     filename = "/etc/openstack/project_id"
     if File.exist?(filename)
-      id = File.read(filename)
+      id = File.read(filename).chomp
     end
     id
   end
