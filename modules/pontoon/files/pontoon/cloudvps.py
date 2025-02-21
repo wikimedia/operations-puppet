@@ -76,7 +76,10 @@ class NovaClient(object):
         return self.client.servers.list()
 
     def fqdns(self) -> List[str]:
-        return [f"{h.name}.{self.project_id}.{HOST_DOMAIN}" for h in self.servers()]
+        return [f"{self.server_fqdn(h)}" for h in self.servers()]
+
+    def server_fqdn(self, server: Server) -> str:
+        return f"{server.name}.{self.project_id}.{HOST_DOMAIN}"
 
     def delete_server(self, server: Server):
         return self.client.servers.delete(server)
@@ -188,7 +191,7 @@ class CloudVPS(object):
 
         return specmap
 
-    def list_hosts(self, all: bool = False) -> Tuple[List[str], List[List]]:
+    def list_hosts(self, all: bool = False, fqdns: bool = False) -> Tuple[List[str], List[List]]:
         """List details about hosts (FQDNs) for the current project
 
         Returns:
@@ -206,7 +209,7 @@ class CloudVPS(object):
 
             data.append(
                 [
-                    host.name,
+                    host.name if not fqdns else self.nova.server_fqdn(host),
                     self.nova.server_image(host).name,
                     self.nova.server_flavor(host).name,
                 ]

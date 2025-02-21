@@ -167,7 +167,9 @@ class StringYAML(YAML):
             return stream.getvalue()
 
 
-def print_openstack_config(pontoon: Pontoon, cloud: CloudVPS, creds: Credentials) -> bool:
+def print_openstack_config(
+    pontoon: Pontoon, cloud: CloudVPS, creds: Credentials
+) -> bool:
     """Print clouds.yaml configuration for the pontoon stack."""
     stack = pontoon.name
     auth_cfg = {
@@ -371,6 +373,13 @@ def main():
         default=False,
         action="store_true",
     )
+    a.add_argument(
+        "--output",
+        help="Output format",
+        dest="output",
+        default="table",
+        choices=["table", "fqdn"],
+    )
 
     a = new_action(
         "create-hosts",
@@ -457,14 +466,22 @@ def main():
     cloud = CloudVPS(p, NovaAuth(creds.id, creds.secret))
     if args.action == "list-hosts":
         if not args.stack or args.all_hosts:
-            log.info("Loading hosts for project %r:" % cloud.project_id)
-            print("\n".join(as_table(*cloud.list_hosts(all=True))))
+            if args.output == "fqdn":
+                _, hosts = cloud.list_hosts(all=True, fqdns=True)
+                print("\n".join([x[0] for x in hosts]))
+            elif args.output == "table":
+                log.info("Loading hosts for project %r:" % cloud.project_id)
+                print("\n".join(as_table(*cloud.list_hosts(all=True))))
         else:
-            log.info(
-                "Loading hosts for project %r and stack %r:"
-                % (cloud.project_id, p.name)
-            )
-            print("\n".join(as_table(*cloud.list_hosts())))
+            if args.output == "fqdn":
+                _, hosts = cloud.list_hosts(fqdns=True)
+                print("\n".join([x[0] for x in hosts]))
+            elif args.output == "table":
+                log.info(
+                    "Loading hosts for project %r and stack %r:"
+                    % (cloud.project_id, p.name)
+                )
+                print("\n".join(as_table(*cloud.list_hosts())))
     elif args.action == "create-hosts":
         cloud.create_hosts(args.no_block)
         update_ssh_fingerprints(p, config_dir)
