@@ -1,0 +1,55 @@
+cluster: 'dp-cssndr4x'
+
+# Instances
+profile::cassandra::instances:
+  "dp-cssndr4x-cass-04.swift.eqiad1.wikimedia.cloud":
+    a:
+      listen_address: '172.16.3.74'
+      data_file_directories:
+        - /srv/cassandra/1
+        - /srv/cassandra/2
+  "dp-cssndr4x-cass-05.swift.eqiad1.wikimedia.cloud":
+    a:
+      listen_address: '172.16.1.202'
+      data_file_directories:
+        - /srv/cassandra/1
+        - /srv/cassandra/2
+  "dp-cssndr4x-cass-06.swift.eqiad1.wikimedia.cloud":
+    a:
+      listen_address: '172.16.3.70'
+      data_file_directories:
+        - /srv/cassandra/1
+        - /srv/cassandra/2
+
+profile::cassandra::settings:
+  start_rpc: false
+  tls_use_pki_truststore: true
+  tls_cluster_name: 'dp-cssndr4x'
+  tls_use_pki: true
+  dc: "%{::site}"
+  cluster_name: 'dp-cssndr4x'
+  super_username: cassandra
+  super_password: "%{passwords::cassandra::super_password}"
+  target_version: 'dev'
+  default_instance_params:
+    #max_heap_size: 12g
+    # 1/4 heap size, no more than 100m/thread
+    #heap_newsize: 2048m
+    compaction_throughput_mb_per_sec: 20
+    concurrent_compactors: 10
+    concurrent_writes: 18
+    concurrent_reads: 18
+    permissions_validity_in_ms: 600000
+    trickle_fsync: false
+    client_encryption_enabled: true
+    # Client encryption has been made optional here for the same reason it was
+    # in the aqs cluster (see: T309229 & T310820).
+    client_encryption_optional: true
+    internode_encryption: all
+  users:
+    - restbase_dev
+    - mediawiki_services_mobileapps
+    - cassandra_devel
+    - data_gateway
+    - aqsloader
+    - commons_impact_analytics

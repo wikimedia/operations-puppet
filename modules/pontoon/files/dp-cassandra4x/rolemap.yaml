@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+  - dp-cssndr4x-puppet-01.swift.eqiad1.wikimedia.cloud
+puppetdb:
+  - dp-cssndr4x-puppetdb-01.swift.eqiad1.wikimedia.cloud
+pki::multirootca:
+  - dp-cssndr4x-pki-01.swift.eqiad1.wikimedia.cloud
+cassandra_dev:
+  - dp-cssndr4x-cass-04.swift.eqiad1.wikimedia.cloud
+  - dp-cssndr4x-cass-05.swift.eqiad1.wikimedia.cloud
+  - dp-cssndr4x-cass-06.swift.eqiad1.wikimedia.cloud

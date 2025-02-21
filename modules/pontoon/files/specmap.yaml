@@ -38,3 +38,6 @@ syslog::centralserver:
 
 kafka::monitoring_bullseye:
   hostname: 'kafkamon'
+
+cassandra_dev:
+  image: 'debian-11.0-bullseye'
