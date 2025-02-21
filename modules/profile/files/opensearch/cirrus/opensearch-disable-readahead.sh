@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 for f in /run/opensearch*/*.pid; do
-  /usr/bin/elasticsearch-madvise "$(cat "$f")"
+  /usr/bin/opensearch-madvise "$(cat "$f")"
 done
 
 echo "Done"
