@@ -214,19 +214,12 @@ class ToolViews(object):
                 # Status codes of 200 to 299 are 'success' codes.
                 # We don't care about client or server errors or redirects
 
-                if r["vhost"] == "tools.wmflabs.org":
-                    # Path based routing (legacy)
-                    # FIXME: add support for toolsbeta?
-                    tool = r["tool"]
-                else:
-                    # Host based routing
-                    tool = r["vhost"].split(".")[0]
-
+                tool = r["vhost"].split(".")[0]
                 if tool not in self.tools:
-                    if tool not in (".well-known", "index.php", "robots.txt"):
-                        logger.info('Unknown tool "%s"', tool)
+                    logger.info('Unknown tool "%s"', tool)
                     # fourohfour is the default route handler
                     tool = "fourohfour"
+
                 stats[tool][r["datetime"]].append(r["ipaddr"])
 
         rows = []
