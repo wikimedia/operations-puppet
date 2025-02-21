@@ -136,7 +136,7 @@ class puppetserver (
     if $ssldir_on_srv {
 
         wmflib::dir::mkdir_p(
-            [ '/srv/puppet/server' ],
+            [ '/srv/puppet/server/ssl/ca' ],
             {
               'mode'  => '0751',
               'owner' => 'puppet',
