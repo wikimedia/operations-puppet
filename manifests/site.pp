@@ -2314,12 +2314,12 @@ node /^relforge1003\.eqiad\./ {
     role(elasticsearch::relforge)
 }
 
-node /^relforge1004\.eqiad\./ {
+node /^relforge100[45]\.eqiad\./ {
     role(cirrus::relforge)
 }
 
-# Repurposed from elastic1104-06, see T386357
-node /^relforge100[5-7]\.eqiad\./ {
+# Repurposed from elastic1105-06, see T386357
+node /^relforge100[67]\.eqiad\./ {
     role(elasticsearch::relforge)
 }
 
