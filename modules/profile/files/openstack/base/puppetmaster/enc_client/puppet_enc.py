@@ -4,6 +4,8 @@ import requests
 import yaml
 import sys
 
+import mwopenstackclients
+
 
 def _is_valid_hostname(name):
     """
@@ -42,7 +44,10 @@ def _is_valid_hostname(name):
 
 if __name__ == '__main__':
     hostname = sys.argv[1]
-    project = hostname.split('.')[1]
+    clients = mwopenstackclients.clients(oscloud="novaobserver")
+    id_for_names = {project.name: project.id for project in clients.allprojects()}
+    project_name = hostname.split('.')[1]
+    project_id = id_for_names[project_name]
 
     # check to make sure ec2id_name is an actual ec2id based hostname, to
     # prevent ldap injection attacks
@@ -54,9 +59,9 @@ if __name__ == '__main__':
 
     classes = set()
 
-    url = '{api_endpoint}/v1/{project}/node/{fqdn}'.format(
+    url = '{api_endpoint}/v1/{project_id}/node/{fqdn}'.format(
         api_endpoint=encconfig['api_endpoint'],
-        project=project,
+        project_id=project_id,
         fqdn=hostname
     )
 
