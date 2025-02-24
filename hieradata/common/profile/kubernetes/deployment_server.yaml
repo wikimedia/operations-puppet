@@ -483,6 +483,14 @@ profile::kubernetes::deployment_server::services:
         - name: airflow-analytics-deploy
           owner: root
           group: analytics-deployers
+    airflow-main:
+      usernames:
+        - name: airflow-main
+          owner: root
+          group: analytics-deployers
+        - name: airflow-main-deploy
+          owner: root
+          group: analytics-deployers
     airflow-platform-eng:
       usernames:
         - name: airflow-platform-eng
