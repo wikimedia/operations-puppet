@@ -53,6 +53,8 @@ write_files:
       path: /etc/rsyslog.d/60-puppet.conf
     - content: {{ds.meta_data.project_id}}
       path: /etc/openstack/project_id
+    - content: {{ds.ec2_metadata.local_ipv4}}
+      path: /etc/openstack/host_ip
     - content: UNKNOWN
       path: /etc/openstack/project_name
     - content: |
@@ -148,11 +150,11 @@ set -x
 # Set fqdn with project name.
 # We have to do this here since project_name isn't available via metadata.
 hostname=`hostname`
+ip=`cat /etc/openstack/host_ip`
 project_id=`cat /etc/openstack/project_id`
 project_name=`openstack project show --os-cloud novaobserver -c name $project_id -f value`
 echo $project_name > /etc/openstack/project_name
 fqdn=$hostname.$project_name.<%= @dhcp_domain %>
-ip=`ip route show default | awk -F"src " 'NR==1{split($2,a," ");print a[1]}'`
 cat > /etc/hosts<< EOF
 $ip $fqdn $hostname
 127.0.0.1 localhost
