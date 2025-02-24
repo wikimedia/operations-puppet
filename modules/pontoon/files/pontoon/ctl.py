@@ -13,6 +13,7 @@ from .nova import HORIZON_URL, HOST_DOMAIN
 from . import Pontoon
 from .credentials import CredentialsMissing, load_credentials
 from .enroll import Enroller
+from .rolegroups import RoleGroups
 from .util import ssh_bash, as_table
 from ruamel.yaml import YAML
 from ruamel.yaml.compat import StringIO
@@ -90,11 +91,20 @@ openstack --os-cloud {stack}
   or
 export OS_CLOUD={stack}
 """,
+    "add-rolegroup": """
+The rolegroup {name!r} has been added to the stack {stack!r}.
+Please inspect the changes in {stack_path!r}, then commit and push them:
+
+git add {stack_path}
+git commit -m "pontoon: add rolegroup {name} to {stack}"
+git push -f pontoon-{stack} HEAD:production
+""",
 }
 
 
 class Controller(object):
     def __init__(self, pontoon: Pontoon, cloud: CloudVPS):
+        self._rolegroups = None
         self.yaml = YAML()
         self.pontoon = pontoon
         self.cloud = cloud
@@ -109,6 +119,68 @@ class Controller(object):
     @property
     def server(self) -> Optional[str]:
         return self.pontoon.server_fqdn
+
+    @property
+    def rolegroups(self) -> RoleGroups:
+        if self._rolegroups is not None:
+            return self._rolegroups
+        self._rolegroups = self._load_rolegroups()
+        return self._rolegroups
+
+    def _load_rolegroups(self) -> RoleGroups:
+        groupmap = {}
+
+        groupfile = os.path.join(self.pontoon.base_path, "rolegroups.yaml")
+        with open(groupfile, encoding="utf-8") as f:
+            groupmap = self.yaml.load(f)
+
+        stack_groupfile = os.path.join(self.pontoon.stack_path, "rolegroups.yaml")
+        if os.path.exists(stack_groupfile):
+            with open(stack_groupfile, encoding="utf-8") as f:
+                stack_groupmap = self.yaml.load(f)
+                groupmap.update(stack_groupmap)
+
+        return RoleGroups(groupmap)
+
+    def add_rolegroup(self, name: str):
+        """Add a role group to the Pontoon stack.
+
+        Args:
+            name (str): The role group to add
+        """
+        group = self.rolegroups.get_group(name)
+        if not group.roles:
+            log.error("Group %s not found", name)
+            return False
+
+        for role in group.roles:
+            if role in self.pontoon.rolemap:
+                log.debug("Role %s already exists, skipping", role)
+                continue
+            hostname = self._hostname_for_role(role)
+            fqdn = self.cloud.fqdn(hostname)
+            self.pontoon.add_host_to_role(fqdn, role)
+        self.pontoon.save()
+
+        for setting in group.settings:
+            destfile = f"{self.pontoon.stack_path}/hiera/{setting}.yaml"
+            if os.path.lexists(destfile):
+                log.debug("Setting %s already exists, skipping", setting)
+                continue
+            os.symlink(f"../../settings/{setting}.yaml", destfile)
+            if not os.path.exists(destfile):
+                log.error(
+                    f"Unable to find source setting file for {setting}. "
+                    f"Check {self.pontoon.stack_path}/hiera"
+                )
+                continue
+
+        return True
+
+    def _hostname_for_role(self, role: str, id: str = "01") -> str:
+        host_prefix = self._host_prefix(self.pontoon.name)
+        role_hostname = self.cloud.specs_for_role(role).hostname
+        return f"{host_prefix}-{role_hostname}-{id}"
 
     def _host_prefix(self, stack_name: str) -> str:
         if "-" not in stack_name:
@@ -128,7 +200,8 @@ class Controller(object):
                 f"stack {self.pontoon.name!r} already exists ({server} found in rolemap)"
             )
 
-        fqdn = self.cloud.fqdn(f"{host_prefix}-puppet-01")
+        hostname = self._hostname_for_role("puppetserver::pontoon")
+        fqdn = self.cloud.fqdn(hostname)
         if fqdn in self.cloud.fqdns:
             raise click.UsageError(
                 f"The server {fqdn} exists in project {self.cloud.project!r},"
@@ -531,6 +604,25 @@ def reboot_hosts(ctx, stack, pattern, type, block):
     # XXX wait for destruction?
     ctrl = get_controller(stack, ctx.obj["home"])
     ctrl.cloud.reboot_hosts(pattern, type, not block)
+
+
+@ctl.command()
+@with_stack
+@click.argument("name")
+@click.pass_obj
+def add_rolegroup(obj, stack, name):
+    ctrl = get_controller(stack, obj["home"])
+    ok = ctrl.add_rolegroup(name)
+    if not ok:
+        raise click.UsageError("Failed to add rolegroup")
+    stack_path = os.path.relpath(ctrl.pontoon.stack_path, os.getcwd())
+    print(
+        INSTRUCTIONS["add-rolegroup"].format(
+            name=name,
+            stack=stack,
+            stack_path=stack_path,
+        )
+    )
 
 
 @ctl.command()

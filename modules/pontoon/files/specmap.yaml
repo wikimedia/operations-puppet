@@ -10,9 +10,17 @@ __default:
 # Roles with higher requirements than default
 puppetserver::pontoon:
   flavor: 'g4.cores2.ram4.disk20'
+  hostname: 'puppet'
+
+pki::multirootca:
+  hostname: 'pki'
+
+pontoon::lb:
+  hostname: 'lb'
 
 logging::opensearch::collector:
   flavor: 'g4.cores2.ram4.disk20'
+  hostname: 'logs-fe'
 
 prometheus:
   flavor: 'g4.cores2.ram4.disk20'
@@ -20,4 +28,13 @@ prometheus:
 # Roles pinned to Debian release other than 'stable'
 kafka::logging:
   image: 'debian-11.0-bullseye'
+  hostname: 'kafka-logs'
 
+alerting_host:
+  hostname: 'alerts'
+
+syslog::centralserver:
+  hostname: 'centrallog'
+
+kafka::monitoring_bullseye:
+  hostname: 'kafkamon'

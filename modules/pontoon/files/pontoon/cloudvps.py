@@ -22,8 +22,9 @@ log = logging.getLogger()
 class Specs:
     """Cloud server specifications."""
 
-    image: Any
-    flavor: Any
+    image: str
+    flavor: str
+    hostname: str
 
 
 @dataclass
@@ -82,12 +83,16 @@ class CloudVPS(object):
         Returns:
             Specs: The specs for this role
         """
-        role_specs = self.specmap["__default"]
+        role_specs = self.specmap["__default"].copy()
         role_specs.update(self.specmap.get(role, {}))
 
+        if role_specs.get("hostname") is None:
+            role_specs["hostname"] = role.replace(":", "_")
+
         return Specs(
-            image=self.nova.name_image(role_specs["image"]),
-            flavor=self.nova.name_flavor(role_specs["flavor"]),
+            image=role_specs["image"],
+            flavor=role_specs["flavor"],
+            hostname=role_specs["hostname"],
         )
 
     @property
@@ -159,7 +164,9 @@ class CloudVPS(object):
             role = self.pontoon.role_for_host(host)
             if role:
                 specs = self.specs_for_role(role)
-                to_add.append((host, specs.image, specs.flavor))
+                image = self.nova.name_image(specs.image)
+                flavor = self.nova.name_flavor(specs.flavor)
+                to_add.append((host, image, flavor))
 
         if dry_run:
             print(f"Will add {to_add!r}")

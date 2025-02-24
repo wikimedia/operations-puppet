@@ -1,0 +1,62 @@
+# SPDX-License-Identifier: Apache-2.0
+
+# Roles and settings to be always included
+__default:
+  roles:
+    - pki::multirootca
+    - puppetdb
+  settings:
+    - pki
+    - puppetdb
+
+# Service discovery and load balancing
+sd:
+  roles:
+    - pontoon::lb
+  settings:
+    - sd_cloudvps
+
+metrics:
+  include:
+    - sd
+  roles:
+    - prometheus
+    - titan
+    - grafana
+    # - graphite::production
+    # - netmon
+  settings:
+    - prometheus
+    - grafana
+
+alerts:
+  include:
+    - sd
+  roles:
+    - alerting_host
+  settings:
+    - alerting_host
+
+logs:
+  roles:
+    - syslog::centralserver
+    - kafka::logging
+    - kafka::monitoring_bullseye
+    # - logging::opensearch::collector
+    # - logging::opensearch::data
+    # - logging::mediawiki::udp2log
+  settings:
+    - syslog
+    - kafka
+
+webperf:
+  roles:
+    - arclamp
+    - webperf
+
+o11y:
+  include:
+    - metrics
+    - alerts
+    - logs
+    # - webperf
