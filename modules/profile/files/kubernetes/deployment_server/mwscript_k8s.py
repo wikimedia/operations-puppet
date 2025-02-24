@@ -34,7 +34,8 @@ NAMESPACE = 'mw-script'
 # in hieradata, where this matches the `kubeconfig` value (or, by default if that's missing, the
 # `name` value).
 KUBE_CONFIGS = [
-    'mw-script',
+    'mw-script',  # Normal access for members of the deployment group.
+    'mw-script-restricted',  # Identical access for members of the restricted group.
 ]
 # Read main_app.image from this values file to determine the live MW image version.
 VALUES = '/etc/helmfile-defaults/mediawiki/release/mw-web-main.yaml'
