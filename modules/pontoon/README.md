@@ -84,6 +84,12 @@ new hosts and enroll them:
     pontoonctl enroll-hosts --role puppetdb
     pontoonctl enroll-hosts --role pki::multirootca
 
+At this point puppet might take a little while to converge. For example
+for puppet to succeed on pki hosts it first needs a full run on
+`puppetserver::pontoon`. The `pontoon-wait-puppet` utility will block
+until Puppet has converged, run the script on all stack hosts to make
+sure changes have settled.
+
 ### Join an existing stack
 
 Existing and bootstrapped Pontoon stacks can be configured locally (i.e. joined) by following the instructions of the following command:
