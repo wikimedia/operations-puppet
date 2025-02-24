@@ -315,6 +315,14 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  airflow_main:
+    id: 54
+    service_class: 'OidcRegisteredService'
+    service_id: 'https://airflow\.wikimedia\.org(/.*)?'
+    profile_format: 'FLAT'
+    required_groups:
+      - nda
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
