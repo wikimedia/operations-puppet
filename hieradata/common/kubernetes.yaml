@@ -897,3 +897,42 @@ kubernetes::clusters:
           - PodSecurityPolicy
           - StorageObjectInUseProtection
           - PersistentVolumeClaimResize
+    aux-k8s-codfw:
+      dc: codfw
+      master: aux-k8s-ctrl.svc.codfw.wmnet
+      pki_intermediate_base: aux
+      # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
+      #       and then copied all over the place. The kubernetes default is 30000-32767.
+      service_node_port_range: [1, 65535]
+      control_plane_nodes:
+        - aux-k8s-ctrl2002.codfw.wmnet
+        - aux-k8s-ctrl2003.codfw.wmnet
+      cluster_dns:
+        - "10.194.64.3"
+      service_cluster_cidr:
+        v4: "10.194.64.0/20"
+        v6: "2620:0:860:304::/116"
+      cluster_cidr:
+        v4: "10.194.80.0/21"
+        v6: "2620:0:860:305::/64"
+      etcd_urls:
+        - https://aux-k8s-etcd2003.codfw.wmnet:2379
+        - https://aux-k8s-etcd2004.codfw.wmnet:2379
+        - https://aux-k8s-etcd2005.codfw.wmnet:2379
+      cluster_nodes:
+        - aux-k8s-ctrl2002.codfw.wmnet
+        - aux-k8s-ctrl2003.codfw.wmnet
+        - aux-k8s-worker2002.codfw.wmnet
+        - aux-k8s-worker2003.codfw.wmnet
+        - aux-k8s-worker2004.codfw.wmnet
+        - aux-k8s-worker2005.codfw.wmnet
+      # This cluster does not have an admission configuration, override the default with null/none/empty.
+      admission_configuration: ~
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize

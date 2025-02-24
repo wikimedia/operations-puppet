@@ -89,6 +89,8 @@ service::catalog:
     ip:
       eqiad:
         default: '10.2.2.74'
+      #codfw:
+        #default: '10.2.1.74'
     lvs:
       class: 'low-traffic'
       conftool:
@@ -104,6 +106,7 @@ service::catalog:
     port: 6443
     sites:
       - 'eqiad'
+      #- 'codfw'
     state: 'production'
 
   k8s-ingress-aux:

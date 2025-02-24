@@ -642,10 +642,12 @@ wikimedia_clusters:
     description: "control-plane cluster for aux kubernetes cluster"
     sites:
       eqiad: []
+      codfw: []
   aux-k8s-workers:
     description: "workers for aux kubernetes cluster"
     sites:
       eqiad: []
+      codfw: []
   cassandra-dev:
     description: "Cassandra dev & test cluster"
     sites:

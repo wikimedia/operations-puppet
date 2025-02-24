@@ -452,3 +452,10 @@ codfw:
     dns2004.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-a]
     dns2005.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-b]
     dns2006.wikimedia.org: [authdns-update, authdns-ns1, authdns-ns2, recdns, ntp-c]
+  aux-k8s:
+    aux-k8s-ctrl2002.codfw.wmnet: [kubemaster]
+    aux-k8s-ctrl2003.codfw.wmnet: [kubemaster]
+    aux-k8s-worker2002.codfw.wmnet: [kubesvc]
+    aux-k8s-worker2003.codfw.wmnet: [kubesvc]
+    aux-k8s-worker2004.codfw.wmnet: [kubesvc]
+    aux-k8s-worker2005.codfw.wmnet: [kubesvc]

@@ -238,7 +238,7 @@ node /^aux-k8s-ctrl100[23]\.eqiad\./ {
 }
 
 node /^aux-k8s-ctrl200[23]\.codfw\./ {
-    role(insetup::observability)
+    role(aux_k8s::master_insetup)
 }
 
 # worker nodes for aux kubernetes cluster
