@@ -1,17 +1,13 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
 import os
-import shlex
-import subprocess
 from typing import Dict, List, Optional
 
 from ruamel.yaml import YAML
 
 log = logging.getLogger()
-
-SSH_CONNECT_TIMEOUT_SECONDS = 6
 
 
 class Pontoon(object):
@@ -80,6 +76,7 @@ class Pontoon(object):
         for role, hosts in self.rolemap.items():
             for h in hosts:
                 if h in res:
+                    # XXX detect duplicates early?
                     log.warning("Duplicate host %s", h)
                     continue
                 res[h] = role
@@ -140,15 +137,3 @@ class Pontoon(object):
         """Write the stack configuration to disk."""
         with open(self.rolemap_path, "w") as f:
             self.yaml.dump(self.rolemap, f)
-
-    def ssh_bash(self, fqdn, cmd, *args, **kwargs) -> subprocess.CompletedProcess[str]:
-        ssh_cmd = [
-            "ssh",
-            "-o",
-            "BatchMode=yes",
-            "-o",
-            f"ConnectTimeout={SSH_CONNECT_TIMEOUT_SECONDS}",
-        ]
-        return subprocess.run(
-            ssh_cmd + [fqdn, "bash", "-c", shlex.quote(cmd)], *args, **kwargs
-        )

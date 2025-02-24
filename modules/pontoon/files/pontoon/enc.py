@@ -6,7 +6,7 @@ import os
 import sys
 import fcntl
 
-from pontoon import Pontoon
+from . import Pontoon
 
 from ruamel.yaml import YAML
 

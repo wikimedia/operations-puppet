@@ -2,17 +2,23 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
-import argparse
 import logging
 import os
-import stat
 import sys
 import subprocess
+import json
 
-from pontoon.cloudvps import HORIZON_URL, HOST_DOMAIN, CloudVPS, NovaAuth
-from pontoon import Pontoon
+from .cloudvps import CloudVPS
+from .nova import HORIZON_URL, HOST_DOMAIN
+from . import Pontoon
+from .credentials import CredentialsMissing, load_credentials
+from .enroll import Enroller
+from .util import ssh_bash, as_table
 from ruamel.yaml import YAML
 from ruamel.yaml.compat import StringIO
+from typing import Optional
+
+import click
 
 log = logging.getLogger()
 
@@ -70,88 +76,256 @@ git commit -m "pontoon: new stack {stack}" {stack}
 
 Then proceed to bootstrap the stack:
 
-pontoonctl bootstrap-stack -s {stack}
+pontoonctl bootstrap-stack --stack {stack}
 """,
     "openstack-config": """
-The configuration below can be used as configuration for the openstack commandline client.
+The YAML snippet below can be used as configuration for the openstack commandline client.
 Place the file in ~/.config/openstack/clouds.yaml.
 
 {clouds_yaml}
 
-And select the {stack} cloud either via command line or environment:
+And select the {stack!r} cloud:
 
-  openstack --os-cloud {stack}
-  export OS_CLOUD={stack}
+openstack --os-cloud {stack}
+  or
+export OS_CLOUD={stack}
 """,
 }
 
 
-class Credentials(object):
-    def __init__(self, config_path: str):
-        self.config_path = config_path
+class Controller(object):
+    def __init__(self, pontoon: Pontoon, cloud: CloudVPS):
+        self.yaml = YAML()
+        self.pontoon = pontoon
+        self.cloud = cloud
 
-        if not os.path.exists(self.config_path):
-            raise CredentialsMissing
+    @classmethod
+    def config_dir(cls):
+        """Where to store Pontoon configuration."""
+        base_config_dir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
+        config_dir = os.path.join(base_config_dir, "pontoon")
+        return os.path.expanduser(config_dir)
 
-        if os.stat(self.config_path).st_mode & stat.S_IROTH:
-            raise ValueError(f"{self.config_path} is world-readable")
+    @property
+    def server(self) -> Optional[str]:
+        return self.pontoon.server_fqdn
 
-        with open(self.config_path) as f:
-            loaded = YAML().load(f)
+    def _host_prefix(self, stack_name: str) -> str:
+        if "-" not in stack_name:
+            return stack_name
 
-        try:
-            self.creds = loaded["credentials"]["default"]
-            self.id = self.creds["id"]
-            self.secret = self.creds["secret"]
-        except KeyError:
-            raise CredentialsMissing
+        # Pick a short(er) name as host prefix
+        novowels = stack_name.translate({ord(i): None for i in "aeiouAEIOU"})
+        return novowels
 
+    def new_stack(self, host_prefix: Optional[str] = None) -> bool:
+        if host_prefix is None:
+            host_prefix = self._host_prefix(self.pontoon.name)
 
-class CredentialsMissing(Exception):
-    pass
+        server = self.pontoon.server_fqdn
+        if server is not None:
+            raise click.UsageError(
+                f"stack {self.pontoon.name!r} already exists ({server} found in rolemap)"
+            )
 
+        fqdn = self.cloud.fqdn(f"{host_prefix}-puppet-01")
+        if fqdn in self.cloud.fqdns:
+            raise click.UsageError(
+                f"The server {fqdn} exists in project {self.cloud.project!r},"
+                f"choose a different prefix."
+            )
 
-def configure_ssh(config_dir: str) -> None:
-    print(
-        INSTRUCTIONS["ssh-config"].format(
-            host_domain=HOST_DOMAIN, config_dir=config_dir
+        self.pontoon.add_host_to_role(fqdn, "puppetserver::pontoon")
+        self.pontoon.save()
+        return True
+
+    def bootstrap_stack(self, local_rev: str) -> bool:
+        # XXX run init_ssh_access after host is created?
+        if not self.server:
+            raise click.UsageError(
+                f"Server not found for {self.pontoon.name}, unable to bootstrap"
+            )
+
+        self.cloud.create_hosts(hosts=set([self.server]))
+        log.info(f"Bootstrapping {self.server} for stack {self.pontoon.name}")
+        bootstrap_path = os.path.join(
+            self.pontoon.base_path, "bootstrap", "bootstrap.sh"
         )
-    )
+        status = subprocess.call(
+            [
+                "scp",
+                "-q",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                bootstrap_path,
+                self.server + ":",
+            ]
+        )
+        if status != 0:
+            log.error("Error copying bootstrap.sh")
+            return False
 
+        proc = ssh_bash(
+            self.server,
+            f"sudo ./bootstrap.sh --check {self.pontoon.name}",
+        )
 
-def update_ssh_fingerprints(pontoon: Pontoon, config_dir: str) -> None:
-    cmd = "ssh-keyscan $(pontoon-enc --list-hosts)"
-    outfile = f"{config_dir}/ssh_known_hosts"
-    outfile = os.path.expanduser(outfile)
+        if proc.returncode == 2:
+            log.info("Bootstrap already completed.")
+            return True
 
-    log.info(f"Updating SSH fingerprints in {outfile}")
-    proc = pontoon.ssh_bash(pontoon.server_fqdn, cmd, capture_output=True, text=True)
-    if proc.returncode != 0:
-        log.error("Failed to update SSH fingerprints: %s", proc.stderr)
-        return
+        # Users can provide their code/data in $HOME/bootstrap
+        send_local_checkout = f"""
+        cd $(git rev-parse --show-toplevel) && \
+            git archive --format tgz {local_rev} | \
+                ssh -o StrictHostKeyChecking=no {self.server} \
+                    'install -d bootstrap/puppet && tar zxf - -C bootstrap/puppet'
+        """
+        log.info(f"Sending local checkout of {local_rev} to {self.server}")
+        subprocess.call(["bash", "-c", send_local_checkout])
 
-    with open(outfile, "w") as known_hosts:
-        known_hosts.write(proc.stdout)
+        log.info(f"Bootstrapping {self.server}")
+        proc = ssh_bash(self.server, f"sudo ./bootstrap.sh {self.pontoon.name}")
 
+        if proc.returncode != 0:
+            log.error(f"Error running bootstrap.sh on {self.server}")
+            return False
 
-def init_stack_ssh(pontoon: Pontoon) -> None:
-    """Add the server SSH host key to the user's known_hosts.
+        return True
 
-    Needed to be able to anchor trust to the server and be able to run 'ssh-keyscan' across stacks.
-    """
-    server = pontoon.server_fqdn
-    log.info(
-        f"Logging into {server} for the first time. Please verify and accept the host key."
-    )
-    subprocess.call(
-        [
-            "ssh",
-            "-o",
-            "HashKnownHosts=no",
-            f"{server}",
-            "true",
-        ]
-    )
+    def enroll_hosts(self, role: Optional[str], force: bool = False) -> bool:
+        candidates = self.pontoon.host_map().keys()
+
+        if role is not None:
+            try:
+                candidates = self.pontoon.hosts_for_role(role)
+            except ValueError:
+                log.error(f"Role {role!r} not found")
+                return False
+
+        if force:
+            enrolled_hosts = []
+        else:
+            log.info("Searching for hosts not yet enrolled")
+            proc = ssh_bash(
+                self.pontoon.server_fqdn,
+                "sudo puppetserver ca list --format json --all",
+                capture_output=True,
+                text=True,
+            )
+            try:
+                ca_list = json.loads(proc.stdout)
+            except json.decoder.JSONDecodeError:
+                log.error(f"Unable to get list of enrolled hosts from {proc.stdout!r}")
+                return False
+            enrolled_hosts = [x["name"] for x in ca_list["signed"]]
+
+        to_enroll = set(candidates) - set(enrolled_hosts)
+        if not to_enroll:
+            log.info("No hosts to enroll")
+            return False
+
+        # Abort if the hosts are not known yet to the server
+        proc = ssh_bash(
+            self.pontoon.server_fqdn,
+            "pontoon-enc --list-hosts",
+            capture_output=True,
+            text=True,
+        )
+        enrollable_hosts = proc.stdout.split("\n")
+        missing_on_server = set(to_enroll) - set(enrollable_hosts)
+        if missing_on_server:
+            log.error(
+                f"Hosts to enroll and not found on Pontoon server: {missing_on_server}"
+            )
+            log.error("You might need to push an updated rolemap.yaml")
+            return False
+
+        e = Enroller(self.pontoon)
+        ok = True
+        for host in to_enroll:
+            if not e.enroll(host, force=force):
+                ok = False
+        return ok
+
+    def init_ssh_access(self) -> bool:
+        """Add the server SSH host key to the user's known_hosts.
+
+        Needed to be able to anchor trust to the server and be able
+        to run 'ssh-keyscan' across stacks.
+        """
+        server = self.pontoon.server_fqdn
+        log.info(
+            f"Logging into {server} for the first time. Please verify and accept the host key."
+        )
+        p = subprocess.run(
+            [
+                "ssh",
+                "-o",
+                "HashKnownHosts=no",
+                f"{server}",
+                "true",
+            ]
+        )
+        return p.returncode == 0
+
+    def setup_remote_repositories(self) -> bool:
+        """Log in into server and set it up to act as a git remote for the user."""
+
+        stack = self.pontoon.name
+        server = self.pontoon.server_fqdn
+        if not server:
+            click.UsageError(
+                f"Unable to find puppetserver::pontoon host for stack {stack}"
+            )
+            return False
+
+        repos = {
+            "puppet.git": (
+                "https://gerrit.wikimedia.org/r/operations/puppet",
+                "production",
+                "/srv/git/operations/puppet",
+            ),
+            "private.git": (
+                "https://gerrit.wikimedia.org/r/labs/private",
+                "master",
+                "/srv/git/labs/private",
+            ),
+        }
+
+        log.info(f"Setting up bare repositories on {server}")
+
+        for name, (url, branch, push_path) in repos.items():
+            log.info(f"Repository {name}")
+
+            res = ssh_bash(
+                server,
+                f"pontoon-setup-repo '{branch}' '{url}' $HOME/{name} '{push_path}'",
+            )
+            if res.returncode != 0:
+                log.error(
+                    f"Unable to set up repository {name}, is {server} accessible and bootstrapped?"
+                )
+                return False
+
+        return True
+
+    def update_ssh_fingerprints(self) -> bool:
+        cmd = "ssh-keyscan $(pontoon-enc --list-hosts)"
+        outfile = f"{self.config_dir()}/ssh_known_hosts"
+
+        log.info(f"Updating SSH fingerprints in {outfile}")
+        proc = ssh_bash(self.pontoon.server_fqdn, cmd, capture_output=True, text=True)
+        if proc.returncode != 0:
+            log.error("Failed to update SSH fingerprints: %s", proc.stderr)
+            return False
+
+        with open(outfile, "w") as known_hosts:
+            known_hosts.write(proc.stdout)
+
+        return True
 
 
 # Adapt dump() to return a string.
@@ -167,115 +341,227 @@ class StringYAML(YAML):
             return stream.getvalue()
 
 
-def print_openstack_config(
-    pontoon: Pontoon, cloud: CloudVPS, creds: Credentials
-) -> bool:
-    """Print clouds.yaml configuration for the pontoon stack."""
-    stack = pontoon.name
-    auth_cfg = {
-        "auth_url": cloud.nova.auth.auth_url,
-        "application_credential_secret": creds.secret,
-        "application_credential_id": creds.id,
-    }
-    cfg = {
-        "clouds": {
-            stack: {
-                "interface": "public",
-                "identity_api_version": 3,
-                "auth_type": "v3applicationcredential",
-                "auth": auth_cfg,
-            }
-        }
-    }
-    clouds_yaml = StringYAML().dump(cfg)
+def get_controller(stack, home) -> Controller:
+    if stack is None:
+        raise click.UsageError("stack required")
+
+    try:
+        p = Pontoon(stack, home)
+    except FileNotFoundError:
+        raise click.UsageError(
+            INSTRUCTIONS["stack-not-found"].format(
+                stack=stack,
+                home=home,
+            )
+        )
+
+    credentials_path = os.path.join(Controller.config_dir(), "cloudvps.yaml")
+    try:
+        creds = load_credentials(credentials_path)
+    except ValueError:
+        raise click.UsageError(f"Unable to get credentials from {credentials_path}")
+    except CredentialsMissing:
+        raise click.UsageError(
+            INSTRUCTIONS["credentials-missing"].format(
+                config_path=credentials_path, horizon_url=HORIZON_URL
+            ),
+        )
+
+    cloud = CloudVPS(p, creds)
+    return Controller(p, cloud)
+
+
+def with_stack(func):
+    """Common decorator to add a --stack option to a command."""
+    func = click.option(
+        "-s",
+        "--stack",
+        type=str,
+        metavar="NAME",
+        default=os.environ.get("PONTOON_STACK"),
+        help="Target Pontoon stack. (env: PONTOON_STACK)",
+    )(func)
+    return func
+
+
+# List commands in --help in the same order they are defined in code
+# https://github.com/pallets/click/issues/513#issuecomment-504158316
+class NaturalOrderGroup(click.Group):
+    def list_commands(self, ctx):
+        return self.commands.keys()
+
+
+@click.group(cls=NaturalOrderGroup)
+@click.option(
+    "--home",
+    type=str,
+    metavar="PATH",
+    default=lambda: os.environ.get("PONTOON_HOME", "."),
+    help="Directory where to locate Pontoon stacks (env: PONTOON_HOME)",
+)
+@click.pass_context
+def ctl(ctx, home):
+    ctx.ensure_object(dict)
+    ctx.obj["home"] = os.path.expanduser(home)
+
+
+@ctl.command()
+@click.argument("name")
+@click.option(
+    "--prefix", metavar="NAME", help="Create hosts with NAME prefix.", default=None
+)
+@click.pass_obj
+def new_stack(obj, name, prefix):
+    Pontoon.new(name, obj["home"])
+    ctrl = get_controller(name, obj["home"])
+    ok = ctrl.new_stack(prefix)
+    if ok:
+        print(INSTRUCTIONS["new-stack"].format(stack=name))
+    else:
+        raise click.UsageError("Failed to create a new stack")
+
+
+@ctl.command()
+@with_stack
+@click.option(
+    "--local-rev",
+    help="Use local git checkout rev to bootstrap. Defaults to 'HEAD'.",
+    default="HEAD",
+    metavar="REV",
+    type=str,
+)
+@click.pass_obj
+def bootstrap_stack(obj, stack, local_rev):
+    ctrl = get_controller(stack, obj["home"])
+
+    ok = ctrl.bootstrap_stack(local_rev)
+    if not ok:
+        log.error("Error bootstrapping")
+        return 1
+
+    ok = ctrl.setup_remote_repositories()
+    if not ok:
+        log.error("Error setting up remote repositories")
+        return 1
+
+    print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
+    print(INSTRUCTIONS["bootstrap-stack"].format(stack=stack))
+
+
+@ctl.command()
+@with_stack
+@click.pass_context
+def join_stack(ctx, stack):
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ctrl.setup_remote_repositories()
+    print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
+
+
+@ctl.command()
+@with_stack
+@click.option(
+    "--all",
+    is_flag=True,
+)
+@click.option("--output", default="table", type=click.Choice(["fqdn", "table"]))
+@click.pass_obj
+def list_hosts(obj, stack, all, output):
+    ctrl = get_controller(stack, obj["home"])
+    hosts = ctrl.cloud.list_hosts()
+    if not all:
+        stack_fqdns = ctrl.pontoon.host_map().keys()
+        hosts = [h for h in hosts if h.fqdn in stack_fqdns]
+
+    if output == "fqdn":
+        print("\n".join([h.fqdn for h in hosts]))
+    elif output == "table":
+        header = ("FQDN", "Image", "Flavor")
+        data = []
+        for h in hosts:
+            data.append((h.fqdn, h.image, h.flavor))
+        if not all:
+            log.info(
+                "Listing hosts for project %r and stack %r:"
+                % (ctrl.cloud.project, stack)
+            )
+        else:
+            log.info("Listing hosts for project %r:" % (ctrl.cloud.project))
+        print("\n".join(as_table(header, data)))
+
+
+@ctl.command()
+@with_stack
+@click.pass_context
+def create_hosts(ctx, stack):
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ctrl.cloud.create_hosts()
+    ctrl.update_ssh_fingerprints()
+
+
+@ctl.command()
+@with_stack
+@click.option("--role")
+@click.option("--force", is_flag=True, default=False)
+@click.pass_context
+def enroll_hosts(ctx, stack, role, force):
+    # XXX handle failure, print instructions
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ok = ctrl.enroll_hosts(role, force)
+    if ok:
+        ctrl.update_ssh_fingerprints()
+
+
+@ctl.command()
+@with_stack
+@click.argument("pattern")
+@click.pass_context
+def destroy_hosts(ctx, stack, pattern):
+    # XXX wait for destruction?
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ctrl.cloud.destroy_hosts(pattern)
+
+
+@ctl.command()
+@with_stack
+@click.argument("pattern")
+@click.option("--type", default="soft", type=click.Choice(["soft", "hard"]))
+@click.option("--block/--no-block", default=True)
+@click.pass_context
+def reboot_hosts(ctx, stack, pattern, type, block):
+    # XXX wait for destruction?
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ctrl.cloud.reboot_hosts(pattern, type, not block)
+
+
+@ctl.command()
+def ssh_config():
+    print(
+        INSTRUCTIONS["ssh-config"].format(
+            host_domain=HOST_DOMAIN, config_dir=Controller.config_dir()
+        )
+    )
+
+
+@ctl.command()
+@with_stack
+@click.pass_context
+def ssh_keyscan(ctx, stack):
+    ctrl = get_controller(stack, ctx.obj["home"])
+    ctrl.update_ssh_fingerprints()
+
+
+@ctl.command()
+@with_stack
+@click.pass_context
+def openstack_config(ctx, stack):
+    ctrl = get_controller(stack, ctx.obj["home"])
+    cfg = ctrl.cloud.openstack_config
     print(
         INSTRUCTIONS["openstack-config"].format(
             stack=stack,
-            clouds_yaml=clouds_yaml,
+            clouds_yaml=StringYAML().dump(cfg),
         )
     )
-    return True
-
-
-def setup_remote_repositories(pontoon: Pontoon) -> bool:
-    """Log in into server and set it up to act as a git remote for the user."""
-
-    stack = pontoon.name
-    server = pontoon.server_fqdn
-    if not server:
-        log.error(f"Unable to find puppetserver::pontoon host for stack {stack}")
-        return False
-
-    git_base = "/srv/git"
-    repos = {
-        "puppet.git": (
-            "https://gerrit.wikimedia.org/r/operations/puppet",
-            "production",
-            f"{git_base}/operations/puppet",
-        ),
-        "private.git": (
-            "https://gerrit.wikimedia.org/r/labs/private",
-            "master",
-            f"{git_base}/labs/private",
-        ),
-    }
-
-    log.info(f"Setting up bare repositories on {server}")
-
-    for name, (url, branch, push_path) in repos.items():
-        log.info(f"Repository {name}")
-
-        res = pontoon.ssh_bash(
-            server, f"pontoon-setup-repo '{branch}' '{url}' $HOME/{name} '{push_path}'"
-        )
-        if res.returncode != 0:
-            log.error(
-                f"Unable to set up repository {name}, is {server} accessible and bootstrapped?"
-            )
-            return False
-
-    print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=server))
-    return True
-
-
-def load_credentials(config_path):
-    config_dir = os.path.dirname(config_path)
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
-
-    try:
-        creds = Credentials(config_path)
-    except ValueError:
-        log.exception("Unable to get credentials")
-        creds = None
-    except CredentialsMissing:
-        log.error(
-            INSTRUCTIONS["credentials-missing"].format(
-                config_path=config_path, horizon_url=HORIZON_URL
-            )
-        )
-        creds = None
-    return creds
-
-
-def as_table(headers, data, separator="|"):
-    res = []
-    # Format data in columns
-    column_widths = [max(len(str(item)) for item in col) for col in zip(headers, *data)]
-    res.append(
-        separator.join(
-            f"{header.ljust(width)}" for header, width in zip(headers, column_widths)
-        )
-    )
-    res.append(separator.join("-" * width for width in column_widths))
-    for row in data:
-        res.append(
-            separator.join(
-                f"{str(item).ljust(width)}" for item, width in zip(row, column_widths)
-            )
-        )
-
-    return res
 
 
 def main():
@@ -283,239 +569,7 @@ def main():
     fmt = logging.Formatter(fmt="[*] %(message)s")
     [h.setFormatter(fmt) for h in log.handlers]
 
-    base_config_dir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
-    config_dir = os.path.join(base_config_dir, "pontoon")
-    config_path = os.path.join(os.path.expanduser(config_dir), "cloudvps.yaml")
-
-    common_parser = argparse.ArgumentParser(add_help=False)
-    common_parser.add_argument(
-        "-s",
-        "--stack",
-        type=str,
-        metavar="NAME",
-        default=os.environ.get("PONTOON_STACK"),
-        help="Target Pontoon stack. (env: PONTOON_STACK)",
-    )
-    parser = argparse.ArgumentParser(
-        description="Operate a Pontoon stack",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        epilog=f"Credentials will be read from {config_path}",
-    )
-    parser.add_argument(
-        "--pontoon-home",
-        type=str,
-        metavar="PATH",
-        default=os.environ.get("PONTOON_HOME", "."),
-        help="Directory where to locate Pontoon stacks. (env: PONTOON_HOME)",
-    )
-
-    actions_p = parser.add_subparsers(
-        help="action to perform",
-        dest="action",
-        required=True,
-    )
-
-    def new_action(*args, **kwargs):
-        kwargs["parents"] = [common_parser]
-        return actions_p.add_parser(*args, **kwargs)
-
-    a = new_action(
-        "new-stack",
-        help="Create a new stack in the current directory.",
-    )
-    a.add_argument(
-        "--prefix",
-        help="Create hosts with NAME prefix.",
-        dest="prefix",
-        default=None,
-        metavar="NAME",
-        type=str,
-    )
-
-    new_action(
-        "ssh-config",
-        help="Print SSH client configuration",
-    )
-
-    new_action(
-        "ssh-keyscan",
-        help="Update SSH host fingerprints",
-    )
-
-    new_action(
-        "openstack-config",
-        help="Print openstack CLI client configuration",
-    )
-
-    a = new_action(
-        "bootstrap-stack",
-        help="Bootstrap a newly-created stack",
-    )
-    a.add_argument(
-        "--local-rev",
-        help="Use local git checkout rev to bootstrap. Defaults to 'HEAD'.",
-        dest="bootstrap_local_rev",
-        default="HEAD",
-        metavar="REV",
-        type=str,
-    )
-
-    new_action(
-        "join-stack",
-        help="Join an existing stack",
-    )
-
-    a = new_action("list-hosts", help="List cloud hosts")
-    a.add_argument(
-        "--all",
-        help="List all hosts in the project",
-        dest="all_hosts",
-        default=False,
-        action="store_true",
-    )
-    a.add_argument(
-        "--output",
-        help="Output format",
-        dest="output",
-        default="table",
-        choices=["table", "fqdn"],
-    )
-
-    a = new_action(
-        "create-hosts",
-        help="Create missing cloud hosts",
-    )
-    a.add_argument(
-        "--no-block",
-        help="Do not block waiting for hosts to be accessible",
-        default=False,
-        dest="no_block",
-        action="store_true",
-    )
-
-    a = new_action(
-        "reboot-hosts",
-        help="Reboot cloud hosts",
-    )
-    a.add_argument(
-        "--no-block",
-        help="Do not block waiting for hosts to be accessible again",
-        default=False,
-        dest="no_block",
-        action="store_true",
-    )
-    a.add_argument(
-        "--type",
-        help="Perform hard or soft reboot. (default soft)",
-        default="SOFT",
-        dest="type",
-    )
-    a.add_argument("pattern")
-
-    a = new_action(
-        "destroy-hosts",
-        help="Destroy cloud hosts matching a pattern",
-    )
-    a.add_argument("pattern")
-
-    a = new_action(
-        "enroll-hosts",
-        help="Enroll cloud hosts into the stack",
-    )
-    a.add_argument(
-        "--force",
-        default=False,
-        action="store_true",
-        help="Pretend no hosts are enrolled already",
-    )
-    a.add_argument("--role", default=None)
-
-    args = parser.parse_args()
-    if args.action == "ssh-config":
-        configure_ssh(config_dir)
-        return 0
-
-    # Create a new Pontoon as needed for CloudVPS
-    home = os.path.expanduser(args.pontoon_home)
-    if args.action == "new-stack":
-        p = Pontoon.new(args.stack, home)
-    elif args.action == "list-hosts":
-        if args.stack:
-            p = Pontoon(args.stack, home)
-        else:
-            p = Pontoon("bootstrap", home)
-    else:
-        if not args.stack:
-            parser.error(
-                "No stack specified. Use --stack or set PONTOON_STACK in the environment"
-            )
-
-        try:
-            p = Pontoon(args.stack, home)
-        except FileNotFoundError:
-            parser.error(
-                INSTRUCTIONS["stack-not-found"].format(
-                    stack=args.stack, home=args.pontoon_home
-                )
-            )
-
-    creds = load_credentials(config_path)
-    if creds is None:
-        return 1
-
-    cloud = CloudVPS(p, NovaAuth(creds.id, creds.secret))
-    if args.action == "list-hosts":
-        if not args.stack or args.all_hosts:
-            if args.output == "fqdn":
-                _, hosts = cloud.list_hosts(all=True, fqdns=True)
-                print("\n".join([x[0] for x in hosts]))
-            elif args.output == "table":
-                log.info("Loading hosts for project %r:" % cloud.project_id)
-                print("\n".join(as_table(*cloud.list_hosts(all=True))))
-        else:
-            if args.output == "fqdn":
-                _, hosts = cloud.list_hosts(fqdns=True)
-                print("\n".join([x[0] for x in hosts]))
-            elif args.output == "table":
-                log.info(
-                    "Loading hosts for project %r and stack %r:"
-                    % (cloud.project_id, p.name)
-                )
-                print("\n".join(as_table(*cloud.list_hosts())))
-    elif args.action == "create-hosts":
-        cloud.create_hosts(args.no_block)
-        update_ssh_fingerprints(p, config_dir)
-    elif args.action == "enroll-hosts":
-        # XXX handle failure, print instructions
-        ok = cloud.enroll_hosts(args.role, args.force)
-        if ok:
-            update_ssh_fingerprints(p, config_dir)
-    elif args.action == "destroy-hosts":
-        # XXX wait for destruction?
-        # XXX stack shouldn't be mandatory ?
-        cloud.destroy_hosts(args.pattern)
-    elif args.action == "reboot-hosts":
-        cloud.reboot_hosts(args.pattern, args.type, args.no_block)
-    elif args.action == "bootstrap-stack":
-        init_stack_ssh(p)
-        ok = cloud.bootstrap_stack(from_local_rev=args.bootstrap_local_rev)
-        if ok:
-            setup_remote_repositories(p)
-            print(INSTRUCTIONS["bootstrap-stack"].format(stack=p.name))
-        else:
-            log.error("Error bootstrapping")
-    elif args.action == "new-stack":
-        ok = cloud.new_stack(args.prefix)
-        if ok:
-            print(INSTRUCTIONS["new-stack"].format(stack=p.name))
-    elif args.action == "ssh-keyscan":
-        update_ssh_fingerprints(p, config_dir)
-    elif args.action == "openstack-config":
-        print_openstack_config(p, cloud, creds)
-    elif args.action == "join-stack":
-        setup_remote_repositories(p)
-    else:
-        parser.print_help()
+    return ctl()
 
 
 if __name__ == "__main__":

@@ -3,7 +3,8 @@
 import logging
 import subprocess
 
-from pontoon import Pontoon
+from . import Pontoon
+from .util import ssh_bash
 
 log = logging.getLogger()
 
@@ -32,11 +33,11 @@ class Enroller(object):
         log.info("Host %r has role %r", host, role)
 
         if force:
-            p = self.pontoon.ssh_bash(
+            p = ssh_bash(
                 self.agent_server, "sudo puppetserver ca clean --certname %s" % host
             )
         else:
-            p = self.pontoon.ssh_bash(
+            p = ssh_bash(
                 host,
                 "sudo puppet config --section agent print server",
                 capture_output=True,
@@ -56,7 +57,7 @@ class Enroller(object):
 
         # Bootstrap PKI via puppet cert SAN
         if role == "pki::multirootca":
-            p = self.pontoon.ssh_bash(
+            p = ssh_bash(
                 host,
                 "sudo puppet config --section agent set dns_alt_names %s "
                 % self.pki_san,
@@ -101,7 +102,7 @@ class Enroller(object):
         )
 
         log.info("Enrolling %s to %s", host, self.agent_server)
-        p = self.pontoon.ssh_bash(host, enroll_cmd)
+        p = ssh_bash(host, enroll_cmd)
         if p.returncode > 0:
             log.error("Failed to enroll %s to %s", host, self.agent_server)
             return False
