@@ -1,0 +1,9 @@
+profile::liberica::bgp_config:
+  communities:
+    - "14907:0" # lowest priority to avoid interfering with traffic while reimaging
+profile::liberica::include_services:
+  - upload
+  - upload-https
+profile::liberica::bgp_config:
+  peers:
+    - 10.140.1.1 # asw1-b4-magru gateway
