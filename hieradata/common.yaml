@@ -652,6 +652,10 @@ wikimedia_clusters:
     description: "Cassandra dev & test cluster"
     sites:
       codfw: []
+  dp-cssndr4x:
+    description: "Cassandra dev & test cluster (Pontoon)"
+    sites:
+      eqiad: []
   ncredir:
     description: "non-canonical domain redirect service cluster"
     sites:

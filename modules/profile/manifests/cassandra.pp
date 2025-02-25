@@ -22,6 +22,21 @@ class profile::cassandra(
     $seeds = split($all_seeds[0], ',')
     $ferm_seeds = split($all_seeds[1], ',')
 
+    # PONTOON: Create hosts entries for Cassandra instances.
+    $all_instances.each |$host, $instances| {
+        $host_parts = split($host, '[.]')
+        $short_host = $host_parts[0]
+        $instances.each |$id, $parms| {
+            $instance_host = regsubst($host, $short_host, "${short_host}-${id}")
+            host { $instance_host:
+                ensure       => present,
+                host_aliases => "${short_host}-${id}",
+                ip           => $parms['listen_address'],
+            }
+        }
+    }
+    # PONTOON: End create host entries.
+
     $base_settings = {
         'instances'             => $instances,
         'rack'                  => $rack,
@@ -41,7 +56,8 @@ class profile::cassandra(
         class { '::profile::rsyslog::udp_json_logback_compat': }
     }
 
-    class { '::cassandra::logging': }
+    # PONTOON: disable to get a clean Puppet run?
+    #class { '::cassandra::logging': }
 
     class { '::cassandra::sysctl':
         # Queue page flushes at 24MB intervals
