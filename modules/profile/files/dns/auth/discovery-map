@@ -2,7 +2,7 @@
 discovery-map => {
     geoip2_db => GeoIP2-City.mmdb
     datacenters => [eqiad codfw]
-    map => { default => [eqiad codfw] }
+    map => { default => [codfw, eqiad] }
     nets => {
         # Wikimedia address space
         208.80.152.0/23    => [codfw, eqiad], # codfw
@@ -26,17 +26,17 @@ discovery-map => {
         # Wikimedia 10/8 private space
         10.2.1.0/24        => [codfw, eqiad], # codfw LVS
         10.2.2.0/24        => [eqiad, codfw], # eqiad LVS
-        10.2.3.0/24        => [eqiad, codfw], # esams LVS
+        10.2.3.0/24        => [codfw, eqiad], # esams LVS
         10.2.4.0/24        => [codfw, eqiad], # ulsfo LVS
         10.2.5.0/24        => [codfw, eqiad], # eqsin LVS
-        10.2.6.0/24        => [eqiad, codfw], # drmrs LVS
-        10.2.7.0/24        => [eqiad, codfw], # magru LVS
-        10.64.0.0/12       => [eqiad, codfw], # eqiad private/mgmt
-        10.80.0.0/16       => [eqiad, codfw], # esams private/mgmt
+        10.2.6.0/24        => [codfw, eqiad], # drmrs LVS
+        10.2.7.0/24        => [codfw, eqiad], # magru LVS
+        10.64.0.0/12       => [codfw, eqiad], # eqiad private/mgmt
+        10.80.0.0/16       => [codfw, eqiad], # esams private/mgmt
         10.128.0.0/16      => [codfw, eqiad], # ulsfo private/mgmt
         10.132.0.0/16      => [codfw, eqiad], # eqsin private/mgmt
-        10.136.0.0/16      => [eqiad, codfw], # drmrs private/mgmt
-        10.140.0.0/16      => [eqiad, codfw], # magru private/mgmt
+        10.136.0.0/16      => [codfw, eqiad], # drmrs private/mgmt
+        10.140.0.0/16      => [codfw, eqiad], # magru private/mgmt
         10.192.0.0/12      => [codfw, eqiad], # codfw private/mgmt
         # Wikimedia 172.16/12 private space
         172.16.0.0/21      => [eqiad, codfw], # cloud-instances2-b-eqiad
