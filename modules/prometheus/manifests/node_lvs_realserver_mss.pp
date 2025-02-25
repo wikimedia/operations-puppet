@@ -19,12 +19,12 @@ define prometheus::node_lvs_realserver_mss (
     }
 
     $endpoints = $clamped_ipport.join(' -e ')
-    # Collect every 5 minutes
+    # Collect every minute
     systemd::timer::job { 'prometheus_lvs_realserver_mss':
         ensure      => $ensure,
         description => 'Regular job to collect MSS values of realserver endpoints',
         user        => 'root',
         command     => "/usr/local/bin/prometheus-lvs-realserver-mss -o ${outfile} -e ${endpoints}",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
     }
 }

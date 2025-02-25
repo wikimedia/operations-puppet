@@ -19,12 +19,12 @@ define prometheus::node_ferm_mss (
     }
 
     $endpoints = $clamped_ipport.join(' -e ')
-    # Collect every 5 minutes
+    # Collect every minute
     systemd::timer::job { 'prometheus_ferm_mss':
         ensure      => $ensure,
         description => 'Regular job to collect MSS values of ferm-based hosts',
         user        => 'root',
         command     => "/usr/local/bin/prometheus-ferm-mss -o ${outfile} -e ${endpoints}",
-        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* *:0/5:0'},
+        interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
     }
 }
