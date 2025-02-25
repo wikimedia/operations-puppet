@@ -111,10 +111,6 @@ class Job:
         w.stop()
 
 
-def config_file(kube_config: str, cluster: str) -> str:
-    return f'/etc/kubernetes/{kube_config}-{cluster}.config'
-
-
 def env_vars_str(env_vars: dict[str, str]) -> str:
     return ' '.join(f'{key}={value}' for key, value in env_vars.items())
 
@@ -142,8 +138,8 @@ def check_config_files(cluster: str) -> tuple[str, str]:
     # the appropriate usergroups.
     groups_tried = set()
     for kube_config in KUBE_CONFIGS:
-        path = config_file(kube_config, cluster)
-        deploy_path = config_file(kube_config + '-deploy', cluster)
+        path = f'/etc/kubernetes/{kube_config}-{cluster}.config'
+        deploy_path = f'/etc/kubernetes/{kube_config}-deploy-{cluster}.config'
         try:
             with open(path, 'r'):
                 pass
@@ -276,6 +272,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             '/usr/bin/helmfile',
             *(['--quiet'] if not args.verbose else []),
             '--file', args.helmfile,
+            '--state-values-set', f'kubeConfig={job.deploy_config_file}',
             '--environment', environment,
             # As of this writing, we don't need a selector because this is the only thing in the
             # helmfile. But it's included anyway, for futureproofing.
