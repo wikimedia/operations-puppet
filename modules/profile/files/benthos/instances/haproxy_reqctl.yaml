@@ -79,11 +79,17 @@ output:
                   url: "${EVENTGATE_URL}"
                   verb: POST
                   headers:
-                    content-type: application/json
+                    Content-Type: application/json
                   rate_limit: ""
-                  timeout: 5s
+                  timeout: 1s
+                  retries: 2
+                  retry_period: 1s
                   max_in_flight: 64
                   batch_as_multipart: false
+                  tls:
+                    enabled: true
+                    root_cas_file: "${ROOT_CAS_FILE}"
+                    skip_cert_verify: false
               - label: "kafka"
                 kafka_franz:
                   seed_brokers: [ "${KAFKA_BROKERS}" ]
