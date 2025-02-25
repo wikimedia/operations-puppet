@@ -29,6 +29,7 @@ profile::gnmi_telemetry::outputs:
     event-processors:
       - delete-tag-name
       - description-to-tag
+      - rename-interface-state
       - static-bgp-tags
       - rename-bgp-session-state
       - rename-bgp-global
@@ -70,6 +71,17 @@ profile::gnmi_telemetry::processors:
         - value-name: "/interfaces/interface/state/description"
           tag-name: "interface_description"
           consume: false
+  rename-interface-state:
+    event-strings:
+      value-names: ["/interfaces/interface/state/oper-status"]
+      transforms:
+        - replace: {apply-on: "value", old: "UP", new: "1"}
+        - replace: {apply-on: "value", old: "DOWN", new: "2"}
+        - replace: {apply-on: "value", old: "TESTING", new: "3"}
+        - replace: {apply-on: "value", old: "UNKNOWN", new: "4"}
+        - replace: {apply-on: "value", old: "DORMANT", new: "5"}
+        - replace: {apply-on: "value", old: "NOT_PRESENT", new: "6"}
+        - replace: {apply-on: "value", old: "LOWER_LAYER_DOWN", new: "7"}
   static-bgp-tags:
     event-value-tag-v2:
       rules:
