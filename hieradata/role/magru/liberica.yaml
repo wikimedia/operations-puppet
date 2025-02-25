@@ -1,0 +1,6 @@
+profile::lvs::interface_tweaks:
+  ens3f0np0:
+    txqlen: 10000
+profile::liberica::bgp_config:
+  peers:
+    - 10.140.0.1 # asw1-b3-magru gateway

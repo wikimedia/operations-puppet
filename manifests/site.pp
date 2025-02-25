@@ -1832,8 +1832,12 @@ node /^lvs600[123]\.drmrs\./ {
 }
 
 # MAGRU lvs servers
-node /^lvs700[123]\.magru\./ {
+node /^lvs700[12]\.magru\./ {
     role(lvs::balancer)
+}
+
+node /^lvs7003\.magru\./ {
+    role(liberica)
 }
 
 node /^maps10(0[5-8]|1[0])\.eqiad\./ {
