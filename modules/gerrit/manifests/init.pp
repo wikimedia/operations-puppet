@@ -95,7 +95,6 @@ class gerrit(
     $ldap_base_dn = $ldap_config['base-dn']
 
     $java_options = [
-        '-XX:+UseG1GC',
         "-Xmx${heap_limit} -Xms${heap_limit}",
         '-Dflogger.backend_factory=com.google.common.flogger.backend.log4j.Log4jBackendFactory#getInstance',
         '-Dflogger.logging_context=com.google.gerrit.server.logging.LoggingContext#getInstance',
