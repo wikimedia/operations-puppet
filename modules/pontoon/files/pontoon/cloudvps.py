@@ -20,16 +20,16 @@ log = logging.getLogger()
 
 @dataclass
 class Specs:
-    """Cloud server specifications."""
+    """Cloud server specifications for new VMs. Roles are mapped to specs in specmap.yaml."""
 
     image: str
     flavor: str
-    hostname: str
+    hostname: str  # used to generate the hostname
 
 
 @dataclass
 class CloudHost:
-    """Represents a cloud host with relevant properties."""
+    """Represents an existing cloud host."""
 
     fqdn: str
     image: str
@@ -74,7 +74,7 @@ class CloudVPS(object):
 
     def specs_for_role(self, role: str) -> Specs:
         """Get Specs for role.
-        The 'default' role will be used if the role
+        The '__default' role will be used if the role
         doesn't have an explicit Spec.
 
         Args:
@@ -97,13 +97,16 @@ class CloudVPS(object):
 
     @property
     def fqdns(self) -> List[str]:
+        """Return a list of FQDNs for the current project."""
         return self.nova.fqdns()
 
     def fqdn(self, host: str) -> str:
+        """Return the FQDN for a host in the current project."""
         return f"{host}.{self.project}.{HOST_DOMAIN}"
 
     @property
     def project(self):
+        """Return the current project."""
         return self.nova.project_id
 
     @property
@@ -146,48 +149,62 @@ class CloudVPS(object):
         return hosts
 
     def create_hosts(
-        self, dry_run=False, no_block=False, hosts: Optional[Set[str]] = None
+        self,
+        block=True,
+        hosts: Optional[Set[str]] = None,
+        role: Optional[str] = None,
     ) -> bool:
-        cloud_hosts = {h for h in self.fqdns}
-        if hosts is None:
-            stack_hosts = {h for h in self.pontoon.host_map().keys()}
-        else:
-            stack_hosts = set(hosts)
+        """Create hosts for roles in the Pontoon stack."""
+        stack_hosts = {h for h in self.pontoon.host_map().keys()}
+        if hosts is not None:
+            hosts = set(hosts)
+        elif role is not None:
+            stack_hosts = set(self.pontoon.hosts_for_role(role))
 
-        to_add = []
+        cloud_hosts = {h for h in self.fqdns}
         candidates = stack_hosts - cloud_hosts
         if not candidates:
             log.info("All hosts already created")
             return False
 
+        to_add = []
         for host in candidates:
-            role = self.pontoon.role_for_host(host)
-            if role:
-                specs = self.specs_for_role(role)
-                image = self.nova.name_image(specs.image)
-                flavor = self.nova.name_flavor(specs.flavor)
-                to_add.append((host, image, flavor))
+            host_role = self.pontoon.role_for_host(host)
+            if not host_role:
+                log.error(f"Role not found for host {host}")
+                continue
+            specs = self.specs_for_role(host_role)
+            image = self.nova.name_image(specs.image)
+            flavor = self.nova.name_flavor(specs.flavor)
+            to_add.append((host, image, flavor))
 
-        if dry_run:
-            print(f"Will add {to_add!r}")
-        else:
-            for server in to_add:
-                log.info(f"Creating {server}")
-                self.nova.create_server(*server)
+        for server in to_add:
+            log.info(f"Creating {server}")
+            self.nova.create_server(*server)
 
-        if no_block:
+        if not block:
             return True
 
         return wait_hosts_access(set([x[0] for x in to_add]))
 
-    def destroy_hosts(self, pattern: str, dry_run=True) -> bool:
+    def destroy_hosts(self, pattern: str, role: Optional[str] = None) -> bool:
+        def _should_delete(server):
+            if role is not None:
+                return self.fqdn(server.name) in self.pontoon.hosts_for_role(role)
+            else:
+                return (
+                    fnmatch.fnmatch(server.name, pattern)
+                    # match pattern against fqdn too for convenience (e.g. copy/paste fqdn)
+                    or fnmatch.fnmatch(self.fqdn(server.name), pattern)
+                )
+
         cloud_servers = self.nova.servers()
-        to_delete = [x for x in cloud_servers if fnmatch.fnmatch(x.name, pattern)]
+        to_delete = [x for x in cloud_servers if _should_delete(x)]
         if len(to_delete) == 0:
-            print("No hosts to delete")
+            log.info("No hosts to delete")
             return True
 
-        print(f"Hosts to remove that match {pattern}:")
+        log.info(f"Hosts to remove matching {role or pattern}:")
         for i in to_delete:
             print(f"  {i.name}")
 
@@ -197,7 +214,7 @@ class CloudVPS(object):
         )
 
         if answer != len(to_delete):
-            print("Not doing anything")
+            log.info("Not doing anything")
             return False
 
         for server in to_delete:
@@ -205,14 +222,26 @@ class CloudVPS(object):
 
         return True
 
-    def reboot_hosts(self, pattern: str, reboot_type: str, no_block=False) -> bool:
+    def reboot_hosts(
+        self, pattern: str, reboot_type: str, block=True, role: Optional[str] = None
+    ) -> bool:
+        def _should_reboot(server):
+            if role is not None:
+                return self.fqdn(server.name) in self.pontoon.hosts_for_role(role)
+            else:
+                return (
+                    fnmatch.fnmatch(server.name, pattern)
+                    # match pattern against fqdn too for convenience (e.g. copy/paste fqdn)
+                    or fnmatch.fnmatch(self.fqdn(server.name), pattern)
+                )
+
         cloud_servers = self.nova.servers()
-        to_reboot = [x for x in cloud_servers if fnmatch.fnmatch(x.name, pattern)]
+        to_reboot = [x for x in cloud_servers if _should_reboot(x)]
         if len(to_reboot) == 0:
-            print("No hosts to reboot")
+            log.info("No hosts to reboot")
             return True
 
-        print(f"Hosts to reboot that match {pattern}:")
+        log.info(f"Hosts to reboot matching {role or pattern}:")
         for i in to_reboot:
             print(f"  {i.name}")
 
@@ -222,15 +251,13 @@ class CloudVPS(object):
         )
 
         if answer != len(to_reboot):
-            print("Not doing anything")
+            log.info("Not doing anything")
             return False
 
         for server in to_reboot:
             self.nova.reboot_server(server, reboot_type)
 
-        if no_block:
+        if not block:
             return True
 
-        return wait_hosts_access(
-            set([f"{x.name}.{self.nova.project_id}.{HOST_DOMAIN}" for x in to_reboot])
-        )
+        return wait_hosts_access(set([self.fqdn(x.name) for x in to_reboot]))

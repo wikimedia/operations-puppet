@@ -4,6 +4,7 @@
 import logging
 import os
 from typing import Dict, List, Optional
+from pathlib import Path
 
 from ruamel.yaml import YAML
 
@@ -30,6 +31,19 @@ class Pontoon(object):
         self.yaml = YAML()
         with open(self.rolemap_path) as f:
             self.rolemap = self.yaml.load(f)
+
+    @property
+    def available_stacks(self) -> List[str]:
+        base = Path(self.base_path)
+        return [
+            d.name
+            for d in base.iterdir()
+            if d.is_dir() and (d / "rolemap.yaml").exists()
+        ]
+
+    @property
+    def available_roles(self) -> List[str]:
+        return list(self.rolemap.keys())
 
     @property
     def stack_path(self) -> str:

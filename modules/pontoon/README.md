@@ -97,3 +97,11 @@ Existing and bootstrapped Pontoon stacks can be configured locally (i.e. joined)
     pontoonctl join-stack -s mystack
 
 Once joining is completed you are ready to `git push` changes to your Pontoon stack.
+
+### Shell auto completion
+
+`pontoonctl` is powered by [click](https://click.palletsprojects.com/en/stable/shell-completion/) and you can for example enable shell completion with:
+
+    source <(_PONTOONCTL_COMPLETE=bash_source pontoonctl)
+
+Make sure to have `PONTOON_HOME` set for `--stack` completion to work. Additionally, `PONTOON_STACK` must be set for `--role` to discover your stack's roles.

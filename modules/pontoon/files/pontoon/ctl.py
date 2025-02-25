@@ -2,24 +2,24 @@
 # SPDX-License-Identifier: Apache-2.0
 
 
+import json
 import logging
 import os
-import sys
 import subprocess
-import json
-
-from .cloudvps import CloudVPS
-from .nova import HORIZON_URL, HOST_DOMAIN
-from . import Pontoon
-from .credentials import CredentialsMissing, load_credentials
-from .enroll import Enroller
-from .rolegroups import RoleGroups
-from .util import ssh_bash, as_table
-from ruamel.yaml import YAML
-from ruamel.yaml.compat import StringIO
+import sys
 from typing import Optional
 
 import click
+from ruamel.yaml import YAML
+from ruamel.yaml.compat import StringIO
+
+from . import Pontoon
+from .cloudvps import CloudVPS
+from .credentials import Credentials, CredentialsMissing, load_credentials
+from .enroll import Enroller
+from .nova import HORIZON_URL, HOST_DOMAIN
+from .rolegroups import RoleGroups
+from .util import as_table, ssh_bash
 
 log = logging.getLogger()
 
@@ -51,7 +51,7 @@ Make sure to run from a directory with Pontoon stacks, or set PONTOON_HOME to be
 the location to search for stacks.
 """,
     "ssh-config": """
-Below you'll find the ~/.ssh/config snippet to enable Pontoon integration
+Below you'll find the ~/.ssh/config snippet to enable Pontoon integration and host autocompletion
 
 # Place this configuration *before* your configuration for Cloud VPS (e.g. bastions)
 Host *.{host_domain}
@@ -110,7 +110,7 @@ class Controller(object):
         self.cloud = cloud
 
     @classmethod
-    def config_dir(cls):
+    def config_dir(cls) -> str:
         """Where to store Pontoon configuration."""
         base_config_dir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
         config_dir = os.path.join(base_config_dir, "pontoon")
@@ -142,7 +142,7 @@ class Controller(object):
 
         return RoleGroups(groupmap)
 
-    def add_rolegroup(self, name: str):
+    def add_rolegroup(self, name: str) -> bool:
         """Add a role group to the Pontoon stack.
 
         Args:
@@ -190,22 +190,17 @@ class Controller(object):
         novowels = stack_name.translate({ord(i): None for i in "aeiouAEIOU"})
         return novowels
 
-    def new_stack(self, host_prefix: Optional[str] = None) -> bool:
-        if host_prefix is None:
-            host_prefix = self._host_prefix(self.pontoon.name)
-
-        server = self.pontoon.server_fqdn
-        if server is not None:
+    def new_stack(self) -> bool:
+        if self.server is not None:
             raise click.UsageError(
-                f"stack {self.pontoon.name!r} already exists ({server} found in rolemap)"
+                f"stack {self.pontoon.name!r} already exists ({self.server} found in rolemap)"
             )
 
         hostname = self._hostname_for_role("puppetserver::pontoon")
         fqdn = self.cloud.fqdn(hostname)
         if fqdn in self.cloud.fqdns:
             raise click.UsageError(
-                f"The server {fqdn} exists in project {self.cloud.project!r},"
-                f"choose a different prefix."
+                f"The server {fqdn} exists in project {self.cloud.project!r}"
             )
 
         self.pontoon.add_host_to_role(fqdn, "puppetserver::pontoon")
@@ -281,9 +276,9 @@ class Controller(object):
         if force:
             enrolled_hosts = []
         else:
-            log.info("Searching for hosts not yet enrolled")
+            log.info("Searching for hosts to enroll")
             proc = ssh_bash(
-                self.pontoon.server_fqdn,
+                self.server,
                 "sudo puppetserver ca list --format json --all",
                 capture_output=True,
                 text=True,
@@ -302,7 +297,7 @@ class Controller(object):
 
         # Abort if the hosts are not known yet to the server
         proc = ssh_bash(
-            self.pontoon.server_fqdn,
+            self.server,
             "pontoon-enc --list-hosts",
             capture_output=True,
             text=True,
@@ -311,7 +306,8 @@ class Controller(object):
         missing_on_server = set(to_enroll) - set(enrollable_hosts)
         if missing_on_server:
             log.error(
-                f"Hosts to enroll and not found on Pontoon server: {missing_on_server}"
+                "The following hosts need enrolling and could not be found ."
+                f"on Pontoon server: {missing_on_server}"
             )
             log.error("You might need to push an updated rolemap.yaml")
             return False
@@ -329,27 +325,25 @@ class Controller(object):
         Needed to be able to anchor trust to the server and be able
         to run 'ssh-keyscan' across stacks.
         """
-        server = self.pontoon.server_fqdn
         log.info(
-            f"Logging into {server} for the first time. Please verify and accept the host key."
+            f"Logging into {self.server} for the first time. Please verify and accept the host key."
         )
         p = subprocess.run(
             [
                 "ssh",
                 "-o",
                 "HashKnownHosts=no",
-                f"{server}",
+                f"{self.server}",
                 "true",
             ]
         )
         return p.returncode == 0
 
     def setup_remote_repositories(self) -> bool:
-        """Log in into server and set it up to act as a git remote for the user."""
+        """Set up the Pontoon stack server to act as a git remote for the user."""
 
         stack = self.pontoon.name
-        server = self.pontoon.server_fqdn
-        if not server:
+        if not self.server:
             click.UsageError(
                 f"Unable to find puppetserver::pontoon host for stack {stack}"
             )
@@ -368,18 +362,19 @@ class Controller(object):
             ),
         }
 
-        log.info(f"Setting up bare repositories on {server}")
+        log.info(f"Setting up bare repositories on {self.server}")
 
         for name, (url, branch, push_path) in repos.items():
             log.info(f"Repository {name}")
 
             res = ssh_bash(
-                server,
+                self.server,
                 f"pontoon-setup-repo '{branch}' '{url}' $HOME/{name} '{push_path}'",
             )
             if res.returncode != 0:
                 log.error(
-                    f"Unable to set up repository {name}, is {server} accessible and bootstrapped?"
+                    f"Unable to set up repository {name}. "
+                    f"Is {self.server} accessible and bootstrapped?"
                 )
                 return False
 
@@ -390,7 +385,7 @@ class Controller(object):
         outfile = f"{self.config_dir()}/ssh_known_hosts"
 
         log.info(f"Updating SSH fingerprints in {outfile}")
-        proc = ssh_bash(self.pontoon.server_fqdn, cmd, capture_output=True, text=True)
+        proc = ssh_bash(self.server, cmd, capture_output=True, text=True)
         if proc.returncode != 0:
             log.error("Failed to update SSH fingerprints: %s", proc.stderr)
             return False
@@ -401,33 +396,7 @@ class Controller(object):
         return True
 
 
-# Adapt dump() to return a string.
-# https://yaml.readthedocs.io/en/latest/example/#output-of-dump-as-a-string
-class StringYAML(YAML):
-    def dump(self, data, stream=None, **kw):
-        inefficient = False
-        if stream is None:
-            inefficient = True
-            stream = StringIO()
-        YAML.dump(self, data, stream, **kw)
-        if inefficient:
-            return stream.getvalue()
-
-
-def get_controller(stack, home) -> Controller:
-    if stack is None:
-        raise click.UsageError("stack required")
-
-    try:
-        p = Pontoon(stack, home)
-    except FileNotFoundError:
-        raise click.UsageError(
-            INSTRUCTIONS["stack-not-found"].format(
-                stack=stack,
-                home=home,
-            )
-        )
-
+def get_credentials() -> Credentials:
     credentials_path = os.path.join(Controller.config_dir(), "cloudvps.yaml")
     try:
         creds = load_credentials(credentials_path)
@@ -439,7 +408,24 @@ def get_controller(stack, home) -> Controller:
                 config_path=credentials_path, horizon_url=HORIZON_URL
             ),
         )
+    return creds
 
+
+def get_controller(stack, home) -> Controller:
+    if stack is None:
+        raise click.UsageError("--stack or PONTOON_STACK required")
+
+    try:
+        p = Pontoon(stack, home)
+    except FileNotFoundError:
+        raise click.UsageError(
+            INSTRUCTIONS["stack-not-found"].format(
+                stack=stack,
+                home=home,
+            )
+        )
+
+    creds = get_credentials()
     cloud = CloudVPS(p, creds)
     return Controller(p, cloud)
 
@@ -452,9 +438,40 @@ def with_stack(func):
         type=str,
         metavar="NAME",
         default=os.environ.get("PONTOON_STACK"),
+        shell_complete=complete_stacks,
         help="Target Pontoon stack. (env: PONTOON_STACK)",
     )(func)
     return func
+
+
+def with_role(func):
+    """Common decorator to add a --role option to a command."""
+    func = click.option(
+        "--role",
+        type=str,
+        metavar="ROLE",
+        shell_complete=complete_roles,
+        help="Operate on hosts belonging to ROLE",
+    )(func)
+    return func
+
+
+def complete_stacks(ctx, param, incomplete) -> list[str]:
+    p = Pontoon("bootstrap", _pontoon_home())
+    return [k for k in p.available_stacks if k.startswith(incomplete)]
+
+
+def complete_roles(ctx, param, incomplete) -> list[str]:
+    stack = os.environ.get("PONTOON_STACK")
+    if not stack:
+        return []
+
+    p = Pontoon(stack, _pontoon_home())
+    return [k for k in p.available_roles if k.startswith(incomplete)]
+
+
+def _pontoon_home(default=".") -> str:
+    return os.path.expanduser(os.environ.get("PONTOON_HOME", default))
 
 
 # List commands in --help in the same order they are defined in code
@@ -464,34 +481,35 @@ class NaturalOrderGroup(click.Group):
         return self.commands.keys()
 
 
-@click.group(cls=NaturalOrderGroup)
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+
+@click.group(cls=NaturalOrderGroup, context_settings=CONTEXT_SETTINGS)
 @click.option(
     "--home",
     type=str,
     metavar="PATH",
-    default=lambda: os.environ.get("PONTOON_HOME", "."),
-    help="Directory where to locate Pontoon stacks (env: PONTOON_HOME)",
+    default=lambda: _pontoon_home(),
+    help="Path to Pontoon stacks (env: PONTOON_HOME, default '.')",
 )
 @click.pass_context
 def ctl(ctx, home):
+    """Pontoon control tool"""
     ctx.ensure_object(dict)
     ctx.obj["home"] = os.path.expanduser(home)
 
 
 @ctl.command()
 @click.argument("name")
-@click.option(
-    "--prefix", metavar="NAME", help="Create hosts with NAME prefix.", default=None
-)
-@click.pass_obj
-def new_stack(obj, name, prefix):
-    Pontoon.new(name, obj["home"])
-    ctrl = get_controller(name, obj["home"])
-    ok = ctrl.new_stack(prefix)
-    if ok:
-        print(INSTRUCTIONS["new-stack"].format(stack=name))
-    else:
+@click.pass_context
+def new_stack(ctx, name):
+    """Create a new stack"""
+    Pontoon.new(name, ctx.obj["home"])
+    ctrl = get_controller(name, ctx.obj["home"])
+    ok = ctrl.new_stack()
+    if not ok:
         raise click.UsageError("Failed to create a new stack")
+    print(INSTRUCTIONS["new-stack"].format(stack=name))
 
 
 @ctl.command()
@@ -503,9 +521,10 @@ def new_stack(obj, name, prefix):
     metavar="REV",
     type=str,
 )
-@click.pass_obj
-def bootstrap_stack(obj, stack, local_rev):
-    ctrl = get_controller(stack, obj["home"])
+@click.pass_context
+def bootstrap_stack(ctx, stack, local_rev):
+    """Bootstrap an existing stack"""
+    ctrl = get_controller(stack, ctx.obj["home"])
 
     ok = ctrl.bootstrap_stack(local_rev)
     if not ok:
@@ -525,8 +544,12 @@ def bootstrap_stack(obj, stack, local_rev):
 @with_stack
 @click.pass_context
 def join_stack(ctx, stack):
+    """Configure the stack to be available for local development"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.setup_remote_repositories()
+    ok = ctrl.setup_remote_repositories()
+    if not ok:
+        log.error("Error setting up remote repositories")
+        return 1
     print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
 
 
@@ -535,15 +558,29 @@ def join_stack(ctx, stack):
 @click.option(
     "--all",
     is_flag=True,
+    default=False,
+    help="List all hosts, not just those in the stack",
 )
-@click.option("--output", default="table", type=click.Choice(["fqdn", "table"]))
-@click.pass_obj
-def list_hosts(obj, stack, all, output):
-    ctrl = get_controller(stack, obj["home"])
+@click.option(
+    "--output",
+    default="table",
+    type=click.Choice(["fqdn", "table"]),
+    help="Output format. 'fqdn' is suitable for scripting.",
+)
+@click.pass_context
+def list_hosts(ctx, stack, all, output):
+    """Show hosts belonging to the stack, or --all"""
+    # don't require stack when listing all hosts
+    if stack is None and all:
+        stack = "bootstrap"
+    ctrl = get_controller(stack, ctx.obj["home"])
     hosts = ctrl.cloud.list_hosts()
     if not all:
+        # Filter out hosts not in the stack
         stack_fqdns = ctrl.pontoon.host_map().keys()
         hosts = [h for h in hosts if h.fqdn in stack_fqdns]
+
+    hosts = sorted(hosts, key=lambda h: h.fqdn)
 
     if output == "fqdn":
         print("\n".join([h.fqdn for h in hosts]))
@@ -564,19 +601,27 @@ def list_hosts(obj, stack, all, output):
 
 @ctl.command()
 @with_stack
+@with_role
+@click.option(
+    "--block/--no-block",
+    default=True,
+    help="Don't wait for creation to complete (default 'block')",
+)
 @click.pass_context
-def create_hosts(ctx, stack):
+def create_hosts(ctx, stack, role, block):
+    """Create hosts for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.cloud.create_hosts()
+    ctrl.cloud.create_hosts(role=role, block=block)
     ctrl.update_ssh_fingerprints()
 
 
 @ctl.command()
 @with_stack
-@click.option("--role")
-@click.option("--force", is_flag=True, default=False)
+@with_role
+@click.option("--force", is_flag=True, default=False, help="Force re-enrollment")
 @click.pass_context
 def enroll_hosts(ctx, stack, role, force):
+    """Enroll hosts for the stack"""
     # XXX handle failure, print instructions
     ctrl = get_controller(stack, ctx.obj["home"])
     ok = ctrl.enroll_hosts(role, force)
@@ -586,32 +631,50 @@ def enroll_hosts(ctx, stack, role, force):
 
 @ctl.command()
 @with_stack
-@click.argument("pattern")
+@with_role
+@click.argument("pattern", required=False)
 @click.pass_context
-def destroy_hosts(ctx, stack, pattern):
+def destroy_hosts(ctx, stack, role, pattern):
+    """Destroy hosts matching a pattern or role"""
     # XXX wait for destruction?
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.cloud.destroy_hosts(pattern)
+    if not (pattern or role):
+        raise click.UsageError("Specify a pattern or --role to destroy hosts")
+    ctrl.cloud.destroy_hosts(pattern or "*", role=role)
 
 
 @ctl.command()
 @with_stack
-@click.argument("pattern")
-@click.option("--type", default="soft", type=click.Choice(["soft", "hard"]))
-@click.option("--block/--no-block", default=True)
+@with_role
+@click.argument("pattern", required=False)
+@click.option(
+    "--type",
+    default="soft",
+    type=click.Choice(["soft", "hard"]),
+    help="'hard' will power cycle the host. (default 'soft')",
+)
+@click.option(
+    "--block/--no-block",
+    default=True,
+    help="Don't wait for reboot to complete (default 'block')",
+)
 @click.pass_context
-def reboot_hosts(ctx, stack, pattern, type, block):
+def reboot_hosts(ctx, stack, role, pattern, type, block):
+    """Reboot hosts matching a pattern or role"""
     # XXX wait for destruction?
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.cloud.reboot_hosts(pattern, type, not block)
+    if not (pattern or role):
+        raise click.UsageError("Specify a pattern or --role to reboot hosts")
+    ctrl.cloud.reboot_hosts(pattern or "*", type, block, role=role)
 
 
 @ctl.command()
 @with_stack
 @click.argument("name")
-@click.pass_obj
-def add_rolegroup(obj, stack, name):
-    ctrl = get_controller(stack, obj["home"])
+@click.pass_context
+def add_rolegroup(ctx, stack, name):
+    """Add a rolegroup (a collection of roles) to the stack"""
+    ctrl = get_controller(stack, ctx.obj["home"])
     ok = ctrl.add_rolegroup(name)
     if not ok:
         raise click.UsageError("Failed to add rolegroup")
@@ -627,6 +690,7 @@ def add_rolegroup(obj, stack, name):
 
 @ctl.command()
 def ssh_config():
+    """Show the local SSH configuration snippet for Pontoon"""
     print(
         INSTRUCTIONS["ssh-config"].format(
             host_domain=HOST_DOMAIN, config_dir=Controller.config_dir()
@@ -638,6 +702,7 @@ def ssh_config():
 @with_stack
 @click.pass_context
 def ssh_keyscan(ctx, stack):
+    """Update Pontoon's known_hosts file with the stack' SSH fingerprints"""
     ctrl = get_controller(stack, ctx.obj["home"])
     ctrl.update_ssh_fingerprints()
 
@@ -646,8 +711,22 @@ def ssh_keyscan(ctx, stack):
 @with_stack
 @click.pass_context
 def openstack_config(ctx, stack):
+    """Show the OpenStack configuration snippet for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
     cfg = ctrl.cloud.openstack_config
+
+    # Adapt dump() to return a string.
+    # https://yaml.readthedocs.io/en/latest/example/#output-of-dump-as-a-string
+    class StringYAML(YAML):
+        def dump(self, data, stream=None, **kw):
+            inefficient = False
+            if stream is None:
+                inefficient = True
+                stream = StringIO()
+            YAML.dump(self, data, stream, **kw)
+            if inefficient:
+                return stream.getvalue()
+
     print(
         INSTRUCTIONS["openstack-config"].format(
             stack=stack,
@@ -656,7 +735,7 @@ def openstack_config(ctx, stack):
     )
 
 
-def main():
+def main() -> int:
     logging.basicConfig(level=logging.INFO)
     fmt = logging.Formatter(fmt="[*] %(message)s")
     [h.setFormatter(fmt) for h in log.handlers]
