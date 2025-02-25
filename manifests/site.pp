@@ -1779,7 +1779,7 @@ node /^logging-hd100[1-5]\.eqiad\./ {
 }
 
 # Logging data nodes, ssd class (eqiad)
-node /^logstash10(2[6789]|3[34567])\.eqiad\./ {
+node /^logstash10(3[34567])\.eqiad\./ {
     role(logging::opensearch::data)
 }
 

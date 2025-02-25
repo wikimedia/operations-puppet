@@ -486,10 +486,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'logstash102[3-5]':
     - partman/flat.cfg
     - virtual.cfg
-  'logstash102[6-9]':
-    - partman/standard.cfg
-    - partman/raid0.cfg
-    - partman/raid0-8dev.cfg
   'logstash103[0-2]':
     - partman/flat.cfg
     - virtual.cfg
