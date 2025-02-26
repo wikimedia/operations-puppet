@@ -2687,7 +2687,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://thanos-query.discovery.wmnet/-/ready
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /-/ready
@@ -2723,11 +2726,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://thanos-query.discovery.wmnet/-/ready
-      # Needed for SSO sessions to stick. As of Dec 2022 backend
-      # selection from varnish -> ATS is always random for pass traffic
-      # therefore even with this we need at most one thanos-fe host
-      # pooled at a time (per site).
       scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     # Skip paging for thanos-web for the following reasons:
     # - only one host pooled at a time per site (see above)
     # - not a huge deal if thanos.w.o is down temporarily

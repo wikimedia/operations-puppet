@@ -5,6 +5,7 @@ class role::titan {
     include profile::firewall
 
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 
     include profile::tlsproxy::envoy
 
