@@ -90,6 +90,7 @@ describe 'liberica' do
                 },
               },
             },
+            gobgp_metrics_address: '127.0.0.1:3010',
           }
         }
         it { is_expected.to compile.with_all_deps }

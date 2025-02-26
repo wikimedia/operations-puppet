@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class liberica(
     Liberica::Config $config,
+    String $gobgp_metrics_address,
 ) {
     ensure_packages(['bpftool', 'ipvsadm', 'gobgpd', 'liberica'])
 

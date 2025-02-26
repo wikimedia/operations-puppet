@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
-Environment="GOBGPD_OPTIONS=--pprof-disable --api-hosts='<%= @config['bgp']['grpc']['address'] %>'"
+Environment="GOBGPD_OPTIONS=--pprof-host='<%= @gobgp_metrics_address %>' --api-hosts='<%= @config['bgp']['grpc']['address'] %>'"
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 SystemCallFilter=~@keyring @clock @cpu-emulation @obsolete @module @raw-io @reboot @swap
 RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX

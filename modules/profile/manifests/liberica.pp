@@ -26,6 +26,7 @@ class profile::liberica(
     Liberica::BgpConfig $bgp_config                 = lookup('profile::liberica::bgp_config'),
     Array[String] $include_services                 = lookup('profile::liberica::include_services'),
     Hash[String, Hash] $interface_tweaks            = lookup('profile::lvs::interface_tweaks'),
+    String $gobgp_metrics_address                   = lookup('profile::liberica::gobgp_metrics_address'),
 ) {
     ensure_packages(['ethtool', 'ipip-multiqueue-optimizer'])
 
@@ -97,6 +98,7 @@ class profile::liberica(
     }
 
     class { 'liberica':
-        config => $config,
+        config                => $config,
+        gobgp_metrics_address => $gobgp_metrics_address,
     }
 }

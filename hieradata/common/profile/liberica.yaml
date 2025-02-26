@@ -54,3 +54,5 @@ profile::liberica::etcd_config:
 profile::liberica::include_services:
   - ncredir
   - ncredir-https
+
+profile::liberica::gobgp_metrics_address: "%{facts.networking.ip}:3010"
