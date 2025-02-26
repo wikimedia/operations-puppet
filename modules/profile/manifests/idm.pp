@@ -169,6 +169,14 @@ class profile::idm(
         unit => 'uwsgi.service',
     }
 
+    systemd::timer::job { 'bitu-signup-cleanup':
+        ensure      => stdlib::ensure($facts['networking']['fqdn'] == $redis_master),
+        user        => 'root',
+        description => 'Cleanup expired signup requests',
+        command     => '/usr/bin/bitu deleteexpired 1',
+        interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 6:15:00'},
+    }
+
     class {'httpd':
         modules => ['proxy_http', 'proxy', 'proxy_uwsgi', 'remoteip']
     }
