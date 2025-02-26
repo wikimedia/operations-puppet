@@ -77,6 +77,11 @@ class profile::mediawiki::php(
             before     => Package['php8.1-common', 'php8.1-opcache']
         }
 
+        apt::package_from_component{ 'pcre2-backport-bullseye':
+            component => 'component/pcre2',
+            packages  => ['libpcre2-8-0'],
+        }
+
         $php_common_version = '2:92+wmf11u1'
 
         # Install explicitly php-common from the php81 component
