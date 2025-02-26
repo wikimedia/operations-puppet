@@ -119,3 +119,5 @@ profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A 
 profile::services_proxy::envoy::listen_ipv6: true
 
 profile::idp::server_name: https://idp.wikimedia.org
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false

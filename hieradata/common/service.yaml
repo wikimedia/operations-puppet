@@ -1234,7 +1234,10 @@ service::catalog:
           http_status: 200
           url:
             - https://toolsadmin.wikimedia.org:7443/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - eqiad
     probes:
       - type: http
         host: toolsadmin.wikimedia.org

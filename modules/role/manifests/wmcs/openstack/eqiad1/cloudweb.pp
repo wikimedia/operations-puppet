@@ -6,6 +6,7 @@ class role::wmcs::openstack::eqiad1::cloudweb {
 
     include profile::openstack::eqiad1::cloudweb_mcrouter
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 
     # Horizon:
     include profile::openstack::eqiad1::horizon::docker_deploy
