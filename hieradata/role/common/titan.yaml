@@ -65,3 +65,5 @@ profile::thanos::oidc_sso_enabled: true
 profile::puppet::agent::force_puppet7: true
 
 profile::opentelemetry::otel_gateway_fqdn: jaeger-collector-grpc.svc.eqiad.wmnet
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
