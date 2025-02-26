@@ -610,3 +610,17 @@ groups:
   rules:
     - record: job:up:avail
       expr: sum by (job) (up) / count by (job) (up)
+
+- name: network
+  rules:
+  # See T387287 for details, the goal is to "link" the network side metric to the device on the other side (BGP, interface, etc)
+  - record: remote_instance:gnmi_bgp_neighbor_session_state
+    expr: |
+      sum without (peer_descr) (
+        label_replace(
+          label_replace(gnmi_bgp_neighbor_session_state{peer_group!~"(IX|Transit|bgptools)[46]", peer_descr!="(null)"},
+            "remote_instance", "$1", "instance", "(.*)"
+          ),
+          "instance", "$1:0", "peer_descr", "(.*)"
+        )
+      )
