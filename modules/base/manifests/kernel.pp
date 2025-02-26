@@ -70,6 +70,8 @@ class base::kernel(
             'erofs',
             'exfat',
             'f2fs',
+            'hfs',
+            'hfsplus',
             'jfs',
             'nilfs2',
             'squashfs',
