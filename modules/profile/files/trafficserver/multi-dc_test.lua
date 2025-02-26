@@ -269,7 +269,7 @@ describe("Multi-DC router", function ()
     assert.are.same("ro", result)
   end)
 
-  it("sends Special:CentralAutoLogin", function ()
+  it("sends Special:CentralAutoLogin on local domain", function ()
     local result = run(
       {default = {mode = "local"}},
       {
@@ -282,14 +282,40 @@ describe("Multi-DC router", function ()
     assert.are.same("rw", result)
   end)
 
-  it("sends loginwiki", function ()
+  it("sends Special:CentralAutoLogin on shared domain", function ()
     local result = run(
       {default = {mode = "local"}},
       {
         method = "GET",
         uri_args = "",
-        uri = "/wiki/Special:CentralLogin/start",
-        header = {Host = "login.wikimedia.org"}
+        uri = "/enwiki/wiki/Special:CentralAutoLogin/checkLoggedIn",
+        header = {Host = "auth.wikimedia.org"}
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends Special:CentralLogin on local domain", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/wiki/Special:CentralLogin/complete",
+        header = {Host = "en.wikipedia.org"}
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("sends Special:CentralLogin on shared domain", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "GET",
+        uri_args = "",
+        uri = "/enwiki/wiki/Special:CentralLogin/start",
+        header = {Host = "auth.wikimedia.org"}
       }
     )
     assert.are.same("rw", result)

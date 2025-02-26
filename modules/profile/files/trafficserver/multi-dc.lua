@@ -142,7 +142,11 @@ local function use_local_dc()
     end
 
     -- CentralAuth login
-    if host == "login.wikimedia.org" or string.find(path, "/wiki/Special:CentralAutoLogin") == 1 then
+    -- note: these might not be at the beginning of the path due to the
+    -- wikiid prefix in the SUL3 shared domain paths
+    if string.find(path, "/wiki/Special:CentralLogin") ~= nil or
+        string.find(path, "/wiki/Special:CentralAutoLogin") ~= nil
+    then
         return false
     end
 
