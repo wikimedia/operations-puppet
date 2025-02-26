@@ -70,6 +70,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     page: true
     port: 443
