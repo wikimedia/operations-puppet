@@ -1313,7 +1313,7 @@ class profile::prometheus::ops (
           'source_labels' => ['source'],
           'regex'         => '([^.]*).*',
           'target_label'  => 'instance',
-          'replacement'   => '${1}', # lint:ignore:single_quote_string_with_variables
+          'replacement'   => '${1}:9804', # lint:ignore:single_quote_string_with_variables
         },
         # Complete the 'source' -> 'instance' rename by dropping the former
         {
