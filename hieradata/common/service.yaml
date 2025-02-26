@@ -67,6 +67,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://apus.discovery.wmnet/
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: true
     port: 443
     probes:
