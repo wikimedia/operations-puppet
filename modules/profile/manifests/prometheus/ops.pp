@@ -2527,6 +2527,12 @@ class profile::prometheus::ops (
         port       => 3003,
     }
 
+    prometheus::class_config{ "liberica_gobgpd_${::site}":
+        dest       => "${targets_path}/liberica_gobgpd_${::site}.yaml",
+        class_name => 'profile::liberica',
+        port       => 3010,
+    }
+
     prometheus::class_config{ "liberica_ipip-mq-optimizer_${::site}":
         dest       => "${targets_path}/liberica_ipip-mq-optimizer_${::site}.yaml",
         class_name => 'profile::liberica',
