@@ -4009,6 +4009,7 @@ service::catalog:
             - https://logs-api.svc.eqiad.wmnet
       scheduler: mh
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
