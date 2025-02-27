@@ -13,3 +13,5 @@ profile::docker_registry_ha::registry::redis_host: "rdb1011.eqiad.wmnet"
 profile::docker_registry_ha::registry::redis_port: 6382
 #profile::docker_registry_ha::registry::redis_password: setintheprivaterepo
 profile::docker_registry_ha::registry::read_only_mode: true
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false

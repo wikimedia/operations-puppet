@@ -4,4 +4,5 @@ class role::docker_registry_ha::registry {
     include profile::nginx
     include profile::docker_registry_ha::registry
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
