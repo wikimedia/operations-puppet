@@ -32,4 +32,8 @@ for x in $DBLIST; do
 	echo $x
 	echo -----------------------------------------------------------------
 	$RUNNER $CMD --wiki=$x "${@}" | sed -u "s/^/$x:  /"
+	# Skip checking mesh networking after the first invocation
+	if [[ "${MESH_CHECK_SKIP}" != "1" ]]; then
+		MESH_CHECK_SKIP="1"
+	fi
 done
