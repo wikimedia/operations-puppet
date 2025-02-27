@@ -1131,6 +1131,7 @@ service::catalog:
             - https://logstash.wikimedia.org/api/status
       scheduler: mh
       ipip_encapsulation:
+        - eqiad
         - codfw
     probes:
       - type: http
