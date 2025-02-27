@@ -154,6 +154,9 @@ rewrite	wiki.mediawiki.org	https://www.mediawiki.org
 # VRT wiki was previously at otrs-wiki.wikimedia.org (T280400)
 rewrite	otrs-wiki.wikimedia.org	https://vrt-wiki.wikimedia.org
 
+# RT was previously request tracker (T385777), redirect old ticket URLs
+funnel	rt.wikimedia.org	https://wikitech.wikimedia.org/wiki/RT
+
 # ombuds wiki was previously at ombudsmen.wikimedia.org (T273323)
 rewrite ombudsmen.wikimedia.org https://ombuds.wikimedia.org
 

@@ -94,3 +94,10 @@ https://en.wikipedia.org:
   assert_status: 302
   assert_headers:
     Location: https://en.wikipedia.org/wiki/Special:ChangeCredentials/MediaWiki%5cAuth%5cPasswordAuthenticationRequest
+
+# T385777
+https://rt.wikimedia.org:
+- path: /
+  assert_status: 301
+  assert_headers:
+    Location: https://wikitech.wikimedia.org/wiki/RT
