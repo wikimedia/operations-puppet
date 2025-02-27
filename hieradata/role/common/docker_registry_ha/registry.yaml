@@ -23,6 +23,8 @@ profile::lvs::realserver::pools:
       - nginx
 # Envoy will be added later, see T215810
 #      - envoyproxy
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 
 profile::nginx::variant: 'custom'
 profile::nginx::modules: []

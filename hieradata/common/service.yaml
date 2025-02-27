@@ -477,6 +477,7 @@ service::catalog:
       scheduler_flag: mh-port
       ipip_encapsulation:
         - eqiad
+        - codfw
     probes:
       - type: http
         path: /v2/
