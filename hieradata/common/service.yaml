@@ -4326,3 +4326,21 @@ service::catalog:
     sites:
       - eqiad
     state: service_setup
+
+  analytics-web:
+    encryption: true
+    role: "analytics_cluster::webserver"
+    public_endpoint: "analytics"
+    port: 8443
+    description: "Dashboards and Data Downloads for Wikimedia Projects"
+    page: false
+    probes:
+      - type: http
+        host: analytics.wikimedia.org
+        expect_sso: true
+    sites:
+      - eqiad
+    ip:
+      eqiad:
+        default: 10.64.21.14  # an-web1001
+    state: service_setup
