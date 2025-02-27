@@ -2630,12 +2630,6 @@ class profile::prometheus::ops (
         backup  => false,
     }
 
-    firewall::service { 'prometheus-web':
-        proto    => 'tcp',
-        port     => [80],
-        src_sets => ['DOMAIN_NETWORKS'],
-    }
-
     $gerrit_targets = {
       'targets' => ['gerrit.wikimedia.org:443'],
       'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
