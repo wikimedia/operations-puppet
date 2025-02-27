@@ -2777,7 +2777,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://thanos-swift.discovery.wmnet/healthcheck
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /healthcheck
