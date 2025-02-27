@@ -14,15 +14,11 @@ class ldap::management(
     file { '/etc/ldapvi.conf':
         content => template('ldap/ldapvi.conf.erb'),
         mode    => '0440',
-        owner   => 'root',
-        group   => 'ldap-admins',
     }
 
     file {
         default:
             ensure => file,
-            owner  => 'root',
-            group  => 'ldap-admins',
             mode   => '0550';
         '/usr/local/bin/modify-ldap-user':
             content => file('ldap/modify-ldap-user');
