@@ -1957,7 +1957,10 @@ service::catalog:
         ProxyFetch:
           url:
             - http://prometheus/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
     port: 80
@@ -1987,7 +1990,10 @@ service::catalog:
           http_status: 302
           url:
             - https://prometheus-%{::site}.wikimedia.org/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         host: prometheus-%{::site}.wikimedia.org

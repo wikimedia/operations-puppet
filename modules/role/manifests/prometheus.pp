@@ -4,6 +4,7 @@ class role::prometheus {
     include profile::firewall
 
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 
     include profile::prometheus::common
 
