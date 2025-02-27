@@ -247,7 +247,7 @@ node /^aux-k8s-worker100[2-5]\.eqiad\./ {
 }
 
 node /^aux-k8s-worker200[2-5]\.codfw\./ {
-    role(insetup::observability)
+    role(aux_k8s::worker_insetup)
 }
 
 # Primary bacula director and storage daemon

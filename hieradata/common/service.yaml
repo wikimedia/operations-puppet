@@ -115,6 +115,8 @@ service::catalog:
     ip: &k8s-ingress-aux_ips
       eqiad:
         default: 10.2.2.78
+      #codfw:
+        #default: 10.2.1.78
     lvs:
       class: low-traffic
       conftool:
@@ -144,6 +146,7 @@ service::catalog:
     port: &k8s-ingress-aux_port 30443
     sites:
       - eqiad
+      #- codfw
     state: production
     page: false
     discovery:
