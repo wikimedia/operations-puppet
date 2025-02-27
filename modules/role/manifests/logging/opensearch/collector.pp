@@ -21,6 +21,7 @@ class role::logging::opensearch::collector {
         include profile::logstash::production
         include profile::tlsproxy::envoy # TLS termination
         include profile::lvs::realserver
+        include profile::lvs::realserver::ipip
         include profile::opensearch::api::httpd_proxy
     } else {
         include profile::logstash::beta

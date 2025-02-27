@@ -1130,6 +1130,8 @@ service::catalog:
           url:
             - https://logstash.wikimedia.org/api/status
       scheduler: mh
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         path: /api/status
