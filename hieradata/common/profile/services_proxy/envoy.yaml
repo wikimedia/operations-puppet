@@ -299,6 +299,13 @@ profile::services_proxy::envoy::listeners:
     service: inference-staging
     timeout: "60s"
     upstream: inference-staging.svc.codfw.wmnet
+  - name: analytics-web
+    port: 6206
+    service: analytics-web
+    timeout: "60s"
+    upstream: analytics-web.discovery.wmnet
+    sets_sni: true
+    http_host: analytics.wikimedia.org
   # Other services, mostly used by restbase
   - name: mwapi-async # mediawiki api for long-lasting async requests
     port: 6500
