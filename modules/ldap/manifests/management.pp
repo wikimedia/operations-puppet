@@ -34,12 +34,4 @@ class ldap::management(
             content =>  file('ldap/scripts/add-ldap-group.py');
 
     }
-
-    file { '/usr/local/bin/rewrite-group-for-memberof':
-        ensure => absent,
-        source => 'puppet:///modules/ldap/rewrite-group-for-memberof.py',
-        mode   => '0554',
-        owner  => 'root',
-        group  => 'root',
-    }
 }
