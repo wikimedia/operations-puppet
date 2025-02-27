@@ -7,7 +7,7 @@ if [ "${BACKPORTS}" = "yes" ]; then
 EOF
 	cat > /etc/apt/preferences.d/<%= @distribution %>-backports.pref <<-'EOF'
 	Package: *
-	Pin: release a=<%= @distribution %>-backports
+	Pin: release n=<%= @distribution %>-backports
 	Pin-Priority: 500
 EOF
 	apt-get update
