@@ -753,15 +753,25 @@ node /^db2(191|196|215|231)\.codfw\./ {
 
 # x2 shard
 # eqiad
-node /^db11(51|52|53)\.eqiad\./ {
+node /^db11(51|52)\.eqiad\./ {
     role(mariadb::objectstash)
 }
 
 # codfw
-node /^db21(42|43|44)\.codfw\./ {
+node /^db21(42|44)\.codfw\./ {
     role(mariadb::objectstash)
 }
 
+# ms3 shard
+# eqiad
+node /^db11(53)\.eqiad\./ {
+    role(mariadb::objectstash)
+}
+
+# codfw
+node /^db21(43)\.codfw\./ {
+    role(mariadb::objectstash)
+}
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
