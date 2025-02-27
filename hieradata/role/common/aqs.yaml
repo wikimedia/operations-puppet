@@ -147,7 +147,7 @@ profile::cassandra::settings:
   tls_use_pki_truststore: true
   tls_use_pki: true
   start_rpc: false
-  target_version: 'dev'
+  target_version: '4.x'
   default_instance_params:
     max_heap_size: 16g
     # 1/4 heap size, no more than 100m/thread
