@@ -4008,6 +4008,8 @@ service::catalog:
           url:
             - https://logs-api.svc.eqiad.wmnet
       scheduler: mh
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
         # The 'host' here can be handled by codfw and eqiad all the same
