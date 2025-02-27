@@ -233,12 +233,8 @@ node /^aux-k8s-etcd200[3-5]\.codfw\./ {
 }
 
 # control-plane servers for aux kubernetes cluster
-node /^aux-k8s-ctrl100[23]\.eqiad\./ {
+node /^aux-k8s-ctrl[12]00[23]\.(eqiad|codfw)\./ {
     role(aux_k8s::master)
-}
-
-node /^aux-k8s-ctrl200[23]\.codfw\./ {
-    role(aux_k8s::master_insetup)
 }
 
 # worker nodes for aux kubernetes cluster
