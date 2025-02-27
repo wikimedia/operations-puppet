@@ -321,12 +321,9 @@ groups:
   ldap-admins:
     gid: 715
     description: ldap admins
-    members: [reedy, foks]
-    privileges: ['ALL = NOPASSWD: /usr/local/sbin/modify-ldap-user',
-                 'ALL = NOPASSWD: /usr/local/sbin/modify-ldap-group',
-                 'ALL = (www-data) NOPASSWD: ALL']
-    approval:
-      - Joanna Borun
+    members: []
+    privileges: []
+    deprecated: true
   contint-users:
     gid: 718
     description: users with accounts on jenkins hosts
