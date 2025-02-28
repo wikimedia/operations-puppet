@@ -2140,7 +2140,10 @@ service::catalog:
         ProxyFetch:
           url:
             - http://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     port: 9200
     sites:
       - eqiad
@@ -2165,7 +2168,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
     port: 9243
@@ -2195,7 +2201,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: false
     probes:
       - type: http
@@ -2228,7 +2237,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: false
     probes:
       - type: http
