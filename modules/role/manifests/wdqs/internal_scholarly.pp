@@ -13,6 +13,7 @@ class role::wdqs::internal_scholarly {
     require profile::query_service::monitor::wikidata_internal_scholarly
     # Production specific profiles
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 
     # wdqs-internal specific profiles
     include profile::tlsproxy::envoy # TLS termination
