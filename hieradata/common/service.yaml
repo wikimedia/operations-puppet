@@ -3375,7 +3375,10 @@ service::catalog:
         ProxyFetch:
           url:
             - http://localhost/readiness-probe
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: false
     probes:
       - type: http
