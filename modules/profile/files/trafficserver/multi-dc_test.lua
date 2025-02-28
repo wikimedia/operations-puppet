@@ -159,6 +159,35 @@ describe("Multi-DC router", function ()
     assert.are.same("rw", result)
   end)
 
+  it("dispatches PUT requests to the primary", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "PUT",
+        uri_args = "",
+        uri = "/w/index.php",
+        header = {Host = "en.wikipedia.org"}
+      }
+    )
+    assert.are.same("rw", result)
+  end)
+
+  it("handles PUT requests locally if they promise to be good", function ()
+    local result = run(
+      {default = {mode = "local"}},
+      {
+        method = "PUT",
+        uri_args = "",
+        uri = "/w/index.php",
+        header = {
+          Host = "en.wikipedia.org",
+          ["Promise-Non-Write-API-Action"] = "true"
+        }
+      }
+    )
+    assert.are.same("ro", result)
+  end)
+
   it("dispatches POST requests to the primary", function ()
     local result = run(
       {default = {mode = "local"}},
@@ -468,4 +497,3 @@ describe("Multi-DC router", function ()
   end)
 
 end)
-
