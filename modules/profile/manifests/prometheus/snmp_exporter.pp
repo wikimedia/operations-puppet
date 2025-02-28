@@ -10,12 +10,15 @@ class profile::prometheus::snmp_exporter (
     class { '::prometheus::snmp_exporter': }
 
     $datacenters.each |$dc| {
-        if $dc in ['eqiad', 'codfw'] {
-            # eqiad/codfw have sentry3 (in addition to sentry4)
-            prometheus::snmp_exporter::module { "pdu_${dc}":
-                template  => 'servertech_sentry3',
-                community => $passwords::network::snmp_ro_community,
-            }
+        #sentry3 (obsolete?)
+        prometheus::snmp_exporter::module { "pdu_${dc}":
+            template  => 'servertech_sentry3',
+            community => $passwords::network::snmp_ro_community,
+        }
+
+        prometheus::snmp_exporter::module { "pdu_pro4x_${dc}":
+            template  => 'servertech_pro4x',
+            community => $passwords::network::snmp_ro_community,
         }
 
         prometheus::snmp_exporter::module { "pdu_sentry4_${dc}":

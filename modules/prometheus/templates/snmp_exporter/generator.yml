@@ -45,3 +45,16 @@ modules:
       - 1.3.6.1.4.1.1718.4.1.13.3 # st4AdcSensorMonitorTable
       - 1.3.6.1.4.1.1718.4.1.14.2 # st4FanSensorConfigTable
       - 1.3.6.1.4.1.1718.4.1.14.3 # st4FanSensorMonitorTable
+  servertech_pro4x:
+    walk:
+      - 1.3.6.1.4.1.13742.6.3.3.4 #inletSensorConfigurationTable
+      - 1.3.6.1.4.1.13742.6.5.2.3 #inletSensorMeasurementsTable
+      - 1.3.6.1.4.1.13742.6.3.5.4 #outletSensorConfigurationTable
+      - 1.3.6.1.4.1.13742.6.5.4.3 #outletSensorMeasurementsTable
+      - 1.3.6.1.4.1.13742.6.3.4.4 #overCurrentProtectorSensorConfigurationTable
+      - 1.3.6.1.4.1.13742.6.5.3.3 #overCurrentProtectorSensorMeasurementsTable
+      - 1.3.6.1.4.1.13742.6.3.2.5 #unitSensorConfigurationTable
+      - 1.3.6.1.4.1.13742.6.5.1.3 #unitSensorMeasurementsTable
+    overrides:
+      sensorType:
+        type: EnumAsInfo
