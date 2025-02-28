@@ -12,6 +12,7 @@ class role::wdqs::public {
     require profile::query_service::monitor::wikidata_public
     # Production specific profiles
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
     # Public endpoint specific profiles
     include profile::tlsproxy::envoy # TLS termination
 }
