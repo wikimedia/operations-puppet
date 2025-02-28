@@ -6,7 +6,6 @@ class profile::cassandra_dev (
 ) {
     $devuser          = 'cassandra_devel'
     $devpasswd        = $cassandra_passwords[$devuser]
-    $tls_cluster_name = 'cassandra-dev'
 
     class {'passwords::cassandra': }
 
