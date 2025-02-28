@@ -24,6 +24,8 @@ profile::lvs::realserver::pools:
    services:
      - wdqs-blazegraph
      - nginx
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 profile::query_service::use_revisions: true
 
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
