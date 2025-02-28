@@ -3270,6 +3270,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     page: false
     port: 80
@@ -3303,6 +3304,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     page: false
     port: 8888
@@ -3516,6 +3518,7 @@ service::catalog:
       scheduler: mh
       scheduler_flag: mh-port
       ipip_encapsulation:
+        - eqiad
         - codfw
     page: false
     probes:
