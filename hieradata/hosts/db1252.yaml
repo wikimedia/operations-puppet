@@ -1,3 +1,4 @@
 # db1252
-# Future host
+# s4
 profile::monitoring::notifications_enabled: false
+mariadb::shard: 's4'

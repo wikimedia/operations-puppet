@@ -631,7 +631,7 @@ node /^db2156\.codfw\./ {
 
 # s4 (commons) core production dbs on eqiad
 # See also db1144 and db1146 below
-node /^db1(160|190|199|238|241|242|243|244|247|248|249)\.eqiad\./ {
+node /^db1(160|190|199|238|241|242|243|244|247|248|249|252)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -969,7 +969,7 @@ node /^db22(41|42|43)\.codfw\./ {
 }
 
 # New databases T379753, T380083 & T384979
-node /^db12(50|52|53|54|55|56|57)\.eqiad\./ {
+node /^db12(50|53|54|55|56|57)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
