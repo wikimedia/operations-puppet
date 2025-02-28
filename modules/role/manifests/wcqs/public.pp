@@ -12,4 +12,5 @@ class role::wcqs::public {
     include profile::tlsproxy::envoy # TLS termination
     # Production specific profiles
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
