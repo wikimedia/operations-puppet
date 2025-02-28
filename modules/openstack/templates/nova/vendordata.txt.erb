@@ -93,11 +93,12 @@ manage_etc_hosts: false
 
 # gpg: needed for apt to function properly
 # pciutils: used by puppet to determine is_virtual
-# python3-keystoneclient: used to look up project name
+# python3-keystoneclient and openstackclient:  used to look up project name
 packages:
     - gpg
     - pciutils
     - python3-keystoneclient
+    - python3-openstackclient
 
 # Mark out ephemeral0 so that cloud-init leaves it alone;
 #  we'll let puppet mount it later.
