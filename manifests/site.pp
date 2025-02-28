@@ -990,6 +990,10 @@ node /^doc(1003|2002)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
+node /^doc(1004|2003)\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services)
+}
+
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
