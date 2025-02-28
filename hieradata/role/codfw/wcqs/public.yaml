@@ -12,6 +12,3 @@ profile::query_service::blazegraph_extra_jvm_opts:
   - "-Dorg.wikidata.query.rdf.mwoauth.OAuthProxyConfig.sessionStoreKeyPrefix=mw-oauth-proxy:wcqs:"
 
 profile::query_service::streaming_updater::kafka_topic: codfw.mediainfo-streaming-updater.mutation
-
-profile::lvs::realserver::ipip::enabled: true
-profile::base::enable_rp_filter: false

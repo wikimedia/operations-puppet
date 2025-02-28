@@ -31,6 +31,8 @@ profile::lvs::realserver::pools:
       services:
         - wcqs-blazegraph
         - nginx
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::cfssl_options:
