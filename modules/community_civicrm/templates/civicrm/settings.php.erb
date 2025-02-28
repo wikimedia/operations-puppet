@@ -728,6 +728,11 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  *
  * @see https://www.drupal.org/docs/installing-drupal/trusted-host-settings
  */
+// Setting the trusted_host_pattern to the current site_name only. site_name
+// has .'s escaped so they don't count as wildcard matches in the regex
+$settings['trusted_host_patterns'] = [
+  '^<%= @site_name.gsub(/\./, '\\.') -%>$',
+];
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
