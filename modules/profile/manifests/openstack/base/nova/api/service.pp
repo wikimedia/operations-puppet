@@ -7,6 +7,8 @@ class profile::openstack::base::nova::api::service(
     String       $dhcp_domain               = lookup('profile::openstack::base::nova::dhcp_domain',
                                                       {default_value => 'example.com'}),
     Integer      $compute_workers = lookup('profile::openstack::base::nova::compute_workers'),
+    Stdlib::Fqdn $keystone_fqdn        = lookup('profile::openstack::base::keystone_api_fqdn'),
+    String $observer_password          = lookup('profile::openstack::base::observer_password'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {
     class {'::openstack::nova::api::service':
@@ -16,6 +18,9 @@ class profile::openstack::base::nova::api::service(
         metadata_bind_port => $metadata_bind_port,
         dhcp_domain        => $dhcp_domain,
         compute_workers    => $compute_workers,
+        keystone_fqdn      => $keystone_fqdn,
+        observer_password  => $observer_password,
+        region             => $region,
     }
     contain '::openstack::nova::api::service'
 

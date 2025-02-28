@@ -7,6 +7,9 @@ class openstack::nova::api::service(
     Stdlib::Port $metadata_bind_port,
     String       $dhcp_domain,
     Integer      $compute_workers,
+    Stdlib::Fqdn $keystone_fqdn,
+    String       $observer_password,
+    String       $region,
     ) {
 
     class { "openstack::nova::api::service::${version}":
