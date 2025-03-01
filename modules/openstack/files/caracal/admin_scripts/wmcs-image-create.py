@@ -4,7 +4,6 @@
 
 import argparse
 import logging
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -228,7 +227,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
         image=upstream_image.id,
         flavor=flavor_id,
         nics=nics,
-        meta={"install_puppet": "true"},
+        meta={"install_puppet": "true", "image_build": "true"},
     )
     LOGGER.info("Created temporary VM %s" % instance.id)
 
@@ -284,58 +283,6 @@ def get_snapshot(instance_id: str, snapshot_path: Path):
             image_file.write(chunk)
 
     return vm_snap
-
-
-def disable_puppet_on_image(workdir: Path, snapshot_path: Path, run: Callable) -> None:
-    LOGGER.info("Disabling the puppet cron on the image")
-    run("modprobe", "nbd")
-    # make sure it's not being used, will not fail if it's not
-    run("qemu-nbd", "--disconnect", "/dev/nbd0")
-    run("qemu-nbd", "--format=raw", "--connect=/dev/nbd0", snapshot_path)
-    mountpath = workdir / "mnt"
-    mountpath.mkdir(parents=True, exist_ok=True)
-    # it will guess the filesystem
-    run("mount", "/dev/nbd0p1", mountpath)
-
-    # Remove the systemd timer that runs Puppet on startup and on a timer
-    puppet_timer = mountpath / "lib/systemd/system/puppet-agent-timer.timer"
-    if not puppet_timer.is_file():
-        raise Exception(f"Unable to find puppet timer file {puppet_timer}, aborting")
-    puppet_timer.unlink()
-
-    # Also remove the legacy cron.d file in case it exists
-    puppet_cron_config = mountpath / "etc/cron.d/puppet"
-    if puppet_cron_config.is_file():
-        LOGGER.warning("Found legacy Puppet cron file %s", puppet_cron_config)
-        puppet_cron_config.unlink()
-
-    # Remove the 'cloud-init is done' flag
-    cloud_init_flag = mountpath / ".cloud-init-finished"
-    if cloud_init_flag.is_file():
-        cloud_init_flag.unlink()
-
-    # Allow cloud-init to re-run per-instance things
-    cloud_instances = mountpath / "var/lib/cloud/instances"
-    shutil.rmtree(cloud_instances)
-
-    # Prepare for a fresh puppet run
-    puppet_certs = mountpath / "var/lib/puppet/ssl"
-    shutil.rmtree(puppet_certs)
-
-    # Bonus: enable dhcp setting of resolv.conf.  This will get turned off again by puppet
-    #  but will allow new images to pick up a proper resolv.conf on boot
-    nodnsupdate = mountpath / "etc/dhcp/dhclient-enter-hooks.d/nodnsupdate"
-    if not nodnsupdate.is_file():
-        raise Exception(f"Unable to find nodnsupdate file {nodnsupdate}, aborting")
-    nodnsupdate.unlink()
-
-    # Clear machine id
-    machine_id = mountpath / "etc/machine-id"
-    with open(machine_id, "w") as text_file:
-        print("uninitialized\n", file=text_file)
-
-    run("umount", mountpath)
-    run("qemu-nbd", "--disconnect", "/dev/nbd0")
 
 
 def sparsify_image(workdir: Path, snapshot_path: Path, run: Callable) -> None:
@@ -416,8 +363,6 @@ def main(args: argparse.Namespace) -> None:
                 vm_snap = get_snapshot(
                     instance_id=instance.id, snapshot_path=snapshot_path
                 )
-
-        disable_puppet_on_image(workdir=workdir, snapshot_path=snapshot_path, run=run)
 
         sparse_snapshot_path = sparsify_image(
             snapshot_path=snapshot_path, workdir=workdir, run=run

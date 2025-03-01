@@ -80,6 +80,12 @@ write_files:
             region_name: <%= @region %>
             identity_api_version: 3
       path: /etc/openstack/clouds.yaml
+{% if ds.meta_data.meta is defined %}
+{% if ds.meta_data.meta.image_build is defined %}
+    - content: building
+      path: /.base_image_is_building
+{% endif %}
+{% endif %}
 
 # resetting ttys0 so root is logged in
 runcmd:
@@ -293,11 +299,29 @@ if dpkg -s puppet; then
     systemctl restart sssd
 fi
 
+if test -f "/.base_image_is_building"; then
+    # stop puppet runs, clean up log files, and generally get this ready
+    # for another cloud-init run.
+    echo Cleaning up files before base image creation
+    rm -f /.base_image_is_building
+    puppet agent --disable "waiting for initial VM setup"
+    rm -f /lib/systemd/system/puppet-agent-timer.timer
+    rm -f /etc/cron.d/puppet
+    rm -rf /var/lib/cloud/instances
+    rm -rf /var/lib/puppet/ssl
+    rm -rf /etc/dhcp/dhclient-enter-hooks.d/nodnsupdate
+    cloud-init clean
+    rm -f /.cloud-init-finished
+    echo 'uninitialized' > etc/machine-id
+    rm -rf /var/log/*
+else
+    # Remove the non-root login restriction. If this is the
+    # initial base image, we just leave logins disabled.
+    rm /etc/block-ldap-key-lookup
 
-# Remove the non-root login restriction
-rm /etc/block-ldap-key-lookup
+    # mark the host as ready, from now on alerts and checks will send notifications (ex. puppet_alert.py)
+    touch /.cloud-init-finished
+fi
 
-# mark the host as ready, from now on alerts and checks will send notifications (ex. puppet_alert.py)
-touch /.cloud-init-finished
 exit 0
 --XXXXboundary text
