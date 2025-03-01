@@ -313,7 +313,7 @@ if test -f "/.base_image_is_building"; then
     cloud-init clean
     rm -f /.cloud-init-finished
     echo 'uninitialized' > etc/machine-id
-    rm -rf /var/log/*
+    find /var/log -type f -exec rm '{}' \;
 else
     # Remove the non-root login restriction. If this is the
     # initial base image, we just leave logins disabled.
