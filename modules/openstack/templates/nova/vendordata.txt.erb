@@ -256,7 +256,7 @@ if dpkg -s puppet; then
     # Sometimes the previous --enable doesn't take. Don't know why but
     #  it's harmless to try again
     puppet agent --enable
-    puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff
+    puppet agent --onetime --verbose --no-daemonize --no-splay --show_diff --certname `hostname -f`
     # Refresh ldap now that puppet has updated our ldap.conf
     systemctl restart nslcd.service
 
