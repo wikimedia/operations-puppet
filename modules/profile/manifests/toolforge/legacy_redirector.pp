@@ -63,6 +63,7 @@ class profile::toolforge::legacy_redirector (
             ip_families         => ['ip4'],
             prometheus_instance => 'tools',
             team                => 'wmcs',
+            timeout             => '10s',
             severity            => 'warning';
 
         'tools.wmflabs.org main page':
