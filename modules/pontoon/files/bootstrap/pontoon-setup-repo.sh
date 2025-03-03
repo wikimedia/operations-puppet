@@ -18,14 +18,14 @@ push_path=$4
 hooks="post-receive pre-receive"
 
 if [ ! -d "$git_dir" ]; then
-  git clone --bare --branch "$branch" "$url" "$git_dir"
+  git clone --quiet --bare --branch "$branch" "$url" "$git_dir"
 fi
 
 for hook in $hooks; do
   hook_path=/srv/git/operations/puppet/modules/pontoon/files/bootstrap/git-${hook}.sh
   repo_hook_path="$git_dir/hooks/${hook}"
   if [ ! -e "$repo_hook_path" ] || [ "$hook_path" -nt "$repo_hook_path" ]; then
-    install -v -m755 "$hook_path" "$repo_hook_path"
+    install -m755 "$hook_path" "$repo_hook_path"
   fi
 done
 

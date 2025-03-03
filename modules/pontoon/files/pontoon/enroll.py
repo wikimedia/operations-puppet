@@ -14,7 +14,7 @@ class Enroller(object):
         self.agent_server = pontoon.server_fqdn
         self.pki_san = "pki.discovery.wmnet"
 
-    def enroll(self, host, force=False):
+    def enroll(self, host, force=False, quiet=True):
         role = self.pontoon.role_for_host(host)
         if not role:
             log.error("Role for %r not found", host)
@@ -60,9 +60,15 @@ class Enroller(object):
             return False
 
         log.info("Running puppet agent for the first time")
-        ssh_bash(host, "sudo puppet agent --test --verbose")
+        ssh_bash(
+            host,
+            f"sudo puppet agent --onetime --no-daemonize --no-splay {quiet and '' or '--verbose'}",
+        )
         # APT sources have likely changed, thus update and run-puppet-agent (now available)
-        proc = ssh_bash(host, "sudo apt -q update && sudo run-puppet-agent")
+        proc = ssh_bash(
+            host,
+            f"sudo apt -q update && sudo run-puppet-agent {quiet and '--quiet' or ''}",
+        )
         return proc.returncode == 0
 
     def _enroll(self, host):

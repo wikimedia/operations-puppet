@@ -25,10 +25,11 @@ from .util import (
     ssh_bash,
     SSH_CONNECT_TIMEOUT_SECONDS,
     wait_subprocesses,
-    HOSTS_ACCESS_TIMEOUT_MINUTES,
 )
 
 log = logging.getLogger()
+
+WAIT_PUPPET_TIMEOUT_MINUTES = 5
 
 INSTRUCTIONS = {
     "credentials-missing": """
@@ -239,7 +240,7 @@ class Controller(object):
         log.info(f"Waiting for puppet to converge on {len(candidates)} hosts")
 
         results = wait_subprocesses(
-            commands_for_hosts(candidates), timeout=60 * HOSTS_ACCESS_TIMEOUT_MINUTES
+            commands_for_hosts(candidates), timeout=60 * WAIT_PUPPET_TIMEOUT_MINUTES
         )
 
         ret = []
@@ -263,9 +264,9 @@ class Controller(object):
         if "-" not in stack_name:
             return stack_name
 
-        # Pick a short(er) name as host prefix
-        novowels = stack_name.translate({ord(i): None for i in "aeiouAEIOU"})
-        return novowels
+        # Pick a short(er) name as host prefix, skip first letter though
+        novowels = stack_name[1:].translate({ord(i): None for i in "aeiouAEIOU"})
+        return stack_name[0] + novowels
 
     def new_stack(self) -> bool:
         if self.server is not None:
@@ -338,6 +339,12 @@ class Controller(object):
             log.error(f"Error running bootstrap.sh on {self.server}")
             return False
 
+        # Kick off the first agent run with itself as the server
+        proc = ssh_bash(
+            self.server,
+            "sudo puppet agent --onetime --no-daemonize --no-splay --verbose",
+        )
+
         return True
 
     def enroll_hosts(self, role: Optional[str], force: bool = False) -> bool:
@@ -391,7 +398,7 @@ class Controller(object):
 
         e = Enroller(self.pontoon)
         ok = True
-        # XXX enroll concurrently ?
+        # XXX enroll concurrently
         for host in to_enroll:
             if not e.enroll(host, force=force):
                 ok = False
@@ -614,16 +621,18 @@ def ctl(ctx, home):
 
 
 @ctl.command()
-@click.argument("name")
+@with_stack
+@click.argument("name", required=False)
 @click.pass_context
-def new_stack(ctx, name):
+def new_stack(ctx, stack, name):
     """Create a new stack"""
-    Pontoon.new(name, ctx.obj["home"])
-    ctrl = get_controller(name, ctx.obj["home"])
+    wanted_stack = stack or name
+    Pontoon.new(wanted_stack, ctx.obj["home"])
+    ctrl = get_controller(wanted_stack, ctx.obj["home"])
     ok = ctrl.new_stack()
     if not ok:
         raise click.UsageError("Failed to create a new stack")
-    print(INSTRUCTIONS["new-stack"].format(stack=name))
+    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack))
 
 
 @ctl.command()
@@ -668,6 +677,14 @@ def join_stack(ctx, stack):
 
 
 @ctl.command()
+@click.pass_context
+def list_stacks(ctx):
+    """List stacks found in Pontoon home"""
+    p = Pontoon("bootstrap", _pontoon_home())
+    print("\n".join(sorted(p.available_stacks)))
+
+
+@ctl.command()
 @with_stack
 @click.option(
     "--all",
@@ -699,6 +716,9 @@ def list_hosts(ctx, stack, all, output):
     if output == "fqdn":
         print("\n".join([h.fqdn for h in hosts]))
     elif output == "table":
+        if not hosts:
+            log.warning("No host(s) found")
+            return 1
         header = ("FQDN", "Image", "Flavor")
         data = []
         for h in hosts:
@@ -787,22 +807,24 @@ def reboot_hosts(ctx, stack, role, pattern, type, block):
 @with_role
 @click.pass_context
 def wait_puppet(ctx, stack, role):
-    """Add a rolegroup (a collection of roles) to the stack"""
+    """Wait for puppet run to converge on hosts"""
     ctrl = get_controller(stack, ctx.obj["home"])
     _, results = ctrl.wait_puppet(role)
+
+    header = ("FQDN", "stdout", "stderr")
+    data = []
 
     ok = True
     for result in sorted(results, key=lambda x: x.fqdn):
         if result.status != "success":
             ok = False
-            print(result.fqdn)
-            print(result.stdout)
-            print(result.stderr)
+            data.append((result.fqdn, result.stdout[:50], result.stderr[:50]))
 
     if ok:
         log.info("Puppet runs completed")
     else:
         log.info("Puppet runs failed")
+        print("\n".join(as_table(header, data)))
 
     return ok
 

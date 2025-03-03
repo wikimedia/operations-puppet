@@ -60,3 +60,6 @@ o11y:
     - alerts
     - logs
     # - webperf
+
+# An alias for __default
+bootstrap: {}

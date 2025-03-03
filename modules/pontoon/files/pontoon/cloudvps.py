@@ -157,7 +157,7 @@ class CloudVPS(object):
         """Create hosts for roles in the Pontoon stack."""
         stack_hosts = {h for h in self.pontoon.host_map().keys()}
         if hosts is not None:
-            hosts = set(hosts)
+            stack_hosts = set(hosts)
         elif role is not None:
             stack_hosts = set(self.pontoon.hosts_for_role(role))
 
@@ -219,6 +219,7 @@ class CloudVPS(object):
 
         for server in to_delete:
             self.nova.delete_server(server)
+        # XXX remove host key too
 
         return True
 
