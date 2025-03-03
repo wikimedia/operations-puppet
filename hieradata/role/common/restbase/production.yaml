@@ -1020,6 +1020,8 @@ profile::lvs::realserver::pools:
       - restbase
       - envoyproxy
     # TODO: add cassandra instances?
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 service::configuration::log_dir: "/var/log"
 
 profile::admin::groups:
