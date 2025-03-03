@@ -451,7 +451,7 @@ groups:
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
-              seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans]
+              seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6475,6 +6475,7 @@ users:
     email: mszabo@wikimedia.org
     ssh_keys:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJSRj+gNTsld5r9OKrDk7j9Wbi/f0NEEnv044Qtwzkn0AAAABHNzaDo= mszabo@wikimedia.org
+    krb: present
   jjmc89:
     ensure: present
     gid: 500
