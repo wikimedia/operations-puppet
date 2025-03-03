@@ -7448,3 +7448,9 @@ ldap_only_users:
     email: dhardy-ctr@wikimedia.org
     expiry_date: "2025-06-27"
     expiry_contact: jdrewniak@wikimedia.org
+  chuckonwumelu:
+    ensure: present
+    realname: Chuck Onwumelu
+    email: chuckonwumelu-ctr@wikimedia.org
+    expiry_date: "2025-06-27"
+    expiry_contact: lgoto@wikimedia.org
