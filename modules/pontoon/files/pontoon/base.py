@@ -3,12 +3,14 @@
 
 import logging
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 from pathlib import Path
 
 from ruamel.yaml import YAML
 
 log = logging.getLogger()
+
+from dataclasses import dataclass, asdict, fields
 
 
 class Pontoon(object):
@@ -28,9 +30,11 @@ class Pontoon(object):
         self.name = name
         self.base_path = base_path
         self.rolemap_path = os.path.join(self.stack_path, "rolemap.yaml")
+        self.config_path = os.path.join(self.stack_path, "config.yaml")
         self.yaml = YAML()
         with open(self.rolemap_path) as f:
             self.rolemap = self.yaml.load(f)
+        self.config = self._load_config()
 
     @property
     def available_stacks(self) -> List[str]:
@@ -147,7 +151,42 @@ class Pontoon(object):
         if fqdn not in hosts:
             hosts.append(fqdn)
 
+    def _load_config(self) -> "StackConfig":
+        if not os.path.exists(self.config_path):
+            data = {}
+        else:
+            with open(self.config_path, "r") as file:
+                data = self.yaml.load(file) or {}
+        return StackConfig.from_dict(data)
+
+    def set_config_value(self, key: str, value: Any):
+        if hasattr(self.config, key):
+            setattr(self.config, key, value)
+        else:
+            raise KeyError(f"Invalid configuration key: {key}")
+
+    def get_config_value(self, key: str) -> Any:
+        if hasattr(self.config, key):
+            return getattr(self.config, key)
+        else:
+            raise KeyError(f"Invalid configuration key: {key}")
+
     def save(self):
-        """Write the stack configuration to disk."""
+        """Write the stack to disk."""
         with open(self.rolemap_path, "w") as f:
             self.yaml.dump(self.rolemap, f)
+
+        with open(self.config_path, "w") as f:
+            self.yaml.dump(asdict(self.config), f)
+
+
+@dataclass
+class StackConfig:
+    host_prefix: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        """Create StackConfig from a dictionary, ensuring all fields are populated."""
+        field_names = {f.name for f in fields(cls)}
+        filtered_data = {k: v for k, v in data.items() if k in field_names}
+        return cls(**filtered_data)
