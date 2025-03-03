@@ -12,6 +12,9 @@
 set -e
 set -u
 
+puppet_origin=https://gerrit.wikimedia.org/r/operations/puppet
+private_origin=https://gerrit.wikimedia.org/r/labs/private
+
 preflight() {
   if [ -z "${SUDO_USER:-}" ]; then
     echo "Please bootstrap using sudo (or set SUDO_USER)"
@@ -45,6 +48,7 @@ preflight() {
 git_init() {
   local orig_dir=$1
   local dir=$2
+  local origin_url=$3
 
   if [ -d "$dir/.git" ]; then
     return
@@ -54,6 +58,7 @@ git_init() {
   git init --initial-branch production --quiet
   git add .
   git commit --quiet --message "Bootstrapped from $orig_dir"
+  git remote set-url origin $origin_url
   popd
 }
 
@@ -69,12 +74,12 @@ bootstrap_repos() {
 
   if [ -d "$user_puppet" ]; then
     rsync -a --delete "$user_puppet" "$dir"
-    git_init "$user_puppet" "$dir/puppet"
+    git_init "$user_puppet" "$dir/puppet" $puppet_origin
   fi
 
   if [ -d "$user_private" ]; then
     rsync -a --delete "$user_private" "$dir"
-    git_init "$user_private" "$dir/private"
+    git_init "$user_private" "$dir/private" $private_origin
   fi
 }
 
