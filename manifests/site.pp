@@ -238,12 +238,8 @@ node /^aux-k8s-ctrl[12]00[23]\.(eqiad|codfw)\./ {
 }
 
 # worker nodes for aux kubernetes cluster
-node /^aux-k8s-worker100[2-5]\.eqiad\./ {
+node /^aux-k8s-worker[12]00[2-5]\.(eqiad|codfw)\./ {
     role(aux_k8s::worker)
-}
-
-node /^aux-k8s-worker200[2-5]\.codfw\./ {
-    role(aux_k8s::worker_insetup)
 }
 
 # Primary bacula director and storage daemon
