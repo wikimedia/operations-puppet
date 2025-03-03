@@ -3,7 +3,9 @@
 #
 class role::druid::public::worker {
 
-    class { '::lvs::realserver': }
+    include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
+
 
     include profile::base::production
     include profile::firewall
