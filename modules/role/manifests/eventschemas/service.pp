@@ -9,4 +9,5 @@ class role::eventschemas::service {
     include profile::tlsproxy::envoy # TLS termination
 
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
 }
