@@ -451,7 +451,7 @@ groups:
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
-              seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo]
+              seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6578,6 +6578,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICA7MPnkrIUcaVBhtaOH6beJjFq9n6iTo3OPODGg1Lmk
+  harroyo-wmf:
+    ensure: present
+    realname: Hector Arroyo
+    email: hector.arroyo@wikimedia.org
+    uid: 47868
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHrNAMI8918dZUQbfcbDSrHHUOQ2Mvq7MgE3hfJg031R hector@hector-wmf
 
 ldap_only_users:
   adavenport:
@@ -7409,10 +7417,6 @@ ldap_only_users:
     ensure: present
     realname: Jonathan Tweed
     email: jtweed@wikimedia.org
-  harroyo-wmf:
-    ensure: present
-    realname: Hector Arroyo
-    email: hector.arroyo@wikimedia.org
   sspalding:
     ensure: present
     realname: Shaun Spalding
