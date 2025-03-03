@@ -14,5 +14,6 @@ class role::mediawiki::jobrunner {
 
     # not included in beta
     include ::profile::lvs::realserver
+    include ::profile::lvs::realserver::ipip
     include ::profile::tlsproxy::envoy
 }

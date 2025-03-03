@@ -782,7 +782,10 @@ service::catalog:
           url:
             - https://localhost/w/health-check.php?force_php74=1
           check_all: true
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: false
     probes:
       - type: http
@@ -3159,7 +3162,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/w/health-check.php
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     page: false
     probes:
       - type: http
