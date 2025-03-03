@@ -2,4 +2,4 @@
 # Do not make candidate master or master 
 # Multiple hardware issues T359940 T361968 T363119 T374215 T387673
 mariadb::shard: 's2'
-
+profile::monitoring::notifications_enabled: false
