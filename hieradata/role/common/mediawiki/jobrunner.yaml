@@ -18,6 +18,8 @@ profile::lvs::realserver::pools:
       - mcrouter
       - envoyproxy
       - php7.4-fpm
+profile::lvs::realserver::ipip::enabled: true
+profile::base::enable_rp_filter: false
 
 profile::mediawiki::php::enable_fpm: true
 # Bump the connections per backend to 5 in mcrouter, see T203786
