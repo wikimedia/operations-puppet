@@ -1081,7 +1081,7 @@ node /^elastic1103|elastic1107\.eqiad\./ {
 }
 
 node /^elastic110[8-9]|elastic1110\.eqiad\./ {
-    role(insetup::search_platform)
+    role(elasticsearch::cirrus)
 }
 
 node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
