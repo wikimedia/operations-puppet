@@ -2141,7 +2141,10 @@ service::catalog:
         ProxyFetch:
           url:
             - http://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     port: 7233
     sites:
       - eqiad
@@ -2170,7 +2173,10 @@ service::catalog:
         ProxyFetch:
           url:
             - https://localhost/
-      scheduler: wrr
+      scheduler: mh
+      scheduler_flag: mh-port
+      ipip_encapsulation:
+        - codfw
     probes:
       - type: http
       - type: swagger

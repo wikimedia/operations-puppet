@@ -10,6 +10,7 @@ class role::restbase::production {
     include profile::cassandra
     include profile::restbase
     include profile::lvs::realserver
+    include profile::lvs::realserver::ipip
     include profile::tlsproxy::envoy # TLS termination
     include profile::services_proxy::envoy  # service-to-service proxy
 }
