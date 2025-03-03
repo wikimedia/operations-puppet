@@ -452,7 +452,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr]
+              migr, mshilova]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6588,6 +6588,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHrNAMI8918dZUQbfcbDSrHHUOQ2Mvq7MgE3hfJg031R hector@hector-wmf
+  mshilova:
+    ensure: present
+    realname: Mariya Shilova
+    email: mshilova@wikimedia.org
+    uid: 42853
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7272,10 +7279,6 @@ ldap_only_users:
     ensure: present
     realname: Kavitha Appakayala
     email: kappakayala@wikimedia.org
-  mshilova:
-    ensure: present
-    realname: Mariya Shilova
-    email: mshilova@wikimedia.org
   anil:
     ensure: present
     realname: Anil Kanji
