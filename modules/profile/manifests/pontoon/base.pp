@@ -68,10 +68,12 @@ class profile::pontoon::base (
         notify => Exec['reconfigure-wmf-certificates'],
     }
 
-    # Convenience script to wait for Puppet to converge
+    # Convenience script to wait for Puppet to converge.
+    # Also do the underscore -> dash translation, unfortunately otherwise the
+    # module could not be imported for testing.
     file { '/usr/local/bin/pontoon-wait-puppet':
         ensure => present,
-        source => 'puppet:///modules/pontoon/bootstrap/pontoon-wait-puppet.py',
+        source => 'puppet:///modules/pontoon/bootstrap/pontoon_wait_puppet.py',
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
