@@ -14,7 +14,7 @@ class Enroller(object):
         self.agent_server = pontoon.server_fqdn
         self.pki_san = "pki.discovery.wmnet"
 
-    def enroll(self, host: str, force: bool = False, quiet: bool = True) -> bool:
+    def enroll(self, host: str, force: bool = False) -> bool:
         role = self.pontoon.role_for_host(host)
         if not role:
             log.error("Role for %r not found", host)
@@ -56,20 +56,7 @@ class Enroller(object):
                 log.error("Failed to set dns-alt-names for %s", host)
                 return False
 
-        if not self._enroll(host):
-            return False
-
-        log.info("Running puppet agent for the first time")
-        ssh_bash(
-            host,
-            f"sudo puppet agent --onetime --no-daemonize --no-splay {quiet and '' or '--verbose'}",
-        )
-        # APT sources have likely changed, thus update and run-puppet-agent (now available)
-        proc = ssh_bash(
-            host,
-            f"sudo apt -q update && sudo run-puppet-agent {quiet and '--quiet' or ''}",
-        )
-        return proc.returncode == 0
+        return self._enroll(host)
 
     def _enroll(self, host: str) -> bool:
         set_master_cmd = (
@@ -82,14 +69,14 @@ class Enroller(object):
         # in Cloud VPS agents of a self-hosted puppetserver expect
         # /var/lib/puppet/client/ssl instead of /var/lib/puppet/ssl. See also
         # modules/wmflib/lib/puppet/parser/functions/puppet_ssldir.rb
-        agent_ssl_client_link = "sudo ln -s . /var/lib/puppet/client"
+        agent_ssl_client_link_cmd = "sudo ln -s . /var/lib/puppet/client"
 
         enroll_cmd = "&&".join(
             (
                 set_master_cmd,
                 set_ca_server_cmd,
                 wipe_puppet_certs_cmd,
-                agent_ssl_client_link,
+                agent_ssl_client_link_cmd,
             )
         )
 

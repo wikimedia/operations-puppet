@@ -357,16 +357,15 @@ def list_hosts(ctx, stack, all, output):
 @with_stack
 @with_role
 @click.option(
-    "--block/--no-block",
-    default=True,
-    help="Don't wait for creation to complete (default 'block')",
+    "--skip-enroll/--no-skip-enroll",
+    default=False,
+    help="Do not enroll the hosts after creation",
 )
 @click.pass_context
-def create_hosts(ctx, stack, role, block):
+def create_hosts(ctx, stack, role, block, skip_enroll):
     """Create hosts for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    # XXX wrap method into controller ?
-    ctrl.cloud.create_hosts(role=role, block=block)
+    ctrl.create_hosts(role=role, skip_enroll=skip_enroll)
     ctrl.update_ssh_fingerprints()
 
 

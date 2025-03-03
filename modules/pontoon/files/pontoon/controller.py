@@ -7,18 +7,17 @@ import logging
 import os
 import subprocess
 from dataclasses import dataclass
-from typing import Optional
-
-from ruamel.yaml import YAML
+from typing import Optional, Set
 
 from pontoon import Pontoon
 from pontoon.cloudvps import CloudVPS
 from pontoon.enroll import Enroller
 from pontoon.rolegroups import RoleGroups
 from pontoon.util import SSH_CONNECT_TIMEOUT_SECONDS, ssh_bash, wait_subprocesses
+from ruamel.yaml import YAML
 
 log = logging.getLogger()
-WAIT_PUPPET_TIMEOUT_MINUTES = 5
+WAIT_PUPPET_TIMEOUT_MINUTES = 30
 
 
 @dataclass
@@ -130,7 +129,7 @@ class Controller(object):
                         "-o",
                         f"ConnectTimeout={SSH_CONNECT_TIMEOUT_SECONDS}",
                         host,
-                        "sudo pontoon-wait-puppet",
+                        f"sudo pontoon-wait-puppet --timeout-minutes {WAIT_PUPPET_TIMEOUT_MINUTES}",
                     ],
                     stdin=subprocess.DEVNULL,
                     stdout=subprocess.PIPE,
@@ -147,7 +146,10 @@ class Controller(object):
                 log.error(f"Role {role!r} not found")
                 return False, [WaitPuppetResult("", "", "", "")]
 
-        log.info(f"Waiting for puppet to converge on {len(candidates)} hosts")
+        log.info(
+            f"Waiting for puppet to converge on {len(candidates)} hosts. "
+            f"(up to {WAIT_PUPPET_TIMEOUT_MINUTES} minutes)"
+        )
 
         results = wait_subprocesses(
             commands_for_hosts(candidates), timeout=60 * WAIT_PUPPET_TIMEOUT_MINUTES
@@ -200,7 +202,9 @@ class Controller(object):
     def bootstrap_stack(self, local_rev: str) -> bool:
         # XXX run init_ssh_access after host is created?
         if not self.server:
-            log.error(f"Server not found for {self.pontoon.name}, does the stack exist?")
+            log.error(
+                f"Server not found for {self.pontoon.name}, does the stack exist?"
+            )
             return False
 
         self.cloud.create_hosts(hosts=set([self.server]))
@@ -258,7 +262,42 @@ class Controller(object):
 
         return True
 
-    def enroll_hosts(self, role: Optional[str], force: bool = False) -> bool:
+    def create_hosts(
+        self,
+        hosts: Optional[Set[str]] = None,
+        role: Optional[str] = None,
+        skip_enroll: bool = False,
+    ) -> bool:
+        """Create hosts for roles in the Pontoon stack."""
+        ok = self.cloud.create_hosts(role=role, hosts=hosts)
+        if not ok:
+            return False
+
+        if skip_enroll:
+            return ok
+
+        to_enroll = {h for h in self.pontoon.host_map().keys()}
+        if hosts is not None:
+            to_enroll = set(hosts)
+        elif role is not None:
+            to_enroll = set(self.pontoon.hosts_for_role(role))
+
+        return self._enroll(to_enroll)
+
+    def _enroll(self, hosts: set[str]) -> bool:
+        ok = True
+        e = Enroller(self.pontoon)
+        for host in hosts:
+            if not e.enroll(host):
+                ok = False
+            self._install_wait_puppet(host)
+        return ok
+
+    # XXX add option to enroll concurrently
+    def enroll_hosts(
+        self, role: Optional[str], force: bool = False, quiet: bool = True
+    ) -> bool:
+        """Set hosts as part of the stack and run puppet."""
         candidates = self.pontoon.host_map().keys()
 
         if role is not None:
@@ -307,16 +346,27 @@ class Controller(object):
             log.error("You might need to push an updated rolemap.yaml")
             return False
 
-        e = Enroller(self.pontoon)
-        ok = True
-        # XXX enroll concurrently
+        ok = self._enroll(to_enroll)
+        if not ok:
+            log.error("Failed to enroll")
+            return False
+
+        # Also run puppet to be nice to the user, i.e. when `pontoonctl enroll-hosts`
+        # is explicitly called and finishes, then the hosts are ready to go.
         for host in to_enroll:
-            if not e.enroll(host, force=force):
-                ok = False
-                # Normally pontoon-wait-puppet is deployed by Puppet, though
-                # during enrollment the first puppet run can fail too.
-                # The script can be used to wait for puppet runs to succeed.
-                self._install_wait_puppet(host)
+            log.info("Running puppet agent for the first time")
+            run_puppet_cmd = f"sudo puppet agent --onetime --no-daemonize " \
+                f"--no-splay {quiet and '' or '--verbose'}"
+            ssh_bash(
+                host,
+                run_puppet_cmd,
+            )
+            # sources have likely changed, thus update and run puppet again
+            proc = ssh_bash(
+                host,
+                f"sudo apt -q update && {run_puppet_cmd}",
+            )
+            return proc.returncode == 0
 
         return ok
 
