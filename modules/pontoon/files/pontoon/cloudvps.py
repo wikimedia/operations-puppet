@@ -4,16 +4,15 @@
 import fnmatch
 import logging
 import os
-from typing import Any, Dict, List, Optional, Set
 from dataclasses import dataclass
-
+from typing import Any, Dict, List, Optional, Set
 
 from ruamel.yaml import YAML
 
-from . import Pontoon
-from .credentials import Credentials
-from .nova import HOST_DOMAIN, NovaClient, NovaAuth
-from .util import user_confirmation, wait_hosts_access
+from pontoon import Pontoon
+from pontoon.credentials import Credentials
+from pontoon.nova import HOST_DOMAIN, NovaAuth, NovaClient
+from pontoon.util import user_confirmation, wait_hosts_access
 
 log = logging.getLogger()
 
@@ -105,7 +104,7 @@ class CloudVPS(object):
         return f"{host}.{self.project}.{HOST_DOMAIN}"
 
     @property
-    def project(self):
+    def project(self) -> Optional[str]:
         """Return the current project."""
         return self.nova.project_id
 

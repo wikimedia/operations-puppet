@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
-from typing import List, Dict, Any, Set
+from typing import Any, Dict, List, Set
 
 
 class RoleGroup:

@@ -6,14 +6,15 @@ import logging
 import os
 
 import click
+from ruamel.yaml import YAML
+from ruamel.yaml.compat import StringIO
+
 from pontoon import Pontoon
 from pontoon.cloudvps import CloudVPS
 from pontoon.controller import Controller
 from pontoon.credentials import Credentials, CredentialsMissing, load_credentials
 from pontoon.nova import HORIZON_URL, HOST_DOMAIN
 from pontoon.util import as_table
-from ruamel.yaml import YAML
-from ruamel.yaml.compat import StringIO
 
 log = logging.getLogger()
 
@@ -191,7 +192,7 @@ def pick_host_prefix(ctrl: Controller, host_prefix: str) -> str:
     click.echo(f"Your new stack {ctrl.pontoon.name!r} needs a prefix for its VMs.")
 
     return click.prompt(
-        f"Please choose a prefix or accept the default.",
+        "Please choose a prefix or accept the default.",
         type=str,
         default=default_prefix,
     )
@@ -364,6 +365,7 @@ def list_hosts(ctx, stack, all, output):
 def create_hosts(ctx, stack, role, block):
     """Create hosts for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
+    # XXX wrap method into controller ?
     ctrl.cloud.create_hosts(role=role, block=block)
     ctrl.update_ssh_fingerprints()
 
@@ -393,6 +395,9 @@ def destroy_hosts(ctx, stack, role, pattern):
     ctrl = get_controller(stack, ctx.obj["home"])
     if not (pattern or role):
         raise click.UsageError("Specify a pattern or --role to destroy hosts")
+    # XXX wrap this method into controller
+    # XXX make sure to delete ssh host keys too
+    # XXX what should happen when removing puppetserver::pontoon ?
     ctrl.cloud.destroy_hosts(pattern or "*", role=role)
 
 

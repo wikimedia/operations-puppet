@@ -9,12 +9,13 @@ import subprocess
 from dataclasses import dataclass
 from typing import Optional
 
+from ruamel.yaml import YAML
+
 from pontoon import Pontoon
 from pontoon.cloudvps import CloudVPS
 from pontoon.enroll import Enroller
 from pontoon.rolegroups import RoleGroups
 from pontoon.util import SSH_CONNECT_TIMEOUT_SECONDS, ssh_bash, wait_subprocesses
-from ruamel.yaml import YAML
 
 log = logging.getLogger()
 WAIT_PUPPET_TIMEOUT_MINUTES = 5

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
-from typing import List, Optional
+from typing import Any, List, Optional
 
 import pkg_resources
 from keystoneauth1 import session as keystone_session
@@ -36,7 +36,7 @@ class NovaClient(object):
         self._image_names = {}
 
     @property
-    def client(self):
+    def client(self) -> Any:
         if self._client is not None:
             return self._client
         self._client = nova_client.Client("2", session=self.session)
@@ -67,13 +67,13 @@ class NovaClient(object):
     def server_fqdn(self, server: Server) -> str:
         return f"{server.name}.{self.project_id}.{HOST_DOMAIN}"
 
-    def delete_server(self, server: Server):
+    def delete_server(self, server: Server) -> Any:
         return self.client.servers.delete(server)
 
-    def reboot_server(self, server: Server, reboot_type: str):
+    def reboot_server(self, server: Server, reboot_type: str) -> Any:
         return self.client.servers.reboot(server, reboot_type)
 
-    def create_server(self, fqdn: str, image: str, flavor: str):
+    def create_server(self, fqdn: str, image: str, flavor: str) -> Any:
         return self.client.servers.create(
             fqdn.split(".")[0],
             image,
@@ -107,7 +107,7 @@ class NovaClient(object):
         i = server.image["id"]
         return self._image_ids.get(i, ImageDeleted("image-not-found"))
 
-    def name_image(self, name):
+    def name_image(self, name: str) -> Image:
         if not self._image_names:
             self._image_names = {i.name: i for i in self.client.glance.list()}
 
@@ -119,7 +119,7 @@ class NovaClient(object):
         all_names = sorted(self._image_names, reverse=True)
         for candidate in all_names:
             if candidate.startswith(name):
-                return self._image_names.get(candidate)
+                return self._image_names.get(candidate, ImageDeleted("image-not-found"))
 
         return ImageDeleted("name-not-found")
 

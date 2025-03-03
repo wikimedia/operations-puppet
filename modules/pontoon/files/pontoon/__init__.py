@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
-from .base import Pontoon
+from pontoon.base import Pontoon
 
 __all__ = ["Pontoon"]

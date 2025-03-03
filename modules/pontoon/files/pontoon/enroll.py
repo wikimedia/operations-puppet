@@ -2,8 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 import logging
 
-from . import Pontoon
-from .util import ssh_bash
+from pontoon import Pontoon
+from pontoon.util import ssh_bash
 
 log = logging.getLogger()
 
@@ -14,7 +14,7 @@ class Enroller(object):
         self.agent_server = pontoon.server_fqdn
         self.pki_san = "pki.discovery.wmnet"
 
-    def enroll(self, host, force=False, quiet=True):
+    def enroll(self, host: str, force: bool = False, quiet: bool = True) -> bool:
         role = self.pontoon.role_for_host(host)
         if not role:
             log.error("Role for %r not found", host)
@@ -71,7 +71,7 @@ class Enroller(object):
         )
         return proc.returncode == 0
 
-    def _enroll(self, host):
+    def _enroll(self, host: str) -> bool:
         set_master_cmd = (
             "sudo puppet config --section agent set server %s" % self.agent_server
         )

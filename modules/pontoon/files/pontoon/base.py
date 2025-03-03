@@ -3,14 +3,13 @@
 
 import logging
 import os
-from typing import Dict, List, Optional, Any
+from dataclasses import asdict, dataclass, fields
 from pathlib import Path
+from typing import Any, Dict, List, Optional
 
 from ruamel.yaml import YAML
 
 log = logging.getLogger()
-
-from dataclasses import dataclass, asdict, fields
 
 
 class Pontoon(object):

@@ -2,9 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 import os
 import stat
+
 from ruamel.yaml import YAML
 
 
+# XXX rework to use dataclasses like base.StackConfig
 class Credentials(object):
     def __init__(self, config_path: str):
         self.config_path = config_path
@@ -30,7 +32,7 @@ class CredentialsMissing(Exception):
     pass
 
 
-def load_credentials(config_path):
+def load_credentials(config_path: str) -> Credentials:
     config_dir = os.path.dirname(config_path)
     if not os.path.exists(config_dir):
         os.makedirs(config_dir)

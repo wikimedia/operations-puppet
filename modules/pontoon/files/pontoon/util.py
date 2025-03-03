@@ -81,7 +81,7 @@ def wait_hosts_access(hosts: Set[str]) -> bool:
     return False
 
 
-def wait_subprocesses(proc_gen, timeout=None):
+def wait_subprocesses(proc_gen, timeout=None) -> dict[str, tuple[int, str, str]]:
     """Waits for subprocesses to complete within a given timeout.
 
     Args:
@@ -89,7 +89,7 @@ def wait_subprocesses(proc_gen, timeout=None):
         timeout: Maximum time (in seconds) to wait before terminating processes.
 
     Returns:
-        A list of tuples (command, return_code, stdout, stderr).
+        A dict of command: (return_code, stdout, stderr).
     """
     processes = {proc: cmd for cmd, proc in proc_gen}
     start_time = time.time()
@@ -133,7 +133,7 @@ def wait_subprocesses(proc_gen, timeout=None):
     return results
 
 
-def as_table(headers, data, separator="|"):
+def as_table(headers, data, separator="|") -> list[str]:
     res = []
     # Format data in columns
     column_widths = [max(len(str(item)) for item in col) for col in zip(headers, *data)]
