@@ -28,7 +28,9 @@ for setup instructions.
 
 ## Quickstart
 
-This section will help you get started with Pontoon. Make sure to visit [Pontoon Wikitech page](https://wikitech.wikimedia.org/wiki/Puppet/Pontoon) for in depth explanation of the concepts outlined here.
+This section will help you get started with Pontoon. Make sure to visit [Pontoon
+Wikitech page](https://wikitech.wikimedia.org/wiki/Puppet/Pontoon) for in depth
+explanation of the concepts outlined here.
 
 ### SSH setup
 
@@ -49,59 +51,50 @@ changes to it and add new roles.
     # The stack is created, follow the instructions on screen, then
     pontoonctl bootstrap-stack
 
-If everything went well, you now have the following:
+If everything went well, after about ten minutes you have the following:
 * a Cloud VPS host named after your stack, this is the Pontoon Puppet server
 * a `git remote` set up named `pontoon-STACK-NAME`
 * the current git branch is `pontoon-STACK-NAME`
 * have just committed and `git push`-ed your first change to the stack
 
-At this point the Pontoon Puppet server is fully bootstrapped and your stack is funcional and ready to accept new roles.
+At this point the Pontoon Puppet server is bootstrapped. Your stack is now
+functional and ready to accept roles.
 
 #### Add PKI and PuppetDB roles
 
-Most likely you want PKI and PuppetDB to be part of your stack too. Adding roles
-to a stack is achieved by modifying the `rolemap.yaml` and assign hosts to
-roles, for example:
+At this point you can add additional foundational services required to make most
+roles work, namely PuppetDB and PKI.  These roles are grouped together and can
+be added with the following:
 
-    # edit $PONTOON_STACK/rolemap.yaml
-    # make sure to keep the same host prefix as pontoon::puppetserver
-    puppetdb:
-      - <host prefix>-puppetdb-01.project.wikimedia.cloud
-    pki::multirootca:
-      - <host prefix>-pki-01.project.wikimedia.cloud
-
-And the roles' hiera settings added to the stack:
-
-    cd $PONTOON_STACK/hiera
-    ln -s ../../settings/puppetdb.yaml
-    ln -s ../../settings/pki.yaml
-
-Next, `git add` and `git commit` the pending changes files, then `git push` to
-the Pontoon remote as you did during bootstrap. The next step is to create the
-new hosts and enroll them:
-
+    pontoonctl add-rolegroup bootstrap
+    # Follow the instructions on screen
+    # NOTE the initial git push might take about half a minute
     pontoonctl create-hosts
-    pontoonctl enroll-hosts --role puppetdb
-    pontoonctl enroll-hosts --role pki::multirootca
+    # create-hosts is expected to take about five minutes
+    pontoonctl wait-puppet
+    # The initialization time for 'bootstrap' rolegroup is about twenty minutes
 
-At this point puppet might take a little while to converge. For example
-for puppet to succeed on pki hosts it first needs a full run on
-`puppetserver::pontoon`. The `pontoon-wait-puppet` utility will block
-until Puppet has converged, run the script on all stack hosts to make
-sure changes have settled.
+Once Puppet has converged you now have a stack fully bootstrapped with a working
+PuppetDB and PKI available. The stack is ready for any additional roles you want
+to test.
 
 ### Join an existing stack
 
-Existing and bootstrapped Pontoon stacks can be configured locally (i.e. joined) by following the instructions of the following command:
+Existing and bootstrapped Pontoon stacks can be configured locally (i.e. joined)
+by following the instructions of the following command:
 
-    pontoonctl join-stack -s mystack
+    pontoonctl join-stack --stack mystack # or set PONTOON_STACK
 
 Once joining is completed you are ready to `git push` changes to your Pontoon stack.
 
 ### Shell auto completion
 
-`pontoonctl` is powered by [click](https://click.palletsprojects.com/en/stable/shell-completion/) and you can for example enable shell completion with:
+`pontoonctl` is powered by
+[click](https://click.palletsprojects.com/en/stable/shell-completion/) and you
+can for example enable shell completion with:
 
     source <(_PONTOONCTL_COMPLETE=bash_source pontoonctl)
 
-Make sure to have `PONTOON_HOME` set for `--stack` completion to work. Additionally, `PONTOON_STACK` must be set for `--role` to discover your stack's roles.
+Make sure to have `PONTOON_HOME` set for `--stack` completion to work.
+Additionally, `PONTOON_STACK` must be set for `--role` to discover your stack's
+roles.
