@@ -256,23 +256,52 @@ class Controller(object):
         return ok, ret
 
     def _hostname_for_role(self, role: str, id: str = "01") -> str:
-        host_prefix = self._host_prefix(self.pontoon.name)
+        host_prefix = self.pontoon.get_config_value("host_prefix")
+        if not host_prefix:
+            host_prefix = self._default_host_prefix
         role_hostname = self.cloud.specs_for_role(role).hostname
         return f"{host_prefix}-{role_hostname}-{id}"
 
-    def _host_prefix(self, stack_name: str) -> str:
+    @property
+    def _default_host_prefix(self) -> str:
+        stack_name = self.pontoon.name
         if "-" not in stack_name:
             return stack_name
 
-        # Pick a short(er) name as host prefix, skip first letter though
+        # Pick a short(er) name as host prefix, skip first letter for better readability
         novowels = stack_name[1:].translate({ord(i): None for i in "aeiouAEIOU"})
         return stack_name[0] + novowels
 
-    def new_stack(self) -> bool:
+    def _set_host_prefix(self, prefix: Optional[str]) -> str:
+        """Set this stack's host prefix. Prompt the user as needed if prefix is missing."""
+        if prefix is None:
+            default_prefix = self._default_host_prefix
+            default_hostname = self._hostname_for_role("puppetserver::pontoon")
+            click.echo(
+                f"Your new stack {self.pontoon.name!r} needs a prefix for its VMs."
+            )
+            click.echo(
+                f"The default prefix is {default_prefix!r}. An example hostname for puppet server is {default_hostname!r}"
+            )
+
+            host_prefix = click.prompt(
+                "Please choose a prefix or accept the default.",
+                type=str,
+                default=default_prefix,
+            )
+        else:
+            host_prefix = prefix
+
+        self.pontoon.set_config_value("host_prefix", host_prefix)
+        return host_prefix
+
+    def new_stack(self, host_prefix: Optional[str] = None) -> bool:
         if self.server is not None:
             raise click.UsageError(
                 f"stack {self.pontoon.name!r} already exists ({self.server} found in rolemap)"
             )
+
+        self._set_host_prefix(host_prefix)
 
         hostname = self._hostname_for_role("puppetserver::pontoon")
         fqdn = self.cloud.fqdn(hostname)
@@ -622,14 +651,22 @@ def ctl(ctx, home):
 
 @ctl.command()
 @with_stack
+@click.option(
+    "--host-prefix",
+    type=str,
+    metavar="PREFIX",
+    help="Hostnames will be generated starting with PREFIX",
+)
 @click.argument("name", required=False)
 @click.pass_context
-def new_stack(ctx, stack, name):
+def new_stack(ctx, stack, host_prefix, name):
     """Create a new stack"""
     wanted_stack = stack or name
+    if wanted_stack is None:
+        wanted_stack = click.prompt("Choose the stack name")
     Pontoon.new(wanted_stack, ctx.obj["home"])
     ctrl = get_controller(wanted_stack, ctx.obj["home"])
-    ok = ctrl.new_stack()
+    ok = ctrl.new_stack(host_prefix)
     if not ok:
         raise click.UsageError("Failed to create a new stack")
     print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack))
