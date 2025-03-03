@@ -1,0 +1,10 @@
+<%# SPDX-License-Identifier: Apache-2.0 -%>
+[Unit]
+Description=Monitor <%= @monitor_path %>
+
+[Path]
+<%= @monitor_type %>=<%= @monitor_path %>
+Unit=<%= @unit_name %>
+
+[Install]
+WantedBy=multi-user.target
