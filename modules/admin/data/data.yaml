@@ -582,7 +582,7 @@ groups:
   stewards-users:
     description: People with access to the stewards VMs
     gid: 751
-    members: [urbanecm, jjmc89]
+    members: [urbanecm, jjmc89, melos]
     approval:
       - Martin Urbanec
   maps-admins:
@@ -6562,6 +6562,14 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK/VTec0mSJN6slnNsIVI7Z4j79Wti5TxAMXr5iqqWz4 george@mac.home
     krb: present
+  melos:
+    ensure: present
+    realname: Melos
+    email: webmelos@gmail.com
+    uid: 3390
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMJOqAV3Mi5jkhn1PBT7Eih/MrlD3D0zLS2tMC/tFyd8 melos stewm
 
 ldap_only_users:
   adavenport:
