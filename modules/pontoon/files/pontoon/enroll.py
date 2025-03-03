@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 import logging
-import subprocess
 
 from . import Pontoon
 from .util import ssh_bash
@@ -12,15 +11,6 @@ log = logging.getLogger()
 class Enroller(object):
     def __init__(self, pontoon: Pontoon):
         self.pontoon = pontoon
-        self.ssh_cmd = [
-            "ssh",
-            "-o",
-            "BatchMode=yes",
-            "-o",
-            "ConnectTimeout=6",
-            "-o",
-            "StrictHostKeyChecking=no",
-        ]
         self.agent_server = pontoon.server_fqdn
         self.pki_san = "pki.discovery.wmnet"
 
@@ -53,7 +43,7 @@ class Enroller(object):
                 return False
             if p.stdout.strip() == self.agent_server:
                 log.warning("Host %s already enrolled", host)
-                return False
+                return True
 
         # Bootstrap PKI via puppet cert SAN
         if role == "pki::multirootca":
@@ -69,14 +59,10 @@ class Enroller(object):
         if not self._enroll(host):
             return False
 
-        log.info("Running puppet agent")
-        subprocess.run(
-            self.ssh_cmd + [host, "--", "sudo puppet agent --test --verbose"]
-        )
+        log.info("Running puppet agent for the first time")
+        ssh_bash(host, "sudo puppet agent --test --verbose")
         # APT sources have likely changed, thus update and run-puppet-agent (now available)
-        proc = subprocess.run(
-            self.ssh_cmd + [host, "--", "sudo apt -q update && sudo run-puppet-agent"]
-        )
+        proc = ssh_bash(host, "sudo apt -q update && sudo run-puppet-agent")
         return proc.returncode == 0
 
     def _enroll(self, host):

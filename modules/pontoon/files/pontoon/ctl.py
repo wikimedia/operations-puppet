@@ -7,6 +7,7 @@ import logging
 import os
 import subprocess
 import sys
+from dataclasses import dataclass
 from typing import Optional
 
 import click
@@ -19,7 +20,13 @@ from .credentials import Credentials, CredentialsMissing, load_credentials
 from .enroll import Enroller
 from .nova import HORIZON_URL, HOST_DOMAIN
 from .rolegroups import RoleGroups
-from .util import as_table, ssh_bash
+from .util import (
+    as_table,
+    ssh_bash,
+    SSH_CONNECT_TIMEOUT_SECONDS,
+    wait_subprocesses,
+    HOSTS_ACCESS_TIMEOUT_MINUTES,
+)
 
 log = logging.getLogger()
 
@@ -51,7 +58,8 @@ Make sure to run from a directory with Pontoon stacks, or set PONTOON_HOME to be
 the location to search for stacks.
 """,
     "ssh-config": """
-Below you'll find the ~/.ssh/config snippet to enable Pontoon integration and host autocompletion
+Below you'll find the ~/.ssh/config snippet to enable Pontoon integration
+and host autocompletion.
 
 # Place this configuration *before* your configuration for Cloud VPS (e.g. bastions)
 Host *.{host_domain}
@@ -100,6 +108,14 @@ git commit -m "pontoon: add rolegroup {name} to {stack}"
 git push -f pontoon-{stack} HEAD:production
 """,
 }
+
+
+@dataclass
+class WaitPuppetResult:
+    fqdn: str
+    status: str
+    stdout: str
+    stderr: str
 
 
 class Controller(object):
@@ -176,6 +192,67 @@ class Controller(object):
                 continue
 
         return True
+
+    def wait_puppet(self, role: Optional[str]) -> tuple[bool, list[WaitPuppetResult]]:
+        """Wait for puppet runs to finish on hosts.
+
+        Args:
+            role (str): The role to wait for, or None for all roles
+
+        Returns:
+            bool: True if all hosts succeeded, False otherwise
+            List[WaitPuppetResult]: List of results for each host
+        """
+
+        def commands_for_hosts(hosts):
+            """Generator yielding (command, subprocess) tuples."""
+            for host in hosts:
+                proc = subprocess.Popen(
+                    [
+                        "ssh",
+                        "-o",
+                        "BatchMode=yes",
+                        "-o",
+                        "ControlPersist=5",
+                        "-o",
+                        "RequestTty=force",  # make sure remote processes get SIGHUP on exit
+                        "-o",
+                        f"ConnectTimeout={SSH_CONNECT_TIMEOUT_SECONDS}",
+                        host,
+                        "sudo pontoon-wait-puppet",
+                    ],
+                    stdin=subprocess.DEVNULL,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                )
+                yield host, proc
+
+        candidates = self.pontoon.host_map().keys()
+
+        if role is not None:
+            try:
+                candidates = self.pontoon.hosts_for_role(role)
+            except ValueError:
+                log.error(f"Role {role!r} not found")
+                return False, [WaitPuppetResult("", "", "", "")]
+
+        log.info(f"Waiting for puppet to converge on {len(candidates)} hosts")
+
+        results = wait_subprocesses(
+            commands_for_hosts(candidates), timeout=60 * HOSTS_ACCESS_TIMEOUT_MINUTES
+        )
+
+        ret = []
+
+        ok = True
+        for fqdn, result in results.items():
+            returncode, stdout, stderr = result
+            status = "success" if returncode == 0 else "error"
+            ret.append(WaitPuppetResult(fqdn, status, stdout, stderr))
+            if returncode != 0:
+                ok = False
+
+        return ok, ret
 
     def _hostname_for_role(self, role: str, id: str = "01") -> str:
         host_prefix = self._host_prefix(self.pontoon.name)
@@ -314,10 +391,47 @@ class Controller(object):
 
         e = Enroller(self.pontoon)
         ok = True
+        # XXX enroll concurrently ?
         for host in to_enroll:
             if not e.enroll(host, force=force):
                 ok = False
+                # Normally pontoon-wait-puppet is deployed by Puppet, though
+                # during enrollment the first puppet run can fail too.
+                # The script can be used to wait for puppet runs to succeed.
+                self._install_wait_puppet(host)
+
         return ok
+
+    def _install_wait_puppet(self, host: str) -> bool:
+        wait_puppet_path = os.path.join(
+            self.pontoon.base_path, "bootstrap", "pontoon_wait_puppet.py"
+        )
+        status = subprocess.call(
+            [
+                "scp",
+                "-q",
+                "-o",
+                "StrictHostKeyChecking=no",
+                "-o",
+                "UserKnownHostsFile=/dev/null",
+                wait_puppet_path,
+                f"{host}:/tmp/pontoon_wait_puppet.py",
+            ]
+        )
+
+        if status != 0:
+            log.error(f"Error copying {wait_puppet_path}")
+            return False
+
+        p = ssh_bash(
+            host,
+            "sudo install -m755 /tmp/pontoon_wait_puppet.py /usr/local/bin/pontoon-wait-puppet",
+        )
+        if p.returncode != 0:
+            log.error("Failed to install pontoon-wait-puppet")
+            return False
+
+        return True
 
     def init_ssh_access(self) -> bool:
         """Add the server SSH host key to the user's known_hosts.
@@ -666,6 +780,31 @@ def reboot_hosts(ctx, stack, role, pattern, type, block):
     if not (pattern or role):
         raise click.UsageError("Specify a pattern or --role to reboot hosts")
     ctrl.cloud.reboot_hosts(pattern or "*", type, block, role=role)
+
+
+@ctl.command()
+@with_stack
+@with_role
+@click.pass_context
+def wait_puppet(ctx, stack, role):
+    """Add a rolegroup (a collection of roles) to the stack"""
+    ctrl = get_controller(stack, ctx.obj["home"])
+    _, results = ctrl.wait_puppet(role)
+
+    ok = True
+    for result in sorted(results, key=lambda x: x.fqdn):
+        if result.status != "success":
+            ok = False
+            print(result.fqdn)
+            print(result.stdout)
+            print(result.stderr)
+
+    if ok:
+        log.info("Puppet runs completed")
+    else:
+        log.info("Puppet runs failed")
+
+    return ok
 
 
 @ctl.command()

@@ -81,6 +81,58 @@ def wait_hosts_access(hosts: Set[str]) -> bool:
     return False
 
 
+def wait_subprocesses(proc_gen, timeout=None):
+    """Waits for subprocesses to complete within a given timeout.
+
+    Args:
+        proc_gen: Generator yielding (command, subprocess.Popen) instances.
+        timeout: Maximum time (in seconds) to wait before terminating processes.
+
+    Returns:
+        A list of tuples (command, return_code, stdout, stderr).
+    """
+    processes = {proc: cmd for cmd, proc in proc_gen}
+    start_time = time.time()
+
+    results = {}
+
+    while processes:
+        for proc in list(processes.keys()):
+            if proc.poll() is not None:  # Process has finished
+                stdout, stderr = proc.communicate()
+                results[processes[proc]] = (
+                    proc.returncode,
+                    stdout.decode(),
+                    stderr.decode(),
+                )
+                del processes[proc]
+
+        if timeout and (time.time() - start_time) >= timeout:
+            for proc in processes.keys():
+                proc.terminate()
+            time.sleep(1)  # Give them a moment to exit
+            for proc in processes.keys():
+                if proc.poll() is None:  # If still running, force kill
+                    proc.kill()
+            log.warning("Timeout reached! Terminated remaining processes.")
+
+            # Capture remaining terminated process results
+            for proc in list(processes.keys()):
+                stdout, stderr = proc.communicate()
+                results[processes[proc]] = (
+                    proc.returncode,
+                    stdout.decode(),
+                    stderr.decode(),
+                )
+                del processes[proc]
+
+            break
+
+        time.sleep(2)  # Prevents busy-waiting
+
+    return results
+
+
 def as_table(headers, data, separator="|"):
     res = []
     # Format data in columns
