@@ -30,6 +30,7 @@ Example: `prometheus-ferm-mss.py -e $ENDPOINT [-e $ANOTHER_ENDPOINT] [-o $FILENA
 
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Dict, List
 import re
 import ipaddress
 import sys
@@ -41,7 +42,7 @@ from prometheus_client import (
 )
 
 
-def call_iptables(version=4) -> list[str]:
+def call_iptables(version=4) -> List[str]:
     opts = ["-L", "OUTPUT", "-n", "-v"]
     if version == 4:
         cmd = "/usr/sbin/iptables"
@@ -58,8 +59,8 @@ def call_iptables(version=4) -> list[str]:
     return result.stdout.splitlines()
 
 
-def process_output(iptables_txt: dict[int, list[str]],
-                   endpoints: dict[int, list[str]]) -> dict[int, dict[str, dict[str, int]]]:
+def process_output(iptables_txt: Dict[int, List[str]],
+                   endpoints: Dict[int, List[str]]) -> Dict[int, Dict[str, Dict[str, int]]]:
     """This iterates over the ip[6]tables output and extracts the TCP MSS value as well as the
     interface for each IP:port combination. """
     tcp_mss_vals = {4: {}, 6: {}}
@@ -96,7 +97,7 @@ def process_output(iptables_txt: dict[int, list[str]],
     return tcp_mss_vals
 
 
-def process_ip_args(endpoints: list[str]) -> dict[int, list[str]]:
+def process_ip_args(endpoints: List[str]) -> Dict[int, List[str]]:
     """Processes (see below) IP address/port pairs and inserts them into a mapping
     grouped by version (4|6)"""
     ip_addrs = {4: [], 6: []}
