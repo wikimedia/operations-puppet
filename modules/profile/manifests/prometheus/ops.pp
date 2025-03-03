@@ -3,16 +3,18 @@
 # needed for WMF production
 #
 class profile::prometheus::ops (
-    String $replica_label                                     = lookup('prometheus::replica_label'),
-    Array[Stdlib::Host] $bastion_hosts                        = lookup('bastion_hosts', { 'default_value' => [] }),
-    Stdlib::Host $netmon_server                               = lookup('netmon_server'),
-    Array $alertmanagers                                      = lookup('alertmanagers', {'default_value' => []}),
+    String $replica_label                                      = lookup('prometheus::replica_label'),
+    Array[Stdlib::Host] $bastion_hosts                         = lookup('bastion_hosts', { 'default_value' => [] }),
+    Stdlib::Host $netmon_server                                = lookup('netmon_server'),
+    Array $alertmanagers                                       = lookup('alertmanagers', {'default_value' => []}),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_http_check_urls = lookup('profile::prometheus::ops::blackbox_pingthing_http_check_urls', { 'default_value' => [] }),
     Array[Stdlib::HTTPUrl] $blackbox_pingthing_proxied_urls    = lookup('profile::prometheus::ops::blackbox_pingthing_proxied_urls', { 'default_value' => [] }),
-    Wmflib::Infra::Devices $infra_devices                     = lookup('infra_devices'),
-    Array                  $alerting_relabel_configs_extra    = lookup('profile::prometheus::ops::alerting_relabel_configs_extra'),
-    Array[Stdlib::Host] $ganeti_clusters                      = lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
-    Prometheus::Blackbox::SmokeHosts $blackbox_smoke_hosts    = lookup('blackbox_smoke_hosts'),
+    Wmflib::Infra::Devices $infra_devices                      = lookup('infra_devices'),
+    Array $alerting_relabel_configs_extra                      = lookup('profile::prometheus::ops::alerting_relabel_configs_extra'),
+    Array[Stdlib::Host] $ganeti_clusters                       = lookup('profile::prometheus::ganeti::clusters', { 'default_value' => []}),
+    Prometheus::Blackbox::SmokeHosts $blackbox_smoke_hosts     = lookup('blackbox_smoke_hosts'),
+    #TODO: define a custom type
+    Array $pdu_families                                        = lookup('profile::prometheus::ops::pdu_families', {'default_value' => []})
 ){
     include ::passwords::gerrit
     $gerrit_client_token = $passwords::gerrit::prometheus_bearer_token
@@ -1232,6 +1234,39 @@ class profile::prometheus::ops (
           },
         ],
       },
+      {
+        'job_name'        => 'pdu_pro4x',
+        'metrics_path'    => '/snmp',
+        # PDUs with per-outlet control can take a long time to be scraped
+        'scrape_timeout'  => '45s',
+        'params'          => {
+          'module' => [ "pdu_pro4x_${::site}" ],
+        },
+        'file_sd_configs' => [
+          { 'files' => [ "${targets_path}/pdu_pro4x_*.yaml" ] }
+        ],
+        'relabel_configs' => [
+          { 'source_labels' => ['__address__'],
+            'target_label'  => '__param_target',
+          },
+          { 'source_labels' => ['__param_target'],
+            'target_label'  => 'instance',
+          },
+          { 'target_label' => '__address__',
+            'replacement'  => "${netmon_server}:9116",
+          },
+        ],
+        # Prefix all metrics with pdu_ (except snmp_ from snmp_exporter itself)
+        # Saves having to tweak the yaml files from snmp-exporter generator
+        # https://github.com/prometheus/snmp_exporter/tree/master/generator
+        'metric_relabel_configs' => [
+          { 'source_labels' => ['__name__'],
+            'regex'         => '(^([^s]|s($|[^n]|n($|[^m]|m($|[^p]|p($|[^_]))))).*$)',
+            'target_label'  => '__name__',
+            'replacement'   => 'pdu_$0',
+          },
+        ],
+      },
     ]
 
     prometheus::pdu_config { "pdu_sentry3_${::site}":
@@ -1248,6 +1283,16 @@ class profile::prometheus::ops (
         dest     => "${targets_path}/pdu_sentry4_1phase_${::site}.yaml",
         model    => 'sentry4',
         resource => 'Facilities::Monitor_pdu_1phase',
+    }
+
+    $pdu_families.each |$pdu| {
+      prometheus::pdu_config_netbox { "pdu_${pdu['family_name']}_${::site}":
+          dest          => "${targets_path}/pdu_${pdu['family_name']}_${::site}.yaml",
+          name_matcher  => $pdu['name_matcher'],
+          model_matcher => $pdu['model_matcher'],
+          manufacturer  => $pdu['manufacturer'],
+          pdus          => $profile::netbox::data::pdus,
+      }
     }
 
     # T221099

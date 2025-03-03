@@ -877,6 +877,9 @@ profile::docker::reporter::generate_reports: false
 profile::syslog::centralserver::use_kafka_relay: false
 
 profile::prometheus::ops::blackbox_pingthing_http_check_urls: []
+
+profile::prometheus::ops::pdu_families: []
+
 profile::puppetmaster::backend::config: {}
 profile::puppetmaster::backend::secure_private: false
 profile::puppetmaster::backend::prevent_cherrypicks: true

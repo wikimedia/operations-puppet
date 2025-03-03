@@ -38,3 +38,9 @@ profile::prometheus::ops::alerting_relabel_configs_extra:
     source_labels: [cluster]
     regex: "(wmcs)"
     action: replace
+
+profile::prometheus::ops::pdu_families:
+  - family_name: pro4x
+    name_matcher: .*
+    model_matcher: pro4x.*
+    manufacturer: server_technology
