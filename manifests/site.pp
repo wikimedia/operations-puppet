@@ -258,6 +258,10 @@ node /^backup1001\.eqiad\./ {
 node /^backup1002\.eqiad\./ {
     role(dbbackups::content)
 }
+# future replacement of the above
+node /^backup1013\.eqiad\./ {
+    role(dbbackups::content)
+}
 
 # eqiad bacula storage for External Storage databases
 node /^backup1003\.eqiad\./ {
@@ -288,7 +292,7 @@ node /^backup1012\.eqiad\./ {
 }
 
 # to be setup
-node /^backup101[34]\.eqiad\./ {
+node /^backup1014\.eqiad\./ {
     role(insetup::data_persistence)
 }
 

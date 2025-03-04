@@ -1,3 +1,7 @@
 -- Grants for '<%= @dump_user %>'@'10.64.32.107'
 GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.32.107` IDENTIFIED BY '<%= @dump_pass %>';
 GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO `<%= @dump_user %>`@`10.64.32.107`;
+-- Grants for '<%= @dump_user %>'@'10.64.16.129'
+GRANT BINLOG MONITOR, FILE, SLAVE MONITOR, RELOAD ON *.* TO `<%= @dump_user %>`@`10.64.16.129` IDENTIFIED BY '<%= @dump_pass %>';
+GRANT EVENT, LOCK TABLES, SELECT, SHOW VIEW, TRIGGER ON `%wik%`.* TO `<%= @dump_user %>`@`10.64.16.129`;
+
