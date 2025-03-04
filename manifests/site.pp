@@ -1840,11 +1840,7 @@ node /^lvs40(0[89]|10)\.ulsfo\./ {
 }
 
 # EQSIN lvs servers
-node /^lvs5004\.eqsin\./ {
-    role(lvs::balancer)
-}
-
-node /^lvs500[56]\.eqsin\./ {
+node /^lvs500[456]\.eqsin\./ {
     role(liberica)
 }
 
