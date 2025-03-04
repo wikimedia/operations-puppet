@@ -162,34 +162,34 @@ class profile::opensearch::cirrus::server(
             port   => $tls_port,
             srange => $ferm_srange,
         }
-        $proxy_params = $ssl_provider ? {
-            'acme_chief' => {
+        if $ssl_provider == 'acme_chief' {
+            $proxy_cert_params = {
                 acme_chief        => true,
                 acme_certname     => $cluster,
                 server_name       => $instance_params['certificate_name'],
-            },
-
-            'cfssl' => {
-                cfssl_paths    => profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-                    hosts => [
-                        $instance_params['certificate_name'],
-                        "search.svc.${::site}.wmnet"
-                    ],
-                }),
-                server_aliases => [
-                    $instance_params['certificate_name'],
-                    "search.svc.${::site}.wmnet"
-                ],
             }
         }
 
-        elasticsearch::tlsproxy { $cluster_name:
+        if $ssl_provider == 'cfssl' {
+            $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
+                hosts => [$instance_params['certificate_name'], "search.svc.${::site}.wmnet"],
+            })
+
+            $proxy_cert_params = {
+                'cfssl_paths'  => $cfssl_paths,
+                server_aliases => [$instance_params['certificate_name'],"search.svc.${::site}.wmnet"],
+            }
+        }
+
+        $proxy_params = merge($proxy_cert_params, {
             upstream_port => $http_port,
             tls_port      => $tls_port,
             enable_http2  => false,
-            *             => $proxy_params,
-        }
+        })
 
+        elasticsearch::tlsproxy { $cluster_name:
+            * => $proxy_params,
+        }
         if $tls_ro_port {
             if empty($ferm_ro_srange) {
                 fail('Read only port specified without a read only srange')

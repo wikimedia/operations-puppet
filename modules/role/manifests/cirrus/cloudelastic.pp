@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: Apache-2.0
+# = Class: role::cirrus::cloudelastic
+#
+# This class sets up OpenSearch for cloudelastic
+#
+class role::cirrus::cloudelastic {
+    include profile::base::production
+    include profile::firewall
+    include profile::opensearch::cirrus::server
+    include profile::logstash::gelf_relay
+}

@@ -1,2 +1,4 @@
 profile::elasticsearch::rack: B2
-profile::elasticsearch::row:  B
+profile::elasticsearch::row: B
+profile::opensearch::rack: B2
+profile::opensearch::row: B

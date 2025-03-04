@@ -1,0 +1,123 @@
+# General configs
+cluster: cloudelastic
+profile::admin::groups:
+  - cloudelastic-roots
+
+# T130329
+# TODO: revisit later to check if this specific check is needed.
+profile::monitoring::nrpe_check_disk_options: -w 15% -c 10% -W 6% -K 3% -l -e -A -i "/srv/sd[a-b][1-3]" --exclude-type=tracefs
+
+profile::opensearch::cirrus::ssl_provider: acme_chief
+profile::opensearch::cirrus::storage_device: dm-2
+profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
+profile::opensearch::cirrus::ferm_ro_srange: '(($LABS_NETWORKS $DOMAIN_NETWORKS))'
+profile::opensearch::cirrus::expose_http: false
+profile::opensearch::version: '1.0.0'
+profile::opensearch::config_version: '1'
+profile::opensearch::base_data_dir: /srv/opensearch
+profile::opensearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
+profile::opensearch::instances:
+  cloudelastic-chi-eqiad:
+    cluster_name: cloudelastic-chi-eqiad
+    short_cluster_name: chi
+    http_port: 9200
+    tls_port: 9243
+    tls_ro_port: 8243
+    transport_tcp_port: 9300
+    heap_memory: '55G'
+    tune_gc_new_size_ratio: 3
+    certificate_name: 'cloudelastic.wikimedia.org'
+  cloudelastic-omega-eqiad:
+    cluster_name: cloudelastic-omega-eqiad
+    short_cluster_name: omega
+    http_port: 9400
+    tls_port: 9443
+    tls_ro_port: 8443
+    transport_tcp_port: 9500
+    heap_memory: '14G'
+    certificate_name: 'cloudelastic.wikimedia.org'
+  cloudelastic-psi-eqiad:
+    cluster_name: cloudelastic-psi-eqiad
+    short_cluster_name: psi
+    http_port: 9600
+    tls_port: 9643
+    tls_ro_port: 8643
+    transport_tcp_port: 9700
+    heap_memory: '14G'
+    certificate_name: 'cloudelastic.wikimedia.org'
+profile::opensearch::common_settings:
+  awareness_attributes: 'row'
+  # We need these plugins to be loaded in order to work properly. This will keep
+  # opensearch from starting if these plugins are not available.
+  plugins_mandatory:
+    - analysis-hebrew
+    - analysis-icu
+    - analysis-smartcn
+    - analysis-stempel
+    - analysis-ukrainian
+    - cirrus-highlighter
+    - opensearch-analysis-stconvert
+    - opensearch-extra
+    - opensearch-extra-analysis-esperanto
+    - opensearch-extra-analysis-serbian
+    - opensearch-extra-analysis-slovak
+    - ltr
+  
+  # More than 30G isn't very useful
+  heap_memory: '30G'
+
+  # Cloudelastic servers are on public vlan
+  bind_networks:
+    - 0.0.0.0
+
+  certificate_name: cloudelastic
+
+  # wait that long for all nodes to restart. If not all nodes are present after
+  # `recover_after_time`, recover anyway, as long as at least
+  # `recover_after_nodes` are present.
+  recover_after_time: '5m'
+
+  # mwgrep queries one copy of each shard in the cluster, which is currently
+  # just over 3k shards. For it to work we need to increase the limit from
+  # default 1k
+  search_shard_count_limit: 5000
+
+  # Increase the per-node cache for compiled LTR models from default 10MB
+  ltr_cache_size: '100mb'
+
+  bulk_thread_pool_executors: 18
+  bulk_thread_pool_capacity: 1000
+  filter_cache_size: '20%'
+
+# Bulk daemon consumes per-datacenter to apply page updates to all clusters.
+
+profile::opensearch::cirrus::enable_remote_search: true
+
+profile::opensearch::monitor::threshold: '>=0.2'
+
+profile::lvs::realserver::pools:
+  cloudelastic-chi-https:
+    services:
+      - "opensearch_1@cloudelastic-chi-eqiad.service"
+  cloudelastic-psi-https:
+    services:
+      - "opensearch_1@cloudelastic-psi-eqiad.service"
+  cloudelastic-omega-https:
+    services:
+      - "opensearch_1@cloudelastic-omega-eqiad.service"
+profile::lvs::realserver::use_conftool: true
+# enable IPIP encapsulation, see T365616
+profile::lvs::realserver::ipip::enabled: true
+
+profile::tlsproxy::instance::nginx_variant: 'light'
+# Role contacts appears to express ownership (comment 1 of 2)
+profile::contacts::role_contacts: ['Search Platform']
+# Whereas contact groups appears to define which team(s) receive alerts (comment 2 of 2)
+contactgroups: 'team-data-platform,team-discovery'
+profile::base::production::role_description: 'opensearch cloud elastic cirrus'
+# required for IPIP encapsulation, see T365616
+profile::base::enable_rp_filter: false
+
+logstash_host: 'localhost'
+
+profile::puppet::agent::force_puppet7: true
