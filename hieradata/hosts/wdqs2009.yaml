@@ -15,7 +15,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - 'wdqs.svc.codfw.wmnet'
     - 'wdqs.wikimedia.org'
     - 'query.wikidata.org'
-    - 'query-legacy-full.eqiad.wmnet'
-profile::tlsproxy::envoy::global_cert_name: 'query-legacy-full.eqiad.wmnet'
+    - 'query-legacy-full.wikidata.org'
+profile::tlsproxy::envoy::global_cert_name: 'query-legacy-full.wikidata.org'
 profile::tlsproxy::envoy::use_remote_address: false
 profile::tlsproxy::envoy::listen_ipv6: true
