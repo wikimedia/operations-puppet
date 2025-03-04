@@ -531,10 +531,16 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat-noswap.cfg
     - virtual.cfg
   # using ml-serve* here would over-match the control plane (see entry above)
-  'ml-serve[12]*|ml-staging2*':
+  'ml-serve[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-overlay-large-kubelet.cfg
+  # Use new containerd partman config (which includes the larger kubelet
+  # partition)
+  'ml-staging2*':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   'ml-etcd*':
     - partman/flat.cfg
     - virtual.cfg

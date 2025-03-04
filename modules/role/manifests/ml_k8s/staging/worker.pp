@@ -4,8 +4,8 @@ class role::ml_k8s::staging::worker {
 
     # Setup dfdaemon (needs to be included before the container runtime)
     include profile::dragonfly::dfdaemon
-    # Sets up docker on the machine
-    include profile::docker::engine
+    # Sets up containerd on the machine
+    include profile::kubernetes::container_runtime
     # Setup kubernetes stuff
     include profile::kubernetes::node
     # Setup calico
