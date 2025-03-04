@@ -50,6 +50,7 @@ class profile::cache::haproxy(
     String $benthos_socket = lookup('profile::cache::haproxy::benthos_socket_address', {'default_value'                                          => '127.0.0.1:1221'}),
     String $conftool_prefix = lookup('conftool_prefix'),
     Optional[Array[Haproxy::Ring, 1]] $rings = lookup('profile::cache::haproxy::rings', {'default_value'                                         => undef}),
+    Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -130,6 +131,12 @@ class profile::cache::haproxy(
         ],
         user        => 'root',
         require     => File['/usr/local/sbin/haproxy-stek-manager'],
+    }
+
+    # For TLS material
+    systemd::tmpfile { 'haproxy_tls_material':
+        ensure  => $use_tls_tmpfiles.bool2str('present', 'absent'),
+        content => 'd /run/haproxy-tls 0700 haproxy haproxy -',
     }
 
     if !$available_unified_certificates[$public_tls_unified_cert_vendor] {
