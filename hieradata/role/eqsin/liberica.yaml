@@ -1,5 +1,5 @@
 profile::lvs::interface_tweaks:
-  enp94s0f0np0:
+  ens1f0np0:
     txqlen: 10000
 profile::liberica::bgp_config:
   peers:
