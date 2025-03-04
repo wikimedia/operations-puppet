@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: Apache-2.0
+protocols = "imap"
+
+# Explicitly turn off ssl/imaps for this. That way we don't have to deal with
+# exporting certs and we only want to allow access from localhost at this
+# point.
+ssl = no
+
+service imap-login {
+  inet_listener imap {
+    address = <%= @imap_address %>
+    port = <%= @imap_port %>
+  }
+}
+
+# https://doc.dovecot.org/2.3/
+mail_location = <%= @mail_location %>
+
+# adjusting for our environment
+first_valid_uid = 200
+
+# use /etc/passwd to look up users
+userdb {
+  driver = passwd
+}
+
+# use /etc/dovecot/passwd to for passwords
+passdb {
+  driver = passwd-file
+  args = scheme=SHA512-CRYPT username_format=%u /etc/dovecot/passwd
+}
