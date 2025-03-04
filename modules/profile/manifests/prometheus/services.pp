@@ -62,11 +62,27 @@ class profile::prometheus::services (
         class_name => 'role::sessionstore',
     }
 
+    $restbase_jobs = [
+        {
+            'job_name'        => 'restbase',
+            'scheme'          => 'http',
+            'file_sd_configs' => [
+                { 'files' => [ "${targets_path}/restbase_*.yaml"] },
+            ],
+        },
+    ]
+
+    prometheus::class_config{ "restbase_${::site}":
+        dest       => "${targets_path}/restbase_${::site}.yaml",
+        class_name => 'profile::restbase',
+        port       => 9102,
+    }
+
     prometheus::server { $instance:
         listen_address                 => "127.0.0.1:${port}",
         storage_retention              => $storage_retention,
         storage_retention_size         => $storage_retention_size,
-        scrape_configs_extra           => $jmx_exporter_jobs,
+        scrape_configs_extra           => [ $jmx_exporter_jobs, $restbase_jobs ].flatten,
         global_config_extra            => $config_extra,
         alertmanagers                  => $alertmanagers.map |$a| { "${a}:9093" },
         alerting_relabel_configs_extra => $alerting_relabel_configs_extra,
