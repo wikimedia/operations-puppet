@@ -173,7 +173,7 @@ class profile::mediawiki::deployment::server(
             ensure                  => $primary_deploy_ensure,
             description             => 'Perform beginning-of-week train operations',
             user                    => 'mwpresync',
-            command                 => '/usr/bin/scap stage-train -Dfull_image_build:True --yes auto',
+            command                 => '/usr/bin/scap stage-train --yes auto',
             send_mail               => true,
             send_mail_only_on_error => false,
             send_mail_to            => 'releng@lists.wikimedia.org',
