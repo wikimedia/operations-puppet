@@ -906,7 +906,7 @@ class profile::pyrra::filesystem::slos (
                 'window' => '12w',
                 'indicator' => {
                     'bool_gauge' => {
-                            'metric' => "search_sli_update_lag:bool{job_name=~\"cirrus_streaming_updater_consumer_search_${datacenter}\", prometheus=\"k8s\"}",
+                            'metric' => "search_sli_update_lag:bool{site=\"${datacenter}\",job_name=~\"cirrus_streaming_updater_consumer_search_${datacenter}\", prometheus=\"k8s\"}",
                     },
                 },
             },
