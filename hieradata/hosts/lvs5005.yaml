@@ -1,0 +1,7 @@
+profile::liberica::bgp_config:
+  communities:
+    - "14907:0" # lowest priority to avoid interfering with traffic while reimaging
+profile::liberica::include_services:
+  - upload
+  - upload-https
+
