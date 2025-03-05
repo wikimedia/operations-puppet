@@ -125,7 +125,7 @@ class GrafanaSyncer(object):
         }
         r = self.api.post("admin/users", json=create_user)
         r.raise_for_status()
-        LOG.info(f"Created user {login} name {name} email {email}")
+        LOG.info(f"Created user '{login}' name '{name}' email '{email}'")
         return r.json()
 
     def set_role(self, uid, role):
@@ -141,11 +141,11 @@ class GrafanaSyncer(object):
         return r.json()
 
     def delete_user(self, uid):
-        LOG.debug(f"Deleting user {uid}")
+        LOG.debug(f"Deleting user '{uid}'")
         if self.commit:
             r = self.api.delete(f"admin/users/{uid}")
             r.raise_for_status()
-            LOG.info(f"Deleted user {uid}")
+            LOG.info(f"Deleted user '{uid}'")
             return r.json()
 
     def sync_ldap_users(self, users, role):
@@ -153,35 +153,35 @@ class GrafanaSyncer(object):
 
         for user in users:
             if user in self.seen_users:
-                LOG.debug(f"User {user} already synced, skipping")
+                LOG.debug(f"User '{user}' already synced, skipping")
                 continue
             meta = self.ldap.uid_meta(user)
             name = meta["cn"][0].decode("utf-8")
             email = meta["mail"][0].decode("utf-8")
 
             if user not in existing_users:
-                LOG.debug(f"Creating user {user} name {name} email {email}")
+                LOG.debug(f"Creating user '{user}' name '{name}' email '{email}'")
                 if self.commit:
                     grafana_uid = self._create_user(user, name, email)["id"]
             else:
                 grafana_meta = existing_users[user]
                 grafana_uid = grafana_meta["id"]
                 if grafana_meta['name'] != name or grafana_meta['email'] != email:
-                    LOG.debug(f"Updating (re-creating) user {user} name {name} email {email}")
+                    LOG.debug(f"Updating (re-creating) user '{user}' name '{name}' email '{email}'")
                     if self.commit:
                         self.delete_user(grafana_uid)
                         grafana_uid = self._create_user(user, name, email)["id"]
 
-            LOG.debug(f"Setting role {role} for {user}")
+            LOG.debug(f"Setting role '{role}' for '{user}'")
             if self.commit:
                 self.set_role(grafana_uid, role)
 
             if role == "Admin":  # special case, both grafana admin and org admin
-                LOG.debug(f"Setting admin for {user}")
+                LOG.debug(f"Setting admin for '{user}'")
                 if self.commit:
                     self.set_grafana_admin(grafana_uid, True)
             else:
-                LOG.debug(f"Unsetting admin for {user}")
+                LOG.debug(f"Unsetting admin for '{user}'")
                 if self.commit:
                     self.set_grafana_admin(grafana_uid, False)
 
@@ -294,7 +294,7 @@ def main():
     if opts.delete_users:
         for login, meta in syncer.grafana_users().items():
             if login in PROTECTED_LOGINS:
-                LOG.info(f"User {login} is protected, not deleting")
+                LOG.info(f"User '{login}' is protected, not deleting")
                 continue
             if login not in all_ldap_uids:
                 syncer.delete_user(meta["id"])
