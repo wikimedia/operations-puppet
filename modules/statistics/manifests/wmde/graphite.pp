@@ -94,6 +94,7 @@ class statistics::wmde::graphite(
         require             => Git::Clone['wmde/scripts'],
         interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* *:*:0'},
         max_runtime_seconds => 55,  # kill if still running after 55s
+        syslog_identifier   => 'wmde-analytics-minutely',
     }
 
     # Note: some of the scripts run by this cron need access to secrets!
@@ -110,6 +111,7 @@ class statistics::wmde::graphite(
         ],
         interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 3:0:0'},
         max_runtime_seconds => 72000,  # kill if still running after 20h
+        syslog_identifier   => 'wmde-analytics-daily-early',
     }
 
     systemd::timer::job { 'wmde-analytics-daily-noon':
@@ -124,6 +126,7 @@ class statistics::wmde::graphite(
         ],
         interval            => {'start' => 'OnCalendar', 'interval' => '*-*-* 12:0:0'},
         max_runtime_seconds => 72000,  # kill if still running after 20h
+        syslog_identifier   => 'wmde-analytics-daily-noon',
     }
 
     systemd::timer::job { 'wmde-analytics-weekly':
@@ -137,6 +140,7 @@ class statistics::wmde::graphite(
         ],
         interval            => {'start' => 'OnCalendar', 'interval' => 'Sunday 0:0:0'},
         max_runtime_seconds => 518400,  # kill if still running after 6d
+        syslog_identifier   => 'wmde-analytics-weekly',
     }
 
     # Disabled until T278665 is solved
