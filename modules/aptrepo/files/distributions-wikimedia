@@ -137,6 +137,7 @@ Components: main
  component/kubernetes123
  component/libmysql-java
  component/logrotate
+ component/lshw
  component/memcached-tls
  component/opensearch13
  component/pcre2
