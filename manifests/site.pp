@@ -1716,12 +1716,12 @@ node /^cloudcephosd104[2-7]\.eqiad\./ {
 }
 
 # migrate this host to opensearch, see T387904
-node /^cloudelastic1007\.eqiad\./ {
+node /^cloudelastic100[7-8]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
 
-node /^cloudelastic100[8-9]\.eqiad\./ {
+node /^cloudelastic1009\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
 
