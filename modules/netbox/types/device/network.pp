@@ -4,6 +4,7 @@ type Netbox::Device::Network = Struct[{
     primary_fqdn             => Stdlib::Fqdn,
     role                     => Netbox::Device::Network::Role,
     site                     => Wmflib::Sites,
+    model                    => String[1],
     Optional['manufacturer'] => String[1],
     Optional['alarms']       => Boolean,
     Optional['ipv6']         => Stdlib::IP::Address::V6
