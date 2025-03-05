@@ -4903,7 +4903,7 @@ users:
     uid: 32741
     gid: 500
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMuqVZP2AFnCbKZBxnLgMbD5Wrt1xgYoR1zBBKNPXreH ben@skate
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFBEZzq5GBF4lCvaBkxtRrV/C6Ur0Q+p9uvVvFVRPS72 ben@guppy
     krb: present
   cjming:
     ensure: present
