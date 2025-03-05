@@ -23,6 +23,7 @@ class snapshot::systemdjobs::wikidatadumps::json(
             command            => "${scriptpath} -p wikidata -d all",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 3:15:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'wikidatajson-dump',
         }
         # project: wikidata, dump type: lexemes, entity to be dumped: lexeme
         systemd::timer::job { 'wikidatajson-lexemes-dump':
@@ -35,6 +36,7 @@ class snapshot::systemdjobs::wikidatadumps::json(
             command            => "${scriptpath} -p wikidata -d lexemes -e lexeme",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Wed *-*-* 3:15:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'wikidatajson-lexemes-dump',
         }
     }
 }

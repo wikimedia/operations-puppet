@@ -22,6 +22,7 @@ class snapshot::systemdjobs::commonsdumps::rdf(
             command            => "${scriptpath} -p commons -d mediainfo -f ttl -e nt",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Sun *-*-* 19:0:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'commonsrdf-dump',
         }
     }
 }

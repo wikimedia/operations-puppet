@@ -22,6 +22,7 @@ class snapshot::systemdjobs::wikidatadumps::rdf(
             command            => "${scriptpath} -p wikidata -d all -f ttl -e nt",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 23:0:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'wikidatardf-all-dumps',
         }
         systemd::timer::job { 'wikidatardf-truthy-dumps':
             ensure             => present,
@@ -33,6 +34,7 @@ class snapshot::systemdjobs::wikidatadumps::rdf(
             command            => "${scriptpath} -p wikidata -d truthy -f nt",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Wed *-*-* 23:0:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'wikidatardf-truthy-dumps',
         }
         systemd::timer::job { 'wikidatardf-lexemes-dumps':
             ensure             => present,
@@ -44,6 +46,7 @@ class snapshot::systemdjobs::wikidatadumps::rdf(
             command            => "${scriptpath} -p wikidata -d lexemes -f ttl -e nt",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Fri *-*-* 23:0:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'wikidatardf-lexemes-dumps',
         }
     }
 }

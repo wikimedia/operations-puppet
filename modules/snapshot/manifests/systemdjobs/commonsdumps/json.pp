@@ -23,6 +23,7 @@ class snapshot::systemdjobs::commonsdumps::json(
             command            => "${scriptpath} -p commons -d mediainfo -e mediainfo -E --ignore-missing",
             interval           => {'start' => 'OnCalendar', 'interval' => 'Mon *-*-* 3:15:0'},
             require            => File[$scriptpath],
+            syslog_identifier  => 'commonsjson-dump',
         }
     }
 }
