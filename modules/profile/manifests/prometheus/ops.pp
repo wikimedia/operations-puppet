@@ -2222,6 +2222,17 @@ class profile::prometheus::ops (
         'tls_config'        => {
             'server_name'   => 'helm-charts.wikimedia.org',
         },
+        'metric_relabel_configs' => [
+          # Remove url label for 404 responses due to label cardinality spam -- T386808
+          # Note that this has been fixed upstream (in the canary as of 2025-03-06), so this can be
+          # removed after we update to a recent enough version.
+          {
+            'source_labels' => ['code'],
+            'regex'  => '404',
+            'target_label' => 'url',
+            'replacement' => '',
+          },
+        ],
       },
     ]
     prometheus::class_config{ "chartmuseum_${::site}":
