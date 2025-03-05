@@ -3,6 +3,9 @@ frontend k8s-ingress
     bind 0.0.0.0:<%= @ingress_port %>
     mode tcp
     option tcplog
+    # don't log connections if they are OK. This help reduce the volume of logs
+    # see https://www.haproxy.com/documentation/haproxy-configuration-manual/1-8r1/#option%20dontlog-normal
+    option dontlog-normal
     timeout client 1h
     default_backend k8s-ingress
     maxconn <%= 1000 * @ingress_nodes.length %>
