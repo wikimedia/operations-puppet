@@ -1,4 +1,4 @@
 # db1253
-# s2
-mariadb::shard: 's2'
+# s7
+mariadb::shard: 's7'
 profile::monitoring::notifications_enabled: false
