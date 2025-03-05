@@ -788,6 +788,11 @@ node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
+# Future m1 master
+node /^db1250\.eqiad\./ {
+    role(mariadb::misc)
+}
+
 # m1 codfw master
 node /^db2232\.codfw\./ {
     role(mariadb::misc)
@@ -977,7 +982,7 @@ node /^db22(41|42|43)\.codfw\./ {
 }
 
 # New databases T379753, T380083 & T384979
-node /^db12(50|54|55|56|57)\.eqiad\./ {
+node /^db12(54|55|56|57)\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
