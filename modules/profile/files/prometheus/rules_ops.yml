@@ -618,7 +618,7 @@ groups:
     expr: |
       sum without (peer_descr) (
         label_replace(
-          label_replace(gnmi_bgp_neighbor_session_state{peer_group!~"(IX|Transit|bgptools)[46]", peer_descr!="(null)"},
+          label_replace(gnmi_bgp_neighbor_session_state{peer_group!~"(IX|Transit|bgptools|Private-Peer)[46]", peer_descr!="(null)"},
             "remote_instance", "$1", "instance", "(.*)"
           ),
           "instance", "$1:0", "peer_descr", "(.*)"
