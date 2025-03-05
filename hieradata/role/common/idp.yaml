@@ -213,7 +213,6 @@ profile::idp::services:
     profile_format: 'FLAT'
     required_groups:
       - nda
-      - wmf
       - logstash-access
       - ops
   mpic:
