@@ -13,11 +13,10 @@ frontend k8s-ingress
 backend k8s-ingress
     mode tcp
     maxconn <%= 1000 * @ingress_nodes.length %>
-    option tcplog
-    option tcp-check
+    option httpchk GET /healthz
     balance roundrobin
     timeout server 1h
     default-server inter 10s downinter 5s rise 2 fall 2 slowstart 60s maxconn 1000 maxqueue 256 weight 100
 <%- @ingress_nodes.each do |server| -%>
-    server <%= server %> <%= server %>:<%= @ingress_backend_port %> check
+    server <%= server %> <%= server %>:<%= @ingress_backend_port %> check check-ssl verify none
 <%- end -%>
