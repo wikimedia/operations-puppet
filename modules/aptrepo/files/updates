@@ -19,7 +19,7 @@ VerifyRelease: 6005210E23B3D3B4
 ListShellHook: grep-dctrl -e -S '^megacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-buster
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Method:  https://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
@@ -30,7 +30,7 @@ VerifyRelease: C208ADDE26C2B797|E3FE26E774C3A4A2
 ListShellHook: grep-dctrl -e -S '^hp-health|hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-bullseye
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Method:  https://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
@@ -41,7 +41,7 @@ VerifyRelease: C208ADDE26C2B797|E3FE26E774C3A4A2
 ListShellHook: grep-dctrl -e -S '^hpssa|hpssacli|hpssaducli|hpacucli|ssaducli|ssacli$' || [ $? -eq 1 ]
 
 Name: hp-mcp-bookworm
-Method:  http://downloads.linux.hpe.com/SDR/repo/mcp
+Method:  https://downloads.linux.hpe.com/SDR/repo/mcp
 Components: non-free>thirdparty/hwraid
 UDebComponents:
 GetInRelease: no
