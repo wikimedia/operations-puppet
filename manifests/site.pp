@@ -304,6 +304,10 @@ node /^backup2001\.codfw\./ {
 node /^backup2002\.codfw\./ {
     role(dbbackups::content)
 }
+# future replacement of the above
+node /^backup2013\.codfw\./ {
+    role(dbbackups::content)
+}
 
 # codfw bacula for External Storage DBs
 node /^backup2003\.codfw\./ {
@@ -334,7 +338,7 @@ node /^backup2012\.codfw\./ {
 }
 
 # to be setup
-node /^backup201[34]\.codfw\./ {
+node /^backup2014\.codfw\./ {
     role(insetup::data_persistence)
 }
 
