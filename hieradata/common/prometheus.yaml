@@ -103,6 +103,7 @@ prometheus::instances:
     hosts:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+      - prometheus2007.codfw.wmnet
 
   ext:
     port: 9908
