@@ -163,15 +163,6 @@ prometheus_all_nodes:
   - prometheus2005.codfw.wmnet
   - prometheus2006.codfw.wmnet
 
-# NOTE: I'm leaving this code in place to allow for easy re-enablement of the
-# migration scripts when required. Useful when doing distribution upgrades.
-# The "ensure" variable is set to absent, preventing resource creation.
-prometheus_migrations:
-  drmrs:
-    ensure: absent
-    src_host: 'prometheus6001.drmrs.wmnet'
-    dst_host: 'prometheus6002.drmrs.wmnet'
-
 alertmanagers:
   - alert1002.wikimedia.org
   - alert2002.wikimedia.org
