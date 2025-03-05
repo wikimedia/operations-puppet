@@ -270,7 +270,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [bvibber, dbrant, cooltey, sharvaniharan]
+    members: [bvibber, dbrant, cooltey, sharvaniharan, wrai]
     approval:
       - Tyler Cipriani
   sretest-roots:
@@ -6602,6 +6602,14 @@ users:
     uid: 47474
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  wrai:
+    ensure: present
+    realname: William Rai
+    email: wrai@wikimedia.org
+    uid: 47706
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIb2cTHSPFutTXSU82ZwG861RUcJ++TPDb+S4Se6OpHN
 
 ldap_only_users:
   adavenport:
@@ -7417,10 +7425,6 @@ ldap_only_users:
     ensure: present
     realname: Ferran Tufan
     email: southparkfan223@hotmail.com
-  wrai:
-    ensure: present
-    realname: William Rai
-    email: wrai@wikimedia.org
   jtweed:
     ensure: present
     realname: Jonathan Tweed
