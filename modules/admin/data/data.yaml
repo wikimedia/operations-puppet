@@ -975,8 +975,8 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-webserver@search',
                  'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@search',
                  'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@search',
-                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@search',
-                 'ALL = NOPASSWD: /bin/journalctl -u airflow-*']
+                 'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@search'
+    ]
   dns-admins:
     gid: 817
     description: People allowed to merge DNS changes
@@ -1050,8 +1050,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@research',
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@research',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@research',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@research',
-      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@research'
     ]
     system_members: [analytics-research]
     approval:
@@ -1077,8 +1076,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@platform_eng',
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@platform_eng',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@platform_eng',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform_eng',
-      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@platform_eng'
     ]
     system_members: [analytics-platform-eng]
     approval:
@@ -1102,8 +1100,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@analytics_product',
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@analytics_product',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@analytics_product',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@analytics_product',
-      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@analytics_product'
     ]
     system_members: [analytics-product]
     approval:
@@ -1125,8 +1122,7 @@ groups:
       'ALL = NOPASSWD: /bin/systemctl restart airflow-webserver@wmde',
       'ALL = NOPASSWD: /bin/systemctl start airflow-kerberos@wmde',
       'ALL = NOPASSWD: /bin/systemctl stop airflow-kerberos@wmde',
-      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@wmde',
-      'ALL = NOPASSWD: /bin/journalctl -u airflow-*'
+      'ALL = NOPASSWD: /bin/systemctl restart airflow-kerberos@wmde'
     ]
     system_members: [analytics-wmde]
     approval:
