@@ -30,19 +30,6 @@ class zuul::monitoring::server (
         notes_url     => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
     }
 
-    monitoring::graphite_threshold{ 'zuul_gearman_wait_queue':
-        ensure          => $ensure,
-        description     => 'Work requests waiting in Zuul Gearman server',
-        dashboard_links => ['https://grafana.wikimedia.org/d/000000322/zuul-gearman?orgId=1&viewPanel=10'],
-        metric          => 'zuul.geard.queue.waiting',
-        contact_group   => 'contint',
-        from            => '10min',
-        percentage      => 100,
-        warning         => 200,
-        critical        => 400,
-        notes_link      => 'https://www.mediawiki.org/wiki/Continuous_integration/Zuul',
-    }
-
     # Installs a particular mtail program into /etc/mtail/
     mtail::program { 'zuul_error_log':
       source => 'puppet:///modules/mtail/programs/zuul_error_log.mtail',
