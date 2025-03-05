@@ -29,6 +29,12 @@ receivers:
   # Hide 'logger' receiver, common to all alerts
   strip:
     - 'logger'
+  # This feature is not merged upstream (March 2025)
+  # See also https://github.com/prymitive/karma/pull/6404/files
+  # And https://phabricator.wikimedia.org/T353457
+  # remove 'default' receiver when duplicated
+  stripIfDuplicated:
+    - 'default'
 
 labels:
   strip:
