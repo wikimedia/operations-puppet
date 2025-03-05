@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# deploys the especified certificate on /etc/acmecerts using the following structure:
-#   /etc/acmecerts/$title:
+# deploys the especified certificate on $certs_path using the following structure:
+#   $certs_path/$title:
 #       live -> random_dir_name
 #       new  -> random_dir_name
 #       random_dir_name:
@@ -14,11 +14,12 @@ define acme_chief::cert (
     String           $key_group  = 'root',
     Optional[String] $puppet_svc = undef,
     Optional[Type]   $puppet_rsc = undef,
+    Stdlib::Unixpath $certs_path = '/etc/acmecerts',
 ) {
     require acme_chief
 
-    if !defined(File['/etc/acmecerts']) {
-        file { '/etc/acmecerts':
+    if !defined(File[$certs_path]) {
+        file { $certs_path:
             ensure => directory,
             owner  => 'root',
             group  => 'root',
@@ -28,7 +29,7 @@ define acme_chief::cert (
 
     $acmechief_host = lookup('acmechief_host')  # lint:ignore:wmf_styleguide
     # lint:ignore:puppet_url_without_modules
-    file { "/etc/acmecerts/${title}":
+    file { "${certs_path}/${title}":
         ensure    => stdlib::ensure($ensure, 'directory'),
         owner     => 'root',
         group     => $key_group,
@@ -41,10 +42,10 @@ define acme_chief::cert (
     }
 
     if $puppet_svc {
-        File["/etc/acmecerts/${title}"] ~> Service[$puppet_svc]
+        File["${certs_path}/${title}"] ~> Service[$puppet_svc]
     }
     if $puppet_rsc {
-        File["/etc/acmecerts/${title}"] ~> $puppet_rsc
+        File["${certs_path}/${title}"] ~> $puppet_rsc
     }
     # lint:endignore
 }
