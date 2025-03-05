@@ -31,8 +31,10 @@ class profile::cache::base(
     $wikimedia_trust = flatten(concat($::network::constants::aggregate_networks, $extra_trust))
 
     if debian::codename::eq('bullseye') {
-        apt::package_from_bpo { 'lshw':
-            distro => 'bullseye',
+        # https://phabricator.wikimedia.org/T380295
+        apt::package_from_component { 'lshw-backport':
+            component => 'component/lshw',
+            packages  => ['lshw'],
         }
     }
 
