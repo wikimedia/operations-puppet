@@ -1715,14 +1715,9 @@ node /^cloudcephosd104[2-7]\.eqiad\./ {
     role(insetup::wmcs)
 }
 
-# migrate this host to opensearch, see T387904
-node /^cloudelastic100[7-8]\.eqiad\./ {
+# migrate cloudelastic to opensearch, see T387904
+node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)
-}
-
-
-node /^cloudelastic1009\.eqiad\./ {
-    role(elasticsearch::cloudelastic)
 }
 
 node /^cloudelastic1010\.eqiad\./ {
