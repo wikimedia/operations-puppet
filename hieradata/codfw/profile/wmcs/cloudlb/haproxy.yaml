@@ -267,4 +267,4 @@ profile::wmcs::cloudlb::haproxy::config:
       # Each hostname will need to be added as an SNI in acme-chief
       #  and a CNAME in wikimediacloud.org dns.
       object.codfw1dev.wikimediacloud.org: radosgw-api
-      openstack.codfw1dev.wikimediacloud.org: keystone-api-public
+      keystone.openstack.codfw1dev.wikimediacloud.org: keystone-api-public
