@@ -242,7 +242,7 @@ profile::idp::services:
   keystone:
     id: 43
     service_class: 'OidcRegisteredService'
-    service_id: 'https://openstack.*.wikimediacloud.org:25000.*'
+    service_id: 'https://(keystone.)?openstack.*.wikimediacloud.org.*'
     profile_format: 'FLAT'
     response_type: 'id_token token'
   airflow_analytics_test:
