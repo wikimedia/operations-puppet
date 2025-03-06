@@ -30,7 +30,7 @@ class prometheus {
         source => 'puppet:///modules/prometheus/provision-fs.sh',
     }
 
-    file { '/usr/local/sbin/prometheus-sync-data':
+    file { '/usr/local/bin/prometheus-sync-data':
         ensure => present,
         mode   => '0555',
         source => 'puppet:///modules/prometheus/sync-data.sh',
