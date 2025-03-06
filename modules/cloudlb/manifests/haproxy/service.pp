@@ -15,14 +15,15 @@ define cloudlb::haproxy::service (
     $frontends = $service['frontends']
     $type = $service['type']
     $open_firewall = $service['open_firewall']
-    $healthcheck_options = $service['healthcheck']['options']
-    $healthcheck_method = $service['healthcheck']['method']
-    $healthcheck_path = $service['healthcheck']['path']
     $firewall = $service['firewall']
     $http = $service['http']
     $balance = $service['backend']['balance']
 
     if $type == 'http' {
+        $healthcheck_options = $service['healthcheck']['options']
+        $healthcheck_method = $service['healthcheck']['method']
+        $healthcheck_path = $service['healthcheck']['path']
+
         file { "/etc/haproxy/conf.d/${title}.cfg":
             ensure  => present,
             owner   => 'root',
@@ -32,7 +33,22 @@ define cloudlb::haproxy::service (
             # restart to pick up new config files in conf.d
             notify  => Service['haproxy'],
         }
+    } elsif $type == 'http-by-host' {
+        $host_mapping = $service['host_mapping']
+        file { "/etc/haproxy/conf.d/${title}.cfg":
+            ensure  => present,
+            owner   => 'root',
+            group   => 'root',
+            mode    => '0444',
+            content => template('cloudlb/haproxy/conf.d/http-service-by-host.cfg.erb'),
+            # restart to pick up new config files in conf.d
+            notify  => Service['haproxy'],
+        }
     } elsif $type == 'tcp' {
+        $healthcheck_options = $service['healthcheck']['options']
+        $healthcheck_method = $service['healthcheck']['method']
+        $healthcheck_path = $service['healthcheck']['path']
+
         file { "/etc/haproxy/conf.d/${title}.cfg":
             ensure  => present,
             owner   => 'root',
