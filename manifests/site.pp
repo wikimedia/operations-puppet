@@ -1735,11 +1735,11 @@ node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
-node /^cloudelastic1010\.eqiad\./ {
+node /^cloudelastic101[01]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
-node /^cloudelastic101[12]\.eqiad\./ {
+node /^cloudelastic1012\.eqiad\./ {
     role(elasticsearch::cloudelastic)
 }
 
