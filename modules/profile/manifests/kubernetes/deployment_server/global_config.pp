@@ -382,6 +382,20 @@ class profile::kubernetes::deployment_server::global_config (
             'maps-master-codfw' => wmflib::role::ips('maps::master', 'codfw'),
           },
         },
+        'puppet' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'rsyncd',
+                'port' => 873,
+              },
+            ],
+          },
+          'instances' => {
+            'puppetdb-codfw' => wmflib::role::ips('puppetdb', 'codfw'),
+            'puppetdb-eqiad' => wmflib::role::ips('puppetdb', 'eqiad'),
+          },
+        },
         'opensearch' => {
           '_meta' => {
             'ports' => [
