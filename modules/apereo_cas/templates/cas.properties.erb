@@ -23,11 +23,7 @@ server.tomcat.basedir=<%= @tomcat_basedir %>
 server.tomcat.remoteip.internal-proxies=127\\.0\\.0\\.1
 management.endpoints.web.base-path=/api
 
-<%- if cas_version >= Gem::Version.new('6.6') -%>
 cas.server.tomcat.http[0].enabled=false
-<%- else -%>
-cas.server.tomcat.http.enabled=false
-<%- end -%>
 cas.server.tomcat.http-proxy.enabled=true
 cas.server.tomcat.http-proxy.secure=true
 cas.server.tomcat.http-proxy.scheme=https
@@ -118,14 +114,12 @@ cas.authn.mfa.u2f.core.expire-devices-time-unit=DAYS
 <% if @webflow_signing_key %>cas.webflow.crypto.signing.key=<%= @webflow_signing_key %><% end %>
 <% if @webflow_encryption_key %>cas.webflow.crypto.encryption.key=<%= @webflow_encryption_key %><% end %>
 
-<%- if cas_version >= Gem::Version.new('6.6') -%>
 <% if @web_authn_signing_key %>cas.authn.mfa.web-authn.crypto.signing.key=<%= @web_authn_signing_key %><% end %>
 <% if @web_authn_encryption_key %>cas.authn.mfa.web-authn.crypto.encryption.key=<%= @web_authn_encryption_key %><% end %>
 <% if @oauth_crypto_signing_key %>cas.authn.oauth.crypto.signing.key=<%= @oauth_crypto_signing_key %><% end %>
 <% if @oauth_crypto_encryption_key %>cas.authn.oauth.crypto.encryption.key=<%= @oauth_crypto_signing_key %><% end %>
 <% if @oauth_token_signing_key %>cas.authn.oauth.access-token.crypto.signing.key=<%= @oauth_token_signing_key %><% end %>
 <% if @oauth_token_encryption_key %>cas.authn.oauth.access-token.crypto.encryption.key=<%= @oauth_token_signing_key %><% end %>
-<%- end -%>
 
 <%- if @tomcat_version == 'tomcat10' -%>
 cas.authn.oauth.session-replication.cookie.crypto.encryption.key=<%= @oauth_session_encryption_key %>
