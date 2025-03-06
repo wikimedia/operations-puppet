@@ -29,8 +29,5 @@ class role::ci {
     include profile::zuul::server
     include profile::ci::proxy_zuul
 
-    include profile::kubernetes::deployment_server
-    include profile::kubernetes::client
-
     include profile::statsite
 }

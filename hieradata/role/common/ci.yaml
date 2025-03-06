@@ -1,6 +1,5 @@
 profile::puppet::agent::force_puppet7: true
 
-profile::kubernetes::deployment_server::helm_user_group: contint-admins
 profile::admin::groups:
   - contint-users
   - contint-admins
@@ -67,21 +66,6 @@ profile::zuul::server::email_server: localhost
 profile::ci::pipeline::publisher::docker_registry_user: "ci-build"
 #profile::ci::pipeline::publisher::docker_registry_password: defined in the private repo
 profile::monitoring::nrpe_check_disk_options: -w 10% -c 5% -W 6% -K 3% -l -e -A -i '/(var/lib|mnt|run|srv)/docker/.*' --exclude-type=tracefs
-
-# ci servers need access only to staging k8s
-profile::kubernetes::deployment_server::restrict_to_clusters:
-  - 'staging'
-
-profile::kubernetes::deployment_server::user_defaults:
-  owner: "%{lookup('jenkins_agent_username')}"
-  group: contint-admins
-  mode: "0440"
-
-profile::kubernetes::deployment_server::services:
-  main:
-    ci:
-      usernames:
-        - name: ci
 
 profile::ci::migration::rsync_src_host: "contint1002.wikimedia.org"
 profile::ci::migration::rsync_dst_hosts:
