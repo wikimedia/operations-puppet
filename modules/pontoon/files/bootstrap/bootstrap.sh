@@ -3,11 +3,12 @@
 
 # Bootstrap a Pontoon Puppet server from a provisioned host.
 # Code will be cloned from public repos (puppet.git/private.git).
-# Optionally users can provide their own code in $HOME/bootstrap/{puppet,private}
+# Optionally, the sudo user running bootstrap.sh can provide their own code in
+# $HOME/bootstrap/{puppet,private}
 #
 # At the end of this phase the host must be ready to:
-# * accept new Puppet agents
-# * receive git changes from user(s) for puppet and private repos
+# * run Puppet agent using itself as the server
+# * accept new Puppet agents in the Pontoon stack
 
 set -e
 set -u

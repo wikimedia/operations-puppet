@@ -1,19 +1,20 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
-
 import json
 import logging
 import os
 import subprocess
 from dataclasses import dataclass
-from typing import Optional, Set
+from typing import Callable, List, Literal, Optional
 
+import pontoon.ssh as ssh
 from pontoon import Pontoon
-from pontoon.cloudvps import CloudVPS
+from pontoon.cloudvps import CloudHost, CloudVPS
 from pontoon.enroll import Enroller
+from pontoon.host import Filter, Host
 from pontoon.rolegroups import RoleGroups
-from pontoon.util import SSH_CONNECT_TIMEOUT_SECONDS, ssh_bash, wait_subprocesses
+from pontoon.util import wait_subprocesses
 from ruamel.yaml import YAML
 
 log = logging.getLogger()
@@ -35,16 +36,58 @@ class Controller(object):
         self.pontoon = pontoon
         self.cloud = cloud
 
-    @classmethod
-    def config_dir(cls) -> str:
-        """Where to store Pontoon configuration."""
-        base_config_dir = os.environ.get("XDG_CONFIG_HOME", "~/.config")
-        config_dir = os.path.join(base_config_dir, "pontoon")
-        return os.path.expanduser(config_dir)
-
     @property
     def server(self) -> Optional[str]:
         return self.pontoon.server_fqdn
+
+    @property
+    def stack_hosts(self) -> List[Host]:
+        """Return hosts defined in the stack"""
+        res = []
+        for fqdn, role in self.pontoon.host_map().items():
+            res.append(Host(fqdn, role))
+        return res
+
+    def cloud_hosts(self, scope: Literal["stack", "project"]) -> list[Host]:
+        """Return hosts running in cloud for the given scope"""
+        res = []
+        hostmap = self.pontoon.host_map()
+
+        for fqdn in self.cloud.fqdns:
+            role = hostmap.get(fqdn, "unknown")
+            if scope == "stack" and fqdn not in hostmap:
+                continue
+            res.append(Host(fqdn, role))
+        return res
+
+    # XXX use Filter(ctrl.cloud_hosts(scope)), though that gives back Host(s) and
+    # we want to CloudHost(s) to be able to print image/flavor too
+    def _filter_scope_hosts(
+        self, scope, role: Optional[str], pattern: Optional[str]
+    ) -> list[CloudHost]:
+
+        # set up custom filters, similar to Filter
+        stack_hosts_by_fqdn = {h.fqdn: h.role for h in self.stack_hosts}
+        stack_hosts_by_role = {}
+        for h in self.stack_hosts:
+            stack_hosts_by_role.setdefault(h.role, []).append(h.fqdn)
+
+        def _filter_by_stack(host):
+            return host.fqdn in stack_hosts_by_fqdn
+
+        def _filter_by_role(host):
+            return host.fqdn in stack_hosts_by_role[role]
+
+        _filter_by_fqdn = Filter.by_fqdn(pattern)
+
+        hosts = self.cloud.list_hosts()
+        if scope == "stack":
+            # Keep only hosts in the stack
+            hosts = filter(lambda x: _filter_by_stack(x), hosts)
+
+        filter_fn = Filter.any(_filter_by_fqdn, _filter_by_role)
+        hosts = filter(lambda x: filter_fn(x), hosts)
+        return [h for h in hosts]
 
     @property
     def rolegroups(self) -> RoleGroups:
@@ -68,6 +111,7 @@ class Controller(object):
 
         return RoleGroups(groupmap)
 
+    # XXX investigate how remove_rolegroup could look like
     def add_rolegroup(self, name: str) -> bool:
         """Add a role group to the Pontoon stack.
 
@@ -103,18 +147,18 @@ class Controller(object):
 
         return True
 
-    def wait_puppet(self, role: Optional[str]) -> tuple[bool, list[WaitPuppetResult]]:
+    def wait_puppet(self, hosts: Filter) -> tuple[bool, list[WaitPuppetResult]]:
         """Wait for puppet runs to finish on hosts.
 
         Args:
-            role (str): The role to wait for, or None for all roles
+            hosts (Filter): The hosts to wait for
 
         Returns:
             bool: True if all hosts succeeded, False otherwise
             List[WaitPuppetResult]: List of results for each host
         """
 
-        def commands_for_hosts(hosts):
+        def commands_for_hosts(hosts: Filter):
             """Generator yielding (command, subprocess) tuples."""
             for host in hosts:
                 proc = subprocess.Popen(
@@ -125,34 +169,27 @@ class Controller(object):
                         "-o",
                         "ControlPersist=5",
                         "-o",
+                        f"UserKnownHostsFile={ssh.KNOWN_HOSTS_PATH()}",
+                        "-o",
                         "RequestTty=force",  # make sure remote processes get SIGHUP on exit
                         "-o",
-                        f"ConnectTimeout={SSH_CONNECT_TIMEOUT_SECONDS}",
-                        host,
+                        f"ConnectTimeout={ssh.CONNECT_TIMEOUT_SECONDS}",
+                        host.fqdn,
                         f"sudo pontoon-wait-puppet --timeout-minutes {WAIT_PUPPET_TIMEOUT_MINUTES}",
                     ],
                     stdin=subprocess.DEVNULL,
                     stdout=subprocess.PIPE,
                     stderr=subprocess.PIPE,
                 )
-                yield host, proc
-
-        candidates = self.pontoon.host_map().keys()
-
-        if role is not None:
-            try:
-                candidates = self.pontoon.hosts_for_role(role)
-            except ValueError:
-                log.error(f"Role {role!r} not found")
-                return False, [WaitPuppetResult("", "", "", "")]
+                yield host.fqdn, proc
 
         log.info(
-            f"Waiting for puppet to converge on {len(candidates)} hosts. "
+            f"Waiting for puppet to converge on {len(hosts)} hosts. "
             f"(up to {WAIT_PUPPET_TIMEOUT_MINUTES} minutes)"
         )
 
         results = wait_subprocesses(
-            commands_for_hosts(candidates), timeout=60 * WAIT_PUPPET_TIMEOUT_MINUTES
+            commands_for_hosts(hosts), timeout=60 * WAIT_PUPPET_TIMEOUT_MINUTES
         )
 
         ret = []
@@ -199,36 +236,42 @@ class Controller(object):
         self.pontoon.save()
         return True
 
-    def bootstrap_stack(self, local_rev: str) -> bool:
-        # XXX run init_ssh_access after host is created?
+    def bootstrap_stack(
+        self,
+        local_rev: str,
+        accept_ssh_key: bool = False,
+        quiet: bool = True,
+    ) -> bool:
         if not self.server:
             log.error(
                 f"Server not found for {self.pontoon.name}, does the stack exist?"
             )
             return False
 
-        self.cloud.create_hosts(hosts=set([self.server]))
+        host = Host(self.server, "puppetserver::pontoon")
+        if host.fqdn not in self.cloud.fqdns:
+            self.cloud.create_hosts(hosts=Filter([host]))
+            ok = ssh.wait_hosts_access({host.fqdn})
+            if not ok:
+                log.error(f"Unable to access {self.server}")
+                return False
+
+        if not ssh.host_key_known(host):
+            ok = ssh.trust_host(host, accept_ssh_key)
+            if not ok:
+                log.error(f"Failed to trust {host}")
+                return False
+
         log.info(f"Bootstrapping {self.server} for stack {self.pontoon.name}")
         bootstrap_path = os.path.join(
             self.pontoon.base_path, "bootstrap", "bootstrap.sh"
         )
-        status = subprocess.call(
-            [
-                "scp",
-                "-q",
-                "-o",
-                "StrictHostKeyChecking=no",
-                "-o",
-                "UserKnownHostsFile=/dev/null",
-                bootstrap_path,
-                self.server + ":",
-            ]
-        )
-        if status != 0:
+        status = ssh.scp(bootstrap_path, f"{self.server}:")
+        if status.returncode != 0:
             log.error("Error copying bootstrap.sh")
             return False
 
-        proc = ssh_bash(
+        proc = ssh.bash(
             self.server,
             f"sudo ./bootstrap.sh --check {self.pontoon.name}",
         )
@@ -236,163 +279,112 @@ class Controller(object):
         if proc.returncode == 2:
             log.info("Bootstrap already completed.")
             return True
+        elif proc.returncode > 0:
+            log.error("Error checking for bootstrap completed.")
+            return False
 
         # Users can provide their code/data in $HOME/bootstrap
         send_local_checkout = f"""
-        cd $(git rev-parse --show-toplevel) && \
+        set -o pipefail ; cd $(git rev-parse --show-toplevel) && \
             git archive --format tgz {local_rev} | \
-                ssh -o StrictHostKeyChecking=no {self.server} \
+                ssh -q -o UserKnownHostsFile={ssh.KNOWN_HOSTS_PATH()} {self.server} \
                     'install -d bootstrap/puppet && tar zxf - -C bootstrap/puppet'
         """
         log.info(f"Sending local checkout of {local_rev} to {self.server}")
-        subprocess.call(["bash", "-c", send_local_checkout])
+        status = subprocess.call(
+            ["bash", "-c", send_local_checkout], cwd=self.pontoon.base_path
+        )
+        if status != 0:
+            log.error("Error sending local checkout")
+            return False
 
         log.info(f"Bootstrapping {self.server}")
-        proc = ssh_bash(self.server, f"sudo ./bootstrap.sh {self.pontoon.name}")
+        proc = ssh.bash(self.server, f"sudo ./bootstrap.sh {self.pontoon.name}")
 
         if proc.returncode != 0:
             log.error(f"Error running bootstrap.sh on {self.server}")
             return False
 
-        # Kick off the first agent run with itself as the server
-        proc = ssh_bash(
+        log.info(f"Running puppet for the first time on {self.server}")
+        # allowed to fail
+        ssh.bash(
             self.server,
-            "sudo puppet agent --onetime --no-daemonize --no-splay --verbose",
+            f"sudo puppet agent --onetime --no-daemonize --no-splay {'' if quiet else '--verbose'}",
         )
 
+        log.info(f"Verifying bootstrap on {self.server}")
+        proc = ssh.bash(
+            self.server, f"sudo ./bootstrap.sh --verify {self.pontoon.name}"
+        )
+        if proc.returncode != 0:
+            log.error(f"Error verifying bootstrap on {self.server}")
+            return False
+
+        return True
+
+    def destroy_hosts(self, hosts: Filter) -> bool:
+
+        for host in hosts:
+            self.cloud.destroy_host(host)
+
+        if self.server in {h.fqdn for h in hosts}:
+            # we're removing the server, nuke ssh_known_hosts because we won't
+            # be able to ssh-keyscan
+            os.unlink(f"{ssh.KNOWN_HOSTS_PATH()}")
+        else:
+            for host in hosts:
+                if ssh.host_key_known(host):
+                    ssh.untrust_host(host)
+
+        # XXX better error reporting
         return True
 
     def create_hosts(
         self,
-        hosts: Optional[Set[str]] = None,
-        role: Optional[str] = None,
+        hosts: Filter,
         skip_enroll: bool = False,
+        no_prompt: bool = False,
     ) -> bool:
         """Create hosts for roles in the Pontoon stack."""
-        ok = self.cloud.create_hosts(role=role, hosts=hosts)
+        ok = self.cloud.create_hosts(hosts)
         if not ok:
             return False
+
+        ok = ssh.wait_hosts_access({h.fqdn for h in hosts})
+        if not ok:
+            return False
+
+        self.update_ssh_fingerprints(accept_ssh_key=no_prompt)
 
         if skip_enroll:
             return ok
 
-        to_enroll = {h for h in self.pontoon.host_map().keys()}
-        if hosts is not None:
-            to_enroll = set(hosts)
-        elif role is not None:
-            to_enroll = set(self.pontoon.hosts_for_role(role))
+        return self._enroll_hosts(hosts)
 
-        return self._enroll(to_enroll)
-
-    def _enroll(self, hosts: set[str]) -> bool:
+    def _enroll_hosts(self, hosts: Filter) -> bool:
         ok = True
         e = Enroller(self.pontoon)
         for host in hosts:
             if not e.enroll(host):
                 ok = False
+            # The first puppet run can fail at enrollment time!
+            # To be able to recover in a user-friendly manner, install
+            # pontoon-wait-puppet now. It can be used later to wait for puppet
+            # to be successful and converge.
             self._install_wait_puppet(host)
         return ok
 
-    # XXX add option to enroll concurrently
-    def enroll_hosts(
-        self, role: Optional[str], force: bool = False, quiet: bool = True
-    ) -> bool:
-        """Set hosts as part of the stack and run puppet."""
-        candidates = self.pontoon.host_map().keys()
-
-        if role is not None:
-            try:
-                candidates = self.pontoon.hosts_for_role(role)
-            except ValueError:
-                log.error(f"Role {role!r} not found")
-                return False
-
-        if force:
-            enrolled_hosts = []
-        else:
-            log.info("Searching for hosts to enroll")
-            proc = ssh_bash(
-                self.server,
-                "sudo puppetserver ca list --format json --all",
-                capture_output=True,
-                text=True,
-            )
-            try:
-                ca_list = json.loads(proc.stdout)
-            except json.decoder.JSONDecodeError:
-                log.error(f"Unable to get list of enrolled hosts from {proc.stdout!r}")
-                return False
-            enrolled_hosts = [x["name"] for x in ca_list["signed"]]
-
-        to_enroll = set(candidates) - set(enrolled_hosts)
-        if not to_enroll:
-            log.info("No hosts to enroll")
-            return False
-
-        # Abort if the hosts are not known yet to the server
-        proc = ssh_bash(
-            self.server,
-            "pontoon-enc --list-hosts",
-            capture_output=True,
-            text=True,
-        )
-        enrollable_hosts = proc.stdout.split("\n")
-        missing_on_server = set(to_enroll) - set(enrollable_hosts)
-        if missing_on_server:
-            log.error(
-                "The following hosts need enrolling and could not be found ."
-                f"on Pontoon server: {missing_on_server}"
-            )
-            log.error("You might need to push an updated rolemap.yaml")
-            return False
-
-        ok = self._enroll(to_enroll)
-        if not ok:
-            log.error("Failed to enroll")
-            return False
-
-        # Also run puppet to be nice to the user, i.e. when `pontoonctl enroll-hosts`
-        # is explicitly called and finishes, then the hosts are ready to go.
-        for host in to_enroll:
-            log.info("Running puppet agent for the first time")
-            run_puppet_cmd = f"sudo puppet agent --onetime --no-daemonize " \
-                f"--no-splay {quiet and '' or '--verbose'}"
-            ssh_bash(
-                host,
-                run_puppet_cmd,
-            )
-            # sources have likely changed, thus update and run puppet again
-            proc = ssh_bash(
-                host,
-                f"sudo apt -q update && {run_puppet_cmd}",
-            )
-            return proc.returncode == 0
-
-        return ok
-
-    def _install_wait_puppet(self, host: str) -> bool:
+    def _install_wait_puppet(self, host: Host) -> bool:
         wait_puppet_path = os.path.join(
             self.pontoon.base_path, "bootstrap", "pontoon_wait_puppet.py"
         )
-        status = subprocess.call(
-            [
-                "scp",
-                "-q",
-                "-o",
-                "StrictHostKeyChecking=no",
-                "-o",
-                "UserKnownHostsFile=/dev/null",
-                wait_puppet_path,
-                f"{host}:/tmp/pontoon_wait_puppet.py",
-            ]
-        )
-
-        if status != 0:
+        status = ssh.scp(wait_puppet_path, f"{host.fqdn}:/tmp/pontoon_wait_puppet.py")
+        if status.returncode != 0:
             log.error(f"Error copying {wait_puppet_path}")
             return False
 
-        p = ssh_bash(
-            host,
+        p = ssh.bash(
+            host.fqdn,
             "sudo install -m755 /tmp/pontoon_wait_puppet.py /usr/local/bin/pontoon-wait-puppet",
         )
         if p.returncode != 0:
@@ -401,25 +393,93 @@ class Controller(object):
 
         return True
 
-    def init_ssh_access(self) -> bool:
-        """Add the server SSH host key to the user's known_hosts.
+    def enroll_hosts(
+        self, hosts: Filter, force: bool = False, quiet: bool = True
+    ) -> bool:
+        """Set hosts as part of the stack and run puppet."""
 
-        Needed to be able to anchor trust to the server and be able
-        to run 'ssh-keyscan' across stacks.
-        """
-        log.info(
-            f"Logging into {self.server} for the first time. Please verify and accept the host key."
+        if force:
+            log.info(f"Forcing enroll on {len(hosts)}")
+            # pretend no hosts are enrolled when force is applied
+            targets = hosts.apply(lambda _: True)
+        else:
+            log.info("Looking for hosts to enroll")
+            targets = hosts.apply(hosts.not_(self._signed_hosts_filter))
+
+        if len(targets) == 0:
+            log.info("No hosts to enroll")
+            return True
+
+        # Abort if hosts are not known yet to the server
+        unknown_to_enc = targets.apply(targets.not_(self._enc_hosts_filter))
+        if len(unknown_to_enc) > 0:
+            log.error(
+                "The following hosts need enrolling and could not be found "
+                "on Pontoon server:"
+            )
+            for host in unknown_to_enc:
+                log.error(f"  {host.fqdn}")
+            log.error("Make sure you have pushed an updated rolemap.yaml")
+            return False
+
+        ok = self._enroll_hosts(targets)
+        if not ok:
+            log.error("Failed to enroll")
+            return False
+
+        # Also run puppet to be nice to the user, i.e. when `pontoonctl enroll-hosts`
+        # is done, then the hosts are ready to go.
+        # XXX add option to run puppet concurrently on the hosts
+        for host in targets:
+            log.info(f"Running puppet agent for the first time on {host.fqdn}")
+            run_puppet_cmd = (
+                f"sudo puppet agent --onetime --no-daemonize "
+                f"--no-splay {'' if quiet else '--verbose'}"
+            )
+            ssh.bash(
+                host.fqdn,
+                run_puppet_cmd,
+            )
+            # sources have likely changed, thus update and run puppet again
+            proc = ssh.bash(
+                host.fqdn,
+                f"sudo apt {'-qqq' if quiet else ''} update && {run_puppet_cmd}",
+            )
+            if ok:
+                ok = proc.returncode == 0
+
+        return ok
+
+    @property
+    def _signed_hosts_filter(self) -> Callable[[Host], bool]:
+        """Filter hosts if they have been signed by Puppet server"""
+        proc = ssh.bash(
+            self.server,
+            "sudo puppetserver ca list --format json --all",
+            capture_output=True,
+            text=True,
         )
-        p = subprocess.run(
-            [
-                "ssh",
-                "-o",
-                "HashKnownHosts=no",
-                f"{self.server}",
-                "true",
-            ]
+        try:
+            ca_list = json.loads(proc.stdout)
+        except json.decoder.JSONDecodeError:
+            log.error(f"Unable to get list of signed hosts from {proc.stdout!r}")
+            return lambda host: False
+
+        signed_fqdns = {x["name"] for x in ca_list["signed"] if x["state"] == "signed"}
+
+        return lambda host: host.fqdn in signed_fqdns
+
+    @property
+    def _enc_hosts_filter(self) -> Callable[[Host], bool]:
+        """Filter hosts if they are known to Pontoon ENC"""
+        proc = ssh.bash(
+            self.server,
+            "pontoon-enc --list-hosts",
+            capture_output=True,
+            text=True,
         )
-        return p.returncode == 0
+        known_fqdns = proc.stdout.split("\n")
+        return lambda host: host.fqdn in known_fqdns
 
     def setup_remote_repositories(self) -> bool:
         """Set up the Pontoon stack server to act as a git remote for the user."""
@@ -448,7 +508,7 @@ class Controller(object):
         for name, (url, branch, push_path) in repos.items():
             log.info(f"Repository {name}")
 
-            res = ssh_bash(
+            res = ssh.bash(
                 self.server,
                 f"pontoon-setup-repo '{branch}' '{url}' $HOME/{name} '{push_path}'",
             )
@@ -461,13 +521,34 @@ class Controller(object):
 
         return True
 
-    def update_ssh_fingerprints(self) -> bool:
-        cmd = "ssh-keyscan $(pontoon-enc --list-hosts)"
-        outfile = f"{self.config_dir()}/ssh_known_hosts"
+    def reboot_hosts(
+        self, hosts: Filter, reboot_type: Literal["hard", "soft"], block: bool = True
+    ) -> bool:
+        for host in hosts:
+            self.cloud.reboot_host(host, reboot_type)
 
-        log.info(f"Updating SSH fingerprints in {outfile}")
-        proc = ssh_bash(self.server, cmd, capture_output=True, text=True)
-        if proc.returncode != 0:
+        if not block:
+            return True
+
+        return ssh.wait_hosts_access({h.fqdn for h in hosts})
+
+    def update_ssh_fingerprints(self, accept_ssh_key: bool = False) -> bool:
+        cmd = "ssh-keyscan -t ecdsa,ed25519 $(pontoon-enc --list-hosts)"
+        outfile = f"{ssh.KNOWN_HOSTS_PATH()}"
+        server = Host(f"{self.server}", "pontoon::puppetmaster")
+
+        log.info(f"Updating SSH fingerprints in {outfile}.")
+        while True:
+            proc = ssh.bash(server.fqdn, cmd, capture_output=True, text=True)
+            if proc.returncode == 0:
+                log.info(f"Updated {outfile} successfully.")
+                break
+
+            if proc.returncode == 255 and not ssh.host_key_known(server):
+                log.warning(f"The host key for {server.fqdn} is missing.")
+                ssh.trust_host(server, accept_ssh_key)
+                continue
+
             log.error("Failed to update SSH fingerprints: %s", proc.stderr)
             return False
 

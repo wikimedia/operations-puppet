@@ -3,18 +3,20 @@
 
 
 import logging
+import sys
 import os
 
 import click
-from ruamel.yaml import YAML
-from ruamel.yaml.compat import StringIO
-
-from pontoon import Pontoon
+from pontoon import Pontoon, SYS_CONFIG_PATH
 from pontoon.cloudvps import CloudVPS
 from pontoon.controller import Controller
 from pontoon.credentials import Credentials, CredentialsMissing, load_credentials
+from pontoon.host import Filter as HostFilter
 from pontoon.nova import HORIZON_URL, HOST_DOMAIN
+from pontoon.ssh import KNOWN_HOSTS_PATH
 from pontoon.util import as_table
+from ruamel.yaml import YAML
+from ruamel.yaml.compat import StringIO
 
 log = logging.getLogger()
 
@@ -53,7 +55,7 @@ and host autocompletion.
 
 # Place this configuration *before* your configuration for Cloud VPS (e.g. bastions)
 Host *.{host_domain}
-  UserKnownHostsFile {config_dir}/ssh_known_hosts
+  UserKnownHostsFile {known_hosts}
 """,
     "bootstrap-stack": """
 
@@ -101,7 +103,7 @@ git push -f pontoon-{stack} HEAD:production
 
 
 def get_credentials() -> Credentials:
-    credentials_path = os.path.join(Controller.config_dir(), "cloudvps.yaml")
+    credentials_path = SYS_CONFIG_PATH().joinpath("cloudvps.yaml").as_posix()
     try:
         creds = load_credentials(credentials_path)
     except ValueError:
@@ -155,7 +157,33 @@ def with_role(func):
         type=str,
         metavar="ROLE",
         shell_complete=complete_roles,
-        help="Operate on hosts belonging to ROLE",
+        help="Operate on hosts with ROLE.",
+    )(func)
+    return func
+
+
+def with_scope(func):
+    """Common decorator to add a --scope option to a command."""
+    func = click.option(
+        "--scope",
+        metavar="NAME",
+        default="stack",
+        type=click.Choice(["stack", "project"]),
+        help="Operate on hosts from scope NAME only.",
+        show_default=True,
+    )(func)
+    return func
+
+
+def with_no_prompt(func):
+    """Common decorator to add a --no-prompt option to a command."""
+    func = click.option(
+        "--no-prompt",
+        is_flag=True,
+        default=False,
+        type=bool,
+        help="Do not stop at prompts.",
+        show_default=True,
     )(func)
     return func
 
@@ -174,7 +202,7 @@ def complete_roles(ctx, param, incomplete) -> list[str]:
     return [k for k in p.available_roles if k.startswith(incomplete)]
 
 
-def pontoon_home(default=".") -> str:
+def pontoon_home(default: str = ".") -> str:
     """
     Used to get Pontoon home in shell complete functions.
 
@@ -185,6 +213,7 @@ def pontoon_home(default=".") -> str:
 
 
 def pick_host_prefix(ctrl: Controller, host_prefix: str) -> str:
+    """Ask the user to pick a prefix for hostnames in the stack."""
     if host_prefix is not None:
         return host_prefix
 
@@ -198,9 +227,34 @@ def pick_host_prefix(ctrl: Controller, host_prefix: str) -> str:
     )
 
 
-# List commands in --help in the same order they are defined in code
-# https://github.com/pallets/click/issues/513#issuecomment-504158316
+def show_and_prompt(operation: str, f: HostFilter, no_prompt: bool) -> bool:
+    if len(f) == 0:
+        log.error(f"No hosts found to {operation}.")
+        return False
+
+    log.info(f"Hosts to {operation}:")
+    for i in f:
+        print(f"  {i.fqdn}")
+
+    if not no_prompt:
+        count = len(f)
+        answer = click.prompt(
+            f"About to {operation} {count} host(s). Input the number to confirm: ",
+            type=int,
+        )
+
+        if answer != count:
+            log.info("Not doing anything")
+            return False
+    return True
+
+
 class NaturalOrderGroup(click.Group):
+    """
+    List commands in --help in the same order they are defined in code
+    https://github.com/pallets/click/issues/513#issuecomment-504158316
+    """
+
     def list_commands(self, ctx):
         return self.commands.keys()
 
@@ -226,7 +280,7 @@ def ctl(ctx, home):
     "--host-prefix",
     type=str,
     metavar="PREFIX",
-    help="Hostnames will be generated starting with PREFIX",
+    help="Hostnames will be generated starting with PREFIX.",
 )
 @click.argument("name", required=False)
 @click.pass_context
@@ -243,8 +297,8 @@ def new_stack(ctx, stack, host_prefix, name):
     Pontoon.new(wanted_stack, home)
 
     ctrl = get_controller(wanted_stack, home)
-    final_host_prefix = pick_host_prefix(ctrl, host_prefix)
-    ok = ctrl.new_stack(final_host_prefix)
+    chosen_host_prefix = pick_host_prefix(ctrl, host_prefix)
+    ok = ctrl.new_stack(chosen_host_prefix)
     if not ok:
         raise click.UsageError("Failed to create a new stack")
     print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack))
@@ -254,13 +308,20 @@ def new_stack(ctx, stack, host_prefix, name):
 @with_stack
 @click.option(
     "--local-rev",
-    help="Use local git checkout rev to bootstrap. Defaults to 'HEAD'.",
+    help="Use local git checkout rev to bootstrap.",
+    show_default=True,
     default="HEAD",
     metavar="REV",
     type=str,
 )
+@click.option(
+    "--accept-ssh-key",
+    help="Automatically accept the SSH host key from Puppet server.",
+    default=False,
+    is_flag=True,
+)
 @click.pass_context
-def bootstrap_stack(ctx, stack, local_rev):
+def bootstrap_stack(ctx, stack, local_rev, accept_ssh_key):
     """Bootstrap an existing stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
 
@@ -269,15 +330,15 @@ def bootstrap_stack(ctx, stack, local_rev):
             f"Server not found for {ctrl.pontoon.name}, unable to bootstrap"
         )
 
-    ok = ctrl.bootstrap_stack(local_rev)
+    ok = ctrl.bootstrap_stack(local_rev, accept_ssh_key)
     if not ok:
         log.error("Error bootstrapping")
-        return 1
+        sys.exit(1)
 
     ok = ctrl.setup_remote_repositories()
     if not ok:
         log.error("Error setting up remote repositories")
-        return 1
+        sys.exit(1)
 
     print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
     print(INSTRUCTIONS["bootstrap-stack"].format(stack=stack))
@@ -292,7 +353,7 @@ def join_stack(ctx, stack):
     ok = ctrl.setup_remote_repositories()
     if not ok:
         log.error("Error setting up remote repositories")
-        return 1
+        sys.exit(1)
     print(INSTRUCTIONS["git-remote-setup"].format(stack=stack, server=ctrl.server))
 
 
@@ -306,103 +367,134 @@ def list_stacks(ctx):
 
 @ctl.command()
 @with_stack
-@click.option(
-    "--all",
-    is_flag=True,
-    default=False,
-    help="List all hosts, not just those in the stack",
-)
+@with_role
+@with_scope
 @click.option(
     "--output",
     default="table",
     type=click.Choice(["fqdn", "table"]),
     help="Output format. 'fqdn' is suitable for scripting.",
+    show_default=True,
 )
+@click.argument("pattern", required=False, default="*")
 @click.pass_context
-def list_hosts(ctx, stack, all, output):
-    """Show hosts belonging to the stack, or --all"""
-    # don't require stack when listing all hosts
-    if stack is None and all:
+def list_hosts(ctx, stack, role, scope, output, pattern):
+    """Show cloud hosts belonging to the stack, or the whole project"""
+    # don't require stack when listing project hosts
+    if stack is None and scope == "project":
         stack = "bootstrap"
+
+    if scope == "project" and role:
+        raise click.UsageError("--role can be used only in stack scope")
+
     ctrl = get_controller(stack, ctx.obj["home"])
-    hosts = ctrl.cloud.list_hosts()
-    if not all:
-        # Filter out hosts not in the stack
-        stack_fqdns = ctrl.pontoon.host_map().keys()
-        hosts = [h for h in hosts if h.fqdn in stack_fqdns]
+
+    hosts = ctrl._filter_scope_hosts(scope, role, pattern)
 
     hosts = sorted(hosts, key=lambda h: h.fqdn)
 
     if output == "fqdn":
+        if not hosts:
+            sys.exit(1)
         print("\n".join([h.fqdn for h in hosts]))
     elif output == "table":
         if not hosts:
             log.warning("No host(s) found")
-            return 1
+            sys.exit(1)
         header = ("FQDN", "Image", "Flavor")
         data = []
         for h in hosts:
             data.append((h.fqdn, h.image, h.flavor))
-        if not all:
-            log.info(
-                "Listing hosts for project %r and stack %r:"
-                % (ctrl.cloud.project, stack)
-            )
+        if scope == "stack":
+            log.info("Hosts for project %r and stack %r:" % (ctrl.cloud.project, stack))
         else:
-            log.info("Listing hosts for project %r:" % (ctrl.cloud.project))
+            log.info("Hosts for project %r:" % (ctrl.cloud.project))
         print("\n".join(as_table(header, data)))
 
 
 @ctl.command()
 @with_stack
 @with_role
+@with_no_prompt
 @click.option(
     "--skip-enroll/--no-skip-enroll",
     default=False,
-    help="Do not enroll the hosts after creation",
+    help="Do not enroll the hosts after creation.",
 )
 @click.pass_context
-def create_hosts(ctx, stack, role, skip_enroll):
+def create_hosts(ctx, stack, role, no_prompt, skip_enroll):
     """Create hosts for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.create_hosts(role=role, skip_enroll=skip_enroll)
-    ctrl.update_ssh_fingerprints()
+
+    f = HostFilter(ctrl.stack_hosts)
+    if role is not None:
+        f = f.apply(f.by_role(role))
+    f = f.apply(f.not_(ctrl.cloud.hosts_filter))
+
+    ok = show_and_prompt("create", f, no_prompt)
+    if not ok:
+        sys.exit(1)
+
+    ctrl.create_hosts(f, skip_enroll, no_prompt)
 
 
 @ctl.command()
 @with_stack
 @with_role
-@click.option("--force", is_flag=True, default=False, help="Force re-enrollment")
+@click.option(
+    "--force",
+    is_flag=True,
+    default=False,
+    help="Force re-enrollment.",
+)
 @click.pass_context
 def enroll_hosts(ctx, stack, role, force):
     """Enroll hosts for the stack"""
     # XXX handle failure, print instructions
     ctrl = get_controller(stack, ctx.obj["home"])
-    ok = ctrl.enroll_hosts(role, force)
-    if ok:
-        ctrl.update_ssh_fingerprints()
+    f = HostFilter(ctrl.stack_hosts)
+    if role is not None:
+        f = f.apply(f.by_role(role))
+    ok = ctrl.enroll_hosts(f, force)
+    if not ok:
+        sys.exit(1)
 
 
 @ctl.command()
 @with_stack
 @with_role
+@with_scope
+@with_no_prompt
 @click.argument("pattern", required=False)
 @click.pass_context
-def destroy_hosts(ctx, stack, role, pattern):
+def destroy_hosts(ctx, stack, role, scope, no_prompt, pattern):
     """Destroy hosts matching a pattern or role"""
-    # XXX wait for destruction?
+    if scope != "stack":
+        stack = "bootstrap"
     ctrl = get_controller(stack, ctx.obj["home"])
     if not (pattern or role):
         raise click.UsageError("Specify a pattern or --role to destroy hosts")
-    # XXX wrap this method into controller
-    # XXX make sure to delete ssh host keys too
-    # XXX what should happen when removing puppetserver::pontoon ?
-    ctrl.cloud.destroy_hosts(pattern or "*", role=role)
+
+    if scope != "stack" and role:
+        raise click.UsageError("--role can be used only in scope 'stack'")
+
+    f = HostFilter(ctrl.cloud_hosts(scope))
+    f = f.apply(f.any(f.by_role(role), f.by_fqdn(pattern)))
+    # XXX wait for destruction?
+    ok = show_and_prompt("destroy", f, no_prompt)
+    if not ok:
+        sys.exit(1)
+
+    ok = ctrl.destroy_hosts(f)
+    if not ok:
+        sys.exit(1)
 
 
 @ctl.command()
 @with_stack
 @with_role
+@with_scope
+@with_no_prompt
 @click.argument("pattern", required=False)
 @click.option(
     "--type",
@@ -416,13 +508,27 @@ def destroy_hosts(ctx, stack, role, pattern):
     help="Don't wait for reboot to complete (default 'block')",
 )
 @click.pass_context
-def reboot_hosts(ctx, stack, role, pattern, type, block):
+def reboot_hosts(ctx, stack, role, scope, no_prompt, pattern, type, block):
     """Reboot hosts matching a pattern or role"""
-    # XXX wait for destruction?
+    if scope != "stack":
+        stack = "bootstrap"
     ctrl = get_controller(stack, ctx.obj["home"])
     if not (pattern or role):
         raise click.UsageError("Specify a pattern or --role to reboot hosts")
-    ctrl.cloud.reboot_hosts(pattern or "*", type, block, role=role)
+    if scope != "stack" and role:
+        raise click.UsageError("--role can be used only in scope 'stack'")
+
+    f = HostFilter(ctrl.cloud_hosts(scope))
+
+    f = f.apply(f.any(f.by_role(role), f.by_fqdn(pattern)))
+
+    ok = show_and_prompt("reboot", f, no_prompt)
+    if not ok:
+        sys.exit(1)
+
+    ok = ctrl.reboot_hosts(f, type, block)
+    if not ok:
+        sys.exit(1)
 
 
 @ctl.command()
@@ -432,7 +538,17 @@ def reboot_hosts(ctx, stack, role, pattern, type, block):
 def wait_puppet(ctx, stack, role):
     """Wait for puppet run to converge on hosts"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    _, results = ctrl.wait_puppet(role)
+
+    f = HostFilter(ctrl.cloud_hosts("stack"))
+    if role is not None:
+        f = f.apply(f.by_role(role))
+    if len(f) == 0:
+        log.error("No hosts selected.")
+        sys.exit(1)
+
+    # XXX use click progress bar
+    # XXX be able to tweak the timeout
+    _, results = ctrl.wait_puppet(f)
 
     header = ("FQDN", "stdout", "stderr")
     data = []
@@ -449,7 +565,8 @@ def wait_puppet(ctx, stack, role):
         log.info("Puppet runs failed")
         print("\n".join(as_table(header, data)))
 
-    return ok
+    if not ok:
+        sys.exit(1)
 
 
 @ctl.command()
@@ -477,18 +594,25 @@ def ssh_config():
     """Show the local SSH configuration snippet for Pontoon"""
     print(
         INSTRUCTIONS["ssh-config"].format(
-            host_domain=HOST_DOMAIN, config_dir=Controller.config_dir()
+            host_domain=HOST_DOMAIN,
+            known_hosts=KNOWN_HOSTS_PATH(),
         )
     )
 
 
 @ctl.command()
 @with_stack
+@click.option(
+    "--accept-ssh-key",
+    help="Automatically accept the SSH host key from Puppet server.",
+    default=False,
+    is_flag=True,
+)
 @click.pass_context
-def ssh_keyscan(ctx, stack):
+def ssh_keyscan(ctx, stack, accept_ssh_key):
     """Update Pontoon's known_hosts file with the stack' SSH fingerprints"""
     ctrl = get_controller(stack, ctx.obj["home"])
-    ctrl.update_ssh_fingerprints()
+    ctrl.update_ssh_fingerprints(accept_ssh_key)
 
 
 @ctl.command()

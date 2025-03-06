@@ -27,6 +27,13 @@ class Credentials(object):
         except KeyError:
             raise CredentialsMissing
 
+    @staticmethod
+    def write(path: str, id: str, secret: str):
+        with open(path, "w") as f:
+            creds = {"credentials": {"default": {"id": id, "secret": secret}}}
+            YAML().dump(creds, f)
+        os.chmod(path, 0o600)
+
 
 class CredentialsMissing(Exception):
     pass

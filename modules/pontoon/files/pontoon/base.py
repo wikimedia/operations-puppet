@@ -12,6 +12,17 @@ from ruamel.yaml import YAML
 log = logging.getLogger()
 
 
+# a module-level attribute for sys_config_path would read nicer.
+# Unfortunately, reading 'os.environ' becomes problematic in tests where the
+# module might have been already initialized. Doing it this way effectively
+# means a lazy evaluation and thus setting XDG_CONFIG_HOME works as expected
+# (e.g. in tests/ctl_test.py)
+def SYS_CONFIG_PATH() -> Path:
+    """Where to store Pontoon configuration not specific to a stack."""
+    p = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config"))
+    return p.joinpath("pontoon").expanduser()
+
+
 class Pontoon(object):
     """This class represents a Pontoon stack.
 
@@ -29,7 +40,7 @@ class Pontoon(object):
         self.name = name
         self.base_path = base_path
         self.rolemap_path = os.path.join(self.stack_path, "rolemap.yaml")
-        self.config_path = os.path.join(self.stack_path, "config.yaml")
+        self.stack_config_path = os.path.join(self.stack_path, "config.yaml")
         self.yaml = YAML()
         with open(self.rolemap_path) as f:
             self.rolemap = self.yaml.load(f)
@@ -151,10 +162,10 @@ class Pontoon(object):
             hosts.append(fqdn)
 
     def _load_config(self) -> "StackConfig":
-        if not os.path.exists(self.config_path):
+        if not os.path.exists(self.stack_config_path):
             data = {}
         else:
-            with open(self.config_path, "r") as file:
+            with open(self.stack_config_path, "r") as file:
                 data = self.yaml.load(file) or {}
         return StackConfig.from_dict(data)
 
@@ -175,7 +186,7 @@ class Pontoon(object):
         with open(self.rolemap_path, "w") as f:
             self.yaml.dump(self.rolemap, f)
 
-        with open(self.config_path, "w") as f:
+        with open(self.stack_config_path, "w") as f:
             self.yaml.dump(asdict(self.config), f)
 
 

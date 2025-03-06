@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
+from dataclasses import dataclass
 from typing import Any, List, Optional
 
-import pkg_resources
+import importlib.metadata
 from keystoneauth1 import session as keystone_session
 from keystoneauth1.identity.v3 import ApplicationCredential
 from novaclient import client as nova_client
@@ -11,8 +12,8 @@ from novaclient.v2.images import Image
 from novaclient.v2.servers import Server
 
 try:
-    APP_VERSION = pkg_resources.get_distribution("pontoon").version
-except pkg_resources.DistributionNotFound:
+    APP_VERSION = importlib.metadata.version("pontoon")
+except importlib.metadata.PackageNotFoundError:
     APP_VERSION = "unknown"
 
 NOVA_DEFAULT_URL = "https://openstack.eqiad1.wikimediacloud.org:25000/v3"
@@ -20,6 +21,15 @@ HORIZON_URL = "https://horizon.wikimedia.org"
 HOST_DOMAIN = "eqiad1.wikimedia.cloud"
 NIC_NET_ID = "7425e328-560c-4f00-8e99-706f3fb90bb4"  # lan-flat-cloudinstances2b
 APP_NAME = "pontoonctl"
+
+
+@dataclass
+class NovaSpecs:
+    """Holds information for Nova to create a new Server"""
+
+    hostname: str
+    image: Image
+    flavor: Flavor
 
 
 class NovaClient(object):
@@ -73,11 +83,11 @@ class NovaClient(object):
     def reboot_server(self, server: Server, reboot_type: str) -> Any:
         return self.client.servers.reboot(server, reboot_type)
 
-    def create_server(self, fqdn: str, image: str, flavor: str) -> Any:
+    def create_server(self, specs: NovaSpecs) -> Any:
         return self.client.servers.create(
-            fqdn.split(".")[0],
-            image,
-            flavor,
+            specs.hostname,
+            specs.image,
+            specs.flavor,
             nics=[{"net-id": NIC_NET_ID}],
         )
 
@@ -91,7 +101,7 @@ class NovaClient(object):
 
         return self._flavor_ids[f]
 
-    def name_flavor(self, name: str) -> str:
+    def name_flavor(self, name: str) -> Flavor:
         if not self._flavor_names:
             self._flavor_names = {f.name: f for f in self.client.flavors.list()}
 

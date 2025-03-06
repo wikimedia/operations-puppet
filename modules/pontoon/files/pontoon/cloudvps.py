@@ -1,18 +1,16 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
-import fnmatch
 import logging
 import os
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Set
-
-from ruamel.yaml import YAML
+from typing import Any, Callable, Dict, List, Optional
 
 from pontoon import Pontoon
 from pontoon.credentials import Credentials
-from pontoon.nova import HOST_DOMAIN, NovaAuth, NovaClient
-from pontoon.util import user_confirmation, wait_hosts_access
+from pontoon.host import Filter, Host
+from pontoon.nova import HOST_DOMAIN, NovaAuth, NovaClient, NovaSpecs, Server
+from ruamel.yaml import YAML
 
 log = logging.getLogger()
 
@@ -27,7 +25,7 @@ class Specs:
 
 
 @dataclass
-class CloudHost:
+class CloudHost(Host):
     """Represents an existing cloud host."""
 
     fqdn: str
@@ -51,10 +49,6 @@ class CloudVPS(object):
             return self._specmap
         self._specmap = self._load_specmap()
         return self._specmap
-
-    @property
-    def project_id(self) -> Optional[str]:
-        return self.nova.project_id
 
     def _load_specmap(self) -> Dict[str, Any]:
         specmap = {}
@@ -104,6 +98,12 @@ class CloudVPS(object):
         return f"{host}.{self.project}.{HOST_DOMAIN}"
 
     @property
+    def hosts_filter(self) -> Callable[[Host], bool]:
+        """To be used with Filter.apply to filter this project's hosts"""
+        cloud_fqdns = self.nova.fqdns()
+        return lambda host: host.fqdn in cloud_fqdns
+
+    @property
     def project(self) -> Optional[str]:
         """Return the current project."""
         return self.nova.project_id
@@ -135,129 +135,50 @@ class CloudVPS(object):
         Returns:
             List[CloudHost]: A list of CloudHost objects.
         """
-        hosts = []
+        res: List[CloudHost] = []
 
-        for host in self.nova.servers():
+        for server in self.nova.servers():
             cloud_host = CloudHost(
-                fqdn=self.nova.server_fqdn(host),
-                image=self.nova.server_image(host).name,
-                flavor=self.nova.server_flavor(host).name,
+                fqdn=self.nova.server_fqdn(server),
+                image=self.nova.server_image(server).name,
+                flavor=self.nova.server_flavor(server).name,
             )
-            hosts.append(cloud_host)
+            res.append(cloud_host)
 
-        return hosts
+        return res
 
     def create_hosts(
         self,
-        block=True,
-        hosts: Optional[Set[str]] = None,
-        role: Optional[str] = None,
+        hosts: Filter,
     ) -> bool:
-        """Create hosts for roles in the Pontoon stack."""
-        stack_hosts = {h for h in self.pontoon.host_map().keys()}
-        if hosts is not None:
-            stack_hosts = set(hosts)
-        elif role is not None:
-            stack_hosts = set(self.pontoon.hosts_for_role(role))
-
-        cloud_hosts = {h for h in self.fqdns}
-        candidates = stack_hosts - cloud_hosts
-        if not candidates:
-            log.info("All hosts already created")
-            return False
-
-        to_add = []
-        for host in candidates:
-            host_role = self.pontoon.role_for_host(host)
-            if not host_role:
-                log.error(f"Role not found for host {host}")
-                continue
-            specs = self.specs_for_role(host_role)
+        """Create hosts in the Pontoon stack."""
+        to_add: List[NovaSpecs] = []
+        for host in hosts:
+            hostname, _ = host.fqdn.split(".", 1)
+            specs = self.specs_for_role(host.role)
             image = self.nova.name_image(specs.image)
             flavor = self.nova.name_flavor(specs.flavor)
-            to_add.append((host, image, flavor))
+            to_add.append(NovaSpecs(hostname, image, flavor))
 
-        for server in to_add:
-            log.info(f"Creating {server}")
-            self.nova.create_server(*server)
-
-        if not block:
-            return True
-
-        return wait_hosts_access(set([x[0] for x in to_add]))
-
-    def destroy_hosts(self, pattern: str, role: Optional[str] = None) -> bool:
-        def _should_delete(server):
-            if role is not None:
-                return self.fqdn(server.name) in self.pontoon.hosts_for_role(role)
-            else:
-                return (
-                    fnmatch.fnmatch(server.name, pattern)
-                    # match pattern against fqdn too for convenience (e.g. copy/paste fqdn)
-                    or fnmatch.fnmatch(self.fqdn(server.name), pattern)
-                )
-
-        cloud_servers = self.nova.servers()
-        to_delete = [x for x in cloud_servers if _should_delete(x)]
-        if len(to_delete) == 0:
-            log.info("No hosts to delete")
-            return True
-
-        log.info(f"Hosts to remove matching {role or pattern}:")
-        for i in to_delete:
-            print(f"  {i.name}")
-
-        answer = user_confirmation(
-            f"About to delete {len(to_delete)} host(s). Input the number to confirm: ",
-            int,
-        )
-
-        if answer != len(to_delete):
-            log.info("Not doing anything")
-            return False
-
-        for server in to_delete:
-            self.nova.delete_server(server)
-        # XXX remove host key too
+        for spec in to_add:
+            log.info(f"Creating {spec}")
+            self.nova.create_server(spec)
 
         return True
 
-    def reboot_hosts(
-        self, pattern: str, reboot_type: str, block=True, role: Optional[str] = None
-    ) -> bool:
-        def _should_reboot(server):
-            if role is not None:
-                return self.fqdn(server.name) in self.pontoon.hosts_for_role(role)
-            else:
-                return (
-                    fnmatch.fnmatch(server.name, pattern)
-                    # match pattern against fqdn too for convenience (e.g. copy/paste fqdn)
-                    or fnmatch.fnmatch(self.fqdn(server.name), pattern)
-                )
+    def destroy_host(self, host: Host) -> bool:
+        server = self._server_for_host(host)
+        self.nova.delete_server(server)
+        return True
 
-        cloud_servers = self.nova.servers()
-        to_reboot = [x for x in cloud_servers if _should_reboot(x)]
-        if len(to_reboot) == 0:
-            log.info("No hosts to reboot")
-            return True
+    def reboot_host(self, host: Host, reboot_type: str) -> bool:
+        server = self._server_for_host(host)
+        self.nova.reboot_server(server, reboot_type)
+        return True
 
-        log.info(f"Hosts to reboot matching {role or pattern}:")
-        for i in to_reboot:
-            print(f"  {i.name}")
-
-        answer = user_confirmation(
-            f"About to reboot {len(to_reboot)} host(s). Input the number to confirm: ",
-            int,
-        )
-
-        if answer != len(to_reboot):
-            log.info("Not doing anything")
-            return False
-
-        for server in to_reboot:
-            self.nova.reboot_server(server, reboot_type)
-
-        if not block:
-            return True
-
-        return wait_hosts_access(set([self.fqdn(x.name) for x in to_reboot]))
+    def _server_for_host(self, host: Host) -> Server:
+        # XXX this should be smarter, e.g. cache known hosts -> server mappings
+        for s in self.nova.servers():
+            if self.nova.server_fqdn(s) == host.fqdn:
+                return s
+        raise ValueError(f"Cloud server not found for {host}")

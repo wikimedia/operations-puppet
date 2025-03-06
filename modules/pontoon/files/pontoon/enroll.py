@@ -3,7 +3,8 @@
 import logging
 
 from pontoon import Pontoon
-from pontoon.util import ssh_bash
+from pontoon.host import Host
+import pontoon.ssh as ssh
 
 log = logging.getLogger()
 
@@ -14,51 +15,43 @@ class Enroller(object):
         self.agent_server = pontoon.server_fqdn
         self.pki_san = "pki.discovery.wmnet"
 
-    def enroll(self, host: str, force: bool = False) -> bool:
-        role = self.pontoon.role_for_host(host)
-        if not role:
-            log.error("Role for %r not found", host)
-            return False
-
-        log.info("Host %r has role %r", host, role)
-
+    def enroll(self, host: Host, force: bool = False) -> bool:
         if force:
-            p = ssh_bash(
-                self.agent_server, "sudo puppetserver ca clean --certname %s" % host
+            p = ssh.bash(
+                self.agent_server, f"sudo puppetserver ca clean --certname {host.fqdn}"
             )
         else:
-            p = ssh_bash(
-                host,
+            p = ssh.bash(
+                host.fqdn,
                 "sudo puppet config --section agent print server",
                 capture_output=True,
                 text=True,
             )
             if p.returncode > 0:
                 log.error(
-                    "Unable to find agent server for %s. Is the host reachable over ssh?",
-                    host,
+                    f"Unable to find agent server for {host.fqdn!r}. "
+                    "Is the host reachable over ssh?",
                 )
                 log.error("Stderr: %s", p.stderr)
                 log.error("Stdout: %s", p.stdout)
                 return False
             if p.stdout.strip() == self.agent_server:
-                log.warning("Host %s already enrolled", host)
+                log.warning(f"Host {host.fqdn!r} already enrolled")
                 return True
 
         # Bootstrap PKI via puppet cert SAN
-        if role == "pki::multirootca":
-            p = ssh_bash(
-                host,
-                "sudo puppet config --section agent set dns_alt_names %s "
-                % self.pki_san,
+        if host.role == "pki::multirootca":
+            p = ssh.bash(
+                host.fqdn,
+                f"sudo puppet config --section agent set dns_alt_names {self.pki_san}",
             )
             if p.returncode > 0:
-                log.error("Failed to set dns-alt-names for %s", host)
+                log.error(f"Failed to set dns-alt-names for {host.fqdn!r}", host)
                 return False
 
-        return self._enroll(host)
+        return self._enroll(host.fqdn)
 
-    def _enroll(self, host: str) -> bool:
+    def _enroll(self, fqdn: str) -> bool:
         set_master_cmd = (
             "sudo puppet config --section agent set server %s" % self.agent_server
         )
@@ -80,10 +73,10 @@ class Enroller(object):
             )
         )
 
-        log.info("Enrolling %s to %s", host, self.agent_server)
-        p = ssh_bash(host, enroll_cmd)
+        log.info(f"Enrolling {fqdn!r} to stack {self.pontoon.name!r}")
+        p = ssh.bash(fqdn, enroll_cmd)
         if p.returncode > 0:
-            log.error("Failed to enroll %s to %s", host, self.agent_server)
+            log.error(f"Failed to enroll {fqdn!r} using {self.agent_server!r}")
             return False
 
         return True
