@@ -71,6 +71,12 @@ profile::elasticsearch::instances:
           - elastic2107.codfw.wmnet
           - elastic2108.codfw.wmnet
           - elastic2109.codfw.wmnet
+          - elastic2110.codfw.wmnet
+          - elastic2111.codfw.wmnet
+          - elastic2112.codfw.wmnet
+          - elastic2113.codfw.wmnet
+          - elastic2114.codfw.wmnet
+          - elastic2115.codfw.wmnet
 
         expected_nodes: 36
 
@@ -116,6 +122,7 @@ profile::elasticsearch::instances:
           - elastic2073.codfw.wmnet
           - elastic2074.codfw.wmnet
           - elastic2090.codfw.wmnet
+          - elastic2111.codfw.wmnet # replacing elastic2056
 
           # row B
           - elastic2092.codfw.wmnet
@@ -134,6 +141,8 @@ profile::elasticsearch::instances:
           - elastic2065.codfw.wmnet
           - elastic2081.codfw.wmnet
           - elastic2102.codfw.wmnet
+          - elastic2112.codfw.wmnet # replacing elastic2057
+
 
           # row D
           - elastic2104.codfw.wmnet
@@ -142,6 +151,8 @@ profile::elasticsearch::instances:
           - elastic2067.codfw.wmnet
           - elastic2084.codfw.wmnet
           - elastic2086.codfw.wmnet
+          - elastic2114.codfw.wmnet # replacing elastic2059
+
 
         expected_nodes: 18
 
@@ -184,6 +195,7 @@ profile::elasticsearch::instances:
           - elastic2079.codfw.wmnet
           - elastic2080.codfw.wmnet
           - elastic2096.codfw.wmnet
+          - elastic2110.codfw.wmnet # replacing elastic2055
 
           # row C
           - elastic2101.codfw.wmnet
@@ -193,6 +205,7 @@ profile::elasticsearch::instances:
           - elastic2082.codfw.wmnet
           - elastic2083.codfw.wmnet
           - elastic2103.codfw.wmnet
+          - elastic2113.codfw.wmnet # replacing elastic2058
 
           # row D
           - elastic2107.codfw.wmnet
@@ -201,6 +214,7 @@ profile::elasticsearch::instances:
           - elastic2068.codfw.wmnet
           - elastic2085.codfw.wmnet
           - elastic2109.codfw.wmnet
+          - elastic2115.codfw.wmnet # replacing elastic2060
 
         expected_nodes: 18
 

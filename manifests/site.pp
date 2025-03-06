@@ -1105,7 +1105,7 @@ node /^elastic210[0-9]\.codfw\./ {
 }
 
 node /^elastic211[0-5]\.codfw\./ {
-    role(insetup::search_platform)
+    role(elasticsearch::cirrus)
 }
 
 # External Storage, Shard 1 (es1) databases
