@@ -4,9 +4,6 @@ eqiad:
     mwdebug1002.eqiad.wmnet: [apache2]
   jobrunner: &jobrunner
     mw1407.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
-    mw1420.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
-    mw1437.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
-    mw1438.eqiad.wmnet: [apache2, nginx, canary] # canary jobrunner
     mw1445.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
     mw1446.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
     mw1349.eqiad.wmnet: [apache2, nginx]
@@ -108,7 +105,7 @@ eqiad:
     cloudelastic1008.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1009.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1010.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
-    cloudelastic1011.eqiad.wmnet: [ cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public ]
+    cloudelastic1011.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
     cloudelastic1012.eqiad.wmnet: [cloudelastic-chi-ssl, cloudelastic-psi-ssl, cloudelastic-omega-ssl, cloudelastic-chi-ssl-public, cloudelastic-psi-ssl-public, cloudelastic-omega-ssl-public]
 
   swift:
@@ -328,6 +325,9 @@ eqiad:
     wikikube-worker1163.eqiad.wmnet: [kubesvc]
     wikikube-worker1164.eqiad.wmnet: [kubesvc]
     wikikube-worker1165.eqiad.wmnet: [kubesvc]
+    wikikube-worker1166.eqiad.wmnet: [kubesvc]
+    wikikube-worker1167.eqiad.wmnet: [kubesvc]
+    wikikube-worker1168.eqiad.wmnet: [kubesvc]
     # This space intentionally left blank - new hosts start at 1240 (T369743), below reserved for renames
     wikikube-worker1240.eqiad.wmnet: [kubesvc]
     wikikube-worker1241.eqiad.wmnet: [kubesvc]

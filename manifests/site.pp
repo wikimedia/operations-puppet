@@ -1709,7 +1709,7 @@ node /^wikikube-worker10(0[2-7]|1[12569]|[2-9][0-9])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
-node /^wikikube-worker11([0-5][0-9]|6[0-5])\.eqiad\./ {
+node /^wikikube-worker11([0-5][0-9]|6[0-8])\.eqiad\./ {
     role(kubernetes::worker)
 }
 
@@ -2127,20 +2127,10 @@ node /^mw13(49|50|51)\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 
-# rack A3 jobrunner and scap::proxy
-node /^mw1420\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
 # Row C
 
 # rack C3
 node /^mw1407\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
-# rack D8 - canary jobrunners
-node /^mw143[7-8]\.eqiad\./ {
     role(mediawiki::jobrunner)
 }
 

@@ -245,6 +245,9 @@ kubernetes::clusters:
         - wikikube-worker1163.eqiad.wmnet
         - wikikube-worker1164.eqiad.wmnet
         - wikikube-worker1165.eqiad.wmnet
+        - wikikube-worker1166.eqiad.wmnet
+        - wikikube-worker1167.eqiad.wmnet
+        - wikikube-worker1168.eqiad.wmnet
         # This space intentionally left blank - new hosts start at 1240 (T369743), below reserved for renames
         - wikikube-worker1240.eqiad.wmnet
         - wikikube-worker1241.eqiad.wmnet
