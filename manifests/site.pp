@@ -120,8 +120,8 @@ node /^an-worker11(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|6[0-9]|7[0-7])\.eqi
     role(analytics_cluster::hadoop::worker)
 }
 
-# New an-worker nodes - See #T377878
-node /^an-worker11(7[8-9]|8[0-6])\.eqiad\./ {
+# New an-worker nodes - See #T377878 and #T386390
+node /^an-worker1(17[8-9]|18[0-9]|19[0-9]|20[0-8])\.eqiad\./ {
     role(insetup::data_engineering)
 }
 
