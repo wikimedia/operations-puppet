@@ -17,6 +17,7 @@ To install `pontoonctl` on your Debian system:
     git checkout production
     # Run pontoonctl from puppet.git checkout
     pipx install --system-site-packages --editable '.[ctl]'
+    # NOTE: make sure to have pipx >= 1.1.0 or --editable emits a warning
 
 Check Cloud VPS connectivity with `pontoonctl list-hosts` and follow the
 instructions to set up credentials.
