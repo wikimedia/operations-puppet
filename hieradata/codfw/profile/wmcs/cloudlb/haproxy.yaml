@@ -254,7 +254,7 @@ profile::wmcs::cloudlb::haproxy::config:
   hostname-mapping:
     type: http-by-host
     firewall:
-      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+      open_to_internet: true
     frontends:
       - port: 443
         acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
