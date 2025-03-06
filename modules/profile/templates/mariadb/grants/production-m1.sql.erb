@@ -126,9 +126,6 @@ GRANT SELECT
 
 -- stats @ dbbackups
 
-GRANT USAGE ON *.* TO `stats`@`10.192.0.190` IDENTIFIED BY '<%=@backup_stats_pass%>';
-GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.0.190`;
-
 GRANT USAGE ON *.* TO `stats`@`10.192.48.161` IDENTIFIED BY '<%=@backup_stats_pass%>';
 GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.48.161`;
 
@@ -137,9 +134,6 @@ GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.32.131`;
 
 GRANT USAGE ON *.* TO `stats`@`10.192.6.9` IDENTIFIED BY '<%=@backup_stats_pass%>';
 GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.192.6.9`;
-
-GRANT USAGE ON *.* TO `stats`@`10.64.32.107` IDENTIFIED BY '<%=@backup_stats_pass%>';
-GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.107`;
 
 GRANT USAGE ON *.* TO `stats`@`10.64.32.26` IDENTIFIED BY '<%=@backup_stats_pass%>';
 GRANT INSERT, SELECT, UPDATE ON `dbbackups`.* TO `stats`@`10.64.32.26`;

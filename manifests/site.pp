@@ -250,14 +250,6 @@ node /^aux-k8s-worker200[2-5]\.codfw\./ {
 node /^backup1001\.eqiad\./ {
     role(backup)
 }
-# eqiad backup generation for External Storage databases
-node /^backup1002\.eqiad\./ {
-    role(dbbackups::content)
-}
-# future replacement of the above
-node /^backup1013\.eqiad\./ {
-    role(dbbackups::content)
-}
 
 # eqiad bacula storage for External Storage databases
 node /^backup1003\.eqiad\./ {
@@ -287,6 +279,15 @@ node /^backup1012\.eqiad\./ {
     role(insetup::data_persistence)
 }
 
+# eqiad backup generation for External Storage databases
+node /^backup1013\.eqiad\./ {
+    role(dbbackups::content)
+}
+# pending to be decommissioned, previous db backup generation
+node /^backup1002\.eqiad\./ {
+    role(insetup::data_persistence)
+}
+
 # to be setup
 node /^backup1014\.eqiad\./ {
     role(insetup::data_persistence)
@@ -295,14 +296,6 @@ node /^backup1014\.eqiad\./ {
 # codfw storage daemon
 node /^backup2001\.codfw\./ {
     role(backup::offsite)
-}
-# codfw backup generation for External Storage databases
-node /^backup2002\.codfw\./ {
-    role(dbbackups::content)
-}
-# future replacement of the above
-node /^backup2013\.codfw\./ {
-    role(dbbackups::content)
 }
 
 # codfw bacula for External Storage DBs
@@ -330,6 +323,15 @@ node /^backup2009\.codfw\./ {
 
 # pending to be setup as bacula expansion
 node /^backup2012\.codfw\./ {
+    role(insetup::data_persistence)
+}
+
+# codfw backup generation for External Storage databases
+node /^backup2013\.codfw\./ {
+    role(dbbackups::content)
+}
+# pending to be decommissioned, previous db backup generation
+node /^backup2002\.codfw\./ {
     role(insetup::data_persistence)
 }
 
