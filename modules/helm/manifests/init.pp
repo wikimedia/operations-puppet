@@ -5,7 +5,7 @@
 # @param helm_cache helm cache directory
 # @param helm_user_group the group used by helm users, will be used for helm_cache
 # @param repositories repo config
-class helm(
+class helm (
     Stdlib::Unixpath $helm_home       = '/etc/helm',
     Stdlib::Unixpath $helm_data       = '/usr/share/helm',
     Stdlib::Unixpath $helm_cache      = '/var/cache/helm',
@@ -15,12 +15,21 @@ class helm(
         'wmf-stable' => 'https://helm-charts.wikimedia.org/stable',
     },
 ) {
-    package { [ 'helm3' ]:
+    package { ['helm311', 'helm317']:
         ensure => installed,
     }
 
-    package { [ 'helm' ]:
+    package { ['helm3']:
         ensure => absent,
+    }
+
+    # Ensure helm 3.11 is the default
+    # TODO: This can be reduced to one call once T387548 is fixed
+    alternatives::select { 'helm':
+        path => '/usr/bin/helm3.11',
+    }
+    alternatives::select { 'helm3':
+        path => '/usr/bin/helm3.11',
     }
 
     # Note that this user is not going to be really used anywhere, it will just own the helm home files
