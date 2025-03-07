@@ -50,11 +50,12 @@
 #
 
 define sslcert::certificate(
-  $ensure=present,
-  $group='ssl-cert',
-  $chain=true,
-  $skip_private=false,
-  $use_cergen=false,
+    $ensure=present,
+    $group='ssl-cert',
+    $chain=true,
+    $skip_private=false,
+    $use_cergen=false,
+    $private_tls_path='/etc/ssl/private',
 ) {
     require sslcert
     require sslcert::dhparam
@@ -99,7 +100,7 @@ define sslcert::certificate(
     }
 
     if !$skip_private {
-        file { "/etc/ssl/private/${title}.key":
+        file { "${private_tls_path}/${title}.key":
             ensure    => $ensure,
             owner     => 'root',
             group     => $group,

@@ -35,14 +35,15 @@
 #
 
 define sslcert::chainedcert(
-  Wmflib::Ensure $ensure       = present,
-  String         $group        = 'ssl-cert',
-  Boolean        $skip_private = false,
+    Wmflib::Ensure   $ensure           = present,
+    String           $group            = 'ssl-cert',
+    Boolean          $skip_private     = false,
+    Stdlib::Unixpath $private_tls_path = '/etc/ssl/private',
 ) {
     require sslcert
 
     $chainedfile = "/etc/ssl/localcerts/${title}.chained.crt"
-    $chainedkeyfile = "/etc/ssl/private/${title}.chained.crt.key"
+    $chainedkeyfile = "${private_tls_path}/${title}.chained.crt.key"
     $chainfile = "/etc/ssl/localcerts/${title}.chain.crt"
 
     if $ensure == 'present' {
@@ -63,7 +64,7 @@ define sslcert::chainedcert(
             require => [ File[$inpath], File[$script] ],
         }
         if !$skip_private {
-            $privatekeyfile = "/etc/ssl/private/${title}.key"
+            $privatekeyfile = "${private_tls_path}/${title}.key"
             exec { "x509-bundle ${title}-chainedkey":
                 path    => 'bin:/usr/bin',
                 cwd     => '/etc/ssl/localcerts',
