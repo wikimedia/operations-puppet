@@ -140,7 +140,6 @@ Components: main
  component/lshw
  component/memcached-tls
  component/opensearch13
- component/pcre2
  component/php74
  component/php81
  component/puppet7
