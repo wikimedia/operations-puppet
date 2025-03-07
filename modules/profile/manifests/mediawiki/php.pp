@@ -78,7 +78,7 @@ class profile::mediawiki::php(
         }
 
         apt::package_from_component{ 'pcre2-backport-bullseye':
-            component => 'component/pcre2',
+            component => 'component/php81',
             packages  => ['libpcre2-8-0'],
         }
 
