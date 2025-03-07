@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova]
+              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -580,7 +580,7 @@ groups:
   stewards-users:
     description: People with access to the stewards VMs
     gid: 751
-    members: [urbanecm, jjmc89, melos, ep1c]
+    members: [urbanecm, melos, ep1c]
     approval:
       - Martin Urbanec
   maps-admins:
@@ -6472,13 +6472,11 @@ users:
       - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIJSRj+gNTsld5r9OKrDk7j9Wbi/f0NEEnv044Qtwzkn0AAAABHNzaDo= mszabo@wikimedia.org
     krb: present
   jjmc89:
-    ensure: present
+    ensure: absent
     gid: 500
     uid: 14207
     realname: JJMC89
-    email: JJMC89.Wikimedia@gmail.com
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBYQTEgOYTG1zSFkRGGYCVHfXCzJarVSqMczMKVA1LLb JJMC89.Wikimedia@gmail.com wmf_prod
+    ssh_keys: []
   cyndywikime:
     ensure: present
     gid: 500
