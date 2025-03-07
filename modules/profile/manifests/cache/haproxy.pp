@@ -94,6 +94,10 @@ class profile::cache::haproxy(
     # used on haproxy.cfg.erb
     $socket = '/run/haproxy/haproxy.sock'
 
+    # used to check the list of certificates, needs to be defined before systemd service
+    # template. See below for usage
+    $tls_check_cfg = '/etc/haproxy-tls-check.cfg'
+
     class { '::haproxy':
         config_content        => template('profile/cache/haproxy.cfg.erb'),
         systemd_content       => template('profile/cache/haproxy.service.erb'),
@@ -188,6 +192,26 @@ class profile::cache::haproxy(
         $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]] + values($extra_certificates)
     } else {
         $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]]
+    }
+
+    # Create a separate list of certificates that needs to be checked by the
+    # tls-check script.
+    # Not to be confused with the list that haproxy uses to load TLS certificates
+    # (although they contains the same certificates paths)
+    file { $tls_check_cfg:
+        ensure  => present,
+        mode    => '0444',
+        owner   => 'root',
+        group   => 'root',
+        content => template('profile/cache/haproxy/tls-check.cfg.erb'),
+    }
+
+    file { '/usr/local/sbin/tls-check':
+        ensure  => present,
+        mode    => '0555',
+        owner   => 'root',
+        group   => 'root',
+        content => file('profile/cache/tls-check.sh'),
     }
 
     ## HAProxy configuration

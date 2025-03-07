@@ -1,0 +1,2 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+CERT_LIST="<%= @certificates.map { |certificate| certificate['cert_paths'] } .join(' ') %>"

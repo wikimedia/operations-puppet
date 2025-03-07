@@ -9,6 +9,7 @@ Wants=network-online.target syslog.service
 [Service]
 Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
 EnvironmentFile=-/etc/default/haproxy
+ExecStartPre=/usr/local/sbin/tls-check <%= @tls_check_cfg %>
 <% if @do_ocsp -%>
 ExecStartPre=/usr/local/sbin/update-ocsp-all
 <% end -%>
