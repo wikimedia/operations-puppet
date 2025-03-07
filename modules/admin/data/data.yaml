@@ -33,7 +33,8 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89]
+              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
+              halfak]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -189,7 +190,7 @@ groups:
     description: software deployers, with access to deployment.eqiad.wmnet and other hosts
     members: &deployment_members [*ops_members, *releng_members,
               bd808, bvibber, cscott, ebernhardson,
-              gjg, halfak, hoo,
+              gjg, hoo,
               kartik, krinkle, marktraceur, milimetric, mlitn,
               nikerabbit, reedy, ssastry, phedenskog,
               tgr, ejegg, catrope,
@@ -401,7 +402,7 @@ groups:
                  "Added with no SSH access" to find examples in this file.
                  Approval requests for this group can be expedited by tagging Data-Engineering on phabricator
     members: &analytics_privatedata_users [milimetric, aude, jforrester,
-              halfak, dr0ptp4kt, bearloga, elukey, mneisler,
+              dr0ptp4kt, bearloga, elukey, mneisler,
               nuria, otto, jgreen, sguebo,
               dbrant, nettrom, leizi, jmm,
               mforns, reedy, west1, phuedx, awight,
@@ -1836,15 +1837,13 @@ users:
     uid: 2890
     email: ggrossmeier@wikimedia.org
   halfak:
-    ensure: present
+    ensure: absent
     gid: 500
     name: halfak
     realname: Aaron Halfaker
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDI6xBPpUqjfZl0AkSgS4sMLqaLdaVIUzZdCmNvzw+TbITw6PWOtMAOnP5A8HOn7aqnSH0ZYYWN/AzMz+9zT6+5JvxOfY43pCmT6qJv3e6mtCkkdy79kCH+b8S9NtrhttxMt9iem2RP1sbJiXLfcinOHuezd2Q05BoY97Aoo8z2/tRRvkPnHA2QU3fxAMS/PBle1ZytN2XJtz565AS7vzrts0su/jTej1ikLNZtMITZIrgB4o9KVcF5FHsmTIBehVwOEQRNYc6AwK+GWDQ1ZDS9m07/VmSIAO8krFPJ8y1M/EvMSP/VR78ABXOYTNlgzTCSuLFjocFMARBOnpA5Nfg5 halfak@graphite2
+    ssh_keys: []
     uid: 2041
-    email: aaron.halfaker@gmail.com
-    krb: present
+    krb: absent
   hashar:
     ensure: present
     gid: 500
