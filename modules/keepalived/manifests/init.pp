@@ -4,14 +4,6 @@
 class keepalived(
     String[1] $config,
 ) {
-    if debian::codename::eq('bullseye') {
-        # default keepalived in bullseye seems broken, see
-        # https://bugs.debian.org/1008222
-        apt::package_from_bpo { 'keepalived':
-            distro => 'bullseye',
-        }
-    }
-
     package { 'keepalived':
         ensure => present,
     }
@@ -20,8 +12,6 @@ class keepalived(
     file { $conf_file :
         ensure    => present,
         mode      => '0444',
-        owner     => 'root',
-        group     => 'root',
         content   => $config,
         show_diff => false,
         require   => Package['keepalived'],
