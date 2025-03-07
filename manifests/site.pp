@@ -1869,8 +1869,12 @@ node /^lvs500[456]\.eqsin\./ {
 }
 
 # DRMRS lvs servers
-node /^lvs600[123]\.drmrs\./ {
+node /^lvs600[12]\.drmrs\./ {
     role(lvs::balancer)
+}
+
+node /^lvs6003\.drmrs\./ {
+    role(liberica)
 }
 
 # MAGRU lvs servers

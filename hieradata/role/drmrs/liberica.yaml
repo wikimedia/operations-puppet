@@ -1,0 +1,8 @@
+profile::lvs::interface_tweaks:
+  enp175s0f0np0:
+    txqlen: 10000
+  enp175s0f1np1:
+    txqlen: 10000
+profile::liberica::bgp_config:
+  peers:
+    - 10.136.0.1 # asw1-b12-drmrs
