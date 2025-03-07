@@ -559,9 +559,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'moss-*':
     - partman/custom/cephadm_raid1_leavelvm.cfg
-  'ms-be208[1-9]|ms-be108[3-9]|ms-be109*':
+  'ms-be208[1-8]|ms-be108[3-9]|ms-be109*':
     - partman/custom/ms-be_simple-efi.cfg
-  'ms-be2050|ms-be20[7]*|ms-be2080|ms-be107[2-9]|ms-be108[1-2]':
+  'ms-be2050|ms-be20[7]*|ms-be2080|ms-be2089|ms-be107[2-9]|ms-be108[1-2]':
     - partman/custom/ms-be_simple.cfg
   'ms-be*':
     - partman/custom/ms-be.cfg
@@ -693,8 +693,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
-  'testhost2001':
-    - partman/custom/backup-format.cfg
   'titan*':
     - partman/standard.cfg
     - partman/raid0.cfg
