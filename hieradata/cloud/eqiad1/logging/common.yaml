@@ -182,7 +182,21 @@ profile::opensearch::logstash::curator_actions:
         timestring: '%Y.%W'
         unit: weeks
         unit_count: 2
-
+  '07':
+    description: 'ecs-mediawiki policy rev 1: delete older than 2 weeks'
+    action: delete_indices
+    options:
+      ignore_empty_list: true
+    filters:
+    - filtertype: pattern
+      kind: regex
+      value: "^ecs-(1.7.0-\\d\\d?-mediawiki|mediawiki-1)-.*$"
+    - filtertype: age
+      source: name
+      direction: older
+      timestring: "%Y.%W"
+      unit: weeks
+      unit_count: 2
   '20':
     description: 'all: after 1 days set number of replicas to 0'
     action: replicas

@@ -36,6 +36,9 @@ class profile::logstash::beta (
     content => '
 filter {
   # Placeholder
+  if [program] == "navtiming" {
+    drop { id => "filter/drop/spam/navtiming_kafka_errors_spam" }
+  }
 }
     '
   }
