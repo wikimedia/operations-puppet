@@ -3,5 +3,15 @@
 # configuration for kube-env helpers
 
 # kube environments
-export KUBE_ENV_ENVIRONMENTS="<%= @kube_env_environments.join(" ") %>"
+export KUBE_ENV_ENVIRONMENTS="<%= @kube_env_environments.keys.join(" ") %>"
 export KUBE_ENV_SERVICES="<%= @kube_env_services.join(" ") %>"
+
+# Array that maps kubernetes environments to their respective versions
+# This duplicated information from KUBE_ENV_ENVIRONMENTS, but I did not want to break existing scripts
+# that rely on the KUBE_ENV_ENVIRONMENTS variable
+declare -A KUBE_ENV_VERSIONS
+export KUBE_ENV_VERSIONS=(
+<%- @kube_env_environments.each do |env, version| -%>
+    ["<%= env %>"]="<%= version %>"
+<%- end -%>
+)

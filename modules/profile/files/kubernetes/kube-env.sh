@@ -12,9 +12,9 @@ kube_env() {
     fi
 
     if [[ "$1" == "admin" ]]; then
-        TILLER_NAMESPACE="kube-system"
+        K8S_NAMESPACE="kube-system"
     else
-        TILLER_NAMESPACE=$1
+        K8S_NAMESPACE=$1
     fi
     K8S_CLUSTER=$2
     KUBECONFIG="/etc/kubernetes/${1}-${K8S_CLUSTER}.config"
@@ -25,12 +25,22 @@ kube_env() {
         echo "You don't have permission to read the configuration for ${1}/${K8S_CLUSTER} (try sudo)"
         return 1
     fi
-    export TILLER_NAMESPACE K8S_CLUSTER KUBECONFIG
+    export K8S_NAMESPACE K8S_CLUSTER KUBECONFIG
+
+    # Define a kubectl alias according to the version the selected cluster is running
+    _k8s_version="${KUBE_ENV_VERSIONS[$K8S_CLUSTER]}"
+    _kubectl="$(which kubectl"${_k8s_version}")"
+    if [ -n "$_kubectl" ]; then
+        # shellcheck disable=SC2139
+        alias kubectl="$_kubectl"
+    else
+        echo "INFO: No matching kubectl version (${_k8s_version}) for cluster ${K8S_CLUSTER} (everything might still work)"
+    fi
 }
 
 # Clear your current kubernetes-related variables
 kube_env_clear() {
-    unset TILLER_NAMESPACE K8S_CLUSTER KUBECONFIG
+    unset K8S_NAMESPACE K8S_CLUSTER KUBECONFIG
 }
 
 # Bash completion for kube_env
@@ -56,10 +66,10 @@ complete -F __kube_env_complete kube-env
 # Add this function to your PS1 to add the currently configured
 # k8s cluster to your prompt.
 __kube_env_ps1() {
-    if [ -z "$K8S_CLUSTER" ] || [ -z "$TILLER_NAMESPACE" ]; then
+    if [ -z "$K8S_CLUSTER" ] || [ -z "$K8S_NAMESPACE" ]; then
         return
     fi
-    echo "<${TILLER_NAMESPACE}/${K8S_CLUSTER}>"
+    echo "<${K8S_NAMESPACE}/${K8S_CLUSTER}>"
 }
 
 

@@ -134,7 +134,9 @@ class profile::kubernetes::deployment_server (
         keys($srvs).filter |$svc_name| { $svc_name in $srvs[$svc_name]['usernames'].map |$u| { $u['name'] } }
     }.flatten().unique()
 
-    $kube_env_environments = keys($kubernetes_clusters).unique()
+    $kube_env_environments = Hash($kubernetes_clusters.map |$cluster_name, $cluster_config| {
+        [$cluster_name, $cluster_config['version']]
+    })
 
     # Add separate environment variable file for kube-env config.
     # profile.d is sourced alphabetically, so it needs to be named such as it comes before kube-env
