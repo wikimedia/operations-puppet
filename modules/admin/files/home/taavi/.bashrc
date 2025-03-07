@@ -20,11 +20,11 @@ case "$TERM" in
 		# copied from modules/profile/templates/kubernetes/kube-env.sh.erb
 		# so it's always defined, modified to add a space in front
 		__taavi_kube_env_ps1() {
-			if [ -z "$K8S_CLUSTER" ] || [ -z "$TILLER_NAMESPACE" ]; then
+			if [ -z "$K8S_CLUSTER" ] || [ -z "$K8S_NAMESPACE" ]; then
 				return
 			fi
 
-			echo " <${TILLER_NAMESPACE}/${K8S_CLUSTER}>"
+			echo " <${K8S_NAMESPACE}/${K8S_CLUSTER}>"
 		}
 
 		PROMPT='\[\033[00;33m\]\u@\h\[\033[00m\] \[\033[01;34m\]\w\[\033[00m\]$(__git_ps1 " (%s)")$(__taavi_kube_env_ps1) \$ '
