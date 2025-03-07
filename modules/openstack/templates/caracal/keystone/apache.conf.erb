@@ -33,7 +33,7 @@ Listen <%= @admin_bind_port %>
 
     # The docs say to make this an arbitrary protected endpoint,
     #  so this is as arbirary as I can make it.
-    OIDCRedirectURI https://<%= @keystone_fqdn %>:<%= @keystone_port %>/protected
+    OIDCRedirectURI https://keystone.<%= @keystone_fqdn %>/protected
     <Location "/protected">
       AuthType openid-connect
       Require valid-user
