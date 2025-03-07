@@ -52,7 +52,8 @@ define package_builder::pbuilder_hook(
 
         # On bullseye, add a hook for pcre2 backports.
         file { "${basepath}/hooks/${distribution}/D04pcre2":
-            ensure => present,
+            # TODO: T386006 - Removing component/pcre2
+            ensure => absent,
             mode   => '0555',
             source => 'puppet:///modules/package_builder/hooks/D04pcre2',
         }
