@@ -38,7 +38,7 @@ KUBE_CONFIGS = [
     'mw-script-restricted',  # Identical access for members of the restricted group.
 ]
 # Read main_app.image from this values file to determine the live MW image version.
-VALUES = '/etc/helmfile-defaults/mediawiki/release/mw-web-main.yaml'
+VALUES = '/etc/helmfile-defaults/mediawiki/release/mw-script-main.yaml'
 
 
 class ClientError(Exception):
@@ -123,10 +123,10 @@ def get_primary_dc() -> str:
 
 
 def mediawiki_image() -> str:
-    # Find out what multiversion image is in use by mw-web, and use the same one. This might not be
-    # the same image that's actually running (particularly if we're in the middle of a deployment or
-    # rollback) but the values file is world-readable so this works even if the user isn't in the
-    # deployment group.
+    # Find out what the most recently deployed multiversion image is and use that. This might not be
+    # the same image that's actually running in the "normal" releases like mw-web (particularly if
+    # we're in the middle of a deployment or rollback) but the values file is world-readable so this
+    # works even if the user isn't in the deployment group.
     with open(VALUES, 'r') as f:
         values = yaml.safe_load(f)
     return values['main_app']['image']
@@ -241,8 +241,8 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
     values = {
-        # For normal deployments, this value is managed by scap. For scripts, we'll use the image
-        # currently used in the mw-web helmfile (except when overridden by command-line flag).
+        # Default to the latest multiversion image deployed by scap, with the option to override
+        # by a command-line flag.
         'main_app': {
             'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(),
         },
@@ -381,7 +381,7 @@ def main() -> int:
     parser.add_argument('--mediawiki_image',
                         help='Specify a MediaWiki image (without registry), e.g. '
                              'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
-                             '(Default: Use the same image as mw-web)')
+                             '(Default: Use the latest image built and deployed by scap)')
     parser.add_argument('--file', action='append', type=parse_filename_pair,
                         help="Copy a text file into the MediaWiki container (in the script's "
                              "working directory) to be used as script input. Format: "
