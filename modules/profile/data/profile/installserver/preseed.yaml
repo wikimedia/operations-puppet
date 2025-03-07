@@ -69,7 +69,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   'an-worker106[5-9]':
     - partman/custom/analytics-flex.cfg
-  'an-worker117[8-9]|an-worker118[0-9]|an-worker119[0-9]|an-worker12[0-8]':
+  'an-worker117[8-9]|an-worker118[0-9]|an-worker119[0-9]|an-worker120[0-8]':
     - partman/custom/analytics-flex.cfg
   'an-worker109[6-9]|an-worker110[01]':
     - reuse-parts.cfg
