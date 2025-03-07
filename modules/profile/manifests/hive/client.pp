@@ -47,6 +47,13 @@ class profile::hive::client(
     $hive_metastore_jdbc_port = $hive_services[$hive_service_name]['metastore_jdbc_port']
     $hive_metastore_jdbc_user = $hive_services[$hive_service_name]['metastore_jdbc_user']
     $hive_metastore_database = $hive_services[$hive_service_name]['metastore_jdbc_database']
+
+    # We set support concurrency to false by default. If someone needs to use it in their hive job, they
+    # may manually set it to true via set hive.support.concurrency = true;
+    $support_concurrency = $hive_services[$hive_service_name]['support_concurrency'] ? {
+        undef   => false,
+        default => $hive_services[$hive_service_name]['support_concurrency'],
+    }
     $hive_cluster_delegation_token_store_class = $hive_services[$hive_service_name]['hive_cluster_delegation_token_store_class'] ? {
         undef   => 'org.apache.hadoop.hive.thrift.DBTokenStore',
         default => $hive_services[$hive_service_name]['hive_cluster_delegation_token_store_class'],
@@ -54,6 +61,10 @@ class profile::hive::client(
     $hive_metastore_disallow_incompatible_col_type_changes = $hive_services[$hive_service_name]['hive_metastore_disallow_incompatible_col_type_changes'] ? {
         undef   => undef,
         default => $hive_services[$hive_service_name]['hive_metastore_disallow_incompatible_col_type_changes'],
+    }
+    $hive_site_extra_properties =  $hive_services[$hive_service_name]['hive_site_extra_properties'] ? {
+        undef   => {},
+        default => $hive_services[$hive_service_name]['hive_site_extra_properties'],
     }
 
     # The WMF webrequest table uses HCatalog's JSON Serde.
@@ -73,11 +84,7 @@ class profile::hive::client(
     class { '::bigtop::hive':
         # Hive uses Zookeeper for table locking.
         zookeeper_hosts                                       => $zookeeper_hosts,
-        # We set support concurrency to false by default.
-        # if someone needs to use it in their hive job, they
-        # may manually set it to true via
-        # set hive.support.concurrency = true;
-        support_concurrency                                   => false,
+        support_concurrency                                   => $support_concurrency,
         # Set this pretty high, to avoid limiting the number
         # of substitution variables a Hive script can use.
         variable_substitute_depth                             => 10000,
@@ -111,6 +118,8 @@ class profile::hive::client(
 
         # Optional logging configuration
         hive_log4j_version                                    => $hive_log4j_version,
+
+        hive_site_extra_properties                            => $hive_site_extra_properties,
     }
 
     # Set up a wrapper script for beeline, the command line

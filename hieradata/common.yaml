@@ -950,6 +950,13 @@ hive_services:
     java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
     metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -XX:-PrintCommandLineFlags -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution -XX:+UseGCLogFileRotation -Xloggc:/var/log/hive/gc-metastore.log -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     server_opts: '-Xms6g -Xmx6g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -XX:+ParallelRefProcEnabled -XX:MaxMetaspaceSize=1024m -XX:-PrintCommandLineFlags -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution -XX:+UseGCLogFileRotation -Xloggc:/var/log/hive/gc-hiveserver.log -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log/hive/hiveserver-heap-dump.bin -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
+    # this allows us to do SHOW LOCKS - See #T386854 for details
+    support_concurrency: true
+    hive_site_extra_properties:
+      hive.txn.manager: org.apache.hadoop.hive.ql.lockmgr.DbTxnManager
+      # this enables an always running daemon as part of the Hive Metastore process that will remove deadlocked/expired locks from the HIVE_LOCKS table
+      # It also enables other Hive services that we do not need, but this is the best we can do with Hive 2.3.6.
+      hive.compactor.initiator.on: true
 
   analytics-hive:
     server_host: analytics-hive.eqiad.wmnet
@@ -968,7 +975,6 @@ hive_services:
     java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre'
     metastore_opts: '-Xms4g -Xmx4g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -XX:-PrintCommandLineFlags -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution -XX:+UseGCLogFileRotation -Xloggc:/var/log/hive/gc-metastore.log -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:9183:/etc/prometheus/hive_metastore_jmx_exporter.yaml'
     server_opts: '-Xms10g -Xmx10g -XX:+UseG1GC -XX:+UseStringDeduplication -XX:MaxGCPauseMillis=1000 -Djava.net.preferIPv4Stack=false -XX:-PrintCommandLineFlags -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCDateStamps -XX:+PrintGCApplicationStoppedTime -XX:+PrintAdaptiveSizePolicy -XX:+PrintTenuringDistribution -XX:+UseGCLogFileRotation -Xloggc:/var/log/hive/gc-hiveserver.log -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=10m -javaagent:/usr/share/java/prometheus/jmx_prometheus_javaagent.jar=[::]:10100:/etc/prometheus/hive_server_jmx_exporter.yaml'
-
 
 
 # Hadoop base configuration is common to multiple profiles, and must be kept

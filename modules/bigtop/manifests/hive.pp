@@ -12,9 +12,7 @@
 #                                  Default: undef (zookeeper lock management
 #                                  will not be used).
 #
-# $support_concurrency           - Whether Hive supports concurrency or not. A Zookeeper
-#                                  instance must be up and running for the default Hive
-#                                  lock manager to support read-write locks.
+# $support_concurrency           - Whether Hive supports concurrency or not.
 #                                  Default: false
 #
 # $jdbc_database                 - Metastore JDBC database name.
@@ -76,6 +74,7 @@
 #                                                         Hive Default: true (was: false in Hive 1.x)
 #                                                         Default: undef (we don't want to render it with Hive 1.x)
 #
+# hive_site_extra_properties - raw hash of extra properties to be rendered in hive-site.xml. Default: undef
 class bigtop::hive(
     $metastore_host,
     $zookeeper_hosts             = undef,
@@ -136,6 +135,8 @@ class bigtop::hive(
     $config_files_group_ownership = 'hdfs',
 
     $hive_metastore_disallow_incompatible_col_type_changes = undef,
+
+    $hive_site_extra_properties = undef,
 
 ) {
     Class['bigtop::hadoop'] -> Class['bigtop::hive']
