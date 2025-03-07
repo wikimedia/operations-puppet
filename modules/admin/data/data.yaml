@@ -7451,3 +7451,7 @@ ldap_only_users:
     email: chuckonwumelu-ctr@wikimedia.org
     expiry_date: "2025-06-27"
     expiry_contact: lgoto@wikimedia.org
+  hswan:
+    ensure: present
+    realname: Hilary Swan
+    email: hswan@wikimedia.org
