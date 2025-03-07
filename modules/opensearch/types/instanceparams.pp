@@ -16,7 +16,6 @@ type Opensearch::InstanceParams = Struct[{
     'heap_memory'                        => Optional[String],
     'plugins_dir'                        => Optional[Stdlib::Absolutepath],
     'plugins_mandatory'                  => Optional[Array[String]],
-    'minimum_master_nodes'               => Optional[Integer],
     'holds_data'                         => Optional[Boolean],
     'auto_create_index'                  => Optional[Variant[Boolean, String]],
     'expected_nodes'                     => Optional[Integer],

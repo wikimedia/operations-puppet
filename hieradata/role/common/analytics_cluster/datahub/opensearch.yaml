@@ -12,7 +12,6 @@ profile::opensearch::common_settings:
   short_cluster_name: datahub
   expected_nodes: 3
   heap_memory: '4G'
-  minimum_master_nodes: 2
   recover_after_nodes: 2
   recover_after_time: '1m'
   send_logs_to_logstash: true

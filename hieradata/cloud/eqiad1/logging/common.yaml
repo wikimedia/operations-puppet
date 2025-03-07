@@ -72,7 +72,6 @@ opensearch::curator::version: 'present'
 profile::opensearch::common_settings:
   auto_create_index: true
   awareness_attributes: ''
-  minimum_master_nodes: 2
   recover_after_nodes: 2
   recover_after_time: '1m'
   # Dont encourage some sort of accidental feedback loop

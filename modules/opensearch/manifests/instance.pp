@@ -24,10 +24,6 @@
 #       smaller.
 # - $plugins_dir: value for path.plugins.  Defaults to /srv/deployment/opensearch/plugins.
 # - $plugins_mandatory: list of mandatory plugins.  Defaults to undef.
-# - $minimum_master_nodes:  how many master nodes must be online for this node
-#       to believe that the OpenSearch cluster is functioning correctly.
-#       Defaults to 1.  Should be set to number of master eligible nodes in
-#       cluster / 2 + 1.
 # - $holds_data: should this node hold data?  Defaults to true.
 # - $auto_create_index: should the cluster automatically create new indices?
 #       Defaults to false.
@@ -127,7 +123,6 @@ define opensearch::instance(
     String                      $heap_memory                        = '2G',
     Stdlib::AbsolutePath        $plugins_dir                        = '/usr/share/opensearch/plugins',
     Optional[Array[String]]     $plugins_mandatory                  = undef,
-    Integer                     $minimum_master_nodes               = 1,
     Boolean                     $holds_data                         = true,
     Variant[Boolean, String]    $auto_create_index                  = false,
     Integer                     $expected_nodes                     = 1,

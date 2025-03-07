@@ -50,7 +50,6 @@ profile::opensearch::common_settings:
   # The OpenSearch nodes that are run on the same box as Logstash+OpenSearch Dashboards are only used
   # as client nodes to communicate with the backing cluster.
   holds_data: false
-  minimum_master_nodes: 2
   recover_after_nodes: 2
   recover_after_time: '1m'
 

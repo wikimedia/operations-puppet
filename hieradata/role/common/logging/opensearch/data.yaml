@@ -22,7 +22,6 @@ profile::opensearch::common_settings:
   short_cluster_name: elk7
   expected_nodes: 10
   heap_memory: '24G'
-  minimum_master_nodes: 2
   recover_after_nodes: 2
   recover_after_time: '1m'
   # Dont encourage some sort of accidental feedback loop
