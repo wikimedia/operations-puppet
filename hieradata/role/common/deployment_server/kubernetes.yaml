@@ -272,11 +272,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-      next:
-        mw_flavour: "publish-81"
-      migration:
-        mw_flavour: "publish-81"
-    mw_flavour: "publish"
+      next: {}
+      migration: {}
+    mw_flavour: "publish-81"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-api-int
@@ -294,11 +292,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-      next:
-        mw_flavour: "publish-81"
-      migration:
-        mw_flavour: "publish-81"
-    mw_flavour: "publish"
+      next: {}
+      migration: {}
+    mw_flavour: "publish-81"
     web_flavour: "webserver"
     debug: false
   - namespace: mw-jobrunner
