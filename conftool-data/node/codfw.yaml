@@ -48,6 +48,11 @@ codfw:
     wikikube-worker2003.codfw.wmnet: [kartotherian-k8s-ssl]
     wikikube-worker2004.codfw.wmnet: [kartotherian-k8s-ssl]
     wikikube-worker2005.codfw.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker2006.codfw.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker2007.codfw.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker2008.codfw.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker2009.codfw.wmnet: [kartotherian-k8s-ssl]
+    wikikube-worker2010.codfw.wmnet: [kartotherian-k8s-ssl]
   elasticsearch:
     elastic2055.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2056.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
