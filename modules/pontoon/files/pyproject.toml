@@ -12,6 +12,11 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 py-modules = ["pontoon"]
 
+[tool.pytest.ini_options]
+markers = [
+    "integration: Marks tests as integration tests"
+]
+
 [project.scripts]
 pontoon-enc = "pontoon.enc:main"
 pontoonctl = "pontoon.ctl:main"
