@@ -139,7 +139,6 @@ class profile::firewall (
             }
 
             nrpe::plugin { 'check_conntrack':
-                ensure => absent,
                 source => 'puppet:///modules/base/firewall/check_conntrack.py',
             }
 
