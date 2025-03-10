@@ -783,12 +783,12 @@ node /^db21(43)\.codfw\./ {
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below
 
-# m1 master
+# old m1 master
 node /^db1164\.eqiad\./ {
     role(mariadb::misc)
 }
 
-# Future m1 master
+# m1 master
 node /^db1250\.eqiad\./ {
     role(mariadb::misc)
 }
