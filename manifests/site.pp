@@ -759,7 +759,8 @@ node /^db2(191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
-# ms1 shard
+# ms1 and x2 shard
+# For now ms1 and x2 are the same - just for MW purposes
 # eqiad
 node /^db11(51|52)\.eqiad\./ {
     role(mariadb::objectstash)
