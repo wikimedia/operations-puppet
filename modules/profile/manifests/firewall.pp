@@ -143,7 +143,6 @@ class profile::firewall (
             }
 
             nrpe::monitor_service { 'conntrack_table_size':
-                ensure        => absent,
                 description   => 'Check size of conntrack table',
                 nrpe_command  => '/usr/local/lib/nagios/plugins/check_conntrack 80 90',
                 contact_group => 'admins',
