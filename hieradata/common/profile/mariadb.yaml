@@ -31,6 +31,15 @@ profile::mariadb::section_params:
   x2:
     writeable_dc: 'both'
     replication_type: 'bidir'
+  ms1:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  ms2:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
+  ms3:
+    writeable_dc: 'both'
+    replication_type: 'bidir'
   es1:
     writeable_dc: 'none'
     replication_type: 'none'
