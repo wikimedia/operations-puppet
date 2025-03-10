@@ -1,5 +1,5 @@
 # db1164
-# old m1 master to be moved to m2
-mariadb::shard: 'm1'
+# future m2 master
+mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
