@@ -6,6 +6,9 @@
     ServerAlias prometheus-*.*
     ServerAlias <%= @fqdn %>
 
+    # enable mod_proxy to reverse-proxy to https
+    SSLProxyEngine on
+
     DocumentRoot /var/www/html
 
     Include /etc/apache2/prometheus.d/*.conf

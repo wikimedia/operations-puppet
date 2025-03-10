@@ -3,6 +3,9 @@
 <VirtualHost [::1]:80 127.0.0.1:80>
     ServerName <%= @vhost %>
 
+    # enable mod_proxy to reverse-proxy to https
+    SSLProxyEngine on
+
     # Redirect authenticated homepage requests to 'ops' instance.
     RewriteEngine on
     RewriteCond %{HTTP_COOKIE} \b_oauth2_proxy=

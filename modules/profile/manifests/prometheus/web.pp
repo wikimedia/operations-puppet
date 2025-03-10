@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::web () {
+    # Acts as a reverse proxy http -> https, hence 'mod_ssl' + http_only
     class { '::httpd':
-        modules => ['proxy', 'proxy_http', 'rewrite', 'lbmethod_byrequests', 'proxy_balancer'],
+        modules   => ['rewrite',
+                      'proxy','proxy_http', 'proxy_balancer',
+                      'lbmethod_byrequests', 'ssl'],
+        http_only => true,
     }
 
     profile::auto_restarts::service { 'apache2': }
