@@ -1712,7 +1712,9 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOnFEsuAmnSGptFVlneYi1AAdX47eibWCoBUv/m7sJEF katie@Katies-MacBook-Air.local
     uid: 1185
-    email: aude.wiki@gmail.com
+    email: kfilbert-ctr@wikimedia.org
+    expiry_date: "2025-06-30"
+    expiry_contact: jseddon@wikimedia.org
   awight:
     ensure: present
     gid: 500
