@@ -7,6 +7,6 @@ profile::base::production::role_description: 'External Storage dumps'
 profile::puppet::agent::force_puppet7: true
 
 profile::dbbackups::mydumper::statistics: 'profile/dbbackups/statistics.ini.erb'
-profile::dbbackups::mydumper::stats_host: db1164.eqiad.wmnet
+profile::dbbackups::mydumper::stats_host: db1250.eqiad.wmnet
 profile::dbbackups::mydumper::stats_db: dbbackups
 profile::dbbackups::mydumper::stats_ca: '/etc/ssl/certs/wmf-ca-certificates.crt'
