@@ -21,8 +21,6 @@ class profile::sre::os_updates (
 
     file { '/usr/local/bin/os-updates-report':
         ensure => stdlib::ensure($ensure, 'file'),
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
         source => 'puppet:///modules/profile/sre/os-updates-report.py',
     }
@@ -38,8 +36,6 @@ class profile::sre::os_updates (
     file {
         default:
             ensure => stdlib::ensure($ensure, 'file'),
-            owner  => 'root',
-            group  => 'root',
             mode   => '0444';
         '/etc/wikimedia/os-updates/os-updates-tracking.cfg':
             source => 'puppet:///modules/profile/sre/os-updates-tracking.cfg';
@@ -85,14 +81,14 @@ class profile::sre::os_updates (
         firewall::service { 'rsyncd_access_miscweb':
             ensure => $os_reports_timer_ensure,
             proto  => 'tcp',
-            port   => [873, 1873],
+            port   => [873],
             srange => $miscweb_rsync_clients,
         }
 
         firewall::service { 'rsyncd_access_aux_pods':
             ensure   => $os_reports_timer_ensure,
             proto    => 'tcp',
-            port     => [873, 1873],
+            port     => [873],
             src_sets => ['AUX_KUBEPODS_NETWORKS', 'STAGING_KUBEPODS_NETWORKS'],
         }
     }
