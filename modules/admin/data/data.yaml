@@ -450,7 +450,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin]
+              migr, mshilova, bwang, hcoplin, benbuchenau]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6599,6 +6599,14 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIb2cTHSPFutTXSU82ZwG861RUcJ++TPDb+S4Se6OpHN
+  benbuchenau:
+    ensure: present
+    realname: Ben Buchenau
+    email: ben.buchenau@wikimedia.de
+    uid: 48678
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQjaDWJMKcyaX9lVpEZM2l4DfU1ZEMoEwtGYWPqE3Qo
 
 ldap_only_users:
   adavenport:
