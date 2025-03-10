@@ -632,3 +632,7 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: jaeger
         - name: jaeger-deploy
+    codesearch:
+      usernames:
+        - name: codesearch
+        - name: codesearch-deploy
