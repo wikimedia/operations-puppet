@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import argparse
+import os
 import shlex
 import signal
 import subprocess
@@ -155,6 +156,10 @@ def main() -> int:
     exceed `resource_change_max_pct`. It retries checking at intervals defined
     by `retry_sleep` seconds until `timeout_minutes` have passed.
     """
+
+    if os.geteuid() != 0:
+        print("Error: needs to run as root")
+        return 1
 
     for sig in (
         signal.SIGINT,
