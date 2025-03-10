@@ -605,14 +605,14 @@ OPEN TASKS WITH A DUE DATE MORE THAN 1 MONTH AGO
 ${result_past_due_dates}
 
 
-OPEN TASKS WITH DEADLINE SUBTYPE BUT WITHOUT DUE DATE (to reset the subtype):
+OPEN TASKS WITH DEADLINE SUBTYPE BUT WITHOUT DUE DATE (to reset the subtype)
+(to be mitigated by https://phabricator.wikimedia.org/T335395 ):
 ${result_deadline_tasks_without_due_dates}
 
 
 PROJECTS WHICH HAVE AN EMPTY PROJECT DESCRIPTION
-(to be mitigated by downstream https://phabricator.wikimedia.org/T344610 ):
+(not an issue anymore due to https://phabricator.wikimedia.org/T344610 ):
 ${result_parent_projects_without_desc}
-
 ${result_sub_projects_without_desc}
 
 
