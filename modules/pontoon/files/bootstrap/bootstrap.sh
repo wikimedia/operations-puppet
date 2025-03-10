@@ -58,7 +58,7 @@ git_init() {
   git init --initial-branch production --quiet
   git add .
   git commit --quiet --message "Bootstrapped from $orig_dir"
-  git remote set-url origin $origin_url
+  git remote add origin $origin_url
   popd
 }
 
@@ -164,10 +164,27 @@ bootstrap_private() {
   rsync -a --chown puppet:root "$git/private" /srv/git/labs
 }
 
+verify() {
+  agent_server=$(puppet config print --section agent server)
+  if [ "$FQDN" == "$agent_server" ]; then
+    exit 0
+  fi
+  echo "Agent server is not correct $agent_server"
+
+  if grep -q "$STACK" $pontoon_path/stack; then
+    exit 0
+  fi
+  echo "Stack $STACK not in $pontoon_path/stack"
+
+  echo "Bootstrap has not completed successfully."
+  exit 1
+}
+
 FQDN=$(hostname --fqdn)
 CHECK_ONLY=0
+VERIFY=0
 
-TEMP=$(getopt -o dp: --long debug,check -n "$0" -- "$@")
+TEMP=$(getopt -o d --long debug,check,verify -n "$0" -- "$@")
 # shellcheck disable=SC2181
 if [ "$?" != 0 ]; then
   echo "Terminating..." >&2
@@ -183,6 +200,10 @@ while true; do
     ;;
   --check)
     CHECK_ONLY=1
+    shift
+    ;;
+  --verify)
+    VERIFY=1
     shift
     ;;
   --)
@@ -206,6 +227,10 @@ fi
 repos_path=/tmp/bootstrap/git
 init_path=/tmp/bootstrap/init
 pontoon_path=/etc/pontoon
+
+if [ "$VERIFY" -eq 1 ]; then
+  verify
+fi
 
 if [ -e $pontoon_path/bootstrap-ok ]; then
   exit 2
