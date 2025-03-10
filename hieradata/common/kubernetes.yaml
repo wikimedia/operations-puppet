@@ -654,7 +654,7 @@ kubernetes::clusters:
         v4: "10.192.76.0/24"
         v6: "2620:0:860:306::1000/116"
       cluster_cidr:
-        v4: "10.192.75.0/24"
+        v4: "10.192.64.0/21"
         v6: "2620:0:860:babe::/64"
       cluster_nodes:
         - kubestagemaster2003.codfw.wmnet

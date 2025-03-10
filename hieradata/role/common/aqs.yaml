@@ -197,16 +197,16 @@ profile::cassandra::monitor_tls_port: 7000
 profile::cassandra::client_ips:
   # required for image-suggestions and other tools.
   # Add the kubernetes pod IPs here
-  # eqiad. In the past it was 10.64.64.0/21
+  # eqiad
   - 10.67.128.0/18
   - 2620:0:861:cabe::/64
   # staging-eqiad
   - 10.64.75.0/24
   - 2620:0:861:babe::/64
   # staging-codfw
-  - 10.192.75.0/24
+  - 10.192.64.0/21
   - 2620:0:860:babe::/64
-  # codfw. In the past it was 10.192.64.0/21
+  # codfw
   - 10.194.128.0/18
   - 2620:0:860:cabe::/64
 
