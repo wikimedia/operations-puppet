@@ -46,7 +46,7 @@ class profile::durum (
     }
 
     acme_chief::cert { 'durum':
-        puppet_svc => 'nginx',
+        puppet_rsc => Exec['nginx-reload'],
     }
 
     class { 'sslcert::dhparam': }
