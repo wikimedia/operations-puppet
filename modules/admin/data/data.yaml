@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak]
+              halfak, jdcc]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -409,7 +409,7 @@ groups:
               joal, akosiaris,
               hoo, daniel, krinkle, tgr,
               ebernhardson, addshore,
-              dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, jdcc, ori,
+              dcausse, bd808, tjones, mobrovac, jdrewniak, ejegg, ori,
               amire80, kartik, pcoombe, foks, kemayo, rmurthy,
               jdlrobson, ovasileva, filippo, pmiazga,
               ladsgroup, musikanimal,
@@ -3023,13 +3023,12 @@ users:
     email: ltoscano@wikimedia.org
     krb: present
   jdcc:
-    ensure: present
+    ensure: absent
     gid: 500
     name: jdcc-berkman
     realname: Justin Clark
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCvfaLmde8biy5hfFR1fOnkfu8eitpGkyWuTXziVHEAFmeiuF87LdnkUDaM/Egom3/fNJKjrzLZPcaJxqa/BeJfWzoz6Ua0dsA/uG1D/l4eIXCEj2QhcvdQT8mbLmXqws3deISARUAIp9DnXG9BQ5LVq6ihwyDgQ9sQiAZsbryKRA5opgSJUE5ynNGBh0M8gIY0+1xBVG9CtrnnyWi7ufklOonzcOo9rssGtE8bHPKnHexKb8FIiVWHy1IrkKLwPBhmLesXTeGnQvAg3VOmeJT7mPG4hH7m5FLB3PvfcCSD27/o/VmVIXUj3ypu0+SBzmJd4uwANMUOuBuNKCXSYB+P jdcc-berkman@work]
+    ssh_keys: []
     uid: 13978
-    email: jclark@cyber.law.harvard.edu
   gehel:
     ensure: present
     gid: 500
