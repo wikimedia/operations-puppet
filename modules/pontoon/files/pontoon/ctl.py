@@ -362,7 +362,7 @@ def list_hosts(ctx, stack, all, output):
     help="Do not enroll the hosts after creation",
 )
 @click.pass_context
-def create_hosts(ctx, stack, role, block, skip_enroll):
+def create_hosts(ctx, stack, role, skip_enroll):
     """Create hosts for the stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
     ctrl.create_hosts(role=role, skip_enroll=skip_enroll)
