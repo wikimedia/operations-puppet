@@ -25,11 +25,6 @@ class puppet_compiler (
 
     # TODO: We currently get TypedDict from typing_extensions however once everything
     # has moved to bookworm we can use typing.TypedDict which was added in py3.8
-    if debian::codename::eq('buster') {
-        apt::package_from_bpo { 'python3-typing-extensions':
-            distro => 'buster',
-        }
-    }
     ensure_packages([
         'python3-yaml', 'python3-requests', 'python3-jinja2', 'python3-clustershell',
         'nginx', 'ruby-httpclient', 'ruby-ldap', 'ruby-rgen', 'ruby-multi-json',
