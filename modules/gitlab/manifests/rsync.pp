@@ -44,7 +44,7 @@ class gitlab::rsync (
             description => 'rsync GitLab data backup primary to a secondary server',
             command     => "${backup_dir_data}/gitlab-backup-periodic-rsync.sh data ${backup_dir_data} ${host}",
             interval    => $rsync_interval,
-            after       => 'full-backup.service',
+            after       => 'full-backup.service partial-backup.service',
         }
         # rsync config backup and exclude Shell scripts and data backup from sync
         systemd::timer::job { "rsync-config-backup-${host}":
