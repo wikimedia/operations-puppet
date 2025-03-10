@@ -1319,9 +1319,19 @@ node /^kubestagemaster[12]00[345]\.(eqiad|codfw)\./ {
     role(kubernetes::staging::master_stacked)
 }
 
-node /^wikikube-ctrl[12]00[1-4]\.(eqiad|codfw)\./ {
+node /^wikikube-ctrl100[1-4]\.eqiad\./ {
     role(kubernetes::master_stacked)
 }
+
+node /^wikikube-ctrl200[1-3]\.codfw\./ {
+    role(kubernetes::master_stacked)
+}
+
+# BEGIN T384970 wikikube-ctrl200[4-5]
+node /^wikikube-ctrl200[4-5]\.codfw\./ {
+    role(insetup::serviceops)
+}
+# END T384970 wikikube-ctrl200[4-5]
 
 # Etherpad on bookworm (virtual machine) (T357159, T316421)
 node /^etherpad[12]00[24]\.(eqiad|codfw)\./ {
@@ -1672,6 +1682,17 @@ node /^wikikube-worker21([0-9][0-9])\.codfw\./ {
 node /^wikikube-worker22([0-3][0-9]|4[0-3])\.codfw\./ {
     role(kubernetes::worker)
 }
+
+# BEGIN T384970 wikikube-worker2248-2331
+node /^wikikube-worker22(4[8-9]|[5-9][0-9])\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+node /^wikikube-worker23([1-2][0-9]|3[0-1])\.codfw\./ {
+    role(insetup::serviceops)
+}
+
+# END T384970
 
 node /^kubestage100[3-6]\.eqiad\./ {
     role(kubernetes::staging::worker)
