@@ -759,11 +759,13 @@ node /^db2(191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
-# x2 shard
+# ms1 shard
 # eqiad
 node /^db11(51|52)\.eqiad\./ {
     role(mariadb::objectstash)
 }
+
+# TO-DO set up ms2, with the other two hosts from ms1
 
 # codfw
 node /^db21(42|44)\.codfw\./ {

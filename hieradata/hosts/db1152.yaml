@@ -1,3 +1,3 @@
 # db1152
-mariadb::shard: 'x2'
+mariadb::shard: 'ms1'
 profile::mariadb::mysql_role: 'master'
