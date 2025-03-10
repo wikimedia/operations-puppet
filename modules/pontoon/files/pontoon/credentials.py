@@ -15,7 +15,7 @@ class Credentials(object):
             raise CredentialsMissing
 
         if os.stat(self.config_path).st_mode & stat.S_IROTH:
-            raise ValueError(f"{self.config_path} is world-readable")
+            raise ValueError(f"wrong permissions: chmod a=,u=r {self.config_path}")
 
         with open(self.config_path) as f:
             loaded = YAML().load(f)

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+import shutil
 import os
 from dataclasses import asdict, dataclass, fields
 from pathlib import Path
@@ -188,6 +189,10 @@ class Pontoon(object):
 
         with open(self.stack_config_path, "w") as f:
             self.yaml.dump(asdict(self.config), f)
+
+    def delete(self):
+        """Remove the stack from disk."""
+        shutil.rmtree(self.stack_path)
 
 
 @dataclass

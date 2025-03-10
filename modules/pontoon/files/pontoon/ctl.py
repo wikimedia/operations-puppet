@@ -26,15 +26,18 @@ INSTRUCTIONS = {
     "credentials-missing": """
 Credentials not found. In order to get new credentials:
   * Navigate to {horizon_url}/identity/application_credentials
-  * Switch to the project for your Pontoon stack from the top left dropdown
-  * Create a new application credential and pick a name for it
+  * From the top left dropdown, select the project for your Pontoon stack
+  * Create a new application credential, 'name' is the only required field.
+    for example '<username>-pontoon'.
 
-The credential will need to be written to {config_path} in this form:
+The credential will need to be written to {credentials_path} in this form:
 
 credentials:
   default:
     id: <CREDENTIAL-ID>
     secret: <CREDENTIAL-SECRET>
+
+Note: {credentials_path} will need to be readable only by your user
 """,
     "git-remote-setup": """
 # Setup the Pontoon git remote for {stack} with the following commands:
@@ -46,8 +49,9 @@ git remote set-url pontoon-{stack} ssh://{server}/~/puppet.git
     "stack-not-found": """
 
 Unable to find stack {stack!r} in path {home!r}.
-Make sure to run from a directory with Pontoon stacks, or set PONTOON_HOME to be
-the location to search for stacks.
+Make sure to run from a directory with Pontoon stacks, usually
+<puppet.git checkout>/modules/pontoon/files.
+To run pontoonctl from any directory, set PONTOON_HOME to the location above.
 """,
     "ssh-config": """
 Below you'll find the ~/.ssh/config snippet to enable Pontoon integration
@@ -106,12 +110,12 @@ def get_credentials() -> Credentials:
     credentials_path = SYS_CONFIG_PATH().joinpath("cloudvps.yaml").as_posix()
     try:
         creds = load_credentials(credentials_path)
-    except ValueError:
-        raise click.UsageError(f"Unable to get credentials from {credentials_path}")
+    except ValueError as e:
+        raise click.UsageError(f"load credentials: {e}")
     except CredentialsMissing:
         raise click.UsageError(
             INSTRUCTIONS["credentials-missing"].format(
-                config_path=credentials_path, horizon_url=HORIZON_URL
+                credentials_path=credentials_path, horizon_url=HORIZON_URL
             ),
         )
     return creds
@@ -294,13 +298,19 @@ def new_stack(ctx, stack, host_prefix, name):
     if wanted_stack in Pontoon("bootstrap", home).available_stacks:
         raise click.UsageError(f"stack {wanted_stack!r} already exists in {home}")
 
-    Pontoon.new(wanted_stack, home)
+    p = Pontoon.new(wanted_stack, home)
 
-    ctrl = get_controller(wanted_stack, home)
-    chosen_host_prefix = pick_host_prefix(ctrl, host_prefix)
-    ok = ctrl.new_stack(chosen_host_prefix)
-    if not ok:
-        raise click.UsageError("Failed to create a new stack")
+    try:
+        ctrl = get_controller(wanted_stack, home)
+        chosen_host_prefix = pick_host_prefix(ctrl, host_prefix)
+        ok = ctrl.new_stack(chosen_host_prefix)
+        if not ok:
+            raise click.UsageError("Failed to create a new stack")
+    except Exception:
+        # Make sure the stack is deleted so pontoonctl new-stack can be run again
+        p.delete()
+        raise
+
     print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack))
 
 
