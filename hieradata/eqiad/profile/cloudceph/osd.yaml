@@ -361,4 +361,4 @@ profile::cloudceph::osd::cluster_networks:
   - "192.168.5.0/24"
   - "192.168.6.0/24"
 
-profile::cloudceph::osd::enable_qos: false
+profile::cloudceph::osd::enable_qos: true

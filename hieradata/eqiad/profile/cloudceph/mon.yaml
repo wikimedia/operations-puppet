@@ -9,4 +9,4 @@ profile::cloudceph::mon::hosts:
     public:
       addr: "10.64.149.19"
 
-profile::cloudceph::mon::enable_qos: false
+profile::cloudceph::mon::enable_qos: true
