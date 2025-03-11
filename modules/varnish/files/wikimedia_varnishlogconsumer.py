@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
   VarnishLogConsumer
@@ -226,9 +227,10 @@ class BaseVarnishLogConsumer(object):
         if splitline[0] not in ('-', '--'):
             return
 
-        tag = splitline[1]
+        tag, value = splitline[1], None
 
-        if len(splitline) > 2:  # The End tag has no 3rd part
+        # Some tags (such as "End") have no values/3rd part
+        if len(splitline) > 2:
             value = splitline[2]
 
         if tag == 'Begin':
