@@ -2,6 +2,7 @@ profile::prometheus::icinga_exporter::label_teams_config:
   data-platform:
     instance:
       - 'cloudelastic.*'
+      - 'relforge.*'
 
   wmcs:
     alertname:
