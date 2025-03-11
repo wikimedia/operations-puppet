@@ -107,6 +107,7 @@ prometheus::instances:
   ext:
     port: 9908
     provision_lv_size: '10g'
+    retention_time: 730h
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
