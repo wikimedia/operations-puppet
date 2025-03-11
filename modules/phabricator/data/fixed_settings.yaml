@@ -34,7 +34,7 @@ files.viewable-mime-types:
   'application/ogg': 'application/ogg'
   'audio/x-wav': 'audio/x-wav'
   'audio/mpeg': 'audio/mpeg'
-  'video/mp4": "video/mp4'
+  'video/mp4': 'video/mp4'
   'video/ogg': 'video/ogg'
   'video/webm': 'video/webm'
   'text/x-php': 'text/plain; charset=utf-8'
