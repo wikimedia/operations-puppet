@@ -33,6 +33,12 @@ class profile::puppetserver::wmcs (
         source => 'puppet:///modules/puppetmaster/validatecloudvpsfqdn.py',
     }
 
+    file_line { 'pgit_alias':
+        ensure => present,
+        path   => '/root/.bashrc',
+        line   => 'alias git=pgit',
+    }
+
     file { '/usr/local/sbin/validatelabsfqdn.py':
         ensure => 'absent',
     }
