@@ -146,7 +146,8 @@ class opensearch (
             logstash_logback_port => $logstash_logback_port,
             rack                  => $rack,
             row                   => $row,
-            *                     => $instance_params
+            require               => Package['opensearch'],
+            *                     => $instance_params,
         }
     }
 

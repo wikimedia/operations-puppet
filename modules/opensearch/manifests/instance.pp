@@ -226,7 +226,6 @@ define opensearch::instance(
         group   => 'root',
         content => template("opensearch/opensearch_${version}.yml.erb"),
         mode    => '0444',
-        require => Package['opensearch'],
     }
 
     file { "${config_dir}/logging.yml":
@@ -238,7 +237,6 @@ define opensearch::instance(
         group   => 'root',
         content => template("opensearch/log4j2_${version}.properties.erb"),
         mode    => '0444',
-        require => Package['opensearch'],
     }
     file { "${config_dir}/jvm.options":
         ensure  => file,
@@ -246,17 +244,15 @@ define opensearch::instance(
         group   => 'root',
         content => template('opensearch/jvm.options.erb'),
         mode    => '0444',
-        require => Package['opensearch'],
     }
 
     # opensearch refuses to start without the "scripts" directory, even if
     # we do not actually use any scripts.
     file { "${config_dir}/scripts":
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        require => Package['opensearch'],
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
     }
 
     $ensure_keystore = $version ? {
@@ -269,7 +265,6 @@ define opensearch::instance(
             command     => '/usr/share/opensearch/bin/opensearch-keystore create',
             environment => ["OPENSEARCH_PATH_CONF=${config_dir}"],
             creates     => "${config_dir}/opensearch.keystore",
-            require     => Package['opensearch'],
             before      => File["${config_dir}/opensearch.keystore"],
         }
     }
@@ -282,11 +277,10 @@ define opensearch::instance(
     }
 
     file { $data_dir:
-      ensure  => directory,
-      owner   => 'opensearch',
-      group   => 'opensearch',
-      mode    => '0755',
-      require => Package['opensearch'],
+      ensure => directory,
+      owner  => 'opensearch',
+      group  => 'opensearch',
+      mode   => '0755',
     }
 
     # GC logs rotation is done by the JVM, but on JVM restart, the logs left by
@@ -316,7 +310,6 @@ define opensearch::instance(
         enable   => true,
         tag      => 'opensearch_services',
         require  => [
-            Package['opensearch'],
             Systemd::Unit["opensearch_${version}@.service"],
             File["${config_dir}/opensearch.yml"],
             File["${config_dir}/logging.yml"],
