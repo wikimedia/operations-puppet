@@ -137,10 +137,11 @@ class profile::cache::haproxy(
         require     => File['/usr/local/sbin/haproxy-stek-manager'],
     }
 
+    $cert_path = '/run/haproxy-tls'
     # For TLS material
     systemd::tmpfile { 'haproxy_tls_material':
         ensure  => $use_tls_tmpfiles.bool2str('present', 'absent'),
-        content => 'd /run/haproxy-tls 0700 haproxy haproxy -',
+        content => "d ${cert_path} 0700 haproxy haproxy -",
     }
 
     if !$available_unified_certificates[$public_tls_unified_cert_vendor] {
