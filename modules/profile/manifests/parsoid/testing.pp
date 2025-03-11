@@ -12,6 +12,14 @@ class profile::parsoid::testing (
         shared    => true,
     }
 
+    # Create a file that sets the parsoid trait, which is picked up by
+    # mediwiki-config, fixing ClusterConfig init
+    # T388465
+    file { '/etc/wikimedia-servergroup':
+        ensure  => present,
+        content => 'parsoid',
+    }
+
     # mysql client and configuration to provide command line access to
     # parsoid testing database
     include passwords::testreduce::mysql
