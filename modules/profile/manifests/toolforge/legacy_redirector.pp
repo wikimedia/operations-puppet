@@ -9,7 +9,15 @@ class profile::toolforge::legacy_redirector (
     }
 
     class { 'httpd':
-        modules => ['alias', 'rewrite', 'ssl'],
+        modules => ['alias', 'rewrite', 'ssl', 'mpm_event'],
+    }
+
+    # See https://phabricator.wikimedia.org/T385908
+    httpd::conf { 'mpm_event_override':
+      ensure    => 'present',
+      conf_type => 'conf',
+      source    => 'puppet:///modules/profile/toolforge/legacy_redirector/mpm_event.conf',
+      replaces  => 'mods-enabled/mpm_event.conf',
     }
 
     httpd::site { 'tools.wmflabs.org':
