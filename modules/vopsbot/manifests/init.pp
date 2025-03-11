@@ -117,15 +117,6 @@ class vopsbot(
         }
     }
 
-    $alertmanager_passive_hosts.each |Stdlib::Fqdn $passive_host| {
-        rsync::quickdatacopy { "vopsbot-sync-db-to-${passive_host}":
-            ensure      => absent,
-            source_host => $alertmanager_active_host,
-            dest_host   => $alertmanager_passive_hosts,
-            module_path => $schema_file,
-        }
-    }
-
     systemd::service { 'vopsbot':
         ensure   => $run_service.bool2str('present', 'absent'),
         override => false,
