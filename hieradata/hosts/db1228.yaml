@@ -1,4 +1,4 @@
 # db1228
-# old m2 master
-mariadb::shard: 'm2'
+# future m5 master
+mariadb::shard: 'm5'
 profile::monitoring::notifications_enabled: false
