@@ -101,8 +101,8 @@ prometheus::instances:
     port: 9912
     k8s_cluster_name: "ml-staging-%{::site}"
     hosts:
-      - prometheus2006.codfw.wmnet
       - prometheus2007.codfw.wmnet
+      - prometheus2008.codfw.wmnet
 
   ext:
     port: 9908
