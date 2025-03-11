@@ -37,8 +37,15 @@ KUBE_CONFIGS = [
     'mw-script',  # Normal access for members of the deployment group.
     'mw-script-restricted',  # Identical access for members of the restricted group.
 ]
-# Read main_app.image from this values file to determine the live MW image version.
-VALUES = '/etc/helmfile-defaults/mediawiki/release/mw-script-main.yaml'
+# Read main_app.image from one of these release values files, dependent on selected PHP version, to
+# determine the live MW image version to use.
+RELEASE_VALUES = {
+    '7.4': '/etc/helmfile-defaults/mediawiki/release/mw-script-main.yaml',
+    '8.1': '/etc/helmfile-defaults/mediawiki/release/mw-script-next.yaml',
+}
+# The default PHP version used to select the appropriate release values file from among those
+# available in RELEASE_VALUES.
+DEFAULT_RELEASE_VALUES_PHP_VERSION = '7.4'
 
 
 class ClientError(Exception):
@@ -122,12 +129,12 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
-def mediawiki_image() -> str:
+def mediawiki_image(php_version: str) -> str:
     # Find out what the most recently deployed multiversion image is and use that. This might not be
     # the same image that's actually running in the "normal" releases like mw-web (particularly if
     # we're in the middle of a deployment or rollback) but the values file is world-readable so this
     # works even if the user isn't in the deployment group.
-    with open(VALUES, 'r') as f:
+    with open(RELEASE_VALUES[php_version], 'r') as f:
         values = yaml.safe_load(f)
     return values['main_app']['image']
 
@@ -241,10 +248,12 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
     values = {
-        # Default to the latest multiversion image deployed by scap, with the option to override
-        # by a command-line flag.
+        # Default to the latest multiversion image deployed by scap for the selected PHP version,
+        # with the option to override by a command-line flag.
         'main_app': {
-            'image': args.mediawiki_image if args.mediawiki_image else mediawiki_image(),
+            'image': (
+                args.mediawiki_image if args.mediawiki_image else mediawiki_image(args.php_version)
+            ),
         },
         'mwscript': {
             'args': [args.script_name, *args.script_args],
@@ -382,6 +391,12 @@ def main() -> int:
                         help='Specify a MediaWiki image (without registry), e.g. '
                              'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
                              '(Default: Use the latest image built and deployed by scap)')
+    parser.add_argument('--php_version',
+                        choices=RELEASE_VALUES.keys(),
+                        default=DEFAULT_RELEASE_VALUES_PHP_VERSION,
+                        help='The PHP version to target when selecting the latest MediaWiki image '
+                             'built / deployed by scap. Ignored if --mediawiki_image is provided. '
+                             f'(Default: {DEFAULT_RELEASE_VALUES_PHP_VERSION})')
     parser.add_argument('--file', action='append', type=parse_filename_pair,
                         help="Copy a text file into the MediaWiki container (in the script's "
                              "working directory) to be used as script input. Format: "
