@@ -1,5 +1,6 @@
-profile::lists::automation::lists_to_sync:
-  - stewards-l
+profile::lists::automation::lists_to_sync_dry_run:
   - global-sysops
   - global-renamers
   - stewards-usergroup
+profile::lists::automation::lists_to_sync_wet_run:
+  - stewards-l
