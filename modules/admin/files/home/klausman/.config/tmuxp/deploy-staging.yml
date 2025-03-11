@@ -2,7 +2,7 @@ session_name: k8s deploy staging
 global_options:
   default-command: sudo -i bash --rcfile /home/klausman/.bashrc_root -i
 windows:
-- window_name: k8s deplot
+- window_name: k8s deploy staging
   suppress_history: false
   layout: even-vertical
   panes:
