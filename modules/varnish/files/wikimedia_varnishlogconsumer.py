@@ -229,7 +229,8 @@ class BaseVarnishLogConsumer(object):
 
         tag, value = splitline[1], None
 
-        # Some tags (such as "End") have no values/3rd part
+        # Some tags (such as "End") have no values/3rd part and will stick with
+        # the default NoneType.
         if len(splitline) > 2:
             value = splitline[2]
 
@@ -239,6 +240,13 @@ class BaseVarnishLogConsumer(object):
         elif tag == 'End':
             self.handle_end()
             self.tx = {}
+        elif tag == "Filters":
+            if value:
+                # Present with comma-separation, not as a list
+                filters = ','.join(value.split())
+            else:
+                filters = 'none'
+            self.tx['filters'] = filters
         elif tag in ('ReqMethod', 'BereqMethod'):
             self.tx['http-method'] = value
         elif tag in ('ReqURL', 'BereqURL'):
