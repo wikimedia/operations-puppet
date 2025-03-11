@@ -1703,26 +1703,16 @@ cache_hosts:
 - 2a02:ec80:700:102:10:140:1:11  # cp7016.magru.wmnet
 
 kafka_brokers_main:
-- 10.64.0.200                  # kafka-main1001.eqiad.wmnet
-- 2620:0:861:101:10:64:0:200   # kafka-main1001.eqiad.wmnet
-- 10.64.16.37                  # kafka-main1002.eqiad.wmnet
-- 2620:0:861:102:10:64:16:37   # kafka-main1002.eqiad.wmnet
-- 10.64.32.90                  # kafka-main1003.eqiad.wmnet
-- 2620:0:861:103:10:64:32:90   # kafka-main1003.eqiad.wmnet
-- 10.64.48.30                  # kafka-main1004.eqiad.wmnet
-- 2620:0:861:107:10:64:48:30   # kafka-main1004.eqiad.wmnet
-- 10.64.48.31                  # kafka-main1005.eqiad.wmnet
-- 2620:0:861:107:10:64:48:31   # kafka-main1005.eqiad.wmnet
-- 10.192.5.9                   # kafka-main2006.codfw.wmnet
-- 2620:0:860:106:10:192:5:9    # kafka-main2006.codfw.wmnet
-- 10.192.22.6                  # kafka-main2007.codfw.wmnet
-- 2620:0:860:112:10:192:22:6   # kafka-main2007.codfw.wmnet
-- 10.192.32.4                  # kafka-main2008.codfw.wmnet
-- 2620:0:860:103:10:192:32:4   # kafka-main2008.codfw.wmnet
-- 10.192.48.33                 # kafka-main2009.codfw.wmnet
-- 2620:0:860:104:10:192:48:33  # kafka-main2009.codfw.wmnet
-- 10.192.48.35                 # kafka-main2010.codfw.wmnet
-- 2620:0:860:104:10:192:48:35  # kafka-main2010.codfw.wmnet
+- 10.192.5.9                   # kafka-main2006.codfw.wmnet #T363210
+- 2620:0:860:106:10:192:5:9    # kafka-main2006.codfw.wmnet #T363210
+- 10.192.22.6                  # kafka-main2007.codfw.wmnet #T363210
+- 2620:0:860:112:10:192:22:6   # kafka-main2007.codfw.wmnet #T363210
+- 10.192.32.4                  # kafka-main2008.codfw.wmnet #T363210
+- 2620:0:860:103:10:192:32:4   # kafka-main2008.codfw.wmnet #T363210
+- 10.192.48.33                 # kafka-main2009.codfw.wmnet #T363210
+- 2620:0:860:104:10:192:48:33  # kafka-main2009.codfw.wmnet #T363210
+- 10.192.48.35                 # kafka-main2010.codfw.wmnet #T363210
+- 2620:0:860:104:10:192:48:35  # kafka-main2010.codfw.wmnet #T363210
 - 10.64.0.101                  # kafka-main1006.eqiad.wmnet #T363214
 - 2620:0:861:101:10:64:0:101   # kafka-main1006.eqiad.wmnet #T363214
 - 10.64.16.30                  # kafka-main1007.eqiad.wmnet #T363214

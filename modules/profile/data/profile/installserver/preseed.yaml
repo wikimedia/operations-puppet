@@ -351,13 +351,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafka-logging*':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
-  'kafka-main[12]00[1-3]':
-    - reuse-parts.cfg
-    - partman/custom/reuse-old-kafka-main.cfg
-  'kafka-main[12]00[45]':
-    - reuse-parts-test.cfg
-    - partman/custom/reuse-raid10-8dev.cfg
-  'kafka-main[12]00[6-9]|kafka-main[12]010':
+  'kafka-main[12]*':
     - reuse-parts.cfg
     - partman/reuse-raid10-6dev.cfg
   'kafkamon[12]00[0-9]':
