@@ -8,3 +8,5 @@ profile::cloudceph::mon::hosts:
   "cloudcephmon1006.eqiad.wmnet":
     public:
       addr: "10.64.149.19"
+
+profile::cloudceph::mon::enable_qos: false

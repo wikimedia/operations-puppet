@@ -8,3 +8,5 @@ profile::cloudceph::mon::hosts:
   "cloudcephmon2006-dev.codfw.wmnet":
     public:
       addr: "10.192.20.20"
+
+profile::cloudceph::mon::enable_qos: true

@@ -1,0 +1,1 @@
+profile::cloudceph::osd::enable_qos: false

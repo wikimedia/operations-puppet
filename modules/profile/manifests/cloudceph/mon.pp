@@ -12,6 +12,7 @@ class profile::cloudceph::mon(
     String                     $ceph_repository_component = lookup('profile::cloudceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes       = lookup('profile::cloudceph::cinder_backup_nodes'),
     Ceph::Auth::Conf           $ceph_auth_conf            = lookup('profile::cloudceph::auth::load_all::configuration'),
+    Boolean                    $enable_qos                = lookup('profile::cloudceph::mon::enable_qos'),
 ) {
     require 'profile::cloudceph::auth::load_all'
 
@@ -87,6 +88,7 @@ class profile::cloudceph::mon(
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
+        enable_qos          => $enable_qos,
     }
 
     class { 'ceph::mon':

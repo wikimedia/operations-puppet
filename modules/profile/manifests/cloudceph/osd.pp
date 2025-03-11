@@ -15,6 +15,7 @@ class profile::cloudceph::osd(
     String[1]                  $ceph_repository_component       = lookup('profile::cloudceph::ceph_repository_component'),
     Array[Stdlib::Fqdn]        $cinder_backup_nodes             = lookup('profile::cloudceph::cinder_backup_nodes'),
     Boolean                    $with_location_hook              = lookup('profile::cloudceph::osd::with_location_hook'),
+    Boolean                    $enable_qos                      = lookup('profile::cloudceph::osd::enable_qos'),
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
@@ -169,7 +170,8 @@ class profile::cloudceph::osd(
         mon_hosts           => $mon_hosts,
         osd_hosts           => $osd_hosts,
         public_networks     => $public_networks,
-        with_location_hook  => $with_location_hook
+        with_location_hook  => $with_location_hook,
+        enable_qos          => $enable_qos,
     }
 
     $mon_host_ips = $mon_hosts.reduce({}) | $memo, $value | {
