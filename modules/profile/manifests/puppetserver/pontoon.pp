@@ -31,10 +31,24 @@ class profile::puppetserver::pontoon (
             group  => 'puppet',
         })
 
-        # Cloning from bootstrap repos takes precedence over gerrit
-        $origin = find_file("/tmp/bootstrap/git/${$repo.basename}/.git/config") ? {
-            undef   => undef,
-            default => "/tmp/bootstrap/git/${$repo.basename}",
+
+        # Clone from gerrit ($origin == undef) unless we are bootstrapping.
+        # In which case:
+        # * clone from the local repos first
+        # * once done, go back to having gerrit as a remote (by git::clone)
+        # This is done in order to have puppetmaster::gitsync do the right thing
+        $bootstrap_dir = "/tmp/bootstrap/git/${$repo.basename}"
+        $bootstrap_guard = "${bootstrap_dir}/.git/bootstrap-ok"
+
+        $origin = (find_file($bootstrap_guard.dirname) and !find_file($bootstrap_guard)) ? {
+            true    => $bootstrap_dir,
+            default => undef,
+        }
+
+        exec { "repo_bootstrap_finish_${repo}":
+            refreshonly => true,
+            command     => "/usr/bin/touch ${bootstrap_guard}",
+            creates     => $bootstrap_guard,
         }
 
         git::clone { $repo:
@@ -42,6 +56,7 @@ class profile::puppetserver::pontoon (
             owner     => 'puppet',
             mode      => '0755',
             origin    => $origin,
+            notify    => Exec["repo_bootstrap_finish_${repo}"],
         }
     }
 
