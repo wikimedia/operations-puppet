@@ -149,6 +149,7 @@ class netops::monitoring(
         'lsw1-e5-eqiad.mgmt' => { ipv4 => '10.65.7.109', parents => ['msw2-eqiad'] },
         'lsw1-e6-eqiad.mgmt' => { ipv4 => '10.65.7.110', parents => ['msw2-eqiad'] },
         'lsw1-e7-eqiad.mgmt' => { ipv4 => '10.65.7.111', parents => ['msw2-eqiad'] },
+        'lsw1-e8-eqiad.mgmt' => { ipv4 => '10.65.2.150', parents => ['msw2-eqiad'] },
         'ssw1-f1-eqiad.mgmt' => { ipv4 => '10.65.2.144', parents => ['msw2-eqiad'] },
         'lsw1-f1-eqiad.mgmt' => { ipv4 => '10.65.1.232', parents => ['msw2-eqiad'] },
         'lsw1-f2-eqiad.mgmt' => { ipv4 => '10.65.1.233', parents => ['msw2-eqiad'] },
@@ -156,6 +157,7 @@ class netops::monitoring(
         'lsw1-f5-eqiad.mgmt' => { ipv4 => '10.65.7.112', parents => ['msw2-eqiad'] },
         'lsw1-f6-eqiad.mgmt' => { ipv4 => '10.65.7.113', parents => ['msw2-eqiad'] },
         'lsw1-f7-eqiad.mgmt' => { ipv4 => '10.65.7.114', parents => ['msw2-eqiad'] },
+        'lsw1-f8-eqiad.mgmt' => { ipv4 => '10.65.3.7', parents => ['msw2-eqiad'] },
         # codfw prod
         'ssw1-a1-codfw.mgmt' => { ipv4 => '10.193.1.204', parents => ['msw1-codfw'] },
         'ssw1-a8-codfw.mgmt' => { ipv4 => '10.193.2.1', parents => ['msw1-codfw'] },
