@@ -20,9 +20,14 @@ define sqlite::db (
         default => $db_path,
     }
     file {$_db_path:
-        ensure => $ensure,
-        owner  => $owner,
-        group  => $group,
+        ensure  => $ensure,
+        owner   => $owner,
+        group   => $group,
+        # If Package installation fails in 'exec' below then
+        # a zero-byte file will be created and the 'exec' will not be refreshed
+        # again, thus 'require' Package here too.
+        # https://phabricator.wikimedia.org/T387112
+        require => Package[$sqlite::package],
     }
     if $sql_schema {
         exec{"sqlite_initialist_db_${title}":
