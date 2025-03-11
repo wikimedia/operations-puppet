@@ -89,6 +89,7 @@ class profile::mediawiki::maintenance (
     include ::profile::mediawiki::maintenance::campaignevents
     include ::profile::mediawiki::maintenance::purge_loginnotify
     include ::profile::mediawiki::maintenance::wikimediaevents
+    include ::profile::mediawiki::maintenance::backfill_localaccounts
 
     # Include the cache warmup script
     # TODO: T369921 - absent and remove.
