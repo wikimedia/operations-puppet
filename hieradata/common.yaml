@@ -2076,6 +2076,11 @@ infra_devices:
     ipv6: 2620:0:861:11b::b
     site: eqiad
     role: l3sw
+  lsw1-e8-eqiad:
+    ipv4: 10.64.146.16
+    ipv6: 2620:0:861:11b::10
+    site: eqiad
+    role: l3sw
   ssw1-f1-eqiad:
     ipv4: 10.64.146.2
     ipv6: 2620:0:861:11b::2
@@ -2109,6 +2114,11 @@ infra_devices:
   lsw1-f7-eqiad:
     ipv4: 10.64.146.15
     ipv6: 2620:0:861:11b::f
+    site: eqiad
+    role: l3sw
+  lsw1-f8-eqiad:
+    ipv4: 10.64.146.17
+    ipv6: 2620:0:861:11b::11
     site: eqiad
     role: l3sw
   cr2-eqord:
