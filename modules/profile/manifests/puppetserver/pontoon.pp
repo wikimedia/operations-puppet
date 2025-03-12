@@ -71,6 +71,15 @@ class profile::puppetserver::pontoon (
         target => "${git_basedir}/labs/private",
     }
 
+    # in Cloud VPS agents of a self-hosted puppetserver expect
+    # /var/lib/puppet/client/ssl instead of /var/lib/puppet/ssl. See also
+    # modules/wmflib/lib/puppet/parser/functions/puppet_ssldir.rb
+    # and the equivalent functionality in pontoon/enroll.py
+    file { '/var/lib/puppet/client':
+        ensure => link,
+        target => '.',
+    }
+
     $puppetdb_hosts = pontoon::hosts_for_role('puppetdb')
     $puppetdb_ok_file='/var/lib/pontoon/puppetdb-ok'
 
