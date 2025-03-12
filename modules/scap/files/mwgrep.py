@@ -1,6 +1,5 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
-# -*- coding: utf-8 -*-
 """
   usage: mwgrep [-h] [--max-results N] [--timeout N] [--user | --module]
                 [--title TITLE | --etitle REGEX] [--no-private] regex
@@ -26,15 +25,13 @@
   lucene version is available from `curl search.svc.eqiad.wmnet:9200`.
 
 """  # noqa: E501
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 import argparse
 import bisect
 from itertools import chain
 import json
 import requests
+import sys
 
 
 TIMEOUT = 30
@@ -73,7 +70,7 @@ ap.add_argument(
 ap.add_argument(
     '--timeout',
     metavar='N',
-    type='{0}s'.format,
+    type='{}s'.format,
     default='30',
     help='abort search after this many seconds (default: 30)'
 )
@@ -157,7 +154,7 @@ try:
     # cover all the live indices used by cirrus.
     # TODO: Using the CirrusSearch metastore might be a good improvement as
     # this technique only relies on a naming convention.
-    local_indices = map(lambda t: "*_" + t, TYPES)
+    local_indices = list(map(lambda t: "*_" + t, TYPES))
 
     # We need to build this same list for all remote clusters:
     # cluster_name:*_content,cluster_name:*_general,cluster_name:*_file
@@ -178,30 +175,30 @@ try:
     try:
         full_result = resp.json()
         if resp.status_code >= 400:
-            error_body = resp.json()
-            if 'error' in error_body and 'root_cause' in error_body['error']:
-                for root_cause in error_body['error']['root_cause']:
+            if 'error' in full_result and 'root_cause' in full_result['error']:
+                for root_cause in full_result['error']['root_cause']:
                     if root_cause['type'] == 'invalid_regex_exception':
                         sys.stderr.write(
-                            'Error while parsing regular expression: {0}\n{1}\n'.format(
+                            'Error while parsing regular expression: {}\n{}\n'.format(
                                 args.term, root_cause['reason']))
                         exit(1)
-                sys.stderr.write('Unknown error: {0}\n'.format(json.dumps(error_body, indent=4)))
+                sys.stderr.write('Unknown error: {}\n'.format(json.dumps(full_result, indent=4)))
                 exit(1)
             else:
                 sys.stderr.write(
-                    'Received unexpected json body from elasticsearch:\n{0}\n'.format(
-                        json.dumps(error_body, indent=4, separators=(',', ': '))))
+                    'Received unexpected json body from elasticsearch:\n{}\n'.format(
+                        json.dumps(full_result, indent=4, separators=(',', ': '))))
             exit(1)
     except ValueError as e:
         sys.stderr.write(
-            "Error '{0}' while parsing elasticsearch response '{1}'.\n".format(
-                e.message, json.dumps(full_result, indent=4, separators=(',', ': '))))
+            "Error '{}' while parsing elasticsearch response '{}'.\n".format(
+                str(e), resp.text))
         exit(1)
 
     result = full_result['hits']
 
-    private_wikis = open('/srv/mediawiki/dblists/private.dblist').read().splitlines()
+    with open('/srv/mediawiki/dblists/private.dblist') as f:
+        private_wikis = f.read().splitlines()
 
     for hit in result['hits']:
         index_name = hit['_index']
@@ -210,7 +207,7 @@ try:
             _, index_name = index_name.split(':', 1)
         db_name = index_name.rsplit('_', 2)[0]
         title = hit['_source']['title']
-        page_name = '%s%s' % (PREFIX_NS[args.ns], title)
+        page_name = '{}{}'.format(PREFIX_NS[args.ns], title)
         if db_name in private_wikis:
             bisect.insort(matches['private'], (db_name, page_name))
         else:
@@ -237,7 +234,7 @@ try:
             print('{:<20}{}'.format(db_name, page_name))
 
     print('')
-    print('(total: %s, shown: %s)' % (total, hits))
+    print('(total: {}, shown: {})'.format(total, hits))
     if full_result['timed_out']:
         print("""
 The query was unable to complete within the alloted time. Only partial results
@@ -252,5 +249,5 @@ the query:
 """)
 
 except requests.exceptions.RequestException as error:
-    sys.stderr.write("Failed to connect to elastic {0}.\n".format(error))
+    sys.stderr.write("Failed to connect to elastic {}.\n".format(error))
     exit(1)
