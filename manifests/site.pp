@@ -649,7 +649,11 @@ node /^db1125\.eqiad\./ {
     role(mariadb::core_test)
 }
 
-# Testing host - will need to be wiped after the DC switch tests
+node /^db1176\.eqiad\./ {
+    role(mariadb::core_test)
+}
+
+# Testing host
 node /^db2230\.codfw\./ {
     role(mariadb::core_test)
 }
@@ -816,11 +820,6 @@ node /^db2234\.codfw\./ {
 }
 ## m5 shard
 # See also multiinstance misc hosts db1217, db2160 below
-
-# old m5 master
-node /^db1176\.eqiad\./ {
-    role(mariadb::misc)
-}
 
 # m5 master
 node /^db1228\.eqiad\./ {
