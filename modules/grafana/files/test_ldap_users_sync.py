@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 import unittest
 from unittest.mock import MagicMock
@@ -18,7 +19,7 @@ class MockResponse(object):
 
 
 def get_ldap_users(uid):
-    return LDAP_USERS[uid]
+    return ldap_users_sync.WikimediaLDAP.normalize_metadata(LDAP_USERS[uid])
 
 
 class SyncerTest(unittest.TestCase):
@@ -60,3 +61,58 @@ class SyncerTest(unittest.TestCase):
 
         self.syncer.sync_ldap_users(["user1"], "Editor")
         self.ldap.uid_meta.assert_not_called()
+
+    def test_sync_user_with_trailing_whitespace(self):
+        """Ensure emails with trailing spaces are normalized before being sent to Grafana."""
+        LDAP_USERS["user_with_space"] = {
+            "cn": [b"user_with_space"],
+            "mail": [b"user@domain "],
+        }
+
+        self.syncer.commit = True
+        self.syncer.sync_ldap_users(["user_with_space"], "Editor")
+
+        self.ldap.uid_meta.assert_called_with("user_with_space")
+
+        self.grafana.post.assert_called_with(
+            "admin/users",
+            json={
+                "OrgId": 1,
+                "email": "user@domain",
+                "login": "user_with_space",
+                "name": "user_with_space",
+                "password": unittest.mock.ANY,
+            },
+        )
+
+    def test_create_user_with_empty_fields(self):
+        """Ensure ValueError is raised when normalize_metadata receives empty or None fields."""
+        with self.assertRaises(ValueError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"email": [b""]})
+        self.assertEqual(
+            str(context.exception), "Invalid email: cannot be empty or None"
+        )
+
+        with self.assertRaises(ValueError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"login": [""]})
+        self.assertEqual(
+            str(context.exception), "Invalid login: cannot be empty or None"
+        )
+
+        with self.assertRaises(ValueError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"name": [b"   "]})
+        self.assertEqual(
+            str(context.exception), "Invalid name: cannot be empty or None"
+        )
+
+        with self.assertRaises(TypeError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"email": [None]})
+        self.assertIn("Unexpected LDAP value type", str(context.exception))
+
+        with self.assertRaises(TypeError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"login": [None]})
+        self.assertIn("Unexpected LDAP value type", str(context.exception))
+
+        with self.assertRaises(TypeError) as context:
+            ldap_users_sync.WikimediaLDAP.normalize_metadata({"name": [None]})
+        self.assertIn("Unexpected LDAP value type", str(context.exception))

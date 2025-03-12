@@ -62,8 +62,29 @@ class WikimediaLDAP(object):
             f"(&(objectclass=organizationalPerson)(uid={uid}))",
         )
         if not result:
-            raise RuntimeError(f'Could not fetch metadata for uid={uid}.')
-        return result[0][1]
+            raise RuntimeError(f"Could not fetch metadata for uid={uid}.")
+
+        return self.normalize_metadata(result[0][1])
+
+    @staticmethod
+    def normalize_metadata(metadata):
+        normalized_metadata = {}
+        for key, values in metadata.items():
+            normalized_values = []
+            for value in values:
+                if isinstance(value, bytes):
+                    value = value.decode("utf-8").strip()
+                elif isinstance(value, str):
+                    value = value.strip()
+                else:
+                    raise TypeError(
+                        f"Unexpected LDAP value type {type(value)} for '{key}'"
+                    )
+                if not value:
+                    raise ValueError(f"Invalid {key}: cannot be empty or None")
+                normalized_values.append(value)
+            normalized_metadata[key] = normalized_values
+        return normalized_metadata
 
 
 class GrafanaAPI(object):
@@ -156,8 +177,8 @@ class GrafanaSyncer(object):
                 LOG.debug(f"User '{user}' already synced, skipping")
                 continue
             meta = self.ldap.uid_meta(user)
-            name = meta["cn"][0].decode("utf-8")
-            email = meta["mail"][0].decode("utf-8")
+            name = meta["cn"][0]
+            email = meta["mail"][0]
 
             if user not in existing_users:
                 LOG.debug(f"Creating user '{user}' name '{name}' email '{email}'")
@@ -166,8 +187,10 @@ class GrafanaSyncer(object):
             else:
                 grafana_meta = existing_users[user]
                 grafana_uid = grafana_meta["id"]
-                if grafana_meta['name'] != name or grafana_meta['email'] != email:
-                    LOG.debug(f"Updating (re-creating) user '{user}' name '{name}' email '{email}'")
+                if grafana_meta["name"] != name or grafana_meta["email"] != email:
+                    LOG.debug(
+                        f"Updating (re-creating) user '{user}' name '{name}' email '{email}'"
+                    )
                     if self.commit:
                         self.delete_user(grafana_uid)
                         grafana_uid = self._create_user(user, name, email)["id"]
