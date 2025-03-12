@@ -645,10 +645,6 @@ node /^db1221\.eqiad\./ {
 }
 
 # Testing cluster
-node /^db1125\.eqiad\./ {
-    role(mariadb::core_test)
-}
-
 node /^db1176\.eqiad\./ {
     role(mariadb::core_test)
 }
