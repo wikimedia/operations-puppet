@@ -1,0 +1,9 @@
+# Temporary override for failing healthcheck in dnsdist 1.9.8
+profile::bird::advertise_vips:
+  wikimedia-dns.org:
+    ensure: present
+    address: 185.71.138.138
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::wikidough::service_domain')} --ssl --sni -I %{lookup('profile::wikidough::service_ipv4')} -u / -t 1 -e 400"
+    address_ipv6: 2001:67c:930::1
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::wikidough::service_domain')} --ssl --sni -I %{lookup('profile::wikidough::service_ipv6')} -u / -t 1 -e 400"
+    service_type: wikidough
