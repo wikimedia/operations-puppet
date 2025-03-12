@@ -1,0 +1,8 @@
+profile::liberica::include_services:
+  - upload
+  - upload-https
+profile::liberica::bgp_config:
+  communities:
+    - "14907:0" # lowest priority to avoid interfering with production traffic while being reimaged
+  peers:
+    - 10.136.1.1 # asw1-b13-drmrs
