@@ -57,7 +57,7 @@ prometheus::instances:
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
-      - prometheus2005.codfw.wmnet
+      - prometheus2007.codfw.wmnet
       - prometheus2006.codfw.wmnet
 
   k8s-staging:
@@ -67,7 +67,7 @@ prometheus::instances:
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
-      - prometheus2005.codfw.wmnet
+      - prometheus2007.codfw.wmnet
       - prometheus2006.codfw.wmnet
 
   k8s-mlserve:
@@ -77,7 +77,7 @@ prometheus::instances:
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
-      - prometheus2005.codfw.wmnet
+      - prometheus2007.codfw.wmnet
       - prometheus2006.codfw.wmnet
 
   k8s-dse:
@@ -94,7 +94,7 @@ prometheus::instances:
     hosts:
       - prometheus1005.eqiad.wmnet
       - prometheus1006.eqiad.wmnet
-      - prometheus2005.codfw.wmnet
+      - prometheus2007.codfw.wmnet
       - prometheus2006.codfw.wmnet
 
   k8s-mlstaging:
