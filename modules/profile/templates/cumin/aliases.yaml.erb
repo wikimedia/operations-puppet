@@ -250,6 +250,11 @@ ldap-maintenance: P{O:openldap::maintenance}
 ldap-main: A:ldap-rw
 ldap-all: A:ldap-replicas or A:ldap-rw
 liberica: P{O:liberica}
+liberica-canary: P{lvs1013.eqiad.wmnet}
+liberica-eqiad: A:liberica and A:eqiad
+liberica-ulsfo: A:liberica and A:ulsfo
+liberica-eqsin: A:liberica and A:eqsin
+liberica-magru: A:liberica and A:magru
 lists: P{O:lists}
 logstash: A:logstash-data or A:logstash-collector
 logstash-data: P{O:logging::opensearch::data}
@@ -258,7 +263,7 @@ logstash-canary: P{logstash1023.eqiad.wmnet}
 logstash-eqiad: A:logstash and A:eqiad
 logstash-codfw: A:logstash and A:codfw
 lvs: P{O:lvs::balancer}
-lvs-canary: P{lvs7001.magru.wmnet}
+lvs-canary: P{lvs2011.codfw.wmnet}
 lvs-eqiad: A:lvs and A:eqiad
 lvs-codfw: A:lvs and A:codfw
 lvs-esams: A:lvs and A:esams
