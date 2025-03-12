@@ -83,8 +83,7 @@ class profile::kubernetes::deployment_server (
                 $kubeconfig_path = "/etc/kubernetes/${kubeconfig_name}-${cluster_name}.config"
 
                 # Add "deploy" group to -deploy users
-                # FIXME: Remove ci user snowflake here
-                if ($user['name'].stdlib::end_with('-deploy') or $user['name'] == 'ci') {
+                if $user['name'].stdlib::end_with('-deploy') {
                     $names = [{ 'organisation' => 'view' }, { 'organisation' => 'deploy' }]
                 } else {
                     $names = [{ 'organisation' => 'view' }]
