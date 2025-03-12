@@ -1,7 +1,7 @@
 profile::lvs::interface_tweaks:
-  enp175s0f0np0:
+  ens3f0np0:
     txqlen: 10000
-  enp175s0f1np1:
+  ens3f1np1:
     txqlen: 10000
 profile::liberica::bgp_config:
   peers:
