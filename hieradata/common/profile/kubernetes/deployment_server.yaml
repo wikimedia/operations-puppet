@@ -170,11 +170,9 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-script
         - name: mw-script-deploy
-        - name: mw-script
-          kubeconfig: mw-script-restricted
+        - name: mw-script-restricted
           group: restricted
-        - name: mw-script-deploy
-          kubeconfig: mw-script-restricted-deploy
+        - name: mw-script-restricted-deploy
           group: restricted
     mw-cron:
       usernames:
