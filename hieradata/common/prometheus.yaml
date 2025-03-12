@@ -117,11 +117,11 @@ prometheus::instances:
 # Pick this instance as the "homepage" for e.g. prometheus-eqiad.w.o
 prometheus::default_web_instance: 'ops'
 
-# If an instance is not yet assigned above, default it to these hosts.
-# This setting is temporary until 'ops' and 'k8s-*' instances have been
-# migrated to prometheus::instances as part of T371087
-prometheus::unassigned_instance_hosts:
-  - prometheus1005.eqiad.wmnet
-  - prometheus1006.eqiad.wmnet
-  - prometheus2005.codfw.wmnet
-  - prometheus2006.codfw.wmnet
+# Same as prometheus::instances, but for cleaning up instances.
+# Having the same instance + host combination here and prometheus::instances
+# will result in catalog compilation failure.
+prometheus::instances_cleanup:
+  k8s-mlstaging:
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
