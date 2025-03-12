@@ -1,0 +1,9 @@
+profile::liberica::bgp_config:
+  communities:
+    - "14907:0" # lowest BGP priority to avoid interfering with production traffic while reimaging
+profile::liberica::include_services:
+  - ncredir
+  - ncredir-https
+  - text
+  - text-https
+
