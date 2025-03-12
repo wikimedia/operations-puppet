@@ -535,8 +535,8 @@ class profile::kubernetes::deployment_server::global_config (
             # to external services
             'kafka_brokers'                 => $kafka_brokers,
             'zookeeper_clusters'            => $zookeeper_nodes,
-
             'mariadb'                       => { 'section_ports' => $db_sections },
+            'kubernetesVersion'             => $cluster_config['version'],
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
