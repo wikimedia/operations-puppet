@@ -23,7 +23,8 @@ class profile::kubernetes::deployment_server::helmfile (
         srcdir     => '/srv/deployment-charts',
     }
 
-    $general_private_dir = "${profile::kubernetes::deployment_server::global_config::general_dir}/private"
+    $general_dir = $profile::kubernetes::deployment_server::global_config::general_dir
+    $general_private_dir = "${general_dir}/private"
     # Private directories for admin services
     $admin_private_dir = "${general_private_dir}/admin"
     file { $admin_private_dir:
@@ -89,6 +90,17 @@ class profile::kubernetes::deployment_server::helmfile (
         }
 
         $cluster.each() | String $cluster_name, K8s::ClusterConfig $cluster_config | {
+            # Write non private data for each service to $general_dir/services-$cluster_name.yaml
+            # this basically dumps profile::kubernetes::deployment_server::services on a per-cluster basis
+            file { "${general_dir}/services-${cluster_name}.yaml":
+                ensure  => file,
+                owner   => 'root',
+                group   => $helm_user_group,
+                mode    => '0640',
+                content => { 'services' => to_yaml($services[$cluster_group]) },
+            }
+
+            # Write private data for each service to $service_private_dir/$svcname/$cluster_name.yaml
             $merged_services.map | String $svcname, Hash $data | {
                 # Permission and file presence setup
                 if $data['private_files'] {

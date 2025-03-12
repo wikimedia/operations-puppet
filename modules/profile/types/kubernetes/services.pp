@@ -25,7 +25,6 @@ type Profile::Kubernetes::Services = Struct[{
         kubeconfig => Optional[String],
     }]],
     namespace       => Optional[String],
-    private_files   => Optional[Struct[{'owner' => String, 'group' => String, 'mode' => String, }]],
+    private_files   => Optional[Struct[{ 'owner' => String, 'group' => String, 'mode' => String, }]],
     ensure => Optional[Wmflib::Ensure],
-
 }]
