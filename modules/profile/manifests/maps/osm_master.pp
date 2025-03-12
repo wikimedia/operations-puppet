@@ -46,7 +46,11 @@ class profile::maps::osm_master (
     $replication_slots = $use_replication_slots ? {
         true    => $maps_hosts.map |$replica| {
                     if $facts['networking']['fqdn'] != $replica {
-                        "wal_${replica.regsubst('\.', '_', 'G')}"
+                        if debian::codename::ge('bookworm') {
+                            "wal_${replica.regsubst('[\.-]', '_', 'G')}"
+                        } else {
+                            "wal_${replica.regsubst('\.', '_', 'G')}"
+                        }
                     }
                     else {
                         undef
