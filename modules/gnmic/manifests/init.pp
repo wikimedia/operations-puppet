@@ -27,13 +27,14 @@ class gnmic(
         'api-server' => {'enable-metrics' => true},
     }
 
-    # No need for notify as gnmic watches the config file
+    # Need to notify as gnmic doesn't watches the config file well enough
     file { '/etc/gnmic.yaml':
         ensure  => file,
         mode    => '0400',  # contains password
         owner   => 'gnmic',
         group   => 'gnmic',
         content => $config.to_yaml,
+        notify  => Service['gnmic']
     }
 
     systemd::service { 'gnmic':
