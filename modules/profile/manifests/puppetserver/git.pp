@@ -52,7 +52,7 @@ class profile::puppetserver::git (
     }
     # TODO: refactor this so its closer to the g10k code
     # This is required to run g10k as root
-    sudo::user { $user:
+    sudo::user { "${user}-puppetserver-deploy-code":
         privileges => [
             'ALL = NOPASSWD: /usr/local/bin/puppetserver-deploy-code',
         ],
@@ -98,7 +98,6 @@ class profile::puppetserver::git (
 
     $repos.each |$repo, $config| {
         $dir = "${basedir}/${repo}"
-
         if $config.has_key('safedir') and $config['safedir'] {
             git::systemconfig { "mark puppet repo ${dir} as safe":
                 settings => {
@@ -122,11 +121,22 @@ class profile::puppetserver::git (
             owner  => $user,
             group  => $group,
         })
+        if $config.has_key('private') and $config['private'] {
+            $git_dir_mode = '0750'
+        } else {
+            $git_dir_mode = '0755'
+        }
+        if $config.has_key('private_group') {
+            $git_dir_group = $config['private_group']
+        } else {
+            $git_dir_group = $group
+        }
         if $config['init'] {
             file { $dir:
                 ensure => directory,
                 owner  => $user,
-                group  => $group,
+                group  => $git_dir_group,
+                mode   => $git_dir_mode,
             }
             exec { "git init ${dir}":
                 command => '/usr/bin/git init',
@@ -144,7 +154,8 @@ class profile::puppetserver::git (
                 branch    => $config['branch'],
                 origin    => $origin,
                 owner     => $user,
-                group     => $group,
+                group     => $git_dir_group,
+                mode      => $git_dir_mode,
                 require   => File[$dir.dirname],
                 before    => Service['puppetserver'],
             }

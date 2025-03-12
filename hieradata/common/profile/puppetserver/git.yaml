@@ -31,6 +31,7 @@ profile::puppetserver::git::repos:
   # operations/private under $basedir.
   'private':
     init: true
+    private: true
     safedir: true
     branch: 'master'
     hooks:
@@ -48,6 +49,8 @@ profile::puppetserver::git::repos:
   # being edited, not committed and potentially broken.
   'operations/private':
     init: true
+    private: true
+    private_group: 'puppet'
     branch: master
     hooks:
         'pre-commit': 'puppet:///modules/puppetmaster/git/private/pre-commit'
