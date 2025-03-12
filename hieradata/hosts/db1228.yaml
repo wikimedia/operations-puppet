@@ -1,4 +1,4 @@
 # db1228
-# future m5 master
+# m5 master
 mariadb::shard: 'm5'
-profile::monitoring::notifications_enabled: false
+profile::mariadb::mysql_role: 'master'
