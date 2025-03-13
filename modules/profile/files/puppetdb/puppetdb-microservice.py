@@ -163,3 +163,13 @@ def resources():
     returns a list of simplified objects {'certname': 'hostname.example.com'}.
     """
     return jsonify(_puppetdb_request('resources', json=request.json, redacted=True))
+
+
+@app.route("/pdb/query/v4/inventory", methods=["POST"])
+def inventory():
+    """Inventory endpoint for POST requests.
+
+    Accepts any POST query to the inventory endpoint, proxy it to PuppetDB and
+    returns a list of simplified objects {'certname': 'hostname.example.com'}.
+    """
+    return jsonify(_puppetdb_request('inventory', json=request.json, redacted=True))
