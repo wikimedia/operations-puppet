@@ -2287,12 +2287,8 @@ node /^prometheus200[5678]\.codfw\./ {
     role(prometheus)
 }
 
-node /^prometheus100[56]\.eqiad\./ {
+node /^prometheus100[5678]\.eqiad\./ {
     role(prometheus)
-}
-
-node /^prometheus100[78]\.eqiad\./ {
-    role(insetup::observability)
 }
 
 node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
