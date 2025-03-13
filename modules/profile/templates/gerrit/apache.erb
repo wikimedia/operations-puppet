@@ -45,6 +45,12 @@
     # https://httpoxy.org/
     RequestHeader unset Proxy early
 
+    # With Gerrit httpd.listenUrl set to `proxy-https://`, Jetty parses the
+    # X-Forwarded-For header set by mod_proxy. If an XFF is set on the client
+    # side, it ends up being considered by Gerrit to be the client IP. It can
+    # be trusted, so strip it. T388791
+    RequestHeader unset X-Forwarded-For
+
     SSLEngine on
     <%- if @use_acmechief -%>
     SSLCertificateFile /etc/acmecerts/gerrit/live/ec-prime256v1.chained.crt
