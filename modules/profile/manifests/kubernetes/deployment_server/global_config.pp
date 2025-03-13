@@ -151,11 +151,6 @@ class profile::kubernetes::deployment_server::global_config (
     $analytics_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-mariadb')
     $analytics_test_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-test-coord')
 
-    $external_services_elasticsearch_cirrus = profile::kubernetes::deployment_server::elasticsearch_external_services_config('cirrus', ['eqiad', 'codfw'])
-    $external_services_elasticsearch_cloudelastic = profile::kubernetes::deployment_server::elasticsearch_external_services_config('cloudelastic', ['eqiad'])
-    $external_services_elasticsearch_relforge = profile::kubernetes::deployment_server::elasticsearch_external_services_config('relforge', ['eqiad'])
-    $external_services_elasticsearch = $external_services_elasticsearch_cirrus + $external_services_elasticsearch_cloudelastic + $external_services_elasticsearch_relforge
-
     # Create one external services definition for each redis port (instance running on each node)
     # to allow services to explicitely specify which redis instance they want to connect to
     $redis_misc_ips = wmflib::role::ips('redis::misc::master') + wmflib::role::ips('redis::misc::slave')
@@ -493,7 +488,6 @@ class profile::kubernetes::deployment_server::global_config (
         }
       },
       $external_service_redis,
-      $external_services_elasticsearch,
     )
 
     # Per-cluster general defaults.
