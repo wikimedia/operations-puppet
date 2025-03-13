@@ -213,21 +213,25 @@ class netops::monitoring(
     }
     create_resources(netops::check, $atlas)
 
-    # RIPE Atlases -- ping checks from prometheus blackbox
+    # RIPE Atlases -- http checks from prometheus blackbox
     $atlas_blackbox_exporter = $atlas.map |$device, $config| {
         {
           "${device}" => {
             'instance_label'      => $device,
             'ip4'                 => $config['ipv4'],
             'ip6'                 => $config['ipv6'],
+            'port'                => 80,
+            'status_matches'      => [200],
             'site'                => $config['site'],
-            'prometheus_instance' => 'ops'
+            'proxy_url'           => "http://webproxy.${config['site']}.wmnet:8080",
+            'prometheus_instance' => 'ops',
+            'severity'            => 'warning',
           }
         }
     }.reduce( {} ) | $memo, $x | {
       $memo + $x
     }
-    create_resources(prometheus::blackbox::check::icmp, $atlas_blackbox_exporter)
+    create_resources(prometheus::blackbox::check::http, $atlas_blackbox_exporter)
 
     # RIPE Atlases measurements checks moved to prometheus/alertmanar
 
