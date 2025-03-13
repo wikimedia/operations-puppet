@@ -1732,12 +1732,8 @@ node /^cloudelastic100[7-9]\.eqiad\./ {
     role(cirrus::cloudelastic)
 }
 
-node /^cloudelastic101[01]\.eqiad\./ {
+node /^cloudelastic101[02]\.eqiad\./ {
     role(cirrus::cloudelastic)
-}
-
-node /^cloudelastic1012\.eqiad\./ {
-    role(elasticsearch::cloudelastic)
 }
 
 node /^cloudnet100[56]\.eqiad\./ {
