@@ -7464,3 +7464,7 @@ ldap_only_users:
     ensure: present
     realname: Hilary Swan
     email: hswan@wikimedia.org
+  astein:
+    ensure: present
+    realname: Avishua Stein
+    email: astein@wikimedia.org
