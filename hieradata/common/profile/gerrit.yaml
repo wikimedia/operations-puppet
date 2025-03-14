@@ -69,7 +69,6 @@ profile::gerrit::replication:
         replicationDelay: 5
         rescheduleDelay: 5
 
-# Networks that will dropped at the firewall level
 profile::gerrit::gerrit_abusers:
   - '167.99.209.130/32'
   - '178.62.222.136/32'
@@ -77,5 +76,3 @@ profile::gerrit::gerrit_abusers:
   - '47.76.0.0/14'  # Alibaba
   - '47.80.0.0/13'  # Alibaba
   - '51.68.11.191/32'
-  - '101.47.0.0/18'  # ByteDance crawling network - T375996
-  - '2605:4C40::/32'  # CacheFly - T375996
