@@ -17,7 +17,7 @@ describe 'liberica' do
                   address: '127.0.0.1:3000',
                 },
                 prometheus: {
-                  address: ':2020',
+                  addresses: [':2020'],
                 },
                 hashing_algorithm: 'jenkins',
                 interface: {
@@ -33,7 +33,7 @@ describe 'liberica' do
                   address: '/var/run/healthcheck.socket',
                 },
                 prometheus: {
-                  address: ':2021',
+                  addresses: [':2021'],
                 },
               },
               fp: {
@@ -43,7 +43,7 @@ describe 'liberica' do
                   address: '127.0.0.1:3001',
                 },
                 prometheus: {
-                  address: ':2022',
+                  addresses: [':2022'],
                 },
                 forwarding_plane: 'ipvs',
               },
@@ -54,7 +54,7 @@ describe 'liberica' do
                   address: '127.0.0.1:3003',
                 },
                 prometheus: {
-                  address: ':2023',
+                  addresses: [':2023'],
                 },
               },
               etcd: {
@@ -106,7 +106,8 @@ hcforwarder:
     network: tcp
     address: 127.0.0.1:3000
   prometheus:
-    address: ":2020"
+    addresses:
+    - ":2020"
   hashing_algorithm: jenkins
   interface:
     egress: eth0
@@ -118,14 +119,16 @@ healthcheck:
     network: unix
     address: "/var/run/healthcheck.socket"
   prometheus:
-    address: ":2021"
+    addresses:
+    - ":2021"
 fp:
   log_level: info
   grpc:
     network: tcp
     address: 127.0.0.1:3001
   prometheus:
-    address: ":2022"
+    addresses:
+    - ":2022"
   forwarding_plane: ipvs
 cp:
   log_level: info
@@ -133,7 +136,8 @@ cp:
     network: tcp
     address: 127.0.0.1:3003
   prometheus:
-    address: ":2023"
+    addresses:
+    - ":2023"
 etcd:
   conftool_domain: eqiad.wmnet
   datacenter: drmrs
