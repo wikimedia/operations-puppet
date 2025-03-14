@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc]
+              halfak, jdcc, rook]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -68,7 +68,7 @@ groups:
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, ryankemper, klausman,
               dcaro, legoktm, cmooney, jelto, btullis,
-              rook, mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
+              mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins, tappof,
               jasmine, fceratto]
@@ -3614,14 +3614,12 @@ users:
     ssh_keys: []
     uid: 18713
   rook:
-    ensure: present
+    ensure: absent
     gid: 500
     name: rook
     realname: Vivian Rook
-    ssh_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGHA0G2dUTOKhsPqDB8spMTE4GHR1s0jfw5BWsHf3jQP rook@mouseprod
+    ssh_keys: []
     uid: 38011
-    email: vrook@wikimedia.org
   mdipietro:
     ensure: absent
     gid: 500
