@@ -1857,8 +1857,12 @@ node /^lvs20(1[1234])\.codfw\./ {
 }
 
 # ESAMS lvs servers
-node /^lvs30(0[89]|10)\.esams\./ {
+node /^lvs30(0[89])\.esams\./ {
     role(lvs::balancer)
+}
+
+node /^lvs3010\.esams\./ {
+    role(liberica)
 }
 
 # ULSFO lvs servers

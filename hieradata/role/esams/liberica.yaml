@@ -1,0 +1,6 @@
+profile::lvs::interface_tweaks:
+  eno12399np0:
+    txqlen: 10000
+profile::liberica::bgp_config:
+  peers:
+    - 10.80.0.1 # asw1-bw27-esams

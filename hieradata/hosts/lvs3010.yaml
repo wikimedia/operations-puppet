@@ -1,1 +1,10 @@
-profile::pybal::primary: false
+profile::liberica::bgp_config:
+  communities:
+    - "14907:1"
+profile::liberica::include_services:
+  - ncredir
+  - ncredir-https
+  - text
+  - text-https
+  - upload
+  - upload-https
