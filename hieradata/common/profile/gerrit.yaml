@@ -70,9 +70,9 @@ profile::gerrit::replication:
         rescheduleDelay: 5
 
 profile::gerrit::gerrit_abusers:
-  - '47.80.0.0/13'
   - '167.99.209.130/32'
   - '178.62.222.136/32'
-  - '47.74.0.0/15'
-  - '47.76.0.0/14'
+  - '47.74.0.0/15'  # Alibaba
+  - '47.76.0.0/14'  # Alibaba
+  - '47.80.0.0/13'  # Alibaba
   - '51.68.11.191/32'
