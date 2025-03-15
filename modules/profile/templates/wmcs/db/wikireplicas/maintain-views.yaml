@@ -100,7 +100,6 @@ fullviews:
   - machine_vision_provider
   - machine_vision_safe_search
   - machine_vision_suggestion
-  - module_deps
   - msg_resource_links
   - namespaces
   - ores_classification
