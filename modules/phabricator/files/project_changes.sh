@@ -145,7 +145,7 @@ SELECT CONCAT("https://phabricator.wikimedia.org/project/profile/", id) AS url, 
         OR (color = "green" AND icon != "timeline")
         OR color = "indigo"
         OR (color = "pink" AND id != 32 AND id != 1825)
-        OR (color = "red" AND id != 6674 AND icon != "policy")
+        OR (color = "red" AND id != 6674 AND icon != "policy" AND icon != "bugs")
         OR (color = "grey" AND icon != "meta" AND name != "Trash"));
 
 END
