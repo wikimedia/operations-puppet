@@ -450,7 +450,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin, benbuchenau]
+              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6607,6 +6607,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQjaDWJMKcyaX9lVpEZM2l4DfU1ZEMoEwtGYWPqE3Qo
+  dsantamaria:
+    ensure: present
+    realname: David Santamaria
+    email: dsantamaria@wikimedia.org
+    uid: 48346
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -6682,10 +6689,6 @@ ldap_only_users:
   delphinepro:
     ensure: absent
     realname: Delphine Menard
-  dsantamaria:
-    ensure: present
-    realname: David Santamaria
-    email: dsantamaria@wikimedia.org
   dwalden:
     ensure: present
     realname: Dominic Walden
