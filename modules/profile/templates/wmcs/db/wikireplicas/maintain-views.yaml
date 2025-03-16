@@ -469,7 +469,7 @@ customviews:
   filerevision:
     source: filerevision
     view:
-      select fr_id, fr_file, fr_size, fr_width, fr_height, fr_metadata, fr_bits, fr_description_id, fr_actor
+      select fr_id, fr_file, fr_size, fr_width, fr_height, fr_metadata, fr_bits, fr_description_id, fr_actor,
       fr_timestamp, fr_sha1, fr_archive_name, fr_deleted
     where: >
       fr_deleted = 0
