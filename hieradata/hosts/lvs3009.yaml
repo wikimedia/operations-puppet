@@ -1,6 +1,4 @@
 profile::liberica::bgp_config:
-  communities:
-    - "14907:0" # lowest priority to avoid interfering with production traffic while being reimaged
   peers:
     - 10.80.1.1 # asw1-by27-esams
 profile::liberica::include_services:
