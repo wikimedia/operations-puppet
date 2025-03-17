@@ -366,20 +366,6 @@ ACCESS_REQUEST_RULES = {
 	    'domain': 'wikimedia.org',
 	    'prevalidate': True
 	}],
-	'cn=airflow-search-ops,ou=groups,dc=wikimedia,dc=org': [
-	{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['slyngshede', 'jmm'],
-            'notify': ['slyngshede@wikimedia.org', 'mmuhlenhoff@wikimedia.org'],
-	    'count': 1
-	},{
-            'module': 'permissions.validators.manager_approval',
-            'managers': ['ssotest14'],
-#            'managers': ['ebernhardson', 'dcausse', 'pfischer', 'dr0ptp4kt'],
-#            'notify': ['ebernhardson@wikimedia.org', 'dcausse@wikimedia.org', 'pfischer@wikimedia.org', 'abaso@wikimedia.org'],
-            'notify': ['moritz+idm002@wikimedia.org'],
-	    'count': 1
-	}],
     }
 }
 <%- end -%>
