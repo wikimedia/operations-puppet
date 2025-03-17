@@ -188,6 +188,17 @@ class profile::kerberos::kdc (
         },
     }
 
+    # Presto is doing a lot of requests and usually around 200k connections
+    # so raise the connection table size of the KDCs (default is 256k) to
+    # - avoid spurious alert if this crosses the 80% default threshold for warnings
+    # - provide some head room for situations where new Presto servers are added/removed
+    sysctl::parameters { 'kdc_conntrack':
+        values   => {
+            'net.netfilter.nf_conntrack_max' => 524288,
+        },
+        priority => 75,
+    }
+
     logrotate::conf { 'kdc':
         ensure => present,
         source => 'puppet:///modules/kerberos/kdc-logrotate.conf',
