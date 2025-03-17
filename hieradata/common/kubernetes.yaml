@@ -598,6 +598,8 @@ kubernetes::clusters:
         - wikikube-worker2243.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
     staging-eqiad:
+      version: "1.31"
+      calico_version: "3.29"
       # cluster_alias: staging makes this the "active" staging cluster.
       # kubeconfig files will be generated with the alias name.
       cluster_alias: staging
@@ -632,6 +634,13 @@ kubernetes::clusters:
         - kubestage1005.eqiad.wmnet
         - kubestage1006.eqiad.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
     staging-codfw:
       version: "1.31"
       calico_version: "3.29"
