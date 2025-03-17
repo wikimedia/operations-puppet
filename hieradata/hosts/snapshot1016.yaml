@@ -1,1 +1,2 @@
 profile::dumps::generation::worker::common::dumps_misc_cronrunner: true
+profile::dumps::generation::worker::common::use_analytics_replicas: false
