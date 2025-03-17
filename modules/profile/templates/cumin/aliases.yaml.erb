@@ -252,6 +252,7 @@ ldap-all: A:ldap-replicas or A:ldap-rw
 liberica: P{O:liberica}
 liberica-canary: P{lvs1013.eqiad.wmnet}
 liberica-eqiad: A:liberica and A:eqiad
+liberica-esams: A:liberica and A:esams
 liberica-ulsfo: A:liberica and A:ulsfo
 liberica-eqsin: A:liberica and A:eqsin
 liberica-drmrs: A:liberica and A:drmrs
@@ -267,7 +268,6 @@ lvs: P{O:lvs::balancer}
 lvs-canary: P{lvs2011.codfw.wmnet}
 lvs-eqiad: A:lvs and A:eqiad
 lvs-codfw: A:lvs and A:codfw
-lvs-esams: A:lvs and A:esams
 # lvs-high-traffic1, lvs-high-traffic2, etc.
 <% @lvs_hosts.each do |lvs_class, lvs_host| -%>
 lvs-<%= lvs_class %>: P{<%= lvs_host.join("* or ") %>*}
