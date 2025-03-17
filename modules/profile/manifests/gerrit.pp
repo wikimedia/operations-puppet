@@ -101,12 +101,12 @@ class profile::gerrit(
     nftables::file::input { 'drop-abuser-nets-v4':
         ensure  => $ensure_abusers_v4,
         order   => 9,
-        content => 'ip saddr @GERRIT_ABUSERS_ipv4 drop\n',
+        content => 'ip saddr @GERRIT_ABUSERS_ipv4 drop',
     }
     nftables::file::input { 'drop-abuser-nets-v6':
         ensure  => $ensure_abusers_v6,
         order   => 9,
-        content => 'ip6 saddr @GERRIT_ABUSERS_ipv6 drop\n',
+        content => 'ip6 saddr @GERRIT_ABUSERS_ipv6 drop',
     }
 
     if $backups_enabled and $backup_set != undef {
