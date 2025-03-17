@@ -5,7 +5,17 @@
 class profile::kubernetes::client (
     K8s::KubernetesVersion $version = lookup('profile::kubernetes::client::version',),
 ) {
-    class { 'k8s::client':
+    # class { 'k8s::client':
+    #     version => $version,
+    # }
+    # FIXME: This is a hack to support multiple versions of kubectl
+    #        which I failed to do properly, see T388388
+    k8s::package { 'kubectl':
+        package => 'client',
         version => $version,
+    }
+    k8s::package { 'kubectl131':
+        package => 'client',
+        version => '1.31',
     }
 }
