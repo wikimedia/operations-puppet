@@ -10,12 +10,8 @@ profile::ncmonitor::reviewers:
   - vgutierrez@wikimedia.org
 profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat'
 # These domains are "main" sites, are maintained differently than expected, or
-# sites that we don't want redirected at all and would rather dead-park (e.g.
-# scam sites or edit-for-pay sites).
-# c.f. https://en.wikipedia.org/wiki/Wikipedia:List_of_paid_editing_companies
+# sites that we don't want redirected at all and would rather dead-park.
 profile::ncmonitor::markmonitor_ignored_domains:
-  - "getawikipedia.com"
-  - "getonwikipedia.com"
   - "learn.wiki"
   - "pywikibot.org"
   - "wikimedia-dns.org"
@@ -23,15 +19,8 @@ profile::ncmonitor::markmonitor_ignored_domains:
   - "wikimedia.social"
   - "wikimediacloud.org"
   - "wikipediaafd.org"
-  - "wikipediaeditors.com"
-  - "wikipediaexperts.com"
   - "wikipediamustdie.com"
   - "wikipediaofficial.com"
-  - "wikipediapagecreators.com"
-  - "wikipediapublisher.com"
-  - "wikipediasubmissions.com"
-  - "wikipediawriters.com"
-  - "wikipediawriting.com"
   - "wmftest.com"
   - "wmftest.net"
   - "wmftest.org"
