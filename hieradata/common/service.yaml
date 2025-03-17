@@ -1053,7 +1053,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: lvs_setup
+    state: service_setup
 
   kartotherian-ssl:
     description: Kartotherian, kartotherian.discovery.wmnet - HTTPS
@@ -1086,7 +1086,7 @@ service::catalog:
     sites:
       - codfw
       - eqiad
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: kartotherian
         active_active: true
