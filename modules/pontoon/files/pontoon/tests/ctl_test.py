@@ -1,17 +1,19 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
 import os
 import shlex
+import socket
 import subprocess
 import uuid
-import logging
 from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
-from pontoon.ctl import ctl
 from pontoon.credentials import Credentials
+from pontoon.ctl import ctl
+from pontoon.ssh import KNOWN_HOSTS_PATH
 
 
 # Clone puppet from current checkout once per session. Individual tests can then
@@ -23,34 +25,35 @@ def session_clone(tmp_path_factory):
     # Pytest adds an auto-increment int to path_factory results. Therefore
     # append a dash to tmp_path_factory names to make it easier to read paths.
     # https://docs.pytest.org/en/stable/how-to/tmp_path.html#temporary-directory-location-and-retention
-    dest_path = tmp_path_factory.mktemp("session-puppet")
+    dest_path = tmp_path_factory.mktemp("session-puppet-")
 
-    p = subprocess.run(
-        shlex.split("git rev-parse --show-toplevel"),
+    p = assert_cmd_ok(
+        "git rev-parse --show-toplevel",
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    assert p.returncode == 0
     puppet_path = Path(p.stdout.decode("utf-8"))
 
-    # XXX copy uncommitted files too
-    p = subprocess.run(
-        shlex.split(f"git clone --depth=1 file://{puppet_path} {dest_path}")
-    )
-    assert p.returncode == 0
+    assert_cmd_ok(f"git clone {puppet_path} {dest_path}")
 
     return dest_path
 
 
 @pytest.fixture(scope="class")
 def puppet_clone(session_clone, class_uuid, tmp_path_factory):
+    # Pytest adds an auto-increment int to path_factory results. Therefore
+    # append a dash to tmp_path_factory names to make it easier to read paths.
+    # https://docs.pytest.org/en/stable/how-to/tmp_path.html#temporary-directory-location-and-retention
     dest_path = tmp_path_factory.mktemp(f"puppet-{class_uuid}-")
 
-    # XXX copy uncommitted files too
-    p = subprocess.run(
-        shlex.split(f"git clone --depth=1 file://{session_clone} {dest_path}")
-    )
-    assert p.returncode == 0
+    clone_cmd = f"git clone --reference {session_clone} {session_clone} {dest_path}"
+    assert_cmd_ok(clone_cmd)
+
+    name_cmd = f"git config user.name test-{class_uuid}"
+    assert_cmd_ok(name_cmd, cwd=dest_path)
+
+    email_cmd = f"git config user.email test-{class_uuid}@{socket.gethostname()}"
+    assert_cmd_ok(email_cmd, cwd=dest_path)
 
     return dest_path
 
@@ -118,14 +121,65 @@ def new_stack(cli_runner: CliRunner, credentials: tuple, home: Path, class_uuid:
     )
     assert result.exit_code == 0, f"Stack creation failed: {result.output}"
 
-    p = subprocess.run(
-        f"git add . && git commit -m 'new stack {stack_name}'",
-        shell=True,
-        cwd=stack_path,
-    )
-    assert p.returncode == 0
+    assert_cmd_ok("git add .", cwd=stack_path)
+    assert_cmd_ok(f"git commit -m 'new stack {stack_name}'", cwd=stack_path)
 
     return stack_name, stack_path
+
+
+@pytest.fixture(scope="class")
+def bootstrap_stack(cli_runner: CliRunner, new_stack: str):
+    name, _ = new_stack
+    result = cli_runner.invoke(
+        ctl,
+        [
+            "bootstrap-stack",
+            "--stack",
+            name,
+            "--accept-ssh-key",
+        ],
+    )
+    assert result.exit_code == 0, "Failed to bootstrap the stack"
+
+    yield name, result
+
+    # XXX cleanup
+
+
+@pytest.fixture(scope="class")
+def git_remote(cli_runner: CliRunner, new_stack: str, puppet_clone: str):
+    """Set up the git remote pointing to new_stack"""
+
+    # make 'git push' work unattended. depends on cli_runner to set os.environ
+    # for KNOWN_HOSTS_PATH
+    _ = cli_runner
+    set_repo_known_hosts = (
+        "git config --add --local "
+        f"core.sshCommand 'ssh -o UserKnownHostsFile={KNOWN_HOSTS_PATH()}'"
+    )
+    assert_cmd_ok(set_repo_known_hosts, cwd=puppet_clone)
+
+    name, _ = new_stack
+    result = cli_runner.invoke(
+        ctl,
+        [
+            "hosts-for-role",
+            "--stack",
+            name,
+            "puppetserver::pontoon",
+        ],
+    )
+    assert result.exit_code == 0, "Failed to find hosts for puppetserver::pontoon"
+
+    server = result.output.strip()
+    remote_url = f"ssh://{server}/~/puppet.git"
+    remote = f"pontoon-{name}"
+
+    assert_cmd_ok(f"git remote add {remote} {remote_url}", cwd=puppet_clone)
+
+    yield remote
+
+    # XXX teardown
 
 
 class TestGeneral:
@@ -185,24 +239,59 @@ class TestBootstrap:
         assert result.exit_code == 0
         assert name in result.output
 
-    def test_bootstrap_stack(self, new_stack, caplog):
+    def test_bootstrap_stack(self, bootstrap_stack, caplog):
         """Test the bootstrap-stack command."""
 
         caplog.set_level(logging.INFO)
 
-        name, _ = new_stack
-        # XXX need an unattended way to set up git remote
-        result = self.runner.invoke(
-            ctl,
-            [
-                "bootstrap-stack",
-                "--stack",
-                name,
-                "--accept-ssh-key",
-            ],
-        )
-        # XXX how to clean up after bootstrap / add roles ?
-        assert result.exit_code == 0, "Bootstrap did not finish successfully"
+        name, result = bootstrap_stack
 
         result = self.runner.invoke(ctl, ["wait-puppet", "--stack", name])
         assert result.exit_code == 0, "wait-puppet did not finish successfully"
+
+    def test_bootstrap_rolegroup(self, bootstrap_stack, caplog, git_remote, home):
+        """Test the add-rolegroup command."""
+
+        caplog.set_level(logging.INFO)
+
+        name, _ = bootstrap_stack
+        result = self.runner.invoke(
+            ctl,
+            [
+                "add-rolegroup",
+                "--stack",
+                name,
+                "bootstrap",
+            ],
+        )
+        # XXX how to clean up after bootstrap / add roles ?
+        assert result.exit_code == 0, "add-rolegroup did not finish successfully"
+
+        cmds = [
+            f"git add {home}",
+            "git commit -m 'new rolegroup'",
+            f"git push -f {git_remote} HEAD:production",
+        ]
+        for cmd in cmds:
+            assert_cmd_ok(cmd, cwd=home)
+
+        result = self.runner.invoke(
+            ctl,
+            [
+                "create-hosts",
+                "--stack",
+                name,
+                "--no-prompt",
+            ],
+        )
+        assert result.exit_code == 0, "Failed to create hosts"
+
+        result = self.runner.invoke(ctl, ["wait-puppet", "--stack", name])
+        assert result.exit_code == 0, "wait-puppet did not finish successfully"
+
+
+def assert_cmd_ok(cmd: str, *args, **kwargs) -> subprocess.CompletedProcess:
+    p = subprocess.run(shlex.split(cmd), *args, **kwargs)
+    assert p.returncode == 0, f"Failed to run {cmd!r}"
+
+    return p
