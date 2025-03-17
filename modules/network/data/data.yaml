@@ -129,7 +129,7 @@ network::subnets:
           ipv4: 10.64.72.0/24
           ipv6: 2620:0:861:cabf::/116
         private1-staging-kubepods-eqiad:
-          ipv4: 10.64.75.0/24
+          ipv4: 10.64.64.0/21
           ipv6: 2620:0:861:babe::/64
         private1-staging-kubesvc-eqiad:
           ipv4: 10.64.76.0/24

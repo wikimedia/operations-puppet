@@ -623,7 +623,7 @@ kubernetes::clusters:
         v4: "10.64.76.0/24"
         v6: "2620:0:861:306::1000/116"
       cluster_cidr:
-        v4: "10.64.75.0/24"
+        v4: "10.64.64.0/21"
         v6: "2620:0:861:babe::/64"
       cluster_nodes:
         - kubestagemaster1003.eqiad.wmnet
