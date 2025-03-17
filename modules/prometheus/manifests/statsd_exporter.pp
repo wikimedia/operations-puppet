@@ -61,7 +61,7 @@ class prometheus::statsd_exporter (
         { 'quantile' => 0.50,
           'error'    => 0.005  },
       ],
-      'ttl' => '0'
+      'ttl' => $ttl
     }
 
     if (!defined(File[$basedir])) {
