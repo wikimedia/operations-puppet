@@ -14,7 +14,7 @@
 
 class install_server::preseed_server (
   Hash[String[1], Install_server::Preseed_subnet::Config] $preseed_subnets = {},
-  Hash[String[1], Array[Install_server::Preseed_host::Config]] $preseed_per_hostname = {},
+  Hash[Install_server::Preseed_host::Name, Array[Install_server::Preseed_host::Config]] $preseed_per_hostname = {},
 
 ) {
   file { '/srv/autoinstall':
