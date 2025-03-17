@@ -1,3 +1,6 @@
+profile::liberica::etcd_config:
+  conftool_domain: codfw.wmnet
+  datacenter: "%{::site}"
 profile::lvs::interface_tweaks:
   ens1f0np0:
     txqlen: 10000
