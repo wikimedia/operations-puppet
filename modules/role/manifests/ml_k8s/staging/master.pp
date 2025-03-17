@@ -7,8 +7,8 @@ class role::ml_k8s::staging::master {
 
     # Needed to schedule containers like bird, used by calico.
     # More info: T285927
-    # Sets up docker on the machine.
-    include profile::docker::engine
+    # Sets up containerd on the machine
+    include profile::kubernetes::container_runtime
     include profile::kubernetes::node
     include profile::calico::kubernetes
 
