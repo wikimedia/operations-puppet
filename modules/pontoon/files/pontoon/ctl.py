@@ -243,7 +243,7 @@ def show_and_prompt(operation: str, f: HostFilter, no_prompt: bool) -> bool:
     if not no_prompt:
         count = len(f)
         answer = click.prompt(
-            f"About to {operation} {count} host(s). Input the number to confirm: ",
+            f"About to {operation} {count} host(s). Input the number to confirm",
             type=int,
         )
 
@@ -623,6 +623,21 @@ def ssh_keyscan(ctx, stack, accept_ssh_key):
     """Update Pontoon's known_hosts file with the stack' SSH fingerprints"""
     ctrl = get_controller(stack, ctx.obj["home"])
     ctrl.update_ssh_fingerprints(accept_ssh_key)
+
+
+@ctl.command()
+@with_stack
+@click.argument("role", shell_complete=complete_roles)
+@click.pass_context
+def hosts_for_role(ctx, stack, role):
+    """Print stack hosts for the given role"""
+    ctrl = get_controller(stack, ctx.obj["home"])
+    try:
+        hosts = ctrl.pontoon.hosts_for_role(role)
+    except ValueError:
+        raise click.UsageError(f"Role {role!r} not found in stack {stack!r}")
+
+    print("\n".join(hosts))
 
 
 @ctl.command()
