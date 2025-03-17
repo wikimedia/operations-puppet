@@ -1,6 +1,21 @@
 # SPDX-License-Identifier: Apache-2.0
 # automate subscribing users to certain lists
-# introduced for steward-related lists (T351202)
+# introduced for steward-related lists (T351202, T388354)
+#
+# This class be used to automate syncing the members of a mailman list.
+#
+# It looks in the data_dir for plain text files with email addresses
+# and then runs a mailman command to sync the members of a mailing list with that file.
+#
+# It can run in dry-run mode where a timer/service is created except the command executed
+# does not actually make the changes. This is for testing and verifying what would happen
+# with a given input file.
+#
+# Lists in the "wet-run" (yea, it's actually called that, comes from fire fighting per Wikipedia) lists
+# actually have their members synced.
+#
+# The other parameters are for automating a sync of the data dirs from another host. Because in this first
+# use case the source is the steward onboarding system on steward* VMs.
 #
 class profile::lists::automation (
     Stdlib::Unixpath $data_dir = lookup('profile::lists::automation::data_dir', {default_value => '/srv/exports'}),

@@ -1,6 +1,8 @@
+# lists with automatic member sync - DRY-RUN, no actual changes
 profile::lists::automation::lists_to_sync_dry_run:
   - global-sysops
   - global-renamers
   - stewards-usergroup
+# lists with automatic member sync - actually sync members
 profile::lists::automation::lists_to_sync_wet_run:
   - stewards-l
