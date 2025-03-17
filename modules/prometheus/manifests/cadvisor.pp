@@ -11,7 +11,6 @@ class prometheus::cadvisor(
     # Taken by subtracting the default for -disable_metrics from the
     # list of all valid metrics
     $metrics_enabled_default = [
-        'accelerator',
         'app',
         'cpu',
         'disk',
