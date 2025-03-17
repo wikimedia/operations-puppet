@@ -6,11 +6,6 @@
 #tegola service. The tilerator service is no longer in use.
 #profile::maps::osm_master::tilerator_pass: some_password
 
-profile::lvs::realserver::pools:
-  kartotherian:
-    services:
-      - kartotherian
-
 profile::admin::groups:
   - maps-roots
   - maps-admins
@@ -22,10 +17,7 @@ profile::maps::apps::kartotherian_storage_id: v4
 
 profile::maps::apps::use_proxy: true
 
-profile::maps::apps::wikidata_query_service: http://wdqs.discovery.wmnet/bigdata/namespace/wdq/sparql
-profile::maps::tlsproxy::servicename: kartotherian.discovery.wmnet
-profile::tlsproxy::instance::nginx_variant: 'light'
-profile::base::production::role_description: 'Maps master (postgresql, kartotherian)'
+profile::base::production::role_description: 'Maps master (postgresql)'
 
 profile::maps::osm_master::log_min_duration_statement: 10000 # 10 seconds
 profile::maps::osm_master::use_replication_slots: false

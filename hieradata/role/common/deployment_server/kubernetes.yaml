@@ -191,9 +191,6 @@ scap::sources:
   gervert/deploy:
     repository: operations/software/gerrit/tools/gervert/deploy
   integration/docroot: {}
-  kartotherian/deploy:
-    repository: maps/kartotherian/deploy
-  #    lvs_service: kartotherian
   logstash/plugins:
     repository: operations/software/logstash/plugins
   analytics/turnilo/deploy: {}

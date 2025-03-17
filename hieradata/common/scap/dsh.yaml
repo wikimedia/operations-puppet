@@ -89,12 +89,6 @@ scap::dsh::groups:
     hosts:
       - arclamp1001.eqiad.wmnet
       - arclamp2001.codfw.wmnet
-  maps:
-    conftool:
-      - {'cluster': 'maps', 'service': 'kartotherian'}
-  maps-canaries:
-    hosts:
-      - maps2009.codfw.wmnet
   phatality:
     conftool:
       - {'cluster': 'kibana7', 'service': 'kibana7'}
