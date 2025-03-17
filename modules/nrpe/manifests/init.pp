@@ -21,6 +21,10 @@ class nrpe($allowed_hosts='127.0.0.1') {
                 'monitoring-plugins',
                 'monitoring-plugins-basic',
                 'monitoring-plugins-standard',
+                # Dep for check_curl plugin
+                # part of the recommended set for monitoring-plugins-standard
+                # not installed by default (T388680)
+                'liburiparser1',
             ]:
         ensure => present,
     }
