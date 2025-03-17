@@ -98,9 +98,10 @@ profile::corto::irc_config::nick: 'cortobot'
 profile::corto::irc_config::server: 'irc.libera.chat'
 profile::corto::irc_config::port: 6697
 profile::corto::irc_config::use_tls: true
-profile::corto::irc_config::channels:
-  - '#corto-test'
-  - '#wikimedia-sre-onfire'
+# Channel specification moved to /srv/git/private
+# profile::corto::irc_config::channels:
+#   - '#corto-test'
+#   - '#wikimedia-sre-onfire'
 
 profile::corto::phabricator_url: 'https://phabricator.wikimedia.org'
 profile::corto::phabricator_project: 'Wikimedia-Incident'
