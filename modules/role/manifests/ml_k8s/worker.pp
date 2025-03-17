@@ -4,8 +4,13 @@ class role::ml_k8s::worker {
 
     # Setup dfdaemon (needs to be included before the container runtime)
     include profile::dragonfly::dfdaemon
-    # Sets up docker on the machine
-    include profile::docker::engine
+    if $::hostname == 'ml-serve2001' {
+      # Sets up containerd on the machine
+      include profile::kubernetes::container_runtime
+    } else {
+      # Sets up docker on the machine
+      include profile::docker::engine
+    }
     # Setup kubernetes stuff
     include profile::kubernetes::node
     # Setup calico
