@@ -8,5 +8,6 @@ class profile::netbox::data (
     Hash[Stdlib::Host, Netbox::Device]        $mgmt            = lookup('profile::netbox::data::mgmt'),
     Hash[String[3], Netbox::Device::Network]  $network_devices = lookup('profile::netbox::data::network_devices'),
     Hash[Stdlib::IP::Address, Netbox::Prefix] $prefixes        = lookup('profile::netbox::data::prefixes'),
+    Hash[String[3], Netbox::Device::PDU]      $pdus            = lookup('profile::netbox::data::pdus', {'default_value' => {}} ),
 ) {
 }
