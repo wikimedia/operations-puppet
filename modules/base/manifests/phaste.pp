@@ -13,11 +13,10 @@ class base::phaste( $ensure = present ) {
     }
 
     file { '/etc/phaste.conf':
-        ensure  => $ensure,
-        content => to_json_pretty($conf),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
+        ensure    => $ensure,
+        content   => to_json_pretty($conf),
+        mode      => '0444',
+        show_diff => false,
     }
 
     file { '/usr/local/bin/phaste':
