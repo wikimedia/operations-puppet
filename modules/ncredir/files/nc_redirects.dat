@@ -601,3 +601,12 @@ rewrite	*wikipedia.org.tr	https://tr.wikipedia.org
 rewrite	*wikiquotes.org	https://www.wikiquote.org
 rewrite	*wikipedia.ro	https://ro.wikipedia.org
 rewrite	*wikimedia.ro	https://romd.wikimedia.org
+funnel	*getawikipedia.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*getonwikipedia.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediaeditors.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediaexperts.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediapagecreators.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediapublisher.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediasubmissions.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediawriters.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+funnel	*wikipediawriting.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
