@@ -17,7 +17,11 @@ require 'syslog'
 Puppet::Reports.register_report(:logstash) do
   desc 'Send logs to a logstash instance'
 
-  SERVER_NAME = Addrinfo.getaddrinfo(Socket.gethostname, nil).first.getnameinfo.first
+  # JRuby's Addrinfo.getaddrinfo is buggy, so continue to use the deprecated
+  # method, until the issues are resolved:
+  # 1. https://github.com/jruby/jruby/issues/8704
+  # 2. https://github.com/jruby/jruby/issues/8705
+  SERVER_NAME = Socket.gethostbyname(Socket.gethostname).first # rubocop:disable Lint/DeprecatedClassMethods
 
   def process
     # Convert Puppet::Transaction::Report object to a logstash event
