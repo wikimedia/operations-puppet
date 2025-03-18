@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook, swagoel]
+              halfak, jdcc, rook, swagoel, jebe]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -441,7 +441,7 @@ groups:
               hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
-              jebe, ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
+              ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
               ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
@@ -474,7 +474,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, oljad, ebysans, aqu,
-              xcollazo, hokwelum, gmodena, dcausse, mnz, jebe, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
+              xcollazo, hokwelum, gmodena, dcausse, mnz, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
               btullis, stevemunene, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl, otto]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
@@ -519,7 +519,7 @@ groups:
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts
-    members: [hokwelum, milimetric, jebe, gmodena]
+    members: [hokwelum, milimetric, gmodena]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Olja Dimitrjevic
@@ -1083,7 +1083,7 @@ groups:
   airflow-analytics-product-admins:
     gid: 840
     description: Group of users for managing Product Analytics related analytics/data jobs and deploying airflow-dags/analytics_product
-    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang, jebe]
+    members: [bearloga, nettrom, conniecc1, nshahquinn-wmf, hghani, kcvelaga, jiawang]
     privileges: [
       'ALL = (analytics-product) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
@@ -5800,14 +5800,12 @@ users:
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC8RA5WEBD39qRNv6/910me3BfWfMTxvTq52IA8mq3EkFqX9bYgxtNQngbAg9QvIj2tyP6/WyRRn578limzjDcD7m2oquRKi4prSCZdZAdxd8Sgs/0OaTV54FJ7MFjABoD/wAOjXsE7MRnSf2JY/NCjAsnFbWRXgz+aKGhjF99oPxNegv6orxFng46rz3gq3I9yW334VmQgYRG8PhkMW86W8YO+XmR4DV3/BxcVy8/S3RnJybspj4otjjfPK1NGz7gRabdNhKNFTKUDL0Bmlno9VTn561gRcxSEZ82ZAysf5jtH7oM65v4Wws1Jnx5dAl0PZS7VOwa6Nj/z/sk8Yuwb wmf-production-12-05-2022
   jebe:
-    ensure: present
+    ensure: absent
     realname: Jennifer Ebe
-    email: jebe@wikimedia.org
     uid: 43150
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILWloU5/2iO6okEbCkuKlLXrNUwCy65Y8xqnfl4SptUo
-    krb: present
+    ssh_keys: []
+    krb: absent
   ollieshotton:
     ensure: present
     realname: Ollie Shotton
