@@ -50,8 +50,6 @@ hosts:
     - ms-be2072
     - ms-be2073
     - ms-be2074
-    - ms-be2075:
-        - failed
     - ms-be2076
     - ms-be2077
     - ms-be2078
