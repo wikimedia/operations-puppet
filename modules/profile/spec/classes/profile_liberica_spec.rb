@@ -2,6 +2,11 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::liberica' do
+  let(:pre_condition) do
+    [
+      'class { "::prometheus::node_exporter": }',
+    ]
+  end
   on_supported_os(WMFConfig.test_on).each do |os, os_facts|
     context "on #{os}" do
         let(:facts) do
