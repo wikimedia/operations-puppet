@@ -24,9 +24,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://airflow-search.wikimedia.org
       replacement: https://airflow-search.discovery.wmnet:30443
     - type: map
-      target: http://airflow-analytics.wikimedia.org
-      replacement: https://airflow-analytics.discovery.wmnet:30443
-    - type: map
       target: http://airflow-platform-eng.wikimedia.org
       replacement: https://airflow-platform-eng.discovery.wmnet:30443
     - type: map
