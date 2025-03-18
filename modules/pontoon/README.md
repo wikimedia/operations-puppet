@@ -1,13 +1,19 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 
-### Pontoon installation instructions
+# Pontoon
+
+The following document will guide you through installing `pontoonctl` and set up
+your first stack. Please refer to the [wikitech Pontoon
+page](https://wikitech.wikimedia.org/wiki/Puppet/Pontoon) for more context and
+information.
+
+## Installation
 
 Pontoon operations are carried out on the command line by `pontoonctl`, for
 example to create new hosts.
 
 You will need a `puppet.git` checkout, and specifically the
 `modules/pontoon/files` directory, where stack configurations are stored.
-
 
 To install `pontoonctl` on your Debian system:
 
@@ -22,8 +28,8 @@ pipx install --system-site-packages --editable '.[ctl]'
 # Note: make sure to have pipx >= 1.1.0 or --editable emits a warning
 ```
 
-Check Cloud VPS connectivity with `pontoonctl list-hosts` and follow the
-instructions to set up credentials.
+Check Cloud VPS connectivity with `pontoonctl list-hosts --scope project` and
+follow the instructions to set up credentials.
 
 > **Note:** Working and configured Cloud VPS access is assumed from this point on.
 In other words, `ssh` towards `wikimedia.cloud` hosts must work. See also
@@ -38,18 +44,20 @@ explanation of the concepts outlined here.
 
 ### SSH setup
 
-Since `pontoonctl` establishes multiple SSH connections, users with SSH keys
-stored on security tokens (e.g., YubiKey) may experience repeated access
-prompts. To avoid this, configure SSH `ControlMaster` and `ControlPersist`
-options.
+> **Note:** Since `pontoonctl` establishes multiple SSH connections, make sure
+you can `ssh` to CloudVPS hosts without prompts. Users with SSH keys stored
+on security tokens (e.g., YubiKey) may experience repeated access prompts. To
+avoid this, configure SSH `ControlMaster` and `ControlPersist` options.
 
-For optional SSH hostname completion, add the following before the Cloud VPS
-bastion configuration in `~/.ssh/config`:
+Add the following before the Cloud VPS bastion configuration in `~/.ssh/config`:
 
-```
+```ssh-config
 Host *.wikimedia.cloud
   UserKnownHostsFile ~/.config/pontoon/ssh_known_hosts
 ```
+
+The snippet will ensure auto-completion for `ssh` hostnames and `git push`
+towards Pontoon hosts works out of the box.
 
 ### Create a new stack
 
@@ -64,14 +72,19 @@ pontoonctl new-stack
 pontoonctl bootstrap-stack
 ```
 
-After approximately ten minutes you will have:
+The bootstrap will take approximately ten minutes. In order to be able to run
+`pontoonctl` from any directory it is recommended to set `PONTOON_HOME` to the
+directory containing stacks (i.e. the directory you are in currently).
+
+Once the bootstrap has completed you will have:
+
 * a Cloud VPS host named after your stack, serving as the Pontoon Puppet server
 * the current git branch set `pontoon-STACK-NAME`
 * a `git remote` named `pontoon-STACK-NAME`
 
 The stack is bootstrapped and ready; the Puppet agent serves as its own server.
-Push your local `puppet.git` commits to the git remote until you are happy with
-the result and the commits are ready for code review.
+You can now push your local `puppet.git` commits to the git remote until you are
+happy with the result and the commits are ready for code review.
 
 #### Add PKI and PuppetDB roles
 
@@ -81,16 +94,42 @@ be added with the following:
 
 ```sh
 pontoonctl add-rolegroup bootstrap
-# Follow the instructions on screen
-# NOTE the initial git push might take about half a minute
+# NOTE the initial git push might be slow, depending on your local internet
 pontoonctl create-hosts    # will take about 5 minutes
 pontoonctl wait-puppet    # will take about 20 minutes
 ```
 
-
 Once Puppet has converged you now have a stack fully bootstrapped with a working
 PuppetDB and PKI available. The stack is ready for any additional roles you want
 to test.
+
+#### Add your role to the stack
+
+With your stack fully bootstrap you can now proceed to add your role. To do so,
+edit your stack's `rolemap.yaml` and add the role and an host. Making sure to
+keep the existing naming scheme of `stack prefix` + `role` + `integer`. For
+example:
+
+```yaml
+myrole:
+  - stackprefix-myrole-01.project.eqiad1.wikimedia.cloud
+```
+
+Then proceed to `git commit` the result and `git push -f pontoon-<STACK NAME>
+HEAD:production` to your stack.
+
+Finally, kick off `pontoonctl create-hosts`.  Once that is done you can `ssh
+hostprefix-myrole-01.project.eqiad1.wikimedia.cloud` and run puppet to inspect
+the result.
+
+Depending on the role the default VM specs may be enough, if not make sure to
+adjust them in `specmap.yaml`.
+
+Getting new roles to work in Pontoon may require tweaks to hiera and/or puppet
+code. Navigate to [wikitech
+documentation](https://wikitech.wikimedia.org/wiki/Puppet/Pontoon#Make_roles_work_in_Pontoon)
+for more detailed instructions and reach out via Phabricator [#pontoon
+project](https://phabricator.wikimedia.org/project/view/6192/) for assistance.
 
 ### Join an existing stack
 
@@ -121,4 +160,15 @@ within your stack.
 
 ### Python version upgrades
 
-The `pipx`-managed virtualenv may break on python version upgrades. The fix is to nuke `$HOME/.local/share/pipx/venvs/pontoon` and create it again as described in the installation section.
+The `pipx`-managed virtualenv may break on python version upgrades. The fix is
+to nuke `$HOME/.local/share/pipx/venvs/pontoon` and create it again as described
+in the installation section.
+
+### Installation non-Debian systems
+
+You can also run `pontoonctl` with `pipx` managing all its dependencies. You
+will need at least version 1.1.0 and use the following to install:
+
+```sh
+pipx install --editable '.[ctl]'
+```

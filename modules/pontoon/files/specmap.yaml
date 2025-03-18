@@ -1,7 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
-# Map roles to VM specifications (image, flavor)
-# Can be overridden per-stack when <stack>/specmap.yaml is found
+# Map roles to VM specifications:
+# * (image, flavor) the VM configuration to use
+# * hostname to use when adding hosts to the stack
+#
+# The specifications in <stack>/specmap.yaml will take
+# precedence when found.
 
 __default:
   image: 'debian-12.0-bookworm'

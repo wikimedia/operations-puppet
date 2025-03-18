@@ -25,7 +25,8 @@ CLICK_CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 INSTRUCTIONS = {
     "credentials-missing": """
 Credentials not found. In order to get new credentials:
-  * Navigate to {horizon_url}/identity/application_credentials
+  * First log in into {horizon_url}
+  * Then navigate to {horizon_url}/identity/application_credentials
   * From the top left dropdown, select the project for your Pontoon stack
   * Create a new application credential, 'name' is the only required field.
     for example '<username>-pontoon'.
@@ -73,7 +74,7 @@ Make sure to run the commands above to set up git locally.
     "new-stack": """
 Stack {stack!r} has been created.
 
-Make sure to commit the stack files before bootstrapping.
+Make sure to commit the stack files before bootstrapping:
 
 git checkout -b pontoon-{stack}
 git add {stack}
@@ -311,7 +312,7 @@ def new_stack(ctx, stack, host_prefix, name):
         p.delete()
         raise
 
-    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack))
+    print(INSTRUCTIONS["new-stack"].format(stack=wanted_stack, cwd=os.getcwd()))
 
 
 @ctl.command()
