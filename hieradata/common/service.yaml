@@ -1102,8 +1102,8 @@ service::catalog:
     lvs:
       class: low-traffic
       conftool:
-        cluster: kubernetes
-        service: kubesvc
+        cluster: maps
+        service: kartotherian-k8s-ssl
       depool_threshold: 0.5
       enabled: true
       monitors:
