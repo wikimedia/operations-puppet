@@ -12,7 +12,8 @@
 # dry_run -  if yes, don't actually sync data and just show what would happen
 # interval - how often to run the sync command, defaults to hourly
 # data_dir - directory to read subscriber data from, defaults to /srv/exports
-#
+# mail_changes - optionally send an email when syncs happen
+# meta_admin_email - optional email address to receive information about syncs
 define mailman3::sync_list_members(
     String $list_name,
     String $list_domain = 'lists.wikimedia.org',
@@ -20,6 +21,8 @@ define mailman3::sync_list_members(
     Enum['n','y'] $dry_run = 'y',
     String $interval = 'hourly',
     Stdlib::Unixpath $data_dir = '/srv/exports',
+    Boolean $mail_changes = false,
+    String $meta_admin_email = 'none@localhost',
 ){
 
     # YES to a dry-run means NOT running it
@@ -30,6 +33,17 @@ define mailman3::sync_list_members(
         'n' => '',
     }
 
+    $mail_cmd = $mail_changes ? {
+        true => @("MAILCMD"/L),
+            " | /usr/bin/mail \
+            -r \"mailman@lists.wikimedia.org\" \
+            -s \"mailman list member sync\" \
+            -a \"Auto-Submitted: auto-generated\" \
+            ${meta_admin_email}\
+            | MAILCMD
+        false => '',
+    }
+
     systemd::timer::job { "sync-list-members-${list_name}":
       ensure       => $ensure,
       user         => 'root',
@@ -37,7 +51,7 @@ define mailman3::sync_list_members(
       command      => @("CMD"/L),
           /usr/bin/mailman-wrapper syncmembers ${dry_run_param} \
           ${data_dir}/mailman_list/${list_domain}/${list_name} \
-          ${list_name}@${list_domain}\
+          ${list_name}@${list_domain}${mail_cmd}\
           | CMD
       interval     => {
           'start'    => 'OnCalendar',
