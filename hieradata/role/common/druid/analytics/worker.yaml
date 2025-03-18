@@ -133,7 +133,7 @@ profile::druid::broker::env:
 
 # --- Druid Coordinator
 profile::druid::coordinator::monitoring_enabled: true
-profile::druid::coordinator::firewall_access: ['ANALYTICS_NETWORKS']
+profile::druid::coordinator::firewall_access: ['ANALYTICS_NETWORKS', 'DSE_KUBEPODS_NETWORKS']
 profile::druid::coordinator::properties:
   druid.emitter: composing
   druid.emitter.composing.emitters: ["logging","http"]
