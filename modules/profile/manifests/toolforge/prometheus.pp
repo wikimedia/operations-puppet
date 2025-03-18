@@ -38,6 +38,7 @@ class profile::toolforge::prometheus (
             'proxy',
             'proxy_http',
             'rewrite',
+            'ssl',
         ],
     }
 
