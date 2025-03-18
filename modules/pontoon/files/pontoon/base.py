@@ -164,10 +164,11 @@ class Pontoon(object):
 
     def _load_config(self) -> "StackConfig":
         if not os.path.exists(self.stack_config_path):
-            data = {}
-        else:
-            with open(self.stack_config_path, "r") as file:
-                data = self.yaml.load(file) or {}
+            with open(self.stack_config_path, "w") as f:
+                f.write("# SPDX-License-Identifier: Apache-2.0\n{}\n")
+
+        with open(self.stack_config_path, "r") as file:
+            data = self.yaml.load(file)
         return StackConfig.from_dict(data)
 
     def set_config_value(self, key: str, value: Any):
