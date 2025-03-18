@@ -1,6 +1,8 @@
 ## NOTE namespaced keys (i.e. with ::) will NOT be looked up here
 ## See also https://phabricator.wikimedia.org/T209265
 lookup_options:
+  abuse_networks:
+    merge: deep  # Ease setting up a block on deployment-prep - T389181!
   apereo_cas:
     merge: deep
   ldap:
