@@ -104,6 +104,9 @@ acl_check_rcpt:
 		hosts = +relay_from_hosts
 		control = submission/sender_retain
 
+	deny senders = ozdemir@gmail.com
+		message = "Please contact noc@wikimedia.org if you want to be able to send email to this receipient."
+
 	# Require recipient domain to be local
 	require message = Relay not permitted
 		domains = +local_domains
