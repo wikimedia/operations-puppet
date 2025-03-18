@@ -15,6 +15,7 @@
 # @param hash_salt salt for one-time login links, cancel links, form tokens, etc.
 # @param git_branch branch to check out of git for civicrm code
 # @param site_name endpoint dns name for civicrm web interface
+# @param civi_mail_user local user account for civicrm mail default mailbox
 # @param db_host host of where the civicrm db is located
 # @param db_user civicrm admin db user
 # @param db_pass password for civicrm admin db user
@@ -28,6 +29,7 @@ class community_civicrm (
     String $git_branch,
     Stdlib::Fqdn $site_name,
     Stdlib::Host $db_host = 'localhost',
+    String $civi_mail_user = 'civimail',
     String $db_user = 'civi_admin',
     String $db_pass = 'FAKEFAKEFAKE',
     String $db_name = 'drupal',
@@ -54,6 +56,11 @@ class community_civicrm (
     systemd::sysuser { 'civiadmin':
         additional_groups => [ 'www-data' ],
         home_dir          => '/usr/lib/community_civicrm',
+    }
+
+    wmflib::dir::mkdir_p("/var/lib/${civi_mail_user}", {owner => $civi_mail_user})
+    systemd::sysuser { $civi_mail_user:
+        home_dir          => "/var/lib/${civi_mail_user}",
     }
 
     file { '/srv/community_civicrm':
