@@ -216,9 +216,9 @@ define opensearch::instance(
     $instance_dic = "${config_dir}/sudachi/system_core.dic"
     $sudachi_dic = '/usr/share/opensearch/config/sudachi/system_core.dic'
     exec { "symlink ${instance_dic}":
-        command => "ln -s '${sudachi_dic}' '${instance_dic}'",
+        command => "/usr/bin/ln -s '${sudachi_dic}' '${instance_dic}'",
         creates => $instance_dic,
-        onlyif  => "test -f '${sudachi_dic}'"
+        onlyif  => "/usr/bin/test -f '${sudachi_dic}'"
     }
 
     $watermark_settings = merge({
