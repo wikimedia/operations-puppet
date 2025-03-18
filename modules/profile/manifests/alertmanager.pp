@@ -6,7 +6,6 @@ class profile::alertmanager (
     Array[Stdlib::Host] $thanos_query_hosts = lookup('profile::alertmanager::thanos_query_hosts', { 'default_value' => [] }),
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
-    Array $prometheus_all_nodes = lookup('prometheus_all_nodes'),
     # lint:ignore:wmf_styleguide - T260574
     String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
     # lint:endignore
@@ -25,7 +24,7 @@ class profile::alertmanager (
     firewall::service { 'alertmanager-prometheus':
         proto  => 'tcp',
         port   => 9093,
-        srange => $prometheus_all_nodes + $grafana_hosts + $thanos_query_hosts,
+        srange => prometheus::all_nodes() + $grafana_hosts + $thanos_query_hosts,
     }
 
     firewall::service{ 'alertmanager-cluster':
