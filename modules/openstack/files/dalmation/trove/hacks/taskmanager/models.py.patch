@@ -1,0 +1,23 @@
+# SPDX-License-Identifier: Apache-2.0
+
+--- models.py	2023-09-07 04:09:51.000000000 +0000
++++ models.py.patched	2024-04-16 20:34:25.352657676 +0000
+@@ -64,6 +64,7 @@
+ from trove.instance.models import Instance
+ from trove.instance.models import InstanceServiceStatus
+ from trove.instance.models import InstanceStatus
++from trove.instance.models import load_simple_instance_addresses
+ from trove.instance import service_status as srvstatus
+ from trove.instance.tasks import InstanceTasks
+ from trove.module import models as module_models
+@@ -1089,9 +1090,7 @@
+ 
+             utils.poll_until(get_server, ip_is_available,
+                              sleep_time=1, time_out=CONF.dns_time_out)
+-            server = self.nova_client.servers.get(
+-                self.db_info.compute_instance_id)
+-            self.db_info.addresses = server.addresses
++            load_simple_instance_addresses(self.context, self.db_info)
+             LOG.debug("Creating dns entry...")
+             ip = self.dns_ip_address
+             if not ip:
