@@ -71,34 +71,38 @@ class profile::apifeatureusage::logstash (
   }
 
   # Inputs
-  logstash::input::kafka { 'rsyslog-udp-localhost-eqiad':
-    kafka_cluster_name                    => 'logging-eqiad',
-    topics_pattern                        => 'udp_localhost-.*',
-    group_id                              => $input_kafka_consumer_group_id,
-    type                                  => 'syslog',
-    tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
-  }
+  ['eqiad', 'codfw'].each |Wmflib::Sites $site| {
+    # Legacy/baremetal mw logging topics
+    logstash::input::kafka { "rsyslog-udp-localhost-${site}":
+      kafka_cluster_name                    => "logging-${site}",
+      topics_pattern                        => 'udp_localhost-.*',
+      group_id                              => $input_kafka_consumer_group_id,
+      type                                  => 'syslog',
+      tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
+      codec                                 => 'json',
+      security_protocol                     => 'SSL',
+      ssl_truststore_location               => $ssl_truststore_location,
+      ssl_truststore_password               => $ssl_truststore_password,
+      manage_truststore                     => $manage_truststore,
+      ssl_endpoint_identification_algorithm => '',
+      consumer_threads                      => 3,
+    }
 
-  logstash::input::kafka { 'rsyslog-udp-localhost-codfw':
-    kafka_cluster_name                    => 'logging-codfw',
-    topics_pattern                        => 'udp_localhost-.*',
-    group_id                              => $input_kafka_consumer_group_id,
-    type                                  => 'syslog',
-    tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka'],
-    codec                                 => 'json',
-    security_protocol                     => 'SSL',
-    ssl_truststore_location               => $ssl_truststore_location,
-    ssl_truststore_password               => $ssl_truststore_password,
-    manage_truststore                     => $manage_truststore,
-    ssl_endpoint_identification_algorithm => '',
-    consumer_threads                      => 3,
+    # k8s mw logging topics - https://phabricator.wikimedia.org/T384335
+    logstash::input::kafka { "rsyslog-mw-${site}":
+      kafka_cluster_name                    => "logging-${site}",
+      topics_pattern                        => 'k8s-mw-.*',
+      group_id                              => $input_kafka_consumer_group_id,
+      type                                  => 'syslog',
+      tags                                  => ['input-kafka-rsyslog-mw', 'rsyslog-mw', 'kafka'],
+      codec                                 => 'json',
+      security_protocol                     => 'SSL',
+      ssl_truststore_location               => $ssl_truststore_location,
+      ssl_truststore_password               => $ssl_truststore_password,
+      manage_truststore                     => $manage_truststore,
+      ssl_endpoint_identification_algorithm => '',
+      consumer_threads                      => 3,
+    }
   }
 
   # Filters

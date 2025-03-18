@@ -59,6 +59,7 @@ class profile::logstash::production (
   }
 
   # k8s dedicated topics https://phabricator.wikimedia.org/T366710
+  # including mw-on-k8s topics https://phabricator.wikimedia.org/T384335
   logstash::input::kafka { 'k8s-eqiad':
     kafka_cluster_name                    => 'logging-eqiad',
     topics_pattern                        => 'k8s-.*',

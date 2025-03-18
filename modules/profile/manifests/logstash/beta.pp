@@ -46,8 +46,6 @@ filter {
   # Inputs (10)
   logstash::input::dlq { 'main': }
 
-  # Logstash collectors in both sites pull messages
-  # from logging kafka clusters in both DCs.
   logstash::input::kafka { 'rsyslog-shipper-eqiad':
     kafka_cluster_name                    => 'logging-beta',
     topics_pattern                        => 'rsyslog-.*',
@@ -69,6 +67,22 @@ filter {
     group_id                              => $input_kafka_consumer_group_id,
     type                                  => 'syslog',
     tags                                  => ['input-kafka-rsyslog-udp-localhost', 'rsyslog-udp-localhost', 'kafka', 'es'],
+    codec                                 => 'json',
+    security_protocol                     => 'SSL',
+    ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-beta'],
+    ssl_endpoint_identification_algorithm => '',
+    manage_truststore                     => $manage_truststore,
+    ssl_truststore_location               => $ssl_truststore_location,
+  }
+
+  # k8s mw logging topics - https://phabricator.wikimedia.org/T384335
+  logstash::input::kafka { 'rsyslog-mw-eqiad':
+    kafka_cluster_name                    => 'logging-beta',
+    topics_pattern                        => 'k8s-mw-.*',
+    group_id                              => $input_kafka_consumer_group_id,
+    type                                  => 'syslog',
+    type                                  => 'syslog',
+    tags                                  => ['input-kafka-rsyslog-mw', 'rsyslog-mw', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
     ssl_truststore_password               => $input_kafka_ssl_truststore_passwords['logging-beta'],
