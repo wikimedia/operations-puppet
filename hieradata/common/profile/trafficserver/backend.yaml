@@ -295,7 +295,7 @@ profile::trafficserver::backend::mapping_rules:
       # NOTE: This exists because by 2025-03-18, rt.wikimedia.org is just a
       # redirects.dat funnel to wikitech. 301s are cheap enough that any
       # backend should be fine
-      replacement: https://mw-web.discovery.wmnet
+      replacement: https://mw-web.discovery.wmnet:4450
     - type: map
       target: http://schema.wikimedia.org
       replacement: https://schema.discovery.wmnet
