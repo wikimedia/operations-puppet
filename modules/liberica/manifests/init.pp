@@ -20,7 +20,8 @@ class liberica(
         ensure => directory,
     }
 
-    file { '/etc/liberica/config.yaml':
+    $config_path = '/etc/liberica/config.yaml'
+    file { $config_path:
         ensure  => present,
         owner   => 'root',
         content => to_yaml($config),
@@ -35,28 +36,28 @@ class liberica(
         ensure  => present,
         content => systemd_template('liberica-hcforwarder'),
         restart => false,
-        require => File['/etc/liberica/config.yaml'],
+        require => File[$config_path],
     }
 
     systemd::service { 'liberica-healthcheck':
         ensure  => present,
         content => systemd_template('liberica-healthcheck'),
         restart => false,
-        require => File['/etc/liberica/config.yaml'],
+        require => File[$config_path],
     }
 
     systemd::service { 'liberica-fp':
         ensure  => present,
         content => systemd_template('liberica-fp'),
         restart => false,
-        require => File['/etc/liberica/config.yaml'],
+        require => File[$config_path],
     }
 
     systemd::service { 'liberica-cp':
         ensure  => present,
         content => systemd_template('liberica-cp'),
         restart => false,
-        require => [File['/etc/liberica/config.yaml'], Systemd::Sysuser['liberica']],
+        require => [File[$config_path], Systemd::Sysuser['liberica']],
     }
 
     # Collect every minute
@@ -66,6 +67,13 @@ class liberica(
         user        => 'root',
         command     => '/usr/bin/liberica cp check /var/lib/prometheus/node.d/liberica-cp.prom',
         interval    => {'start' => 'OnCalendar', 'interval' => 'minutely'},
-        require     => File['/etc/liberica/config.yaml'],
+        require     => File[$config_path],
+    }
+
+    prometheus::node_file_age { 'liberica_config_age_metrics':
+        ensure  => present,
+        paths   => [$config_path],
+        outfile => '/var/lib/prometheus/node.d/liberica-config-age.prom',
+        require => File[$config_path],
     }
 }

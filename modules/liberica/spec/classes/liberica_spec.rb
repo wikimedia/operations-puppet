@@ -3,6 +3,7 @@ require_relative '../../../../rake_modules/spec_helper'
 
 describe 'liberica' do
   on_supported_os(WMFConfig.test_on).each do |os, facts|
+    let(:pre_condition) { 'include prometheus::node_exporter' }
     context "On #{os}" do
       let(:facts) { facts }
       context "On ensure present" do
