@@ -292,7 +292,10 @@ profile::trafficserver::backend::mapping_rules:
       replacement: https://miscweb.discovery.wmnet:30443
     - type: map
       target: http://rt.wikimedia.org
-      replacement: https://rt.discovery.wmnet
+      # NOTE: This exists because by 2025-03-18, rt.wikimedia.org is just a
+      # redirects.dat funnel to wikitech. 301s are cheap enough that any
+      # backend should be fine
+      replacement: https://mw-web.discovery.wmnet
     - type: map
       target: http://schema.wikimedia.org
       replacement: https://schema.discovery.wmnet
