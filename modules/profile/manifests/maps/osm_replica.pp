@@ -4,7 +4,7 @@ class profile::maps::osm_replica(
     # check_postgres_replication_lag script relies on values that are only
     # readable by superuser or replication user. This prevents using a
     # dedicated user for monitoring.
-    String $replication_pass                           = lookup('postgresql::slave::replication_pass'),
+    String $replication_pass                           = lookup('profile::maps::osm_master::replication_pass'),
     Boolean                   $use_replication_slots   = lookup('profile::maps::osm_replica::use_replication_slots'),
     Optional[Integer[250]] $log_min_duration_statement = lookup('profile::maps::osm_replica::log_min_duration_statement', { 'default_value' => undef })
 ){
