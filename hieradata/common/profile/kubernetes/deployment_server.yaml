@@ -477,14 +477,6 @@ profile::kubernetes::deployment_server::services:
         - name: airflow-search-deploy
           owner: root
           group: analytics-deployers
-    airflow-analytics:
-      usernames:
-        - name: airflow-analytics
-          owner: root
-          group: analytics-deployers
-        - name: airflow-analytics-deploy
-          owner: root
-          group: analytics-deployers
     airflow-main:
       usernames:
         - name: airflow-main
