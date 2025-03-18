@@ -4365,3 +4365,18 @@ service::catalog:
       eqiad:
         default: 10.64.21.14  # an-web1001
     state: service_setup
+
+  codesearch:
+    description: "UI to search through Wikimedia code repositories"
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: http
+        host: codesearch.wikimedia.org
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+      - codfw
+    state: service_setup
+
