@@ -4,6 +4,8 @@ profile::elasticsearch::dc_settings:
           - cloudelastic1008.eqiad.wmnet
           - cloudelastic1009.eqiad.wmnet
           - cloudelastic1010.eqiad.wmnet
+          - cloudelastic1011.eqiad.wmnet
+          - cloudelastic1012.eqiad.wment
 
         cluster_hosts:
           - cloudelastic1007.eqiad.wmnet
