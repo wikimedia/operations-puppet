@@ -80,6 +80,7 @@ describe 'liberica' do
                   service: 'bar',
                   ip: '192.2.0.1',
                   port: 80,
+                  protocol: 'tcp',
                   healthchecks: {
                     'L4': {
                       type: 'IdleTCPConnectionCheck',
@@ -160,6 +161,7 @@ services:
     service: bar
     ip: 192.2.0.1
     port: 80
+    protocol: tcp
     healthchecks:
       L4:
         type: IdleTCPConnectionCheck

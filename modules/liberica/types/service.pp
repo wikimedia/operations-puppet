@@ -6,5 +6,6 @@ type Liberica::Service = Struct[{
         'service'          => String,
         'ip'               => Stdlib::IP::Address::Nosubnet,
         'port'             => Stdlib::Port,
+        'protocol'         => Liberica::Protocol,
         'healthchecks'     => Hash[String, Liberica::Healthcheck],
 }]

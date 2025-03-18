@@ -15,6 +15,11 @@ function liberica::service_from_wmflib(
             fail("scheduler ${svc['lvs']['scheduler']} not supported by liberica")
         }
 
+        $protocol = $svc['lvs']['protocol'] ? {
+            Liberica::Protocol => $svc['lvs']['protocol'],
+            default            => 'tcp',
+        }
+
         $forward_type = $site in $svc['lvs']['ipip_encapsulation']? {
             true  => 'tunnel',
             false => 'direct_route',
@@ -92,6 +97,7 @@ function liberica::service_from_wmflib(
                     service          => $svc['lvs']['conftool']['service'],
                     ip               => $ip,
                     port             => $svc['port'],
+                    protocol         => $protocol,
                     healthchecks     => $healthchecks,
                 },
             }

@@ -37,6 +37,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '208.80.153.232',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L7-http://www.wikipedia.com/_status' => {
               'type' => 'HTTPCheck',
@@ -54,6 +55,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '2620:0:860:ed1a::9',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L7-http://www.wikipedia.com/_status' => {
               'type' => 'HTTPCheck',
@@ -84,6 +86,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '208.80.153.232',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L4' => {
               'type' => 'IdleTCPConnectionCheck',
@@ -100,6 +103,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '2620:0:860:ed1a::9',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L4' => {
               'type' => 'IdleTCPConnectionCheck',
@@ -130,6 +134,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '208.80.153.232',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L7-http://www.wikipedia.com/_status' => {
               'type' => 'HTTPCheck',
@@ -153,6 +158,7 @@ describe 'liberica::service_from_wmflib' do
           'service' => 'bar',
           'ip' => '2620:0:860:ed1a::9',
           'port' => 80,
+          'protocol' => 'tcp',
           'healthchecks' => {
             'L7-http://www.wikipedia.com/_status' => {
               'type' => 'HTTPCheck',
