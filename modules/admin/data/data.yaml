@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook]
+              halfak, jdcc, rook, swagoel]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -421,7 +421,7 @@ groups:
               kevinbazira, jiji, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
-              chrisalbon, wikigit, nahidunlimited, swagoel,
+              chrisalbon, wikigit, nahidunlimited,
               edtadros, dvrandecic, cparle, klausman, sbisson, fab, cwhite,
               janstee, gmodena, cdanis, wmde-leszek, jakob,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
@@ -4529,15 +4529,13 @@ users:
     gid: 500
     ssh_keys: []
   swagoel:
-    ensure: present
+    ensure: absent
     name: swagoel
     realname: Swati Goel
-    email: ms.swati.goel@gmail.com
     uid: 27754
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOe8yGmiYe4TX6NLuqjO16X6vXJZnyoh6pdFS//eywhI swati@Swatis-Air.volcano.net
-    krb: present
+    ssh_keys: []
+    krb: absent
   dumisani:
     ensure: absent
     name: dumisani
