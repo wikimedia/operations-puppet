@@ -213,12 +213,12 @@ define opensearch::instance(
         mode   => '0755',
     }
 
-    $instance_dic = "${config_dir}/sudachi/system_core.dic"
-    $sudachi_dic = '/usr/share/opensearch/config/sudachi/system_core.dic'
-    exec { "symlink ${instance_dic}":
-        command => "/usr/bin/ln -s '${sudachi_dic}' '${instance_dic}'",
-        creates => $instance_dic,
-        onlyif  => "/usr/bin/test -f '${sudachi_dic}'"
+    $instance_dir = "${config_dir}/sudachi"
+    $sudachi_dir = '/usr/share/opensearch/config/sudachi'
+    exec { "symlink ${instance_dir}":
+        command => "/usr/bin/ln -s '${sudachi_dir}' '${instance_dir}'",
+        creates => $instance_dir,
+        onlyif  => "/usr/bin/test -f '${sudachi_dir}'"
     }
 
     $watermark_settings = merge({
