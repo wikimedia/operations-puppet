@@ -5,28 +5,6 @@ class openstack::clientpackages::vms::common(
 ) {
     requires_realm('labs')
 
-    if debian::codename::le('buster') {
-        $py2packages = [
-            'python-novaclient',
-            'python-glanceclient',
-            'python-keystoneclient',
-            'python-openstackclient',
-            'python-designateclient',
-            'python-neutronclient',
-            'python-netaddr',
-        ]
-        ensure_packages($py2packages)
-
-        # Wrapper python class to easily query openstack clients
-        file { '/usr/lib/python2.7/dist-packages/mwopenstackclients.py':
-            ensure => 'present',
-            source => 'puppet:///modules/openstack/clientpackages/py2/mwopenstackclients.py',
-            mode   => '0755',
-            owner  => 'root',
-            group  => 'root',
-        }
-    }
-
     $py3packages = [
         'python3-novaclient',
         'python3-glanceclient',
