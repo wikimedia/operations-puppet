@@ -404,6 +404,12 @@ network::subnets:
         private1-virtual-codfw:
           ipv4: 10.192.24.0/23
           ipv6: 2620:0:860:140::/64
+        private1-aux-kubepods-codfw:
+          ipv4: 10.194.80.0/21
+          ipv6: 2620:0:860:305::/64
+        private1-aux-kubesvc-codfw:
+          ipv4: 10.194.64.0/20
+          ipv6: 2620:0:860:304::/64
     esams:
       public:
         public1-bw27-esams:

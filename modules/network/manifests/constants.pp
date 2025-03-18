@@ -196,6 +196,11 @@ class network::constants {
             'sphere'      => 'private',
             'description' => 'aux-kubepods',
             }),
+        slice_network_constants('production', {
+            'site'        => 'codfw',
+            'sphere'      => 'private',
+            'description' => 'aux-kubepods',
+            }),
         ])
     $dse_kubepods_networks = flatten([
         slice_network_constants('production', {
