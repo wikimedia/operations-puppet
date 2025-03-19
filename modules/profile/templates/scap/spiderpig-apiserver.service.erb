@@ -4,7 +4,7 @@ Description=SpiderPig Apiserver
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/scap spiderpig-apiserver --port <%= @spiderpig_port %>
+ExecStart=/usr/bin/scap spiderpig-apiserver --host :: --port <%= @spiderpig_port %>
 User=<%= @spiderpig_user %>
 WorkingDirectory=~
 
