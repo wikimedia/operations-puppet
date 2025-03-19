@@ -48,15 +48,6 @@ class openstack::util::admin_scripts(
         ensure => absent,
     }
 
-    # Script to migrate (with suspension) instances between compute nodes
-    file { '/usr/local/sbin/wmcs-live-migrate':
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/openstack/${version}/admin_scripts/wmcs-live-migrate.py",
-    }
-
     # Set up keystone services (example script)
     file { '/root/wmcs-prod-example.sh':
         ensure => 'present',
