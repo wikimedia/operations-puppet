@@ -20,6 +20,8 @@
 #       The MySQL VRTS database user (probably not the same)
 #   $exim_database_pass,
 #       The MySQL VRTS database pass (probably not the same)
+#   $exim_deny_senders,
+#       Email addresses denied as senders in exim config
 #   $trusted_networks,
 #       The trusted by VRTS networks
 #
@@ -53,6 +55,7 @@ class vrts(
     String $exim_database_name,
     String $exim_database_user,
     String $exim_database_pass,
+    String $exim_deny_senders,
     Array $trusted_networks,
     String $download_url,
     String $http_proxy,
@@ -69,6 +72,7 @@ class vrts(
         vrts_mysql_database => $exim_database_name,
         vrts_mysql_user     => $exim_database_user,
         vrts_mysql_password => $exim_database_pass,
+        exim_deny_senders   => $exim_deny_senders,
         trusted_networks    => $trusted_networks,
         mail_smarthosts     => $mail_smarthosts,
     }

@@ -12,6 +12,8 @@
 #       The password for exim to connect to the VRTS database
 #   $trusted_networks
 #       VRTS trusted networks by exim/spamassasin
+#   $exim_deny_senders
+#       Email addresses denied as senders in exim
 #
 # Actions:
 #       Install/configure exim/spamassasin
@@ -30,6 +32,7 @@ class vrts::mail(
     String $vrts_mysql_database,
     String $vrts_mysql_user,
     String $vrts_mysql_password,
+    String $exim_deny_senders,
     Array $trusted_networks,
     Array[Stdlib::Fqdn] $mail_smarthosts,
 ){
