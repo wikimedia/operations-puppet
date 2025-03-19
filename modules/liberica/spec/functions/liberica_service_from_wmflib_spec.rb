@@ -116,6 +116,55 @@ describe 'liberica::service_from_wmflib' do
       }
     ) }
   end
+  context "service using DNS" do
+    let('svc') { base_svc.merge('base' => base_svc['base'].merge('lvs' => base_svc['base']['lvs'].merge(
+      {'monitors' =>
+       {'DNS' =>
+        { 'domain_name' => ['www.wikipedia.org'] }
+       }
+      })))
+    }
+    it { is_expected.to run.with_params(svc, 'eqiad').and_return(
+      {
+        'baselb_80' => {
+          'forward_type' => 'tunnel',
+          'depool_threshold' => 0.5,
+          'cluster' => 'foo',
+          'service' => 'bar',
+          'ip' => '208.80.153.232',
+          'port' => 80,
+          'protocol' => 'tcp',
+          'healthchecks' => {
+            'DNS-www.wikipedia.org' => {
+              'type' => 'DNSCheck',
+              'query_type' => 'A',
+              'domain_name' => 'www.wikipedia.org',
+              'timeout' => '5s',
+              'check_period' => '10s',
+            },
+          },
+        },
+        'baselb6_80' => {
+          'forward_type' => 'tunnel',
+          'depool_threshold' => 0.5,
+          'cluster' => 'foo',
+          'service' => 'bar',
+          'ip' => '2620:0:860:ed1a::9',
+          'port' => 80,
+          'protocol' => 'tcp',
+          'healthchecks' => {
+            'DNS-www.wikipedia.org' => {
+              'type' => 'DNSCheck',
+              'query_type' => 'A',
+              'domain_name' => 'www.wikipedia.org',
+              'timeout' => '5s',
+              'check_period' => '10s',
+            },
+          },
+        },
+      }
+    ) }
+  end
   context "service using both ProxyFetch and IdleConnection" do
     let('svc') { base_svc.merge('base' => base_svc['base'].merge('lvs' => base_svc['base']['lvs'].merge(
       {'monitors' =>

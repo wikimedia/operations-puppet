@@ -19,7 +19,7 @@ type Wmflib::Service::Lvs = Struct[{
     'scheduler_flag'     => Optional[Enum['mh-port']],
     'conftool'           => Struct[{'cluster' => String[1], 'service' => String[1]}],
     'depool_threshold'   => Float[0.0, 1.0],
-    'monitors'           => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash]],
+    'monitors'           => Optional[Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP', 'DNS'], Hash]],
     'bgp'                => Optional[Boolean],
     'protocol'           => Optional[Enum['tcp', 'udp']],
     'ipip_encapsulation' => Optional[Array[Wmflib::Sites]],

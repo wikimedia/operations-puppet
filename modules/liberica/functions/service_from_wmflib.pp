@@ -26,12 +26,15 @@ function liberica::service_from_wmflib(
         }
 
         $healthchecks = $svc['lvs']['monitors']? {
-            Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP'], Hash] => $svc['lvs']['monitors'].reduce({})|$hcs_memo, $hcs_value| {
+            Hash[Enum['ProxyFetch', 'IdleConnection', 'UDP', 'DNS'], Hash] => $svc['lvs']['monitors'].reduce({})|$hcs_memo, $hcs_value| {
                 $hc_type = $hcs_value[0]
                 $hc_cfg = $hcs_value[1]
 
                 if $hc_type == 'ProxyFetch' and !$hc_cfg['url'] {
                     fail('invalid ProxyFetch configuration')
+                }
+                if $hc_type == 'DNS' and !$hc_cfg['domain_name'] {
+                    fail('invalid DNS healthcheck configuration')
                 }
 
                 # default values for healthcheck configuration settings
@@ -40,12 +43,12 @@ function liberica::service_from_wmflib(
                     default              => 200,
                 }
 
-                $http_check_timeout = $hc_cfg['timeout'] ? {
+                $timeout = $hc_cfg['timeout'] ? {
                     Integer => "${hc_cfg['timeout']}s",
                     default => '5s',
                 }
 
-                $http_check_period = $hc_cfg['interval'] ? {
+                $check_period = $hc_cfg['interval'] ? {
                     Integer => "${hc_cfg['interval']}s",
                     default => '10s',
                 }
@@ -53,6 +56,11 @@ function liberica::service_from_wmflib(
                 $idle_connection_timeout = $hc_cfg['timeout-clean-reconnect'] ? {
                     Integer => "${hc_cfg['timeout-clean-reconnect']}s",
                     default => '3s',
+                }
+
+                $query_type = $hc_cfg['query_type'] ? {
+                    Enum['A'] => $hc_cfg['query_type'],
+                    default   => 'A',
                 }
 
                 $hc = $hc_type? {
@@ -63,8 +71,8 @@ function liberica::service_from_wmflib(
                                 type         => 'HTTPCheck',
                                 url          => $url,
                                 status_code  => $status_code,
-                                timeout      => $http_check_timeout,
-                                check_period => $http_check_period,
+                                timeout      => $timeout,
+                                check_period => $check_period,
                             },
                         }
                         $url_memo + $hc_url
@@ -76,6 +84,18 @@ function liberica::service_from_wmflib(
                             check_period     => '300ms',
                             reconnect_period => '1s',
                         },
+                    },
+                    'DNS'            => $hc_cfg['domain_name'].reduce({})|$domain_name_memo, Stdlib::Fqdn $domain_name| {
+                        $hc_fqdn = {
+                            "DNS-${domain_name}" => {
+                                type         => 'DNSCheck',
+                                query_type   => $query_type,
+                                domain_name  => $domain_name,
+                                timeout      => $timeout,
+                                check_period => $check_period,
+                            },
+                        }
+                        $domain_name_memo + $hc_fqdn
                     },
                     default          => fail("unsupported healthcheck type: ${hc_type}"),
                 }
