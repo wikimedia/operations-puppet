@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
+
+--- api.py	2024-08-25 15:49:12.192846344 -0500
++++ api.py.modified	2024-08-25 15:49:08.499873718 -0500
+@@ -43,17 +43,19 @@
+ 
+ _FACADE = None
+ 
+-
++###AR-MOD#-FIX SQL?
+ def _create_facade_lazily():
+     global _FACADE
+     if _FACADE is None:
+-        _FACADE = db_session.EngineFacade.from_config(CONF)
++        # FIXME(karolinku): autocommit=True it's not compatible with
++        # SQLAlchemy 2.0, and will be removed in future
++        _FACADE = db_session.EngineFacade.from_config(CONF, autocommit=True)
+         if profiler_sqlalchemy:
+             if CONF.profiler.enabled and CONF.profiler.trace_sqlalchemy:
+                 profiler_sqlalchemy.add_tracing(sa, _FACADE.get_engine(), "db")
+ 
+     return _FACADE
+-
++###################
+ 
+ def get_engine():
+     facade = _create_facade_lazily()

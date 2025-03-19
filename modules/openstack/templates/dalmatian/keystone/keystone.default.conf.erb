@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: Apache-2.0
+#
+# Config fragment for sql-managed service-domain
+[identity]
+driver = ldap
+
+[ldap]
+url = <% @ldap_hosts.each do |ldap_host| %>ldap://<%= ldap_host %>,<% end %>
+tree_dn = <%= @ldap_base_dn %>
+user_tree_dn = ou=people,<%= @ldap_base_dn %>
+user_objectclass = inetOrgPerson
+user_filter = (!(pwdPolicySubentry=cn=disabled,ou=ppolicies,<%= @ldap_base_dn %>))
+user_id_attribute = <%= @ldap_user_id_attribute %>
+user_name_attribute = <%= @ldap_user_name_attribute %>
+user = <%= @ldap_user_dn %>
+password = <%= @ldap_user_pass %>
+
+
+# for T348857, map toolsbeta user groups to keystone groups.
+# This is a temporary proof-of-concept; if the idea sticks we'll
+# do this for tools as well as toolsbeta.
+#
+# Note that this mapping needs to happen in the default domain
+# because that's where the users are.
+group_tree_dn = ou=servicegroups,dc=wikimedia,dc=org
+group_objectclass = groupOfNames
+# group_filter = (|(cn=tools.*)(cn=toolsbeta.*))
+group_filter = (cn=toolsbeta.*)
+group_name_attribute = cn
+group_id_attribute = gidNumber
+group_member_attribute = member
+group_allow_create = False
+group_allow_delete = False
+group_allow_update = False

@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: Apache-2.0
+
+--- models.py	2024-08-25 15:35:11.961582541 -0500
++++ models.py.modified	2024-08-25 15:38:05.749668341 -0500
+@@ -92,10 +92,11 @@
+ 
+         if session is None:
+             session = db_api.get_session()
+-
+-        with session.begin():
+-            super(MagnumBase, self).save(session)
+-
++#######MOD-AR TEST QUEUE PROBLEM #####
++        super(MagnumBase, self).save(session)
++        # with session.begin():
++        #     super(MagnumBase, self).save(session)
++#######MOD-AR TEST QUEUE PROBLEM #####
+ 
+ Base = declarative_base(cls=MagnumBase)
+ 
