@@ -213,18 +213,12 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
               kemayo, arthurtaylor
     ]
-    system_members: [mwbuilder, mwpresync, spiderpig]
-    privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
+    system_members: [mwbuilder, mwpresync]
+    privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
                  'ALL = NOPASSWD: /usr/bin/renice',
                  'ALL = NOPASSWD: /usr/local/sbin/fix-staging-perms',
-                 'ALL = NOPASSWD: /bin/systemctl start spiderpig-jobrunner',
-                 'ALL = NOPASSWD: /bin/systemctl stop spiderpig-jobrunner',
-                 'ALL = NOPASSWD: /bin/systemctl restart spiderpig-jobrunner',
-                 'ALL = NOPASSWD: /bin/systemctl start spiderpig-apiserver',
-                 'ALL = NOPASSWD: /bin/systemctl stop spiderpig-apiserver',
-                 'ALL = NOPASSWD: /bin/systemctl restart spiderpig-apiserver',
                  # The restart script must run as a login shell (sudo -i) in order to be fed etcd
                  # tokens as environment vars. Sudo seemingly implements this by rewriting the
                  # command before checking sudoers -- but it disallows any arguments that don't
@@ -1308,13 +1302,6 @@ groups:
     privileges: ['ALL = (cassandra_devel) NOPASSWD: /usr/bin/cqlsh *']
     approval:
       - Kwaku Addo Ofori
-  # Placeholder to reserve the gid.
-  # This service system user is managed by puppet in
-  # profile::scap::spiderpig spiderpig.  No members other than the
-  # spiderpig user are expected to be added to this group.
-  #   gid: 929
-  #   system: true
-  #   members: []
 
 users:
   reprepro:
@@ -1519,14 +1506,6 @@ users:
   #   gid: 928
   #   home_dir: /srv/authdns
   #   shell: /usr/bin/git-shell
-  # Placeholder to reserve the uid/gid.
-  # This service system user is managed by puppet.
-  # spiderpig:
-  #   ensure: present
-  #   system: true
-  #   uid: 929
-  #   gid: 929
-  #   home_dir: /home/spiderpig
   rush:
     ensure: absent
     gid: 500

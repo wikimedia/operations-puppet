@@ -482,13 +482,3 @@ profile::mediawiki::deployment::server::auto_clean_interval: Mon *-*-* 21:00:00 
 profile::confd::instances:
   main:
     interval: 30
-
-# T383945
-profile::envoy::ensure: present
-profile::tlsproxy::envoy::ssl_provider: cfssl
-profile::tlsproxy::envoy::sni_support: "yes"
-profile::tlsproxy::envoy::services:
-   - server_names: ["spiderpig"]
-     port: 9000
-     cert_name: "spiderpig.wikimedia.org"
-profile::tlsproxy::envoy::global_cert_name: "deployment.eqiad.wmnet"
