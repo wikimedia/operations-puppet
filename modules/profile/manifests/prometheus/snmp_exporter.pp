@@ -1,8 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::prometheus::snmp_exporter (
-  # As of Jan 2022 all SNMP polling happens from codfw/eqiad netmon
-  # hosts, therefore allow all Prometheus hosts to talk to snmp_exporter
-    Array[Stdlib::Host] $prometheus_all_nodes = lookup('prometheus_all_nodes'),
     Array[String] $datacenters = lookup('datacenters'),
 ) {
     include passwords::network
@@ -34,10 +31,12 @@ class profile::prometheus::snmp_exporter (
             src_sets => ['LABS_NETWORKS'],
         }
     } else {
+        # As of Jan 2022 all SNMP polling happens from codfw/eqiad netmon hosts.
+        # Therefore allow all Prometheus hosts to talk to snmp_exporter
         firewall::service { 'prometheus-snmp-exporter':
             proto  => 'tcp',
             port   => 9116,
-            srange => $prometheus_all_nodes,
+            srange => prometheus::all_nodes(),
         }
     }
 }
