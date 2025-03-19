@@ -10,7 +10,7 @@ from typing import Callable, List, Literal, Optional
 
 import pontoon.ssh as ssh
 from pontoon import Pontoon
-from pontoon.cloudvps import CloudHost, CloudVPS
+from pontoon.cloudvps import CloudVPS
 from pontoon.enroll import Enroller
 from pontoon.host import Filter, Host
 from pontoon.rolegroups import RoleGroups
@@ -48,7 +48,7 @@ class Controller(object):
             res.append(Host(fqdn, role))
         return res
 
-    def cloud_hosts(self, scope: Literal["stack", "project"]) -> list[Host]:
+    def cloud_hosts(self, scope: Literal["stack", "project"]) -> List[Host]:
         """Return hosts running in cloud for the given scope"""
         res = []
         hostmap = self.pontoon.host_map()
@@ -59,35 +59,6 @@ class Controller(object):
                 continue
             res.append(Host(fqdn, role))
         return res
-
-    # XXX use Filter(ctrl.cloud_hosts(scope)), though that gives back Host(s) and
-    # we want to CloudHost(s) to be able to print image/flavor too
-    def _filter_scope_hosts(
-        self, scope, role: Optional[str], pattern: Optional[str]
-    ) -> list[CloudHost]:
-
-        # set up custom filters, similar to Filter
-        stack_hosts_by_fqdn = {h.fqdn: h.role for h in self.stack_hosts}
-        stack_hosts_by_role = {}
-        for h in self.stack_hosts:
-            stack_hosts_by_role.setdefault(h.role, []).append(h.fqdn)
-
-        def _filter_by_stack(host):
-            return host.fqdn in stack_hosts_by_fqdn
-
-        def _filter_by_role(host):
-            return host.fqdn in stack_hosts_by_role[role]
-
-        _filter_by_fqdn = Filter.by_fqdn(pattern)
-
-        hosts = self.cloud.list_hosts()
-        if scope == "stack":
-            # Keep only hosts in the stack
-            hosts = filter(lambda x: _filter_by_stack(x), hosts)
-
-        filter_fn = Filter.any(_filter_by_fqdn, _filter_by_role)
-        hosts = filter(lambda x: filter_fn(x), hosts)
-        return [h for h in hosts]
 
     @property
     def rolegroups(self) -> RoleGroups:

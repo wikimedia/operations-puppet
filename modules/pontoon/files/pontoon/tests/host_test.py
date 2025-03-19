@@ -1,58 +1,104 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
 import unittest
 
-from pontoon.host import Host, Filter
+from pontoon.host import Filter, Host
 
 
 class TestHostFilter(unittest.TestCase):
-
-    def setUp(self):
-        self.hosts = [
-            Host("server1.example.com", "web"),
-            Host("server2.example.com", "db"),
-            Host("app1.example.org", "app"),
-            Host("server3.example.com", "web"),
-            Host("db1.example.org", "db"),
-        ]
-        # same as first host in self.hosts
-        self.duplicate_host = Host("server1.example.com", "web")
-        self.filter = Filter(self.hosts)
-
     def test_host_repr(self):
-        host = Host("test.example.com", "test-role")
-        self.assertEqual(repr(host), "Host(fqdn='test.example.com', role='test-role')")
-
-    def test_filter_by_fqdn_exact(self):
-        filtered = self.filter.apply(Filter.by_fqdn("server1.example.com"))
-        self.assertEqual(len(filtered), 1)
-        self.assertEqual(filtered._hosts[0].fqdn, "server1.example.com")
-
-    def test_filter_by_fqdn_pattern(self):
-        filtered = self.filter.apply(Filter.by_fqdn("server*.example.com"))
-        self.assertEqual(len(filtered), 3)
-
-    def test_filter_multiple_conditions(self):
-        filtered = self.filter.apply(
-            Filter.by_fqdn("server*.example.com"), Filter.by_role("web")
-        )
-        self.assertEqual(len(filtered), 2)
-
-    def test_filter_any_condition(self):
-        filtered = self.filter.apply(
-            Filter.any(Filter.by_fqdn("server1.example.com"), Filter.by_role("db"))
-        )
-        self.assertEqual(len(filtered), 3)
-
-    def test_filter_not_condition(self):
-        filtered = self.filter.apply(Filter.not_(Filter.by_fqdn("server1.example.com")))
-        self.assertEqual(len(filtered), 4)
+        h = Host("a.example.com", "role::foo")
+        self.assertEqual(repr(h), "Host(fqdn='a.example.com', role='role::foo')")
 
     def test_host_equality(self):
-        self.assertEqual(self.hosts[0], self.duplicate_host)
-        self.assertNotEqual(self.hosts[1], self.duplicate_host)
+        h1 = Host("a.example.com", "role::foo")
+        h2 = Host("a.example.com", "role::foo")
+        h3 = Host("b.example.com", "role::foo")
+        h4 = Host("a.example.com", "role::bar")
+
+        self.assertEqual(h1, h2)
+        self.assertNotEqual(h1, h3)
+        self.assertNotEqual(h1, h4)
 
     def test_host_hashing(self):
-        self.assertEqual(hash(self.hosts[0]), hash(self.duplicate_host))
-        self.assertNotEqual(hash(self.hosts[1]), hash(self.duplicate_host))
+        h1 = Host("a.example.com", "role::foo")
+        h2 = Host("a.example.com", "role::foo")
+        h3 = Host("b.example.com", "role::foo")
+
+        hosts = {h1, h2, h3}
+        self.assertEqual(len(hosts), 2)
+
+    def test_filter_multiple_conditions(self):
+        hosts = [
+            Host("a.example.com", "role::foo"),
+            Host("b.example.com", "role::bar"),
+            Host("c.example.com", "role::foo"),
+        ]
+
+        f = Filter(hosts)
+        self.assertEqual(len(f), 3)
+
+        f = f.apply(Filter.by_role("role::foo"))
+        self.assertEqual(len(f), 2)
+
+        f = f.apply(Filter.by_fqdn("a*"))
+        self.assertEqual(len(f), 1)
+
+        self.assertEqual(list(f)[0].fqdn, "a.example.com")
+
+    def test_filter_any_condition(self):
+        hosts = [
+            Host("a.example.com", "role::foo"),
+            Host("b.example.com", "role::bar"),
+            Host("c.example.com", "role::baz"),
+        ]
+
+        f = Filter(hosts)
+        f = f.apply(
+            Filter.any(Filter.by_role("role::foo"), Filter.by_role("role::bar"))
+        )
+        self.assertEqual(len(f), 2)
+
+    def test_filter_not_condition(self):
+        hosts = [
+            Host("a.example.com", "role::foo"),
+            Host("b.example.com", "role::bar"),
+            Host("c.example.com", "role::baz"),
+        ]
+
+        f = Filter(hosts)
+        f = f.apply(
+            Filter.not_(Filter.by_role("role::foo")),
+        )
+        self.assertEqual(len(f), 2)
+        for h in f:
+            self.assertNotEqual(h.role, "role::foo")
+
+    def test_filter_by_fqdn_exact(self):
+        hosts = [
+            Host("a.example.com", "role::foo"),
+            Host("b.example.com", "role::bar"),
+            Host("c.example.com", "role::baz"),
+        ]
+
+        f = Filter(hosts)
+        f = f.apply(Filter.by_fqdn("b.example.com"))
+        self.assertEqual(len(f), 1)
+        self.assertEqual(list(f)[0].fqdn, "b.example.com")
+
+    def test_filter_by_fqdn_pattern(self):
+        hosts = [
+            Host("a.example.com", "role::foo"),
+            Host("b.example.com", "role::bar"),
+            Host("c.example.com", "role::baz"),
+        ]
+
+        f = Filter(hosts)
+        f = f.apply(Filter.by_fqdn("*.example.com"))
+        self.assertEqual(len(f), 3)
+
+        f = Filter(hosts)
+        f = f.apply(Filter.by_fqdn("a*"))
+        self.assertEqual(len(f), 1)
+        self.assertEqual(list(f)[0].fqdn, "a.example.com")

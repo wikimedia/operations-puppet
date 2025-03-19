@@ -387,7 +387,7 @@ def list_stacks(ctx):
     help="Output format. 'fqdn' is suitable for scripting.",
     show_default=True,
 )
-@click.argument("pattern", required=False, default="*")
+@click.argument("pattern", required=False)
 @click.pass_context
 def list_hosts(ctx, stack, role, scope, output, pattern):
     """Show cloud hosts belonging to the stack, or the whole project"""
@@ -400,7 +400,19 @@ def list_hosts(ctx, stack, role, scope, output, pattern):
 
     ctrl = get_controller(stack, ctx.obj["home"])
 
-    hosts = ctrl._filter_scope_hosts(scope, role, pattern)
+    hosts = HostFilter(ctrl.cloud.list_hosts())
+
+    # First filter by scope, keepin only hosts in the stack
+    if scope == "stack":
+        stack_fqdns = {h.fqdn for h in ctrl.stack_hosts}
+        hosts = hosts.apply(lambda host: host.fqdn in stack_fqdns)
+
+    # Apply role/pattern filter (with AND logic)
+    if role:
+        hosts = hosts.apply(HostFilter.by_role(role))
+
+    if pattern:
+        hosts = hosts.apply(HostFilter.by_fqdn(pattern))
 
     hosts = sorted(hosts, key=lambda h: h.fqdn)
 

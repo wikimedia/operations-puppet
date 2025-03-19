@@ -4,7 +4,8 @@
 import logging
 import os
 from dataclasses import dataclass
-from typing import Any, Callable, Dict, List, Optional
+from fnmatch import fnmatch
+from typing import Any, Callable, Dict, List, Optional, TypeVar
 
 from pontoon import Pontoon
 from pontoon.credentials import Credentials
@@ -18,6 +19,9 @@ from pontoon.nova import (
     Server,
 )
 from ruamel.yaml import YAML
+
+# Type variable for Host or CloudHost
+H = TypeVar("H", bound=Host)
 
 log = logging.getLogger()
 
@@ -33,11 +37,29 @@ class Specs:
 
 @dataclass
 class CloudHost(Host):
-    """Represents an existing cloud host."""
+    """Represents an existing cloud host with cloud-specific properties.
+
+    This enhances the base Host class with additional Cloud VPS specific
+    attributes like image and flavor.
+    """
 
     fqdn: str
     image: str
     flavor: str
+    role: str = "unknown"  # Default to unknown if role not provided
+
+    def __init__(self, fqdn: str, image: str, flavor: str, role: str = "unknown"):
+        """Initialize a CloudHost instance.
+
+        Args:
+            fqdn: Fully qualified domain name
+            image: OS image name
+            flavor: VM flavor/size
+            role: Puppet role of the host (defaults to "unknown")
+        """
+        super().__init__(fqdn, role)
+        self.image = image
+        self.flavor = flavor
 
 
 class CloudVPS(object):
@@ -106,9 +128,62 @@ class CloudVPS(object):
 
     @property
     def hosts_filter(self) -> Callable[[Host], bool]:
-        """To be used with Filter.apply to filter this project's hosts"""
-        cloud_fqdns = self.nova.fqdns()
+        """Return a filter function to identify hosts that exist in the cloud.
+
+        To be used with Filter.apply to filter this project's hosts.
+
+        Returns:
+            A callable that returns True if a host exists in the cloud
+        """
+        # Create a set for faster lookups
+        cloud_fqdns = set(self.nova.fqdns())
         return lambda host: host.fqdn in cloud_fqdns
+
+    @staticmethod
+    def by_image(image: Optional[str]) -> Callable[[H], bool]:
+        """Filter hosts by image pattern.
+
+        This only works on CloudHost objects. For regular Host objects,
+        this will always return False.
+
+        Args:
+            image: Image name or pattern to match
+
+        Returns:
+            A callable filter function
+        """
+        if image is None:
+            return lambda _: False
+
+        def match(host):
+            if not hasattr(host, "image"):
+                return False
+            return fnmatch(host.image, image)
+
+        return match
+
+    @staticmethod
+    def by_flavor(flavor: Optional[str]) -> Callable[[H], bool]:
+        """Filter hosts by flavor pattern.
+
+        This only works on CloudHost objects. For regular Host objects,
+        this will always return False.
+
+        Args:
+            flavor: Flavor name or pattern to match
+
+        Returns:
+            A callable filter function
+        """
+        if flavor is None:
+            return lambda _: False
+
+        def match(host):
+            if not hasattr(host, "flavor"):
+                return False
+            return fnmatch(host.flavor, flavor)
+
+        return match
 
     @property
     def project(self) -> Optional[str]:
@@ -140,15 +215,23 @@ class CloudVPS(object):
         """List details about hosts (FQDNs) for the current project.
 
         Returns:
-            List[CloudHost]: A list of CloudHost objects.
+            List[CloudHost]: A list of CloudHost objects with role information
+                from the stack when available.
         """
+        # Get a mapping of FQDNs to roles from the stack
+        stack_fqdn_to_role = self.pontoon.host_map()
+
         res: List[CloudHost] = []
 
         for server in self.nova.servers():
+            fqdn = self.nova.server_fqdn(server)
+            role = stack_fqdn_to_role.get(fqdn, "unknown")
+
             cloud_host = CloudHost(
-                fqdn=self.nova.server_fqdn(server),
+                fqdn=fqdn,
                 image=self.nova.server_image(server).name,
                 flavor=self.nova.server_flavor(server).name,
+                role=role,
             )
             res.append(cloud_host)
 
