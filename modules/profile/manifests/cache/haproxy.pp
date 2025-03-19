@@ -137,21 +137,44 @@ class profile::cache::haproxy(
         require     => File['/usr/local/sbin/haproxy-stek-manager'],
     }
 
-    $cert_path = '/run/haproxy-tls'
-    # For TLS material
+    $tmpfs_path = '/run/haproxy-tls'
+    $volatile_tls_path = $use_tls_tmpfiles? {
+        true    => $tmpfs_path,
+        default => undef,
+    }
+
     systemd::tmpfile { 'haproxy_tls_material':
         ensure  => $use_tls_tmpfiles.bool2str('present', 'absent'),
-        content => "d ${cert_path} 0700 haproxy haproxy -",
+        content => "d ${volatile_tls_path} 0700 haproxy haproxy -",
     }
 
     if !$available_unified_certificates[$public_tls_unified_cert_vendor] {
         fail('The specified TLS unified cert vendor is not available')
     }
 
+    # Iterate over all available_unified_certificate structure and check if
+    # the cert_paths starts with the required prefix, depending on the usage
+    # of volatile storage for tls keys or not
+    $available_unified_certificates.each |$provider, $avail_cert| {
+        $avail_cert['cert_paths'].each |Stdlib::Unixpath $path| {
+
+            if $use_tls_tmpfiles {
+                unless($path.stdlib::start_with($volatile_tls_path)) {
+                    fail("Certificate path ${path} should match with ${volatile_tls_path}")
+                }
+            } else {
+                if $path =~ $tmpfs_path {
+                    fail("Certificate path ${path} should NOT match with ${tmpfs_path}")
+                }
+            }
+        }
+    }
+
     unless empty($unified_certs) {
         $unified_certs.each |String $cert| {
             sslcert::certificate { $cert:
-                before => $site_resource,
+                before           => $site_resource,
+                private_tls_path => $volatile_tls_path,
             }
 
             if $do_ocsp {
@@ -159,8 +182,14 @@ class profile::cache::haproxy(
                     proxy  => $ocsp_proxy,
                     before => Service['haproxy'],
                 }
+
                 # HAProxy expects the prefetched OCSP response on the same path as the certificate
-                file { "/etc/ssl/private/${cert}.chained.crt.key.ocsp":
+                $ocsp_response_path = $use_tls_tmpfiles? {
+                    true    => $volatile_tls_path,
+                    default => '/etc/ssl/private',
+                }
+
+                file { "${ocsp_response_path}/${cert}.chained.crt.key.ocsp":
                     ensure  => link,
                     target  => "/var/cache/ocsp/${cert}.ocsp",
                     require => Sslcert::Ocsp::Conf[$cert],
@@ -179,6 +208,7 @@ class profile::cache::haproxy(
             acme_chief::cert { $acme_cert:
                 puppet_svc => 'haproxy',
                 key_group  => 'haproxy',
+                certs_path => $volatile_tls_path,
             }
         }
     }
@@ -188,6 +218,7 @@ class profile::cache::haproxy(
             acme_chief::cert { $extra_cert_name:
                 puppet_svc => 'haproxy',
                 key_group  => 'haproxy',
+                certs_path => $volatile_tls_path,
             }
         }
         $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]] + values($extra_certificates)
