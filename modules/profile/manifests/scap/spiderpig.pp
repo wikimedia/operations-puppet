@@ -19,13 +19,20 @@ class profile::scap::spiderpig (
         mode   => '0755',
     }
 
+    # TODO: Once we are in bookworm+, switch the following 2 resources to systemd-sysuser
     user { $spiderpig_user:
         uid     => $uid,
         gid     => $gid,
         comment => 'SpiderPig jobrunner/apiserver',
         home    => $home_dir,
-        require => File[$home_dir]
+        require => File[$home_dir],
     }
+
+    group { $spiderpig_user:
+        gid    => $gid,
+        system => true,
+    }
+
 
     systemd::service { 'spiderpig-jobrunner':
         ensure  => $ensure_services,
