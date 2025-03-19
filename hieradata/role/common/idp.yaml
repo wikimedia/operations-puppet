@@ -314,6 +314,12 @@ profile::idp::services:
     required_groups:
       - nda
       - wmf
+  spiderpig:
+    id: 55
+    service_id: 'https://spiderpig\.wikimedia\.org(/.*)?'
+    required_groups:
+      - releng
+      - ops
 profile::idp::ldap_attributes:
   - cn
   - memberOf
