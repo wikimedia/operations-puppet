@@ -561,6 +561,11 @@ network::subnets:
         sandbox1-eqsin:
           ipv4: 103.102.166.16/28
           ipv6: 2001:df2:e500:201::/64
+    magru:
+      public:
+        sandbox1-b3-magru:
+          ipv4: 195.200.68.64/29
+          ipv6: 2a02:ec80:700:201::/64
   cloud:
     eqiad:
       private:
