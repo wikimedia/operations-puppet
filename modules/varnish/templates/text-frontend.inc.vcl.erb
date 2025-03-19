@@ -431,7 +431,7 @@ sub cluster_fe_recv {
     // set headers (T350094), and normalize it here to reduce the amount of code that needs
     // both cookie handling and header handling logic.
     if (req.http.Cookie ~ "(^|;\s*)X-Wikimedia-Debug=") {
-        set req.http.X-Wikimedia-Debug = regsub(regsub(
+        set req.http.X-Wikimedia-Debug = regsuball(regsuball(
             regsub(
                 req.http.Cookie,
                 "^(?:.*;\s*)?X-Wikimedia-Debug=([^;]*).*$",
