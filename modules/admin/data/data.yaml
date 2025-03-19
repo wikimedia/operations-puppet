@@ -213,7 +213,7 @@ groups:
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
               kemayo, arthurtaylor
     ]
-    system_members: [mwbuilder, mwpresync]
+    system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
                  'ALL = NOPASSWD: /etc/init.d/apache2',
