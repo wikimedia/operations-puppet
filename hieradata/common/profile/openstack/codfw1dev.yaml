@@ -1,5 +1,5 @@
 profile::openstack::codfw1dev::region: 'codfw1dev-r'
-profile::openstack::codfw1dev::version: 'dalmation'
+profile::openstack::codfw1dev::version: 'caracal'
 profile::openstack::codfw1dev::horizon_version: 'caracal'
 
 # Keep codfw1dev APIs limited to VMs and prod hosts
