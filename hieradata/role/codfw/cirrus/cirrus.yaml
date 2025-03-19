@@ -1,0 +1,224 @@
+profile::opensearch::dc_settings:
+    production-search-codfw:
+        # codfw prod name
+        cluster_name: production-search-codfw
+        short_cluster_name: chi
+        http_port: 9200
+        tls_port: 9243
+        certificate_name: 'search.discovery.wmnet'
+        transport_tcp_port: 9300
+        # OS-specific: Not default
+        unicast_hosts: # this is also the list of master eligible nodes
+          - elastic2093.codfw.wmnet # row B
+          - elastic2061.codfw.wmnet # row A
+          - elastic2074.codfw.wmnet # row A
+          - elastic2081.codfw.wmnet # row C
+          - elastic2084.codfw.wmnet # row D
+
+        cluster_hosts:
+          - elastic2055.codfw.wmnet
+          - elastic2056.codfw.wmnet
+          - elastic2057.codfw.wmnet
+          - elastic2058.codfw.wmnet
+          - elastic2059.codfw.wmnet
+          - elastic2060.codfw.wmnet
+          - elastic2061.codfw.wmnet
+          - elastic2062.codfw.wmnet
+          - elastic2063.codfw.wmnet
+          - elastic2064.codfw.wmnet
+          - elastic2065.codfw.wmnet
+          - elastic2066.codfw.wmnet
+          - elastic2067.codfw.wmnet
+          - elastic2068.codfw.wmnet
+          - elastic2069.codfw.wmnet
+          - elastic2070.codfw.wmnet
+          - elastic2071.codfw.wmnet
+          - elastic2072.codfw.wmnet
+          - elastic2073.codfw.wmnet
+          - elastic2074.codfw.wmnet
+          - elastic2075.codfw.wmnet
+          - elastic2076.codfw.wmnet
+          - elastic2077.codfw.wmnet
+          - elastic2078.codfw.wmnet
+          - elastic2079.codfw.wmnet
+          - elastic2080.codfw.wmnet
+          - elastic2081.codfw.wmnet
+          - elastic2082.codfw.wmnet
+          - elastic2083.codfw.wmnet
+          - elastic2084.codfw.wmnet
+          - elastic2085.codfw.wmnet
+          - elastic2086.codfw.wmnet
+          - elastic2087.codfw.wmnet
+          - elastic2088.codfw.wmnet
+          - elastic2089.codfw.wmnet
+          - elastic2090.codfw.wmnet
+          - elastic2091.codfw.wmnet
+          - elastic2092.codfw.wmnet
+          - elastic2093.codfw.wmnet
+          - elastic2094.codfw.wmnet
+          - elastic2095.codfw.wmnet
+          - elastic2096.codfw.wmnet
+          - elastic2097.codfw.wmnet
+          - elastic2098.codfw.wmnet
+          - elastic2099.codfw.wmnet
+          - elastic2100.codfw.wmnet
+          - elastic2101.codfw.wmnet
+          - elastic2102.codfw.wmnet
+          - elastic2103.codfw.wmnet
+          - elastic2104.codfw.wmnet
+          - elastic2105.codfw.wmnet
+          - elastic2106.codfw.wmnet
+          - elastic2107.codfw.wmnet
+          - elastic2108.codfw.wmnet
+          - elastic2109.codfw.wmnet
+          - elastic2110.codfw.wmnet
+          - elastic2111.codfw.wmnet
+          - elastic2112.codfw.wmnet
+          - elastic2113.codfw.wmnet
+          - elastic2114.codfw.wmnet
+          - elastic2115.codfw.wmnet
+
+        expected_nodes: 36
+
+        # We should be able to run "OK" with 24 servers.
+        recover_after_nodes: 24
+
+        # Report metrics for some of our largest indices
+        indices_to_monitor:
+         - commonswiki_file
+         - wikidatawiki_content
+         - enwiki_general
+         - enwiki_content
+         - viwiki_general
+         - commonswiki_general
+         - cebwiki_content
+         - metawiki_general
+         - dewiki_content
+         - frwiki_content
+
+    production-search-omega-codfw:
+        # codfw prod name
+        cluster_name: production-search-omega-codfw
+        short_cluster_name: omega
+        http_port: 9400
+        tls_port: 9443
+        certificate_name: 'search.discovery.wmnet'
+        transport_tcp_port: 9500
+        heap_memory: '10G'
+        # ES-specific: Not default
+        unicast_hosts: # this is also the list of master eligible nodes
+          - elastic2092.codfw.wmnet # row B
+          - elastic2100.codfw.wmnet # row C
+          - elastic2106.codfw.wmnet # row D
+          - elastic2073.codfw.wmnet # row A
+          - elastic2086.codfw.wmnet # row D
+
+        cluster_hosts:
+          # row A
+          - elastic2087.codfw.wmnet
+          - elastic2088.codfw.wmnet
+          - elastic2056.codfw.wmnet
+          - elastic2061.codfw.wmnet
+          - elastic2073.codfw.wmnet
+          - elastic2074.codfw.wmnet
+          - elastic2090.codfw.wmnet
+          - elastic2111.codfw.wmnet # replacing elastic2056
+
+          # row B
+          - elastic2092.codfw.wmnet
+          - elastic2093.codfw.wmnet
+          - elastic2057.codfw.wmnet
+          - elastic2063.codfw.wmnet
+          - elastic2070.codfw.wmnet
+          - elastic2077.codfw.wmnet
+          - elastic2097.codfw.wmnet
+
+          # row C
+          - elastic2098.codfw.wmnet
+          - elastic2099.codfw.wmnet
+          - elastic2100.codfw.wmnet
+          - elastic2059.codfw.wmnet
+          - elastic2065.codfw.wmnet
+          - elastic2081.codfw.wmnet
+          - elastic2102.codfw.wmnet
+          - elastic2112.codfw.wmnet # replacing elastic2057
+
+
+          # row D
+          - elastic2104.codfw.wmnet
+          - elastic2105.codfw.wmnet
+          - elastic2106.codfw.wmnet
+          - elastic2067.codfw.wmnet
+          - elastic2084.codfw.wmnet
+          - elastic2086.codfw.wmnet
+          - elastic2114.codfw.wmnet # replacing elastic2059
+
+
+        expected_nodes: 18
+
+        # We should be able to run "OK" with 11 servers.
+        recover_after_nodes: 11
+
+    production-search-psi-codfw:
+        # codfw prod name
+        cluster_name: production-search-psi-codfw
+        short_cluster_name: psi
+        http_port: 9600
+        tls_port: 9643
+        certificate_name: 'search.discovery.wmnet'
+        transport_tcp_port: 9700
+        heap_memory: '10G'
+        # ES-specific: Not default
+        unicast_hosts: # this is also the list of master eligible nodes
+          - elastic2108.codfw.wmnet # row D
+          - elastic2075.codfw.wmnet # row A
+          - elastic2076.codfw.wmnet # row A
+          - elastic2080.codfw.wmnet # row B
+          - elastic2083.codfw.wmnet # row C
+
+        cluster_hosts:
+          # row A
+          - elastic2089.codfw.wmnet
+          - elastic2055.codfw.wmnet
+          - elastic2062.codfw.wmnet
+          - elastic2069.codfw.wmnet
+          - elastic2075.codfw.wmnet
+          - elastic2076.codfw.wmnet
+          - elastic2091.codfw.wmnet
+
+          # row B
+          - elastic2094.codfw.wmnet
+          - elastic2095.codfw.wmnet
+          - elastic2058.codfw.wmnet
+          - elastic2064.codfw.wmnet
+          - elastic2078.codfw.wmnet
+          - elastic2079.codfw.wmnet
+          - elastic2080.codfw.wmnet
+          - elastic2096.codfw.wmnet
+          - elastic2110.codfw.wmnet # replacing elastic2055
+
+          # row C
+          - elastic2101.codfw.wmnet
+          - elastic2066.codfw.wmnet
+          - elastic2071.codfw.wmnet
+          - elastic2072.codfw.wmnet
+          - elastic2082.codfw.wmnet
+          - elastic2083.codfw.wmnet
+          - elastic2103.codfw.wmnet
+          - elastic2113.codfw.wmnet # replacing elastic2058
+
+          # row D
+          - elastic2107.codfw.wmnet
+          - elastic2108.codfw.wmnet
+          - elastic2060.codfw.wmnet
+          - elastic2068.codfw.wmnet
+          - elastic2085.codfw.wmnet
+          - elastic2109.codfw.wmnet
+          - elastic2115.codfw.wmnet # replacing elastic2060
+
+        expected_nodes: 18
+
+        # We should be able to run "OK" with 11 servers.
+        recover_after_nodes: 11
+
+profile::elasticsearch::dc_settings: {}
