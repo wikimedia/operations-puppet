@@ -12,3 +12,6 @@ profile::base::production::role_description: 'fill-in dumper of XML/SQL wiki con
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
 profile::puppet::agent::force_puppet7: true
+
+profile::mediawiki::php::php_versions: ['8.1']
+profile::mediawiki::php::absented_php_versions: ['7.4']

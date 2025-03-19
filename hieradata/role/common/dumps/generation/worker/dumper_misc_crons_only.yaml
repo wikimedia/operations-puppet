@@ -13,3 +13,5 @@ profile::base::production::role_description: 'dumper of misc dumps (such as wiki
 profile::mediawiki::php::icu67: true
 
 profile::puppet::agent::force_puppet7: true
+
+profile::dumps::generation::worker::common::php: /usr/bin/php7.4
