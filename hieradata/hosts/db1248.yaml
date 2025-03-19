@@ -1,4 +1,5 @@
 # db1248
+# Do not pool yet T388837
 mariadb::shard: 's4'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false
