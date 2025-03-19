@@ -102,4 +102,10 @@ class profile::spicerack (
         source => 'puppet:///modules/profile/spicerack/test_cookbook.py',
         mode   => '0555',
     }
+
+    file { '/usr/local/sbin/spicerack-shell':
+        ensure => file,
+        source => 'puppet:///modules/profile/spicerack/spicerack_shell.py',
+        mode   => '0555',
+    }
 }
