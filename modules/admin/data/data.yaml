@@ -788,7 +788,13 @@ groups:
     members: &analytics_wmde_users_members [lucaswerkmeister-wmde, conniecc1, tarrow, itamar,
               awight, wmde-fisch, wmde-leszek, jakob, sihe, ollieshotton,
               andrewtavis-wmde, kpayne]
-    privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL']
+    privileges: ['ALL = (analytics-wmde) NOPASSWD: ALL',
+                 # See T387514 for details of the following four entries.
+                 # They will be removed once the associated systemd timers have been migrated to Airflow
+                 'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-minutely.service',
+                 'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-early.service',
+                 'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-daily-noon.service',
+                 'ALL = NOPASSWD: /bin/journalctl -u wmde-analytics-weekly.service']
   eventbus-admins:
     gid: 785
     description: admins for the eventbus clusters - unsed after T232122 (2019-09)
