@@ -9,7 +9,14 @@ from typing import Any, Callable, Dict, List, Optional
 from pontoon import Pontoon
 from pontoon.credentials import Credentials
 from pontoon.host import Filter, Host
-from pontoon.nova import HOST_DOMAIN, NovaAuth, NovaClient, NovaSpecs, Server
+from pontoon.nova import (
+    HOST_DOMAIN,
+    NOVA_DEFAULT_URL,
+    NovaAuth,
+    NovaClient,
+    NovaSpecs,
+    Server,
+)
 from ruamel.yaml import YAML
 
 log = logging.getLogger()
@@ -38,7 +45,7 @@ class CloudVPS(object):
 
     def __init__(self, pontoon: Pontoon, creds: Credentials):
         self.pontoon = pontoon
-        self.nova = NovaClient(NovaAuth(creds.id, creds.secret))
+        self.nova = NovaClient(NovaAuth.create(creds.id, creds.secret))
         self.creds = creds
         self.yaml = YAML()
         self._specmap = None
@@ -113,7 +120,7 @@ class CloudVPS(object):
         """Return configuration for openstack CLI tools."""
         stack = self.pontoon.name
         auth_cfg = {
-            "auth_url": self.nova.auth.auth_url,
+            "auth_url": NOVA_DEFAULT_URL,
             "application_credential_secret": self.creds.secret,
             "application_credential_id": self.creds.id,
         }
