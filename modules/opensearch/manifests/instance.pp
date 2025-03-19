@@ -218,7 +218,7 @@ define opensearch::instance(
     exec { "symlink ${instance_dir}":
         command => "/usr/bin/ln -s '${sudachi_dir}' '${instance_dir}'",
         creates => $instance_dir,
-        onlyif  => "/usr/bin/test -f '${sudachi_dir}'"
+        onlyif  => "/usr/bin/test -d '${sudachi_dir}'"
     }
 
     $watermark_settings = merge({
