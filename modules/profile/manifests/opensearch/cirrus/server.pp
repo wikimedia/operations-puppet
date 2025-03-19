@@ -139,6 +139,16 @@ class profile::opensearch::cirrus::server(
       source   => 'puppet:///modules/opensearch/opensearch.motd',
     }
 
+    # symlink elasticsearch to opensearch, so we can run our rolling-operation
+    # cookbook without patching Spicerack
+    # (ref https://gerrit.wikimedia.org/r/plugins/gitiles/operations/software/spicerack/+/refs/heads
+    # /master/spicerack/elasticsearch_cluster.py#111
+    file { '/etc/elasticsearch':
+        ensure  => link,
+        target  => '/etc/opensearch',
+        require => File['/etc/opensearch/instances'],
+    }
+
     # TLS configuration
     # For legacy reasons this reuses elasticsearch::tlsproxy until we can
     # enable the opensearch security plugin for native tls.
