@@ -456,7 +456,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria]
+              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6637,6 +6637,15 @@ users:
     uid: 48346
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  cpetrillo:
+    ensure: present
+    realname: Chris Petrillo
+    email: cpetrillo@wikimedia.org
+    uid: 45466
+    gid: 500
+    ssh_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0Kxa5UOVXHgNBcJCNtcXvH0lc/gvN2/uk2L7CyMs4DUjc6Q1OyNoLt76tlqTHy3Vmr/OaqqIP542X2uYs+VNAqVXala2keFBA2JyQrYhZinQvAPDiTqJyciM7iZvg41bbv1gft02HCVplcSR0KIGWGwRbubkrpTekIUgmWpX6c8xygrfY8wTgPJpOsGc03yOIfzAdiji4JqPjKrE9yrgHsxpx903lx8FfMDoFO7zh2IQbEDyTzS5pOVijtJKObRm7EUqkrv/p1wl1C4u0amDAt6pBvB0jSWVLpY10yV/+i29+l+3Te63LbWYqhnev1o439V3PcbfToZlbV/pZ/9cx/c/iHyyGIo2uSHdpN53STRmJnaCCtnSvqg7htFr8vpO9dUxIVPdHgi3j/dztikPTAoTscOCW7ViGHnbBNtphe5JlScq31qk4Ikud00Lc80EXntmjrnkOHOeIl6O56Xn8Q4t3cNBvGMWGk7cpgPkWVJjiiryMMPJWpHmcNCWwqNEVaM/x+9iq4l5dcDRu8sR9Dbza3ZdbTMC9VFSUVpOmdSCW9NbBB5PyMCKb8gTxKcEdQEZOLYzm7Ceoq9Vo5dV9dqX2gEyNyTjat4z+FMKq4LY0Ab6S6fEmb93ZFmUoHGECyyCm6gmcDgzYe0uJdyKOhRcPCaJWjP/C64wkM1mZow== christopherpetrillo@wmf3408
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7460,10 +7469,6 @@ ldap_only_users:
     ensure: present
     realname: Ilse Ackerman
     email: iackerman@wikimedia.org
-  cpetrillo:
-    ensure: present
-    realname: Chris Petrillo
-    email: cpetrillo@wikimedia.org
   lmora:
     ensure: present
     realname: Loren Mora
