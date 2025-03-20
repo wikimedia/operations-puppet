@@ -1,7 +1,11 @@
 profile::opensearch::dc_settings:
-    # ES-specific: Not default
+    # Since this is a two-node cluster where either host can be master,
+    # you'll need to turn off master election on one of them before any
+    # scheduled operations.
+    # ref https://www.elastic.co/guide/en/elasticsearch/reference/current/voting-config-exclusions.html
     unicast_hosts:
       - relforge1003.eqiad.wmnet
+      - relforge1004.eqiad.wmnet
     cluster_hosts:
       - relforge1003.eqiad.wmnet
       - relforge1004.eqiad.wmnet
