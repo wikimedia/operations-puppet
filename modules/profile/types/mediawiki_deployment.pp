@@ -11,12 +11,15 @@
 type Profile::Mediawiki_deployment = Struct[{
     'namespace'   => String,
     'releases'    => Hash[String, Struct[{
+        'mw_kind'     => Optional[String],
         'mw_flavour'  => Optional[String],
         'web_flavour' => Optional[String],
-        'stage'       => Optional[Enum['canaries']],
+        'stage'       => Optional[Enum['testservers','canaries','production']],
         'deploy'      => Optional[Boolean],
     }]],
+    'mw_kind'     => Optional[String],
     'mw_flavour'  => String,
     'web_flavour' => String,
+    # TODO: T389499 - Remove support for debug.
     'debug'       => Boolean,
 }]
