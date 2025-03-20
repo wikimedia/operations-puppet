@@ -566,6 +566,10 @@ node /^datahubsearch100[1-3]\.eqiad\./ {
     role(analytics_cluster::datahub::opensearch)
 }
 
+node /^db1300\.eqiad\./ {
+    role(mariadb::research)
+}
+
 ## Analytics Backup Multi-instance
 node /^db1208\.eqiad\./ {
     role(mariadb::misc::analytics::backup)
