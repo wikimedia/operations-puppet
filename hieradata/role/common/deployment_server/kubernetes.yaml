@@ -492,6 +492,7 @@ profile::confd::instances:
     interval: 30
 
 # T383945
+profile::mediawiki::deployment::server::ensure_spiderpig: present
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: cfssl
 profile::tlsproxy::envoy::sni_support: "yes"

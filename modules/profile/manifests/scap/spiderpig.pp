@@ -3,7 +3,7 @@
 #
 # Set up SpiderPig services
 class profile::scap::spiderpig (
-    Wmflib::Ensure             $ensure_services = 'present', # lint:ignore:wmf_styleguide
+    Wmflib::Ensure             $ensure_services = 'absent', # lint:ignore:wmf_styleguide
     Stdlib::Port::Unprivileged $spiderpig_port  = lookup('profile::scap::spiderpig::port', {'default_value' => 9000}),
     String                     $spiderpig_user  = lookup('profile::mediawiki::system_users::spiderpig_user', {'default_value' => 'spiderpig'})
 ) {

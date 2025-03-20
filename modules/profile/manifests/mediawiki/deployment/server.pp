@@ -14,6 +14,7 @@ class profile::mediawiki::deployment::server(
     Stdlib::Host $rsync_host                    = lookup('profile::mediawiki::deployment::server::rsync_host'),
     Stdlib::Fqdn $releases_server               = lookup('releases_server'),
     Array[Stdlib::Fqdn] $other_releases_servers = lookup('releases_servers_failover'),
+    Wmflib::Ensure $ensure_spiderpig            = lookup('profile::mediawiki::deployment::server::ensure_spiderpig', {'default_value' => 'absent'}),
     String $statsd                              = lookup('statsd'),
     Hash[String, Struct[{
                         'origin'          => Optional[String],
@@ -162,8 +163,13 @@ class profile::mediawiki::deployment::server(
         deployment_hosts  => $deployment_hosts_fqdn,
     }
 
+    $spiderpig_ensure_services = $primary_deploy_ensure ? {
+        'present' => $ensure_spiderpig,
+        default   => 'absent',
+    }
+
     class { 'profile::scap::spiderpig':
-        ensure_services => $primary_deploy_ensure,
+        ensure_services => $spiderpig_ensure_services,
     }
 
     motd::script { 'inactive_warning':
