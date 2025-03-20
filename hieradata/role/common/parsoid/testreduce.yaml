@@ -32,7 +32,8 @@ profile::tlsproxy::envoy::services:
     port: 8001
 profile::tlsproxy::envoy::firewall_global: true
 
-profile::nginx::variant: 'light'
+profile::nginx::variant: 'custom'
+profile::nginx::modules: []
 
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Parsoid visual diffing tests'
