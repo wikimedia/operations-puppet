@@ -187,7 +187,7 @@ class profile::tlsproxy::envoy(
     else {
         unless $global_cert_name {
             fail(['If you want non-sni TLS to be supported, you need to define ',
-                  'profile::tlsproxy::envoy::global_cert_name or '].join(' '))
+                  'profile::tlsproxy::envoy::global_cert_name'].join(''))
         }
         case $ssl_provider {
             'sslcert': {
