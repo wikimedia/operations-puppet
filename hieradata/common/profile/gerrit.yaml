@@ -7,6 +7,9 @@ profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
 profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
+profile::gerrit::replica_host: 'gerrit2002.wikimedia.org'
+profile::gerrit::spare_host: 'gerrit2003.wikimedia.org'
+
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
@@ -14,9 +17,8 @@ profile::gerrit::migration::data_dir: '/srv/gerrit'
 
 profile::gerrit::lfs_replica_sync: true
 profile::gerrit::lfs_sync_dest:
-    # - 'gerrit1003.wikimedia.org'
-    - 'gerrit2002.wikimedia.org'
-    - 'gerrit2003.wikimedia.org'
+    - "%{lookup('profile::gerrit::replica_host')}"
+    - "%{lookup('profile::gerrit::spare_host')}"
 
 # External backups
 profile::gerrit::backups_enabled: true
