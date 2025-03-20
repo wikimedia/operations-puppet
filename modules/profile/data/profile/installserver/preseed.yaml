@@ -534,7 +534,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - virtual.cfg
   # Use new containerd partman config (which includes the larger kubelet
   # partition)
-  'ml-serve2001*':
+  'ml-serve200[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
