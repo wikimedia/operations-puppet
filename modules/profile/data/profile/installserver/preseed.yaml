@@ -651,7 +651,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
   'puppetserver2004':
-    - partman/standard.cfg
+    - partman/standard-efi.cfg
     - partman/raid10-4dev-efi.cfg
   'puppetserver*':
     - partman/standard.cfg
