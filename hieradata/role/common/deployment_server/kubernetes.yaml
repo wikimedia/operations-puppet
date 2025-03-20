@@ -259,12 +259,14 @@ scap::k8s_deployments:
 profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
   - namespace: mw-debug
     releases:
-      pinkunicorn: {}
+      pinkunicorn:
+        stage: testservers
       next:
         mw_flavour: "publish-81"
+        stage: testservers
+    mw_kind: "debug-image"
     mw_flavour: "publish"
     web_flavour: "webserver"
-    debug: true
   - namespace: mw-web
     releases:
       main: {}
@@ -274,7 +276,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       migration: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-api-int
     releases:
       main: {}
@@ -283,7 +284,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       migration: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-api-ext
     releases:
       main: {}
@@ -293,7 +293,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       migration: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-jobrunner
     releases:
       main: {}
@@ -302,7 +301,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       migration: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-parsoid
     releases:
       main: {}
@@ -311,13 +309,13 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       migration: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-misc
     releases:
-      main: {}
+      main:
+        stage: testservers
+    mw_kind: "debug-image"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: true
   - namespace: mw-wikifunctions
     releases:
       main: {}
@@ -326,19 +324,17 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       group2: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-videoscaler
     releases:
       main: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-cron
     releases:
       main: {}
+    mw_kind: "cli-image"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
-    debug: false
   - namespace: mw-script
     releases:
       main:
@@ -348,7 +344,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
         deploy: false
     mw_flavour: "publish"
     web_flavour: "webserver"
-    debug: false
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
 # default:
