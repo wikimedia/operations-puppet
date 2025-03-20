@@ -71,11 +71,13 @@ class profile::acme_chief::cloud (
     }
 
     file { '/etc/acme-chief/designate-sync-config.yaml':
-        ensure  => present,
-        owner   => 'acme-chief',
-        group   => 'acme-chief',
-        mode    => '0400',
-        content => to_yaml({
+        ensure    => present,
+        owner     => 'acme-chief',
+        group     => 'acme-chief',
+        mode      => '0400',
+        show_diff => false,
+        backup    => false,
+        content   => to_yaml({
             'OS_AUTH_URL'      => $designate_sync_auth_url,
             'OS_USERNAME'      => $designate_sync_username,
             'OS_PASSWORD'      => $designate_sync_password,
