@@ -508,6 +508,28 @@ FROM_UNIXTIME(mta1.dateCreated) AS stalled_date
 END
 )
 
+#echo "result_old_inprogress_tasks"
+# see https://phabricator.wikimedia.org/T380300
+result_old_inprogress_tasks=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u $sql_user $sql_name << END
+SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID
+    FROM phabricator_maniphest.maniphest_task t
+    JOIN phabricator_maniphest.maniphest_transaction ta
+    WHERE (ta.transactionType = "status"
+        AND ta.newValue = "\"progress\""
+        AND ta.dateModified < (UNIX_TIMESTAMP() - 63072000))
+    AND ta.objectPHID = t.phid
+    AND t.status = "progress"
+    AND t.phid NOT IN
+        (SELECT ta.objectPHID
+        FROM phabricator_maniphest.maniphest_transaction ta
+        WHERE (ta.transactionType = "status"
+            AND ta.dateModified > (UNIX_TIMESTAMP() - 63072000)))
+    GROUP BY t.id
+    ORDER BY ta.dateModified;
+
+END
+)
+
 # the actual email
 cat <<EOF | /usr/bin/mail -r "${sndr_address}" -s "Phabricator weekly project changes" -a "Auto-Submitted: auto-generated" ${rcpt_address}
 
@@ -636,6 +658,11 @@ ${result_cookie_licked_open_tasks_without_patch_for_review}
 STALLED TASKS THAT HAVE BEEN STALLED FOR MORE THAN THREE YEARS
 (to potentially manually re-triage and reset to open status):
 ${result_old_stalled_tasks}
+
+
+IN PROGRESS TASKS WITH NO STATUS CHANGE FOR MORE THAN TWO YEARS
+(to potentially reset to open task status):
+${result_old_inprogress_tasks}
 
 
 Yours sincerely,
