@@ -2350,12 +2350,8 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
 }
 
 # relevance forge servers (run opensearch, owned by DPE SRE)
-# 1003 still runs elastic
-node /^relforge1003\.eqiad\./ {
-    role(elasticsearch::relforge)
-}
-# 1004 runs opensearch via the "cirrus" role
-node /^relforge1004\.eqiad\./ {
+
+node /^relforge100[34]\.eqiad\./ {
     role(cirrus::relforge)
 }
 
