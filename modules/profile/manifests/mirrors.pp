@@ -34,4 +34,11 @@ class profile::mirrors {
     nrpe::plugin { 'check_apt_mirror':
         source => 'puppet:///modules/profile/mirrors/check_apt_mirror';
     }
+
+    # export age of mirrors to Prometheus
+    prometheus::node_file_age { 'mirror_age_metrics':
+        ensure  => present,
+        paths   => ['/srv/mirrors/debian', '/srv/mirrors/ubuntu'],
+        outfile => '/var/lib/prometheus/node.d/mirror-age.prom',
+    }
 }
