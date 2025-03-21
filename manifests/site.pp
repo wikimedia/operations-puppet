@@ -2388,18 +2388,13 @@ node /^relforge1010\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 # restbase eqiad cluster
-node /^restbase10(2[8-9]|3[0-9]|4[0-4])\.eqiad\./ {
+node /^restbase10(2[8-9]|3[0-9]|4[0-5])\.eqiad\./ {
     role(restbase::production)
 }
 
 # restbase codfw cluster
 node /^restbase20(2[4-9]|3[0-8])\.codfw\./ {
     role(restbase::production)
-}
-
-# restbase refresh: T383673
-node /^restbase1045\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 # New cassandra dev nodes T324113
