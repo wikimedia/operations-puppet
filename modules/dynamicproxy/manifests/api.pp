@@ -22,16 +22,7 @@ class dynamicproxy::api (
 
     file { '/usr/local/bin/invisible-unicorn.py':
         source => 'puppet:///modules/dynamicproxy/api/invisible-unicorn.py',
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
-    }
-
-    if debian::codename::eq('bullseye') {
-        # see https://phabricator.wikimedia.org/T340881
-        apt::package_from_bpo { 'python3-flask-sqlalchemy':
-            distro => 'bullseye',
-        }
     }
 
     ensure_packages([
@@ -42,6 +33,7 @@ class dynamicproxy::api (
         'python3-redis',
         'python3-oslo.context',
         'python3-oslo.policy',
+        'python3-flask-sqlalchemy',
     ])
 
     uwsgi::app { 'invisible-unicorn':
@@ -67,16 +59,12 @@ class dynamicproxy::api (
 
     file { '/etc/dynamicproxy-api/zones.json':
         content => $supported_zones.to_json_pretty(),
-        owner   => 'root',
-        group   => 'root',
         mode    => '0444',
         notify  => Uwsgi::App['invisible-unicorn'],
     }
 
     file { '/etc/dynamicproxy-api/config.ini':
         content   => template('dynamicproxy/api/invisible-unicorn.ini.erb'),
-        owner     => 'root',
-        group     => 'root',
         mode      => '0444',
         show_diff => false,
         notify    => Uwsgi::App['invisible-unicorn'],
@@ -84,8 +72,6 @@ class dynamicproxy::api (
 
     file { '/etc/dynamicproxy-api/schema.sql':
         source => 'puppet:///modules/dynamicproxy/api/schema.sql',
-        owner  => 'root',
-        group  => 'root',
         mode   => '0555',
     }
 
@@ -99,16 +85,12 @@ class dynamicproxy::api (
     file { '/srv/backup/README':
         ensure => file,
         source => 'puppet:///modules/dynamicproxy/api/BackupReadme',
-        owner  => 'root',
-        group  => 'root',
         mode   => '0644',
     }
 
     file { '/usr/local/sbin/proxydb-bak.sh':
         ensure => file,
         mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
         source => 'puppet:///modules/dynamicproxy/api/proxydb-bak.sh',
     }
 
