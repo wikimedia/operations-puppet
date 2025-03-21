@@ -22,3 +22,4 @@ profile::puppetmaster::frontend::puppetservers:
 - puppetserver2001.codfw.wmnet
 - puppetserver2002.codfw.wmnet
 - puppetserver2003.codfw.wmnet
+- puppetserver2004.codfw.wmnet
