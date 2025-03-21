@@ -51,6 +51,32 @@ define apt::package_from_component(
 ) {
     include apt
 
+    # Starting with Bookworm the Debian installer defaults to using the signed-by
+    # notation in apt-setup, also apply the same for the puppetised Wikimedia
+    # repository.
+    # The signed-by notation allows to specify which repository key is used
+    # for which repository (previously they applied to all repos)
+    # https://wiki.debian.org/DebianRepository/UseThirdParty
+    if debian::codename::ge('bookworm'){
+        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
+    } else {
+        $wikimedia_apt_keyfile = undef
+    }
+
+    # Remove http prefix and forward slashes
+    $apt_repo_filename = "${component}-${uri}-${distro}".
+                      regsubst('https?://', '').
+                      regsubst('/', '-', 'G')
+
+    ensure_resource('apt::repository', $apt_repo_filename,
+        {
+            uri        => $uri,
+            dist       => $distro,
+            components => $component,
+            keyfile    => $wikimedia_apt_keyfile,
+        }
+    )
+
     $exec_before = $ensure_packages ? {
         false => undef,
         default => $packages ? {
@@ -68,26 +94,7 @@ define apt::package_from_component(
         command     => '/usr/bin/apt-get update',
         refreshonly => true,
         before      => $exec_before,
-    }
-
-    # Starting with Bookworm the Debian installer defaults to using the signed-by
-    # notation in apt-setup, also apply the same for the puppetised Wikimedia
-    # repository.
-    # The signed-by notation allows to specify which repository key is used
-    # for which repository (previously they applied to all repos)
-    # https://wiki.debian.org/DebianRepository/UseThirdParty
-    if debian::codename::ge('bookworm'){
-        $wikimedia_apt_keyfile = 'puppet:///modules/install_server/autoinstall/keyring/wikimedia-archive-keyring.gpg'
-    } else {
-        $wikimedia_apt_keyfile = undef
-    }
-
-    apt::repository { "repository_${title}":
-        uri        => $uri,
-        dist       => $distro,
-        components => $component,
-        keyfile    => $wikimedia_apt_keyfile,
-        notify     => Exec["apt_package_from_component_${title}"],
+        subscribe   => Apt::Repository[$apt_repo_filename],
     }
 
     # We already pin o=Wikimedia with priority 1001

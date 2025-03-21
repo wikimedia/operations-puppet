@@ -16,7 +16,7 @@ describe 'ceph::common' do
         it { is_expected.to compile.with_all_deps }
         it { should contain_package('ceph-common') }
         it { should contain_package('fio') }
-        it { is_expected.to contain_apt__repository('repository_ceph').with_components('dummy/component-repo') }
+        it { is_expected.to contain_apt__package_from_component('ceph').with_component('dummy/component-repo') }
       end
     end
   end

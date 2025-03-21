@@ -11,7 +11,9 @@ describe 'apt::package_from_component' do
       context 'default parameters' do
         it { is_expected.to compile }
         it do
-          is_expected.to contain_apt__repository('repository_mypackage').with(
+          is_expected.to contain_apt__repository(
+            "foobar-apt.wikimedia.org-wikimedia-#{facts[:os]['distro']['codename']}-wikimedia"
+          ).with(
             uri: 'http://apt.wikimedia.org/wikimedia',
             dist: "#{facts[:os]['distro']['codename']}-wikimedia",
             components: 'foobar'

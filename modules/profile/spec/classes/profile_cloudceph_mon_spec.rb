@@ -80,7 +80,7 @@ describe "profile::cloudceph::mon" do
 
       context "when no ceph repo passed uses correct default" do
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_apt__repository("repository_ceph").with_components("thirdparty/ceph-octopus") }
+        it { is_expected.to contain_apt__package_from_component("ceph").with_component("thirdparty/ceph-octopus") }
       end
 
       context "when ceph repo passed uses the given one" do
@@ -90,7 +90,7 @@ describe "profile::cloudceph::mon" do
           })
         }
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_apt__repository("repository_ceph").with_components("dummy/component-repo") }
+        it { is_expected.to contain_apt__package_from_component("ceph").with_component("dummy/component-repo") }
       end
 
       context "when the mgr keyring path passed, the parent directories get their permissions set" do
