@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::maps::osm_replica(
-    Stdlib::Host $master     = lookup('profile::maps::osm_replica::master'),
+    Stdlib::Host $master                               = lookup('profile::maps::osm_replica::master'),
     # check_postgres_replication_lag script relies on values that are only
     # readable by superuser or replication user. This prevents using a
     # dedicated user for monitoring.
@@ -23,13 +23,24 @@ class profile::maps::osm_replica(
         default => undef,
     }
 
-    class { '::postgresql::slave':
-        master_server              => $master,
-        root_dir                   => '/srv/postgresql',
-        includes                   => ['tuning.conf'],
-        log_min_duration_statement => $log_min_duration_statement,
-        replication_slot_name      => $replication_slot_name,
+    if debian::codename::ge('bookworm') {
+        class { '::postgresql::slave':
+            master_server              => $master,
+            root_dir                   => '/srv/postgresql',
+            includes                   => ['tuning.conf'],
+            max_wal_senders            => 20, # Needs to be identical for master/replica role
+            log_min_duration_statement => $log_min_duration_statement,
+            replication_slot_name      => $replication_slot_name,
+        }
+    } else {
+        class { '::postgresql::slave':
+            master_server              => $master,
+            root_dir                   => '/srv/postgresql',
+            includes                   => ['tuning.conf'],
+            log_min_duration_statement => $log_min_duration_statement,
+            replication_slot_name      => $replication_slot_name,
 
+        }
     }
 
     class { 'postgresql::slave::monitoring':

@@ -35,12 +35,17 @@ class profile::maps::osm_master (
     $db_name = 'gis'
     $pgversion  = wmflib::debian_postgresql_version()
 
-    # We need 1 connection per host that is fully pooled. If we want
-    # to pool additional hosts, we need TWO connections per host (one
-    # for the backup thread, and one for the streaming of new logs
-    # thread). 6 will give us the overhead to allow for 3 new hosts to
-    # be added at once in case we need this.
-    $max_senders = length($maps_hosts) + 6
+
+    if debian::codename::ge('bookworm') {
+        $max_senders = 20 # Needs to be identical for master/replica role
+    } else {
+        # We need 1 connection per host that is fully pooled. If we want
+        # to pool additional hosts, we need TWO connections per host (one
+        # for the backup thread, and one for the streaming of new logs
+        # thread). 6 will give us the overhead to allow for 3 new hosts to
+        # be added at once in case we need this.
+        $max_senders = length($maps_hosts) + 6
+    }
 
     # We iterate through all maps hosts of the DC, and skip ourselves (master)
     $replication_slots = $use_replication_slots ? {
