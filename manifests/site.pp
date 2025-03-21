@@ -2391,7 +2391,7 @@ node /^relforge1010\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 # restbase eqiad cluster
-node /^restbase10(2[8-9]|3[0-9]|4[0-3])\.eqiad\./ {
+node /^restbase10(2[8-9]|3[0-9]|4[0-4])\.eqiad\./ {
     role(restbase::production)
 }
 
@@ -2401,7 +2401,7 @@ node /^restbase20(2[4-9]|3[0-8])\.codfw\./ {
 }
 
 # restbase refresh: T383673
-node /^restbase104[4-5]\.eqiad\./ {
+node /^restbase1045\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
