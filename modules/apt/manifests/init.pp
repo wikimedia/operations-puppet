@@ -185,7 +185,7 @@ class apt(
         keyfile    => $wikimedia_apt_keyfile,
     }
 
-    if debian::codename::ge('bullseye') {
+    if debian::codename::ge('bookworm') {
         apt::repository { 'debian-backports':
             uri        => "http://${mirror}/debian/",
             dist       => "${::lsbdistcodename}-backports",
