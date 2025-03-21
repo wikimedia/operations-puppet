@@ -2,110 +2,42 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
 <!-- This file is maintained by puppet!! -->
 <!-- modules/dumps/files/web/html/enterprise_html_index.html -->
-<head><title>Index - Wikimedia Enterprise HTML Dumps</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-body {
-	background-color: #f9f9f9;
-	font-family: sans-serif;
-	font-size: 10pt;
-}
-#container {
-	width: 30em;
-
-	margin: 2em auto;
-	padding: 1em;
-
-	background-color: #FAF5E6;
-	border: 1px solid #E5D4A1;
-}
-a {
-	font-size: 95%;
-}
-
-h1 {
-	font-weight: bold;
-	text-align: center;
-}
-h2 {
-	display: inline;
-	padding-bottom: 0;
-	margin-bottom: 0;
-}
-
-.file-listing {
-	display: inline;
-	margin-left: 0.5em;
-	margin-top: 0;
-	clear: both;
-}
-
-#footer {
-	border-top: 1px solid #E5D4A1;
-	margin: 2em 0 0 0;
-	padding: 4px;
-	font-size: 75%;
-}
-</style>
+<head>
+  <title>Wikimedia Enterprise HTML Dump Archive</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <link rel="stylesheet" type="text/css" href="/dumps.css" />
 </head>
 <body>
 <div id="container">
-<h1>Wikimedia Enterprise HTML Dumps</h1>
-
+<h1>Wikimedia Enterprise HTML Dump Archive</h1>
 <p>
-  This partial mirror of Wikimedia Enterprise HTML dumps is an experimental service.
+  The partial mirrors of Wikimedia Enterprise HTML dumps were an experimental service that, 
+  as of 03/24/2025, are no longer replicated here.
 </p>
 <p>
-  Dumps are produced for a specific set of namespaces and wikis, and then made available
-  for public download. Each dump output file consists of a tar.gz archive which, when
-  uncompressed and untarred, contains one file, with a single line per article, in json
-  format. Among the attributes defined in the file are the following below, however to 
-  see all attributes please visit the data dictionary for 
-  <a href="https://enterprise.wikimedia.com/docs/data-dictionary/">Wikimedia Enterprise APIs</a>:
+  If you are in need of recent runs, dumps of article change updates, or the ability to query 
+  individual articles from the dumps, visit 
+  <a href="https://enterprise.wikimedia.com/?utm_source=wmfdumps">Wikimedia Enterprise</a> to 
+  sign up for a free account. Alternatively use your developer account to access APIs within 
+  Wikimedia Cloud Services.
 </p>
-<dl>
-  <dt>name</dt>
-  <dd>the title of the article</dd>
-  <dt>identifier</dt>
-  <dd>the page id</dd>
-  <dt>date modified</dt>
-  <dd>the last time the page was modified</dd>
-  <dt>version</dt>
-  <dd>a compound structure representing the page revision</dd>
-  <dt>url</dt>
-  <dd>the full url to the page on the wiki</dd>
-  <dt>namespace</dt>
-  <dd>a compound structure representing the namespace of the page</dd>
-  <dt>in_language</dt>
-  <dd>a compound structure representing the language of the wiki that has the page</dd>
-  <dt>article_body</dt>
-  <dd>the page text in HTML with additional markup from the MediaWiki parser (see <a href="https://www.mediawiki.org/wiki/Specs/HTML">specification</a>)</dd>
-  <dt>wikitext</dt>
-  <dd>the plain wikitext of the page without additional markup</dd>
-  <dt>license</dt>
-  <dd>license information for the page</dd>
-</dl>
-
+<hr />
+<h3>
+  Historical Archive
+</h3>
+<p>
+  The historical dumps will remain available here for a specific set of namespaces and wikis for public 
+  download. Each dump output file consists of a tar.gz archive which, when uncompressed and untarred, 
+  contains one file, with a single line per article, in json format. To view the payload schema visit 
+  Wikimedia Enterprise 
+  <a href="https://enterprise.wikimedia.com/docs/data-dictionary/?utm_source=wmfdumps">API Data Dictionary</a>.
 </p>
 <p>
- Accompanying the tar.gz file is a file containing the md5sum and the date the dump was
- produced, also in json format.
-<p>
-  All files for a dump run are included in a single directory of the format YYYYMMDD.
-  The dumps will eventually become available on a regular schedule, around the 2nd and 21st
-  of each month.
+  Accompanying the tar.gz file is a file containing the md5sum and the date the dump was produced, also 
+  in JSON format. All files for a dump run are included in a single directory of the format YYYYMMDD. 
 </p>
 <p>
-  Initially, we hope to keep three runs for public download, covering about a 6-week period.
-</p>
-<p>
-  If you are in need of more frequent runs, dumps of just article change updates, or the ability 
-  to query individual articles from the dumps, visit 
-  <a href="https://enterprise.wikimedia.com/">Wikimedia Enterprise</a> to sign up for a free trial.
-</p>
-<p>
-  View the directories here:
-  <a href="/other/enterprise_html/runs/">other/enterprise_html/runs</a>
+  View those directories here: <a href="/other/enterprise_html/runs/">other/enterprise_html/runs</a>
 </p>
 <hr />
 <p> Back to <a href="../">other data bundles</a> | <a href="../../">the main index page</a> </p>
