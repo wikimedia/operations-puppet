@@ -402,8 +402,6 @@ tables:
   wikidata_relation_members:
     type: relation_member
     columns:
-      - name: id
-        type: bigint
       - name: osm_id
         type: id
       - name: geometry
