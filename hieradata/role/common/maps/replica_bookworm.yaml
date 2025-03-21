@@ -18,3 +18,4 @@ profile::maps::osm_replica::use_replication_slots: false
 profile::firewall::provider: nftables
 
 profile::puppet::agent::force_puppet7: true
+profile::monitoring::notifications_enabled: false
