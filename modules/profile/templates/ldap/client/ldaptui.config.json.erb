@@ -1,0 +1,12 @@
+{
+    "uri": "ldaps://<%= @ldap_rw_host %>",
+    "username": "<%= @ldap_user %>",
+    "password": "<%= @ldap_user_pass %>",
+    "readonly": false,
+    "connection_timeout": 5,
+    "users": {
+        "dn": "ou=people,dc=wikimedia,dc=org",
+        "object_classes": ["inetOrgPerson"],
+        "auxiliary_classes": ["posixAccount"]
+    }
+}
