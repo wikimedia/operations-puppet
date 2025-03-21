@@ -2014,6 +2014,10 @@ node /^moss-fe100[12]\.eqiad\./ {
     role(cephadm::rgw)
 }
 
+node /^apus-fe100\d\.eqiad\./ {
+    role(cephadm::rgw)
+}
+
 # Controller for the eqiad apus cephadm cluster
 node /^moss-be1001\.eqiad\./ {
     role(cephadm::controller)
@@ -2033,6 +2037,10 @@ node /^moss-be200[23]\.codfw\./ {
 }
 
 node /^moss-fe200[12]\.codfw\./ {
+    role(cephadm::rgw)
+}
+
+node /^apus-fe200\d\.codfw\./ {
     role(cephadm::rgw)
 }
 
@@ -2503,11 +2511,11 @@ node /^thanos-be2\d\d\d\.codfw\./ {
     role(thanos::backend)
 }
 
-node /^thanos-fe100[1234]\.eqiad\./ {
+node /^thanos-fe10\d\d\.eqiad\./ {
     role(thanos::frontend)
 }
 
-node /^thanos-fe200[1234]\.codfw\./ {
+node /^thanos-fe20\d\d\.codfw\./ {
     role(thanos::frontend)
 }
 

@@ -570,7 +570,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'ml-lab*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'moss-*':
+  'moss-*|apus-*':
     - partman/custom/cephadm_raid1_leavelvm.cfg
   'ms-be208[1-8]|ms-be108[3-9]|ms-be109*':
     - partman/custom/ms-be_simple-efi.cfg
