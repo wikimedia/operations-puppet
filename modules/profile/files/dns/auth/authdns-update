@@ -86,6 +86,7 @@ if clush $CLUSH_OPTIONS -o "${SSH_OPTIONS}" $OTHERS_OPT authdns-local-update $FQ
     echo ""; echo "clush ran successfully on all nodes"
 else
     echo ""; echo "Error: authdns-update failed as clush returned a non-zero exit code; check the output above!"
+    sal_log "FAIL"
     exit 1
 fi
 
