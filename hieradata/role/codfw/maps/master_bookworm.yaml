@@ -8,7 +8,6 @@ profile::maps::osm_master::disable_admin_timer: true
 profile::maps::osm_master::disable_tile_generation_timer: true
 profile::maps::osm_master::disable_replication_timer: true
 profile::maps::osm_master::disable_waterlines_import_timer: true
-profile::maps::osm_master::use_replication_slots: true
 profile::maps::osm_master::replicas: # This also includes the master
   maps-test2001:
     ip_address: 10.192.12.22
