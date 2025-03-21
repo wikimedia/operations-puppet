@@ -1094,7 +1094,7 @@ node /^elastic110[8-9]|elastic1110\.eqiad\./ {
 }
 
 # T384966 refresh hosts
-node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
+node /^elastic11(1[1-9]|2[0-2])\.eqiad\./ {
     role(insetup::search_platform)
 }
 
@@ -2354,7 +2354,14 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
 node /^relforge100[34]\.eqiad\./ {
     role(cirrus::relforge)
 }
+# refresh hosts T384966
+node /^relforge100[89]\.eqiad\./ {
+    role(insetup::search_platform)
+}
 
+node /^relforge1010\.eqiad\./ {
+    role(insetup::search_platform)
+}
 # restbase eqiad cluster
 node /^restbase10(2[8-9]|3[0-9]|4[0-3])\.eqiad\./ {
     role(restbase::production)
