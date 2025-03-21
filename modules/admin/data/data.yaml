@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook, swagoel, jebe]
+              halfak, jdcc, rook, swagoel, jebe, sharvaniharan]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -277,7 +277,7 @@ groups:
   releasers-mobile:
     gid: 712
     description: people who upload mobile app releases
-    members: [bvibber, dbrant, cooltey, sharvaniharan, wrai]
+    members: [bvibber, dbrant, cooltey, wrai]
     approval:
       - Tyler Cipriani
   sretest-roots:
@@ -454,7 +454,7 @@ groups:
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
-              sharvaniharan, ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
+              ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
@@ -3500,14 +3500,12 @@ users:
     uid: 17764
     email: cfeng@wikimedia.org
   sharvaniharan:
-    ensure: present
+    ensure: absent
     gid: 500
     name: sharvaniharan
     realname: Sharvani Haran
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBNylzEzK5E1+261DvF/4JNgmFcBGYhOtn6w8jXoHVI8 sharan@wmf2050.local
+    ssh_keys: []
     uid: 17744
-    email: sharan@wikimedia.org
   dbarratt:
     ensure: absent
     gid: 500
