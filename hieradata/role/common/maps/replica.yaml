@@ -20,4 +20,4 @@ profile::maps::apps::use_proxy: true
 profile::base::production::role_description: 'Maps replica (postgresql)'
 
 profile::maps::osm_replica::log_min_duration_statement: 10000 # 10 seconds
-profile::maps::osm_replica::use_replication_slots: false
+profile::maps::osm_replica::use_replication_slots: true
