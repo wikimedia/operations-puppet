@@ -1,10 +1,21 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 # Apache configuration for performance.wikimedia.org
 # This file is managed by Puppet.
+#
+# Excimer UI:
+# Browse flamegraphs with data collected by php-excimer,
+# saved over HTTP from MediaWiki hosts via WikimediaDebug.
+# https://wikitech.wikimedia.org/wiki/WikimediaDebug#Request_profiling
+#
+# XHGui:
+# Display memory usage and call counts from data collected by php-tideways,
+# saved to MySQL from MediaWiki hosts via WikimediaDebug.
+# https://wikitech.wikimedia.org/wiki/XHGui
 <VirtualHost *:80>
     ServerName <%= @server_name %>
 
     DocumentRoot /srv/org/wikimedia/performance/public_html
+
     Alias /excimer /srv/org/wikimedia/performance/excimer/index.php
     Alias /xhgui /srv/org/wikimedia/performance/xhgui/webroot
 
@@ -12,32 +23,19 @@
         AllowOverride None
     </Directory>
 
+    <Directory /srv/org/wikimedia/performance>
+        AllowOverride None
+        php_admin_flag engine on
+        Require all granted
+    </Directory>
+
     <Directory /srv/org/wikimedia/performance/public_html>
         <IfModule mod_headers.c>
             Header set Cache-Control "s-maxage=600, max-age=600, public, must-revalidate"
         </IfModule>
-        Require all granted
     </Directory>
 
-    # Excimer UI displays flamegraphs.
-    # The data is collected by php-excimer, saved over HTTP from MediaWiki hosts via WikimediaDebug.
-    #
-    # https://wikitech.wikimedia.org/wiki/WikimediaDebug#Request_profiling
-    <Directory /srv/org/wikimedia/performance/excimer>
-        AllowOverride None
-        php_admin_flag engine on
-        Require all granted
-    </Directory>
-
-    # XHGui displays memory usage and call counts.
-    # The data is collected by php-tideways, saved to MySQL from MediaWiki hosts via WikimediaDebug.
-    #
-    # https://wikitech.wikimedia.org/wiki/XHGui
     <Directory /srv/org/wikimedia/performance/xhgui>
-        AllowOverride None
-        php_admin_flag engine on
-        Require all granted
-
         # Based on:
         # https://gerrit.wikimedia.org/g/operations/software/xhgui/+/refs/tags/0.12.0/webroot/.htaccess
         RewriteEngine On
