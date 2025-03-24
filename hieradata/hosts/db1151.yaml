@@ -1,4 +1,4 @@
 # db1151
-mariadb::shard: 'x2'
+mariadb::shard: 'ms2'
 profile::monitoring::notifications_enabled: false
 
