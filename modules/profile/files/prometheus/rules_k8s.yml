@@ -194,6 +194,10 @@ groups:
     - record: wiki_user_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m
       expr: sum by (wiki, user, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_count[5m]))
 
+    # by bucket for histogram_quantile()
+    - record: le_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_bucket:rate5m
+      expr: sum by (le, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_bucket[5m]))
+
 
 - name: self
   rules:
