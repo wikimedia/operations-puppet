@@ -46,6 +46,7 @@ profile::keyholder::server::agents:
       - wikidev
       - mwdeploy
       - mwbuilder
+      - deployment
 
   phabricator:
     trusted_groups:
