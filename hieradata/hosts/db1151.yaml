@@ -1,4 +1,6 @@
 # db1151
 mariadb::shard: 'ms2'
+profile::mariadb::mysql_role: 'master'
+profile::mariadb::config::sync_binlog: '0'
 profile::monitoring::notifications_enabled: false
 
