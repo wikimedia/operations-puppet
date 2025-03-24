@@ -57,6 +57,7 @@ class postgresql::master(
     Integer                    $sync_count                  = 1,
     String                     $sync_mode                   = 'on',
     String                     $log_line_prefix             = '%t ',
+    String                     $listen_addresses            = '*',
     Array[String]              $includes                    = [],
     Array[String[1]]           $replication_slots           = [],
     Optional[Stdlib::Unixpath] $ssldir                      = undef,
@@ -82,6 +83,7 @@ class postgresql::master(
         log_line_prefix             => $log_line_prefix,
         log_min_duration_statement  => $log_min_duration_statement,
         log_autovacuum_min_duration => $log_autovacuum_min_duration,
+        listen_addresses            => $listen_addresses,
     }
 
     file { "/etc/postgresql/${_pgversion}/main/master.conf":

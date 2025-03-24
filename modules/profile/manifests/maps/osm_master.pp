@@ -67,6 +67,16 @@ class profile::maps::osm_master (
         default => [],
       }
 
+
+    # The old buster maps cluster only used IPV4, but newer ones have IPV6
+    # However all our ACLs are based on v4 IP. We should eventually move to FQDN-based
+    # grants but in the interim only have postgresql listen on ipv4 when run on modern hosts
+    if debian::codename::ge('bookworm') {
+        $listen_addresses = '0.0.0.0'
+    } else {
+        $listen_addresses = '*'
+    }
+
     class { 'postgresql::master':
         root_dir                   => '/srv/postgresql',
         includes                   => [ 'tuning.conf', 'logging.conf' ],
@@ -75,7 +85,7 @@ class profile::maps::osm_master (
         max_wal_senders            => $max_senders,
         log_min_duration_statement => $log_min_duration_statement,
         replication_slots          => $replication_slots,
-
+        listen_addresses           => $listen_addresses,
     }
 
     ensure_packages('osm2pgsql')
