@@ -4,7 +4,7 @@ class role::ml_k8s::worker {
 
     # Setup dfdaemon (needs to be included before the container runtime)
     include profile::dragonfly::dfdaemon
-    if $::hostname =~ /^ml-serve200[1-5]/ {
+    if $::hostname =~ /^ml-serve20(0[1-5]|11)/ {
       # Sets up containerd on the machine
       include profile::kubernetes::container_runtime
     } else {
