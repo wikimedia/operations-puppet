@@ -138,11 +138,6 @@ class profile::firewall (
                 content => template('base/firewall/defs.erb'),
             }
 
-            nrpe::plugin { 'check_conntrack':
-                ensure => absent,
-                source => 'puppet:///modules/base/firewall/check_conntrack.py',
-            }
-
             nrpe::plugin { 'check_ferm':
                 source => 'puppet:///modules/base/firewall/check_ferm',
             }
