@@ -59,6 +59,15 @@ fi
     --exclude="*.swp" \
     "${MASTER}::common" /srv/mediawiki-staging
 
+# Clean up cruft
+for dir in /srv/mediawiki-staging/php-*; do
+    if [ "$(/bin/ls $dir)" == "cache" ]; then
+        # This particular php-* directory consists only of a "cache" subdirectory.
+        # Blast it.
+        rm -fr "$dir"
+    fi
+done
+
 /usr/bin/rsync \
     --archive --delete-delay --delay-updates --compress --new-compress --delete \
     --exclude="*.swp" \
