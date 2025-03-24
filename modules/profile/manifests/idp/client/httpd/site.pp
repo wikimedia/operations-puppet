@@ -27,29 +27,40 @@
 #    cookies from being sent over an unencrypted HTTP connection. By default, mod_auth_cas sets the
 #    'Secure' attribute depending on information about the connection (the 'Auto' option).
 #    The options 'On' and 'Off' can be used to override the automatic behaviour.
+# @param session_timeout This is the hard limit, in seconds, for a mod_auth_cas session (idle or not)
+#    When a session has reached this age and a new request is made, the user is
+#    redirected to the CASLoginURL to obtain a new service ticket.  When this
+#    new ticket is validated, they will be assigned a new mod_auth_cas session.
+#    Set this value to '0' in order to allow a non-idle session to not expire.
+# @param session_idle_timeout This is a limit, in seconds, of how long a mod_auth_cas session can be idle.
+#    When a request comes in, if it has been inactive for CASIdleTimeout
+#    seconds, the user is redirected to the CASLoginURL to obtain a new service
+#    ticket.
 # @param acme_chief_cert the name of the acme chief certificate to use
 define profile::idp::client::httpd::site (
     String[1]                     $vhost_content,
     Stdlib::Host                  $virtual_host         = $title,
-    Stdlib::Unixpath              $document_root       = '/var/www',
-    Array[Stdlib::Host]           $server_aliases      = [],
-    String[1]                     $authn_header        = 'CAS-User',
-    String[1]                     $attribute_prefix    = 'X-CAS-',
-    Boolean                       $debug               = false,
-    Integer[1,99]                 $priority            = 50,
-    Boolean                       $validate_saml       = false,
-    Boolean                       $enable_monitor      = true,
-    String[1]                     $protected_uri       = '/',
-    String[1]                     $cookie_scope        = $protected_uri,
-    Boolean                       $proxied_as_https    = false,
-    String[1,1]                   $attribute_delimiter = ':',
-    Enum['staging', 'production'] $environment         = 'production',
-    Boolean                       $enable_slo          = true,
-    Wmflib::HTTP::SameSite        $cookie_same_site    = 'Lax',
-    Enum['Auto', 'On', 'Off']     $cookie_secure       = 'On',
-    Hash[String,Any]              $vhost_settings      = {},
-    Array[String[1]]              $required_groups     = [],
-    Optional[String[1]]           $acme_chief_cert     = undef,
+    Stdlib::Unixpath              $document_root        = '/var/www',
+    Array[Stdlib::Host]           $server_aliases       = [],
+    String[1]                     $authn_header         = 'CAS-User',
+    String[1]                     $attribute_prefix     = 'X-CAS-',
+    Boolean                       $debug                = false,
+    Integer[1,99]                 $priority             = 50,
+    Boolean                       $validate_saml        = false,
+    Boolean                       $enable_monitor       = true,
+    String[1]                     $protected_uri        = '/',
+    String[1]                     $cookie_scope         = $protected_uri,
+    Boolean                       $proxied_as_https     = false,
+    String[1,1]                   $attribute_delimiter  = ':',
+    Enum['staging', 'production'] $environment          = 'production',
+    Boolean                       $enable_slo           = true,
+    Wmflib::HTTP::SameSite        $cookie_same_site     = 'Lax',
+    Enum['Auto', 'On', 'Off']     $cookie_secure        = 'On',
+    Integer[0]                    $session_timeout      = 7200,
+    Integer[0]                    $session_idle_timeout = 3600,
+    Hash[String,Any]              $vhost_settings       = {},
+    Array[String[1]]              $required_groups      = [],
+    Optional[String[1]]           $acme_chief_cert      = undef,
 ) {
     include profile::idp::client::httpd
     $apereo_cas        = $profile::idp::client::httpd::apereo_cas
@@ -78,6 +89,8 @@ define profile::idp::client::httpd::site (
         'CASSSOEnabled'         => $enable_slo.bool2str('On', 'Off'),
         'CASCookieSameSite'     => $cookie_same_site,
         'CASCookieSecure'       => $cookie_secure,
+        'CASTimeout'            => $session_timeout,
+        'CASIdleTimeout'        => $session_idle_timeout,
     }
 
     $cas_auth_require = $required_groups.empty? {
