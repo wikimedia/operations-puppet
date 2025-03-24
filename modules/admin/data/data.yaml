@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook, swagoel, jebe, sharvaniharan]
+              halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -440,7 +440,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
-              dalezhou, otich, sgimeno, tchin, aitolkyn,
+              dalezhou, otich, sgimeno, tchin,
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
               soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
@@ -5454,16 +5454,12 @@ users:
     ssh_keys: []
     krb: absent
   aitolkyn:
-    ensure: present
+    ensure: absent
     realname: Bai Aitolkyn
-    email: baiaitolkyn@gmail.com
     uid: 30692
     gid: 500
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFUWkbN5/6nDSKi4x+wvs5bo1wt6KmwBinBrYYB8SfT5 baiaitolkyn@gmail.com
-    krb: present
-    expiry_date: "2025-04-30"
-    expiry_contact: diego@wikimedia.org
+    ssh_keys: []
+    krb: absent
   drochford:
     ensure: absent
     realname: David Rochford
