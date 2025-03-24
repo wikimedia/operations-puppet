@@ -81,7 +81,6 @@ filter {
     topics_pattern                        => 'k8s-mw-.*',
     group_id                              => $input_kafka_consumer_group_id,
     type                                  => 'syslog',
-    type                                  => 'syslog',
     tags                                  => ['input-kafka-rsyslog-mw', 'rsyslog-mw', 'kafka', 'es'],
     codec                                 => 'json',
     security_protocol                     => 'SSL',
