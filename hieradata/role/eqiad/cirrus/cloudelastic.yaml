@@ -1,10 +1,9 @@
 profile::opensearch::dc_settings:
     # ES-specific: Not default
     unicast_hosts: # this is also the list of master eligible nodes
-      - cloudelastic1008.eqiad.wmnet
       - cloudelastic1009.eqiad.wmnet
       - cloudelastic1010.eqiad.wmnet
-
+      - cloudelastic1011.eqiad.wmnet
     cluster_hosts:
       - cloudelastic1007.eqiad.wmnet
       - cloudelastic1008.eqiad.wmnet
