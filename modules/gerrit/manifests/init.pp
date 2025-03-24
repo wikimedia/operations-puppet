@@ -17,7 +17,7 @@ class gerrit(
     Stdlib::Unixpath                  $git_dir           = '/srv/gerrit/git',
     Integer                           $git_open_files    = 20000,
     Stdlib::HTTPSUrl                  $gitiles_url       = "https://${::gerrit::host}/g",
-    Stdlib::Datasize                  $heap_limit        = '32g',
+    Stdlib::Datasize                  $heap_limit        = '64g',
     Boolean                           $manage_scap_user  = false,
     Array[Stdlib::Fqdn]               $replica_hosts     = [],
     Boolean                           $replica           = false,
