@@ -88,6 +88,8 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     vhost_settings:
       ro_vhost: "grafana.%{lookup('public_domain')}"
+    session_idle_timeout: 86400
+    session_timeout: 86400
   "grafana-next-rw.%{lookup('public_domain')}":
     vhost_content: 'profile/idp/client/httpd-grafana.erb'
     document_root: '/usr/share/grafana/public'
@@ -97,6 +99,8 @@ profile::idp::client::httpd::sites:
     proxied_as_https: true
     vhost_settings:
       ro_vhost: "grafana-next.%{lookup('public_domain')}"
+    session_idle_timeout: 86400
+    session_timeout: 86400
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
 profile::grafana::standby_host: 'grafana2001.codfw.wmnet'
