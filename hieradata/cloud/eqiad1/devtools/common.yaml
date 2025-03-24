@@ -188,6 +188,8 @@ profile::ssh::server::authorized_keys_file:
 ## to get certificates from LE we use acmechief in production and certbot in cloud
 profile::gerrit::use_acmechief: false
 profile::tlsproxy::envoy::header_key_format: 'proper_case'
+profile::pki::client::ensure: present
+profile::tlsproxy::envoy::ssl_provider: cfssl
 sslcert::certificate::skip_private: true
 
 ## Backups

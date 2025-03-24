@@ -4,3 +4,6 @@ profile::mediawiki::scap_client::is_master: true
 profile::confd::instances:
   main:
     interval: 300
+
+# needed since spiderpig moved to deployment servers and includes envoy proxy
+profile::tlsproxy::envoy::global_cert_name: deploy-1006.devtools.eqiad1.wikimedia.cloud
