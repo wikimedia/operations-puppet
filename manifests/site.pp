@@ -2374,7 +2374,7 @@ node /^relforge100[34]\.eqiad\./ {
 }
 # refresh hosts T384966
 node /^relforge100[89]\.eqiad\./ {
-    role(cirrus::relforge)
+    role(insetup::search_platform)
 }
 
 node /^relforge1010\.eqiad\./ {
