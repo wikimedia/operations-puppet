@@ -1104,16 +1104,58 @@ node /^elastic11(1[1-9]|2[0-2])\.eqiad\./ {
     role(insetup::search_platform)
 }
 
-node /^elastic(205[5-9]|20[6-9][0-9])\.codfw\./ {
-    role(elasticsearch::cirrus)
-}
-node /^elastic210[0-9]\.codfw\./ {
+# re-arranging elastic hosts by row in order to facilitate
+# reimages. Row info sourced from regex.yaml
+# ROW A
+node /^elastic2(055|056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic211[0-5]\.codfw\./ {
+# As we reimage the above hosts, we'll change both their role and their name.
+# node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./
+#     role(opensearch::cirrus)
+# }
+
+# ROW B
+
+node  /^elastic20(56|57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+    role(elasticsearch::cirrus)
+
+}
+
+node /^elastic2110\.codfw\./ {
     role(elasticsearch::cirrus)
 }
+
+# node  /^cirrussearch2(56|57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+#     role(opensearch::cirrus)
+#
+# }
+#
+# node ^cirrussearch2.codfw\./ {
+#     role(opensearch::cirrus)
+# }
+
+# ROW C
+
+node /^elastic2(059|065|066||071|083|081|082|098|099|100|101|102|103|112|113)\.codfw\./ {
+    role(elasticsearch::cirrus)
+}
+
+# node /^cirrussearch2(059|065|066||071|083|081|082|098|099|100|101|102|103|112|113)\.codfw\./ {
+#     role(opensearch::cirrus)
+# }
+
+# ROW D
+
+node /^elastic2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
+    role(elasticsearch::cirrus)
+}
+
+# node /^cirrussearch2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
+# role(opensearch::cirrus)
+# }
+
 
 # External Storage, Shard 1 (es1) databases
 # RO section
