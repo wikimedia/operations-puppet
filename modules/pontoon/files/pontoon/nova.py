@@ -15,7 +15,7 @@ from novaclient.v2.servers import Server
 NOVA_DEFAULT_URL = "https://openstack.eqiad1.wikimediacloud.org:25000/v3"
 HORIZON_URL = "https://horizon.wikimedia.org"
 HOST_DOMAIN = "eqiad1.wikimedia.cloud"
-NIC_NET_ID = "7425e328-560c-4f00-8e99-706f3fb90bb4"  # lan-flat-cloudinstances2b
+NIC_NET_ID = "7425e328-560c-4f00-8e99-706f3fb90bb4"  # VLAN/legacy
 
 # Try to get the app version
 try:

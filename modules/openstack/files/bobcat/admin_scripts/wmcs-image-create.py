@@ -112,7 +112,7 @@ else:
     flavorid = "95aecdfc-24b2-4ea5-8aec-0b303dd27d9d"
 
     # This is the id of the standard VM network.
-    # In eqiad1 that's 'lan-flat-cloudinstances2b'
+    # In eqiad1 that's 'VLAN/legacy'
     networkid = "7425e328-560c-4f00-8e99-706f3fb90bb4"
 
 

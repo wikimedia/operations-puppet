@@ -54,12 +54,12 @@ neutron router-creanete cloudinstances1b-gw --distributed False --ha True
 #
 # LAN for VMs nets & subnets
 #
-neutron net-create lan-flat-cloudinstances2b --router:external=false --provider:network_type=flat \
+neutron net-create VLAN/legacy --router:external=false --provider:network_type=flat \
 	--provider:physical_network=cloudinstances2b --shared
 
 neutron subnet-create --name cloud-instances2-b-eqiad --ip-version 4 \
 	--allocation-pool start=172.16.0.10,end=172.16.7.254 --gateway 172.16.0.1 \
-	--dns-nameserver 208.80.154.143 lan-flat-cloudinstances2b 172.16.0.0/21
+	--dns-nameserver 208.80.154.143 VLAN/legacy 172.16.0.0/21
 #
 # Main routing configuration
 #
@@ -76,7 +76,7 @@ neutron router-gateway-set --fixed-ip subnet_id=cloud-instances-transport1-b-eqi
 
 # connect router to LAN
 neutron router-interface-add cloudinstances2b-gw cloud-instances2-b-eqiad
-neutron net-update --port-security-enabled=false lan-flat-cloudinstances2b
+neutron net-update --port-security-enabled=false VLAN/legacy
 
 #
 # checks and tests

@@ -28,7 +28,7 @@ for project in allprojects:
                 server.name,
                 project.id,
                 server.id,
-                server.addresses["lan-flat-cloudinstances2b"][0]["addr"],
+                server.addresses["VLAN/legacy"][0]["addr"],
                 flavorname,
             )
         )
