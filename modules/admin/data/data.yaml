@@ -7491,3 +7491,7 @@ ldap_only_users:
     ensure: present
     realname: Avishua Stein
     email: astein@wikimedia.org
+  kevmon:
+    ensure: present
+    realname: Kevin Montalva
+    email: kevmon@wikimedia.org
