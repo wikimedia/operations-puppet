@@ -1010,7 +1010,7 @@ node /^doc(1003|2002)\.(codfw|eqiad)\./ {
 }
 
 node /^doc(1004|2003)\.(codfw|eqiad)\./ {
-    role(insetup::collaboration_services)
+    role(insetup::collaboration_services_nftables)
 }
 
 # Wikidough (T252132)
@@ -1435,7 +1435,7 @@ node /^gitlab2002\.wikimedia\./ {
 }
 
 node /^gitlab2003\.wikimedia\./ {
-    role(insetup::collaboration_services)
+    role(insetup::collaboration_services_nftables)
 }
 
 # gitlab runners - codfw (T3011183)
@@ -1570,7 +1570,7 @@ node /^phab1004\.eqiad\./ {
 
 # new hardware (eqiad) - T369671
 node /^phab1005\.eqiad\./ {
-    role(insetup::collaboration_services)
+    role(insetup::collaboration_services_nftables)
 }
 
 # Phabricator codfw (T280544, T279177) (failover)
