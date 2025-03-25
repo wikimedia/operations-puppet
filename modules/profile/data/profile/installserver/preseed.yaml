@@ -142,11 +142,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'dns[1-9][0-9][0-9][0-9]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'cloudelastic100[78]':
+  'cloudelastic100[7]':
     - partman/standard.cfg
     - partman/raid0.cfg
     - partman/raid0-3dev.cfg
-  'cloudelastic1009':
+  'cloudelastic100[89]':
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-3dev-efi.cfg
