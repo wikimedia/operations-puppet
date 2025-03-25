@@ -543,6 +543,11 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
+  # A bit ugly to have all these stanzas, but it's only temporary
+  'ml-serve2009*':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   'ml-serve201*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
