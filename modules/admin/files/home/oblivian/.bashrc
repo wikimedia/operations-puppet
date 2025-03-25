@@ -84,6 +84,30 @@ if command -v kafkacat > /dev/null; then
         fi
         kafkacat -C -b "$(hostname -f)":9093 -t "$TOPIC" -X security.protocol=SSL
     }
+    mw-log-tail() {
+        while getopts n:f opt; do
+            case $opt in
+                n)
+                    OFFSET=$OPTARG
+                    COUNT="-c ${OPTARG}"
+                    ;;
+                f)
+                    COUNT=""
+                    ;;
+                \?)
+                    echo "Invalid option: -$OPTARG" >&2
+                    echo "usage: mwlogs [-n count] [-f] [kafkacat options]"
+                    return 1
+                    ;;
+            esac
+        done
+        if [[ -z "$OFFSET" ]]; then
+            OFFSET="-1"
+        fi
+        # shellcheck disable=SC2086 # $COUNT is intentionally unquoted
+        kafkacat -C -b "$(hostname -f)":9093 -t "mediawiki.httpd.accesslog" -X security.protocol=SSL -o "$OFFSET" $COUNT 2>/dev/null
+
+    }
 fi
 
 if command -v helmfile > /dev/null; then
