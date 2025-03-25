@@ -317,6 +317,7 @@ profile::idp::services:
   spiderpig:
     id: 55
     service_id: 'https://spiderpig\.wikimedia\.org(/.*)?'
+    member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
       - releng
       - ops
