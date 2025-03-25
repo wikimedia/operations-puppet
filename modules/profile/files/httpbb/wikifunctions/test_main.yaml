@@ -9,6 +9,8 @@ https://www.wikifunctions.org:
 - path: /view/en/Z1
   assert_status: 200
   assert_body_contains: Object
+# Case-insensitive to allow the community's preference to settle on one or the
+# other - T383032
 - path: /view/fr/Z1
   assert_status: 200
-  assert_body_contains: Objet
+  assert_body_regex: "[Oo]bjet"
