@@ -17,5 +17,6 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
 
   include profile::mediawiki::maintenance::serviceops_version
   include profile::mediawiki::maintenance::growthexperiments
+  include profile::mediawiki::maintenance::startupregistrystats
 
 }
