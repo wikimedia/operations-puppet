@@ -1908,11 +1908,11 @@ node /^maps-test200[3-6]\.codfw\./ {
 }
 
 node /^maps-test200[2]\.codfw\./ {
-    role(maps::replica_bookworm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^maps-test2001\.codfw\./ {
-    role(maps::master_bookworm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # testing buster master - maps2.0 migration
