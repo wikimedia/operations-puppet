@@ -222,11 +222,11 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl start spiderpig-jobrunner',
                  'ALL = NOPASSWD: /bin/systemctl stop spiderpig-jobrunner',
                  'ALL = NOPASSWD: /bin/systemctl restart spiderpig-jobrunner',
-                 'ALL = NOPASSWD: /bin/journalctl -u spiderpig-jobrunner *',
+                 'ALL = NOPASSWD: /bin/journalctl -u spiderpig-jobrunner',
                  'ALL = NOPASSWD: /bin/systemctl start spiderpig-apiserver',
                  'ALL = NOPASSWD: /bin/systemctl stop spiderpig-apiserver',
                  'ALL = NOPASSWD: /bin/systemctl restart spiderpig-apiserver',
-                 'ALL = NOPASSWD: /bin/journalctl -u spiderpig-apiserver *',
+                 'ALL = NOPASSWD: /bin/journalctl -u spiderpig-apiserver',
                  # The restart script must run as a login shell (sudo -i) in order to be fed etcd
                  # tokens as environment vars. Sudo seemingly implements this by rewriting the
                  # command before checking sudoers -- but it disallows any arguments that don't
