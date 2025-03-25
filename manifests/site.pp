@@ -1364,7 +1364,7 @@ node /^ganeti10(2[3456789]|3[0-9]|4[0-9]|5[0-2])\.eqiad\./ {
 
 # T381576
 node /^ganeti10(5[34])\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # Routed Ganeti nodes
@@ -1378,7 +1378,7 @@ node /^ganeti20(1[9]|2[0-9]|3[01256789]|4[0-4])\.codfw\./ {
 
 # T384838
 node /^ganeti20(4[56789]|5[0])\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^ganeti-test200[123]\.codfw\./ {
@@ -1585,7 +1585,7 @@ node /^pki1001\.eqiad\./ {
 
 # PKI server T342892
 node /^pki1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # PKI server
@@ -1601,7 +1601,7 @@ node /^pki-root1001\.eqiad\./ {
 
 # pki-root server T334401
 node /^pki-root1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^kafka-logging100[1-5]\.eqiad\./ {
@@ -1657,7 +1657,7 @@ node /^krb1001\.eqiad\./ {
 }
 
 node /^krb1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^krb2002\.codfw\./ {
@@ -1904,7 +1904,7 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
 }
 
 node /^maps-test200[3-6]\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^maps-test200[2]\.codfw\./ {
@@ -2333,7 +2333,7 @@ node /^puppetserver[12]00[123]\.(codfw|eqiad)\./ {
 }
 
 node /^puppetserver2004\.codfw\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # pybal-test2003 VM is used for pybal testing/development
@@ -2535,7 +2535,7 @@ node /^deploy(1003|2002)\.(eqiad|codfw)\./ {
 }
 
 node /^urldownloader[12]00[12]\.wikimedia\./ {
-    role(insetup::infrastructure_foundations)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # https://wikitech.wikimedia.org/wiki/Url-downloader
