@@ -146,6 +146,10 @@ groups:
                   gerrit-root, gerrit-deployers, deployment, contint-roots, contint-admins, deployment-ci-admins,
                   zuul-deployers, gitlab-roots, phabricator-roots, deploy-phabricator, contint-docker, deployment-docker'
     members: &releng_members [hashar, thcipriani, brennen, dancy, jhuneidi, dduvall, jnuche, aklapper, bd808]
+    privileges: ['ALL = NOPASSWD: /bin/systemctl start train-presync',
+                 'ALL = NOPASSWD: /bin/systemctl start train-clean',
+                 'ALL = NOPASSWD: /usr/journalctl -u train-presync',
+                 'ALL = NOPASSWD: /usr/journalctl -u train-clean']
     approval:
       - Tyler Cipriani
   wikireplica-roots:
