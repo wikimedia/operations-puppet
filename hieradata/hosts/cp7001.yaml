@@ -1,3 +1,153 @@
 # Rolling out Varnish 7 (T378737)
 profile::cache::varnish::frontend::packages_component: component/varnish-staging
 profile::cache::varnish::frontend::varnish_ge_v7: true
+
+# TLS on volatile storage
+profile::cache::haproxy::use_tls_tmpfiles: true
+profile::cache::haproxy::available_unified_certificates:
+  digicert-2024:
+    cert_paths:
+        - /run/haproxy-tls/digicert-2024-ecdsa-unified.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikifunctions.org
+        - '*.wikifunctions.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+    warning_threshold: 30
+    critical_threshold: 15
+  lets-encrypt:
+    cert_paths:
+        - /run/haproxy-tls/unified/live/ec-prime256v1.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+    warning_threshold: 21
+    critical_threshold: 15
+  pki-goog:
+    cert_paths:
+        - /run/haproxy-tls/unified-goog/live/ec-prime256v1.chained.crt.key
+    server_names:
+        - wikipedia.org
+        - '*.wikipedia.org'
+        - '*.m.wikipedia.org'
+        - wikimedia.org
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - mediawiki.org
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - wikibooks.org
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - wikidata.org
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - wikinews.org
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - wikiquote.org
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - wikisource.org
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - wikiversity.org
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - wikivoyage.org
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - wiktionary.org
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - wikimediafoundation.org
+        - '*.wikimediafoundation.org'
+        - wmfusercontent.org
+        - '*.wmfusercontent.org'
+        - w.wiki
+    warning_threshold: 21
+    critical_threshold: 15
+profile::cache::haproxy::extra_certificates:
+  wikiworkshop:
+    cert_paths:
+      - /run/haproxy-tls/wikiworkshop/live/ec-prime256v1.chained.crt.key
+    server_names:
+      - wikiworkshop.org
+      - www.wikiworkshop.org
+    warning_threshold: 21
+    critical_threshold: 15
