@@ -44,16 +44,7 @@ class profile::systemd::timesyncd (
     # /usr/local/lib/nagios/plugins is managed by the nrpe module
     # and dependencies will be handled via auto requires
     nrpe::plugin { 'check_timedatectl':
-        ensure => $ensure,
+        ensure => absent,
         source => 'puppet:///modules/profile/systemd/check_timedatectl',
-    }
-
-    nrpe::monitor_service { 'timesynd_ntp_status':
-        ensure         => absent,
-        description    => 'Check the NTP synchronisation status of timesyncd',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_timedatectl',
-        contact_group  => 'admins',
-        check_interval => 30,
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
     }
 }
