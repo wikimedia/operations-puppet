@@ -1360,7 +1360,7 @@ node /^ganeti10(2[3456789]|3[0-9]|4[0-9]|5[0-2])\.eqiad\./ {
 
 # T381576
 node /^ganeti10(5[34])\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 # Routed Ganeti nodes
@@ -1374,7 +1374,7 @@ node /^ganeti20(1[9]|2[0-9]|3[01256789]|4[0-4])\.codfw\./ {
 
 # T384838
 node /^ganeti20(4[56789]|5[0])\.codfw\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^ganeti-test200[123]\.codfw\./ {

@@ -325,6 +325,12 @@ profile::installserver::preseed::preseed_per_hostname:
   'krb[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'ganeti105[34]*':
+    - partman/custom/ganeti-raid5-efi.cfg
+  'ganeti204[56789]*':
+    - partman/custom/ganeti-raid5-efi.cfg
+  'ganeti205*':
+    - partman/custom/ganeti-raid5-efi.cfg
   'ganeti[12]*':
     - partman/custom/ganeti-raid5.cfg
   'ganeti[34567]*':
