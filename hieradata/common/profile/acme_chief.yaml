@@ -1,2 +1,343 @@
 profile::acme_chief::ssl_client_certificate: '/etc/ssl/localcerts/puppet_ca_certs.pem'
 profile::acme_chief::ssl_client_certificate_source: 'puppet:///modules/profile/pki/puppet_ca_certs.pem'
+
+profile::acme_chief::certificates:
+    apt:
+        CN: 'apt.wikimedia.org'
+        SNI:
+        - 'apt.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^apt[12]00[12]\.wikimedia\.org$'
+    archiva:
+        CN: 'archiva.wikimedia.org'
+        SNI:
+        - 'archiva.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'archiva1002.wikimedia.org'
+    cloudelastic:
+        CN: 'cloudelastic.wikimedia.org'
+        SNI:
+        - 'cloudelastic.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
+        - '^cloudelastic[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+    dotls-for-authdns:
+        CN: 'ns0.wikimedia.org'
+        SNI:
+        - 'ns0.wikimedia.org'
+        - 'ns1.wikimedia.org'
+        - 'ns2.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^dns[1-9][0-9]{3}\.wikimedia\.org$'
+    dumps:
+        CN: 'dumps.wikimedia.org'
+        SNI:
+        - 'dumps.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^clouddumps100[12]\.wikimedia\.org$'
+    durum:
+        CN: 'check.wikimedia-dns.org'
+        SNI:
+        - 'check.wikimedia-dns.org'
+        - '*.check.wikimedia-dns.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^durum[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+    gerrit:
+        CN: 'gerrit.wikimedia.org'
+        SNI:
+        - 'gerrit.wikimedia.org'
+        - 'gerrit-replica.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'gerrit1003.wikimedia.org'
+        - 'gerrit2002.wikimedia.org'
+        - 'gerrit2003.wikimedia.org'
+    gitlab:
+        CN: 'gitlab.wikimedia.org'
+        SNI:
+        - 'gitlab.wikimedia.org'
+        - 'gitlab-replica-a.wikimedia.org'
+        - 'gitlab-replica-b.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'gitlab1003.wikimedia.org'
+        - 'gitlab1004.wikimedia.org'
+        - 'gitlab2002.wikimedia.org'
+        - 'gitlab2003.wikimedia.org'
+    icinga:
+        CN: 'icinga.wikimedia.org'
+        SNI:
+        - 'icinga.wikimedia.org'
+        - 'alerts.wikimedia.org'
+        - 'alert1002.wikimedia.org'
+        - 'alert2002.wikimedia.org'
+        - 'icinga-extmon.wikimedia.org'
+        - 'klaxon.wikimedia.org'
+        - 'requestctl.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^alert[12]002\.wikimedia\.org$'
+    idm:
+        CN: 'idm.wikimedia.org'
+        SNI:
+        - 'idm.wikimedia.org'
+        - 'idm1001.wikimedia.org'
+        - 'idm2001.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'idm1001.wikimedia.org'
+        - 'idm2001.wikimedia.org'
+    idm-test:
+        CN: 'idm-test.wikimedia.org'
+        SNI:
+        - 'idm-test.wikimedia.org'
+        - 'idm-test1001.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'idm-test1001.wikimedia.org'
+    idp:
+        CN: 'idp.wikimedia.org'
+        SNI:
+        - 'idp.wikimedia.org'
+        - 'idp1004.wikimedia.org'
+        - 'idp2004.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'idp1004.wikimedia.org'
+        - 'idp2004.wikimedia.org'
+    idp-test:
+        CN: 'idp-test.wikimedia.org'
+        SNI:
+        - 'idp-test.wikimedia.org'
+        - 'idp-test1004.wikimedia.org'
+        - 'idp-test2004.wikimedia.org'
+        - 'idp-test2005.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'idp-test1004.wikimedia.org'
+        - 'idp-test2004.wikimedia.org'
+        - 'idp-test2005.wikimedia.org'
+    ldap:
+        CN: 'ldap-ro.eqiad.wikimedia.org'
+        SNI:
+        - 'ldap-labs.eqiad.wikimedia.org'
+        - 'ldap-labs.codfw.wikimedia.org'
+        - 'ldap-ro.eqiad.wikimedia.org'
+        - 'ldap-ro.codfw.wikimedia.org'
+        - 'ldap-rw.eqiad.wikimedia.org'
+        - 'ldap-rw.codfw.wikimedia.org'
+        - 'ldap-rw-next.eqiad.wikimedia.org'
+        - 'ldap-rw-next.codfw.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^ldap-(ro|labs)\.(eqiad|codfw)\.wikimedia\.org$'
+        - '^seaborgium\.wikimedia\.org$'
+        - '^serpens\.wikimedia\.org$'
+        - '^ldap-rw1001\.wikimedia\.org$'
+        - '^ldap-rw2001\.wikimedia\.org$'
+        - '^ldap-replica100[3456]\.wikimedia\.org$'
+        - '^ldap-replica200[5678]\.wikimedia\.org$'
+    ldap-codfw1dev:
+        CN: 'ns-recursor.openstack.codfw1dev.wikimediacloud.org'
+        SNI:
+        - 'ns0.openstack.codfw1dev.wikimediacloud.org'
+        - 'ns1.openstack.codfw1dev.wikimediacloud.org'
+        - 'cloudservices2004-dev.private.codfw.wikimedia.cloud'
+        - 'cloudservices2005-dev.private.codfw.wikimedia.cloud'
+        challenge: dns-01
+        authorized_hosts:
+        - 'cloudservices2004-dev.codfw.wmnet'
+        - 'cloudservices2005-dev.codfw.wmnet'
+    librenms:
+        CN: 'librenms.wikimedia.org'
+        SNI:
+        - 'librenms.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^netmon\d{4}\.wikimedia\.org$'
+    lists:
+        CN: 'lists.wikimedia.org'
+        SNI:
+        - 'lists.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'lists1004.wikimedia.org'
+        - 'lists2001.wikimedia.org'
+    mirrors:
+        CN: 'mirrors.wikimedia.org'
+        SNI:
+        - 'mirrors.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'mirror1001.wikimedia.org'
+    mx:
+        CN: 'mx1001.wikimedia.org'
+        SNI:
+        - 'mx1001.wikimedia.org'
+        - 'mx2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^mx[12]001\.wikimedia\.org$'
+    mx-in:
+        CN: 'mx-in1001.wikimedia.org'
+        SNI:
+        - 'mx-in1001.wikimedia.org'
+        - 'mx-in2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^mx-in[12]001\.wikimedia\.org$'
+    mx-out:
+        CN: 'mx-out1001.wikimedia.org'
+        SNI:
+        - 'mx-out1001.wikimedia.org'
+        - 'mx-out2001.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^mx-out[12]001\.wikimedia\.org$'
+    openstack-codfw1dev:
+        CN: 'openstack.codfw1dev.wikimediacloud.org'
+        SNI:
+        - 'keystone.openstack.codfw1dev.wikimediacloud.org'
+        - 'openstack.codfw1dev.wikimediacloud.org'
+        - 'object.codfw1dev.wikimediacloud.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^cloudlb200[123]-dev\.codfw\.wmnet$'
+    openstack-eqiad1:
+        CN: 'openstack.eqiad1.wikimediacloud.org'
+        SNI:
+        - 'keystone.openstack.eqiad1.wikimediacloud.org'
+        - 'openstack.eqiad1.wikimediacloud.org'
+        - 'object.eqiad1.wikimediacloud.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^cloudlb100[123]\.eqiad\.wmnet$'
+    orchestrator:
+        CN: 'orchestrator.wikimedia.org'
+        SNI:
+        - 'orchestrator.wikimedia.org'
+        - 'dborch1001.wikimedia.org'
+        challenge: dns-01
+        authorized_hosts:
+        - 'dborch1001.wikimedia.org'
+    unified:
+        CN: '*.wikipedia.org'
+        SNI:
+        - '*.wikipedia.org'
+        - 'wikimedia.org'
+        - 'mediawiki.org'
+        - 'wikibooks.org'
+        - 'wikidata.org'
+        - 'wikifunctions.org'
+        - 'wikinews.org'
+        - 'wikiquote.org'
+        - 'wikisource.org'
+        - 'wikiversity.org'
+        - 'wikivoyage.org'
+        - 'wiktionary.org'
+        - 'wikimediafoundation.org'
+        - 'w.wiki'
+        - 'wmfusercontent.org'
+        - '*.m.wikipedia.org'
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - '*.wikifunctions.org'
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - '*.wikimediafoundation.org'
+        - '*.wmfusercontent.org'
+        - 'wikipedia.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+    unified-goog:
+        CN: '*.wikipedia.org'
+        SNI:
+        - '*.wikipedia.org'
+        - 'wikimedia.org'
+        - 'mediawiki.org'
+        - 'wikibooks.org'
+        - 'wikidata.org'
+        - 'wikifunctions.org'
+        - 'wikinews.org'
+        - 'wikiquote.org'
+        - 'wikisource.org'
+        - 'wikiversity.org'
+        - 'wikivoyage.org'
+        - 'wiktionary.org'
+        - 'wikimediafoundation.org'
+        - 'w.wiki'
+        - 'wmfusercontent.org'
+        - '*.m.wikipedia.org'
+        - '*.wikimedia.org'
+        - '*.m.wikimedia.org'
+        - '*.planet.wikimedia.org'
+        - '*.mediawiki.org'
+        - '*.m.mediawiki.org'
+        - '*.wikibooks.org'
+        - '*.m.wikibooks.org'
+        - '*.wikidata.org'
+        - '*.m.wikidata.org'
+        - '*.wikifunctions.org'
+        - '*.wikinews.org'
+        - '*.m.wikinews.org'
+        - '*.wikiquote.org'
+        - '*.m.wikiquote.org'
+        - '*.wikisource.org'
+        - '*.m.wikisource.org'
+        - '*.wikiversity.org'
+        - '*.m.wikiversity.org'
+        - '*.wikivoyage.org'
+        - '*.m.wikivoyage.org'
+        - '*.wiktionary.org'
+        - '*.m.wiktionary.org'
+        - '*.wikimediafoundation.org'
+        - '*.wmfusercontent.org'
+        - 'wikipedia.org'
+        staging_time: 604800
+        challenge: dns-01
+        account: 72f6cee110ecd66620ec200be3990522
+        key_types:
+        - 'ec-prime256v1'
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+    wikidough:
+        CN: 'wikimedia-dns.org'
+        SNI:
+        - 'wikimedia-dns.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^doh[1-9][0-9]{3}\.wikimedia\.org$'
+    wikiworkshop:
+        CN: 'wikiworkshop.org'
+        SNI:
+        - 'wikiworkshop.org'
+        - 'www.wikiworkshop.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
