@@ -16,6 +16,8 @@
 "get_subnetpool": "rule:regular_user"
 "update_subnetpool": "rule:admin_only"
 "delete_subnetpool": "rule:admin_only"
+"update_subnet": "rule:admin_only"
+"delete_subnet": "rule:admin_only"
 "create_address_scope": "rule:admin_or_member"
 "get_address_scope": "rule:regular_user"
 "update_address_scope": "rule:admin_only"
