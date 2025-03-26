@@ -17,7 +17,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import TextIO
+from typing import Optional, TextIO
 
 import yaml
 from conftool.cli import ConftoolClient
@@ -45,7 +45,7 @@ RELEASE_VALUES = {
 }
 # The default PHP version used to select the appropriate release values file from among those
 # available in RELEASE_VALUES.
-DEFAULT_RELEASE_VALUES_PHP_VERSION = '7.4'
+DEFAULT_RELEASE_VALUES_PHP_VERSION = '8.1'
 
 
 class ClientError(Exception):
@@ -129,11 +129,13 @@ def get_primary_dc() -> str:
     return mwconfig('common', 'WMFMasterDatacenter').val
 
 
-def mediawiki_image(php_version: str) -> str:
+def mediawiki_image(php_version: Optional[str]) -> str:
     # Find out what the most recently deployed multiversion image is and use that. This might not be
     # the same image that's actually running in the "normal" releases like mw-web (particularly if
     # we're in the middle of a deployment or rollback) but the values file is world-readable so this
     # works even if the user isn't in the deployment group.
+    if php_version is None:
+        php_version = DEFAULT_RELEASE_VALUES_PHP_VERSION
     with open(RELEASE_VALUES[php_version], 'r') as f:
         values = yaml.safe_load(f)
     return values['main_app']['image']
@@ -244,6 +246,19 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             raise ClientError(f'Invalid {e.encoding}: only text files may be passed with --file.')
     else:
         textdata = None
+
+    # TODO: T387917 - Remove these messages when fallback to 7.4 is removed.
+    if args.mediawiki_image is None:
+        if args.php_version is None:
+            logger.info(
+                'ℹ️ Your job will run on PHP 8.1 (T387917). If you encounter a compatibility '
+                'issue, you can use --php_version 7.4 to explicitly select 7.4.')
+        elif args.php_version == '7.4':
+            logger.info(
+                'ℹ️ The ability to select PHP 7.4 via --php_version will be removed (T387917). '
+                'If you have selected this due to an 8.1 compatibility issue, please prioritize '
+                'addressing the underlying problem.')
+
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
@@ -393,7 +408,6 @@ def main() -> int:
                              '(Default: Use the latest image built and deployed by scap)')
     parser.add_argument('--php_version',
                         choices=RELEASE_VALUES.keys(),
-                        default=DEFAULT_RELEASE_VALUES_PHP_VERSION,
                         help='The PHP version to target when selecting the latest MediaWiki image '
                              'built / deployed by scap. Ignored if --mediawiki_image is provided. '
                              f'(Default: {DEFAULT_RELEASE_VALUES_PHP_VERSION})')
