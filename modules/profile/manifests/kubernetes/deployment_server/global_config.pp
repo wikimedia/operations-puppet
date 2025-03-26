@@ -150,6 +150,8 @@ class profile::kubernetes::deployment_server::global_config (
 
     $analytics_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-mariadb')
     $analytics_test_meta_master_ips = profile::kubernetes::deployment_server::mariadb_master_ips('Profile::Analytics::Database::Meta', 'an-test-coord')
+    $mariadb_external_storage_eqiad_ips = profile::kubernetes::deployment_server::mariadb_external_storage_ips('eqiad')
+    $mariadb_external_storage_codfw_ips = profile::kubernetes::deployment_server::mariadb_external_storage_ips('codfw')
 
     # Create one external services definition for each redis port (instance running on each node)
     # to allow services to explicitely specify which redis instance they want to connect to
@@ -484,6 +486,20 @@ class profile::kubernetes::deployment_server::global_config (
           'instances' => {
             'analytics'      => wmflib::role::ips('analytics_cluster::coordinator'),
             'analytics_test' => wmflib::role::ips('analytics_test_cluster::coordinator'),
+          }
+        },
+        'mariadb-external-storage' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'tcp',
+                'port' => 3306
+              },
+            ],
+          },
+          'instances' => {
+            'eqiad' => $mariadb_external_storage_eqiad_ips,
+            'codfw' => $mariadb_external_storage_codfw_ips,
           }
         }
       },
