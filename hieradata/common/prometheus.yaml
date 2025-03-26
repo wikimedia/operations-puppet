@@ -56,7 +56,7 @@ prometheus::instances:
     k8s_cluster_name: "%{::site}"
     hosts:
       - prometheus1007.eqiad.wmnet
-      - prometheus1006.eqiad.wmnet
+      - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
 
@@ -66,7 +66,7 @@ prometheus::instances:
     provision_lv_size: '100g'
     hosts:
       - prometheus1007.eqiad.wmnet
-      - prometheus1006.eqiad.wmnet
+      - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
 
@@ -76,7 +76,7 @@ prometheus::instances:
     provision_lv_size: '350g'
     hosts:
       - prometheus1007.eqiad.wmnet
-      - prometheus1006.eqiad.wmnet
+      - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
 
@@ -86,14 +86,14 @@ prometheus::instances:
     provision_lv_size: '80g'
     hosts:
       - prometheus1007.eqiad.wmnet
-      - prometheus1006.eqiad.wmnet
+      - prometheus1008.eqiad.wmnet
 
   k8s-aux:
     port: 9911
     k8s_cluster_name: "aux-k8s-%{::site}"
     hosts:
       - prometheus1007.eqiad.wmnet
-      - prometheus1006.eqiad.wmnet
+      - prometheus1008.eqiad.wmnet
       - prometheus2007.codfw.wmnet
       - prometheus2008.codfw.wmnet
 
