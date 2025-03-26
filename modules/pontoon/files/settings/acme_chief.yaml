@@ -1,16 +1,3 @@
 # SPDX-License-Identifier: Apache-2.0
-acmechief_host: "%{alias('__master_for_role_acme_chief')}"
-
-# Authorize hosts to fetch acme certs based on the role they run
-profile::acme_chief::certificates:
-  icinga:
-    authorized_hosts: "%{alias('__hosts_for_role_alerting_host')}"
-  librenms:
-    authorized_hosts: "%{alias('__hosts_for_role_netmon')}"
-
-
-lookup_options:
-  profile::acme_chief::certificates:
-    merge:
-      strategy: deep
-
+profile::puppetserver::pontoon::acme_enabled: true
+acmechief_host: "%{alias('__master_for_role_puppetserver__pontoon')}"

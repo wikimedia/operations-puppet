@@ -6,6 +6,7 @@ class profile::puppetserver::pontoon (
     Stdlib::Unixpath               $code_dir     = lookup('profile::puppetserver::code_dir'),
     Boolean                        $pki_enabled  = lookup('profile::puppetserver::pontoon::pki_enabled', {'default_value' => false}),
     Boolean                        $zk_enabled   = lookup('profile::puppetserver::pontoon::zk_enabled', {'default_value' => false}),
+    Boolean                        $acme_enabled = lookup('profile::puppetserver::pontoon::acme_enabled', {'default_value' => false}),
     Hash[String, Stdlib::Unixpath] $extra_mounts = lookup('profile::puppetserver::extra_mounts'),
 ) {
     class { 'pontoon::enc': }
@@ -149,12 +150,19 @@ class profile::puppetserver::pontoon (
         $intermediates = lookup('profile::pki::root_ca::intermediates', {'default_value' => []})
         $rsa_intermediates = lookup('profile::pki::root_ca::rsa_intermediates', {'default_value' => []})
         $root_ca_name = lookup('profile::pki::root_ca::common_name', {'default_value' => ''})
+        $acme_certs = lookup('profile::acme_chief::certificates')
         # lint:endignore
 
         class { 'pontoon::pki_root':
             intermediates => $intermediates + $rsa_intermediates,
             root_ca_name  => $root_ca_name,
             volatile      => $extra_mounts['volatile'],
+        }
+
+        if $acme_enabled {
+            class { 'pontoon::pki_acme':
+                acme_certs => $acme_certs,
+            }
         }
     }
 

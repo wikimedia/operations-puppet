@@ -18,6 +18,7 @@ profile::puppetserver::puppetdb_urls: []
 
 profile::puppetserver::extra_mounts:
   volatile: "/srv/puppet_fileserver/volatile"
+  acmedata: "/srv/puppet_fileserver/acmedata"
 
 # Look up Pontoon values (per-host, per-stack, defaults) first, then
 # check the production hierarchy.
