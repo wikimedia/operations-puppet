@@ -1,3 +1,4 @@
 # db2142
 mariadb::shard: 'ms1'
 profile::mariadb::mysql_role: 'master'
+profile::mariadb::config::sync_binlog: '0'
