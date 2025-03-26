@@ -850,7 +850,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
+    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla, chuckonwumelu]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
@@ -1811,6 +1811,16 @@ users:
     uid: 21734
     email: cchen@wikimedia.org
     krb: present
+  chuckonwumelu:
+    ensure: present
+    gid: 500
+    name: chuckonwumelu
+    realname: Chuck Onwumelu
+    email: conwumelu-ctr@wikimedia.org
+    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsidMDu4A1V81Vi/EtPButWF6+7Rjpj2DUTx4MsUInb conwumelu-ctr@wikimedia.org]
+    uid: 35552
+    expiry_date: "2025-06-27"
+    expiry_contact: lgoto@wikimedia.org
   cmcmahon:
     ensure: absent
     gid: 500
@@ -7479,12 +7489,6 @@ ldap_only_users:
     email: dhardy-ctr@wikimedia.org
     expiry_date: "2025-06-27"
     expiry_contact: jdrewniak@wikimedia.org
-  chuckonwumelu:
-    ensure: present
-    realname: Chuck Onwumelu
-    email: chuckonwumelu-ctr@wikimedia.org
-    expiry_date: "2025-06-27"
-    expiry_contact: lgoto@wikimedia.org
   hswan:
     ensure: present
     realname: Hilary Swan
