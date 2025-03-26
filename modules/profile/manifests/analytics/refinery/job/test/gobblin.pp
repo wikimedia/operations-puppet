@@ -29,15 +29,22 @@ class profile::analytics::refinery::job::test::gobblin(
         gobblin_jar_file          => "${refinery_path}/artifacts/org/wikimedia/gobblin-wmf/gobblin-wmf-core-${gobblin_wmf_version}-jar-with-dependencies.jar"
     }
 
+    # Remove the original webrequest gobblin job in favor of the new one
+    # TODO: After the migration succeeded, remove this code block
     profile::analytics::refinery::job::gobblin_job { 'webrequest_test':
-        interval         => '*-*-* *:00/10:00',
+        ensure   => 'absent',
+        interval => '*-*-* *:05/10:00',
+    }
+
+    profile::analytics::refinery::job::gobblin_job { 'webrequest_frontend_test':
+        interval => '*-*-* *:05/10:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'event_default_test':
-        interval         => '*-*-* *:05:00',
+        interval => '*-*-* *:10:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy_test':
-        interval         => '*-*-* *:10:00',
+        interval => '*-*-* *:15:00',
     }
 }
