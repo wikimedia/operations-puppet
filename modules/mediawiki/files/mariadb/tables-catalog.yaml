@@ -983,6 +983,30 @@ tables:
       - dbname: metawiki
     canonicality: canonical
     visibility: private
+  - name: globaljsonlinks
+    source: jsonconfig
+    databases:
+      - dbname: commonswiki
+        cluster: x1
+      - dbname: testcommonswiki
+    canonicality: derivative
+    visibility: public
+  - name: globaljsonlinks_wiki
+    source: jsonconfig
+    databases:
+      - dbname: commonswiki
+        cluster: x1
+      - dbname: testcommonswiki
+    canonicality: derivative
+    visibility: public
+  - name: globaljsonlinks_target
+    source: jsonconfig
+    databases:
+      - dbname: commonswiki
+        cluster: x1
+      - dbname: testcommonswiki
+    canonicality: derivative
+    visibility: public
 sources:
   core:
     - path: sql/tables.json
@@ -1104,6 +1128,9 @@ sources:
   oauth_ratelimiter:
     - path: extensions/OAuthRateLimiter/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuthRateLimiter/+/refs/heads/master/schema/tables.json
+  jsonconfig:
+    - path: extensions/JsonConfig/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/JsonConfig/+/refs/heads/master/sql/tables.json
 dropped_tables:
   - flaggedtemplates
   - flaggedimages
