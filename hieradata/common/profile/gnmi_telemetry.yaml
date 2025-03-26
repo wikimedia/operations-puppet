@@ -5,6 +5,7 @@ profile::gnmi_telemetry::targets_sub:
   juniper:
     - interfaces-states
     - bgp
+    - alarms
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -57,6 +58,12 @@ profile::gnmi_telemetry::subscriptions:
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/last-established"
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/state/interface-error"
       - "/network-instances/network-instance/protocols/protocol/bgp/neighbors/neighbor/afi-safis/afi-safi/state/prefixes"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  alarms:
+    paths:
+      - "/system/alarms/alarm/state/id"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
