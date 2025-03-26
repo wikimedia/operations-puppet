@@ -44,8 +44,8 @@ profile::benthos::instances:
       cluster: jumbo
       site: eqiad
       topics:
-      - "webrequest_text"
-      - "webrequest_upload"
+      - "webrequest_frontend_text"
+      - "webrequest_frontend_upload"
 
   # independent for each site
   mw_accesslog_metrics:

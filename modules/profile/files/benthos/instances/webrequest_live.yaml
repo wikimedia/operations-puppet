@@ -16,23 +16,17 @@ input:
       enabled: true
       root_cas_file: /etc/ssl/certs/wmf-ca-certificates.crt
       skip_cert_verify: true # See https://phabricator.wikimedia.org/T291905
-    consumer_group: 'benthos-webrequest-sampled-live-franz'
+    consumer_group: 'benthos-webrequest_live'
     start_from_oldest: false
     batching:
       count: 4096
       period: 500ms
 
 pipeline:
-  # webrequest (text + upload) topics have 24 partitions each
-  # make sure we can process at least webrequest_text in parallel
+  # webrequest_frontend (text + upload) topics have 24 partitions each
+  # make sure we can process at least webrequest_frontend_text in parallel
   threads: 24
   processors:
-  # varnishkafka will set dt to '-' on request timeout (e.g. started and never finished)
-  # these messages can't be indexed into druid (we don't know when they happened)
-  - label: "validate"
-    bloblang: |
-      root = if this.dt == "-" { deleted() }
-
   - label: "sample"
     bloblang: |
       root = if this.ip != "-" && this.sequence != "-" && this.sequence % env("SAMPLING").number() != 0 { deleted() }
