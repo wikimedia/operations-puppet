@@ -7,8 +7,13 @@ class role::ml_k8s::master {
 
     # Needed to schedule containers like bird, used by calico.
     # More info: T285927
-    # Sets up docker on the machine.
-    include profile::docker::engine
+    if $::hostname =~ /ml-serve-ctrl2001/ {
+      # Sets up containerd on the machine
+      include profile::kubernetes::container_runtime
+    } else {
+      # Sets up docker on the machine.
+      include profile::docker::engine
+    }
     include profile::kubernetes::node
     include profile::calico::kubernetes
 
