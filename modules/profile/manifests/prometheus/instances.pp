@@ -44,11 +44,10 @@ class profile::prometheus::instances (
     }
 
     $instances_cleanup.each |$instance, $config| {
-        if ! ($facts['volume_groups'] and $facts['volume_groups']['vg0']) {
-            fail('prometheus::instances_cleanup requires lvm vg0')
-        }
-
         if $facts['networking']['fqdn'] in $config['hosts'] {
+            if ! ($facts['volume_groups'] and $facts['volume_groups']['vg0']) {
+                fail('prometheus::instances_cleanup requires lvm vg0')
+            }
             # Disable and stop services first
             ["prometheus@${instance}", "thanos-sidecar@${instance}"].each |$unit| {
                 # cheeky and it works: will fail catalog compilation if the same instance + host is defined in both
