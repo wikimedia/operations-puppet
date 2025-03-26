@@ -169,6 +169,11 @@ profile::installserver::preseed::preseed_per_hostname:
   'chartmuseum[12]001':
     - partman/flat.cfg
     - virtual.cfg
+  # formally known as Elasticsearch, now they're on OpenSearch! T388610
+  'cirrussearch*':
+    - partman/standard-efi.cfg
+    - partman/raid0-efi.cfg
+    - partman/raid0-2dev-efi.cfg
   'cloudcephmon200[3-4]-dev':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
