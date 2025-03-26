@@ -6,6 +6,7 @@ profile::gnmi_telemetry::targets_sub:
     - interfaces-states
     - bgp
     - alarms
+    - bfd
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -38,6 +39,11 @@ profile::gnmi_telemetry::outputs:
       - rename-bgp-neighbor-tag
       - rename-bgp-neighbor-prefixes
       - rename-bgp-afi-safi
+      - rename-bfd-session-state
+      - rename-bfd-diagnostic-code
+      - static-bfd-tags
+      - rename-bfd-peer
+
 profile::gnmi_telemetry::subscriptions:
   interfaces-states:
     paths:
@@ -64,6 +70,17 @@ profile::gnmi_telemetry::subscriptions:
   alarms:
     paths:
       - "/system/alarms/alarm/state/id"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  bfd:
+    paths:
+    - "/bfd/interfaces/interface/peers/peer/state/local-address"
+    - "/bfd/interfaces/interface/peers/peer/state/remote-address"
+    - "/bfd/interfaces/interface/peers/peer/state/session-state"
+    - "/bfd/interfaces/interface/peers/peer/state/remote-session-state"
+    - "/bfd/interfaces/interface/peers/peer/state/local-diagnostic-code"
+    - "/bfd/interfaces/interface/peers/peer/state/remote-diagnostic-code"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
@@ -153,3 +170,46 @@ profile::gnmi_telemetry::processors:
             apply-on: "name"
             old: "afi-safi_afi-safi-name"
             new: "afi-safi"
+  static-bfd-tags:
+    event-value-tag-v2:
+      rules:
+      - value-name: "/bfd/interfaces/interface/peers/peer/state/local-address"
+        tag-name: local_address
+        consume: true
+      - value-name: "/bfd/interfaces/interface/peers/peer/state/remote-address"
+        tag-name: remote_address
+        consume: true
+  rename-bfd-session-state:
+    event-strings:
+      value-names:
+      - "/bfd/interfaces/interface/peers/peer/state/session-state"
+      - "/bfd/interfaces/interface/peers/peer/state/remote-session-state"
+      transforms: # https://github.com/openconfig/public/blob/master/release/models/bfd/openconfig-bfd.yang#L126
+      - replace: {apply-on: "value", old: "ADMIN_DOWN", new: "1"}
+      - replace: {apply-on: "value", old: "DOWN", new: "2"}
+      - replace: {apply-on: "value", old: "INIT", new: "3"}
+      - replace: {apply-on: "value", old: "UP", new: "4"}
+  rename-bfd-diagnostic-code:
+    event-strings:
+      value-names:
+      - "/bfd/interfaces/interface/peers/peer/state/local-diagnostic-code"
+      - "/bfd/interfaces/interface/peers/peer/state/remote-diagnostic-code"
+      transforms: # https://github.com/openconfig/public/blob/master/release/models/bfd/openconfig-bfd.yang#L154
+      - replace: {apply-on: "value", old: "NO_DIAGNOSTIC", new: "0"}
+      - replace: {apply-on: "value", old: "DETECTION_TIMEOUT", new: "1"}
+      - replace: {apply-on: "value", old: "ECHO_FAILED", new: "2"}
+      - replace: {apply-on: "value", old: "FORWARDING_RESET", new: "3"}
+      - replace: {apply-on: "value", old: "PATH_DOWN", new: "4"}
+      - replace: {apply-on: "value", old: "CONCATENATED_PATH_DOWN", new: "5"}
+      - replace: {apply-on: "value", old: "ADMIN_DOWN", new: "6"}
+      - replace: {apply-on: "value", old: "REVERSE_CONCATENATED_PATH_DOWN", new: "7"}
+      - replace: {apply-on: "value", old: "NEIGHBOR_DOWN", new: "8"}
+  rename-bfd-peer:
+    event-strings:
+      value-names:
+      - "/bfd/interfaces/interface/peers/peer/state.*"
+      transforms:
+      - replace:
+          apply-on: name
+          old: "/bfd/interfaces/interface/peers/peer/state"
+          new: "/bfd/peer"
