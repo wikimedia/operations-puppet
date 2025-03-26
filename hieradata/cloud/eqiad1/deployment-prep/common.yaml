@@ -223,7 +223,7 @@ profile::elasticsearch::common_settings:
 
 # NOTE: these opensearch settings will need to be overloaded on a per-host
 # basis for the Logstash opensearch cluster.
-profile::opensearch::version: '1.3'
+profile::opensearch::version: '1.0.0'
 profile::opensearch::config_version: '1'
 profile::opensearch::cirrus::ferm_srange: ''
 profile::opensearch::cirrus::expose_http: false
