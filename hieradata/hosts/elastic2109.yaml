@@ -1,0 +1,2 @@
+# enable CPU performance governor; see T386860
+profile::elasticsearch:enable_performance_cpu_governor: true
