@@ -1100,7 +1100,7 @@ node /^elastic110[8-9]|elastic1110\.eqiad\./ {
 }
 
 # T384966 refresh hosts
-node /^elastic11(1[1-9]|2[0-2])\.eqiad\./ {
+node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
     role(insetup::search_platform)
 }
 
