@@ -14,6 +14,9 @@
 # @logrotate_size enable or disable rotation by size
 # @logrotate_rotate keep number of spcified logs
 # @param enable_robots_txt serve a custom robots.txt
+# @param object_storage_enabled Whether to enable object storage for GitLab.
+# @param object_storage_access_key S3-like credentials (access_key) for the object storage access.
+# @param object_storage_secret_key S3-like credentials (secret_key) for the object storage access.
 class gitlab (
     Wmflib::Ensure   $ensure                                    = 'present',
     Stdlib::Host     $gitlab_domain                             = $facts['networking']['fqdn'],
@@ -78,9 +81,9 @@ class gitlab (
     String                   $ldap_group_sync_bot               = 'ldap-sync-bot',
     String                   $ldap_group_sync_bot_token         = 'ldap-sync-bot-token-not-supplied',
     Systemd::Timer::Schedule $ldap_group_sync_interval          = {'start' => 'OnCalendar', 'interval' => '*:0/15'},
-    Boolean                  $thanos_storage_enabled            = false,
-    String                   $thanos_storage_username           = '',
-    String                   $thanos_storage_password           = '',
+    Boolean                  $object_storage_enabled            = false,
+    String                   $object_storage_access_key         = '',
+    String                   $object_storage_secret_key         = '',
     Boolean                  $local_gems_enabled                = false,
     Hash[Stdlib::Unixpath, Array[String]] $local_gems           = {},
     Integer                  $max_storage_concurrency           = 4,

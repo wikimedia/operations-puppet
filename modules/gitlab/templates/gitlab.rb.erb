@@ -220,14 +220,14 @@ gitlab_rails['omniauth_auto_link_saml_user'] = <%= @omniauth_auto_link_saml_user
 # To change other settings, see:
 # https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/README.md#changing-gitlab-yml-settings
 
-<% if @thanos_storage_enabled %>
+<% if @object_storage_enabled %>
 gitlab_rails['object_store']['enabled'] = true
 gitlab_rails['object_store']['proxy_download'] = true
 gitlab_rails['object_store']['connection'] = {
   'provider' => 'AWS',
-  'aws_access_key_id' => '<%= @thanos_storage_username %>',
-  'aws_secret_access_key' => '<%= @thanos_storage_password %>',
-  'host' => 'thanos-swift.discovery.wmnet',
+  'aws_access_key_id' => '<%= @object_storage_access_key %>',
+  'aws_secret_access_key' => '<%= @object_storage_secret_key %>',
+  'host' => 'apus.discovery.wmnet',
   'path_style' => true,
   'enable_signature_v4_streaming' => false,
 }
@@ -244,7 +244,7 @@ gitlab_rails['object_store']['objects']['pages']['enabled'] = false
 <%- end -%>
 
 gitlab_rails['env'] = {
-<%- if @thanos_storage_enabled -%>
+<%- if @object_storage_enabled -%>
   # This is needed to let Gitlab/Excon pick up the wmf signed certificates
   'SSL_CERT_DIR' => '/etc/ssl/certs',
 <%- end -%>

@@ -44,9 +44,8 @@
 # @param service_name The name of the GitLab service, used for identification in various configurations.
 # @param smtp_enabled Whether to enable SMTP for sending emails from GitLab.
 # @param ssh_listen_addresses An array of IP addresses on which ssh-git daemon should listen.
-# @param thanos_storage_enabled Whether to enable Thanos storage for GitLab.
-# @param thanos_storage_password A hash containing the passwords for Thanos storage accounts.
-# @param thanos_storage_username The username for accessing Thanos storage.
+# @param object_storage_enabled Whether to enable object storage for GitLab.
+# @param object_storage_credentials Hash map of S3 credentials for read-only and read-write access.
 # @param use_acmechief Whether to use AcmeChief for certificate management.
 # @param enable_robots_txt serve a custom robots.txt
 class profile::gitlab(
@@ -88,9 +87,8 @@ class profile::gitlab(
     String $ldap_group_sync_bot_token = lookup('profile::gitlab::ldap_group_sync_bot_token'),
     String $configure_projects_bot_token = lookup('profile::gitlab::configure_projects_bot_token'),
     Systemd::Timer::Schedule $ldap_group_sync_interval = lookup('profile::gitlab::ldap_group_sync_interval_interval'),
-    Boolean $thanos_storage_enabled = lookup('profile::gitlab::thanos_storage_enabled', {default_value => false}),
-    String $thanos_storage_username = lookup('profile::gitlab::thanos_storage_username', {default_value => ''}),
-    Hash[String, String] $thanos_storage_password = lookup('profile::thanos::swift::accounts_keys', {default_value => {}}),
+    Boolean $object_storage_enabled = lookup('profile::gitlab::object_storage_enabled', {default_value => false}),
+    Hash[String, Ceph::S3::Account] $object_storage_credentials = lookup('profile::ceph::s3::client::apus_keys', {default_value => {}}),
     Boolean $local_gems_enabled = lookup('profile::gitlab::local_gems_enabled', {default_value => false}),
     Hash[Stdlib::Unixpath, Array[String]] $local_gems = lookup('profile::gitlab::local_gems', {default_value => {}}),
     Integer $max_storage_concurrency = lookup('profile::gitlab::max_storage_concurrency'),
@@ -264,6 +262,18 @@ class profile::gitlab(
         backup_dir_config => $backup_dir_config,
     }
 
+    if $object_storage_enabled and !empty($object_storage_credentials) {
+      # Use read-write credentials for production and read-only for replicas
+      $object_storage_access_key = $active_host ? {
+          $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['access_key'],
+          default        => $object_storage_credentials['gitlab-ro']['access_key'],
+      }
+      $object_storage_secret_key = $active_host ? {
+          $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['secret_key'],
+          default        => $object_storage_credentials['gitlab-ro']['secret_key'],
+      }
+    }
+
     class { 'gitlab':
         backup_dir_data              => $backup_dir_data,
         exporters                    => $exporters,
@@ -301,9 +311,9 @@ class profile::gitlab(
         ldap_group_sync_interval     => $ldap_group_sync_interval,
         enable_configure_projects    => $active_host == $facts['fqdn'], # enable configure-projects on active Gitlab server
         configure_projects_bot_token => $configure_projects_bot_token,
-        thanos_storage_enabled       => $thanos_storage_enabled,
-        thanos_storage_username      => $thanos_storage_username,
-        thanos_storage_password      => $thanos_storage_password['gitlab'],
+        object_storage_enabled       => $object_storage_enabled,
+        object_storage_access_key    => $object_storage_access_key,
+        object_storage_secret_key    => $object_storage_secret_key,
         local_gems_enabled           => $local_gems_enabled,
         local_gems                   => $local_gems,
         max_storage_concurrency      => $max_storage_concurrency,
