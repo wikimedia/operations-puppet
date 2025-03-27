@@ -50,6 +50,19 @@ local function use_rest_gateway()
     local rules = gateway_paths["default"]
     local host = ts.client_request.header["Host"]
 
+    -- If a host:[URL...] pair is specified under ignore, don't check
+    -- for or complete any redirects for this pairing and just
+    -- immediately return
+    if host ~= nil and gateway_paths["ignore"] ~= nil and gateway_paths["ignore"][host] ~= nil then
+
+        local ignore_paths = gateway_paths["ignore"][host]
+        for index, ignore_path in pairs(ignore_paths) do
+            if string.find(orig_path, ignore_path) then
+                return false
+            end
+        end
+    end
+
     -- If we match a domain, add more rules
     if host ~= nil and gateway_paths[host] ~= nil then
         -- Start from a fresh copy of default.

@@ -50,6 +50,12 @@ local default_config = {
         ["/api/rest_v1/(.+)/pdf/(.*)"] = {"rest-gateway.discovery.wmnet", 4113},
         ["/api/rest_v1/metrics/unique%-devices/(.+)"] = {"api-gateway.discovery.wmnet", 8087}
     },
+    ["ignore"] = {
+       ["ga.wikipedia.org"] = {
+          "/api/fake_path/(.*)",
+          "/api/other_path/(.*)",
+       }
+    },
     ["test.wikipedia.org"] = {
         ["/api/rest_v1/page/title/(.*)"] = {"rest-gateway.discovery.wmnet", 4113},
     },
@@ -170,6 +176,32 @@ describe("Busted unit testing framework", function()
       assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
       assert.is_nil(result.host)
       assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - wiki+path that we ignore", function()
+      result = run({
+          host = 'ga.wikipedia.org',
+          uri = '/api/fake_path/abc'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_NO_REMAP, result.remap_value)
+      assert.is_nil(result.host)
+      assert.is_nil(result.port)
+      assert.is_nil(ts.error_msg)
+    end)
+
+    it("test - wiki in ignore list with no patch match", function()
+      result = run({
+          host = 'ga.wikipedia.org',
+          uri = '/api/rest_v1/page/pdf/Tornado'
+        },
+        default_config
+      )
+      assert.are.same(TS_LUA_REMAP_DID_REMAP, result.remap_value)
+      assert.are.same('rest-gateway.discovery.wmnet', result.host)
+      assert.are.same(4113, result.port)
       assert.is_nil(ts.error_msg)
     end)
 
