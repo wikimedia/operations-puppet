@@ -16,15 +16,9 @@ kill-all-dhcp; netcfg
 # which is useful for debugging (see also network-console settings)
 anna-install network-console
 
-# preseed the correct wikimedia repository location
-if [ -f /usr/share/keyrings/ubuntu-archive-keyring.gpg ]; then
-	SUITE=$(debconf-get mirror/suite)-wikimedia
-	COMPONENTS="main universe thirdparty"
-else
-	#SUITE=$(debconf-get mirror/codename)-wikimedia # is set later in the installation process
-	SUITE=$(cat /etc/default-release)-wikimedia
-	COMPONENTS="main backports thirdparty"
-fi
+#SUITE=$(debconf-get mirror/codename)-wikimedia # is set later in the installation process
+SUITE=$(cat /etc/default-release)-wikimedia
+COMPONENTS="main backports thirdparty"
 echo d-i apt-setup/local0/repository string deb http://apt.wikimedia.org/wikimedia $SUITE $COMPONENTS > /tmp/apt_repository.cfg
 debconf-set-selections /tmp/apt_repository.cfg
 
