@@ -78,7 +78,7 @@ define apereo_cas::service (
                     '@class'   => 'java.util.TreeMap',
                     'memberOf' => $member_of_exclude
                 },
-                'excludeUnmappedAttributes' => true,
+                'excludeUnmappedAttributes' => false,
                 'completeMatch'             => false,
                 'caseInsensitive'           => true,
                 'order'                     => 0
