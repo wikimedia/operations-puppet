@@ -57,6 +57,8 @@
 "delete_firewall_rule": "rule:admin_only"
 "create_qos_queue": "rule:admin_only"
 "get_qos_queue": "rule:regular_user"
+"get_agent": "rule:regular_user"
+"get_l3-agents": "rule:regular_user"
 "get_loadbalancer-agent": "rule:admin_only"
 "get_loadbalancer-pools": "rule:admin_only"
 "get_agent-loadbalancers": "rule:admin_only"
