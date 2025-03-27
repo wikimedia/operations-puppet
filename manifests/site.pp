@@ -1733,7 +1733,7 @@ node /^wikikube-worker22(4[8-9]|[5-9][0-9])\.codfw\./ {
     role(insetup::serviceops)
 }
 
-node /^wikikube-worker23([1-2][0-9]|3[0-1])\.codfw\./ {
+node /^wikikube-worker23([0-2][0-9]|3[0-1])\.codfw\./ {
     role(insetup::serviceops)
 }
 
