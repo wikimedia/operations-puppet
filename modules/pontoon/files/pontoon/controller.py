@@ -332,11 +332,11 @@ class Controller(object):
 
         return self._enroll_hosts(hosts)
 
-    def _enroll_hosts(self, hosts: Filter) -> bool:
+    def _enroll_hosts(self, hosts: Filter, force: bool) -> bool:
         ok = True
         e = Enroller(self.pontoon)
         for host in hosts:
-            if not e.enroll(host):
+            if not e.enroll(host, force):
                 ok = False
             # The first puppet run can fail at enrollment time!
             # To be able to recover in a user-friendly manner, install
@@ -370,7 +370,7 @@ class Controller(object):
         """Set hosts as part of the stack and run puppet."""
 
         if force:
-            log.info(f"Forcing enroll on {len(hosts)}")
+            log.info(f"Forcing enroll on {len(hosts)} hosts")
             # pretend no hosts are enrolled when force is applied
             targets = hosts.apply(lambda _: True)
         else:
@@ -393,7 +393,7 @@ class Controller(object):
             log.error("Make sure you have pushed an updated rolemap.yaml")
             return False
 
-        ok = self._enroll_hosts(targets)
+        ok = self._enroll_hosts(targets, force)
         if not ok:
             log.error("Failed to enroll")
             return False
