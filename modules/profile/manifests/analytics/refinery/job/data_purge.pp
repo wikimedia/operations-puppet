@@ -144,15 +144,11 @@ class profile::analytics::refinery::job::data_purge (
         user        => 'analytics',
     }
 
-    # Keep this many days of druid webrequest sampled
-    # Please note: we are currently setting a custom loadPolicy of (now-30 days)
-    # in Druid (for more info, check the Coordinator's UI -> Datasources -> ..)
-    # that limits the segments pulled by Druid from deep storage.
-    # The value defined below is related only to the retention period for
-    # the Druid segments stored in deep storage.
-    $druid_webrequest_sampled_retention_days = 60
+    # Marking this Absent as the data has been deleted.
+    # Will delete the code just after.
+    $druid_webrequest_sampled_retention_days = 90
     kerberos::systemd_timer { 'refinery-drop-webrequest-sampled-druid':
-        ensure      => $ensure_timers,
+        ensure      => 'absent',
         description => 'Drop Druid Webrequest sampled data from deep storage following data retention policies.',
         command     => "${refinery_path}/bin/refinery-drop-druid-deep-storage-data -d ${druid_webrequest_sampled_retention_days} webrequest_sampled_128",
         interval    => '*-*-* 05:15:00',
