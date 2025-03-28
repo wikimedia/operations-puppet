@@ -260,3 +260,33 @@ testcases:
         type: kubernetes
       service:
         type: input-file-kubernetes
+
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2025-03-28T22:22:01.201528+00:00",
+          "type": "syslog",
+          "assignments": [
+            {
+              "partition": 0,
+              "topic": "codfw.mediawiki.recentchange",
+              "offset": -1
+            },
+            {
+              "partition": 0,
+              "topic": "eqiad.mediawiki.recentchange",
+              "offset": 5467582859
+            }
+          ],
+          "name": "KafkaSSE"
+        }
+  - expected:
+      - __target_index: logstash-k8s-1-1.0.0-N-daily
+        assignments: '{offset=-1, topic=codfw.mediawiki.recentchange, partition=0},{offset=5467582859, topic=eqiad.mediawiki.recentchange, partition=0}'
+        facility: local0
+        host: kubestage1008
+        logsource: kubestage1008
+        name: KafkaSSE
+        program: input-file-kubernetes
+        severity: NOTICE
+        type: syslog
