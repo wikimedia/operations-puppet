@@ -46,7 +46,7 @@ profile::opensearch::instances:
         certificate_name: 'relforge.svc.eqiad.wmnet'
 
 profile::opensearch::common_settings:
-    awareness_attributes: ''
+    awareness_attributes: 'row'
     # We should be able to run "OK" with a single server.
     recover_after_nodes: 1
     recover_after_time: '1m'
