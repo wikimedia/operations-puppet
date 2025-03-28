@@ -1818,9 +1818,9 @@ users:
     realname: Chuck Onwumelu
     email: conwumelu-ctr@wikimedia.org
     ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsidMDu4A1V81Vi/EtPButWF6+7Rjpj2DUTx4MsUInb conwumelu-ctr@wikimedia.org]
-    uid: 35552
+    uid: 48644
     expiry_date: "2025-06-27"
-    expiry_contact: lgoto@wikimedia.org
+    expiry_contact: jborun@wikimedia.org
   cmcmahon:
     ensure: absent
     gid: 500
