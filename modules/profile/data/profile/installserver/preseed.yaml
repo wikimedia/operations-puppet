@@ -133,7 +133,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcumin*':
     - partman/flat.cfg
     - virtual.cfg
-  'cumin1002':
+  'cumin100[23]':
     - partman/flat.cfg
     - virtual.cfg
   'cumin*|parsoidtest1001':
