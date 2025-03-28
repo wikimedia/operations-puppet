@@ -36,14 +36,14 @@ class Credentials(object):
             YAML().dump(creds, f)
         os.chmod(path, 0o600)
 
+    @staticmethod
+    def load(config_path: str) -> "Credentials":
+        config_dir = os.path.dirname(config_path)
+        if not os.path.exists(config_dir):
+            os.makedirs(config_dir)
+
+        return Credentials(config_path)
+
 
 class CredentialsMissing(Exception):
     pass
-
-
-def load_credentials(config_path: str) -> Credentials:
-    config_dir = os.path.dirname(config_path)
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
-
-    return Credentials(config_path)

@@ -276,7 +276,7 @@ class Controller(object):
             log.error(f"Error running bootstrap.sh on {self.server}")
             return False
 
-        log.info(f"Running puppet for the first time on {self.server}")
+        log.info(f"Running puppet agent on {self.server}")
         # allowed to fail
         ssh.bash(
             self.server,
@@ -381,7 +381,7 @@ class Controller(object):
             log.info("No hosts to enroll")
             return True
 
-        # Abort if hosts are not known yet to the server
+        # Abort if hosts are not known yet to Pontoon ENC on the server
         unknown_to_enc = targets.apply(targets.not_(self._enc_hosts_filter))
         if len(unknown_to_enc) > 0:
             log.error(
@@ -402,7 +402,7 @@ class Controller(object):
         # is done, then the hosts are ready to go.
         # XXX add option to run puppet concurrently on the hosts
         for host in targets:
-            log.info(f"Running puppet agent for the first time on {host.fqdn}")
+            log.info(f"Running puppet agent on {host.fqdn}")
             run_puppet_cmd = (
                 f"sudo puppet agent --onetime --no-daemonize "
                 f"--no-splay {'' if quiet else '--verbose'}"

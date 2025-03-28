@@ -110,7 +110,7 @@ def main():
     role = p.role_for_host(args.hostname)
     if not role:
         log.error("Host %s not found in %s", args.hostname, p.rolemap_path)
-        sys.exit(-1)
+        return -1
 
     variables = {
         # role() emulation
@@ -126,6 +126,8 @@ def main():
         },
         sys.stdout,
     )
+
+    return 0
 
 
 if __name__ == "__main__":

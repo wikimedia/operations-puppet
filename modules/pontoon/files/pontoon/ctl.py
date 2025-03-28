@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 
+# The pontoonctl CLI utility entry point
+
 
 import logging
 import sys
@@ -10,7 +12,7 @@ import click
 from pontoon import Pontoon, SYS_CONFIG_PATH
 from pontoon.cloudvps import CloudVPS
 from pontoon.controller import Controller
-from pontoon.credentials import Credentials, CredentialsMissing, load_credentials
+from pontoon.credentials import Credentials, CredentialsMissing
 from pontoon.host import Filter as HostFilter
 from pontoon.nova import HORIZON_URL, HOST_DOMAIN
 from pontoon.ssh import KNOWN_HOSTS_PATH
@@ -110,7 +112,7 @@ git push -f pontoon-{stack} HEAD:production
 def get_credentials() -> Credentials:
     credentials_path = SYS_CONFIG_PATH().joinpath("cloudvps.yaml").as_posix()
     try:
-        creds = load_credentials(credentials_path)
+        creds = Credentials.load(credentials_path)
     except ValueError as e:
         raise click.UsageError(f"load credentials: {e}")
     except CredentialsMissing:
@@ -241,16 +243,19 @@ def show_and_prompt(operation: str, f: HostFilter, no_prompt: bool) -> bool:
     for i in f:
         print(f"  {i.fqdn}")
 
-    if not no_prompt:
-        count = len(f)
-        answer = click.prompt(
-            f"About to {operation} {count} host(s). Input the number to confirm",
-            type=int,
-        )
+    if no_prompt:
+        return True
 
-        if answer != count:
-            log.info("Not doing anything")
-            return False
+    count = len(f)
+    answer = click.prompt(
+        f"About to {operation} {count} host(s). Input the number to confirm",
+        type=int,
+    )
+
+    if answer != count:
+        log.info("Not doing anything")
+        return False
+
     return True
 
 
@@ -319,21 +324,21 @@ def new_stack(ctx, stack, host_prefix, name):
 @with_stack
 @click.option(
     "--local-rev",
-    help="Use local git checkout rev to bootstrap.",
+    help="Use git revision ID during bootstrap.",
     show_default=True,
     default="HEAD",
-    metavar="REV",
+    metavar="ID",
     type=str,
 )
 @click.option(
     "--accept-ssh-key",
-    help="Automatically accept the SSH host key from Puppet server.",
+    help="Trust the SSH host key from Puppet server.",
     default=False,
     is_flag=True,
 )
 @click.pass_context
 def bootstrap_stack(ctx, stack, local_rev, accept_ssh_key):
-    """Bootstrap an existing stack"""
+    """Bootstrap a newly-created stack"""
     ctrl = get_controller(stack, ctx.obj["home"])
 
     if not ctrl.server:
@@ -402,7 +407,7 @@ def list_hosts(ctx, stack, role, scope, output, pattern):
 
     hosts = HostFilter(ctrl.cloud.list_hosts())
 
-    # First filter by scope, keepin only hosts in the stack
+    # First filter by scope, keeping only hosts in the stack
     if scope == "stack":
         stack_fqdns = {h.fqdn for h in ctrl.stack_hosts}
         hosts = hosts.apply(lambda host: host.fqdn in stack_fqdns)

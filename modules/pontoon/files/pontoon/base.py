@@ -14,10 +14,10 @@ log = logging.getLogger()
 
 
 # a module-level attribute for sys_config_path would read nicer.
-# Unfortunately, reading 'os.environ' becomes problematic in tests where the
-# module might have been already initialized. Doing it this way effectively
-# means a lazy evaluation and thus setting XDG_CONFIG_HOME works as expected
-# (e.g. in tests/ctl_test.py)
+# Unfortunately, reading 'os.environ' at module initialization time becomes
+# problematic in tests where we may want to set XDG_CONFIG_HOME to a different
+# value.  Doing it this way effectively means a lazy evaluation and thus setting
+# XDG_CONFIG_HOME works as expected (e.g. in tests/ctl_test.py)
 def SYS_CONFIG_PATH() -> Path:
     """Where to store Pontoon configuration not specific to a stack."""
     p = Path(os.environ.get("XDG_CONFIG_HOME", "~/.config"))
