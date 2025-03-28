@@ -69,6 +69,9 @@ def rebase_repo(repo_path, latest_upstream_commit, prometheus_gauge):
     repo = git.Repo(repo_path)
     assert not repo.bare
 
+    with repo.config_writer() as config:
+        config.set_value("user", "name", "git-sync-upstream")
+
     # diff index against working copy
     if repo.index.diff(None):
         logger.error("Local diffs detected.  Commit your changes!")
