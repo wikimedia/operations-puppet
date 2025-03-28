@@ -87,7 +87,7 @@ profile::puppet::agent::force_puppet7: true
 profile::query_service::monitoring_user_agents:
   - "check_http/v2.3.3 (monitoring-plugins 2.3.3)"
   - "Twisted PageGetter"
-  - "prometheus-public-sparql-ep-check"
+  - "prometheus-sparql-check"
   - "wmf-prometheus/prometheus-blazegraph-exporter (root@wikimedia.org)"
 
 profile::query_service::only_throttle_cdn: true
