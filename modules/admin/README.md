@@ -71,20 +71,20 @@ See https://phabricator.wikimedia.org/T248161
 ```
 
 ## Adding a new human user
-To choose the UID for a new user please lookup
-the existing UID in (labs) LDAP and use that.
-currently you do this on mwmaint1002.
-For example, to look up user "someuser":
+To determine the UID for a new user, look up the existing UID (`uidNumber`) in
+LDAP. For example, to look up user "someuser" on ldap-maint1001:
 
 ```
 /usr/bin/ldapsearch -x "uid=someuser*"
 ```
 
-Advantages: no more duplicate UIDs that needed fixing,
-matching UID across production and labs,
-no need to grep|sort for the latest free UID anymore
-almost every user who gets prod. shell already has a
-labs user. if not, ask them nicely to make one first
+We **require** that UIDs are consistent across systems, with LDAP being the
+authoritative source. This has the following advantages: no more duplicate UIDs
+that needed fixing, matching UID across production and Wikimedia Cloud
+Services, no need to grep|sort for the latest free UID anymore.
+Almost every user who gets production shell already has a Wikimedia developer
+account, but if not, ask them nicely to create one at
+https://idm.wikimedia.org.
 
 SSH keys added to this file always need to be verified.
 acceptable methods of verification include:
@@ -95,7 +95,8 @@ plain email (senders can't be trusted),
 IRC (definitely if not registered/identified with nickserv)
 RT-only (because it can be emailed)
 
-Add the ''realname'' of the user (most labs accounts don't have a real name set)
+Add the ''realname'' of the user (most Wikimedia developer accounts don't have
+a real name set).
 
 Add the ''email'' address of the users:
 - If the user is WMF staff use the email address of their Google account
