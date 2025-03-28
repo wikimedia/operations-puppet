@@ -86,13 +86,14 @@ class Pontoon(object):
         Returns:
             Pontoon: The newly created stack
         """
-        stack_path = os.path.join(base_path, name)
-        os.makedirs(stack_path, exist_ok=True)
-        rolemap_path = os.path.join(stack_path, "rolemap.yaml")
-        if not os.path.exists(rolemap_path):
-            with open(rolemap_path, "w+") as f:
-                f.write("# SPDX-License-Identifier: Apache-2.0\n{}\n")
-        os.makedirs(os.path.join(stack_path, "hiera"), exist_ok=True)
+        stack_path = Path(base_path) / name
+        stack_path.mkdir(parents=True, exist_ok=True)
+        (stack_path / "hiera").mkdir(parents=True, exist_ok=True)
+
+        for config_file in ('rolemap.yaml', 'config.yaml'):
+            config_path = stack_path / config_file
+            if not config_path.exists():
+                config_path.write_text("# SPDX-License-Identifier: Apache-2.0\n{}\n")
 
         return Pontoon(name, base_path)
 
@@ -163,12 +164,13 @@ class Pontoon(object):
             hosts.append(fqdn)
 
     def _load_config(self) -> "StackConfig":
+        # Backwards compatibility: accept stacks with no config
         if not os.path.exists(self.stack_config_path):
-            with open(self.stack_config_path, "w") as f:
-                f.write("# SPDX-License-Identifier: Apache-2.0\n{}\n")
+            return StackConfig()
 
         with open(self.stack_config_path, "r") as file:
             data = self.yaml.load(file)
+
         return StackConfig.from_dict(data)
 
     def set_config_value(self, key: str, value: Any):
