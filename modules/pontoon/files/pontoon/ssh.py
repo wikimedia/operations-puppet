@@ -32,7 +32,7 @@ def bash(fqdn, cmd, *args, **kwargs) -> subprocess.CompletedProcess[str]:
         "-o",
         f"ConnectTimeout={CONNECT_TIMEOUT_SECONDS}",
     ]
-    return subprocess.run(
+    return _retry_subprocess(
         ssh_cmd + [fqdn, "bash", "-c", shlex.quote(cmd)], *args, **kwargs
     )
 
@@ -93,7 +93,7 @@ def trust_host(host: Host, accept: bool = False) -> bool:
     if not accept:
         log.info(f"Logging into {host.fqdn}. Please verify and accept the host key.")
 
-    p = subprocess.run(
+    p = _retry_subprocess(
         [
             "ssh",
             "-q",
@@ -146,7 +146,7 @@ def host_key_known(host: Host) -> bool:
 
 def host_access_ok(host: Host) -> bool:
     """Can we ssh to the server ok unattended? In other words is the host key known?"""
-    p = subprocess.run(
+    p = _retry_subprocess(
         [
             "ssh",
             "-q",
@@ -164,12 +164,12 @@ def host_access_ok(host: Host) -> bool:
 def host_access_ok_user(host: Host) -> bool:
     """Can the user access the host unattended? If not, the ssh client doesn't
     have default access to Pontoon' ssh_known_hosts."""
-    p = subprocess.run(["ssh", "-q", "-o", "BatchMode=yes", f"{host.fqdn}", "true"])
+    p = _retry_subprocess(["ssh", "-q", "-o", "BatchMode=yes", f"{host.fqdn}", "true"])
     return p.returncode == 0
 
 
 def scp(src: str, dest: str, *args, **kwargs) -> subprocess.CompletedProcess:
-    return subprocess.run(
+    return _retry_subprocess(
         [
             "scp",
             "-q",
@@ -181,3 +181,20 @@ def scp(src: str, dest: str, *args, **kwargs) -> subprocess.CompletedProcess:
         *args,
         **kwargs,
     )
+
+
+def _retry_subprocess(
+    cmd: list[str],
+    retries: int = 2,
+    delay: int = 3,
+    *args,
+    **kwargs,
+) -> subprocess.CompletedProcess:
+    """Run a command and retry on failure."""
+    for attempt in range(retries):
+        p = subprocess.run(cmd, *args, **kwargs)
+        if p.returncode == 0:
+            return p
+        log.warning(f"Command failed: {p.returncode}. Retrying in {delay} seconds...")
+        time.sleep(delay)
+    return p
