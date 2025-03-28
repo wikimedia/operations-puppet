@@ -332,7 +332,7 @@ class Controller(object):
 
         return self._enroll_hosts(hosts)
 
-    def _enroll_hosts(self, hosts: Filter, force: bool) -> bool:
+    def _enroll_hosts(self, hosts: Filter, force: bool = False) -> bool:
         ok = True
         e = Enroller(self.pontoon)
         for host in hosts:
