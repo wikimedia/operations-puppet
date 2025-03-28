@@ -57,14 +57,6 @@ class profile::archiva(
         monitoring_contact_groups => $contact_groups,
     }
 
-    # Set up an rsync module so that anybody
-    # can rsync read from $gitfat_archiva_path.
-    # The git fat store will be available at:
-    #   hostname::archiva/git-fat
-    rsync::server::module { 'archiva':
-        ensure => absent,
-    }
-
     # Bacula backups for /var/lib/archiva.
     if $enable_backup {
         include ::profile::backup::host
