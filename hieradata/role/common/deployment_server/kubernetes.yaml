@@ -321,6 +321,9 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
   - namespace: mw-wikifunctions
     releases:
       main: {}
+      group0: {}
+      group1: {}
+      group2: {}
     mw_flavour: "publish-81"
     web_flavour: "webserver"
     debug: false
