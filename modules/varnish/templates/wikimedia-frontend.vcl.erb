@@ -771,16 +771,11 @@ sub vcl_purge {
 }
 
 sub vcl_hit {
-<%- if @vcl_config['varnish_ge_v7'] -%>
     if (req.method == "PURGE") {
         set req.http.X-CDIS = "hit/purge";
     } else {
         set req.http.X-CDIS = "hit/" + obj.hits;
     }
-<%- else -%>
-    # obj.hits is set in vcl_deliver later on due to Varnish bug.
-    set req.http.X-CDIS = "hit";
-<%- end -%>
     call cluster_fe_hit;
     // default vcl_hit invokes here!
 }
@@ -985,22 +980,12 @@ C{
 <%- if @varnish_testing -%>
        const struct gethdr_s prob_hdr = { HDR_BERESP, "\030X-Admission-Probability:" };
        const struct gethdr_s urand_hdr = { HDR_BERESP, "\022X-Admission-Urand:" };
-<%- if @vcl_config['varnish_ge_v7'] -%>
        VRT_SetHdr(ctx, &prob_hdr, NULL, TOSTRAND(VRT_REAL_string(ctx, admissionprob)));
        VRT_SetHdr(ctx, &urand_hdr, NULL, TOSTRAND(VRT_REAL_string(ctx, urand)));
-<%- else -%>
-       VRT_SetHdr(ctx, &prob_hdr, VRT_REAL_string(ctx, admissionprob), vrt_magic_string_end);
-       VRT_SetHdr(ctx, &urand_hdr, VRT_REAL_string(ctx, urand), vrt_magic_string_end);
-<%- end -%>
 <%- end -%>
 
-<%- if @vcl_config['varnish_ge_v7'] -%>
        Vmod_vmod_std_Func.log(ctx, TOSTRANDS(2, "Admission Probability: ", VRT_REAL_string(ctx, admissionprob)));
        Vmod_vmod_std_Func.log(ctx, TOSTRANDS(2, "Admission Urand: ", VRT_REAL_string(ctx, urand)));
-<%- else -%>
-       Vmod_std_Func.log(ctx, "Admission Probability: ", VRT_REAL_string(ctx, admissionprob), vrt_magic_string_end);
-       Vmod_std_Func.log(ctx, "Admission Urand: ", VRT_REAL_string(ctx, urand), vrt_magic_string_end);
-<%- end -%>
 
        // If admission test succeeds, mark as uncacheable
        if (admissionprob < urand) {
@@ -1137,16 +1122,6 @@ sub deliver_synth_ {
 }
 
 sub vcl_deliver {
-<%- unless @vcl_config['varnish_ge_v7'] -%>
-    # obj.hits isn't known in vcl_hit for older Varnish versions so we set this
-    # here instead. This bug was fixed in Varnish 6.1 and we set this in
-    # vcl_hit for later versions.
-    if (req.method != "PURGE") {
-        if(req.http.X-CDIS == "hit") {
-            set req.http.X-CDIS = "hit/" + obj.hits;
-        }
-    }
-<%- end -%>
     // Provides custom error html if error response has no body
     if (resp.http.Content-Length == "0" && resp.status >= 400) {
         return(synth(resp.status));

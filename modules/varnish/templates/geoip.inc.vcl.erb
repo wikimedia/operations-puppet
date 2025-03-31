@@ -196,7 +196,6 @@ C{
         // Use libvmod-header to ensure the Set-Cookie header we are adding
         // does not clobber or manipulate existing cookie headers (if any).
         const struct gethdr_s hdr_set_cookie = { HDR_RESP, "\013Set-Cookie:" };
-<%- if @vcl_config['varnish_ge_v7'] -%>
         Vmod_vmod_header_Func.append(
             ctx, &hdr_set_cookie,
             TOSTRANDS(
@@ -204,11 +203,6 @@ C{
                 host_safe
             )
         );
-<%- else -%>
-        Vmod_header_Func.append(ctx, &hdr_set_cookie,
-                                out, "; Path=/; secure; Domain=.",
-                                host_safe, vrt_magic_string_end);
-<%- end -%>
     }
 
     static const char* mm_path[_GEO_IDX_SIZE][4] = {
@@ -302,18 +296,10 @@ C{
                     tmp = alloca(edata->data_size + 1);
                     memcpy(tmp, edata->utf8_string, edata->data_size);
                     tmp[edata->data_size] = '\0';
-<%- if @vcl_config['varnish_ge_v7'] -%>
                     VRT_SetHdr(ctx, &hdr, NULL, TOSTRAND(tmp));
-<%- else -%>
-                    VRT_SetHdr(ctx, &hdr, tmp, vrt_magic_string_end);
-<%- end -%>
                     break;
                 case MMDB_DATA_TYPE_UINT32:
-<%- if @vcl_config['varnish_ge_v7'] -%>
                     VRT_SetHdr(ctx, &hdr, NULL, TOSTRAND(VRT_INT_string(ctx, edata->uint32)));
-<%- else -%>
-                    VRT_SetHdr(ctx, &hdr, VRT_INT_string(ctx, edata->uint32), vrt_magic_string_end);
-<%- end -%>
                     break;
                 default:
                     break;

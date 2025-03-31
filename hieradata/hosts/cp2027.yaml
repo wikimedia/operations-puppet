@@ -58,6 +58,3 @@ profile::cache::haproxy::pre_acl_actions:
       verb: track-sc0 src table httpreqrate
     - context: tcp-request connection
       verb: track-sc1 src table newconnrate
-# Rolling out Varnish 7 (T378737)
-profile::cache::varnish::frontend::packages_component: component/varnish-staging
-profile::cache::varnish::frontend::varnish_ge_v7: true

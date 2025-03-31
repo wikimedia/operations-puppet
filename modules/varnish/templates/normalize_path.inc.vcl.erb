@@ -173,11 +173,7 @@ void normalize_path_encoding(const struct vrt_ctx *ctx, const size_t* decoder_ri
      * VRT_l_req_url() is varadic, and concatenates its arguments.
      */
     if (dirty)
-<%- if @vcl_config['varnish_ge_v7'] -%>
         VRT_l_req_url(ctx, NULL, TOSTRAND(out_url));
-<%- else -%>
-        VRT_l_req_url(ctx, out_url, vrt_magic_string_end);
-<%- end -%>
 }
 
 #undef DO_DECODE
