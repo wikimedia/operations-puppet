@@ -270,6 +270,9 @@ route:
         - match:
             severity: 'critical'
           receiver: 'growth-critical'
+        - match:
+            severity: 'task'
+          receiver: 'growth-critical'
     - match:
         team: 'trust-and-safety-product'
       routes:
