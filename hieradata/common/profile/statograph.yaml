@@ -29,7 +29,7 @@ profile::statograph::metrics:
 
   - statuspage_id: trkbds94n87s  # Successful edits
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
-    query: 'sum(entry_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate2m)'
+    query: 'sum(entry_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_count:rate5m)'
 
   - statuspage_id: 1vzzyvjxzgsf  # User-reported networking errors
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
