@@ -254,46 +254,55 @@ profile::services_proxy::envoy::listeners:
     service: search-https
     timeout: "50s"
     upstream: search.svc.eqiad.wmnet
+    keepalive: "50s"
   - name: search-chi-codfw
     port: 6202
     service: search-https
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
+    keepalive: "50s"
   - name: search-omega-eqiad
     port: 6103
     service: search-omega-https
     timeout: "50s"
     upstream: search.svc.eqiad.wmnet
+    keepalive: "50s"
   - name: search-omega-codfw
     port: 6203
     service: search-omega-https
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
+    keepalive: "50s"
   - name: search-psi-eqiad
     port: 6104
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.eqiad.wmnet
+    keepalive: "50s"
   - name: cloudelastic-chi-eqiad
     port: 6105
     service: cloudelastic-chi-https
     timeout: "50s"
     upstream: cloudelastic.wikimedia.org
+    keepalive: "50s"
   - name: cloudelastic-omega-eqiad
     port: 6106
     service: cloudelastic-omega-https
     timeout: "50s"
     upstream: cloudelastic.wikimedia.org
+    keepalive: "50s"
   - name: cloudelastic-psi-eqiad
     port: 6107
     service: cloudelastic-psi-https
     timeout: "50s"
     upstream: cloudelastic.wikimedia.org
+    keepalive: "50s"
   - name: search-psi-codfw
     port: 6204
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
+    keepalive: "50s"
   - name: inference-staging
     port: 6205
     service: inference-staging
