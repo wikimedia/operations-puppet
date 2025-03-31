@@ -16,7 +16,7 @@ profile::opensearch::dc_settings:
           - elastic2084.codfw.wmnet # row D
 
         cluster_hosts:
-          - elastic2055.codfw.wmnet
+          - cirrussearch2055.codfw.wmnet
           - elastic2056.codfw.wmnet
           - elastic2057.codfw.wmnet
           - elastic2058.codfw.wmnet
@@ -179,7 +179,7 @@ profile::opensearch::dc_settings:
         cluster_hosts:
           # row A
           - elastic2089.codfw.wmnet
-          - elastic2055.codfw.wmnet
+          - cirrussearch2055.codfw.wmnet
           - elastic2062.codfw.wmnet
           - elastic2069.codfw.wmnet
           - elastic2075.codfw.wmnet

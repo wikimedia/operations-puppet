@@ -1106,12 +1106,19 @@ node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
 # re-arranging elastic hosts by row in order to facilitate
 # reimages. Row info sourced from regex.yaml
 # ROW A
-node /^elastic2(055|056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./ {
+## TEMP BEGIN remove elastic2055 and added entry for cirrussearch2055
+node /^elastic2(056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
+node /^cirrussearch2(055)\.codfw\./ {
+    role(opensearch::cirrus)
+}
+## TEMP END   remove elastic2055 and added entry for cirrussearch2055
+
+
 # As we reimage the above hosts, we'll change both their role and their name.
-# node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./
+# node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089||090|091|111|)\.codfw\./ {
 #     role(opensearch::cirrus)
 # }
 

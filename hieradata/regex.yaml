@@ -1,7 +1,9 @@
 es_codfw_rack_a2:
-  __regex: !ruby/regexp /^elastic2(055|073|074|087|088|111)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(elastic2(073|074|087|088|111)|cirrus2(055))\.codfw\.wmnet$/
   profile::elasticsearch::rack: A2
   profile::elasticsearch::row:  A
+  profile::opensearch::cirrus::rack: A2
+  profile::opensearch::cirrus::row: A
 
 es_codfw_rack_a4:
   __regex: !ruby/regexp /^elastic20(61|62|89)\.codfw\.wmnet$/
