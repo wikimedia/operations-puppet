@@ -59,11 +59,4 @@ class openstack::glance::service::dalmatian(
     systemd::sysuser { 'glance':
         description => 'glance system user',
     }
-
-    # Apply https://review.opendev.org/c/openstack/glance_store/+/885581
-    openstack::patch { '/usr/lib/python3/dist-packages/glance_store/_drivers/rbd.py':
-        source  => 'puppet:///modules/openstack/dalmatian/glance/hacks/rbd.py.patch',
-        require => Package['glance'],
-        notify  => Service['glance-api'],
-    }
 }
