@@ -16,6 +16,9 @@ profile::docker_registry_ha::registry::read_only_mode: false
 profile::docker_registry_ha::registry::authorized_k8s_clusters:
  - main
 
+# Disable cache for T390251
+profile::docker_registry_ha::registry::nginx_cache: false
+
 profile::lvs::realserver::pools:
   docker-registry:
     services:
