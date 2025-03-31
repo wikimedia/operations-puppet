@@ -442,6 +442,10 @@ profile::kubernetes::deployment_server::general:
     mesh:
       certmanager:
         <<: *certmanager_eqiad
+  aux-k8s-codfw:
+    mesh:
+      certmanager:
+        <<: *certmanager_codfw
 
 # Enable icu67 component - T345561
 profile::mediawiki::php::icu67: true
