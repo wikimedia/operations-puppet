@@ -1760,31 +1760,14 @@ service::catalog:
   mw-wikifunctions:
     description: mw-wikifunctions, mw-wikifunctions.discovery.wmnet
     encryption: true
-    ip:
-      codfw:
-        default: 10.2.1.88
-      eqiad:
-        default: 10.2.2.88
-    lvs:
-      class: low-traffic
-      conftool:
-        cluster: kubernetes
-        service: kubesvc
-      depool_threshold: 0.5
-      enabled: true
-      monitors:
-        IdleConnection:
-          max-delay: 300
-          timeout-clean-reconnect: 3
-      scheduler: wrr
-      protocol: tcp
+    ip: *k8s-ingress-wikikube_ips
+    port: *k8s-ingress-wikikube_port
     httpbb_dir: wikifunctions
     page: false
     probes:
       - type: http
         path: /wiki/Special:BlankPage
         host: www.wikifunctions.org
-    port: 4451
     sites:
       - eqiad
       - codfw
