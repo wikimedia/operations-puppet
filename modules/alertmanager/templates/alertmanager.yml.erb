@@ -161,6 +161,12 @@ route:
         team: 'dcops'
       receiver: 'dcops-mail'
       routes:
+        # temp route to test per-interface network alerts
+        - match:
+            severity: 'task'
+            scope: 'network'
+          receiver: 'dcops-task-network'
+          group_by: ['summary']
         - match:
             severity: 'task'
           # Default to #dcops project if none of the site routes match
@@ -597,6 +603,12 @@ receivers:
       headers: {'Auto-Submitted':'auto-generated'}
     - to: 'sre-service-ops-collab@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
+
+- name: 'dcops-task-network'
+  webhook_configs:
+    # #dcops + summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5&title=phid%3DPHID-PROJ-d3h5oaspnvdwfjklmivl%26title%3D%7B%7BgroupLabels.summary%7D%7D'
+      send_resolved: false
 
 - name: 'dcops-task'
   webhook_configs:
