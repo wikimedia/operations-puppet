@@ -8,17 +8,18 @@ map $http_upgrade $connection_upgrade {
     '' close;
 }
 
-<%- if @nginx_cache %>
+<%- if @nginx_blob_cache %>
 # Define a cache for immutable blobs and manifests
 # inactive time here probably needs to match what is
 # set in proxy_cache_valid below.
-proxy_cache_path <%= @nginx_cache_dir %>
+proxy_cache_path <%= @nginx_blob_cache_dir %>
                   levels=1:2
                   max_size=10g
                   inactive=7d
                   keys_zone=cache:10m
                   use_temp_path=off;
-
+<%- end -%>
+<%- if @nginx_auth_cache %>
 # Define a separate cache for the auth backends to mitigate subrequests for
 # every authentication.
 proxy_cache_path <%= @nginx_auth_cache_dir %>
@@ -208,7 +209,7 @@ server {
       proxy_read_timeout          180;
       send_timeout                180;
 
-      <%- if @nginx_cache %>
+      <%- if @nginx_blob_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
       location ~ ^/v2/restricted/(.*)/(blobs|manifests)/sha256:(.*) {
         proxy_pass http://registry;
@@ -318,7 +319,7 @@ server {
         deny all;
       }
 
-      <%- if @nginx_cache %>
+      <%- if @nginx_blob_cache %>
       # Blobs and manifests by digest are immutable, so we can cache them
       location ~ ^/v2/(.*/(?:blobs|manifests)/sha256:.*) {
         # Nginx applies only _some_ of the parent location block directives
@@ -353,12 +354,14 @@ server {
     location = /auth/basic {
       internal;
 
+      <%- if @nginx_auth_cache %>
       # Aggressively cache the responses from the basic auth server basing the
       # key solely on the authorization header. This avoids constant
       # subrequests.
       proxy_cache auth;
       proxy_cache_key "basic $http_authorization";
       proxy_cache_valid 202 401 1h;
+      <%- end -%>
 
       proxy_pass http://unix:<%= @nginx_auth_socket %>:/;
       proxy_pass_request_body off;
@@ -369,6 +372,7 @@ server {
     location = /auth/jwt {
       internal;
 
+      <%- if @nginx_auth_cache %>
       # Cache JWT authorization as well but be less aggressive about it, only
       # caching successful auths for 1 minute. Note that if the jwt-authorizer
       # is ever refactored to use more than the request path and authorization
@@ -377,6 +381,7 @@ server {
       proxy_cache auth;
       proxy_cache_key "jwt $request_uri$http_authorization";
       proxy_cache_valid 200 202 1m;
+      <%- end -%>
 
       proxy_pass http://unix:<%= @jwt_authorizer_socket %>:/$auth_request_path;
       proxy_pass_request_body off;

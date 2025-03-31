@@ -40,7 +40,8 @@ class docker_registry_ha::web (
     Array[String]                        $jwt_issuers          = ['https://gitlab.wikimedia.org'],
     Boolean                              $read_only_mode       = false,
     String                               $homepage             = '/srv/homepage',
-    Boolean                              $nginx_cache          = true,
+    Boolean                              $nginx_blob_cache     = true,
+    Boolean                              $nginx_auth_cache     = true,
     Array[Stdlib::Host]                  $deployment_hosts     = [],
     Array[Stdlib::Host]                  $kubernetes_hosts     = [],
 ) {
@@ -91,23 +92,23 @@ class docker_registry_ha::web (
     $k8s_authenticated_nodes = Hash($kubernetes_hosts.map |$host| { [$host, ipresolve($host, 4)]}.sort)
 
     # Create a directory for nginx cache if enabled
-    if $nginx_cache {
-        $cache_dir_ensure = directory
-        $cache_config_ensure = file
+    if $nginx_blob_cache {
+        $blob_cache_dir_ensure = directory
+        $blob_cache_config_ensure = file
     } else {
-        $cache_dir_ensure = absent
-        $cache_config_ensure = absent
+        $blob_cache_dir_ensure = absent
+        $blob_cache_config_ensure = absent
     }
-    $nginx_cache_dir = '/var/cache/nginx-docker-registry'
-    file { $nginx_cache_dir:
-        ensure => $cache_dir_ensure,
+    $nginx_blob_cache_dir = '/var/cache/nginx-docker-registry'
+    file { $nginx_blob_cache_dir:
+        ensure => $blob_cache_dir_ensure,
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0775',
     }
 
     file {'/etc/nginx/registry-nginx-cache.conf':
-        ensure  => $cache_config_ensure,
+        ensure  => $blob_cache_config_ensure,
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
@@ -128,8 +129,13 @@ class docker_registry_ha::web (
     # Create a separate cache and socket location for internal auth_request
     # subrequests (see templates/registry.nginx.conf.erb)
     $nginx_auth_cache_dir = '/var/cache/nginx-auth'
+    if $nginx_auth_cache {
+        $ensure_auth_cache = directory
+    } else {
+        $ensure_auth_cache = absent
+    }
     file { $nginx_auth_cache_dir:
-        ensure => directory,
+        ensure => $ensure_auth_cache,
         owner  => 'www-data',
         group  => 'www-data',
         mode   => '0700',
