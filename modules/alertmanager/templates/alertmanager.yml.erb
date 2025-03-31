@@ -166,7 +166,7 @@ route:
             severity: 'task'
             scope: 'network'
           receiver: 'dcops-task-network'
-          group_by: ['summary']
+          group_by: ['instance', 'interface']
         - match:
             severity: 'task'
           # Default to #dcops project if none of the site routes match
@@ -607,7 +607,7 @@ receivers:
 - name: 'dcops-task-network'
   webhook_configs:
     # #dcops + summary as title
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5&title=%7B%7BgroupLabels.summary%7D%7D'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-guqp46cxa2rgti2tqgv5&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'dcops-task'
