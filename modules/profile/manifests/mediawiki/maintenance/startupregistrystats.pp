@@ -5,7 +5,7 @@ class profile::mediawiki::maintenance::startupregistrystats(
     profile::mediawiki::periodic_job { 'startupregistrystats-testwiki':
         command               => '/usr/local/bin/mwscript extensions/WikimediaMaintenance/blameStartupRegistry.php --wiki testwiki --record-stats',
         interval              => '*:10',
-        cron_schedule         => '*/10 * * * *',
+        cron_schedule         => '10 * * * *',
         team                  => 'mediawiki-platform',
         script_label          => 'blameStartupRegistry.php',
         description           => 'Run blameStartupRegistry.php on testwiki every 10 minutes',
