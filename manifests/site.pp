@@ -556,7 +556,7 @@ node /^cumin1002\.eqiad\./ {
 }
 
 node /^cumin1003\.eqiad\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(cluster::management)
 }
 
 node /^cumin2002\.codfw\./ {

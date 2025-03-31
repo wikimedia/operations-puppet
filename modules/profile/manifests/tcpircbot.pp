@@ -46,6 +46,8 @@ class profile::tcpircbot(
             '2620:0:860:122:10:192:43:9/128',   # puppetserver2004.codfw.wmnet (for conftool notifications)
             '::ffff:10.64.48.98/128',           # cumin1002.eqiad.wmnet
             '2620:0:861:107:10:64:48:98/128',   # cumin1002.eqiad.wmnet
+            '::ffff:10.64.16.154/128',          # cumin1003.eqiad.wmnet
+            '2620:0:861:102:10:64:16:154/128',  # cumin1003.eqiad.wmnet
             '::ffff:10.192.32.49/128',          # cumin2002.codfw.wmnet
             '2620:0:860:103:10:192:32:49/128',  # cumin2002.codfw.wmnet
         ] + $authdns_hosts_ips,
@@ -78,6 +80,7 @@ class profile::tcpircbot(
         'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1002.eqiad.wmnet',        # cluster mgmt eqiad
+        'cumin1003.eqiad.wmnet',        # cluster mgmt eqiad
         'cumin2002.codfw.wmnet',        # cluster mgmt codfw
     ] + $authdns_hosts
 
