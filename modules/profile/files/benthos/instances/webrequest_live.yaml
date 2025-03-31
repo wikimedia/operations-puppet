@@ -40,10 +40,12 @@ pipeline:
       root.continent = this.ip.geoip_country(path: "/usr/share/GeoIP/GeoIP2-Country.mmdb").Continent.Names.en
 
   - label: "meta"
+    # Kafka topics are named webrequest_frontend_text and webrequest_frontend_upload
+    # We need to use the 3rd item of the split-by _ as the webrequest_source value
     bloblang: |
       root = this
       root.webrequest_source = (
-          meta("kafka_topic").split("_").index(1)
+          meta("kafka_topic").split("_").index(2)
       ).catch("-")
 
   - label: "analytics"
