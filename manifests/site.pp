@@ -122,7 +122,7 @@ node /^an-worker1(10[0-9]|11[0-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-7
 
 # New an-worker nodes - See #T377878 and #T386390
 node /^an-worker1(17[8-9]|18[0-6])\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(insetup::data_platform_ferm)
 }
 
 # turnilo.wikimedia.org
@@ -171,7 +171,7 @@ node /^an-conf100[1-3]\.eqiad\./ {
 
 # Refreshed hardware for Analytics Zookeeper cluster - See #T364429
 node /^an-conf100[4-6]\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(insetup::data_platform_ferm)
 }
 
 # Analytics Presto nodes
@@ -412,7 +412,7 @@ node /^cloudcephosd2004-dev\.codfw\./ {
 
 # New ceph node codfw T349934
 node /^cephosd200[1-3]\.codfw\./ {
-    role(insetup::data_engineering)
+    role(insetup::data_platform_nftables)
 }
 
 node /^cloudcephmon200[4-6]-dev\.codfw\./ {
@@ -1100,7 +1100,7 @@ node /^elastic110[8-9]|elastic1110\.eqiad\./ {
 
 # T384966 refresh hosts
 node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
-    role(insetup::search_platform)
+    role(insetup::data_platform_ferm)
 }
 
 # re-arranging elastic hosts by row in order to facilitate
@@ -1670,7 +1670,7 @@ node /^kafka-jumbo10(0[7-9]|1[0-5])\.eqiad\./ {
 
 # New kafka-jumbo hosts - See #T377874
 node /^kafka-jumbo101[6-8]\.eqiad\./ {
-    role(insetup::data_engineering)
+    role(insetup::data_platform_ferm)
 }
 
 # Kafkamon bullseye hosts
@@ -1680,7 +1680,7 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
 
 # New Kafka nodes T314160
 node /^kafka-stretch200[12]\.codfw\./ {
-    role(insetup::data_engineering)
+    role(insetup::data_platform_ferm)
 }
 
 # virtual machines for misc. applications and static sites
@@ -1955,11 +1955,6 @@ node /^maps-test2001\.codfw\./ {
 # testing buster master - maps2.0 migration
 node /^maps2009\.codfw\./ {
     role(maps::master)
-}
-
-# To be decommissioned
-node /^matomo1002\.eqiad\./ {
-    role(insetup::data_engineering)
 }
 
 # Bookworm replacement for matomo1002 - T349397
@@ -2411,7 +2406,7 @@ node /^relforge100[89]\.eqiad\./ {
 }
 
 node /^relforge1010\.eqiad\./ {
-    role(insetup::search_platform)
+    role(insetup::data_platform_ferm)
 }
 # restbase eqiad cluster
 node /^restbase10(2[8-9]|3[0-9]|4[0-3])\.eqiad\./ {
@@ -2654,7 +2649,7 @@ node /^wdqs202[6-7].codfw\./ {
 }
 
 node /^wdqs-categories1001.eqiad\./ {
-    role(insetup::search_platform)
+    role(insetup::data_platform_ferm)
 }
 
 node /^webperf1003.eqiad\./ {
