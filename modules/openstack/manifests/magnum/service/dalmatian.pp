@@ -70,19 +70,4 @@ class openstack::magnum::service::dalmatian(
         require => Package['magnum-api'],
         notify  => Service['magnum-api'],
     }
-    openstack::patch { '/usr/lib/python3/dist-packages/magnum/db/sqlalchemy/models.py':
-        source  => 'puppet:///modules/openstack/dalmatian/magnum/hacks/db/sqlalchemy/models.py.patch',
-        require => Package['magnum-conductor'],
-        notify  => Service['magnum-conductor'],
-    }
-    openstack::patch { '/usr/lib/python3/dist-packages/magnum/db/sqlalchemy/api.py':
-        source  => 'puppet:///modules/openstack/dalmatian/magnum/hacks/db/sqlalchemy/api.py.patch',
-        require => Package['magnum-conductor'],
-        notify  => Service['magnum-conductor'],
-    }
-    openstack::patch { '/usr/lib/python3/dist-packages/oslo_db/sqlalchemy/enginefacade.py':
-        source  => 'puppet:///modules/openstack/dalmatian/magnum/hacks/oslodb/sqlalchemy/enginefacade.py.patch',
-        require => Package['magnum-conductor'],
-        notify  => Service['magnum-conductor'],
-    }
 }
