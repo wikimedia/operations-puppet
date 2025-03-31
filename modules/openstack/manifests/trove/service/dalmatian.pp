@@ -77,18 +77,4 @@ class openstack::trove::service::dalmatian(
             group  => 'trove',
             mode   => '0644';
     }
-
-    # Apply https://review.opendev.org/c/openstack/trove/+/869511
-    # (Hopefully fixed after Zed)
-    openstack::patch { '/usr/lib/python3/dist-packages/trove/instance/models.py':
-        source  => 'puppet:///modules/openstack/dalmatian/trove/hacks/instance/models.py.patch',
-        require => Package['trove-api'],
-        notify  => Service['trove-api', 'trove-taskmanager'],
-    }
-
-    openstack::patch { '/usr/lib/python3/dist-packages/trove/taskmanager/models.py':
-        source  => 'puppet:///modules/openstack/dalmatian/trove/hacks/taskmanager/models.py.patch',
-        require => Package['trove-api'],
-        notify  => Service['trove-api', 'trove-taskmanager'],
-    }
 }
