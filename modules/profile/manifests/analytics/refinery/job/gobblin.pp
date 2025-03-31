@@ -41,7 +41,7 @@
 #   during HDFS maintenance work
 #
 class profile::analytics::refinery::job::gobblin(
-    String $gobblin_wmf_version = lookup('profile::analytics::refinery::job::gobblin_wmf_version', { 'default_value' => '1.0.3' }),
+    String $gobblin_wmf_version = lookup('profile::analytics::refinery::job::gobblin_wmf_version', { 'default_value' => '1.0.6' }),
     String $ensure_timers = lookup('profile::analytics::refinery::job::gobblin::ensure_timers', { 'default_value' => 'present' }),
 ) {
     require ::profile::analytics::refinery
