@@ -7,9 +7,6 @@ class openstack::clientpackages::dalmatian::bullseye(
         'python3-glanceclient',
         'python3-keystoneauth1',
         'python3-keystoneclient',
-        # Openstacksdk is needed only to ensure the patch to it is applied in order
-        # once the patch is not needed can be removed
-        'python3-openstacksdk',
         'python3-openstackclient',
         'python3-troveclient',
         'python3-designateclient',
@@ -26,10 +23,5 @@ class openstack::clientpackages::dalmatian::bullseye(
         mode   => '0755',
         owner  => 'root',
         group  => 'root',
-    }
-
-    openstack::patch { '/usr/lib/python3/dist-packages/openstack/config/loader.py':
-        source  => 'puppet:///modules/openstack/dalmatian/openstacksdk/hacks/allow_overriding_cloud_yaml.bullseye.patch',
-        require => Package['python3-openstacksdk'],
     }
 }
