@@ -15,7 +15,7 @@ profile::dumps::rsync_internal_clients:
   - wcqs2001.codfw.wmnet
   - wdqs2009.codfw.wmnet
 
-profile::dumps::generation_worker_cron_php: /usr/bin/php7.4
+profile::dumps::generation_worker_cron_php: /usr/bin/php8.1
 profile::dumps::single_backend: false
 
 # the servers below maintain copies of either xml or misc dumps
