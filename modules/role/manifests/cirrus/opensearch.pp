@@ -7,7 +7,6 @@ class role::cirrus::opensearch {
     include profile::base::production
     include profile::firewall
     include profile::lvs::realserver
-    include profile::lvs::realserver::ipip
     include profile::opensearch::cirrus::server
     include profile::logstash::gelf_relay
 }
