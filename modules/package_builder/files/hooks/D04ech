@@ -1,0 +1,10 @@
+#!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+
+if [ "$ECH" = "yes" ]; then
+    cat > /etc/apt/sources.list.d/wikimedia-ech.list <<-'EOF'
+    deb http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/nginx-ech
+    deb-src http://apt.wikimedia.org/wikimedia bookworm-wikimedia component/nginx-ech
+EOF
+    apt-get update
+fi

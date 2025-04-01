@@ -136,6 +136,12 @@ define package_builder::pbuilder_hook(
         source => 'puppet:///modules/package_builder/hooks/D04java21'
     }
 
+    file { "${basepath}/hooks/${distribution}/D04ech":
+        ensure => present,
+        mode   => '0555',
+        source => 'puppet:///modules/package_builder/hooks/D04ech'
+    }
+
     file { "${basepath}/hooks/${distribution}/D04component":
       ensure  => file,
       mode    => '0555',
