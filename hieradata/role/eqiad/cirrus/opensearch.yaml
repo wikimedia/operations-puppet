@@ -1,4 +1,4 @@
-profile::opensearch::dc_settings:
+profile::opensearch::instances:
     production-search-eqiad:
         # eqiad prod name
         cluster_name: production-search-eqiad
@@ -222,4 +222,4 @@ profile::opensearch::dc_settings:
         # We should be able to run "OK" with 11 servers.
         recover_after_nodes: 11
 
-profile::elasticsearch::dc_settings: {}
+profile::opensearch::dc_settings: {}
