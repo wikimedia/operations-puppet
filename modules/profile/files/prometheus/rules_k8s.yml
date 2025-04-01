@@ -189,6 +189,13 @@ groups:
     - record: le_kubernetes_namespace:mediawiki_WikimediaEvents_editResponseTime_seconds_bucket:rate5m
       expr: sum by (le, kubernetes_namespace) (rate(mediawiki_WikimediaEvents_editResponseTime_seconds_bucket[5m]))
 
+- name: authentication_metrics
+  rules:
+    - record: accountType_entrypoint_event_subtype_sul3:mediawiki_WikimediaEvents_authmanager_success:rate5m
+      expr: sum by (accountType, entrypoint, event, subtype, sul3) (rate(mediawiki_WikimediaEvents_authmanager_success_total[5m]))
+
+    - record: accountType_entrypoint_event_reason_subtype_sul3:mediawiki_WikimediaEvents_authmanager_error:rate5m
+      expr: sum by (accountType, entrypoint, event, reason, subtype, sul3) (rate(mediawiki_WikimediaEvents_authmanager_error_total[5m]))
 
 - name: self
   rules:
