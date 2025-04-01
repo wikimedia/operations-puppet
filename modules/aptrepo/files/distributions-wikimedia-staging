@@ -31,3 +31,14 @@ Components: main
 Description: Staging Wikimedia packages for Debian bookworm
 SignWith: 671B51EA4CC7E5B2
 DebOverride: deb-override
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: trixie-wikimedia
+Codename: trixie-wikimedia
+Version: 13
+Architectures: source amd64
+Components: main
+Description: Staging Wikimedia packages for Debian trixie
+SignWith: 671B51EA4CC7E5B2
+DebOverride: deb-override

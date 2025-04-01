@@ -30,3 +30,18 @@ SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
 Log:
  log
+
+Origin: Wikimedia
+Label: Wikimedia
+Suite: trixie-wikimedia-private
+Codename: trixie-wikimedia-private
+Version: 13
+Architectures: source amd64
+Components: main
+# sorted list, leading whitespace matters!
+ thirdparty/hwraid
+Description: Private Wikimedia packages for Debian trixie
+SignWith: 9D392D3FFADF18FB
+DebOverride: deb-override
+Log:
+ log
