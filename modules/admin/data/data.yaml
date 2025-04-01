@@ -6636,6 +6636,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPQjaDWJMKcyaX9lVpEZM2l4DfU1ZEMoEwtGYWPqE3Qo
+    krb: present
   dsantamaria:
     ensure: present
     realname: David Santamaria
