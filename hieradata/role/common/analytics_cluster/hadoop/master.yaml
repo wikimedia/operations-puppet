@@ -76,6 +76,10 @@ profile::base::production::role_description: 'Hadoop master (NameNode & Resource
 
 profile::puppet::agent::force_puppet7: true
 
-# Temporarily exclude an-worker1202 for a vlan move
+# Temporarily exclude an-worker1202 for a vlan move - See #T390048
+# Temporarily exlude hosts in rack F6 for a hard drive upgrade - See #T390168
 profile::hadoop::master::excluded_hosts:
   - an-worker1202.eqiad.wmnet
+  - an-worker1169.eqiad.wmnet
+  - an-worker1170.eqiad.wmnet
+  - an-worker1171.eqiad.wmnet
