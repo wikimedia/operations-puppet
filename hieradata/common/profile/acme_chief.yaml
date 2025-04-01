@@ -48,6 +48,13 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^durum[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
+    ech:
+        CN: 'wikimedia-ech.org'
+        SNI:
+        - 'wikimedia-ech.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^durum[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
