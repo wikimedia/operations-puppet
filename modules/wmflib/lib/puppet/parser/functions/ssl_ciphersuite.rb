@@ -134,7 +134,6 @@ END
               ) do |args|
 
     Puppet::Parser::Functions.function(:notice)
-    os_major_release = lookupvar('operatingsystemmajrelease').to_i
 
     if args.length < 2 || args.length > 3
       fail(ArgumentError, 'ssl_ciphersuite() requires at least 2 arguments')
@@ -156,25 +155,20 @@ END
     end
 
     # OS / Server -dependant feature flags:
-    tls1_3 = os_major_release > 9
     cipherlist = ciphersuites[ciphersuite].join(":")
 
     output = []
 
     if server == 'apache'
-      if tls1_3
-        cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^TLS_/}.join(':')
-        cipherlist_tls1_3 = ciphersuites[ciphersuite].reject{|x| x !~ /^TLS_/}.join(':')
-      end
       if ciphersuite == 'compat'
         output.push('SSLProtocol all -SSLv2 -SSLv3')
       else
         output.push('SSLProtocol all -SSLv2 -SSLv3 -TLSv1 -TLSv1.1')
       end
+      cipherlist = ciphersuites[ciphersuite].reject{|x| x =~ /^TLS_/}.join(':')
+      cipherlist_tls1_3 = ciphersuites[ciphersuite].reject{|x| x !~ /^TLS_/}.join(':')
       output.push("SSLCipherSuite #{cipherlist}")
-      if tls1_3
-        output.push("SSLCipherSuite TLSv1.3 #{cipherlist_tls1_3}")
-      end
+      output.push("SSLCipherSuite TLSv1.3 #{cipherlist_tls1_3}")
       # Note: missing config to restrict ECDH curves
       output.push('SSLHonorCipherOrder On')
       output.push('SSLOpenSSLConfCmd DHParameters "/etc/ssl/dhparam.pem"')
@@ -182,12 +176,8 @@ END
         output.push("Header always set Strict-Transport-Security \"#{hsts_val}\"")
       end
     else # nginx
-      compat_protocols = 'TLSv1 TLSv1.1 TLSv1.2'
-      protocols = 'TLSv1.2'
-      if tls1_3
-        compat_protocols += ' TLSv1.3'
-        protocols += ' TLSv1.3'
-      end
+      compat_protocols = 'TLSv1 TLSv1.1 TLSv1.2 TLSv1.3'
+      protocols = 'TLSv1.2 TLSv1.3'
       if ciphersuite == 'compat'
         output.push("ssl_protocols #{compat_protocols};")
       else
