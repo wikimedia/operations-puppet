@@ -1,5 +1,5 @@
 # General configs
-cluster: opensearch
+cluster: elasticsearch
 profile::admin::groups:
   - elasticsearch-roots
 
