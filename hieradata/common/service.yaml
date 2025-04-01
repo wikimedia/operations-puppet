@@ -110,7 +110,7 @@ service::catalog:
     state: 'production'
 
   k8s-ingress-aux:
-    description: "istio-ingresscontroller on aux-k8s. k8s-ingress-aux.discovery.wmnet"
+    description: "istio-ingresscontroller on aux-k8s. k8s-ingress-aux-(ro|rw).discovery.wmnet"
     encryption: true
     ip: &k8s-ingress-aux_ips
       eqiad:
@@ -150,7 +150,9 @@ service::catalog:
     state: production
     page: false
     discovery:
-      - dnsdisc: k8s-ingress-aux
+      - dnsdisc: k8s-ingress-aux-ro
+        active_active: true
+      - dnsdisc: k8s-ingress-aux-rw
         active_active: false
 
   jaeger-collector-http:
