@@ -8,8 +8,6 @@ class profile::wmcs::nfs::standalone(
     Boolean $host_scratch    = lookup('profile::wmcs::nfs::standalone::host_scratch', {'default_value' => false}),
     Array[String] $volumes   = lookup('profile::wmcs::nfs::standalone::volumes'),
 ) {
-    require profile::openstack::eqiad1::observerenv
-
     motd::script { 'nfs-standalone-banner':
         ensure => present,
         source => 'puppet:///modules/profile/wmcs/nfs/standalone/motd.sh',
