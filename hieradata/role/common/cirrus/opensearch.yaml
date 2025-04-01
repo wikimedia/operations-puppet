@@ -73,7 +73,7 @@ profile::opensearch::cirrus::common_settings:
     bulk_thread_pool_capacity: 1000
     filter_cache_size: '20%'
 
-profile::opensearch::cirrus::cirrus::enable_remote_search: true
+profile::opensearch::cirrus::enable_remote_search: true
 profile::tlsproxy::instance::nginx_variant: 'light'
 # Role contacts appears to express ownership (comment 1 of 2)
 profile::contacts::role_contacts: ['Search Platform']
