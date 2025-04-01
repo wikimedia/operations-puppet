@@ -257,6 +257,14 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
     keepalive: "50s"
+  - name: search-chi
+    port: 6302
+    service: search-https
+    timeout: "50s"
+    upstream: search.discovery.wmnet
+    keepalive: "50s"
+    retry:
+      retry_on: gateway-error
   - name: search-omega-eqiad
     port: 6103
     service: search-omega-https
@@ -269,12 +277,34 @@ profile::services_proxy::envoy::listeners:
     timeout: "50s"
     upstream: search.svc.codfw.wmnet
     keepalive: "50s"
+  - name: search-omega
+    port: 6303
+    service: search-omega-https
+    timeout: "50s"
+    upstream: search.discovery.wmnet
+    keepalive: "50s"
+    retry:
+      retry_on: gateway-error
   - name: search-psi-eqiad
     port: 6104
     service: search-psi-https
     timeout: "50s"
     upstream: search.svc.eqiad.wmnet
     keepalive: "50s"
+  - name: search-psi-codfw
+    port: 6204
+    service: search-psi-https
+    timeout: "50s"
+    upstream: search.svc.codfw.wmnet
+    keepalive: "50s"
+  - name: search-psi
+    port: 6304
+    service: search-psi-https
+    timeout: "50s"
+    upstream: search.discovery.wmnet
+    keepalive: "50s"
+    retry:
+      retry_on: gateway-error
   - name: cloudelastic-chi-eqiad
     port: 6105
     service: cloudelastic-chi-https
@@ -292,12 +322,6 @@ profile::services_proxy::envoy::listeners:
     service: cloudelastic-psi-https
     timeout: "50s"
     upstream: cloudelastic.wikimedia.org
-    keepalive: "50s"
-  - name: search-psi-codfw
-    port: 6204
-    service: search-psi-https
-    timeout: "50s"
-    upstream: search.svc.codfw.wmnet
     keepalive: "50s"
   - name: inference-staging
     port: 6205
@@ -439,10 +463,13 @@ profile::services_proxy::envoy::enabled_listeners:
   - swift-codfw
   - search-chi-eqiad
   - search-chi-codfw
+  - search-chi
   - search-omega-eqiad
   - search-omega-codfw
+  - search-omega
   - search-psi-eqiad
   - search-psi-codfw
+  - search-psi
   - cloudelastic-chi-eqiad
   - cloudelastic-omega-eqiad
   - cloudelastic-psi-eqiad
