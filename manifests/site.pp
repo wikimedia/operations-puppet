@@ -272,7 +272,7 @@ node /^backup1009\.eqiad\./ {
 
 # reallocated for bacula expansion, TODO
 node /^backup1012\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # eqiad backup generation for External Storage databases
@@ -281,12 +281,12 @@ node /^backup1013\.eqiad\./ {
 }
 # pending to be decommissioned, previous db backup generation
 node /^backup1002\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # to be setup
 node /^backup1014\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # codfw storage daemon
@@ -319,7 +319,7 @@ node /^backup2009\.codfw\./ {
 
 # pending to be setup as bacula expansion
 node /^backup2012\.codfw\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # codfw backup generation for External Storage databases
@@ -328,12 +328,12 @@ node /^backup2013\.codfw\./ {
 }
 # pending to be decommissioned, previous db backup generation
 node /^backup2002\.codfw\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # to be setup
 node /^backup2014\.codfw\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 
@@ -2420,7 +2420,7 @@ node /^restbase20(2[4-9]|3[0-8])\.codfw\./ {
 
 # restbase refresh: T383673
 node /^restbase104[4-5]\.eqiad\./ {
-    role(insetup::data_persistence)
+    role(insetup::data_persistence_ferm)
 }
 
 # New cassandra dev nodes T324113
