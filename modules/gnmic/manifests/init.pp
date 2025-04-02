@@ -25,6 +25,7 @@ class gnmic(
     $config = wmflib::resource::filter_params('tls_ca') + {
         'tls-ca' => $tls_ca,
         'api-server' => {'enable-metrics' => true},
+        'retry' => '5m',
     }
 
     # Need to notify as gnmic doesn't watches the config file well enough
