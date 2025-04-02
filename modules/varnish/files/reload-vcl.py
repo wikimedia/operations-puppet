@@ -132,8 +132,7 @@ def auto_discard(vadm_cmd):
         if vcl['state'] == 'label':
             continue
 
-        vcl_uuid = vcl['name'].split('-', 1)[1]
-        vcl_discard_cmd = vadm_cmd + ['vcl.discard', vcl_uuid]
+        vcl_discard_cmd = vadm_cmd + ['vcl.discard', vcl['name']]
         do_cmd(vcl_discard_cmd)
 
 
