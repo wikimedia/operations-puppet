@@ -345,3 +345,42 @@ certificates::acme_chief:
     - '*.thediff.community'
     - wikipedi.org
     - '*.wikipedi.org'
+    - wikirnedia.org
+    - '*.wikirnedia.org'
+    - wikiartpedia.me
+    - '*.wikiartpedia.me'
+    - wikipediadereceitas.net
+    - '*.wikipediadereceitas.net'
+    - wikipediaarticle.org
+    - '*.wikipediaarticle.org'
+    - wikipediastories.org
+    - '*.wikipediastories.org'
+    - abstractwikipedia.com
+    - '*.abstractwikipedia.com'
+    - wikimediacloudservices.org
+    - '*.wikimediacloudservices.org'
+    - popwikipedia.com
+    - '*.popwikipedia.com'
+  non-canonical-redirect-9:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipediashop.com
+    SNI:
+    - wikipediashop.com
+    - '*.wikipediashop.com'
+    - awikipedia.com
+    - '*.awikipedia.com'
+    - wiki.community
+    - '*.wiki.community'
+    - wikipediaofficial.com
+    - '*.wikipediaofficial.com'
+    - wikivisit.org
+    - '*.wikivisit.org'
+    - wikimanialondon.com
+    - '*.wikimanialondon.com'
+    - wikimedia.net
+    - '*.wikimedia.net'
