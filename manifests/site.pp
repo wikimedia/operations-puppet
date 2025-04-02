@@ -1700,7 +1700,7 @@ node /^krb1001\.eqiad\./ {
 }
 
 node /^krb1002\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(insetup::infrastructure_foundations_nftables)
 }
 
 node /^krb2002\.codfw\./ {
