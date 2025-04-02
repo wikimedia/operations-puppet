@@ -636,3 +636,11 @@ rewrite	*wikimediafoundation.cn	https://wikimediafoundation.org/zh/
 rewrite	*wikisource.wiki	https://wikisource.org
 rewrite	*wikimedia.charity	https://www.wikimedia.org
 rewrite	*wikipedia.xyz	https://www.wikipedia.org
+funnel	*wp.gives	https://meta.wikimedia.org/wiki/Grants:Start
+rewrite	*wikimedia-ech.org	https://www.wikimedia.org
+rewrite	*wikimedia-ech.com	https://www.wikimedia.org
+rewrite	*donate.wiki	https://donate.wikimedia.org
+funnel	*wikipediacreators.com	https://wikimediafoundation.org/news/2018/08/22/dont-pay-for-wikipedia-articles/
+rewrite	*wikimedia-ech.net	https://www.wikimedia.org
+rewrite	*ech.wiki	https://www.wikimedia.org
+funnel	*wiki.gives	https://meta.wikimedia.org/wiki/Grants:Start
