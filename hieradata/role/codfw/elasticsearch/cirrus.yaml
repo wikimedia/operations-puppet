@@ -17,7 +17,7 @@ profile::elasticsearch::instances:
 
         cluster_hosts:
           - cirrussearch2055.codfw.wmnet
-          - elastic2056.codfw.wmnet
+          - cirrussearch2056.codfw.wmnet
           - elastic2057.codfw.wmnet
           - elastic2058.codfw.wmnet
           - elastic2059.codfw.wmnet
@@ -117,12 +117,12 @@ profile::elasticsearch::instances:
           # row A
           - elastic2087.codfw.wmnet
           - elastic2088.codfw.wmnet
-          - elastic2056.codfw.wmnet
+          - cirrussearch2056.codfw.wmnet
           - elastic2061.codfw.wmnet
           - elastic2073.codfw.wmnet
           - elastic2074.codfw.wmnet
           - elastic2090.codfw.wmnet
-          - elastic2111.codfw.wmnet # replacing elastic2056
+          - elastic2111.codfw.wmnet # replacing cirrussearch2056
 
           # row B
           - elastic2092.codfw.wmnet

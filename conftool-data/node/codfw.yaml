@@ -37,7 +37,8 @@ codfw:
     moss-fe2001.codfw.wmnet: [apus]
     moss-fe2002.codfw.wmnet: [apus]
   elasticsearch:
-    elastic2056.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    cirrussearch2055.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    cirrussearch2056.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2057.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic2058.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic2059.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]

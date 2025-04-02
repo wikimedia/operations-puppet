@@ -11,7 +11,7 @@ es_codfw_rack_a4:
   profile::elasticsearch::row:  A
 
 es_codfw_rack_a7:
-  __regex: !ruby/regexp /^elastic20(56|69|75|76|90|91)\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(elastic20(69|75|76|90|91)|cirrussearch2(056))\.codfw\.wmnet$/
   profile::elasticsearch::rack: A7
   profile::elasticsearch::row:  A
 
