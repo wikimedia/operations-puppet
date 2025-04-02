@@ -399,7 +399,7 @@ node /^cloudlb200[123]-dev\.codfw\./ {
 }
 
 node /^cloudlb200[4]-dev\.codfw\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_nftables)
 }
 
 node /^cloudcephosd200[123]-dev\.codfw\./ {
@@ -407,7 +407,7 @@ node /^cloudcephosd200[123]-dev\.codfw\./ {
 }
 
 node /^cloudcephosd2004-dev\.codfw\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_ferm)
 }
 
 # New ceph node codfw T349934
@@ -1536,12 +1536,12 @@ node /^cloudcontrol200[456]-dev\.codfw\./ {
 
 # New cloudcontrol node in codfw T342456
 node /^cloudcontrol200[789]-dev\.codfw\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_ferm)
 }
 
 # New cloudnet node used for OVS experiments
 node /^cloudnet200[78]-dev\.codfw\./ {
-    role(insetup::wmcs)
+    role(insetup_noferm)
 }
 
 node /^cloudvirt200[456]-dev\.codfw\./ {
@@ -1753,12 +1753,12 @@ node /^cloudcontrol100[567]\.eqiad\./ {
 
 # New cloudcontrol nodes T342455
 node /^cloudcontrol10(0[8-9]|1[0])\-dev\.eqiad\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_ferm)
 }
 
 # Refresh for cloudcontrol1005
 node /^cloudcontrol1011.eqiad\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_ferm)
 }
 
 # Data Platform - Ceph osd servers T322760
@@ -1777,7 +1777,7 @@ node /^cloudcephosd10(0[1-9]|1[0-9]|2[0-9]|3[0-9]|4[0-1])\.eqiad\./ {
 }
 
 node /^cloudcephosd104[2-7]\.eqiad\./ {
-    role(insetup::wmcs)
+    role(insetup::wmcs_ferm)
 }
 
 # migrate cloudelastic to opensearch, see T387904
@@ -2568,7 +2568,7 @@ node /^cloudvirt10(3[1-9]|4[0-9]|5[0-9]|6[0-7])\.eqiad\./ {
 
 # new cloudvirts T382492
 node /^cloudvirt10(6[8-9]|7[0-6])\.eqiad\./ {
-    role(insetup::wmcs)
+    role(insetup_noferm)
 }
 
 node /^wcqs100[123]\.eqiad\./ {
