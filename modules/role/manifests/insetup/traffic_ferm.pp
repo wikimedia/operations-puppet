@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-class role::insetup::traffic {
+class role::insetup::traffic_ferm {
     include profile::base::production
     # If we are an LVS host the install the appropriate sysctls so we can
     # complete reimaging. See T336428
