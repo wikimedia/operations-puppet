@@ -420,7 +420,7 @@ profile::trafficserver::backend::mapping_rules:
       # First, catch REST API for path normalization with the right params
     - type: map
       target: http://www.wikifunctions.org/w/rest.php
-      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443/w/rest.php
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -442,7 +442,7 @@ profile::trafficserver::backend::mapping_rules:
       # Then, catch action API to remove path normalization for PURGE requests
     - type: map
       target: http://www.wikifunctions.org/w/api.php
-      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443/w/api.php
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/api.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
@@ -459,7 +459,7 @@ profile::trafficserver::backend::mapping_rules:
       # parameters as the global mediawiki catch-all.
     - type: map
       target: http://www.wikifunctions.org
-      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443
+      replacement: https://mw-wikifunctions.discovery.wmnet:4451
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
