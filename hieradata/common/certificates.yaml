@@ -317,8 +317,8 @@ certificates::acme_chief:
     challenge: dns-01
     authorized_regexes:
     - ^ncredir[0-9]{4,}\..*\.wmnet$
-    prevalidate: 'true'
-    skip_invalid_snis: 'true'
+    prevalidate: true
+    skip_invalid_snis: true
     CN: wikimediacommons.uk
     SNI:
     - wikimediacommons.uk
