@@ -21,5 +21,5 @@ type Profile::Mediawiki_deployment = Struct[{
     'mw_flavour'  => String,
     'web_flavour' => String,
     # TODO: T389499 - Remove support for debug.
-    'debug'       => Boolean,
+    'debug'       => Optional[Boolean],
 }]
