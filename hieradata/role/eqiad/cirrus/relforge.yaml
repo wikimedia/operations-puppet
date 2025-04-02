@@ -15,8 +15,6 @@ profile::opensearch::dc_settings:
       - relforge1009.eqiad.wmnet
     expected_nodes: 2
 
-profile::opensearch::s3_username: 'search:platform'
-
 has_lvs: false
 
 profile::opensearch::cirrus::storage_device: md1
