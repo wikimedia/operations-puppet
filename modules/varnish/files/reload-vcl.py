@@ -107,6 +107,9 @@ def auto_discard(vadm_cmd):
         available   auto/warm          0 vcl-$(uuid) (1 label)
         {'status': 'available', 'state': 'warm',
         'temperature': 'warm', 'busy': 66, 'name': 'vcl-$(uuid)', 'labels': 1}
+        {"status": "available", "state": "warm",
+         "temperature": "warm", "busy": 0,"name": "vcl-$(uuid)", "labels": 1}
+
 
     and labels referenced somewhere:
         available  label/warm          0 wikimedia_misc -> vcl-$(uuid) (1 return(vcl))
@@ -130,6 +133,8 @@ def auto_discard(vadm_cmd):
         if vcl['status'] != 'available':
             continue
         if vcl['state'] == 'label':
+            continue
+        if 'labels' in vcl and vcl['labels'] > 0:
             continue
 
         vcl_discard_cmd = vadm_cmd + ['vcl.discard', vcl['name']]
