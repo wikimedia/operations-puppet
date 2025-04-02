@@ -88,9 +88,9 @@ class profile::pybal(
 
     nrpe::monitor_service { 'check_service_restart_pybal':
         description    => 'Check if Pybal has been restarted after pybal.conf was changed',
-        nrpe_command   => '/usr/local/lib/nagios/plugins/check_pybal_restart --service pybal.service --file /etc/pybal/pybal.conf',
-        check_interval => 120, # 120mins
-        retry_interval => 60,  # 60mins
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_pybal_restart --service pybal.service --file /etc/pybal/pybal.conf --critical 1',
+        check_interval => 10, # mins
+        retry_interval => 1,  # mins
         notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal#Pybal_service_has_not_been_restarted',
     }
 
