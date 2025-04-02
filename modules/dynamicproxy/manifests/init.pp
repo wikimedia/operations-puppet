@@ -160,6 +160,7 @@ class dynamicproxy (
         $fqdn = $name.regsubst('(.+)\.', '\\1')
         nginx::site { $fqdn:
             content => template('dynamicproxy/nginx-site.conf.erb'),
+            require => Acme_chief::Cert[$zone['acmechief_cert']],
         }
     }
 
