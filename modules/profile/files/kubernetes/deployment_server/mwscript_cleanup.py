@@ -12,7 +12,7 @@ from kubernetes import client, config
 
 logger = logging.Logger(__name__)
 
-EXCLUDE_RELEASES = {'prometheus'}
+EXCLUDE_RELEASES = {'mediawiki-common', 'prometheus'}
 EXPIRY_TIME = datetime.timedelta(days=7)
 MINIMUM_AGE = datetime.timedelta(minutes=5)
 NAMESPACE = 'mw-script'
