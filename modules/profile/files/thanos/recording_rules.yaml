@@ -177,10 +177,9 @@ groups:
       # record boolean search lag metric for pyrra search-update-lag bool_gauge SLO
       - record: search_sli_update_lag:bool
         expr: flink_taskmanager_job_task_operator_lastBatchMedianLag{job_name=~"cirrus_streaming_updater_consumer_search_.*", prometheus="k8s"} / 1000 < bool 600
-
       # record boolean wdqs lag metric for pyrra wdqs-update-lag bool_gauge SLO
       - record: wdqs_sli_update_lag:bool
-        expr: ( time() - blazegraph_lastupdated{cluster="wdqs"} and on(cluster) ( rate(org_wikidata_query_rdf_blazegraph_filters_QueryEventSenderFilter_event_sender_filter_StartedQueries{}[5m]) > 1)) < bool 600
+        expr: ( time() - blazegraph_lastupdated{cluster="wdqs", instance =~ ".*:919[35]"} and on(cluster) ( rate(org_wikidata_query_rdf_blazegraph_filters_QueryEventSenderFilter_event_sender_filter_StartedQueries{instance  =~ ".*:9102"}[5m]) > 1)) < bool 600
 
   - name: phpfpm_workers
     rules:
