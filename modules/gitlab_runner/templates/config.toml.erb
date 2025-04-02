@@ -12,6 +12,8 @@ listen_address = '[<%= @exporter_listen_address %>]:<%= @exporter_listen_port %>
   # Select how a project should be built. Fixed to docker executor for security reasons.
   executor = "docker"
 
+  output_limit = <%= @output_limit %>
+
   environment = [
     <%- if @ensure_buildkitd == 'present' -%>
     # Provide a default variable for BUILDKIT_HOST

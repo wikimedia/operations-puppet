@@ -85,6 +85,7 @@ class profile::gitlab::runner (
     Optional[Boolean]                           $buildkitd_dockerfile_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled'),
     Optional[Boolean]                           $buildkitd_gateway_frontend_enabled = lookup('profile::gitlab::runner::buildkitd_gateway_frontend_enabled'),
     Optional[Array[String]]                     $buildkitd_allowed_gateway_sources = lookup('profile::gitlab::runner::buildkitd_allowed_gateway_sources'),
+    Integer                                     $output_limit = lookup('profile::gitlab::runner::output_limit'),
 ) {
     class { 'docker::configuration':
         settings => $docker_settings,
@@ -243,6 +244,7 @@ class profile::gitlab::runner (
             require                 => Docker::Network[$docker_network],
             allowed_images          => $allowed_images,
             allowed_docker_services => $allowed_docker_services,
+            output_limit            => $output_limit,
         }
     } else {
         exec { 'gitlab-unregister-runner':

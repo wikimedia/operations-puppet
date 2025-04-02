@@ -108,6 +108,8 @@ profile::gitlab::runner::allowed_docker_services:
   - "docker-registry.wikimedia.org/**/*"
   - "docker-registry.discovery.wmnet/**/*"
 
+profile::gitlab::runner::output_limit: 20480
+
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'virtual machine running runners for gitlab'
 
