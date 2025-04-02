@@ -21,6 +21,7 @@
 #
 
 
+import json
 import os
 import re
 import time
@@ -93,26 +94,47 @@ def auto_discard(vadm_cmd):
     """
     Discard loaded VCLs such as:
         available   auto/warm          0 vcl-$(uuid)
+        {'status': 'available', 'state': 'warm',
+         'temperature': 'warm', 'busy': 0, 'name': 'vcl-$(uuid)'}
+
 
     Do *not* try discarding the currently active VCL, eg:
         active      auto/warm          3 vcl-$(uuid)
+        {'status': 'active', 'state': 'auto',
+         'temperature': 'warm', 'busy': 398, 'name': 'vcl-$(uuid)'}
 
     as well as VCLs with a label pointing to them:
         available   auto/warm          0 vcl-$(uuid) (1 label)
+        {'status': 'available', 'state': 'warm',
+        'temperature': 'warm', 'busy': 66, 'name': 'vcl-$(uuid)', 'labels': 1}
 
     and labels referenced somewhere:
         available  label/warm          0 wikimedia_misc -> vcl-$(uuid) (1 return(vcl))
+        {'status': 'available', 'state': 'label',
+        'temperature': 'warm', 'busy': 0, 'name': 'wikimedia_misc', 'label': {'name': 'vcl-$(uuid)',
+                                                                              'refs': 25}}
     """
     # sleep is insurance against unknown varnish bugs if we move too fast from
     # "use" to "discard" and trip some race.
     time.sleep(1)
 
-    vcl_list_cmd = vadm_cmd + ['vcl.list']
-    for line in get_cmd_output(vcl_list_cmd).splitlines():
-        match = re.match(r'^available\s+\S+\s+[0-9]+\s+(boot|vcl-\S+)$', line.decode("utf-8"))
-        if match:
-            vcl_discard_cmd = vadm_cmd + ['vcl.discard', match.group(1)]
-            do_cmd(vcl_discard_cmd)
+    vcl_list_cmd = vadm_cmd + ['vcl.list', '-j']
+    vcl_list_output = get_cmd_output(vcl_list_cmd)
+    vcl_list_data = json.loads(vcl_list_output)
+    if vcl_list_data[0] != 2:
+        raise RuntimeError("unsupported vcl.list JSON version")
+
+    for vcl in vcl_list_data[3:]:
+        if vcl['busy'] != 0:
+            continue
+        if vcl['status'] != 'available':
+            continue
+        if vcl['state'] == 'label':
+            continue
+
+        vcl_uuid = vcl['name'].split('-', 1)[1]
+        vcl_discard_cmd = vadm_cmd + ['vcl.discard', vcl_uuid]
+        do_cmd(vcl_discard_cmd)
 
 
 def load(vadm_cmd, filename):
