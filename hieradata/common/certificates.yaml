@@ -300,9 +300,48 @@ certificates::acme_chief:
     - '*.wikkipedia.be'
     - wikidata.ro
     - '*.wikidata.ro'
+    - coinwikipedia.org
+    - '*.coinwikipedia.org'
+    - thediff.news
+    - '*.thediff.news'
+    - wiktionary.us
+    - '*.wiktionary.us'
     staging_time: 604800
     challenge: dns-01
     authorized_regexes:
     - ^ncredir[0-9]{4,}\..*\.wmnet$
     prevalidate: true
     skip_invalid_snis: true
+  non-canonical-redirect-8:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: 'true'
+    skip_invalid_snis: 'true'
+    CN: wikimediacommons.uk
+    SNI:
+    - wikimediacommons.uk
+    - '*.wikimediacommons.uk'
+    - xn--wikirda-p0a62emr.pl
+    - '*.xn--wikirda-p0a62emr.pl'
+    - wiikpedia.org
+    - '*.wiikpedia.org'
+    - turkcewikipedia.org
+    - '*.turkcewikipedia.org'
+    - wikpedia.com
+    - '*.wikpedia.com'
+    - wikipidia.com
+    - '*.wikipidia.com'
+    - 2wikipedia.info
+    - '*.2wikipedia.info'
+    - wikisource.co
+    - '*.wikisource.co'
+    - wikimedipedia.com
+    - '*.wikimedipedia.com'
+    - wipedia.org
+    - '*.wipedia.org'
+    - thediff.community
+    - '*.thediff.community'
+    - wikipedi.org
+    - '*.wikipedi.org'
