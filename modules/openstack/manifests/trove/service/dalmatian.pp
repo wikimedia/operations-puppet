@@ -33,19 +33,6 @@ class openstack::trove::service::dalmatian(
         ensure => 'present',
     }
 
-
-    # sqlalchemy version 2 has quite a few breaking changes;
-    #  as of Dalmation, the trove db upgrade fails with 2.x
-    #
-    # Magnum also seems to function better with 1.x in dalmatian.
-    ensure_packages(['python3-sqlalchemy'])
-    apt::pin { 'python3-sqlalchemy':
-        pin      => 'version 1.*',
-        package  => 'python3-sqlalchemy',
-        priority => 1001,
-        before   => Package['python3-sqlalchemy'],
-    }
-
     # Subtemplates of trove.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
