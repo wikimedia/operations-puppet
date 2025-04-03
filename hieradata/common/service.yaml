@@ -799,14 +799,11 @@ service::catalog:
         - eqiad
         - codfw
     page: false
-    probes:
-      - type: http
-        path: /w/health-check.php
     port: 443
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: jobrunner
         active_active: false
@@ -3113,14 +3110,11 @@ service::catalog:
         - eqiad
         - codfw
     page: false
-    probes:
-      - type: http
-        path: /w/health-check.php
     port: 443
     sites:
       - eqiad
       - codfw
-    state: production
+    state: lvs_setup
     discovery:
       - dnsdisc: videoscaler
         active_active: false
