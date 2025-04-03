@@ -382,6 +382,7 @@ profile::services_proxy::envoy::listeners:
     keepalive: "4s"
     timeout: "60s"
     xfp: https
+    sets_sni: true
   - name: mw-jobrunner
     port: 6506
     service: mw-jobrunner
