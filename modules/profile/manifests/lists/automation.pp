@@ -53,9 +53,11 @@ class profile::lists::automation (
 
     each($lists_to_sync_wet) |$list_name| {
         mailman3::sync_list_members { "sync-members-${list_name}":
-            ensure    => $list_sync_ensure,
-            list_name => $list_name,
-            dry_run   => 'n',
+            ensure           => $list_sync_ensure,
+            list_name        => $list_name,
+            dry_run          => 'n',
+            mail_changes     => true,
+            meta_admin_email => 'dzahn@wikimedia.org',
         }
     }
 }
