@@ -35,7 +35,7 @@ define mailman3::sync_list_members(
 
     $mail_cmd = $mail_changes ? {
         true => @("MAILCMD"/L),
-            " | /usr/bin/mail \
+             | /usr/bin/mail \
             -r mailman@lists.wikimedia.org \
             -s "mailman list member sync" \
             -a "Auto-Submitted: auto-generated" \
