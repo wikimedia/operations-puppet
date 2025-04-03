@@ -1106,13 +1106,16 @@ node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
 # re-arranging elastic hosts by row in order to facilitate
 # reimages. Row info sourced from regex.yaml
 # ROW A
-node /^elastic2(061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
+## TEMP BEGIN remove elastic2055 and added entry for cirrussearch2055
+node /^elastic2(056|061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^cirrussearch2(055|056)\.codfw\./ {
+node /^cirrussearch2(055)\.codfw\./ {
     role(cirrus::opensearch)
 }
+## TEMP END   remove elastic2055 and added entry for cirrussearch2055
+
 
 # As we reimage the above hosts, we'll change both their role and their name.
 # node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
@@ -1121,7 +1124,7 @@ node /^cirrussearch2(055|056)\.codfw\./ {
 
 # ROW B
 
-node  /^elastic20(57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+node  /^elastic20(56|57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
     role(elasticsearch::cirrus)
 
 }
@@ -1130,21 +1133,21 @@ node /^elastic2110\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-# node  /^cirrussearch2(57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+# node  /^cirrussearch2(56|57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
 #     role(cirrus::opensearch)
 #
 # }
 #
-# node ^cirrussearch2110\.codfw\./ {
+# node ^cirrussearch2.codfw\./ {
 #     role(cirrus::opensearch)
 # }
 
 # ROW C
 
-node /^elastic2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.codfw\./ {
+node /^elastic2(059|065|066|071|083|081|082|098|099|100|101|102|103|112|113)\.codfw\./ {
     role(elasticsearch::cirrus)
 }
-# node /^cirrussearch2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.codfw\./ {
+# node /^cirrussearch2(059|065|066|071|083|081|082|098|099|100|101|102|103|112|113)\.codfw\./ {
 #     role(opensearch::cirrus)
 # ROW D
 
