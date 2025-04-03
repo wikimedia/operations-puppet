@@ -53,6 +53,7 @@ class profile::puppetserver::git (
     # TODO: refactor this so its closer to the g10k code
     # This is required to run g10k as root
     sudo::user { "${user}-puppetserver-deploy-code":
+        user       => $user,
         privileges => [
             'ALL = NOPASSWD: /usr/local/bin/puppetserver-deploy-code',
         ],
