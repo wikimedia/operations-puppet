@@ -62,7 +62,6 @@ profile::lvs::realserver::pools:
   mw-parsoid: {}
   mw-web: {}
   mw-web-next: {}
-  mw-wikifunctions: {}
   device-analytics: {}
   rest-gateway: {}
   kartotherian-k8s-ssl: {}
