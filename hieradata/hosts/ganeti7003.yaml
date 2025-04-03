@@ -3,7 +3,6 @@ profile::ganeti::nodes:
   - ganeti7001.magru.wmnet
   - ganeti7003.magru.wmnet
 profile::ganeti::rapi::certificate: ganeti01.svc.magru.wmnet
-profile::firewall::provider: nftables
 
 profile::ganeti::manage_known_hosts: true
 profile::ganeti::cluster_ssh_key: 'ganeti01.svc.magru.wmnet ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5pRaGMkqKqxRLx0XVppFBVZktKiriQJ+TQEQN7Tto5JIDBWqScfFZ6l1PgZEmfyQLNuYPlPa3BRaJ8KiJPZKx02UqxIECTQIaOQp5eTizZmtafKM4nwiC/0/wZ6kiTnFrADlYRdfEx0kNjuJq7Wkw3l2v1eG7Ki1XQz9Eii+7WLhsE15WQzlNHbf/Woj4mbOVzvAhw7vfvLJzyluPQt/ufTIhTjKiOgqvBMhe4lcXjVkkPOdaIF94W130W/y76GATApvuKitq9tpQZ5QL1Qu+XJN5CS0SDvxwtKMg61xb4xUT3gjD01PBcUoEZQOBf2oDFRJy0oFXw9WLIf5xj2N/'
