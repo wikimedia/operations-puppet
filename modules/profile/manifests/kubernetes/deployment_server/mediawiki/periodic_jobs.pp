@@ -15,8 +15,38 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
     order   => '01',
   }
 
-  include profile::mediawiki::maintenance::serviceops_version
-  include profile::mediawiki::maintenance::growthexperiments
-  include profile::mediawiki::maintenance::startupregistrystats
-
+  include ::profile::mediawiki::maintenance::serviceops_version
+  include ::profile::mediawiki::maintenance::growthexperiments
+  include ::profile::mediawiki::maintenance::startupregistrystats
+  include ::profile::mediawiki::maintenance::wikidata
+  include ::profile::mediawiki::maintenance::mediamoderation
+  include ::profile::mediawiki::maintenance::globalblocking
+  include ::profile::mediawiki::maintenance::pagetriage
+  include ::profile::mediawiki::maintenance::translationnotifications
+  include ::profile::mediawiki::maintenance::updatetranslationstats
+  include ::profile::mediawiki::maintenance::echo_mail_batch
+  include ::profile::mediawiki::maintenance::parsercachepurging
+  include ::profile::mediawiki::maintenance::cleanup_upload_stash
+  include ::profile::mediawiki::maintenance::update_flaggedrev_stats
+  include ::profile::mediawiki::maintenance::refreshlinks
+  include ::profile::mediawiki::maintenance::update_special_pages
+  include ::profile::mediawiki::maintenance::purge_abusefilter
+  include ::profile::mediawiki::maintenance::purge_checkuser
+  include ::profile::mediawiki::maintenance::purge_expired_userrights
+  include ::profile::mediawiki::maintenance::purge_old_cx_drafts
+  include ::profile::mediawiki::maintenance::purge_securepoll
+  include ::profile::mediawiki::maintenance::db_lag_stats
+  include ::profile::mediawiki::maintenance::cirrussearch
+  include ::profile::mediawiki::maintenance::generatecaptcha
+  include ::profile::mediawiki::maintenance::pageassessments
+  include ::profile::mediawiki::maintenance::readinglists
+  include ::profile::mediawiki::maintenance::initsitestats
+  include ::profile::mediawiki::maintenance::temporary_accounts
+  include ::profile::mediawiki::maintenance::recount_categories
+  include ::profile::mediawiki::maintenance::purge_expired_blocks
+  include ::profile::mediawiki::maintenance::image_suggestions
+  include ::profile::mediawiki::maintenance::campaignevents
+  include ::profile::mediawiki::maintenance::purge_loginnotify
+  include ::profile::mediawiki::maintenance::wikimediaevents
+  include ::profile::mediawiki::maintenance::backfill_localaccounts
 }
