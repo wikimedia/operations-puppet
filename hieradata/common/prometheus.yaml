@@ -125,3 +125,19 @@ prometheus::instances_cleanup:
     hosts:
       - prometheus2005.codfw.wmnet
       - prometheus2006.codfw.wmnet
+  k8s-aux:
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  k8s-mlserve:
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  k8s-staging:
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
+  k8s:
+    hosts:
+      - prometheus2005.codfw.wmnet
+      - prometheus2006.codfw.wmnet
