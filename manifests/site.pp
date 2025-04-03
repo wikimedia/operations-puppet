@@ -1946,7 +1946,7 @@ node /^maps-test200[2-6]\.codfw\./ {
 }
 
 node /^maps-test2001\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(maps::master_bookworm)
 }
 
 # testing buster master - maps2.0 migration
