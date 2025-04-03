@@ -1392,7 +1392,7 @@ node /^wikikube-ctrl200[1-3]\.codfw\./ {
 
 # BEGIN T384970 wikikube-ctrl200[4-5]
 node /^wikikube-ctrl200[4-5]\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 # END T384970 wikikube-ctrl200[4-5]
 
@@ -1743,11 +1743,11 @@ node /^wikikube-worker22([0-3][0-9]|4[0-3])\.codfw\./ {
 
 # BEGIN T384970 wikikube-worker2248-2331
 node /^wikikube-worker22(4[8-9]|[5-9][0-9])\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 node /^wikikube-worker23([0-2][0-9]|3[0-1])\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 # END T384970
@@ -1980,11 +1980,11 @@ node /^mc20(3[8-9]|4[0-9]|5[0-5])\.codfw\./ {
 }
 
 node /^mc-gp100[1-3]\.eqiad\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 node /^mc-gp200[1-3]\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 node /^mc-gp100[4-6]\.eqiad\./ {
@@ -1996,11 +1996,11 @@ node /^mc-gp200[4-6]\.codfw\./ {
 }
 
 node /^mc-misc100[1-2]\.eqiad\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 node /^mc-misc200[1-2]\.codfw\./ {
-    role(insetup::serviceops)
+    role(insetup::serviceops_ferm)
 }
 
 # new mc-wf nodes T313963
