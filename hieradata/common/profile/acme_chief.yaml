@@ -23,7 +23,7 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_regexes:
         - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
-        - '^cloudelastic[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+        - '^cloudelastic[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     dotls-for-authdns:
         CN: 'ns0.wikimedia.org'
         SNI:
@@ -47,7 +47,7 @@ profile::acme_chief::certificates:
         - '*.check.wikimedia-dns.org'
         challenge: dns-01
         authorized_regexes:
-        - '^durum[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+        - '^durum[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     gerrit:
         CN: 'gerrit.wikimedia.org'
         SNI:
@@ -273,7 +273,7 @@ profile::acme_chief::certificates:
         staging_time: 604800
         challenge: dns-01
         authorized_regexes:
-        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     unified-goog:
         CN: '*.wikipedia.org'
         SNI:
@@ -324,7 +324,7 @@ profile::acme_chief::certificates:
         key_types:
         - 'ec-prime256v1'
         authorized_regexes:
-        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     wikidough:
         CN: 'wikimedia-dns.org'
         SNI:
@@ -340,4 +340,4 @@ profile::acme_chief::certificates:
         staging_time: 604800
         challenge: dns-01
         authorized_regexes:
-        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|ulsfo|esams|drmrs|eqsin|magru)\.wmnet$'
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
