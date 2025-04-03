@@ -420,7 +420,7 @@ profile::trafficserver::backend::mapping_rules:
       # First, catch REST API for path normalization with the right params
     - type: map
       target: http://www.wikifunctions.org/w/rest.php
-      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/rest.php
+      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443/w/rest.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -435,14 +435,11 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+          - '@pparam=mw-wikifunctions-ingress.discovery.wmnet' # dest
       # Then, catch action API to remove path normalization for PURGE requests
     - type: map
       target: http://www.wikifunctions.org/w/api.php
-      replacement: https://mw-wikifunctions.discovery.wmnet:4451/w/api.php
+      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443/w/api.php
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/rb-mw-mangling.lua'
@@ -451,15 +448,12 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+          - '@pparam=mw-wikifunctions-ingress.discovery.wmnet' # dest
       # Last, catch the rest of wikifunctions calls with identical path normalization
       # parameters as the global mediawiki catch-all.
     - type: map
       target: http://www.wikifunctions.org
-      replacement: https://mw-wikifunctions.discovery.wmnet:4451
+      replacement: https://mw-wikifunctions-ingress.discovery.wmnet:30443
       params:
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/normalize-path.lua'
@@ -474,10 +468,7 @@ profile::trafficserver::backend::mapping_rules:
           # Multi-DC
           - '@plugin=/usr/lib/trafficserver/modules/tslua.so'
           - '@pparam=/etc/trafficserver/lua/multi-dc.lua'
-          - '@pparam=mw-wikifunctions-ro.discovery.wmnet' # dest
-          # Re-use origin server connections if origin IP and port match
-          - '@plugin=/usr/lib/trafficserver/modules/conf_remap.so'
-          - '@pparam=proxy.config.http.server_session_sharing.match=ip'
+          - '@pparam=mw-wikifunctions-ingress.discovery.wmnet' # dest
       # mediawiki
       # REST api
     - type: regex_map
