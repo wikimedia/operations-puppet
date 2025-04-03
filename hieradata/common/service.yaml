@@ -814,7 +814,7 @@ service::catalog:
   k8s-ingress-staging:
     description: istio-ingresscontroller on kubernetes staging. k8s-ingress-staging.discovery.wmnet
     encryption: true
-    ip:
+    ip: &k8s-ingress-wikikube-staging_ips
       codfw:
         default: 10.2.1.69
       eqiad:
@@ -846,7 +846,7 @@ service::catalog:
     # leading this check and PyBal monitor to fail.
     probes:
       - type: tcp-notls
-    port: 30443
+    port: &k8s-ingress-wikikube-staging_port 30443
     sites:
       - codfw
       - eqiad
@@ -3940,6 +3940,20 @@ service::catalog:
       - codfw
     state: production
 
+  data-gateway-staging:
+    description: data gateway staging service, data-gateway.k8s-staging.discovery.wmnet
+    encryption: true
+    ip: *k8s-ingress-wikikube-staging_ips
+    page: false
+    port: *k8s-ingress-wikikube-staging_port
+    probes:
+      - type: http
+        path: /healthz
+    sites:
+      - eqiad
+      - codfw
+    state: production
+
   developer-portal:
     description: Static documentation site, developer-portal.discovery.wmnet
     encryption: true
@@ -4364,4 +4378,3 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
-

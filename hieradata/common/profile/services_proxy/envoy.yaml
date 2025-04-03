@@ -421,6 +421,13 @@ profile::services_proxy::envoy::listeners:
     # We manually force the host header to use the right value.
     http_host: 'noc.wikimedia.org'
     keepalive: "4s"
+  - name: data-gateway-staging
+    port: 6510
+    service: data-gateway-staging
+    timeout: "10s"
+    keepalive: "4s"
+    sets_sni: true
+    upstream: data-gateway.k8s-staging.discovery.wmnet
 
 # default listeners list used by the MW installations
 profile::services_proxy::envoy::enabled_listeners:
