@@ -222,3 +222,4 @@ profile::opensearch::instances:
         recover_after_nodes: 11
 
 profile::opensearch::dc_settings: {}
+
