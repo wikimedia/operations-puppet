@@ -46,6 +46,8 @@ cnames:
     - centralauth.analytics.db.svc.wikimedia.cloud.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.analytics.db.svc.wikimedia.cloud.
+  s8.analytics.db.svc.wikimedia.cloud.:
+    - x3.analytics.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
   s7.web.db.svc.eqiad.wmflabs.:
     - centralauth.web.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
@@ -54,3 +56,5 @@ cnames:
     - centralauth.web.db.svc.wikimedia.cloud.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.web.db.svc.wikimedia.cloud.
+  s8.web.db.svc.wikimedia.cloud.:
+    - x3.web.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
