@@ -10,4 +10,4 @@ prometheus::replica_label: 'a'
 prometheus::instances_overrides:
   retention_size: '1GB'
   hosts:
-    - "%{alias('__master_for_role_prometheus')}"
+    - "%{alias('__hosts_for_role_prometheus')}"
