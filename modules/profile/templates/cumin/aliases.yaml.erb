@@ -49,6 +49,17 @@ bastion-canary: P{bast4005.wikimedia.org}
 centrallog: P{O:syslog::centralserver}
 cephosd: P{O:ceph::server}
 chartmuseum: P{O:chartmuseum}
+# Add new aliases for cirrussearch (formerly elastic, now OpenSearch) cluster T388610
+# The cluster will be mixed until the migration is complete, so elastic aliases
+# should match the new or old hosts.
+cirrussearch: P{O:elasticsearch::cirrus or O:cirrus::opensearch}
+cirrussearch-canary: P{elastic1102.eqiad.wmnet}
+cirrussearch-codfw: A:cirrussearch and A:codfw
+cirrussearch-eqiad: A:cirrusssearch and A:eqiad
+cirrussearch-codfw-omega: P{R:Service = elasticsearch_7@production-search-omega-codfw or R:Service = opensearch_1@production-search-omega-codfw}
+cirrussearch-codfw-psi: P{R:Service = elasticsearch_7@production-search-psi-codfw or R:Service = opensearch_1@production-search-psi-codfw}
+cirrussearch-eqiad-omega: P{R:Service = elasticsearch_7@production-search-omega-eqiad or R:Service = opensearch_1@production-search-omega-eqiad}
+cirrussearch-eqiad-psi: P{R:Service = elasticsearch_7@production-search-psi-eqiad or R:Service = opensearch_1@production-search-psi-eqiad}
 cloudelastic: P{O:cirrus::cloudelastic}
 cloudbackup: P{O:wmcs::openstack::eqiad1::instance_backups} or P{O:wmcs::openstack::eqiad1::cinder_backups} or P{O:wmcs::openstack::codfw1dev::cinder_backups}
 cloudcontrol: P{O:wmcs::openstack::eqiad1::control}
@@ -151,14 +162,17 @@ durum: P{O:durum}
 <% @datacenters.each do |dc| -%>
 durum-<%= dc %>: A:durum and A:<%= dc %>
 <% end -%>
-elastic: P{O:elasticsearch::cirrus}
+# Add new aliases for cirrussearch (formerly elastic, now OpenSearch) cluster T388610
+# The cluster will be mixed until the migration is complete, so elastic aliases
+# should match the new or old hosts.
+elastic: P{O:elasticsearch::cirrus or O:cirrus::opensearch}
 elastic-canary: P{elastic1102.eqiad.wmnet}
 elastic-codfw: A:elastic and A:codfw
 elastic-eqiad: A:elastic and A:eqiad
-elastic-codfw-omega: P{R:Service = elasticsearch_7@production-search-omega-codfw}
-elastic-codfw-psi: P{R:Service = elasticsearch_7@production-search-psi-codfw}
-elastic-eqiad-omega: P{R:Service = elasticsearch_7@production-search-omega-eqiad}
-elastic-eqiad-psi: P{R:Service = elasticsearch_7@production-search-psi-eqiad}
+elastic-codfw-omega: P{R:Service = elasticsearch_7@production-search-omega-codfw or R:Service = opensearch_1@production-search-omega-codfw}
+elastic-codfw-psi: P{R:Service = elasticsearch_7@production-search-psi-codfw or R:Service = opensearch_1@production-search-psi-codfw}
+elastic-eqiad-omega: P{R:Service = elasticsearch_7@production-search-omega-eqiad or R:Service = opensearch_1@production-search-omega-eqiad}
+elastic-eqiad-psi: P{R:Service = elasticsearch_7@production-search-psi-eqiad or R:Service = opensearch_1@production-search-psi-eqiad}
 etherpad: P{O:etherpad}
 failoid: P{O:failoid}
 ganeti: P{O:ganeti}
