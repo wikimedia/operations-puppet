@@ -54,6 +54,16 @@ class backy2(
       Package[$package] -> Package['backy2']
     }
 
+    # sqlalchemy version 2 has quite a few breaking changes;
+    #  backy2 can't talk to postgres unless we install
+    #  something pre version 2.
+    apt::pin { 'python3-sqlalchemy':
+        pin      => 'version 1.*',
+        package  => 'python3-sqlalchemy',
+        priority => 1001,
+        before   => Package['python3-sqlalchemy'],
+    }
+
     # python3-crypto is not included in bullseye, not sure if it's needed in Buster or not
     # let's include on buster until it's gone so that the existing hosts don't break
     if debian::codename::le('buster') {
