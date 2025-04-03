@@ -37,6 +37,7 @@ define profile::mediawiki::periodic_job::kubernetes(
     Stdlib::Unixpath $helmfile_defaults_dir = '/etc/helmfile-defaults',
 ) {
     if $ensure == 'present' {
+        $command_quoted = $command.to_json()
         concat_fragment { "mediawiki_job_${title}":
             content => template('profile/mediawiki/maintenance/kubernetes_periodic_job.tmpl.erb'),
             target  => "${helmfile_defaults_dir}/mediawiki/periodic-jobs.yaml",

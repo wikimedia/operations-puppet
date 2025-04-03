@@ -1,7 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
     - name: <%= @title.gsub('_', '-') %>
       schedule: "<%= @cron_schedule %>"
-      command: "<%= @command %>"
+      command: <%= @command_quoted %>
       labels:
         team: <%= @team %>
         script: <%= @script_label %>
