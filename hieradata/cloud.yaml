@@ -154,8 +154,6 @@ profile::debmonitor::server::enable_monitoring: false
 profile::debmonitor::server::required_groups: []
 profile::debmonitor::server::trusted_ca_source: "/etc/ssl/certs/Puppet_Internal_CA.pem"
 
-profile::etherpad::service_ensure: running
-
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::description: WMF GitLab runner
@@ -623,9 +621,6 @@ profile::thanos::httpd::enable_sso: false
 profile::thanos::query_frontend::memcached_hosts: []
 profile::thanos::rule_hosts: {}
 profile::thanos::swift::cluster_label: ~
-
-profile::gerrit::ipv6: ~
-profile::gerrit::enable_monitoring: true
 
 profile::alertmanager::irc::host: "example.net"
 profile::alertmanager::irc::port: 6697
