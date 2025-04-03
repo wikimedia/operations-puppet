@@ -211,7 +211,7 @@ groups:
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
-              kemayo, arthurtaylor
+              kemayo, arthurtaylor, ozge
     ]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
@@ -458,7 +458,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo]
+              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -929,7 +929,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis, ozge]
     privileges: []
     approval:
       - Chris Albon
@@ -6652,6 +6652,15 @@ users:
     gid: 500
     ssh_keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC0Kxa5UOVXHgNBcJCNtcXvH0lc/gvN2/uk2L7CyMs4DUjc6Q1OyNoLt76tlqTHy3Vmr/OaqqIP542X2uYs+VNAqVXala2keFBA2JyQrYhZinQvAPDiTqJyciM7iZvg41bbv1gft02HCVplcSR0KIGWGwRbubkrpTekIUgmWpX6c8xygrfY8wTgPJpOsGc03yOIfzAdiji4JqPjKrE9yrgHsxpx903lx8FfMDoFO7zh2IQbEDyTzS5pOVijtJKObRm7EUqkrv/p1wl1C4u0amDAt6pBvB0jSWVLpY10yV/+i29+l+3Te63LbWYqhnev1o439V3PcbfToZlbV/pZ/9cx/c/iHyyGIo2uSHdpN53STRmJnaCCtnSvqg7htFr8vpO9dUxIVPdHgi3j/dztikPTAoTscOCW7ViGHnbBNtphe5JlScq31qk4Ikud00Lc80EXntmjrnkOHOeIl6O56Xn8Q4t3cNBvGMWGk7cpgPkWVJjiiryMMPJWpHmcNCWwqNEVaM/x+9iq4l5dcDRu8sR9Dbza3ZdbTMC9VFSUVpOmdSCW9NbBB5PyMCKb8gTxKcEdQEZOLYzm7Ceoq9Vo5dV9dqX2gEyNyTjat4z+FMKq4LY0Ab6S6fEmb93ZFmUoHGECyyCm6gmcDgzYe0uJdyKOhRcPCaJWjP/C64wkM1mZow== christopherpetrillo@wmf3408
+    krb: present
+  ozge:
+    ensure: present
+    realname: Özge Karakaya
+    email: okarakaya@wikimedia.org
+    uid: 48958
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9oQOEEcRINTs5nk3I6s6eB8FqHZSYeII7pFYV67E8Q okarakaya@wikimedia.org
     krb: present
 
 ldap_only_users:
