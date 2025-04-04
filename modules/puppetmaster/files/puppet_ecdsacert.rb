@@ -162,7 +162,7 @@ class PuppetECDSAGen
 
   def cleanup
     Log.debug "Removing file #{csr_path} if present"
-    File.delete csr_path if File.exists? csr_path
+    File.delete csr_path if File.exist? csr_path
   end
 end
 

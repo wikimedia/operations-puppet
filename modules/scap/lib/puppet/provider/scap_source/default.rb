@@ -80,7 +80,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
     umask = 0o002
     file_mode = 0o2775
 
-    unless Dir.exists?(path)
+    unless Dir.exist?(path)
       FileUtils.makedirs path, :mode => file_mode
       FileUtils.chown_R resource[:owner], resource[:group], path
     end
@@ -149,19 +149,19 @@ Puppet::Type.type(:scap_source).provide(:default) do
   end
 
   def deploy_head_exists?
-    File.exists?(File.join(target_path, '.git', 'DEPLOY_HEAD'))
+    File.exist?(File.join(target_path, '.git', 'DEPLOY_HEAD'))
   end
 
   def create
     # Create the parent directory
-    unless Dir.exists?(deploy_root)
+    unless Dir.exist?(deploy_root)
       Puppet.debug("Creating #{deploy_root}")
       FileUtils.makedirs deploy_root, :mode => 0o755
       FileUtils.chown_R resource[:owner], resource[:group], deploy_root
     end
 
     # Checkout the main repository, and the scap one too
-    unless Dir.exists?(target_path)
+    unless Dir.exist?(target_path)
       Puppet.debug("Checking out #{repo} into #{target_path}")
       checkout repo, target_path
       Puppet.debug("Repository checked out in #{target_path}")
@@ -169,7 +169,7 @@ Puppet::Type.type(:scap_source).provide(:default) do
 
     if resource[:scap_repository]
       target = File.join(target_path, 'scap')
-      checkout resource[:scap_repository], target unless Dir.exists?(target)
+      checkout resource[:scap_repository], target unless Dir.exist?(target)
     end
     scap_init unless deploy_head_exists?
   end

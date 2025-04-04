@@ -13,7 +13,7 @@ Facter.add(:has_ipmi) do
   confine :kernel => %w{Linux FreeBSD OpenBSD}
   confine :virtual => 'physical'
   confine do
-    File.exists?('/usr/sbin/dmidecode')
+    File.exist?('/usr/sbin/dmidecode')
   end
 
   setcode do
@@ -26,12 +26,12 @@ end
 Facter.add(:ipmi_lan) do
   confine :has_ipmi => true
   confine do
-    File.exists?('/usr/sbin/bmc-config') || File.exists?('/usr/bin/ipmitool')
+    File.exist?('/usr/sbin/bmc-config') || File.exist?('/usr/bin/ipmitool')
   end
 
   setcode do
     ipmi_lan = {}
-    if File.exists?('/usr/sbin/bmc-config')
+    if File.exist?('/usr/sbin/bmc-config')
       cmd = '/usr/sbin/bmc-config -o -S Lan_Conf'
     else
       cmd = '/usr/bin/ipmitool lan print'
@@ -62,7 +62,7 @@ end
 Facter.add(:ipmi_chassis) do
   confine :has_ipmi => true
   confine do
-    File.exists?('/usr/sbin/ipmi-chassis-config')
+    File.exist?('/usr/sbin/ipmi-chassis-config')
   end
 
   ipmi_chassis = {

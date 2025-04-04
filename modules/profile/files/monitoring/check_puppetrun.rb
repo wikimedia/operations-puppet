@@ -87,13 +87,13 @@ if warn.zero? || crit.zero?
     exit 3
 end
 
-if File.exists?(adminlockfile)
+if File.exist?(adminlockfile)
        enabled = false
        disabled_message = YAML.safe_load(File.read(adminlockfile))["disabled_message"]
        disabled_time = File.stat(adminlockfile).ctime
 end
 
-if File.exists?(summaryfile)
+if File.exist?(summaryfile)
     begin
       summary = YAML.safe_load(File.read(summaryfile))
       lastrun = summary["time"]["last_run"]

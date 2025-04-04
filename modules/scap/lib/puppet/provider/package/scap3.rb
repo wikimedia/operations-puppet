@@ -34,7 +34,7 @@ Puppet::Type.type(:package).provide(
   # cache and final directory creation is left up to scap.
   #
   def install
-    unless Dir.exists?(deploy_root)
+    unless Dir.exist?(deploy_root)
       FileUtils.makedirs(deploy_root)
     end
 

@@ -12,7 +12,7 @@ Puppet::Reports.register_report(:statsd) do
 
     def load_config
         config_file = File.join Puppet.settings[:confdir], 'statsd.yaml'
-        raise Puppet::ParseError, "#{config_file} is missing" unless File.exists? config_file
+        raise Puppet::ParseError, "#{config_file} is missing" unless File.exist? config_file
         YAML.load_file(config_file)
     end
 

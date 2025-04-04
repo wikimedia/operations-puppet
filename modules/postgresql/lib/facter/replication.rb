@@ -18,6 +18,6 @@ Facter.add('postgres_replica_initialised') do
   end
   setcode do
     data_dir = Facter::Util::Resolution.exec("sudo -u postgres psql -tc 'SHOW data_directory;'").strip
-    File.exists?("#{data_dir}/backup_label.old")
+    File.exist?("#{data_dir}/backup_label.old")
   end
 end

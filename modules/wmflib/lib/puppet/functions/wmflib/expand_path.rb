@@ -23,7 +23,7 @@ Puppet::Functions.create_function(:'wmflib::expand_path') do
   end
 
   def load_data_hash(path, context)
-    return {} unless File.exists?(path)
+    return {} unless File.exist?(path)
     context.cached_file_data(path) do |content|
       begin
         if Gem::Version.new(RUBY_VERSION) >= Gem::Version.new('2.7')

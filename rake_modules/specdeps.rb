@@ -29,9 +29,9 @@ class SpecDependencies
     modules = modules_modified(filelist)
     return [] unless modules
     modules.each do |mod|
-      specs.add(mod) if Dir.exists?("modules/#{mod}/spec")
+      specs.add(mod) if Dir.exist?("modules/#{mod}/spec")
       if @deps.include?mod
-        @deps[mod].each{ |m| specs.add(m) if Dir.exists?("modules/#{m}/spec") }
+        @deps[mod].each{ |m| specs.add(m) if Dir.exist?("modules/#{m}/spec") }
       end
     end
     specs.to_a
@@ -44,7 +44,7 @@ class SpecDependencies
     modules = modules_modified(filelist)
     return [] unless modules
     modules.each do |mod|
-      mods_to_test.add(mod) if File.exists? "modules/#{mod}/tox.ini"
+      mods_to_test.add(mod) if File.exist? "modules/#{mod}/tox.ini"
     end
     mods_to_test
   end
@@ -54,7 +54,7 @@ class SpecDependencies
     # files that have a tox.ini file in their
     # module.
     filelist.select do |file|
-      File.exists? "modules/#{module_from_filename(file)}/tox.ini"
+      File.exist? "modules/#{module_from_filename(file)}/tox.ini"
     end
   end
 

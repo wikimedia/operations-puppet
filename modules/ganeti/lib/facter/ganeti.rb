@@ -2,7 +2,7 @@
 Facter.add('ganeti_cluster') do
   confine :kernel => :linux
   confine do
-    File.exists?('/var/lib/ganeti/ssconf_cluster_name')
+    File.exist?('/var/lib/ganeti/ssconf_cluster_name')
   end
 
   setcode do
@@ -13,7 +13,7 @@ end
 Facter.add('ganeti_master') do
   confine :kernel => :linux
   confine do
-    File.exists?('/var/lib/ganeti/ssconf_master_node')
+    File.exist?('/var/lib/ganeti/ssconf_master_node')
   end
 
   setcode do

@@ -4,7 +4,7 @@ require 'rexml/document'
 Facter.add(:lldp) do
   confine :kernel => %w{Linux FreeBSD OpenBSD}
   confine do
-    File.exists?('/usr/sbin/lldpctl')
+    File.exist?('/usr/sbin/lldpctl')
   end
 
   setcode do

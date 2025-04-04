@@ -7,7 +7,7 @@ Facter.add(:lshw) do
   confine :is_virtual => false
   # Only make this available if lshw is installed on the system.
   confine do
-    File.exists?('/usr/bin/lshw')
+    File.exist?('/usr/bin/lshw')
   end
   # Additionally confine to only Traffic hosts for now (cp/dns), excluding LVS.
   confine do
