@@ -5,6 +5,7 @@ function wmflib::debian_postgresql_version(){
         'buster'   => '11',
         'bullseye' => '13',
         'bookworm' => '15',
+        'trixie'   => '17',
         default    => fail('unsupported distro'),
     }
 }
