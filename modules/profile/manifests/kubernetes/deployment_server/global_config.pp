@@ -74,6 +74,7 @@ class profile::kubernetes::deployment_server::global_config (
                 'encryption' => $split_svc['encryption'],
                 'keepalive' => $split_data['keepalive'],
                 'sets_sni' => $split_data['sets_sni'],
+                'sni_rewrites_host_header' => $split_data['sni_rewrites_host_header'],
             }.filter |$key, $val| { $val =~ NotUndef }
         }
         $upstream = {
@@ -82,6 +83,7 @@ class profile::kubernetes::deployment_server::global_config (
                     'port' => $upstream_port,
                     'encryption' => $encryption,
                     'sets_sni'   => $listener['sets_sni'],
+                    'sni_rewrites_host_header' => $listener['sni_rewrites_host_header'],
                     'tcp_keepalive'   => $listener['tcp_keepalive'],
                     'idle_timeout'   => $listener['idle_timeout'],
                     'keepalive' => $listener['keepalive'],

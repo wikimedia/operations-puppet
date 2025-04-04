@@ -383,6 +383,9 @@ profile::services_proxy::envoy::listeners:
     timeout: "60s"
     xfp: https
     sets_sni: true
+    # We need > 1 possible Host headers here (wikifunctions, wikidata) and thus
+    # http_host wouldn't cover this use case
+    sni_rewrites_host_header: false
   - name: mw-jobrunner
     port: 6506
     service: mw-jobrunner

@@ -10,6 +10,7 @@ type Profile::Service_listener =  Struct[{
     'retry'        => Optional[Hash],
     'keepalive'    => Optional[String],
     'sets_sni'     => Optional[Boolean],
+    'sni_rewrites_host_header'     => Optional[Boolean],
     'tcp_keepalive' => Optional[Struct[{
         'keepalive_probes'   => Optional[Integer],
         'keepalive_time'     => Optional[Integer],

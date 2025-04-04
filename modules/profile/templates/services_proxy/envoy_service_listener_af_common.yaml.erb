@@ -60,7 +60,7 @@ filter_chains:
               <%- if @listener['http_host'] -%>
               host_rewrite_literal: <%= @listener['http_host'] %>
               <%- end -%>
-              <%- if @listener['sets_sni'] && !@listener['http_host'] -%>
+              <%- if @listener['sets_sni'] && !@listener['http_host'] && !@listener['sni_rewrites_host_header'] -%>
               auto_host_rewrite: true
               <%- end -%>
               cluster: <%= @svc_name %>-split
@@ -76,7 +76,7 @@ filter_chains:
               <%- if @listener['http_host'] -%>
               host_rewrite_literal: <%= @listener['http_host'] %>
               <%- end -%>
-              <%- if @listener['sets_sni'] && !@listener['http_host'] -%>
+              <%- if @listener['sets_sni'] && !@listener['http_host'] && !@listener['sni_rewrites_host_header'] -%>
               auto_host_rewrite: true
               <%- end -%>
               cluster: <%= @svc_name %>
