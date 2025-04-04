@@ -417,6 +417,9 @@ codfw:
     thanos-fe2002.codfw.wmnet: [thanos-swift]
     thanos-fe2003.codfw.wmnet: [thanos-swift]
     thanos-fe2004.codfw.wmnet: [thanos-swift]
+    thanos-fe2005.codfw.wmnet: [thanos-swift]
+    thanos-fe2006.codfw.wmnet: [thanos-swift]
+    thanos-fe2007.codfw.wmnet: [thanos-swift]
     titan2001.codfw.wmnet: [thanos-query, thanos-web]
     titan2002.codfw.wmnet: [thanos-query, thanos-web]
   ml_serve:

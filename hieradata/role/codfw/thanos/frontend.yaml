@@ -3,4 +3,7 @@ profile::thanos::swift::memcached_servers:
   - thanos-fe2002.codfw.wmnet
   - thanos-fe2003.codfw.wmnet
   - thanos-fe2004.codfw.wmnet
+  - thanos-fe2005.codfw.wmnet
+  - thanos-fe2006.codfw.wmnet
+  - thanos-fe2007.codfw.wmnet
 profile::thanos::swift::read_affinity: 'r2=100'

@@ -95,6 +95,9 @@ profile::thanos::swift::frontends:
   - thanos-fe2002.codfw.wmnet
   - thanos-fe2003.codfw.wmnet
   - thanos-fe2004.codfw.wmnet
+  - thanos-fe2005.codfw.wmnet
+  - thanos-fe2006.codfw.wmnet
+  - thanos-fe2007.codfw.wmnet
   - thanos-fe1001.eqiad.wmnet
   - thanos-fe1002.eqiad.wmnet
   - thanos-fe1003.eqiad.wmnet
