@@ -91,3 +91,4 @@ cephadm_clusters:
     rgws:
       - moss-fe2001.codfw.wmnet
       - moss-fe2002.codfw.wmnet
+      - apus-fe2003.codfw.wmnet
