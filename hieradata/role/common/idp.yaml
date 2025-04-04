@@ -319,6 +319,7 @@ profile::idp::services:
     service_id: 'https://spiderpig\.wikimedia\.org(/.*)?'
     member_of_exclude: '^cn=tools(beta)?.*,ou=servicegroups,.*$'
     required_groups:
+      - spiderpig-access
       - releng
       - ops
 profile::idp::ldap_attributes:
