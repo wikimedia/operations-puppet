@@ -100,6 +100,8 @@ profile::swift::proxyhosts:
   - ms-fe2012.codfw.wmnet
   - ms-fe2013.codfw.wmnet
   - ms-fe2014.codfw.wmnet
+  - ms-fe2015.codfw.wmnet
+  - ms-fe2016.codfw.wmnet
 
 profile::swift::storagehosts:
   - ms-be1060.eqiad.wmnet

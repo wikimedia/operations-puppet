@@ -5,7 +5,9 @@ profile::swift::proxy::memcached_servers: [
   'ms-fe2011.codfw.wmnet',
   'ms-fe2012.codfw.wmnet',
   'ms-fe2013.codfw.wmnet',
-  'ms-fe2014.codfw.wmnet'
+  'ms-fe2014.codfw.wmnet',
+  'ms-fe2015.codfw.wmnet',
+  'ms-fe2016.codfw.wmnet'
 # no trailing comma!
 ]
 

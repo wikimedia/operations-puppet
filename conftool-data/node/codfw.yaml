@@ -33,6 +33,8 @@ codfw:
     ms-fe2012.codfw.wmnet: [swift-fe, nginx]
     ms-fe2013.codfw.wmnet: [swift-fe, nginx]
     ms-fe2014.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2015.codfw.wmnet: [swift-fe, nginx]
+    ms-fe2016.codfw.wmnet: [swift-fe, nginx]
   apus:
     moss-fe2001.codfw.wmnet: [apus]
     moss-fe2002.codfw.wmnet: [apus]
