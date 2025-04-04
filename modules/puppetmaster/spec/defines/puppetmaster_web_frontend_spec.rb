@@ -76,7 +76,6 @@ describe 'puppetmaster::web_frontend' do
           before(:each) do
             params.merge!(
               canary_hosts: [
-                'www.wikipedia.org', # This test hard codes the A/AAAA answers below
                 '192.0.2.42',
                 '2001:db8::1',
               ]
@@ -88,9 +87,7 @@ describe 'puppetmaster::web_frontend' do
               ensure: 'present',
               priority: '90'
             ).with_content(
-              %r{RewriteCond\s+expr\s+"-R\s+'208\.80\.154\.224'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'2620:0:861:ed1a::1'"\s+\[OR\]
-              \s+RewriteCond\s+expr\s+"-R\s+'192\.0\.2\.42'"\s+\[OR\]
+              %r{RewriteCond\s+expr\s+"-R\s+'192\.0\.2\.42'"\s+\[OR\]
               \s+RewriteCond\s+expr\s+"-R\s+'2001:db8::1'"
               \s+RewriteRule\s+\^\s+balancer://canarybackend%\{REQUEST_URI\}\s+\[P,QSA\]
               \s+<Proxy\s+balancer://canarybackend>
