@@ -258,6 +258,12 @@ def main() -> int:
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
             ExternalCloudVendor(
+                 "Google-SpecialCaseCrawlers",
+                 # https://developers.google.com/search/docs/crawling-indexing/google-special-case-crawlers
+                 "https://developers.google.com/static/search/apis/ipranges/special-crawlers.json",
+                 {"ipv4Prefix", "ipv6Prefix"},
+            ),
+            ExternalCloudVendor(
                 "OpenAI-SearchBot",
                 "https://openai.com/searchbot.json",
                 {"ipv4Prefix", "ipv6Prefix"},
