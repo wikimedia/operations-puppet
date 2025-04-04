@@ -2451,7 +2451,7 @@ infra_devices:
     ipv6: 2a02:ec80:300:ffff::4
     site: esams
     role: l3sw
-  ripe-atlas-esams:
+  atlas3001:
     ipv4: '185.15.59.74'
     ipv6: '2a02:ec80:300:202:185:15:59:74'
     site: esams
@@ -2516,7 +2516,7 @@ infra_devices:
     - mr1-eqsin
     site: eqsin
     role: scs
-  ripe-atlas-eqsin:
+  atlas5001:
     ipv4: 103.102.166.20
     ipv6: 2001:df2:e500:201:103:102:166:20
     parents:
@@ -2587,7 +2587,7 @@ infra_devices:
     ipv6: 2a02:ec80:700:ffff::4
     site: magru
     role: l3sw
-  ripe-atlas-magru:
+  atlas7001:
     ipv4: 195.200.68.66
     ipv6: 2a02:ec80:700:201:195:200:68:66
     parents:

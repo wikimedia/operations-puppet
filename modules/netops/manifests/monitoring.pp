@@ -217,6 +217,7 @@ class netops::monitoring(
     $atlas_blackbox_exporter = $atlas.map |$device, $config| {
         {
           "${device}" => {
+            'server_name'         => "${device}.wikimedia.org",
             'instance_label'      => $device,
             'ip4'                 => $config['ipv4'],
             'ip6'                 => $config['ipv6'],
