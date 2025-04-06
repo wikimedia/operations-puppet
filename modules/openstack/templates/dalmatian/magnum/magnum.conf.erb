@@ -456,8 +456,16 @@ workers = 2
 # request. (list value)
 #allow_headers =
 
+[database]
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_overflow = 50
+max_pool_size = 10
+connection_recycle_time = 300
+pool_timeout = 60
 
-<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
+# Enable the experimental use of database reconnect on connection lost.
+use_db_reconnect = true
+
 
 [docker]
 
