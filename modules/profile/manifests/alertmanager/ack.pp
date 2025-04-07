@@ -2,7 +2,7 @@
 class profile::alertmanager::ack (
     Stdlib::Host        $active_host = lookup('profile::alertmanager::active_host'),
 ) {
-    if $active_host == $::fqdn {
+    if $active_host == $facts['networking']['fqdn'] {
         $ensure = present
     } else {
         $ensure = absent

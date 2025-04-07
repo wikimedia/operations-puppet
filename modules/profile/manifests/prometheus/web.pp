@@ -20,7 +20,7 @@ class profile::prometheus::web () {
     prometheus::instances().each |$instance, $config| {
         # Configure reverse proxy for prometheus instances belonging to this host or site
         $hosts_for_site = $config['hosts'].filter |$h| { $h =~ "\\.${::site}" }
-        if $::fqdn in $config['hosts'] or !empty($hosts_for_site) {
+        if $facts['networking']['fqdn'] in $config['hosts'] or !empty($hosts_for_site) {
             prometheus::web { $instance:
                 proxy_pass => prometheus::proxy_pass($config),
             }

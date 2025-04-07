@@ -9,7 +9,7 @@ class profile::alertmanager::irc (
     String              $irc_nickname_password = lookup('profile::alertmanager::irc::nickname_password'),
     String              $vhost = lookup('profile::alertmanager::web::vhost'),
 ) {
-    if $active_host == $::fqdn {
+    if $active_host == $facts['networking']['fqdn'] {
         $irc_ensure = running
     } else {
         $irc_ensure = stopped

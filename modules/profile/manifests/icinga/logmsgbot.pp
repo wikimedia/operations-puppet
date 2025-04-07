@@ -3,7 +3,7 @@ class profile::icinga::logmsgbot(
     Array[String] $partners    = lookup('profile::icinga::partners'),
 ) {
     class{ '::profile::tcpircbot':
-        ensure => $active_host == $::fqdn ? {
+        ensure => $active_host == $facts['networking']['fqdn'] ? {
             false => absent,
             true  => present,
         }

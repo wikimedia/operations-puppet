@@ -24,8 +24,8 @@ class profile::wmcs::metricsinfra::alertmanager::api_rw_proxy (
         content => epp(
             'profile/wmcs/metricsinfra/alertmanager/api_rw_proxy/vhost.conf.epp',
             {
-                'server_name' => $facts['fqdn'],
-                'domain'      => $facts['domain'],
+                'server_name' => $facts['networking']['fqdn'],
+                'domain'      => $facts['networking']['domain'],
                 'trusted_ips' => $trusted_ips,
             },
         ),

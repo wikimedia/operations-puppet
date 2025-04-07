@@ -59,7 +59,7 @@ class thanos::compact (
     if $ensure != present {
         $service_ensure = $ensure
     } else { # handle fqdn-based singleton service
-        if $run_on_host == $::fqdn {
+        if $run_on_host == $facts['networking']['fqdn'] {
             $service_ensure = 'present'
             $service_enable = true
         } else {

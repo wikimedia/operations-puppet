@@ -57,8 +57,9 @@ class thanos::rule (
     $am_config = { 'alertmanagers' => [
         { 'static_configs' => $alertmanagers.map |$a| { "${a}:9093" } }
     ]}
-    $replica = $::fqdn in $rule_hosts ? {
-        true  => $rule_hosts[$::fqdn]['replica'],
+    $fqdn = $facts['networking']['fqdn']
+    $replica = $fqdn in $rule_hosts ? {
+        true  => $rule_hosts[$fqdn]['replica'],
         false => 'unset'
     }
     $relabel_config_file = '/etc/thanos-rule/relabel.yaml'
@@ -122,7 +123,7 @@ class thanos::rule (
     if $ensure != present {
         $service_ensure = $ensure
     } else { # handle fqdn-based service running/stopped status
-        if $::fqdn in $rule_hosts {
+        if $facts['networking']['fqdn'] in $rule_hosts {
             $service_ensure = 'present'
             $service_enable = true
         } else {

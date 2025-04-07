@@ -627,8 +627,8 @@ profile::alertmanager::irc::port: 6697
 profile::alertmanager::irc::nickname: "jinxer-wm"
 profile::alertmanager::irc::realname: "I jinx things at WMF"
 profile::alertmanager::irc::channel: "wikimedia-observability-spam"
-profile::alertmanager::web::vhost: "alerts.%{facts.domain}"
-profile::alertmanager::api::vhost_alias: "alertmanager-*.%{facts.domain}"
+profile::alertmanager::web::vhost: "alerts.%{facts.networking.domain}"
+profile::alertmanager::api::vhost_alias: "alertmanager-*.%{facts.networking.domain}"
 profile::alertmanager::api::ro: []
 profile::alertmanager::api::rw: []
 profile::graphite::base::cluster_servers: []

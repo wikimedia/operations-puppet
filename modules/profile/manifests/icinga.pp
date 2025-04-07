@@ -34,7 +34,7 @@ class profile::icinga(
     Integer                       $timeout               = lookup('profile::elasticsearch::monitor::timeout', {'default_value' => 4}),
     Hash                          $wikimedia_clusters    = lookup('wikimedia_clusters'),
 ){
-    $is_passive = !($::fqdn == $active_host)
+    $is_passive = !($facts['networking']['fqdn'] == $active_host)
 
     ensure_packages('mariadb-client')
 

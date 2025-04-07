@@ -19,7 +19,7 @@ class profile::opensearch::logstash(
 
     # tasks that should only run on one host
     # TODO: use fork when available
-    if $jobs_host == $::fqdn {
+    if $jobs_host == $facts['networking']['fqdn'] {
         include ::profile::prometheus::es_exporter
 
         if ($curator_actions) {

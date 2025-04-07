@@ -6,7 +6,7 @@ class alertmanager::irc (
     Stdlib::Port $irc_port = 6697,
     String $irc_nickname = $title,
     String $irc_realname = $title,
-    String $dashboard_url = "https://alerts.${facts['domain']}",
+    String $dashboard_url = "https://alerts.${facts['networking']['domain']}",
     Optional[String] $irc_nickname_password = undef,
     Stdlib::Ensure::Service $service_ensure = running,
 ) {

@@ -21,7 +21,7 @@ class profile::thanos::compact (
         concurrency       => $concurrency,
     }
 
-    if $thanos_compact_host == $::fqdn {
+    if $thanos_compact_host == $facts['networking']['fqdn'] {
         class { 'thanos::compact::prometheus': }
     }
 }

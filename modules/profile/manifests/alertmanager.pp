@@ -7,7 +7,7 @@ class profile::alertmanager (
     String              $irc_channel = lookup('profile::alertmanager::irc::channel'),
     Optional[String]    $victorops_api_key = lookup('profile::alertmanager::victorops_api_key'),
     # lint:ignore:wmf_styleguide - T260574
-    String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['domain']}"}),
+    String $vhost  = lookup('profile::alertmanager::web::vhost', {'default_value' => "alerts.${facts['networking']['domain']}"}),
     # lint:endignore
     Optional[Boolean]   $sink_notifications = lookup('profile::alertmanager::sink_notifications', { 'default_value' => false }),
 ) {

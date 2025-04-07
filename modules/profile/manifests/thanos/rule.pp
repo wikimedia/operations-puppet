@@ -44,7 +44,7 @@ class profile::thanos::rule (
         retention_time    => sprintf('%dd', $object_store_cutoff_days + 1)
     }
 
-    if $::fqdn in $thanos_rule_hosts {
+    if $facts['networking']['fqdn'] in $thanos_rule_hosts {
         # placeholder class to be able to fetch thanos-rule hosts
         # as Prometheus job targets
         class { 'thanos::rule::prometheus': }

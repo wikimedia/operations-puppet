@@ -112,7 +112,7 @@ define prometheus::server (
         ],
         'relabel_configs' => [
           { 'target_label' => 'instance',
-            'replacement'  => "${::hostname}:${port}",
+            'replacement'  => "${facts['networking']['hostname']}:${port}",
           },
         ],
       },

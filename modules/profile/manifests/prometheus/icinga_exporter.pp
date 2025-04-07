@@ -10,7 +10,7 @@ class profile::prometheus::icinga_exporter (
 ) {
 
     class { 'prometheus::icinga_exporter':
-        export_problems    => $active_host == $::fqdn,
+        export_problems    => $active_host == $facts['networking']['fqdn'],
         alertmanagers      => $alertmanagers,
         label_teams_config => $label_teams_config,
         extinfo_url        => "https://icinga.${public_domain}/cgi-bin/icinga/extinfo.cgi",

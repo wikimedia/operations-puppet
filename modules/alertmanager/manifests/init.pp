@@ -29,7 +29,7 @@ class alertmanager (
     $all_hosts = $partners + $active_host
     $cluster_opts = $all_hosts.reduce(
       ['--cluster.advertise-address', "${::ipaddress}:9094"]) |$agg, $host| {
-        if $host != $::fqdn {
+        if $host != $facts['networking']['fqdn'] {
             $tmp = ['--cluster.peer', "${host}:9094"]
         } else {
             $tmp = []

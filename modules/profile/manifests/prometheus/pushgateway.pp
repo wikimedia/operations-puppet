@@ -4,7 +4,7 @@ class profile::prometheus::pushgateway (
 ) {
     $http_port = 9091
 
-    if $pushgateway_host == $::fqdn {
+    if $pushgateway_host == $facts['networking']['fqdn'] {
         $ensure = present
     } else {
         $ensure = absent
