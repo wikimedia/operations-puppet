@@ -8,9 +8,7 @@ AccuracySec=<%= @accuracy %>
 <%- @timer_intervals.each do |timer| -%>
 <%= timer['start'] %>=<%= timer['interval'] %>
 <%- end -%>
-<%- if @facts['os']['release']['major'].to_i >= 9 -%>
 RandomizedDelaySec=<%= @splay %>
-<%- end -%>
 
 [Install]
 WantedBy=multi-user.target
