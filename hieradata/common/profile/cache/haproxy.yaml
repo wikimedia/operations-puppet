@@ -195,11 +195,12 @@ profile::cache::haproxy::del_headers:
       name: 'tracestate'
       acl: missing_xwd
 
-
+# TLS on volatile storage
+profile::cache::haproxy::use_tls_tmpfiles: true
 profile::cache::haproxy::available_unified_certificates:
   digicert-2024:
     cert_paths:
-        - /etc/ssl/private/digicert-2024-ecdsa-unified.chained.crt.key
+        - /run/haproxy-tls/digicert-2024-ecdsa-unified.chained.crt.key
     server_names:
         - wikipedia.org
         - '*.wikipedia.org'
@@ -246,7 +247,7 @@ profile::cache::haproxy::available_unified_certificates:
     critical_threshold: 15
   lets-encrypt:
     cert_paths:
-        - /etc/acmecerts/unified/live/ec-prime256v1.chained.crt.key
+        - /run/haproxy-tls/unified/live/ec-prime256v1.chained.crt.key
     server_names:
         - wikipedia.org
         - '*.wikipedia.org'
@@ -291,7 +292,7 @@ profile::cache::haproxy::available_unified_certificates:
     critical_threshold: 15
   pki-goog:
     cert_paths:
-        - /etc/acmecerts/unified-goog/live/ec-prime256v1.chained.crt.key
+        - /run/haproxy-tls/unified-goog/live/ec-prime256v1.chained.crt.key
     server_names:
         - wikipedia.org
         - '*.wikipedia.org'

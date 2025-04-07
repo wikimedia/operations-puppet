@@ -288,15 +288,6 @@ profile::cache::base::default_weights:
   cdn: 1
   ats-be: 100
 
-profile::cache::haproxy::extra_certificates:
-  wikiworkshop:
-    cert_paths:
-      - /etc/acmecerts/wikiworkshop/live/ec-prime256v1.chained.crt.key
-    server_names:
-      - wikiworkshop.org
-      - www.wikiworkshop.org
-    warning_threshold: 21
-    critical_threshold: 15
 profile::lvs::realserver::pools:
   text-https:
     services:
@@ -340,3 +331,13 @@ profile::puppet::agent::force_puppet7: true
 
 profile::cache::haproxykafka::kafka:
   topic: webrequest_frontend_text
+
+profile::cache::haproxy::extra_certificates:
+  wikiworkshop:
+    cert_paths:
+      - /run/haproxy-tls/wikiworkshop/live/ec-prime256v1.chained.crt.key
+    server_names:
+      - wikiworkshop.org
+      - www.wikiworkshop.org
+    warning_threshold: 21
+    critical_threshold: 15
