@@ -8,7 +8,7 @@ function wmflib::service::get_i13n_ips_for_lvs() >> Array[Stdlib::IP::Address] {
         fail('wmflib::service::get_i13n_ips_for_lvs() requires profile::lvs::configuration to be included in your class explicitly')
     }
     $profile::lvs::configuration::lvs_class_hosts.filter |$class, $data| {
-        $::hostname in $data
+        $facts['networking']['hostname'] in $data
     }
     .keys.map |$class| {
         ipresolve(wmflib::service::get_i13n_for_lvs_class($class, $::site), 4)

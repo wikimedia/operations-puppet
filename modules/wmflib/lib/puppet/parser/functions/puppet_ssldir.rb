@@ -49,7 +49,7 @@ module Puppet::Parser::Functions
     puppetmaster = lookupvar('puppetmaster')
     if puppetmaster == '' || puppetmaster.nil?
       default
-    elsif [lookupvar('hostname'), 'localhost', '', nil].include?puppetmaster
+    elsif [lookupvar('facts')['networking']['hostname'], 'localhost', '', nil].include?puppetmaster
       self_master
     else
       self_client
