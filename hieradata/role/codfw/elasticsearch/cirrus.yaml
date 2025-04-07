@@ -18,6 +18,65 @@ profile::elasticsearch::instances:
         cluster_hosts:
           - cirrussearch2055.codfw.wmnet
           - cirrussearch2056.codfw.wmnet
+          - cirrussearch2057.codfw.wmnet
+          - cirrussearch2058.codfw.wmnet
+          - cirrussearch2059.codfw.wmnet
+          - cirrussearch2060.codfw.wmnet
+          - cirrussearch2061.codfw.wmnet
+          - cirrussearch2062.codfw.wmnet
+          - cirrussearch2063.codfw.wmnet
+          - cirrussearch2064.codfw.wmnet
+          - cirrussearch2065.codfw.wmnet
+          - cirrussearch2066.codfw.wmnet
+          - cirrussearch2067.codfw.wmnet
+          - cirrussearch2068.codfw.wmnet
+          - cirrussearch2069.codfw.wmnet
+          - cirrussearch2070.codfw.wmnet
+          - cirrussearch2071.codfw.wmnet
+          - cirrussearch2072.codfw.wmnet
+          - cirrussearch2073.codfw.wmnet
+          - cirrussearch2074.codfw.wmnet
+          - cirrussearch2075.codfw.wmnet
+          - cirrussearch2076.codfw.wmnet
+          - cirrussearch2077.codfw.wmnet
+          - cirrussearch2078.codfw.wmnet
+          - cirrussearch2079.codfw.wmnet
+          - cirrussearch2080.codfw.wmnet
+          - cirrussearch2081.codfw.wmnet
+          - cirrussearch2082.codfw.wmnet
+          - cirrussearch2083.codfw.wmnet
+          - cirrussearch2084.codfw.wmnet
+          - cirrussearch2085.codfw.wmnet
+          - cirrussearch2086.codfw.wmnet
+          - cirrussearch2087.codfw.wmnet
+          - cirrussearch2088.codfw.wmnet
+          - cirrussearch2089.codfw.wmnet
+          - cirrussearch2090.codfw.wmnet
+          - cirrussearch2091.codfw.wmnet
+          - cirrussearch2092.codfw.wmnet
+          - cirrussearch2093.codfw.wmnet
+          - cirrussearch2094.codfw.wmnet
+          - cirrussearch2095.codfw.wmnet
+          - cirrussearch2096.codfw.wmnet
+          - cirrussearch2097.codfw.wmnet
+          - cirrussearch2098.codfw.wmnet
+          - cirrussearch2099.codfw.wmnet
+          - cirrussearch2100.codfw.wmnet
+          - cirrussearch2101.codfw.wmnet
+          - cirrussearch2102.codfw.wmnet
+          - cirrussearch2103.codfw.wmnet
+          - cirrussearch2104.codfw.wmnet
+          - cirrussearch2105.codfw.wmnet
+          - cirrussearch2106.codfw.wmnet
+          - cirrussearch2107.codfw.wmnet
+          - cirrussearch2108.codfw.wmnet
+          - cirrussearch2109.codfw.wmnet
+          - cirrussearch2110.codfw.wmnet
+          - cirrussearch2111.codfw.wmnet
+          - cirrussearch2112.codfw.wmnet
+          - cirrussearch2113.codfw.wmnet
+          - cirrussearch2114.codfw.wmnet
+          - cirrussearch2115.codfw.wmnet
           - elastic2057.codfw.wmnet
           - elastic2058.codfw.wmnet
           - elastic2059.codfw.wmnet
@@ -153,6 +212,44 @@ profile::elasticsearch::instances:
           - elastic2086.codfw.wmnet
           - elastic2114.codfw.wmnet # replacing elastic2059
 
+          # row A
+          - cirrussearch2087.codfw.wmnet
+          - cirrussearch2088.codfw.wmnet
+          - cirrussearch2056.codfw.wmnet
+          - cirrussearch2061.codfw.wmnet
+          - cirrussearch2073.codfw.wmnet
+          - cirrussearch2074.codfw.wmnet
+          - cirrussearch2090.codfw.wmnet
+          - cirrussearch2111.codfw.wmnet # replacing cirrussearch2056
+
+          # row B
+          - cirrussearch2092.codfw.wmnet
+          - cirrussearch2093.codfw.wmnet
+          - cirrussearch2057.codfw.wmnet
+          - cirrussearch2063.codfw.wmnet
+          - cirrussearch2070.codfw.wmnet
+          - cirrussearch2077.codfw.wmnet
+          - cirrussearch2097.codfw.wmnet
+
+          # row C
+          - cirrussearch2098.codfw.wmnet
+          - cirrussearch2099.codfw.wmnet
+          - cirrussearch2100.codfw.wmnet
+          - cirrussearch2059.codfw.wmnet
+          - cirrussearch2065.codfw.wmnet
+          - cirrussearch2081.codfw.wmnet
+          - cirrussearch2102.codfw.wmnet
+          - cirrussearch2112.codfw.wmnet # replacing cirrussearch2057
+
+          # row D
+          - cirrussearch2104.codfw.wmnet
+          - cirrussearch2105.codfw.wmnet
+          - cirrussearch2106.codfw.wmnet
+          - cirrussearch2067.codfw.wmnet
+          - cirrussearch2084.codfw.wmnet
+          - cirrussearch2086.codfw.wmnet
+          - cirrussearch2114.codfw.wmnet # replacing cirrussearch2059
+
 
         expected_nodes: 18
 
@@ -215,6 +312,46 @@ profile::elasticsearch::instances:
           - elastic2085.codfw.wmnet
           - elastic2109.codfw.wmnet
           - elastic2115.codfw.wmnet # replacing elastic2060
+
+
+          # row A
+          - cirrussearch2089.codfw.wmnet
+          - cirrussearch2055.codfw.wmnet
+          - cirrussearch2062.codfw.wmnet
+          - cirrussearch2069.codfw.wmnet
+          - cirrussearch2075.codfw.wmnet
+          - cirrussearch2076.codfw.wmnet
+          - cirrussearch2091.codfw.wmnet
+
+          # row B
+          - cirrussearch2094.codfw.wmnet
+          - cirrussearch2095.codfw.wmnet
+          - cirrussearch2058.codfw.wmnet
+          - cirrussearch2064.codfw.wmnet
+          - cirrussearch2078.codfw.wmnet
+          - cirrussearch2079.codfw.wmnet
+          - cirrussearch2080.codfw.wmnet
+          - cirrussearch2096.codfw.wmnet
+          - cirrussearch2110.codfw.wmnet # replacing cirrussearch2055
+
+          # row C
+          - cirrussearch2101.codfw.wmnet
+          - cirrussearch2066.codfw.wmnet
+          - cirrussearch2071.codfw.wmnet
+          - cirrussearch2072.codfw.wmnet
+          - cirrussearch2082.codfw.wmnet
+          - cirrussearch2083.codfw.wmnet
+          - cirrussearch2103.codfw.wmnet
+          - cirrussearch2113.codfw.wmnet # replacing cirrussearch2058
+
+          # row D
+          - cirrussearch2107.codfw.wmnet
+          - cirrussearch2108.codfw.wmnet
+          - cirrussearch2060.codfw.wmnet
+          - cirrussearch2068.codfw.wmnet
+          - cirrussearch2085.codfw.wmnet
+          - cirrussearch2109.codfw.wmnet
+          - cirrussearch2115.codfw.wmnet # replacing cirrussearch2060
 
         expected_nodes: 18
 
