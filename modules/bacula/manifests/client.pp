@@ -67,9 +67,11 @@ class bacula::client(
                 ],
     }
 
+    $fqdn = $facts['networking']['fqdn']
+
     if wmflib::have_puppetdb() {
         # We export oufself to the director
-        @@file { "/etc/bacula/clients.d/${::fqdn}.conf":
+        @@file { "/etc/bacula/clients.d/${fqdn}.conf":
             ensure  => present,
             owner   => 'root',
             group   => 'bacula',

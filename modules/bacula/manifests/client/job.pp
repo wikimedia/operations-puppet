@@ -31,9 +31,11 @@ define bacula::client::job(
 
     $director = $::bacula::client::director
 
+    $fqdn = $facts['networking']['fqdn']
+
     # We export to the director
     if wmflib::have_puppetdb() {
-        @@file { "/etc/bacula/jobs.d/${::fqdn}-${name}.conf":
+        @@file { "/etc/bacula/jobs.d/${fqdn}-${name}.conf":
             ensure  => present,
             owner   => 'root',
             group   => 'bacula',
