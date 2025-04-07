@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # This file tests the behaviour of the jobrunner endpoint
 
-https://jobrunner.discovery.wmnet:
+https://mw-jobrunner.discovery.wmnet:
   # Cannot reach the web endpoints here
   - path: /w/index.php
     assert_status: 404
