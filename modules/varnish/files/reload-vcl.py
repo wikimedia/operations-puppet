@@ -128,7 +128,7 @@ def auto_discard(vadm_cmd):
         raise RuntimeError("unsupported vcl.list JSON version")
 
     for vcl in vcl_list_data[3:]:
-        if vcl['busy'] != 0:
+        if 'busy' in vcl and vcl['busy'] != 0:
             continue
         if vcl['status'] != 'available':
             continue
