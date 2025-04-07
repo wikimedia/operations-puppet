@@ -80,7 +80,7 @@ class base::standard_packages (
     unless $facts['is_virtual'] {
         # As of September 2015, mcelog still does not support newer AMD processors.
         # See <https://www.mcelog.org/faq.html#18>.
-        if $::processor0 !~ /AMD/ {
+        if $facts['processors']['models'][0] !~ /AMD/ {
             ensure_packages('intel-microcode')
         }
 
@@ -96,7 +96,7 @@ class base::standard_packages (
         # is a current fact.  In a future upgrade, it will be a legacy fact and
         # should be replaced with a parse of the dmi fact (which will be a map not
         # a string).
-        if $facts['manufacturer'] == 'HP' {
+        if $facts['dmi']['manufacturer'] == 'HP' {
             # this package doesn't seem to exists for debian bullseye, see T300438
             if debian::codename::lt('bullseye') {
                 ensure_packages('hp-health')

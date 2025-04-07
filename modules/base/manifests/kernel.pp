@@ -81,7 +81,7 @@ class base::kernel(
     # This section is for blacklisting modules per server model.
     # It was originally started for acpi_pad issues on R320 (T162850)
     # but is meant to be extended as needed.
-    case $::productname {
+    case $facts['dmi']['product']['name'] {
       'PowerEdge R320': {
         kmod::blacklist { 'r320':
             modules => [ 'acpi_pad' ],
