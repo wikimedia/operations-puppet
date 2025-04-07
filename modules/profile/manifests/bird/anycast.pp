@@ -21,10 +21,9 @@ class profile::bird::anycast(
   Optional[Stdlib::IP::Address::Nosubnet]        $ipv4_src              = lookup('profile::bird::ipv4_src', {'default_value' => undef}),
   Firewall::Provider                             $fw_provider           = lookup('profile::firewall::provider'),
 ){
-
   $advertise_vips.each |$vip_fqdn, $vip_params| {
     if $do_ipv6 and !$vip_params['address_ipv6'] {
-      fail("IPv6 support was enabled but the IPv6 address for ${vip_fqdn} was not set.")
+      warning("IPv6 support was enabled but the IPv6 address for ${vip_fqdn} was not set")
     }
   }
 
@@ -45,7 +44,7 @@ class profile::bird::anycast(
       address_ipv6   => $vip_params['address_ipv6'],
       check_cmd_ipv6 => $vip_params['check_cmd_ipv6'],
     }
-    if $do_ipv6 {
+    if $do_ipv6 and $vip_params['address_ipv6'] {
       interface::ip { "lo-vip-${vip_fqdn}-ipv6":
         ensure    => $vip_params['ensure'],
         address   => $vip_params['address_ipv6'],

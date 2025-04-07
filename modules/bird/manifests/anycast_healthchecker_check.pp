@@ -36,8 +36,14 @@ define bird::anycast_healthchecker_check(
   Optional[String] $check_cmd_ipv6 = undef,
   ){
 
-  if $do_ipv6 {
+  if $do_ipv6 and $address_ipv6 {
     $title_ipv6 = "${title}.ipv6"
+
+    if !$check_cmd_ipv6 {
+      fail("bird::anycast_healthchecker_check[${title}]: check_cmd_ipv6 is required when IPv6 is enabled")
+    }
+  } else {
+    $title_ipv6 = undef
   }
 
   file { "/etc/anycast-healthchecker.d/${title}.conf":

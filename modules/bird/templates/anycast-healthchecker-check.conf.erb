@@ -8,7 +8,7 @@ check_rise        = 10
 check_disabled    = false
 on_disabled       = withdraw
 ip_prefix         = <%= @address %>/32
-<% if @do_ipv6 %>
+<% if @title_ipv6 %>
 [<%= @title_ipv6 %>]
 check_cmd         = <%= @check_cmd_ipv6 %>
 check_interval    = 1
