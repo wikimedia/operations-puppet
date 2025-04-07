@@ -5,5 +5,5 @@ class profile::openstack::base::clientpackages::vms(
 ) {
     requires_realm('labs')
     class { '::openstack::clientpackages::vms::common': }
-    class { "::openstack::clientpackages::vms::${version}::${::lsbdistcodename}": }
+    class { "::openstack::clientpackages::vms::${version}::${facts['os']['distro']['codename']}": }
 }
