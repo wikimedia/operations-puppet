@@ -46,6 +46,7 @@ class package_builder(
 
     ensure_packages([
         'apache2-dev',
+        'bc',
         'build-essential',
         'cdbs',
         'cowbuilder',
