@@ -207,13 +207,10 @@ class netops::monitoring(
     create_resources(netops::check, $l3_switches_mgmt, $l3_switches_mgmt_defaults)
 
 
-    # RIPE Atlases -- no SNMP for these
+    # RIPE Atlases -- http checks from prometheus blackbox
     $atlas = $infra_devices.filter |$device, $config| {
         $config['role'] == 'atlas'
     }
-    create_resources(netops::check, $atlas)
-
-    # RIPE Atlases -- http checks from prometheus blackbox
     $atlas_blackbox_exporter = $atlas.map |$device, $config| {
         {
           "${device}" => {
@@ -226,7 +223,10 @@ class netops::monitoring(
             'site'                => $config['site'],
             'proxy_url'           => "http://webproxy.${config['site']}.wmnet:8080",
             'prometheus_instance' => 'ops',
-            'severity'            => 'warning',
+            'severity'            => 'critical',
+            'probe_summary'       => 'Ripe Atlas anchor {{ $labels.instance }} is not returning HTTP 200 OK on port 80',
+            'probe_description'   => 'The Ripe Atlas anchor {{ $labels.instance }} cannot be reached (via local proxy) from the Prometheus instance at its site ({{ $externalLabels.site }}), or it does not respond with an HTTP 200 OK status code.',
+            'probe_runbook'       => 'https://wikitech.wikimedia.org/wiki/RIPE_Atlas#HTTP_checks_failing',
           }
         }
     }.reduce( {} ) | $memo, $x | {
