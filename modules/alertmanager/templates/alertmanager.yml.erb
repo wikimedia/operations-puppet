@@ -363,6 +363,12 @@ receivers:
     - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
+  - name: 'data-persistence-task'
+  webhook_configs:
+  # #DBA
+  - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-hwibeuyzizzy4xzunfsk'
+  send_resolved: false
+
 - name: 'data-platform-page'
   victorops_configs:
     - routing_key: 'data-platform'
@@ -672,6 +678,24 @@ receivers:
   webhook_configs:
     # #mediawiki-platform-team
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-slx6kyyichxp3k4elgud'
+  send_resolved: false
+
+  - name: 'lpl-task'
+  webhook_configs:
+  # #LPL Essential
+  - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cj2ngojmzb7ocghft2pg'
+  send_resolved: false
+
+  - name: 'mw-interfaces-task'
+  webhook_configs:
+  # #MW-Interfaces-Team
+  - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-up3kfz23uapwmm6wugys'
+  send_resolved: false
+
+  - name: 'security-task'
+  webhook_configs:
+    # #Security
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwqfaiejpr656zc6hf6o'
       send_resolved: false
 
 - name: 'fr-ircmail'
