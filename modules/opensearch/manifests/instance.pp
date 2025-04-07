@@ -12,7 +12,7 @@
 # - $http_port: Port for opensearch to live on. Default: 9200
 # - $transport_tcp_port: Port used for inter-node transport. Default: 9300
 # - $node_name: Node name exposed within opensearch
-#       Default: ${::hostname}-${title}
+#       Default: ${facts['networking']['hostname']}-${title}
 # - $base_data_dir: Where opensearch stores its data. Must be unique per-cluster.
 #       Default: /srv/opensearch
 # - $send_logs_to_logstash: When true logs are send to logstash. $logstash_host
@@ -122,7 +122,7 @@ define opensearch::instance(
 
     # the following parameters have defaults that are sane both for single
     # and multi-instances
-    String                      $node_name                          = "${::hostname}-${cluster_name}",
+    String                      $node_name                          = "${facts['networking']['hostname']}-${cluster_name}",
     Boolean                     $send_logs_to_logstash              = true,
     String                      $heap_memory                        = '2G',
     Stdlib::AbsolutePath        $plugins_dir                        = '/usr/share/opensearch/plugins',
@@ -173,7 +173,7 @@ define opensearch::instance(
         fail('Need a logstash_host to send logs to logstash')
     }
 
-    $master_eligible = $::fqdn in $unicast_hosts
+    $master_eligible = $facts['networking']['fqdn'] in $unicast_hosts
 
     if $gc_log == true {
         $gc_log_flags = [

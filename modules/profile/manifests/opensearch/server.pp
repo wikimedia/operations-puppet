@@ -79,7 +79,7 @@ class profile::opensearch::server(
     # Accessed from profile::opensearch::* for firewalls, proxies, etc.
     $filtered_instances.each |$instance_title, $instance_params| {
         $transport_tcp_port = pick_default($instance_params['transport_tcp_port'], 9300)
-        $opensearch_nodes_ferm = join(pick_default($all_opensearch_nodes, [$::fqdn]), ' ')
+        $opensearch_nodes_ferm = join(pick_default($all_opensearch_nodes, [$facts['networking']['fqdn']]), ' ')
 
         ferm::service { "opensearch-inter-node-${transport_tcp_port}":
             proto   => 'tcp',

@@ -82,5 +82,6 @@ class profile::lvs::configuration {
         'lvs7002' => 'high-traffic2',
         'lvs7003' => 'secondary',
     }
-    $lvs_class = pick($lvs_classes[$::hostname], 'unknown')
+    $hostname = $facts['networking']['hostname']
+    $lvs_class = pick($lvs_classes[$hostname], 'unknown')
 }

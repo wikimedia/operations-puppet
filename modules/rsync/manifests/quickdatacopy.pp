@@ -73,7 +73,7 @@ define rsync::quickdatacopy(
           default      => $dest_host,
       }
 
-      if $source_host == $::fqdn {
+      if $source_host == $facts['networking']['fqdn'] {
 
           include rsync::server
 

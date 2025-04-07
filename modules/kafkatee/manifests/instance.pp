@@ -58,7 +58,7 @@ define kafkatee::instance (
     Stdlib::Unixpath $kafka_offset_store_path                 = "/var/cache/kafkatee/${name}/offsets",
     Enum['smallest', 'largest', 'error'] $kafka_offset_reset  = 'largest',
     Optional[Integer] $kafka_message_max_bytes                = undef,
-    String $kafka_group_id                                    = $::fqdn,
+    String $kafka_group_id                                    = $facts['networking']['fqdn'],
     Stdlib::Unixpath $pidfile                                 = "/var/run/kafkatee/kafkatee-${name}.pid",
     Stdlib::Unixpath $log_statistics_file                     = "/var/cache/kafkatee/${name}/kafkatee.stats.json",
     Integer[0,300] $log_statistics_interval                   = 60,

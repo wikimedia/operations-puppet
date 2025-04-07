@@ -46,7 +46,7 @@
 # @param ssl_provider the ssl provider e.g. sslcert, acme_chief
 # TODO: allows services to override this value in the Profile::Tlsproxy::Envoy::Service Struct
 # @param upstream_addr the address of the backend service.  must be a localy configuered ipaddrres,
-#                      localhost or $facts['fqdn'].  Default: $facts['fqdn']
+#                      localhost or $facts['networking']['fqdn'].  Default: $facts['networking']['fqdn']
 # @param services An array of Profile::Tlsproxy::Envoy::Service's to configure
 #                 Default [{server_name: ['*'], port: 80}]
 # @param global_cert_name The use of this certificate depends on the value of ssl_provider.
@@ -105,7 +105,7 @@ class profile::tlsproxy::envoy(
 
     $valid_upstream_addr = $facts['networking']['interfaces'].values().reduce([]) |$memo, $int| {
         $memo + [$int['ip'], $int['ip6']]
-    }.delete_undef_values() + ['localhost', $facts['fqdn']]
+    }.delete_undef_values() + ['localhost', $facts['networking']['fqdn']]
     unless $upstream_addr in $valid_upstream_addr {
         fail("upstream_addr must be one of: ${valid_upstream_addr.join(', ')}")
     }

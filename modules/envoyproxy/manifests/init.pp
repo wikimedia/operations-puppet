@@ -9,7 +9,7 @@ class envoyproxy(
 ) {
 
     # Variables for zone-aware routing, useful if that is used.
-    $service_node = $::fqdn
+    $service_node = $facts['networking']['fqdn']
     $service_zone = $::site
     $envoy_directory = '/etc/envoy'
     $dir_ensure = stdlib::ensure($ensure, 'directory')

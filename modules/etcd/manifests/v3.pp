@@ -63,10 +63,10 @@
 #   Path to the private key file to use for client connections.
 #
 class etcd::v3 (
-    String $member_name = $::hostname,
-    String $client_listen_host = $::fqdn,
+    String $member_name = $facts['networking']['hostname'],
+    String $client_listen_host = $facts['networking']['fqdn'],
     Stdlib::Compat::Ipv4 $client_listen_ip = $::facts['ipaddress'],
-    String $peer_listen_host = $::fqdn,
+    String $peer_listen_host = $facts['networking']['fqdn'],
     Stdlib::Compat::Ipv4 $peer_listen_ip = $::facts['ipaddress'],
     String $cluster_name = $::domain,
     Stdlib::Port $adv_client_port = 2379,

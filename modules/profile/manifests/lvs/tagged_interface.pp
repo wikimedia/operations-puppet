@@ -5,7 +5,7 @@ define profile::lvs::tagged_interface(
 ) {
     $vlan_info = $interfaces[$title]
     $vlan_id = $vlan_info['id']
-    if $::hostname in $vlan_info['iface'] {
+    if $facts['networking']['hostname'] in $vlan_info['iface'] {
         $iface_str = $vlan_info['iface'][$::hostname]
         $iface = split($iface_str, ':')
         $tag = "${iface[0]}.${vlan_id}"

@@ -62,7 +62,7 @@ class profile::etcd::v3(
     } else {
         $peers_list = $discovery
         $srv_dns = undef
-        $certname = $::fqdn
+        $certname = $facts['networking']['fqdn']
     }
 
     # TLS certs *for etcd use* in peer-to-peer communications,
@@ -122,7 +122,7 @@ class profile::etcd::v3(
 
     # Monitoring
     class { '::etcd::v3::monitoring':
-        endpoint => "https://${::fqdn}:2379"
+        endpoint => "https://${facts['networking']['fqdn']}:2379"
     }
 
     # Firewall

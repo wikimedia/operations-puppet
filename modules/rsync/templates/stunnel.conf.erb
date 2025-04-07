@@ -5,8 +5,8 @@ accept = :::1873
 client = no
 
 CAfile = <%= scope.call_function('puppet_ssldir', []) + "/certs/ca.pem" %>
-cert   = <%= scope.call_function('puppet_ssldir', []) + "/certs/#{@fqdn}.pem" %>
-key    = <%= scope.call_function('puppet_ssldir', []) + "/private_keys/#{@fqdn}.pem" %>
+cert   = <%= scope.call_function('puppet_ssldir', []) + "/certs/#{@facts['networking']['fqdn']}.pem" %>
+key    = <%= scope.call_function('puppet_ssldir', []) + "/private_keys/#{@facts['networking']['fqdn']}.pem" %>
 
 verifyChain = yes
 
