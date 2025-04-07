@@ -7,35 +7,7 @@
 JAVA_ARGS="<%= @jvm_opts %>"
 
 # These normally shouldn't need to be edited if using OS packages
-<%- if @facts['os']['release']['major'].to_i > 9 -%>
 CONFIG="/etc/puppetdb/conf.d"
 
 # Bootstrap path
 BOOTSTRAP_CONFIG="/etc/puppetdb/bootstrap.cfg"
-<%- else -%>
-# Location of your Java binary (version 7 or higher)
-JAVA_BIN="/usr/bin/java"
-USER="puppetdb"
-GROUP="puppetdb"
-INSTALL_DIR="/opt/puppetlabs/server/apps/puppetdb"
-CONFIG="/etc/puppetlabs/puppetdb/conf.d"
-
-# Bootstrap path
-BOOTSTRAP_CONFIG="/etc/puppetlabs/puppetdb/bootstrap.cfg"
-
-# SERVICE_STOP_RETRIES can be set here to alter the default stop timeout in
-# seconds.  For systemd, the shorter of this setting or 'TimeoutStopSec' in
-# the systemd.service definition will effectively be the timeout which is used.
-SERVICE_STOP_RETRIES=60
-
-# START_TIMEOUT can be set here to alter the default startup timeout in
-# seconds.  For systemd, the shorter of this setting or 'TimeoutStartSec'
-# in the service's systemd.service configuration file will effectively be the
-# timeout which is used.
-START_TIMEOUT=300
-
-
-# Maximum number of seconds that can expire for a service reload attempt before
-# the result of the attempt is interpreted as a failure.
-RELOAD_TIMEOUT=120
-<%- end -%>
