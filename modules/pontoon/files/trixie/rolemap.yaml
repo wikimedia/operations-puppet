@@ -5,3 +5,13 @@ pki::multirootca:
 - trixie-pki-01.o11y.eqiad1.wikimedia.cloud
 puppetdb:
 - trixie-puppetdb-01.o11y.eqiad1.wikimedia.cloud
+grafana:
+- trixie-grafana-01.o11y.eqiad1.wikimedia.cloud
+prometheus:
+- trixie-prometheus-01.o11y.eqiad1.wikimedia.cloud
+titan:
+- trixie-titan-01.o11y.eqiad1.wikimedia.cloud
+pontoon::lb:
+- trixie-lb-01.o11y.eqiad1.wikimedia.cloud
+alerting_host:
+- trixie-alerts-01.o11y.eqiad1.wikimedia.cloud
