@@ -13,6 +13,7 @@ class apt(
     }
 
     $private_repo_components = (['thirdparty/hwraid'] + $private_components).join(' ')
+    $codename = $facts['os']['distro']['codename']
 
     exec { 'apt-get update':
         path        => '/usr/bin',
@@ -63,7 +64,7 @@ class apt(
         }
         apt::repository { 'debian':
             uri           => "http://${mirror}/debian",
-            dist          => $facts['os']['distro']['codename'],
+            dist          => $codename,
             components    => 'main contrib non-free non-free-firmware',
             concat_target => $debian_sources,
             keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
@@ -71,7 +72,7 @@ class apt(
         }
         apt::repository { 'debian-security':
             uri           => 'http://security.debian.org/debian-security',
-            dist          => "${facts['os']['distro']['codename']}-security",
+            dist          => "${codename}-security",
             components    => 'main contrib non-free non-free-firmware',
             concat_target => $debian_sources,
             keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
@@ -79,7 +80,7 @@ class apt(
         }
         apt::repository { 'debian-updates':
             uri           => "http://${mirror}/debian",
-            dist          => "${facts['os']['distro']['codename']}-updates",
+            dist          => "${codename}-updates",
             components    => 'main contrib non-free non-free-firmware',
             keyfile_path  => '/usr/share/keyrings/debian-archive-keyring.gpg',
             concat_target => $debian_sources,
@@ -164,7 +165,7 @@ class apt(
 
     apt::repository { 'wikimedia':
         uri        => 'http://apt.wikimedia.org/wikimedia',
-        dist       => "${::lsbdistcodename}-wikimedia",
+        dist       => "${codename}-wikimedia",
         components => $components,
         keyfile    => $wikimedia_apt_keyfile,
     }
@@ -180,7 +181,7 @@ class apt(
     apt::repository { 'wikimedia-private':
         ensure     => $ensure_private_repo,
         uri        => 'http://apt.wikimedia.org:8080',
-        dist       => "${::lsbdistcodename}-wikimedia-private",
+        dist       => "${codename}-wikimedia-private",
         components => $private_repo_components,
         keyfile    => $wikimedia_apt_keyfile,
     }
@@ -188,14 +189,14 @@ class apt(
     if debian::codename::ge('bookworm') {
         apt::repository { 'debian-backports':
             uri        => "http://${mirror}/debian/",
-            dist       => "${::lsbdistcodename}-backports",
+            dist       => "${codename}-backports",
             components => 'main contrib non-free',
         }
     }
 
     apt::repository { 'debian-debug':
         uri        => 'http://deb.debian.org/debian-debug',
-        dist       => "${::lsbdistcodename}-debug",
+        dist       => "${codename}-debug",
         components => 'main contrib non-free',
         source     => false,
     }

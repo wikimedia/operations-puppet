@@ -24,7 +24,7 @@
 #
 # [*distro*]
 #  The distribution for which the packages are built, defaults to the
-#  ${::lsbdistcodename}-wikimedia suite of the current distro by default.
+#  ${facts['os']['distro']['codename']}-wikimedia suite of the current distro by default.
 #  If a package is specifically only available for a given distro, it can
 #  also be listed like "bookworm-wikimedia"
 #
@@ -44,7 +44,7 @@
 define apt::package_from_component(
     String          $component,
     Variant[Array[String],Hash[String,String]] $packages        = [$name],
-    String                                     $distro          = "${::lsbdistcodename}-wikimedia",
+    String                                     $distro          = "${facts['os']['distro']['codename']}-wikimedia",
     Stdlib::HTTPUrl                            $uri             = 'http://apt.wikimedia.org/wikimedia',
     Integer                                    $priority        = 1001,
     Boolean                                    $ensure_packages = true,
@@ -98,7 +98,7 @@ define apt::package_from_component(
     }
 
     # We already pin o=Wikimedia with priority 1001
-    unless $distro == "${::lsbdistcodename}-wikimedia" and $priority == 1001 {
+    unless $distro == "${facts['os']['distro']['codename']}-wikimedia" and $priority == 1001 {
         apt::pin { "apt_pin_${title}":
             pin      => "release c=${component}",
             priority => $priority,
