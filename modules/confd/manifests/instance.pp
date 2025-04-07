@@ -27,7 +27,7 @@ define confd::instance (
     Boolean                          $running       = true,
     String                           $backend       = 'etcd',
     Optional[Array[Stdlib::HTTPUrl]] $hosts         = undef,
-    Stdlib::Fqdn                     $srv_dns       = $facts['domain'],
+    Stdlib::Fqdn                     $srv_dns       = $facts['networking']['domain'],
     String                           $scheme        = 'https',
     Integer                          $interval      = 3,
     Optional[String]                 $prefix        = undef,
