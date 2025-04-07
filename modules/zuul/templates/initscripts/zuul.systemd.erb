@@ -9,11 +9,7 @@ Group=zuul
 Environment=STATSD_HOST=<%= @statsd_host %>
 Environment=STATSD_PORT=9125
 <% end %>
-<% if @facts['os']['release']['major'].to_i > 9 -%>
 ExecStart=/srv/deployment/zuul/venv/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
-<%- else -%>
-ExecStart=/usr/bin/zuul-server -d -c /etc/zuul/zuul-server.conf
-<%- end -%>
 ExecReload=/bin/kill -HUP $MAINPID
 ExecStop=/bin/kill -USR1 $MAINPID
 TimeoutStopSec=infinity

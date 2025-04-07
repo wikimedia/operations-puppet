@@ -4,11 +4,7 @@ Description=Zuul merger
 [Service]
 User=zuul
 Group=zuul
-<% if @facts['os']['release']['major'].to_i > 9 -%>
 ExecStart=/srv/deployment/zuul/venv/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
-<%- else -%>
-ExecStart=/usr/bin/zuul-merger -d -c /etc/zuul/zuul-merger.conf
-<%- end -%>
 ExecStop=/bin/kill -USR1 $MAINPID
 TimeoutStopSec=infinity
 EnvironmentFile=/etc/default/zuul-merger
