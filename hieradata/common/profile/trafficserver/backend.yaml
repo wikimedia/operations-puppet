@@ -271,9 +271,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query-scholarly.wikidata.org/bigdata
       replacement: https://wdqs-scholarly.discovery.wmnet/bigdata
     - type: map
-      target: http://query-scholarly.wikidata.org/querybuilder
-      replacement: https://webserver-misc-sites.discovery.wmnet/querybuilder
-    - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
       target: http://query-scholarly.wikidata.org
