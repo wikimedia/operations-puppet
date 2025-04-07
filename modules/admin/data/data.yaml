@@ -34,7 +34,7 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn]
+              halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -452,7 +452,7 @@ groups:
               ollieshotton, taavi, abhas, santhosh, frankie, dmartin, mvolz,
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol, acooper,
-              ahoelzl, nathillard, amyt, xiaoxiao, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
+              ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
               aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
@@ -943,7 +943,7 @@ groups:
     description: Group of users that have access to ML Team lab/experimentation machines
     members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis,
                             klausman, dsaez, fab, isaacj, leizi, mgerlach,
-                            mirrys, mnz, paragon, trokhymovych, xiaoxiao, bearloga]
+                            mirrys, mnz, paragon, trokhymovych, bearloga]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop',
                  'ALL = NOPASSWD: /usr/bin/nvtop']
@@ -6161,14 +6161,12 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILInfdooHG0VTLNV6TSlNiYTvNpgtWuM7Vy25CGqngKA ngkountas@wikimedia.org'
   xiaoxiao:
-    ensure: present
+    ensure: absent
     realname: Xiao Xiao
-    email: xxiao@wikimedia.org
     uid: 45622
     gid: 500
-    ssh_keys:
-      - 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC+E7DCVBFUZ7tZrSgEhcCD/sWCI54aujtG0owaoxFEunY5HcNbl9nPjza1SLQsO6GeWV1e6VoHhvDyChJVkWljWApr4qMN0PJVg9nxQJmHfBHaEepDCF9xBvQ25dekZ0POxCxcOoKKXpdJWZCTWMxPOELyVRFeMG+o9xxEZODsobKG15BsnqgJ31KRDtuYdYyVs527fPxL6uc/Ju6rWsAK+y6mpFMYE9bRu4DWQEhYLPMO76MxYLilPAEuynv/M8B/WNtq33kMM7andMt/Pqh4dN/KTZ4vqtS5rIEGrrNbZauU54abBFGFhgSGJ3Shwo+dDsNAoSHeLO8VqealzsPcLQb6nGq/68PXKCat7blJ4njeoJzbgFjCWbtqeS5Bs4i6PpHpao9JP2i54Cc39H4xvn/dB9nWT7zN1DcFFoNVVMCgBhSGu5mBgxXj+INX2aG1k+GE0gcMxkFJLJ3Xr1Ngehcq2ds+moaMdsIkha7mIVIXk7mjoodf+HzdxPxZQSbnAFUGQ2zUBSKa8JC3vzxBGsOT69nZjVnpN8+TT1lLVyYuyE2PuzpxfsTfKyeK8T4+terqTLz5yiEFKNgD8daiO9jtFCXoAW5J6iSve9IMH3e9yfwTGhmcWIvDGyK9z32HD5CQgG/6PVcxbmuQSTS7VP1wsTi417mWJTAozyKl9Q== xiaoxiao@wikimedia.org'
-    krb: present
+    ssh_keys: []
+    krb: absent
   ecarg:
     ensure: present
     realname: Grace Choi
