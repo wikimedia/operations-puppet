@@ -30,25 +30,6 @@ loglevel=<%= log_levels.fetch(@log_level, 3) %>
 The version of ulogd2 on buster dynamically loads modules so we don't need this
 https://git.netfilter.org/ulogd2/commit/?id=8f0fff33137807838b39a4dfd01438d6b25f7175
 -%>
-<%- if @facts['os']['release']['major'].to_i < 10 -%>
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_NFLOG.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_ULOG.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inppkt_UNIXSOCK.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inpflow_NFCT.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_inpflow_NFACCT.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IFINDEX.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2STR.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2BIN.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_IP2HBIN.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_PRINTPKT.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_HWHDR.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_PRINTFLOW.so"
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_filter_MARK.so"
-  <%- @nflog.each do |output| -%>
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_output_<%= output %>.so"
-  <%- end -%>
-plugin="/usr/lib/x86_64-linux-gnu/ulogd/ulogd_raw2packet_BASE.so"
-<%- end -%>
 
 <%- ['LOGEMU', 'SYSLOG'].each do |output| -%>
   <%-if @nflog.include?(output) -%>
