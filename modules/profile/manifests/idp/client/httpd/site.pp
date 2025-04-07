@@ -87,8 +87,8 @@ define profile::idp::client::httpd::site (
         'CASAttributeDelimiter' => $attribute_delimiter,
         'CASValidateSAML'       => $validate_saml.bool2str('On', 'Off'),
         'CASSSOEnabled'         => $enable_slo.bool2str('On', 'Off'),
-        'CASCookieSameSite'     => $cookie_same_site,
-        'CASCookieSecure'       => $cookie_secure,
+        #'CASCookieSameSite'     => $cookie_same_site,
+        #'CASCookieSecure'       => $cookie_secure,
         'CASTimeout'            => $session_timeout,
         'CASIdleTimeout'        => $session_idle_timeout,
     }
