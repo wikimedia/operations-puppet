@@ -1106,18 +1106,16 @@ node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
 # re-arranging elastic hosts by row in order to facilitate
 # reimages. Row info sourced from regex.yaml
 # ROW A
+
+# TODO remove me after row A opensearch migration fully complete including master
 node /^elastic2(061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^cirrussearch2(055|056)\.codfw\./ {
+# As we reimage the above hosts, we'll change both their role and their name.
+node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
     role(cirrus::opensearch)
 }
-
-# As we reimage the above hosts, we'll change both their role and their name.
-# node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
-#     role(opensearch::cirrus)
-# }
 
 # ROW B
 
@@ -1145,7 +1143,7 @@ node /^elastic2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.co
     role(elasticsearch::cirrus)
 }
 # node /^cirrussearch2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.codfw\./ {
-#     role(opensearch::cirrus)
+#     role(cirrus::opensearch)
 # ROW D
 
 node /^elastic2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
