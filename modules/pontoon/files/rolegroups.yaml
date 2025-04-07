@@ -36,6 +36,7 @@ alerts:
     - alerting_host
   settings:
     - alerting_host
+    - acme_chief
 
 logs:
   roles:
