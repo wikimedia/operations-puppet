@@ -1,0 +1,2 @@
+# Automatically detach after 15 minutes idle time
+idle 900 detach
