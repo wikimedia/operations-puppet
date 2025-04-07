@@ -50,7 +50,7 @@
 
 module Puppet::Parser::Functions
   newfunction(:kafka_config, :type => :rvalue, :arity => -2) do |args|
-    fqdn = lookupvar('::fqdn').to_s
+    fqdn = lookupvar('facts')['networking']['fqdn'].to_s
     clusters = call_function('lookup', ['kafka_clusters', {'default_value' => {}}])
     cluster_name = clusters.key?(args[0]) ? args[0] : function_kafka_cluster_name(args)
 
