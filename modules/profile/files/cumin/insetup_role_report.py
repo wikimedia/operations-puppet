@@ -20,11 +20,12 @@ MESSAGE_SUFFIX = ('For more information or to relay feedback just reply to this 
                   f'touch with {AUDIT_OWNER}.\n')
 OWNER_PREFIX = 'Those are the audit reports sent to the various owners.\n\n'
 # Mapping of owner email to Puppet O:insetup::* roles (allow exceptions starting a role with O:)
+
 MAPPING = {
     'calbon': ['machine_learning'],
-    'glederrey': ['search_platform', 'data_engineering'],
-    'jborun': ['infrastructure_foundations', 'unowned', 'buster', 'wmcs'],
-    'kappakayala': ['serviceops', 'container'],
+    'glederrey': ['data_platform'],
+    'jborun': ['infrastructure_foundations', 'wmcs', 'O:insetup::unowned', 'O:insetup::buster'],
+    'kappakayala': ['serviceops', 'O:insetup::container'],
     'kofori': ['data_persistence', 'traffic', 'O:insetup_noferm'],
     'lmata': ['observability'],
     'lsobanski': ['collaboration_services'],
@@ -53,13 +54,13 @@ def generate_message(roles: list[str]) -> str:
         if role.startswith('O:'):
             role_query = role
         else:
-            role_query = f'O:insetup::{role}'
+            role_query = f'O:insetup::{role}_ferm or O:insetup::{role}_nftables'
 
         hosts = query.Query(config).execute(role_query)
         if not hosts:
             continue
 
-        message_parts.append(f'* {len(hosts)} hosts with Puppet role {role_query[2:]}:\n{hosts}\n')
+        message_parts.append(f'* {len(hosts)} hosts with Puppet role {role_query}:\n{hosts}\n')
 
     if len(message_parts) == 1:
         return ''
