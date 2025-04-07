@@ -10,7 +10,7 @@ define monitoring::service(
     Integer                           $check_interval        = 1, # min
     Integer                           $retry_interval        = 1, # min
     Stdlib::Unixpath                  $config_dir            = '/etc/nagios',
-    Variant[Stdlib::Host,String]      $host                  = $facts['hostname'],
+    Variant[Stdlib::Host,String]      $host                  = $facts['networking']['hostname'],
     Optional[String]                  $contact_group         = undef,
     Optional[String]                  $group                 = undef,
     Optional[Boolean]                 $notifications_enabled = undef,
@@ -71,7 +71,7 @@ define monitoring::service(
 
     # the nagios service instance
     $service = {
-        "${::hostname} ${title}" => {
+        "${facts['networking']['hostname']} ${title}" => {
             ensure                 => $ensure,
             host_name              => $host,
             servicegroups          => $servicegroups,
