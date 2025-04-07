@@ -151,15 +151,18 @@ class profile::prometheus::cloud (
             ],
         },
     ]
-    file { "${targets_path}/maintain_dbusers_eqiad1.yaml":
-        content => to_yaml([{
-            'labels'  => {
-                'deployment' => $openstack_deployment,
-            },
-            'targets' => [
-                "${maintain_dbusers_primary}:9090",
-            ],
-        }]),
+
+    if $maintain_dbusers_primary =~ $::site {
+        file { "${targets_path}/maintain_dbusers_${openstack_deployment}.yaml":
+            content => to_yaml([{
+                'labels'  => {
+                    'deployment' => $openstack_deployment,
+                },
+                'targets' => [
+                    "${maintain_dbusers_primary}:9090",
+                ],
+            }]),
+        }
     }
 
     # https://phabricator.wikimedia.org/T348643#9916509
