@@ -20,8 +20,7 @@ set -o pipefail
 
 OUTFILE="${1:-/var/lib/prometheus/node.d/ssh_open_sessions.prom}"
 
-# Count the non-empty lines output by `who`
-SESSION_COUNT=$(/usr/bin/who | /bin/grep '\S' | /usr/bin/wc -l)
+SESSION_COUNT=$(loginctl list-sessions --no-legend | wc -l)
 
 cat <<EOF > "${OUTFILE}.$$"
 # HELP ssh_open_sessions Number of active ssh / mosh / console sessions
