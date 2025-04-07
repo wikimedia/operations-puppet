@@ -1,3 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 puppetserver::pontoon:
 - trixie-puppet-01.o11y.eqiad1.wikimedia.cloud
+pki::multirootca:
+- trixie-pki-01.o11y.eqiad1.wikimedia.cloud
+puppetdb:
+- trixie-puppetdb-01.o11y.eqiad1.wikimedia.cloud
