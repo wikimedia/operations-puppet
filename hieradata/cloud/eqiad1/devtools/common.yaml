@@ -365,3 +365,5 @@ profile::firewall::nftables_throttling::ensure: absent
 profile::firewall::nftables_throttling::max_connections: 32
 profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::port: 443
+
+profile::etherpad::service_ensure: running
