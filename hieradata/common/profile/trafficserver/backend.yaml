@@ -231,9 +231,6 @@ profile::trafficserver::backend::mapping_rules:
       target: http://query.wikidata.org/bigdata
       replacement: https://wdqs.discovery.wmnet/bigdata
     - type: map
-      target: http://query.wikidata.org/querybuilder
-      replacement: https://webserver-misc-sites.discovery.wmnet/querybuilder
-    - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
       target: http://query.wikidata.org
@@ -247,9 +244,6 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://query-main.wikidata.org/bigdata
       replacement: https://wdqs-main.discovery.wmnet/bigdata
-    - type: map
-      target: http://query-main.wikidata.org/querybuilder
-      replacement: https://webserver-misc-sites.discovery.wmnet/querybuilder
     - type: map
       # mapping without a path must be the last entry
       # https://docs.trafficserver.apache.org/en/9.2.x/admin-guide/files/remap.config.en.html#reverse-proxy-mapping-rules
