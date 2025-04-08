@@ -13,12 +13,15 @@ class profile::statsd (
         backend_ports => range(8126, 8131),
     }
 
-    # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
-    ferm::service { 'statsd':
-        proto   => 'udp',
-        port    => '8125',
-        notrack => true,
-        srange  => '$DOMAIN_NETWORKS',
+    # T228380 - disable graphite/statsd metric ingest
+    if ( $::realm != 'production' ) {
+        # load balancer frontend, backend ports 8126-8131 are only accessed from localhost
+        ferm::service { 'statsd':
+          proto   => 'udp',
+          port    => '8125',
+          notrack => true,
+          srange  => '$DOMAIN_NETWORKS',
+        }
     }
 
     class { '::statsite': }
