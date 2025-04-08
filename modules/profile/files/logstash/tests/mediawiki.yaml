@@ -333,6 +333,102 @@ testcases:
           "host": "mw1439",
           "server": "jobrunner.discovery.wmnet",
           "http_method": "POST",
+          "phpversion": "8.1.20",
+          "channel": "exception",
+          "program": "php8.1-fpm"
+        }
+    expected:
+      - "__target_index": "logstash-deploy-1-1.0.0-N-daily"
+        message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        caught_by: "php-wmerrors"
+        channel: "exception"
+        exception:
+          file: "/srv/mediawiki/src/Profiler.php:276"
+          message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+          trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
+        host: "mw1439"
+        logsource: "mw1439"
+        program: "php8.1-fpm"
+        facility: "daemon"
+        type: "mediawiki"
+        level: "ERROR"
+        url: "/rpc/RunSingleJob.php"
+        ip: "2620:0:861:107:10:64:48:78"
+        http_method: "POST"
+        server: "jobrunner.discovery.wmnet"
+        phpversion: "8.1.20"
+        servergroup: "jobrunner"
+        normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        message_checksum: "2514dea08b28d53f7f1ab87cdbf07759"
+        reqId: "ede088f4-b120-4615-9523-25c820686a58"
+      - "__target_index": "ecs-mediawiki-1-1.11.0-N-weekly"
+        message: "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        log:
+          level: "ERROR"
+          origin:
+            file:
+              line: "276"
+              name: "/srv/mediawiki/src/Profiler.php"
+          syslog:
+            facility:
+              code: 3
+              name: "daemon"
+            priority: 27
+            severity:
+              code: 3
+              name: "error"
+        host:
+          name: "mw1439"
+        labels:
+          channel: "exception"
+          caught_by: "php-wmerrors"
+          phpversion: "8.1.20"
+          servergroup: "jobrunner"
+          normalized_message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+        service:
+          type: "php8.1-fpm"
+        http:
+          request:
+            method: "POST"
+        error:
+          message: "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276"
+          stack_trace: "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(..."
+        trace:
+          id: "ede088f4-b120-4615-9523-25c820686a58"
+        url:
+          full: "https://jobrunner.discovery.wmnet/rpc/RunSingleJob.php"
+        ecs:
+          version: "1.11.0"
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2022-06-08T14:24:55.175",
+          "rsyslog.hostname": "mw1439",
+          "rsyslog.programname": "mediawiki",
+          "rsyslog.severity": "err",
+          "rsyslog.facility": "daemon",
+          "timestamp": "2022-06-08T14:24:55.175Z",
+          "exception": {
+            "message": "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+            "trace": "#0 /srv/mediawiki/src/Profiler.php(276): Redis->connect(...",
+            "file": "/srv/mediawiki/src/Profiler.php:276"
+          },
+          "type": "mediawiki",
+          "@timestamp": "2022-06-08T14:24:55.175Z",
+          "url": "/rpc/RunSingleJob.php",
+          "normalized_message": "Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+          "reqId": "ede088f4-b120-4615-9523-25c820686a58",
+          "ip": "2620:0:861:107:10:64:48:78",
+          "timestamp": "2022-06-08T14:24:54.111855+00:00",
+          "facility": "daemon",
+          "logsource": "mw1439",
+          "caught_by": "php-wmerrors",
+          "level": "ERROR",
+          "servergroup": "jobrunner",
+          "message": "[ede088f4-b120-4615-9523-25c820686a58] Uncaught RedisException: Connection timed out in /srv/mediawiki/src/Profiler.php:276",
+          "host": "mw1439",
+          "server": "jobrunner.discovery.wmnet",
+          "http_method": "POST",
           "phpversion": "7.4.30",
           "channel": "exception",
           "program": "php7.4-fpm"

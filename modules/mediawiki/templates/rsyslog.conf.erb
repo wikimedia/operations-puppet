@@ -21,7 +21,7 @@ if $programname == "apache2" then {
 }
 
 # Forward PHP7 logs and stacktraces to the log aggregator
-if ($programname startswith 'php7.')  then {
+if ($programname startswith 'php7.' or $programname startswith 'php8.')  then {
     @<%= @log_aggregator %>;MediaWiki
 <% if @forward_syslog -%>
     @<%= @forward_syslog %>
