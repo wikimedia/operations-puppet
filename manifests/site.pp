@@ -168,8 +168,13 @@ node /^an-airflow1007\.eqiad\./ {
     }
 
 # Analytics Zookeeper cluster
-node /^an-conf100[1-6]\.eqiad\./ {
+node /^an-conf100[4-6]\.eqiad\./ {
     role(analytics_cluster::zookeeper)
+}
+
+# Analytics Zookeeper hosts to be decommissioned
+node /^an-conf100[1-3]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # Analytics Presto nodes
