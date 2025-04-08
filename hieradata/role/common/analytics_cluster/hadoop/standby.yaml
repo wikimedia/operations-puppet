@@ -74,5 +74,4 @@ profile::puppet::agent::force_puppet7: true
 # Temporarily exclude an-worker1202 for a vlan move - See #T390048
 # Temporarily exlude hosts in rack F6 for a hard drive upgrade - See #T390168
 profile::hadoop::master::standby::excluded_hosts:
-  - an-worker1202.eqiad.wmnet
   - an-worker1169.eqiad.wmnet
