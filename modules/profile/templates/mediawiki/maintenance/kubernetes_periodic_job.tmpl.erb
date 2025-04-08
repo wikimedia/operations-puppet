@@ -6,3 +6,6 @@
         team: <%= @team %>
         script: <%= @script_label %>
       description: <%= @description %>
+    <%- if @ttlsecondsafterfinished -%>
+      ttlSecondsAfterFinished: <%= @ttlsecondsafterfinished %>
+    <% end %>

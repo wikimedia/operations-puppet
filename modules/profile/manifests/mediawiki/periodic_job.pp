@@ -36,6 +36,8 @@
 # [*team*] The team responsible for the job. Default: undef
 #
 # [*description*] The description of the job. Default: undef
+#
+# [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default 1.2d). Default: undef
 
 define profile::mediawiki::periodic_job(
     String $command,
@@ -51,19 +53,21 @@ define profile::mediawiki::periodic_job(
     Optional[String] $team = undef,
     Optional[String] $description = undef,
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
+    Optional[Integer] $ttlsecondsafterfinished = undef,
 ) {
 
     if $::_role == 'deployment_server/kubernetes' {
         if $kubernetes {
             profile::mediawiki::periodic_job::kubernetes { $title:
-                ensure                => $ensure,
-                command               => $command,
-                cron_schedule         => $cron_schedule,
-                splay                 => $splay,
-                script_label          => $script_label,
-                team                  => $team,
-                description           => $description,
-                helmfile_defaults_dir => $helmfile_defaults_dir,
+                ensure                  => $ensure,
+                command                 => $command,
+                cron_schedule           => $cron_schedule,
+                splay                   => $splay,
+                script_label            => $script_label,
+                team                    => $team,
+                description             => $description,
+                helmfile_defaults_dir   => $helmfile_defaults_dir,
+                ttlsecondsafterfinished => $ttlsecondsafterfinished,
             }
         }
     } else {
