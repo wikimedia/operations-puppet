@@ -1269,22 +1269,6 @@ class profile::prometheus::ops (
       },
     ]
 
-    prometheus::pdu_config { "pdu_sentry3_${::site}":
-        dest => "${targets_path}/pdu_sentry3_${::site}.yaml",
-    }
-
-    prometheus::pdu_config { "pdu_sentry4_${::site}":
-        dest  => "${targets_path}/pdu_sentry4_${::site}.yaml",
-        model => 'sentry4',
-    }
-
-    # PoPs might have single phase PDUs (e.g. ulsfo)
-    prometheus::pdu_config { "pdu_sentry4_1phase_${::site}":
-        dest     => "${targets_path}/pdu_sentry4_1phase_${::site}.yaml",
-        model    => 'sentry4',
-        resource => 'Facilities::Monitor_pdu_1phase',
-    }
-
     $pdu_families.each |$pdu| {
       prometheus::pdu_config_netbox { "pdu_${pdu['family_name']}_${::site}":
           dest          => "${targets_path}/pdu_${pdu['family_name']}_${::site}.yaml",

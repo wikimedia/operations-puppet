@@ -40,6 +40,14 @@ profile::prometheus::ops::alerting_relabel_configs_extra:
     action: replace
 
 profile::prometheus::ops::pdu_families:
+  - family_name: sentry4
+    name_matcher: .*
+    model_matcher: c2.*-ycmfa.*
+    manufacturer: sentry
+  - family_name: sentry4_1phase
+    name_matcher: .*
+    model_matcher: c2.*-.*af2m.*
+    manufacturer: sentry
   - family_name: pro4x
     name_matcher: .*
     model_matcher: pro4x.*
