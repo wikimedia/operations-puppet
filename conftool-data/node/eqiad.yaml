@@ -2,14 +2,6 @@ eqiad:
   testserver:
     mwdebug1001.eqiad.wmnet: [apache2]
     mwdebug1002.eqiad.wmnet: [apache2]
-  jobrunner: &jobrunner
-    mw1407.eqiad.wmnet: [apache2, nginx]          # Only pooled as videoscaler
-    mw1445.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
-    mw1446.eqiad.wmnet: [apache2, nginx]         # Only pooled as videoscaler
-    mw1349.eqiad.wmnet: [apache2, nginx]
-    mw1350.eqiad.wmnet: [apache2, nginx]
-    mw1351.eqiad.wmnet: [apache2, nginx]
-  videoscaler: *jobrunner
   cache_text:
     cp1100.eqiad.wmnet: [cdn, ats-be]
     cp1102.eqiad.wmnet: [cdn, ats-be]
