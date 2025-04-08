@@ -1,1 +1,1 @@
-profile::openstack::eqiad1::galera::server_id: 4
+profile::openstack::eqiad1::galera::server_id: 3

@@ -10,8 +10,6 @@ profile::openstack::eqiad1::public_apis: true
 # All of the API endpoints are behind a HAProxy load balancer, running
 # haproxy_nodes (defined below).
 profile::openstack::eqiad1::openstack_control_nodes:
-  - host_fqdn: cloudcontrol1005.eqiad.wmnet
-    cloud_private_fqdn: cloudcontrol1005.private.eqiad.wikimedia.cloud
   - host_fqdn: cloudcontrol1006.eqiad.wmnet
     cloud_private_fqdn: cloudcontrol1006.private.eqiad.wikimedia.cloud
   - host_fqdn: cloudcontrol1007.eqiad.wmnet

@@ -45,10 +45,6 @@ profile::cloudceph::auth::load_all::configuration:
     caps:
       mon: allow r
       osd: allow class-read object_prefix rbd_children, allow rwx pool=eqiad1-glance-images
-  client.rgw.cloudcontrol1005:
-    caps:
-      mon: allow rw
-      osd: allow rwx
   client.rgw.cloudcontrol1006:
     caps:
       mon: allow rw

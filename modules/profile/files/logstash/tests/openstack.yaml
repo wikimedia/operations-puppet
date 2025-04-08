@@ -61,11 +61,11 @@ testcases:
           "facility": "local0",
           "level": "WARNING",
           "host": "cloudhost0000",
-          "message":"2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1005"
+          "message":"2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1011"
         }
     expected:
       - __target_index: "ecs-default-1-1.11.0-N-weekly"
-        message: "No compute service record found for host cloudcontrol1005"
+        message: "No compute service record found for host cloudcontrol1011"
         labels:
           project: "admin-monitoring"
         event:
@@ -81,7 +81,7 @@ testcases:
               code: 16
             priority: 132
           logger: "nova.scheduler.host_manager"
-          original: "2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1005"
+          original: "2020-11-23 18:03:13.919 13834 WARNING nova.scheduler.host_manager [req-d53f32a1-2d47-463e-b031-d95fd678fd96 osstackcanary admin-monitoring - default default] No compute service record found for host cloudcontrol1011"
         user:
           name: "osstackcanary"
         host:
@@ -175,14 +175,14 @@ testcases:
           "rsyslog.severity": "DEBUG",
           "rsyslog.facility": "daemon",
           "facility": "daemon",
-          "logsource": "cloudcontrol1005",
-          "host": "cloudcontrol1005",
+          "logsource": "cloudcontrol1011",
+          "host": "cloudcontrol1011",
           "program": "nova-fullstack",
           "severity": "DEBUG",
           "timestamp": "2021-08-16T20:28:22.170025",
           "message": "SSH wait for 55.22",
           "log.level": "DEBUG",
-          "host.name": "cloudcontrol1005",
+          "host.name": "cloudcontrol1011",
           "ecs.version": "1.7.0"
         }
     expected:
@@ -199,7 +199,7 @@ testcases:
               code: 3
             priority: 31
         host:
-          name: "cloudcontrol1005"
+          name: "cloudcontrol1011"
         service:
           type: "nova-fullstack"
         ecs:

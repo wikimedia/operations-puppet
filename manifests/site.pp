@@ -1745,7 +1745,7 @@ node /^kubestage200[1234]\.codfw\./ {
     role(kubernetes::staging::worker)
 }
 
-node /^cloudcontrol100[567]\.eqiad\./ {
+node /^cloudcontrol100[67]\.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
@@ -1754,9 +1754,12 @@ node /^cloudcontrol10(0[8-9]|1[0])\-dev\.eqiad\./ {
     role(insetup::wmcs_ferm)
 }
 
-# Refresh for cloudcontrol1005
 node /^cloudcontrol1011.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
+}
+
+node /^cloudcontrol1005.eqiad\./ {
+    role(insetup::wmcs_ferm)
 }
 
 # Data Platform - Ceph osd servers T322760
