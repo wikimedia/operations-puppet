@@ -3,19 +3,9 @@
 # NOTE: Resist the urge to just old it in some other profile, it's been split
 # off in its own profile so that it can be reused in e.g. deployment servers
 class profile::kubernetes::client (
-    K8s::KubernetesVersion $version = lookup('profile::kubernetes::client::version',),
+    Optional[K8s::KubernetesVersion] $version = lookup('profile::kubernetes::client::version', { default_value => undef }),
 ) {
-    # class { 'k8s::client':
-    #     version => $version,
-    # }
-    # FIXME: This is a hack to support multiple versions of kubectl
-    #        which I failed to do properly, see T388388
-    k8s::package { 'kubectl':
-        package => 'client',
+    class { 'k8s::client':
         version => $version,
-    }
-    k8s::package { 'kubectl131':
-        package => 'client',
-        version => '1.31',
     }
 }
