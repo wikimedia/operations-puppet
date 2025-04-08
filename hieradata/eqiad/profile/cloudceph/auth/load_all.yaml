@@ -57,6 +57,10 @@ profile::cloudceph::auth::load_all::configuration:
     caps:
       mon: allow rw
       osd: allow rwx
+  client.rgw.cloudcontrol1011:
+    caps:
+      mon: allow rw
+      osd: allow rwx
   radosgw:
     caps:
       mon: allow rw

@@ -16,6 +16,8 @@ profile::openstack::eqiad1::openstack_control_nodes:
     cloud_private_fqdn: cloudcontrol1006.private.eqiad.wikimedia.cloud
   - host_fqdn: cloudcontrol1007.eqiad.wmnet
     cloud_private_fqdn: cloudcontrol1007.private.eqiad.wikimedia.cloud
+  - host_fqdn: cloudcontrol1011.eqiad.wmnet
+    cloud_private_fqdn: cloudcontrol1011.private.eqiad.wikimedia.cloud
 
 # The public service name for the keystone API
 #
