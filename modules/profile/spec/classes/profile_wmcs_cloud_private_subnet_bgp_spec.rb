@@ -3,11 +3,11 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'profile::wmcs::cloud_private_subnet::bgp' do
-  on_supported_os(WMFConfig.test_on(11, 11)).each do |os, facts|
+  on_supported_os(WMFConfig.test_on(11, 12)).each do |os, facts|
     context "on #{os}" do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
-        'hostname' => 'cloudlb2001-dev',
+        'hostname' => 'cloudlb2002-dev',
       }) }
       let(:params) {{
         'vips' => {
@@ -20,6 +20,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
           'other' => {
             'ensure' => 'present',
             'check_cmd' => 'whatever',
+            'check_cmd_ipv6' => 'whatever',
             'service_type' => 'whatever',
             'address' => '192.0.2.1',
             'address_ipv6' => '3fff::ffff',
@@ -48,9 +49,9 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
         function dnsquery::aaaa ($name) {
           if $name == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
-            ['3fff::2001']
-          } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
             []
+          } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
+            ['3fff::2001']
           } elsif $name == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
             ['3fff::1']
           }
@@ -75,7 +76,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
       it {
           is_expected.to contain_class("profile::bird::anycast")
-              .with_ipv4_src("172.20.5.2")
+              .with_ipv4_src("172.20.5.3")
       }
 
       it "should have a routing table" do
@@ -129,7 +130,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
       context "without IPv6 support" do
         let(:facts) { facts.merge({
-          'hostname' => 'cloudlb2002-dev',
+          'hostname' => 'cloudlb2001-dev',
         }) }
 
         it {

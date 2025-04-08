@@ -11,6 +11,7 @@ class profile::wmcs::cloud_private_subnet::bgp (
             $profile::wmcs::cloud_private_subnet::gw_address_v6,
         ].filter |$addr| { $addr != undef },
         ipv4_src       => $profile::wmcs::cloud_private_subnet::cloud_private_address_v4,
+        ipv6_src       => $profile::wmcs::cloud_private_subnet::cloud_private_address_v6,
         multihop       => false,
     }
 

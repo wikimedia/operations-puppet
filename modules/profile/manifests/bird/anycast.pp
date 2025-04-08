@@ -18,7 +18,8 @@ class profile::bird::anycast(
   Optional[Boolean]                              $do_ipv6               = lookup('profile::bird::do_ipv6', {'default_value' => false}),
   Optional[Boolean]                              $multihop              = lookup('profile::bird::multihop', {'default_value' => true}),
   Optional[Bird::Anycasthc_logging]              $anycasthc_logging     = lookup('profile::bird::anycasthc_logging', {'default_value' => undef}),
-  Optional[Stdlib::IP::Address::Nosubnet]        $ipv4_src              = lookup('profile::bird::ipv4_src', {'default_value' => undef}),
+  Optional[Stdlib::IP::Address::V4::Nosubnet]    $ipv4_src              = lookup('profile::bird::ipv4_src', {'default_value' => undef}),
+  Optional[Stdlib::IP::Address::V6::Nosubnet]    $ipv6_src              = lookup('profile::bird::ipv6_src', {'default_value' => undef}),
   Firewall::Provider                             $fw_provider           = lookup('profile::firewall::provider'),
 ){
   $advertise_vips.each |$vip_fqdn, $vip_params| {
@@ -71,6 +72,7 @@ class profile::bird::anycast(
       do_ipv6      => $do_ipv6,
       multihop     => $multihop,
       ipv4_src     => $ipv4_src,
+      ipv6_src     => $ipv6_src,
       fw_provider  => $fw_provider,
   }
 }
