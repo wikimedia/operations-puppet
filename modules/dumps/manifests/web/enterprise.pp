@@ -41,7 +41,7 @@ class dumps::web::enterprise(
 
     $download_command = "/usr/bin/python3 ${script_path} --creds ${creds_path} --settings ${settings_path} --retries 5"
     systemd::timer::job { 'download_enterprise_htmldumps':
-        ensure                  => $is_primary_server.bool2str('present', 'absent'),
+        ensure                  => 'absent',
         description             => 'Twice monthly download of Wikimedia Enterprise HTML dumps',
         user                    => $user,
         monitoring_enabled      => false,
@@ -56,7 +56,7 @@ class dumps::web::enterprise(
     # rsync the downloaded files to secondary host, allowing the rsync to take a full day
     $rsync_command = "/usr/bin/rsync -a --bwlimit=160000 ${dumps_web_server}::data/xmldatadumps/public/other/enterprise_html/runs ${miscdumpsdir}/enterprise_html/"
     systemd::timer::job { 'rsync_enterprise_htmldumps':
-        ensure             => $is_primary_server.bool2str('absent', 'present'),
+        ensure             => 'absent',
         description        => 'Twice monthly rsync after download of Wikimedia Enterprise HTML dumps',
         user               => root,
         monitoring_enabled => false,
