@@ -282,6 +282,9 @@ route:
         - match:
             severity: 'critical'
           receiver: 'trust-and-safety-product-critical'
+        - match:
+            severity: 'task'
+          receiver: 'trust-and-safety-product-critical'
     - match:
         team: 'mediawiki-platform'
       routes:
