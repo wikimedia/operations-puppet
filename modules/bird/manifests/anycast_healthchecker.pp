@@ -81,6 +81,7 @@ class bird::anycast_healthchecker(
         service_params => {
             ensure  => 'running', # lint:ignore:ensure_first_param
             require => Service[$bind_service],
+            before  => Service['bird'],
         },
     }
 }
