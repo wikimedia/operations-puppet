@@ -147,7 +147,7 @@ Components: main
  component/prometheus-openstack-exporter
  component/pybal
  component/rsyslog-k8s
- component/varnish-staging
+ component/varnish6
  thirdparty/amd-rocm54
  thirdparty/bigtop15
  thirdparty/bigtop33
