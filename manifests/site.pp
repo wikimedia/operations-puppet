@@ -168,13 +168,8 @@ node /^an-airflow1007\.eqiad\./ {
     }
 
 # Analytics Zookeeper cluster
-node /^an-conf100[1-5]\.eqiad\./ {
+node /^an-conf100[1-6]\.eqiad\./ {
     role(analytics_cluster::zookeeper)
-}
-
-# Refreshed hardware for Analytics Zookeeper cluster - See #T364429
-node /^an-conf1006\.eqiad\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # Analytics Presto nodes
