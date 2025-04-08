@@ -4,21 +4,6 @@ profile::admin::groups:
   - deployment
   - perf-roots
 
-profile::lvs::realserver::use_safe_restart: true
-profile::lvs::realserver::pools:
-  jobrunner:
-    services:
-      - apache2
-      - mcrouter
-      - envoyproxy
-      - php7.4-fpm
-  videoscaler:
-    services:
-      - apache2
-      - mcrouter
-      - envoyproxy
-      - php7.4-fpm
-profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
 
 profile::mediawiki::php::enable_fpm: true

@@ -803,7 +803,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: jobrunner
         active_active: false
@@ -3114,7 +3114,7 @@ service::catalog:
     sites:
       - eqiad
       - codfw
-    state: lvs_setup
+    state: service_setup
     discovery:
       - dnsdisc: videoscaler
         active_active: false
