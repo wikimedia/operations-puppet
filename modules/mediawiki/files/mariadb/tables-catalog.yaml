@@ -1007,6 +1007,13 @@ tables:
       - dbname: testcommonswiki
     canonicality: derivative
     visibility: public
+  - name: cn_notice_projects
+    source: central_notice
+    databases:
+      - dbname: metawiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
 sources:
   core:
     - path: sql/tables.json
