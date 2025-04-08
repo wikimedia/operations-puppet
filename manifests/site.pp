@@ -1767,10 +1767,6 @@ node /^cloudcontrol1011.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-node /^cloudcontrol1005.eqiad\./ {
-    role(insetup::wmcs_ferm)
-}
-
 # Data Platform - Ceph osd servers T322760
 node /^cephosd100[12345]\.eqiad\./ {
     role(ceph::server)
