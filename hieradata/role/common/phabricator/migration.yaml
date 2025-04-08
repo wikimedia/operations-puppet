@@ -3,6 +3,8 @@ profile::admin::groups:
 
 profile::mail::default_mail_relay::enabled: false
 
+profile::firewall::provider: nftables
+
 profile::phabricator::migration::dst_hosts:
   - "%{lookup('phabricator_passive_server')}"
 
