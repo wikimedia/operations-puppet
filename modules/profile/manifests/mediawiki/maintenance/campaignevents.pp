@@ -3,6 +3,9 @@
 class profile::mediawiki::maintenance::campaignevents(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+    # team label for alerting
+    $team_label = 'campaigns-product'
+
     # group0: meta.wikimedia.org both in beta and production
     profile::mediawiki::periodic_job { 'campaignevents-updateutcts-metawiki':
         command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',
@@ -39,8 +42,14 @@ class profile::mediawiki::maintenance::campaignevents(
 
         # group1: test2.wikipedia.org
         profile::mediawiki::periodic_job { 'campaignevents-updateutcts-test2wiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki test2wiki',
-            interval => '03:52'
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki test2wiki',
+            interval              => '03:52',
+            cron_schedule         => '52 3 * * *',
+            team                  => $team_label,
+            script_label          => 'UpdateUTCTimestamps.php-test2wiki',
+            description           => 'Update UTC Timestamps on test2wiki',
+            kubernetes            => true,
+            helmfile_defaults_dir => $helmfile_defaults_dir,
         }
         profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-test2wiki':
             command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki test2wiki',
