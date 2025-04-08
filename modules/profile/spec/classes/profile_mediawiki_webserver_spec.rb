@@ -34,23 +34,6 @@ describe 'profile::mediawiki::webserver' do
                               .with_feature_flags({})
         }
       end
-      context "with tls" do
-        let(:facts) { super().merge({'cluster' => 'jobrunner'}) }
-        let(:params) { super().merge({:has_tls => true}) }
-        # stub out the required class. We test it elsewhere
-        it { is_expected.to contain_class('profile::tlsproxy::envoy') }
-        context "with lvs" do
-          let(:params) { super().merge({:has_lvs => true}) }
-          context "with jobrunner server" do
-            let(:node_params) {{ '_role' => 'mediawiki/jobrunner' }}
-
-            it { is_expected.to compile.with_all_deps }
-            it { is_expected.to contain_class('lvs::realserver')
-              .with_realserver_ips(['10.2.2.26', '10.2.2.5'])
-            }
-          end
-        end
-      end
     end
   end
 end

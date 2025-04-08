@@ -24,7 +24,7 @@ describe 'profile::lvs::realserver' do
         let(:params) {
           {
             'pools' => {
-              'jobrunner' => {'services' => ['apache2', 'php', 'mcrouter', 'nginx']},
+              'kibana7' => {'services' => ['apache2', 'kibana', 'nginx']},
             },
             'use_conftool' => true,
             'poolcounter_backends' => [
@@ -39,13 +39,13 @@ describe 'profile::lvs::realserver' do
         }
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('lvs::realserver')
-                              .with_realserver_ips(['10.2.2.26'])
+                              .with_realserver_ips(['10.2.2.48'])
         }
         it { is_expected.to contain_conftool__scripts__safe_service_restart('nginx')
-                              .with_lvs_pools(['jobrunner'])
+                              .with_lvs_pools(['kibana7'])
         }
         it { is_expected.to contain_file('/usr/local/sbin/restart-apache2')
-                              .with_content(/--pools jobrunner --services apache2/)
+                              .with_content(/--pools kibana7 --services apache2/)
                               .with_content(/--max-concurrency [1-9]/)
         }
         it { is_expected.to contain_class('poolcounter::client::python')
