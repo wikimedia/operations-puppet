@@ -761,6 +761,7 @@ zookeeper_clusters:
       an-conf1001.eqiad.wmnet: '1001'
       an-conf1002.eqiad.wmnet: '1002'
       an-conf1003.eqiad.wmnet: '1003'
+      an-conf1004.eqiad.wmnet: '1004'
 
   # Test ZK cluster
   test-eqiad:
