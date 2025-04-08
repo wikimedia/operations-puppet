@@ -48,6 +48,7 @@ cnames:
     - meta.analytics.db.svc.wikimedia.cloud.
   s8.analytics.db.svc.wikimedia.cloud.:
     - x3.analytics.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
+    - termstore.wikidatawiki.analytics.db.svc.wikimedia.cloud. # ditto
   s7.web.db.svc.eqiad.wmflabs.:
     - centralauth.web.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
@@ -58,3 +59,4 @@ cnames:
     - meta.web.db.svc.wikimedia.cloud.
   s8.web.db.svc.wikimedia.cloud.:
     - x3.web.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
+    - termstore.wikidatawiki.web.db.svc.wikimedia.cloud. # ditto
