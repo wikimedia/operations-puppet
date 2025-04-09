@@ -230,6 +230,7 @@ profile::opensearch::cirrus::expose_http: false
 profile::opensearch::cirrus::storage_device: dm-0
 profile::opensearch::rack: ''
 profile::opensearch::row: ''
+profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-knn/lib'
 profile::opensearch::instances:
   beta-search:
     cluster_name: beta-search
