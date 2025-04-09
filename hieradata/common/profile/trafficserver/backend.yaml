@@ -391,6 +391,9 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://yarn.wikimedia.org
       replacement: https://an-tool1008.eqiad.wmnet
+    - type: map
+      target: http://zarcillo.wikimedia.org
+      replacement: https://zarcillo.svc.eqiad.wmnet:30443
     - type: regex_map
       target: 'http://(.*)/api/rest_v1'
       replacement: https://restbase.discovery.wmnet:7443/api/rest_v1
