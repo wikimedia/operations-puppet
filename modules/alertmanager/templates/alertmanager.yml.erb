@@ -107,6 +107,9 @@ route:
         - match:
             severity: 'warning'
           receiver: 'data-persistence-irc-feed'
+        - match:
+            severity: 'task'
+          receiver: 'data-persistence-task'
     - match:
         team: 'data-platform'
       routes:
@@ -286,6 +289,24 @@ route:
             severity: 'task'
           receiver: 'mediawiki-platform-task'
         - receiver: 'mediawiki-platform-ircmail'
+    - match:
+        team: 'language_and_product_localization'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'lpl-task'
+    - match:
+        team: 'mw-interfaces'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mw-interfaces-task'
+    - match:
+        team: 'security'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'security-task'
 
     - match:
         team: 'ml'
