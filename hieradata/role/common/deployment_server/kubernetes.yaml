@@ -461,7 +461,6 @@ profile::docker::engine::settings:
   live-restore: true
   iptables: false
   storage-driver: "overlay2"
-  max-concurrent-uploads: 1  # More info T390251#10706432
 profile::ci::pipeline::publisher::docker_registry_user: "ci-restricted"
 # T372602 (php8.1 migration) means we're building 2x the images
 # Prune at 7 days old instead of 14
