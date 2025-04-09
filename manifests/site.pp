@@ -2119,18 +2119,9 @@ node /^mwdebug100[12]\.eqiad\./ {
     role(mediawiki::canary_appserver)
 }
 
-# Jobrunners
-
-node /^mw13(49|50|51)\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
-
 # Row C
 
 # rack C3
-node /^mw1407\.eqiad\./ {
-    role(mediawiki::jobrunner)
-}
 
 # mediawiki maintenance server (periodic jobs)
 # mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
@@ -2138,8 +2129,6 @@ node /^mw1407\.eqiad\./ {
 node /^mwmaint[12]002\.(eqiad|codfw)\./ {
     role(mediawiki::maintenance)
 }
-
-# Jobrunners (now mostly used via changepropagation as a LVS endpoint)
 
 ## DATACENTER: CODFW
 
@@ -2149,14 +2138,8 @@ node /^mwdebug200[12]\.codfw\./ {
     role(mediawiki::canary_appserver)
 }
 
-# Jobrunners
 
 # Row D
-
-# rack D4 - canary jobrunners
-node /^mw227[8-9]\.codfw\./ {
-    role(mediawiki::jobrunner)
-}
 
 ## END MEDIAWIKI APPLICATION SERVERS
 
