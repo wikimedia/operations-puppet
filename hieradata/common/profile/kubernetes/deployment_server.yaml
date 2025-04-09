@@ -636,3 +636,7 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: codesearch
         - name: codesearch-deploy
+    zarcillo:
+      usernames:
+        - name: zarcillo
+        - name: zarcillo-deploy

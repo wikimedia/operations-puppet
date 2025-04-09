@@ -4297,3 +4297,16 @@ service::catalog:
       - eqiad
       - codfw
     state: service_setup
+
+  zarcillo:
+    description: "DB automation"
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: http
+        host: zarcillo.wikimedia.org
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+    state: service_setup
