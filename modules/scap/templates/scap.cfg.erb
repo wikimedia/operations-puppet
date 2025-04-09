@@ -67,11 +67,6 @@ gerrit_push_user: trainbranchbot
 # docker (e.g. scap mwscript and scap mwshell).
 docker_user: mwbuilder
 
-# The image used when executing PHP maintenance scripts in a container on the
-# deployment host.
-# TODO: T390225 - Remove this when it becomes the configuration default.
-mediawiki_runtime_image: docker-registry.wikimedia.org/php8.1-fpm-multiversion-base
-
 # Settings for mediawiki container image building (T297673)
 release_repo_dir: /srv/mwbuilder/release
 release_repo_update_cmd: sudo -u mwbuilder /usr/local/bin/update-mediawiki-tools-release
