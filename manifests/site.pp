@@ -1146,8 +1146,12 @@ node /^elastic2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.co
 #     role(cirrus::opensearch)
 # ROW D
 
-node /^elastic2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
+node /^elastic2(060|067|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
     role(elasticsearch::cirrus)
+}
+
+node /^cirrussearch2068\.codfw\./ {
+    role(cirrus::opensearch)
 }
 
 # node /^cirrussearch2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
