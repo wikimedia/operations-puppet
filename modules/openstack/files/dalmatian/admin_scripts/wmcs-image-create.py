@@ -236,7 +236,7 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
     tries = 30
     while not logtail and tries > 0:
         try:
-            logtail = nova.servers.get_console_output(instance.id, length=20)
+            logtail = nova.servers.get_console_output(instance.id, length=60)
         except Exception:
             pass
             tries -= 1
@@ -247,11 +247,11 @@ def create_puppetized_vm(upstream_image, network_id, flavor_id):
 
     while (
         "Execute cloud user/final scripts" not in logtail
-        and "Reached target" not in logtail
+        or "Reached target" not in logtail
     ):
         LOGGER.info("Waiting one minutes for VM to puppetize")
         time.sleep(60)
-        logtail = nova.servers.get_console_output(instance.id, length=20)
+        logtail = nova.servers.get_console_output(instance.id, length=60)
 
     LOGGER.info("Stopping the VM")
     logtail = nova.servers.stop(instance.id)
