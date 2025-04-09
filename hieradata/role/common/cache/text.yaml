@@ -341,3 +341,5 @@ profile::cache::haproxy::extra_certificates:
       - www.wikiworkshop.org
     warning_threshold: 21
     critical_threshold: 15
+
+profile::cache::haproxy::use_etcd_req_filters: true
