@@ -20,4 +20,5 @@ type Profile::Mediawiki_deployment = Struct[{
     'mw_kind'     => Optional[String],
     'mw_flavour'  => String,
     'web_flavour' => String,
+    'dir'         => Optional[String],
 }]
