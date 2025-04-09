@@ -458,10 +458,10 @@ workers = 2
 
 [database]
 connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
-max_overflow = 50
-max_pool_size = 10
+max_overflow = 100
+max_pool_size = 20
 connection_recycle_time = 300
-pool_timeout = 60
+pool_timeout = 120
 
 # Enable the experimental use of database reconnect on connection lost.
 use_db_reconnect = true

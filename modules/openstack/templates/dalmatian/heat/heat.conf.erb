@@ -356,7 +356,15 @@ auth_uri = https://<%= @keystone_fqdn %>:25000
 # If set, then the server's certificate will not be verified. (boolean value)
 #insecure = <None>
 
-<%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
+[database]
+connection = mysql+pymysql://<%= @db_user %>:<%= @db_pass %>@<%= @db_host %>/<%= @db_name %>
+max_overflow = 50
+max_pool_size = 10
+connection_recycle_time = 300
+pool_timeout = 120
+
+# Enable the experimental use of database reconnect on connection lost.
+use_db_reconnect = true
 
 [heat_api]
 
