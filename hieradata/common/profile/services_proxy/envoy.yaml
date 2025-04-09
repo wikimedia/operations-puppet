@@ -395,15 +395,6 @@ profile::services_proxy::envoy::listeners:
       retry_on: "5xx"
       num_retries: 1
     xfp: https
-  - name: videoscaler
-    port: 6507
-    service: videoscaler
-    timeout: "30s"
-    keepalive: "4s"
-    retry:
-      retry_on: "5xx"
-      num_retries: 1
-    xfp: https
   - name: mw-misc
     port: 6508
     service: mw-misc
