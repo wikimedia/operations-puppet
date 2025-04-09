@@ -26,6 +26,7 @@ profile::opensearch::row: ''
 profile::opensearch::version: '1.0.0'
 profile::opensearch::base_data_dir: /srv/opensearch
 profile::opensearch::java_home: '/usr/lib/jvm/java-11-openjdk-amd64'
+profile::opensearch::native_lib_path: '/usr/share/opensearch/plugins/opensearch-knn/lib'
 
 profile::opensearch::instances:
     relforge-eqiad:

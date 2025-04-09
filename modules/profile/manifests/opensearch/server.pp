@@ -25,11 +25,12 @@ class profile::opensearch::server(
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
     String                                   $rack                  = lookup('profile::opensearch::rack'),
     String                                   $row                   = lookup('profile::opensearch::row'),
-    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',            { 'default_value' => '1.0.0' }),
-    Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',          { 'default_value' => undef }),
-    Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable',    { 'default_value' => false }),
-    Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',        { 'default_value' => undef }),
-    Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',        { 'default_value' => undef }),
+    Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',         { 'default_value' => '1.0.0' }),
+    Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',       { 'default_value' => undef }),
+    Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable', { 'default_value' => false }),
+    Optional[String]                         $s3_username           = lookup('profile::opensearch::s3_username',     { 'default_value' => undef }),
+    Optional[String]                         $s3_password           = lookup('profile::opensearch::s3_password',     { 'default_value' => undef }),
+    Optional[String]                         $native_lib_path       = lookup('profile::opensearch::native_lib_path', { 'default_value' => undef }),
 ) {
 
     require ::profile::java
@@ -135,6 +136,7 @@ class profile::opensearch::server(
         row                   => $row,
         java_home             => pick($java_home, $profile::java::default_java_home),
         enable_curator        => $enable_curator,
+        native_lib_path       => $native_lib_path,
     } -> file { '/usr/share/opensearch/plugins':
         ensure => 'directory',
         force  => true,

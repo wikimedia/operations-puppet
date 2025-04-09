@@ -29,6 +29,7 @@ class opensearch (
     Optional[String]                                   $row                     = undef,
     Optional[String]                                   $java_home               = undef,
     Boolean                                            $enable_curator          = false,
+    Optional[String]                                   $native_lib_path         = undef,
 ) {
     # Check arguments and set package
     case $version {

@@ -16,6 +16,9 @@ Environment=OPENSEARCH_JVM_OPTIONS=/etc/opensearch/%i/jvm.options
 Environment=PID_DIR=/run/opensearch-%i
 Environment=OPENSEARCH_SD_NOTIFY=true
 
+<% if @native_lib_path -%>
+Environment=LD_LIBRARY_PATH=<%= @native_lib_path %>
+<% end -%>
 <% if @java_home -%>
 Environment=JAVA_HOME=<%= @java_home %>
 <% end -%>
