@@ -151,7 +151,9 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/gateway-check.lua.conf',
     }
 
+    # TODO: T391421 - Remove in advance of renaming the script.
     trafficserver::lua_script { 'mw-php-migration':
+        ensure    => absent,
         source    => 'puppet:///modules/profile/trafficserver/mw-php-migration.lua',
         unit_test => 'puppet:///modules/profile/trafficserver/mw-php-migration_test.lua',
         config    => 'puppet:///modules/profile/trafficserver/mw-php-migration.lua.conf',
