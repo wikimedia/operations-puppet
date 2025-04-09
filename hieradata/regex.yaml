@@ -20,98 +20,98 @@ es_codfw_rack_a7:
   profile::opensearch::row: A
 
 es_codfw_rack_b2:
-  __regex: !ruby/regexp /^(elastic20(57|63|64|77|78|92|93|94)|cirrussearch20(57|63|64|77|78|92|93|94))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(57|63|64|77|78|92|93|94)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B2
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B2
   profile::opensearch::row: B
 
 es_codfw_rack_b4:
-  __regex: !ruby/regexp /^(elastic20(58|70|95|96|97)|cirrussearch20(58|70|95|96|97))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(58|70|95|96|97)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B4
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B4
   profile::opensearch::row: B
 
 es_codfw_rack_b5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)2110\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2110\.codfw\.wmnet$/
   profile::elasticsearch::rack: B5
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B5
   profile::opensearch::row: B
 
 es_codfw_rack_b7:
-  __regex: !ruby/regexp /^(elastic20(79|80)|cirrussearch20(79|80))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(79|80)\.codfw\.wmnet$/
   profile::elasticsearch::rack: B7
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B7
   profile::opensearch::row: B
 
 es_codfw_rack_c1:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)2112\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2112\.codfw\.wmnet$/
   profile::elasticsearch::rack: C1
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C1
   profile::opensearch::row: C
 
 es_codfw_rack_c2:
-  __regex: !ruby/regexp /^(elastic20(98|99)|cirrussearch20(98|99))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic20(98|99)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C2
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C2
   profile::opensearch::row: C
 
 es_codfw_rack_c4:
-  __regex: !ruby/regexp /^(elastic2(065|066|081|082|100|101)|cirrussearch2(065|066|081|082|100|101))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2(065|066|081|082|100|101)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C4
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C4
   profile::opensearch::row: C
 
 es_codfw_rack_c5:
-  __regex: !ruby/regexp /^(elastic|cirrusssearch)2113\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2113\.codfw\.wmnet$/
   profile::elasticsearch::rack: C5
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C5
   profile::opensearch::row: C
 
 es_codfw_rack_c7:
-  __regex: !ruby/regexp /^(elastic2(059|071|083|102|103)|cirrussearch2(059|071|083|102|103))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2(059|071|083|102|103)\.codfw\.wmnet$/
   profile::elasticsearch::rack: C7
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C7
   profile::opensearch::row: C
 
 es_codfw_rack_d1:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)2114\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2114\.codfw\.wmnet$/
   profile::elasticsearch::rack: D1
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D1
   profile::opensearch::row: D
 
 es_codfw_rack_d2:
-  __regex: !ruby/regexp /^(elastic2(104|105)|cirrussearch2(104|105))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2(104|105)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D2
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D2
   profile::opensearch::row: D
 
 es_codfw_rack_d3:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)2115\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2115\.codfw\.wmnet$/
   profile::elasticsearch::rack: D3
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D3
   profile::opensearch::row: D
 
 es_codfw_rack_d4:
-  __regex: !ruby/regexp /^(elastic2(072|084|085|106|107)|cirrussearch2(072|084|085|106|107))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^elastic2(072|084|085|106|107)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D4
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D4
   profile::opensearch::row: D
 
 es_codfw_rack_d7:
-  __regex: !ruby/regexp /^(elastic2(060|067|068|086|108|109)|cirrussearch2(060|067|068|086|108|109))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(elastic2(060|067|068|086|108|109)|cirrussearch2068)\.codfw\.wmnet$/
   profile::elasticsearch::rack: D7
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D7
@@ -125,28 +125,28 @@ es_eqiad_rack_a2:
   profile::opensearch::row: A
 
 es_eqiad_rack_a3:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1054\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1054\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
   profile::elasticsearch::row:  A
   profile::opensearch::rack: A3
   profile::opensearch::row: A
 
 es_eqiad_rack_a4:
-  __regex: !ruby/regexp /^(elastic10(68|69|84)|cirrussearch10(68|69|84))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(68|69|84)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A4
   profile::elasticsearch::row:  A
   profile::opensearch::rack: A4
   profile::opensearch::row: A
 
 es_eqiad_rack_a5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1053\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1053\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A5
   profile::elasticsearch::row:  A
   profile::opensearch::rack: A5
   profile::opensearch::row: A
 
 es_eqiad_rack_a7:
-  __regex: !ruby/regexp /^(elastic10(70|71|72|73)|cirrussearch10(70|71|72|73))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(70|71|72|73)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A7
   profile::elasticsearch::row:  A
   profile::opensearch::rack: A7
@@ -154,7 +154,7 @@ es_eqiad_rack_a7:
 
 
 es_eqiad_rack_b1:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1055\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1055\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B1
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B1
@@ -162,7 +162,7 @@ es_eqiad_rack_b1:
 
 
 es_eqiad_rack_b2:
-  __regex: !ruby/regexp /^(relforge1004|elastic1074|elastic1075|cirrussearch1074|cirrussearch1075)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(relforge1004|elastic1074|elastic1075)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B2
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B2
@@ -170,42 +170,42 @@ es_eqiad_rack_b2:
 
 
 es_eqiad_rack_b4:
-  __regex: !ruby/regexp /^(elastic10(76|77|78|79)|cirrussearch10(76|77|78|79))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(76|77|78|79)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B4
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B4
   profile::opensearch::row: B
 
 es_eqiad_rack_b5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1056\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1056\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B5
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B4
   profile::opensearch::row: B
 
 es_eqiad_rack_b7:
-  __regex: !ruby/regexp /^(elastic10(85|86)|cirrussearch10(85|86))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(85|86)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B7
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B7
   profile::opensearch::row: B
 
 es_eqiad_rack_c3:
-  __regex: !ruby/regexp /^(elastic10(57|58)|cirrussearch10(57|58))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(57|58)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C3
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C3
   profile::opensearch::row: C
 
 es_eqiad_rack_c4:
-  __regex: !ruby/regexp /^(relforge1008|elastic1080|elastic1081|cirrussearch1080|cirrussearch1081)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(relforge1008|elastic1080|elastic1081)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C4
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C4
   profile::opensearch::row: C
 
 es_eqiad_rack_c7:
-  __regex: !ruby/regexp /^(elastic10(82|83|87|88)|cirrussearch10(82|83|87|88))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(82|83|87|88)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C7
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C7
@@ -213,7 +213,7 @@ es_eqiad_rack_c7:
 
 
 es_eqiad_rack_c8:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1059\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1059\.eqiad\.wmnet$/
   profile::elasticsearch::rack: C8
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C8
@@ -221,7 +221,7 @@ es_eqiad_rack_c8:
 
 
 es_eqiad_rack_d1:
-  __regex: !ruby/regexp /^(elastic10(60|61)|cirrussearch10(60|61))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(60|61)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D1
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D1
@@ -235,84 +235,84 @@ es_eqiad_rack_d2:
   profile::opensearch::row: D
 
 es_eqiad_rack_d3:
-  __regex: !ruby/regexp /^(elastic10(62|63)|cirrussearch10(62|63))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(62|63)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D3
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D3
   profile::opensearch::row: D
 
 es_eqiad_rack_d4:
-  __regex: !ruby/regexp /^(elastic1(064|103)|cirrussearch1(064|103))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1(064|103)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D4
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D4
   profile::opensearch::row: D
 
 es_eqiad_rack_d5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1065\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1065\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D5
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D5
   profile::opensearch::row: D
 
 es_eqiad_rack_d6:
-  __regex: !ruby/regexp /^(elastic10(66|67)|cirrussearch10(66|67))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(66|67)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: D6
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D6
   profile::opensearch::row: D
 
 es_eqiad_rack_e1:
-  __regex: !ruby/regexp /^(elastic1108|elastic1089|elastic1090|cirrussearch1(108|089|090))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(elastic1108|elastic1089|elastic1090)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E1
   profile::elasticsearch::row:  E
   profile::opensearch::rack: E1
   profile::opensearch::row: E
 
 es_eqiad_rack_e2:
-  __regex: !ruby/regexp /^(elastic10(91|92)|cirrussearch10(91|92))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(91|92)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E2
   profile::elasticsearch::row:  E
   profile::opensearch::rack: E2
   profile::opensearch::row: E
 
 es_eqiad_rack_e3:
-  __regex: !ruby/regexp /^(elastic10(93|94|95)|cirrussearch10(93|94|95))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(93|94|95)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E3
   profile::elasticsearch::row:  E
   profile::opensearch::rack: E3
   profile::opensearch::row: E
 
 es_eqiad_rack_e5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1109\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1109\.eqiad\.wmnet$/
   profile::elasticsearch::rack: E5
   profile::elasticsearch::row:  E
   profile::opensearch::rack: E5
   profile::opensearch::row: E
 
 es_eqiad_rack_f1:
-  __regex: !ruby/regexp /^((elastic1110|elastic1096|elastic1097)|cirrussearch1(110|096|097))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(elastic1110|elastic1096|elastic1097)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F1
   profile::elasticsearch::row:  F
   profile::opensearch::rack: F1
   profile::opensearch::row: F
 
 es_eqiad_rack_f2:
-  __regex: !ruby/regexp /^(elastic10(98|99)|cirrussearch10(98|99))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic10(98|99)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F2
   profile::elasticsearch::row:  F
   profile::opensearch::rack: F2
   profile::opensearch::row: F
 
 es_eqiad_rack_f3:
-  __regex: !ruby/regexp /^(elastic11(00|01|02)|cirrussearch11(00|01|02))\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic11(00|01|02)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F3
   profile::elasticsearch::row:  F
   profile::opensearch::rack: F3
   profile::opensearch::row: F
 
 es_eqiad_rack_f5:
-  __regex: !ruby/regexp /^(elastic|cirrussearch)1107\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^elastic1107\.eqiad\.wmnet$/
   profile::elasticsearch::rack: F5
   profile::elasticsearch::row:  F
   profile::opensearch::rack: F5
