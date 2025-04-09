@@ -176,6 +176,9 @@ class community_civicrm (
         php_version => $php_version,
     }
 
+    # install the local dovecot server for serving bounce replies, etc.
+    include community_civicrm::dovecot
+
     # run the regularly scheduled civi jobs
     # https://docs.civicrm.org/sysadmin/en/latest/setup/jobs/
     systemd::timer::job { 'community_civicrm-cv-job-run':

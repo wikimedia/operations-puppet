@@ -5,6 +5,7 @@ class profile::community_civicrm::mail (
   Stdlib::Fqdn $site_name = lookup('profile::community_civicrm::httpd::site_name', {'default_value' => 'community-crm.wikimedia.org'}),
 ){
 
+  include network::constants
   class { 'profile::postfix::mx':
     config                 => {
       mailbox_command => '/usr/lib/dovecot/dovecot-lda -f "$SENDER" -a "$RECIPIENT"',

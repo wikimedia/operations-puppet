@@ -27,6 +27,11 @@ profile::postfix::mx::static_transport_maps:
     content: |
       # Match MediaWiki VERP bounces and forward them to the bounce handler api
       /wiki-[a-z0-9_.]+-[a-z0-9]+-[a-z0-9]+-[a-z0-9+\/=]+@wikimedia.org/	wiki-verp-bounce-handler
+  community_civicrm:
+    type: 'hash'
+    content: |
+      # Forward community crm mail to crm server
+      community-crm.wikimedia.org	smtp:community-crm.discovery.wmnet
   donate:
     type: 'hash'
     content: |

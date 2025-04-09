@@ -28,6 +28,7 @@ class profile::community_civicrm (
 
     include profile::community_civicrm::db
     include profile::community_civicrm::httpd
+    include profile::community_civicrm::mail
 
     class { 'community_civicrm':
         civi_mail_user => $civi_mail_user,
