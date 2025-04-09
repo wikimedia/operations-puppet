@@ -23,7 +23,7 @@ class profile::scap::dsh(
     # These need to change according to the MediaWiki active datacenter.
     # We also want the servers from each cluster in their own canary list.
     $canary_dcs = ['eqiad', 'codfw']
-    $canary_clusters = ['appserver', 'api_appserver', 'jobrunner', 'parsoid']
+    $canary_clusters = ['appserver', 'api_appserver', 'parsoid']
 
     $canary_clusters.each |$cl| {
         # Cosmetic fix to get the same filenames as before

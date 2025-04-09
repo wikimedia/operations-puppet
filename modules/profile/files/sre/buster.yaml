@@ -92,8 +92,6 @@ role::mariadb::parsercache:
 role::ncredir:
   target-q: 2023-1
   phab-task: 321309
-role::mediawiki::jobrunner:
-  target-q: TBD
 role::mediawiki::appserver::api:
   target-q: TBD
 role::swift::proxy:

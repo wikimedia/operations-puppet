@@ -9,15 +9,11 @@ scap::dsh::groups:
   kubernetes-workers:
     conftool:
       - {'cluster': 'kubernetes', 'service': 'kubesvc'}
-  jobrunner:
-    conftool:
-      - {'cluster': 'jobrunner', 'service': 'nginx'}
   testserver:
     conftool:
       - {'cluster': 'testserver', 'service': 'apache2'}
   mediawiki-installation:
     conftool:
-      - {'cluster': 'jobrunner', 'service': 'nginx'}
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - mwmaint1002.eqiad.wmnet

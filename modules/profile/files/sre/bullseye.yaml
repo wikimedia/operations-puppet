@@ -61,8 +61,6 @@ role::mariadb::parsercache:
   target-q: TBD
 role::ncredir:
   target-q: TBD
-role::mediawiki::jobrunner:
-  target-q: TBD
 role::mediawiki::appserver::api:
   target-q: TBD
 role::swift::proxy:
