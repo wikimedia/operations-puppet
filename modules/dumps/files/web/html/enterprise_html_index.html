@@ -1,46 +1,38 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<!DOCTYPE html>
+<html lang="en">
 <!-- This file is maintained by puppet!! -->
 <!-- modules/dumps/files/web/html/enterprise_html_index.html -->
 <head>
+  <meta charset="utf-8">
   <title>Wikimedia Enterprise HTML Dump Archive</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" type="text/css" href="/dumps.css" />
+  <link rel="stylesheet" href="/dumps.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div id="container">
-<h1>Wikimedia Enterprise HTML Dump Archive</h1>
-<p>
-  The partial mirrors of Wikimedia Enterprise HTML dumps were an experimental service that, 
-  as of 03/24/2025, are no longer replicated here.
-</p>
-<p>
-  If you are in need of recent runs, dumps of article change updates, or the ability to query 
-  individual articles from the dumps, visit 
-  <a href="https://enterprise.wikimedia.com/?utm_source=wmfdumps">Wikimedia Enterprise</a> to 
-  sign up for a free account. Alternatively use your developer account to access APIs within 
-  Wikimedia Cloud Services.
-</p>
-<hr />
-<h3>
-  Historical Archive
-</h3>
-<p>
-  The historical dumps will remain available here for a specific set of namespaces and wikis for public 
-  download. Each dump output file consists of a tar.gz archive which, when uncompressed and untarred, 
-  contains one file, with a single line per article, in json format. To view the payload schema visit 
-  Wikimedia Enterprise 
-  <a href="https://enterprise.wikimedia.com/docs/data-dictionary/?utm_source=wmfdumps">API Data Dictionary</a>.
-</p>
-<p>
-  Accompanying the tar.gz file is a file containing the md5sum and the date the dump was produced, also 
-  in JSON format. All files for a dump run are included in a single directory of the format YYYYMMDD. 
-</p>
-<p>
-  View those directories here: <a href="/other/enterprise_html/runs/">other/enterprise_html/runs</a>
-</p>
-<hr />
-<p> Back to <a href="../">other data bundles</a> | <a href="../../">the main index page</a> </p>
-</div>
+  <div id="container">
+    <h1>Wikimedia Enterprise HTML Dump Archive</h1>
+    <p>
+      The partial mirrors of Wikimedia Enterprise HTML dumps were an experimental service that, as of 24 March 2025, 
+      are no longer replicated here.
+    </p>
+    <p>
+      For recent dumps of article change updates (<em>Snapshot API</em>) or the ability to query individual articles 
+      (<em>On-demand API</em>), please visit <a href="https://enterprise.wikimedia.com/api/?utm_source=wmfdumps">Wikimedia 
+      Enterprise</a> to sign up for a free account. Alternatively, use your developer account to access APIs 
+      within Wikimedia Cloud Services.
+    </p>
+    <hr>
+    <h3>Historical Archive</h3>
+    <p>
+      The historical dumps will remain available here for a specific set of namespaces and wikis for public 
+      download. To view the payload schema visit Wikimedia Enterprise 
+      <a href="https://enterprise.wikimedia.com/docs/data-dictionary/?utm_source=wmfdumps">API Data Dictionary</a>.
+    </p>
+    <p>
+      View those directories here: <a href="/other/enterprise_html/runs/">other/enterprise_html/runs</a>
+    </p>
+    <hr>
+    <p>Back to <a href="../">other data bundles</a> | <a href="../../">the main index page</a></p>
+  </div>
 </body>
 </html>
