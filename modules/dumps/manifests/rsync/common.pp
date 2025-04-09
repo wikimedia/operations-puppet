@@ -20,13 +20,9 @@ class dumps::rsync::common(
         refreshonly => true,
         require     => File['/etc/rsyncd.d'],
     }
-    # We do not need to manage the rsync service on clouddumps100[1-2]
-    # since it is managed by an rsync::server::module resource. See #T389784
-    unless $facts['networking']['fqdn'] =~ /^clouddumps[\d]{4}/ {
-        service { 'rsync':
-            ensure    => running,
-            enable    => true,
-            subscribe => [Exec['update-rsyncd.conf']],
-        }
+    service { 'rsync':
+        ensure    => running,
+        enable    => true,
+        subscribe => [ Exec['update-rsyncd.conf'] ],
     }
 }
