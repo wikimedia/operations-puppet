@@ -113,7 +113,7 @@ protocol bgp {
         export filter vips6_filter;
     };
     local <%= @ipv6_src %> as 64605;
-<% if ! @_multihop -%>
+<% if neighbor_v6.start_with?('fe80') -%>
     neighbor <%= neighbor_v6 %>%<%= @facts['networking']['primary'] %> external;
 <% else -%>
     neighbor <%= neighbor_v6 %> external;
