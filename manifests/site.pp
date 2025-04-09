@@ -2366,12 +2366,8 @@ node /^registry[12]00[345]\.(eqiad|codfw)\./ {
 
 # https://releases.wikimedia.org - VMs for releases files (mediawiki and other)
 # https://releases-jenkins.wikimedia.org (automatic MediaWiki builds)
-node /^releases[1]003\.(codfw|eqiad)\./ {
+node /^releases[12]003\.(codfw|eqiad)\./ {
     role(releases)
-}
-
-node /^releases[2]003\.codfw\./ {
-    role(insetup::collaboration_services_ferm)
 }
 
 # relevance forge servers (run opensearch, owned by DPE SRE)
