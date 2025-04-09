@@ -205,15 +205,11 @@ def purge_duplicates(project_id, deployment, delete=False):
     return strayrecords
 
 
-def list_strays(project_id, deployment, delete=False):
-    strayrecs = purge_duplicates("noauth-project", args.deployment, args.delete)
+def list_strays(deployment, delete=False):
     if deployment == "eqiad1":
-        strayrecords = purge_duplicates("cloudinfra", deployment, delete)
-        strayrecs.extend(strayrecords)
+        return purge_duplicates("cloudinfra", deployment, delete)
     elif deployment == "codfw1dev":
-        strayrecords = purge_duplicates("cloudinfra-codfw1dev", deployment, delete)
-        strayrecs.extend(strayrecords)
-    return strayrecs
+        return purge_duplicates("cloudinfra-codfw1dev", deployment, delete)
 
 
 parser = argparse.ArgumentParser(
@@ -251,10 +247,10 @@ if args.delete and args.doublecheck:
     print("--delete and --doublecheck are mutually exclusive")
     sys.exit(2)
 
-strayrecs = list_strays("noauth-project", args.deployment, args.delete)
+strayrecs = list_strays(args.deployment, args.delete)
 
 if args.doublecheck:
-    strayrecs2 = list_strays("noauth-project", args.deployment, args.delete)
+    strayrecs2 = list_strays(args.deployment, args.delete)
     persistentstrays = set(strayrecs).intersection(set(strayrecs2))
     strayrecs = list(persistentstrays)
 

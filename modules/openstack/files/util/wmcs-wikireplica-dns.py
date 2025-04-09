@@ -112,7 +112,7 @@ def main():
 
         if zone.endswith("wmflabs."):
             dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(oscloud=args.os_cloud), "noauth-project"
+                mwopenstackclients.Clients(oscloud=args.os_cloud), "cloudinfra"
             )
         elif zone.endswith("db.svc.wikimedia.cloud."):
             dns = mwopenstackclients.DnsManager(

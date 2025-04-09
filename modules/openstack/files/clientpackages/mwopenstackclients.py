@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # SPDX-License-Identifier: Apache-2.0
 import json
 import logging
@@ -268,7 +269,7 @@ class Clients(object):
             )
         return self.glanceclients[project]
 
-    # In many cases we might be accessing records in one project (e.g. 'noauth-project')
+    # In many cases we might be accessing records in one project (e.g. 'cloudinfra')
     #  while using a token from a different project (e.g. 'admin').
     # The 'project' arg refers to the project that contains the zones or records of interest.
     @retry(
@@ -426,7 +427,7 @@ clients = Clients
 class DnsManager(object):
     """Wrapper for communicating with Designate API."""
 
-    def __init__(self, client, tenant="noauth-project"):
+    def __init__(self, client, tenant="cloudinfra"):
         """
         :param client: mwopenstackclients.Clients instance
         :param tenant: Tenant to operate as via X-Auth-Sudo-Tenant-ID

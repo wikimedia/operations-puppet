@@ -250,7 +250,6 @@ if args.delete and args.to_prometheus:
 
 strays = purge_duplicates("cloudinfra", args.delete)
 strays += purge_duplicates("cloudinfra-codfw1dev", args.delete)
-strays += purge_duplicates("noauth-project", args.delete)
 
 if args.to_prometheus:
     write_prom_file(strays)
