@@ -8,3 +8,8 @@ groups:
     expr:   histogram_quantile(0.75, sum by (le,job) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
   - record: job:webperf_cpubenchmark_seconds:50pct1h
     expr:   histogram_quantile(0.50, sum by (le,job) (rate(webperf_cpubenchmark_seconds_bucket[1h])))
+
+- name: real_user_monitoring
+  rules:
+    - record: geocontinent_uafamily_mwskin_mwgroup:webperf_painttiming_firstcontentfulpaint_seconds_mwcontext_anonymous_mainspace:rate5m
+      expr: sum by (geo_continent, ua_family, mw_skin, mw_group) (rate(webperf_painttiming_firstcontentfulpaint_seconds_bucket{mw_context="anonymous_mainspace_view"}[5m]))
