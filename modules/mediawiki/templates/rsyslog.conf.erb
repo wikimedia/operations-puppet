@@ -39,9 +39,9 @@ if ($programname startswith 'mediawiki_job_') then {
 }
 
 # Forward messages logged by the kernel and containing the string
-# "php7" (such as warnings that the process was killed or respawned)
+# "php7" or "php8" (such as warnings that the process was killed or respawned)
 # to the log aggregator.
-if $msg contains "php7" and $programname == "kernel" then {
+if ($programname == "kernel" and ($msg contains "php7" or $msg contains "php8")) {
     @<%= @log_aggregator %>;MediaWiki
 <% if @forward_syslog -%>
     @<%= @forward_syslog %>

@@ -77,19 +77,22 @@ class profile::mediawiki::php(
             before     => Package['php8.1-common', 'php8.1-opcache']
         }
 
-        apt::package_from_component{ 'pcre2-backport-bullseye':
-            component => 'component/php81',
-            packages  => ['libpcre2-8-0'],
-        }
-
+        # As per T386006, we need a PCRE 10.39 or higher for PHP 8.1
+        # to work properly.
         $php_common_version = '2:92+wmf11u1'
+        $libpcre2_version = '10.42-1~wmf11+1'
+
+        package { 'libpcre2-8-0':
+            ensure  => $libpcre2_version,
+            require => Apt::Repository['wikimedia-php81'],
+        }
 
         # Install explicitly php-common from the php81 component
         # as the one installed elsewhere misses
         package { 'php-common':
             ensure  => $php_common_version,
             require => Exec['apt_update_php'],
-            before  => Package['php8.1-common', 'php8.1-opcache']
+            before  => Package['php8.1-common', 'php8.1-opcache', 'libpcre2-8-0']
         }
     } elsif ('8.1' in $absented_php_versions) {
         apt::repository { 'wikimedia-php81':
