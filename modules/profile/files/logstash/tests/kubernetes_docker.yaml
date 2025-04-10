@@ -290,3 +290,42 @@ testcases:
         program: input-file-kubernetes
         severity: NOTICE
         type: syslog
+
+  - input:
+      - >
+        {
+          "kubernetes": { "namespace_name": "airflow-wmde" },
+          "msg":"2025-04-02T23:07:04.815811883Z stderr F {\"level\":\"info\",\"ts\":\"2025-04-02T23:07:04Z\",\"msg\":\"Cannot synchronize external server connection parameters\",\"controller\":\"cluster\",\"controllerGroup\":\"postgresql.cnpg.io\",\"controllerKind\":\"Cluster\",\"Cluster\":{\"name\":\"postgresql-airflow-wmde\",\"namespace\":\"airflow-wmde\"},\"namespace\":\"airflow-wmde\",\"name\":\"postgresql-airflow-wmde\",\"reconcileID\":\"2ec9f93d-e13f-4d46-8f8b-1a2a618dfebc\",\"serverName\":\"external-database\",\"logging_pod\":\"postgresql-airflow-wmde-2\",\"err\":\"secrets \\\"postgresql-airflow-wmde-bootstrap-import\\\" not found\"}",
+          "stream": "stderr"
+        }
+  - expected:
+      - __target_index: "logstash-k8s-1-1.0.0-N-daily"
+        Cluster:
+          name: postgresql-airflow-wmde
+          namespace: airflow-wmde
+        controller: cluster
+        controllerGroup: postgresql.cnpg.io
+        controllerKind: Cluster
+        err:
+          message: 'secrets "postgresql-airflow-wmde-bootstrap-import" not found'
+        facility: local0
+        host: kubestage1008
+        kubernetes:
+          namespace_name: airflow-wmde
+        level: info
+        logging_pod: postgresql-airflow-wmde-2
+        logsource: kubestage1008
+        msg: 'Cannot synchronize external server connection parameters'
+        name: postgresql-airflow-wmde
+        namespace: airflow-wmde
+        program: input-file-kubernetes
+        reconcileID: 2ec9f93d-e13f-4d46-8f8b-1a2a618dfebc
+        rsyslog.facility: local0
+        rsyslog.hostname: kubestage1008
+        rsyslog.programname: input-file-kubernetes
+        rsyslog.severity: NOTICE
+        serverName: external-database
+        severity: NOTICE
+        stream: stderr
+        time: '2025-04-02T23:07:04.815811883Z'
+        ts: '2025-04-02T23:07:04Z'
