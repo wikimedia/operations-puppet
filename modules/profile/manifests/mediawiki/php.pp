@@ -85,6 +85,7 @@ class profile::mediawiki::php(
         package { 'libpcre2-8-0':
             ensure  => $libpcre2_version,
             require => Apt::Repository['wikimedia-php81'],
+            before  => Package['php8.1-common', 'php8.1-opcache']
         }
 
         # Install explicitly php-common from the php81 component
@@ -92,7 +93,7 @@ class profile::mediawiki::php(
         package { 'php-common':
             ensure  => $php_common_version,
             require => Exec['apt_update_php'],
-            before  => Package['php8.1-common', 'php8.1-opcache', 'libpcre2-8-0']
+            before  => Package['php8.1-common', 'php8.1-opcache']
         }
     } elsif ('8.1' in $absented_php_versions) {
         apt::repository { 'wikimedia-php81':
