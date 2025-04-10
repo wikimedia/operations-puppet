@@ -1,8 +1,0 @@
-# SPDX-License-Identifier: Apache-2.0
-
-"admin_or_glanceadmin": "is_admin:True or role:glanceadmin"
-"admin_or_owner": "is_admin:True or project_id:%(project_id)s"
-"context_is_admin": "role:admin"
-
-"admin_or_member": "is_admin:True or role:member"
-"default": "rule:admin_or_member"
