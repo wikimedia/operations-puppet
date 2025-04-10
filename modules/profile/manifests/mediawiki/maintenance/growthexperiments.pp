@@ -36,8 +36,14 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # purge expired rows from the database (Mentor dashboard, T280307)
     profile::mediawiki::periodic_job { 'growthexperiments-purgeExpiredMentorStatus':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
-        interval => '*-*-01,15 8:45:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
+        interval              => '*-*-01,15 8:45:00',
+        cron_schedule         => '45 8 1,15 * *',
+        kubernetes            => true,
+        team                  => 'growth',
+        script_label          => 'purgeExpiredMentorStatus.php',
+        description           => 'Purge expired rows from the database for the Mentor dashboard, twice a month.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # push periodically-computed metrics into statsd (T318684)
