@@ -420,9 +420,9 @@ receivers:
     - to: 'sre-data-persistence@<%= @facts["networking"]["domain"] %>'
       headers: {'Auto-Submitted':'auto-generated'}
 
-  - name: 'data-persistence-task'
+- name: 'data-persistence-task'
   webhook_configs:
-  # #DBA
+    # #DBA
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-hwibeuyzizzy4xzunfsk'
       send_resolved: false
 
