@@ -118,7 +118,6 @@ class ForwarderBot(ircbot.SingleServerIRCBot):
             connection.join(channel)
 
         if 'infiles' in config:
-            global files
             for infile in config['infiles']:
                 f = open(infile, 'r')
                 f.seek(0, 2)
