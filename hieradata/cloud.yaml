@@ -1197,3 +1197,5 @@ profile::cache::haproxy::allowed_methods:
 
 # We don't use requestctl here
 profile::conftool::requestctl_client::admin_groups: []
+
+profile::cache::haproxy::use_benthos: false

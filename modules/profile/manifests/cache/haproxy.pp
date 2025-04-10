@@ -32,7 +32,7 @@ class profile::cache::haproxy (
     Optional[Integer]                        $log_length                  = lookup('profile::cache::haproxy::log_length', { 'default_value'                  => 8192 }),
     Boolean                                  $use_etcd_req_filters        = lookup('profile::cache::haproxy::use_etcd_req_filters', { 'default_value'        => false }),
     Boolean                                  $numa_networking             = lookup('profile::cache::haproxy::numa_networking', { 'default_value'             => true }),
-    Boolean                                  $use_benthos                 = lookup('profile::cache::haproxy::use_benthos', { 'default_value'                 => false }),
+    Boolean                                  $use_benthos                 = lookup('profile::cache::haproxy::use_benthos', { 'default_value'                 => true }),
     String                                   $benthos_socket              = lookup('profile::cache::haproxy::benthos_socket_address', { 'default_value'      => '127.0.0.1:1221' }),
     String                                   $conftool_prefix             = lookup('conftool_prefix'),
     Boolean                                  $use_tls_tmpfiles            = lookup('profile::cache::haproxy::use_tls_tmpfiles', { 'default_value'            => false }),

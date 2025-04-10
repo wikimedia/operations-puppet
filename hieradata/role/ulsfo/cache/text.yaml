@@ -22,7 +22,6 @@ profile::benthos::instances:
       topics:
         - "none"
 
-
 profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request
@@ -59,4 +58,4 @@ profile::cache::haproxy::enabled_certificates:
 
 lookup_options:
   profile::cache::haproxy::post_acl_actions:
-      merge: first
+    merge: first

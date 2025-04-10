@@ -1,3 +1,6 @@
+profile::cache::haproxy::use_benthos: true
+profile::cache::haproxy::benthos_socket_address: "127.0.0.1:1221"
+
 # TLS on volatile storage
 profile::cache::haproxy::use_tls_tmpfiles: true
 
