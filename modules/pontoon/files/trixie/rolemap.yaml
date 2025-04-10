@@ -15,3 +15,5 @@ pontoon::lb:
 - trixie-lb-01.o11y.eqiad1.wikimedia.cloud
 alerting_host:
 - trixie-alerts-01.o11y.eqiad1.wikimedia.cloud
+syslog::centralserver:
+- trixie-centrallog-01.o11y.eqiad1.wikimedia.cloud
