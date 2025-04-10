@@ -598,6 +598,8 @@ network::subnets:
           ipv4: 172.16.128.0/24
         cloud-instances-flat3-codfw:
           ipv4: 172.16.129.0/24
+        vxlan-ipv4-only-codfw:
+          ipv4: 172.16.130.0/24
         cloud-instances-pool1-codfw:
           ipv4: 172.16.132.0/22
         cloud-private-b1-codfw:
