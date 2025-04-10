@@ -23,7 +23,6 @@ class profile::kubernetes::deployment_server::mediawiki::periodic_jobs(
   include ::profile::mediawiki::maintenance::globalblocking
   include ::profile::mediawiki::maintenance::pagetriage
   include ::profile::mediawiki::maintenance::translationnotifications
-  include ::profile::mediawiki::maintenance::updatetranslationstats
   include ::profile::mediawiki::maintenance::echo_mail_batch
   include ::profile::mediawiki::maintenance::parsercachepurging
   include ::profile::mediawiki::maintenance::cleanup_upload_stash
