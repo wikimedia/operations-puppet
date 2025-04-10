@@ -1014,6 +1014,70 @@ tables:
       - dbname: testwiki
     canonicality: canonical
     visibility: public
+  - name: cx_corpora
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cx_lists
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: private
+  - name: cx_notification_log
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical with acceptable loss
+    visibility: public
+  - name: cx_section_translations
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cx_significant_edits
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical with acceptable loss
+    visibility: private
+  - name: cx_suggestions
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: private
+  - name: cx_translations
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
+  - name: cx_translators
+    source: contenttranslation
+    databases:
+      - dbname: wikishared
+        cluster: x1
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: public
 sources:
   core:
     - path: sql/tables.json
@@ -1039,6 +1103,9 @@ sources:
   cognate:
     - path: extensions/Cognate/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Cognate/+/master/sql/tables.json
+  contenttranslation:
+    - path: extensions/ContentTranslation/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ContentTranslation/+/master/sql/tables.json
   credit_source:
     - path: extensions/CreditsSource/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/CreditsSource/+/master/schema/tables.json
