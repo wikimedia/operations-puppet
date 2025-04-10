@@ -335,22 +335,25 @@ profile::opensearch::logstash::curator_actions:
   # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
   # This action will ignore indices already forceMerged to the same or fewer number of segments per shard,
   # so the 'forcemerged' filter is unneeded.
-  '90':
-    description: 'all: forcemerge indexes older than 2 days'
-    action: forcemerge
-    options:
-      max_num_segments: 1
-      delay: 120
-      continue_if_exception: false
-    filters:
-      - filtertype: pattern
-        kind: regex
-        exclude: true  # exclude special indexes
-        value: '^\..*'
-      - filtertype: age
-        source: creation_date
-        direction: older
-        unit: days
-        unit_count: 2
+  #
+  # Temporarily disabled as possible contributor to T390215
+  #
+  #'90':
+  #  description: 'all: forcemerge indexes older than 2 days'
+  #  action: forcemerge
+  #  options:
+  #    max_num_segments: 1
+  #    delay: 120
+  #    continue_if_exception: false
+  #  filters:
+  #    - filtertype: pattern
+  #      kind: regex
+  #      exclude: true  # exclude special indexes
+  #      value: '^\..*'
+  #    - filtertype: age
+  #      source: creation_date
+  #      direction: older
+  #      unit: days
+  #      unit_count: 2
 
 profile::puppet::agent::force_puppet7: true
