@@ -14,6 +14,11 @@ class snapshot::dumps::dblists {
     $labs_bigwikis = ['enwiki', 'simplewiki', 'wikidatawiki']
     $labs_bigwikis_dblist = join($labs_bigwikis, "\n")
 
+    # mediawikiwiki temporarily excluded due to multiple failures that don't allow
+    # other dumps to move forward. https://phabricator.wikimedia.org/T390839
+    $excludewikis = ['mediawikiwiki']
+    $excludewikis_dblist = join($excludewikis, "\n")
+
     $skip_dblist = "${enwiki_dblist}\n${wikidatawiki_dblist}\n${bigwikis_dblist}"
     $skip_labs_dblist = $labs_bigwikis_dblist
 
@@ -70,6 +75,14 @@ class snapshot::dumps::dblists {
         owner   => 'root',
         group   => 'root',
         content => "${skip_labs_dblist}\n",
+    }
+    file { "${dblistsdir}/skipmonitor.dblist":
+        ensure  => 'present',
+        path    => "${dblistsdir}/skipmonitor.dblist",
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        content => "${excludewikis_dblist}\n",
     }
     file { "${dblistsdir}/skipnone.dblist":
         ensure  => 'present',
