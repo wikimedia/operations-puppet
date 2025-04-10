@@ -1155,13 +1155,9 @@ node /^elastic2(060|067|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\
     role(elasticsearch::cirrus)
 }
 
-node /^cirrussearch2068\.codfw\./ {
+node /^cirrussearch2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
     role(cirrus::opensearch)
 }
-
-# node /^cirrussearch2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
-# role(cirrus::opensearch)
-# }
 
 
 # External Storage, Shard 1 (es1) databases
