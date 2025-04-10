@@ -132,7 +132,7 @@ class profile::netbox (
     $netbox_extras_path = '/srv/deployment/netbox-extras'
 
     $netbox_scripts_path = '/srv/netbox'
-    $run_report_command = 'runscript --user sre_bot'
+    $run_report_command = 'runscript --user sre_bot --commit'
 
     file { $netbox_scripts_path:
         ensure => directory,  # Create the parent directory for the one below
