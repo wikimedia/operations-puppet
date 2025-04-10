@@ -91,6 +91,12 @@ listen tls
     capture response header Server len 64
     <%- end -%>
 
+    # vars
+    http-request set-var(txn.xwd_count) req.hdr_cnt(X-Wikimedia-Debug)
+    http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
+    http-request set-var(req.auth) str(ECDSA)
+
+<%# Generated set-var -%>
 <%- if @vars and @vars['tls'] -%>
 <%- @vars['tls'].each do |var| -%>
 <%- if var['acl'] == nil -%>
@@ -105,6 +111,7 @@ listen tls
 <%- end -%>
 <%- end -%>
 
+<%# Generated pre_acl_actions -%>
 <%- if @pre_acl_actions and @pre_acl_actions['tls'] -%>
 <%- @pre_acl_actions['tls'].each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
@@ -115,11 +122,28 @@ listen tls
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
 <%- end -%>
 
+    # ACLs
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 500
+    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate) gt 0
+    acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate) gt 0
+    acl missing_xwd var(txn.xwd_count) -m int eq 0
+    acl h2 fc_http_major eq 2
+    acl ssl_session_reused ssl_fc_is_resumed eq 1
+    acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
+
+<%# Generated acls -%>
 <%- if @acls and @acls['tls'] -%>
 <%- @acls['tls'].each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
 <%- end -%>
 <%- end -%>
+
+    http-request set-var(req.h2) int(1) if h2
+    http-request set-var(req.h2) int(0) if !h2
+    http-request set-var(req.h2s) str(h2) if h2
+    http-request set-var(req.h2s) str(h1) if !h2
+    http-request set-var(req.sess) str(new) if !ssl_session_reused
+    http-request set-var(req.sess) str(reused) if ssl_session_reused
 
 <%- if @vars and @vars['tls'] -%>
 <%- @vars['tls'].each do |var| -%>
@@ -129,6 +153,14 @@ listen tls
 <%- end -%>
 <%- end -%>
 
+    http-request set-header X-Client-IP "%[src]"
+    http-request set-header X-Client-Port "%[src_port]"
+    http-request set-header X-Forwarded-Proto "https"
+    http-request set-header X-Connection-Properties "H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];"
+    http-request set-header X-Analytics-TLS "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
+    http-request set-header X-Requestctl " "
+
+<%# Generated set-header -%>
 <%- if @add_headers and @add_headers['tls'] -%>
 <%- @add_headers['tls'].each do |add_header| -%>
 <%- if add_header['value'] -%>
@@ -139,12 +171,35 @@ listen tls
 <%- if @extended_logging -%>
     http-request capture hdr(X-Analytics-TLS) len 96
 <%- end -%>
+    http-request del-header X-Request-Id if !wikimedia_trust
+    http-request del-header tracestate if !wikimedia_trust
+    http-request del-header traceparent if !wikimedia_trust
+    http-response del-header X-Analytics
+    http-response del-header Backend-Timing if missing_xwd
+    http-response del-header X-ATS-Timestamp if missing_xwd
+    http-response del-header X-Envoy-Upstream-Service-Time if missing_xwd
+    http-response del-header X-OpenStack-Request-ID if missing_xwd
+    http-response del-header X-Powered-By if missing_xwd
+    http-response del-header X-Request-Id if missing_xwd
+    http-response del-header X-Timestamp if missing_xwd
+    http-response del-header X-Trans-Id if missing_xwd
+    http-response del-header X-Varnish if missing_xwd
+    http-response del-header traceparent if missing_xwd
+    http-response del-header tracestate if missing_xwd
+
+<%# Generated del-header -%>
 <%- if @del_headers and @del_headers['tls'] -%>
 <%- @del_headers['tls'].each do |del_header| -%>
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 <%- end -%>
 
+    http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
+    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
+    # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
+    http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
+
+<%# Generated post_acl_actions -%>
 <%- if @post_acl_actions and @post_acl_actions['tls'] -%>
 <%- @post_acl_actions['tls'].each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
@@ -268,12 +323,20 @@ frontend http
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
 <%- end -%>
+
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate_http) ge 400
+    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate_http) gt 0
+    acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate_http) gt 0
+
 <%# acls -%>
 <%- if @acls and @acls['http'] -%>
 <%- @acls['http'].each do |acl| -%>
     acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
 <%- end -%>
 <%- end -%>
+
+    http-request set-var(req.dummy_silent_drop_port80) src,debug(silent-drop_port80_for_300s,stderr) if too_many_concurrent_queries !too_much_recent_concurrency
+
 <%# vars (with acls) -%>
 <%- if @vars and @vars['http'] -%>
 <%- @vars['http'].each do |var| -%>
@@ -296,6 +359,11 @@ frontend http
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 <%- end -%>
+
+    http-request track-sc0 src table httpreqrate_http
+    # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
+    http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
+
 <%# post_acl_actions -%>
 <%- if @post_acl_actions and @post_acl_actions['http'] -%>
 <%- @post_acl_actions['http'].each do |action| -%>

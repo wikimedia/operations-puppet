@@ -1,25 +1,6 @@
 profile::cache::haproxy::post_acl_actions:
-  tls:
-    - context: http-request
-      verb: track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
-    - context: http-request
-      verb: 'set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr)'
-      condition: if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency
-      comment: "exists only for logging side-effect"
-    # To disable concurrency enforcement, comment out this entire block below.
-    - context: http-request
-      verb: silent-drop
-      condition: if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
-      comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
-  http:
-    - context: http-request
-      verb: track-sc0 src table httpreqrate_http
-    # To disable concurrency enforcement, comment out this entire block below.
-    - context: http-request
-      verb: silent-drop
-      condition: if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
-      comment: "To disable concurrency enforcement, see post_acl_actions in puppet/hieradata/common/profile/cache/haproxy.yaml"
-
+  tls: []
+  http: []
 profile::cache::haproxy::sticktables:
   - name: httpreqrate
     type: ipv6
@@ -37,163 +18,15 @@ profile::cache::haproxy::sticktables:
       - 'gpc_rate(10,300s)'
 
 profile::cache::haproxy::vars:
-  tls:
-    - direction: request
-      name: 'txn.xwd_count'
-      value: 'req.hdr_cnt(X-Wikimedia-Debug)'
-    - direction: request
-      name: 'req.h2'
-      value: 'int(1)'
-      acl: 'h2'
-    - direction: request
-      name: 'req.h2'
-      value: 'int(0)'
-      acl: '!h2'
-    - direction: request
-      name: 'req.h2s'
-      value: 'str(h2)'
-      acl: 'h2'
-    - direction: request
-      name: 'req.h2s'
-      value: 'str(h1)'
-      acl: '!h2'
-    - direction: request
-      name: 'req.sess'
-      value: 'str(new)'
-      acl: '!ssl_session_reused'
-    - direction: request
-      name: 'req.sess'
-      value: 'str(reused)'
-      acl: 'ssl_session_reused'
-    - direction: request
-      name: 'req.ciph'
-      value: "ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')"
-    - direction: request
-      name: 'req.auth'
-      value: 'str(ECDSA)'
-  http:
-    - direction: request
-      name: 'req.dummy_silent_drop_port80'  # exists only for logging purposes
-      value: 'src,debug(silent-drop_port80_for_300s,stderr)'
-      # only log the first time an IP violates too_many_concurrent_queries and starts being silent-dropped
-      acl: 'too_many_concurrent_queries !too_much_recent_concurrency'
-
+  tls: []
+  http: []
 profile::cache::haproxy::acls:
-  tls:
-    - name: 'too_many_concurrent_queries'
-      criterion: 'sc0_trackers(httpreqrate)'
-      operator: 'ge'
-      value: '500'
-    - name: 'too_much_recent_concurrency'
-      # Add hysteresis.
-      criterion: 'sc0_gpc0_rate(httpreqrate)'
-      operator: 'gt'
-      value: '0'
-    - name: 'mark_as_too_much_concurrency'
-      criterion: 'sc0_inc_gpc0(httpreqrate)'  # increments the gpc0 counter
-      # (so yes, evaluating this ACL is mutating, and yes, this is haproxy-idiomatic)
-      operator: 'gt'
-      value: '0'
-    - name: missing_xwd
-      criterion: 'var(txn.xwd_count)'
-      operator: '-m int eq'
-      value: '0'
-    - name: h2
-      criterion: 'fc_http_major'
-      operator: 'eq'
-      value: '2'
-    - name: ssl_session_reused
-      criterion: 'ssl_fc_is_resumed'
-      operator: 'eq'
-      value: '1'
-    - name: mathoid_as_a_service
-      criterion: path
-      operator: '-m beg'
-      value: /api/rest_v1/media/math/
-  http:
-    - name: 'too_many_concurrent_queries'
-      criterion: 'sc0_trackers(httpreqrate_http)'
-      operator: 'ge'
-      value: '400'
-    - name: 'too_much_recent_concurrency'
-      # Add hysteresis.
-      criterion: 'sc0_gpc0_rate(httpreqrate_http)'
-      operator: 'gt'
-      value: '0'
-    - name: 'mark_as_too_much_concurrency'
-      criterion: 'sc0_inc_gpc0(httpreqrate_http)'  # increments the gpc1 counter
-      # (so yes, evaluating this ACL is mutating, and yes, this is haproxy-idiomatic)
-      operator: 'gt'
-      value: '0'
-
+  tls: []
+  http: []
 profile::cache::haproxy::add_headers:
-  tls:
-    - direction: request
-      name: 'X-Client-IP'
-      value: '%[src]'
-    - direction: request
-      name: 'X-Client-Port'
-      value: '%[src_port]'
-    - direction: request
-      name: 'X-Forwarded-Proto'
-      value: 'https'
-    - direction: request
-      name: 'X-Connection-Properties'
-      value: 'H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];'
-    - direction: request
-      name: 'X-Analytics-TLS'
-      value: 'vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]'
-    - direction: request
-      name: 'X-Requestctl'
-      value: ' '
-
-
+  tls: []
 profile::cache::haproxy::del_headers:
-  tls:
-    - direction: request
-      name: 'X-Request-Id'
-      acl: '!wikimedia_trust'
-    - direction: request
-      name: 'tracestate'
-      acl: '!wikimedia_trust'
-    - direction: request
-      name: 'traceparent'
-      acl: '!wikimedia_trust'
-    - direction: response
-      name: 'X-Analytics'
-    - direction: response
-      name: 'Backend-Timing'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-ATS-Timestamp'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Envoy-Upstream-Service-Time'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-OpenStack-Request-ID'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Powered-By'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Request-Id'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Timestamp'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Trans-Id'
-      acl: missing_xwd
-    - direction: response
-      name: 'X-Varnish'
-      acl: missing_xwd
-    - direction: response
-      name: 'traceparent'
-      acl: missing_xwd
-    - direction: response
-      name: 'tracestate'
-      acl: missing_xwd
+  tls: []
 
 # TLS on volatile storage
 profile::cache::haproxy::use_tls_tmpfiles: true
