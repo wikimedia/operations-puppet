@@ -307,6 +307,42 @@ route:
         - match:
             severity: 'task'
           receiver: 'security-task'
+    - match:
+        team: 'campaigns-product'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'campaigns-product-task'
+    - match:
+        team: 'community-tech'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'community-tech-task'
+    - match:
+        team: 'flaggedrevs'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'flaggedrevs-task'
+    - match:
+        team: 'mediawiki-categories'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mediawiki-categories-task'
+    - match:
+        team: 'mediawiki-page-derived-data'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mediawiki-page-derived-data-task'
+    - match:
+        team: 'mediawiki-special-pages'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mediawiki-special-pages-task'
 
     - match:
         team: 'ml'
