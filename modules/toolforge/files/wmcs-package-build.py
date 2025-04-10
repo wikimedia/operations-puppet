@@ -260,7 +260,6 @@ def stage_cleanup():
 
 
 def main():
-    global ctx
     args = parse_args()
     ctx.args = args
     ctx.git_repo_dir = "{}/{}".format(
