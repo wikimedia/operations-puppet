@@ -76,7 +76,7 @@ def instancenetwork():
     neutronclient = observerclients.neutronclient(project=POLICY_TEST_PROJECT)
 
     def instance_network(net1, net2):
-        if "instance" in net2["name"]:
+        if "legacy" in net2["name"] or "dualstack" in net2["name"]:
             return net2
         else:
             return net1
