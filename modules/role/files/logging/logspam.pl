@@ -154,8 +154,6 @@ my %junk_consolidate_patterns = (
 
 my %consolidate_patterns = (
   qr/Failed to load data blob from Unable to fetch blob at tt:\d+/ => 'RevisionAccess',
-  # T371633: Deployment noise
-  qr/CurlFactory:\d+\s+cURL error \d+:.*localhost/                 => '[curl-localhost]',
 );
 
 my %all_consolidate_patterns = (%junk_consolidate_patterns, %consolidate_patterns);
