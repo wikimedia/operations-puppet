@@ -18,10 +18,47 @@ class profile::phabricator::migration (
         require => Class['scap::user'],
     })
 
-    file { '/usr/bin/scap':
-        ensure  => 'link',
-        target  => "${scap_path}/scap",
-        require => File[$scap_path],
+    file { '/usr/local/sbin/phab_deploy_config_deploy':
+        content => file('phabricator/phab_deploy_config_deploy.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_promote':
+        content => file('phabricator/phab_deploy_promote.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_finalize':
+        content => template('phabricator/phab_deploy_finalize.sh.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    file { '/usr/local/sbin/phab_deploy_rollback':
+        content => file('phabricator/phab_deploy_rollback.sh'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0700',
+    }
+
+    $sudo_rules = [
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_rollback',
+        'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
+    ]
+
+    scap::target { 'phabricator/deployment':
+        deploy_user => 'phab-deploy',
+        key_name    => 'phabricator',
+        manage_user => true,
+        require     => File['/usr/local/sbin/phab_deploy_finalize'],
+        sudo_rules  => $sudo_rules,
     }
 
     class { '::phabricator::phd::user': }
