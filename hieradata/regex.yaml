@@ -90,7 +90,7 @@ es_codfw_rack_d1:
   profile::opensearch::row: D
 
 es_codfw_rack_d2:
-  __regex: !ruby/regexp /^(elastic2(104|105)|cirrussearch2(104|105))\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(elastic2(104|105)|cirrussearch2(014|104|105))\.codfw\.wmnet$/
   profile::elasticsearch::rack: D2
   profile::elasticsearch::row:  D
   profile::opensearch::rack: D2
