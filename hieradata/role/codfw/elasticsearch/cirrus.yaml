@@ -11,7 +11,6 @@ profile::elasticsearch::instances:
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2093.codfw.wmnet # row B
           - elastic2061.codfw.wmnet # row A
-          - elastic2074.codfw.wmnet # row A
           - elastic2081.codfw.wmnet # row C
           - elastic2084.codfw.wmnet # row D
 
@@ -95,7 +94,6 @@ profile::elasticsearch::instances:
           - elastic2072.codfw.wmnet
           - elastic2073.codfw.wmnet
           - elastic2074.codfw.wmnet
-          - elastic2075.codfw.wmnet
           - elastic2076.codfw.wmnet
           - elastic2077.codfw.wmnet
           - elastic2078.codfw.wmnet
@@ -179,7 +177,6 @@ profile::elasticsearch::instances:
           - cirrussearch2056.codfw.wmnet
           - elastic2061.codfw.wmnet
           - elastic2073.codfw.wmnet
-          - elastic2074.codfw.wmnet
           - elastic2090.codfw.wmnet
           - elastic2111.codfw.wmnet # replacing cirrussearch2056
 
@@ -268,7 +265,6 @@ profile::elasticsearch::instances:
         # ES-specific: Not default
         unicast_hosts: # this is also the list of master eligible nodes
           - elastic2108.codfw.wmnet # row D
-          - elastic2075.codfw.wmnet # row A
           - elastic2076.codfw.wmnet # row A
           - elastic2080.codfw.wmnet # row B
           - elastic2083.codfw.wmnet # row C
@@ -279,7 +275,6 @@ profile::elasticsearch::instances:
           - cirrussearch2055.codfw.wmnet
           - elastic2062.codfw.wmnet
           - elastic2069.codfw.wmnet
-          - elastic2075.codfw.wmnet
           - elastic2076.codfw.wmnet
           - elastic2091.codfw.wmnet
 
