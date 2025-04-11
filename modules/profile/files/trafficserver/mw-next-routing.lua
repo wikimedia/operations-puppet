@@ -1,8 +1,10 @@
 -- SPDX-License-Identifier: Apache-2.0
 --
--- Decide whether a request should be routed to a -next service in order to
--- serve on PHP 8.1 based on the presence of the PHP_ENGINE cookie and a load
--- fraction override.
+-- Decides whether a request should be routed to a -next service, based on the
+-- presence of a pattern in the Cookie header that identifies enrolled requests
+-- and a configured load fraction (i.e., random selection probability).
+--
+-- See mw-next-routing.lua.conf for configuration details.
 --
 -- This file is managed by Puppet.
 
@@ -13,9 +15,12 @@ jit.off(true, true)
 local random_seeded = false
 local config_read_time = nil
 -- In the exceptional case where first-load of the config fails, we'll use the
--- default config defined here. This should reflect the expected state at the
--- current stage of the migration, which as of now is to defer to the cookie.
-local config = { load_fraction = 1 }
+-- default config defined here.
+local config = {
+    enabled = false,
+    load_fraction = 0,
+    cookie_pattern = nil,
+}
 
 -- Mapping from (multi-dc.lua remapped) hosts to their -next service equivalent
 -- host / port pairs.
@@ -31,8 +36,20 @@ local next_service_host_ports = {
 local function read_config()
     local configfile = ts.get_config_dir() .. "/lua/mw-next-routing.lua.conf"
     local conf = dofile(configfile)
-    if type(conf) ~= "table" or type(conf.load_fraction) ~= "number" then
-        ts.error("mw-next-routing.lua: invalid config file")
+    if type(conf) ~= "table" then
+        ts.error("mw-next-routing.lua: invalid config file - not a table")
+        return nil
+    end
+    if type(conf.enabled) ~= "boolean" then
+        ts.error("mw-next-routing.lua: invalid config file - enabled is not a boolean")
+        return nil
+    end
+    if type(conf.load_fraction) ~= "number" then
+        ts.error("mw-next-routing.lua: invalid config file - load_fraction is not a number")
+        return nil
+    end
+    if type(conf.cookie_pattern) ~= "string" then
+        ts.error("mw-next-routing.lua: invalid config file - cookie_pattern is not a string")
         return nil
     end
     return conf
@@ -59,19 +76,20 @@ local function reload_config()
     end
 end
 
--- Determine whether to route the request to its -next service in order to
--- serve on PHP 8.1.
+-- Determine whether to route the request to its -next service.
 local function use_next()
+    -- If the load fraction is zero, or if there is no eligible cookie pattern
+    -- configured, there's nothing to do.
+    if config.load_fraction == 0 or config.cookie_pattern == nil then
+        return false
+    end
     local cookie = ts.client_request.header.Cookie
     if cookie == nil then
         return false
     end
-    if not string.find(cookie, "PHP_ENGINE=8.1") then
+    if not string.find(cookie, config.cookie_pattern) then
         return false
     end
-    -- The PHP_ENGINE cookie is present with the correct value. Finally, apply
-    -- the load_fraction sampling probability.
-    reload_config()
     if not random_seeded then
       random_seeded = true
       math.randomseed(ts.http.id())
@@ -81,6 +99,10 @@ end
 
 -- The ATS hook point.
 function do_remap()
+    reload_config()
+    if not config.enabled then
+        return TS_LUA_REMAP_NO_REMAP
+    end
     local orig_url_host = ts.client_request.get_url_host()
     local next_dst = next_service_host_ports[orig_url_host]
     if next_dst == nil then
