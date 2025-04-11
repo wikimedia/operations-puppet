@@ -21,12 +21,9 @@ profile::ci::docker::settings:
 # When changing this, run `tc-setup` on all the CI instances.
 #
 labstore::traffic_shaping::egress: 100mbps
+
 profile::ci::package_builder::extra_packages:
-    sid:
-        - eatmydata
-    bullseye:
-        - eatmydata
-    buster:
+    default:
         - eatmydata
 
 # package_builder installs python-all - T370337

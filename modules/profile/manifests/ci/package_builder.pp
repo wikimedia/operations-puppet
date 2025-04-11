@@ -4,7 +4,7 @@
 # Setup cow images and jenkins-debian-glue
 #
 class profile::ci::package_builder (
-    Hash[Debian::Codename, Array[String]] $extra_packages = lookup('profile::ci::package_builder::extra_packages'),
+    Hash[Variant[Debian::Codename, Enum['default']], Array[String]] $extra_packages = lookup('profile::ci::package_builder::extra_packages'),
 ) {
 
     # Shell script wrappers to ease package building

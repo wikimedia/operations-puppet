@@ -3,7 +3,7 @@
 # addition of new distributions as easy as possible
 class package_builder::environments(
     Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
-    Hash[Debian::Codename, Array[String]] $extra_packages = {}
+    Hash[Variant[Debian::Codename, Enum['default']], Array[String]] $extra_packages = {}
 ) {
     package_builder::pbuilder_base { 'buster-amd64':
         distribution   => 'buster',
@@ -12,7 +12,7 @@ class package_builder::environments(
         mirror         => 'http://mirrors.wikimedia.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
-        extra_packages => pick_default($extra_packages['buster'], [])
+        extra_packages => pick_default($extra_packages['buster'], $extra_packages['default'], [])
     }
     package_builder::pbuilder_base { 'bullseye-amd64':
         distribution   => 'bullseye',
@@ -21,7 +21,7 @@ class package_builder::environments(
         mirror         => 'http://mirrors.wikimedia.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
-        extra_packages => pick_default($extra_packages['bullseye'], [])
+        extra_packages => pick_default($extra_packages['bullseye'], $extra_packages['default'], [])
     }
 
     package_builder::pbuilder_base { 'bookworm-amd64':
@@ -31,7 +31,7 @@ class package_builder::environments(
         mirror         => 'http://mirrors.wikimedia.org/debian',
         keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath       => $basepath,
-        extra_packages => pick_default($extra_packages['bookworm'], [])
+        extra_packages => pick_default($extra_packages['bookworm'], $extra_packages['default'], [])
     }
 
     package_builder::pbuilder_base { 'trixie-amd64':
@@ -52,6 +52,6 @@ class package_builder::environments(
         mirror             => 'http://mirrors.wikimedia.org/debian',
         keyring            => '/usr/share/keyrings/debian-archive-keyring.gpg',
         basepath           => $basepath,
-        extra_packages     => pick_default($extra_packages['sid'], [])
+        extra_packages     => pick_default($extra_packages['sid'], $extra_packages['default'], [])
     }
 }

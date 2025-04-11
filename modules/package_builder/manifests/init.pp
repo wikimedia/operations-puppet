@@ -3,7 +3,9 @@
 #   Installs Debian package creation/building tools and creates environments to
 #   help with easy package building.
 # @param basepath the base path to use
-# @param extra_packages A hash of extrabackes to add to the base image i.e. distro => [packages]}
+# @param extra_packages A hash of extrabackes to add to the base image
+#   i.e. distro => [packages]}. The 'default' distro can be used to
+#   apply to all distributions.
 # @example
 #   include package_builder
 #   class {'package_builder':
@@ -11,7 +13,7 @@
 #   }
 class package_builder(
     Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
-    Hash[Debian::Codename, Array[String]] $extra_packages = {}
+    Hash[Variant[Debian::Codename, Enum['default']], Array[String]] $extra_packages = {}
 ) {
     class { 'package_builder::hooks':
         basepath => $basepath,

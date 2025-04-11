@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 # frozen_string_literal: true
 
 require_relative '../../../../rake_modules/spec_helper'
@@ -13,6 +14,11 @@ describe 'package_builder' do
       describe 'Change Defaults' do
         context 'extra_packages' do
           let(:params) { {extra_packages: {'buster' => ['foobar']}} }
+
+          it { is_expected.to compile.with_all_deps }
+        end
+        context 'extra_packages with default' do
+          let(:params) { {extra_packages: {'default' => ['foobar']}} }
 
           it { is_expected.to compile.with_all_deps }
         end
