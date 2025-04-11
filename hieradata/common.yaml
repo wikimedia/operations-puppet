@@ -1896,6 +1896,17 @@ apereo_cas:
     oidc_endpoint: 'https://idp-test.wikimedia.org/oidc'
 
 ripeatlas_measurements:
+  eqiad:  # https://atlas.ripe.net/probes/7513/anchor
+    ipv4:
+      - '96496702'  # anchors pings
+      - '96496701'  # anchors traceroutes
+      - '96503799'  # probes pings
+      - '96503798'  # probes traceroutes
+    ipv6:
+      - '96496705'  # anchors pings
+      - '96496704'  # anchors traceroutes
+      - '96503802'  # probes pings
+      - '96503801'  # probes traceroutes
   codfw:  # https://atlas.ripe.net/frames/probes/7038/
     ipv4:
       - '32390538'  # anchors pings
@@ -2182,6 +2193,13 @@ infra_devices:
     ipv6: 2620:0:861:ffff::5
     site: eqord
     role: cr
+  atlas1001:
+    ipv4: 208.80.155.69
+    ipv6: 2620:0:861:202:208:80:155:69
+    parents:
+    - asw2-b-eqiad
+    site: eqiad
+    role: atlas
 
   cr1-codfw:
     ipv4: 208.80.153.192
