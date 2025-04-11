@@ -70,6 +70,8 @@ case "$command" in
   add)
     requires_root
     SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add "$@"
+    # Restart the keyholder-proxy to pick up new ssh identities
+    systemctl restart keyholder-proxy
     ;;
   arm)
     requires_root
@@ -84,6 +86,8 @@ case "$command" in
   disarm)
     requires_root
     SSH_AUTH_SOCK=/run/keyholder/agent.sock /usr/bin/sudo -u keyholder -E /usr/bin/ssh-add -D
+    # Restart the keyholder-proxy to drop all ssh identities
+    systemctl restart keyholder-proxy
     ;;
   start|stop|restart)
     requires_root
