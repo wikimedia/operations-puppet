@@ -29,7 +29,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-db*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'an-druid1005':
+  'an-druid100[5-7]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
   'an-druid100[1-4]':
@@ -231,7 +231,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'dragonfly-supernode*':
     - partman/flat.cfg
     - virtual.cfg
-  'druid1009|druid101[01]':
+  'druid1009|druid101[0-3]':
     - partman/standard.cfg
     - partman/raid10-8dev.cfg
   'druid100[7-8]':

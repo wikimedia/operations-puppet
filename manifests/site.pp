@@ -1030,6 +1030,11 @@ node /^an-druid100[1-5]\.eqiad\./ {
     role(druid::analytics::worker)
 }
 
+# New druid analytics hosts - See #T387142
+node /^an-druid100[6-7]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 node /^an-test-druid1001\.eqiad\./ {
     role(druid::test_analytics::worker)
 }
@@ -1039,6 +1044,11 @@ node /^an-test-druid1001\.eqiad\./ {
 # https://wikitech.wikimedia.org/wiki/Analytics/Data_Lake#Druid
 node /^druid10(0[7-9]|1[0-1])\.eqiad\./ {
     role(druid::public::worker)
+}
+
+# New druid public hosts - See #T387132
+node /^druid101[2-3]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # new dse-k8s-crtl control plane servers T310171
