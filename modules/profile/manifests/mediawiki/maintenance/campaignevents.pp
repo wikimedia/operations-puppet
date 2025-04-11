@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # T320403
-class profile::mediawiki::maintenance::campaignevents {
+class profile::mediawiki::maintenance::campaignevents(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     # group0: meta.wikimedia.org both in beta and production
     profile::mediawiki::periodic_job { 'campaignevents-updateutcts-metawiki':
         command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',

@@ -1,5 +1,7 @@
 # Include this to add periodic jobs calling updateSpecialPages.php on all clusters.
-class profile::mediawiki::maintenance::updatequerypages {
+class profile::mediawiki::maintenance::updatequerypages(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
 
     # add periodic jobs - usage: <cluster>@<day of month> (monthday currently unused, only sets cronjob name)
     # Wikidata has several jobs disabled: T234948, T239072

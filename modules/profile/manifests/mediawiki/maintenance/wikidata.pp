@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::wikidata() {
+class profile::mediawiki::maintenance::wikidata(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     require profile::mediawiki::common
     require profile::lvs::configuration
     # Resubmit changes in wb_changes that are older than 6 hours

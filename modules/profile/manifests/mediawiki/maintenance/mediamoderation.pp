@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::mediawiki::maintenance::mediamoderation {
+class profile::mediawiki::maintenance::mediamoderation(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     # push periodically-computed metrics into statsd (T353703)
     profile::mediawiki::periodic_job { 'mediamoderation-updateMetrics':
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/all.dblist extensions/MediaModeration/maintenance/updateMetrics.php --verbose',

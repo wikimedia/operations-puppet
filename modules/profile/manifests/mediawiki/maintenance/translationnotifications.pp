@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::translationnotifications {
+class profile::mediawiki::maintenance::translationnotifications(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     # Should there be systemd timer entry for each wiki,
     # or just one which runs the scripts which iterates over
     # selected set of wikis?

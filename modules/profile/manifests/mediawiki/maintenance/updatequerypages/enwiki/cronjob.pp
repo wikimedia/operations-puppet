@@ -1,5 +1,7 @@
 # a cronjob for updatequerypages for enwiki
-class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob {
+class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
 
     profile::mediawiki::periodic_job { 'updatequerypages_lonelypages_s1':
         command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages',

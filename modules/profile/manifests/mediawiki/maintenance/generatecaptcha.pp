@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::generatecaptcha {
+class profile::mediawiki::maintenance::generatecaptcha(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     file { '/etc/fancycaptcha':
         ensure => 'directory',
         mode   => '0555',

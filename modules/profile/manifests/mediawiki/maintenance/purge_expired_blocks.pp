@@ -6,7 +6,9 @@
 # we ensure that expired blocks are purged at least once a day in these small wikis.
 # See T257473.
 #
-class profile::mediawiki::maintenance::purge_expired_blocks {
+class profile::mediawiki::maintenance::purge_expired_blocks(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     profile::mediawiki::periodic_job { 'purge_expired_blocks':
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/small.dblist maintenance/purgeExpiredBlocks.php',
         interval => '05:00'

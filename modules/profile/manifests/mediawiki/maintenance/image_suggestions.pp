@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::mediawiki::maintenance::image_suggestions {
+class profile::mediawiki::maintenance::image_suggestions(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
   profile::mediawiki::periodic_job { 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_CA':
     command  => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=cawiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
     interval => 'Wed 0:00',

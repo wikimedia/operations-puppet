@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::purge_expired_userrights {
+class profile::mediawiki::maintenance::purge_expired_userrights(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
     profile::mediawiki::periodic_job { 'purge_expired_userrights':
         command  => '/usr/local/bin/foreachwiki maintenance/purgeExpiredUserrights.php',
         interval => '*-14,28 06:42'

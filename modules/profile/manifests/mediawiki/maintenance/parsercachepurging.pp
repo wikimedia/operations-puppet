@@ -1,4 +1,6 @@
-class profile::mediawiki::maintenance::parsercachepurging {
+class profile::mediawiki::maintenance::parsercachepurging(
+    Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+) {
 
     # Every day, Purge entries older than 30d * 86400s/d = 2592000s
     #
