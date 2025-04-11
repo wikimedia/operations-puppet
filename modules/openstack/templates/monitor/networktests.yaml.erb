@@ -104,7 +104,7 @@
 # from VXLAN/IPv4-only
 - name: from VM VXLAN/IPv4-only to neutron VXLAN/IPv4-only IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "timeout -k5s 10s ping6 -c1 $NEUTRON_VXLAN_IPV4_ONLY >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "timeout -k5s 10s ping4 -c1 $NEUTRON_VXLAN_IPV4_ONLY >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
@@ -140,14 +140,14 @@
 # from VXLAN/IPv4-only-fip
 - name: from VM VXLAN/IPv4-only-fip to neutron VXLAN/IPv4-only IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "timeout -k5s 10s ping6 -c1 $NEUTRON_VXLAN_IPV4_ONLY >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "timeout -k5s 10s ping4 -c1 $NEUTRON_VXLAN_IPV4_ONLY >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VM VXLAN/IPv4-only-fip to VM VXLAN/Dualstack IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_IP "timeout -k5s 10s ping4 -c1 $VM_VXLAN_DUALSTACK >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "timeout -k5s 10s ping4 -c1 $VM_VXLAN_DUALSTACK >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
@@ -176,7 +176,7 @@
 # from VLAN/Legacy
 - name: from VM VLAN/legacy to neutron VLAN/legacy IPv4 ping
   tests:
-    - cmd: $SSH $VM_VLAN_LEGACY "timeout -k5s 10s ping6 -c1 $NEUTRON_VLAN_LEGACY >/dev/null"
+    - cmd: $SSH $VM_VLAN_LEGACY "timeout -k5s 10s ping4 -c1 $NEUTRON_VLAN_LEGACY >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
@@ -248,42 +248,42 @@
 # cloudgw from within VMs
 - name: from VXLAN/dualstack to cloudgw VIRT gateway IPv6 ping
   tests:
-    - cmd: $SSH $VXLAN_DUALSTACK "timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/dualstack to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VXLAN_DUALSTACK "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VXLAN_IPV4ONLY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4ONLY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only-fip to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VXLAN_IPV4ONLY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4ONLY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VLAN/legacy to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VLAN_LEGACY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VLAN_LEGACY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VLAN/legacy-fip to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VLAN_LEGACY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""

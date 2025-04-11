@@ -38,10 +38,10 @@ profile::openstack::codfw1dev::networktests::envvars:
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
     VM_VXLAN_DUALSTACK: networktests-vxlan-dualstack.testlabs.codfw1dev.wikimedia.cloud
-    VM_VXLAN_IPV4ONLY: networktests-vxlan-ipv4only.testlabs.codfw1dev.wikimedia.cloud
-    VM_VXLAN_IPV4ONLY_FIP: networktests-vxlan-ipv4only-fip.testlabs.codfw1dev.wikimedia.cloud
+    VM_VXLAN_IPV4_ONLY: networktests-vxlan-ipv4only.testlabs.codfw1dev.wikimedia.cloud
+    VM_VXLAN_IPV4_ONLY_FIP: networktests-vxlan-ipv4only-fip.testlabs.codfw1dev.wikimedia.cloud
     VM_VLAN_LEGACY: networktests-vlan-legacy.testlabs.codfw1dev.wikimedia.cloud
-    VM_VLAN_LEGACY: networktests-vlan-legacy-fip.testlabs.codfw1dev.wikimedia.cloud
+    VM_VLAN_LEGACY_FIP: networktests-vlan-legacy-fip.testlabs.codfw1dev.wikimedia.cloud
     NEUTRON_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     NEUTRON_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     NEUTRON_VLAN_LEGACY: vlan-legacy.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
