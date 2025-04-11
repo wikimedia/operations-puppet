@@ -48,8 +48,14 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # push periodically-computed metrics into statsd (T318684)
     profile::mediawiki::periodic_job { 'growthexperiments-updateMetrics':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMetrics.php --verbose',
-        interval => '*-*-* 04:30:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateMetrics.php --verbose',
+        interval              => '*-*-* 04:30:00',
+        cron_schedule         => '30 4 * * *',
+        kubernetes            => true,
+        team                  => 'growth',
+        script_label          => 'updateMetrics.php',
+        description           => 'Push periodically-computed mentorship metrics into statsd (T318684)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # update user impact data (T313395)
