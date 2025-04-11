@@ -2,3 +2,11 @@
 profile::gitlab::service_ip_v4: '208.80.154.15'
 profile::gitlab::service_ip_v6: '2620:0:861:1:208:80:154:15'
 profile::gitlab::service_name: 'gitlab-replica-b.wikimedia.org'
+
+# test object storage on one of the replicas
+profile::gitlab::object_storage_enabled: true
+
+# diable restore temporarily
+profile::gitlab::restore_interval:
+  start: 'OnCalendar'
+  interval: '2025-12-31 23:59:59'
