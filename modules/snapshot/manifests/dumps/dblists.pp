@@ -14,7 +14,9 @@ class snapshot::dumps::dblists {
     $labs_bigwikis = ['enwiki', 'simplewiki', 'wikidatawiki']
     $labs_bigwikis_dblist = join($labs_bigwikis, "\n")
 
-    $skip_dblist = "${enwiki_dblist}\n${wikidatawiki_dblist}\n${bigwikis_dblist}"
+    # mediawikiwiki temporarily excluded due to multiple failures that don't allow
+    # other dumps to move forward. https://phabricator.wikimedia.org/T390839
+    $skip_dblist = "mediawikiwiki\n${enwiki_dblist}\n${wikidatawiki_dblist}\n${bigwikis_dblist}"
     $skip_labs_dblist = $labs_bigwikis_dblist
 
     $skipnone_dblist = ''
