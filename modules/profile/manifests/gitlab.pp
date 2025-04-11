@@ -272,6 +272,9 @@ class profile::gitlab(
           $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['secret_key'],
           default        => $object_storage_credentials['gitlab-ro']['secret_key'],
       }
+    } else {
+      $object_storage_access_key = ''
+      $object_storage_secret_key = ''
     }
 
     class { 'gitlab':
