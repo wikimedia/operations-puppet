@@ -516,14 +516,14 @@ SELECT CONCAT("https://phabricator.wikimedia.org/T", t.id) AS taskID
     JOIN phabricator_maniphest.maniphest_transaction ta
     WHERE (ta.transactionType = "status"
         AND ta.newValue = "\"progress\""
-        AND ta.dateModified < (UNIX_TIMESTAMP() - 63072000))
+        AND ta.dateModified < (UNIX_TIMESTAMP() - 31536000))
     AND ta.objectPHID = t.phid
     AND t.status = "progress"
     AND t.phid NOT IN
         (SELECT ta.objectPHID
         FROM phabricator_maniphest.maniphest_transaction ta
         WHERE (ta.transactionType = "status"
-            AND ta.dateModified > (UNIX_TIMESTAMP() - 63072000)))
+            AND ta.dateModified > (UNIX_TIMESTAMP() - 31536000)))
     GROUP BY t.id
     ORDER BY ta.dateModified;
 
