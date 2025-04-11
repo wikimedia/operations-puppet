@@ -1,10 +1,10 @@
 profile::openstack::codfw1dev::networktests::sshbastion: bastion.bastioninfra-codfw1dev.codfw1dev.wmcloud.org
 profile::openstack::codfw1dev::networktests::envvars:
     ROUTING_SOURCE_IP: 185.15.57.1
-    FLOATING_VM_FQDN: proxy-04.proxy-codfw1dev.codfw1dev.wikimedia.cloud
+    FLOATING_VM_FQDN: networktests-vlan-legacy-fip.testlabs.codfw1dev.wikimedia.cloud
     FLOATING_VM_IP: 185.15.57.6
     VM_IP_PREFIX: 172.16.128.
-    NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
+    NO_FLOATING_VM: networktests-vlan-legacy.testlabs.codfw1dev.wikimedia.cloud
     GENERAL_PUPPETMASTER: cloudinfra-cloudvps-puppetserver-1.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     LOCAL_PUPPETMASTER: cloudinfra-internal-puppetserver-01.cloudinfra-codfw1dev.codfw1dev.wikimedia.cloud
     CLOUDGW_A_IP: 208.80.153.188
@@ -24,7 +24,7 @@ profile::openstack::codfw1dev::networktests::envvars:
     NEUTRON_WAN_FQDN: cloudinstances2b-gw.openstack.codfw1dev.wikimediacloud.org
     NEUTRON_VIRT_IP: 172.16.128.1
     NEUTRON_VIRT_IPV6: 2a02:ec80:a100:1::1
-    NEUTRON_VIRT_FQDN: cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
+    NEUTRON_VIRT_FQDN: vlan-legacy.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     NEUTRON_VIRT_IP_VXLAN_IPV4_ONLY: 172.16.130.1
     NEUTRON_VIRT_FQDN_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     DNS_RECURSOR_IP: 172.20.254.1
