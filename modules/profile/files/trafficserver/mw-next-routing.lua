@@ -29,10 +29,10 @@ local next_service_host_ports = {
 -- Read the configuration file and return the resulting table or nil if the
 -- config is not valid.
 local function read_config()
-    local configfile = ts.get_config_dir() .. "/lua/mw-php-migration.lua.conf"
+    local configfile = ts.get_config_dir() .. "/lua/mw-next-routing.lua.conf"
     local conf = dofile(configfile)
     if type(conf) ~= "table" or type(conf.load_fraction) ~= "number" then
-        ts.error("mw-php-migration.lua: invalid config file")
+        ts.error("mw-next-routing.lua: invalid config file")
         return nil
     end
     return conf
@@ -86,7 +86,7 @@ function do_remap()
     if next_dst == nil then
         -- This should not happen, and indicates we've inserted the plugin into
         -- the wrong mapping rule.
-        ts.error("mw-php-migration.lua: unrecognized original host \"" .. orig_url_host .. "\"")
+        ts.error("mw-next-routing.lua: unrecognized original host \"" .. orig_url_host .. "\"")
     elseif use_next() then
         ts.client_request.set_url_host(next_dst.host)
         ts.client_request.set_url_port(next_dst.port)

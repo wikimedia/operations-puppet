@@ -2,8 +2,8 @@
 
 local file_name = debug.getinfo(1, "S").source:sub(1)
 local base_dir = (file_name:reverse():match("/([^@]*)") or ""):reverse()
-local mw_php_migration_file = loadfile(base_dir .. "/mw-php-migration.lua")
-local mw_php_migration_config_file = loadfile(base_dir .. "/mw-php-migration.lua.conf")
+local mw_next_routing_file = loadfile(base_dir .. "/mw-next-routing.lua")
+local mw_next_routing_config_file = loadfile(base_dir .. "/mw-next-routing.lua.conf")
 
 local function make_ts(request)
     ts = {
@@ -37,7 +37,7 @@ end
 
 local function run(request, config)
     local ts = setup(request, config)
-    mw_php_migration_file()
+    mw_next_routing_file()
     local result = {}
     result.remap_value = do_remap()
     result.host = ts.client_request.mapped_host
@@ -166,7 +166,7 @@ describe("MediaWiki PHP 8.1 migration script for ATS Lua Plugin", function()
             { load_fraction = 1 }
         )
 
-        mw_php_migration_file()
+        mw_next_routing_file()
 
         assert.are.same(TS_LUA_REMAP_DID_REMAP, do_remap())
         assert.are.same("mw-web-next.discovery.wmnet", ts_initial.client_request.mapped_host)
@@ -226,7 +226,7 @@ describe("MediaWiki PHP 8.1 migration script for ATS Lua Plugin", function()
             { load_fraction = 1 }
         )
 
-        mw_php_migration_file()
+        mw_next_routing_file()
 
         assert.are.same(TS_LUA_REMAP_DID_REMAP, do_remap())
         assert.are.same("mw-web-next.discovery.wmnet", ts_initial.client_request.mapped_host)
@@ -254,7 +254,7 @@ describe("MediaWiki PHP 8.1 migration script for ATS Lua Plugin", function()
                 url_host = "mw-web.discovery.wmnet",
                 header = { Cookie = "PHP_ENGINE=8.1" }
             },
-            mw_php_migration_config_file()
+            mw_next_routing_config_file()
         )
         -- We do not care about the remapping outcome, only whether errors
         -- were emitted that indicate the production config is invalid.
