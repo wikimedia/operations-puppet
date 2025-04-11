@@ -37,3 +37,11 @@ profile::openstack::codfw1dev::networktests::envvars:
     DUMPS_NO_FLOATING_VM: tools-codfw1dev-k8s-worker-2.tools-codfw1dev.codfw1dev.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
+    VM_VXLAN_DUALSTACK: networktests-vxlan-dualstack.testlabs.codfw1dev.wikimedia.cloud
+    VM_VXLAN_IPV4ONLY: networktests-vxlan-ipv4only.testlabs.codfw1dev.wikimedia.cloud
+    VM_VXLAN_IPV4ONLY_FIP: networktests-vxlan-ipv4only-fip.testlabs.codfw1dev.wikimedia.cloud
+    VM_VLAN_LEGACY: networktests-vlan-legacy.testlabs.codfw1dev.wikimedia.cloud
+    VM_VLAN_LEGACY: networktests-vlan-legacy-fip.testlabs.codfw1dev.wikimedia.cloud
+    NEUTRON_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
+    NEUTRON_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
+    NEUTRON_VLAN_LEGACY: vlan-legacy.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
