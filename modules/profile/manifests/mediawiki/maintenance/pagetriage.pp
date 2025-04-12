@@ -14,7 +14,13 @@ class profile::mediawiki::maintenance::pagetriage(
     }
 
     profile::mediawiki::periodic_job { 'pagetriage_cleanup_test2wiki':
-        interval => '*-2/2 8:55',
-        command  => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki',
+        interval              => '*-2/2 8:55',
+        cron_schedule         => '55 8 2-31/2 * *',
+        kubernetes            => true,
+        team                  => 'community-tech',
+        script_label          => 'updatePageTriageQueue.php-test2wiki',
+        description           => 'Removes expired page metadata from the pagetriage queue on test2wiki',
+        command               => '/usr/local/bin/mwscript extensions/PageTriage/cron/updatePageTriageQueue.php test2wiki',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
