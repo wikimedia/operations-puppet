@@ -1,1 +1,0 @@
-profile::mjolnir::kafka_msearch_daemon::ensure: absent
