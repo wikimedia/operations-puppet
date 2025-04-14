@@ -14,7 +14,7 @@ vms: P{F:virtual=kvm}
 
 # Server group definitions
 acmechief: P{O:acme_chief}
-all-mw: A:mw or A:mw-jobrunner
+all-mw: A:mw
 all-mw-codfw: A:all-mw and A:codfw
 all-mw-eqiad: A:all-mw and A:eqiad
 all-etcd: P{P:etcd::v3}
@@ -340,9 +340,6 @@ mw-app-canary: P{O:mediawiki::canary_appserver}
 mw-canary: A:mw-app-canary
 mw-codfw: A:mw and A:codfw
 mw-eqiad: A:mw and A:eqiad
-mw-jobrunner: P{O:mediawiki::jobrunner}
-mw-jobrunner-codfw: A:mw-jobrunner and A:codfw
-mw-jobrunner-eqiad: A:mw-jobrunner and A:eqiad
 mw-maintenance: P{O:mediawiki::maintenance}
 mwlog: P{O:logging::mediawiki::udp2log}
 mx-all: A:mx-in or A:mx-out
