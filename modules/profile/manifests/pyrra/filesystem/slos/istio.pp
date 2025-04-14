@@ -66,7 +66,7 @@ define profile::pyrra::filesystem::slos::istio(
                             'metric' => "workload:istio_request_duration_milliseconds_bucket{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", le=\"${latency_max_seconds_bucket}\", site=\"${datacenter}\" }",
                         },
                         'total'   => {
-                            'metric' => "workload:istio_request_duration_milliseconds_bucket{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
+                            'metric' => "workload:istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
                         },
                     },
                 },
