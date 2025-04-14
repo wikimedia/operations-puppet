@@ -1066,7 +1066,6 @@ groups:
     ]
     system_members: [analytics-research]
     approval:
-      - Xiao Xiao
       - Miriam Redi
   analytics-platform-eng-admins:
     gid: 831
