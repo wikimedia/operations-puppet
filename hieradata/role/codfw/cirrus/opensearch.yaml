@@ -13,6 +13,7 @@ profile::opensearch::instances:
           - elastic2061.codfw.wmnet # row A
           - elastic2081.codfw.wmnet # row C
           - elastic2084.codfw.wmnet # row D
+          - cirrussearch2111.codfw.wmnet # row A
 
         cluster_hosts:
           - cirrussearch2055.codfw.wmnet
@@ -267,6 +268,7 @@ profile::opensearch::instances:
           - elastic2076.codfw.wmnet # row A
           - elastic2080.codfw.wmnet # row B
           - elastic2083.codfw.wmnet # row C
+          - cirrussearch2115.codfw.wmnet # row D
 
         cluster_hosts:
           # row A
