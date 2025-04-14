@@ -7512,3 +7512,7 @@ ldap_only_users:
     ensure: present
     realname: Julie van der Hoop
     email: jvanderhoop@wikimedia.org
+  bcampbell804:
+    ensure: present
+    realname: Brendan Campbell-Craven
+    email: bcampbell@wikimedia.org
