@@ -5,7 +5,7 @@ gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '7.23.0'
 # are no longer using legacy facts and buster specs
 gem 'facterdb', '= 1.27.0'
 gem 'puppet-strings', '~> 2.9.0'
-gem 'rspec-puppet', '~> 2.9.0'
+gem 'rspec-puppet', '~> 2.10.0'
 gem 'rspec-puppet-facts', '~> 2.0', require: false
 gem 'puppetlabs_spec_helper', '< 4.0.0'
 gem 'parallel_tests'
