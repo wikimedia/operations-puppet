@@ -1,0 +1,2 @@
+profile::mediawiki::php::php_versions: ['8.1']
+profile::mediawiki::php::absented_php_versions: ['7.4']
