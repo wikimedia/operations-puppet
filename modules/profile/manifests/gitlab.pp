@@ -88,7 +88,7 @@ class profile::gitlab(
     String $configure_projects_bot_token = lookup('profile::gitlab::configure_projects_bot_token'),
     Systemd::Timer::Schedule $ldap_group_sync_interval = lookup('profile::gitlab::ldap_group_sync_interval_interval'),
     Boolean $object_storage_enabled = lookup('profile::gitlab::object_storage_enabled', {default_value => false}),
-    Hash[String, Ceph::S3::Account] $object_storage_credentials = lookup('profile::ceph::s3::client::apus_keys', {default_value => {}}),
+    Ceph::S3::Account $object_storage_credentials = lookup('profile::ceph::s3::client::apus_keys', {default_value => {}}),
     Boolean $local_gems_enabled = lookup('profile::gitlab::local_gems_enabled', {default_value => false}),
     Hash[Stdlib::Unixpath, Array[String]] $local_gems = lookup('profile::gitlab::local_gems', {default_value => {}}),
     Integer $max_storage_concurrency = lookup('profile::gitlab::max_storage_concurrency'),
