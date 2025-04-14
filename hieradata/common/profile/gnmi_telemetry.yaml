@@ -25,7 +25,7 @@ profile::gnmi_telemetry::outputs:
     type: prometheus
     metric-prefix: "gnmi"
     expiration: 300s
-    num-workers: 8
+    num-workers: 16 # T388641#10737894
     export-timestamps: true
     timeout: 50s
     event-processors:
