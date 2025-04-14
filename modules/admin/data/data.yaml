@@ -7508,3 +7508,7 @@ ldap_only_users:
     ensure: present
     realname: Kevin Montalva
     email: kevmon@wikimedia.org
+  jvanderhoop:
+    ensure: present
+    realname: Julie van der Hoop
+    email: jvanderhoop@wikimedia.org
