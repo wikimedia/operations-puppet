@@ -9,8 +9,6 @@
 class profile::librenms (
     Stdlib::Fqdn        $active_server   = lookup('netmon_server'),
     Array[Stdlib::Fqdn] $passive_servers = lookup('netmon_servers_failover'),
-    Stdlib::Fqdn        $graphite_host   = lookup('graphite_host'),
-    String              $graphite_prefix = lookup('profile::librenms::graphite_prefix'),
     String              $sitename        = lookup('profile::librenms::sitename'),
     Stdlib::Unixpath    $install_dir     = lookup('profile::librenms::install_dir'),
     String              $laravel_app_key = lookup('profile::librenms::laravel_app_key'),
@@ -114,13 +112,6 @@ class profile::librenms (
             'preauth',
         ],
         'auth_mechanism'     => $auth_mechanism,
-
-        'graphite'   => {
-            'enable' => true,
-            'host'   => $graphite_host,
-            'port'   => '2003',
-            'prefix' => $graphite_prefix,
-        },
     }
 
     $ldap = {
