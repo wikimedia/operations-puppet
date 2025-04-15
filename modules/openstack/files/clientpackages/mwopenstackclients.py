@@ -432,9 +432,9 @@ class DnsManager(object):
         :param client: mwopenstackclients.Clients instance
         :param tenant: Tenant to operate as via X-Auth-Sudo-Tenant-ID
         """
-        services = client.keystoneclient().services.list()
+        services = client.keystoneclient(project=tenant).services.list()
         serviceid = [s.id for s in services if s.type == "dns"][0]
-        endpoints = client.keystoneclient().endpoints.list(serviceid)
+        endpoints = client.keystoneclient(project=tenant).endpoints.list(serviceid)
         self.url = [
             e.url
             for e in endpoints
