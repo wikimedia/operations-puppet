@@ -122,11 +122,16 @@ class jenkins(
     if $use_scap3_deployment {
         $deploy_dir = 'releng/jenkins-deploy'
 
+        file { '/etc/systemd/system/jenkins.service.d':
+          ensure => 'directory',
+        }
+
         file { '/etc/systemd/system/jenkins.service.d/override.conf':
-          ensure => 'link',
-          target => "/srv/deployment/${deploy_dir}/conf/jenkins.service.d/override.conf",
-          owner  => 'root',
-          group  => 'root',
+          ensure  => 'link',
+          target  => "/srv/deployment/${deploy_dir}/conf/jenkins.service.d/override.conf",
+          owner   => 'root',
+          group   => 'root',
+          require => File['/etc/systemd/system/jenkins.service.d'],
         }
 
         scap::target { $deploy_dir:
