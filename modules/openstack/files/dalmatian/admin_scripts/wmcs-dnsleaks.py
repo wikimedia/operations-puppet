@@ -32,6 +32,7 @@ are already mid-deletion.  In that case it should be safe to re-run.
 
 import argparse
 import sys
+import time
 
 import mwopenstackclients
 
@@ -250,6 +251,7 @@ if args.delete and args.doublecheck:
 strayrecs = list_strays(args.deployment, args.delete)
 
 if args.doublecheck:
+    time.sleep(120)
     strayrecs2 = list_strays(args.deployment, args.delete)
     persistentstrays = set(strayrecs).intersection(set(strayrecs2))
     strayrecs = list(persistentstrays)
