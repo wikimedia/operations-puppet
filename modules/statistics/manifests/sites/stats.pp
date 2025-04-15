@@ -55,6 +55,20 @@ class statistics::sites::stats {
         require => File[$wikistats_source_directory],
     }
 
+    # We want to serve wikistats 2 from the root stats.wikimedia.org domain.
+    # wikistats 2 has only 2 entry URLs, index.html and assets-v2.  Symlink them
+    # from the docroot.
+    file { "${wikistats_web_directory}/index.html":
+        ensure  => 'link',
+        target  => "${wikistats_source_directory}/dist/index.html",
+        require => File[$wikistats_source_directory],
+    }
+    file { "${wikistats_web_directory}/assets-v2":
+        ensure  => 'link',
+        target  => "${wikistats_source_directory}/dist/assets-v2",
+        require => File[$wikistats_source_directory],
+    }
+
     # Apache site for stats.wikimedia.org
     httpd::site { 'stats.wikimedia.org':
         content => template('statistics/stats.wikimedia.org.erb'),

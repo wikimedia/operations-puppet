@@ -12,8 +12,8 @@
     CustomLog /var/log/apache2/access.log wmf
     ServerSignature On
 
-    DocumentRoot /srv/stats.wikimedia.org/htdocs
-    <Directory "/srv/stats.wikimedia.org/htdocs">
+    DocumentRoot /srv/stats.wikimedia.org
+    <Directory "/srv/stats.wikimedia.org">
         Options Indexes FollowSymLinks MultiViews
         AllowOverride None
         Require all granted
@@ -26,7 +26,7 @@
     # due to a deployment may end up in a broken user experience
     # (until the cache revalidates its content or the operator manually
     # drops it).
-    <Directory "/srv/stats.wikimedia.org/htdocs">
+    <Directory "/srv/stats.wikimedia.org">
         <Files "index.html">
             Header set Cache-Control "max-age=10"
         </Files>
