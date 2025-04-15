@@ -458,7 +458,7 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge]
+              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6655,6 +6655,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL9oQOEEcRINTs5nk3I6s6eB8FqHZSYeII7pFYV67E8Q okarakaya@wikimedia.org
     krb: present
+  lmeintrup:
+    ensure: present
+    realname: Lena Meintrup
+    email: lena.meintrup@wikimedia.de
+    uid: 30978
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7177,10 +7184,6 @@ ldap_only_users:
     ensure: present
     realname: Uzoma Ozurumba
     email: uozurumba@wikimedia.org
-  lmeintrup:
-    ensure: present
-    realname: Lena Meintrup
-    email: lena.meintrup@wikimedia.de
   keegan:
     ensure: present
     realname: Keegan Peterzell
