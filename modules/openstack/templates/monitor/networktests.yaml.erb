@@ -332,31 +332,31 @@
 
 - name: from VXLAN/dualstack contacting the wikis using IPv6
   tests:
-   - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -6 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $IPV6_PREFIX"
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -6 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $IPV6_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VXLAN/dualstack contacting the wikis using IPv4
   tests:
-   - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VXLAN/IPv4-only contacting the wikis without NAT address
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VXLAN/IPv4-only-fip contacting the wikis with FIP address
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FIP_PREFIX"
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FIP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VLAN/legacy contacting the wikis wihtout NAT address
   tests:
@@ -382,14 +382,14 @@
 
 - name: from VXLAN/IPv4-only can contact auth DNS server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only-fip can contact auth DNS server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
       stdout: ""
       retcode: 0
       stderr: ""
@@ -418,17 +418,17 @@
 
 - name: from VXLAN/IPv4-only can contact recursor DNS server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
-     stdout: "1"
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
 
 - name: from VXLAN/IPv4-only-fip can contact recursor DNS server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
-     stdout: "1"
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
 
 - name: from VLAN/legacy can contact recursor DNS server
   tests:
@@ -454,17 +454,17 @@
 
 - name: from VXLAN/IPv4-only can contact LDAP server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'ldapsearch -x whatever | grep -q ^"# numResponses"'
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only-fip can contact LDAP server
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'ldapsearch -x whatever | grep -q ^"# numResponses"'
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VLAN/legacy can contact LDAP server
   tests:
@@ -490,17 +490,17 @@
 
 - name: from VXLAN/IPv4-only can contact openstack APIs
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'curl -4 -s $KEYSTONE_URL | grep -q identity'
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VXLAN/IPv4-only-fip can contact openstack APIs
   tests:
-   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'curl -4 -s $KEYSTONE_URL | grep -q identity'
-     stdout: ""
-     retcode: 0
-     stderr: ""
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
 
 - name: from VLAN/legacy can contact openstack APIs
   tests:
