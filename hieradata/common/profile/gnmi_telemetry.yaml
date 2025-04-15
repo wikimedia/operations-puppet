@@ -7,6 +7,7 @@ profile::gnmi_telemetry::targets_sub:
     - bgp
     - alarms
     - bfd
+    - system
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -68,8 +69,18 @@ profile::gnmi_telemetry::subscriptions:
     sample-interval: 60s
     encoding: proto
   alarms:
+    # Needs to be on its own, as the metric is not present when no alarms are active
+    # and the full subscription will abort if just one path is unreachable
     paths:
       - "/system/alarms/alarm/state/id"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
+  system:
+    paths:
+    - "/system/cpus/cpu/state"
+    - "/system/memory/state"
+    - "/system/mount-points/mount-point/state"
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
