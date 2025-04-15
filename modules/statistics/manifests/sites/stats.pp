@@ -14,10 +14,7 @@ class statistics::sites::stats {
 
     # added due to this error: https://phabricator.wikimedia.org/T285355#7256778
     file {[$wikistats_web_directory, "${wikistats_web_directory}/htdocs"]:
-        ensure => 'directory',
-        owner  => 'root',
-        group  => 'www-data',
-        mode   => '0775',
+        ensure => 'absent',
     }
 
     # stats.wikimedia.org (Wikistats 2.0) setup:
