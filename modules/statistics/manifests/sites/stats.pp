@@ -44,9 +44,7 @@ class statistics::sites::stats {
     # It is then linked to serve at http://stats.wikimedia.org/v2
     # TO BE REMOVED once redirect from /v2 -> / is set up.
     file { "${wikistats_web_directory}/htdocs/v2":
-        ensure  => 'link',
-        target  => "${wikistats_source_directory}/dist",
-        require => File[$wikistats_source_directory],
+        ensure  => 'absent',
     }
 
     # We want to serve wikistats 2 from the root stats.wikimedia.org domain.
