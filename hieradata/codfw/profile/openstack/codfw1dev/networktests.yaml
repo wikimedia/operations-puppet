@@ -45,5 +45,5 @@ profile::openstack::codfw1dev::networktests::envvars:
     NEUTRON_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     NEUTRON_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
     NEUTRON_VLAN_LEGACY: vlan-legacy.cloudinstances2b-gw.svc.codfw1dev.wikimedia.cloud
-    IPV6_PREFIX: "2a02:ec80:a100:"
+    IPV6_PREFIX: 2a02:ec80:a100
     FIP_PREFIX: "185.15."
