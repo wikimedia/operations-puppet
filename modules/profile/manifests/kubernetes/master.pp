@@ -4,7 +4,6 @@
 #
 class profile::kubernetes::master (
     String $kubernetes_cluster_name = lookup('profile::kubernetes::cluster_name'),
-    Array  $prometheus_all_nodes    = lookup('prometheus_all_nodes'),
 ) {
     $k8s_config = k8s::fetch_cluster_config($kubernetes_cluster_name)
     $stacked = defined(Class['profile::etcd::v3'])
@@ -282,15 +281,5 @@ class profile::kubernetes::master (
         proto  => 'tcp',
         port   => '6443',
         srange => undef,
-    }
-
-    # Allow prometheus to scrape:
-    # * kube-controller-manager (10257)
-    # * kube-scheduler (10259)
-    $prometheus_nodes_ferm = join($prometheus_all_nodes, ' ')
-    ferm::service { 'prometheus-metrics':
-        proto  => 'tcp',
-        port   => [10257, 10259],
-        srange => "(@resolve((${prometheus_nodes_ferm})))",
     }
 }
