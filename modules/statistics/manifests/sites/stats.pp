@@ -12,11 +12,6 @@ class statistics::sites::stats {
 
     $wikistats_web_directory       = '/srv/stats.wikimedia.org'
 
-    # added due to this error: https://phabricator.wikimedia.org/T285355#7256778
-    file {[$wikistats_web_directory, "${wikistats_web_directory}/htdocs"]:
-        ensure => 'absent',
-    }
-
     # stats.wikimedia.org (Wikistats 2.0) setup:
     $wikistats_source_directory    = '/srv/src/wikistats-v2'
     file { ['/srv/src', $wikistats_source_directory]:
@@ -36,16 +31,6 @@ class statistics::sites::stats {
         group     => 'www-data',
         mode      => '0755',
         require   => File[$wikistats_source_directory],
-    }
-
-    # We want to serve wikistats 2 from the root stats.wikimedia.org domain.
-    # wikistats 2 has only 2 entry URLs, index.html and assets-v2.  Symlink them
-    # from the docroot.
-    file { "${wikistats_web_directory}/htdocs/index.html":
-        ensure  => 'absent',
-    }
-    file { "${wikistats_web_directory}/htdocs/assets-v2":
-        ensure  => 'absent',
     }
 
     # We want to serve wikistats 2 from the root stats.wikimedia.org domain.
