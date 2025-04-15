@@ -288,6 +288,234 @@
       retcode: 0
       stderr: ""
 
+- name: from VXLAN/dualstack contacting the internet using IPv6
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -6 -s ifconfig.me | grep -q 2a02:ec80"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/dualstack contacting the internet using IPv4 uses NAT address
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -4 -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only contacting the internet uses NAT address
+  tests:
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "curl -4 -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip contacting the internet uses FIP
+  tests:
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "curl -4 -s ifconfig.me | grep -qv $ROUTING_SOURCE_IP"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy contacting the internet uses NAT address
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY "curl -4 -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip contacting the internet uses FIP
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "curl -4 -s ifconfig.me | grep -qv $ROUTING_SOURCE_IP"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/dualstack contacting the wikis using IPv6
+  tests:
+   - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -6 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $IPV6_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/dualstack contacting the wikis using IPv4
+  tests:
+   - cmd: $SSH $VM_VXLAN_DUALSTACK "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only contacting the wikis without NAT address
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip contacting the wikis with FIP address
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FIP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy contacting the wikis wihtout NAT address
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip contacting the wikis with FIP address
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "curl -4 -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FIP_PREFIX"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+# TODO: missing IPv6 support on DNS servers
+- name: from VXLAN/dualstack can contact auth DNS server, using IPv4
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only can contact auth DNS server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip can contact auth DNS server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy can contact auth DNS server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip can contact auth DNS server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+# TODO: missing IPv6 support on DNS servers
+- name: from VXLAN/dualstack can contact recursor DNS server, using IPv4
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only can contact recursor DNS server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip can contact recursor DNS server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy can contact recursor DNS server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip can contact recursor DNS server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
+      stdout: "1"
+      retcode: 0
+      stderr: ""
+
+# TODO: missing IPv6 support on LDAP servers
+- name: from VXLAN/dualstack can contact LDAP server, using IPv4
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only can contact LDAP server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip can contact LDAP server
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy can contact LDAP server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip can contact LDAP server
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP 'ldapsearch -x whatever | grep -q ^"# numResponses"'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+# TODO: missing IPv6 support on LDAP servers
+- name: from VXLAN/dualstack can contact openstack APIs, using IPv4
+  tests:
+    - cmd: $SSH $VM_VXLAN_DUALSTACK 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only can contact openstack APIs
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VXLAN/IPv4-only-fip can contact openstack APIs
+  tests:
+   - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy can contact openstack APIs
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: from VLAN/legacy-fip can contact openstack APIs
+  tests:
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP 'curl -4 -s $KEYSTONE_URL | grep -q identity'
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
 <% else %>
 # not including IPv6 tests
 <% end %>
