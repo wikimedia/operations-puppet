@@ -6,7 +6,6 @@ class profile::kubernetes::deployment_server::global_config (
     Hash[String, Any] $general_values                   = lookup('profile::kubernetes::deployment_server::general', { 'default_value' => {} }),
     Stdlib::Unixpath $general_dir                       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', { default_value => '/etc/helmfile-defaults' }),
     Array[Profile::Service_listener] $service_listeners = lookup('profile::services_proxy::envoy::listeners', { 'default_value' => [] }),
-    Array[Stdlib::Fqdn] $prometheus_nodes               = lookup('prometheus_all_nodes'),
     Hash[String, Hash] $kafka_clusters                  = lookup('kafka_clusters'),
     Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
     String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
@@ -528,32 +527,14 @@ class profile::kubernetes::deployment_server::global_config (
         $dc = $cluster_config['dc']
         $puppet_ca_data = file($facts['puppet_config']['localcacert'])
 
-        $filtered_prometheus_nodes = $prometheus_nodes.filter |$node| { "${dc}.wmnet" in $node }.map |$node| { ipresolve($node) }
-
-        # FIXME: What is prometheus_nodes used for?
-        # FIXME: Do we still need puppet_ca_crt (images should use wmf-certificates debian package)
-        unless empty($filtered_prometheus_nodes) {
-            $deployment_config_opts = {
-                'tls' => {
-                    'telemetry' => {
-                        'prometheus_nodes' => $filtered_prometheus_nodes,
-                    },
-                },
-                'puppet_ca_crt' => $puppet_ca_data,
-            }
-        } else {
-            $deployment_config_opts = {
-                'puppet_ca_crt' => $puppet_ca_data,
-            }
-        }
-
         # TODO: add info about the cluster group? So we don't need to have unique cluster names.
         # Merge default and environment specific general values with deployment config and service proxies
         $opts = deep_merge(
           $general_values['default'],
           $general_values[$cluster_name],
-          $deployment_config_opts,
           {
+            # FIXME: Do we still need puppet_ca_crt (images should use wmf-certificates debian package)
+            'puppet_ca_crt'                 => $puppet_ca_data,
             'external_services_definitions' => $external_service_opts,
             'services_proxy'                => $proxies,
             # Temporary duplication of kafka/zookeeper details until all charts are migrated
