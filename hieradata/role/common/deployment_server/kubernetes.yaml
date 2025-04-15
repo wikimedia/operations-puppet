@@ -318,7 +318,6 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     web_flavour: "webserver"
   - namespace: mw-wikifunctions
     releases:
-      main: {}
       group0: {}
       group1: {}
       group2: {}
