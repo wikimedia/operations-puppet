@@ -40,10 +40,6 @@ profile::services_proxy::envoy::listeners:
       retry_on: "5xx"
       num_retries: 2
     timeout: "25s"
-  - name: wdqs-internal
-    port: 6009
-    service: wdqs-internal
-    timeout: "10s"
   - name: restbase
     port: 6011
     service: restbase-https
@@ -430,7 +426,6 @@ profile::services_proxy::envoy::enabled_listeners:
   - echostore
   - termbox
   - push-notifications
-  - wdqs-internal
   - restbase
   - rest-gateway
   - cxserver

@@ -394,11 +394,6 @@ wikimedia_clusters:
     description: "Druid Public Cluster"
     sites:
       eqiad: []
-  wdqs-internal:
-    description: "Wikidata Query Service - Internal cluster"
-    sites:
-      eqiad: []
-      codfw: []
   wdqs-internal-main:
     description: "Wikidata Query Service internal - main graph"
     sites:
