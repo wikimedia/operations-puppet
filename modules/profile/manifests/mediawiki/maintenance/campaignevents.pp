@@ -52,9 +52,15 @@ class profile::mediawiki::maintenance::campaignevents(
             helmfile_defaults_dir => $helmfile_defaults_dir,
         }
         profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-test2wiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki test2wiki',
-            interval => '00/03:00',
-            splay    => 300,
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki test2wiki',
+            interval              => '00/03:00',
+            cron_schedule         => '0 */3 * * *',
+            splay                 => 300,
+            kubernetes            => true,
+            team                  => $team_label,
+            script_label          => 'AggregateParticipantAnswers.php-test2wiki',
+            description           => 'Aggregate participant answers on test2wiki',
+            helmfile_defaults_dir => $helmfile_defaults_dir,
         }
     }
 }
