@@ -1,6 +1,9 @@
 class profile::mediawiki::maintenance::growthexperiments(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+
+    $team_name = 'growth'
+
     # Purge old welcome survey data (personal data used in user options,
     # with 90-day retention) that's within 30 days of expiry, twice a month.
     # See T208369 and T252575. Logs are saved to
@@ -10,7 +13,7 @@ class profile::mediawiki::maintenance::growthexperiments(
         interval              => '*-*-01,15 03:15:00',
         cron_schedule         => '15 3 1,15 * *',
         kubernetes            => true,
-        team                  => 'growth',
+        team                  => $team_name,
         script_label          => 'deleteOldSurveys.php',
         description           => "Purge old welcome survey data (personal data used in user options, with 90-day retention) that's within 30 days of expiry, twice a month.",
         helmfile_defaults_dir => $helmfile_defaults_dir,
@@ -52,7 +55,7 @@ class profile::mediawiki::maintenance::growthexperiments(
         interval              => '*-*-* 04:30:00',
         cron_schedule         => '30 4 * * *',
         kubernetes            => true,
-        team                  => 'growth',
+        team                  => $team_name,
         script_label          => 'updateMetrics.php',
         description           => 'Push periodically-computed mentorship metrics into statsd (T318684)',
         helmfile_defaults_dir => $helmfile_defaults_dir,
@@ -70,8 +73,14 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # delete old user impact data (T313395)
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactDelete':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteExpiredUserImpactData.php --expiry=2days',
-        interval => '*-*-* 02:10:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteExpiredUserImpactData.php --expiry=2days',
+        interval              => '*-*-* 02:10:00',
+        cron_schedule         => '10 2 * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'deleteExpiredUserImpactData.php',
+        description           => 'Delete old user impact data (T313395)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # update the "is active" flag for mentees (T318457)
