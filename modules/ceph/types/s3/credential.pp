@@ -3,6 +3,6 @@
 
 # Key lengths taken from src/rgw/driver/rados/rgw_user.h in the Ceph source
 type Ceph::S3::Credential = Struct[{
-    access_key => String[20,20],
-    secret_key => String[40,40],
+    access_key => String,
+    secret_key => String,
 }]
