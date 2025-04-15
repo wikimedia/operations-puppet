@@ -70,7 +70,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(
-        level=max(logging.DEBUG, logging.WARNING - (10 * args.loglevel)),
+        level=max(logging.DEBUG, logging.INFO - (10 * args.loglevel)),
         format="%(asctime)s %(name)-12s %(levelname)-8s: %(message)s",
         datefmt="%Y-%m-%dT%H:%M:%SZ",
     )
@@ -108,27 +108,15 @@ def main():
         shards = all_shards
 
     for zone in zones:
-        logger.warning("Ensuring %s" % zone)
+        logger.info("Processing zone '{}'".format(zone))
 
-        if zone.endswith("wmflabs."):
-            dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(oscloud=args.os_cloud), "cloudinfra"
-            )
-        elif zone.endswith("db.svc.wikimedia.cloud."):
-            dns = mwopenstackclients.DnsManager(
-                mwopenstackclients.Clients(oscloud=args.os_cloud), "cloudinfra"
-            )
-        else:
-            logging.error(
-                "This zone is in an unknown tld; supported are wmflabs and "
-                "wikimidia.cloud"
-            )
-            continue
-
+        dns = mwopenstackclients.DnsManager(
+            mwopenstackclients.Clients(oscloud=args.os_cloud), "cloudinfra"
+        )
         r = dns.zones(name=zone)
         if not r:
-            logging.error(
-                "Zone %s does not exist.  Please create it and re-run.\n"
+            logger.error(
+                "Zone '%s' does not exist. Please create it and re-run.\n"
                 "Example: \n\n"
                 "openstack zone create --sudo-project-id "
                 "cloudinfra --email root@wmcloud.org %s\n" % (zone, zone)
@@ -141,6 +129,7 @@ def main():
         for svc, ips in config["zones"][zone].items():
             # Goofy, but true -- Designate needs FQDNs for names.
             fqdn = "{}.{}".format(svc, zone)
+            logger.info("Syncing A record '{}'".format(fqdn))
             dns.ensure_recordset(zone_id, fqdn, "A", ips)
 
             if args.aliases and svc in shards:
@@ -150,6 +139,7 @@ def main():
                     svc, segment
                 )
                 # Ensure that there are wikidb aliases for shards
+                logger.info("Fetching wiki list for '{}'".format(svc))
                 dblist = requests.get(
                     "https://noc.wikimedia.org/conf/dblists/{}.dblist".format(svc)
                 )
@@ -158,7 +148,10 @@ def main():
                 except requests.exceptions.HTTPError:
                     logger.warning('DBList "%s" not found', svc)
                 else:
-                    for wikidb in dblist.text.splitlines():
+                    wikidb_aliases = dblist.text.splitlines()
+                    logger.info("Syncing CNAME records for {} aliases of "
+                                "'{}'".format(len(wikidb_aliases), svc))
+                    for wikidb in wikidb_aliases:
                         if wikidb.startswith("#"):
                             continue
                         db_fqdn = "{}.{}".format(wikidb, zone)
@@ -169,6 +162,7 @@ def main():
             if fqdn in config["cnames"]:
                 # Add additional aliases for this fqdn
                 for cname in config["cnames"][fqdn]:
+                    logger.info("Syncing additional CNAME: '{}'".format(cname))
                     cname_zone = find_zone_for_fqdn(dns, cname)
                     if cname_zone:
                         # This is a special case of an old dns name redirected
