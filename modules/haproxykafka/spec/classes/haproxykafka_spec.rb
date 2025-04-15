@@ -12,6 +12,7 @@ describe 'haproxykafka' do
             workers: 1,
             message_buffer: 1024.0,
             sdid: 'haproxykafka@0',
+            hostname: "test",
             socket: {
               path: '/var/run/haproxykafka.sock',
               mode: '0622',
@@ -91,6 +92,7 @@ describe 'haproxykafka' do
 workers: 1
 message_buffer: 1024.0
 sdid: haproxykafka@0
+hostname: test
 socket:
   path: "/var/run/haproxykafka.sock"
   mode: '0622'

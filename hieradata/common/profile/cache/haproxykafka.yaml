@@ -4,6 +4,7 @@ profile::cache::haproxykafka::kafka_cluster_name: jumbo-eqiad
 profile::cache::haproxykafka::workers: 2
 profile::cache::haproxykafka::message_buffer: 100.0
 profile::cache::haproxykafka::sdid: haproxykafka@0
+profile::cache::haproxykafka::hostname: "%{facts.networking.fqdn}"
 profile::cache::haproxykafka::socket:
   path: /var/run/haproxykafka/haproxykafka.sock
   mode: "0622"

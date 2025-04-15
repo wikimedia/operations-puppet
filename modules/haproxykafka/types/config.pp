@@ -38,6 +38,7 @@ type Haproxykafka::Config = Struct[{
     'workers'             => Integer[1,192],
     'message_buffer'      => Float,
     'sdid'                => String,
+    'hostname'            => String,
     'socket'              => Haproxykafka::Socket,
     'logparser'           => Haproxykafka::Logparser,
     'kafka'               => Haproxykafka::Kafka,
