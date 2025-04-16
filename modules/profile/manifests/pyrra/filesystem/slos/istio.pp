@@ -30,7 +30,7 @@ define profile::pyrra::filesystem::slos::istio(
             },
             'spec'       => {
                 'alerting'  => {
-                    'burnrates' => "${enable_alerts}" #lint:ignore:only_variable_string
+                    'burnrates' => $enable_alerts
                 },
                 'target'    => $slo_requests_target,
                 'window'    => $window,
@@ -62,6 +62,9 @@ define profile::pyrra::filesystem::slos::istio(
                 },
             },
             'spec'       => {
+                'alerting'  => {
+                    'burnrates' => $enable_alerts
+                },
                 'target'    => $slo_latency_target,
                 'window'    => $window,
                 'indicator' => {
