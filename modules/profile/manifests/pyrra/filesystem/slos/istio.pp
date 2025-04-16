@@ -10,6 +10,7 @@ define profile::pyrra::filesystem::slos::istio(
     String $requests_errors_regex = '5..',
     String $latency_max_seconds_bucket = '5000',
     String $k8s_cluster_name = 'wikikube',
+    Boolean $enable_alerts = false,
     Wmflib::Ensure $ensure = 'present'
 ) {
     $datacenters.each |$datacenter| {
@@ -28,6 +29,9 @@ define profile::pyrra::filesystem::slos::istio(
                 },
             },
             'spec'       => {
+                'alerting'  => {
+                    'burnrates' => "${enable_alerts}" #lint:ignore:only_variable_string
+                },
                 'target'    => $slo_requests_target,
                 'window'    => $window,
                 'indicator' => {
