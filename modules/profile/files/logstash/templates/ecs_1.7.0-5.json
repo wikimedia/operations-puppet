@@ -3439,7 +3439,7 @@
       "query": {
         "default_field": "message"
       },
-      "refresh_interval": "10s",
+      "refresh_interval": "5s",
       "routing": {
         "allocation": {
           "require": {

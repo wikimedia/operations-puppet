@@ -2,7 +2,7 @@
   "index_patterns" : "logstash-*",
   "version" : 60001,
   "settings" : {
-    "index.refresh_interval" : "10s",
+    "index.refresh_interval" : "5s",
     "index.routing.allocation.require.disktype" : "ssd",
     "index.query.default_field" : "all",
     "number_of_shards" : 1,
