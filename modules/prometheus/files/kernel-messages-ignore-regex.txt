@@ -10,3 +10,4 @@ ACPI Error: Region .* has no handler
 ACPI Error: Aborting method .* due to previous error
 ACPI Error: AE_NOT_EXIST.*
 ERST: Error Record Serialization Table \(ERST\) support is initialized.
+db_root: cannot open: /etc/target
