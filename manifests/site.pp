@@ -1138,7 +1138,7 @@ node /^elastic2110\.codfw\./ {
     role(elasticsearch::cirrus)
 }
 
-node  /^cirrussearch2(57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+node  /^cirrussearch20(57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
     role(cirrus::opensearch)
 
 }
