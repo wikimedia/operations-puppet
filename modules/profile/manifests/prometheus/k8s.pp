@@ -581,6 +581,8 @@ define profile::prometheus::k8s (
                         'destination_principal',
                         'destination_version',
                         'destination_cluster',
+                        'release',
+                        'heritage'
                     ].join('|')})",
                 },
             ],
