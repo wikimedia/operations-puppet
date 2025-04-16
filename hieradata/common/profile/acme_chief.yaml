@@ -24,13 +24,6 @@ profile::acme_chief::certificates:
         authorized_regexes:
         - '^cloudelastic[1-9][0-9]{3}\.wikimedia\.org$'
         - '^cloudelastic[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
-    community-crm:
-        CN: 'community-crm.wikimedia.org'
-        SNI:
-        - 'community-crm.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^community-crm\.wikimedia\.org$'
     dotls-for-authdns:
         CN: 'ns0.wikimedia.org'
         SNI:
