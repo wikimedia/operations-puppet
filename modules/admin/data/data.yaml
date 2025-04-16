@@ -458,7 +458,8 @@ groups:
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
-              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup]
+              migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
+              kcoleman]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6662,6 +6663,13 @@ users:
     uid: 30978
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  kcoleman:
+    ensure: present
+    realname: Katie Coleman
+    email: kcoleman@wikimedia.org
+    uid: 46423
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7409,10 +7417,6 @@ ldap_only_users:
   febinbellamy:
     ensure: absent
     realname: Febin Bellamy
-  kcoleman:
-    ensure: present
-    realname: Katie Coleman
-    email: kcoleman@wikimedia.org
   ospingou:
     ensure: present
     realname: Olga Spingou
