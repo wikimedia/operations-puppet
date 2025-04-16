@@ -469,13 +469,8 @@ class SchemaOperations:
             return
 
         if not self.database_exists(self.db_p):
-            # Can't use pymysql to build this
-            self.write_execute(
-                "GRANT SELECT, SHOW VIEW ON `{}`.* TO 'labsdbuser';".format(
-                    self.db_p.replace("_", "\\_")
-                )
-            )
-            self.write_execute(f"CREATE DATABASE `{self.db_p}`;")
+            logging.warning("DB %s does not exist to create views", self.db_p)
+            return
 
         logging.info("Full views for %s:", self.db)
         for view in fullviews:
