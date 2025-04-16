@@ -79,8 +79,9 @@ def _main():
         "interactive",
         username,
         dry_run=dry_run,
-        host=config["tcpircbot_host"],
-        port=config["tcpircbot_port"],
+        host=config.get("tcpircbot_host", None),
+        port=config.get("tcpircbot_port", 0),
+        notify_logger_enabled=config.get("user_input_notifications_enabled", False),
     )
 
     params = config.get("instance_params", {})
