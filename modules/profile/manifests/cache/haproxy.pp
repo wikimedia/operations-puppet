@@ -51,6 +51,7 @@ class profile::cache::haproxy(
     String $conftool_prefix = lookup('conftool_prefix'),
     Optional[Array[Haproxy::Ring, 1]] $rings = lookup('profile::cache::haproxy::rings', {'default_value'                                         => undef}),
     Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
+    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                             => ['GET','HEAD','OPTIONS']}),
 ) {
     class { 'sslcert::dhparam':
     }

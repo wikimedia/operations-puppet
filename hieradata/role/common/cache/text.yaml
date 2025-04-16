@@ -343,3 +343,11 @@ profile::cache::haproxy::extra_certificates:
     critical_threshold: 15
 
 profile::cache::haproxy::use_etcd_req_filters: true
+profile::cache::haproxy::allowed_methods:
+  - DELETE
+  - GET
+  - HEAD
+  - OPTIONS
+  - PATCH
+  - POST
+  - PUT

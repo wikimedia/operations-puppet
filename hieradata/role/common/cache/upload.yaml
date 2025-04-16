@@ -166,3 +166,7 @@ profile::cache::haproxy::post_acl_actions:
       condition: if !wikimedia_trust
 
 profile::cache::haproxy::use_etcd_req_filters: true
+profile::cache::haproxy::allowed_methods:
+  - GET
+  - HEAD
+  - OPTIONS

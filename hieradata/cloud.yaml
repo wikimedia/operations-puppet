@@ -1179,3 +1179,11 @@ haproxy_allowed_healthcheck_sources: []
 
 profile::cache::haproxy::extended_logging: false
 profile::cache::haproxy::use_haproxykafka: false
+profile::cache::haproxy::allowed_methods:
+  - DELETE
+  - GET
+  - HEAD
+  - OPTIONS
+  - PATCH
+  - POST
+  - PUT

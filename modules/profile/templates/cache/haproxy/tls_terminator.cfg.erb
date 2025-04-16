@@ -130,6 +130,7 @@ listen tls
     acl h2 fc_http_major eq 2
     acl ssl_session_reused ssl_fc_is_resumed eq 1
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
+    acl allowed_methods method <%= @allowed_methods.join(' ') %>
 
 <%# Generated acls -%>
 <%- if @acls and @acls['tls'] -%>
@@ -193,6 +194,17 @@ listen tls
     http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
 <%- end -%>
 <%- end -%>
+
+    # Provide Server header
+    http-after-response set-header Server HAProxy unless { res.hdr(Server) -m found }
+    # Provide X-Cache headers
+    http-after-response set-header X-Cache "<%= @hostname %> int" unless { res.hdr(X-Cache) -m found }
+    http-after-response set-header X-Cache-Status "int-tls" unless { res.hdr(X-Cache-Status) -m found }
+
+    # Allow only a subset of methods
+    http-request deny deny_status 405 unless allowed_methods
+    # Allow OPTIONS method only with Origin header
+    http-request deny deny_status 405 if { method OPTIONS } !{ hdr(Origin) -m found }
 
     http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
     http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
