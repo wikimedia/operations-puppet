@@ -1088,23 +1088,33 @@ node /^dumpsdata100[45]\.eqiad\./ {
     role(dumps::generation::server::spare)
 }
 
-node /^elastic105[3-9]\.eqiad\./ {
+# Arrange elastic nodes by row to facilitate reimage T388610
+
+# Row A
+node /^elastic10(53|54|68|69|70|71|72|73|84)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^(elastic106[0-9]|elastic107[0-9]|elastic108[0-9])\.eqiad\./ {
+# Row B
+node /^elastic10(55|56|74|75|76|77|78|79|85|86)\.eqiad\./ {
+    role(elasticsearch::cirrus)
+}
+# Row C
+node /^elastic10(57|58|59|80|81|82|83|87|88)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^(elastic109[0-9]|elastic110[0-2])\.eqiad\./ {
+# Row D
+node /^elastic1(060|061|062|063|064|065|066|067|103)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-node /^elastic1103|elastic1107\.eqiad\./ {
+# Row E
+node /^elastic1(089|090|091|092|093|094|095|108|109)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
-
-node /^elastic110[8-9]|elastic1110\.eqiad\./ {
+# Row F
+node /^elastic1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
