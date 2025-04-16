@@ -37,13 +37,13 @@
 class profile::cache::varnish::frontend (
     # Globals
     String                  $conftool_prefix         = lookup('conftool_prefix'),
-    Boolean                 $has_lvs                 = lookup('has_lvs', {'default_value'                                                    => true}),
+    Boolean                 $has_lvs                 = lookup('has_lvs', {'default_value'                                                   => true}),
     # TODO: fix theses so they re under the profile namespace
     Hash[String, Hash]      $cache_nodes             = lookup('cache::nodes'),
     String                  $cache_cluster           = lookup('cache::cluster'),
     Profile::Cache::Sites   $req_handling            = lookup('cache::req_handling'),
-    Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', {'default_value'                                   => {}}),
-    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'          => true}),
+    Profile::Cache::Sites   $alternate_domains       = lookup('cache::alternate_domains', {'default_value'                                  => {}}),
+    Boolean                 $single_backend          = lookup('profile::cache::varnish::frontend::single_backend', {'default_value'         => true}),
     # locals
     Hash[String, Any]       $fe_vcl_config           = lookup('profile::cache::varnish::frontend::fe_vcl_config'),
     Hash[String, Any]       $fe_cache_be_opts        = lookup('profile::cache::varnish::frontend::cache_be_opts'),
@@ -57,18 +57,21 @@ class profile::cache::varnish::frontend (
     String                  $uds_owner               = lookup('profile::cache::varnish::frontend::uds_owner'),
     String                  $uds_group               = lookup('profile::cache::varnish::frontend::uds_group'),
     Stdlib::Filemode        $uds_mode                = lookup('profile::cache::varnish::frontend::uds_mode'),
-    Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'    => '/run/varnish-privileged.socket'}),
+    Stdlib::Unixpath        $privileged_uds          = lookup('profile::cache::varnish::frontend::privileged_uds', {'default_value'         => '/run/varnish-privileged.socket'}),
     Boolean                 $use_etcd_req_filters    = lookup('profile::cache::varnish::frontend::use_etcd_req_filters'),
     Boolean                 $use_ip_reputation       = lookup('profile::cache::varnish::frontend::use_ip_reputation'),
-    Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'       => false}),
+    Boolean                 $do_esitest              = lookup('profile::cache::varnish::frontend::do_esitest', {'default_value'             => false}),
     Boolean                 $enable_monitoring       = lookup('profile::cache::varnish::frontend::enable_monitoring'),
-    Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value' => undef}),
+    Optional[String]        $fe_jemalloc_conf        = lookup('profile::cache::varnish::frontend::fe_jemalloc_conf', {'default_value'       => undef}),
     Integer[1]              $thread_pool_max         = lookup('profile::cache::varnish::frontend::thread_pool_max'),
-    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value' => '160M'}),
-    Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value' => 170}),
-    Boolean                 $check_min_fe_mem        = lookup('profile::cache::varnish::frontend::check_min_fe_mem', {'default_value' => false}),
+    Optional[String]        $vsl_size                = lookup('profile::cache::varnish::frontend::vsl_size', {'default_value'               => '160M'}),
+    Optional[Integer]       $fe_mem_gb_reserved      = lookup('profile::cache::varnish::frontend::fe_mem_gb_reserved', {'default_value'     => 170}),
+    Boolean                 $check_min_fe_mem        = lookup('profile::cache::varnish::frontend::check_min_fe_mem', {'default_value'       => false}),
     Optional[Integer]       $check_min_fe_mem_value  = lookup('profile::cache::varnish::frontend::check_min_fe_mem_value', {'default_value' => 150}),
-    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value' => '^/beacon\/(?!event)[^/?]+'}),
+    Optional[String]        $fe_beacon_uri_regex     = lookup('profile::cache::varnish::frontend::fe_beacon_uri_regex', {'default_value'    => '^/beacon\/(?!event)[^/?]+'}),
+    Boolean                 $do_edge_uniques         = lookup('profile::cache::varnish::frontend::do_edge_uniques', {'default_value'        => false}),
+    Stdlib::Unixpath        $edge_uniques_key_dir    = lookup('profile::cache::varnish::frontend::edge_uniques_key_path', {'default_value'  => '/etc/varnish/uniques.d'}),
+    Stdlib::Unixpath        $edge_uniques_cfg_path   = lookup('profile::cache::varnish::frontend::edge_uniques_cfg_path', {'default_value'  => '/etc/varnish/uniques.json'}),
 ) {
     include profile::cache::base
     $wikimedia_nets = $profile::cache::base::wikimedia_nets
@@ -114,6 +117,45 @@ class profile::cache::varnish::frontend (
         }
     }
 
+    # TODO: Move it to the list of packages above as soon as it's deployed
+    # across the whole CDN
+    package { 'libvmod-wmfuniq':
+        ensure => $do_edge_uniques.bool2str('installed', 'absent'),
+    }
+
+    $wmfuniq_secret_base_path = '/etc/varnish/uniques.d'
+    file {$wmfuniq_secret_base_path:
+        ensure    => $do_edge_uniques.bool2str('directory', 'absent'),
+        owner     => 'root',
+        group     => 'varnish',
+        mode      => '0750',
+        show_diff => false,
+        backup    => false,
+    }
+
+    $wmfuniq_secrets = wmflib::list_secrets('wmfuniq')
+    $wmfuniq_secrets.each|String $secret| {
+        file { "${wmfuniq_secret_base_path}/${secret}":
+            ensure    => $do_edge_uniques.bool2str('present', 'absent'),
+            owner     => 'root',
+            group     => 'varnish',
+            mode      => '0640',
+            show_diff => false,
+            backup    => false,
+            content   => wmflib::secret($secret, true),
+        }
+    }
+
+    # TODO: this will be replaced eventually by an automatically fetched JSON
+    # file from cp servers
+    file { $edge_uniques_cfg_path:
+        ensure => $do_edge_uniques.bool2str('present', 'absent'),
+        owner  => 'root',
+        group  => 'varnish',
+        mode   => '0640',
+        source => 'puppet:///modules/profile/cache/uniques.json',
+    }
+
     # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
     # shm memory to disk
     mount { '/var/lib/varnish':
@@ -154,11 +196,14 @@ class profile::cache::varnish::frontend (
     }
 
     $vcl_config = $fe_vcl_config + {
-        req_handling      => $req_handling,
-        alternate_domains => $alternate_domains,
-        fe_mem_gb         => $fe_mem_gb,
-        do_esitest        => $do_esitest,
-        beacon_uri_regex  => $fe_beacon_uri_regex,
+        req_handling          => $req_handling,
+        alternate_domains     => $alternate_domains,
+        fe_mem_gb             => $fe_mem_gb,
+        do_esitest            => $do_esitest,
+        beacon_uri_regex      => $fe_beacon_uri_regex,
+        do_edge_uniques       => $do_edge_uniques,
+        edge_uniques_key_path => "${edge_uniques_key_dir}/keys.cfg",
+        edge_uniques_cfg_path => $edge_uniques_cfg_path,
     }
 
     # VCL files common to all instances

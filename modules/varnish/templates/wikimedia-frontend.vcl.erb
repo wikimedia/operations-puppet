@@ -23,6 +23,7 @@ import std;
 # different code.
 import header;
 
+import cookie;
 import directors;
 import netmapper;
 import querysort;  // T138093
@@ -620,6 +621,28 @@ sub wm_recv_pass {
     <%= caching_vcl %>
 }
 
+sub uniques_recv {
+<% unless @vcl_config.fetch("do_edge_uniques", false) -%>
+    if (req.http.Cookie) {
+        // Normalize cookie name case before vmod_cookie processing,
+        // allowing for whitespace variance. vmod_cookie is case-sensitive,
+        // and while that is correct by modern RFCs, ancient ones
+        // explicitly said the names were case-insensitive, and there's
+        // some evidence that there are case-insensitive impls out in the
+        // wild, and generally Postel should apply here.
+        set req.http.Cookie = regsub(req.http.Cookie, "(?i)(^|;)\s*WMF-Uniq\s*=", "\1WMF-Uniq=");
+        cookie.parse(req.http.Cookie);
+        if (cookie.isset("WMF-Uniq")) {
+            cookie.delete("WMF-Uniq");
+            set req.http.Cookie = cookie.get_string();
+            if (req.http.Cookie == "") {
+                unset req.http.Cookie;
+            }
+        }
+    }
+<% end -%>
+}
+
 sub vcl_recv {
 <% if @traffic_shutdown -%>
     // Hieradata switch to shut users out of a DC/cluster. T129424
@@ -716,6 +739,8 @@ sub vcl_recv {
     }
 
     set req.backend_hint = cache_local.backend();
+
+    call uniques_recv;
 
     if(req.restarts == 0) {
         call analytics_recv;

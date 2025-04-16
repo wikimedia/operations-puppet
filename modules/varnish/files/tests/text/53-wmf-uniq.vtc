@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "differential privacy"
+
+server s1 -repeat 2 {
+    rxreq
+    # be sure that WMF-Uniq cookie doesn't reach the origin server
+    expect req.http.Cookie !~ "WMF-Uniq"
+    expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
+    # CC: private to ensure that all the requests hit the origin server
+    txresp -hdr "Cache-Control: private"
+} -start
+
+
+varnish v1 -arg "-a ${tmpdir}/v1.sock -p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+
+    include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    sub vcl_deliver {
+        set resp.http.url = req.url;
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+
+} -start
+
+client c1 -connect "${tmpdir}/v1.sock" {
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=snakeoil"
+    rxresp
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: wmf-uniq=snakeoil"
+    rxresp
+} -run
