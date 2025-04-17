@@ -21,7 +21,7 @@ if $programname == "apache2" then {
 }
 
 # Forward PHP7 logs and stacktraces to the log aggregator
-if ($programname startswith 'php7.' or $programname startswith 'php8.')  then {
+if $programname startswith 'php'  then {
     @<%= @log_aggregator %>;MediaWiki
 <% if @forward_syslog -%>
     @<%= @forward_syslog %>
@@ -41,7 +41,7 @@ if ($programname startswith 'mediawiki_job_') then {
 # Forward messages logged by the kernel and containing the string
 # "php7" or "php8" (such as warnings that the process was killed or respawned)
 # to the log aggregator.
-if ($programname == "kernel" and ($msg contains "php7" or $msg contains "php8")) {
+if $msg contains "php" and $programname == "kernel" then {
     @<%= @log_aggregator %>;MediaWiki
 <% if @forward_syslog -%>
     @<%= @forward_syslog %>
