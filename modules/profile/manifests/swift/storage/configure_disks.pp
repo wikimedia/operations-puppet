@@ -30,7 +30,16 @@ class profile::swift::storage::configure_disks (
     $parted_script = 'mklabel gpt mkpart primary 1M 100%'
     $facts['swift_disks']['objects'].each |$drive| {
         # disk is of the form pci-0000:3b:00.0-scsi-0:0:1:0
-        $idx = $drive.split(/:/)[-2]
+        # or pci-0000:98:00.0-sas-exp0x500304801ff9b73f-phy0-lun-0
+        $sas_id = $drive =~ /exp0x([0-9a-z]+)-phy(\d+)-lun/ ? {
+            true    => "_exp_${1}_phy_${2}",
+            default => undef,
+        }
+        if $sas_id != undef {
+            $idx = $sas_id
+        } else {
+            $idx = $drive.split(/:/)[-2]
+        }
         $device_path = "/dev/disk/by-path/${drive}"
         $partition_path = "${device_path}-part1"
         $swift_path = "${swift_storage_dir}${drive}-part1"
