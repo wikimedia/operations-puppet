@@ -54,11 +54,17 @@ profile::gerrit::replication:
         maxRetries: 50
         rescheduleDelay: 15
         replicatePermissions: false
-        # Double escape backslashes:
-        # once for regex, once for gitconfig formatting
+        # We drop the whole apps/ hierarchy that has been entirely archived.
+        # Notes:
+        # - double escape backslashes: once for regex, once for gitconfig
+        #   formatting
+        # - there can be ONLY one inverted match, else the second will match
+        #   the one excluded by the first - T392198
+        # You are better of reparenting the project to All-Archived-Projects
+        # which BLOCK Read for the group mediawiki-replication. This is only
+        # kept to ensure we do not replicate the GitHub apps.
         projects:
-            - '^(?:(?!apps\\/ios\\/).)*$'
-            - '^(?:(?!apps\\/android\\/).)*$'
+            - '^(?:(?!apps\\/).)*$'
     replica_codfw:
         url: "%{lookup('profile::gerrit::daemon_user')}@gerrit1003.wikimedia.org:/srv/gerrit/git/${name}.git"
         mirror: true
