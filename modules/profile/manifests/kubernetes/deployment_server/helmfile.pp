@@ -97,7 +97,7 @@ class profile::kubernetes::deployment_server::helmfile (
                 owner   => 'root',
                 group   => $helm_user_group,
                 mode    => '0640',
-                content => { 'services' => to_yaml($services[$cluster_group]) },
+                content => to_yaml({ 'services' => $services[$cluster_group] }),
             }
 
             # Write private data for each service to $service_private_dir/$svcname/$cluster_name.yaml
