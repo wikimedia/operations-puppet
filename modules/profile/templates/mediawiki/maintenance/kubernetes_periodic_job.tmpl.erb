@@ -1,5 +1,5 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-    - name: <%= @title.gsub('_', '-').downcase %>
+    - name: <%= @title.gsub('_', '-').gsub(/@\d*/, '').downcase %>
       schedule: "<%= @cron_schedule %>"
       command: <%= @command_quoted %>
       labels:

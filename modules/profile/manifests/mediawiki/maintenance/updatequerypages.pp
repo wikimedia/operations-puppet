@@ -14,9 +14,14 @@ class profile::mediawiki::maintenance::updatequerypages(
     # Move away from using a defined resource and use sharded_periodic_job
     # The '@<day of month>' hasn't worked in years, but we keep it for now to make the diff easier to read.
     profile::mediawiki::sharded_periodic_job { 'updatequerypages_deadendpages':
-        interval => '*-9,23 01:00',
-        shards   => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18'],
-        script   => 'updateSpecialPages.php --override --only=Deadendpages',
+        interval          => '*-9,23 01:00',
+        cron_schedule     => '00 01 9,23 * *',
+        shards            => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18'],
+        kubernetes_shards => ['s3@13'],
+        script            => 'updateSpecialPages.php --override --only=Deadendpages',
+        team              => 'mediawiki-special-pages',
+        description       => 'Update deadendpages',
+        script_label      => 'updatequerypages-deadendpages',
     }
 
     profile::mediawiki::maintenance::updatequerypages::uncatpages { ['s4@14']: }
