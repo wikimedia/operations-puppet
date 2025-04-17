@@ -73,6 +73,7 @@ def _parse_libvirt_block_or_net_stat_to_prom(
 
     'block.count': 1,
     'block.0.name': 'vda',
+    'block.0.path': '/var/lib/nova/instances/456ca6d8-2593-4d14-9f13-f13f31cce54b/disk',
     'block.0.backingIndex': 1,
     'block.0.rd.reqs': 2568643,
     'block.0.rd.bytes': 52688131072,
@@ -108,7 +109,7 @@ def _parse_libvirt_block_or_net_stat_to_prom(
         prom_name = f"{base_prom_name}_count"
         return PromStat(name=prom_name, tags=tags, value=stat_value)
 
-    if tags_values[1] == "name":
+    if tags_values[-1] in ("name", "path"):
         # ignore non-numeric stats for now
         return None
 
