@@ -249,6 +249,7 @@ Components: main
  thirdparty/bigtop33
  thirdparty/ceph-reef
  thirdparty/docker
+ thirdparty/jenkins
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-runner

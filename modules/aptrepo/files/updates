@@ -8,6 +8,15 @@ Architectures: all>amd64
 VerifyRelease: 5BA31D57EF5975CA
 ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
 
+Name: jenkins-bookworm
+Method: http://pkg.jenkins-ci.org/debian-stable/
+Suite: binary
+Flat: thirdparty/jenkins
+GetInRelease: no
+Architectures: all>amd64
+VerifyRelease: 5BA31D57EF5975CA
+ListShellHook: grep-dctrl -X -S jenkins || [ $? -eq 1 ]
+
 Name: hwraid-megacli
 Method: http://hwraid.le-vert.net/debian
 Components: main>thirdparty/hwraid
