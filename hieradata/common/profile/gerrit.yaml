@@ -6,7 +6,7 @@ profile::gerrit::mask_service: false
 profile::gerrit::host: 'gerrit.wikimedia.org'
 profile::gerrit::config: 'gerrit.config.erb'
 
-profile::gerrit::active_host: 'gerrit2002.wikimedia.org'
+profile::gerrit::active_host: 'gerrit1003.wikimedia.org'
 profile::gerrit::replica_hosts:
     - 'gerrit-replica.wikimedia.org'
 
@@ -14,7 +14,8 @@ profile::gerrit::migration::data_dir: '/srv/gerrit'
 
 profile::gerrit::lfs_replica_sync: true
 profile::gerrit::lfs_sync_dest:
-    - 'gerrit1003.wikimedia.org'
+    # - 'gerrit1003.wikimedia.org'
+    - 'gerrit2002.wikimedia.org'
     - 'gerrit2003.wikimedia.org'
 
 # External backups
@@ -34,6 +35,7 @@ profile::gerrit::scap_key_name: 'gerrit'
 # List of gerrit servers used in firewall rules.
 profile::gerrit::ssh_allowed_hosts:
  - gerrit1003.wikimedia.org
+ - gerrit2003.wikimedia.org
  - gerrit2002.wikimedia.org
 
 # Assume all production nodes are replicas
@@ -66,7 +68,7 @@ profile::gerrit::replication:
         projects:
             - '^(?:(?!apps\\/).)*$'
     replica_codfw:
-        url: "%{lookup('profile::gerrit::daemon_user')}@gerrit1003.wikimedia.org:/srv/gerrit/git/${name}.git"
+        url: "%{lookup('profile::gerrit::daemon_user')}@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git"
         mirror: true
         replicateProjectDeletions: true
         replicateHiddenProjects: true
