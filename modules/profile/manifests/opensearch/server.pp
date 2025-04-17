@@ -8,8 +8,6 @@
 # - $logstash_host: Host to send logs to
 # - $logstash_logback_port: Tcp port on localhost to send structured logs to.
 # - $logstash_transport: Transport mechanism for logs.
-# - $rack: Rack server is in. Used for allocation awareness.
-# - $row: Row server is in. Used for allocation awareness.
 # - $version: version of the package to install
 # - $java_home: optionally specify the JAVA_HOME path in the opensearch systemd unit.
 # - $enable_curator: installs curator.  default false
@@ -23,8 +21,6 @@ class profile::opensearch::server(
     Stdlib::AbsolutePath                     $base_data_dir         = lookup('profile::opensearch::base_data_dir'),
     String                                   $logstash_host         = lookup('logstash_host'),
     Stdlib::Port                             $logstash_logback_port = lookup('logstash_logback_port'),
-    String                                   $rack                  = lookup('profile::opensearch::rack'),
-    String                                   $row                   = lookup('profile::opensearch::row'),
     Enum['1.0.0', '2.0.0']                   $version               = lookup('profile::opensearch::version',         { 'default_value' => '1.0.0' }),
     Optional[String]                         $java_home             = lookup('profile::opensearch::java_home',       { 'default_value' => undef }),
     Boolean                                  $enable_curator        = lookup('profile::opensearch::curator::enable', { 'default_value' => false }),
@@ -34,6 +30,20 @@ class profile::opensearch::server(
 ) {
 
     require ::profile::java
+
+    # Use netbox to retrieve row / rack information for row aware shard allocation
+    require ::profile::netbox::host
+
+    $location = $profile::netbox::host::location
+
+    $row = $location ? {
+        Netbox::Device::Location::BareMetal => $location['row'],
+        default => undef,
+    }
+    $rack = $location ? {
+        Netbox::Device::Location::BareMetal => $location['rack'],
+        default => undef,
+    }
 
     # Rather than asking hiera to magically merge these settings for us, we
     # explicitly take two sets of defaults for global defaults and per-dc
