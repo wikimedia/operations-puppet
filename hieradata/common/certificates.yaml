@@ -157,6 +157,8 @@ certificates::acme_chief:
     - wiktionary.eu
     - pywikibot.org
     - '*.pywikibot.org'
+    - pywikipedia.org
+    - '*.pywikipedia.org'
     - wikimediaenterprise.com
     - '*.wikimediaenterprise.com'
     staging_time: 604800
