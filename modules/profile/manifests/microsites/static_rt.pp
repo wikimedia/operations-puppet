@@ -4,7 +4,6 @@ class profile::microsites::static_rt(
     Hash $ldap_config = lookup('ldap'),
 ){
 
-    backup::set { 'rt-static' : }
     wmflib::dir::mkdir_p('/srv/org/wikimedia/static-rt')
 
     include ::passwords::ldap::production
