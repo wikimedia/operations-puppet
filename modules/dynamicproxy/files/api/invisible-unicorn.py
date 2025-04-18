@@ -477,10 +477,10 @@ def scrub_mappings(project_id):
                 redis_store.update_route(route)
             else:
                 print("Removing %s" % route.domain)
+                dns.delete_records_for(project_id, route.domain)
                 db.session.delete(route)
                 db.session.commit()
                 redis_store.delete_route(route)
-                dns.delete_records_for(project_id, route.domain)
 
     return "OK", 200
 
@@ -543,12 +543,12 @@ def delete_mapping(project_id, domain):
     if route is None:
         return "No such domain", 404
 
+    dns.delete_records_for(project_id, domain)
+
     db.session.delete(route)
     db.session.commit()
 
     redis_store.delete_route(route)
-
-    dns.delete_records_for(project_id, domain)
 
     return "deleted", 200
 
