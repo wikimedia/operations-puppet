@@ -386,3 +386,42 @@ certificates::acme_chief:
     - '*.wikimanialondon.com'
     - wikimedia.net
     - '*.wikimedia.net'
+    - wikipediavideo.com
+    - '*.wikipediavideo.com'
+    - wikipedia-foundation.com
+    - '*.wikipedia-foundation.com'
+    - wikipewdia.org
+    - '*.wikipewdia.org'
+    - wikiversity.tw
+    - '*.wikiversity.tw'
+    - wikimedia-commons.wiki
+    - '*.wikimedia-commons.wiki'
+    - wikipediapagecreators.com
+    - '*.wikipediapagecreators.com'
+    - wikiversity.co
+    - '*.wikiversity.co'
+    - wikipedia10.com
+    - '*.wikipedia10.com'
+    - wmfcloud.org
+    - '*.wmfcloud.org'
+    - wikisource.jp.net
+    - '*.wikisource.jp.net'
+    - wikipediabank.com
+    - '*.wikipediabank.com'
+    - wikispecies.gr
+    - '*.wikispecies.gr'
+    - wikipdeia.com
+    - '*.wikipdeia.com'
+  non-canonical-redirect-10:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikipediya.org
+    SNI:
+    - wikipediya.org
+    - '*.wikipediya.org'
+    - wikiversity.gr
+    - '*.wikiversity.gr'
