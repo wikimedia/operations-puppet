@@ -26,6 +26,8 @@ profile::opensearch::common_settings:
   filter_cache_size: '10%'
   disktype: 'ssd'
 
+logstash::heap_memory: 512m
+
 # nominate one host per cluster to run certain jobs
 profile::elasticsearch::logstash::jobs_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"
 profile::elasticsearch::logstash::curator_actions:
