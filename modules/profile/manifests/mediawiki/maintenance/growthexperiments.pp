@@ -21,7 +21,6 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # Track task pool size
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
-        ensure   => absent,
         command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
         interval => '*-*-* *:11:00',
     }
