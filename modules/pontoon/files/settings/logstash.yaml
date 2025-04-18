@@ -29,8 +29,8 @@ profile::opensearch::common_settings:
 logstash::heap_memory: 512m
 
 # nominate one host per cluster to run certain jobs
-profile::elasticsearch::logstash::jobs_host: "%{alias('__master_for_role_logstash__elasticsearch7')}"
-profile::elasticsearch::logstash::curator_actions:
+profile::opensearch::logstash::jobs_host: "%{alias('__master_for_role_logging__opensearch__data')}"
+profile::opensearch::logstash::curator_actions:
   '01':
     description: 'delete older than 1 day'
     action: delete_indices
