@@ -40,11 +40,13 @@ KUBE_CONFIGS = [
 # Read main_app.image from one of these release values files, dependent on selected PHP version, to
 # determine the live MW image version to use.
 RELEASE_VALUES = {
-    '7.4': '/etc/helmfile-defaults/mediawiki/release/mw-script-main.yaml',
-    '8.1': '/etc/helmfile-defaults/mediawiki/release/mw-script-next.yaml',
+    '8.1': '/etc/helmfile-defaults/mediawiki/release/mw-script-main.yaml',
 }
 # The default PHP version used to select the appropriate release values file from among those
 # available in RELEASE_VALUES.
+# NOTE: If you are changing this, consider also logging a message indicating that (1) fallback is
+# possible via --php_version or (2) (if used) fallback will be removed at a later date.
+# See https://gerrit.wikimedia.org/r/1131351 for an example.
 DEFAULT_RELEASE_VALUES_PHP_VERSION = '8.1'
 
 
@@ -270,18 +272,6 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             raise ClientError(f'Invalid {e.encoding}: only text files may be passed with --file.')
     else:
         textdata = None
-
-    # TODO: T387917 - Remove these messages when fallback to 7.4 is removed.
-    if args.mediawiki_image is None:
-        if args.php_version is None:
-            logger.info(
-                'ℹ️ Your job will run on PHP 8.1 (T387917). If you encounter a compatibility '
-                'issue, you can use --php_version 7.4 to explicitly select 7.4.')
-        elif args.php_version == '7.4':
-            logger.info(
-                'ℹ️ The ability to select PHP 7.4 via --php_version will be removed (T387917). '
-                'If you have selected this due to an 8.1 compatibility issue, please prioritize '
-                'addressing the underlying problem.')
 
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
