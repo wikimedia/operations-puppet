@@ -29,7 +29,4 @@ profile::openstack::eqiad1::puppetmaster::encapi::git_updater_active_host: enc-2
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_project: cloudinfra
 profile::openstack::eqiad1::puppetmaster::encapi::token_validator_username: cloudinfrakeystonevalidate
 
-profile::openstack::eqiad1::puppetmaster::ca: cloud-puppetmaster-03.cloudinfra.eqiad.wmflabs
-profile::openstack::eqiad1::puppetmaster::cert_secret_path: puppetmaster
-
 puppetmaster::enable_geoip: false
