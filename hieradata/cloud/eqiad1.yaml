@@ -225,9 +225,7 @@ profile::openstack::base::keystone::auth_protocol: https
 profile::openstack::base::keystone::public_port: 25000
 profile::openstack::eqiad1::nova::dhcp_domain: "eqiad1.wikimedia.cloud"
 cumin_masters:
-  - 172.16.4.160 # cloud-cumin-03.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.2.249 # cloud-cumin-04.cloudinfra.eqiad1.wikimedia.cloud
-  - 172.16.1.220 # bastion-restricted-eqiad1-3.bastion.eqiad1.wikimedia.cloud
+  - 172.16.1.220 # bastion-restricted-eqiad1-3.bastion.eqiad1.wikimedia.cloud (proxy for cloudcumin*)
 
 profile::puppet::agent::dns_alt_names: []
 
