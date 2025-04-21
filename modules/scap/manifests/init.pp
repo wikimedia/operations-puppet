@@ -24,8 +24,7 @@ class scap (
 
     # Deployment servers/masters are bootstrapped in profile::mediawiki::deployment::server
     if $enable_bootstrapping and !$is_master {
-        # This dir needs to match the home of the user defined in class scap::user
-        $scap_home = '/var/lib/scap'
+        $scap_home = $scap::user::home_dir
 
         file { '/usr/local/bin/bootstrap-scap-target.sh':
           mode   => '0755',
