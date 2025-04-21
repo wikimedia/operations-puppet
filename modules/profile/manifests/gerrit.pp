@@ -188,4 +188,18 @@ class profile::gerrit(
     rsyslog::input::file { 'gerrit-apache2-access':
         path => '/var/log/apache2/*access*.log',
     }
+
+    # have a different banner on primary host vs replicas (T392212)
+    $motd_script = $is_replica ? {
+        true    => 'replica',
+        false   => 'primary',
+        default => 'replica',
+    }
+
+    motd::script { "${motd_script} warning":
+        ensure   => 'present',
+        priority => 1,
+        content  => template("profile/gerrit/${motd_script}.motd.erb"),
+    }
+
 }
