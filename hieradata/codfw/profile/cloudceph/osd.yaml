@@ -42,11 +42,11 @@ profile::cloudceph::osd::hosts:
   "cloudcephosd2004-dev.codfw.wmnet":
     public:
       addr: "10.192.20.6"
-      iface: "ens1f0np0"
+      iface: "enp13s0f0np0"
     cluster:
       addr: "192.168.4.4"
       prefix: "24"
-      iface: "ens1f1np1"
+      iface: "enp13s0f1np1"
 
 profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
