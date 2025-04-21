@@ -102,6 +102,9 @@ table inet cloudgw {
         ip saddr @cloud_filter counter drop
         ip daddr @cloud_filter counter drop
 
+        # reject mail that would be NATted
+        ip saddr @virtual_subnets_cidrs tcp dport 25 counter reject with icmp type admin-prohibited
+
         # forward all packets only in the VRF
         iifname "vrf-cloudgw" oifname { $nic_virt, $nic_wan } counter accept
 
