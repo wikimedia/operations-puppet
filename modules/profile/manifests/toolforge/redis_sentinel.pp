@@ -91,7 +91,9 @@ class profile::toolforge::redis_sentinel (
     }
 
     # Monitoring!
-    prometheus::redis_exporter { '6379': }
+    prometheus::redis_exporter { '6379':
+        arguments => '-set-client-name=false',
+    }
 
     # Allow users to connect
     ferm::service { 'toolforge-redis-access':
