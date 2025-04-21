@@ -53,13 +53,13 @@ class profile::phabricator::migration (
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_finalize',
     ]
 
-    scap::target { 'phabricator/deployment':
-        deploy_user => 'phab-deploy',
-        key_name    => 'phabricator',
-        manage_user => true,
-        require     => File['/usr/local/sbin/phab_deploy_finalize'],
-        sudo_rules  => $sudo_rules,
-    }
+    #scap::target { 'phabricator/deployment':
+    #    deploy_user => 'phab-deploy',
+    #    key_name    => 'phabricator',
+    #    manage_user => true,
+    #    require     => File['/usr/local/sbin/phab_deploy_finalize'],
+    #    sudo_rules  => $sudo_rules,
+    #}
 
     class { '::phabricator::phd::user': }
 
