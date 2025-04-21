@@ -94,7 +94,7 @@ class profile::toolforge::redis_sentinel (
     prometheus::redis_exporter { '6379': }
 
     # Allow users to connect
-    ferm::service { 'toolforge-redis-access':
+    ferm::service { 'toolforge-redis-access':
         proto => 'tcp',
         port  => 6379,
     }
@@ -102,19 +102,19 @@ class profile::toolforge::redis_sentinel (
     $redis_hosts_ferm = join($redis_hosts, ' ')
 
     # Sentinels need to talk to each other
-    ferm::service { 'toolforge-redis-sentinel-internal':
+    ferm::service { 'toolforge-redis-sentinel-internal':
         proto  => 'tcp',
         port   => 26379,
         srange => "@resolve((${redis_hosts_ferm}))"
     }
 
     # and keepalived too
-    ferm::rule { 'toolforge-redis-keepalived-vrrp':
+    ferm::rule { 'toolforge-redis-keepalived-vrrp':
         rule   => "proto vrrp saddr (@resolve((${redis_hosts_ferm}))) ACCEPT;",
     }
 
     $prometheus_ferm_nodes = join($prometheus_nodes, ' ')
-    ferm::service { 'toolforge-redis-prometheus':
+    ferm::service { 'toolforge-redis-prometheus':
         proto  => 'tcp',
         port   => 9121,
         srange => "@resolve((${prometheus_ferm_nodes}))"
