@@ -29,3 +29,18 @@ profile::openstack::eqiad1::networktests::envvars:
     DUMPS_NO_FLOATING_VM: tools-k8s-worker-nfs-76.tools.eqiad1.wikimedia.cloud
     TOOLFORGE_BASTION_LOGIN: login.toolforge.org
     TOOLFORGE_BASTION_DEV: dev.toolforge.org
+    VM_VLAN_LEGACY: networktests-vlan-legacy.testlabs.eqiad1.wikimedia.cloud
+    VM_VLAN_LEGACY_FIP: networktests-vlan-legacy-fip.testlabs.eqiad1.wikimedia.cloud
+    VM_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    VM_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    VM_VXLAN_IPV4_ONLY_FIP: vlan-legacy.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    FIP_PREFIX: "185.15."
+    NEUTRON_VLAN_LEGACY: vlan-legacy.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    NEUTRON_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    NEUTRON_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    CLOUDGW_A_IPV6: 2a02:ec80:a000:fe03::1003:1
+    CLOUDGW_B_IPV6: 2a02:ec80:a000:fe03::1004:1
+    CLOUDGW_VIRT_IPV6: 2a02:ec80:a000:fe04::1:1
+    CLOUDGW_WAN_IPV6: 2a02:ec80:a000:fe03::3
+    IPV6_PREFIX: 2a02:ec80:a000
+    NEUTRON_WAN_IPV6: 2a02:ec80:a000:fe04::2:1

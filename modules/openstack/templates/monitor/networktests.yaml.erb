@@ -8,7 +8,77 @@
 <% end -%>
 ---
 
-<% if @ipv6 %>
+- name: basic ping to cloudgw addresses (raw addresses) from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_IP >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_IP >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_IP >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_IP >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to cloudgw addresses (DNS names) from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron WAN from outside the cloud network
+  tests:
+    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_IP >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_FQDN >/dev/null
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, no floating IP
+  tests:
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
+- name: basic ping to neutron VIRT gateway from within the cloud virtual network, with floating IP
+  tests:
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
+      stdout: ""
+      retcode: 0
+      stderr: ""
+
 - name: basic IPv6 ping to cloudgw addresses (raw addresses) from outside the cloud network
   tests:
     - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A_IPV6 >/dev/null
@@ -512,163 +582,6 @@
 - name: from VLAN/legacy-fip can contact openstack APIs
   tests:
     - cmd: $SSH $VM_VLAN_LEGACY_FIP 'curl -4 -s $KEYSTONE_URL | grep -q identity'
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-<% else %>
-# not including IPv6 tests
-<% end %>
-
-- name: basic ping to cloudgw addresses (raw addresses) from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to cloudgw addresses (DNS names) from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to neutron WAN from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to neutron VIRT gateway from within the cloud virtual network, no floating IP
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to neutron VIRT gateway from within the cloud virtual network, with floating IP
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-
-- name: VM (no floating IP) contacting the internet gets NAT'd using routing_source_ip
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM "curl -s ifconfig.me | grep -q $ROUTING_SOURCE_IP"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (no floating IP) contacting an address covered by dmz_cidr doesn't get NAT'd
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM "curl -Is https://es.wikipedia.org | grep x-client-ip | grep -q $VM_IP_PREFIX"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (using floating IP) isn't affected by either routing_source_ip or dmz_cidr
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "curl -s ifconfig.me | grep -q $FLOATING_VM_IP"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: $SSH $FLOATING_VM_FQDN "curl -Is https://es.wikipedia.org | grep x-client-ip | grep -q $FLOATING_VM_IP"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (no floating IP) can contact auth DNS server
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (no floating IP) can contact recursor DNS server
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
-      stdout: "1"
-      retcode: 0
-      stderr: ""
-
-- name: VM (using floating IP) can contact auth DNS server
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "dig +short $DNS_AUTH_DOMAIN @${DNS_AUTH_IP} | grep -q ${DNS_AUTH_DOMAIN_A_RECORD}"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (using floating IP) can contact recursor DNS server
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "dig +short wikidata.org @${DNS_RECURSOR_IP} | wc -l"
-      stdout: "1"
-      retcode: 0
-      stderr: ""
-
-- name: VM (using floating IP) can contact LDAP server
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN 'ldapsearch -x whatever | grep -q ^"# numResponses"'
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (not using floating IP) can contact LDAP server
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM 'ldapsearch -x whatever | grep -q ^"# numResponses"'
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (using floating IP) can contact openstack API
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN 'curl -s $KEYSTONE_URL | grep -q identity'
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: VM (no floating IP) can contact openstack API
-  tests:
-    - cmd: $SSH $NO_FLOATING_VM 'curl -s $KEYSTONE_URL | grep -q identity'
       stdout: ""
       retcode: 0
       stderr: ""
