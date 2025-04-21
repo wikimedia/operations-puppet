@@ -1,7 +1,15 @@
 ---
 profile::wmcs::cloudgw::blackboxmonitor::wan_fqdn: wan.cloudgw.eqiad1.wikimediacloud.org
 profile::wmcs::cloudgw::blackboxmonitor::virt_fqdn: virt.cloudgw.eqiad1.wikimediacloud.org
+# NOTE: this is set to false to prevent chicken-egg problems with the initial IPv6 setup
+# because the exporter config puppet template reads the FQDN's IPv6 but the FQDN are set up manually via netbox
+# after the puppet run has assigned the IPv6 to each interface
 profile::wmcs::cloudgw::blackboxmonitor::do_ipv6: false
+profile::wmcs::cloudgw::virt_subnets_cidr_v6:
+  - 2a02:ec80:a000::/55
+profile::wmcs::cloudgw::virt_peer_v6: 2a02:ec80:a000:fe04::2:1
+profile::wmcs::cloudgw::wan_gw_v6: 2a02:ec80:a000:fe03::1
+
 profile::wmcs::cloudgw::routing_source_ip: 185.15.56.1
 profile::wmcs::cloudgw::virt_subnets_cidr: [172.16.0.0/21]
 profile::wmcs::cloudgw::virt_floating: [185.15.56.0/25]
@@ -13,6 +21,9 @@ profile::wmcs::cloudgw::vrrp_vips:
   # TODO: this would be more robust if using a custom data type
   - "185.15.56.237/29 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
   - "185.15.56.244/29 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
+profile::wmcs::cloudgw::vrrp_vips_v6:
+  - "2a02:ec80:a100:fe04::1:1/64 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
+  - "2a02:ec80:a100:fe03::2/64 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
 
 profile::wmcs::cloudgw::conntrackd:
   cloudgw1003:
