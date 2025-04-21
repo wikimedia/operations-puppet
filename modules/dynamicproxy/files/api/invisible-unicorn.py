@@ -541,7 +541,7 @@ def delete_mapping(project_id, domain):
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
-        return "No such domain", 400
+        return "No such domain", 404
 
     db.session.delete(route)
     db.session.commit()
@@ -559,11 +559,11 @@ def get_mapping(project_id, domain):
 
     project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
-        return "No such domain", 400
+        return "No such domain", 404
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
-        return "No such domain", 400
+        return "No such domain", 404
 
     data = {
         "domain": route.domain,
@@ -577,13 +577,13 @@ def get_mapping(project_id, domain):
 def update_mapping(project_id, domain):
     project = Project.query.filter_by(openstack_id=project_id).first()
     if project is None:
-        return "No such domain", 400
+        return "No such domain", 404
 
     enforce_policy("proxy:update", project_id)
 
     route = Route.query.filter_by(project=project, domain=domain).first()
     if route is None:
-        return "No such domain", 400
+        return "No such domain", 404
 
     data = flask.request.get_json(True)
 
