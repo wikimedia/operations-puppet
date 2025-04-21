@@ -38,8 +38,8 @@ profile::cloudceph::osd::hosts:
     cluster:
       addr: "192.168.4.3"
       prefix: "24"
-      iface: "eno4"
-  "cloudcephosd2003-dev.codfw.wmnet":
+      iface: "eno2"
+  "cloudcephosd2004-dev.codfw.wmnet":
     public:
       addr: "10.192.20.6"
       iface: "ens1f0np0"
