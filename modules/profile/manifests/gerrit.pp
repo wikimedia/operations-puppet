@@ -32,7 +32,7 @@ class profile::gerrit(
     require ::profile::java
     require ::passwords::gerrit
 
-    $is_replica = $facts['fqdn'] != $active_host
+    $is_replica = $facts['networking']['fqdn'] != $active_host
 
     if $bind_service_ip {
         interface::alias { 'gerrit server':
