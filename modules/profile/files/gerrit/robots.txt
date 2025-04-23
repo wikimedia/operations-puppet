@@ -3,4 +3,6 @@
 User-Agent: *
 Disallow: /g
 Disallow: /r/plugins/gitiles
+Disallow: /r/login/
+Disallow: /r/q/
 Crawl-delay: 1
