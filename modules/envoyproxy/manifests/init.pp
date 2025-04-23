@@ -88,6 +88,15 @@ class envoyproxy(
         notify  => Exec['verify-envoy-config'],
     }
 
+    file { "${envoy_directory}/stats-config.yaml":
+        ensure => $ensure,
+        source => 'puppet:///modules/envoyproxy/stats-config.yaml',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0555',
+        notify => Exec['verify-envoy-config'],
+    }
+
     $runtime_ensure = $runtime ? {
         {}      => 'absent',
         default => $ensure
