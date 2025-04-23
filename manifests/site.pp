@@ -742,6 +742,10 @@ node /^db2(152|154|161|162|163|165|166|167|181|195|241|242|243)\.codfw\./ {
     role(mariadb::core)
 }
 
+# Future x3 host
+node /^db1258\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
 # codfw sanitarium master
 node /^db2164\.codfw\./ {
     role(mariadb::sanitarium_master)
