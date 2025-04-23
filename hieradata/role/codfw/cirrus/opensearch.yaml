@@ -11,6 +11,7 @@ profile::opensearch::instances:
     unicast_hosts: # this is also the list of master eligible nodes
       - elastic2093.codfw.wmnet # row B
       - elastic2061.codfw.wmnet # row A
+      - cirrussearch2061.codfw.wmnet # row A
       - elastic2081.codfw.wmnet # row C
       - elastic2084.codfw.wmnet # row D
       - cirrussearch2111.codfw.wmnet # row A
