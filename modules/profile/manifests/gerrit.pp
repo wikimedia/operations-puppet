@@ -112,6 +112,13 @@ class profile::gerrit(
             ip6 saddr @GERRIT_ABUSERS_ipv6 drop
             | EOF
     }
+    nftables::file::input { 'accept-hackathon-istanbul':
+        ensure  => 'present',
+        order   => 11,
+        content => @(EOF/L)
+            ip saddr 88.255.11.32/28 accept
+            | EOF
+    }
 
     if $backups_enabled and $backup_set != undef {
         backup::set { $backup_set:
