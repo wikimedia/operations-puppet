@@ -23,6 +23,9 @@ class profile::toolforge::mailrelay (
     # everything works fine.
     $all_toolforge_servers = wmflib::class::ips('profile::base')
 
+    include network::constants
+    $wmcs_ip_ranges = $network::constants::all_cloud_instance_networks + $network::constants::all_cloud_floating_networks
+
     class { '::exim4':
         queuerunner => 'combined',
         config      => template('profile/toolforge/mail-relay.exim4.conf.erb'),

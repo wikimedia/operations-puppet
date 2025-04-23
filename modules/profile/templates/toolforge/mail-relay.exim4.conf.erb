@@ -26,7 +26,7 @@ domainlist local_domains = <%= @mail_domains.join(' : ') %> : \
                            *.INSTANCEPROJECT.eqiad1.wikimedia.cloud
 # The <; at the beginning tells exim to use ';' as the delimiter instead of the default ':' (which interferes with ipv6)
 hostlist toolforge_hosts = <; <%= @all_toolforge_servers.join(' ; ') %>
-hostlist wmcs_hosts = 172.16.0.0/21
+hostlist wmcs_hosts = <; <%= @wmcs_ip_ranges.join(' ; ') %>
 
 acl_smtp_rcpt = acl_check_rcpt
 acl_smtp_data = acl_check_data
@@ -91,7 +91,7 @@ acl_check_rcpt:
   # Some Cloud VPS projects (mostly those that move out of Toolforge) relay via the Toolforge mail
   # relay and not via the Cloud VPS mail relay. This is not supported, and we should consider
   # making this a hard reject.
-  accept  log_message    = Cloud VPS user relaying mail via Toolforge for domain $sender_address_domain
+  accept  message        = Cloud VPS user relaying mail via Toolforge for domain $sender_address_domain
           hosts          = +wmcs_hosts
           sender_domains = +local_domains
           control        = submission
