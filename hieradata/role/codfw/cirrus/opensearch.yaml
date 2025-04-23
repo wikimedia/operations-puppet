@@ -10,10 +10,11 @@ profile::opensearch::instances:
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
       - elastic2093.codfw.wmnet # row B
-      - elastic2061.codfw.wmnet # row A
       - cirrussearch2061.codfw.wmnet # row A
       - elastic2081.codfw.wmnet # row C
+      - cirrussearch2081.codfw.wmnet # row C
       - elastic2084.codfw.wmnet # row D
+      - cirrussearch2084.codfw.wmnet # row D
       - cirrussearch2111.codfw.wmnet # row A
 
     cluster_hosts:
@@ -166,10 +167,15 @@ profile::opensearch::instances:
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
       - elastic2092.codfw.wmnet # row B
+      - cirrussearch2092.codfw.wmnet # row B
       - elastic2100.codfw.wmnet # row C
+      - cirrussearch2100.codfw.wmnet # row C
       - elastic2106.codfw.wmnet # row D
+      - cirrussearch2106.codfw.wmnet # row D
       - elastic2073.codfw.wmnet # row A
+      - cirrussearch2073.codfw.wmnet # row A
       - elastic2086.codfw.wmnet # row D
+      - cirrussearch2086.codfw.wmnet # row D
 
     cluster_hosts:
       # row A
@@ -266,9 +272,13 @@ profile::opensearch::instances:
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
       - elastic2108.codfw.wmnet # row D
+      - cirrussearch2108.codfw.wmnet # row D
       - elastic2076.codfw.wmnet # row A
+      - cirrussearch2076.codfw.wmnet # row A
       - elastic2080.codfw.wmnet # row B
+      - cirrussearch2080.codfw.wmnet # row B
       - elastic2083.codfw.wmnet # row C
+      - cirrussearch2083.codfw.wmnet # row C
       - cirrussearch2115.codfw.wmnet # row D
 
     cluster_hosts:
