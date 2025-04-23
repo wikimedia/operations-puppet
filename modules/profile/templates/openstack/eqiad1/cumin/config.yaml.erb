@@ -31,10 +31,8 @@ openstack:
     client_params:
         region_name: <%= @region %>
     <%- end -%>
-    <%- if @is_project -%>
     query_params:
         project: <%= @wmcs_project %>
-    <%- end -%>
 
 plugins:
     backends:

@@ -14,35 +14,25 @@
 #     key: 'alias query'
 #
 # [*profile::openstack::eqiad1::puppetdb_host*]
-#   FQDN (the form used in Puppet certificates, so .wmflabs for older hosts)
-#   of a project-local PuppetDB host, if any.
+#   FQDN of a project-local PuppetDB host, if any.
 #
 class profile::openstack::eqiad1::cumin::master(
-    $keystone_protocol                    = lookup('profile::openstack::base::keystone::auth_protocol'),
-    Stdlib::Fqdn $keystone_api_fqdn       = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    $keystone_port                        = lookup('profile::openstack::base::keystone::public_port'),
-    $observer_username                    = lookup('profile::openstack::base::observer_user'),
-    $observer_password                    = lookup('profile::openstack::eqiad1::observer_password'),
-    $observer_project                     = lookup('profile::openstack::base::observer_project'),
-    $nova_dhcp_domain                     = lookup('profile::openstack::eqiad1::nova::dhcp_domain'),
-    Hash $aliases                         = lookup('profile::openstack::eqiad1::cumin::aliases'),
-    $project_ssh_priv_key_path            = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
-    $region                               = lookup('profile::openstack::eqiad1::region'),
-    Optional[Stdlib::Host] $puppetdb_host = lookup('profile::openstack::eqiad1::cumin::master::puppetdb_host', {default_value => undef}),
-    Integer $cumin_connect_timeout        = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
+    String[1]                  $keystone_protocol         = lookup('profile::openstack::base::keystone::auth_protocol'),
+    Stdlib::Fqdn               $keystone_api_fqdn         = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
+    Stdlib::Port               $keystone_port             = lookup('profile::openstack::base::keystone::public_port'),
+    String[1]                  $observer_username         = lookup('profile::openstack::base::observer_user'),
+    String[1]                  $observer_password         = lookup('profile::openstack::eqiad1::observer_password'),
+    String[1]                  $observer_project          = lookup('profile::openstack::base::observer_project'),
+    Stdlib::Fqdn               $nova_dhcp_domain          = lookup('profile::openstack::eqiad1::nova::dhcp_domain'),
+    Hash                       $aliases                   = lookup('profile::openstack::eqiad1::cumin::aliases'),
+    Optional[Stdlib::Unixpath] $project_ssh_priv_key_path = lookup('profile::openstack::eqiad1::cumin::project_ssh_priv_key_path'),
+    String[1]                  $region                    = lookup('profile::openstack::eqiad1::region'),
+    Optional[Stdlib::Host]     $puppetdb_host             = lookup('profile::openstack::eqiad1::cumin::master::puppetdb_host', {default_value => undef}),
+    Integer                    $cumin_connect_timeout     = lookup('profile::cumin::master::connect_timeout', {'default_value' => 10}),
 ) {
-        # TODO: simplify once hiera converts null properly to undef (this can be fixed now)
-        if $::wmcs_project and $project_ssh_priv_key_path and $project_ssh_priv_key_path != '' and $project_ssh_priv_key_path != 'undef' {
-            $is_project = true
-            keyholder::agent { "cumin_openstack_${::wmcs_project}_master":
-                trusted_groups => ['root'],
-                priv_key_path  => $project_ssh_priv_key_path,
-            }
-        } else {
-            $is_project = false
-            keyholder::agent { 'cumin_openstack_master':
-                trusted_groups => ['wmcs-roots', 'root'],
-            }
+        keyholder::agent { "cumin_openstack_${::wmcs_project}_master":
+            trusted_groups => ['root'],
+            priv_key_path  => $project_ssh_priv_key_path,
         }
 
         # Explicitely require cumin's suggested packages to enable OpenStack backend,
@@ -99,17 +89,8 @@ class profile::openstack::eqiad1::cumin::master(
             require => File['/etc/cumin'],
         }
 
-        if debian::codename::eq('buster') {
-            apt::package_from_component { 'spicerack':
-                component => 'component/spicerack',
-                packages  => ['python3-tqdm'],
-                priority  => 1002,
-            }
-        }
-
         $python_version = debian::codename() ? {
             'bullseye' => '3.9',
-            'buster'   => '3.7',
             default    => fail("unsupported on ${debian::codename()}"),
         }
 
