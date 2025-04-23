@@ -1,0 +1,6 @@
+# This file is managed by Puppet
+# puppet:///modules/profile/gerrit/robots.txt
+User-Agent: *
+Disallow: /g
+Disallow: /r/plugins/gitiles
+Crawl-delay: 1

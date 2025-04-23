@@ -57,13 +57,12 @@ class profile::gerrit::proxy(
         content => template('profile/gerrit/apache.erb'),
     }
 
-    $robots = ['User-Agent: *', 'Disallow: /g', 'Disallow: /r/plugins/gitiles', 'Crawl-delay: 1']
     file { '/var/www/robots.txt':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        content => inline_template("<%= @robots.join('\n') %>"),
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/profile/gerrit/robots.txt'
     }
 
     # Error page stuff
