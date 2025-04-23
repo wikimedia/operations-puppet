@@ -7,8 +7,8 @@ profile::openstack::eqiad1::designate::enabled_notification_handlers: "nova_fixe
 
 # This is 16.172.in-addr.arpa.
 profile::openstack::eqiad1::designate::domain_id_internal_reverse_v4: "6990e139-49e6-466c-9421-46cf45f05842"
-# This is 1.0.0.0.0.0.1.a.0.8.c.e.2.0.a.2.ip6.arpa.
-profile::openstack::eqiad1::designate::domain_id_internal_reverse_v6: "placeholder-todo"
+# This is 1.0.0.0.0.0.0.a.0.8.c.e.2.0.a.2.ip6.arpa.
+profile::openstack::eqiad1::designate::domain_id_internal_reverse_v6: "1c405a20-d3bd-45d3-b436-eedd1f7d9b91"
 # NOTE: no trailing dot on purpose, the code does it
 profile::openstack::eqiad1::designate::base_domain_name: "eqiad1.wikimedia.cloud"
 
