@@ -74,10 +74,12 @@ class EnvoyConfig:
     def __init__(self, base_dir: str):
         self._base_dir = base_dir
         self.admin_file = os.path.join(base_dir, "admin-config.yaml")
+        self.stats_file = os.path.join(base_dir, "stats-config.yaml")
         self.runtime_file = os.path.join(base_dir, "runtime.yaml")
         self.config_file = os.path.join(base_dir, "envoy.yaml")
         self.config = {
             "admin": {},
+            "stats_config": {},
             "static_resources": {"listeners": [], "clusters": []},
         }
 
@@ -85,6 +87,14 @@ class EnvoyConfig:
         with open(self.admin_file, "r") as admin_fh:
             admin = yaml.safe_load(admin_fh)
         self.config["admin"] = admin
+
+    def _read_stats(self):
+        if not os.path.exists(self.stats_file):
+            return
+
+        with open(self.stats_file, "r") as stats_fh:
+            stats = yaml.safe_load(stats_fh)
+        self.config["stats_config"] = stats
 
     def _read_runtime(self):
         self.config["layered_runtime"] = {
@@ -140,6 +150,7 @@ class EnvoyConfig:
         If anything goes wrong, exceptions will be raised
         """
         self._read_admin()
+        self._read_stats()
         self._read_runtime()
         for what in ["listeners", "clusters"]:
             dirname = os.path.join(self._base_dir, what + ".d")

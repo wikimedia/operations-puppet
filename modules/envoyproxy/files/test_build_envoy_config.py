@@ -28,6 +28,7 @@ class TestEnvoyConfig:
         ep = envoy.EnvoyConfig("/etc/envoy")
         assert ep.config_file == "/etc/envoy/envoy.yaml"
         assert ep.admin_file == "/etc/envoy/admin-config.yaml"
+        assert ep.stats_file == "/etc/envoy/stats-config.yaml"
         assert ep.runtime_file == "/etc/envoy/runtime.yaml"
 
     def test_populate_config_good(self):
@@ -36,6 +37,7 @@ class TestEnvoyConfig:
         ep.populate_config()
         # Check that admin gets populated
         assert ep.config["admin"]["access_log"]["typed_config"]["path"] == "/tmp/test.log"
+        assert len(ep.config["stats_config"]["histogram_bucket_settings"][0]["buckets"]) == 13
         # Check listeners are loaded in order
         resources = ep.config["static_resources"]["listeners"]
         assert resources[0]["address"]["socket_address"]["port_value"] == 443
