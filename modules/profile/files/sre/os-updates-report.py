@@ -286,7 +286,8 @@ def prepare_todo_report(owners, roles, hosts, distro, target_dir):
             # use the primarily responsible team
             owner = owners.get(role)[0]
 
-        hosts_todo[owner].append(host)
+            if owner:
+                hosts_todo[owner].append(host)
 
     with dominate.document(title='Per-team breakdown of open migrations for {}'.
                            format(distro)) as html_report:
