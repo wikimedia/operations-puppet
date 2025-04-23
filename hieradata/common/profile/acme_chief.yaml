@@ -215,7 +215,7 @@ profile::acme_chief::certificates:
         - 'object.codfw1dev.wikimediacloud.org'
         challenge: dns-01
         authorized_regexes:
-        - '^cloudlb200[123]-dev\.codfw\.wmnet$'
+        - '^cloudlb200[234]-dev\.codfw\.wmnet$'
     openstack-eqiad1:
         CN: 'openstack.eqiad1.wikimediacloud.org'
         SNI:
