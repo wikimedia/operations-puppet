@@ -69,7 +69,7 @@ es_codfw_rack_c4:
   profile::opensearch::row: C
 
 es_codfw_rack_c5:
-  __regex: !ruby/regexp /^(elastic|cirrusssearch)2113\.codfw\.wmnet$/
+  __regex: !ruby/regexp /^(elastic|cirrussearch)2113\.codfw\.wmnet$/
   profile::elasticsearch::rack: C5
   profile::elasticsearch::row:  C
   profile::opensearch::rack: C5
