@@ -21,9 +21,6 @@ eqiad:
     cp1113.eqiad.wmnet: [cdn, ats-be]
     cp1115.eqiad.wmnet: [cdn, ats-be]
   restbase:
-    restbase1028.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1029.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
-    restbase1030.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1031.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1032.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1033.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
@@ -36,6 +33,9 @@ eqiad:
     restbase1040.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1041.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1042.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
+    restbase1043.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
+    restbase1044.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
+    restbase1045.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
   elasticsearch:
     elastic1053.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1054.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
