@@ -3,6 +3,7 @@ class profile::toolforge::legacy_redirector (
 ) {
     $ssl_settings = ssl_ciphersuite('apache', 'compat')
     if $ssl_certificate_name {
+        class { 'sslcert::dhparam': }
         acme_chief::cert { $ssl_certificate_name:
             puppet_svc => 'apache2',
         }
