@@ -571,6 +571,11 @@ network::subnets:
       private:
         cloud-instances2-b-eqiad:
           ipv4: 172.16.0.0/21
+        cloud-instances-vxlan-v4only-eqiad:
+          ipv4: 172.16.8.0/21
+        cloud-instances-vxlan-dualstack-eqiad:
+          ipv4: 172.16.16.0/21
+          ipv6: 2a02:ec80:a000:1::/64
         cloud-private-c8-eqiad:
           ipv4: 172.20.1.0/24
           ipv6: 2a02:ec80:a000:201::/64
@@ -598,6 +603,7 @@ network::subnets:
           ipv4: 172.16.128.0/24
         cloud-instances-flat3-codfw:
           ipv4: 172.16.129.0/24
+          ipv6: 2a02:ec80:a100:1::/64
         cloud-instances-vxlan-ipv4-only-codfw:
           ipv4: 172.16.130.0/24
         cloud-private-b1-codfw:
