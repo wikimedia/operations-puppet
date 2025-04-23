@@ -7,13 +7,15 @@ table inet filter {
         # used to meter IPv4 IPs
         set TRACKINGLIST {
                 type ipv4_addr
-                flags dynamic
+                flags dynamic,timeout
+                timeout <%= @tracking_duration %>s
         }
 
         # used to meter IPv6 IPs
         set TRACKINGLIST_V6 {
                 type ipv6_addr
-                flags dynamic
+                flags dynamic,timeout
+                timeout <%= @tracking_duration %>s
         }
 
         # used to block actual IPv4 IPs
