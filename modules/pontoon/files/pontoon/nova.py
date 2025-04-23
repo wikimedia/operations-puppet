@@ -179,6 +179,9 @@ class NovaClient:
             specs.image,
             specs.flavor,
             nics=[{"net-id": NIC_NET_ID}],
+            # don't spend time upgrading packages on first boot
+            # https://phabricator.wikimedia.org/T390822
+            userdata="#cloud-config\npackage_upgrade: False",
         )
 
     def server_flavor(self, server: Server) -> Flavor:
