@@ -38,8 +38,8 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         }
 
         function dnsquery::a ($name) {
-          if $name == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
-            ['172.20.5.2', '127.0.0.1']
+          if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
+            ['172.20.5.5', '127.0.0.1']
           } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
             ['172.20.5.3']
           } elsif $name == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
@@ -48,7 +48,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
         }
 
         function dnsquery::aaaa ($name) {
-          if $name == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
+          if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
             []
           } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
             ['3fff::2001']
@@ -130,7 +130,7 @@ describe 'profile::wmcs::cloud_private_subnet::bgp' do
 
       context "without IPv6 support" do
         let(:facts) { facts.merge({
-          'hostname' => 'cloudlb2001-dev',
+          'hostname' => 'cloudlb2004-dev',
         }) }
 
         it {

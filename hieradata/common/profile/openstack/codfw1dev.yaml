@@ -27,9 +27,9 @@ profile::openstack::codfw1dev::keystone_api_fqdn: 'openstack.codfw1dev.wikimedia
 # These servers should not be accessed using hostnames in this list;
 # rather, that should happen via the keystone_api_fqdn defined above.
 profile::openstack::codfw1dev::haproxy_nodes:
-  - cloudlb2001-dev.private.codfw.wikimedia.cloud
   - cloudlb2002-dev.private.codfw.wikimedia.cloud
   - cloudlb2003-dev.private.codfw.wikimedia.cloud
+  - cloudlb2004-dev.private.codfw.wikimedia.cloud
 
 profile::openstack::codfw1dev::glance_backends:
   - rbd

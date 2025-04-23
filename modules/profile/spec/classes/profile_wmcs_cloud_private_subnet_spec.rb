@@ -15,8 +15,8 @@ describe 'profile::wmcs::cloud_private_subnet' do
       }
 
       function dnsquery::a ($name) {
-        if $name == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
-          ['172.20.5.2', '127.0.0.1']
+        if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
+          ['172.20.5.5', '127.0.0.1']
         } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
           ['172.20.5.3']
         } elsif $name == 'cloudsw-b1.private.codfw.wikimedia.cloud' {
@@ -25,7 +25,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
       }
 
       function dnsquery::aaaa ($name) {
-        if $name == 'cloudlb2001-dev.private.codfw.wikimedia.cloud' {
+        if $name == 'cloudlb2004-dev.private.codfw.wikimedia.cloud' {
           ['3fff::2001']
         } elsif $name == 'cloudlb2002-dev.private.codfw.wikimedia.cloud' {
           []
@@ -39,7 +39,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
       let(:node_params) { { 'site' => 'codfw' } }
       let(:facts) { facts.merge({
         'interface_primary' => 'eno1',
-        'hostname' => 'cloudlb2001-dev',
+        'hostname' => 'cloudlb2004-dev',
       }) }
       let(:params) {{
         'cloud_private_gw_t' => 'cloudsw-<%= $rack %>.private.codfw.wikimedia.cloud',
@@ -78,7 +78,7 @@ describe 'profile::wmcs::cloud_private_subnet' do
       it "should assign an IPv4 address to the interface" do
         is_expected.to contain_interface__ip("cloud_private_subnet_ip4")
               .with_interface("vlan2151")
-              .with_address("172.20.5.2")
+              .with_address("172.20.5.5")
               .with_prefixlen("24")
       end
 

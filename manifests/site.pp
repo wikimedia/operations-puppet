@@ -394,11 +394,11 @@ node /^cloudgw200[23]-dev\.codfw\./ {
     role(wmcs::cloudgw)
 }
 
-node /^cloudlb200[123]-dev\.codfw\./ {
+node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
 
-node /^cloudlb200[4]-dev\.codfw\./ {
+node /^cloudlb200[1]-dev\.codfw\./ {
     role(insetup::wmcs_nftables)
 }
 
