@@ -80,6 +80,15 @@ class network::constants {
             }
         )
     }
+    $all_cloud_instance_networks = $cloud_instance_networks.values.flatten()
+
+    $all_cloud_floating_networks = slice_network_constants(
+        'cloud',
+        {
+            sphere      => 'public',
+            description => 'floating',
+        }
+    )
 
     # $frack_networks will always contain just the fundraising networks
     $frack_networks = slice_network_constants('frack')
