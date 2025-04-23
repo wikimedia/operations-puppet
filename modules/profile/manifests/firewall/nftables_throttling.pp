@@ -31,4 +31,14 @@ class profile::firewall::nftables_throttling (
         order   => 99,
         content => template('profile/firewall/throttling.nft.erb'),
     }
+
+    # temporary exempt for Hackathon hotel network (T382309)
+    nftables::file::input { 'throttling-accept-hackathon-istanbul':
+        ensure  => 'present',
+        order   => 11,
+        content => @(EOF/L)
+            ip saddr 88.255.11.32/28 tcp dport {22, 80, 443} accept
+            ip saddr 88.255.15.90/32 tcp dport {22, 80, 443} accept
+            | EOF
+    }
 }
