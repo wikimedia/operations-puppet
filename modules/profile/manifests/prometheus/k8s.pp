@@ -582,7 +582,12 @@ define profile::prometheus::k8s (
                         'destination_version',
                         'destination_cluster',
                         'release',
-                        'heritage'
+                        'heritage',
+                        'serving_knative_dev_configurationUID',
+                        'serving_knative_dev_revision',
+                        'serving_knative_dev_revisionUID',
+                        'serving_knative_dev_service',
+                        'serving_knative_dev_serviceUID',
                     ].join('|')})",
                 },
             ],
