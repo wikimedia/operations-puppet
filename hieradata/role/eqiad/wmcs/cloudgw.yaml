@@ -22,8 +22,8 @@ profile::wmcs::cloudgw::vrrp_vips:
   - "185.15.56.237/29 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
   - "185.15.56.244/29 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
 profile::wmcs::cloudgw::vrrp_vips_v6:
-  - "2a02:ec80:a100:fe04::1:1/64 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
-  - "2a02:ec80:a100:fe03::2/64 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
+  - "2a02:ec80:a000:fe04::1:1/64 dev vlan%{lookup('profile::wmcs::cloudgw::virt_vlan')}"
+  - "2a02:ec80:a000:fe03::2/64 dev vlan%{lookup('profile::wmcs::cloudgw::wan_vlan')}"
 
 profile::wmcs::cloudgw::conntrackd:
   cloudgw1003:
