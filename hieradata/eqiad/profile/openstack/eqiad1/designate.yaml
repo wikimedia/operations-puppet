@@ -3,7 +3,7 @@ profile::openstack::eqiad1::designate::db_host: "openstack.eqiad1.wikimediacloud
 # This is .eqiad1.wikimedia.cloud.
 profile::openstack::eqiad1::designate::domain_id_internal_forward: "67603ef4-3d64-40d6-90d3-5b7776a99034"
 
-profile::openstack::eqiad1::designate::enabled_notification_handlers: "nova_fixed_multi, wmf_sink"
+profile::openstack::eqiad1::designate::enabled_notification_handlers: "nova_fixed, wmcs_nova_fixed_ptr, wmf_sink"
 
 # This is 16.172.in-addr.arpa.
 profile::openstack::eqiad1::designate::domain_id_internal_reverse_v4: "6990e139-49e6-466c-9421-46cf45f05842"
