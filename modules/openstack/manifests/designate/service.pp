@@ -57,22 +57,14 @@ class openstack::designate::service(
         notify  => Service['designate-sink'],
     }
 
-    file { '/usr/lib/python3/dist-packages/nova_fixed_multi':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi",
+    file { [
+        '/usr/lib/python3/dist-packages/nova_fixed_multi',
+        '/usr/lib/python3/dist-packages/nova_fixed_multi.egg-info',
+    ]:
+        ensure  => absent,
         recurse => true,
-        notify  => Service['designate-sink'],
-    }
-
-    file { '/usr/lib/python3/dist-packages/nova_fixed_multi.egg-info':
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        source  => "puppet:///modules/openstack/${version}/designate/nova_fixed_multi.egg-info",
-        recurse => true,
-        notify  => Service['designate-sink'],
+        force   => true,
+        purge   => true,
     }
 
     file { '/usr/lib/python3/dist-packages/wmfdesignatelib.py':
