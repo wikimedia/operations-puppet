@@ -31,26 +31,54 @@ class profile::mediawiki::maintenance::translationnotifications(
         interval => 'Mon 10:05',
     }
 
-    profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-mediawikiwiki':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki mediawikiwiki --days 365 --really',
-        interval => '*-01,04,07,10-02 03:30:00',
+    profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveuser-mediawikiwiki':
+        command               => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki mediawikiwiki --days 365 --really',
+        interval              => '*-01,04,07,10-02 03:30:00',
+        cron_schedule         => '30 3 2 */3 *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'UnsubscribeInactiveUsers.php',
+        description           => 'Unsubscribe inactive translator users on mediawikiwiki once a quarter.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'translationnotifications-unsubscribeinactiveusers-mediawikiwiki',
     }
 
     # Incubator
-    profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-incubator':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki incubatorwiki --days 365 --really',
-        interval => '*-01,04,07,10-02 04:15:00',
+    profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveuser-incubator':
+        command               => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki incubatorwiki --days 365 --really',
+        interval              => '*-01,04,07,10-02 04:15:00',
+        cron_schedule         => '15 4 2 */3 *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'UnsubscribeInactiveUsers.php',
+        description           => 'Unsubscribe inactive translator users on incubatorwiki once a quarter.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'translationnotifications-unsubscribeinactiveusers-incubator',
     }
 
     # Wikimania
-    profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-wikimania':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki wikimaniawiki --days 365 --really',
-        interval => '*-01,04,07,10-02 05:00:00',
+    profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveuser-wikimania':
+        command               => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki wikimaniawiki --days 365 --really',
+        interval              => '*-01,04,07,10-02 05:00:00',
+        cron_schedule         => '0 5 2 */3 *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'UnsubscribeInactiveUsers.php',
+        description           => 'Unsubscribe inactive translator users on wikimaniawiki once a quarter.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'translationnotifications-unsubscribeinactiveusers-wikimania',
     }
 
     # Commons
-    profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-commons':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki commonswiki --days 365 --really',
-        interval => '*-01,04,07,10-02 05:30:00',
+    profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveuser-commons':
+        command               => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki commonswiki --days 365 --really',
+        interval              => '*-01,04,07,10-02 05:30:00',
+        cron_schedule         => '30 5 2 */3 *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'UnsubscribeInactiveUsers.php',
+        description           => 'Unsubscribe inactive translator users on commonswiki once a quarter.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'translationnotifications-unsubscribeinactiveusers-commons',
     }
 }
