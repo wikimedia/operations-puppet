@@ -1343,6 +1343,7 @@ kerberos_kadmin_keytabs_repo:
 # e.g. while provisioning a new server
 kerberos_kdc_servers:
     - 'krb1001.eqiad.wmnet'
+    - 'krb1002.eqiad.wmnet'
     - 'krb2002.codfw.wmnet'
 
 # This list of servers passed to Kerberos clients. It is typically kept in sync
