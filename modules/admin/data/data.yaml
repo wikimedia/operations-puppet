@@ -7519,3 +7519,7 @@ ldap_only_users:
     ensure: present
     realname: Brendan Campbell-Craven
     email: bcampbell@wikimedia.org
+  owresch:
+    ensure: present
+    realname: Ohana Waldburger-Resch
+    email: owresch@wikimedia.org
