@@ -134,7 +134,10 @@ class profile::puppetserver (
     puppetserver::rsync_module { 'ca':
         path     => $ca_dir,
         hosts    => wmflib::class::hosts('puppetserver::ca'),
-        interval => {'start' => 'OnUnitInactiveSec', 'interval' => '24h'},
+        interval => {
+            'start'    => 'OnCalendar',
+            'interval' => 'Mon..Fri *-*-* 15:00:00',
+        },
     }
 
     ferm::service { 'puppetserver':
