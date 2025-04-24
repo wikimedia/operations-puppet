@@ -37,10 +37,10 @@ define profile::pyrra::filesystem::slos::istio(
                 'indicator' => {
                     'ratio' => {
                         'errors' => {
-                            'metric' => "workload:istio_requests_total{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", response_code=~\"${requests_errors_regex}\", site=\"${datacenter}\" }",
+                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\",  destination_canonical_service=\"${destination_canonical_service}\", response_code=~\"${requests_errors_regex}\", site=\"${datacenter}\" }",
                         },
                         'total'  => {
-                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
+                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\",  destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
                         },
                     },
                 },
@@ -70,10 +70,10 @@ define profile::pyrra::filesystem::slos::istio(
                 'indicator' => {
                     'latency'  => {
                         'success' => {
-                            'metric' => "workload:istio_request_duration_milliseconds_bucket{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", le=\"${latency_max_seconds_bucket}\", site=\"${datacenter}\" }",
+                            'metric' => "istio_request_duration_milliseconds_bucket{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", destination_canonical_service=\"${destination_canonical_service}\", le=\"${latency_max_seconds_bucket}\", site=\"${datacenter}\" }",
                         },
                         'total'   => {
-                            'metric' => "workload:istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
+                            'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", destination_canonical_service=\"${destination_canonical_service}\", site=\"${datacenter}\" }",
                         },
                     },
                 },
