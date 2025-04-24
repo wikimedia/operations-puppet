@@ -43,7 +43,7 @@ define profile::mediawiki::periodic_job::kubernetes(
         $command_quoted = $command.to_json()
 
         if length($title) > 52 {
-            die("Can't create a Kubernetes periodic job with full title longer than 52 chars: ${title}")
+            fail("Can't create a Kubernetes periodic job with full title longer than 52 chars: ${title}")
         }
         concat_fragment { $title:
             content => template('profile/mediawiki/maintenance/kubernetes_periodic_job.tmpl.erb'),
