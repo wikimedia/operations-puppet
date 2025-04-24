@@ -2,23 +2,14 @@ profile::openstack::eqiad1::networktests::sshbastion: eqiad1.bastion.wmcloud.org
 profile::openstack::eqiad1::networktests::envvars:
     ROUTING_SOURCE_IP: 185.15.56.1
     FLOATING_VM_FQDN: bastion-eqiad1-03.bastion.eqiad1.wikimedia.cloud
-    FLOATING_VM_IP: 185.15.56.87
     VM_IP_PREFIX: 172.16.
     NO_FLOATING_VM: tools-imagebuilder-2.tools.eqiad1.wikimedia.cloud
     GENERAL_PUPPETMASTER: cloudinfra-cloudvps-puppetserver-1.cloudinfra.eqiad1.wikimedia.cloud
     LOCAL_PUPPETMASTER: cloudinfra-internal-puppetserver-1.cloudinfra.eqiad1.wikimedia.cloud
-    CLOUDGW_A_IP: 185.15.56.245
-    CLOUDGW_B_IP: 185.15.56.246
-    CLOUDGW_VIRT_IP: 185.15.56.237
-    CLOUDGW_WAN_IP: 185.15.56.244
-    CLOUDGW_A_FQDN: vlan1120.cloudgw1003.eqiad1.wikimediacloud.org
-    CLOUDGW_B_FQDN: vlan1120.cloudgw1004.eqiad1.wikimediacloud.org
-    CLOUDGW_VIRT_FQDN: virt.cloudgw.eqiad1.wikimediacloud.org
-    CLOUDGW_WAN_FQDN: wan.cloudgw.eqiad1.wikimediacloud.org
-    NEUTRON_WAN_IP: 185.15.56.238
-    NEUTRON_WAN_FQDN: cloudinstances2b-gw.openstack.eqiad1.wikimediacloud.org
-    NEUTRON_VIRT_IP: 172.16.0.1
-    NEUTRON_VIRT_FQDN: vlan-legacy.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
+    CLOUDGW_A: vlan1120.cloudgw1003.eqiad1.wikimediacloud.org
+    CLOUDGW_B: vlan1120.cloudgw1004.eqiad1.wikimediacloud.org
+    CLOUDGW_VIRT: virt.cloudgw.eqiad1.wikimediacloud.org
+    CLOUDGW_WAN: wan.cloudgw.eqiad1.wikimediacloud.org
     DNS_RECURSOR_IP: 172.20.255.1
     DNS_AUTH_IP: 185.15.56.163
     DNS_AUTH_DOMAIN: toolforge.org
@@ -35,12 +26,8 @@ profile::openstack::eqiad1::networktests::envvars:
     VM_VXLAN_IPV4_ONLY: networktests-vxlan-ipv4only.testlabs.eqiad1.wikimedia.cloud
     VM_VXLAN_IPV4_ONLY_FIP: networktests-vxlan-ipv4only-fip.testlabs.eqiad1.wikimedia.cloud
     FIP_PREFIX: "185.15."
+    NEUTRON_WAN: cloudinstances2b-gw.openstack.eqiad1.wikimediacloud.org
     NEUTRON_VLAN_LEGACY: vlan-legacy.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
     NEUTRON_VXLAN_IPV4_ONLY: vxlan-ipv4-only.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
     NEUTRON_VXLAN_DUALSTACK: vxlan-dualstack.cloudinstances2b-gw.svc.eqiad1.wikimedia.cloud
-    CLOUDGW_A_IPV6: 2a02:ec80:a000:fe03::1003:1
-    CLOUDGW_B_IPV6: 2a02:ec80:a000:fe03::1004:1
-    CLOUDGW_VIRT_IPV6: 2a02:ec80:a000:fe04::1:1
-    CLOUDGW_WAN_IPV6: 2a02:ec80:a000:fe03::3
     IPV6_PREFIX: 2a02:ec80:a000
-    NEUTRON_WAN_IPV6: 2a02:ec80:a000:fe04::2:1

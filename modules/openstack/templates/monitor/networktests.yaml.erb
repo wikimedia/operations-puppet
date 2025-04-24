@@ -8,122 +8,54 @@
 <% end -%>
 ---
 
-- name: basic ping to cloudgw addresses (raw addresses) from outside the cloud network
+- name: from cloudcontrol to cloudgw IPv4 ping
   tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_IP >/dev/null
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_IP >/dev/null
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_IP >/dev/null
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_IP >/dev/null
+    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
 
-- name: basic ping to cloudgw addresses (DNS names) from outside the cloud network
+- name: from cloudcontrol to cloudgw IPv6 ping
   tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_A_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_B_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_B >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $CLOUDGW_WAN_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_WAN >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
 
-- name: basic ping to neutron WAN from outside the cloud network
+- name: from cloudcontrol to neutron WAN IPv4 ping
   tests:
-    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_IP >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping4 -c1 $NEUTRON_WAN >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
 
-- name: basic ping to neutron VIRT gateway from within the cloud virtual network, no floating IP
+- name: from cloudcontrol to neutron WAN IPv6 ping
   tests:
-    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: $SSH $NO_FLOATING_VM "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic ping to neutron VIRT gateway from within the cloud virtual network, with floating IP
-  tests:
-    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_IP >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: $SSH $FLOATING_VM_FQDN "timeout -k5s 10s ping4 -c1 $NEUTRON_VIRT_FQDN >/dev/null"
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic IPv6 ping to cloudgw addresses (raw addresses) from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A_IPV6 >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_B_IPV6 >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_IPV6 >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_WAN_IPV6 >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic IPv6 ping to cloudgw addresses (DNS names) from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_A_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_B_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $CLOUDGW_WAN_FQDN >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-
-- name: basic IPv6 ping to neutron WAN from outside the cloud network
-  tests:
-    - cmd: timeout -k5s 10s ping6 -c1 $NEUTRON_WAN_IPV6 >/dev/null
-      stdout: ""
-      retcode: 0
-      stderr: ""
-    - cmd: timeout -k5s 10s ping6 -c1 $NEUTRON_WAN_FQDN >/dev/null
+    - cmd: timeout -k5s 10s ping6 -c1 $NEUTRON_WAN >/dev/null
       stdout: ""
       retcode: 0
       stderr: ""
@@ -318,42 +250,42 @@
 # cloudgw from within VMs
 - name: from VXLAN/dualstack to cloudgw VIRT gateway IPv6 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping6 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/dualstack to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_DUALSTACK "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VXLAN/IPv4-only-fip to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VXLAN_IPV4_ONLY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VLAN/legacy to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VM_VLAN_LEGACY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VLAN_LEGACY "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
 
 - name: from VLAN/legacy-fip to cloudgw VIRT gateway IPv4 ping
   tests:
-    - cmd: $SSH $VM_VLAN_LEGACY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT_FQDN >/dev/null"
+    - cmd: $SSH $VM_VLAN_LEGACY_FIP "timeout -k5s 10s ping4 -c1 $CLOUDGW_VIRT >/dev/null"
       stdout: ""
       retcode: 0
       stderr: ""
