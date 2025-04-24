@@ -160,6 +160,8 @@ class RedisStore:
 class Dns:
     """Deals with any DNS writes."""
 
+    RECORD_DESCRIPTION = "managed by Cloud VPS web proxy service"
+
     def __init__(
         self, zones: dict, target_ipv4: str, clients: mwopenstackclients.Clients
     ):
@@ -263,7 +265,13 @@ class Dns:
         if not client.recordsets.list(
             zone_id, criterion={"name": hostname, "type": "A"}
         ):
-            client.recordsets.create(zone_id, hostname, "A", [self.target_ipv4])
+            client.recordsets.create(
+                zone_id,
+                hostname,
+                "A",
+                [self.target_ipv4],
+                description=Dns.RECORD_DESCRIPTION,
+            )
 
     def delete_records_for(self, project: str, hostname: str):
         hostname, project, zone_id = self.get_zone(project, hostname)
