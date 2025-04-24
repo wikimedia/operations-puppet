@@ -140,12 +140,10 @@ groups:
     members: [*ops_members, *ops_limited]
     posix_name: adm
   platform-engineering:
-    description: People in the Platform Engineering team.
+    members: []
     gid: 824
-    # ariel, hnowlan, kamila, tstarling not included because of ops membership
-    members: &platform_engineering_members [bpirkle, daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
-    approval:
-      - Will Doran
+    deprecated: true
+    description: Deprecated since July 2023 re-org, Platform Engineering team no longer exists.
   release-engineering:
     gid: 837
     description: 'Members of the Release Engineering team. Transitively, they are also members of:
@@ -522,7 +520,7 @@ groups:
   snapshot-admins:
     gid: 743
     description: People who can sudo into the dumpsgen user on snapshot hosts.
-    members: [*platform_engineering_members, hoo, ebernhardson]
+    members: [hoo, ebernhardson]
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Dan Andreescu
@@ -531,7 +529,7 @@ groups:
   dumpsdata-admins:
     gid: 825
     description: People who can sudo into the dumpsgen user on dumpsdata hosts.
-    members: [*platform_engineering_members]
+    members: []
     privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
     approval:
       - Dan Andreescu
@@ -1064,7 +1062,7 @@ groups:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
-      *platform_engineering_members, cparle, mfossati, mlitn, fab, htriedman
+      cparle, mfossati, mlitn, fab, htriedman
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
