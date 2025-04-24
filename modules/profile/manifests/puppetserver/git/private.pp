@@ -4,7 +4,7 @@ class profile::puppetserver::git::private (
 ) {
     include profile::puppetserver::git
     $repo_url = "${profile::puppetserver::git::basedir}/private"
-    ensure_packages(['yamllint'])
+    ensure_packages(['yamllint', 'wmfuniq-keygen'])
     file { '/etc/puppet/yamllint.yaml':
         ensure => file,
         source => 'puppet:///modules/puppetmaster/git/yamllint.yaml',
