@@ -5,15 +5,24 @@ class profile::mediawiki::maintenance::translationnotifications(
     # or just one which runs the scripts which iterates over
     # selected set of wikis?
 
+    $team = 'language_and_product_localization'
+
     # MetaWiki
     profile::mediawiki::periodic_job { 'translationnotifications-metawiki':
         command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki',
         interval => 'Mon 10:00',
     }
 
-    profile::mediawiki::periodic_job { 'translationnotifications-unsubscribeinactiveusers-metawiki':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki metawiki --days 365 --really',
-        interval => '*-01,04,07,10-02 02:00:00',
+    profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveusers-metawiki':
+        command               => '/usr/local/bin/mwscript extensions/TranslationNotifications/maintenance/UnsubscribeInactiveUsers.php --wiki metawiki --days 365 --really',
+        interval              => '*-01,04,07,10-02 02:00:00',
+        cron_schedule         => '0 2 2 */3 *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'UnsubscribeInactiveUsers.php',
+        description           => 'Unsubscribe inactive translator users on metawiki once a quarter.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'translationnotifications-unsubscribeinactiveusers-metawiki',
     }
 
     # MediaWiki
