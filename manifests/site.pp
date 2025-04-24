@@ -727,7 +727,12 @@ node /^db2159\.codfw\./ {
 }
 
 # s8 (wikidata) core production dbs on eqiad
-node /^db1(172|177|192|193|203|209|211|214|226|255|256|257)\.eqiad\./ {
+node /^db1(172|177|192|193|203|209|211|214|226)\.eqiad\./ {
+    role(mariadb::core)
+}
+
+# x3 (split from s8) future section
+node /^db1(255|256|257)\.eqiad\./ {
     role(mariadb::core)
 }
 
