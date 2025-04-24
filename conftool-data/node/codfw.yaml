@@ -43,7 +43,6 @@ codfw:
     elastic2061.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2062.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2063.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-    elastic2064.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2065.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2066.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2067.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
