@@ -83,3 +83,6 @@ profile::gerrit::gerrit_abusers:
   - '47.80.0.0/13'  # Alibaba
   - '51.68.11.191/32'
   - '101.47.0.0/18'  # ByteDance crawling network - T375996
+  - '43.133.0.0/16' # Tencent
+  - '43.134.0.0/16' # Tencent
+  - '43.159.0.0/18' # Tencent
