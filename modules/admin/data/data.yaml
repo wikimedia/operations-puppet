@@ -7523,3 +7523,7 @@ ldap_only_users:
     ensure: present
     realname: Ohana Waldburger-Resch
     email: owresch@wikimedia.org
+  jmerino-wmf:
+    ensure: present
+    realname: Jeni Merino
+    email: jmerino@wikimedia.org
