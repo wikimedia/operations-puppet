@@ -15,6 +15,7 @@ eqiad:
   - es6
   - es7
   - x1
+  - x3
   - pc1
   - pc2
   - pc3
@@ -42,6 +43,7 @@ codfw:
   - es6
   - es7
   - x1
+  - x3
   - pc1
   - pc2
   - pc3
