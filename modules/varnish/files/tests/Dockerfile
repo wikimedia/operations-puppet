@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN set -e; \
     BASE_PACKAGES="gnupg2 geoip-database sudo python3-toml"; \
     SUDOERS_FILE="/etc/sudoers.d/varnish_test_nopasswd"; \
-    VARNISH_BASE="varnish varnish-modules libvmod-netmapper libvmod-re2 libmaxminddb-dev python3-pip confd libvmod-querysort libsodium-dev"; \
+    VARNISH_BASE="varnish varnish-modules varnish-re2 libvmod-netmapper libmaxminddb-dev python3-pip confd libvmod-querysort libsodium-dev"; \
     apt-get update; \
     apt-get install -y ${BASE_PACKAGES}; \
     adduser --home /${C_USER} --disabled-password --gecos "" ${C_USER}; \
