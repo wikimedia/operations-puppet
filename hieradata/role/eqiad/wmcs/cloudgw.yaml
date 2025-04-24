@@ -1,10 +1,6 @@
 ---
 profile::wmcs::cloudgw::blackboxmonitor::wan_fqdn: wan.cloudgw.eqiad1.wikimediacloud.org
 profile::wmcs::cloudgw::blackboxmonitor::virt_fqdn: virt.cloudgw.eqiad1.wikimediacloud.org
-# NOTE: this is set to false to prevent chicken-egg problems with the initial IPv6 setup
-# because the exporter config puppet template reads the FQDN's IPv6 but the FQDN are set up manually via netbox
-# after the puppet run has assigned the IPv6 to each interface
-profile::wmcs::cloudgw::blackboxmonitor::do_ipv6: false
 profile::wmcs::cloudgw::virt_subnets_cidr_v6:
   - 2a02:ec80:a000::/55
 profile::wmcs::cloudgw::virt_peer_v6: 2a02:ec80:a000:fe04::2:1
