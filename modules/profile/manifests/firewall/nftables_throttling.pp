@@ -2,7 +2,6 @@
 # @summary manage backup timers
 # @max_connections number of simultaneous connections clients are allowed
 # @throttle_duration duration how long clients are banned in seconds
-# @tracking_duration duration how long connections are tracked in seconds
 # @nft_policy whether to actually drop packets or to accept them (for logging-only / testing)
 # @nft_logging whether to log firewall actions to /var/log/messages or not
 # @port tcp port which is throttled (default 443)
@@ -13,8 +12,6 @@ class profile::firewall::nftables_throttling (
     {default_value => 32}), # allow 32 parallel connections
     Integer $throttle_duration = lookup('profile::firewall::nftables_throttling::throttle_duration',
     {default_value => 300}), # ban clients above for 300 seconds
-    Integer $tracking_duration = lookup('profile::firewall::nftables_throttling::tracking_duration',
-    {default_value => 3600}), # track connections for a maximum of 3600s
     Enum['accept', 'drop'] $nft_policy = lookup('profile::firewall::nftables_throttling::nft_policy',
     {default_value => 'accept'}),
     Boolean $nft_logging = lookup('profile::firewall::nftables_throttling::nft_logging',
