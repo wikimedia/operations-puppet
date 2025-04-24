@@ -75,6 +75,62 @@ profile::elasticsearch::instances:
           - elastic1109.eqiad.wmnet
           - elastic1110.eqiad.wmnet
 
+          - cirrusssearch1053.eqiad.wmnet
+          - cirrusssearch1054.eqiad.wmnet
+          - cirrusssearch1055.eqiad.wmnet
+          - cirrusssearch1056.eqiad.wmnet
+          - cirrusssearch1057.eqiad.wmnet
+          - cirrusssearch1058.eqiad.wmnet
+          - cirrusssearch1059.eqiad.wmnet
+          - cirrusssearch1060.eqiad.wmnet
+          - cirrusssearch1061.eqiad.wmnet
+          - cirrusssearch1062.eqiad.wmnet
+          - cirrusssearch1063.eqiad.wmnet
+          - cirrusssearch1064.eqiad.wmnet
+          - cirrusssearch1065.eqiad.wmnet
+          - cirrusssearch1066.eqiad.wmnet
+          - cirrusssearch1067.eqiad.wmnet
+          - cirrusssearch1068.eqiad.wmnet
+          - cirrusssearch1069.eqiad.wmnet
+          - cirrusssearch1070.eqiad.wmnet
+          - cirrusssearch1071.eqiad.wmnet
+          - cirrusssearch1072.eqiad.wmnet
+          - cirrusssearch1073.eqiad.wmnet
+          - cirrusssearch1074.eqiad.wmnet
+          - cirrusssearch1075.eqiad.wmnet
+          - cirrusssearch1076.eqiad.wmnet
+          - cirrusssearch1077.eqiad.wmnet
+          - cirrusssearch1078.eqiad.wmnet
+          - cirrusssearch1079.eqiad.wmnet
+          - cirrusssearch1080.eqiad.wmnet
+          - cirrusssearch1081.eqiad.wmnet
+          - cirrusssearch1082.eqiad.wmnet
+          - cirrusssearch1083.eqiad.wmnet
+          - cirrusssearch1084.eqiad.wmnet
+          - cirrusssearch1085.eqiad.wmnet
+          - cirrusssearch1086.eqiad.wmnet
+          - cirrusssearch1087.eqiad.wmnet
+          - cirrusssearch1088.eqiad.wmnet
+          - cirrusssearch1089.eqiad.wmnet
+          - cirrusssearch1090.eqiad.wmnet
+          - cirrusssearch1091.eqiad.wmnet
+          - cirrusssearch1092.eqiad.wmnet
+          - cirrusssearch1093.eqiad.wmnet
+          - cirrusssearch1094.eqiad.wmnet
+          - cirrusssearch1095.eqiad.wmnet
+          - cirrusssearch1096.eqiad.wmnet
+          - cirrusssearch1097.eqiad.wmnet
+          - cirrusssearch1098.eqiad.wmnet
+          - cirrusssearch1099.eqiad.wmnet
+          - cirrusssearch1100.eqiad.wmnet
+          - cirrusssearch1101.eqiad.wmnet
+          - cirrusssearch1102.eqiad.wmnet
+          - cirrusssearch1103.eqiad.wmnet
+          - cirrusssearch1107.eqiad.wmnet
+          - cirrusssearch1108.eqiad.wmnet
+          - cirrusssearch1109.eqiad.wmnet
+          - cirrusssearch1110.eqiad.wmnet
+
         # TODO at what point do we need to update this number?
         expected_nodes: 35
 
@@ -154,6 +210,46 @@ profile::elasticsearch::instances:
           - elastic1100.eqiad.wmnet
           - elastic1107.eqiad.wmnet
 
+          # row A
+          - cirrusssearch1053.eqiad.wmnet
+          - cirrusssearch1054.eqiad.wmnet
+          - cirrusssearch1068.eqiad.wmnet
+          - cirrusssearch1070.eqiad.wmnet
+          - cirrusssearch1071.eqiad.wmnet
+
+          # row B
+          - cirrusssearch1055.eqiad.wmnet
+          - cirrusssearch1056.eqiad.wmnet
+          - cirrusssearch1074.eqiad.wmnet
+          - cirrusssearch1076.eqiad.wmnet
+          - cirrusssearch1077.eqiad.wmnet
+
+          # row C
+          - cirrusssearch1057.eqiad.wmnet
+          - cirrusssearch1058.eqiad.wmnet
+          - cirrusssearch1080.eqiad.wmnet
+          - cirrusssearch1082.eqiad.wmnet
+
+          # row D
+          - cirrusssearch1060.eqiad.wmnet
+          - cirrusssearch1061.eqiad.wmnet
+          - cirrusssearch1062.eqiad.wmnet
+          - cirrusssearch1063.eqiad.wmnet
+          - cirrusssearch1103.eqiad.wmnet
+
+          # row E
+          - cirrusssearch1089.eqiad.wmnet
+          - cirrusssearch1091.eqiad.wmnet
+          - cirrusssearch1093.eqiad.wmnet
+          - cirrusssearch1094.eqiad.wmnet
+          - cirrusssearch1109.eqiad.wmnet
+
+          # row F
+          - cirrusssearch1096.eqiad.wmnet
+          - cirrusssearch1098.eqiad.wmnet
+          - cirrusssearch1100.eqiad.wmnet
+          - cirrusssearch1107.eqiad.wmnet
+
         expected_nodes: 18
 
         # We should be able to run "OK" with 11 servers.
@@ -217,6 +313,46 @@ profile::elasticsearch::instances:
           - elastic1101.eqiad.wmnet
           - elastic1102.eqiad.wmnet
           - elastic1110.eqiad.wmnet
+
+          # row A
+          - cirrusssearch1069.eqiad.wmnet
+          - cirrusssearch1072.eqiad.wmnet
+          - cirrusssearch1073.eqiad.wmnet
+          - cirrusssearch1084.eqiad.wmnet
+
+          # row B
+          - cirrusssearch1075.eqiad.wmnet
+          - cirrusssearch1078.eqiad.wmnet
+          - cirrusssearch1079.eqiad.wmnet
+          - cirrusssearch1085.eqiad.wmnet
+          - cirrusssearch1086.eqiad.wmnet
+
+          # row C
+          - cirrusssearch1059.eqiad.wmnet
+          - cirrusssearch1081.eqiad.wmnet
+          - cirrusssearch1083.eqiad.wmnet
+          - cirrusssearch1087.eqiad.wmnet
+          - cirrusssearch1088.eqiad.wmnet
+
+          # row D
+          - cirrusssearch1064.eqiad.wmnet
+          - cirrusssearch1065.eqiad.wmnet
+          - cirrusssearch1066.eqiad.wmnet
+          - cirrusssearch1067.eqiad.wmnet
+
+          # row E
+          - cirrusssearch1090.eqiad.wmnet
+          - cirrusssearch1092.eqiad.wmnet
+          - cirrusssearch1095.eqiad.wmnet
+          - cirrusssearch1108.eqiad.wmnet
+
+          # row F
+          - cirrusssearch1097.eqiad.wmnet
+          - cirrusssearch1099.eqiad.wmnet
+          - cirrusssearch1101.eqiad.wmnet
+          - cirrusssearch1102.eqiad.wmnet
+          - cirrusssearch1110.eqiad.wmnet
+
         expected_nodes: 18
 
         # We should be able to run "OK" with 11 servers.
