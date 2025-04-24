@@ -1,9 +1,37 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::durum (
-  Stdlib::Fqdn                $domain   = lookup('profile::durum::service::domain'),
-  Profile::Durum::Service_ips $ips      = lookup('profile::durum::service::ips'),
-  Profile::Durum::Common      $common   = lookup('profile::durum::service::common'),
+  Stdlib::Fqdn                $domain        = lookup('profile::durum::service::domain'),
+  Profile::Durum::Service_ips $ips           = lookup('profile::durum::service::ips'),
+  Profile::Durum::Common      $common        = lookup('profile::durum::service::common'),
+  Stdlib::Unixpath            $ech_key_dir   = lookup('profile::durum::ech_key_dir'),
+  Boolean                     $do_ech        = lookup('profile::durum::do_ech', { 'default_value' => false }),
+  String                      $ech_outer_sni = lookup('profile::durum::ech_outer_sni', { 'default_value' => 'wikimedia-ech.org' }),
 ) {
+
+    file { $ech_key_dir:
+        ensure => $do_ech.bool2str('directory', 'absent'),
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0750',
+    }
+    file { "${ech_key_dir}/outer-ech.pem.ech":
+        ensure    => $do_ech.bool2str('present', 'absent'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0640',
+        show_diff => false,
+        backup    => false,
+        content   => secret('keyholder/ech-durum.pem.ech'),
+    }
+    # Set up a conf.d override for the http{} directive.
+    file { '/etc/nginx/conf.d/nginx-http-override.conf':
+        ensure  => $do_ech.bool2str('present', 'absent'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('profile/durum/nginx-http-override.conf.erb'),
+        notify  => Exec['nginx-reload'],
+    }
 
     $durum_path = $common['durum_path']
 
@@ -50,13 +78,22 @@ class profile::durum (
     }
 
     class { 'sslcert::dhparam': }
+    # Encrypted Client Hello experiment. T205378.
+    # If enabled, install the nginx version with ECH support from component.
+    if $do_ech {
+        apt::package_from_component { 'nginx':
+          component => 'component/nginx-ech',
+        }
+        acme_chief::cert { 'ech':
+            puppet_rsc => Exec['nginx-reload'],
+        }
+    }
 
     $ssl_settings = ssl_ciphersuite('nginx', 'strong', true)
     nginx::site { 'durum':
         content => template('profile/durum/nginx.conf.erb'),
         require => [
           File[$index_file, $uuid_js_file, $check_js_file, $css_file],
-          Acme_chief::Cert['durum'],
         ]
     }
 
