@@ -76,13 +76,19 @@ define systemd::unit (
 
     $exec_label = "systemd daemon-reload for ${unit_name} (${title})"
     file { $path:
-        ensure  => $ensure,
-        source  => $source,
-        content => $content,
-        mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        notify  => Exec[$exec_label],
+        ensure       => $ensure,
+        source       => $source,
+        content      => $content,
+        # The --recursive-errors flag is only supported on bookworm and
+        # newer.
+        validate_cmd => debian::codename::ge('bookworm') ? {
+            true  => "/usr/bin/systemd-analyze verify --recursive-errors=no %:${unit_name}",
+            false => undef,
+        },
+        mode         => '0444',
+        owner        => 'root',
+        group        => 'root',
+        notify       => Exec[$exec_label],
     }
 
     exec { $exec_label:
