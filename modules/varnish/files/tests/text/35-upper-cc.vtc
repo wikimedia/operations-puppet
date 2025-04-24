@@ -28,7 +28,8 @@ varnish v1 -vcl {
 
 client c1 {
     loop 2 {
-        txreq -hdr "Host: en.wikipedia.org" -hdr "User-Agent: varnishTest" -hdr "X-Forwarded-Proto: https"
+        # provide a WMF-Uniq cookie to ensure the same X-E-E value
+        txreq -hdr "Host: en.wikipedia.org" -hdr "User-Agent: varnishTest" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
         rxresp
         expect resp.status == 200
     }

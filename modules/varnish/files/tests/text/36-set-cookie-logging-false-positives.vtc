@@ -42,7 +42,9 @@ varnish v1 -vcl {
 
 client c1 {
     # cache miss
-    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
     rxresp
     expect resp.status == 200
     expect resp.http.x-cache ~ "miss"
@@ -51,13 +53,17 @@ client c1 {
     delay 3
 
     # cache hit under grace, triggering a bgfetch to refresh the object
-    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
     rxresp
     expect resp.status == 200
     expect resp.http.x-cache ~ "hit"
 
     # because of the session cookie returned to the bgfetch, this is now hit-for-pass
-    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/1" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
     rxresp
     expect resp.status == 200
     expect resp.http.x-cache ~ "pass"

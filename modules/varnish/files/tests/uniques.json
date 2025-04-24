@@ -1,0 +1,91 @@
+{
+    "_comment": "These two share domains and the first half of their ranges, but differ on test names and should have random correlation for enrollment",
+    "2025-abtests2-foo-10x10": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2200-12-31T23:59:59Z",
+        "domains": {
+            "en.wikipedia.org": {
+                "groups": {
+                    "grp0": [     0,  9999 ],
+                    "grp1": [ 10000, 19999 ],
+                    "grp2": [ 20000, 29999 ],
+                    "grp3": [ 30000, 39999 ],
+                    "grp4": [ 40000, 49999 ],
+                    "grp5": [ 50000, 59999 ],
+                    "grp6": [ 60000, 69999 ],
+                    "grp7": [ 70000, 79999 ],
+                    "grp8": [ 80000, 89999 ],
+                    "grp9": [ 90000, 99999 ]
+                }
+            }
+        }
+    },
+    "2025-abtests2-bar-5x10": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2200-12-31T23:59:59Z",
+        "domains": {
+            "en.wikipedia.org": {
+                "groups": {
+                    "grp0": [     0,  9999 ],
+                    "grp1": [ 10000, 19999 ],
+                    "grp2": [ 20000, 29999 ],
+                    "grp3": [ 30000, 39999 ],
+                    "grp4": [ 40000, 49999 ]
+                }
+            }
+        }
+    },
+    "_comment": "These two share a shared_selector, but one is missing grp3",
+    "2025-abtests2-sel1-4x25": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2200-12-31T23:59:59Z",
+        "shared_selector": "abtests2-selected",
+        "domains": {
+            "en.wikipedia.org": {
+                "groups": {
+                    "grp0": [     0, 24999 ],
+                    "grp1": [ 25000, 49999 ],
+                    "grp2": [ 50000, 74999 ],
+                    "grp3": [ 75000, 99999 ]
+                }
+            }
+        }
+    },
+    "2025-abtests2-sel2-4x25": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2200-12-31T23:59:59Z",
+        "shared_selector": "abtests2-selected",
+        "domains": {
+            "en.wikipedia.org": {
+                "groups": {
+                    "grp0": [     0, 24999 ],
+                    "grp1": [ 25000, 49999 ],
+                    "grp2": [ 50000, 74999 ]
+                }
+            }
+        }
+    },
+    "_comment": "This one uses unique_domain to split domains",
+    "2025-abtests2-udom": {
+        "start": "2024-01-01T00:00:00Z",
+        "end": "2200-12-31T23:59:59Z",
+        "domains": {
+            "en.wikipedia.org": {
+                "unique_domain": true,
+                "groups": {
+                    "grp0": [     0, 24999 ],
+                    "grp1": [ 25000, 49999 ],
+                    "grp2": [ 50000, 74999 ]
+                }
+            },
+            "test.wikipedia.org": {
+                "unique_domain": true,
+                "groups": {
+                    "grp0": [     0, 24999 ],
+                    "grp1": [ 25000, 49999 ],
+                    "grp2": [ 50000, 74999 ]
+                }
+            }
+        }
+    }
+}

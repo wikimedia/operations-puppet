@@ -28,6 +28,9 @@ import directors;
 import netmapper;
 import querysort;  // T138093
 import var;
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+import wmfuniq;
+<% end -%>
 
 // rate limiting
 import vsthrottle;
@@ -526,10 +529,17 @@ include "directors.frontend.vcl";
     netmapper.init("trusted_proxies", "<%= @netmapper_dir %>/trusted_proxies.json", 89);
     netmapper.init("public_clouds", "<%= @netmapper_dir %>/public_clouds.json", 89);
     netmapper.init("known_clients", "<%= @netmapper_dir %>/known_clients.json", 89);
-    <%- if @ip_reputation -%>
+<%- if @ip_reputation -%>
     // Proxy networks provided by ip reputation vendors. Reload every 10 minutes as it should change daily at most.
     netmapper.init("vendor_proxies", "<%= @netmapper_dir %>/vendor_proxies.json", 600);
-    <%- end -%>
+<%- end -%>
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+      new wu_cfg = wmfuniq.cfg("<%= @vcl_config.fetch("edge_uniques_key_path") %>",
+          "<%= @vcl_config.fetch("edge_uniques_cfg_path") %>",
+          1,
+          0
+      );
+<% end -%>
 }
 
 sub normalize_request_nonmisc {
@@ -625,7 +635,11 @@ sub wm_recv_pass {
 }
 
 sub uniques_recv {
-<% unless @vcl_config.fetch("do_edge_uniques", false) -%>
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+    // Wipe req-header names that might come directly from the client,
+    // which this VCL code claims as its own territory
+    unset req.http.X-WUVAL;
+<% end -%>
     if (req.http.Cookie) {
         // Normalize cookie name case before vmod_cookie processing,
         // allowing for whitespace variance. vmod_cookie is case-sensitive,
@@ -636,11 +650,36 @@ sub uniques_recv {
         set req.http.Cookie = regsub(req.http.Cookie, "(?i)(^|;)\s*WMF-Uniq\s*=", "\1WMF-Uniq=");
         cookie.parse(req.http.Cookie);
         if (cookie.isset("WMF-Uniq")) {
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+            set req.http.X-WUVAL = cookie.get("WMF-Uniq");
+<% end -%>
             cookie.delete("WMF-Uniq");
             set req.http.Cookie = cookie.get_string();
             if (req.http.Cookie == "") {
                 unset req.http.Cookie;
             }
+        }
+    }
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+    // Must call process_cookie() on every request, which will generate a
+    // fresh one if WUVAL is empty/unset/invalid
+    wu_cfg.process_cookie(req.http.X-WUVAL, req.url ~ "^/evt-103e/v2/events");
+    // delete the temp header to avoid leaks
+    unset req.http.X-WUVAL;
+
+    // Send the cache-variance for enrolled tests towards normal backends, but
+    // send the "event" string containing per-experiment IDs when the backend
+    // is going to be eventgate analytics ingestion.
+    if (req.url ~ "^/evt-103e/v2/events") {
+        set req.http.X-Experiment-Enrollments = wu_cfg.get_abtests_event();
+    } else {
+        set req.http.X-Experiment-Enrollments = wu_cfg.get_abtests_vary();
+    }
+    if (req.http.X-Experiment-Enrollments == "") {
+        unset req.http.X-Experiment-Enrollments;
+        // Prevent requests with empty X-E-E from reaching the beacon endpoint
+        if (req.url ~ "^/evt-103e/v2/events") {
+            return (synth(204, ""));
         }
     }
 <% end -%>
@@ -738,7 +777,9 @@ sub vcl_recv {
 
     set req.backend_hint = cache_local.backend();
 
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
     call uniques_recv;
+<%- end -%>
 
     if(req.restarts == 0) {
         call analytics_recv;
@@ -851,6 +892,14 @@ sub wm_backend_response {
     // We'll be setting this same variable internally in VCL in hit-for-pass
     // cases later.
     unset beresp.http.X-CDIS;
+    // Ensure that X-Experiment-Enrollments is on the Vary header. We need to
+    // deploy this in advance to let the CDN vary the whole cache so we can
+    // perform without needing to wipe the CDN
+    if (!beresp.http.Vary) {
+        set beresp.http.Vary = "X-Experiment-Enrollments";
+    } else if (beresp.http.Vary !~ "(?i)\bX-Experiment-Enrollments\b") {
+        set beresp.http.Vary = beresp.http.Vary + ", X-Experiment-Enrollments";
+    }
 
     /* Don't cache private, no-cache, no-store objects. */
     if (beresp.http.Cache-Control ~ "(?i:private|no-cache|no-store)") {
@@ -1144,6 +1193,49 @@ sub deliver_synth_ {
     set resp.http.X-Client-IP = req.http.X-Client-IP;
 }
 
+sub uniques_deliver {
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+    if (wu_cfg.get_set_cookie()) {
+            // The *very* special case is a request to host=="wikimedia.org".
+            // We can't set a cookie just for this without leaking it to all
+            // subdomains.  We cannot set it *only* for the 2LD and not have it
+            // leak, so we cannot set one at all in this case.
+            // Every request to this domain gets a fresh pointless one
+            // internally, but it's ok because in practice this whole domain is
+            // just a 301 -> www.wikimedia.org.
+        if (req.http.Host != "wikimedia.org") {
+            if (req.http.Host ~ "((^|\.)(<%= @wikimedia_domains_regex %>))$") {
+                // For the rest of *.wikimedia.org, we must set the domain to
+                // the full Host value to avoid leaks to 3rd-party entities
+                // that unfortunately exist in this space.  For all other
+                // cases, use the 2LD as the Domain attribute.
+
+                if (req.http.X-Cookie-Host ~ "\.wikimedia\.org$") {
+                    set resp.http.X-WUTMPDOM = req.http.X-Cookie-Host;
+                } else {
+                    set resp.http.X-WUTMPDOM = regsub(req.http.X-Cookie-Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.\Q<%= @vcl_config.fetch('top_domain', 'org') %>\E)$", "\2");
+                }
+
+                header.append(resp.http.Set-Cookie,
+                    "WMF-Uniq="
+                    + wu_cfg.get_cookie_val()
+                    + ";Domain=" + resp.http.X-WUTMPDOM
+                    + ";Path=/;HttpOnly;secure;SameSite=Lax;Expires="
+                    + std.time(std.time2integer(now + 1y, 0) / 86400 * 86400)
+                );
+                unset resp.http.X-WUTMPDOM; // clear temp header from above
+            }
+        }
+    }
+
+    set resp.http.X-WUTIMING = "WMF-Uniq;" + wu_cfg.get_abtests_stiming();
+    if (resp.http.X-WUTIMING != "WMF-Uniq;") {
+        header.append(resp.http.Server-Timing, resp.http.X-WUTIMING);
+    }
+    unset resp.http.X-WUTIMING;
+<% end -%>
+}
+
 sub vcl_deliver {
     // Provides custom error html if error response has no body
     if (resp.http.Content-Length == "0" && resp.status >= 400) {
@@ -1159,6 +1251,9 @@ sub vcl_deliver {
     }
     call deliver_synth_;
     call cluster_fe_deliver;
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+    call uniques_deliver;
+<%- end -%>
     return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
 

@@ -18,5 +18,6 @@ client c1 {
     rxresp
 
     expect resp.status == 200
-    expect resp.http.Set-Cookie == <undef>
+    expect resp.http.Set-Cookie !~ "foo"
+    expect resp.http.Set-Cookie !~ "bar"
 } -run

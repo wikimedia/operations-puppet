@@ -18,7 +18,7 @@ client c1 {
     rxresp
 
     expect resp.status == 200
-    expect resp.http.Set-Cookie == <undef>
+    expect resp.http.Set-Cookie !~ "test"
     expect resp.http.X-MediaWiki-Original == <undef>
     expect resp.http.Content-Disposition == "attachment"
     expect resp.http.Access-Control-Allow-Origin == "*"

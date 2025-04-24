@@ -48,10 +48,13 @@ varnish v1 -vcl {
 } -start
 
 client c1 -connect "${tmpdir}/v1.sock" {
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic"
+
     rxresp
     expect resp.body ~ "Included file"
-    txreq -url "/wiki/Private_Page" -hdr "Cookie: enwikiSession=42;" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    # provide a WMF-Uniq cookie to ensure the same X-E-E value
+    txreq -url "/wiki/Private_Page" -hdr "Cookie: enwikiSession=42;WMF-Uniq=fJ_78P59gZJLL5lpUJzosAHuAAAAAMaC5V3iaYIYfYnoPEvFMlUxDy0ugjXSXVic" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https"
     rxresp
     expect resp.body ~ "Included file"
 } -run

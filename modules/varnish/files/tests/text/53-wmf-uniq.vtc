@@ -1,11 +1,26 @@
 # SPDX-License-Identifier: Apache-2.0
-varnishtest "differential privacy"
+varnishtest "Edge uniques"
 
-server s1 -repeat 2 {
+server s1 {
+    # acting like a mw origin server
     rxreq
+    expect req.url == "/wiki/Main_Page"
     # be sure that WMF-Uniq cookie doesn't reach the origin server
     expect req.http.Cookie !~ "WMF-Uniq"
     expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
+    expect req.http.X-WUVAL == <undef>
+    expect req.http.X-Experiment-Enrollments == "2025-abtests2-foo-10x10=grp4;2025-abtests2-bar-5x10=grp1;2025-abtests2-sel1-4x25=grp1;2025-abtests2-sel2-4x25=grp1;2025-abtests2-udom=grp0;"
+    # CC: private to ensure that all the requests hit the origin server
+    txresp -hdr "Cache-Control: private"
+
+    # acting like intake-analytics origin server
+    rxreq
+    # be sure that WMF-Uniq cookie doesn't reach the origin server
+    expect req.url == "/evt-103e/v2/events"
+    expect req.http.Cookie !~ "WMF-Uniq"
+    expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
+    expect req.http.X-WUVAL == <undef>
+    expect req.http.X-Experiment-Enrollments == "2025-abtests2-foo-10x10=grp4/uO9C-PjenMmPf3icilFCZg;2025-abtests2-bar-5x10=grp1/xdB6Klpv547LLndFcdnIIw;2025-abtests2-sel1-4x25=grp1/Mk9Di5JseeKaYZEoKfIJtw;2025-abtests2-sel2-4x25=grp1/Mk9Di5JseeKaYZEoKfIJtw;2025-abtests2-udom=grp0/FuxT4Qzk_KKzRwBQU6vtjg;"
     # CC: private to ensure that all the requests hit the origin server
     txresp -hdr "Cache-Control: private" -hdr "Vary: X-Experiment-Enrollments"
 } -start
@@ -27,17 +42,36 @@ varnish v1 -vcl {
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
     sub vcl_deliver {
-        set resp.http.url = req.url;
+        # leak Vary header before it gets removed by uniques_deliver
+        set resp.http.X-Vary = resp.http.Vary;
     }
     include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
 
 } -start
 
 client c1 -connect "${tmpdir}/v1.sock" {
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=snakeoil"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: wmf-uniq=snakeoil"
+    expect resp.status == 200
+    expect resp.http.X-Vary == "X-Experiment-Enrollments"
+    # collisions with Server-Timing: cache;desc="pass", host;desc="cp6016"
+#    expect resp.http.Server-Timing == "2025-abtests2-foo-10x10=grp4;2025-abtests2-bar-5x10=grp1;2025-abtests2-sel1-4x25=grp1;2025-abtests2-sel2-4x25=grp1;2025-abtests2-udom=grp0;"
+    txreq -url "/evt-103e/v2/events" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
     # Vary: X-E-E doesn't get leaked to the user
     expect resp.http.Vary !~ "X-Experiment-Enrollments"
+    expect resp.status == 200
+    # no experiments defined for es.wp.o, it shouldn't reach the origin server
+    txreq -url "/evt-103e/v2/events" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
+    rxresp
+    expect resp.status == 204
 } -run
+
+varnish v1 -expect WMFUNIQ.c_fresh_null == 0
+varnish v1 -expect WMFUNIQ.c_fresh_invalid_b64 == 0
+varnish v1 -expect WMFUNIQ.c_fresh_invalid_keytag == 0
+varnish v1 -expect WMFUNIQ.c_fresh_invalid_mac == 0
+varnish v1 -expect WMFUNIQ.c_fresh_invalid_bug1 == 0
+varnish v1 -expect WMFUNIQ.c_fresh_invalid_bug2 == 0
+varnish v1 -expect WMFUNIQ.c_abtested == 2
+varnish v1 -expect WMFUNIQ.c_abtested_toomany == 0
