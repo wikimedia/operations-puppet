@@ -437,6 +437,12 @@ profile::kubernetes::deployment_server::services:
   dse-k8s:
     airflow-analytics-test:
       usernames:
+        - name: postgresql-airflow-analytics-test
+          owner: root
+          group: root
+        - name: postgresql-airflow-analytics-test-deploy
+          owner: root
+          group: root
         - name: airflow-analytics-test
           owner: root
           group: analytics-deployers
