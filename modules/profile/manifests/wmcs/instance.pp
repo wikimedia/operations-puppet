@@ -180,4 +180,15 @@ class profile::wmcs::instance(
             rule => "saddr @resolve((${metricsinfra_prometheus_nodes.join(' ')})) ACCEPT;"
         }
     }
+
+    # Permit DHCPv6 response traffic on hosts with host-level firewall - T392611
+    # TODO: convert to firewall::service, now breaks due to a duplicate declaration error
+    ferm::service { 'dhcp6-response':
+        proto  => 'udp',
+        port   => 546,
+        # TODO: filter on the source port as well? not currently supported by any of our wrappers
+        # sport => 547,
+        srange => 'fe80::/10',
+        drange => 'fe80::/10',
+    }
 }
