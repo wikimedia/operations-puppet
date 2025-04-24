@@ -86,3 +86,7 @@ profile::gerrit::gerrit_abusers:
   - '43.133.0.0/16' # Tencent
   - '43.134.0.0/16' # Tencent
   - '43.159.0.0/18' # Tencent
+  - '20.125.66.80/28' # openai-gptbot
+  - '20.171.206.0/23' # openai-gptbot
+  - '4.227.36.0/25' # openai-gptbot
+  - '52.230.152.0/24' # openai-gptbot
