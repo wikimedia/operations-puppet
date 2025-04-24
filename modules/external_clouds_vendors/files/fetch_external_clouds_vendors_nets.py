@@ -172,7 +172,10 @@ def merge_adjacent(nets: Set[str]) -> Set[str]:
     Returns
         Set(str): A set of network ranges with ajacent prefixes merged
     """
-    merged = cidr_merge([IPNetwork(net) for net in nets])
+    # If the network subnet is one of the following spurious values,
+    # discard it and avoid failures.
+    spurious_nets = ["None"]
+    merged = cidr_merge([IPNetwork(net) for net in nets if net not in spurious_nets])
     return {str(net) for net in merged}
 
 
