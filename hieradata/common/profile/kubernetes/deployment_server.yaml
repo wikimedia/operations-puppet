@@ -455,10 +455,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: airflow-wmde
           owner: root
-          group: analytics-deployers
+          group: airflow-wmde-admins
         - name: airflow-wmde-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-wmde-admins
     airflow-research:
       usernames:
         - name: airflow-research
