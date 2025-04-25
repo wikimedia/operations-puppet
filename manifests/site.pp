@@ -398,10 +398,6 @@ node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
 
-node /^cloudlb200[1]-dev\.codfw\./ {
-    role(insetup::wmcs_nftables)
-}
-
 node /^cloudcephosd200[1234]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
