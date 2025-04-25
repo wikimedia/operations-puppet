@@ -96,7 +96,8 @@ class profile::analytics::refinery::job::gobblin(
     }
 
     profile::analytics::refinery::job::gobblin_job { 'eventlogging_legacy':
-        interval         => '*-*-* *:30:00',
+        ensure   => absent,
+        interval => '*-*-* *:30:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'webrequest_frontend_rc0':
