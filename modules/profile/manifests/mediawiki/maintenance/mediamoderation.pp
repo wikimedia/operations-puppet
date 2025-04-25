@@ -2,10 +2,18 @@
 class profile::mediawiki::maintenance::mediamoderation(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+    $team = 'trust-and-safety-product'
+
     # push periodically-computed metrics into statsd (T353703)
     profile::mediawiki::periodic_job { 'mediamoderation-updateMetrics':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/all.dblist extensions/MediaModeration/maintenance/updateMetrics.php --verbose',
-        interval => '*-*-* 04:32:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/all.dblist extensions/MediaModeration/maintenance/updateMetrics.php --verbose',
+        interval              => '*-*-* 04:32:00',
+        cron_schedule         => '32 4 * * *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'updateMetrics.php',
+        description           => 'push periodically-computed media moderation metrics into statsd at 04:32',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # Run a scan over newly uploaded images on all WMF wikis (except Wikimedia Commons) every hour (T355169)
