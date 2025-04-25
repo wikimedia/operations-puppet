@@ -38,6 +38,9 @@
 # [*description*] The description of the job. Default: undef
 #
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default 1.2d). Default: undef
+#
+# [*migration_title*] a string used to reference the old periodic job for removal when migrating to Kubernetes in a situation where the job needs to be renamed.
+#
 
 define profile::mediawiki::periodic_job(
     String $command,
@@ -54,6 +57,7 @@ define profile::mediawiki::periodic_job(
     Optional[String] $description = undef,
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
+    Optional[String] $migration_title = undef,
 ) {
 
     if $::_role == 'deployment_server/kubernetes' {
@@ -83,7 +87,12 @@ define profile::mediawiki::periodic_job(
         } else {
             $systemd_ensure = $ensure
         }
-        profile::mediawiki::periodic_job::systemd{ $title:
+        $timer_title = $migration_title ? {
+            undef   => $title,
+            default => $migration_title
+        }
+
+        profile::mediawiki::periodic_job::systemd{ $timer_title:
             ensure   => $systemd_ensure,
             command  => $command,
             interval => $interval,
