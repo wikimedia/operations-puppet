@@ -1,9 +1,9 @@
 class profile::toolforge::disable_tool (
-    Hash   $ldap_config = lookup('ldap'),
-    String $novaadmin_bind_dn = lookup('profile::openstack::base::ldap_user_dn'),
-    String $novaadmin_bind_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
-    String $tools_db_host = lookup('profile::toolforge::disable_tool::disable_tool_db_host'),
-    String $tools_db_password = lookup('profile::toolforge::disable_tool::disable_tool_db_password'),
+    Hash         $ldap_config         = lookup('ldap'),
+    String       $novaadmin_bind_dn   = lookup('profile::openstack::base::ldap_user_dn'),
+    String       $novaadmin_bind_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
+    Stdlib::Fqdn $tools_db_host       = lookup('profile::toolforge::disable_tool::disable_tool_db_host', {default_value => 'tools.db.svc.wikimedia.cloud'}),
+    String       $tools_db_password   = lookup('profile::toolforge::disable_tool::disable_tool_db_password'),
 ) {
     $ldap_uri = "ldap://${ldap_config['rw-server']}:389"
 
