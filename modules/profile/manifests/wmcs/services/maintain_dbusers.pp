@@ -49,8 +49,7 @@ class profile::wmcs::services::maintain_dbusers (
     }.flatten.unique
 
     $legacy_hosts = {
-        # floating IP on clouddb-services to clouddb1001 VM
-        '185.15.56.15:3306' => {
+        'tools.db.svc.wikimedia.cloud:3306' => {
             'grant-type' => 'legacy',
         },
     }
