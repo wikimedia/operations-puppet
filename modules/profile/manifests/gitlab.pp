@@ -266,13 +266,11 @@ class profile::gitlab(
       # Use read-write credentials for production and read-only for replicas
       $object_storage_access_key = $active_host ? {
           $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['access_key'],
-          # Test rw-credentials on the replica first. This should be removed after the test.
-          default        => $object_storage_credentials['gitlab-rw']['access_key'],
+          default        => $object_storage_credentials['gitlab-ro']['access_key'],
       }
       $object_storage_secret_key = $active_host ? {
           $facts['fqdn'] => $object_storage_credentials['gitlab-rw']['secret_key'],
-          # Test rw-credentials on the replica first. This should be removed after the test.
-          default        => $object_storage_credentials['gitlab-rw']['secret_key'],
+          default        => $object_storage_credentials['gitlab-ro']['secret_key'],
       }
     } else {
       $object_storage_access_key = ''
