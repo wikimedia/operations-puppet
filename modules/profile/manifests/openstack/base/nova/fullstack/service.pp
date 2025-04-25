@@ -3,7 +3,7 @@ class profile::openstack::base::nova::fullstack::service(
     $osstackcanary_pass = lookup('profile::openstack::base::nova::fullstack_pass'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes'),
     $region = lookup('profile::openstack::base::region'),
-    $network = lookup('profile::openstack::base::nova::instance_network_id'),
+    $network = lookup('profile::openstack::base::nova::fullstack_instance_network_id'),
     $puppetmaster = lookup('profile::openstack::base::puppetmaster_hostname'),
     $bastion_ip = lookup('profile::openstack::base::nova::fullstack_bastion_ip'),
     $deployment = lookup('profile::openstack::base::nova::fullstack_deployment'),
