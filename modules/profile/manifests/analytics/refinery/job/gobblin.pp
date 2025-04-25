@@ -86,7 +86,8 @@ class profile::analytics::refinery::job::gobblin(
         # We want at lesat one gobblin run to see timestamps on either side of the hour.
         # Run at 5 and 35 minutes after the hour.
         # Bug: https://phabricator.wikimedia.org/T286343
-        interval         => '*-*-* *:05,35:00',
+        ensure   => absent,
+        interval => '*-*-* *:05,35:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'event_default':
