@@ -122,6 +122,30 @@ def env_vars_str(env_vars: dict[str, str]) -> str:
     return ' '.join(f'{key}={value}' for key, value in env_vars.items())
 
 
+def helm_cache_home() -> str:
+    # If we can use the shared cache (i.e. we're in the deployment group) do that. We need write
+    # access or else helm chokes, since it updates the cache along the way.
+    if os.access('/var/cache/helm', os.W_OK):
+        return '/var/cache/helm'
+    # If we can't do that (e.g. we're in the restricted group) we can still use a cache in our own
+    # homedir, but "helm diff" will complain if we don't do "helm repo update" first. This is helm's
+    # default, except anchored as an absolute path.
+    cache = Path(os.environ['HOME'], '.cache/helm')
+    if not cache.exists():
+        logger.info('👋 Setting up the Helm cache. Only need to do this the first time...')
+        try:
+            subprocess.run(['/usr/bin/helm', 'repo', 'update'],
+                           env={
+                               'HELM_CACHE_HOME': str(cache),
+                               'HELM_CONFIG_HOME': '/etc/helm',
+                           },
+                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=True)
+        except subprocess.CalledProcessError as e:
+            logger.error(e.stdout)
+            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
+    return str(cache)
+
+
 def get_primary_dc() -> str:
     ct = ConftoolClient(configfile='/etc/conftool/config.yaml',
                         schemafile='/etc/conftool/schema.yaml')
@@ -307,7 +331,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             ],
             env={
                 'PATH': os.environ['PATH'],  # Our helmfiles use an unqualified path for helmBinary.
-                'HELM_CACHE_HOME': '/var/cache/helm',  # Use the shared cache.
+                'HELM_CACHE_HOME': helm_cache_home(),
                 'HELM_CONFIG_HOME': '/etc/helm',  # Needed for helm chart repos etc.
                 'HELM_DATA_HOME': '/usr/share/helm',  # Needed for helm-diff.
                 'RELEASE_NAME': job.release,  # Consumed by the helmfile template.
@@ -333,7 +357,8 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             # When shelling out to kubectl, we pass $HOME through so that it finds (or creates)
             # .kube/cache there, instead of dropping it rudely into $PWD.
             subprocess.run(['/usr/bin/kubectl', 'logs', '-f', f'job/{job.name}', job.app_container],
-                           env={**job.kube_env, 'HOME': os.environ['HOME']})
+                           env={**job.kube_env, 'HOME': os.environ['HOME']},
+                           check=True)
         except subprocess.CalledProcessError as e:
             raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
         except KeyboardInterrupt:
