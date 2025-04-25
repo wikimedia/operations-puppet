@@ -71,7 +71,8 @@ class profile::analytics::refinery::job::gobblin(
         # The offset from calendar hour is to mitigate out-of-order events
         # messing up with _IMPORTED flags generation, and runs of the webrequest gobblin job
         # happening simulatenously.
-        interval         => '*-*-* *:08/10:00',
+        ensure   => absent,
+        interval => '*-*-* *:08/10:00',
     }
 
     profile::analytics::refinery::job::gobblin_job { 'netflow':
