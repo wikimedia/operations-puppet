@@ -19,12 +19,12 @@
 <style>
 * { margin: 0; padding: 0; }
 body { background: #fff; font: 15px/1.6 sans-serif; color: #333; }
-.content { margin: <% if @errorpage['margin'] %><%= @errorpage['margin'] %><% else %>7% auto 0<% end %>; padding: 2em 1em 1em; max-width: 640px; }
+.content { margin: <% if @errorpage['margin'] %><%= @errorpage['margin'] %><% else %>7% auto 0<% end %>; padding: 2em 1em 1em; max-width: 640px; display: flex; flex-direction: row; flex-wrap: wrap; }
 .footer { clear: both; margin-top: <% if @errorpage['margin_top'] %><%= @errorpage['margin_top'] %><% else %>14%<% end %>; border-top: 1px solid #e5e5e5; background: #f9f9f9; padding: 2em 0; font-size: 0.8em; text-align: center; }
-img { float: left; margin: 0 2em 2em 0; }
+img { margin: 0 2em 2em 0; }
 a img { border: 0; }
 h1 { margin-top: 1em; font-size: 1.2em; }
-.content-text { overflow: hidden; overflow-wrap: break-word; word-wrap: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; -ms-hyphens: auto; hyphens: auto; }
+.content-text { flex: 1; }
 p { margin: 0.7em 0 1em 0; }
 a { color: #0645ad; text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -47,8 +47,8 @@ details[open] { background: #970302; color: #dfdedd; }
 <% if @errorpage['logo_link'] && @errorpage['logo_link'] != :undef -%>
 </a>
 <% end -%>
-<h1><%= @errorpage['pagetitle'] %></h1>
 <div class="content-text">
+<h1><%= @errorpage['pagetitle'] %></h1>
 <%- if @errorpage.has_key? 'content' and @errorpage['content'] %>
 <%= @errorpage['content'] %>
 <%- else -%>
