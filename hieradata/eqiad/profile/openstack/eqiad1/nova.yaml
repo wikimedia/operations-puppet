@@ -6,7 +6,7 @@ profile::openstack::eqiad1::nova::db_name_cell: "nova_cell0_eqiad1"
 profile::openstack::eqiad1::nova::dhcp_domain: "eqiad1.wikimedia.cloud"
 profile::openstack::eqiad1::nova::metadata_listen_port: 18775
 profile::openstack::eqiad1::nova::osapi_compute_listen_port: 18774
-profile::openstack::eqiad1::nova::fullstack_instance_network_id: "7425e328-560c-4f00-8e99-706f3fb90bb4"
+profile::openstack::eqiad1::nova::fullstack_instance_network_id: "d8a16ddf-c01f-4f22-8b67-8ed18b4b1b45"
 profile::openstack::eqiad1::nova::libvirt_cpu_model: "Haswell-noTSX-IBRS"
 
 profile::openstack::eqiad1::nova::network_flat_interface_vlan: "1105"
