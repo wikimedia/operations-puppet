@@ -24,6 +24,12 @@ class profile::statistics::explorer::misc_jobs (
             wmde_secrets  => $wmde_secrets,
         }
 
+        # Used by statistics::wmde
+        # https://phabricator.wikimedia.org/T392599
+        class { '::profile::prometheus::statsd_exporter':
+            enable_relay => false,
+        }
+
         # Product Analytics team statistics scripts and cron jobs
         class { 'statistics::product_analytics': }
 
