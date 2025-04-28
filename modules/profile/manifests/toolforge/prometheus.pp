@@ -156,35 +156,29 @@ class profile::toolforge::prometheus (
         },
     ].map |Hash $job| {
         if $job['instance_filter'] {
-            $relabel_configs = [
+            $filter_relabel_configs = [
                 {
                     'source_labels' => ['__meta_openstack_instance_name'],
                     'action'        => 'keep',
                     'regex'         => $job['instance_filter'],
                 },
-                {
-                    'source_labels' => ['__meta_openstack_instance_name'],
-                    'target_label'  => 'instance',
-                },
-                {
-                    'source_labels' => ['__meta_openstack_instance_status'],
-                    'action'        => 'keep',
-                    'regex'         => 'ACTIVE',
-                },
             ]
         } else {
-            $relabel_configs = [
-                {
-                    'source_labels' => ['__meta_openstack_instance_name'],
-                    'target_label'  => 'instance',
-                },
-                {
-                    'source_labels' => ['__meta_openstack_instance_status'],
-                    'action'        => 'keep',
-                    'regex'         => 'ACTIVE',
-                },
-            ]
+            $filter_relabel_configs = []
         }
+
+        $relabel_configs = $filter_relabel_configs + [
+            {
+                'source_labels' => ['__meta_openstack_instance_name'],
+                'target_label'  => 'instance',
+            },
+            {
+                'source_labels' => ['__meta_openstack_instance_status'],
+                'action'        => 'keep',
+                'regex'         => 'ACTIVE',
+            },
+        ]
+
 
         $result = {
             'job_name'             => $job['name'],
