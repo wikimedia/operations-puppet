@@ -1,5 +1,6 @@
 # override settings for wdqs2009, a temporary endpoint for the legacy
 # full graph service. Ref T384422
+cluster: wdqs-legacy-full
 profile::envoy::ensure: present
 profile::tlsproxy::envoy::ssl_provider: 'cfssl'
 profile::tlsproxy::envoy::sni_support: 'yes'
