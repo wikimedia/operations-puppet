@@ -3,6 +3,8 @@
 Slice=thanos.slice
 ExecStart=
 ExecStart=/usr/bin/thanos rule \
+<%#- avoid log spam https://phabricator.wikimedia.org/T383966#10771692 -%>
+  --log.level error \
   --web.route-prefix /rule \
   --web.external-prefix /rule \
   --http-address <%= @http_address %> \
