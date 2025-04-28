@@ -13,10 +13,6 @@
 #    Dict of exceptions to the global thresholds
 #    Default: []
 #
-#  [*graphite_host*]
-#    Hostname of the Graphite ingester
-#    Optional
-#
 #  [*icinga_dir*]
 #    Directory to write a notification file in the event of an attack, to be picked up by an Icinga check
 #    Optional
@@ -24,7 +20,6 @@
 class fastnetmon(
   Array[Stdlib::IP::Address,1] $networks = [],
   Hash[String, Hash[String, Any]] $thresholds_overrides = [],
-  Optional[Stdlib::Host] $graphite_host = undef,
   Optional[Stdlib::Unixpath] $icinga_dir = undef,
   ) {
 

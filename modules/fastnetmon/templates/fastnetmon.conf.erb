@@ -174,13 +174,8 @@ gobgp = off
 # Graphite monitoring
 # InfluxDB is also supported, please check our reference:
 # https://github.com/FastVPSEestiOu/fastnetmon/blob/master/docs/INFLUXDB_INTEGRATION.md
-<% if @graphite_host %>
-graphite = on
-graphite_host = <%= Resolv.new.getaddress(@graphite_host).to_s %> # needs an IPv4, no CNAME/A
-graphite_port = 2003
-<% else %>
+# Graphite is being decom - T228380
 graphite = off
-<% end %>
 
 # Default namespace for Graphite data
 graphite_prefix = fastnetmon
