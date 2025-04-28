@@ -30,7 +30,6 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     $htpassword_file                = '/etc/nginx/toolsdb-replica-cnf.htpasswd';
     $htpassword_hash                = htpasswd($htpassword, $htpassword_salt);
 
-
     if $include_tools_repo {
         apt::repository { 'toolforge':
             uri        => 'https://deb.svc.toolforge.org/repo',
@@ -48,43 +47,43 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
-        content => to_yaml({
-          'TOOL_REPLICA_CNF_PATH' => $tool_replica_cnf_path,
-          'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
-          'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
-          'BACKENDS'              => {
-            'ToolforgeToolFileBackend'    => {
-              'ToolforgeToolBackendConfig' => {
-                'replica_cnf_path'     => $tool_replica_cnf_path,
-                'scripts_path'         => $scripts_path,
-                'tools_project_prefix' => $tools_project_prefix,
-                'use_sudo'             => true,
-              },
+        content => {
+            'TOOL_REPLICA_CNF_PATH' => $tool_replica_cnf_path,
+            'PAWS_REPLICA_CNF_PATH' => $paws_replica_cnf_path,
+            'USER_REPLICA_CNF_PATH' => $user_replica_cnf_path,
+            'BACKENDS'              => {
+                'ToolforgeToolFileBackend'    => {
+                    'ToolforgeToolBackendConfig' => {
+                        'replica_cnf_path'     => $tool_replica_cnf_path,
+                        'scripts_path'         => $scripts_path,
+                        'tools_project_prefix' => $tools_project_prefix,
+                        'use_sudo'             => true,
+                    },
+                },
+                'ToolforgeUserFileBackend'    => {
+                    'FileConfig' => {
+                        'replica_cnf_path' => $user_replica_cnf_path,
+                        'scripts_path'     => $scripts_path,
+                        'use_sudo'         => true,
+                    },
+                },
+                'PawsUserFileBackend'         => {
+                    'FileConfig' => {
+                        'replica_cnf_path' => $paws_replica_cnf_path,
+                        'scripts_path'     => $scripts_path,
+                        'use_sudo'         => true,
+                    },
+                },
+                'ToolforgeToolEnvvarsBackend' => {
+                    'EnvvarsConfig' => {
+                        'kubeconfig_path_template' => $kubeconfig_path_template,
+                        'toolforge_api_endpoint'   => "https://api.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud:30003",
+                        'scripts_path'             => $scripts_path,
+                        'use_sudo'                 => true,
+                    },
+                },
             },
-            'ToolforgeUserFileBackend'    => {
-              'FileConfig' => {
-                'replica_cnf_path' => $user_replica_cnf_path,
-                'scripts_path'     => $scripts_path,
-                'use_sudo'         => true,
-              },
-            },
-            'PawsUserFileBackend'         => {
-              'FileConfig' => {
-                'replica_cnf_path' => $paws_replica_cnf_path,
-                'scripts_path'     => $scripts_path,
-                'use_sudo'         => true,
-              },
-            },
-            'ToolforgeToolEnvvarsBackend' => {
-              'EnvvarsConfig' => {
-                'kubeconfig_path_template' => $kubeconfig_path_template,
-                'toolforge_api_endpoint'   => "https://api.svc.${::wmcs_project}.${::wmcs_deployment}.wikimedia.cloud:30003",
-                'scripts_path'             => $scripts_path,
-                'use_sudo'                 => true,
-              },
-            },
-          }
-        })
+        }.to_yaml(),
     }
 
     file { $write_replica_cnf_script_path:
@@ -145,7 +144,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
         require => File[ $base_path, $api_service_base_path ],
         recurse => true,
         source  => $api_service_app_path_in_repo,
-        }
+    }
 
     # Needed for prometheus exporter to share metrics between uwsgi processes
     file { $metrics_dir:
@@ -164,7 +163,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
             Package['python3-flask'],
             File[ $replica_cnf_config_file_path ],
             File[ $api_service_app_path ]
-            ],
+        ],
         settings           => {
             uwsgi              => {
                 'plugins'      => 'python3',
@@ -192,64 +191,62 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     }
 
     file { $htpassword_file:
-            content => "${htuser}:${htpassword_hash}",
-            owner   => $user,
-            group   => $group,
-            mode    => '0440',
-            before  => Service['nginx'],
-            require => Package['nginx-common'],
+        content => "${htuser}:${htpassword_hash}",
+        owner   => $user,
+        group   => $group,
+        mode    => '0440',
+        before  => Service['nginx'],
+        require => Package['nginx-common'],
     }
 
     nginx::site { 'toolsdb-replica-cnf-web-nginx':
         require => Uwsgi::App['toolsdb-replica-cnf-web'],
         content => epp(
-          'profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp',
-          {
-            'redirect_to_https' => $redirect_to_https,
-          }
+            'profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp',
+            {'redirect_to_https' => $redirect_to_https},
         ),
     }
 
 
     ensure_packages(['bats'])
     file { '/srv/ops':
-      ensure => 'directory',
-      mode   => '0500',
+        ensure => 'directory',
+        mode   => '0500',
     }
     file { '/srv/ops/replica_cnf_web':
-      ensure => 'directory',
-      mode   => '0500',
+        ensure => 'directory',
+        mode   => '0500',
     }
     $func_tests_dir='/srv/ops/replica_cnf_web/functional_tests'
     $puppet_path='profile/wmcs/nfs/replica_cnf_web_fullstack_tests'
     file { $func_tests_dir:
-      ensure => 'directory',
-      mode   => '0500',
+        ensure => 'directory',
+        mode   => '0500',
     }
     file { "${func_tests_dir}/run.sh":
-      content => epp(
-        "${puppet_path}/run.sh.epp",
-        {
-          'http_user'     => $htuser,
-          'http_password' => $htpassword,
-        }
-      ),
-      mode    => '0500',
+        content => epp(
+            "${puppet_path}/run.sh.epp",
+            {
+                'http_user'     => $htuser,
+                'http_password' => $htpassword,
+            }
+        ),
+        mode    => '0500',
     }
     file { "${func_tests_dir}/paws_account.bats":
-      source => "puppet:///modules/${puppet_path}/paws_accounts.bats",
-      mode   => '0400',
+        source => "puppet:///modules/${puppet_path}/paws_accounts.bats",
+        mode   => '0400',
     }
     file { "${func_tests_dir}/user_account.bats":
-      source => "puppet:///modules/${puppet_path}/user_accounts.bats",
-      mode   => '0400',
+        source => "puppet:///modules/${puppet_path}/user_accounts.bats",
+        mode   => '0400',
     }
     file { "${func_tests_dir}/tool_account.bats":
-      source => "puppet:///modules/${puppet_path}/tool_accounts.bats",
-      mode   => '0400',
+        source => "puppet:///modules/${puppet_path}/tool_accounts.bats",
+        mode   => '0400',
     }
     file { "${func_tests_dir}/helpers.bash":
-      source => "puppet:///modules/${puppet_path}/helpers.bash",
-      mode   => '0400',
+        source => "puppet:///modules/${puppet_path}/helpers.bash",
+        mode   => '0400',
     }
 }
