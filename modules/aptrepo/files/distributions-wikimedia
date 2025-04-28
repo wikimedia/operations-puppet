@@ -301,6 +301,7 @@ Version: 13
 Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
+ component/puppet7
  thirdparty/hwraid
 UDebComponents: main
 Description: Wikimedia packages for Debian trixie
