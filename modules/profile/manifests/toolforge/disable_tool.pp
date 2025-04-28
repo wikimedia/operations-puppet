@@ -10,11 +10,12 @@ class profile::toolforge::disable_tool (
     ensure_packages(['python3-pymysql'])
 
     file { '/etc/disable_tool.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0500',
-        content => template('profile/toolforge/disable_tool.conf.erb'),
+        ensure    => file,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0500',
+        content   => template('profile/toolforge/disable_tool.conf.erb'),
+        show_diff => false,
     }
     git::clone { 'repos/cloud/toolforge/disable-tool':
         ensure    => latest,
