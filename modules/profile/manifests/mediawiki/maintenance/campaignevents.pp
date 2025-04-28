@@ -8,8 +8,14 @@ class profile::mediawiki::maintenance::campaignevents(
 
     # group0: meta.wikimedia.org both in beta and production
     profile::mediawiki::periodic_job { 'campaignevents-updateutcts-metawiki':
-        command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',
-        interval => '02:52'
+        command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki metawiki',
+        interval              => '02:52',
+        cron_schedule         => '52 2 * * *',
+        team                  => $team_label,
+        script_label          => 'UpdateUTCTimestamps.php-metawiki',
+        description           => 'Update UTC Timestamps on metawiki',
+        kubernetes            => true,
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
     profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-metawiki':
         command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki metawiki',
@@ -20,8 +26,14 @@ class profile::mediawiki::maintenance::campaignevents(
     unless $::realm == 'labs' {
         # group0: test.wikipedia.org
         profile::mediawiki::periodic_job { 'campaignevents-updateutcts-testwiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki testwiki',
-            interval => '03:12'
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki testwiki',
+            interval              => '03:12',
+            cron_schedule         => '12 3 * * *',
+            team                  => $team_label,
+            script_label          => 'UpdateUTCTimestamps.php-testwiki',
+            description           => 'Update UTC Timestamps on testwiki',
+            kubernetes            => true,
+            helmfile_defaults_dir => $helmfile_defaults_dir,
         }
         profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-testwiki':
             command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki testwiki',
@@ -31,8 +43,14 @@ class profile::mediawiki::maintenance::campaignevents(
 
         # group0: office.mediawiki.org
         profile::mediawiki::periodic_job { 'campaignevents-updateutcts-officewiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki officewiki',
-            interval => '03:32'
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/UpdateUTCTimestamps.php --wiki officewiki',
+            interval              => '03:32',
+            cron_schedule         => '32 3 * * *',
+            team                  => $team_label,
+            script_label          => 'UpdateUTCTimestamps.php-officewiki',
+            description           => 'Update UTC Timestamps on officewiki',
+            kubernetes            => true,
+            helmfile_defaults_dir => $helmfile_defaults_dir,
         }
         profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-officewiki':
             command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki officewiki',
