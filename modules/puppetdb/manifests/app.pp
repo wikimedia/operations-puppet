@@ -25,6 +25,8 @@
 # @param db_ro_host the host of the read only database
 # @param db_password the database password
 # @param db_ro_password the password for the ro database
+# @param db_maximum_pool_size the maximum number of connections to the database.
+#        rw and ro databases each get a separate pool.
 class puppetdb::app(
     String                        $jvm_opts                   = '-Xmx4G',
     String                        $db_user                    = 'puppetdb',
@@ -46,6 +48,7 @@ class puppetdb::app(
     Optional[Stdlib::Host]        $db_ro_host                 = undef,
     Optional[String]              $db_password                = undef,
     Optional[String]              $db_ro_password             = undef,
+    Integer                       $db_maximum_pool_size       = 25,
 ) {
     # We don't want debian's dbconfig to configure our database, since we are
     # configuring it via puppet.
@@ -134,6 +137,7 @@ class puppetdb::app(
         'password'             => $db_password,
         'facts-blacklist-type' => $facts_blacklist_type,
         'facts-blacklist'      => $facts_blacklist.join(', '),
+        'maximum-pool-size'    => $db_maximum_pool_size,
     }
     puppetdb::config { 'database':
         settings => $db_settings,
@@ -142,9 +146,10 @@ class puppetdb::app(
     if $db_ro_host and $db_driver == 'postgres' {
         $postgres_ro_db_subname = "//${db_ro_host}:5432/puppetdb?${postgres_uri}"
         $read_db_settings = {
-            'subname'  => $postgres_ro_db_subname,
-            'username' => 'puppetdb_ro',
-            'password' => $db_ro_password,
+            'subname'           => $postgres_ro_db_subname,
+            'username'          => 'puppetdb_ro',
+            'password'          => $db_ro_password,
+            'maximum-pool-size' => $db_maximum_pool_size,
         }
         puppetdb::config { 'read-database':
             settings => $read_db_settings,
