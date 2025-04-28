@@ -19,7 +19,6 @@ class profile::mediawiki::maintenance::cirrussearch(
     }
 
     profile::mediawiki::periodic_job { 'cirrus_build_completion_indices_codfw':
-        ensure   => absent, # Disable to avoid orphan indices while migrating to opensearch T388610
         command  => '/usr/local/bin/cirrus_build_completion_indices.sh codfw',
         interval => '02:30',
     }
