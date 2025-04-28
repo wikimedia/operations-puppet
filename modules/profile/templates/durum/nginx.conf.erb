@@ -4,13 +4,11 @@
 ssl_certificate     /etc/acmecerts/durum/live/ec-prime256v1.chained.crt;
 ssl_certificate_key /etc/acmecerts/durum/live/ec-prime256v1.key;
 
-<%- unless @do_ech -%>
 # Do not log any access/error logs; we should not save any data related to Wikidough.
 access_log off;
 error_log  /dev/null;
-<%- else -%>
+<%- if @do_ech -%>
 log_format withech '[$time_local] $status "$http_user_agent" "$ech_status"';
-access_log /var/log/nginx/access.log withech;
 <%- end -%>
 
 # landing page: check.wikimedia-dns.org
@@ -28,6 +26,8 @@ server {
   ssl_ecdh_curve X25519:prime256v1;
   ssl_prefer_server_ciphers on;
   add_header Strict-Transport-Security "max-age=106384710; includeSubDomains; preload" always;
+
+  access_log /var/log/nginx/access.log withech;
 
   location / {
     add_header Content-Type text/plain;
