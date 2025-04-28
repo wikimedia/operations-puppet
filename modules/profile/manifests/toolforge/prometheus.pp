@@ -173,6 +173,12 @@ class profile::toolforge::prometheus (
                 'target_label'  => 'instance',
             },
             {
+                'source_labels' => ['__meta_openstack_instance_name'],
+                'target_label'  => '__address__',
+                'regex'         => '(.*)',
+                'replacement'   => "\$1:${job['port']}",
+            },
+            {
                 'source_labels' => ['__meta_openstack_instance_status'],
                 'action'        => 'keep',
                 'regex'         => 'ACTIVE',
@@ -190,7 +196,7 @@ class profile::toolforge::prometheus (
                     'username'          => $observer_user,
                     'password'          => $observer_password,
                     'domain_name'       => 'default',
-                    'project_name'      => pick($job['project'], $::wmcs_project),
+                    'project_name'      => $::wmcs_project,
                     'all_tenants'       => false,
                     'refresh_interval'  => '5m',
                     'port'              => $job['port'],
