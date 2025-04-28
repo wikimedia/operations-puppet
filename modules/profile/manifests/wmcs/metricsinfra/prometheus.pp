@@ -88,6 +88,7 @@ class profile::wmcs::metricsinfra::prometheus(
         options => {
             base_directory   => $base_path,
             units_to_reload  => ['prometheus@cloud.service', 'prometheus-blackbox-exporter.service'],
+            fqdn_template    => "{instance}.{project}.${::wmcs_deployment}.wikimedia.cloud",
             blackbox_address => 'localhost:9115',
             blackbox_dir     => '/etc/prometheus/blackbox.yml.d',
             blackbox_reload  => '/usr/local/bin/prometheus-assemble-config blackbox',
