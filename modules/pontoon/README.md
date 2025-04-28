@@ -161,7 +161,7 @@ within your stack.
 ### Python version upgrades
 
 The `pipx`-managed virtualenv may break on python version upgrades. The fix is
-to nuke `$HOME/.local/share/pipx/venvs/pontoon` and create it again as described
+to nuke `$HOME/.local/pipx/venvs/pontoon` and create it again as described
 in the installation section.
 
 ### Installation non-Debian systems
