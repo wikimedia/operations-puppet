@@ -16,9 +16,9 @@ profile::acme_chief::accounts:
   72f6cee110ecd66620ec200be3990522:
     regr: '{"body": {}, "uri": "https://dv.acme-v02.api.pki.goog/account/SPoml_vOBQHVMLyrM3y4ow"}'
     directory: "https://dv.acme-v02.api.pki.goog/directory"
-profile::acme_chief::active: acmechief1002.eqiad.wmnet
+profile::acme_chief::active: acmechief2002.codfw.wmnet
 profile::acme_chief::passive:
-  - 'acmechief2002.codfw.wmnet'
+  - 'acmechief1002.eqiad.wmnet'
 profile::nginx::variant: 'light'
 profile::contacts::role_contacts: ['Traffic']
 profile::base::production::role_description: 'ACME certificate manager'

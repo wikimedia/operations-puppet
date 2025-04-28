@@ -6,6 +6,6 @@ profile::acme_chief::accounts:
   7ee51c01616dea9c3cad10790392bebc:
     regr: '{"body": {}, "uri": "https://dv.acme-v02.test-api.pki.goog/account/-avg_vATfcrXaCkgGpdxhg"}'
     directory: "https://dv.acme-v02.test-api.pki.goog/directory"
-profile::acme_chief::active: acmechief-test1001.eqiad.wmnet
-profile::acme_chief::passive: ['acmechief-test2001.codfw.wmnet']
+profile::acme_chief::active: acmechief-test2001.codfw.wmnet
+profile::acme_chief::passive: ['acmechief-test1001.eqiad.wmnet']
 profile::monitoring::notifications_enabled: false
