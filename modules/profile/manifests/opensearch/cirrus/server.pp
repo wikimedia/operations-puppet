@@ -106,23 +106,13 @@ class profile::opensearch::cirrus::server(
         source => 'puppet:///modules/profile/opensearch/cirrus/opensearch-disable-readahead.sh',
     }
 
+    # Run the wrapper every 30 mins
     systemd::timer::job { 'opensearch-disable-readahead':
-        ensure => absent
+        description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
+        command     => '/usr/local/bin/opensearch-disable-readahead.sh',
+        user        => 'root',
+        interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
     }
-
-    # Run the wrapper every 30 mins for each installed cluster
-    $::profile::opensearch::server::filtered_instances.each |$instance_title, $instance_params| {
-        $cluster_name = $instance_params['cluster_name']
-        $base_data_dir = $instance_params['base_data_dir']
-
-        systemd::timer::job { "opensearch-disable-readahead-${cluster_name}":
-            description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
-            command     => "/usr/local/bin/opensearch-disable-readahead.sh ${cluster_name} ${base_data_dir}",
-            user        => 'root',
-            interval    => [{'start' => 'OnUnitActiveSec', 'interval' => '30min'}, {'start' => 'OnBootSec', 'interval' => '1min'}],
-        }
-    }
-
     # END   Temporary mitigation put in place for T264053
 
     # Install custom prometheus data collection. Standard data collection is
