@@ -140,7 +140,7 @@ def main():
     if args.bullseye:
         target_versions['bullseye'] = args.bullseye
     if args.bookworm:
-        target_versions['bookworm'] = args.bullseye
+        target_versions['bookworm'] = args.bookworm
     report = generate_report(target_versions, args.skip_dbs, args.skip_wmcs)
     print_report(report)
 
