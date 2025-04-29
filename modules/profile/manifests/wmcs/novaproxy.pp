@@ -117,7 +117,8 @@ class profile::wmcs::novaproxy (
 
     class { 'prometheus::nginx_exporter': }
 
-    if !$keepalived_vips.empty() {
+    $_keepalived_peers = $keepalived_peers.lest || { $all_proxies }
+    if !$keepalived_vips.empty() and !$_keepalived_peers.empty() {
         $is_primary = $::facts['hostname'] == $active_proxy
         # Ensure the primary server (where we would prefer to get API writes)
         # gets priority when it is online
@@ -128,13 +129,13 @@ class profile::wmcs::novaproxy (
 
         class { 'keepalived::failover':
             auth_pass => $keepalived_password,
-            peers     => $all_proxies - $::facts['networking']['fqdn'],
+            peers     => $_keepalived_peers - $::facts['networking']['fqdn'],
             vips      => $keepalived_vips,
             priority  => fqdn_rand(100) + $priority_modifier,
         }
 
         ferm::rule { 'keepalived-vrrp':
-            rule   => "proto vrrp saddr ${ferm::join_hosts($all_proxies)} ACCEPT;",
+            rule   => "proto vrrp saddr ${ferm::join_hosts($_keepalived_peers)} ACCEPT;",
         }
     }
 }
