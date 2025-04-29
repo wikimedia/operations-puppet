@@ -35,10 +35,17 @@ class profile::mediawiki::maintenance::campaignevents(
             kubernetes            => true,
             helmfile_defaults_dir => $helmfile_defaults_dir,
         }
-        profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-testwiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki testwiki',
-            interval => '00/03:00',
-            splay    => 300,
+        profile::mediawiki::periodic_job { 'campaignevents-aggregateanswers-testwiki':
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki testwiki',
+            interval              => '00/03:00',
+            cron_schedule         => '0 */3 * * *',
+            splay                 => 300,
+            team                  => $team_label,
+            script_label          => 'AggregateParticipantAnswers.php-testwiki',
+            description           => 'Aggregate participant answers on testwiki',
+            kubernetes            => true,
+            helmfile_defaults_dir => $helmfile_defaults_dir,
+            migration_title       => 'campaignevents-aggregateparticipantanswers-testwiki',
         }
 
         # group0: office.mediawiki.org
