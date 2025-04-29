@@ -8,7 +8,6 @@ class profile::wmcs::services::toolsdb_replica_cnf(
     String $htpassword_salt          = lookup('profile::wmcs::services::toolsdb_replica_cnf::htpassword_salt'),
     String $tools_project_prefix     = lookup('profile::wmcs::services::toolsdb_replica_cnf::tools_project_prefix'),
     String $kubeconfig_path_template = lookup('profile::wmcs::services::toolsdb_replica_cnf::kubeconfig_path_template'),
-    Boolean $redirect_to_https       = lookup('profile::wmcs::services::toolsdb_replica_cnf::redirect_to_https'),
     # might be needed to get toolforge weld
     Boolean $include_tools_repo      = lookup('profile::wmcs::services::toolsdb_replica_cnf::include_tools_repo'),
 ) {
@@ -201,10 +200,7 @@ class profile::wmcs::services::toolsdb_replica_cnf(
 
     nginx::site { 'toolsdb-replica-cnf-web-nginx':
         require => Uwsgi::App['toolsdb-replica-cnf-web'],
-        content => epp(
-            'profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp',
-            {'redirect_to_https' => $redirect_to_https},
-        ),
+        content => epp('profile/wmcs/nfs/toolsdb-replica-cnf-web.nginx.epp'),
     }
 
 
