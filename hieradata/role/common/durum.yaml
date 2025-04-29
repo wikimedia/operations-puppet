@@ -48,23 +48,23 @@ profile::bird::advertise_vips:
   yesdoh.check.wikimedia-dns.org:
     ensure: present
     address: *successdoh_ipv4
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H yesdoh.check.wikimedia-dns.org --ssl --sni -I 185.71.138.140 -u /check -t 1"
     address_ipv6: *successdoh_ipv6
-    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H yesdoh.check.wikimedia-dns.org --ssl --sni -I 2001:67c:930::3 -u /check -t 1"
     service_type: durum
   no.check.wikimedia-dns.org:
     ensure: present
     address: *failure_ipv4
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H no.check.wikimedia-dns.org --ssl --sni -I 185.71.138.141 -u /check -t 1"
     address_ipv6: *failure_ipv6
-    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H no.check.wikimedia-dns.org --ssl --sni -I 2001:67c:930::4 -u /check -t 1"
     service_type: durum
   yesdot.check.wikimedia-dns.org:
     ensure: present
     address: *successdot_ipv4
-    check_cmd: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv4')} -u / -t 1"
+    check_cmd: "/usr/lib/nagios/plugins/check_http -H yesdot.check.wikimedia-dns.org --ssl --sni -I 185.71.138.142 -u /check -t 1"
     address_ipv6: *successdot_ipv6
-    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H %{lookup('profile::durum::service::domain')} --ssl --sni -I %{lookup('profile::durum::service::ipv6')} -u / -t 1"
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_http -H yesdot.check.wikimedia-dns.org --ssl --sni -I 2001:67c:930::5 -u /check -t 1"
     service_type: durum
 
 profile::bird::bind_anycast_services:
