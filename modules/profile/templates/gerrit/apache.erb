@@ -131,7 +131,7 @@
     # sorted by URL length, starting with the longest worker URLs.
 
     # Worker for Gitiles
-    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On
+    ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On max=4
     # Below requests are handled by the same backend since the URLs match and
     # thus with the same settings.
     ProxyPass /r/plugins/gitiles/ http://127.0.0.1:8080/r/plugins/gitiles/
