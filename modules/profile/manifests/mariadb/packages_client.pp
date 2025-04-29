@@ -3,6 +3,8 @@ class profile::mariadb::packages_client (
 ) {
     if $package != undef {
         $mariadb_client_package = $package
+    } elsif debian::codename::eq('bookworm') {
+        $mariadb_client_package = 'wmf-mariadb106-client'
     } elsif debian::codename::eq('bullseye') {
         $mariadb_client_package = 'wmf-mariadb105-client'
     } elsif debian::codename::eq('buster') {
