@@ -24,7 +24,16 @@ class keepalived::failover (
   $peers_v6 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V6 }
 
   if $vips_v6 {
-    $source_v6 = $facts['networking']['ip6']
+    $sources_v6 = $facts['networking'][$interface]['bindings6']
+      .map |$binding| { $binding['address'] }
+      .filter |Stdlib::IP::Address::V6::Nosubnet $addr| { !($addr =~ /^fe80/) }  # not a link-local
+      .filter |Stdlib::IP::Address::V6::Nosubnet $addr| { !($addr in $vips) }  # not a VIP
+
+    unless $sources_v6 =~ Array[Stdlib::IP::Address::V6::Nosubnet, 1, 1] {
+      fail("unable to detect valid unicast source address: ${sources_v6}")
+    }
+
+    $source_v6 = $sources_v6[0]
   } else {
     $source_v6 = undef
   }
