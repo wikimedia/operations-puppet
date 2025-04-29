@@ -451,6 +451,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-test-k8s:
       usernames:
+        - name: postgresql-airflow-test-k8s
+          owner: root
+          group: root
+        - name: postgresql-airflow-test-k8s-deploy
+          owner: root
+          group: root
         - name: airflow-test-k8s
           owner: root
           group: analytics-deployers
@@ -459,6 +465,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-wmde:
       usernames:
+        - name: postgresql-airflow-wmde
+          owner: root
+          group: root
+        - name: postgresql-airflow-wmde-deploy
+          owner: root
+          group: root
         - name: airflow-wmde
           owner: root
           group: airflow-wmde-admins
@@ -467,6 +479,12 @@ profile::kubernetes::deployment_server::services:
           group: airflow-wmde-admins
     airflow-research:
       usernames:
+        - name: postgresql-airflow-research
+          owner: root
+          group: root
+        - name: postgresql-airflow-research-deploy
+          owner: root
+          group: root
         - name: airflow-research
           owner: root
           group: analytics-deployers
@@ -475,6 +493,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-search:
       usernames:
+        - name: postgresql-airflow-search
+          owner: root
+          group: root
+        - name: postgresql-airflow-search-deploy
+          owner: root
+          group: root
         - name: airflow-search
           owner: root
           group: analytics-deployers
@@ -483,6 +507,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-main:
       usernames:
+        - name: postgresql-airflow-main
+          owner: root
+          group: root
+        - name: postgresql-airflow-main-deploy
+          owner: root
+          group: root
         - name: airflow-main
           owner: root
           group: analytics-deployers
@@ -491,6 +521,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-platform-eng:
       usernames:
+        - name: postgresql-airflow-platform-eng
+          owner: root
+          group: root
+        - name: postgresql-airflow-platform-eng-deploy
+          owner: root
+          group: root
         - name: airflow-platform-eng
           owner: root
           group: analytics-deployers
@@ -499,6 +535,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-analytics-product:
       usernames:
+        - name: postgresql-airflow-analytics-product
+          owner: root
+          group: root
+        - name: postgresql-airflow-analytics-product-deploy
+          owner: root
+          group: root
         - name: airflow-analytics-product
           owner: root
           group: analytics-deployers
@@ -507,6 +549,12 @@ profile::kubernetes::deployment_server::services:
           group: analytics-deployers
     airflow-ml:
       usernames:
+        - name: postgresql-airflow-ml
+          owner: root
+          group: root
+        - name: postgresql-airflow-ml-deploy
+          owner: root
+          group: root
         - name: airflow-ml
           owner: root
           group: analytics-deployers
