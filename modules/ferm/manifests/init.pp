@@ -99,6 +99,9 @@ class ferm (
             recurse => true,
             purge   => true,
             force   => true,
+            # Ignore hidden staged files created by confd,
+            # confd/resource/template/resource.go:153
+            ignore  => ['.*'],
             require => Package['ferm'],
             notify  => Service['ferm'],
         }
