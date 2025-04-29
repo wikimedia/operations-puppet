@@ -16,6 +16,7 @@
 # [*max_time*] End of time range limit to serve. Can be RFC3339-style
 #              absolute time or relative to now (e.g. -1d)
 # [*consistency_delay*] Minimum age of all blocks before they are being read.
+# [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
 
 # TODO(filippo) evaluate using memcache (shared with swift) for caching
 class thanos::store (
@@ -26,6 +27,7 @@ class thanos::store (
     Optional[String] $min_time = undef,
     Optional[String] $max_time = undef,
     Optional[String] $consistency_delay = undef,
+    Float[0, 1] $memlimit_ratio = 0.7,
 ) {
     ensure_packages(['thanos'])
 

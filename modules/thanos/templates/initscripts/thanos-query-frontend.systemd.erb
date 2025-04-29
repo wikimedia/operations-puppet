@@ -4,6 +4,10 @@ Slice=thanos.slice
 SendSIGKILL=yes
 ExecStart=
 ExecStart=/usr/bin/thanos query-frontend \
+<% if @memlimit_ratio > 0 -%>
+  --enable-auto-gomemlimit \
+  --auto-gomemlimit.ratio=<%= @memlimit_ratio %> \
+<% end -%>
   --http-address <%= @http_address %> \
   --cache-compression-type snappy \
   --query-frontend.downstream-url <%= @downstream_url %> \

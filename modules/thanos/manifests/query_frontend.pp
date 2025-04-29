@@ -14,6 +14,8 @@
 # [*max_query_length*] Reject queries requesting a range longer than this duration (h/m/s)
 # [*memcached_hosts*] List of hostnames for memcached caching, empty list disables memcached
 # [*memcached_port*] The port for memcached client
+# [*request_debug*] Enable request debug logging
+# [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
 
 class thanos::query_frontend (
     Stdlib::Port::Unprivileged $http_port = 16902,
@@ -23,6 +25,7 @@ class thanos::query_frontend (
     Array[Stdlib::Host] $memcached_hosts = [],
     Stdlib::Port $memcached_port = 11211,
     Boolean $request_debug = false,
+    Float[0, 1] $memlimit_ratio = 0.7,
 ) {
     ensure_packages(['thanos'])
 

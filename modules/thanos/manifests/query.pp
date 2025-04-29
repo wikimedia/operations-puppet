@@ -8,6 +8,9 @@
 # [*http_port*] The port to listen on for HTTP
 # [*replica_label*] The Prometheus label to use for deduplicating results
 # [*sd_files*] The file glob used to discover Thanos StoreAPI endpoints
+# [*tracing_enabled*] Self explanatory
+# [*request_debug*] Enable request debug logging
+# [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
 
 class thanos::query (
     Stdlib::Port::Unprivileged $http_port,
@@ -15,6 +18,7 @@ class thanos::query (
     String $sd_files = '/etc/thanos-query/stores/*.yml',
     Boolean $tracing_enabled = false,
     Boolean $request_debug = false,
+    Float[0, 1] $memlimit_ratio = 0.7,
 ) {
     ensure_packages(['thanos'])
 

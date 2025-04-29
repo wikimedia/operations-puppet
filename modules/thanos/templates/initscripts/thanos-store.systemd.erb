@@ -4,6 +4,10 @@ Slice=thanos.slice
 ExecStart=
 # Use = for min/max time options since their values can start with -
 ExecStart=/usr/bin/thanos store \
+<% if @memlimit_ratio > 0 -%>
+  --enable-auto-gomemlimit \
+  --auto-gomemlimit.ratio=<%= @memlimit_ratio %> \
+<% end -%>
   --http-address <%= @http_address %> \
   --grpc-address <%= @grpc_address %> \
   --data-dir <%= @data_dir %> \

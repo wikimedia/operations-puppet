@@ -7,6 +7,10 @@ RuntimeDirectoryPreserve=yes
 RuntimeDirectory=thanos-query
 ExecStart=
 ExecStart=/usr/bin/thanos query \
+<% if @memlimit_ratio > 0 -%>
+  --enable-auto-gomemlimit \
+  --auto-gomemlimit.ratio=<%= @memlimit_ratio %> \
+<% end -%>
   --http-address <%= @http_address %> \
   --query.replica-label <%= @replica_label %> \
   --store.sd-files <%= @sd_files %> \
