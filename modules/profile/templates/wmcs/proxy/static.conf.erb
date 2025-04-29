@@ -10,8 +10,7 @@ geo $bad_user {
 
 
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server ipv6only=on;
+    listen [::]:80 default_server;
     server_name _;
     # 308 is the more proper return code, but lots of crappy old clients do
     # not understand it. So we will instead stick with the ancient 301 and
@@ -21,8 +20,7 @@ server {
 
 <% @proxy_mappings.each do |frontend,backend| %>
 server {
-    listen 443 ssl http2;
-    listen [::]:443 ssl http2 ipv6only=on;
+    listen [::]:443 ssl http2;
     server_name <%= frontend %>;
 
     ssl_certificate /etc/acmecerts/<%= backend['certname'] -%>/live/ec-prime256v1.chained.crt;
