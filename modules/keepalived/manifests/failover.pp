@@ -23,7 +23,7 @@ class keepalived::failover (
   $peers_v4 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V4 }
   $peers_v6 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V6 }
 
-  if $vips_v6 {
+  if !$vips_v6.empty() {
     $sources_v6 = $facts['networking']['interfaces'][$interface]['bindings6']
       .map |$binding| { $binding['address'] }
       .filter |Stdlib::IP::Address::V6::Nosubnet $addr| { !($addr =~ /^fe80/) }  # not a link-local
