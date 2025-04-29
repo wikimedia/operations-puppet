@@ -277,6 +277,13 @@ class profile::mediawiki::php(
         }
     }
 
+    # The uuid extension is only needed on PHP 8.1 and later (T373752).
+    php::extension{ 'uuid':
+        install_packages   => true,
+        versions           => $php_versions.filter |$v| { versioncmp($v, '8.1') >= 0 },
+        versioned_packages => true,
+    }
+
     # Extensions that require configuration.
     # Group 1: extensions that only have version-specific packages.
     $mysql_package_overrides = $php_versions.map |$v| {{$v => "php${v}-mysql"}}.reduce({}) |$m, $val| {$m.merge($val)}
