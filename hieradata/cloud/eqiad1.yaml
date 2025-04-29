@@ -237,6 +237,10 @@ bastion_hosts:
 cache_hosts:
   - 172.16.5.238 # proxy-03.project-proxy.eqiad1.wikimedia.cloud
   - 172.16.5.200 # proxy-04.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.19.232           # proxy-5.project-proxy.eqiad1.wikimedia.cloud
+  - 2a02:ec80:a000:1::2f3   # proxy-5.project-proxy.eqiad1.wikimedia.cloud
+  - 172.16.17.55            # proxy-6.project-proxy.eqiad1.wikimedia.cloud
+  - 2a02:ec80:a000:1::31d   # proxy-6.project-proxy.eqiad1.wikimedia.cloud
 
 # use aliases to provide for backwards compatibility
 # perhaps this doesn't work with our current version of puppet
