@@ -125,8 +125,20 @@
 
     # PolyGerrit cannot serve over /r/project so uses /r/p.
     RewriteRule ^/r/projects/(.+),dashboards/(.+)$ https://<%= @host %>/r/p/$1/+/dashboard/$2 [L,R=301,NE]
-    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon Keepalive=On
+
+    # Proxies to backend servers are workers which are shared based on URLs
+    # overlapping. The first matching rule wins. The definitions thus must be
+    # sorted by URL length, starting with the longest worker URLs.
+
+    # Worker for Gitiles
     ProxyPass /g/ http://127.0.0.1:8080/r/plugins/gitiles/ retry=0 nocanon Keepalive=On
+    # Below requests are handled by the same backend since the URLs match and
+    # thus with the same settings.
+    ProxyPass /r/plugins/gitiles/ http://127.0.0.1:8080/r/plugins/gitiles/
+
+    # Worker for Gerrit
+    ProxyPass /r/ http://127.0.0.1:8080/r/ retry=0 nocanon Keepalive=On
+
     ErrorDocument 503 "/error.html#"
 
     ErrorLog /var/log/apache2/<%= @host %>.https.error.log
