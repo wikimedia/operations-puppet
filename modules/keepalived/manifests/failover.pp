@@ -23,6 +23,12 @@ class keepalived::failover (
   $peers_v4 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V4 }
   $peers_v6 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V6 }
 
+  if $vips_v6 {
+    $source_v6 = $facts['networking']['ip6']
+  } else {
+    $source_v6 = undef
+  }
+
   class { 'keepalived':
     config => template('keepalived/keepalived.conf.erb'),
   }

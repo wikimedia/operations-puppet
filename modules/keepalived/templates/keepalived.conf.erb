@@ -35,15 +35,12 @@ vrrp_instance vrrp_ipv6 {
   virtual_router_id <%= @virtual_router_id %>
   priority <%= @priority %>
   advert_int 1
-  authentication {
-    auth_type PASS
-    auth_pass <%= @auth_pass %>
-  }
   virtual_ipaddress {
 <% @vips_v6.each do |vip| -%>
     <%= vip %>
 <% end -%>
   }
+  unicast_src_ip <%= @source_v6 %>
   unicast_peer {
 <% @peers_v6.each do |peer| -%>
     <%= peer %>
