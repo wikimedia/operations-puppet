@@ -1,0 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
+# This key will allow pods in the dse-k8s-eqiad cluster to rsync new dumps to the clouddumps servers, for distribution.
+# The IP ranges below reflect the DSE_KUBEPODS_NETWORKS ranges in eqiad.
+from="10.67.24.0/21",from="2620:0:861:302::/64",command="/usr/bin/rsync --server -vloDtpr . /srv/mediawiki-dumps-legacy" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINP7YBWrx/crCj9oOq/rBCmT//PXufLEUU2W6iEud5wL dumpsgen-rsync@dse-k8s-eqiad
