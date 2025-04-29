@@ -1,6 +1,6 @@
 cluster: wmcs
 
-contactgroups: "wmcs-team-email,admins"
+contactgroups: "wmcs-team-email,team-data-platform,admins"
 
 profile::puppet::agent::force_puppet7: true
 
