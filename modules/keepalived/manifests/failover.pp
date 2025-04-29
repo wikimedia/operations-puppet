@@ -24,7 +24,7 @@ class keepalived::failover (
   $peers_v6 = $peer_ips.filter |$peer| { $peer =~ Stdlib::IP::Address::V6 }
 
   if $vips_v6 {
-    $sources_v6 = $facts['networking'][$interface]['bindings6']
+    $sources_v6 = $facts['networking']['interfaces'][$interface]['bindings6']
       .map |$binding| { $binding['address'] }
       .filter |Stdlib::IP::Address::V6::Nosubnet $addr| { !($addr =~ /^fe80/) }  # not a link-local
       .filter |Stdlib::IP::Address::V6::Nosubnet $addr| { !($addr in $vips) }  # not a VIP
