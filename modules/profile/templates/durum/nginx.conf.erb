@@ -27,8 +27,6 @@ server {
   ssl_prefer_server_ciphers on;
   add_header Strict-Transport-Security "max-age=106384710; includeSubDomains; preload" always;
 
-  access_log /var/log/nginx/access.log withech;
-
   location / {
     add_header Content-Type text/plain;
     return 200 'OK';
@@ -49,9 +47,20 @@ server {
   add_header  Cache-Control               "no-store";
 
   location / {
-    root      <%= @durum_path %>;
-    index     index.html;
+    <%- if @do_ech -%>
+    # Enable logging for the inner SNI when ECH is enabled. This is where withech logs to access.log.
+    access_log /var/log/nginx/access.log withech;
+    <%- end -%>
+    root       <%= @durum_path %>;
+    index      index.html;
   }
+
+  <%- if @do_ech -%>
+  location /check {
+    add_header Content-Type text/plain;
+    return 200 'OK';
+  }
+  <%- end -%>
 
 }
 
