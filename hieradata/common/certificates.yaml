@@ -425,3 +425,33 @@ certificates::acme_chief:
     - '*.wikipediya.org'
     - wikiversity.gr
     - '*.wikiversity.gr'
+    - wikipediaafd.org
+    - '*.wikipediaafd.org'
+    - wikimedia.com.tr
+    - '*.wikimedia.com.tr'
+    - border-wikipedia.de
+    - '*.border-wikipedia.de'
+    - getawikipedia.com
+    - '*.getawikipedia.com'
+    - wikimediacommons.wiki
+    - '*.wikimediacommons.wiki'
+    - wikimediafunctions.com
+    - '*.wikimediafunctions.com'
+    - wikinews.community
+    - '*.wikinews.community'
+    - wikipdiamovement.org
+    - '*.wikipdiamovement.org'
+    - abstract.wiki
+    - '*.abstract.wiki'
+    - wikipedia.email
+    - '*.wikipedia.email'
+    - wikiversity.lt
+    - '*.wikiversity.lt'
+    - eswikipedia.org
+    - '*.eswikipedia.org'
+    - wikibooks.lv
+    - '*.wikibooks.lv'
+    - wikimediaadministration.org
+    - '*.wikimediaadministration.org'
+    - wikipedia.foundation
+    - '*.wikipedia.foundation'
