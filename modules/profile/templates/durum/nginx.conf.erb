@@ -56,7 +56,7 @@ server {
   }
 
   <%- if @do_ech -%>
-  location /check {
+  location /health {
     add_header Content-Type text/plain;
     return 200 'OK';
   }
