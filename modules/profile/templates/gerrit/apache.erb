@@ -131,6 +131,13 @@
 
     ErrorLog /var/log/apache2/<%= @host %>.https.error.log
 
+    # T392467
+    <Location "/r/plugins/gitiles/">
+    RewriteEngine On
+    RewriteCond %{HTTP:Cookie} !(^|;\s*)GerritAccount=
+    RewriteRule ^ - [R=401,L]
+    </Location>
+
     # Possible values include: debug, info, notice, warn, error, crit,
     # alert, emerg.
     LogLevel warn
