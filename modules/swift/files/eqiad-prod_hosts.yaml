@@ -55,8 +55,6 @@ hosts:
     - ms-be1089
     - ms-be1090
   prod24:
-    - ms-be1060:
-        - failed
     - ms-be1061
     - ms-be1062
     - ms-be1063
