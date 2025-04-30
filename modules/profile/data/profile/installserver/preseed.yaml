@@ -732,7 +732,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'testvm*':
     - partman/flat.cfg
     - virtual.cfg
-  'thanos-be1005|thanos-be2005':
+  'thanos-be100[5-9]|thanos-be200[5-9]':
     - partman/custom/ms-be_simple-efi.cfg
   'thanos-be*':
     - partman/custom/ms-be.cfg
