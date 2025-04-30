@@ -129,16 +129,6 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'oversight%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
-            'mobile_ticket_count'      => {
-                'name'    => 'vrts_ticket_count',
-                'columns' => ['count'],
-                'labels'  => ['name'],
-                'query'   => @("QUERY"/)
-                            SELECT COUNT(t.id) AS count, 'mobile_queues' AS name FROM ticket t
-                            INNER JOIN queue q ON t.queue_id = q.id
-                            WHERE q.valid_id=1 AND q.name LIKE 'mobile%' AND t.create_time >= '${start_date}';
-                            | QUERY
-            },
             'photosub_ticket_count'    => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
@@ -159,6 +149,16 @@ class profile::vrts(
                             WHERE q.valid_id=1 AND q.name LIKE 'sister%' AND t.create_time >= '${start_date}';
                             | QUERY
             },
+            'junk_queue_ticket_count'  => {
+                'name'    => 'vrts_ticket_count',
+                'columns' => ['count'],
+                'labels'  => ['name'],
+                'query'   => @("QUERY"/)
+                            SELECT COUNT(t.id) AS count, 'junk_queues' AS name FROM ticket t
+                            INNER JOIN queue q ON t.queue_id = q.id
+                            WHERE q.valid_id=1 AND q.id = 3;
+                            | QUERY
+            },
             'other_ticket_count'       => {
                 'name'    => 'vrts_ticket_count',
                 'columns' => ['count'],
@@ -174,6 +174,7 @@ class profile::vrts(
                             AND q.name NOT LIKE 'mobile%'
                             AND q.name NOT LIKE 'photo%'
                             AND q.name NOT LIKE 'sister%'
+                            AND q.id != 3
                             AND t.create_time >= '${start_date}';
                             | QUERY
             }
