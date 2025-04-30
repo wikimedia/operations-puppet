@@ -3560,8 +3560,7 @@ users:
     gid: 500
     name: aborrero
     realname: Arturo Borrero Gonzalez
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInHKi3MxDy91mgCV3x3MBFxCFWbM5QziRGJwdRRiVun aborrero@wikimedia.org production
+    ssh_keys: []
     uid: 18194
     email: aborrero@wikimedia.org
   hpham:
