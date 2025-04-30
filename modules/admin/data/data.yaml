@@ -64,7 +64,7 @@ groups:
     members: &ops_members [filippo, bblack, andrew, oblivian,
               akosiaris, mark, ariel, otto, robh, tstarling,
               ori, jmm, jynus, elukey, gehel, volans, marostegui,
-              ayounsi, herron, vgutierrez, jiji, cwhite,
+              ayounsi, herron, vgutierrez, cwhite,
               cdanis, dzahn, sukhe, pt1979,
               rzl, hnowlan, jayme, ryankemper, klausman,
               dcaro, legoktm, cmooney, jelto, btullis,
@@ -118,7 +118,7 @@ groups:
     # with the extra tools that we allow.
     gid: 724
     description: 'Used for SREs without full root privileges'
-    members: &ops_limited [*datacenter_ops]
+    members: &ops_limited [*datacenter_ops, jiji]
     privileges: ['ALL = NOPASSWD: /usr/sbin/dmidecode',
                  'ALL = NOPASSWD: /usr/bin/dmesg *',
                  'ALL = NOPASSWD: /usr/sbin/lldpctl *',
@@ -430,7 +430,7 @@ groups:
               cicalese, gbirke, isaacj, sbassett,
               niharika29, jgleeson, srishakatux,
               esanders, sukhe, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
-              kevinbazira, jiji, cohi, mstyles, snowick,
+              kevinbazira, cohi, mstyles, snowick,
               aarora, knissen, jiawang, tarrow,
               itamar, phedenskog, aaron, aklapper, andrew-wmde,
               chrisalbon, wikigit, nahidunlimited,
