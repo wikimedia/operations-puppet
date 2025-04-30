@@ -2,4 +2,4 @@
 mariadb::shard: 'es2'
 profile::mariadb::mysql_role: 'standalone'
 mariadb::binlog_format: 'ROW'
-
+mariadb::package: 'wmf-mariadb1011'
