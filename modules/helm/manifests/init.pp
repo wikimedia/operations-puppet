@@ -24,11 +24,7 @@ class helm (
     }
 
     # Ensure helm 3.11 is the default
-    # TODO: This can be reduced to one call once T387548 is fixed
     alternatives::select { 'helm':
-        path => '/usr/bin/helm3.11',
-    }
-    alternatives::select { 'helm3':
         path => '/usr/bin/helm3.11',
     }
 
