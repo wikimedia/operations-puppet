@@ -1,14 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-[Unit]
-Description=HAProxy log parser and forwarder
-After=network-online.target
-
-[Install]
-WantedBy=multi-user.target
-
 [Service]
 User=<%= @user %>
 Group=<%= @user %>
+ExecStart=
 ExecStart=/usr/bin/haproxykafka -c <%= @conffile_full_path %>
 Restart=always
 MemoryHigh=4.5%

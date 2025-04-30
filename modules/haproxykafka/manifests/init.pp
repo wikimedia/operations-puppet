@@ -61,9 +61,10 @@ class haproxykafka (
     }
 
     systemd::service { 'haproxykafka':
-        ensure  => $ensure,
-        content => systemd_template('haproxykafka'),
-        restart => true,
-        require => File[$conffile_full_path],
+        ensure   => $ensure,
+        restart  => true,
+        override => true,
+        content  => init_template('haproxykafka', 'systemd_override'),
+        require  => File[$conffile_full_path],
     }
 }
