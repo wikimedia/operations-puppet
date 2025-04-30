@@ -54,6 +54,7 @@ class profile::mediawiki::maintenance::updatequerypages(
         cron_schedule         => '00 01 10,24 * *',
         shards                => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17'],
         script                => 'updateSpecialPages.php --override --only=Mostlinked',
+        kubernetes            => true,
         team                  => $team,
         description           => 'Update mostlinked',
         script_label          => 'updatequerypages-mostlinked',
