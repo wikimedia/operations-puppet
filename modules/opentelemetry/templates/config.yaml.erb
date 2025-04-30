@@ -11,41 +11,6 @@ receivers:
 processors:
   batch:
 
-  tail_sampling:
-    policies: [
-      # Thanos sampling -- sample Thanos services at 1% here via otel collector since
-      #                    production Thanos version currently predates inbuilt sampling
-      {
-        name: thanos-sampling,
-        type: and,
-        and:
-          {
-            and_sub_policy:
-              [
-                {
-                  # Match thanos service names
-                  name: thanos-service-names,
-                  type: string_attribute,
-                  string_attribute:
-                    {
-                      key: service.name,
-                      values: [
-                        thanos-query,
-                      ],
-                    },
-                },
-                {
-                  # apply probabilistic sampling
-                  name: thanos-sampling,
-                  type: probabilistic,
-                  probabilistic: { sampling_percentage: 0.1 },
-                },
-              ],
-          },
-      },
-      # End Thanos sampling
-    ]
-
 exporters:
   logging:
   <% if defined?(@otel_gateway_fqdn) %>
@@ -57,7 +22,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [tail_sampling, batch]
+      processors: [batch]
       exporters:
         - logging
         <% if defined?(@otel_gateway_fqdn) %>
