@@ -44,6 +44,7 @@ class profile::mediawiki::maintenance::updatequerypages(
         shards                => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17'],
         script                => 'updateSpecialPages.php --override --only=Mostrevisions',
         team                  => $team,
+        kubernetes            => true,
         description           => 'Update mostrevisions',
         script_label          => 'updatequerypages-mostrevisions',
         helmfile_defaults_dir => $helmfile_defaults_dir,
