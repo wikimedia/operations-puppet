@@ -107,7 +107,7 @@ class profile::opensearch::cirrus::server(
     }
 
     systemd::timer::job { 'opensearch-disable-readahead':
-        ensure      => absent
+        ensure      => absent,
         description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
         command     => '/usr/local/bin/opensearch-disable-readahead.sh',
         user        => 'root',
