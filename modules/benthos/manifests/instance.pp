@@ -24,7 +24,7 @@ define benthos::instance(
         ensure       => stdlib::ensure($ensure, 'file'),
         owner        => 'benthos',
         group        => 'benthos',
-        mode         => '0755',
+        mode         => '0444',
         source       => "puppet:///modules/${config_source}",
         validate_cmd => '/usr/bin/benthos lint --skip-env-var-check %',
     }
@@ -34,7 +34,7 @@ define benthos::instance(
             ensure  => stdlib::ensure($ensure, 'file'),
             owner   => 'benthos',
             group   => 'benthos',
-            mode    => '0755',
+            mode    => '0444',
             content => template('benthos/env_variables.erb'),
             notify  => Service[$service_name],
         }
