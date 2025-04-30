@@ -90,3 +90,6 @@ profile::gerrit::gerrit_abusers:
   - '20.171.206.0/23' # openai-gptbot
   - '4.227.36.0/25' # openai-gptbot
   - '52.230.152.0/24' # openai-gptbot
+  - '45.197.1.0/24' # Zillion
+  - '2a0a:4cc0::/40' # Netcup
+  - '2a03:4000::/32' # Netcup
