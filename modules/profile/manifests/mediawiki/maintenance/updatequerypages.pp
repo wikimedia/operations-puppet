@@ -12,7 +12,7 @@ class profile::mediawiki::maintenance::updatequerypages(
         cron_schedule         => '00 01 8,22 * *',
         shards                => ['s1@11', 's2@12', 's3@13', 's4@14', 's5@15', 's6@16', 's7@17', 's8@18'],
         script                => 'updateSpecialPages.php --override --only=Ancientpages',
-        kubernetes_shards     => ['s3@13'],
+        kubernetes            => true,
         team                  => $team,
         description           => 'Update ancientpages',
         script_label          => 'updatequerypages-ancientpages',
