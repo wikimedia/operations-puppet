@@ -75,10 +75,15 @@ class dynamicproxy (
         interval    => {'start' => 'OnCalendar', 'interval' => '*-*-* 00/1:00:00'}
     }
 
-    $lua_path = debian::codename::ge('bookworm').bool2str(
-        '/etc/nginx/lua/?.lua;;',
-        '/etc/nginx/lua/?.lua'
-    )
+    if debian::codename::ge('bookworm') {
+        package { 'lua-nginx-redis':
+            ensure => present,
+        }
+
+        $lua_path = undef
+    } else {
+        $lua_path = '/etc/nginx/lua/?.lua'
+    }
 
     file { '/etc/nginx/nginx.conf':
         ensure  => file,
@@ -177,13 +182,22 @@ class dynamicproxy (
     }
 
     file { '/etc/nginx/lua/resty':
-        ensure  => directory,
-        require => File['/etc/nginx/lua'],
+        ensure  => absent,
+        recurse => true,
+        force   => true,
+        purge   => true,
     }
 
-    file { '/etc/nginx/lua/resty/redis.lua':
-        ensure  => file,
-        require => File['/etc/nginx/lua/resty'],
-        source  => 'puppet:///modules/dynamicproxy/redis.lua',
+    if debian::codename::lt('bookworm') {
+        file { '/etc/nginx/lua/nginx':
+            ensure  => directory,
+            require => File['/etc/nginx/lua'],
+        }
+
+        file { '/etc/nginx/lua/nginx/redis.lua':
+            ensure  => file,
+            require => File['/etc/nginx/lua/resty'],
+            source  => 'puppet:///modules/dynamicproxy/redis.lua',
+        }
     }
 }

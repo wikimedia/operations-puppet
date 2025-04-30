@@ -15,7 +15,7 @@
 -- Lua file run by nginx that does appropriate routing
 -- Gets domain name, figures out instance name from it, and routes there
 
-local redis = require 'resty.redis'
+local redis = require 'nginx.redis'
 local red = redis:new()
 red:set_timeout(1000)
 red:connect('127.0.0.1', 6379)
