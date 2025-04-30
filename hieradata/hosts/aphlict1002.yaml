@@ -1,1 +1,1 @@
-profile::phabricator::aphlict::ensure: absent
+profile::phabricator::aphlict::ensure: present
