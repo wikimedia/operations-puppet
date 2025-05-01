@@ -55,6 +55,97 @@ define host {
 }
 
 define host {
+    host_name                franio2001
+    address                  10.195.0.46
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                franio2002
+    address                  10.195.0.47
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                franio2003
+    address                  10.195.0.48
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                fransc2001
+    address                  10.195.0.45
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                fransw2001
+    address                  10.195.0.50
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                fransw2002
+    address                  10.195.0.51
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
+    host_name                fransw2003
+    address                  10.195.0.52
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
     host_name                frauth1002
     address                  10.64.40.69
     check_command            check_ping!500,20%!2000,100%
