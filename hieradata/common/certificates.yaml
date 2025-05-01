@@ -455,3 +455,42 @@ certificates::acme_chief:
     - '*.wikimediaadministration.org'
     - wikipedia.foundation
     - '*.wikipedia.foundation'
+    - wikipediaexperts.com
+    - '*.wikipediaexperts.com'
+    - wikisource.dk
+    - '*.wikisource.dk'
+    - wikisource.lv
+    - '*.wikisource.lv'
+  non-canonical-redirect-11:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: weekipedia.com
+    SNI:
+    - weekipedia.com
+    - '*.weekipedia.com'
+    - donatetowikipedia.org
+    - '*.donatetowikipedia.org'
+    - wikipassport.org
+    - '*.wikipassport.org'
+    - wikimedia.charity
+    - '*.wikimedia.charity'
+    - wikiartpedia.mobi
+    - '*.wikiartpedia.mobi'
+    - wikiversity.am
+    - '*.wikiversity.am'
+    - setknowledgefree.org
+    - '*.setknowledgefree.org'
+    - wikipediagroup.org
+    - '*.wikipediagroup.org'
+    - wikipedia10.org
+    - '*.wikipedia10.org'
+    - nlwikipedia.org
+    - '*.nlwikipedia.org'
+    - wikidough.org
+    - '*.wikidough.org'
+    - wikipedia.xyz
+    - '*.wikipedia.xyz'
