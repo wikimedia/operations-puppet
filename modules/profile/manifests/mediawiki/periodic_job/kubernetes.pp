@@ -41,6 +41,10 @@ define profile::mediawiki::periodic_job::kubernetes(
 ) {
     if $ensure == 'present' {
         $command_quoted = $command.to_json()
+        $description_quoted = $description ? {
+            undef   => '',
+            default => $description.to_json(),
+        }
 
         if length($title) > 52 {
             fail("Can't create a Kubernetes periodic job with full title longer than 52 chars: ${title}")
