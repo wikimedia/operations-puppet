@@ -11,9 +11,6 @@ class role::wdqs::internal {
     require profile::query_service::categories
     require profile::query_service::wikidata
     require profile::query_service::monitor::wikidata_internal
-    # Production specific profiles
-    include profile::lvs::realserver
-    include profile::lvs::realserver::ipip
 
     # wdqs-internal specific profiles
     include profile::tlsproxy::envoy # TLS termination
