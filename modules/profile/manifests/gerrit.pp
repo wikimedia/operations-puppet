@@ -117,6 +117,7 @@ class profile::gerrit(
         order   => 11,
         content => @(EOF/L)
             ip saddr 88.255.11.32/28 tcp dport { 80, 443, 29418 } accept
+            ip saddr 88.255.15.90/32 tcp dport { 80, 443, 29418 } accept
             | EOF
     }
 
