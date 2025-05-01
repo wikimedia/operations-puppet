@@ -2922,7 +2922,8 @@ users:
     gid: 500
     name: lucaswerkmeister-wmde
     realname: Lucas Werkmeister
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDBm16KVbtgcdmPMWDFi5YQcWiU4HoCIh5qkyt+BEUW3 cardno:20_560_905
     uid: 16753
     email: lucas.werkmeister@wikimedia.de
   wmde-leszek:
