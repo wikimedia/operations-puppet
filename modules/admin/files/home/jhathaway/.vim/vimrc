@@ -71,6 +71,7 @@ let g:ale_lint_on_insert_leave = 1        " Automatically lint when leaving inse
 let g:ale_set_signs = 1                   " Enable signs showing in the gutter to reduce interruptive visuals
 let g:ale_linters_explicit = 1            " Only run linters that are explicitly listed below
 let g:ale_set_highlights = 1              " Disable highlighting as it interferes with readability and accessibility
+let g:ale_fix_on_save = 1
 let g:ale_linters = {}
 let g:ale_fixers = {}
 
@@ -142,17 +143,17 @@ colorscheme default
 
 set signcolumn=auto
 set tabstop=4
-let g:ale_enabled = 1
-let g:ale_fix_on_save = 1
 augroup filetypes
 	autocmd!
 	autocmd FileType sh setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 noexpandtab
+	autocmd FileType bash setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 noexpandtab
 	autocmd FileType puppet setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 expandtab smarttab
 	autocmd FileType epuppet setlocal textwidth=80 tabstop=4 shiftwidth=4 softtabstop=-1 expandtab smarttab
 	autocmd FileType yaml setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=-1 expandtab smarttab
 	autocmd FileType json setlocal textwidth=80 tabstop=2 shiftwidth=2 softtabstop=-1 expandtab smarttab
 augroup END
 let g:ale_fixers['sh'] = ['shfmt']
+let g:ale_fixers['bash'] = ['shfmt']
 let g:ale_fixers['bats'] = ['shfmt']
 " not yet used for wikimedia python
 " let g:ale_fixers['python'] = ['black']
@@ -165,6 +166,7 @@ let g:ale_fixers['json'] = ['clang-format']
 let g:ale_fixers['java'] = ['google_java_format']
 let g:ale_fixers['puppet'] = ['puppetlint']
 let g:ale_linters['c'] = ['clangtidy']
+let g:ale_linters['puppet'] = ['puppet', 'puppetlint']
 let g:ale_linters['json'] = ['jq']
 
 " HACK: to fix spelling on light backgrounds

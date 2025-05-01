@@ -2,6 +2,11 @@
 	name = Jesse Hathaway
 	email = jesse@mbuki-mvuki.org
 	signingkey = /home/jhathaway/.ssh/id_rsa_git.pub
+[diff]
+	algorithm = histogram
+	colorMoved = plain
+	mnemonicPrefix = true
+	renames = true
 [pull]
 	ff = only
 [init]
@@ -22,6 +27,17 @@
 	grep-changed = "!f(){ git diff-index -U -G \"$@\" HEAD; };f "
 	grep-staged  = "!f(){ git diff-index -U --cached -G \"$@\" HEAD; };f "
 	amend = commit --amend
-	mylog = log --author 'Jesse Hathaway'
+	mylog = log --author jhathaway@wikimedia.org --author jesse@mbuki-mvuki.org
 [commit]
 	verbose = true
+[url "git@salsa.debian.org:installer-team/"]
+	pushInsteadOf = https://salsa.debian.org/installer-team/
+[status]
+	short = true
+# wmf config
+[includeIf "hasconfig:remote.*.url:https://*.wikimedia.org/**"]
+    path = ~/.config/git/wmf
+[includeIf "hasconfig:remote.*.url:git@gitlab.wikimedia.org:repos/**"]
+    path = ~/.config/git/wmf
+[branch]
+	sort = committerdate

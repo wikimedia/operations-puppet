@@ -71,4 +71,8 @@ Plug 'w0rp/ale'
 " YAML bread crumbs
 Plug 'Einenlum/yaml-revealer'
 
+" Support for GNU sytel line numbers, e.g.
+" $ vim path/to/file.ext:12:3
+Plug 'wsdjeg/vim-fetch'
+
 call plug#end()

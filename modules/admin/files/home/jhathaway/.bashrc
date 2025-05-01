@@ -60,6 +60,9 @@ man() {
 # Typing is hard, ⌨️
 function grpe { grep "$@"; }
 
+# Remove version info
+function octave { command octave --silent "$@"; }
+
 fe() {
 	local files
 	mapfile -t files <(fzf-tmux --query="$1" --multi --select-1 --exit-0)
@@ -113,10 +116,6 @@ dollar() {
 		printf -v out '\[\e[1;31m\]\$\[\e[m\]'
 	fi
 	printf '%s' "${out@P}"
-}
-
-corp() {
-	ssh -D 8123 -f -C -q -N support01.chi
 }
 
 function join_by {
@@ -282,19 +281,24 @@ function wmf-past-work {
 
 	printf '\n## Git Commits\n'
 	declare -A wmf_repos=(
+		['corto']='main'
 		['dcl']='main'
 		['deployment-charts']='master'
+		['dns']='master'
 		['docker-pkg']='master'
+		['integration-config']='master'
 		['mx-tests']='main'
 		['production-images']='master'
 		['puppet']='production'
+		['puppet-compiler']='master'
 	)
 	for repo in "${!wmf_repos[@]}"; do
 		PAGER='' git -C ~/src/wmf/"$repo" fetch 2>/dev/null
 		# Format: Wed Jul 26 16:39  adadce2  typo
 		# --since=1.weeks \
+		#'--pretty=format:%<(18,trunc)%ch%<(12,trunc)%h%s'
 		local log_args=(
-			'--pretty=format:%<(18,trunc)%ch%<(12,trunc)%h%s'
+			'--pretty=format:%h: %s'
 			'--reverse'
 			"--since=$since"
 			"--until=$until"
@@ -316,7 +320,7 @@ function wmf-last-week {
 	wmf-past-work -s "$(date -I -d 'last sunday - 7 days')" -u "$(date -I -d 'last saturday')"
 }
 
-# Create a gerrit link from a commit hash
+# Create a git tiles gerrit link from a commit hash
 # e.g. https://gerrit.wikimedia.org/r/plugins/gitiles/operations/puppet/+/feee1540547412d9bc4429df570a3c6da151162e
 function wmf-gerrit-link {
 	commit=$1
@@ -336,8 +340,12 @@ function gdoc-img-copy {
 }
 
 # Disposable Debian container
+# TODO:
+# 1. Add vim
+# 2. Make these a systemd container, so we have a better simulacrum
+# 3. Fix debconf warning about no dialog program
 function bubble-up {
-	printf 'Bubbling...🫧\n'
+	printf 'Bubbling up...🫧\n'
 	# TODO: pull down dotfiles, but don't mount home? Re-use sync-dotfiles?
 	# TODO: default image
 	if [[ $# -gt 0 ]]; then
@@ -362,6 +370,9 @@ function git-root {
 }
 
 # Convert to phabricators remarkup language
+# TODO:
+# - just use plain text numbering, since phab's numbers, don't support code
+#   blocks
 function md2phab {
 	cmd=(pandoc -t remarkup.lua -f markdown)
 	if [[ -v '1' ]]; then
@@ -447,6 +458,7 @@ export MANWIDTH=80
 # Allows less to know the total line length via stdin, by going to the EOF,
 # this then allows it to generate a percentage in the status line.
 export MANPAGER='less +Gg'
+export PAGER='less'
 # ssh tab completion from avahi
 export COMP_KNOWN_HOSTS_WITH_AVAHI=1
 # fix jq colors, https://github.com/jqlang/jq/issues/2924
@@ -513,6 +525,9 @@ for cmd in "${k8s_cmds[@]}"; do
 	fi
 done
 
+# OpenBao completions
+complete -C /usr/bin/bao bao
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(lesspipe)"
 
@@ -523,6 +538,7 @@ set -o vi
 tabs -4
 
 # Aliases
+alias abacus=octave
 alias xclip="xclip -selection clipboard"
 if [[ "$(uname)" == 'Linux' ]]; then
 	alias lsblk='lsblk -o NAME,SIZE,TYPE,FSTYPE,MODEL,MOUNTPOINT,LABEL'
@@ -532,20 +548,100 @@ fi
 alias v='view'
 # ipcalc-ng has IPv6 support
 alias ipcalc='ipcalc-ng'
+
 function noop {
 	{ sudo puppet agent -t --noop "$@"; } 2>&1 | tee ~/puppet-noop.out
+	return "${PIPESTATUS[0]}"
 }
+
 function apply {
 	{ sudo puppet agent -t "$@"; } 2>&1 | tee ~/puppet-apply.out
+	return "${PIPESTATUS[0]}"
 }
+
 function noopply {
-	noop "$@"
+	if ! noop "$@"; then
+		return 1
+	fi
 	read -r -p 'Apply? [y/n]: '
 	if [[ $REPLY =~ ^[Yy]$ ]]; then
 		apply "$@"
 	else
 		printf 'Puppet apply skipped.\n'
 	fi
+}
+
+function puppet-catalog {
+	sudo cat "/var/lib/puppet/client_data/catalog/$(hostname -f).json" |
+		jq .
+}
+
+function csv-to-sqlite {
+	csv=$1
+	if [[ ! -e "${csv}" ]]; then
+		printf 'Error: CSV file "%s" not found\n' "$csv"
+		return 1
+	fi
+	table="${csv%%.*}"
+	db="${table}.db"
+	# Remove any existing db, otherwise the import appends rows
+	if [[ -e "${db}" ]]; then
+		rm -i "${db}"
+		if [[ -e "${db}" ]]; then
+			return 1
+		fi
+	fi
+	sqlite3 "$db" <<-EOF
+		.import --csv ${csv} ${table}
+	EOF
+	sqlite3 "$db"
+}
+
+# re-display debian's dynamic motd
+function motd {
+	cat /run/motd.dynamic
+}
+
+# TODO: reline is not yet compatible with bash-rsi
+function irb {
+	INPUTRC=/dev/null command irb
+}
+function jirb {
+	INPUTRC=/dev/null command jirb
+}
+
+# https://danielhpavey.uk/vim/vim-open-all-files-from-specified-commit/
+function vi-commit() {
+	if [[ $# -eq 1 ]]; then
+		commit=$1
+	else
+		commit='HEAD'
+	fi
+	mapfile -t commit_files < <(git diff-tree --no-commit-id --name-only -r "$commit")
+	vi "${commit_files[@]}"
+}
+
+# how I compose plain text email, don't judge :P
+function vail() {
+	xclip -o |
+		vipe --suffix md |
+		tee ~/tmp/email-"$(date --iso-8601=seconds)".md |
+		xclip
+}
+
+# bash version of resize, useful for serial consoles which can't autoresize
+# via SIGWINCH
+# - https://unix.stackexchange.com/a/530361
+function resize {
+	local old
+	local rows
+	local cols
+	old=$(stty -g)
+	stty -echo
+	printf '\033[18t'
+	IFS=';' read -d t -r _ rows cols _
+	stty "$old"
+	stty cols "$cols" rows "$rows"
 }
 
 # shellcheck disable=SC2016
