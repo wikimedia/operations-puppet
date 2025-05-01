@@ -9,8 +9,16 @@
 class profile::mediawiki::maintenance::purge_expired_blocks(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+    $team = 'trust-and-safety-product'
+
     profile::mediawiki::periodic_job { 'purge_expired_blocks':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/small.dblist maintenance/purgeExpiredBlocks.php',
-        interval => '05:00'
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/small.dblist maintenance/purgeExpiredBlocks.php',
+        interval              => '05:00',
+        cron_schedule         => '0 5 * * *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'purgeExpiredBlocks.php',
+        description           => 'Purge expired blocks on small wikis',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
