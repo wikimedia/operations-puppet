@@ -48,6 +48,9 @@ describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :defi
 - "$.(cluster|search).remote.gamma.seeds":
   - host1:9900
   - host2:9900
+- "$.(cluster|search).remote.phi.seeds":
+  - host5:9700
+  - host4:9700
           EOM
           )
       }

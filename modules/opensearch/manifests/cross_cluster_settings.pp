@@ -21,7 +21,7 @@ define opensearch::cross_cluster_settings(
     $config_dir = "/etc/opensearch/${cluster_name}"
     $http_port = $settings[$instance_name]['http_port']
 
-    $remote_clusters = $settings.filter |$instance| { $instance[0] != $instance_name }
+    $remote_clusters = $settings.filter |$instance| { $instance[0] }
     $extracted_settings = $remote_clusters.reduce({}) | $agg, $kv_pair| {
         $cluster_title = $kv_pair[0]
         $cluster_param = $kv_pair[1]

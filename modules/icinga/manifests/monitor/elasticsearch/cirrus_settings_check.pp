@@ -7,8 +7,7 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
     require icinga::elasticsearch::cirrus_settings_plugin
 
     if $enable_remote_search {
-        $remote_clusters = $settings.filter |$instance| { $instance[1]['cluster_name'] != $title }
-        $extracted_settings = $remote_clusters.map | $cluster_title, $cluster_param| {
+        $extracted_settings = $settings.map | $cluster_title, $cluster_param| {
             $cirrus_settings = {
                 "$.(cluster|search).remote.${cluster_param['short_cluster_name']}.seeds" => $cluster_param[
                     'unicast_hosts'].map |$unicast_host| {
