@@ -54,7 +54,6 @@ node /^an-db100[1-2]\.eqiad\./ {
     role(analytics_cluster::postgresql)
 }
 
-# New an-mariadb nodes T321119
 node /^an-mariadb100[1-2]\.eqiad\./ {
     role(analytics_cluster::mariadb)
 }
@@ -72,13 +71,21 @@ node /^an-test-master1002\.eqiad\./ {
     role(analytics_test_cluster::hadoop::standby)
 }
 
+node /^an-test-master100[3-4]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 node /^an-test-worker100[1-3]\.eqiad\./ {
     role(analytics_test_cluster::hadoop::worker)
 }
 
-# new an-test-coord1001  T255518
 node /^an-test-coord1001\.eqiad\./ {
     role(analytics_test_cluster::coordinator)
+}
+
+# New an-test-coord1002 - See #T393029
+node /^an-test-coord1002\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 node /^an-test-client1002\.eqiad\./ {
@@ -217,8 +224,6 @@ node /^aqs200[1-9]|aqs201[0-2]\.codfw\./ {
     role(aqs)
 }
 
-# New Archiva host on Buster
-# T254890
 node /^archiva1002\.wikimedia\./ {
     role(archiva)
 }
