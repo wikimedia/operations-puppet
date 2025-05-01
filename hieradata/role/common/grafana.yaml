@@ -104,6 +104,7 @@ profile::idp::client::httpd::sites:
 
 profile::grafana::active_host: 'grafana1002.eqiad.wmnet'
 profile::grafana::standby_host: 'grafana2001.codfw.wmnet'
+profile::grafana::enable_dashboard_sync: false
 profile::grafana::enable_loki: true
 profile::grafana::loki::config:
   auth_enabled: false
