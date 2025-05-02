@@ -1386,6 +1386,11 @@ node /^es2040\.codfw\./ {
     role(mariadb::core)
 }
 
+#Future es hosts T393106
+node /^es204(7|8)\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 node /^failoid[12]002\.(eqiad|codfw)\./ {
     role(failoid)
 }
