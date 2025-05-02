@@ -11,10 +11,9 @@ class profile::puppetserver::wmcs (
 
     # to prevent java from being upgraded via unattended-upgrades
     # see also T377803 and T385553
-    apt::pin { 'cloud-vps-puppetserver-openjdk':
-        package  => 'openjdk-*',
-        pin      => 'release *',
-        priority => 1001,
+    apt::unattendedupgrades::exclude { 'cloud-vps-puppetserver-openjdk':
+        package => 'openjdk-',
+        prefix  => true,
     }
 
     class { 'puppetmaster::gitsync':
