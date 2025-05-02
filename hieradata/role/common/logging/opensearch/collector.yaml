@@ -62,7 +62,7 @@ profile::opensearch::common_settings:
 # API access
 profile::opensearch::api::httpd_proxy::vhost: logs-api.discovery.wmnet
 profile::opensearch::api::httpd_proxy::serveradmin: noc@wikimedia.org
-profile::opensearch::api::httpd_proxy::auth_type: local
+profile::opensearch::api::httpd_proxy::auth_type: local-api
 profile::opensearch::api::httpd_proxy::auth_realm: local
 profile::opensearch::api::httpd_proxy::auth_file: '/etc/opensearch-api-htpasswd'
 # The basic auth accounts, an hash of username -> hashed-password. Will
@@ -71,6 +71,12 @@ profile::opensearch::api::httpd_proxy::auth_file: '/etc/opensearch-api-htpasswd'
 #   htpasswd -n foo
 #profile::opensearch::api::httpd_proxy::accounts:
 #  'foo': '$apr1$HGuvNA0g$L4j7ot6JjhfwPPv8V5uPG1'
+
+profile::opensearch::api::httpd_proxy::group_file: '/etc/opensearch-api-htgroup'
+# authorizations for basic auth accounts are applied via groups like so
+# (also defined in private.git)
+#profile::opensearch::api::httpd_proxy::groups:
+#  'groupname': 'user1 user2'
 
 # Logstash
 logstash::heap_memory: 4g

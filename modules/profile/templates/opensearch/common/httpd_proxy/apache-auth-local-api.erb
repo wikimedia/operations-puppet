@@ -1,0 +1,25 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+    AuthName "<%= @auth_realm %>"
+    AuthType Basic
+    AuthUserFile <%= @auth_file %>
+    AuthGroupFile <%= @group_file %>
+
+    <RequireAny>
+        #Allow all basic auth users GET/HEAD
+        <RequireAll>
+            Require method GET HEAD
+            Require valid-user
+        </RequireAll>
+
+        #Allow write group to POST PUT
+        <RequireAll>
+            Require method POST PUT
+            Require group write
+        </RequireAll>
+
+        #Allow delete group to DELETE
+        <RequireAll>
+            Require method DELETE
+            Require group delete
+        </RequireAll>
+    </RequireAny>
