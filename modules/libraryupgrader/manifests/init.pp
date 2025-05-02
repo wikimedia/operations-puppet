@@ -39,7 +39,7 @@ class libraryupgrader (
         ensure    => present,
         source    => 'gitlab',
         directory => $clone_dir,
-        branch    => 'master',
+        branch    => 'main',
         owner     => 'libup',
         group     => 'libup',
         require   => User['libup'],
