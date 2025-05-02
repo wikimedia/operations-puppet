@@ -117,13 +117,6 @@ es_codfw_rack_d7:
   profile::opensearch::rack: D7
   profile::opensearch::row: D
 
-es_eqiad_rack_a2:
-  __regex: !ruby/regexp /^relforge1003\.eqiad\.wmnet$/
-  profile::elasticsearch::rack: A2
-  profile::elasticsearch::row:  A
-  profile::opensearch::rack: A2
-  profile::opensearch::row: A
-
 es_eqiad_rack_a3:
   __regex: !ruby/regexp /^(elastic|cirrussearch)1054\.eqiad\.wmnet$/
   profile::elasticsearch::rack: A3
@@ -162,7 +155,7 @@ es_eqiad_rack_b1:
 
 
 es_eqiad_rack_b2:
-  __regex: !ruby/regexp /^(relforge1004|elastic1074|elastic1075|cirrussearch1074|cirrussearch1075)\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^(elastic1074|elastic1075|cirrussearch1074|cirrussearch1075)\.eqiad\.wmnet$/
   profile::elasticsearch::rack: B2
   profile::elasticsearch::row:  B
   profile::opensearch::rack: B2

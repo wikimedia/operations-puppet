@@ -4,14 +4,10 @@ profile::opensearch::dc_settings:
     # scheduled operations.
     # ref https://www.elastic.co/guide/en/elasticsearch/reference/current/voting-config-exclusions.html
     unicast_hosts:
-      - relforge1003.eqiad.wmnet
-      - relforge1004.eqiad.wmnet
       - relforge1008.eqiad.wmnet
       - relforge1009.eqiad.wmnet
       - relforge1010.eqiad.wmnet
     cluster_hosts:
-      - relforge1003.eqiad.wmnet
-      - relforge1004.eqiad.wmnet
       - relforge1008.eqiad.wmnet
       - relforge1009.eqiad.wmnet
       - relforge1010.eqiad.wmnet

@@ -87,8 +87,6 @@ scap::dsh::groups:
       - {'cluster': 'logstash', 'service': 'kibana'}
   relforge:
     hosts:
-      - relforge1003.eqiad.wmnet
-      - relforge1004.eqiad.wmnet
       - relforge1008.eqiad.wmnet
       - relforge1009.eqiad.wmnet
       - relforge1010.eqiad.wmnet
