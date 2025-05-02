@@ -166,10 +166,5 @@ password = <%= @ldap_user_pass %>
 [wsgi]
 api_paste_config=/etc/nova/api-paste.ini
 
-[oslo_policy]
-enforce_scope = <%= @enforce_policy_scope %>
-enforce_new_defaults = <%= @enforce_new_policy_defaults %>
-policy_file = policy.yaml
-
-[image_cache] 
+[image_cache]
 remove_unused_base_images=True

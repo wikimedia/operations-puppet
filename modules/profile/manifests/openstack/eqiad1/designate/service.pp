@@ -21,8 +21,6 @@ class profile::openstack::eqiad1::designate::service(
     $region = lookup('profile::openstack::eqiad1::region'),
     Integer $mcrouter_port = lookup('profile::openstack::eqiad1::designate::mcrouter_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
-    Boolean $enforce_policy_scope = lookup('profile::openstack::eqiad1::keystone::enforce_policy_scope'),
-    Boolean $enforce_new_policy_defaults = lookup('profile::openstack::eqiad1::keystone::enforce_new_policy_defaults'),
 ) {
     $designate_hosts = $openstack_control_nodes.map |$node| { $node[$openstack_control_node_interface] }
 
@@ -50,8 +48,6 @@ class profile::openstack::eqiad1::designate::service(
         region                        => $region,
         mcrouter_port                 => $mcrouter_port,
         haproxy_nodes                 => $haproxy_nodes,
-        enforce_policy_scope          => $enforce_policy_scope,
-        enforce_new_policy_defaults   => $enforce_new_policy_defaults,
     }
 
     $run_dnsleaks = $openstack_control_nodes[1]['host_fqdn'] == $facts['networking']['fqdn']

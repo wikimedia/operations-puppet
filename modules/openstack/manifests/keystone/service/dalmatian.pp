@@ -33,8 +33,6 @@ class openstack::keystone::service::dalmatian(
     String $bastion_project_id,
     Array[String] $prod_networks,
     Array[String] $labs_networks,
-    Boolean $enforce_policy_scope,
-    Boolean $enforce_new_policy_defaults,
     Stdlib::Port $public_bind_port,
     Stdlib::Port $admin_bind_port,
     Stdlib::Fqdn $horizon_hostname,

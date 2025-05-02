@@ -16,8 +16,6 @@ class openstack::heat::service::dalmatian(
     String $rabbit_pass,
     String[32] $auth_encryption_key,
     String $domain_admin_pass,
-    Boolean $enforce_policy_scope,
-    Boolean $enforce_new_policy_defaults,
 ) {
     require "openstack::serverpackages::dalmatian::${::lsbdistcodename}"
 

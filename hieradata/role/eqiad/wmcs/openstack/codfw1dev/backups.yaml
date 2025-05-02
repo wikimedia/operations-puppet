@@ -31,7 +31,6 @@ profile::openstack::codfw1dev::region: codfw1dev-r
 profile::openstack::codfw1dev::version: dalmatian
 profile::openstack::codfw1dev::cinder::db_host: openstack.codfw1dev.wikimediacloud.org
 profile::openstack::codfw1dev::keystone_api_fqdn: openstack.codfw1dev.wikimediacloud.org
-profile::openstack::codfw1dev::keystone::enforce_policy_scope: true
 profile::openstack::codfw1dev::rabbitmq_nodes:
     # TODO: decide what to do with these
     #- rabbitmq01.codfw1dev.wikimediacloud.org

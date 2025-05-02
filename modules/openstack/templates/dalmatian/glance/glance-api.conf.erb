@@ -334,8 +334,3 @@ rados_connect_timeout = 0
 [file]
 filesystem_store_datadir = /srv/glance/images/
 store_description = "local filesystem store"
-
-[oslo_policy]
-enforce_scope = <%= @enforce_policy_scope %>
-enforce_new_defaults = <%= @enforce_new_policy_defaults %>
-policy_file = policy.yaml

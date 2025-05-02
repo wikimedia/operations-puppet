@@ -19,8 +19,6 @@ class openstack::cinder::config::dalmatian(
     Array[String]       $all_backend_names,
     String[1]           $backend_type,
     String[1]           $backend_name,
-    Boolean             $enforce_policy_scope,
-    Boolean             $enforce_new_policy_defaults,
 ) {
     require 'openstack::cinder::user'
 

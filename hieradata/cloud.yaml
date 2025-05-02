@@ -1088,8 +1088,6 @@ profile::openstack::codfw1dev::keystone::admin_bind_port: placeholder
 profile::openstack::codfw1dev::keystone::public_bind_port: placeholder
 profile::openstack::codfw1dev::keystone::wmcloud_domain_owner: placeholder
 profile::openstack::codfw1dev::keystone::bastion_project_id: placeholder
-profile::openstack::codfw1dev::keystone::enforce_policy_scope: placeholder
-profile::openstack::codfw1dev::keystone::enforce_new_policy_defaults: placeholder
 profile::openstack::eqiad1::region: placeholder
 profile::openstack::eqiad1::version: placeholder
 profile::openstack::eqiad1::horizon_version: placeholder
