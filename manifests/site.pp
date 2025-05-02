@@ -2428,7 +2428,7 @@ node /^relforge100[89]\.eqiad\./ {
 }
 
 node /^relforge1010\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+    role(cirrus::relforge)
 }
 # restbase eqiad cluster
 node /^restbase10(2[8-9]|3[0-9]|4[0-5])\.eqiad\./ {

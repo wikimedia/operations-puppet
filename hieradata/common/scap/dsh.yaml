@@ -78,6 +78,7 @@ scap::dsh::groups:
       - relforge1004.eqiad.wmnet
       - relforge1008.eqiad.wmnet
       - relforge1009.eqiad.wmnet
+      - relforge1010.eqiad.wmnet
   webperf:
     hosts:
       - webperf1003.eqiad.wmnet
