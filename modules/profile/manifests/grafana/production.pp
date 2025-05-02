@@ -5,8 +5,9 @@
 # It powers <https://grafana.wikimedia.org>.
 #
 class profile::grafana::production (
-    Stdlib::Fqdn $active_host = lookup('profile::grafana::active_host'),
-    Stdlib::Fqdn $standby_host = lookup('profile::grafana::standby_host'),
+    Stdlib::Fqdn $active_host      = lookup('profile::grafana::active_host'),
+    Stdlib::Fqdn $standby_host     = lookup('profile::grafana::standby_host'),
+    Boolean $enable_dashboard_sync = lookup('profile::grafana::enable_dashboard_sync', { 'default_value' => true }),
 ) {
     include ::profile::grafana
     include ::profile::grafana::grizzly
@@ -16,9 +17,14 @@ class profile::grafana::production (
         false => absent,
     }
 
+    $dashboard_sync_ensure = $enable_dashboard_sync ? {
+        true  => 'present',
+        false => 'absent',
+    }
+
     # Enables rsync'ing /var/lib/grafana from active host to standby host.
     rsync::quickdatacopy { 'var-lib-grafana':
-        ensure              => present,
+        ensure              => $dashboard_sync_ensure,
         source_host         => $active_host,
         dest_host           => $standby_host,
         module_path         => '/var/lib/grafana',
