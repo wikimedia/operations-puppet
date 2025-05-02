@@ -133,12 +133,14 @@ define systemd::sysuser (
     }
 
     if debian::codename::ge('bookworm') {
-        exec { "update-sysusers-${title}":
-            command  => "/bin/systemd-sysusers ${sysusers_file}",
-            path     => '/usr/bin:/usr/sbin:/bin',
-            provider => 'shell',
-            onlyif   => "test -n \"\$(systemd-sysusers --dry-run ${sysusers_file} 2>&1)\"",
-            user     => 'root',
+        if $ensure != 'absent' {
+            exec { "update-sysusers-${title}":
+                command  => "/bin/systemd-sysusers ${sysusers_file}",
+                path     => '/usr/bin:/usr/sbin:/bin',
+                provider => 'shell',
+                onlyif   => "test -n \"\$(systemd-sysusers --dry-run ${sysusers_file} 2>&1)\"",
+                user     => 'root',
+            }
         }
     }
 }
