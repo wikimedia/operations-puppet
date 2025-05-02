@@ -41,3 +41,13 @@ profile::nginx::variant: "full"
 
 profile::contacts::role_contacts: ["WMCS"]
 profile::base::production::role_description: 'clouddumps host in the public VLAN that distributes dumps to clients via NFS/Web/Rsync'
+
+# This user uses rsync over ssh to publish dumps from the dse-k8s cluster.
+# See #T389784 for more.
+profile::ssh::server::match_config:
+  - criteria: User
+    patterns:
+    - dumpsgen
+    config:
+      ChrootDirectory: /srv/mediawiki-dumps-legacy
+      AllowTcpForwarding: 'no'

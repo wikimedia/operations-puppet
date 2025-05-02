@@ -10,6 +10,19 @@ class profile::dumps::distribution::server {
         ensure => 'directory',
     }
 
+    # The following directory will be the temporary home of the dumps that are
+    # synced from Airflow jobs. See #T389784
+    file { '/srv/mediawiki-dumps-legacy':
+        ensure => 'directory',
+    }
+
+    file { '/srv/mediawiki-dumps-legacy/xmldatadumps':
+        ensure => 'directory',
+        owner  => 'dumpsgen',
+        group  => 'dumpsgen',
+        mode   => '0755',
+    }
+
     # The following authorized_key exists in order to permit the dumpsgen user to send dumps from pods
     # running on the dse-k8s cluster. The receiving command is forced to be the rsync server and it
     # only permits access from the DSE_KUBEPODS_NETWORKS. The corresponding private key is deployed as
