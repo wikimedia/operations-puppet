@@ -53,20 +53,20 @@ describe 'systemd::path' do
         }
         it { is_expected.to raise_error(Puppet::Error) }
       end
-    end
-    context 'when referring to non-existent unit' do
-      let(:title) { 'dummy' }
-      let(:pre_condition) {}
-      let(:params) {
-        {
-          :monitor_path => '/test',
-          :monitor_type => 'PathExists'
+      context 'when referring to non-existent unit' do
+        let(:title) { 'dummy' }
+        let(:pre_condition) {}
+        let(:params) {
+          {
+            :monitor_path => '/test',
+            :monitor_type => 'PathExists'
+          }
         }
-      }
-      it do
-        is_expected.to compile.and_raise_error(
-          /Could not find resource 'Systemd::Unit\[dummy.service\]'/
-        )
+        it do
+          is_expected.to compile.and_raise_error(
+            /Could not find resource 'Systemd::Unit\[dummy.service\]'/
+          )
+        end
       end
     end
   end

@@ -16,10 +16,13 @@ class systemd {
         recurse => true,
     }
 
-    exec { 'Refresh sysusers':
-        command     => '/bin/systemd-sysusers',
-        user        => 'root',
-        refreshonly => true,
+    # bullseye's systemd-sysusers does not support the dry-run flag
+    if debian::codename::le('bullseye') {
+        exec { 'Refresh sysusers':
+            command     => '/bin/systemd-sysusers',
+            user        => 'root',
+            refreshonly => true,
+        }
     }
 
     nrpe::plugin { 'check_journal_pattern':
