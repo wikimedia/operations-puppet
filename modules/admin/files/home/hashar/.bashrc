@@ -5,8 +5,21 @@ fi
 
 ### ALIASES
 
-alias ls="ls --color=auto -F"
-alias ll="ls -l"
+alias ls='ls --color=auto -F'
+alias ll='ls -l'
+alias tree='tree -ACF'
+
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# Took me a decade until I suddenly thought about those:
+alias good='git bisect good'
+alias bad='git bisect bad'
+
+# cal starts the week with Sunday
+# ncal is a confusing transposed calendar. -b flips it
+alias cal='ncal -b'
 
 ### MISC SETTINGS
 
