@@ -107,6 +107,8 @@ eqiad:
     ms-fe1012.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1013.eqiad.wmnet: [swift-fe, nginx]
     ms-fe1014.eqiad.wmnet: [swift-fe, nginx]
+    ms-fe1015.eqiad.wmnet: [swift-fe, nginx]
+    ms-fe1016.eqiad.wmnet: [swift-fe, nginx]
   apus:
     moss-fe1001.eqiad.wmnet: [apus]
     moss-fe1002.eqiad.wmnet: [apus]

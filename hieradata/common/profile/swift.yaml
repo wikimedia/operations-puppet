@@ -94,6 +94,8 @@ profile::swift::proxyhosts:
   - ms-fe1012.eqiad.wmnet
   - ms-fe1013.eqiad.wmnet
   - ms-fe1014.eqiad.wmnet
+  - ms-fe1015.eqiad.wmnet
+  - ms-fe1016.eqiad.wmnet
   - ms-fe2009.codfw.wmnet
   - ms-fe2010.codfw.wmnet
   - ms-fe2011.codfw.wmnet
