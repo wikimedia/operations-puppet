@@ -2,4 +2,4 @@
 # This key will allow pods in the dse-k8s-eqiad cluster to log into the clouddumps servers as the dumpsgen user.
 # Its purpose is to allow the use of rsync over ssh to publish the dumps.
 # The IP ranges below reflect the DSE_KUBEPODS_NETWORKS ranges in eqiad.
-from="10.67.24.0/21",from="2620:0:861:302::/64" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINP7YBWrx/crCj9oOq/rBCmT//PXufLEUU2W6iEud5wL dumpsgen-rsync@dse-k8s-eqiad
+from="10.67.24.0/21,2620:0:861:302::/64" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINP7YBWrx/crCj9oOq/rBCmT//PXufLEUU2W6iEud5wL dumpsgen-rsync@dse-k8s-eqiad

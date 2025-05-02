@@ -49,5 +49,4 @@ profile::ssh::server::match_config:
     patterns:
     - dumpsgen
     config:
-      ChrootDirectory: /srv/mediawiki-dumps-legacy
       AllowTcpForwarding: 'no'
