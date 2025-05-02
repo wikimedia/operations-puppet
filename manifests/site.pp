@@ -2282,6 +2282,10 @@ node /^pc1018\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
 
+node /^pc2018\.codfw\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # codfw
 # pc1
 node /^pc2011\.codfw\./ {
