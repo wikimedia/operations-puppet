@@ -50,6 +50,18 @@ class profile::puppet::agent (
                 component => 'component/puppet7',
                 packages  => ['ruby-sys-filesystem']
             }
+        } elsif debian::codename::eq('trixie') {
+            # On trixie we initially use a forward port of the Puppet agent from Bookworm
+            # Later one, once the Puppet repo is fully compatible with Puppet 8, we'll
+            # switch to using the 8.10 client shipped in Trixie
+            # - Puppet 7 needs ruby-concurrent 1.1.x, but Trixie includes 1.3.5. Since no
+            #   package we use needs ruby-concurrent, we're installing a forward port of
+            #   ruby-concurrent from bookworm and configure apt to use it
+            apt::package_from_component { 'puppet7-forward-port':
+              component => 'component/puppet7',
+              priority  => 1002,
+              packages  => ['ruby-concurrent']
+            }
         } else {
             # Add a priority on the debian repos as we have a forward port in wikimedia/main
             apt::pin { 'puppet':
