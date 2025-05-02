@@ -9,11 +9,9 @@ profile::opensearch::instances:
     transport_tcp_port: 9300
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2093.codfw.wmnet # row B
+      - cirrussearch2093.codfw.wmnet # row B
       - cirrussearch2061.codfw.wmnet # row A
-      - elastic2081.codfw.wmnet # row C
       - cirrussearch2081.codfw.wmnet # row C
-      - elastic2084.codfw.wmnet # row D
       - cirrussearch2084.codfw.wmnet # row D
       - cirrussearch2111.codfw.wmnet # row A
 
@@ -166,56 +164,13 @@ profile::opensearch::instances:
     heap_memory: '10G'
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2092.codfw.wmnet # row B
       - cirrussearch2092.codfw.wmnet # row B
-      - elastic2100.codfw.wmnet # row C
       - cirrussearch2100.codfw.wmnet # row C
-      - elastic2106.codfw.wmnet # row D
       - cirrussearch2106.codfw.wmnet # row D
-      - elastic2073.codfw.wmnet # row A
       - cirrussearch2073.codfw.wmnet # row A
-      - elastic2086.codfw.wmnet # row D
       - cirrussearch2086.codfw.wmnet # row D
 
     cluster_hosts:
-      # row A
-      - elastic2087.codfw.wmnet
-      - elastic2088.codfw.wmnet
-      - cirrussearch2056.codfw.wmnet
-      - elastic2061.codfw.wmnet
-      - elastic2073.codfw.wmnet
-      - elastic2090.codfw.wmnet
-      - elastic2111.codfw.wmnet # replacing cirrussearch2056
-
-      # row B
-      - elastic2092.codfw.wmnet
-      - elastic2093.codfw.wmnet
-      - elastic2057.codfw.wmnet
-      - elastic2063.codfw.wmnet
-      - elastic2070.codfw.wmnet
-      - elastic2077.codfw.wmnet
-      - elastic2097.codfw.wmnet
-
-      # row C
-      - elastic2098.codfw.wmnet
-      - elastic2099.codfw.wmnet
-      - elastic2100.codfw.wmnet
-      - elastic2059.codfw.wmnet
-      - elastic2065.codfw.wmnet
-      - elastic2081.codfw.wmnet
-      - elastic2102.codfw.wmnet
-      - elastic2112.codfw.wmnet # replacing elastic2057
-
-
-      # row D
-      - elastic2104.codfw.wmnet
-      - elastic2105.codfw.wmnet
-      - elastic2106.codfw.wmnet
-      - elastic2067.codfw.wmnet
-      - elastic2084.codfw.wmnet
-      - elastic2086.codfw.wmnet
-      - elastic2114.codfw.wmnet # replacing elastic2059
-
       # row A
       - cirrussearch2087.codfw.wmnet
       - cirrussearch2088.codfw.wmnet
@@ -271,56 +226,13 @@ profile::opensearch::instances:
     heap_memory: '10G'
     # discovery.zen.ping.unicast.hosts likely deprecated in future version
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic2108.codfw.wmnet # row D
       - cirrussearch2108.codfw.wmnet # row D
-      - elastic2076.codfw.wmnet # row A
       - cirrussearch2076.codfw.wmnet # row A
-      - elastic2080.codfw.wmnet # row B
       - cirrussearch2080.codfw.wmnet # row B
-      - elastic2083.codfw.wmnet # row C
       - cirrussearch2083.codfw.wmnet # row C
       - cirrussearch2115.codfw.wmnet # row D
 
     cluster_hosts:
-      # row A
-      - elastic2089.codfw.wmnet
-      - cirrussearch2055.codfw.wmnet
-      - elastic2062.codfw.wmnet
-      - elastic2069.codfw.wmnet
-      - elastic2076.codfw.wmnet
-      - elastic2091.codfw.wmnet
-
-      # row B
-      - elastic2094.codfw.wmnet
-      - elastic2095.codfw.wmnet
-      - elastic2058.codfw.wmnet
-      - elastic2064.codfw.wmnet
-      - elastic2078.codfw.wmnet
-      - elastic2079.codfw.wmnet
-      - elastic2080.codfw.wmnet
-      - elastic2096.codfw.wmnet
-      - elastic2110.codfw.wmnet # replacing cirrussearch2055
-
-      # row C
-      - elastic2101.codfw.wmnet
-      - elastic2066.codfw.wmnet
-      - elastic2071.codfw.wmnet
-      - elastic2072.codfw.wmnet
-      - elastic2082.codfw.wmnet
-      - elastic2083.codfw.wmnet
-      - elastic2103.codfw.wmnet
-      - elastic2113.codfw.wmnet # replacing elastic2058
-
-      # row D
-      - elastic2107.codfw.wmnet
-      - elastic2108.codfw.wmnet
-      - elastic2060.codfw.wmnet
-      - elastic2068.codfw.wmnet
-      - elastic2085.codfw.wmnet
-      - elastic2109.codfw.wmnet
-      - elastic2115.codfw.wmnet # replacing elastic2060
-
-
       # row A
       - cirrussearch2089.codfw.wmnet
       - cirrussearch2055.codfw.wmnet
