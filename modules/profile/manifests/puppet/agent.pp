@@ -57,10 +57,15 @@ class profile::puppet::agent (
             # - Puppet 7 needs ruby-concurrent 1.1.x, but Trixie includes 1.3.5. Since no
             #   package we use needs ruby-concurrent, we're installing a forward port of
             #   ruby-concurrent from bookworm and configure apt to use it
+            # - To unbreak some dependency cycles, ruby-defaults (which is the package which
+            #   declares what version of rubyX.Y is pulled in by ruby etc. meta packages)
+            #   declares a Breaks: on the puppet7-agent. This blocks deploying the Puppet
+            #   Puppet 7 agent and we don't need it for our upgrades, so ruby-defaults
+            #   was rebuilt without the Breaks:
             apt::package_from_component { 'puppet7-forward-port':
               component => 'component/puppet7',
               priority  => 1002,
-              packages  => ['ruby-concurrent']
+              packages  => ['ruby-concurrent', 'ruby', 'libruby']
             }
         } else {
             # Add a priority on the debian repos as we have a forward port in wikimedia/main
