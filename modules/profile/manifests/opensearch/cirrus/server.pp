@@ -14,6 +14,7 @@ class profile::opensearch::cirrus::server(
     String $storage_device = lookup('profile::opensearch::cirrus::storage_device'),
     Boolean $enable_remote_search = lookup('profile::opensearch::cirrus::enable_remote_search'),
     Profile::Pki::Provider $ssl_provider = lookup('profile::opensearch::cirrus::ssl_provider'),
+    Stdlib::AbsolutePath $base_data_dir = lookup('profile::opensearch::base_data_dir'),
 ) {
     # Also brings in ::profile::opensearch::server
     include ::profile::opensearch::monitoring::base_checks
@@ -117,7 +118,6 @@ class profile::opensearch::cirrus::server(
     # Run the wrapper every 30 mins for each installed cluster
     $::profile::opensearch::server::filtered_instances.each |$instance_title, $instance_params| {
         $cluster_name = $instance_params['cluster_name']
-        $base_data_dir = $instance_params['base_data_dir']
 
         systemd::timer::job { "opensearch-disable-readahead-${cluster_name}":
             description => 'Disables readahead on all open files every 30 minutes to alleviate Cirrussearch / opensearch IO load spikes',
