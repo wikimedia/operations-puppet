@@ -8,6 +8,7 @@ profile::gnmi_telemetry::targets_sub:
     - alarms
     - bfd
     - system
+    - optics
 
 profile::gnmi_telemetry::site_mapping:
   eqiad: ['eqiad', 'eqord']
@@ -31,6 +32,7 @@ profile::gnmi_telemetry::outputs:
     timeout: 50s
     event-processors:
       - delete-tag-name
+      - delete-value-name
       - description-to-tag
       - rename-interface-state
       - static-bgp-tags
@@ -95,11 +97,19 @@ profile::gnmi_telemetry::subscriptions:
     stream-mode: sample
     sample-interval: 60s
     encoding: proto
+  optics:
+    paths:
+      - "/junos/system/linecard/optics/"
 profile::gnmi_telemetry::processors:
   delete-tag-name:
     event-delete:
       tag-names:
         - "^subscription-name"
+  delete-value-name:
+    event-delete:
+      value-names:
+        # remove some non-needed metrics
+        - ".*(low|high)_(alarm|warning)_threshold(_dbm)?" # optics
   description-to-tag:
     event-value-tag-v2:
       rules:
