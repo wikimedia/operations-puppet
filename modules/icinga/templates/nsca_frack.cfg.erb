@@ -42,6 +42,19 @@ define host {
 }
 
 define host {
+    host_name                fran1002
+    address                  10.64.40.99
+    check_command            check_ping!500,20%!2000,100%
+    max_check_attempts       2
+    notification_options     d,u,r,f
+    contact_groups           fr-tech
+    notification_interval    0
+    notification_period      24x7
+    check_period             24x7
+    hostgroups               fundraising-analytics
+}
+
+define host {
     host_name                fran2001
     address                  10.195.0.36
     check_command            check_ping!500,20%!2000,100%
@@ -64,7 +77,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -77,7 +90,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -90,7 +103,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -103,7 +116,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -116,7 +129,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -129,7 +142,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
@@ -142,7 +155,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-analytics
+    hostgroups               fundraising-misc
 }
 
 define host {
