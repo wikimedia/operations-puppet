@@ -417,7 +417,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'cloudcephosd200[1-3]-dev|cloudcontrol2004-dev|cloudcontrol200[6-9]-dev|cloudnet200[7-8]-dev':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'cloudcontrol100[6-7]|cloudcontrol2005-dev|cloudgw2003-dev':
+  'cloudcontrol100[6-7]|cloudcontrol2005-dev|cloudgw2003-dev|cloudcontro2010-dev':
     - partman/standard.cfg
     - partman/hwraid-1dev.cfg
   'cloudcontrol100[8-9]|cloudcontrol1010':

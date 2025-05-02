@@ -1575,6 +1575,11 @@ node /^cloudcontrol200[789]-dev\.codfw\./ {
     role(insetup::wmcs_ferm)
 }
 
+# Refresh for cloudcontrol2004, T393102
+node /^cloudcontrol2010-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
 # New cloudnet node used for OVS experiments
 node /^cloudnet200[78]-dev\.codfw\./ {
     role(insetup_noferm)
