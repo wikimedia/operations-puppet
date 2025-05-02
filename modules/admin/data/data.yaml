@@ -4556,7 +4556,9 @@ users:
     email: dcaro@wikimedia.org
     uid: 25603
     gid: 500
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAID46/gY7mfN96ylAdQb6ZBfrq9L3QwemMtN5ZjrJgEmK dcaro@magnum
+      - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIDbrjOCsU1VbyZZjk8kFmDfL51LWnfUG6KH6n9gmM69IAAAABHNzaDo= dcaro@wikimedia.org yk1
   zxane:
     ensure: absent
     name: zxane
