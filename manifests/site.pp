@@ -128,7 +128,7 @@ node /^an-worker1(10[0-9]|11[0-9]|12[0-9]|13[0-9]|14[0-9]|15[0-9]|16[0-9]|17[0-7
 }
 
 # New an-worker nodes - See #T377878 and #T386390
-node /^an-worker1(17[8-9]|18[0-6])\.eqiad\./ {
+node /^an-worker1(16[6-8]|17[8-9]|18[0-6])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
