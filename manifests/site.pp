@@ -246,6 +246,10 @@ node /^aux-k8s-ctrl[12]00[23]\.(eqiad|codfw)\./ {
 node /^aux-k8s-worker[12]00[2-5]\.(eqiad|codfw)\./ {
     role(aux_k8s::worker)
 }
+# T393053 and T393054
+node /^aux-k8s-worker[12]00[6-9]\.(eqiad|codfw)\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
 
 # Primary bacula director and storage daemon
 node /^backup1001\.eqiad\./ {
