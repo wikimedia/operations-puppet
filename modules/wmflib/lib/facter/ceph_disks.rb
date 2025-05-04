@@ -12,7 +12,7 @@ def parse_pd_list(data)
   data.each do |disk|
     disks[disk['EID:Slt']] = {
       enclosure: disk['EID:Slt'].strip.split[0],
-      slot: disk['DID'].strip,
+      slot: disk['DID'],
       medium: disk['Med'].strip,
       interface: disk['Intf'].strip,
     }
