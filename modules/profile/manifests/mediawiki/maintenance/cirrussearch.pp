@@ -14,6 +14,7 @@ class profile::mediawiki::maintenance::cirrussearch(
     # Rebuilds the completion suggester indices daily. This job, as of
     # mar 2015, takes around 5 hours to run.
     profile::mediawiki::periodic_job { 'cirrus_build_completion_indices_eqiad':
+        ensure   => absent, # Disable to avoid orphan indices while migrating to opensearch T388610
         command  => '/usr/local/bin/cirrus_build_completion_indices.sh eqiad',
         interval => '02:30',
     }
