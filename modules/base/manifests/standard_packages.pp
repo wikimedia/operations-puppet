@@ -48,6 +48,12 @@ class base::standard_packages (
         ensure_packages('quickstack')
     }
 
+    # Default sysctl settings by Debian, prior to Trixie these were partly set by procps
+    # and partly via Linux
+    if debian::codename::ge('trixie') {
+        ensure_packages(['linux-sysctl-defaults'])
+    }
+
     # uninstall these packages
     package { [
         'apport', 'command-not-found', 'command-not-found-data', 'ecryptfs-utils',
