@@ -2615,7 +2615,7 @@ node /^wcqs200[123]\.codfw\./ {
 }
 
 node /^wdqs101[167]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+    role(wdqs::main)
 }
 
 node /^wdqs101([2-5]|[89])\.eqiad\./ {
@@ -2627,7 +2627,7 @@ node /^wdqs1020\.eqiad\./ {
 }
 
 node /^wdqs(2008|201[45])\.codfw\./ {
-    role(insetup::data_platform_ferm)
+    role(wdqs::main)
 }
 
 node /^wdqs(200[79]|201[0-3]|201[6-7])\.codfw\./ {
