@@ -2,7 +2,7 @@ class profile::mediawiki::maintenance::pagetriage(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
 
-    $team = 'community-tech'
+    $team = 'moderator-tools'
 
     # TODO: Consider creating a single periodic job that runs all of these scripts at
     # 48h intervals, rather than staggering them throughout the day.
