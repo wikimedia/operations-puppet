@@ -346,6 +346,12 @@ route:
         - match:
             severity: 'task'
           receiver: 'mediawiki-special-pages-task'
+    - match:
+        team: 'moderator-tools'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'moderator-tools-task'
 
     - match:
         team: 'ml'
@@ -793,6 +799,12 @@ receivers:
   webhook_configs:
     # #MediaWiki-Special-pages
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-4ae4jcwy4qaqp7r2cfeg'
+      send_resolved: false
+
+- name: 'moderator-tools-task'
+  webhook_configs:
+    # #Moderator-Tools-Team
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-67hyf2drnhe6m6b3aqzk'
       send_resolved: false
 
 - name: 'fr-ircmail'
