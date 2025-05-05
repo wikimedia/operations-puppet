@@ -791,6 +791,14 @@ kubernetes::clusters:
       admission_configuration: ~
       cni_config:
         <<: *ml-serve_cni_config
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
     ml-staging-codfw:
       dc: codfw
       master: ml-staging-ctrl.svc.codfw.wmnet
@@ -824,6 +832,14 @@ kubernetes::clusters:
       admission_configuration: ~
       cni_config:
         <<: *ml-serve_cni_config
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
   dse-k8s:
     dse-k8s-eqiad:
       dc: eqiad
