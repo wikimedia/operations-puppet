@@ -18,6 +18,10 @@ class profile::ldap::client::ldaptui(
         ensure =>  directory
     }
 
+    file { '/etc/ldaptui':
+        ensure =>  directory
+    }
+
     file { '/usr/local/bin/ldaptui':
         mode   => '0550',
         source => 'puppet:///modules/profile/ldap/client/ldaptui.sh'
