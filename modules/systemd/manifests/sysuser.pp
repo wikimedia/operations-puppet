@@ -69,14 +69,14 @@ define systemd::sysuser (
     $_shell    = pick($shell, '-')
     $line      = "${_usertype}\t${username}\t${id}\t${gecos}\t${_home_dir}\t${_shell}\n"
     include systemd
-    $sysusers_file="/etc/sysusers.d/${title.regsubst('[\W_/]', '-', 'G')}.conf"
-    file { $sysusers_file:
+    file { "/etc/sysusers.d/${title.regsubst('[\W_/]', '-', 'G')}.conf":
         ensure  => stdlib::ensure($ensure, 'file'),
         content => $line,
         owner   => 'root',
         group   => 'root',
         mode    => '0444',
         require => File['/etc/sysusers.d'],
+        notify  => Exec['Refresh sysusers'],
     }
     if $usertype == 'group' and $id_type == 'integer' {
         group { $username:
@@ -125,14 +125,9 @@ define systemd::sysuser (
             uid      => $uid,
             password => $password,
             groups   => $additional_groups,
+            # Ensure sysuser creates the user
+            # we use the user resource to update things like the homedir and shell
+            require  => Exec['Refresh sysusers'],
         }
-    }
-
-    exec { "update-sysusers-${title}":
-        command  => "/bin/systemd-sysusers ${sysusers_file}",
-        path     => '/usr/bin:/usr/sbin:/bin',
-        provider => 'shell',
-        onlyif   => "test -n \"\$(systemd-sysusers --dry-run ${sysusers_file} 2>&1)\"",
-        user     => 'root',
     }
 }

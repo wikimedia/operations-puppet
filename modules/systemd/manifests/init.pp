@@ -16,6 +16,12 @@ class systemd {
         recurse => true,
     }
 
+    exec { 'Refresh sysusers':
+        command     => '/bin/systemd-sysusers',
+        user        => 'root',
+        refreshonly => true,
+    }
+
     nrpe::plugin { 'check_journal_pattern':
         source => 'puppet:///modules/systemd/check_journal_pattern',
     }
