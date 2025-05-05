@@ -1595,7 +1595,7 @@ node /^cloudrabbit100[123]\.eqiad\./ {
 }
 
 # Soon to be codfw1dev cloudrabbit servers T392539
-node /^cloudrabbit200[123]-dev\.eqiad\./ {
+node /^cloudrabbit200[123]-dev\.codfw\./ {
     role(insetup::wmcs_nftables)
 }
 
