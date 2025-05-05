@@ -98,6 +98,8 @@
 "os_compute_api:servers:revert_resize": "rule:admin_or_member"
 "os_compute_api:servers:show": ""
 "os_compute_api:servers:show:flavor-extra-specs": ""
+"os_compute_api:os-flavor-extra-specs:index": ""
+"os_compute_api:os-flavor-extra-specs:show": ""
 "os_compute_api:servers:show:host_status": ""
 "os_compute_api:servers:start": "rule:admin_or_member"
 "os_compute_api:servers:stop": "rule:admin_or_member"
@@ -106,6 +108,8 @@
 "os_compute_api:os-security-groups:list": ""
 "os_compute_api:os-security-groups:add": "rule:admin_or_member"
 "os_compute_api:os-security-groups:remove": "rule:admin_or_member"
+"os_compute_api:os-server-groups:index": ""
+"os_compute_api:os-server-groups:show": ""
 
 
 # WMF-specific rules to control the Horizon sudo panel
