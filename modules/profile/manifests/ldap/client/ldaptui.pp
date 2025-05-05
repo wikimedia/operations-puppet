@@ -29,11 +29,11 @@ class profile::ldap::client::ldaptui(
     }
 
     file { "${base_dir}/requirements.txt":
-        source => 'puppet:///modules/profile/ldap/ldaptui/requirements.txt'
+        source => 'puppet:///modules/profile/ldap/client/ldaptui/requirements.txt'
     }
 
     file { "${base_dir}/ldaptui.py":
-        source => 'puppet:///modules/profile/ldap/ldaptui/ldaptui.py'
+        source => 'puppet:///modules/profile/ldap/client/ldaptui/ldaptui.py'
     }
 
     exec { 'ldaptui-venv':
