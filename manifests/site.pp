@@ -1128,10 +1128,16 @@ node /^elastic1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-# T384966 refresh hosts
+# T384966 refresh hosts (pre-rename)
 node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
+
+# T384966 refresh hosts (post-rename)
+node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
 
 # re-arranging elastic hosts by row in order to facilitate
 # reimages. Row info sourced from regex.yaml

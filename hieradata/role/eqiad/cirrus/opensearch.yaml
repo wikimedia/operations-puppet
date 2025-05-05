@@ -74,62 +74,76 @@ profile::opensearch::instances:
           - elastic1109.eqiad.wmnet
           - elastic1110.eqiad.wmnet
 
-          - cirrusssearch1053.eqiad.wmnet
-          - cirrusssearch1054.eqiad.wmnet
-          - cirrusssearch1055.eqiad.wmnet
-          - cirrusssearch1056.eqiad.wmnet
-          - cirrusssearch1057.eqiad.wmnet
-          - cirrusssearch1058.eqiad.wmnet
-          - cirrusssearch1059.eqiad.wmnet
-          - cirrusssearch1060.eqiad.wmnet
-          - cirrusssearch1061.eqiad.wmnet
-          - cirrusssearch1062.eqiad.wmnet
-          - cirrusssearch1063.eqiad.wmnet
-          - cirrusssearch1064.eqiad.wmnet
-          - cirrusssearch1065.eqiad.wmnet
-          - cirrusssearch1066.eqiad.wmnet
-          - cirrusssearch1067.eqiad.wmnet
-          - cirrusssearch1068.eqiad.wmnet
-          - cirrusssearch1069.eqiad.wmnet
-          - cirrusssearch1070.eqiad.wmnet
-          - cirrusssearch1071.eqiad.wmnet
-          - cirrusssearch1072.eqiad.wmnet
-          - cirrusssearch1073.eqiad.wmnet
-          - cirrusssearch1074.eqiad.wmnet
-          - cirrusssearch1075.eqiad.wmnet
-          - cirrusssearch1076.eqiad.wmnet
-          - cirrusssearch1077.eqiad.wmnet
-          - cirrusssearch1078.eqiad.wmnet
-          - cirrusssearch1079.eqiad.wmnet
-          - cirrusssearch1080.eqiad.wmnet
-          - cirrusssearch1081.eqiad.wmnet
-          - cirrusssearch1082.eqiad.wmnet
-          - cirrusssearch1083.eqiad.wmnet
-          - cirrusssearch1084.eqiad.wmnet
-          - cirrusssearch1085.eqiad.wmnet
-          - cirrusssearch1086.eqiad.wmnet
-          - cirrusssearch1087.eqiad.wmnet
-          - cirrusssearch1088.eqiad.wmnet
-          - cirrusssearch1089.eqiad.wmnet
-          - cirrusssearch1090.eqiad.wmnet
-          - cirrusssearch1091.eqiad.wmnet
-          - cirrusssearch1092.eqiad.wmnet
-          - cirrusssearch1093.eqiad.wmnet
-          - cirrusssearch1094.eqiad.wmnet
-          - cirrusssearch1095.eqiad.wmnet
-          - cirrusssearch1096.eqiad.wmnet
-          - cirrusssearch1097.eqiad.wmnet
-          - cirrusssearch1098.eqiad.wmnet
-          - cirrusssearch1099.eqiad.wmnet
-          - cirrusssearch1100.eqiad.wmnet
-          - cirrusssearch1101.eqiad.wmnet
-          - cirrusssearch1102.eqiad.wmnet
-          - cirrusssearch1103.eqiad.wmnet
-          - cirrusssearch1107.eqiad.wmnet
-          - cirrusssearch1108.eqiad.wmnet
-          - cirrusssearch1109.eqiad.wmnet
-          - cirrusssearch1110.eqiad.wmnet
-
+          - cirrussearch1053.eqiad.wmnet
+          - cirrussearch1054.eqiad.wmnet
+          - cirrussearch1055.eqiad.wmnet
+          - cirrussearch1056.eqiad.wmnet
+          - cirrussearch1057.eqiad.wmnet
+          - cirrussearch1058.eqiad.wmnet
+          - cirrussearch1059.eqiad.wmnet
+          - cirrussearch1060.eqiad.wmnet
+          - cirrussearch1061.eqiad.wmnet
+          - cirrussearch1062.eqiad.wmnet
+          - cirrussearch1063.eqiad.wmnet
+          - cirrussearch1064.eqiad.wmnet
+          - cirrussearch1065.eqiad.wmnet
+          - cirrussearch1066.eqiad.wmnet
+          - cirrussearch1067.eqiad.wmnet
+          - cirrussearch1068.eqiad.wmnet
+          - cirrussearch1069.eqiad.wmnet
+          - cirrussearch1070.eqiad.wmnet
+          - cirrussearch1071.eqiad.wmnet
+          - cirrussearch1072.eqiad.wmnet
+          - cirrussearch1073.eqiad.wmnet
+          - cirrussearch1074.eqiad.wmnet
+          - cirrussearch1075.eqiad.wmnet
+          - cirrussearch1076.eqiad.wmnet
+          - cirrussearch1077.eqiad.wmnet
+          - cirrussearch1078.eqiad.wmnet
+          - cirrussearch1079.eqiad.wmnet
+          - cirrussearch1080.eqiad.wmnet
+          - cirrussearch1081.eqiad.wmnet
+          - cirrussearch1082.eqiad.wmnet
+          - cirrussearch1083.eqiad.wmnet
+          - cirrussearch1084.eqiad.wmnet
+          - cirrussearch1085.eqiad.wmnet
+          - cirrussearch1086.eqiad.wmnet
+          - cirrussearch1087.eqiad.wmnet
+          - cirrussearch1088.eqiad.wmnet
+          - cirrussearch1089.eqiad.wmnet
+          - cirrussearch1090.eqiad.wmnet
+          - cirrussearch1091.eqiad.wmnet
+          - cirrussearch1092.eqiad.wmnet
+          - cirrussearch1093.eqiad.wmnet
+          - cirrussearch1094.eqiad.wmnet
+          - cirrussearch1095.eqiad.wmnet
+          - cirrussearch1096.eqiad.wmnet
+          - cirrussearch1097.eqiad.wmnet
+          - cirrussearch1098.eqiad.wmnet
+          - cirrussearch1099.eqiad.wmnet
+          - cirrussearch1100.eqiad.wmnet
+          - cirrussearch1101.eqiad.wmnet
+          - cirrussearch1102.eqiad.wmnet
+          - cirrussearch1103.eqiad.wmnet
+          - cirrussearch1107.eqiad.wmnet
+          - cirrussearch1108.eqiad.wmnet
+          - cirrussearch1109.eqiad.wmnet
+          - cirrussearch1110.eqiad.wmnet
+          - cirrussearch1111.eqiad.wmnet
+          - cirrussearch1112.eqiad.wmnet
+          - cirrussearch1113.eqiad.wmnet
+          - cirrussearch1114.eqiad.wmnet
+          - cirrussearch1115.eqiad.wmnet
+          - cirrussearch1116.eqiad.wmnet
+          - cirrussearch1117.eqiad.wmnet
+          - cirrussearch1118.eqiad.wmnet
+          - cirrussearch1119.eqiad.wmnet
+          - cirrussearch1120.eqiad.wmnet
+          - cirrussearch1121.eqiad.wmnet
+          - cirrussearch1122.eqiad.wmnet
+          - cirrussearch1123.eqiad.wmnet
+          - cirrussearch1124.eqiad.wmnet
+          - cirrussearch1125.eqiad.wmnet
 
         # TODO at what point do we need to update this number?
         expected_nodes: 35
@@ -211,44 +225,51 @@ profile::opensearch::instances:
           - elastic1107.eqiad.wmnet
 
           # row A
-          - cirrusssearch1053.eqiad.wmnet
-          - cirrusssearch1054.eqiad.wmnet
-          - cirrusssearch1068.eqiad.wmnet
-          - cirrusssearch1070.eqiad.wmnet
-          - cirrusssearch1071.eqiad.wmnet
+          - cirrussearch1053.eqiad.wmnet
+          - cirrussearch1054.eqiad.wmnet
+          - cirrussearch1068.eqiad.wmnet
+          - cirrussearch1070.eqiad.wmnet
+          - cirrussearch1071.eqiad.wmnet
+          - cirrussearch1112.eqiad.wmnet
 
           # row B
-          - cirrusssearch1055.eqiad.wmnet
-          - cirrusssearch1056.eqiad.wmnet
-          - cirrusssearch1074.eqiad.wmnet
-          - cirrusssearch1076.eqiad.wmnet
-          - cirrusssearch1077.eqiad.wmnet
+          - cirrussearch1055.eqiad.wmnet
+          - cirrussearch1056.eqiad.wmnet
+          - cirrussearch1074.eqiad.wmnet
+          - cirrussearch1076.eqiad.wmnet
+          - cirrussearch1077.eqiad.wmnet
+          - cirrussearch1113.eqiad.wmnet
+          - cirrussearch1114.eqiad.wmnet
 
           # row C
-          - cirrusssearch1057.eqiad.wmnet
-          - cirrusssearch1058.eqiad.wmnet
-          - cirrusssearch1080.eqiad.wmnet
-          - cirrusssearch1082.eqiad.wmnet
+          - cirrussearch1057.eqiad.wmnet
+          - cirrussearch1058.eqiad.wmnet
+          - cirrussearch1080.eqiad.wmnet
+          - cirrussearch1082.eqiad.wmnet
+          - cirrussearch1119.eqiad.wmnet
 
           # row D
-          - cirrusssearch1060.eqiad.wmnet
-          - cirrusssearch1061.eqiad.wmnet
-          - cirrusssearch1062.eqiad.wmnet
-          - cirrusssearch1063.eqiad.wmnet
-          - cirrusssearch1103.eqiad.wmnet
+          - cirrussearch1060.eqiad.wmnet
+          - cirrussearch1061.eqiad.wmnet
+          - cirrussearch1062.eqiad.wmnet
+          - cirrussearch1063.eqiad.wmnet
+          - cirrussearch1103.eqiad.wmnet
+          - cirrussearch1120.eqiad.wmnet
 
           # row E
-          - cirrusssearch1089.eqiad.wmnet
-          - cirrusssearch1091.eqiad.wmnet
-          - cirrusssearch1093.eqiad.wmnet
-          - cirrusssearch1094.eqiad.wmnet
-          - cirrusssearch1109.eqiad.wmnet
+          - cirrussearch1089.eqiad.wmnet
+          - cirrussearch1091.eqiad.wmnet
+          - cirrussearch1093.eqiad.wmnet
+          - cirrussearch1094.eqiad.wmnet
+          - cirrussearch1109.eqiad.wmnet
 
           # row F
-          - cirrusssearch1096.eqiad.wmnet
-          - cirrusssearch1098.eqiad.wmnet
-          - cirrusssearch1100.eqiad.wmnet
-          - cirrusssearch1107.eqiad.wmnet
+          - cirrussearch1096.eqiad.wmnet
+          - cirrussearch1098.eqiad.wmnet
+          - cirrussearch1100.eqiad.wmnet
+          - cirrussearch1107.eqiad.wmnet
+          - cirrussearch1124.eqiad.wmnet
+          - cirrussearch1125.eqiad.wmnet
 
         expected_nodes: 18
 
@@ -315,43 +336,51 @@ profile::opensearch::instances:
           - elastic1110.eqiad.wmnet
 
           # row A
-          - cirrusssearch1069.eqiad.wmnet
-          - cirrusssearch1072.eqiad.wmnet
-          - cirrusssearch1073.eqiad.wmnet
-          - cirrusssearch1084.eqiad.wmnet
+          - cirrussearch1069.eqiad.wmnet
+          - cirrussearch1072.eqiad.wmnet
+          - cirrussearch1073.eqiad.wmnet
+          - cirrussearch1084.eqiad.wmnet
+          - cirrussearch1111.eqiad.wmnet
 
           # row B
-          - cirrusssearch1075.eqiad.wmnet
-          - cirrusssearch1078.eqiad.wmnet
-          - cirrusssearch1079.eqiad.wmnet
-          - cirrusssearch1085.eqiad.wmnet
-          - cirrusssearch1086.eqiad.wmnet
+          - cirrussearch1075.eqiad.wmnet
+          - cirrussearch1078.eqiad.wmnet
+          - cirrussearch1079.eqiad.wmnet
+          - cirrussearch1085.eqiad.wmnet
+          - cirrussearch1086.eqiad.wmnet
+          - cirrussearch1115.eqiad.wmnet
+          - cirrussearch1116.eqiad.wmnet
+          - cirrussearch1117.eqiad.wmnet
 
           # row C
-          - cirrusssearch1059.eqiad.wmnet
-          - cirrusssearch1081.eqiad.wmnet
-          - cirrusssearch1083.eqiad.wmnet
-          - cirrusssearch1087.eqiad.wmnet
-          - cirrusssearch1088.eqiad.wmnet
+          - cirrussearch1059.eqiad.wmnet
+          - cirrussearch1081.eqiad.wmnet
+          - cirrussearch1083.eqiad.wmnet
+          - cirrussearch1087.eqiad.wmnet
+          - cirrussearch1088.eqiad.wmnet
+          - cirrussearch1118.eqiad.wmnet
 
           # row D
-          - cirrusssearch1064.eqiad.wmnet
-          - cirrusssearch1065.eqiad.wmnet
-          - cirrusssearch1066.eqiad.wmnet
-          - cirrusssearch1067.eqiad.wmnet
+          - cirrussearch1064.eqiad.wmnet
+          - cirrussearch1065.eqiad.wmnet
+          - cirrussearch1066.eqiad.wmnet
+          - cirrussearch1067.eqiad.wmnet
+          - cirrussearch1121.eqiad.wmnet
+          - cirrussearch1122.eqiad.wmnet
 
           # row E
-          - cirrusssearch1090.eqiad.wmnet
-          - cirrusssearch1092.eqiad.wmnet
-          - cirrusssearch1095.eqiad.wmnet
-          - cirrusssearch1108.eqiad.wmnet
+          - cirrussearch1090.eqiad.wmnet
+          - cirrussearch1092.eqiad.wmnet
+          - cirrussearch1095.eqiad.wmnet
+          - cirrussearch1108.eqiad.wmnet
+          - cirrussearch1123.eqiad.wmnet
 
           # row F
-          - cirrusssearch1097.eqiad.wmnet
-          - cirrusssearch1099.eqiad.wmnet
-          - cirrusssearch1101.eqiad.wmnet
-          - cirrusssearch1102.eqiad.wmnet
-          - cirrusssearch1110.eqiad.wmnet
+          - cirrussearch1097.eqiad.wmnet
+          - cirrussearch1099.eqiad.wmnet
+          - cirrussearch1101.eqiad.wmnet
+          - cirrussearch1102.eqiad.wmnet
+          - cirrussearch1110.eqiad.wmnet
 
         expected_nodes: 18
 
