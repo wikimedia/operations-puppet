@@ -14,7 +14,8 @@ input:
     topics: [ "${KAFKA_TOPICS}" ]
     tls:
       enabled: true
-    consumer_group: "benthos-mw-accesslog-metrics"
+    consumer_group: "benthos-mw-accesslog-metrics-mwlog"
+    start_from_oldest: false
     batching:
       count: 2048
       period: 500ms
