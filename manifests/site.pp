@@ -1135,7 +1135,7 @@ node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
 
 # T384966 refresh hosts (post-rename)
 node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+    role(cirrus::opensearch)
 }
 
 
