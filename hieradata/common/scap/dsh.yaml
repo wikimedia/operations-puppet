@@ -48,6 +48,9 @@ scap::dsh::groups:
     conftool:
       - {'cluster': 'wdqs', 'service': 'wdqs'}
     hosts:
+      - wdqs1011.eqiad.wmnet
+      - wdqs1016.eqiad.wmnet
+      - wdqs1017.eqiad.wmnet
       - wdqs1021.eqiad.wmnet
       - wdqs1022.eqiad.wmnet
       - wdqs1023.eqiad.wmnet
@@ -55,6 +58,9 @@ scap::dsh::groups:
       - wdqs1025.eqiad.wmnet
       - wdqs1026.eqiad.wmnet
       - wdqs1027.eqiad.wmnet
+      - wdqs2008.codfw.wmnet
+      - wdqs2014.codfw.wmnet
+      - wdqs2015.codfw.wmnet
       - wdqs2018.codfw.wmnet
       - wdqs2019.codfw.wmnet
       - wdqs2020.codfw.wmnet
