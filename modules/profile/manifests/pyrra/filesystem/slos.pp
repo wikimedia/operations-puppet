@@ -18,6 +18,16 @@ class profile::pyrra::filesystem::slos (
         enable_alerts => true,
     }
 
+    # Performance test for T387350
+    profile::pyrra::filesystem::slos::istio { 'revertrisk-la':
+        team => 'ml',
+        slo_requests_target => '95.0',
+        slo_latency_target => '95.0',
+        destination_canonical_service => 'revertrisk-language-agnostic-predictor-default',
+        enable_alerts => false,
+        pyrra_namespace => 'pyrra-o11y-pilot',
+    }
+
     # workaround grouping exported metrics limitation by setting site/datacenter via puppet
     $datacenters.each |$datacenter| {
 

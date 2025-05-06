@@ -11,6 +11,7 @@ define profile::pyrra::filesystem::slos::istio(
     String $latency_max_seconds_bucket = '5000',
     String $k8s_cluster_name = 'wikikube',
     Boolean $enable_alerts = false,
+    String $pyrra_namespace = 'pyrra-o11y',
     Wmflib::Ensure $ensure = 'present'
 ) {
     $datacenters.each |$datacenter| {
@@ -21,7 +22,7 @@ define profile::pyrra::filesystem::slos::istio(
             'kind'       => 'ServiceLevelObjective',
             'metadata'   => {
                 'name'      => "${title}-requests",
-                'namespace' => 'pyrra-o11y',
+                'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
                 'labels'    => {
                     'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
                     'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
@@ -54,7 +55,7 @@ define profile::pyrra::filesystem::slos::istio(
             'kind'       => 'ServiceLevelObjective',
             'metadata'   => {
                 'name'      => "${title}-latency",
-                'namespace' => 'pyrra-o11y',
+                'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
                 'labels'    => {
                     'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
                     'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
