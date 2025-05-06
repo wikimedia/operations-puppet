@@ -94,4 +94,5 @@ profile::gerrit::gerrit_abusers:
   - '2a0a:4cc0::/40' # Netcup
   - '2a03:4000::/32' # Netcup
   - '85.208.98.18/32' 
-  - '89.58.0.0/16' # Netcup
+  - '89.58.0.0/18' # Netcup
+  - '152.53.0.0/16' # ANX Holding GmbH
