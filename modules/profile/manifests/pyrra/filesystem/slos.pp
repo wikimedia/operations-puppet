@@ -15,6 +15,7 @@ class profile::pyrra::filesystem::slos (
         slo_requests_target => '95.0',
         slo_latency_target => '95.0',
         latency_max_seconds_bucket => '30000',
+        enable_alerts => true,
     }
 
     # workaround grouping exported metrics limitation by setting site/datacenter via puppet
