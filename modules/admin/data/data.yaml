@@ -463,7 +463,7 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman, jvanderhoop]
+              kcoleman, jvanderhoop, scampos]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6681,6 +6681,13 @@ users:
     uid: 48993
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  scampos:
+    ensure: present
+    realname: Sara Campos
+    email: scampos@wikimedia.org
+    uid: 45281
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7402,10 +7409,6 @@ ldap_only_users:
     ensure: present
     realname: Maciej Jaros
     email: egil@wp.pl
-  scampos:
-    ensure: present
-    realname: Sara Campos
-    email: scampos@wikimedia.org
   xqt:
     ensure: present
     realname: (known to legal)
