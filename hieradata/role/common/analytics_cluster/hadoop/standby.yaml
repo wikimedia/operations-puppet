@@ -71,3 +71,7 @@ profile::base::production::role_description: 'Hadoop standby NameNode'
 
 profile::puppet::agent::force_puppet7: true
 
+# Temporarily exlude hosts in rack F3 for a hard drive upgrade - See #T390171
+profile::hadoop::master::standby::excluded_hosts:
+  - an-worker1156.eqiad.wmnet
+  - an-worker1177.eqiad.wmnet
