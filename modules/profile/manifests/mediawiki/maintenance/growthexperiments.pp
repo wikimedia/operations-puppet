@@ -24,8 +24,14 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # Track task pool size
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
-        interval => '*-*-* *:11:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
+        interval              => '*-*-* *:11:00',
+        cron_schedule         => '11 * * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'listTaskCounts.php',
+        description           => 'Track ores task pool size',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # update data for the mentor dashboard (T285811)
