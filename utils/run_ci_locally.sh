@@ -1,6 +1,7 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 set -eo pipefail
+shopt -s lastpipe
 # Script to run CI checks on your local puppet code.
 # It uses the same docker image we use to run such tests in
 # CI.
@@ -37,6 +38,8 @@ if [[ -n "$1" && "$1" == "-h" ]]; then
 	usage
 fi
 
+git_root=$(git rev-parse --show-toplevel)
+
 if [ -n "$OCI_RUNTIME" ] && command -v "$OCI_RUNTIME" >/dev/null; then
 	oci_runtime="$OCI_RUNTIME"
 # Verify that docker or podman is installed, prefer podman
@@ -60,24 +63,57 @@ IMG_VERSION=${IMG_VERSION:-"latest"}
 IMG_NAME=docker-registry.wikimedia.org/releng/operations-puppet:$IMG_VERSION
 CONT_NAME=puppet-tests-${IMG_VERSION}
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ "$IMG_VERSION" = "latest" ]; then
 	echo "Using 'latest' image tag, set IMG_VERSION to use a specific version"
 	$oci_runtime pull "$IMG_NAME"
 fi
 
-pushd "${SCRIPT_DIR}/.."
+cont_puppet_dir=$(
+	$oci_runtime run \
+		--rm \
+		--entrypoint '/usr/bin/printenv' \
+		"$IMG_NAME" \
+		'PUPPET_DIR'
+)
+cont_docker_head=$(
+	$oci_runtime run \
+		--rm \
+		--workdir "$cont_puppet_dir" \
+		--entrypoint '/usr/bin/git' \
+		"$IMG_NAME" \
+		show-ref -s docker-head
+)
+
+pushd "${git_root}" >/dev/null
 oci_run_args=(
 	'--rm'
 	'--env'
 	ZUUL_REF=""
 	'--env'
 	RAKE_TARGET="$*"
+	'--env'
+	CONT_DOCKER_HEAD="$cont_docker_head"
 	'--name'
 	"$CONT_NAME"
-	'--volume'
-	"$PWD":/src
 )
+
+# Mount each file or directory in the root of our local repo over the same file
+# in the container repo root, exclude testing dependencies of ruby & python.
+# This totals 42 mounts at the time of this writing, which seems a bit
+# ludicrous, but seems to work fine in practice.
+find "$git_root" -mindepth 1 -maxdepth 1 -printf '%f\n' |
+	mapfile -t git_root_files
+for file in "${git_root_files[@]}"; do
+	if [[ "$file" = ".tox" ||
+		"$file" = ".bundle" ||
+		"$file" = "Gemfile.lock" ]]; then
+		continue
+	fi
+	oci_run_args+=(
+		'--volume'
+		"$git_root"/"$file":"$cont_puppet_dir"/"$file":ro
+	)
+done
 
 # Fix platform warning when running on M1/M2 macs
 if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]; then
@@ -85,6 +121,18 @@ if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]; then
 		'--platform'
 		'linux/amd64'
 	)
+fi
+
+# Update the private repo, dup of Rakefile logic, to avoid needing rake deps to
+# run, we can't do this in the container, because the file system is mounted
+# readonly
+private_repo='https://gerrit.wikimedia.org/r/labs/private'
+fixture_path="${git_root}/spec/fixtures"
+private_modules_path="${fixture_path}/private"
+if [[ -e "${private_modules_path}/.git" ]]; then
+	git -C "$private_modules_path" pull --ff-only
+else
+	git clone "$private_repo" "$private_modules_path"
 fi
 
 if [ "${INTERACTIVE}" == "yes" ]; then
@@ -97,4 +145,4 @@ if [ "${INTERACTIVE}" == "yes" ]; then
 else
 	$oci_runtime run "${oci_run_args[@]}" "$IMG_NAME"
 fi
-popd
+popd >/dev/null

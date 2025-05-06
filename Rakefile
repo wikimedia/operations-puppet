@@ -48,10 +48,14 @@ pattern_end = 'spec/{aliases,classes,defines,functions,hosts,integration,plans,t
 private_repo = 'https://gerrit.wikimedia.org/r/labs/private'
 fixture_path = File.join(__dir__, 'spec', 'fixtures')
 private_modules_path = File.join(fixture_path, 'private')
-if File.exist?(File.join(private_modules_path, '.git'))
-  system('git', '-C', private_modules_path, 'pull', '--ff-only', out: File::NULL)
-else
-  system('git', 'clone', private_repo, private_modules_path, out: File::NULL)
+# If we are on a readonly fs, e.g. in a local CI container, don't try to clone
+# the private repo, instead clone the repo in utils/run_ci_locally.sh
+if File.writable?(fixture_path)
+  if File.exist?(File.join(private_modules_path, '.git'))
+    system('git', '-C', private_modules_path, 'pull', out: File::NULL)
+  else
+    system('git', 'clone', private_repo, private_modules_path, out: File::NULL)
+  end
 end
 ENV['SPEC_PREP_DONE'] = 'DONE'
 # We should probably set this in the dockerfile
