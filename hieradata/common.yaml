@@ -153,22 +153,6 @@ statsd_exporter_port: 9125
 # Debmonitor instance
 debmonitor: debmonitor.discovery.wmnet
 
-# List of all prometheus nodes (ops instance)
-prometheus_all_nodes:
-  - prometheus7001.magru.wmnet
-  - prometheus3003.esams.wmnet
-  - prometheus4002.ulsfo.wmnet
-  - prometheus5002.eqsin.wmnet
-  - prometheus6002.drmrs.wmnet
-  - prometheus1005.eqiad.wmnet
-  - prometheus1006.eqiad.wmnet
-  - prometheus1007.eqiad.wmnet
-  - prometheus1008.eqiad.wmnet
-  - prometheus2005.codfw.wmnet
-  - prometheus2006.codfw.wmnet
-  - prometheus2007.codfw.wmnet
-  - prometheus2008.codfw.wmnet
-
 alertmanagers:
   - alert1002.wikimedia.org
   - alert2002.wikimedia.org
