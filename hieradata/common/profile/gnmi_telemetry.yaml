@@ -100,6 +100,9 @@ profile::gnmi_telemetry::subscriptions:
   optics:
     paths:
       - "/junos/system/linecard/optics/"
+    stream-mode: sample
+    sample-interval: 60s
+    encoding: proto
 profile::gnmi_telemetry::processors:
   delete-tag-name:
     event-delete:
