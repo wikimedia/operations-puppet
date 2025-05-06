@@ -31,8 +31,8 @@ class openstack::cinder::config::dalmatian(
     # Subtemplates of cinder.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
-    $keystone_auth_username = 'novaadmin'
-    $keystone_auth_project = 'admin'
+    $keystone_auth_username = 'cinder'
+    $keystone_auth_project = 'service'
     file { '/etc/cinder/cinder.conf':
         content   => template('openstack/dalmatian/cinder/cinder.conf.erb'),
         owner     => 'cinder',
