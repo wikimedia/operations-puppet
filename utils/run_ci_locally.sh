@@ -5,7 +5,7 @@ set -eo pipefail
 # It uses the same docker image we use to run such tests in
 # CI.
 usage() {
-    cat <<USG
+	cat <<USG
 $0 - run tests on your puppet working directory.
 
 USAGE:
@@ -31,28 +31,28 @@ $ run_ci_locally.sh --tasks
 # Execute all spec tests
 $ run_ci_locally.sh global:spec
 USG
-    exit 2
+	exit 2
 }
 if [[ -n "$1" && "$1" == "-h" ]]; then
-    usage
+	usage
 fi
 
 if [ -n "$OCI_RUNTIME" ] && command -v "$OCI_RUNTIME" >/dev/null; then
-    oci_runtime="$OCI_RUNTIME"
+	oci_runtime="$OCI_RUNTIME"
 # Verify that docker or podman is installed, prefer podman
 elif command -v podman >/dev/null; then
-    oci_runtime='podman'
+	oci_runtime='podman'
 elif command -v docker >/dev/null; then
-    oci_runtime='docker'
-    # If using docker verify that the current user has permissions to operate
-    # on it.
-    if ! docker info >/dev/null; then
-        echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
-        exit 1
-    fi
+	oci_runtime='docker'
+	# If using docker verify that the current user has permissions to operate
+	# on it.
+	if ! docker info >/dev/null; then
+		echo "Your current user ($USER) is not authorized to operate on the docker daemon. Please fix that."
+		exit 1
+	fi
 else
-    echo "Neither 'docker' nor 'podman' were found in your PATH: '$PATH'. Please install one of them"
-    exit 1
+	echo "Neither 'docker' nor 'podman' were found in your PATH: '$PATH'. Please install one of them"
+	exit 1
 fi
 
 INTERACTIVE=${INTERACTIVE:-"no"}
@@ -60,44 +60,41 @@ IMG_VERSION=${IMG_VERSION:-"latest"}
 IMG_NAME=docker-registry.wikimedia.org/releng/operations-puppet:$IMG_VERSION
 CONT_NAME=puppet-tests-${IMG_VERSION}
 
-SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
-if [ "$IMG_VERSION" = "latest" ]
-then
-  echo "Using 'latest' image tag, set IMG_VERSION to use a specific version"
-  $oci_runtime pull "$IMG_NAME"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ "$IMG_VERSION" = "latest" ]; then
+	echo "Using 'latest' image tag, set IMG_VERSION to use a specific version"
+	$oci_runtime pull "$IMG_NAME"
 fi
 
 pushd "${SCRIPT_DIR}/.."
 oci_run_args=(
-  '--rm'
-  '--env'
-  ZUUL_REF=""
-  '--env'
-  RAKE_TARGET="$*"
-  '--name'
-  "$CONT_NAME"
-  '--volume'
-  "$PWD":/src
+	'--rm'
+	'--env'
+	ZUUL_REF=""
+	'--env'
+	RAKE_TARGET="$*"
+	'--name'
+	"$CONT_NAME"
+	'--volume'
+	"$PWD":/src
 )
 
 # Fix platform warning when running on M1/M2 macs
-if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]
-then
-  oci_run_args+=(
-    '--platform'
-    'linux/amd64'
-  )
+if [ "$(uname -m)" == "arm64" ] && [ "${oci_runtime}" == "docker" ]; then
+	oci_run_args+=(
+		'--platform'
+		'linux/amd64'
+	)
 fi
 
-if [ "${INTERACTIVE}" == "yes" ]
-then
-  echo "starting $oci_runtime in interactive mode."
-  echo "you will most likely want to run the following steps"
-  echo "bundle update"
-  echo "run your custom rspec debug steps e.g."
-  echo "cd modules/wmflib && bundle exec rake spec"
-  $oci_runtime run "${oci_run_args[@]}" -it --workdir /src --entrypoint bash "$IMG_NAME"
+if [ "${INTERACTIVE}" == "yes" ]; then
+	echo "starting $oci_runtime in interactive mode."
+	echo "you will most likely want to run the following steps"
+	echo "bundle update"
+	echo "run your custom rspec debug steps e.g."
+	echo "cd modules/wmflib && bundle exec rake spec"
+	$oci_runtime run "${oci_run_args[@]}" -it --workdir /src --entrypoint bash "$IMG_NAME"
 else
-  $oci_runtime run "${oci_run_args[@]}" "$IMG_NAME"
+	$oci_runtime run "${oci_run_args[@]}" "$IMG_NAME"
 fi
 popd
