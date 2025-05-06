@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Get the status of a Dell PERC RAID controller
+Get the status of a Broadcom controller, either shipped by Dell as PERC 750
+or by Supermicro.
 
-Execute and parse the perccli commands in order to print a summary of the RAID
+Execute and parse the perccli/storcli commands in order to print a summary of the RAID
 status.
 """
 
@@ -21,24 +22,40 @@ NAGIOS_CRIT = 2
 NAGIOS_UNKN = 3
 
 
-def run_perccli_command(args) -> dict:
-    """Wrapper for the perccli64 tool"""
-    cmd = ['/usr/bin/perccli64', args]
+def get_tool_to_use():
+    """Find the binary tool to use, checking what is available on the host."""
+    if os.path.isfile('/usr/sbin/storcli'):
+        return '/usr/sbin/storcli'
+    elif os.path.isfile('/usr/bin/perccli64'):
+        return '/usr/bin/perccli64'
+    else:
+        raise RuntimeError('Neither storcli nor perccli64 present on the host, please check.')
+
+
+def run_command(args) -> dict:
+    """Wrapper for the perccli64/storcli tools"""
+    cmd = [get_tool_to_use(), args]
 
     # Capture stdout from command and enable check.
-    # Check will cause a CalledProcessError if perccli64 returns with
+    # Check will cause a CalledProcessError if perccli64/storcli returns with
     # an non-zero exit code. Exception is handled in main.
-    perc_data = subprocess.run(cmd, capture_output=True, check=True)
-    return json.loads(perc_data.stdout)
+    data = subprocess.run(cmd, capture_output=True, check=True)
+    return json.loads(data.stdout)
 
 
 def list_controllers() -> List[int]:
     """IDs of the installed controllers"""
     command_args = 'show J'
-    data = run_perccli_command(command_args)
+    data = run_command(command_args)
 
-    overviews_list = [controller['Response Data']['System Overview']
-                      for controller in data['Controllers']]
+    overviews_list = []
+    for controller in data['Controllers']:
+        system_overview_key = (
+            'System Overview' if 'System Overview' in controller['Response Data']
+            else 'IT System Overview'
+        )
+        overviews_list.append(controller['Response Data'][system_overview_key])
+
     overviews = []
     for overview in overviews_list:
         overviews.extend(overview)
@@ -47,16 +64,16 @@ def list_controllers() -> List[int]:
     return controller_ids
 
 
-def get_perccli_data(controller_ids) -> Tuple[bool, str, dict]:
-    """Get data on disks, enclosure and battery status from the PERCCLI tool, for
+def get_raid_cli_data(controller_ids) -> Tuple[bool, str, dict]:
+    """Get data on disks, enclosure and battery status from the tool, for
     each installed controller.
     """
 
     controllers = ','.join([str(controller_id) for controller_id in controller_ids])
 
-    # Appending J to any perccli command will return JSON formatet output
+    # Appending J to any command will return JSON formatted output
     command_args = f'/c{controllers} show all J'
-    data = run_perccli_command(command_args)
+    data = run_command(command_args)
 
     # If the controller request does not return "Success", we want to abort
     # any other processing.
@@ -71,7 +88,7 @@ def get_perccli_data(controller_ids) -> Tuple[bool, str, dict]:
         return NAGIOS_UNKN, f'communication {len(controller_communication_errors)}\
                 {controller["Command Status"]["Status"]}', data['Controllers']
 
-    # The PERCCLI tool always returns an array of controllers, even if we
+    # The tool always returns an array of controllers, even if we
     # specifically requested just the one. Extract the response data from
     # the array to make things easier to work with.
     return NAGIOS_OK, 'communication: 0 OK', data['Controllers']
@@ -90,7 +107,8 @@ def lookup_by_key(key, data) -> list:
 
     # Find device data, by key, for each controller. Will yield a list of
     # devices per controller.
-    elements_per_controller = [controller[key] for controller in controller_data]
+    elements_per_controller = [
+        controller[key] for controller in controller_data if key in controller]
 
     # If the elements in the list are not lists, do not attempt to merge.
     if len(elements_per_controller) > 0 and not isinstance(elements_per_controller[0], list):
@@ -110,7 +128,7 @@ def virtual_devices_configured() -> bool:
     # /call = All controllers
     # /vall = All virtual drives
     command_args = '/call/vall show all J'
-    data = run_perccli_command(command_args)
+    data = run_command(command_args)
     vds = [ctl['Response Data'] for ctl in data['Controllers'] if 'Response Data' in ctl]
     return True if vds else False
 
@@ -128,7 +146,7 @@ def general_state(data) -> Tuple[int, str]:
 def get_topology(controller_id) -> str:
     """Get the human-readable topology data for a controller"""
     args = f'/c{controller_id}/dall show'
-    cmd = ['/usr/bin/perccli64', args]
+    cmd = [get_tool_to_use(), args]
     return subprocess.check_output(cmd, universal_newlines=True)
 
 
@@ -179,11 +197,11 @@ def enclosure_state(data) -> Tuple[bool, str]:
 
 
 def parser_controller_data(controller_ids) -> Tuple[int, str]:
-    """Parse data from returned by the perccli64 tools"""
+    """Parse data from returned by the tools"""
     messages = []
 
     # Communication status, as well as data.
-    c_state, c_msg, data = get_perccli_data(controller_ids)
+    c_state, c_msg, data = get_raid_cli_data(controller_ids)
     messages.append(c_msg)
 
     # General RAID controller state.
@@ -214,7 +232,7 @@ def parser_controller_data(controller_ids) -> Tuple[int, str]:
 
 
 def check_permissions():
-    """Running the PERCCLI tool without root permissions will work, but
+    """Running the tool without root permissions will work, but
     return no data, as if no controllers are installed.
     """
     if os.getuid() != 0:
