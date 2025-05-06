@@ -22,11 +22,11 @@ red:connect('127.0.0.1', 6379)
 
 --- Lookup backend host and port to proxy
 -- @parm hostname Hostname to lookup
-function lookup_backend(hostname)
+local function lookup_backend(hostname)
     return red:srandmember('frontend:' .. hostname)
 end
 
-function redis_shutdown()
+local function redis_shutdown()
     -- Use a connection pool of 256 connections with a 32s idle timeout
     -- This also closes the current redis connection.
     red:set_keepalive(1000 * 32, 256)
