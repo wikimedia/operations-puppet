@@ -208,6 +208,8 @@ class profile::kubernetes::master (
         force_tls               => true,
         certificate_expiry_days => $certificate_expiry_days,
         prometheus_instance     => 'ops',
+        timeout                 => '20s',
+        alert_after             => '5m',
     }
 
     # Setup kube-scheduler
