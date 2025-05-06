@@ -257,13 +257,6 @@ topics = notifications
 #
 backend_url = memcached://localhost:11213
 
-[oslo_policy]
-
-# Designate isn't ready to adopt upstream default policies yet. Review this
-#  again in B
-enforce_scope = false
-enforce_new_defaults = false
-
 [service:worker]
 #workers = None
 #threads = 1000
