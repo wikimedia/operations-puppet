@@ -35,6 +35,7 @@ end
 if ngx.var.http_host == nil then
     -- missing HOST: header from client. We can't figure out where to route
     -- the request without it, so tell the client this was a bad request.
+    redis_shutdown()
     return ngx.exit(400)
 end
 
