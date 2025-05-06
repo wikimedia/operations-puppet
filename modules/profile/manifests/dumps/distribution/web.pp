@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::dumps::distribution::web (
     Boolean $is_primary_server = lookup('profile::dumps::distribution::web::is_primary_server'),
-    Stdlib::Host $dumps_active_web_server = lookup('dumps_dist_active_web'),
     Stdlib::Unixpath $datadir = lookup('profile::dumps::distribution::basedatadir'),
     Stdlib::Unixpath $xmldumpsdir = lookup('profile::dumps::distribution::xmldumpspublicdir'),
     Stdlib::Unixpath $miscdatasetsdir = lookup('profile::dumps::distribution::miscdumpsdir'),
@@ -35,11 +34,4 @@ class profile::dumps::distribution::web (
         port  => '443',
     }
 
-    class { 'dumps::web::enterprise':
-        is_primary_server => $is_primary_server,
-        dumps_web_server  => $dumps_active_web_server,
-        user              => 'dumpsgen',
-        group             => 'dumpsgen',
-        miscdumpsdir      => $miscdatasetsdir,
-    }
 }
