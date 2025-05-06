@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 """
   Django CORS middleware for graphite-web
@@ -26,6 +27,6 @@ class CorsMiddleware(middleware_base_class):
             response['Access-Control-Allow-Origin'] = origin
             response['Access-Control-Allow-Methods'] = 'GET, OPTIONS'
             response['Access-Control-Allow-Headers'] = (
-                'origin, authorization, accept')
+                'origin, authorization, accept, x-grafana-device-id')
             response['Access-Control-Allow-Credentials'] = 'true'
         return response
