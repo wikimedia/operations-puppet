@@ -19,8 +19,22 @@ class profile::mediawiki::maintenance::growthexperiments(
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
-    # Ensure that a sufficiently large pool of link recommendations is available.
-    profile::mediawiki::maintenance::growthexperiments::refreshlinkrecommendations { [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]: }
+    $link_rec_shards = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]
+    $kubernetes_shards = ['s1']
+
+    # Cleanup as part of migration (T385782)
+    $link_rec_shards.each |$shard| {
+        profile::mediawiki::periodic_job { "growthexperiments-refreshLinkRecommendations-${shard}":
+            command               => "/usr/local/bin/foreachwikiindblist 'growthexperiments & ${shard}' extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php",
+            interval              => '*-*-* *:27:00',
+            cron_schedule         => '27 * * * *',
+            kubernetes            => $shard in $kubernetes_shards,
+            team                  => $team_name,
+            script_label          => 'refreshLinkRecommendations.php',
+            description           => 'Ensure that a sufficiently large pool of link recommendations is available.',
+            helmfile_defaults_dir => $helmfile_defaults_dir,
+        }
+    }
 
     # Track task pool size
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
