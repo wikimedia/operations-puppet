@@ -78,10 +78,6 @@ class profile::wmcs::instance(
         mode    => '0444',
     }
 
-    package { 'puppet-lint':
-        ensure => present,
-    }
-
     # We are using nfsv4, which doesn't require rpcbind on clients. T241710
     # However, removing the package removes nfs-common.
     if $facts['nfscommon_version'] {
