@@ -1,0 +1,2 @@
+profile::puppet::agent::force_puppet7: true
+profile::base::production::role_description: 'WMCS Rabbit message queue host'
