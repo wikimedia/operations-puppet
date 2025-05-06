@@ -463,7 +463,7 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman]
+              kcoleman, jvanderhoop]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6674,6 +6674,13 @@ users:
     uid: 46423
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  jvanderhoop:
+    ensure: present
+    realname: Julie van der Hoop
+    email: jvanderhoop@wikimedia.org
+    uid: 48993
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7515,10 +7522,6 @@ ldap_only_users:
     ensure: present
     realname: Kevin Montalva
     email: kevmon@wikimedia.org
-  jvanderhoop:
-    ensure: present
-    realname: Julie van der Hoop
-    email: jvanderhoop@wikimedia.org
   bcampbell804:
     ensure: present
     realname: Brendan Campbell-Craven
