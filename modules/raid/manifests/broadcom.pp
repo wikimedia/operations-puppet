@@ -6,7 +6,7 @@ class raid::broadcom {
     if $facts['dmi']['board']['manufacturer'] == 'Supermicro' {
         ensure_packages('storcli')
     } else {
-        ensure_packages('perccli64')
+        ensure_packages('perccli')
     }
 
     nrpe::plugin { 'get-raid-status-broadcom':
