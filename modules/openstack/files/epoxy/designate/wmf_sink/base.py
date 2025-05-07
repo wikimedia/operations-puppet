@@ -257,7 +257,6 @@ class BaseAddressWMFHandler(BaseAddressHandler):
             service = keystone.services.list(type="puppet-enc")[0]
 
             self.enc_endpoint = keystone.endpoints.list(
-                service=service.id, interface="public", enabled=True
-            )[0].url
+                service=service.id, interface="public")[0].url
 
         return self.enc_endpoint
