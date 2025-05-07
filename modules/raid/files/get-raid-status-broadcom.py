@@ -136,7 +136,8 @@ def virtual_devices_configured() -> bool:
 def general_state(data) -> Tuple[int, str]:
     """Get overall state from the RAID controller"""
     status_list = lookup_by_key('Status', data)
-    errors = [status for status in status_list if status['Controller Status'] in ['Optimal', 'OK']]
+    errors = [status for status in status_list
+              if status['Controller Status'] not in ['Optimal', 'OK']]
     status = 'OK' if not errors else errors[0]['Controller Status']
     exit_code = 0 if not errors else NAGIOS_WARN
     message = f'controller: {len(errors)} {status}'
