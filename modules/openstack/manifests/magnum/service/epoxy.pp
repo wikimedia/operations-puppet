@@ -51,21 +51,4 @@ class openstack::magnum::service::epoxy(
             group   => 'root',
             mode    => '0755',
     }
-
-
-    # Hack in fix for log size
-    #  https://phabricator.wikimedia.org/T336586
-    #  https://review.opendev.org/c/openstack/magnum/+/885900
-    # These next two files can be removed once the upstream patch is merged and
-    # we catch up with it.
-    openstack::patch { '/usr/lib/python3/dist-packages/magnum/drivers/common/templates/kubernetes/fragments/start-container-agent.sh':
-        source  => 'puppet:///modules/openstack/epoxy/magnum/hacks/drivers/common/templates/kubernetes/fragments/start-container-agent.sh.patch',
-        require => Package['magnum-api'],
-        notify  => Service['magnum-api'],
-    }
-    openstack::patch { '/usr/lib/python3/dist-packages/magnum/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml':
-        source  => 'puppet:///modules/openstack/epoxy/magnum/hacks/drivers/k8s_fedora_coreos_v1/templates/fcct-config.yaml.patch',
-        require => Package['magnum-api'],
-        notify  => Service['magnum-api'],
-    }
 }
