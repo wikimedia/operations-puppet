@@ -1,6 +1,5 @@
 profile::admin::groups:
   - wmcs-roots
-contactgroups: wmcs-team-email
 profile::contacts::role_contacts: ['WMCS']
 cluster: wmcs
 
