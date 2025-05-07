@@ -17,7 +17,13 @@ class profile::mediawiki::maintenance::purge_expired_userrights(
     # CentralAuth tables are global, we only need to run this on one wiki.
     # I picked meta since that's where all on-wiki CentralAuth actions are done.
     profile::mediawiki::periodic_job { 'purge_expired_global_rights':
-        command  => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/purgeExpiredGlobalRights.php --wiki metawiki',
-        interval => '*-3,17 13:23',
+        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/purgeExpiredGlobalRights.php --wiki metawiki',
+        interval              => '*-3,17 13:23',
+        cron_schedule         => '23 13 3,17 * *',
+        team                  => $team,
+        kubernetes            => true,
+        description           => 'Remove expired userrights from the global_user_groups table',
+        script_label          => 'CentralAuth-purgeExpiredGlobalRights.php',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
