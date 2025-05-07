@@ -260,6 +260,14 @@ def parse_filename_pair(filenames: str) -> tuple[str, TextIO]:
     return remote_name, argparse.FileType()(local_name)
 
 
+def parse_env(env: str) -> tuple[str, str]:
+    try:
+        name, value = env.split('=', maxsplit=1)  # If the input is "a=b=c", the value is "b=c".
+    except ValueError:
+        raise argparse.ArgumentTypeError('must be of the form ENV_VARIABLE=value')
+    return name, value
+
+
 def start(args: argparse.Namespace) -> dict[str, str]:
     environment = get_primary_dc()
     # If we can't open the config, bail out with a clear error message, instead of running helmfile.
@@ -286,6 +294,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         },
         'mwscript': {
             'args': [args.script_name, *args.script_args],
+            'env': dict(args.env) if args.env else None,
             'labels': {
                 'username': interactive.get_username(),
                 # The label can't contain slashes or colons. If script_name has a path or an
@@ -432,6 +441,9 @@ def main() -> int:
                              "path/to/local-file.txt[:remote-file.txt] -- omit colon section to "
                              "use the same filename (with any leading path stripped). Pass --file "
                              "again to copy multiple files.")
+    parser.add_argument('--env', action='append', type=parse_env,
+                        help="Set an environment variable for the script. Format: --env VAR=value. "
+                             "Pass --env again to set multiple variables.")
     parser.add_argument('--timeout', type=parse_duration,
                         help='Set a deadline for the job, to interrupt it after a set interval. '
                              'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
