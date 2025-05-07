@@ -53,6 +53,9 @@
       "@timestamp": {
         "type": "date"
       },
+      "generated": {
+        "type": "date"
+      },
       "tags": {
         "ignore_above": 1024,
         "type": "keyword"
