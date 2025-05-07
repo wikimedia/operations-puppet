@@ -4,10 +4,6 @@
 class profile::cache::varnish::frontend::text (
     Wmflib::Ensure $esitest_ensure = lookup('profile::cache::varnish::frontend::text::esitest_ensure', {'default_value' => 'absent'}),
 ) {
-    # for VCL compilation using libGeoIP
-    class { 'geoip': }
-    class { 'geoip::dev': }
-
     # Include ESI testing backend service in all text nodes
     class { 'esitest':
         ensure     => $esitest_ensure,

@@ -6,6 +6,7 @@
 # - monitoring
 # - logging/analytics
 # - purging
+# - geoip
 #
 class profile::cache::base(
     String $cache_cluster                            = lookup('cache::cluster'),
@@ -71,6 +72,11 @@ class profile::cache::base(
             use_noflow_iface_preup => $use_noflow_iface_preup,
         }
     }
+
+    # GeoIP data is needed for both Varnish and haproxy.
+    class { 'geoip': }
+    class { 'geoip::dev': }
+
     # Basic varnish classes
 
     class { '::varnish::common':
