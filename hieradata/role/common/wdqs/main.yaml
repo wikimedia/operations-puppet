@@ -46,6 +46,7 @@ profile::tlsproxy::envoy::cfssl_options:
     - wdqs-main.svc.%{::site}.wmnet
     - wdqs-main.wikimedia.org
     - query-main.wikidata.org
+    - query.wikidata.org
 profile::tlsproxy::envoy::global_cert_name: "wdqs-main.discovery.wmnet"
 profile::tlsproxy::envoy::listen_ipv6: true
 
