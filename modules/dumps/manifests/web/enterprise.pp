@@ -7,7 +7,7 @@ class dumps::web::enterprise(
 ){
     $script_path = '/usr/local/bin/wm_enterprise_downloader.py'
     file { $script_path:
-        ensure => 'present',
+        ensure => 'absent',
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
@@ -16,7 +16,7 @@ class dumps::web::enterprise(
 
     $creds_path = '/etc/dumps/wm_enterprise_creds'
     file { $creds_path:
-        ensure  => 'present',
+        ensure  => 'absent',
         mode    => '0640',
         owner   => $user,
         group   => $group,
@@ -25,7 +25,7 @@ class dumps::web::enterprise(
 
     $settings_path = '/etc/dumps/wm_enterprise_settings'
     file { $settings_path:
-        ensure => 'present',
+        ensure => 'absent',
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
