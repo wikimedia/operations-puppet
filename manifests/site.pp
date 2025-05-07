@@ -2436,13 +2436,18 @@ node /^relforge1010\.eqiad\./ {
     role(cirrus::relforge)
 }
 # restbase eqiad cluster
-node /^restbase10(2[8-9]|3[0-9]|4[0-5])\.eqiad\./ {
+node /^restbase10(3[1-9]|4[0-5])\.eqiad\./ {
     role(restbase::production)
 }
 
 # restbase codfw cluster
 node /^restbase20(2[4-9]|3[0-8])\.codfw\./ {
     role(restbase::production)
+}
+
+# decommissioning
+node /^restbase10(2[8-9]|30)\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
 }
 
 # New cassandra dev nodes T324113
