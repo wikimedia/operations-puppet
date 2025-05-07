@@ -17,10 +17,17 @@ class profile::mediawiki::maintenance::campaignevents(
         kubernetes            => true,
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
-    profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-metawiki':
-        command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki metawiki',
-        interval => '00/03:00',
-        splay    => 300,
+    profile::mediawiki::periodic_job { 'campaignevents-aggregateanswers-metawiki':
+        command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki metawiki',
+        interval              => '00/03:00',
+        cron_schedule         => '0 */3 * * *',
+        splay                 => 300,
+        team                  => $team_label,
+        script_label          => 'AggregateParticipantAnswers.php-metawiki',
+        description           => 'Aggregate participant answers on metawiki',
+        kubernetes            => true,
+        helmfile_defaults_dir => $helmfile_defaults_dir,
+        migration_title       => 'campaignevents-aggregateparticipantanswers-metawiki',
     }
 
     unless $::realm == 'labs' {
@@ -59,10 +66,17 @@ class profile::mediawiki::maintenance::campaignevents(
             kubernetes            => true,
             helmfile_defaults_dir => $helmfile_defaults_dir,
         }
-        profile::mediawiki::periodic_job { 'campaignevents-aggregateparticipantanswers-officewiki':
-            command  => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki officewiki',
-            interval => '00/03:00',
-            splay    => 300,
+        profile::mediawiki::periodic_job { 'campaignevents-aggregateanswers-officewiki':
+            command               => '/usr/local/bin/mwscript extensions/CampaignEvents/maintenance/AggregateParticipantAnswers.php --wiki officewiki',
+            interval              => '00/03:00',
+            cron_schedule         => '0 */3 * * *',
+            splay                 => 300,
+            team                  => $team_label,
+            script_label          => 'AggregateParticipantAnswers.php-officewiki',
+            description           => 'Aggregate participant answers on officewiki',
+            kubernetes            => true,
+            helmfile_defaults_dir => $helmfile_defaults_dir,
+            migration_title       => 'campaignevents-aggregateparticipantanswers-officewiki',
         }
 
         # group1: test2.wikipedia.org
