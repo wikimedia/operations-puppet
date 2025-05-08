@@ -88,3 +88,13 @@ profile::opensearch::cirrus::ferm_srange: '$DOMAIN_NETWORKS'
 profile::opensearch::cirrus::expose_http: true
 
 profile::puppet::agent::force_puppet7: true
+
+profile::opensearch::cirrus::certificate_domains:
+  - 'search.discovery.wmnet'
+  - 'search-chi.discovery.wmnet'
+  - 'search-omega.discovery.wmnet'
+  - 'search-psi.discovery.wmnet'
+  - 'search.svc.%{::site}.wmnet'
+  - 'search-chi.svc.%{::site}.wmnet'
+  - 'search-omega.svc.%{::site}.wmnet'
+  - 'search-psi.svc.%{::site}.wmnet'

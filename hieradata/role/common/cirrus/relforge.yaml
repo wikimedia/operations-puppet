@@ -89,3 +89,6 @@ profile::opensearch::cirrus::enable_remote_search: false
 logstash_host: 'localhost'
 
 profile::tlsproxy::instance::nginx_variant: 'light'
+
+profile::opensearch::cirrus::certificate_domains:
+  - 'relforge.svc.eqiad.wmnet'

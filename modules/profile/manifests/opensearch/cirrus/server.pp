@@ -15,6 +15,7 @@ class profile::opensearch::cirrus::server(
     Boolean $enable_remote_search = lookup('profile::opensearch::cirrus::enable_remote_search'),
     Profile::Pki::Provider $ssl_provider = lookup('profile::opensearch::cirrus::ssl_provider'),
     Stdlib::AbsolutePath $base_data_dir = lookup('profile::opensearch::base_data_dir'),
+    Array $certificate_domains = lookup('profile::opensearch::cirrus::certificate_domains'),
 ) {
     # Also brings in ::profile::opensearch::server
     include ::profile::opensearch::monitoring::base_checks
@@ -196,12 +197,12 @@ class profile::opensearch::cirrus::server(
 
         if $ssl_provider == 'cfssl' {
             $cfssl_paths = profile::pki::get_cert('discovery', $facts['networking']['fqdn'], {
-                hosts => [$instance_params['certificate_name'], "search.svc.${::site}.wmnet"],
+                hosts => $certificate_domains,
             })
 
             $proxy_cert_params = {
                 'cfssl_paths'  => $cfssl_paths,
-                server_aliases => [$instance_params['certificate_name'],"search.svc.${::site}.wmnet"],
+                server_aliases => $certificate_domains,
             }
         }
 
