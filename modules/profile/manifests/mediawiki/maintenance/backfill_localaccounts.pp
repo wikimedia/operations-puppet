@@ -18,7 +18,13 @@ class profile::mediawiki::maintenance::backfill_localaccounts(
 
     }
     profile::mediawiki::periodic_job { 'centralauth-backfillLocalAccounts.php-metawiki':
-        command  => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=metawiki --startdate=yesterday',
-        interval => '*:55',
+        command               => '/usr/local/bin/mwscript extensions/CentralAuth/maintenance/backfillLocalAccounts.php  --wiki=metawiki --startdate=yesterday',
+        interval              => '*:55',
+        cron_schedule         => '55 * * * *',
+        team                  => $team,
+        kubernetes            => true,
+        description           => 'Backfill global user accounts to metawiki',
+        script_label          => 'CentralAuth-backfillLocalAccounts.php-metawiki',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
