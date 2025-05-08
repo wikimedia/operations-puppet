@@ -53,6 +53,19 @@ class profile::dns::auth::update (
         before   => Exec['authdns-local-update'],
     }
 
+    # systemd timer to run git gc once a month. This results in signficant
+    # performance improvements for authdns-update and is documented in T393602.
+    systemd::timer::job { 'gc-authdns-git-repo':
+        ensure      => present,
+        description => 'Run git maintenance run to optimize authdns Git repository',
+        user        => 'authdns',
+        command     => "/usr/bin/git -C ${workingdir} maintenance run",
+        interval    => {
+            'start'    => 'OnCalendar',
+            'interval' => 'Mon *-*-01..07 14:00:00',
+        },
+    }
+
     $authdns_conf = '/etc/wikimedia-authdns.conf'
 
     $authdns_update_watch_keys = $datacenters.map |$dc| { "/pools/${dc}/dnsbox/authdns-update" }
