@@ -306,7 +306,7 @@ sub cluster_fe_recv_pre_purge {
 
         // Custom rule to block traffic coming from bots, hitting the Analytics AQS API.
         if (req.http.User-Agent ~ "^(python-requests|rest-client\/2\.1\.0)" && req.url ~ "^/api/rest_v1/metrics/pageviews") {
-            return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please contact noc@wikimedia.org."));
+            return (synth(403, "Scripted requests from your IP have been blocked, please see https://foundation.wikimedia.org/wiki/Special:MyLanguage/Policy:Wikimedia_Foundation_User-Agent_Policy. In case of further questions, please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>."));
         }
     }
 

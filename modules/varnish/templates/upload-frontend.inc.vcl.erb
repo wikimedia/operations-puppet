@@ -223,7 +223,7 @@ sub ua_policy_enforcement {
     // 2021-07-28: downloading too quickly, bypassing rate limits via multiple IPs
     if (req.http.User-Agent ~ "^DownloadBot/") {
         set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:downloadbot";
-        return (synth(403, "Forbidden. Please contact noc@wikimedia.org"));
+        return (synth(403, "Forbidden. Please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
     }
 
     // Missing or empty User-Agent header
@@ -252,7 +252,7 @@ sub ua_policy_enforcement {
     if (req.http.User-Agent ~ "omnibot") {
         if (vsthrottle.is_denied("ua-policy:" + req.http.X-Client-IP, 10, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",ua_policy:omnibot";
-            return (synth(429, "Too many requests. Please contact noc@wikimedia.org"));
+            return (synth(429, "Too many requests. Please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
         }
     }
 
@@ -296,7 +296,7 @@ sub cluster_fe_ratelimit {
         if (req.http.X-Provenance ~ "cloud=\w+"
             && vsthrottle.is_denied("public_cloud:" + req.http.X-Client-IP, 100, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud";
-            return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
+            return (synth(429, "Too Many Requests. Please <%= @vcl_config.fetch('block_help', 'contact noc@wikimedia.org') %>"));
         }
 
         // General upload rate limiting: 1000/10s (100/s long term, with 1000 burst)
