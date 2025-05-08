@@ -2182,7 +2182,7 @@ service::catalog:
       - codfw
     state: production
     discovery:
-      - dnsdisc: search
+      - dnsdisc: search-chi
         active_active: true
 
   search-omega-https:
@@ -2211,6 +2211,9 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+    discovery:
+      - dnsdisc: search-omega
+        active_active: true
     aliases:
       - "search"
 
@@ -2240,6 +2243,9 @@ service::catalog:
       - eqiad
       - codfw
     state: production
+    discovery:
+      - dnsdisc: search-psi
+        active_active: true
     aliases:
       - "search"
 
