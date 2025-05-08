@@ -1319,7 +1319,7 @@ kerberos_realm_name: WIKIMEDIA
 # rely on Kerberos authentication
 kerberos_extra_realm_domains:
 - 'discovery.wmnet'
-kerberos_kadmin_server_primary: 'krb1001.eqiad.wmnet'
+kerberos_kadmin_server_primary: 'krb1002.eqiad.wmnet'
 kerberos_kadmin_keytabs_repo:
 - 'puppetserver1001.eqiad.wmnet'
 
