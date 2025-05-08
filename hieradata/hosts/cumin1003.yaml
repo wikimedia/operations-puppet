@@ -1,6 +1,6 @@
 profile::firewall::provider: nftables
 profile::homer::private_git_peer: cumin2002.codfw.wmnet
 profile::homer::diff_timer_interval: ~
-profile::httpbb::test_kubernetes_hourly: true
+profile::httpbb::test_kubernetes_hourly: false
 profile::cumin::master::insetup_role_report_day: 0  # disabled
 profile::dbbackups::transfer::enabled: false  # disable DB backups
