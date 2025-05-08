@@ -13,7 +13,8 @@ import cumin
 from cumin import query
 
 
-AUDIT_OWNER = 'dtankersley@wikimedia.org'
+AUDIT_OWNER = 'wpao@wikimedia.org'
+DEBUG_OWNER = 'rcoccioli@wikimedia.org'
 MESSAGE_PREFIX = ('This is the list of hosts owned by your team that are ready to be put in '
                   'production but still have an "insetup" Puppet role:\n')
 MESSAGE_SUFFIX = ('For more information or to relay feedback just reply to this email or get in '
@@ -84,6 +85,7 @@ def main() -> None:
 
     if len(owner_message) > 1:
         send_mail(AUDIT_OWNER, '\n'.join(owner_message))
+        send_mail(DEBUG_OWNER, '\n'.join(owner_message))
 
 
 if __name__ == '__main__':
