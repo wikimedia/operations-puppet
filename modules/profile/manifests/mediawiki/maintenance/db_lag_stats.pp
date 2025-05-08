@@ -6,8 +6,17 @@
 class profile::mediawiki::maintenance::db_lag_stats(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+
+    $team = 'data-persistence'
+
     profile::mediawiki::periodic_job { 'db_lag_stats_reporter':
-        command  => '/usr/local/bin/mwscript maintenance/getLagTimes.php --wiki aawiki --report',
-        interval => '*:*:00',
+        command               => '/usr/local/bin/mwscript maintenance/getLagTimes.php --wiki aawiki --report',
+        interval              => '*:*:00',
+        cron_schedule         => '* * * * *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'getLagTimes.php',
+        description           => 'Report the amount of lag for Mediawiki-pooled DBs.',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
