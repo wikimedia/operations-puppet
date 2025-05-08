@@ -175,6 +175,7 @@ listen tls
     http-request del-header X-Request-Id if !wikimedia_trust
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
+    http-request del-header X-Experiment-Enrollments
     http-response del-header X-Analytics
     http-response del-header Backend-Timing if missing_xwd
     http-response del-header X-ATS-Timestamp if missing_xwd
