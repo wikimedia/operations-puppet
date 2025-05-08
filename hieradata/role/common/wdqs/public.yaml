@@ -15,24 +15,12 @@ profile::query_service::event_service_endpoint: 'https://eventgate-analytics.dis
 profile::query_service::lag_warning: 21600 # 6 hours
 profile::query_service::lag_critical: 43200 # 12 hours
 profile::query_service::nodes:
-  - 'wdqs1012.eqiad.wmnet'
-  - 'wdqs1013.eqiad.wmnet'
-  - 'wdqs1014.eqiad.wmnet'
-  - 'wdqs1015.eqiad.wmnet'
   - 'wdqs1018.eqiad.wmnet'
   - 'wdqs1019.eqiad.wmnet'
   - 'wdqs1020.eqiad.wmnet'
-  - 'wdqs2007.codfw.wmnet'
   - 'wdqs2009.codfw.wmnet'
-  - 'wdqs2010.codfw.wmnet'
-  - 'wdqs2011.codfw.wmnet'
-  - 'wdqs2012.codfw.wmnet'
-  - 'wdqs2013.codfw.wmnet'
   - 'wdqs2016.codfw.wmnet'
   - 'wdqs2017.codfw.wmnet'
-  - 'wdqs2018.codfw.wmnet'
-  - 'wdqs2019.codfw.wmnet'
-  - 'wdqs2020.codfw.wmnet'
 profile::admin::groups:
   - wdqs-roots
   - wdqs-admins

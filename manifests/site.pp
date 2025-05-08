@@ -2618,11 +2618,11 @@ node /^wcqs200[123]\.codfw\./ {
     role(wcqs::public)
 }
 
-node /^wdqs101[167]\.eqiad\./ {
+node /^wdqs101[1-7]\.eqiad\./ {
     role(wdqs::main)
 }
 
-node /^wdqs101([2-5]|[89])\.eqiad\./ {
+node /^wdqs101([89])\.eqiad\./ {
     role(wdqs::public)
 }
 
@@ -2630,11 +2630,11 @@ node /^wdqs1020\.eqiad\./ {
     role(wdqs::public)
 }
 
-node /^wdqs(2008|201[45])\.codfw\./ {
+node /^wdqs(20(07|08|10|11|12|13|14|15))\.codfw\./ {
     role(wdqs::main)
 }
 
-node /^wdqs(200[79]|201[0-3]|201[6-7])\.codfw\./ {
+node /^wdqs(2009|201[6-7])\.codfw\./ {
     role(wdqs::public)
 }
 

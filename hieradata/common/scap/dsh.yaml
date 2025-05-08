@@ -49,6 +49,10 @@ scap::dsh::groups:
       - {'cluster': 'wdqs', 'service': 'wdqs'}
     hosts:
       - wdqs1011.eqiad.wmnet
+      - wdqs1012.eqiad.wmnet
+      - wdqs1013.eqiad.wmnet
+      - wdqs1014.eqiad.wmnet
+      - wdqs1015.eqiad.wmnet
       - wdqs1016.eqiad.wmnet
       - wdqs1017.eqiad.wmnet
       - wdqs1021.eqiad.wmnet
@@ -58,7 +62,12 @@ scap::dsh::groups:
       - wdqs1025.eqiad.wmnet
       - wdqs1026.eqiad.wmnet
       - wdqs1027.eqiad.wmnet
+      - wdqs2007.codfw.wmnet
       - wdqs2008.codfw.wmnet
+      - wdqs2010.codfw.wmnet
+      - wdqs2011.codfw.wmnet
+      - wdqs2012.codfw.wmnet
+      - wdqs2013.codfw.wmnet
       - wdqs2014.codfw.wmnet
       - wdqs2015.codfw.wmnet
       - wdqs2018.codfw.wmnet
