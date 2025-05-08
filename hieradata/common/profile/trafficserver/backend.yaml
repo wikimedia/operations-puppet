@@ -321,6 +321,10 @@ profile::trafficserver::backend::mapping_rules:
     - type: map
       target: http://intake-analytics.wikimedia.org
       replacement: https://eventgate-analytics-external.discovery.wmnet:4692 # TLS port
+    - type: regex_map
+      target: 'http://(.*)/evt-103e/v2/events' # random prefix result of 'evt' + echo wmfuniq|md5sum |cut -b1-4
+      # send traffic to the existing /v1/events endpoint
+      replacement: https://eventgate-analytics-external.discovery.wmnet:4692/v1/events # TLS port
     - type: map
       target: http://superset.wikimedia.org
       replacement: https://superset.discovery.wmnet:30443
