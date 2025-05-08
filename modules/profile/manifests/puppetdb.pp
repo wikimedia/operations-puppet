@@ -28,32 +28,34 @@
 # @param ssldir the location of the ssldir
 # @param ssl_verify_client how to validate mtls clients
 # @param sites a list of additional nginx proxies to configure
+# @param pdb_resource_exporter_config YAML structure listing the metrics to be exported
 #
 class profile::puppetdb (
-    Hash[String, Puppetmaster::Backends] $puppetmasters         = lookup('puppetmaster::servers'),
-    Stdlib::Host                         $master                = lookup('profile::puppetdb::master'),
-    String                               $jvm_opts              = lookup('profile::puppetdb::jvm_opts'),
-    Boolean                              $elk_logging           = lookup('profile::puppetdb::elk_logging'),
-    Stdlib::Unixpath                     $ca_path               = lookup('profile::puppetdb::ca_path'),
-    Optional[String[1]]                  $ca_content            = lookup('profile::puppetdb::ca_content'),
-    Array[Stdlib::Host]                  $puppetboard_hosts     = lookup('profile::puppetdb::puppetboard_hosts'),
-    Boolean                              $tmpfs_stockpile_queue = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
-    Boolean                              $clean_stockpile       = lookup('profile::puppetdb::clean_stockpile'),
-    String                               $puppetdb_pass         = lookup('puppetdb::password::rw'),
-    String                               $puppetdb_ro_pass      = lookup('puppetdb::password::ro'),
-    Optional[Stdlib::Host]               $db_ro_host            = lookup('profile::puppetdb::db_ro_host'),
-    Puppetdb::Loglevel                   $log_level             = lookup('profile::puppetdb::log_level'),
+    Hash[String, Puppetmaster::Backends] $puppetmasters                = lookup('puppetmaster::servers'),
+    Stdlib::Host                         $master                       = lookup('profile::puppetdb::master'),
+    String                               $jvm_opts                     = lookup('profile::puppetdb::jvm_opts'),
+    Boolean                              $elk_logging                  = lookup('profile::puppetdb::elk_logging'),
+    Stdlib::Unixpath                     $ca_path                      = lookup('profile::puppetdb::ca_path'),
+    Optional[String[1]]                  $ca_content                   = lookup('profile::puppetdb::ca_content'),
+    Array[Stdlib::Host]                  $puppetboard_hosts            = lookup('profile::puppetdb::puppetboard_hosts'),
+    Boolean                              $tmpfs_stockpile_queue        = lookup('profile::puppetdb::tmpfs_stockpile_queue'),
+    Boolean                              $clean_stockpile              = lookup('profile::puppetdb::clean_stockpile'),
+    String                               $puppetdb_pass                = lookup('puppetdb::password::rw'),
+    String                               $puppetdb_ro_pass             = lookup('puppetdb::password::ro'),
+    Optional[Stdlib::Host]               $db_ro_host                   = lookup('profile::puppetdb::db_ro_host'),
+    Puppetdb::Loglevel                   $log_level                    = lookup('profile::puppetdb::log_level'),
     # TODO: rename to facts-blocklist when on 6.13.0 - T254646
-    # https://puppet.com/docs/puppetdb/6/release_notes.html#puppetdb-6130
-    Array[String]                        $facts_blacklist       = lookup('profile::puppetdb::facts_blacklist'),
-    Enum['literal', 'regex']             $facts_blacklist_type  = lookup('profile::puppetdb::facts_blacklist_type'),
-    Integer[0]                           $gc_interval           = lookup('profile::puppetdb::gc_interval'),
-    Pattern[/\d+[dhms]/]                 $node_ttl              = lookup('profile::puppetdb::node_ttl'),
-    Pattern[/\d+[dhms]/]                 $node_purge_ttl        = lookup('profile::puppetdb::node_purge_ttl'),
-    Pattern[/\d+[dhms]/]                 $report_ttl            = lookup('profile::puppetdb::report_ttl'),
-    Nginx::SSL::Verify_client            $ssl_verify_client     = lookup('profile::puppetdb::ssl_verify_client'),
-    Hash[String[1], Hash]                $sites                 = lookup('profile::puppetdb::sites'),
-    Optional[Stdlib::Unixpath]           $ssldir                = lookup('profile::puppetdb::ssldir'),
+    # https://puppet.com/docs/puppetdb/6/release_notes.html#pupp       etdb-6130
+    Array[String]                        $facts_blacklist              = lookup('profile::puppetdb::facts_blacklist'),
+    Enum['literal', 'regex']             $facts_blacklist_type         = lookup('profile::puppetdb::facts_blacklist_type'),
+    Integer[0]                           $gc_interval                  = lookup('profile::puppetdb::gc_interval'),
+    Pattern[/\d+[dhms]/]                 $node_ttl                     = lookup('profile::puppetdb::node_ttl'),
+    Pattern[/\d+[dhms]/]                 $node_purge_ttl               = lookup('profile::puppetdb::node_purge_ttl'),
+    Pattern[/\d+[dhms]/]                 $report_ttl                   = lookup('profile::puppetdb::report_ttl'),
+    Nginx::SSL::Verify_client            $ssl_verify_client            = lookup('profile::puppetdb::ssl_verify_client'),
+    Hash[String[1], Hash]                $sites                        = lookup('profile::puppetdb::sites'),
+    Optional[Stdlib::Unixpath]           $ssldir                       = lookup('profile::puppetdb::ssldir'),
+    Hash                                 $pdb_resource_exporter_config = lookup('profile::puppetdb::pdb_resource_exporter_config'),
 ) {
     # Prometheus JMX agent for the Puppetdb's JVM
     $jmx_exporter_config_file = '/etc/puppetdb/jvm_prometheus_puppetdb_jmx_exporter.yaml'
@@ -175,4 +177,16 @@ class profile::puppetdb (
             * => $config,
         }
     }
+
+    $ensure_pdb_resource_exporter = $facts['networking']['fqdn'] == $master ? {
+        true  => 'present',
+        false => 'absent',
+    }
+
+    class { 'prometheus::pdb_resource_exporter':
+        ensure          => $ensure_pdb_resource_exporter,
+        pushgateway_url => 'http://prometheus-pushgateway.discovery.wmnet',
+        config          => $pdb_resource_exporter_config,
+    }
+
 }

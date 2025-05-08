@@ -18,3 +18,21 @@ profile::puppetdb::ca_content: ~
 profile::puppetdb::ssl_verify_client: optional
 profile::puppetdb::sites: {}
 profile::puppetdb::db_ro_host: '%{facts.networking.fqdn}'
+profile::puppetdb::pdb_resource_exporter_config:
+  series:
+    - rtype: Nrpe::Monitor_service
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.nrpe_command | split(" ")[0]), (. | join("|"))] | @json
+      uniq: False
+      name: icinga_migration_count
+    - rtype: Nrpe::Monitor_service
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.nrpe_command | split(" ")[0]), (. | join("|"))] | @json
+      uniq: True
+      name: icinga_migration_count_distinct
+    - rtype: Monitoring::Service
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.check_command | split(" ")[0]), (. | join("|"))] | @json
+      uniq: False
+      name: icinga_migration_count
+    - rtype: Monitoring::Service
+      filter: .[] | .title as $title | .parameters as $parameters | [ ([.tags[] | select(startswith("profile:"))] | sort) | ($title),($parameters.check_command | split(" ")[0]), (. | join("|"))] | @json
+      uniq: True
+      name: icinga_migration_count_distinct
