@@ -168,6 +168,11 @@
 #   * 1 Tracks IO Buffer Memory allocations and releases
 #   * 2 Tracks IO Buffer Memory and OpenSSL Memory allocations and releases
 #
+# [*cachekey_headers*]
+#   When enabled it instructs cache key manipulation plugin (cachekey) to add the list of headers to the cache key. The list of headers is
+#   always sorted (by ATS) before adding them to the cache key. (default: undef)
+#   See https://docs.trafficserver.apache.org/en/latest/admin-guide/plugins/cachekey.en.html
+#
 # === Examples
 #
 #  trafficserver::instance { 'backend':
@@ -223,6 +228,7 @@ define trafficserver::instance(
     Integer[0,1]                                    $x_forwarded_for         = 0,
     Boolean                                         $systemd_hardening       = true,
     Optional[Integer[0,2]]                          $res_track_memory        = undef,
+    Optional[Array[String, 1]]                      $cachekey_headers        = undef,
 ) {
 
     # trafficserver::instance can be defined multiple times we need to make sure
