@@ -21,19 +21,20 @@ class profile::mediawiki::maintenance::growthexperiments(
     }
 
     $link_rec_shards = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]
-    $kubernetes_shards = ['s1']
 
     # Cleanup as part of migration (T385782)
     $link_rec_shards.each |$shard| {
         profile::mediawiki::periodic_job { "growthexperiments-refreshLinkRecommendations-${shard}":
-            command               => "/usr/local/bin/foreachwikiindblist 'growthexperiments & ${shard}' extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php",
-            interval              => '*-*-* *:27:00',
-            cron_schedule         => '27 * * * *',
-            kubernetes            => $shard in $kubernetes_shards,
-            team                  => $team_name,
-            script_label          => 'refreshLinkRecommendations.php',
-            description           => 'Ensure that a sufficiently large pool of link recommendations is available.',
-            helmfile_defaults_dir => $helmfile_defaults_dir,
+            command                 => "/usr/local/bin/foreachwikiindblist 'growthexperiments & ${shard}' extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php",
+            interval                => '*-*-* *:27:00',
+            cron_schedule           => '27 * * * *',
+            kubernetes              => true,
+            team                    => $team_name,
+            script_label            => 'refreshLinkRecommendations.php',
+            description             => 'Ensure that a sufficiently large pool of link recommendations is available.',
+            concurrency_policy      => 'Forbid', # ensure that jobs finish - some shards can take multiple hours
+            startingdeadlineseconds => 1800, # 30 minutes deadline to start a delayed job
+            helmfile_defaults_dir   => $helmfile_defaults_dir,
         }
     }
 
