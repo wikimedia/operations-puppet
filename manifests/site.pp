@@ -1138,7 +1138,6 @@ node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
     role(cirrus::opensearch)
 }
 
-
 # re-arranging elastic hosts by row in order to facilitate
 # reimages. Row info sourced from regex.yaml
 # ROW A
