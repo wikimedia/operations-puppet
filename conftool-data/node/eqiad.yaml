@@ -37,7 +37,6 @@ eqiad:
     restbase1044.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1045.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
   elasticsearch:
-    elastic1053.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1056.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1057.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     elastic1058.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
