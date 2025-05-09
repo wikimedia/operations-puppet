@@ -2,6 +2,8 @@
 class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
     Stdlib::Unixpath $helmfile_defaults_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
 ) {
+    # team label for alerting
+    $team_label = 'mediawiki-special-pages'
 
     profile::mediawiki::periodic_job { 'updatequerypages_lonelypages_s1':
         command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages',
@@ -9,13 +11,25 @@ class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostcategories_s1':
-        command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories',
-        interval => '*-16 01:00',
+        command               => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories',
+        interval              => '*-16 01:00',
+        cron_schedule         => '0 1 16 * *',
+        team                  => $team_label,
+        script_label          => 'UpdateSpecialPages.php-Mostcategories',
+        description           => 'Update special pages on s1: Most categories',
+        kubernetes            => true,
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostlinkedtemplates_s1':
-        command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates',
-        interval => '*-18 01:00',
+        command               => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates',
+        interval              => '*-18 01:00',
+        cron_schedule         => '0 1 18 * *',
+        team                  => $team_label,
+        script_label          => 'UpdateSpecialPages.php-Mostlinkedtemplates',
+        description           => 'Update special pages on s1: Most linked templates',
+        kubernetes            => true,
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_uncategorizedcategories_s1':
