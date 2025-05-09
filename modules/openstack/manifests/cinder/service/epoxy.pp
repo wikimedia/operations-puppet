@@ -23,12 +23,6 @@ class openstack::cinder::service::epoxy(
             group   => 'cinder',
             mode    => '0644',
             require => Package['cinder-api'];
-        '/etc/cinder/resource_filters.json':
-            source  => 'puppet:///modules/openstack/epoxy/cinder/resource_filters.json',
-            owner   => 'cinder',
-            group   => 'cinder',
-            mode    => '0644',
-            require => Package['cinder-api'];
         '/etc/init.d/cinder-api':
             content => template('openstack/epoxy/cinder/cinder-api'),
             owner   => 'root',
