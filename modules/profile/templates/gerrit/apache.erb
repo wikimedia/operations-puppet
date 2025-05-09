@@ -75,6 +75,7 @@
     SetEnvIf User-Agent TweetmemeBot bad_browser
     SetEnvIf User-Agent Yeti bad_browser
     SetEnvIf User-Agent "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/127.0.0.0 Safari/537.36" bad_browser
+
     # T351658
     SetEnvIf Remote_Addr 96.27.49.214 bad_browser
     SetEnvIf Remote_Addr 43.153.166.18 bad_browser
@@ -83,6 +84,21 @@
 
     # CacheFly - T375996
     SetEnvIfExpr "-R '2605:4C40::/32'" bad_browser
+
+    # Systematically ban old browser versions.
+    # Ban very old versions of Chrome. For now we're banning up to Chrome 125.
+    BrowserMatch "Chrome\/[0-9]{1,2}\." bad_browser
+    BrowserMatch "Chrome\/1([0-1][0-9]|2[0-5])\." bad_browser
+    # Ban very old versions of Firefox. For now we're banning up to Firefox 100.
+    BrowserMatch "Firefox\/[0-9]{1,2}\." bad_browser
+
+    # Systematically ban very old reported OS versions.
+    # Ban very old versions of Windows. For now we're banning up to Windows 7.
+    BrowserMatch "Windows\ NT\ [0-5]\." bad_browser
+    BrowserMatch "Windows\ NT\ 6\.[01]" bad_browser
+    # Ban very old versions of Mac OS X. For now we're banning up to Mac OS X 10.6.
+    BrowserMatch "Mac\ OS\ X\ 10\.[0-5]" bad_browser
+
 
     DocumentRoot /var/www
     <Directory />
