@@ -141,6 +141,10 @@ eqiad:
     wdqs1027.eqiad.wmnet: [wdqs-scholarly]
   wdqs-main:
     wdqs1011.eqiad.wmnet: [wdqs-main]
+    wdqs1012.eqiad.wmnet: [wdqs-main]
+    wdqs1013.eqiad.wmnet: [wdqs-main]
+    wdqs1014.eqiad.wmnet: [wdqs-main]
+    wdqs1015.eqiad.wmnet: [wdqs-main]
     wdqs1016.eqiad.wmnet: [wdqs-main]
     wdqs1017.eqiad.wmnet: [wdqs-main]
     wdqs1021.eqiad.wmnet: [wdqs-main]

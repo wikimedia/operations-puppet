@@ -127,7 +127,12 @@ codfw:
     wdqs2026.codfw.wmnet: [wdqs-scholarly]
     wdqs2027.codfw.wmnet: [wdqs-scholarly]
   wdqs-main:
+    wdqs2007.codfw.wmnet: [wdqs-main]
     wdqs2008.codfw.wmnet: [wdqs-main]
+    wdqs2010.codfw.wmnet: [wdqs-main]
+    wdqs2011.codfw.wmnet: [wdqs-main]
+    wdqs2012.codfw.wmnet: [wdqs-main]
+    wdqs2013.codfw.wmnet: [wdqs-main]
     wdqs2014.codfw.wmnet: [wdqs-main]
     wdqs2015.codfw.wmnet: [wdqs-main]
     wdqs2021.codfw.wmnet: [wdqs-main]
