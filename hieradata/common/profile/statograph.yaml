@@ -17,7 +17,7 @@ profile::statograph::proxies:
 profile::statograph::metrics:
   - statuspage_id: wtbz5cdhk8rl # Total Request Volume
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
-    query: 'sum by () (job_method_status:varnish_requests:rate5m{method!="PURGE"})'
+    query: 'sum by () (job:haproxy_frontend_http_responses_total:rate2m{job="cache_haproxy_tls"})'
 
   - statuspage_id: lyfcttm2lhw4  # Wiki response time
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
@@ -25,7 +25,7 @@ profile::statograph::metrics:
 
   - statuspage_id: h5mvbny28713  # Error responses
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
-    query: 'sum by () (job_method_status:varnish_requests:rate5m{method!="PURGE", status=~"5.."})'
+    query: 'sum by () (job:haproxy_frontend_http_responses_total:rate2m{code="5xx",job="cache_haproxy_tls"})'
 
   - statuspage_id: trkbds94n87s  # Successful edits
     prometheus: "%{lookup('profile::statograph::thanos_url')}"
