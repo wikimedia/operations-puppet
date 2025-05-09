@@ -90,3 +90,4 @@ cephadm_clusters:
     rgws:
       - moss-fe1001.eqiad.wmnet
       - moss-fe1002.eqiad.wmnet
+      - apus-fe1003.eqiad.wmnet
