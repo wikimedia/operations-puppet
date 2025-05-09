@@ -3,7 +3,10 @@
 class prometheus::ethtool_exporter(
     Wmflib::Ensure $ensure = 'present',
 ) {
-    if debian::codename::ge('bookworm') {
+    if debian::codename::eq('bookworm') {
+        # prometheus-ethtool-exporter was initially built for Bookworm. Starting with
+        # Trixie we're planning to switch to the integrated ethtool exporter of
+        # prometheus-node-exporter
         package { 'prometheus-ethtool-exporter':
             ensure => stdlib::ensure($ensure, 'package'),
         }
