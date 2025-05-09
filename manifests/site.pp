@@ -1128,11 +1128,30 @@ node /^elastic1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
     role(elasticsearch::cirrus)
 }
 
-# T384966 refresh hosts (pre-rename)
-node /^elastic11(1[1-9]|2[0-5])\.eqiad\./ {
-    role(insetup::data_platform_ferm)
+# Row A
+node /^cirrussearch10(53|54|68|69|70|71|72|73|84)\.eqiad\./ {
+    role(cirrus::opensearch)
 }
-
+# Row B
+node /^cirrussearch10(55|56|74|75|76|77|78|79|85|86)\.eqiad\./ {
+    role(cirrus::opensearch)
+}
+# Row C
+node /^cirrussearch10(57|58|59|80|81|82|83|87|88)\.eqiad\./ {
+    role(cirrus::opensearch)
+}
+# Row D
+node /^cirrussearch1(060|061|062|063|064|065|066|067|103)\.eqiad\./ {
+    role(cirrus::opensearch)
+}
+# Row E
+node /^cirrussearch1(089|090|091|092|093|094|095|108|109)\.eqiad\./ {
+    role(cirrus::opensearch)
+}
+# Row F
+node /^cirrussearch1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
+    role(cirrus::opensearch)
+}
 # T384966 refresh hosts (post-rename)
 node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
     role(cirrus::opensearch)
