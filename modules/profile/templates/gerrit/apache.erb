@@ -97,7 +97,10 @@
     BrowserMatch "Windows\ NT\ [0-5]\." bad_browser
     BrowserMatch "Windows\ NT\ 6\.[01]" bad_browser
     # Ban very old versions of Mac OS X. For now we're banning up to Mac OS X 10.6.
-    BrowserMatch "Mac\ OS\ X\ 10\.[0-5]" bad_browser
+    # Match Firefox OS string
+    BrowserMatch "Mac\ OS\ X\ 10\.[0-5];" bad_browser
+    # Match Safari OS string
+    BrowserMatch "Mac\ OS\ X\ 10\_[0-5]_" bad_browser
 
 
     DocumentRoot /var/www
