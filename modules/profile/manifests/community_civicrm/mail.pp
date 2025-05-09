@@ -15,5 +15,9 @@ class profile::community_civicrm::mail (
     # Set up the generic addresses so they will go somewhere useful.
     # Not 100% sure this is used but will want to check. Couldn't fully test in my cloudvps testing.
     domain_aliases_generic => [ $site_name ],
+
+    # Specify cfssl as the provider as we are using the internal ssl
+    # certificates for web and other services
+    tls_provider           => 'cfssl',
   }
 }
