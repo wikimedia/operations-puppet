@@ -1,4 +1,8 @@
 [Service]
 ExecStart=
+<% if @facts['os']['distro']['codename'] == 'bullseye' -%>
 ExecStart=/usr/bin/prometheus-blackbox-exporter --config.file /etc/prometheus/blackbox.yml --log.level=debug
+<% else %>
+ExecStart=/usr/bin/prometheus-blackbox-exporter --config.file /etc/prometheus/blackbox.yml --log.prober error
+<% end %>
 LimitNOFILE=16535
