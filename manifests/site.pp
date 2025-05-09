@@ -1844,9 +1844,11 @@ node /^cloudnet100[56]\.eqiad\./ {
 node /^clouddb10(13|14|15|16)\.eqiad\./ {
     role(wmcs::db::wikireplicas::web_multiinstance)
 }
-
 node /^clouddb10(17|18|19|20)\.eqiad\./ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
+}
+node /^clouddb102[1-4]\.eqiad\./ {
+    role(insetup::wmcs_ferm)
 }
 
 node /^cloudbackup100[34]\.eqiad\./ {
