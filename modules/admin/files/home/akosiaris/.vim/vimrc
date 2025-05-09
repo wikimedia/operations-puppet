@@ -1,11 +1,12 @@
 " vim: set foldmarker={,} foldlevel=0 spell:
-
+"
 " Basics {
      set nocompatible " explicitly get out of vi-compatible mode
-     call pathogen#infect()
+"    call pathogen#infect()
 "    set noexrc " don't use local version of .(g)vimrc, .exrc
      set background=dark " we plan to use a dark background
-     colorscheme solarized
+"    colorscheme solarized
+     set termguicolors
      set cpoptions=aABceFsmq
      "             |||||||||
      "             ||||||||+-- When joining lines, leave the cursor
@@ -60,7 +61,7 @@
 
 " Vim UI {
 "    set cursorcolumn " highlight the current column
-"    set cursorline " highlight current line
+     set cursorline " highlight current line
      set incsearch " BUT do highlight as you type you
                    " search phrase
      set laststatus=2 " always show the status line
@@ -77,6 +78,7 @@
     set novisualbell " don't blink
 "   set title " update the title of your window
     set number " turn on line numbers
+    set relativenumber " turn on relative line numbers
     set numberwidth=5 " We are good up to 99999 lines
 "    set report=0 " tell us when anything is changed via :...
     set ruler " Always show current positions along the bottom
@@ -175,7 +177,7 @@
     set nowrap " do not wrap line
     set smartcase " if there are caps, go case-sensitive
 "   set formatoptions=rq " Automatically insert comment leader on return,
-"   set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
+    set shiftround " when at 3 spaces, and I hit > ... go to 4, not 5
 "   set expandtab " no real tabs please!
 "   set shiftwidth=4 " auto-indent amount when using cindent,
                       " >>, << and stuff like that
@@ -183,7 +185,7 @@
                        "should a tab be (see expandtab)
 "   set tabstop=8 " real tabs should be 8, and they will show with
                    " set list on
-" }   
+" }
 
 " Highlights {
     highlight ExtraWhiteSpace ctermbg=darkgreen guibg=lightgreen
