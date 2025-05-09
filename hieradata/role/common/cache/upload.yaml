@@ -37,7 +37,6 @@ profile::cache::varnish::frontend::runtime_params:
     - nuke_limit=1000
 profile::cache::varnish::frontend::transient_gb: 10
 profile::cache::varnish::frontend::fe_vcl_config:
-    allowed_methods: '^(GET|HEAD|OPTIONS|PURGE)$'
     # accept only upload purge traffic
     purge_host_regex: '^(upload|maps)\.wikimedia\.org$'
     upload_domain: 'upload.wikimedia.org'
