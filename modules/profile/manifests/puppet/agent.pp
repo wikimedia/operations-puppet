@@ -65,7 +65,7 @@ class profile::puppet::agent (
             apt::package_from_component { 'puppet7-forward-port':
               component => 'component/puppet7',
               priority  => 1002,
-              packages  => ['ruby-concurrent', 'ruby', 'libruby']
+              packages  => ['ruby-concurrent', 'ruby', 'libruby', 'puppet', 'puppet-agent']
             }
         } else {
             # Add a priority on the debian repos as we have a forward port in wikimedia/main
