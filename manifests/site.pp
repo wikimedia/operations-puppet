@@ -1847,7 +1847,8 @@ node /^clouddb10(13|14|15|16)\.eqiad\./ {
 node /^clouddb10(17|18|19|20)\.eqiad\./ {
     role(wmcs::db::wikireplicas::analytics_multiinstance)
 }
-node /^clouddb102[1-4]\.eqiad\./ {
+# clouddb1021 is skipped, it was a special host that's now gone
+node /^clouddb102[2-5]\.eqiad\./ {
     role(insetup::wmcs_ferm)
 }
 
