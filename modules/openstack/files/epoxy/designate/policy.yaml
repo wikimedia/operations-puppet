@@ -2,8 +2,7 @@
 
 "abandon_zone": "rule:default"
 "admin": "role:admin or is_admin:True"
-"default": "rule:admin or role:member or role:designateadmin"
-"default": "(role:admin) or (role:member and project_id:%(project_id)s)"
+"default": "(role:admin) or (role:member and project_id:%(project_id)s) or (role:designateadmin and project_id:%(project_id)s)"
 
 "all_tenants": "rule:admin"
 "count_records": ""
