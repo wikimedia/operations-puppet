@@ -10,6 +10,7 @@ config_file_version = 2
 
 [sudo]
 #debug_level=10
+timeout = 30
 
 [nss]
 #debug_level=10
@@ -20,9 +21,13 @@ filter_users = root
 #debug_level=10
 # default to 0 days (no expiration)
 offline_credentials_expiration = 1
+timeout = 30
 
 [ssh]
 #debug_level=10
+
+[be]
+timeout = 30
 
 [domain/wikimedia.org]
 #debug_level=10
