@@ -51,7 +51,8 @@ class profile::cache::haproxy(
     String $conftool_prefix = lookup('conftool_prefix'),
     Optional[Array[Haproxy::Ring, 1]] $rings = lookup('profile::cache::haproxy::rings', {'default_value'                                         => undef}),
     Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
-    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                             => ['GET','HEAD','OPTIONS']}),
+    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                           => ['GET','HEAD','OPTIONS']}),
+    Boolean $lua_lookup_experiment = lookup('profile::cache::haproxy::lua_lookup_experiment', {'default_value'                                   => false}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -376,5 +377,13 @@ class profile::cache::haproxy(
     ###########
     if $use_benthos {
         include ::profile::benthos
+    }
+
+    file { '/etc/haproxy/geoip.lua':
+        ensure  => $lua_lookup_experiment.bool2str('present', 'absent'),
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/geoip.lua'),
     }
 }

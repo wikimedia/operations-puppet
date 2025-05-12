@@ -485,6 +485,10 @@ sub recv_fe_ip_processing {
     if (req.http.X-Abuse-Network == "") {
         unset req.http.X-Abuse-Network;
     }
+    <%- if @vcl_config.fetch('lua_lookup_experiment', false) -%>
+    // Remove X-Test-ISP header (lua lookup experiment)
+    unset req.http.X-Test-ISP;
+    <%- end -%>
     // From this (very early) point forward, regardless of cache tier/layer:
     // req.http.X-Client-IP ->
     //     This is our standard notion of the Client/UA's real IP, after
