@@ -12,9 +12,6 @@ class netops::monitoring(
         snmp_community => $passwords::network::snmp_ro_community,
         alarms         => false,
         critical       => true,
-        interfaces     => true,
-        bfd            => true,
-        bgp            => true,
         os             => 'Junos',
         ospf           => true,
     }
@@ -114,8 +111,6 @@ class netops::monitoring(
     #
     $l3_switches_mgmt_defaults = {
         snmp_community => $passwords::network::snmp_ro_community,
-        alarms         => true,
-        bgp            => true,
         bfd            => true,  # Will report as OK if no BFD is in use
         ospf           => true,  # Will report as OK if no OSPF in use
         os             => 'Junos',
