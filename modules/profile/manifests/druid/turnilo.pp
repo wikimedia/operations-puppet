@@ -17,27 +17,23 @@
 #   Monitoring's contact grup.
 #   Default: 'analytics'
 #
+# [*network_devices*]
+#   Map of network devices.
+#   Default: Exported from Netbox.
+#
 class profile::druid::turnilo(
-    Array[Turnilo::Druid_cluster] $druid_clusters     = lookup('profile::druid::turnilo::druid_clusters'),
-    Stdlib::Port                  $port               = lookup('profile::druid::turnilo::port'),
-    Boolean                       $monitoring_enabled = lookup('profile::druid::turnilo::monitoring_enabled'),
-    String                        $contact_group      = lookup('profile::druid::turnilo::contact_group'),
+    Array[Turnilo::Druid_cluster]            $druid_clusters     = lookup('profile::druid::turnilo::druid_clusters'),
+    Stdlib::Port                             $port               = lookup('profile::druid::turnilo::port'),
+    Boolean                                  $monitoring_enabled = lookup('profile::druid::turnilo::monitoring_enabled'),
+    String                                   $contact_group      = lookup('profile::druid::turnilo::contact_group'),
+    Hash[String[3], Netbox::Device::Network] $network_devices    = lookup('profile::netbox::data::network_devices'),
 ) {
-    # Abuse the fact that we all ready have network device mappings in puppetdb via the netop::check
-    # resource with bgp => true matching routers and filter out fw's with bfd => false
-    # TODO: pull this data from netbox/puppet integration - T229397
-    $pql = @("PQL")
-    resources[certname, parameters, title] {
-        type = "Netops::Check"
-        and parameters.bgp = true and parameters.bfd = true
-        order by certname
-    }
 
-    | PQL
-    $network_devices = wmflib::puppetdb_query($pql)
-    $export_names_map = Hash($network_devices.map |$device| {
-        [$device['parameters']['ipv4'], $device['title']]
+    $network_devices_filtered = $network_devices.filter |$device, $attributes| { $attributes['role'] in ['cr','asw', 'cloudsw', 'pfw'] }
+    $export_names_map = Hash($network_devices_filtered.map |$device, $attributes| {
+        [$attributes['ipv4'], $device]
     }.sort)
+
     class { 'turnilo':
         druid_clusters   => $druid_clusters,
         export_names_map => $export_names_map,

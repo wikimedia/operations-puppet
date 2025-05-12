@@ -19,20 +19,6 @@ class netops::monitoring(
         ospf           => true,
     }
 
-    #############################################################################################################
-    ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
-    ######                                                                                                 ######
-    ###### profile::druid::turnilo makes use of the information populated in $routers via puppetdb_query.  ######
-    ###### One needs to ensure any changes made here are compatible with the use case in that profile      ######
-    ###### specifically we use the following so the bgp and bfd attributes are significant:                ######
-    ######     resources[certname, parameters, title] {                                                    ######
-    ######         type = "Netops::Check                                                                   ######
-    ######         and parameters.bgp = true and parameters.bfd = true                                     ######
-    ######         order by certname                                                                       ######
-    ######     }                                                                                           ######
-    ###### WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ######
-    #############################################################################################################
-
     $routers = $infra_devices.filter |$device, $config| {
         $config['role'] in ['cr', 'pfw']
     }
