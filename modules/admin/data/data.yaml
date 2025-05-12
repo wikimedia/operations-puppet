@@ -34,7 +34,8 @@ groups:
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
-              halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur]
+              halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
+              cicalese]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -136,8 +137,7 @@ groups:
     description: People in the Platform Engineering team.
     gid: 824
     # ariel, hnowlan, kamila, tstarling not included because of ops membership
-    members: &platform_engineering_members [bpirkle, cicalese,
-              daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
+    members: &platform_engineering_members [bpirkle, daniel, kevinbazira, gmodena, hokwelum, tchin, xcollazo, sg912]
     approval:
       - Will Doran
   release-engineering:
@@ -213,7 +213,7 @@ groups:
               mfossati, isaranto, zabe, sgimeno, apine, dmartin, gengh, fab,
               dr0ptp4kt, dani, aqu, sfaci, damilare, dreamyjazz, wfan219,
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
-              mszabo, ihurbain, zoe, bpirkle, cicalese, daniel, gmodena, hokwelum,
+              mszabo, ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge
     ]
@@ -427,7 +427,7 @@ groups:
               ladsgroup, musikanimal,
               dsaez, rho, mirrys, slaporte,
               ayounsi, mmiller, seddon, tstarling, karen,
-              cicalese, gbirke, isaacj, sbassett,
+              gbirke, isaacj, sbassett,
               niharika29, jgleeson, srishakatux,
               esanders, sukhe, iflorez, mayakpwiki, conniecc1, abi, mgerlach,
               kevinbazira, cohi, mstyles, snowick,
@@ -3537,14 +3537,12 @@ users:
     uid: 14485
     email: rho@wikimedia.org
   cicalese:
-    ensure: present
+    ensure: absent
     gid: 500
     name: cicalese
     realname: Cindy Cicalese
-    ssh_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCuBIYZJaY5mjq6Jep6XJHF7YiSltdMkUYHDeMpYU804XE52+PiFTmscxKPREyzPRiXw4SIfu3fOd2spYy/LxCgLJkv4iNWrA+sjGtsuC8ex61ZiUoSVV36SifWN/4x2jY1MsZBSk4Uzf7F6LBT3SFwtRtaGLN6CBeteKbz8S+1w7bcA8CwU6wsTKolFrV/ehGta+q88e+7kF+u1p8+WUYTl5mo9Nk41NpH6GMD+60iYf7flXXD7+t/hEtEcuWFtNm6pSm7cKsj8EuHmQC+j6d+Gb+slUnCq9lR5QAjzFh6Ks72ZHx33f4h8xUK7/CG+ZFk+YBEF9H9USCzN7S9wfuD ccicalese@wikimedia.org
+    ssh_keys: []
     uid: 2886
-    email: ccicalese@wikimedia.org
   mirrys:
     ensure: present
     gid: 500
