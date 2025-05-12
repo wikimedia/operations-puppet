@@ -18,8 +18,14 @@ class profile::mediawiki::maintenance::mediamoderation(
 
     # Run a scan over newly uploaded images on all WMF wikis (except Wikimedia Commons) every hour (T355169)
     profile::mediawiki::periodic_job { 'mediamoderation-hourlyScan':
-        command  => '/usr/local/bin/foreachwikiindblist "all.dblist - mediamoderation-continuous-scan.dblist - preinstall.dblist" extensions/MediaModeration/maintenance/scanFilesInScanTable.php --use-jobqueue --sleep=1 --poll-sleep=10 --last-checked=never --verbose',
-        interval => '*-*-* *:02:00',
+        command               => '/usr/local/bin/foreachwikiindblist "all.dblist - mediamoderation-continuous-scan.dblist - preinstall.dblist" extensions/MediaModeration/maintenance/scanFilesInScanTable.php --use-jobqueue --sleep=1 --poll-sleep=10 --last-checked=never --verbose',
+        interval              => '*-*-* *:02:00',
+        cron_schedule         => '2 * * * *',
+        kubernetes            => true,
+        team                  => $team,
+        script_label          => 'scanFilesInScanTable.php',
+        description           => 'Run a scan over newly uploaded images on all WMF wikis (except Wikimedia Commons) at 2 minutes past the hour, every hour (T355169)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # Run a continuous scan on Wikimedia Commons, restarted every hour (T355169)
