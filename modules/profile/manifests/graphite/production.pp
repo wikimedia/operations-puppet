@@ -107,18 +107,6 @@ class profile::graphite::production (
         srange => $graphite_hosts,
     }
 
-    firewall::service { 'carbon_c_relay-frontend_relay_udp':
-        proto    => 'udp',
-        port     => 2003,
-        src_sets => ['DOMAIN_NETWORKS'],
-    }
-
-    firewall::service { 'carbon_c_relay-frontend_relay_tcp':
-        proto    => 'tcp',
-        port     => 2003,
-        src_sets => ['DOMAIN_NETWORKS'],
-    }
-
     firewall::service { 'carbon_pickled':
         proto    => 'tcp',
         port     => 2004,
