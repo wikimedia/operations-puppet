@@ -25,8 +25,7 @@ class profile::zuul::server(
 
     # set relay to local statsite instance
     class { '::profile::prometheus::statsd_exporter':
-        enable_relay  => true,
-        relay_address => 'localhost:8125'
+        enable_relay  => false,
     }
 
     profile::gerrit::sshkey { 'gerrit':
