@@ -435,4 +435,17 @@ PHABRICATOR_API_TOKEN = '<%= @phabricator_token %>'
 STATICFILES_DIRS = [
   '/srv/idm/bitu/src/bitu/static/',
 ]
+
+# Django Vite / Vue JS application loader.
+DJANGO_VITE = {
+    "default": {
+        "dev_mode": False,
+        "static_url_prefix": "bundler",
+        "manifest_path": BASE_DIR / "static" / "bundler" / "manifest.json",
+    },
+}
+
+INSTALLED_APPS = INSTALLED_APPS + [
+    'django_vite'
+]
 <%- end -%>
