@@ -6,7 +6,7 @@ class profile::mediawiki::maintenance::wikimediaevents(
     $team_label = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'wikimediaevents-UpdatePeriodicMetrics-per-wiki':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/all.dblist extensions/WikimediaEvents/maintenance/UpdatePeriodicMetrics.php --verbose',
+        command               => '/usr/local/bin/foreachwikiindblist "all - private" extensions/WikimediaEvents/maintenance/UpdatePeriodicMetrics.php --verbose',
         interval              => '*-*-* 04:40:00',
         cron_schedule         => '40 4 * * *',
         team                  => $team_label,
