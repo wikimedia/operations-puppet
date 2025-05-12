@@ -22,8 +22,6 @@
 
   fsid = <%= $fsid %>
 
-  # we log to syslog instead
-  log file = none
   public network = <%= $public_networks.join(' ') %>
 <% if $cluster_networks.size > 0 {-%>
   cluster network = <%= $cluster_networks.join(' ') %>
