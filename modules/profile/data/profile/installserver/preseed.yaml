@@ -16,10 +16,14 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  'aux-k8s-worker*':
+  'aux-k8s-worker[12]00[1-5]':
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
+  'aux-k8s-worker[12]00[6-9]':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
+    - partman/custom/kubernetes-node-containerd-efi.cfg
   'an-airflow*':
     - partman/flat.cfg
     - virtual.cfg
