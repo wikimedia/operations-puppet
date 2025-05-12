@@ -680,3 +680,7 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: zarcillo
         - name: zarcillo-deploy
+    miscweb:
+      usernames:
+        - name: miscweb
+        - name: miscweb-deploy
