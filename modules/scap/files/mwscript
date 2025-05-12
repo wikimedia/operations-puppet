@@ -4,14 +4,29 @@
 # This script belongs in /usr/local/bin/ and should be in PATH.
 . /etc/profile.d/mediawiki.sh
 
+# Warn only on mwmaint hosts.
 # Warn on stderr, and only if stderr is a terminal.
 # Exclude sql.php, mysql.php until T375910 is resolved.
 # Exclude importImages.php until T377497 is resolved.
-if [ -t 2 ] && [ "${1%.php}" != "sql" ] && [ "${1%.php}" != "mysql" ] && [ "${1%.php}" != "importImages" ] ; then
-	echo >&2 "DEPRECATION WARNING: Maintenance scripts are moving to Kubernetes. See"
-	echo >&2 "https://wikitech.wikimedia.org/wiki/Maintenance_scripts for the new process."
-	echo >&2 "Maintenance hosts will be going away; please submit feedback promptly if"
-	echo >&2 "maintenance scripts on Kubernetes don't work for you. (T341553)"
+if [ "${HOSTNAME:0:7}" == "mwmaint" ] && [ -t 2 ] && [ "${1%.php}" != "sql" ] && [ "${1%.php}" != "mysql" ] && [ "${1%.php}" != "importImages" ] ; then
+	echo >&2 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  DEPRECATION WARNING: Maintenance scripts are moving to Kubernetes.   @@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  Running mwscript on mwmaint hosts is no longer supported. It will    @@@"
+	echo >&2 "@@@  break, soon, without further warning.                                @@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  Please see https://w.wiki/E68b for the announcement and              @@@"
+	echo >&2 "@@@  https://wikitech.wikimedia.org/wiki/Maintenance_scripts for the new  @@@"
+	echo >&2 "@@@  process. Please submit feedback right away if maintenance scripts    @@@"
+	echo >&2 "@@@  on Kubernetes don't work for you. (T341553)                          @@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  Your script will start in thirty seconds.                            @@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	# Hi there - I know the speed bump is annoying. If you're here to comment it out,
+	# please be sure you've already filed feedback, or your workflow really will break.
+	sleep 30
 fi
 
 # Use the source version of the script if the source directory is present.
