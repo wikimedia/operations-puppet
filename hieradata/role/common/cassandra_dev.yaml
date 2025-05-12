@@ -36,17 +36,17 @@ profile::cassandra::instances:
     a:
       listen_address: 10.192.16.14
       data_file_directories:
-        - /srv/cassandra-a/data_0
-        - /srv/cassandra-a/data_1
-        - /srv/cassandra-a/data_2
-        - /srv/cassandra-a/data_3
+        - /srv/sda4
+        - /srv/sdb4
+        - /srv/sdc4
+        - /srv/sdd4
     b:
       listen_address: 10.192.16.15
       data_file_directories:
-        - /srv/cassandra-b/data_0
-        - /srv/cassandra-b/data_1
-        - /srv/cassandra-b/data_2
-        - /srv/cassandra-b/data_3
+        - /srv/sda4
+        - /srv/sdb4
+        - /srv/sdc4
+        - /srv/sdd4
   "cassandra-dev2002.codfw.wmnet":
     a:
       listen_address: 10.192.32.84
