@@ -241,8 +241,10 @@ def main():
 
     disabled, disable_message = puppet_disabled()
     if disabled and too_old:
-        first_line = "Puppet has been disabled for {} secs, with the following message: {}".format(
-            last_success_elapsed, disable_message
+        first_line = (
+            "Puppet has been disabled for {:.0f} secs, with the following message: {}".format(
+                last_success_elapsed, disable_message
+            )
         )
     elif too_old and has_errors:
         first_line = (
