@@ -262,8 +262,9 @@ class profile::airflow(
         # If any of the Airflow instances on this machine have statsd_monitoring_enabled, add a statsd_exporter.
         if $airflow_instances.any |$dict| { $dict[1]['statsd_monitoring_enabled'] } {
             class { 'profile::prometheus::statsd_exporter':
-            prometheus_instance => 'analytics',
-            mappings            => $statsd_exporter_mappings,
+                enable_relay        => false,
+                prometheus_instance => 'analytics',
+                mappings            => $statsd_exporter_mappings,
             }
         }
 
