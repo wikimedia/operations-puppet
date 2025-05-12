@@ -19,5 +19,8 @@ class profile::community_civicrm::mail (
     # Specify cfssl as the provider as we are using the internal ssl
     # certificates for web and other services
     tls_provider           => 'cfssl',
+
+    # We are recieving email
+    mta_mode               => 'inbound',
   }
 }
