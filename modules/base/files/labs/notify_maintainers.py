@@ -92,9 +92,16 @@ def _email_member(member, subject, body):
         # user is disabled, do not email
         return
 
-    email = userrec["mail"][0]
+    username = userrec["cn"][0].decode()
+    email = userrec["mail"][0].decode()
 
-    args = ["/usr/bin/mail", "-s", subject, "-a", "Precedence: Bulk", email.decode()]
+    target = email
+    # These are not valid characters in usernames anyway, but be extra careful
+    # to make sure we don't lose these notifications
+    if "<" not in username and ">" not in username:
+        target = f"{username} <{email}>"
+
+    args = ["/usr/bin/mail", "-s", subject, "-a", "Precedence: Bulk", target]
 
     p = subprocess.Popen(
         args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT
