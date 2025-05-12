@@ -27,10 +27,11 @@ import yaml
 import subprocess
 
 # Don't bother to notify the novaadmin and nova-tools-bot user as it spams ops@
-# and noc@, respectively
+# noc@ and cloudservices@ respectively
 USER_IGNORE_LIST = [
     "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
     "uid=nova-tools-bot,ou=people,dc=wikimedia,dc=org",
+    "uid=tools-tofu,ou=people,dc=wikimedia,dc=org",
 ]
 
 
