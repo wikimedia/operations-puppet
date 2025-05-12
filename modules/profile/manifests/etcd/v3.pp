@@ -134,12 +134,6 @@ class profile::etcd::v3(
         }
     }
 
-    firewall::service { 'etcd_prometheus':
-        proto  => 'tcp',
-        port   => $adv_client_port,
-        srange => prometheus::all_nodes(),
-    }
-
     firewall::service { 'etcd_peers':
         proto    => 'tcp',
         port     => 2380,
