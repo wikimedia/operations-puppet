@@ -215,7 +215,7 @@ groups:
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
-              kemayo, arthurtaylor, ozge
+              kemayo, arthurtaylor, ozge, bwojtowicz
     ]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
@@ -463,7 +463,7 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman, jvanderhoop, scampos]
+              kcoleman, jvanderhoop, scampos, bwojtowicz]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -934,7 +934,7 @@ groups:
   ml-team-admins:
     gid: 823
     description: Group of users that have access to ML Team's machines
-    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis, ozge]
+    members: &ml-team-admins [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis, ozge, bwojtowicz]
     privileges: []
     approval:
       - Chris Albon
@@ -6685,6 +6685,15 @@ users:
     uid: 45281
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  bwojtowicz:
+    ensure: present
+    realname: Bartosz Wójtowicz
+    email: bwojtowicz@wikimedia.org
+    uid: 49199
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMH1DHRmcANXHM0KtlSmdDC7Z2AYLHp1lzbvfEU+cL1B bwojtowicz@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7530,7 +7539,3 @@ ldap_only_users:
     ensure: present
     realname: Jeni Merino
     email: jmerino@wikimedia.org
-  bwojtowicz:
-    ensure: present
-    realname: Bartosz Wójtowicz
-    email: bwojtowicz@wikimedia.org
