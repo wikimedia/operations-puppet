@@ -22,11 +22,12 @@
 #   True if the varnishkafka instance should be monitored.  Default: false
 #
 class profile::cache::kafka::webrequest(
-    String $cache_cluster       = lookup('cache::cluster'),
-    String $kafka_cluster_name  = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
-    Boolean $ssl_enabled        = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value' => false}),
-    Boolean $monitoring_enabled = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value' => false}),
-    Boolean $atskafka_enabled   = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value' => false}),
+    String $cache_cluster         = lookup('cache::cluster'),
+    String $kafka_cluster_name    = lookup('profile::cache::kafka::webrequest::kafka_cluster_name'),
+    Boolean $varnishkafka_enabled = lookup('profile::cache::kafka::webrequest::varnishkafka_enabled', {'default_value' => true}),
+    Boolean $ssl_enabled          = lookup('profile::cache::kafka::webrequest::ssl_enabled', {'default_value'          => false}),
+    Boolean $monitoring_enabled   = lookup('profile::cache::kafka::webrequest::monitoring_enabled', {'default_value'   => false}),
+    Boolean $atskafka_enabled     = lookup('profile::cache::kafka::webrequest::atskafka_enabled', {'default_value'     => false}),
 ) {
     $kafka_config     = kafka_config($kafka_cluster_name)
 
@@ -129,6 +130,7 @@ class profile::cache::kafka::webrequest(
     }
 
     varnishkafka::instance { 'webrequest':
+        ensure                       => $varnishkafka_enabled.bool2str('present', 'absent'),
         brokers                      => $kafka_brokers,
         topic                        => $topic,
         format_type                  => 'json',
