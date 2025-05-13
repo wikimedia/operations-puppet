@@ -557,6 +557,16 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
+  # New GPU hosts for eqiad. Install them with bookworm/containerd immediately,
+  # even if not all of eqiad has been reimaged yet.
+  'ml-serve1012*':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
+  'ml-serve1013*':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   # using ml-serve* here would over-match the control plane (see entry above)
   'ml-serve[12]*':
     - partman/standard.cfg

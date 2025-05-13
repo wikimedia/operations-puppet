@@ -2107,6 +2107,10 @@ node /^ml-serve10(0[1-9]|1[01])\.eqiad\./ {
     role(ml_k8s::worker)
 }
 
+node  /^ml-serve10(12|13)\.eqiad\./ {
+    role(insetup::machine_learning)
+}
+
 node /^ml-staging-etcd200[123]\.codfw\./ {
     role(etcd::v3::ml_etcd::staging)
 }
