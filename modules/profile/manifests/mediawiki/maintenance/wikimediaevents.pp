@@ -6,7 +6,8 @@ class profile::mediawiki::maintenance::wikimediaevents(
     $team_label = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'wikimediaevents-UpdatePeriodicMetrics-per-wiki':
-        command               => '/usr/local/bin/foreachwikiindblist "all - private" extensions/WikimediaEvents/maintenance/UpdatePeriodicMetrics.php --verbose',
+        # dblists must reflect https://gerrit.wikimedia.org/r/plugins/gitiles/operations/mediawiki-config/+/refs/heads/master/wmf-config/InitialiseSettings.php#8808
+        command               => '/usr/local/bin/foreachwikiindblist "all - closed - private - fishbowl" extensions/WikimediaEvents/maintenance/UpdatePeriodicMetrics.php --verbose',
         interval              => '*-*-* 04:40:00',
         cron_schedule         => '40 4 * * *',
         team                  => $team_label,
