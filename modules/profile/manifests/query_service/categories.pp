@@ -25,7 +25,6 @@ class profile::query_service::categories(
     Stdlib::Httpurl $categories_endpoint =  lookup('profile::query_service::categories_endpoint', { 'default_value' => 'http://localhost:9990' }),
 ) {
     require ::profile::query_service::common
-    include ::profile::query_service::monitor::categories
 
     $instance_name = "${deploy_name}-categories"
     $nginx_port = 80
