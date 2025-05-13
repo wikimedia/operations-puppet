@@ -39,6 +39,8 @@ class profile::openstack::base::rabbitmq(
     String $magnum_rabbit_password = lookup('profile::openstack::base::magnum::rabbit_pass'),
     String $cinder_rabbit_user = lookup('profile::openstack::base::cinder::rabbit_user'),
     String $cinder_rabbit_password = lookup('profile::openstack::base::cinder::rabbit_pass'),
+    String $octavia_rabbit_user = lookup('profile::openstack::base::octavia::rabbit_user'),
+    String $octavia_rabbit_password = lookup('profile::openstack::base::octavia::rabbit_pass'),
     String $designate_rabbit_user = lookup('profile::openstack::base::designate::rabbit_user'),
     String $designate_rabbit_password = lookup('profile::openstack::base::designate::rabbit_pass'),
     $rabbit_erlang_cookie = lookup('profile::openstack::base::rabbit_erlang_cookie'),
@@ -135,6 +137,11 @@ class profile::openstack::base::rabbitmq(
     class { '::openstack::cinder::rabbit':
         username => $cinder_rabbit_user,
         password => $cinder_rabbit_password,
+    }
+
+    class { '::openstack::octavia::rabbit':
+        username => $octavia_rabbit_user,
+        password => $octavia_rabbit_password,
     }
 
     class { '::openstack::designate::rabbit':

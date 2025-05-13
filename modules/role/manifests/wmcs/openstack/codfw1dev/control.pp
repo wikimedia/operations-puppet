@@ -22,8 +22,6 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::rbd_cloudcontrol
     include profile::openstack::codfw1dev::networktests
 
-    # For testing purposes:
-    include profile::openstack::codfw1dev::barbican
     include profile::openstack::codfw1dev::heat
     include profile::openstack::codfw1dev::magnum
 
@@ -46,4 +44,8 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::nova::fullstack::service
 
     include profile::cloudceph::auth::deploy
+
+    # For testing purposes:
+    include profile::openstack::codfw1dev::barbican
+    include profile::openstack::codfw1dev::octavia
 }

@@ -1,0 +1,1 @@
+profile::openstack::base::octavia::rabbit_user: 'octavia'
