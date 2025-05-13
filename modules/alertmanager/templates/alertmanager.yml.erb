@@ -68,6 +68,13 @@ route:
         job: 'blackbox/pingthing'
       receiver: 'fr-ircmail'
 
+    - match:
+        scope: 'network'
+      match_re:
+        instance: '^(pfw|fasw).*'
+      receiver: 'fr-ircmail'
+      continue: true
+
     # Generic pingthing alerts are routed to irc #wm-operations and noc@wm.o
     - match:
         job: 'blackbox/pingthing'
