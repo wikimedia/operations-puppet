@@ -26,7 +26,7 @@ define profile::analytics::refinery::job::gobblin_job (
     $environment                = {},
     $send_mail                 = true,
     $send_mail_to               = 'data-engineering-alerts@wikimedia.org',
-    $ensure                     = 'present',
+    $ensure                     = 'absent',
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path

@@ -18,7 +18,7 @@
 #
 class profile::analytics::refinery::job::test::gobblin(
     String $gobblin_wmf_version = lookup('profile::analytics::refinery::job::test::gobblin_wmf_version', { 'default_value' => '1.0.6' }),
-    String $ensure_timers = lookup('profile::analytics::refinery::job::test::gobblin::ensure_timers', { 'default_value' => 'present' }),
+    String $ensure_timers = lookup('profile::analytics::refinery::job::test::gobblin::ensure_timers', { 'default_value' => 'absent' }),
 ) {
     require ::profile::analytics::refinery
     $refinery_path = $::profile::analytics::refinery::path
