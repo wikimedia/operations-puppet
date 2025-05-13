@@ -64,7 +64,7 @@ function check_imposm() {
 function download_pbf() {
   echo "starting download of PBF from $MIRROR_PATH" | ts | tee -a "${log_file}"
   if [ ! -f "$download_dir/$filename.md5" ]; then
-    curl https://"${MIRROR_PATH}/pbf/${filename}".md5 -o "${download_dir}/${filename}.md5"
+    curl -L https://"${MIRROR_PATH}/pbf/${filename}".md5 -o "${download_dir}/${filename}.md5"
   fi
   if [ ! -f "$download_dir/$filename" ]; then
     curl -L https://"${MIRROR_PATH}/pbf/${filename}" -o "${download_dir}/${filename}"
