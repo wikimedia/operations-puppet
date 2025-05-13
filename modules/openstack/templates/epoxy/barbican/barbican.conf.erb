@@ -426,6 +426,7 @@ enabled_crypto_plugins = simple_crypto
 # the kek should be a 32-byte value which is base64 encoded
 kek = <%= @crypto_kek %>
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 

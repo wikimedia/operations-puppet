@@ -76,6 +76,7 @@ log_agent_heartbeats = <%= @log_agent_heartbeats %>
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/database.erb"]) %>
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [matchmaker_redis]

@@ -331,6 +331,7 @@ api_strategy = trove.common.strategies.cluster.experimental.vertica.api.VerticaA
 # middleware should parse the headers or not. (boolean value)
 #enable_proxy_headers_parsing = false
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [service_credentials]

@@ -173,6 +173,7 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 # Used by DisableByFilesPortsHealthcheck plugin. (list value)
 #disable_by_file_paths =
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [nova]

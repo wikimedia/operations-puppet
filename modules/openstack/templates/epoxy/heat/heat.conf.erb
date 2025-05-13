@@ -448,6 +448,7 @@ workers = 2
 #tcp_keepidle = 600
 
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/servicetoken.erb"]) %>

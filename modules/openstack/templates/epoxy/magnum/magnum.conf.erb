@@ -472,6 +472,7 @@ username = magnum
 user_domain_id = default
 password = <%= @ldap_user_pass %>
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 # Some magnum code expects this to be available under the legacy
 #  names, so we duplicate things here:

@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # common openstack-wide keystone access
-[keystone_authtoken]
 auth_type = password
 www_authenticate_uri = https://<%= @keystone_fqdn %>:25000
 auth_url = https://<%= @keystone_fqdn %>:25357

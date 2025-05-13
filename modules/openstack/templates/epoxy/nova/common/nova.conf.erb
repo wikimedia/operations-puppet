@@ -100,6 +100,7 @@ enabled_filters = <%= @scheduler_filters.join(",") %>
 weight_classes=nova.scheduler.weights.metrics.MetricsWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAntiAffinityWeigher, nova.scheduler.weights.affinity.ServerGroupSoftAffinityWeigher
 host_subset_size = 2
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 <%= scope.call_function('template', ["openstack/#{@version}/common/servicetoken.erb"]) %>

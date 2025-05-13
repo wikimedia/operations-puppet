@@ -124,6 +124,7 @@ default_limit_admin = 10000
 #max_limit_admin = 1000
 
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 #-----------------------

@@ -292,6 +292,7 @@ scrub_time = 43200
 # Base directory that the Image Cache uses
 image_cache_dir = /var/lib/glance/image-cache/
 
+[keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
 [paste_deploy]
