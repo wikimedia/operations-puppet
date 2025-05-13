@@ -140,6 +140,18 @@ monitoring::groups:
     description: Equipment with lsw1-d7-codfw as uplink
   lsw1-d8-codfw:
     description: Equipment with lsw1-d8-codfw as uplink
+  ssw1-e1-codfw:
+    description: Equipment with ssw1-e1-codfw as uplink
+  ssw1-f1-codfw:
+    description: Equipment with ssw1-f1-codfw as uplink
+  lsw1-e1-codfw:
+    description: Equipment with lsw1-e1-codfw as uplink
+  lsw1-e3-codfw:
+    description: Equipment with lsw1-e3-codfw as uplink
+  lsw1-f1-codfw:
+    description: Equipment with lsw1-f1-codfw as uplink
+  lsw1-f3-codfw:
+    description: Equipment with lsw1-f3-codfw as uplink
   cloudsw1-b1-codfw:
     description: Equipment with cloudsw1-b1-codfw as uplink
   asw1-by27-esams:

@@ -178,6 +178,12 @@ class netops::monitoring(
         'lsw1-d6-codfw.mgmt' => { ipv4 => '10.193.2.186', parents => ['msw1-codfw'] },
         'lsw1-d7-codfw.mgmt' => { ipv4 => '10.193.2.192', parents => ['msw1-codfw'] },
         'lsw1-d8-codfw.mgmt' => { ipv4 => '10.193.2.207', parents => ['msw1-codfw'] },
+        'ssw1-e1-codfw.mgmt' => { ipv4 => '10.193.3.38', parents => ['msw2-codfw'] },
+        'ssw1-f1-codfw.mgmt' => { ipv4 => '10.193.3.215', parents => ['msw2-codfw'] },
+        'lsw1-e1-codfw.mgmt' => { ipv4 => '10.193.3.39', parents => ['msw2-codfw'] },
+        'lsw1-e3-codfw.mgmt' => { ipv4 => '10.193.3.209', parents => ['msw2-codfw'] },
+        'lsw1-f1-codfw.mgmt' => { ipv4 => '10.193.3.222', parents => ['msw2-codfw'] },
+        'lsw1-f3-codfw.mgmt' => { ipv4 => '10.193.3.221', parents => ['msw2-codfw'] },
         # codfw cloud
         'cloudsw1-b1-codfw.mgmt' => { ipv4 => '10.193.0.243', parents => ['msw1-codfw']},
         # drmrs

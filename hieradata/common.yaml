@@ -2210,16 +2210,22 @@ infra_devices:
     site: codfw
     role: pfw
   mr1-codfw:
-    ipv4: '208.80.153.196'
-    ipv6: '2620:0:860:ffff::6'
+    ipv4: 208.80.153.196
+    ipv6: 2620:0:860:ffff::6
     parents:
     - lsw1-a2-codfw
     site: codfw
     role: mr
   msw1-codfw:
-    ipv4: '10.193.0.3'
+    ipv4: 10.193.0.3
     parents:
     - mr1-codfw
+    site: codfw
+    role: msw
+  msw2-codfw:
+    ipv4: 10.193.1.89
+    parents:
+    - msw1-codfw
     site: codfw
     role: msw
   ssw1-a1-codfw:
@@ -2385,6 +2391,36 @@ infra_devices:
   lsw1-d8-codfw:
     ipv4: 10.192.255.33
     ipv6: 2620:0:860:13f::22
+    site: codfw
+    role: l3sw
+  ssw1-e1-codfw:
+    ipv4: 10.192.255.40
+    ipv6: 2620:0:860:13f::29
+    site: codfw
+    role: l3sw
+  ssw1-f1-codfw:
+    ipv4: 10.192.255.41
+    ipv6: 2620:0:860:13f::2a
+    site: codfw
+    role: l3sw
+  lsw1-e1-codfw:
+    ipv4: 10.192.255.42
+    ipv6: 2620:0:860:13f::2b
+    site: codfw
+    role: l3sw
+  lsw1-e3-codfw:
+    ipv4: 10.192.255.43
+    ipv6: 2620:0:860:13f::2c
+    site: codfw
+    role: l3sw
+  lsw1-f1-codfw:
+    ipv4: 10.192.255.44
+    ipv6: 2620:0:860:13f::2d
+    site: codfw
+    role: l3sw
+  lsw1-f3-codfw:
+    ipv4: 10.192.255.45
+    ipv6: 2620:0:860:13f::2e
     site: codfw
     role: l3sw
   fasw2-c8a-codfw:

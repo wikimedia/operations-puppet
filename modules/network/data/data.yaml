@@ -372,6 +372,18 @@ network::subnets:
         private1-d8-codfw:
           ipv4: 10.192.43.0/24
           ipv6: 2620:0:860:122::/64
+        private1-e1-codfw:
+          ipv4: 10.192.56.0/24
+          ipv6: 2620:0:860:12b::/64
+        private1-e3-codfw:
+          ipv4: 10.192.57.0/24
+          ipv6: 2620:0:860:12c::/64
+        private1-f1-codfw:
+          ipv4: 10.192.58.0/24
+          ipv6: 2620:0:860:12d::/64
+        private1-f3-codfw:
+          ipv4: 10.192.59.0/24
+          ipv6: 2620:0:860:12e::/64
         cloud-hosts1-b1-codfw:
           ipv4: 10.192.20.0/24
           ipv6: 2620:0:860:118::/64
