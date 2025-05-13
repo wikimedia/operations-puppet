@@ -70,7 +70,7 @@ class profile::opensearch::cirrus::server(
             # All clusters use the same repo, which enables cross-cluster snapshot restores.
             prometheus::blackbox::check::http { "${facts['fqdn']}_${instance_title}_snapshot":
                 server_name    => $facts['fqdn'],
-                team           => 'data-platform-sre',
+                team           => 'data-platform',
                 severity       => 'task',
                 path           => '/_snapshot/elastic_snaps',
                 port           => $http_port,
