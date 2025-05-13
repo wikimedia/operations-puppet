@@ -3,7 +3,13 @@ class profile::mediawiki::maintenance::update_flaggedrev_stats(
 ) {
 
     profile::mediawiki::periodic_job { 'update_flaggedrev_stats':
-        command  => '/usr/local/bin/mwscriptwikiset extensions/FlaggedRevs/maintenance/updateStats.php flaggedrevs.dblist',
-        interval => '00:08'
+        command               => '/usr/local/bin/mwscriptwikiset extensions/FlaggedRevs/maintenance/updateStats.php flaggedrevs.dblist',
+        interval              => '00:08',
+        cron_schedule         => '08 00 * * *',
+        kubernetes            => true,
+        team                  => 'flaggedrevs',
+        script_label          => 'FlaggedRevs-updateStats.php',
+        description           => 'Update the FlaggedRevs article review statistics table',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
