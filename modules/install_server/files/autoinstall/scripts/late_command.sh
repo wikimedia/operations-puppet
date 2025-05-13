@@ -32,6 +32,10 @@ LSB_RELEASE=$(chroot /target /usr/bin/lsb_release --codename --short)
 BASE_REPO="http://apt.wikimedia.org/wikimedia ${LSB_RELEASE}-wikimedia component"
 if [ "$PUPPET_VERSION" -eq 7 ]; then
   case "${LSB_RELEASE}" in
+    "trixie")
+      printf 'deb %s/puppet7\n' "$BASE_REPO" > /target/etc/apt/sources.list.d/component-puppet7.list
+      printf 'Package: ruby-concurrent ruby libruby puppet puppet-agent\nPin: release c=component/puppet7\nPin-Priority: 1002\n' > /target/etc/apt/preferences.d/puppet.pref
+      ;;
     "bookworm")
       printf 'Package: puppet\nPin: release l=Debian\nPin-Priority: 1003\n' > /target/etc/apt/preferences.d/puppet.pref
       ;;
