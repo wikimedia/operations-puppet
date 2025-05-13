@@ -2,4 +2,3 @@
 # s8 - but future x3
 # x3 future master
 mariadb::shard: 's8'
-profile::monitoring::notifications_enabled: false
