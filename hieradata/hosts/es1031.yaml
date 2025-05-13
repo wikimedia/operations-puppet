@@ -1,4 +1,4 @@
 # es1031
 mariadb::shard: 'es3'
 profile::mariadb::mysql_role: 'standalone'
-
+mariadb::package: 'wmf-mariadb1011'
