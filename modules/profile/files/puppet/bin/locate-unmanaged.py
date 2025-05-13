@@ -47,10 +47,15 @@ def main() -> int:
         if resource["resource_type"] == "File"
     ]
 
+    unmanaged = list()
     for file in args.directory.glob("**/*"):
         if file in all_managed_paths:
             continue
-        print(str(file))
+        unmanaged.append(str(file))
+
+    # Ensure consistent order, so that Cumin host group merging will work
+    for file in sorted(unmanaged):
+        print(file)
 
     return 0
 
