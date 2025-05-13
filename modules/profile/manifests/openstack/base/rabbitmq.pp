@@ -47,7 +47,8 @@ class profile::openstack::base::rabbitmq(
     Optional[String] $rabbit_cfssl_label = lookup('profile::openstack::base::rabbitmq::rabbit_cfssl_label', {default_value => undef}),
     Integer $heartbeat_timeout = lookup('profile::openstack::base::heartbeat_timeout'),
     String $version = lookup('profile::openstack::base::version'),
-    Stdlib::IP::Address::V4 $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Stdlib::IP::Address::V4 $cloud_private_supernet_v4 = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
+    Stdlib::IP::Address::V6 $cloud_private_supernet_v6 = lookup('profile::wmcs::cloud_private_subnet::supernet_v6'),
 ){
     if $rabbit_cfssl_label {
         $cert_paths = profile::pki::get_cert(
@@ -177,7 +178,7 @@ class profile::openstack::base::rabbitmq(
     firewall::service { 'rabbitmq-cloud-private':
         proto  => 'tcp',
         port   => [5671, 5672],
-        srange => $cloud_private_supernet,
+        srange => [$cloud_private_supernet_v4, $cloud_private_supernet_v6],
     }
 
     firewall::service { 'rabbitmq-internals':
