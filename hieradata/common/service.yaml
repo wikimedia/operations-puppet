@@ -4270,3 +4270,16 @@ service::catalog:
     sites:
       - eqiad
     state: service_setup
+
+  os-reports:
+    description: "OS Reports"
+    encryption: true
+    ip: *k8s-ingress-aux_ips
+    page: false
+    probes:
+      - type: http
+        host: os-reports.wikimedia.org
+    port: *k8s-ingress-aux_port
+    sites:
+      - eqiad
+    state: service_setup
