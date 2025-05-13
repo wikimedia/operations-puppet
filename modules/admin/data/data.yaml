@@ -3334,7 +3334,6 @@ users:
     realname: Deborah Tankersley
     ssh_keys: []
     uid: 15213
-    email: dtankersley@wikimedia.org
   melodykramer:
     ensure: absent
     gid: 500
@@ -6750,10 +6749,6 @@ ldap_only_users:
   ddw:
     ensure: absent
     realname: Dani Dwaal
-  debt:
-    ensure: present
-    realname: Deborah Tankersley
-    email: dtankersley@wikimedia.org
   deepeshaburse:
     ensure: present
     realname: Deepesha Burse
