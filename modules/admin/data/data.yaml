@@ -463,7 +463,7 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed]
+              kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6682,6 +6682,13 @@ users:
     realname: Jonathan Tweed
     email: jtweed@wikimedia.org
     uid: 47755
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  skivlehan:
+    ensure: present
+    realname: Sean Kivlehan
+    email: skivlehan@wikimedia.org
+    uid: 49210
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
