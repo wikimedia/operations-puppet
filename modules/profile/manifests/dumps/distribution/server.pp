@@ -12,11 +12,7 @@ class profile::dumps::distribution::server {
 
     # The following directory will be the temporary home of the dumps that are
     # synced from Airflow jobs. See #T389784
-    file { '/srv/mediawiki-dumps-legacy':
-        ensure => 'directory',
-    }
-
-    file { '/srv/mediawiki-dumps-legacy/xmldatadumps':
+    file { '/srv/dumps/xmldatadumps_airflow_temp':
         ensure => 'directory',
         owner  => 'dumpsgen',
         group  => 'dumpsgen',
