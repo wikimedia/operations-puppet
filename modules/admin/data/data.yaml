@@ -215,7 +215,7 @@ groups:
               tjones, jsn, ecarg, amastilovic, ebysans, daphnesmit, toyofuku,
               mszabo, ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
-              kemayo, arthurtaylor, ozge, bwojtowicz, thiemowmde
+              kemayo, arthurtaylor, ozge, bwojtowicz, thiemowmde, esanders
     ]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
