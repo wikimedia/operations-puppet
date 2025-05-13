@@ -7,17 +7,16 @@ profile::elasticsearch::instances:
     tls_port: 9243
     certificate_name: 'search.discovery.wmnet'
     transport_tcp_port: 9300
-    
+
     # OS-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1054.eqiad.wmnet # Row A3
       - elastic1074.eqiad.wmnet # Row B2
       - elastic1081.eqiad.wmnet # Row C4
       - elastic1094.eqiad.wmnet # Row E
       - elastic1100.eqiad.wmnet # Row F
       - cirrussearch1122.eqiad.wmnet # Row D
-    
+      - cirrussearch1074.eqiad.wmnet # Row B2
     cluster_hosts:
       - elastic1053.eqiad.wmnet
       - elastic1054.eqiad.wmnet
@@ -145,13 +144,13 @@ profile::elasticsearch::instances:
       - cirrussearch1123.eqiad.wmnet
       - cirrussearch1124.eqiad.wmnet
       - cirrussearch1125.eqiad.wmnet
-    
+
     # TODO at what point do we need to update this number?
     expected_nodes: 35
-    
+
     # We should be able to run "OK" with 24 servers.
     recover_after_nodes: 24
-    
+
     # Report metrics for some of our largest indices
     indices_to_monitor:
       - commonswiki_file
@@ -164,7 +163,7 @@ profile::elasticsearch::instances:
       - metawiki_general
       - dewiki_content
       - frwiki_content
-  
+
   production-search-omega-eqiad:
     # eqiad prod name
     cluster_name: production-search-omega-eqiad
@@ -177,12 +176,12 @@ profile::elasticsearch::instances:
     # ES-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1068.eqiad.wmnet # Row A4
       - elastic1076.eqiad.wmnet # Row B4
       - elastic1057.eqiad.wmnet # Row C3
       - elastic1093.eqiad.wmnet # Row E
       - elastic1098.eqiad.wmnet # Row F
       - cirrussearch1068.eqiad.wmnet # Row A4
+      - cirrussearch1076.eqiad.wmnet # Row B4
 
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
@@ -192,40 +191,40 @@ profile::elasticsearch::instances:
       - elastic1068.eqiad.wmnet
       - elastic1070.eqiad.wmnet
       - elastic1071.eqiad.wmnet
-      
+
       # row B
       - elastic1055.eqiad.wmnet
       - elastic1056.eqiad.wmnet
       - elastic1074.eqiad.wmnet
       - elastic1076.eqiad.wmnet
       - elastic1077.eqiad.wmnet
-      
+
       # row C
       - elastic1057.eqiad.wmnet
       - elastic1058.eqiad.wmnet
       - elastic1080.eqiad.wmnet
       - elastic1082.eqiad.wmnet
-      
+
       # row D
       - elastic1060.eqiad.wmnet
       - elastic1061.eqiad.wmnet
       - elastic1062.eqiad.wmnet
       - elastic1063.eqiad.wmnet
       - elastic1103.eqiad.wmnet
-      
+
       # row E
       - elastic1089.eqiad.wmnet
       - elastic1091.eqiad.wmnet
       - elastic1093.eqiad.wmnet
       - elastic1094.eqiad.wmnet
       - elastic1109.eqiad.wmnet
-      
+
       # row F
       - elastic1096.eqiad.wmnet
       - elastic1098.eqiad.wmnet
       - elastic1100.eqiad.wmnet
       - elastic1107.eqiad.wmnet
-      
+
       # row A
       - cirrussearch1053.eqiad.wmnet
       - cirrussearch1054.eqiad.wmnet
@@ -233,7 +232,7 @@ profile::elasticsearch::instances:
       - cirrussearch1070.eqiad.wmnet
       - cirrussearch1071.eqiad.wmnet
       - cirrussearch1112.eqiad.wmnet
-      
+
       # row B
       - cirrussearch1055.eqiad.wmnet
       - cirrussearch1056.eqiad.wmnet
@@ -242,14 +241,14 @@ profile::elasticsearch::instances:
       - cirrussearch1077.eqiad.wmnet
       - cirrussearch1113.eqiad.wmnet
       - cirrussearch1114.eqiad.wmnet
-      
+
       # row C
       - cirrussearch1057.eqiad.wmnet
       - cirrussearch1058.eqiad.wmnet
       - cirrussearch1080.eqiad.wmnet
       - cirrussearch1082.eqiad.wmnet
       - cirrussearch1119.eqiad.wmnet
-      
+
       # row D
       - cirrussearch1060.eqiad.wmnet
       - cirrussearch1061.eqiad.wmnet
@@ -257,14 +256,14 @@ profile::elasticsearch::instances:
       - cirrussearch1063.eqiad.wmnet
       - cirrussearch1103.eqiad.wmnet
       - cirrussearch1120.eqiad.wmnet
-      
+
       # row E
       - cirrussearch1089.eqiad.wmnet
       - cirrussearch1091.eqiad.wmnet
       - cirrussearch1093.eqiad.wmnet
       - cirrussearch1094.eqiad.wmnet
       - cirrussearch1109.eqiad.wmnet
-      
+
       # row F
       - cirrussearch1096.eqiad.wmnet
       - cirrussearch1098.eqiad.wmnet
@@ -272,12 +271,12 @@ profile::elasticsearch::instances:
       - cirrussearch1107.eqiad.wmnet
       - cirrussearch1124.eqiad.wmnet
       - cirrussearch1125.eqiad.wmnet
-    
+
     expected_nodes: 18
-    
+
     # We should be able to run "OK" with 11 servers.
     recover_after_nodes: 11
-  
+
   production-search-psi-eqiad:
     # eqiad prod name
     cluster_name: production-search-psi-eqiad
@@ -290,13 +289,12 @@ profile::elasticsearch::instances:
     # ES-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1073.eqiad.wmnet # Row A7
       - elastic1075.eqiad.wmnet # Row B2
       - elastic1083.eqiad.wmnet # Row C7
       - elastic1095.eqiad.wmnet # Row E
       - elastic1102.eqiad.wmnet # Row F
       - cirrussearch1073.eqiad.wmnet # Row A7
-    
+      - cirrussearch1075.eqiad.wmnet # Row B2
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
@@ -304,47 +302,47 @@ profile::elasticsearch::instances:
       - elastic1072.eqiad.wmnet
       - elastic1073.eqiad.wmnet
       - elastic1084.eqiad.wmnet
-      
+
       # row B
       - elastic1075.eqiad.wmnet
       - elastic1078.eqiad.wmnet
       - elastic1079.eqiad.wmnet
       - elastic1085.eqiad.wmnet
       - elastic1086.eqiad.wmnet
-      
+
       # row C
       - elastic1059.eqiad.wmnet
       - elastic1081.eqiad.wmnet
       - elastic1083.eqiad.wmnet
       - elastic1087.eqiad.wmnet
       - elastic1088.eqiad.wmnet
-      
+
       # row D
       - elastic1064.eqiad.wmnet
       - elastic1065.eqiad.wmnet
       - elastic1066.eqiad.wmnet
       - elastic1067.eqiad.wmnet
-      
+
       # row E
       - elastic1090.eqiad.wmnet
       - elastic1092.eqiad.wmnet
       - elastic1095.eqiad.wmnet
       - elastic1108.eqiad.wmnet
-      
+
       # row F
       - elastic1097.eqiad.wmnet
       - elastic1099.eqiad.wmnet
       - elastic1101.eqiad.wmnet
       - elastic1102.eqiad.wmnet
       - elastic1110.eqiad.wmnet
-      
+
       # row A
       - cirrussearch1069.eqiad.wmnet
       - cirrussearch1072.eqiad.wmnet
       - cirrussearch1073.eqiad.wmnet
       - cirrussearch1084.eqiad.wmnet
       - cirrussearch1111.eqiad.wmnet
-      
+
       # row B
       - cirrussearch1075.eqiad.wmnet
       - cirrussearch1078.eqiad.wmnet
@@ -354,7 +352,7 @@ profile::elasticsearch::instances:
       - cirrussearch1115.eqiad.wmnet
       - cirrussearch1116.eqiad.wmnet
       - cirrussearch1117.eqiad.wmnet
-      
+
       # row C
       - cirrussearch1059.eqiad.wmnet
       - cirrussearch1081.eqiad.wmnet
@@ -362,7 +360,7 @@ profile::elasticsearch::instances:
       - cirrussearch1087.eqiad.wmnet
       - cirrussearch1088.eqiad.wmnet
       - cirrussearch1118.eqiad.wmnet
-      
+
       # row D
       - cirrussearch1064.eqiad.wmnet
       - cirrussearch1065.eqiad.wmnet
@@ -370,23 +368,23 @@ profile::elasticsearch::instances:
       - cirrussearch1067.eqiad.wmnet
       - cirrussearch1121.eqiad.wmnet
       - cirrussearch1122.eqiad.wmnet
-      
+
       # row E
       - cirrussearch1090.eqiad.wmnet
       - cirrussearch1092.eqiad.wmnet
       - cirrussearch1095.eqiad.wmnet
       - cirrussearch1108.eqiad.wmnet
       - cirrussearch1123.eqiad.wmnet
-      
+
       # row F
       - cirrussearch1097.eqiad.wmnet
       - cirrussearch1099.eqiad.wmnet
       - cirrussearch1101.eqiad.wmnet
       - cirrussearch1102.eqiad.wmnet
       - cirrussearch1110.eqiad.wmnet
-    
+
     expected_nodes: 18
-    
+
     # We should be able to run "OK" with 11 servers.
     recover_after_nodes: 11
 
