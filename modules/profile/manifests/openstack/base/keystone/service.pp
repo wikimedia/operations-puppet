@@ -39,7 +39,8 @@ class profile::openstack::base::keystone::service(
     Stdlib::Port $admin_bind_port = lookup('profile::openstack::base::admin_bind_port'),
     Stdlib::Port $public_bind_port = lookup('profile::openstack::base::public_bind_port'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
-    Optional[Stdlib::IP::Address::V4] $cloud_private_supernet = lookup('profile::wmcs::cloud_private_subnet::supernet_v4', {default_value => undef}),
+    Optional[Stdlib::IP::Address::V4] $cloud_private_supernet_v4 = lookup('profile::wmcs::cloud_private_subnet::supernet_v4', {default_value => undef}),
+    Optional[Stdlib::IP::Address::V6] $cloud_private_supernet_v6 = lookup('profile::wmcs::cloud_private_subnet::supernet_v6', {default_value => undef}),
     Stdlib::Fqdn $horizon_hostname = lookup('profile::openstack::base::horizon::webserver_hostname'),
 ) {
 
@@ -87,7 +88,7 @@ class profile::openstack::base::keystone::service(
         wsgi_server                 => $wsgi_server,
         wmcloud_domain_owner        => $wmcloud_domain_owner,
         bastion_project_id          => $bastion_project_id,
-        prod_networks               => $::network::constants::production_networks + [$cloud_private_supernet],
+        prod_networks               => $::network::constants::production_networks + [$cloud_private_supernet_v4, $cloud_private_supernet_v6],
         labs_networks               => $::network::constants::cloud_networks,
         keystone_admin_uri          => $keystone_admin_uri,
         public_bind_port            => $public_bind_port,
