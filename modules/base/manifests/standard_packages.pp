@@ -9,7 +9,7 @@ class base::standard_packages (
 )  {
 
     ensure_packages ([
-        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils', 'dstat',
+        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
@@ -52,6 +52,12 @@ class base::standard_packages (
     # and partly via Linux
     if debian::codename::ge('trixie') {
         ensure_packages(['linux-sysctl-defaults'])
+    }
+
+    # dstat is unmaintained and got removed from Debian trixie due to incompatibilties with
+    # current Python releases
+    if debian::codename::lt('trixie') {
+        ensure_packages('dstat')
     }
 
     # uninstall these packages
