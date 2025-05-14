@@ -61,7 +61,7 @@ define command{
 # 'vo-host-notify-by-email' command definition
 define command{
     command_name    vo-host-notify-by-email
-    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n\nAcknowledged by $HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ Host $HOSTALIAS$ - $HOSTOUTPUT$" $CONTACTADDRESS1$
+    command_line    /usr/bin/printf "%b" "Notification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n\nAcknowledged by $HOSTACKAUTHOR$: $HOSTACKCOMMENT$" | /usr/bin/mail -s "$NOTIFICATIONTYPE$ Host $HOSTALIAS$" $CONTACTADDRESS1$
     }
 
 # 'vo-notify-by-email' command definition
