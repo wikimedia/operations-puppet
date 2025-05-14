@@ -9,3 +9,6 @@
     <%- if @ttlsecondsafterfinished -%>
       ttlSecondsAfterFinished: <%= @ttlsecondsafterfinished %>
     <% end %>
+    <%- if @concurrency_policy -%>
+      concurrency: <%= @concurrency_policy %>
+    <%- end %>

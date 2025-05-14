@@ -41,6 +41,7 @@
 #
 # [*migration_title*] a string used to reference the old periodic job for removal when migrating to Kubernetes in a situation where the job needs to be renamed.
 #
+# [*concurrency_policy*] A kubernetes policy for what happens to jobs that run concurrently/overlap. Default is undef, which implies "Replace" in the chart
 
 define profile::mediawiki::periodic_job(
     String $command,
@@ -58,6 +59,7 @@ define profile::mediawiki::periodic_job(
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
     Optional[String] $migration_title = undef,
+    Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
 ) {
 
     if $::_role == 'deployment_server/kubernetes' {
@@ -72,6 +74,7 @@ define profile::mediawiki::periodic_job(
                 description             => $description,
                 helmfile_defaults_dir   => $helmfile_defaults_dir,
                 ttlsecondsafterfinished => $ttlsecondsafterfinished,
+                concurrency_policy      => $concurrency_policy,
             }
         }
     } else {
