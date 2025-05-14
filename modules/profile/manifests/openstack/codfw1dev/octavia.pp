@@ -46,13 +46,6 @@ class profile::openstack::codfw1dev::octavia(
         mode   => '0700',
     }
 
-    file { '/home/octavia/.ssh':
-        ensure => directory,
-        owner  => 'octavia',
-        group  => 'octavia',
-        mode   => '0700',
-    }
-
     file { '/etc/octavia/certs/client.cert-and-key.pem':
         owner     => 'octavia',
         group     => 'octavia',
@@ -83,8 +76,7 @@ class profile::openstack::codfw1dev::octavia(
         content   => secret('openstack/octavia/server_ca.cert.pem'),
         require   => File['/etc/octavia/certs'],
     }
-
-    file { '/home/octavia/.ssh/id_rsa':
+    file { '/etc/octavia/certs/id_rsa':
         ensure    => 'present',
         mode      => '0600',
         owner     => 'osstackcanary',
