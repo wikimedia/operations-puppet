@@ -4775,7 +4775,7 @@ users:
     gid: 500
     krb: present
     ssh_keys:
-      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILPofgCuu5AVNvAyH2qs3IFOhpByNCfO5HMVnTBG6IdX corybant@delphi"
+      - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJBdVH1UgngwF7CmvS0CVUyw8BIXQP775pbnzne7/f+O corybant@delphi"
   il:
     ensure: absent
     realname: Igor L
