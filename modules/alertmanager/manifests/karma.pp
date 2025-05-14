@@ -18,6 +18,8 @@ class alertmanager::karma (
         restart  => true,
     }
 
+    profile::auto_restarts::service { 'karma': }
+
     if $config {
         $content = $config
     } else {
