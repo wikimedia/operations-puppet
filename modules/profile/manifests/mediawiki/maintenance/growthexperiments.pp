@@ -35,23 +35,13 @@ class profile::mediawiki::maintenance::growthexperiments(
     }
 
     # update data for the mentor dashboard (T285811)
-    profile::mediawiki::periodic_job { 'growthexperiments-updateMenteeData-s1':
-        command               => '/usr/local/bin/foreachwikiindblist \'growthexperiments & s1\' extensions/GrowthExperiments/maintenance/updateMenteeData.php --statsd --dbshard s1',
-        interval              => '*-*-* 00,03,06,09,12,15,18,21:15:00',
-        cron_schedule         => '15 */3 * * *',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'updateMenteeData.php-s1',
-        description           => 'update data for the mentor dashboard',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
-    }
-    $update_mentee_shards = [ 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]
+    $update_mentee_shards = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]
     $update_mentee_shards.each | $mentee_shard | {
         profile::mediawiki::periodic_job { "growthexperiments-updateMenteeData-${mentee_shard}":
             command               => "/usr/local/bin/foreachwikiindblist 'growthexperiments & ${mentee_shard}' extensions/GrowthExperiments/maintenance/updateMenteeData.php --statsd --dbshard ${mentee_shard}",
             interval              => '*-*-* 00,03,06,09,12,15,18,21:15:00',
             cron_schedule         => '15 */3 * * *',
-            kubernetes            => false,
+            kubernetes            => true,
             team                  => $team_name,
             script_label          => "updateMenteeData.php-${mentee_shard}",
             description           => 'update data for the mentor dashboard',
