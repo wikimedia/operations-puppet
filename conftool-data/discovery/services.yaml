@@ -3,8 +3,6 @@ restbase-async: [eqiad, codfw]
 restbase-backend: [eqiad, codfw]
 restbase: [eqiad, codfw]
 search: [eqiad, codfw]
-search-psi: [eqiad, codfw]
-search-omega: [eqiad, codfw]
 # All the rest
 apertium: [eqiad, codfw]
 api-gateway: [eqiad, codfw]
