@@ -1,3 +1,4 @@
 # db1258
-# Future x3 host - single CPU
+# s8 - but future x3
+mariadb::shard: 's8'
 profile::monitoring::notifications_enabled: false

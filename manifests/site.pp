@@ -737,7 +737,7 @@ node /^db1(172|177|192|193|203|209|211|214|226)\.eqiad\./ {
 }
 
 # x3 (split from s8) future section
-node /^db1(255|256|257)\.eqiad\./ {
+node /^db1(255|256|257|258)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -753,10 +753,6 @@ node /^db2(152|154|161|162|163|165|166|167|181|195|241|242|243)\.codfw\./ {
 }
 
 # Future x3 host
-node /^db1258\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 node /^db2244\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
