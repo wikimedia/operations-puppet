@@ -1,0 +1,2 @@
+profile::cache::kafka::webrequest::monitoring_enabled: false
+profile::cache::kafka::webrequest::varnishkafka_enabled: false
