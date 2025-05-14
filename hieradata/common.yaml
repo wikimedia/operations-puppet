@@ -1331,7 +1331,6 @@ kerberos_kadmin_keytabs_repo:
 # with kerberos_kdc_servers_to_clients, but there are circumstances where they might differ,
 # e.g. while provisioning a new server
 kerberos_kdc_servers:
-    - 'krb1001.eqiad.wmnet'
     - 'krb1002.eqiad.wmnet'
     - 'krb2002.codfw.wmnet'
 
