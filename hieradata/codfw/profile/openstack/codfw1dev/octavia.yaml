@@ -5,3 +5,4 @@ profile::openstack::codfw1dev::octavia::db_name: "codfw1dev_octavia"
 profile::openstack::codfw1dev::octavia::active: true
 profile::openstack::codfw1dev::octavia::amphora_secgroup: 61ce3e32-b4e9-4c8c-9d9f-15033ecf0b0d
 profile::openstack::codfw1dev::octavia::amphora_boot_network: f0476311-203a-4fbf-80a7-4cb2d0064594
+profile::openstack::codfw1dev::octavia::rabbit_user: 'octavia'
