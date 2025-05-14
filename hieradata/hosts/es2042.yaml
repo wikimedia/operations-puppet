@@ -1,3 +1,4 @@
 # es2042
 mariadb::shard: 'es4'
 profile::mariadb::mysql_role: 'standalone'
+mariadb::package: 'wmf-mariadb1011'
