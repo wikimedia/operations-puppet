@@ -182,4 +182,5 @@ class corto(
         enable => $service_enable,
     }
 
+    profile::auto_restarts::service { 'corto': }
 }
