@@ -101,7 +101,7 @@ def get_run(step_by_step: bool) -> Callable:
 if False:
     # codfw1dev
     flavorid = "946ac6c4-f81d-4acd-8fd5-7da9222fa746"
-    networkid = "05a5494a-184f-4d5c-9e98-77ae61c56daa"
+    networkid = "7d5adac7-fa5f-4282-a02c-4ced95b871ed"
 else:
     # eqiad1
 
@@ -112,7 +112,7 @@ else:
 
     # This is the id of the standard VM network.
     # In eqiad1 that's 'VLAN/legacy'
-    networkid = "7425e328-560c-4f00-8e99-706f3fb90bb4"
+    networkid = "d8a16ddf-c01f-4f22-8b67-8ed18b4b1b45"
 
 
 def parse_args():
