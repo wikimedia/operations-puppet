@@ -51,6 +51,12 @@
 #   before you apply this module.
 #   Default: [/var/lib/cassandra/data]
 #
+# [*local_system_data_file_directory*]
+#   Directory where Cassandra should store local system keyspaces. In a JBOD
+#   configuration, this should be configured to use a RAID array so that local
+#   system state is not corrupted by the failure of any one disk.
+#   Default: undef
+#
 # [*commitlog_directory*]
 #   Directory where Cassandra should store its commit log.
 #   Default: /var/lib/cassandra/commitlog
@@ -289,6 +295,7 @@ define cassandra::instance (
     Boolean                               $monitor_enabled                  = true,
     Boolean                               $auto_apply_grants                = false,
     Boolean                               $legacy_ssl_storage_port_enabled  = false,
+    Optional[Stdlib::Unixpath]            $local_system_data_file_directory = undef,
 ) {
 
     $instance_data_file_directories = $data_file_directories.empty? {

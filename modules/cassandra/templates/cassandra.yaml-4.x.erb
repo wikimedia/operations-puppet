@@ -323,12 +323,16 @@ data_file_directories:
 <% end -%>
 
 
-# Directory were Cassandra should store the data of the local system keyspaces.
+# Directory where Cassandra should store the data of the local system keyspaces.
 # By default Cassandra will store the data of the local system keyspaces in the first of the data directories specified
 # by data_file_directories.
 # This approach ensures that if one of the other disks is lost Cassandra can continue to operate. For extra security
 # this setting allows to store those data on a different directory that provides redundancy.
+<% if @local_system_data_file_directory -%>
+local_system_data_file_directory: <%= @local_system_data_file_directory %>
+<% else -%>
 # local_system_data_file_directory:
+<% end -%>
 
 # commit log.  when running on magnetic HDD, this should be a
 # separate spindle than the data directories.

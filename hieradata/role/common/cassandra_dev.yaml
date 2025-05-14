@@ -44,6 +44,7 @@ profile::cassandra::instances:
       commitlog_directory: /srv/cassandra/cassandra-a/commitlog
       hints_directory: /srv/cassandra/cassandra-a/hints
       saved_caches_directory: /srv/cassandra/cassandra-a/saved_caches
+      local_system_data_file_directory: /srv/cassandra-a/system
     b:
       listen_address: 10.192.16.15
       data_file_directories:
@@ -55,6 +56,7 @@ profile::cassandra::instances:
       commitlog_directory: /srv/cassandra/cassandra-b/commitlog
       hints_directory: /srv/cassandra/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/cassandra-b/saved_caches
+      local_system_data_file_directory: /srv/cassandra-b/system
   "cassandra-dev2002.codfw.wmnet":
     a:
       listen_address: 10.192.32.84
