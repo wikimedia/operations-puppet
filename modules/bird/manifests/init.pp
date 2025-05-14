@@ -136,6 +136,8 @@ class bird(
       notify => Service['prometheus-bird-exporter'],
   }
 
+  profile::auto_restarts::service { 'prometheus-bird-exporter': }
+
   nrpe::monitor_service { 'bird':
       ensure       => present,
       description  => 'Bird Internet Routing Daemon',
