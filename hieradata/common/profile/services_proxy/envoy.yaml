@@ -281,7 +281,7 @@ profile::services_proxy::envoy::listeners:
     port: 6303
     service: search-omega-https
     timeout: "50s"
-    upstream: search-omega.discovery.wmnet
+    upstream: search.discovery.wmnet
     keepalive: "50s"
     retry:
       retry_on: gateway-error
@@ -301,7 +301,7 @@ profile::services_proxy::envoy::listeners:
     port: 6304
     service: search-psi-https
     timeout: "50s"
-    upstream: search-psi.discovery.wmnet
+    upstream: search.discovery.wmnet
     keepalive: "50s"
     retry:
       retry_on: gateway-error
