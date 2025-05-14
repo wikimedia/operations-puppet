@@ -10,9 +10,10 @@ class profile::dumps::distribution::server {
         ensure => 'directory',
     }
 
-    # The following directory will be the temporary home of the dumps that are
+    # The following directories will be the temporary home of the dumps that are
     # synced from Airflow jobs. See #T389784
-    file { '/srv/dumps/xmldatadumps_airflow_temp':
+    $dumps_tmp_dir = '/srv/dumps/xmldatadumps_airflow_temp'
+    file { [$dumps_tmp_dir, "${dumps_tmp_dir}/xmldatadumps", "${dumps_tmp_dir}/xmldatadumps/public"]:
         ensure => 'directory',
         owner  => 'dumpsgen',
         group  => 'dumpsgen',
