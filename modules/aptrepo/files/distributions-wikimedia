@@ -159,6 +159,7 @@ Components: main
  thirdparty/conda
  thirdparty/confluent
  thirdparty/confluent7
+ thirdparty/docker
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-bullseye
@@ -199,6 +200,7 @@ Update:
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
  thirdparty/conda
+ thirdparty/docker-bullseye
  thirdparty/docker-ci-bullseye
  thirdparty/gitlab-bullseye
  thirdparty/gitlab-runner
@@ -246,6 +248,7 @@ Components: main
  thirdparty/bigtop15
  thirdparty/bigtop33
  thirdparty/ceph-reef
+ thirdparty/docker
  thirdparty/elastic710
  thirdparty/elasticsearch-curator5
  thirdparty/gitlab-runner
@@ -279,6 +282,7 @@ Update:
  node20
  routinator-bookworm
  thirdparty/ceph-reef
+ thirdparty/docker-bookworm
  thirdparty/gitlab-runner
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
@@ -304,8 +308,12 @@ Architectures: source amd64 i386
 Components: main
 # sorted list, leading whitespace matters!
  component/puppet7
+ thirdparty/docker
  thirdparty/hwraid
 UDebComponents: main
+Update:
+# sorted list, leading whitespace matters!
+ thirdparty/docker-trixie
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
