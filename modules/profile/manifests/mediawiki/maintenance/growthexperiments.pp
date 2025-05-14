@@ -26,7 +26,7 @@ class profile::mediawiki::maintenance::growthexperiments(
     profile::mediawiki::periodic_job { 'growthexperiments-listTaskCounts':
         command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/listTaskCounts.php --topictype ores --statsd --output none',
         interval              => '*-*-* *:11:00',
-        cron_schedule         => '11 * * * *',
+        cron_schedule         => '11 */2 * * *', # Different schedule on kubernetes to work around the Replace policy T394018 T394019
         kubernetes            => true,
         team                  => $team_name,
         script_label          => 'listTaskCounts.php',
