@@ -463,7 +463,7 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman, jvanderhoop, scampos, bwojtowicz]
+              kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6694,6 +6694,13 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMH1DHRmcANXHM0KtlSmdDC7Z2AYLHp1lzbvfEU+cL1B bwojtowicz@wikimedia.org
     krb: present
+  jtweed:
+    ensure: present
+    realname: Jonathan Tweed
+    email: jtweed@wikimedia.org
+    uid: 47755
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7489,10 +7496,6 @@ ldap_only_users:
     ensure: present
     realname: Ferran Tufan
     email: southparkfan223@hotmail.com
-  jtweed:
-    ensure: present
-    realname: Jonathan Tweed
-    email: jtweed@wikimedia.org
   sspalding:
     ensure: present
     realname: Shaun Spalding
