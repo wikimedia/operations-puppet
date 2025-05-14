@@ -7,6 +7,7 @@ full_name_format = %1$s
 services = <%= @services.join(', ') %>
 <%- end -%>
 config_file_version = 2
+timeout = 30
 
 [sudo]
 #debug_level=10
@@ -26,6 +27,7 @@ timeout = 30
 
 [ssh]
 #debug_level=10
+timeout = 30
 
 [be]
 timeout = 30
@@ -75,3 +77,4 @@ entry_cache_timeout = 5400
 entry_cache_ssh_host_timeout = 5400
 # 1 day max time accounts can be in cache, default is 0 days (unlimited)
 account_cache_expiration = 1
+timeout = 30
