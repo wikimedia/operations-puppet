@@ -18,4 +18,8 @@ class alertmanager::ack (
         override => true,
         restart  => true,
     }
+
+    profile::auto_restarts::service { 'kthxbye':
+        ensure => $ensure,
+    }
 }
