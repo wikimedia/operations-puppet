@@ -22,6 +22,8 @@ class alertmanager::irc (
         enable => $service_enable,
     }
 
+    profile::auto_restarts::service { 'alertmanager-irc-relay': }
+
     file { '/etc/alertmanager-irc-relay.yml':
         ensure    => present,
         owner     => 'alertmanager-irc-relay',
