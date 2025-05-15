@@ -453,6 +453,9 @@ eqiad:
     thanos-fe1002.eqiad.wmnet: [thanos-swift]
     thanos-fe1003.eqiad.wmnet: [thanos-swift]
     thanos-fe1004.eqiad.wmnet: [thanos-swift]
+    thanos-fe1005.eqiad.wmnet: [thanos-swift]
+    thanos-fe1006.eqiad.wmnet: [thanos-swift]
+    thanos-fe1007.eqiad.wmnet: [thanos-swift]
     titan1001.eqiad.wmnet: [thanos-query, thanos-web]
     titan1002.eqiad.wmnet: [thanos-query, thanos-web]
   ml_serve:

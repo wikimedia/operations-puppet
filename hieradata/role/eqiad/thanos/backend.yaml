@@ -3,3 +3,6 @@ profile::thanos::swift::memcached_servers:
   - thanos-fe1002.eqiad.wmnet
   - thanos-fe1003.eqiad.wmnet
   - thanos-fe1004.eqiad.wmnet
+  - thanos-fe1005.eqiad.wmnet
+  - thanos-fe1006.eqiad.wmnet
+  - thanos-fe1007.eqiad.wmnet
