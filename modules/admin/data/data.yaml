@@ -1878,7 +1878,7 @@ users:
     name: gjg
     realname: Greg Grossmeier
     ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICs7QmHsNmzg/ybEXmW4PVRIgfIdgIP7R345wpaZjlL8 greg@x2
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPul+urK7qgLY7UucRRj9SljZFB/DWpMKZ1KMragNGbc greg@carbon12
     uid: 2890
     email: ggrossmeier@wikimedia.org
   halfak:
