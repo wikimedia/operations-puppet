@@ -57,6 +57,12 @@ class profile::openstack::base::octavia(
         srange => [$amphora_mgmt_cidr, $amphora_mgmt_cidr_v6],
     }
 
+    ferm::service { 'octavia-amphora-healthcheck-udp':
+        proto  => 'udp',
+        port   => 5555,
+        srange => [$amphora_mgmt_cidr, $amphora_mgmt_cidr_v6],
+    }
+
     openstack::db::project_grants { 'octavia':
         access_hosts => $haproxy_nodes,
         db_name      => $db_name,
