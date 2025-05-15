@@ -149,10 +149,10 @@ function cleanup() {
 
 check_imposm
 download_pbf
+set_permissions
 initial_osm_import
 osm_production_deploy
 import_water_lines
 custom_functions_and_indexes
 layers_functions
-set_permissions
 cleanup
