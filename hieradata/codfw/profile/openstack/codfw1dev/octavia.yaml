@@ -6,4 +6,5 @@ profile::openstack::codfw1dev::octavia::active: true
 profile::openstack::codfw1dev::octavia::amphora_secgroup: 61ce3e32-b4e9-4c8c-9d9f-15033ecf0b0d
 profile::openstack::codfw1dev::octavia::amphora_boot_network: 4bbc1288-4b3f-4eb4-ab6b-4b000df78df3
 profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr: 172.16.131.0/24
+profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr_v6: 2a02:ec80:a100:100::/64
 profile::openstack::codfw1dev::octavia::rabbit_user: 'octavia'

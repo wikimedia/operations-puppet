@@ -19,6 +19,7 @@ class profile::openstack::codfw1dev::octavia(
     String $amphora_secgroup = lookup('profile::openstack::codfw1dev::octavia::amphora_secgroup'),
     String $amphora_boot_network = lookup('profile::openstack::codfw1dev::octavia::amphora_boot_network'),
     Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr'),
+    Stdlib::IP::Address::V6::CIDR $amphora_mgmt_cidr_v6 = lookup('profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr_v6'),
 ) {
     class {'::profile::openstack::base::octavia':
         version                 => $version,
@@ -39,6 +40,7 @@ class profile::openstack::codfw1dev::octavia(
         amphora_secgroup        => $amphora_secgroup,
         amphora_boot_network    => $amphora_boot_network,
         amphora_mgmt_cidr       => $amphora_mgmt_cidr,
+        amphora_mgmt_cidr_v6    => $amphora_mgmt_cidr_v6,
     }
 
     file { '/etc/octavia/certs':

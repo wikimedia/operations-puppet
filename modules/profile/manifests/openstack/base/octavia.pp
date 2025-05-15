@@ -20,6 +20,7 @@ class profile::openstack::base::octavia(
     String $amphora_secgroup = lookup('profile::openstack::base::octavia::amphora_secgroup'),
     String $amphora_boot_network = lookup('profile::openstack::base::octavia::amphora_boot_network'),
     Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr'),
+    Stdlib::IP::Address::V6::CIDR $amphora_mgmt_cidr_v6 = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr_v6'),
 ) {
     class { '::openstack::octavia::service':
         version              => $version,
@@ -49,7 +50,7 @@ class profile::openstack::base::octavia(
     ferm::service { 'octavia-amphora-healthcheck':
         proto  => 'tcp',
         port   => 5555,
-        srange => $amphora_mgmt_cidr,
+        srange => [$amphora_mgmt_cidr, $amphora_mgmt_cidr_v6],
     }
 
     openstack::db::project_grants { 'octavia':
