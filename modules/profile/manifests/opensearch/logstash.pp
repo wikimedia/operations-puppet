@@ -5,9 +5,9 @@
 # Provisions OpenSearch backend node for a Logstash cluster.
 #
 class profile::opensearch::logstash(
-    Optional[Stdlib::Fqdn]     $jobs_host        = lookup('profile::opensearch::logstash::jobs_host',       { default_value => undef }),
-    Optional[Hash]             $curator_actions  = lookup('profile::opensearch::logstash::curator_actions', { default_value => undef }),
-    Opensearch::InstanceParams $dc_settings      = lookup('profile::opensearch::dc_settings'),
+    Optional[Stdlib::Fqdn]     $jobs_host    = lookup('profile::opensearch::logstash::jobs_host',    { default_value => undef }),
+    Hash                       $curator_jobs = lookup('profile::opensearch::logstash::curator_jobs', { default_value => {} }),
+    Opensearch::InstanceParams $dc_settings  = lookup('profile::opensearch::dc_settings'),
 ) {
     include ::profile::opensearch::server
 
@@ -17,22 +17,23 @@ class profile::opensearch::logstash(
         src_sets => ['CUMIN_MASTERS'],
     }
 
-    # tasks that should only run on one host
-    # TODO: use fork when available
+    # these tasks should only run on one host
     if $jobs_host == $::fqdn {
         include ::profile::prometheus::es_exporter
 
-        if ($curator_actions) {
-            # all curator actions from hiera: profile::opensearch::logstash::curator_actions
-            opensearch::curator::job { 'cluster_wide':
-                cluster_name => $dc_settings['cluster_name'],
-                actions      => $curator_actions,
+        $curator_jobs.each |$job_name, $job_config| {
+            opensearch::curator::job { $job_name:
+              cluster_name => $dc_settings['cluster_name'],
+              actions      => $job_config,
             }
         }
     } else {
-        opensearch::curator::job { 'cluster_wide':
-            ensure       => absent,
-            cluster_name => $dc_settings['cluster_name'],
+        # remove jobs from other hosts in the cluster
+        $curator_jobs.each |$job_name, $job_config| {
+            opensearch::curator::job { $job_name:
+              ensure       => absent,
+              cluster_name => $dc_settings['cluster_name'],
+            }
         }
     }
 }
