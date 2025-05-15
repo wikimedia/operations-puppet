@@ -1,4 +1,4 @@
-profile::openstack::eqiad1::octavia::api_bind_port: 19876
+profile::openstack::eqiad1::octavia::api_bind_port: 9876
 profile::openstack::eqiad1::octavia::db_host: "openstack.eqiad1.wikimediacloud.org"
 profile::openstack::eqiad1::octavia::db_user: "octavia"
 profile::openstack::eqiad1::octavia::db_name: "eqiad1_octavia"

@@ -1,4 +1,4 @@
-profile::openstack::codfw1dev::octavia::api_bind_port: 19876
+profile::openstack::codfw1dev::octavia::api_bind_port: 9876
 profile::openstack::codfw1dev::octavia::db_host: "openstack.codfw1dev.wikimediacloud.org"
 profile::openstack::codfw1dev::octavia::db_user: "octavia"
 profile::openstack::codfw1dev::octavia::db_name: "codfw1dev_octavia"
