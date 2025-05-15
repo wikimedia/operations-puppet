@@ -5,6 +5,7 @@ class openstack::octavia::service::epoxy(
     String $region,
     Array[Stdlib::Fqdn] $memcached_nodes,
     Array[Stdlib::Fqdn] $rabbitmq_nodes,
+    Array[Stdlib::IP::Address] $control_nodes,
     String $db_pass,
     String $db_name,
     Stdlib::Fqdn $db_host,

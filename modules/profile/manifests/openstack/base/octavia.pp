@@ -22,6 +22,9 @@ class profile::openstack::base::octavia(
     Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr'),
     Stdlib::IP::Address::V6::CIDR $amphora_mgmt_cidr_v6 = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr_v6'),
 ) {
+
+    $control_nodes = $openstack_control_nodes.map |$node| { ipresolve($node['cloud_private_fqdn'], 4) }
+
     class { '::openstack::octavia::service':
         version              => $version,
         memcached_nodes      => $openstack_control_nodes.map |$node| { $node['cloud_private_fqdn'] },
@@ -39,6 +42,7 @@ class profile::openstack::base::octavia(
         region               => $region,
         amphora_secgroup     => $amphora_secgroup,
         amphora_boot_network => $amphora_boot_network,
+        control_nodes        => $control_nodes,
     }
 
     ferm::service { 'octavia-api-backend':
