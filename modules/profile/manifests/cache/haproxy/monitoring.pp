@@ -34,7 +34,7 @@ define profile::cache::haproxy::monitoring(
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
         }
         nrpe::monitor_service { 'haproxy_ocsp_freshness_acme_chief':
-            ensure       => bool2str($acme_chief, 'present', 'absent'),
+            ensure       => absent,
             description  => 'Freshness of OCSP Stapling files (HAProxy acme-chief)',
             nrpe_command => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args_acme_chief}",
             notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
