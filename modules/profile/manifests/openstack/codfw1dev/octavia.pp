@@ -18,6 +18,7 @@ class profile::openstack::codfw1dev::octavia(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
     String $amphora_secgroup = lookup('profile::openstack::codfw1dev::octavia::amphora_secgroup'),
     String $amphora_boot_network = lookup('profile::openstack::codfw1dev::octavia::amphora_boot_network'),
+    Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr'),
 ) {
     class {'::profile::openstack::base::octavia':
         version                 => $version,
@@ -37,6 +38,7 @@ class profile::openstack::codfw1dev::octavia(
         haproxy_nodes           => $haproxy_nodes,
         amphora_secgroup        => $amphora_secgroup,
         amphora_boot_network    => $amphora_boot_network,
+        amphora_mgmt_cidr       => $amphora_mgmt_cidr,
     }
 
     file { '/etc/octavia/certs':
