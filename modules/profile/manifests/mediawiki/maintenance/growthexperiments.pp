@@ -128,9 +128,14 @@ class profile::mediawiki::maintenance::growthexperiments(
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
-    # update list of praiseworthy mentees (T322444)
     profile::mediawiki::periodic_job { 'growthexperiments-refreshPraiseworthyMentees':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshPraiseworthyMentees.php',
-        interval => '*-*-* 08:15:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshPraiseworthyMentees.php',
+        interval              => '*-*-* 08:15:00',
+        cron_schedule         => '15 8 * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'refreshPraiseworthyMentees.php',
+        description           => 'update list of praiseworthy mentees (T322444)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 }
