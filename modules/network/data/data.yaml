@@ -608,6 +608,7 @@ network::subnets:
           ipv4: 172.16.130.0/24
         cloud-instances-octavia-lb-mgmt-net:
           ipv4: 172.16.131.0/24
+          ipv6: 2a02:ec80:a100:100::/64
         cloud-private-b1-codfw:
           ipv4: 172.20.5.0/24
           ipv6: 2a02:ec80:a100:205::/64
