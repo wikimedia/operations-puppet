@@ -359,6 +359,17 @@ define cassandra::instance (
         }
     }
 
+    # The storage directory for local keyspaces does not have a
+    # default value, so must be handled separately.
+    if $local_system_data_file_directory {
+        exec { "install-${local_system_data_file_directory}":
+            command => "install -o cassandra -g cassandra -m 750 -d ${local_system_data_file_directory}",
+            path    => '/usr/bin/:/bin/',
+            before  => Systemd::Service[$service_name],
+            creates => $local_system_data_file_directory,
+        }
+    }
+
     file { "${config_directory}/cassandra-env.sh":
         ensure  => present,
         content => template("${module_name}/cassandra-env.sh-${target_version}.erb"),
