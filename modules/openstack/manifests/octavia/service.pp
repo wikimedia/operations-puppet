@@ -36,19 +36,23 @@ class openstack::octavia::service(
     }
 
     service { 'octavia-api':
-        ensure  => running,
-        require => Package['octavia-api', 'python3-octavia'],
+        ensure    => running,
+        require   => Package['octavia-api', 'python3-octavia'],
+        subscribe => File['/etc/octavia/octavia.conf'],
     }
     service { 'octavia-health-manager':
-        ensure  => running,
-        require => Package['octavia-health-manager', 'python3-octavia'],
+        ensure    => running,
+        require   => Package['octavia-health-manager', 'python3-octavia'],
+        subscribe => File['/etc/octavia/octavia.conf'],
     }
     service { 'octavia-housekeeping':
-        ensure  => running,
-        require => Package['octavia-housekeeping', 'python3-octavia'],
+        ensure    => running,
+        require   => Package['octavia-housekeeping', 'python3-octavia'],
+        subscribe => File['/etc/octavia/octavia.conf'],
     }
     service { 'octavia-worker':
-        ensure  => running,
-        require => Package['octavia-worker', 'python3-octavia'],
+        ensure    => running,
+        require   => Package['octavia-worker', 'python3-octavia'],
+        subscribe => File['/etc/octavia/octavia.conf'],
     }
 }
