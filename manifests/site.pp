@@ -2323,11 +2323,12 @@ node /^pc1017\.eqiad\./ {
     role(mariadb::parsercache)
 }
 
-# Future pc8 host
+# pc8
 node /^pc1018\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(mariadb::parsercache)
 }
 
+# Future pc8 codfw host
 node /^pc2018\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
