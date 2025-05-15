@@ -37,6 +37,13 @@ class dynamicproxy::api (
         'python3-flask-sqlalchemy',
     ])
 
+    apt::pin { 'python3-flask':
+        pin      => 'version 2.2.*',
+        package  => 'python3-flask',
+        priority => 1001,
+        before   => Package['python3-flask'],
+    }
+
     uwsgi::app { 'invisible-unicorn':
         settings  => {
             uwsgi => {
