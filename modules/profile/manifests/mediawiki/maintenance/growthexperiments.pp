@@ -115,10 +115,15 @@ class profile::mediawiki::maintenance::growthexperiments(
         helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
-    # update the "is active" flag for mentees (T318457)
     profile::mediawiki::periodic_job { 'growthexperiments-updateIsActiveFlagForMentees':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
-        interval => 'Mon *-*-* 09:42:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
+        interval              => 'Mon *-*-* 09:42:00',
+        cron_schedule         => '42 9 * * MON',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'updateIsActiveFlagForMentees.php',
+        description           => 'update the "is active" flag for mentees (T318457)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # update list of praiseworthy mentees (T322444)
