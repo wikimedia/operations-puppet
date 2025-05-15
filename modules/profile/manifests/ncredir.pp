@@ -37,7 +37,7 @@ class profile::ncredir(
 
                 monitoring::service { "https_ncredir_${cert_name}":
                     description   => "HTTPS ${cert_name}",
-                    check_command => "check_ssl_http_letsencrypt_ocsp!${check_hostname}",
+                    check_command => "check_ssl_http_letsencrypt!${check_hostname}",
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Ncredir',
                 }
             }
