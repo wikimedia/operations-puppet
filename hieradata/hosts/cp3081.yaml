@@ -1,3 +1,0 @@
-profile::cache::haproxy::lua_lookup_experiment: true
-profile::cache::varnish::frontend::fe_vcl_config:
-  lua_lookup_experiment: true
