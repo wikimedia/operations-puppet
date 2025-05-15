@@ -32,8 +32,6 @@ server {
 
    ssl_certificate /etc/acmecerts/apt/live/ec-prime256v1.chained.crt;
    ssl_certificate_key /etc/acmecerts/apt/live/ec-prime256v1.key;
-   ssl_stapling on;
-   ssl_stapling_file /etc/acmecerts/apt/live/ec-prime256v1.ocsp;
    <%= @ssl_settings.join("\n   ") %>
 
    root /srv;
