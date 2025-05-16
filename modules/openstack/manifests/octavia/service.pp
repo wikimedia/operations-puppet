@@ -17,6 +17,7 @@ class openstack::octavia::service(
     String $ca_passphrase,
     String $amphora_secgroup,
     String $amphora_boot_network,
+    String $heartbeat_key,
 ) {
     class { "openstack::octavia::service::${version}":
         db_user              => $db_user,
@@ -35,6 +36,7 @@ class openstack::octavia::service(
         region               => $region,
         amphora_secgroup     => $amphora_secgroup,
         amphora_boot_network => $amphora_boot_network,
+        heartbeat_key        => $heartbeat_key,
     }
 
     service { 'octavia-api':

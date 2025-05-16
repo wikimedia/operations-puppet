@@ -590,7 +590,7 @@ server_ca = /etc/octavia/certs/server_ca.cert.pem
 bind_port = 5555
 bind_ip = 0.0.0.0
 controller_ip_port_list = <%= @control_nodes.map{ |node| "#{node}:5555" }.join(',') %>
-heartbeat_key = "thisisnotempty"
+heartbeat_key = <%= @heartbeat_key %>
 
 
 [healthcheck]

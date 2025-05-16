@@ -21,6 +21,7 @@ class profile::openstack::base::octavia(
     String $amphora_boot_network = lookup('profile::openstack::base::octavia::amphora_boot_network'),
     Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr'),
     Stdlib::IP::Address::V6::CIDR $amphora_mgmt_cidr_v6 = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr_v6'),
+    String $heartbeat_key = lookup('profile::openstack::base::octavia::heartbeat_key'),
 ) {
 
     $control_nodes = $openstack_control_nodes.map |$node| { ipresolve($node['cloud_private_fqdn'], 4) }
@@ -43,6 +44,7 @@ class profile::openstack::base::octavia(
         amphora_secgroup     => $amphora_secgroup,
         amphora_boot_network => $amphora_boot_network,
         control_nodes        => $control_nodes,
+        heartbeat_key        => $heartbeat_key,
     }
 
     ferm::service { 'octavia-api-backend':
