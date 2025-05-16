@@ -23,6 +23,7 @@ eqiad:
   - pc5
   - pc6
   - pc7
+  - pc8
   - ms1
   - ms2
   - ms3
@@ -51,6 +52,7 @@ codfw:
   - pc5
   - pc6
   - pc7
+  - pc8
   - ms1
   - ms2
   - ms3
