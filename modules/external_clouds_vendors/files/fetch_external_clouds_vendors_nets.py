@@ -174,7 +174,7 @@ def merge_adjacent(nets: Set[str]) -> Set[str]:
     """
     # If the network subnet is one of the following spurious values,
     # discard it and avoid failures.
-    spurious_nets = ["None"]
+    spurious_nets = ["2002::/16"]
     merged = cidr_merge([IPNetwork(net) for net in nets if net not in spurious_nets])
     return {str(net) for net in merged}
 
