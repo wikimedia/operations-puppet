@@ -242,6 +242,7 @@ Components: main
  component/tomcat9
  component/wmf-laptop
  thirdparty/amd-rocm61
+ thirdparty/amd-rocm63
  thirdparty/bigtop15
  thirdparty/bigtop33
  thirdparty/ceph-reef
@@ -267,6 +268,7 @@ UDebComponents: main
 Update:
 # sorted list, leading whitespace matters!
  amd-rocm61
+ amd-rocm63
  conftool-bookworm
  elastic710
  elasticsearch-curator5
