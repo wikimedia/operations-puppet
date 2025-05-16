@@ -6,7 +6,7 @@
 class profile::homer (
     String $nb_ro_token = lookup('profile::netbox::ro_token'),
     Stdlib::HTTPSUrl $nb_api = lookup('netbox_api_url'),
-    Optional[Stdlib::Host] $private_git_peer = lookup('profile::homer::private_git_peer'),
+    Array[Stdlib::Host] $private_git_peers = lookup('profile::homer::private_git_peers'),
     Optional[String[1]] $diff_timer_interval = lookup('profile::homer::diff_timer_interval'),
     Optional[Boolean] $disable_homer = lookup('profile::homer::disable', {'default_value' => false}),
 ){
@@ -19,15 +19,13 @@ class profile::homer (
         }
 
         class { 'homer':
-            private_git_peer => $private_git_peer,
-            nb_token         => $nb_ro_token,
-            nb_api           => $nb_api,
+            private_git_peers => $private_git_peers,
+            nb_token          => $nb_ro_token,
+            nb_api            => $nb_api,
         }
 
         file { '/usr/local/sbin/check-homer-diff':
             ensure  => present,
-            owner   => 'root',
-            group   => 'root',
             mode    => '0544',
             source  => 'puppet:///modules/profile/homer/check_homer_diff.sh',
             require => Class['homer'],

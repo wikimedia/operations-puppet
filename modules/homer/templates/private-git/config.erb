@@ -4,9 +4,11 @@
 	filemode = true
 	bare = false
 	logallrefupdates = true
-[remote "peer"]
-	url = ssh://<%= @private_git_peer %>/srv/homer/private
+<%- @private_git_peers.each do |peer| -%>
+[remote "<%= peer %>"]
+	url = ssh://<%= peer %>/srv/homer/private
 	fetch = +refs/heads/*:refs/remotes/origin/*
+<%- end -%>
 [branch "master"]
 [receive]
 	denyCurrentBranch = ignore

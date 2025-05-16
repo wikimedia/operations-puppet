@@ -9,7 +9,7 @@
 # - $nb_api: Netbox URL
 #
 class homer(
-    Stdlib::Host $private_git_peer,
+    Array[Stdlib::Host] $private_git_peers,
     String $nb_token,
     Stdlib::HTTPSUrl $nb_api,
 ) {
@@ -20,14 +20,12 @@ class homer(
 
   file { '/srv/homer':
       ensure => directory,
-      owner  => 'root',
       group  => 'ops',
       mode   => '0550',
   }
 
   file { $output_dir:
       ensure  => directory,
-      owner   => 'root',
       group   => 'ops',
       mode    => '0770',
       require => File['/srv/homer'],
@@ -43,13 +41,12 @@ class homer(
       require   => File['/srv/homer'],
   }
 
-  # Clone the private data from the $private_git_peer host
+  # Clone the private data from the first $private_git_peers host
   # The data must be present on the other peer, the current puppetization doesn't
   # cover the case of a fresh start without data in either peer hosts.
   git::clone { 'homer_private_repo':
       ensure                => 'present',
-      origin                => "ssh://${private_git_peer}/srv/homer/private",
-      remote_name           => 'peer',
+      origin                => "ssh://${private_git_peers[0]}/srv/homer/private",
       directory             => $private_repo,
       environment_variables => ['SSH_AUTH_SOCK=/run/keyholder/proxy.sock'],
       owner                 => 'root',
@@ -60,7 +57,6 @@ class homer(
 
   file { '/etc/homer':
       ensure => directory,
-      owner  => 'root',
       group  => 'ops',
       mode   => '0550',
   }
@@ -68,7 +64,6 @@ class homer(
   file { '/etc/homer/config.yaml':
       ensure  => present,
       content => template('homer/config.yaml.erb'),
-      owner   => 'root',
       group   => 'ops',
       mode    => '0440',
       require => File['/etc/homer'],
@@ -76,7 +71,6 @@ class homer(
 
   file { '/usr/local/bin/homer':
       ensure => present,
-      owner  => 'root',
       group  => 'ops',
       mode   => '0550',
       source => 'puppet:///modules/homer/homer.sh',
@@ -86,8 +80,6 @@ class homer(
   $private_repo_git_dir = "${private_repo}/.git"
   file { "${private_repo_git_dir}/config":
       ensure  => present,
-      owner   => 'root',
-      group   => 'root',
       mode    => '0644',
       content => template('homer/private-git/config.erb'),
       require => Git::Clone['homer_private_repo'],
@@ -96,10 +88,15 @@ class homer(
   file { "${private_repo_git_dir}/hooks":
       ensure  => directory,
       recurse => 'remote',
-      owner   => 'root',
-      group   => 'root',
       mode    => '0755',
       source  => 'puppet:///modules/homer/private-git/hooks',
       require => Git::Clone['homer_private_repo'],
+  }
+
+  file { "${private_repo_git_dir}/hooks/post-commit":
+      ensure  => file,
+      mode    => '0755',
+      content => template('homer/private-git/hooks/post-commit.erb'),
+      require => File["${private_repo_git_dir}/hooks"],
   }
 }

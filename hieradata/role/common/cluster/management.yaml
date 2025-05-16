@@ -55,7 +55,7 @@ profile::spicerack::elasticsearch_config_data:
 profile::spicerack::mysql_config_data:
   replication_user: repl2024
   # replication_password: overiden in the private repo
-profile::homer::private_git_peer: ~
+profile::homer::private_git_peers: []
 profile::homer::diff_timer_interval: ~
 
 profile::puppet::agent::force_puppet7: true

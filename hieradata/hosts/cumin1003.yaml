@@ -1,5 +1,7 @@
 profile::firewall::provider: nftables
-profile::homer::private_git_peer: cumin2002.codfw.wmnet
+profile::homer::private_git_peers:
+  - cumin1002.eqiad.wmnet
+  - cumin2002.codfw.wmnet
 profile::homer::diff_timer_interval: ~
 profile::httpbb::test_kubernetes_hourly: false
 profile::cumin::master::insetup_role_report_day: 0  # disabled
