@@ -395,7 +395,9 @@ class profile::postfix::mx (
             | EOF
     }
 
+    # T394514 - context: T197173, requires: T213902
     rsyslog::conf { 'postfix':
+        ensure   => absent,
         priority => 20,
         content  => @(EOF),
             # Managed by Puppet
