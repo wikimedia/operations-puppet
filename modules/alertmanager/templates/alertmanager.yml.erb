@@ -352,6 +352,12 @@ route:
         - match:
             severity: 'task'
           receiver: 'moderator-tools-task'
+    - match:
+        team: 'notifications-echo'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'notifications-echo-task'
 
     - match:
         team: 'ml'
@@ -808,6 +814,12 @@ receivers:
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-67hyf2drnhe6m6b3aqzk&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 # End projects for mw-cron alerting
+
+- name: 'notifications-echo-task'
+  webhook_configs:
+    # #notifications_echo
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-osuk4au5ksi6kl66jvk5'
+      send_resolved: false
 
 - name: 'fr-ircmail'
   webhook_configs:
