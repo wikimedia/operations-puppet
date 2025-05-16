@@ -2140,12 +2140,20 @@ node /^moss-be100[23]\.eqiad\./ {
     role(cephadm::storage)
 }
 
+node /^apus-be100\d\.eqiad\./ {
+    role(cephadm::storage)
+}
+
 # Controller for the codfw apus cephadm cluster
 node /^moss-be2001\.codfw\./ {
     role(cephadm::controller)
 }
 
 node /^moss-be200[23]\.codfw\./ {
+    role(cephadm::storage)
+}
+
+node /^apus-be200\d\.codfw\./ {
     role(cephadm::storage)
 }
 
