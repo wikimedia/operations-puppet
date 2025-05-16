@@ -32,6 +32,7 @@ USER_IGNORE_LIST = [
     "uid=novaadmin,ou=people,dc=wikimedia,dc=org",
     "uid=nova-tools-bot,ou=people,dc=wikimedia,dc=org",
     "uid=tools-tofu,ou=people,dc=wikimedia,dc=org",
+    "uid=toolsbeta-tofu,ou=people,dc=wikimedia,dc=org",
 ]
 
 
