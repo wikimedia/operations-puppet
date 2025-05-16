@@ -79,6 +79,10 @@ tables:
     source: core
     canonicality: derivative
     visibility: public
+  - name: existencelinks
+    source: core
+    canonicality: derivative
+    visibility: public
   - name: category
     source: core
     canonicality: derivative
