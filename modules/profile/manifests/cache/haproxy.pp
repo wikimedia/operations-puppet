@@ -51,7 +51,8 @@ class profile::cache::haproxy(
     String $conftool_prefix = lookup('conftool_prefix'),
     Optional[Array[Haproxy::Ring, 1]] $rings = lookup('profile::cache::haproxy::rings', {'default_value'                                         => undef}),
     Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
-    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                             => ['GET','HEAD','OPTIONS']}),
+    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                           => ['GET','HEAD','OPTIONS']}),
+    Boolean $maxmind_lookup = lookup('profile::cache::haproxy::maxmind_lookup', {'default_value'                                                 => false}),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -376,5 +377,32 @@ class profile::cache::haproxy(
     ###########
     if $use_benthos {
         include ::profile::benthos
+    }
+
+    #####################
+    # maxmind db lookup #
+    #####################
+
+    package {'lua5.3-maxminddb':
+        ensure => $maxmind_lookup.bool2str('present', 'absent'),
+    }
+
+    # As this could be needed by other lua script
+    # will be brought anyway
+    file { '/etc/haproxy/lua':
+        ensure => directory,
+        owner  => 'haproxy',
+        group  => 'haproxy',
+        mode   => '0755',
+    }
+
+    file {'/etc/haproxy/lua/maxmind-lookup.lua':
+        ensure  => $maxmind_lookup.bool2str('present', 'absent'),
+        mode    => '0644',
+        owner   => 'haproxy',
+        group   => 'haproxy',
+        content => file('profile/cache/maxmind-lookup.lua'),
+        require => [File['/etc/haproxy/lua'], Package['lua5.3-maxminddb']],
+        notify  => Service['haproxy'],
     }
 }

@@ -14,6 +14,9 @@ global
     lua-load <%= lua_script %>
 <%- end -%>
 <%- end -%>
+<%- if @maxmind_lookup -%>
+    lua-load-per-thread /etc/haproxy/lua/maxmind-lookup.lua
+<%- end -%>
 
     ssl-default-bind-options ssl-min-ver <%= @min_tls_version -%> ssl-max-ver <%= @max_tls_version %>
     ssl-default-bind-ciphers <%= @tls_ciphers %>
@@ -219,6 +222,11 @@ listen tls
 <%- end -%>
 <%- end -%>
 
+<%- if @maxmind_lookup -%>
+    # just to be sure we don't perform lookups on private network
+    acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.160.0.0/16 127.0.0.0/8 ::1
+    http-request set-header X-Requestctl-ISP %[lua.fetch_isp] unless is_private_network OR wikimedia_trust
+<%- end -%>
 
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org
@@ -382,6 +390,16 @@ frontend http
 <%- @post_acl_actions['http'].each do |action| -%>
     <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
 <%- end -%>
+<%- end -%>
+
+<%- if @wikimedia_trust -%>
+    acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
+<%- end -%>
+
+<%- if @maxmind_lookup -%>
+    # just to be sure we don't perform lookups on private network
+    acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.160.0.0/16 127.0.0.0/8 ::1
+    http-request set-header X-Requestctl-ISP %[lua.fetch_isp] unless is_private_network OR wikimedia_trust
 <%- end -%>
 
     # Provide Server header
