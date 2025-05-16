@@ -16,6 +16,3 @@ tslua.so <%= @global_lua_script %> --enable-reload
 <% if @enable_compress -%>
 compress.so <%= @compress_config_path %>
 <% end -%>
-<% if @cachekey_headers -%>
-cachekey.so --include-headers=<%= @cachekey_headers.join(',') %>
-<% end -%>
