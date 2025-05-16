@@ -28,7 +28,6 @@
 #               'phabricator', 'github', 'gitlab' and 'gerrit' accepted
 # @param environment_variables An array of additional environment variables to pass
 #                              to the git exec.
-# @param remote_name the remote name used when setting the url
 # @param update_method Specifies the method to use to update the checkout when
 #                      The value must be _pull_ or _checkout_.
 #                      - 'pull' will perform a merging pull if upstream changes.
@@ -71,7 +70,6 @@ define git::clone(
     Boolean                             $recurse_submodules    = false,
     String[1]                           $source                = 'gerrit',
     Array[String[1]]                    $environment_variables = [],
-    String[1]                           $remote_name           = 'origin',
     Optional[Integer[1]]                $depth                 = undef,
     Optional[String[1]]                 $origin                = undef,
     Optional[String[1]]                 $branch                = undef,
@@ -144,7 +142,6 @@ define git::clone(
                 $git_dir = "${directory}/.git"
             }
 
-
             $shared_arg = $shared.bool2str('-c core.sharedRepository=group', '')
             $git = '/usr/bin/git'
 
@@ -192,12 +189,12 @@ define git::clone(
             }
 
             # Ensure that the URL for 'origin' is always up-to-date.
-            exec { "git_set_${remote_name}_${title}":
+            exec { "git_set_origin_${title}":
                 cwd       => $directory,
-                command   => "${git} remote set-url ${remote_name} ${remote}",
+                command   => "${git} remote set-url origin ${remote}",
                 provider  => shell,
                 logoutput => on_failure,
-                unless    => "[ \"\$(${git} remote get-url ${remote_name})\" = \"${remote}\" ]",
+                unless    => "[ \"\$(${git} remote get-url origin)\" = \"${remote}\" ]",
                 umask     => $umask,
                 user      => $owner,
                 group     => $group,
@@ -208,12 +205,12 @@ define git::clone(
             if $ensure == 'latest' {
                 $local_branch_expression = $branch_or_tag.lest || {
                     # Use the default branch name obtained from the remote.
-                    "$(git remote show ${remote_name} | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')"
+                    "$(git remote show origin | awk -F': ' '\$1~/HEAD branch/ {print \$2; exit}')"
                 }
                 $ref_to_check = $git_tag ? {
                     undef => $branch ? {
-                        undef   => "remotes/${remote_name}/HEAD",
-                        default => "remotes/${remote_name}/${branch}",
+                        undef   => 'remotes/origin/HEAD',
+                        default => "remotes/origin/${branch}",
                     },
                     default => "refs/tags/${git_tag}",
                 }
@@ -238,7 +235,7 @@ define git::clone(
                     umask     => $umask,
                     user      => $owner,
                     group     => $group,
-                    require   => Exec["git_set_${remote_name}_${title}"],
+                    require   => Exec["git_set_origin_${title}"],
                 }
                 # If we want submodules up to date, then we need
                 # to run git submodule update --init after
