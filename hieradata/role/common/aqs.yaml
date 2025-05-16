@@ -4,11 +4,6 @@
 #
 cluster: aqs
 
-profile::admin::groups:
-    - aqs-admins
-    - aqs-roots
-    - deploy-aqs
-
 #
 # Cassandra for AQS
 #

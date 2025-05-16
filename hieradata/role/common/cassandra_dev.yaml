@@ -139,7 +139,6 @@ profile::cassandra::monitor_tls_port: 7000
 # General
 #
 profile::admin::groups:
-  - aqs-admins
   - restbase-admins
   - cassandra-staging-devs
 

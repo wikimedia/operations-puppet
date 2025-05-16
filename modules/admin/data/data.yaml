@@ -672,31 +672,21 @@ groups:
     deprecated: true
   deploy-aqs:
     gid: 786
-    description: Deployers for the Analytics Query Service
-    members: [*analytics_admins_members]
-    privileges: [
-         'ALL = NOPASSWD: /usr/sbin/service restbase *',
-         'ALL = (restbase) NOPASSWD: ALL']
+    description: Deployers for the Analytics Query Service (deprecated)
+    members: []
+    privileges: []
+    deprecated: true
   deploy-design:
     gid: 815
     description: Deployers for content on design.wikimedia.org
     members: [volker-e, jdrewniak]
     privileges: []
   aqs-admins:
-    description: Group of admins for the Analytics Query Service
+    description: Group of admins for the Analytics Query Service (deprecated, can be fully removed once aqs* hosts are reimaged to bookworm)
     gid: 764
-    members: [*analytics_admins_members, frankie]
-    approval:
-      - Olja Dimitrjevic
-    privileges: ['ALL = NOPASSWD: /usr/sbin/service cassandra *',
-                 'ALL = NOPASSWD: /usr/sbin/service cassandra-[ab] *',
-                 'ALL = (cassandra) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /usr/sbin/service restbase *',
-                 'ALL = (restbase) NOPASSWD: ALL',
-                 'ALL = NOPASSWD: /bin/journalctl *',
-                 'ALL = NOPASSWD: /bin/systemctl start cassandra-[ab]',
-                 'ALL = NOPASSWD: /bin/systemctl stop cassandra-[ab]',
-                 'ALL = NOPASSWD: /bin/systemctl restart cassandra-[ab]']
+    members: []
+    privileges: []
+    deprecated: true
   perf-team:
     gid: 796
     description: performance team members with access to webperf, and arclamp servers
@@ -708,7 +698,7 @@ groups:
     members: [krinkle, phedenskog, aaron]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
   aqs-users:
-    description: Group of users for the Analytics Query Service (Deprecated since 2020-03)
+    description: Group of users for the Analytics Query Service (Deprecated since 2020-03, can be fully removed once aqs* hosts are reimaged to bookworm)
     gid: 767
     members: []
     deprecated: true
@@ -1032,11 +1022,10 @@ groups:
       - Alexandros Kosiaris
   aqs-roots:
     gid: 829
-    description: people who have full root on aqs nodes
+    description: people who have full root on aqs nodes (deprecated, can be fully removed once aqs* hosts are reimaged to bookworm)
     members: []
-    privileges: ['ALL = (ALL) NOPASSWD: ALL']
-    approval:
-      - Olja Dimitrjevic
+    privileges: []
+    deprecated: true
   os-installers:
     gid: 832
     description: users with privileges to install an OS via cookbook

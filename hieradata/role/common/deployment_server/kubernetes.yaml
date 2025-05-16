@@ -12,8 +12,6 @@ profile::admin::groups:
   - wdqs-admins
   - airflow-search-admins
   - eventlogging-admins
-  - aqs-admins
-  - deploy-aqs
   - deploy-design
   - deploy-phabricator
   - analytics-deployers
@@ -62,8 +60,6 @@ profile::keyholder::server::agents:
 
   deploy-service:
     trusted_groups:
-      - aqs-admins
-      - deploy-aqs
       - deployment
 
   dumpsdeploy:
