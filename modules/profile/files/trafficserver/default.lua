@@ -190,6 +190,9 @@ function do_global_read_response()
         ts.server_response.header['Cache-Control'] = 's-maxage=600'
     end
 
+    -- Add X-Experiment-Enrollments to Vary header
+    ts.server_response.header['Vary'] = add_vary(ts.server_response.header['Vary'], 'X-Experiment-Enrollments')
+
     ----------------------------------------------------------
     -- Avoid caching responses that might get cached otherwise
     ----------------------------------------------------------

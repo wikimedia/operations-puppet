@@ -136,19 +136,19 @@ describe("Busted unit testing framework", function()
       assert.stub(ts.http.set_server_resp_no_store).was.called_with(1)
     end)
 
-    it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto", function()
+    it("test - do_global_read_response Vary-slotting for X-Forwarded-Proto and X-Experiment-Enrollments", function()
       local old_status = _G.ts.server_response.get_status
       _G.ts.server_response.get_status = function() return 301 end
 
       _G.ts.server_response.header['Vary'] = nil
       do_global_read_response()
-      assert.are.equals('X-Forwarded-Proto', _G.ts.server_response.header['Vary'])
+      assert.are.equals('X-Forwarded-Proto,X-Experiment-Enrollments', _G.ts.server_response.header['Vary'])
 
       -- Do not add X-Forwarded-Proto on other status codes
       _G.ts.server_response.get_status = old_status
       _G.ts.server_response.header['Vary'] = nil
       do_global_read_response()
-      assert.are.equals(nil, _G.ts.server_response.header['Vary'])
+      assert.are.equals('X-Experiment-Enrollments', _G.ts.server_response.header['Vary'])
     end)
 
     it("test - do_global_send_response cache miss", function()
