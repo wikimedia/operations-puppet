@@ -10,7 +10,6 @@ Port <%= @listen_port %>
 <%- @ssh_listen_addresses.each do |listen_addr| %>
 ListenAddress <%= listen_addr %>
 <%- end -%>
-Protocol 2
 # HostKeys for protocol version 2
 <%- @host_key_algos.each do |algo| -%>
 HostKey <%= "#{@base_dir}/ssh_host_#{algo}_key" %>

@@ -15,7 +15,6 @@ ListenAddress <%= listen %>
 #ListenAddress ::
 #ListenAddress 0.0.0.0
 <%- end -%>
-Protocol 2
 # HostKeys for protocol version 2
 <%- @key_types.each do |type| -%>
 HostKey /etc/ssh/ssh_host_<%= type %>_key
