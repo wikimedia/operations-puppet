@@ -175,7 +175,6 @@ profile::cassandra::settings:
   users:
     - aqsloader
     - image_suggestions
-    - aqs_testing
     - device_analytics
     - geo_analytics
     - media_analytics
