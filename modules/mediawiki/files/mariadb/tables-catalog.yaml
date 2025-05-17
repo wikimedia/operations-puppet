@@ -1082,6 +1082,16 @@ tables:
       - dbname: testwiki
     canonicality: canonical
     visibility: public
+  - name: ores_classification
+    source: ores
+    canonicality: derivative
+    visibility: public
+    dblist: ores
+  - name: ores_model
+    source: ores
+    canonicality: derivative
+    visibility: public
+    dblist: ores
 sources:
   core:
     - path: sql/tables.json
@@ -1134,6 +1144,9 @@ sources:
   linter:
     - path: extensions/Linter/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
+  ores:
+    - path: extensions/ORES/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ORES/+/master/sql/tables.json
   proofread:
     - path: extensions/ProofreadPage/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ProofreadPage/+/master/sql/tables.json
