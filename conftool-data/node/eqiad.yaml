@@ -65,6 +65,8 @@ eqiad:
 #    cirrussearch1082.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
 #    cirrussearch1083.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch1084.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl ]
+    cirrussearch1085.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl ]
+    cirrussearch1086.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl ]
 #    cirrussearch1087.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
 #    cirrussearch1088.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     elastic1089.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
