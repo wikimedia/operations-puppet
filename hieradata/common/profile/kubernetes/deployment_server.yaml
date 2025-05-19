@@ -138,6 +138,10 @@ profile::kubernetes::deployment_server::services:
       usernames:
         - name: mw-debug
         - name: mw-debug-deploy
+    mw-experimental:
+      usernames:
+        - name: mw-experimental
+        - name: mw-experimental-deploy
     mw-api-int:
       usernames:
         - name: mw-api-int
