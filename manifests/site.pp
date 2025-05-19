@@ -2458,13 +2458,10 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
 }
 
 # relevance forge servers (run opensearch, owned by DPE SRE)
-node /^relforge100[89]\.eqiad\./ {
+node /^relforge10(08|09|10)\.eqiad\./ {
     role(cirrus::relforge)
 }
 
-node /^relforge1010\.eqiad\./ {
-    role(cirrus::relforge)
-}
 # restbase eqiad cluster
 node /^restbase10(3[1-9]|4[0-5])\.eqiad\./ {
     role(restbase::production)
