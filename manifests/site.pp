@@ -2722,6 +2722,11 @@ node /^arclamp2001\.codfw\./ {
     role(arclamp)
 }
 
+# zuul3 - T393873
+node /^zuul(1001|2001)\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_nftables)
+}
+
 node default {
     if $::realm == 'production' and !$::_role {
         fail('No puppet role has been assigned to this node.')
