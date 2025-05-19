@@ -71,6 +71,8 @@ profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path']
 
 profile::cache::upload::upload_webp_hits_threshold: 100
 
+profile::cache::kafka::webrequest::varnishkafka_enabled: false
+
 prometheus::varnishkafka_exporter::config:
   stats_files:
     - '/var/cache/varnishkafka/webrequest.stats.json'
