@@ -29,6 +29,8 @@
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default, 1.2d). Default: undef
 #
 # [*concurrency_policy*] A kubernetes policy for what happens to jobs that run concurrently/overlap. Default is undef, which implies "Replace" in the chart
+#
+# [*startingdeadlineseconds*] Defines a deadline in whole seconds for starting the Job if the exact timer is missed. Default: undef
 
 
 define profile::mediawiki::periodic_job::kubernetes(
@@ -42,6 +44,7 @@ define profile::mediawiki::periodic_job::kubernetes(
     Stdlib::Unixpath $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
     Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
+    Optional[Integer] $startingdeadlineseconds = undef,
 ) {
     if $ensure == 'present' {
         $command_quoted = $command.to_json()

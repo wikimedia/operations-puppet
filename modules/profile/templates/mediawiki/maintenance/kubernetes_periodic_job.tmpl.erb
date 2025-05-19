@@ -12,3 +12,6 @@
     <%- if @concurrency_policy -%>
       concurrency: <%= @concurrency_policy %>
     <%- end %>
+    <%- if @startingdeadlineseconds -%>
+      startingDeadlineSeconds: <%= @startingdeadlineseconds %>
+    <% end %>
