@@ -6,7 +6,8 @@ class profile::mediawiki::maintenance::globalblocking(
     $team_label = 'trust-and-safety-product'
 
     profile::mediawiki::periodic_job { 'globalblocking-fixGlobalBlockWhitelist':
-        command               => '/usr/local/bin/foreachwiki extensions/GlobalBlocking/maintenance/fixGlobalBlockWhitelist.php --delete',
+        # dblists must be in sync with $wmgUseGlobalBlocking in mediawiki-config
+        command               => '/usr/local/bin/foreachwikiindblist "all - fishbowl - private" extensions/GlobalBlocking/maintenance/fixGlobalBlockWhitelist.php --delete',
         interval              => 'Sun 00:00',
         cron_schedule         => '0 0 * * SUN',
         team                  => $team_label,
