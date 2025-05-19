@@ -37,4 +37,53 @@ class openstack::clientpackages::vms::dalmatian::bookworm(
     }
     Exec['openstack-dalmatian-bookworm-apt-upgrade'] -> Package <| title != 'gnupg' |>
 
+
+    apt::repository { 'openstack-caracal-bookworm':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-caracal-backports',
+        components => 'main',
+    }
+    apt::repository { 'openstack-caracal-bookworm-nochange':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-caracal-backports-nochange',
+        components => 'main',
+    }
+    apt::repository { 'openstack-bobcat-bookworm':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-bobcat-backports',
+        components => 'main',
+    }
+    apt::repository { 'openstack-bobcat-bookworm-nochange':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-bobcat-backports-nochange',
+        components => 'main',
+    }
+    apt::repository { 'openstack-antelope-bookworm':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-antelope-backports',
+        components => 'main',
+    }
+    apt::repository { 'openstack-antelope-bookworm-nochange':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-antelope-backports-nochange',
+        components => 'main',
+    }
+    apt::repository { 'openstack-zed-bookworm':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-zed-backports',
+        components => 'main',
+    }
+    apt::repository { 'openstack-zed-bookworm-nochange':
+        ensure     => absent,
+        uri        => 'http://mirrors.wikimedia.org/osbpo',
+        dist       => 'bookworm-zed-backports-nochange',
+        components => 'main',
+    }
 }
