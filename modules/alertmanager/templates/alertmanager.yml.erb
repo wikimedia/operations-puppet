@@ -432,7 +432,7 @@ receivers:
 - name: 'data-persistence-task'
   webhook_configs:
     # #DBA
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-hwibeuyzizzy4xzunfsk'
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-hwibeuyzizzy4xzunfsk&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'data-platform-page'
@@ -742,70 +742,70 @@ receivers:
 
 - name: 'mediawiki-platform-task'
   webhook_configs:
-    # #mediawiki-platform-team
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-slx6kyyichxp3k4elgud'
+    # #mediawiki-platform-team / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-slx6kyyichxp3k4elgud&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'lpl-task'
   webhook_configs:
-  # #LPL Essential
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cj2ngojmzb7ocghft2pg'
+  # #LPL Essential / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cj2ngojmzb7ocghft2pg&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mw-interfaces-task'
   webhook_configs:
-    # #MW-Interfaces-Team
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-up3kfz23uapwmm6wugys'
+    # #MW-Interfaces-Team / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-up3kfz23uapwmm6wugys&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'security-task'
   webhook_configs:
-    # #Security
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwqfaiejpr656zc6hf6o'
+    # #Security / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwqfaiejpr656zc6hf6o&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'campaigns-product-task'
   webhook_configs:
-    # #Campaigns-Product-Team
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kw3viznkxdqazpqmd567'
+    # #Campaigns-Product-Team / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kw3viznkxdqazpqmd567&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'community-tech-task'
   webhook_configs:
-    # #Community-Tech
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kws2wih774dwaclxs2qy'
+    # #Community-Tech / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-kws2wih774dwaclxs2qy&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 # Not teams but projects for mw-cron alerting T385709
 # All these hooks add the #wikimedia-production-error tag as well
 - name: 'flaggedrevs-task'
   webhook_configs:
-    # #FlaggedRevs
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cnkuxktcyh5qgsvww6n3&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6'
+    # #FlaggedRevs / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-cnkuxktcyh5qgsvww6n3&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-categories-task'
   webhook_configs:
-    # #MediaWiki-Categories
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3zxwm2ndcydpz4ayfwre&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6'
+    # #MediaWiki-Categories / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3zxwm2ndcydpz4ayfwre&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-page-derived-data-task'
   webhook_configs:
-    # #MediaWiki-Page-derived-data
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7mwi2t2oqwukglnnwv66&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6'
+    # #MediaWiki-Page-derived-data / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-7mwi2t2oqwukglnnwv66&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-special-pages-task'
   webhook_configs:
-    # #MediaWiki-Special-pages
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-4ae4jcwy4qaqp7r2cfeg&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6'
+    # #MediaWiki-Special-pages / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-4ae4jcwy4qaqp7r2cfeg&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'moderator-tools-task'
   webhook_configs:
-    # #Moderator-Tools-Team
-    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-67hyf2drnhe6m6b3aqzk&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6'
+    # #Moderator-Tools-Team / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-67hyf2drnhe6m6b3aqzk&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 # End projects for mw-cron alerting
 
