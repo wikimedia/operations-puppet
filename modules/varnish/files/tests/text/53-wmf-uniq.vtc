@@ -7,7 +7,7 @@ server s1 -repeat 2 {
     expect req.http.Cookie !~ "WMF-Uniq"
     expect req.http.X-Orig-Cookie !~ "WMF-Uniq"
     # CC: private to ensure that all the requests hit the origin server
-    txresp -hdr "Cache-Control: private"
+    txresp -hdr "Cache-Control: private" -hdr "Vary: X-Experiment-Enrollments"
 } -start
 
 
@@ -38,4 +38,6 @@ client c1 -connect "${tmpdir}/v1.sock" {
     rxresp
     txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: wmf-uniq=snakeoil"
     rxresp
+    # Vary: X-E-E doesn't get leaked to the user
+    expect resp.http.Vary !~ "X-Experiment-Enrollments"
 } -run

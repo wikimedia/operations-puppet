@@ -1146,6 +1146,14 @@ sub vcl_deliver {
     if (resp.http.Content-Length == "0" && resp.status >= 400) {
         return(synth(resp.status));
     }
+    // Do not leak Vary: X-Experiment-Enrollments to the user
+    if (resp.http.Vary) {
+        if (resp.http.Vary == "X-Experiment-Enrollments") {
+            unset resp.http.Vary;
+        } else if (resp.http.Vary ~ "(?i)\s*X-Experiment-Enrollments") {
+            set resp.http.Vary = regsub(resp.http.Vary, "(?i),?\s*\bX-Experiment-Enrollments\b\s*", "");
+        }
+    }
     call deliver_synth_;
     call cluster_fe_deliver;
     return (deliver); // no default VCL (which is just "return (deliver)" anyways)
