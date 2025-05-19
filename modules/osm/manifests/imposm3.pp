@@ -42,6 +42,10 @@ class osm::imposm3 (
             ensure => directory,
             owner  => 'osmupdater',
             group  => 'osm';
+        '/usr/share/imposm/layers':
+            ensure => directory,
+            owner  => 'osmupdater',
+            group  => 'osm';
         $imposm_diff_dir:
             ensure => directory,
             owner  => 'osmupdater',
@@ -84,6 +88,28 @@ class osm::imposm3 (
             source => 'puppet:///modules/osm/sql/lib.sql';
         '/usr/share/imposm/names.sql':
             source => 'puppet:///modules/osm/sql/names.sql';
+        '/usr/share/imposm/layers/layer_admin.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_admin.sql';
+        '/usr/share/imposm/layers/layer_aeroway.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_aeroway.sql';
+        '/usr/share/imposm/layers/layer_building.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_building.sql';
+        '/usr/share/imposm/layers/layer_country_label.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_country_label.sql';
+        '/usr/share/imposm/layers/layer_landuse.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_landuse.sql';
+        '/usr/share/imposm/layers/layer_place_label.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_place_label.sql';
+        '/usr/share/imposm/layers/layer_poi_label.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_poi_label.sql';
+        '/usr/share/imposm/layers/layer_transportation_name.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_transportation_name.sql';
+        '/usr/share/imposm/layers/layer_transportation.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_transportation.sql';
+        '/usr/share/imposm/layers/layer_water.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_water.sql';
+        '/usr/share/imposm/layers/layer_waterway.sql':
+            source => 'puppet:///modules/osm/sql/layers/layer_waterway.sql';
     }
 
     $ensure_replication = $disable_replication_timer ? {

@@ -3,10 +3,7 @@
 
 set -e
 
-kartotherian_dir="/srv/deployment/kartotherian/deploy"
-osm_bright_source="@kartotherian/osm-bright-source"
-
-for sql_file in "${kartotherian_dir}"/node_modules/"${osm_bright_source}"/sql/layers/*.sql; do
+for sql_file in /usr/share/imposm/layers/*.sql; do
     echo "  executing: ${sql_file}"
     psql -Xd gis -f "${sql_file}"
 done
