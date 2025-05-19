@@ -161,6 +161,10 @@ class EchoBot(ib3_auth.SASL, SingleServerIRCBot):
         for chan in [self.chans]:
             c.join(chan)
 
+    def on_disconnect(self, c, e):
+        print('Disconnected')
+        sys.exit(0)
+
 
 class EventHandler(pyinotify.ProcessEvent):
     def process_IN_MODIFY(self, event):
@@ -182,7 +186,7 @@ class EventHandler(pyinotify.ProcessEvent):
                 # set a 450 max message size and hope is enough.
                 # We anyway catch and silently drop the message later on if that
                 # turns out to not be true
-                outputs = [s[0+i:450+i] for i in range(0, len(s), 450)]
+                outputs = [s[0 + i:450 + i] for i in range(0, len(s), 450)]
                 for out in outputs:
                     bot.connection.privmsg(chans, out)
             except (irc.client.ServerNotConnectedError, irc.client.MessageTooLong,
