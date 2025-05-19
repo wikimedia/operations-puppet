@@ -476,7 +476,7 @@ def get_node_config(project, fqdn):
 
     # this is only queried by Puppet, and explicitely only returns yaml
     return Response(
-        yaml.safe_dump({"roles": roles, "hiera": hiera}),
+        yaml.safe_dump({"roles": roles, "hiera": hiera}, default_style='"'),
         status=200,
         mimetype="application/x-yaml",
     )
