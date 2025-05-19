@@ -23,10 +23,8 @@ scap::dsh::groups:
       - snapshot1011.eqiad.wmnet
       - snapshot1012.eqiad.wmnet
       - snapshot1013.eqiad.wmnet
-      - snapshot1014.eqiad.wmnet
       - snapshot1015.eqiad.wmnet
       - snapshot1016.eqiad.wmnet
-      - snapshot1017.eqiad.wmnet
   cassandra:
     conftool:
       - {'cluster': 'aqs', 'service': 'cassandra', 'datacenters': ['eqiad']}
