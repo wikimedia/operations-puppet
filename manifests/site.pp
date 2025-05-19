@@ -1072,8 +1072,8 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# new dse-k8s-workers T29157 and T3074009
-node /^dse-k8s-worker100[1-9]\.eqiad\./ {
+# new dse-k8s-workers T29157, T3074009, T394647
+node /^dse-k8s-worker10(0[1-9]|10)\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
@@ -2552,7 +2552,7 @@ node /^snapshot1010\.eqiad\./ {
 node /^snapshot101[123]\.eqiad\./ {
     role(dumps::generation::worker::dumper)
 }
-node /^snapshot101[47]\.eqiad\./ {
+node /^snapshot1014\.eqiad\./ {
     role(dumps::generation::worker::testbed)
 }
 # snapshot1015 is used to take some of the load of the wikidata dump

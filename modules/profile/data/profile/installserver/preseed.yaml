@@ -259,7 +259,7 @@ profile::installserver::preseed::preseed_per_hostname:
   'dse-k8s-worker100[1-4]':
     - partman/standard.cfg
     - partman/custom/kubernetes-node-containerd-local-storage.cfg
-  'dse-k8s-worker100[5-9]':
+  'dse-k8s-worker100[5-9]|dse-k8s-worker1010':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
