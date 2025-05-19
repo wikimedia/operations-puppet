@@ -4,12 +4,7 @@
 set -e
 
 MIRROR_PATH="planet.openstreetmap.org"
-
 download_dir="/srv/downloads"
-kartotherian_dir="/srv/deployment/kartotherian/deploy"
-postgis_vt_util_sql_lib="${kartotherian_dir}/node_modules/@kartotherian/postgis-vt-util/lib.sql"
-modules_with_sql="@kartotherian/osm-bright-source/sql/helpers"
-geoshapes_sql="/srv/deployment/kartotherian/deploy/src/sql/geoshapes-create-indexes.sql"
 proxy=
 log_file=/var/log/osm-initial-import.log
 dump_date="latest"
@@ -55,9 +50,9 @@ filename="planet-${dump_date}.osm.pbf"
 function check_imposm() {
     imposm_pid=$(pgrep -f /usr/bin/imposm || true)
     if [ -n "$imposm_pid" ]; then
-        echo "Not starting import while imposm is running!" | ts | tee -a "${log_file}"
-        echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections" | ts | tee -a "${log_file}"
-        exit 1
+	echo "Not starting import while imposm is running!" | ts | tee -a "${log_file}"
+	echo "Run `sudo service imposm stop` before starting - imposm will compete for postgres connections" | ts | tee -a "${log_file}"
+	exit 1
     fi
 }
 
@@ -114,17 +109,14 @@ function import_water_lines() {
 
 function custom_functions_and_indexes() {
   echo "starting creation of custom functions and indexes" | ts | tee -a "${log_file}"
-  sudo -u postgres psql -Xd gis -f ${postgis_vt_util_sql_lib} | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f /usr/share/imposm/lib.sql | ts | tee -a "${log_file}"
 
-  for module in ${modules_with_sql}; do
-    echo "executing SQL in: ${kartotherian_dir}/node_modules/${module}" | ts | tee -a "${log_file}"
-    for sql_file in "${kartotherian_dir}"/node_modules/"${module}"/*.sql; do
-      echo "  executing: ${sql_file}" | ts | tee -a "${log_file}"
-      sudo -u postgres psql -Xd gis -f "${sql_file}" | ts | tee -a "${log_file}"
-    done
-  done
+  echo "creating Kartotherian SQL functions and indices" | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f /usr/share/imposm/create-indexes.sql | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f /usr/share/imposm/functions.sql | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f /usr/share/imposm/names.sql | ts | tee -a "${log_file}"
 
-  sudo -u postgres psql -Xd gis -f "${geoshapes_sql}" | ts | tee -a "${log_file}"
+  sudo -u postgres psql -Xd gis -f /usr/share/imposm/geoshapes-create-indexes.sql | ts | tee -a "${log_file}"
   echo "creation of custom functions and indexes completed" | ts | tee -a "${log_file}"
 }
 

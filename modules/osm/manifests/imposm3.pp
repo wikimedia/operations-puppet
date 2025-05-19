@@ -38,6 +38,10 @@ class osm::imposm3 (
             ensure => directory,
             owner  => 'osmupdater',
             group  => 'osm';
+        '/usr/share/imposm':
+            ensure => directory,
+            owner  => 'osmupdater',
+            group  => 'osm';
         $imposm_diff_dir:
             ensure => directory,
             owner  => 'osmupdater',
@@ -70,6 +74,16 @@ class osm::imposm3 (
             source => 'puppet:///modules/osm/bootstrap-tile-storage.sh';
         '/etc/imposm/event-template.json':
             source => 'puppet:///modules/osm/event-template.json';
+        '/usr/share/imposm/create-indexes.sql':
+            source => 'puppet:///modules/osm/sql/create-indexes.sql';
+        '/usr/share/imposm/functions.sql':
+            source => 'puppet:///modules/osm/sql/functions.sql';
+        '/usr/share/imposm/geoshapes-create-indexes.sql':
+            source => 'puppet:///modules/osm/sql/geoshapes-create-indexes.sql';
+        '/usr/share/imposm/lib.sql':
+            source => 'puppet:///modules/osm/sql/lib.sql';
+        '/usr/share/imposm/names.sql':
+            source => 'puppet:///modules/osm/sql/names.sql';
     }
 
     $ensure_replication = $disable_replication_timer ? {
