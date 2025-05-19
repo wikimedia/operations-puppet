@@ -168,7 +168,7 @@ C{
         // We can't set a cookie if we don't know the valid top domain, so this
         // is the case where we emit no Cookie output at all (as before) with
         // the two possible bare "return;" below
-        const struct gethdr_s hdr = { HDR_REQ, "\005host:" };
+        const struct gethdr_s hdr = { HDR_REQ, "\016x-cookie-host:" };
         const char* host = VRT_GetHdr(ctx, &hdr);
         if (!host)
             return;

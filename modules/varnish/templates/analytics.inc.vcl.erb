@@ -74,7 +74,7 @@ sub set_last_access_global_cookie__ {
         "WMF-Last-Access-Global="
         + req.http.X-NowDay
         + ";Path=/;Domain=."
-        + regsub(req.http.Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain', 'org') %>)$", "\2")
+        + regsub(req.http.X-Cookie-Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.<%= @vcl_config.fetch('top_domain', 'org') %>)$", "\2")
         + ";HttpOnly;secure;Expires="
         + std.time(std.time2integer(now + 32d, 0) / 43200 * 43200, now)
     );
@@ -90,7 +90,7 @@ sub analytics_last_access_deliver_ {
     /*
      * WMF-Last-Access
      */
-    if(req.http.Host != "api.wikimedia.org") {
+    if(req.http.X-Cookie-Host != "api.wikimedia.org") {
         if(req.http.X-WMF-LastStamp) {
             set resp.http.X-Analytics = resp.http.X-Analytics
                 + ";WMF-Last-Access="
@@ -111,7 +111,7 @@ sub analytics_last_access_deliver_ {
     /*
      * WMF-Last-Access-Global (not for wikimedia.org)
      */
-    if(req.http.Host !~ "\.wikimedia\.org$") {
+    if(req.http.X-Cookie-Host !~ "\.wikimedia\.org$") {
         if(req.http.X-WMF-LastGlobalStamp) {
             set resp.http.X-Analytics = resp.http.X-Analytics
                 + ";WMF-Last-Access-Global="
@@ -330,7 +330,7 @@ sub analytics_recv {
 sub analytics_last_access_recv {
     call analytics_last_access_recv_;
     // Global last access cookies not used w/ wikimedia.org
-    if(req.http.Host !~ "\.wikimedia\.org$") {
+    if(req.http.X-Cookie-Host !~ "\.wikimedia\.org$") {
         call analytics_last_access_global_recv_;
     }
 

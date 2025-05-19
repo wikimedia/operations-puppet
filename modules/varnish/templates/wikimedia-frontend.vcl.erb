@@ -293,6 +293,8 @@ sub normalize_request {
     if(req.url !~ "^(/|\*$)") {
         return (synth(400, ""));
     }
+    # save the original host header to be able to set cookies accordingly
+    set req.http.X-Cookie-Host = req.http.Host;
 
     if (req.http.Accept-Language) {
         set req.http.Accept-Language = std.tolower(req.http.Accept-Language);
@@ -839,6 +841,7 @@ sub vcl_backend_fetch {
     // Prevent sending the header on any inwards-facing requests to
     // applayer services.
     unset bereq.http.X-WMF-DP;
+    unset bereq.http.X-Cookie-Host;
 
     call cluster_fe_backend_fetch;
 }
