@@ -793,3 +793,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'zookeeper-test*':
     - partman/flat.cfg
     - virtual.cfg
+  'zuul*':
+    - partman/flat.cfg
+    - virtual.cfg
