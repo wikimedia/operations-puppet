@@ -9,14 +9,15 @@ class profile::mediawiki::maintenance::growthexperiments(
     # See T208369 and T252575. Logs are saved to
     # /var/log/mediawiki/mediawiki_job_growthexperiments-deleteOldSurveys/syslog.log
     profile::mediawiki::periodic_job { 'growthexperiments-deleteOldSurveys':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteOldSurveys.php --cutoff 60',
-        interval              => '*-*-01,15 03:15:00',
-        cron_schedule         => '15 3 1,15 * *',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'deleteOldSurveys.php',
-        description           => "Purge old welcome survey data (personal data used in user options, with 90-day retention) that's within 30 days of expiry, twice a month.",
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/deleteOldSurveys.php --cutoff 60',
+        interval                => '*-*-01,15 03:15:00',
+        cron_schedule           => '15 3 1,15 * *',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'deleteOldSurveys.php',
+        description             => "Purge old welcome survey data (personal data used in user options, with 90-day retention) that's within 30 days of expiry, twice a month.",
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1814400, # 3 weeks
     }
 
     $link_rec_shards = [ 's1', 's2', 's3', 's4', 's5', 's6', 's7', 's8' ]
@@ -73,14 +74,15 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # purge expired rows from the database (Mentor dashboard, T280307)
     profile::mediawiki::periodic_job { 'growthexperiments-purgeExpiredMentorStatus':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
-        interval              => '*-*-01,15 8:45:00',
-        cron_schedule         => '45 8 1,15 * *',
-        kubernetes            => true,
-        team                  => 'growth',
-        script_label          => 'purgeExpiredMentorStatus.php',
-        description           => 'Purge expired rows from the database for the Mentor dashboard, twice a month.',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/purgeExpiredMentorStatus.php',
+        interval                => '*-*-01,15 8:45:00',
+        cron_schedule           => '45 8 1,15 * *',
+        kubernetes              => true,
+        team                    => 'growth',
+        script_label            => 'purgeExpiredMentorStatus.php',
+        description             => 'Purge expired rows from the database for the Mentor dashboard, twice a month.',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1814400, # 3 weeks
     }
 
     # push periodically-computed metrics into statsd (T318684)
@@ -118,14 +120,15 @@ class profile::mediawiki::maintenance::growthexperiments(
     }
 
     profile::mediawiki::periodic_job { 'growthexperiments-updateIsActiveFlagForMentees':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
-        interval              => 'Mon *-*-* 09:42:00',
-        cron_schedule         => '42 9 * * MON',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'updateIsActiveFlagForMentees.php',
-        description           => 'update the "is active" flag for mentees (T318457)',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/updateIsActiveFlagForMentees.php',
+        interval                => 'Mon *-*-* 09:42:00',
+        cron_schedule           => '42 9 * * MON',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'updateIsActiveFlagForMentees.php',
+        description             => 'update the "is active" flag for mentees (T318457)',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'growthexperiments-refreshPraiseworthyMentees':

@@ -6,15 +6,16 @@ class profile::mediawiki::maintenance::refreshlinks(
     $shard_to_day = {'s1' => 1, 's2' => 2, 's3' => 3, 's4' => 4, 's5' => 5, 's6' => 6, 's7' => 7, 's8' => 8}
     $shard_to_day.map |$shard, $day_of_month| {
         profile::mediawiki::periodic_job { "refreshlinks-delete-from-nonexistent-${shard}":
-            command               => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${shard}.dblist --dfn-only",
-            interval              => "*-${day_of_month} 00:00",
-            kubernetes            => true,
-            cron_schedule         => "00 00 ${day_of_month} * *",
-            team                  => 'mediawiki-page-derived-data',
-            description           => "Refresh link tables in ${shard}, deleting links from nonexistent articles only",
-            script_label          => 'refreshLinks.php--dfn-only',
-            helmfile_defaults_dir => $helmfile_defaults_dir,
-            migration_title       => "cron-refreshlinks-${shard}@${day_of_month}",
+            command                 => "/usr/local/bin/mwscriptwikiset refreshLinks.php ${shard}.dblist --dfn-only",
+            interval                => "*-${day_of_month} 00:00",
+            kubernetes              => true,
+            cron_schedule           => "00 00 ${day_of_month} * *",
+            team                    => 'mediawiki-page-derived-data',
+            description             => "Refresh link tables in ${shard}, deleting links from nonexistent articles only",
+            script_label            => 'refreshLinks.php--dfn-only',
+            helmfile_defaults_dir   => $helmfile_defaults_dir,
+            migration_title         => "cron-refreshlinks-${shard}@${day_of_month}",
+            ttlsecondsafterfinished => 5097600, # 2 months
         }
     }
 }

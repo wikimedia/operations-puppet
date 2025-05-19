@@ -11,25 +11,27 @@ class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostcategories_s1':
-        command               => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories',
-        interval              => '*-16 01:00',
-        cron_schedule         => '0 1 16 * *',
-        team                  => $team_label,
-        script_label          => 'UpdateSpecialPages.php-Mostcategories',
-        description           => 'Update special pages on s1: Most categories',
-        kubernetes            => true,
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostcategories',
+        interval                => '*-16 01:00',
+        cron_schedule           => '0 1 16 * *',
+        team                    => $team_label,
+        script_label            => 'UpdateSpecialPages.php-Mostcategories',
+        description             => 'Update special pages on s1: Most categories',
+        kubernetes              => true,
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 5097600, # 2 months
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostlinkedtemplates_s1':
-        command               => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates',
-        interval              => '*-18 01:00',
-        cron_schedule         => '0 1 18 * *',
-        team                  => $team_label,
-        script_label          => 'UpdateSpecialPages.php-Mostlinkedtemplates',
-        description           => 'Update special pages on s1: Most linked templates',
-        kubernetes            => true,
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Mostlinkedtemplates',
+        interval                => '*-18 01:00',
+        cron_schedule           => '0 1 18 * *',
+        team                    => $team_label,
+        script_label            => 'UpdateSpecialPages.php-Mostlinkedtemplates',
+        description             => 'Update special pages on s1: Most linked templates',
+        kubernetes              => true,
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 5097600, # 2 months
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_uncategorizedcategories_s1':

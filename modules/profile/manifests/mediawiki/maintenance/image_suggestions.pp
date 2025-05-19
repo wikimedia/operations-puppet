@@ -6,86 +6,93 @@ class profile::mediawiki::maintenance::image_suggestions(
     $team_name = 'structured-data'
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_CA':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=cawiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 0:00',
-        cron_schedule         => '0 0 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-cawiki',
-        description           => 'Send notifications about image suggestions for cawiki once a week on wednesdays',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_CA',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=cawiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 0:00',
+        cron_schedule           => '0 0 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-cawiki',
+        description             => 'Send notifications about image suggestions for cawiki once a week on wednesdays',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_CA',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_NO':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=nowiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 1:00',
-        cron_schedule         => '0 1 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-nowiki',
-        description           => 'Send notifications about image suggestions for nowiki once a week on wednesdays',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_NO',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=nowiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 1:00',
+        cron_schedule           => '0 1 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-nowiki',
+        description             => 'Send notifications about image suggestions for nowiki once a week on wednesdays',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_NO',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_PT':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=ptwiki --min-edit-count=300 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 2:00',
-        cron_schedule         => '0 2 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-ptwiki',
-        description           => 'Send notifications about image suggestions for ptwiki once a week on wednesdays',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_PT',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=ptwiki --min-edit-count=300 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 2:00',
+        cron_schedule           => '0 2 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-ptwiki',
+        description             => 'Send notifications about image suggestions for ptwiki once a week on wednesdays',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_PT',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_RU':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=ruwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 3:00',
-        cron_schedule         => '0 3 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-ruwiki',
-        description           => 'Send notifications about image suggestions for ruwiki once a week on wednesdays',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_RU',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=ruwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 3:00',
+        cron_schedule           => '0 3 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-ruwiki',
+        description             => 'Send notifications about image suggestions for ruwiki once a week on wednesdays',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_RU',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_ID':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=idwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 4:00',
-        cron_schedule         => '0 4 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-idwiki',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_ID',
-        description           => 'Send notifications about image suggestions for idwiki once a week on wednesdays',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=idwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 4:00',
+        cron_schedule           => '0 4 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-idwiki',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_ID',
+        description             => 'Send notifications about image suggestions for idwiki once a week on wednesdays',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_FI':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=fiwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 5:00',
-        cron_schedule         => '0 5 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-fiwiki',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_FI',
-        description           => 'Send notifications about image suggestions for fiwiki once a week on wednesdays',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=fiwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 5:00',
+        cron_schedule           => '0 5 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-fiwiki',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_FI',
+        description             => 'Send notifications about image suggestions for fiwiki once a week on wednesdays',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'ImageSuggestions_NotifyUnillustratedWatched_HU':
-        command               => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=huwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
-        interval              => 'Wed 6:00',
-        cron_schedule         => '0 6 * * WED',
-        kubernetes            => true,
-        team                  => $team_name,
-        script_label          => 'SendNotificationsForUnillustratedWatchedTitles.php-huwiki',
-        description           => 'Send notifications about image suggestions for huwiki once a week on wednesdays',
-        migration_title       => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_HU',
-        helmfile_defaults_dir => $helmfile_defaults_dir,
+        command                 => '/usr/local/bin/mwscript extensions/ImageSuggestions/maintenance/SendNotificationsForUnillustratedWatchedTitles.php --wiki=huwiki --min-edit-count=500 --min-confidence=80 --max-notifications-per-user=2 --exclude-instance-of=Q5 --queue --quiet',
+        interval                => 'Wed 6:00',
+        cron_schedule           => '0 6 * * WED',
+        kubernetes              => true,
+        team                    => $team_name,
+        script_label            => 'SendNotificationsForUnillustratedWatchedTitles.php-huwiki',
+        description             => 'Send notifications about image suggestions for huwiki once a week on wednesdays',
+        migration_title         => 'ImageSuggestions_SendNotificationsForUnillustratedWatchedTitles_HU',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 }
