@@ -2458,11 +2458,6 @@ node /^releases[12]003\.(codfw|eqiad)\./ {
 }
 
 # relevance forge servers (run opensearch, owned by DPE SRE)
-
-node /^relforge100[34]\.eqiad\./ {
-    role(cirrus::relforge)
-}
-# refresh hosts T384966
 node /^relforge100[89]\.eqiad\./ {
     role(cirrus::relforge)
 }
