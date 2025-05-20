@@ -26,6 +26,7 @@ zones:
     s6: [172.20.255.7]
     s7: [172.20.255.8]
     s8: [172.20.255.9]
+    x3: [172.20.255.18]
   analytics.db.svc.eqiad.wmflabs.: *analytics
   web.db.svc.wikimedia.cloud.: &web
     s1: [172.20.255.10]
@@ -36,6 +37,7 @@ zones:
     s6: [172.20.255.15]
     s7: [172.20.255.16]
     s8: [172.20.255.17]
+    x3: [172.20.255.19]
   web.db.svc.eqiad.wmflabs.: *web
 cnames:
   s7.analytics.db.svc.eqiad.wmflabs.:
@@ -46,9 +48,9 @@ cnames:
     - centralauth.analytics.db.svc.wikimedia.cloud.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.analytics.db.svc.wikimedia.cloud.
-  s8.analytics.db.svc.wikimedia.cloud.:
-    - x3.analytics.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
-    - termstore.wikidatawiki.analytics.db.svc.wikimedia.cloud. # ditto
+  x3.analytics.db.svc.wikimedia.cloud.:
+    # No dblist for x3 so this has to be specified manually
+    - termstore.wikidatawiki.analytics.db.svc.wikimedia.cloud.
   s7.web.db.svc.eqiad.wmflabs.:
     - centralauth.web.db.svc.eqiad.wmflabs.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
@@ -57,6 +59,6 @@ cnames:
     - centralauth.web.db.svc.wikimedia.cloud.
     # [[wikitech:Help:Toolforge/Database#Metadata_database]]
     - meta.web.db.svc.wikimedia.cloud.
-  s8.web.db.svc.wikimedia.cloud.:
-    - x3.web.db.svc.wikimedia.cloud.  # to ease the x3 split, T390954
-    - termstore.wikidatawiki.web.db.svc.wikimedia.cloud. # ditto
+  x3.web.db.svc.wikimedia.cloud.:
+    # No dblist for x3 so this has to be specified manually
+    - termstore.wikidatawiki.web.db.svc.wikimedia.cloud.
