@@ -20,7 +20,7 @@ class profile::wmcs::db::wikireplicas::views (
 
     file { '/usr/local/sbin/maintain-views':
         ensure  => file,
-        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/maintain-views.py',
+        source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/views/maintain_views.py',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',
@@ -51,7 +51,7 @@ class profile::wmcs::db::wikireplicas::views (
     if !$instances or ('s7' in $instances.keys) {
         file { '/usr/local/sbin/maintain-meta_p':
             ensure  => file,
-            source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain-meta_p.py',
+            source  => 'puppet:///modules/profile/wmcs/db/wikireplicas/maintain_meta_p.py',
             owner   => 'root',
             group   => 'root',
             mode    => '0755',
