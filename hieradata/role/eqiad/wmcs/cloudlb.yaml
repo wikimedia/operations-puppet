@@ -35,6 +35,9 @@ profile::bird::advertise_vips:
   wikireplicas-analytics-s8.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.9
+  wikireplicas-analytics-x3.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.18
   wikireplicas-web-s1.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.10
@@ -59,3 +62,6 @@ profile::bird::advertise_vips:
   wikireplicas-web-s8.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.17
+  wikireplicas-web-x3.svc.private.eqiad.wikimedia.cloud:
+    <<: *wikireplicas
+    address: 172.20.255.19
