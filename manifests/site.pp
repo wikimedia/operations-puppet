@@ -906,7 +906,7 @@ node /^db1150\.eqiad\./ {
 node /^db1171\.eqiad\./ {
     role(mariadb::backup_source)
 }
-## s5, s8 & x1, bookworm
+## s5, x1 & x3, bookworm
 node /^db1216\.eqiad\./ {
     role(mariadb::backup_source)
 }
@@ -948,7 +948,7 @@ node /^db2198\.codfw\./ {
 node /^db2199\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & s8, bookworm
+## s7 & x3, bookworm
 node /^db2200\.codfw\./ {
     role(mariadb::backup_source)
 }

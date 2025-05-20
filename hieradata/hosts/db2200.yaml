@@ -2,4 +2,4 @@
 # Buffer pool sizes/instance enabled
 profile::mariadb::dbstore_multiinstance::instances:
   s7: 150G
-  s8: 192G
+  x3: 192G
