@@ -86,6 +86,7 @@ cephadm_clusters:
       - moss-be1001.eqiad.wmnet
       - moss-be1002.eqiad.wmnet
       - moss-be1003.eqiad.wmnet
+      - apus-be1004.eqiad.wmnet
     monitors: *osds
     rgws:
       - moss-fe1001.eqiad.wmnet
