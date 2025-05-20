@@ -21,4 +21,5 @@ type Profile::Mediawiki_deployment = Struct[{
     'mw_flavour'  => String,
     'web_flavour' => String,
     'dir'         => Optional[String],
+    'clusters'    => Optional[Array[String]],
 }]
