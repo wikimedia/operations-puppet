@@ -647,6 +647,23 @@ kubernetes::clusters:
     staging-codfw:
       version: "1.31"
       calico_version: "3.29"
+      # T352956
+      cni_config:
+        name: "k8s-pod-network"
+        cniVersion: "0.3.1"
+        plugins:
+          - type: "calico"
+            log_level: "info"
+            datastore_type: "kubernetes"
+            mtu: 1460
+            ipam:
+              type: "calico-ipam"
+              assign_ipv4: "true"
+              assign_ipv6: "true"
+            policy:
+              type: "k8s"
+            kubernetes:
+              kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
       dc: codfw
       master: kubestagemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube_staging
