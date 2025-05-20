@@ -777,11 +777,16 @@ sub vcl_recv {
 
     set req.backend_hint = cache_local.backend();
 
-<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
-    call uniques_recv;
-<%- end -%>
 
     if(req.restarts == 0) {
+<% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
+        // Skip PURGE requests as its volume will alter wmfuniq stats.
+        // An innocent SRE could be tempted to move this after the PURGE handling
+        // below, but beware of the dragons hidden inside cluster_fe_recv_pre_purge
+        if (req.method != "PURGE") {
+            call uniques_recv;
+        }
+<%- end -%>
         call analytics_recv;
         if (var.get_int("is_alt_domain") != 1 &&
             req.http.host != "<%= @vcl_config.fetch('upload_domain') %>") {
@@ -1252,7 +1257,9 @@ sub vcl_deliver {
     call deliver_synth_;
     call cluster_fe_deliver;
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
-    call uniques_deliver;
+    if (req.method != "PURGE") {
+        call uniques_deliver;
+    }
 <%- end -%>
     return (deliver); // no default VCL (which is just "return (deliver)" anyways)
 }
