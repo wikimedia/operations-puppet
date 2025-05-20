@@ -2011,8 +2011,12 @@ node /^maps20(0[5-8]|10)\.codfw\./ {
     role(maps::replica)
 }
 
-node /^maps-test200[2-6]\.codfw\./ {
+node /^maps-test200[3-6]\.codfw\./ {
     role(insetup::infrastructure_foundations_nftables)
+}
+
+node /^maps-test200[2]\.codfw\./ {
+    role(maps::replica_bookworm)
 }
 
 node /^maps-test2001\.codfw\./ {
