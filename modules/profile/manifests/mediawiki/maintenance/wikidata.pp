@@ -5,8 +5,14 @@ class profile::mediawiki::maintenance::wikidata(
     require profile::lvs::configuration
     # Resubmit changes in wb_changes that are older than 6 hours
     profile::mediawiki::periodic_job { 'wikidata_resubmit_changes_for_dispatch':
-        command  => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/ResubmitChanges.php --wiki wikidatawiki --minimum-age 21600',
-        interval => '*-*-* *:39:00',
+        command               => '/usr/local/bin/mwscript extensions/Wikibase/repo/maintenance/ResubmitChanges.php --wiki wikidatawiki --minimum-age 21600',
+        interval              => '*-*-* *:39:00',
+        cron_schedule         => '39 * * * *',
+        team                  => 'wikidata',
+        kubernetes            => true,
+        description           => 'Resubmit changes in wb_changes that are older than 6 hours',
+        script_label          => 'ResubmitChanges.php-wikidatawiki',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     if $::realm != 'labs' {
