@@ -35,12 +35,26 @@ class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_uncategorizedcategories_s1':
-        command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories',
-        interval => '*-19 01:00',
+        command                 => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Uncategorizedcategories',
+        interval                => '*-19 01:00',
+        cron_schedule           => '0 1 19 * *',
+        team                    => $team_label,
+        script_label            => 'UpdateSpecialPages.php-Uncategorizedcategories_s1',
+        description             => 'Update special pages on s1: Uncategorised categories',
+        kubernetes              => true,
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 5097600, # 2 months
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_wantedtemplates_s1':
-        command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates',
-        interval => '*-20 01:00',
+        command                 => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Wantedtemplates',
+        interval                => '*-20 01:00',
+        cron_schedule           => '0 1 20 * *',
+        team                    => $team_label,
+        script_label            => 'UpdateSpecialPages.php-Wantedtemplates_s1',
+        description             => 'Update special pages on s1: Wanted templates',
+        kubernetes              => true,
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 5097600, # 2 months
     }
 }
