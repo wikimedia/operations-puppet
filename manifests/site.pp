@@ -2723,7 +2723,7 @@ node /^arclamp2001\.codfw\./ {
 }
 
 # zuul3 - T393873
-node /^zuul(1001|2001)\.(codfw|eqiad)\./ {
+node /^zuul(100[1-3]|200[1-3])\.(codfw|eqiad)\./ {
     role(insetup::collaboration_services_ferm)
 }
 
