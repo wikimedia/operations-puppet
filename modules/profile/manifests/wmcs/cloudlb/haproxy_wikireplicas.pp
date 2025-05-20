@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary cloudlb logic for wiki replicas, based on etcd
 class profile::wmcs::cloudlb::haproxy_wikireplicas (
-    Hash[String[1], Hash[String[1], Stdlib::IP::Address::Nosubnet]] $frontends     = lookup('profile::wmcs::cloudlb::haproxy_wikireplicas::frontends', {default_value => {}}),
-    Hash[String[1], Stdlib::Port]                                   $section_ports = lookup('profile::mariadb::section_ports'),
+    Hash[String[1], Hash[String[1], Array[Stdlib::IP::Address::Nosubnet, 1]]] $frontends     = lookup('profile::wmcs::cloudlb::haproxy_wikireplicas::frontends', {default_value => {}}),
+    Hash[String[1], Stdlib::Port]                                             $section_ports = lookup('profile::mariadb::section_ports'),
 ) {
     if !$frontends.empty() {
         include profile::confd

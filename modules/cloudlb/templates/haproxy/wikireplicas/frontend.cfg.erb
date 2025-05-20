@@ -1,8 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
 <%- @frontends.each_pair do |type, sections| -%>
-<%- sections.each_pair do |section, ip| -%>
+<%- sections.each_pair do |section, ips| -%>
 frontend wikireplica-proxy-<%= type %>-<%= section %>
+<%- ips.each do |ip| -%>
     bind <%= ip %>:3306
+<%- end -%>
 
     mode tcp
     option tcplog

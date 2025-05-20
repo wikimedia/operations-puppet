@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary generates haproxy frontends to connect to the wiki replicas
 class cloudlb::haproxy::wikireplicas::frontend (
-    Hash[String[1], Hash[String[1], Stdlib::IP::Address::Nosubnet]] $frontends,
-    Hash[String[1], String[1]]                                      $backups,
+    Hash[String[1], Hash[String[1], Array[Stdlib::IP::Address::Nosubnet, 1]]] $frontends,
+    Hash[String[1], String[1]]                                                $backups,
 ) {
     file { '/etc/haproxy/conf.d/wiki-replica-frontends.cfg':
         ensure  => present,
