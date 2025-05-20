@@ -96,7 +96,11 @@ listen tls
     capture response header Server len 64
     <%- end -%>
 
-    # Set here any variable you might need
+    # Host normalization
+    # Use the host_only converter to remove eventual trailing port and
+    # lowercase it. Also, remove eventual trailing dot
+    http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
+
     http-request set-var(txn.xwd_count) req.hdr_cnt(X-Wikimedia-Debug)
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
