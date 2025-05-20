@@ -357,7 +357,7 @@ groups:
       - Tyler Cipriani
     members: &contint_admins_members [*ops_members, *contint_roots_members,
               bd808, cscott, krinkle, reedy,
-              gjg, addshore, taavi, arthurtaylor]
+              gjg, addshore, taavi, arthurtaylor, phedenskog]
     privileges: ['ALL = (jenkins) NOPASSWD: ALL',
                  'ALL = (jenkins-agent) NOPASSWD: ALL',
                  'ALL = (doc-uploader) NOPASSWD: ALL',
