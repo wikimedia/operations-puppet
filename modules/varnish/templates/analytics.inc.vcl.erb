@@ -142,7 +142,7 @@ sub analytics_provenance_recv_ {
         // Ready a variable for later X-Analytics tagging in vcl_deliver.
 
         // Grab just the value of the wprov parameter, excluding the rest of the URL
-        set req.http.X-WMF-WPROV = regsub(req.url, "(?i).+[?&]wprov=([^&]+).*", "\1");
+        var.set("wprov", regsub(req.url, "(?i).+[?&]wprov=([^&]+).*", "\1"));
 
         // Remove the wprov=X parameter from req.url to avoid cache
         // fragmentation using two regexes to cover distinct cases:
@@ -158,8 +158,8 @@ sub analytics_provenance_recv_ {
 
 sub analytics_provenance_deliver_ {
     // In case there was a provenance parameter with a value, add it to X-Analytics
-    if (req.http.X-WMF-WPROV) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";wprov=" + req.http.X-WMF-WPROV;
+    if (var.get("wprov")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";wprov=" + var.get("wprov");
     }
 }
 
@@ -301,19 +301,19 @@ sub analytics_recv {
     // If this request had no cookies whatsoever mark it as such
     // to later report this fact to X-Analytics
     if (!req.http.Cookie) {
-        set req.http.X-WMF-NOCOOKIES = 1;
+        var.set_int("nocookies", 1);
     } else if(req.http.Cookie ~ "([sS]ession|Token)=")
     {
-        set req.http.X-WMF-SESSIONCOOKIE = 1;
+        var.set_int("has_sessioncookie", 1);
     }
 
     if (req.http.Authorization) {
         if (req.http.Authorization ~ "^OAuth ") {
-            set req.http.X-WMF-AUTHORIZATION = "OAuth";
+            var.set("auth_scheme", "OAuth");
         } else if (req.http.Authorization ~ "^Bearer ") {
-            set req.http.X-WMF-AUTHORIZATION = "Bearer";
+            var.set("auth_scheme", "Bearer");
         } else {
-            set req.http.X-WMF-AUTHORIZATION = "unknown";
+            var.set("auth_scheme", "unknown");
         }
     }
 
@@ -411,15 +411,15 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=" + req.http.X-WMF-Translation-Engine;
     }
 
-    if (req.http.X-WMF-AUTHORIZATION) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";authorization=" + req.http.X-WMF-AUTHORIZATION;
+    if (var.get("auth_scheme")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";authorization=" + var.get("auth_scheme");
     }
 
-    if (req.http.X-WMF-NOCOOKIES) {
+    if (var.get_int("nocookies")) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";nocookies=1";
     }
 
-    if (req.http.X-WMF-SESSIONCOOKIE) {
+    if (var.get_int("has_sessioncookie")) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";sessioncookie=1";
     }
 
