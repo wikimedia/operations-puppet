@@ -1213,7 +1213,7 @@ sub uniques_deliver {
                 if (req.http.X-Cookie-Host ~ "\.wikimedia\.org$") {
                     set resp.http.X-WUTMPDOM = req.http.X-Cookie-Host;
                 } else {
-                    set resp.http.X-WUTMPDOM = regsub(req.http.X-Cookie-Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.\Q<%= @vcl_config.fetch('top_domain', 'org') %>\E)$", "\2");
+                    set resp.http.X-WUTMPDOM = "." + regsub(req.http.X-Cookie-Host, "^([a-z0-9-]+\.)*([a-z0-9-]+\.\Q<%= @vcl_config.fetch('top_domain', 'org') %>\E)$", "\2");
                 }
 
                 header.append(resp.http.Set-Cookie,
