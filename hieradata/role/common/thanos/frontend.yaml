@@ -35,7 +35,7 @@ profile::tlsproxy::envoy::upstream_addr: "%{facts.ipaddress}"
 # Let idle_timeout kick in instead for long-running/streaming requests. T337251
 profile::tlsproxy::envoy::upstream_response_timeout: 0.0
 
-profile::swift::stats_reporter_host: 'thanos-fe1001.eqiad.wmnet'
+profile::swift::stats_reporter_host: 'thanos-fe1004.eqiad.wmnet'
 
 profile::thanos::swift::memcached_size_mb: 768
 

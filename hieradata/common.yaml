@@ -144,7 +144,7 @@ swift_clusters:
     expirer_host: 'ms-be1068.eqiad.wmnet'
   thanos:
     cluster_name: 'thanos-prod'
-    ring_manager: 'thanos-fe1001.eqiad.wmnet'
+    ring_manager: 'thanos-fe1004.eqiad.wmnet'
 
 # Main statsd instance
 statsd: statsd.eqiad.wmnet:8125
