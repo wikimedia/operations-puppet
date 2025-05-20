@@ -97,7 +97,6 @@ profile::base::production::role_description: 'CI server'
 # keep Python2 packages on bullseye to be able to run Zuul v2
 profile::base::remove_python2_on_bullseye: false
 
-profile::statsite::ensure: absent
 profile::prometheus::statsd_exporter::mappings:
   # Geard metrics
   - match: 'zuul.geard.workers'

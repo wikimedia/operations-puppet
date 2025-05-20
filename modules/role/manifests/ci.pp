@@ -28,6 +28,4 @@ class role::ci {
 
     include profile::zuul::server
     include profile::ci::proxy_zuul
-
-    include profile::statsite
 }
