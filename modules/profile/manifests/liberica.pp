@@ -28,7 +28,7 @@ class profile::liberica(
     Hash[String, Hash] $interface_tweaks            = lookup('profile::lvs::interface_tweaks'),
     String $gobgp_metrics_address                   = lookup('profile::liberica::gobgp_metrics_address'),
 ) {
-    ensure_packages(['ethtool', 'ipip-multiqueue-optimizer'])
+    ensure_packages(['ethtool'])
 
     ## Kernel setup
 
@@ -65,8 +65,15 @@ class profile::liberica(
 
     $optimizer_interfaces = $host_native_ifaces
     $prometheus_addr = "${::ipaddress}:9095"
+    # katran ships the ipip-multiqueue-optimizer features as part of its eBPF code
+    $optimizer_needed = $fp_config['forwarding_plane'] != 'katran'
+
+    package { 'ipip-multiqueue-optimizer':
+        ensure => $optimizer_needed.bool2str('present', 'absent'),
+    }
+
     systemd::service { 'ipip-multiqueue-optimizer':
-        ensure               => present,
+        ensure               => $optimizer_needed.bool2str('present', 'absent'),
         content              => systemd_template('ipip-multiqueue-optimizer'),
         monitoring_enabled   => true,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/LVS#IPIP_encapsulation_experiments',
