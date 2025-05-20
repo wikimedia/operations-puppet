@@ -18,7 +18,7 @@ define icinga::monitor::elasticsearch::base_checks(
                 default:
                     host          => $host,
                     critical      => false,
-                    contact_group => 'admins,team-discovery',
+                    contact_group => 'team-data-platform,team-discovery',
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
                 ;
                 "elasticsearch_shards_${host}:${port}":
@@ -46,7 +46,7 @@ define icinga::monitor::elasticsearch::base_checks(
             nrpe::monitor_service {
                 default:
                     critical      => false,
-                    contact_group => 'admins,team-discovery',
+                    contact_group => 'team-data-platform,team-discovery',
                     notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
                 ;
                 "elasticsearch_shards_${port}":
