@@ -335,6 +335,12 @@ route:
             severity: 'task'
           receiver: 'mediawiki-categories-task'
     - match:
+        team: 'mediawiki-file-management'
+      routes:
+        - match:
+            severity: 'task'
+          receiver: 'mediawiki-file-management-task'
+    - match:
         team: 'mediawiki-page-derived-data'
       routes:
         - match:
@@ -794,6 +800,12 @@ receivers:
   webhook_configs:
     # #MediaWiki-Categories / summary as title
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-3zxwm2ndcydpz4ayfwre&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
+      send_resolved: false
+
+- name: 'mediawiki-file-management-task'
+  webhook_configs:
+    # #MediaWiki-File-management / summary as title
+    - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-p47fisgjxbwgb6ojosiq&phid=PHID-PROJ-4uc7r7pdosfsk55qg7f6&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
 
 - name: 'mediawiki-page-derived-data-task'
