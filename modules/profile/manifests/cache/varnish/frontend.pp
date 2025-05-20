@@ -130,7 +130,7 @@ class profile::cache::varnish::frontend (
 
     $wmfuniq_secrets = wmflib::list_secrets('wmfuniq')
     $wmfuniq_secrets.each|String $secret| {
-        file { "${wmfuniq_secret_base_path}/${secret}":
+        file { "${wmfuniq_secret_base_path}/${secret.basename}":
             ensure    => 'present',
             owner     => 'root',
             group     => 'varnish',
