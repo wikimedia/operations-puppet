@@ -281,6 +281,27 @@ def start(args: argparse.Namespace) -> dict[str, str]:
     else:
         textdata = None
 
+    if args.dblist:
+        # We don't include any UI for invoking mwscriptwikiset. There's no need, as the version in
+        # mediawiki-cli is just an alias for foreachwikiindblist with the args in a different order.
+        # Likewise we never invoke foreachwiki, just "forreachwikiindblist all" (via --dblist=all),
+        # which has the same functionality. We could special-case it, we just don't need to.
+        # `command` is a list of length 1, just because it's passed all the way through to the
+        # Kubernetes Container spec, which takes it that way.
+        command = ['/usr/local/bin/foreachwikiindblist']
+        mwscript_args = [args.dblist, args.script_name, *args.script_args]
+    else:
+        # TODO: When not using foreachwikiindblist, this invokes MWScript.php directly (instead of
+        #  using mwscript) in order to avoid the extra "Start run" and "Stop run" log lines. After
+        #  https://gitlab.wikimedia.org/repos/releng/release/-/merge_requests/175 is merged (or, if
+        #  we decide we want to include that output after all) this can be replaced with
+        #    command = ['usr/local/bin/mwscript']
+        #    mwscript_args = [args.script_name, *args.script_args]
+        #  in order to use the helper script consistently. After that, the section of
+        #  lamp/deployment.yaml.tpl labeled "backwards compatibility T378479" can be cleaned up too.
+        command = ['/usr/bin/php']
+        mwscript_args = [args.script_name, *args.script_args]
+
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
     # messy escaping. Instead, we'll write it to a values file, and pass that *path* to helmfile. As
     # long as we're doing that, we'll set all these values that way.
@@ -293,8 +314,9 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             ),
         },
         'mwscript': {
-            'command': ['/usr/bin/php'],
-            'args': [args.script_name, *args.script_args],
+            'command': command,
+            'args': mwscript_args,
+            'dblist': args.dblist,
             'env': dict(args.env) if args.env else None,
             'labels': {
                 'username': interactive.get_username(),
@@ -449,6 +471,10 @@ def main() -> int:
                         help='Set a deadline for the job, to interrupt it after a set interval. '
                              'Examples: 1d, 2h, 30m, 40s, 40 -- number without unit is in seconds. '
                              '(Default: No deadline)')
+    parser.add_argument('--dblist', help='Specify a dblist suitable for foreachwikiindblist, which '
+                                         'will execute your script across all matching wikis. This '
+                                         'can be a filename in the dblists directory like '
+                                         '"s1.dblist" or an expression like "s3 - testwikis".')
     parser.add_argument('-o', '--output', choices=['none', 'json'], default='none',
                         help='Machine-readable output on stdout, in addition to normal logging on '
                              'stderr. Options other than "none" are incompatible with --attach, '
