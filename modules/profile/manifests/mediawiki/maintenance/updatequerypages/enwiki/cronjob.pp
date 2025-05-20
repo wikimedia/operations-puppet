@@ -6,8 +6,15 @@ class profile::mediawiki::maintenance::updatequerypages::enwiki::cronjob(
     $team_label = 'mediawiki-special-pages'
 
     profile::mediawiki::periodic_job { 'updatequerypages_lonelypages_s1':
-        command  => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages',
-        interval => '*-15 01:00',
+        command                 => '/usr/local/bin/mwscriptwikiset updateSpecialPages.php s1.dblist --override --only=Lonelypages',
+        interval                => '*-15 01:00',
+        cron_schedule           => '0 1 15 * *',
+        team                    => $team_label,
+        script_label            => 'UpdateSpecialPages.php-lonelypages',
+        description             => 'Update special pages on s1: Lonely pages',
+        kubernetes              => true,
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 5097600, # 2 months
     }
 
     profile::mediawiki::periodic_job { 'updatequerypages_mostcategories_s1':
