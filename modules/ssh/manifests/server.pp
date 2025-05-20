@@ -46,6 +46,14 @@ class ssh::server (
         fail('Specify only one of $puppetserver_ca_host_certs or $host_certs')
     }
 
+    if $authorized_keys_command == undef and $authorized_keys_command_user {
+        fail('If authorized_keys_command_user is enabled, you also need to configure authorized_keys_command.')
+    }
+
+    if $authorized_keys_command and $authorized_keys_command_user == undef {
+        fail('If authorized_keys_command is enabled, you also need to configure authorized_keys_command_user.')
+    }
+
     $_permit_root = $permit_root ? {
         String  => $permit_root,
         false   => 'no',
@@ -66,6 +74,12 @@ class ssh::server (
         $disable_keyboard = 'KbdInteractiveAuthentication no'
     } else {
         $disable_keyboard = 'ChallengeResponseAuthentication no'
+    }
+
+    if debian::codename::ge('trixie') {
+        $ssh_puppet_conf = '/etc/ssh/sshd_config.d/10-wikimedia-base.conf'
+    } else {
+        $ssh_puppet_conf = '/etc/ssh/sshd_config'
     }
 
     # we use the legacy facts here specificaly because we override them in
@@ -112,7 +126,7 @@ class ssh::server (
 
     service { 'ssh':
         ensure    => running,
-        subscribe => File['/etc/ssh/sshd_config'],
+        subscribe => File[$ssh_puppet_conf],
     }
 
     profile::auto_restarts::service { 'ssh': }
@@ -135,14 +149,23 @@ class ssh::server (
         }
     }
 
-    file { '/etc/ssh/sshd_config':
-        ensure       => file,
-        owner        => 'root',
-        group        => 'root',
-        mode         => '0444',
-        content      => template('ssh/sshd_config.erb'),
-        validate_cmd => '/usr/sbin/sshd -t -f %',
-        require      => Package['openssh-server'],
+    if debian::codename::ge('trixie') {
+        file { $ssh_puppet_conf:
+            ensure       => file,
+            mode         => '0444',
+            content      => template('ssh/sshd_config-ng.erb'),
+            validate_cmd => '/usr/sbin/sshd -t',
+        }
+    } else {
+        file { $ssh_puppet_conf:
+            ensure       => file,
+            owner        => 'root',
+            group        => 'root',
+            mode         => '0444',
+            content      => template('ssh/sshd_config.erb'),
+            validate_cmd => '/usr/sbin/sshd -t -f %',
+            require      => Package['openssh-server'],
+        }
     }
 
     if wmflib::have_puppetdb() {

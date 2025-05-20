@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file contains all the puppetised changes on top of the default Debian sshd config
+
+<%- @listen_ports.each do |port| -%>
+# Non-default ports have been configured via profile::ssh::server::listen_ports:
+Port <%= port %>
+<%- end -%>
+<%- unless @listen_addresses.empty? -%>
+    <%- @listen_addresses.each do |listen| -%>
+ListenAddress <%= listen %>
+    <%- end -%>
+<%- end -%>
+
+<%- @key_types.each do |type| -%>
+HostKey /etc/ssh/ssh_host_<%= type %>_key
+  <%- if @ssh_ca_key_available or @host_certs.length > 0 -%>
+HostCertificate /etc/ssh/ssh_host_<%= type %>_key-cert.pub
+  <%- end -%>
+<%- end -%>
+<%- if @trusted_user_ca_keys.length > 0 -%>
+TrustedUserCAKeys /etc/ssh/trusted_user_ca_keys.pub
+  <%- if @authorized_principals_file -%>
+AuthorizedPrincipalsFile <%= @authorized_principals_file %>
+  <%- end -%>
+<%- end -%>
+
+LogLevel VERBOSE
+
+PermitRootLogin <%= @_permit_root %>
+
+<%- if @authorized_keys_file.length > 0 -%>
+AuthorizedKeysFile	<%= @authorized_keys_file.join(' ') %>
+<%- end -%>
+
+IgnoreUserKnownHosts yes
+
+PasswordAuthentication no
+
+<%- if @disable_agent_forwarding -%>
+AllowAgentForwarding no
+<%- end -%>
+
+<%- if @enable_kerberos -%>
+GSSAPIAuthentication yes
+<%- end -%>
+
+<%- if @gateway_ports -%>
+# Allow remote hosts to connect to ports forwarded by the client
+GatewayPorts yes
+<%- end -%>
+<%- if @max_sessions -%>
+MaxSessions <%= @max_sessions %>
+<%- end -%>
+<%- if @max_startups -%>
+MaxStartups <%= @max_startups %>
+<%- end -%>
+
+<%- unless @accept_env.empty? -%>
+AcceptEnv <%= @accept_env.join(' ') %>
+<%- end -%>
+
+<%- if @authorized_keys_command and @authorized_keys_command_user -%>
+Match user *,!root  # T394283
+  AuthorizedKeysCommand <%= @authorized_keys_command %>
+  AuthorizedKeysCommandUser <%= @authorized_keys_command_user %>
+<%- end -%>
+##
+## Anything below this point must start with a match declaration
+## or will only apply to the previous Matches above.
+##
+<%- @match_config.each do |match| -%>
+Match <%= match['criteria'] %> <%= match['patterns'].join(',') %>
+  <%- match['config'].each_pair do |item, value| -%>
+  <%= item %> <%= value %>
+  <%- end -%>
+<%- end -%>
