@@ -32,6 +32,12 @@ labels:
 <%- if 'blockdevice_nvme0n1_model' in $host_details[$node] { -%>
 <%- if $host_details[$node]['blockdevice_nvme0n1_model'].match(/NVMe/) { -%>
   - NVMe
+<%- } elsif $host_details[$node]['blockdevice_nvme0n1_model'].match(/BOSS/) and 'blockdevice_nvme1n1_model' in $host_details[$node] { -%>
+<%- if $host_details[$node]['blockdevice_nvme1n1_model'].match(/NVMe/) { -%>
+  - NVMe
+<%- } else { -%>
+  - Unknown_storage # Found second NVME, didn't recognise it
+<%- } -%>
 <%- } } else { -%>
   - Unknown_storage # We won't be able to put OSDs on this node!
 <%- } -%>
