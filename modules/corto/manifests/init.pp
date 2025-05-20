@@ -167,20 +167,17 @@ class corto(
         content   => secret('corto/gdrive-creds.json'),
     }
 
-    $service_run = $ensure ? {
-        present => running,
-        absent => stopped,
-    }
-
     $service_enable = $ensure ? {
         present => true,
         absent => false,
     }
 
     service { 'corto':
-        ensure => $service_run,
+        ensure => stdlib::ensure($ensure, 'service'),
         enable => $service_enable,
     }
 
-    profile::auto_restarts::service { 'corto': }
+    profile::auto_restarts::service { 'corto':
+      ensure => $ensure,
+    }
 }
