@@ -86,6 +86,7 @@ class profile::cache::varnish::frontend (
     $packages = [
         'libvmod-netmapper',
         'libvmod-querysort',  # T138093
+        'libvmod-wmfuniq',
         'varnish',
         'varnish-modules',
         'varnish-re2',
@@ -117,15 +118,9 @@ class profile::cache::varnish::frontend (
         }
     }
 
-    # TODO: Move it to the list of packages above as soon as it's deployed
-    # across the whole CDN
-    package { 'libvmod-wmfuniq':
-        ensure => $do_edge_uniques.bool2str('installed', 'absent'),
-    }
-
     $wmfuniq_secret_base_path = '/etc/varnish/uniques.d'
     file {$wmfuniq_secret_base_path:
-        ensure    => $do_edge_uniques.bool2str('directory', 'absent'),
+        ensure    => 'directory',
         owner     => 'root',
         group     => 'varnish',
         mode      => '0750',
@@ -136,7 +131,7 @@ class profile::cache::varnish::frontend (
     $wmfuniq_secrets = wmflib::list_secrets('wmfuniq')
     $wmfuniq_secrets.each|String $secret| {
         file { "${wmfuniq_secret_base_path}/${secret}":
-            ensure    => $do_edge_uniques.bool2str('present', 'absent'),
+            ensure    => 'present',
             owner     => 'root',
             group     => 'varnish',
             mode      => '0640',
@@ -149,7 +144,7 @@ class profile::cache::varnish::frontend (
     # TODO: this will be replaced eventually by an automatically fetched JSON
     # file from cp servers
     file { $edge_uniques_cfg_path:
-        ensure => $do_edge_uniques.bool2str('present', 'absent'),
+        ensure => 'present',
         owner  => 'root',
         group  => 'varnish',
         mode   => '0640',
