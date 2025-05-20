@@ -156,10 +156,10 @@ def get_primary_dc() -> str:
 
 
 def mediawiki_image(php_version: Optional[str]) -> str:
-    # Find out what the most recently deployed multiversion image is and use that. This might not be
-    # the same image that's actually running in the "normal" releases like mw-web (particularly if
-    # we're in the middle of a deployment or rollback) but the values file is world-readable so this
-    # works even if the user isn't in the deployment group.
+    # Find out what the most recently deployed multiversion-cli image is and use that. This might
+    # not be the same version that's actually running in the "normal" releases like mw-web
+    # (particularly if we're in the middle of a deployment or rollback) but the values file is
+    # world-readable so this works even if the user isn't in the deployment group.
     if php_version is None:
         php_version = DEFAULT_RELEASE_VALUES_PHP_VERSION
     with open(RELEASE_VALUES[php_version], 'r') as f:
@@ -293,6 +293,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             ),
         },
         'mwscript': {
+            'command': ['/usr/bin/php'],
             'args': [args.script_name, *args.script_args],
             'env': dict(args.env) if args.env else None,
             'labels': {
@@ -427,8 +428,8 @@ def main() -> int:
                              'Include the full helmfile diff.)')
     parser.add_argument('--comment', help='Set a comment label on the Kubernetes job.')
     parser.add_argument('--mediawiki_image',
-                        help='Specify a MediaWiki image (without registry), e.g. '
-                             'restricted/mediawiki-multiversion:2024-08-08-135932-publish '
+                        help='Specify a MediaWiki CLI image (without registry), e.g. '
+                             'restricted/mediawiki-multiversion-cli:2025-05-20-205526-publish-81 '
                              '(Default: Use the latest image built and deployed by scap)')
     parser.add_argument('--php_version',
                         choices=RELEASE_VALUES.keys(),
