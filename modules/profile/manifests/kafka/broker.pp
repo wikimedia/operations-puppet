@@ -194,6 +194,9 @@ class profile::kafka::broker(
 ) {
     include profile::kafka::common
 
+    # Set performance governor
+    class { 'cpufrequtils': }
+
     $config         = kafka_config($kafka_cluster_name)
     $cluster_name   = $config['name']
     $zookeeper_url  = $config['zookeeper']['url']
