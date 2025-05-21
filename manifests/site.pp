@@ -2731,7 +2731,7 @@ node /^arclamp2001\.codfw\./ {
 
 # zuul - main
 node /^zuul([1-2]001)\.(codfw|eqiad)\./ {
-    role(insetup::collaboration_services_ferm)
+    role(zuul::main)
 }
 
 # zuul - executors
