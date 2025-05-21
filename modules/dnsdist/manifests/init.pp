@@ -35,6 +35,9 @@
 # @param tcp_client_threads_max
 #    [int] maximum number of TCP client threads. default: 20.
 #
+# @param tcp_queries_per_connection_max
+#    [int] maximum number of queries in an incoming TCP connection. default: 50.
+#
 # @param enable_console
 #    [bool] whether to enable dnsdist's console. default: false.
 #
@@ -68,21 +71,22 @@ class dnsdist (
     Dnsdist::TLS_common                 $tls_common,
     Dnsdist::TLS_config                 $tls_config_doh,
     Dnsdist::TLS_config                 $tls_config_dot,
-    Boolean                             $enable_wikidough       = true,
-    Array[String[1]]                    $doh_paths              = ['/', '/dns-query'],
-    Boolean                             $enable_packetcache     = true,
-    Integer[1]                          $packetcache_max        = 10000000,
-    Integer[0]                          $ringbuffer_max         = 0,
-    Integer[1]                          $tcp_client_threads_max = 20,
-    Boolean                             $enable_console         = false,
-    Optional[String]                    $console_key            = undef,
-    Boolean                             $enable_webserver       = false,
-    Boolean                             $drop_querytype_any     = true,
-    Optional[Dnsdist::Webserver_config] $webserver              = undef,
-    Boolean                             $enable_ecs             = true,
-    Boolean                             $enable_landing         = false,
-    Optional[String]                    $landing_text           = undef,
-    Dnsdist::Http_headers               $custom_headers         = {},
+    Boolean                             $enable_wikidough               = true,
+    Array[String[1]]                    $doh_paths                      = ['/', '/dns-query'],
+    Boolean                             $enable_packetcache             = true,
+    Integer[1]                          $packetcache_max                = 10000000,
+    Integer[0]                          $ringbuffer_max                 = 0,
+    Integer[1]                          $tcp_client_threads_max         = 20,
+    Integer[1]                          $tcp_queries_per_connection_max = 50,
+    Boolean                             $enable_console                 = false,
+    Optional[String]                    $console_key                    = undef,
+    Boolean                             $enable_webserver               = false,
+    Boolean                             $drop_querytype_any             = true,
+    Optional[Dnsdist::Webserver_config] $webserver                      = undef,
+    Boolean                             $enable_ecs                     = true,
+    Boolean                             $enable_landing                 = false,
+    Optional[String]                    $landing_text                   = undef,
+    Dnsdist::Http_headers               $custom_headers                 = {},
 ) {
 
     if ($enable_console and $console_key == undef) {

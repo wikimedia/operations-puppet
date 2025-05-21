@@ -56,6 +56,10 @@ addAction(AndRule({QNameRule('dough.wikimedia-dns.org.'), QTypeRule(DNSQType.TXT
 -- set the maximum number of TCP client threads (dnsdist's default is 10)
 setMaxTCPClientThreads(<%= @tcp_client_threads_max %>)
 
+-- set maximum number of queries in an incoming TCP connection (default is 50, set by us)
+-- see https://www.dnsdist.org/security-advisories/powerdns-advisory-for-dnsdist-2025-03.html
+setMaxTCPQueriesPerConnection(<%= @tcp_queries_per_connection_max %>)
+
 -- == Privacy ==
 
 -- restrict the size of the in-memory ring buffers used for traffic inspection
