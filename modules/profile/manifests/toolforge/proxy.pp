@@ -1,6 +1,5 @@
 class profile::toolforge::proxy (
     Stdlib::Fqdn               $web_domain               = lookup('profile::toolforge::web_domain',        {default_value => 'toolforge.org'}),
-    Array[Stdlib::Fqdn]        $prometheus               = lookup('prometheus_nodes',                      {default_value => ['localhost']}),
     Stdlib::Fqdn               $k8s_vip_fqdn             = lookup('profile::toolforge::k8s::apiserver_fqdn',{default_value => 'k8s.tools.eqiad1.wikimedia.cloud'}),
     Stdlib::Port               $k8s_vip_port             = lookup('profile::toolforge::k8s::ingress_port', {default_value => 30000}),
     Integer                    $rate_limit_requests      = lookup('profile::toolforge::proxy::rate_limit_requests', {default_value => 100}),
@@ -147,14 +146,6 @@ class profile::toolforge::proxy (
 
     # prometheus nginx metrics
     class { 'prometheus::nginx_exporter': }
-
-    $prometheus_hosts = join($prometheus, ' ')
-    ferm::service { 'prometheus_nginx_exporter':
-        proto  => 'tcp',
-        port   => '9113', # this is the default
-        desc   => 'prometheus nginx exporter',
-        srange => "@resolve((${prometheus_hosts}))",
-    }
 
     prometheus::blackbox::check::http { $web_domain:
         path                => '/.well-known/healthz',
