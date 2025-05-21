@@ -1,3 +1,6 @@
+# Let's keep multiinstance ports in the 3310-3329 &
+# 3350-3369 range, so they don't conflict with the
+# port + 20 default por for the extra connection socket.
 profile::mariadb::section_ports:
   s1: 3311
   s2: 3312
@@ -9,8 +12,8 @@ profile::mariadb::section_ports:
   s8: 3318
   s9: 3319
   x1: 3320
-  x2: 3330
-  x3: 3340
+  x2: 3362
+  x3: 3363
   m1: 3321
   m2: 3322
   m3: 3323
