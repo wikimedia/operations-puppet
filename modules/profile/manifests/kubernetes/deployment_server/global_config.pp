@@ -381,6 +381,8 @@ class profile::kubernetes::deployment_server::global_config (
             'maps-read-replicas-codfw' => wmflib::role::ips('maps::replica', 'codfw'),
             'maps-master-eqiad' => wmflib::role::ips('maps::master', 'eqiad'),
             'maps-master-codfw' => wmflib::role::ips('maps::master', 'codfw'),
+            'maps-bookworm-read-replicas-codfw' => wmflib::role::ips('maps::replica_bookworm', 'codfw'),
+            'maps-bookworm-master-codfw' => wmflib::role::ips('maps::master_bookworm', 'codfw'),
           },
         },
         'puppet' => {
