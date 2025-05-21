@@ -38,6 +38,7 @@ class openstack::cinder::volume(
     }
 
     service { 'cinder-volume':
+        ensure  => running,
         require => Package['cinder-volume'],
     }
 }
