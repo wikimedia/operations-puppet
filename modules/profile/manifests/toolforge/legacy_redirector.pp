@@ -61,7 +61,6 @@ class profile::toolforge::legacy_redirector (
     prometheus::blackbox::check::http {
         default:
             port                => $monitor_port,
-            ip_families         => ['ip4'],
             prometheus_instance => 'tools',
             team                => 'wmcs',
             timeout             => '10s',
