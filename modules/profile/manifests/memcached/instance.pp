@@ -33,6 +33,9 @@
 #   User to run memcached as.
 #   Default: undef
 #
+# [*performance_cpu_governor*]
+#   Enable the CPU governor for performance.
+#
 # [*extstore_ensure*]
 #   Ensure state of the extstore path.  This enables the extstore featur Default: absent
 #   https://github.com/memcached/memcached/wiki/Extstore
@@ -82,26 +85,30 @@
 
 
 class profile::memcached::instance (
-    String                     $version          = lookup('profile::memcached::version'),
-    Stdlib::Port               $port             = lookup('profile::memcached::port'),
-    Integer                    $size             = lookup('profile::memcached::size'),
-    Array[String]              $extended_options = lookup('profile::memcached::extended_options'),
-    Integer                    $max_seq_reqs     = lookup('profile::memcached::max_seq_reqs'),
-    Integer                    $min_slab_size    = lookup('profile::memcached::min_slab_size'),
-    Float                      $growth_factor    = lookup('profile::memcached::growth_factor'),
-    String                     $memcached_user   = lookup('profile::memcached::memcached_user'),
-    Optional[WMFlib::Ensure]   $extstore_ensure  = lookup('profile::memcached::extstore_ensure'),
-    Optional[Integer]          $extstore_size    = lookup('profile::memcached::extstore_size'),
-    Optional[Stdlib::Unixpath] $extstore_path    = lookup('profile::memcached::extstore_path'),
-    Optional[Boolean]          $enable_tls       = lookup('profile::memcached::enable_tls'),
-    Optional[Stdlib::Port]     $notls_port       = lookup('profile::memcached::notls_port'),
-    Optional[Stdlib::Unixpath] $ssl_cert         = lookup('profile::memcached::ssl_cert'),
-    Optional[Stdlib::Unixpath] $ssl_key          = lookup('profile::memcached::ssl_key'),
-    Optional[Stdlib::Unixpath] $localcacert      = lookup('profile::memcached::localcacert'),
-    Optional[Integer]          $threads          = lookup('profile::memcached::threads'),
-    Optional[Firewall::Hosts]  $srange           = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
+    String                     $version                 = lookup('profile::memcached::version'),
+    Stdlib::Port               $port                     = lookup('profile::memcached::port'),
+    Integer                    $size                     = lookup('profile::memcached::size'),
+    Array[String]              $extended_options         = lookup('profile::memcached::extended_options'),
+    Integer                    $max_seq_reqs             = lookup('profile::memcached::max_seq_reqs'),
+    Integer                    $min_slab_size            = lookup('profile::memcached::min_slab_size'),
+    Float                      $growth_factor            = lookup('profile::memcached::growth_factor'),
+    String                     $memcached_user           = lookup('profile::memcached::memcached_user'),
+    Optional[Boolean]          $performance_cpu_governor = lookup('profile::memcached::performance_cpu_governor'),
+    Optional[WMFlib::Ensure]   $extstore_ensure          = lookup('profile::memcached::extstore_ensure'),
+    Optional[Integer]          $extstore_size            = lookup('profile::memcached::extstore_size'),
+    Optional[Stdlib::Unixpath] $extstore_path            = lookup('profile::memcached::extstore_path'),
+    Optional[Boolean]          $enable_tls               = lookup('profile::memcached::enable_tls'),
+    Optional[Stdlib::Port]     $notls_port               = lookup('profile::memcached::notls_port'),
+    Optional[Stdlib::Unixpath] $ssl_cert                 = lookup('profile::memcached::ssl_cert'),
+    Optional[Stdlib::Unixpath] $ssl_key                  = lookup('profile::memcached::ssl_key'),
+    Optional[Stdlib::Unixpath] $localcacert              = lookup('profile::memcached::localcacert'),
+    Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
+    Optional[Firewall::Hosts]  $srange                   = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
 ) {
     include ::profile::prometheus::memcached_exporter
+    if $performance_cpu_governor {
+        class { 'cpufrequtils': }
+    }
 
     $extstore = $extstore_ensure ? {
         present => ["ext_path=${extstore_path}/datafile:${extstore_size}G"],
