@@ -259,7 +259,9 @@ profile::gitlab::runner::allowed_images:
   # Elasticsearch official - T327519:
   - "docker.elastic.co/elasticsearch/*:*"
   # Toolforge CI images
+  ## remove the wmflabs.org one once we moved all ci to toolforge.org
   - "docker-registry.tools.wmflabs.org/**/*"
+  - "docker-registry.svc.toolforge.org/**/*"
   # SonarQube cli image
   - "sonarsource/sonar-scanner-cli:*"
   # T372848: Blubber + Kokkuri images created from the "cloud" runners on DO
