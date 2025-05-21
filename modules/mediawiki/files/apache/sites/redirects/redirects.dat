@@ -64,7 +64,7 @@ rewrite	cz.wikiquote.org	https://cs.wikiquote.org
 rewrite	cz.wikisource.org	https://cs.wikisource.org
 rewrite	cz.wikiversity.org	https://cs.wikiversity.org
 rewrite	cz.wiktionary.org	https://cs.wiktionary.org
-rewrite	cz.wikinews.org	https://cs.wikinews.org
+rewrite	cz.wikinews.org	        https://cs.wikinews.org
 rewrite	dk.wikipedia.org	https://da.wikipedia.org
 rewrite	dk.wikibooks.org	https://da.wikibooks.org
 rewrite	dk.wiktionary.org	https://da.wiktionary.org
@@ -76,12 +76,20 @@ rewrite	nb.wikiquote.org	https://no.wikiquote.org
 rewrite	nb.wikibooks.org	https://no.wikibooks.org
 rewrite	nb.wikivoyage.org	https://no.wikivoyage.org
 rewrite	nb.wikisource.org	https://no.wikisource.org
-rewrite	nb.wikinews.org	https://no.wikinews.org
+rewrite	nb.wikinews.org	        https://no.wikinews.org
 funnel	nb.wikiversity.org	https://beta.wikiversity.org/wiki/Hovedside
 rewrite	lzh.wikipedia.org	https://zh-classical.wikipedia.org
 rewrite	nrf.wikipedia.org	https://nrm.wikipedia.org
 rewrite	sgs.wikipedia.org	https://bat-smg.wikipedia.org
 rewrite	vro.wikipedia.org	https://fiu-vro.wikipedia.org
+rewrite	tj.wikipedia.org	https://tg.wikipedia.org  # T393803
+rewrite	tj.wiktionary.org	https://tg.wiktionary.org # T393803
+rewrite	tj.wikiquote.org	https://tg.wikiquote.org  # T393803
+rewrite	tj.wikibooks.org	https://tg.wikibooks.org  # T393803
+rewrite	tj.wikivoyage.org	https://tg.wikivoyage.org # T393803
+rewrite	tj.wikisource.org	https://tg.wikisource.org # T393803
+rewrite	tj.wikinews.org	        https://tg.wikinews.org   # T393803
+
 # Although there is a rename of zh-yue pending (T30441), content
 # already exists at zh-yue so the rewrite must go that way for now (T105999)
 rewrite	yue.wikipedia.org	https://zh-yue.wikipedia.org
