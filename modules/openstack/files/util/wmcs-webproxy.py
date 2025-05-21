@@ -25,9 +25,9 @@ import mwopenstackclients
 logger = logging.getLogger(__name__)
 
 
-def url_template(client):
+def url_template(client, project):
     """Get the url template for accessing the proxy service."""
-    keystone = client.keystoneclient()
+    keystone = client.keystoneclient(project)
     proxy = keystone.services.list(type='proxy')[0]
     endpoint = keystone.endpoints.list(
         service=proxy.id, interface='public', enabled=True)[0]
@@ -35,7 +35,7 @@ def url_template(client):
 
 
 def proxy_client(client, project):
-    proxy_url = url_template(client).replace("$(tenant_id)s", project)
+    proxy_url = url_template(client, project).replace("$(tenant_id)s", project)
     session = client.session(project)
     return proxy_url, session
 
