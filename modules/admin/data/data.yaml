@@ -7521,3 +7521,7 @@ ldap_only_users:
     ensure: present
     realname: Jeni Merino
     email: jmerino@wikimedia.org
+  guilherme:
+    ensure: present
+    realname: Guilherme Goncalves
+    email: guilherme@wikimedia.org
