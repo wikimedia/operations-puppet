@@ -297,7 +297,7 @@ profile::opensearch::instances:
       - elastic1102.eqiad.wmnet # Row F
       - cirrussearch1073.eqiad.wmnet # Row A7
       - cirrussearch1075.eqiad.wmnet # Row B2
-      - cirrussearch1118.eqiad.wmnet
+      - cirrussearch1118.eqiad.wmnet # Row C4
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
