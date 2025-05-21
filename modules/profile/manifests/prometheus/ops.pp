@@ -873,13 +873,6 @@ class profile::prometheus::ops (
         port       => 9117,
     }
 
-    # Special config for Apache on RT servers
-    prometheus::class_config{ "apache_rt_${::site}":
-        dest       => "${targets_path}/apache_rt_${::site}.yaml",
-        class_name => 'role::requesttracker',
-        port       => 9117,
-    }
-
     # Special config for SQL Exporter on VRTS
     prometheus::class_config{ "sql_vrts_${::site}":
         dest       => "${targets_path}/sql_vrts_${::site}.yaml",
