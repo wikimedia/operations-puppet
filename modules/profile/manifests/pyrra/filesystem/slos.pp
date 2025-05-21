@@ -372,6 +372,7 @@ class profile::pyrra::filesystem::slos (
     # limited to primary sites only
     if $datacenter in ['eqiad', 'codfw'] {
         pyrra::filesystem::config { "wdqs-update-lag-${datacenter}.yaml":
+          ensure => absent,
           content => to_yaml({
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind' => 'ServiceLevelObjective',
@@ -393,7 +394,7 @@ class profile::pyrra::filesystem::slos (
                     },
                 },
             },
-          })
+          }),
         }
     }
 
