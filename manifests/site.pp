@@ -2718,8 +2718,20 @@ node /^arclamp2001\.codfw\./ {
     role(arclamp)
 }
 
-# zuul3 - T393873
-node /^zuul(100[1-3]|200[1-3])\.(codfw|eqiad)\./ {
+# new zuul machines - T393873
+
+# zuul - main
+node /^zuul([1-2]001)\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_ferm)
+}
+
+# zuul - executors
+node /^zuul([1-2]002)\.(codfw|eqiad)\./ {
+    role(insetup::collaboration_services_ferm)
+}
+
+# zuul - trusted runners
+node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
     role(insetup::collaboration_services_ferm)
 }
 
