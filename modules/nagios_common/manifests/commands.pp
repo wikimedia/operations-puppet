@@ -28,7 +28,7 @@ class nagios_common::commands(
         'libnet-ssleay-perl',
         'libio-socket-ssl-perl',
         'libio-socket-inet6-perl',
-        # check_bgp/check_jnx_alarms
+        # check_jnx_alarms
         'libnet-snmp-perl',
         'libtime-duration-perl',
         # check_vrrp
@@ -55,7 +55,6 @@ class nagios_common::commands(
 
     nagios_common::check_command { [
         'check_bfd.py',
-        'check_bgp',
         'check_dsh_groups',
         'check_graphite.py',
         'check_ifstatus_nomon',

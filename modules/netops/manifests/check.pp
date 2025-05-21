@@ -26,9 +26,6 @@
 # [*bfd*]
 #   Whether to perform BFD status checks. Defaults to false.
 #
-# [*bgp*]
-#   Whether to perform BGP checks. Defaults to false.
-#
 # [*critical*]
 #   Whether to page. Defaults to false.
 #
@@ -61,7 +58,7 @@
 #
 #  netops::check { 'cr1-esams':
 #      ipv4 => '91.198.174.245',
-#      bgp  => true,
+#      bfd  => true,
 #  }
 
 define netops::check(
@@ -71,7 +68,6 @@ define netops::check(
     String $group                           = 'network',
     Boolean $alarms                         = false,
     Boolean $bfd                            = false,
-    Boolean $bgp                            = false,
     Boolean $critical                       = false,
     Boolean $interfaces                     = false,
     Optional[Array[Stdlib::Host]] $parents  = undef,
@@ -126,16 +122,6 @@ define netops::check(
             description   => 'Router interfaces',
             check_command => "check_ifstatus_nomon!${snmp_community}",
             notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Router_interface_down',
-        }
-    }
-
-    if $bgp {
-        @monitoring::service { "${title} BGP status":
-            host          => $title,
-            group         => $group,
-            description   => 'BGP status',
-            check_command => "check_bgp!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BGP_status',
         }
     }
 
