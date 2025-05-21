@@ -233,7 +233,8 @@ gitlab_rails['object_store']['connection'] = {
 }
 
 gitlab_rails['object_store']['objects']['artifacts']['bucket'] = 'gitlab-artifacts'
-gitlab_rails['object_store']['objects']['packages']['bucket'] = 'gitlab-packages'
+#gitlab_rails['object_store']['objects']['packages']['bucket'] = 'gitlab-packages'
+gitlab_rails['object_store']['objects']['packages']['enabled'] = false
 
 gitlab_rails['object_store']['objects']['external_diffs']['enabled'] = false
 gitlab_rails['object_store']['objects']['lfs']['enabled'] = false
