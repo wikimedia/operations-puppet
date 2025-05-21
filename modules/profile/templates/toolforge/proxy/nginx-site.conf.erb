@@ -31,6 +31,7 @@ geo $bad_user {
 <%- if @acme_certname -%>
 server {
     listen 80 default_server;
+    listen [::]:80 default_server;
     server_name _;
     # 308 is the more proper return code, but lots of crappy old clients do
     # not understand it. So we will instead stick with the ancient 301 and
@@ -49,8 +50,8 @@ server {
     resolver <%= @resolver %>;
 
     <%- if @acme_certname -%>
-    # Serve both HTTP and HTTPS
     listen 443 default_server ssl http2;
+    listen [::]:443 default_server ssl http2;
 
     ssl_certificate /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.chained.crt;
     ssl_certificate_key /etc/acmecerts/<%= @acme_certname %>/live/ec-prime256v1.key;
@@ -69,6 +70,7 @@ server {
     add_header Strict-Transport-Security "max-age=31622400" always;
     <%- else %>
     listen 80;
+    listen [::]:80;
     <%- end -%>
 
     # Some projects have tools that take data in and process them
