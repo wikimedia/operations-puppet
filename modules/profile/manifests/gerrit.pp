@@ -26,8 +26,6 @@ class profile::gerrit(
     Stdlib::Fqdn                      $active_host         = lookup('profile::gerrit::active_host'),
     Boolean                           $lfs_replica_sync    = lookup('profile::gerrit::lfs_replica_sync'),
     Optional[Array[Stdlib::Fqdn]]     $lfs_sync_dest       = lookup('profile::gerrit::lfs_sync_dest'),
-    # TODO: Import them from confd/requestctl later T348734
-    Array[Stdlib::IP::Address]        $gerrit_abusers      = lookup('profile::gerrit::gerrit_abusers'),
 ) {
     require ::profile::java
     require ::passwords::gerrit
@@ -73,44 +71,6 @@ class profile::gerrit(
         proto  => 'tcp',
         port   => 443,
         drange => [$ipv4, $ipv6],
-    }
-
-    $ensure_abusers = empty($gerrit_abusers) ? {
-        true    => 'absent',
-        default => 'present',
-    }
-
-    # nftables has a problem with dropping of empty sets, so make sure we just create the drop rule if needed
-    # Otherwise the sets have to be created with the dynamic flag
-    $ipv4_abusers = $gerrit_abusers.filter |$ip| { $ip =~ Stdlib::IP::Address::V4 }
-    $ipv6_abusers = $gerrit_abusers.filter |$ip| { $ip =~ Stdlib::IP::Address::V6 }
-    $ensure_abusers_v4 = empty($ipv4_abusers) ? {
-        true    => 'absent',
-        default => 'present',
-    }
-    $ensure_abusers_v6 = empty($ipv6_abusers) ? {
-        true    => 'absent',
-        default => 'present',
-    }
-
-    # Create a nftables set GERRIT_ABUSERS and drop all traffic
-    nftables::set { 'GERRIT_ABUSERS':
-        ensure => $ensure_abusers,
-        hosts  => $gerrit_abusers,
-    }
-    nftables::file::input { 'drop-abuser-nets-v4':
-        ensure  => $ensure_abusers_v4,
-        order   => 9,
-        content => @(EOF/L)
-            ip saddr @GERRIT_ABUSERS_ipv4 drop
-            | EOF
-    }
-    nftables::file::input { 'drop-abuser-nets-v6':
-        ensure  => $ensure_abusers_v6,
-        order   => 9,
-        content => @(EOF/L)
-            ip6 saddr @GERRIT_ABUSERS_ipv6 drop
-            | EOF
     }
 
     if $backups_enabled and $backup_set != undef {
