@@ -569,6 +569,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
     - partman/custom/kubernetes-node-containerd-efi.cfg
+  # Use new containerd partman config (which includes the larger kubelet
+  # partition)
+  'ml-serve1001*':
+    - partman/standard.cfg
+    - partman/raid1-2dev.cfg
+    - partman/custom/kubernetes-node-containerd.cfg
   # using ml-serve* here would over-match the control plane (see entry above)
   'ml-serve[12]*':
     - partman/standard.cfg
