@@ -15,11 +15,12 @@ class toolforge::toolviews (
     ])
 
     file { '/etc/toolviews.yaml':
-        ensure  => file,
-        content => template('toolforge/toolviews.yaml.erb'),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
+        ensure    => file,
+        content   => template('toolforge/toolviews.yaml.erb'),
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        show_diff => false,
     }
 
     file { '/usr/local/bin/toolviews.py':
