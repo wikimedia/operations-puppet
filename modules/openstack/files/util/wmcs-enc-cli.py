@@ -10,7 +10,7 @@ import requests
 
 
 def get_url(clients, project):
-    keystone = clients.keystoneclient()
+    keystone = clients.keystoneclient(project)
     proxy = keystone.services.list(type="puppet-enc")[0]
     endpoint = keystone.endpoints.list(
         service=proxy.id, interface="public", enabled=True
