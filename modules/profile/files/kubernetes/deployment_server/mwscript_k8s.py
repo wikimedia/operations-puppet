@@ -291,15 +291,7 @@ def start(args: argparse.Namespace) -> dict[str, str]:
         command = ['/usr/local/bin/foreachwikiindblist']
         mwscript_args = [args.dblist, args.script_name, *args.script_args]
     else:
-        # TODO: When not using foreachwikiindblist, this invokes MWScript.php directly (instead of
-        #  using mwscript) in order to avoid the extra "Start run" and "Stop run" log lines. After
-        #  https://gitlab.wikimedia.org/repos/releng/release/-/merge_requests/175 is merged (or, if
-        #  we decide we want to include that output after all) this can be replaced with
-        #    command = ['usr/local/bin/mwscript']
-        #    mwscript_args = [args.script_name, *args.script_args]
-        #  in order to use the helper script consistently. After that, the section of
-        #  lamp/deployment.yaml.tpl labeled "backwards compatibility T378479" can be cleaned up too.
-        command = ['/usr/bin/php']
+        command = ['/usr/local/bin/mwscript']
         mwscript_args = [args.script_name, *args.script_args]
 
     # Since mwscript.args is a list, passing it on the helmfile command line would get into some
@@ -317,7 +309,12 @@ def start(args: argparse.Namespace) -> dict[str, str]:
             'command': command,
             'args': mwscript_args,
             'dblist': args.dblist,
-            'env': dict(args.env) if args.env else None,
+            'env': {
+                # Enables "classic" mwscript and foreachwikiindblist logging behavior in the
+                # in-container mwscript helper.
+                'MWSCRIPT_COMPATIBLE_LOGGING': 1,
+                **(dict(args.env) if args.env else {}),
+            },
             'labels': {
                 'username': interactive.get_username(),
                 # The label can't contain slashes or colons. If script_name has a path or an
