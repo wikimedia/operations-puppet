@@ -103,10 +103,10 @@ class profile::puppet::agent (
         certificate_revocation => $_certificate_revocation,
         facts_soft_limit       => $facts_soft_limit,
     }
+
     class { 'puppet_statsd':
-        statsd_host   => 'statsd.eqiad.wmnet',
-        metric_format => 'puppet.<%= metric %>',
     }
+
     class { 'prometheus::node_puppet_agent': }
     include profile::puppet::client_bucket
 
