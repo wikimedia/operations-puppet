@@ -69,8 +69,14 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # monitor dangling link recommendation entries (DB record without search index record or vice versa)
     profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
-        interval => '*-*-* 07:20:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
+        interval              => '*-*-* 07:20:00',
+        cron_schedule         => '20 7 * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'fixLinkRecommendationData.php-dryrun',
+        description           => 'monitor dangling link recommendation entries (DB record without search index record or vice versa)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # purge expired rows from the database (Mentor dashboard, T280307)
@@ -100,12 +106,24 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # update user impact data (T313395)
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactUpdateRecentlyRegistered':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
-        interval => '*-*-* 05:15:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
+        interval              => '*-*-* 05:15:00',
+        cron_schedule         => '15 5 * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'refreshUserImpactData.php-recentlyregistered',
+        description           => 'update user impact data (recently registered users)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
     profile::mediawiki::periodic_job { 'growthexperiments-userImpactUpdateRecentlyEdited':
-        command  => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=1year --editedWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
-        interval => '*-*-* 07:45:00',
+        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/refreshUserImpactData.php --registeredWithin=1year --editedWithin=2week --hasEditsAtLeast=3 --ignoreIfUpdatedWithin=6hour --verbose --use-job-queue',
+        interval              => '*-*-* 07:45:00',
+        cron_schedule         => '45 7 * * *',
+        kubernetes            => true,
+        team                  => $team_name,
+        script_label          => 'refreshUserImpactData.php-recentlyedited',
+        description           => 'update user impact data (recent edit users)',
+        helmfile_defaults_dir => $helmfile_defaults_dir,
     }
 
     # delete old user impact data (T313395)
