@@ -3,8 +3,7 @@ profile::openstack::codfw1dev::version: 'epoxy'
 profile::openstack::codfw1dev::horizon_version: 'caracal'
 
 # Keep codfw1dev APIs limited to VMs and prod hosts
-# Temporarily opened to permit some local dev/testing
-profile::openstack::codfw1dev::public_apis: true
+profile::openstack::codfw1dev::public_apis: false
 
 profile::openstack::codfw1dev::openstack_control_nodes:
   - host_fqdn: cloudcontrol2004-dev.codfw.wmnet
