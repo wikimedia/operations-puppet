@@ -2338,7 +2338,7 @@ node /^pc1018\.eqiad\./ {
 
 # Future pc8 codfw host
 node /^pc2018\.codfw\./ {
-    role(insetup::data_persistence_ferm)
+    role(mariadb::parsercache)
 }
 
 # codfw
