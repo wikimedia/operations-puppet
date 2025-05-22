@@ -8,7 +8,7 @@ class profile::mediawiki::maintenance::parsercachepurging(
     #
     # WARNING: Increasing msleep may cause exponential growth. Deletes must outpace other writes! (T282761)
     #
-    ['pc1', 'pc2', 'pc3', 'pc4', 'pc5', 'pc6', 'pc7'].each |$pc_cluster| {
+    ['pc1', 'pc2', 'pc3', 'pc4', 'pc5', 'pc6', 'pc7', 'pc8'].each |$pc_cluster| {
         profile::mediawiki::periodic_job { "purge_parsercache_${pc_cluster}":
             command               => "/usr/local/bin/mwscript purgeParserCache.php --wiki=aawiki --tag ${pc_cluster} --age=2592000 --msleep 200",
             interval              => '01:00',
