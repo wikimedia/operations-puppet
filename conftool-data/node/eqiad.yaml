@@ -464,6 +464,7 @@ eqiad:
     ml-serve-ctrl1001.eqiad.wmnet: [kubemaster]
     ml-serve-ctrl1002.eqiad.wmnet: [kubemaster]
     ml-serve1001.eqiad.wmnet: [kubesvc]
+    ml-serve1002.eqiad.wmnet: [kubesvc]
     ml-serve1003.eqiad.wmnet: [kubesvc]
     ml-serve1004.eqiad.wmnet: [kubesvc]
     ml-serve1005.eqiad.wmnet: [kubesvc]
