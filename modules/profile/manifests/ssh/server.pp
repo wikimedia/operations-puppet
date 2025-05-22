@@ -6,7 +6,6 @@
 # @param authorized_keys_file space seperated list of authorized keys files
 # @param lookup_keys_from_ldap if true, user keys will be looked up from ldap
 # @param explicit_macs Allow users to opt out of more secure MACs
-# @param enable_hba enable host based authentication
 # @param enable_kerberos enable kerberos
 # @param disable_agent_forwarding disable agent forwarding
 # @param max_sessions allow users to override the maximum number ops sessions
@@ -29,7 +28,6 @@ class profile::ssh::server (
     Array[Stdlib::Unixpath]      $authorized_keys_file       = lookup('profile::ssh::server::authorized_keys_file'),
     Boolean                      $lookup_keys_from_ldap      = lookup('profile::ssh::server::lookup_keys_from_ldap'),
     Boolean                      $explicit_macs              = lookup('profile::ssh::server::explicit_macs'),
-    Boolean                      $enable_hba                 = lookup('profile::ssh::server::enable_hba'),
     Boolean                      $enable_kerberos            = lookup('profile::ssh::server::enable_kerberos'),
     Boolean                      $disable_agent_forwarding   = lookup('profile::ssh::server::disable_agent_forwarding'),
     Optional[Integer]            $max_sessions               = lookup('profile::ssh::server::max_sessions'),

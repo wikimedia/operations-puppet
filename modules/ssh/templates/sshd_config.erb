@@ -56,15 +56,7 @@ AuthorizedKeysFile	<%= @authorized_keys_file.join(' ') %>
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
 
-<%- if @enable_hba -%>
-HostbasedAuthentication yes
-HostbasedUsesNameFromPacketOnly no
-
-# matching entries shosts.equiv requires a reverse DNS lookup
-UseDNS yes
-<%- else -%>
 HostbasedAuthentication no
-<%- end -%>
 IgnoreUserKnownHosts yes
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)

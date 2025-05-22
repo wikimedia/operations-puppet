@@ -6,7 +6,6 @@
 # @param authorized_keys_command command to run for authorized keys
 # @param authorized_keys_command_user user to run authorized_keys_command as
 # @param explicit_macs Allow users to opt out of more secure MACs
-# @param enable_hba enable host based authentication
 # @param enable_kerberos enable kerberos
 # @param disable_agent_forwarding disable agent forwarding
 # @param max_sessions allow users to override the maximum number ops sessions
@@ -29,7 +28,6 @@ class ssh::server (
     Optional[Stdlib::Unixpath]   $authorized_keys_command      = undef,
     Optional[String[1]]          $authorized_keys_command_user = undef,
     Boolean                      $explicit_macs                = true,
-    Boolean                      $enable_hba                   = false,
     Boolean                      $enable_kerberos              = false,
     Boolean                      $disable_agent_forwarding     = true,
     Optional[Integer]            $max_sessions                 = undef,
