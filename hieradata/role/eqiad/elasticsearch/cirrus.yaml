@@ -20,6 +20,7 @@ profile::elasticsearch::instances:
       - cirrussearch1122.eqiad.wmnet # Row D
       - cirrussearch1074.eqiad.wmnet # Row B2
       - cirrussearch1081.eqiad.wmnet # Row C4
+      - cirrussearch1094.eqiad.wmnet # Row E
     cluster_hosts:
       - elastic1053.eqiad.wmnet
       - elastic1054.eqiad.wmnet
@@ -185,7 +186,7 @@ profile::elasticsearch::instances:
       - cirrussearch1068.eqiad.wmnet # Row A4
       - cirrussearch1076.eqiad.wmnet # Row B4
       - cirrussearch1119.eqiad.wmnet # Row C
-
+      - cirrussearch1093.eqiad.wmnet # Row E
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
@@ -298,6 +299,7 @@ profile::elasticsearch::instances:
       - cirrussearch1073.eqiad.wmnet # Row A7
       - cirrussearch1075.eqiad.wmnet # Row B2
       - cirrussearch1118.eqiad.wmnet # Row C4
+      - cirrussearch1095.eqiad.wmnet # Row E
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
