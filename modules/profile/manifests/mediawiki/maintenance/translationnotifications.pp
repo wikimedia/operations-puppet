@@ -9,8 +9,15 @@ class profile::mediawiki::maintenance::translationnotifications(
 
     # MetaWiki
     profile::mediawiki::periodic_job { 'translationnotifications-metawiki':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki',
-        interval => 'Mon 10:00',
+        command                 => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki metawiki',
+        interval                => 'Mon 10:00',
+        cron_schedule           => '0 10 * * MON',
+        kubernetes              => true,
+        team                    => $team,
+        script_label            => 'DigestEmailer.php-metawiki',
+        description             => 'send email notification to translators on regular intervals on metawiki.',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveusers-metawiki':
@@ -28,8 +35,15 @@ class profile::mediawiki::maintenance::translationnotifications(
 
     # MediaWiki
     profile::mediawiki::periodic_job { 'translationnotifications-mediawikiwiki':
-        command  => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki',
-        interval => 'Mon 10:05',
+        command                 => '/usr/local/bin/mwscript extensions/TranslationNotifications/scripts/DigestEmailer.php --wiki mediawikiwiki',
+        interval                => 'Mon 10:05',
+        cron_schedule           => '05 10 * * MON',
+        kubernetes              => true,
+        team                    => $team,
+        script_label            => 'DigestEmailer.php-mediawikiwiki',
+        description             => 'send email notification to translators on regular intervals on mediawikiwiki.',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 
     profile::mediawiki::periodic_job { 'translationnotifs-unsubinactiveuser-mediawikiwiki':
