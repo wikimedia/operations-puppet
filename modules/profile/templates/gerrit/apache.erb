@@ -101,6 +101,10 @@
     BrowserMatch "Mac\ OS\ X\ 10\.[0-5];" bad_browser
     # Match Safari OS string
     BrowserMatch "Mac\ OS\ X\ 10\_[0-5]_" bad_browser
+    # Trident is Internet Explorer HTML engine (MSHTML)
+    # https://en.wikipedia.org/wiki/Trident_(software)#Release_history
+    # Trident 5 is IE9
+    BrowserMatch "Trident\/[1-5]\." bad_browser
 
 
     DocumentRoot /var/www
