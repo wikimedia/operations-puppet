@@ -2,5 +2,11 @@
 # new zuul (T393873) - main server
 class profile::zuul::main {
 
-    ensure_packages('docker.io')
+    ensure_packages(['docker.io', 'docker-compose'])
+
+    service { 'docker':
+        ensure => running,
+        enable => true,
+    }
+
 }
