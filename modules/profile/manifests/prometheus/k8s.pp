@@ -281,6 +281,14 @@ define profile::prometheus::k8s (
                     'source_labels' => ['__meta_kubernetes_pod_annotation_sidecar_istio_io_inject'],
                     'regex'         => '(true|false)',
                 },
+                # Avoid targets that correspond to pods in terminal states,
+                # such as those associated with completed jobs that remain
+                # visible in the API until their TTL expires. See T395052.
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__meta_kubernetes_pod_phase'],
+                    'regex'         => '(Succeeded|Failed)',
+                },
                 {
                     'action'        => 'replace',
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
@@ -355,6 +363,14 @@ define profile::prometheus::k8s (
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_scrape_by_name'],
                     'regex'         => true,
                 },
+                # Avoid targets that correspond to pods in terminal states,
+                # such as those associated with completed jobs that remain
+                # visible in the API until their TTL expires. See T395052.
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__meta_kubernetes_pod_phase'],
+                    'regex'         => '(Succeeded|Failed)',
+                },
                 {
                     'action'        => 'replace',
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_io_path'],
@@ -421,6 +437,14 @@ define profile::prometheus::k8s (
                     'source_labels' => ['envoy_cluster_name'],
                     'regex'         => '^admin_interface$',
                 },
+                # Avoid targets that correspond to pods in terminal states,
+                # such as those associated with completed jobs that remain
+                # visible in the API until their TTL expires. See T395052.
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__meta_kubernetes_pod_phase'],
+                    'regex'         => '(Succeeded|Failed)',
+                },
                 {
                     'action'        => 'replace',
                     'source_labels' => ['__address__', '__meta_kubernetes_pod_annotation_envoyproxy_io_port'],
@@ -461,6 +485,14 @@ define profile::prometheus::k8s (
                     'action'        => 'keep',
                     'source_labels' => ['__meta_kubernetes_pod_annotation_prometheus_kserve_io_scrape'],
                     'regex'         => true,
+                },
+                # Avoid targets that correspond to pods in terminal states,
+                # such as those associated with completed jobs that remain
+                # visible in the API until their TTL expires. See T395052.
+                {
+                    'action'        => 'drop',
+                    'source_labels' => ['__meta_kubernetes_pod_phase'],
+                    'regex'         => '(Succeeded|Failed)',
                 },
                 {
                     'action'        => 'replace',
