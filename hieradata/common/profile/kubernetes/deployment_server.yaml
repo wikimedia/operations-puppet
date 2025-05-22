@@ -399,6 +399,14 @@ profile::kubernetes::deployment_server::services:
         - name: logo-detection-deploy
           owner: root
           group: deploy-ml-service
+    edit-check:
+      usernames:
+        - name: edit-check
+          owner: root
+          group: deploy-ml-service
+        - name: edit-check-deploy
+          owner: root
+          group: deploy-ml-service
     ores-legacy:
       usernames:
         - name: ores-legacy
