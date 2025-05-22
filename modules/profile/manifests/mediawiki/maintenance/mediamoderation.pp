@@ -32,7 +32,7 @@ class profile::mediawiki::maintenance::mediamoderation(
 
         # Run a continuous scan on Wikimedia Commons, restarted every hour (T355169)
         profile::mediawiki::periodic_job { 'mediamoderation-continuousScan-commonswiki':
-            command               => 'timeout 3500 /usr/local/bin/mwscript extensions/MediaModeration/maintenance/scanFilesInScanTable.php --wiki=commonswiki --use-jobqueue --poll-sleep=30 --sleep=60 --last-checked=never --verbose',
+            command               => '/usr/local/bin/mwscript extensions/MediaModeration/maintenance/scanFilesInScanTable.php --wiki=commonswiki --use-jobqueue --poll-sleep=30 --sleep=60 --last-checked=never --verbose',
             interval              => '*-*-* *:34:00',
             cron_schedule         => '34 * * * *',
             kubernetes            => true,
