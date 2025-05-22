@@ -2585,6 +2585,10 @@ node /^testreduce1002\.eqiad\./ {
     role(parsoid::testreduce)
 }
 
+node /^testvm2006.codfw\./ {
+    role(test_krb)
+}
+
 # Test instances for Ganeti test cluster
 node /^testvm200[1-9]\.codfw\./ {
     role(test)
