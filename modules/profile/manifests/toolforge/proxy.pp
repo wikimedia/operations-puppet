@@ -149,7 +149,6 @@ class profile::toolforge::proxy (
 
     prometheus::blackbox::check::http { $web_domain:
         path                => '/.well-known/healthz',
-        ip_families         => ['ip4'],
         prometheus_instance => 'tools',
         team                => 'wmcs',
         severity            => 'warning',
