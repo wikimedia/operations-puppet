@@ -5,6 +5,5 @@
 class role::test_krb {
     include profile::base::production
     include profile::firewall
-    include profile::kerberos::client
-    include profile::kerberos::keytabs
+    include profile::base::cuminunpriv
 }
