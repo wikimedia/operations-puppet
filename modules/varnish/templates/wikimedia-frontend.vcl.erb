@@ -1209,7 +1209,11 @@ sub uniques_deliver {
             // internally, but it's ok because in practice this whole domain is
             // just a 301 -> www.wikimedia.org.
         if (req.http.Host != "wikimedia.org") {
+<% if @realm == "production" -%>
             if (req.http.Host ~ "((^|\.)(<%= @wikimedia_domains_regex %>))$") {
+<% else -%>
+            if (req.http.Host ~ "((^|\.)(<%= @wmcs_domains_regex %>))$") {
+<% end -%>
                 // For the rest of *.wikimedia.org, we must set the domain to
                 // the full Host value to avoid leaks to 3rd-party entities
                 // that unfortunately exist in this space.  For all other
