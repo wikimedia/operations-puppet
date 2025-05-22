@@ -411,6 +411,11 @@ node /^cloudcephosd200[1234]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
+# T393614
+node /^cloudcephosd200[567]-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
 # New ceph node codfw T349934
 node /^cephosd200[1-3]\.codfw\./ {
     role(insetup::data_platform_nftables)

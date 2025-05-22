@@ -411,7 +411,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid10-4dev.cfg
   'cloudcephosd1*':
     - partman/custom/cephosd.cfg
-  'cloudcephosd2004-dev':
+  'cloudcephosd200[4-7]-dev':
     - partman/custom/cephosd.cfg
   'clouddumps100[1-2]':
     - partman/flat.cfg
