@@ -11,6 +11,9 @@ AccuracySec=<%= @accuracy %>
 <%- if @facts['os']['release']['major'].to_i >= 9 -%>
 RandomizedDelaySec=<%= @splay %>
 <%- end -%>
+<%- if @facts['os']['release']['major'].to_i >= 11 and @fixed_random_delay -%>
+FixedRandomDelay=true
+<%- end -%>
 
 [Install]
 WantedBy=multi-user.target

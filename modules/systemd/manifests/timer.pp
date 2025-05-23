@@ -22,6 +22,11 @@
 #   Accuracy of the timer, in the format given by
 #   Systemd::Timer::Interval. Defaults to 15 seconds, which should be good in
 #   most cases.
+# [*fixed_random_delay*]
+#   When enabled, the randomized offset specified by splay is reused for all
+#   timings of the same timer. For a given timer unit, the offset depends on
+#   the machine ID, user identifier and timer name.
+#   Note: FixedRandomDelay is available only from Bullseye onward
 
 define systemd::timer(
     Array[Systemd::Timer::Schedule, 1] $timer_intervals,
@@ -29,7 +34,11 @@ define systemd::timer(
     Wmflib::Ensure $ensure = 'present',
     Integer $splay = 0,
     Systemd::Timer::Interval $accuracy = '15sec',
+    Boolean $fixed_random_delay = false,
 ) {
+    if $fixed_random_delay and $splay == 0 {
+        fail('fixed_random_delay requires setting $splay to >0')
+    }
     if $ensure == 'present' {
         $timer_intervals.each |$schedule| {
             # Each Schedule has either an Interval (which is already validated by
