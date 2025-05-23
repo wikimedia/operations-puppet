@@ -73,8 +73,7 @@ class profile::openstack::base::cloudweb_mcrouter(
         proto   => 'tcp',
         notrack => true,
         port    => $mcrouter_port,
-        srange  => "(@resolve((${join($cloudweb_hosts,' ')}))
-                    @resolve((${join($cloudweb_hosts,' ')}), AAAA))",
+        srange  => $cloudweb_hosts,
     }
 
     ferm::service { 'memcached_for_mcrouter':
@@ -82,7 +81,6 @@ class profile::openstack::base::cloudweb_mcrouter(
         proto   => 'tcp',
         notrack => true,
         port    => 11000,
-        srange  => "(@resolve((${join($cloudweb_hosts,' ')}))
-                    @resolve((${join($cloudweb_hosts,' ')}), AAAA))",
+        srange  => $cloudweb_hosts,
     }
 }

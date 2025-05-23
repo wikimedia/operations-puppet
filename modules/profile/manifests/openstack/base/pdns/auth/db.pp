@@ -61,8 +61,7 @@ class profile::openstack::base::pdns::auth::db(
     ferm::service { 'mysql_designate':
         proto  => 'tcp',
         port   => '3306',
-        srange => "(@resolve((${join($designate_hosts,' ')}))
-                   @resolve((${join($designate_hosts,' ')}), AAAA))"
+        srange => $designate_hosts,
     }
 
     backup::set { 'mysql-srv-backups-dumps-latest': }

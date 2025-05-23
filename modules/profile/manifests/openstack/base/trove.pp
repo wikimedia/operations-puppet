@@ -54,7 +54,7 @@ class profile::openstack::base::trove(
     ferm::service { 'trove-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'trove':

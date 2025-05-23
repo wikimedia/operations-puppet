@@ -14,6 +14,6 @@ class profile::openstack::base::neutron::service(
     ferm::service { 'neutron-api-backend':
         proto  => 'tcp',
         port   => $bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 }

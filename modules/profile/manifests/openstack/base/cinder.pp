@@ -59,7 +59,7 @@ class profile::openstack::base::cinder(
     ferm::service { 'cinder-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'cinder':

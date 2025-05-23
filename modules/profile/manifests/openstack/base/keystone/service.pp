@@ -105,7 +105,7 @@ class profile::openstack::base::keystone::service(
     ferm::service { 'keystone-api-backend':
         proto  => 'tcp',
         port   => "(${public_bind_port} ${admin_bind_port})",
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'keystone':

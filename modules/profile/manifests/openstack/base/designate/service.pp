@@ -61,7 +61,7 @@ class profile::openstack::base::designate::service(
     ferm::service { 'designate-api-backend':
         proto  => 'tcp',
         port   => 9001,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     $raw_pdns_hosts = $pdns_hosts.map |$host| { $host['auth_fqdn'] }
@@ -130,8 +130,7 @@ class profile::openstack::base::designate::service(
         proto   => 'tcp',
         notrack => true,
         port    => $mcrouter_port,
-        srange  => "(@resolve((${join($designate_hosts,' ')}))
-                    @resolve((${join($designate_hosts,' ')}), AAAA))",
+        srange  => $designate_hosts,
     }
 
     openstack::db::project_grants { 'designate':

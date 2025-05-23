@@ -26,7 +26,7 @@ class profile::openstack::base::placement(
     ferm::service { 'placement-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     openstack::db::project_grants { 'placement':

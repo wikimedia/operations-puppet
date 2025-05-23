@@ -27,12 +27,12 @@ class profile::openstack::base::nova::api::service(
     ferm::service { 'nova-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 
     ferm::service { 'nova-metadata-backend':
         proto  => 'tcp',
         port   => $metadata_bind_port,
-        srange => "@resolve((${haproxy_nodes.join(' ')}))",
+        srange => $haproxy_nodes,
     }
 }
