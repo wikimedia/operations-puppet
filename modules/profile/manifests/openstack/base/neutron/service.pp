@@ -11,7 +11,7 @@ class profile::openstack::base::neutron::service(
     }
     contain '::openstack::neutron::service'
 
-    ferm::service { 'neutron-api-backend':
+    firewall::service { 'neutron-api-backend':
         proto  => 'tcp',
         port   => $bind_port,
         srange => $haproxy_nodes,

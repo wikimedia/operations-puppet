@@ -53,7 +53,7 @@ class profile::openstack::base::pdns::auth::service(
         rule  => 'proto udp dport 53 NOTRACK;',
     }
 
-    ferm::service { 'pdns-rest-api':
+    firewall::service { 'pdns-rest-api':
         proto  => 'tcp',
         port   => '8081',
         srange => [$pdns_auth_hosts + $designate_hosts].flatten,

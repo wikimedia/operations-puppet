@@ -37,7 +37,7 @@ class profile::openstack::base::magnum(
         domain_admin_pass   => $domain_admin_pass,
     }
 
-    ferm::service { 'magnum-api-backend':
+    firewall::service { 'magnum-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,

@@ -24,13 +24,13 @@ class profile::openstack::base::nova::api::service(
     }
     contain '::openstack::nova::api::service'
 
-    ferm::service { 'nova-api-backend':
+    firewall::service { 'nova-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,
     }
 
-    ferm::service { 'nova-metadata-backend':
+    firewall::service { 'nova-metadata-backend':
         proto  => 'tcp',
         port   => $metadata_bind_port,
         srange => $haproxy_nodes,

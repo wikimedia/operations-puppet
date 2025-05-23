@@ -56,7 +56,7 @@ class profile::openstack::base::cinder(
     class { '::openstack::cinder::monitor':
     }
 
-    ferm::service { 'cinder-api-backend':
+    firewall::service { 'cinder-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,

@@ -102,7 +102,7 @@ class profile::openstack::base::keystone::service(
     }
     contain '::openstack::util::admin_scripts'
 
-    ferm::service { 'keystone-api-backend':
+    firewall::service { 'keystone-api-backend':
         proto  => 'tcp',
         port   => [$public_bind_port, $admin_bind_port],
         srange => $haproxy_nodes,

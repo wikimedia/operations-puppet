@@ -23,7 +23,7 @@ class profile::openstack::base::placement(
         api_bind_port   => $api_bind_port,
     }
 
-    ferm::service { 'placement-api-backend':
+    firewall::service { 'placement-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,

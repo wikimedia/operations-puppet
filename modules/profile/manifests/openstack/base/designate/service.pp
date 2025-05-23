@@ -58,7 +58,7 @@ class profile::openstack::base::designate::service(
     }
     contain '::openstack::designate::service'
 
-    ferm::service { 'designate-api-backend':
+    firewall::service { 'designate-api-backend':
         proto  => 'tcp',
         port   => 9001,
         srange => $haproxy_nodes,

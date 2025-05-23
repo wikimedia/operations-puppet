@@ -51,19 +51,19 @@ class profile::openstack::base::octavia(
         octavia_project_id   => $octavia_project_id,
     }
 
-    ferm::service { 'octavia-api-backend':
+    firewall::service { 'octavia-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,
     }
 
-    ferm::service { 'octavia-amphora-healthcheck':
+    firewall::service { 'octavia-amphora-healthcheck':
         proto  => 'tcp',
         port   => 5555,
         srange => [$amphora_mgmt_cidr, $amphora_mgmt_cidr_v6],
     }
 
-    ferm::service { 'octavia-amphora-healthcheck-udp':
+    firewall::service { 'octavia-amphora-healthcheck-udp':
         proto  => 'udp',
         port   => 5555,
         srange => [$amphora_mgmt_cidr, $amphora_mgmt_cidr_v6],

@@ -51,7 +51,7 @@ class profile::openstack::base::trove(
         trove_dns_zone_id       => $trove_dns_zone_id,
     }
 
-    ferm::service { 'trove-api-backend':
+    firewall::service { 'trove-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,

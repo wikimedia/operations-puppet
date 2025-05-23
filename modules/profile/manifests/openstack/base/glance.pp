@@ -33,7 +33,7 @@ class profile::openstack::base::glance(
     }
     contain '::openstack::glance::service'
 
-    ferm::service { 'glance-api-backend':
+    firewall::service { 'glance-api-backend':
         proto  => 'tcp',
         port   => $api_bind_port,
         srange => $haproxy_nodes,

@@ -36,7 +36,7 @@ class profile::openstack::base::puppetmaster::encapi (
         token_validator_project  => $token_validator_project,
     }
 
-    ferm::service { 'enc':
+    firewall::service { 'enc':
         proto => 'tcp',
         port  => '443',
     }

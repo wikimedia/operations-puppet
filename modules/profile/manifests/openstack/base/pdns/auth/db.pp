@@ -58,7 +58,7 @@ class profile::openstack::base::pdns::auth::db(
     }
 
     # Allow mysql access from the designate host so it can send domain updates.
-    ferm::service { 'mysql_designate':
+    firewall::service { 'mysql_designate':
         proto  => 'tcp',
         port   => 3306,
         srange => $designate_hosts,
