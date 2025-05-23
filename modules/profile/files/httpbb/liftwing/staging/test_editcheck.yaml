@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: Apache-2.0
+https://edit-check.edit-check.wikimedia.org:
+- path: /v1/models/edit-check:predict
+  json_body:
+    instances:
+      - original_text: ""
+        modified_text: "this is a great example of work"
+        check_type: "tone"
+        lang: "en"
+  assert_status: 200
+  assert_body_contains: probability
+  method: POST

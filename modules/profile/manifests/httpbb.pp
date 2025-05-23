@@ -155,6 +155,9 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/production/test_article-models.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_article-models.yaml'
     }
+    httpbb::test_suite {'liftwing/production/test_editcheck.yaml':
+        source => 'puppet:///modules/profile/files/httpbb/liftwing/production/test_editcheck.yaml'
+    }
     httpbb::test_suite {'liftwing/production/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_llm.yaml'
     }
@@ -196,6 +199,9 @@ class profile::httpbb (
     }
     httpbb::test_suite {'liftwing/staging/test_article-models.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_article-models.yaml'
+    }
+    httpbb::test_suite {'liftwing/staging/test_editcheck.yaml':
+        source => 'puppet:///modules/profile/files/httpbb/liftwing/staging/test_editcheck.yaml'
     }
     httpbb::test_suite {'liftwing/staging/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_llm.yaml'
