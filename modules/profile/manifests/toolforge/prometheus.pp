@@ -443,6 +443,12 @@ class profile::toolforge::prometheus (
             pod_name  => 'jobs-emailer-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 8081,
         },
+        {
+            name      => 'components-api',
+            namespace => 'components-api',
+            pod_name  => 'components-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
+            port      => 9000,
+        },
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
