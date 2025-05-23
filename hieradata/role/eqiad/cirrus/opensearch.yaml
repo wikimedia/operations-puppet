@@ -14,13 +14,12 @@ profile::opensearch::instances:
     # OS-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1081.eqiad.wmnet # Row C4
-      - elastic1094.eqiad.wmnet # Row E
       - elastic1100.eqiad.wmnet # Row F
       - cirrussearch1122.eqiad.wmnet # Row D
       - cirrussearch1074.eqiad.wmnet # Row B2
       - cirrussearch1081.eqiad.wmnet # Row C4
       - cirrussearch1094.eqiad.wmnet # Row E
+      - cirrussearch1100.eqiad.wmnet # Row F
     cluster_hosts:
       - elastic1053.eqiad.wmnet
       - elastic1054.eqiad.wmnet
@@ -180,13 +179,11 @@ profile::opensearch::instances:
     # ES-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1057.eqiad.wmnet # Row C3
-      - elastic1093.eqiad.wmnet # Row E
-      - elastic1098.eqiad.wmnet # Row F
       - cirrussearch1068.eqiad.wmnet # Row A4
       - cirrussearch1076.eqiad.wmnet # Row B4
       - cirrussearch1119.eqiad.wmnet # Row C
       - cirrussearch1093.eqiad.wmnet # Row E
+      - cirrudsearch1098.eqiad.wmnet # Row F
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
@@ -293,13 +290,11 @@ profile::opensearch::instances:
     # ES-specific: Not default
     # We want each master on a different row
     unicast_hosts: # this is also the list of master eligible nodes
-      - elastic1083.eqiad.wmnet # Row C7
-      - elastic1095.eqiad.wmnet # Row E
-      - elastic1102.eqiad.wmnet # Row F
       - cirrussearch1073.eqiad.wmnet # Row A7
       - cirrussearch1075.eqiad.wmnet # Row B2
       - cirrussearch1118.eqiad.wmnet # Row C4
       - cirrussearch1095.eqiad.wmnet # Row E
+      - cirrussearch1102.eqiad.wmnet # Row F
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
