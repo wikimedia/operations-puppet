@@ -5,6 +5,8 @@ import csv
 import json
 import logging
 import time
+import re
+from datetime import datetime
 from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -92,12 +94,50 @@ class ExternalCloudVendorAzure:
         Returns:
             set[str]: A set of network prefixes
         """
+
+        JSON_REGEX = r'https://download\.microsoft\.com/download/[^"\']*ServiceTags_Public_\d{8}\.json'  # noqa: E501
+
         page = session.get(self.url)
         tree = html.fromstring(page.content)
-        download_url = tree.xpath(
-            "//a[contains(@class, 'download-btn') and "
-            "contains(@href,'download.microsoft.com/download/')]/@href"
-        )[0]
+
+        scripts = tree.xpath('//script')
+        urls = []
+
+        for script in scripts:
+            script_content = script.text_content() if script.text_content() else ""
+            if script_content:
+                json_urls = re.findall(JSON_REGEX, script_content)
+                urls.extend(json_urls)
+
+        if not urls:
+            # Try to use regex if the previoust method failed
+            html_page = tree.text_content()
+            matches = re.findall(JSON_REGEX, html_page)
+            urls.extend(matches)
+
+        if not urls:
+            # return empty if nothing found
+            return set()
+
+        # Sort by date, as we *should* find at least two urls with
+        # ServiceTags_Public_YYYYMMDD.json format
+        url_timestamps = []
+        for url in urls:
+            timestamp = re.search(r'ServiceTags_Public_(\d{8})\.json', url)
+            if timestamp:
+                ts_str = timestamp.group(1)
+                try:
+                    date_obj = datetime.strptime(ts_str, '%Y%m%d')
+                    url_timestamps.append((url, date_obj))
+                except ValueError:
+                    continue
+
+        if not url_timestamps:
+            return set()
+
+        url_timestamps.sort(key=lambda x: x[1], reverse=True)
+        # Pick the most recent one
+        download_url = url_timestamps[0][0]
 
         ips = session.get(download_url, allow_redirects=True).json()
         nets = {
@@ -229,7 +269,7 @@ def main() -> int:
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
             ExternalCloudVendorOci(),
-            # ExternalCloudVendorAzure(),
+            ExternalCloudVendorAzure(),
             CSVExternalCloudVendor(
                 "DigitalOcean",
                 # This is the file linked from the digitalocean platform documentation website:
