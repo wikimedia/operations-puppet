@@ -91,6 +91,8 @@ class profile::cache::varnish::frontend (
         'varnish-modules',
         'varnish-re2',
     ]
+    # wmfuniq-experiment-fetcher python dependencies
+    ensure_packages(['python3-jsonschema', 'python3-requests'])
 
     # We need these two services disabled as we don't use them.
     systemd::mask { 'varnishncsa.service': }
@@ -149,6 +151,30 @@ class profile::cache::varnish::frontend (
         group  => 'varnish',
         mode   => '0640',
         source => 'puppet:///modules/profile/cache/uniques.json',
+    }
+
+    file { '/usr/local/bin/wmfuniq-experiment-fetcher':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+        source => 'puppet:///modules/profile/cache/wmfuniq_experiment_fetcher.py',
+    }
+
+    systemd::timer::job { 'wmfuniq-experiment-fetcher':
+        ensure             => 'present',
+        description        => 'fetch edge uniques experiments configuration',
+        user               => 'varnish',
+        monitoring_enabled => true,
+        send_mail          => true,
+        environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
+        interval           => {'start' => 'OnCalendar', 'interval' => 'minutely'},
+        accuracy           => '1s',
+        splay              => 59,
+        fixed_random_delay => true,
+        # fetch the configuration but don't use it yet
+        command            => '/usr/local/bin/wmfuniq-experiment-fetcher /tmp/uniques.json',
+        require            => [File['/usr/local/bin/wmfuniq-experiment-fetcher'], Package['python3-jsonschema']],
     }
 
     # Mount /var/lib/varnish as tmpfs to avoid Linux flushing mlocked
