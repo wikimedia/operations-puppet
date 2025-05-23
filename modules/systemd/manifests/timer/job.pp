@@ -9,8 +9,14 @@
 # @param interval
 #   Systemd interval to use. See Systemd::Timer::Schedule for the format.
 #   Several intervals can be provided as Array[See Systemd::Timer::Schedule]
+# @param fixed_random_delay
+#   Passed to systemd::timer. See FixedRandomDelay in systemd.timer(5)
+#   It can be used as a native replacement of fqdn_rand()
 # @param splay
 #   Passed to systemd::timer. See RandomizedDelaySec in systemd.timer(5)
+# @param accuracy
+#   Passed to systemd::timer. Specify the accuracy the timer shall elapse with
+#   See AccuracySec in systemd.timer(5)
 # @param timeout_start_sec
 #   Configures the time to wait for start-up. If a daemon service does not
 #   signal start-up completion within the configured time, the service will be
@@ -131,7 +137,9 @@ define systemd::timer::job (
     Boolean                                 $ignore_errors             = false,
     Boolean                                 $send_mail_only_on_error   = true,
     Boolean                                 $private_tmp               = false,
+    Boolean                                 $fixed_random_delay        = false,
     Optional[Integer]                       $splay                     = undef,
+    Optional[Systemd::Timer::Interval]      $accuracy                  = undef,
     # TODO: set some sane default otherwise its infinite T324466
     Optional[Integer]                       $timeout_start_sec         = undef,
     Optional[String]                        $logfile_owner             = undef,
@@ -191,10 +199,12 @@ define systemd::timer::job (
     }
 
     systemd::timer { $title:
-        ensure          => $ensure,
-        timer_intervals => $mangled_intervals,
-        splay           => $splay,
-        unit_name       => "${title}.service",
+        ensure             => $ensure,
+        timer_intervals    => $mangled_intervals,
+        splay              => $splay,
+        fixed_random_delay => $fixed_random_delay,
+        accuracy           => $accuracy,
+        unit_name          => "${title}.service",
     }
 
     if $logging_enabled {
