@@ -104,7 +104,7 @@ class profile::openstack::base::keystone::service(
 
     ferm::service { 'keystone-api-backend':
         proto  => 'tcp',
-        port   => "(${public_bind_port} ${admin_bind_port})",
+        port   => [$public_bind_port, $admin_bind_port],
         srange => $haproxy_nodes,
     }
 
