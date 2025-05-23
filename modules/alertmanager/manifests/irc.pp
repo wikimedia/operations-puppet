@@ -22,7 +22,9 @@ class alertmanager::irc (
         enable => $service_enable,
     }
 
-    profile::auto_restarts::service { 'alertmanager-irc-relay': }
+    profile::auto_restarts::service { 'alertmanager-irc-relay':
+        ensure => stdlib::ensure($service_enable),
+    }
 
     file { '/etc/alertmanager-irc-relay.yml':
         ensure    => present,
