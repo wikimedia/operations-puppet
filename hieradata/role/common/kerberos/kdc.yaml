@@ -29,3 +29,5 @@ profile::contacts::role_contacts:
   - 'Infrastructure Foundations'
   - 'Data Platform'
 profile::base::production::role_description: 'Kerberos KDC'
+
+profile::firewall::provider: nftables
