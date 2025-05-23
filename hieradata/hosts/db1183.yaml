@@ -1,3 +1,0 @@
-# db1183
-mariadb::shard: 'x1'
-profile::monitoring::notifications_enabled: false
