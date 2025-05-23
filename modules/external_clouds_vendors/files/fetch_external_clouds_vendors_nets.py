@@ -229,7 +229,7 @@ def main() -> int:
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
             ExternalCloudVendorOci(),
-            ExternalCloudVendorAzure(),
+            # ExternalCloudVendorAzure(),
             CSVExternalCloudVendor(
                 "DigitalOcean",
                 # This is the file linked from the digitalocean platform documentation website:
