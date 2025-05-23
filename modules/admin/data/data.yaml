@@ -7525,3 +7525,7 @@ ldap_only_users:
     ensure: present
     realname: Guilherme Goncalves
     email: guilherme@wikimedia.org
+  ericmill:
+    ensure: present
+    realname: Eric Mill
+    email: ericmill@wikimedia.org
