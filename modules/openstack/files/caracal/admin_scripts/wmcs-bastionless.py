@@ -5,7 +5,7 @@
 import argparse
 import mwopenstackclients
 
-clients = mwopenstackclients.clients(oscloud="novaadmin")
+clients = mwopenstackclients.clients(oscloud="novaobserver")
 
 keystone = clients.keystoneclient()
 
@@ -80,7 +80,8 @@ def count_bastionless_users():
         unbastioned_members = list(members - bastionmembers - service_users)
         for user in unbastioned_members:
             if user.endswith("manager") or user.endswith("admin"):
-                unbastioned_members.remove(user)
+                continue
+            unbastioned_members.remove(user)
         if unbastioned_members:
             print(
                 "Project %s has unbastioned member: %s"
