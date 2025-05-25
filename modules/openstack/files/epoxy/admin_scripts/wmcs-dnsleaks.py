@@ -251,7 +251,7 @@ if args.delete and args.doublecheck:
 strayrecs = list_strays(args.deployment, args.delete)
 
 if args.doublecheck:
-    time.sleep(120)
+    time.sleep(300)
     strayrecs2 = list_strays(args.deployment, args.delete)
     persistentstrays = set(strayrecs).intersection(set(strayrecs2))
     strayrecs = list(persistentstrays)
