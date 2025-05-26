@@ -10,8 +10,6 @@ if not isp_db then
     return
 end
 
-core.register_fetches("fetch_isp", fetch_isp)
-
 function fetch_isp(txn)
    local ip_address = txn.f:src()
    local ok, result, status = pcall(isp_db.lookup, isp_db, ip_address)
@@ -26,3 +24,5 @@ function fetch_isp(txn)
 
    return isp
 end
+
+core.register_fetches("fetch_isp", fetch_isp)
