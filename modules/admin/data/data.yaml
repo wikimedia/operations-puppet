@@ -80,7 +80,7 @@ groups:
       - Mark Bergsma
   # System-wide GIDs managed in Puppet which are up for re-use since the old group vanished
   # completely from all our servers
-  # 782 714 725 726 739
+  # 782 725 726 739
   datacenter-ops:
     # Moved upward to allow to be referenced in 'ops-limited'.
     # The group is used on a subset of nodes (puppet/install/apt/etc..) to
@@ -1141,6 +1141,10 @@ groups:
     description: deployers on mwdebug hosts
     privileges: ['ALL = (ALL) NOPASSWD: /usr/local/sbin/disable-puppet*, /usr/local/sbin/enable-puppet*']
     members: [*deployment_members]
+  airflow-deployers:
+    gid: 714
+    description: Base groups for all users deploying airflow instances
+    members: [*analytics_privatedata_users]
   # Placeholder to reserve the uid/gid.
   # This service system user is managed by puppet.
   # swift:
