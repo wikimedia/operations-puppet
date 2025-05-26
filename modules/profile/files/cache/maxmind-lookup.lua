@@ -3,7 +3,7 @@
 local maxminddb = require("maxminddb")
 
 local isp_dbpath = "/usr/share/GeoIP/GeoIP2-ISP.mmdb"
-local error_response = "N/A"
+local error_response = ""
 local isp_db, err = maxminddb.open(isp_dbpath)
 if not isp_db then
     core.Alert("Error opening MaxMind ISP DB: " .. err)
@@ -16,7 +16,6 @@ function fetch_isp(txn)
    local ip_address = txn.f:src()
    local ok, result, status = pcall(isp_db.lookup, isp_db, ip_address)
    if not ok then
-      -- core.Alert("Error looking up IP " .. ip_address)
       return error_response
    end
 
