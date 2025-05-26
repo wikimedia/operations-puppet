@@ -144,11 +144,11 @@ class NovaInstance(object):
                 )
             )
             return False
-        except novaclient.exceptions.BadRequest as exc:
+        except (novaclient.exceptions.BadRequest, novaclient.exceptions.Conflict):
             logging.warning(
-                "Failed to migrate instance {} ({}): {}".format(
-                    self.instance_id, self.instance_name, exc
-                )
+                "Failed to migrate instance %s (%s)",
+                self.instance_id, self.instance_name,
+                exc_info=True,
             )
             return False
 
