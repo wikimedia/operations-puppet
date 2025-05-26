@@ -25,7 +25,7 @@ class profile::mediawiki::maintenance::growthexperiments(
     # Cleanup as part of migration (T385782)
     $link_rec_shards.each |$shard| {
         profile::mediawiki::periodic_job { "growthexperiments-refreshLinkRecommendations-${shard}":
-            command                 => "/usr/local/bin/foreachwikiindblist 'growthexperiments & ${shard}' extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php",
+            command                 => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/foreachwikiindblist 'growthexperiments & ${shard}' extensions/GrowthExperiments/maintenance/refreshLinkRecommendations.php",
             interval                => '*-*-* *:27:00',
             cron_schedule           => '27 * * * *',
             kubernetes              => true,
@@ -69,7 +69,7 @@ class profile::mediawiki::maintenance::growthexperiments(
 
     # monitor dangling link recommendation entries (DB record without search index record or vice versa)
     profile::mediawiki::periodic_job { 'growthexperiments-fixLinkRecommendationData-dryrun':
-        command               => '/usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
+        command               => 'FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/foreachwikiindblist /srv/mediawiki/dblists/growthexperiments.dblist extensions/GrowthExperiments/maintenance/fixLinkRecommendationData.php --search-index --db-table --dry-run --statsd',
         interval              => '*-*-* 07:20:00',
         cron_schedule         => '20 7 * * *',
         kubernetes            => true,
