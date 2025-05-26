@@ -453,10 +453,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-dev
           owner: root
-          group: deployment
+          group: airflow-deployers
         - name: airflow-dev-deploy
           owner: root
-          group: deployment
+          group: airflow-deployers
     airflow-analytics-test:
       usernames:
         - name: postgresql-airflow-analytics-test
