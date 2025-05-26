@@ -27,6 +27,8 @@
 #    $event_handler
 #       Default to false. If present execute this registered command on the
 #       Nagios server.
+#    $migration_task
+#       Phab task that tracks the migrations of current check
 #    $dashboard_link
 #       An optional URL to link to grafana or another monitoring dashboard.
 #       Must not be URL-encoded.
@@ -44,6 +46,7 @@ define nrpe::monitor_service(
     $event_handler    = undef,
     $check_interval   = 1, # min
     $retry_interval   = 1, # min
+    $migration_task   = 'T321808',
     Optional[Array[Stdlib::HTTPSUrl, 1]] $dashboard_links = undef,
     Optional[String] $sudo_user = undef,
     Wmflib::Ensure $ensure = present,

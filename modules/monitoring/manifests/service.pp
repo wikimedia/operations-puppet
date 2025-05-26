@@ -11,6 +11,7 @@ define monitoring::service(
     Integer                           $retry_interval        = 1, # min
     Stdlib::Unixpath                  $config_dir            = '/etc/nagios',
     Variant[Stdlib::Host,String]      $host                  = $facts['hostname'],
+    String                            $migration_task        = 'T321808',
     Optional[String]                  $contact_group         = undef,
     Optional[String]                  $group                 = undef,
     Optional[Boolean]                 $notifications_enabled = undef,
