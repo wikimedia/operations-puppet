@@ -155,6 +155,7 @@ profile::idp::redis_enable: true
 profile::idp::redis_server: rdb1012.eqiad.wmnet
 profile::idp::redis_port: 6378
 profile::idp::redis_database: 1
+profile::idp::theme: wikimedia
 profile::idp::u2f_jpa_enable: true
 profile::idp::u2f_jpa_server: m1-master.eqiad.wmnet
 profile::idp::u2f_jpa_db: cas_staging
