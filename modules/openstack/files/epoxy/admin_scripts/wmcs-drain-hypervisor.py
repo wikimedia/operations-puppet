@@ -117,7 +117,13 @@ class NovaInstance(object):
 
     def migrate(self):
         try:
-            if self.instance.status == "ACTIVE":
+            if self.instance._info["OS-EXT-STS:vm_state"] == "deleted":
+                # This instance is being deleted! No need to do anything in that case.
+                logging.info(
+                    "instance %s (%s) is being deleted, ignoring",
+                    self.instance_id, self.instance_name,
+                )
+            elif self.instance.status == "ACTIVE":
                 self.live_migrate()
             elif self.instance.status == "SHUTOFF":
                 self.stopped_migrate()
