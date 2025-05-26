@@ -3,17 +3,16 @@ class profile::openstack::base::pdns::auth::db(
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     $pdns_db_pass = lookup('profile::openstack::base::pdns:db_pass'),
     $pdns_admin_db_pass = lookup('profile::openstack::base::pdns::db_admin_pass'),
-    Array[String] $mysql_root_clients = lookup('mysql_root_clients', {'default_value' => []}),
-){
-
+) {
     $designate_host_ips = $designate_hosts.map |$host| { dnsquery::lookup($host, true) }.flatten
 
     # install mysql locally on all dns servers
     include ::profile::mariadb::monitor::dba
     # for DBA admin root purposes
-    $mysql_root_clients_str = join($mysql_root_clients, ' ')
-    ferm::rule { 'mariadb_dba':
-        rule => "saddr (${mysql_root_clients_str}) proto tcp dport (3306) ACCEPT;",
+    firewall::service { 'mariadb_dba':
+        proto    => 'tcp',
+        port     => 3306,
+        src_sets => ['MYSQL_ROOT_CLIENTS'],
     }
 
     # Note:  This will install mariadb but won't set up the
