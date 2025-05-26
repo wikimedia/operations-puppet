@@ -30,7 +30,6 @@ class profile::openstack::codfw1dev::cumin::target(
 
     $ssh_authorized_sources = join($cumin_masters, ',')
     $ssh_project_authorized_sources = join($project_masters, ',')
-    $ssh_project_ferm_sources = join($project_masters, ' ')
     $pub_key = secret('keyholder/cumin_openstack_master.pub')
 
     ssh::userkey { 'root-cumin':
@@ -40,11 +39,11 @@ class profile::openstack::codfw1dev::cumin::target(
         content => template('profile/openstack/codfw1dev/cumin/userkey.erb'),
     }
 
-    if $ssh_project_ferm_sources != '' {
-        ferm::service { 'ssh-from-cumin-project-masters':
+    unless $project_masters.empty() {
+        firewall::service { 'ssh-from-cumin-project-masters':
             proto  => 'tcp',
-            port   => '22',
-            srange => "(${ssh_project_ferm_sources})",
+            port   => 22,
+            srange => $project_masters,
         }
     }
 
