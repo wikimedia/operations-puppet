@@ -4,6 +4,10 @@
 	filemode = true
 	bare = false
 	logallrefupdates = true
+# Adding origin to prevent git::clone to fail
+[remote "origin"]
+	url = ssh://<%= @private_git_peers[0] %>/srv/homer/private
+	fetch = +refs/heads/*:refs/remotes/origin/*
 <%- @private_git_peers.each do |peer| -%>
 [remote "<%= peer %>"]
 	url = ssh://<%= peer %>/srv/homer/private
