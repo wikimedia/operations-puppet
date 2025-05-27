@@ -1,9 +1,4 @@
 # db2186
-# Buffer pool sizes/instance enabled
-profile::mariadb::sanitarium_multiinstance::instances:
-  s1: 48G
-  s3: 48G
-  s5: 8G
-  s8: 48G
+mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
 profile::monitoring::notifications_enabled: false

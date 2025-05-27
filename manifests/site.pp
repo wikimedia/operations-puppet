@@ -774,7 +774,7 @@ node /^db1(179|220|224|237)\.eqiad\./ {
 }
 
 # codfw
-node /^db2(191|196|215|231)\.codfw\./ {
+node /^db2(186|191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -874,7 +874,7 @@ node /^db1(154|155)\.eqiad\./ {
     role(mariadb::sanitarium_multiinstance)
 }
 
-node /^db2(186|187)\.codfw\./ {
+node /^db2(187)\.codfw\./ {
     role(mariadb::sanitarium_multiinstance)
 }
 
