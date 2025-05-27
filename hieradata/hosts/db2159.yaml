@@ -1,4 +1,2 @@
 # db2159
-# sanitarium master for s7
 mariadb::shard: 's7'
-mariadb::binlog_format: 'ROW'

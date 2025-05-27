@@ -1,4 +1,2 @@
 # db2226
-# sanitarium master for s2
 mariadb::shard: 's2'
-mariadb::binlog_format: 'ROW'
