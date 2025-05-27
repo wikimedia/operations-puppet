@@ -10,6 +10,9 @@ class profile::kubernetes::deployment_server::global_config (
     Hash[String, Integer] $db_sections                  = lookup('profile::mariadb::section_ports'),
     String $helm_user_group                             = lookup('profile::kubernetes::deployment_server::helm_user_group'),
     Hash[String, Hash] $zookeeper_clusters              = lookup('zookeeper_clusters'),
+    String $kerberos_admin                              = lookup('kerberos_kadmin_server_primary'),
+    Array[String] $kerberos_servers                     = lookup('kerberos_kdc_servers_to_clients'),
+
 ) {
     # General directory holding all configurations managed by puppet
     # that are used in helmfiles
@@ -128,6 +131,11 @@ class profile::kubernetes::deployment_server::global_config (
         }.flatten()
         $retval = { $cl => $ips }
     }.reduce({}) |$mem, $val| { $mem.merge($val) }
+
+    $kerberos = {
+      'admin'   => $kerberos_admin,
+      'servers' => $kerberos_servers,
+    }
 
     # Turn the puppet DB resources for Cassandra clusters into a hashmap of the form:
     # ['name_instance_dc']  => [ip1, ip2, ...]
@@ -546,6 +554,7 @@ class profile::kubernetes::deployment_server::global_config (
             'zookeeper_clusters'            => $zookeeper_nodes,
             'mariadb'                       => { 'section_ports' => $db_sections },
             'kubernetesVersion'             => $cluster_config['version'],
+            'kerberos'                      => $kerberos,
           }
         )
         $general_config_path = "${general_dir}/general-${cluster_name}.yaml"
