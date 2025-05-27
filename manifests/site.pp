@@ -2745,12 +2745,12 @@ node /^zuul([1-2]001)\.(codfw|eqiad)\./ {
 
 # zuul - executors
 node /^zuul([1-2]002)\.(codfw|eqiad)\./ {
-    role(insetup::collaboration_services_ferm)
+    role(zuul::executor)
 }
 
 # zuul - trusted runners
 node /^zuul([1-2]003)\.(codfw|eqiad)\./ {
-    role(insetup::collaboration_services_ferm)
+    role(zuul::trusted_runner)
 }
 
 node default {
