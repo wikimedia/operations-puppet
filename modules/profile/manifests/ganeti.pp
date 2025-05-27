@@ -286,6 +286,7 @@ class profile::ganeti (
         $v6_prefixes = $::site ? {
             'codfw' => {'private' => '2620:0:860:140', 'public' => '2620:0:860:5'},
             'eqiad' => {'private' => '2620:0:861:140', 'public' => '2620:0:861:5'},
+            'magru' => {'private' => '2a02:ec80:700:103', 'public' => '2a02:ec80:700:3'},
         }
         # Override the Package provided net-common script
         file { '/usr/lib/ganeti/3.0/usr/lib/ganeti/net-common':
