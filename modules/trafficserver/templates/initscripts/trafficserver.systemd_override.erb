@@ -1,5 +1,7 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [Service]
+User=<%= @user %>
+Group=<%= @user %>
 ExecStart=
 <% if @default_instance -%>
 ExecStart=/usr/bin/traffic_manager --nosyslog
