@@ -109,6 +109,8 @@ def collect_stats_from_romc_smi(registry, rocm_smi_path):
                     rocm_metrics[card][metric].strip())
             # Power
             elif metric == 'Average Graphics Package Power (W)':
+                if rocm_metrics[card][metric].strip() in ["0", "N/A"]:
+                    continue
                 # format example: 7.0
                 gpu_stats['power'].labels(card=card).set(
                     rocm_metrics[card][metric].strip())
