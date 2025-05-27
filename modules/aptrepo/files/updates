@@ -167,24 +167,6 @@ Architectures: amd64
 VerifyRelease: 7EA0A9C3F273FCD8
 ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io|docker-buildx-plugin|docker-compose-plugin$' || [ $? -eq 1 ]
 
-Name: thirdparty/docker-bookworm
-Method: https://download.docker.com/linux/debian/
-Suite: bookworm
-Components: stable>thirdparty/docker
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io|docker-buildx-plugin|docker-compose-plugin$' || [ $? -eq 1 ]
-
-Name: thirdparty/docker-trixie
-Method: https://download.docker.com/linux/debian/
-Suite: trixie
-Components: stable>thirdparty/docker
-UDebComponents:
-Architectures: amd64
-VerifyRelease: 7EA0A9C3F273FCD8
-ListShellHook: grep-dctrl -e -P '^docker-ce|docker-ce-cli|containerd\.io|docker-buildx-plugin|docker-compose-plugin$' || [ $? -eq 1 ]
-
 Name: amd-rocm42
 Method: http://repo.radeon.com/rocm/apt/4.2/
 Suite: xenial

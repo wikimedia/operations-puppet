@@ -282,7 +282,6 @@ Update:
  node20
  routinator-bookworm
  thirdparty/ceph-reef
- thirdparty/docker-bookworm
  thirdparty/gitlab-runner
  thirdparty/haproxy26-bookworm
  thirdparty/haproxy28
@@ -311,9 +310,6 @@ Components: main
  thirdparty/docker
  thirdparty/hwraid
 UDebComponents: main
-Update:
-# sorted list, leading whitespace matters!
- thirdparty/docker-trixie
 Description: Wikimedia packages for Debian trixie
 SignWith: 9D392D3FFADF18FB
 DebOverride: deb-override
