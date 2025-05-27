@@ -1,3 +1,6 @@
+# don't monitor relforge, as it doesn't serve external traffic
+profile::monitoring::notifications_enabled: false
+
 profile::opensearch::dc_settings:
     # Since this is a two-node cluster where either host can be master,
     # you'll need to turn off master election on one of them before any
