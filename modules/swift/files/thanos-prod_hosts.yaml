@@ -25,14 +25,22 @@ schemes:
 
 hosts:
   prod:
-    - thanos-be1001
-    - thanos-be1002
-    - thanos-be1003
-    - thanos-be1004
+    - thanos-be1001:
+        - drain
+    - thanos-be1002:
+        - drain
+    - thanos-be1003:
+        - drain
+    - thanos-be1004:
+        - drain
     - thanos-be2001
     - thanos-be2002
     - thanos-be2003
     - thanos-be2004
   prod24_ng:
     - thanos-be1005
+    - thanos-be1006
+    - thanos-be1007
+    - thanos-be1008
+    - thanos-be1009
     - thanos-be2005
