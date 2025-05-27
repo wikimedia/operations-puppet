@@ -225,12 +225,12 @@ listen tls
 <%- if @maxmind_lookup -%>
     # just to be sure we don't perform lookups on private network
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-
     # Fetch var from maxmind lua script and check if empty
-    http-request set-var(req.isp) lua.fetch_isp
+    http-request set-var(req.isp) lua.fetch_isp,lower,bytes(0,64)
     acl is_unknown_isp var(req.isp) -m len 0
-    http-request del-header X-Requestctl-ISP if is_unknown_isp
-    http-request set-header X-Requestctl-ISP %[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
+
+    http-request del-header X-Provenance if is_unknown_isp
+    http-request set-header X-Provenance isp=%[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
 <%- end -%>
 
 <%- if @dedicated_hc_backend -%>
@@ -404,12 +404,12 @@ frontend http
 <%- if @maxmind_lookup -%>
     # just to be sure we don't perform lookups on private network
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-
     # Fetch var from maxmind lua script and check if empty
-    http-request set-var(req.isp) lua.fetch_isp
+    http-request set-var(req.isp) lua.fetch_isp,lower,bytes(0,64)
     acl is_unknown_isp var(req.isp) -m len 0
-    http-request del-header X-Requestctl-ISP if is_unknown_isp
-    http-request set-header X-Requestctl-ISP %[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
+
+    http-request del-header X-Provenance if is_unknown_isp
+    http-request set-header X-Provenance isp=%[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
 <%- end -%>
 
     # Provide Server header
