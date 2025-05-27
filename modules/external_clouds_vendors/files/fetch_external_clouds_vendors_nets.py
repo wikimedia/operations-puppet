@@ -321,6 +321,11 @@ def main() -> int:
                 "https://openai.com/gptbot.json",
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
+            ExternalCloudVendor(
+                "BingBot",
+                "https://www.bing.com/toolbox/bingbot.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            )
         ],
     }
 
