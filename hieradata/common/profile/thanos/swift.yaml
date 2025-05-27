@@ -89,6 +89,10 @@ profile::thanos::swift::backends:
   - thanos-be1003.eqiad.wmnet
   - thanos-be1004.eqiad.wmnet
   - thanos-be1005.eqiad.wmnet
+  - thanos-be1006.eqiad.wmnet
+  - thanos-be1007.eqiad.wmnet
+  - thanos-be1008.eqiad.wmnet
+  - thanos-be1009.eqiad.wmnet
 
 profile::thanos::swift::frontends:
   - thanos-fe2004.codfw.wmnet
