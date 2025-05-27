@@ -1229,7 +1229,7 @@ sub uniques_deliver {
                     "WMF-Uniq="
                     + wu_cfg.get_cookie_val()
                     + ";Domain=" + resp.http.X-WUTMPDOM
-                    + ";Path=/;HttpOnly;secure;SameSite=Lax;Expires="
+                    + ";Path=/;HttpOnly;secure;SameSite=<%= @vcl_config.fetch("edge_uniques_same_site", "Lax") %>;Expires="
                     + std.time(std.time2integer(now + 1y, 0) / 86400 * 86400)
                 );
                 unset resp.http.X-WUTMPDOM; // clear temp header from above
