@@ -1,6 +1,3 @@
-# temporarily silence monitors T388610
-profile::monitoring::notifications_enabled: false
-
 profile::elasticsearch::instances:
   production-search-eqiad:
     # eqiad prod name
