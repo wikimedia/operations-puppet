@@ -571,7 +571,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/custom/kubernetes-node-containerd-efi.cfg
   # Use new containerd partman config (which includes the larger kubelet
   # partition)
-  'ml-serve1011':
+  'ml-serve101*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
