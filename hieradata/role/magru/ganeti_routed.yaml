@@ -1,0 +1,6 @@
+profile::ganeti::nodes:
+  - ganeti7002.magru.wmnet
+profile::ganeti::rapi::certificate: ganeti03.svc.magru.wmnet
+profile::ganeti::tap_ip4:
+  public: 195.200.68.97
+  private: 10.140.2.1
