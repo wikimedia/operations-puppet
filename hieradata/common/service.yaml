@@ -2204,6 +2204,7 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    page: false
     probes:
       - type: http
     port: 9443
@@ -2213,6 +2214,9 @@ service::catalog:
     state: production
     aliases:
       - "search"
+    discovery:
+      - dnsdisc: search-omega
+        active_active: true
 
   search-psi-https:
     description: Elasticsearch search for MediaWiki (Psi cluster) - HTTPS
@@ -2233,6 +2237,7 @@ service::catalog:
           url:
             - https://localhost/
       scheduler: wrr
+    page: false
     probes:
       - type: http
     port: 9643
@@ -2242,6 +2247,9 @@ service::catalog:
     state: production
     aliases:
       - "search"
+    discovery:
+      - dnsdisc: search-psi
+        active_active: true
 
   sessionstore:
     description: Session store, sessionstore.discovery.wmnet
