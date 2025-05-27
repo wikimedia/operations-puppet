@@ -1,0 +1,7 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<%- | String $sampling_rate | -%>
+module(load="builtin:omfile")
+set $!rand = random(<%= $sampling_rate %>);
+if ($!rand == 0) then {
+  *.* /srv/syslog/rsyslog-debug.log;RSYSLOG_DebugFormat
+}
