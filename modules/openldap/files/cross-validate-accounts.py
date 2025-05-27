@@ -179,7 +179,6 @@ def read_members_yaml(yamldata, group):
 def validate_common_ops_group(yamldata):
     ldap_ops = set(
         get_ldap_group_members('ops')
-        + get_ldap_group_members('ops-limited')
     )
 
     yml_ops = set(
