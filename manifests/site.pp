@@ -378,6 +378,10 @@ node /^bast7001\.wikimedia\./ {
     role(bastionhost)
 }
 
+node /^bast7002\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # Debian package/docker images building host in production
 node /^build2001\.codfw\./ {
     role(builder)
@@ -1029,9 +1033,17 @@ node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
 }
 
+node /^doh7003\.wikimedia\./ {
+    role(insetup::traffic_ferm)
+}
+
 # durum for Wikidough (T289536)
 node /^durum[1-9][0-9]{3}\./ {
     role(durum)
+}
+
+node /^durum7003\.magru\./ {
+    role(insetup::traffic_nftables)
 }
 
 # Dragonfly Supernode (T286054)
@@ -2278,6 +2290,10 @@ node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
 
+node /^ncredir7003\.magru\./ {
+    role(insetup::traffic_ferm)
+}
+
 node /^netbox[12]00[0-9]\.(eqiad|codfw)\./ {
     role(netbox::frontend)
 }
@@ -2410,6 +2426,10 @@ node /^prometheus100[5678]\.eqiad\./ {
 
 node /^prometheus[34567]00[1-9]\.(esams|ulsfo|eqsin|drmrs|magru)\./ {
     role(prometheus::pop)
+}
+
+node /^prometheus7002\.magru\./ {
+    role(insetup::observability_ferm)
 }
 
 node /^puppetmaster[12]001\.(codfw|eqiad)\./ {
