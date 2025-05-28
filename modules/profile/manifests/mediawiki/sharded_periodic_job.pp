@@ -74,7 +74,7 @@ define profile::mediawiki::sharded_periodic_job(
 
         $command = $foreachwiki_ignore_errors ? {
             true  => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/mwscriptwikiset ${script}",
-            false => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/mwscriptwikiset ${script}",
+            false => "/usr/local/bin/mwscriptwikiset ${script}",
         }
 
         profile::mediawiki::periodic_job { "${title}_${shard}":
