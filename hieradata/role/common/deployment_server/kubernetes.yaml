@@ -25,6 +25,7 @@ profile::admin::groups:
   - airflow-analytics-product-admins
   - airflow-wmde-admins
   - release-engineering
+  - airflow-deployers
 
 # We still don't enable fpm here
 profile::mediawiki::php::enable_fpm: false
