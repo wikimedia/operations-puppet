@@ -75,3 +75,6 @@ profile::puppet::agent::force_puppet7: true
 profile::hadoop::master::standby::excluded_hosts:
   - an-worker1148.eqiad.wmnet
   - an-worker1155.eqiad.wmnet
+  - an-worker1163.eqiad.wmnet
+  - an-worker1164.eqiad.wmnet
+  - an-worker1165.eqiad.wmnet
