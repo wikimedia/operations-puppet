@@ -2,3 +2,4 @@
 # x3 master
 mariadb::shard: 'x3'
 profile::mariadb::mysql_role: 'master'
+mariadb::binlog_format: 'STATEMENT'
