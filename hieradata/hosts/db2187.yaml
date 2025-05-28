@@ -1,9 +1,4 @@
 # db2187
-# Buffer pool sizes/instance enabled
-profile::mariadb::sanitarium_multiinstance::instances:
-  s2: 38G
-  s4: 46G
-  s6: 30G
-  s7: 38G
-mariadb::binlog_format: 'ROW'
+# s8 - but future x3
+mariadb::shard: 's8'
 profile::monitoring::notifications_enabled: false

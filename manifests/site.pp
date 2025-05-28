@@ -753,7 +753,7 @@ node /^db1167\.eqiad\./ {
 
 # s8 (wikidata) core production dbs on codfw
 # db224[123] will go to x3 T381475
-node /^db2(152|154|161|162|163|165|166|167|181|195|241|242|243)\.codfw\./ {
+node /^db2(152|154|161|162|163|165|166|167|181|187|195|241|242|243)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -871,10 +871,6 @@ node /^db2160\.codfw\./ {
 
 # sanitarium hosts
 node /^db1(154|155)\.eqiad\./ {
-    role(mariadb::sanitarium_multiinstance)
-}
-
-node /^db2(187)\.codfw\./ {
     role(mariadb::sanitarium_multiinstance)
 }
 
