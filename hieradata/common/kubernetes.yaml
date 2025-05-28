@@ -104,8 +104,6 @@ kubernetes::clusters:
         - wikikube-worker1029.eqiad.wmnet
         - wikikube-worker1030.eqiad.wmnet
         - wikikube-worker1031.eqiad.wmnet
-        - wikikube-worker1032.eqiad.wmnet
-        - wikikube-worker1033.eqiad.wmnet
         - wikikube-worker1034.eqiad.wmnet
         - wikikube-worker1035.eqiad.wmnet
         - wikikube-worker1036.eqiad.wmnet
