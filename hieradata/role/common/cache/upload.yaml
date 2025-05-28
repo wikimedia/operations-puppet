@@ -138,3 +138,4 @@ profile::cache::haproxy::allowed_methods:
   - HEAD
   - OPTIONS
 profile::cache::haproxy::set_x_provenance: true
+profile::cache::varnish::frontend::do_edge_uniques: true

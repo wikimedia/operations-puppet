@@ -21,5 +21,3 @@ profile::benthos::instances:
       # Not needed in this case
       topics:
         - "none"
-
-profile::cache::varnish::frontend::do_edge_uniques: true

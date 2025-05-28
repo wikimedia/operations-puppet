@@ -357,3 +357,4 @@ profile::cache::haproxy::allowed_methods:
   - POST
   - PUT
 profile::cache::haproxy::set_x_provenance: true
+profile::cache::varnish::frontend::do_edge_uniques: true
