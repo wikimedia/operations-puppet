@@ -322,10 +322,15 @@ def main() -> int:
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
             ExternalCloudVendor(
-                "BingBot",
+                "Bingbot-main",
                 "https://www.bing.com/toolbox/bingbot.json",
                 {"ipv4Prefix", "ipv6Prefix"},
-            )
+            ),
+            ExternalCloudVendor(
+                "Bingbot-others",
+                "https://www.bing.com/toolbox/bingbot-others.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
         ],
     }
 
