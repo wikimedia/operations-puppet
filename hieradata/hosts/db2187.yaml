@@ -1,4 +1,5 @@
 # db2187
-# s8 - but future x3
+# x3
 mariadb::shard: 's8'
+mariadb::binlog_format: 'STATEMENT'
 profile::monitoring::notifications_enabled: false
