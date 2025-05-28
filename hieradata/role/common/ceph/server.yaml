@@ -35,5 +35,6 @@ profile::tlsproxy::envoy::listen_ipv6: true
 profile::tlsproxy::envoy::firewall_src_sets:
   - ANALYTICS_NETWORKS
   - DSE_KUBEPODS_NETWORKS
+  - DEPLOYMENT_HOSTS
 profile::tlsproxy::envoy::firewall_srange:
   - db1208.eqiad.wmnet
