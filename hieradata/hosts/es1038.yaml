@@ -1,3 +1,4 @@
 # es1038
 # candidate master for es6
 mariadb::shard: 'es6'
+mariadb::package: 'wmf-mariadb1011'
