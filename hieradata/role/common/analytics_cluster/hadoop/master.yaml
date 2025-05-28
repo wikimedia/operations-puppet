@@ -78,8 +78,8 @@ profile::puppet::agent::force_puppet7: true
 
 # Temporarily exlude hosts in group 5 - rack F1 for a hard drive upgrade - See #T390172
 profile::hadoop::master::excluded_hosts:
-  - an-worker1148.eqiad.wmnet
-  - an-worker1155.eqiad.wmnet
   - an-worker1163.eqiad.wmnet
   - an-worker1164.eqiad.wmnet
   - an-worker1165.eqiad.wmnet
+  - an-worker1119.eqiad.wmnet
+  - an-worker1135.eqiad.wmnet
