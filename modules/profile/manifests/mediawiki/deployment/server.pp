@@ -115,7 +115,7 @@ class profile::mediawiki::deployment::server(
     ::monitoring::icinga::bad_directory_owner { '/srv/mediawiki-staging': }
 
     file { '/usr/local/etc/fix-staging-perms.sh':
-        content => "deployment_group=\"${deployment_group}\"\n",
+        content => "deployment_group=\"${deployment_group}\"\ndeployment_dirs=\"/srv/mediawiki-staging /srv/patches\"\n",
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
