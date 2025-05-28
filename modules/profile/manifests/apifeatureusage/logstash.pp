@@ -38,12 +38,22 @@ class profile::apifeatureusage::logstash (
     },
   }
 
-  $apt_component = 'elastic710'
+  $es_apt_component = 'elastic710'
   apt::repository { 'wikimedia-elastic':
+    ensure     => absent,
     uri        => 'http://apt.wikimedia.org/wikimedia',
     dist       => "${::lsbdistcodename}-wikimedia",
-    components => "thirdparty/${apt_component}",
+    components => "thirdparty/${es_apt_component}",
     before     => Class['::logstash'],
+
+  }
+
+  $os_apt_component = 'opensearch1'
+  apt::repository { 'wikimedia-opensearch':
+      uri        => 'http://apt.wikimedia.org/wikimedia',
+      dist       => "${::lsbdistcodename}-wikimedia",
+      components => "thirdparty/${os_apt_component}",
+      before     => Class['::opensearch::curator'],
   }
 
   class { '::logstash':
