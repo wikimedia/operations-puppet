@@ -17,9 +17,6 @@ class profile::apifeatureusage::logstash (
   $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
   $manage_truststore = false
 
-  # use WMF Observability-maintained curator fork, ref T394742
-  class { '::opensearch::curator': }
-
   $config_dir = '/etc/prometheus'
   $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"
 
@@ -48,12 +45,10 @@ class profile::apifeatureusage::logstash (
 
   }
 
-  $os_apt_component = 'opensearch1'
-  apt::repository { 'wikimedia-opensearch':
-      uri        => 'http://apt.wikimedia.org/wikimedia',
-      dist       => "${::lsbdistcodename}-wikimedia",
-      components => "thirdparty/${os_apt_component}",
-      before     => Class['::opensearch::curator'],
+  apt::package_from_component { 'elasticsearch-curator':
+      packages  => ['elasticsearch-curator'],
+      component => 'thirdparty/opensearch1',
+      distro    => "${::lsbdistcodename}-wikimedia",
   }
 
   class { '::logstash':

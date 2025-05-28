@@ -59,6 +59,3 @@ profile::apifeatureusage::logstash::curator_actions:
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'API feature usage Logstash collector'
 profile::puppet::agent::force_puppet7: true
-
-# use WMF Observability-maintained fork, ref T394742
-profile::opensearch::curator::version: 'present'
