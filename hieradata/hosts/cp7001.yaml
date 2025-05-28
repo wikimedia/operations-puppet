@@ -1,2 +1,1 @@
-profile::cache::varnish::frontend::do_edge_uniques: true
 profile::cache::haproxy::maxmind_lookup: true
