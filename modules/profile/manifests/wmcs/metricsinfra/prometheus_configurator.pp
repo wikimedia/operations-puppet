@@ -55,7 +55,8 @@ class profile::wmcs::metricsinfra::prometheus_configurator (
             "${host}:9093"
         },
         alert_routing => {
-            irc_base => "http://${alertmanager_active_host}:19190/",
+            irc_base  => "http://${alertmanager_active_host}:19190/",
+            phab_base => 'http://localhost:8292/',
         },
         global_jobs => $global_jobs,
         outputs => [],
