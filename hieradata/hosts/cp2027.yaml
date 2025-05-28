@@ -58,4 +58,3 @@ profile::cache::haproxy::pre_acl_actions:
       verb: track-sc0 src table httpreqrate
     - context: tcp-request connection
       verb: track-sc1 src table newconnrate
-profile::cache::varnish::frontend::do_edge_uniques: true
