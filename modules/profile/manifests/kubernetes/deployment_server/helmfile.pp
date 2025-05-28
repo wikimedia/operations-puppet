@@ -50,7 +50,7 @@ class profile::kubernetes::deployment_server::helmfile (
             ensure => directory,
             owner  => 'root',
             group  => $helm_user_group,
-            mode   => '0750',
+            mode   => '0751',
         }
         if $admin_services_secrets[$cluster_group] {
             $admin_services_secrets[$cluster_group].each | String $svcname, Hash $data | {

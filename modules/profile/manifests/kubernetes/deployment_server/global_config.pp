@@ -21,13 +21,14 @@ class profile::kubernetes::deployment_server::global_config (
     }
 
     # directory holding private data for services
-    # This is only writable by root, and readable by $helm_user_group
+    # This is only writable by root, and readable by $helm_user_group.
+    # Users not in this group can only traverse through it, but not read the contents.
     $general_private_dir = "${general_dir}/private"
     file { $general_private_dir:
         ensure => directory,
         owner  => 'root',
         group  => $helm_user_group,
-        mode   => '0750',
+        mode   => '0751',
     }
 
     # Global data defining the services proxy upstreams
