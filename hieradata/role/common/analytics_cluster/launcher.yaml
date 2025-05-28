@@ -82,6 +82,7 @@ profile::airflow::airflow_version: '2.10.3-py3.10-20250212'
 profile::airflow::instances:
   # airflow@analytics instance.
   analytics:
+    services_ensure: absent # This service is to be decommissioned
     firewall_srange: ANALYTICS_NETWORKS
     # Since we set security: kerberos a keytab must be deployed for the service_user.
     service_user: analytics
