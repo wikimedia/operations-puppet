@@ -32,6 +32,8 @@
 #
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default 1.2d). Default: undef
 #
+# [*foreachwiki_ignore_errors*] Continue with the next wiki in the loop on error (kubernetes only). Default: false
+#
 # [*ensure*] Either 'present' or 'absent'. Default: present
 
 define profile::mediawiki::sharded_periodic_job(
@@ -50,6 +52,7 @@ define profile::mediawiki::sharded_periodic_job(
     Optional[String] $description = undef,
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
+    Optional[Boolean] $foreachwiki_ignore_errors = false,
     Wmflib::Ensure $ensure = present,
 ) {
     $real_description = $description ? {
@@ -69,10 +72,15 @@ define profile::mediawiki::sharded_periodic_job(
             $kubernetes = $shard in $kubernetes_shards
         }
 
+        $command = $foreachwiki_ignore_errors ? {
+            true  => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/mwscriptwikiset ${script}",
+            false => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/mwscriptwikiset ${script}",
+        }
+
         profile::mediawiki::periodic_job { "${title}_${shard}":
             ensure                  => $ensure,
             kubernetes              => $kubernetes,
-            command                 => "/usr/local/bin/mwscriptwikiset ${script}",
+            command                 => $command,
             interval                => $interval,
             splay                   => $splay,
             cron_schedule           => $cron_schedule,
