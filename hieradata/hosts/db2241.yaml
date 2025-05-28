@@ -1,4 +1,4 @@
 # db2241
-# s8 - but future x3
-# x3 future master
-mariadb::shard: 's8'
+# x3 master
+mariadb::shard: 'x3'
+profile::mariadb::mysql_role: 'master'
