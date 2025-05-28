@@ -21,21 +21,6 @@ profile::opensearch::instances:
       - cirrussearch1094.eqiad.wmnet # Row E
       - cirrussearch1100.eqiad.wmnet # Row F
     cluster_hosts:
-      - elastic1053.eqiad.wmnet
-      - elastic1054.eqiad.wmnet
-      - elastic1055.eqiad.wmnet
-      - elastic1056.eqiad.wmnet
-      - elastic1057.eqiad.wmnet
-      - elastic1058.eqiad.wmnet
-      - elastic1059.eqiad.wmnet
-      - elastic1060.eqiad.wmnet
-      - elastic1061.eqiad.wmnet
-      - elastic1062.eqiad.wmnet
-      - elastic1063.eqiad.wmnet
-      - elastic1064.eqiad.wmnet
-      - elastic1065.eqiad.wmnet
-      - elastic1066.eqiad.wmnet
-      - elastic1067.eqiad.wmnet
       - elastic1068.eqiad.wmnet
       - elastic1069.eqiad.wmnet
       - elastic1070.eqiad.wmnet
@@ -77,21 +62,6 @@ profile::opensearch::instances:
       - elastic1109.eqiad.wmnet
       - elastic1110.eqiad.wmnet
 
-      - cirrussearch1053.eqiad.wmnet
-      - cirrussearch1054.eqiad.wmnet
-      - cirrussearch1055.eqiad.wmnet
-      - cirrussearch1056.eqiad.wmnet
-      - cirrussearch1057.eqiad.wmnet
-      - cirrussearch1058.eqiad.wmnet
-      - cirrussearch1059.eqiad.wmnet
-      - cirrussearch1060.eqiad.wmnet
-      - cirrussearch1061.eqiad.wmnet
-      - cirrussearch1062.eqiad.wmnet
-      - cirrussearch1063.eqiad.wmnet
-      - cirrussearch1064.eqiad.wmnet
-      - cirrussearch1065.eqiad.wmnet
-      - cirrussearch1066.eqiad.wmnet
-      - cirrussearch1067.eqiad.wmnet
       - cirrussearch1068.eqiad.wmnet
       - cirrussearch1069.eqiad.wmnet
       - cirrussearch1070.eqiad.wmnet
@@ -187,30 +157,20 @@ profile::opensearch::instances:
     # We want roughly half of hosts to be in omega and half to be in psi
     cluster_hosts:
       # row A
-      - elastic1053.eqiad.wmnet
-      - elastic1054.eqiad.wmnet
       - elastic1068.eqiad.wmnet
       - elastic1070.eqiad.wmnet
       - elastic1071.eqiad.wmnet
 
       # row B
-      - elastic1055.eqiad.wmnet
-      - elastic1056.eqiad.wmnet
       - elastic1074.eqiad.wmnet
       - elastic1076.eqiad.wmnet
       - elastic1077.eqiad.wmnet
 
       # row C
-      - elastic1057.eqiad.wmnet
-      - elastic1058.eqiad.wmnet
       - elastic1080.eqiad.wmnet
       - elastic1082.eqiad.wmnet
 
       # row D
-      - elastic1060.eqiad.wmnet
-      - elastic1061.eqiad.wmnet
-      - elastic1062.eqiad.wmnet
-      - elastic1063.eqiad.wmnet
       - elastic1103.eqiad.wmnet
 
       # row E
@@ -227,16 +187,12 @@ profile::opensearch::instances:
       - elastic1107.eqiad.wmnet
 
       # row A
-      - cirrussearch1053.eqiad.wmnet
-      - cirrussearch1054.eqiad.wmnet
       - cirrussearch1068.eqiad.wmnet
       - cirrussearch1070.eqiad.wmnet
       - cirrussearch1071.eqiad.wmnet
       - cirrussearch1112.eqiad.wmnet
 
       # row B
-      - cirrussearch1055.eqiad.wmnet
-      - cirrussearch1056.eqiad.wmnet
       - cirrussearch1074.eqiad.wmnet
       - cirrussearch1076.eqiad.wmnet
       - cirrussearch1077.eqiad.wmnet
@@ -244,17 +200,11 @@ profile::opensearch::instances:
       - cirrussearch1114.eqiad.wmnet
 
       # row C
-      - cirrussearch1057.eqiad.wmnet
-      - cirrussearch1058.eqiad.wmnet
       - cirrussearch1080.eqiad.wmnet
       - cirrussearch1082.eqiad.wmnet
       - cirrussearch1119.eqiad.wmnet
 
       # row D
-      - cirrussearch1060.eqiad.wmnet
-      - cirrussearch1061.eqiad.wmnet
-      - cirrussearch1062.eqiad.wmnet
-      - cirrussearch1063.eqiad.wmnet
       - cirrussearch1103.eqiad.wmnet
       - cirrussearch1120.eqiad.wmnet
 
@@ -311,17 +261,12 @@ profile::opensearch::instances:
       - elastic1086.eqiad.wmnet
 
       # row C
-      - elastic1059.eqiad.wmnet
       - elastic1081.eqiad.wmnet
       - elastic1083.eqiad.wmnet
       - elastic1087.eqiad.wmnet
       - elastic1088.eqiad.wmnet
 
       # row D
-      - elastic1064.eqiad.wmnet
-      - elastic1065.eqiad.wmnet
-      - elastic1066.eqiad.wmnet
-      - elastic1067.eqiad.wmnet
 
       # row E
       - elastic1090.eqiad.wmnet
@@ -354,7 +299,6 @@ profile::opensearch::instances:
       - cirrussearch1117.eqiad.wmnet
 
       # row C
-      - cirrussearch1059.eqiad.wmnet
       - cirrussearch1081.eqiad.wmnet
       - cirrussearch1083.eqiad.wmnet
       - cirrussearch1087.eqiad.wmnet
@@ -362,10 +306,6 @@ profile::opensearch::instances:
       - cirrussearch1118.eqiad.wmnet
 
       # row D
-      - cirrussearch1064.eqiad.wmnet
-      - cirrussearch1065.eqiad.wmnet
-      - cirrussearch1066.eqiad.wmnet
-      - cirrussearch1067.eqiad.wmnet
       - cirrussearch1121.eqiad.wmnet
       - cirrussearch1122.eqiad.wmnet
 

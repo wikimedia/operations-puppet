@@ -37,12 +37,6 @@ eqiad:
     restbase1044.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
     restbase1045.eqiad.wmnet: [restbase, restbase-ssl, restbase-backend]
   elasticsearch:
-#    cirrussearch1060.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-#    cirrussearch1061.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-#    cirrussearch1062.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-#    cirrussearch1064.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
-#    cirrussearch1065.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
-#    cirrussearch1066.eqiad.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch1068.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl ]
     cirrussearch1069.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl ]
     cirrussearch1070.eqiad.wmnet: [ elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl ]

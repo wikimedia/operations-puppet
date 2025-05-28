@@ -1116,50 +1116,33 @@ node /^dumpsdata100[45]\.eqiad\./ {
     role(dumps::generation::server::spare)
 }
 
-# Arrange elastic nodes by row to facilitate reimage T388610
+
+# BEGIN hosts to decom, see T394350
+
+node /^elastic10(54|67)\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+node /^cirrussearch10(53|55|56|57|58|59|60|61|62|63|64|65|66)\.eqiad\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# END hosts to decom, see T394350
 
 # Row A
-node /^elastic10(53|54|68|69|70|71|72|73|84)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-# Row B
-node /^elastic10(55|56|74|75|76|77|78|79|85|86)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-# Row C
-node /^elastic10(57|58|59|80|81|82|83|87|88)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-# Row D
-node /^elastic1(060|061|062|063|064|065|066|067|103)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-# Row E
-node /^elastic1(089|090|091|092|093|094|095|108|109)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-# Row F
-node /^elastic1(096|097|098|099|100|101|102|107|110)\.eqiad\./ {
-    role(elasticsearch::cirrus)
-}
-
-# Row A
-node /^cirrussearch10(53|54|68|69|70|71|72|73|84)\.eqiad\./ {
+node /^cirrussearch10(68|69|70|71|72|73|84)\.eqiad\./ {
     role(cirrus::opensearch)
 }
 # Row B
-node /^cirrussearch10(55|56|74|75|76|77|78|79|85|86)\.eqiad\./ {
+node /^cirrussearch10(74|75|76|77|78|79|85|86)\.eqiad\./ {
     role(cirrus::opensearch)
 }
 # Row C
-node /^cirrussearch10(57|58|59|80|81|82|83|87|88)\.eqiad\./ {
+node /^cirrussearch10(80|81|82|83|87|88)\.eqiad\./ {
     role(cirrus::opensearch)
 }
 # Row D
-node /^cirrussearch1(060|061|062|063|064|065|066|067|103)\.eqiad\./ {
+node /^cirrussearch1103\.eqiad\./ {
     role(cirrus::opensearch)
 }
 # Row E
