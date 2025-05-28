@@ -17,7 +17,8 @@ class profile::apifeatureusage::logstash (
   $ssl_truststore_password = profile::base::certificates::get_trusted_ca_jks_password()
   $manage_truststore = false
 
-  class { 'elasticsearch::curator': }
+  # use WMF Observability-maintained curator fork, ref T394742
+  class { '::opensearch::curator': }
 
   $config_dir = '/etc/prometheus'
   $jmx_exporter_config_file = "${config_dir}/logstash_jmx_exporter.yaml"

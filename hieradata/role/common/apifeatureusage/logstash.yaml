@@ -1,18 +1,11 @@
-
 cluster: apifeatureusage
-
 profile::base::certificates::include_bundle_jks: true
-
 logstash::heap_memory: '2G'
-
 profile::apifeatureusage::logstash::targets:
   - search.svc.codfw.wmnet
   - search.svc.eqiad.wmnet
-
 profile::apifeatureusage::logstash::jobs_host: apifeatureusage1001.eqiad.wmnet
-
 profile::apifeatureusage::logstash::input_kafka_consumer_group_id: 'apifeatureusage'
-
 profile::apifeatureusage::logstash::curator_actions:
   '01':
     description: 'apifeatureusage: delete older than 91 days'
@@ -63,8 +56,9 @@ profile::apifeatureusage::logstash::curator_actions:
         direction: older
         unit: days
         unit_count: 2
-
 profile::contacts::role_contacts: ['Search Platform']
 profile::base::production::role_description: 'API feature usage Logstash collector'
-
 profile::puppet::agent::force_puppet7: true
+
+# use WMF Observability-maintained fork, ref T394742
+profile::opensearch::curator::version: 'present'
