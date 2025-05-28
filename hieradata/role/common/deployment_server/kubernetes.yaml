@@ -343,11 +343,11 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
     web_flavour: "webserver"
   - namespace: mediawiki-dumps-legacy
     releases:
-      production: {}
+      production:
+        deploy: false  # Temporary, until we're satisfied that everything works as expected
     mw_flavour: "publish-81"
     mw_kind: "cli-image"
     dir: "dse-k8s-services"
-    clusters: ["dse-k8s-eqiad"]
     web_flavour: "webserver"
 profile::kubernetes::deployment_server::include_admin: true
 # Default and environment specific generic values go here.
