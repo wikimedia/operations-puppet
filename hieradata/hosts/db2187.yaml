@@ -1,4 +1,3 @@
 # db2187
-# x3
-mariadb::shard: 's8'
+mariadb::shard: 'x3'
 mariadb::binlog_format: 'STATEMENT'
