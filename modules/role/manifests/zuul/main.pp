@@ -4,4 +4,5 @@ class role::zuul::main {
     include profile::base::production
     include profile::firewall
     include profile::zuul::main
+    include profile::zuul::user
 }
