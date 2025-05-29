@@ -8,3 +8,5 @@ contactgroups: 'admins,team-data-platform,wmcs-team-email'
 profile::contacts::role_contacts: ['WMCS']
 
 profile::puppet::agent::force_puppet7: true
+
+mariadb::package: 'wmf-mariadb1011' # Upgrading to MariaDB 10.11 - See #T394930
