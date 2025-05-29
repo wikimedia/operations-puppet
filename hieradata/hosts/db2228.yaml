@@ -1,2 +1,3 @@
 # db2228
 mariadb::shard: 's5'
+mariadb::binlog_format: 'STATEMENT'
