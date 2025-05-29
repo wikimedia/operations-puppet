@@ -4,16 +4,9 @@ global
     htsets = @facts['numa']['device_to_htset'][@numa_iface]
     cpus = htsets.flatten.join(' ')
 -%>
-<%- if @haproxy_version == 'haproxy24' -%>
-    nbproc 1
-<%- end -%>
+
     cpu-map 1/1- <%= cpus %>
 
-<%- if @lua_scripts -%>
-<%- @lua_scripts.each do |lua_script| -%>
-    lua-load <%= lua_script %>
-<%- end -%>
-<%- end -%>
 <%- if @maxmind_lookup -%>
     lua-load-per-thread /etc/haproxy/lua/maxmind-lookup.lua
 <%- end -%>
