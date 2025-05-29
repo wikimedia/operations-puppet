@@ -49,7 +49,6 @@ class profile::cache::haproxy(
     Boolean $use_benthos = lookup('profile::cache::haproxy::use_benthos', {'default_value'                                                       => false}),
     String $benthos_socket = lookup('profile::cache::haproxy::benthos_socket_address', {'default_value'                                          => '127.0.0.1:1221'}),
     String $conftool_prefix = lookup('conftool_prefix'),
-    Optional[Array[Haproxy::Ring, 1]] $rings = lookup('profile::cache::haproxy::rings', {'default_value'                                         => undef}),
     Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
     Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                           => ['GET','HEAD','OPTIONS']}),
     Boolean $maxmind_lookup = lookup('profile::cache::haproxy::maxmind_lookup', {'default_value'                                                 => false}),

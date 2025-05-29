@@ -37,8 +37,6 @@ lookup_options:
     merge: deep
   profile::cache::haproxy::sticktables:
     merge: deep
-  profile::cache::haproxy::rings:
-    merge: deep
   profile::cache::haproxy::filters:
     merge: deep
   profile::conftool2git::ssh_privkey:

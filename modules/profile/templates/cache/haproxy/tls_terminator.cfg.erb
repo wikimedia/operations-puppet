@@ -38,6 +38,7 @@ backend <%= table['name'] %>
 <%- end -%>
 <%- end -%>
 
+## LOGGING RINGS ##
 <%- if @use_benthos -%>
 # Benthos log ring used to send requestctl silent drops to benthos
 ring reqctl-ring
@@ -46,17 +47,7 @@ ring reqctl-ring
     timeout server 100
     server benthos <%= @benthos_socket %> log-proto legacy
 <%- end -%>
-
-<%- if @rings -%>
-# Log rings used mainly to route additional logging
-<%- @rings.each do |ring| -%>
-ring <%= ring['name'] %>
-    format <%= ring['format'] %>
-    timeout connect <%= ring['timeout_connect_ms'] %>
-    timeout server <%= ring['timeout_server_ms'] %>
-    server <%= ring['backend_name'] %> <% if ring['backend_prefix'] %><%= ring['backend_prefix'] %>@<% end %><%= ring['backend_address'] %><%- if ring['backend_log_proto'] -%> log-proto <%= ring['backend_log_proto'] %><%- end %>
-<%- end -%>
-<%- end -%>
+## END LOGGING RINGS ##
 
 listen tls
     log global
