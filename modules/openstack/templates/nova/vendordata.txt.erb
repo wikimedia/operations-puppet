@@ -48,6 +48,8 @@ bootcmd:
 #   Get puppet package from wikimedia repo
 #   (avoids getting a too-new version from the Bookworm repo)
 write_files:
+    - content: "nameserver 172.20.255.1"
+      path: /etc/resolv.conf
     - content: "VM is work in progress"
       path: /etc/block-ldap-key-lookup
     - content: "daemon.* |/dev/console"
