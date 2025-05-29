@@ -137,10 +137,19 @@ class openstack::keystone::service::epoxy(
             require   => Package['keystone'];
     }
 
-
-    # Fix for https://phabricator.wikimedia.org/T395542, should bein upstream in F
-    openstack::patch { '/usr/lib/python3/dist-packages/':
-        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/0001-api-Remove-constraints-on-user-IDs.patch',
+    # Fixes for https://phabricator.wikimedia.org/T395542, should be in upstream in F
+    openstack::patch { '/usr/lib/python3/dist-packages/keystone/identity/schema.py':
+        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/keystone/identity/schema.py.patch',
+        require => Package['keystone'],
+        notify  => Service['keystone-admin', 'keystone'],
+    }
+    openstack::patch { '/usr/lib/python3/dist-packages/keystone/api/validation/parameter_types.py':
+        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/keystone/api/validation/parameter_types.py.patch',
+        require => Package['keystone'],
+        notify  => Service['keystone-admin', 'keystone'],
+    }
+    openstack::patch { '/usr/lib/python3/dist-packages/keystone/assignment/schema.py':
+        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/assignment/schema.py.patch',
         require => Package['keystone'],
         notify  => Service['keystone-admin', 'keystone'],
     }
