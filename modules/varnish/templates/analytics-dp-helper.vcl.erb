@@ -15,8 +15,12 @@ C{
         char hexhash[2 * crypto_shorthash_BYTES + 1];
         char outputhash[4] = { 0 };
 
-        const struct gethdr_s hdr = { HDR_REQ, "\012X-Page-ID:" };
-        const char* page_id = VRT_GetHdr(ctx, &hdr);
+        struct vmod_priv *dp_hash_var_pt = VRT_priv_task_get(ctx, &VGC_vmod_var);
+        if (dp_hash_var_pt == NULL) {
+            VRT_fail(ctx, "failed to get task priv for vmod var");
+            return;
+        }
+        const char *page_id = Vmod_vmod_var_Func.get_string(ctx, dp_hash_var_pt, "page_id");
         if (!page_id)
             return;
 

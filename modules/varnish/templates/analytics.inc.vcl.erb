@@ -239,16 +239,17 @@ sub analytics_differential_privacy_deliver_ {
     } else {
         // Article pageview (x-analytics has namespace=0 and page ID) so we should process for DP
         if (resp.http.X-Analytics ~ "(^|;\s*)ns=0(;|$)" && resp.http.X-Analytics ~ "(^|;\s*)page_id=(\d+).*(;|$)") {
-            unset req.http.X-Page-ID; // clear any sent by the user
-            set req.http.X-Page-ID = regsub(
-                resp.http.X-Analytics,
-                ".*page_id=(\d+).*",
-                "\1"
+            var.set(
+                "page_id",
+                regsub(
+                    resp.http.X-Analytics,
+                    ".*page_id=(\d+).*",
+                    "\1"
+                )
             );
-
         }
 
-        if (req.http.X-Page-ID) {  // pageview to article
+        if (var.get("page_id")) {  // pageview to article
             // If list doesn't exist, create it as an empty string
             if (!req.http.X-WMF-DP) {
                 set req.http.X-WMF-DP = "";
