@@ -8,6 +8,13 @@ class ldap::client::config (
     String[1]           $base_dn,
     String[1]           $proxy_pass,
 ) {
+    file { '/etc/ldap':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+    }
+
     file { '/etc/ldap/ldap.conf':
         owner   => 'root',
         group   => 'root',
