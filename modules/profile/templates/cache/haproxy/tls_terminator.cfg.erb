@@ -76,7 +76,6 @@ listen tls
     <%- if @extended_logging -%>
     unique-id-format "%rt"
     <%- end -%>
-    # TODO: refactor to a more configurable approach
     capture response header X-Cache-Status len 10
     capture request header Host len 255
     <%- if @extended_logging -%>
@@ -91,33 +90,20 @@ listen tls
     capture response header Server len 64
     <%- end -%>
 
-    # vars
+    # Set here any variable you might need
     http-request set-var(txn.xwd_count) req.hdr_cnt(X-Wikimedia-Debug)
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
 
-<%# Generated set-var -%>
-<%- if @vars and @vars['tls'] -%>
-<%- @vars['tls'].each do |var| -%>
-<%- if var['acl'] == nil -%>
-    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
-<%- end -%>
-<%- end -%>
-<%- end -%>
-
-<%- if @filters -%>
-<%- @filters.each do |filter| -%>
-    filter bwlim-<%= filter['direction'] %> <%= filter['name'] %> key <%= filter['key'] %> table <%= filter['table'] %> limit <%= filter['size'] %>
-<%- end -%>
+    # Bandwidth limiting
+<%- if @cache_cluster == 'upload' -%>
+    # 32 MByte/s per source IP limit for uploads
+    filter bwlim-out limit-by-source key src table limit-by-source limit 32m
+    # 38MByte/sec * ~8 cache hosts/PoP =~ 2.4Gbit/sec/distinctURIpath/PoP egress budget
+    filter bwlim-out limit-by-path key path,sdbm(1) table limit-by-path limit 38m
 <%- end -%>
 
-<%# Generated pre_acl_actions -%>
-<%- if @pre_acl_actions and @pre_acl_actions['tls'] -%>
-<%- @pre_acl_actions['tls'].each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
-<%- end -%>
-<%- end -%>
-
+    # Allowlist ACLs
 <%- if @wikimedia_trust -%>
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
 <%- end -%>
@@ -132,27 +118,12 @@ listen tls
     acl mathoid_as_a_service path -m beg /api/rest_v1/media/math/
     acl allowed_methods method <%= @allowed_methods.join(' ') %>
 
-<%# Generated acls -%>
-<%- if @acls and @acls['tls'] -%>
-<%- @acls['tls'].each do |acl| -%>
-    acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
-<%- end -%>
-<%- end -%>
-
     http-request set-var(req.h2) int(1) if h2
     http-request set-var(req.h2) int(0) if !h2
     http-request set-var(req.h2s) str(h2) if h2
     http-request set-var(req.h2s) str(h1) if !h2
     http-request set-var(req.sess) str(new) if !ssl_session_reused
     http-request set-var(req.sess) str(reused) if ssl_session_reused
-
-<%- if @vars and @vars['tls'] -%>
-<%- @vars['tls'].each do |var| -%>
-<%- if var['acl'] -%>
-    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
-<%- end -%>
-<%- end -%>
-<%- end -%>
 
     http-request set-header X-Client-IP "%[src]"
     http-request set-header X-Client-Port "%[src_port]"
@@ -161,14 +132,6 @@ listen tls
     http-request set-header X-Analytics-TLS "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
     http-request set-header X-Requestctl " "
 
-<%# Generated set-header -%>
-<%- if @add_headers and @add_headers['tls'] -%>
-<%- @add_headers['tls'].each do |add_header| -%>
-<%- if add_header['value'] -%>
-    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
-<%- end -%>
-<%- end -%>
-<%- end -%>
 <%- if @extended_logging -%>
     http-request capture hdr(X-Analytics-TLS) len 96
 <%- end -%>
@@ -189,12 +152,6 @@ listen tls
     http-response del-header traceparent if missing_xwd
     http-response del-header tracestate if missing_xwd
 
-<%# Generated del-header -%>
-<%- if @del_headers and @del_headers['tls'] -%>
-<%- @del_headers['tls'].each do |del_header| -%>
-    http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
-<%- end -%>
-<%- end -%>
 
     # Provide Server header
     http-after-response set-header Server HAProxy unless { res.hdr(Server) -m found }
@@ -332,56 +289,12 @@ frontend http
     # inactivity timeout on the client side for half-closed connections
     timeout client-fin <%= @redirection_timeout['client_fin'] %>s
 <%- end -%>
-<%# vars -%>
-<%- if @vars and @vars['http'] -%>
-<%- @vars['http'].each do |var| -%>
-<%- if var['acl'] == nil -%>
-    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %>
-<%- end -%>
-<%- end -%>
-<%- end -%>
-<%# pre_acl_actions -%>
-<%- if @pre_acl_actions and @pre_acl_actions['http'] -%>
-<%- @pre_acl_actions['http'].each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
-<%- end -%>
-<%- end -%>
 
     acl too_many_concurrent_queries sc0_trackers(httpreqrate_http) ge 400
     acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate_http) gt 0
     acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate_http) gt 0
 
-<%# acls -%>
-<%- if @acls and @acls['http'] -%>
-<%- @acls['http'].each do |acl| -%>
-    acl <%= acl['name'] %> <%= acl['criterion'] %> <%= acl['operator'] %> <%= acl['value'] %>
-<%- end -%>
-<%- end -%>
-
     http-request set-var(req.dummy_silent_drop_port80) src,debug(silent-drop_port80_for_300s,stderr) if too_many_concurrent_queries !too_much_recent_concurrency
-
-<%# vars (with acls) -%>
-<%- if @vars and @vars['http'] -%>
-<%- @vars['http'].each do |var| -%>
-<%- if var['acl'] -%>
-    http-<%= var['direction'] %> set-var(<%= var['name'] %>) <%= var['value'] %> if <%= var['acl'] %>
-<%- end -%>
-<%- end -%>
-<%- end -%>
-<%# add_headers -%>
-<%- if @add_headers and @add_headers['http'] -%>
-<%- @add_headers['http'].each do |add_header| -%>
-<%- if add_header['value'] -%>
-    http-<%= add_header['direction'] %> set-header <%= add_header['name'] %> "<%= add_header['value'] %>"
-<%- end -%>
-<%- end -%>
-<%- end -%>
-<%# del_headers -%>
-<%- if @del_headers and @del_headers['http'] -%>
-<%- @del_headers['http'].each do |del_header| -%>
-    http-<%= del_header['direction'] %> del-header <%= del_header['name'] %> <%- if del_header['acl'] %> if <%= del_header['acl'] %> <%- end %>
-<%- end -%>
-<%- end -%>
 
     http-request track-sc0 src table httpreqrate_http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE

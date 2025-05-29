@@ -2,16 +2,6 @@ profile::cache::haproxy::post_acl_actions:
   tls: []
   http: []
 
-profile::cache::haproxy::vars:
-  tls: []
-  http: []
-profile::cache::haproxy::acls:
-  tls: []
-  http: []
-profile::cache::haproxy::add_headers:
-  tls: []
-profile::cache::haproxy::del_headers:
-  tls: []
 
 # TLS on volatile storage
 profile::cache::haproxy::use_tls_tmpfiles: true

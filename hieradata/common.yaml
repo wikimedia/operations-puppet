@@ -27,17 +27,9 @@ lookup_options:
     merge: hash
   profile::cache::varnish::frontend::cache_be_opts:
     merge: hash
-  profile::cache::haproxy::acls:
-    merge: deep
-  profile::cache::haproxy::pre_acl_actions:
-    merge: deep
   profile::cache::haproxy::post_acl_actions:
     merge: deep
-  profile::cache::haproxy::vars:
-    merge: deep
   profile::cache::haproxy::sticktables:
-    merge: deep
-  profile::cache::haproxy::filters:
     merge: deep
   profile::conftool2git::ssh_privkey:
     convert_to: 'Sensitive'

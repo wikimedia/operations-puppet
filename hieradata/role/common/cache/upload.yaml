@@ -146,18 +146,6 @@ profile::cache::haproxy::sticktables:
     store:
       - bytes_out_rate(1s)
 
-profile::cache::haproxy::filters:
-  - direction: out
-    name: limit-by-source
-    size: 32m
-    key: src
-    table: limit-by-source
-  - direction: out
-    name: limit-by-path
-    size: 38m  # 38MByte/sec * ~8 cache hosts/PoP =~ 2.4Gbit/sec/distinctURIpath/PoP egress budget
-    key: path,sdbm(1)
-    table: limit-by-path
-
 profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request
