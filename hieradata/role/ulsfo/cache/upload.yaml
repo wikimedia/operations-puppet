@@ -22,16 +22,6 @@ profile::benthos::instances:
       topics:
         - "none"
 
-# This will be removed when haproxy rings will be available on whole DC/everywhere
-profile::cache::haproxy::rings:
-  - name: reqctl-ring
-    format: raw
-    timeout_connect_ms: 5
-    timeout_server_ms: 100
-    backend_name: benthos
-    backend_address: *benthos_address
-    backend_log_proto: legacy
-
 profile::cache::haproxy::post_acl_actions:
   tls:
     - context: http-request

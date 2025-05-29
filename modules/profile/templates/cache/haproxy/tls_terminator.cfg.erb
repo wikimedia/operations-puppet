@@ -4,7 +4,6 @@ global
     htsets = @facts['numa']['device_to_htset'][@numa_iface]
     cpus = htsets.flatten.join(' ')
 -%>
-
     cpu-map 1/1- <%= cpus %>
 
 <%- if @maxmind_lookup -%>
@@ -27,13 +26,27 @@ global
 <%- end -%>
     tune.h2.max-concurrent-streams <%= @h2settings['max_concurrent_streams'] %>
 
-<%- if @sticktables -%>
 # Pseudo-backends used only for statistics tracking.
+backend httpreqrate
+    stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
+backend httpreqrate_http
+    stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
+<%- if @sticktables -%>
 <%- @sticktables.each do |table| -%>
 backend <%= table['name'] %>
     stick-table type <%= table['type'] %> <%= table['len'] ? "len " + table['len'].to_s : "" %> size <%= table['size'] %> <%= table['expire'] ? "expire " + table['expire'] : "" %> <%= table['store'] ? "store " + table['store'].join(',') : "" %>
 <%- end -%>
 <%- end -%>
+
+<%- if @use_benthos -%>
+# Benthos log ring used to send requestctl silent drops to benthos
+ring reqctl-ring
+    format raw
+    timeout connect 5
+    timeout server 100
+    server benthos <%= @benthos_socket %> log-proto legacy
+<%- end -%>
+
 <%- if @rings -%>
 # Log rings used mainly to route additional logging
 <%- @rings.each do |ring| -%>
