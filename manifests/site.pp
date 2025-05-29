@@ -745,7 +745,7 @@ node /^db1(172|177|192|193|203|209|211|214|226)\.eqiad\./ {
     role(mariadb::core)
 }
 
-# x3 (split from s8) future section
+# x3 (split from s8) core production dbs
 node /^db1(255|256|257|258)\.eqiad\./ {
     role(mariadb::core)
 }
@@ -757,7 +757,12 @@ node /^db1167\.eqiad\./ {
 
 # s8 (wikidata) core production dbs on codfw
 # db224[123] will go to x3 T381475
-node /^db2(152|154|161|162|163|165|166|167|181|187|195|241|242|243)\.codfw\./ {
+node /^db2(152|154|161|162|163|165|166|167|181|195)\.codfw\./ {
+    role(mariadb::core)
+}
+
+# x3 (split from s8) core production dbs
+node /^db2(187|241|242|243)\.codfw\./ {
     role(mariadb::core)
 }
 
