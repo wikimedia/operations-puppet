@@ -136,4 +136,12 @@ class openstack::keystone::service::epoxy(
             notify    => Service[$wsgi_server],
             require   => Package['keystone'];
     }
+
+
+    # Fix for https://phabricator.wikimedia.org/T395542, should bein upstream in F
+    openstack::patch { '/usr/lib/python3/dist-packages/':
+        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/0001-api-Remove-constraints-on-user-IDs.patch',
+        require => Package['keystone'],
+        notify  => Service['keystone-admin', 'keystone'],
+    }
 }

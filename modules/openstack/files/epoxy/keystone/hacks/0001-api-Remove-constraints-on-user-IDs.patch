@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: Apache-2.0
+
+From 7830e89dfb57acf9b9a6857b7f4c58a03547277c Mon Sep 17 00:00:00 2001
+From: Stephen Finucane <stephenfin@redhat.com>
+Date: Thu, 29 May 2025 14:14:51 +0100
+Subject: [PATCH] api: Remove constraints on user IDs
+
+Per the comment added inline, this is not valid when LDAP is in use.
+
+Change-Id: Idcc0bdf7d0e73fa608ebf6b32d6e016c7b9a8997
+Signed-off-by: Stephen Finucane <stephenfin@redhat.com>
+Closes-bug: #2112112
+---
+ keystone/api/validation/parameter_types.py | 10 ++++++++++
+ keystone/assignment/schema.py              |  4 ++--
+ keystone/identity/schema.py                |  2 +-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/keystone/api/validation/parameter_types.py b/keystone/api/validation/parameter_types.py
+index b8d74665a..66b5d0acd 100644
+--- a/keystone/api/validation/parameter_types.py
++++ b/keystone/api/validation/parameter_types.py
+@@ -56,6 +56,16 @@ description: dict[str, Any] = {
+     "description": "The resource description.",
+ }
+ 
++# User IDs can come from LDAP and LDAP has no constraints on length or format.
++# Therefore we have no minLength, maxLength, or pattern here. Note that this
++# only applies to read-operations (the LDAP backend is read-only) and write
++# operations that hit the database *can* impose these constraints, but we
++# (thankfully!) don't let people set their own IDs anyway so...
++user_id: dict[str, Any] = {
++    "type": "string",
++    "description": "The ID of the user.",
++}
++
+ domain_id: dict[str, Any] = {
+     "type": "string",
+     "minLength": 1,
+diff --git a/keystone/assignment/schema.py b/keystone/assignment/schema.py
+index 8479b8c46..5c52eb3a1 100644
+--- a/keystone/assignment/schema.py
++++ b/keystone/assignment/schema.py
+@@ -313,7 +313,7 @@ role_assignment_schema: dict[str, Any] = {
+                     "required": ["id"],
+                     "additionalProperties": False,
+                 },
+-                "id": parameter_types.id_string,
++                "id": parameter_types.user_id,
+                 "name": parameter_types.name,
+             },
+             "required": ["id"],
+@@ -362,7 +362,7 @@ role_assignments_index_request_query: dict[str, Any] = {
+         "scope.system": {},
+         "scope.domain.id": parameter_types.domain_id,
+         "scope.project.id": parameter_types.project_id,
+-        "user.id": parameter_types.id_string,
++        "user.id": parameter_types.user_id,
+         # NOTE(0weng): `scope.OS-INHERIT:inherited_to` accepts anything,
+         # but it will only show inherited role assignments if its value is
+         # `projects`; otherwise, only non-inherited role assignments are shown.
+diff --git a/keystone/identity/schema.py b/keystone/identity/schema.py
+index f8688baae..81a28fb82 100644
+--- a/keystone/identity/schema.py
++++ b/keystone/identity/schema.py
+@@ -87,7 +87,7 @@ user_index_request_query: dict[str, Any] = {
+ }
+ 
+ _user_properties: dict[str, Any] = {
+-    'id': {"type": "string", "description": "The user ID.", "readOnly": True},
++    'id': parameter_types.user_id,
+     'default_project_id': validation.nullable(parameter_types.id_string),
+     'description': validation.nullable(parameter_types.description),
+     'domain_id': parameter_types.id_string,
+-- 
+2.39.5
+
