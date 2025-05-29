@@ -409,8 +409,8 @@ sub analytics_deliver_post {
     // Add Google Translate translationengine X-Analytics tag for measuring impact.
     // Via is largely standardized and is likely to stay. Other characteristics of the
     // request, including the Referer, can be combined for greater confidence.
-    if (req.http.X-WMF-Translation-Engine) {
-        set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=" + req.http.X-WMF-Translation-Engine;
+    if (var.get("translation_engine")) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";translationengine=" + var.get("translation_engine");
     }
 
     if (var.get("auth_scheme")) {
