@@ -600,13 +600,8 @@ node /^db1196\.eqiad\./ {
 }
 
 # s1 (enwiki) core production dbs on codfw
-node /^db2(145|146|153|170|174|176|188|203|212|216)\.codfw\./ {
+node /^db2(145|146|153|170|173|174|176|188|203|212|216)\.codfw\./ {
     role(mariadb::core)
-}
-
-# codfw sanitarium master
-node /^db2173\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 # s2 (large wikis) core production dbs on eqiad
@@ -621,14 +616,10 @@ node /^db1156\.eqiad\./ {
 }
 
 # s2 (large wikis) core production dbs on codfw
-node /^db2(148|175|189|204|207|225|238)\.codfw\./ {
+node /^db2(148|175|189|204|207|225|226|238)\.codfw\./ {
     role(mariadb::core)
 }
 
-# codfw sanitarium master
-node /^db2226\.codfw\./ {
-    role(mariadb::sanitarium_master)
-}
 # s3 core production dbs on eqiad
 node /^db1(157|166|175|189|198|223)\.eqiad\./ {
     role(mariadb::core)
@@ -640,13 +631,8 @@ node /^db1212\.eqiad\./ {
 }
 
 # s3 core production dbs on codfw
-node /^db2(149|177|190|194|205|209|227)\.codfw\./ {
+node /^db2(149|156|177|190|194|205|209|227)\.codfw\./ {
     role(mariadb::core)
-}
-
-# codfw sanitarium master
-node /^db2156\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 # s4 (commons) core production dbs on eqiad
@@ -671,13 +657,8 @@ node /^db2230\.codfw\./ {
 }
 
 # s4 (commons) core production dbs on codfw
-node /^db2(147|172|179|206|210|219|236|237|240)\.codfw\./ {
+node /^db2(147|155|172|179|206|210|219|236|237|240)\.codfw\./ {
     role(mariadb::core)
-}
-
-# codfw sanitarium master
-node /^db2155\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 # s5 (default, dewiki and others) core production dbs on eqiad
@@ -692,14 +673,10 @@ node /^db1161\.eqiad\./ {
 }
 
 # s5 (default, dewiki and others) core production dbs on codfw
-node /^db2(157|171|178|192|211|213|223)\.codfw\./ {
+node /^db2(157|171|178|192|211|213|223|228)\.codfw\./ {
     role(mariadb::core)
 }
 
-# codfw sanitarium master
-node /^db2228\.codfw\./ {
-    role(mariadb::sanitarium_master)
-}
 # s6 (frwiki, jawiki, ruwiki) core production dbs on eqiad
 node /^db1(168|173|180|187|201|231)\.eqiad\./ {
     role(mariadb::core)
@@ -711,13 +688,8 @@ node /^db1165\.eqiad\./ {
 }
 
 # s6 core production dbs on codfw
-node /^db2(151|169|180|193|214|217|224|229)\.codfw\./ {
+node /^db2(151|158|169|180|193|214|217|224|229)\.codfw\./ {
     role(mariadb::core)
-}
-
-# codfw sanitarium master
-node /^db2158\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 # s7 (centralauth, meta et al.) core production dbs on eqiad
@@ -731,13 +703,8 @@ node /^db1158\.eqiad\./ {
 }
 
 # s7 (centralauth, meta et al.) core production dbs on codfw
-node /^db2(150|168|182|218|208|220|221|222)\.codfw\./ {
+node /^db2(150|159|168|182|218|208|220|221|222)\.codfw\./ {
     role(mariadb::core)
-}
-
-# codfw sanitarium master
-node /^db2159\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 # s8 (wikidata) core production dbs on eqiad
@@ -757,7 +724,7 @@ node /^db1167\.eqiad\./ {
 
 # s8 (wikidata) core production dbs on codfw
 # db224[123] will go to x3 T381475
-node /^db2(152|154|161|162|163|165|166|167|181|195)\.codfw\./ {
+node /^db2(152|154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
     role(mariadb::core)
 }
 
@@ -769,11 +736,6 @@ node /^db2(187|241|242|243)\.codfw\./ {
 # Future x3 host
 node /^db2244\.codfw\./ {
     role(insetup::data_persistence_ferm)
-}
-
-# codfw sanitarium master
-node /^db2164\.codfw\./ {
-    role(mariadb::sanitarium_master)
 }
 
 ## x1 shard
