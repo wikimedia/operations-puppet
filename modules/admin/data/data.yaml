@@ -2394,6 +2394,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPA+o8oO3J3L+XxElPCpv4W2h47HMAUAM+EiSUWTyBMQ joe@wikimedia.org
     uid: 4816
     email: glavagetto@wikimedia.org
+    krb: present
 # T109521
   laner:
     ensure: absent
