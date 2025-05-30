@@ -23,10 +23,11 @@ fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 
 # Prevent puppet from doing things before we're ready.
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
+#
+# Also, allow systemd-resolved to lookup a simple domains like 'puppet'
 bootcmd:
   - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "prevent puppet runs during cloud-init" ]
-  - [ cloud-init-per, once, delinkresolvconf, /usr/bin/mv, -f, /run/systemd/resolve/resolv.conf, /etc/resolv.conf ]
-  - [ cloud-init-per, once, purgeresolved, /usr/bin/dpkg, --purge, systemd-resolved, libnss-resolve ]
+  - [ cloud-init-per, once, appendresolvconf, /usr/bin/sed, -i, '$ a\ResolveUnicastSingleLabel=yes', /etc/resolv.conf ]
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
