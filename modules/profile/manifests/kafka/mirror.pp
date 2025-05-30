@@ -205,10 +205,11 @@ class profile::kafka::mirror(
 
             # Generate icinga alert if MirrorMaker process is not running.
             nrpe::monitor_service { "kafka-mirror-${mirror_process_name}":
-                description  => "Kafka MirrorMaker ${mirror_process_name}",
-                nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_process_name}/producer\\.properties'",
-                require      => Confluent::Kafka::Mirror::Instance[$mirror_process_name],
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
+                description    => "Kafka MirrorMaker ${mirror_process_name}",
+                nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java  --ereg-argument-array 'kafka.tools.MirrorMaker.+/etc/kafka/mirror/${mirror_process_name}/producer\\.properties'",
+                require        => Confluent::Kafka::Mirror::Instance[$mirror_process_name],
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Kafka/Administration#MirrorMaker',
+                migration_task => 'T357099',
             }
 
             # More alerts can be added by declaring

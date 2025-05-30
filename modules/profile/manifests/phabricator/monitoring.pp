@@ -31,10 +31,11 @@ class profile::phabricator::monitoring (
         }
 
         nrpe::monitor_service { 'check_phab_phd':
-            description   => 'PHD should be running',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
-            contact_group => $phab_contact_groups,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Phabricator',
+            description    => 'PHD should be running',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1: --ereg-argument-array  'php ./phd-daemon' -u phd",
+            contact_group  => $phab_contact_groups,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Phabricator',
+            migration_task => 'T357099',
         }
     }
 

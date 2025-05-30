@@ -266,17 +266,19 @@ class acme_chief::server (
         default => '0:0',
     }
     nrpe::monitor_service { 'acme-chief_backend':
-        description  => 'Ensure acme-chief-backend is running only in the active node',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c ${ac_backend_process} -a acme-chief-backend",
-        require      => Package['acme-chief'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        description    => 'Ensure acme-chief-backend is running only in the active node',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c ${ac_backend_process} -a acme-chief-backend",
+        require        => Package['acme-chief'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        migration_task => 'T357099',
     }
 
     nrpe::monitor_service { 'acme-chief_api':
-        description  => 'Ensure acme-chief-api is running',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/uwsgi --die-on-term --ini /etc/uwsgi/apps-enabled/acme-chief.ini'",
-        require      => Package['acme-chief'],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        description    => 'Ensure acme-chief-api is running',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/uwsgi --die-on-term --ini /etc/uwsgi/apps-enabled/acme-chief.ini'",
+        require        => Package['acme-chief'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        migration_task => 'T357099',
     }
 
     sudo::user { 'nagios_acme-chief_fileage_checks':

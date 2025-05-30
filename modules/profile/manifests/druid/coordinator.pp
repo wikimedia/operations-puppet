@@ -49,10 +49,11 @@ class profile::druid::coordinator(
 
     if $monitoring_enabled {
         nrpe::monitor_service { 'druid-coordinator':
-            description  => 'Druid coordinator',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server coordinator\'",
-            critical     => false,
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            description    => 'Druid coordinator',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server coordinator\'",
+            critical       => false,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            migration_task => 'T357099',
         }
     }
 }

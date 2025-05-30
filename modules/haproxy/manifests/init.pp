@@ -116,9 +116,10 @@ class haproxy(
         }
 
         nrpe::monitor_service { 'haproxy':
-            description  => 'haproxy process',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+            description    => 'haproxy process',
+            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1: -C haproxy',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/HAProxy',
+            migration_task => 'T357099',
         }
 
         nrpe::monitor_service { 'haproxy_alive':

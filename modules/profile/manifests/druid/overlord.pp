@@ -48,10 +48,11 @@ class profile::druid::overlord(
 
     if $monitoring_enabled {
         nrpe::monitor_service { 'druid-overlord':
-            description  => 'Druid overlord',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server overlord\'",
-            critical     => false,
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            description    => 'Druid overlord',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server overlord\'",
+            critical       => false,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            migration_task => 'T357099',
         }
     }
 }

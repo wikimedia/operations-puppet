@@ -24,11 +24,12 @@ class profile::mediabackup::storage (
         ca_path       => $tls_paths['ca'],
     }
     nrpe::monitor_service { 'minio_server':
-        description   => 'MinIO server processes',
-        nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C minio -a server',
-        critical      => false,
-        contact_group => 'admins',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Media_storage/Backups',
+        description    => 'MinIO server processes',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C minio -a server',
+        critical       => false,
+        contact_group  => 'admins',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Media_storage/Backups',
+        migration_task => 'T357099',
     }
 
     # Do not open the firewall to everyone if there are no available storage hosts

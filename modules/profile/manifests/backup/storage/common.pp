@@ -13,9 +13,10 @@ class profile::backup::storage::common(
     }
 
     nrpe::monitor_service { 'bacula_sd':
-        description  => 'bacula sd process',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Bacula',
+        description    => 'bacula sd process',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u bacula -C bacula-sd',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Bacula',
+        migration_task => 'T357099',
     }
 
     firewall::service { 'bacula-storage-demon':

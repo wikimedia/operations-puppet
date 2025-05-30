@@ -31,17 +31,19 @@ class profile::lists::monitoring (
 
     # mailman3 service
     nrpe::monitor_service { 'procs_mailman3':
-        ensure       => $ensure,
-        description  => 'mailman3',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman3',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -u list --ereg-argument-array=\'/mailman3/bin/master\'',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T357099',
     }
     # uwsgi powering mailman3
     nrpe::monitor_service { 'procs_mailman3_web':
-        ensure       => $ensure,
-        description  => 'mailman3-web',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 13:13 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman3-web',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 5:5 -u www-data --ereg-argument-array=\'/usr/bin/uwsgi\'',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T357099',
     }
     nrpe::monitor_service { 'mailman3_queue':
         ensure          => $ensure,

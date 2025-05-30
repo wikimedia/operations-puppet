@@ -203,9 +203,10 @@ class profile::ganeti (
 
         # Service monitoring
         nrpe::monitor_service{ 'ganeti-noded':
-            description  => 'ganeti-noded running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+            description    => 'ganeti-noded running',
+            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:2 -c 1:2 -u root -C ganeti-noded',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+            migration_task => 'T357099',
         }
 
         prometheus::blackbox::check::tcp { 'ganeti-noded':
@@ -216,9 +217,10 @@ class profile::ganeti (
 
 
         nrpe::monitor_service{ 'ganeti-confd':
-            description  => 'ganeti-confd running',
-            nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-confd -C ganeti-confd',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+            description    => 'ganeti-confd running',
+            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-confd -C ganeti-confd',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+            migration_task => 'T357099',
         }
 
         # Memory monitoring
@@ -232,9 +234,10 @@ class profile::ganeti (
             }
 
             nrpe::monitor_service{ 'ganeti-wconfd':
-                description  => 'ganeti-wconfd running',
-                nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+                description    => 'ganeti-wconfd running',
+                nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 -u gnt-masterd -C ganeti-wconfd',
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Ganeti',
+                migration_task => 'T357099',
             }
         }
 

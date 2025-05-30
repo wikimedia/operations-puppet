@@ -152,9 +152,10 @@ class bird(
   profile::auto_restarts::service { 'prometheus-bird-exporter': }
 
   nrpe::monitor_service { 'bird':
-      ensure       => present,
-      description  => 'Bird Internet Routing Daemon',
-      nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C bird',
-      notes_url    => 'https://wikitech.wikimedia.org/wiki/Anycast#Bird_daemon_not_running',
+      ensure         => present,
+      description    => 'Bird Internet Routing Daemon',
+      nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C bird',
+      notes_url      => 'https://wikitech.wikimedia.org/wiki/Anycast#Bird_daemon_not_running',
+      migration_task => 'T357099',
   }
 }

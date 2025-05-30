@@ -59,10 +59,11 @@ class profile::druid::middlemanager(
         # Special case for the middlemanager daemon: its correspondent Java
         # process name is 'middleManager'
         nrpe::monitor_service { 'druid-middlemanager':
-            description  => 'Druid middlemanager',
-            nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server middleManager\'",
-            critical     => false,
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            description    => 'Druid middlemanager',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a \'${class_prefix}.cli.Main server middleManager\'",
+            critical       => false,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Druid',
+            migration_task => 'T357099',
         }
     }
 }

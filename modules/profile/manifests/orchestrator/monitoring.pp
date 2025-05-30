@@ -20,10 +20,11 @@ class profile::orchestrator::monitoring(
     }
 
     nrpe::monitor_service { 'orchestrator_process':
-        ensure       => $check_procs_ensure,
-        description  => 'orchestrator process',
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array 'orchestrator http'",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        ensure         => $check_procs_ensure,
+        description    => 'orchestrator process',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -w 1:1 -c 1:1 --ereg-argument-array 'orchestrator http'",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Orchestrator',
+        migration_task => 'T357099',
     }
 
     nrpe::monitor_service { 'orchestrator_tcp_port':

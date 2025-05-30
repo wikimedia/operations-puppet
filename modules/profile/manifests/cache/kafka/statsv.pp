@@ -89,11 +89,12 @@ class profile::cache::kafka::statsv(
 
         # Generate icinga alert if varnishkafka is not running.
         nrpe::monitor_service { 'varnishkafka-statsv':
-            description   => 'statsv Varnishkafka log producer',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/statsv.conf'",
-            contact_group => 'admins,analytics,team-data-platform',
-            require       => Class['::varnishkafka'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
+            description    => 'statsv Varnishkafka log producer',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/statsv.conf'",
+            contact_group  => 'admins,analytics,team-data-platform',
+            require        => Class['::varnishkafka'],
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
+            migration_task => 'T357099',
         }
     }
 }

@@ -208,12 +208,13 @@ class profile::cache::kafka::webrequest(
 
         # Generate icinga alert if varnishkafka is not running.
         nrpe::monitor_service { 'varnishkafka-webrequest':
-            ensure        => $varnishkafka_enabled.bool2str('present', 'absent'),
-            description   => 'Webrequests Varnishkafka log producer',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/webrequest.conf'",
-            contact_group => 'admins,analytics,team-data-platform',
-            require       => Class['::varnishkafka'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
+            ensure         => $varnishkafka_enabled.bool2str('present', 'absent'),
+            description    => 'Webrequests Varnishkafka log producer',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -a '/usr/bin/varnishkafka -S /etc/varnishkafka/webrequest.conf'",
+            contact_group  => 'admins,analytics,team-data-platform',
+            require        => Class['::varnishkafka'],
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Varnishkafka',
+            migration_task => 'T357099',
         }
     }
 

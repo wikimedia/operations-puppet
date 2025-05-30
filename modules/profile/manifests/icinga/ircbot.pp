@@ -54,9 +54,10 @@ class profile::icinga::ircbot(
 
     # T28784 - IRC bots process need nagios monitoring
     nrpe::monitor_service { 'ircecho':
-        ensure       => $ensure,
-        description  => 'ircecho_service_running',
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -w 1:4 -c 1:20 -a ircecho',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Ircecho',
+        ensure         => $ensure,
+        description    => 'ircecho_service_running',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -w 1:4 -c 1:20 -a ircecho',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Ircecho',
+        migration_task => 'T357099',
     }
 }

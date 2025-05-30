@@ -14,8 +14,9 @@ define  query_service::monitor::blazegraph_instance (
     }
 
     nrpe::monitor_service { "${title}-_process":
-        description  => "Blazegraph process (${title})",
-        nrpe_command => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* --port ${port} .* blazegraph-service-.*war'",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
+        description    => "Blazegraph process (${title})",
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -u ${username} --ereg-argument-array '^java .* --port ${port} .* blazegraph-service-.*war'",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
+        migration_task => 'T357099',
     }
 }
