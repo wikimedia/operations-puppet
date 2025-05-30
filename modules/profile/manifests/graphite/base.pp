@@ -237,15 +237,17 @@ class profile::graphite::base(
 
     # This check goes to the backend, which is http.
     monitoring::service { 'graphite_render':
-        description   => "${hostname} render",
-        check_command => "check_http_url!${hostname}!/render",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
+        description    => "${hostname} render",
+        check_command  => "check_http_url!${hostname}!/render",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
+        migration_task => 'T228830',
     }
 
     # Probe the API, the "carbon" hierarchy should always exist
     monitoring::service { 'graphite_api':
-        description   => "${hostname} api",
-        check_command => "check_http_url!${hostname}!/metrics/find?query=carbon.*",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
+        description    => "${hostname} api",
+        check_command  => "check_http_url!${hostname}!/metrics/find?query=carbon.*",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Graphite#Operations_troubleshooting',
+        migration_task => 'T228830',
     }
 }
