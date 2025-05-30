@@ -82,8 +82,14 @@
 #   to a different port.
 #   Default: undef
 #
-
-
+# [*srange*]
+#   A ferm macro to which access will be granted. The firewall definition will be
+#   created as a ferm::service
+#
+# [*firewall_src_sets*]
+#   A firewall set to which access will be granted. If configured, this takes precendence
+#   over *srange*. The firewall definition will be created as a firewall::service
+#
 class profile::memcached::instance (
     String                     $version                 = lookup('profile::memcached::version'),
     Stdlib::Port               $port                     = lookup('profile::memcached::port'),
@@ -104,6 +110,7 @@ class profile::memcached::instance (
     Optional[Stdlib::Unixpath] $localcacert              = lookup('profile::memcached::localcacert'),
     Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
     Optional[Firewall::Hosts]  $srange                   = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
+    Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets'),
 ) {
     include ::profile::prometheus::memcached_exporter
     if $performance_cpu_governor {
@@ -152,16 +159,33 @@ class profile::memcached::instance (
         extstore_path   => $extstore_path,
 
     }
-    ferm::service { 'memcached':
-        proto  => 'tcp',
-        port   => $port,
-        srange => $srange,
+    if $firewall_src_sets {
+        firewall::service { 'memcached':
+            proto    => 'tcp',
+            port     => $port,
+            src_sets => $firewall_src_sets,
+        }
+    } else {
+        ferm::service { 'memcached':
+            proto  => 'tcp',
+            port   => $port,
+            srange => $srange,
+        }
     }
+
     if $notls_port and $enable_tls {
-      ferm::service { 'memcached_notls':
-          proto  => 'tcp',
-          port   => $notls_port,
-          srange => $srange,
-      }
+        if $firewall_src_sets {
+            firewall::service { 'memcached_notls':
+                proto    => 'tcp',
+                port     => $notls_port,
+                src_sets => $firewall_src_sets,
+            }
+        } else {
+            ferm::service { 'memcached_notls':
+                proto  => 'tcp',
+                port   => $notls_port,
+                srange => $srange,
+            }
+        }
     }
 }

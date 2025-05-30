@@ -10,6 +10,7 @@ profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::port: 11211
 profile::memcached::srange: "$CLOUD_PRIVATE_NETWORKS"
+profile::memcached::firewall_src_sets: ~
 profile::memcached::memcached_user: 'nobody'
 
 profile::cloudceph::client::rbd::client_name: 'codfw1dev-glance-images'
