@@ -25,8 +25,8 @@ fqdn: {{ds.meta_data.name}}.{{ds.meta_data.project_id}}.<%= @dhcp_domain %>
 # APT fails to acquire GPG keys if packages dirmngr or gpg are missing
 bootcmd:
   - [ cloud-init-per, once, disablepuppet, puppet, agent, --disable, "prevent puppet runs during cloud-init" ]
+  - [ cloud-init-per, once, delinkresolvconf, /usr/bin/mv, -f, /run/systemd/resolve/resolv.conf, /etc/resolv.conf ]
   - [ cloud-init-per, once, purgeresolved, /usr/bin/dpkg, --purge, systemd-resolved, libnss-resolve ]
-  - [ cloud-init-per, once, cleanresolvconf, /usr/bin/rm, -f, /etc/resolv.conf ]
   - [ cloud-init-per, once, dirmngr-aptupdate, apt-get, update ]
   - [ cloud-init-per, once, dirmngr-aptinstall, apt-get, install, "-y", dirmngr ]
   - [ cloud-init-per, once, gnupginstall, apt-get, install, "-y", gnupg ]
@@ -48,8 +48,6 @@ bootcmd:
 #   Get puppet package from wikimedia repo
 #   (avoids getting a too-new version from the Bookworm repo)
 write_files:
-    - content: "nameserver 172.20.255.1"
-      path: /etc/resolv.conf
     - content: "VM is work in progress"
       path: /etc/block-ldap-key-lookup
     - content: "daemon.* |/dev/console"
