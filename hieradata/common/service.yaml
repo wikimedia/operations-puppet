@@ -4282,4 +4282,5 @@ service::catalog:
     port: *k8s-ingress-aux_port
     sites:
       - eqiad
+      - codfw
     state: service_setup
