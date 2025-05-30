@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad]
+              cicalese, oljad, aborrero]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -71,7 +71,7 @@ groups:
               dcaro, legoktm, cmooney, jelto, btullis,
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
-              fabfur, taavi, arnaudb, brouberol, swfrench, aborrero, cdobbins, tappof,
+              fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
               jasmine, fceratto]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
@@ -457,7 +457,7 @@ groups:
               ksarabia, jgiannelos, sfaci, fnavas-foundation, trizek, atieno, andrewtavis-wmde, sg912,
               hghani, nshahquinn-wmf, zabe, amalr, mpossoupe, maryana, osefu, brouberol,
               ahoelzl, nathillard, amyt, ecarg, ehughes, rkhan, mfischerwmf, amastilovic, arinaigum,
-              aborrero, jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
+              jaz, sdeckelmann-wmf, jwheeler, elinewmde, arthurtaylor, kcvelaga, fabfur,
               georgemikesell, bblack, toyofuku, linafaridwmde, yliou, derenrich, sperry-wmf,
               mareikeheuer, hnordeen, rickijay, radimer, dmuthuri, kgraessle, dreamyjazz, jsn, cwylo,
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
@@ -3538,14 +3538,12 @@ users:
     email: mredi@wikimedia.org
     krb: present
   aborrero:
-    ensure: present
+    ensure: absent
     gid: 500
     name: aborrero
     realname: Arturo Borrero Gonzalez
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIInHKi3MxDy91mgCV3x3MBFxCFWbM5QziRGJwdRRiVun aborrero@wikimedia.org production
+    ssh_keys: []
     uid: 18194
-    email: aborrero@wikimedia.org
   hpham:
     ensure: absent
     gid: 500
