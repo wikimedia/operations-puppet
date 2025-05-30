@@ -9,7 +9,7 @@ class base::standard_packages (
 )  {
 
     ensure_packages ([
-        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies', 'dnsutils',
+        'acct', 'byobu', 'colordiff', 'curl', 'debian-goodies',
         'ethtool', 'gdb', 'gdisk', 'git', 'htop', 'httpry', 'iotop', 'iperf', 'jq',
         'libtemplate-perl', 'lldpd', 'lshw', 'molly-guard', 'moreutils', 'net-tools', 'numactl', 'ncdu',
         'ngrep', 'pigz', 'psmisc', 'pv', 'python3', 'screen', 'strace', 'sysstat', 'tcpdump',
@@ -46,6 +46,14 @@ class base::standard_packages (
     # Needs further work to work with Bookworm's binutils, revisit when Bookworm is stable
     if debian::codename::lt('bookworm') {
         ensure_packages('quickstack')
+    }
+
+    # Starting with Bullseye dnsutils is a transition package to bind9-dnsutils, so install
+    # it directly (and starting with trixie the transition package no longer exists)
+    if debian::codename::ge('bullseye') {
+        ensure_packages('bind9-dnsutils')
+    } else {
+        ensure_packages('dnsutils')
     }
 
     # Default sysctl settings by Debian, prior to Trixie these were partly set by procps
