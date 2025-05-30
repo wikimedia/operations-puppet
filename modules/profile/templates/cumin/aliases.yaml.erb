@@ -54,7 +54,7 @@ chartmuseum: P{O:chartmuseum}
 # The cluster will be mixed until the migration is complete, so elastic aliases
 # should match the new or old hosts.
 cirrussearch: P{O:elasticsearch::cirrus or O:cirrus::opensearch}
-cirrussearch-canary: P{elastic1102.eqiad.wmnet}
+cirrussearch-canary: P{cirrussearch1102.eqiad.wmnet}
 cirrussearch-codfw: A:cirrussearch and A:codfw
 cirrussearch-eqiad: A:cirrussearch and A:eqiad
 cirrussearch-codfw-omega: P{R:Service = elasticsearch_7@production-search-omega-codfw or R:Service = opensearch_1@production-search-omega-codfw}
@@ -167,7 +167,6 @@ durum-<%= dc %>: A:durum and A:<%= dc %>
 # The cluster will be mixed until the migration is complete, so elastic aliases
 # should match the new or old hosts.
 elastic: P{O:elasticsearch::cirrus or O:cirrus::opensearch}
-elastic-canary: P{elastic1102.eqiad.wmnet}
 elastic-codfw: A:elastic and A:codfw
 elastic-eqiad: A:elastic and A:eqiad
 elastic-codfw-omega: P{R:Service = elasticsearch_7@production-search-omega-codfw or R:Service = opensearch_1@production-search-omega-codfw}
