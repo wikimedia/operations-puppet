@@ -132,29 +132,6 @@ profile::base::enable_rp_filter: false
 profile::cache::haproxykafka::kafka:
   topic: webrequest_frontend_upload
 
-profile::cache::haproxy::sticktables:
-  - name: limit-by-source
-    type: ipv6
-    size: 1m
-    expire: 60s
-    store:
-      - bytes_out_rate(1s)
-  - name: limit-by-path
-    type: integer
-    size: 1m
-    expire: 60s
-    store:
-      - bytes_out_rate(1s)
-
-profile::cache::haproxy::post_acl_actions:
-  tls:
-    - context: http-request
-      verb: set-bandwidth-limit limit-by-source
-      condition: if !wikimedia_trust
-    - context: http-request
-      verb: set-bandwidth-limit limit-by-path
-      condition: if !wikimedia_trust
-
 profile::cache::haproxy::use_etcd_req_filters: true
 profile::cache::haproxy::allowed_methods:
   - GET

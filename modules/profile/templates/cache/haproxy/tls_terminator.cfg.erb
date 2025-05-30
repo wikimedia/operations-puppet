@@ -31,6 +31,12 @@ backend httpreqrate
     stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
 backend httpreqrate_http
     stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
+<%- if @feature_flags['bwlimit'] -%>
+backend limit-by-source
+    stick-table type ipv6  size 1m expire 60s store bytes_out_rate(1s)
+backend limit-by-path
+    stick-table type integer  size 1m expire 60s store bytes_out_rate(1s)
+<%- end -%>
 <%- if @sticktables -%>
 <%- @sticktables.each do |table| -%>
 backend <%= table['name'] %>
@@ -95,8 +101,8 @@ listen tls
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
 
-    # Bandwidth limiting
-<%- if @cache_cluster == 'upload' -%>
+    # Bandwidth limiting filters
+<%- if @feature_flags['bwlimit'] -%>
     # 32 MByte/s per source IP limit for uploads
     filter bwlim-out limit-by-source key src table limit-by-source limit 32m
     # 38MByte/sec * ~8 cache hosts/PoP =~ 2.4Gbit/sec/distinctURIpath/PoP egress budget
@@ -169,12 +175,19 @@ listen tls
     # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
 
-<%# Generated post_acl_actions -%>
-<%- if @post_acl_actions and @post_acl_actions['tls'] -%>
-<%- @post_acl_actions['tls'].each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
+<%- if @use_benthos -%>
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.hdr(Host)]","src":"%[src]"."path":"%[path]"}' if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
+    http-request set-var(req.dummy) var(req.silentdrop),json(utf8),debug(silentdroplog,reqctl-ring) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
+    http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
+    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
+    http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency   # To disable concurrency enforcement, comment the http-request action below
 <%- end -%>
+<%- if @feature_flags['bwlimit'] %>
+    # TODO: move in the filtering backend so we can remove the condition
+    http-request set-bandwidth-limit limit-by-source if !wikimedia_trust
+    http-request set-bandwidth-limit limit-by-path if !wikimedia_trust
 <%- end -%>
+
 
 <%- if @maxmind_lookup -%>
     # just to be sure we don't perform lookups on private network
@@ -299,13 +312,6 @@ frontend http
     http-request track-sc0 src table httpreqrate_http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
-
-<%# post_acl_actions -%>
-<%- if @post_acl_actions and @post_acl_actions['http'] -%>
-<%- @post_acl_actions['http'].each do |action| -%>
-    <%= action['context'] %> <%= action['verb'] %> <%= action['condition'] or "" %><%= action['comment'] ? "   # " + action['comment'] : "" %>
-<%- end -%>
-<%- end -%>
 
 <%- if @wikimedia_trust -%>
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>

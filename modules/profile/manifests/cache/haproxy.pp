@@ -16,8 +16,6 @@ class profile::cache::haproxy(
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', {'default_value'                        => undef}),
-    Optional[Hash[String, Array[Haproxy::Action]]] $post_acl_actions = lookup('profile::cache::haproxy::post_acl_actions', {'default_value'      => undef}),
-    Optional[Array[Haproxy::Sticktable]] $sticktables = lookup('profile::cache::haproxy::sticktables', {'default_value'                          => undef}),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', {'default_value'                                 => false}),
     Optional[Stdlib::HTTPUrl] $ocsp_proxy = lookup('http_proxy', {'default_value'                                                                => undef}),
@@ -243,6 +241,11 @@ class profile::cache::haproxy(
     }
 
     ## HAProxy configuration
+    # per cluster feature flags
+    $feature_flags = $cache_cluster ? {
+        'upload' => { 'bwlimit' => true },
+        default  => { 'bwlimit' => false }
+    }
     file { '/etc/haproxy/tls.lua':
         ensure  => absent,
         owner   => 'haproxy',
