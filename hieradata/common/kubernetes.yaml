@@ -781,6 +781,14 @@ kubernetes::clusters:
                 - knative-serving
                 - cert-manager
                 - kserve
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - PodSecurityPolicy
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
     ml-serve-codfw:
       dc: codfw
       master: ml-ctrl.svc.codfw.wmnet
