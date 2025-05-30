@@ -996,7 +996,7 @@ node /^doc(1003)\.(codfw|eqiad)\./ {
 }
 
 node /^doc(2003)\.(codfw|eqiad)\./ {
-    role(insetup::collaboration_services_nftables)
+    role(doc)
 }
 
 # Wikidough (T252132)
