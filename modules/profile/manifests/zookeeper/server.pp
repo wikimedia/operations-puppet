@@ -39,11 +39,12 @@ class profile::zookeeper::server (
     if $monitoring_enabled {
         # Alert if Zookeeper Server is not running.
         nrpe::monitor_service { 'zookeeper':
-            description   => 'Zookeeper Server',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
-            critical      => $is_critical,
-            contact_group => $monitoring_contact_group,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
+            description    => 'Zookeeper Server',
+            nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.zookeeper.server.quorum.QuorumPeerMain /etc/zookeeper/conf/zoo.cfg"',
+            critical       => $is_critical,
+            contact_group  => $monitoring_contact_group,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Zookeeper',
+            migration_task => 'T309012',
         }
 
         monitoring::check_prometheus { 'zookeeper_client_conns':
