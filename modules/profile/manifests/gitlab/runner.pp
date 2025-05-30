@@ -259,7 +259,7 @@ class profile::gitlab::runner (
         ensure                      => $ensure_buildkitd,
         network                     => $docker_network,
         image                       => $buildkitd_image,
-        nameservers                 => $buildkitd_nameservers,
+        nameservers                 => wmflib::hosts2ips($buildkitd_nameservers),
         environment                 => $proxy_variables,
         gckeepstorage               => $buildkitd_gckeepstorage,
         dockerfile_frontend_enabled => $buildkitd_dockerfile_frontend_enabled,
