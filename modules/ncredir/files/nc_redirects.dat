@@ -47,7 +47,6 @@
 #
 funnel	*indianwikimedia.com	https://www.wikimedia.org
 funnel	*pywikibot.org	https://pywikibot.toolforge.org/
-funnel	*pywikipedia.org	https://pywikibot.toolforge.org/
 funnel	*wekipedia.com	https://www.wikipedia.org
 funnel	*wiikipedia.com	https://www.wikipedia.org
 funnel	*wikepedia.org	https://www.wikipedia.org
