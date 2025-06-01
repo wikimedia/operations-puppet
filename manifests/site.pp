@@ -1819,7 +1819,8 @@ node /^cloudcephosd10(0[4-9]|1[0-9]|2[0-9]|3[0-9]|4[0-1])\.eqiad\./ {
     role(wmcs::ceph::osd)
 }
 
-node /^cloudcephosd104[2-7]\.eqiad\./ {
+# New ceph OSD nodes T394333 and T378828
+node /^cloudcephosd10(4[2-9]|5[0-1])\.eqiad\./ {
     role(insetup::wmcs_ferm)
 }
 
