@@ -492,3 +492,42 @@ certificates::acme_chief:
     - '*.wikidough.org'
     - wikipedia.xyz
     - '*.wikipedia.xyz'
+    - thediff.fail
+    - '*.thediff.fail'
+    - wikipedia.or.id
+    - '*.wikipedia.or.id'
+    - wikipediafoundation.com
+    - '*.wikipediafoundation.com'
+    - wikipedia.lgbt
+    - '*.wikipedia.lgbt'
+    - citationneeded.online
+    - '*.citationneeded.online'
+    - wikpipedia.org
+    - '*.wikpipedia.org'
+    - wiktionary.lt
+    - '*.wiktionary.lt'
+    - wikipedia.ar
+    - '*.wikipedia.ar'
+  non-canonical-redirect-12:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: wikiedia.org
+    SNI:
+    - wikiedia.org
+    - '*.wikiedia.org'
+    - wikidata.app
+    - '*.wikidata.app'
+    - wikimedia.sex
+    - '*.wikimedia.sex'
+    - wikimedia.ooo
+    - '*.wikimedia.ooo'
+    - wikiholiday.org
+    - '*.wikiholiday.org'
+    - wikopedia.com
+    - '*.wikopedia.com'
+    - wikimediafoundations.org
+    - '*.wikimediafoundations.org'
