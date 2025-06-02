@@ -21,6 +21,33 @@ CMD=$2
 shift
 shift
 
+# On mwmaint hosts, when stderr is a terminal, announce impending decom.
+if [ "${HOSTNAME:0:7}" == "mwmaint" ] && [ -t 2 ]; then
+	echo >&2 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  Running foreachwiki* on mwmaint hosts is no longer supported.        @@@"
+	echo >&2 "@@@                                                                       @@@"
+	if [ "${CMD%.php}" == "sql" ] || [ "${CMD%.php}" == "mysql" ] || [ "${CMD%.php}" == "importImages" ] ; then
+		# Send users of the following to the active deployment host on
+		# a temporary basis:
+		# * (T375910) mysql.php or sql.php
+		# * (T377497) importImages.php
+		echo >&2 "@@@  You are using a maintenance script that is not yet supported on      @@@"
+		echo >&2 "@@@  Kubernetes. Until further notice, please use the active deployment   @@@"
+		echo >&2 "@@@  host (deployment.eqiad.wmnet) to run your script.                    @@@"
+	else
+		echo >&2 "@@@  Maintenance scripts have moved to Kubernetes. Please submit feedback @@@"
+		echo >&2 "@@@  right away if maintenance scripts on Kubernetes do not work for your @@@"
+		echo >&2 "@@@  use case (T341553).                                                  @@@"
+	fi
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@  Please see https://w.wiki/E68b for the announcement and              @@@"
+	echo >&2 "@@@  https://wikitech.wikimedia.org/wiki/Maintenance_scripts for details. @@@"
+	echo >&2 "@@@                                                                       @@@"
+	echo >&2 "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+	exit 1
+fi
+
 RUNNER=php
 if [ "$(whoami)" != "$MEDIAWIKI_WEB_USER" ] ; then
 	RUNNER="sudo -u $MEDIAWIKI_WEB_USER $RUNNER"
