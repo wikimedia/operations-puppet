@@ -31,7 +31,7 @@ profile::wmcs::striker::docker::instances:
   # This is the Toolsbeta instance.
   striker-toolsbeta:
     port: 8081
-    version: 2025-05-21-082129-production
+    version: 2025-06-02-141244-production
     env:
       OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
       DB_NAME: strikertoolsbeta
