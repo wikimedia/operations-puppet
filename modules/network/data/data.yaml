@@ -501,6 +501,9 @@ network::subnets:
         public1-lvs-magru:
           ipv4: 195.200.68.224/27
           ipv6: 2a02:ec80:700:ed1a::/64
+        public1-virtual-magru:
+          ipv4: 195.200.68.96/27
+          ipv6: 2a02:ec80:700:3::/64
       private:
         private1-b3-magru:
           ipv4: 10.140.0.0/24
@@ -510,6 +513,9 @@ network::subnets:
           ipv6: 2a02:ec80:700:102::/64
         private1-lvs-magru:
           ipv4: 10.2.7.0/24
+        private1-virtual-magru:
+          ipv4: 10.140.2.0/24
+          ipv6: 2a02:ec80:700:103::/64
   frack:
     eqiad:
       public:
