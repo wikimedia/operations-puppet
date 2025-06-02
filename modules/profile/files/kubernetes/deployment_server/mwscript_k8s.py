@@ -130,21 +130,20 @@ def helm_cache_home() -> str:
     if os.access('/var/cache/helm', os.W_OK):
         return '/var/cache/helm'
     # If we can't do that (e.g. we're in the restricted group) we can still use a cache in our own
-    # homedir, but "helm diff" will complain if we don't do "helm repo update" first. This is helm's
-    # default, except anchored as an absolute path.
+    # homedir. This requires running "helm repo update" in order to (1) create the cache on the 1st
+    # run and (2) keep the cached repository index up-to-date on subsequent runs.
     cache = Path(os.environ['HOME'], '.cache/helm')
-    if not cache.exists():
-        logger.info('👋 Setting up the Helm cache. Only need to do this the first time...')
-        try:
-            subprocess.run(['/usr/bin/helm', 'repo', 'update'],
-                           env={
-                               'HELM_CACHE_HOME': str(cache),
-                               'HELM_CONFIG_HOME': '/etc/helm',
-                           },
-                           stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=True)
-        except subprocess.CalledProcessError as e:
-            logger.error(e.stdout)
-            raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
+    logger.info('👋 Refreshing the local Helm cache...')
+    try:
+        subprocess.run(['/usr/bin/helm', 'repo', 'update'],
+                       env={
+                           'HELM_CACHE_HOME': str(cache),
+                           'HELM_CONFIG_HOME': '/etc/helm',
+                       },
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        logger.error(e.stdout)
+        raise ServerError(f'Command failed with status {e.returncode}: {shlex.join(e.cmd)}')
     return str(cache)
 
 
