@@ -536,7 +536,7 @@ include "directors.frontend.vcl";
 <% if @vcl_config.fetch("do_edge_uniques", false) or @varnish_testing -%>
       new wu_cfg = wmfuniq.cfg("<%= @vcl_config.fetch("edge_uniques_key_path") %>",
           "<%= @vcl_config.fetch("edge_uniques_cfg_path") %>",
-          1,
+          30,
           0
       );
 <% end -%>
