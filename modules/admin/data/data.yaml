@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero, mwilliams]
+              cicalese, oljad, aborrero, mwilliams, pwaigi1-]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -454,7 +454,7 @@ groups:
               dalezhou, otich, sgimeno, tchin,
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
-              soworu-01, pwaigi1-, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
+              soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
               stevemunene, ryasmeen, abartov, wfan219, eileen, ifrahkh,
@@ -5615,12 +5615,11 @@ users:
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
   pwaigi1-:
-    ensure: present
+    ensure: absent
     realname: Purity Waigi
-    email: pwaigi@wikimedia.org
     uid: 40428
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   trokhymovych:
     ensure: present
     realname: Mykola Trokhymovych
