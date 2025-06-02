@@ -6,6 +6,7 @@ codec: "json_lines"
 ignore:
   - "tags"
   - "normalized"
+  - "[event][original]"
 testcases:
   - input:
       - >

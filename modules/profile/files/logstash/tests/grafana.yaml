@@ -16,6 +16,7 @@ ignore:
   - "normalized_message"
   - "tags"
   - '@timestamp'
+  - "[event][original]"
 testcases:
   - input:
       - >

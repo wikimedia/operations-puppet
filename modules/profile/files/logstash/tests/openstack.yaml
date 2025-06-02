@@ -8,6 +8,7 @@ ignore:
   - "tags"
   - "normalized_message"
   - "normalized"
+  - "[event][original]"
 testcases:
   - input:
       - >

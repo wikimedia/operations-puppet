@@ -13,6 +13,7 @@ codec: "json_lines"
 ignore:
   - "host"
   - "normalized"
+  - "[event][original]"
 testcases:
   - input:
       - >

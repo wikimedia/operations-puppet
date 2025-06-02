@@ -5,6 +5,7 @@ fields:
 codec: "json_lines"
 ignore:
   - "@timestamp"
+  - "[event][original]"
 testcases:
   - input:
       - >

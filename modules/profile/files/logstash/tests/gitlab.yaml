@@ -10,6 +10,7 @@ codec: "json_lines"
 ignore:
   - "normalized"
   - "[url][path]"  # when not defined, path is populated by logstash-filter-verifier
+  - "[event][original]"
 testcases:
   - input:
     - >

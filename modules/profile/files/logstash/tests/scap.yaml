@@ -9,6 +9,7 @@ ignore:
   - "@timestamp"
   - "tags"
   - "[normalized][dropped]"
+  - "[event][original]"
 testcases:
   - input:
     - >

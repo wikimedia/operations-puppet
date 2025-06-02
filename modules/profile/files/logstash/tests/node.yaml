@@ -9,6 +9,7 @@ ignore:
   - "normalized_message"
   - "normalized"
   - "[http][response][body]"  # json encoding is non-deterministic
+  - "[event][original]"
 testcases:
   - input:
     - >

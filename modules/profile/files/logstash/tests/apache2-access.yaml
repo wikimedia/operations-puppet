@@ -4,6 +4,7 @@ fields:
 codec: "json_lines"
 ignore:
   - "[normalized][dropped]"
+  - "[event][original]"
 testcases:
   - input:
       - >

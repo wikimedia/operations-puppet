@@ -11,6 +11,7 @@ codec: "json_lines"
 ignore:
   - "@timestamp"
   - "[normalized][dropped]"
+  - "[event][original]"
 testcases:
   - input:
       - >

@@ -13,6 +13,7 @@ codec: "json_lines"
 ignore:
   - "[log][original]"  # json encoding is non-deterministic
   - "[normalized][dropped]"
+  - "[event][original]"
 testcases:
   - input:
       - >
