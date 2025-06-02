@@ -17,38 +17,6 @@ class profile::mediawiki::maintenance::generatecaptcha(
             group   => 'root',
             content => $fancycaptcha.to_yaml,
         }
-
-        # TODO: Remove old file path absent resources.
-        file { '/etc/fancycaptcha':
-            ensure => 'absent',
-            mode   => '0555',
-            owner  => 'root',
-            group  => 'root',
-        }
-
-        file { '/etc/fancycaptcha/words':
-            ensure  => 'absent',
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => secret('fancycaptcha/words');
-        }
-
-        file { '/etc/fancycaptcha/badwords':
-            ensure  => 'absent',
-            mode    => '0444',
-            owner   => 'root',
-            group   => 'root',
-            content => secret('fancycaptcha/badwords');
-        }
-
-        file { '/usr/local/bin/captchaloop':
-            ensure => 'absent',
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0555',
-            source => 'puppet:///modules/mediawiki/captchaloop',
-        }
     } else {
         file { '/etc/fancycaptcha':
             ensure => 'directory',
@@ -79,8 +47,20 @@ class profile::mediawiki::maintenance::generatecaptcha(
         }
     }
 
+    $generatecaptcha_command = $::_role ? {
+        'deployment_server/kubernetes' => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf --badwordlist=/etc/fancycaptcha/badwords --fill=10000 --delete --threads=4',
+        default                        => '/usr/local/bin/captchaloop',
+    }
+
     profile::mediawiki::periodic_job { 'generatecaptcha':
-        command  => '/usr/local/bin/captchaloop',
-        interval => 'Mon 01:00',
+        command                 => $generatecaptcha_command,
+        interval                => 'Mon 01:00',
+        cron_schedule           => '00 01 * * MON',
+        kubernetes              => true,
+        team                    => 'security',
+        script_label            => 'GenerateFancyCaptchas.php',
+        description             => 'Generate new captchas weekly',
+        helmfile_defaults_dir   => $helmfile_defaults_dir,
+        ttlsecondsafterfinished => 1209600, # 2 weeks
     }
 }
