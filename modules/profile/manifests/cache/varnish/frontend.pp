@@ -143,16 +143,6 @@ class profile::cache::varnish::frontend (
         }
     }
 
-    # TODO: this will be replaced eventually by an automatically fetched JSON
-    # file from cp servers
-    file { $edge_uniques_cfg_path:
-        ensure => 'present',
-        owner  => 'root',
-        group  => 'varnish',
-        mode   => '0640',
-        source => 'puppet:///modules/profile/cache/uniques.json',
-    }
-
     file { '/usr/local/bin/wmfuniq-experiment-fetcher':
         ensure => 'present',
         owner  => 'root',
@@ -164,7 +154,7 @@ class profile::cache::varnish::frontend (
     systemd::timer::job { 'wmfuniq-experiment-fetcher':
         ensure             => 'present',
         description        => 'fetch edge uniques experiments configuration',
-        user               => 'varnish',
+        user               => 'root',
         monitoring_enabled => true,
         send_mail          => true,
         environment        => {'MAILTO' => 'sre-traffic@wikimedia.org'},
@@ -172,8 +162,7 @@ class profile::cache::varnish::frontend (
         accuracy           => '1s',
         splay              => 59,
         fixed_random_delay => true,
-        # fetch the configuration but don't use it yet
-        command            => '/usr/local/bin/wmfuniq-experiment-fetcher /tmp/uniques.json',
+        command            => "/usr/local/bin/wmfuniq-experiment-fetcher ${edge_uniques_cfg_path}",
         require            => [File['/usr/local/bin/wmfuniq-experiment-fetcher'], Package['python3-jsonschema']],
     }
 
