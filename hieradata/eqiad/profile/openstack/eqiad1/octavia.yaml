@@ -3,6 +3,6 @@ profile::openstack::eqiad1::octavia::db_host: "openstack.eqiad1.wikimediacloud.o
 profile::openstack::eqiad1::octavia::db_user: "octavia"
 profile::openstack::eqiad1::octavia::db_name: "eqiad1_octavia"
 profile::openstack::eqiad1::octavia::active: true
-profile::openstack::eqiad1::octavia::amphora_secgroup: FIXME
+profile::openstack::eqiad1::octavia::amphora_secgroup: 99013ea7-7d15-4467-919a-013dde191030
 profile::openstack::eqiad1::octavia::amphora_boot_network: FIXME
 profile::openstack::eqiad1::octavia::rabbit_user: 'octavia'

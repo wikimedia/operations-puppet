@@ -35,7 +35,7 @@ class openstack::octavia::service::epoxy(
 
     $version = inline_template("<%= @title.split(':')[-1] -%>")
     $keystone_auth_username = 'octavia'
-    $keystone_auth_project = 'service'
+    $keystone_auth_project = 'octavia'
     file {
         '/etc/octavia/octavia.conf':
             content   => template('openstack/epoxy/octavia/octavia.conf.erb'),
