@@ -12,9 +12,10 @@ from shutil import chown
 from typing import Optional, Union
 
 import requests
+from requests.exceptions import JSONDecodeError, RequestException
 
 # provided by python3-jsonschema
-from jsonschema import validate
+from jsonschema import validate, ValidationError
 
 
 URL = 'https://mpic.discovery.wmnet:30443/api/v1/experiments?authority=varnish&format=config'
@@ -36,25 +37,34 @@ def read_file(path: Union[str | os.PathLike], catch_exceptions: bool = True) -> 
             raise
 
 
-def fetch_config(url: str, timeout: float) -> str:
+def fetch_config(url: str, timeout: float) -> Optional[str]:
     headers = {'User-Agent': USER_AGENT, 'X-Experiment-Config-Poller': socket.getfqdn()}
-    r = requests.get(url, headers=headers, timeout=timeout)
-    r.raise_for_status()
+    try:
+        r = requests.get(url, headers=headers, timeout=timeout)
+    except RequestException:
+        return None
+
+    if r.status_code != 200:
+        return None
 
     if r.headers['Content-Type'] != 'application/json; charset=utf-8':
-        raise RuntimeError('Unexpected Content-Type')
+        return None
 
     # validate returns None if validation is succesful and raises an exception otherwise
     # validate(r.json(), json.loads(read_file(SCHEMA_PATH, catch_exceptions=False)))
-    validate(r.json(), json.loads(SCHEMA))
+    try:
+        validate(r.json(), json.loads(SCHEMA))
+    except (JSONDecodeError, ValidationError):
+        return None
 
     return r.text
 
 
 def main(config_path: Union[str, os.PathLike]) -> None:
     new_config = fetch_config(URL, TIMEOUT)
+
     # NOOP if the config file hasn't been updated
-    if new_config == read_file(config_path):
+    if new_config is None or new_config == read_file(config_path):
         return
 
     try:
