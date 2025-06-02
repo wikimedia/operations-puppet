@@ -17,13 +17,21 @@ from requests.exceptions import RequestException
 # provided by python3-jsonschema
 from jsonschema import validate, ValidationError
 
+from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
+
 
 URL = 'https://mpic.discovery.wmnet:30443/api/v1/experiments?authority=varnish&format=config'
 TIMEOUT = 10
 USER_AGENT = 'wmfuniq_experiment_fetcher/0.0.1 (sre-traffic@wikimedia.org)'
 VARNISH_GROUP = 'varnish'
+NODE_EXPORTER_PATH = '/var/lib/prometheus/node.d/wmfuniq_experiment_fetcher.prom'
 # TODO: read it from disk
 SCHEMA = '{"$schema":"http://json-schema.org/draft-04/schema#","title":"wmfuniq_abtests","description":"A collection of wmfuniq abtest definitions","type":"object","additionalProperties":false,"properties":{"_comment":{"type":"string"}},"patternProperties":{"^[A-Za-z0-9][-_.A-Za-z0-9]{7,62}$":{"title":"abtest","description":"Defines a single abtest","type":"object","required":["start","end","domains"],"additionalProperties":false,"properties":{"_comment":{"type":"string"},"start":{"description":"Start date in RFC 3999 UTC form, no subsecond values allowed and TZ offset must be Z","type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},"end":{"description":"End date in same form as start","type":"string","pattern":"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"},"cache_split":{"description":"Whether content cache should be split for this experiment, default true","type":"boolean"},"shared_selector":{"description":"Optional override of abtest name for ID derivation purposes","type":"string","pattern":"^[A-Za-z0-9][-_.A-Za-z0-9]{7,62}$"},"domains":{"type":"object","minProperties":1,"additionalProperties":false,"properties":{"_comment":{"type":"string"}},"patternProperties":{"^[a-z0-9][-_.a-z0-9]{0,254}$":{"description":"The domainname of a site used by the abtest, in lowercase","type":"object","required":["groups"],"additionalProperties":false,"properties":{"_comment":{"type":"string"},"unique_domain":{"type":"boolean"},"groups":{"description":"Named test groups for this site","type":"object","minProperties":1,"additionalProperties":false,"properties":{"_comment":{"type":"string"}},"patternProperties":{"^[A-Za-z0-9][-_.A-Za-z0-9]{0,62}$":{"description":"Range of buckets assigned to this group","type":"array","minItems":2,"maxItems":2,"items":{"type":"integer","minimum":0,"maximum":99999}}}}}}}}}}}}'  # noqa: E501
+
+
+registry = CollectorRegistry()
+http_status_last = Gauge('wmfuniq_experiment_fetcher_http_status_last',
+                         'HTTP status code of the last request', registry=registry)
 
 
 def read_file(path: Union[str | os.PathLike], catch_exceptions: bool = True) -> Optional[str]:
@@ -42,12 +50,16 @@ def fetch_config(url: str, timeout: float) -> Optional[str]:
     try:
         r = requests.get(url, headers=headers, timeout=timeout)
     except RequestException:
+        http_status_last.set(-1)
         return None
 
+    http_status_last.set(r.status_code)
     if r.status_code != 200:
+        print(f'Unexpected status code: {r.status_code}')
         return None
 
     if r.headers['Content-Type'] != 'application/json; charset=utf-8':
+        print(f"Unexpected Content-Type: {r.headers['Content-Type']}")
         return None
 
     # validate returns None if validation is succesful and raises an exception otherwise
@@ -90,4 +102,5 @@ if __name__ == '__main__':
         sys.exit(1)
 
     main(Path(sys.argv[1]))
+    write_to_textfile(NODE_EXPORTER_PATH, registry)
     sys.exit(0)
