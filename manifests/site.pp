@@ -1354,6 +1354,10 @@ node /^es2037\.codfw\./ {
     role(mariadb::core)
 }
 
+node /^es2047\.codfw\./ {
+    role(mariadb::core)
+}
+
 # External Storage, Shard 7 (es7) databases
 # RW section
 ## eqiad servers
@@ -1384,7 +1388,7 @@ node /^es2040\.codfw\./ {
 
 # Future es hosts T393106
 # Future es hosts T393107
-node /^es204(7|8)\.codfw\./ {
+node /^es204(8)\.codfw\./ {
     role(insetup::data_persistence_ferm)
 }
 
