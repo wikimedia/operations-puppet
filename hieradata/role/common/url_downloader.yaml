@@ -1,5 +1,10 @@
 profile::url_downloader::url_downloader_port: 8080
 profile::logrotate::hourly: true
+# profile::nginx::variant: 'custom'  # for >= bookworm
+profile::nginx::variant: 'extras'
+profile::nginx::modules: ['lua']
+profile::nginx::managed: false
+
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::base::production::role_description: 'Upload-by-URL proxy'
 

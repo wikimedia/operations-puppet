@@ -1,0 +1,29 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# This file is managed by Puppet.
+
+server {
+    listen <%= @proxy_port %> ssl;
+    listen [::]:<%= @proxy_port %> ssl;
+    server_name <%= @subdomain %>;
+    ssl_certificate <%= @subdomain_ssl_chain %>;
+    ssl_certificate_key <%= @subdomain_ssl_key %>;
+
+    # HSTS (2 years)
+    add_header Strict-Transport-Security "max-age=63072000" always;
+
+    # Restrict methods
+    if ($request_method !~ ^(GET|HEAD|POST|OPTIONS)$) {
+        return 403;
+    }
+
+    location / {
+        proxy_pass https://<%= @target %>.hcaptcha.com;
+        proxy_ssl_server_name on;
+
+        # Never pass the following headers
+        proxy_set_header X-Forwarded-For "";
+        proxy_set_header X-Client-IP "";
+
+        proxy_cache HCAPTCHA;
+    }
+}

@@ -1,0 +1,64 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+# Based on the default nginx.conf from the bookworm debian package, with added
+# hcaptcha-specific config and SSL config from Mozilla SSL config generator.
+
+user www-data;
+worker_processes auto;
+pid /var/run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+    worker_connections 4096;
+}
+
+http {
+    sendfile on;
+    tcp_nopush on;
+    types_hash_max_size 2048;
+    tcp_nodelay on;
+    keepalive_timeout 65;
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    gzip on;
+
+    # SSL config adapted from Mozilla SSL Configuration Generator -- intermediate configuration
+    ssl_protocols TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+    ssl_ecdh_curve X25519:prime256v1:secp384r1;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305;
+    ssl_prefer_server_ciphers off;
+
+    # see also ssl_session_ticket_key alternative to stateful session cache
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+
+    ssl_dhparam "/etc/ssl/dhparam.pem";
+
+    # TODO(Raine) consider OCSP stapling
+
+    resolver <%= @nginx_resolver_ips[0] %>;
+
+    proxy_ssl_server_name on;
+    merge_slashes off;
+    proxy_cache_path /tmp/nginx-cache levels=1:2 keys_zone=HCAPTCHA:10m inactive=24h max_size=8g;
+
+    # CORS setup
+    add_header 'Access-Control-Allow-Origin' 'https://<%= @proxy_domain %>';
+    add_header 'Vary' 'Origin, Accept-Encoding';
+    add_header 'Access-Control-Allow-Methods' 'GET, HEAD, POST, OPTIONS';
+    add_header 'Access-Control-Allow-Headers' 'Cache-Control, Content-Type, DNT, Referer, User-Agent, challenge-bypass-token, cf-chl-bypass, challenge-bypass-token, challenge-bypass-host, challenge-bypass-path';
+    add_header 'Access-Control-Allow-Credentials' 'true';
+
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        return 301 https://$host$request_uri;
+    }
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}

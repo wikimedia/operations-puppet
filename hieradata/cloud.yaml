@@ -1199,3 +1199,12 @@ profile::cache::haproxy::allowed_methods:
 profile::conftool::requestctl_client::admin_groups: []
 
 profile::cache::haproxy::use_benthos: false
+
+# The following can be mostly cleaned up once hcaptcha proxy is its own role
+profile::hcaptcha::proxy::proxy_port: 10443
+profile::hcaptcha::proxy::proxy_domain: "%{facts.hostname}"
+profile::hcaptcha::proxy::nginx_resolvers: "%{alias('profile::resolving::nameservers')}"
+profile::hcaptcha::proxy::subdomains:
+  assets: newassets
+  imgs:   imgs
+  report: accounts
