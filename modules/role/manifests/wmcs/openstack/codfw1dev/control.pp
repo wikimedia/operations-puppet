@@ -31,6 +31,7 @@ class role::wmcs::openstack::codfw1dev::control {
     include profile::openstack::codfw1dev::nova::api::service
     include profile::openstack::codfw1dev::neutron::common
     include profile::openstack::codfw1dev::neutron::service
+    include profile::openstack::codfw1dev::octavia
 
     include profile::ldap::client::utils
     include profile::memcached::instance
@@ -47,5 +48,4 @@ class role::wmcs::openstack::codfw1dev::control {
 
     # For testing purposes:
     include profile::openstack::codfw1dev::barbican
-    include profile::openstack::codfw1dev::octavia
 }

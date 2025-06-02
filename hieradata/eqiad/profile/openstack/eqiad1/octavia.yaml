@@ -4,5 +4,7 @@ profile::openstack::eqiad1::octavia::db_user: "octavia"
 profile::openstack::eqiad1::octavia::db_name: "eqiad1_octavia"
 profile::openstack::eqiad1::octavia::active: true
 profile::openstack::eqiad1::octavia::amphora_secgroup: 99013ea7-7d15-4467-919a-013dde191030
-profile::openstack::eqiad1::octavia::amphora_boot_network: FIXME
+profile::openstack::eqiad1::octavia::amphora_boot_network: be062461-92dd-4521-8a8b-00bde61a24ee
+profile::openstack::eqiad1::octavia::amphora_mgmt_cidr: 172.16.24.0/24
+profile::openstack::eqiad1::octavia::amphora_mgmt_cidr_v6: 2a02:ec80:a000:100::/64
 profile::openstack::eqiad1::octavia::rabbit_user: 'octavia'

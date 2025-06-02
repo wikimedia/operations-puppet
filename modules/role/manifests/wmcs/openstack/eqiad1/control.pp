@@ -27,6 +27,7 @@ class role::wmcs::openstack::eqiad1::control {
     include profile::openstack::eqiad1::nova::conductor::service
     include profile::openstack::eqiad1::nova::scheduler::service
     include profile::openstack::eqiad1::nova::api::service
+    include profile::openstack::eqiad1::octavia
 
     include profile::ldap::client::utils
     include profile::openstack::eqiad1::designate::dns_floating_ip_updater
