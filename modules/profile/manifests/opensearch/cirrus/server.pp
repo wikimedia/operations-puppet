@@ -48,7 +48,7 @@ class profile::opensearch::cirrus::server(
     $::profile::opensearch::server::filtered_instances.each |$instance_title, $instance_params| {
         $cluster_name = $instance_params['cluster_name']
         $http_port = $instance_params['http_port']
-
+        $tls_port = $instance_params['tls_port']
         opensearch::log::hot_threads_cluster { $cluster_name:
             http_port => $http_port,
         }
@@ -69,7 +69,7 @@ class profile::opensearch::cirrus::server(
                 team           => 'data-platform',
                 severity       => 'task',
                 path           => '/_snapshot/elastic_snaps',
-                port           => $http_port,
+                port           => $tls_port,
                 ip_families    => ['ip4','ip6'],
                 status_matches => [200],
                 force_tls      => true,
