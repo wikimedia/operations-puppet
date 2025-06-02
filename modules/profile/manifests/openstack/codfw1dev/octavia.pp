@@ -57,7 +57,7 @@ class profile::openstack::codfw1dev::octavia(
         group     => 'octavia',
         mode      => '0600',
         show_diff => false,
-        content   => secret('openstack/octavia/client.cert-and-key.pem'),
+        content   => secret('openstack/codfw1dev/octavia/client.cert-and-key.pem'),
         require   => File['/etc/octavia/certs'],
     }
     file { '/etc/octavia/certs/server_ca.key.pem':
@@ -65,21 +65,21 @@ class profile::openstack::codfw1dev::octavia(
         group     => 'octavia',
         mode      => '0600',
         show_diff => false,
-        content   => secret('openstack/octavia/server_ca.key.pem'),
+        content   => secret('openstack/codfw1dev/octavia/server_ca.key.pem'),
         require   => File['/etc/octavia/certs'],
     }
     file { '/etc/octavia/certs/client_ca.cert.pem':
         owner     => 'octavia',
         group     => 'octavia',
         show_diff => false,
-        content   => secret('openstack/octavia/client_ca.cert.pem'),
+        content   => secret('openstack/codfw1dev/octavia/client_ca.cert.pem'),
         require   => File['/etc/octavia/certs'],
     }
     file { '/etc/octavia/certs/server_ca.cert.pem':
         owner     => 'octavia',
         group     => 'octavia',
         show_diff => false,
-        content   => secret('openstack/octavia/server_ca.cert.pem'),
+        content   => secret('openstack/codfw1dev/octavia/server_ca.cert.pem'),
         require   => File['/etc/octavia/certs'],
     }
     file { '/etc/octavia/certs/id_rsa':
@@ -87,7 +87,7 @@ class profile::openstack::codfw1dev::octavia(
         mode      => '0600',
         owner     => 'osstackcanary',
         group     => 'osstackcanary',
-        content   => secret('openstack/octavia/amphorakey'),
+        content   => secret('openstack/codfw1dev/octavia/amphorakey'),
         show_diff => false,
     }
 }
