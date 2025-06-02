@@ -35,3 +35,47 @@ def filter(event)
   event.set('original', original_event.to_json)
   [event]
 end
+
+# run tests with `ruby dlq_transformer.rb`
+if __FILE__ == $PROGRAM_NAME
+  require_relative '../helpers/filter_scripts_test_helper'
+
+  fixture = {
+    '@metadata' => {
+      'dead_letter_queue' => {
+        'plugin_type' => 'foo',
+        'reason' => 'bar',
+        'plugin_id' => 'baz'
+      }
+    },
+    'removed' => 'removed'
+  }
+  event = filter(Event.new(fixture))[0]
+
+  assert_nil(
+    'no removed fields',
+    event.get('removed')
+  )
+  assert_true(
+    'type is dlq',
+    event.get('type') == 'dlq'
+  )
+  assert_true(
+    'plugin_id is baz',
+    event.get('plugin_id') == 'baz'
+  )
+  assert_true(
+    'message is bar',
+    event.get('message') == 'bar'
+  )
+  assert_true(
+    'plugin_type is foo',
+    event.get('plugin_type') == 'foo'
+  )
+  fixture['type'] = 'dlq'
+  event = filter(Event.new(fixture))[0]
+  assert_true(
+    'dlq events are cancelled',
+    event.get('[@metadata][cancelled]')
+  )
+end
