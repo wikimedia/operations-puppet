@@ -1087,19 +1087,6 @@ node /^dumpsdata100[45]\.eqiad\./ {
     role(dumps::generation::server::spare)
 }
 
-
-# BEGIN hosts to decom, see T394350
-
-node /^elastic10(54|67)\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-node /^cirrussearch10(53|55|56|57|58|59|60|61|62|63|64|65|66)\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
-# END hosts to decom, see T394350
-
 # Row A
 node /^cirrussearch10(68|69|70|71|72|73|84)\.eqiad\./ {
     role(cirrus::opensearch)
