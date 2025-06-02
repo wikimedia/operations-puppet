@@ -1,1 +1,1 @@
-profile::cache::haproxy::maxmind_lookup: true
+profile::cache::haproxy::set_x_provenance: true

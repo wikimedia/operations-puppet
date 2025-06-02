@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::cache::haproxy(
+class profile::cache::haproxy (
     String $cache_cluster = lookup('cache::cluster'),
     Stdlib::Port $tls_port = lookup('profile::cache::haproxy::tls_port'),
-    Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', {'default_value'                                          => 9422}),
+    Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', { 'default_value'                                          => 9422 }),
     Hash[String, Haproxy::Tlscertificate] $available_unified_certificates = lookup('profile::cache::haproxy::available_unified_certificates'),
-    Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', {'default_value' => undef}),
-    Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', {'default_value'                                   => undef}),
+    Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', { 'default_value' => undef }),
+    Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', { 'default_value'                                   => undef }),
     Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
-    Array[String] $unified_acme_chief_certs = lookup('profile::cache::haproxy::unified_acme_chief_certs', {'default_value'                       => ['unified']}),
+    Array[String] $unified_acme_chief_certs = lookup('profile::cache::haproxy::unified_acme_chief_certs', { 'default_value'                       => ['unified'] }),
     Haproxy::Backend $backend = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
@@ -15,36 +15,36 @@ class profile::cache::haproxy(
     Integer[0] $tls_session_lifetime = lookup('profile::cache::haproxy::tls_session_lifetime'),
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
-    Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', {'default_value'                        => undef}),
+    Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', { 'default_value'                        => undef }),
     Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
-    Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', {'default_value'                                 => false}),
-    Optional[Stdlib::HTTPUrl] $ocsp_proxy = lookup('http_proxy', {'default_value'                                                                => undef}),
+    Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', { 'default_value'                                 => false }),
+    Optional[Stdlib::HTTPUrl] $ocsp_proxy = lookup('http_proxy', { 'default_value'                                                                => undef }),
     String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
-    Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', {'default_value'                                                  => '/etc/haproxymtail'}),
-    Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', {'default_value'                                              => 3906}),
-    Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', {'default_value'                                                => '/var/log/haproxy.fifo'}),
+    Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', { 'default_value'                                                  => '/etc/haproxymtail' }),
+    Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', { 'default_value'                                              => 3906 }),
+    Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', { 'default_value'                                                => '/var/log/haproxy.fifo' }),
     Boolean $monitoring_enabled = lookup('profile::cache::haproxy::monitoring_enabled'),
-    Haproxy::Version $haproxy_version = lookup('profile::cache::haproxy::version', {'default_value'                                              => 'haproxy28'}),
-    Boolean $do_systemd_hardening = lookup('profile::cache::haproxy::do_systemd_hardening', {'default_value'                                     => false}),
-    Boolean $enable_coredumps = lookup('profile::cache::haproxy::enable_coredumps', {'default_value'                                             => false}),
-    Optional[Stdlib::Port] $http_redirection_port = lookup('profile::cache::haproxy::http_redirection_port', {'default_value'                    => 80}),
-    Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', {'default_value'                    => undef}),
-    Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', {'default_value'                                      => undef}),
-    Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', {'default_value'                                     => false}),
-    Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', {'default_value'                                             => false}),
-    Boolean $use_haproxykafka = lookup('profile::cache::haproxy::use_haproxykafka', {'default_value'                                             => false}),
-    Stdlib::Unixpath $haproxykafka_socket = lookup('profile::cache::haproxy::haproxykafka_socket', {'default_value'                              => '/var/run/haproxykafka/haproxykafka.sock'}),
-    Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', {'default_value'                            => undef}),
-    Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', {'default_value'                       => false}),
-    Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', {'default_value'                                               => 8192}),
-    Boolean $use_etcd_req_filters = lookup('profile::cache::haproxy::use_etcd_req_filters', {'default_value'                                     => false}),
-    Boolean $numa_networking = lookup('profile::cache::haproxy::numa_networking', {'default_value'                                               => true}),
-    Boolean $use_benthos = lookup('profile::cache::haproxy::use_benthos', {'default_value'                                                       => false}),
-    String $benthos_socket = lookup('profile::cache::haproxy::benthos_socket_address', {'default_value'                                          => '127.0.0.1:1221'}),
+    Haproxy::Version $haproxy_version = lookup('profile::cache::haproxy::version', { 'default_value'                                              => 'haproxy28' }),
+    Boolean $do_systemd_hardening = lookup('profile::cache::haproxy::do_systemd_hardening', { 'default_value'                                     => false }),
+    Boolean $enable_coredumps = lookup('profile::cache::haproxy::enable_coredumps', { 'default_value'                                             => false }),
+    Optional[Stdlib::Port] $http_redirection_port = lookup('profile::cache::haproxy::http_redirection_port', { 'default_value'                    => 80 }),
+    Optional[Haproxy::Timeout] $redirection_timeout = lookup('profile::cache::haproxy::redirection_timeout', { 'default_value'                    => undef }),
+    Optional[Array[Haproxy::Filter]] $filters = lookup('profile::cache::haproxy::filters', { 'default_value'                                      => undef }),
+    Boolean $dedicated_hc_backend = lookup('profile::cache::haproxy::dedicated_hc_backend', { 'default_value'                                     => false }),
+    Boolean $extended_logging = lookup('profile::cache::haproxy::extended_logging', { 'default_value'                                             => false }),
+    Boolean $use_haproxykafka = lookup('profile::cache::haproxy::use_haproxykafka', { 'default_value'                                             => false }),
+    Stdlib::Unixpath $haproxykafka_socket = lookup('profile::cache::haproxy::haproxykafka_socket', { 'default_value'                              => '/var/run/haproxykafka/haproxykafka.sock' }),
+    Optional[Array[Stdlib::IP::Address]] $hc_sources = lookup('haproxy_allowed_healthcheck_sources', { 'default_value'                            => undef }),
+    Boolean $install_haproxy26_component = lookup('profile::cache::haproxy::install_haproxy26_component', { 'default_value'                       => false }),
+    Optional[Integer] $log_length = lookup('profile::cache::haproxy::log_length', { 'default_value'                                               => 8192 }),
+    Boolean $use_etcd_req_filters = lookup('profile::cache::haproxy::use_etcd_req_filters', { 'default_value'                                     => false }),
+    Boolean $numa_networking = lookup('profile::cache::haproxy::numa_networking', { 'default_value'                                               => true }),
+    Boolean $use_benthos = lookup('profile::cache::haproxy::use_benthos', { 'default_value'                                                       => false }),
+    String $benthos_socket = lookup('profile::cache::haproxy::benthos_socket_address', { 'default_value'                                          => '127.0.0.1:1221' }),
     String $conftool_prefix = lookup('conftool_prefix'),
-    Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', {'default_value'                                             => false}),
-    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', {'default_value'                           => ['GET','HEAD','OPTIONS']}),
-    Boolean $maxmind_lookup = lookup('profile::cache::haproxy::maxmind_lookup', {'default_value'                                                 => false}),
+    Boolean $use_tls_tmpfiles = lookup('profile::cache::haproxy::use_tls_tmpfiles', { 'default_value'                                             => false }),
+    Array[Wmflib::HTTP::Method] $allowed_methods = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'                           => ['GET','HEAD','OPTIONS'] }),
+    Boolean $set_x_provenance = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'                                             => false }),
 ) {
     class { 'sslcert::dhparam':
     }
@@ -70,7 +70,7 @@ class profile::cache::haproxy(
 
     apt::package_from_component { 'haproxy':
         component       => $component,
-        before          => Class['::haproxy'],
+        before          => Class['haproxy'],
         priority        => 1002, # Take precedence over main
         ensure_packages => false, # this is handled by ::haproxy
     }
@@ -92,7 +92,7 @@ class profile::cache::haproxy(
     # template. See below for usage
     $tls_check_cfg = '/etc/haproxy-tls-check.cfg'
 
-    class { '::haproxy':
+    class { 'haproxy':
         config_content        => template('profile/cache/haproxy.cfg.erb'),
         systemd_content       => template('profile/cache/haproxy.service.erb'),
         logging               => false,
@@ -101,7 +101,7 @@ class profile::cache::haproxy(
 
     ensure_packages('python3-pystemd')
     file { '/usr/local/sbin/haproxy-stek-manager':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/cache/haproxy_stek_manager.py',
         owner  => root,
         group  => root,
@@ -119,12 +119,12 @@ class profile::cache::haproxy(
         command     => "/usr/local/sbin/haproxy-stek-manager ${tls_ticket_keys_path}",
         interval    => [
             {
-            'start'    => 'OnCalendar',
-            'interval' => '*-*-* 00/8:00:00', # every 8 hours
+                'start'    => 'OnCalendar',
+                'interval' => '*-*-* 00/8:00:00', # every 8 hours
             },
             {
-            'start'    => 'OnBootSec',
-            'interval' => '0sec',
+                'start'    => 'OnBootSec',
+                'interval' => '0sec',
             },
         ],
         user        => 'root',
@@ -151,7 +151,6 @@ class profile::cache::haproxy(
     # of volatile storage for tls keys or not
     $available_unified_certificates.each |$provider, $avail_cert| {
         $avail_cert['cert_paths'].each |Stdlib::Unixpath $path| {
-
             if $use_tls_tmpfiles {
                 unless($path.stdlib::start_with($volatile_tls_path)) {
                     fail("Certificate path ${path} should match with ${volatile_tls_path}")
@@ -225,7 +224,7 @@ class profile::cache::haproxy(
     # Not to be confused with the list that haproxy uses to load TLS certificates
     # (although they contains the same certificates paths)
     file { $tls_check_cfg:
-        ensure  => present,
+        ensure  => file,
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -233,7 +232,7 @@ class profile::cache::haproxy(
     }
 
     file { '/usr/local/sbin/tls-check':
-        ensure  => present,
+        ensure  => file,
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -275,7 +274,7 @@ class profile::cache::haproxy(
 
     # This contains the PyBal IPs allowed to perform healthchecks
     file { $hc_sources_file_path:
-        ensure  => bool2str($dedicated_hc_backend, 'present','absent'),
+        ensure  => bool2str($dedicated_hc_backend, 'file','absent'),
         mode    => '0444',
         owner   => 'root',
         group   => 'root',
@@ -289,7 +288,7 @@ class profile::cache::haproxy(
     $max_tls_version = 'TLSv1.3'
     if $use_etcd_req_filters {
         file { '/usr/local/bin/check-haproxy-map':
-            ensure => present,
+            ensure => file,
             owner  => 'root',
             group  => 'root',
             mode   => '0555',
@@ -317,6 +316,22 @@ class profile::cache::haproxy(
                 reload     => '/usr/bin/systemctl reload haproxy.service',
                 before     => Service['haproxy'],
             }
+        }
+
+        confd::file { '/etc/haproxy/ipblocks.d/all.map':
+            ensure     => present,
+            prefix     => $conftool_prefix,
+            watch_keys => ['/request-ipblocks'],
+            content    => template('profile/cache/haproxy/ipblocks-all.map.tpl.erb'),
+            # Please, whoever sees this in the future, don't @ me about this.
+            # An haproxy map file can contain either blank lines, comments,
+            # or lines with key-value pairs separated by spaces.
+            # The check command is a perl one-liner that checks for these three cases.
+            # If you find a nicer solution that doesn't involve writing a custom
+            # parser, please fix this.
+            check      => '/usr/local/bin/check-haproxy-map',
+            reload     => '/usr/bin/systemctl reload haproxy.service',
+            before     => Service['haproxy'],
         }
 
         haproxy::confd_site { 'tls':
@@ -362,7 +377,7 @@ class profile::cache::haproxy(
     }
 
     file { '/usr/local/sbin/haproxy-restart':
-        ensure  => present,
+        ensure  => file,
         mode    => '0555',
         owner   => 'root',
         group   => 'root',
@@ -373,19 +388,13 @@ class profile::cache::haproxy(
     # Benthos #
     ###########
     if $use_benthos {
-        include ::profile::benthos
+        include profile::benthos
     }
 
     #####################
-    # maxmind db lookup #
+    # LUA scripting     #
     #####################
-
-    package {'lua5.3-maxminddb':
-        ensure => $maxmind_lookup.bool2str('present', 'absent'),
-    }
-
-    # As this could be needed by other lua script
-    # will be brought anyway
+    # Base directory for all LUA scripts
     file { '/etc/haproxy/lua':
         ensure => directory,
         owner  => 'haproxy',
@@ -393,8 +402,16 @@ class profile::cache::haproxy(
         mode   => '0755',
     }
 
-    file {'/etc/haproxy/lua/maxmind-lookup.lua':
-        ensure  => $maxmind_lookup.bool2str('present', 'absent'),
+    #####################
+    # maxmind db lookup #
+    #####################
+
+    package { 'lua5.3-maxminddb':
+        ensure => $set_x_provenance.bool2str('present', 'absent'),
+    }
+
+    file { '/etc/haproxy/lua/maxmind-lookup.lua':
+        ensure  => $set_x_provenance.bool2str('file', 'absent'),
         mode    => '0644',
         owner   => 'haproxy',
         group   => 'haproxy',

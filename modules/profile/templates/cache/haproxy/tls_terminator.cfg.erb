@@ -6,7 +6,7 @@ global
 -%>
     cpu-map 1/1- <%= cpus %>
 
-<%- if @maxmind_lookup -%>
+<%- if @set_x_provenance -%>
     lua-load-per-thread /etc/haproxy/lua/maxmind-lookup.lua
 <%- end -%>
 
@@ -189,15 +189,33 @@ listen tls
 <%- end -%>
 
 
-<%- if @maxmind_lookup -%>
-    # just to be sure we don't perform lookups on private network
+<%- if @set_x_provenance -%>
+    # Set x-provenance
+    # First, we check if the request comes from our ring of trust, or is internal. We set:
+    # * net=wikimedia-trust if the request is coming from the wikimedia-trust subnet
+    # * net=internal if the request is coming from a private network
+    # If neither condition is met, the value will be looked up a map containing all
+    # requestctl-defined ipblocks, resulting in:
+    # * abuse=<value> if the request is coming from a known abuser
+    # * client=<value> if the request is coming from a known client ipblock
+    # * cloud=<value> if the request is coming from a known cloud
+    # If all of the above fails, we look up the ip in maxmind to fetch an isp value
+    # * isp=<value> if the IP matches the isp lookup in maxmind
+    # If this also fails, we have no information on the request and we'll set
+    # * net=unknown
+    # We only set the variable once
+    <%- if @wikimedia_trust -%>
+    http-request set-var(req.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
+    <%- end -%>
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-    # Fetch var from maxmind lua script and check if empty
-    http-request set-var(req.isp) lua.fetch_isp,lower,bytes(0,64)
-    acl is_unknown_isp var(req.isp) -m len 0
-
-    http-request del-header X-Provenance if is_unknown_isp
-    http-request set-header X-Provenance isp=%[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
+    http-request set-var(req.provenance,ifnotexists) str('net=internal') if is_private_network
+    # check if the IP is included in one of our ipblocks
+    http-request set-var(req.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
+    # If everything else failed, find an isp in maxmind
+    http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
+    # lookup failed
+    http-request set-var(req.provenance,ifnotexists) str('net=unknown')
+    http-request set-header X-Provenance var(req.provenance)
 <%- end -%>
 
 <%- if @dedicated_hc_backend -%>
@@ -312,21 +330,6 @@ frontend http
     http-request track-sc0 src table httpreqrate_http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
-
-<%- if @wikimedia_trust -%>
-    acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
-<%- end -%>
-
-<%- if @maxmind_lookup -%>
-    # just to be sure we don't perform lookups on private network
-    acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
-    # Fetch var from maxmind lua script and check if empty
-    http-request set-var(req.isp) lua.fetch_isp,lower,bytes(0,64)
-    acl is_unknown_isp var(req.isp) -m len 0
-
-    http-request del-header X-Provenance if is_unknown_isp
-    http-request set-header X-Provenance isp=%[var(req.isp)] unless is_private_network OR wikimedia_trust OR is_unknown_isp
-<%- end -%>
 
     # Provide Server header
     http-after-response set-header Server HAProxy

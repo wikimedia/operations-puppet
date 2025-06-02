@@ -18,11 +18,11 @@ function fetch_isp(txn)
    end
 
    local ok, isp = pcall(result.get, result, "isp")
-   if not ok then
+   if not ok or isp == nil or isp == '' then
       return error_response
    end
 
-   return isp
+   return 'isp=' .. isp
 end
 
 core.register_fetches("fetch_isp", fetch_isp)

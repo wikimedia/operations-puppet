@@ -1,0 +1,22 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+{{- range gets "/request-ipblocks/abuse/*" }}
+    {{- $ipblock := json .Value }}
+    {{- $id := base .Key }}
+    {{- range $cidr := $ipblock.cidrs }}
+{{ $cidr }}   abuse={{ $id }}
+    {{- end }}
+{{- end }}
+{{- range gets "/request-ipblocks/cloud/*" }}
+    {{- $ipblock := json .Value }}
+    {{- $id := base .Key }}
+    {{- range $cidr := $ipblock.cidrs }}
+{{ $cidr }}   cloud={{ $id }}
+    {{- end }}
+{{- end }}
+{{- range gets "/request-ipblocks/known-clients/*" }}
+    {{- $ipblock := json .Value }}
+    {{- $id := base .Key }}
+    {{- range $cidr := $ipblock.cidrs }}
+{{ $cidr }}   client={{ $id }}
+    {{- end }}
+{{- end }}
