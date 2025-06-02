@@ -322,6 +322,11 @@ profile::idp::services:
       - spiderpig-access
       - releng
       - ops
+  zarcillo:
+    id: 56
+    service_id: 'https://zarcillo\.wikimedia\.org(/.*)?'
+    required_groups:
+      - ops
 profile::idp::ldap_attributes:
   - cn
   - memberOf
