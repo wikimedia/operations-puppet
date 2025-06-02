@@ -708,8 +708,13 @@ node /^db2(150|159|168|182|218|208|220|221|222)\.codfw\./ {
 }
 
 # s8 (wikidata) core production dbs on eqiad
-node /^db1(172|177|192|193|203|209|211|214|226)\.eqiad\./ {
+node /^db1(172|177|192|193|203|209|214|226)\.eqiad\./ {
     role(mariadb::core)
+}
+
+# eqiad sanitarium master
+node /^db1167\.eqiad\./ {
+    role(mariadb::sanitarium_master)
 }
 
 # x3 (split from s8) core production dbs
@@ -717,8 +722,7 @@ node /^db1(255|256|257|258)\.eqiad\./ {
     role(mariadb::core)
 }
 
-# eqiad sanitarium master
-node /^db1167\.eqiad\./ {
+node /^db1211\.eqiad\./ {
     role(mariadb::sanitarium_master)
 }
 
