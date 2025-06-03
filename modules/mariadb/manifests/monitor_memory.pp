@@ -16,11 +16,12 @@ class mariadb::monitor_memory(
     $check_command = "${path}/pmp-check-unix-memory -c ${critical} -w ${warning}"
 
     nrpe::monitor_service { 'mariadb_memory':
-        description   => 'MariaDB memory',
-        nrpe_command  => $check_command,
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        require       => Package['monitoring-plugins-contrib'],
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        description    => 'MariaDB memory',
+        nrpe_command   => $check_command,
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        require        => Package['monitoring-plugins-contrib'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        migration_task => 'T315866',
     }
 }

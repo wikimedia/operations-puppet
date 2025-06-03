@@ -32,5 +32,6 @@ define dbbackups::check (
             User['backupcheck'],
         ],
         notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/Backups#Rerun_a_failed_backup',
+        migration_task => 'T315866',
     }
 }

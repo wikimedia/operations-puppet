@@ -9,11 +9,12 @@ class mariadb::monitor_disk(
     $pct_critical  = 5,
     ) {
     nrpe::monitor_service { 'mariadb_disk_space':
-        description   => 'MariaDB disk space',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_disk \
+        description    => 'MariaDB disk space',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_disk \
 -w ${pct_warning}% -c ${pct_critical}% -l -e --exclude-type=tracefs",
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        migration_task => 'T315866',
     }
 }

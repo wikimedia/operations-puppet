@@ -11,11 +11,12 @@ define mariadb::monitor_readonly(
     $check_command = "db-check-health --port=${port} --icinga --check_read_only=${read_only} --process"
 
     nrpe::monitor_service { "mariadb_read_only_${name}":
-        description   => "MariaDB read only ${name}",
-        nrpe_command  => $check_command,
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        require       => Package['wmfmariadbpy-common'],
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Master_comes_back_in_read_only',
+        description    => "MariaDB read only ${name}",
+        nrpe_command   => $check_command,
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        require        => Package['wmfmariadbpy-common'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Master_comes_back_in_read_only',
+        migration_task => 'T315866',
     }
 }

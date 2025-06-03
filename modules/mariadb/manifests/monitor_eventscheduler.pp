@@ -11,11 +11,12 @@ define mariadb::monitor_eventscheduler(
     $check_command = "db-check-health --port=${port} --icinga --check_event_scheduler=${event_scheduler} --process"
 
     nrpe::monitor_service { "mariadb_event_scheduler_${name}":
-        description   => "MariaDB Event Scheduler ${name}",
-        nrpe_command  => $check_command,
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        require       => Package['wmfmariadbpy-common'],
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Event_Scheduler',
+        description    => "MariaDB Event Scheduler ${name}",
+        nrpe_command   => $check_command,
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        require        => Package['wmfmariadbpy-common'],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Event_Scheduler',
+        migration_task => 'T315866',
     }
 }

@@ -30,31 +30,34 @@ define mariadb::monitor_replication(
     $check_mariadb = "${check_command} ${check_set} ${check_warn}"
 
     nrpe::monitor_service { "mariadb_replica_io_state_${name}":
-        description   => "MariaDB Replica IO: ${name}",
-        nrpe_command  => "${check_mariadb} --check=slave_io_state",
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        description    => "MariaDB Replica IO: ${name}",
+        nrpe_command   => "${check_mariadb} --check=slave_io_state",
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        migration_task => 'T315866',
     }
 
     nrpe::monitor_service { "mariadb_replica_sql_state_${name}":
-        description   => "MariaDB Replica SQL: ${name}",
-        nrpe_command  => "${check_mariadb} --check=slave_sql_state",
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        description    => "MariaDB Replica SQL: ${name}",
+        nrpe_command   => "${check_mariadb} --check=slave_sql_state",
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        migration_task => 'T315866',
     }
 
     # check the lag towards the $source_dc's master
     nrpe::monitor_service { "mariadb_replica_sql_lag_${name}":
-        description   => "MariaDB Replica Lag: ${name}",
-        nrpe_command  => "${check_mariadb} --check=slave_sql_lag \
-                          --shard=${name} --datacenter=${source_dc} \
-                          --sql-lag-warn=${lag_warn} \
-                          --sql-lag-crit=${lag_crit}",
-        retries       => 10,
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        description    => "MariaDB Replica Lag: ${name}",
+        nrpe_command   => "${check_mariadb} --check=slave_sql_lag \
+                           --shard=${name} --datacenter=${source_dc} \
+                           --sql-lag-warn=${lag_warn} \
+                           --sql-lag-crit=${lag_crit}",
+        retries        => 10,
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting#Depooling_a_replica',
+        migration_task => 'T315866',
     }
 }

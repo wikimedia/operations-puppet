@@ -7,10 +7,11 @@ class mariadb::monitor_process(
     $process_count  = 1,
     ) {
     nrpe::monitor_service { $process_name:
-        description   => "${process_name} processes",
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c ${process_count}:${process_count} -C ${process_name}",
-        critical      => $is_critical,
-        contact_group => $contact_group,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        description    => "${process_name} processes",
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c ${process_count}:${process_count} -C ${process_name}",
+        critical       => $is_critical,
+        contact_group  => $contact_group,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
+        migration_task => 'T315866',
     }
 }
