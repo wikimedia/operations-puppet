@@ -379,7 +379,7 @@ node /^bast7001\.wikimedia\./ {
 }
 
 node /^bast7002\.wikimedia\./ {
-    role(insetup::infrastructure_foundations_ferm)
+    role(bastionhost)
 }
 
 # Debian package/docker images building host in production
