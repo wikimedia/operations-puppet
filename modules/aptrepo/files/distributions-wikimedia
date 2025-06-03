@@ -279,6 +279,7 @@ Update:
  grafana
  hp-mcp-bookworm
  hwraid-megacli
+ jenkins-bookworm
  matomo
  node20
  routinator-bookworm
