@@ -627,6 +627,14 @@ def main() -> int:
         nargs="+",
     )
     group.add_argument(
+        "--sections",
+        help=(
+            "Specify section(s) to work on, instead of all. "
+            "Multiple values can be given space-separated."
+        ),
+        nargs="+",
+    )
+    group.add_argument(
         "--all-databases",
         help="Flag to run through all possible databases",
         action="store_true",
@@ -738,7 +746,11 @@ def main() -> int:
 
     db_connections = {}
     try:
-        for instance in config["mysql_instances"]:
+        instances = config["mysql_instances"]
+        if args.sections:
+            instances = [section for section in instances if section in args.sections]
+
+        for instance in instances:
             socket = f"/run/mysqld/mysqld.{instance}.sock"
             db_connections[instance] = pymysql.connect(
                 user=config["mysql_user"],
@@ -750,7 +762,7 @@ def main() -> int:
         # This will include private and deleted dbs at this stage
         dbs_per_instance: dict[str, set[str]] = {}
         all_available_dbs: set[str] = set()
-        for inst in config["mysql_instances"]:
+        for inst in instances:
             instance_dbs = set()
             if inst in config["manual_dbs"].keys():
                 instance_dbs.update(config["manual_dbs"][inst])
@@ -792,7 +804,7 @@ def main() -> int:
 
         # At this point we are on a multi-instance replica
         dbs_in_scope = set(dbs_with_metadata.keys())
-        for inst in config["mysql_instances"]:
+        for inst in instances:
             instance_dbs = dbs_in_scope.intersection(dbs_per_instance[inst])
             instance_dbs_with_metadata = {
                 db: meta for (db, meta) in dbs_with_metadata.items() if db in instance_dbs
