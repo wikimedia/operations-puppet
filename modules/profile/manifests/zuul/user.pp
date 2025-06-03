@@ -13,7 +13,6 @@ class profile::zuul::user {
         system  => true,
         groups  => 'docker',
         require => [
-            Class['docker'],
             Group['zuul'],
         ],
     }
