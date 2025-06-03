@@ -22,6 +22,7 @@ class raid::megaraid {
     retry_interval => $raid::retry_interval,
     event_handler  => "raid_handler!megacli!${::site}",
     notes_url      => 'https://wikitech.wikimedia.org/wiki/MegaCli#Monitoring',
+    migration_task => 'T350694',
   }
 
 }

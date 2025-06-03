@@ -121,9 +121,10 @@ class profile::mail::mx (
     }
 
     monitoring::service { 'smtp':
-        description   => 'Exim SMTP',
-        check_command => 'check_smtp_tls_le',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+        description    => 'Exim SMTP',
+        check_command  => 'check_smtp_tls_le',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+        migration_task => 'T350694',
     }
 
     firewall::service { 'exim-smtp':

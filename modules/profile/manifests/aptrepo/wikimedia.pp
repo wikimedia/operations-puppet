@@ -98,9 +98,10 @@ class profile::aptrepo::wikimedia (
 
     if $primary_server == $facts['networking']['fqdn'] {
         monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => 'check_ssl_http_letsencrypt!apt.wikimedia.org',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/APT_repository',
+            description    => 'HTTPS',
+            check_command  => 'check_ssl_http_letsencrypt!apt.wikimedia.org',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/APT_repository',
+            migration_task => 'T350694',
         }
         $motd_ensure = 'absent'
     } else {

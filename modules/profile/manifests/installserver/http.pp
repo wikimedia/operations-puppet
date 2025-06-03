@@ -16,8 +16,9 @@ class profile::installserver::http {
     }
 
     monitoring::service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/APT_repository',
+        description    => 'HTTP',
+        check_command  => 'check_http',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/APT_repository',
+        migration_task => 'T350694',
     }
 }

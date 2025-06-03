@@ -9,9 +9,10 @@ class icinga::monitor::debmonitor {
 
     monitoring::service {
         default:
-            contact_group => 'admins',
-            host          => 'debmonitor.wikimedia.org',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Debmonitor';
+            contact_group  => 'admins',
+            host           => 'debmonitor.wikimedia.org',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
+            migration_task => 'T350694';
         'debmonitor-healthcheck':
             description   => 'Debmonitor Health Check',
             check_command => 'check_https_redirect!443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/';

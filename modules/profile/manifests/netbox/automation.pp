@@ -94,6 +94,7 @@ class profile::netbox::automation (
         nrpe_command   => "${check_command} ${icinga_state_file} ${max_age}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/Netbox_DNS_uncommitted_changes',
         contact_group  => 'team-dcops',
+        migration_task => 'T350694',
     }
 
     prometheus::blackbox::check::http {

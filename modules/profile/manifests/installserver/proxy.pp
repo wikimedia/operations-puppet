@@ -55,10 +55,11 @@ class profile::installserver::proxy(
 
     # Monitoring
     monitoring::service { 'squid':
-        ensure        => $ensure,
-        description   => 'Squid',
-        check_command => 'check_tcp!8080',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
+        ensure         => $ensure,
+        description    => 'Squid',
+        check_command  => 'check_tcp!8080',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/HTTP_proxy',
+        migration_task => 'T350694',
     }
 
     prometheus::blackbox::check::http { 'squid':

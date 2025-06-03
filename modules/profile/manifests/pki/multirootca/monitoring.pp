@@ -16,11 +16,12 @@ define profile::pki::multirootca::monitoring (
         ensure => absent,
     }
     nrpe::monitor_service { "check_certificate_expiry_${intermediate}":
-        ensure       => $ensure,
-        description  => "Check to ensure the signer certificate is valid CA: ${intermediate}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
-        nrpe_command => "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}",
-        sudo_user    => 'root',
+        ensure         => $ensure,
+        description    => "Check to ensure the signer certificate is valid CA: ${intermediate}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PKI/CA_Operations',
+        nrpe_command   => "/usr/bin/openssl x509 -checkend ${one_month_secs} -in ${ca_file}",
+        sudo_user      => 'root',
+        migration_task => 'T350694',
     }
 
     # Note: this script requires python3-cryptography

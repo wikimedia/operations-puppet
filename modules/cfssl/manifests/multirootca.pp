@@ -39,5 +39,6 @@ class cfssl::multirootca (
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/PKI',
         content              => template('cfssl/cfssl-multirootca.service.erb'),
         restart              => true,
+        migration_task       => 'T350694',
     }
 }

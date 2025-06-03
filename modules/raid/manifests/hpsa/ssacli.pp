@@ -30,6 +30,7 @@ class raid::hpsa::ssacli {
         retry_interval => $raid::retry_interval,
         event_handler  => "raid_handler!ssacli!${::site}",
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook#Hardware_Raid_Information_Gathering',
+        migration_task => 'T350694',
     }
 
     nrpe::plugin { 'check_ssacli':

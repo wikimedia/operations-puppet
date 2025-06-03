@@ -150,6 +150,7 @@ class profile::firewall (
                 notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/check_ferm',
                 check_interval => 30,
                 retry_interval => $ferm_icinga_retry_interval,
+                migration_task => 'T350694',
             }
         }
 

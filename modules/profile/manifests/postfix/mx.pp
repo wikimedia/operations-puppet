@@ -349,9 +349,10 @@ class profile::postfix::mx (
     Class['Rspamd'] -> Class['Postfix']
 
     monitoring::service { 'smtp':
-        description   => 'Postfix SMTP',
-        check_command => 'check_smtp_tls_le',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+        description    => 'Postfix SMTP',
+        check_command  => 'check_smtp_tls_le',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mail#Troubleshooting',
+        migration_task => 'T350694',
     }
 
     firewall::service { 'smtp':

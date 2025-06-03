@@ -54,10 +54,11 @@ class profile::openldap_clouddev (
     }
 
     monitoring::service { 'ldap':
-        description   => 'LDAP WMCS test cluster',
-        check_command => 'check_ldap!dc=wikimedia,dc=org',
-        critical      => false,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
+        description    => 'LDAP WMCS test cluster',
+        check_command  => 'check_ldap!dc=wikimedia,dc=org',
+        critical       => false,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
+        migration_task => 'T350694',
     }
 
     if $backup {

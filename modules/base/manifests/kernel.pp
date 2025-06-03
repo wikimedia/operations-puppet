@@ -103,6 +103,7 @@ class base::kernel(
         check_interval => 1440,
         retry_interval => 5,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Microcode',
+        migration_task => 'T350694',
     }
 
     # Only Debian Bullseye or newer has the autoremove logic

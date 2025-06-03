@@ -58,10 +58,11 @@ class profile::openldap (
 
     $monitoring_rw_desc = $read_only.bool2str('read-only', 'writable')
     monitoring::service { 'ldap':
-        description   => "LDAP (${monitoring_rw_desc} server)",
-        check_command => 'check_ldap!dc=wikimedia,dc=org',
-        critical      => false,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
+        description    => "LDAP (${monitoring_rw_desc} server)",
+        check_command  => 'check_ldap!dc=wikimedia,dc=org',
+        critical       => false,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/LDAP#Troubleshooting',
+        migration_task => 'T350694',
     }
 
     if $backup {

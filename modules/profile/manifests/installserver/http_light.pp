@@ -29,8 +29,9 @@ class profile::installserver::http_light {
     }
 
     monitoring::service { 'http':
-        description   => 'HTTP',
-        check_command => 'check_http',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Install_servers',
+        description    => 'HTTP',
+        check_command  => 'check_http',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Install_servers',
+        migration_task => 'T350694',
     }
 }

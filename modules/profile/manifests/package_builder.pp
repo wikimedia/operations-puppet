@@ -23,9 +23,10 @@ class profile::package_builder {
     }
 
     monitoring::service { 'package_builder_rsync':
-        description   => 'package builder rsync',
-        check_command => 'check_tcp!873',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Debian_Packaging#Upload_to_Wikimedia_Repo',
+        description    => 'package builder rsync',
+        check_command  => 'check_tcp!873',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Debian_Packaging#Upload_to_Wikimedia_Repo',
+        migration_task => 'T350694',
     }
 
     prometheus::blackbox::check::tcp { 'package-builder-rsync':
