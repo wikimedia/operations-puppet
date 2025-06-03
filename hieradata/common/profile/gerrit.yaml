@@ -40,16 +40,6 @@ profile::gerrit::ssh_allowed_hosts:
 profile::gerrit::git_dir: '/srv/gerrit/git'
 
 profile::gerrit::ssh_host_key: 'ssh_host_key'
-
-profile::gerrit::replication::settings:
-    replica-settings: &REPLICA_SETTINGS
-        mirror: true
-        replicateProjectDeletions: true
-        replicateHiddenProjects: true
-        defaultForceUpdate: true
-        threads: 4
-        replicationDelay: 5
-        rescheduleDelay: 5
 profile::gerrit::replication:
     github:
         url: 'git@github.com:wikimedia/${name}'
@@ -75,10 +65,12 @@ profile::gerrit::replication:
         # kept to ensure we do not replicate the GitHub apps.
         projects:
             - '^(?:(?!apps\\/).)*$'
-    replica-a-codfw:
-        <<: *REPLICA_SETTINGS
+    replica_codfw:
         url: "%{lookup('profile::gerrit::daemon_user')}@gerrit2002.wikimedia.org:/srv/gerrit/git/${name}.git"
-    replica-b-codfw:
-        <<: *REPLICA_SETTINGS
-        url: "%{lookup('profile::gerrit::daemon_user')}@gerrit2003.wikimedia.org:/srv/gerrit/git/${name}.git"
-
+        mirror: true
+        replicateProjectDeletions: true
+        replicateHiddenProjects: true
+        defaultForceUpdate: true
+        threads: 4
+        replicationDelay: 5
+        rescheduleDelay: 5
