@@ -32,6 +32,10 @@
 #
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default 1.2d). Default: undef
 #
+# [*failedjobshistorylimit*] How many failed jobs to keep in history (chart default 1). Default: undef
+#
+# [*successfuljobshistorylimit*] How many successful jobs to keep in history (chart default 3). Default: undef
+#
 # [*foreachwiki_ignore_errors*] Continue with the next wiki in the loop on error (kubernetes only). Default: false
 #
 # [*ensure*] Either 'present' or 'absent'. Default: present
@@ -52,6 +56,8 @@ define profile::mediawiki::sharded_periodic_job(
     Optional[String] $description = undef,
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
+    Optional[Integer] $failedjobshistorylimit = undef,
+    Optional[Integer] $successfuljobshistorylimit = undef,
     Optional[Boolean] $foreachwiki_ignore_errors = false,
     Wmflib::Ensure $ensure = present,
 ) {
@@ -73,18 +79,20 @@ define profile::mediawiki::sharded_periodic_job(
         }
 
         profile::mediawiki::periodic_job { "${title}_${shard}":
-            ensure                    => $ensure,
-            kubernetes                => $kubernetes,
-            command                   => "/usr/local/bin/mwscriptwikiset ${script}",
-            interval                  => $interval,
-            splay                     => $splay,
-            cron_schedule             => $cron_schedule,
-            script_label              => $script_label,
-            team                      => $team,
-            description               => "${real_description} in ${real_shard}",
-            helmfile_defaults_dir     => $helmfile_defaults_dir,
-            ttlsecondsafterfinished   => $ttlsecondsafterfinished,
-            foreachwiki_ignore_errors => $foreachwiki_ignore_errors,
+            ensure                     => $ensure,
+            kubernetes                 => $kubernetes,
+            command                    => "/usr/local/bin/mwscriptwikiset ${script}",
+            interval                   => $interval,
+            splay                      => $splay,
+            cron_schedule              => $cron_schedule,
+            script_label               => $script_label,
+            team                       => $team,
+            description                => "${real_description} in ${real_shard}",
+            helmfile_defaults_dir      => $helmfile_defaults_dir,
+            ttlsecondsafterfinished    => $ttlsecondsafterfinished,
+            failedjobshistorylimit     => $failedjobshistorylimit,
+            successfuljobshistorylimit => $successfuljobshistorylimit,
+            foreachwiki_ignore_errors  => $foreachwiki_ignore_errors,
         }
     }
 

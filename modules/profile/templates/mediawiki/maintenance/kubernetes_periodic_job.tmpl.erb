@@ -9,6 +9,12 @@
     <%- if @ttlsecondsafterfinished -%>
       ttlSecondsAfterFinished: <%= @ttlsecondsafterfinished %>
     <%- end -%>
+    <%- if @successfuljobshistorylimit -%>
+      successfulJobsHistoryLimit: <%= @successfuljobshistorylimit %>
+    <%- end -%>
+    <%- if @failedjobshistorylimit -%>
+      failedJobsHistoryLimit: <%= @failedjobshistorylimit %>
+    <%- end -%>
     <%- if @concurrency_policy -%>
       concurrency: <%= @concurrency_policy %>
     <%- end -%>

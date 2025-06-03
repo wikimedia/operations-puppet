@@ -28,6 +28,10 @@
 #
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default, 1.2d). Default: undef
 #
+# [*failedjobshistorylimit*] How many failed jobs to keep in history (chart default 1). Default: undef
+#
+# [*successfuljobshistorylimit*] How many successful jobs to keep in history (chart default 3). Default: undef
+#
 # [*concurrency_policy*] A kubernetes policy for what happens to jobs that run concurrently/overlap. Default is undef, which implies "Replace" in the chart
 #
 # [*startingdeadlineseconds*] Defines a deadline in whole seconds for starting the Job if the exact timer is missed. Default: undef
@@ -43,6 +47,8 @@ define profile::mediawiki::periodic_job::kubernetes(
     String $description = undef,
     Stdlib::Unixpath $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
+    Optional[Integer] $failedjobshistorylimit = undef,
+    Optional[Integer] $successfuljobshistorylimit = undef,
     Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
     Optional[Integer] $startingdeadlineseconds = undef,
 ) {

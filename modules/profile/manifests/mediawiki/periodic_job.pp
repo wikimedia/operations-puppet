@@ -39,6 +39,10 @@
 #
 # [*ttlsecondsafterfinished*] How long the created job objects stay in kubernetes (chart default 1.2d). Default: undef
 #
+# [*failedjobshistorylimit*] How many failed jobs to keep in history (chart default 1). Default: undef
+#
+# [*successfuljobshistorylimit*] How many successful jobs to keep in history (chart default 3). Default: undef
+#
 # [*migration_title*] a string used to reference the old periodic job for removal when migrating to Kubernetes in a situation where the job needs to be renamed.
 #
 # [*concurrency_policy*] A kubernetes policy for what happens to jobs that run concurrently/overlap. Default is undef, which implies "Replace" in the chart
@@ -63,6 +67,8 @@ define profile::mediawiki::periodic_job(
     Optional[String] $description = undef,
     Optional[Stdlib::Unixpath] $helmfile_defaults_dir = '/etc/helmfile-defaults',
     Optional[Integer] $ttlsecondsafterfinished = undef,
+    Optional[Integer] $failedjobshistorylimit = undef,
+    Optional[Integer] $successfuljobshistorylimit = undef,
     Optional[String] $migration_title = undef,
     Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
     Optional[Integer] $startingdeadlineseconds = undef,
@@ -76,17 +82,19 @@ define profile::mediawiki::periodic_job(
                 false => $command,
             }
             profile::mediawiki::periodic_job::kubernetes { $title:
-                ensure                  => $ensure,
-                command                 => $real_command,
-                cron_schedule           => $cron_schedule,
-                splay                   => $splay,
-                script_label            => $script_label,
-                team                    => $team,
-                description             => $description,
-                helmfile_defaults_dir   => $helmfile_defaults_dir,
-                ttlsecondsafterfinished => $ttlsecondsafterfinished,
-                concurrency_policy      => $concurrency_policy,
-                startingdeadlineseconds => $startingdeadlineseconds,
+                ensure                     => $ensure,
+                command                    => $real_command,
+                cron_schedule              => $cron_schedule,
+                splay                      => $splay,
+                script_label               => $script_label,
+                team                       => $team,
+                description                => $description,
+                helmfile_defaults_dir      => $helmfile_defaults_dir,
+                ttlsecondsafterfinished    => $ttlsecondsafterfinished,
+                failedjobshistorylimit     => $failedjobshistorylimit,
+                successfuljobshistorylimit => $successfuljobshistorylimit,
+                concurrency_policy         => $concurrency_policy,
+                startingdeadlineseconds    => $startingdeadlineseconds,
             }
         }
     } else {
