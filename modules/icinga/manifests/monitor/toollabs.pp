@@ -12,11 +12,12 @@ class icinga::monitor::toollabs () {
     $checker="check_http_url_at_address_for_string_with_timeout!300!${test_entry_host}"
 
     monitoring::service { 'tools-checker-labs-dns-private':
-        description   => 'toolschecker: Verify internal DNS from within Tools',
-        check_command => "${checker}!/dns/private!OK",
-        host          => $test_entry_host,
-        contact_group => 'wmcs-team',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        description    => 'toolschecker: Verify internal DNS from within Tools',
+        check_command  => "${checker}!/dns/private!OK",
+        host           => $test_entry_host,
+        contact_group  => 'wmcs-team',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-etcd-k8s':
@@ -27,45 +28,51 @@ class icinga::monitor::toollabs () {
         retry_interval => 5,
         contact_group  => 'wmcs-team-email,wmcs-bots',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-ldap':
-        description   => 'toolschecker: Test LDAP for query',
-        check_command => "${checker}!/ldap!OK",
-        host          => $test_entry_host,
-        contact_group => 'wmcs-team-email,wmcs-bots',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        description    => 'toolschecker: Test LDAP for query',
+        check_command  => "${checker}!/ldap!OK",
+        host           => $test_entry_host,
+        contact_group  => 'wmcs-team-email,wmcs-bots',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-dumps':
-        description   => 'toolschecker: Make sure enwiki dumps are not empty',
-        check_command => "${checker}!/nfs/dumps!OK",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team-email',
+        description    => 'toolschecker: Make sure enwiki dumps are not empty',
+        check_command  => "${checker}!/nfs/dumps!OK",
+        host           => $test_entry_host,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group  => 'wmcs-team-email',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-nfs-home':
-        description   => 'toolschecker: NFS read/writeable on labs instances',
-        check_command => "${checker}!/nfs/home!OK",
-        host          => $test_entry_host,
-        contact_group => 'wmcs-team',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        description    => 'toolschecker: NFS read/writeable on labs instances',
+        check_command  => "${checker}!/nfs/home!OK",
+        host           => $test_entry_host,
+        contact_group  => 'wmcs-team',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-redis':
-        description   => 'toolschecker: Redis set/get',
-        check_command => "${checker}!/redis!OK",
-        host          => $test_entry_host,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
-        contact_group => 'wmcs-team',
+        description    => 'toolschecker: Redis set/get',
+        check_command  => "${checker}!/redis!OK",
+        host           => $test_entry_host,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        contact_group  => 'wmcs-team',
+        migration_task => 'T328502',
     }
 
     monitoring::service { 'tools-checker-self':
-        description   => 'toolschecker service itself needs to return OK',
-        check_command => "${checker}!/self!OK",
-        host          => $test_entry_host,
-        contact_group => 'wmcs-team',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        description    => 'toolschecker service itself needs to return OK',
+        check_command  => "${checker}!/self!OK",
+        host           => $test_entry_host,
+        contact_group  => 'wmcs-team',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Toolforge/Admin/Toolschecker',
+        migration_task => 'T328502',
     }
 }

@@ -23,15 +23,17 @@ class profile::openstack::eqiad1::pdns::auth::service(
 
     $monitor_verify_records.each | Stdlib::Fqdn $verify_record | {
         monitoring::service { "Auth DNS UDP: ${verify_record} on server ${monitor_fqdn}":
-            description   => "Check DNS auth via UDP of ${verify_record} on server ${monitor_fqdn}",
-            check_command => "check_dig!${monitor_fqdn}!${verify_record}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            description    => "Check DNS auth via UDP of ${verify_record} on server ${monitor_fqdn}",
+            check_command  => "check_dig!${monitor_fqdn}!${verify_record}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            migration_task => 'T328502',
         }
 
         monitoring::service { "Auth DNS TCP: ${verify_record} on server ${monitor_fqdn}":
-            description   => "Check DNS auth via TCP of ${verify_record} on server ${monitor_fqdn}",
-            check_command => "check_dig_tcp!${monitor_fqdn}!${verify_record}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            description    => "Check DNS auth via TCP of ${verify_record} on server ${monitor_fqdn}",
+            check_command  => "check_dig_tcp!${monitor_fqdn}!${verify_record}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            migration_task => 'T328502',
         }
     }
 }

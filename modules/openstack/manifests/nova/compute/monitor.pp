@@ -24,12 +24,13 @@ class openstack::nova::compute::monitor(
     # The weird [n] is an attempt to keep check_procs from counting itself.
     #  https://serverfault.com/questions/359958/nagios-nrpe-check-procs-wrong-return-value
     nrpe::monitor_service { 'ensure_single_nova_compute_proc':
-        ensure        => $ensure,
-        description   => 'nova-compute proc maximum',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:1 -p 1 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
-        retries       => 5,
-        contact_group => $contact_groups,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        ensure         => $ensure,
+        description    => 'nova-compute proc maximum',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:1 -p 1 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
+        retries        => 5,
+        contact_group  => $contact_groups,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        migration_task => 'T328502',
     }
 
     # Labvirts have been known to fully reboot in <=4 minutes and
@@ -38,12 +39,13 @@ class openstack::nova::compute::monitor(
     # But allow for the possibility of 2 procs in case it is in graceful
     # transition where this persistent bad state will alert above.
     nrpe::monitor_service { 'ensure_nova_compute_running':
-        ensure        => $ensure,
-        description   => 'nova-compute proc minimum',
-        nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
-        retries       => 1,
-        contact_group => $contact_groups,
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        ensure         => $ensure,
+        description    => 'nova-compute proc minimum',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:2 --ereg-argument-array '^/usr/bin/pytho[n].* /usr/bin/nova-compute'",
+        retries        => 1,
+        contact_group  => $contact_groups,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+        migration_task => 'T328502',
     }
 
     if ($active) and ($verify_instances) {
@@ -61,12 +63,13 @@ class openstack::nova::compute::monitor(
         # OS_PROJECT_ID=testlabs openstack server create \
         # --flavor 2 --image <image-id> --availability-zone host:<hypervisor> <instance>
         nrpe::monitor_service { 'ensure_running_kvm_instances':
-            ensure        => $ensure,
-            description   => 'ensure kvm processes are running',
-            nrpe_command  => "/usr/lib/nagios/plugins/check_procs -c 1:120 --ereg-argument-array ${kvmbinary}",
-            retries       => 2,
-            contact_group => $contact_groups,
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            ensure         => $ensure,
+            description    => 'ensure kvm processes are running',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_procs -c 1:120 --ereg-argument-array ${kvmbinary}",
+            retries        => 2,
+            contact_group  => $contact_groups,
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Troubleshooting',
+            migration_task => 'T328502',
         }
     }
 }

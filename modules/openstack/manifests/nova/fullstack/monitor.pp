@@ -13,6 +13,7 @@ class openstack::nova::fullstack::monitor {
         timeout        => 30,
         check_interval => 15,
         contact_group  => 'wmcs-team-email,wmcs-bots',
-        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates';
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Portal:Cloud_VPS/Admin/Host_aggregates',
+        migration_task => 'T328502';
     }
 }
