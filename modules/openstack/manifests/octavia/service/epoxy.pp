@@ -19,6 +19,7 @@ class openstack::octavia::service::epoxy(
     String $amphora_flavor,
     String $amphora_boot_network,
     String $heartbeat_key,
+    String $octavia_project_id,
 ) {
     require "openstack::serverpackages::epoxy::${::lsbdistcodename}"
 

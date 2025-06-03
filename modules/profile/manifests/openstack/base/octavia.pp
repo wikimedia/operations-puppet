@@ -11,6 +11,7 @@ class profile::openstack::base::octavia(
     String $db_name = lookup('profile::openstack::base::octavia::db_name'),
     String $db_pass = lookup('profile::openstack::base::octavia::db_pass'),
     String $ldap_user_pass = lookup('profile::openstack::base::octavia::service_user_pass'),
+    String $octavia_project_id = lookup('profile::openstack::base::octavia::octavia_project_id'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::octavia::api_bind_port'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::base::rabbitmq_nodes'),
     String $rabbit_user = lookup('profile::openstack::base::octavia::rabbit_user'),
@@ -47,6 +48,7 @@ class profile::openstack::base::octavia(
         amphora_flavor       => $amphora_flavor,
         control_nodes        => $control_nodes,
         heartbeat_key        => $heartbeat_key,
+        octavia_project_id   => $octavia_project_id,
     }
 
     ferm::service { 'octavia-api-backend':

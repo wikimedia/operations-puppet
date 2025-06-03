@@ -462,7 +462,7 @@ ca_private_key_passphrase = <%= @ca_passphrase %>
 
 
 [controller_worker]
-amp_image_owner_id = octavia
+amp_image_owner_id = <%= @octavia_project_id %>
 amp_image_tag = amphora
 amp_ssh_key_name = amphorakey
 amp_secgroup_list = <%= @amphora_secgroup %>

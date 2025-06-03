@@ -10,6 +10,7 @@ class profile::openstack::codfw1dev::octavia(
     String $db_pass = lookup('profile::openstack::codfw1dev::octavia::db_pass'),
     String $db_user = lookup('profile::openstack::codfw1dev::octavia::db_host'),
     String $db_name = lookup('profile::openstack::codfw1dev::octavia::db_name'),
+    String $octavia_project_id = lookup('profile::openstack::codfw1dev::octavia::octavia_project_id'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::octavia::api_bind_port'),
     String $ldap_user_pass = lookup('profile::openstack::codfw1dev::octavia::service_user_pass'),
     String $rabbit_pass = lookup('profile::openstack::codfw1dev::octavia::rabbit_pass'),
@@ -45,6 +46,7 @@ class profile::openstack::codfw1dev::octavia(
         amphora_mgmt_cidr       => $amphora_mgmt_cidr,
         amphora_mgmt_cidr_v6    => $amphora_mgmt_cidr_v6,
         heartbeat_key           => $heartbeat_key,
+        octavia_project_id      => $octavia_project_id,
     }
 
     file { '/etc/octavia/certs':

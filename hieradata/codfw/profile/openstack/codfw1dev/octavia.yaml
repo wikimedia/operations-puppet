@@ -9,3 +9,4 @@ profile::openstack::codfw1dev::octavia::amphora_flavor: 0e38db8b-e6bb-49e1-82d8-
 profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr: 172.16.131.0/24
 profile::openstack::codfw1dev::octavia::amphora_mgmt_cidr_v6: 2a02:ec80:a100:100::/64
 profile::openstack::codfw1dev::octavia::rabbit_user: 'octavia'
+profile::openstack::codfw1dev::octavia::octavia_project_id: 497ac47bc5a44dd6943517f88bd77b58

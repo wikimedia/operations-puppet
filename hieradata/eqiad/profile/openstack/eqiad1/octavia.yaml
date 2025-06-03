@@ -9,3 +9,4 @@ profile::openstack::eqiad1::octavia::amphora_flavor: 41f0ea41-75ca-44a6-be66-bb5
 profile::openstack::eqiad1::octavia::amphora_mgmt_cidr: 172.16.24.0/24
 profile::openstack::eqiad1::octavia::amphora_mgmt_cidr_v6: 2a02:ec80:a000:100::/64
 profile::openstack::eqiad1::octavia::rabbit_user: 'octavia'
+profile::openstack::eqiad1::octavia::octavia_project_id: bd825ee46c214f9e88126a2b290d88f8
