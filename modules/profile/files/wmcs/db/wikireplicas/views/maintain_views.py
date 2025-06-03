@@ -224,7 +224,7 @@ class SchemaOperations:
         """
         if self.table_exists(view, self.db):
             # If it does, create or replace the view for it.
-            logging.info("[%s.%s] ", self.db_p, view)
+            logging.info("[%s.%s.%s] ", self.section, self.db_p, view)
             if not self.table_exists(view, self.db_p) or self._confirm(
                 "View already exists. Replace?"
             ):
@@ -358,7 +358,7 @@ class SchemaOperations:
             if not self.table_exists(view_name, self.db_p) or self._confirm(
                 "View already exists. Replace?"
             ):
-                logging.info("[%s.%s] ", self.db_p, view_name)
+                logging.info("[%s.%s.%s] ", self.section, self.db_p, view_name)
                 self.create_customview(view_name, view_details, sources_checked)
         else:
             # If any source was not found, ignore this view.
@@ -465,25 +465,25 @@ class SchemaOperations:
         self.views_missing_tables = []
 
         if not self.database_exists(self.db):
-            logging.warning("DB %s does not exist to create views", self.db)
+            logging.warning("DB %s.%s does not exist to create views", self.section, self.db)
             return
 
         if not self.database_exists(self.db_p):
-            logging.warning("DB %s does not exist to create views", self.db_p)
+            logging.warning("DB %s.%s does not exist to create views", self.section, self.db_p)
             return
 
-        logging.info("Full views for %s:", self.db)
+        logging.info("Full views for %s.%s:", self.section, self.db)
         for view in fullviews:
             self.do_fullview(view)
 
-        logging.info("Custom views for %s:", self.db)
+        logging.info("Custom views for %s.%s:", self.section, self.db)
         for view_name, view_details in customviews.items():
             self.do_customview(view_name, view_details)
 
     def drop_public_database(self):
         """Drop a public database entirely."""
         if self.database_exists(self.db_p):
-            if self._confirm(f"Drop {self.db_p}?"):
+            if self._confirm(f"Drop {self.section}.{self.db_p}?"):
                 self.write_execute(f"DROP DATABASE `{self.db_p}`;")
         else:
             logging.warning("DB %s does not exist", self.db_p)
@@ -601,12 +601,12 @@ def dbrun(
                 )
                 logging.info("cleaning %s tables", len(clean_tables))
                 for dt in clean_tables:
-                    logging.info("Dropping view %s.%s", ops.db_p, dt)
+                    logging.info("Dropping view %s.%s.%s", ops.section, ops.db_p, dt)
                     try:
                         ops.drop_view(dt)
                     except pymysql.err.MySQLError:
                         exit_status = 1
-                        logging.exception("Error dropping view %s.%s", ops.db_p, dt)
+                        logging.exception("Error dropping view %s.%s.%s", ops.section, ops.db_p, dt)
     return exit_status
 
 
