@@ -58,6 +58,12 @@ class ncredir(
         notify  => Exec['nginx-reload'],
     }
 
+    file { '/etc/nginx/conf.d/ncredir_hash_sizes.conf':
+        source  => 'puppet:///modules/ncredir/ncredir_hash_sizes.conf',
+        require => File['/etc/nginx/conf.d'],
+        notify  => Exec['nginx-reload'],
+    }
+
     nginx::site { 'ncredir':
         content => template('ncredir/ncredir.nginx.conf.erb'),
     }
