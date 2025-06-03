@@ -293,6 +293,23 @@ profile::opensearch::logstash::curator_jobs:
           unit: weeks
           unit_count: 2
 
+    '13':
+      description: 'ecs-webrequest policy rev 1: delete older than 2 weeks'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-webrequest-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%W'
+          unit: weeks
+          unit_count: 2
+
     '20':
       description: 'all: after 1 days set number of replicas to 0'
       action: replicas
@@ -343,6 +360,23 @@ profile::opensearch::logstash::curator_jobs:
           direction: older
           timestring: '%Y.%m.%d'
           unit: days
+          unit_count: 1
+
+    '23':
+      description: 'logstash-webrequest-1: after 1 day set number of replicas to 1'
+      action: replicas
+      options:
+        count: 1
+        ignore_empty_list: true
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-webrequest-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%W'
+          unit: weeks
           unit_count: 1
 
     # For any indices prefixed by "logstash-", and have "index.routing.allocation.require.disktype":"ssd" set,
