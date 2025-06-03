@@ -30,15 +30,17 @@ define profile::cache::haproxy::monitoring(
         $check_args = '-c 259500 -w 173100 -d /var/cache/ocsp -g "*.ocsp"'
         $check_args_acme_chief = '-c 518400 -w 432000 -d /etc/acmecerts -g "*/live/*.ocsp"'
         nrpe::monitor_service { 'haproxy_ocsp_freshness':
-            description  => 'Freshness of OCSP Stapling files (HAProxy)',
-            nrpe_command => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            description    => 'Freshness of OCSP Stapling files (HAProxy)',
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            migration_task => 'T367149',
         }
         nrpe::monitor_service { 'haproxy_ocsp_freshness_acme_chief':
-            ensure       => absent,
-            description  => 'Freshness of OCSP Stapling files (HAProxy acme-chief)',
-            nrpe_command => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args_acme_chief}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            ensure         => absent,
+            description    => 'Freshness of OCSP Stapling files (HAProxy acme-chief)',
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_fresh_files_in_dir ${check_args_acme_chief}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/HTTPS/Unified_Certificates',
+            migration_task => 'T367149',
         }
     }
 }

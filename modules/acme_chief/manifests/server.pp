@@ -257,19 +257,21 @@ class acme_chief::server (
     }
 
     nrpe::monitor_service { 'cert_sync_active_node':
-        ensure       => $ensure,
-        description  => 'Ensure cert-sync script runs successfully in the active node',
-        nrpe_command => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
-        sudo_user    => 'acme-chief',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        ensure         => $ensure,
+        description    => 'Ensure cert-sync script runs successfully in the active node',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.done",
+        sudo_user      => 'acme-chief',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        migration_task => 'T367149',
     }
 
     nrpe::monitor_service { 'cert_sync_passive_node':
-        ensure       => $ensure_passive,
-        description  => 'Ensure that passive node gets the certificates from the active node as expected',
-        nrpe_command => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
-        sudo_user    => 'acme-chief',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        ensure         => $ensure_passive,
+        description    => 'Ensure that passive node gets the certificates from the active node as expected',
+        nrpe_command   => "/usr/lib/nagios/plugins/check_file_age -w 3600 -c 7200 ${certs_path}/.rsync.status",
+        sudo_user      => 'acme-chief',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Acme-chief',
+        migration_task => 'T367149',
     }
 
     $timer_ensure = ($is_active and !empty($passive_hosts) and !empty($passive_hosts[0])) ? {

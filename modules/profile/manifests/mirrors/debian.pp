@@ -72,8 +72,9 @@ class profile::mirrors::debian {
     }
 
     nrpe::monitor_service {'check_debian_mirror':
-        description  => 'Debian mirror in sync with upstream',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mirrors',
+        description    => 'Debian mirror in sync with upstream',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_apt_mirror /srv/mirrors/debian',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mirrors',
+        migration_task => 'T367149',
     }
 }

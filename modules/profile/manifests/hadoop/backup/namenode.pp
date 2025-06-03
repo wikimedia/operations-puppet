@@ -92,11 +92,12 @@ class profile::hadoop::backup::namenode(
         $warning_threshold_hours = 26
         $critical_threshold_hours = 48
         nrpe::monitor_service { 'hadoop-namenode-backup-age':
-            description   => 'Age of most recent Hadoop NameNode backup files',
-            nrpe_command  => "/usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${backup_dir} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
-            sudo_user     => 'root',
-            contact_group => 'team-data-platform',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_backup_age',
+            description    => 'Age of most recent Hadoop NameNode backup files',
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_newest_file_age -V -C -d ${backup_dir} -w ${$warning_threshold_hours} -c ${critical_threshold_hours}",
+            sudo_user      => 'root',
+            contact_group  => 'team-data-platform',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_backup_age',
+            migration_task => 'T367149',
         }
     }
 
