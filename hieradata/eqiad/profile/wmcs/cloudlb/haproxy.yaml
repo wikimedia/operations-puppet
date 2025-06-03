@@ -145,6 +145,20 @@ profile::wmcs::cloudlb::haproxy::config:
       method: GET
       path: /
 
+  octavia-api:
+    type: http
+    firewall:
+      open_to_internet: "%{alias('profile::openstack::codfw1dev::public_apis')}"
+    frontends:
+      - port: 29876
+        acme_chief_cert_name: "%{lookup('profile::wmcs::cloudlb::haproxy::acme_chief_cert_name')}"
+    backend:
+      port: "%{alias('profile::openstack::codfw1dev::octavia::api_bind_port')}"
+      servers: "%{alias('profile::openstack::codfw1dev::openstack_control_nodes')}"
+    healthcheck:
+      method: GET
+      path: /
+
   neutron-api:
     type: http
     firewall:
