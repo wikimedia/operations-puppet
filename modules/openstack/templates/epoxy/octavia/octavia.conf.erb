@@ -462,12 +462,12 @@ ca_private_key_passphrase = <%= @ca_passphrase %>
 
 
 [controller_worker]
-amp_image_owner_id = service
+amp_image_owner_id = octavia
 amp_image_tag = amphora
 amp_ssh_key_name = amphorakey
 amp_secgroup_list = <%= @amphora_secgroup %>
 amp_boot_network_list = <%= @amphora_boot_network %>
-amp_flavor_id = 200
+amp_flavor_id = <%= @amphora_flavor %>
 network_driver = allowed_address_pairs_driver
 compute_driver = compute_nova_driver
 amphora_driver = amphora_haproxy_rest_driver

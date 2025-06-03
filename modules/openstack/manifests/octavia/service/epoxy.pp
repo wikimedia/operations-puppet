@@ -16,6 +16,7 @@ class openstack::octavia::service::epoxy(
     String $rabbit_pass,
     String $ca_passphrase,
     String $amphora_secgroup,
+    String $amphora_flavor,
     String $amphora_boot_network,
     String $heartbeat_key,
 ) {

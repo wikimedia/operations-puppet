@@ -19,6 +19,7 @@ class profile::openstack::base::octavia(
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     String $amphora_secgroup = lookup('profile::openstack::base::octavia::amphora_secgroup'),
     String $amphora_boot_network = lookup('profile::openstack::base::octavia::amphora_boot_network'),
+    String $amphora_flavor = lookup('profile::openstack::base::octavia::amphora_flavor'),
     Stdlib::IP::Address::V4::CIDR $amphora_mgmt_cidr = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr'),
     Stdlib::IP::Address::V6::CIDR $amphora_mgmt_cidr_v6 = lookup('profile::openstack::base::octavia::amphora_mgmt_cidr_v6'),
     String $heartbeat_key = lookup('profile::openstack::base::octavia::heartbeat_key'),
@@ -43,6 +44,7 @@ class profile::openstack::base::octavia(
         region               => $region,
         amphora_secgroup     => $amphora_secgroup,
         amphora_boot_network => $amphora_boot_network,
+        amphora_flavor       => $amphora_flavor,
         control_nodes        => $control_nodes,
         heartbeat_key        => $heartbeat_key,
     }
