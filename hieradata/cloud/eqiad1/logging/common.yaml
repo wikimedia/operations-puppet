@@ -92,6 +92,7 @@ profile::opensearch::logstash::curator_jobs:
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 300
       filters:
         - filtertype: pattern
           kind: prefix
@@ -108,6 +109,7 @@ profile::opensearch::logstash::curator_jobs:
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
         - filtertype: pattern
           kind: prefix
@@ -124,10 +126,11 @@ profile::opensearch::logstash::curator_jobs:
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
         - filtertype: pattern
-          kind: regex
-          value: '^ecs-(1.7.0-\d\d?-default|default-1)-.*$'
+          kind: prefix
+          value: 'ecs-default-1-'
         - filtertype: age
           source: name
           direction: older
@@ -140,10 +143,11 @@ profile::opensearch::logstash::curator_jobs:
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
         - filtertype: pattern
-          kind: regex
-          value: '^ecs-(1.7.0-\d\d?-test|test-1)-.*$'
+          kind: prefix
+          value: 'ecs-test-1-'
         - filtertype: age
           source: name
           direction: older
@@ -156,6 +160,7 @@ profile::opensearch::logstash::curator_jobs:
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
         - filtertype: pattern
           kind: regex
@@ -168,35 +173,126 @@ profile::opensearch::logstash::curator_jobs:
           unit_count: 2
 
     '06':
+      description: 'ecs-alerts-2: delete older than 5 years'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-alerts-2-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y'
+          unit: years
+          # count of 6 to inclusively retain the last calendar day minus five years.
+          # ( e.g. 2024(deleted 2030-01-01), 2025, 2026, 2027, 2028, 2029, 2030(current year index) )
+          unit_count: 6
+
+    '07':
       description: 'w3creportingapi-1.0.0: delete older than 2 weeks'
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
         - filtertype: pattern
-          kind: regex
-          value: '^w3creportingapi-.*$'
+          kind: prefix
+          value: 'w3creportingapi-default-'
         - filtertype: age
           source: name
           direction: older
           timestring: '%Y.%W'
           unit: weeks
           unit_count: 2
-    '07':
+
+    '08':
+      description: 'ecs-probes-1: delete monitoring probes logs older than 10 days'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-probes-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 10
+
+    '09':
       description: 'ecs-mediawiki policy rev 1: delete older than 2 weeks'
       action: delete_indices
       options:
         ignore_empty_list: true
+        timeout_override: 120
       filters:
-      - filtertype: pattern
-        kind: regex
-        value: "^ecs-(1.7.0-\\d\\d?-mediawiki|mediawiki-1)-.*$"
-      - filtertype: age
-        source: name
-        direction: older
-        timestring: "%Y.%W"
-        unit: weeks
-        unit_count: 2
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-mediawiki-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%W'
+          unit: weeks
+          unit_count: 2
+
+    '10':
+      description: 'jaeger: delete older than 32 days'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: regex
+          value: '^jaeger-(service|span)-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 32
+
+    '11':
+      description: 'thumbor: delete older than 7 days'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-thumbor-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 7
+
+    '12':
+      description: 'ecs-k8s policy rev 1: delete older than 2 weeks'
+      action: delete_indices
+      options:
+        ignore_empty_list: true
+        timeout_override: 120
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'ecs-k8s-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%W'
+          unit: weeks
+          unit_count: 2
+
     '20':
       description: 'all: after 1 days set number of replicas to 0'
       action: replicas
@@ -212,6 +308,40 @@ profile::opensearch::logstash::curator_jobs:
         - filtertype: age
           source: creation_date
           direction: older
+          unit: days
+          unit_count: 1
+
+    '21':
+      description: 'logstash-webrequest-1: after 1 day set number of replicas to 1'
+      action: replicas
+      options:
+        count: 1
+        ignore_empty_list: true
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-webrequest-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
+          unit: days
+          unit_count: 1
+
+    '22':
+      description: 'logstash-thumbor-1: after 1 day set number of replicas to 1'
+      action: replicas
+      options:
+        count: 1
+        ignore_empty_list: true
+      filters:
+        - filtertype: pattern
+          kind: prefix
+          value: 'logstash-thumbor-1-'
+        - filtertype: age
+          source: name
+          direction: older
+          timestring: '%Y.%m.%d'
           unit: days
           unit_count: 1
 
@@ -240,18 +370,18 @@ profile::opensearch::logstash::curator_jobs:
           unit: days
           unit_count: 7
 
-    # forceMerge "logstash-" prefixed indices older than 2 days (based on index creation_date) to 1 segments per shard.
+    # forceMerge older indices (based on index creation_date) to 1 segments per shard.
     # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
-    # This action will ignore indices already forceMerged to the same or fewer number of segments per shard,
-    # so the 'forcemerged' filter is unneeded.
     '90':
-      description: 'all: forcemerge indexes older than 2 days'
+      description: 'all: forcemerge older indexes'
       action: forcemerge
       options:
         max_num_segments: 1
         delay: 120
         continue_if_exception: false
       filters:
+        - filtertype: forcemerged
+          max_num_segments: 1
         - filtertype: pattern
           kind: regex
           exclude: true  # exclude special indexes

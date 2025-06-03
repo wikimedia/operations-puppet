@@ -333,7 +333,6 @@ profile::opensearch::logstash::curator_jobs:
 
     # forceMerge older indices (based on index creation_date) to 1 segments per shard.
     # Delay 120 seconds between each forceMerge operation to allow the cluster to quiesce.
-
     '90':
       description: 'all: forcemerge older indexes'
       action: forcemerge
