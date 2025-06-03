@@ -12,7 +12,7 @@ from shutil import chown
 from typing import Optional, Union
 
 import requests
-from requests.exceptions import JSONDecodeError, RequestException
+from requests.exceptions import RequestException
 
 # provided by python3-jsonschema
 from jsonschema import validate, ValidationError
@@ -54,7 +54,11 @@ def fetch_config(url: str, timeout: float) -> Optional[str]:
     # validate(r.json(), json.loads(read_file(SCHEMA_PATH, catch_exceptions=False)))
     try:
         validate(r.json(), json.loads(SCHEMA))
-    except (JSONDecodeError, ValidationError):
+    except ValidationError:
+        print(f"JSON doesn't match the schema: {r.text}")
+        return None
+    except Exception:  # use requests.exception.JSONDecodeError when requests 2.27 is available
+        print(f'Invalid payload received: {r.text}')
         return None
 
     return r.text
