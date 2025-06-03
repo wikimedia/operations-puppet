@@ -7539,3 +7539,9 @@ ldap_only_users:
     ensure: present
     realname: Eric Mill
     email: ericmill@wikimedia.org
+  llugo:
+    ensure: present
+    realname: Luz Lugo
+    email: llugo-ctr@wikimedia.org
+    expiry_date: "2026-01-31"
+    expiry_contact: nisrael@wikimedia.org
