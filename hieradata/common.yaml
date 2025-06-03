@@ -1500,6 +1500,8 @@ bastion_hosts:
 - 2a02:ec80:600:1:185:15:58:6    # bast6003.wikimedia.org
 - 195.200.68.38                  # bast7001.wikimedia.org
 - 2a02:ec80:700:2:195:200:68:38  # bast7001.wikimedia.org
+- 195.200.68.99                  # bast7002.wikimedia.org
+- 2a02:ec80:700:3:195:200:68:99  # bast7002.wikimedia.org
 
 cache_hosts:
 - 10.64.0.79                     # cp1100.eqiad.wmnet
