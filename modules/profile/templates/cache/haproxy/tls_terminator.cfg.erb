@@ -114,9 +114,7 @@ listen tls
 <%- end -%>
 
     # Allowlist ACLs
-<%- if @wikimedia_trust -%>
     acl wikimedia_trust src <%= @wikimedia_trust.join(' ') %>
-<%- end -%>
 
     # ACLs
     acl too_many_concurrent_queries sc0_trackers(httpreqrate) ge 500
@@ -208,9 +206,7 @@ listen tls
     # If this also fails, we have no information on the request and we'll set
     # * net=unknown
     # We only set the variable once
-    <%- if @wikimedia_trust -%>
     http-request set-var(req.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
-    <%- end -%>
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
     http-request set-var(req.provenance,ifnotexists) str('net=internal') if is_private_network
     # check if the IP is included in one of our ipblocks
@@ -232,21 +228,7 @@ listen tls
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
-    <%- if @wikimedia_trust %>
     use_backend requestctl_filters if !wikimedia_trust
-    <%- else %>
-    {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
-    {{- if not (exists $path) }}
-    {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
-    {{- end }}
-
-    {{ if exists $path }}
-    # REQUESTCTL FILTERS
-    {{ $value := json (getv $path) }}{{ range split $value.dsl "\n" }}
-    {{ . }}
-    {{- end }}
-    {{- end }}
-    <%- end %>
 <%- end -%>
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>

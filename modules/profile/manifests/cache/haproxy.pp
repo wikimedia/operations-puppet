@@ -206,7 +206,12 @@ class profile::cache::haproxy (
         content => file('profile/cache/haproxy-tls.lua'),
     }
 
-    $wikimedia_trust = $profile::cache::base::wikimedia_trust
+    # Networks we trust and will bypass most filters
+    if $profile::cache::base::wikimedia_trust {
+        $wikimedia_trust = $profile::cache::base::wikimedia_trust
+    } else {
+        $wikimedia_trust = ['127.0.0.1/8', '::1']
+    }
     $crt_list_path = '/etc/haproxy/crt-list.cfg'
     $hc_sources_file_path = '/etc/haproxy/allowed-hc-sources.lst'
 
