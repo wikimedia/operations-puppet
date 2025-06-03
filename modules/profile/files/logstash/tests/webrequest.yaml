@@ -133,7 +133,7 @@ testcases:
   - input:
       - >
         {
-          "hostname":"cp0000.eqiad.wmnet",
+          "hostname":"cp1000.eqiad.wmnet",
           "sequence":14608368068,
           "dt":"2023-04-19T22:19:22Z",
           "time_firstbyte":0.000308,
@@ -159,7 +159,7 @@ testcases:
     expected:
       - __target_index: "ecs-default-1-1.11.0-N-weekly"
         host:
-          name: "cp0000.eqiad.wmnet"
+          name: "cp1000.eqiad.wmnet"
         labels:
           channel: "webrequest"
           range: "-"
@@ -212,7 +212,7 @@ testcases:
           version: "1.7.0"
 
       - __target_index: "logstash-default-1-1.0.0-N-daily"
-        host: "cp0000.eqiad.wmnet"
+        host: "cp1000.eqiad.wmnet"
         sequence: 14608368068
         dt: "2023-04-19T22:19:22Z"
         time_firstbyte: 0.000308
