@@ -748,14 +748,23 @@ def main() -> int:
             )
 
         # This will include private and deleted dbs at this stage
-        all_available_dbs = []
+        dbs_per_instance: dict[str, set[str]] = {}
+        all_available_dbs: set[str] = set()
         for inst in config["mysql_instances"]:
-            all_available_dbs.extend(read_dblist(inst, args.mediawiki_config))
+            instance_dbs = set()
+            if inst in config["manual_dbs"].keys():
+                instance_dbs.update(config["manual_dbs"][inst])
+            else:
+                instance_dbs.update(read_dblist(inst, args.mediawiki_config))
+
             if inst in config["add_to_all_dbs"].keys():
-                all_available_dbs.extend(config["add_to_all_dbs"][inst])
+                instance_dbs.update(config["add_to_all_dbs"][inst])
+
+            dbs_per_instance[inst] = instance_dbs
+            all_available_dbs |= instance_dbs
 
         # argparse will ensure we are declaring explicitly
-        dbs = all_available_dbs
+        dbs = list(all_available_dbs)
         if args.databases:
             dbs = [db for db in args.databases if db in all_available_dbs]
 
@@ -784,12 +793,7 @@ def main() -> int:
         # At this point we are on a multi-instance replica
         dbs_in_scope = set(dbs_with_metadata.keys())
         for inst in config["mysql_instances"]:
-            dbs_for_section = read_dblist(inst, args.mediawiki_config)
-            if inst in config["add_to_all_dbs"].keys():
-                dbs_for_section.extend(config["add_to_all_dbs"][inst])
-
-            dbs_in_section = set(dbs_for_section)
-            instance_dbs = dbs_in_scope.intersection(dbs_in_section)
+            instance_dbs = dbs_in_scope.intersection(dbs_per_instance[inst])
             instance_dbs_with_metadata = {
                 db: meta for (db, meta) in dbs_with_metadata.items() if db in instance_dbs
             }

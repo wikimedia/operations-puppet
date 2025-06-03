@@ -10,6 +10,13 @@ mysql_instances:
   - all
 <%- end -%>
 
+# Databases for sections that do not have a per-section dblist available.
+manual_dbs:
+  x3:
+    - wikidatawiki
+
+# Databases that are not listed in section dblists but exist in sections that
+# usually use dblists.
 add_to_all_dbs:
   s7:
     - centralauth
