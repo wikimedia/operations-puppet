@@ -72,23 +72,19 @@ define profile::mediawiki::sharded_periodic_job(
             $kubernetes = $shard in $kubernetes_shards
         }
 
-        $command = $foreachwiki_ignore_errors ? {
-            true  => "FOREACHWIKI_IGNORE_ERRORS=1 /usr/local/bin/mwscriptwikiset ${script}",
-            false => "/usr/local/bin/mwscriptwikiset ${script}",
-        }
-
         profile::mediawiki::periodic_job { "${title}_${shard}":
-            ensure                  => $ensure,
-            kubernetes              => $kubernetes,
-            command                 => $command,
-            interval                => $interval,
-            splay                   => $splay,
-            cron_schedule           => $cron_schedule,
-            script_label            => $script_label,
-            team                    => $team,
-            description             => "${real_description} in ${real_shard}",
-            helmfile_defaults_dir   => $helmfile_defaults_dir,
-            ttlsecondsafterfinished => $ttlsecondsafterfinished,
+            ensure                    => $ensure,
+            kubernetes                => $kubernetes,
+            command                   => "/usr/local/bin/mwscriptwikiset ${script}",
+            interval                  => $interval,
+            splay                     => $splay,
+            cron_schedule             => $cron_schedule,
+            script_label              => $script_label,
+            team                      => $team,
+            description               => "${real_description} in ${real_shard}",
+            helmfile_defaults_dir     => $helmfile_defaults_dir,
+            ttlsecondsafterfinished   => $ttlsecondsafterfinished,
+            foreachwiki_ignore_errors => $foreachwiki_ignore_errors,
         }
     }
 

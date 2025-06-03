@@ -44,6 +44,9 @@
 # [*concurrency_policy*] A kubernetes policy for what happens to jobs that run concurrently/overlap. Default is undef, which implies "Replace" in the chart
 #
 # [*startingdeadlineseconds*] Defines a deadline in whole seconds for starting the Job if the exact timer is missed. Default: undef
+#
+# [*foreachwiki_ignore_errors*] Continue with the next wiki in the loop on error (kubernetes only). Default: false
+
 
 define profile::mediawiki::periodic_job(
     String $command,
@@ -63,13 +66,18 @@ define profile::mediawiki::periodic_job(
     Optional[String] $migration_title = undef,
     Optional[Enum['Allow','Forbid','Replace']] $concurrency_policy = undef,
     Optional[Integer] $startingdeadlineseconds = undef,
+    Optional[Boolean] $foreachwiki_ignore_errors = false,
 ) {
 
     if $::_role == 'deployment_server/kubernetes' {
         if $kubernetes {
+            $real_command = $foreachwiki_ignore_errors ? {
+                true  => "FOREACHWIKI_IGNORE_ERRORS=1 ${command}",
+                false => $command,
+            }
             profile::mediawiki::periodic_job::kubernetes { $title:
                 ensure                  => $ensure,
-                command                 => $command,
+                command                 => $real_command,
                 cron_schedule           => $cron_schedule,
                 splay                   => $splay,
                 script_label            => $script_label,
