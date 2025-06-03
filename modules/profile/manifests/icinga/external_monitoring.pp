@@ -32,13 +32,15 @@ class profile::icinga::external_monitoring (
         content  => template('profile/icinga/external_monitoring.conf.erb'),
     }
     monitoring::service {"https-${vhost}-unauthorized":
-        description   => "${vhost} requires authentication",
-        check_command => "check_https_unauthorized!${vhost}!/cgi-bin/icinga/extinfo.cgi?type=0!403",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
+        description    => "${vhost} requires authentication",
+        check_command  => "check_https_unauthorized!${vhost}!/cgi-bin/icinga/extinfo.cgi?type=0!403",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
+        migration_task => 'T367065',
     }
     monitoring::service {"https-${vhost}-expiry":
-        description   => "${vhost} SSL Expiry",
-        check_command => "check_https_expiry!${vhost}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
+        description    => "${vhost} SSL Expiry",
+        check_command  => "check_https_expiry!${vhost}!443",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/https_unauthorized',
+        migration_task => 'T367065',
     }
 }

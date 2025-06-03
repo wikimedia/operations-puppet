@@ -122,14 +122,16 @@ define profile::idp::client::httpd::site (
 
     if $enable_monitor {
         monitoring::service {"https-${title}-unauthorized":
-            description   => "${title} requires authentication",
-            check_command => "check_https_sso_redirect!${title}!${protected_uri}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+            description    => "${title} requires authentication",
+            check_command  => "check_https_sso_redirect!${title}!${protected_uri}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+            migration_task => 'T367065',
         }
         monitoring::service {"https-${title}-expiry":
-            description   => "${title} tls expiry",
-            check_command => "check_https_expiry!${title}!443",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+            description    => "${title} tls expiry",
+            check_command  => "check_https_expiry!${title}!443",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/CAS-SSO/Administration',
+            migration_task => 'T367065',
         }
     }
 }
