@@ -266,23 +266,25 @@ define varnish::instance(
     if $listen_uds and $enable_monitoring {
         $listen_uds.each |Stdlib::Unixpath $uds_path| {
             nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${uds_path}":
-                ensure       => present,
-                description  => "Check Varnish UDS ${uds_path}",
-                nrpe_command => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${uds_path}",
-                sudo_user    => 'root',
-                notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
-                require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+                ensure         => present,
+                description    => "Check Varnish UDS ${uds_path}",
+                nrpe_command   => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${uds_path}",
+                sudo_user      => 'root',
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Varnish',
+                require        => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+                migration_task => 'T385587',
             }
         }
     }
 
     if $privileged_uds and $enable_monitoring {
         nrpe::monitor_service { "check-varnish-uds${instancesuffix}-${privileged_uds}":
-            ensure       => present,
-            description  => "Check Varnish privileged UDS ${privileged_uds}",
-            nrpe_command => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${privileged_uds}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Varnish',
-            require      => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+            ensure         => present,
+            description    => "Check Varnish privileged UDS ${privileged_uds}",
+            nrpe_command   => "/usr/local/lib/nagios/plugins/check_varnish_uds --socket ${privileged_uds}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Varnish',
+            require        => File['/usr/local/lib/nagios/plugins/check_varnish_uds'],
+            migration_task => 'T385587',
         }
     }
 }

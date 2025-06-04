@@ -42,8 +42,9 @@ define profile::trafficserver::logs(
     # Icinga check to ensure we are not skipping logs due to lack of buffer
     # space - T237608
     nrpe::monitor_service { "${service_name}_skipped_logs":
-        description  => "Logs skipped by ${service_name}",
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_journal_pattern '1 hour ago' 'NOTE: Skipping the current log entry for ' ${service_name}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
+        description    => "Logs skipped by ${service_name}",
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_journal_pattern '1 hour ago' 'NOTE: Skipping the current log entry for ' ${service_name}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/ATS',
+        migration_task => 'T385587',
     }
 }

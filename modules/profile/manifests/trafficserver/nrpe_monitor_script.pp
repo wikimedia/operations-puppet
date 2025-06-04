@@ -20,6 +20,9 @@
 # [*args*]
 #   Optional arguments to pass to the script.
 #
+# [*migration_task*]
+#   Used to track the icinga to prometheus migration task (temporary)
+#
 define profile::trafficserver::nrpe_monitor_script(
     String $sudo_user,
     Wmflib::Ensure $ensure = present,
@@ -27,6 +30,7 @@ define profile::trafficserver::nrpe_monitor_script(
     Enum['sh', 'py'] $extension = 'sh',
     Integer $timeout = 30,
     String $args = '',
+    String $migration_task = 'T385587',
 ){
     $full_path = "/usr/local/lib/nagios/plugins/${checkname}"
 
@@ -45,12 +49,13 @@ define profile::trafficserver::nrpe_monitor_script(
     }
 
     nrpe::monitor_service { $title:
-        ensure       => $ensure,
-        description  => $title,
-        nrpe_command => "${full_path} ${args}",
-        sudo_user    => $sudo_user,
-        require      => File[$full_path],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
-        timeout      => $timeout,
+        ensure         => $ensure,
+        description    => $title,
+        nrpe_command   => "${full_path} ${args}",
+        sudo_user      => $sudo_user,
+        require        => File[$full_path],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        timeout        => $timeout,
+        migration_task => $migration_task,
     }
 }

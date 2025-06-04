@@ -66,9 +66,10 @@ class profile::trafficserver::backend (
 
     if $monitor_enable {
         nrpe::monitor_service { 'default_ats_lua_conf':
-            description  => 'Default ATS Lua configuration file',
-            nrpe_command => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/ATS',
+            description    => 'Default ATS Lua configuration file',
+            nrpe_command   => '/usr/local/lib/nagios/plugins/check_default_ats_lua_conf',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/ATS',
+            migration_task => 'T385587',
         }
     }
 

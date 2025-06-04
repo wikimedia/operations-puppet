@@ -35,17 +35,19 @@ define profile::trafficserver::monitoring(
     }
 
     nrpe::monitor_service { "traffic_manager_${instance_name}":
-        description  => "Ensure traffic_manager is running for instance ${instance_name}",
-        nrpe_command => $traffic_manager_nrpe_command,
-        require      => Trafficserver::Instance[$instance_name],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        description    => "Ensure traffic_manager is running for instance ${instance_name}",
+        nrpe_command   => $traffic_manager_nrpe_command,
+        require        => Trafficserver::Instance[$instance_name],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        migration_task => 'T385587',
     }
 
     nrpe::monitor_service { "traffic_server_${instance_name}":
-        description  => "Ensure traffic_server is running for instance ${instance_name}",
-        nrpe_command => $traffic_server_nrpe_command,
-        require      => Trafficserver::Instance[$instance_name],
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        description    => "Ensure traffic_server is running for instance ${instance_name}",
+        nrpe_command   => $traffic_server_nrpe_command,
+        require        => Trafficserver::Instance[$instance_name],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        migration_task => 'T385587',
     }
 
     nrpe::monitor_service { "trafficserver_exporter_${instance_name}":
@@ -64,10 +66,11 @@ define profile::trafficserver::monitoring(
     }
 
     monitoring::service { "traffic_manager_${instance_name}_check_http":
-        description   => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",
-        check_command => "${traffic_manager_http_check}!localhost!${port}!/_stats",
-        require       => Prometheus::Trafficserver_exporter["trafficserver_exporter_${instance_name}"],
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        description    => "Ensure traffic_manager binds on ${port} and responds to HTTP requests",
+        check_command  => "${traffic_manager_http_check}!localhost!${port}!/_stats",
+        require        => Prometheus::Trafficserver_exporter["trafficserver_exporter_${instance_name}"],
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Apache_Traffic_Server',
+        migration_task => 'T385587',
     }
 
     profile::trafficserver::nrpe_monitor_script { "check_trafficserver_${instance_name}_config_status":
