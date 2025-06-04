@@ -17,6 +17,9 @@ class profile::analytics::cluster::packages::common {
     # Install MaxMind databases for geocoding UDFs
     class { '::geoip': }
 
+    # Install the ua-parser updated regexes.yaml file
+    class { 'ua_parser': }
+
     # Need R for Spark2R.
     class { '::r_lang': }
 
