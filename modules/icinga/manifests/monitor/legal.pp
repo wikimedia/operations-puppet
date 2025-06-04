@@ -22,6 +22,7 @@ class icinga::monitor::legal {
         retry_interval => 30,
         contact_group  => 'admins,legal',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Check_legal_html',
+        migration_task => 'T384303',
     }
 
     monitoring::service { 'en.m.wp.o-legal-html':
@@ -32,6 +33,7 @@ class icinga::monitor::legal {
         retry_interval => 30,
         contact_group  => 'admins,legal',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Check_legal_html',
+        migration_task => 'T384303',
     }
 
     monitoring::service { 'en.wb.o-legal-html':
@@ -42,5 +44,6 @@ class icinga::monitor::legal {
         retry_interval => 30,
         contact_group  => 'admins,legal',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Check_legal_html',
+        migration_task => 'T384303',
     }
 }
