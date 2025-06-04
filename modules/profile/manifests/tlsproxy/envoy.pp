@@ -230,7 +230,7 @@ class profile::tlsproxy::envoy(
     if $ensure == 'present' {
 
         $retry_policy = $retries ? {
-            true    => {'num_retries' => 1},
+            true    => {'num_retries' => 1, 'retry_on' => 'connect-failure'},
             default => {'num_retries' => 0},
         }
 
