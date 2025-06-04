@@ -14,7 +14,7 @@
 # @param fe_transient_gb Amount of Transient=malloc to configure in GB
 # @param separate_vcl list of addtional VCLs
 # @param has_lvs Indicate of cache is behind LVS
-# @param single_backend Feature flag to use only the host-local ats-be
+# @param single_backend Feature flag to use only the host-local ats-be (codfw/drmrs only)
 # @param listen_uds list of uds for varnish
 # @param uds_owner The owner of the uds sockets
 # @param uds_group The group of the uds sockets
@@ -223,11 +223,16 @@ class profile::cache::varnish::frontend (
 
     $separate_vcl_frontend = $separate_vcl.map |$vcl| { "${vcl}-frontend" }
 
-    # Single-backend nodes (only those with the new 6.4TB NVMe)
+    # Single-backend nodes (Only codfw/drmrs can disable; All other DCs
+    # forcibly use single_backend and cannot be adjusted due to ats-be
+    # no longer being available as a confd service).
     if $single_backend {
         $backend_caches = [ $facts['networking']['fqdn'] ]
         $etcd_backends = false
     } else {
+        unless $::site =~ /^(codfw|drmrs)$/ {
+            warning('Only codfw/drmrs can have single-backend CDN disabled')
+        }
         $backend_caches = $cache_nodes[$cache_cluster][$::site]
         $etcd_backends = $backends_in_etcd
     }

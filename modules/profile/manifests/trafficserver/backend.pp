@@ -33,6 +33,7 @@ class profile::trafficserver::backend (
     Stdlib::Unixpath                          $trusted_ca_path          = lookup('profile::trafficserver::backend::trusted_ca_path'),
     Boolean                                   $monitor_enable           = lookup('profile::trafficserver::backend::monitor_enable'),
     Integer[1]                                $cache_volumes            = lookup('profile::trafficserver::backend::cache_volumes', {default_value => 1}),
+    Boolean                                   $single_backend           = lookup('profile::trafficserver::backend::single_backend', {default_value => true}),
 ){
     $global_lua_script = $default_lua_script? {
         ''      => '',
@@ -83,7 +84,12 @@ class profile::trafficserver::backend (
 
     $default_instance = true
     $instance_name = 'backend'
-    $conftool_service = 'ats-be'
+    # conftool_service should be cdn for single backend; ats-be otherwise
+    # (codfw/drmrs).
+    $conftool_service = $single_backend ? {
+        true  => 'cdn',
+        false => 'ats-be',
+    }
     $paths = trafficserver::get_paths($default_instance, 'backend')
 
     trafficserver::instance { $instance_name:
