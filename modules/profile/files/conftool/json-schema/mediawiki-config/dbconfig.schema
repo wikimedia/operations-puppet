@@ -7,7 +7,7 @@
             "patternProperties": {
                 "DEFAULT": {"type": "string"},
                 "^s[124-8]$": {"type": "string"},
-                "^s1[01]$": {"type": "string"}
+                "^es[67]$": {"type": "string"}
             },
             "additionalProperties": false
         },
