@@ -1,1 +1,1 @@
-mariadb::package: 'wmf-mariadb106'
+mariadb::package: 'wmf-mariadb1011'
