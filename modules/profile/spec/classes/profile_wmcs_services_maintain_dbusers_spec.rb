@@ -10,7 +10,9 @@ describe "profile::wmcs::services::maintain_dbusers" do
           "s1" => 3312,
         },
         "mysql_variances" => {
-          "s12345" => 45,
+          "s12345" => {
+            "max_connections" => 45,
+          },
         },
         "paws_replica_cnf_user" => "paws_user",
         "paws_replica_cnf_htpassword" => "paws_pass",
