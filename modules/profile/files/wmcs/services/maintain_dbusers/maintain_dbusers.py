@@ -593,13 +593,13 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                         try:
                             show_grants_sql_str = (
                                 """
-                                SHOW GRANTS FOR '{mysql_username}'@'%%';
+                                SHOW GRANTS FOR '{mysql_username}'@'%';
                                 """
                             ).format(mysql_username=row["mysql_username"])
                             cloud_db_cur.execute(show_grants_sql_str)
                             cloud_db_cur.fetchone()
                             status = "present"
-                        except pymysql.err.InternalError as err:
+                        except pymysql.err.OperationalError as err:
                             # Error code for when no grants exist for user
                             if err.args[0] != 1141:
                                 raise
@@ -906,7 +906,7 @@ def _create_user_on_cloud_db(
                 dry_run=dry_run,
                 cloud_db_cur=cloud_db_cur,
             )
-        except pymysql.err.InternalError as err:
+        except pymysql.err.OperationalError as err:
             # When on a "legacy" server, it is possible
             # there is an old account that will need cleanup
             # before we create it anew.
