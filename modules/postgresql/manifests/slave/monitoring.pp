@@ -18,10 +18,11 @@ class postgresql::slave::monitoring(
 --warning=${warning} --critical=${critical}"
 
     nrpe::monitor_service { 'postgres-rep-lag':
-        description  => $description,
-        nrpe_command => $icinga_command,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Postgres#Monitoring',
-        retries      => $retries,
+        description    => $description,
+        nrpe_command   => $icinga_command,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Postgres#Monitoring',
+        retries        => $retries,
+        migration_task => 'T374839',
     }
 
 }
