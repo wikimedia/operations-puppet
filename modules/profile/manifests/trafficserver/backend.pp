@@ -157,6 +157,11 @@ class profile::trafficserver::backend (
         config    => 'puppet:///modules/profile/trafficserver/gateway-check.lua.conf',
     }
 
+    trafficserver::lua_script { 'rb-mw-mangling-beta':
+        ensure => stdlib::ensure($::realm == 'labs'),
+        source => 'puppet:///modules/profile/trafficserver/rb-mw-mangling-beta.lua',
+    }
+
     if $monitor_enable {
         # Monitoring
         profile::trafficserver::monitoring { "trafficserver_${instance_name}_monitoring":
