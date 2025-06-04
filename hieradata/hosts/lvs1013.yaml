@@ -3,4 +3,4 @@ profile::lvs::interface_tweaks:
     txqlen: 10000
 profile::liberica::bgp_config:
   communities:
-    - "14907:0" # lowest BGP priority, depooled for T395228
+    - "14907:11"
