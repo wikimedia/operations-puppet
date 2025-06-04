@@ -97,7 +97,7 @@ class profile::kubernetes::mediawiki_runner(
     # as it is strictly for mw-experimental
 
     if $is_mw_experimental {
-
+        require profile::mediawiki::system_users
         # Taken from mediawiki::scap class
         $mediawiki_deployment_dir = '/srv/mediawiki'
 
