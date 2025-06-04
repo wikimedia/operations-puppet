@@ -346,7 +346,7 @@ groups:
   contint-roots:
     gid: 720
     description: users who have full root on jenkins servers
-    members: &contint_roots_members [*releng_members, jforrester, bd808]
+    members: &contint_roots_members [*releng_members, jforrester, bd808, corvus]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Tyler Cipriani
@@ -6697,6 +6697,16 @@ users:
     uid: 17901
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  corvus:
+    ensure: present
+    realname: James Blair
+    email: jim@acmegating.com
+    expiry_date: "2025-06-30"
+    expiry_contact: tcipriani@wikimedia.org
+    uid: 3150
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2sHwbOOa4DxGlasYNF7A4qb4rsD3lOY1vRIycOn9Ou corvus@fuligin
 
 ldap_only_users:
   adavenport:
