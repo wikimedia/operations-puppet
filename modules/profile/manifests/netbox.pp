@@ -320,12 +320,14 @@ class profile::netbox (
                 check_interval => $report['check_interval'],
                 notes_url      => "https://netbox.wikimedia.org/extras/scripts/${reportid}/",
                 contact_group  => 'team-dcops',
+                migration_task => 'T374823',
             }
         }
         else {
             nrpe::monitor_service { "check_netbox_${repname}":
-                ensure    => absent,
-                notes_url => 'https://wikitech.wikimedia.org/wiki/Netbox#Report_Alert',
+                ensure         => absent,
+                notes_url      => 'https://wikitech.wikimedia.org/wiki/Netbox#Report_Alert',
+                migration_task => 'T374823',
             }
         }
         # This definitely should only be on one of the frontends
