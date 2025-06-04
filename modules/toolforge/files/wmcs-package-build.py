@@ -93,7 +93,7 @@ def parse_args():
            Defaults to "%(default)s"
            """
     parser.add_argument(
-        "--aptly-host", default="tools-services-05.tools.eqiad1.wikimedia.cloud", help=help
+        "--aptly-host", default="tools-services-06.tools.eqiad1.wikimedia.cloud", help=help
     )
     help = """If this option is present, this script won't backup aptly data
            over NFS
