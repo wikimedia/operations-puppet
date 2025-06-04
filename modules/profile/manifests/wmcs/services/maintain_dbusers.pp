@@ -8,7 +8,7 @@
 class profile::wmcs::services::maintain_dbusers (
     Hash                                                    $labsldapconfig               = lookup('labsldapconfig', {'merge' => hash}),
     Hash                                                    $ldap                         = lookup('ldap', {'merge' => hash}),
-    Hash[Profile::Mariadb::Valid_section, Stdlib::Port]     $section_ports                = lookup('profile::mariadb::section_ports'),
+    Hash[String[1], Stdlib::Port]                           $section_ports                = lookup('profile::mariadb::section_ports'),
     Hash[String[1], Hash[Enum['max_connections'], Integer]] $mysql_variances              = lookup('profile::wmcs::services::maintain_dbusers::mysql_variances'),
     String[1]                                               $paws_replica_cnf_user        = lookup('profile::wmcs::services::maintain_dbusers::paws_replica_cnf_user'),
     String[1]                                               $paws_replica_cnf_htpassword  = lookup('profile::wmcs::services::maintain_dbusers::paws_replica_cnf_htpassword'),
