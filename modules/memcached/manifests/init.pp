@@ -197,15 +197,17 @@ class memcached(
     # Prefer a direct check if memcached is not running on localhost.
     } elsif $ip == '127.0.0.1' {
         nrpe::monitor_service { 'memcached':
-            description  => 'Memcached',
-            nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
-            notes_url    => 'https://wikitech.wikimedia.org/wiki/Memcached',
+            description    => 'Memcached',
+            nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H ${ip} -p ${port}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
+            migration_task => 'T384305',
         }
     } else {
         monitoring::service { 'memcached':
-            description   => 'Memcached',
-            check_command => "check_tcp!${port}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Memcached',
+            description    => 'Memcached',
+            check_command  => "check_tcp!${port}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Memcached',
+            migration_task => 'T384305',
         }
     }
 
