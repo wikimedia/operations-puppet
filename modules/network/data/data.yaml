@@ -591,6 +591,9 @@ network::subnets:
           ipv4: 172.16.0.0/21
         cloud-instances-vxlan-v4only-eqiad:
           ipv4: 172.16.8.0/21
+        cloud-instances-octavia-lb-mgmt-net-eqiad1:
+          ipv4: 172.16.24.0/24
+          ipv6: 2a02:ec80:a000:100::/64
         cloud-instances-vxlan-dualstack-eqiad:
           ipv4: 172.16.16.0/21
           ipv6: 2a02:ec80:a000:1::/64
@@ -624,7 +627,7 @@ network::subnets:
           ipv6: 2a02:ec80:a100:1::/64
         cloud-instances-vxlan-ipv4-only-codfw:
           ipv4: 172.16.130.0/24
-        cloud-instances-octavia-lb-mgmt-net:
+        cloud-instances-octavia-lb-mgmt-net-codfw1dev:
           ipv4: 172.16.131.0/24
           ipv6: 2a02:ec80:a100:100::/64
         cloud-private-b1-codfw:
