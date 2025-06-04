@@ -1631,6 +1631,10 @@ node /^install7001\.wikimedia\./ {
     role(installserver)
 }
 
+node /^install7002\.wikimedia\./ {
+    role(insetup::infrastructure_foundations_ferm)
+}
+
 # new alert (icinga + alertmanager) systems, replacing icinga[12]001 (T370111, T370112)
 node /^alert[12]002\.wikimedia\./ {
     role(alerting_host)
@@ -2226,12 +2230,12 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
-node /^ncredir[1-9][0-9]{3}\./ {
-    role(ncredir)
+node /^ncredir700[34]\.magru\./ {
+    role(insetup::traffic_ferm)
 }
 
-node /^ncredir7003\.magru\./ {
-    role(insetup::traffic_ferm)
+node /^ncredir[1-9][0-9]{3}\./ {
+    role(ncredir)
 }
 
 node /^netbox[12]00[0-9]\.(eqiad|codfw)\./ {
@@ -2248,6 +2252,10 @@ node /^netbox-dev[12]00[0-9]\.(eqiad|codfw)\./ {
 
 node /^netmon[0-9]{4}\.wikimedia\./ {
     role(netmon)
+}
+
+node /^netflow7002\.magru\./ {
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 # Network insights (netflow/pmacct, etc.)
