@@ -53,11 +53,12 @@ define facilities::monitor_pdu_service(
     $snmp_community =  $passwords::network::snmp_ro_community
 
     @monitoring::service { $title:
-        host          => $host,
-        group         => 'pdus',
-        description   => $title,
-        check_command => "check_snmp_generic!${snmp_community}!${oid}!${title}!${warn_hi}!${crit_hi}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
+        host           => $host,
+        group          => 'pdus',
+        description    => $title,
+        check_command  => "check_snmp_generic!${snmp_community}!${oid}!${title}!${warn_hi}!${crit_hi}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Dc-operations/Hardware_Troubleshooting_Runbook',
+        migration_task => 'T375166',
     }
 
 }
