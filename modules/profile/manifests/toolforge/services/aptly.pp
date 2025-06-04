@@ -1,5 +1,7 @@
-class profile::toolforge::services::aptly(
-) {
+class profile::toolforge::services::aptly () {
+    # wmcs-package-build uses this to "back up" aptly contents to NFS
+    ensure_packages(['rsync'])
+
     aptly::repo { 'bookworm-tools':
         publish => true,
     }
