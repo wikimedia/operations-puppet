@@ -72,6 +72,8 @@ identity:validate_token: rule:admin_required or (role:reader and system_scope:al
 
 # These are custom rules added by WMF to manage the member
 #  panel in Horizon
+# The toggle_projectadmin name refers to granting 'member' role to a
+#  user with 'reader', or stripping 'member' from a user.
 members:grant_membership: rule:admin_or_owner
 members:revoke_membership: rule:admin_or_owner
-members:toggle_member: rule:admin_or_owner
+members:toggle_projectadmin: rule:admin_or_owner

@@ -78,6 +78,8 @@ identity:validate_token: rule:service_admin_or_keystone_validate_or_token_subjec
 
 # These are custom rules added by WMF to manage the member
 #  panel in Horizon
+# The toggle_projectadmin name refers to granting 'member' role to a
+#  user with 'reader', or stripping 'member' from a user.
 members:grant_membership: rule:admin_or_member
 members:revoke_membership: rule:admin_or_member
-members:toggle_member: rule:admin_or_member
+members:toggle_projectadmin: rule:admin_or_member
