@@ -1723,10 +1723,6 @@ node /^miscweb[12]003\.(eqiad|codfw)\./ {
     role(miscweb)
 }
 
-node /^krb1001\.eqiad\./ {
-    role(insetup::infrastructure_foundations_ferm)
-}
-
 node /^krb1002\.eqiad\./ {
     role(kerberos::kdc)
 }
