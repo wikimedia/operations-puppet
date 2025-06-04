@@ -5,25 +5,28 @@ class profile::lists::monitoring (
     Stdlib::Unixpath $mailman_root = lookup('profile::lists::mailman_root', default_value => '/var/lib/mailman3')
 ) {
     monitoring::service { 'smtp':
-        ensure        => $ensure,
-        description   => 'Exim SMTP',
-        check_command => 'check_smtp_tls_le',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Exim',
+        ensure         => $ensure,
+        description    => 'Exim SMTP',
+        check_command  => 'check_smtp_tls_le',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Exim',
+        migration_task => 'T370157',
     }
 
     monitoring::service { 'https':
-        ensure        => $ensure,
-        description   => 'HTTPS',
-        check_command => "check_ssl_http_letsencrypt!${lists_servername}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'HTTPS',
+        check_command  => "check_ssl_http_letsencrypt!${lists_servername}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
 
     nrpe::monitor_service { 'mailman_queue':
-        ensure       => $ensure,
-        description  => 'mailman_queue_size',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
-        sudo_user    => 'list',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman_queue_size',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_mailman_queue 25 25 25',
+        sudo_user      => 'list',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
 
     # mailman3 service
@@ -49,14 +52,16 @@ class profile::lists::monitoring (
         notes_url       => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
         check_interval  => 5,
         retry_interval  => 5,
+        migration_task  => 'T370157',
     }
 
     nrpe::monitor_service { 'mailman3_runners':
-        ensure       => $ensure,
-        description  => 'mailman3_runners',
+        ensure         => $ensure,
+        description    => 'mailman3_runners',
         # As of Mailman Core 3.3.3, there are 14 runners
-        nrpe_command => '/usr/lib/nagios/plugins/check_procs -c 14: -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_procs -c 14: -u list --ereg-argument-array=\'/usr/lib/mailman3/bin/runner\'',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
     prometheus::node_file_count { 'track mailman3 queue depths':
         ensure  => $ensure,
@@ -70,24 +75,27 @@ class profile::lists::monitoring (
     }
 
     monitoring::service { 'mailman_listinfo':
-        ensure        => $ensure,
-        description   => 'mailman list info',
-        check_command => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!Wikimedia Mailing List",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman list info',
+        check_command  => "check_https_url_for_string!${lists_servername}!/postorius/lists/wikimedia-l.lists.wikimedia.org/!Wikimedia Mailing List",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
 
     monitoring::service { 'mailman_archives':
-        ensure        => $ensure,
-        description   => 'mailman archives',
-        check_command => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!Wikimedia Mailing List",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman archives',
+        check_command  => "check_https_url_for_string!${lists_servername}!/hyperkitty/list/wikimedia-l@lists.wikimedia.org/!Wikimedia Mailing List",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
 
     monitoring::service { 'mailman_listinfo_ssl_expiry':
-        ensure        => $ensure,
-        description   => 'mailman list info ssl expiry',
-        check_command => "check_https_expiry!${lists_servername}!443",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        ensure         => $ensure,
+        description    => 'mailman list info ssl expiry',
+        check_command  => "check_https_expiry!${lists_servername}!443",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Mailman/Monitoring',
+        migration_task => 'T370157',
     }
 
     monitoring::check_prometheus { 'mailman_hours_until_empty_outbound_queue':
