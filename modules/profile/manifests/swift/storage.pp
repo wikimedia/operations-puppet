@@ -86,9 +86,10 @@ class profile::swift::storage (
     }
 
     nrpe::monitor_service { 'load_average':
-        description  => 'very high load average likely xfs',
-        nrpe_command => '/usr/lib/nagios/plugins/check_load -w 80,80,80 -c 200,100,100',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Swift',
+        description    => 'very high load average likely xfs',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_load -w 80,80,80 -c 200,100,100',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Swift',
+        migration_task => 'T370526',
     }
 
     if $disks_by_path {
