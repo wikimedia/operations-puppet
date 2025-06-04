@@ -103,12 +103,12 @@ class profile::kubernetes::mediawiki_runner(
 
         # Directory should be at least present before kubelet starts, even if empty.
         file { $mediawiki_deployment_dir:
-            ensure => directory,
-            owner  => 'mwdeploy',
-            group  => 'mwdeploy',
-            mode   => '0775',
-            after  => User['mwdeploy'],
-            before => Service['kubelet'],
+            ensure  => directory,
+            owner   => 'mwdeploy',
+            group   => 'mwdeploy',
+            mode    => '0775',
+            require => User['mwdeploy'],
+            before  => Service['kubelet'],
         }
 
         # fix-staging-perms is copied from profile::mediawiki::deployment::server
