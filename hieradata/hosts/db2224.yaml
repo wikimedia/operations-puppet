@@ -1,3 +1,4 @@
 # db2224
 mariadb::shard: 's6'
 mariadb::package: 'wmf-mariadb1011'
+mariadb::binlog_format: 'STATEMENT'
