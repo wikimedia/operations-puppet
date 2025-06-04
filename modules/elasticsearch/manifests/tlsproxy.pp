@@ -43,9 +43,10 @@ define elasticsearch::tlsproxy (
         default => 'check_ssl_on_port',
     }
     monitoring::service { "elasticsearch-https-${title}":
-        ensure        => present,
-        description   => "Elasticsearch HTTPS for ${title}",
-        check_command => "${check_command}!${server_name}!${tls_port}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Search',
+        ensure         => present,
+        description    => "Elasticsearch HTTPS for ${title}",
+        check_command  => "${check_command}!${server_name}!${tls_port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Search',
+        migration_task => 'T384998',
     }
 }

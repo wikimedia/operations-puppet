@@ -16,10 +16,11 @@ define icinga::monitor::elasticsearch::base_checks(
         if !$use_nrpe {
             monitoring::service {
                 default:
-                    host          => $host,
-                    critical      => false,
-                    contact_group => 'team-data-platform,team-discovery',
-                    notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+                    host           => $host,
+                    critical       => false,
+                    contact_group  => 'team-data-platform,team-discovery',
+                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+                    migration_task => 'T384998',
                 ;
                 "elasticsearch_shards_${host}:${port}":
                     check_command => "check_elasticsearch_shards_threshold!${scheme}!${port}!${threshold}!${timeout}",
@@ -45,9 +46,10 @@ define icinga::monitor::elasticsearch::base_checks(
 
             nrpe::monitor_service {
                 default:
-                    critical      => false,
-                    contact_group => 'team-data-platform,team-discovery',
-                    notes_url     => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+                    critical       => false,
+                    contact_group  => 'team-data-platform,team-discovery',
+                    notes_url      => 'https://wikitech.wikimedia.org/wiki/Search#Administration',
+                    migration_task => 'T384998',
                 ;
                 "elasticsearch_shards_${port}":
                     nrpe_command => "/usr/lib/nagios/plugins/check_elasticsearch.py --ignore-status --url http://localhost:${port} --shards-inactive '${threshold}' --timeout ${timeout}",

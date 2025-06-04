@@ -38,5 +38,6 @@ define icinga::monitor::elasticsearch::cirrus_settings_check(
         check_interval => 720, # 12h
         retry_interval => 120, # 2h
         retries        => 1,
+        migration_task => 'T384998',
     }
 }
