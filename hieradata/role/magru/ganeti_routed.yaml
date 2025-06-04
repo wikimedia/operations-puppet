@@ -1,4 +1,5 @@
 profile::ganeti::nodes:
+  - ganeti7001.magru.wmnet
   - ganeti7002.magru.wmnet
 profile::ganeti::rapi::certificate: ganeti03.svc.magru.wmnet
 profile::ganeti::tap_ip4:

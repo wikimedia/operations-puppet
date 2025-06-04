@@ -1479,15 +1479,9 @@ node /^ganeti700[34]\.magru\./ {
     role(ganeti)
 }
 
-node /^ganeti700[1]\.magru\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
-
-node /^ganeti700[2]\.magru\./ {
+node /^ganeti700[12]\.magru\./ {
     role(ganeti_routed)
 }
-
 
 # gitlab servers - eqiad (T274459, T301177)
 node /^gitlab1003\.wikimedia\./ {
