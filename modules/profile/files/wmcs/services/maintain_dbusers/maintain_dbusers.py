@@ -131,6 +131,10 @@ def get_headers():
     return headers
 
 
+def should_create(account_type: str, db_config: dict[str, Any]) -> bool:
+    return account_type != "paws" or db_config["grant-type"] != "legacy"
+
+
 def should_execute_for_user(username: str, only_users: list[str] = []) -> bool:
     """
     returns True if only_users is empty array or if username is in only_users,
@@ -567,16 +571,19 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
     cloud_dbs = []
     try:
         acct_db = get_accounts_db_conn(config=config)
-        for host in config["labsdbs"]["hosts"]:
+        for host, config in config["labsdbs"]["hosts"].items():
             hostname = host.split(":")[0]
             port = int(host.split(":")[1])
 
             cloud_dbs.append(
-                pymysql.connect(
-                    host=hostname,
-                    user=config["labsdbs"]["username"],
-                    password=config["labsdbs"]["password"],
-                    port=port,
+                (
+                    pymysql.connect(
+                        host=hostname,
+                        user=config["labsdbs"]["username"],
+                        password=config["labsdbs"]["password"],
+                        port=port,
+                    ),
+                    config,
                 )
             )
 
@@ -587,7 +594,10 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
                 """
             read_cur.execute(select_from_acct_sql_str)
             for row in read_cur:
-                for cloud_db in cloud_dbs:
+                for cloud_db, db_config in cloud_dbs:
+                    if not should_create(row["type"], db_config):
+                        continue
+
                     sqlhost = "{}:{}".format(cloud_db.host, cloud_db.port)
                     with cloud_db.cursor() as cloud_db_cur:
                         try:
@@ -636,7 +646,7 @@ def harvest_replica_accounts(dry_run: bool, only_users: list[str], config: dict[
         logging.info("Successfully executed  harvest_replica_accounts")
     finally:
         acct_db.close()
-        for cloud_db in cloud_dbs:
+        for cloud_db, db_config in cloud_dbs:
             cloud_db.close()
 
 
@@ -665,7 +675,9 @@ def _populate_new_account(
     )
     cur.execute(create_acct_sql_str)
     acct_id = cur.lastrowid
-    for hostname in config["labsdbs"]["hosts"]:
+    for hostname, db_config in config["labsdbs"]["hosts"].items():
+        if not should_create(account_type, db_config):
+            continue
         create_acct_host_sql_str = (
             """
             INSERT INTO account_host (account_id, hostname, status)
