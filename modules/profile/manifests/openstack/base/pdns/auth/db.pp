@@ -49,11 +49,12 @@ class profile::openstack::base::pdns::auth::db(
     }
 
     file { '/etc/mysql/production-grants-dns.sql':
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0400',
-        content => template('role/mariadb/grants/dns.sql.erb'),
+        ensure    => present,
+        owner     => 'root',
+        group     => 'root',
+        mode      => '0400',
+        content   => template('role/mariadb/grants/dns.sql.erb'),
+        show_diff => false,
     }
 
     # Allow mysql access from the designate host so it can send domain updates.
