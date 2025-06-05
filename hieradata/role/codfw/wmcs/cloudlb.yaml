@@ -1,6 +1,7 @@
 profile::admin::groups:
   - wmcs-roots
 
+profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   openstack.codfw1dev.wikimediacloud.org:
     ensure: present
