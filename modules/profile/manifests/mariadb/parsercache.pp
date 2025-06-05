@@ -1,5 +1,4 @@
-# parsercache (pc) specific configuration
-# These are mariadb servers acting as on-disk cache for parsed wikitext
+# parsercache (pc) and objectstash pecific configuration
 
 class profile::mariadb::parsercache (
     $shard = lookup('mariadb::parsercache::shard'),
@@ -33,7 +32,7 @@ class profile::mariadb::parsercache (
     }
     class { 'profile::mariadb::grants::production':
         shard    => 'parsercache',
-        prompt   => 'PARSERCACHE',
+        prompt   => "Parsercache / Objectstash ${shard}",
         password => $passwords::misc::scripts::mysql_cumin_pass,
     }
 

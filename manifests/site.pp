@@ -753,39 +753,39 @@ node /^db2(186|191|196|215|231)\.codfw\./ {
     role(mariadb::core)
 }
 
-# ms1 and x2 shard
-# For now ms1 and x2 are the same - just for MW purposes
+# ms1 ms2 and ms3 shards
+# They use the parsercache role in puppet so masters are RW all the time.
 # eqiad
 node /^db11(52)\.eqiad\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 
 # codfw
 node /^db21(42)\.codfw\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 
 # ms2 shard
 # eqiad
 
 node /^db11(51)\.eqiad\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 
 # codfw
 node /^db21(44)\.codfw\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 
 # ms3 shard
 # eqiad
 node /^db11(53)\.eqiad\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 
 # codfw
 node /^db21(43)\.codfw\./ {
-    role(mariadb::objectstash)
+    role(mariadb::parsercache)
 }
 ## m1 shard
 # See also multiinstance misc hosts db1217, db2160 below

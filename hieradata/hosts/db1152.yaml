@@ -1,5 +1,5 @@
 # db1152
-mariadb::shard: 'ms1'
+mariadb::parsercache::shard: 'ms1'
 profile::mariadb::mysql_role: 'master'
 profile::mariadb::config::sync_binlog: '0'
 # Testing MariaDB 10.11 T365805
