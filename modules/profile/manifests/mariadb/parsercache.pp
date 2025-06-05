@@ -39,7 +39,7 @@ class profile::mariadb::parsercache (
 
     class { 'mariadb::config':
         config                  => 'role/mariadb/mysqld_config/parsercache.my.cnf.erb',
-        datadir                 => '/srv/sqldata-cache',
+        datadir                 => '/srv/sqldata',
         tmpdir                  => '/srv/tmp',
         ssl                     => 'puppet-cert',
         p_s                     => 'on',
