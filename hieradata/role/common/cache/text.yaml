@@ -250,6 +250,7 @@ profile::cache::varnish::frontend::fe_vcl_config:
     # levels that will allow a couple human users but block anything in excess.
     attack_mode: false
     differential_privacy: true
+    edge_uniques_same_site: 'None'
 profile::cache::varnish::frontend::separate_vcl: ['misc']
 profile::cache::varnish::frontend::fe_extra_vcl: ['normalize_path', 'geoip']
 profile::cache::varnish::frontend::transient_gb: 5
