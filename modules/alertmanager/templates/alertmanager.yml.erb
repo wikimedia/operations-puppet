@@ -78,6 +78,14 @@ route:
         team: 'sre'
       routes:
         - match:
+            alertname: 'MediaWikiElevatedUnknownLogins'
+          receiver: 'trust-and-safety-product-critical'
+          continue: true
+        - match:
+            alertname: 'MediaWikiElevatedUnknownLogins'
+          receiver: 'security-mail'
+          continue: true
+        - match:
             severity: 'page'
           receiver: 'sre-page'
         - match:
@@ -775,6 +783,11 @@ receivers:
     # #Security / summary as title
     - url: 'http://localhost:8292/alerts?phid=PHID-PROJ-dwqfaiejpr656zc6hf6o&title=%7B%7BcommonAnnotations.summary%7D%7D'
       send_resolved: false
+
+- name: 'security-mail'
+  email_configs:
+    - to: 'security-team@wikimedia.org'
+      headers: {'Auto-Submitted':'auto-generated'}
 
 - name: 'campaigns-product-task'
   webhook_configs:
