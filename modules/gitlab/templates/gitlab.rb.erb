@@ -228,12 +228,14 @@ gitlab_rails['object_store']['connection'] = {
   'aws_access_key_id' => '<%= @object_storage_access_key %>',
   'aws_secret_access_key' => '<%= @object_storage_secret_key %>',
   'host' => 'apus.discovery.wmnet',
+  'endpoint' => 'https://apus.discovery.wmnet',
   'path_style' => true,
   'enable_signature_v4_streaming' => false,
 }
 
 gitlab_rails['object_store']['objects']['artifacts']['bucket'] = 'gitlab-artifacts'
-gitlab_rails['object_store']['objects']['packages']['bucket'] = 'gitlab-packages'
+#gitlab_rails['object_store']['objects']['packages']['bucket'] = 'gitlab-packages'
+gitlab_rails['object_store']['objects']['packages']['enabled'] = false
 
 gitlab_rails['object_store']['objects']['external_diffs']['enabled'] = false
 gitlab_rails['object_store']['objects']['lfs']['enabled'] = false
