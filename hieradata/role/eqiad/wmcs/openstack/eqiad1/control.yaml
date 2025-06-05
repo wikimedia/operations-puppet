@@ -13,8 +13,8 @@ profile::memcached::extended_options:
   - 'slab_reassign'
 profile::memcached::size: 2000
 profile::memcached::port: 11211
-profile::memcached::srange: "$CLOUD_PRIVATE_NETWORKS"
-profile::memcached::firewall_src_sets: ~
+profile::memcached::firewall_src_sets:
+    - CLOUD_PRIVATE_NETWORKS
 profile::memcached::firewall_srange: ~
 
 profile::cloudceph::client::rbd::client_name: 'eqiad1-glance-images'
