@@ -215,7 +215,7 @@ listen tls
     http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
     # lookup failed
     http-request set-var(req.provenance,ifnotexists) str('net=unknown')
-    http-request set-header X-Provenance var(req.provenance)
+    http-request set-header X-Provenance %[var(req.provenance)]
 <%- end -%>
 
 <%- if @dedicated_hc_backend -%>
