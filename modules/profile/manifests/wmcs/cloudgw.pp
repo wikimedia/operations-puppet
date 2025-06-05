@@ -24,12 +24,14 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',          {default_value => '127.0.0.7'}),
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',               {default_value => []}),
     Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                   {default_value => []}),
-    Array[Stdlib::IP::Address::V4::Cidr]           $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',  {default_value => []}),
+    Array[Wmflib::IP::Address::CIDR]               $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',  {default_value => []}),
     Stdlib::IP::Address::V4::Cidr                  $cloud_private_supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
 ) {
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
+
+    $public_cidrs_v4 = $public_cidrs.filter |$net| { $net =~ Stdlib::IP::Address::V4::CIDR }
 
     nftables::file { 'cloudgw':
         ensure  => present,

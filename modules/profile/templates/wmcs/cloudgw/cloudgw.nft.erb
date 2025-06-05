@@ -43,9 +43,9 @@ table inet cloudgw {
         # use auto-merge to collapse overlapping elements, see T346432
         auto-merge
         counter
-        <%- if !@public_cidrs.empty? -%>
+        <%- if !@public_cidrs_v4.empty? -%>
         elements = {
-        <% @public_cidrs.each do |element| -%>
+        <% @public_cidrs_v4.each do |element| -%>
             <%= element %> ,
         <% end -%>
         }
