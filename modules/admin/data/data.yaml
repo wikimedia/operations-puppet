@@ -7558,3 +7558,9 @@ ldap_only_users:
     email: llugo-ctr@wikimedia.org
     expiry_date: "2026-01-31"
     expiry_contact: nisrael@wikimedia.org
+  toluayo:
+    ensure: present
+    realname: Toluwanimi Ayodele
+    email: tayodele-ctr@wikimedia.org
+    expiry_date: "2026-06-27"
+    expiry_contact: mmunyoki@wikimedia.org
