@@ -47,9 +47,8 @@ class profile::mediawiki::maintenance::generatecaptcha(
         }
     }
 
-    # TODO T388531 : Restore --delete option once we've confirmed new captchas are generated and uploaded correctly, also bring --fill down to 10000
     $generatecaptcha_command = $::_role ? {
-        'deployment_server/kubernetes' => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf --badwordlist=/etc/fancycaptcha/badwords --fill=12000 --threads=4',
+        'deployment_server/kubernetes' => '/usr/local/bin/mwscript extensions/ConfirmEdit/maintenance/GenerateFancyCaptchas.php enwiki --wordlist=/etc/fancycaptcha/words --font=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf --badwordlist=/etc/fancycaptcha/badwords --fill=10000 --delete --threads=4',
         default                        => '/usr/local/bin/captchaloop',
     }
 
