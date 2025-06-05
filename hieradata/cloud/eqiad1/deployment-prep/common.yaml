@@ -570,7 +570,10 @@ mediawiki::sites:
     vhosts:
       - name: wikibooks
         params:
-          server_aliases: ["*.wikibooks.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikibooks.beta.wmflabs.org",
+            "*.wikibooks.beta.wmcloud.org"
+          ]
       - name: wikipedia
         params:
           docroot: "/srv/mediawiki/docroot/wikipedia.org"
@@ -586,8 +589,10 @@ mediawiki::sites:
               ]
       - name: wikidata
         params:
-          server_aliases:
-            ["wikidata.beta.wmflabs.org", "*.wikidata.beta.wmflabs.org"]
+          server_aliases: [
+            "wikidata.beta.wmflabs.org", "*.wikidata.beta.wmflabs.org",
+            "wikidata.beta.wmcloud.org", "*.wikidata.beta.wmcloud.org"
+          ]
           additional_rewrites:
             early: []
             late:
@@ -597,31 +602,39 @@ mediawiki::sites:
               ]
       - name: wikisource
         params:
-          server_aliases: ["*.wikisource.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikisource.beta.wmflabs.org",
+            "*.wikisource.beta.wmcloud.org"
+          ]
       - name: wikiversity
         params:
-          server_aliases: ["*.wikiversity.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikiversity.beta.wmflabs.org",
+            "*.wikiversity.beta.wmcloud.org"
+          ]
       - name: wikiquote
         params:
-          server_aliases: ["*.wikiquote.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikiquote.beta.wmflabs.org",
+            "*.wikiquote.beta.wmcloud.org"
+          ]
       - name: wiktionary
         params:
-          server_aliases: ["*.wiktionary.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wiktionary.beta.wmflabs.org",
+            "*.wiktionary.beta.wmcloud.org"
+          ]
       - name: wikinews
         params:
-          server_aliases: ["*.wikinews.beta.wmflabs.org"]
+          server_aliases: [
+            "*.wikinews.beta.wmflabs.org",
+            "*.wikinews.beta.wmcloud.org"
+          ]
       - name: loginwiki
         params:
           server_name: "login.wikimedia.beta.wmflabs.org"
+          server_aliases: ["login.wikimedia.beta.wmcloud.org"]
           variant_aliases: []
-      - name: wikifunctions
-        params:
-          server_aliases: ["wikifunctions.beta.wmflabs.org", "*.wikifunctions.beta.wmflabs.org"]
-          additional_rewrites:
-            "early": []
-            "late":
-              - "    # /view support, for Wikifunctions.org"
-              - "    RewriteRule ^/view/.*$     /w/index.php"
       - name: wikimedia
         params:
           server_name: "misc-sites"
@@ -632,7 +645,13 @@ mediawiki::sites:
               "api.wikimedia.beta.wmflabs.org",
               "vote.wikimedia.beta.wmflabs.org",
               "foundation.wikimedia.beta.wmflabs.org",
-              "incubator.wikimedia.beta.wmflabs.org"
+              "incubator.wikimedia.beta.wmflabs.org",
+              "commons.wikimedia.beta.wmcloud.org",
+              "meta.wikimedia.beta.wmcloud.org",
+              "api.wikimedia.beta.wmcloud.org",
+              "vote.wikimedia.beta.wmcloud.org",
+              "foundation.wikimedia.beta.wmcloud.org",
+              "incubator.wikimedia.beta.wmcloud.org"
             ]
           variant_aliases: []
       - name: wikivoyage
@@ -666,7 +685,10 @@ mediawiki::sites:
     vhosts:
       - name: auth
         params:
-          server_aliases: ["auth.wikimedia.beta.wmflabs.org"]
+          server_aliases: [
+            "auth.wikimedia.beta.wmflabs.org",
+            "auth.wikimedia.beta.wmcloud.org"
+          ]
           additional_rewrites:
             early:
               - "    # Redirect requests for the root of the domain to something nice"
