@@ -3,6 +3,8 @@
 include "geoip.inc.vcl";
 include "normalize_path.inc.vcl";
 
+import std;
+
 # Temporary hack to patch T284479
 # Not a complete list.
 # Do not use; use X-Provenance == "cloud=gcp" instead; see also T270391
@@ -258,22 +260,16 @@ sub cluster_fe_recv_pre_purge {
             set req.http.host = "<%= @vcl_config.fetch("static_host") %>";
         }
 
-        // X-RB-NOREDIR: redirect=false optimization: T134464
-        // RB sends the same content regardless of ?redirect=false, but
+        // RESTBase redirect=false optimization: T134464
+        // RESTBase sends the same content regardless of ?redirect=false, but
         // switches from 302 w/ Location (normal) to 200 w/o Location
         // (?redirect=false) for wikitext redirect responses.  We can
-        // make this more-efficient by doing this in Varnish and sharing
+        // make this more efficient by doing this in Varnish and sharing
         // the cache object (stripping the parameter and doing the
         // transform at deliver time).
-        unset req.http.X-RB-NOREDIR; // do not let clients interfere!
         if (req.url ~ "^/api/rest_v1/.*[?&]redirect=") {
-            // extract the redirect= value to boolean X-RB-NOREDIR for later
-            set req.http.X-RB-NOREDIR = regsub(req.url, "^.+[?&]redirect=([^&]+).*$", "\1");
-            if (req.http.X-RB-NOREDIR ~ "(?i)^(false|no|0)$") {
-                set req.http.X-RB-NOREDIR = "1";
-            } else {
-                unset req.http.X-RB-NOREDIR;
-            }
+            // extract the redirect= value to boolean for later
+            var.set("rb_noredir_param", regsub(req.url, "^.+[?&]redirect=([^&]+).*$", "\1"));
             // Remove the redirect=X parameter from req.url to avoid cache
             // fragmentation using two regexes to cover distinct cases:
             // (1) Simple strip if final query arg:
@@ -607,8 +603,9 @@ sub cluster_fe_backend_response {
 }
 
 sub cluster_fe_deliver {
-    # Other half of X-RB-NOREDIR (see cluster_fe_recv_pre_purge)
-    if (req.http.X-RB-NOREDIR) {
+    # Other half of RESTBase redirect=false optimization (see cluster_fe_recv_pre_purge)
+    if (var.get("rb_noredir_param") ~ "(?i)^(false|no|0)$") {
+        std.log("noredir: 1");
         if (resp.status == 302) {
             unset resp.http.Location;
             set resp.status = 200;

@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: Apache-2.0
+
+varnishtest "restbase-redirect"
+server s1 {
+    rxreq
+    expect req.url == "/api/rest_v1/Foo%20Bar"
+    txresp -status 301 -hdr "location: /api/rest_v1/Foo_Bar"
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+   include "${basepath}/usr/share/varnish/tests/wikimedia_misc-frontend.vcl";
+}
+
+# Attach the "wikimedia_misc" label to wikimedia_misc-frontend.vcl
+varnish v1 -cli "vcl.label wikimedia_misc vcl1"
+
+varnish v1 -vcl {
+    backend vtc_backend {
+        .host = "${s1_addr}"; .port = "${s1_port}";
+    }
+    include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
+} -start
+
+logexpect l1 -v v1 -g request {
+    expect 0 * * "noredir: 1"
+    } -start
+
+client c1 {
+    # Make sure the redirect query param is preserved by Varnish when wikitext
+    # serves back a 301 title redirect (which is different han a 307 page
+    # redirect!)
+    txreq  -url "/api/rest_v1/Foo%20Bar?redirect=false" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.10 Safari/605.1.1"
+    rxresp
+    expect resp.status == 301
+} -run
+
+logexpect l1 -wait
