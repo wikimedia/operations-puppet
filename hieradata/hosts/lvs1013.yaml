@@ -4,16 +4,3 @@ profile::lvs::interface_tweaks:
 profile::liberica::bgp_config:
   communities:
     - "14907:0" # lowest BGP priority, depooled for T395228
-profile::liberica::fp_config:
-  log_level: info
-  grpc:
-    network: tcp
-    address: 127.0.0.1:1102
-  prometheus:
-    addresses:
-      - "%{facts.networking.ip}:3002"
-      - "[%{facts.networking.ip6}]:3002"
-  forwarding_plane: katran
-  katran:
-    interface: enp4s0f0
-    conntrack_size: 8000000
