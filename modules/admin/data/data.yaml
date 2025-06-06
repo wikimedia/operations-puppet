@@ -463,7 +463,8 @@ groups:
               ariel, quiddity, wmdecyn, joelyrookewmde, ifeatunnaobiwmde, cyndywikime,
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
-              kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan]
+              kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
+              deerbee]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6707,6 +6708,13 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF2sHwbOOa4DxGlasYNF7A4qb4rsD3lOY1vRIycOn9Ou corvus@fuligin
+  deerbee:
+    ensure: present
+    realname: Deniz Erdogan
+    email: deniz.erdogan@wikimedia.de
+    uid: 34644
+    gid: 500
+    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
 
 ldap_only_users:
   adavenport:
@@ -7270,10 +7278,6 @@ ldap_only_users:
     ensure: present
     realname: Cai Blanton
     email: cblanton@wikimedia.org
-  deerbee:
-    ensure: present
-    realname: Deniz Erdogan
-    email: deniz.erdogan@wikimedia.de
   jacquelinechen:
     ensure: present
     realname: Jacqueline Chen
