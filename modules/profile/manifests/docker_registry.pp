@@ -1,43 +1,43 @@
 # SPDX-License-Identifier: Apache-2.0
-# == Class profile::docker_registry_ha::registry
+# == Class profile::docker_registry
 #
 # This provisions a highly available docker registry,
 # served at <https://docker-registry.wikimedia.org/>.
 #
 # See also <https://wikitech.wikimedia.org/wiki/Docker-registry>.
-class profile::docker_registry_ha::registry(
+class profile::docker_registry(
     # The following variables might be useful elsewhere too
-    String $ci_restricted_user_password = lookup('profile::docker_registry_ha::ci_restricted_user_password'),
-    String $kubernetes_user_password = lookup('profile::docker_registry_ha::kubernetes_user_password'),
-    String $ci_build_user_password = lookup('profile::docker_registry_ha::ci_build_user_password'),
-    String $prod_build_user_password = lookup('profile::docker_registry_ha::prod_build_user_password'),
-    String $password_salt = lookup('profile::docker_registry_ha::password_salt'),
+    String $ci_restricted_user_password = lookup('profile::docker_registry::ci_restricted_user_password'),
+    String $kubernetes_user_password = lookup('profile::docker_registry::kubernetes_user_password'),
+    String $ci_build_user_password = lookup('profile::docker_registry::ci_build_user_password'),
+    String $prod_build_user_password = lookup('profile::docker_registry::prod_build_user_password'),
+    String $password_salt = lookup('profile::docker_registry::password_salt'),
     # Which machines are allowed to build images.
-    Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry_ha::registry::image_builders', { 'default_value' => undef }),
+    Optional[Array[Stdlib::Host]] $image_builders = lookup('profile::docker_registry::image_builders', { 'default_value' => undef }),
     # Storage configuration
-    String $certname = lookup('profile::docker_registry_ha::registry::certname'),
-    Array[Cfssl::Common_name] $alt_names = lookup('profile::docker_registry_ha::registry::alt_names'),
+    String $certname = lookup('profile::docker_registry::certname'),
+    Array[Cfssl::Common_name] $alt_names = lookup('profile::docker_registry::alt_names'),
     Hash[String, Hash[String, String]] $swift_accounts = lookup('profile::swift::accounts'),
-    Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry_ha::registry::swift_auth_url'),
+    Stdlib::Httpsurl $swift_auth_url = lookup('profile::docker_registry::swift_auth_url'),
     # By default, the password will be extracted from swift, but can be overridden
     Hash[String, Hash] $global_swift_account_keys = lookup('profile::swift::global_account_keys'),
-    Optional[String] $swift_container = lookup('profile::docker_registry_ha::registry::swift_container', { 'default_value' => undef }),
-    String $swift_replication_configuration = lookup('profile::docker_registry_ha::registry::swift_replication_configuration'),
-    String $swift_replication_key = lookup('profile::docker_registry_ha::registry::swift_replication_key'),
-    Optional[String] $swift_password = lookup('profile::docker_registry_ha::registry::swift_password', { 'default_value' => undef }),
-    Optional[Stdlib::Host] $redis_host = lookup('profile::docker_registry_ha::registry::redis_host', { 'default_value' => undef }),
-    Optional[Stdlib::Port] $redis_port = lookup('profile::docker_registry_ha::registry::redis_port', { 'default_value' => undef }),
-    Optional[String] $redis_password = lookup('profile::docker_registry_ha::registry::redis_password', { 'default_value' => undef }),
-    Optional[String] $docker_registry_shared_secret = lookup('profile::docker_registry_ha::registry::shared_secret', { 'default_value' => undef }),
-    Boolean $registry_read_only_mode = lookup('profile::docker_registry_ha::registry::read_only_mode', { 'default_value' => false }),
+    Optional[String] $swift_container = lookup('profile::docker_registry::swift_container', { 'default_value' => undef }),
+    String $swift_replication_configuration = lookup('profile::docker_registry::swift_replication_configuration'),
+    String $swift_replication_key = lookup('profile::docker_registry::swift_replication_key'),
+    Optional[String] $swift_password = lookup('profile::docker_registry::swift_password', { 'default_value' => undef }),
+    Optional[Stdlib::Host] $redis_host = lookup('profile::docker_registry::redis_host', { 'default_value' => undef }),
+    Optional[Stdlib::Port] $redis_port = lookup('profile::docker_registry::redis_port', { 'default_value' => undef }),
+    Optional[String] $redis_password = lookup('profile::docker_registry::redis_password', { 'default_value' => undef }),
+    Optional[String] $docker_registry_shared_secret = lookup('profile::docker_registry::shared_secret', { 'default_value' => undef }),
+    Boolean $registry_read_only_mode = lookup('profile::docker_registry::read_only_mode', { 'default_value' => false }),
     Array[Stdlib::Host] $deployment_hosts = lookup('deployment_hosts', { 'default_value' => [] }),
-    Boolean $nginx_blob_cache = lookup('profile::docker_registry_ha::registry::nginx_blob_cache', { 'default_value' => true }),
-    Boolean $nginx_auth_cache = lookup('profile::docker_registry_ha::registry::nginx_auth_cache', { 'default_value' => true }),
+    Boolean $nginx_blob_cache = lookup('profile::docker_registry::nginx_blob_cache', { 'default_value' => true }),
+    Boolean $nginx_auth_cache = lookup('profile::docker_registry::nginx_auth_cache', { 'default_value' => true }),
     # Hosts allowed to authenticate using JSON Web Tokens issued by our GitLab instance
-    Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry_ha::registry::jwt_allowed_ips', { 'default_value' => [] }),
+    Array[Stdlib::IP::Address] $jwt_allowed_ips = lookup('profile::docker_registry::jwt_allowed_ips', { 'default_value' => [] }),
     # Which k8s clusters should be able to pull restricted images
-    Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry_ha::registry::authorized_k8s_clusters', { 'default_value' => [] }),
-    Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry_ha::registry::catalog_maxentries', { 'default_value' => 50}),
+    Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry::authorized_k8s_clusters', { 'default_value' => [] }),
+    Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry::catalog_maxentries', { 'default_value' => 50}),
 ) {
     require network::constants
     # Hiera configurations
@@ -57,7 +57,7 @@ class profile::docker_registry_ha::registry(
         $password = $swift_password
     }
 
-    class { 'docker_registry_ha':
+    class { 'docker_registry':
         swift_user                      => $swift_account['user'],
         swift_password                  => $password,
         swift_url                       => $swift_auth_url,
@@ -86,7 +86,7 @@ class profile::docker_registry_ha::registry(
         'hosts'           => $alt_names,
     })
     class { 'sslcert::dhparam': }
-    class { 'docker_registry_ha::web':
+    class { 'docker_registry::web':
         ci_restricted_user_password => $ci_restricted_user_password,
         kubernetes_user_password    => $kubernetes_user_password,
         ci_build_user_password      => $ci_build_user_password,

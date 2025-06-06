@@ -1285,7 +1285,7 @@ class profile::prometheus::ops (
 
     prometheus::class_config{ "docker_registry_${::site}":
         dest       => "${targets_path}/docker_registry_${::site}.yaml",
-        class_name => 'profile::docker_registry_ha::registry',
+        class_name => 'profile::docker_registry',
         port       => 5001,
     }
 

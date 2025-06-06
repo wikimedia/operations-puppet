@@ -26,7 +26,7 @@
 # @param kubernetes_hosts list of kubernetes hosts
 # TODO: Refactor this to be a flexible ACL system, similar to etcd::tlsproxy
 #
-class docker_registry_ha::web (
+class docker_registry::web (
     String                               $ci_restricted_user_password,
     String                               $kubernetes_user_password,
     String                               $ci_build_user_password,
@@ -112,13 +112,13 @@ class docker_registry_ha::web (
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/docker_registry_ha/registry-nginx-cache.conf',
+        source  => 'puppet:///modules/docker_registry/registry-nginx-cache.conf',
         require => Package['nginx'],
     }
 
     file { '/etc/nginx/nginx.conf':
         ensure  => present,
-        source  => 'puppet:///modules/docker_registry_ha/nginx.conf',
+        source  => 'puppet:///modules/docker_registry/nginx.conf',
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
@@ -176,7 +176,7 @@ class docker_registry_ha::web (
         group               => 'www-data',
         keys_url            => $jwt_keys_url,
         issuers             => $jwt_issuers,
-        validation_template => 'puppet:///modules/docker_registry_ha/jwt-validations.tmpl',
+        validation_template => 'puppet:///modules/docker_registry/jwt-validations.tmpl',
     }
 
     profile::auto_restarts::service { 'docker-registry-ha-jwt':
@@ -184,7 +184,7 @@ class docker_registry_ha::web (
     }
 
     nginx::site { 'registry':
-        content => template('docker_registry_ha/registry-nginx.conf.erb'),
+        content => template('docker_registry/registry-nginx.conf.erb'),
     }
 
     ensure_packages(['python3-docker-report'])
@@ -193,7 +193,7 @@ class docker_registry_ha::web (
         mode    => '0744',
         owner   => 'root',
         group   => 'root',
-        source  => 'puppet:///modules/docker_registry_ha/registry-homepage-builder.py',
+        source  => 'puppet:///modules/docker_registry/registry-homepage-builder.py',
         require => Package['python3-docker-report'],
     }
 
@@ -201,7 +201,7 @@ class docker_registry_ha::web (
         mode   => '0644',
         owner  => 'root',
         group  => 'root',
-        source => 'puppet:///modules/docker_registry_ha/registry-homepage-builder.css',
+        source => 'puppet:///modules/docker_registry/registry-homepage-builder.css',
     }
 
     file { $homepage:

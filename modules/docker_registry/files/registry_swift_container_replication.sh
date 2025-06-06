@@ -15,7 +15,7 @@ function create_container {
     local swift_replication_configuration=$3
     local swift_replication_key=$4
 
-    logger -t "docker_registry_ha_swift" "Replicated swift container ${swift_container} created."
+    logger -t "docker_registry_swift" "Replicated swift container ${swift_container} created."
     source "${account_file}" && swift post \
                     -t "${swift_replication_configuration}" \
                     -k "${swift_replication_key}" "${swift_container}"
@@ -26,7 +26,7 @@ function create_container {
 function check_container {
     local account_file=$1
     local swift_container=$2
-    logger -t "docker_registry_ha_swift" "checking if ${swift_container} exists."
+    logger -t "docker_registry_swift" "checking if ${swift_container} exists."
     source "${account_file}" && swift stat "${swift_container}"
     exit $?
 

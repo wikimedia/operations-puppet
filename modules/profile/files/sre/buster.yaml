@@ -338,7 +338,7 @@ role::redis::misc::master:
   target-q: TBD
 role::redis::misc::slave:
   target-q: TBD
-role::docker_registry_ha::registry:
+role::docker_registry:
   target-q: TBD
   phab-task: 332016
 role::releases:

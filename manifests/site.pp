@@ -2409,7 +2409,7 @@ node /^rdb20(08|10)\.codfw\./ {
 }
 
 node /^registry[12]00[345]\.(eqiad|codfw)\./ {
-    role(docker_registry_ha::registry)
+    role(docker_registry)
 }
 
 # https://releases.wikimedia.org - VMs for releases files (mediawiki and other)

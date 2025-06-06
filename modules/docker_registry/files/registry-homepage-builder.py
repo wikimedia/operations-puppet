@@ -51,7 +51,7 @@ def header(title) -> str:
 
 
 def footer() -> str:
-    program_url = "https://gerrit.wikimedia.org/g/operations/puppet/+/refs/heads/production/modules/docker_registry_ha/files/registry-homepage-builder.py"  # noqa: E501
+    program_url = "https://gerrit.wikimedia.org/g/operations/puppet/+/refs/heads/production/modules/docker_registry/files/registry-homepage-builder.py"  # noqa: E501
     return """
            <footer>Page created by <a href="{program_url}">registry-homepage-builder.py</a></footer>
            </body></html>

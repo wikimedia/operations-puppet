@@ -2,8 +2,7 @@
 # Provisions a systemd service instance of jwt-authorizer.
 #
 # The jwt-authorizer service provides integrated auth with GitLab CI jobs via
-# their short lived JSON Web Tokens to other services like
-# docker_registry_ha. See the nginx configuration of the latter for usage.
+# their short lived JSON Web Tokens to other services like the OCI registry
 #
 # @param listen Address or UNIX socket to bind to (e.g. tcp://127.0.0.1:1337,
 #               unix:///some/unix.sock)

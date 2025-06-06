@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-class docker_registry_ha (
+class docker_registry (
     Stdlib::Httpurl $swift_url,
     String $swift_user,
     String $swift_password,
@@ -38,18 +38,18 @@ class docker_registry_ha (
             content => "export ST_AUTH=${swift_url}/auth/v1.0\nexport ST_USER=${swift_user}\nexport ST_KEY=${swift_password}\n"
     }
 
-    file { '/usr/local/bin/registry_ha_swift_container_replication.sh':
-        source => 'puppet:///modules/docker_registry_ha/registry_ha_swift_container_replication.sh',
+    file { '/usr/local/bin/registry_swift_container_replication.sh':
+        source => 'puppet:///modules/docker_registry/registry_swift_container_replication.sh',
         mode   => '0544',
         owner  => 'docker-registry',
         group  => 'docker-registry',
     }
     exec { 'create_swift_container_replication':
-        command => "/usr/local/bin/registry_ha_swift_container_replication.sh -x -a ${account_file} \
+        command => "/usr/local/bin/registry_swift_container_replication.sh -x -a ${account_file} \
                     -r ${swift_replication_configuration} \
                     -k ${swift_replication_key} \
                     -c ${swift_container}",
-        unless  => "/usr/local/bin/registry_ha_swift_container_replication.sh -t -a ${account_file} \
+        unless  => "/usr/local/bin/registry_swift_container_replication.sh -t -a ${account_file} \
                     -c ${swift_container}",
         cwd     => '/tmp',
         path    => '/bin:/sbin:/usr/bin:/usr/sbin',
@@ -57,7 +57,7 @@ class docker_registry_ha (
     }
 
     file { '/etc/docker/registry/config.yml':
-        content => template('docker_registry_ha/registry-ha-config.yaml.erb'),
+        content => template('docker_registry/registry-config.yaml.erb'),
         owner   => 'docker-registry',
         group   => 'docker-registry',
         mode    => '0440',
