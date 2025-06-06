@@ -50,9 +50,16 @@ class profile::gnmi_telemetry (
         {'subscriptions' => $targets_sub[$device['manufacturer']]}]
     })
 
+    # Poor man's clustering, split the targets between all local netflow hosts
+    # Ensure to add FQDN of the current host also the first time the profile is applied
+    $netflow_hosts = (wmflib::resource::hosts('Class', [$::site], 'Profile::Gnmi_telemetry') << $facts['networking']['fqdn']).sort.unique
+    $targets_keys = $targets.keys
+    $gnmic_targets = $targets.filter |$fqdn, $config| {
+        $targets_keys.index($fqdn) % $netflow_hosts.size == $netflow_hosts.index($facts['networking']['fqdn'])
+    }
     $filter_params = ['infra_devices', 'targets_sub', 'ports', 'site_mapping']
     class { 'gnmic':
-        targets => $targets,
+        targets => $gnmic_targets,
         tls_ca  => $bundle_path,
         *       => wmflib::resource::filter_params($filter_params)
     }
