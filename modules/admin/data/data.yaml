@@ -464,7 +464,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde]
+              deerbee, rosalie-wmde, guilherme]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6715,6 +6715,15 @@ users:
     uid: 34644
     gid: 500
     ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+  guilherme:
+    ensure: present
+    realname: Guilherme Goncalves
+    email: guilherme@wikimedia.org
+    uid: 49293
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlmHJrM3b5ma68tu6shrbodHYHi6uiba+bVvZ7FFz4t guilherme@wikimedia.org
+    krb: present
 
 ldap_only_users:
   adavenport:
@@ -7548,10 +7557,6 @@ ldap_only_users:
     ensure: present
     realname: Jeni Merino
     email: jmerino@wikimedia.org
-  guilherme:
-    ensure: present
-    realname: Guilherme Goncalves
-    email: guilherme@wikimedia.org
   ericmill:
     ensure: present
     realname: Eric Mill
