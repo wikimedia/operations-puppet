@@ -353,3 +353,4 @@ profile::cache::haproxy::allowed_methods:
   - PATCH
   - POST
   - PUT
+profile::cache::haproxy::set_x_provenance: true

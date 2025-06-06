@@ -137,3 +137,4 @@ profile::cache::haproxy::allowed_methods:
   - GET
   - HEAD
   - OPTIONS
+profile::cache::haproxy::set_x_provenance: true
