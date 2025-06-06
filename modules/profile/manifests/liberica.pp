@@ -48,9 +48,11 @@ class profile::liberica(
     # as an array.
     $service_ips = wmflib::service::get_ips_for_services($filtered_svcs, $::site)
 
-    # Bind VIPs to the loopback interface
-    class { 'lvs::realserver':
-        realserver_ips => sort($service_ips)
+    # Bind VIPs to the loopback interface unless we are using katran
+    if $fp_config['forwarding_plane'] != 'katran' {
+        class { 'lvs::realserver':
+            realserver_ips => sort($service_ips)
+        }
     }
 
     # Apply needed interface tweaks
