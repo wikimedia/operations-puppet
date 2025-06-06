@@ -5,7 +5,6 @@
 # served at <https://docker-registry.wikimedia.org/>.
 #
 # See also <https://wikitech.wikimedia.org/wiki/Docker-registry>.
-
 class profile::docker_registry_ha::registry(
     # The following variables might be useful elsewhere too
     String $ci_restricted_user_password = lookup('profile::docker_registry_ha::ci_restricted_user_password'),
@@ -40,9 +39,6 @@ class profile::docker_registry_ha::registry(
     Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry_ha::registry::authorized_k8s_clusters', { 'default_value' => [] }),
     Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry_ha::registry::catalog_maxentries', { 'default_value' => 50}),
 ) {
-    # if this looks pretty similar to profile::docker::registry
-    # is intended.
-
     require network::constants
     # Hiera configurations
     if !$image_builders {
@@ -50,14 +46,6 @@ class profile::docker_registry_ha::registry(
     } else {
         $builders = $image_builders
     }
-
-    # Nginx frontend
-    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
-        'notify_services' => ['nginx'],
-        'outdir'          => '/etc/nginx/ssl',
-        'hosts'           => $alt_names,
-    })
-    class { 'sslcert::dhparam': }
 
     $swift_account = $swift_accounts['docker_registry']
     # Get the local site's swift credentials
@@ -91,6 +79,13 @@ class profile::docker_registry_ha::registry(
         }
     }.flatten.unique
 
+    # Nginx frontend
+    $ssl_paths = profile::pki::get_cert('discovery', $certname, {
+        'notify_services' => ['nginx'],
+        'outdir'          => '/etc/nginx/ssl',
+        'hosts'           => $alt_names,
+    })
+    class { 'sslcert::dhparam': }
     class { 'docker_registry_ha::web':
         ci_restricted_user_password => $ci_restricted_user_password,
         kubernetes_user_password    => $kubernetes_user_password,
