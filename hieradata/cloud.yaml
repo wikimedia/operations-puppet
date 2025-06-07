@@ -953,8 +953,6 @@ profile::openstack::codfw1dev::openstack_control_nodes:
     cloud_private_fqdn: cloudcontrol2005-dev.private.codfw.wikimedia.cloud
   - host_fqdn: cloudcontrol2006-dev.codfw.wmnet
     cloud_private_fqdn: cloudcontrol2006-dev.private.codfw.wikimedia.cloud
-  - host_fqdn: cloudcontrol2010-dev.codfw.wmnet
-    cloud_private_fqdn: cloudcontrol2010-dev.private.codfw.wikimedia.cloud
 
 profile::wmcs::services::toolsdb_replica_cnf::user_replica_cnf_path: /srv/tools/home
 profile::wmcs::services::toolsdb_replica_cnf::paws_replica_cnf_path: /srv/paws/project/paws/userhomes

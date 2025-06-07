@@ -1566,7 +1566,7 @@ node /^cloudcontrol200[456]-dev\.codfw\./ {
 
 # Refresh for cloudcontrol2004, T393102
 node /^cloudcontrol2010-dev\.codfw\./ {
-    role(wmcs::openstack::codfw1dev::control)
+    role(insetup::wmcs_ferm)
 }
 
 # New cloudnet node used for OVS experiments

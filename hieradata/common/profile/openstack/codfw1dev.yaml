@@ -12,8 +12,6 @@ profile::openstack::codfw1dev::openstack_control_nodes:
     cloud_private_fqdn: cloudcontrol2005-dev.private.codfw.wikimedia.cloud
   - host_fqdn: cloudcontrol2006-dev.codfw.wmnet
     cloud_private_fqdn: cloudcontrol2006-dev.private.codfw.wikimedia.cloud
-  - host_fqdn: cloudcontrol2010-dev.codfw.wmnet
-    cloud_private_fqdn: cloudcontrol2010-dev.private.codfw.wikimedia.cloud
 
 # The public service name for the keystone API
 #
