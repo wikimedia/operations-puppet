@@ -31,7 +31,7 @@ class profile::wmcs::backup_instances(
         after           => 'backup_vms.service',
         interval        => {
           'start'    => 'OnCalendar',
-          'interval' => '*-*-* 00:05:00', # daily at five past midnight
+          'interval' => $backup_interval,
         },
         logging_enabled => true,
         user            => 'root',
