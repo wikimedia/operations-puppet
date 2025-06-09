@@ -28,7 +28,7 @@ class profile::liberica(
     Hash[String, Hash] $interface_tweaks            = lookup('profile::lvs::interface_tweaks'),
     String $gobgp_metrics_address                   = lookup('profile::liberica::gobgp_metrics_address'),
 ) {
-    ensure_packages(['ethtool', 'ipip-multiqueue-optimizer'])
+    ensure_packages(['ethtool', 'ipip-multiqueue-optimizer', 'xdp-tools'])
 
     ## Kernel setup
 
