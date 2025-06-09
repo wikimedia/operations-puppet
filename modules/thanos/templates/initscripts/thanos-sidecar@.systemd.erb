@@ -10,6 +10,10 @@ User=prometheus
 # Use = for min time option since its value can start with -
 # Let sidecar start even when Prometheus compaction is disabled: --shipper.ignore-unequal-block-size
 ExecStart=/usr/bin/thanos sidecar \
+<% if @memlimit_ratio > 0 -%>
+  --enable-auto-gomemlimit \
+  --auto-gomemlimit.ratio=<%= @memlimit_ratio %> \
+<% end -%>
   --http-address <%= @http_address %> \
   --grpc-address <%= @grpc_address %> \
   --tsdb.path <%= @tsdb_path %> \
