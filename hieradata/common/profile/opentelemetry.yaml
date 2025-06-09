@@ -1,0 +1,1 @@
+profile::opentelemetry::otel_gateway_fqdn: jaeger-collector-grpc.svc.eqiad.wmnet
