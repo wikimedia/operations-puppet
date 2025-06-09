@@ -3,4 +3,4 @@ profile::wmcs::db::wikireplicas::mariadb_multiinstance::instances:
   s8: 105G
   x3: 105G
   s5: 185G
-mariadb::package: 'wmf-mariadb106'
+mariadb::package: 'wmf-mariadb1011'
