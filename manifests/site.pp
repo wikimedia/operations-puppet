@@ -733,13 +733,8 @@ node /^db2(152|154|161|162|163|164|165|166|167|181|195)\.codfw\./ {
 }
 
 # x3 (split from s8) core production dbs
-node /^db2(187|241|242|243)\.codfw\./ {
+node /^db2(187|241|242|243|244)\.codfw\./ {
     role(mariadb::core)
-}
-
-# Future x3 host
-node /^db2244\.codfw\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 ## x1 shard
