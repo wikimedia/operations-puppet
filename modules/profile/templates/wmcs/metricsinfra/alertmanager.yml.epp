@@ -38,8 +38,11 @@ alertmanager_config:
     # When there is no project-specific receiver, do not send notifications at all
     receiver: 'blackhole'
 
-<% if $victorops_api_key { %>
     routes:
+      # Log all notifications
+      - receiver: 'logger'
+        continue: true
+<% if $victorops_api_key { %>
       - match:
           severity: 'page'
           team: 'wmcs'
@@ -49,6 +52,10 @@ alertmanager_config:
 
   receivers:
     - name: 'blackhole'
+    # alertmanager-webhook-logger endpoint
+    - name: 'logger'
+      webhook_configs:
+        - url: 'http://localhost:6725'
 <% if $victorops_api_key { %>
     - name: 'wmcs-page'
       victorops_configs:

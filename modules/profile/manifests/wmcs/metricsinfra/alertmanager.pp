@@ -7,7 +7,10 @@ class profile::wmcs::metricsinfra::alertmanager (
     $base_path = '/etc/prometheus/alertmanager'
 
     # Prometheus alert manager service setup and config
-    package { 'prometheus-alertmanager':
+    package { [
+        'prometheus-alertmanager',
+        'alertmanager-webhook-logger',
+    ]:
         ensure => present,
     }
 
@@ -69,8 +72,13 @@ class profile::wmcs::metricsinfra::alertmanager (
         },
     }
 
-    service { 'prometheus-alertmanager':
+    service { [
+        'prometheus-alertmanager',
+        'alertmanager-webhook-logger',
+    ]:
         ensure => running,
         enable => true,
     }
+
+    profile::auto_restarts::service { 'alertmanager-webhook-logger': }
 }
