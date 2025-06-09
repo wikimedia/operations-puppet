@@ -48,9 +48,10 @@ class thanos::query (
     }
 
     $tracing_config_file = '/etc/thanos-query/tracing-config.yml'
-    file { $tracing_config_file:
-        ensure  => present,
-        content => template('thanos/tracing-config.yaml.erb'),
+    thanos::tracing { $tracing_config_file:
+        service_name  => 'thanos-query',
+        sampler_type  => 'traceidratiobased',
+        sampler_param => '0.001',
     }
 
     $logging_cmdline = $request_debug ? {

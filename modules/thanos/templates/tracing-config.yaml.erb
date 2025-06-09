@@ -2,7 +2,7 @@
 type: OTLP
 config:
     client_type: "grpc"
-    service_name: "thanos-query"
+    service_name: "<%= @service_name %>"
     resource_attributes: {}
     reconnection_period: 0s
     compression: ""
@@ -16,7 +16,7 @@ config:
         retry_max_interval: 0s
         retry_max_elapsed_time: 0s
     headers: {}
-    # config values:
-    # https://github.com/thanos-io/thanos/blob/236777732278c64ca01c1c09d726f0f712c87164/pkg/tracing/otlp/otlp.go#L28
-    sampler_type: "traceidratiobased"
-    sampler_param: "0.001"
+    sampler_type: "<%= @sampler_type %>"
+    <%- if @sampler_param -%>
+    sampler_param: "<%= @sampler_param %>"
+    <%- end -%>
