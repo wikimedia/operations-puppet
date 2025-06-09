@@ -19,7 +19,7 @@ class raid::broadcom {
     }
 
     nrpe::monitor_service { 'raid_broadcom_raid':
-        description    => 'Dell PowerEdge RAID / Supermicro Broadcom Controller',
+        description    => 'Dell PowerEdge or Supermicro Broadcom RAID Controller',
         nrpe_command   => '/usr/local/lib/nagios/plugins/get-raid-status-broadcom',
         sudo_user      => 'root',
         check_interval => $raid::check_interval,
