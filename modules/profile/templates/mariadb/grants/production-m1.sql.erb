@@ -170,3 +170,10 @@ GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.64.0.
 -- pki @ pki2002.codfw.wmnet
 GRANT USAGE ON *.* TO 'pki'@'10.192.16.172' IDENTIFIED BY '<%=@pki_pass%>';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE,ALTER ON `pki`.* TO 'pki'@'10.192.16.172';
+
+-- zuul
+GRANT USAGE ON *.* TO 'zuul'@'10.64.32.10' IDENTIFIED BY '<%=@zuul_pass%>';
+GRANT ALL PRIVILEGES ON `zuul`.* TO 'zuul'@'10.64.32.10';
+
+GRANT USAGE ON *.* TO 'zuul'@'10.64.0.15' IDENTIFIED BY '<%=@zuul_pass%>';
+GRANT ALL PRIVILEGES ON `zuul`.* TO 'zuul'@'10.64.0.15';
