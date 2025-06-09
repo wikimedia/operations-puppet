@@ -21,7 +21,7 @@ prometheus::instances:
       - prometheus4002.ulsfo.wmnet
       - prometheus5002.eqsin.wmnet
       - prometheus6002.drmrs.wmnet
-      - prometheus7001.magru.wmnet
+      - prometheus7002.magru.wmnet
 
   services:
     port: 9903
