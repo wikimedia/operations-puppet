@@ -2,6 +2,8 @@
 # new zuul (T393873) - main server
 class profile::zuul::main {
 
+    include ::passwords::mysql::zuul
+
     ensure_packages(['docker.io'])
 
     service { 'docker':
