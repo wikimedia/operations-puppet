@@ -1555,11 +1555,10 @@ node /^cloudnet200[5-6]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::net)
 }
 
-node /^cloudcontrol200[456]-dev\.codfw\./ {
+node /^cloudcontrol200[56]-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::control)
 }
 
-# Refresh for cloudcontrol2004, T393102
 node /^cloudcontrol2010-dev\.codfw\./ {
     role(wmcs::openstack::codfw1dev::control)
 }
