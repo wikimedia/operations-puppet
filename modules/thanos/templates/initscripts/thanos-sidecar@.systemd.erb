@@ -20,6 +20,7 @@ ExecStart=/usr/bin/thanos sidecar \
   --prometheus.url <%= @prometheus_url %> \
   <%= @objstore_account ? "--objstore.config-file #{@objstore_config_file}" : '' %> \
   <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
+  <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   --shipper.ignore-unequal-block-size
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s

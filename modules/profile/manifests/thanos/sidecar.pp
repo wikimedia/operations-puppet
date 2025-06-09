@@ -24,12 +24,15 @@ define profile::thanos::sidecar (
     $objstore_account = lookup('profile::thanos::objstore_account') # lint:ignore:wmf_styleguide
     $objstore_password = lookup('profile::thanos::objstore_password') # lint:ignore:wmf_styleguide
 
+    include profile::opentelemetry::collector
+
     thanos::sidecar { $title :
         prometheus_port     => $prometheus_port,
         prometheus_instance => $prometheus_instance,
         http_port           => $http_port,
         grpc_port           => $grpc_port,
         min_time            => $min_time,
+        tracing_enabled     => true,
     }
 
     if $enable_upload {

@@ -16,6 +16,7 @@
 #              absolute time or relative to now (e.g. -1d)
 # [*base_path*] Base path where the sidecar is hosted (if not passed will use <prometheus_insatnce>)
 # [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
+# [*tracing_enabled*] Self explanatory
 
 define thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
@@ -27,6 +28,7 @@ define thanos::sidecar (
     Optional[String] $objstore_password = undef,
     Optional[String] $min_time = undef,
     Float[0, 1] $memlimit_ratio = 0.7,
+    Boolean $tracing_enabled = false,
 ) {
     ensure_packages(['thanos'])
 
@@ -41,6 +43,7 @@ define thanos::sidecar (
     $service_name = "thanos-sidecar@${title}"
     $tsdb_path = "${prometheus_base}/metrics"
     $objstore_config_file = "/etc/${service_name}/objstore.yaml"
+    $tracing_config_file = "/etc/${service_name}/tracing-config.yaml"
 
     file { "/etc/${service_name}":
         ensure => directory,
@@ -66,6 +69,11 @@ define thanos::sidecar (
         group     => 'root',
         show_diff => false,
         content   => $objstore_content,
+    }
+
+    thanos::tracing { $tracing_config_file:
+        service_name => $service_name,
+        sampler_type => 'parentbasedalwayssample',
     }
 
     systemd::service { $service_name:
