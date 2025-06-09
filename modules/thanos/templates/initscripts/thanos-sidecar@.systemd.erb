@@ -21,6 +21,8 @@ ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
 SendSIGKILL=no
 SyslogIdentifier=%N
+# Per thanos-sidecar instance
+MemoryMax=5%
 
 [Install]
 WantedBy=multi-user.target
