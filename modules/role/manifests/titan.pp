@@ -25,4 +25,7 @@ class role::titan {
     include profile::pyrra::filesystem
 
     include profile::opentelemetry::collector
+
+    include profile::memcached::instance
+    include profile::memcached::memkeys
 }

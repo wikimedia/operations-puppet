@@ -67,3 +67,8 @@ profile::puppet::agent::force_puppet7: true
 profile::opentelemetry::otel_gateway_fqdn: jaeger-collector-grpc.svc.eqiad.wmnet
 profile::lvs::realserver::ipip::enabled: true
 profile::base::enable_rp_filter: false
+
+profile::memcached::size: 16384 # multiple of 1024, megabytes
+profile::memcached::firewall_src_sets: ~
+profile::memcached::extended_options:
+  - 'modern'
