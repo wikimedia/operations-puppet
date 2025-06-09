@@ -52,11 +52,6 @@ class thanos::query_frontend (
         'type'   => 'MEMCACHED',
         'config' => {
           'addresses'     => $memcached_hosts.map |$h| { "${h}:${memcached_port}" },
-          'timeout'       => '3s',
-          'max_item_size' => '1MB',
-          'max_async_concurrency' => 20, # Required default to have memcached writes work
-          'max_async_buffer_size' => 10000, # Default will be included in Thanos itself, required for now
-          'dns_provider_update_interval' => '60s', # https://github.com/thanos-io/thanos/issues/3324
         }
       }
     }
