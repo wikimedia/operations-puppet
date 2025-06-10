@@ -107,61 +107,67 @@ define netops::check(
       $monitor_enable='absent'
     }
     @monitoring::service { "${title} Juniper alarms":
-        ensure        => $monitor_enable,
-        host          => $title,
-        group         => $group,
-        description   => 'Juniper alarms',
-        check_command => "check_jnx_alarms!${snmp_community}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Juniper_alarm',
+        ensure         => $monitor_enable,
+        host           => $title,
+        group          => $group,
+        description    => 'Juniper alarms',
+        check_command  => "check_jnx_alarms!${snmp_community}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Juniper_alarm',
+        migration_task => 'T384830',
     }
 
     if $interfaces {
         @monitoring::service { "${title} interfaces":
-            host          => $title,
-            group         => $group,
-            description   => 'Router interfaces',
-            check_command => "check_ifstatus_nomon!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Router_interface_down',
+            host           => $title,
+            group          => $group,
+            description    => 'Router interfaces',
+            check_command  => "check_ifstatus_nomon!${snmp_community}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#Router_interface_down',
+            migration_task => 'T384830',
         }
     }
 
     if $vcp {
         @monitoring::service { "${title} VCP status":
-            host          => $title,
-            group         => $group,
-            description   => 'Juniper virtual chassis ports',
-            check_command => "check_vcp!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VCP_status',
+            host           => $title,
+            group          => $group,
+            description    => 'Juniper virtual chassis ports',
+            check_command  => "check_vcp!${snmp_community}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VCP_status',
+            migration_task => 'T384830',
         }
     }
 
     if $vrrp_peer {
         @monitoring::service { "${title} VRRP status":
-            host          => $title,
-            group         => $group,
-            description   => 'VRRP status',
-            check_command => "check_vrrp!${vrrp_peer}!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VRRP_status',
+            host           => $title,
+            group          => $group,
+            description    => 'VRRP status',
+            check_command  => "check_vrrp!${vrrp_peer}!${snmp_community}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#VRRP_status',
+            migration_task => 'T384830',
         }
     }
 
     if $bfd {
         @monitoring::service { "${title} BFD status":
-            host          => $title,
-            group         => $group,
-            description   => 'BFD status',
-            check_command => "check_bfd!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BFD_status',
+            host           => $title,
+            group          => $group,
+            description    => 'BFD status',
+            check_command  => "check_bfd!${snmp_community}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#BFD_status',
+            migration_task => 'T384830',
         }
     }
 
     if $ospf {
         @monitoring::service { "${title} OSPF status":
-            host          => $title,
-            group         => $group,
-            description   => 'OSPF status',
-            check_command => "check_ospf!${snmp_community}",
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#OSPF_status',
+            host           => $title,
+            group          => $group,
+            description    => 'OSPF status',
+            check_command  => "check_ospf!${snmp_community}",
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/Network_monitoring#OSPF_status',
+            migration_task => 'T384830',
         }
     }
 }
