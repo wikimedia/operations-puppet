@@ -7,9 +7,10 @@ define  query_service::monitor::blazegraph_instance (
     String $contact_groups,
 ) {
     nrpe::monitor_service { "Query_Service_Local_Blazegraph_endpoint-${title}":
-        description  => "Blazegraph Port for ${title}",
-        nrpe_command => "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p ${port}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
+        description    => "Blazegraph Port for ${title}",
+        nrpe_command   => "/usr/lib/nagios/plugins/check_tcp -H 127.0.0.1 -p ${port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidata_query_service/Runbook',
+        migration_task => 'T384308',
     }
 
     nrpe::monitor_service { "${title}-_process":
