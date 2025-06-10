@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero]
+              cicalese, oljad, aborrero, mwilliams]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -438,7 +438,7 @@ groups:
               janstee, gmodena, cdanis, wmde-leszek, jakob,
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
-              mwilliams, samwalton, apine, mlitn, sihe, cmadeo,
+              samwalton, apine, mlitn, sihe, cmadeo,
               htriedman, cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming, mnz,
@@ -4737,12 +4737,12 @@ users:
     ssh_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDGoHMHjUVr1SjVzIlQvZBxaSQj/ex2P95D54y2wZzAd14tJ4vnVPh800Uspg+gfJ1ibNrx7WRdWFJXk3vK32oCvhbo7RNPMAQFrai4OFeHxGYPGEB1XMNC/4sy1HNgAD56IltqYHfVp0/EfQiSiv1wYWBkAdpRUW/Aqa9qwl51SLR8EE1cFojQCtkvCYJOo0uS2qL5Z0qJEP/SN3ocuDlD89rdxxVA+VGBeXHfMpqJBpeUyA6Xmx9sKUV3KFO2A6kQAN55x9BFEC3BtUuu9SRx4AgaDJLeNU5+D1Uqfg8bzgBXjaSyGc6vSqISqQLViFh4Y61lFlCOz1NvVQ/yv6LM95d2fKy98jxQGvIUf2O9F2sBjRUQlBMdKkbT2/4v4ldHLf+VUbyHN1po2PBQfXff4B7+DTrmI/UAiRYoW7sTmqRu1j1nSSY1QgHrRVkR+gCcwGhkYnlkmTDcKqVgNkEKwTYSQtyU9pZ4OaccQ/0b028xnOvc95VGh1/ffGatNoXexdspqWffxKgT5dIGSaSXofAaJdIV9UJBb4X1MUT6wvghT+WSgrg55IC5QN4fCbAZO1jhVdCcwBfBUqTcZZr+TSDhdM8oQeYJuo6gOVhWP2c+awPr5dIF/XTVYMHZ9G8dDLX+SSYvQpqdKQkR5KZ4nYQEvOHJ0sLchprJdiFUNw== daimona.wiki@gmail.com"
   mwilliams:
-    ensure: present
+    ensure: absent
     realname: Matthew Williams
     email: mwilliams@wikimedia.org
     uid: 23615
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   samwalton:
     ensure: present
     realname: Sam Walton
