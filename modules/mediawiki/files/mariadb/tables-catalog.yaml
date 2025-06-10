@@ -18,7 +18,7 @@ tables:
   - name: user_former_groups
     source: core
     canonicality: canonical
-    visibility: partially public
+    visibility: public
   - name: bot_passwords
     source: core
     canonicality: canonical with acceptable loss
@@ -54,11 +54,11 @@ tables:
   - name: l10n_cache
     source: core
     canonicality: derivative
-    visibility: private
+    visibility: public
   - name: redirect
     source: core
     canonicality: derivative
-    visibility: partially public
+    visibility: public
   - name: pagelinks
     source: core
     canonicality: derivative
@@ -178,7 +178,7 @@ tables:
   - name: filearchive
     source: core
     canonicality: canonical
-    visibility: private
+    visibility: partially public
   - name: text
     source: core
     canonicality: canonical
@@ -210,7 +210,7 @@ tables:
   - name: archive
     source: core
     canonicality: canonical
-    visibility: private
+    visibility: partially public
   - name: page
     source: core
     canonicality: canonical
@@ -258,7 +258,7 @@ tables:
   - name: abuse_filter_action
     source: abuse_filter
     canonicality: canonical
-    visibility: public
+    visibility: partially public
   - name: abuse_filter_log
     source: abuse_filter
     canonicality: canonical
