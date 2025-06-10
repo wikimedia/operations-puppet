@@ -17,8 +17,9 @@ class icinga::monitor::gitlab {
 
     monitoring::service {
         default:
-            host      => 'gitlab.wikimedia.org',
-            notes_url => 'https://wikitech.wikimedia.org/wiki/GitLab#Monitoring';
+            host           => 'gitlab.wikimedia.org',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/GitLab#Monitoring',
+            migration_task => 'T384922';
         'gitlab-https':
             description   => 'Gitlab HTTPS healthcheck',
             check_command => 'check_https_url!gitlab.wikimedia.org!/explore';

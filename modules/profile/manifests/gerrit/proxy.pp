@@ -20,10 +20,11 @@ class profile::gerrit::proxy(
 
     if $enable_monitoring {
         monitoring::service { 'https':
-            description   => 'HTTPS',
-            check_command => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
-            contact_group => 'admins,gerrit',
-            notes_url     => 'https://phabricator.wikimedia.org/project/view/330/',
+            description    => 'HTTPS',
+            check_command  => "check_ssl_on_host_port_letsencrypt!${tls_host}!${tls_host}!443",
+            contact_group  => 'admins,gerrit',
+            notes_url      => 'https://phabricator.wikimedia.org/project/view/330/',
+            migration_task => 'T384922',
         }
 
         if !$is_replica {
