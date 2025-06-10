@@ -31,7 +31,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes',  {default_value => []}),
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
-    Stdlib::IP::Address::V4::Nosubnet $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip'),
+    Array[Stdlib::IP::Address::Nosubnet, 1] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip'),
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
 ) {
     $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
@@ -80,7 +80,7 @@ class profile::openstack::base::pdns::recursor::service(
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     class { '::dnsrecursor':
-        listen_addresses         => [$bgp_vip],
+        listen_addresses         => $bgp_vip,
         allow_from               => $allow_from,
         additional_forward_zones => "${legacy_tld}=${pdns_auth_addrs}, ${reverse_zone_rules}",
         auth_zones               => 'labsdb=/var/zones/labsdb',
