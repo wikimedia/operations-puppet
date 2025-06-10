@@ -11,8 +11,9 @@ class etcd::v3::monitoring(Stdlib::HTTPSurl $endpoint) {
     }
 
     nrpe::monitor_service{ 'etcd_cluster_health':
-        description  => 'Etcd cluster health',
-        nrpe_command => "/usr/local/bin/check_etcd_health ${endpoint}",
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Etcd',
+        description    => 'Etcd cluster health',
+        nrpe_command   => "/usr/local/bin/check_etcd_health ${endpoint}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Etcd',
+        migration_task => 'T384933',
     }
 }

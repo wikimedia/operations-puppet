@@ -63,9 +63,10 @@ class profile::etcd::tlsproxy(
     }
 
     monitoring::service { 'etcd-tlsproxy-ssl':
-        description   => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
-        check_command => "check_ssl_on_host_port!${upstream_host}!${upstream_host}!${listen_port}",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Cergen',
+        description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
+        check_command  => "check_ssl_on_host_port!${upstream_host}!${upstream_host}!${listen_port}",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Cergen',
+        migration_task => 'T384933',
     }
 
     file { '/etc/nginx/auth/':
