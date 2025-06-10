@@ -25,5 +25,6 @@ class profile::eventstreams::monitoring {
         contact_group  => 'admins,analytics,team-data-platform',
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Event_Platform/EventStreams/Administration',
         check_command  => "check_eventstreams!${stream_url}",
+        migration_task => 'T384427',
     }
 }
