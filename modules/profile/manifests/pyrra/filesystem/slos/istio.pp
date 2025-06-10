@@ -5,7 +5,7 @@ define profile::pyrra::filesystem::slos::istio(
     String $slo_requests_target,
     String $slo_latency_target,
     Array[String] $datacenters = ['eqiad', 'codfw'],
-    String $window = '12w',
+    String $window = '4w',
     String $destination_canonical_service = "${title}-production",
     String $requests_errors_regex = '5..',
     String $latency_max_seconds_bucket = '5000',
