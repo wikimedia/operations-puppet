@@ -590,7 +590,7 @@ class DnsManager(object):
     def ensure_recordset(self, zone, name, type_, records, description=None, ttl=None):
         """Find or create a recordest and make sure it matches the given
         records."""
-        r = self.designateclient.recordsets.list(zone, criterion={"name": name})
+        r = self.designateclient.recordsets.list(zone, criterion={"name": name, "type": type_})
         if not r:
             logger.warning("Creating %s", name)
             rs = self.designateclient.recordsets.create(zone, name, type_, records)
