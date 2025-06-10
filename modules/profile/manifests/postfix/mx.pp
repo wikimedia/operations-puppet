@@ -53,6 +53,8 @@
 # @param cfssl_label
 #     When using cfssl as the tls_provider this optional parameter specifies the
 #     intermediate signing cert
+# @param mask_received_hosts array of hosts to mask their IP in 'Received:'
+#     headers
 class profile::postfix::mx (
     Hash                                     $config                 = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
     Profile::Postfix::Static_transport_maps  $static_transport_maps  = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
@@ -73,6 +75,7 @@ class profile::postfix::mx (
     Array[Stdlib::Host]                      $unverifiable_domains   = lookup('profile::postfix::mx::unverifiable_domains', {'default_value' => []}),
     Enum['acme', 'cfssl']                    $tls_provider           = lookup('profile::postfix::mx::tls_provider', {'default_value' => 'acme'}),
     Optional[String[1]]                      $cfssl_label            = lookup('profile::postfix::mx::cfssl_label', {'default_value' => undef}),
+    Array[Stdlib::Host]                      $mask_received_hosts    = lookup('profile::postfix::mx::masked_received_hosts', {'default_value' => []}),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
@@ -103,6 +106,17 @@ class profile::postfix::mx (
     postfix::lookup::database { $recipient_discard_transport_map_path:
         content => $recipient_discards.reduce('') |$memo, $v| {
             "${memo}${v[0]} discard:${v[1]}\n"
+        },
+    }
+
+    $smtp_header_checks_path = '/etc/postfix/smtp_header_checks'
+    $smtp_header_checks_paths = [ "regexp:${smtp_header_checks_path}" ]
+    postfix::lookup::database { $smtp_header_checks_path:
+        content => $mask_received_hosts.reduce('') |$memo, $host| {
+            $checks = dnsquery::lookup($host).reduce('') |$ip_memo, $ip| {
+                "${ip_memo}/^Received:(.*)\\ \\[${ip}\\](.*)\$/ REPLACE Received:\${1}\${2}\n"
+            }
+            "${memo}${checks}"
         },
     }
 
@@ -149,6 +163,7 @@ class profile::postfix::mx (
         # Require TLS to advertise SMTP auth
         smtpd_tls_auth_only              => 'yes',
         header_checks                    => ['regexp:/etc/postfix/header_checks'],
+        smtp_header_checks               => $smtp_header_checks_paths,
         smtpd_sender_restrictions        => [
             'permit_mynetworks',
             'reject_non_fqdn_sender',
