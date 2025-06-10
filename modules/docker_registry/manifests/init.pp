@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
+# Installs docker distribution (the name for the registry software) and some prerequisite packages
 class docker_registry (
     Stdlib::Httpurl $swift_url,
     String $swift_user,
@@ -12,7 +13,6 @@ class docker_registry (
     String $registry_shared_secret,
     Integer $catalog_maxentries,
 ){
-
     package {'docker-registry':
         ensure => present,
     }
@@ -69,13 +69,5 @@ class docker_registry (
         require => File[
             '/etc/docker/registry/config.yml'
         ],
-    }
-
-    rsyslog::input::file { 'registry-nginx-error':
-        path => '/var/log/nginx/error.log',
-    }
-
-    rsyslog::input::file { 'registry-nginx-access':
-        path => '/var/log/nginx/access.log',
     }
 }

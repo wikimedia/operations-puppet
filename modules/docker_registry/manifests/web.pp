@@ -224,4 +224,11 @@ class docker_registry::web (
         },
         require     => File['/usr/local/bin/registry-homepage-builder'],
     }
+    rsyslog::input::file { 'registry-nginx-error':
+        path => '/var/log/nginx/error.log',
+    }
+
+    rsyslog::input::file { 'registry-nginx-access':
+        path => '/var/log/nginx/access.log',
+    }
 }
