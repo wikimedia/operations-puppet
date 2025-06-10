@@ -184,6 +184,7 @@ class profile::postfix::mx (
         smtpd_helo_required              => 'yes',
         smtpd_helo_restrictions          => [
             'permit_mynetworks',
+            'permit_sasl_authenticated',
             'reject_non_fqdn_helo_hostname',
             'reject_invalid_helo_hostname',
         ],
