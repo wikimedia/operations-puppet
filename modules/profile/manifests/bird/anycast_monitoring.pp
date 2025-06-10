@@ -24,11 +24,12 @@ class profile::bird::anycast_monitoring (
     }
 
     monitoring::service { 'Recursive DNS anycast VIP':
-        host          => '10.3.0.1',
-        description   => 'recursive DNS anycast VIP',
-        check_command => 'check_dns!www.wikipedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
-        critical      => true, # Page
+        host           => '10.3.0.1',
+        description    => 'recursive DNS anycast VIP',
+        check_command  => 'check_dns!www.wikipedia.org',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Anycast_recursive_DNS#Troubleshooting',
+        critical       => true, # Page
+        migration_task => 'T384425',
     }
 
     $ntp_anycast_peers.each |Stdlib::Fqdn $ntp_anycast_peer| {

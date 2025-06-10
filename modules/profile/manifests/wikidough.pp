@@ -117,6 +117,7 @@ class profile::wikidough (
             check_interval => 360,  # 6h
             retry_interval => 60,   # 1h
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Wikidough/Monitoring#Service_Restart_Check',
+            migration_task => 'T384425',
         }
     }
 

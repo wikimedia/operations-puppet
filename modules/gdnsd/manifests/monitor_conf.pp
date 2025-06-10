@@ -10,9 +10,10 @@ class gdnsd::monitor_conf {
     }
 
     nrpe::monitor_service { 'gdnsd_checkconf':
-        description  => 'gdnsd checkconf',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_gdnsd_checkconf',
-        critical     => true,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/DNS#gdnsd_checkconf',
+        description    => 'gdnsd checkconf',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_gdnsd_checkconf',
+        critical       => true,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS#gdnsd_checkconf',
+        migration_task => 'T384425',
     }
 }

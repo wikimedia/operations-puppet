@@ -15,9 +15,10 @@ class profile::dns::auth::monitoring {
     #  view of reality, though, as the mapping of listener addresses
     #  to real hosts could be fluid due to routing/anycast.
     monitoring::service { 'auth dns':
-        description   => 'Auth DNS',
-        check_command => 'check_dns_query_auth_port!5353!www.wikipedia.org',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/DNS',
+        description    => 'Auth DNS',
+        check_command  => 'check_dns_query_auth_port!5353!www.wikipedia.org',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS',
+        migration_task => 'T384425',
     }
 
     # port 5353 monitoring listeners (which humans and other tools may hit!)

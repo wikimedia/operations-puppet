@@ -78,8 +78,9 @@ class profile::dns::auth::dotls(
     }
 
     nrpe::monitor_service { 'check_dotls':
-        description  => 'AuthDNS-over-TLS Works',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_dotls',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/DNS',
+        description    => 'AuthDNS-over-TLS Works',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_dotls',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/DNS',
+        migration_task => 'T384425',
     }
 }
