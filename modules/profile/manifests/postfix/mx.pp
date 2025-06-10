@@ -152,6 +152,7 @@ class profile::postfix::mx (
         compatibility_level              => '3.6',
         mynetworks                       => $agg_nets,
         myhostname                       => $facts['fqdn'],
+        myorigin                         => '$mydomain',
         inet_interfaces                  => case $mta_mode {
             'null-client': { ['loopback-only'] }
             default:       { ['all'] }
