@@ -135,6 +135,13 @@ replicate-wild-ignore-table = <%= name %>.%
 replicate-wild-ignore-table = %.<%= name %>
 <% end -%>
 
+<% require 'yaml' -%>
+<% tables = YAML.load_file(File.dirname(__FILE__) + "/../../../../mediawiki/files/mariadb/tables-catalog.yaml")['tables'] -%>
+<% tables.each do |table_data| -%>
+  <%- if table_data['visibility'] == 'private' -%>
+replicate-wild-ignore-table = %.<%= table_data['name'] %>
+  <%- end -%>
+<% end -%>
 [mysqldump]
 quick
 max_allowed_packet = 32M

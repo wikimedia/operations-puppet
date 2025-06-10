@@ -1,3 +1,10 @@
+<% require 'yaml' -%>
+<% tables = YAML.load_file(File.dirname(__FILE__) + "/../../../mediawiki/files/mariadb/tables-catalog.yaml")['tables'] -%>
+<% tables.each do |table_data| -%>
+  <%- if table_data['visibility'] == 'private' -%>
+<%= table_data['name'] %>
+  <%- end -%>
+<% end -%>
 <% scope.call_function('lookup', ['private_tables']).each do |name| -%>
 <%= name %>
 <% end -%>
