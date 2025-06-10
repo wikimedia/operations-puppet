@@ -80,7 +80,10 @@ define cloudlb::haproxy::service (
         $port = $frontend['port']
         $drange = $frontend['address'].then |$ip| { [$ip] }
 
-        firewall::service { "${title}_${port}":
+        # Remove unsafe characters, and add an underscore separator
+        $address_str = $frontend['address'].then |$ip| { "${$ip.regsubst('[^\w\-]', '_', 'G')}_" }.lest || { '' }
+
+        firewall::service { "${title}_${address_str}${port}":
             ensure   => present,
             proto    => 'tcp',
             port     => $port,

@@ -74,6 +74,7 @@ describe 'cloudlb::haproxy::service' do
                         'acme_chief_cert_name' => 'example.com',
                     },
                     {
+                        'address' => '192.0.2.1',
                         'port' => 11_112,
                         'acme_chief_cert_name' => 'example.com',
                      },
@@ -100,7 +101,7 @@ describe 'cloudlb::haproxy::service' do
                     'port'     => 11_111,
                     'src_sets' => ['PRODUCTION_NETWORKS', 'LABS_NETWORKS']
                 ).without_srange
-            is_expected.to contain_firewall__service('service1_11112').with(
+            is_expected.to contain_firewall__service('service1_192_0_2_1_11112').with(
                     'ensure'   => 'present',
                     'proto'    => 'tcp',
                     'port'     => 11_112,
