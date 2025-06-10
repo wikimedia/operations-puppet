@@ -71,3 +71,6 @@ profile::memcached::size: 16384 # multiple of 1024, megabytes
 profile::memcached::firewall_src_sets: ~
 profile::memcached::extended_options:
   - 'modern'
+
+profile::thanos::query_frontend::memcached_hosts:
+  - '127.0.0.1'
