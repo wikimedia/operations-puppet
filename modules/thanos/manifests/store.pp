@@ -17,6 +17,7 @@
 #              absolute time or relative to now (e.g. -1d)
 # [*consistency_delay*] Minimum age of all blocks before they are being read.
 # [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
+# [*tracing_enabled*] Self explanatory
 
 # TODO(filippo) evaluate using memcache (shared with swift) for caching
 class thanos::store (
@@ -28,6 +29,7 @@ class thanos::store (
     Optional[String] $max_time = undef,
     Optional[String] $consistency_delay = undef,
     Float[0, 1] $memlimit_ratio = 0.7,
+    Boolean $tracing_enabled = false,
 ) {
     ensure_packages(['thanos'])
 
@@ -37,6 +39,7 @@ class thanos::store (
     $data_dir = '/srv/thanos-store'
     $cache_config_file = '/etc/thanos-store/cache.yaml'
     $objstore_config_file = '/etc/thanos-store/objstore.yaml'
+    $tracing_config_file = '/etc/thanos-store/tracing-config.yml'
 
     file { $data_dir:
         ensure => directory,
@@ -67,6 +70,11 @@ class thanos::store (
         group     => 'root',
         show_diff => false,
         content   => template('thanos/objstore.yaml.erb'),
+    }
+
+    thanos::tracing { $tracing_config_file:
+        service_name => $service_name,
+        sampler_type => 'parentbasedalwayssample',
     }
 
     systemd::service { $service_name:

@@ -15,4 +15,5 @@ ExecStart=/usr/bin/thanos store \
   --objstore.config-file <%= @objstore_config_file %> \
   <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
   <%= @max_time ? "--max-time=#{@max_time}" : '' %> \
+  <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   <%= @consistency_delay ? "--consistency-delay=#{@consistency_delay}" : '' %>

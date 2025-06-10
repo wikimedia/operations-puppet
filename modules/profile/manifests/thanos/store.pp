@@ -31,6 +31,7 @@ class profile::thanos::store (
         max_time          => sprintf('-%dd', $object_store_cutoff_days),
         min_time          => $min_time,
         consistency_delay => '30m',
+        tracing_enabled   => true,
     }
 
     # Allow access from query hosts
