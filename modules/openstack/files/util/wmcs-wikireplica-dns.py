@@ -129,8 +129,17 @@ def main():
         for svc, ips in config["zones"][zone].items():
             # Goofy, but true -- Designate needs FQDNs for names.
             fqdn = "{}.{}".format(svc, zone)
+
+            # Checking for a colon is hacky but works I guess
+            ips_ipv4 = [ip for ip in ips if ":" not in ip]
+            ips_ipv6 = [ip for ip in ips if ":" in ip]
+
             logger.info("Syncing A record '{}'".format(fqdn))
-            dns.ensure_recordset(zone_id, fqdn, "A", ips)
+            dns.ensure_recordset(zone_id, fqdn, "A", ips_ipv4)
+
+            if ips_ipv6:
+                logger.info("Syncing AAAA record '{}'".format(fqdn))
+                dns.ensure_recordset(zone_id, fqdn, "AAAA", ips_ipv6)
 
             if args.aliases and svc in shards:
                 # everything gets sent to the wikimedia.cloud domain for replicas
