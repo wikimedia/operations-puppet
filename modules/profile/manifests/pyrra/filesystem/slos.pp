@@ -59,7 +59,7 @@ class profile::pyrra::filesystem::slos (
             },
             'spec' => {
                 'target' => '99.5',
-                'window' => '12w',
+                'window' => '4w',
                 'indicator' => {
                     'ratio' => {
                         'errors' => {
@@ -95,7 +95,7 @@ class profile::pyrra::filesystem::slos (
             },
             'spec' => {
                 'target' => '99.95',
-                'window' => '12w',
+                'window' => '4w',
                 'indicator' => {
                     'bool_gauge' => {
                         'metric' => "logstash_sli_availability:bool{site=\"${datacenter}\"}",
