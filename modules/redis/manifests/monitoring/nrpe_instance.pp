@@ -10,5 +10,6 @@ define redis::monitoring::nrpe_instance($replica_warning=60, $replica_critical=6
         contact_group  => 'admins',
         retry_interval => 2,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/Redis',
+        migration_task => 'T384924',
     }
 }
