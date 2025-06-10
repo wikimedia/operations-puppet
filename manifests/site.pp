@@ -50,10 +50,6 @@ node /^an-coord100[34]\.eqiad\./ {
     role(analytics_cluster::coordinator)
 }
 
-node /^an-db100[1-2]\.eqiad\./ {
-    role(analytics_cluster::postgresql)
-}
-
 node /^an-mariadb100[1-2]\.eqiad\./ {
     role(analytics_cluster::mariadb)
 }
@@ -1055,9 +1051,13 @@ node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::dse_k8s_etcd)
 }
 
-# new dse-k8s-workers T29157, T3074009, T394647
+# new dse-k8s-workers T29157, T3074009, T394647, T395557
 node /^dse-k8s-worker10(0[1-9]|1[0-1])\.eqiad\./ {
     role(dse_k8s::worker)
+}
+
+node /^dse-k8s-worker101[2-3]\.eqiad\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # nfs server for xml dumps generation, also rsyncs xml dumps

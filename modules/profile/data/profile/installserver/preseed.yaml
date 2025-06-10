@@ -30,9 +30,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'an-coord100[3-4]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
-  'an-db*':
-    - partman/standard.cfg
-    - partman/raid1-2dev.cfg
   'an-druid100[5-7]':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
