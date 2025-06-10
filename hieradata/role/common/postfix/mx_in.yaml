@@ -4,6 +4,7 @@ profile::base::production::role_description: 'Postfix inbound email server'
 profile::mail::default_mail_relay::enabled: false
 profile::contacts::role_contacts: ['Infrastructure Foundations']
 profile::postfix::mx::mta_mode: 'inbound'
+profile::postfix::mx::mask_received_hosts: ['crm2001.codfw.wmnet']
 
 profile::postfix::mx::domain_aliases_generic:
   - 'mediawiki.org'
