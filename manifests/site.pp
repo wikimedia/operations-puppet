@@ -375,7 +375,7 @@ node /^bast6003\.wikimedia\./ {
 }
 
 node /^bast7001\.wikimedia\./ {
-    role(bastionhost)
+    role(insetup::infrastructure_foundations_ferm)
 }
 
 node /^bast7002\.wikimedia\./ {
