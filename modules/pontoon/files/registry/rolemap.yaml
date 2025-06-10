@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: Apache-2.0
+puppetserver::pontoon:
+- registry-puppet-01.sre-sandbox.eqiad1.wikimedia.cloud
+pki::multirootca:
+- registry-pki-01.sre-sandbox.eqiad1.wikimedia.cloud
+puppetdb:
+- registry-puppetdb-01.sre-sandbox.eqiad1.wikimedia.cloud
+docker_registry:
+- registry-docker-registry-01.sre-sandbox.eqiad1.wikimedia.cloud
