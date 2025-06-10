@@ -7,11 +7,10 @@ class profile::openstack::base::pdns::auth::service(
     $db_pass = lookup('profile::openstack::base::pdns::db_pass'),
     Array[Stdlib::Fqdn] $prometheus_nodes = lookup('prometheus_nodes'),
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
-){
+) {
     $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $dns_webserver_allow_to = dnsquery::lookup($this_host_entry['private_fqdn'], true)
-    $listen_on = dnsquery::lookup($this_host_entry['auth_fqdn'], true)
-    $query_local_address = $this_host_entry['auth_fqdn']
+    $auth_fqdn_ips = dnsquery::lookup($this_host_entry['auth_fqdn'], true)
 
     $pdns_auth_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
     $pdns_api_allow_from = [
@@ -36,9 +35,9 @@ class profile::openstack::base::pdns::auth::service(
         .sort
 
     class { '::pdns_server':
-        listen_on             => $listen_on,
+        listen_on             => $auth_fqdn_ips,
         default_soa_content   => $default_soa_content,
-        query_local_address   => $query_local_address,
+        query_local_address   => $auth_fqdn_ips,
         pdns_db_host          => $db_host,
         pdns_db_password      => $db_pass,
         dns_webserver_address => '::',

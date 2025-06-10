@@ -9,7 +9,7 @@
 class pdns_server(
     Array[Stdlib::IP::Address::Nosubnet, 1] $listen_on,
     Stdlib::Fqdn                            $default_soa_content,
-    Stdlib::Fqdn                            $query_local_address,
+    Array[Stdlib::IP::Address::Nosubnet, 1] $query_local_address,
     Stdlib::Host                            $pdns_db_host,
     String[1]                               $pdns_db_password,
     Stdlib::IP::Address::Nosubnet           $dns_webserver_address,
