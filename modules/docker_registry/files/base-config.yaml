@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: Apache-2.0
+version: 0.1
+log:
+  fields:
+    service: docker-registry
+storage:
+  cache:
+    blobdescriptor: redis
+  delete:
+    enabled: true
+http:
+  addr: 123
+  secret: dummy
+  headers:
+    X-Content-Type-Options: [nosniff]
+  debug:
+    addr: 1234
+    prometheus:
+      enabled: true
+      path: /metrics
+redis:
+  addr: dummy:123
+  password: dummy
+  db: 0
+  dialtimeout: 100ms
+  readtimeout: 100ms
+  writetimeout: 300ms
+  pool:
+    maxidle: 16
+    maxactive: 64
+    idletimeout: 300s
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+  tcp: []
+catalog:
+  maxentries: 123

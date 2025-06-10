@@ -57,18 +57,28 @@ class profile::docker_registry(
         $password = $swift_password
     }
 
-    class { 'docker_registry':
-        swift_user                      => $swift_account['user'],
-        swift_password                  => $password,
-        swift_url                       => $swift_auth_url,
+    # Install all the required stuff
+    class { 'docker_registry': }
+    # Get our swift registry started
+    docker_registry::instance { 'swift':
+        backend                         => 'swift',
+        backend_config                  => {
+            username  => $swift_account['user'],
+            password  => $password,
+            authurl   => $swift_auth_url,
+            container => $swift_container,
+        },
         swift_replication_key           => $swift_replication_key,
         swift_replication_configuration => $swift_replication_configuration,
-        swift_container                 => $swift_container,
-        redis_host                      => $redis_host,
-        redis_port                      => $redis_port,
-        redis_passwd                    => $redis_password,
+        redis_config                    => {
+            addr     => "${redis_host}:${redis_port}",
+            password => $redis_password,
+            db       => 0,
+        },
         registry_shared_secret          => $docker_registry_shared_secret,
         catalog_maxentries              => $catalog_maxentries,
+        port                            => 5000,
+        debug_port                      => 5001,
     }
 
     $k8s_groups = k8s::fetch_cluster_groups()
