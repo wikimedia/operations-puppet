@@ -31,6 +31,8 @@
 # @param rspamd_sender_discards
 #     Sender address patterns to silently discard, these patterns should conform to the Rspamd syntax:
 #     https://rspamd.com/doc/modules/multimap.html#regexp-maps
+# @param rspamd_network_discards
+#     Sender IPs or CIDRs to silently discard.
 # @param plain_auth_logins
 #     Hash of username to hashed password for SMTP plain authenticated relaying,
 #     protected by TLS.
@@ -56,26 +58,27 @@
 # @param mask_received_hosts array of hosts to mask their IP in 'Received:'
 #     headers
 class profile::postfix::mx (
-    Hash                                     $config                 = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
-    Profile::Postfix::Static_transport_maps  $static_transport_maps  = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
-    Profile::Postfix::Dynamic_transport_maps $dynamic_transport_maps = lookup('profile::postfix::mx::dynamic_transport_maps', {'default_value' => {}}),
-    Array[Stdlib::Host]                      $domain_aliases_generic = lookup('profile::postfix::mx::domain_aliases_generic', {'default_value' => []}),
-    Profile::Postfix::Domain_aliases         $domain_aliases         = lookup('profile::postfix::mx::domain_aliases', {'default_value' => {}}),
-    Hash                                     $rspamd_config          = lookup('profile::postfix::mx::rspamd_config', { 'default_value' => {} }),
-    Hash                                     $rspamd_override_config = lookup('profile::postfix::mx::rspamd_override_config', { 'default_value' => {} }),
-    Hash[String[1], String[1]]               $rspamd_dkim_keys       = lookup('profile::postfix::mx::rspamd_dkim_keys', { 'default_value' => {} }),
-    Array[String[1]]                         $rspamd_sender_discards = lookup('profile::postfix::mx::rspamd_sender_discards', {'default_value' => []}),
-    Hash[Stdlib::Email, String[1]]           $plain_auth_logins      = lookup('profile::postfix::mx::plain_auth_logins', {'default_value' => {}}),
-    Array[Stdlib::IP::Address]               $trusted_networks       = lookup('profile::postfix::mx::trusted_networks', {'default_value' => $::network::constants::aggregate_networks}),
-    Optional[Profile::Postfix::Mail_aliases] $mail_aliases           = lookup('profile::postfix::mx::mail_aliases', {'default_value' => undef}),
-    Optional[Profile::Postfix::Verp]         $verp_config            = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
-    Profile::Postfix::Mta_mode               $mta_mode               = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
-    Hash[Stdlib::Email, String[1]]           $recipient_discards     = lookup('profile::postfix::mx::recipient_discards', {'default_value' => {}}),
-    Array[Stdlib::Host]                      $verify_domains         = lookup('profile::postfix::mx::verify_domains', {'default_value' => []}),
-    Array[Stdlib::Host]                      $unverifiable_domains   = lookup('profile::postfix::mx::unverifiable_domains', {'default_value' => []}),
-    Enum['acme', 'cfssl']                    $tls_provider           = lookup('profile::postfix::mx::tls_provider', {'default_value' => 'acme'}),
-    Optional[String[1]]                      $cfssl_label            = lookup('profile::postfix::mx::cfssl_label', {'default_value' => undef}),
-    Array[Stdlib::Host]                      $mask_received_hosts    = lookup('profile::postfix::mx::masked_received_hosts', {'default_value' => []}),
+    Hash                                     $config                  = lookup('profile::postfix::mx::config', { 'default_value' => {} }),
+    Profile::Postfix::Static_transport_maps  $static_transport_maps   = lookup('profile::postfix::mx::static_transport_maps', {'default_value' => {}}),
+    Profile::Postfix::Dynamic_transport_maps $dynamic_transport_maps  = lookup('profile::postfix::mx::dynamic_transport_maps', {'default_value' => {}}),
+    Array[Stdlib::Host]                      $domain_aliases_generic  = lookup('profile::postfix::mx::domain_aliases_generic', {'default_value' => []}),
+    Profile::Postfix::Domain_aliases         $domain_aliases          = lookup('profile::postfix::mx::domain_aliases', {'default_value' => {}}),
+    Hash                                     $rspamd_config           = lookup('profile::postfix::mx::rspamd_config', { 'default_value' => {} }),
+    Hash                                     $rspamd_override_config  = lookup('profile::postfix::mx::rspamd_override_config', { 'default_value' => {} }),
+    Hash[String[1], String[1]]               $rspamd_dkim_keys        = lookup('profile::postfix::mx::rspamd_dkim_keys', { 'default_value' => {} }),
+    Array[String[1]]                         $rspamd_sender_discards  = lookup('profile::postfix::mx::rspamd_sender_discards', {'default_value' => []}),
+    Array[Stdlib::IP::Address]               $rspamd_network_discards = lookup('profile::postfix::mx::rspamd_network_discards', {'default_value' => []}),
+    Hash[Stdlib::Email, String[1]]           $plain_auth_logins       = lookup('profile::postfix::mx::plain_auth_logins', {'default_value' => {}}),
+    Array[Stdlib::IP::Address]               $trusted_networks        = lookup('profile::postfix::mx::trusted_networks', {'default_value' => $::network::constants::aggregate_networks}),
+    Optional[Profile::Postfix::Mail_aliases] $mail_aliases            = lookup('profile::postfix::mx::mail_aliases', {'default_value' => undef}),
+    Optional[Profile::Postfix::Verp]         $verp_config             = lookup('profile::postfix::mx::verp_config', {'default_value' => undef}),
+    Profile::Postfix::Mta_mode               $mta_mode                = lookup('profile::postfix::mx::mta_mode', {'default_value' => 'null-client'}),
+    Hash[Stdlib::Email, String[1]]           $recipient_discards      = lookup('profile::postfix::mx::recipient_discards', {'default_value' => {}}),
+    Array[Stdlib::Host]                      $verify_domains          = lookup('profile::postfix::mx::verify_domains', {'default_value' => []}),
+    Array[Stdlib::Host]                      $unverifiable_domains    = lookup('profile::postfix::mx::unverifiable_domains', {'default_value' => []}),
+    Enum['acme', 'cfssl']                    $tls_provider            = lookup('profile::postfix::mx::tls_provider', {'default_value' => 'acme'}),
+    Optional[String[1]]                      $cfssl_label             = lookup('profile::postfix::mx::cfssl_label', {'default_value' => undef}),
+    Array[Stdlib::Host]                      $mask_received_hosts     = lookup('profile::postfix::mx::masked_received_hosts', {'default_value' => []}),
 ) {
     $trusted_networks_filtered = $trusted_networks.filter |$x| {
         $x !~ /127.0.0.0|::1/
@@ -517,7 +520,14 @@ class profile::postfix::mx (
                 action    => 'discard',
                 prefilter => true,
                 regexp    => true,
-            }
+            },
+            network_discards => {
+                type      => 'ip',
+                map       => 'file:///var/lib/rspamd/network_discards.map',
+                symbol    => 'NETWORK_DISCARDS',
+                action    => 'discard',
+                prefilter => true,
+            },
         },
         actions => {
             discard => {
@@ -554,6 +564,16 @@ class profile::postfix::mx (
         ensure  => present,
         mode    => '0444',
         content => $rspamd_sender_discards.reduce('') |$memo, $v| {
+            "${memo}${v}\n"
+        },
+        # needed to create the /var/lib/rspamd dir
+        require => Package['rspamd'],
+    }
+
+    file { '/var/lib/rspamd/network_discards.map':
+        ensure  => present,
+        mode    => '0444',
+        content => $rspamd_network_discards.reduce('') |$memo, $v| {
             "${memo}${v}\n"
         },
         # needed to create the /var/lib/rspamd dir
