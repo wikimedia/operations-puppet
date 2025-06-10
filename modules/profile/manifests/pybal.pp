@@ -92,6 +92,7 @@ class profile::pybal(
         check_interval => 10, # mins
         retry_interval => 1,  # mins
         notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal#Pybal_service_has_not_been_restarted',
+        migration_task => 'T384938',
     }
 
     # Sites with MediaWiki appservers need runcommand

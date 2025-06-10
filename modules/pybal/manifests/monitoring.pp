@@ -23,9 +23,10 @@ class pybal::monitoring(
     }
 
     nrpe::monitor_service { 'pybal_backends':
-        description  => 'PyBal backends health check',
-        nrpe_command => '/usr/local/lib/nagios/plugins/check_pybal --url http://localhost:9090/alerts',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/PyBal',
+        description    => 'PyBal backends health check',
+        nrpe_command   => '/usr/local/lib/nagios/plugins/check_pybal --url http://localhost:9090/alerts',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
+        migration_task => 'T384938',
     }
 
     nrpe::plugin { 'check_pybal_ipvs_diff':
@@ -38,6 +39,7 @@ class pybal::monitoring(
         check_interval => 5,
         timeout        => 60,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
+        migration_task => 'T384938',
     }
 
     if $config_source == 'etcd' {
@@ -53,6 +55,7 @@ class pybal::monitoring(
             check_interval => 5,
             timeout        => 60,
             notes_url      => 'https://wikitech.wikimedia.org/wiki/PyBal',
+            migration_task => 'T384938',
         }
     }
 
