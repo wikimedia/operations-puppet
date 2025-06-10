@@ -27,12 +27,13 @@ define profile::thanos::sidecar (
     include profile::opentelemetry::collector
 
     thanos::sidecar { $title :
-        prometheus_port     => $prometheus_port,
-        prometheus_instance => $prometheus_instance,
-        http_port           => $http_port,
-        grpc_port           => $grpc_port,
-        min_time            => $min_time,
-        tracing_enabled     => true,
+        prometheus_port       => $prometheus_port,
+        prometheus_instance   => $prometheus_instance,
+        http_port             => $http_port,
+        grpc_port             => $grpc_port,
+        min_time              => $min_time,
+        tracing_enabled       => true,
+        limits_request_series => 128000,
     }
 
     if $enable_upload {

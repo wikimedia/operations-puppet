@@ -17,6 +17,8 @@
 # [*base_path*] Base path where the sidecar is hosted (if not passed will use <prometheus_insatnce>)
 # [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
 # [*tracing_enabled*] Self explanatory
+# [*limits_request_series*] The maximum series allowed for a single Series request. 0 to disable.
+# [*limits_request_samples*] The maximum samples allowed for a single Series request. 0 to disable.
 
 define thanos::sidecar (
     Stdlib::Port::Unprivileged $prometheus_port,
@@ -29,6 +31,8 @@ define thanos::sidecar (
     Optional[String] $min_time = undef,
     Float[0, 1] $memlimit_ratio = 0.7,
     Boolean $tracing_enabled = false,
+    Integer[0] $limits_request_series = 0,
+    Integer[0] $limits_request_samples = 0,
 ) {
     ensure_packages(['thanos'])
 

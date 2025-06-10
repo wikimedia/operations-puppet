@@ -17,6 +17,8 @@ ExecStart=/usr/bin/thanos sidecar \
   --http-address <%= @http_address %> \
   --grpc-address <%= @grpc_address %> \
   --tsdb.path <%= @tsdb_path %> \
+  --store.limits.request-series <%= @limits_request_series %> \
+  --store.limits.request-samples <%= @limits_request_samples %> \
   --prometheus.url <%= @prometheus_url %> \
   <%= @objstore_account ? "--objstore.config-file #{@objstore_config_file}" : '' %> \
   <%= @min_time ? "--min-time=#{@min_time}" : '' %> \
