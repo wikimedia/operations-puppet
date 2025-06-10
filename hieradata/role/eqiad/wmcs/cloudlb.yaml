@@ -15,55 +15,74 @@ profile::bird::advertise_vips:
     service_type: haproxy
     # TODO: can we check the specific proxy for this section?
     check_cmd: "/usr/local/lib/nagios/plugins/check_haproxy --check=someup"
+    check_cmd_ipv6: "/usr/local/lib/nagios/plugins/check_haproxy --check=someup"
     address: 172.20.255.2
+    address_ipv6: 2a02:ec80:a000:2ff::2
   wikireplicas-analytics-s2.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.3
+    address_ipv6: 2a02:ec80:a000:2ff::3
   wikireplicas-analytics-s3.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.4
+    address_ipv6: 2a02:ec80:a000:2ff::4
   wikireplicas-analytics-s4.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.5
+    address_ipv6: 2a02:ec80:a000:2ff::5
   wikireplicas-analytics-s5.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.6
+    address_ipv6: 2a02:ec80:a000:2ff::6
   wikireplicas-analytics-s6.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.7
+    address_ipv6: 2a02:ec80:a000:2ff::7
   wikireplicas-analytics-s7.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.8
+    address_ipv6: 2a02:ec80:a000:2ff::8
   wikireplicas-analytics-s8.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.9
+    address_ipv6: 2a02:ec80:a000:2ff::9
   wikireplicas-analytics-x3.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.18
+    address_ipv6: 2a02:ec80:a000:2ff::18
   wikireplicas-web-s1.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.10
+    address_ipv6: 2a02:ec80:a000:2ff::10
   wikireplicas-web-s2.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.11
+    address_ipv6: 2a02:ec80:a000:2ff::11
   wikireplicas-web-s3.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.12
+    address_ipv6: 2a02:ec80:a000:2ff::12
   wikireplicas-web-s4.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.13
+    address_ipv6: 2a02:ec80:a000:2ff::13
   wikireplicas-web-s5.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.14
+    address_ipv6: 2a02:ec80:a000:2ff::14
   wikireplicas-web-s6.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.15
+    address_ipv6: 2a02:ec80:a000:2ff::15
   wikireplicas-web-s7.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.16
+    address_ipv6: 2a02:ec80:a000:2ff::16
   wikireplicas-web-s8.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.17
+    address_ipv6: 2a02:ec80:a000:2ff::17
   wikireplicas-web-x3.svc.private.eqiad.wikimedia.cloud:
     <<: *wikireplicas
     address: 172.20.255.19
+    address_ipv6: 2a02:ec80:a000:2ff::19
