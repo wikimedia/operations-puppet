@@ -4,7 +4,7 @@ class profile::lvs::configuration {
     $lvs_class_hosts = {
         'high-traffic1' => $::realm ? {
             'production' => $::site ? {
-                'eqiad' => [ 'lvs1017', 'lvs1020', 'lvs1016' ],
+                'eqiad' => [ 'lvs1016', 'lvs1020' ],
                 'codfw' => [ 'lvs2011', 'lvs2014' ],
                 'esams' => [ 'lvs3008', 'lvs3010' ],
                 'ulsfo' => [ 'lvs4008', 'lvs4010' ],
@@ -59,7 +59,6 @@ class profile::lvs::configuration {
     $lvs_classes =  {
         'lvs1013' => 'secondary',
         'lvs1016' => 'high-traffic1',
-        'lvs1017' => 'high-traffic1',
         'lvs1018' => 'high-traffic2',
         'lvs1019' => 'low-traffic',
         'lvs1020' => 'secondary',
