@@ -1092,6 +1092,30 @@ tables:
     canonicality: derivative
     visibility: public
     dblist: ores
+  - name: pagetriage_page
+    source: pagetriage
+    canonicality: canonical
+    visibility: public
+    databases:
+      - dbname: enwiki
+      - dbname: testwiki
+      - dbname: test2wiki
+  - name: pagetriage_page_tags
+    source: pagetriage
+    canonicality: canonical
+    visibility: public
+    databases:
+      - dbname: enwiki
+      - dbname: testwiki
+      - dbname: test2wiki
+  - name: pagetriage_tags
+    source: pagetriage
+    canonicality: canonical
+    visibility: public
+    databases:
+      - dbname: enwiki
+      - dbname: testwiki
+      - dbname: test2wiki
 sources:
   core:
     - path: sql/tables.json
@@ -1147,6 +1171,9 @@ sources:
   ores:
     - path: extensions/ORES/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ORES/+/master/sql/tables.json
+  pagetriage:
+    - path: extensions/PageTriage/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/PageTriage/+/master/sql/tables.json
   proofread:
     - path: extensions/ProofreadPage/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ProofreadPage/+/master/sql/tables.json
