@@ -9,14 +9,31 @@ class profile::openstack::base::pdns::auth::service(
     String $pdns_api_key = lookup('profile::openstack::base::pdns::pdns_api_key', {'default_value' => ''}),
 ){
     $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
-    $dns_webserver_address = $this_host_entry['private_fqdn'].ipresolve(4)
+    $dns_webserver_allow_to = dnsquery::lookup($this_host_entry['private_fqdn'], true)
     $listen_on = dnsquery::lookup($this_host_entry['auth_fqdn'], true)
     $query_local_address = $this_host_entry['auth_fqdn']
 
     $pdns_auth_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
-    $pdns_api_allow_from = [$pdns_auth_hosts, $designate_hosts, $prometheus_nodes].flatten.map |Stdlib::Fqdn $fqdn| {
-        dnsquery::lookup($fqdn, true)
-    }.flatten + ['127.0.0.1']
+    $pdns_api_allow_from = [
+        $pdns_auth_hosts,
+        $designate_hosts,
+        $prometheus_nodes,
+        '127.0.0.1', '::1',
+    ]
+        .flatten
+        .wmflib::hosts2ips()
+        .map |Stdlib::IP::Address::Nosubnet $ip| {
+            $ip ? {
+                # When the web server is bound on all IPv6 interfaces (::),
+                # it will see v4 addresses using the IPv6 compat form instead of
+                # the normal v4 form. We add both forms to the ACL here, since the same
+                # list is used for allow-axfr-ips which does see the normal v4 addresses.
+                Stdlib::IP::Address::V4::Nosubnet => [$ip, "::ffff:${ip}"],
+                default                           => $ip,
+            }
+        }
+        .flatten
+        .sort
 
     class { '::pdns_server':
         listen_on             => $listen_on,
@@ -24,9 +41,9 @@ class profile::openstack::base::pdns::auth::service(
         query_local_address   => $query_local_address,
         pdns_db_host          => $db_host,
         pdns_db_password      => $db_pass,
-        dns_webserver_address => '0.0.0.0',
+        dns_webserver_address => '::',
         dns_api_key           => $pdns_api_key,
-        dns_api_allow_from    => $pdns_api_allow_from.sort,
+        dns_api_allow_from    => $pdns_api_allow_from,
     }
 
     ferm::service { 'udp_dns_rec':
@@ -57,6 +74,6 @@ class profile::openstack::base::pdns::auth::service(
         proto  => 'tcp',
         port   => '8081',
         srange => [$pdns_auth_hosts + $designate_hosts].flatten,
-        drange => $dns_webserver_address,
+        drange => $dns_webserver_allow_to,
     }
 }
