@@ -121,7 +121,7 @@ local function use_local_dc()
     -- POST and PUT requests go to primary unless there is an override header
     local promise = ts.client_request.header['Promise-Non-Write-API-Action']
     local http_method = ts.client_request.get_method()
-    if promise ~= "true" and (http_method == "POST" or http_method == "PUT") then
+    if promise ~= "true" and (http_method == "POST" or http_method == "PUT" or http_method == "PATCH" or http_method == "DELETE") then
         return false
     end
 
