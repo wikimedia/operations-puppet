@@ -216,7 +216,7 @@ groups:
               mszabo, ihurbain, zoe, bpirkle, daniel, gmodena, hokwelum,
               tchin, xcollazo, sg912, aude, dbrant, jly, ammarpad, gkyziridis,
               kemayo, arthurtaylor, ozge, bwojtowicz, thiemowmde, esanders, jdlrobson,
-              kgraessle, santhosh]
+              kgraessle, santhosh, cmelo]
     system_members: [mwbuilder, mwpresync, spiderpig]
     privileges: ['ALL = (www-data,mwdeploy,scap,mwpresync,spiderpig) NOPASSWD: ALL',
                  'ALL = NOPASSWD: /usr/sbin/apache2ctl',
@@ -464,7 +464,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde, guilherme]
+              deerbee, rosalie-wmde, guilherme, cmelo]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6724,6 +6724,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAlmHJrM3b5ma68tu6shrbodHYHi6uiba+bVvZ7FFz4t guilherme@wikimedia.org
     krb: present
+  cmelo:
+    ensure: present
+    realname: Claudio Melo
+    email: cmelo@wikimedia.org
+    uid: 35344
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICB5a7B3Lik8aSZpI3TOgV6uBExCmrkmn8FE/3PHmClG claudiomelo@wmf3041
+    krb: absent
 
 ldap_only_users:
   adavenport:
@@ -7291,10 +7300,6 @@ ldap_only_users:
     ensure: present
     realname: Jacqueline Chen
     email: jchen@wikimedia.org
-  cmelo:
-    ensure: present
-    realname: Claudio Melo
-    email: cmelo@wikimedia.org
   jcarvalho:
     ensure: absent
     realname: João Carvalho
