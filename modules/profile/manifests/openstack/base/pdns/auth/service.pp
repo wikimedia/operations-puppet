@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::openstack::base::pdns::auth::service(
-    Array[Hash] $hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Profile::Openstack::Pdns::Host] $hosts = lookup('profile::openstack::base::pdns::hosts'),
     Array[Stdlib::Fqdn] $designate_hosts = lookup('profile::openstack::base::designate_hosts'),
     Stdlib::Fqdn $default_soa_content = lookup('profile::openstack::base::pdns::default_soa_content'),
     $db_host = lookup('profile::openstack::base::pdns::db_host'),

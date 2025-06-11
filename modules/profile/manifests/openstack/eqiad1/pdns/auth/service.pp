@@ -1,5 +1,5 @@
 class profile::openstack::eqiad1::pdns::auth::service(
-    Array[Hash] $hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
+    Array[Profile::Openstack::Pdns::Host] $hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::eqiad1::openstack_control_nodes'),
     String $openstack_control_node_interface = lookup('profile::openstack::base::neutron::openstack_control_node_interface', {default_value => 'cloud_private_fqdn'}),
     $db_pass = lookup('profile::openstack::eqiad1::pdns::db_pass'),

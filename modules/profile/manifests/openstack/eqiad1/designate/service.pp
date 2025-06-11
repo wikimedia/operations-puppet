@@ -14,7 +14,7 @@ class profile::openstack::eqiad1::designate::service(
     $ldap_user_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
     $pdns_api_key = lookup('profile::openstack::eqiad1::pdns::api_key'),
     $db_admin_pass = lookup('profile::openstack::eqiad1::designate::db_admin_pass'),
-    Array[Hash] $pdns_hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
+    Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     $rabbit_pass = lookup('profile::openstack::eqiad1::designate::rabbit_pass'),
     $osm_host = lookup('profile::openstack::eqiad1::osm_host'),

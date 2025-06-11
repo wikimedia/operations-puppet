@@ -23,7 +23,7 @@
 #
 class profile::wmcs::services::dnsrecursor (
     String                     $legacy_tld = lookup('profile::openstack::base::pdns::legacy_tld'),
-    Array[Hash]                $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
+    Array[Profile::Openstack::Pdns::Host]                $pdns_hosts       = lookup('profile::openstack::base::pdns::hosts'),
     Array[String]              $private_reverse_zones = lookup('profile::openstack::base::pdns::private_reverse_zones'),
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
 ) {
