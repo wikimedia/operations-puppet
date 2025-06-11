@@ -35,7 +35,7 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
 ) {
     $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
-    $query_local_address = $this_host_entry['auth_fqdn']
+    $auth_ips = $this_host_entry['auth_ips']
 
     include ::network::constants
     $allow_from = flatten([
@@ -76,7 +76,7 @@ class profile::openstack::base::pdns::recursor::service(
         require => File['/var/zones']
     }
 
-    $pdns_auth_addrs = $pdns_hosts.map |$item| { dnsquery::lookup($item['auth_fqdn'], true) }.flatten.sort.join(';')
+    $pdns_auth_addrs = $pdns_hosts.map |$item| { $item['auth_ips'] }.flatten.sort.join(';')
     $reverse_zone_rules = inline_template("<% @private_reverse_zones.each do |zone| %><%= zone %>=${pdns_auth_addrs}, <% end %>")
 
     class { '::dnsrecursor':
@@ -92,7 +92,7 @@ class profile::openstack::base::pdns::recursor::service(
         dnssec                   => 'off',  # T226088 - off until 4.1.x
         enable_webserver         => debian::codename::ge('bullseye'),
         api_allow_from           => $pdns_api_allow_from,
-        query_local_address      => dnsquery::lookup($query_local_address, true),
+        query_local_address      => $auth_ips,
         threads                  => 12,
     }
 

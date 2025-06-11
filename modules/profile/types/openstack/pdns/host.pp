@@ -3,6 +3,7 @@
 # a Cloud VPS DNS host has.
 type Profile::Openstack::Pdns::Host = Struct[{
   auth_fqdn    => Stdlib::Fqdn,
+  auth_ips     => Array[Stdlib::IP::Address::Nosubnet, 1],
   private_fqdn => Stdlib::Fqdn,
   host_fqdn    => Stdlib::Fqdn,
 }]

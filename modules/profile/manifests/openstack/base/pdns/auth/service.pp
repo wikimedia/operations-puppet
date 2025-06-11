@@ -10,9 +10,9 @@ class profile::openstack::base::pdns::auth::service(
 ) {
     $this_host_entry = ($hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $dns_webserver_allow_to = dnsquery::lookup($this_host_entry['private_fqdn'], true)
-    $auth_fqdn_ips = dnsquery::lookup($this_host_entry['auth_fqdn'], true)
+    $auth_ips = $this_host_entry['auth_ips']
 
-    $pdns_auth_hosts = $hosts.map |$host| { $host['auth_fqdn'] }
+    $pdns_auth_hosts = $hosts.map |$host| { $host['auth_ips'] }.flatten
     $pdns_api_allow_from = [
         $pdns_auth_hosts,
         $designate_hosts,
@@ -35,9 +35,9 @@ class profile::openstack::base::pdns::auth::service(
         .sort
 
     class { '::pdns_server':
-        listen_on             => $auth_fqdn_ips,
+        listen_on             => $auth_ips,
         default_soa_content   => $default_soa_content,
-        query_local_address   => $auth_fqdn_ips,
+        query_local_address   => $auth_ips,
         pdns_db_host          => $db_host,
         pdns_db_password      => $db_pass,
         dns_webserver_address => '::',

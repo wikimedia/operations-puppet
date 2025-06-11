@@ -6,7 +6,7 @@
   id: 794ccc2c-d751-44fe-b57f-8894c9f5c842
   nameservers:
 <% @pdns_hosts.each do |pdns_host| -%>
-  - host: <%= scope.function_ipresolve([pdns_host['auth_fqdn']]) %>
+  - host: <%= pdns_host['auth_ips'][0] %>
     port: 53
 <% end -%>
   ns_records:
