@@ -179,19 +179,21 @@ class profile::restbase(
     }
 
     monitoring::service { 'restbase_http_root':
-        ensure        => $ensure_monitor_restbase,
-        description   => 'Restbase root url',
-        check_command => "check_http_port_url!${port}!/",
-        contact_group => 'admins,team-services',
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+        ensure         => $ensure_monitor_restbase,
+        description    => 'Restbase root url',
+        check_command  => "check_http_port_url!${port}!/",
+        contact_group  => 'admins,team-services',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/RESTBase',
+        migration_task => 'T321808',
     }
 
 
     nrpe::monitor_service { 'restbase_instance_space':
-        ensure       => $ensure_monitor_restbase,
-        description  => 'Cassandra instance data free space',
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/RESTBase#instance-data',
-        nrpe_command => '/usr/lib/nagios/plugins/check_disk -w 30% -c 20% -p /srv/cassandra/instance-data',
+        ensure         => $ensure_monitor_restbase,
+        description    => 'Cassandra instance data free space',
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/RESTBase#instance-data',
+        nrpe_command   => '/usr/lib/nagios/plugins/check_disk -w 30% -c 20% -p /srv/cassandra/instance-data',
+        migration_task => 'T321808',
     }
 
 
