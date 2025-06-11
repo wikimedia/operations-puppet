@@ -17,7 +17,7 @@ profile::mariadb::section_ports:
   m1: 3321
   m2: 3322
   m3: 3323
-  m4: 3324
+#  m4: 3324
   m5: 3325
 #  m6: 3326
 #  m7: 3327
