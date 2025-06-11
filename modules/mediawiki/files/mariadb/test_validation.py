@@ -18,3 +18,10 @@ def test_validation():
     data = yaml.safe_load(open(data_path))
     validate(data, schema, format_checker=FormatChecker())
     assert True
+
+
+if __name__ == '__main__':
+    try:
+        test_validation()
+    except Exception as e:
+        print(e)
