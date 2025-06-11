@@ -804,6 +804,62 @@ tables:
     canonicality: derivative
     visibility: public
     dblist: flaggedrevs
+  - name: flow_ext_ref
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_revision
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_topic_list
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_tree_node
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_tree_revision
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_wiki_ref
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
+  - name: flow_workflow
+    source: flow
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: flowdb
+        cluster: x1
+      - dbname: officewiki
   - name: geo_tags
     source: geo_data
     canonicality: derivative
@@ -1162,6 +1218,9 @@ sources:
   flaggedrevs:
     - path: extensions/FlaggedRevs/includes/backend/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/FlaggedRevs/+/master/includes/backend/schema/tables.json
+  flow:
+    - path: extensions/Flow/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Flow/+/master/sql/tables.json
   geo_data:
     - path: extensions/GeoData/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/GeoData/+/master/sql/tables.json
@@ -1253,3 +1312,5 @@ dropped_tables:
   - flaggedtemplates
   - flaggedimages
   - cur
+  - flow_definition
+  - flow_wiki_ref_deleteme
