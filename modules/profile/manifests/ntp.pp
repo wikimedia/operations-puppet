@@ -94,6 +94,7 @@ class profile::ntp (
         retry_interval => 5,  # min
         check_command  => 'check_ntp_peer_and_stratum!0.05!0.1!5!10',   # -W stratum 5, -C stratum 10
         notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP',
+        migration_task => 'T385590',
     }
 
     nrpe::plugin { 'check_ntp_service':
@@ -111,6 +112,7 @@ class profile::ntp (
             check_interval => 60, # 60mins
             retry_interval => 30, # 30mins
             notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+            migration_task => 'T385590',
         }
     }
 

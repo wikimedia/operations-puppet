@@ -38,10 +38,11 @@ class profile::bird::anycast_monitoring (
         }
 
         monitoring::service { "NTP anycast VIP ${ntp_anycast_ip}":
-            host          => $ntp_anycast_peer,
-            description   => "NTP anycast VIP ${ntp_anycast_ip} ${ntp_anycast_peer}",
-            check_command => 'check_ntp_peer!0.1!0.5',
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+            host           => $ntp_anycast_peer,
+            description    => "NTP anycast VIP ${ntp_anycast_ip} ${ntp_anycast_peer}",
+            check_command  => 'check_ntp_peer!0.1!0.5',
+            notes_url      => 'https://wikitech.wikimedia.org/wiki/NTP#Monitoring',
+            migration_task => 'T385590',
         }
     }
 
