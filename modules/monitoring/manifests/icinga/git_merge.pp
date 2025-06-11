@@ -16,12 +16,13 @@ define monitoring::icinga::git_merge (
     }
 
     nrpe::monitor_service { "${sane_title}_merged":
-        ensure       => $ensure,
-        description  => "Unmerged changes on repository ${title}",
-        nrpe_command => "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge",
-        sudo_user    => 'root',
-        retries      => $interval,
-        notes_url    => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
+        ensure         => $ensure,
+        description    => "Unmerged changes on repository ${title}",
+        nrpe_command   => "/usr/local/lib/nagios/plugins/check_${sane_title}-needs-merge",
+        sudo_user      => 'root',
+        retries        => $interval,
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Monitoring/unmerged_changes',
+        migration_task => 'T370530',
     }
 
     sudo::user { "${sane_title}_needs_merge":
