@@ -112,9 +112,10 @@ class profile::thanos::swift::frontend (
     }
 
     monitoring::service { 'thanos-swift-https':
-        description   => 'Thanos swift https',
-        check_command => "check_https_url!${service_host}!/healthcheck",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Thanos',
+        description    => 'Thanos swift https',
+        check_command  => "check_https_url!${service_host}!/healthcheck",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Thanos',
+        migration_task => 'T385583',
     }
 
     $ring_manager_ensure = $swift_clusters[$swift_cluster_label]['ring_manager'] ? {

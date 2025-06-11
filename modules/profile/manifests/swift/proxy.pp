@@ -146,14 +146,16 @@ class profile::swift::proxy (
         false => 'http',
     }
     monitoring::service { "swift-${http_s}-frontend":
-        description   => "Swift ${http_s} frontend",
-        check_command => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
+        description    => "Swift ${http_s} frontend",
+        check_command  => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/frontend",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Swift',
+        migration_task => 'T385583',
     }
     monitoring::service { "swift-${http_s}-backend":
-        description   => "Swift ${http_s} backend",
-        check_command => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
-        notes_url     => 'https://wikitech.wikimedia.org/wiki/Swift',
+        description    => "Swift ${http_s} backend",
+        check_command  => "check_${http_s}_url!${::swift::proxy::proxy_service_host}!/monitoring/backend",
+        notes_url      => 'https://wikitech.wikimedia.org/wiki/Swift',
+        migration_task => 'T385583',
     }
 
 
