@@ -69,6 +69,7 @@ profile::base::enable_rp_filter: false
 
 profile::memcached::size: 16384 # multiple of 1024, megabytes
 profile::memcached::firewall_src_sets: ~
+profile::memcached::firewall_srange: ~
 profile::memcached::extended_options:
   - 'modern'
 

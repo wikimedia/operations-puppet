@@ -11,6 +11,7 @@ profile::memcached::extended_options:
 profile::memcached::port: 11211
 profile::memcached::firewall_src_sets:
     - CLOUD_PRIVATE_NETWORKS
+profile::memcached::firewall_srange: ~
 
 profile::memcached::memcached_user: 'nobody'
 

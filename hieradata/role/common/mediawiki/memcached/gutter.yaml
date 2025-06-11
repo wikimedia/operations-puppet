@@ -17,6 +17,7 @@ profile::memcached::localcacert: "%{facts.puppet_config.localcacert}"
 profile::memcached::notls_port: 11211
 profile::memcached::port: 11214
 profile::memcached::firewall_src_sets: ~
+profile::memcached::firewall_srange: ~
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Memcached gutter/failover cluster'
 

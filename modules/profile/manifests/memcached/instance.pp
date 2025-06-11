@@ -111,6 +111,7 @@ class profile::memcached::instance (
     Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
     Optional[Firewall::Hosts]  $srange                   = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
     Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets'),
+    Optional[Firewall::Range]  $firewall_srange          = lookup('profile::memcached::firewall_srange'),
 ) {
     include ::profile::prometheus::memcached_exporter
     if $performance_cpu_governor {
@@ -165,6 +166,12 @@ class profile::memcached::instance (
             port     => $port,
             src_sets => $firewall_src_sets,
         }
+    } elsif $firewall_srange {
+        firewall::service { 'memcached':
+            proto  => 'tcp',
+            port   => $port,
+            srange => $firewall_srange,
+        }
     } else {
         ferm::service { 'memcached':
             proto  => 'tcp',
@@ -179,6 +186,12 @@ class profile::memcached::instance (
                 proto    => 'tcp',
                 port     => $notls_port,
                 src_sets => $firewall_src_sets,
+            }
+        } elsif $firewall_srange {
+            firewall::service { 'memcached_notls':
+                proto  => 'tcp',
+                port   => $notls_port,
+                srange => $firewall_srange,
             }
         } else {
             ferm::service { 'memcached_notls':
