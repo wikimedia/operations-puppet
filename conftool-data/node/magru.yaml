@@ -18,7 +18,6 @@ magru:
     cp7015.magru.wmnet: [cdn]
     cp7016.magru.wmnet: [cdn]
   ncredir:
-    ncredir7001.magru.wmnet: [nginx]
     ncredir7002.magru.wmnet: [nginx]
     ncredir7003.magru.wmnet: [nginx]
   dnsbox:
