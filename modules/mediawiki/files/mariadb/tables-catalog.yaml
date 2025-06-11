@@ -903,6 +903,96 @@ tables:
     source: linter
     canonicality: derivative
     visibility: public
+  - name: thread
+    source: liquidthreads
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: enwikinews
+      - dbname: enwiktionary
+      - dbname: fiwikimedia
+      - dbname: huwiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: ptwikibooks
+      - dbname: sewikimedia
+      - dbname: strategywiki
+      - dbname: svwikisource
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: wikimania2010wiki
+  - name: user_message_state
+    source: liquidthreads
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: enwikinews
+      - dbname: enwiktionary
+      - dbname: fiwikimedia
+      - dbname: huwiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: ptwikibooks
+      - dbname: sewikimedia
+      - dbname: strategywiki
+      - dbname: svwikisource
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: wikimania2010wiki
+  - name: thread_history
+    source: liquidthreads
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: enwikinews
+      - dbname: enwiktionary
+      - dbname: fiwikimedia
+      - dbname: huwiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: ptwikibooks
+      - dbname: sewikimedia
+      - dbname: strategywiki
+      - dbname: svwikisource
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: wikimania2010wiki
+  - name: thread_pending_relationship
+    source: liquidthreads
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: enwikinews
+      - dbname: enwiktionary
+      - dbname: fiwikimedia
+      - dbname: huwiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: ptwikibooks
+      - dbname: sewikimedia
+      - dbname: strategywiki
+      - dbname: svwikisource
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: wikimania2010wiki
+  - name: thread_reaction
+    source: liquidthreads
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: enwikinews
+      - dbname: enwiktionary
+      - dbname: fiwikimedia
+      - dbname: huwiki
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: ptwikibooks
+      - dbname: sewikimedia
+      - dbname: strategywiki
+      - dbname: svwikisource
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: wikimania2010wiki
   - name: oauth_ratelimit_client_tier
     source: oauth_ratelimiter
     databases:
@@ -1236,6 +1326,9 @@ sources:
   linter:
     - path: extensions/Linter/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Linter/+/master/sql/tables.json
+  liquidthreads:
+    - path: extensions/LiquidThreads/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LiquidThreads/+/master/sql/tables.json
   oauth_ratelimiter:
     - path: extensions/OAuthRateLimiter/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuthRateLimiter/+/refs/heads/master/schema/tables.json
@@ -1314,3 +1407,4 @@ dropped_tables:
   - cur
   - flow_definition
   - flow_wiki_ref_deleteme
+  - historical_thread
