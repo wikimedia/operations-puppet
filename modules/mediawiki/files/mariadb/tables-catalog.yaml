@@ -993,6 +993,24 @@ tables:
       - dbname: test2wiki
       - dbname: testwiki
       - dbname: wikimania2010wiki
+  - name: oathauth_types
+    source: oathauth
+    databases:
+      - dbname: centralauth
+        cluster: s7
+      - dblist: fishbowl
+      - dblist: private
+    canonicality: canonical
+    visibility: private
+  - name: oathauth_devices
+    source: oathauth
+    databases:
+      - dbname: centralauth
+        cluster: s7
+      - dblist: fishbowl
+      - dblist: private
+    canonicality: canonical
+    visibility: private
   - name: oauth_ratelimit_client_tier
     source: oauth_ratelimiter
     databases:
@@ -1329,6 +1347,9 @@ sources:
   liquidthreads:
     - path: extensions/LiquidThreads/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LiquidThreads/+/master/sql/tables.json
+  oathauth:
+    - path: extensions/OATHAuth/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OATHAuth/+/refs/heads/master/sql/tables.json
   oauth_ratelimiter:
     - path: extensions/OAuthRateLimiter/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuthRateLimiter/+/refs/heads/master/schema/tables.json
@@ -1408,3 +1429,4 @@ dropped_tables:
   - flow_definition
   - flow_wiki_ref_deleteme
   - historical_thread
+  - oathauth_users
