@@ -925,6 +925,22 @@ kubernetes::clusters:
   aux-k8s:
     aux-k8s-eqiad:
       dc: eqiad
+      cni_config:
+        name: "k8s-pod-network"
+        cniVersion: "0.3.1"
+        plugins:
+          - type: "calico"
+            log_level: "info"
+            datastore_type: "kubernetes"
+            mtu: 1460
+            ipam:
+              type: "calico-ipam"
+              assign_ipv4: "true"
+              assign_ipv6: "true"
+            policy:
+              type: "k8s"
+            kubernetes:
+              kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
       master: aux-k8s-ctrl.svc.eqiad.wmnet
       pki_intermediate_base: aux
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
@@ -964,6 +980,22 @@ kubernetes::clusters:
           - PersistentVolumeClaimResize
     aux-k8s-codfw:
       dc: codfw
+      cni_config:
+        name: "k8s-pod-network"
+        cniVersion: "0.3.1"
+        plugins:
+          - type: "calico"
+            log_level: "info"
+            datastore_type: "kubernetes"
+            mtu: 1460
+            ipam:
+              type: "calico-ipam"
+              assign_ipv4: "true"
+              assign_ipv6: "true"
+            policy:
+              type: "k8s"
+            kubernetes:
+              kubeconfig: "/etc/cni/net.d/calico-kubeconfig"
       master: aux-k8s-ctrl.svc.codfw.wmnet
       pki_intermediate_base: aux
       # TODO: All clusters use 1-65535, which was probably introduced on wikikube to support migrations from legacy infra
