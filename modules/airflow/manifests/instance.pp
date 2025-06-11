@@ -458,6 +458,7 @@ define airflow::instance(
         monitoring_enabled   => $monitoring_enabled,
         monitoring_notes_url => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow',
         require              => $service_dependencies,
+        migration_task       => 'T384214',
     }
 
     # Airflow webserver for this instance.
@@ -470,7 +471,8 @@ define airflow::instance(
         require              => $service_dependencies,
         service_params       => {
             'subscribe' => $service_dependencies,
-        }
+        },
+        migration_task       => 'T384214',
     }
     profile::auto_restarts::service { "airflow-webserver@${title}":
         ensure => $services_ensure,
@@ -488,6 +490,7 @@ define airflow::instance(
         service_params       => {
             'subscribe' => $service_dependencies,
         },
+        migration_task       => 'T384214',
     }
     profile::auto_restarts::service { "airflow-scheduler@${title}":
         ensure => $services_ensure,
@@ -512,6 +515,7 @@ define airflow::instance(
         service_params       => {
             'subscribe' => File[$airflow_config_file],
         },
+        migration_task       => 'T384214',
     }
     profile::auto_restarts::service { "airflow-kerberos@${title}":
         ensure => $kerberos_ensure,
