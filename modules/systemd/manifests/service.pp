@@ -17,6 +17,7 @@
 #                            of the unit ended up in a failed state.
 # @param team The team which owns this service
 # @param service_params Additional service parameters we want to specify
+# @param migration_task Used to track the icinga to prometheus migration task (temporary)
 #
 define systemd::service (
     String $content,
@@ -31,6 +32,7 @@ define systemd::service (
     Boolean                   $monitoring_critical      = false,
     Optional[Wmflib::Team]    $team                     = undef,
     Hash                      $service_params           = {},
+    String                    $migration_task           = 'T321808',
 ) {
     if $unit_type == 'service' {
         $label = $title
@@ -69,10 +71,11 @@ define systemd::service (
             fail('Must provide $monitoring_notes_url if $monitoring_enabled')
         }
         systemd::monitor { $title:
-            ensure        => $ensure,
-            notes_url     => $monitoring_notes_url,
-            contact_group => $monitoring_contact_group,
-            critical      => $monitoring_critical,
+            ensure         =>  $ensure,
+            notes_url      =>  $monitoring_notes_url,
+            contact_group  =>  $monitoring_contact_group,
+            critical       =>  $monitoring_critical,
+            migration_task => $migration_task,
         }
     }
 }

@@ -5,6 +5,7 @@
 # @param retries how many time to retry the check before going critical
 # @param contact_group the monitoring contact group to alert
 # @param critical if true, this will be a paging alert
+# @param migration_task Used to track the icinga to prometheus migration task (temporary)
 define systemd::monitor (
     Stdlib::HTTPUrl $notes_url,
     Wmflib::Ensure  $ensure         = 'present',
@@ -12,6 +13,7 @@ define systemd::monitor (
     Integer[1]      $retries        = 2,
     String          $contact_group  = 'admin',
     Boolean         $critical       = false,
+    String          $migration_task = 'T321808',
 ) {
     # T225268 - always provision NRPE plugin script
     ensure_resource('nrpe::plugin', 'check_systemd_unit_status', {
@@ -27,5 +29,6 @@ define systemd::monitor (
         contact_group  => $contact_group,
         notes_url      => $notes_url,
         critical       => $critical,
+        migration_task => $migration_task,
     }
 }
