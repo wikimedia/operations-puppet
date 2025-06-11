@@ -3,10 +3,11 @@ profile::bird::advertise_vips:
   ns1.openstack.codfw1dev.wikimediacloud.org:
     ensure: present
     service_type: "pdns auth"
-    # TODO: verify address
     address: 185.15.57.26
+    address_ipv6: 2a02:ec80:a100:4000::3
     # NOTE: we always want to advertise this address
     check_cmd: "/bin/sh -c 'true'"
+    check_cmd_ipv6: "/bin/sh -c 'true'"
 
 # use the cloud-private FQDN here as it is the one covered by the acme-chief TLS cert
 profile::openldap::master: cloudservices2004-dev.private.codfw.wikimedia.cloud
