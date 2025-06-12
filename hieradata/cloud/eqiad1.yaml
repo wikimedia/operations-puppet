@@ -16,7 +16,6 @@ ldap:
   ro-server-fallback: ldap-ro.codfw.wikimedia.org
   rw-server: ldap-rw.eqiad.wikimedia.org
   rw-server-fallback: ldap-rw.codfw.wikimedia.org
-profile::base::overlayfs: true
 profile::monitoring::raid_check: false
 
 profile::resolving::domain_search:
