@@ -18,8 +18,9 @@
 # [*consistency_delay*] Minimum age of all blocks before they are being read.
 # [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
 # [*tracing_enabled*] Self explanatory
+# [*memcached_hosts*] List of hostnames for memcached caching, empty list disables memcached
+# [*memcached_port*] The port for memcached client
 
-# TODO(filippo) evaluate using memcache (shared with swift) for caching
 class thanos::store (
     Hash[String, String] $objstore_account,
     String $objstore_password,
@@ -30,6 +31,8 @@ class thanos::store (
     Optional[String] $consistency_delay = undef,
     Float[0, 1] $memlimit_ratio = 0.7,
     Boolean $tracing_enabled = false,
+    Array[Stdlib::Host] $memcached_hosts = [],
+    Stdlib::Port $memcached_port = 11211,
 ) {
     ensure_packages(['thanos'])
 
@@ -55,12 +58,28 @@ class thanos::store (
         group  => 'root',
     }
 
+    if empty($memcached_hosts) {
+      $cache_config = {
+        'type'   => 'IN-MEMORY',
+        'config' => {
+          'max_size'      => '16GB',
+          'max_item_size' => '30MB',
+        }
+      }
+    } else {
+      $cache_config = {
+        'type'   => 'MEMCACHED',
+        'config' => {
+          'addresses' => $memcached_hosts.map |$h| { "${h}:${memcached_port}" },
+        }
+      }
+    }
+
     file { $cache_config_file:
         ensure  => present,
         mode    => '0444',
-        owner   => 'root',
-        group   => 'root',
-        content => template('thanos/store_cache.yaml.erb'),
+        content => to_yaml($cache_config),
+        notify  => Service[$service_name],
     }
 
     file { $objstore_config_file:

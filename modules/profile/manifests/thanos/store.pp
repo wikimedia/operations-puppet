@@ -16,6 +16,7 @@ class profile::thanos::store (
     Array $query_hosts = lookup('profile::thanos::frontends'),
     Optional[Integer] $object_store_cutoff_days = lookup('profile::thanos::object_store_cutoff_days', { 'default_value' => undef }),
     Optional[String] $min_time = lookup('profile::thanos::store::min_time', { 'default_value' => undef }),
+    Array[Stdlib::Host] $memcached_hosts = lookup('profile::thanos::store::memcached_hosts'),
 ) {
     $http_port = 11902
     $grpc_port = 11901
@@ -32,6 +33,8 @@ class profile::thanos::store (
         min_time          => $min_time,
         consistency_delay => '30m',
         tracing_enabled   => true,
+        memcached_hosts   => $memcached_hosts,
+        memcached_port    => 11211,
     }
 
     # Allow access from query hosts

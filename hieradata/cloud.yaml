@@ -621,6 +621,7 @@ profile::icinga::mgmt_parents:
   magru: mr1-magru
 profile::thanos::httpd::enable_sso: false
 profile::thanos::query_frontend::memcached_hosts: []
+profile::thanos::store::memcached_hosts: []
 profile::thanos::rule_hosts: {}
 profile::thanos::swift::cluster_label: ~
 
