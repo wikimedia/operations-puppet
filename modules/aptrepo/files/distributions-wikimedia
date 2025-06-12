@@ -99,7 +99,6 @@ Update:
  hp-mcp-buster
  hwraid-megacli
  matomo
- thirdparty/ceph-octopus
  thirdparty/conda
  thirdparty/docker-ci-buster
  thirdparty/gitlab-runner
@@ -195,7 +194,6 @@ Update:
  node16-bullseye
  pcre2-php81-bullseye
  routinator
- thirdparty/ceph-octopus-bullseye
  thirdparty/ceph-pacific
  thirdparty/ceph-quincy
  thirdparty/ceph-reef
