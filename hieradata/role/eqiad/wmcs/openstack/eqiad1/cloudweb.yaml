@@ -31,7 +31,7 @@ profile::wmcs::striker::docker::instances:
   # This is the Toolsbeta instance.
   striker-toolsbeta:
     port: 8081
-    version: 2025-06-02-141244-production
+    version: 2025-06-12-103158-production
     env:
       OAUTH_CONSUMER_KEY: da1e697ab8d3edb2ca42fb91d32aa83c
       DB_NAME: strikertoolsbeta
@@ -48,6 +48,7 @@ profile::wmcs::striker::docker::instances:
       GITLAB_REPO_NAMESPACE_NAME: toolforge-repos/toolsbeta
       GITLAB_REPO_NAMESPACE_ID: 3718
       FEATURE_ACCOUNT_CREATE: 0
+      BITU_URL: https://idm-test.wikimedia.org
       SITE_ENVIRONMENT_BANNER: "STAGING ENVIRONMENT (toolsbeta)"
 
 # The following values should be set in the private repo
