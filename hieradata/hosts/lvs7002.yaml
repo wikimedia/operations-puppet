@@ -4,8 +4,6 @@ profile::liberica::include_services:
 profile::liberica::bgp_config:
   peers:
     - 10.140.1.1 # asw1-b4-magru gateway
-  communities:
-    - "14907:0" # depooled for T396561
 profile::liberica::fp_config:
   log_level: info
   grpc:
