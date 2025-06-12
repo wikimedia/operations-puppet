@@ -31,8 +31,8 @@ class profile::openstack::base::pdns::recursor::service(
     Array[Stdlib::IP::Address] $monitoring_hosts = lookup('monitoring_hosts', {default_value => []}),
     Array[OpenStack::ControlNode] $openstack_control_nodes = lookup('profile::openstack::base::openstack_control_nodes',  {default_value => []}),
     Array[Stdlib::IP::Address] $pdns_api_allow_from = lookup('profile::openstack::base::pdns::pdns_api_allow_from', {'default_value' => []}),
-    Array[Stdlib::IP::Address::Nosubnet, 1] $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip'),
-    Array[Hash] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
+    Stdlib::IP::Address::V4::Nosubnet $bgp_vip = lookup('profile::openstack::base::pdns::recursor::bgp_vip'),
+    Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::base::pdns::hosts'),
 ) {
     $this_host_entry = ($pdns_hosts.filter | $host | {$host['host_fqdn'] == $::fqdn})[0]
     $query_local_address = $this_host_entry['auth_fqdn']
