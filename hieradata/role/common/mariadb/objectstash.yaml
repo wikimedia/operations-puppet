@@ -1,9 +1,0 @@
-profile::contacts::role_contacts:
-- Data Persistence
-profile::base::production::role_description: 'Object stash database'
-mariadb::binlog_format: 'STATEMENT'
-profile::monitoring::is_critical: true
-profile::mariadb::config::sync_binlog: '0'
-profile::mariadb::config::innodb_flush_log_at_trx_commit: '0'
-
-profile::puppet::agent::force_puppet7: true
