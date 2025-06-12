@@ -18,8 +18,10 @@
 #   - dedicated=mw-experimental:NoSchedule
 
 class profile::kubernetes::mediawiki_experimental(
-    Boolean $is_mw_experimental                  = lookup('profile::kubernetes::node::mw_experimental'),
-    Optional[String] $deployment_group           = lookup('deployment_group', { default_value => undef }),
+    Boolean $is_mw_experimental            = lookup('profile::kubernetes::node::mw_experimental'),
+    Stdlib::Host $deployment_server        = lookup('deployment_server'),
+    Stdlib::Unixpath $helmfile_general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Optional[String] $deployment_group     = lookup('deployment_group', { default_value => undef }),
 ) {
     if $is_mw_experimental {
         require profile::mediawiki::system_users
@@ -36,6 +38,19 @@ class profile::kubernetes::mediawiki_experimental(
             before  => Service['kubelet'],
         }
 
+        # On deployment server, the /etc/helmfile-defaults/mediawiki/release contains
+        # the latest mediawiki release to be used by every deployment. We are syncing
+        # this directory to the mw-experimental nodes so that they can use the latest
+        # mediawiki release
+        $mediawiki_releases = "${helmfile_general_dir}/mediawiki/release"
+        rsync::quickdatacopy { 'mediawiki_releases_sync':
+            ensure      => present,
+            auto_sync   => true,
+            source_host => $deployment_server,
+            dest_host   => $facts['networking']['fqdn'],
+            module_path => $mediawiki_releases,
+            chown       => 'root:deployment',
+        }
         # fix-staging-perms is copied from profile::mediawiki::deployment::server
         # it fixes ownership and permissions of /srv/mediawiki
 
@@ -55,7 +70,6 @@ class profile::kubernetes::mediawiki_experimental(
             group   => 'root',
             require => File['/usr/local/etc/fix-staging-perms.sh'],
         }
-
         # Script and timer for mw-experimental mediawiki image updates
         # TODO: Add timer
         $mw_experimental_update_script_name = 'mw-experimental-mediawiki-image-update'
@@ -69,6 +83,17 @@ class profile::kubernetes::mediawiki_experimental(
             source => "puppet:///modules/profile/kubernetes/node/${mw_experimental_update_script_name}.sh",
         }
 
+        systemd::timer::job { $mw_experimental_update_script_name:
+            description => 'Update /srv/mediawiki with the latest mediawiki image every hour',
+            command     => $mw_experimental_update_script_path,
+            user        => 'root',
+            team        => 'ServiceOps',
+            require     => File[$mw_experimental_update_script_path],
+            interval    => {
+                'start'    => 'OnUnitActiveSec',
+                'interval' => '1 hour',
+            },
+        }
 
     }
 }

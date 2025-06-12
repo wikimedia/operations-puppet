@@ -12,111 +12,143 @@
 # * synchronises them to /srv/mediawiki using rsync
 #
 # TODO: properly log to syslog and logstash
-# This script requires root privileges to run.
-set -e
+# This script requires root privileges to run. Any user can add a lock
+
+set -euo pipefail
 
 MOUNT_PATH="/srv/mediawiki"
-REGISTRY='docker-registry.discovery.wmnet'
-IMAGE_NAME='restricted/mediawiki-multiversion'
-IMAGE_BASE_NAME="${REGISTRY}"/"${IMAGE_NAME}"
 MEDIAWIKI_CONTAINER_DIR="/srv/mediawiki"
-# IMAGES_TO_KEEP=5
 LOG_FILE="/var/log/mediawiki-update-$(date +'%Y%m%d').log"
+FORCE_COPY=false
+RELEASE="/etc/helmfile-defaults/mediawiki/release/mw-experimental-pinkllama.yaml"
+LOCK_FILE="/var/lock/mw-experimental-mediawiki-image-update.lock"
 
-echo "Starting mediawiki image update script at $(date)" | tee -a "$LOG_FILE"
+
+if [ ! -f "$RELEASE" ]; then
+    echo "Release file not found: $RELEASE" | tee -a "$LOG_FILE"
+    exit 1
+fi
+
+REGISTRY=$(grep -E '^\s*registry:' "$RELEASE" | awk '{print $2}')
+IMAGE=$(grep -E '^\s*image:' "$RELEASE" | awk '{print $2}')
+FULL_IMAGE="${REGISTRY}/${IMAGE}"
+
+IMAGE_NAME="${IMAGE%%:*}"         # image name
+LATEST_RELEASE_TAG="${IMAGE##*:}" # image tag
+
+echo "Latest release tag for $IMAGE_NAME is: $LATEST_RELEASE_TAG" | tee -a "$LOG_FILE"
+
+# Check arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -f)
+      FORCE_COPY=true
+      echo "Forcing code update" | tee -a "$LOG_FILE"
+      shift
+      ;;
+    --lock)
+      # Lock to prevent code updates (either manual or via the timer)
+      touch "$LOCK_FILE"
+      echo "Lock created at $LOCK_FILE" | tee -a "$LOG_FILE"
+      exit 0
+      ;;
+    --unlock)
+      # Remove the lock file if it exists
+      if [ -f "$LOCK_FILE" ]; then
+        rm "$LOCK_FILE"
+        echo "Removing lock $LOCK_FILE" | tee -a "$LOG_FILE"
+      else
+        echo "No lock file found at $LOCK_FILE" | tee -a "$LOG_FILE"
+      fi
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" | tee -a "$LOG_FILE"
+      echo "Usage: $0 [-f] [--lock] [--unlock]" | tee -a "$LOG_FILE"
+      exit 1
+      ;;
+  esac
+done
+
+# Check for lock file
+if [ -f "$LOCK_FILE" ]; then
+    echo "Updating /srv/mediawiki has been locked. To unlock, run: $0 --unlock" | tee -a "$LOG_FILE"
+    exit 0
+fi
+
+# cleanup_old_images() {
+#    # TODO: Implement cleanup
+#}
 
 copy_directory() {
     local container=$1
-    local mount_path=$2
+    local target_path=$2
     local container_dir=$3
 
-    # Check if /srv/mediawiki exists on the host
-    if [ ! -d "$mount_path" ]; then
-      echo "$mount_path is not present" | tee -a "$LOG_FILE"
-      return 1
+    echo "Copying from $container:$container_dir to $target_path" | tee -a "$LOG_FILE"
+
+    TEMP_DIR=$(mktemp -d)
+    echo "Created temporary directory $TEMP_DIR" | tee -a "$LOG_FILE"
+
+    # Copy contents from the container to the temporary directory
+    if ! nerdctl --namespace k8s.io cp "$container:${container_dir}/." "$TEMP_DIR"; then
+        echo "Failed to copy files from container to temp dir" | tee -a "$LOG_FILE"
+        rm -rf "$TEMP_DIR"
+        return 1
     fi
 
-    # Create a temporary directory for rsync. We are doing this in two steps as using rsync
-    # to copy from the container to the host, would require rsync to be installed in the container.
-    # nerdctl provides only cp.
-    TEMP_DIR=$(mktemp -d)
-    echo "Created temporary directory: $TEMP_DIR" | tee -a "$LOG_FILE"
-    # Copy files from container to temp directory (keep trailing slashes)
-    if ! nerdctl --namespace k8s.io cp "$container:$container_dir/." "$TEMP_DIR"; then
-        echo "Failed to copy files from container to temp directory" | tee -a "$LOG_FILE"
+    # Sync from temporary directory to target path
+    echo "Starting rsync from $TEMP_DIR to $target_path" | tee -a "$LOG_FILE"
+    if ! rsync -a --delete "$TEMP_DIR/" "$target_path/"; then
+        echo "Rsync failed" | tee -a "$LOG_FILE"
         rm -rf "$TEMP_DIR"
         return 1
     fi
-    # Rsync files from temp directory to mount path (keep trailing slashes)
-    echo "Starting rsync from $TEMP_DIR to $mount_path" | tee -a "$LOG_FILE"
-    if ! rsync -a --delete "$TEMP_DIR/" "$mount_path/" >> "$LOG_FILE" 2>&1; then
-        echo "Failed to rsync files from temp directory to mount path" | tee -a "$LOG_FILE"
-        rm -rf "$TEMP_DIR"
-        return 1
-    fi
-    echo "Rsync completed successfully" | tee -a "$LOG_FILE"
-    # Fix permissions on /srv/mediawiki
+
+    echo "Rsync completed, fixing perms" | tee -a "$LOG_FILE"
     /usr/local/sbin/fix-staging-perms
-    # Clean up temporary directory
+
+    # Cleanup
     rm -rf "$TEMP_DIR"
-    echo "Remove temporary directory" | tee -a "$LOG_FILE"
+    echo "Cleaned up temporary directory $TEMP_DIR" | tee -a "$LOG_FILE"
 }
 
-# Check the latest version of the image on the registry
-# This should be improved, in such a way where we pick up the
-# image name from helm-file defaults
-LATEST_VERSION=$(skopeo list-tags "docker://$IMAGE_BASE_NAME" | jq -r '.Tags[]' | sort -V | tail -n1)
-if [ -z "$LATEST_VERSION" ]; then
-    echo "Borked latest version" | tee -a "$LOG_FILE"
-    exit 1
+echo "Starting mw-experimental mediawiki image update script at $(date)" | tee -a "$LOG_FILE"
+
+# Check if the image is already present locally using nerdctl inspect
+if nerdctl --namespace k8s.io inspect "$FULL_IMAGE" &>/dev/null; then
+    EXISTS_LOCALLY=true
+else
+    EXISTS_LOCALLY=false
+    echo "Image $IMAGE not found locally" | tee -a "$LOG_FILE"
 fi
 
-# Check the local version of the image
-LOCAL_VERSION=$(nerdctl --namespace k8s.io images | grep "$IMAGE_BASE_NAME" | awk '{print $2}' | sort -V | tail -n1)
-if [ -z "$LOCAL_VERSION" ]; then
-    echo "No local version found, first run" | tee -a "$LOG_FILE"
-    LOCAL_VERSION="0.0.0"
-fi
-# Compare versions
-if [ "$LATEST_VERSION" = "$LOCAL_VERSION" ]; then
-    echo "Already at latest version $LATEST_VERSION" | tee -a "$LOG_FILE"
+# To update or not to update?
+if $EXISTS_LOCALLY && ! $FORCE_COPY; then
+    echo "Image $IMAGE already exists locally" | tee -a "$LOG_FILE"
     exit 0
-fi
-# We are updating then
-IMAGE="$IMAGE_BASE_NAME:$LATEST_VERSION"
-echo "Updating to version $LATEST_VERSION" | tee -a "$LOG_FILE"
-
-# Pull it
-echo "Pulling image $IMAGE" | tee -a "$LOG_FILE"
-if ! nerdctl --insecure-registry --namespace k8s.io pull "$IMAGE"; then
-    echo "Failed to pull image $IMAGE" | tee -a "$LOG_FILE"
-    exit 1
+elif $EXISTS_LOCALLY && $FORCE_COPY; then
+    echo "Image $IMAGE exists locally but force copy requested" | tee -a "$LOG_FILE"
 fi
 
-# Temporary container and mount it, we use sleep infinity to keep it running
-# as it will be termonated after the copy is done.
+# We are updating, so pull latest image
+echo "Pulling image $FULL_IMAGE" | tee -a "$LOG_FILE"
+crictl pull "$FULL_IMAGE" 2>&1 | tee -a "$LOG_FILE"
+
+# Start container
 CONTAINER_NAME="mediawiki-multiversion-temp-$(date +%s)"
 echo "Creating temporary container $CONTAINER_NAME" | tee -a "$LOG_FILE"
-if ! nerdctl --namespace k8s.io run --name "$CONTAINER_NAME" -d "$IMAGE" sleep infinity; then
+
+trap "echo 'Cleaning up container'; nerdctl --namespace k8s.io rm -f $CONTAINER_NAME" EXIT
+
+if ! nerdctl --namespace k8s.io run --net=none --name "$CONTAINER_NAME" -d "$FULL_IMAGE" sleep infinity; then
     echo "Failed to create container $CONTAINER_NAME" | tee -a "$LOG_FILE"
     exit 1
 fi
 
-# Copy
-# TODO: use a cleanup function w/ trap EXIT
 if ! copy_directory "$CONTAINER_NAME" "$MOUNT_PATH" "$MEDIAWIKI_CONTAINER_DIR"; then
     echo "Copy failed" | tee -a "$LOG_FILE"
-    nerdctl --namespace k8s.io rm -f "$CONTAINER_NAME"
     exit 1
 fi
 
-# Cleanup temporary container
-echo "Cleaning up temporary container $CONTAINER_NAME" | tee -a "$LOG_FILE"
-nerdctl --namespace k8s.io rm -f "$CONTAINER_NAME"
-
-# Remove old images TBA
-# Get list of images (newest first)
-# echo "Getting list of images" | tee -a "$LOG_FILE"
-# IMAGE_LIST=$(nerdctl --namespace k8s.io images --format "{{.Tag}}	{{.ID}}" "$IMAGE_BASE_NAME" | sort -r)
-
-echo "Done" | tee -a "$LOG_FILE"
+echo -e "Done" | tee -a "$LOG_FILE"
