@@ -1011,6 +1011,24 @@ tables:
       - dblist: private
     canonicality: canonical
     visibility: private
+  - name: oauth_registered_consumer
+    source: oauth
+    databases:
+      - dbname: metawiki
+    canonicality: canonical
+    visibility: private
+  - name: oauth_accepted_consumer
+    source: oauth
+    databases:
+      - dbname: metawiki
+    canonicality: canonical
+    visibility: private
+  - name: oauth2_access_tokens
+    source: oauth
+    databases:
+      - dbname: metawiki
+    canonicality: canonical
+    visibility: private
   - name: oauth_ratelimit_client_tier
     source: oauth_ratelimiter
     databases:
@@ -1350,6 +1368,9 @@ sources:
   oathauth:
     - path: extensions/OATHAuth/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OATHAuth/+/refs/heads/master/sql/tables.json
+  oauth:
+    - path: extensions/OAuth/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuth/+/refs/heads/master/schema/tables.json
   oauth_ratelimiter:
     - path: extensions/OAuthRateLimiter/schema/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OAuthRateLimiter/+/refs/heads/master/schema/tables.json
