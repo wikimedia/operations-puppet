@@ -75,3 +75,4 @@ profile::memcached::extended_options:
 
 profile::thanos::query_frontend::memcached_hosts:
   - '127.0.0.1'
+profile::thanos::store::memcached_hosts: "%{alias('profile::thanos::query_frontend::memcached_hosts')}"
