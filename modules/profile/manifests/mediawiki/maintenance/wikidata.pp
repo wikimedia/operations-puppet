@@ -39,14 +39,17 @@ class profile::mediawiki::maintenance::wikidata(
         $pooled_server_min_query_rate = 0.2
         $additional_args = "--lb-pool ${svc_lbl} ${lb} --pooled-server-min-query-rate ${pooled_server_min_query_rate}"
         profile::mediawiki::periodic_job { 'wikidata-updateQueryServiceLag':
-            command               => "/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet ${additional_args}",
-            interval              => '*-*-* *:*:00',
-            cron_schedule         => '* * * * *',
-            team                  => $team,
-            kubernetes            => true,
-            description           => 'Update the cached query service maxlag value every minute',
-            script_label          => 'updateQueryServiceLag.php-wikidatawiki',
-            helmfile_defaults_dir => $helmfile_defaults_dir,
+            command                    => "/usr/local/bin/mwscript extensions/Wikidata.org/maintenance/updateQueryServiceLag.php --wiki wikidatawiki --cluster wdqs --prometheus prometheus.svc.eqiad.wmnet ${additional_args}",
+            interval                   => '*-*-* *:*:00',
+            cron_schedule              => '* * * * *',
+            team                       => $team,
+            kubernetes                 => true,
+            description                => 'Update the cached query service maxlag value every minute',
+            script_label               => 'updateQueryServiceLag.php-wikidatawiki',
+            ttlsecondsafterfinished    => 600, # 10 minutes
+            failedjobshistorylimit     => 10, # 10 failed jobs
+            successfuljobshistorylimit => 10, # 10 successful jobs
+            helmfile_defaults_dir      => $helmfile_defaults_dir,
         }
     }
 }
