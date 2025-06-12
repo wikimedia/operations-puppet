@@ -230,26 +230,6 @@ Architectures: amd64
 VerifyRelease: 9386B48A1A693C5C
 ListShellHook: grep-dctrl -e -S '^(amd-smi-lib|comgr|composablekernel-dev|half|hip-dev|hip-doc|hip-runtime-amd|hip-samples|hipcc|hipblas|hipblas-dev|hipblas-common-dev|hipblaslt|hipblaslt-dev|hipcub-dev|hipfft|hipfft-dev|hipify-clang|hiprand|hiprand-dev|hipsolver|hipsolver-dev|hipsparse|hipsparse-dev|hipsparselt|hipsparselt-dev|hiptensor|hiptensor-dev|hsa-amd-aqlprofile|hsa-rocr|hsa-rocr-dev|migraphx|miopen-hip|miopen-hip-dev|mivisionx|openmp-extras-dev|openmp-extras-runtime|rccl|rccl-dev|rocalution|rocalution-dev|rocblas|rocblas-dev|rocfft|rocfft-dev|rocm-cmake|rocm-core|rocm-dbgapi|rocm-debug-agent|rocm-dev|rocm-device-libs|rocm-gdb|rocm-hip-runtime|rocm-language-runtime|rocm-libs|rocm-llvm|rocm-opencl|rocm-opencl-dev|rocm-smi-lib|rocm-utils|rocminfo|rocprim-dev|rocprofiler|rocprofiler-dev|rocprofiler-plugins|rocprofiler-register|rocprofiler-sdk|rocprofiler-sdk-roctx|rocrand|rocrand-dev|rocsolver|rocsolver-dev|rocsparse|rocsparse-dev|rocthrust-dev|roctracer|roctracer-dev|rocwmma-dev|rpp)$' || [ $? -eq 1 ]
 
-Name: thirdparty/ceph-octopus
-Method: https://mirror.croit.io/debian-octopus
-Components: main>thirdparty/ceph-octopus
-UDebComponents:
-Suite: buster
-Architectures: amd64
-VerifyRelease: 718C1F180B5A84A3
-# skip any debugging package, as they are too big and can be manually installed if needed for debugging
-ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
-
-Name: thirdparty/ceph-octopus-bullseye
-Method: https://mirror.croit.io/debian-octopus
-Components: main>thirdparty/ceph-octopus
-UDebComponents:
-Suite: bullseye
-Architectures: amd64
-VerifyRelease: 718C1F180B5A84A3
-# skip any debugging package, as they are too big and can be manually installed if needed for debugging
-ListShellHook: grep-dctrl --invert-match --eregex --field=Package '^.*-dbg(sym)?.*$' || [ $? -eq 1 ]
-
 # From pacific we switch the ceph package source from croit.io to ceph.com. See #T326945 for more information.
 Name: thirdparty/ceph-pacific
 Method: https://download.ceph.com/debian-pacific
