@@ -11,6 +11,8 @@ class role::kubernetes::worker {
     include profile::kubernetes::node
     # Set up mediawiki-related stuff
     include profile::kubernetes::mediawiki_runner
+    # Set up experimental mediawiki nodes
+    include profile::kubernetes::mediawiki_experimental
     # Setup calico
     include profile::calico::kubernetes
     # Setup LVS
