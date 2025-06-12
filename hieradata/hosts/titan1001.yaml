@@ -1,0 +1,1 @@
+profile::thanos::store::memcached_hosts: "%{alias('profile::thanos::query_frontend::memcached_hosts')}"
