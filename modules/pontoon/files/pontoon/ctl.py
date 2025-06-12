@@ -48,6 +48,9 @@ git remote add pontoon-{stack} ssh://{server}/~/puppet.git
 
 # If the Pontoon server has changed, update its url:
 git remote set-url pontoon-{stack} ssh://{server}/~/puppet.git
+
+# (optional) private.git can be set up as well:
+git remote add pontoon-{stack}-private ssh://{server}/~/private.git
 """,
     "stack-not-found": """
 

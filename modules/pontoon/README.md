@@ -86,6 +86,9 @@ The stack is bootstrapped and ready; the Puppet agent serves as its own server.
 You can now push your local `puppet.git` commits to the git remote until you are
 happy with the result and the commits are ready for code review.
 
+> **Note:** Remember to force-push your `HEAD` to the `production` remote branch:
+> `git push -f pontoon-<STACK NAME> HEAD:production`
+
 #### Add PKI and PuppetDB roles
 
 At this point you can add additional foundational services required to make most
@@ -172,3 +175,22 @@ will need at least version 1.1.0 and use the following to install:
 ```sh
 pipx install --editable '.[ctl]'
 ```
+
+## Tips and tricks
+
+### Private Puppet repo
+
+It is possible to also have changes to the [private puppet
+repo](https://gerrit.wikimedia.org/g/labs/private) in Pontoon.
+To do so, follow the private.git instructions setup:
+
+```sh
+# Command is idempotent, can be re-run at will
+pontoonctl join-stack -s <STACK NAME>
+```
+
+And push your local copy of `private.git` with:
+
+`git push -f pontoon-<STACK NAME>-private HEAD:master`
+
+Note that here we push to the `master` branch, not the `production` branch.
