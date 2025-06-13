@@ -2221,10 +2221,6 @@ node /^ncmonitor[1-9][0-9]{3}\./ {
     role(ncmonitor)
 }
 
-node /^ncredir700[4]\.magru\./ {
-    role(insetup::traffic_ferm)
-}
-
 node /^ncredir[1-9][0-9]{3}\./ {
     role(ncredir)
 }
