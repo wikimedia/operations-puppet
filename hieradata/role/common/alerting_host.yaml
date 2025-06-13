@@ -113,3 +113,6 @@ profile::corto::phabricator_policy::edit: '#acl_security'
 profile::confd::instances:
   main:
     interval: 300
+
+profile::metamonitoring::group: 'prometamon'
+profile::metamonitoring::install_dir: '/usr/local/prometheus-metamonitoring'

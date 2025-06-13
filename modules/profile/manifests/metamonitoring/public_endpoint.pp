@@ -1,16 +1,23 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::metamonitoring::public_endpoint (
-    String $group = lookup('profile::metamonitoring::group', {default_value => 'prometamon'}),
-    Stdlib::Absolutepath $install_dir = lookup('profile::metamonitoring::install_dir', {default_value => '/usr/local/prometheus-metamonitoring'}),
-    String $acme_chief_cert = lookup('profile::metamonitoring::acme_chief_cert', {default_value => 'metamonitoring'}),
-    Array[String] $datacenters = lookup('datacenters', {default_value => ['dummy']}),
-    Optional[String] $hostname = lookup('profile::metamonitoring::hostname', { 'default_value' => 'metamonitoring' }),
-    Optional[String] $domain = lookup('profile::metamonitoring::domain', { 'default_value' => undef }),
+    String               $group,
+    Stdlib::Absolutepath $install_dir,
+    Array[String]        $datacenters     = lookup('datacenters', {default_value => ['dummy']}),
+    String               $acme_chief_cert = lookup('profile::metamonitoring::public_endpoint:acme_chief_cert', {default_value => 'metamonitoring'}),
+    Stdlib::Host         $listen_address  = lookup('profile::metamonitoring::public_endpoint:listen_address', { default_value => '0.0.0.0' }),
+    Stdlib::Port         $listen_port     = lookup('profile::metamonitoring::public_endpoint:listen_port', { default_value => 20999}),
+    String               $user            = lookup('profile::metamonitoring::public_endpoint:user', { default_value => 'metamonpubep'}),
+    Optional[String]     $hostname        = lookup('profile::metamonitoring::public_endpoint:hostname', { 'default_value' => 'metamonitoring' }),
+    Optional[String]     $domain          = lookup('profile::metamonitoring::public_endpoint:domain', { 'default_value' => undef }),
 ) {
+
     class { 'metamonitoring::public_endpoint':
-        prometheus_metamonitor_group => $group,
-        install_dir                  => $install_dir,
-        datacenters                  => $datacenters,
+        group          => $group,
+        install_dir    => $install_dir,
+        datacenters    => $datacenters,
+        user           => $user,
+        listen_address => $listen_address,
+        listen_port    => $listen_port,
     }
 
     acme_chief::cert { $acme_chief_cert:

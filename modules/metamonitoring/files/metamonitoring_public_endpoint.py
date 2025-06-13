@@ -1,5 +1,29 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
+
+#
+# This software has been developed to expose the results of o11y metamonitoring checks
+# to external uptime monitoring services. It uses Flask to expose its endpoint.
+# Since it runs under Gunicorn, its behavior can be customized via environment variables.
+#
+# STATUS_DIR: Directory where each module can find the current status of metamonitoring checks.
+#             Each module has its own subfolder within this directory.
+#
+# DEADMANSWITCH_THRESHOLD: Number of seconds after which a DMS alert is considered obsolete.
+#
+# ALERTMANAGER_URL: URL of the Alertmanager instance to query.
+#
+# DMS_ALERT_NAME: Name of the DMS alert as defined in the Prometheus/Thanos alerting rules.
+#
+# SUPPORTED_SERVICES: Comma-separated list (no spaces) of supported services (prometheus,thanos).
+#                     Prometheus and Thanos are currently supported; others may be added.
+#
+# MONITORED_INSTANCES: Comma-separated list (no spaces) of Prometheus/Thanos instance names
+#                     for which a DMS alert is expected.
+#
+# LOG_LEVEL: log level.
+#
+
 import logging
 import os
 import time
@@ -18,19 +42,18 @@ from datetime import (
     timezone
 )
 
-STATUS_DIR = '/var/lib'
-DEADMANSWITCH_THRESHOLD = 600
-ALERTMANAGER_URL = 'http://localhost:9093'
-DMS_ALERT_NAME = 'DeadManSwitch'
-SUPPORTED_SERVICES = ['prometheus', 'thanos']
+STATUS_DIR = os.getenv('STATUS_DIR', '/var/lib').lower()
+DEADMANSWITCH_THRESHOLD = int(os.getenv('DEADMANSWITCH_THRESHOLD', '600'))
+ALERTMANAGER_URL = os.getenv('ALERTMANAGER_URL', 'http://localhost:9093').lower()
+DMS_ALERT_NAME = os.getenv('DMS_ALERT_NAME', 'DeadManSwitch')
+SUPPORTED_SERVICES = os.getenv('SUPPORTED_SERVICES', 'prometheus,thanos').split(",")
+MONITORED_INSTANCES = os.getenv("MONITORED_INSTANCES", "").split(",")
 
 
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(level=getattr(logging, log_level, logging.INFO),
                     format="{levelname} - {funcName} - {message}", style="{")
 logger = logging.getLogger()
-
-monitored_instances = os.getenv("MONITORED_INSTANCES", "").split(",")
 
 
 class Retval(Enum):
@@ -59,14 +82,17 @@ class Retval(Enum):
         424
     )
 
-    def customized(self, value: str):
+    def customized(self, value: str) -> Tuple[int, str]:
         return (self._code, self._message.replace('#PLACEHOLDER', value))
 
 
-def filterMonitoredInstance(f):
-    return list(filter(lambda x: x.startswith(f), monitored_instances))
+def filterMonitoredInstance(f: str) -> Tuple[str]:
+    return list(filter(lambda x: x.startswith(f), MONITORED_INSTANCES))
 
 
+# Checks for alerts that have been notified by Alertmanager to the DMS hook.
+# Continuously tests Alertmanager's routing capabilities.
+# Intended to checked only on the active Alertmanager instance.
 def deadmanswitchnotified(service: str) -> Tuple[str, int]:
     folder = Path(f"{STATUS_DIR}/deadmanswitchamhook")
 
@@ -102,6 +128,9 @@ def deadmanswitchnotified(service: str) -> Tuple[str, int]:
     return Retval.OUTDATED.customized(','.join(badts))
 
 
+# Checks for alerts directly on the Alertmanager DB.
+# Useful to verify DB synchronization between Alertmanager instances in the cluster.
+# Intended to be checked on every Alertmanager instance.
 def deadmanswitchonamdb(service: str) -> Tuple[str, int]:
     instances = filterMonitoredInstance(service)
 

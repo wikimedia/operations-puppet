@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
+#
+# This software has been developed to be used as an Alertmanager webhook.
+# It uses Flask to expose its endpoint.
+# It parses Dead Man Switch alerts, and for each alert in the firing state,
+# it touches a file under a status directory.
+# Since its endpoint is exposed via Gunicorn, it can be configured via environment variables.
+# Currently, only log verbosity (LOG_LEVEL) and status directory (STATUS_DIR) can be configured.
+#
+# https://training.promlabs.com/training/monitoring-and-debugging-prometheus/metrics-based-meta-monitoring/end-to-end-watchdog-alerts/
+
 import logging
 import os
 
@@ -11,7 +21,7 @@ from flask import (
     abort
 )
 
-STATUS_DIR = '/var/lib/deadmanswitchamhook'
+STATUS_DIR = os.getenv("STATUS_DIR", '/var/lib/deadmanswitchamhook')
 
 log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(level=getattr(logging, log_level, logging.INFO),

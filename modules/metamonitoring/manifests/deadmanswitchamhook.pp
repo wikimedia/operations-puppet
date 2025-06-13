@@ -1,12 +1,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # @param config Configuration file to use, if the default is not suitable
 class metamonitoring::deadmanswitchamhook (
-    String $prometheus_metamonitor_group,
+    String $group,
     String $install_dir,
-    Stdlib::Absolutepath $status_dir = '/var/lib/deadmanswitchamhook',
-    Stdlib::Host $listen_address = '0.0.0.0',
-    Stdlib::Port $listen_port = 20666,
-    String $user = 'deadmanswitchamhook',
+    Stdlib::Absolutepath $status_dir,
+    Stdlib::Host $listen_address,
+    Stdlib::Port $listen_port,
+    String $user,
 ) {
     ensure_packages(['python3-gunicorn', 'python3-flask', 'python3-box', 'python3-prometheus-client'])
 
@@ -15,13 +15,13 @@ class metamonitoring::deadmanswitchamhook (
         shell      => '/usr/sbin/nologin',
         managehome => false,
         system     => true,
-        groups     => $prometheus_metamonitor_group,
+        groups     => $group,
     }
 
     file { $status_dir:
         ensure => 'directory',
         owner  => $user,
-        group  => $prometheus_metamonitor_group,
+        group  => $group,
         mode   => '0770',
     }
 
@@ -29,6 +29,7 @@ class metamonitoring::deadmanswitchamhook (
         ensure => file,
         source => 'puppet:///modules/metamonitoring/deadmanswitchamhook.py',
         mode   => '0555',
+        notify => Service['deadmanswitchamhook'],
     }
 
     systemd::service { 'deadmanswitchamhook':

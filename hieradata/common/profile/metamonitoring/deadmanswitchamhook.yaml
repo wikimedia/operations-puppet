@@ -1,0 +1,4 @@
+profile::metamonitoring::deadmanswitchamhook:status_dir: '/var/lib/deadmanswitchamhook'
+profile::metamonitoring::deadmanswitchamhook:listen_address: '0.0.0.0'
+profile::metamonitoring::deadmanswitchamhook:listen_port: 20666
+profile::metamonitoring::deadmanswitchamhook:user: deadmanswitchamhook'
