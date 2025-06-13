@@ -70,10 +70,10 @@ define docker_registry::instance (
     $base_config = loadyaml("${module_path}/files/base-config.yaml")
     $overrides = {
         'http'    => {
-            'addr'   => $port,
+            'addr'   => ":${port}",
             'secret' => $registry_shared_secret,
             'debug'  => {
-                'addr' => $debug_port,
+                'addr' => ":${debug_port}",
             }
         },
         'redis'   => $redis_config,
