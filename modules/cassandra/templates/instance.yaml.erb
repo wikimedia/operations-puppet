@@ -6,3 +6,7 @@ config_directory: <%= @config_directory %>
 data_file_directories: [<%= Array(@instance_data_file_directories).join(',') %>]
 rpc_address: <%= @instance_rpc_address %>
 native_transport_port: <%= @native_transport_port %>
+commitlog_directory: <%= @commitlog_directory %>
+hints_directory: <%= @hints_directory %>
+saved_caches_directory: <%= @saved_caches_directory %>
+heapdump_directory: <%= @heapdump_directory %>
