@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=Gunicorn for metamonitor_public_endpoint
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @install_dir %>
+EnvironmentFile=/etc/default/metamonitoring_public_endpoint
+ExecStart=/usr/bin/gunicorn metamonitor_public_endpoint:app \
+    --bind <%= @listen_address %>:<%= @listen_port %> \
+    --workers 4 \
+    --access-logfile - \
+    --error-logfile -
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

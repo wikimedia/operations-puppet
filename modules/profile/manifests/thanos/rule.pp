@@ -90,4 +90,9 @@ class profile::thanos::rule (
     thanos::recording_rule { 'recording_rules.yaml':
         source   => 'puppet:///modules/profile/thanos/recording_rules.yaml',
     }
+
+    # Deploy Thanos metamonitoring rules
+    thanos::recording_rule { 'metamonitoring_rules.yaml':
+        source   => 'puppet:///modules/profile/thanos/metamonitoring_rules.yaml',
+    }
 }

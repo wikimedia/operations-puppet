@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+[Unit]
+Description=Gunicorn for deadmanswitchamhook
+
+[Service]
+User=<%= @user %>
+Group=<%= @group %>
+WorkingDirectory=<%= @install_dir %>
+ExecStart=/usr/bin/gunicorn deadmanswitchamhook:app \
+    --bind <%= @listen_address %>:<%= @listen_port %> \
+    --workers 4 \
+    --access-logfile - \
+    --error-logfile -
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
