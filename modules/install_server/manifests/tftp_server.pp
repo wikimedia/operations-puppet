@@ -49,6 +49,8 @@ class install_server::tftp_server () {
             source => 'puppet:///modules/install_server/atftpd-default',
             notify => Service['atftpd'],
         }
+        # Only needed if atftpd is started as a classic daemon
+        profile::auto_restarts::service { 'atftpd': }
     }
 
     package { 'atftpd':
@@ -60,6 +62,4 @@ class install_server::tftp_server () {
         hasstatus => false,
         require   => Package['atftpd'],
     }
-
-    profile::auto_restarts::service { 'atftpd': }
 }
