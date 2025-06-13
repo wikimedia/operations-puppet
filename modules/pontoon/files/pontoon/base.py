@@ -191,6 +191,9 @@ class Pontoon(object):
             self.yaml.dump(self.rolemap, f)
 
         with open(self.stack_config_path, "w") as f:
+            # self.config is not meant to be user-modified and it is a "bare" dictionary.
+            # yaml comments are not preserved on load, thus append the SPDX header here.
+            f.write("# SPDX-License-Identifier: Apache-2.0\n")
             self.yaml.dump(asdict(self.config), f)
 
     def delete(self):
