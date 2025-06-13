@@ -27,6 +27,13 @@ route:
     - receiver: 'logger'
       continue: true
 
+    # Dead Man Switch - meta monitoring
+    - match:
+        alertname: 'DeadManSwitch'
+        severity: 'info'
+      repeat_interval: '5m'
+      receiver: 'o11y-deadmanswitch'
+
 <% if @sink_notifications %>
     #
     # ALL NOTIFICATIONS ARE BEING SINKED HERE AND GOING NOWHERE.
@@ -551,6 +558,10 @@ receivers:
 - name: 'o11y-irc'
   webhook_configs:
     - url: 'http://<%= @active_host %>:19190/wikimedia-observability'
+
+- name: 'o11y-deadmanswitch'
+  webhook_configs:
+    - url: 'http://<%= @active_host %>:20666/deadmanswitch'
 
 - name: 'search-platform-ircmail'
   webhook_configs:

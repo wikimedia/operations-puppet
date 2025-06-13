@@ -40,6 +40,10 @@ class profile::prometheus::instances (
             } else {
                 include "profile::prometheus::${instance}"
             }
+
+            prometheus::dead_man_switch { "dead_man_switch_${instance}":
+                instance => $instance,
+            }
         }
     }
 

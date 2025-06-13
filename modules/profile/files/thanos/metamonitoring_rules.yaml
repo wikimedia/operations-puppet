@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: Apache-2.0
+groups:
+- name: metamonitoring
+  rules:
+  - for: 1m
+    expr: vector(1) > 0
+    alert: DeadManSwitch
+    labels:
+      team: o11y
+      severity: info
+    annotations:
+      logs: TODO
+      runbook: TODO
+      summary: Dead Man Switch
+      dashboard: TODO
+      description: This is an alert meant to ensure that the entire alerting pipeline
+        is functional. This alert is always firing, therefore it should always be
+        firing in Alertmanager and always fire against a receiver.

@@ -213,6 +213,15 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'mirror1001.wikimedia.org'
+    metamonitoring:
+        CN: 'metamonitoring.wikimedia.org'
+        SNI:
+        - 'metamonitoring.wikimedia.org'
+        - 'metamonitoring-alert1002.wikimedia.org'
+        - 'metamonitoring-alert2002.wikimedia.org'
+        challenge: dns-01
+        authorized_regexes:
+        - '^alert[12]002\.wikimedia\.org$'
     mx-in:
         CN: 'mx-in1001.wikimedia.org'
         SNI:

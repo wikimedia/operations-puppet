@@ -1,0 +1,39 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+<VirtualHost *:443>
+    ServerName <%= $vhost %>
+
+    ServerAdmin noc@wikimedia.org
+
+    ErrorLog ${APACHE_LOG_DIR}/<%= $vhost %>_error.log
+    CustomLog ${APACHE_LOG_DIR}/<%= $vhost %>_access.log combined
+
+    SSLEngine on
+    SSLCertificateFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.chained.crt
+    SSLCertificateKeyFile /etc/acmecerts/<%= $acme_chief_cert %>/live/ec-prime256v1.key
+
+    ProxyPassMatch ^/((prometheus|thanos)/.*) http://127.0.0.1:20999/$1
+    ProxyPassReverse / http://127.0.0.1:20999/
+
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    ProxyPreserveHost On
+
+    <Directory />
+        Require all granted
+    </Directory>
+
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName <%= $vhost %>
+    ServerAdmin noc@wikimedia.org
+    DocumentRoot /var/www
+
+    RewriteEngine on
+    RewriteCond %{SERVER_PORT} !^443$
+    RewriteRule ^/(.*)$ https://<%= $vhost %>/$1 [L,R=301]
+
+    ErrorLog ${APACHE_LOG_DIR}/<%= $vhost %>_error.log
+    LogLevel warn
+</VirtualHost>

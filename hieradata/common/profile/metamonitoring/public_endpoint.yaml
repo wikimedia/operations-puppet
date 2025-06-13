@@ -1,0 +1,4 @@
+profile::metamonitoring::public_endpoint::acme_chief_cert: 'metamonitoring'
+profile::metamonitoring::public_endpoint::listen_address: '0.0.0.0'
+profile::metamonitoring::public_endpoint::listen_port: 20999
+profile::metamonitoring::public_endpoint::hostname: 'metamonitoring'

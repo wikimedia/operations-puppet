@@ -26,6 +26,7 @@ class role::alerting_host {
     include profile::alertmanager::api
     include profile::alertmanager::phab
     include profile::alertmanager::triage
+    include profile::metamonitoring
     include profile::conftool::hiddenparma
     include profile::klaxon
     include profile::vopsbot

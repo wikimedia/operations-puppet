@@ -45,6 +45,13 @@ profile::mail::smarthost::wmcs::internal_domains:
   - "*.wikimedia.cloud"
 profile::mail::smarthost::wmcs::external_domain: wmcloud.org
 
+profile::metamonitoring::deadmanswitchamhook::listen_address: ~
+profile::metamonitoring::deadmanswitchamhook::listen_port: ~
+profile::metamonitoring::public_endpoint::acme_chief_cert: ~
+profile::metamonitoring::public_endpoint::listen_address: ~
+profile::metamonitoring::public_endpoint::listen_port: ~
+profile::metamonitoring::public_endpoint::hostname: ~
+
 profile::acme_chief::ssl_client_certificate: "%{facts.puppet_config.localcacert}"
 profile::acme_chief::ssl_client_certificate_source: ~
 profile::aptrepo::wikimedia::public_basedir: /srv/wikimedia

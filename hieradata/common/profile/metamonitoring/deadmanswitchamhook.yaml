@@ -1,0 +1,2 @@
+profile::metamonitoring::deadmanswitchamhook::listen_address: '0.0.0.0'
+profile::metamonitoring::deadmanswitchamhook::listen_port: 20666
