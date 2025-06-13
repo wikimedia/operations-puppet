@@ -38,6 +38,7 @@ class profile::docker_registry(
     # Which k8s clusters should be able to pull restricted images
     Array[String] $authorized_k8s_clusters = lookup('profile::docker_registry::authorized_k8s_clusters', { 'default_value' => [] }),
     Optional[Integer] $catalog_maxentries = lookup('profile::docker_registry::catalog_maxentries', { 'default_value' => 50}),
+    Hash[String, Hash] $apus_credentials = lookup('profile::ceph::s3::client::apus_keys'),
 ) {
     require network::constants
     # Hiera configurations
@@ -79,6 +80,31 @@ class profile::docker_registry(
         catalog_maxentries              => $catalog_maxentries,
         port                            => 5000,
         debug_port                      => 5001,
+    }
+    # Keep it named after the intended user for now
+    docker_registry::instance { 'restricted':
+        backend                => 's3',
+        backend_config         => {
+            accesskey      => $apus_credentials['docker-registry']['access_key'],
+            secretkey      => $apus_credentials['docker-registry']['secret_key'],
+            bucket         => 'registry-restricted', # The bucket should be around beforehand
+            regionendpoint => 'https://apus.discovery.wmnet',
+            secure         => true, # use HTTPS
+            encrypt        => false, # but don't encrypt the data
+            region         => 'us-west-1', # This is useless but required
+            # Valid values are: off (default), debug, debugwithsigning, debugwithhttpbody, debugwithrequestretries,
+            # debugwithrequesterrors and debugwitheventstreambody
+            # loglevel  => 'off',
+        },
+        redis_config           => {
+            addr     => "${redis_host}:${redis_port}",
+            password => $redis_password,
+            db       => 1,
+        },
+        registry_shared_secret => $docker_registry_shared_secret,
+        catalog_maxentries     => $catalog_maxentries,
+        port                   => 5002,
+        debug_port             => 5003,
     }
 
     $k8s_groups = k8s::fetch_cluster_groups()

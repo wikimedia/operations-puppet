@@ -58,7 +58,11 @@ define docker_registry::instance (
             }
         }
     } elsif $backend == 's3' {
-        fail('S3 not supported yet')
+        $storage_config = {
+            'storage' => {
+                's3'   => $backend_config,
+            }
+        }
     } else {
         # This should never happen
         fail('Unsupported backend')
