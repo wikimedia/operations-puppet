@@ -110,7 +110,7 @@ profile::presto::server::catalogs:
 
   thanos_test:
     properties:
-      connector.name: thanos_test
+      connector.name: prometheus
       prometheus.uri: http://thanos-query.discovery.wmnet
       prometheus.query-chunk-duration: 1d
       prometheus.max-query-duration: 1h
