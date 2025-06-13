@@ -24,8 +24,8 @@ define docker_registry::instance (
     Integer $catalog_maxentries,
     Integer $port=5000,
     Integer $debug_port=5001,
-    Optional[Pattern[/\/\/[a-zA-Z_]{3,}\/[a-zA-Z_]{3,}\/AUTH_[a-zA-Z_]+\/[a-z_]{3,}/]] $swift_replication_configuration,
-    Optional[String] $swift_replication_key,
+    Optional[Pattern[/\/\/[a-zA-Z_]{3,}\/[a-zA-Z_]{3,}\/AUTH_[a-zA-Z_]+\/[a-z_]{3,}/]] $swift_replication_configuration=undef,
+    Optional[String] $swift_replication_key=undef,
 ){
     if $backend == 'swift' {
         # These are repopulated here for creating the account file and Exec Puppet resources
