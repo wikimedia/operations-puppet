@@ -153,4 +153,10 @@ class openstack::keystone::service::epoxy(
         require => Package['keystone'],
         notify  => Service['keystone-admin', 'keystone'],
     }
+    # Upstream patch https://review.opendev.org/c/openstack/keystone/+/952641
+    openstack::patch { '/usr/lib/python3/dist-packages/keystone/trust/schema.py':
+        source  => 'puppet:///modules/openstack/epoxy/keystone/hacks/trust/schema.py.patch',
+        require => Package['keystone'],
+        notify  => Service['keystone-admin', 'keystone'],
+    }
 }
