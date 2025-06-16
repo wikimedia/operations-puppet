@@ -193,6 +193,19 @@ class profile::kubernetes::deployment_server::global_config (
 
     $external_service_opts = deep_merge(
       {
+        'archiva' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'https',
+                'port' => 443
+              }
+            ],
+          },
+          'instances' => {
+            'legacy' => wmflib::role::ips('archiva'),
+          }
+        },
         'kafka'  => {
           '_meta' => {
             'ports' => [
