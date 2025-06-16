@@ -389,7 +389,7 @@ profile::installserver::preseed::preseed_per_hostname:
   # Canary new disk config: T391544
   'sessionstore2004':
     - partman/custom/cassandra-jbod.cfg
-    - partman/raid1-2dev.cfg
+    - partman/raid1-2dev-efi.cfg
   'contint[12]00[12]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
