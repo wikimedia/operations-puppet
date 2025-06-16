@@ -1475,11 +1475,7 @@ node /^ganeti700[4]\.magru\./ {
     role(ganeti)
 }
 
-node /^ganeti700[3]\.magru\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
-node /^ganeti700[12]\.magru\./ {
+node /^ganeti700[123]\.magru\./ {
     role(ganeti_routed)
 }
 
