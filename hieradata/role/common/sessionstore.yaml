@@ -39,6 +39,10 @@ profile::cassandra::instances:
         - /srv/sdb4/cassandra-a/data
         - /srv/sdc4/cassandra-a/data
         - /srv/sdd4/cassandra-a/data
+        - /srv/sde4/cassandra-a/data
+        - /srv/sdf4/cassandra-a/data
+        - /srv/sdg4/cassandra-a/data
+        - /srv/sdh4/cassandra-a/data
       heapdump_directory: /srv/sda4/cassandra-a
       commitlog_directory: /srv/cassandra/cassandra-a/commitlog
       hints_directory: /srv/cassandra/cassandra-a/hints
