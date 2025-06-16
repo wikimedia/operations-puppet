@@ -16,6 +16,3 @@ profile::liberica::fp_config:
   katran:
     interface: eno12399np0
     conntrack_size: 8000000
-profile::liberica::bgp_config:
-  communities:
-    - "14907:0" # depooled for T396561
