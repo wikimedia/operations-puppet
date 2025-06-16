@@ -1665,7 +1665,7 @@ node /^kafkamon[12]003\.(codfw|eqiad)\./ {
 #
 # profile::microsites::os_reports      # https://os-reports.wikimedia.org
 node /^miscweb[12]003\.(eqiad|codfw)\./ {
-    role(miscweb)
+    role(insetup::collaboration_services_nftables)
 }
 
 node /^krb1002\.eqiad\./ {
