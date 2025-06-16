@@ -34,6 +34,17 @@ class natlog (
         require  => Systemd::Tmpfile['natlog'],
     }
 
+    if debian::codename::eq('bullseye') {
+        # This is no longer required in bookworm and newer.
+        file_line { 'natlog_start':
+            ensure => present,
+            path   => '/etc/default/natlog',
+            line   => 'START=yes',
+            match  => 'START',
+            notify => Service['natlog'],
+        }
+    }
+
     service { 'natlog':
         ensure  => running,
         enable  => true,
