@@ -2713,7 +2713,6 @@ wmcs_domains:
 # List of IP addresses used by HAProxy to route healthcheck
 # requests to dedicated backend
 haproxy_allowed_healthcheck_sources:
-  - 10.64.0.136                         # lvs1016
   - 10.64.0.80                          # lvs1017
   - 10.64.17.18                         # lvs1017
   - 10.64.33.18                         # lvs1017
