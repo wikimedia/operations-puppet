@@ -40,7 +40,7 @@ class natlog (
             ensure => present,
             path   => '/etc/default/natlog',
             line   => 'START=yes',
-            match  => 'START',
+            match  => '^START',
             notify => Service['natlog'],
         }
     }
