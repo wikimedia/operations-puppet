@@ -25,3 +25,5 @@ prometheus::node_exporter::collectors_extra:
 profile::firewall::provider: nftables
 
 profile::ganeti::routed: true
+
+profile::base::enable_rp_filter: false
