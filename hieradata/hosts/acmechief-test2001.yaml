@@ -12,3 +12,5 @@ profile::monitoring::notifications_enabled: false
 profile::acme_chief::certificates:
     unified-goog:
         account: 7ee51c01616dea9c3cad10790392bebc
+    upload-goog:
+        account: 7ee51c01616dea9c3cad10790392bebc

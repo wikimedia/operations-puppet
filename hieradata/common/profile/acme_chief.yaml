@@ -343,6 +343,18 @@ profile::acme_chief::certificates:
       - 'ec-prime256v1'
       authorized_regexes:
       - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
+    upload-goog:
+      CN: 'upload.wikimedia.org'
+      SNI:
+      - 'upload.wikimedia.org'
+      - 'maps.wikimedia.org'
+      staging_time: 604800
+      challenge: dns-01
+      account: 72f6cee110ecd66620ec200be3990522
+      key_types:
+      - 'ec-prime256v1'
+      authorized_regexes:
+      - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     wikidough:
         CN: 'wikimedia-dns.org'
         SNI:
