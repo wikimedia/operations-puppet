@@ -76,11 +76,12 @@ profile::base::production::role_description: 'Hadoop master (NameNode & Resource
 
 profile::puppet::agent::force_puppet7: true
 
-# Temporarily exlude hosts in group 5 - rack F1 for a hard drive upgrade - See #T390172
+# Temporarily exlude hosts in group 9 and 10 for a hard drive upgrade - See #T390176 and #T390178
 profile::hadoop::master::excluded_hosts:
-  - an-worker1160.eqiad.wmnet
-  - an-worker1161.eqiad.wmnet
-  - an-worker1162.eqiad.wmnet
-  - an-worker1157.eqiad.wmnet
-  - an-worker1158.eqiad.wmnet
-  - an-worker1159.eqiad.wmnet
+  - an-worker1149.eqiad.wmnet
+  - an-worker1150.eqiad.wmnet
+  - an-worker1151.eqiad.wmnet
+  - an-worker1152.eqiad.wmnet
+  - an-worker1153.eqiad.wmnet
+  - an-worker1175.eqiad.wmnet
+  - an-worker1176.eqiad.wmnet
