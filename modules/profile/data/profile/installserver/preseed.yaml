@@ -312,7 +312,12 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  'wikikube-worker*':
+  # Wikikube mw-experimental (VMs)
+  'wikikube-worker-exp*':
+    - partman/flat.cfg
+    - partman/flat-noswap.cfg
+    - virtual.cfg
+  'wikikube-worker[12]*':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
     - partman/custom/kubernetes-node-containerd.cfg
