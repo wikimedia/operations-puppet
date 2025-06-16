@@ -63,7 +63,10 @@ class profile::bird::anycast(
       logging      => $anycasthc_logging,
   }
 
-  include profile::bird::anycast_healthchecker_monitoring
+  nrpe::plugin { 'check_anycast_healthchecker':
+      ensure  => absent,
+      content => '',
+  }
 
   class { 'bird':
       neighbors    => $neighbors_list,
