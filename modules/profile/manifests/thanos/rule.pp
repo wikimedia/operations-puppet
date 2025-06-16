@@ -41,7 +41,8 @@ class profile::thanos::rule (
         query_url         => "https://thanos.${public_domain}",
         # Thanos Rule accepts input in the form of an interval (e.g., '15d' represents 15 days).
         # The cutoff parameter is expressed in days as an Integer, and here we adjust the format to the correct string.
-        retention_time    => sprintf('%dd', $object_store_cutoff_days + 1)
+        retention_time    => sprintf('%dd', $object_store_cutoff_days + 1),
+        tracing_enabled   => true,
     }
 
     if $::fqdn in $thanos_rule_hosts {

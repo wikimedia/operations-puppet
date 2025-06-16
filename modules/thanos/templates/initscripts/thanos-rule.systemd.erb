@@ -13,6 +13,7 @@ ExecStart=/usr/bin/thanos rule \
 <%- if @use_objstore -%>
   --objstore.config-file <%= @objstore_config_file %> \
 <%- end -%>
+  <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   --alert.query-url <%= @query_url %> \
   --alert.relabel-config-file <%= @relabel_config_file %> \
   --alertmanagers.config-file <%= @am_config_file %> \

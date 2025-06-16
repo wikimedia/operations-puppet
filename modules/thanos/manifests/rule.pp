@@ -27,6 +27,7 @@
 # [*http_port*] The port to use for HTTP
 # [*grpc_port*] The port to use for gRPC
 # [*retention_time*] Block retention time on local disk
+# [*tracing_enabled*] Self explanatory
 
 class thanos::rule (
     Hash[Stdlib::Fqdn, Hash] $rule_hosts,
@@ -41,6 +42,7 @@ class thanos::rule (
     Stdlib::Port::Unprivileged $http_port = 17902,
     Stdlib::Port::Unprivileged $grpc_port = 17901,
     String $retention_time = '2d',
+    Boolean $tracing_enabled = false,
 ) {
     ensure_packages(['thanos'])
 
@@ -53,6 +55,7 @@ class thanos::rule (
     $service_name = 'thanos-rule'
     $data_dir = '/srv/thanos-rule'
     $objstore_config_file = '/etc/thanos-rule/objstore.yaml'
+    $tracing_config_file = '/etc/thanos-rule/tracing-config.yml'
     $am_config_file = '/etc/thanos-rule/alertmanagers.yaml'
     $am_config = { 'alertmanagers' => [
         { 'static_configs' => $alertmanagers.map |$a| { "${a}:9093" } }
@@ -101,6 +104,11 @@ class thanos::rule (
         file { $objstore_config_file:
             ensure => absent,
         }
+    }
+
+    thanos::tracing { $tracing_config_file:
+        service_name => $service_name,
+        sampler_type => 'parentbasedalwayssample',
     }
 
     file { $am_config_file:
