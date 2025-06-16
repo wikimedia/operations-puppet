@@ -82,32 +82,4 @@ class profile::hadoop::worker (
         mode   => '0550',
         source => 'puppet:///modules/profile/hadoop/worker/set_yarn_dir_ownership',
     }
-
-    if $monitoring_enabled {
-        # Icinga process alerts for DataNode and NodeManager
-        nrpe::monitor_service { 'hadoop-hdfs-datanode':
-            description   => 'Hadoop DataNode',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.datanode.DataNode"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::worker'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Datanode_process',
-        }
-        nrpe::monitor_service { 'hadoop-yarn-nodemanager':
-            description   => 'Hadoop NodeManager',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.nodemanager.NodeManager"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::worker'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Yarn_Nodemanager_process',
-        }
-
-        if $::fqdn in $::bigtop::hadoop::journalnode_hosts {
-            nrpe::monitor_service { 'hadoop-hdfs-journalnode':
-                description   => 'Hadoop JournalNode',
-                nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.qjournal.server.JournalNode"',
-                contact_group => 'admins,team-data-platform',
-                require       => Class['bigtop::hadoop'],
-                notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Journalnode_process',
-            }
-        }
-    }
 }

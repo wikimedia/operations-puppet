@@ -65,36 +65,6 @@ class profile::hadoop::master(
 
     # Include icinga alerts if production realm.
     if $monitoring_enabled {
-        # Icinga process alerts for NameNode, ResourceManager and HistoryServer
-        nrpe::monitor_service { 'hadoop-hdfs-namenode':
-            description   => 'Hadoop Namenode - Primary',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.server.namenode.NameNode"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::master'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_Namenode_process',
-        }
-        nrpe::monitor_service { 'hadoop-hdfs-zkfc':
-            description   => 'Hadoop HDFS Zookeeper failover controller',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.hdfs.tools.DFSZKFailoverController"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::master'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#HDFS_ZKFC_process',
-        }
-        nrpe::monitor_service { 'hadoop-yarn-resourcemanager':
-            description   => 'Hadoop ResourceManager',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.yarn.server.resourcemanager.ResourceManager"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::master'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Yarn_Resourcemanager_process',
-        }
-        nrpe::monitor_service { 'hadoop-mapreduce-historyserver':
-            description   => 'Hadoop HistoryServer',
-            nrpe_command  => '/usr/lib/nagios/plugins/check_procs -c 1:1 -C java -a "org.apache.hadoop.mapreduce.v2.hs.JobHistoryServer"',
-            contact_group => 'admins,team-data-platform',
-            require       => Class['bigtop::hadoop::master'],
-            notes_url     => 'https://wikitech.wikimedia.org/wiki/Analytics/Systems/Cluster/Hadoop/Alerts#Mapreduce_Historyserver_process',
-        }
-
         if $use_kerberos {
             require ::profile::kerberos::client
             $kerberos_prefix = "${::profile::kerberos::client::run_command_script} hdfs "
