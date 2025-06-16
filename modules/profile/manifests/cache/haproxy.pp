@@ -256,23 +256,6 @@ class profile::cache::haproxy (
             group  => 'root',
             mode   => '0755',
         }
-        ['cloud', 'abuse', 'known-clients'].each |String $scope| {
-            confd::file { "/etc/haproxy/ipblocks.d/${scope}.map":
-                ensure     => present,
-                prefix     => $conftool_prefix,
-                watch_keys => ["/request-ipblocks/${scope}"],
-                content    => template('profile/cache/haproxy/ipblocks.map.tpl.erb'),
-                # Please, whoever sees this in the future, don't @ me about this.
-                # An haproxy map file can contain either blank lines, comments,
-                # or lines with key-value pairs separated by spaces.
-                # The check command is a perl one-liner that checks for these three cases.
-                # If you find a nicer solution that doesn't involve writing a custom
-                # parser, please fix this.
-                check      => '/usr/local/bin/check-haproxy-map',
-                reload     => '/usr/bin/systemctl reload haproxy.service',
-                before     => Service['haproxy'],
-            }
-        }
 
         confd::file { '/etc/haproxy/ipblocks.d/all.map':
             ensure     => present,
