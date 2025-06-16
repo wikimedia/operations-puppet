@@ -21,12 +21,15 @@ class profile::wmcs::cloudgw (
     Stdlib::IP::Address                            $vrrp_peer                 = lookup('profile::wmcs::cloudgw::vrrp_peer',                  {default_value => '127.0.0.1'}),
     Optional[Array[String]]                        $vrrp_vips_v6              = lookup('profile::wmcs::cloudgw::vrrp_vips_v6',               {default_value => undef}),
     Hash                                           $conntrackd                = lookup('profile::wmcs::cloudgw::conntrackd',                 {default_value => {}}),
+    Boolean                                        $enable_nat_log            = lookup('profile::wmcs::cloudgw::enable_nat_log',             {default_value => false}),
     Stdlib::IP::Address                            $routing_source            = lookup('profile::wmcs::cloudgw::routing_source_ip',          {default_value => '127.0.0.7'}),
     Optional[Array[Stdlib::IP::Address::V4]]       $cloud_filter              = lookup('profile::wmcs::cloudgw::cloud_filter',               {default_value => []}),
     Array[Stdlib::IP::Address::V4]                 $dmz_cidr                  = lookup('profile::wmcs::cloudgw::dmz_cidr',                   {default_value => []}),
     Array[Wmflib::IP::Address::CIDR]               $public_cidrs              = lookup('profile::wmcs::cloud_private_subnet::public_cidrs',  {default_value => []}),
     Stdlib::IP::Address::V4::Cidr                  $cloud_private_supernet    = lookup('profile::wmcs::cloud_private_subnet::supernet_v4'),
 ) {
+    include profile::logrotate
+
     ensure_packages('vlan')
     $nic_virt = "vlan${virt_vlan}"
     $nic_wan  = "vlan${wan_vlan}"
@@ -217,5 +220,11 @@ class profile::wmcs::cloudgw (
     nftables::file { 'conntrackd_tcp_3780':
         order   => 110,
         content => "add rule inet base input ip saddr ${conntrackd_remote_address} tcp dport 3780 ct state new accept\n",
+    }
+
+    if $enable_nat_log {
+        class { 'natlog':
+            logrotate_frequency => $profile::logrotate::hourly.bool2str('hourly', 'daily'),
+        }
     }
 }
