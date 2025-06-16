@@ -182,7 +182,7 @@ class profile::puppetserver::pontoon (
 
     # XXX refactor to use profile::puppetserver::git instead
     git::clone { 'netbox-hiera':
-        ensure    => present,
+        ensure    => 'latest',
         origin    => 'https://netbox-exports.wikimedia.org/netbox-hiera',
         owner     => 'puppet',
         mode      => '0755',
