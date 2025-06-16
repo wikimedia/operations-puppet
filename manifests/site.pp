@@ -1107,20 +1107,20 @@ node /^cirrussearch11(1[1-9]|2[0-5])\.eqiad\./ {
     role(cirrus::opensearch)
 }
 
-# re-arranging elastic hosts by row in order to facilitate
-# reimages. Row info sourced from regex.yaml
-# ROW A
 
-# As we reimage the above hosts, we'll change both their role and their name.
-node /^cirrussearch2(055|056|061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
+# soon-to-be-decommed T395855
+node /^cirrussearch20[55-60]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# ROW A
+node /^cirrussearch2(061|062|069|073|074|075|076|087|088|089|090|091|111)\.codfw\./ {
     role(cirrus::opensearch)
 }
 
 # ROW B
-
-node  /^cirrussearch20(57|58|63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
+node  /^cirrussearch20(63|64|70|77|78|79|80|92|93|94|95|96|97)\.codfw\./ {
     role(cirrus::opensearch)
-
 }
 
 node /^cirrussearch2110\.codfw\./ {
@@ -1128,13 +1128,11 @@ node /^cirrussearch2110\.codfw\./ {
 }
 
 # ROW C
-
-node /^cirrussearch2(059|065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.codfw\./ {
+node /^cirrussearch2(065|066|071|081|082|083|098|099|100|101|102|103|112|113)\.codfw\./ {
     role(cirrus::opensearch)
 }
 # ROW D
-
-node /^cirrussearch2(060|067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
+node /^cirrussearch2(067|068|072|084|085|086|104|105|106|107|108|109|114|115)\.codfw\./ {
     role(cirrus::opensearch)
 }
 
