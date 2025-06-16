@@ -29,14 +29,4 @@ class profile::microsites::os_reports (
         interval        => {'start' => 'OnCalendar', 'interval' => '*-*-* 03:00:00'},
     }
 
-    prometheus::blackbox::check::http { 'os-reports.wikimedia.org':
-        team               => 'collaboration-services',
-        severity           => 'task',
-        path               => '/',
-        ip_families        => ['ip4'],
-        force_tls          => true,
-        status_matches     => [200],
-        body_regex_matches => ['OS deprecation'],
-    }
-
 }
