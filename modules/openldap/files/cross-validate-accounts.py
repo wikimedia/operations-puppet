@@ -60,7 +60,7 @@ def fetch_yaml_data():
     tmp_dir = tempfile.mkdtemp()
     os.chdir(tmp_dir)
     try:
-        subprocess.check_output(["git", "clone",
+        subprocess.check_output(["git", "clone", "--depth=1",
                                  "https://gerrit.wikimedia.org/r/operations/puppet.git"],
                                 stderr=subprocess.STDOUT, shell=False)
     except subprocess.CalledProcessError as e:
