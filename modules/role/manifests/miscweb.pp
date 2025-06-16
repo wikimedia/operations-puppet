@@ -8,6 +8,5 @@ class role::miscweb {
     include profile::tlsproxy::envoy             # TLS termination
     include profile::prometheus::apache_exporter # dashboard data
 
-    include profile::microsites::os_reports      # https://os-reports.wikimedia.org
     include profile::microsites::monitoring      # Contains blackbox checks for miscweb services on Kubernetes (T300171)
 }
