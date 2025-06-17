@@ -24,6 +24,38 @@ RELEASE="/etc/helmfile-defaults/mediawiki/release/mw-experimental-pinkllama.yaml
 LOCK_FILE="/var/lock/mw-experimental-mediawiki-image-update.lock"
 
 
+# Check arguments
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    -f)
+      FORCE_COPY=true
+      echo "Forcing code update" | tee -a "$LOG_FILE"
+      shift
+      ;;
+    --lock)
+      # Lock to prevent code updates (either manual or via the timer)
+      touch "$LOCK_FILE"
+      echo "Lock created at $LOCK_FILE"
+      exit 0
+      ;;
+    --unlock)
+      # Remove the lock file if it exists
+      if [ -f "$LOCK_FILE" ]; then
+        rm "$LOCK_FILE"
+        echo "Removing lock $LOCK_FILE"
+      else
+        echo "No lock file found at $LOCK_FILE"
+      fi
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" | tee -a "$LOG_FILE"
+      echo "Usage: $0 [-f] [--lock] [--unlock]"
+      exit 1
+      ;;
+  esac
+done
+
 if [ ! -f "$RELEASE" ]; then
     echo "Release file not found: $RELEASE" | tee -a "$LOG_FILE"
     exit 1
@@ -37,38 +69,6 @@ IMAGE_NAME="${IMAGE%%:*}"         # image name
 LATEST_RELEASE_TAG="${IMAGE##*:}" # image tag
 
 echo "Latest release tag for $IMAGE_NAME is: $LATEST_RELEASE_TAG" | tee -a "$LOG_FILE"
-
-# Check arguments
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -f)
-      FORCE_COPY=true
-      echo "Forcing code update" | tee -a "$LOG_FILE"
-      shift
-      ;;
-    --lock)
-      # Lock to prevent code updates (either manual or via the timer)
-      touch "$LOCK_FILE"
-      echo "Lock created at $LOCK_FILE" | tee -a "$LOG_FILE"
-      exit 0
-      ;;
-    --unlock)
-      # Remove the lock file if it exists
-      if [ -f "$LOCK_FILE" ]; then
-        rm "$LOCK_FILE"
-        echo "Removing lock $LOCK_FILE" | tee -a "$LOG_FILE"
-      else
-        echo "No lock file found at $LOCK_FILE" | tee -a "$LOG_FILE"
-      fi
-      exit 0
-      ;;
-    *)
-      echo "Unknown option: $1" | tee -a "$LOG_FILE"
-      echo "Usage: $0 [-f] [--lock] [--unlock]" | tee -a "$LOG_FILE"
-      exit 1
-      ;;
-  esac
-done
 
 # Check for lock file
 if [ -f "$LOCK_FILE" ]; then

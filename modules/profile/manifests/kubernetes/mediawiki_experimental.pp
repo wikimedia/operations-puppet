@@ -79,7 +79,7 @@ class profile::kubernetes::mediawiki_experimental(
             ensure => present,
             owner  => 'root',
             group  => 'root',
-            mode   => '0544',
+            mode   => '0555',
             source => "puppet:///modules/profile/kubernetes/node/${mw_experimental_update_script_name}.sh",
         }
 
