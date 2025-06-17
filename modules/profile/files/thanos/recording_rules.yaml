@@ -147,25 +147,7 @@ groups:
           "exporter", "squid",
           "", ""
           )
-  - name: istio_slos
-    rules:
-      # istio_request_duration_milliseconds_{bucket,count} and istio_requests_total
-      # are used for SLO dashboards for services behind an Istio Gateway.
-      # Due to the number of metrics and the big number of labels provided by upstream
-      # (see https://istio.io/latest/docs/reference/config/metrics/#labels)
-      # the computation of recording rule can easily become slow and cause holes
-      # in the final time series. For this reason we heavily limit the range of
-      # values for specific labels.
-      #
-      # SLx: Buckets for latency
-      - record: istio_sli_latency_request_duration_milliseconds_bucket:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, le, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_bucket{kubernetes_namespace="istio-system", le=~"(50|100|250|500|1000|2500|5000|10000|30000|\\+Inf)"}[5m]))
-      # SLx: Total requests for latency.
-      - record: istio_sli_latency_request_duration_milliseconds_count:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_request_duration_milliseconds_count{kubernetes_namespace="istio-system"}[5m]))
-      # SLx: Request counts with status
-      - record: istio_sli_availability_requests_total:increase5m
-        expr: sum by (destination_canonical_service, destination_service_namespace, response_code, site, prometheus) (increase(istio_requests_total{kubernetes_namespace="istio-system"}[5m]))
+
   - name: logstash_slos
     rules:
       # record boolean logstash availabilty metric for pyrra logstash-availability bool_gauge SLO
