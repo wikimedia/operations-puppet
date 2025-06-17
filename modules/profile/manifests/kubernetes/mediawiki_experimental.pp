@@ -20,7 +20,7 @@
 class profile::kubernetes::mediawiki_experimental(
     Boolean $is_mw_experimental            = lookup('profile::kubernetes::node::mw_experimental'),
     Stdlib::Host $deployment_server        = lookup('deployment_server'),
-    Stdlib::Unixpath $helmfile_general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Stdlib::Unixpath $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
     Optional[String] $deployment_group     = lookup('deployment_group', { default_value => undef }),
 ) {
     if $is_mw_experimental {
@@ -42,14 +42,21 @@ class profile::kubernetes::mediawiki_experimental(
         # the latest mediawiki release to be used by every deployment. We are syncing
         # this directory to the mw-experimental nodes so that they can use the latest
         # mediawiki release
-        $mediawiki_releases = "${helmfile_general_dir}/mediawiki/release"
+        $kubernetes_release_dir = "${general_dir}/mediawiki/release"
+        file { $kubernetes_release_dir:
+            ensure => directory,
+            owner  => 'mwbuilder',
+            group  => 'deployment',
+            mode   => '2775',
+        }
         rsync::quickdatacopy { 'releases':
             ensure      => present,
             auto_sync   => true,
             source_host => $deployment_server,
             dest_host   => $facts['networking']['fqdn'],
-            module_path => $mediawiki_releases,
+            module_path => $kubernetes_release_dir,
             chown       => 'root:deployment',
+            require     => File[$kubernetes_release_dir],
         }
         # fix-staging-perms is copied from profile::mediawiki::deployment::server
         # it fixes ownership and permissions of /srv/mediawiki
