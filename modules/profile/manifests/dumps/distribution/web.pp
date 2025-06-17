@@ -27,11 +27,13 @@ class profile::dumps::distribution::web (
     ferm::service { 'xmldumps_http':
         proto => 'tcp',
         port  => '80',
+        qos   => 'low',
     }
 
     ferm::service { 'xmldumps_https':
         proto => 'tcp',
         port  => '443',
+        qos   => 'low',
     }
 
 }
