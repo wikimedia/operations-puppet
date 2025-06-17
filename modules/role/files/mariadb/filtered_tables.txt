@@ -197,7 +197,9 @@ categorylinks,cl_sortkey,K
 categorylinks,cl_timestamp,K
 categorylinks,cl_sortkey_prefix,K
 categorylinks,cl_collation,K
+categorylinks,cl_collation_id,K
 categorylinks,cl_type,K
+categorylinks,cl_target_id,K
 ce_address,cea_id,K
 ce_address,cea_full_address,K
 ce_address,cea_country,K
