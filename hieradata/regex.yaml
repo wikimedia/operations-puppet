@@ -443,6 +443,7 @@ wikikube_workers_exp:
     - deployment
   # deployment_group should be the same as hieradata/role/common/deployment_server/kubernetes.yaml
   deployment_group: "deployment"
+  profile::kubernetes::node::mw_experimental: true
   profile::kubernetes::node::kubelet_node_labels:
     - dedicated=mw-experimental
   profile::kubernetes::node::kubelet_node_taints:
