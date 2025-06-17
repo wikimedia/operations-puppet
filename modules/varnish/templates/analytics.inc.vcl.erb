@@ -423,8 +423,8 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";sessioncookie=1";
     }
 
-    if (req.http.X-Public-Cloud) {
-        // do we still need this considering req.http.X-Public-Cloud?
+    if (req.http.X-Provenance ~ "cloud=\w+") {
+        // do we still need this considering X-Provenance content?
         set resp.http.X-Analytics = resp.http.X-Analytics + ";public_cloud=1";
     }
 

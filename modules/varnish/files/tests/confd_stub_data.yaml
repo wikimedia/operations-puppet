@@ -23,8 +23,8 @@ conftool:
           "header_value": "", "query_parameter": "", "query_parameter_value": ""}
         #
         any_cloud: |-
-          {"method": "", "url_path": "", "header": "X-Public-Cloud",
-          "header_value": ".*", "query_parameter": "", "query_parameter_value": ""}
+          {"method": "", "url_path": "", "header": "X-Provenance",
+          "header_value": "cloud=\w+", "query_parameter": "", "query_parameter_value": ""}
       "query":
         nocache: |-
           {"method": "", "url_path": "", "header": "",
@@ -36,12 +36,12 @@ conftool:
     request-vcl:
       cache-upload:
         global: '{ "vcl":
-            "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && vsthrottle.is_denied(\"requestctl:rate_limit_aws:\" + req.http.X-Client-IP, 1000, 10s, 100s)) {\n
+            "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && vsthrottle.is_denied(\"requestctl:rate_limit_aws:\" + req.http.X-Client-IP, 1000, 10s, 100s)) {\n
                 \treturn (synth(429, \"Too many requests. Please contact noc@wikimedia.org.\"));\n
             }"}'
       cache-text:
         global: '{ "vcl":
-        "if (req.http.X-Public-Cloud ~ \"test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
+        "if (req.http.X-Provenance ~ \"cloud=test-cloud-provider\" && req.url ~ \"^(/wiki/|/w/index.php)\" && !req.http.X-Wikimedia-Debug) {\n
                 \treturn (synth(403, \"Forbidden.\"));\n
          }\n
          if (std.ip(req.http.X-Client-IP, \"192.0.2.1\") ~ text_abuse_nets && (req.url ~ \"[?&]nocache=.*\" || req.method == \"POST\")) {\n

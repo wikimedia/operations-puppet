@@ -153,7 +153,7 @@ backend <%= 'be_' + backend.gsub(/[-.]/, '_') %> {
 sub shutdown_public_clouds {
 <% if @vcl_config.fetch("public_clouds_shutdown") -%>
     // Unconditionally return 403 to all traffic from public clouds like ec2
-    if (req.http.X-Public-Cloud)) {
+    if (req.http.X-Provenance ~ "cloud=\w+")) {
         return (synth(403));
     }
 <% end -%>
@@ -359,7 +359,6 @@ sub recv_fe_ip_processing {
     // this subroutine "owns" these 3 headers - nothing else in our VCL or
     // anywhere in our network should be setting them.
     unset req.http.X-Trusted-Proxy;
-    unset req.http.X-Public-Cloud;
     unset req.http.X-Abuse-Network;
 
     // unset this one just because it's well-known and some default
@@ -463,12 +462,6 @@ sub recv_fe_ip_processing {
 
         // cleanup
         unset req.http.maybe-xcip;
-    }
-
-    set req.http.X-Public-Cloud = netmapper.map("public_clouds", req.http.X-Client-IP);
-    // normalize to boolean post-netmapper (varnish-3.0.4...)
-    if (req.http.X-Public-Cloud == "") {
-        unset req.http.X-Public-Cloud;
     }
 
     set req.http.X-Known-Client = netmapper.map("known_clients", req.http.X-Client-IP);

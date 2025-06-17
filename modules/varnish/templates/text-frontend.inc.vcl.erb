@@ -5,7 +5,7 @@ include "normalize_path.inc.vcl";
 
 # Temporary hack to patch T284479
 # Not a complete list.
-# Do not use; use X-Public-Cloud == "gcp" instead; see also T270391
+# Do not use; use X-Provenance == "cloud=gcp" instead; see also T270391
 acl google_cloud_nets {
     "2600:1900::0"/28;
 }
@@ -478,7 +478,7 @@ sub cluster_fe_ratelimit {
 
     // Rate limit public cloud to 100/s with bursts of 1000 (excluding
     // cloud IPs included in wikimedia_nets)
-    if (req.http.X-Public-Cloud
+    if (req.http.X-Provenance ~ "cloud=\w+"
         && std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
         && vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
         set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud";
@@ -509,7 +509,8 @@ sub cluster_fe_ratelimit {
                 return (synth(429, "Too Many Requests"));
             }
         } else {
-            if (req.http.X-Public-Cloud && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
+            if (req.http.X-Provenance ~ "cloud=\w+"
+                && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
                 set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud_uncached";
                 return (synth(429, "Too Many Requests"));
             } else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {

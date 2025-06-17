@@ -1,7 +1,7 @@
 varnishtest "cache_text dynamic-filters"
 
 server s1 {
-    loop 4 {
+    loop 2 {
         rxreq
         txresp
     }
@@ -26,8 +26,9 @@ varnish v1 -vcl {
     include "${basepath}/usr/share/varnish/tests/wikimedia_text-frontend.vcl";
 } -start
 
+
 client c1 {
-    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42"
+    txreq -url "/wiki/Main_Page" -hdr "Host: en.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "X-Client-IP: 198.51.100.42" -hdr "X-Provenance: cloud=test-cloud-provider"
     rxresp
     expect resp.status == 403
 
@@ -47,3 +48,5 @@ client c1 {
     rxresp
     expect resp.status == 403
 } -run
+
+varnish v1 -expect backend_req == 2

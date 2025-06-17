@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: Apache-2.0
+varnishtest "cache_upload x-provenance"
+
+server s1 {
+    rxreq
+    txresp
+    expect req.http.X-Provenance == "cloud=test-cloud-provider"
+    rxreq
+    txresp
+    expect req.http.X-Public-Cloud == <undef>
+} -start
+
+varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inline_c=true -p cc_command='${cc_command}'" -vcl+backend {
+   backend vtc_backend {
+       .host = "${s1_addr}"; .port = "${s1_port}";
+   }
+   include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
+} -start
+
+client c1 {
+    txreq -url "/1" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "X-Provenance: cloud=test-cloud-provider" -hdr "X-Client-IP: 198.51.100.42"
+    rxresp
+    expect resp.http.X-Analytics ~ "public_cloud=1"
+    expect resp.status == 200
+
+    txreq -url "/1" -hdr "Host: upload.wikimedia.org" -hdr "X-Forwarded-Proto: https" -hdr "User-Agent: Mozilla/5.0 (I solemnly swear I am a real browser; KHTML, like Gecko)" -hdr "X-Client-IP: 198.51.100.42"
+    rxresp
+    expect resp.http.X-Analytics !~ "public_cloud"
+    expect resp.status == 200
+} -run
