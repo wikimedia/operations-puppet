@@ -16,6 +16,7 @@ ProtectSystem=strict
 PrivateTmp=yes
 ProtectKernelModules=yes
 ProtectKernelTunables=yes
+ReadWritePaths=/sys/fs/bpf
 LimitMEMLOCK=infinity
 ExecStart=/usr/bin/libericad hcforwarder
 ExecReload=/usr/bin/kill -SIGHUP $MAINPID
