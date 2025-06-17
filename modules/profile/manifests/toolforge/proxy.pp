@@ -16,7 +16,14 @@ class profile::toolforge::proxy (
     class { '::sslcert::dhparam': } # deploys /etc/ssl/dhparam.pem, required by nginx
 
     include profile::resolving
-    $resolver = $profile::resolving::nameserver_ips.join(' ')
+    $resolver = $profile::resolving::nameserver_ips
+        .map |$ip| {
+            wmflib::ip_family($ip) ? {
+                4 => $ip,
+                6 => "[${ip}]",
+            }
+        }
+        .join(' ')
 
     file { '/etc/nginx/nginx.conf':
         ensure  => file,

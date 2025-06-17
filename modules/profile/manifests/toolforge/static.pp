@@ -3,7 +3,14 @@ class profile::toolforge::static (
     Stdlib::Fqdn $web_domain    = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
 ) {
     include profile::resolving
-    $resolver = $profile::resolving::nameserver_ips.join(' ')
+    $resolver = $profile::resolving::nameserver_ips
+        .map |$ip| {
+            wmflib::ip_family($ip) ? {
+                4 => $ip,
+                6 => "[${ip}]",
+            }
+        }
+        .join(' ')
     $fingerprints_dir = '/var/www/fingerprints'
 
     wmflib::dir::mkdir_p($fingerprints_dir)
