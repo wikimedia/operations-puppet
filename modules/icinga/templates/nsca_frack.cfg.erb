@@ -103,7 +103,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-trino
 }
 
 define host {
@@ -116,7 +116,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-trino
 }
 
 define host {
@@ -129,7 +129,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-trino
 }
 
 define host {
@@ -142,7 +142,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-misc
+    hostgroups               fundraising-trino
 }
 
 define host {
@@ -831,6 +831,11 @@ define hostgroup {
 define hostgroup {
     hostgroup_name           fundraising-queue
     alias                    Fundraising Queue
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-trino
+    alias                    Fundraising Trino
 }
 
 # PASSIVE SERVICES TEMPLATE
@@ -2052,4 +2057,66 @@ define service {
     use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-queue
+}
+
+# fundraising-trino
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_memory
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-trino
+}
+
+define service {
+    use                      passive-service
+    service_description      check_trino
+    hostgroup_name           fundraising-trino
 }
