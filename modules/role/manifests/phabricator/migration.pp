@@ -4,4 +4,5 @@ class role::phabricator::migration {
     include profile::base::production
     include profile::firewall
     include profile::phabricator::migration
+    include profile::phabricator::httpd
 }

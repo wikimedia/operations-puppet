@@ -88,6 +88,10 @@ class profile::phabricator::migration (
         mode    => '0600',
     }
 
+    file { '/srv/phab':
+        ensure => directory,
+    }
+
     class { '::phabricator::phd::user': }
 
     if $facts['fqdn'] in $dst_hosts {
