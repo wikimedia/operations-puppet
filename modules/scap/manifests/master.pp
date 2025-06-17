@@ -102,11 +102,12 @@ class scap::master(
         read_only   => 'yes',
         hosts_allow => $deployment_hosts
     }
-
+    $releases_allow_hosts = (wmflib::role::hosts('kubernetes::worker') + $deployment_hosts)
     rsync::server::module { 'releases':
-        path        => $scap_k8s_releases,
-        read_only   => 'yes',
-        hosts_allow => $deployment_hosts
+        path          => $scap_k8s_releases,
+        read_only     => 'yes',
+        hosts_allow   => $releases_allow_hosts,
+        auto_firewall => true
     }
 
     class { 'scap::l10nupdate': }

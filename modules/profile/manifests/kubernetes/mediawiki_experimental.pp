@@ -43,7 +43,7 @@ class profile::kubernetes::mediawiki_experimental(
         # this directory to the mw-experimental nodes so that they can use the latest
         # mediawiki release
         $mediawiki_releases = "${helmfile_general_dir}/mediawiki/release"
-        rsync::quickdatacopy { 'mediawiki_releases_sync':
+        rsync::quickdatacopy { 'releases':
             ensure      => present,
             auto_sync   => true,
             source_host => $deployment_server,
