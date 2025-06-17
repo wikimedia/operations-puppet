@@ -18,6 +18,11 @@ class natlog (
         default  => $logrotate_days,
     }
 
+    file { '/etc/systemd/journald@natlog.conf':
+        ensure => file,
+        source => 'puppet:///modules/natlog/journald.conf',
+    }
+
     logrotate::rule { 'natlog':
         ensure       => present,
         file_glob    => "${base_path}/natlog.log",
@@ -27,12 +32,6 @@ class natlog (
         not_if_empty => true,
         rotate       => $rotate,
         post_rotate  => ['/usr/lib/rsyslog/rsyslog-rotate'],
-    }
-
-    rsyslog::conf { 'natlog':
-        content  => template('natlog/rsyslog.conf.erb'),
-        priority => 20,
-        require  => Systemd::Tmpfile['natlog'],
     }
 
     if debian::codename::eq('bullseye') {
@@ -46,9 +45,21 @@ class natlog (
         }
     }
 
+    systemd::override { 'natlog':
+        unit   => 'natlog',
+        source => 'puppet:///modules/natlog/natlog.override.service',
+        before => Service['natlog'],
+    }
+
     service { 'natlog':
         ensure  => running,
         enable  => true,
-        require => [Package['natlog'], Rsyslog::Conf['natlog']],
+        require => Package['natlog'],
+    }
+
+    rsyslog::conf { 'natlog':
+        content  => template('natlog/rsyslog.conf.erb'),
+        priority => 20,
+        require  => [Systemd::Tmpfile['natlog'], Service['natlog']],
     }
 }

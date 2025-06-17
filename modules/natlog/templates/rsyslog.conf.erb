@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 # rsyslogd(8) configuration file for natlog. This file is managed by Puppet.
+input(type="imuxsock" Socket="/run/systemd/journal.natlog/dev-log")
+
 :syslogtag, isequal, "NATLOG:"   <%= @base_path %>/natlog.log
 :syslogtag, isequal, "NATLOG:"   stop
