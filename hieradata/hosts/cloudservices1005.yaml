@@ -6,5 +6,7 @@ profile::bird::advertise_vips:
     ensure: present
     service_type: "pdns auth"
     address: 185.15.56.162
+    address_ipv6: 2a02:ec80:a000:4000::2
     # NOTE: we always want to advertise this address
     check_cmd: "/bin/sh -c 'true'"
+    check_cmd_ipv6: "/bin/sh -c 'true'"

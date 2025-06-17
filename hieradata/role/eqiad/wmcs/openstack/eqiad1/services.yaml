@@ -11,7 +11,7 @@ raid::md::timer_ensure: absent
 profile::contacts::role_contacts: ["WMCS"]
 
 profile::openstack::base::pdns::default_soa_content: ns0.openstack.eqiad1.wikimediacloud.org
-profile::openstack::base::pdns::recursor::bgp_vip: [172.20.255.1]
+profile::openstack::base::pdns::recursor::bgp_vip: [172.20.255.1, 2a02:ec80:a000:2ff::1]
 
 profile::dbbackups::mydumper::enabled: true
 profile::dbbackups::mydumper::calendar: '*-*-* 00:00:00'
@@ -24,6 +24,7 @@ profile::openstack::eqiad1::pdns::auth::service::monitor_verify_records:
   - tools-puppetserver-01.tools.eqiad1.wikimedia.cloud
   - www.wmcloud.org
 
+profile::bird::do_ipv6: true
 profile::bird::advertise_vips:
   # NOTE: this is a shared BGP-based anycast VIP. There also a non-shared per-host adddress
   ns-recursor.openstack.eqiad1.wikimediacloud.org:
@@ -31,3 +32,5 @@ profile::bird::advertise_vips:
     service_type: "pdns recursor"
     address: 172.20.255.1
     check_cmd: "/usr/lib/nagios/plugins/check_dns_query -H 172.20.255.1 -d www.wikimedia.org -t 1"
+    address_ipv6: 2a02:ec80:a000:2ff::1
+    check_cmd_ipv6: "/usr/lib/nagios/plugins/check_dns_query -H 2a02:ec80:a000:2ff::1 -d www.wikimedia.org -t 1"
