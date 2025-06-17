@@ -176,6 +176,8 @@ transport_url = rabbit://<%= @rabbitmq_nodes.map{ |rabbit_host| "#{@rabbit_user}
 [keystone_authtoken]
 <%= scope.call_function('template', ["openstack/#{@version}/common/keystone_authtoken.erb"]) %>
 
+<%= scope.call_function('template', ["openstack/#{@version}/common/servicetoken.erb"]) %>
+
 [nova]
 
 #
