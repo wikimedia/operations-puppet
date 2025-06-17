@@ -33,7 +33,7 @@ groups:
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
               dbad2021, bdgreenlee, kormat, kwakuofori, mabualruz, mttp, springle, natalia-rodriguez,
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
-              dumisani, lbowmaker, andyrussg, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
+              dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams]
   absent_ldap:
@@ -464,7 +464,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde, guilherme, cmelo]
+              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -2625,13 +2625,15 @@ users:
     ssh_keys: []
     uid: 3029
   andyrussg:
-    ensure: absent
+    ensure: present
     gid: 500
     name: andyrussg
     realname: Andrew Green
-    ssh_keys: []
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPk5bd6dpChEOm8RMFGriNY5vzI6EamAB+cZGQ74zIxD andrew.green@extern.wikimedia.de
     uid: 3609
-    krb: absent
+    expiry_date: "2025-07-14"
+    expiry_contact: leszek.manicki@wikimedia.de
   mobrovac:
     ensure: present
     gid: 500
