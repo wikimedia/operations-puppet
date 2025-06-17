@@ -2,7 +2,7 @@ profile::admin::groups:
   - gitlab-roots
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::concurrent: 1
-profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/buster:latest
+profile::gitlab::runner::docker_image: docker-registry.discovery.wmnet/bookworm:latest
 profile::gitlab::runner::pull_policy:
   - "always"
 profile::gitlab::runner::docker_volume: false
