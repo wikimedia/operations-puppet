@@ -981,10 +981,6 @@ node /^doc(1004|2002)\.(codfw|eqiad)\./ {
   role(doc)
 }
 
-node /^doc(1003)\.(codfw|eqiad)\./ {
-  role(insetup::collaboration_services_nftables)
-}
-
 node /^doc(2003)\.(codfw|eqiad)\./ {
     role(doc)
 }
