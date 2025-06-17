@@ -1741,7 +1741,7 @@ node /^wikikube-worker-exp1001\.eqiad\./ {
 }
 
 node /^wikikube-worker-exp2001\.codfw\./ {
-    role(insetup::serviceops_ferm)
+    role(kubernetes::worker)
 }
 
 node /^kubestage100[3-6]\.eqiad\./ {

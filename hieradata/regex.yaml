@@ -423,7 +423,7 @@ hadoop_workers_sff_drives:
   profile::hadoop::common::min_datanode_mounts: 20
 
 wikikube_workers_exp:
-  __regex: !ruby/regexp /^wikikube-worker-exp1001\.eqiad\.wmnet$/
+  __regex: !ruby/regexp /^wikikube-worker-exp[12]001\.(codfw|eqiad)\.wmnet$/
   # mw-experimental hosts need the deployment group present as it will own
   # /srv/mediawiki
   profile::admin::groups:

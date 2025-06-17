@@ -595,6 +595,7 @@ kubernetes::clusters:
         - wikikube-worker2241.codfw.wmnet
         - wikikube-worker2242.codfw.wmnet
         - wikikube-worker2243.codfw.wmnet
+        - wikikube-worker-exp2001.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
       admission_plugins:
         enable:
