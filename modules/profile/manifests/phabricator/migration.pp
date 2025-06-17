@@ -92,6 +92,91 @@ class profile::phabricator::migration (
         ensure => directory,
     }
 
+    $fpm_config = {
+        'date'                   => {
+            'timezone' => 'UTC',
+        },
+        'opcache'                   => {
+            'memory_consumption'      => 128,
+            'interned_strings_buffer' => 16,
+            'max_accelerated_files'   => 10000,
+            'validate_timestamps'     => 0,
+        },
+        'max_execution_time'  => 30,
+        'post_max_size'       => '10M',
+        'track_errors'        => 'Off',
+        'upload_max_filesize' => '10M',
+    }
+
+    $core_extensions =  [
+        'curl',
+        'gd',
+        'gmp',
+        'intl',
+        'mbstring',
+        'ldap',
+    ]
+
+    $php_version = wmflib::debian_php_version()
+
+    # Install the runtime
+    class { '::php':
+        ensure         => present,
+        versions       => [$php_version],
+        sapis          => ['cli', 'fpm'],
+        config_by_sapi => {
+            'fpm' => $fpm_config,
+        },
+    }
+
+    $core_extensions.each |$extension| {
+        php::extension { $extension:
+            versioned_packages => true,
+            sapis              => ['cli', 'fpm'],
+        }
+    }
+
+    class { '::php::fpm':
+        ensure => present,
+        config => {
+            'emergency_restart_interval' => '60s',
+            'process.priority'           => -19,
+        },
+    }
+
+    # Extensions that require configuration.
+    php::extension {
+        default:
+            sapis        => ['cli', 'fpm'];
+        'apcu':
+            ;
+        'mailparse':
+            priority     => 21;
+        'mysqlnd':
+            install_packages => false,
+            priority         => 10;
+        'xml':
+            versioned_packages => true,
+            priority           => 15;
+        'mysqli':
+            package_overrides => {"${php_version}" =>"php${php_version}-mysql"},;
+    }
+
+    $num_workers = max(floor($facts['processors']['count'] * 1.5), 8)
+    # These numbers need to be positive integers
+    $max_spare = ceiling($num_workers * 0.3)
+    $min_spare = ceiling($num_workers * 0.1)
+    php::fpm::pool { 'www':
+        version => $php_version,
+        config  => {
+            'pm'                   => 'dynamic',
+            'pm.max_spare_servers' => $max_spare,
+            'pm.min_spare_servers' => $min_spare,
+            'pm.start_servers'     => $min_spare,
+            'pm.max_children'      => $num_workers,
+        }
+    }
+
     class { '::phabricator::phd::user': }
 
     if $facts['fqdn'] in $dst_hosts {
