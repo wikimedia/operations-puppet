@@ -86,3 +86,61 @@ def filter(event)
   end
   [event]
 end
+
+if __FILE__ == $PROGRAM_NAME
+  require_relative '../helpers/filter_scripts_test_helper'
+  register({})
+
+  fixture = {
+    'ecs.version' => '1.7.0',
+    'message' => 'Valid Event',
+    'labels' => {
+      'foo' => 'bar',
+      'dots.here' => 'not expanded'
+    },
+    'log' => { 'level' => 'INFO' },
+    'log.syslog.facility.code' => 23,
+    'log.syslog.facility.name' => 'local7',
+    'log.syslog.priority' => 135,
+    'log.syslog.severity.code' => 3,
+    'log.syslog.severity.name' => 3
+  }
+
+  event = filter(Event.new(fixture))[0]
+
+  # print the filtered output if first argument is 'debug'
+  if ARGV[0] == 'debug'
+    require 'json'
+    puts(JSON.pretty_generate(event.to_hash))
+  end
+
+  expected_output = {
+    "message" => "Valid Event",
+    "labels" => {
+      "foo" => "bar",
+      "dots.here" => 'not expanded'
+    },
+    "log" => {
+      "level" => "INFO",
+      "syslog" => {
+        "facility" => {
+          "code" => 23,
+          "name" => "local7"
+        },
+        "priority" => 135,
+        "severity" => {
+          "code" => 3,
+          "name" => 3
+        }
+      }
+    },
+    "ecs" => {
+      "version" => "1.7.0"
+    }
+  }
+
+  assert_true(
+    'dots are expanded correctly',
+    event.to_hash == expected_output
+  )
+end
