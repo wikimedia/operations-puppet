@@ -6,7 +6,7 @@ profile::gitlab::runner::docker_volume: true
 # uses similar configuration as Trusted Runners:
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::concurrent: 1
-profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:latest
+profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/bookworm:latest
 profile::gitlab::runner::docker_volume_min: 5
 profile::gitlab::runner::docker_volume_max: 8
 profile::gitlab::runner::docker_network: bridge # TODO: workaround for T311241 to unblock T304514

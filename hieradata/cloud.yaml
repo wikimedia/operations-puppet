@@ -157,7 +157,7 @@ profile::debmonitor::server::trusted_ca_source: "/etc/ssl/certs/Puppet_Internal_
 profile::gitlab::runner::ensure: present
 profile::gitlab::runner::concurrent: 1
 profile::gitlab::runner::description: WMF GitLab runner
-profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/buster:latest
+profile::gitlab::runner::docker_image: docker-registry.wikimedia.org/bookworm:latest
 # Use a local image if pulling fails (T329216)
 profile::gitlab::runner::pull_policy:
   - "always"
