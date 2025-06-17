@@ -13,16 +13,16 @@
 #limitations under the License.
 
 class dynamicproxy (
-    Array[String]                    $ssl_settings,
-    Hash[String, Dynamicproxy::Zone] $supported_zones,
-    Optional[Stdlib::Fqdn]           $redis_primary,
-    Array[Stdlib::IP::Address]       $banned_ips,
-    String                           $blocked_user_agent_regex,
-    String                           $blocked_referer_regex,
-    Array[Stdlib::Fqdn]              $xff_fqdns,
-    Integer                          $rate_limit_requests,
-    String[1]                        $redis_maxmemory = '512MB',
-    Array[Stdlib::IP::Address]       $nameservers = [],
+    Array[String]                        $ssl_settings,
+    Hash[String, Dynamicproxy::Zone]     $supported_zones,
+    Optional[Stdlib::Fqdn]               $redis_primary,
+    Array[Stdlib::IP::Address]           $banned_ips,
+    String                               $blocked_user_agent_regex,
+    String                               $blocked_referer_regex,
+    Array[Stdlib::Fqdn]                  $xff_fqdns,
+    Integer                              $rate_limit_requests,
+    Array[Stdlib::IP::Address::Nosubnet] $nameservers,
+    String[1]                            $redis_maxmemory = '512MB',
 ) {
     $acme_certs = $supported_zones.values.map |Dynamicproxy::Zone $zone| { $zone['acmechief_cert'] }.unique
 
@@ -30,7 +30,14 @@ class dynamicproxy (
         puppet_rsc => Exec['nginx-reload'],
     }
 
-    $resolver = $nameservers.join(' ')
+    $resolver = $nameservers
+        .map |$ip| {
+            wmflib::ip_family($ip) ? {
+                4 => $ip,
+                6 => "[${ip}]",
+            }
+        }
+        .join(' ')
 
     $redis_port = '6379'
     if $redis_primary and !($redis_primary in [$::facts['hostname'], $::facts['fqdn']]) {

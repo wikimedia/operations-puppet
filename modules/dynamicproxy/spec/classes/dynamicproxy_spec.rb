@@ -40,11 +40,16 @@ describe 'dynamicproxy' do
           'blocked_referer_regex'    => 'foosite\\.example',
           'xff_fqdns'                => ['fooproject.wmcloud.org'],
           'rate_limit_requests'      => 100,
+          'nameservers'              => ['192.0.2.53', '2001:db8::53'],
         }
       end
 
       describe 'compiles without errors' do
         it { is_expected.to compile.with_all_deps }
+        it do
+          is_expected.to contain_file('/etc/nginx/sites-available/zone1-example') \
+            .with_content(/resolver 192\.0\.2\.53 \[2001:db8::53\];/)
+        end
       end
     end
   end
