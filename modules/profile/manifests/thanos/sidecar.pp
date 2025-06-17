@@ -33,7 +33,7 @@ define profile::thanos::sidecar (
         grpc_port             => $grpc_port,
         min_time              => $min_time,
         tracing_enabled       => true,
-        limits_request_series => 128000,
+        limits_request_series => 256000,
     }
 
     if $enable_upload {
