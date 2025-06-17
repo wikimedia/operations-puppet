@@ -182,7 +182,8 @@ class profile::phabricator::migration (
     if $facts['fqdn'] in $dst_hosts {
 
         file { '/srv/repos':
-            ensure => directory,
+            ensure => link,
+            target => '/srv/deployment/phabricator/deployment',
         }
 
         file { '/srv/dumps':
