@@ -989,22 +989,22 @@ node /^doc(2003)\.(codfw|eqiad)\./ {
     role(doc)
 }
 
+node /^doh700[34]\.wikimedia\./ {
+    role(insetup::traffic_ferm)
+}
+
 # Wikidough (T252132)
 node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
 }
 
-node /^doh700[34]\.wikimedia\./ {
-    role(insetup::traffic_ferm)
+node /^durum700[34]\.magru\./ {
+    role(insetup::traffic_nftables)
 }
 
 # durum for Wikidough (T289536)
 node /^durum[1-9][0-9]{3}\./ {
     role(durum)
-}
-
-node /^durum700[34]\.magru\./ {
-    role(insetup::traffic_nftables)
 }
 
 # Dragonfly Supernode (T286054)
