@@ -2634,6 +2634,7 @@ users:
     uid: 3609
     expiry_date: "2025-07-14"
     expiry_contact: leszek.manicki@wikimedia.de
+    krb: present
   mobrovac:
     ensure: present
     gid: 500
