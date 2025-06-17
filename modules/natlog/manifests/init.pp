@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary configures the natlog utility
 class natlog (
+    Stdlib::Unixpath             $base_path            = '/srv/natlog',
     Logrotate::Frequency         $logrotate_frequency = 'daily',
     Integer[1]                   $logrotate_days      = 4,
 ) {
@@ -9,7 +10,7 @@ class natlog (
     }
 
     systemd::tmpfile { 'natlog':
-        content => 'd /var/log/natlog/ 0755 root adm -',
+        content => "d ${base_path}/ 0755 root adm -",
     }
 
     $rotate = $logrotate_frequency ? {
@@ -19,7 +20,7 @@ class natlog (
 
     logrotate::rule { 'natlog':
         ensure       => present,
-        file_glob    => '/var/log/natlog/natlog.log',
+        file_glob    => "${base_path}/natlog.log",
         frequency    => $logrotate_frequency,
         compress     => true,
         missing_ok   => true,
@@ -29,7 +30,7 @@ class natlog (
     }
 
     rsyslog::conf { 'natlog':
-        source   => 'puppet:///modules/natlog/rsyslog.conf',
+        content  => template('natlog/rsyslog.conf.erb'),
         priority => 20,
         require  => Systemd::Tmpfile['natlog'],
     }
