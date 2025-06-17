@@ -11,4 +11,8 @@ class profile::zuul::main {
         enable => true,
     }
 
+    rsyslog::conf { 'zuul':
+        content  => file('zuul/rsyslog.conf'),
+        priority => 20,
+    }
 }
