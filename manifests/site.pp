@@ -995,7 +995,7 @@ node /^(doh[1-9][0-9]{3})\.wikimedia\./ {
     role(wikidough)
 }
 
-node /^doh7003\.wikimedia\./ {
+node /^doh700[34]\.wikimedia\./ {
     role(insetup::traffic_ferm)
 }
 
@@ -1004,7 +1004,7 @@ node /^durum[1-9][0-9]{3}\./ {
     role(durum)
 }
 
-node /^durum7003\.magru\./ {
+node /^durum700[34]\.magru\./ {
     role(insetup::traffic_nftables)
 }
 
