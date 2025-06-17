@@ -7574,3 +7574,7 @@ ldap_only_users:
     ensure: present
     realname: Sean Long
     email: slong@wikimedia.org
+  derhexer:
+    ensure: present
+    realname: DerHexer
+    email: wikipedia_emails-nachfrage@yahoo.de
