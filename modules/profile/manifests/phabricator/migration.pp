@@ -46,6 +46,25 @@ class profile::phabricator::migration (
         mode    => '0700',
     }
 
+    $sudo_env_keep = [
+        'SCAP_REVS_DIR',
+        'SCAP_FINAL_PATH',
+        'SCAP_REV_PATH',
+        'SCAP_CURRENT_REV_DIR',
+        'SCAP_DONE_REV_DIR',
+    ].join(' ')
+
+    $sudo_scap_defaults = "Defaults:phab-deploy env_keep+=\"${sudo_env_keep}\"\n"
+
+    file { '/etc/sudoers.d/scap_sudo_defaults':
+        ensure       => file,
+        mode         => '0440',
+        owner        => 'root',
+        group        => 'root',
+        content      => $sudo_scap_defaults,
+        validate_cmd => '/usr/sbin/visudo -cqf %',
+    }
+
     $sudo_rules = [
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_config_deploy',
         'ALL=(root) NOPASSWD: /usr/local/sbin/phab_deploy_promote',
