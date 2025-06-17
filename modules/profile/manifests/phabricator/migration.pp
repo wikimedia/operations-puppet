@@ -61,6 +61,14 @@ class profile::phabricator::migration (
         sudo_rules  => $sudo_rules,
     }
 
+    file { '/etc/phabricator/script-vars':
+        ensure  => present,
+        content => template('phabricator/script-vars.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0600',
+    }
+
     class { '::phabricator::phd::user': }
 
     if $facts['fqdn'] in $dst_hosts {
