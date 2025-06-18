@@ -2,8 +2,11 @@
 # Allow rsyncing phabricator data to other servers for hardware migration
 # and setup scap user before deploying the first time to a new or reimaged server.
 class profile::phabricator::migration (
-    Stdlib::Fqdn        $src_host  = lookup('phabricator_active_server'),
-    Array[Stdlib::Fqdn] $dst_hosts = lookup('profile::phabricator::migration::dst_hosts'),
+    Stdlib::Fqdn        $src_host     = lookup('phabricator_active_server'),
+    Array[Stdlib::Fqdn] $dst_hosts    = lookup('profile::phabricator::migration::dst_hosts'),
+    Stdlib::Unixpath    $phabdir      = lookup('profile::phabricator::migration::phabdir'),
+    String              $storage_user = lookup('profile::phabricator::migration::storage_user'),
+    String              $deploy_user  = lookup('profile::phabricator::migration::deploy_user'),
 ) {
 
     # setup scap user and symlink to binary before the first deploy and
@@ -80,6 +83,7 @@ class profile::phabricator::migration (
         sudo_rules  => $sudo_rules,
     }
 
+
     file { '/etc/phabricator/script-vars':
         ensure  => present,
         content => template('phabricator/script-vars.erb'),
@@ -147,11 +151,11 @@ class profile::phabricator::migration (
     # Extensions that require configuration.
     php::extension {
         default:
-            sapis        => ['cli', 'fpm'];
+            sapis => ['cli', 'fpm'];
         'apcu':
             ;
         'mailparse':
-            priority     => 21;
+            priority => 21;
         'mysqlnd':
             install_packages => false,
             priority         => 10;
@@ -179,7 +183,7 @@ class profile::phabricator::migration (
 
     class { '::phabricator::phd::user': }
 
-    if $facts['fqdn'] in $dst_hosts {
+    if $facts['networking']['fqdn'] in $dst_hosts {
 
         file { '/srv/repos':
             ensure => link,

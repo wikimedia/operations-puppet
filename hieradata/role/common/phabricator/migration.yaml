@@ -12,3 +12,7 @@ profile::phabricator::migration::dst_hosts:
 
 profile::contacts::role_contacts: ['Collaboration Services']
 profile::base::production::role_description: 'Temp role to allow migrating Phabricator data to a new server'
+
+profile::phabricator::migration::phabdir: '/srv/phab'
+profile::phabricator::migration::storage_user: 'phadmin'
+profile::phabricator::migration::deploy_user: 'phab-deploy'
