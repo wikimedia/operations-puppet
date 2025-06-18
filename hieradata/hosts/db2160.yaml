@@ -5,3 +5,4 @@ profile::mariadb::misc::multiinstance::instances:
   m3: 100G
   m5: 100G
 profile::monitoring::is_critical: false
+mariadb::package: 'wmf-mariadb1011'
