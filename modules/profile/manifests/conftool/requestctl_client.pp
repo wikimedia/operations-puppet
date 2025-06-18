@@ -1,14 +1,50 @@
 # SPDX-License-Identifier: Apache-2.0
 # @summary profile to install conftool requestctl plugin
 # @param conftool_prefix the conftool prefix
-class profile::conftool::requestctl_client(
-        String $conftool_prefix = lookup('conftool_prefix'),
+class profile::conftool::requestctl_client (
+    String $conftool_prefix = lookup('conftool_prefix'),
+    Hash[String, String] $api_tokens = lookup('profile::conftool::hiddenparma::api_tokens'),
+    Array[String] $admin_groups = lookup('profile::conftool::requestctl_client::admin_groups', { 'default_value' => ['ops'] }),
 ) {
     require profile::conftool::client
-    ensure_packages(['python3-conftool-requestctl'])
-    # Create the test directory
+    # Remove the old requestctl client and everything that came with it.
+    package { 'python3-conftool-requestctl': ensure => absent}
     file { ['/var/lib/requestctl', '/var/lib/requestctl/tests']:
-        ensure => directory,
+        ensure => absent,
+    }
+    # Ensure everyone in the admin groups group has their api token in their home directory.
+    # If even one user in the groups doesn't have an api token, puppet will fail.
+    # While this might seem harsh, it's the only way to ensure people get onboarded correctly.
+    $admin_module_path = get_module_path('admin')
+    $admin_data = loadyaml("${admin_module_path}/data/data.yaml")['groups']
+    $admin_groups.each |$grp| {
+        unless $grp in $admin_data {
+            fail("${grp}, declared in profile::conftool::requestctl_client::admin_groups, does not exist.")
+        }
+        $admin_data[$grp]['members'].each |$user| {
+            if $user in $api_tokens {
+                file { "/home/${user}/.requestctl":
+                    ensure  => file,
+                    mode    => '0400',
+                    owner   => $user,
+                    group   => $grp,
+                    content => "${api_tokens[$user]}\n",
+                }
+            } else {
+                notify { "Lacking user token for user ${user}":
+                    message => "User '${user}' does not have an api token defined in profile::conftool::hiddenparma::api_tokens",
+                }
+            }
+        }
+    }
+
+    # This is a copy of the file contained in the scripts/ directory of the
+    # HIDDENPARMA repository:
+    # https://gitlab.wikimedia.org/repos/sre/hiddenparma/-/blob/main/scripts/requestctl_cli.py
+    file { '/usr/bin/requestctl':
+        ensure => file,
+        mode   => '0755',
+        source => 'puppet:///modules/profile/conftool/requestctl_cli.original.py',
     }
     file { '/usr/local/bin/requestctl-checkip':
         ensure => file,
@@ -16,5 +52,4 @@ class profile::conftool::requestctl_client(
         mode   => '0555',
         source => 'puppet:///modules/profile/conftool/requestctl_checkip.py',
     }
-    # TODO: add an alert if there are uncommitted changes
 }

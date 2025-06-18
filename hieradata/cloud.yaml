@@ -1191,3 +1191,6 @@ profile::cache::haproxy::allowed_methods:
   - PATCH
   - POST
   - PUT
+
+# We don't use requestctl here
+profile::conftool::requestctl_client::admin_groups: []
