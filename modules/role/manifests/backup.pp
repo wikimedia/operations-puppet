@@ -1,8 +1,10 @@
 class role::backup {
+    include profile::base::production
+
     # We actually want to be able to backup ourselves
     include profile::backup::host
-    include profile::backup::director
     include profile::backup::filesets
-    include profile::backup::storage::main
-    include profile::base::production
+
+    include profile::backup::director
+    # future storage daemon could go here
 }

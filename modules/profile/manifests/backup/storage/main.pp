@@ -1,31 +1,27 @@
+# SPDX-License-Identifier: Apache-2.0
 # Profile class for adding a storage daemon service to a host
+# for the main production filesystem backups (everything except
+# databases and wiki multimedia files)
 
 class profile::backup::storage::main {
     include profile::backup::storage::common
 
-    # Main setup:
-    # 3 storage devices separated on 2 physical arrays
-    mount { '/srv/archive' :
-        ensure  => mounted,
-        device  => '/dev/mapper/array1-archive',
-        fstype  => 'ext4',
-        require => File['/srv/archive'],
+    # Production setup:
+    # 2 storage devices on the same mount point
+    file { '/srv/bacula':
+        ensure => directory,
+        owner  => 'bacula',
+        group  => 'bacula',
+        mode   => '0660',
     }
-    mount { '/srv/production' :
+    mount { '/srv/bacula' :
         ensure  => mounted,
-        device  => '/dev/mapper/array1-production',
+        device  => '/dev/mapper/hwraid-backups',
         fstype  => 'ext4',
-        require => File['/srv/production'],
+        require => File['/srv/bacula'],
     }
-    mount { '/srv/databases' :
-        ensure  => mounted,
-        device  => '/dev/mapper/array2-databases',
-        fstype  => 'ext4',
-        require => File['/srv/databases'],
-    }
-    file { ['/srv/archive',
-            '/srv/production',
-            '/srv/databases', ]:
+    file { [ '/srv/bacula/production',
+          '/srv/bacula/archive' ]:
         ensure  => directory,
         owner   => 'bacula',
         group   => 'bacula',
@@ -33,33 +29,17 @@ class profile::backup::storage::main {
         require => Class['bacula::storage'],
     }
 
-    bacula::storage::device { 'FileStorageArchive':
+    $upcase_site = capitalize($::site)
+    bacula::storage::device { "FileStorageArchive${upcase_site}":
         device_type     => 'File',
         media_type      => 'File',
-        archive_device  => '/srv/archive',
+        archive_device  => '/srv/bacula/archive',
         max_concur_jobs => 2,
     }
-    bacula::storage::device { 'FileStorageProduction':
+    bacula::storage::device { "FileStorageProduction${upcase_site}":
         device_type     => 'File',
         media_type      => 'File',
-        archive_device  => '/srv/production',
+        archive_device  => '/srv/bacula/production',
         max_concur_jobs => 2,
-    }
-    if $::site == 'eqiad' {
-        bacula::storage::device { 'FileStorageDatabases':
-            device_type     => 'File',
-            media_type      => 'File',
-            archive_device  => '/srv/databases',
-            max_concur_jobs => 2,
-        }
-    } elsif $::site == 'codfw' {
-        bacula::storage::device { 'FileStorageDatabasesCodfw':
-            device_type     => 'File',
-            media_type      => 'File',
-            archive_device  => '/srv/databases',
-            max_concur_jobs => 2,
-        }
-    } else {
-        fail('Only eqiad or codfw pools are configured for database backups.')
     }
 }

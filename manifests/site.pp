@@ -242,9 +242,14 @@ node /^aux-k8s-worker[12]00[6-9]\.(eqiad|codfw)\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
-# Primary bacula director and storage daemon
+# Former primary bacula director and storage daemon, to be decom
 node /^backup1001\.eqiad\./ {
-    role(backup)
+    role(backup::olddirector)
+}
+
+# pending to be decommissioned, previous db backup generation
+node /^backup1002\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
 }
 
 # eqiad bacula storage for External Storage databases
@@ -260,17 +265,17 @@ node /^backup101[01]\.eqiad\./ {
     role(mediabackup::storage)
 }
 
-# new backup storage eqiad T294974
+# eqiad backup storage for databases
 node /^backup1008\.eqiad\./ {
     role(backup::databases)
 }
 
-# new backup storage eqiad T307048
+# eqiad primary backup storage (NOT the director!)
 node /^backup1009\.eqiad\./ {
-    role(backup::production)
+    role(backup::main)
 }
 
-# reallocated for bacula expansion, TODO
+# eqiad backup storage for gerrit/gitlab, TODO
 node /^backup1012\.eqiad\./ {
     role(insetup::data_persistence_ferm)
 }
@@ -279,14 +284,10 @@ node /^backup1012\.eqiad\./ {
 node /^backup1013\.eqiad\./ {
     role(dbbackups::content)
 }
-# pending to be decommissioned, previous db backup generation
-node /^backup1002\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
 
-# to be setup
+# new backup director
 node /^backup1014\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
+    role(backup)
 }
 
 # codfw storage daemon
