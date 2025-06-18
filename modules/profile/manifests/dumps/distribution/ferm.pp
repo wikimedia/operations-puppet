@@ -29,5 +29,6 @@ class profile::dumps::distribution::ferm (
         port   => 873,
         proto  => 'tcp',
         srange => $_rsync_clients,
+        qos    => 'low',
     }
 }
