@@ -84,10 +84,10 @@ profile::thanos::swift::backends:
   - thanos-be2003.codfw.wmnet
   - thanos-be2004.codfw.wmnet
   - thanos-be2005.codfw.wmnet
-  - thanos-be1001.eqiad.wmnet
-  - thanos-be1002.eqiad.wmnet
-  - thanos-be1003.eqiad.wmnet
-  - thanos-be1004.eqiad.wmnet
+  - thanos-be2006.codfw.wmnet
+  - thanos-be2007.codfw.wmnet
+  - thanos-be2008.codfw.wmnet
+  - thanos-be2009.codfw.wmnet
   - thanos-be1005.eqiad.wmnet
   - thanos-be1006.eqiad.wmnet
   - thanos-be1007.eqiad.wmnet
