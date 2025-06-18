@@ -1052,6 +1052,11 @@ node /^dse-k8s-worker10(0[1-9]|1[0-3])\.eqiad\./ {
     role(dse_k8s::worker)
 }
 
+# New dse-k8s-workers in codfw - See #T353789
+node /^dse-k8s-worker200[12]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
 # nfs server for xml dumps generation, also rsyncs xml dumps
 # data to fallback nfs server(s)
 node /^dumpsdata1006\.eqiad\./ {
@@ -1676,11 +1681,6 @@ node /^kafka-jumbo101[6-8]\.eqiad\./ {
 # Kafkamon bullseye hosts
 node /^kafkamon[12]003\.(codfw|eqiad)\./ {
     role(kafka::monitoring_bullseye)
-}
-
-# New Kafka nodes T314160
-node /^kafka-stretch200[12]\.codfw\./ {
-    role(insetup::data_platform_ferm)
 }
 
 # virtual machines for misc. applications and static sites

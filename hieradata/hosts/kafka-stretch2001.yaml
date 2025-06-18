@@ -1,4 +1,0 @@
-
-# access granted to run performance tests against non-PII data; see T376813
-profile::admin::groups:
-  - analytics-research-admins

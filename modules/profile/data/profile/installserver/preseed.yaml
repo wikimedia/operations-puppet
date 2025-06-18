@@ -251,9 +251,9 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/flat.cfg
     - partman/flat-noswap.cfg
     - virtual.cfg
-  # The following for dse-k8s nodes have a RAID controller and an additional
-  # pair of SSDs to be used for local storage - See #T365283 for details.
-  'dse-k8s-worker100[1-4]':
+  # Some of our dse-k8s nodes have a RAID controller and additional
+  # local storage - See #T365283 and #T353789 for details.
+  'dse-k8s-worker100[1-4]|dse-k8s-worker200[1-2]':
     - partman/standard.cfg
     - partman/custom/kubernetes-node-containerd-local-storage.cfg
   'dse-k8s-worker*':
@@ -386,8 +386,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
-  'kafka-stretch[12]00[1-2]':
-    - partman/custom/kafka-jumbo.cfg
   'sessionstore100[4-6]|sessionstore200[5-6]':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
