@@ -315,7 +315,7 @@ node /^backup2008\.codfw\./ {
 
 # New backup node for codfw T307049
 node /^backup2009\.codfw\./ {
-    role(backup::production)
+    role(backup::main)
 }
 
 # pending to be setup as bacula expansion
