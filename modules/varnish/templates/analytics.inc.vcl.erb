@@ -385,6 +385,13 @@ sub analytics_deliver_post {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";wmfuuid=" + req.http.X-WMF-UUID;
     }
 
+    # The "X-Subdomain" header is added before the cache and request,
+    # in vcl_recv/cluster_fe_recv_pre_purge.
+    # We are now after the response, in vcl_deliver/deliver_synth_
+    if (req.http.X-Subdomain) {
+        set resp.http.X-Analytics = resp.http.X-Analytics + ";ismobile=1";
+    }
+
     # We set debug=1, so analytics won't count those requests as real pageviews.
     if (req.http.X-Wikimedia-Debug) {
         set resp.http.X-Analytics = resp.http.X-Analytics + ";debug=1";
