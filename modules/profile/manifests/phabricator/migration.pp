@@ -11,7 +11,7 @@ class profile::phabricator::migration (
 
     # test db host access (T390034)
     include passwords::mysql::phorge_testdb
-    $mysql_admin_user = $passwords::mysql::phorge_testdb::admin_pass
+    $storage_pass = $passwords::mysql::phorge_testdb::admin_pass
 
     # setup scap user and symlink to binary before the first deploy and
     # before 'scap install-world' has installed scap itself (T357572)
