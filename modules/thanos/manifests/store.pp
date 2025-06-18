@@ -20,6 +20,8 @@
 # [*tracing_enabled*] Self explanatory
 # [*memcached_hosts*] List of hostnames for memcached caching, empty list disables memcached
 # [*memcached_port*] The port for memcached client
+# [*limits_request_series*] The maximum series allowed for a single Series request. 0 to disable.
+# [*limits_request_samples*] The maximum samples allowed for a single Series request. 0 to disable.
 
 class thanos::store (
     Hash[String, String] $objstore_account,
@@ -33,6 +35,8 @@ class thanos::store (
     Boolean $tracing_enabled = false,
     Array[Stdlib::Host] $memcached_hosts = [],
     Stdlib::Port $memcached_port = 11211,
+    Integer[0] $limits_request_series = 0,
+    Integer[0] $limits_request_samples = 0,
 ) {
     ensure_packages(['thanos'])
 

@@ -16,6 +16,7 @@ define profile::thanos::sidecar (
     String $prometheus_instance,
     Boolean $enable_upload = false,
     Optional[String] $min_time = '-15d',
+    Integer $limits_request_series = lookup('thanos_limits_request_series', { 'default_value' => 0 }), # lint:ignore:wmf_styleguide
 ) {
     $http_port = $prometheus_port + 10000
     $grpc_port = $prometheus_port + 20000
@@ -33,7 +34,7 @@ define profile::thanos::sidecar (
         grpc_port             => $grpc_port,
         min_time              => $min_time,
         tracing_enabled       => true,
-        limits_request_series => 0,
+        limits_request_series => $limits_request_series,
     }
 
     if $enable_upload {

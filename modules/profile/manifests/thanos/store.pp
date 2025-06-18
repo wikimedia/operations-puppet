@@ -17,24 +17,26 @@ class profile::thanos::store (
     Optional[Integer] $object_store_cutoff_days = lookup('profile::thanos::object_store_cutoff_days', { 'default_value' => undef }),
     Optional[String] $min_time = lookup('profile::thanos::store::min_time', { 'default_value' => undef }),
     Array[Stdlib::Host] $memcached_hosts = lookup('profile::thanos::store::memcached_hosts'),
+    Integer $limits_request_series = lookup('thanos_limits_request_series', { 'default_value' => 0 }), # lint:ignore:wmf_styleguide
 ) {
     $http_port = 11902
     $grpc_port = 11901
 
     class { 'thanos::store':
-        objstore_account  => $objstore_account,
-        objstore_password => $objstore_password,
-        http_port         => $http_port,
-        grpc_port         => $grpc_port,
+        objstore_account      => $objstore_account,
+        objstore_password     => $objstore_password,
+        http_port             => $http_port,
+        grpc_port             => $grpc_port,
         # Thanos Store accepts input in the form of an interval (e.g., '15d' represents 15 days).
         # With respect to Thanos Rule, we also need to add a minus sign here
         # The cutoff parameter is expressed in days as an Integer, and here we adjust the format to the correct string.
-        max_time          => sprintf('-%dd', $object_store_cutoff_days),
-        min_time          => $min_time,
-        consistency_delay => '30m',
-        tracing_enabled   => true,
-        memcached_hosts   => $memcached_hosts,
-        memcached_port    => 11211,
+        max_time              => sprintf('-%dd', $object_store_cutoff_days),
+        min_time              => $min_time,
+        consistency_delay     => '30m',
+        tracing_enabled       => true,
+        memcached_hosts       => $memcached_hosts,
+        memcached_port        => 11211,
+        limits_request_series => $limits_request_series,
     }
 
     # Allow access from query hosts
