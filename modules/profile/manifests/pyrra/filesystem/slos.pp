@@ -332,38 +332,6 @@ class profile::pyrra::filesystem::slos (
         }
 
     }
-    # nuke me after absenting
-    pyrra::filesystem::config { "wdqs-availability-${datacenter}.yaml":
-      ensure => absent,
-      content => to_yaml({
-        'apiVersion' => 'pyrra.dev/v1alpha1',
-        'kind' => 'ServiceLevelObjective',
-        'metadata' => {
-            'name' => 'wdqs-availability',
-            'namespace' => 'pyrra-o11y',
-            'labels' => {
-                'pyrra.dev/team' => 'search',
-                'pyrra.dev/service' => 'wdqs',
-                'pyrra.dev/site' => "${datacenter}",  #lint:ignore:only_variable_string
-            },
-        },
-        'spec' => {
-            'target' => '95',
-            'window' => '12w',
-            'indicator' => {
-                'ratio' => {
-                    'errors' => {
-                        'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",status!~\"200|403|429\",backend=\"wdqs.discovery.wmnet\"}",
-                    },
-                    'total' => {
-                        'metric' => "trafficserver_backend_requests_seconds_count{site=\"${datacenter}\",backend=\"wdqs.discovery.wmnet\"}",
-                    },
-                },
-            },
-        },
-      })
-    }
-
 
     # WDQS Availability (Main) SLO - WDQS uses one availability SLI: The percentage of all requests receiving a non-error response,
     #                                defined as one of: HTTP 200 (success), HTTP 403 (client banned), or HTTP 429 (client throttled).
