@@ -96,7 +96,8 @@ class profile::phabricator::migration (
     }
 
     file { '/srv/phab':
-        ensure => directory,
+        ensure => link,
+        target => '/srv/deployment/phabricator/deployment',
     }
 
     $fpm_config = {
@@ -189,8 +190,7 @@ class profile::phabricator::migration (
     if $facts['networking']['fqdn'] in $dst_hosts {
 
         file { '/srv/repos':
-            ensure => link,
-            target => '/srv/deployment/phabricator/deployment',
+            ensure => directory,
         }
 
         file { '/srv/dumps':
