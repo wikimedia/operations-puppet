@@ -45,4 +45,9 @@ class profile::mariadb::wmf_root_client {
                       Package['percona-toolkit'],  # dependency on pt-kill
         ],
     }
+
+    # wmfdb-admin package from https://gitlab.wikimedia.org/repos/sre/wmfdb
+    # provides the /usr/bin/db-mysql utility to connect to MariaDB instances
+    ensure_packages('wmfdb-admin')
+
 }
