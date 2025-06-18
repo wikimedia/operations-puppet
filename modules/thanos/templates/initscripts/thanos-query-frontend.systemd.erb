@@ -17,4 +17,5 @@ ExecStart=/usr/bin/thanos query-frontend \
   --query-frontend.log-queries-longer-than <%= @log_queries_longer_than %> \
   --query-frontend.compress-responses \
   --query-range.align-range-with-step \
+  --query-frontend.force-query-stats \
   <%= @logging_cmdline %>
