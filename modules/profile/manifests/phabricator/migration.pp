@@ -9,6 +9,10 @@ class profile::phabricator::migration (
     String              $deploy_user  = lookup('profile::phabricator::migration::deploy_user'),
 ) {
 
+    # test db host access (T390034)
+    include passwords::mysql::phorge_testdb
+    $mysql_admin_user = $passwords::mysql::phorge_testdb::admin_pass
+
     # setup scap user and symlink to binary before the first deploy and
     # before 'scap install-world' has installed scap itself (T357572)
 
@@ -82,7 +86,6 @@ class profile::phabricator::migration (
         require     => File['/usr/local/sbin/phab_deploy_finalize'],
         sudo_rules  => $sudo_rules,
     }
-
 
     file { '/etc/phabricator/script-vars':
         ensure  => present,
