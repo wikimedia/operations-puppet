@@ -5,6 +5,12 @@
 class profile::backup::storage::oldmain {
     include profile::backup::storage::common
 
+    motd::script { 'inactive_warning':
+        ensure   => present,
+        priority => 1,
+        content  => template('profile/backup/inactive.motd.erb'),
+    }
+
     # Main setup:
     # 3 storage devices separated on 2 physical arrays
     mount { '/srv/archive' :
