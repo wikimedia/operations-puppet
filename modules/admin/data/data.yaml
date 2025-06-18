@@ -2632,6 +2632,7 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPk5bd6dpChEOm8RMFGriNY5vzI6EamAB+cZGQ74zIxD andrew.green@extern.wikimedia.de
     uid: 3609
+    email: andrew.green@extern.wikimedia.de
     expiry_date: "2025-07-14"
     expiry_contact: leszek.manicki@wikimedia.de
     krb: present
