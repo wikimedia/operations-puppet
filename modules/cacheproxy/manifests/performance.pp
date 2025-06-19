@@ -87,6 +87,12 @@ class cacheproxy::performance (
         before    => Sysctl::Parameters['cache proxy network tuning'],
     }
 
+    # Report CPUs assigned to NIC queues
+    prometheus::node_nic_queue_cpu { 'nic_queue_cpu':
+        ensure    => present,
+        interface => $iface_primary,
+    }
+
     # Network tuning for high-load HTTP caches
     sysctl::parameters { 'cache proxy network tuning':
         values => {
