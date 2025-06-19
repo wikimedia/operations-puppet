@@ -1276,6 +1276,18 @@ tables:
     canonicality: derivative
     visibility: public
     dblist: translate
+  - name: uw_campaigns
+    source: uploadwizard
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dbname: commonswiki
+      - dbname: testcommonswiki
+      - dbname: donatewiki
+      - dbname: foundationwiki
+      - dbname: test2wiki
+      - dbname: testwiki
+      - dbname: rowiki
   - name: wb_changes
     source: wb_changes
     dblist: wikibaserepo
@@ -1497,6 +1509,9 @@ sources:
   translate:
     - path: extensions/Translate/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Translate/+/master/sql/tables.json
+  uploadwizard:
+    - path: extensions/UploadWizard/sql/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/UploadWizard/+/master/sql/tables.json
   wb_changes:
     - path: extensions/Wikibase/repo/sql/abstract/wb_changes.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/wb_changes.json
