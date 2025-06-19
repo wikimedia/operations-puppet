@@ -12,7 +12,6 @@ class profile::dumps::distribution::web (
         datadir                  => $datadir,
         xmldumpsdir              => $xmldumpsdir,
         miscdatasetsdir          => $miscdatasetsdir,
-        htmldumps_server         => 'htmldumper1001.eqiad.wmnet',
         webuser                  => 'dumpsgen',
         webgroup                 => 'dumpsgen',
         blocked_user_agent_regex => $blocked_user_agent_regex,

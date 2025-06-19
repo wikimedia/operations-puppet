@@ -237,8 +237,6 @@ role::wmcs::openstack::codfw1dev::cloudweb:
   target-q: TBD
 role::eventlogging::analytics:
   target-q: TBD
-role::dumps::web::htmldumps:
-  target-q: TBD
 role::kafka::monitoring_buster:
   target-q: TBD
 role::microsites::peopleweb:

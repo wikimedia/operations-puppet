@@ -4,7 +4,6 @@ class dumps::web::xmldumps(
     $datadir          = undef,
     $xmldumpsdir      = undef,
     $miscdatasetsdir  = undef,
-    $htmldumps_server = undef,
     $webuser          = undef,
     $webgroup         = undef,
     String $blocked_user_agent_regex = '',

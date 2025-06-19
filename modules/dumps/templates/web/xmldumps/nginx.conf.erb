@@ -45,16 +45,4 @@ server {
    rewrite ^/(other/)?mediawiki(|/.*)$                $scheme://releases.wikimedia.org/mediawiki$2 break;
    rewrite ^/fundraising(|/.*)$                       /other/fundraising$1 permanent;
    rewrite ^/analytics(|/.*)$                         /other/analytics$1 permanent;
-
-   # for now we proxy for html (restbase) dumps
-   location /htmldumps {
-      proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $remote_addr;
-      proxy_set_header Proxy ""; # https://httpoxy.org/
-      proxy_pass http://<%= @htmldumps_server %>;
-      limit_rate 8192k;
-      limit_rate_after 1m;
-      limit_conn addr 5;
-   }
 }

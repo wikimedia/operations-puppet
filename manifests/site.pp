@@ -1494,12 +1494,6 @@ node /^grafana2001\.codfw\./ {
     role(grafana)
 }
 
-# Serves dumps of revision content from restbase, in HTML format
-# T245567 - replaced francium.eqiad.wmnet
-node /^htmldumper1001\.eqiad\./ {
-    role(dumps::web::htmldumps)
-}
-
 node /^irc[12]003\.wikimedia\./ {
     role(ircstream)
 }

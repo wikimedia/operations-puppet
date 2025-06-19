@@ -360,9 +360,6 @@ profile::installserver::preseed::preseed_per_hostname:
   'graphite*':
     - partman/standard.cfg
     - partman/raid10-4dev.cfg
-  'htmldumper1001':
-    - partman/standard.cfg
-    - partman/raid10-4dev.cfg
   'install*':
     - partman/flat.cfg
     - virtual.cfg
