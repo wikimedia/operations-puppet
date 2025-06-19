@@ -103,4 +103,13 @@ class profile::liberica(
         config                => $config,
         gobgp_metrics_address => $gobgp_metrics_address,
     }
+
+    # Report CPUs handling NIC queues
+    $interface_tweaks.each|String $iface_name, Hash $tweaks| {
+        prometheus::node_nic_queue_cpu { "nic-queue-cpu-${iface_name}":
+            ensure    => present,
+            interface => $iface_name,
+            outfile   => "/var/prometheus/node.d/nic-queue-cpu-${iface_name}.prom",
+        }
+    }
 }
