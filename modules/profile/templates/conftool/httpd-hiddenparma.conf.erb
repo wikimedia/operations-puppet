@@ -51,8 +51,8 @@
 
     <Location /api>
         Require all granted
-        ProxyPass <%= @vhost_settings['proxy_pass'] %>
-        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>
+        ProxyPass <%= @vhost_settings['proxy_pass'] %>/api
+        ProxyPassReverse <%= @vhost_settings['proxy_pass'] %>/api
     </Location>
 
     # Static files
