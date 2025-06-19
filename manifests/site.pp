@@ -1399,7 +1399,7 @@ node /^ganeti203[3-4]\.codfw\./ {
     role(ganeti_routed)
 }
 
-node /^ganeti20(1[9]|2[01256789]|3[01256789]|4[0-6])\.codfw\./ {
+node /^ganeti20(1[9]|2[01256789]|3[01256789]|4[0-8])\.codfw\./ {
     role(ganeti)
 }
 
@@ -1410,7 +1410,7 @@ node /^ganeti20(2[34])\.codfw\./ {
 
 
 # T384838
-node /^ganeti20(4[789]|5[0])\.codfw\./ {
+node /^ganeti20(4[9]|5[0])\.codfw\./ {
     role(insetup::infrastructure_foundations_nftables)
 }
 
