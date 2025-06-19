@@ -10,12 +10,14 @@ define prometheus::node_nic_queue_cpu (
 ) {
     ensure_packages(['python3-prometheus-client'])
 
-    file { '/usr/local/bin/prometheus-nic-queue-cpu':
-        ensure => stdlib::ensure($ensure, 'file'),
-        mode   => '0555',
-        owner  => 'root',
-        group  => 'root',
-        source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-nic-queue-cpu.py',
+    if !File['/usr/local/bin/prometheus-nic-queue-cpu'] {
+        file { '/usr/local/bin/prometheus-nic-queue-cpu':
+            ensure => stdlib::ensure($ensure, 'file'),
+            mode   => '0555',
+            owner  => 'root',
+            group  => 'root',
+            source => 'puppet:///modules/prometheus/usr/local/bin/prometheus-nic-queue-cpu.py',
+        }
     }
 
     # Collect every hour
