@@ -7,6 +7,8 @@ Type=notify
 ExecStart=/usr/sbin/rsyslogd -n -f /etc/librenms-rsyslog.conf -i /var/run/librenms-rsyslogd.pid
 StandardOutput=null
 Restart=on-failure
+# Bandaid for memory leak - T397427
+MemoryMax=5G
 
 [Install]
 WantedBy=multi-user.target
