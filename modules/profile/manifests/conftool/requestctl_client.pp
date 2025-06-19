@@ -37,6 +37,15 @@ class profile::conftool::requestctl_client (
             }
         }
     }
+    # A lot of people probably still have the muscle memory of using "sudo" when running requestctl. We need that to keep
+    # working. We might want a better solution later.
+    file { '/root/.requestctl':
+        ensure  => file,
+        mode    => '0400',
+        owner   => 'root',
+        group   => 'root',
+        content => "${api_tokens['root']}\n",
+    }
 
     # This is a copy of the file contained in the scripts/ directory of the
     # HIDDENPARMA repository:
