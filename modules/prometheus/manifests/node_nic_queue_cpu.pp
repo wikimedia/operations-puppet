@@ -10,7 +10,7 @@ define prometheus::node_nic_queue_cpu (
 ) {
     ensure_packages(['python3-prometheus-client'])
 
-    if !File['/usr/local/bin/prometheus-nic-queue-cpu'] {
+    if !defined(File['/usr/local/bin/prometheus-nic-queue-cpu']) {
         file { '/usr/local/bin/prometheus-nic-queue-cpu':
             ensure => stdlib::ensure($ensure, 'file'),
             mode   => '0555',
