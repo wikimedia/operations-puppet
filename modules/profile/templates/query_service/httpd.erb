@@ -29,7 +29,7 @@
         AllowOverride None
         Require all granted
 
-        <FilesMatch "^(index|embed)\.html$">
+        <FilesMatch "(^(index|embed)\.html$)|(\.json$)">
             Header set Cache-Control "no-cache"
         </FilesMatch>
     </Directory>

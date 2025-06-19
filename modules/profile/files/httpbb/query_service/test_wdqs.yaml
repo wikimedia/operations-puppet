@@ -11,6 +11,11 @@ https://query.wikidata.org:
   assert_status: 200
   assert_headers:
     cache-control: no-cache
+# i18n files must not be cached
+- path: /i18n/en.json
+  assert_status: 200
+  assert_headers:
+    cache-control: no-cache
 # everything else should be fine to cache
 - path: /favicon.ico
   assert_status: 200
