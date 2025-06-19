@@ -233,6 +233,8 @@ groups:
                  'ALL = NOPASSWD: /bin/systemctl start spiderpig-apiserver',
                  'ALL = NOPASSWD: /bin/systemctl stop spiderpig-apiserver',
                  'ALL = NOPASSWD: /bin/systemctl restart spiderpig-apiserver',
+                 # This is used to refresh /srv/mediawiki on mw-experimental nodes
+                 'ALL = NOPASSWD: /bin/systemctl restart mw-experimental-mediawiki-image-update.service',
                  'ALL = NOPASSWD: /bin/journalctl -u spiderpig-apiserver',
                  # The restart script must run as a login shell (sudo -i) in order to be fed etcd
                  # tokens as environment vars. Sudo seemingly implements this by rewriting the

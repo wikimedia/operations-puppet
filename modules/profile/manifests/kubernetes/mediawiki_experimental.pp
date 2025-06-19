@@ -78,7 +78,6 @@ class profile::kubernetes::mediawiki_experimental(
             require => File['/usr/local/etc/fix-staging-perms.sh'],
         }
         # Script and timer for mw-experimental mediawiki image updates
-        # TODO: Add timer
         $mw_experimental_update_script_name = 'mw-experimental-mediawiki-image-update'
         $mw_experimental_update_script_path = "/usr/local/sbin/${mw_experimental_update_script_name}"
 
@@ -92,7 +91,7 @@ class profile::kubernetes::mediawiki_experimental(
 
         systemd::timer::job { $mw_experimental_update_script_name:
             description => 'Update /srv/mediawiki with the latest mediawiki image every hour',
-            command     => $mw_experimental_update_script_path,
+            command     => "${mw_experimental_update_script_path} -f",
             user        => 'root',
             team        => 'ServiceOps',
             require     => File[$mw_experimental_update_script_path],
