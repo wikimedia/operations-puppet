@@ -4,11 +4,14 @@
 #  a shared 'novaadmin' user will work for now.
 [service_user]
 send_service_user_token = True
-
+default_domain_id = default
 project_domain_id = default
 project_name = <%= @keystone_auth_project %>
+tenant_name = <%= @keystone_auth_project %>
 user_domain_id = default
 password = <%= @ldap_user_pass %>
 username = <%= @keystone_auth_username %>
-auth_url = https://<%= @keystone_fqdn %>:25357
+auth_url = https://<%= @keystone_fqdn %>:25000
 auth_type = password
+
+
