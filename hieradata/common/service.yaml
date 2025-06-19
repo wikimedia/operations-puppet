@@ -1006,9 +1006,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          url:
-            - https://localhost:6543/
       scheduler: wrr
     page: false
     probes:
@@ -2884,10 +2881,6 @@ service::catalog:
         IdleConnection:
           max-delay: 300
           timeout-clean-reconnect: 3
-        ProxyFetch:
-          timeout: 10
-          url:
-            - http://localhost/healthz
       scheduler: wrr
     probes:
       - type: http
