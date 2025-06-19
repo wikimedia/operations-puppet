@@ -15,7 +15,6 @@ profile::memcached::size: 2000
 profile::memcached::port: 11211
 profile::memcached::firewall_src_sets:
     - CLOUD_PRIVATE_NETWORKS
-profile::memcached::firewall_srange: ~
 
 profile::cloudceph::client::rbd::client_name: 'eqiad1-glance-images'
 profile::cloudceph::client::rbd::pool: 'eqiad1-glance-images'

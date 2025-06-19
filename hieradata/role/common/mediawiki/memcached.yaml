@@ -25,7 +25,6 @@ profile::memcached::extended_options:
   - "ext_threads=2"
 profile::memcached::firewall_src_sets:
   - DOMAIN_NETWORKS
-profile::memcached::firewall_srange: ~
 profile::contacts::role_contacts: ['ServiceOps']
 profile::base::production::role_description: 'Mediawiki memcached'
 

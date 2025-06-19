@@ -82,14 +82,14 @@
 #   to a different port.
 #   Default: undef
 #
-# [*srange*]
-#   A ferm macro to which access will be granted. The firewall definition will be
-#   created as a ferm::service
+#
+# [*firewall_srange*]
+#   By default no firewall port is opened. This allows to grant access to an array
+#   of hosts
 #
 # [*firewall_src_sets*]
-#   A firewall set to which access will be granted. If configured, this takes precendence
-#   over *srange*. The firewall definition will be created as a firewall::service
-#
+#   By default no firewall port is opened. This allows to grant access to an array
+#   of firewall sets (e.g. DOMAIN_NETWORKS)
 class profile::memcached::instance (
     String                     $version                 = lookup('profile::memcached::version'),
     Stdlib::Port               $port                     = lookup('profile::memcached::port'),
@@ -109,9 +109,8 @@ class profile::memcached::instance (
     Optional[Stdlib::Unixpath] $ssl_key                  = lookup('profile::memcached::ssl_key'),
     Optional[Stdlib::Unixpath] $localcacert              = lookup('profile::memcached::localcacert'),
     Optional[Integer]          $threads                  = lookup('profile::memcached::threads'),
-    Optional[Firewall::Hosts]  $srange                   = lookup('profile::memcached::srange', {default_value => '$DOMAIN_NETWORKS'}),
-    Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets'),
-    Optional[Firewall::Range]  $firewall_srange          = lookup('profile::memcached::firewall_srange'),
+    Optional[Array[String[1]]] $firewall_src_sets        = lookup('profile::memcached::firewall_src_sets', { 'default_value' => undef }),
+    Optional[Firewall::Range]  $firewall_srange          = lookup('profile::memcached::firewall_srange', { 'default_value' => undef }),
 ) {
     include ::profile::prometheus::memcached_exporter
     if $performance_cpu_governor {
@@ -160,23 +159,20 @@ class profile::memcached::instance (
         extstore_path   => $extstore_path,
 
     }
+
     if $firewall_src_sets {
         firewall::service { 'memcached':
             proto    => 'tcp',
             port     => $port,
             src_sets => $firewall_src_sets,
         }
-    } elsif $firewall_srange {
+    }
+
+    if $firewall_srange {
         firewall::service { 'memcached':
             proto  => 'tcp',
             port   => $port,
             srange => $firewall_srange,
-        }
-    } else {
-        ferm::service { 'memcached':
-            proto  => 'tcp',
-            port   => $port,
-            srange => $srange,
         }
     }
 
@@ -187,17 +183,13 @@ class profile::memcached::instance (
                 port     => $notls_port,
                 src_sets => $firewall_src_sets,
             }
-        } elsif $firewall_srange {
+        }
+
+        if $firewall_srange {
             firewall::service { 'memcached_notls':
                 proto  => 'tcp',
                 port   => $notls_port,
                 srange => $firewall_srange,
-            }
-        } else {
-            ferm::service { 'memcached_notls':
-                proto  => 'tcp',
-                port   => $notls_port,
-                srange => $srange,
             }
         }
     }

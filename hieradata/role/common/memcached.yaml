@@ -15,7 +15,6 @@ profile::memcached::notls_port: 11211
 profile::memcached::port: 11214
 profile::memcached::firewall_src_sets:
   - DOMAIN_NETWORKS
-profile::memcached::firewall_srange: ~
 profile::contacts::role_contacts: ["ServiceOps"]
 profile::base::production::role_description: 'Basic memcached role'
 
