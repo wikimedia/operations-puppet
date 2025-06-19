@@ -48,6 +48,7 @@ profile::cache::haproxy::available_unified_certificates:
         - w.wiki
     warning_threshold: 30
     critical_threshold: 15
+    ocsp: true
   lets-encrypt:
     cert_paths:
         - /run/haproxy-tls/unified/live/ec-prime256v1.chained.crt.key
@@ -93,6 +94,7 @@ profile::cache::haproxy::available_unified_certificates:
         - w.wiki
     warning_threshold: 21
     critical_threshold: 15
+    ocsp: false
   pki-goog:
     cert_paths:
         - /run/haproxy-tls/unified-goog/live/ec-prime256v1.chained.crt.key
@@ -138,6 +140,7 @@ profile::cache::haproxy::available_unified_certificates:
         - w.wiki
     warning_threshold: 21
     critical_threshold: 15
+    ocsp: true
 
 profile::cache::haproxy::do_ocsp: true
 profile::cache::haproxy::h2settings:

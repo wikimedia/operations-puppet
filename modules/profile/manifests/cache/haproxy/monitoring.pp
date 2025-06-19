@@ -8,12 +8,12 @@ define profile::cache::haproxy::monitoring(
     # This profile depends on some resources created by profile::monitoring
     include profile::monitoring
 
-    if $do_ocsp {
-        $https_check = 'check_ssl_ats_ocsp'
-    } else {
-        $https_check = 'check_ssl_ats'
-    }
     $certificates.each|Haproxy::Tlscertificate $cert| {
+        if $cert['ocsp'] {
+            $https_check = 'check_ssl_ats_ocsp'
+        } else {
+            $https_check = 'check_ssl_ats'
+        }
         if $cert['warning_threshold'] and $cert['critical_threshold'] {
             $check_server_name = $cert['server_names'][0]
             $check_sni_str = join($cert['server_names'], ',')

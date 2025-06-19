@@ -3,4 +3,5 @@ type Haproxy::Tlscertificate = Struct[{
     'cert_paths'         => Array[Stdlib::Unixpath],
     'warning_threshold'  => Optional[Integer[0]],
     'critical_threshold' => Optional[Integer[0]],
+    'ocsp'               => Boolean,
 }]
