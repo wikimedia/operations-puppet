@@ -109,7 +109,7 @@ class profile::liberica(
         prometheus::node_nic_queue_cpu { "nic-queue-cpu-${iface_name}":
             ensure    => present,
             interface => $iface_name,
-            outfile   => "/var/prometheus/node.d/nic-queue-cpu-${iface_name}.prom",
+            outfile   => "/var/lib/prometheus/node.d/nic-queue-cpu-${iface_name}.prom",
         }
     }
 }
