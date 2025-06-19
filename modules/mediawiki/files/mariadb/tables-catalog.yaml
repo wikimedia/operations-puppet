@@ -1136,6 +1136,34 @@ tables:
     canonicality: derivative
     visibility: public
     dblist: ores
+  - name: page_assessments
+    source: pageassessments
+    canonicality: derivative
+    visibility: public
+    databases:
+      - dbname: arwiki
+      - dbname: enwiki
+      - dbname: enwikivoyage
+      - dbname: frwiki
+      - dbname: newiki
+      - dbname: huwiki
+      - dbname: testwiki
+      - dbname: trwiki
+      - dbname: zhwiki
+  - name: page_assessments_projects
+    source: pageassessments
+    canonicality: derivative
+    visibility: public
+    databases:
+      - dbname: arwiki
+      - dbname: enwiki
+      - dbname: enwikivoyage
+      - dbname: frwiki
+      - dbname: newiki
+      - dbname: huwiki
+      - dbname: testwiki
+      - dbname: trwiki
+      - dbname: zhwiki
   - name: pagetriage_page
     source: pagetriage
     canonicality: canonical
@@ -1488,6 +1516,9 @@ sources:
   ores:
     - path: extensions/ORES/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/ORES/+/master/sql/tables.json
+  pageassessments:
+    - path: extensions/PageAssessments/db/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/PageAssessments/+/master/db/tables.json
   pagetriage:
     - path: extensions/PageTriage/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/PageTriage/+/master/sql/tables.json
