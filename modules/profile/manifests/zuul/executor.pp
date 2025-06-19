@@ -8,4 +8,16 @@ class profile::zuul::executor {
         ensure => running,
         enable => true,
     }
+
+    wmflib::dir::mkdir_p('/etc/zuul/ssh')
+
+    file { '/etc/zuul/ssh/id_rsa':
+        ensure  => present,
+        owner   => 'root',
+        group   => 'zuul',
+        mode    => '0440',
+        content => secret('zuul/id_rsa'),
+        require => User['zuul'],
+    }
+
 }

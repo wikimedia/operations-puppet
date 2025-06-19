@@ -3,5 +3,6 @@
 class role::zuul::executor {
     include profile::base::production
     include profile::firewall
+    include profile::zuul::user
     include profile::zuul::executor
 }
