@@ -92,6 +92,13 @@ class thanos::query_frontend (
         default => '',
     }
 
+    # query-frontend logs are verbose, thus split into a separate file
+    systemd::syslog { 'thanos-query-frontend':
+        force_stop => true,
+        owner      => 'thanos',
+        group      => 'thanos',
+    }
+
     systemd::service { $service_name:
         ensure         => present,
         restart        => true,
