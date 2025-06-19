@@ -3,6 +3,7 @@
 # common openstack-wide keystone access
 auth_type = password
 www_authenticate_uri = https://<%= @keystone_fqdn %>:25000
+auth_url = https://<%= @keystone_fqdn %>:25357
 password = <%= @ldap_user_pass %>
 project_domain_id = default
 project_name = <%= @keystone_auth_project %>
