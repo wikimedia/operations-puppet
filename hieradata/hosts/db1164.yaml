@@ -1,6 +1,6 @@
 # db1164
-# m2 master
+# m2
 mariadb::shard: 'm2'
 mariadb::binlog_format: 'ROW'
-profile::mariadb::mysql_role: 'master'
-profile::monitoring::is_critical: true
+#profile::mariadb::mysql_role: 'master'
+#profile::monitoring::is_critical: true
