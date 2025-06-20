@@ -326,7 +326,7 @@ profile::idp::services:
     id: 56
     service_id: 'https://zarcillo\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
+      - wmf
 profile::idp::ldap_attributes:
   - cn
   - memberOf
