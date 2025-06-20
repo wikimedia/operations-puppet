@@ -12,7 +12,7 @@ class profile::openstack::codfw1dev::nova::common(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::codfw1dev::rabbitmq_nodes'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
-    $ldap_user_pass = lookup('profile::openstack::codfw1dev::nova::ldap_service_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
     $rabbit_pass = lookup('profile::openstack::codfw1dev::nova::rabbit_pass'),
     $metadata_proxy_shared_secret = lookup('profile::openstack::codfw1dev::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::codfw1dev::nova::metadata_listen_port'),
