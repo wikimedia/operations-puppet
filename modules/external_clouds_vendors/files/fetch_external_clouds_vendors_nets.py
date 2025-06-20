@@ -4,6 +4,9 @@
 import csv
 import json
 import logging
+import os
+import subprocess
+import tempfile
 import time
 import re
 from datetime import datetime
@@ -12,10 +15,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import List, Set
 
-from conftool.extensions.reqconfig import (
-    api,
-    RequestctlError,
-)
+import yaml
+
 from lxml import html
 from netaddr import IPNetwork, cidr_merge
 from requests import Session
@@ -219,6 +220,25 @@ def merge_adjacent(nets: Set[str]) -> Set[str]:
     return {str(net) for net in merged}
 
 
+def requestctl_apply(slug, data, api_token) -> subprocess.CompletedProcess:
+    """Run requestctl apply on the requested ipblock"""
+    try:
+        tmp = tempfile.NamedTemporaryFile(mode="w+", delete=False)
+        yaml.dump(data, tmp)
+        cmd = ['/usr/bin/requestctl', 'apply', 'ipblock', slug, '-f', tmp.name]
+        result = subprocess.run(
+            cmd,
+            check=True,
+            text=True,
+            capture_output=True,
+            env={'REQUESTCTL_API_TOKEN': api_token}
+        )
+        logging.debug("Output of running requestctl apply: %s", result.stdout)
+        return result
+    finally:
+        os.unlink(tmp.name)
+
+
 def get_args() -> Namespace:
     """Parse arguments"""
     parser = ArgumentParser(description=__doc__)
@@ -255,6 +275,12 @@ def main() -> int:
     """main entry point"""
     args = get_args()
     logging.basicConfig(level=get_log_level(args.verbose))
+    if args.conftool:
+        # We need to have the API token defined, or this won't work
+        api_token = os.environ.get('REQUESTCTL_API_TOKEN')
+        if api_token is None:
+            raise ValueError("Cannot write to conftool without an api token.")
+
     data = dict()
     runtime_error = False
 
@@ -366,19 +392,24 @@ def main() -> int:
                 runtime_error = True
 
     if args.conftool:
-        req_api = api.RequestctlApi(api.client(config="/etc/conftool/config.yaml"))
+        api_token = os.environ.get('REQUESTCTL_API_TOKEN', None)
+        if api_token is None:
+            raise ValueError("you must define the env variable REQUESTCTL_API_TOKEN"
+                             " in order to export data to requestctl.")
+
         for ipblock_type, ipblocks in data.items():
             for ipblock_name, cidrs in ipblocks.items():
                 slug = f"{ipblock_type}/{ipblock_name.lower()}"
+                to_update = {
+                    "cidrs": cidrs,
+                    "comment": f"Automatically generated IPs for {ipblock_name}",
+                }
+
                 try:
                     logging.info("Updating ipblock@%s", slug)
-                    entity = req_api.get("ipblock", slug)
-                    to_update = {
-                        "cidrs": cidrs,
-                        "comment": f"Automatically generated IPs for {ipblock_name}",
-                    }
-                    req_api.write(entity, to_update)
-                except RequestctlError as error:
+                    requestctl_apply(slug, to_update, api_token)
+                    logging.info("ipblock imported correctly")
+                except subprocess.CalledProcessError as error:
                     logging.error("Error updating %s: %s", slug, error)
                     runtime_error = True
 

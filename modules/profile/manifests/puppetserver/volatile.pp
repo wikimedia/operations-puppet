@@ -8,14 +8,15 @@
 # @param geoip_fetch_private Fetch the proprietary paid-for MaxMind database
 # @param ip_reputation_config The configuration of the ip reputation download script
 # @param ip_reputation_proxies The list of proxy families to use in the ip reputation script
-
+# @param api_tokens The api tokens used by the requestctl cli
 class profile::puppetserver::volatile (
     Optional[Stdlib::HTTPUrl] $http_proxy            = lookup('http_proxy'),
     Boolean                   $geoip_fetch_private   = lookup('profile::puppetserver::volatile::geoip_fetch_private'),
     # Should be defined in the private repo.
     Hash[String, Any]         $ip_reputation_config  = lookup('profile::puppetserver::volatile::ip_reputation_config'),
     Array[String]             $ip_reputation_proxies = lookup('profile::puppetserver::volatile::ip_reputation_proxies'),
-){
+    Hash[String, String]      $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
+) {
     include profile::puppetserver
     unless $profile::puppetserver::extra_mounts.has_key('volatile') {
         fail("Must define a volatile entry in profile::puppetserver::extra_mounts to use ${title}")
@@ -35,7 +36,7 @@ class profile::puppetserver::volatile (
     }
 
     file { '/usr/local/sbin/update-netboot-image':
-        ensure => present,
+        ensure => file,
         source => 'puppet:///modules/profile/puppetserver/update-netboot-image.sh',
         mode   => '0544',
     }
@@ -49,6 +50,7 @@ class profile::puppetserver::volatile (
         outfile     => "${base_path}/external_cloud_vendors/public_clouds.json",
         conftool    => $profile::puppetserver::enable_ca,
         http_proxy  => $http_proxy,
+        api_token   => $api_tokens['root'],
     }
     class { 'ip_reputation_vendors':
         ensure         => stdlib::ensure(!$ip_reputation_proxies.empty()),
@@ -66,7 +68,6 @@ class profile::puppetserver::volatile (
     file { [$geoip_destdir, $geoip_destdir_ipinfo]:
         ensure => directory,
     }
-
 
     if $geoip_fetch_private {
         include passwords::geoip
@@ -95,7 +96,7 @@ class profile::puppetserver::volatile (
                 'GeoLite2-ASN',
                 'GeoLite2-Country',
                 'GeoLite2-City',
-          ],
+            ],
         }
     } else {
         class { 'geoip::data::maxmind':
@@ -111,6 +112,6 @@ class profile::puppetserver::volatile (
     puppetserver::rsync_module { 'volatile':
         path     => $base_path,
         hosts    => wmflib::class::hosts('profile::puppetserver::volatile'),
-        interval => {'start' => 'OnUnitInactiveSec', 'interval' => '15m'},
+        interval => { 'start' => 'OnUnitInactiveSec', 'interval' => '15m' },
     }
 }

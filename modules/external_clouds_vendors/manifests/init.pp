@@ -8,6 +8,7 @@
 # @param outfile location to write the results
 # @param private_repo location of the private_repo
 # @param http_proxy http proxy server to use will be used for both http and https
+# @param api_token the requestctl api token in case we're writing to requestctl
 class external_clouds_vendors (
     Wmflib::Ensure            $ensure       = 'present',
     String[1]                 $user         = 'external-clouds-fetcher',
@@ -16,7 +17,12 @@ class external_clouds_vendors (
     Boolean                   $conftool     = false,
     Stdlib::Unixpath          $outfile      = '/srv/external_clouds_vendors/public_clouds.json',
     Optional[Stdlib::HTTPUrl] $http_proxy   = undef,
+    Optional[String]          $api_token    = undef,
 ) {
+    if (conftool and !$api_token) {
+        fail('You need to provide a API token to interact with requestctl.')
+    }
+
     ensure_packages(['python3-lxml', 'python3-netaddr', 'python3-requests', 'python3-wmflib', 'python3-conftool', 'python3-git'])
     if $manage_user {
         systemd::sysuser { $user:
@@ -27,9 +33,13 @@ class external_clouds_vendors (
             ],
         }
     }
-    $environment = $http_proxy ? {
+    $proxy_env = $http_proxy ? {
         undef   => {},
         default => Hash( ['http_proxy', 'https_proxy' ].map |$env| {[$env, $http_proxy, $env.upcase, $http_proxy]}.flatten)
+    }
+    $environment = $api_token ? {
+        undef => $proxy_env,
+        default => $proxy_env + {'REQUESTCTL_API_TOKEN' => $api_token}
     }
     if !defined($outfile.dirname) {
         file { $outfile.dirname():
