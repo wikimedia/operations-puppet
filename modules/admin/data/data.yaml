@@ -75,7 +75,7 @@ groups:
               mvernon, ladsgroup, aokoth, jhathaway, bking, denisse, slyngshede,
               brett, fnegri, cgoubert, eevans, stevemunene, kamila,
               fabfur, taavi, arnaudb, brouberol, swfrench, cdobbins, tappof,
-              jasmine, fceratto]
+              jasmine, fceratto, joanna]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     # Approved by the person's manager:
     approval:
