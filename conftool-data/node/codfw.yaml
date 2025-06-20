@@ -79,7 +79,7 @@ codfw:
     cirrussearch2109.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2111.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2112.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
-    cirrussearch2113.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
+    cirrussearch2113.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
     cirrussearch2114.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-omega-ssl]
     cirrussearch2115.codfw.wmnet: [elasticsearch, elasticsearch-ssl, elasticsearch-psi-ssl]
   restbase:
