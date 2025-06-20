@@ -1400,12 +1400,12 @@ node /^ganeti203[3-4]\.codfw\./ {
     role(ganeti_routed)
 }
 
-node /^ganeti20(1[9]|2[01256789]|3[01256789]|4[0-8])\.codfw\./ {
+node /^ganeti20(1[9]|2[0256789]|3[01256789]|4[0-8])\.codfw\./ {
     role(ganeti)
 }
 
 # pending decom
-node /^ganeti20(2[34])\.codfw\./ {
+node /^ganeti20(2[1])\.codfw\./ {
     role(insetup::infrastructure_foundations_nftables)
 }
 
