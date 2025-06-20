@@ -5,6 +5,7 @@ sub translation_engine_recv {
     unset req.http.X-WMF-GT-Redirect-Scoped;
     if (req.http.Via ~ "(?i)translate\.google\.com") {
         set req.http.X-WMF-Translation-Engine = "GT";
+        // Use the mobile format for Google Translate requests to Wikipedia (T212197)
         if (req.http.User-Agent !~ "Googlebot" && req.http.Host ~ "\.wikipedia\.org$") {
             set req.http.X-WMF-GT-Redirect-Scoped = 1;
         }
