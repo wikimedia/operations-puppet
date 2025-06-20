@@ -147,8 +147,8 @@ auth_url = https://<%= @keystone_fqdn %>:25000/v3
 auth_type = v3password
 password = <%= @ldap_user_pass %>
 project_domain_name = default
-project_name = admin
-tenant_name = admin
+project_name = <%= @keystone_auth_project %>
+tenant_name = <%= @keystone_auth_project %>
 user_domain_id = default
 user_domain_name = default
 username = <%= @keystone_auth_username %>
@@ -157,7 +157,7 @@ default_floating_pool = ext-nat
 [placement]
 region_name = <%= @region %>
 project_domain_name = Default
-project_name = admin
+project_name = <%= @keystone_auth_project %>
 auth_type = password
 user_domain_name = Default
 auth_url = https://<%= @keystone_fqdn %>:25357/v3
