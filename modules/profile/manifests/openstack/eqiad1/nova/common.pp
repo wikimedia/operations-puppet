@@ -11,7 +11,7 @@ class profile::openstack::eqiad1::nova::common(
     Array[Stdlib::Fqdn] $rabbitmq_nodes = lookup('profile::openstack::eqiad1::rabbitmq_nodes'),
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
-    $ldap_user_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::eqiad1::nova::ldap_service_user_pass'),
     $rabbit_pass = lookup('profile::openstack::eqiad1::nova::rabbit_pass'),
     $metadata_proxy_shared_secret = lookup('profile::openstack::eqiad1::neutron::metadata_proxy_shared_secret'),
     Stdlib::Port $metadata_listen_port = lookup('profile::openstack::eqiad1::nova::metadata_listen_port'),

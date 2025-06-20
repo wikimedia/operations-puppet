@@ -14,7 +14,7 @@ class profile::openstack::base::nova::common(
     Array[Stdlib::Host] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::base::keystone_api_fqdn'),
     $scheduler_filters = lookup('profile::openstack::base::nova::scheduler_filters'),
-    $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::base::nova::ldap_service_user_pass'),
     $rabbit_user = lookup('profile::openstack::base::nova::rabbit_user'),
     $rabbit_pass = lookup('profile::openstack::base::rabbit_pass'),
     $metadata_proxy_shared_secret = lookup('profile::openstack::base::neutron::metadata_proxy_shared_secret'),

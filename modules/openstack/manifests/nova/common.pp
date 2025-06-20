@@ -30,8 +30,8 @@ class openstack::nova::common(
         require => Package['nova-common'],
     }
 
-    $keystone_auth_username = 'novaadmin'
-    $keystone_auth_project = 'admin'
+    $keystone_auth_username = 'novaservice'
+    $keystone_auth_project = 'service'
     file { '/etc/nova/nova.conf':
         content   => template("openstack/${version}/nova/common/nova.conf.erb"),
         owner     => 'nova',
