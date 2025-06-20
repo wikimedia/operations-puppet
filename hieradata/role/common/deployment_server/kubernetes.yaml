@@ -264,6 +264,7 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
         stage: testservers
       next:
         stage: testservers
+        web_flavour: "webserver-bookworm"
     mw_kind: "debug-image"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
@@ -280,7 +281,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       next: {}
-      migration: {}
+      migration:
+        web_flavour: "webserver-bookworm"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
   - namespace: mw-api-int
@@ -288,7 +290,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-      migration: {}
+      migration:
+        web_flavour: "webserver-bookworm"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
   - namespace: mw-api-ext
@@ -297,7 +300,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       canary:
         stage: "canaries"
       next: {}
-      migration: {}
+      migration:
+        web_flavour: "webserver-bookworm"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
   - namespace: mw-jobrunner
@@ -305,7 +309,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-      migration: {}
+      migration:
+        web_flavour: "webserver-bookworm"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
   - namespace: mw-parsoid
@@ -313,7 +318,8 @@ profile::kubernetes::deployment_server::mediawiki::release::mw_releases:
       main: {}
       canary:
         stage: "canaries"
-      migration: {}
+      migration:
+        web_flavour: "webserver-bookworm"
     mw_flavour: "publish-81"
     web_flavour: "webserver"
   - namespace: mw-misc
