@@ -151,7 +151,7 @@ project_name = admin
 tenant_name = admin
 user_domain_id = default
 user_domain_name = default
-username = novaadmin
+username = <%= @keystone_auth_username %>
 default_floating_pool = ext-nat
 
 [placement]
@@ -161,7 +161,7 @@ project_name = admin
 auth_type = password
 user_domain_name = Default
 auth_url = https://<%= @keystone_fqdn %>:25357/v3
-username = novaadmin
+username = <%= @keystone_auth_username %>
 password = <%= @ldap_user_pass %>
 
 [wsgi]
