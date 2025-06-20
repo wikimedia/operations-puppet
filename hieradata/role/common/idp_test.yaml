@@ -143,7 +143,7 @@ profile::idp::actuators:
 profile::idp::server_name: https://idp-test.wikimedia.org
 profile::idp::idp_nodes:
   - idp-test1004.wikimedia.org
-  - idp-test2004.wikimedia.org
+  - idp-test2005.wikimedia.org
 profile::idp::is_staging_host: true
 profile::idp::memcached_enable: false
 profile::idp::memcached::memcached_user: 'memcache'
