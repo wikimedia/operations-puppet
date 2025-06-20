@@ -47,7 +47,7 @@ profile::cassandra::client_ips:
   - 10.192.64.0/21
   - 2620:0:860:babe::/64
   # codfw.
-  - 10.194.128.0/18
+  - 10.194.128.0/17
   - 2620:0:860:cabe::/64
 
 ## Instances
