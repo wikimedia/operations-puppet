@@ -335,6 +335,8 @@ kubernetes::clusters:
         - wikifunctions-orchestrator
         - wikifunctions-evaluator
     codfw:
+      version: "1.31"
+      calico_version: "3.29"
       dc: codfw
       master: kubemaster.svc.codfw.wmnet
       pki_intermediate_base: wikikube
@@ -594,6 +596,13 @@ kubernetes::clusters:
         - wikikube-worker2242.codfw.wmnet
         - wikikube-worker2243.codfw.wmnet
       apparmor_profiles: *wikikube_apparmor_profiles
+      admission_plugins:
+        enable:
+          - DenyServiceExternalIPs
+          - NodeRestriction
+        disable:
+          - StorageObjectInUseProtection
+          - PersistentVolumeClaimResize
     staging-eqiad:
       version: "1.31"
       calico_version: "3.29"
