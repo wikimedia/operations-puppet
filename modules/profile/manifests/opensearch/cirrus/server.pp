@@ -61,19 +61,6 @@ class profile::opensearch::cirrus::server(
                 settings             => $::profile::opensearch::server::configured_instances,
                 enable_remote_search => $enable_remote_search,
             }
-
-            # T357146 monitor snapshot repository
-            # All clusters use the same repo, which enables cross-cluster snapshot restores.
-            prometheus::blackbox::check::http { "${facts['fqdn']}_${instance_title}_snapshot":
-                server_name    => $facts['fqdn'],
-                team           => 'data-platform',
-                severity       => 'task',
-                path           => '/_snapshot/elastic_snaps',
-                port           => $tls_port,
-                ip_families    => ['ip4','ip6'],
-                status_matches => [200],
-                force_tls      => true,
-            }
         }
     }
 
