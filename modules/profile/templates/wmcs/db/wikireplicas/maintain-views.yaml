@@ -230,7 +230,7 @@ customviews:
     view: >
       select af_id, if(af_hidden,null,af_pattern) as af_pattern,
       af_actor, af_timestamp, af_enabled, if(af_hidden,null,af_comments) as af_comments,
-      af_public_comments, af_hidden, af_hit_count, af_throttled, af_deleted, af_actions,
+      af_public_comments, af_hidden, af_throttled, af_deleted, af_actions,
       af_global, af_group
   abuse_filter_action:
     source:
