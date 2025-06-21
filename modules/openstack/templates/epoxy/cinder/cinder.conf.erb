@@ -36,7 +36,7 @@ auth_strategy = keystone
 # A list of backend names to use. These backend names should be backed by a unique [CONFIG] group with its options (list value)
 enabled_backends = <%= @all_backend_names.join(',') %>
 
-rpc_response_timeout=120
+rpc_response_timeout=60
 
 #
 # Enable image signature verification.
