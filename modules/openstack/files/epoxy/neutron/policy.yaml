@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"get_subnet": "rule:regular_user"
 "create_subnetpool": "rule:admin_only"
-"get_subnetpool": "rule:regular_user"
 "update_subnetpool": "rule:admin_only"
 "delete_subnetpool": "rule:admin_only"
 "update_subnet": "rule:admin_only"
@@ -15,8 +13,6 @@
 "get_network_ip_availability": ""
 "update_network": "rule:admin_only"
 "delete_network": "rule:admin_only"
-"create_port": "(rule:admin_only) or (role:member and project_id:%(project_id)s)"
-"get_port": "rule:regular_user"
 "create_router": "rule:admin_only"
 "get_router": "rule:admin_only"
 "delete_router": "rule:admin_only"
@@ -87,11 +83,11 @@
 #  shows the extra three rules are needed.
 #
 # See also upstream patch https://review.opendev.org/c/openstack/neutron/+/886214
-"create_port:fixed_ips:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"update_port:fixed_ips:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"create_port:fixed_ips:subnet_id": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"update_port:fixed_ips:subnet_id": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"create_port:allowed_address_pairs": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"update_port:allowed_address_pairs": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"create_port:allowed_address_pairs:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
-"update_port:allowed_address_pairs:ip_address": "rule:context_is_advsvc or rule:admin_or_network_owner or rule:shared"
+"create_port:fixed_ips:ip_address": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"update_port:fixed_ips:ip_address": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"create_port:fixed_ips:subnet_id": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"update_port:fixed_ips:subnet_id": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"create_port:allowed_address_pairs": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"update_port:allowed_address_pairs": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"create_port:allowed_address_pairs:ip_address": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
+"update_port:allowed_address_pairs:ip_address": "(rule:shared) or (rule:admin_only) or (rule:context_is_advsvc) or (rule:service_api) or role:manager and project_id:%(project_id)s or role:member and rule:network_owner"
