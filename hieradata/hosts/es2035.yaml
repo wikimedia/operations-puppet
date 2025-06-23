@@ -1,5 +1,5 @@
 # es2035
-profile::mariadb::mysql_role: 'master'
+# candidate master for es6
 mariadb::shard: 'es6'
 mariadb::binlog_format: 'ROW'
 mariadb::package: 'wmf-mariadb1011'
