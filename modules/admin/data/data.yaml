@@ -49,7 +49,7 @@ groups:
               stef25, twilsonbf, ryan-bf, prtksxna, babiola, simone-this-dot, s-mukuti, nosc,
               kchapman, ryanbrounley, oleksandrtsyba-wmde, vhargyono, whatamidoing, agueyte, elitre,
               kassiameq, maurelio, dmantena, kelhurd, lea-wmde, febinbellamy, fjoseph, mcastro-wmf, jfk,
-              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano]
+              rudolphampofo, jrbranaa, wdoran, wquarshie, mhernandez, jaycano, ncreasy]
   wikidev:
     gid: 500
     description: container group for primary user groups.
@@ -7507,11 +7507,8 @@ ldap_only_users:
     realname: Grey Olson
     email: golson@wikimedia.org
   ncreasy:
-    ensure: present
+    ensure: absent
     realname: Natasha Creasy
-    email: ncreasy-ctr@wikimedia.org
-    expiry_date: "2025-06-30"
-    expiry_contact: rmurthy@wikimedia.org
   southparkfan:
     ensure: present
     realname: Ferran Tufan
