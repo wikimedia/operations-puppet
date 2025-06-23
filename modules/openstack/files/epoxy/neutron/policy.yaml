@@ -22,8 +22,6 @@
 "delete_router": "rule:admin_only"
 "add_router_interface": "rule:admin_only"
 "remove_router_interface": "rule:admin_only"
-"create_qos_queue": "rule:admin_only"
-"get_qos_queue": "rule:regular_user"
 "get_agent": "rule:regular_user"
 "get_l3-agents": "rule:regular_user"
 "get_loadbalancer-agent": "rule:admin_only"
