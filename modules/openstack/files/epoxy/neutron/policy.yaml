@@ -1,10 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 
-"get_subnet": "rule:regular_user"
+"get_subnet": "role:reader and project_id:%(project_id)s or rule:shared or rule:external_network or (rule:admin_only) or (role:reader and rule:network_owner) or role:member and project_id:%(project_id)s or (role:member and rule:network_owner)"
 "create_subnetpool": "rule:admin_only"
-"get_subnetpool": "rule:regular_user"
-"update_subnetpool": "rule:admin_only"
-"delete_subnetpool": "rule:admin_only"
+"get_subnetpool": "(rule:admin_only) or (role:reader and project_id:%(project_id)s) or rule:shared_subnetpools or (role:member and project_id:%(project_id)s)"
 "update_subnet": "rule:admin_only"
 "delete_subnet": "rule:admin_only"
 "get_address_scope": "rule:regular_user"
