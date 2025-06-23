@@ -181,6 +181,10 @@ user_name_attribute = <%= @ldap_user_name_attribute %>
 user = <%= @ldap_user_dn %>
 password = <%= @ldap_user_pass %>
 
+# Increasing from default '10' based on MaxConnectionReachedError
+#  appearing in the logs
+pool_size = 20
+
 [matchmaker_redis]
 [memcache]
 # deprecated in favor of [cache]
