@@ -15,7 +15,7 @@ class profile::analytics::cluster::packages::common {
         ensure_packages(['python3.7', 'libpython3.7'])
     }
     # Install MaxMind databases for geocoding UDFs
-    class { '::geoip': }
+    include profile::analytics::geoip
 
     # Install the ua-parser updated regexes.yaml file
     class { 'ua_parser': }

@@ -11,6 +11,8 @@ class role::dse_k8s::worker {
     include profile::calico::kubernetes
     # Support for AMD GPUs
     include profile::amd_gpu
+    # Install the Maxmind GeoIP databases for analytics work
+    include profile::analytics::geoip
 
     # Setup LVS
     include profile::lvs::realserver
