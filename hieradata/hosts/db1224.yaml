@@ -1,3 +1,4 @@
 # db1224
 mariadb::shard: 'x1'
 mariadb::binlog_format: 'ROW'
+mariadb::package: 'wmf-mariadb1011'
