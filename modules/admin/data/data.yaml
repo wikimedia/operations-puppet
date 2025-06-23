@@ -5807,9 +5807,7 @@ users:
   jhancock:
     ensure: present
     realname: Jennifer Hancock
-    email: jhancock-ctr@wikimedia.org
-    expiry_contact: wpao@wikimedia.org
-    expiry_date: "2025-06-30"
+    email: jhancock@wikimedia.org
     uid: 42729
     gid: 500
     ssh_keys:
