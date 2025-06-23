@@ -975,6 +975,10 @@ node /^debmonitor[12]003\.(codfw|eqiad)\./ {
     role(debmonitor::server)
 }
 
+node /^debmonitor-dev2001\.codfw\./ {
+    role(insetup::infrastructure_foundations_nftables)
+}
+
 node /^dns[1-9][0-9]{3}\.wikimedia\./ {
     role(dnsbox)
 }
