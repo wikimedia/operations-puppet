@@ -383,11 +383,14 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
-  'sessionstore100[4-6]|sessionstore200[5-6]':
+  'sessionstore100[4-6]|sessionstore2006':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
-  # Canary new disk config: T391544
+  # Migrate sessionstore to new disk config: T391544
   'sessionstore2004':
+    - reuse-parts.cfg
+    - partman/custom/reuse-cassandra-jbod.cfg
+  'sessionstore2005':
     - partman/custom/cassandra-jbod.cfg
     - partman/raid1-2dev-efi.cfg
   'contint[12]00[12]':
@@ -700,12 +703,9 @@ profile::installserver::preseed::preseed_per_hostname:
   'releases*':
     - partman/flat.cfg
     - virtual.cfg
-  'cassandra-dev2001':
+  'cassandra-dev200[123]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
-  'cassandra-dev200[23]':
-    - partman/custom/cassandra-jbod.cfg
-    - partman/raid1-2dev-efi.cfg
   'restbase102[8-9]|restbase103*|restbase104[0-5]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandrahosts-3ssd-jbod.cfg
