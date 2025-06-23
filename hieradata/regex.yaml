@@ -422,19 +422,6 @@ hadoop_workers_sff_drives:
   __regex: !ruby/regexp /^an-worker(109[6-9]|110[0-1])\.eqiad\.wmnet$/
   profile::hadoop::common::min_datanode_mounts: 20
 
-# Extstore experiment T352885 (eqiad only)
-memcached_servers_extstore_eqiad:
-  __regex: !ruby/regexp /^mc10(3[7-9]|4[0-9]|5[0-4])\.eqiad\.wmnet$/
-  profile::memcached::memcached_user: 'memcache'
-  profile::memcached::threads: 28
-  profile::memcached::extstore_ensure: present
-  profile::memcached::extstore_size: 50
-  profile::memcached::extstore_path: /srv/memcached
-  profile::memcached::extended_options:
-    - "modern"
-    - "ext_item_size=176"
-    - "ext_threads=2"
-
 wikikube_workers_exp:
   __regex: !ruby/regexp /^wikikube-worker-exp1001\.eqiad\.wmnet$/
   # mw-experimental hosts need the deployment group present as it will own
