@@ -30,30 +30,35 @@ pathmunge() {
 	fi
 }
 
-# https://unix.stackexchange.com/questions/18087/can-i-get-individual-man-pages-for-the-bash-builtin-commands
+# Provides bash builtins as pseudo manpages and if a local manpage is not found
+# it tries to retrieve one from manpages.debian.org with debian-goodies' dman
 man() {
-	local cur_width
+	local cur_width width
 
 	cur_width=$(tput cols)
 
 	if [[ $cur_width -gt $MANWIDTH ]]; then
-		cur_width=$MANWIDTH
+		width=$MANWIDTH
+	else
+		width=$cur_width
 	fi
 
-	if [[ "${#@}" -gt 1 ]]; then
-		MANWIDTH="${cur_width}" command -p man "$@"
+	if [[ $# -eq 1 ]] &&
+		arg_type=$(type -t "$1") >/dev/null &&
+		{
+			[[ "$arg_type" == 'builtin' ]] ||
+				[[ "$arg_type" == 'keyword' ]]
+		}; then
+		help "$1" | "${PAGER}"
 	else
-		case "$(type -t "$1"):$1" in
-		builtin:*)
-			help "$1" | "${PAGER:-less}" # built-in
-			;;
-		*[[?*]*)
-			help "$1" | "${PAGER:-less}" # pattern
-			;;
-		*)
-			MANWIDTH="${cur_width}" command -p man "$@" # something else, presumed to be an external command
-			;;
-		esac
+		if command -p man -w "$@" >/dev/null 2>&1; then
+			MANWIDTH="${width}" command -p man "$@"
+		else
+			# TODO add section support to dman
+			printf 'No local manpage found for "%s",\n' "$*"
+			printf 'querying manpages.debian.org...\n'
+			MANWIDTH="${width}" dman "$@"
+		fi
 	fi
 }
 
@@ -202,7 +207,7 @@ function ncdu() {
 
 # World Clock
 function wclock() {
-	local fmt='%R %l:%M%p'
+	local fmt='%R %l:%M%P UTC%:::z'
 	TZ=America/Los_Angeles date \
 		'+Los Angeles : '"$fmt"
 	TZ=America/Chicago date \
@@ -364,9 +369,9 @@ function k8s-rm-completed-pods {
 
 # Git functions
 function git-root {
-	declare -g gr
-	export gr
-	gr="$(git rev-parse --show-toplevel 2>/dev/null)"
+	declare -g GR
+	export GR
+	GR="$(git rev-parse --show-toplevel 2>/dev/null)"
 }
 
 # Convert to phabricators remarkup language
@@ -457,7 +462,9 @@ export WATCH_INTERVAL=1 # 2secs just seems wierd!
 export MANWIDTH=80
 # Allows less to know the total line length via stdin, by going to the EOF,
 # this then allows it to generate a percentage in the status line.
-export MANPAGER='less +Gg'
+#export MANPAGER='less +Gg'
+# Try vim as our MANPAGER
+export MANPAGER="vim +MANPAGER --not-a-term -"
 export PAGER='less'
 # ssh tab completion from avahi
 export COMP_KNOWN_HOSTS_WITH_AVAHI=1
@@ -470,6 +477,10 @@ export DOCKER_HOST="unix:///run/user/${UID}/podman/podman.sock"
 # Java
 JAVA_HOME=$(readlink -f /usr/bin/java | sed 's:bin/java::')
 export JAVA_HOME
+
+# Python
+# Re-enables readline based repl, i.e. vi-mode
+export PYTHON_BASIC_REPL=1
 
 # CDPATH for common directories
 CDPATH=.:~:~/src:
@@ -617,8 +628,16 @@ function vi-commit() {
 	else
 		commit='HEAD'
 	fi
+	local git_root
+	git_root="$(git rev-parse --show-toplevel 2>/dev/null)"
 	mapfile -t commit_files < <(git diff-tree --no-commit-id --name-only -r "$commit")
+	if ! pushd "$git_root" >/dev/null; then
+		return 1
+	fi
 	vi "${commit_files[@]}"
+	if ! popd >/dev/null; then
+		return 1
+	fi
 }
 
 # how I compose plain text email, don't judge :P
@@ -629,8 +648,8 @@ function vail() {
 		xclip
 }
 
-# bash version of resize, useful for serial consoles which can't autoresize
-# via SIGWINCH
+# Bash version of resize, useful for serial consoles which can't auto-resize via
+# SIGWINCH
 # - https://unix.stackexchange.com/a/530361
 function resize {
 	local old

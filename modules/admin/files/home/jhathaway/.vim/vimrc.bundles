@@ -62,7 +62,7 @@ Plug 'tpope/vim-rsi'
 " Not sure if this is used, provides quick fix mappings
 "Plug 'romainl/vim-qf'
 
-" Colorizes hex codes
+" Colorizes hex codes, and ansi escape sequences
 Plug 'chrisbra/Colorizer'
 
 " Ale fixers and formatters
@@ -71,7 +71,7 @@ Plug 'w0rp/ale'
 " YAML bread crumbs
 Plug 'Einenlum/yaml-revealer'
 
-" Support for GNU sytel line numbers, e.g.
+" Support for GNU style line numbers, e.g.
 " $ vim path/to/file.ext:12:3
 Plug 'wsdjeg/vim-fetch'
 

@@ -29,13 +29,14 @@ syntax on
 set shortmess-=S
 set hlsearch
 set showmatch
+set showcmd
 set incsearch
 set hidden
 set backspace=indent,eol,start
 set ruler
 set wrap
 set dir=/tmp//
-set scrolloff=5
+set scrolloff=3
 set ignorecase
 set smartcase
 set wildignore+=*.pyc,*.o,*.class,*.lo,.git,vendor/*,node_modules/**,bower_components/**,*/build_gradle/*,*/build_intellij/*,*/build/*,*/cassandra_data/*
@@ -290,3 +291,9 @@ let g:lsp_settings = {
 \     }
 \   },
 \}
+
+" Custom key bindings
+" lessish
+noremap Q q
+noremap <Space> <PageDown>
+noremap q :confirm quit<CR>
