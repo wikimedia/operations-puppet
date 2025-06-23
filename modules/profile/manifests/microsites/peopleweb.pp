@@ -12,11 +12,18 @@ class profile::microsites::peopleweb (
     String           $home_dir_size_warning_recipient = lookup('profile::microsites::peopleweb::home_dir_size_warning_recipient'),
 ){
 
-    # firewall: allow caching layer to talk to http backend
+    # firewall: allow caching layer and kubernets pods to talk to http backend
     firewall::service { 'people-http':
         proto    => 'tcp',
         port     => 80,
-        src_sets => ['CACHES'],
+        src_sets => ['CACHES', 'STAGING_KUBEPODS_NETWORKS', 'WIKIKUBE_KUBEPODS_NETWORKS' ],
+    }
+
+    # firewall: allow caching layer and kubernets pods to talk to https backend
+    firewall::service { 'people-https':
+        proto    => 'tcp',
+        port     => 443,
+        src_sets => ['CACHES', 'STAGING_KUBEPODS_NETWORKS', 'WIKIKUBE_KUBEPODS_NETWORKS' ],
     }
 
     # firewall: allow http from deployment servers for testing
