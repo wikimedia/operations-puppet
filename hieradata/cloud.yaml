@@ -143,7 +143,6 @@ profile::debmonitor::client::ssl_ca: "puppet"
 profile::debmonitor::client::ssl_ca_label: ~
 
 profile::debmonitor::server::settings_module: debmonitor.settings.test
-profile::debmonitor::server::ssl_certs: puppet
 profile::debmonitor::server::django_log_db_queries: true
 profile::debmonitor::server::django_require_login: false
 # Only scap3 is a valid deployment method anything else is noop

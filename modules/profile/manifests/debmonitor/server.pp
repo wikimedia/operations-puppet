@@ -18,8 +18,7 @@
 # @param app_deployment How to deploy the APP
 # @param enable_logback Enable logback
 # @param enable_monitoring Enable monitoring
-# @param ssl_certs Indicate how sslcerts are managed (puppet or cfssl)
-# @param cfssl_label CFSSL label to use when requesting ssl certs.  Only valid if ssl_certs = 'cfssl'
+# @param cfssl_label CFSSL label to use when requesting ssl certs
 # @param required_groups A list of ldap groups allowed to login
 # @param trusted_ca_source Path to CA files used for MTLS truststore
 class profile::debmonitor::server (
@@ -35,14 +34,10 @@ class profile::debmonitor::server (
     String                             $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
     Boolean                            $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
     Boolean                            $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
-    Enum['puppet', 'cfssl']            $ssl_certs                = lookup('profile::debmonitor::server::ssl_certs'),
-    Optional[String]                   $cfssl_label              = lookup('profile::debmonitor::server::cfssl_label'),
+    String                             $cfssl_label              = lookup('profile::debmonitor::server::cfssl_label'),
     Array[String]                      $required_groups          = lookup('profile::debmonitor::server::required_groups'),
     Stdlib::Filesource                 $trusted_ca_source        = lookup('profile::debmonitor::server::trusted_ca_source'),
 ) {
-    if $ssl_certs == 'cfssl' and !$cfssl_label {
-        fail('\$cfssl_label required when using cfssl')
-    }
     include passwords::ldap::production
 
     # Starting with Bookworm Debmonitor uses the packaged Django stack from Debian
@@ -153,17 +148,14 @@ class profile::debmonitor::server (
         source => $trusted_ca_source,
         notify => Service['apache2'],
     }
-    if $ssl_certs == 'puppet' {
-        $cert = $facts['puppet_config']['hostcert']
-        $key = $facts['puppet_config']['hostprivkey']
-    } elsif $ssl_certs == 'cfssl' {
-        $ssl_paths = profile::pki::get_cert($cfssl_label, $internal_server_name, {
-            profile => 'server',
-            hosts   => [$facts['networking']['fqdn']],
-        })
-        $cert = $ssl_paths['cert']
-        $key = $ssl_paths['key']
-    }
+
+    $ssl_paths = profile::pki::get_cert($cfssl_label, $internal_server_name, {
+        profile => 'server',
+        hosts   => [$facts['networking']['fqdn']],
+    })
+    $cert = $ssl_paths['cert']
+    $key = $ssl_paths['key']
+
     httpd::site { $internal_server_name:
         content => template('profile/debmonitor/internal_client_auth_endpoint.conf.erb'),
     }
