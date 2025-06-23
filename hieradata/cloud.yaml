@@ -145,8 +145,6 @@ profile::debmonitor::client::ssl_ca_label: ~
 profile::debmonitor::server::settings_module: debmonitor.settings.test
 profile::debmonitor::server::django_log_db_queries: true
 profile::debmonitor::server::django_require_login: false
-# Only scap3 is a valid deployment method anything else is noop
-profile::debmonitor::server::app_deployment: "NONE"
 profile::debmonitor::server::enable_logback: false
 profile::debmonitor::server::enable_monitoring: false
 # Empty groups resolves to valid-user

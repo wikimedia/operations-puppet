@@ -15,7 +15,6 @@
 # @param django_log_db_queries Whether to log DB queries
 # @param django_require_login whether to disable logins
 # @param settings_module the settings module to use
-# @param app_deployment How to deploy the APP
 # @param enable_logback Enable logback
 # @param enable_monitoring Enable monitoring
 # @param cfssl_label CFSSL label to use when requesting ssl certs
@@ -31,7 +30,6 @@ class profile::debmonitor::server (
     Boolean                            $django_log_db_queries    = lookup('profile::debmonitor::server::django_log_db_queries'),
     Boolean                            $django_require_login     = lookup('profile::debmonitor::server::django_require_login'),
     String                             $settings_module          = lookup('profile::debmonitor::server::settings_module'),
-    String                             $app_deployment           = lookup('profile::debmonitor::server::app_deployment'),
     Boolean                            $enable_logback           = lookup('profile::debmonitor::server::enable_logback'),
     Boolean                            $enable_monitoring        = lookup('profile::debmonitor::server::enable_monitoring'),
     String                             $cfssl_label              = lookup('profile::debmonitor::server::cfssl_label'),
