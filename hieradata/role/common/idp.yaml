@@ -327,6 +327,11 @@ profile::idp::services:
     service_id: 'https://zarcillo\.wikimedia\.org(/.*)?'
     required_groups:
       - ops
+  debmonitor-next:
+    id: 57
+    service_id: '^https://debmonitor-next\.wikimedia\.org(/.*)?'
+    required_groups:
+      - ops
 profile::idp::ldap_attributes:
   - cn
   - memberOf
