@@ -6,6 +6,20 @@
 
 require 'json'
 
+# This is an incomplete stub.  You can help by expanding it.
+class LogStash
+  class Timestamp
+    def initialize(time)
+      @time = DateTime.parse(time)
+      self
+    end
+
+    def to_json(*)
+      "\"#{@time.iso8601}\""
+    end
+  end
+end
+
 def assert_true(what, truth)
   raise "#{what} is not true" unless truth == true
 end
@@ -37,7 +51,7 @@ class Event
       depth += 1
     end
 
-    return cur if depth == selector.length
+    cur if depth == selector.length
   end
 
   def set(selector, value)

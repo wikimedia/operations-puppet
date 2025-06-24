@@ -1,22 +1,22 @@
 # SPDX-License-Identifier: Apache-2.0
 # filter_on_templates_v2.rb
 # Logstash Ruby script to strip incompatible fields based on type described in the latest index template.
-# @version 2.0.0
+# @version 2.0.1
 
 def register(params)
   @types_map = {  # TODO: This mapping is incomplete.  You can help by expanding it.
-                  :date         => [DateTime],
+                  :date         => [DateTime, LogStash::Timestamp],
                   :keyword      => [String],
                   :text         => [String],
                   :object       => [Hash],
                   :boolean      => [TrueClass, FalseClass],
-                  :float        => [Numeric],
+                  :float        => [Float, Integer],
                   :geo_point    => [Hash],
-                  :half_float   => [Numeric],
-                  :integer      => [Numeric],
+                  :half_float   => [Float, Integer],
+                  :integer      => [Integer],
                   :ip           => [String],
-                  :long         => [Numeric],
-                  :scaled_float => [Numeric],
+                  :long         => [Integer],
+                  :scaled_float => [Float, Integer],
                   # Non-OpenSearch data type indicating a namespace that is included in the fully-expanded template mapping.
                   # See: get_template_namespaces()
                   :parent       => []
@@ -43,14 +43,13 @@ def data_type_correct?(data, valid_types)
   valid_types.map { |t| data.is_a?(t) }.include? true
 end
 
-# Check if provided type is a type or subclass of the provided valid types.
+# Check if all values in an array are one of the valid types.
 #
-# @param type [Object] The data type to check
+# @param values [Array] The values to inspect
 # @param valid_types [Array] Valid data types
 # @return [Boolean]
-def type_or_subclass?(type, valid_types)
-  valids = [].concat(valid_types).concat(valid_types.map { |t| t.subclasses }).flatten
-  valids.include?(type)
+def array_value_types_correct?(values, valid_types)
+  values.map { |value| data_type_correct?(value, valid_types)}.all?
 end
 
 # Remove event at namespace from the event and the event_namespaces hash
@@ -59,9 +58,6 @@ end
 # @param event_namespaces [Hash] The event_namespaces hash
 # @return [NilClass]
 def purge_event(namespace, event, event_namespaces)
-  # event_namespaces.each_key do |key|
-  #   event_namespaces.delete(key) if key.start_with? namespace
-  # end
   event.remove(namespace)
   event_namespaces.delete(namespace)
   namespace = namespace[0, namespace.rindex('[')]
@@ -83,7 +79,7 @@ def get_dynamic_template_namespaces(dynamic_templates)
   dynamic_templates.each do |dt|
     # default ECS dynamic mapping settings as of ecs 1.11.0
     next if dt.keys.include?('strings_as_keyword')
-    dt.each do |_, settings|
+    dt.each_value do |settings|
       next unless settings['path_match']
       # convert dot-delimited to bracketed namespace
       full_ns = "[#{settings['path_match'].gsub(/\./, '][')}]"
@@ -259,7 +255,7 @@ def filter(event)
   end
 
   # handle template dates
-  @template_dates.each_key do |template_namespace|
+  @template_dates.each do |template_namespace, properties|
     entity = event.get(template_namespace)
     next if entity.nil?
     if entity.is_a?(String)
@@ -273,8 +269,10 @@ def filter(event)
       # Warning: this is silly.  It's fast, but detection could probably be improved.
       next if entity.slice(0, 19) == dt.iso8601.slice(0, 19)
     end
-    errors[:field_type_mismatch].append(template_namespace)
-    purge_event(template_namespace, event, event_namespaces)
+    unless data_type_correct?(entity, @types_map[properties[:type]])
+      errors[:field_type_mismatch].append(template_namespace)
+      purge_event(template_namespace, event, event_namespaces)
+    end
   end
 
   # handle remaining fields
@@ -285,7 +283,11 @@ def filter(event)
       purge_event(namespace, event, event_namespaces)
       next
     end
-    unless type_or_subclass?(type, @types_map[properties[:type]]) # rubocop:disable Style/Next
+    # keyword type supports an array of strings - don't reject these
+    if type == Array && properties[:type] == :keyword
+      next if array_value_types_correct?(event.get(namespace), @types_map[properties[:type]])
+    end
+    unless @types_map[properties[:type]].include?(type) # rubocop:disable Style/Next
       errors[:field_type_mismatch].append(namespace)
       purge_event(namespace, event, event_namespaces)
       next
@@ -305,10 +307,12 @@ if __FILE__ == $PROGRAM_NAME
   register({ "glob_pattern" => "../templates/ecs_1.11.0-*.json" })
 
   fixture = {
-    '@timestamp' => '1970-01-01T00:00:00.000Z',
+    '@timestamp' => LogStash::Timestamp.new('1970-01-01T00:00:00.000Z'),
     'event' => {
       'created' => 'invalid',
-      'ingested' => 0
+      'ingested' => 0,
+      'duration' => 0.849,
+      'type' => ['access', 'connection']
     },
     'labels' => {
       'valid_string' => 'foo',
@@ -341,6 +345,9 @@ if __FILE__ == $PROGRAM_NAME
       }
     },
     'destination' => {
+      'port' => 10_025
+    },
+    'observer' => {
       'geo' => {
         'location' => 0
       }
@@ -392,9 +399,10 @@ if __FILE__ == $PROGRAM_NAME
       '[labels][illegal_object]',
       '[labels][illegal_hash_in_array]',
       '[labels][illegal_array_in_array]',
-      '[destination][geo][location]',
+      '[observer][geo][location]',
       '[event][created]',
       '[event][ingested]',
+      '[event][duration]',
       '[log]',
       '[client][user]',
       '[client][geo][city_name]'
@@ -470,7 +478,7 @@ if __FILE__ == $PROGRAM_NAME
     event.get('[log]')
   )
   assert_nil(
-    'destination field is removed',
-    event.get('[destination]')
+    'observer field is removed',
+    event.get('[observer]')
   )
 end
