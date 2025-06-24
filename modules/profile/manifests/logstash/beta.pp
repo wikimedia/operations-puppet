@@ -42,6 +42,26 @@ filter {
 }
     '
   }
+  # T234565 testing
+  # TODO: move to 71-filter_ecs_cleanup when determined production-ready
+  file { '/etc/logstash/conf.d/71-filter_ecs_cleanup_v2.conf':
+    ensure  => 'present',
+    mode    => '0440',
+    owner   => 'logstash',
+    group   => 'logstash',
+    notify  => Service['logstash'],
+    content => '
+filter {
+  if [@metadata][output] == "ecs" {
+    ruby {
+      path => "/etc/logstash/filter_scripts/filter_on_templates_v2.rb"
+      script_params => { "glob_pattern" => "/etc/logstash/templates/ecs_1.11.0-*.json" }
+      id => "filter/ruby/ecs_cleanup/filter_on_templates_v2"
+    }
+  }
+}
+    '
+  }
 
   # Inputs (10)
   logstash::input::dlq { 'main': }
