@@ -23,3 +23,5 @@ profile::base::production::role_description: 'Debmonitor server'
 profile::puppet::agent::force_puppet7: true
 
 profile::firewall::provider: nftables
+
+profile::monitoring::notifications_enabled: false
