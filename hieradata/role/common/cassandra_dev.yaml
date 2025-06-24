@@ -48,11 +48,11 @@ profile::cassandra::instances:
     b:
       listen_address: 10.192.16.15
       data_file_directories:
-        - /srv/sda4/cassandra-b/data
-        - /srv/sdb4/cassandra-b/data
-        - /srv/sdc4/cassandra-b/data
-        - /srv/sdd4/cassandra-b/data
-      heapdump_directory: /srv/sdb4/cassandra-b
+        - /srv/storage-0/cassandra-b/data
+        - /srv/storage-1/cassandra-b/data
+        - /srv/storage-2/cassandra-b/data
+        - /srv/storage-3/cassandra-b/data
+      heapdump_directory: /srv/storage-1/cassandra-b
       commitlog_directory: /srv/cassandra/cassandra-b/commitlog
       hints_directory: /srv/cassandra/cassandra-b/hints
       saved_caches_directory: /srv/cassandra/cassandra-b/saved_caches
