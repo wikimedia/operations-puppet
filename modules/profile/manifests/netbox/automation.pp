@@ -14,6 +14,7 @@ class profile::netbox::automation (
     Stdlib::Fqdn        $git_hostname     = lookup('profile::netbox::automation::git_hostname'),
     Integer             $dns_min_records  = lookup('profile::netbox::automation::dns_min_records'),
     Array[Stdlib::Fqdn] $frontends        = lookup('profile::netbox::automation::frontend'),
+    Array[String[1]]    $reposync_repos   = lookup('profile::spicerack::reposync::repos'),
 ) {
     include profile::netbox
     $ssl_paths     = $profile::netbox::ssl_paths
@@ -37,11 +38,13 @@ class profile::netbox::automation (
     class { 'reposync':
         target_only => true,
         group       => 'www-data',
-        repos       => ['netbox-hiera'],
+        repos       => $reposync_repos,
     }
-    file { "${repo_path}/netbox-hiera":
-        ensure => link,
-        target => "${reposync::base_dir}/netbox-hiera",
+    $reposync_repos.each |String $repo| {
+        file { "${repo_path}/${repo}":
+            ensure => link,
+            target => "${reposync::base_dir}/${repo}",
+        }
     }
 
     # Expose automation git repositories

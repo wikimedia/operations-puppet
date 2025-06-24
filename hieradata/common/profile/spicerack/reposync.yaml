@@ -1,3 +1,5 @@
 profile::spicerack::reposync::ensure: present
-profile::spicerack::reposync::repos: []
+profile::spicerack::reposync::repos:
+  - netbox-hiera
+  - netbox-dns
 profile::spicerack::reposync::remotes: []
