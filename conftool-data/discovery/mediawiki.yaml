@@ -1,4 +1,2 @@
 swift: [eqiad, codfw]
-swift-rw: [eqiad, codfw]
-swift-ro: [eqiad, codfw]
 thumbor: [eqiad, codfw]
