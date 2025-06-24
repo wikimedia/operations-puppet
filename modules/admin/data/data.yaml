@@ -5711,9 +5711,7 @@ users:
     ensure: present
     krb: present
     realname: Hamid Ghani
-    email: hghani-ctr@wikimedia.org
-    expiry_date: "2025-06-30"
-    expiry_contact: osefu@wikimedia.org
+    email: hghani@wikimedia.org
     uid: 42383
     gid: 500
     ssh_keys:
