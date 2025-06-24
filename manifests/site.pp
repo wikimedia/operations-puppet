@@ -976,7 +976,7 @@ node /^debmonitor[12]003\.(codfw|eqiad)\./ {
 }
 
 node /^debmonitor-dev2001\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
+    role(debmonitor::server_dev)
 }
 
 node /^dns[1-9][0-9]{3}\.wikimedia\./ {
