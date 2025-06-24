@@ -57,6 +57,8 @@ cache::alternate_domains:
     caching: 'normal'
   debmonitor.wikimedia.org:
     caching: 'pass'
+  debmonitor-next.wikimedia.org:
+    caching: 'pass'
   design.wikimedia.org:
     caching: 'normal'
   developer.wikimedia.org:
