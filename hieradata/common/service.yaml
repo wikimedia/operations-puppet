@@ -2557,10 +2557,6 @@ service::catalog:
     discovery:
       - dnsdisc: swift
         active_active: true
-      - dnsdisc: swift-rw # TODO: remove this from DNS!
-        active_active: false
-      - dnsdisc: swift-ro # TODO: remove this from DNS!
-        active_active: true
     aliases:
       - "ms-fe"
 
