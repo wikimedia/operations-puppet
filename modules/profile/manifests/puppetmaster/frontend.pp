@@ -33,6 +33,7 @@ class profile::puppetmaster::frontend(
     Hash[String, Any]             $ip_reputation_config    = lookup('profile::puppetmaster::frontend::ip_reputation_config'),
     Array[String]                 $ip_reputation_proxies   = lookup('profile::puppetmaster::frontend::ip_reputation_proxies'),
     Optional[Stdlib::Host]        $puppet_merge_server     = lookup('puppet_merge_server'),
+    Hash[String, String]          $api_tokens            = lookup('profile::conftool::hiddenparma::api_tokens'),
 ) {
     ensure_packages([
       'libapache2-mod-passenger',
@@ -169,12 +170,13 @@ class profile::puppetmaster::frontend(
     # Let's download the public cloud IP ranges, save them to etcd.
     # This will only upload to conftool on the CA puppetmaster.
     class { 'external_clouds_vendors':
-        ensure      => 'present',
+        ensure      => 'absent',
         user        => 'root',
         manage_user => false,
         conftool    => false,
         outfile     => '/var/lib/puppet/volatile/external_cloud_vendors/public_clouds.json',
         http_proxy  => $http_proxy,
+        api_token   => $api_tokens['root'],
     }
 
 
