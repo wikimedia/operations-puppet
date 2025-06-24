@@ -15,6 +15,7 @@ profile::cumin::master::email_alerts: true
 profile::ldap::bitu::group: ops
 profile::spicerack::reposync::repos:
   - netbox-hiera
+  - netbox-dns
 profile::spicerack::configure_kafka: true
 profile::spicerack::cookbooks_repos:
   'operations/cookbooks': '/srv/deployment/spicerack'
