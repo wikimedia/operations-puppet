@@ -45,7 +45,7 @@ filter {
   # T234565 testing
   # TODO: move to 71-filter_ecs_cleanup when determined production-ready
   file { '/etc/logstash/conf.d/71-filter_ecs_cleanup_v2.conf':
-    ensure  => 'present',
+    ensure  => 'absent',
     mode    => '0440',
     owner   => 'logstash',
     group   => 'logstash',
