@@ -12,7 +12,8 @@ class profile::toolforge::prometheus (
     String                     $observer_user                      = lookup('profile::openstack::base::observer_user'),
     Boolean                    $allow_pages                        = lookup('profile::toolforge::prometheus::allow_pages', {default_value => false}),
     Optional[Stdlib::Datasize] $storage_retention_size             = lookup('profile::toolforge::prometheus::storage_retention_size',   {default_value => undef}),
-    Array[Stdlib::HTTPUrl]     $probes_pingthing_http_check_urls   = lookup('profile::toolforge::prometheus::probes_pingthing_http_check_urls', { 'default_value' => [] }),
+    Array[Stdlib::HTTPUrl]     $probes_pingthing_http_check_urls   = lookup('profile::toolforge::prometheus::probes_pingthing_http_check_urls', {default_value => [] }),
+    Boolean                    $enable_query_log                   = lookup('profile::toolforge::prometheus::enable_query_log', {default_value => false}),
 ) {
     # Bullseye VMs (currently only in toolsbeta) have their storage mounted via Cinder
     if debian::codename::le('buster') {
@@ -558,6 +559,33 @@ class profile::toolforge::prometheus (
             'replacement'  => 'critical',
         }
     }
+    if $enable_query_log {
+        $global_config_extra = {
+            'query_log_file' => '/var/log/prometheus/query.log',
+        }
+
+        file { '/var/log/prometheus/query.log':
+            ensure => present,
+            owner  => 'prometheus',
+            group  => 'prometheus',
+            mode   => '0640',
+        }
+        logrotate::rule { 'prometheus_query_log':
+            ensure        => present,
+            file_glob     => '/var/log/prometheus/query.log',
+            frequency     => 'daily',
+            not_if_empty  => true,
+            rotate        => 3,
+            compress      => true,
+            missing_ok    => true,
+            copy_truncate => true,
+            post_rotate   => [
+                'service prometheus@tools reload'
+            ],
+        }
+    } else {
+        $global_config_extra = {}
+    }
 
     prometheus::server { 'tools':
         listen_address                 => '127.0.0.1:9902',
@@ -571,6 +599,7 @@ class profile::toolforge::prometheus (
             { 'target_label' => 'team',    'replacement' => 'wmcs',          'action' => 'replace' },
             $page_filter,
         ].filter |$it| { $it != undef },
+        global_config_extra            => $global_config_extra,
     }
 
     prometheus::rule { 'rules_kubernetes.yml':
