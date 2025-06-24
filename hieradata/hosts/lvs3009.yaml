@@ -1,8 +1,6 @@
 profile::liberica::bgp_config:
   peers:
     - 10.80.1.1 # asw1-by27-esams
-  communities:
-    - "14907:0" # depooled for T396561
 profile::liberica::include_services:
   - upload
   - upload-https
