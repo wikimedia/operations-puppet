@@ -7,6 +7,7 @@ import os
 import socket
 import sys
 import tempfile
+import time
 from pathlib import Path
 from shutil import chown
 from typing import Optional, Union
@@ -22,7 +23,7 @@ from prometheus_client import CollectorRegistry, Gauge, write_to_textfile
 
 URL = 'https://mpic.discovery.wmnet:30443/api/v1/experiments?authority=varnish&format=config'
 TIMEOUT = 10
-USER_AGENT = 'wmfuniq_experiment_fetcher/0.0.1 (sre-traffic@wikimedia.org)'
+USER_AGENT = 'wmfuniq_experiment_fetcher/0.0.2 (sre-traffic@wikimedia.org)'
 VARNISH_GROUP = 'varnish'
 NODE_EXPORTER_PATH = '/var/lib/prometheus/node.d/wmfuniq_experiment_fetcher.prom'
 # TODO: read it from disk
@@ -32,6 +33,8 @@ SCHEMA = '{"$schema":"http://json-schema.org/draft-04/schema#","title":"wmfuniq_
 registry = CollectorRegistry()
 http_status_last = Gauge('wmfuniq_experiment_fetcher_http_status_last',
                          'HTTP status code of the last request', registry=registry)
+http_duration_seconds_last = Gauge('wmfuniq_experiment_fetcher_http_duration_seconds_last',
+                                   'Duration of the last HTTP request', registry=registry)
 
 
 def read_file(path: Union[str | os.PathLike], catch_exceptions: bool = True) -> Optional[str]:
@@ -48,10 +51,14 @@ def read_file(path: Union[str | os.PathLike], catch_exceptions: bool = True) -> 
 def fetch_config(url: str, timeout: float) -> Optional[str]:
     headers = {'User-Agent': USER_AGENT, 'X-Experiment-Config-Poller': socket.getfqdn()}
     try:
+        start_time = time.time()
         r = requests.get(url, headers=headers, timeout=timeout)
     except RequestException:
         http_status_last.set(-1)
         return None
+    finally:
+        end_time = time.time()
+        http_duration_seconds_last.set(end_time - start_time)
 
     http_status_last.set(r.status_code)
     if r.status_code != 200:
