@@ -48,6 +48,7 @@
 # @param object_storage_credentials Hash map of S3 credentials for read-only and read-write access.
 # @param use_acmechief Whether to use AcmeChief for certificate management.
 # @param enable_robots_txt serve a custom robots.txt
+# @param enable_secondary_sshd enable the dedicated ssh daemon for ssh
 class profile::gitlab(
     Stdlib::Fqdn $active_host = lookup('profile::gitlab::active_host'),
     Array[Stdlib::Fqdn] $passive_hosts = lookup('profile::gitlab::passive_hosts'),
@@ -99,6 +100,7 @@ class profile::gitlab(
     String $logrotate_size = lookup('profile::gitlab::logrotate_size'),
     Integer $logrotate_rotate = lookup('profile::gitlab::logrotate_rotate'),
     Boolean $enable_robots_txt = lookup('profile::gitlab::enable_robots_txt'),
+    Boolean $enable_secondary_sshd = lookup('profile::gitlab::enable_secondary_sshd'),
 ){
 
     $acme_chief_cert = 'gitlab'
@@ -327,5 +329,6 @@ class profile::gitlab(
         logrotate_size               => $logrotate_size,
         logrotate_rotate             => $logrotate_rotate,
         enable_robots_txt            => $enable_robots_txt,
+        enable_secondary_sshd        => $enable_secondary_sshd,
     }
 }
