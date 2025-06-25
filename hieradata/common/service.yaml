@@ -1731,11 +1731,6 @@ service::catalog:
       - eqiad
       - codfw
     state: production
-    discovery:
-      - dnsdisc: mw-wikifunctions
-        active_active: false
-      - dnsdisc: mw-wikifunctions-ro
-        active_active: true
 
   ncredir:
     description: Non canonical domains redirect service
