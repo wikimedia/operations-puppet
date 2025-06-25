@@ -7,8 +7,3 @@ profile::admin::groups:
   - sretest-roots
 profile::firewall::provider: nftables
 profile::syslog::remote::mtls_provider: 'cfssl'
-
-
-# Experiment: T362985
-profile::dns::netbox::gitrepo: 'https://netbox-exports.wikimedia.org/netbox-dns'
-profile::dns::netbox::netbox_dns_records::dir: '/srv/git/netbox_dns'
