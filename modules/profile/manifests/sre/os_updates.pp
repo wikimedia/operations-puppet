@@ -19,6 +19,14 @@ class profile::sre::os_updates (
         mode   => '0755',
     }
 
+    file { '/srv/os-reports/base.css':
+        ensure => stdlib::ensure($ensure, 'file'),
+        owner  => 'os-reports',
+        group  => 'os-reports',
+        mode   => '0744',
+        source => 'puppet:///modules/profile/microsites/os-reports-base.css',
+    }
+
     file { '/usr/local/bin/os-updates-report':
         ensure => stdlib::ensure($ensure, 'file'),
         mode   => '0555',
