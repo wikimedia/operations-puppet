@@ -13,10 +13,16 @@
 # @param bind_service the service for systemd to bind to
 # @param do_ipv6 configure ipv6
 # @param logging The logging config hash
+# @param do_prom_exporter whether to enable the built-in Prometheus metrics (default: false)
+# @param prom_exporter_path if the above is enabled, path for directory where metrics are exported
+# @param prom_exporter_interval the scraping period for the metrics
 class bird::anycast_healthchecker(
-    Optional[Array[String[1], 1]] $bind_service = undef,
-    Boolean                       $do_ipv6      = false,
-    Bird::Anycasthc_logging       $logging      = {'level' => 'info', 'num_backups' => 8},
+    Optional[Array[String[1], 1]] $bind_service           = undef,
+    Boolean                       $do_ipv6                = false,
+    Bird::Anycasthc_logging       $logging                = {'level' => 'info', 'num_backups' => 8},
+    Boolean                       $do_prom_exporter       = false,
+    Stdlib::Unixpath              $prom_exporter_path     = '/var/lib/prometheus/node.d/',
+    Integer[30]                   $prom_exporter_interval = 60,
 ){
 
     ensure_packages(['anycast-healthchecker'])

@@ -26,3 +26,8 @@ log_file               = /var/log/anycast-healthchecker/anycast-healthchecker.lo
 json_stdout            = false
 json_log_file          = false
 json_log_server        = false
+<%- if @do_prom_exporter -%>
+prometheus_exporter    = true
+prometheus_collector_textfile_dir = <%= @prom_exporter_path %>
+prometheus_exporter_interval      = <%= @prom_exporter_interval %>
+<%- end -%>
