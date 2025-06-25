@@ -3,11 +3,8 @@ class profile::cache::haproxy (
     String $cache_cluster = lookup('cache::cluster'),
     Stdlib::Port $tls_port = lookup('profile::cache::haproxy::tls_port'),
     Stdlib::Port $prometheus_port = lookup('profile::cache::haproxy::prometheus_port', { 'default_value'                                          => 9422 }),
-    Hash[String, Haproxy::Tlscertificate] $available_unified_certificates = lookup('profile::cache::haproxy::available_unified_certificates'),
-    Optional[Hash[String, Haproxy::Tlscertificate]] $extra_certificates = lookup('profile::cache::haproxy::extra_certificates', { 'default_value' => undef }),
-    Optional[Array[String]] $unified_certs = lookup('profile::cache::haproxy::unified_certs', { 'default_value'                                   => undef }),
-    Boolean $unified_acme_chief = lookup('profile::cache::haproxy::unified_acme_chief'),
-    Array[String] $unified_acme_chief_certs = lookup('profile::cache::haproxy::unified_acme_chief_certs', { 'default_value'                       => ['unified'] }),
+    Hash[String, Haproxy::Tlscertificate, 1] $available_certificates = lookup('profile::cache::haproxy::available_certificates'),
+    Array[String, 1] $enabled_certificates = lookup('profile::cache::haproxy::enabled_certificates'),
     Haproxy::Backend $backend = lookup('profile::cache::haproxy::varnish_socket'),
     String $tls_ciphers = lookup('profile::cache::haproxy::tls_ciphers'),
     String $tls13_ciphers = lookup('profile::cache::haproxy::tls13_ciphers'),
@@ -16,10 +13,7 @@ class profile::cache::haproxy (
     Haproxy::Timeout $timeout = lookup('profile::cache::haproxy::timeout'),
     Haproxy::H2settings $h2settings = lookup('profile::cache::haproxy::h2settings'),
     Optional[Haproxy::Proxyprotocol] $proxy_protocol = lookup('profile::cache::haproxy::proxy_protocol', { 'default_value'                        => undef }),
-    Boolean $do_ocsp = lookup('profile::cache::haproxy::do_ocsp'),
     Boolean $http_disable_keepalive = lookup('profile::cache::haproxy::http_disable_keepalive', { 'default_value'                                 => false }),
-    Optional[Stdlib::HTTPUrl] $ocsp_proxy = lookup('http_proxy', { 'default_value'                                                                => undef }),
-    String $public_tls_unified_cert_vendor=lookup('public_tls_unified_cert_vendor'),
     Stdlib::Unixpath $mtail_dir = lookup('profile::cache::haproxy::mtail_dir', { 'default_value'                                                  => '/etc/haproxymtail' }),
     Stdlib::Port::User $mtail_port = lookup('profile::cache::haproxy::mtail_port', { 'default_value'                                              => 3906 }),
     Stdlib::Unixpath $mtail_fifo = lookup('profile::cache::haproxy::mtail_fifo', { 'default_value'                                                => '/var/log/haproxy.fifo' }),
@@ -47,10 +41,6 @@ class profile::cache::haproxy (
     Boolean $set_x_provenance = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value'                                             => false }),
 ) {
     class { 'sslcert::dhparam':
-    }
-    if $do_ocsp {
-        class { 'sslcert::ocsp::init':
-        }
     }
     if $use_etcd_req_filters {
         $site_resource = Haproxy::Confd_site['tls']
@@ -142,14 +132,16 @@ class profile::cache::haproxy (
         content => "d ${volatile_tls_path} 0700 haproxy haproxy -",
     }
 
-    if !$available_unified_certificates[$public_tls_unified_cert_vendor] {
-        fail('The specified TLS unified cert vendor is not available')
+    $enabled_certificates.each|String $cert_name| {
+        if !$available_certificates[$cert_name] {
+            fail("Enabled certificate ${cert_name} isn't available")
+        }
     }
 
-    # Iterate over all available_unified_certificate structure and check if
+    # Iterate over all available_certificate structure and check if
     # the cert_paths starts with the required prefix, depending on the usage
     # of volatile storage for tls keys or not
-    $available_unified_certificates.each |$provider, $avail_cert| {
+    $available_certificates.each |String $cert_name, Haproxy::Tlscertificate $avail_cert| {
         $avail_cert['cert_paths'].each |Stdlib::Unixpath $path| {
             if $use_tls_tmpfiles {
                 unless($path.stdlib::start_with($volatile_tls_path)) {
@@ -163,60 +155,20 @@ class profile::cache::haproxy (
         }
     }
 
-    unless empty($unified_certs) {
-        $unified_certs.each |String $cert| {
-            sslcert::certificate { $cert:
-                before           => $site_resource,
-                private_tls_path => $volatile_tls_path,
-            }
-
-            if $do_ocsp {
-                sslcert::ocsp::conf { $cert:
-                    proxy  => $ocsp_proxy,
-                    before => Service['haproxy'],
-                }
-
-                # HAProxy expects the prefetched OCSP response on the same path as the certificate
-                $ocsp_response_path = $use_tls_tmpfiles? {
-                    true    => $volatile_tls_path,
-                    default => '/etc/ssl/private',
-                }
-
-                file { "${ocsp_response_path}/${cert}.chained.crt.key.ocsp":
-                    ensure  => link,
-                    target  => "/var/cache/ocsp/${cert}.ocsp",
-                    require => Sslcert::Ocsp::Conf[$cert],
-                }
-            }
-        }
-        if $do_ocsp {
-            sslcert::ocsp::hook { 'haproxy-ocsp':
-                content => file('profile/cache/update_ocsp_haproxy_hook.sh'),
-            }
+    $available_certificates.each|String $cert_name, Haproxy::Tlscertificate $cert| {
+        acme_chief::cert { $cert_name:
+            puppet_svc => 'haproxy',
+            key_group  => 'haproxy',
+            certs_path => $volatile_tls_path,
         }
     }
 
-    if $unified_acme_chief {
-        $unified_acme_chief_certs.each |String $acme_cert| {
-            acme_chief::cert { $acme_cert:
-                puppet_svc => 'haproxy',
-                key_group  => 'haproxy',
-                certs_path => $volatile_tls_path,
-            }
-        }
-    }
-
-    if !empty($extra_certificates) {
-        $extra_certificates.each |String $extra_cert_name, Hash $extra_cert| {
-            acme_chief::cert { $extra_cert_name:
-                puppet_svc => 'haproxy',
-                key_group  => 'haproxy',
-                certs_path => $volatile_tls_path,
-            }
-        }
-        $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]] + values($extra_certificates)
-    } else {
-        $certificates = [$available_unified_certificates[$public_tls_unified_cert_vendor]]
+    # The reason we are doing filter and then map is because a map will also include nil elements for
+    # each $available_certificates that's not on $enabled_certificates.
+    $certificates = $available_certificates.filter |String $cert_name, Haproxy::Tlscertificate $cert| {
+        $cert_name in $enabled_certificates
+    }.map |String $cert_name, Haproxy::Tlscertificate $cert| {
+        $cert
     }
 
     # Create a separate list of certificates that needs to be checked by the
@@ -351,8 +303,6 @@ class profile::cache::haproxy (
         profile::cache::haproxy::monitoring { 'haproxy_tls_monitoring':
             port         => $tls_port,
             certificates => $certificates,
-            do_ocsp      => $do_ocsp,
-            acme_chief   => $unified_acme_chief,
             require      => $site_resource,
         }
     }
