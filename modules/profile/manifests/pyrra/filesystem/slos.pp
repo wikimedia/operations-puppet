@@ -26,6 +26,7 @@ class profile::pyrra::filesystem::slos (
         destination_canonical_service => 'revertrisk-language-agnostic-predictor-default',
         enable_alerts => false,
         pyrra_namespace => 'pyrra-o11y-pilot',
+        prometheus_instance => 'k8s-mlserve',
     }
 
     # workaround grouping exported metrics limitation by setting site/datacenter via puppet
