@@ -154,6 +154,7 @@ my %junk_consolidate_patterns = (
 
 my %consolidate_patterns = (
   qr/Failed to load data blob from Unable to fetch blob at tt:\d+/ => 'RevisionAccess',
+  qr/ThreadRevision:77  PHP Notice: unserialize\(\): Error at offset \d+ of 65535 bytes/ => 'Error',
 );
 
 my %all_consolidate_patterns = (%junk_consolidate_patterns, %consolidate_patterns);
