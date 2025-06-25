@@ -6175,7 +6175,7 @@ users:
     ensure: present
     realname: Riddy Khan
     email: rkhan-ctr@wikimedia.org
-    expiry_date: '2025-06-28'
+    expiry_date: '2025-12-31'
     expiry_contact: anakanishi@wikimedia.org
     uid: 45721
     gid: 500
