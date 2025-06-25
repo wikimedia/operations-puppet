@@ -16,7 +16,7 @@ class profile::dns::auth::netbox_dns_records (
     git::clone { $netbox_dns_records_dir:
         directory => $netbox_dns_records_dir,
         origin    => $netbox_dns_records_repo,
-        branch    => 'main',
+        branch    => 'master',
         timeout   => 600,   # 10 minutes
     }
 
