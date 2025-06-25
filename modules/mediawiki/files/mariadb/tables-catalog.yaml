@@ -42,7 +42,7 @@ tables:
   - name: log_search
     source: core
     canonicality: canonical
-    visibility: partially public
+    visibility: private
   - name: change_tag
     source: core
     canonicality: canonical
@@ -102,11 +102,11 @@ tables:
   - name: querycache
     source: core
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: querycachetwo
     source: core
     canonicality: derivative
-    visibility: public
+    visibility: private
   - name: page_restrictions
     source: core
     canonicality: canonical
@@ -118,7 +118,7 @@ tables:
   - name: querycache_info
     source: core
     canonicality: canonical with acceptable loss
-    visibility: public
+    visibility: private
   - name: watchlist
     source: core
     canonicality: canonical
@@ -1257,7 +1257,7 @@ tables:
   - name: translate_cache
     source: translate
     canonicality: canonical
-    visibility: public
+    visibility: private
     dblist: translate
   - name: revtag
     source: translate
