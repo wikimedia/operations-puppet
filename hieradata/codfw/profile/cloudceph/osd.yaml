@@ -47,6 +47,30 @@ profile::cloudceph::osd::hosts:
       addr: "192.168.4.4"
       prefix: "24"
       iface: "enp13s0f1np1"
+  "cloudcephosd2005-dev.codfw.wmnet":
+    public:
+      addr: "10.192.20.9"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.4.5"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd2006-dev.codfw.wmnet":
+    public:
+      addr: "10.192.20.13"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.4.6"
+      prefix: "24"
+      iface: "eno12409np1"
+  "cloudcephosd2007-dev.codfw.wmnet":
+    public:
+      addr: "10.192.20.14"
+      iface: "eno12399np0"
+    cluster:
+      addr: "192.168.4.7"
+      prefix: "24"
+      iface: "eno12409np1"
 
 profile::cloudceph::osd::cluster_networks:
   - "192.168.4.0/24"
