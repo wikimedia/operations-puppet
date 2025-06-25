@@ -7,4 +7,5 @@ class role::sretest {
     include profile::base::production
     include profile::firewall
     include profile::sretest
+    include profile::dns::auth::netbox_dns_records
 }
