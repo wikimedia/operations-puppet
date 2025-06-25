@@ -42,124 +42,13 @@ metadata:
 #   are not present on non-FlaggedRevs wikis, but we
 #   still want it present for FlaggedRevs wikis
 fullviews:
-  - article_assessment
-  - article_assessment_pages
-  - article_assessment_ratings
-  - article_feedback
-  - article_feedback_pages
-  - article_feedback_properties
-  - article_feedback_ratings
-  - article_feedback_revisions
-  - article_feedback_stats
-  - article_feedback_stats_types
-  - babel
-  - category
-  - change_tag
-  - change_tag_def
-  - cn_assignments
-  - cn_known_devices
-  - cn_known_mobile_carriers
-  - cn_notice_countries
-  - cn_notice_languages
-  - cn_notice_log
-  - cn_notice_mixin_params
-  - cn_notice_mixins
-  - cn_notice_mobile_carriers
-  - cn_notice_projects
-  - cn_notices
-  - cn_template_devices
-  - cn_template_log
-  - cn_template_mixins
-  - cn_templates
-  - collation
-  - content_models
-  - externallinks
-  - filetypes
-  - flaggedpage_config
-  - flaggedpage_pending
-  - flaggedpages
-  - flaggedrevs
-  - flaggedrevs_promote
-  - flaggedrevs_statistics
-  - flaggedrevs_stats
-  - flaggedrevs_stats2
-  - flaggedrevs_tracking
-  - flaggedtemplates
-  - geo_killlist
-  - geo_tags
-  - geo_updates
-  - globalimagelinks
-  - global_block_whitelist
-  - hashs
-  - imagelinks
-  - imagelinks_old
-  - interwiki
-  - ipblocks_restrictions
-  - iwlinks
-  - l10n_cache
-  - langlinks
-  - links
-  - linter
-  - machine_vision_freebase_mapping
-  - machine_vision_image
-  - machine_vision_label
-  - machine_vision_provider
-  - machine_vision_safe_search
-  - machine_vision_suggestion
-  - msg_resource_links
-  - namespaces
-  - ores_classification
-  - ores_model
-  - page
-  - page_broken
-  - pagelinks
-  - page_assessments
-  - page_assessments_projects
-  - page_props
-  - page_restrictions
-  - pagetriage_page
-  - pagetriage_page_tags
-  - pagetriage_tags
-  - protected_titles
-  - pr_index
-  - redirect
-  - renameuser_status
-  - revtag                 # T289952
-  - site_identifiers
-  - sites
-  - site_stats
-  - slot_roles
-  - templatelinks
-  - translate_groupreviews # T289952
-  - translate_groupstats   # T289952
-  - translate_metadata     # T289952
-  - translate_reviews      # T289952
-  - translate_sections     # T289952
-  - transcode
-  - updatelog
-  - updates
-  - user_former_groups
-  - user_groups
-  - wikilove_image_log
-  - wikilove_log
-  - global_group_permissions
-  - global_group_restrictions
-  - global_user_groups
-  - wikiset
-  - wb_changes_subscription
-  - wb_id_counters
-  - wb_items_per_site
-  - wb_property_info
-  - wbc_entity_usage
-  - wbqc_constraints
-  - wbs_propertypairs
-  - watchlist_count
-  - wbt_text           # T225038
-  - wbt_type           # T225038
-  - wbt_text_in_lang   # T225038
-  - wbt_term_in_lang   # T225038
-  - wbt_property_terms # T225038
-  - wbt_item_terms     # T225038
+<% require 'yaml' -%>
+<% tables = YAML.load_file(File.dirname(__FILE__) + "/../../../../../mediawiki/files/mariadb/tables-catalog.yaml")['tables'] -%>
+<% tables.sort_by{|hsh| hsh[:name]}.each do |table_data| -%>
+  <%- if table_data['visibility'] == 'public' -%>
+  - <%= table_data['name'] %>
+  <%- end -%>
+<% end -%>
 
 # Deliberately excluded:
 # - abusefilterprivatedetails  T187455
