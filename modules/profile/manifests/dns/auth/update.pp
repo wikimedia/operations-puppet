@@ -3,6 +3,7 @@ class profile::dns::auth::update (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers         = lookup('authdns_servers'),
     Stdlib::HTTPSUrl                                  $gitrepo                 = lookup('profile::dns::auth::gitrepo'),
     Stdlib::Unixpath                                  $netbox_dns_snippets_dir = lookup('profile::dns::auth::update::netbox_dns_snippets_dir'),
+    Stdlib::Unixpath                                  $netbox_dns_records_dir  = lookup('profile::dns::auth::update::netbox_dns_records_dir'),
     Stdlib::Fqdn                                      $netbox_exports_domain   = lookup('profile::dns::auth::update::netbox_exports_domain'),
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers_ips     = lookup('profile::dns::auth::authdns_servers_ips'),
     Array[Wmflib::Sites]                              $datacenters             = lookup('datacenters'),
@@ -14,7 +15,11 @@ class profile::dns::auth::update (
     require ::profile::dns::auth::update::scripts
 
     $workingdir = '/srv/authdns/git'
+    # Here and elsewhere, 'dns_snippets' is the existing/legacy generated records,
+    # and 'dns_records' is for the files created by the new cookbook that will
+    # eventually replace it
     $netbox_dns_snippets_repo = "https://${netbox_exports_domain}/dns.git"
+    $netbox_dns_records_repo = "https://${netbox_exports_domain}/netbox-dns"
     $netbox_dns_user = 'netboxdns'
 
     user { $netbox_dns_user:
@@ -24,7 +29,8 @@ class profile::dns::auth::update (
         shell   => '/bin/bash',
     }
 
-    file { dirname($netbox_dns_snippets_dir):
+    # Creates /srv/git/ which both our snippet/records repos are cloned to
+    file { dirname($netbox_dns_records_dir):
         ensure => directory,
         mode   => '0755',
         owner  => 'root',
@@ -38,7 +44,7 @@ class profile::dns::auth::update (
     git::systemconfig { 'safe.directory-authdns-git':
         settings => {
             'safe' => {
-                'directory' => '/srv/authdns/git',
+                'directory' => $workingdir,
             }
         },
         before   => Exec['authdns-local-update'],
@@ -47,7 +53,15 @@ class profile::dns::auth::update (
     git::systemconfig { 'safe.directory-netbox-snippets':
         settings => {
             'safe' => {
-                'directory' => '/srv/git/netbox_dns_snippets',
+                'directory' => $netbox_dns_snippets_dir,
+            }
+        },
+        before   => Exec['authdns-local-update'],
+    }
+    git::systemconfig { 'safe.directory-netbox-records':
+        settings => {
+            'safe' => {
+                'directory' => $netbox_dns_records_dir,
             }
         },
         before   => Exec['authdns-local-update'],
@@ -164,6 +178,17 @@ class profile::dns::auth::update (
         group     => $netbox_dns_user,
         timeout   => 600,   # 10 minutes
         notify    => Exec['authdns-local-update'],
+    }
+
+    # Clone the new-format Netbox exported DNS snippet files to the other repo dir
+    git::clone { $netbox_dns_records_dir:
+        directory => $netbox_dns_records_dir,
+        origin    => $netbox_dns_records_repo,
+        branch    => 'master',
+        owner     => $netbox_dns_user,
+        group     => $netbox_dns_user,
+        timeout   => 600,   # 10 minutes
+        # TODO: notify    => Exec['authdns-local-update'],
     }
 
     exec { 'authdns-local-update':

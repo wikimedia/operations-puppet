@@ -1,3 +1,4 @@
 profile::dns::auth::update::netbox_dns_snippets_dir: '/srv/git/netbox_dns_snippets'
+# Below directory will eventually replace the above one, for now we add both in parallel
+profile::dns::auth::update::netbox_dns_records_dir: '/srv/git/netbox_dns_records'
 profile::dns::auth::update::netbox_exports_domain: netbox-exports.wikimedia.org
-
