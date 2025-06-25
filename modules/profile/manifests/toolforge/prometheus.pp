@@ -450,6 +450,18 @@ class profile::toolforge::prometheus (
             pod_name  => 'components-api-[a-zA-Z0-9]+-[a-zA-Z0-9]+',
             port      => 9000,
         },
+        {
+            name      => 'loki-tools',
+            namespace => 'loki',
+            pod_name  => 'loki-tools(-[a-zA-Z0-9]+)+',
+            port      => 3100,
+        },
+        {
+            name      => 'alloy',
+            namespace => 'alloy',
+            pod_name  => 'alloy-[a-zA-Z0-9]+',
+            port      => 12345,
+        },
         # This is for Toolforge infrastructure only. Do not add any
         # user workloads here.
     ].map |Hash $job| {
