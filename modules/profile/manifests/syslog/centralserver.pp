@@ -119,4 +119,26 @@ class profile::syslog::centralserver (
         source => 'puppet:///modules/mtail/programs/ulogd.mtail',
         notify => Service['mtail'],
     }
+
+    # Temporary debug log for rsyslog misrouting investigation
+    # Safe to remove once T383309 is resolved
+    rsyslog::conf { 'debug_format':
+        ensure   => present,
+        content  => epp('profile/rsyslog/sample_debug_filter.conf.epp', { 'sampling_rate' => String(10) }),
+        priority => 1,
+    }
+
+    logrotate::rule { 'rsyslog-debug':
+        ensure         => present,
+        file_glob      => '/srv/syslog/rsyslog-debug-custom.log /srv/syslog/rsyslog-debug-standard.log',
+        frequency      => 'hourly',
+        size           => '5G',
+        date_ext       => true,
+        date_yesterday => true,
+        rotate         => 3,
+        missing_ok     => true,
+        no_create      => true,
+        compress       => true,
+        post_rotate    => ['service rsyslog rotate >/dev/null 2>&1 || true'],
+    }
 }
