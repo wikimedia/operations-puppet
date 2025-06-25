@@ -964,12 +964,8 @@ node /^dns[1-9][0-9]{3}\.wikimedia\./ {
     role(dnsbox)
 }
 
-node /^doc(1004|2002)\.(codfw|eqiad)\./ {
+node /^doc(1004|2003)\.(codfw|eqiad)\./ {
   role(doc)
-}
-
-node /^doc(2003)\.(codfw|eqiad)\./ {
-    role(doc)
 }
 
 node /^doh700[34]\.wikimedia\./ {
