@@ -8,9 +8,9 @@ define profile::cache::haproxy::monitoring(
 
     $certificates.each|Haproxy::Tlscertificate $cert| {
         if $cert['ocsp'] {
-            $https_check = 'check_ssl_ats_ocsp'
+            $https_check = 'check_ssl_cdn_ocsp'
         } else {
-            $https_check = 'check_ssl_ats'
+            $https_check = 'check_ssl_cdn'
         }
         if $cert['warning_threshold'] and $cert['critical_threshold'] {
             $check_server_name = $cert['server_names'][0]
