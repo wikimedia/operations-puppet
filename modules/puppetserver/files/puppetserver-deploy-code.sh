@@ -30,15 +30,23 @@ trap cleanup SIGINT SIGHUP SIGABRT EXIT
 
 function main {
 	local codedir envdir g10k_envdir new_dir
+	local puppet_workdir=/srv/git/operations/puppet
 	codedir=$(puppet config --section server print codedir)
-	if ! current_branch=$(git -C /srv/git/operations/puppet/ branch --show-current); then
+	if ! current_branch=$(git -C $puppet_workdir branch --show-current); then
 		printf 'ERROR: Unable to obtain the current branch\n' 1>&2
 		exit 1
 	fi
 	if [[ "$current_branch" != 'production' ]]; then
-		printf 'ERROR: Current branch in /srv/git/operations/puppet is "%s", should be "production"\n' "$current_branch" 1>&2
-		printf 'ERROR: Exiting rather than deploying something surprising\n' 1>&2
-		exit 1
+		local git_dir=${puppet_workdir}/.git
+		if [[ -d $git_dir/rebase-apply || -d $git_dir/rebase-merge ]]; then
+			# T397877
+			printf 'INFO: Exiting, skipping Puppet code deploy, because a git rebase is in progress\n' 1>&2
+			exit 2
+		else
+			printf 'ERROR: Current branch in %s is "%s", should be "production"\n' "$puppet_workdir" "$current_branch" 1>&2
+			printf 'ERROR: Exiting rather than deploying something surprising\n' 1>&2
+			exit 1
+		fi
 	fi
 	envdir="${codedir}/environments"
 	g10k_envdir="${codedir}/environments_staging"
