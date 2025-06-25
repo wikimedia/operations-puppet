@@ -119,7 +119,15 @@ class profile::mediawiki::maintenance (
         ensure      => present,
         auto_sync   => false,
         source_host => 'mwmaint1002.eqiad.wmnet',
-        dest_host   => 'mwmaint2002.codfw.wmnet',
+        dest_host   => ['mwmaint2002.codfw.wmnet', $deployment_server],
+        module_path => '/home',
+    }
+
+    rsync::quickdatacopy { 'home-mwmaint-secondary':
+        ensure      => present,
+        auto_sync   => false,
+        source_host => 'mwmaint2002.codfw.wmnet',
+        dest_host   => [$deployment_server],
         module_path => '/home',
     }
 
