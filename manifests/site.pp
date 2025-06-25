@@ -404,13 +404,8 @@ node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
 
-node /^cloudcephosd200[1234]-dev\.codfw\./ {
+node /^cloudcephosd200[1-7]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
-}
-
-# T393614
-node /^cloudcephosd200[567]-dev\.codfw\./ {
-    role(insetup::wmcs_ferm)
 }
 
 # New ceph node codfw T349934
