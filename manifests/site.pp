@@ -404,7 +404,12 @@ node /^cloudlb200[234]-dev\.codfw\./ {
     role(wmcs::cloudlb)
 }
 
-node /^cloudcephosd200[1-7]-dev\.codfw\./ {
+# Preparing for decom T397968
+node /^cloudcephosd200[12]-dev\.codfw\./ {
+    role(insetup::wmcs_ferm)
+}
+
+node /^cloudcephosd200[3-7]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
