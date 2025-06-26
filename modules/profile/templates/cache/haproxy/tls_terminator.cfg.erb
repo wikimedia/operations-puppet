@@ -269,7 +269,6 @@ backend requestctl_filters
     acl requestctl_key_present res.hdr(x-analytics) -i -m sub "requestctl="
     http-response set-header x-analytics "%[res.fhdr(x-analytics),add_item(';requestctl=',txn.x_requestctl)]" if !requestctl_key_present
     <%- end -%>
-
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
 
