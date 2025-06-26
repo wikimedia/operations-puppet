@@ -21,7 +21,7 @@
 # @param required_groups A list of ldap groups allowed to login
 # @param trusted_ca_source Path to CA files used for MTLS truststore
 class profile::debmonitor::server (
-    String                             $internal_server_name     = lookup('debmonitor'),
+    String                             $internal_server_name     = lookup('profile::debmonitor::server::internal_server_name'),
     Hash                               $ldap_config              = lookup('ldap'),
     String                             $public_server_name       = lookup('profile::debmonitor::server::public_server_name'),
     String                             $django_secret_key        = lookup('profile::debmonitor::server::django_secret_key'),
