@@ -7530,7 +7530,7 @@ ldap_only_users:
     ensure: present
     realname: Dillon Hardy
     email: dhardy-ctr@wikimedia.org
-    expiry_date: "2025-06-27"
+    expiry_date: "2025-08-01"
     expiry_contact: jdrewniak@wikimedia.org
   hswan:
     ensure: present
