@@ -1320,7 +1320,7 @@ tables:
     source: wb_changes
     dblist: wikibaserepo
     canonicality: derivative
-    visibility: public
+    visibility: partially public
   - name: wb_changes_subscription
     source: wb_changes_subscription
     dblist: wikibaserepo
