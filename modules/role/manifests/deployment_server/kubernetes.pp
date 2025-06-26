@@ -12,4 +12,5 @@ class role::deployment_server::kubernetes {
     include profile::docker::ferm
     include profile::docker::prune_old_images
     include profile::airflow_devenv
+    include profile::mariadb::client
 }
