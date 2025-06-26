@@ -7580,3 +7580,7 @@ ldap_only_users:
     ensure: present
     realname: DerHexer
     email: wikipedia_emails-nachfrage@yahoo.de
+  amarkossian:
+    ensure: present
+    realname: Armen Markossian
+    email: amarkossian@wikimedia.org
