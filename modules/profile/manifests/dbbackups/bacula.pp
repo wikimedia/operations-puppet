@@ -18,6 +18,10 @@ class profile::dbbackups::bacula (
         backup::set { 'mysql-srv-backups-dumps-latest':
             jobdefaults => $jobdefaults,
         }
+
+        backup::set { 'file-archival':
+            jobdefaults => 'Weekly-Mon-ArchiveEqiad',
+        }
         # Disable snapshoting sending to long term storage.
         # It takes a lot of space and is rarely used beyond
         # the 1 week window.

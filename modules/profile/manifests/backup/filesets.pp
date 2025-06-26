@@ -224,4 +224,9 @@ class profile::backup::filesets(
     bacula::director::fileset { 'data-platform-postgres-s3':
         includes => [ '/srv/postgresql_backups' ],
     }
+
+    # Generic path for archivals
+    bacula::director::fileset { 'file-archival':
+        includes => [ '/srv/archival' ]
+    }
 }
