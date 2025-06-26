@@ -1,0 +1,11 @@
+profile::gitlab::runner::block_dockerhub: true
+profile::gitlab::runner::buildkitd_allowed_gateway_sources:
+- docker-registry.wikimedia.org/repos/releng/blubber/buildkit
+- docker-registry.wikimedia.org/repos/releng/buildkit/dockerfile-frontend
+profile::gitlab::runner::buildkitd_dockerfile_frontend_enabled: true
+profile::gitlab::runner::docker_network: bridge
+profile::gitlab::runner::docker_volume: true
+profile::gitlab::runner::docker_volume_max: 8
+profile::gitlab::runner::docker_volume_min: 5
+profile::gitlab::runner::restrict_firewall: true
+profile::gitlab::runner::user: gitlab-runner

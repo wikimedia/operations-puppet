@@ -246,7 +246,6 @@ prometheus_nodes:
   - logging-alert-01.logging.eqiad1.wikimedia.cloud
 
 # GitLab
-profile::gitlab::active_host: 'gitlab-prod-1002.devtools.eqiad1.wikimedia.cloud'
 profile::gitlab::passive_hosts: []
 
 profile::base::ssh_server_settings:
@@ -280,12 +279,6 @@ profile::gitlab::cert_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/f
 profile::gitlab::key_path: '/etc/letsencrypt/live/gitlab.devtools.wmcloud.org/privkey.pem'
 
 profile::contacts::role_contacts: ['ServiceOps']
-
-# service IP for public https and ssh (T276148)
-profile::gitlab::service_ip_v4: '172.16.7.146'
-profile::gitlab::service_ip_v6: '::'
-profile::gitlab::service_name: 'gitlab.devtools.wmcloud.org'
-profile::gitlab::external_url: "https://%{lookup('profile::gitlab::service_name')}/"
 
 # Content-Security-Policy
 profile::gitlab::csp_enabled: false
