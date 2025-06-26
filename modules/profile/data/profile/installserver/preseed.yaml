@@ -387,10 +387,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
   # Migrate sessionstore to new disk config: T391544
-  'sessionstore2004':
-    - reuse-parts.cfg
-    - partman/custom/reuse-cassandra-jbod.cfg
-  'sessionstore2005':
+  'sessionstore200[4-5]':
     - partman/custom/cassandra-jbod.cfg
     - partman/raid1-2dev-efi.cfg
   'contint[12]00[12]':
