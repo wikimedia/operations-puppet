@@ -12,6 +12,11 @@
 # spark.driver.memory              5g
 # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
 
+# We configure the default value of spark.mater to be yarn since this is by far the most common
+# type of usage in our environment. It can be overridden on the command-line to use 'local' and to
+# limit the number of cores allocated. Please see #T393181 and the following docs for more info.
+# https://wikitech.wikimedia.org/wiki/Data_Platform/Systems/Spark#Application_Master
+spark.master                                        yarn
 # Dynamic allocation allows Spark to dynamically scale the cluster resources
 # allocated for an application based on the workload. Only available in YARN mode.
 # More info: https://spark.apache.org/docs/2.1.2/configuration.html#dynamic-allocation
