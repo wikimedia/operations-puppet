@@ -13,6 +13,28 @@ authoritative;
 # RFC 4578, used mainly to detect UEFI vs. BIOS
 option architecture-type code 93 = unsigned integer 16;
 
+# rfc4578#section-2.3:
+#
+#    The format of the option is:
+#
+#                 Code  Len  Type  Machine Identifier
+#                +----+-----+----+-----+ . . . +-----+
+#                | 97 |  n  |  t |     | . . . |     |
+#                +----+-----+----+-----+ . . . +-----+
+#
+#    Octet "t" describes the type of the machine identifier in the
+#    remaining octets in this option. 0 (zero) is the only value defined
+#    for this octet at the present time, and it describes the remaining
+#    octets as a 16-octet Globally Unique Identifier (GUID).  Octet "n" is
+#    17 for type 0.
+#
+#    **NOTE**: We treat the entire value as a string, rather than a record such
+#    as:
+#      code 97 = { unsigned integer 8, string };
+#    because matching using the record does not work in the host-identifier for
+#    unknown reasons.
+option pxe-client-id       code  97 = string;
+
 # syslinux/pxelinux
 option space pxelinux;
 option pxelinux.magic      code 208 = string;
