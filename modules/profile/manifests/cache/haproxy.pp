@@ -39,6 +39,7 @@ class profile::cache::haproxy (
     Boolean                                  $use_tls_tmpfiles            = lookup('profile::cache::haproxy::use_tls_tmpfiles', { 'default_value' => false }),
     Array[Wmflib::HTTP::Method]              $allowed_methods             = lookup('profile::cache::haproxy::allowed_methods', { 'default_value'  => ['GET','HEAD','OPTIONS'] }),
     Boolean                                  $set_x_provenance            = lookup('profile::cache::haproxy::set_x_provenance', { 'default_value' => false }),
+    Boolean                                  $set_x_analytics             = lookup('profile::cache::haproxy::set_x_analytics', { 'default_value' => false }),
 ) {
     class { 'sslcert::dhparam':
     }
