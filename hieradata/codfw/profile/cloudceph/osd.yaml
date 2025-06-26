@@ -15,14 +15,6 @@
 # 192.168.4.254
 #
 profile::cloudceph::osd::hosts:
-  "cloudcephosd2003-dev.codfw.wmnet":
-    public:
-      addr: "10.192.20.17"
-      iface: "eno1"
-    cluster:
-      addr: "192.168.4.3"
-      prefix: "24"
-      iface: "eno2"
   "cloudcephosd2004-dev.codfw.wmnet":
     public:
       addr: "10.192.20.6"
