@@ -23,12 +23,12 @@ describe("Busted unit testing framework", function()
 
       require("x-wikimedia-debug-routing")
 
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=mwdebug1001.eqiad.wmnet; profile"
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "backend=k8s-mw-experimental-eqiad; profile"
 
       do_remap()
 
-      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug1001.eqiad.wmnet")
-      assert.stub(ts.client_request.set_url_port).was.called_with(443)
+      assert.stub(ts.client_request.set_url_host).was.called_with("mw-experimental.eqiad.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4456)
       assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
     end)
 
@@ -40,12 +40,12 @@ describe("Busted unit testing framework", function()
 
       require("x-wikimedia-debug-routing")
 
-      _G.ts.client_request.header['X-Wikimedia-Debug'] = "mwdebug2002.codfw.wmnet"
+      _G.ts.client_request.header['X-Wikimedia-Debug'] = "k8s-mw-experimental-codfw"
 
       do_remap()
 
-      assert.stub(ts.client_request.set_url_host).was.called_with("mwdebug2002.codfw.wmnet")
-      assert.stub(ts.client_request.set_url_port).was.called_with(443)
+      assert.stub(ts.client_request.set_url_host).was.called_with("mw-experimental.codfw.wmnet")
+      assert.stub(ts.client_request.set_url_port).was.called_with(4456)
       assert.stub(ts.http.config_int_set).was.called_with(TS_LUA_CONFIG_HTTP_CACHE_HTTP, 0)
     end)
 

@@ -33,11 +33,6 @@ end
 -- A mapping from backend name to host and port.
 local debug_map = {
     ["k8s-mwdebug"]               = { host = "mwdebug.discovery.wmnet",      port = 4444 },
-    ["1"]                         = { host = "mwdebug1001.eqiad.wmnet",      port =  443 },
-    ["mwdebug1001.eqiad.wmnet"]   = { host = "mwdebug1001.eqiad.wmnet",      port =  443 },
-    ["mwdebug1002.eqiad.wmnet"]   = { host = "mwdebug1002.eqiad.wmnet",      port =  443 },
-    ["mwdebug2001.codfw.wmnet"]   = { host = "mwdebug2001.codfw.wmnet",      port =  443 },
-    ["mwdebug2002.codfw.wmnet"]   = { host = "mwdebug2002.codfw.wmnet",      port =  443 },
     ["k8s-mwdebug-eqiad"]         = { host = "mwdebug.svc.eqiad.wmnet",      port = 4444 },
     ["k8s-mwdebug-codfw"]         = { host = "mwdebug.svc.codfw.wmnet",      port = 4444 },
     ["k8s-mwdebug-next"]          = { host = "mwdebug-next.discovery.wmnet", port = 4453 },
