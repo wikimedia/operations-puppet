@@ -132,3 +132,35 @@ testcases:
           version: "1.7.0"
       - message: "Finished scap: beta-scap-sync-world (build #54832) (duration: 01m 05s)"
         channel: "scap"
+  - input:
+      - >
+        {
+          "rsyslog.hostname": "foo",
+          "ecs": { "version": "1.11.0" },
+          "type": "scap",
+          "message": "This should bypass 15-filter_scap_migration.conf.",
+          "user": { "name": "theuser" }
+        }
+    expected:
+        - __target_index: "ecs-default-1-1.11.0-N-weekly"
+          message: "This should bypass 15-filter_scap_migration.conf."
+          log:
+            level: "INFO"
+            syslog:
+              facility:
+                code: 1
+                name: 'user'
+              priority: 14
+              severity:
+                code: 6
+                name: 'informational'
+          normalized:
+            message: 'this should bypass 15-filter_scap_migration.conf.'
+          service:
+            type: 'scap'
+          user:
+            name: "theuser"
+          host:
+            name: "foo"
+          ecs:
+            version: '1.11.0'
