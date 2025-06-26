@@ -18,10 +18,10 @@
 #   - dedicated=mw-experimental:NoSchedule
 
 class profile::kubernetes::mediawiki_experimental(
-    Boolean $is_mw_experimental            = lookup('profile::kubernetes::node::mw_experimental'),
-    Stdlib::Host $deployment_server        = lookup('deployment_server'),
-    Stdlib::Unixpath $general_dir = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
-    Optional[String] $deployment_group     = lookup('deployment_group', { default_value => undef }),
+    Boolean $is_mw_experimental         = lookup('profile::kubernetes::node::mw_experimental'),
+    Stdlib::Host $deployment_server     = lookup('deployment_server'),
+    Stdlib::Unixpath $general_dir       = lookup('profile::kubernetes::deployment_server::global_config::general_dir', {default_value => '/etc/helmfile-defaults'}),
+    Optional[String] $deployment_group  = lookup('deployment_group', { default_value => undef }),
 ) {
     if $is_mw_experimental {
         require profile::mediawiki::system_users
@@ -32,8 +32,8 @@ class profile::kubernetes::mediawiki_experimental(
         file { $mediawiki_deployment_dir:
             ensure  => directory,
             owner   => 'mwdeploy',
-            group   => 'mwdeploy',
-            mode    => '0775',
+            group   => 'deployment',
+            mode    => '2775',
             require => User['mwdeploy'],
             before  => Service['kubelet'],
         }
@@ -41,14 +41,24 @@ class profile::kubernetes::mediawiki_experimental(
         # On deployment server, the /etc/helmfile-defaults/mediawiki/release contains
         # the latest mediawiki release to be used by every deployment. We are syncing
         # this directory to the mw-experimental nodes so that they can use the latest
-        # mediawiki release
+        # mediawiki release. We should create the parent directories
+
+        file { $general_dir:
+            ensure => directory,
+            mode   => '0775',
+        }
+        file { "${general_dir}/mediawiki":
+            ensure  => directory,
+            mode    => '0775',
+            require => File[$general_dir],
+        }
+
         $kubernetes_release_dir = "${general_dir}/mediawiki/release"
         file { $kubernetes_release_dir:
             ensure => directory,
-            owner  => 'mwbuilder',
-            group  => 'deployment',
-            mode   => '2775',
+            mode   => '0775',
         }
+
         rsync::quickdatacopy { 'releases':
             ensure      => present,
             auto_sync   => true,
@@ -58,9 +68,9 @@ class profile::kubernetes::mediawiki_experimental(
             chown       => 'root:deployment',
             require     => File[$kubernetes_release_dir],
         }
+
         # fix-staging-perms is copied from profile::mediawiki::deployment::server
         # it fixes ownership and permissions of /srv/mediawiki
-
         file { '/usr/local/etc/fix-staging-perms.sh':
             content => "deployment_group=\"${deployment_group}\"\ndeployment_dirs=\"/srv/mediawiki\"\n",
             mode    => '0444',
@@ -100,7 +110,7 @@ class profile::kubernetes::mediawiki_experimental(
                 'interval' => '1 hour',
             },
         }
-        $motd_content = "This is a mw-experimental host. To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental\n* refresh /srv/mediawiki on this host by running sudo systemctl start mw-experimental-mediawiki-image-update.service."
+        $motd_content = "\nThis is a mw-experimental host. To ensure you have the latest code, you should:\n* login to the deployment server and run helmfile in helmfile.d/service/mw-experimental\n* refresh /srv/mediawiki on this host by running sudo systemctl start mw-experimental-mediawiki-image-update.service.\n\n"
         motd::message { 'mw-experimental-tldr':
             ensure   => present,
             priority => 99,
