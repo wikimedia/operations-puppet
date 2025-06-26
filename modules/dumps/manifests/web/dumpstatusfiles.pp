@@ -13,7 +13,7 @@ class dumps::web::dumpstatusfiles(
     # check every interval minutes for a new tarball of status files
     # and unpack them
     systemd::timer::job { 'update-dump-statusfiles':
-        ensure       => present,
+        ensure       => absent,
         description  => 'Check for a new tarball of status files, and unpack',
         user         => 'root',
         send_mail    => true,
