@@ -7,7 +7,7 @@ class profile::openstack::base::glance(
     String $db_name = lookup('profile::openstack::base::glance::db_name'),
     String $db_pass = lookup('profile::openstack::base::glance::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::glance::db_host'),
-    String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::base::glance::ldap_user_pass'),
     Stdlib::Absolutepath $glance_data_dir = lookup('profile::openstack::base::glance::data_dir'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::glance::api_bind_port'),
     Array[String] $glance_backends = lookup('profile::openstack::base::glance_backends'),

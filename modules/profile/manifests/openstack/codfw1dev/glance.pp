@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::glance(
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::codfw1dev::glance::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::glance::db_host'),
-    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::glance::ldap_user_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::glance::api_bind_port'),
     String $ceph_pool = lookup('profile::openstack::codfw1dev::glance::ceph_pool'),
     Array[String] $glance_backends = lookup('profile::openstack::codfw1dev::glance_backends'),

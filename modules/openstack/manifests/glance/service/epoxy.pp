@@ -19,8 +19,8 @@ class openstack::glance::service::epoxy(
         ensure => 'present',
     }
 
-    $keystone_auth_username = 'novaadmin'
-    $keystone_auth_project = 'admin'
+    $keystone_auth_username = 'glance'
+    $keystone_auth_project = 'service'
     $version = inline_template("<%= @title.split(':')[-1] -%>")
     file {
         '/etc/glance/glance-api.conf':
