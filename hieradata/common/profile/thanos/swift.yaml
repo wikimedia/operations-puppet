@@ -36,6 +36,12 @@ profile::thanos::swift::accounts:
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'mlserve:ro'
     stats_enabled: 'no'
+  machinetranslation_ro:
+    access:       ''
+    account_name: 'AUTH_mlserve'
+    auth:         'https://thanos-swift.discovery.wmnet'
+    user:         'machinetranslation:ro'
+    stats_enabled: 'no'
   tegola_prod:
     access:       '.admin'
     account_name: 'AUTH_tegola'
@@ -61,11 +67,6 @@ profile::thanos::swift::accounts:
     account_name: 'AUTH_mw-event-enrichment'
     auth:         'https://thanos-swift.discovery.wmnet'
     user:         'mw-event-enrichment:prod'
-  machinetranslation:
-    access:       '.admin'
-    account_name: 'AUTH_machinetranslation'
-    auth:         'https://thanos-swift.discovery.wmnet'
-    user:         'machinetranslation:prod'
   gitlab:
     access:       '.admin'
     account_name: 'AUTH_gitlab'
