@@ -1,3 +1,7 @@
+# Submit to both production and staging debmonitor
+debmonitor_servers:
+  - debmonitor.discovery.wmnet
+  - debmonitor-next.discovery.wmnet
 profile::firewall::defs_from_etcd: true
 profile::puppet::agent::force_puppet7: true
 profile::contacts::role_contacts:
