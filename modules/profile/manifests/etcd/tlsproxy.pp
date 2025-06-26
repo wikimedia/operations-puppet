@@ -79,8 +79,8 @@ class profile::etcd::tlsproxy(
         }
     } else {
         $ssl_paths = profile::pki::get_cert('discovery', $cert_name, {
-            hosts           => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
-            notify_services => ['nginx'],
+            hosts  => [$facts['networking']['hostname'], $facts['networking']['fqdn']],
+            notify => Exec['nginx-reload'],
         })
         monitoring::service { 'etcd-tlsproxy-ssl':
             description    => "etcd tlsproxy SSL ${upstream_host}:${listen_port}",
