@@ -4,7 +4,7 @@ class profile::openstack::eqiad1::placement(
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::eqiad1::placement::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::eqiad1::placement::db_host'),
-    String $ldap_user_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::eqiad1::placement::db_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::eqiad1::placement::api_bind_port'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::eqiad1::haproxy_nodes'),
 ) {

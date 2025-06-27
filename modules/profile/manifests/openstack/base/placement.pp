@@ -7,7 +7,7 @@ class profile::openstack::base::placement(
     String $db_name = lookup('profile::openstack::base::placement::db_name'),
     String $db_pass = lookup('profile::openstack::base::placement::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::base::placement::db_host'),
-    String $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::base::placement::db_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::base::placement::api_bind_port'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::base::haproxy_nodes'),
 ) {

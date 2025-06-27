@@ -5,7 +5,7 @@ class profile::openstack::codfw1dev::placement(
     Stdlib::Fqdn $keystone_fqdn = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String $db_pass = lookup('profile::openstack::codfw1dev::placement::db_pass'),
     Stdlib::Fqdn $db_host = lookup('profile::openstack::codfw1dev::placement::db_host'),
-    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
+    String $ldap_user_pass = lookup('profile::openstack::codfw1dev::placement::db_pass'),
     Stdlib::Port $api_bind_port = lookup('profile::openstack::codfw1dev::placement::api_bind_port'),
     Array[Stdlib::Fqdn] $haproxy_nodes = lookup('profile::openstack::codfw1dev::haproxy_nodes'),
 ) {
