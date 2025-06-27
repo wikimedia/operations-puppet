@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# @summary manage backup timers
+# @summary manages nftables based throttling
 # @max_connections number of simultaneous connections clients are allowed
 # @throttle_duration duration how long clients are banned in seconds
 # @nft_policy whether to actually drop packets or to accept them (for logging-only / testing)

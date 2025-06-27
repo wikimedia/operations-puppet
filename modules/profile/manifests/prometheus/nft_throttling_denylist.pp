@@ -1,4 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-class profile::prometheus::nft_throttling_denylist {
-    class {'prometheus::nft_throttling_denylist': }
+# @summary manages prometheus metrics for nftables based throttling
+class profile::prometheus::nft_throttling_denylist (
+        Wmflib::Ensure $ensure = lookup('profile::prometheus::nft_throttling_denylist::ensure',
+    {default_value => present}),
+) {
+    class {'prometheus::nft_throttling_denylist':
+        ensure => $ensure,
+    }
 }
