@@ -172,28 +172,28 @@ class profile::debmonitor::server (
 
     if $enable_monitoring {
         monitoring::service { 'debmonitor-cdn-https':
-            description    => 'debmonitor.wikimedia.org:7443 CDN',
-            check_command  => 'check_https_redirect!7443!debmonitor.wikimedia.org!/!302!https://idp.wikimedia.org/',
+            description    => "${public_server_name}:7443 CDN",
+            check_command  => "check_https_redirect!7443!${public_server_name}!/!302!https://idp.wikimedia.org/",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
             migration_task => 'T350694',
         }
 
         monitoring::service { 'debmonitor-cdn-https-expiry':
-            description    => 'debmonitor.wikimedia.org:7443 CDN SSL Expiry',
-            check_command  => 'check_https_expiry!debmonitor.wikimedia.org!7443',
+            description    => "${public_server_name}:7443 CDN SSL Expiry",
+            check_command  => "check_https_expiry!${public_server_name}!7443",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
             migration_task => 'T350694',
         }
 
         monitoring::service { 'debmonitor-https':
-            description    => 'debmonitor.discovery.wmnet:443 internal',
-            check_command  => 'check_https_client_auth_puppet!debmonitor.discovery.wmnet!/client!200!HEAD',
+            description    => "${internal_server_name}:443 internal",
+            check_command  => "check_https_client_auth_puppet!${internal_server_name}!/client!200!HEAD",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
             migration_task => 'T350694',
         }
 
         prometheus::blackbox::check::http { 'debmonitor-client-download':
-            server_name     => 'debmonitor.discovery.wmnet',
+            server_name     => $internal_server_name,
             port            => 443,
             path            => '/client',
             use_client_auth => true,
