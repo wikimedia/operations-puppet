@@ -2228,7 +2228,7 @@ users:
         nuria@wikimedia.org-production]
     uid: 4193
     email: nuria.ruiz.garcia@gmail.com
-    krb: present
+    krb: absent
   csalvia:
     ensure: absent
     gid: 500
@@ -2431,7 +2431,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJLyB3QrQbsm1yOaS3FmizxHr9ShF3mgUNMDnY6QAbpW ori@yubikey
     uid: 2220
     email: ori.livneh@gmail.com
-    krb: present
+    krb: absent
   jkrauska:
     ensure: absent
     gid: 500
