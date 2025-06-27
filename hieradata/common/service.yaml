@@ -3011,7 +3011,7 @@ service::catalog:
           timeout-clean-reconnect: 3
         ProxyFetch:
           url:
-            - https://healthcheck.wikimedia.org/varnish-fe
+            - https://upload.wikimedia.org/varnish-fe-hc-5ebea9
       scheduler: mh
       ipip_encapsulation:
         - eqiad
