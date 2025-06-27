@@ -186,8 +186,6 @@ class profile::analytics::refinery::job::refine(
         'ReferencePreviewsPopups',
         'TemplateDataApi',
         'TemplateDataEditor',
-        'TwoColConflictConflict',
-        'TwoColConflictExit',
         'VirtualPageView',
         'VisualEditorTemplateDialogUse',
         'WikibaseTermboxInteraction',
