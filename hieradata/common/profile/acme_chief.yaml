@@ -183,14 +183,6 @@ profile::acme_chief::certificates:
         challenge: dns-01
         authorized_hosts:
         - 'mirror1001.wikimedia.org'
-    mx:
-        CN: 'mx1001.wikimedia.org'
-        SNI:
-        - 'mx1001.wikimedia.org'
-        - 'mx2001.wikimedia.org'
-        challenge: dns-01
-        authorized_regexes:
-        - '^mx[12]001\.wikimedia\.org$'
     mx-in:
         CN: 'mx-in1001.wikimedia.org'
         SNI:
