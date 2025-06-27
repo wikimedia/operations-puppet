@@ -75,7 +75,14 @@ class acme_chief::server (
                 $ret
             }
         },
-        certificates => $certificates,
+        certificates => $certificates.reduce({}) |Hash[String, Acme_chief::Certificate] $result, $entry| {
+            $cert_name = $entry[0]
+            $cert_config = $entry[1]
+
+            $result + {
+                $cert_name => $cert_config + { 'key_types' => pick($cert_config['key_types'], ['ec-prime256v1']) }
+            }
+        },
         challenges   => $challenge_conf,
     }
 
