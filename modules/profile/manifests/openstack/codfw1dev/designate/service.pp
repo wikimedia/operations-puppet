@@ -12,7 +12,7 @@ class profile::openstack::codfw1dev::designate::service(
     String[1] $domain_id_internal_reverse_v6 = lookup('profile::openstack::codfw1dev::designate::domain_id_internal_reverse_v6'),
     String[1] $enabled_notification_handlers = lookup('profile::openstack::codfw1dev::designate::enabled_notification_handlers'),
     String[1] $base_domain_name = lookup('profile::openstack::codfw1dev::designate::base_domain_name'),
-    $ldap_user_pass = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::codfw1dev::designate::ldap_user_pass'),
     $pdns_api_key = lookup('profile::openstack::codfw1dev::pdns::api_key'),
     $db_admin_pass = lookup('profile::openstack::codfw1dev::designate::db_admin_pass'),
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::codfw1dev::pdns::hosts'),

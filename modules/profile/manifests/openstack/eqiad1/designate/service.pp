@@ -11,7 +11,7 @@ class profile::openstack::eqiad1::designate::service(
     String[1] $domain_id_internal_reverse_v6 = lookup('profile::openstack::eqiad1::designate::domain_id_internal_reverse_v6'),
     String[1] $enabled_notification_handlers = lookup('profile::openstack::eqiad1::designate::enabled_notification_handlers'),
     String[1] $base_domain_name = lookup('profile::openstack::eqiad1::designate::base_domain_name'),
-    $ldap_user_pass = lookup('profile::openstack::eqiad1::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::eqiad1::designate::ldap_user_pass'),
     $pdns_api_key = lookup('profile::openstack::eqiad1::pdns::api_key'),
     $db_admin_pass = lookup('profile::openstack::eqiad1::designate::db_admin_pass'),
     Array[Profile::Openstack::Pdns::Host] $pdns_hosts = lookup('profile::openstack::eqiad1::pdns::hosts'),

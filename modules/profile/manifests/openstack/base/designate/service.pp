@@ -14,7 +14,7 @@ class profile::openstack::base::designate::service(
     String[1] $domain_id_internal_reverse_v6 = lookup('profile::openstack::base::designate::domain_id_internal_reverse_v6'),
     String[1] $enabled_notification_handlers = lookup('profile::openstack::base::designate::enabled_notification_handlers'),
     String[1] $base_domain_name = lookup('profile::openstack::base::designate::base_domain_name'),
-    $ldap_user_pass = lookup('profile::openstack::base::ldap_user_pass'),
+    $ldap_user_pass = lookup('profile::openstack::base::designate::ldap_user_pass'),
     $pdns_api_key = lookup('profile::openstack::base::pdns::api_key'),
     $db_admin_user = lookup('profile::openstack::base::designate::db_admin_user'),
     $db_admin_pass = lookup('profile::openstack::base::designate::db_admin_pass'),

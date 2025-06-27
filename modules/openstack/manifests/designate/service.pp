@@ -111,8 +111,8 @@ class openstack::designate::service(
         require   => Package['designate-common'];
     }
 
-    $keystone_auth_username = 'novaadmin'
-    $keystone_auth_project = 'admin'
+    $keystone_auth_username = 'designate'
+    $keystone_auth_project = 'service'
     file {
         '/etc/designate/designate.conf':
             owner     => 'designate',
