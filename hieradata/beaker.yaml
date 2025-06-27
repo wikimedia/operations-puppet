@@ -45,7 +45,8 @@ bastion_hosts:
 # in docker we cant write to this /sys value
 profile::firewall::manage_nf_conntrack: false
 # Fail fast
-debmonitor: localhost
+debmonitor_servers:
+  - localhost
 # Dont need proxies in docker
 profile::apt::use_proxy: false
 # No IPv6 in unprivlaged docker

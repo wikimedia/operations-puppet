@@ -1,6 +1,6 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
 [DEFAULT]
-server=<%= @debmonitor_server %>
+server=<%= @debmonitor_servers.join(',') %>
 cert=<%= @cert %>
 key=<%= @private_key %>
 <%- if @ca -%>

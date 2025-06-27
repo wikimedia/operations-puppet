@@ -15,10 +15,10 @@
 # @param ssl_ca use the puppet issued certs or request a cert from cfssl
 # @param ssl_ca_label if using cfssl this is the ca label to use for certificate requests
 class profile::debmonitor::client (
-    Stdlib::Host            $debmonitor_server = lookup('debmonitor'),
-    Wmflib::Ensure          $ensure            = lookup('profile::debmonitor::client::ensure'),
-    Enum['puppet', 'cfssl'] $ssl_ca            = lookup('profile::debmonitor::client::ssl_ca'),
-    Optional[String]        $ssl_ca_label      = lookup('profile::debmonitor::client::ssl_ca_label'),
+    Array[Stdlib::Host]     $debmonitor_servers = lookup('debmonitor_servers'),
+    Wmflib::Ensure          $ensure             = lookup('profile::debmonitor::client::ensure'),
+    Enum['puppet', 'cfssl'] $ssl_ca             = lookup('profile::debmonitor::client::ssl_ca'),
+    Optional[String]        $ssl_ca_label       = lookup('profile::debmonitor::client::ssl_ca_label'),
 ) {
 
     $base_path = '/etc/debmonitor'

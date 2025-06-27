@@ -137,7 +137,8 @@ statsd: statsd.eqiad.wmnet:8125
 statsd_exporter_port: 9125
 
 # Debmonitor instance
-debmonitor: debmonitor.discovery.wmnet
+debmonitor_servers:
+  - debmonitor.discovery.wmnet
 
 alertmanagers:
   - alert1002.wikimedia.org
