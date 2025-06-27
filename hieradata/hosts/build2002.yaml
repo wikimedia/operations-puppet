@@ -10,3 +10,6 @@ profile::java::java_packages:
     variant: "jdk"
   - version: "17"
     variant: "jdk"
+
+debmonitor_servers:
+  - debmonitor-next.discovery.wmnet
