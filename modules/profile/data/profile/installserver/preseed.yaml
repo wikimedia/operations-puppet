@@ -727,9 +727,15 @@ profile::installserver::preseed::preseed_per_hostname:
   'sretest100[1-4]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
-  'sretest200[1-69]1[0]':
+  'sretest200[1-4|9]':
     - partman/standard-efi.cfg
     - partman/raid1-2dev-efi.cfg
+  'sretest2010':
+    - partman/standard-efi.cfg
+    - partman/raid1-2dev-efi.cfg
+  'sretest2005':
+    - partman/flat.cfg
+    - virtual.cfg
   'sretest2002':
     - partman/custom/cacheproxy.cfg
   'titan*':
