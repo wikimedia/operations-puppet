@@ -172,11 +172,6 @@ node /^an-conf100[4-6]\.eqiad\./ {
     role(analytics_cluster::zookeeper)
 }
 
-# Analytics Zookeeper hosts to be decommissioned
-node /^an-conf100[1-3]\.eqiad\./ {
-    role(insetup::data_platform_ferm)
-}
-
 # Analytics Presto nodes
 node /^an-presto10(0[1-9]|1[0-9]|20)\.eqiad\./ {
     role(analytics_cluster::presto::server)

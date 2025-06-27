@@ -161,9 +161,6 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/standard-efi.cfg
     - partman/raid0-efi.cfg
     - partman/raid0-3dev-efi.cfg
-  'an-conf100[1-3]':
-    - reuse-parts.cfg
-    - partman/custom/reuse-analytics-zk-raid1-2dev.cfg
   'an-conf100[4-6]':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
