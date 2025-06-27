@@ -2897,7 +2897,7 @@ users:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCFMD8oAOcXW1Xvxnz3nYOAq9U9RuvTXoNu8spEdEs1wfelLEj4kQlNxp5vaF23lxbPSfGd6vQ3xF/2yu+5TN8ZjghL8NR5e7NfXynHPT2bdk0vLCXZ1KCNs6gc+kjwsUiJfAX9+1Ink9tf1XORLxae2Q+qOZQDsqYL7sTAyAtrPJ5xYQudnQN6Mz5XD5ajyunja6Ihk/UIg0TloYbr63BzTWSVF6gNi9GqEw017JqSaB17v0+meB/U4FDrFmsimtWdpmURir0isLnYdEc9R2wXVzaL4L0gXj4trWjQCMkCnbkvCqYRY7fxq6ersTKssJf4iydFsbEwLGEy3DqKZwlSctrExBh4iyyyxuhANTfNxPaPdggj2aR05Ik15TGrY5uVyNww32GaZAAnv9z0ib8IJje0Lrz9XAIFSIcTsF+rsU1v5yK81tkjWcHx2q2+X77efaOpsaZOwjCgDcxx30g5mAuLrjrRBGARGt5IriG5FTfg4mgc8GgGw76soo/AEM= adshwm-wmf-prodution-20210806
     uid: 2178
     email: wikimedia@addshore.com
-    krb: present
+    krb: absent
   tarrow:
     ensure: present
     gid: 500
@@ -4884,7 +4884,7 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJHZXGVblGTOgm+IWr1kL109Zchw3pgG97PioMWLP0JS haltriedman@MacBook-Pro.local
-    krb: present
+    krb: absent
   jelto:
     ensure: present
     realname: Jelto Wodstrcil
