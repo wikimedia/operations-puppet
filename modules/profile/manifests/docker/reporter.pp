@@ -6,6 +6,8 @@ class profile::docker::reporter(
     Boolean                   $generate_reports = lookup('profile::docker::reporter::generate_reports'),
     Optional[Stdlib::HTTPUrl] $proxy            = lookup('http_proxy'),
 ) {
+    include profile::docker::reporter::credentials
+
     ensure_packages(['python3-docker-report'])
     $report_ensure = $generate_reports.bool2str('present', 'absent')
 

@@ -5,6 +5,8 @@ profile::docker::builder::rebuild_images: false
 profile::docker::builder::build_base_images: false
 profile::docker::builder::docker_pkg: false
 
+profile::docker::reporter::credentials::deploy_k8s_credentials: true
+
 profile::java::java_packages:
   - version: "8"
     variant: "jdk"
