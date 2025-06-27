@@ -56,7 +56,7 @@ testcases:
             - "network"
             - "web"
           dataset: "apache.access"
-          duration: "18883"
+          duration: 18883
           kind: "event"
           outcome: "unknown"
           type:
@@ -73,11 +73,11 @@ testcases:
             method: "GET"
             referrer: "-"
           response:
-            bytes: "43631"
+            bytes: 43631
             headers:
               content_type: "application/x-git-upload-pack-advertisement"
               user: "-"
-            status_code: "200"
+            status_code: 200
         labels:
           handler: "proxy-server"
           httpd_server_name: "gerrit.wikimedia.org"

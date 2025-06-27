@@ -149,7 +149,7 @@ testcases:
           level: "ERROR"
           origin:
             file:
-              line: "224"
+              line: 224
               name: "/srv/mediawiki/php-1.38.0-wmf.3/vendor/wikimedia/assert/src/Assert.php"
           syslog:
             facility:
@@ -267,7 +267,7 @@ testcases:
           level: "ERROR"
           origin:
             file:
-              line: "148"
+              line: 148
               name: "/srv/mediawiki/php-1.38.0-wmf.4/includes/pager/ReverseChronologicalPager.php"
           syslog:
             facility:
@@ -368,7 +368,7 @@ testcases:
           level: "ERROR"
           origin:
             file:
-              line: "276"
+              line: 276
               name: "/srv/mediawiki/src/Profiler.php"
           syslog:
             facility:
@@ -464,7 +464,7 @@ testcases:
           level: "ERROR"
           origin:
             file:
-              line: "276"
+              line: 276
               name: "/srv/mediawiki/src/Profiler.php"
           syslog:
             facility:
@@ -676,7 +676,7 @@ testcases:
         host:
           name: "mediawiki-main-7b957d95c7-gwrnc"
         process:
-          pid: "11"
+          pid: 11
         service:
           type: "php-fpm-slowlog"
         error:

@@ -113,7 +113,7 @@ testcases:
           origin:
             file:
               name: "ContextHandler.java"
-              line: "2372"
+              line: 2372
             function: "log"
           logger: "org.eclipse.jetty.server.handler.ContextHandler$Context"
         process:

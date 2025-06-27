@@ -28,7 +28,7 @@ testcases:
         destination:
           ip: "::1"
           domain: "localhost"
-          port: "44734"
+          port: 44734
         ecs:
           version: "1.11.0"
         event:
@@ -63,7 +63,7 @@ testcases:
         source:
           ip: "::1"
           domain: "localhost"
-          port: "8141"
+          port: 8141
 
   - input:
       - >
@@ -80,7 +80,7 @@ testcases:
         destination:
           ip: "127.0.0.1"
           domain: "localhost"
-          port: "45868"
+          port: 45868
         ecs:
           version: "1.11.0"
         event:
@@ -115,7 +115,7 @@ testcases:
         source:
           ip: "127.0.0.1"
           domain: "localhost"
-          port: "9243"
+          port: 9243
 
   - input:
       - >
@@ -132,7 +132,7 @@ testcases:
         destination:
           ip: "127.0.0.1"
           domain: "localhost"
-          port: "67"
+          port: 67
         ecs:
           version: "1.11.0"
         event:
@@ -166,4 +166,4 @@ testcases:
         source:
           ip: "127.0.0.1"
           domain: "localhost"
-          port: "67"
+          port: 67

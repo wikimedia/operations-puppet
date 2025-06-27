@@ -638,9 +638,9 @@ testcases:
             headers:
               referer: ""
           response:
-            status_code: "204"
+            status_code: 204
             body:
-              bytes: "0"
+              bytes: 0
         user_agent:
           original: "gitlab-runner 14.0.1 (refs/pipelines/326100216; go1.13.8; linux/amd64)"
         event:
@@ -690,9 +690,9 @@ testcases:
         labels:
           connection_id: "2433935"
         process:
-          pid: "3607"
+          pid: 3607
           thread:
-            id: "0"
+            id: 0
         event:
           category:
             - "network"

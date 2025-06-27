@@ -48,7 +48,7 @@ testcases:
         service:
           type: "nova"
         process:
-          pid: "71430"
+          pid: 71430
         ecs:
           version: "1.7.0"
 
@@ -90,7 +90,7 @@ testcases:
         service:
           type: "nova"
         process:
-          pid: "13834"
+          pid: 13834
         ecs:
           version: "1.7.0"
 
@@ -164,7 +164,7 @@ testcases:
         service:
           type: "glance-wsgi-api"
         process:
-          pid: "12257"
+          pid: 12257
         user:
           name: "osstackcanary"
         ecs:

@@ -6,6 +6,7 @@ codec: "json_lines"
 ignore:
   - "@timestamp"
   - "[event][original]"
+  - "normalized"
 testcases:
   - input:
       - >
@@ -36,22 +37,22 @@ testcases:
         source:
           mac: "de:ad:be:ee:ee:ff"
           ip: "127.0.0.1"
-          port: "9999"
-          packets: "1"
+          port: 9999
+          packets: 1
         destination:
           mac: "de:ad:be:ee:ff:ff"
           ip: "127.0.1.1"
-          port: "65535"
+          port: 65535
         log:
           level: "NOTSET"
           original: "PFE_FW_SYSLOG_ETH_IP: FW: xe-3/0/4.1103 A 044f:0800 de:ad:be:ee:ee:ff -> de:ad:be:ee:ff:ff  tcp 127.0.0.1 127.0.1.1  9999 65535 (1 packets)"
           syslog:
             facility:
-              code: "19"
+              code: 19
               name: "local3"
-            priority: "156"
+            priority: 156
             severity:
-              "code": "4"
+              "code": 4
               "name": "warning"
         service:
           type: "netdev"
@@ -61,9 +62,6 @@ testcases:
           version: "1.7.0"
         tags:
           - "firewall"
-        normalized:
-          dropped:
-            no_such_field: [ 'path' ]
 
   - input:
       - >
@@ -84,11 +82,11 @@ testcases:
           level: "NOTSET"
           syslog:
             facility:
-              code: "23"
+              code: 23
               name: "local7"
-            priority: "190"
+            priority: 190
             severity:
-              "code": "6"
+              "code": 6
               "name": "informational"
         service:
           type: "netdev"
@@ -102,19 +100,16 @@ testcases:
           - "firewall"
         process:
           name: "RT_FLOW"
-        normalized:
-          dropped:
-            no_such_field: [ 'path' ]
         rule:
           name: "default-deny(global)"
         network:
           iana_number: "6"
         source:
           ip: "1.1.1.1"
-          port: "37127"
+          port: 37127
         destination:
           ip: "2.2.2.2"
-          port: "10025"
+          port: 10025
         observer:
           ingress:
             zone: "untrust"
