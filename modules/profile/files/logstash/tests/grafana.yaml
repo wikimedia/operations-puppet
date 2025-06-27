@@ -87,6 +87,7 @@ testcases:
         http:
           request:
             method: "GET"
+          response:
             status_code: 400
         url:
           path: "/api/live/ws"
