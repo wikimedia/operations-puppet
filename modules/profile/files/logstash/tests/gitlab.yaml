@@ -155,7 +155,7 @@ testcases:
         process:
           pid: 17132
         event:
-          duration: 0.849
+          duration: 849000
         ecs:
           version: "1.7.0"
 
@@ -235,7 +235,7 @@ testcases:
         process:
           pid: 17132
         event:
-          duration: 3.319
+          duration: 3319000
         client:
           ip: "127.0.0.1"
         ecs:
@@ -314,7 +314,7 @@ testcases:
           id: "01F7T5TAC9G99EF9ZR1YEC83A5"
         user:
           name: "UserName"
-          id: 2
+          id: "2"
         log:
           level: "NOTICE"
           syslog:
@@ -329,7 +329,7 @@ testcases:
           origin:
             function: "show"
         event:
-          duration: 1.07051
+          duration: 1070510000
         client:
           ip: "127.0.0.1"
         http:
@@ -408,7 +408,7 @@ testcases:
           id: "01F7SM40CRPBEEWWYS9M2ZKMAT"
         user:
           name: "UserName"
-          id: 2
+          id: "2"
         log:
           level: "INFO"
           syslog:
@@ -420,7 +420,7 @@ testcases:
               name: "informational"
             priority: 134
         event:
-          duration: 0.14005
+          duration: 140050000
         client:
           ip: "127.0.0.1"
         http:
@@ -568,7 +568,7 @@ testcases:
           type: "gitlab"
           name: "gitlab-sidekiq"
         event:
-          duration: 0.0005855746567249298
+          duration: 585574
         log:
           level: "INFO"
           syslog:
