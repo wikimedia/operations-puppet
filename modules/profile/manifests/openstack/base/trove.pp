@@ -8,7 +8,7 @@ class profile::openstack::base::trove(
     String                        $db_pass                     = lookup('profile::openstack::base::trove::db_pass'),
     String                        $db_name                     = lookup('profile::openstack::base::trove::db_name'),
     Stdlib::Fqdn                  $db_host                     = lookup('profile::openstack::base::trove::db_host'),
-    String                        $ldap_user_pass              = lookup('profile::openstack::base::ldap_user_pass'),
+    String                        $ldap_user_pass              = lookup('profile::openstack::base::trove::trove_user_pass'),
     Stdlib::Fqdn                  $keystone_fqdn               = lookup('profile::openstack::base::keystone_api_fqdn'),
     String                        $region                      = lookup('profile::openstack::base::region'),
     Stdlib::Port                  $api_bind_port               = lookup('profile::openstack::base::trove::api_bind_port'),

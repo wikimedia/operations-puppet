@@ -7,7 +7,7 @@ class profile::openstack::codfw1dev::trove(
     String                        $db_pass                 = lookup('profile::openstack::codfw1dev::trove::db_pass'),
     String                        $db_name                 = lookup('profile::openstack::codfw1dev::trove::db_name'),
     Stdlib::Fqdn                  $db_host                 = lookup('profile::openstack::codfw1dev::trove::db_host'),
-    String                        $ldap_user_pass          = lookup('profile::openstack::codfw1dev::ldap_user_pass'),
+    String                        $ldap_user_pass          = lookup('profile::openstack::codfw1dev::trove::trove_user_pass'),
     Stdlib::Fqdn                  $keystone_fqdn           = lookup('profile::openstack::codfw1dev::keystone_api_fqdn'),
     String                        $region                  = lookup('profile::openstack::codfw1dev::region'),
     String                        $rabbit_pass             = lookup('profile::openstack::codfw1dev::trove::rabbit_pass'),

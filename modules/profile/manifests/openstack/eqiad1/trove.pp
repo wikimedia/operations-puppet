@@ -6,7 +6,7 @@ class profile::openstack::eqiad1::trove(
     String                        $db_pass                 = lookup('profile::openstack::eqiad1::trove::db_pass'),
     String                        $db_name                 = lookup('profile::openstack::eqiad1::trove::db_name'),
     Stdlib::Fqdn                  $db_host                 = lookup('profile::openstack::eqiad1::trove::db_host'),
-    String                        $ldap_user_pass          = lookup('profile::openstack::eqiad1::ldap_user_pass'),
+    String                        $ldap_user_pass          = lookup('profile::openstack::eqiad1::trove::trove_user_pass'),
     Stdlib::Fqdn                  $keystone_fqdn           = lookup('profile::openstack::eqiad1::keystone_api_fqdn'),
     String                        $region                  = lookup('profile::openstack::eqiad1::region'),
     String                        $rabbit_pass             = lookup('profile::openstack::eqiad1::trove::rabbit_pass'),

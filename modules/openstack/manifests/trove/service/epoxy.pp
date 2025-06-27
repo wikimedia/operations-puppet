@@ -47,8 +47,8 @@ class openstack::trove::service::epoxy(
     # Subtemplates of trove.conf are going to want to know what
     #  version this is
     $version = inline_template("<%= @title.split(':')[-1] -%>")
-    $keystone_auth_username = 'novaadmin'
-    $keystone_auth_project = 'admin'
+    $keystone_auth_username = 'trove'
+    $keystone_auth_project = 'service'
     file {
         '/etc/trove/trove.conf':
             content   => template('openstack/epoxy/trove/trove.conf.erb'),
