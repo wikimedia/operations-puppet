@@ -766,7 +766,7 @@ sub vcl_recv {
     unset req.http.X-CDIS; // clear internal cache-disposition header
     unset req.http.X-Varnish-Cluster; // internal cache cluster header
 
-    if (req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") {
+    if ((req.http.host == "healthcheck.wikimedia.org" && req.url == "/varnish-fe") || (req.url == "/varnish-fe-hc-5ebea9")) {
         return (synth(200, "healthcheck"));
     }
 

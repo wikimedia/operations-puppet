@@ -225,8 +225,9 @@ listen tls
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org
     acl hc-path        path_beg     /varnish-fe
+    acl hc-unique-path path_beg     /varnish-fe-hc-5ebea9
     acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
-    use_backend healthcheck if hc-host hc-path hc-allowed-src
+    use_backend healthcheck if hc-host hc-path hc-allowed-src || hc-host hc-unique-path
 <%- end -%>
 
     option forwardfor
