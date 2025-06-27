@@ -187,7 +187,7 @@ class profile::debmonitor::server (
 
         monitoring::service { 'debmonitor-https':
             description    => "${internal_server_name}:443 internal",
-            check_command  => "check_https_client_auth_puppet!${internal_server_name}!/client!200!HEAD",
+            check_command  => "check_https_client_auth_puppet!${internal_server_name}!/auth-check!200!HEAD",
             notes_url      => 'https://wikitech.wikimedia.org/wiki/Debmonitor',
             migration_task => 'T350694',
         }
