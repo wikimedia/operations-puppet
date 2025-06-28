@@ -42,7 +42,6 @@ testcases:
             file:
               line: 113
               name: "tcpircbot.py"
-              path: "tcpircbot.py"
             function: "log_event"
           syslog:
             facility:
@@ -94,7 +93,6 @@ testcases:
             file:
               line: 223
               name: "tcpircbot.py"
-              path: "tcpircbot.py"
             function: "<module>"
           syslog:
             facility:

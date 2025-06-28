@@ -40,7 +40,6 @@ testcases:
           file:
             line: 223
             name: "tcpircbot.py"
-            path: "tcpircbot.py"
           function: "<module>"
         syslog:
           facility:
