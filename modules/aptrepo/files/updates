@@ -529,3 +529,12 @@ UDebComponents:
 Architectures: amd64
 VerifyRelease: 671B51EA4CC7E5B2
 ListShellHook: grep-dctrl -e -S '^pcre2$' || [ $? -eq 1 ]
+
+Name: pcre2-php83-bullseye
+Method: https://apt-staging.wikimedia.org/wikimedia-staging/
+Components: main>component/php83
+Suite: bullseye-wikimedia
+UDebComponents:
+Architectures: amd64
+VerifyRelease: 671B51EA4CC7E5B2
+ListShellHook: grep-dctrl -e -S '^pcre2$' || [ $? -eq 1 ]

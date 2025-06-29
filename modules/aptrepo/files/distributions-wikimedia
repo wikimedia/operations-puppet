@@ -141,6 +141,7 @@ Components: main
  component/opensearch13
  component/php74
  component/php81
+ component/php83
  component/puppet7
  component/pdns-recursor
  component/prometheus-openstack-exporter
