@@ -247,11 +247,6 @@ node /^backup1001\.eqiad\./ {
     role(backup::olddirector)
 }
 
-# pending to be decommissioned, previous db backup generation
-node /^backup1002\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # eqiad bacula storage for External Storage databases
 node /^backup1003\.eqiad\./ {
     role(backup::es)
