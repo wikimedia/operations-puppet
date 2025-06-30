@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero, mwilliams, pwaigi1-]
+              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -448,7 +448,7 @@ groups:
               samwalton, apine, mlitn, sihe, cmadeo,
               cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
-              ifried, etonkovidova, ldelench, cjming, mnz,
+              ifried, etonkovidova, ldelench, cjming,
               wmde-fisch, ksiebert, tchanders,
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
@@ -494,7 +494,7 @@ groups:
                  as the ability to sudo to certain Analytics Cluster system users.
                  This group should contain members of the Analytics team.
     members: &analytics_admins_members [joal, mforns, milimetric, ebysans, aqu,
-              xcollazo, hokwelum, gmodena, dcausse, mnz, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
+              xcollazo, hokwelum, gmodena, dcausse, tchin, cjming, phuedx, dr0ptp4kt, sg912, sfaci,
               btullis, stevemunene, brouberol, ryankemper, bking, gehel, amastilovic, ahoelzl, otto]
     privileges: ['ALL = (hdfs)  NOPASSWD: ALL',
                  'ALL = (analytics)  NOPASSWD: ALL',
@@ -933,7 +933,7 @@ groups:
     description: Group of users that have access to ML Team lab/experimentation machines
     members: &ml-lab-users [chrisalbon, kevinbazira, aikochou, isaranto, gkyziridis,
                             klausman, dsaez, fab, isaacj, leizi, mgerlach, dr0ptp4kt,
-                            mirrys, mnz, paragon, trokhymovych, bearloga]
+                            mirrys, paragon, trokhymovych, bearloga]
     posix_name: render
     privileges: ['ALL = NOPASSWD: /usr/sbin/radeontop',
                  'ALL = NOPASSWD: /usr/bin/nvtop']
@@ -1036,7 +1036,7 @@ groups:
   analytics-research-admins:
     gid: 830
     description: Group of users for managing research related analytics/data jobs.
-    members: &analytics_research_admins_members [fab, gmodena, mnz]
+    members: &analytics_research_admins_members [fab, gmodena]
     privileges: [
       'ALL = (analytics-research) NOPASSWD: ALL',
       # https://wikitech.wikimedia.org/wiki/Analytics/Systems/Airflow
@@ -5096,16 +5096,12 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGlHTnlWPgIVAiGrqPSJTUN6+5WoaWjNta+RoZ42Qmv prabhat@wmf2921
     krb: present
   mnz:
-    ensure: present
-    email: maslam-ctr@wikimedia.org
+    ensure: absent
     realname: Muniza Aslam
-    expiry_date: "2025-06-28"
-    expiry_contact: xxiao@wikimedia.org
     gid: 500
     uid: 32084
-    krb: present
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZiBjvl5o40Ile7UjKq2OrMczkHMA4L6Md/6z+llKnY mnz@wlt
+    krb: absent
+    ssh_keys: []
   lbowmaker:
     ensure: absent
     realname: Luke Bowmaker
