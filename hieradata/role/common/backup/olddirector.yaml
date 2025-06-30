@@ -1,4 +1,0 @@
-cluster: backup
-profile::contacts::role_contacts: ['Data Persistence']
-profile::base::production::role_description: 'Old regular production backup storage server'
-profile::puppet::agent::force_puppet7: true

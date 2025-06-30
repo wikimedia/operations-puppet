@@ -34,15 +34,6 @@ class profile::backup::director(
         label_fmt        => $pool,
         max_vol_bytes    => '536870912000',
     }
-    # old production pool, to be removed in 60 days
-    bacula::director::pool { 'OldProduction':
-        max_vols         => 70,
-        storage          => 'backup1001-FileStorageProduction',
-        volume_retention => '90 days',
-        label_fmt        => 'production',
-        max_vol_bytes    => '536870912000',
-        next_pool        => $offsite_pool,
-    }
 
     # Default pool needed internally by bacula
     bacula::director::pool { 'Default':
@@ -57,15 +48,6 @@ class profile::backup::director(
         storage          => "${onsite_sd}-${file_storage_archive}",
         volume_retention => '5 years',
         label_fmt        => 'archiveEqiad',
-        max_vol_bytes    => '536870912000',
-    }
-
-    # Old Archive pool for long term archival - to be removed when migrated to the above
-    bacula::director::pool { 'OldArchive':
-        max_vols         => 5,
-        storage          => 'backup1001-FileStorageArchive',
-        volume_retention => '5 years',
-        label_fmt        => 'archive',
         max_vol_bytes    => '536870912000',
     }
 
@@ -87,33 +69,16 @@ class profile::backup::director(
         label_fmt        => 'databases-codfw',
         max_vol_bytes    => '536870912000',
     }
-    # Old databases pool, kept as read-only (for recovery purposes only).
-    # Temporary, to be removed after 60 days pass.
-    bacula::director::pool { 'OldDatabasesEqiad':
-        max_vols         => 95,
-        storage          => 'backup1001-FileStorageDatabases',
-        volume_retention => '90 days',
-        label_fmt        => 'databases',
-        max_vol_bytes    => '536870912000',
-    }
-    bacula::director::pool { 'OldDatabasesCodfw':
-        max_vols         => 95,
-        storage          => 'backup2001-FileStorageDatabasesCodfw',
-        volume_retention => '90 days',
-        label_fmt        => 'databases-codfw',
-        max_vol_bytes    => '536870912000',
-    }
-
 
     # TODO: config codfw pool when there is dual directors
     # Off site pool for off site backups
-    bacula::director::pool { $offsite_pool:
-        max_vols         => 70,
-        storage          => "${offsite_sd}-FileStorageProduction",
-        volume_retention => '90 days',
-        label_fmt        => $offsite_pool,
-        max_vol_bytes    => '536870912000',
-    }
+    #bacula::director::pool { $offsite_pool:
+    #    max_vols         => 70,
+    #    storage          => "${offsite_sd}-FileStorageProduction",
+    #    volume_retention => '90 days',
+    #    label_fmt        => $offsite_pool,
+    #    max_vol_bytes    => '536870912000',
+    #}
 
     # Eqiad pool for read-only External Storage backups
     bacula::director::pool { 'EsRoEqiad':
