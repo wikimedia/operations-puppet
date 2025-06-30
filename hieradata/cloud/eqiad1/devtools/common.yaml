@@ -357,7 +357,7 @@ profile::firewall::nftables_throttling::max_connections: 32
 profile::firewall::nftables_throttling::throttle_duration: 300
 profile::firewall::nftables_throttling::port: 443
 
-rofile::prometheus::nft_throttling_denylist::ensure: absent
+profile::prometheus::nft_throttling_denylist::ensure: absent
 
 profile::etherpad::service_ensure: running
 
