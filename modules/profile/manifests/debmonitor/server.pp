@@ -192,7 +192,7 @@ class profile::debmonitor::server (
             migration_task => 'T350694',
         }
 
-        prometheus::blackbox::check::http { 'debmonitor-client-download':
+        prometheus::blackbox::check::http { "debmonitor-client-download-${internal_server_name}":
             server_name     => $internal_server_name,
             port            => 443,
             path            => '/client',
