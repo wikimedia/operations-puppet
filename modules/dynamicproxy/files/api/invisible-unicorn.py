@@ -68,7 +68,7 @@ enforcer = policy.Enforcer(cfg.CONF)
 enforcer.register_defaults(
     [
         policy.RuleDefault("admin", "role:admin"),
-        policy.RuleDefault("admin_or_member", "rule:admin or role:member"),
+        policy.RuleDefault("admin_or_member", "rule:admin or role:member or role:proxyadmin"),
         policy.RuleDefault("proxy:zones:index", ""),
         policy.RuleDefault("proxy:zones:use_deprecated", "rule:admin"),
         policy.RuleDefault("proxy:index", ""),
