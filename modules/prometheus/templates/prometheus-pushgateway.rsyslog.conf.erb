@@ -1,0 +1,5 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+if ($programname startswith 'prometheus-pushgateway') then {
+    action(type="omfile" file="<%= @log_file %>")
+    stop
+}
