@@ -380,14 +380,14 @@ profile::installserver::preseed::preseed_per_hostname:
   'kafkamon[12]00[0-9]':
     - partman/flat.cfg
     - virtual.cfg
-  'sessionstore100[5-6]':
+  'sessionstore1006':
     - reuse-parts.cfg
     - partman/reuse-raid1-2dev.cfg
   # Migrate sessionstore to new disk config: T391544
   'sessionstore200[4-6]':
     - reuse-parts.cfg
     - partman/custom/reuse-cassandra-jbod.cfg
-  'sessionstore1004':
+  'sessionstore100[4-5]':
     - partman/custom/cassandra-jbod.cfg
     - partman/raid1-2dev-efi.cfg
   'contint[12]00[12]':
