@@ -42,6 +42,20 @@ profile::cassandra::instances:
   "sessionstore1005.eqiad.wmnet":
     a:
       listen_address: 10.64.32.67
+      data_file_directories:
+        - /srv/storage-0/cassandra-a/data
+        - /srv/storage-1/cassandra-a/data
+        - /srv/storage-2/cassandra-a/data
+        - /srv/storage-3/cassandra-a/data
+        - /srv/storage-4/cassandra-a/data
+        - /srv/storage-5/cassandra-a/data
+        - /srv/storage-6/cassandra-a/data
+        - /srv/storage-7/cassandra-a/data
+      heapdump_directory: /srv/storage-0/cassandra-a
+      commitlog_directory: /srv/cassandra/cassandra-a/commitlog
+      hints_directory: /srv/cassandra/cassandra-a/hints
+      saved_caches_directory: /srv/cassandra/cassandra-a/saved_caches
+      local_system_data_file_directory: /srv/cassandra/cassandra-a/system
   "sessionstore1006.eqiad.wmnet":
     a:
       listen_address: 10.64.48.59
