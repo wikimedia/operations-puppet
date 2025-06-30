@@ -107,6 +107,7 @@ class gitlab::ssh (
 
     profile::auto_restarts::service { 'ssh-gitlab':
         # make sure the auto restart does not overlap with restore
+        ensure         => $ensure,
         restart_hour   => '14',
         restart_minute => '00',
     }
