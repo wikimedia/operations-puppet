@@ -190,6 +190,8 @@ class profile::kubernetes::deployment_server::global_config (
 
     $gitlab_ips = dnsquery::lookup('gitlab.wikimedia.org', true).flatten.unique
     $rgw_eqiad_dpe_ips = dnsquery::lookup('rgw.eqiad.dpe.anycast.wmnet', true).flatten.unique
+    $thanos_swift_eqiad_ips = dnsquery::lookup('thanos-swift.svc.eqiad.wmnet', true).flatten.unique
+    $thanos_swift_codfw_ips = dnsquery::lookup('thanos-swift.svc.codfw.wmnet', true).flatten.unique
 
     $external_service_opts = deep_merge(
       {
@@ -539,6 +541,20 @@ class profile::kubernetes::deployment_server::global_config (
           'instances' => {
             'eqiad' => $mariadb_external_storage_eqiad_ips,
             'codfw' => $mariadb_external_storage_codfw_ips,
+          }
+        },
+        'thanos-swift' => {
+          '_meta' => {
+            'ports' => [
+              {
+                'name' => 'https',
+                'port' => 443
+              },
+            ],
+          },
+          'instances' => {
+            'eqiad' => $thanos_swift_eqiad_ips,
+            'codfw' => $thanos_swift_codfw_ips,
           }
         }
       },
