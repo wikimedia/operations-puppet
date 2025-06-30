@@ -7525,9 +7525,7 @@ ldap_only_users:
   dhardy:
     ensure: present
     realname: Dillon Hardy
-    email: dhardy-ctr@wikimedia.org
-    expiry_date: "2025-08-01"
-    expiry_contact: jdrewniak@wikimedia.org
+    email: dhardy@wikimedia.org
   hswan:
     ensure: present
     realname: Hilary Swan
