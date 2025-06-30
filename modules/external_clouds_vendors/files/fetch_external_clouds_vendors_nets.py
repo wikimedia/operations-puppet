@@ -357,6 +357,11 @@ def main() -> int:
                 "https://www.bing.com/toolbox/bingbot-others.json",
                 {"ipv4Prefix", "ipv6Prefix"},
             ),
+            ExternalCloudVendor(
+                "ImageSiftBot",
+                "https://imagesift.com/wikimedia.json",
+                {"ipv4Prefix", "ipv6Prefix"},
+            ),
         ],
     }
 
