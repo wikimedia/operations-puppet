@@ -632,6 +632,12 @@ def update_prefix_by_id(project: str, prefix_id: int):
         if "roles" in request.json:
             roles = request.json["roles"]
 
+            if type(roles) is not list:
+                return (
+                    dump_with_requested_format({"error": "Provided roles should be a list"}),
+                    400,
+                )
+
             to_remove = set(current_roles) - set(roles)
             to_add = set(roles) - set(current_roles)
 
