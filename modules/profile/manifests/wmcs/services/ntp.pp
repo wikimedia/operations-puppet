@@ -31,6 +31,7 @@ class profile::wmcs::services::ntp (
         time_acl     => $time_acl,
         extra_config => $extra_config,
         query_acl    => $query_acl,
+        auto_restart => true,
     }
 
     # FIXME: add monitoring once we decide on a wmcs/services monitoring system
