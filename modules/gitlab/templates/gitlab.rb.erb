@@ -122,9 +122,6 @@ nginx['log_format'] = 'escape=json\' \'@cee: {\'
 gitlab_rails['gitlab_default_projects_features_<%= project %>'] = <%= @default_projects_features.include?(project) %>
 <%- end -%>
 
-# The directory where Git repositories will be stored
-git_data_dirs({"default" => {"path" => "<%= @data_dir %>"} })
-
 # The directory where Gitlab backups will be stored
 gitlab_rails['backup_path'] = "<%= @backup_dir_data %>"
 
@@ -192,15 +189,23 @@ puma['exporter_address'] = '<%= config.fetch('listen_address', @exporter_default
 puma['exporter_port'] = <%= config['port'] %>
 <%- when 'workhorse' -%>
 gitlab_workhorse['prometheus_listen_addr'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>'
-<%- when 'gitaly' -%>
-gitaly['configuration'] = {
-  prometheus_listen_addr: '<%= config.fetch('listen_address', @exporter_default_listen) %>:<%= config['port'] %>',
-}
 <%- when 'sidekiq' -%>
 sidekiq['listen_address'] = '<%= config.fetch('listen_address', @exporter_default_listen) %>'
 sidekiq['listen_port'] = <%= config['port'] %>
 <% end -%>
 <% end -%>
+
+gitaly['configuration'] = {
+<%- if @exporters.key?('gitaly') -%>
+  prometheus_listen_addr: '<%= @exporters['gitaly'].fetch('listen_address', @exporter_default_listen) %>:<%= @exporters['gitaly']['port'] %>',
+<%- end -%>
+  storage: [
+    {
+      name: 'default',
+      path: '<%= @data_dir %>/repositories',
+    },
+  ],
+}
 
 gitlab_rails['omniauth_allow_single_sign_on'] = <%= _to_ruby(@configured_providers) %>
 <% unless @auto_sign_in_with.nil? -%>
