@@ -322,10 +322,6 @@ node /^backup2012\.codfw\./ {
 node /^backup2013\.codfw\./ {
     role(dbbackups::content)
 }
-# pending to be decommissioned, previous db backup generation
-node /^backup2002\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
 
 # to be setup
 node /^backup2014\.codfw\./ {
