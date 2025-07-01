@@ -90,7 +90,7 @@ END
 #echo "results_mediantasksopen_unbreaknow"
 result_mediantasksopen_unbreaknow=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "100" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "100" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "100" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "100" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
@@ -98,7 +98,7 @@ END
 #echo "rm_needstriage"
 result_mediantasksopen_needstriage=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "90" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "90" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "90" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "90" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
@@ -106,7 +106,7 @@ END
 #echo "rm_high"
 result_mediantasksopen_high=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "80" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "80" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "80" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "80" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
@@ -114,7 +114,7 @@ END
 #echo "rm_normal"
 result_mediantasksopen_normal=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "50" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "50" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "50" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "50" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
@@ -122,7 +122,7 @@ END
 #echo "rm_low"
 result_mediantasksopen_low=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "25" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "25" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "25" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "25" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
@@ -130,7 +130,7 @@ END
 #echo "rm_lowest"
 result_mediantasksopen_lowest=$(MYSQL_PWD=${sql_pass} /usr/bin/mysql -h $sql_host -P $sql_port -u$sql_user $sql_name << END
 
-SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_number, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "10" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "10" AND d.status = "open")) as t2 WHERE 1 AND t1.row_number IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
+SELECT avg(t1.dateCreated) as '' FROM (SELECT @rownum:=@rownum+1 as row_nr, d.dateCreated FROM maniphest_task d, (SELECT @rownum:=0) r WHERE (d.priority = "10" AND d.status = "open") ORDER BY d.dateCreated) as t1, (SELECT COUNT(*) AS total_rows FROM maniphest_task d WHERE (d.priority = "10" AND d.status = "open")) as t2 WHERE 1 AND t1.row_nr IN ( floor((total_rows+1)/2), floor((total_rows+2)/2));
 
 END
 )
