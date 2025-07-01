@@ -533,3 +533,42 @@ certificates::acme_chief:
     - '*.wikopedia.com'
     - wikimediafoundations.org
     - '*.wikimediafoundations.org'
+    - wicipedia.com
+    - '*.wicipedia.com'
+    - wikimediadataservice.net
+    - '*.wikimediadataservice.net'
+    - wikipedianetworktrust.net
+    - '*.wikipedianetworktrust.net'
+    - wikimedia-foundation.org
+    - '*.wikimedia-foundation.org'
+    - wikpedia.net
+    - '*.wikpedia.net'
+    - wikipedia-iran.com
+    - '*.wikipedia-iran.com'
+    - wikidata.hk
+    - '*.wikidata.hk'
+    - pap.wiki
+    - '*.pap.wiki'
+    - wikiguidebook.org
+    - '*.wikiguidebook.org'
+    - wikinews.wiki
+    - '*.wikinews.wiki'
+    - wikimediacommons.app
+    - '*.wikimediacommons.app'
+    - xn--80adgfman1aa4l.xn--p1ai
+    - '*.xn--80adgfman1aa4l.xn--p1ai'
+    - wikimediafunctions.net
+    - '*.wikimediafunctions.net'
+  non-canonical-redirect-13:
+    staging_time: 604800
+    challenge: dns-01
+    authorized_regexes:
+    - ^ncredir[0-9]{4,}\..*\.wmnet$
+    prevalidate: true
+    skip_invalid_snis: true
+    CN: 2wikipedia.com
+    SNI:
+    - 2wikipedia.com
+    - '*.2wikipedia.com'
+    - visualwikipedia.net
+    - '*.visualwikipedia.net'
