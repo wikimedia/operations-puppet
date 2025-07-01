@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus]
+              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -446,7 +446,7 @@ groups:
               matmarex, kharlan, bpirkle, rmaung, lilients, ppel, aikochou,
               kzeta, urbanecm, vthamaini, paragon, cbogen, pginer,
               samwalton, apine, mlitn, sihe, cmadeo,
-              cooltey, schoenbaechler, btullis, jabrams, jm, nforrester,
+              cooltey, btullis, jabrams, jm, nforrester,
               katelevan, cmaslak, abban, mikeraish, saisuman, gehel,
               ifried, etonkovidova, ldelench, cjming,
               wmde-fisch, ksiebert, tchanders,
@@ -4894,12 +4894,11 @@ users:
     ssh_keys:
       - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdWEos7FwxZ4JpK7zo05iCggujoIkojNUH93pwQC4/l jelto-wmf@x1'
   schoenbaechler:
-    ensure: present
+    ensure: absent
     realname: Robin Schoenbaechler
-    email: rschoenbaechler@wikimedia.org
     uid: 17817
     gid: 500
-    ssh_keys: []  # no SSH keys, for Superset dashboards with private data
+    ssh_keys: []
   ksiebert:
     ensure: present
     realname: Karolin Siebert
