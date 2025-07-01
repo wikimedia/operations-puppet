@@ -16,6 +16,7 @@ class profile::pyrra::filesystem::slos (
         slo_latency_target => '90.0',
         latency_max_seconds_bucket => '30000',
         enable_alerts => false,
+        slo_success_ratio_target => '85.0',
     }
 
     # Performance test for T387350

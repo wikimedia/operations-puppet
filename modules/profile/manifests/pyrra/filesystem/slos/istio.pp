@@ -13,8 +13,10 @@ define profile::pyrra::filesystem::slos::istio (
     String $pyrra_namespace = 'pyrra-o11y',
     Wmflib::Ensure $ensure = 'present',
     String $prometheus_instance = 'k8s',
+    String $slo_success_ratio_requests_regex = '\(2\|3\)..',
     Optional[String] $slo_latency_target = undef,
     Optional[String] $latency_target_requests_regex = undef,
+    Optional[String] $slo_success_ratio_target = undef,
 ) {
     if $destination_canonical_service == $title {
         # Istio 1.15 uses the -production suffix in destination_canonical_service, 1.24 does not.
@@ -94,6 +96,48 @@ define profile::pyrra::filesystem::slos::istio (
                             },
                             'total'   => {
                                 'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
+                            },
+                        },
+                    },
+                },
+              })
+            }
+        }
+        # Experimental target to go alongside to the Service Availability one. In some cases, like Citoid's,
+        # we may have multiple SLOs:
+        # 1) Generic availability, for example in the Citoid's use case a 5xx is surely a backend issue.
+        # 2) Success ratio, for example in the Citoid's use case whatever it is not a 2xx or a 3xx, since
+        #    we also count 4xx in this case as a bad response (in particular, 404s are indicative of an issue
+        #    with a third party service).
+        # Two aspects of the same service, looked from different point of views.
+        if $slo_success_ratio_target {
+            pyrra::filesystem::config { "${k8s_cluster_name}-${title}-success-ratio-${datacenter}.yaml":
+              ensure  => $ensure,
+              content => to_yaml({
+                'apiVersion' => 'pyrra.dev/v1alpha1',
+                'kind'       => 'ServiceLevelObjective',
+                'metadata'   => {
+                    'name'      => "${title}-availability",
+                    'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
+                    'labels'    => {
+                        'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
+                        'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
+                        'pyrra.dev/site'    => "${datacenter}", #lint:ignore:only_variable_string
+                    },
+                },
+                'spec'       => {
+                    'alerting'  => {
+                        'burnrates' => $enable_alerts
+                    },
+                    'target'    => $slo_success_ratio_target,
+                    'window'    => $window,
+                    'indicator' => {
+                        'ratio' => {
+                            'errors' => {
+                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_target}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
+                            },
+                            'total'  => {
+                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
                             },
                         },
                     },
