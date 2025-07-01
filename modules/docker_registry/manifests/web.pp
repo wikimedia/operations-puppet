@@ -66,8 +66,9 @@ class docker_registry::web (
     # Read access to /restricted/
     $restricted_read_file = '/etc/nginx/restricted-read.htpasswd';
     $kubernetes_user_hash = htpasswd($kubernetes_user_password, $password_salt);
+    $prod_build_user_hash = htpasswd($prod_build_user_password, $password_salt);
     file { $restricted_read_file:
-        content => "kubernetes:${kubernetes_user_hash}\nci-restricted:${ci_restricted_user_hash}",
+        content => "kubernetes:${kubernetes_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}",
         owner   => 'www-data',
         group   => 'www-data',
         mode    => '0440',
@@ -78,7 +79,6 @@ class docker_registry::web (
     # Push access to /
     $regular_push_file = '/etc/nginx/regular-push.htpasswd';
     $ci_build_user_hash = htpasswd($ci_build_user_password, $password_salt);
-    $prod_build_user_hash = htpasswd($prod_build_user_password, $password_salt);
     file { $regular_push_file:
         content => "ci-build:${ci_build_user_hash}\nprod-build:${prod_build_user_hash}\nci-restricted:${ci_restricted_user_hash}",
         owner   => 'www-data',
