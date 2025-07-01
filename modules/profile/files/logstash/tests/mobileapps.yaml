@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+fields:
+  "rsyslog.severity": "NOTICE"
+  "rsyslog.facility": "user"
+  facility: "user"
+  level: "NOTICE"
+  program: "input-file-kubernetes"
+  type: "syslog"
+codec: "json_lines"
+ignore:
+  - "@timestamp"
+  - "normalized_message"
+  - "tags"
+testcases:
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2025-07-01T13:36:11.683",
+          "rsyslog.hostname": "kubestage1005",
+          "logsource": "kubestage1005",
+          "hostname": "mobileapps-staging-cc4747488-5mw46",
+          "kubernetes": {
+            "namespace_name": "mobileapps"
+          },
+          "msg": "2025-07-01T13:36:11.68362414Z stdout F {\"name\":\"mobileapps\",\"hostname\":\"mobileapps-staging-cc4747488-5mw46\",\"pid\":13,\"level\":\"TRACE\",\"msg\":\"Outgoing request\",\"outRequest\":{\"method\":\"post\",\"uri\":\"http://localhost:6500/w/api.php\",\"headers\":{\"host\":\"commons.wikimedia.org\",\"user-agent\":\"Mobileapps/WMF\",\"content-type\":\"application/x-www-form-urlencoded\",\"x-request-id\":\"5df731a5-4655-459d-8cfe-b8245ff86f89\"},\"body\":{\"format\":\"json\",\"formatversion\":2,\"action\":\"query\",\"prop\":\"coordinates|description|pageprops|pageimages|revisions|info\",\"pilicense\":\"any\",\"piprop\":\"thumbnail|original|name\",\"pilangcode\":\"commons\",\"pithumbsize\":320,\"rvprop\":\"contentmodel|timestamp\",\"rvslots\":\"main\",\"titles\":\"File:Belfort-Technopole_(2).JPG\"}},\"request_id\":\"5df731a5-4655-459d-8cfe-b8245ff86f89\",\"request\":{\"url\":\"/commons.wikimedia.org/v1/page/summary/File%3ABelfort-Technopole_(2).JPG\",\"headers\":{\"user-agent\":\"python-httpx/0.28.1\",\"x-request-id\":\"5df731a5-4655-459d-8cfe-b8245ff86f89\"},\"method\":\"GET\",\"params\":{\"0\":\"/commons.wikimedia.org/v1/page/summary/File:Belfort-Technopole_(2).JPG\"},\"query\":{},\"remoteAddress\":\"127.0.0.1\",\"remotePort\":40370},\"levelPath\":\"trace/req\",\"time\":\"2025-07-01T13:35:51.766Z\",\"v\":0}"
+        }
+    expected:
+      - __target_index: "logstash-webrequest-1-1.0.0-N-daily"
+        facility: "user"
+        host: "kubestage1005"
+        logsource: "kubestage1005"
+        hostname: "mobileapps-staging-cc4747488-5mw46"
+        kubernetes:
+          namespace_name: "mobileapps"
+        level: "TRACE"
+        levelPath: "trace/req"
+        msg: "Outgoing request"
+        name: "mobileapps"
+        pid: 13
+        program: "input-file-kubernetes"
+        request:
+          headers:
+            user-agent: "python-httpx/0.28.1"
+            x-request-id: "5df731a5-4655-459d-8cfe-b8245ff86f89"
+          method: "GET"
+          params:
+            0: "/commons.wikimedia.org/v1/page/summary/File:Belfort-Technopole_(2).JPG"
+          remoteAddress: "127.0.0.1"
+          remotePort: 40370
+          url: "/commons.wikimedia.org/v1/page/summary/File%3ABelfort-Technopole_(2).JPG"
+        request_id: "5df731a5-4655-459d-8cfe-b8245ff86f89"
+        stream: "stdout"
+        time: "2025-07-01T13:35:51.766Z"
+        type: "syslog"
+        v: 0
