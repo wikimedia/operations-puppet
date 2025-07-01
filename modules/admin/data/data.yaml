@@ -476,7 +476,7 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore, olliekryva, vgutierrez]
+              stran, addshore, olliekryva, vgutierrez, resquito]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -1063,7 +1063,8 @@ groups:
     gid: 831
     description: Group of users for managing Platform Engineering related analytics/data jobs.
     members: &analytics_platform_eng_admins_members [
-      cparle, mfossati, mlitn, fab, htriedman
+      cparle, mfossati, mlitn, fab, htriedman,
+      hshaikh, resquito, dr0ptp4kt
     ]
     privileges: [
       'ALL = (analytics-platform-eng) NOPASSWD: ALL',
