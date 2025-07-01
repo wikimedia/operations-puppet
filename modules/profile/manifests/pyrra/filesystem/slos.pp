@@ -31,6 +31,18 @@ class profile::pyrra::filesystem::slos (
         k8s_cluster_name => 'ml-serve',
     }
 
+    profile::pyrra::filesystem::slos::istio { 'tonecheck':
+        team => 'ml',
+        slo_availability_target => '95.0',
+        slo_latency_target => '90.0',
+        destination_canonical_service => 'edit-check-predictor',
+        latency_max_seconds_bucket => '1000',
+        enable_alerts => false,
+        pyrra_namespace => 'pyrra-o11y',
+        latency_target_requests_regex => '2..',
+        prometheus_instance => 'k8s-mlserve',
+    }
+
     ['eqiad', 'codfw'].each | $datacenter | {
         # Logstash Requests SLO - please see wikitech for details
         # https://wikitech.wikimedia.org/wiki/SLO/logstash
