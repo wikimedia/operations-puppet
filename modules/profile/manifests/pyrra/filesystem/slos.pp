@@ -15,7 +15,7 @@ class profile::pyrra::filesystem::slos (
         slo_requests_target => '99.5',
         slo_latency_target => '90.0',
         latency_max_seconds_bucket => '30000',
-        enable_alerts => true,
+        enable_alerts => false,
     }
 
     # Performance test for T387350
@@ -58,6 +58,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.5',
                 'window' => '4w',
                 'indicator' => {
@@ -94,6 +97,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.95',
                 'window' => '4w',
                 'indicator' => {
@@ -128,6 +134,9 @@ class profile::pyrra::filesystem::slos (
             },
         },
         'spec' => {
+            'alerting'  => {
+                'burnrates' => true
+            },
             'target' => '99.9',
             'window' => '12w',
             'indicator' => {
@@ -166,6 +175,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.9',
                 'window' => '12w',
                 'indicator' => {
@@ -206,6 +218,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.7',
                 'window' => '12w',
                 'indicator' => {
@@ -246,6 +261,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.9',
                 'window' => '12w',
                 'indicator' => {
@@ -279,6 +297,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '99.8',
                 'window' => '12w',
                 'indicator' => {
@@ -315,6 +336,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '95',
                 'window' => '12w',
                 'indicator' => {
@@ -351,6 +375,9 @@ class profile::pyrra::filesystem::slos (
             },
         },
         'spec' => {
+            'alerting'  => {
+                'burnrates' => false
+            },
             'target' => '95',
             'window' => '12w',
             'indicator' => {
@@ -385,6 +412,9 @@ class profile::pyrra::filesystem::slos (
             },
         },
         'spec' => {
+            'alerting'  => {
+                'burnrates' => false
+            },
             'target' => '95',
             'window' => '12w',
             'indicator' => {
@@ -419,6 +449,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => false
+                },
                 'target' => '95',
                 'window' => '12w',
                 'indicator' => {
@@ -449,6 +482,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => false
+                },
                 'target' => '95',
                 'window' => '12w',
                 'indicator' => {
@@ -479,6 +515,9 @@ class profile::pyrra::filesystem::slos (
                 },
             },
             'spec' => {
+                'alerting'  => {
+                    'burnrates' => true
+                },
                 'target' => '95',
                 'window' => '12w',
                 'indicator' => {
