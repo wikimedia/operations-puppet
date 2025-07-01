@@ -31,7 +31,7 @@ profile::opensearch::dashboards::httpd_proxy::serveradmin: noc@wikimedia.org
 profile::opensearch::dashboards::httpd_proxy::auth_type: sso
 
 # enforces phatality plugin version
-profile::opensearch::dashboards::phatality::version: '2.7.0.2'
+profile::opensearch::dashboards::phatality::version: '2.7.0.3'
 
 # OpenSearch
 # NOTE: short_cluster_name must be kept in sync with the data role (logging/opensearch/data.yaml)
