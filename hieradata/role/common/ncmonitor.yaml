@@ -14,6 +14,7 @@ profile::ncmonitor::suffix_list_path: '/var/lib/ncmonitor/public_suffix_list.dat
 profile::ncmonitor::markmonitor_ignored_domains:
   - "learn.wiki"
   - "pywikibot.org"
+  - "pywikipedia.org"
   - "wikimedia-dns.org"
   - "wikimedia.cloud"
   - "wikimedia.social"
