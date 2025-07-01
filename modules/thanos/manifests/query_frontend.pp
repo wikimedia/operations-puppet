@@ -80,6 +80,7 @@ class thanos::query_frontend (
         service_name  => $service_name,
         sampler_type  => 'traceidratiobased',
         sampler_param => '0.001',
+        notify        => Service[$service_name],
     }
 
     $logging_config = @("CONFIG")

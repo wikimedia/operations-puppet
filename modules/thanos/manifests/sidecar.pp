@@ -78,6 +78,7 @@ define thanos::sidecar (
     thanos::tracing { $tracing_config_file:
         service_name => $service_name,
         sampler_type => 'parentbasedalwayssample',
+        notify       => Service[$service_name],
     }
 
     systemd::service { $service_name:

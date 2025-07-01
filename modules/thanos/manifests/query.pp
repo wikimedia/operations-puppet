@@ -51,6 +51,7 @@ class thanos::query (
     thanos::tracing { $tracing_config_file:
         service_name => $service_name,
         sampler_type => 'parentbasedalwayssample',
+        notify       => Service[$service_name],
     }
 
     $logging_cmdline = $request_debug ? {

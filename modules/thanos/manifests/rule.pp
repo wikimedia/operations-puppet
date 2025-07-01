@@ -109,6 +109,7 @@ class thanos::rule (
     thanos::tracing { $tracing_config_file:
         service_name => $service_name,
         sampler_type => 'parentbasedalwayssample',
+        notify       => Service[$service_name],
     }
 
     file { $am_config_file:
