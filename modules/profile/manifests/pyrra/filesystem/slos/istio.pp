@@ -2,11 +2,11 @@
 #
 define profile::pyrra::filesystem::slos::istio (
     String $team,
-    String $slo_requests_target,
+    String $slo_availability_target,
     Array[String] $datacenters = ['eqiad', 'codfw'],
     String $window = '4w',
     String $destination_canonical_service = $title,
-    String $requests_errors_regex = '5..',
+    String $availability_errors_regex = '5..',
     String $latency_max_seconds_bucket = '5000',
     String $k8s_cluster_name = 'wikikube',
     Boolean $enable_alerts = false,
@@ -25,13 +25,13 @@ define profile::pyrra::filesystem::slos::istio (
         $destination_canonical_service_filter = "destination_canonical_service=\"${destination_canonical_service}\""
     }
     $datacenters.each |$datacenter| {
-        pyrra::filesystem::config { "${k8s_cluster_name}-${title}-requests-${datacenter}.yaml":
+        pyrra::filesystem::config { "${k8s_cluster_name}-${title}-availability-${datacenter}.yaml":
           ensure  => $ensure,
           content => to_yaml({
             'apiVersion' => 'pyrra.dev/v1alpha1',
             'kind'       => 'ServiceLevelObjective',
             'metadata'   => {
-                'name'      => "${title}-requests",
+                'name'      => "${title}-availability",
                 'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
                 'labels'    => {
                     'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
@@ -43,12 +43,12 @@ define profile::pyrra::filesystem::slos::istio (
                 'alerting'  => {
                     'burnrates' => $enable_alerts
                 },
-                'target'    => $slo_requests_target,
+                'target'    => $slo_availability_target,
                 'window'    => $window,
                 'indicator' => {
                     'ratio' => {
                         'errors' => {
-                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${requests_errors_regex}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
+                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${availability_errors_regex}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
                         },
                         'total'  => {
                             'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
