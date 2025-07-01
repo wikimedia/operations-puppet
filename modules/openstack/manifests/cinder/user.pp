@@ -5,5 +5,7 @@ class openstack::cinder::user (
 
     systemd::sysuser { 'cinder':
         description => 'cinder system user',
+        home_dir    => '/var/lib/cinder',
+        shell       => '/usr/sbin/nologin',
     }
 }
