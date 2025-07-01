@@ -6,4 +6,5 @@ class role::microsites::peopleweb {
     include profile::microsites::peopleweb
     include profile::tlsproxy::envoy # TLS termination
     include profile::prometheus::apache_exporter
+    include profile::microsites::monitoring    # Monitoring for miscweb services on Kubernetes (T397264)
 }
