@@ -457,7 +457,7 @@ class profile::pyrra::filesystem::slos (
                 'window' => '12w',
                 'indicator' => {
                     'bool_gauge' => {
-                            'metric' => "wdqs_main_sli_update_lag:bool{site=\"${datacenter}\"}",
+                            'metric' => "wdqs_sli_main_update_lag:bool{site=\"${datacenter}\"}",
                     },
                 },
             },
