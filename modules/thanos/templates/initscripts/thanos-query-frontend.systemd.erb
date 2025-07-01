@@ -18,4 +18,5 @@ ExecStart=/usr/bin/thanos query-frontend \
   --query-frontend.compress-responses \
   --query-range.align-range-with-step \
   --query-frontend.force-query-stats \
+  <%= @tracing_enabled ? "--tracing.config-file #{@tracing_config_file}" : '' %> \
   <%= @logging_cmdline %>

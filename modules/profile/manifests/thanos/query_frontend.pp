@@ -15,5 +15,6 @@ class profile::thanos::query_frontend (
         memcached_port   => 11211,
         # A little over a year max - T356788
         max_query_length => '9000h',
+        tracing_enabled  => true,
     }
 }

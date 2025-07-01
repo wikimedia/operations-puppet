@@ -16,6 +16,7 @@
 # [*memcached_port*] The port for memcached client
 # [*request_debug*] Enable request debug logging
 # [*memlimit_ratio*] Set GOMEMLIMIT to system/container memory * ratio. Use 0.0 to disable.
+# [*tracing_enabled*] Self explanatory
 
 class thanos::query_frontend (
     Stdlib::Port::Unprivileged $http_port = 16902,
@@ -26,12 +27,14 @@ class thanos::query_frontend (
     Stdlib::Port $memcached_port = 11211,
     Boolean $request_debug = false,
     Float[0, 1] $memlimit_ratio = 0.7,
+    Boolean $tracing_enabled = false,
 ) {
     ensure_packages(['thanos'])
 
     $http_address = "0.0.0.0:${http_port}"
     $service_name = 'thanos-query-frontend'
     $cache_config_file = '/etc/thanos-query-frontend/cache.yaml'
+    $tracing_config_file = '/etc/thanos-query-frontend/tracing-config.yml'
 
     file { '/etc/thanos-query-frontend':
         ensure => directory,
@@ -71,6 +74,12 @@ class thanos::query_frontend (
         group   => 'root',
         content => to_yaml($cache_config),
         notify  => Service[$service_name],
+    }
+
+    thanos::tracing { $tracing_config_file:
+        service_name  => $service_name,
+        sampler_type  => 'traceidratiobased',
+        sampler_param => '0.001',
     }
 
     $logging_config = @("CONFIG")
