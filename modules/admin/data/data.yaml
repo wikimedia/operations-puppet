@@ -471,7 +471,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg, htriedman]
+              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg, htriedman, antonkokhwmde]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6718,6 +6718,15 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICB5a7B3Lik8aSZpI3TOgV6uBExCmrkmn8FE/3PHmClG claudiomelo@wmf3041
     krb: absent
+  antonkokhwmde:
+    ensure: present
+    realname: Anton Kokh
+    email: anton.kokh@wikimedia.de
+    uid: 47485
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDR/b6QSDCarQkDPB++eIguZWEW7PjR2O9nIt7WtVNiC anton kokh@wmde-102485
+    krb: present
 
 ldap_only_users:
   adavenport:
