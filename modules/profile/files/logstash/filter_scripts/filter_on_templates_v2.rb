@@ -180,10 +180,13 @@ end
 # The filter required by the Ruby plugin.
 def filter(event)
   # Collect invalid namespaces for reporting
+  # Pass through existing errors
   errors = {
-    :no_such_field => [],
-    :field_type_mismatch => []
+    :no_such_field => event.get('[normalized][dropped][no_such_field]'),
+    :field_type_mismatch => event.get('[normalized][dropped][field_type_mismatch]')
   }
+  errors[:no_such_field] = [] unless errors[:no_such_field].is_a?(Array)
+  errors[:field_type_mismatch] = [] unless errors[:field_type_mismatch].is_a?(Array)
 
   # performance optimization: remove objects and geo_points from the full event_namespaces list
   # these excluded namespaces require special treatment
@@ -377,6 +380,11 @@ if __FILE__ == $PROGRAM_NAME
           }
         }
       }
+    },
+    'normalized' => {
+      'dropped' => {
+        'no_such_field' => ['foo']
+      }
     }
   }
 
@@ -411,6 +419,7 @@ if __FILE__ == $PROGRAM_NAME
   assert_true(
     'undefined fields populate normalized.dropped.no_such_field',
     event.get('[normalized][dropped][no_such_field]') == [
+      'foo',
       '[client][geo][location][undefined_field]',
       '[undefined_field]',
       '[client][geo][undefined_field]'
