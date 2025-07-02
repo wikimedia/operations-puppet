@@ -10,19 +10,19 @@ Job {
   Allow Mixed Priority = yes
 }
 
-Job {
-  Name = "Migrate Job"
-  Type = Migrate
-  Level = Full
-  Pool = OldProduction
-  FileSet = "root"
-  Client = <%= @fqdn -%>-fd
-  Messages = Standard
-  Selection Type = SQLQuery
-  Selection Pattern = "SELECT 15515"
-  Priority = 20
-  Allow Mixed Priority = yes
-}
+#Job {
+#  Name = "Migrate Job"
+#  Type = Migrate
+#  Level = Full
+#  Pool = OldProduction
+#  FileSet = "root"
+#  Client = <%= @fqdn -%>-fd
+#  Messages = Standard
+#  Selection Type = SQLQuery
+#  Selection Pattern = "SELECT 15515"
+#  Priority = 20
+#  Allow Mixed Priority = yes
+#}
 
 Job {
   Name = "Offsite Job"
