@@ -11,3 +11,6 @@ profile::thanos::objstore_password: 'foo'
 profile::thanos::retention::raw: '2w'
 profile::thanos::retention::5m: '2w'
 profile::thanos::retention::1h: '2w'
+
+profile::alertmanager::thanos_query_hosts: "%{alias('__hosts_for_role_titan')}"
+
