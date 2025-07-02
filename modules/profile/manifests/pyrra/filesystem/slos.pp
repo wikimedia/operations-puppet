@@ -12,7 +12,7 @@ class profile::pyrra::filesystem::slos (
     # Services on K8s served via Istio Ingress
     profile::pyrra::filesystem::slos::istio { 'citoid':
         team => 'sre',
-        slo_requests_target => '99.5',
+        slo_availability_target => '99.5',
         slo_latency_target => '90.0',
         latency_max_seconds_bucket => '30000',
         enable_alerts => false,
@@ -22,7 +22,7 @@ class profile::pyrra::filesystem::slos (
     # Performance test for T387350
     profile::pyrra::filesystem::slos::istio { 'revertrisk-la':
         team => 'ml',
-        slo_requests_target => '95.0',
+        slo_availability_target => '95.0',
         slo_latency_target => '95.0',
         destination_canonical_service => 'revertrisk-language-agnostic-predictor-default',
         enable_alerts => false,
