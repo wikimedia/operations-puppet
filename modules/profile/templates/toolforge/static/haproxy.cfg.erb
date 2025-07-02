@@ -1,0 +1,22 @@
+# SPDX-License-Identifier: Apache-2.0
+
+frontend static
+	bind *:80
+	http-response set-header X-Clacks-Overhead "GNU Terry Pratchett"
+
+	# GZIP ALL THE THINGS!
+	compression algo gzip
+	compression type text/plain text/css text/xml application/json application/javascript application/x-javascript text/javascript
+
+	default_backend nginx
+
+backend nginx
+	server <%= @facts['networking']['hostname'] %> <%= @facts['networking']['fqdn'] %>:8000 check
+
+listen stats
+	bind *:9900
+	mode http
+	http-request use-service prometheus-exporter if { path /metrics }
+	# Explicitly avoid keep-alive to prevent Prometheus scrapers from
+	# reusing indefinitelly the same TCP connection. See T343000
+	http-after-response set-header Connection Close

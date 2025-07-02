@@ -2,6 +2,12 @@ class profile::toolforge::static (
     Stdlib::Fqdn $static_domain = lookup('profile::toolforge::static::static_domain', {default_value => 'tools-static.wmflabs.org'}),
     Stdlib::Fqdn $web_domain    = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
 ) {
+    class { 'haproxy': }
+
+    haproxy::site { 'static':
+        content => template('profile/toolforge/static/haproxy.cfg.erb'),
+    }
+
     include profile::resolving
     $resolver = $profile::resolving::nameserver_ips
         .map |$ip| {
@@ -16,7 +22,7 @@ class profile::toolforge::static (
     wmflib::dir::mkdir_p($fingerprints_dir)
 
     nginx::site { 'static-server':
-        content => template('profile/toolforge/static-server.conf.erb'),
+        content => template('profile/toolforge/static/nginx.conf.erb'),
     }
 
     class { 'ssh::publish_fingerprints':
