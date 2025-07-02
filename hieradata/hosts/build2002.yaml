@@ -14,4 +14,5 @@ profile::java::java_packages:
     variant: "jdk"
 
 debmonitor_servers:
+  - debmonitor.discovery.wmnet
   - debmonitor-next.discovery.wmnet

@@ -26,3 +26,7 @@ profile::puppet::agent::force_puppet7: true
 profile::firewall::provider: nftables
 
 profile::monitoring::notifications_enabled: false
+
+debmonitor_servers:
+  - debmonitor.discovery.wmnet
+  - debmonitor-next.discovery.wmnet
