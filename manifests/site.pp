@@ -242,11 +242,6 @@ node /^aux-k8s-worker[12]00[6-9]\.(eqiad|codfw)\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
-# Former primary bacula director and storage daemon, to be decom
-node /^backup1001\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # eqiad bacula storage for External Storage databases
 node /^backup1003\.eqiad\./ {
     role(backup::es)
