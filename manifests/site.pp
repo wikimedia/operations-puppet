@@ -285,11 +285,6 @@ node /^backup1014\.eqiad\./ {
     role(backup)
 }
 
-# codfw storage daemon
-node /^backup2001\.codfw\./ {
-    role(insetup::data_persistence_ferm)
-}
-
 # codfw bacula for External Storage DBs
 node /^backup2003\.codfw\./ {
     role(backup::es)
