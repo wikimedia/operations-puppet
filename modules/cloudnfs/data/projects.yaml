@@ -28,6 +28,10 @@ dump-references-processor:
   gid: 55368
   mounts:
     dumps: true  # T333549
+dumpstorrents:
+  gid: 56801
+  mounts:
+    dumps: true  # T398477
 puppet-diffs:
   gid: 53809
   mounts:
