@@ -1,2 +1,19 @@
+profile::cache::haproxy::available_certificates:
+  upload:
+    cert_paths:
+        - /run/haproxy-tls/upload/live/ec-prime256v1.chained.crt.key
+    server_names: &upload_cert_server_names
+        - upload.wikimedia.org
+        - maps.wikimedia.org
+    warning_threshold: 21
+    critical_threshold: 15
+    ocsp: false
+  upload-goog:
+    cert_paths:
+        - /run/haproxy-tls/upload-goog/live/ec-prime256v1.chained.crt.key
+    server_names: *upload_cert_server_names
+    warning_threshold: 21
+    critical_threshold: 15
+    ocsp: true
 profile::cache::haproxy::enabled_certificates:
-  - unified-goog
+  - upload-goog
