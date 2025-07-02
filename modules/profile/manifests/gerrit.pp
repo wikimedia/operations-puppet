@@ -54,6 +54,17 @@ class profile::gerrit(
         drange => [$ipv4, $ipv6],
     }
 
+    # ssh from primary for remote control of replicas.
+    #
+    # This is used by the rename-project plugin to ask replicas Gerrit daemons
+    # to rename a project using `gerrit rename-project <old> <new>` command.
+    # See T398401
+    firewall::service { 'gerrit_ssh_primary_to_replica_daemon':
+        proto  => 'tcp',
+        port   => 29418,
+        srange => [$active_host],
+    }
+
     # ssh between gerrit servers for cluster support
     firewall::service { 'gerrit_ssh_cluster':
         port   => 22,
