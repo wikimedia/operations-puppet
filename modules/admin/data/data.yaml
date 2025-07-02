@@ -35,7 +35,7 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler]
+              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -455,7 +455,7 @@ groups:
               tandic, auglnkv, rzl, aminalhazwani,
               dalezhou, otich, sgimeno, tchin,
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
-              dani, bgwiki, alinebruenger, sgrabarczuk, vpoundstone,
+              dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
               hokwelum, cmyrick, gjg, lucaswerkmeister-wmde, hshaikh, ptiwary,
               damilare, isaranto, anakanishi, gkyziridis,
@@ -5598,12 +5598,11 @@ users:
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICqscLAryPFqoIEfgy+6qpJrAtOwcFZ3P8AYOc3jZCeo claime@Clements-MacBook-Pro.local
   vpoundstone:
-    ensure: present
+    ensure: absent
     realname: Virginia Poundstone
-    email: vpoundstone@wikimedia.org
     uid: 40566
     gid: 500
-    ssh_keys: []  # Added with no SSH access, for membership in analytics-privatedata-users.
+    ssh_keys: []
   soworu-01:
     ensure: present
     realname: Segun Oworu
