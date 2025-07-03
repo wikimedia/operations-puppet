@@ -28,6 +28,7 @@ class profile::pyrra::filesystem::slos (
         enable_alerts => false,
         pyrra_namespace => 'pyrra-o11y-pilot',
         prometheus_instance => 'k8s-mlserve',
+        k8s_cluster_name => 'ml-serve',
     }
 
     # workaround grouping exported metrics limitation by setting site/datacenter via puppet
