@@ -195,7 +195,7 @@ class profile::debmonitor::server (
         prometheus::blackbox::check::http { "debmonitor-client-download-${internal_server_name}":
             server_name     => $internal_server_name,
             port            => 443,
-            path            => '/client',
+            path            => '/auth-check',
             use_client_auth => true,
             method          => 'HEAD',
             status_matches  => [200],
