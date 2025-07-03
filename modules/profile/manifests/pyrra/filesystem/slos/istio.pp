@@ -13,7 +13,7 @@ define profile::pyrra::filesystem::slos::istio (
     String $pyrra_namespace = 'pyrra-o11y',
     Wmflib::Ensure $ensure = 'present',
     String $prometheus_instance = 'k8s',
-    String $slo_success_ratio_requests_regex = '\(2\|3\)..',
+    String $slo_success_ratio_requests_regex = '(2\|3)..',
     Optional[String] $slo_latency_target = undef,
     Optional[String] $latency_target_requests_regex = undef,
     Optional[String] $slo_success_ratio_target = undef,
