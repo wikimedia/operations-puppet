@@ -117,7 +117,7 @@ define profile::pyrra::filesystem::slos::istio (
                 'apiVersion' => 'pyrra.dev/v1alpha1',
                 'kind'       => 'ServiceLevelObjective',
                 'metadata'   => {
-                    'name'      => "${title}-availability",
+                    'name'      => "${title}-success-ratio",
                     'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
                     'labels'    => {
                         'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
@@ -134,7 +134,7 @@ define profile::pyrra::filesystem::slos::istio (
                     'indicator' => {
                         'ratio' => {
                             'errors' => {
-                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_target}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
+                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
                             },
                             'total'  => {
                                 'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
