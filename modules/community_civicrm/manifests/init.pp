@@ -192,5 +192,5 @@ class community_civicrm (
         interval        => {'start' => 'OnCalendar', 'interval' => '*:0/5'},
     }
 
-
+    profile::auto_restarts::service { 'apache2': }
 }
