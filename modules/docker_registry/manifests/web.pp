@@ -143,11 +143,8 @@ class docker_registry::web (
 
     $nginx_auth_socket_dir = '/var/run/nginx-auth'
     $nginx_auth_socket = "${nginx_auth_socket_dir}/basic.sock"
-    file { $nginx_auth_socket_dir:
-        ensure => directory,
-        owner  => 'www-data',
-        group  => 'www-data',
-        mode   => '0700',
+    systemd::tmpfile { 'nginx_auth_socket_dir':
+        content => "d ${nginx_auth_socket_dir} 0700 www-data www-data"
     }
 
     # Add a systemctl override that will allow us to clean up the nginx auth socket
