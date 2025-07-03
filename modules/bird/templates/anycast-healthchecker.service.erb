@@ -14,6 +14,9 @@ Type=simple
 TimeoutStartSec=0
 User=bird
 Group=bird
+<%- unless @supplementary_groups.nil? -%>
+SupplementaryGroups=<%= @supplementary_groups.join(" ") %>
+<%- end -%>
 ExecStart=/usr/bin/anycast-healthchecker
 Restart=on-failure
 

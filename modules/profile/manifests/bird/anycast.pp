@@ -13,6 +13,7 @@
 # @param do_prom_exporter whether to enable the built-in Prometheus metrics
 # @param prom_exporter_path if the above is enabled, path for directory where metrics are exported
 # @param prom_exporter_interval the scraping period for the metrics
+# @param supplementary_groups the additional supplementary group for the anycast-hc process
 class profile::bird::anycast(
   Boolean                                        $bfd                    = lookup('profile::bird::bfd', {'default_value' => true}),
   Optional[Array[Stdlib::IP::Address::Nosubnet]] $neighbors_list         = lookup('profile::bird::neighbors_list', {default_value => undef}),
@@ -26,6 +27,7 @@ class profile::bird::anycast(
   Optional[Boolean]                              $do_prom_exporter       = lookup('profile::bird::anycast::do_prom_exporter', {'default_value' => false}),
   Optional[Stdlib::Unixpath]                     $prom_exporter_path     = lookup('profile::bird::anycast::prom_exporter_path', {'default_value' => undef}),
   Optional[Integer[30]]                          $prom_exporter_interval = lookup('profile::bird::anycast::prom_exporter_interval', {'default_value' => undef}),
+  Optional[Array[String[1], 1]]                  $supplementary_groups   = lookup('profile::bird::anycast::supplementary_groups', {'default_value' => undef}),
   Firewall::Provider                             $fw_provider            = lookup('profile::firewall::provider'),
 ){
   $advertise_vips.each |$vip_fqdn, $vip_params| {
@@ -70,6 +72,7 @@ class profile::bird::anycast(
       do_prom_exporter       => $do_prom_exporter,
       prom_exporter_path     => $prom_exporter_path,
       prom_exporter_interval => $prom_exporter_interval,
+      supplementary_groups   => $supplementary_groups,
   }
 
   nrpe::plugin { 'check_anycast_healthchecker':
