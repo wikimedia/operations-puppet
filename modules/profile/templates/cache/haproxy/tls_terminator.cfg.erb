@@ -79,22 +79,30 @@ listen tls
     # timeout used after upgrading a connection (websockets) or after the first response when no keepalive/close option is specified
     timeout tunnel <%= @timeout['tunnel'] %>s
 
-    <%- if @extended_logging -%>
     unique-id-format "%rt"
-    <%- end -%>
-    capture response header X-Cache-Status len 10
+
     capture request header Host len 255
-    <%- if @extended_logging -%>
     capture request header Referer len 1024
     capture request header User-Agent len 1024
     capture request header Accept-Language len 1024
     capture request header Range len 10
     capture request header Accept len 64
-    capture response header Content-Type len 128
-    capture response header X-Analytics len 256
-    capture response header X-Cache len 96
-    capture response header Server len 64
-    <%- end -%>
+
+    # populate txn variables used for logging purposes
+    http-response set-var(txn.content_type) res.hdr(Content-Type)
+
+    # default values for x-cache and x-cache-status
+    http-request set-var(txn.x_cache) str("<%= @hostname %> int")
+    http-request set-var(txn.x_cache_status) str("int-tls")
+    # override them with upstream headers
+    http-response set-var(txn.x_cache) res.hdr(X-Cache) if { res.hdr(X-Cache) -m found }
+    http-response set-var(txn.x_cache_status) res.hdr(X-Cache-Status) if { res.hdr(X-Cache-Status) -m found }
+
+    # default value for server
+    http-request set-var(txn.server) str("HAProxy")
+    # override it with upstream header
+    http-response set-var(txn.server) res.hdr(Server) if { res.hdr(Server) -m found }
+
 
     # Host normalization
     # Use the host_only converter to remove eventual trailing port and
@@ -138,16 +146,20 @@ listen tls
     http-request set-header X-Forwarded-Proto "https"
     http-request set-header X-Connection-Properties "H2=%[var(req.h2)]; SSR=%[ssl_fc_is_resumed]; SSL=%[ssl_fc_protocol]; C=%[ssl_fc_cipher]; EC=UNKNOWN; KA=%[var(req.auth)];"
     http-request set-header X-Analytics-TLS "vers=%[ssl_fc_protocol];keyx=UNKNOWN;auth=%[var(req.auth)];ciph=%[var(req.ciph)];prot=%[var(req.h2s)];sess=%[var(req.sess)]"
+    # avoid that external users can inject arbitrary X-Requestctl values
     http-request set-header X-Requestctl " "
 
-<%- if @extended_logging -%>
+
     http-request capture hdr(X-Analytics-TLS) len 96
-<%- end -%>
     http-request del-header X-Request-Id if !wikimedia_trust
     http-request del-header tracestate if !wikimedia_trust
     http-request del-header traceparent if !wikimedia_trust
     http-request del-header X-Experiment-Enrollments
+
+    # Copy X-Analytics hdr into var to safely log it after deletion
+    http-response set-var(txn.x_analytics,ifnotempty) res.hdr(X-Analytics)
     http-response del-header X-Analytics if missing_xwd
+
     http-response del-header Backend-Timing if missing_xwd
     http-response del-header X-ATS-Timestamp if missing_xwd
     http-response del-header X-Envoy-Upstream-Service-Time if missing_xwd
@@ -162,15 +174,15 @@ listen tls
 
 
     # Provide Server header
-    http-after-response set-header Server HAProxy unless { res.hdr(Server) -m found }
+    http-after-response set-header Server %[var(txn.server)] unless { res.hdr(Server) -m found }
     # Provide X-Cache headers
-    http-after-response set-header X-Cache "<%= @hostname %> int" unless { res.hdr(X-Cache) -m found }
-    http-after-response set-header X-Cache-Status "int-tls" unless { res.hdr(X-Cache-Status) -m found }
+    http-after-response set-header X-Cache %[var(txn.x_cache)] unless { res.hdr(X-Cache) -m found }
+    http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)] unless { res.hdr(X-Cache-Status) -m found }
 
     # Allow only a subset of methods
-    http-request deny deny_status 405 unless allowed_methods
+    http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] unless allowed_methods
     # Allow OPTIONS method only with Origin header
-    http-request deny deny_status 405 if { method OPTIONS } !{ hdr(Origin) -m found }
+    http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] if { method OPTIONS } !{ hdr(Origin) -m found }
 
     http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
     http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
@@ -234,8 +246,10 @@ listen tls
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 
 
-<%- if ( @use_etcd_req_filters && @wikimedia_trust ) -%>
+<%- if @use_etcd_req_filters -%>
 backend requestctl_filters
+    # txn.x_requestctl gets populated by matching requestctl rules
+    http-request set-var(txn.x_requestctl) str("")
     {{- $path := "/request-haproxy-dsl/cache-<%= @cache_cluster %>/<%= @site %>" -}}
     {{- if not (exists $path) }}
     {{- $path = "/request-haproxy-dsl/cache-<%= @cache_cluster %>/global" -}}
@@ -246,12 +260,21 @@ backend requestctl_filters
     {{ . }}
     {{- end }}
     {{- end}}
-    <%- if @set_x_analytics -%>
-    # Add the x-requestctl header content to x-analytics if not present
-    http-request set-var(txn.x_requestctl) req.hdr(x-requestctl)
-    acl requestctl_key_present res.hdr(x-analytics) -i -m sub "requestctl="
-    http-response set-header x-analytics "%[res.fhdr(x-analytics),add_item(';requestctl=',txn.x_requestctl)]" if !requestctl_key_present
-    <%- end -%>
+    # len greater than 4 cause len(hap:) = 4 and requestctl haproxy rules get the hap: prefix
+    acl x_requestctl_is_set var(txn.x_requestctl) -m len gt 4
+    acl requestctl_key_present var(txn.x_analytics) -i -m sub "requestctl="
+
+    # populate X-Requestctl in case requestctl rules haven't blocked the request
+    http-request set-header X-Requestctl %[var(txn.x_requestctl)]
+
+    # with http-after-response we ensure that x_analytics gets updated even if a requestctl rule gets triggered
+    # here we append ;requestctl= to an existing X-Analytics coming from upstream that for some reason doesn't have a requestctl key
+    http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
+    http-after-response set-var-fmt(txn.x_analytics,ifnotset) "requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
+    # clean-up requestctl data from X-Analytics header
+    http-response replace-value X-Analytics "(.*);requestctl=.*;(.*)" "\1;\2" if requestctl_key_present
+
+
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
 <%- end -%>
 
@@ -283,24 +306,19 @@ frontend http
     bind :<%= @http_redirection_port %>
     bind :::<%= @http_redirection_port %> v6only
 
-<%- if @extended_logging -%>
     unique-id-format "%rt"
-<%- end -%>
+
     # Needed for logging purposes
     capture request header Host len 255
-    # declare a capture slot with id 0 for X-Cache-Status
-    declare capture response len 10
-<%- if @extended_logging -%>
     capture request header Referer len 1024
     capture request header User-Agent len 1024
     capture request header Accept-Language len 1024
     capture request header Range len 10
     capture request header Accept len 64
-    capture response header Content-Type len 128
-    capture response header X-Analytics len 256
-    capture response header X-Cache len 96
-    capture response header Server len 64
-<%- end -%>
+
+    http-request set-var(txn.server) str("HAProxy")
+    http-request set-var(txn.x_cache) str("<%= @hostname %> int")
+    http-request set-var(txn.x_cache_status) str("int-tls")
 
     # we can be rather aggresive regarding timeouts here as only impact http to https redirections
     # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
@@ -325,14 +343,11 @@ frontend http
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
 
     # Provide Server header
-    http-after-response set-header Server HAProxy
+    http-after-response set-header Server %[var(txn.server)]
     # Provide X-Cache headers
-    http-after-response set-header X-Cache "<%= @hostname %> int"
-    http-after-response set-header X-Cache-Status "int-tls"
-    http-after-response capture hdr(X-Cache-Status) id 0
-<%- if @extended_logging -%>
-    http-request capture hdr(X-Analytics-TLS) len 96
-<%- end -%>
+    http-after-response set-header X-Cache %[var(txn.x_cache)]
+    http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)]
+
 <%- if @http_disable_keepalive -%>
     # Explicitly avoid keep-alive
     http-after-response set-header Connection Close
