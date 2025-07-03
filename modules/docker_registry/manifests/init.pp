@@ -28,7 +28,8 @@ class docker_registry (
     }
     # Disable the main service shipped with the package, we will be instantiating our own stuff via systemd::service
     service { 'docker-registry':
-        ensure  => absent,
+        ensure => stopped,
+        enable => false,
     }
     # Remove the main config files shipped with the package, we want our own, shipped via docker_registry::instance
     file { '/etc/docker/registry/config.yml':
