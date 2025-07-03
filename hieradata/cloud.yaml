@@ -212,6 +212,10 @@ profile::gitlab::runner::allowed_services:
     host: "toolforge.org"
     port: 443
     proto: tcp
+  deployment-prep-cdn: # Any *.beta.wmcloud.org/*.beta.wmflabs.org service
+    host: en.wikipedia.beta.wmcloud.org
+    port: 443
+    proto: tcp
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.22.0
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
