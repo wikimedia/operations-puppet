@@ -21,5 +21,4 @@ profile::puppetmaster::frontend::puppetservers:
 - puppetserver1003.eqiad.wmnet
 - puppetserver2001.codfw.wmnet
 - puppetserver2002.codfw.wmnet
-- puppetserver2003.codfw.wmnet
 - puppetserver2004.codfw.wmnet
