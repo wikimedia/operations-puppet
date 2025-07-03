@@ -40,8 +40,6 @@ class profile::tcpircbot(
             '2620:0:860:103:10:192:32:10/128',  # puppetserver2001.codfw.wmnet (for conftool notifications)
             '::ffff:10.192.0.19/128',           # puppetserver2002.codfw.wmnet (for conftool notifications)
             '2620:0:860:101:10:192:0:19/128',   # puppetserver2002.codfw.wmnet (for conftool notifications)
-            '::ffff:10.192.14.6/128',           # puppetserver2003.codfw.wmnet (for conftool notifications)
-            '2620:0:860:10f:10:192:14:6/128',   # puppetserver2003.codfw.wmnet (for conftool notifications)
             '::ffff:10.192.43.9/128',           # puppetserver2004.codfw.wmnet (for conftool notifications)
             '2620:0:860:122:10:192:43:9/128',   # puppetserver2004.codfw.wmnet (for conftool notifications)
             '::ffff:10.64.48.98/128',           # cumin1002.eqiad.wmnet
@@ -76,7 +74,7 @@ class profile::tcpircbot(
         'puppetserver1003.eqiad.wmnet', # puppet 7 eqiad
         'puppetserver2001.codfw.wmnet', # puppet 7 codfw
         'puppetserver2002.codfw.wmnet', # puppet 7 codfw
-        'puppetserver2003.codfw.wmnet', # puppet 7 codfw
+        'puppetserver2004.codfw.wmnet', # puppet 7 codfw
         'mwmaint1002.eqiad.wmnet',      # maintenance eqiad
         'mwmaint2002.codfw.wmnet',      # maintenance codfw
         'cumin1002.eqiad.wmnet',        # cluster mgmt eqiad
