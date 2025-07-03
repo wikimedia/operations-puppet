@@ -26,124 +26,117 @@ define profile::pyrra::filesystem::slos::istio (
         # If the destination_canonical_service is overridden by the caller use a simple comparison instead of a regex.
         $destination_canonical_service_filter = "destination_canonical_service=\"${destination_canonical_service}\""
     }
-    $datacenters.each |$datacenter| {
-        pyrra::filesystem::config { "${k8s_cluster_name}-${title}-availability-${datacenter}.yaml":
-          ensure  => $ensure,
-          content => to_yaml({
-            'apiVersion' => 'pyrra.dev/v1alpha1',
-            'kind'       => 'ServiceLevelObjective',
-            'metadata'   => {
-                'name'      => "${title}-availability",
-                'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-                'labels'    => {
-                    'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                    'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-                    'pyrra.dev/site'    => "${datacenter}", #lint:ignore:only_variable_string
-                },
+    $datacenters_regex = $datacenters.join('|')
+    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-availability.yaml":
+      ensure  => $ensure,
+      content => to_yaml({
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind'       => 'ServiceLevelObjective',
+        'metadata'   => {
+            'name'      => "${title}-availability",
+            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
+            'labels'    => {
+                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
+                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
             },
-            'spec'       => {
-                'alerting'  => {
-                    'burnrates' => $enable_alerts
-                },
-                'target'    => $slo_availability_target,
-                'window'    => $window,
-                'indicator' => {
-                    'ratio' => {
-                        'errors' => {
-                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${availability_errors_regex}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
-                        },
-                        'total'  => {
-                            'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
-                        },
+        },
+        'spec'       => {
+            'alerting'  => {
+                'burnrates' => $enable_alerts
+            },
+            'target'    => $slo_availability_target,
+            'window'    => $window,
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code=~\"${availability_errors_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
+                    },
+                    'total'  => {
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
             },
-          })
-        }
-        if $slo_latency_target {
-            # We want to be able to trim the success part of the SLI based on the response code. For example, in some cases
-            # it may makes sense to just pay attention to HTTP 20X responses, rather than a mixture of 20x/30x/40x all with
-            # different latency performances.
-            $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=\"${datacenter}\""
-            $latency_success_sli = $latency_target_requests_regex ? {
-                undef   => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}}",
-                default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
-            }
-            pyrra::filesystem::config { "${k8s_cluster_name}-${title}-latency-${datacenter}.yaml":
-              ensure  => $ensure,
-              content => to_yaml({
-                'apiVersion' => 'pyrra.dev/v1alpha1',
-                'kind'       => 'ServiceLevelObjective',
-                'metadata'   => {
-                    'name'      => "${title}-latency",
-                    'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-                    'labels'    => {
-                        'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                        'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-                        'pyrra.dev/site'    => "${datacenter}", #lint:ignore:only_variable_string
+        },
+      })
+    }
+    # We want to be able to trim the success part of the SLI based on the response code. For example, in some cases
+    # it may makes sense to just pay attention to HTTP 20X responses, rather than a mixture of 20x/30x/40x all with
+    # different latency performances.
+    $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=~\"${$datacenters_regex}\""
+    $latency_success_sli = $latency_target_requests_regex ? {
+        undef   => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}}",
+        default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
+    }
+    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-latency.yaml":
+      ensure  => ($slo_latency_target == undef).bool2str('present', 'absent'),
+      content => to_yaml({
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind'       => 'ServiceLevelObjective',
+        'metadata'   => {
+            'name'      => "${title}-latency",
+            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
+            'labels'    => {
+                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
+                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
+            },
+        },
+        'spec'       => {
+            'alerting'  => {
+                'burnrates' => $enable_alerts
+            },
+            'target'    => $slo_latency_target,
+            'window'    => $window,
+            'indicator' => {
+                'latency'  => {
+                    'success' => {
+                        'metric' => $latency_success_sli,
+                    },
+                    'total'   => {
+                        'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
-                'spec'       => {
-                    'alerting'  => {
-                        'burnrates' => $enable_alerts
+            },
+        },
+      })
+    }
+
+    # Experimental target to go alongside to the Service Availability one. In some cases, like Citoid's,
+    # we may have multiple SLOs:
+    # 1) Generic availability, for example in the Citoid's use case a 5xx is surely a backend issue.
+    # 2) Success ratio, for example in the Citoid's use case whatever it is not a 2xx or a 3xx, since
+    #    we also count 4xx in this case as a bad response (in particular, 404s are indicative of an issue
+    #    with a third party service).
+    # Two aspects of the same service, looked from different point of views.
+    pyrra::filesystem::config { "${k8s_cluster_name}-${title}-success-ratio.yaml":
+      ensure  => ($slo_success_ratio_target == undef).bool2str('present', 'absent'),
+      content => to_yaml({
+        'apiVersion' => 'pyrra.dev/v1alpha1',
+        'kind'       => 'ServiceLevelObjective',
+        'metadata'   => {
+            'name'      => "${title}-success-ratio",
+            'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
+            'labels'    => {
+                'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
+                'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
+            },
+        },
+        'spec'       => {
+            'alerting'  => {
+                'burnrates' => $enable_alerts
+            },
+            'target'    => $slo_success_ratio_target,
+            'window'    => $window,
+            'indicator' => {
+                'ratio' => {
+                    'errors' => {
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
-                    'target'    => $slo_latency_target,
-                    'window'    => $window,
-                    'indicator' => {
-                        'latency'  => {
-                            'success' => {
-                                'metric' => $latency_success_sli,
-                            },
-                            'total'   => {
-                                'metric' => "istio_request_duration_milliseconds_count{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
-                            },
-                        },
-                    },
-                },
-              })
-            }
-        }
-        # Experimental target to go alongside to the Service Availability one. In some cases, like Citoid's,
-        # we may have multiple SLOs:
-        # 1) Generic availability, for example in the Citoid's use case a 5xx is surely a backend issue.
-        # 2) Success ratio, for example in the Citoid's use case whatever it is not a 2xx or a 3xx, since
-        #    we also count 4xx in this case as a bad response (in particular, 404s are indicative of an issue
-        #    with a third party service).
-        # Two aspects of the same service, looked from different point of views.
-        if $slo_success_ratio_target {
-            pyrra::filesystem::config { "${k8s_cluster_name}-${title}-success-ratio-${datacenter}.yaml":
-              ensure  => $ensure,
-              content => to_yaml({
-                'apiVersion' => 'pyrra.dev/v1alpha1',
-                'kind'       => 'ServiceLevelObjective',
-                'metadata'   => {
-                    'name'      => "${title}-success-ratio",
-                    'namespace' => "${pyrra_namespace}", #lint:ignore:only_variable_string
-                    'labels'    => {
-                        'pyrra.dev/team'    => "${team}", #lint:ignore:only_variable_string
-                        'pyrra.dev/service' => "${title}", #lint:ignore:only_variable_string
-                        'pyrra.dev/site'    => "${datacenter}", #lint:ignore:only_variable_string
+                    'total'  => {
+                        'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\" }",
                     },
                 },
-                'spec'       => {
-                    'alerting'  => {
-                        'burnrates' => $enable_alerts
-                    },
-                    'target'    => $slo_success_ratio_target,
-                    'window'    => $window,
-                    'indicator' => {
-                        'ratio' => {
-                            'errors' => {
-                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, response_code!~\"${slo_success_ratio_requests_regex}\", site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
-                            },
-                            'total'  => {
-                                'metric' => "istio_requests_total{source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, site=\"${datacenter}\", prometheus=\"${prometheus_instance}\" }",
-                            },
-                        },
-                    },
-                },
-              })
-            }
-        }
+            },
+        },
+      })
     }
 }
