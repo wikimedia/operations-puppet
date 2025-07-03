@@ -9,6 +9,8 @@ profile::firewall::provider: nftables
 # cloudgw applies custom conntrack settings
 profile::firewall::manage_nf_conntrack: false
 
+profile::logrotate::hourly: true
+
 profile::wmcs::cloudgw::dmz_cidr:
   # VMs --> wiki (text-lb.eqiad)
   - "208.80.154.224"
