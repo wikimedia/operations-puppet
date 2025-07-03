@@ -42,6 +42,12 @@ aux-etcd: P{O:etcd::v3::aux_k8s_etcd}
 aux-master: P{O:aux_k8s::master}
 aux-worker: P{O:aux_k8s::worker}
 aux-k8s: A:aux-master or A:aux-etcd or A:aux-worker
+<% ['eqiad', 'codfw'].each do |dc| -%>
+aux-k8s-<%= dc %>: A:aux-k8s and A:<%= dc %>
+aux-worker-<%= dc %>: A:aux-worker and A:<%= dc %>
+aux-master-<%= dc %>: A:aux-master and A:<%= dc %>
+aux-etcd-<%= dc %>: A:aux-etcd and A:<%= dc %>
+<% end -%>
 backup: A:bacula or A:db-backups or A:mediabackups or P{O:dbbackups::monitoring}
 bacula: P{O:backup::offsite or O:backup or O:backup::es or O:backup::databases or O:backup::main}
 bastion: P{O:bastionhost}
