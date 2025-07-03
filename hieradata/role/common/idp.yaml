@@ -326,7 +326,7 @@ profile::idp::services:
     id: 56
     service_id: 'https://zarcillo\.wikimedia\.org(/.*)?'
     required_groups:
-      - ops
+      - wmf
   debmonitor-next:
     id: 57
     service_id: '^https://debmonitor-next\.wikimedia\.org(/.*)?'
