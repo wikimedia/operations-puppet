@@ -6,6 +6,11 @@ class profile::dns::auth::monitoring {
     # Metrics!
     class { 'prometheus::node_gdnsd': }
 
+    # Metrics for service states: T374619
+    class { 'prometheus::node_dnsbox_service_state_exporter':
+        ensure => present,
+    }
+
     # Monitor gdnsd checkconf via NRPE
     class { 'gdnsd::monitor_conf': }
 
