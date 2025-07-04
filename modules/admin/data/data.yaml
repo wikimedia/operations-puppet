@@ -7579,3 +7579,7 @@ ldap_only_users:
     ensure: present
     realname: Armen Markossian
     email: amarkossyan@wikimedia.org
+  osleger:
+    ensure: present
+    realname: Otto Sleger
+    email: osleger@wikimedia.org
