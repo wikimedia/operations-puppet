@@ -14,7 +14,11 @@ class profile::statistics::explorer::ml(
       # Packages used by the Content Translation team
       # to test a replacement of NLLB on AMD GPUs.
       'ocl-icd-libopencl1',
-      'ocl-icd-opencl-dev'])
+      'ocl-icd-opencl-dev',
+      # Packages required for model_upload Python script
+      'python3-boto3',
+      'python3-urllib3'
+      ])
 
     file { '/etc/s3cmd':
         ensure => directory,
@@ -45,6 +49,14 @@ class profile::statistics::explorer::ml(
         group   => 'deploy-ml-service',
         mode    => '0550',
         content => template('profile/statistics/explorer/ml/model_upload.sh.erb'),
+    }
+
+    file {'/usr/local/bin/model_upload.py':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'deploy-ml-service',
+        mode    => '0550',
+        content => template('profile/statistics/explorer/ml/model_upload.py'),
     }
 
     # Allow the ML team admins only to work on the wmf-ml-models
