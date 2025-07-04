@@ -860,13 +860,13 @@ customviews:
       NULL as user_email_token, NULL as user_email_token_expires, user_registration,
       NULL as user_newpass_time, user_editcount, NULL as user_password_expires,
       user_is_temp
-    where: ( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id ) IS NULL
+    where: not exists( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id)
   user_old:
     source: user_old
     view: >
       select user_id, user_name, NULL as user_password, NULL as user_newpassword, NULL as user_email,
       NULL as user_options, NULL as user_newtalk, NULL as user_touched, user_real_name, NULL as user_token
-    where: ( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id ) IS NULL
+    where: not exists( select 1 from block join block_target on bl_target=bt_id where bl_deleted=1 AND bt_user=user_id)
   user_properties:
     source: user_properties
     view: select up_user, up_property, up_value
