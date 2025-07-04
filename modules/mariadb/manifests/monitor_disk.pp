@@ -11,7 +11,8 @@ class mariadb::monitor_disk(
     nrpe::monitor_service { 'mariadb_disk_space':
         description    => 'MariaDB disk space',
         nrpe_command   => "/usr/lib/nagios/plugins/check_disk \
--w ${pct_warning}% -c ${pct_critical}% -l -e --exclude-type=tracefs",
+-w ${pct_warning}% -c ${pct_critical}% -l -e \
+--exclude-type=tracefs --exclude-type=tmpfs --exclude-type=ramfs --exclude-type=devtmpfs",
         critical       => $is_critical,
         contact_group  => $contact_group,
         notes_url      => 'https://wikitech.wikimedia.org/wiki/MariaDB/troubleshooting',
