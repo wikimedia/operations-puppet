@@ -1380,16 +1380,6 @@ node /^ganeti20(2[256789]|3[01256789]|4[0-9]|5[0])\.codfw\./ {
     role(ganeti)
 }
 
-# pending decom
-node /^ganeti2019\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
-# pending decom
-node /^ganeti2020\.codfw\./ {
-    role(insetup::infrastructure_foundations_nftables)
-}
-
 node /^ganeti-test200[123]\.codfw\./ {
     role(ganeti_test)
 }
