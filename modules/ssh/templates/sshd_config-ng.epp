@@ -1,0 +1,95 @@
+<%#- #SPDX-License-Identifier: Apache-2.0 -%>
+<%- | Array[Stdlib::Port] $listen_ports,
+    Array[Stdlib::IP::Address] $listen_addresses,
+    Ssh::Config::PermitRootLogin $permit_root,
+    Array[Stdlib::Unixpath] $authorized_keys_file,
+    Optional[Stdlib::Unixpath] $authorized_keys_command,
+    Optional[String[1]] $authorized_keys_command_user,
+    Boolean $explicit_macs,
+    Boolean $enable_kerberos,
+    Boolean $disable_agent_forwarding,
+    Optional[Integer] $max_sessions,
+    Optional[String[1]] $max_startups,
+    Boolean $gateway_ports,
+    Array[Ssh::KeyType] $key_types,
+    Array[String[1]] $accept_env,
+    Array[Ssh::Match] $match_config,
+    Boolean $puppetserver_ca_host_certs,
+    Array[String[1]] $trusted_user_ca_keys,
+    Ssh::HostKeys $host_keys,
+    Ssh::HostCerts $host_certs,
+    Optional[Stdlib::Unixpath] $authorized_principals_file
+| -%>
+# This file contains all the puppetised changes on top of the default Debian sshd config
+
+<%- $listen_ports.each |$port| { -%>
+# Non-default ports have been configured via profile::ssh::server::listen_ports:
+Port <%= $port %>
+<%- } -%>
+
+<%- $listen_addresses.each |$listen| { -%>
+ListenAddress <%= $listen %>
+<%- } -%>
+<%- $key_types.each |$ktype| { -%>
+HostKey /etc/ssh/ssh_host_<%= $ktype %>_key
+    <%- if $ssh_ca_key_available or $host_certs.length > 0 { -%>
+HostCertificate /etc/ssh/ssh_host_<%= $ktype %>_key-cert.pub
+    <%- } -%>
+<% } -%>
+<% if $trusted_user_ca_keys.length > 0 {-%>
+TrustedUserCAKeys /etc/ssh/trusted_user_ca_keys.pub
+  <% if $authorized_principals_file {-%>
+AuthorizedPrincipalsFile <%= $authorized_principals_file %>
+  <% } -%>
+<% } -%>
+
+LogLevel VERBOSE
+
+PermitRootLogin <%= $permit_root.bool2str('yes', 'no') %>
+
+<% if $authorized_keys_file.length > 0 {-%>
+AuthorizedKeysFile	<%= $authorized_keys_file.join(' ') %>
+<% } -%>
+
+IgnoreUserKnownHosts yes
+
+PasswordAuthentication no
+
+<%- if $disable_agent_forwarding {-%>
+AllowAgentForwarding no
+<% } -%>
+
+<%- if $enable_kerberos {-%>
+GSSAPIAuthentication <%= $enable_kerberos.bool2str('yes', 'no') %>
+<% } -%>
+
+<%- if $gateway_ports { -%>
+# Allow remote hosts to connect to ports forwarded by the client
+GatewayPorts yes
+<% } -%>
+<%- if $max_sessions {-%>
+MaxSessions <%= $max_sessions %>
+<% } -%>
+<%- if $max_startups {-%>
+MaxStartups <%= $max_startups %>
+<% } -%>
+
+<%- unless $accept_env.empty { -%>
+AcceptEnv <%= $accept_env.join(' ') %>
+<% } -%>
+
+<%- if $authorized_keys_command and $authorized_keys_command_user {-%>
+Match user *,!root  # T394283
+  AuthorizedKeysCommand <%= $authorized_keys_command %>
+  AuthorizedKeysCommandUser <%= $authorized_keys_command_user %>
+<% } -%>
+##
+## Anything below this point must start with a match declaration
+## or will only apply to the previous Matches above.
+##
+<%- $match_config.each |$match| { -%>
+Match <%= $match['criteria'] %> <%= $match['patterns'].join(',') %>
+  <%- $match['config'].each |$item, $value| { -%>
+  <%= $item %> <%= $value %>
+  <% } -%>
+<% } -%>

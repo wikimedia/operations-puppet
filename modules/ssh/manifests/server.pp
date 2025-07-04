@@ -150,10 +150,34 @@ class ssh::server (
     }
 
     if debian::codename::ge('trixie') {
+
+        $sshd_params = {
+            'listen_ports' => $listen_ports,
+            'listen_addresses' => $listen_addresses,
+            'permit_root' => $permit_root,
+            'authorized_keys_file' => $authorized_keys_file,
+            'authorized_keys_command' => $authorized_keys_command,
+            'authorized_keys_command_user' => $authorized_keys_command_user,
+            'explicit_macs' => $explicit_macs,
+            'enable_kerberos' => $enable_kerberos,
+            'disable_agent_forwarding' => $disable_agent_forwarding,
+            'max_sessions' => $max_sessions,
+            'max_startups' => $max_startups,
+            'gateway_ports' => $gateway_ports,
+            'accept_env' => $accept_env,
+            'match_config' => $match_config,
+            'puppetserver_ca_host_certs' => $puppetserver_ca_host_certs,
+            'trusted_user_ca_keys' => $trusted_user_ca_keys,
+            'key_types' => $key_types,
+            'host_keys' => $host_keys,
+            'host_certs' => $host_certs,
+            'authorized_principals_file' => $authorized_principals_file
+        }
+
         file { $ssh_puppet_conf:
             ensure       => file,
             mode         => '0444',
-            content      => template('ssh/sshd_config-ng.erb'),
+            content      => epp('ssh/sshd_config-ng.epp', $sshd_params),
             validate_cmd => '/usr/sbin/sshd -t',
         }
     } else {
