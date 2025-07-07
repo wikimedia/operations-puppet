@@ -2326,7 +2326,7 @@ node /^puppetserver200[124]\.codfw\./ {
     role(puppetserver)
 }
 
-node /^puppetserver200[3]\.eqiad\./ {
+node /^puppetserver200[3]\.codfw\./ {
     role(insetup::infrastructure_foundations_ferm)
 }
 
