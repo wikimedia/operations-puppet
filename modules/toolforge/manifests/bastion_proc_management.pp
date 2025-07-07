@@ -16,29 +16,16 @@
 # [*min_uid*]
 #  Integer. Minimum UID we regard as a "user" process owner.
 #
-# [*project*]
-#  String. Cloud VPS project this is running on.
-#
 # [*dry_run*]
 #  Boolean. If true, will only log instead of actually killing processes.
-#
-# === Example ===
-#
-# A accepting defaults, but setting the project correctly.
-#
-# class { 'toolforge::bastion_proc_management':
-#        project => $::wmcs_project,
-#    }
 
 class toolforge::bastion_proc_management (
-    String  $project,
     Integer $days_allowed = 3,
     Integer $script_victims = 2,
     Integer $min_uid = 1000,
     Boolean $dry_run = false,
 ){
     ensure_packages('python3-psutil')
-    ensure_packages('python3-ldap3')
 
     # Script to stop long-running services, sometimes
     file { '/usr/local/sbin/wmcs-wheel-of-misfortune':
@@ -51,12 +38,11 @@ class toolforge::bastion_proc_management (
 
     # Expose args in a way that is CLI friendly as well as not a 1000 char line.
     $main_cmd = '/usr/local/sbin/wmcs-wheel-of-misfortune'
-    $proj = " --project ${project}"
     $age = " --age ${days_allowed}"
     $uids = " --min-uid ${min_uid}"
     $vics = " --victims ${script_victims}"
     $dry_run_cmd = $dry_run.bool2str(' --dry-run', '')
-    $timer_cmd = "${main_cmd}${proj}${age}${uids}${vics}${dry_run_cmd}"
+    $timer_cmd = "${main_cmd}${age}${uids}${vics}${dry_run_cmd}"
 
     systemd::timer::job { 'wmcs-wheel-of-misfortune-runner':
         ensure                    => 'present',
