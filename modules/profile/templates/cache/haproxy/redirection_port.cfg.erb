@@ -1,0 +1,60 @@
+<%#- SPDX-License-Identifier: Apache-2.0 -%>
+backend httpreqrate_http
+    stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
+
+frontend http-temp
+    log global
+    maxconn 2000
+    bind :<%= @http_redirection_port %>
+    bind :::<%= @http_redirection_port %> v6only
+
+    unique-id-format "%rt"
+
+    # Needed for logging purposes
+    capture request header Host len 255
+    capture request header Referer len 1024
+    capture request header User-Agent len 1024
+    capture request header Accept-Language len 1024
+    capture request header Range len 10
+    capture request header Accept len 64
+
+    http-request set-var(txn.server) str("HAProxy")
+    http-request set-var(txn.x_cache) str("<%= @hostname %> int")
+    http-request set-var(txn.x_cache_status) str("int-tls")
+
+    # we can be rather aggresive regarding timeouts here as only impact http to https redirections
+    # time to wait for a complete HTTP request, It only applies to the header part of the HTTP request (unless option http-buffer-request is used)
+<%- if @redirection_timeout -%>
+    timeout http-request <%= @redirection_timeout['http_request'] %>s
+    # set the maximum allowed time to wait for a new HTTP request to appear
+    timeout http-keep-alive <%= @redirection_timeout['keep_alive'] %>s
+    # set the maximum inactivity time on the client side
+    timeout client <%= @redirection_timeout['client'] %>s
+    # inactivity timeout on the client side for half-closed connections
+    timeout client-fin <%= @redirection_timeout['client_fin'] %>s
+<%- end -%>
+
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate_http) ge 400
+    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate_http) gt 0
+    acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate_http) gt 0
+
+    http-request set-var(req.dummy_silent_drop_port80) src,debug(silent-drop_port80_for_300s,stderr) if too_many_concurrent_queries !too_much_recent_concurrency
+
+    http-request track-sc0 src table httpreqrate_http
+    # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
+    http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
+
+    # Provide Server header
+    http-after-response set-header Server %[var(txn.server)]
+    # Provide X-Cache headers
+    http-after-response set-header X-Cache %[var(txn.x_cache)]
+    http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)]
+
+<%- if @http_disable_keepalive -%>
+    # Explicitly avoid keep-alive
+    http-after-response set-header Connection Close
+<%- end -%>
+    # METH_GET is a predefined ACL that includes GET and HEAD requests
+    # http://docs.haproxy.org/2.6/configuration.html#7.4
+    http-request redirect scheme https code 301 if METH_GET
+    http-request deny status 403 content-type text/html file /etc/haproxy/tls-terminator-tls-plaintext-error.html

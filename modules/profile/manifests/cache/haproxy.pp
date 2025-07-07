@@ -21,7 +21,7 @@ class profile::cache::haproxy (
     Haproxy::Version                         $haproxy_version             = lookup('profile::cache::haproxy::version', { 'default_value'                     => 'haproxy28' }),
     Boolean                                  $do_systemd_hardening        = lookup('profile::cache::haproxy::do_systemd_hardening', { 'default_value'        => false }),
     Boolean                                  $enable_coredumps            = lookup('profile::cache::haproxy::enable_coredumps', { 'default_value'            => false }),
-    Optional[Stdlib::Port]                   $http_redirection_port       = lookup('profile::cache::haproxy::http_redirection_port', { 'default_value'       => 80 }),
+    Stdlib::Port                             $http_redirection_port       = lookup('profile::cache::haproxy::http_redirection_port', { 'default_value'       => 80 }),
     Optional[Haproxy::Timeout]               $redirection_timeout         = lookup('profile::cache::haproxy::redirection_timeout', { 'default_value'         => undef }),
     Optional[Array[Haproxy::Filter]]         $filters                     = lookup('profile::cache::haproxy::filters', { 'default_value'                     => undef }),
     Boolean                                  $dedicated_hc_backend        = lookup('profile::cache::haproxy::dedicated_hc_backend', { 'default_value'        => false }),
@@ -76,6 +76,8 @@ class profile::cache::haproxy (
 
     # used on haproxy.cfg.erb
     $socket = '/run/haproxy/haproxy.sock'
+    $min_tls_version = 'TLSv1.2'
+    $max_tls_version = 'TLSv1.3'
 
     # used to check the list of certificates, needs to be defined before systemd service
     # template. See below for usage
@@ -240,8 +242,7 @@ class profile::cache::haproxy (
 
     $http_reuse = 'always'
     # The haproxy site configuration
-    $min_tls_version = 'TLSv1.2'
-    $max_tls_version = 'TLSv1.3'
+
     if $use_etcd_req_filters {
         file { '/usr/local/bin/check-haproxy-map':
             ensure => file,
@@ -284,6 +285,11 @@ class profile::cache::haproxy (
             ensure  => present,
             content => template('profile/cache/haproxy/tls_terminator.cfg.erb'),
         }
+    }
+
+    haproxy::site { 'redirection_port':
+        ensure  => present,
+        content => template('profile/cache/haproxy/redirection_port.cfg.erb'),
     }
 
     if $monitoring_enabled {
