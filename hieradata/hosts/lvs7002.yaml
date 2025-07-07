@@ -1,6 +1,3 @@
 profile::liberica::include_services:
   - upload
   - upload-https
-profile::liberica::bgp_config:
-  peers:
-    - 10.140.1.1 # asw1-b4-magru gateway

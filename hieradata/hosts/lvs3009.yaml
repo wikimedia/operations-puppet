@@ -1,6 +1,3 @@
-profile::liberica::bgp_config:
-  peers:
-    - 10.80.1.1 # asw1-by27-esams
 profile::liberica::include_services:
   - upload
   - upload-https
