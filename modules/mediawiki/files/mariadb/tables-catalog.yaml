@@ -1421,6 +1421,11 @@ tables:
     dblist: wikibaserepo
     canonicality: derivative
     visibility: public
+  - name: wikilove_log
+    source: wikilove
+    dblist: wikilove
+    canonicality: canonical
+    visibility: public
   - name: wikimedia_campaign_events_grant
     source: wikimediacampaignevents
     databases:
@@ -1588,6 +1593,9 @@ sources:
   wikibase_term_store:
     - path: extensions/Wikibase/repo/sql/abstract/term_store.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Wikibase/+/master/repo/sql/abstract/term_store.json
+  wikilove:
+    - path: extensions/WikiLove/patches/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikiLove/+/master/patches/tables.json
   wikimediacampaignevents:
     - path: extensions/WikimediaCampaignEvents/db_patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaCampaignEvents/+/master/db_patches/tables.json
