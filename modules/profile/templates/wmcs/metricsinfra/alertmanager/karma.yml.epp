@@ -24,6 +24,11 @@ authorization:
   acl:
     silences: /etc/karma-acl-silences.yaml
 
+receivers:
+  # Hide 'logger' receiver, common to all alerts
+  strip:
+    - 'logger'
+
 labels:
   valueOnly:
     # Don't display 'severity' and 'alertname' label name since that's
