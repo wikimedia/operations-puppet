@@ -584,7 +584,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-pay-lvs
+    hostgroups               fundraising-pay-lb
 }
 
 define host {
@@ -597,7 +597,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-pay-lvs
+    hostgroups               fundraising-pay-lb
 }
 
 define host {
@@ -610,7 +610,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-pay-lvs
+    hostgroups               fundraising-pay-lb
 }
 
 define host {
@@ -623,7 +623,7 @@ define host {
     notification_interval    0
     notification_period      24x7
     check_period             24x7
-    hostgroups               fundraising-pay-lvs
+    hostgroups               fundraising-pay-lb
 }
 
 define host {
@@ -803,6 +803,11 @@ define hostgroup {
 define hostgroup {
     hostgroup_name           fundraising-mx
     alias                    Fundraising Mail
+}
+
+define hostgroup {
+    hostgroup_name           fundraising-pay-lb
+    alias                    Fundraising Payments Load Balancer
 }
 
 define hostgroup {
@@ -1825,6 +1830,74 @@ define service {
     use                      passive-service
     service_description      check_zombie
     hostgroup_name           fundraising-mx
+}
+
+# fundraising-pay-lb
+
+define service {
+    use                      passive-service
+    service_description      check_bird
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_disk
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_haproxy
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_load
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_procs
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_puppetrun
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_raid
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_rsyslog_backlog
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_memory
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_timesync
+    hostgroup_name           fundraising-pay-lb
+}
+
+define service {
+    use                      passive-service
+    service_description      check_zombie
+    hostgroup_name           fundraising-pay-lb
 }
 
 # fundraising-pay-lvs
