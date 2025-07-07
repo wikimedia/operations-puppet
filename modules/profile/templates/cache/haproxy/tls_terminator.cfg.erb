@@ -272,7 +272,7 @@ backend requestctl_filters
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
     http-after-response set-var-fmt(txn.x_analytics,ifnotset) "requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
     # clean-up requestctl data from X-Analytics header
-    http-response replace-value X-Analytics "(.*);requestctl=.*;(.*)" "\1;\2" if requestctl_key_present
+    http-after-response set-header x-analytics %[res.hdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
 
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
