@@ -1,0 +1,116 @@
+profile::ceph::auth::load_all::configuration:
+  aux-k8s-csi-rbd:
+    caps:
+      mon: profile rbd
+      mgr: profile rbd pool=aux-k8s-csi-rbd-ssd
+      osd: profile rbd pool=aux-k8s-csi-rbd-ssd
+  dse-k8s-csi:
+    caps:
+      mon: profile rbd
+      mgr: profile rbd pool=dse-k8s-csi-ssd
+      osd: profile rbd pool=dse-k8s-csi-ssd
+  dse-k8s-csi-cephfs:
+    # Cf https://github.com/ceph/ceph-csi/blob/devel/docs/capabilities.md#cephfs
+    caps:
+      mgr: allow rw
+      osd: allow rw tag cephfs metadata=dpe, allow rw tag cephfs data=dpe, allow rw tag cephfs metadata=dumps, allow rw tag cephfs data=dumps
+      mds: allow r fsname=dpe path=/volumes, allow rws fsname=dpe path=/volumes/csi, allow r fsname=dumps path=/volumes, allow rws fsname=dumps path=/volumes/csi
+      mon: allow r fsname=dpe, allow r fsname=dumps
+  admin:
+    caps:
+      mgr: allow *
+      mon: allow *
+      osd: allow *
+      mds: allow *
+  mon.:
+    keyring_path: /etc/ceph/ceph.mon.keyring
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.cephosd2001:
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.cephosd2002:
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mon.cephosd2003:
+    import_to_ceph: false
+    caps:
+      mon: allow *
+  mgr.cephosd2001:
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd2001/keyring
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+      mds: allow *
+  mgr.cephosd2002:
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd2002/keyring
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+      mds: allow *
+  mgr.cephosd2003:
+    keyring_path: /var/lib/ceph/mgr/ceph-cephosd2003/keyring
+    caps:
+      mon: allow profile mgr
+      osd: allow *
+      mds: allow *
+  bootstrap-osd:
+    keyring_path: /var/lib/ceph/bootstrap-osd/ceph.keyring
+    caps:
+      mgr: allow r
+      mon: profile bootstrap-osd
+  osd.cephosd2001:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd2002:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  osd.cephosd2003:
+    caps:
+      mon: allow profile osd
+      mgr: allow profile osd
+      osd: allow *
+  radosgw:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd2001:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd2002:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  client.rgw.cephosd2003:
+    caps:
+      mon: allow rw
+      osd: allow rwx
+  mds.cephosd2001:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd2001/keyring
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd2002:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd2002/keyring
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *
+  mds.cephosd2003:
+    keyring_path: /var/lib/ceph/mds/ceph-cephosd2003/keyring
+    caps:
+      mon: profile mds
+      mgr: profile mds
+      mds: allow *
+      osd: allow *

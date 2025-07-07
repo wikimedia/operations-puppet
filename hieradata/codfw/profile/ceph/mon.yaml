@@ -1,0 +1,10 @@
+profile::ceph::mon::hosts:
+  "cephosd2001.codfw.wmnet":
+    public:
+      addr: "10.192.0.133"
+  "cephosd2002.codfw.wmnet":
+    public:
+      addr: "10.192.32.235"
+  "cephosd2003.codfw.wmnet":
+    public:
+      addr: "10.192.48.240"

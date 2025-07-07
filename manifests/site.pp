@@ -384,11 +384,6 @@ node /^cloudcephosd200[4-7]-dev\.codfw\./ {
     role(wmcs::ceph::osd)
 }
 
-# New ceph node codfw T349934
-node /^cephosd200[1-3]\.codfw\./ {
-    role(insetup::data_platform_nftables)
-}
-
 node /^cloudcephmon200[4-6]-dev\.codfw\./ {
     role(wmcs::ceph::mon)
 }
@@ -1728,8 +1723,13 @@ node /^cloudcontrol1011.eqiad\./ {
     role(wmcs::openstack::eqiad1::control)
 }
 
-# Data Platform - Ceph osd servers T322760
-node /^cephosd100[12345]\.eqiad\./ {
+# Data Platform - Ceph cluster in eqiad
+node /^cephosd100[1-5]\.eqiad\./ {
+    role(ceph::server)
+}
+
+# Data Platform - Ceph cluster in codfw
+node /^cephosd200[1-3]\.codfw\./ {
     role(ceph::server)
 }
 

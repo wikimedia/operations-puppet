@@ -637,6 +637,7 @@ wikimedia_clusters:
   cephosd:
     description: "Ceph clusters providing services to the Data Platform teams"
     sites:
+      codfw: []
       eqiad: []
   datahubsearch:
     description: "OpenSearch cluster that services DataHub"
