@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: Apache-2.0
-# Attention: It's incomplete. Work in progress.
 ---
-version: "0"
+version: "1"
 tables:
   - name: site_identifiers
     source: core
@@ -1600,10 +1599,8 @@ sources:
     - path: extensions/WikimediaCampaignEvents/db_patches/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/WikimediaCampaignEvents/+/master/db_patches/tables.json
 dropped_tables:
-  - flaggedtemplates
-  - flaggedimages
+  # only tables that have been dropped in code but not yet in production
   - cur
-  - flow_definition
-  - flow_wiki_ref_deleteme
+  - hidden
   - historical_thread
   - oathauth_users
