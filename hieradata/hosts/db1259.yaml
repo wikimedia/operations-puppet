@@ -1,0 +1,5 @@
+# db1259
+# This host replaces db1246 which had multiple crashes and was replaced T393296 with a new unit
+mariadb::shard: 's2'
+profile::monitoring::notifications_enabled: false
+mariadb::package: 'wmf-mariadb1011'

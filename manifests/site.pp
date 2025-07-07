@@ -584,6 +584,11 @@ node /^db2(148|175|189|204|207|225|226|238)\.codfw\./ {
     role(mariadb::core)
 }
 
+# db1259 replaces db1246 T393296
+node /^db125(9)\.eqiad\./ {
+    role(insetup::data_persistence_ferm)
+}
+
 # s3 core production dbs on eqiad
 node /^db1(157|166|175|189|198|223)\.eqiad\./ {
     role(mariadb::core)
