@@ -4,16 +4,3 @@ profile::lvs::interface_tweaks:
 profile::liberica::bgp_config:
   peers:
     - 10.140.0.1 # asw1-b3-magru gateway
-profile::liberica::fp_config:
-  log_level: info
-  grpc:
-    network: tcp
-    address: 127.0.0.1:1102
-  prometheus:
-    addresses:
-      - "%{facts.networking.ip}:3002"
-      - "[%{facts.networking.ip6}]:3002"
-  forwarding_plane: katran
-  katran:
-    interface: eno12399np0
-    conntrack_size: 8000000

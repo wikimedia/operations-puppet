@@ -32,7 +32,10 @@ profile::liberica::fp_config:
     addresses:
       - "%{facts.networking.ip}:3002"
       - "[%{facts.networking.ip6}]:3002"
-  forwarding_plane: ipvs
+  forwarding_plane: katran
+  katran:
+    interface: "%{facts.interface_primary}"
+    conntrack_size: 8000000
 
 profile::liberica::cp_config:
   log_level: info
