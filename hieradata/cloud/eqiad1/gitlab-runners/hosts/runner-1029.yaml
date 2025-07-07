@@ -1,3 +1,0 @@
-profile::gitlab::runner::enable_registry_proxy: true
-profile::gitlab::runner::registry_proxy_environment:
-  REGISTRY_PROXY_REMOTEURL: 'https://registry-1.docker.io'
