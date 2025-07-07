@@ -24,15 +24,6 @@ schemes:
       ssds: *ssdw
 
 hosts:
-  prod:
-    - thanos-be2001:
-        - drain
-    - thanos-be2002:
-        - drain
-    - thanos-be2003:
-        - drain
-    - thanos-be2004:
-        - drain
   prod24_ng:
     - thanos-be1005
     - thanos-be1006
