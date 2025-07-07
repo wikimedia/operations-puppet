@@ -461,63 +461,9 @@ sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
-    // TODO: move all these rules to requestctl if possible.
-    // For now, add the requestctl header for them too,
-    // so that we have some more insight into which rule is kicking in
-    // Set the header to the empty string if not present.
+    // Add the requestctl header if it wasn't set in the previous layer
     if (!req.http.X-Requestctl) {
         set req.http.X-Requestctl = "";
-    }
-
-    if (req.url ~ "^/api/rest_v1/page/pdf/") {
-        if (vsthrottle.is_denied("proton_limiter:" + req.http.X-Client-IP, 10, 10s)) {
-            set req.http.X-Requestctl = req.http.X-Requestctl + ",static_proton";
-            return (synth(429, "Too Many Requests"));
-        }
-    }
-
-    // Rate limit public cloud to 100/s with bursts of 1000 (excluding
-    // cloud IPs included in wikimedia_nets)
-    if (req.http.X-Provenance ~ "cloud=\w+"
-        && std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets
-        && vsthrottle.is_denied("public_cloud_all:" + req.http.X-Client-IP, 1000, 10s)) {
-        set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud";
-        return (synth(429, "Too Many Requests. Please contact noc@wikimedia.org"));
-    }
-
-    // T284479
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") ~ google_cloud_nets && req.http.User-Agent ~ "HeadlessChrome/" && req.url ~ "/w/index.php" && req.url ~ "[?&]search=") {
-        set req.http.X-Requestctl = req.http.X-Requestctl + ",static_T284479";
-        return (synth(403, "Forbidden; please contact noc@wikimedia.org"));
-    }
-
-    // Ratelimit miss/pass requests per IP:
-    //   * Excluded for now:
-    //       * all WMF IPs (including labs)
-    //       * seemingly-authenticated requests (simple cookie check)
-    //   * RB and MW API, Wikidata: 1000/10s (100/s long term, with 1000 burst)
-    //   * All others from public cloud IPs: 100/10s (10/s long term, with 100 burst)
-    //   * All others: 1000/50s (20/s long term, with 1000 burst)
-    //       (current data leads us to believe sustaining 20/s should be
-    //       nearly impossible against standard MW outputs without
-    //       concurrency>1)
-    if (req.http.Cookie !~ "([sS]ession|Token)=" &&
-        std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
-        if (req.url ~ "^/(api/rest_v1/|w/api.php|wiki/Special:EntityData)") {
-            if (vsthrottle.is_denied("rest:" + req.http.X-Client-IP, 1000, 10s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_rest";
-                return (synth(429, "Too Many Requests"));
-            }
-        } else {
-            if (req.http.X-Provenance ~ "cloud=\w+"
-                && vsthrottle.is_denied("public_cloud_uncached:" + req.http.X-Client-IP, 100, 10s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_public_cloud_uncached";
-                return (synth(429, "Too Many Requests"));
-            } else if (vsthrottle.is_denied("general:" + req.http.X-Client-IP, 1000, 50s)) {
-                set req.http.X-Requestctl = req.http.X-Requestctl + ",static_general";
-                return (synth(429, "Too Many Requests"));
-            }
-        }
     }
 
     <%- if @etcd_filters -%>
