@@ -22,5 +22,3 @@ profile::wmcs::cloudgw::wan_gw_v6: 2a02:ec80:a000:fe03::2
 
 # cloudgw1003 is our VRRP peer
 profile::wmcs::cloudgw::vrrp_peer: 185.15.56.245
-
-profile::wmcs::cloudgw::enable_nat_log: true
