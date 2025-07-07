@@ -17,13 +17,26 @@ class profile::docker::reporter(
             team   => 'ServiceOps',
             proxy  => $proxy,
             ;
-        # Report on base images and production-images
+        # Report on base images and production-images.
+        # Temporarily absented while testing the new Kubernetes version.
         'base':
+            ensure    => absent,
             frequency => 'daily',
+            target    => 'registry',
             ;
         # Report on images used in production on k8s
+        # Temporarily absented while testing the new Kubernetes version.
         'k8s':
+            ensure    => absent,
             frequency => 'weekly',
+            target    => 'registry',
+            ;
+        # Report on the staging-eqiad kubernetes cluster.
+        'wikikube_staging_eqiad':
+            frequency           => 'daily',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-staging-eqiad.config',
+            rule_filename       => 'wikikube_kubernetes_rules.ini'
             ;
     }
 }
