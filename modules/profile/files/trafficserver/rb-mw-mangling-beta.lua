@@ -3,6 +3,7 @@
 -- https://phabricator.wikimedia.org/T265625
 jit.off(true, true)
 
+-- Beta Cluster-specific extension to rb-mw-mangling.lua
 function remap_hook()
     local orig_uri = ts.client_request.get_uri()
 
