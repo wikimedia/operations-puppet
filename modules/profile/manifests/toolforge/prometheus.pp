@@ -565,10 +565,11 @@ class profile::toolforge::prometheus (
     } else {
         # Rewrite pages as criticals on non-production deployments.
         $page_filter = {
-            'action'       => 'replace',
-            'target_label' => 'severity',
-            'regex'        => 'page',
-            'replacement'  => 'critical',
+            'action'        => 'replace',
+            'source_labels' => ['severity'],
+            'target_label'  => 'severity',
+            'regex'         => 'page',
+            'replacement'   => 'critical',
         }
     }
     if $enable_query_log {
