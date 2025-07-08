@@ -18,8 +18,8 @@ define openstack::patch (
   }
 
   exec { "apply ${patch_file}":
-    command => "/usr/bin/patch --forward ${file} ${patch_file}",
-    unless  => "/usr/bin/patch --reverse --dry-run -f ${file} ${patch_file}",
+    command => "/usr/bin/patch --fuzz=0 --forward ${file} ${patch_file}",
+    unless  => "/usr/bin/patch --fuzz=0 --reverse --dry-run -f ${file} ${patch_file}",
     require => [File[$patch_file], Package['patch']],
   }
 }
