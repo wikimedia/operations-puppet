@@ -260,7 +260,7 @@ class profile::analytics::refinery::job::data_purge (
     # runs once a month
     $dumps_retention_days = 80
     kerberos::systemd_timer { 'drop-mediawiki-pages_meta_history-dumps':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop pages_meta_history dumps data from HDFS after 80 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_history --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute d1ae950b3ddd706bcac0ab068ca8953f",
         environment => $systemd_env,
@@ -271,7 +271,7 @@ class profile::analytics::refinery::job::data_purge (
     # drop monthly pages_meta_current dumps data after 80 days (last day of month as reference)
     # runs once a month
     kerberos::systemd_timer { 'drop-mediawiki-pages_meta_current-dumps':
-        ensure      => $ensure_timers,
+        ensure      => absent,
         description => 'Drop pages_meta_current dumps data from HDFS after 80 days.',
         command     => "${refinery_path}/bin/refinery-drop-older-than --base-path /wmf/data/raw/mediawiki/dumps/pages_meta_current --path-format '(?P<year>[0-9]{4})(?P<month>[0-9]{2})01' --older-than ${dumps_retention_days} --allowed-interval 70 --log-file ${mediawiki_dumps_log_file} --skip-trash --execute 2962f6cd190c2c04bf22e075196a7db1",
         environment => $systemd_env,
