@@ -2120,10 +2120,9 @@ node /^mwdebug100[12]\.eqiad\./ {
 # rack C3
 
 # mediawiki maintenance server (periodic jobs)
-# mwmaint1002 replaced mwmaint1001 (T201343) which replaced terbium (T192185)
-# mwmaint2002 replaced mwmaint2001 (T274170, T275905)
+# deprecated, replaced by deployment server see T397017
 node /^mwmaint[12]002\.(eqiad|codfw)\./ {
-    role(mediawiki::maintenance)
+    role(insetup::buster)
 }
 
 ## DATACENTER: CODFW
