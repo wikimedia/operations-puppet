@@ -1,2 +1,3 @@
 # db2227
 mariadb::shard: 's3'
+mariadb::binlog_format: 'STATEMENT'
