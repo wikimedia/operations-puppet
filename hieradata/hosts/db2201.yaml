@@ -3,3 +3,4 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s5: 230G
   x1: 128G
+mariadb::package: 'wmf-mariadb1011'
