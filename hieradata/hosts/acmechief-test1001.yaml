@@ -10,6 +10,8 @@ profile::acme_chief::active: acmechief-test2001.codfw.wmnet
 profile::acme_chief::passive: ['acmechief-test1001.eqiad.wmnet']
 profile::monitoring::notifications_enabled: false
 profile::acme_chief::certificates:
+    measure-goog:
+        account: 7ee51c01616dea9c3cad10790392bebc
     unified-goog:
         account: 7ee51c01616dea9c3cad10790392bebc
     upload-goog:

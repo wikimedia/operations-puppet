@@ -177,6 +177,35 @@ profile::acme_chief::certificates:
         key_types:
         - 'ec-prime256v1'
         - 'rsa-2048'
+    measure:
+        CN: 'measure-eqiad.wikimedia.org'
+        SNI:
+        - 'measure-eqiad.wikimedia.org'
+        - 'measure-codfw.wikimedia.org'
+        - 'measure-esams.wikimedia.org'
+        - 'measure-ulsfo.wikimedia.org'
+        - 'measure-eqsin.wikimedia.org'
+        - 'measure-drmrs.wikimedia.org'
+        - 'measure-magru.wikimedia.org'
+        staging_time: 604800
+        challenge: dns-01
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
+    measure-goog:
+        CN: 'measure-eqiad.wikimedia.org'
+        SNI:
+        - 'measure-eqiad.wikimedia.org'
+        - 'measure-codfw.wikimedia.org'
+        - 'measure-esams.wikimedia.org'
+        - 'measure-ulsfo.wikimedia.org'
+        - 'measure-eqsin.wikimedia.org'
+        - 'measure-drmrs.wikimedia.org'
+        - 'measure-magru.wikimedia.org'
+        staging_time: 604800
+        challenge: dns-01
+        account: 72f6cee110ecd66620ec200be3990522
+        authorized_regexes:
+        - '^cp[1-9][0-9]{3}\.(eqiad|codfw|esams|ulsfo|eqsin|drmrs|magru)\.wmnet$'
     mirrors:
         CN: 'mirrors.wikimedia.org'
         SNI:
