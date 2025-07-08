@@ -97,6 +97,17 @@ class profile::analytics::cluster::hadoop::yarn_capacity_scheduler (
         'yarn.scheduler.capacity.root.production.minimum-user-limit-percent' => 20,
         'yarn.scheduler.capacity.root.essential.minimum-user-limit-percent' => 50,
 
+        # Specific user limits
+        # We have noticed that some users can overwhelm the cluster.
+        # As an example, the druid user can launch MapReduce jobs that use 85%+ of the cluster resources.
+        # We want such jobs to use resources if available, but to be deprioritized when needed.
+        # From definition of 'yarn.scheduler.capacity.<queue-path>.user-settings.<user-name>.weight':
+        # "This floating point value is used when calculating the user limit resource values for users in a queue.
+        #  This value will weight each user more or less than the other users in the queue.
+        #  For example, if user A should receive 50% more resources in a queue than users B and C, this property
+        #  will be set to 1.5 for user A. Users B and C will default to 1.0."
+        'yarn.scheduler.capacity.root.production.user-settings.druid.weight' => 0.5,
+
         # Max lifetime for a Yarn application
         'yarn.scheduler.capacity.root.default.maximum-application-lifetime' => 604800, # 1 week in seconds
         'yarn.scheduler.capacity.root.gpus.maximum-application-lifetime' => 604800, # 1 week in seconds
