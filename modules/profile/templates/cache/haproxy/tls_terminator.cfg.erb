@@ -89,27 +89,27 @@ listen tls
     capture request header Accept len 64
 
     # populate txn variables used for logging purposes
-    http-response set-var(txn.content_type) res.hdr(Content-Type)
+    http-response set-var(txn.content_type) res.fhdr(Content-Type)
 
     # default values for x-cache and x-cache-status
     http-request set-var(txn.x_cache) str("<%= @hostname %> int")
     http-request set-var(txn.x_cache_status) str("int-tls")
     # override them with upstream headers
-    http-response set-var(txn.x_cache) res.hdr(X-Cache) if { res.hdr(X-Cache) -m found }
-    http-response set-var(txn.x_cache_status) res.hdr(X-Cache-Status) if { res.hdr(X-Cache-Status) -m found }
+    http-response set-var(txn.x_cache) res.fhdr(X-Cache) if { res.fhdr(X-Cache) -m found }
+    http-response set-var(txn.x_cache_status) res.fhdr(X-Cache-Status) if { res.fhdr(X-Cache-Status) -m found }
 
     # default value for server
     http-request set-var(txn.server) str("HAProxy")
     # override it with upstream header
-    http-response set-var(txn.server) res.hdr(Server) if { res.hdr(Server) -m found }
+    http-response set-var(txn.server) res.fhdr(Server) if { res.fhdr(Server) -m found }
 
 
     # Host normalization
     # Use the host_only converter to remove eventual trailing port and
     # lowercase it. Also, remove eventual trailing dot
-    http-request set-header Host %[req.hdr(Host),host_only,rtrim(.)]
+    http-request set-header Host %[req.fhdr(Host),host_only,rtrim(.)]
 
-    http-request set-var(txn.xwd_count) req.hdr_cnt(X-Wikimedia-Debug)
+    http-request set-var(txn.xwd_count) req.fhdr_cnt(X-Wikimedia-Debug)
     http-request set-var(req.ciph) ssl_fc_cipher,regsub('^ECDHE-ECDSA-',''),regsub('^TLS_',''),regsub('_','-','g'),regsub('^CHACHA20-POLY1305$','CHACHA20-POLY1305-SHA256')
     http-request set-var(req.auth) str(ECDSA)
 
@@ -157,7 +157,7 @@ listen tls
     http-request del-header X-Experiment-Enrollments
 
     # Copy X-Analytics hdr into var to safely log it after deletion
-    http-response set-var(txn.x_analytics,ifnotempty) res.hdr(X-Analytics)
+    http-response set-var(txn.x_analytics,ifnotempty) res.fhdr(X-Analytics)
     http-response del-header X-Analytics if missing_xwd
 
     http-response del-header Backend-Timing if missing_xwd
@@ -174,10 +174,10 @@ listen tls
 
 
     # Provide Server header
-    http-after-response set-header Server %[var(txn.server)] unless { res.hdr(Server) -m found }
+    http-after-response set-header Server %[var(txn.server)] unless { res.fhdr(Server) -m found }
     # Provide X-Cache headers
-    http-after-response set-header X-Cache %[var(txn.x_cache)] unless { res.hdr(X-Cache) -m found }
-    http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)] unless { res.hdr(X-Cache-Status) -m found }
+    http-after-response set-header X-Cache %[var(txn.x_cache)] unless { res.fhdr(X-Cache) -m found }
+    http-after-response set-header X-Cache-Status %[var(txn.x_cache_status)] unless { res.fhdr(X-Cache-Status) -m found }
 
     # Allow only a subset of methods
     http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] unless allowed_methods
@@ -190,7 +190,7 @@ listen tls
     http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
 
 <%- if @use_benthos -%>
-    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.hdr(Host)]","src":"%[src]"."path":"%[path]"}' if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host)]","src":"%[src]"."path":"%[path]"}' if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
     http-request set-var(req.dummy) var(req.silentdrop),json(utf8),debug(silentdroplog,reqctl-ring) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
     http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
     http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
@@ -272,7 +272,7 @@ backend requestctl_filters
     http-after-response set-var(txn.x_analytics,ifset) var(txn.x_analytics),add_item(';requestctl=',txn.x_requestctl) if x_requestctl_is_set !requestctl_key_present
     http-after-response set-var-fmt(txn.x_analytics,ifnotset) "requestctl=%[var(txn.x_requestctl)]" if x_requestctl_is_set
     # clean-up requestctl data from X-Analytics header
-    http-after-response set-header x-analytics %[res.hdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
+    http-after-response set-header x-analytics %[res.fhdr(x-analytics),'regsub("(^|;)\s*requestctl=[^;]*(;|$)","\1\2","g")'] if requestctl_key_present
 
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
