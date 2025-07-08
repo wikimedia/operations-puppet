@@ -1009,14 +1009,24 @@ node /^druid101[2-3]\.eqiad\./ {
     role(insetup::data_platform_ferm)
 }
 
-# new dse-k8s-crtl control plane servers T310171
+# dse-k8s-crtl control plane servers in eqiad
 node /^dse-k8s-ctrl100[12]\.eqiad\./ {
     role(dse_k8s::master)
 }
 
-# new dse-k8s-etcd etcd cluster servers T310170
+# new dse-k8s-crtl control plane servers in codfw
+node /^dse-k8s-ctrl200[12]\.codfw\./ {
+    role(insetup::data_platform_ferm)
+}
+
+# dse-k8s-etcd etcd cluster servers in eqiad
 node /^dse-k8s-etcd100[1-3]\.eqiad\./ {
     role(etcd::v3::dse_k8s_etcd)
+}
+
+# new dse-k8s-etcd etcd cluster servers in codfw
+node /^dse-k8s-etcd200[1-3]\.codfw\./ {
+    role(insetup::data_platform_ferm)
 }
 
 # new dse-k8s-workers T29157, T3074009, T394647, T395557
