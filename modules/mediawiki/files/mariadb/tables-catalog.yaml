@@ -165,7 +165,7 @@ tables:
   - name: categorylinks
     source: core
     canonicality: derivative
-    visibility: public
+    visibility: partially public
   - name: logging
     source: core
     canonicality: canonical
