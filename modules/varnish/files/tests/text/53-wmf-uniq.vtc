@@ -65,9 +65,13 @@ client c1 -connect "${tmpdir}/v1.sock" {
     txreq -url "/evt-103e/v2/events" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https" -hdr "Cookie: WMF-Uniq=mnNLW7Q1LgqWNaCCQ8oH2wHsAAAAAMaCvjZBnffeUqtWboSy3gqe0L3ODVYQBZb9"
     rxresp
     expect resp.status == 204
+    # Cookie-less request doesn't hit /evt-103e backend
+    txreq -url "/evt-103e/v2/events" -hdr "Host: es.wikipedia.org" -hdr "X-Forwarded-Proto: https"
+    rxresp
+    expect resp.status == 204
 } -run
 
-varnish v1 -expect WMFUNIQ.c_fresh_null == 0
+varnish v1 -expect WMFUNIQ.c_fresh_null == 1
 varnish v1 -expect WMFUNIQ.c_fresh_invalid_b64 == 0
 varnish v1 -expect WMFUNIQ.c_fresh_invalid_keytag == 0
 varnish v1 -expect WMFUNIQ.c_fresh_invalid_mac == 0
@@ -75,3 +79,4 @@ varnish v1 -expect WMFUNIQ.c_fresh_invalid_bug1 == 0
 varnish v1 -expect WMFUNIQ.c_fresh_invalid_bug2 == 0
 varnish v1 -expect WMFUNIQ.c_abtested == 2
 varnish v1 -expect WMFUNIQ.c_abtested_toomany == 0
+varnish v1 -expect backend_req == 2

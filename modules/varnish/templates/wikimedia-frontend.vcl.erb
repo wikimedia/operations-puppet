@@ -671,7 +671,11 @@ sub uniques_recv {
     // send the "event" string containing per-experiment IDs when the backend
     // is going to be eventgate analytics ingestion.
     if (req.url ~ "^/evt-103e/v2/events") {
-        set req.http.X-Experiment-Enrollments = wu_cfg.get_abtests_event();
+        if (wu_cfg.get_cookie_count() > 0) {
+            set req.http.X-Experiment-Enrollments = wu_cfg.get_abtests_event();
+        } else {
+            set req.http.X-Experiment-Enrollments = "";
+        }
     } else {
         set req.http.X-Experiment-Enrollments = wu_cfg.get_abtests_vary();
     }
