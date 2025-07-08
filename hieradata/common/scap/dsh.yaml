@@ -16,8 +16,6 @@ scap::dsh::groups:
     conftool:
       - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
-      - mwmaint1002.eqiad.wmnet
-      - mwmaint2002.codfw.wmnet
       - parsoidtest1001.eqiad.wmnet
       - snapshot1010.eqiad.wmnet
       - snapshot1011.eqiad.wmnet
