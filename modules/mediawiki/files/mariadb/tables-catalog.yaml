@@ -1083,6 +1083,38 @@ tables:
       - dbname: test2wiki
       - dbname: testwiki
       - dbname: wikimania2010wiki
+  - name: nl_newsletters
+    source: newsletter
+    databases:
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: testwiki
+    canonicality: derivative
+    visibility: partially public
+  - name: nl_issues
+    source: newsletter
+    databases:
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: testwiki
+    canonicality: canonical with acceptable loss
+    visibility: partially public
+  - name: nl_publishers
+    source: newsletter
+    databases:
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: testwiki
+    canonicality: derivative
+    visibility: partially public
+  - name: nl_subscriptions
+    source: newsletter
+    databases:
+      - dbname: mediawikiwiki
+      - dbname: officewiki
+      - dbname: testwiki
+    canonicality: canonical
+    visibility: private
   - name: oathauth_types
     source: oathauth
     databases:
@@ -1508,6 +1540,9 @@ sources:
   liquidthreads:
     - path: extensions/LiquidThreads/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LiquidThreads/+/master/sql/tables.json
+  newsletter:
+    - path: extensions/Newsletter/sql/tables.json
+      gerrit: https://https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Newsletter/+/refs/heads/master/sql/tables.json
   oathauth:
     - path: extensions/OATHAuth/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/OATHAuth/+/refs/heads/master/sql/tables.json
