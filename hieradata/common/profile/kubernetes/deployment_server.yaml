@@ -475,10 +475,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-analytics-test
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-analytics-test-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -493,10 +493,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-test-k8s
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-test-k8s-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -529,10 +529,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-research
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-research-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -547,10 +547,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-search
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-search-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -565,10 +565,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-main
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-main-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -583,10 +583,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-platform-eng
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-platform-eng-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -601,10 +601,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-analytics-product
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-analytics-product-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
@@ -619,10 +619,10 @@ profile::kubernetes::deployment_server::services:
           group: root
         - name: airflow-ml
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
         - name: airflow-ml-deploy
           owner: root
-          group: analytics-deployers
+          group: airflow-deployers
       private_files:
         owner: root
         group: airflow-deployers
