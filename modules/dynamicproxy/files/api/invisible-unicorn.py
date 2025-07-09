@@ -178,7 +178,7 @@ class Dns:
     def designateclient(self, project) -> designateclient.Client:
         return designateclient.Client(session=self.clients.session(project))
 
-    def get_zone(self, project: str, hostname: str):
+    def get_zone(self, project: str, hostname: str, *, ignore_deprecated: bool = False):
         """Determines the Keystone project and DNS zone to use for a particular hostname."""
         if hostname[-1] != ".":
             hostname += "."
@@ -196,7 +196,7 @@ class Dns:
             )
             return None
 
-        if self.zones[zone_name].get("deprecated", False):
+        if self.zones[zone_name].get("deprecated", False) and not ignore_deprecated:
             enforce_policy("proxy:zones:use_deprecated", project)
         if self.zones[zone_name]["project"] != project and not self.zones[
             zone_name
@@ -294,7 +294,7 @@ class Dns:
             )
 
     def delete_records_for(self, project: str, hostname: str):
-        hostname, project, zone_id = self.get_zone(project, hostname)
+        hostname, project, zone_id = self.get_zone(project, hostname, ignore_deprecated=True)
         if not zone_id:
             return
 
