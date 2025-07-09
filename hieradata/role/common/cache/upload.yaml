@@ -155,7 +155,7 @@ profile::cache::haproxy::available_certificates:
     server_names: *upload_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: true
+    ocsp: false
   measure:
     cert_paths:
         - /run/haproxy-tls/measure/live/ec-prime256v1.chained.crt.key
@@ -176,7 +176,7 @@ profile::cache::haproxy::available_certificates:
     server_names: *measure_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: true
+    ocsp: false
 
 profile::benthos::use_geoip: false
 profile::benthos::instances:

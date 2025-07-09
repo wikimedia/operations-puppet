@@ -389,7 +389,7 @@ profile::cache::haproxy::available_certificates:
     server_names: *unified_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: true
+    ocsp: false
   wikiworkshop:
     cert_paths:
       - /run/haproxy-tls/wikiworkshop/live/ec-prime256v1.chained.crt.key
