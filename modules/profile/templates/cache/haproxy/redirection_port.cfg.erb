@@ -1,8 +1,8 @@
 <%#- SPDX-License-Identifier: Apache-2.0 -%>
-backend httpreqrate_http_temp
+backend httpreqrate_http
     stick-table type ipv6  size 1m expire 300s store http_req_rate(10s),gpc_rate(10,300s)
 
-frontend http-temp
+frontend http
     log global
     maxconn 2000
     bind :<%= @http_redirection_port %>
@@ -34,13 +34,13 @@ frontend http-temp
     timeout client-fin <%= @redirection_timeout['client_fin'] %>s
 <%- end -%>
 
-    acl too_many_concurrent_queries sc0_trackers(httpreqrate_http_temp) ge 400
-    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate_http_temp) gt 0
-    acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate_http_temp) gt 0
+    acl too_many_concurrent_queries sc0_trackers(httpreqrate_http) ge 400
+    acl too_much_recent_concurrency sc0_gpc0_rate(httpreqrate_http) gt 0
+    acl mark_as_too_much_concurrency sc0_inc_gpc0(httpreqrate_http) gt 0
 
     http-request set-var(req.dummy_silent_drop_port80) src,debug(silent-drop_port80_for_300s,stderr) if too_many_concurrent_queries !too_much_recent_concurrency
 
-    http-request track-sc0 src table httpreqrate_http_temp
+    http-request track-sc0 src table httpreqrate_http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
 
