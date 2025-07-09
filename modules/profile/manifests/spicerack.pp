@@ -58,6 +58,9 @@ class profile::spicerack (
               'eqiad' => kafka_config('logging', 'eqiad'),
               'codfw' => kafka_config('logging', 'codfw'),
           },
+          'test' => {
+              'eqiad' => kafka_config('test', 'eqiad'),
+          }
         },
         default => {},
     }
