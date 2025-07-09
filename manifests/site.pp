@@ -772,12 +772,12 @@ node /^db2233\.codfw\./ {
 ## m3 shard
 # See also multiinstance misc hosts db1217, db2160 below
 # m3 master
-node /^db1213\.eqiad\./ {
+node /^db1250\.eqiad\./ {
     role(mariadb::misc::phabricator)
 }
 
-# Future m3 master
-node /^db1250\.eqiad\./ {
+# Old m3 master
+node /^db1213\.eqiad\./ {
     role(mariadb::misc::phabricator)
 }
 
