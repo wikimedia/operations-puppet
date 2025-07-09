@@ -19,8 +19,21 @@ class profile::cloudceph::osd(
 ) {
     $host_conf = $osd_hosts[$facts['fqdn']]
 
-    $cluster_iface = $host_conf['cluster']['iface']
     $public_iface = $host_conf['public']['iface']
+
+    if 'vlan' in $host_conf['cluster'] {
+        $vlan_id = $host_conf['cluster']['vlan']
+        $cluster_iface = "vlan${vlan_id}@${public_iface}"
+        # This is a single-nic host using a tagged interface for the cluster network.
+        interface::tagged { "vlan${vlan_id}":
+            base_interface     => $public_iface,
+            vlan_id            => $vlan_id,
+            method             => 'manual',
+            legacy_vlan_naming => false,
+        }
+    } else {
+        $cluster_iface = $host_conf['cluster']['iface']
+    }
 
     require profile::cloudceph::auth::deploy
     if ! defined(Ceph::Auth::Keyring['admin']) {
