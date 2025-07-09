@@ -10,9 +10,6 @@ Wants=network-online.target syslog.service
 Environment="CONFIG=/etc/haproxy/haproxy.cfg" "PIDFILE=<%=@pid%>"
 EnvironmentFile=-/etc/default/haproxy
 ExecStartPre=/usr/local/sbin/tls-check <%= @tls_check_cfg %>
-<% if @do_ocsp -%>
-ExecStartPre=/usr/local/sbin/update-ocsp-all
-<% end -%>
 ExecStartPre=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
 ExecStart=/usr/sbin/haproxy -Ws -f ${CONFIG} -p $PIDFILE $EXTRAOPTS
 ExecReload=/usr/sbin/haproxy -f ${CONFIG} -c -q $EXTRAOPTS
@@ -48,9 +45,6 @@ CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_SETGID CAP_SETUID CAP_DAC_OVERRID
 # Since we set ProtectSystem=strict, allow access to the below paths.
 ReadWritePaths=/run/haproxy
 ReadWritePaths=/var/lib/haproxy
-<% if @do_ocsp -%>
-ReadWritePaths=/var/cache/ocsp
-<% end -%>
 <%- if @enable_coredumps -%>
 ReadWritePaths=/var/tmp/core
 <%- end -%>
