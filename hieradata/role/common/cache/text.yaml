@@ -79,6 +79,14 @@ cache::alternate_domains:
     caching: 'pass'
   graphite.wikimedia.org:
     caching: 'normal'
+  hcaptcha.wikimedia.org:
+    caching: 'normal'
+  assets.hcaptcha.wikimedia.org:
+    caching: 'normal'
+  imgs.hcaptcha.wikimedia.org:
+    caching: 'normal'
+  report.hcaptcha.wikimedia.org:
+    caching: 'normal'
   helm-charts.wikimedia.org:
     caching: 'pass'
   horizon.wikimedia.org:
