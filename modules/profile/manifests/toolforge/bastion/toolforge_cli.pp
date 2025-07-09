@@ -9,6 +9,7 @@ class profile::toolforge::bastion::toolforge_cli (
     'toolforge-envvars-cli',
     'toolforge-jobs-framework-cli',
     'toolforge-webservice',
+    'misctools',
   ]:
     ensure => installed,
   }

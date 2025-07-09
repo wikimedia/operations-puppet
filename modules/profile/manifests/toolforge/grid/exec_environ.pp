@@ -323,11 +323,6 @@ class profile::toolforge::grid::exec_environ {
         source => 'puppet:///modules/profile/toolforge/override.my.cnf',
     }
 
-    # misctools is in the aptly repo
-    ensure_packages(['misctools'], {
-        ensure => latest,
-    })
-
     # T65000
     ensure_packages(['imagemagick', 'webp'])
 

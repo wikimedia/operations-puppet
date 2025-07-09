@@ -26,11 +26,6 @@ class profile::toolforge::bastion (
         source => 'puppet:///modules/profile/toolforge/disabledtoolshell',
     }
 
-    # misctools is in the tools aptly repo
-    ensure_packages(['misctools'], {
-        ensure => latest,
-    })
-
     motd::script { 'bastion-banner':
         ensure => present,
         source => "puppet:///modules/profile/toolforge/40-${::wmcs_project}-bastion-banner.sh",
