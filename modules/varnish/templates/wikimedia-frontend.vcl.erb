@@ -464,11 +464,6 @@ sub recv_fe_ip_processing {
         unset req.http.maybe-xcip;
     }
 
-    set req.http.X-Known-Client = netmapper.map("known_clients", req.http.X-Client-IP);
-    // normalize to boolean post-netmapper (varnish-3.0.4...)
-    if (req.http.X-Known-Client == "") {
-        unset req.http.X-Known-Client;
-    }
     <%- if @ip_reputation -%>
     // For the desktop non-ve edit path, use the large expensive map of ip reputation
     if (req.url ~ "^/w/index\.php" && (req.method == "POST" || req.url ~ "[?&]action=edit")) {
