@@ -1,0 +1,6 @@
+# The excluded_slots parameter tells puppet which two drive bays are
+# used for the operating system and should not be configured with OSDs.
+# In eqiad, the enclosure is numbered 23.
+profile::ceph::osd::excluded_slots:
+  - 'c0/e23/s24'  # Do not remove
+  - 'c0/e23/s25'  # Do not remove

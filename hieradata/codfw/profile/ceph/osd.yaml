@@ -1,0 +1,6 @@
+# The excluded_slots parameter tells puppet which two drive bays are
+# used for the operating system and should not be configured with OSDs.
+# In codfw, the enclosure is numbered 25.
+profile::ceph::osd::excluded_slots:
+  - 'c0/e25/s24'  # Do not remove
+  - 'c0/e25/s25'  # Do not remove
