@@ -8,7 +8,7 @@
 # This version is only for the Hadoop testing cluster
 #
 class profile::analytics::refinery::job::test::refine (
-    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::test::refine::ensure_timers', { 'default_value' => 'present' }),
+    Wmflib::Ensure $ensure_timers = lookup('profile::analytics::refinery::job::test::refine::ensure_timers', { 'default_value' => 'absent' }),
     Boolean $use_kerberos_keytab  = lookup('profile::analytics::refinery::job::test::refine::use_kerberos_keytab', { 'default_value' => true }),
 ) {
     require ::profile::analytics::refinery
