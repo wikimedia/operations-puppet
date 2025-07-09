@@ -35,7 +35,8 @@ groups:
               twentyafterfour, akhatun, ezachte, chelsyx, sbailey, gtzatchkova, manuel-wmde, sandeeps,
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
-              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone]
+              cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
+              chuckonwumelu]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -842,7 +843,7 @@ groups:
   wmcs-roots:
     description: root for cloud services infrastructure
     gid: 792
-    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla, chuckonwumelu]
+    members: &wmcs_roots [bd808, taavi, raymond-ndibe, samtar, komla]
     privileges: ['ALL = (ALL) NOPASSWD: ALL']
     approval:
       - Joanna Borun
@@ -1803,15 +1804,12 @@ users:
     email: cchen@wikimedia.org
     krb: present
   chuckonwumelu:
-    ensure: present
+    ensure: absent
     gid: 500
     name: chuckonwumelu
     realname: Chuck Onwumelu
-    email: conwumelu-ctr@wikimedia.org
-    ssh_keys: [ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICsidMDu4A1V81Vi/EtPButWF6+7Rjpj2DUTx4MsUInb conwumelu-ctr@wikimedia.org]
+    ssh_keys: []
     uid: 48644
-    expiry_date: "2025-06-27"
-    expiry_contact: jborun@wikimedia.org
   cmcmahon:
     ensure: absent
     gid: 500
