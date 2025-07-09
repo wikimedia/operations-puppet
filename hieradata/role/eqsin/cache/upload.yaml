@@ -37,5 +37,5 @@ profile::cache::haproxy::available_certificates:
     critical_threshold: 15
     ocsp: true
 profile::cache::haproxy::enabled_certificates:
-  - upload-goog
-  - measure-goog
+  - upload
+  - measure
