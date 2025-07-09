@@ -59,7 +59,7 @@ describe 'ceph::osds' do
         it { is_expected.to compile.with_all_deps }
       end
       describe 'disable disk cache' do
-        it { is_expected.to contain_exec('Disable write cache on device /dev/sdm').with_command('hdparm -W 0 /dev/sdm') }
+        it { is_expected.to contain_exec('Disable write cache on device /dev/sdm').with_command('sdparm --set WCE=0 /dev/sdm') }
       end
       describe 'set IO schedulers on ssd and hdd' do
         it { is_expected.to contain_sysfs__parameters('scheduler_sdk').with_values({"block/sdk/queue/scheduler" => "mq-deadline"}) }

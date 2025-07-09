@@ -13,16 +13,18 @@ class ceph::osds (
     Ceph::Auth::Keyring["osd.${facts['hostname']}"] -> Class['ceph::osds']
     Class['ceph::config'] -> Class['ceph::osds']
 
-    ensure_packages(['ceph-osd','ceph-volume','hdparm'])
+    ensure_packages(['ceph-osd','ceph-volume','sdparm'])
 
     # Disable the write cache on devices using the SCSI disk driver
     $facts['disk_type'].filter | $disk | { $disk[0] =~ 'sd*' }.each |$disk, $type| {
     # Unset wite cache
     exec { "Disable write cache on device /dev/${disk}":
         # 0->disable, 1->enable
-        command => "hdparm -W 0 /dev/${disk}",
+        command => "sdparm --set WCE=0 /dev/${disk}",
         user    => 'root',
-        unless  => "hdparm -W /dev/${disk} | grep write-caching | egrep '(not supported|off)'",
+        # The following command checks that the current value for WCE (write cache enable)
+        # is zero.
+        unless  => "sdparm --get WCE=1 --hex /dev/${disk} | grep '^0x00.$'",
         path    => ['/usr/sbin', '/usr/bin'],
     }
 
