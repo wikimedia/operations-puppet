@@ -42,7 +42,7 @@ class profile::hcaptcha::proxy (
     }
 
     $subdomains.each |$prefix, $target| {
-        $subdomain = "${prefix}.${proxy_domain}"
+        $subdomain = "${prefix}-${proxy_domain}"
         $subdomain_ssl_paths = profile::pki::get_cert('discovery', $subdomain, {
             'owner'           => 'root',
             'group'           => 'www-data',

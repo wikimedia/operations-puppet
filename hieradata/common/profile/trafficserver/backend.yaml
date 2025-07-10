@@ -123,13 +123,13 @@ profile::trafficserver::backend::mapping_rules:
       target: http://hcaptcha.wikimedia.org
       replacement: https://urldownloader1004.wikimedia.org:10443
     - type: map
-      target: http://imgs.hcaptcha.wikimedia.org
+      target: http://imgs-hcaptcha.wikimedia.org
       replacement: https://urldownloader1004.wikimedia.org:10443
     - type: map
-      target: http://report.hcaptcha.wikimedia.org
+      target: http://report-hcaptcha.wikimedia.org
       replacement: https://urldownloader1004.wikimedia.org:10443
     - type: map
-      target: http://assets.hcaptcha.wikimedia.org
+      target: http://assets-hcaptcha.wikimedia.org
       replacement: https://urldownloader1004.wikimedia.org:10443
     - type: map
       target: http://helm-charts.wikimedia.org

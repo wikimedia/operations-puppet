@@ -81,11 +81,11 @@ cache::alternate_domains:
     caching: 'normal'
   hcaptcha.wikimedia.org:
     caching: 'normal'
-  assets.hcaptcha.wikimedia.org:
+  assets-hcaptcha.wikimedia.org:
     caching: 'normal'
-  imgs.hcaptcha.wikimedia.org:
+  imgs-hcaptcha.wikimedia.org:
     caching: 'normal'
-  report.hcaptcha.wikimedia.org:
+  report-hcaptcha.wikimedia.org:
     caching: 'normal'
   helm-charts.wikimedia.org:
     caching: 'pass'
@@ -441,4 +441,3 @@ profile::benthos::instances:
       # Not needed in this case
       topics:
         - "none"
-
