@@ -7583,3 +7583,7 @@ ldap_only_users:
     ensure: present
     realname: Otto Sleger
     email: osleger@wikimedia.org
+  vpm:
+    ensure: present
+    realname: Valerie Puffet-Michel
+    email: vpuffetmichel@wikimedia.org
