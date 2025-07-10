@@ -482,7 +482,26 @@ class profile::prometheus::ops (
                 'server_name'   => 'gerrit.wikimedia.org',
             },
         },
+        # Gerrit replica metrics
+        # https://phabricator.wikimedia.org/T398854
+        {
+          'job_name'            => 'gerrit-replica',
+          'bearer_token_file'   => '/srv/prometheus/ops/gerrit.token',
+          'metrics_path'        => '/r/monitoring',
+          'scheme'              => 'https',
+          'file_sd_configs'     => [{ 'files' => ["${targets_path}/gerrit-replica.yaml"] }],
+          'tls_config'          => { 'server_name' => 'gerrit-replica.wikimedia.org' },
+        },
+        {
+          'job_name'            => 'gerrit-replica-metrics',
+          'bearer_token_file'   => '/srv/prometheus/ops/gerrit.token',
+          'metrics_path'        => '/r/plugins/metrics-reporter-prometheus/metrics',
+          'scheme'              => 'https',
+          'file_sd_configs'     => [{ 'files' => ["${targets_path}/gerrit-replica.yaml"] }],
+          'tls_config'          => { 'server_name' => 'gerrit-replica.wikimedia.org' },
+        },
       ]
+
     }
 
     # Add one job for each of mysql 'group' (i.e. their broad function)
@@ -2667,6 +2686,10 @@ class profile::prometheus::ops (
       'targets' => ['gerrit.wikimedia.org:443'],
       'labels'  => {'cluster' => 'misc', 'site' => 'eqiad'},
     }
+    $gerrit_replica_targets = {
+        'targets' => ['gerrit-replica.wikimedia.org:443'],
+        'labels'  => { 'cluster' => 'misc', 'site' => 'codfw' },
+      }
 
     $node_site_data = wmflib::get_clusters({'site' => [$::site]}).map |$cluster, $data| {
         {
@@ -2693,6 +2716,8 @@ class profile::prometheus::ops (
             }]);
         "${targets_path}/gerrit.yaml":
             content => to_yaml([$gerrit_targets]);
+        "${targets_path}/gerrit-replica.yaml":
+            content => to_yaml([$gerrit_replica_targets]);
         # Generic HTTPS probes for a static list of urls defined in hiera
         "${targets_path}/blackbox_pingthing_http_check_urls.yaml":
             content => to_yaml([{'targets' => $blackbox_pingthing_http_check_urls}]);
