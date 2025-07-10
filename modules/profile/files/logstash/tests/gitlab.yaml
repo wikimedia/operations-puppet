@@ -737,3 +737,54 @@ testcases:
               name: notice
         ecs:
           version: "1.7.0"
+
+  - input:
+      - >
+        {
+          "rsyslog.timereported": "2025-07-09T19:39:10.157Z",
+          "rsyslog.programname": "input-file-gitlab-rails-application-json",
+          "program": "input-file-gitlab-rails-application-json",
+          "severity": "NOTICE",
+          "host": "gitlab2002",
+          "severity": "INFO",
+          "time": "2025-07-09T19:39:10.157Z",
+          "correlation_id": "01JZRB5XW7ME3RRGWPMBAGVX2S",
+          "meta.caller_id": "POST /api/:version/projects/:id/pipelines/:pipeline_id/cancel",
+          "meta.remote_ip": "<REDACTED>",
+          "meta.feature_category": "<REDACTED>",
+          "meta.user": "<REDACTED>",
+          "meta.user_id": 0,
+          "meta.project": "repos/<REDACTED>",
+          "meta.root_namespace": "repos",
+          "meta.client_id": "<REDACTED>",
+          "class": "Ci::CancelPipelineService",
+          "event": "pipeline_cancel_running",
+          "pipeline_id": 0,
+          "auto_canceled_by_pipeline_id": null,
+          "cascade_to_children": true,
+          "execute_async": true
+        }
+    expected:
+      - __target_index: "ecs-default-1-1.11.0-N-weekly"
+        '@timestamp': "2025-07-09T19:39:10.157Z"
+        host:
+          name: "gitlab1004"
+        labels:
+          event: "pipeline_cancel_running"
+        log:
+          level: "INFO"
+          syslog:
+            facility:
+              code: 16
+              name: "local0"
+            priority: 134
+            severity:
+              code: 6
+              name: "informational"
+        service:
+          name: "gitlab-rails-application"
+          type: "gitlab"
+        trace:
+          id: "01JZRB5XW7ME3RRGWPMBAGVX2S"
+        ecs:
+          version: "1.7.0"
