@@ -2,16 +2,29 @@
 class profile::toolforge::bastion::toolforge_cli (
   Stdlib::Fqdn $web_domain = lookup('profile::toolforge::web_domain', {default_value => 'toolforge.org'}),
 ) {
-  package { [
+
+  $packages = [
     'toolforge-cli',
     'toolforge-builds-cli',
     'toolforge-components-cli',
     'toolforge-envvars-cli',
-    'toolforge-jobs-framework-cli',
+    'toolforge-jobs-cli',
     'toolforge-webservice',
-    'misctools',
-  ]:
+  ]
+
+  package { $packages:
     ensure => installed,
+  }
+  # TODO: rename to toolforge-misctools-cli once we don't support buster
+  # bastions
+  if debian::codename::eq('buster') {
+    package { 'misctools':
+      ensure =>  installed,
+    }
+  } else {
+    package { 'toolforge-misctools-cli':
+      ensure =>  installed,
+    }
   }
 
   $harbor_domain = "${::wmcs_project}-harbor.wmcloud.org"
