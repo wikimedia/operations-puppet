@@ -9,29 +9,40 @@
 # @param registry_endpoint if target is 'registry', it indicates its endpoint.
 # @param k8s_kubeconfig if target is 'kubernetes', it indicates the kubeconfig's path to use.
 # @param rule_filename the filename of the rule config file to use.
+# @param hour Depending on whether the report runs daily or weekly,
+#             this designates the time of day for each day or the time of the day on Monday.
 define profile::docker::reporter::report(
     Wmflib::Ensure                 $ensure              = 'present',
     Enum['daily', 'weekly']        $frequency           = 'weekly',
+    String                         $hour                = '00:00:00',
     Optional[Stdlib::HTTPUrl]      $proxy               = undef,
     Optional[Wmflib::Team]         $team                = undef,
     Integer                        $min_debian_version  = 11,
     Enum['registry', 'kubernetes'] $target              = 'registry',
     Optional[String]               $registry_endpoint   = 'docker-registry.discovery.wmnet',
     Optional[String]               $k8s_kubeconfig_path = undef,
-    String                         $rule_filename       = "${title}_${target}_rules.ini",
+    Optional[String]               $rule_filename       = undef,
 ) {
-    file { "/etc/docker-report/${rule_filename}":
-        ensure => $ensure,
-        owner  => 'root',
-        group  => 'root',
-        source => "puppet:///modules/profile/docker/reporter/${rule_filename}",
+    if $rule_filename == undef {
+        $filter_param = ''
+    } else {
+        $rule_filepath = "/etc/docker-report/${rule_filename}"
+        if !defined(File[$rule_filepath]) {
+            file { $rule_filepath:
+                ensure => $ensure,
+                owner  => 'root',
+                group  => 'root',
+                source => "puppet:///modules/profile/docker/reporter/${rule_filename}",
+            }
+        }
+        $filter_param = "--filter-file /etc/docker-report/${rule_filename}"
     }
-    $hour = sprintf('%02d', fqdn_rand(24, $title))
+
     $environment = $proxy.then |$p| {{'http_proxy' => $p}}
 
     $interval = $frequency ? {
-        'daily' => "*-*-* ${hour}:00:00",
-        'weekly' => "Mon *-*-* ${hour}:00:00"
+        'daily' => "*-*-* ${hour}",
+        'weekly' => "Mon *-*-* ${hour}"
     }
 
     if $target == 'kubernetes' {
@@ -43,7 +54,7 @@ define profile::docker::reporter::report(
     systemd::timer::job { "docker-reporter-${target}-${title}-images":
         ensure            => $ensure,
         description       => "Report on upgrades to ${title} images (${target}).",
-        command           => "/usr/bin/docker-report --minimum-debian-version ${min_debian_version} --filter-file /etc/docker-report/${rule_filename} ${target_param}",
+        command           => "/usr/bin/docker-report --minimum-debian-version ${min_debian_version} ${filter_param} ${target_param}",
         interval          => {'start' => 'OnCalendar', 'interval' => $interval},
         user              => 'root',
         environment       => $environment,

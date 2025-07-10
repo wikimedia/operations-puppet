@@ -20,16 +20,18 @@ class profile::docker::reporter(
         # Report on base images and production-images.
         # Temporarily absented while testing the new Kubernetes version.
         'base':
-            ensure    => absent,
-            frequency => 'daily',
-            target    => 'registry',
+            ensure        => absent,
+            frequency     => 'daily',
+            target        => 'registry',
+            rule_filename => 'base_registry_rules.ini',
             ;
         # Report on images used in production on k8s
         # Temporarily absented while testing the new Kubernetes version.
         'k8s':
-            ensure    => absent,
-            frequency => 'weekly',
-            target    => 'registry',
+            ensure        => absent,
+            frequency     => 'weekly',
+            target        => 'registry',
+            rule_filename => 'k8s_registry_rules.ini',
             ;
         # Report on the staging-eqiad kubernetes cluster.
         'wikikube_staging_eqiad':
@@ -37,6 +39,21 @@ class profile::docker::reporter(
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-staging-eqiad.config',
             rule_filename       => 'wikikube_kubernetes_rules.ini'
+            ;
+        # Report on the staging-eqiad kubernetes cluster.
+        'wikikube_staging_codfw':
+            frequency           => 'daily',
+            hour                => '00:30:00',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-staging-codfw.config',
+            rule_filename       => 'wikikube_kubernetes_rules.ini'
+            ;
+        # Report on the staging-eqiad kubernetes cluster.
+        'ml_staging_codfw':
+            frequency           => 'daily',
+            hour                => '01:00:00',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-staging-codfw.config',
             ;
     }
 }
