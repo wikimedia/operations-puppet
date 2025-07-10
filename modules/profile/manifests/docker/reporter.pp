@@ -55,5 +55,26 @@ class profile::docker::reporter(
             target              => 'kubernetes',
             k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-ml-staging-codfw.config',
             ;
+        # Report on the DSE kubernetes cluster.
+        'dse_eqiad':
+            frequency           => 'daily',
+            hour                => '01:30:00',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-dse-k8s-eqiad.config',
+            ;
+        # Report on the AUX eqiad kubernetes cluster.
+        'aux_eqiad':
+            frequency           => 'daily',
+            hour                => '02:00:00',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-aux-k8s-eqiad.config',
+            ;
+        # Report on the AUX codfw kubernetes cluster.
+        'aux_codfw':
+            frequency           => 'daily',
+            hour                => '02:30:00',
+            target              => 'kubernetes',
+            k8s_kubeconfig_path => '/etc/kubernetes/debmonitor-aux-k8s-codfw.config',
+            ;
     }
 }
