@@ -225,18 +225,20 @@ LINES: while (my $line = <$logstream>) {
   my $exception_class = $2;
   my $stack_trace = shorten($3);
 
-  if (!$junk) {
-    # Strip some junk
-    for my $pattern (@junk_patterns, keys %junk_consolidate_patterns) {
-      next LINES if ($stack_trace =~ $pattern);
+  if ($stack_trace !~ /PHP Deprecated: Caller from.*ignored an error originally raised from/) {
+    if (!$junk) {
+      # Strip some junk
+      for my $pattern (@junk_patterns, keys %junk_consolidate_patterns) {
+        next LINES if ($stack_trace =~ $pattern);
+      }
     }
-  }
 
-  # Condense some common errors:
-  for my $pattern (keys %all_consolidate_patterns) {
-    if ($stack_trace =~ $pattern) {
-      $exception_class = $all_consolidate_patterns{$pattern};
-      $stack_trace = $pattern;
+    # Condense some common errors:
+    for my $pattern (keys %all_consolidate_patterns) {
+      if ($stack_trace =~ $pattern) {
+        $exception_class = $all_consolidate_patterns{$pattern};
+        $stack_trace = $pattern;
+      }
     }
   }
 
