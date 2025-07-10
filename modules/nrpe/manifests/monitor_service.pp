@@ -76,5 +76,6 @@ define nrpe::monitor_service(
         check_interval => $check_interval,
         retry_interval => $retry_interval,
         notes_url      => $notes_urls,
+        migration_task => $migration_task,
     }
 }
