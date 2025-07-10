@@ -152,8 +152,17 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/production/test_articletopic-outlink.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_articletopic-outlink.yaml'
     }
+    httpbb::test_suite {'liftwing/production/test_article-models.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_article-models.yaml'
+    }
     httpbb::test_suite {'liftwing/production/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_llm.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_logo-detection.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_logo-detection.yaml'
+    }
+    httpbb::test_suite {'liftwing/production/test_recommendation-api-ng.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/production/test_recommendation-api-ng.yaml'
     }
     httpbb::test_suite {'liftwing/production/test_revertrisk.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/production/test_revertrisk.yaml'
@@ -185,8 +194,17 @@ class profile::httpbb (
     httpbb::test_suite {'liftwing/staging/test_articletopic-outlink.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_articletopic-outlink.yaml'
     }
+    httpbb::test_suite {'liftwing/staging/test_article-models.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_article-models.yaml'
+    }
     httpbb::test_suite {'liftwing/staging/test_llm.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_llm.yaml'
+    }
+    httpbb::test_suite {'liftwing/staging/test_logo-detection.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_logo-detection.yaml'
+    }
+    httpbb::test_suite {'liftwing/staging/test_recommendation-api-ng.yaml':
+        source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_recommendation-api-ng.yaml'
     }
     httpbb::test_suite {'liftwing/staging/test_revertrisk.yaml':
         source => 'puppet:///modules/profile/httpbb/liftwing/staging/test_revertrisk.yaml'
