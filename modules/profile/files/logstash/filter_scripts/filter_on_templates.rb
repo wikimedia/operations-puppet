@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-# filter_on_templates_v2.rb
+# filter_on_templates.rb
 # Logstash Ruby script to strip incompatible fields based on type described in the latest index template.
 # @version 2.0.1
 
@@ -303,7 +303,7 @@ def filter(event)
   [event]
 end
 
-# run tests with `ruby filter_on_templates_v2.rb
+# run tests with `ruby filter_on_templates.rb
 if __FILE__ == $PROGRAM_NAME
   require_relative '../helpers/filter_scripts_test_helper'
   require 'date_core'
