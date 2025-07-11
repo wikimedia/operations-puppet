@@ -113,37 +113,55 @@ C{
      * example, 'wikipedia.org' for 'en.m.wikipedia.org'. But we handle other
      * common cases correctly too, like 'news.bbc.co.uk' (which may set cookies
      * for bbc.co.uk, but not the entire co.uk public suffix), by assuming that
-     * if either of the top two levels is less than three characters long, then
+     * if either of the top two levels is only one or two characters long, then
      * the public suffix contains two parts. A fully comprehensive and correct
-     * solution would require checking against a public suffix database like
+     * solution would require checking against a public suffix list like
      * <https://publicsuffix.org/>.
      */
     static const char* geo_get_top_cookie_domain(const char* host) {
-        const char *last, *second_last, *third_last, *pos, *top_cookie_domain;
+        const char *last, *second_last, *third_last, *fourth_last, *pos, *top_cookie_domain;
 
         if (!host)
             return NULL;
 
-        last = second_last = third_last = host;
+        last = second_last = third_last = fourth_last = host;
         for (pos = host; *pos != '\0'; pos++) {
             if (*pos == '.') {
+                fourth_last = third_last;
                 third_last = second_last;
                 second_last = last;
                 last = pos;
             }
         }
 
-        // If either the second- or top-level domain is less than three
-        // characters long, assume that the domain uses a two-part public
-        // suffix (like '.co.uk') and include one additional level in the
-        // result.  Also, if the name ends in '.beta.wmflabs.org', make a
-        // special case for that.
-        if (!strcmp(third_last, ".beta.wmflabs.org")
-                || !strcmp(third_last, ".beta.wmcloud.org")
-                || (pos - last) <= 3
-                || (last - second_last) <= 3) {
+        if ((pos - last) <= 3  || (last - second_last) <= 3) {
+            // If the last or second last part is only one or two characters long,
+            // set cookies on the domain above that.
+            //
+            // * news.bbc.co.uk      > .uk (last)   > .bbc.co.uk (wildcard)
+            // * example.co.uk       > .co (second) > example.co.uk (plain)
+            // * w.wiki              > w (second)   > .w.wiki (wildcard, unintended and unneeded but harmless)
+            //
             top_cookie_domain = third_last;
+
+        } else if (!strcmp(third_last, ".beta.wmflabs.org") || !strcmp(third_last, ".beta.wmcloud.org")) {
+            // In the Beta Cluster, use the first subdomain.
+            //
+            // * en.m.wikipedia.beta.wmcloud.org  > .wikipedia.beta.wmcloud.org (wildcard)
+            // * w.beta.wmcloud.org               > w.beta.wmcloud.org (plain)
+            //
+            top_cookie_domain = fourth_last;
+
         } else {
+            // Default to two segments. This will naturally use a wildcard if there were more.
+            //
+            // * en.m.wikipedia.org  > .wikipedia.org (wildcard)
+            // * wikipedia.org       > wikipedia.org (plain)
+            // * beta.wmcloud.org    > .wmcloud.org (wildcard, this is invalid but we don't need it)
+            // * foo.example.wiki    > .example.wiki (wildcard)
+            // * example.wiki        > example.wiki (plain)
+            // * localhost           > localhost (plain)
+            //
             top_cookie_domain = second_last;
         }
 
