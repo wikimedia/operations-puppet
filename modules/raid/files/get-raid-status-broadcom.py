@@ -229,7 +229,7 @@ def parser_controller_data(controller_ids) -> Tuple[int, str]:
         for controller in controller_ids:
             messages.append(get_topology(controller))
 
-    return max(c_state, g_state, p_state, v_state, b_state, e_state), ' | '.join(messages)
+    return max(c_state, g_state, p_state, v_state, b_state, e_state), ' ; '.join(messages)
 
 
 def check_permissions():
