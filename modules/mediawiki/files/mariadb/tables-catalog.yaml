@@ -674,6 +674,27 @@ tables:
     source: checkuser
     canonicality: canonical
     visibility: private
+  - name: cuci_temp_edit
+    source: checkuser
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: cuci_user
+    source: checkuser
+    canonicality: derivative
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
+  - name: cuci_wiki_map
+    source: checkuser
+    canonicality: canonical with acceptable loss
+    visibility: private
+    databases:
+      - dbname: wikishared
+        cluster: x1
   - name: cognate_pages
     source: cognate
     databases:
@@ -1083,6 +1104,13 @@ tables:
       - dbname: test2wiki
       - dbname: testwiki
       - dbname: wikimania2010wiki
+  - name: mediamoderation_scan
+    source: mediamoderation
+    canonicality: canonical
+    visibility: private
+    databases:
+      - dblist: all
+        cluster: x1
   - name: nl_newsletters
     source: newsletter
     databases:
@@ -1540,6 +1568,9 @@ sources:
   liquidthreads:
     - path: extensions/LiquidThreads/sql/tables.json
       gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/LiquidThreads/+/master/sql/tables.json
+  mediamoderation:
+    - path: extensions/MediaModeration/schema/tables.json
+      gerrit: https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/MediaModeration/+/master/schema/tables.json
   newsletter:
     - path: extensions/Newsletter/sql/tables.json
       gerrit: https://https://gerrit.wikimedia.org/r/plugins/gitiles/mediawiki/extensions/Newsletter/+/refs/heads/master/sql/tables.json
