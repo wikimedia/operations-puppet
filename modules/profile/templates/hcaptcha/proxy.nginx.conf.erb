@@ -19,6 +19,11 @@ server {
     location / {
         <%= @nginx_ipblinding_conf %>
 
+        # Don't serve redirect base /
+        location = / {
+           deny all;
+        }
+
         proxy_pass https://hcaptcha.com;
         proxy_ssl_server_name on;
 
@@ -32,6 +37,11 @@ server {
         proxy_intercept_errors on;
 
         error_page 301 302 = @handle_redirect;
+
+        location = /robots.txt {
+          add_header Content-Type text/plain;
+          return 200 "User-agent: *\nDisallow: /\n";
+        }
     }
 
     location @handle_redirect {
