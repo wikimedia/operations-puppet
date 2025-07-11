@@ -118,9 +118,11 @@ fi
 IFACE=$(ip -4 route list 0/0 | cut -d ' ' -f 5 | head -1)
 
 # Load the qemu module from the guest host
-cp /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko /lib/modules/$(uname -r)/kernel/drivers/firmware/
-depmod
-modprobe qemu_fw_cfg
+if [ -f /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko ]; then
+  cp /target/lib/modules/$(uname -r)/kernel/drivers/firmware/qemu_fw_cfg.ko /lib/modules/$(uname -r)/kernel/drivers/firmware/
+  depmod
+  modprobe qemu_fw_cfg
+fi
 
 # If a qemu VM:
 if [ -f "/sys/firmware/qemu_fw_cfg/by_name/opt/ip6/raw" ]; then
