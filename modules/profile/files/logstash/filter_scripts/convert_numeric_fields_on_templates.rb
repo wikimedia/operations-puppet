@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # convert_numeric_fields_on_templates.rb
-# Logstash Ruby script to convert expected numeric fields to int/float from strings based on a provided template.
-# @version 1.0.0
+# Logstash Ruby script to opportunistically convert expected numeric fields to int/float from strings based on a provided template.
+# @version 1.0.1
 
 # The register function required by the Ruby plugin.
 def register(params)
@@ -89,9 +89,6 @@ end
 
 # The filter required by the Ruby plugin.
 def filter(event)
-  # Collect invalid namespaces for reporting
-  errors = []
-
   # handle dynamic template namespaces
   @dynamic_template_objects.each do |namespace, properties|
     entity = event.get(namespace)
@@ -113,14 +110,11 @@ def filter(event)
     next unless entity.is_a?(String)
     begin
       event.set(namespace, convert(entity, properties[:type]))
-    rescue
-      errors.append(namespace)
-      event.remove(namespace)
+    rescue # rubocop:disable Lint/HandleExceptions
+      # allow the value to remain as-is
+      # a namespace that reaches here will be removed by filter-on-template later in the pipeline
     end
   end
-
-  # record errors
-  event.set('[normalized][dropped][string_to_numeric_conversion_failure]', errors) unless errors.empty?
   [event]
 end
 
@@ -137,12 +131,12 @@ if __FILE__ == $PROGRAM_NAME
       'uptime' => '5000' # valid
     },
     'network' => {
-      'bytes' => '5k', # dropped
-      'packets' => { 'foo' => 'bar' } # will pass
+      'bytes' => '5k', # will pass through
+      'packets' => { 'foo' => 'bar' } # will pass through
     },
     'process' => {
-      'pid' => [1], # will pass
-      'exit_code' => '1.1' # dropped: invalid float, should be int
+      'pid' => [1], # will pass through
+      'exit_code' => '1.1' # will pass through
     },
     'event' => {
       'risk_score' => '1', # should convert to float
@@ -196,15 +190,12 @@ if __FILE__ == $PROGRAM_NAME
   )
 
   assert_true(
-    'invalid hashes remain intact',
-    event.get('[network][packets]').is_a?(Hash)
+    'invalid hashes and values remain intact',
+    event.get('[network]') == { 'bytes' => '5k', 'packets' => { 'foo' => 'bar' } }
   )
 
   assert_true(
-    'invalid values',
-    event.get('[normalized][dropped][string_to_numeric_conversion_failure]') == [
-      '[network][bytes]',
-      '[process][exit_code]'
-    ]
+    'invalid close-enough values remain intact',
+    event.get('[process]') == { 'pid' => [1], 'exit_code' => '1.1' }
   )
 end
