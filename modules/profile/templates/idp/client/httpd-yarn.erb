@@ -71,18 +71,25 @@
     ErrorLog /var/log/apache2/<%= @virtual_host %>.log
 
     LogLevel warn
+    RewriteEngine on
 
     ProxyPass /health_check !
     ProxyPass /jobhistory/ http://<%= @vhost_settings['res_manager'] %>:19888/jobhistory/
     ProxyPassReverse /jobhistory/ http://<%= @vhost_settings['res_manager'] %>:19888/jobhistory/
+    RewriteRule ^/jobhistory$ /jobhistory/ [R]
+
 
     <%- if @vhost_settings['spark_history_server_address'] -%>
     <%- if @vhost_settings['spark_history_server_address'].include? 'https' -%>
     SSLProxyEngine On
     <%- end -%>
-    ProxyPass /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
+    RewriteRule ^/history$ /history/ [R]
+    RewriteRule ^/spark-history$ /spark-history/ [R]
+
+    ProxyPass /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/ timeout=<%= @vhost_settings['spark_history_server_timeout'] %>
     ProxyPassReverse /history/ <%= @vhost_settings['spark_history_server_address'] %>/history/
-    ProxyPass /spark-history/ <%= @vhost_settings['spark_history_server_address'] %>/
+
+    ProxyPass /spark-history/ <%= @vhost_settings['spark_history_server_address'] %>/ timeout=<%= @vhost_settings['spark_history_server_timeout'] %>
     ProxyPassReverse /spark-history/ <%= @vhost_settings['spark_history_server_address'] %>/
     <%- end %>
     ProxyPass /health_check !

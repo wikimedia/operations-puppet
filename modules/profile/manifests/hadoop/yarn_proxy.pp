@@ -12,6 +12,8 @@ class profile::hadoop::yarn_proxy (
     require profile::analytics::httpd::utils
     require profile::hadoop::common
 
+    httpd::mod_conf { 'rewrite': }
+
     $server_name = $::realm ? {
         'production' => 'yarn.wikimedia.org',
         'labs'       => "yarn-${::wmcs_project}.${::site}.wmnet",
@@ -19,6 +21,7 @@ class profile::hadoop::yarn_proxy (
 
     $resourcemanager_primary_host = $profile::hadoop::common::resourcemanager_hosts[0]
     $spark_history_server_address = $profile::hadoop::common::yarn_spark_history_server_address
+    $spark_history_server_timeout = $profile::hadoop::common::yarn_spark_history_server_timeout
 
     profile::idp::client::httpd::site{ 'yarn.wikimedia.org':
         vhost_content    => 'profile/idp/client/httpd-yarn.erb',
@@ -26,6 +29,7 @@ class profile::hadoop::yarn_proxy (
         vhost_settings   => {
             'res_manager'                  => $resourcemanager_primary_host,
             'spark_history_server_address' => $spark_history_server_address,
+            'spark_history_server_timeout' => $spark_history_server_timeout,
         },
         required_groups  => [
             'cn=ops,ou=groups,dc=wikimedia,dc=org',

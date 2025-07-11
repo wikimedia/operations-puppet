@@ -400,6 +400,11 @@ class profile::hadoop::common (
         default => $hadoop_config['yarn_spark_history_server_address']
     }
 
+    $yarn_spark_history_server_timeout = $hadoop_config['yarn_spark_history_server_timeout'] ? {
+        undef   => 300,
+        default => $hadoop_config['yarn_spark_history_server_timeout']
+    }
+
     # The datanode mountpoints are retrieved from facter, among the list of mounted
     # partitions on the host. Once a partition is not available anymore (disk broken for example),
     # it is sufficient to run puppet to update the configs (and restart daemons if needed).
