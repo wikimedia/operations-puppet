@@ -27,3 +27,5 @@ profile::dbbackups::check::db_password: 'foo'
 
 # Icinga o11y specific
 profile::icinga::stub_contactgroups: true
+
+enable_nrpe2nodexp: true

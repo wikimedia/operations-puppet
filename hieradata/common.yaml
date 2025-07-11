@@ -100,6 +100,7 @@ datacenters:
   - eqsin
   - drmrs
   - magru
+enable_nrpe2nodexp: false
 
 # This is used for setting the resolv.conf on the DNS hosts and the NTP peers
 # that are consumed by P:systemd::timesyncd.

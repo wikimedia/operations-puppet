@@ -1,49 +1,53 @@
 require_relative '../../../../rake_modules/spec_helper'
 
 describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :define do
-  describe 'when remote search is disabled' do
-      let(:title) { 'my_cluster_name' }
-      let(:params) { {
-        :port => 9201,
-        :settings => {'my_cluster_name' => {
-                'cluster_name'          => 'my_cluster_name',
-                'short_cluster_name'    => 'the_short_cluster_name',
-                'send_logs_to_logstash' => true,
-                'publish_host'          => '127.0.0.1',
-            }},
-        :enable_remote_search => false,
-      } }
+  on_supported_os(WMFConfig.test_on).each do |os, facts|
+    context "on #{os}" do
+      let(:facts)  { facts }
 
-      it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml').with_content("--- \n") }
-  end
+      describe 'when remote search is disabled' do
+          let(:title) { 'my_cluster_name' }
+          let(:params) { {
+            :port => 9201,
+            :settings => {'my_cluster_name' => {
+                    'cluster_name'          => 'my_cluster_name',
+                    'short_cluster_name'    => 'the_short_cluster_name',
+                    'send_logs_to_logstash' => true,
+                    'publish_host'          => '127.0.0.1',
+                }},
+            :enable_remote_search => false,
+          } }
 
-  describe 'when remote search is enabled' do
-      let(:title) { 'my_cluster_name' }
-      let(:params) { {
-        :port => 9201,
-        :settings => {
-            'my_gamma_cluster' => {
-                'cluster_name'          => 'my_gamma_cluster_name',
-                'short_cluster_name'    => 'gamma',
-                'send_logs_to_logstash' => true,
-                'publish_host'          => '127.0.0.1',
-                'unicast_hosts'         => ['host1', 'host2'],
-                'transport_tcp_port'    => 9900,
+          it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml').with_content("--- \n") }
+      end
+
+      describe 'when remote search is enabled' do
+          let(:title) { 'my_cluster_name' }
+          let(:params) { {
+            :port => 9201,
+            :settings => {
+                'my_gamma_cluster' => {
+                    'cluster_name'          => 'my_gamma_cluster_name',
+                    'short_cluster_name'    => 'gamma',
+                    'send_logs_to_logstash' => true,
+                    'publish_host'          => '127.0.0.1',
+                    'unicast_hosts'         => ['host1', 'host2'],
+                    'transport_tcp_port'    => 9900,
+                },
+                'my_cluster_name' => {
+                    'cluster_name'          => 'my_cluster_name',
+                    'short_cluster_name'    => 'phi',
+                    'send_logs_to_logstash' => true,
+                    'publish_host'          => '127.0.0.1',
+                    'unicast_hosts'         => ['host5', 'host4'],
+                    'transport_tcp_port'    => 9700,
+                },
             },
-            'my_cluster_name' => {
-                'cluster_name'          => 'my_cluster_name',
-                'short_cluster_name'    => 'phi',
-                'send_logs_to_logstash' => true,
-                'publish_host'          => '127.0.0.1',
-                'unicast_hosts'         => ['host5', 'host4'],
-                'transport_tcp_port'    => 9700,
-            },
-        },
-        :enable_remote_search => true,
-      } }
+            :enable_remote_search => true,
+          } }
 
-      it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml')
-          .with_content(<<-EOM
+          it { is_expected.to contain_file('/etc/elasticsearch/my_cluster_name/cirrus_check_settings.yaml')
+              .with_content(<<-EOM
 ---
 - "$.(cluster|search).remote.gamma.seeds":
   - host1:9900
@@ -52,7 +56,9 @@ describe 'icinga::monitor::elasticsearch::cirrus_settings_check', :type => :defi
   - host5:9700
   - host4:9700
           EOM
-          )
-      }
+              )
+          }
+      end
+    end
   end
 end

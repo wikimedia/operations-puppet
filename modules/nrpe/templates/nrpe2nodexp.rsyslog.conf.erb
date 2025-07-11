@@ -1,0 +1,10 @@
+# SPDX-License-Identifier: Apache-2.0
+if $programname contains "nrpe2nodexp-<%= @title %>" then {
+    if ($msg contains "\"ecs.version\": \"1.7.0\"") then {
+        # Send logs to kafka
+        set $.log_outputs = "kafka ecs_170 local";
+    } else {
+        # Filter out non-relevant nrpe2nodexp messages
+        stop
+    }
+}
