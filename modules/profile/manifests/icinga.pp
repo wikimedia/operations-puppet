@@ -292,13 +292,16 @@ class profile::icinga(
     }
 
     $metamonitor_home = '/var/lib/metamonitor'
-    user { 'metamonitor':
-        ensure     => present,
-        system     => true,
-        home       => $metamonitor_home,
-        managehome => true,
-        shell      => '/bin/bash',
-        groups     => $icinga_group,
+    systemd::sysuser { 'metamonitor':
+        home_dir          => $metamonitor_home,
+        shell             => '/bin/bash',
+        additional_groups => [$icinga_group],
+    }
+
+    file { $metamonitor_home:
+        ensure => directory,
+        owner  => 'metamonitor',
+        group  => 'metamonitor',
     }
 
     file { "${metamonitor_home}/.ssh":
