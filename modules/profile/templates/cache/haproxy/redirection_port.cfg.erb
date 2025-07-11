@@ -44,6 +44,11 @@ frontend http
     # TO DISABLE CONCURRENCY ENFORCEMENT, COMMENT THE FOLLOWING LINE
     http-request silent-drop if too_much_recent_concurrency || too_many_concurrent_queries mark_as_too_much_concurrency
 
+    # Populate x_analytics variable for logging purpose
+    # set the var to 1 if client didn't sent any cookie
+    http-request set-var(req.nocookies) req.cook_cnt,bool,not
+    http-request set-var-fmt(txn.x_analytics) "https=0;client_port=%[src_port];nocookies=%[var(req.nocookies)]"
+
     # Provide Server header
     http-after-response set-header Server %[var(txn.server)]
     # Provide X-Cache headers
