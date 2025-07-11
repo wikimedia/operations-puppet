@@ -27,7 +27,7 @@ groups:
               faidon, ejoseph, toddleroux, ryanmax, afandian2, jeh, jhernandez, hxi-ctr, dannyh, mepps,
               cmacholan, echetty, toan, jk, nfraison, swak, ktsouroupidou, hshaath,
               ilooremeta, cmjohnson, xihua, nray, fsero, demon, paramd, neilpquinn-wmf,
-              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, aranyap, bscarone, appledora,
+              mhay, skyenet, tmlt-tmager, damiendf, dpujol, dasm, bscarone, appledora,
               jameel, jminor, awjrichards, ntsako, jkieserman, skvjold, essexigyan, erayfield, kmorgan,
               tsepothoabala, zxane, cec, jbond, nickifeajika, daniram, bstorm,
               shubhankar, nskaggs, mhoutti, goransm, brion, jfishback, pearley, kcv-wikimf, lsobanski,
@@ -474,7 +474,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg, htriedman, antonkokhwmde]
+              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg, htriedman, antonkokhwmde, aranyap]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -5861,12 +5861,15 @@ users:
     gid: 500
     ssh_keys: []
   aranyap:
-    ensure: absent
-    realname: Aranya Prum
-    uid: 43621
+    ensure: present
     gid: 500
-    krb: absent
-    ssh_keys: []
+    name: aranyap
+    realname: Aranya Prum
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOXdWYmddta1VReNU34UtJWq1zP+kkJ9pP9fLrYE+vAz aprum@wikimedia.org
+    uid: 43621
+    email: aprum@wikimedia.org
+    krb: present
   nickifeajika:
     ensure: absent
     realname: Nick Ifeajika
