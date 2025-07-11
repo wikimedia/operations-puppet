@@ -80,7 +80,7 @@ remove_os_md() {
   # Assemble any software RAID arrays that are discovered
   mdadm --assemble --scan || true
     # Disable any swap devices that are actively using MD RAID devices
-  SWAPDEVS=$(grep md /proc/swaps | awk '{print $1}')
+  SWAPDEVS=$(sed -n 's#^\(/dev/md[0-9]*\).*#\1#p' /proc/swaps)
   if [ -n "$SWAPDEVS" ]; then
     for d in ${SWAPDEVS}; do
       swapoff ${d}
