@@ -877,7 +877,7 @@ node /^db2198\.codfw\./ {
 node /^db2199\.codfw\./ {
     role(mariadb::backup_source)
 }
-## s7 & x3
+## s7 & x3, 10.11
 node /^db2200\.codfw\./ {
     role(mariadb::backup_source)
 }

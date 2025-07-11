@@ -3,3 +3,4 @@
 profile::mariadb::dbstore_multiinstance::instances:
   s7: 150G
   x3: 192G
+mariadb::package: 'wmf-mariadb1011'
