@@ -1318,6 +1318,10 @@ node /^es1040\.eqiad\./ {
     role(mariadb::core)
 }
 
+node /^es1048\.eqiad\./ {
+    role(mariadb::core)
+}
+
 ## codfw servers
 node /^es2038\.codfw\./ {
     role(mariadb::core)
@@ -1333,11 +1337,6 @@ node /^es2040\.codfw\./ {
 
 node /^es2048\.codfw\./ {
     role(mariadb::core)
-}
-
-# Future es hosts T393107
-node /^es104(8)\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 node /^failoid[12]002\.(eqiad|codfw)\./ {
