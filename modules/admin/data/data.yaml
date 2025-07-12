@@ -7590,3 +7590,7 @@ ldap_only_users:
     ensure: present
     realname: Nuria Ruiz
     email: nuria.ruiz.garcia@gmail.com
+  sowmya.guru:
+    ensure: present
+    realname: Sowmya Guru
+    email: sowmya.guru@wikimedia.de
