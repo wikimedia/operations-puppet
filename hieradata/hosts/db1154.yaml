@@ -7,3 +7,4 @@ profile::mariadb::sanitarium_multiinstance::instances:
   s8: 48G
   x3: 12G
 mariadb::binlog_format: 'ROW'
+mariadb::package: 'wmf-mariadb1011'
