@@ -80,5 +80,14 @@ class profile::kubernetes::mediawiki_runner(
             fetch_ipinfo_dbs => true,
             before           => Service['kubelet'],
         }
+        if $feature_flags['allow_memcached_ports'] {
+            $memcached_ports = [11211, 11214]
+            ferm::rule { 'skip_memcached_conntrack_out':
+                desc  => 'Skip outgoing connection tracking towards memcached',
+                table => 'raw',
+                chain => 'OUTPUT',
+                rule  => "proto tcp dport (${memcached_ports.join(' ')}) NOTRACK;",
+            }
+        }
     }
 }

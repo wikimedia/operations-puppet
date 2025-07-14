@@ -1,0 +1,2 @@
+profile::kubernetes::node::feature_flags:
+  allow_memcached_ports: true
