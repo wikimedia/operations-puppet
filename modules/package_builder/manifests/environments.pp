@@ -5,15 +5,6 @@ class package_builder::environments(
     Stdlib::Unixpath                      $basepath       = '/var/cache/pbuilder',
     Hash[Variant[Debian::Codename, Enum['default']], Array[String]] $extra_packages = {}
 ) {
-    package_builder::pbuilder_base { 'buster-amd64':
-        distribution   => 'buster',
-        components     => 'main',
-        architecture   => 'amd64',
-        mirror         => 'http://mirrors.wikimedia.org/debian',
-        keyring        => '/usr/share/keyrings/debian-archive-keyring.gpg',
-        basepath       => $basepath,
-        extra_packages => pick_default($extra_packages['buster'], $extra_packages['default'], [])
-    }
     package_builder::pbuilder_base { 'bullseye-amd64':
         distribution   => 'bullseye',
         components     => 'main',
