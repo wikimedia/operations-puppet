@@ -9,7 +9,8 @@
 # on the node is up to date, and if not, it will download the latest mediawiki image
 
 class profile::kubernetes::mediawiki_runner(
-    Optional[Array[String]] $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
+    Profile::Kubernetes::Feature_flags $feature_flags       = lookup('profile::kubernetes::node::feature_flags', { default_value => {} }),
+    Optional[Array[String]]            $kubelet_node_labels = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
 ) {
     # Treat the node as reserved if it is explicitly dedicated to a
     # purpose other than "mw-experimental". For now, we assume that

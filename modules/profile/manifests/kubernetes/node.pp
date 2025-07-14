@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 class profile::kubernetes::node (
     String $kubernetes_cluster_name                          = lookup('profile::kubernetes::cluster_name'),
+    Profile::Kubernetes::Feature_flags $feature_flags        = lookup('profile::kubernetes::node::feature_flags', { default_value => {} }),
     Optional[Array[String]] $kubelet_node_labels             = lookup('profile::kubernetes::node::kubelet_node_labels', { default_value => [] }),
     Optional[Array[String]] $kubelet_extra_params            = lookup('profile::kubernetes::node::kubelet_extra_params', { default_value => undef }),
     Optional[Array[K8s::Core::V1Taint]] $kubelet_node_taints = lookup('profile::kubernetes::node::kubelet_node_taints', { default_value => [] }),
