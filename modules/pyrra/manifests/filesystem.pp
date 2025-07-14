@@ -18,7 +18,20 @@ class pyrra::filesystem(
 
     $config_folder = dirname($config_files)
 
-    file { [ $prometheus_folder, $config_folder ]:
+    # purge unmanaged files from pyrra config folder
+    file { $config_folder:
+        ensure  => directory,
+        source  => 'puppet:///modules/pyrra/pyrra-filesystem-config-empty',
+        owner   => 'pyrra',
+        group   => 'pyrra',
+        mode    => '0755',
+        recurse => true,
+        purge   => true,
+        force   => true,
+        require => Package['pyrra'],
+    }
+
+    file { $prometheus_folder:
         ensure  => directory,
         mode    => '0755',
         owner   => 'pyrra',
