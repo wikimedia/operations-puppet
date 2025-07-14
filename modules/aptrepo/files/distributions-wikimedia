@@ -150,7 +150,7 @@ Components: main
  component/varnish6
  thirdparty/amd-rocm54
  thirdparty/bigtop15
- thirdparty/bigtop33
+ thirdparty/bigtop34
  thirdparty/ceph-octopus
  thirdparty/ceph-pacific
  thirdparty/ceph-quincy
@@ -246,7 +246,7 @@ Components: main
  thirdparty/amd-rocm61
  thirdparty/amd-rocm63
  thirdparty/bigtop15
- thirdparty/bigtop33
+ thirdparty/bigtop34
  thirdparty/ceph-reef
  thirdparty/docker
  thirdparty/jenkins
