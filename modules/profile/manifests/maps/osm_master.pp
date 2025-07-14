@@ -6,7 +6,7 @@ class profile::maps::osm_master (
     Variant[String,Integer] $planet_sync_minute  = lookup('profile::maps::osm_master::planet_sync_minute', { 'default_value' => '00' }),
     Array[Stdlib::Host] $maps_hosts              = lookup('profile::maps::hosts'),
     String $kartotherian_pass                    = lookup('profile::maps::osm_master::kartotherian_pass'),
-    Optional[String] $tilerator_pass             = lookup('profile::maps::osm_master::tilerator_pass'), # Can be removed when buster dropped
+    Optional[String] $tilerator_pass             = lookup('profile::maps::osm_master::tilerator_pass'), # TODO: Can be removed when buster dropped
     String $replication_pass                     = lookup('profile::maps::osm_master::replication_pass'),
     String $swift_key_id                         = lookup('profile::maps::osm_master::swift_key_id'),
     String $swift_password                       = lookup('profile::maps::osm_master::swift_password'),
@@ -125,12 +125,20 @@ class profile::maps::osm_master (
         method   => 'peer',
     }
 
-    unless debian::codename::eq('bookworm') {
-        profile::maps::user_cidrs { 'tilerator@localhost':
-            user       => 'tilerator',
+    $tegola_pass = $tilerator_pass
+    if debian::codename::eq('bookworm') {
+        profile::maps::user_cidrs { 'tegola@localhost':
+            user       => 'tegola',
+            password   => $tegola_pass,
             database   => 'all',
             ip_address => '127.0.0.1/32',
+        }
+    } else {
+        profile::maps::user_cidrs { 'tilerator@localhost':
+            user       => 'tilerator',
             password   => $tilerator_pass,
+            database   => 'all',
+            ip_address => '127.0.0.1/32',
         }
     }
 
@@ -140,11 +148,20 @@ class profile::maps::osm_master (
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
-                user       => 'tilerator',
-                database   => 'all',
-                ip_address => $subnet,
-                password   => $tilerator_pass,
+            if debian::codename::eq('bookworm') {
+                profile::maps::user_cidrs { "tegola@${_subnet}_kubepod":
+                    user       => 'tegola',
+                    database   => 'all',
+                    ip_address => $subnet,
+                    password   => $tegola_pass,
+                }
+            } else {
+                profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
+                    user       => 'tilerator',
+                    database   => 'all',
+                    ip_address => $subnet,
+                    password   => $tilerator_pass,
+                }
             }
             profile::maps::user_cidrs { "kartotherian@${_subnet}_kubepod":
                 user       => 'kartotherian',
@@ -155,8 +172,15 @@ class profile::maps::osm_master (
         }
     }
 
-    unless debian::codename::eq('bookworm') {
-        $postgres_replicas.each |$replica, $ip_address| {
+    $postgres_replicas.each |$replica, $ip_address| {
+        if debian::codename::eq('bookworm') {
+            profile::maps::user_cidrs { "tegola@${replica}":
+                user       => 'tegola',
+                password   => $tegola_pass,
+                database   => 'all',
+                ip_address => $ip_address['ip_address'],
+            }
+        } else {
             profile::maps::user_cidrs { "tilerator@${replica}":
                 user       => 'tilerator',
                 password   => $tilerator_pass,

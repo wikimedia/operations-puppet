@@ -52,12 +52,17 @@ class profile::maps::osm_replica(
         retries     => 15, # compensate for spikes in lag when OSM database resync is underway.
     }
 
-    # tegola-vector-tiles and kartotherian will connect as user tilerator
-    # from kubernetes pods.
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            unless debian::codename::eq('bookworm') {
+            if debian::codename::eq('bookworm') {
+                postgresql::user::hba { "tegola_${_subnet}_kubepod":
+                    user      => 'tegola',
+                    database  => 'all',
+                    cidr      => $subnet,
+                    pgversion => $pgversion,
+                }
+            } else {
                 postgresql::user::hba { "tilerator_${_subnet}_kubepod":
                     user      => 'tilerator',
                     database  => 'all',
