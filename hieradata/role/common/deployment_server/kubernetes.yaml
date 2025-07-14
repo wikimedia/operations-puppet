@@ -203,9 +203,6 @@ scap::sources:
     repository: mediawiki/services/restbase/deploy
   horizon/deploy:
     repository: openstack/horizon/deploy
-  tilerator/deploy:
-    repository: maps/tilerator/deploy
-  #    lvs_service: tilerator
   wikimedia/discovery/analytics:
     repository: wikimedia/discovery/analytics
   wdqs/wdqs:
