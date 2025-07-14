@@ -68,7 +68,7 @@ define profile::pyrra::filesystem::slos::istio (
         default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
     }
     pyrra::filesystem::config { "${k8s_cluster_name}-${title}-latency.yaml":
-      ensure  => ($slo_latency_target == undef).bool2str('present', 'absent'),
+      ensure  => ($slo_latency_target != undef).bool2str('present', 'absent'),
       content => to_yaml({
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind'       => 'ServiceLevelObjective',
@@ -108,7 +108,7 @@ define profile::pyrra::filesystem::slos::istio (
     #    with a third party service).
     # Two aspects of the same service, looked from different point of views.
     pyrra::filesystem::config { "${k8s_cluster_name}-${title}-success-ratio.yaml":
-      ensure  => ($slo_success_ratio_target == undef).bool2str('present', 'absent'),
+      ensure  => ($slo_success_ratio_target != undef).bool2str('present', 'absent'),
       content => to_yaml({
         'apiVersion' => 'pyrra.dev/v1alpha1',
         'kind'       => 'ServiceLevelObjective',
