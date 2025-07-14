@@ -627,7 +627,7 @@ node /^db2(147|155|172|179|206|210|219|236|237|240)\.codfw\./ {
 
 # s5 (default, dewiki and others) core production dbs on eqiad
 # See also db1213 and db1144 below
-node /^db1(159|185|200|210|230)\.eqiad\./ {
+node /^db1(159|185|200|207|210|230)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -750,11 +750,6 @@ node /^db21(43)\.codfw\./ {
 # See also multiinstance misc hosts db1217, db2160 below
 # m1 master
 node /^db1213\.eqiad\./ {
-    role(mariadb::misc)
-}
-
-# old m1 master
-node /^db1207\.eqiad\./ {
     role(mariadb::misc)
 }
 
