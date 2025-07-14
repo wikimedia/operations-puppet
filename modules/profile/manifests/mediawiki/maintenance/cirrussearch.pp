@@ -4,14 +4,6 @@ class profile::mediawiki::maintenance::cirrussearch(
 
     $team = 'search-platform'
 
-    file { '/usr/local/bin/cirrus_build_completion_indices.sh':
-        ensure => 'absent',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0555',
-        source => 'puppet:///modules/profile/mediawiki/maintenance/cirrus_build_completion_indices.sh',
-    }
-
     profile::mediawiki::sharded_periodic_job { 'cirrus_build_completion_indices_eqiad':
         interval                  => '02:30',
         cron_schedule             => '30 02 * * *',
