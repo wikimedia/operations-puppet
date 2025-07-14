@@ -40,7 +40,8 @@ class DataTest(unittest.TestCase):
 
     # This should never happen (as user IDs are originally assigned on LDAP account creation),
     # but let's enforce this here just in case
-    user_uid_max = 49999
+    # This was 49999 (50k) but bumped to 499999 (500k) due to T355663
+    user_uid_max = 499999
 
     @classmethod
     def setUpClass(cls):
