@@ -140,13 +140,11 @@ class profile::maps::osm_master (
     $wikikube_networks.each |String $subnet| {
         if $subnet =~ Stdlib::IP::Address::V4 {
             $_subnet = split($subnet, '/')[0]
-            unless debian::codename::eq('bookworm') {
-                profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
-                    user       => 'tilerator',
-                    database   => 'all',
-                    ip_address => $subnet,
-                    password   => $tilerator_pass,
-                }
+            profile::maps::user_cidrs { "tilerator@${_subnet}_kubepod":
+                user       => 'tilerator',
+                database   => 'all',
+                ip_address => $subnet,
+                password   => $tilerator_pass,
             }
             profile::maps::user_cidrs { "kartotherian@${_subnet}_kubepod":
                 user       => 'kartotherian',
