@@ -565,7 +565,7 @@ node /^db2(145|146|153|170|173|174|176|188|203|212|216)\.codfw\./ {
 
 # s2 (large wikis) core production dbs on eqiad
 # See also db1146 below
-node /^db1(162|182|188|197|222|229|233|246|254)\.eqiad\./ {
+node /^db1(162|182|188|197|222|229|233|246|254|259)\.eqiad\./ {
     role(mariadb::core)
 }
 
@@ -577,11 +577,6 @@ node /^db1156\.eqiad\./ {
 # s2 (large wikis) core production dbs on codfw
 node /^db2(148|175|189|204|207|225|226|238)\.codfw\./ {
     role(mariadb::core)
-}
-
-# db1259 replaces db1246 T393296
-node /^db125(9)\.eqiad\./ {
-    role(insetup::data_persistence_ferm)
 }
 
 # s3 core production dbs on eqiad
