@@ -1,0 +1,34 @@
+profile::cache::haproxy::available_certificates:
+  upload:
+    cert_paths:
+        - /run/haproxy-tls/upload/live/ec-prime256v1.chained.crt.key
+    server_names: &upload_cert_server_names
+        - upload.wikimedia.org
+        - maps.wikimedia.org
+    warning_threshold: 21
+    critical_threshold: 15
+  upload-goog:
+    cert_paths:
+        - /run/haproxy-tls/upload-goog/live/ec-prime256v1.chained.crt.key
+    server_names: *upload_cert_server_names
+    warning_threshold: 21
+    critical_threshold: 15
+  measure:
+    cert_paths:
+        - /run/haproxy-tls/measure/live/ec-prime256v1.chained.crt.key
+    server_names: &measure_cert_server_names
+        - measure-eqiad.wikimedia.org
+        - measure-codfw.wikimedia.org
+        - measure-esams.wikimedia.org
+        - measure-ulsfo.wikimedia.org
+        - measure-eqsin.wikimedia.org
+        - measure-drmrs.wikimedia.org
+        - measure-magru.wikimedia.org
+    warning_threshold: 21
+    critical_threshold: 15
+  measure-goog:
+    cert_paths:
+        - /run/haproxy-tls/measure-goog/live/ec-prime256v1.alt.chained.crt.key
+    server_names: *measure_cert_server_names
+    warning_threshold: 21
+    critical_threshold: 15
