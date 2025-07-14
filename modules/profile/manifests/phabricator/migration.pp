@@ -16,11 +16,14 @@ class profile::phabricator::migration (
     # setup scap user and symlink to binary before the first deploy and
     # before 'scap install-world' has installed scap itself (T357572)
 
-    $scap_path = '/var/lib/scap/scap/bin'
-
     class { '::scap::user': }
 
-    wmflib::dir::mkdir_p($scap_path, {
+    wmflib::dir::mkdir_p('/var/lib/scap/scap', {
+        owner   => 'scap',
+        require => Class['scap::user'],
+    })
+
+    wmflib::dir::mkdir_p('/var/lib/scap/scap/bin', {
         owner   => 'scap',
         require => Class['scap::user'],
     })
