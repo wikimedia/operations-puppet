@@ -36,7 +36,7 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu, dalezhou]
+              chuckonwumelu, dalezhou, nuria]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -2219,14 +2219,12 @@ users:
     ssh_keys: []
     uid: 18976
   nuria:
-    ensure: present
+    ensure: absent
     gid: 500
     name: nuria
     realname: Nuria Ruiz
-    ssh_keys: [ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIUCvA8K9rgp4n0hCJxbFt66CSbo9JhkSvQwlMj4+mxj9Mypf5/TLoRVPNVEwF4htjKmMdtaXDzGDTJUJPh9SPWqi1wP0YGydxv7z8BAIgaRliCHycviGE3nHjcxkiG+U2zxBL7Bc/Jy7d5Ky2qC/5Nu7jhBRF+kq3haZ0zx0T0cSmTvvUDfKt27uuLWxBA8Z4z2kNYVCpVL4pvlGPkqhZO75wPIUsCAlPH3Tq+Cq8FIc7BoZgjFQ+g6okpUF2PZY4eVoMR2MS8WIwQlOXwe+AMh+JEgq7oH//LN03IDX7YJQCNbmJ6MR0YdB1TOQHF/RKFImGBdDEC0vx6/QeIVOr
-        nuria@wikimedia.org-production]
+    ssh_keys: []
     uid: 4193
-    email: nuria.ruiz.garcia@gmail.com
     krb: absent
   csalvia:
     ensure: absent
@@ -7588,3 +7586,7 @@ ldap_only_users:
     ensure: present
     realname: Valerie Puffet-Michel
     email: vpuffetmichel@wikimedia.org
+  nuria:
+    ensure: present
+    realname: Nuria Ruiz
+    email: nuria.ruiz.garcia@gmail.com
