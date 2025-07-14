@@ -255,6 +255,7 @@ def noraid_parse(response):
             continue
         if blk_dev['name'].startswith('drbd') or \
            blk_dev['name'].startswith('zram') or \
+           blk_dev['name'].startswith('rbd') or \
            blk_dev['name'].startswith('nbd'):
             continue
         # The vendor value returned by lsblk is a fixed width string of 8 chars,
