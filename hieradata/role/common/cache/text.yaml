@@ -390,14 +390,12 @@ profile::cache::haproxy::available_certificates:
         - w.wiki
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
   unified-goog:
     cert_paths:
         - /run/haproxy-tls/unified-goog/live/ec-prime256v1.chained.crt.key
     server_names: *unified_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
   wikiworkshop:
     cert_paths:
       - /run/haproxy-tls/wikiworkshop/live/ec-prime256v1.chained.crt.key
@@ -406,7 +404,6 @@ profile::cache::haproxy::available_certificates:
       - www.wikiworkshop.org
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
 
 profile::cache::haproxy::use_etcd_req_filters: true
 profile::cache::haproxy::allowed_methods:

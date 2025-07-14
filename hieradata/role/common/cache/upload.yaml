@@ -148,14 +148,12 @@ profile::cache::haproxy::available_certificates:
         - maps.wikimedia.org
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
   upload-goog:
     cert_paths:
         - /run/haproxy-tls/upload-goog/live/ec-prime256v1.chained.crt.key
     server_names: *upload_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
   measure:
     cert_paths:
         - /run/haproxy-tls/measure/live/ec-prime256v1.chained.crt.key
@@ -169,14 +167,12 @@ profile::cache::haproxy::available_certificates:
         - measure-magru.wikimedia.org
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
   measure-goog:
     cert_paths:
         - /run/haproxy-tls/measure-goog/live/ec-prime256v1.chained.crt.key
     server_names: *measure_cert_server_names
     warning_threshold: 21
     critical_threshold: 15
-    ocsp: false
 
 profile::benthos::use_geoip: false
 profile::benthos::instances:
