@@ -36,7 +36,7 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu]
+              chuckonwumelu, dalezhou]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -456,7 +456,7 @@ groups:
               samwilson, tillmletzko-wmde, janjaquemot, mmartorana,
               mmunyoki, ryankemper, bking, spatel, aqu, ebysans, mfossati, madasan,
               tandic, auglnkv, rzl, aminalhazwani,
-              dalezhou, otich, sgimeno, tchin,
+              otich, sgimeno, tchin,
               hmonroy, dmaza, mazevedo, tsev, kstoller, samtar, xcollazo,
               dani, bgwiki, alinebruenger, sgrabarczuk,
               soworu-01, trokhymovych, siko, wubwubwub, pfischer, ttaylor,
@@ -5397,16 +5397,12 @@ users:
     realname: Shubhankar Patankar
     ssh_keys: []
   dalezhou:
-    ensure: present
+    ensure: absent
     uid: 38372
     gid: 500
-    krb: present
+    krb: absent
     realname: Dale Zhou
-    email: dale.zhou@uci.edu
-    expiry_date: "2025-07-21"
-    expiry_contact: mgerlach@wikimedia.org
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIwgplBvgCWWSYgmTW8cwNlG7pjwr5I8INx4pGL4rE5n dalezhou@seasnet-14-33.seas.upenn.edu
+    ssh_keys: []
   otich:
     ensure: present
     realname: Olga Tichonova
