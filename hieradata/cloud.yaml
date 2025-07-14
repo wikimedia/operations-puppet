@@ -220,6 +220,14 @@ profile::gitlab::runner::allowed_services:
     host: puppet-enc.cloudinfra.wmcloud.org
     port: 443
     proto: tcp
+  cloud-dynamic-proxy-api-eqiad1:
+    host: proxy-eqiad1.wmcloud.org
+    port: 5668
+    proto: tcp
+  cloud-dynamic-proxy-api-codfw1:
+    host: proxy-codfw1dev.wmflabs.org
+    port: 5668
+    proto: tcp
 profile::gitlab::runner::ensure_buildkitd: present
 profile::gitlab::runner::buildkitd_image: docker-registry.wikimedia.org/repos/releng/buildkit:wmf-v0.22.0
 profile::gitlab::runner::buildkitd_nameservers: "%{alias('profile::resolving::nameservers')}"
