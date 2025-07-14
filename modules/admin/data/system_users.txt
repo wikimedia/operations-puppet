@@ -38,7 +38,6 @@ visualdiff
 glancesync
 tendril
 librenms
-tileratorui
 parsoid
 jenkins-agent
 phd
@@ -49,7 +48,6 @@ jenkins
 stats
 hive
 envoy
-tilerator
 hdfs
 eventstreams
 gitdaemon
