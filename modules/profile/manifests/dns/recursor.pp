@@ -9,6 +9,7 @@ class profile::dns::recursor (
     Hash[Stdlib::Fqdn, Stdlib::IP::Address::Nosubnet] $authdns_servers          = lookup('authdns_servers'),
     Array[Stdlib::IP::Address]                        $dont_query               = lookup('profile::dns::recursor::dont_query', {'default_value' => []}),
     Array[Stdlib::IP::Address]                        $dont_query_negations     = lookup('profile::dns::recursor::dont_query_negations', {'default_value' => []}),
+    Boolean                                           $use_new_pdns_cfg         = lookup('profile::dns::recursor::use_new_pdns_cfg', {'default_value' => false}),
 ) {
     include network::constants
     include profile::firewall
@@ -67,6 +68,7 @@ class profile::dns::recursor (
         require               => Systemd::Service['gdnsd'],
         dont_query            => $dont_query,
         dont_query_negations  => $dont_query_negations,
+        use_new_pdns_cfg      => $use_new_pdns_cfg,
     }
 
     ferm::service { 'udp_dns_recursor':

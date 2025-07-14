@@ -64,6 +64,7 @@ class dnsrecursor (
     Array[Stdlib::IP::Address]                                      $dont_query               = [],
     Array[Stdlib::IP::Address]                                      $dont_query_negations     = [],
     Optional[Hash]                                                  $extra_records            = undef,
+    Boolean                                                         $use_new_pdns_cfg         = false, # T381608: Upgrade pdns-recursor to 5.x on all prod DNS hosts
 ) {
 
     ensure_packages(['pdns-recursor'])
@@ -94,17 +95,21 @@ class dnsrecursor (
             content => inline_template("<% @extra_records.each do |key,value| %><%=value %> <%=key %>\n<% end -%>")
         }
     }
-
-    file { '/etc/powerdns/recursor.conf':
+    $cfg_file_ext = $use_new_pdns_cfg ? {
+        true => 'yml',
+        false => 'conf',
+    }
+    $cfg_file_name = "recursor.${cfg_file_ext}"
+    $template = "dnsrecursor/${cfg_file_name}.erb"
+    file { "/etc/powerdns/${cfg_file_name}":
         ensure  => 'present',
         require => Package['pdns-recursor'],
         owner   => 'root',
         group   => $group,
         mode    => '0440',
         notify  => $service,
-        content => template('dnsrecursor/recursor.conf.erb'),
+        content => template($template),
     }
-
     if $lua_hooks != undef {
         file { '/etc/powerdns/recursorhooks.lua':
             ensure  => 'present',
@@ -124,7 +129,7 @@ class dnsrecursor (
         content  => template('dnsrecursor/override.conf.erb'),
         require  => [
           Package['pdns-recursor'],
-          File['/etc/powerdns/recursor.conf']
+          File["/etc/powerdns/${cfg_file_name}"]
         ],
     }
 }

@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: Apache-2.0
+# This file is managed by puppet -- DO NOT edit locally!
+# https://doc.powerdns.com/recursor/yamlsettings.html
+
+dnssec:
+  validation: <%= @dnssec %>
+<%- if @allow_edns_allowlist -%>
+# we need ECS to ensure our geoip resolution (e.g. for discovery hostnames) works correctly regardless of which recursor (x-dc) a client uses
+# https://doc.powerdns.com/recursor/upgrade.html#x-to-4-5-1
+ecs:
+  add_for:
+  - 0.0.0.0/0
+  - "::/0"
+<%- end -%>
+incoming:
+<%- if @allow_from_listen -%>
+# If set, only allow these comma separated netmasks to recurse
+  allow_from:
+  <%- (@allow_from.flatten + @listen_addresses.flatten).each do |addr| -%>
+    - <%= addr %>
+  <%- end -%>
+<%- else -%>
+  allow_from:
+  <%- @allow_from.flatten.each do |addr| -%>
+    - <%= addr %>
+  <%- end -%>
+<%- end -%>
+<%- if @allow_edns_padding -%>
+  edns_padding_mode: <%= @edns_padding_mode %>
+  edns_padding_from: <%= @edns_padding_from %>
+<%- end -%>
+  listen:
+  <%- @listen_addresses.flatten.each do |listen_addr| -%>
+    - <%= listen_addr %>
+  <%- end -%>
+  max_tcp_clients: <%= @max_tcp_clients %>
+  max_tcp_per_client: <%= @max_tcp_per_client %>
+  pdns_distributes_queries: false
+  port: 53
+  reuseport: true
+  tcp_timeout: <%= @client_tcp_timeout %>
+<% if @allow_incoming_ecs -%>
+  # whether to process and pass along source ECS information (example: received by and passed from dnsdist)
+  use_incoming_edns_subnet: true
+<% end -%>
+logging:
+  common_errors: <%= @log_common_errors %>
+  quiet: true
+  trace: off
+outgoing:
+<%- if @dont_query && !@dont_query.empty? -%>
+  dont_query:
+  <%- @dont_query.each do |dont_query_addr| -%>
+    - <%= dont_query_addr %>
+  <%- end -%>
+  <%- @dont_query_negations.each do |dont_query_addr| -%>
+    - <%= '!'+dont_query_addr %>
+  <%- end -%>
+<%- end -%>
+<%- if @allow_dot_to_auth -%>
+# Use DNS over TLS (DoT) for queries to WMF auth servers. gdnsd support DoT.
+  dot_to_port_853: true
+  dot_to_auth_names:
+    - ns0.wikimedia.org
+    - ns1.wikimedia.org
+    - ns2.wikimedia.org
+<%- end -%>
+<%- if @allow_edns_allowlist -%>
+  edns_subnet_allow_list:
+  <%- @wmf_authdns.each do |authdns| -%>
+    - <%= authdns %>
+  <%- end -%>
+<% end -%>
+<% if !@query_local_address.empty? or @do_ipv6 -%>
+  source_address:
+  <%- if @do_ipv6 -%>
+    - 0.0.0.0
+    - "::"
+  <%- end -%>
+  <%- @query_local_address.each do |query_addr| -%>
+    - <%= query_addr %>
+  <%- end -%>
+<% end -%>
+recordcache:
+  max_entries: <%= @max_cache_entries %>
+  max_negative_ttl: <%= @max_negative_ttl %>
+recursor:
+<%- if @auth_zones -%>
+  auth_zones:
+  <%- @auth_zones.each do |auth_zone| -%>
+    - <%= auth_zone %>
+  <%- end -%>
+<%- end -%>
+  config_dir: /etc/powerdns/
+  daemon: true
+<%- if @extra_records -%>
+  etc_hosts_file: /etc/powerdns/extrarecursorhosts
+  export_etc_hosts: true
+<%- else -%>
+  export_etc_hosts: <%= @export_etc_hosts %>
+<%- end -%>
+  extended_resolution_errors: <%= @allow_extended_errors %>
+<%- if @allow_forward_zones -%>
+# forward_zones format: "<zone_name1>=<IP1>;<IP2>;..., <zone_name2>=<IP3>;<IP4>;..., ..."
+  forward_zones:
+  <%- @forward_zones.split(',').each do |fzone_elem| -%>
+    - zone: <%= fzone_elem.split('=')[0].strip %>
+      recurse: false
+      forwarders:
+      <%- fzone_elem.split('=')[1].split(';').each do |forwarder_addr| -%>
+        - <%= forwarder_addr %>
+      <%- end -%>
+  <%- end -%>
+<%- end -%>
+  hint_file: /usr/share/dns/root.hints
+<%- if @lua_hooks -%>
+  # lua scripts allow extending the resolver
+  # with custom behavior
+  lua_dns_script: /etc/powerdns/recursorhooks.lua
+<%- end -%>
+  max_mthreads: 2048
+# QNAME minimisation support was added in pdns 4.3.0.
+  qname_minimization: <%= @allow_qname_minimisation %>
+  security_poll_suffix: ''
+  setgid: pdns
+  setuid: pdns
+  socket_dir: <%= @socket_dir %>
+  stats_ringbuffer_entries: 1000
+  threads: <%= @threads %>
+  version_string: <%= @hostname %>
+webservice:
+<%- if @enable_webserver -%>
+  webserver: true
+  allow_from:
+  <%- @api_allow_from.each do |api_ip| -%>
+    - <%= api_ip %>
+  <%- end -%>
+  loglevel: <%= @webserver_log_level %>
+  port: <%= @webserver_port %>
+<%- else -%>
+  webserver: false
+<%- end -%>
+

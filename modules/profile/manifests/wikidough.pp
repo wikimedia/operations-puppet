@@ -7,6 +7,7 @@ class profile::wikidough (
     Dnsdist::TLS_config       $tls_dot          = lookup('profile::wikidough::dnsdist::tls_dot'),
     Dnsdist::Webserver_config $webserver_config = lookup('profile::wikidough::dnsdist::webserver_config', {'merge' => hash}),
     Dnsdist::Http_headers     $custom_headers   = lookup('profile::wikidough::dnsdist::custom_headers'),
+    Boolean                   $use_new_pdns_cfg = lookup('profile::dns::recursor::use_new_pdns_cfg', {'default_value' => false}),
 ) {
 
     ensure_packages(['python3-pystemd'])
@@ -54,6 +55,7 @@ class profile::wikidough (
         edns_padding_mode        => 'padded-queries-only',
         restart_service          => false,
         allow_extended_errors    => true,
+        use_new_pdns_cfg         => $use_new_pdns_cfg,
     }
 
     acme_chief::cert { 'wikidough':
