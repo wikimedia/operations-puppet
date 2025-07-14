@@ -613,7 +613,8 @@ groups:
   kartotherian-admin:
     description: Group of kartotherian admins
     gid: 754
-    members: [sbisson, catrope]
+    members: []
+    deprecated: true
     approval:
       - Subramanya Sastry
     privileges: ['ALL = NOPASSWD: /usr/sbin/service kartotherian *',
