@@ -71,8 +71,8 @@ sub cluster_fe_ratelimit {
 
     <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
-    // They're only applied to external clients
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+    // They're only applied to untrusted requests
+    if (req.http.X-Trusted-Request != "A") {
         include "requestctl-filters.inc.vcl";
     }
     <%- end -%>
@@ -85,7 +85,7 @@ sub cluster_fe_ratelimit_hit {
     <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
     // They're only applied to external clients
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+    if (req.http.X-Trusted-Request != "A") {
         include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>

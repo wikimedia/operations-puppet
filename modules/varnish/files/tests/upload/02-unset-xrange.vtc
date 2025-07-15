@@ -12,6 +12,10 @@ varnish v1 -arg "-p vcl_path=${vcl_path} -p vcc_err_unref=false -p vcc_allow_inl
         .host = "${s1_addr}"; .port = "${s1_port}";
     }
 
+    # trust all requests by default
+    sub vcl_recv {
+        set req.http.X-Trusted-Request = "A";
+    }
     include "${basepath}/usr/share/varnish/tests/wikimedia_upload-frontend.vcl";
 } -start
 

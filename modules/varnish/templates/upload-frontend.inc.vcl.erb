@@ -207,9 +207,8 @@ sub cluster_fe_recv_tail { }
 sub cluster_fe_hash { }
 
 sub cluster_fe_ratelimit {
-    // dont apply any rate limiting to internal networks
-    // Fallback to 192.0.2.1, from rfc5735's TEST-NET-1, which is not in wikimedia_nets
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+    // dont apply any rate limiting to trusted requests
+    if (req.http.X-Trusted-Request != "A") {
         // TODO: move all these rules to requestctl if possible.
         // For now, add the requestctl header for them too,
         // so that we have some more insight into which rule is kicking in
@@ -245,7 +244,7 @@ sub cluster_fe_ratelimit {
         if (req.http.X-Client-IP ~ "^130\.44\.21[2345]\." && vsthrottle.is_denied("bytedance", 100, 10s)) {
             set req.http.X-Requestctl = req.http.X-Requestctl + ",static_bytedance";
             return (synth(429, "Too Many Requests"));
-                }
+        }
 
         // 403 all python-requests UA
         if (req.http.User-Agent ~ "^python-requests") {
@@ -325,8 +324,8 @@ sub cluster_fe_ratelimit_hit {
     set req.http.X-Requestctl = regsub(req.http.X-Requestctl, "^,", "");
     <%- if @etcd_filters -%>
     // These are the ratelimits generated from etcd
-    // They're only applied to external clients
-    if (std.ip(req.http.X-Client-IP, "192.0.2.1") !~ wikimedia_nets) {
+    // They're only applied to untrusted requests
+    if (req.http.X-Trusted-Request != "A") {
         include "requestctl-filters-hit.inc.vcl";
     }
     <%- end -%>
