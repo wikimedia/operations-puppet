@@ -96,6 +96,8 @@ profile::installserver::preseed::preseed_per_hostname:
   'arclamp[12]001':
     - partman/standard.cfg
     - partman/raid1-2dev.cfg
+  'aqs1012':
+    - partman/custom/aqs-cassandra-8ssd-2srv.cfg
   'aqs*':
     - reuse-parts.cfg
     - partman/custom/reuse-aqs-cassandra-8ssd-2srv.cfg
