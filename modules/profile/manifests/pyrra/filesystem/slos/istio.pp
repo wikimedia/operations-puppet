@@ -62,7 +62,7 @@ define profile::pyrra::filesystem::slos::istio (
     # We want to be able to trim the success part of the SLI based on the response code. For example, in some cases
     # it may makes sense to just pay attention to HTTP 20X responses, rather than a mixture of 20x/30x/40x all with
     # different latency performances.
-    $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=~\"${$datacenters_regex}\""
+    $base_latency_success_sli_labels = "source_workload_namespace=\"istio-system\", source_workload=\"istio-ingressgateway\", ${destination_canonical_service_filter}, le=\"${latency_max_seconds_bucket}\", site=~\"${$datacenters_regex}\", prometheus=\"${prometheus_instance}\""
     $latency_success_sli = $latency_target_requests_regex ? {
         undef   => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}}",
         default => "istio_request_duration_milliseconds_bucket{${base_latency_success_sli_labels}, response_code=~\"${latency_target_requests_regex}\"}"
