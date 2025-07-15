@@ -17,41 +17,34 @@ function error() {
   $logger --stderr "${1}"
 }
 
-# Various operations skipped here for T370266 - revert once finished
+log "Running puppet..."
+$puppet agent --test
 
-log "Skipping puppet run"
-# log "Running puppet..."
-# $puppet agent --test
+log "Applying storage migrations"
+"$PHAB_DIR"/phabricator/bin/storage upgrade --force -u "$PHAB_STORAGE_USER" -p "$PHAB_STORAGE_PASS"
 
-log "Skipping storage migrations - apply manually"
-# log "Applying storage migrations"
-# "$PHAB_DIR"/phabricator/bin/storage upgrade --force -u "$PHAB_STORAGE_USER" -p "$PHAB_STORAGE_PASS"
-
-log "Not restarting PHD"
-# log "Restarting PHD"
-# $systemctl start phd
+log "Restarting PHD"
+$systemctl start phd
 
 # T314460 - avoid race condition that leads to 'Unable to load the "Arcanist" library.'
 <% if @facts['os']['distro']['codename'] == 'buster' -%>
-# log "Restarting PHP 7.3"
-# $systemctl restart php7.3-fpm.service
+log "Restarting PHP 7.3"
+$systemctl restart php7.3-fpm.service
 <% end -%>
 <% if @facts['os']['distro']['codename'] == 'bullseye' -%>
-# log "Restarting PHP 7.4"
-# $systemctl restart php7.4-fpm.service
+log "Restarting PHP 7.4"
+$systemctl restart php7.4-fpm.service
 <% end -%>
-# log "Reloading apache"
-# $systemctl reload apache2
+log "Reloading apache"
+$systemctl reload apache2
 
-log "Leaving puppet disabled - message -phabricator deployment-"
-# log "Enabling puppet agent"
-# enable-puppet 'phabricator deployment'
+log "Enabling puppet agent"
+enable-puppet 'phabricator deployment'
 
-log "Not verifying database status"
-# log "Verifying database status"
-# "$PHAB_DIR"/phabricator/bin/storage status &>/dev/null
-# retcode=$?
-# if [ "$retcode" != "0" ]; then
-#    error ">>>ERROR: Phabricator storage is in a bad state."
-#    exit 1
-# fi
+log "Verifying database status"
+"$PHAB_DIR"/phabricator/bin/storage status &>/dev/null
+retcode=$?
+if [ "$retcode" != "0" ]; then
+    error ">>>ERROR: Phabricator storage is in a bad state."
+    exit 1
+fi
