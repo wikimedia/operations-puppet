@@ -5,14 +5,16 @@ case $- in
 esac
 
 if [ $(id -u) -eq 0 ]; then
-    PS1="\$(if [ \$? == 0 ]; then echo ✔️; else echo ❌; fi) \[\e[7;49;31m\]\u@\h:\w\[\e[0m\]\$ "
+    PS1="\$(if [ \$? == 0 ]; then echo ✅; else echo ❌; fi) \[\e[7;49;31m\]\u@\h:\w\[\e[0m\]\$ "
 else
-    PS1="\$(if [ \$? == 0 ]; then echo ✔️; else echo ❌; fi) \[\e[1;31m\]\u@\h\[\e[0m\]:\[\e[01;34m\]\w\[\e[0m\]\$ "
+    PS1="\$(if [ \$? == 0 ]; then echo ✅; else echo ❌; fi) \[\e[1;31m\]\u@\h\[\e[0m\]:\[\e[01;34m\]\w\[\e[0m\]\$ "
 fi
 alias mysqlbinlog='mysqlbinlog -vv --base64-output=DECODE-ROWS --skip-ssl'
 alias ls='ls --color=auto'
 alias skip-slave-start='systemctl set-environment MYSQLD_OPTS="--skip-slave-start"'
 alias zarcillo='mysql.py -h db1215 -A zarcillo'
+alias sys="systemctl list-units '*.service'"
+alias screen="LC_ALL=en_US.UTF-8 screen"
 
 function my() {
     local instances socket socket_count has_mysql skip_ssl
