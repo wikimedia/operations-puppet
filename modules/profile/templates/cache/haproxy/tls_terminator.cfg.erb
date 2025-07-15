@@ -172,6 +172,13 @@ listen tls
     http-request set-bandwidth-limit limit-by-path if !wikimedia_trust
 <%- end -%>
 
+<%- if @dedicated_hc_backend -%>
+    acl hc-host        hdr(host) -i healthcheck.wikimedia.org
+    acl hc-path        path_beg     /varnish-fe
+    acl hc-unique-path path_beg     /varnish-fe-hc-5ebea9
+    acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
+    use_backend healthcheck if hc-host hc-path hc-allowed-src || hc-unique-path hc-allowed-src
+<%- end -%>
 
 <%- if @set_x_provenance -%>
     # Set x-provenance
@@ -188,29 +195,39 @@ listen tls
     # If this also fails, we have no information on the request and we'll set
     # * net=unknown
     # We only set the variable once
+    # Set X-Trusted-Request
+    # Provide a trust score from A to F, currently solely based on the source of the request
+    # A for net=wikimedia_trust|internal
+    # F for abuse=
+    # E otherwise
     http-request set-var(req.provenance,ifnotexists) str('net=wikimedia-trust') if wikimedia_trust
     acl is_private_network src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 127.0.0.0/8 ::1
     http-request set-var(req.provenance,ifnotexists) str('net=internal') if is_private_network
+    # AWS Elastic IPs used by the Wikimedia Enterprise project reported in the following tasks over time:
+    # T255524 T294798 T370294
+    acl is_wme_client src 3.23.12.83/32 3.211.48.168/32 44.206.140.241/32 35.168.168.219/32 35.172.30.169/32 3.222.74.115/32
+    http-request set-var(req.provenance,ifnotexists) str('net=wme') if is_wme_client
+    http-request set-var(req.trusted_request) str(A) if { var(req.provenance) -m found }
     # check if the IP is included in one of our ipblocks
     http-request set-var(req.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
+    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance} -m beg "abuse=" }
     # If everything else failed, find an isp in maxmind
     http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
     # lookup failed
     http-request set-var(req.provenance,ifnotexists) str('net=unknown')
     http-request set-header X-Provenance %[var(req.provenance)]
+<%- else -%>
+    # fallback to validate wikimedia_trust if we are not using X-Provenance
+    http-request set-var(req.trusted_request) str(A) if wikimedia_trust
 <%- end -%>
-
-<%- if @dedicated_hc_backend -%>
-    acl hc-host        hdr(host) -i healthcheck.wikimedia.org
-    acl hc-path        path_beg     /varnish-fe
-    acl hc-unique-path path_beg     /varnish-fe-hc-5ebea9
-    acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
-    use_backend healthcheck if hc-host hc-path hc-allowed-src || hc-unique-path hc-allowed-src
-<%- end -%>
+    http-request set-var(req.trusted_request,ifnotexists) str(E)
+    http-request set-header X-Trusted-Request %[var(req.trusted_request)]
+    acl is_trusted_request var(req.trusted_request) -m str A
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
-    use_backend requestctl_filters if !wikimedia_trust
+    # Enforce requestctl filters for any request with a trust score lower than A
+    use_backend requestctl_filters if !is_trusted_request
 <%- end -%>
 
     server backend_server <%= @backend['prefix'] %>@<%= @backend['address'] %><%- if @backend['maxconn'] -%> maxconn <%= @backend['maxconn'] %><%- end %>
