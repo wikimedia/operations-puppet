@@ -478,11 +478,6 @@ node /^cp40(3[789]|4[01234])\.ulsfo\./ {
 # eqsin caches
 #
 
-# Temp setup, will go away once wiped
-node /^cp50(1[3456])\.eqsin\./ {
-    role(insetup_noferm)
-}
-
 node /^cp50(2[56789]|3[012])\.eqsin\./ {
     role(cache::upload)
 }
