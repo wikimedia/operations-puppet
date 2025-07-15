@@ -98,7 +98,7 @@ profile::installserver::preseed::preseed_per_hostname:
     - partman/raid1-2dev.cfg
   'aqs1012':
     - partman/custom/cassandra-jbod.cfg
-    - partman/raid1-2dev.cfg
+    - partman/raid1-2dev-efi.cfg
   'aqs*':
     - reuse-parts.cfg
     - partman/custom/reuse-aqs-cassandra-8ssd-2srv.cfg
