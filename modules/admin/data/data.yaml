@@ -7590,3 +7590,7 @@ ldap_only_users:
     ensure: present
     realname: Sowmya Guru
     email: sowmya.guru@wikimedia.de
+  mszwarc:
+    ensure: present
+    realname: Marcin Szwarc
+    email: mszwarc@wikimedia.org
