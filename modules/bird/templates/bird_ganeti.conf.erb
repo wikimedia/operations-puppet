@@ -27,25 +27,71 @@ protocol kernel kernel_v6 {
    };
 }
 
-<% @neighbors_v4.each do |neighbor_v4| -%>
-protocol bgp {
+filter vm4_filter {
+    if net.len != 32 then reject;
+    if bgp_path.first != bgp_path.last then reject;
+    accept;
+}
+filter vm6_filter {
+    if net.len != 128 then reject;
+    if bgp_path.first != bgp_path.last then reject;
+    accept;
+}
+
+<% @neighbors_v4.each_with_index do |neighbor_v4, index|  -%>
+protocol bgp switch_v4_<%= index %> {
     ipv4 {
         import none;
         export all;
     };
-    local <%= @ipv4_src %> as 64612;
+    local as 64612;
     neighbor <%= neighbor_v4 %> external;
+    # Linux socket API limitation on v4 (GUA to GUA session)
+    # as we use a wildcard for the dynamic group, we need to use it everywhere
+    interface range "<%= @facts['networking']['primary'][0, 3] %>*";
+    source address <%= @ipv4_src %>;
+    strict bind;
 }
 <% end -%>
 
-<% @neighbors_v6.each do |neighbor_v6| -%>
-protocol bgp {
+<% @neighbors_v6.each_with_index do |neighbor_v6, index| -%>
+protocol bgp switch_v6_<%= index %> {
     ipv6 {
         import none;
         export all;
     };
     local <%= @ipv6_src %> as 64612;
-    interface "<%= @facts['networking']['primary'] %>";
     neighbor <%= neighbor_v6 %> external;
+    interface "<%= @facts['networking']['primary'] %>";
 }
 <% end -%>
+
+protocol bgp dynamic_v4 {
+    advertise hostname on;
+    ipv4 {
+        import filter vm4_filter;
+        receive limit 50 action disable;
+        export none;
+    };
+    local as 64612;
+    neighbor range 0.0.0.0/0 onlink external;
+    interface range "tap*";
+    strict bind;
+    dynamic name "vm_v4_";
+    dynamic name digits 2;
+}
+
+protocol bgp dynamic_v6 {
+    advertise hostname on;
+    ipv6 {
+        import filter vm6_filter;
+        receive limit 50 action disable;
+        export none;
+    };
+    local as 64612;
+    neighbor range ::/0 onlink external;
+    interface range "tap*";
+    strict bind;
+    dynamic name "vm_v6_";
+    dynamic name digits 2;
+}
