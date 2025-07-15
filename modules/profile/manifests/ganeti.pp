@@ -306,6 +306,12 @@ class profile::ganeti (
                 'net.ipv6.conf.all.forwarding'                            => 1,
             },
         }
+        sysctl::parameters { 'disable-v4-redirects':
+            values => {
+                'net.ipv4.conf.all.send_redirects'     => 0,
+                'net.ipv4.conf.default.send_redirects' => 0,
+            },
+        }
 
         # Unlike the legacy bridged mode routed packets are processed by hypervisor
         # local firewall, so we need to not re-mark DSCP in packets from VMs
