@@ -473,7 +473,7 @@ groups:
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
               deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
-              stran, addshore]
+              stran, addshore, olliekryva]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
               analytics-research, analytics-platform-eng, analytics-wmde, spark]
@@ -6720,6 +6720,17 @@ users:
     gid: 500
     ssh_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDR/b6QSDCarQkDPB++eIguZWEW7PjR2O9nIt7WtVNiC anton kokh@wmde-102485
+    krb: present
+  olliekryva:
+    ensure: present
+    realname: Ollie
+    email: okryva-ctr@wikimedia.org
+    expiry_date: "2026-06-30"
+    expiry_contact: scherukuwada@wikimedia.org
+    uid: 100041
+    gid: 500
+    ssh_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPqCnFysS5bVbJ2DwN9TCEOVk71rGsaKLkKZsiSho0KA olliekryva@Ollies-MacBook-Pro.local
     krb: present
 
 ldap_only_users:
