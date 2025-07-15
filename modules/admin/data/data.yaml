@@ -36,7 +36,7 @@ groups:
               dumisani, lbowmaker, eoghan, drochford, muja, piccardi, sstefanova, jjmc89,
               halfak, jdcc, rook, swagoel, jebe, sharvaniharan, aitolkyn, xiaoxiao, acooper, marktraceur,
               cicalese, oljad, aborrero, mwilliams, pwaigi1-, mnz, corvus, schoenbaechler, vpoundstone,
-              chuckonwumelu, dalezhou, nuria]
+              chuckonwumelu, dalezhou, nuria, andyrussg]
   absent_ldap:
     description: meta group for absented users which had privileged LDAP access in the past, an automatic check verifies it has been really removed from the LDAP (but removal has to be handled separatelly)
     members: [adavenport, siddharth11, albe, audiohazel, tbolliger, jmatazzoni, pbj, nirzar,
@@ -474,7 +474,7 @@ groups:
               seanleong-wmde, cdobbins, khantstop, jly, suzannewood, volans, mszabo, harroyo-wmf,
               migr, mshilova, bwang, hcoplin, benbuchenau, dsantamaria, cpetrillo, ozge, lmeintrup,
               kcoleman, jvanderhoop, scampos, bwojtowicz, jtweed, skivlehan, oblivian, neslihanturan,
-              deerbee, rosalie-wmde, guilherme, cmelo, andyrussg, htriedman, antonkokhwmde, aranyap,
+              deerbee, rosalie-wmde, guilherme, cmelo, htriedman, antonkokhwmde, aranyap,
               stran, addshore]
     privileges: ['ALL = (analytics-privatedata) NOPASSWD: ALL']
     system_members: [analytics-search, analytics, analytics-privatedata, analytics-product,
@@ -2623,17 +2623,13 @@ users:
     ssh_keys: []
     uid: 3029
   andyrussg:
-    ensure: present
+    ensure: absent
     gid: 500
     name: andyrussg
     realname: Andrew Green
-    ssh_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPk5bd6dpChEOm8RMFGriNY5vzI6EamAB+cZGQ74zIxD andrew.green@extern.wikimedia.de
+    ssh_keys: []
     uid: 3609
-    email: andrew.green@extern.wikimedia.de
-    expiry_date: "2025-07-14"
-    expiry_contact: leszek.manicki@wikimedia.de
-    krb: present
+    krb: absent
   mobrovac:
     ensure: present
     gid: 500
