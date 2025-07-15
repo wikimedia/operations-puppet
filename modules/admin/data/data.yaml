@@ -528,13 +528,10 @@ groups:
       - Andrew Otto
   dumpsdata-admins:
     gid: 825
-    description: People who can sudo into the dumpsgen user on dumpsdata hosts.
+    description: No longer in use, can be fully dropped once all snapshot* hosts are repurposed
     members: []
-    privileges: ['ALL = (dumpsgen) NOPASSWD: ALL']
-    approval:
-      - Dan Andreescu
-      - Andreas Hoelzl
-      - Andrew Otto
+    privileges: []
+    deprecated: true
   dumps-roots:
     gid: 828
     description: People who have full root on snapshot, dumpsdata, and some labstore hosts

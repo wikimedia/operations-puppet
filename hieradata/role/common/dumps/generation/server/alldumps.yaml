@@ -7,7 +7,6 @@ profile::dumps::generation::server::jobswatcher: present
 cluster: dumps
 profile::admin::groups:
   - dumps-roots
-  - dumpsdata-admins
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'NFS server of xml/sql and misc dumps generation filesystem to dumps producer hosts'

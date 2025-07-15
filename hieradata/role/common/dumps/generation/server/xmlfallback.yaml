@@ -1,7 +1,6 @@
 cluster: dumps
 profile::admin::groups:
   - dumps-roots
-  - dumpsdata-admins
 
 profile::contacts::role_contacts: ['Data Platform']
 profile::base::production::role_description: 'Fallback NFS server of xml dumps generation filesystem to dumps producer hosts'
