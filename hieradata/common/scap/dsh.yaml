@@ -10,11 +10,8 @@ scap::dsh::groups:
     conftool:
       - {'cluster': 'kubernetes', 'service': 'kubesvc'}
   testserver:
-    conftool:
-      - {'cluster': 'testserver', 'service': 'apache2'}
+    hosts: []
   mediawiki-installation:
-    conftool:
-      - {'cluster': 'testserver', 'service': 'apache2'}
     hosts:
       - parsoidtest1001.eqiad.wmnet
 
