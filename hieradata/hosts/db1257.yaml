@@ -1,3 +1,4 @@
 # db1257
 mariadb::shard: 'x3'
 mariadb::binlog_format: 'STATEMENT'
+mariadb::package: 'wmf-mariadb1011'
