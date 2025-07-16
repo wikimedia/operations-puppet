@@ -172,14 +172,6 @@ listen tls
     http-request set-bandwidth-limit limit-by-path if !wikimedia_trust
 <%- end -%>
 
-<%- if @dedicated_hc_backend -%>
-    acl hc-host        hdr(host) -i healthcheck.wikimedia.org
-    acl hc-path        path_beg     /varnish-fe
-    acl hc-unique-path path_beg     /varnish-fe-hc-5ebea9
-    acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
-    use_backend healthcheck if hc-host hc-path hc-allowed-src || hc-unique-path hc-allowed-src
-<%- end -%>
-
 <%- if @set_x_provenance -%>
     # Set x-provenance
     # First, we check if the request comes from our ring of trust, or is internal. We set:
@@ -210,7 +202,7 @@ listen tls
     http-request set-var(req.trusted_request) str(A) if { var(req.provenance) -m found }
     # check if the IP is included in one of our ipblocks
     http-request set-var(req.provenance,ifnotexists,ifnotempty) src,map_ip(/etc/haproxy/ipblocks.d/all.map)
-    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance} -m beg "abuse=" }
+    http-request set-var(req.trusted_request,ifnotexists) str(F) if { var(req.provenance) -m beg "abuse=" }
     # If everything else failed, find an isp in maxmind
     http-request set-var(req.provenance,ifnotexists,ifnotempty) lua.fetch_isp,lower,bytes(0,64)
     # lookup failed
@@ -223,6 +215,14 @@ listen tls
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
     acl is_trusted_request var(req.trusted_request) -m str A
+
+<%- if @dedicated_hc_backend -%>
+    acl hc-host        hdr(host) -i healthcheck.wikimedia.org
+    acl hc-path        path_beg     /varnish-fe
+    acl hc-unique-path path_beg     /varnish-fe-hc-5ebea9
+    acl hc-allowed-src src       -f <%= @hc_sources_file_path %>
+    use_backend healthcheck if hc-host hc-path hc-allowed-src || hc-unique-path hc-allowed-src
+<%- end -%>
 
     option forwardfor
 <%- if @use_etcd_req_filters  -%>
