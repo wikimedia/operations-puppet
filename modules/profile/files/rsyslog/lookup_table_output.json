@@ -33,6 +33,7 @@
     {"index" : "input-file-puppetdb", "value" : "kafka" },
     {"index" : "input-file-kubernetes", "value" : "k8s" },
     {"index" : "input-file-docker", "value" : "kafka" },
+    {"index" : "input-file-hcaptcha-nginx-error", "value" : "kafka" },
     {"index" : "input-file-horizon", "value" : "kafka" },
     {"index" : "input-file-gitlab-gitaly-json", "value" : "kafka" },
     {"index" : "input-file-gitlab-rails-production-json", "value" : "kafka" },

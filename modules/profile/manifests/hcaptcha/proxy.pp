@@ -65,4 +65,9 @@ class profile::hcaptcha::proxy (
     profile::auto_restarts::service { 'nginx': }
     class { 'prometheus::nginx_exporter': }
 
+    rsyslog::input::file { 'hcaptcha-nginx-error':
+        path => '/var/log/nginx/error.log',
+    }
+
+
 }
