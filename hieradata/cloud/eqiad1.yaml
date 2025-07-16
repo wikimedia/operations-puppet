@@ -89,7 +89,7 @@ profile::cache::varnish::frontend::runtime_params:
 profile::cache::varnish::frontend::fe_vcl_config:
   purge_host_regex: '^(?!(upload\.wikimedia.beta\.wmflabs\.org|maps\.beta\.wmflabs\.org|upload\.wikimedia\.beta\.wmcloud\.org|maps\.wikimedia\.beta\.wmcloud\.org))'
   static_host: "en.wikipedia.beta.wmcloud.org"
-  top_domain: "beta.wmflabs.org"
+  top_domain: "beta.wmcloud.org"
   shortener_domain: "w.beta.wmcloud.org"
   upload_domain: "upload.wikimedia.beta.wmcloud.org"
   upload_webp_hits_threshold: 1000

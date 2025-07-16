@@ -230,7 +230,7 @@ nfs_mounts:
   home: false
   scratch: false
   dumps: false
-mediawiki::web::sites::domain_suffix: "beta.wmflabs.org"
+mediawiki::web::sites::domain_suffix: "beta.wmcloud.org"
 
 
 # NOTE: The production keyholder_agents and sources used by
@@ -553,7 +553,7 @@ mediawiki::sites:
       public_rewrites: true
       short_urls: false
       declare_site: false
-      domain_suffix: "beta.wmflabs.org"
+      domain_suffix: "beta.wmcloud.org"
       variant_aliases:
         [
           "sr",
@@ -568,98 +568,75 @@ mediawiki::sites:
           "zh-tw",
         ]
     vhosts:
-      - name: wikibooks
+      - name: wikidata
         params:
-          server_aliases: [
-            "*.wikibooks.beta.wmflabs.org",
-            "*.wikibooks.beta.wmcloud.org"
-          ]
+          server_name: www.wikidata.beta.wmcloud.org
+          server_aliases: ["wikidata.beta.wmcloud.org", "*.wikidata.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikidata.org"
+          canonical_name: "On"
+          wikibase_rewrites: true
+          additional_rewrites:
+            early: []
+            late: []
+      - name: wiktionary
+        params:
+          server_aliases: ["*.wiktionary.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wiktionary.org"
+      - name: wikiquote
+        params:
+          server_aliases: ["*.wikiquote.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikiquote.org"
+      - name: wikimedia-misc-sites
+        params:
+          docroot: "/srv/mediawiki/docroot/wikimedia.org"
+          server_aliases:
+            [
+              "api.wikimedia.beta.wmcloud.org",
+              "foundation.wikimedia.beta.wmcloud.org",
+              "incubator.wikimedia.beta.wmcloud.org",
+              "login.wikimedia.beta.wmcloud.org",
+              "meta.wikimedia.beta.wmcloud.org",
+              "vote.wikimedia.beta.wmcloud.org"
+            ]
+      - name: wikimediacommons
+        params:
+          server_name: commons.wikimedia.beta.wmcloud.org
+          wikibase_rewrites: true
+          additional_rewrites:
+            early: []
+            late:
+              - "    # /data/ path T163922"
+              - "    RewriteRule ^/data/(.*)/(.*)$ %%{}{ENV:RW_PROTO}://commons.wikimedia.org/wiki/Special:PageData/$1/$2 [R=301,QSA]"
       - name: wikipedia
         params:
+          server_aliases: [ "*.wikipedia.beta.wmcloud.org"]
           docroot: "/srv/mediawiki/docroot/wikipedia.org"
-          server_aliases: [
-            "*.wikipedia.beta.wmflabs.org",
-            "*.wikipedia.beta.wmcloud.org"
-          ]
           additional_rewrites:
             early: []
             late:
               [
                 "    RewriteRule ^/data/(.*)/(.*)$ /wiki/Special:PageData/$1/$2 [R=303,QSA]",
               ]
-      - name: wikidata
+      - name: wikibooks
         params:
-          server_aliases: [
-            "wikidata.beta.wmflabs.org", "*.wikidata.beta.wmflabs.org",
-            "wikidata.beta.wmcloud.org", "*.wikidata.beta.wmcloud.org"
-          ]
-          additional_rewrites:
-            early: []
-            late:
-              [
-                "    # https://meta.wikimedia.org/wiki/Wikidata/Notes/URI_scheme",
-                '    Include "sites-enabled/wikidata-uris.incl"',
-              ]
+          server_aliases: ["*.wikibooks.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikibooks.org"
       - name: wikisource
         params:
-          server_aliases: [
-            "*.wikisource.beta.wmflabs.org",
-            "*.wikisource.beta.wmcloud.org"
-          ]
-      - name: wikiversity
-        params:
-          server_aliases: [
-            "*.wikiversity.beta.wmflabs.org",
-            "*.wikiversity.beta.wmcloud.org"
-          ]
-      - name: wikiquote
-        params:
-          server_aliases: [
-            "*.wikiquote.beta.wmflabs.org",
-            "*.wikiquote.beta.wmcloud.org"
-          ]
-      - name: wiktionary
-        params:
-          server_aliases: [
-            "*.wiktionary.beta.wmflabs.org",
-            "*.wiktionary.beta.wmcloud.org"
-          ]
+          server_aliases: ["*.wikisource.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikisource.org"
       - name: wikinews
         params:
-          server_aliases: [
-            "*.wikinews.beta.wmflabs.org",
-            "*.wikinews.beta.wmcloud.org"
-          ]
-      - name: loginwiki
+          server_aliases: ["*.wikinews.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikinews.org"
+      - name: wikiversity
         params:
-          server_name: "login.wikimedia.beta.wmflabs.org"
-          server_aliases: ["login.wikimedia.beta.wmcloud.org"]
-          variant_aliases: []
-      - name: wikimedia
-        params:
-          server_name: "misc-sites"
-          server_aliases:
-            [
-              "commons.wikimedia.beta.wmflabs.org",
-              "meta.wikimedia.beta.wmflabs.org",
-              "api.wikimedia.beta.wmflabs.org",
-              "vote.wikimedia.beta.wmflabs.org",
-              "foundation.wikimedia.beta.wmflabs.org",
-              "incubator.wikimedia.beta.wmflabs.org",
-              "commons.wikimedia.beta.wmcloud.org",
-              "meta.wikimedia.beta.wmcloud.org",
-              "api.wikimedia.beta.wmcloud.org",
-              "vote.wikimedia.beta.wmcloud.org",
-              "foundation.wikimedia.beta.wmcloud.org",
-              "incubator.wikimedia.beta.wmcloud.org"
-            ]
-          variant_aliases: []
+          server_aliases: ["*.wikiversity.beta.wmcloud.org"]
+          docroot: "/srv/mediawiki/docroot/wikiversity.org"
       - name: wikivoyage
         params:
-          server_aliases: [
-            "*.wikivoyage.beta.wmflabs.org",
-            "*.wikivoyage.beta.wmcloud.org"
-          ]
+          server_aliases: ["*.wikivoyage.beta.wmcloud.org" ]
+          docroot: "/srv/mediawiki/docroot/wikivoyage.org"
           variant_aliases:
             [
               "zh",
@@ -681,18 +658,17 @@ mediawiki::sites:
       legacy_rewrites: false
       # robots.txt, favicon.ico are static files in the docroot instead
       public_rewrites: false
-      domain_suffix: "beta.wmflabs.org"
+      domain_suffix: "beta.wmcloud.org"
     vhosts:
       - name: auth
         params:
           server_aliases: [
-            "auth.wikimedia.beta.wmflabs.org",
             "auth.wikimedia.beta.wmcloud.org"
           ]
           additional_rewrites:
             early:
               - "    # Redirect requests for the root of the domain to something nice"
-              - "    RewriteRule ^/$ https://www.wikimedia.beta.wmflabs.org [R=302,L]"
+              - "    RewriteRule ^/$ https://www.wikimedia.beta.wmcloud.org [R=302,L]"
               - "    # Serve static files before the below RewriteRule can match (T385520)"
               - "    RewriteRule ^/\\.well-known/ - [L]"
               - "    RewriteRule ^/static/ - [L]"
@@ -705,10 +681,10 @@ mediawiki::sites:
               - "    # Custom error page (T383952)"
               - "    ErrorDocument 404 /404.html"
             late: []
-  # www.wikimedia.beta.wmflabs.org also catches *.wikimedia.beta.wmflabs.org
+  # www.wikimedia.beta.wmcloud.org also catches *.wikimedia.beta.wmcloud.org
   # so it needs to come last.
   # (keep in sync with hieradata/common/mediawiki.yaml)
-  - name: www.wikimedia.beta.wmflabs.org
+  - name: www.wikimedia.beta.wmcloud.org
     template: mediawiki/apache/sites/included/www.wikimedia.org.conf.erb
     priority: 10
 
