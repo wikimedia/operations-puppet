@@ -154,24 +154,6 @@ listen tls
     # Allow OPTIONS method only with Origin header
     http-request deny deny_status 405 hdr X-Cache %[var(txn.x_cache)] if { method OPTIONS } !{ hdr(Origin) -m found }
 
-    http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
-    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
-    # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
-    http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
-
-<%- if @use_benthos -%>
-    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host)]","src":"%[src]"."path":"%[path]"}' if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
-    http-request set-var(req.dummy) var(req.silentdrop),json(utf8),debug(silentdroplog,reqctl-ring) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
-    http-request track-sc0 src table httpreqrate if !wikimedia_trust !mathoid_as_a_service
-    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
-    http-request silent-drop if too_much_recent_concurrency || !wikimedia_trust !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency   # To disable concurrency enforcement, comment the http-request action below
-<%- end -%>
-<%- if @feature_flags['bwlimit'] %>
-    # TODO: move in the filtering backend so we can remove the condition
-    http-request set-bandwidth-limit limit-by-source if !wikimedia_trust
-    http-request set-bandwidth-limit limit-by-path if !wikimedia_trust
-<%- end -%>
-
 <%- if @set_x_provenance -%>
     # Set x-provenance
     # First, we check if the request comes from our ring of trust, or is internal. We set:
@@ -215,6 +197,24 @@ listen tls
     http-request set-var(req.trusted_request,ifnotexists) str(E)
     http-request set-header X-Trusted-Request %[var(req.trusted_request)]
     acl is_trusted_request var(req.trusted_request) -m str A
+
+    http-request track-sc0 src table httpreqrate if !is_trusted_request !mathoid_as_a_service
+    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
+    # TO DISABLE CONCURRENCY ENFORCEMENT, JUST COMMENT THE FOLLOWING LINE
+    http-request silent-drop if too_much_recent_concurrency || !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency
+
+<%- if @use_benthos -%>
+    http-request set-var-fmt(req.silentdrop) '{"host":"%[req.fhdr(Host)]","src":"%[src]"."path":"%[path]"}' if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Prepares json payload as a variable used in successive debug function
+    http-request set-var(req.dummy) var(req.silentdrop),json(utf8),debug(silentdroplog,reqctl-ring) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # Logs into reqctl-ring the req.silentdrop variable defined earlier
+    http-request track-sc0 src table httpreqrate if !is_trusted_request !mathoid_as_a_service
+    http-request set-var(req.dummy_silent_drop) src,debug(silent-drop_for_300s,stderr) if !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries !too_much_recent_concurrency   # exists only for logging side-effect
+    http-request silent-drop if too_much_recent_concurrency || !is_trusted_request !mathoid_as_a_service too_many_concurrent_queries mark_as_too_much_concurrency   # To disable concurrency enforcement, comment the http-request action below
+<%- end -%>
+<%- if @feature_flags['bwlimit'] %>
+    # TODO: move in the filtering backend so we can remove the condition
+    http-request set-bandwidth-limit limit-by-source if !is_trusted_request
+    http-request set-bandwidth-limit limit-by-path if !is_trusted_request
+<%- end -%>
 
 <%- if @dedicated_hc_backend -%>
     acl hc-host        hdr(host) -i healthcheck.wikimedia.org
